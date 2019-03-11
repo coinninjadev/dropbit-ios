@@ -203,7 +203,7 @@ class AppCoordinator: CoordinatorType {
       }
     })
 
-    let title = "Push notifications are an important part of the the DropBit experience." +
+    let title = "Push notifications are an important part of the DropBit experience." +
     " Without them you will not be notified to complete transactions which will cause them to expire."
 
     let description = "Please allow us to send you push notifications on the following prompt."
