@@ -90,6 +90,8 @@
 		3B2E78362024D56500DA25AF /* StoryboardInitializable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B2E78352024D56500DA25AF /* StoryboardInitializable.swift */; };
 		3B2EBF6F222EEB18003C0D0E /* CKMPhoneNumberTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B2EBF6E222EEB18003C0D0E /* CKMPhoneNumberTests.swift */; };
 		3B2EBF71223010DC003C0D0E /* ManagedContactComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B2EBF70223010DC003C0D0E /* ManagedContactComponents.swift */; };
+		3B2EBF73223176D9003C0D0E /* MockUserDefaultsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B2EBF72223176D9003C0D0E /* MockUserDefaultsManager.swift */; };
+		3B2EBF7522318476003C0D0E /* ContactCacheManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B2EBF7422318476003C0D0E /* ContactCacheManagerTests.swift */; };
 		3B30228121C9290D007F137A /* SyncRoutineError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B30228021C9290D007F137A /* SyncRoutineError.swift */; };
 		3B302F262123160800A7E070 /* PromiseKit+CoreData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B302F252123160800A7E070 /* PromiseKit+CoreData.swift */; };
 		3B30AF1521B810FF009BAE5A /* ConfirmPaymentViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B30AF1421B810FF009BAE5A /* ConfirmPaymentViewControllerTests.swift */; };
@@ -855,6 +857,8 @@
 		3B2E78352024D56500DA25AF /* StoryboardInitializable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoryboardInitializable.swift; sourceTree = "<group>"; };
 		3B2EBF6E222EEB18003C0D0E /* CKMPhoneNumberTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CKMPhoneNumberTests.swift; sourceTree = "<group>"; };
 		3B2EBF70223010DC003C0D0E /* ManagedContactComponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagedContactComponents.swift; sourceTree = "<group>"; };
+		3B2EBF72223176D9003C0D0E /* MockUserDefaultsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockUserDefaultsManager.swift; sourceTree = "<group>"; };
+		3B2EBF7422318476003C0D0E /* ContactCacheManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactCacheManagerTests.swift; sourceTree = "<group>"; };
 		3B30228021C9290D007F137A /* SyncRoutineError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncRoutineError.swift; sourceTree = "<group>"; };
 		3B302F252123160800A7E070 /* PromiseKit+CoreData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PromiseKit+CoreData.swift"; sourceTree = "<group>"; };
 		3B30AF1421B810FF009BAE5A /* ConfirmPaymentViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmPaymentViewControllerTests.swift; sourceTree = "<group>"; };
@@ -2285,6 +2289,7 @@
 				B52770C3207574060083710E /* MockCalculatorViewModel.swift */,
 				6B8250D63C5BAA325C86E644 /* MockPersistenceManager.swift */,
 				B596702C221E2AE4008E884D /* MockContactCacheManager.swift */,
+				3B2EBF72223176D9003C0D0E /* MockUserDefaultsManager.swift */,
 				3BA389A62035C97000B599A0 /* MockPinCreationViewControllerDelegate.swift */,
 				4AF433272094103C00B11BC9 /* MockDeviceVerificationViewControllerDelegate.swift */,
 				B51894782089304E00E75C20 /* MockTransactionHistoryDetailCellDelegate.swift */,
@@ -2329,6 +2334,7 @@
 				B5A7523D2225E62F0017DB35 /* HashingManagerTests.swift */,
 				B55D084F21B6F89C007DD9E5 /* CKRecipientParserTests.swift */,
 				30F0B64A2139D6C300BF7DBB /* CoinNinjaUrlFactory.swift */,
+				3B2EBF7422318476003C0D0E /* ContactCacheManagerTests.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -3722,6 +3728,7 @@
 				A29CE11520A389B400761B91 /* CompositeValidatorTests.swift in Sources */,
 				3BA389A72035C97000B599A0 /* MockPinCreationViewControllerDelegate.swift in Sources */,
 				3B325D572190B2CE0094897C /* MockRecoveryWordsIntroViewControllerDelegate.swift in Sources */,
+				3B2EBF7522318476003C0D0E /* ContactCacheManagerTests.swift in Sources */,
 				B586099721B9CAAA004C5AB7 /* MockRecordNotFoundErrorResponse.swift in Sources */,
 				3B3F11012056D7AB003F86EF /* MockVerifyRecoveryWordsResultDelegate.swift in Sources */,
 				3B86F78E203C6E2300D15231 /* PinEntryViewControllerTests.swift in Sources */,
@@ -3828,6 +3835,7 @@
 				B55D085021B6F89C007DD9E5 /* CKRecipientParserTests.swift in Sources */,
 				B52EF8CC21A4B0870081CB3B /* MerchantPaymentRequestResponseTests.swift in Sources */,
 				B57C243920741B8A00F9519A /* CalculatorViewModelTests.swift in Sources */,
+				3B2EBF73223176D9003C0D0E /* MockUserDefaultsManager.swift in Sources */,
 				A29CE11120A385FE00761B91 /* CurrencyStringValidatorTests.swift in Sources */,
 				6B82500CB8AD79F2E4EFEEA7 /* KeypadDigitViewTests.swift in Sources */,
 				3B80E27B21BEF04500F6EF17 /* DatabaseMigrationWorkerTests.swift in Sources */,
