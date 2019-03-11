@@ -37,7 +37,7 @@ enum DeviceVerificationError {
   }
 }
 
-final class DeviceVerificationViewController: BaseViewController, PhoneNumberEntryViewDisplayable {
+final class DeviceVerificationViewController: BaseViewController {
 
   enum Mode {
     case phoneNumberEntry
@@ -60,7 +60,10 @@ final class DeviceVerificationViewController: BaseViewController, PhoneNumberEnt
     }
   }
 
+  @IBOutlet var exampleLabel: OnboardingSubtitleLabel!
+  @IBOutlet var phoneNumberContainer: UIView!
   @IBOutlet var phoneNumberEntryView: PhoneNumberEntryView!
+  @IBOutlet var submitPhoneNumberButton: PrimaryActionButton!
   @IBOutlet var codeDisplayView: PinDisplayView!
   @IBOutlet var resendCodeButton: UnderlinedTextButton!
 
@@ -70,6 +73,9 @@ final class DeviceVerificationViewController: BaseViewController, PhoneNumberEnt
 
   @IBAction func resendTextMessage(_ sender: Any) {
     coordinationDelegate?.viewControllerDidRequestResendCode(self)
+  }
+  @IBAction func submitPhoneNumber(_ sender: Any) {
+    
   }
 
   @objc func skipVerification() {
@@ -132,7 +138,13 @@ final class DeviceVerificationViewController: BaseViewController, PhoneNumberEnt
     switch entryMode {
     case .phoneNumberEntry:
       updatePrimaryLabels(title: enterYourPhone, message: normalPhoneMessage)
+
+      submitPhoneNumberButton.setTitle("NEXT", for: .normal)
+      updateView(forSelectedRegion: phoneNumberEntryView.selectedRegion)
+      exampleLabel.isHidden = false
+      phoneNumberContainer.isHidden = false
       phoneNumberEntryView.isHidden = false
+      submitPhoneNumberButton.isHidden = false
       keypadEntryView.delegate = self.phoneNumberEntryView.textField
 
     case .codeVerification(let phoneNumber):
@@ -162,7 +174,10 @@ final class DeviceVerificationViewController: BaseViewController, PhoneNumberEnt
   }
 
   private func setDefaultHiddenViews() {
+    exampleLabel.isHidden = true
+    phoneNumberContainer.isHidden = true
     phoneNumberEntryView.isHidden = true
+    submitPhoneNumberButton.isHidden = true
     codeDisplayView.isHidden = true
     updateErrorLabel(with: nil)
   }
@@ -199,6 +214,28 @@ final class DeviceVerificationViewController: BaseViewController, PhoneNumberEnt
     }
   }
 
+}
+
+extension DeviceVerificationViewController: PhoneNumberEntryViewDisplayable {
+
+  func phoneNumberEntryView(_ view: PhoneNumberEntryView, didSelectCountry country: CKCountry) {
+    updateView(forSelectedRegion: country.regionCode)
+  }
+
+  private func updateView(forSelectedRegion regionCode: String) {
+    switch entryMode {
+    case .phoneNumberEntry:
+
+      exampleLabel.text = "Example: "
+
+      let phoneNumberLengths = self.phoneNumberKit.possiblePhoneNumberLengths(forCountry: regionCode, phoneNumberType: .mobile, lengthType: .national)
+      let regionHasSinglePhoneNumberLength = phoneNumberLengths.count == 1
+      submitPhoneNumberButton.isHidden = regionHasSinglePhoneNumberLength
+
+    default:
+      break
+    }
+  }
 }
 
 extension DeviceVerificationViewController: StoryboardInitializable {}
