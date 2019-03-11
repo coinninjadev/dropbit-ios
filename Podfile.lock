@@ -83,7 +83,7 @@ CHECKOUT OPTIONS:
     :commit: 8b47d5f
     :git: https://github.com/pahmed/Permission.git
   PhoneNumberKit:
-    :commit: 12112e0568d9ed9a0cebe034123919fab62ccbe9
+    :commit: 98d9587ba30dec9e758409aff6550ee40891aa80
     :git: https://github.com/blwinters/PhoneNumberKit.git
 
 SPEC CHECKSUMS:
