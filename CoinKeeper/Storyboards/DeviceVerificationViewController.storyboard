@@ -45,8 +45,8 @@
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HGr-Xr-gKB" userLabel="Phone Number Container">
                                                 <rect key="frame" x="27.5" y="89.5" width="312" height="86.5"/>
                                                 <subviews>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Example" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="s2x-ve-wvJ" userLabel="Example" customClass="OnboardingSubtitleLabel" customModule="DropBit" customModuleProvider="target">
-                                                        <rect key="frame" x="0.0" y="12" width="312" height="20.5"/>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Example" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="s2x-ve-wvJ" userLabel="Example" customClass="ExamplePhoneNumberLabel" customModule="DropBit" customModuleProvider="target">
+                                                        <rect key="frame" x="0.0" y="12" width="312" height="16.5"/>
                                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                         <nil key="textColor"/>
@@ -68,7 +68,7 @@
                                                     <constraint firstAttribute="bottom" secondItem="p5R-F7-HDn" secondAttribute="bottom" id="RCl-Go-KWO"/>
                                                     <constraint firstAttribute="trailing" secondItem="p5R-F7-HDn" secondAttribute="trailing" id="RSw-eJ-fFy"/>
                                                     <constraint firstAttribute="trailing" secondItem="s2x-ve-wvJ" secondAttribute="trailing" id="jRo-MC-Kk4"/>
-                                                    <constraint firstItem="p5R-F7-HDn" firstAttribute="top" secondItem="s2x-ve-wvJ" secondAttribute="bottom" constant="4" id="l13-a3-zZE"/>
+                                                    <constraint firstItem="p5R-F7-HDn" firstAttribute="top" secondItem="s2x-ve-wvJ" secondAttribute="bottom" constant="8" id="l13-a3-zZE"/>
                                                     <constraint firstItem="p5R-F7-HDn" firstAttribute="leading" secondItem="HGr-Xr-gKB" secondAttribute="leading" id="qcb-f5-Mga"/>
                                                 </constraints>
                                             </view>
