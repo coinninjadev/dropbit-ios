@@ -48,12 +48,8 @@ public class CKMTransaction: NSManagedObject {
 
   /// txid does not begin with a prefix (e.g. invitations with placeholder Transaction objects)
   var txidIsActualTxid: Bool {
-    if txid.starts(with: CKMTransaction.invitationTxidPrefix) ||
-      txid.starts(with: CKMTransaction.failedTxidPrefix) {
-      return false
-    } else {
-      return true
-    }
+    let isInviteOrFailed = txid.starts(with: CKMTransaction.invitationTxidPrefix) || txid.starts(with: CKMTransaction.failedTxidPrefix)
+    return !isInviteOrFailed
   }
 
   func setTxid(withInvitation invitation: CKMInvitation) {
@@ -112,7 +108,6 @@ public class CKMTransaction: NSManagedObject {
     let txidPredicate = CKPredicate.Transaction.txidIn(txidsToKeep)
     let fullPredicate = NSCompoundPredicate(type: .and, subpredicates: [failedPredicate,
                                                                         txidPredicate])
-
     return transactions(matching: fullPredicate, in: context)
   }
 
@@ -155,7 +150,6 @@ public class CKMTransaction: NSManagedObject {
     let fetchRequest: NSFetchRequest<CKMTransaction> = CKMTransaction.fetchRequest()
     fetchRequest.predicate = predicate
     fetchRequest.propertiesToFetch = [txidKeyPath]
-
     return transactions(with: fetchRequest, in: context).map { $0.txid }
   }
 
@@ -432,11 +426,7 @@ public class CKMTransaction: NSManagedObject {
 
   /// The amount received after the network fee has been subtracted from the sent amount
   var receivedAmount: Int {
-    if isIncoming {
-      return netWalletAmount
-    } else {
-      return abs(netWalletAmount) - networkFee
-    }
+    return isIncoming ? netWalletAmount : (abs(netWalletAmount) - networkFee)
   }
 
   /// The relevant address belonging to the wallet.
@@ -497,7 +487,6 @@ extension CKMTransaction: CounterpartyRepresentable {
   var counterpartyAddressId: String? {
     return counterpartyReceiverAddressId
   }
-
 }
 
 extension CKMTransaction {
