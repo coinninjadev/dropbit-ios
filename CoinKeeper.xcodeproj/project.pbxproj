@@ -88,6 +88,7 @@
 		3B2E78302024AEA100DA25AF /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B2E782F2024AEA100DA25AF /* Theme.swift */; };
 		3B2E78332024C76D00DA25AF /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B2E78322024C76D00DA25AF /* AppCoordinator.swift */; };
 		3B2E78362024D56500DA25AF /* StoryboardInitializable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B2E78352024D56500DA25AF /* StoryboardInitializable.swift */; };
+		3B2EBF6F222EEB18003C0D0E /* CKMPhoneNumberTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B2EBF6E222EEB18003C0D0E /* CKMPhoneNumberTests.swift */; };
 		3B30228121C9290D007F137A /* SyncRoutineError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B30228021C9290D007F137A /* SyncRoutineError.swift */; };
 		3B302F262123160800A7E070 /* PromiseKit+CoreData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B302F252123160800A7E070 /* PromiseKit+CoreData.swift */; };
 		3B30AF1521B810FF009BAE5A /* ConfirmPaymentViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B30AF1421B810FF009BAE5A /* ConfirmPaymentViewControllerTests.swift */; };
@@ -851,6 +852,7 @@
 		3B2E782F2024AEA100DA25AF /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; usesTabs = 0; };
 		3B2E78322024C76D00DA25AF /* AppCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
 		3B2E78352024D56500DA25AF /* StoryboardInitializable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoryboardInitializable.swift; sourceTree = "<group>"; };
+		3B2EBF6E222EEB18003C0D0E /* CKMPhoneNumberTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CKMPhoneNumberTests.swift; sourceTree = "<group>"; };
 		3B30228021C9290D007F137A /* SyncRoutineError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncRoutineError.swift; sourceTree = "<group>"; };
 		3B302F252123160800A7E070 /* PromiseKit+CoreData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PromiseKit+CoreData.swift"; sourceTree = "<group>"; };
 		3B30AF1421B810FF009BAE5A /* ConfirmPaymentViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmPaymentViewControllerTests.swift; sourceTree = "<group>"; };
@@ -2445,6 +2447,7 @@
 				3B1555E720D2C47000D6A70C /* VinCoreDataTests.swift */,
 				3B1555E920D2D48D00D6A70C /* VoutCoreDataTests.swift */,
 				3B24DFBF20EBEFC100C31969 /* DerivativePathTests.swift */,
+				3B2EBF6E222EEB18003C0D0E /* CKMPhoneNumberTests.swift */,
 			);
 			path = NSManagedObject;
 			sourceTree = "<group>";
@@ -3839,6 +3842,7 @@
 				B5C8F5BD216CF04900E3E85B /* MockNetworkManager+WalletAddressRequestRequestable.swift in Sources */,
 				B51894792089304E00E75C20 /* MockTransactionHistoryDetailCellDelegate.swift in Sources */,
 				3BF5808020E3AFA100DD7F95 /* TransactionDataWorkerTests.swift in Sources */,
+				3B2EBF6F222EEB18003C0D0E /* CKMPhoneNumberTests.swift in Sources */,
 				B5EBFBD420765AD1005F609D /* CurrencyConverterTests.swift in Sources */,
 				B586099D21B9DA62004C5AB7 /* TargetTests.swift in Sources */,
 				3B24DFC020EBEFC100C31969 /* DerivativePathTests.swift in Sources */,

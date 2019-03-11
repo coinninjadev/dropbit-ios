@@ -64,6 +64,21 @@ public class CKMPhoneNumber: NSManagedObject {
     return ckmPhoneNumber
   }
 
+  public static func findAllWithoutCounterpartyName(in context: NSManagedObjectContext) -> [CKMPhoneNumber] {
+    let counterpartyKeyPath = #keyPath(CKMPhoneNumber.counterparty)
+    let counterpartyPredicate = NSPredicate(format: "\(counterpartyKeyPath) == nil")
+    let request: NSFetchRequest<CKMPhoneNumber> = CKMPhoneNumber.fetchRequest()
+    request.predicate = counterpartyPredicate
+
+    var result: [CKMPhoneNumber] = []
+    do {
+      result = try context.fetch(request)
+    } catch {
+      print("error: \(error)")
+    }
+    return result
+  }
+
   public func configure(with outgoingTransactionData: OutgoingTransactionData, in context: NSManagedObjectContext) {
     guard outgoingTransactionData.contactName.isNotEmpty else { return }
     self.counterparty = CKMCounterparty.findOrCreate(with: outgoingTransactionData.contactName, in: context)
