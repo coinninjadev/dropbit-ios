@@ -369,7 +369,7 @@ extension SendPaymentViewController {
     self.bitcoinAddressButton.isHidden = true
     self.phoneNumberEntryView.isHidden = false
 
-    let region = phoneNumberEntryView.selectedRegion ?? phoneNumberEntryView.defaultRegion
+    let region = phoneNumberEntryView.selectedRegion
     let country = CKCountry(regionCode: region, kit: self.phoneNumberKit)
     let number = contact.globalPhoneNumber.nationalNumber
 
