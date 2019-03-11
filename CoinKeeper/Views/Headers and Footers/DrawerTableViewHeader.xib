@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="yEv-6J-wWa" customClass="DrawerTableViewHeader" customModule="CoinKeeper" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="118" height="100"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nDS-YX-jG5">
+                    <rect key="frame" x="0.0" y="0.0" width="118" height="100"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                </view>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aRr-N2-Xcg">
+                    <rect key="frame" x="38" y="29.5" width="42" height="21"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="---" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Bgq-tl-dVZ">
+                    <rect key="frame" x="47.5" y="49.5" width="23" height="21"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <constraints>
+                <constraint firstItem="Bgq-tl-dVZ" firstAttribute="centerY" secondItem="yEv-6J-wWa" secondAttribute="centerY" constant="10" id="51T-jG-X2x"/>
+                <constraint firstItem="aRr-N2-Xcg" firstAttribute="centerY" secondItem="yEv-6J-wWa" secondAttribute="centerY" constant="-10" id="9m1-jh-EwK"/>
+                <constraint firstItem="tLX-37-AmA" firstAttribute="top" secondItem="nDS-YX-jG5" secondAttribute="top" id="FQE-r8-hbp"/>
+                <constraint firstItem="nDS-YX-jG5" firstAttribute="bottom" secondItem="tLX-37-AmA" secondAttribute="bottom" id="Jeh-CV-3Ly"/>
+                <constraint firstItem="nDS-YX-jG5" firstAttribute="trailing" secondItem="tLX-37-AmA" secondAttribute="trailing" id="ObJ-Lz-QO6"/>
+                <constraint firstItem="tLX-37-AmA" firstAttribute="leading" secondItem="nDS-YX-jG5" secondAttribute="leading" id="evz-a0-AGN"/>
+                <constraint firstItem="Bgq-tl-dVZ" firstAttribute="centerX" secondItem="yEv-6J-wWa" secondAttribute="centerX" id="h3n-Nm-gfi"/>
+                <constraint firstItem="aRr-N2-Xcg" firstAttribute="centerX" secondItem="yEv-6J-wWa" secondAttribute="centerX" id="hiD-aM-orA"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <viewLayoutGuide key="safeArea" id="tLX-37-AmA"/>
+            <connections>
+                <outlet property="_backgroundView" destination="nDS-YX-jG5" id="jMa-QH-2cW"/>
+                <outlet property="priceLabel" destination="Bgq-tl-dVZ" id="MTl-9t-Ikb"/>
+                <outlet property="priceTitleLabel" destination="aRr-N2-Xcg" id="6kX-i6-sJA"/>
+            </connections>
+            <point key="canvasLocation" x="-193" y="-230"/>
+        </view>
+    </objects>
+</document>

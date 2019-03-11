@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="NoTransactionsView" customModule="DropBit" customModuleProvider="target">
+            <connections>
+                <outlet property="learnAboutBitcoinButton" destination="DzG-YQ-eYE" id="Mxf-Ye-6tn"/>
+                <outlet property="noTransactionsDetail" destination="j3R-A6-1l7" id="ale-lc-h6J"/>
+                <outlet property="noTransactionsTitle" destination="aGx-fi-eIm" id="EMO-Xy-vD0"/>
+                <outletCollection property="detailLabels" destination="j3R-A6-1l7" collectionClass="NSMutableArray" id="hRv-5c-PLe"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No Bitcoin...Yet!" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aGx-fi-eIm">
+                    <rect key="frame" x="50" y="270" width="275" height="21"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="749" text="All incoming and outgoing transactions will appear here. " textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="j3R-A6-1l7">
+                    <rect key="frame" x="50" y="313" width="275" height="41"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DzG-YQ-eYE" customClass="PrimaryActionButton" customModule="DropBit" customModuleProvider="target">
+                    <rect key="frame" x="50" y="376" width="275" height="44"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="44" id="GOY-OK-7kb"/>
+                    </constraints>
+                    <state key="normal" title="LEARN MORE ABOUT BITCOIN"/>
+                    <connections>
+                        <action selector="learnAboutBitcoinButtonWasTapped" destination="-1" eventType="touchUpInside" id="Wyz-ra-ae8"/>
+                    </connections>
+                </button>
+            </subviews>
+            <constraints>
+                <constraint firstItem="aGx-fi-eIm" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="50" id="Bz3-08-Odh"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="j3R-A6-1l7" secondAttribute="trailing" constant="50" id="HdZ-1I-Pa6"/>
+                <constraint firstItem="j3R-A6-1l7" firstAttribute="top" secondItem="aGx-fi-eIm" secondAttribute="bottom" constant="22" id="K3A-6r-wb2"/>
+                <constraint firstItem="j3R-A6-1l7" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="Mdv-Ge-mZb"/>
+                <constraint firstItem="DzG-YQ-eYE" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="50" id="NHg-RE-UNq"/>
+                <constraint firstItem="j3R-A6-1l7" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="50" id="Qpx-hG-j5C"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="DzG-YQ-eYE" secondAttribute="trailing" constant="50" id="edK-Df-QP6"/>
+                <constraint firstItem="DzG-YQ-eYE" firstAttribute="top" secondItem="j3R-A6-1l7" secondAttribute="bottom" constant="22" id="l1q-0Q-5mQ"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="aGx-fi-eIm" secondAttribute="trailing" constant="50" id="vTQ-Iz-ppd"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <point key="canvasLocation" x="-291" y="72"/>
+        </view>
+    </objects>
+</document>

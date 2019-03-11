@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--No Connection View Controller-->
+        <scene sceneID="9ww-E8-bvL">
+            <objects>
+                <viewController storyboardIdentifier="NoConnectionViewController" id="Q54-Bz-lkd" customClass="NoConnectionViewController" customModule="DropBit" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Zed-Uh-AjI">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dec-xh-V0o">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                            </imageView>
+                            <view alpha="0.5" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6Xz-tw-ASk">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </view>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No internet connection. You must have internet connection to use DropBit." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6mg-J9-F3m">
+                                <rect key="frame" x="25" y="238" width="325" height="41"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FgL-o2-D22" customClass="PrimaryActionButton" customModule="DropBit" customModuleProvider="target">
+                                <rect key="frame" x="44" y="379" width="287" height="44"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="qdq-5H-Raf"/>
+                                </constraints>
+                                <state key="normal" title="RETRY"/>
+                                <connections>
+                                    <action selector="retryConnection:" destination="Q54-Bz-lkd" eventType="touchUpInside" id="Ifd-sI-DzY"/>
+                                </connections>
+                            </button>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="Hfb-s1-zFJ">
+                                <rect key="frame" x="177.5" y="323" width="20" height="20"/>
+                            </activityIndicatorView>
+                        </subviews>
+                        <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="6mg-J9-F3m" firstAttribute="centerX" secondItem="Zed-Uh-AjI" secondAttribute="centerX" id="0jp-x6-HSX"/>
+                            <constraint firstAttribute="bottom" secondItem="6Xz-tw-ASk" secondAttribute="bottom" id="2pk-FG-BfI"/>
+                            <constraint firstItem="6mg-J9-F3m" firstAttribute="leading" secondItem="Zed-Uh-AjI" secondAttribute="leading" constant="25" id="6aQ-ha-gGH"/>
+                            <constraint firstItem="Hfb-s1-zFJ" firstAttribute="centerX" secondItem="Zed-Uh-AjI" secondAttribute="centerX" id="8aQ-QP-wIG"/>
+                            <constraint firstItem="Hfb-s1-zFJ" firstAttribute="top" secondItem="6mg-J9-F3m" secondAttribute="bottom" constant="44" id="8ce-PP-paF"/>
+                            <constraint firstItem="6Xz-tw-ASk" firstAttribute="top" secondItem="Zed-Uh-AjI" secondAttribute="top" id="Cbj-3e-Uqy"/>
+                            <constraint firstItem="4Ni-mj-JjU" firstAttribute="trailing" secondItem="FgL-o2-D22" secondAttribute="trailing" constant="44" id="RTd-Vo-B1p"/>
+                            <constraint firstAttribute="trailing" secondItem="6mg-J9-F3m" secondAttribute="trailing" constant="25" id="U9Q-Qz-QGp"/>
+                            <constraint firstItem="6Xz-tw-ASk" firstAttribute="bottom" secondItem="dec-xh-V0o" secondAttribute="bottom" id="UFl-oR-Evg"/>
+                            <constraint firstItem="FgL-o2-D22" firstAttribute="top" secondItem="6mg-J9-F3m" secondAttribute="bottom" constant="100" id="Ump-2r-UV4"/>
+                            <constraint firstItem="dec-xh-V0o" firstAttribute="trailing" secondItem="4Ni-mj-JjU" secondAttribute="trailing" id="WeI-UD-lTA"/>
+                            <constraint firstItem="4Ni-mj-JjU" firstAttribute="trailing" secondItem="6Xz-tw-ASk" secondAttribute="trailing" id="aDH-HT-HbX"/>
+                            <constraint firstItem="FgL-o2-D22" firstAttribute="leading" secondItem="4Ni-mj-JjU" secondAttribute="leading" constant="44" id="e7J-gc-pHY"/>
+                            <constraint firstItem="dec-xh-V0o" firstAttribute="top" secondItem="6Xz-tw-ASk" secondAttribute="top" id="eaZ-vZ-1Ha"/>
+                            <constraint firstItem="dec-xh-V0o" firstAttribute="leading" secondItem="4Ni-mj-JjU" secondAttribute="leading" id="kfg-oj-atr"/>
+                            <constraint firstItem="6Xz-tw-ASk" firstAttribute="leading" secondItem="4Ni-mj-JjU" secondAttribute="leading" id="p1W-Sh-o2b"/>
+                            <constraint firstItem="6mg-J9-F3m" firstAttribute="centerY" secondItem="Zed-Uh-AjI" secondAttribute="centerY" constant="-75" id="yYD-KS-zVE"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="4Ni-mj-JjU"/>
+                    </view>
+                    <connections>
+                        <outlet property="activitySpinner" destination="Hfb-s1-zFJ" id="fH5-og-93O"/>
+                        <outlet property="blurViewStackImageView" destination="dec-xh-V0o" id="dmN-HG-n3L"/>
+                        <outlet property="noConnectionLabel" destination="6mg-J9-F3m" id="c81-oP-Fnc"/>
+                        <outlet property="retryButton" destination="FgL-o2-D22" id="Mrq-7c-xdj"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="V8T-Wa-rsB" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-122.40000000000001" y="63.418290854572717"/>
+        </scene>
+    </scenes>
+</document>

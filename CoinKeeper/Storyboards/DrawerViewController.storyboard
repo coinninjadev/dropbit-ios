@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Drawer View Controller-->
+        <scene sceneID="KWh-lO-VpU">
+            <objects>
+                <viewController storyboardIdentifier="DrawerViewController" id="sKY-NZ-aK2" customClass="DrawerViewController" customModule="DropBit" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="LHH-QY-w6l">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="pKK-bh-S9D">
+                                <rect key="frame" x="8" y="40" width="359" height="545"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </tableView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ORh-md-pMr">
+                                <rect key="frame" x="166.5" y="613" width="42" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="dropbitTitle" translatesAutoresizingMaskIntoConstraints="NO" id="B4V-cE-9DF">
+                                <rect key="frame" x="154" y="593" width="67" height="19"/>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="B4V-cE-9DF" firstAttribute="top" secondItem="pKK-bh-S9D" secondAttribute="bottom" constant="8" id="ALG-fD-fQG"/>
+                            <constraint firstItem="B4V-cE-9DF" firstAttribute="centerX" secondItem="LHH-QY-w6l" secondAttribute="centerX" id="Q1z-Js-nEL"/>
+                            <constraint firstItem="pKK-bh-S9D" firstAttribute="top" secondItem="t19-o2-kaz" secondAttribute="top" constant="20" id="S9b-jX-2Dt"/>
+                            <constraint firstItem="t19-o2-kaz" firstAttribute="trailing" secondItem="pKK-bh-S9D" secondAttribute="trailing" constant="8" id="ZMw-y2-LVD"/>
+                            <constraint firstItem="ORh-md-pMr" firstAttribute="top" secondItem="B4V-cE-9DF" secondAttribute="bottom" constant="1" id="bO0-dh-Lfq"/>
+                            <constraint firstItem="t19-o2-kaz" firstAttribute="bottom" secondItem="ORh-md-pMr" secondAttribute="bottom" constant="33" id="h3n-bp-top"/>
+                            <constraint firstItem="pKK-bh-S9D" firstAttribute="leading" secondItem="t19-o2-kaz" secondAttribute="leading" constant="8" id="tfE-G0-XDe"/>
+                            <constraint firstItem="ORh-md-pMr" firstAttribute="centerX" secondItem="LHH-QY-w6l" secondAttribute="centerX" id="ubb-ab-Tbf"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="t19-o2-kaz"/>
+                    </view>
+                    <connections>
+                        <outlet property="drawerTableView" destination="pKK-bh-S9D" id="4NB-lj-zNg"/>
+                        <outlet property="versionLabel" destination="ORh-md-pMr" id="hBz-NI-SPw"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Rnb-ju-RYb" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-634.39999999999998" y="20.239880059970016"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="dropbitTitle" width="67" height="19"/>
+    </resources>
+</document>

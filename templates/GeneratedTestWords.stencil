@@ -1,0 +1,15 @@
+public struct GeneratedTestWords {
+  static var fakeWords: [String] {
+    return "{{ argument.fakeWords }}".components(separatedBy: "_")
+  }
+
+  /// IMPORTANT: Do not use these words for tests where a transaction could be generated.
+  /// The next receive address for these words should always be at index 0.
+  static var recoverOnlyWords: [String] {
+    return "{{ argument.recoverOnlyWords }}".components(separatedBy: "_")
+  }
+
+  static var recoverOnlyFirstAddress: String {
+    return "{{ argument.recoverOnlyFirstAddress }}"
+  }
+}

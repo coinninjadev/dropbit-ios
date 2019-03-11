@@ -1,0 +1,55 @@
+# For more information about this configuration visit
+# https://docs.fastlane.tools/actions/scan/#scanfile
+
+# In general, you can use the options available
+# fastlane scan --help
+
+# Remove the # in front of the line to enable the option
+
+scheme "CoinKeeper"
+workspace "CoinKeeper.xcworkspace"
+code_coverage true
+xcpretty_args '--test'
+disable_concurrent_testing true
+
+for_lane :local_test do
+  test_without_building false
+  device "iPhone X (12.0)"
+  clean false
+end
+
+for_lane :local_unit_tests do
+  test_without_building false
+  device "iPhone X (12.0)"
+  only_testing ["DropBitTests"]
+  clean false
+end
+
+for_lane :local_ui_tests do
+  test_without_building false
+  device "iPhone X (12.0)"
+  only_testing ["DropBitUITests"]
+  clean false
+end
+
+for_lane :quick_test do
+  test_without_building false
+  device "iPhone X (12.0)"
+  clean false
+end
+
+for_lane :test do
+  devices [
+    "iPhone X (11.1)",
+    "iPhone X (11.4)",
+    "iPhone X (12.0)"
+   ]
+  only_testing ["DropBitTests"]
+  clean true
+end
+
+for_lane :ui_tests do
+  device "iPhone X (12.0)"
+  only_testing ["DropBitUITests"]
+  clean true
+end

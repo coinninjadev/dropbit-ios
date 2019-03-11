@@ -1,0 +1,53 @@
+stages:
+  - unit_tests
+  - ui_tests
+  - test_flight
+  - archive
+
+cache:
+  paths:
+    - Carthage/
+
+variables:
+  LC_ALL: "en_US.UTF-8"
+  LANG: "en_US.UTF-8"
+
+before_script:
+  - gem install bundler
+  - bundle install
+
+run_tests:
+  stage: unit_tests
+  script: bundle exec fastlane test
+  tags:
+    - ios
+  coverage: '/CoinKeeper.*\.app | \d+(?:\.\d+)?%/'
+
+run_ui_tests:
+  stage: ui_tests
+  script: bundle exec fastlane ui_tests
+  tags:
+    - ios
+
+build_test_flight:
+  stage: test_flight
+  script: bundle exec fastlane beta
+  tags:
+    - ios
+  only:
+    - /^release-.*$/
+    - develop
+  allow_failure: true
+
+build_archive:
+  stage: archive
+  script: bundle exec fastlane deploy
+  only:
+    - /^release-.*$/
+  artifacts:
+    paths:
+      - build/CoinKeeper.ipa
+    expire_in: 4 weeks
+  tags:
+    - ios
+  when: manual

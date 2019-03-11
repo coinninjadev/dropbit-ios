@@ -1,0 +1,30 @@
+# For more information about this configuration visit
+# https://docs.fastlane.tools/actions/gym/#gymfile
+
+# In general, you can use the options available
+# fastlane gym --help
+
+# Remove the # in front of the line to enable the option
+
+
+### Settings need to be updated once CI is implmeneted, this is just template for now
+#
+workspace "CoinKeeper.xcworkspace"
+scheme "CoinKeeper"
+output_name "CoinKeeper.ipa"
+output_directory "./build"
+sdk "iphoneos12.1"
+include_bitcode false
+silent true
+
+for_lane :deploy do
+  clean true
+  puts "*** In Gymfile, setting Release configuration ***"
+  configuration "Release"
+end
+
+for_lane :beta do
+  clean true
+  puts "*** In Gymfile, setting Beta configuration ***"
+  configuration "Beta"
+end

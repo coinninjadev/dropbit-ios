@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="CalculatorCurrencyToggle" customModule="CoinKeeper" customModuleProvider="target">
+            <connections>
+                <outlet property="leftButton" destination="wmh-VA-SVL" id="6ch-4s-zsg"/>
+                <outlet property="rightButton" destination="9Wf-Nt-Y5P" id="P90-y2-Ow1"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB">
+            <rect key="frame" x="0.0" y="0.0" width="240" height="60"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wmh-VA-SVL" customClass="CalculatorCurrencyButton" customModule="CoinKeeper" customModuleProvider="target">
+                    <rect key="frame" x="0.0" y="0.0" width="120" height="60"/>
+                    <state key="normal" title="Button A"/>
+                    <connections>
+                        <action selector="didTapLeftButton:" destination="-1" eventType="touchUpInside" id="IJh-g4-9O1"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9Wf-Nt-Y5P" customClass="CalculatorCurrencyButton" customModule="CoinKeeper" customModuleProvider="target">
+                    <rect key="frame" x="120" y="0.0" width="120" height="60"/>
+                    <state key="normal" title="Button B"/>
+                    <connections>
+                        <action selector="didTapRightButton:" destination="-1" eventType="touchUpInside" id="2iX-mW-e7Z"/>
+                    </connections>
+                </button>
+            </subviews>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstItem="wmh-VA-SVL" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="9gy-Mb-bze"/>
+                <constraint firstItem="wmh-VA-SVL" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" id="JWj-Ls-feV"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="wmh-VA-SVL" secondAttribute="bottom" id="MI6-W1-hRo"/>
+                <constraint firstItem="wmh-VA-SVL" firstAttribute="width" secondItem="9Wf-Nt-Y5P" secondAttribute="width" id="QWp-yp-FDp"/>
+                <constraint firstItem="9Wf-Nt-Y5P" firstAttribute="leading" secondItem="wmh-VA-SVL" secondAttribute="trailing" id="aTr-4I-gsy"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="9Wf-Nt-Y5P" secondAttribute="bottom" id="aVR-2w-1PE"/>
+                <constraint firstItem="9Wf-Nt-Y5P" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" id="orW-Ma-PQI"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="9Wf-Nt-Y5P" secondAttribute="trailing" id="t7y-YE-iLZ"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <point key="canvasLocation" x="-57.5" y="-36.5"/>
+        </view>
+    </objects>
+</document>

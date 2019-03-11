@@ -1,0 +1,19 @@
+apple_id "#{ENV['APPLE_ID']}" # Your Apple email address
+itc_team_id "#{ENV['ITC_TEAM_ID']}" # iTunes Connect Team ID
+team_id "#{ENV['TEAM_ID']}" # Developer Portal Team ID
+app_identifier "com.coinninja.CoinKeeper"
+
+for_platform :ios do
+  for_lane :beta do
+    puts "*** In Appfile, setting app identifier to com.coinninja.CoinKeeper.beta ***"
+    app_identifier "com.coinninja.CoinKeeper.beta"
+  end
+
+  for_lane :deploy do
+    puts "*** In Appfile, setting app identifier to com.coinninja.CoinKeeper ***"
+    app_identifier "com.coinninja.CoinKeeper"
+  end
+end
+
+# For more information about the Appfile, see:
+#     https://docs.fastlane.tools/advanced/#appfile

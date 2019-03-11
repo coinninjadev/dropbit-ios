@@ -1,0 +1,21 @@
+import Foundation
+
+struct DeviceEndpoint: Codable {
+  enum Platform: String, Codable {
+    case apns = "{{ argument.deviceEndpointProdPlatform }}"
+    case sandbox = "{{ argument.deviceEndpointTestPlatform }}"
+  }
+
+  enum Application: String, Codable {
+    case dropbit = "{{ argument.deviceEndpointProdApplication }}"
+    case dropBitTest = "{{ argument.deviceEndpointTestApplication }}"
+  }
+
+  var id: String
+  var createdAt: Int
+  var updatedAt: Int
+  var application: Application
+  var platform: Platform
+  var token: String
+  var deviceId: String
+}

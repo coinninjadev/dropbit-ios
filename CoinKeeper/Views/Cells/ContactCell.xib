@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" rowHeight="69" id="a03-99-PdF" customClass="ContactCell" customModule="CoinKeeper" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="71"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="a03-99-PdF" id="Hs7-Pn-qmK">
+                <rect key="frame" x="0.0" y="0.0" width="375" height="70.5"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="Fyb-CI-me0">
+                        <rect key="frame" x="49" y="17" width="280" height="37"/>
+                        <subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="7pF-Y9-fv6">
+                                <rect key="frame" x="0.0" y="0.0" width="235" height="37"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="czX-5v-IQB">
+                                        <rect key="frame" x="0.0" y="0.0" width="235" height="20.5"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="749" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0EB-RR-5nM">
+                                        <rect key="frame" x="0.0" y="20.5" width="235" height="16.5"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                            </stackView>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="ePs-No-OWb">
+                                <rect key="frame" x="243" y="0.0" width="37" height="37"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9sv-4d-Cv8">
+                                        <rect key="frame" x="0.0" y="0.0" width="37" height="37"/>
+                                        <state key="normal" backgroundImage="dropBitIcon"/>
+                                        <connections>
+                                            <action selector="inviteButtonWasTouched" destination="a03-99-PdF" eventType="touchUpInside" id="iAZ-AY-jVf"/>
+                                        </connections>
+                                    </button>
+                                    <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QLZ-Hw-QCM">
+                                        <rect key="frame" x="0.0" y="37" width="37" height="0.0"/>
+                                        <state key="normal" title="Send"/>
+                                        <connections>
+                                            <action selector="sendButtonWasTouched" destination="a03-99-PdF" eventType="touchUpInside" id="saE-99-cti"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="37" id="0Yh-kK-XEA"/>
+                                    <constraint firstAttribute="width" constant="37" id="fba-5j-soB"/>
+                                </constraints>
+                            </stackView>
+                        </subviews>
+                    </stackView>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="Fyb-CI-me0" firstAttribute="leading" secondItem="Hs7-Pn-qmK" secondAttribute="leadingMargin" constant="33" id="HzB-io-u4x"/>
+                    <constraint firstItem="Fyb-CI-me0" firstAttribute="centerY" secondItem="Hs7-Pn-qmK" secondAttribute="centerY" id="J3z-V6-IqV"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="Fyb-CI-me0" secondAttribute="trailing" constant="30" id="PIe-bS-Alv"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="inviteButton" destination="9sv-4d-Cv8" id="P4X-CN-bwP"/>
+                <outlet property="nameLabel" destination="czX-5v-IQB" id="1lq-jQ-LM5"/>
+                <outlet property="phoneNumberLabel" destination="0EB-RR-5nM" id="X5L-GJ-v42"/>
+                <outlet property="sendButton" destination="QLZ-Hw-QCM" id="INg-MG-P7O"/>
+            </connections>
+            <point key="canvasLocation" x="-531" y="-129"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="dropBitIcon" width="37" height="37"/>
+    </resources>
+</document>

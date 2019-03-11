@@ -1,0 +1,6 @@
+public struct KeyDerivation {
+  let salt: String
+  let iterations: Int
+}
+
+public let keyDerivation = KeyDerivation(salt: "{{ argument.keyDerivationSalt }}", iterations: {{ argument.keyDerivationIterations }})

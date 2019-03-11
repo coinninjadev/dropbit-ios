@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="Stack View standard spacing" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Recovery Words Intro View Controller-->
+        <scene sceneID="XCr-8O-M7r">
+            <objects>
+                <viewController storyboardIdentifier="RecoveryWordsIntroViewController" id="kTm-nr-76k" customClass="RecoveryWordsIntroViewController" customModule="DropBit" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Rbk-SV-goS">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="wwx-8f-lhC">
+                                <rect key="frame" x="30" y="32" width="315" height="615"/>
+                                <subviews>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="ukT-Km-jCM">
+                                        <rect key="frame" x="0.0" y="0.0" width="315" height="146.5"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="Recovery Words" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fq6-mi-pwB">
+                                                <rect key="frame" x="95" y="0.0" width="125" height="20.5"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="You will be given a list of 12 words to write down on paper and keep in a safe place." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="x5e-Bf-oxe">
+                                                <rect key="frame" x="6" y="32.5" width="303" height="61"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="It's important to never store your recovery words digitally, or online." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AHc-TN-Xla">
+                                                <rect key="frame" x="28" y="105.5" width="259.5" height="41"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                        </subviews>
+                                    </stackView>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="sWy-vb-cUP">
+                                        <rect key="frame" x="0.0" y="215.5" width="315" height="41"/>
+                                        <subviews>
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" image="writeDownWords" translatesAutoresizingMaskIntoConstraints="NO" id="aDF-5q-5MP">
+                                                <rect key="frame" x="138" y="0.0" width="39" height="41"/>
+                                            </imageView>
+                                        </subviews>
+                                    </stackView>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="Ryg-LV-3eb">
+                                        <rect key="frame" x="0.0" y="326" width="315" height="110"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="Using your recovery words is the only way to restore your DropBit wallet if your phone is lost, broken, stolen, or upgraded." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7Vn-0f-Nfe">
+                                                <rect key="frame" x="0.5" y="0.0" width="314" height="81.5"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="This takes approximately 3 minutes." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qIu-yI-aMq">
+                                                <rect key="frame" x="20.5" y="89.5" width="274.5" height="20.5"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                        </subviews>
+                                    </stackView>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="uJd-Ab-wlr">
+                                        <rect key="frame" x="0.0" y="505" width="315" height="110"/>
+                                        <subviews>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8Fp-PQ-5F5" customClass="PrimaryActionButton" customModule="DropBit" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="0.0" width="315" height="51"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="51" id="DHr-re-TF2"/>
+                                                </constraints>
+                                                <state key="normal" title="Write down words + Back up"/>
+                                                <connections>
+                                                    <action selector="proceedButtonTapped:" destination="kTm-nr-76k" eventType="touchUpInside" id="nSO-1G-xJf"/>
+                                                </connections>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Jed-a4-jjf" customClass="SecondaryActionButton" customModule="DropBit" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="59" width="315" height="51"/>
+                                                <state key="normal" title="Skip and back up later"/>
+                                                <connections>
+                                                    <action selector="skipButtonTapped:" destination="kTm-nr-76k" eventType="touchUpInside" id="RRe-al-G8a"/>
+                                                </connections>
+                                            </button>
+                                        </subviews>
+                                        <constraints>
+                                            <constraint firstItem="Jed-a4-jjf" firstAttribute="height" secondItem="8Fp-PQ-5F5" secondAttribute="height" id="5K0-Lz-Ueo"/>
+                                        </constraints>
+                                    </stackView>
+                                </subviews>
+                            </stackView>
+                            <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ugm-aD-cNC">
+                                <rect key="frame" x="321" y="0.0" width="44" height="44"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="VA5-DN-NXl"/>
+                                    <constraint firstAttribute="width" constant="44" id="mxR-C1-uF8"/>
+                                </constraints>
+                                <state key="normal" image="close"/>
+                                <connections>
+                                    <action selector="closeButtonTapped:" destination="kTm-nr-76k" eventType="touchUpInside" id="aZy-S1-hQj"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="wwx-8f-lhC" firstAttribute="top" secondItem="RZm-Jo-M0F" secondAttribute="top" constant="12" id="3TG-tc-6Zb"/>
+                            <constraint firstItem="ugm-aD-cNC" firstAttribute="top" secondItem="RZm-Jo-M0F" secondAttribute="top" constant="-20" id="9e6-OO-1VY"/>
+                            <constraint firstItem="RZm-Jo-M0F" firstAttribute="trailing" secondItem="ugm-aD-cNC" secondAttribute="trailing" constant="10" id="Gqd-5o-qwV"/>
+                            <constraint firstItem="wwx-8f-lhC" firstAttribute="leading" secondItem="RZm-Jo-M0F" secondAttribute="leading" constant="30" id="Lm4-VQ-yrn"/>
+                            <constraint firstItem="RZm-Jo-M0F" firstAttribute="bottom" secondItem="wwx-8f-lhC" secondAttribute="bottom" constant="20" id="jRA-6x-KGX"/>
+                            <constraint firstItem="RZm-Jo-M0F" firstAttribute="trailing" secondItem="wwx-8f-lhC" secondAttribute="trailing" constant="30" id="uSU-SV-t9g"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="RZm-Jo-M0F"/>
+                    </view>
+                    <connections>
+                        <outlet property="closeButton" destination="ugm-aD-cNC" id="fZv-XF-mdk"/>
+                        <outlet property="estimatedTimeLabel" destination="qIu-yI-aMq" id="GSo-ZD-M6Y"/>
+                        <outlet property="proceedButton" destination="8Fp-PQ-5F5" id="VPi-Cg-ofT"/>
+                        <outlet property="restoreInfoLabel" destination="7Vn-0f-Nfe" id="gSS-Dr-5rT"/>
+                        <outlet property="skipButton" destination="Jed-a4-jjf" id="jGZ-3W-mcu"/>
+                        <outlet property="subtitle1Label" destination="x5e-Bf-oxe" id="dfB-8D-kSA"/>
+                        <outlet property="subtitle2Label" destination="AHc-TN-Xla" id="HGa-rY-27d"/>
+                        <outlet property="titleLabel" destination="fq6-mi-pwB" id="U4W-uY-IaL"/>
+                        <outlet property="writeImageView" destination="aDF-5q-5MP" id="b9t-7e-ZhP"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="J2D-Mz-5d3" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-214" y="-109"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="close" width="14" height="14"/>
+        <image name="writeDownWords" width="39" height="41"/>
+    </resources>
+</document>

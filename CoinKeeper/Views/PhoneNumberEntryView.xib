@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="PhoneNumberEntryView" customModule="DropBit" customModuleProvider="target">
+            <connections>
+                <outlet property="buttonSeparator" destination="irK-8l-MMR" id="b58-Ia-GrV"/>
+                <outlet property="countryCodeButton" destination="XDI-Ic-RjQ" id="vfy-hd-keG"/>
+                <outlet property="separatorWidthConstraint" destination="GNs-jW-m9K" id="aDd-up-nFj"/>
+                <outlet property="textField" destination="ZMW-4U-2H3" id="XnM-Oi-W4d"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="51"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ZMW-4U-2H3" customClass="CKPhoneNumberTextField" customModule="DropBit" customModuleProvider="target">
+                    <rect key="frame" x="66" y="0.0" width="243" height="51"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <nil key="textColor"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <textInputTraits key="textInputTraits"/>
+                </textField>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XDI-Ic-RjQ">
+                    <rect key="frame" x="0.0" y="0.0" width="58" height="51"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="58" id="ypo-rY-Ovs"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="24"/>
+                    <state key="normal" title="🇻🇪"/>
+                    <connections>
+                        <action selector="toggleCountryCodePicker:" destination="-1" eventType="touchUpInside" id="XZR-IG-6A7"/>
+                    </connections>
+                </button>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="arrowDownIndicator" translatesAutoresizingMaskIntoConstraints="NO" id="FS4-3T-XRX">
+                    <rect key="frame" x="45" y="23" width="7" height="5"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="7" id="Mcf-Pu-p2g"/>
+                        <constraint firstAttribute="height" constant="5" id="XQN-jx-L6R"/>
+                    </constraints>
+                </imageView>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="irK-8l-MMR">
+                    <rect key="frame" x="58" y="0.0" width="1" height="51"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="1" id="GNs-jW-m9K"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstItem="irK-8l-MMR" firstAttribute="leading" secondItem="XDI-Ic-RjQ" secondAttribute="trailing" id="0Op-qo-gj8"/>
+                <constraint firstItem="ZMW-4U-2H3" firstAttribute="leading" secondItem="XDI-Ic-RjQ" secondAttribute="trailing" constant="8" id="1Rm-QM-Dt6"/>
+                <constraint firstItem="irK-8l-MMR" firstAttribute="bottom" secondItem="vUN-kp-3ea" secondAttribute="bottom" id="4Al-H4-NTj"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="top" secondItem="irK-8l-MMR" secondAttribute="top" id="8tk-CC-Q21"/>
+                <constraint firstItem="XDI-Ic-RjQ" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="CQE-ZN-N5J"/>
+                <constraint firstItem="ZMW-4U-2H3" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" id="OMT-P8-GPA"/>
+                <constraint firstItem="FS4-3T-XRX" firstAttribute="trailing" secondItem="XDI-Ic-RjQ" secondAttribute="trailing" constant="-6" id="TUW-XJ-MWS"/>
+                <constraint firstItem="XDI-Ic-RjQ" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" id="U6N-ju-xPL"/>
+                <constraint firstItem="ZMW-4U-2H3" firstAttribute="centerX" secondItem="vUN-kp-3ea" secondAttribute="centerX" id="cFE-fC-3T1"/>
+                <constraint firstItem="FS4-3T-XRX" firstAttribute="centerY" secondItem="XDI-Ic-RjQ" secondAttribute="centerY" id="r4c-ix-99g"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="XDI-Ic-RjQ" secondAttribute="bottom" id="ucy-rc-VyL"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="ZMW-4U-2H3" secondAttribute="bottom" id="yR1-Xb-nOg"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <point key="canvasLocation" x="-650.39999999999998" y="-130.88455772113943"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="arrowDownIndicator" width="7" height="5"/>
+    </resources>
+</document>

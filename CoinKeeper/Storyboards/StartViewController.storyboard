@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Montserrat-Light.ttf">
+            <string>Montserrat-Light</string>
+        </array>
+        <array key="Montserrat-Regular.ttf">
+            <string>Montserrat-Regular</string>
+        </array>
+    </customFonts>
+    <scenes>
+        <!--Start View Controller-->
+        <scene sceneID="3N9-2p-UID">
+            <objects>
+                <viewController storyboardIdentifier="StartViewController" id="q8X-KO-IOT" customClass="StartViewController" customModule="DropBit" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="kBV-GD-12V">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" image="logo" translatesAutoresizingMaskIntoConstraints="NO" id="yIP-lc-RFH">
+                                <rect key="frame" x="107" y="310" width="161" height="47"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="161" id="pij-Qw-7bU"/>
+                                    <constraint firstAttribute="height" constant="47" id="s2n-pT-py1"/>
+                                </constraints>
+                            </imageView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CRC-uf-fAq" userLabel="Welcome BG View">
+                                <rect key="frame" x="44" y="380" width="287" height="37"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" verticalCompressionResistancePriority="751" text="The simplest way to send and receive Bitcoin" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aOW-zu-cJp">
+                                        <rect key="frame" x="0.0" y="0.0" width="287" height="37"/>
+                                        <fontDescription key="fontDescription" name="Montserrat-Light" family="Montserrat" pointSize="15"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstItem="aOW-zu-cJp" firstAttribute="top" secondItem="CRC-uf-fAq" secondAttribute="top" id="NYU-1Z-F9k"/>
+                                    <constraint firstItem="aOW-zu-cJp" firstAttribute="leading" secondItem="CRC-uf-fAq" secondAttribute="leading" id="TaN-DX-lHL"/>
+                                    <constraint firstAttribute="trailing" secondItem="aOW-zu-cJp" secondAttribute="trailing" id="mM6-Tb-JDc"/>
+                                    <constraint firstAttribute="bottom" secondItem="aOW-zu-cJp" secondAttribute="bottom" id="qFL-yr-4T3"/>
+                                </constraints>
+                            </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4qN-Cw-sbR" customClass="PrimaryActionButton" customModule="DropBit" customModuleProvider="target">
+                                <rect key="frame" x="75" y="547" width="225" height="44"/>
+                                <fontDescription key="fontDescription" name="Montserrat-Regular" family="Montserrat" pointSize="12"/>
+                                <state key="normal" title="NEW WALLET"/>
+                                <connections>
+                                    <action selector="createWalletButtonTapped:" destination="q8X-KO-IOT" eventType="touchUpInside" id="q3l-uC-San"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="k0W-r3-c5t" customClass="SecondaryActionButton" customModule="DropBit" customModuleProvider="target">
+                                <rect key="frame" x="75" y="603" width="225" height="44"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="225" id="ONi-hm-Hdz"/>
+                                    <constraint firstAttribute="height" constant="44" id="q1l-PY-zWf"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Montserrat-Regular" family="Montserrat" pointSize="12"/>
+                                <state key="normal" title="Restore from backup"/>
+                                <connections>
+                                    <action selector="restoreWalletButtonTapped:" destination="q8X-KO-IOT" eventType="touchUpInside" id="RBg-f7-Jzr"/>
+                                </connections>
+                            </button>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="blockchainImage" translatesAutoresizingMaskIntoConstraints="NO" id="IAf-Dy-hdx">
+                                <rect key="frame" x="8" y="0.0" width="375" height="400"/>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" red="0.95686274510000002" green="0.95686274510000002" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstItem="w3N-rS-PQo" firstAttribute="trailing" secondItem="CRC-uf-fAq" secondAttribute="trailing" constant="44" id="1wH-Ns-z2N"/>
+                            <constraint firstItem="k0W-r3-c5t" firstAttribute="top" secondItem="4qN-Cw-sbR" secondAttribute="bottom" constant="12" id="48O-zH-Ump"/>
+                            <constraint firstItem="CRC-uf-fAq" firstAttribute="leading" secondItem="w3N-rS-PQo" secondAttribute="leading" constant="44" id="5gv-PE-Pgk"/>
+                            <constraint firstItem="IAf-Dy-hdx" firstAttribute="leading" secondItem="w3N-rS-PQo" secondAttribute="leading" constant="8" id="7Jd-wV-bBE"/>
+                            <constraint firstItem="w3N-rS-PQo" firstAttribute="trailing" secondItem="IAf-Dy-hdx" secondAttribute="trailing" constant="-8" id="EQL-Ee-wk3"/>
+                            <constraint firstItem="IAf-Dy-hdx" firstAttribute="top" secondItem="kBV-GD-12V" secondAttribute="top" id="LNl-oT-30d"/>
+                            <constraint firstItem="4qN-Cw-sbR" firstAttribute="trailing" secondItem="k0W-r3-c5t" secondAttribute="trailing" id="R5L-nI-YpY"/>
+                            <constraint firstItem="w3N-rS-PQo" firstAttribute="bottom" secondItem="k0W-r3-c5t" secondAttribute="bottom" constant="20" id="RIl-s0-GMX"/>
+                            <constraint firstItem="CRC-uf-fAq" firstAttribute="centerX" secondItem="kBV-GD-12V" secondAttribute="centerX" id="Z2w-za-PYe"/>
+                            <constraint firstItem="4qN-Cw-sbR" firstAttribute="leading" secondItem="k0W-r3-c5t" secondAttribute="leading" id="fXD-V7-TtU"/>
+                            <constraint firstItem="IAf-Dy-hdx" firstAttribute="height" secondItem="kBV-GD-12V" secondAttribute="height" multiplier="0.6" id="h63-mD-Lv7"/>
+                            <constraint firstItem="yIP-lc-RFH" firstAttribute="centerY" secondItem="kBV-GD-12V" secondAttribute="centerY" id="hgF-Bb-vVa"/>
+                            <constraint firstItem="k0W-r3-c5t" firstAttribute="centerX" secondItem="kBV-GD-12V" secondAttribute="centerX" id="m69-Jt-Ygz"/>
+                            <constraint firstItem="yIP-lc-RFH" firstAttribute="centerX" secondItem="kBV-GD-12V" secondAttribute="centerX" id="oRQ-xg-o4m"/>
+                            <constraint firstItem="4qN-Cw-sbR" firstAttribute="height" secondItem="k0W-r3-c5t" secondAttribute="height" id="yGm-K4-BYn"/>
+                            <constraint firstItem="CRC-uf-fAq" firstAttribute="top" secondItem="yIP-lc-RFH" secondAttribute="bottom" constant="23" id="z09-5W-24v"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="w3N-rS-PQo"/>
+                    </view>
+                    <connections>
+                        <outlet property="blockchainImage" destination="IAf-Dy-hdx" id="14l-Av-QHH"/>
+                        <outlet property="createWalletButton" destination="4qN-Cw-sbR" id="rcf-f5-Qd5"/>
+                        <outlet property="logoImage" destination="yIP-lc-RFH" id="mvJ-K1-KCu"/>
+                        <outlet property="logoImageVerticalConstraint" destination="hgF-Bb-vVa" id="HON-0G-33P"/>
+                        <outlet property="restoreWalletButton" destination="k0W-r3-c5t" id="56a-jw-IoM"/>
+                        <outlet property="welcomeBGView" destination="CRC-uf-fAq" id="VWo-1A-xoY"/>
+                        <outlet property="welcomeBGViewTopConstraint" destination="z09-5W-24v" id="0UI-PO-2cV"/>
+                        <outlet property="welcomeLabel" destination="aOW-zu-cJp" id="qJ8-mA-4Zp"/>
+                        <outletCollection property="animatableViews" destination="4qN-Cw-sbR" collectionClass="NSMutableArray" id="d23-5f-pYv"/>
+                        <outletCollection property="animatableViews" destination="k0W-r3-c5t" collectionClass="NSMutableArray" id="Dzr-Pf-J1I"/>
+                        <outletCollection property="animatableViews" destination="CRC-uf-fAq" collectionClass="NSMutableArray" id="xyy-uf-LXC"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="tZM-jX-4SF" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-402" y="197"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="blockchainImage" width="375" height="487"/>
+        <image name="logo" width="229" height="67"/>
+    </resources>
+</document>

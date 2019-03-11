@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Confirm Payment View Controller-->
+        <scene sceneID="bzi-0f-S3r">
+            <objects>
+                <viewController storyboardIdentifier="ConfirmPaymentViewController" id="gUB-vy-gYz" customClass="ConfirmPaymentViewController" customModule="DropBit" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="SVe-iA-OVj">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="SEND" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4MI-Eh-hf4">
+                                <rect key="frame" x="165.5" y="39" width="44.5" height="11"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mCK-oH-QnS">
+                                <rect key="frame" x="312" y="39" width="44" height="44"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="EuF-HU-oAf"/>
+                                    <constraint firstAttribute="width" constant="44" id="VNl-sU-aFg"/>
+                                </constraints>
+                                <state key="normal" image="close"/>
+                                <connections>
+                                    <action selector="closeButtonWasTouched" destination="gUB-vy-gYz" eventType="touchUpInside" id="tKF-6l-6gj"/>
+                                </connections>
+                            </button>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="gNh-Rk-dVe">
+                                <rect key="frame" x="20" y="62" width="335" height="411"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="d4a-kE-2Oh">
+                                        <rect key="frame" x="47.5" y="0.0" width="240" height="50"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </view>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="7BT-1c-Iea" userLabel="Currency Stack View">
+                                        <rect key="frame" x="0.0" y="50" width="335" height="77.5"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Primary Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BuO-4J-J23">
+                                                <rect key="frame" x="0.0" y="0.0" width="335" height="20.5"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Secondary Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="j84-Df-Ve8">
+                                                <rect key="frame" x="0.0" y="28.5" width="335" height="20.5"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Network Fee Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ut3-Jo-Aga">
+                                                <rect key="frame" x="0.0" y="57" width="335" height="20.5"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                        </subviews>
+                                    </stackView>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zaD-5F-yhL">
+                                        <rect key="frame" x="47.5" y="127.5" width="240" height="50"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </view>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="24" translatesAutoresizingMaskIntoConstraints="NO" id="hwU-0H-AXk" userLabel="Contact Address Stack View">
+                                        <rect key="frame" x="47.5" y="177.5" width="240" height="183.5"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="Contact Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0Sj-WV-wLS">
+                                                <rect key="frame" x="0.0" y="0.0" width="240" height="20.5"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="Address Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="x8t-zs-37a">
+                                                <rect key="frame" x="0.0" y="44.5" width="240" height="20.5"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <view contentMode="scaleToFill" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="1AR-mM-awK" customClass="ConfirmPaymentMemoView" customModule="DropBit" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="89" width="240" height="50"/>
+                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" priority="250" constant="60" id="ebw-P8-tj4"/>
+                                                </constraints>
+                                            </view>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="Secondary Address Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6f6-Lp-a3V">
+                                                <rect key="frame" x="0.0" y="163" width="240" height="20.5"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                        </subviews>
+                                    </stackView>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vlc-1q-SPM">
+                                        <rect key="frame" x="47.5" y="361" width="240" height="50"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </view>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstItem="7BT-1c-Iea" firstAttribute="leading" secondItem="gNh-Rk-dVe" secondAttribute="leading" id="3Ct-y7-BCp"/>
+                                    <constraint firstAttribute="trailing" secondItem="7BT-1c-Iea" secondAttribute="trailing" id="WJ1-Df-3Pg"/>
+                                    <constraint firstItem="d4a-kE-2Oh" firstAttribute="height" secondItem="zaD-5F-yhL" secondAttribute="height" id="Y8r-Kg-798"/>
+                                    <constraint firstItem="vlc-1q-SPM" firstAttribute="height" secondItem="zaD-5F-yhL" secondAttribute="height" id="fAz-bh-Mfo"/>
+                                </constraints>
+                            </stackView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="TAP AND HOLD TO SEND" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CZH-K6-Gha">
+                                <rect key="frame" x="89.5" y="505" width="196.5" height="0.0"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="08C-pp-IYX" customClass="ConfirmPaymentButton" customModule="DropBit" customModuleProvider="target">
+                                <rect key="frame" x="154" y="555" width="67" height="67"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="67" id="MPv-2o-Fdy"/>
+                                    <constraint firstAttribute="height" constant="67" id="P3q-Ja-Ove"/>
+                                </constraints>
+                                <connections>
+                                    <action selector="confirmButtonWasHeld" destination="gUB-vy-gYz" eventType="touchDown" id="dGN-oc-muO"/>
+                                    <action selector="confirmButtonWasReleased" destination="gUB-vy-gYz" eventType="touchUpOutside" id="WUe-7c-efe"/>
+                                    <action selector="confirmButtonWasReleased" destination="gUB-vy-gYz" eventType="touchUpInside" id="pbr-y8-9NK"/>
+                                </connections>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="UtD-Hu-veT" firstAttribute="bottom" secondItem="08C-pp-IYX" secondAttribute="bottom" constant="45" id="4gJ-pg-bpM"/>
+                            <constraint firstItem="4MI-Eh-hf4" firstAttribute="centerX" secondItem="SVe-iA-OVj" secondAttribute="centerX" id="8OU-pD-EYD"/>
+                            <constraint firstItem="UtD-Hu-veT" firstAttribute="trailing" secondItem="gNh-Rk-dVe" secondAttribute="trailing" constant="20" id="9gj-at-Bmz"/>
+                            <constraint firstItem="mCK-oH-QnS" firstAttribute="top" secondItem="UtD-Hu-veT" secondAttribute="top" constant="19" id="GPy-f4-wJc"/>
+                            <constraint firstItem="gNh-Rk-dVe" firstAttribute="leading" secondItem="UtD-Hu-veT" secondAttribute="leading" constant="20" id="OtV-Kx-hNJ"/>
+                            <constraint firstItem="4MI-Eh-hf4" firstAttribute="top" secondItem="UtD-Hu-veT" secondAttribute="top" constant="19" id="Vxu-1m-i2u"/>
+                            <constraint firstItem="gNh-Rk-dVe" firstAttribute="top" secondItem="4MI-Eh-hf4" secondAttribute="bottom" constant="12" id="Wci-90-qws"/>
+                            <constraint firstItem="08C-pp-IYX" firstAttribute="top" secondItem="CZH-K6-Gha" secondAttribute="bottom" constant="50" id="ZSW-PA-p3v"/>
+                            <constraint firstItem="08C-pp-IYX" firstAttribute="centerX" secondItem="SVe-iA-OVj" secondAttribute="centerX" id="btO-tl-dd1"/>
+                            <constraint firstItem="UtD-Hu-veT" firstAttribute="trailing" secondItem="mCK-oH-QnS" secondAttribute="trailing" constant="19" id="fcb-E9-fo7"/>
+                            <constraint firstItem="CZH-K6-Gha" firstAttribute="top" secondItem="gNh-Rk-dVe" secondAttribute="bottom" constant="32" id="lf8-NA-4Nv"/>
+                            <constraint firstItem="CZH-K6-Gha" firstAttribute="centerX" secondItem="SVe-iA-OVj" secondAttribute="centerX" id="re1-Sh-fP1"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="UtD-Hu-veT"/>
+                    </view>
+                    <connections>
+                        <outlet property="closeButton" destination="mCK-oH-QnS" id="pZj-5U-C2t"/>
+                        <outlet property="confirmButton" destination="08C-pp-IYX" id="Gea-fB-nUk"/>
+                        <outlet property="contactLabel" destination="0Sj-WV-wLS" id="YA5-MQ-zbI"/>
+                        <outlet property="memoContainerView" destination="1AR-mM-awK" id="M8K-KY-eJG"/>
+                        <outlet property="networkFeeLabel" destination="ut3-Jo-Aga" id="dhH-u6-HrS"/>
+                        <outlet property="primaryAddressLabel" destination="x8t-zs-37a" id="7tE-sA-mjr"/>
+                        <outlet property="primaryCurrencyLabel" destination="BuO-4J-J23" id="08n-Uz-lSi"/>
+                        <outlet property="secondaryAddressLabel" destination="6f6-Lp-a3V" id="1ou-So-13n"/>
+                        <outlet property="secondaryCurrencyLabel" destination="j84-Df-Ve8" id="CoS-7W-ffR"/>
+                        <outlet property="tapAndHoldLabel" destination="CZH-K6-Gha" id="EEO-vJ-2OS"/>
+                        <outlet property="titleLabel" destination="4MI-Eh-hf4" id="Pgm-ob-vBR"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="BK9-gn-mUD" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-759.20000000000005" y="124.58770614692655"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="close" width="14" height="14"/>
+    </resources>
+</document>

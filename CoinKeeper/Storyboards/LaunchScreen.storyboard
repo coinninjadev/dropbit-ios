@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="y2D-s2-BYK">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="0W1-xe-NIg">
+            <objects>
+                <viewController id="y2D-s2-BYK" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="CYa-Dc-BlI">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="blockchainImage" translatesAutoresizingMaskIntoConstraints="NO" id="nQP-hU-1iS">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="400"/>
+                            </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo" translatesAutoresizingMaskIntoConstraints="NO" id="w5g-Ja-jA8">
+                                <rect key="frame" x="107" y="310" width="161" height="47"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="161" id="Vkc-3U-0cb"/>
+                                    <constraint firstAttribute="height" constant="47" id="nom-DK-4Cb"/>
+                                </constraints>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" red="0.95686274509803915" green="0.95686274509803915" blue="0.95686274509803915" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstItem="nQP-hU-1iS" firstAttribute="leading" secondItem="adt-fn-Rbg" secondAttribute="leading" id="03I-uy-new"/>
+                            <constraint firstItem="nQP-hU-1iS" firstAttribute="height" secondItem="CYa-Dc-BlI" secondAttribute="height" multiplier="0.6" id="3tc-ER-vP5"/>
+                            <constraint firstItem="w5g-Ja-jA8" firstAttribute="centerX" secondItem="CYa-Dc-BlI" secondAttribute="centerX" id="6IZ-qW-aeX"/>
+                            <constraint firstItem="nQP-hU-1iS" firstAttribute="top" secondItem="CYa-Dc-BlI" secondAttribute="top" id="SUW-7T-DgH"/>
+                            <constraint firstItem="adt-fn-Rbg" firstAttribute="trailing" secondItem="nQP-hU-1iS" secondAttribute="trailing" id="gCc-L8-x5L"/>
+                            <constraint firstItem="w5g-Ja-jA8" firstAttribute="centerY" secondItem="CYa-Dc-BlI" secondAttribute="centerY" id="xuC-pa-WSH"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="adt-fn-Rbg"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="WXv-FX-cFv" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-286" y="178"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="blockchainImage" width="375" height="487"/>
+        <image name="logo" width="229" height="67"/>
+    </resources>
+</document>

@@ -1,0 +1,104 @@
+PODS:
+  - Alamofire (4.8.1)
+  - JKSteppedProgressBar (0.5.0)
+  - Mixpanel-swift (2.5.7):
+    - Mixpanel-swift/Complete (= 2.5.7)
+  - Mixpanel-swift/Complete (2.5.7)
+  - MMDrawerController (0.5.7):
+    - MMDrawerController/Core (= 0.5.7)
+    - MMDrawerController/MMDrawerBarButtonItem (= 0.5.7)
+    - MMDrawerController/MMDrawerVisualStates (= 0.5.7)
+    - MMDrawerController/Subclass (= 0.5.7)
+  - MMDrawerController/Core (0.5.7)
+  - MMDrawerController/MMDrawerBarButtonItem (0.5.7):
+    - MMDrawerController/Core
+  - MMDrawerController/MMDrawerVisualStates (0.5.7):
+    - MMDrawerController/Core
+  - MMDrawerController/Subclass (0.5.7):
+    - MMDrawerController/Core
+  - Moya (11.0.2):
+    - Moya/Core (= 11.0.2)
+  - Moya/Core (11.0.2):
+    - Alamofire (~> 4.1)
+    - Result (~> 3.0)
+  - Permission/Camera (2.0.4):
+    - Permission/Core
+  - Permission/Contacts (2.0.4):
+    - Permission/Core
+  - Permission/Core (2.0.4)
+  - Permission/Notifications (2.0.4):
+    - Permission/Core
+  - PhoneNumberKit (2.6.0):
+    - PhoneNumberKit/PhoneNumberKitCore (= 2.6.0)
+    - PhoneNumberKit/UIKit (= 2.6.0)
+  - PhoneNumberKit/PhoneNumberKitCore (2.6.0)
+  - PhoneNumberKit/UIKit (2.6.0):
+    - PhoneNumberKit/PhoneNumberKitCore
+  - ReachabilitySwift (4.3.0)
+  - Result (3.2.4)
+  - RNCryptor (5.0.3)
+  - SVProgressHUD (2.2.5)
+
+DEPENDENCIES:
+  - JKSteppedProgressBar (from `https://github.com/MitchellMalleo/JKSteppedProgressBar.git`, commit `a41db05`)
+  - Mixpanel-swift (~> 2.5.0)
+  - MMDrawerController (~> 0.5.7)
+  - Moya (~> 11.0.2)
+  - Permission/Camera (from `https://github.com/pahmed/Permission.git`, commit `8b47d5f`)
+  - Permission/Contacts (from `https://github.com/pahmed/Permission.git`, commit `8b47d5f`)
+  - Permission/Notifications (from `https://github.com/pahmed/Permission.git`, commit `8b47d5f`)
+  - PhoneNumberKit (from `https://github.com/blwinters/PhoneNumberKit.git`, branch `develop`)
+  - ReachabilitySwift
+  - Result
+  - RNCryptor (~> 5.0)
+  - SVProgressHUD
+
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - Alamofire
+    - Mixpanel-swift
+    - MMDrawerController
+    - Moya
+    - ReachabilitySwift
+    - Result
+    - RNCryptor
+    - SVProgressHUD
+
+EXTERNAL SOURCES:
+  JKSteppedProgressBar:
+    :commit: a41db05
+    :git: https://github.com/MitchellMalleo/JKSteppedProgressBar.git
+  Permission:
+    :commit: 8b47d5f
+    :git: https://github.com/pahmed/Permission.git
+  PhoneNumberKit:
+    :branch: develop
+    :git: https://github.com/blwinters/PhoneNumberKit.git
+
+CHECKOUT OPTIONS:
+  JKSteppedProgressBar:
+    :commit: a41db05
+    :git: https://github.com/MitchellMalleo/JKSteppedProgressBar.git
+  Permission:
+    :commit: 8b47d5f
+    :git: https://github.com/pahmed/Permission.git
+  PhoneNumberKit:
+    :commit: 12112e0568d9ed9a0cebe034123919fab62ccbe9
+    :git: https://github.com/blwinters/PhoneNumberKit.git
+
+SPEC CHECKSUMS:
+  Alamofire: 16ce2c353fb72865124ddae8a57c5942388f4f11
+  JKSteppedProgressBar: e61561a7faee1a4a216ac4510b4b6d1a3760e318
+  Mixpanel-swift: d4de197db883e9dbba162fee6751db5e7766971b
+  MMDrawerController: 7a4cf8e25596bf2434e03ce50d22a8608ddee6a1
+  Moya: a725035953bc1c0eb1be505ab903984501d82440
+  Permission: c53c7235f14d76cd2851364df0a7cf05b464037f
+  PhoneNumberKit: 167ee1f0bbb6efce7c62559e620eae745595532f
+  ReachabilitySwift: 408477d1b6ed9779dba301953171e017c31241f3
+  Result: d2d07204ce72856f1fd9130bbe42c35a7b0fea10
+  RNCryptor: c93d19029dcf7ff160aca0f24d6c9e7b0d82f664
+  SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
+
+PODFILE CHECKSUM: ea4929bf3e6442aeb136434c29a9da4856e0a604
+
+COCOAPODS: 1.5.3

@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="KeypadEntryView" customModule="CoinKeeper" customModuleProvider="target">
+            <connections>
+                <outlet property="backButton" destination="tYz-gB-19n" id="Fn3-xw-UL8"/>
+                <outlet property="button0" destination="NPr-IS-ekq" id="ceW-TW-SVd"/>
+                <outlet property="button1" destination="U3D-r1-MxL" id="3xS-hg-4np"/>
+                <outlet property="button2" destination="a2x-08-cAs" id="1iU-es-nuo"/>
+                <outlet property="button3" destination="cgS-iN-xlS" id="0SM-Js-zgq"/>
+                <outlet property="button4" destination="TgJ-Fr-yl1" id="zSo-GA-v2p"/>
+                <outlet property="button5" destination="hRe-Qx-f7Y" id="tcU-qg-BDa"/>
+                <outlet property="button6" destination="gj5-yd-76V" id="Vpg-j5-6Vd"/>
+                <outlet property="button7" destination="RpG-Nf-QIG" id="3mF-XP-Pcd"/>
+                <outlet property="button8" destination="WZs-KU-SCm" id="mQS-4Y-hlf"/>
+                <outlet property="button9" destination="pju-RV-qm6" id="d12-nz-ZT4"/>
+                <outlet property="decimalButton" destination="ZGE-oH-t2H" id="Q5y-nO-iid"/>
+                <outletCollection property="allButtons" destination="U3D-r1-MxL" collectionClass="NSMutableArray" id="nhP-gj-cFO"/>
+                <outletCollection property="allButtons" destination="a2x-08-cAs" collectionClass="NSMutableArray" id="dtp-cG-6Cd"/>
+                <outletCollection property="allButtons" destination="cgS-iN-xlS" collectionClass="NSMutableArray" id="Jsb-Uv-BsQ"/>
+                <outletCollection property="allButtons" destination="TgJ-Fr-yl1" collectionClass="NSMutableArray" id="8zV-2g-lnF"/>
+                <outletCollection property="allButtons" destination="hRe-Qx-f7Y" collectionClass="NSMutableArray" id="GNr-C3-saN"/>
+                <outletCollection property="allButtons" destination="gj5-yd-76V" collectionClass="NSMutableArray" id="WyF-Pd-YQC"/>
+                <outletCollection property="allButtons" destination="RpG-Nf-QIG" collectionClass="NSMutableArray" id="q0o-sU-GfC"/>
+                <outletCollection property="allButtons" destination="WZs-KU-SCm" collectionClass="NSMutableArray" id="q1j-n4-jlz"/>
+                <outletCollection property="allButtons" destination="pju-RV-qm6" collectionClass="NSMutableArray" id="5bZ-Na-IMR"/>
+                <outletCollection property="allButtons" destination="ZGE-oH-t2H" collectionClass="NSMutableArray" id="oHK-Aj-SFa"/>
+                <outletCollection property="allButtons" destination="NPr-IS-ekq" collectionClass="NSMutableArray" id="PWu-08-rfO"/>
+                <outletCollection property="allButtons" destination="tYz-gB-19n" collectionClass="NSMutableArray" id="hjo-iQ-Oco"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="t3N-ZI-vkX">
+                    <rect key="frame" x="0.0" y="20" width="375" height="647"/>
+                    <subviews>
+                        <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="fci-lx-oKd">
+                            <rect key="frame" x="0.0" y="0.0" width="375" height="162"/>
+                            <subviews>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="U3D-r1-MxL" customClass="KeypadButton" customModule="CoinKeeper" customModuleProvider="target">
+                                    <rect key="frame" x="0.0" y="0.0" width="125" height="162"/>
+                                    <state key="normal" title="1"/>
+                                    <connections>
+                                        <action selector="numberButtonTapped:" destination="-1" eventType="touchUpInside" id="uPd-8b-2ug"/>
+                                    </connections>
+                                </button>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="a2x-08-cAs" customClass="KeypadButton" customModule="CoinKeeper" customModuleProvider="target">
+                                    <rect key="frame" x="125" y="0.0" width="125" height="162"/>
+                                    <state key="normal" title="2"/>
+                                    <connections>
+                                        <action selector="numberButtonTapped:" destination="-1" eventType="touchUpInside" id="ThF-Mc-Jpg"/>
+                                    </connections>
+                                </button>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cgS-iN-xlS" customClass="KeypadButton" customModule="CoinKeeper" customModuleProvider="target">
+                                    <rect key="frame" x="250" y="0.0" width="125" height="162"/>
+                                    <state key="normal" title="3"/>
+                                    <connections>
+                                        <action selector="numberButtonTapped:" destination="-1" eventType="touchUpInside" id="o4x-xU-5Mn"/>
+                                    </connections>
+                                </button>
+                            </subviews>
+                        </stackView>
+                        <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="eYj-T6-H1o">
+                            <rect key="frame" x="0.0" y="162" width="375" height="161.5"/>
+                            <subviews>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TgJ-Fr-yl1" customClass="KeypadButton" customModule="CoinKeeper" customModuleProvider="target">
+                                    <rect key="frame" x="0.0" y="0.0" width="125" height="161.5"/>
+                                    <state key="normal" title="4"/>
+                                    <connections>
+                                        <action selector="numberButtonTapped:" destination="-1" eventType="touchUpInside" id="WLH-lK-oy4"/>
+                                    </connections>
+                                </button>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hRe-Qx-f7Y" customClass="KeypadButton" customModule="CoinKeeper" customModuleProvider="target">
+                                    <rect key="frame" x="125" y="0.0" width="125" height="161.5"/>
+                                    <state key="normal" title="5"/>
+                                    <connections>
+                                        <action selector="numberButtonTapped:" destination="-1" eventType="touchUpInside" id="Jc9-8Y-sSQ"/>
+                                    </connections>
+                                </button>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gj5-yd-76V" customClass="KeypadButton" customModule="CoinKeeper" customModuleProvider="target">
+                                    <rect key="frame" x="250" y="0.0" width="125" height="161.5"/>
+                                    <state key="normal" title="6"/>
+                                    <connections>
+                                        <action selector="numberButtonTapped:" destination="-1" eventType="touchUpInside" id="30F-X1-SP2"/>
+                                    </connections>
+                                </button>
+                            </subviews>
+                        </stackView>
+                        <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="EjT-8H-RBo">
+                            <rect key="frame" x="0.0" y="323.5" width="375" height="162"/>
+                            <subviews>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RpG-Nf-QIG" customClass="KeypadButton" customModule="CoinKeeper" customModuleProvider="target">
+                                    <rect key="frame" x="0.0" y="0.0" width="125" height="162"/>
+                                    <state key="normal" title="7"/>
+                                    <connections>
+                                        <action selector="numberButtonTapped:" destination="-1" eventType="touchUpInside" id="lab-4k-ScV"/>
+                                    </connections>
+                                </button>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WZs-KU-SCm" customClass="KeypadButton" customModule="CoinKeeper" customModuleProvider="target">
+                                    <rect key="frame" x="125" y="0.0" width="125" height="162"/>
+                                    <state key="normal" title="8"/>
+                                    <connections>
+                                        <action selector="numberButtonTapped:" destination="-1" eventType="touchUpInside" id="auk-fI-q8F"/>
+                                    </connections>
+                                </button>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pju-RV-qm6" customClass="KeypadButton" customModule="CoinKeeper" customModuleProvider="target">
+                                    <rect key="frame" x="250" y="0.0" width="125" height="162"/>
+                                    <state key="normal" title="9"/>
+                                    <connections>
+                                        <action selector="numberButtonTapped:" destination="-1" eventType="touchUpInside" id="m5Y-2U-5n2"/>
+                                    </connections>
+                                </button>
+                            </subviews>
+                        </stackView>
+                        <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="Ozv-34-Jtg">
+                            <rect key="frame" x="0.0" y="485.5" width="375" height="161.5"/>
+                            <subviews>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZGE-oH-t2H" customClass="KeypadButton" customModule="CoinKeeper" customModuleProvider="target">
+                                    <rect key="frame" x="0.0" y="0.0" width="125" height="161.5"/>
+                                    <state key="normal" title="."/>
+                                    <connections>
+                                        <action selector="decimalButtonTapped:" destination="-1" eventType="touchUpInside" id="x4R-p8-ovc"/>
+                                    </connections>
+                                </button>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NPr-IS-ekq" customClass="KeypadButton" customModule="CoinKeeper" customModuleProvider="target">
+                                    <rect key="frame" x="125" y="0.0" width="125" height="161.5"/>
+                                    <state key="normal" title="0"/>
+                                    <connections>
+                                        <action selector="numberButtonTapped:" destination="-1" eventType="touchUpInside" id="q8Y-Ek-7Ys"/>
+                                    </connections>
+                                </button>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" adjustsImageSizeForAccessibilityContentSizeCategory="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tYz-gB-19n" customClass="KeypadButton" customModule="CoinKeeper" customModuleProvider="target">
+                                    <rect key="frame" x="250" y="0.0" width="125" height="161.5"/>
+                                    <state key="normal" image="back"/>
+                                    <connections>
+                                        <action selector="backButtonTapped:" destination="-1" eventType="touchUpInside" id="H1j-Lw-Q7E"/>
+                                    </connections>
+                                </button>
+                            </subviews>
+                        </stackView>
+                    </subviews>
+                </stackView>
+            </subviews>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="t3N-ZI-vkX" secondAttribute="bottom" id="Wfb-AJ-usW"/>
+                <constraint firstItem="t3N-ZI-vkX" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" id="rn3-OT-hrz"/>
+                <constraint firstItem="t3N-ZI-vkX" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="z5V-0j-hw8"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="t3N-ZI-vkX" secondAttribute="trailing" id="zDp-1m-3BD"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="back" width="13" height="20"/>
+    </resources>
+</document>

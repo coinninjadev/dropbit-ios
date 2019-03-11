@@ -1,0 +1,14 @@
+public struct ApiKeys {
+  let analyticsProdKey: String
+  let analyticsTestKey: String
+
+  var analyticsKey: String {
+    #if DEBUG
+      return analyticsTestKey
+    #else
+      return analyticsProdKey
+    #endif
+  }
+}
+
+public let apiKeys = ApiKeys(analyticsProdKey: "{{ argument.analyticsProdKey }}", analyticsTestKey: "{{ argument.analyticsTestKey }}")

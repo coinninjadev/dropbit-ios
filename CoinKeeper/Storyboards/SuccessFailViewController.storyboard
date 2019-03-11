@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Success Fail View Controller-->
+        <scene sceneID="SRG-wg-5Q4">
+            <objects>
+                <viewController storyboardIdentifier="SuccessFailViewController" id="6uW-kN-tKT" customClass="SuccessFailViewController" customModule="CoinKeeper" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="XXc-7M-g9R">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TcY-dE-XeF" customClass="PrimaryActionButton" customModule="CoinKeeper" customModuleProvider="target">
+                                <rect key="frame" x="41" y="587" width="293" height="51"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="51" id="d6X-lW-gMn"/>
+                                </constraints>
+                                <state key="normal" title="Button"/>
+                                <connections>
+                                    <action selector="actionButtonWasTouched" destination="6uW-kN-tKT" eventType="touchUpInside" id="638-gu-elV"/>
+                                </connections>
+                            </button>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="McW-pv-Feo" customClass="SuccessFailView" customModule="CoinKeeper" customModuleProvider="target">
+                                <rect key="frame" x="124" y="270" width="127" height="127"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="127" id="uot-MZ-mKV"/>
+                                    <constraint firstAttribute="width" constant="127" id="xsY-ox-8o0"/>
+                                </constraints>
+                            </view>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UjV-di-5WC">
+                                <rect key="frame" x="166" y="219" width="42" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OQm-mR-5Li">
+                                <rect key="frame" x="312" y="39" width="44" height="44"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="44" id="HvO-5O-G3r"/>
+                                    <constraint firstAttribute="height" constant="44" id="sTr-zc-1Yp"/>
+                                </constraints>
+                                <state key="normal" image="close"/>
+                                <connections>
+                                    <action selector="closeButtonWasTouched" destination="6uW-kN-tKT" eventType="touchUpInside" id="1id-LM-AWL"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pzc-dT-I6R">
+                                <rect key="frame" x="50" y="462" width="275" height="0.0"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="pzc-dT-I6R" firstAttribute="centerX" secondItem="XXc-7M-g9R" secondAttribute="centerX" id="6gA-aj-xGh"/>
+                            <constraint firstItem="v0v-YA-VV3" firstAttribute="trailing" secondItem="OQm-mR-5Li" secondAttribute="trailing" constant="19" id="7tI-nn-0MW"/>
+                            <constraint firstAttribute="trailing" secondItem="pzc-dT-I6R" secondAttribute="trailing" constant="50" id="8Eo-v1-5Zu"/>
+                            <constraint firstItem="v0v-YA-VV3" firstAttribute="trailing" secondItem="TcY-dE-XeF" secondAttribute="trailing" constant="41" id="B1Q-A4-ehO"/>
+                            <constraint firstItem="v0v-YA-VV3" firstAttribute="bottom" secondItem="TcY-dE-XeF" secondAttribute="bottom" constant="29" id="BUq-IY-Igv"/>
+                            <constraint firstItem="pzc-dT-I6R" firstAttribute="top" secondItem="McW-pv-Feo" secondAttribute="bottom" constant="65" id="F5j-vs-6xF"/>
+                            <constraint firstItem="TcY-dE-XeF" firstAttribute="leading" secondItem="v0v-YA-VV3" secondAttribute="leading" constant="41" id="Kas-w4-S89"/>
+                            <constraint firstItem="OQm-mR-5Li" firstAttribute="top" secondItem="v0v-YA-VV3" secondAttribute="top" constant="19" id="U6V-q3-Pdh"/>
+                            <constraint firstItem="pzc-dT-I6R" firstAttribute="leading" secondItem="XXc-7M-g9R" secondAttribute="leading" constant="50" id="adi-ob-Z9v"/>
+                            <constraint firstItem="McW-pv-Feo" firstAttribute="top" secondItem="UjV-di-5WC" secondAttribute="bottom" constant="30" id="ow3-aF-ECa"/>
+                            <constraint firstItem="McW-pv-Feo" firstAttribute="centerY" secondItem="XXc-7M-g9R" secondAttribute="centerY" id="vTf-dD-9dq"/>
+                            <constraint firstItem="McW-pv-Feo" firstAttribute="centerX" secondItem="XXc-7M-g9R" secondAttribute="centerX" id="yRd-4j-hZJ"/>
+                            <constraint firstItem="UjV-di-5WC" firstAttribute="centerX" secondItem="XXc-7M-g9R" secondAttribute="centerX" id="yk5-ft-mE0"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="v0v-YA-VV3"/>
+                    </view>
+                    <connections>
+                        <outlet property="actionButton" destination="TcY-dE-XeF" id="2I8-EK-EfZ"/>
+                        <outlet property="closeButton" destination="OQm-mR-5Li" id="Ln9-W2-ybT"/>
+                        <outlet property="subtitleLabel" destination="pzc-dT-I6R" id="z0l-Ed-YCu"/>
+                        <outlet property="successFailView" destination="McW-pv-Feo" id="hM2-6X-xsp"/>
+                        <outlet property="titleLabel" destination="UjV-di-5WC" id="ndS-bz-is9"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="qxk-0z-NPA" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1006" y="-29"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="close" width="14" height="14"/>
+    </resources>
+</document>
