@@ -131,6 +131,8 @@ protocol PersistenceManagerType: DeviceCountryCodeProvider {
   func setKeychainMigrationFlag(migrated: Bool, for version: KeychainMigrationVersion)
   func keychainMigrationFlag(for version: KeychainMigrationVersion) -> Bool
 
+  /// Look for any transactions sent to a phone number without a contact name, and provide a name if found, as a convenience when viewing tx history
+  func matchContactsIfPossible()
 }
 
 extension PersistenceManagerType {
@@ -233,6 +235,7 @@ protocol PersistenceDatabaseType: AnyObject {
   func lastReceiveIndex(in context: NSManagedObjectContext) -> Int?
   func lastChangeIndex(in context: NSManagedObjectContext) -> Int?
 
+  func matchContactsIfPossible(with contactCacheManager: ContactCacheManagerType)
 }
 
 protocol PersistenceUserDefaultsType: AnyObject {

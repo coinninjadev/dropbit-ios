@@ -8,18 +8,16 @@
 
 import CoreData
 
-class InMemoryCoreDataStack {
+class InMemoryCoreDataStack: BaseCoreDataStack {
 
-  lazy var managedObjectModel: NSManagedObjectModel = {
-    let url = Bundle.main.url(forResource: "Model", withExtension: "momd")!
-    let model = NSManagedObjectModel(contentsOf: url)!
-    return model
-  }()
+  override init(stackConfig: CoreDataStackConfig = CoreDataStackConfig(stackType: .main, storeType: .inMemory)) {
+    super.init(stackConfig: stackConfig)
+  }
 
-  lazy var persistentContainer: NSPersistentContainer = {
-    let container = NSPersistentContainer(name: "CoinKeeper", managedObjectModel: managedObjectModel)
+  override func createPersistentContainer() -> NSPersistentContainer {
+    let container = NSPersistentContainer(name: stackConfig.stackType.containerName, managedObjectModel: managedObjectModel)
     let description = NSPersistentStoreDescription()
-    description.type = NSInMemoryStoreType
+    description.type = stackConfig.storeType.storeType
     description.shouldAddStoreAsynchronously = false // Make it simpler in test env
 
     container.persistentStoreDescriptions = [description]
@@ -33,10 +31,5 @@ class InMemoryCoreDataStack {
       }
     }
     return container
-  }()
-
-  var context: NSManagedObjectContext {
-    return persistentContainer.viewContext
   }
-
 }
