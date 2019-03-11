@@ -92,6 +92,7 @@
 		3B2EBF71223010DC003C0D0E /* ManagedContactComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B2EBF70223010DC003C0D0E /* ManagedContactComponents.swift */; };
 		3B2EBF73223176D9003C0D0E /* MockUserDefaultsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B2EBF72223176D9003C0D0E /* MockUserDefaultsManager.swift */; };
 		3B2EBF7522318476003C0D0E /* ContactCacheManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B2EBF7422318476003C0D0E /* ContactCacheManagerTests.swift */; };
+		3B2EBF782232AB17003C0D0E /* CoreDataStackConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B2EBF762232AAD6003C0D0E /* CoreDataStackConfig.swift */; };
 		3B30228121C9290D007F137A /* SyncRoutineError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B30228021C9290D007F137A /* SyncRoutineError.swift */; };
 		3B302F262123160800A7E070 /* PromiseKit+CoreData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B302F252123160800A7E070 /* PromiseKit+CoreData.swift */; };
 		3B30AF1521B810FF009BAE5A /* ConfirmPaymentViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B30AF1421B810FF009BAE5A /* ConfirmPaymentViewControllerTests.swift */; };
@@ -859,6 +860,7 @@
 		3B2EBF70223010DC003C0D0E /* ManagedContactComponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagedContactComponents.swift; sourceTree = "<group>"; };
 		3B2EBF72223176D9003C0D0E /* MockUserDefaultsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockUserDefaultsManager.swift; sourceTree = "<group>"; };
 		3B2EBF7422318476003C0D0E /* ContactCacheManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactCacheManagerTests.swift; sourceTree = "<group>"; };
+		3B2EBF762232AAD6003C0D0E /* CoreDataStackConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataStackConfig.swift; sourceTree = "<group>"; };
 		3B30228021C9290D007F137A /* SyncRoutineError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncRoutineError.swift; sourceTree = "<group>"; };
 		3B302F252123160800A7E070 /* PromiseKit+CoreData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PromiseKit+CoreData.swift"; sourceTree = "<group>"; };
 		3B30AF1421B810FF009BAE5A /* ConfirmPaymentViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmPaymentViewControllerTests.swift; sourceTree = "<group>"; };
@@ -2068,6 +2070,7 @@
 				403AAD5C2063513900F7A2BA /* Model.xcdatamodeld */,
 				B5CFA32E221DFE53002B1BDD /* ContactCache */,
 				B505414C207D10DD0059C8F9 /* InMemoryCoreDataStack.swift */,
+				3B2EBF762232AAD6003C0D0E /* CoreDataStackConfig.swift */,
 				B505D4E921050F2000C0C8FC /* CKPredicate.swift */,
 				B51F824F207BF62F00692F5B /* NSManagedObject */,
 				3BC9E5512047440900444A53 /* CreateRecoveryWordCellData.swift */,
@@ -3548,6 +3551,7 @@
 				A2893BBE20FD4C5A00E96B07 /* BasePageViewController.swift in Sources */,
 				A29CE10220A3517800761B91 /* CompositeValidator.swift in Sources */,
 				B5CFA336221E008B002B1BDD /* CCMPhoneNumber+CoreDataProperties.swift in Sources */,
+				3B2EBF782232AB17003C0D0E /* CoreDataStackConfig.swift in Sources */,
 				B521E85F218785B8002DB8C2 /* CoreDataObserver.swift in Sources */,
 				B5D1B2D221934DBE006B2BC7 /* UITestArgument.swift in Sources */,
 				B54D206220F921A20057A694 /* CKBannerView.swift in Sources */,
