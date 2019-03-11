@@ -60,7 +60,7 @@ final class DeviceVerificationViewController: BaseViewController {
     }
   }
 
-  @IBOutlet var exampleLabel: OnboardingSubtitleLabel!
+  @IBOutlet var exampleLabel: ExamplePhoneNumberLabel!
   @IBOutlet var phoneNumberContainer: UIView!
   @IBOutlet var phoneNumberEntryView: PhoneNumberEntryView!
   @IBOutlet var submitPhoneNumberButton: PrimaryActionButton!
@@ -144,7 +144,6 @@ final class DeviceVerificationViewController: BaseViewController {
       exampleLabel.isHidden = false
       phoneNumberContainer.isHidden = false
       phoneNumberEntryView.isHidden = false
-      submitPhoneNumberButton.isHidden = false
       keypadEntryView.delegate = self.phoneNumberEntryView.textField
 
     case .codeVerification(let phoneNumber):
@@ -226,7 +225,18 @@ extension DeviceVerificationViewController: PhoneNumberEntryViewDisplayable {
     switch entryMode {
     case .phoneNumberEntry:
 
-      exampleLabel.text = "Example: "
+      let formatter = CKPhoneNumberFormatter(kit: self.phoneNumberKit, format: .national)
+      let exampleNumber = self.phoneNumberKit.exampleNumber(forCountry: regionCode, phoneNumberType: .mobile)
+      let countryCode = self.phoneNumberEntryView.textField.currentGlobalNumber().countryCode
+
+      // concatenate country code with formatted national number to match parentheses formatting of CKPhoneNumberTextField for US
+      if let nationalNumber = exampleNumber,
+        let formattedNationalNumber = try? formatter.string(from: GlobalPhoneNumber(countryCode: countryCode, nationalNumber: nationalNumber)) {
+        exampleLabel.text = "Example: +\(countryCode) \(formattedNationalNumber)"
+
+      } else {
+        exampleLabel.text = nil
+      }
 
       let phoneNumberLengths = self.phoneNumberKit.possiblePhoneNumberLengths(forCountry: regionCode, phoneNumberType: .mobile, lengthType: .national)
       let regionHasSinglePhoneNumberLength = phoneNumberLengths.count == 1
