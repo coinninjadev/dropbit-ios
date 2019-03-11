@@ -322,7 +322,6 @@
 		4A251738207515FF0030FCA2 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A251737207515FF0030FCA2 /* NetworkManager.swift */; };
 		4A4A9DF320979C11007A47F4 /* MockNetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A4A9DF220979C11007A47F4 /* MockNetworkManager.swift */; };
 		4A75CAF92090FB0D00E8E653 /* DeviceVerificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A75CAF82090FB0D00E8E653 /* DeviceVerificationViewController.swift */; };
-		4A8DFDB420980F1300D39ED4 /* PhoneNumberFormatter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A8DFDB320980F1300D39ED4 /* PhoneNumberFormatter.framework */; };
 		4AE8AE262098C52800748431 /* SecurePinDisplayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AE8AE252098C52800748431 /* SecurePinDisplayView.swift */; };
 		4AF4332220935C8D00B11BC9 /* DeviceVerificationCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AF4332120935C8D00B11BC9 /* DeviceVerificationCoordinator.swift */; };
 		4AF433262093BD4100B11BC9 /* DeviceVerificationViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4AF433252093BA8700B11BC9 /* DeviceVerificationViewController.storyboard */; };
@@ -1091,7 +1090,6 @@
 		4A251737207515FF0030FCA2 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		4A4A9DF220979C11007A47F4 /* MockNetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockNetworkManager.swift; sourceTree = "<group>"; };
 		4A75CAF82090FB0D00E8E653 /* DeviceVerificationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceVerificationViewController.swift; sourceTree = "<group>"; };
-		4A8DFDB320980F1300D39ED4 /* PhoneNumberFormatter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PhoneNumberFormatter.framework; path = Carthage/Build/iOS/PhoneNumberFormatter.framework; sourceTree = "<group>"; };
 		4AE8AE252098C52800748431 /* SecurePinDisplayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecurePinDisplayView.swift; sourceTree = "<group>"; };
 		4AF4332120935C8D00B11BC9 /* DeviceVerificationCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceVerificationCoordinator.swift; sourceTree = "<group>"; };
 		4AF433252093BA8700B11BC9 /* DeviceVerificationViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = DeviceVerificationViewController.storyboard; sourceTree = "<group>"; };
@@ -1534,7 +1532,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				A24525352100EBC80024D5F8 /* Gifu.framework in Frameworks */,
-				4A8DFDB420980F1300D39ED4 /* PhoneNumberFormatter.framework in Frameworks */,
 				3B9EE8782058359400C0CC8C /* PMAlertController.framework in Frameworks */,
 				3B8269172032407C009B11EC /* Strongbox.framework in Frameworks */,
 				B54D205E20F908C30057A694 /* SwiftMessages.framework in Frameworks */,
@@ -1682,7 +1679,6 @@
 			children = (
 				A24525342100EBC80024D5F8 /* Gifu.framework */,
 				B54D205D20F908C30057A694 /* SwiftMessages.framework */,
-				4A8DFDB320980F1300D39ED4 /* PhoneNumberFormatter.framework */,
 				3B9EE8772058359400C0CC8C /* PMAlertController.framework */,
 				3B8269162032407C009B11EC /* Strongbox.framework */,
 				3BB854DF20220D6100190874 /* CNBitcoinKit.framework */,
