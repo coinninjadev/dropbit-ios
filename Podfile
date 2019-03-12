@@ -16,7 +16,7 @@ target 'DropBit' do
   pod 'Moya', '~> 11.0.2'
   pod 'Result'
   pod 'ReachabilitySwift'
-  pod 'PhoneNumberKit', git: 'https://github.com/blwinters/PhoneNumberKit.git', :branch => 'develop' #'~> 2.6'
+  pod 'PhoneNumberKit', git: 'https://github.com/blwinters/PhoneNumberKit.git', commit: 'ccf8ece'
   pod 'JKSteppedProgressBar', git: 'https://github.com/MitchellMalleo/JKSteppedProgressBar.git', commit: 'a41db05'
   pod 'RNCryptor', '~> 5.0'
 
