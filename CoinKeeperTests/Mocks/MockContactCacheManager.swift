@@ -49,6 +49,10 @@ class MockContactCacheManager: ContactCacheManagerType {
                        inputs: CachedPhoneNumberDependencies,
                        in context: NSManagedObjectContext) throws { }
 
+  func validatedMetadata(for globalPhoneNumber: GlobalPhoneNumber, in context: NSManagedObjectContext) -> CCMValidatedMetadata? {
+    return nil
+  }
+
   func managedContactComponents(forGlobalPhoneNumber number: GlobalPhoneNumber) -> ManagedContactComponents? {
     return nil
   }
