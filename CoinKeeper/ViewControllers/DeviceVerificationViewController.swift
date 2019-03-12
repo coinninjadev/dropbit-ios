@@ -74,8 +74,19 @@ final class DeviceVerificationViewController: BaseViewController {
   @IBAction func resendTextMessage(_ sender: Any) {
     coordinationDelegate?.viewControllerDidRequestResendCode(self)
   }
+
   @IBAction func submitPhoneNumber(_ sender: Any) {
-    
+    let phoneNumber = phoneNumberEntryView.textField.currentGlobalNumber()
+
+    do {
+      let parsedNumber = try phoneNumberKit.parse(phoneNumber.asE164())
+      let globalNumber = GlobalPhoneNumber(parsedNumber: parsedNumber,
+                                           regionCode: phoneNumberEntryView.selectedRegion)
+      self.handleValidPhoneNumber(globalNumber)
+
+    } catch {
+      self.handleInvalidPhoneNumber()
+    }
   }
 
   @objc func skipVerification() {
@@ -170,6 +181,15 @@ final class DeviceVerificationViewController: BaseViewController {
   func updateErrorLabel(with message: String?) {
     errorLabel?.text = message
     errorLabel?.isHidden = (message == nil)
+  }
+
+  func handleValidPhoneNumber(_ phoneNumber: GlobalPhoneNumber) {
+    self.updateErrorLabel(with: nil)
+    self.coordinationDelegate?.viewController(self, didEnterPhoneNumber: phoneNumber)
+  }
+
+  func handleInvalidPhoneNumber() {
+    self.updateErrorLabel(with: DeviceVerificationError.invalidPhoneNumber.displayMessage)
   }
 
   private func setDefaultHiddenViews() {
@@ -294,12 +314,11 @@ extension DeviceVerificationViewController: KeypadEntryViewDelegate {
 extension DeviceVerificationViewController: CKPhoneNumberTextFieldDelegate {
 
   func textFieldReceivedValidMobileNumber(_ phoneNumber: GlobalPhoneNumber, textField: CKPhoneNumberTextField) {
-    self.updateErrorLabel(with: nil)
-    self.coordinationDelegate?.viewController(self, didEnterPhoneNumber: phoneNumber)
+    handleValidPhoneNumber(phoneNumber)
   }
 
   func textFieldReceivedInvalidMobileNumber(_ phoneNumber: GlobalPhoneNumber, textField: CKPhoneNumberTextField) {
-    self.updateErrorLabel(with: DeviceVerificationError.invalidPhoneNumber.displayMessage)
+    handleInvalidPhoneNumber()
   }
 
 }
