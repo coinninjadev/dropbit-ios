@@ -245,14 +245,13 @@ extension DeviceVerificationViewController: PhoneNumberEntryViewDisplayable {
     switch entryMode {
     case .phoneNumberEntry:
 
-      let formatter = CKPhoneNumberFormatter(kit: self.phoneNumberKit, format: .national)
+      let formatter = CKPhoneNumberFormatter(kit: self.phoneNumberKit, format: .international)
       let exampleNumber = self.phoneNumberKit.exampleNumber(forCountry: regionCode, phoneNumberType: .mobile)
       let countryCode = self.phoneNumberEntryView.textField.currentGlobalNumber().countryCode
 
-      // concatenate country code with formatted national number to match parentheses formatting of CKPhoneNumberTextField for US
       if let nationalNumber = exampleNumber,
-        let formattedNationalNumber = try? formatter.string(from: GlobalPhoneNumber(countryCode: countryCode, nationalNumber: nationalNumber)) {
-        exampleLabel.text = "Example: +\(countryCode) \(formattedNationalNumber)"
+        let formattedNumber = try? formatter.string(from: GlobalPhoneNumber(countryCode: countryCode, nationalNumber: nationalNumber)) {
+        exampleLabel.text = "Example: \(formattedNumber)"
 
       } else {
         exampleLabel.text = nil
