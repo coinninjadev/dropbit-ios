@@ -15,7 +15,7 @@ class MockContactCacheManager: ContactCacheManagerType {
 
   let stack = InMemoryCoreDataStack(stackConfig: CoreDataStackConfig(stackType: .contactCache, storeType: .inMemory))
 
-  var viewContext: NSManagedObjectContext {
+  var mainQueueContext: NSManagedObjectContext {
     return stack.context
   }
 

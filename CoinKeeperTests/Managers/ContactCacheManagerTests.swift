@@ -35,7 +35,7 @@ class ContactCacheManagerTests: XCTestCase {
     let mortyName = "Morty"
     let global1 = GlobalPhoneNumber(countryCode: 1, nationalNumber: rickNumber)
     let global2 = GlobalPhoneNumber(countryCode: 1, nationalNumber: mortyNumber)
-    let ccmContext = sut.viewContext
+    let ccmContext = sut.mainQueueContext
     let ccmPhone1 = CCMPhoneNumber(insertInto: ccmContext)
     let ccmPhone2 = CCMPhoneNumber(insertInto: ccmContext)
     let ccmMetadata1 = CCMValidatedMetadata(phoneNumber: global1, hashedGlobalNumber: "", insertInto: ccmContext)

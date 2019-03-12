@@ -166,7 +166,7 @@ class PersistenceManagerTests: XCTestCase {
     _ = ckmPhone1.map { counterparty1.phoneNumbers.insert($0) }
 
     // set up ccm data
-    let ccmContext = mockContactCacheMgr.viewContext
+    let ccmContext = mockContactCacheMgr.mainQueueContext
     let ccmPhone1 = CCMPhoneNumber(insertInto: ccmContext)
     let ccmPhone2 = CCMPhoneNumber(insertInto: ccmContext)
     let ccmMetadata1 = CCMValidatedMetadata(phoneNumber: global1, hashedGlobalNumber: "", insertInto: ccmContext)
