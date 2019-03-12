@@ -13,8 +13,10 @@ import Contacts
 
 class MockContactCacheManager: ContactCacheManagerType {
 
+  let stack = InMemoryCoreDataStack(stackConfig: CoreDataStackConfig(stackType: .contactCache, storeType: .inMemory))
+
   var viewContext: NSManagedObjectContext {
-    return NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
+    return stack.context
   }
 
   func createChildBackgroundContext() -> NSManagedObjectContext {
@@ -46,5 +48,9 @@ class MockContactCacheManager: ContactCacheManagerType {
   func persistContacts(_ contacts: [CNContact],
                        inputs: CachedPhoneNumberDependencies,
                        in context: NSManagedObjectContext) throws { }
+
+  func managedContactComponents(forGlobalPhoneNumber number: GlobalPhoneNumber) -> ManagedContactComponents? {
+    return nil
+  }
 
 }
