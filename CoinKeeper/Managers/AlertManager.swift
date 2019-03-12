@@ -301,9 +301,10 @@ class AlertManager: AlertManagerType {
   }
 
   private func showSenderAlert(for update: AddressRequestUpdateDisplayable) {
+    let receiverDesc = update.receiverDescription(phoneFormatter: self.phoneNumberFormatter)
     switch update.status {
     case .completed:
-      let message = "Your transaction of \(update.fiatDescription) to \(update.receiverDescription) has been sent!"
+      let message = "Your transaction of \(update.fiatDescription) to \(receiverDesc) has been sent!"
 
       DispatchQueue.main.async {
         switch UIApplication.shared.applicationState {
@@ -315,12 +316,12 @@ class AlertManager: AlertManagerType {
       }
     case .canceled:
       // Likely triggered because the DropBit was sent and then another app spent the vouts before we could execute the transaction.
-      let message = "Your DropBit of \(update.fiatDescription) to \(update.receiverDescription) has been canceled due to insufficient funds."
+      let message = "Your DropBit of \(update.fiatDescription) to \(receiverDesc) has been canceled due to insufficient funds."
       self.showBanner(with: message, duration: .default, alertKind: .error)
     case .expired:
       let message = """
         For security purposes we can only allow 24 hours for a \(CKStrings.dropBitWithTrademark) to be completed.
-        Your DropBit sent to \(update.receiverDescription) has expired. Please try sending again.
+        Your DropBit sent to \(receiverDesc) has expired. Please try sending again.
         """.removingMultilineLineBreaks()
       self.showBanner(with: message, duration: .default, alertKind: .error)
 
