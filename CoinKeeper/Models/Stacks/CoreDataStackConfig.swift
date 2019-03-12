@@ -96,7 +96,15 @@ class CoreDataStackConfig {
         let config = CoreDataStackConfig(stackType: .main, storeType: .disk)
         return SQLiteCoreDataStack(stackConfig: config)
       }
-    case .inMemory: return InMemoryCoreDataStack()
+    case .inMemory:
+      switch self.stackType {
+      case .contactCache:
+        let config = CoreDataStackConfig(stackType: .contactCache, storeType: .inMemory)
+        return InMemoryCoreDataStack(stackConfig: config)
+      case .main:
+        let config = CoreDataStackConfig(stackType: .main, storeType: .inMemory)
+        return InMemoryCoreDataStack(stackConfig: config)
+      }
     }
   }
 }
