@@ -26,7 +26,6 @@ class SQLiteCoreDataStack: BaseCoreDataStack {
     description.shouldMigrateStoreAutomatically = true
     description.setOption(FileProtectionType.completeUntilFirstUserAuthentication as NSObject, forKey: NSPersistentStoreFileProtectionKey)
     description.type = stackConfig.storeType.storeType
-    //      description.configuration = "Default"
     description.shouldAddStoreAsynchronously = stackConfig.storeType.shouldAddStoreAsynchronously
     container.persistentStoreDescriptions = [description]
 

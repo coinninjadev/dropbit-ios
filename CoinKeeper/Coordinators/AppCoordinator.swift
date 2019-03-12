@@ -336,7 +336,9 @@ class AppCoordinator: CoordinatorType {
     trackEventForFirstTimeOpeningAppIfApplicable()
     UIApplication.shared.setMinimumBackgroundFetchInterval(TimeInterval(3600)) //one hour
 
-    self.contactCacheDataWorker.reloadSystemContactsIfNeeded { [weak self] _ in self?.persistenceManager.matchContactsIfPossible() }
+    self.contactCacheDataWorker.reloadSystemContactsIfNeeded { [weak self] _ in
+      self?.persistenceManager.matchContactsIfPossible()
+    }
   }
 
   private func trackEventForFirstTimeOpeningAppIfApplicable() {

@@ -21,7 +21,6 @@ protocol DeviceVerificationCoordinatorDelegate: AnyObject {
   func coordinator(_ coordinator: DeviceVerificationCoordinator, didVerify phoneNumber: GlobalPhoneNumber)
   func coordinatorSkippedPhoneVerification(_ coordinator: DeviceVerificationCoordinator)
   func registerAndPersistWallet(in context: NSManagedObjectContext) -> Promise<Void>
-
 }
 
 class DeviceVerificationCoordinator: ChildCoordinatorType {

@@ -16,7 +16,7 @@ class Database: PersistenceDatabaseType {
 
   let logger = OSLog(subsystem: "com.coinninja.coinkeeper.database", category: "database")
 
-  private let stackConfig: CoreDataStackConfig // = CoreDataStackConfig(stackType: .main, storeType: .disk)
+  private let stackConfig: CoreDataStackConfig
   private let container: NSPersistentContainer
 
   lazy var mainQueueContext: NSManagedObjectContext = {

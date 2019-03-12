@@ -14,7 +14,7 @@ import PhoneNumberKit
 
 protocol ContactCacheManagerType: AnyObject {
 
-  var viewContext: NSManagedObjectContext { get }
+  var mainQueueContext: NSManagedObjectContext { get }
   func createChildBackgroundContext() -> NSManagedObjectContext
 
   func createPhoneNumberFetchedResultsController() -> NSFetchedResultsController<CCMPhoneNumber>
@@ -33,35 +33,36 @@ protocol ContactCacheManagerType: AnyObject {
 
 }
 
-class ContactCacheManager: NSPersistentContainer, ContactCacheManagerType {
-
-  static let modelFilename = "ContactCacheDB"
+class ContactCacheManager: ContactCacheManagerType {
 
   let logger = OSLog(subsystem: "com.coinninja.coinkeeper.contactcache", category: "manager")
 
-  static var model: NSManagedObjectModel? = {
-    return Bundle(for: ContactCacheManager.self).url(forResource: "ContactCache", withExtension: "momd")
-      .flatMap { NSManagedObjectModel(contentsOf: $0) }
+  private let stackConfig: CoreDataStackConfig
+  private let container: NSPersistentContainer
+
+  lazy var mainQueueContext: NSManagedObjectContext = {
+    let context = self.container.viewContext
+    context.automaticallyMergesChangesFromParent = true
+    context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
+    if stackConfig.storeType.shouldSetQueryGeneration {
+      try? context.setQueryGenerationFrom(.current)
+    }
+    return context
   }()
 
   convenience init() {
-    self.init(stackConfig: CoreDataStackConfig(stackType: .contactCache, storeType: .disk))
+    let config = CoreDataStackConfig(stackType: .contactCache, storeType: .disk)
+    self.init(stackConfig: config)
   }
 
-  convenience init(stackConfig: CoreDataStackConfig) {
-    let maybeModel = Bundle(for: ContactCacheManager.self)
-      .url(forResource: stackConfig.stackType.modelName, withExtension: "momd")
-      .flatMap { NSManagedObjectModel(contentsOf: $0) }
-    guard let model = maybeModel else { fatalError() }
-    self.init(name: stackConfig.stackType.modelName, managedObjectModel: model)
-    setupPersistentStores(stackConfig: stackConfig)
-    self.viewContext.automaticallyMergesChangesFromParent = true
-    self.viewContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
+  init(stackConfig: CoreDataStackConfig) {
+    self.stackConfig = stackConfig
+    self.container = stackConfig.stack.persistentContainer
   }
 
   func createChildBackgroundContext() -> NSManagedObjectContext {
     let bgContext = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
-    bgContext.parent = viewContext
+    bgContext.parent = mainQueueContext
     bgContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
     return bgContext
   }
@@ -73,7 +74,7 @@ class ContactCacheManager: NSPersistentContainer, ContactCacheManagerType {
     fetchRequest.fetchBatchSize = 25
 
     let controller = NSFetchedResultsController(fetchRequest: fetchRequest,
-                                                managedObjectContext: viewContext,
+                                                managedObjectContext: mainQueueContext,
                                                 sectionNameKeyPath: #keyPath(CCMPhoneNumber.verificationStatus),
                                                 cacheName: nil) // avoid caching unless there is real need as it is often the source of bugs
     return controller
@@ -81,11 +82,13 @@ class ContactCacheManager: NSPersistentContainer, ContactCacheManagerType {
 
   func managedContactComponents(forGlobalPhoneNumber number: GlobalPhoneNumber) -> ManagedContactComponents? {
     var components: ManagedContactComponents?
-    if let foundMetadata = CCMValidatedMetadata.find(withNumber: number, in: viewContext),
-      let displayName = foundMetadata.cachedPhoneNumber?.cachedContact?.displayName,
-      let phoneInputs = ManagedPhoneNumberInputs(countryCode: foundMetadata.countryCode, nationalNumber: foundMetadata.nationalNumber) {
-      let counterpartyInputs = ManagedCounterpartyInputs(name: displayName)
-      components = ManagedContactComponents(counterpartyInputs: counterpartyInputs, phonenumberInputs: phoneInputs)
+    mainQueueContext.performAndWait {
+      if let foundMetadata = CCMValidatedMetadata.find(withNumber: number, in: mainQueueContext),
+        let displayName = foundMetadata.cachedPhoneNumber?.cachedContact?.displayName,
+        let phoneInputs = ManagedPhoneNumberInputs(countryCode: foundMetadata.countryCode, nationalNumber: foundMetadata.nationalNumber) {
+        let counterpartyInputs = ManagedCounterpartyInputs(name: displayName)
+        components = ManagedContactComponents(counterpartyInputs: counterpartyInputs, phonenumberInputs: phoneInputs)
+      }
     }
     return components
   }
@@ -199,7 +202,7 @@ class ContactCacheManager: NSPersistentContainer, ContactCacheManagerType {
   func deleteSystemContactData(in context: NSManagedObjectContext) throws {
     let entitiesToKeep = [String(describing: CCMValidatedMetadata.self)]
     try context.performThrowingAndWait {
-      let entitiesToDelete = ContactCacheManager.model?.entities
+      let entitiesToDelete = self.stackConfig.model?.entities
         .compactMap { $0.name }.filter { !entitiesToKeep.contains($0) } ?? []
       try entitiesToDelete.forEach { entityName in
         try self.executeBatchDeleteFor(entity: entityName, in: context)
@@ -208,25 +211,6 @@ class ContactCacheManager: NSPersistentContainer, ContactCacheManagerType {
   }
 
   // MARK: - Private
-
-  private func setupPersistentStores(stackConfig: CoreDataStackConfig) {
-    let directory = NSPersistentContainer.defaultDirectoryURL()
-    let storeURL = directory.appendingPathComponent("\(stackConfig.stackType.modelName).sqlite")
-    let description = NSPersistentStoreDescription(url: storeURL)
-    description.shouldInferMappingModelAutomatically = true
-    description.shouldMigrateStoreAutomatically = true
-    description.type = stackConfig.storeType.storeType
-    description.setOption(FileProtectionType.completeUntilFirstUserAuthentication as NSObject, forKey: NSPersistentStoreFileProtectionKey)
-    persistentStoreDescriptions = [description]
-
-    self.loadPersistentStores { [weak self] _, error in
-      guard let strongSelf = self else { fatalError("could not load contact cache persistent store") }
-      if let err = error {
-        os_log("Failed to load contact cache persistence stores: %@", log: strongSelf.logger, type: .error, err.localizedDescription)
-      }
-    }
-  }
-
   private func executeBatchDeleteFor(entity name: String, in context: NSManagedObjectContext) throws {
     let fetch = NSFetchRequest<NSFetchRequestResult>(entityName: name)
     let request = NSBatchDeleteRequest(fetchRequest: fetch)

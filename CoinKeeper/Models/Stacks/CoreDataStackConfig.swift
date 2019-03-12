@@ -87,7 +87,15 @@ class CoreDataStackConfig {
 
   private func setupPersistentStores() -> BaseCoreDataStack {
     switch self.storeType {
-    case .disk: return SQLiteCoreDataStack()
+    case .disk:
+      switch self.stackType {
+      case .contactCache:
+        let config = CoreDataStackConfig(stackType: .contactCache, storeType: .disk)
+        return SQLiteCoreDataStack(stackConfig: config)
+      case .main:
+        let config = CoreDataStackConfig(stackType: .main, storeType: .disk)
+        return SQLiteCoreDataStack(stackConfig: config)
+      }
     case .inMemory: return InMemoryCoreDataStack()
     }
   }
