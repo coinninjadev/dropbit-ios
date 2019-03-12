@@ -46,4 +46,6 @@ protocol SendPaymentViewControllerDelegate: DeviceCountryCodeProvider {
   func viewControllerDidRequestAlert(_ viewController: UIViewController, viewModel: AlertControllerViewModel)
   func viewControllerShouldInitiallyAllowMemoSharing(_ viewController: SendPaymentViewController) -> Bool
   func showAlertForInvalidContactOrPhoneNumber(contactName: String?, displayNumber: String)
+
+  func viewController(_ viewController: UIViewController, checkForContactFromGenericContact genericContact: GenericContact) -> ValidatedContact?
 }

@@ -66,6 +66,8 @@ class MockPersistenceManager: PersistenceManagerType {
     return []
   }
 
+  func matchContactsIfPossible() { databaseManager.matchContactsIfPossible(with: self.contactCacheManager) }
+
   var unacknowledgedInvitations: [CKMInvitation] = []
   func getUnacknowledgedInvitations(in context: NSManagedObjectContext) -> [CKMInvitation] {
     return unacknowledgedInvitations
@@ -456,6 +458,7 @@ class MockPersistenceManager: PersistenceManagerType {
       return 0
     }
 
+    func matchContactsIfPossible(with contactCacheManager: ContactCacheManagerType) {}
   }
 
   class MockPersistenceUserDefaultsManager: PersistenceUserDefaultsType {

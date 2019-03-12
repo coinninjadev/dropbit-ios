@@ -16,6 +16,7 @@ class MockDatabaseManager: PersistenceDatabaseType {
 
   func unverifyUser(in context: NSManagedObjectContext) {}
   func removeWalletId(in context: NSManagedObjectContext) {}
+  let stack = InMemoryCoreDataStack()
 
   func walletId(in context: NSManagedObjectContext) -> String? {
     return nil
@@ -44,7 +45,7 @@ class MockDatabaseManager: PersistenceDatabaseType {
   }
 
   lazy var mainQueueContext: NSManagedObjectContext = {
-    return NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
+    return stack.context
   }()
 
   func persistentStore(for context: NSManagedObjectContext) -> NSPersistentStore? {
@@ -143,5 +144,8 @@ class MockDatabaseManager: PersistenceDatabaseType {
 
   func lastChangeIndex(in context: NSManagedObjectContext) -> Int? {
     return 0
+  }
+
+  func matchContactsIfPossible(with contactCacheManager: ContactCacheManagerType) {
   }
 }

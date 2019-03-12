@@ -340,7 +340,13 @@ extension SendPaymentViewController {
       case .btcAddress(let btcAddress):
         self.showBitcoinAddressRecipient(with: btcAddress)
       case .phoneNumber(let contact):
-        self.showPhoneEntryView(with: contact)
+        if let validatedContact = self.coordinationDelegate?.viewController(self, checkForContactFromGenericContact: contact) {
+          self.viewModel.paymentRecipient = PaymentRecipient.contact(validatedContact)
+          self.updateViewWithModel()
+          self.hideRecipientInputViews()
+        } else {
+          self.showPhoneEntryView(with: contact)
+        }
       case .contact:
         self.hideRecipientInputViews()
       }
@@ -382,7 +388,6 @@ extension SendPaymentViewController: SelectedValidContactDelegate {
     self.setPaymentRecipient(.contact(contact))
     self.updateViewWithModel()
   }
-
 }
 
 // MARK: - Amounts and Currencies
