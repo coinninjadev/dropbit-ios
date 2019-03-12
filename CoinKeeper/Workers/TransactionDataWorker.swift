@@ -11,6 +11,7 @@ import PromiseKit
 import CoreData
 import CNBitcoinKit
 import os.log
+import PhoneNumberKit
 
 protocol TransactionDataWorkerType: AnyObject {
 
@@ -41,6 +42,8 @@ class TransactionDataWorker: TransactionDataWorkerType {
   let persistenceManager: PersistenceManagerType
   let networkManager: NetworkManagerType
   let analyticsManager: AnalyticsManagerType
+
+  let phoneNumberKit = PhoneNumberKit()
 
   private let gapLimit = 20
   private let logger = OSLog(subsystem: "com.coinninja.transactionDataWorker", category: "aggregate_tx_responses")
@@ -259,7 +262,7 @@ class TransactionDataWorker: TransactionDataWorkerType {
 
     // This should succeed in partially decoding future versions if they are purely additive to the schema
     let payloads: [SharedPayloadV1] = decryptedPayloads.compactMap { try? SharedPayloadV1(data: $0) }
-    self.persistenceManager.persistReceivedSharedPayloads(payloads, in: context)
+    self.persistenceManager.persistReceivedSharedPayloads(payloads, kit: self.phoneNumberKit, in: context)
   }
 
   func groomFailedTransactions(notIn txids: [String], in context: NSManagedObjectContext) -> Promise<Void> {

@@ -235,7 +235,7 @@ class ContactCacheManager: ContactCacheManagerType {
                                        in context: NSManagedObjectContext) -> CCMPhoneNumber {
     // Create inputs
     let globalNumber = GlobalPhoneNumber(parsedNumber: parsedNumber)
-    let hashedNumber = inputs.hasher.hash(phoneNumber: globalNumber, salt: inputs.salt)
+    let hashedNumber = inputs.hasher.hash(phoneNumber: globalNumber, salt: inputs.salt, parsedNumber: parsedNumber, kit: inputs.kit)
     let formattedNumber = self.format(number: parsedNumber, kit: inputs.kit, deviceCountryCode: inputs.deviceCountryCode)
 
     // Create new CCMPhoneNumber

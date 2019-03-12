@@ -9,6 +9,7 @@
 import CNBitcoinKit
 import CoreData
 import PromiseKit
+import PhoneNumberKit
 import Strongbox
 
 protocol PersistenceManagerType: DeviceCountryCodeProvider {
@@ -71,6 +72,7 @@ protocol PersistenceManagerType: DeviceCountryCodeProvider {
   )
   func persistReceivedSharedPayloads(
     _ payloads: [SharedPayloadV1],
+    kit: PhoneNumberKit,
     in context: NSManagedObjectContext
   )
   func deleteTransactions(notIn txids: [String], in context: NSManagedObjectContext)
@@ -203,6 +205,7 @@ protocol PersistenceDatabaseType: AnyObject {
   func persistReceivedSharedPayloads(
     _ payloads: [SharedPayloadV1],
     hasher: HashingManager,
+    kit: PhoneNumberKit,
     in context: NSManagedObjectContext
   )
 
