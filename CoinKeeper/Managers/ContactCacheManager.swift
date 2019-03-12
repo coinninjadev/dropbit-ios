@@ -29,6 +29,7 @@ protocol ContactCacheManagerType: AnyObject {
                        inputs: CachedPhoneNumberDependencies,
                        in context: NSManagedObjectContext) throws
 
+  func validatedMetadata(for globalPhoneNumber: GlobalPhoneNumber, in context: NSManagedObjectContext) -> CCMValidatedMetadata?
   func managedContactComponents(forGlobalPhoneNumber number: GlobalPhoneNumber) -> ManagedContactComponents?
 
 }
@@ -80,10 +81,14 @@ class ContactCacheManager: ContactCacheManagerType {
     return controller
   }
 
+  func validatedMetadata(for globalPhoneNumber: GlobalPhoneNumber, in context: NSManagedObjectContext) -> CCMValidatedMetadata? {
+    return CCMValidatedMetadata.find(withNumber: globalPhoneNumber, in: context)
+  }
+
   func managedContactComponents(forGlobalPhoneNumber number: GlobalPhoneNumber) -> ManagedContactComponents? {
     var components: ManagedContactComponents?
     mainQueueContext.performAndWait {
-      if let foundMetadata = CCMValidatedMetadata.find(withNumber: number, in: mainQueueContext),
+      if let foundMetadata = validatedMetadata(for: number, in: mainQueueContext),
         let displayName = foundMetadata.cachedPhoneNumber?.cachedContact?.displayName,
         let phoneInputs = ManagedPhoneNumberInputs(countryCode: foundMetadata.countryCode, nationalNumber: foundMetadata.nationalNumber) {
         let counterpartyInputs = ManagedCounterpartyInputs(name: displayName)
