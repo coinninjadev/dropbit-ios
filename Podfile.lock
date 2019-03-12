@@ -47,7 +47,7 @@ DEPENDENCIES:
   - Permission/Camera (from `https://github.com/pahmed/Permission.git`, commit `8b47d5f`)
   - Permission/Contacts (from `https://github.com/pahmed/Permission.git`, commit `8b47d5f`)
   - Permission/Notifications (from `https://github.com/pahmed/Permission.git`, commit `8b47d5f`)
-  - PhoneNumberKit (from `https://github.com/blwinters/PhoneNumberKit.git`, commit `ccf8ece`)
+  - PhoneNumberKit (from `https://github.com/blwinters/PhoneNumberKit.git`, commit `18b0a34`)
   - ReachabilitySwift
   - Result
   - RNCryptor (~> 5.0)
@@ -72,7 +72,7 @@ EXTERNAL SOURCES:
     :commit: 8b47d5f
     :git: https://github.com/pahmed/Permission.git
   PhoneNumberKit:
-    :commit: ccf8ece
+    :commit: 18b0a34
     :git: https://github.com/blwinters/PhoneNumberKit.git
 
 CHECKOUT OPTIONS:
@@ -83,7 +83,7 @@ CHECKOUT OPTIONS:
     :commit: 8b47d5f
     :git: https://github.com/pahmed/Permission.git
   PhoneNumberKit:
-    :commit: ccf8ece
+    :commit: 18b0a34
     :git: https://github.com/blwinters/PhoneNumberKit.git
 
 SPEC CHECKSUMS:
@@ -99,6 +99,6 @@ SPEC CHECKSUMS:
   RNCryptor: c93d19029dcf7ff160aca0f24d6c9e7b0d82f664
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
 
-PODFILE CHECKSUM: 58dc33d5e38bb472ec0c1e8c1cb4775eec06ccad
+PODFILE CHECKSUM: 746f18e8a78f8a56d22f7b832774c263cd8e58ba
 
 COCOAPODS: 1.5.3
