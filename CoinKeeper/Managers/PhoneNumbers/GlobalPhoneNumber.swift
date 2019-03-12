@@ -47,3 +47,5 @@ public struct GlobalPhoneNumber: Codable, CustomStringConvertible {
   }
 
 }
+
+extension GlobalPhoneNumber: Equatable {}

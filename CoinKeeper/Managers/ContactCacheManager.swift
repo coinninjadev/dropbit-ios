@@ -29,6 +29,8 @@ protocol ContactCacheManagerType: AnyObject {
                        inputs: CachedPhoneNumberDependencies,
                        in context: NSManagedObjectContext) throws
 
+  func managedContactComponents(forGlobalPhoneNumber number: GlobalPhoneNumber) -> ManagedContactComponents?
+
 }
 
 class ContactCacheManager: NSPersistentContainer, ContactCacheManagerType {
@@ -43,9 +45,16 @@ class ContactCacheManager: NSPersistentContainer, ContactCacheManagerType {
   }()
 
   convenience init() {
-    guard let theModel = ContactCacheManager.model else { fatalError("could not load model file") }
-    self.init(name: ContactCacheManager.modelFilename, managedObjectModel: theModel)
-    setupPersistentStores()
+    self.init(stackConfig: CoreDataStackConfig(stackType: .contactCache, storeType: .disk))
+  }
+
+  convenience init(stackConfig: CoreDataStackConfig) {
+    let maybeModel = Bundle(for: ContactCacheManager.self)
+      .url(forResource: stackConfig.stackType.modelName, withExtension: "momd")
+      .flatMap { NSManagedObjectModel(contentsOf: $0) }
+    guard let model = maybeModel else { fatalError() }
+    self.init(name: stackConfig.stackType.modelName, managedObjectModel: model)
+    setupPersistentStores(stackConfig: stackConfig)
     self.viewContext.automaticallyMergesChangesFromParent = true
     self.viewContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
   }
@@ -68,6 +77,17 @@ class ContactCacheManager: NSPersistentContainer, ContactCacheManagerType {
                                                 sectionNameKeyPath: #keyPath(CCMPhoneNumber.verificationStatus),
                                                 cacheName: nil) // avoid caching unless there is real need as it is often the source of bugs
     return controller
+  }
+
+  func managedContactComponents(forGlobalPhoneNumber number: GlobalPhoneNumber) -> ManagedContactComponents? {
+    var components: ManagedContactComponents?
+    if let foundMetadata = CCMValidatedMetadata.find(withNumber: number, in: viewContext),
+      let displayName = foundMetadata.cachedPhoneNumber?.cachedContact?.displayName,
+      let phoneInputs = ManagedPhoneNumberInputs(countryCode: foundMetadata.countryCode, nationalNumber: foundMetadata.nationalNumber) {
+      let counterpartyInputs = ManagedCounterpartyInputs(name: displayName)
+      components = ManagedContactComponents(counterpartyInputs: counterpartyInputs, phonenumberInputs: phoneInputs)
+    }
+    return components
   }
 
   /// Use this to update the fetched results controller as the user searches
@@ -189,12 +209,13 @@ class ContactCacheManager: NSPersistentContainer, ContactCacheManagerType {
 
   // MARK: - Private
 
-  private func setupPersistentStores() {
+  private func setupPersistentStores(stackConfig: CoreDataStackConfig) {
     let directory = NSPersistentContainer.defaultDirectoryURL()
-    let storeURL = directory.appendingPathComponent("\(ContactCacheManager.modelFilename).sqlite")
+    let storeURL = directory.appendingPathComponent("\(stackConfig.stackType.modelName).sqlite")
     let description = NSPersistentStoreDescription(url: storeURL)
     description.shouldInferMappingModelAutomatically = true
     description.shouldMigrateStoreAutomatically = true
+    description.type = stackConfig.storeType.storeType
     description.setOption(FileProtectionType.completeUntilFirstUserAuthentication as NSObject, forKey: NSPersistentStoreFileProtectionKey)
     persistentStoreDescriptions = [description]
 

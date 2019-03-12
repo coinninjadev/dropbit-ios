@@ -41,6 +41,11 @@ public class CKMPhoneNumber: NSManagedObject {
     return number
   }
 
+  public static func find(withGlobalPhoneNumber number: GlobalPhoneNumber, in context: NSManagedObjectContext) -> CKMPhoneNumber? {
+    guard let inputs = ManagedPhoneNumberInputs(phoneNumber: number) else { return nil }
+    return self.find(withInputs: inputs, in: context)
+  }
+
   public static func find(withInputs inputs: ManagedPhoneNumberInputs, in context: NSManagedObjectContext) -> CKMPhoneNumber? {
     let ccPath = #keyPath(CKMPhoneNumber.countryCode)
     let ccPredicate = NSPredicate(format: "\(ccPath) == %d", inputs.countryCode)

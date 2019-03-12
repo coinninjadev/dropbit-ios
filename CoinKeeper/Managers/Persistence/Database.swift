@@ -23,7 +23,9 @@ class Database: PersistenceDatabaseType {
     let context = self.container.viewContext
     context.automaticallyMergesChangesFromParent = true
     context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
-    try? context.setQueryGenerationFrom(.current)
+    if stackConfig.storeType.shouldSetQueryGeneration {
+      try? context.setQueryGenerationFrom(.current)
+    }
     return context
   }()
 

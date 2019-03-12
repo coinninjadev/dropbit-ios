@@ -159,8 +159,9 @@ public class CKMTransaction: NSManagedObject {
     return transactions(with: fetchRequest, in: context)
   }
 
-  private static func transactions(with fetchRequest: NSFetchRequest<CKMTransaction> = CKMTransaction.fetchRequest(),
-                                   in context: NSManagedObjectContext) -> [CKMTransaction] {
+  private static func transactions(
+    with fetchRequest: NSFetchRequest<CKMTransaction> = CKMTransaction.fetchRequest(),
+    in context: NSManagedObjectContext) -> [CKMTransaction] {
     var result: [CKMTransaction] = []
     context.performAndWait {
       do {

@@ -15,7 +15,7 @@ class DatabaseTests: XCTestCase {
   var sut: Database!
 
   let config = CoreDataStackConfig(stackType: .main, storeType: .inMemory)
-  
+
   override func setUp() {
     super.setUp()
     sut = Database(stackConfig: config)
