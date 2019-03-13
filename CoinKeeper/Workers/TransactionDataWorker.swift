@@ -70,11 +70,27 @@ class TransactionDataWorker: TransactionDataWorkerType {
     let receiveAddressFetcher: (Int) -> CNBMetaAddress = { [unowned self] in self.walletManager.createAddressDataSource().receiveAddress(at: $0) }
     let changeAddressFetcher: (Int) -> CNBMetaAddress = { [unowned self] in self.walletManager.createAddressDataSource().changeAddress(at: $0) }
     let minimumSeekReceiveIndex: Int? = self.minimumSeekReceiveAddressIndex(in: context)
+
+    if fullSync {
+      return fetchAddressTransactionSummaries(seekingThroughIndex: minimumSeekReceiveIndex, in: context, addressFetcher: receiveAddressFetcher)
+        .then(in: context) { self.fetchAddressTransactionSummaries(in: context, aggregatingATSResponses: $0, addressFetcher: changeAddressFetcher) }
+        .then(in: context) { self.processAddressTransactionSummaries($0, fullSync: fullSync, in: context) }
+    } else {
+
+      // get date of last transaction, minus 1 hour
+      // get last receive index and create batches of 20 addresses in advance
+      // for each batch, pass the addresses with the date into an optional minDate parameter on networkManager.fetchTransactionSummaries()
+      return Promise.value(())
+    }
+  }
+
+  private func processAddressTransactionSummaries(_ aggregateATSResponse: [AddressTransactionSummaryResponse],
+                                                  fullSync: Bool,
+                                                  in context: NSManagedObjectContext) -> Promise<Void> {
+
     let highPriorityBackgroundQueue = DispatchQueue.global(qos: .userInitiated)
 
-    return fetchAddressTransactionSummaries(seekingThroughIndex: minimumSeekReceiveIndex, in: context, addressFetcher: receiveAddressFetcher)
-      .then(in: context) { self.fetchAddressTransactionSummaries(in: context, aggregatingATSResponses: $0, addressFetcher: changeAddressFetcher) }
-      .then(in: context) { self.persistAddressTransactionSummaries(with: $0, in: context) }
+    return self.persistAddressTransactionSummaries(with: aggregateATSResponse, in: context)
       .get(in: context) { _ in self.persistenceManager.updateWalletLastIndexes(in: context) }
       .then { Promise.value(TransactionDataWorkerDTO(atsResponses: $0)) }
       .then { (dto: TransactionDataWorkerDTO) -> Promise<TransactionDataWorkerDTO> in
