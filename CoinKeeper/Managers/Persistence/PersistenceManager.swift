@@ -8,6 +8,7 @@ import Foundation
 import Strongbox
 import CoreData
 import PromiseKit
+import PhoneNumberKit
 import os.log
 
 // swiftlint:disable type_body_length
@@ -231,9 +232,9 @@ class PersistenceManager: PersistenceManagerType {
       .get { self.userDefaultsManager.receiveAddressIndexGaps = $0 }.asVoid()
   }
 
-  func persistReceivedSharedPayloads(_ payloads: [SharedPayloadV1], in context: NSManagedObjectContext) {
+  func persistReceivedSharedPayloads(_ payloads: [SharedPayloadV1], kit: PhoneNumberKit, in context: NSManagedObjectContext) {
     let hasher = self.hashingManager
-    databaseManager.persistReceivedSharedPayloads(payloads, hasher: hasher, in: context)
+    databaseManager.persistReceivedSharedPayloads(payloads, hasher: hasher, kit: kit, in: context)
   }
 
   func walletId(in context: NSManagedObjectContext) -> String? {

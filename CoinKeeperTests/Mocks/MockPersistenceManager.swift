@@ -3,9 +3,10 @@
 // Copyright (c) 2018 Coin Ninja, LLC. All rights reserved.
 //
 
-import CoreData
-import PromiseKit
 import CNBitcoinKit
+import CoreData
+import PhoneNumberKit
+import PromiseKit
 @testable import DropBit
 
 // swiftlint:disable file_length
@@ -115,7 +116,7 @@ class MockPersistenceManager: PersistenceManagerType {
     invitation: CKMInvitation?,
     in context: NSManagedObjectContext) { }
 
-  func persistReceivedSharedPayloads(_ payloads: [SharedPayloadV1], in context: NSManagedObjectContext) { }
+  func persistReceivedSharedPayloads(_ payloads: [SharedPayloadV1], kit: PhoneNumberKit, in context: NSManagedObjectContext) { }
 
   func groomAddressTransactionSummaries(
     from responses: [AddressTransactionSummaryResponse],
@@ -427,6 +428,7 @@ class MockPersistenceManager: PersistenceManagerType {
 
     func persistReceivedSharedPayloads(_ payloads: [SharedPayloadV1],
                                        hasher: HashingManager,
+                                       kit: PhoneNumberKit,
                                        in context: NSManagedObjectContext) {
     }
 

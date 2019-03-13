@@ -16,6 +16,13 @@ protocol PhoneNumberEntryViewDisplayable: PhoneNumberEntryViewDelegate, CountryC
   var countryCodeSearchView: CountryCodeSearchView? { get set }
   var countryCodeDataSource: CountryCodePickerDataSource { get }
 
+  /// Optional method for updating UI outside of the PhoneNumberEntryView
+  func phoneNumberEntryView(_ view: PhoneNumberEntryView, didSelectCountry country: CKCountry)
+
+}
+
+extension PhoneNumberEntryViewDisplayable {
+  func phoneNumberEntryView(_ view: PhoneNumberEntryView, didSelectCountry country: CKCountry) { }
 }
 
 extension PhoneNumberEntryViewDisplayable where Self: UIViewController, Self: CKPhoneNumberTextFieldDelegate {
@@ -40,6 +47,7 @@ extension PhoneNumberEntryViewDisplayable where Self: UIViewController, Self: CK
 
   func countryCodeSearchView(_ searchView: CountryCodeSearchView, didSelectCountry country: CKCountry) {
     self.phoneNumberEntryView.configure(withCountry: country)
+    self.phoneNumberEntryView(phoneNumberEntryView, didSelectCountry: country)
     self.hideCountryCodeSearchView()
 
     // Activate textfield and move cursor to end

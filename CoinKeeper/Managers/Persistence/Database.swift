@@ -9,6 +9,7 @@
 import Foundation
 import os.log
 import CoreData
+import PhoneNumberKit
 import PromiseKit
 import CNBitcoinKit
 
@@ -213,7 +214,7 @@ class Database: PersistenceDatabaseType {
     }
   }
 
-  func persistReceivedSharedPayloads(_ payloads: [SharedPayloadV1], hasher: HashingManager, in context: NSManagedObjectContext) {
+  func persistReceivedSharedPayloads(_ payloads: [SharedPayloadV1], hasher: HashingManager, kit: PhoneNumberKit, in context: NSManagedObjectContext) {
     let salt: Data
     do {
       salt = try hasher.salt()
@@ -230,7 +231,7 @@ class Database: PersistenceDatabaseType {
       }
 
       let phoneNumber = payload.profile.globalPhoneNumber()
-      let phoneNumberHash = hasher.hash(phoneNumber: phoneNumber, salt: salt)
+      let phoneNumberHash = hasher.hash(phoneNumber: phoneNumber, salt: salt, parsedNumber: nil, kit: kit)
 
       if tx.phoneNumber == nil, let inputs = ManagedPhoneNumberInputs(phoneNumber: phoneNumber) {
         tx.phoneNumber = CKMPhoneNumber.findOrCreate(withInputs: inputs,
