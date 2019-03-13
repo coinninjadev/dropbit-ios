@@ -33,4 +33,13 @@ extension String {
     return self.isEmpty ? nil : self
   }
 
+  /// Drops first character from string if it matches the parameter
+  func dropFirstCharacter(ifEquals char: Character) -> String {
+    if self.first == char {
+      return String(self.dropFirst())
+    } else {
+      return self
+    }
+  }
+
 }

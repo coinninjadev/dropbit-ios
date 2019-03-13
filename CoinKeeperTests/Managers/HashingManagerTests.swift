@@ -96,13 +96,16 @@ class HashingManagerTests: XCTestCase {
   }
 
   func testPhoneNumberHashGeneration_SM() {
-    let phoneNumber = GlobalPhoneNumber(countryCode: 378, nationalNumber: "66661212")
-    let expectedHash = "20e5dd53713801a9b0e65b92f99263b5c0086d1e383e3e8d12e15a75b424e067"
+    let phoneNumberWithPrefix = GlobalPhoneNumber(countryCode: 378, nationalNumber: "054966661212")
+    let phoneNumberWithoutPrefix = GlobalPhoneNumber(countryCode: 378, nationalNumber: "66661212")
+    let expectedHash = "8497fccbb713e01ca298d15bb7fc919baed6fca102bd6089c07351ce220298f7"
 
     do {
       let salt = try self.sut.salt()
-      let hashedNumber = self.sut.hash(phoneNumber: phoneNumber, salt: salt, parsedNumber: nil, kit: self.kit)
-      XCTAssertEqual(hashedNumber, expectedHash, "hashes should be equal")
+      let hashedNumberWithPrefix = self.sut.hash(phoneNumber: phoneNumberWithPrefix, salt: salt, parsedNumber: nil, kit: self.kit)
+      let hashedNumberWithoutPrefix = self.sut.hash(phoneNumber: phoneNumberWithoutPrefix, salt: salt, parsedNumber: nil, kit: self.kit)
+      XCTAssertEqual(hashedNumberWithPrefix, expectedHash, "hashes should be equal")
+      XCTAssertEqual(hashedNumberWithPrefix, hashedNumberWithoutPrefix, "hashes should be equal")
     } catch {
       XCTFail(error.localizedDescription)
     }
