@@ -19,8 +19,9 @@ struct HashingManager {
     return salt
   }
 
-  /// If the number has already been parsed, pass it in as `parsedNumber` for efficiency,
-  /// otherwise the GlobalPhoneNumber will be parsed for hashing.
+  /// This function always requires a GlobalPhoneNumber for hashing. If a parsedNumber is already available, providing
+  /// it will skip the step of parsing the global number in this function, increasing efficiency. Passing nil for the parsedNumber
+  /// and relying on parsing inside this function is acceptable and the more common scenario.
   func hash(phoneNumber number: GlobalPhoneNumber, salt: Data, parsedNumber: PhoneNumber?, kit: PhoneNumberKit) -> String {
     let normalizedNumber = normalizeNumber(number, parsedNumber: parsedNumber, kit: kit)
     return pbkdf2SHA256(password: normalizedNumber,
@@ -29,7 +30,7 @@ struct HashingManager {
                         rounds: keyDerivation.iterations)
   }
 
-  func normalizeNumber(_ number: GlobalPhoneNumber, parsedNumber: PhoneNumber?, kit: PhoneNumberKit) -> String {
+  private func normalizeNumber(_ number: GlobalPhoneNumber, parsedNumber: PhoneNumber?, kit: PhoneNumberKit) -> String {
     let transformablePhoneNumber: PhoneNumber? = parsedNumber ?? (try? kit.parse(number.asE164()))
 
     let originalNationalNumber = number.sanitizedNationalNumber()
