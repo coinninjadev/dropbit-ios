@@ -60,7 +60,7 @@ class CoreDataStackConfig {
 
     var containerName: String {
       switch self {
-      case .main: return "CoinKeeper"
+      case .main: return "CoinNinjaDB"
       case .contactCache: return "ContactCacheDB"
       }
     }

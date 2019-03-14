@@ -20,7 +20,7 @@ class SQLiteCoreDataStack: BaseCoreDataStack {
     let logger = OSLog(subsystem: "com.coinninja.coinkeeper.sqlitecoredatastack", category: "create_persistent_container")
     let container = NSPersistentContainer(name: stackConfig.stackType.containerName, managedObjectModel: managedObjectModel)
     let directory = NSPersistentContainer.defaultDirectoryURL()
-    let storeURL = directory.appendingPathComponent("\(stackConfig.stackType.modelName).sqlite")
+    let storeURL = directory.appendingPathComponent("\(stackConfig.stackType.containerName).sqlite")
     let description = NSPersistentStoreDescription(url: storeURL)
     description.shouldInferMappingModelAutomatically = true
     description.shouldMigrateStoreAutomatically = true
