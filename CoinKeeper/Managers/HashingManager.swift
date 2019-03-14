@@ -34,7 +34,8 @@ struct HashingManager {
     let transformablePhoneNumber: PhoneNumber? = parsedNumber ?? (try? kit.parse(number.asE164()))
 
     let originalNationalNumber = number.sanitizedNationalNumber()
-    var normalizedNationalNumber = originalNationalNumber
+    let trimmedNationalNumber = originalNationalNumber.dropFirstCharacter(ifEquals: "0")
+    var normalizedNationalNumber = trimmedNationalNumber
 
     // Similar to Signal, we ignore the national prefix for Brazil whose token is "$2", prefix "0"
     let token = "$1"
@@ -46,8 +47,12 @@ struct HashingManager {
 
       // The prefix precedes the token in the transform rule
       let prefix = transformRule.replacingOccurrences(of: token, with: "")
+
+      // Trim leading 0 from transform rule to match Android
+      let trimmedTransformRule = transformRule.dropFirstCharacter(ifEquals: "0")
+
       if originalNationalNumber.starts(with: prefix) == false {
-        normalizedNationalNumber = transformRule.replacingOccurrences(of: token, with: originalNationalNumber)
+        normalizedNationalNumber = trimmedTransformRule.replacingOccurrences(of: token, with: trimmedNationalNumber)
       }
     }
 
