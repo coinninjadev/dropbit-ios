@@ -91,10 +91,25 @@ public class CKMAddressTransactionSummary: NSManagedObject {
     do {
       items = try context.fetch(fetchRequest)
     } catch {
-      let logger = OSLog(subsystem: "com.coinninja.coinkeeper.ckmaddresstransactionsummary", category: "ckmtransaction")
+      let logger = OSLog(subsystem: "com.coinninja.coinkeeper.ckmaddresstransactionsummary", category: "CKMAddressTransactionSummary")
       os_log("Could not execute fetch request for AddressTransactionSummary objects: %@", log: logger, type: .error, error.localizedDescription)
     }
     return items
+  }
+
+  static func findLatest(in context: NSManagedObjectContext) -> CKMAddressTransactionSummary? {
+    let datePath = #keyPath(CKMAddressTransactionSummary.transaction.date)
+    let fetchRequest: NSFetchRequest<CKMAddressTransactionSummary> = CKMAddressTransactionSummary.fetchRequest()
+    fetchRequest.sortDescriptors = [NSSortDescriptor(key: datePath, ascending: false)]
+    fetchRequest.fetchLimit = 1
+
+    do {
+      return try context.fetch(fetchRequest).first
+    } catch {
+      let logger = OSLog(subsystem: "com.coinninja.coinkeeper.ckmaddresstransactionsummary", category: "CKMAddressTransactionSummary")
+      os_log("Could not execute fetch request for latest AddressTransactionSummary: %@", log: logger, type: .error, error.localizedDescription)
+      return nil
+    }
   }
 
   func configure(

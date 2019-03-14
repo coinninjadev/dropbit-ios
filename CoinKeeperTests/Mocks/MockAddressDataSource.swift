@@ -48,4 +48,12 @@ class MockAddressDataSource: AddressDataSourceType {
     return nil
   }
 
+  func lastReceiveIndex(in context: NSManagedObjectContext) -> Int? {
+    return nil
+  }
+
+  func lastChangeIndex(in context: NSManagedObjectContext) -> Int? {
+    return nil
+  }
+
 }
