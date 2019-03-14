@@ -18,7 +18,6 @@ class InMemoryCoreDataStack: BaseCoreDataStack {
     let container = NSPersistentContainer(name: stackConfig.stackType.containerName, managedObjectModel: managedObjectModel)
     let description = NSPersistentStoreDescription()
     description.type = stackConfig.storeType.storeType
-    description.shouldAddStoreAsynchronously = false // Make it simpler in test env
 
     container.persistentStoreDescriptions = [description]
     container.loadPersistentStores { (description, error) in

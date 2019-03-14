@@ -33,13 +33,6 @@ class CoreDataStackConfig {
       }
     }
 
-    var shouldAddStoreAsynchronously: Bool {
-      switch self {
-      case .disk: return true
-      case .inMemory: return false
-      }
-    }
-
     var shouldSetQueryGeneration: Bool {
       switch self {
       case .disk: return true
