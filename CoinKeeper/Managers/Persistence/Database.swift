@@ -242,6 +242,17 @@ class Database: PersistenceDatabaseType {
         tx.phoneNumber = CKMPhoneNumber.findOrCreate(withInputs: inputs,
                                                      phoneNumberHash: phoneNumberHash,
                                                      in: context)
+        var counterpartyInputs: ManagedCounterpartyInputs?
+        let ccmContext = contactCacheManager.mainQueueContext
+        ccmContext.performAndWait {
+          if let metadata = contactCacheManager.validatedMetadata(for: phoneNumber, in: ccmContext),
+            let displayName = metadata.cachedPhoneNumber?.cachedContact?.displayName {
+            counterpartyInputs = ManagedCounterpartyInputs(name: displayName)
+          }
+        }
+        if let name = counterpartyInputs?.name {
+          tx.phoneNumber?.counterparty = CKMCounterparty.findOrCreate(with: name, in: context)
+        }
       }
 
       let payloadAsData = try? payload.encoded()
