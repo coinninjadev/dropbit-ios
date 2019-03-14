@@ -214,7 +214,12 @@ class Database: PersistenceDatabaseType {
     }
   }
 
-  func persistReceivedSharedPayloads(_ payloads: [SharedPayloadV1], hasher: HashingManager, kit: PhoneNumberKit, in context: NSManagedObjectContext) {
+  func persistReceivedSharedPayloads(
+    _ payloads: [SharedPayloadV1],
+    hasher: HashingManager,
+    kit: PhoneNumberKit,
+    contactCacheManager: ContactCacheManagerType,
+    in context: NSManagedObjectContext) {
     let salt: Data
     do {
       salt = try hasher.salt()

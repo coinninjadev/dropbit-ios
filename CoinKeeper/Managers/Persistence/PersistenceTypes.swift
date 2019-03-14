@@ -17,6 +17,7 @@ protocol PersistenceManagerType: DeviceCountryCodeProvider {
   var databaseManager: PersistenceDatabaseType { get }
   var userDefaultsManager: PersistenceUserDefaultsType { get }
   var contactCacheManager: ContactCacheManagerType { get }
+  var hashingManager: HashingManager { get }
 
   func double(for key: PersistenceManager.CKUserDefaults.Key) -> Double
   func set(_ doubleValue: Double, for key: PersistenceManager.CKUserDefaults.Key)
@@ -206,6 +207,7 @@ protocol PersistenceDatabaseType: AnyObject {
     _ payloads: [SharedPayloadV1],
     hasher: HashingManager,
     kit: PhoneNumberKit,
+    contactCacheManager: ContactCacheManagerType,
     in context: NSManagedObjectContext
   )
 

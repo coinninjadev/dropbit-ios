@@ -17,6 +17,7 @@ class MockPersistenceManager: PersistenceManagerType {
   var databaseManager: PersistenceDatabaseType
   var userDefaultsManager: PersistenceUserDefaultsType
   var contactCacheManager: ContactCacheManagerType
+  var hashingManager: HashingManager = HashingManager()
 
   init(keychainManager: PersistenceKeychainType = MockPersistenceKeychainManager(store: MockKeychainAccessorType()),
        databaseManager: PersistenceDatabaseType = MockPersistenceDatabaseManager(),
@@ -429,6 +430,7 @@ class MockPersistenceManager: PersistenceManagerType {
     func persistReceivedSharedPayloads(_ payloads: [SharedPayloadV1],
                                        hasher: HashingManager,
                                        kit: PhoneNumberKit,
+                                       contactCacheManager: ContactCacheManagerType,
                                        in context: NSManagedObjectContext) {
     }
 
