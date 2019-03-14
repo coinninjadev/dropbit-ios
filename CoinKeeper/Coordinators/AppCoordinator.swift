@@ -472,7 +472,9 @@ class AppCoordinator: CoordinatorType {
       })
     }
 
-    self.contactCacheDataWorker.reloadSystemContactsIfNeeded(completion: nil)
+    self.contactCacheDataWorker.reloadSystemContactsIfNeeded { [weak self] _ in
+      self?.persistenceManager.matchContactsIfPossible()
+    }
   }
 
   /// Handle app leaving active state, either becoming inactive, entering background, or terminating.

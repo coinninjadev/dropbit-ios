@@ -214,7 +214,12 @@ class Database: PersistenceDatabaseType {
     }
   }
 
-  func persistReceivedSharedPayloads(_ payloads: [SharedPayloadV1], hasher: HashingManager, kit: PhoneNumberKit, in context: NSManagedObjectContext) {
+  func persistReceivedSharedPayloads(
+    _ payloads: [SharedPayloadV1],
+    hasher: HashingManager,
+    kit: PhoneNumberKit,
+    contactCacheManager: ContactCacheManagerType,
+    in context: NSManagedObjectContext) {
     let salt: Data
     do {
       salt = try hasher.salt()
@@ -237,6 +242,11 @@ class Database: PersistenceDatabaseType {
         tx.phoneNumber = CKMPhoneNumber.findOrCreate(withInputs: inputs,
                                                      phoneNumberHash: phoneNumberHash,
                                                      in: context)
+
+        let counterpartyInputs = contactCacheManager.managedContactComponents(forGlobalPhoneNumber: phoneNumber)?.counterpartyInputs
+        if let name = counterpartyInputs?.name {
+          tx.phoneNumber?.counterparty = CKMCounterparty.findOrCreate(with: name, in: context)
+        }
       }
 
       let payloadAsData = try? payload.encoded()

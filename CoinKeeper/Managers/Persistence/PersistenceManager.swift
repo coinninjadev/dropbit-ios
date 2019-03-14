@@ -234,7 +234,12 @@ class PersistenceManager: PersistenceManagerType {
 
   func persistReceivedSharedPayloads(_ payloads: [SharedPayloadV1], kit: PhoneNumberKit, in context: NSManagedObjectContext) {
     let hasher = self.hashingManager
-    databaseManager.persistReceivedSharedPayloads(payloads, hasher: hasher, kit: kit, in: context)
+    databaseManager.persistReceivedSharedPayloads(
+      payloads,
+      hasher: hasher,
+      kit: kit,
+      contactCacheManager: contactCacheManager,
+      in: context)
   }
 
   func walletId(in context: NSManagedObjectContext) -> String? {
