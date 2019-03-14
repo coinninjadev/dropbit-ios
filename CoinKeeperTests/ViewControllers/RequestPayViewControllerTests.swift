@@ -95,9 +95,7 @@ class RequestPayViewControllerTests: XCTestCase {
     XCTAssertTrue(mockCoordinator.copiedToClipboardWasCalled, "should tell delegate that text was copied")
 
     if let pasteboardText = UIPasteboard.general.string, pasteboardText.isNotEmpty {
-      XCTAssertTrue(pasteboardText.contains("bitcoin:"), "pasteboard should contain bitcoin URL scheme (actual text: \(pasteboardText))")
-      XCTAssertTrue(pasteboardText.contains(address), "pasteboard should contain the address (actual text: \(pasteboardText))")
-      XCTAssertTrue(pasteboardText.contains("amount"), "pasteboard should contain the amount (actual text: \(pasteboardText))")
+      XCTAssertEqual(pasteboardText, address, "pasteboard should contain only the address (actual text: \(pasteboardText))")
 
     } else {
       XCTFail("Pasteboard text is empty")
