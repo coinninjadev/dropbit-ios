@@ -683,6 +683,7 @@
 		B5B53C9C2107CAA5006C7B67 /* TransactionDetailsInfoContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5B53C9B2107CAA5006C7B67 /* TransactionDetailsInfoContainer.swift */; };
 		B5B53C9E2107CD1C006C7B67 /* TransactionDetailMessageLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5B53C9D2107CD1C006C7B67 /* TransactionDetailMessageLabel.swift */; };
 		B5B9132921419F84003A24E9 /* PhoneNumberKit+AreaCodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5B9132821419F84003A24E9 /* PhoneNumberKit+AreaCodes.swift */; };
+		B5BA5247223AA38E001165FC /* CKMTransaction+FetchRequests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5BA5246223AA38E001165FC /* CKMTransaction+FetchRequests.swift */; };
 		B5C0A5F82097A24A00D648DF /* CounterpartyRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5C0A5F72097A24A00D648DF /* CounterpartyRepresentable.swift */; };
 		B5C2E02B20BC721E00F21928 /* WalletAddressResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5C2E02A20BC721E00F21928 /* WalletAddressResponse.swift */; };
 		B5C5EDE321FA41FF0032AC94 /* SharedPayloadV1.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5C5EDE221FA41FF0032AC94 /* SharedPayloadV1.swift */; };
@@ -1454,6 +1455,7 @@
 		B5B53C9B2107CAA5006C7B67 /* TransactionDetailsInfoContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TransactionDetailsInfoContainer.swift; path = CoinKeeper/Views/TransactionDetailsInfoContainer.swift; sourceTree = SOURCE_ROOT; };
 		B5B53C9D2107CD1C006C7B67 /* TransactionDetailMessageLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDetailMessageLabel.swift; sourceTree = "<group>"; };
 		B5B9132821419F84003A24E9 /* PhoneNumberKit+AreaCodes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PhoneNumberKit+AreaCodes.swift"; sourceTree = "<group>"; };
+		B5BA5246223AA38E001165FC /* CKMTransaction+FetchRequests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CKMTransaction+FetchRequests.swift"; sourceTree = "<group>"; };
 		B5C0A5F72097A24A00D648DF /* CounterpartyRepresentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CounterpartyRepresentable.swift; sourceTree = "<group>"; };
 		B5C2E02A20BC721E00F21928 /* WalletAddressResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletAddressResponse.swift; sourceTree = "<group>"; };
 		B5C5EDE221FA41FF0032AC94 /* SharedPayloadV1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedPayloadV1.swift; sourceTree = "<group>"; };
@@ -2538,6 +2540,7 @@
 				3B8FA48120C16F5C0074B617 /* CKMTemporarySentTransaction+CoreDataClass.swift */,
 				3B8FA48220C16F5C0074B617 /* CKMTemporarySentTransaction+CoreDataProperties.swift */,
 				3BA360822090B0C100732C43 /* CKMTransaction+CoreDataClass.swift */,
+				B5BA5246223AA38E001165FC /* CKMTransaction+FetchRequests.swift */,
 				3BA360832090B0C100732C43 /* CKMTransaction+CoreDataProperties.swift */,
 				B56B63792200CDF100CCC153 /* CKMTransactionSharedPayload+CoreDataClass.swift */,
 				B56B63772200CDD300CCC153 /* CKMTransactionSharedPayload+CoreDataProperties.swift */,
@@ -3379,6 +3382,7 @@
 				B501022221F2325B00D42A71 /* UIColor+Init.swift in Sources */,
 				B52CC6A7221E401E00B00C9E /* CCMValidatedMetadata+CoreDataProperties.swift in Sources */,
 				B536D12B21F1140100C344B6 /* SendPaymentMemoView.swift in Sources */,
+				B5BA5247223AA38E001165FC /* CKMTransaction+FetchRequests.swift in Sources */,
 				B5823FE1207EA72500B12A35 /* TransactionHistoryDetailCell.swift in Sources */,
 				A200575520B6F2D0007074D9 /* Command.swift in Sources */,
 				B505414D207D10DD0059C8F9 /* InMemoryCoreDataStack.swift in Sources */,
