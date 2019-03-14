@@ -33,13 +33,6 @@ class CoreDataStackConfig {
       }
     }
 
-    var shouldAddStoreAsynchronously: Bool {
-      switch self {
-      case .disk: return true
-      case .inMemory: return false
-      }
-    }
-
     var shouldSetQueryGeneration: Bool {
       switch self {
       case .disk: return true
@@ -60,7 +53,7 @@ class CoreDataStackConfig {
 
     var containerName: String {
       switch self {
-      case .main: return "CoinKeeper"
+      case .main: return "CoinNinjaDB"
       case .contactCache: return "ContactCacheDB"
       }
     }
