@@ -155,4 +155,24 @@ extension AppCoordinator: SerialQueueManagerDelegate {
     self.persistenceManager.unverifyUser(in: context)
   }
 
+  func handleMissingWalletError(_ error: CKPersistenceError) {
+    if walletManager == nil {
+      resetWalletManagerIfNeeded()
+    }
+
+    if walletManager == nil {  // if still nil
+      let action = AlertActionConfiguration(title: "OK", style: .default, action: nil)
+      let description = "The app failed to obtain access to the iOS keychain. For your security, please force close the app and try again."
+      let viewModel = AlertControllerViewModel(
+        title: "Something went wrong",
+        description: description,
+        image: nil,
+        style: .alert,
+        actions: [action]
+      )
+      let alertController = alertManager.alert(from: viewModel)
+      navigationController.topViewController()?.present(alertController, animated: true, completion: nil)
+    }
+  }
+
 }
