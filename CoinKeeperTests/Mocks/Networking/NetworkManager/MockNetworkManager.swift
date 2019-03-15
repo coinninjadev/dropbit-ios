@@ -58,4 +58,6 @@ class MockNetworkManager: NetworkManagerType {
     return Promise.value(response)
   }
 
+  func handleUpdateCachedMetadataError(error: Error) {}
+
 }
