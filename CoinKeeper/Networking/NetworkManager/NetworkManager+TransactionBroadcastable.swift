@@ -43,7 +43,7 @@ struct BroadcastInfo: Error {
 extension NetworkManager: TransactionBroadcastable {
 
   func broadcastTx(with transactionData: CNBTransactionData) -> Promise<String> {
-    guard let wmgr = walletDelegate?.mainWalletManager() else { return Promise(error: CKPersistenceError.noWallet) }
+    guard let wmgr = walletDelegate?.mainWalletManager() else { return Promise(error: CKPersistenceError.noWalletWords) }
     let walletCopy = wmgr.createWalletCopy()
     let transactionBuilder = CNBTransactionBuilder()
     let metadata = transactionBuilder.generateTxMetadata(with: transactionData, wallet: walletCopy)
@@ -98,7 +98,7 @@ extension NetworkManager: TransactionBroadcastable {
   }
 
   private func broadcastToLibbitcoin(with transactionData: CNBTransactionData) -> Promise<BroadcastInfo> {
-    guard let wmgr = walletDelegate?.mainWalletManager() else { return Promise(error: CKPersistenceError.noWallet) }
+    guard let wmgr = walletDelegate?.mainWalletManager() else { return Promise(error: CKPersistenceError.noWalletWords) }
     let walletCopy = wmgr.createWalletCopy()
     return Promise { seal in
       let transactionBuilder = CNBTransactionBuilder()

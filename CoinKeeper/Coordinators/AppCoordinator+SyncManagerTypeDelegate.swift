@@ -57,7 +57,7 @@ extension AppCoordinator: SerialQueueManagerDelegate {
     }
 
     // Ensure the wallet is using the words from the keychain before sending any requests, especially deverification checks
-    guard let keychainWords = self.persistenceManager.keychainManager.retrieveValue(for: .walletWords) as? [String] else {
+    guard let keychainWords = self.persistenceManager.walletWords() else {
       os_log("wallet does not yet exist, stopping sync", log: logger, type: .debug)
       return Promise(error: SyncRoutineError.missingRecoveryWords)
     }

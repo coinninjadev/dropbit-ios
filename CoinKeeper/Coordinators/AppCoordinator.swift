@@ -100,7 +100,7 @@ class AppCoordinator: CoordinatorType {
     self.launchStateManager = theLaunchStateManager
     self.badgeManager = BadgeManager(persistenceManager: persistenceManager)
     self.analyticsManager = analyticsManager
-    if let words = persistenceManager.keychainManager.retrieveValue(for: .walletWords) as? [String] {
+    if let words = persistenceManager.walletWords() {
       self.walletManager = WalletManager(words: words, persistenceManager: persistenceManager)
     }
     self.balanceUpdateManager = BalanceUpdateManager()

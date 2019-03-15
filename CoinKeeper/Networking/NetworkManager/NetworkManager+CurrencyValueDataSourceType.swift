@@ -85,6 +85,7 @@ extension NetworkManager: CurrencyValueDataSourceType {
     if rateCheckTimestamp.timeIntervalSince(lastExchangeRateCheck) > sTimeoutIntervalBetweenNetworkRequests {
       lastExchangeRateCheck = rateCheckTimestamp
       updateCachedMetadata()
+        .catch(self.handleUpdateCachedMetadataError)
     }
   }
 

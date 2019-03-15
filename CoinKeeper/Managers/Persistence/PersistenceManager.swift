@@ -52,6 +52,14 @@ class PersistenceManager: PersistenceManagerType {
     }
   }
 
+  func walletWords() -> [String]? {
+    let maybeWords = keychainManager.retrieveValue(for: .walletWords) as? [String]
+    if let words = maybeWords, words.count == 12 {
+      return words
+    }
+    return nil
+  }
+
   func mainQueueContext() -> NSManagedObjectContext {
     return databaseManager.mainQueueContext
   }
@@ -163,7 +171,7 @@ class PersistenceManager: PersistenceManagerType {
     return Promise { seal in
 
       guard let wallet = CKMWallet.find(in: context) else {
-        seal.reject(CKPersistenceError.noWallet)
+        seal.reject(CKPersistenceError.noManagedWallet)
         return
       }
 
