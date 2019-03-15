@@ -64,32 +64,25 @@ class TransactionDataWorker: TransactionDataWorkerType {
     return self.performFetchAndStoreAllTransactionalData(in: context, fullSync: false)
   }
 
+  typealias AddressFetcher = (Int) -> CNBMetaAddress
+
   func performFetchAndStoreAllTransactionalData(in context: NSManagedObjectContext, fullSync: Bool) -> Promise<Void> {
     CKNotificationCenter.publish(key: .didStartSync, object: nil, userInfo: nil)
 
     let addressDataSource = self.walletManager.createAddressDataSource()
-    let receiveAddressFetcher: (Int) -> CNBMetaAddress = { addressDataSource.receiveAddress(at: $0) }
-    let changeAddressFetcher: (Int) -> CNBMetaAddress = { addressDataSource.changeAddress(at: $0) }
+    let receiveAddressFetcher: AddressFetcher = { addressDataSource.receiveAddress(at: $0) }
+    let changeAddressFetcher: AddressFetcher = { addressDataSource.changeAddress(at: $0) }
 
     // Check latest CKMAddressTransactionSummary because it always represents an actual transaction
     // Run full sync if latestTransactionDate is nil
     let latestTransactionDate: Date? = CKMAddressTransactionSummary.findLatest(in: context)?.transaction?.date
 
     if let latestTxDate = latestTransactionDate, !fullSync {
-      // Incremental Sync
-      let syncStartDate = latestTxDate.addingTimeInterval(-3600)
-      let lastReceiveIndex = addressDataSource.lastReceiveIndex(in: context) ?? 0
-      let lastChangeIndex = addressDataSource.lastChangeIndex(in: context) ?? 0
-      let seekToReceiveIndex = lastReceiveIndex + gapLimit
-      let seekToChangeIndex = lastChangeIndex + gapLimit
-
-      // for each batch, pass the addresses with the date into an optional minDate parameter on networkManager.fetchTransactionSummaries()
-      return fetchIncrementalAddressTransactionSummaries(minDate: syncStartDate, seekingThroughIndex: seekToReceiveIndex,
-                                                         in: context, addressFetcher: receiveAddressFetcher)
-        .then(in: context) { aggregateResponses in
-          return self.fetchIncrementalAddressTransactionSummaries(minDate: syncStartDate, seekingThroughIndex: seekToChangeIndex,
-                                                                  in: context, aggregatingATSResponses: aggregateResponses, addressFetcher: changeAddressFetcher)}
-        .then(in: context) { self.processAddressTransactionSummaries($0, fullSync: fullSync, in: context) }
+      return performIncrementalFetchAndStore(latestTxDate: latestTxDate,
+                                             addressDataSource: addressDataSource,
+                                             receiveFetcher: receiveAddressFetcher,
+                                             changeFetcher: changeAddressFetcher,
+                                             in: context)
 
     } else {
       // Full Sync (latest transaction is unknown, relies on recursion until empty response is received)
@@ -99,6 +92,27 @@ class TransactionDataWorker: TransactionDataWorkerType {
         .then(in: context) { self.fetchAddressTransactionSummaries(in: context, aggregatingATSResponses: $0, addressFetcher: changeAddressFetcher) }
         .then(in: context) { self.processAddressTransactionSummaries($0, fullSync: fullSync, in: context) }
     }
+  }
+
+  private func performIncrementalFetchAndStore(latestTxDate: Date,
+                                               addressDataSource: AddressDataSourceType,
+                                               receiveFetcher: @escaping AddressFetcher,
+                                               changeFetcher: @escaping AddressFetcher,
+                                               in context: NSManagedObjectContext) -> Promise<Void> {
+    let syncStartDate = latestTxDate.addingTimeInterval(-3600)
+    let lastReceiveIndex = addressDataSource.lastReceiveIndex(in: context) ?? 0
+    let lastChangeIndex = addressDataSource.lastChangeIndex(in: context) ?? 0
+    let seekToReceiveIndex = lastReceiveIndex + gapLimit
+    let seekToChangeIndex = lastChangeIndex + gapLimit
+
+    // for each batch, pass the addresses with the date into an optional minDate parameter on networkManager.fetchTransactionSummaries()
+    return fetchIncrementalAddressTransactionSummaries(minDate: syncStartDate, seekingThroughIndex: seekToReceiveIndex,
+                                                       in: context, addressFetcher: receiveFetcher)
+      .then(in: context) { aggregateResponses in
+        return self.fetchIncrementalAddressTransactionSummaries(minDate: syncStartDate, seekingThroughIndex: seekToChangeIndex,
+                                                                in: context, aggregatingATSResponses: aggregateResponses, addressFetcher: changeFetcher)}
+      .then(in: context) { self.processAddressTransactionSummaries($0, fullSync: false, in: context) }
+
   }
 
   private func processAddressTransactionSummaries(_ aggregateATSResponse: [AddressTransactionSummaryResponse],
@@ -199,7 +213,7 @@ class TransactionDataWorker: TransactionDataWorkerType {
     seekingThroughIndex: Int? = nil,
     in context: NSManagedObjectContext,
     aggregatingATSResponses aggregateATSResponses: [AddressTransactionSummaryResponse] = [],
-    addressFetcher: @escaping (Int) -> CNBMetaAddress
+    addressFetcher: @escaping AddressFetcher
     ) -> Promise<[AddressTransactionSummaryResponse]> {
 
     return Promise { seal in
@@ -261,7 +275,7 @@ class TransactionDataWorker: TransactionDataWorkerType {
     seekingThroughIndex: Int,
     in context: NSManagedObjectContext,
     aggregatingATSResponses aggregateATSResponses: [AddressTransactionSummaryResponse] = [],
-    addressFetcher: @escaping (Int) -> CNBMetaAddress
+    addressFetcher: @escaping AddressFetcher
     ) -> Promise<[AddressTransactionSummaryResponse]> {
 
     let batchedMetaAddresses: [[CNBMetaAddress]] = Array(0...seekingThroughIndex).map(addressFetcher).chunked(by: 20)
