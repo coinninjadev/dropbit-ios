@@ -100,7 +100,7 @@ class AppCoordinator: CoordinatorType {
     self.launchStateManager = theLaunchStateManager
     self.badgeManager = BadgeManager(persistenceManager: persistenceManager)
     self.analyticsManager = analyticsManager
-    if let words = persistenceManager.keychainManager.retrieveValue(for: .walletWords) as? [String] {
+    if let words = persistenceManager.walletWords() {
       self.walletManager = WalletManager(words: words, persistenceManager: persistenceManager)
     }
     self.balanceUpdateManager = BalanceUpdateManager()
@@ -454,7 +454,7 @@ class AppCoordinator: CoordinatorType {
 
   /// Handle app becoming active
   func appEnteredActiveState() {
-    setCurrentCoin()
+    resetWalletManagerIfNeeded()
     connectionManager.start()
 
     // check keychain time interval for resigned time, and if within 30 sec, don't require
@@ -475,6 +475,18 @@ class AppCoordinator: CoordinatorType {
     self.contactCacheDataWorker.reloadSystemContactsIfNeeded { [weak self] _ in
       self?.persistenceManager.matchContactsIfPossible()
     }
+  }
+
+  func resetWalletManagerIfNeeded() {
+    if walletManager == nil,
+      let words = persistenceManager.walletWords() {
+      walletManager = WalletManager(words: words, persistenceManager: persistenceManager)
+    }
+    setCurrentCoin()
+  }
+
+  func appBecameActive() {
+    resetWalletManagerIfNeeded()
   }
 
   /// Handle app leaving active state, either becoming inactive, entering background, or terminating.

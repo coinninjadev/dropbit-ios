@@ -16,4 +16,6 @@ class MockWalletDelegate: WalletDelegateType {
     return mockWalletManager
   }
 
+  func resetWalletManagerIfNeeded() {}
+
 }

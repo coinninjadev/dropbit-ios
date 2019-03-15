@@ -17,6 +17,7 @@ protocol WalletSyncDelegate: AnyObject {
   func syncManagerDidFinishSync()
   func showAlertsForSyncedChanges(in context: NSManagedObjectContext) -> Promise<Void>
   func syncManagerDidSetWalletManager(walletManager: WalletManagerType, in context: NSManagedObjectContext) -> Promise<Void>
+  func handleMissingWalletError(_ error: CKPersistenceError)
 }
 
 class WalletSyncOperationFactory {
@@ -137,8 +138,8 @@ class WalletSyncOperationFactory {
       return dependencies.networkManager.getWallet().asVoid()
 
     } else { // walletId is nil
-      guard let keychainWords = dependencies.persistenceManager.keychainManager.retrieveValue(for: .walletWords) as? [String] else {
-        return Promise { $0.reject(CKPersistenceError.noWallet) }
+      guard let keychainWords = dependencies.persistenceManager.walletWords() else {
+        return Promise { $0.reject(CKPersistenceError.noWalletWords) }
       }
 
       // Make sure we are registering a wallet with the words stored in the keychain
@@ -154,20 +155,25 @@ class WalletSyncOperationFactory {
   }
 
   private func handleSyncRoutineError(_ error: Error, in context: NSManagedObjectContext) {
-    guard let networkError = error as? CKNetworkError else { return }
+    if let persistenceError = error as? CKPersistenceError {
+      switch persistenceError {
+      case .noWalletWords:
+        delegate?.handleMissingWalletError(persistenceError)
+      default: break
+      }
+    } else if let networkError = error as? CKNetworkError {
+      switch networkError {
+      case .reachabilityFailed(let moyaError):
+        delegate?.handleReachabilityError(moyaError)
 
-    switch networkError {
-    case .reachabilityFailed(let moyaError):
-      delegate?.handleReachabilityError(moyaError)
+      case .invalidValue, .responseMissingValue:
+        delegate?.handleInvalidResponseError(networkError)
 
-    case .invalidValue, .responseMissingValue:
-      delegate?.handleInvalidResponseError(networkError)
+      case .shouldUnverify(_, let recordType):
+        delegate?.handleAuthorizationError(networkError, recordType: recordType, in: context)
 
-    case .shouldUnverify(_, let recordType):
-      delegate?.handleAuthorizationError(networkError, recordType: recordType, in: context)
-
-    default:
-      break
+      default: break
+      }
     }
   }
 

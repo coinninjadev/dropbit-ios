@@ -36,6 +36,7 @@ protocol PersistenceManagerType: DeviceCountryCodeProvider {
 
   func resetPersistence()
   func resetWallet()
+  func walletWords() -> [String]?
 
   func createBackgroundContext() -> NSManagedObjectContext
   func mainQueueContext() -> NSManagedObjectContext

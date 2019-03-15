@@ -119,7 +119,7 @@ class Database: PersistenceDatabaseType {
     return Promise { seal in
       context.performAndWait {
         guard let wallet = CKMWallet.find(in: context) else {
-          seal.reject(CKPersistenceError.noWallet)
+          seal.reject(CKPersistenceError.noManagedWallet)
           return
         }
 

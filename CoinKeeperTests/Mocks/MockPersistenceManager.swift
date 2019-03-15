@@ -54,6 +54,9 @@ class MockPersistenceManager: PersistenceManagerType {
 
   func resetPersistence() {}
   func resetWallet() {}
+  func walletWords() -> [String]? {
+    return keychainManager.retrieveValue(for: .walletWords) as? [String]
+  }
   func deregisterPhone() {}
   func persist(pendingInvitationData data: PendingInvitationData) {}
   func persistUnacknowledgedInvitation(in context: NSManagedObjectContext, with btcPair: BitcoinUSDPair,

@@ -66,7 +66,7 @@ class LaunchStateManager: LaunchStateManagerType {
       options.insert(.pinEntered)
     }
 
-    if persistenceManager.keychainManager.retrieveValue(for: .walletWords) != nil {
+    if persistenceManager.walletWords() != nil {
       options.insert(.walletExists)
     }
 
