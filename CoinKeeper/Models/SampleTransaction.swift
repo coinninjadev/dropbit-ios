@@ -252,7 +252,7 @@ extension CKMTransaction {
   convenience init(sampleTx: SampleTransaction, wallet: CKMWallet, insertInto context: NSManagedObjectContext) {
     self.init(insertInto: context)
 
-    self.txid = sampleTx.id ?? ""
+    self.txid = sampleTx.id
     self.confirmations = sampleTx.confirmations
     self.date = sampleTx.date
     self.sortDate = sampleTx.date

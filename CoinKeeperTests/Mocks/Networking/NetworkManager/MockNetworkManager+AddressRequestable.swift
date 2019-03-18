@@ -11,7 +11,7 @@ import PromiseKit
 
 extension MockNetworkManager: AddressRequestable {
 
-  func fetchTransactionSummaries(for addresses: [String]) -> Promise<[AddressTransactionSummaryResponse]> {
+  func fetchTransactionSummaries(for addresses: [String], afterDate: Date?) -> Promise<[AddressTransactionSummaryResponse]> {
     wasAskedToFetchTransactionSummariesForAddresses = true
     return Promise { _ in }
   }

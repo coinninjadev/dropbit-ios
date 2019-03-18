@@ -72,7 +72,7 @@ class TransactionHistoryDetailCellAddressViewTests: XCTestCase {
     let sampleCounterpartyAddress = SampleCounterpartyAddress(addressId: "13r1jyivitShUiv9FJvjLH7Nh1ZZptumwE")
     let sampleTransaction = SampleTransaction(
       netWalletAmount: nil,
-      id: nil,
+      id: "",
       btcReceived: 1,
       isIncoming: true,
       walletAddress: SampleTransaction.sampleWalletAddress,
@@ -95,7 +95,7 @@ class TransactionHistoryDetailCellAddressViewTests: XCTestCase {
     let sampleCounterpartyAddress = SampleCounterpartyAddress(addressId: validAddress)
     let sampleTransaction = SampleTransaction(
       netWalletAmount: nil,
-      id: nil,
+      id: "",
       btcReceived: 1,
       isIncoming: false,
       walletAddress: SampleTransaction.sampleWalletAddress,
@@ -127,7 +127,7 @@ class TransactionHistoryDetailCellAddressViewTests: XCTestCase {
     )
     let sampleTransaction = SampleTransaction(
       netWalletAmount: nil,
-      id: nil,
+      id: "",
       btcReceived: 1,
       isIncoming: false,
       walletAddress: SampleTransaction.sampleWalletAddress,
@@ -166,7 +166,7 @@ class TransactionHistoryDetailCellAddressViewTests: XCTestCase {
     )
     let sampleTransaction = SampleTransaction(
       netWalletAmount: nil,
-      id: nil,
+      id: "",
       btcReceived: 1,
       isIncoming: false,
       walletAddress: SampleTransaction.sampleWalletAddress,
