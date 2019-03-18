@@ -49,6 +49,7 @@ class SendPaymentViewControllerTests: XCTestCase {
     XCTAssertNotNil(self.sut.contactsButton, "contactsButton should be connected")
     XCTAssertNotNil(self.sut.scanButton, "scanButton should be connected")
     XCTAssertNotNil(self.sut.sendButton, "sendButton should be connected")
+    XCTAssertNotNil(self.sut.sendMaxButton, "sendMaxButton should be connected")
     XCTAssertNotNil(self.sut.memoContainerView, "memoButton should be connected")
   }
 

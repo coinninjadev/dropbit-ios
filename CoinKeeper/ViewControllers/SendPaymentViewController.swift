@@ -80,6 +80,7 @@ ValidatorAlertDisplayable {
   @IBOutlet var pasteButton: CompactActionButton!
   @IBOutlet var sendButton: PrimaryActionButton!
   @IBOutlet var memoContainerView: SendPaymentMemoView!
+  @IBOutlet var sendMaxButton: LightBorderedButton!
 
   @IBAction func performClose() {
     coordinationDelegate?.viewControllerDidSelectClose(self)
@@ -470,6 +471,7 @@ extension SendPaymentViewController: UITextFieldDelegate {
       setPaymentRecipient(recipient)
       updateViewWithModel()
     case primaryAmountTextField:
+      sendMaxButton.isHidden = true
       guard let text = sanitizedAmountString,
         let number = NSDecimalNumber(fromString: text) else { return }
       if number == .zero {
@@ -510,6 +512,8 @@ extension SendPaymentViewController: UITextFieldDelegate {
 
     case primaryAmountTextField:
       viewModel.btcAmount = getBitcoinValueForPrimaryAmountText()
+      sendMaxButton.isHidden = viewModel.btcAmount != .zero
+      primaryAmountTextField.text = viewModel.primaryAmountInputText(withRates: self.rateManager.exchangeRates)
       loadAmounts(forPrimary: false, forSecondary: true)
     default:
       break

@@ -51,6 +51,10 @@
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits"/>
                                     </textField>
+                                    <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2Q4-Um-Y5Z" customClass="LightBorderedButton" customModule="DropBit" customModuleProvider="target">
+                                        <rect key="frame" x="250" y="35.5" width="77" height="30"/>
+                                        <state key="normal" title="SEND MAX"/>
+                                    </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" text="Secondary Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MFr-LH-oew">
                                         <rect key="frame" x="0.0" y="81" width="327" height="20.5"/>
                                         <constraints>
@@ -107,9 +111,11 @@
                                     <constraint firstAttribute="trailing" secondItem="04W-cu-0yT" secondAttribute="trailing" id="7s1-xz-s1h"/>
                                     <constraint firstItem="MFr-LH-oew" firstAttribute="leading" secondItem="JFL-ap-dYz" secondAttribute="leading" id="GUa-ZR-qgg"/>
                                     <constraint firstItem="gVg-Q3-DyT" firstAttribute="leading" secondItem="JFL-ap-dYz" secondAttribute="leading" id="H7A-T6-Kd6"/>
+                                    <constraint firstItem="2Q4-Um-Y5Z" firstAttribute="centerY" secondItem="gVg-Q3-DyT" secondAttribute="centerY" id="IX6-wI-Nuf"/>
                                     <constraint firstItem="Zoz-wS-Csm" firstAttribute="leading" secondItem="JFL-ap-dYz" secondAttribute="leading" constant="8" id="JCY-ca-tal"/>
                                     <constraint firstItem="04W-cu-0yT" firstAttribute="leading" secondItem="JFL-ap-dYz" secondAttribute="leading" id="TbT-hD-FNJ"/>
                                     <constraint firstAttribute="bottom" secondItem="04W-cu-0yT" secondAttribute="bottom" constant="24" id="dgF-9k-cmr"/>
+                                    <constraint firstAttribute="trailing" secondItem="2Q4-Um-Y5Z" secondAttribute="trailing" id="hti-oi-6J9"/>
                                     <constraint firstAttribute="trailing" secondItem="Zoz-wS-Csm" secondAttribute="trailing" constant="8" id="ls1-cP-xc6"/>
                                     <constraint firstAttribute="trailing" secondItem="gVg-Q3-DyT" secondAttribute="trailing" id="pz3-sI-7TW"/>
                                     <constraint firstAttribute="bottom" secondItem="Zoz-wS-Csm" secondAttribute="bottom" constant="29" id="s8F-TP-Z7e"/>
@@ -209,6 +215,7 @@
                         <outlet property="scanButton" destination="Zvc-Ce-tCL" id="ByK-hb-s8H"/>
                         <outlet property="secondaryAmountLabel" destination="MFr-LH-oew" id="9p9-OW-ubX"/>
                         <outlet property="sendButton" destination="xMy-P4-RBB" id="CYW-nf-22m"/>
+                        <outlet property="sendMaxButton" destination="2Q4-Um-Y5Z" id="0aw-nM-XZe"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="9Ih-ii-wig" userLabel="First Responder" sceneMemberID="firstResponder"/>
