@@ -115,13 +115,13 @@ class TransactionDataWorker: TransactionDataWorkerType {
 
   }
 
-  private func processAddressTransactionSummaries(_ aggregateATSResponse: [AddressTransactionSummaryResponse],
+  private func processAddressTransactionSummaries(_ aggregateATSResponses: [AddressTransactionSummaryResponse],
                                                   fullSync: Bool,
                                                   in context: NSManagedObjectContext) -> Promise<Void> {
 
     let highPriorityBackgroundQueue = DispatchQueue.global(qos: .userInitiated)
 
-    return self.persistAddressTransactionSummaries(with: aggregateATSResponse, in: context)
+    return self.persistAddressTransactionSummaries(with: aggregateATSResponses, in: context)
       .get(in: context) { _ in self.persistenceManager.updateWalletLastIndexes(in: context) }
       .then { Promise.value(TransactionDataWorkerDTO(atsResponses: $0)) }
       .then { (dto: TransactionDataWorkerDTO) -> Promise<TransactionDataWorkerDTO> in
@@ -130,7 +130,7 @@ class TransactionDataWorker: TransactionDataWorkerType {
       }
       .then(in: context) { (dto: TransactionDataWorkerDTO) -> Promise<TransactionDataWorkerDTO> in
         let txidsToSubtract: Set<String> = (fullSync) ? [] : CKMTransaction.findAllTxidsFullyConfirmed(in: context).asSet()
-        let txidsToFetch = dto.txids.asSet().subtracting(txidsToSubtract).asArray()
+        let txidsToFetch = dto.atsResponsesTxIds.asSet().subtracting(txidsToSubtract).asArray()
         return self.promisesForFetchingTransactionDetails(withTxids: txidsToFetch, in: context)
           .then(on: highPriorityBackgroundQueue, in: context) { self.processTransactionResponses($0, in: context) }
           .then { Promise.value(TransactionDataWorkerDTO(txResponses: $0).merged(with: dto)) }
@@ -279,10 +279,10 @@ class TransactionDataWorker: TransactionDataWorkerType {
     ) -> Promise<[AddressTransactionSummaryResponse]> {
 
     let batchedMetaAddresses: [[CNBMetaAddress]] = Array(0...seekingThroughIndex).map(addressFetcher).chunked(by: 20)
-    let atsFetchPromises: [Promise<[AddressTransactionSummaryResponse]>] = batchedMetaAddresses.map { metaAddresses -> Promise<[AddressTransactionSummaryResponse]> in
-      let addressBatch = metaAddresses.compactMap { $0.address }
+    let atsFetchPromises: [Promise<[AddressTransactionSummaryResponse]>] = batchedMetaAddresses.map { metaAddressBatch in
+      let addressBatch = metaAddressBatch.compactMap { $0.address }
       return networkManager.fetchTransactionSummaries(for: addressBatch, afterDate: minDate)
-        .map { self.responsesWithPaths(from: $0, matching: metaAddresses) }
+        .map { self.responsesWithPaths(from: $0, matching: metaAddressBatch) }
     }
 
     return when(fulfilled: atsFetchPromises)
