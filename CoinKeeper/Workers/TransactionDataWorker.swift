@@ -322,8 +322,25 @@ class TransactionDataWorker: TransactionDataWorkerType {
   }
 
   private func fetchAndSetDayAveragePrices(for transactions: [CKMTransaction], in context: NSManagedObjectContext) -> Promise<Void> {
-    let promises = transactions.map { fetchAndSetDayAveragePrice(for: $0, in: context) }
-    return when(fulfilled: promises)
+    var transactionIterator = transactions.makeIterator()
+    let promiseIterator = AnyIterator<Promise<Void>> {
+      guard let ckmTransaction = transactionIterator.next() else {
+        return nil
+      }
+      return Promise { seal in
+        context.performAndWait {
+          self.fetchAndSetDayAveragePrice(for: ckmTransaction, in: context)
+            .done(in: context) {
+              seal.fulfill(())
+            }
+            .catch { error in
+              seal.reject(error)
+          }
+        }
+      }
+    }
+
+    return when(fulfilled: promiseIterator, concurrently: 5).asVoid()
   }
 
   private func fetchAndSetDayAveragePrice(for transaction: CKMTransaction, in context: NSManagedObjectContext) -> Promise<Void> {
