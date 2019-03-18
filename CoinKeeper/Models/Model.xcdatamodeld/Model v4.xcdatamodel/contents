@@ -22,7 +22,7 @@
         <attribute name="txid" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="address" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CKMAddress" inverseName="addressTransactionSummaries" inverseEntity="CKMAddress" syncable="YES"/>
         <relationship name="transaction" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CKMTransaction" inverseName="addressTransactionSummaries" inverseEntity="CKMTransaction" syncable="YES"/>
-        <relationship name="wallet" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CKMWallet" inverseName="addressTransactionSummaries" inverseEntity="CKMWallet" syncable="YES"/>
+        <relationship name="wallet" optional="YES" maxCount="1" deletionRule="No Action" destinationEntity="CKMWallet" inverseName="addressTransactionSummaries" inverseEntity="CKMWallet" syncable="YES"/>
         <uniquenessConstraints>
             <uniquenessConstraint>
                 <constraint value="addressId"/>
