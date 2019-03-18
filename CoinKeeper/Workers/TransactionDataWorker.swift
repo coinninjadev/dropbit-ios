@@ -305,7 +305,9 @@ class TransactionDataWorker: TransactionDataWorkerType {
 
     let uniqueTxResponses = dto.txResponses.uniqued()
     let uniqueTxNotificationResponses = dto.txNotificationResponses.uniqued()
-    let expectedTxids = dto.txids
+    let localATSTxids = CKMAddressTransactionSummary.findAllTxids(in: context)
+    let expectedTxids = localATSTxids + dto.atsResponsesTxIds //combine local ATS txids with incremental ones for full set of valid txids
+
     return persistenceManager.persistTransactions(from: uniqueTxResponses, in: context, relativeToCurrentHeight: dto.blockHeight, fullSync: fullSync)
       .get(in: context) { self.decryptAndPersistSharedPayloads(from: uniqueTxNotificationResponses, in: context) }
       .get(in: context) { self.persistenceManager.deleteTransactions(notIn: expectedTxids, in: context) }
