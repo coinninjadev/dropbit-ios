@@ -106,11 +106,16 @@ class TransactionDataWorker: TransactionDataWorkerType {
     let seekToChangeIndex = lastChangeIndex + gapLimit
 
     // for each batch, pass the addresses with the date into an optional minDate parameter on networkManager.fetchTransactionSummaries()
-    return fetchIncrementalAddressTransactionSummaries(minDate: syncStartDate, seekingThroughIndex: seekToReceiveIndex,
-                                                       in: context, addressFetcher: receiveFetcher)
+    return fetchIncrementalAddressTransactionSummaries(minDate: syncStartDate,
+                                                       seekingThroughIndex: seekToReceiveIndex,
+                                                       in: context,
+                                                       addressFetcher: receiveFetcher)
       .then(in: context) { aggregateResponses in
-        return self.fetchIncrementalAddressTransactionSummaries(minDate: syncStartDate, seekingThroughIndex: seekToChangeIndex,
-                                                                in: context, aggregatingATSResponses: aggregateResponses, addressFetcher: changeFetcher)}
+        return self.fetchIncrementalAddressTransactionSummaries(minDate: syncStartDate,
+                                                                seekingThroughIndex: seekToChangeIndex,
+                                                                in: context,
+                                                                aggregatingATSResponses: aggregateResponses,
+                                                                addressFetcher: changeFetcher)}
       .then(in: context) { self.processAddressTransactionSummaries($0, fullSync: false, in: context) }
 
   }
