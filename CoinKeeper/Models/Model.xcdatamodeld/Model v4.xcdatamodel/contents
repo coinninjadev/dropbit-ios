@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14460.32" systemVersion="18C54" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14460.32" systemVersion="18D109" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="CKMAddress" representedClassName="CKMAddress" versionHashModifier="1" syncable="YES">
         <attribute name="addressId" attributeType="String" syncable="YES"/>
         <relationship name="addressTransactionSummaries" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CKMAddressTransactionSummary" inverseName="address" inverseEntity="CKMAddressTransactionSummary" syncable="YES"/>
@@ -22,7 +22,7 @@
         <attribute name="txid" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="address" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CKMAddress" inverseName="addressTransactionSummaries" inverseEntity="CKMAddress" syncable="YES"/>
         <relationship name="transaction" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CKMTransaction" inverseName="addressTransactionSummaries" inverseEntity="CKMTransaction" syncable="YES"/>
-        <relationship name="wallet" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="CKMWallet" inverseName="addressTransactionSummaries" inverseEntity="CKMWallet" syncable="YES"/>
+        <relationship name="wallet" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CKMWallet" inverseName="addressTransactionSummaries" inverseEntity="CKMWallet" syncable="YES"/>
         <uniquenessConstraints>
             <uniquenessConstraint>
                 <constraint value="addressId"/>
@@ -173,7 +173,7 @@
     </entity>
     <elements>
         <element name="CKMAddress" positionX="-1170" positionY="315" width="128" height="103"/>
-        <element name="CKMAddressTransactionSummary" positionX="-1377" positionY="315" width="128" height="163"/>
+        <element name="CKMAddressTransactionSummary" positionX="-1377" positionY="315" width="128" height="165"/>
         <element name="CKMCounterparty" positionX="-1964" positionY="-63" width="128" height="73"/>
         <element name="CKMCounterpartyAddress" positionX="-1935" positionY="351" width="128" height="73"/>
         <element name="CKMDerivativePath" positionX="-972" positionY="315" width="128" height="163"/>
@@ -182,10 +182,10 @@
         <element name="CKMServerAddress" positionX="-1143" positionY="108" width="128" height="103"/>
         <element name="CKMTemporarySentTransaction" positionX="-1928" positionY="459" width="128" height="135"/>
         <element name="CKMTransaction" positionX="-1667" positionY="317" width="128" height="345"/>
+        <element name="CKMTransactionSharedPayload" positionX="-1809" positionY="81" width="128" height="120"/>
         <element name="CKMUser" positionX="-1523" positionY="144" width="128" height="88"/>
         <element name="CKMVin" positionX="-1845" positionY="657" width="128" height="133"/>
         <element name="CKMVout" positionX="-1503" positionY="639" width="128" height="165"/>
         <element name="CKMWallet" positionX="-1368" positionY="99" width="128" height="165"/>
-        <element name="CKMTransactionSharedPayload" positionX="-1809" positionY="81" width="128" height="120"/>
     </elements>
 </model>
