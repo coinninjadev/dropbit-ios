@@ -132,7 +132,7 @@ public class CKMAddressTransactionSummary: NSManagedObject {
     }
 
     if transaction == nil {
-      txid.map { self.transaction = CKMTransaction.find(byTxid: $0, in: context) }
+      self.transaction = CKMTransaction.find(byTxid: txid, in: context)
     }
   }
 
