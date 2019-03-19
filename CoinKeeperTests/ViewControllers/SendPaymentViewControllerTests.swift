@@ -10,7 +10,6 @@ import UIKit
 @testable import DropBit
 import XCTest
 import PromiseKit
-import PhoneNumberKit
 import enum Result.Result
 
 class SendPaymentViewControllerTests: XCTestCase {
@@ -18,14 +17,11 @@ class SendPaymentViewControllerTests: XCTestCase {
   var sut: SendPaymentViewController!
   var mockCoordinator: MockSendPaymentViewControllerCoordinator!
 
-  let phoneNumberKit = PhoneNumberKit()
-
   override func setUp() {
     super.setUp()
     self.sut = SendPaymentViewController.makeFromStoryboard()
     self.sut.viewModel = SendPaymentViewModel(btcAmount: 0.00567676,
                                               primaryCurrency: .USD,
-                                              parser: CKRecipientParser(kit: self.phoneNumberKit),
                                               address: "12A1MyfXbW6RhdRAZEqofac5jCQQjwEPBu")
     let mockNetworkManager = MockNetworkManager(persistenceManager: MockPersistenceManager())
     self.mockCoordinator = MockSendPaymentViewControllerCoordinator(networkManager: mockNetworkManager)
@@ -119,7 +115,7 @@ class SendPaymentViewControllerTests: XCTestCase {
 
     let address = "12A1MyfXbW6RhdRAZEqofac5jCQQjwEPBu"
     let text = "bitcoin:\(address)"
-    self.sut.pasteRecipient(fromText: text)
+    self.sut.applyRecipient(inText: text)
 
     let expectation = XCTestExpectation(description: "update ui")
     DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
@@ -138,7 +134,7 @@ class SendPaymentViewControllerTests: XCTestCase {
 
     let address = "12A1MyfXbW6RhdRAZEqofac5jCQQjwEPBu"
     let text = "bitcoin:\(address)?amount=1.2"
-    self.sut.pasteRecipient(fromText: text)
+    self.sut.applyRecipient(inText: text)
     XCTAssertEqual(self.sut.viewModel.primaryCurrency, .BTC)
 
     let expectation = XCTestExpectation(description: "update ui")
@@ -158,7 +154,7 @@ class SendPaymentViewControllerTests: XCTestCase {
 
     let address = "12A1MyfXbW6RhdRAZEqofac5jCQQjwEPBu"
     let text = "bitcoin:\(address)?amount=1.2192384712893712893"
-    self.sut.pasteRecipient(fromText: text)
+    self.sut.applyRecipient(inText: text)
     XCTAssertEqual(self.sut.viewModel.primaryCurrency, .BTC)
 
     let expectation = XCTestExpectation(description: "update ui")
@@ -175,7 +171,7 @@ class SendPaymentViewControllerTests: XCTestCase {
 
   func testBitcoinURLPasteWithInvalidAddress() {
     let text = "bitcoin:12A1MyfXbW6RhdRAZEqofac5jC?amount=1.2192384712893712893"
-    self.sut.pasteRecipient(fromText: text)
+    self.sut.applyRecipient(inText: text)
     let title = "To: BTC Address or phone number"
 
     XCTAssertNil(self.sut.viewModel.paymentRecipient, "recipient should be nil after pasting invalid address")
