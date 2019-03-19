@@ -146,7 +146,7 @@ class PersistenceManagerTests: XCTestCase {
     let contactCacheConfig = CoreDataStackConfig(stackType: .contactCache, storeType: .inMemory)
     let mockContactCacheMgr = ContactCacheManager(stackConfig: contactCacheConfig)
     let dbStackConfig = CoreDataStackConfig(stackType: .main, storeType: .inMemory)
-    let mockDBMgr = Database(stackConfig: dbStackConfig)
+    let mockDBMgr = CKDatabase(stackConfig: dbStackConfig)
     sut = PersistenceManager(
       keychainManager: mockKeychainManager,
       databaseManager: mockDBMgr,

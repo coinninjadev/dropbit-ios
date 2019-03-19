@@ -21,7 +21,7 @@ class PersistenceManager: PersistenceManagerType {
 
   init(
     keychainManager: PersistenceKeychainType = CKKeychain(),
-    databaseManager: PersistenceDatabaseType = Database(),
+    databaseManager: PersistenceDatabaseType = CKDatabase(),
     userDefaultsManager: PersistenceUserDefaultsType = CKUserDefaults(),
     contactCacheManager: ContactCacheManagerType = ContactCacheManager()) {
     self.keychainManager = keychainManager

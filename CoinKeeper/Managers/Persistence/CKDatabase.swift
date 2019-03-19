@@ -13,7 +13,7 @@ import PhoneNumberKit
 import PromiseKit
 import CNBitcoinKit
 
-class Database: PersistenceDatabaseType {
+class CKDatabase: PersistenceDatabaseType {
 
   let logger = OSLog(subsystem: "com.coinninja.coinkeeper.database", category: "database")
 
