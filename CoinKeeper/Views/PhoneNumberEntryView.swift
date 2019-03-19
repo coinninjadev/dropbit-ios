@@ -15,8 +15,8 @@ protocol PhoneNumberEntryViewDelegate: AnyObject {
 
 class PhoneNumberEntryView: UIView {
 
-  let defaultRegion = Locale.current.regionCode ?? "US"
-  var selectedRegion: String?
+  static let defaultRegion = Locale.current.regionCode ?? "US"
+  var selectedRegion: String = PhoneNumberEntryView.defaultRegion
 
   static let flagFont = UIFont.systemFont(ofSize: 22)
 
@@ -79,8 +79,7 @@ class PhoneNumberEntryView: UIView {
   }
 
   private func loadFlagImage() {
-    let regionCode = selectedRegion ?? defaultRegion
-    let flag = emojiFactory.emojiFlag(for: regionCode)
+    let flag = emojiFactory.emojiFlag(for: selectedRegion)
     self.countryCodeButton.setTitle(flag, for: .normal)
   }
 

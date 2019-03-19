@@ -206,6 +206,10 @@ class SendPaymentViewControllerTests: XCTestCase {
     func showAlertForInvalidContactOrPhoneNumber(contactName: String?, displayNumber: String) {
     }
 
+    func viewController(_ viewController: UIViewController, checkForContactFromGenericContact genericContact: GenericContact) -> ValidatedContact? {
+      return nil
+    }
+
     func deviceCountryCode() -> Int? {
       return nil
     }

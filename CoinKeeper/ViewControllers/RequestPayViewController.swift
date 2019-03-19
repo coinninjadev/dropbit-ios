@@ -108,7 +108,7 @@ final class RequestPayViewController: PresentableViewController, StoryboardIniti
   }
 
   @IBAction func addressTapped(_ sender: UITapGestureRecognizer) {
-    UIPasteboard.general.string = viewModel?.bitcoinUrl.absoluteString
+    UIPasteboard.general.string = viewModel?.bitcoinUrl.components.address
     coordinationDelegate?.viewControllerSuccessfullyCopiedToClipboard(self)
   }
 }

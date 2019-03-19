@@ -9,6 +9,7 @@
 import Foundation
 @testable import DropBit
 import CoreData
+import PhoneNumberKit
 import PromiseKit
 import CNBitcoinKit
 
@@ -16,6 +17,7 @@ class MockDatabaseManager: PersistenceDatabaseType {
 
   func unverifyUser(in context: NSManagedObjectContext) {}
   func removeWalletId(in context: NSManagedObjectContext) {}
+  let stack = InMemoryCoreDataStack()
 
   func walletId(in context: NSManagedObjectContext) -> String? {
     return nil
@@ -44,7 +46,7 @@ class MockDatabaseManager: PersistenceDatabaseType {
   }
 
   lazy var mainQueueContext: NSManagedObjectContext = {
-    return NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
+    return stack.context
   }()
 
   func persistentStore(for context: NSManagedObjectContext) -> NSPersistentStore? {
@@ -80,6 +82,8 @@ class MockDatabaseManager: PersistenceDatabaseType {
 
   func persistReceivedSharedPayloads(_ payloads: [SharedPayloadV1],
                                      hasher: HashingManager,
+                                     kit: PhoneNumberKit,
+                                     contactCacheManager: ContactCacheManagerType,
                                      in context: NSManagedObjectContext) {
   }
 
@@ -143,5 +147,8 @@ class MockDatabaseManager: PersistenceDatabaseType {
 
   func lastChangeIndex(in context: NSManagedObjectContext) -> Int? {
     return 0
+  }
+
+  func matchContactsIfPossible(with contactCacheManager: ContactCacheManagerType) {
   }
 }

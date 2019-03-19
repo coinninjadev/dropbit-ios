@@ -9,6 +9,7 @@
 import CNBitcoinKit
 import CoreData
 import PromiseKit
+import PhoneNumberKit
 import Strongbox
 
 protocol PersistenceManagerType: DeviceCountryCodeProvider {
@@ -16,6 +17,7 @@ protocol PersistenceManagerType: DeviceCountryCodeProvider {
   var databaseManager: PersistenceDatabaseType { get }
   var userDefaultsManager: PersistenceUserDefaultsType { get }
   var contactCacheManager: ContactCacheManagerType { get }
+  var hashingManager: HashingManager { get }
 
   func double(for key: PersistenceManager.CKUserDefaults.Key) -> Double
   func set(_ doubleValue: Double, for key: PersistenceManager.CKUserDefaults.Key)
@@ -34,6 +36,7 @@ protocol PersistenceManagerType: DeviceCountryCodeProvider {
 
   func resetPersistence()
   func resetWallet()
+  func walletWords() -> [String]?
 
   func createBackgroundContext() -> NSManagedObjectContext
   func mainQueueContext() -> NSManagedObjectContext
@@ -71,6 +74,7 @@ protocol PersistenceManagerType: DeviceCountryCodeProvider {
   )
   func persistReceivedSharedPayloads(
     _ payloads: [SharedPayloadV1],
+    kit: PhoneNumberKit,
     in context: NSManagedObjectContext
   )
   func deleteTransactions(notIn txids: [String], in context: NSManagedObjectContext)
@@ -131,6 +135,8 @@ protocol PersistenceManagerType: DeviceCountryCodeProvider {
   func setKeychainMigrationFlag(migrated: Bool, for version: KeychainMigrationVersion)
   func keychainMigrationFlag(for version: KeychainMigrationVersion) -> Bool
 
+  /// Look for any transactions sent to a phone number without a contact name, and provide a name if found, as a convenience when viewing tx history
+  func matchContactsIfPossible()
 }
 
 extension PersistenceManagerType {
@@ -201,6 +207,8 @@ protocol PersistenceDatabaseType: AnyObject {
   func persistReceivedSharedPayloads(
     _ payloads: [SharedPayloadV1],
     hasher: HashingManager,
+    kit: PhoneNumberKit,
+    contactCacheManager: ContactCacheManagerType,
     in context: NSManagedObjectContext
   )
 
@@ -233,6 +241,7 @@ protocol PersistenceDatabaseType: AnyObject {
   func lastReceiveIndex(in context: NSManagedObjectContext) -> Int?
   func lastChangeIndex(in context: NSManagedObjectContext) -> Int?
 
+  func matchContactsIfPossible(with contactCacheManager: ContactCacheManagerType)
 }
 
 protocol PersistenceUserDefaultsType: AnyObject {

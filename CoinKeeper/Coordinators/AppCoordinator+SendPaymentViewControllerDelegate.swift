@@ -344,4 +344,15 @@ extension AppCoordinator: SendPaymentViewControllerDelegate {
   func deviceCountryCode() -> Int? {
     return persistenceManager.deviceCountryCode()
   }
+
+  func viewController(_ viewController: UIViewController, checkForContactFromGenericContact genericContact: GenericContact) -> ValidatedContact? {
+    let globalPhoneNumber = genericContact.globalPhoneNumber
+    let context = contactCacheManager.mainQueueContext
+    var validatedContact: ValidatedContact?
+    context.performAndWait {
+      let foundContact = contactCacheManager.validatedMetadata(for: globalPhoneNumber, in: context)?.cachedPhoneNumber
+      validatedContact = foundContact.flatMap { ValidatedContact(cachedNumber: $0) }
+    }
+    return validatedContact
+  }
 }

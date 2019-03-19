@@ -35,7 +35,7 @@ NotificationNetworkInteractable {
 
   func start()
   func updateCachedMetadata() -> Promise<CheckInResponse>
-
+  func handleUpdateCachedMetadataError(error: Error)
 }
 
 extension NetworkManagerType {
@@ -76,6 +76,27 @@ class NetworkManager: NetworkManagerType {
   func start() {
     // Setup exchange rate, network fees, block height, etc.
     updateCachedMetadata()
+      .catch(self.handleUpdateCachedMetadataError)
+  }
+
+  func handleUpdateCachedMetadataError(error: Error) {
+    if let networkError = error as? CKNetworkError {
+      switch networkError {
+      case .reachabilityFailed(let moyaError):
+        print("error: \(moyaError)")
+        if let data = moyaError.response?.data,
+          let responseError = try? JSONDecoder().decode(CoinNinjaErrorResponse.self, from: data),
+          responseError.error == NetworkErrorIdentifier.missingSignatureHeader.rawValue {
+          guard self.walletDelegate?.mainWalletManager() == nil else { return }
+          self.walletDelegate?.resetWalletManagerIfNeeded()
+          if self.walletDelegate?.mainWalletManager() != nil {
+            self.updateCachedMetadata()
+          }
+        }
+
+      default: break
+      }
+    }
   }
 
 }

@@ -105,7 +105,7 @@ protocol SerialQueueManagerType: class {
 
 class SerialQueueManager: SerialQueueManagerType {
 
-  let queue: OperationQueueType
+  var queue: OperationQueueType
   var timer: Timer = Timer()
   weak var delegate: SerialQueueManagerDelegate?
   private let syncTimerIntervalInSeconds: Int = 60

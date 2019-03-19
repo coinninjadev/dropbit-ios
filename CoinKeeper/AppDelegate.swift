@@ -37,6 +37,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     coordinator?.appEnteredActiveState()
   }
 
+  func applicationDidBecomeActive(_ application: UIApplication) {
+    coordinator?.appBecameActive()
+  }
+
   func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
     coordinator?.registerForRemoteNotifications(with: deviceToken)
   }

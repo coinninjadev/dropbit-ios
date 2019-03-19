@@ -84,6 +84,7 @@ enum NetworkErrorIdentifier: String {
   case deviceUUIDMismatch = "device_uuid mismatch"
   case recordNotFound = "record not found"
   case timestampHeaderOffset = "timestamp header is beyond the allowed offset"
+  case missingSignatureHeader = "missing signature header"
 }
 
 enum RecordType: String {
