@@ -30,4 +30,8 @@ public struct ManagedPhoneNumberInputs {
     self.init(countryCode: phoneNumber.countryCode, nationalNumber: phoneNumber.sanitizedNationalNumber())
   }
 
+  func asGlobalPhoneNumber() -> GlobalPhoneNumber {
+    return GlobalPhoneNumber(countryCode: Int(countryCode), nationalNumber: "\(nationalNumber)")
+  }
+
 }

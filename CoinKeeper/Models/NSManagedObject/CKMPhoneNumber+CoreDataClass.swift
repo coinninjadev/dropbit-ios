@@ -41,6 +41,11 @@ public class CKMPhoneNumber: NSManagedObject {
     return number
   }
 
+  public static func find(withGlobalPhoneNumber number: GlobalPhoneNumber, in context: NSManagedObjectContext) -> CKMPhoneNumber? {
+    guard let inputs = ManagedPhoneNumberInputs(phoneNumber: number) else { return nil }
+    return self.find(withInputs: inputs, in: context)
+  }
+
   public static func find(withInputs inputs: ManagedPhoneNumberInputs, in context: NSManagedObjectContext) -> CKMPhoneNumber? {
     let ccPath = #keyPath(CKMPhoneNumber.countryCode)
     let ccPredicate = NSPredicate(format: "\(ccPath) == %d", inputs.countryCode)
@@ -62,6 +67,21 @@ public class CKMPhoneNumber: NSManagedObject {
       }
     }
     return ckmPhoneNumber
+  }
+
+  public static func findAllWithoutCounterpartyName(in context: NSManagedObjectContext) -> [CKMPhoneNumber] {
+    let counterpartyKeyPath = #keyPath(CKMPhoneNumber.counterparty)
+    let counterpartyPredicate = NSPredicate(format: "\(counterpartyKeyPath) == nil")
+    let request: NSFetchRequest<CKMPhoneNumber> = CKMPhoneNumber.fetchRequest()
+    request.predicate = counterpartyPredicate
+
+    var result: [CKMPhoneNumber] = []
+    do {
+      result = try context.fetch(request)
+    } catch {
+      print("error: \(error)")
+    }
+    return result
   }
 
   public func configure(with outgoingTransactionData: OutgoingTransactionData, in context: NSManagedObjectContext) {

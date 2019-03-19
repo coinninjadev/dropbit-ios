@@ -17,7 +17,7 @@ protocol WalletManagerType: AnyObject {
   var coin: CNBBaseCoin { get set }
   var wallet: CNBHDWallet { get }
   var hexEncodedPublicKey: String { get }
-  func signatureSigning(data: Data) -> String?
+  func signatureSigning(data: Data) -> String
   func mnemonicWords() -> [String]
   func resetWallet(with words: [String])
 
@@ -205,7 +205,7 @@ class WalletManager: WalletManagerType {
     return wallet.mnemonicWords().compactMap { $0 as? String }
   }
 
-  func signatureSigning(data: Data) -> String? {
+  func signatureSigning(data: Data) -> String {
     return wallet.signatureSigning(data)
   }
 

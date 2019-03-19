@@ -10,7 +10,8 @@ import Foundation
 
 enum CKPersistenceError: Error, LocalizedError {
   case missingValue(key: String)
-  case noWallet
+  case noWalletWords
+  case noManagedWallet
   case noUser
   case unexpectedResult
   case failedToFetch(String)
@@ -18,7 +19,8 @@ enum CKPersistenceError: Error, LocalizedError {
   var errorDescription: String? {
     switch self {
     case .missingValue(let key):  return "Missing value for key: \(key)"
-    case .noWallet:               return "Failed to find wallet"
+    case .noWalletWords:          return "Failed to fetch recovery words from Keychain"
+    case .noManagedWallet:        return "Failed to find wallet"
     case .noUser:                 return "Failed to find user"
     case .unexpectedResult:       return "Fetch request returned unexpected result"
     case .failedToFetch(let key): return "Failed to fetch results: \(key)"

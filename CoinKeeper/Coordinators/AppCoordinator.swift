@@ -100,7 +100,7 @@ class AppCoordinator: CoordinatorType {
     self.launchStateManager = theLaunchStateManager
     self.badgeManager = BadgeManager(persistenceManager: persistenceManager)
     self.analyticsManager = analyticsManager
-    if let words = persistenceManager.keychainManager.retrieveValue(for: .walletWords) as? [String] {
+    if let words = persistenceManager.walletWords() {
       self.walletManager = WalletManager(words: words, persistenceManager: persistenceManager)
     }
     self.balanceUpdateManager = BalanceUpdateManager()
@@ -203,7 +203,7 @@ class AppCoordinator: CoordinatorType {
       }
     })
 
-    let title = "Push notifications are an important part of the the DropBit experience." +
+    let title = "Push notifications are an important part of the DropBit experience." +
     " Without them you will not be notified to complete transactions which will cause them to expire."
 
     let description = "Please allow us to send you push notifications on the following prompt."
@@ -336,7 +336,9 @@ class AppCoordinator: CoordinatorType {
     trackEventForFirstTimeOpeningAppIfApplicable()
     UIApplication.shared.setMinimumBackgroundFetchInterval(TimeInterval(3600)) //one hour
 
-    self.contactCacheDataWorker.reloadSystemContactsIfNeeded(completion: nil)
+    self.contactCacheDataWorker.reloadSystemContactsIfNeeded { [weak self] _ in
+      self?.persistenceManager.matchContactsIfPossible()
+    }
   }
 
   private func trackEventForFirstTimeOpeningAppIfApplicable() {
@@ -452,7 +454,7 @@ class AppCoordinator: CoordinatorType {
 
   /// Handle app becoming active
   func appEnteredActiveState() {
-    setCurrentCoin()
+    resetWalletManagerIfNeeded()
     connectionManager.start()
 
     // check keychain time interval for resigned time, and if within 30 sec, don't require
@@ -470,7 +472,21 @@ class AppCoordinator: CoordinatorType {
       })
     }
 
-    self.contactCacheDataWorker.reloadSystemContactsIfNeeded(completion: nil)
+    self.contactCacheDataWorker.reloadSystemContactsIfNeeded { [weak self] _ in
+      self?.persistenceManager.matchContactsIfPossible()
+    }
+  }
+
+  func resetWalletManagerIfNeeded() {
+    if walletManager == nil,
+      let words = persistenceManager.walletWords() {
+      walletManager = WalletManager(words: words, persistenceManager: persistenceManager)
+    }
+    setCurrentCoin()
+  }
+
+  func appBecameActive() {
+    resetWalletManagerIfNeeded()
   }
 
   /// Handle app leaving active state, either becoming inactive, entering background, or terminating.

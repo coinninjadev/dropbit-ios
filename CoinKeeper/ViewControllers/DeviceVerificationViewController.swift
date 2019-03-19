@@ -37,7 +37,7 @@ enum DeviceVerificationError {
   }
 }
 
-final class DeviceVerificationViewController: BaseViewController, PhoneNumberEntryViewDisplayable {
+final class DeviceVerificationViewController: BaseViewController {
 
   enum Mode {
     case phoneNumberEntry
@@ -60,7 +60,10 @@ final class DeviceVerificationViewController: BaseViewController, PhoneNumberEnt
     }
   }
 
+  @IBOutlet var exampleLabel: ExamplePhoneNumberLabel!
+  @IBOutlet var phoneNumberContainer: UIView!
   @IBOutlet var phoneNumberEntryView: PhoneNumberEntryView!
+  @IBOutlet var submitPhoneNumberButton: PrimaryActionButton!
   @IBOutlet var codeDisplayView: PinDisplayView!
   @IBOutlet var resendCodeButton: UnderlinedTextButton!
 
@@ -70,6 +73,20 @@ final class DeviceVerificationViewController: BaseViewController, PhoneNumberEnt
 
   @IBAction func resendTextMessage(_ sender: Any) {
     coordinationDelegate?.viewControllerDidRequestResendCode(self)
+  }
+
+  @IBAction func submitPhoneNumber(_ sender: Any) {
+    let phoneNumber = phoneNumberEntryView.textField.currentGlobalNumber()
+
+    do {
+      let parsedNumber = try phoneNumberKit.parse(phoneNumber.asE164())
+      let globalNumber = GlobalPhoneNumber(parsedNumber: parsedNumber,
+                                           regionCode: phoneNumberEntryView.selectedRegion)
+      self.handleValidPhoneNumber(globalNumber)
+
+    } catch {
+      self.handleInvalidPhoneNumber()
+    }
   }
 
   @objc func skipVerification() {
@@ -132,6 +149,11 @@ final class DeviceVerificationViewController: BaseViewController, PhoneNumberEnt
     switch entryMode {
     case .phoneNumberEntry:
       updatePrimaryLabels(title: enterYourPhone, message: normalPhoneMessage)
+
+      submitPhoneNumberButton.setTitle("NEXT", for: .normal)
+      updateView(forSelectedRegion: phoneNumberEntryView.selectedRegion)
+      exampleLabel.isHidden = false
+      phoneNumberContainer.isHidden = false
       phoneNumberEntryView.isHidden = false
       keypadEntryView.delegate = self.phoneNumberEntryView.textField
 
@@ -161,8 +183,20 @@ final class DeviceVerificationViewController: BaseViewController, PhoneNumberEnt
     errorLabel?.isHidden = (message == nil)
   }
 
+  func handleValidPhoneNumber(_ phoneNumber: GlobalPhoneNumber) {
+    self.updateErrorLabel(with: nil)
+    self.coordinationDelegate?.viewController(self, didEnterPhoneNumber: phoneNumber)
+  }
+
+  func handleInvalidPhoneNumber() {
+    self.updateErrorLabel(with: DeviceVerificationError.invalidPhoneNumber.displayMessage)
+  }
+
   private func setDefaultHiddenViews() {
+    exampleLabel.isHidden = true
+    phoneNumberContainer.isHidden = true
     phoneNumberEntryView.isHidden = true
+    submitPhoneNumberButton.isHidden = true
     codeDisplayView.isHidden = true
     updateErrorLabel(with: nil)
   }
@@ -199,6 +233,38 @@ final class DeviceVerificationViewController: BaseViewController, PhoneNumberEnt
     }
   }
 
+}
+
+extension DeviceVerificationViewController: PhoneNumberEntryViewDisplayable {
+
+  func phoneNumberEntryView(_ view: PhoneNumberEntryView, didSelectCountry country: CKCountry) {
+    updateView(forSelectedRegion: country.regionCode)
+  }
+
+  private func updateView(forSelectedRegion regionCode: String) {
+    switch entryMode {
+    case .phoneNumberEntry:
+
+      let formatter = CKPhoneNumberFormatter(kit: self.phoneNumberKit, format: .international)
+      let exampleNumber = self.phoneNumberKit.exampleNumber(forCountry: regionCode, phoneNumberType: .mobile)
+      let countryCode = self.phoneNumberEntryView.textField.currentGlobalNumber().countryCode
+
+      if let nationalNumber = exampleNumber,
+        let formattedNumber = try? formatter.string(from: GlobalPhoneNumber(countryCode: countryCode, nationalNumber: nationalNumber)) {
+        exampleLabel.text = "Example: \(formattedNumber)"
+
+      } else {
+        exampleLabel.text = nil
+      }
+
+      let phoneNumberLengths = self.phoneNumberKit.possiblePhoneNumberLengths(forCountry: regionCode, phoneNumberType: .mobile, lengthType: .national)
+      let regionHasSinglePhoneNumberLength = phoneNumberLengths.count == 1
+      submitPhoneNumberButton.isHidden = regionHasSinglePhoneNumberLength
+
+    default:
+      break
+    }
+  }
 }
 
 extension DeviceVerificationViewController: StoryboardInitializable {}
@@ -247,12 +313,11 @@ extension DeviceVerificationViewController: KeypadEntryViewDelegate {
 extension DeviceVerificationViewController: CKPhoneNumberTextFieldDelegate {
 
   func textFieldReceivedValidMobileNumber(_ phoneNumber: GlobalPhoneNumber, textField: CKPhoneNumberTextField) {
-    self.updateErrorLabel(with: nil)
-    self.coordinationDelegate?.viewController(self, didEnterPhoneNumber: phoneNumber)
+    handleValidPhoneNumber(phoneNumber)
   }
 
   func textFieldReceivedInvalidMobileNumber(_ phoneNumber: GlobalPhoneNumber, textField: CKPhoneNumberTextField) {
-    self.updateErrorLabel(with: DeviceVerificationError.invalidPhoneNumber.displayMessage)
+    handleInvalidPhoneNumber()
   }
 
 }

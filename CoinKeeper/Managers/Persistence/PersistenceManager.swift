@@ -8,6 +8,7 @@ import Foundation
 import Strongbox
 import CoreData
 import PromiseKit
+import PhoneNumberKit
 import os.log
 
 // swiftlint:disable type_body_length
@@ -49,6 +50,14 @@ class PersistenceManager: PersistenceManagerType {
       _ = CKMWallet.findOrCreate(in: bgContext)
       try? bgContext.save()
     }
+  }
+
+  func walletWords() -> [String]? {
+    let maybeWords = keychainManager.retrieveValue(for: .walletWords) as? [String]
+    if let words = maybeWords, words.count == 12 {
+      return words
+    }
+    return nil
   }
 
   func mainQueueContext() -> NSManagedObjectContext {
@@ -162,7 +171,7 @@ class PersistenceManager: PersistenceManagerType {
     return Promise { seal in
 
       guard let wallet = CKMWallet.find(in: context) else {
-        seal.reject(CKPersistenceError.noWallet)
+        seal.reject(CKPersistenceError.noManagedWallet)
         return
       }
 
@@ -231,9 +240,14 @@ class PersistenceManager: PersistenceManagerType {
       .get { self.userDefaultsManager.receiveAddressIndexGaps = $0 }.asVoid()
   }
 
-  func persistReceivedSharedPayloads(_ payloads: [SharedPayloadV1], in context: NSManagedObjectContext) {
+  func persistReceivedSharedPayloads(_ payloads: [SharedPayloadV1], kit: PhoneNumberKit, in context: NSManagedObjectContext) {
     let hasher = self.hashingManager
-    databaseManager.persistReceivedSharedPayloads(payloads, hasher: hasher, in: context)
+    databaseManager.persistReceivedSharedPayloads(
+      payloads,
+      hasher: hasher,
+      kit: kit,
+      contactCacheManager: contactCacheManager,
+      in: context)
   }
 
   func walletId(in context: NSManagedObjectContext) -> String? {
@@ -375,6 +389,10 @@ class PersistenceManager: PersistenceManagerType {
     self.persist(pendingInvitationData: invitation.pendingInvitationData)
   }
 
+  func matchContactsIfPossible() {
+    databaseManager.matchContactsIfPossible(with: contactCacheManager)
+  }
+
   class Keychain: PersistenceKeychainType {
 
     enum Key: String, CaseIterable {
@@ -468,422 +486,6 @@ class PersistenceManager: PersistenceManagerType {
     }
 
   } // end Keychain class
-
-  class Database: NSPersistentContainer, PersistenceDatabaseType {
-
-    let logger = OSLog(subsystem: "com.coinninja.coinkeeper.appcoordinator", category: "database")
-
-    static var model: NSManagedObjectModel? = {
-      return Bundle(for: PersistenceManager.self).url(forResource: "Model", withExtension: "momd")
-        .flatMap { NSManagedObjectModel(contentsOf: $0) }
-    }()
-
-    static let modelFilename = "CoinNinjaDB"
-
-    lazy var mainQueueContext: NSManagedObjectContext = {
-      return self.createNewMainContext()
-    }()
-
-    func createBackgroundContext() -> NSManagedObjectContext {
-      let bgContext = newBackgroundContext()
-      bgContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
-      return bgContext
-    }
-
-    func persistentStore(for context: NSManagedObjectContext) -> NSPersistentStore? {
-      return context.persistentStoreCoordinator?.persistentStores.first
-    }
-
-    private func executeBatchDeleteFor(entity name: String, in context: NSManagedObjectContext) {
-      let fetch = NSFetchRequest<NSFetchRequestResult>(entityName: name)
-      let request = NSBatchDeleteRequest(fetchRequest: fetch)
-      request.resultType = .resultTypeObjectIDs
-
-      context.performAndWait {
-        do {
-          if let result = try context.execute(request) as? NSBatchDeleteResult, let objectIDs = result.result as? [NSManagedObjectID] {
-            NSManagedObjectContext.mergeChanges(fromRemoteContextSave: [NSDeletedObjectsKey: objectIDs], into: [context])
-          }
-        } catch {
-          fatalError("Failed to execute request: \(error)")
-        }
-      }
-    }
-
-    func deleteAll(in context: NSManagedObjectContext) {
-      context.performAndWait {
-        Database.model?.entities.compactMap { $0.name }.forEach { executeBatchDeleteFor(entity: $0, in: context) }
-      }
-    }
-
-    func unverifyUser(in context: NSManagedObjectContext) {
-      var user: CKMUser?
-
-      context.performAndWait {
-        let allServerAddresses = serverPoolAddresses(in: context)
-        allServerAddresses.forEach { context.delete($0) }
-
-        CKMInvitation.find(withStatuses: [.requestSent, .addressSent], in: context).forEach { $0.status = .canceled }
-        CKMInvitation.find(withStatuses: [.notSent], in: context).forEach { context.delete($0) }
-
-        user = CKMUser.find(in: context)
-        user.flatMap { context.delete($0) }
-
-        do {
-          try context.save()
-        } catch {
-          os_log("failed to save context in %@. error: %@", log: logger, type: .error, #function, error.localizedDescription)
-        }
-      }
-
-      user.map { self.mainQueueContext.refresh($0, mergeChanges: true) }
-    }
-
-    func removeWalletId(in context: NSManagedObjectContext) {
-      guard let wallet = CKMWallet.find(in: context) else {
-        return
-      }
-
-      wallet.id = nil
-    }
-
-    convenience init() {
-      guard let theModel = Database.model else { fatalError("could not load model file") }
-      self.init(name: Database.modelFilename, managedObjectModel: theModel)
-      setupPersistentStores()
-    }
-
-    private func setupPersistentStores() {
-      let directory = NSPersistentContainer.defaultDirectoryURL()
-      let storeURL = directory.appendingPathComponent("\(Database.modelFilename).sqlite")
-      let description = NSPersistentStoreDescription(url: storeURL)
-      description.shouldInferMappingModelAutomatically = true
-      description.shouldMigrateStoreAutomatically = true
-      description.setOption(FileProtectionType.completeUntilFirstUserAuthentication as NSObject, forKey: NSPersistentStoreFileProtectionKey)
-      persistentStoreDescriptions = [description]
-
-      self.loadPersistentStores { [weak self] _, error in
-        guard let strongSelf = self else { fatalError("could not load persistent store") }
-        if let err = error {
-          os_log("Failed to load persistence stores: %@", log: strongSelf.logger, type: .error, err.localizedDescription)
-        }
-        let context = strongSelf.mainQueueContext
-        context.performAndWait {
-          CKMWallet.findOrCreate(in: context)
-          try? context.save()
-        }
-      }
-    }
-
-    func createNewMainContext() -> NSManagedObjectContext {
-      let context = viewContext
-      context.automaticallyMergesChangesFromParent = true
-      context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
-      try? context.setQueryGenerationFrom(.current)
-      return context
-    }
-
-    func walletId(in context: NSManagedObjectContext) -> String? {
-      var id: String?
-
-      context.performAndWait {
-        id = CKMWallet.find(in: context)?.id
-      }
-
-      return id
-    }
-
-    func persistWalletId(_ id: String, in context: NSManagedObjectContext) -> Promise<Void> {
-      return Promise { seal in
-        context.performAndWait {
-          guard let wallet = CKMWallet.find(in: context) else {
-            seal.reject(CKPersistenceError.noWallet)
-            return
-          }
-
-          wallet.id = id
-
-          do {
-            try context.save()
-            seal.fulfill(())
-          } catch {
-            seal.reject(error)
-          }
-        }
-      }
-    }
-
-    func containsRegularTransaction(in context: NSManagedObjectContext) -> IncomingOutgoingTuple {
-      return CKMTransaction.containsRegularTransaction(in: context)
-    }
-
-    func containsDropbitTransaction(in context: NSManagedObjectContext) -> IncomingOutgoingTuple {
-      return CKMTransaction.containsDropbitTransaction(in: context)
-    }
-
-    func userId(in context: NSManagedObjectContext) -> String? {
-      return CKMUser.find(in: context)?.id
-    }
-
-    func userVerificationStatus(in context: NSManagedObjectContext) -> UserVerificationStatus {
-      return CKMUser.find(in: context)?.verificationStatusCase ?? .unverified
-    }
-
-    func persistUserId(_ id: String, in context: NSManagedObjectContext) -> Promise<CKMUser> {
-      return Promise { seal in
-        context.performAndWait {
-          let user = CKMUser.updateOrCreate(with: id, in: context)
-          do {
-            try context.save()
-            seal.fulfill(user)
-          } catch {
-            os_log("Failed to save context with user ID: %@", log: logger, type: .error, error.localizedDescription)
-            seal.reject(error)
-          }
-        }
-      }
-    }
-
-    func persistVerificationStatus(_ status: String, in context: NSManagedObjectContext) -> Promise<UserVerificationStatus> {
-      return Promise { seal in
-        context.performAndWait {
-          guard let user = CKMUser.find(in: context) else {
-            seal.reject(CKPersistenceError.noUser)
-            return
-          }
-
-          user.verificationStatus = status
-
-          seal.fulfill(user.verificationStatusCase)
-
-        }
-      }
-    }
-
-    func persistServerAddress(
-      for metaAddress: CNBMetaAddress,
-      createdAt: Date,
-      wallet: CKMWallet,
-      in context: NSManagedObjectContext) -> Promise<Void> {
-      return Promise { seal in
-        let addressString = metaAddress.address
-        let index = metaAddress.derivationPath.index
-
-        context.performAndWait {
-          let newAddress = CKMServerAddress(address: addressString, createdAt: createdAt, insertInto: context)
-          newAddress.derivativePath = CKMDerivativePath.findOrCreate(withIndex: Int(index), in: context)
-        }
-
-        seal.fulfill(()) //no need to return the created object(s), fulfill with Void
-      }
-    }
-
-    func persistTransactions(
-      from transactionResponses: [TransactionResponse],
-      in context: NSManagedObjectContext,
-      relativeToCurrentHeight blockHeight: Int,
-      fullSync: Bool
-      ) -> Promise<Void> {
-      return Promise { seal in
-        transactionResponses.forEach {
-          _ = CKMTransaction.findOrCreate(with: $0, in: context, relativeToBlockHeight: blockHeight, fullSync: fullSync)
-        }
-        seal.fulfill(())
-      }
-    }
-
-    func persistReceivedSharedPayloads(_ payloads: [SharedPayloadV1], hasher: HashingManager, in context: NSManagedObjectContext) {
-      let salt: Data
-      do {
-        salt = try hasher.salt()
-      } catch {
-        os_log("Failed to get salt for hashing shared payload phone number: %@", log: logger, type: .error, error.localizedDescription)
-        return
-      }
-
-      for payload in payloads {
-        guard let tx = CKMTransaction.find(byTxid: payload.txid, in: context) else { continue }
-
-        if tx.memo == nil {
-          tx.memo = payload.info.memo
-        }
-
-        let phoneNumber = payload.profile.globalPhoneNumber()
-        let phoneNumberHash = hasher.hash(phoneNumber: phoneNumber, salt: salt)
-
-        if tx.phoneNumber == nil, let inputs = ManagedPhoneNumberInputs(phoneNumber: phoneNumber) {
-          tx.phoneNumber = CKMPhoneNumber.findOrCreate(withInputs: inputs,
-                                                       phoneNumberHash: phoneNumberHash,
-                                                       in: context)
-        }
-
-        let payloadAsData = try? payload.encoded()
-        let ckmSharedPayload = CKMTransactionSharedPayload(sharingDesired: true,
-                                                           fiatAmount: payload.info.amount,
-                                                           fiatCurrency: payload.info.currency,
-                                                           receivedPayload: payloadAsData,
-                                                           insertInto: context)
-        tx.sharedPayload = ckmSharedPayload
-      }
-    }
-
-    func persistTransactionSummaries(
-      from responses: [AddressTransactionSummaryResponse],
-      in context: NSManagedObjectContext
-      ) -> Promise<Set<Int>> {
-
-      return Promise { seal in
-        // Construct and persist cache of address index gaps alongside persisting summaries
-        var usedReceiveAddressIndices: Set<Int> = []
-
-        responses.forEach { response in
-          let ats = CKMAddressTransactionSummary.findOrCreate(with: response, in: context)
-
-          if let pathResponse = response.derivativePathResponse, ats.isChangeAddress != pathResponse.isChangeAddress {
-            ats.isChangeAddress = pathResponse.isChangeAddress
-          }
-
-          if !ats.isChangeAddress, let index = ats.address?.derivativePath?.index { // only insert receive addresses
-            usedReceiveAddressIndices.insert(index)
-          }
-        }
-
-        // Look for index gaps up to the server address max index to handle edge cases
-        let maxServerIndex = CKMServerAddress.maxIndex(in: context) ?? 0
-        let maxUsedIndex = usedReceiveAddressIndices.max() ?? 0
-        let maxObservedIndex = max(maxServerIndex, maxUsedIndex)
-
-        let allPotentialIndices = Array(0...maxObservedIndex).asSet()
-        let unusedReceiveAddressIndices: Set<Int> = allPotentialIndices.subtracting(usedReceiveAddressIndices)
-
-        seal.fulfill(unusedReceiveAddressIndices)
-      }
-    }
-
-    func persistTemporaryTransaction(
-      from transactionData: CNBTransactionData,
-      with outgoingTransactionData: OutgoingTransactionData,
-      txid: String,
-      invitation: CKMInvitation?,
-      in context: NSManagedObjectContext
-      ) {
-
-      var outgoingTxDTO = outgoingTransactionData
-      outgoingTxDTO.txid = txid
-      outgoingTxDTO.feeAmount = Int(transactionData.feeAmount)
-
-      invitation?.setTxid(to: txid)
-      invitation?.status = .completed
-
-      func updateOrCreateTxForTempTx() -> CKMTransaction {
-        if let existingTransaction = CKMTransaction.find(byTxid: txid, in: context),
-          let invitation = invitation,
-          invitation.transaction !== existingTransaction {
-
-          let txToRemove = invitation.transaction
-          invitation.transaction = existingTransaction
-          txToRemove.map { context.delete($0) }
-          existingTransaction.phoneNumber = invitation.counterpartyPhoneNumber
-          return existingTransaction
-
-        } else if let invitation = invitation, let tx = invitation.transaction {
-          tx.configure(with: outgoingTxDTO, in: context)
-          tx.phoneNumber = invitation.counterpartyPhoneNumber
-          return tx
-
-        } else {
-          let transaction = CKMTransaction(insertInto: context)
-          transaction.configure(with: outgoingTxDTO, in: context)
-          return transaction
-        }
-      }
-
-      // Identify relevantTx to link vouts to its tempTx
-      let relevantTransaction = updateOrCreateTxForTempTx()
-      relevantTransaction.configureNewSenderSharedPayload(with: outgoingTxDTO.sharedPayloadDTO, in: context)
-
-      // Currently, this function is only called after broadcastTx()
-      relevantTransaction.broadcastedAt = Date()
-
-      let vouts = transactionData.unspentTransactionOutputs.compactMap { CKMVout.find(from: $0, in: context) }
-
-      // Link the vout to the relevant tempTx in case we need to mark the tx as failed and free up these vouts
-      relevantTransaction.temporarySentTransaction?.reservedVouts = Set(vouts)
-
-      vouts.forEach { $0.isSpent = true }
-    }
-
-    func deleteTransactions(notIn txids: [String], in context: NSManagedObjectContext) {
-      let transactionsToRemove = CKMTransaction.findAllToDelete(notIn: txids, in: context)
-      transactionsToRemove.forEach { context.delete($0) }
-    }
-
-    func getAllInvitations(in context: NSManagedObjectContext) -> [CKMInvitation] {
-      return CKMInvitation.getAllInvitations(in: context)
-    }
-
-    func getUnacknowledgedInvitations(in context: NSManagedObjectContext) -> [CKMInvitation] {
-      return CKMInvitation.findUnacknowledgedInvitations(in: context)
-    }
-
-    func transactionsWithoutDayAveragePrice(in context: NSManagedObjectContext) -> Promise<[CKMTransaction]> {
-      let pricePredicate = CKPredicate.Transaction.withoutDayAveragePrice()
-      let txidPredicate = CKPredicate.Transaction.withValidTxid()
-      let compoundPredicate = NSCompoundPredicate(type: .and, subpredicates: [pricePredicate, txidPredicate])
-
-      return Promise { seal in
-        let request: NSFetchRequest<CKMTransaction> = CKMTransaction.fetchRequest()
-        request.predicate = compoundPredicate
-        let results = try context.fetch(request)
-        seal.fulfill(results)
-      }
-    }
-
-    func serverPoolAddresses(in context: NSManagedObjectContext) -> [CKMServerAddress] {
-      let request: NSFetchRequest<CKMServerAddress> = CKMServerAddress.fetchRequest()
-      request.sortDescriptors = [NSSortDescriptor(key: #keyPath(CKMServerAddress.derivativePath.index), ascending: true)]
-      let results = try? context.fetch(request)
-      return results ?? []
-    }
-
-    func updateLastReceiveAddressIndex(index: Int, in context: NSManagedObjectContext) {
-      context.performAndWait {
-        CKMWallet.find(in: context)?.lastReceivedIndex = index
-      }
-    }
-
-    func updateLastChangeAddressIndex(index: Int, in context: NSManagedObjectContext) {
-      context.performAndWait {
-        CKMWallet.find(in: context)?.lastChangeIndex = index
-      }
-    }
-
-    func addressesProvidedForReceivedPendingDropBits(in context: NSManagedObjectContext) -> [String] {
-      return CKMInvitation.addressesProvidedForReceivedPendingDropBits(in: context)
-    }
-
-    /// CKMWallet stores -1 as the default, non-optional value. This function returns nil if the stored value is negative.
-    func lastReceiveIndex(in context: NSManagedObjectContext) -> Int? {
-      var value: Int?
-      context.performAndWait {
-        if let lastIndex = CKMWallet.find(in: context)?.lastReceivedIndex, lastIndex >= 0 {
-          value = lastIndex
-        }
-      }
-      return value
-    }
-
-    /// CKMWallet stores -1 as the default, non-optional value. This function returns nil if the stored value is negative.
-    func lastChangeIndex(in context: NSManagedObjectContext) -> Int? {
-      var value: Int?
-      context.performAndWait {
-        if let lastIndex = CKMWallet.find(in: context)?.lastChangeIndex, lastIndex >= 0 {
-          value = lastIndex
-        }
-      }
-      return value
-    }
-  } // end Database class
 
   class CKUserDefaults: PersistenceUserDefaultsType {
 

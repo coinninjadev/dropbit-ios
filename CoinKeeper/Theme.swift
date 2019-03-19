@@ -97,6 +97,7 @@ struct Theme {
     case bannerMessage
     case keypadButton
     case onboardingTitle, onboardingSubtitle
+    case examplePhoneNumber
     case createRecoveryWord, createRecoveryWordStatus
     case currencyButton
     case primaryButtonTitle
@@ -198,6 +199,7 @@ struct Theme {
            .transactionDetailDate,
            .recoverySubtitle2,
            .confirmPaymentSecondaryAddress,
+           .examplePhoneNumber,
            .tutorialDetail: 										return CKFont.regular(13)
       case .transactionHistoryMemo,
            .transactionDetailStatus,

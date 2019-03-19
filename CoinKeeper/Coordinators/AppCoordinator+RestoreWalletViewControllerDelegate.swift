@@ -16,7 +16,7 @@ extension AppCoordinator: RestoreWalletViewControllerDelegate {
     let successFailController = SuccessFailViewController.makeFromStoryboard()
     successFailController.viewModel.flow = .restoreWallet
     successFailController.retryCompletion = {
-      if let words = self.persistenceManager.keychainManager.retrieveValue(for: .walletWords) as? [String] {
+      if let words = self.persistenceManager.walletWords() {
         self.walletManager = WalletManager(words: words, persistenceManager: self.persistenceManager)
         DispatchQueue.main.async {
           successFailController.mode = .success

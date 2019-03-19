@@ -3,9 +3,10 @@
 // Copyright (c) 2018 Coin Ninja, LLC. All rights reserved.
 //
 
-import CoreData
-import PromiseKit
 import CNBitcoinKit
+import CoreData
+import PhoneNumberKit
+import PromiseKit
 @testable import DropBit
 
 // swiftlint:disable file_length
@@ -16,6 +17,7 @@ class MockPersistenceManager: PersistenceManagerType {
   var databaseManager: PersistenceDatabaseType
   var userDefaultsManager: PersistenceUserDefaultsType
   var contactCacheManager: ContactCacheManagerType
+  var hashingManager: HashingManager = HashingManager()
 
   init(keychainManager: PersistenceKeychainType = MockPersistenceKeychainManager(store: MockKeychainAccessorType()),
        databaseManager: PersistenceDatabaseType = MockPersistenceDatabaseManager(),
@@ -52,6 +54,9 @@ class MockPersistenceManager: PersistenceManagerType {
 
   func resetPersistence() {}
   func resetWallet() {}
+  func walletWords() -> [String]? {
+    return keychainManager.retrieveValue(for: .walletWords) as? [String]
+  }
   func deregisterPhone() {}
   func persist(pendingInvitationData data: PendingInvitationData) {}
   func persistUnacknowledgedInvitation(in context: NSManagedObjectContext, with btcPair: BitcoinUSDPair,
@@ -65,6 +70,8 @@ class MockPersistenceManager: PersistenceManagerType {
   func getAllInvitations(in context: NSManagedObjectContext) -> [CKMInvitation] {
     return []
   }
+
+  func matchContactsIfPossible() { databaseManager.matchContactsIfPossible(with: self.contactCacheManager) }
 
   var unacknowledgedInvitations: [CKMInvitation] = []
   func getUnacknowledgedInvitations(in context: NSManagedObjectContext) -> [CKMInvitation] {
@@ -113,7 +120,7 @@ class MockPersistenceManager: PersistenceManagerType {
     invitation: CKMInvitation?,
     in context: NSManagedObjectContext) { }
 
-  func persistReceivedSharedPayloads(_ payloads: [SharedPayloadV1], in context: NSManagedObjectContext) { }
+  func persistReceivedSharedPayloads(_ payloads: [SharedPayloadV1], kit: PhoneNumberKit, in context: NSManagedObjectContext) { }
 
   func groomAddressTransactionSummaries(
     from responses: [AddressTransactionSummaryResponse],
@@ -425,6 +432,8 @@ class MockPersistenceManager: PersistenceManagerType {
 
     func persistReceivedSharedPayloads(_ payloads: [SharedPayloadV1],
                                        hasher: HashingManager,
+                                       kit: PhoneNumberKit,
+                                       contactCacheManager: ContactCacheManagerType,
                                        in context: NSManagedObjectContext) {
     }
 
@@ -456,6 +465,7 @@ class MockPersistenceManager: PersistenceManagerType {
       return 0
     }
 
+    func matchContactsIfPossible(with contactCacheManager: ContactCacheManagerType) {}
   }
 
   class MockPersistenceUserDefaultsManager: PersistenceUserDefaultsType {

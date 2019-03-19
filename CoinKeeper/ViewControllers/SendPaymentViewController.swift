@@ -340,7 +340,13 @@ extension SendPaymentViewController {
       case .btcAddress(let btcAddress):
         self.showBitcoinAddressRecipient(with: btcAddress)
       case .phoneNumber(let contact):
-        self.showPhoneEntryView(with: contact)
+        if let validatedContact = self.coordinationDelegate?.viewController(self, checkForContactFromGenericContact: contact) {
+          self.viewModel.paymentRecipient = PaymentRecipient.contact(validatedContact)
+          self.updateViewWithModel()
+          self.hideRecipientInputViews()
+        } else {
+          self.showPhoneEntryView(with: contact)
+        }
       case .contact:
         self.hideRecipientInputViews()
       }
@@ -363,7 +369,7 @@ extension SendPaymentViewController {
     self.bitcoinAddressButton.isHidden = true
     self.phoneNumberEntryView.isHidden = false
 
-    let region = phoneNumberEntryView.selectedRegion ?? phoneNumberEntryView.defaultRegion
+    let region = phoneNumberEntryView.selectedRegion
     let country = CKCountry(regionCode: region, kit: self.phoneNumberKit)
     let number = contact.globalPhoneNumber.nationalNumber
 
@@ -382,7 +388,6 @@ extension SendPaymentViewController: SelectedValidContactDelegate {
     self.setPaymentRecipient(.contact(contact))
     self.updateViewWithModel()
   }
-
 }
 
 // MARK: - Amounts and Currencies
@@ -484,7 +489,7 @@ extension SendPaymentViewController: UITextFieldDelegate {
         case .bitcoinURL: updateViewModel(withParsedRecipient: recipient)
         case .phoneNumber(let globalPhoneNumber):
           let salt = try hashingManager.salt()
-          let hashedPhoneNumber = hashingManager.hash(phoneNumber: globalPhoneNumber, salt: salt)
+          let hashedPhoneNumber = hashingManager.hash(phoneNumber: globalPhoneNumber, salt: salt, parsedNumber: nil, kit: self.phoneNumberKit)
           let formattedPhoneNumber = try CKPhoneNumberFormatter(kit: self.phoneNumberKit, format: .international)
             .string(from: globalPhoneNumber)
           let contact = GenericContact(phoneNumber: globalPhoneNumber, hash: hashedPhoneNumber, formatted: formattedPhoneNumber)

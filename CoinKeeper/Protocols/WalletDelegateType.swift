@@ -10,4 +10,5 @@ import Foundation
 
 protocol WalletDelegateType: AnyObject {
   func mainWalletManager() -> WalletManagerType?
+  func resetWalletManagerIfNeeded()
 }

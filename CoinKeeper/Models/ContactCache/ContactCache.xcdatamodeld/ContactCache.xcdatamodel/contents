@@ -28,6 +28,10 @@
         <attribute name="hashedGlobalNumber" attributeType="String" syncable="YES"/>
         <attribute name="nationalNumber" attributeType="String" syncable="YES"/>
         <relationship name="cachedPhoneNumber" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CCMPhoneNumber" inverseName="cachedValidatedMetadata" inverseEntity="CCMPhoneNumber" syncable="YES"/>
+        <fetchIndex name="byCountryCodeAndNumber">
+            <fetchIndexElement property="countryCode" type="Binary" order="ascending"/>
+            <fetchIndexElement property="nationalNumber" type="Binary" order="ascending"/>
+        </fetchIndex>
     </entity>
     <elements>
         <element name="CCMContact" positionX="-63" positionY="-18" width="128" height="120"/>
