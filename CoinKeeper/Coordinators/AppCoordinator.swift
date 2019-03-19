@@ -67,6 +67,8 @@ class AppCoordinator: CoordinatorType {
   let phoneNumberKit = PhoneNumberKit()
   let contactStore = CNContactStore()
 
+  var bitcoinURLToOpen: BitcoinURL?
+
   lazy var contactCacheDataWorker: ContactCacheDataWorker = {
     return ContactCacheDataWorker(contactCacheManager: self.contactCacheManager,
                                   permissionManager: self.permissionManager,
@@ -409,6 +411,24 @@ class AppCoordinator: CoordinatorType {
     navigationController.viewControllers = [drawerController]
 
     navigationController.isNavigationBarHidden = true
+
+    handlePendingBitcoinURL()
+  }
+
+  private func handlePendingBitcoinURL() {
+    guard let bitcoinURL = self.bitcoinURLToOpen, self.launchStateManager.userAuthenticated else { return }
+    self.bitcoinURLToOpen = nil
+
+    if let topVC = self.navigationController.topViewController(), let sendPaymentVC = topVC as? SendPaymentViewController {
+      sendPaymentVC.applyRecipient(inText: bitcoinURL.absoluteString)
+
+    } else {
+      let sendPaymentViewController = SendPaymentViewController.makeFromStoryboard()
+      assignCoordinationDelegate(to: sendPaymentViewController)
+      sendPaymentViewController.alertManager = self.alertManager
+      sendPaymentViewController.recipientDescriptionToLoad = bitcoinURL.absoluteString
+      navigationController.present(sendPaymentViewController, animated: true)
+    }
   }
 
   var drawerController: MMDrawerController? {
@@ -487,12 +507,14 @@ class AppCoordinator: CoordinatorType {
 
   func appBecameActive() {
     resetWalletManagerIfNeeded()
+    handlePendingBitcoinURL()
   }
 
   /// Handle app leaving active state, either becoming inactive, entering background, or terminating.
   func appResignedActiveState() {
     persistenceManager.setLastLoginTime()
     connectionManager.stop()
+    self.bitcoinURLToOpen = nil
     //    UIApplication.shared.applicationIconBadgeNumber = persistenceManager.pendingInvitations().count
   }
 
