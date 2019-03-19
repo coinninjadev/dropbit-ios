@@ -147,10 +147,10 @@ extension PersistenceManagerType {
 
 protocol PersistenceKeychainType: AnyObject {
   @discardableResult
-  func store(anyValue value: Any?, key: PersistenceManager.Keychain.Key) -> Bool
+  func store(anyValue value: Any?, key: CKKeychain.Key) -> Bool
 
   @discardableResult
-  func store(valueToHash value: String?, key: PersistenceManager.Keychain.Key) -> Bool
+  func store(valueToHash value: String?, key: CKKeychain.Key) -> Bool
 
   @discardableResult
   func store(deviceID: String) -> Bool
@@ -161,8 +161,8 @@ protocol PersistenceKeychainType: AnyObject {
   @discardableResult
   func store(userPin pin: String) -> Bool
 
-  func retrieveValue(for key: PersistenceManager.Keychain.Key) -> Any?
-  func bool(for key: PersistenceManager.Keychain.Key) -> Bool?
+  func retrieveValue(for key: CKKeychain.Key) -> Any?
+  func bool(for key: CKKeychain.Key) -> Bool?
 
   func backup(recoveryWords words: [String])
   func walletWordsBackedUp() -> Bool

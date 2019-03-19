@@ -10,7 +10,7 @@ import Strongbox
 class PersistenceManagerTests: XCTestCase {
   var sut: PersistenceManager!
   var mockKeychainAccessor: MockKeychainAccessorType!
-  var mockKeychainManager: PersistenceManager.Keychain!
+  var mockKeychainManager: CKKeychain!
   var mockDatabaseManager: MockDatabaseManager!
   var mockUserDefaultsManager: MockUserDefaultsManager!
   var mockContactCacheManager: MockContactCacheManager!
@@ -21,7 +21,7 @@ class PersistenceManagerTests: XCTestCase {
     mockContactCacheManager = MockContactCacheManager()
     mockKeychainAccessor = MockKeychainAccessorType()
     mockUserDefaultsManager = MockUserDefaultsManager()
-    mockKeychainManager = PersistenceManager.Keychain(store: mockKeychainAccessor)
+    mockKeychainManager = CKKeychain(store: mockKeychainAccessor)
 
     self.sut = PersistenceManager(
       keychainManager: mockKeychainManager,
@@ -44,7 +44,7 @@ class PersistenceManagerTests: XCTestCase {
 
   // MARK: keychain
   private func setupKeychainTests() {
-    let keychainManager = PersistenceManager.Keychain(store: mockKeychainAccessor)
+    let keychainManager = CKKeychain(store: mockKeychainAccessor)
     self.sut = PersistenceManager(keychainManager: keychainManager)
     _ = self.sut.keychainManager.store(valueToHash: "foo", key: .userPin)
   }

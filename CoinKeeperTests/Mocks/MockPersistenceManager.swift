@@ -281,7 +281,7 @@ class MockPersistenceManager: PersistenceManagerType {
     func deleteAll() {}
     func unverifyUser() {}
 
-    func bool(for key: PersistenceManager.Keychain.Key) -> Bool? {
+    func bool(for key: CKKeychain.Key) -> Bool? {
       return nil
     }
 
@@ -295,12 +295,12 @@ class MockPersistenceManager: PersistenceManagerType {
     var values: [String: Any] = [:]
     var anyValueExists = false
 
-    func store(anyValue value: Any?, key: PersistenceManager.Keychain.Key) -> Bool {
+    func store(anyValue value: Any?, key: CKKeychain.Key) -> Bool {
       self.values[key.rawValue] = value
       anyValueExists = (self.values[key.rawValue] != nil)
       return anyValueExists
     }
-    func store(valueToHash value: String?, key: PersistenceManager.Keychain.Key) -> Bool {
+    func store(valueToHash value: String?, key: CKKeychain.Key) -> Bool {
       self.values[key.rawValue] = value
       valueExists = (self.values[key.rawValue] != nil)
       return valueExists
@@ -308,7 +308,7 @@ class MockPersistenceManager: PersistenceManagerType {
 
     var wordsExist = false
     func store(recoveryWords words: [String]) -> Bool {
-      self.values[PersistenceManager.Keychain.Key.walletWords.rawValue] = words
+      self.values[CKKeychain.Key.walletWords.rawValue] = words
       wordsExist = !words.isEmpty
       return wordsExist
     }
@@ -320,12 +320,12 @@ class MockPersistenceManager: PersistenceManagerType {
 
     var deviceIDExists = false
     func store(deviceID: String) -> Bool {
-      self.values[PersistenceManager.Keychain.Key.deviceID.rawValue] = deviceID
+      self.values[CKKeychain.Key.deviceID.rawValue] = deviceID
       deviceIDExists = !deviceID.isEmpty
       return deviceIDExists
     }
 
-    func retrieveValue(for key: PersistenceManager.Keychain.Key) -> Any? {
+    func retrieveValue(for key: CKKeychain.Key) -> Any? {
       return values[key.rawValue]
     }
 

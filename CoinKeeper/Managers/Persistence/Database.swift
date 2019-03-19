@@ -444,4 +444,4 @@ class Database: PersistenceDatabaseType {
       }
     }
   }
-} // end Database class
+}
