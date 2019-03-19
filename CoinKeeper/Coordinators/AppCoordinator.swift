@@ -597,8 +597,7 @@ class AppCoordinator: CoordinatorType {
 
   func showScanViewController(fallbackBTCAmount: NSDecimalNumber, primaryCurrency: CurrencyCode) {
     let scanViewController = ScanQRViewController.makeFromStoryboard()
-    let parser = CKRecipientParser(kit: self.phoneNumberKit)
-    scanViewController.fallbackPaymentViewModel = SendPaymentViewModel(btcAmount: fallbackBTCAmount, primaryCurrency: primaryCurrency, parser: parser)
+    scanViewController.fallbackPaymentViewModel = SendPaymentViewModel(btcAmount: fallbackBTCAmount, primaryCurrency: primaryCurrency)
 
     assignCoordinationDelegate(to: scanViewController)
     scanViewController.modalPresentationStyle = .formSheet

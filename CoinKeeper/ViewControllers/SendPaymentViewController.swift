@@ -22,8 +22,7 @@ class SendPaymentViewController: PresentableViewController,
   PhoneNumberEntryViewDisplayable,
 ValidatorAlertDisplayable {
 
-  var viewModel: SendPaymentViewModelType = SendPaymentViewModel(btcAmount: 0, primaryCurrency: .USD,
-                                                                 parser: CKRecipientParser(kit: PhoneNumberKit()))
+  var viewModel: SendPaymentViewModelType = SendPaymentViewModel(btcAmount: 0, primaryCurrency: .USD)
   var alertManager: AlertManagerType?
   let rateManager = ExchangeRateManager()
   let phoneNumberKit = PhoneNumberKit()
@@ -300,8 +299,7 @@ extension SendPaymentViewController {
       let errorTitle = "Payment Request Error"
       switch result {
       case .success(let response):
-        let parser = CKRecipientParser(kit: self.phoneNumberKit)
-        guard let fetchedModel = SendPaymentViewModel(response: response, parser: parser),
+        guard let fetchedModel = SendPaymentViewModel(response: response),
           let fetchedAddress = fetchedModel.address,
           let fetchedAmount = fetchedModel.btcAmount else {
             self.showValidatorAlert(for: MerchantPaymentRequestError.missingOutput, title: errorTitle)

@@ -15,15 +15,13 @@ extension AppCoordinator: ScanQRViewControllerDelegate {
       self.resolveMerchantPaymentRequest(withURL: paymentRequestURL) { result in
         switch result {
         case .success(let response):
-          let parser = CKRecipientParser(kit: self.phoneNumberKit)
-          guard let fetchedModel = SendPaymentViewModel(response: response, parser: parser) else { return }
+          guard let fetchedModel = SendPaymentViewModel(response: response) else { return }
           self.showSendPaymentViewController(withViewModel: fetchedModel, dismissing: viewController, completion: nil)
 
         case .failure(let paymentRequestError):
           let errorMessage = paymentRequestError.errorDescription ?? self.defaultPaymentErrorMessage
           let errorAlert = self.alertManager.defaultAlert(withTitle: self.paymentErrorTitle, description: errorMessage)
-          let parser = CKRecipientParser(kit: self.phoneNumberKit)
-          let viewModel = SendPaymentViewModel(btcAmount: .zero, primaryCurrency: .BTC, parser: parser)
+          let viewModel = SendPaymentViewModel(btcAmount: .zero, primaryCurrency: .BTC)
 
           self.showSendPaymentViewController(withViewModel: viewModel, dismissing: viewController) { sendPaymentViewController in
             sendPaymentViewController.present(errorAlert, animated: true, completion: nil)
@@ -43,16 +41,15 @@ extension AppCoordinator: ScanQRViewControllerDelegate {
     let sendPaymentViewController = SendPaymentViewController.makeFromStoryboard()
     assignCoordinationDelegate(to: sendPaymentViewController)
 
-    let parser = CKRecipientParser(kit: self.phoneNumberKit)
     let primaryCurrency = fallbackViewModel?.primaryCurrency ?? .BTC
     let shouldUseFallback = (qrCode.btcAmount ?? .zero) == .zero
 
     if shouldUseFallback {
       let fallbackAmount = fallbackViewModel?.btcAmount ?? .zero
       let fallbackQRCode = qrCode.copy(withBTCAmount: fallbackAmount)
-      sendPaymentViewController.viewModel = SendPaymentViewModel(qrCode: fallbackQRCode, primaryCurrency: primaryCurrency, parser: parser)
+      sendPaymentViewController.viewModel = SendPaymentViewModel(qrCode: fallbackQRCode, primaryCurrency: primaryCurrency)
     } else {
-      sendPaymentViewController.viewModel = SendPaymentViewModel(qrCode: qrCode, primaryCurrency: .BTC, parser: parser)
+      sendPaymentViewController.viewModel = SendPaymentViewModel(qrCode: qrCode, primaryCurrency: .BTC)
     }
 
     return sendPaymentViewController
