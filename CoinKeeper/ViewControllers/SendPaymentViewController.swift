@@ -28,6 +28,10 @@ ValidatorAlertDisplayable {
   let phoneNumberKit = PhoneNumberKit()
   var hashingManager = HashingManager()
 
+  /// The presenter of SendPaymentViewController can set this property to provide a recipient.
+  /// It will be parsed and used to update the viewModel and view when ready.
+  var recipientDescriptionToLoad: String?
+
   var countryCodeSearchView: CountryCodeSearchView?
   let countryCodeDataSource = CountryCodePickerDataSource()
 
@@ -84,7 +88,7 @@ ValidatorAlertDisplayable {
   @IBAction func performPaste() {
     coordinationDelegate?.viewControllerDidSelectPaste(self)
     if let text = UIPasteboard.general.string {
-      pasteRecipient(fromText: text)
+      applyRecipient(inText: text)
     }
   }
 
@@ -151,7 +155,12 @@ ValidatorAlertDisplayable {
     super.viewWillAppear(animated)
 
     primaryAmountTextField.delegate = self
-    updateViewWithModel()
+
+    if let recipientDescription = self.recipientDescriptionToLoad {
+      self.applyRecipient(inText: recipientDescription)
+    } else {
+      updateViewWithModel()
+    }
   }
 
   @objc func primaryAmountTextFieldDidChange(_ textField: UITextField) {
@@ -257,7 +266,7 @@ extension SendPaymentViewController {
 
 extension SendPaymentViewController {
 
-  func pasteRecipient(fromText text: String) {
+  func applyRecipient(inText text: String) {
     do {
       let recipient = try viewModel.recipientParser.findSingleRecipient(inText: text, ofTypes: [.bitcoinURL, .phoneNumber])
       updateViewModel(withParsedRecipient: recipient)
@@ -508,7 +517,7 @@ extension SendPaymentViewController: UITextFieldDelegate {
 
   func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
     if let pasteboardText = UIPasteboard.general.string, pasteboardText == string {
-      pasteRecipient(fromText: pasteboardText)
+      applyRecipient(inText: pasteboardText)
     }
 
     switch textField {
