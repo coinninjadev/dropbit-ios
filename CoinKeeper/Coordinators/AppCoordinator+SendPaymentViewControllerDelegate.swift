@@ -64,7 +64,7 @@ extension AppCoordinator: SendPaymentViewControllerDelegate {
 
         } else {
           let popupString = self.persistenceManager.string(for: .invitationPopup) ?? ""
-          if let value = PersistenceManager.CKUserDefaults.Value(rawValue: popupString), case .optOut = value {
+          if let value = CKUserDefaults.Value(rawValue: popupString), case .optOut = value {
             completion()
           } else {
             self.showModalForInviteExplanation(with: viewController,

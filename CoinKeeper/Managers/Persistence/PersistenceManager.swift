@@ -10,8 +10,6 @@ import PromiseKit
 import PhoneNumberKit
 import os.log
 
-// swiftlint:disable type_body_length
-// swiftlint:disable file_length
 class PersistenceManager: PersistenceManagerType {
 
   let keychainManager: PersistenceKeychainType
@@ -392,193 +390,27 @@ class PersistenceManager: PersistenceManagerType {
     databaseManager.matchContactsIfPossible(with: contactCacheManager)
   }
 
-  class CKUserDefaults: PersistenceUserDefaultsType {
-
-    enum Value: String {
-      case optIn
-      case optOut
-
-      var defaultsString: String { return self.rawValue }
-    }
-
-    enum Key: String, CaseIterable {
-      case invitationPopup
-      case firstTimeOpeningApp
-      case exchangeRateBTCUSD
-      case feeBest
-      case feeBetter
-      case feeGood
-      case blockheight
-      case didTutorial
-      case walletID // for background fetching purposes
-      case userID   // for background fetching purposes
-      case pendingInvitations  // [String: [String: Data]]
-      case uuid // deviceID
-      case shownMessageIds
-      case lastPublishedMessageTimeInterval
-      case coinNinjaServerDeviceId
-      case receiveAddressIndexGaps
-      case deviceEndpointId
-      case devicePushToken
-      case unseenTransactionChangesExist
-      case backupWordsReminderShown
-      case migrationVersions //database
-      case keychainMigrationVersions
-      case lastSuccessfulSyncCompletedAt
-
-      var defaultsString: String { return self.rawValue }
-    }
-
-    private func removeValue(forKey key: Key) {
-      CKUserDefaults.standardDefaults.set(nil, forKey: key.defaultsString)
-    }
-
-    private func removeValues(forKeys keys: [Key]) {
-      keys.forEach { removeValue(forKey: $0) }
-    }
-
-    func deviceId() -> UUID? {
-      guard let deviceIdString = CKUserDefaults.standardDefaults.string(forKey: Key.uuid.defaultsString) else { return nil }
-      return UUID(uuidString: deviceIdString)
-    }
-
-    func setDeviceId(_ uuid: UUID) {
-      CKUserDefaults.standardDefaults.set(uuid.uuidString, forKey: Key.uuid.defaultsString)
-    }
-
-    func deleteDeviceEndpointIds() {
-      removeValues(forKeys: [
-        .deviceEndpointId,
-        .coinNinjaServerDeviceId
-        ])
-    }
-
-    /// Use this method to not delete everything from UserDefaults
-    func deleteWallet() {
-      removeValues(forKeys: [
-        .exchangeRateBTCUSD,
-        .feeBest,
-        .feeBetter,
-        .feeGood,
-        .didTutorial,
-        .blockheight,
-        .receiveAddressIndexGaps,
-        .walletID,
-        .unseenTransactionChangesExist,
-        .userID,
-        .pendingInvitations,
-        .backupWordsReminderShown,
-        .unseenTransactionChangesExist,
-        .lastSuccessfulSyncCompletedAt
-        ])
-      CKUserDefaults.standardDefaults.synchronize()
-    }
-
-    func deleteAll() {
-      removeValues(forKeys: Key.allCases)
-    }
-
-    func removeWalletId() {
-      removeValue(forKey: .walletID)
-    }
-
-    func unverifyUser() {
-      removeValues(forKeys: [.pendingInvitations, .userID])
-    }
-
-    let indexGapKey = CKUserDefaults.Key.receiveAddressIndexGaps.rawValue
-    var receiveAddressIndexGaps: Set<Int> {
-      get {
-        if let gaps = CKUserDefaults.standardDefaults.array(forKey: indexGapKey) as? [Int] {
-          return Set(gaps)
-        } else {
-          return Set<Int>()
-        }
-      }
-      set {
-        let numbers: [NSNumber] = Array(newValue).map { NSNumber(value: $0) } // map Set<Int> to [NSNumber]
-        CKUserDefaults.standardDefaults.set(NSArray(array: numbers), forKey: indexGapKey)
-      }
-    }
-
-    func persist(pendingInvitationData invitationData: PendingInvitationData) {
-      guard let data = invitationData.asData() else { return }
-      let pendingKey = CKUserDefaults.Key.pendingInvitations.defaultsString
-      var existing: [String: Data] = [:]
-      if let value = CKUserDefaults.standardDefaults.dictionary(forKey: pendingKey) as? [String: Data] {
-        existing = value
-      }
-      let toMerge: [String: Data] = [invitationData.id: data]
-      let merged = existing.merging(toMerge, uniquingKeysWith: { (_, new) in new })
-      CKUserDefaults.standardDefaults.set(merged, forKey: pendingKey)
-    }
-
-    func pendingInvitations() -> [PendingInvitationData] {
-      let pendingKey = CKUserDefaults.Key.pendingInvitations.defaultsString
-      guard let pendingInvitations = CKUserDefaults.standardDefaults.dictionary(forKey: pendingKey) as? [String: Data] else { return [] }
-      return pendingInvitations.values.compactMap { PendingInvitationData.decode(from: $0) }
-    }
-
-    func pendingInvitation(with id: String) -> PendingInvitationData? {
-      let pendingKey = CKUserDefaults.Key.pendingInvitations.defaultsString
-      guard let pendingInvitations = CKUserDefaults.standardDefaults.dictionary(forKey: pendingKey) as? [String: Data] else { return nil }
-      return pendingInvitations[id].flatMap { PendingInvitationData.decode(from: $0) }
-    }
-
-    @discardableResult
-    func removePendingInvitation(with id: String) -> PendingInvitationData? {
-      let pendingKey = CKUserDefaults.Key.pendingInvitations.defaultsString
-      var existing: [String: Data] = [:]
-      if let value = CKUserDefaults.standardDefaults.dictionary(forKey: pendingKey) as? [String: Data] {
-        existing = value
-      }
-      let removed = existing.removeValue(forKey: id).flatMap { PendingInvitationData.decode(from: $0) }
-      CKUserDefaults.standardDefaults.set(existing, forKey: pendingKey)
-      return removed
-    }
-
-    func setPendingInvitationFailed(_ invitation: PendingInvitationData) {
-      var newInvitation = invitation
-      newInvitation.failedToSendAt = Date()
-      guard let data = newInvitation.asData() else { return }
-
-      let pendingKey = CKUserDefaults.Key.pendingInvitations.defaultsString
-      var existing: [String: Data] = [:]
-      if let value = CKUserDefaults.standardDefaults.dictionary(forKey: pendingKey) as? [String: Data] {
-        existing = value
-      }
-
-      existing[invitation.id] = data
-
-      CKUserDefaults.standardDefaults.set(existing, forKey: pendingKey)
-    }
-  } // end CKUserDefaults class
-
-  private func save() {
-    CKUserDefaults.standardDefaults.synchronize()
-  }
-
-  func double(for key: PersistenceManager.CKUserDefaults.Key) -> Double {
+  func double(for key: CKUserDefaults.Key) -> Double {
     return CKUserDefaults.standardDefaults.double(forKey: key.defaultsString)
   }
 
-  func set(_ doubleValue: Double, for key: PersistenceManager.CKUserDefaults.Key) {
+  func set(_ doubleValue: Double, for key: CKUserDefaults.Key) {
     CKUserDefaults.standardDefaults.set(doubleValue, forKey: key.defaultsString)
   }
 
-  func integer(for key: PersistenceManager.CKUserDefaults.Key) -> Int {
+  func integer(for key: CKUserDefaults.Key) -> Int {
     return CKUserDefaults.standardDefaults.integer(forKey: key.defaultsString)
   }
 
-  func set(_ integerValue: Int, for key: PersistenceManager.CKUserDefaults.Key) {
+  func set(_ integerValue: Int, for key: CKUserDefaults.Key) {
     CKUserDefaults.standardDefaults.set(integerValue, forKey: key.defaultsString)
   }
 
-  func string(for key: PersistenceManager.CKUserDefaults.Key) -> String? {
+  func string(for key: CKUserDefaults.Key) -> String? {
     return CKUserDefaults.standardDefaults.string(forKey: key.defaultsString)
   }
 
-  func array(for key: PersistenceManager.CKUserDefaults.Key) -> [String]? {
+  func array(for key: CKUserDefaults.Key) -> [String]? {
     guard let array = CKUserDefaults.standardDefaults.array(forKey: key.defaultsString) as? [String] else {
       return nil
     }
@@ -586,35 +418,35 @@ class PersistenceManager: PersistenceManagerType {
     return array
   }
 
-  func set(_ array: [String], for key: PersistenceManager.CKUserDefaults.Key) {
+  func set(_ array: [String], for key: CKUserDefaults.Key) {
     CKUserDefaults.standardDefaults.set(array, forKey: key.defaultsString)
   }
 
-  func set(_ string: String, for key: PersistenceManager.CKUserDefaults.Key) {
+  func set(_ string: String, for key: CKUserDefaults.Key) {
     CKUserDefaults.standardDefaults.set(string, forKey: key.defaultsString)
   }
 
-  func set(_ stringValue: PersistenceManager.CKUserDefaults.Value, for key: PersistenceManager.CKUserDefaults.Key) {
+  func set(_ stringValue: CKUserDefaults.Value, for key: CKUserDefaults.Key) {
     set(stringValue.defaultsString, for: key)
   }
 
-  func set(stringValue: String, for key: PersistenceManager.CKUserDefaults.Key) {
+  func set(stringValue: String, for key: CKUserDefaults.Key) {
     CKUserDefaults.standardDefaults.set(stringValue, forKey: key.defaultsString)
   }
 
-  func set(_ bool: Bool, for key: PersistenceManager.CKUserDefaults.Key) {
+  func set(_ bool: Bool, for key: CKUserDefaults.Key) {
     CKUserDefaults.standardDefaults.set(bool, forKey: key.defaultsString)
   }
 
-  func bool(for key: PersistenceManager.CKUserDefaults.Key) -> Bool {
+  func bool(for key: CKUserDefaults.Key) -> Bool {
     return CKUserDefaults.standardDefaults.bool(forKey: key.defaultsString)
   }
 
-  func set(_ date: Date, for key: PersistenceManager.CKUserDefaults.Key) {
+  func set(_ date: Date, for key: CKUserDefaults.Key) {
     CKUserDefaults.standardDefaults.set(date, forKey: key.defaultsString)
   }
 
-  func date(for key: PersistenceManager.CKUserDefaults.Key) -> Date? {
+  func date(for key: CKUserDefaults.Key) -> Date? {
     return CKUserDefaults.standardDefaults.object(forKey: key.defaultsString) as? Date
   }
 

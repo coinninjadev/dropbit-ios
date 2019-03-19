@@ -111,7 +111,7 @@ class PersistenceManagerTests: XCTestCase {
       memo: "test memo"
     )
 
-    let userDefaultsManager = PersistenceManager.CKUserDefaults()
+    let userDefaultsManager = CKUserDefaults()
     self.sut = PersistenceManager(userDefaultsManager: userDefaultsManager)
 
     self.sut.persist(pendingInvitationData: pendingInv1)
