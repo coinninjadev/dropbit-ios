@@ -221,7 +221,9 @@ class AppCoordinator: CoordinatorType {
   }
 
   private func setInitialRootViewController() {
-    if launchStateManager.shouldRequireAuthentication {
+    if launchStateManager.isFirstTimeAfteriCloudRestore() {
+      startFirstTimeAfteriCloudRestore()
+    } else if launchStateManager.shouldRequireAuthentication {
       registerWalletWithServerIfNeeded {
         self.requireAuthenticationIfNeeded {
           self.continueSetupFlow()
@@ -537,6 +539,7 @@ class AppCoordinator: CoordinatorType {
     case .createWallet:   startCreateRecoveryWordsFlow()
     case .verifyDevice:   startDeviceVerificationFlow(shouldOrphanRoot: true)
     case .enterApp: validToStartEnteringApp()
+    case .phoneRestore: startFirstTimeAfteriCloudRestore()
     }
   }
 
@@ -693,5 +696,21 @@ class AppCoordinator: CoordinatorType {
     let viewController = PinCreationViewController.makeFromStoryboard()
     assignCoordinationDelegate(to: viewController)
     navigationController.pushViewController(viewController, animated: true)
+  }
+
+  private func startFirstTimeAfteriCloudRestore() {
+    let title = ""
+    let description = "It appears you may be launching for the first time after an iCloud/iTunes restore. If so, your database has been restored"
+      + ", but for your security, Coin Ninja does not store your recovery words outside of your phone, so we cannot restore them for you. "
+      + "If you choose to restore, and enter your 12 recovery words, tap Restore. If you choose to remove all DropBit local storage and start "
+      + "with a new wallet, tap Start Over."
+    let okAction = AlertActionConfiguration(title: "Restore", style: .default) { self.restoreWallet() }
+    let startOverAction = AlertActionConfiguration(title: "Start Over", style: .cancel) {
+      self.persistenceManager.resetPersistence()
+      self.startNewWalletFlow()
+    }
+    let alertViewModel = AlertControllerViewModel(title: title, description: description, actions: [okAction, startOverAction])
+    let alert = alertManager.alert(from: alertViewModel)
+    navigationController.topViewController()?.present(alert, animated: true)
   }
 }

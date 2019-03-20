@@ -25,6 +25,7 @@ protocol LaunchStateManagerType: AnyObject {
   func userWasAuthenticated()
   func unauthenticateUser()
   func isFirstTime() -> Bool
+  func isFirstTimeAfteriCloudRestore() -> Bool
 }
 
 /**
@@ -45,6 +46,7 @@ enum UserProfileLaunchStep: Int {
   case createWallet //covers both persisting words and checking that the user backed them up
   case verifyDevice //covers both registering the wallet and verifying the phone number
   case enterApp
+  case phoneRestore // for when a phone is replaced/upgraded, per se, and database is restored but not keychain entries
 }
 
 class LaunchStateManager: LaunchStateManagerType {
@@ -133,13 +135,25 @@ class LaunchStateManager: LaunchStateManagerType {
     } else if options.contains([.pinEntered]) {
       return .createWallet
 
+    } else if isFirstTimeAfteriCloudRestore(with: options) {
+      return .phoneRestore
+
     } else {
       return .enterPin
     }
   }
 
   func isFirstTime() -> Bool {
-    return retrieveProfileOptions().isEmpty
+    let options = retrieveProfileOptions()
+    return options.isEmpty || isFirstTimeAfteriCloudRestore(with: options)
+  }
+
+  func isFirstTimeAfteriCloudRestore() -> Bool {
+    return isFirstTimeAfteriCloudRestore(with: retrieveProfileOptions())
+  }
+
+  private func isFirstTimeAfteriCloudRestore(with options: UserProfileOptionSet) -> Bool {
+    return options.contains([.deviceVerified]) && options.subtracting(.deviceVerified).isEmpty
   }
 
   func deviceIsVerified() -> Bool {
