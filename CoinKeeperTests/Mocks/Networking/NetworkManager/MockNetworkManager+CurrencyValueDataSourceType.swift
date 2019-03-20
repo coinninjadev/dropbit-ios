@@ -15,10 +15,6 @@ extension MockNetworkManager: CurrencyValueDataSourceType {
     latestExchangeRatesWasCalled = true
   }
 
-  func latestFees(responseHandler: (Fees) -> Void) {
-    latestFeesWasCalled = true
-  }
-
   func latestFees() -> Promise<Fees> {
     return Promise { _ in }
   }
