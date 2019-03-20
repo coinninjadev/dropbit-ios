@@ -158,6 +158,7 @@ ValidatorAlertDisplayable {
 
     if let recipientDescription = self.recipientDescriptionToLoad {
       self.applyRecipient(inText: recipientDescription)
+      self.recipientDescriptionToLoad = nil
     } else {
       updateViewWithModel()
     }
