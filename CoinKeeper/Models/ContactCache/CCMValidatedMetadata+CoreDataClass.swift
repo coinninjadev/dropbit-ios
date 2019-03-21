@@ -43,7 +43,7 @@ public class CCMValidatedMetadata: NSManagedObject {
   /// that all point to the same CCMValidatedMetadata object. This provides a
   /// consistent displayName in that situation, sorted ascending.
   func firstCachedPhoneNumberByName() -> CCMPhoneNumber? {
-    let sorted = cachedPhoneNumber.sorted(by: { (lhsNumber, rhsNumber) -> Bool in
+    let sorted = cachedPhoneNumbers.sorted(by: { (lhsNumber, rhsNumber) -> Bool in
       guard let lhsName = lhsNumber.cachedContact?.displayName else { return false }
       guard let rhsName = rhsNumber.cachedContact?.displayName else { return true }
       return lhsName < rhsName
