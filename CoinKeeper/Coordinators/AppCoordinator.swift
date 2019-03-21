@@ -700,16 +700,9 @@ class AppCoordinator: CoordinatorType {
 
   private func startFirstTimeAfteriCloudRestore() {
     let title = ""
-    let description = "It appears you may be launching for the first time after an iCloud/iTunes restore. If so, your database has been restored"
-      + ", but for your security, Coin Ninja does not store your recovery words outside of your phone, so we cannot restore them for you. "
-      + "If you choose to restore, and enter your 12 recovery words, tap Restore. If you choose to remove all DropBit local storage and start "
-      + "with a new wallet, tap Start Over."
-    let okAction = AlertActionConfiguration(title: "Restore", style: .default) { self.restoreWallet() }
-    let startOverAction = AlertActionConfiguration(title: "Start Over", style: .cancel) {
-      self.persistenceManager.resetPersistence()
-      self.startNewWalletFlow()
-    }
-    let alertViewModel = AlertControllerViewModel(title: title, description: description, actions: [okAction, startOverAction])
+    let description = "It looks like you have restored from a backup. Please enter your 12 recovery words to restore your wallet."
+    let okAction = AlertActionConfiguration(title: "RESTORE NOW", style: .default) { self.restoreWallet() }
+    let alertViewModel = AlertControllerViewModel(title: title, description: description, actions: [okAction])
     let alert = alertManager.alert(from: alertViewModel)
     navigationController.topViewController()?.present(alert, animated: true)
   }
