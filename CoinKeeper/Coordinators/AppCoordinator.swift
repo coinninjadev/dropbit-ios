@@ -165,6 +165,12 @@ class AppCoordinator: CoordinatorType {
     return KeychainMigrationWorker(migrators: factory.migrators())
   }
 
+  func createContactCacheMigrationWorker() -> ContactCacheMigrationWorker {
+    let factory = ContactCacheMigratorFactory(persistenceManager: self.persistenceManager,
+                                              dataWorker: self.contactCacheDataWorker)
+    return ContactCacheMigrationWorker(migrators: factory.migrators())
+  }
+
   func createMigratorFactory(in context: NSManagedObjectContext) -> DatabaseMigratorFactory? {
     guard let wmgr = walletManager else { return nil }
     let addressDataSource = wmgr.createAddressDataSource()

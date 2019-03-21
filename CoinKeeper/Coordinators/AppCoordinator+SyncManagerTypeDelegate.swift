@@ -79,6 +79,7 @@ extension AppCoordinator: SerialQueueManagerDelegate {
     }
 
     let keychainWorker = self.createKeychainMigrationWorker()
+    let contactCacheMigrationWorker = self.createContactCacheMigrationWorker()
 
     let syncHelpers = SyncDependencies(
       walletManager: wmgr,
@@ -88,6 +89,7 @@ extension AppCoordinator: SerialQueueManagerDelegate {
       walletWorker: walletWorker,
       databaseMigrationWorker: dbWorker,
       keychainMigrationWorker: keychainWorker,
+      contactCacheMigrationWorker: contactCacheMigrationWorker,
       persistenceManager: persistenceManager,
       networkManager: networkManager,
       connectionManager: connectionManager,

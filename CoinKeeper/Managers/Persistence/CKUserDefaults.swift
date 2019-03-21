@@ -40,6 +40,7 @@ class CKUserDefaults: PersistenceUserDefaultsType {
     case backupWordsReminderShown
     case migrationVersions //database
     case keychainMigrationVersions
+    case contactCacheMigrationVersions
     case lastSuccessfulSyncCompletedAt
 
     var defaultsString: String { return self.rawValue }

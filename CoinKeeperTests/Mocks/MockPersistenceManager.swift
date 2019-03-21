@@ -275,6 +275,14 @@ class MockPersistenceManager: PersistenceManagerType {
     return false
   }
 
+  func setContactCacheMigrationFlag(migrated: Bool, for version: ContactCacheMigrationVersion) {
+
+  }
+
+  func contactCacheMigrationFlag(for version: ContactCacheMigrationVersion) -> Bool {
+    return false
+  }
+
   // MARK: KeychainManager
   class MockPersistenceKeychainManager: PersistenceKeychainType {
     func backup(recoveryWords words: [String]) {}
