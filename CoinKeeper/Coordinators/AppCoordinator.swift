@@ -334,7 +334,7 @@ class AppCoordinator: CoordinatorType {
     trackIfUserHasWallet()
     trackIfUserHasWordsBackedUp()
     trackEventForFirstTimeOpeningAppIfApplicable()
-    UIApplication.shared.setMinimumBackgroundFetchInterval(TimeInterval(3600)) //one hour
+    UIApplication.shared.setMinimumBackgroundFetchInterval(.oneHour)
 
     self.contactCacheDataWorker.reloadSystemContactsIfNeeded { [weak self] _ in
       self?.persistenceManager.matchContactsIfPossible()

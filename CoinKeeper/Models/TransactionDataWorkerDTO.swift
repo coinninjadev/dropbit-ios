@@ -33,7 +33,7 @@ struct TransactionDataWorkerDTO {
     return copy
   }
 
-  var txids: [String] {
+  var atsResponsesTxIds: [String] {
     return atsResponses.map { $0.txid }
   }
 
