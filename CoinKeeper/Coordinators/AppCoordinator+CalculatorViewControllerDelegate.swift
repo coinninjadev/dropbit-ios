@@ -52,10 +52,8 @@ extension AppCoordinator: CalculatorViewControllerDelegate {
     let sendPaymentViewController = SendPaymentViewController.makeFromStoryboard()
     assignCoordinationDelegate(to: sendPaymentViewController)
     sendPaymentViewController.alertManager = self.alertManager
-    let parser = CKRecipientParser(kit: self.phoneNumberKit)
     sendPaymentViewController.viewModel = SendPaymentViewModel(btcAmount: converter.btcValue,
-                                                               primaryCurrency: converter.fromCurrency,
-                                                               parser: parser)
+                                                               primaryCurrency: converter.fromCurrency)
     navigationController.present(sendPaymentViewController, animated: true)
   }
 

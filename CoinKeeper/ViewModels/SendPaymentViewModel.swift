@@ -135,10 +135,9 @@ struct SendPaymentViewModel: SendPaymentViewModelType {
     }
   }
 
-  let recipientParser: RecipientParserType
+  let recipientParser: RecipientParserType = CKRecipientParser(kit: PhoneNumberKit())
 
-  init(qrCode: QRCode, primaryCurrency: CurrencyCode, parser: RecipientParserType) {
-    self.recipientParser = parser
+  init(qrCode: QRCode, primaryCurrency: CurrencyCode) {
     self.paymentRecipient = qrCode.address.flatMap { .btcAddress($0) }
     self.btcAmount = qrCode.btcAmount
     self.primaryCurrency = primaryCurrency
@@ -146,9 +145,8 @@ struct SendPaymentViewModel: SendPaymentViewModelType {
     self.memo = nil
   }
 
-  init(btcAmount: NSDecimalNumber, primaryCurrency: CurrencyCode, parser: RecipientParserType,
+  init(btcAmount: NSDecimalNumber, primaryCurrency: CurrencyCode,
        address: String? = nil, requiredFeeRate: Double? = nil, memo: String? = nil) {
-    self.recipientParser = parser
     self.paymentRecipient = address.flatMap { .btcAddress($0) }
     self.btcAmount = btcAmount
     self.primaryCurrency = primaryCurrency
@@ -156,12 +154,11 @@ struct SendPaymentViewModel: SendPaymentViewModelType {
     self.memo = memo
   }
 
-  init?(response: MerchantPaymentRequestResponse, parser: RecipientParserType) {
+  init?(response: MerchantPaymentRequestResponse) {
     guard let output = response.outputs.first else { return nil }
     let amount = NSDecimalNumber(integerAmount: output.amount, currency: .BTC)
     self.init(btcAmount: amount,
               primaryCurrency: .BTC,
-              parser: parser,
               address: output.address,
               requiredFeeRate: response.requiredFeeRate,
               memo: response.memo)
