@@ -500,13 +500,7 @@ class AppCoordinator: CoordinatorType {
       })
     }
 
-    let contactCacheMigrationWorker = self.createContactCacheMigrationWorker()
-    _ = contactCacheMigrationWorker.migrateIfPossible()
-      .done {
-        self.contactCacheDataWorker.reloadSystemContactsIfNeeded(force: false) { [weak self] _ in
-          self?.persistenceManager.matchContactsIfPossible()
-        }
-    }
+    refreshContacts()
   }
 
   func resetWalletManagerIfNeeded() {
@@ -517,9 +511,11 @@ class AppCoordinator: CoordinatorType {
     setCurrentCoin()
   }
 
+  /// Called only on first open, after didFinishLaunchingWithOptions, when appEnteredActiveState is not called
   func appBecameActive() {
     resetWalletManagerIfNeeded()
     handlePendingBitcoinURL()
+    refreshContacts()
   }
 
   /// Handle app leaving active state, either becoming inactive, entering background, or terminating.
@@ -528,6 +524,16 @@ class AppCoordinator: CoordinatorType {
     connectionManager.stop()
     self.bitcoinURLToOpen = nil
     //    UIApplication.shared.applicationIconBadgeNumber = persistenceManager.pendingInvitations().count
+  }
+
+  private func refreshContacts() {
+    let contactCacheMigrationWorker = self.createContactCacheMigrationWorker()
+    _ = contactCacheMigrationWorker.migrateIfPossible()
+      .done {
+        self.contactCacheDataWorker.reloadSystemContactsIfNeeded(force: false) { [weak self] _ in
+          self?.persistenceManager.matchContactsIfPossible()
+        }
+    }
   }
 
   func resetUserAuthenticatedState() {
