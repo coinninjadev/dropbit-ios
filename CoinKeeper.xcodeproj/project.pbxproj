@@ -490,6 +490,9 @@
 		B51FB0E621751F75005CBAD6 /* CNNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BA389A82035E62F00B599A0 /* CNNavigationController.swift */; };
 		B51FB0E82175221A005CBAD6 /* UITestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51FB0E72175221A005CBAD6 /* UITestCase.swift */; };
 		B521E85F218785B8002DB8C2 /* CoreDataObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = B559AF1021811FDD001D44F2 /* CoreDataObserver.swift */; };
+		B5221D5122441CAA0081C868 /* ContactCacheMigratorFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5221D5022441CAA0081C868 /* ContactCacheMigratorFactory.swift */; };
+		B5221D5322441CC30081C868 /* MigrateContactCacheV1toV2.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5221D5222441CC30081C868 /* MigrateContactCacheV1toV2.swift */; };
+		B5221D55224427C40081C868 /* ContactCacheMigrationWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5221D54224427C40081C868 /* ContactCacheMigrationWorker.swift */; };
 		B523DFC220926E88008A789D /* Collection+IsNotEmpty.swift in Sources */ = {isa = PBXBuildFile; fileRef = B523DFC120926E88008A789D /* Collection+IsNotEmpty.swift */; };
 		B524B242216CEB5200F669F4 /* MockNetworkManager+MessageRequestable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B524B240216CEAAE00F669F4 /* MockNetworkManager+MessageRequestable.swift */; };
 		B5264B2F21909196009164F6 /* ResponseStringsTestable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5264B2E21909196009164F6 /* ResponseStringsTestable.swift */; };
@@ -1267,6 +1270,9 @@
 		B51F823D207BDEC900692F5B /* UIView+ParentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+ParentViewController.swift"; sourceTree = "<group>"; };
 		B51FB0E72175221A005CBAD6 /* UITestCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITestCase.swift; sourceTree = "<group>"; };
 		B5221D4F2243FFB70081C868 /* ContactCache v2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "ContactCache v2.xcdatamodel"; sourceTree = "<group>"; };
+		B5221D5022441CAA0081C868 /* ContactCacheMigratorFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactCacheMigratorFactory.swift; sourceTree = "<group>"; };
+		B5221D5222441CC30081C868 /* MigrateContactCacheV1toV2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MigrateContactCacheV1toV2.swift; sourceTree = "<group>"; };
+		B5221D54224427C40081C868 /* ContactCacheMigrationWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactCacheMigrationWorker.swift; sourceTree = "<group>"; };
 		B523DFC120926E88008A789D /* Collection+IsNotEmpty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Collection+IsNotEmpty.swift"; sourceTree = "<group>"; };
 		B524B240216CEAAE00F669F4 /* MockNetworkManager+MessageRequestable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MockNetworkManager+MessageRequestable.swift"; sourceTree = "<group>"; };
 		B5264B2E21909196009164F6 /* ResponseStringsTestable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseStringsTestable.swift; sourceTree = "<group>"; };
@@ -1808,6 +1814,7 @@
 			isa = PBXGroup;
 			children = (
 				B52CC6AA221EC63F00B00C9E /* ContactCacheDataWorker.swift */,
+				B5221D54224427C40081C868 /* ContactCacheMigrationWorker.swift */,
 				B552EDE2211E33D000332BB5 /* TransactionDataWorker.swift */,
 				B552EDE6211E33D000332BB5 /* WalletAddressDataWorker.swift */,
 				3B80E27421BE9D7A00F6EF17 /* DatabaseMigrationWorker.swift */,
@@ -1915,6 +1922,8 @@
 			children = (
 				3B4A9F2E21BEF55F0009CDF6 /* DatabaseMigratorFactory.swift */,
 				3B80E27721BEEDD300F6EF17 /* MigrateDatabaseV1toV2.swift */,
+				B5221D5022441CAA0081C868 /* ContactCacheMigratorFactory.swift */,
+				B5221D5222441CC30081C868 /* MigrateContactCacheV1toV2.swift */,
 				B5DDB0F621DE69C100A25929 /* KeychainMigratorFactory.swift */,
 				B5DDB0F821DE6A1100A25929 /* MigrateKeychainV1toV2.swift */,
 			);
@@ -3285,6 +3294,7 @@
 				A2AA3778210112C000633F83 /* UIImageView+GIF.swift in Sources */,
 				B57F06832243CF0200C147D2 /* TimeInterval+Constants.swift in Sources */,
 				3B2E3ED021C92FE600AE55DE /* SyncDependencies.swift in Sources */,
+				B5221D5122441CAA0081C868 /* ContactCacheMigratorFactory.swift in Sources */,
 				3BACDB992190B7DB0006F2D4 /* AppCoordinator+RecoveryWordsIntroViewControllerDelegate.swift in Sources */,
 				A293E35020F67F390099ED69 /* SuccessFailViewModel.swift in Sources */,
 				A2E0300220EABF8E00E160E9 /* RestoreWalletViewController.swift in Sources */,
@@ -3377,6 +3387,7 @@
 				3BA9F60F208F6EBF0047C213 /* AppCoordinator+RequestPayViewControllerDelegate.swift in Sources */,
 				4A75CAF92090FB0D00E8E653 /* DeviceVerificationViewController.swift in Sources */,
 				B526760720F5059F003144A7 /* PriceTransactionResponse.swift in Sources */,
+				B5221D55224427C40081C868 /* ContactCacheMigrationWorker.swift in Sources */,
 				403AAD5E2063513900F7A2BA /* Model.xcdatamodeld in Sources */,
 				30C0974E219C64F80064F19E /* Int+NSDecimalNumber.swift in Sources */,
 				307DF119214C297E00260369 /* MessageResponse.swift in Sources */,
@@ -3564,6 +3575,7 @@
 				3B61B6E220DD282E0021D69E /* SendPaymentViewControllerDelegate.swift in Sources */,
 				3B124E102020EB2B00431E2E /* AppDelegate.swift in Sources */,
 				3BD7B73120D66F12005057A7 /* HorizontallyPaginatedCollectionViewLayout.swift in Sources */,
+				B5221D5322441CC30081C868 /* MigrateContactCacheV1toV2.swift in Sources */,
 				B56E15972167DB26003B69D4 /* NetworkManager+WalletRequestable.swift in Sources */,
 				B5A42A98217A31D800EB32CB /* UserNotifiableError.swift in Sources */,
 				A29CE0C72098F84300761B91 /* SuccessFailViewController.swift in Sources */,

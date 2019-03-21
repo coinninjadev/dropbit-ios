@@ -134,6 +134,8 @@ protocol PersistenceManagerType: DeviceCountryCodeProvider {
   func databaseMigrationFlag(for version: DatabaseMigrationVersion) -> Bool
   func setKeychainMigrationFlag(migrated: Bool, for version: KeychainMigrationVersion)
   func keychainMigrationFlag(for version: KeychainMigrationVersion) -> Bool
+  func setContactCacheMigrationFlag(migrated: Bool, for version: ContactCacheMigrationVersion)
+  func contactCacheMigrationFlag(for version: ContactCacheMigrationVersion) -> Bool
 
   /// Look for any transactions sent to a phone number without a contact name, and provide a name if found, as a convenience when viewing tx history
   func matchContactsIfPossible()
