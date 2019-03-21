@@ -54,6 +54,9 @@
                                     <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2Q4-Um-Y5Z" customClass="LightBorderedButton" customModule="DropBit" customModuleProvider="target">
                                         <rect key="frame" x="250" y="35.5" width="77" height="30"/>
                                         <state key="normal" title="SEND MAX"/>
+                                        <connections>
+                                            <action selector="performSendMax" destination="mA3-RJ-Qjv" eventType="touchUpInside" id="9we-wt-hw1"/>
+                                        </connections>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" text="Secondary Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MFr-LH-oew">
                                         <rect key="frame" x="0.0" y="81" width="327" height="20.5"/>

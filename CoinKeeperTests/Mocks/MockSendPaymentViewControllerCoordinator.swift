@@ -9,6 +9,7 @@
 import Foundation
 import UIKit
 import PromiseKit
+import CNBitcoinKit
 @testable import DropBit
 import enum Result.Result
 
@@ -22,6 +23,17 @@ class MockSendPaymentViewControllerCoordinator: SendPaymentViewControllerCoordin
 
   func viewController(_ viewController: UIViewController, checkForContactFromGenericContact genericContact: GenericContact) -> ValidatedContact? {
     return nil
+  }
+
+  var fakeTransactionData: CNBTransactionData?
+  var didAskToSendMaxFunds = false
+  func viewController(_ viewController: UIViewController, sendMaxFundsTo address: String, feeRate: Double) -> Promise<CNBTransactionData> {
+    didAskToSendMaxFunds = true
+    if let data = fakeTransactionData {
+      return Promise.value(data)
+    } else {
+      return Promise(error: TransactionDataError.insufficientFunds)
+    }
   }
 
   var networkManager: NetworkManagerType

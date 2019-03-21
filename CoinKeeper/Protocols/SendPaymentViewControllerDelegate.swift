@@ -6,7 +6,9 @@
 //  Copyright © 2018 Coin Ninja, LLC. All rights reserved.
 //
 
-import Result
+import CNBitcoinKit
+import PromiseKit
+import enum Result.Result
 
 protocol SendPaymentViewControllerDelegate: DeviceCountryCodeProvider {
   func sendPaymentViewControllerDidLoad(_ viewController: UIViewController)
@@ -48,5 +50,10 @@ protocol SendPaymentViewControllerDelegate: DeviceCountryCodeProvider {
   func showAlertForInvalidContactOrPhoneNumber(contactName: String?, displayNumber: String)
 
   func viewController(_ viewController: UIViewController, checkForContactFromGenericContact genericContact: GenericContact) -> ValidatedContact?
-  func viewController(_ viewController: UIViewController, sendMaxFundsTo address: String, feeRate: Double)
+
+  func viewController(
+    _ viewController: UIViewController,
+    sendMaxFundsTo address: String,
+    feeRate: Double
+  ) -> Promise<CNBTransactionData>
 }

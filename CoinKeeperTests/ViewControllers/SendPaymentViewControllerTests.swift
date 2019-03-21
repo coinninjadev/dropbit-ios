@@ -90,6 +90,12 @@ class SendPaymentViewControllerTests: XCTestCase {
     XCTAssertTrue(actions.contains(selector), "bitcoinAddressButton should contain action")
   }
 
+  func testSendMaxButtonContainsAction() {
+    let actions = self.sut.sendMaxButton.actions(forTarget: self.sut, forControlEvent: .touchUpInside) ?? []
+    let selector = #selector(SendPaymentViewController.performSendMax).description
+    XCTAssertTrue(actions.contains(selector), "sendMaxButton should contain action")
+  }
+
   // MARK: actions produce results
   func testCloseButtonTappedProducesResult() {
     self.sut.closeButton.sendActions(for: .touchUpInside)
@@ -198,120 +204,18 @@ class SendPaymentViewControllerTests: XCTestCase {
     XCTAssertEqual(self.sut.viewModel.primaryCurrency, .BTC)
   }
 
-  // MARK: private classes
-  class MockCoordinator: SendPaymentViewControllerDelegate {
-    func showAlertForInvalidContactOrPhoneNumber(contactName: String?, displayNumber: String) {
-    }
+  func testSendMaxAsksCoordinationDelegateToReturnPromiseOfTxData() {
+    // given
+    let mockPersistenceManager = MockPersistenceManager()
+    let mockNetworkManager = MockNetworkManager(persistenceManager: mockPersistenceManager)
+    let mockCoordinator = MockSendPaymentViewControllerCoordinator(networkManager: mockNetworkManager)
+    sut.generalCoordinationDelegate = mockCoordinator
+    sut.viewModel.requiredFeeRate = 5.0
 
-    func viewController(_ viewController: UIViewController, checkForContactFromGenericContact genericContact: GenericContact) -> ValidatedContact? {
-      return nil
-    }
+    // when
+    sut.sendMaxButton.sendActions(for: .touchUpInside)
 
-    func deviceCountryCode() -> Int? {
-      return nil
-    }
-
-    let networkManager: NetworkManagerType = MockNetworkManager(persistenceManager: MockPersistenceManager())
-
-    func sendPaymentViewControllerDidLoad(_ viewController: UIViewController) {}
-
-    func viewControllerDidRequestAlert(_ viewController: UIViewController, viewModel: AlertControllerViewModel) {}
-
-    func balanceNetPending() -> NSDecimalNumber {
-      return .zero
-    }
-
-    func spendableBalanceNetPending() -> NSDecimalNumber {
-      return .zero
-    }
-
-    var balanceUpdateManager: BalanceUpdateManager
-
-    init() {
-      balanceUpdateManager = BalanceUpdateManager()
-    }
-
-    func latestExchangeRates(responseHandler: (ExchangeRates) -> Void) {
-
-    }
-
-    func latestFees() -> Promise<Fees> {
-      return Promise.value([:])
-    }
-
-    var didTapScan = false
-    func viewControllerDidPressScan(_ viewController: UIViewController, btcAmount: NSDecimalNumber, primaryCurrency: CurrencyCode) {
-      didTapScan = true
-    }
-
-    var didTapContacts = false
-    func viewControllerDidPressContacts(_ viewController: UIViewController & SelectedValidContactDelegate) {
-      didTapContacts = true
-    }
-
-    func viewController(
-      _ viewController: UIViewController,
-      checkingCachedAddressesFor phoneNumberHash: String,
-      completion: @escaping (Result<[WalletAddressesQueryResponse], UserProviderError>) -> Void) {
-
-    }
-
-    func viewControllerDidRequestVerificationCheck(_ viewController: UIViewController, completion: @escaping (() -> Void)) {
-
-    }
-
-    func viewControllerShouldInitiallyAllowMemoSharing(_ viewController: SendPaymentViewController) -> Bool {
-      return true
-    }
-
-    var didTapClose = false
-    func viewControllerDidSelectClose(_ viewController: UIViewController) {
-      didTapClose = true
-    }
-
-    func viewControllerDidSendPayment(
-      _ viewController: UIViewController,
-      btcAmount: NSDecimalNumber,
-      requiredFeeRate: Double?,
-      primaryCurrency: CurrencyCode,
-      address: String?,
-      contact: ContactType?,
-      rates: ExchangeRates,
-      sharedPayload: SharedPayloadDTO) {
-
-    }
-
-    func viewControllerDidBeginAddressNegotiation(
-      _ viewController: UIViewController,
-      btcAmount: NSDecimalNumber,
-      primaryCurrency: CurrencyCode,
-      contact: ContactType,
-      memo: String?,
-      rates: ExchangeRates,
-      memoIsShared: Bool,
-      sharedPayload: SharedPayloadDTO) {
-
-    }
-
-    func viewControllerDidPasteInvalidDestination(_ viewController: UIViewController) {
-
-    }
-
-    func viewControllerDidAttemptInvalidDestination(_ viewController: UIViewController, error: Error?) {
-
-    }
-
-    var didTapPaste = false
-    func viewControllerDidSelectPaste(_ viewController: UIViewController) {
-      didTapPaste = true
-    }
-
-    var didSelectMemoButton = false
-    func viewControllerDidSelectMemoButton(_ viewController: UIViewController, memo: String?, completion: @escaping (String) -> Void) {
-      didSelectMemoButton = true
-    }
-
-    func openURL(_ url: URL, completionHandler completion: ((Bool) -> Void)?) { }
+    // then
+    XCTAssertTrue(mockCoordinator.didAskToSendMaxFunds)
   }
-
 }

@@ -114,6 +114,25 @@ ValidatorAlertDisplayable {
     }
   }
 
+  @IBAction func performSendMax() {
+    guard let address = viewModel.address, let feeRate = viewModel.requiredFeeRate else { return }
+    coordinationDelegate?.viewController(self, sendMaxFundsTo: address, feeRate: feeRate)
+      .done {txData in
+        print(txData)
+      }
+      .catch { error in
+        let action = AlertActionConfiguration.init(title: "OK", style: .default, action: nil)
+        let alertViewModel = AlertControllerViewModel(
+          title: "Insufficient Funds",
+          description: "There are not enough funds to cover the transaction and network fee.",
+          image: nil,
+          style: .alert,
+          actions: [action]
+        )
+        self.coordinationDelegate?.viewControllerDidRequestAlert(self, viewModel: alertViewModel)
+    }
+  }
+
   @IBAction func performStartPhoneEntry() {
     showPhoneEntryView(with: "")
     phoneNumberEntryView.textField?.becomeFirstResponder()
