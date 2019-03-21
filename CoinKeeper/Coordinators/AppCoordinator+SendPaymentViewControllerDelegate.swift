@@ -350,8 +350,8 @@ extension AppCoordinator: SendPaymentViewControllerDelegate {
     let context = contactCacheManager.mainQueueContext
     var validatedContact: ValidatedContact?
     context.performAndWait {
-      let foundContact = contactCacheManager.validatedMetadata(for: globalPhoneNumber, in: context)?.cachedPhoneNumber
-      validatedContact = foundContact.flatMap { ValidatedContact(cachedNumber: $0) }
+      let foundValidNumber = contactCacheManager.validatedMetadata(for: globalPhoneNumber, in: context)?.firstCachedPhoneNumberByName()
+      validatedContact = foundValidNumber.flatMap { ValidatedContact(cachedNumber: $0) }
     }
     return validatedContact
   }

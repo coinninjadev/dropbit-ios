@@ -39,13 +39,21 @@ public class CCMValidatedMetadata: NSManagedObject {
     }
   }
 
-
   /// It is possible for the user to have duplicates in their device contacts
   /// that all point to the same CCMValidatedMetadata object. This provides a
-  /// consistent displayName in that situation.
+  /// consistent displayName in that situation, sorted ascending.
+  func firstCachedPhoneNumberByName() -> CCMPhoneNumber? {
+    let sorted = cachedPhoneNumber.sorted(by: { (lhsNumber, rhsNumber) -> Bool in
+      guard let lhsName = lhsNumber.cachedContact?.displayName else { return false }
+      guard let rhsName = rhsNumber.cachedContact?.displayName else { return true }
+      return lhsName < rhsName
+    })
+
+    return sorted.first
+  }
+
   func firstDisplayNameForCachedPhoneNumbers() -> String? {
-    let displayNames = cachedPhoneNumber.compactMap { $0.cachedContact?.displayName }
-    return displayNames.sorted().first
+    return firstCachedPhoneNumberByName()?.cachedContact?.displayName
   }
 
 }

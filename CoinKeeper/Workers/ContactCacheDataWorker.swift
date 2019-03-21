@@ -196,9 +196,9 @@ class ContactCacheDataWorker: ContactCacheDataWorkerType {
         for metadata in metadataList {
           if let responseStatus = responseDict[metadata.hashedGlobalNumber],
             let status = PhoneNumberVerificationStatus.case(forString: responseStatus) {
-            metadata.cachedPhoneNumber?.setStatusIfDifferent(status)
+            metadata.cachedPhoneNumber.forEach { $0.setStatusIfDifferent(status) }
           } else {
-            metadata.cachedPhoneNumber?.setStatusIfDifferent(.notVerified)
+            metadata.cachedPhoneNumber.forEach { $0.setStatusIfDifferent(.notVerified) }
           }
         }
     }
