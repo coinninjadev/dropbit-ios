@@ -355,4 +355,10 @@ extension AppCoordinator: SendPaymentViewControllerDelegate {
     }
     return validatedContact
   }
+
+  func viewController(_ viewController: UIViewController, sendMaxFundsTo address: String, feeRate: Double) {
+    guard let wmgr = walletManager else { return }
+    walletManager?.transactionDataSendingMax(to: address, withFeeRate: feeRate)
+    // do something with this tx data
+  }
 }

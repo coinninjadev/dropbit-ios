@@ -48,4 +48,5 @@ protocol SendPaymentViewControllerDelegate: DeviceCountryCodeProvider {
   func showAlertForInvalidContactOrPhoneNumber(contactName: String?, displayNumber: String)
 
   func viewController(_ viewController: UIViewController, checkForContactFromGenericContact genericContact: GenericContact) -> ValidatedContact?
+  func viewController(_ viewController: UIViewController, sendMaxFundsTo address: String, feeRate: Double)
 }
