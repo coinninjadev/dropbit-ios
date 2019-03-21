@@ -19,6 +19,8 @@ extension CCMValidatedMetadata {
   @NSManaged public var countryCode: Int
   @NSManaged public var nationalNumber: String
   @NSManaged public var hashedGlobalNumber: String
-  @NSManaged public var cachedPhoneNumber: CCMPhoneNumber?
+
+  /// To-many relationship, is singular for legacy migration reasons
+  @NSManaged public var cachedPhoneNumber: Set<CCMPhoneNumber>
 
 }

@@ -1266,6 +1266,7 @@
 		B51F823B207BB00D00692F5B /* BalanceSecondaryAmountLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BalanceSecondaryAmountLabel.swift; sourceTree = "<group>"; };
 		B51F823D207BDEC900692F5B /* UIView+ParentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+ParentViewController.swift"; sourceTree = "<group>"; };
 		B51FB0E72175221A005CBAD6 /* UITestCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITestCase.swift; sourceTree = "<group>"; };
+		B5221D4F2243FFB70081C868 /* ContactCache v2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "ContactCache v2.xcdatamodel"; sourceTree = "<group>"; };
 		B523DFC120926E88008A789D /* Collection+IsNotEmpty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Collection+IsNotEmpty.swift"; sourceTree = "<group>"; };
 		B524B240216CEAAE00F669F4 /* MockNetworkManager+MessageRequestable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MockNetworkManager+MessageRequestable.swift"; sourceTree = "<group>"; };
 		B5264B2E21909196009164F6 /* ResponseStringsTestable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseStringsTestable.swift; sourceTree = "<group>"; };
@@ -4489,9 +4490,10 @@
 		B5CFA32B221DF9AF002B1BDD /* ContactCache.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				B5221D4F2243FFB70081C868 /* ContactCache v2.xcdatamodel */,
 				B5CFA32C221DF9AF002B1BDD /* ContactCache.xcdatamodel */,
 			);
-			currentVersion = B5CFA32C221DF9AF002B1BDD /* ContactCache.xcdatamodel */;
+			currentVersion = B5221D4F2243FFB70081C868 /* ContactCache v2.xcdatamodel */;
 			path = ContactCache.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

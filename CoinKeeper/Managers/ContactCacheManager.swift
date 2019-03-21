@@ -246,10 +246,10 @@ class ContactCacheManager: ContactCacheManagerType {
 
     // Find or create CCMValidatedMetadata, attach it to the CCMPhoneNumber
     if let foundMetadata = CCMValidatedMetadata.find(withNumber: globalNumber, in: context) {
-      foundMetadata.cachedPhoneNumber = cachedPhoneNumber
+      cachedPhoneNumber.cachedValidatedMetadata = foundMetadata
     } else {
       let newMetadata = CCMValidatedMetadata(phoneNumber: globalNumber, hashedGlobalNumber: hashedNumber, insertInto: context)
-      newMetadata.cachedPhoneNumber = cachedPhoneNumber
+      cachedPhoneNumber.cachedValidatedMetadata = newMetadata
     }
 
     return cachedPhoneNumber
