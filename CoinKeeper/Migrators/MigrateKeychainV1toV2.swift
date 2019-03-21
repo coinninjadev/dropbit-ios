@@ -17,7 +17,7 @@ struct MigrateKeychainV1toV2: Migratable {
     let migrated = persistenceManager.keychainMigrationFlag(for: version)
     guard !migrated else { return }
 
-    let allKeys = PersistenceManager.Keychain.Key.allCases
+    let allKeys = CKKeychain.Key.allCases
 
     for key in allKeys {
       guard let existingValue = persistenceManager.keychainManager.retrieveValue(for: key) else { continue }

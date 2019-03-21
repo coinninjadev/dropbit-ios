@@ -19,20 +19,20 @@ protocol PersistenceManagerType: DeviceCountryCodeProvider {
   var contactCacheManager: ContactCacheManagerType { get }
   var hashingManager: HashingManager { get }
 
-  func double(for key: PersistenceManager.CKUserDefaults.Key) -> Double
-  func set(_ doubleValue: Double, for key: PersistenceManager.CKUserDefaults.Key)
-  func integer(for key: PersistenceManager.CKUserDefaults.Key) -> Int
-  func set(_ integerValue: Int, for key: PersistenceManager.CKUserDefaults.Key)
-  func set(_ stringValue: PersistenceManager.CKUserDefaults.Value, for key: PersistenceManager.CKUserDefaults.Key)
-  func set(_ string: String, for key: PersistenceManager.CKUserDefaults.Key)
-  func string(for key: PersistenceManager.CKUserDefaults.Key) -> String?
-  func set(_ array: [String], for key: PersistenceManager.CKUserDefaults.Key)
-  func array(for key: PersistenceManager.CKUserDefaults.Key) -> [String]?
-  func set(_ bool: Bool, for key: PersistenceManager.CKUserDefaults.Key)
-  func set(_ date: Date, for key: PersistenceManager.CKUserDefaults.Key)
-  func date(for key: PersistenceManager.CKUserDefaults.Key) -> Date?
+  func double(for key: CKUserDefaults.Key) -> Double
+  func set(_ doubleValue: Double, for key: CKUserDefaults.Key)
+  func integer(for key: CKUserDefaults.Key) -> Int
+  func set(_ integerValue: Int, for key: CKUserDefaults.Key)
+  func set(_ stringValue: CKUserDefaults.Value, for key: CKUserDefaults.Key)
+  func set(_ string: String, for key: CKUserDefaults.Key)
+  func string(for key: CKUserDefaults.Key) -> String?
+  func set(_ array: [String], for key: CKUserDefaults.Key)
+  func array(for key: CKUserDefaults.Key) -> [String]?
+  func set(_ bool: Bool, for key: CKUserDefaults.Key)
+  func set(_ date: Date, for key: CKUserDefaults.Key)
+  func date(for key: CKUserDefaults.Key) -> Date?
 
-  func bool(for key: PersistenceManager.CKUserDefaults.Key) -> Bool
+  func bool(for key: CKUserDefaults.Key) -> Bool
 
   func resetPersistence()
   func resetWallet()
@@ -147,10 +147,10 @@ extension PersistenceManagerType {
 
 protocol PersistenceKeychainType: AnyObject {
   @discardableResult
-  func store(anyValue value: Any?, key: PersistenceManager.Keychain.Key) -> Bool
+  func store(anyValue value: Any?, key: CKKeychain.Key) -> Bool
 
   @discardableResult
-  func store(valueToHash value: String?, key: PersistenceManager.Keychain.Key) -> Bool
+  func store(valueToHash value: String?, key: CKKeychain.Key) -> Bool
 
   @discardableResult
   func store(deviceID: String) -> Bool
@@ -161,8 +161,8 @@ protocol PersistenceKeychainType: AnyObject {
   @discardableResult
   func store(userPin pin: String) -> Bool
 
-  func retrieveValue(for key: PersistenceManager.Keychain.Key) -> Any?
-  func bool(for key: PersistenceManager.Keychain.Key) -> Bool?
+  func retrieveValue(for key: CKKeychain.Key) -> Any?
+  func bool(for key: CKKeychain.Key) -> Bool?
 
   func backup(recoveryWords words: [String])
   func walletWordsBackedUp() -> Bool

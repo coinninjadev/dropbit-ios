@@ -30,13 +30,13 @@ class MockPersistenceManager: PersistenceManagerType {
     self.contactCacheManager = contactCacheManager
   }
 
-  func set(_ array: [String], for key: PersistenceManager.CKUserDefaults.Key) {}
-  func set(_ string: String, for key: PersistenceManager.CKUserDefaults.Key) {}
-  func set(_ bool: Bool, for key: PersistenceManager.CKUserDefaults.Key) {}
-  func set(_ date: Date, for key: PersistenceManager.CKUserDefaults.Key) {}
-  func array(for key: PersistenceManager.CKUserDefaults.Key) -> [String]? { return nil }
-  func bool(for key: PersistenceManager.CKUserDefaults.Key) -> Bool { return false }
-  func date(for key: PersistenceManager.CKUserDefaults.Key) -> Date? { return nil }
+  func set(_ array: [String], for key: CKUserDefaults.Key) {}
+  func set(_ string: String, for key: CKUserDefaults.Key) {}
+  func set(_ bool: Bool, for key: CKUserDefaults.Key) {}
+  func set(_ date: Date, for key: CKUserDefaults.Key) {}
+  func array(for key: CKUserDefaults.Key) -> [String]? { return nil }
+  func bool(for key: CKUserDefaults.Key) -> Bool { return false }
+  func date(for key: CKUserDefaults.Key) -> Date? { return nil }
 
   var unverifyUserWasCalled = false
   func unverifyUser(in context: NSManagedObjectContext) {
@@ -63,7 +63,7 @@ class MockPersistenceManager: PersistenceManagerType {
                                        contact: ContactType, fee: Int, acknowledgementId: String) {}
   func deleteTransactions(notIn txids: [String], in context: NSManagedObjectContext) {}
   func deleteWallet(in context: NSManagedObjectContext) {}
-  func set(_ stringValue: PersistenceManager.CKUserDefaults.Value, for key: PersistenceManager.CKUserDefaults.Key) {}
+  func set(_ stringValue: CKUserDefaults.Value, for key: CKUserDefaults.Key) {}
   func updateWalletLastIndexes(in context: NSManagedObjectContext) {}
   func deleteDeviceEndpointIds() {}
   func saveCurrentContext() {}
@@ -133,7 +133,7 @@ class MockPersistenceManager: PersistenceManagerType {
     return Promise { _ in }
   }
 
-  func string(for key: PersistenceManager.CKUserDefaults.Key) -> String? {
+  func string(for key: CKUserDefaults.Key) -> String? {
     return ""
   }
 
@@ -281,7 +281,7 @@ class MockPersistenceManager: PersistenceManagerType {
     func deleteAll() {}
     func unverifyUser() {}
 
-    func bool(for key: PersistenceManager.Keychain.Key) -> Bool? {
+    func bool(for key: CKKeychain.Key) -> Bool? {
       return nil
     }
 
@@ -295,12 +295,12 @@ class MockPersistenceManager: PersistenceManagerType {
     var values: [String: Any] = [:]
     var anyValueExists = false
 
-    func store(anyValue value: Any?, key: PersistenceManager.Keychain.Key) -> Bool {
+    func store(anyValue value: Any?, key: CKKeychain.Key) -> Bool {
       self.values[key.rawValue] = value
       anyValueExists = (self.values[key.rawValue] != nil)
       return anyValueExists
     }
-    func store(valueToHash value: String?, key: PersistenceManager.Keychain.Key) -> Bool {
+    func store(valueToHash value: String?, key: CKKeychain.Key) -> Bool {
       self.values[key.rawValue] = value
       valueExists = (self.values[key.rawValue] != nil)
       return valueExists
@@ -308,7 +308,7 @@ class MockPersistenceManager: PersistenceManagerType {
 
     var wordsExist = false
     func store(recoveryWords words: [String]) -> Bool {
-      self.values[PersistenceManager.Keychain.Key.walletWords.rawValue] = words
+      self.values[CKKeychain.Key.walletWords.rawValue] = words
       wordsExist = !words.isEmpty
       return wordsExist
     }
@@ -320,12 +320,12 @@ class MockPersistenceManager: PersistenceManagerType {
 
     var deviceIDExists = false
     func store(deviceID: String) -> Bool {
-      self.values[PersistenceManager.Keychain.Key.deviceID.rawValue] = deviceID
+      self.values[CKKeychain.Key.deviceID.rawValue] = deviceID
       deviceIDExists = !deviceID.isEmpty
       return deviceIDExists
     }
 
-    func retrieveValue(for key: PersistenceManager.Keychain.Key) -> Any? {
+    func retrieveValue(for key: CKKeychain.Key) -> Any? {
       return values[key.rawValue]
     }
 
@@ -525,22 +525,22 @@ class MockPersistenceManager: PersistenceManagerType {
     var value: [String: Any] = [:]
   }
 
-  func double(for key: PersistenceManager.CKUserDefaults.Key) -> Double {
+  func double(for key: CKUserDefaults.Key) -> Double {
     let userDefaultsManager = self.userDefaultsManager as? MockPersistenceUserDefaultsManager
     return userDefaultsManager?.value[key.rawValue] as? Double ?? 0.0
   }
 
-  func set(_ doubleValue: Double, for key: PersistenceManager.CKUserDefaults.Key) {
+  func set(_ doubleValue: Double, for key: CKUserDefaults.Key) {
     let userDefaultsManager = self.userDefaultsManager as? MockPersistenceUserDefaultsManager
     userDefaultsManager?.value[key.rawValue] = doubleValue
   }
 
-  func integer(for key: PersistenceManager.CKUserDefaults.Key) -> Int {
+  func integer(for key: CKUserDefaults.Key) -> Int {
     let userDefaultsManager = self.userDefaultsManager as? MockPersistenceUserDefaultsManager
     return userDefaultsManager?.value[key.rawValue] as? Int ?? 0
   }
 
-  func set(_ integerValue: Int, for key: PersistenceManager.CKUserDefaults.Key) {
+  func set(_ integerValue: Int, for key: CKUserDefaults.Key) {
     let userDefaultsManager = self.userDefaultsManager as? MockPersistenceUserDefaultsManager
     userDefaultsManager?.value[key.rawValue] = integerValue
   }
