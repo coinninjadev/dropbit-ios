@@ -99,7 +99,7 @@ class TransactionDataWorker: TransactionDataWorkerType {
                                                receiveFetcher: @escaping AddressFetcher,
                                                changeFetcher: @escaping AddressFetcher,
                                                in context: NSManagedObjectContext) -> Promise<Void> {
-    let syncStartDate = latestTxDate.addingTimeInterval(-3600)
+    let syncStartDate = latestTxDate.addingTimeInterval(-.oneHour)
     let lastReceiveIndex = addressDataSource.lastReceiveIndex(in: context) ?? 0
     let lastChangeIndex = addressDataSource.lastChangeIndex(in: context) ?? 0
     let seekToReceiveIndex = lastReceiveIndex + gapLimit
