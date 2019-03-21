@@ -14,10 +14,6 @@ protocol CurrencyValueDataSourceType: AnyObject {
   /// Also, checks the exchange rates and posts a notification if they have been updated
   func latestExchangeRates(responseHandler: ExchangeRatesRequest)
 
-  /// Provides a closure to be called by the delegate, which passes back the latest Fees
-  /// Also, checks the fees and posts a notification if they have been updated
-  func latestFees(responseHandler: FeesRequest)
-
   /// Returns latestFees wrapped in a Promise
   func latestFees() -> Promise<Fees>
 
@@ -52,17 +48,6 @@ extension NetworkManager: CurrencyValueDataSourceType {
     responseHandler([.BTC: 1.0, .USD: usdRate])
 
     // re-fetch the latest exchange rates
-    refetchLatestMetadataIfNecessary()
-  }
-
-  func latestFees(responseHandler: FeesRequest) {
-    // return latest fees
-    let bestFee = self.cachedBestFee
-    let betterFee = self.cachedBetterFee
-    let goodFee = self.cachedGoodFee
-    responseHandler([.best: bestFee, .better: betterFee, .good: goodFee])
-
-    // re-fetch the latest fees
     refetchLatestMetadataIfNecessary()
   }
 

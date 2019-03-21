@@ -238,10 +238,6 @@ class SendPaymentViewControllerTests: XCTestCase {
 
     }
 
-    func latestFees(responseHandler: (Fees) -> Void) {
-
-    }
-
     func latestFees() -> Promise<Fees> {
       return Promise.value([:])
     }

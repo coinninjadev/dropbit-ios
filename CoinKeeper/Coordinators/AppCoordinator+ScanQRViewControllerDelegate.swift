@@ -42,6 +42,7 @@ extension AppCoordinator: ScanQRViewControllerDelegate {
   private func createSendPaymentViewController(forQRCode qrCode: QRCode, fallbackViewModel: SendPaymentViewModel?) -> SendPaymentViewController {
     let sendPaymentViewController = SendPaymentViewController.makeFromStoryboard()
     assignCoordinationDelegate(to: sendPaymentViewController)
+    sendPaymentViewController.alertManager = self.alertManager
 
     let parser = CKRecipientParser(kit: self.phoneNumberKit)
     let primaryCurrency = fallbackViewModel?.primaryCurrency ?? .BTC

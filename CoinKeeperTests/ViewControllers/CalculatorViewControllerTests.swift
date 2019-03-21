@@ -162,11 +162,6 @@ class CalculatorViewControllerTests: XCTestCase {
       latestExchangeRatesWasCalled = true
     }
 
-    var latestFeesWasCalled = false
-    func latestFees(responseHandler: FeesRequest) {
-      latestFeesWasCalled = true
-    }
-
     func viewControllerDidRequestBadgeUpdate(_ viewController: UIViewController) {
     }
 

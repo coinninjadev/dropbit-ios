@@ -50,14 +50,19 @@ class NetworkManagerTests: XCTestCase {
     let expectedBestFee = self.persistenceManager.double(for: .feeBest)
     let expectedBetterFee = self.persistenceManager.double(for: .feeBetter)
     let expectedGoodFee = self.persistenceManager.double(for: .feeGood)
-    var fees: Fees = [:]
-    self.sut.latestFees { (feesParam) in
-      fees = feesParam
+
+    let expectation = XCTestExpectation(description: "cached fees")
+    _ = self.sut.latestFees()
+      .done { fees in
+        XCTAssertEqual(fees[.best], expectedBestFee, "best fee should equal expected value")
+        XCTAssertEqual(fees[.better], expectedBetterFee, "better fee should equal expected value")
+        XCTAssertEqual(fees[.good], expectedGoodFee, "good fee should equal expected value")
+        expectation.fulfill()
+      }.catch { error in
+        XCTFail(error.localizedDescription)
     }
 
-    XCTAssertEqual(fees[.best], expectedBestFee, "best fee should equal expected value")
-    XCTAssertEqual(fees[.better], expectedBetterFee, "better fee should equal expected value")
-    XCTAssertEqual(fees[.good], expectedGoodFee, "good fee should equal expected value")
+    wait(for: [expectation], timeout: 3.0)
   }
 
   // MARK: fetching exchange rates
