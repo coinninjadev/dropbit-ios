@@ -115,7 +115,7 @@ public class CKMAddressTransactionSummary: NSManagedObject {
   static func findAllTxids(in context: NSManagedObjectContext) -> [String] {
     let logger = OSLog(subsystem: "com.coinninja.coinkeeper.ckmaddresstransactionsummary", category: "CKMAddressTransactionSummary")
 
-    let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "CKMAddressTransactionSummary")
+    let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: CKMAddressTransactionSummary.entityName())
     let txidKey = #keyPath(CKMAddressTransactionSummary.txid)
     fetchRequest.propertiesToFetch = [txidKey]
     fetchRequest.resultType = .dictionaryResultType
