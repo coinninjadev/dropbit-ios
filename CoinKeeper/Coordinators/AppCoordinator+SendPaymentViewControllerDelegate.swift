@@ -230,7 +230,7 @@ extension AppCoordinator: SendPaymentViewControllerDelegate {
         if shouldReloadContactCache {
           strongSelf.alertManager.showActivityHUD(withStatus: "Loading Contacts")
 
-          strongSelf.contactCacheDataWorker.reloadSystemContactsIfNeeded { [weak self] error in
+          strongSelf.contactCacheDataWorker.reloadSystemContactsIfNeeded(force: false) { [weak self] error in
             if let err = error, let self = self {
               os_log("Error reloading contacts cache: %@", log: self.logger, type: .error, err.localizedDescription)
             }

@@ -340,7 +340,7 @@ class AppCoordinator: CoordinatorType {
     trackEventForFirstTimeOpeningAppIfApplicable()
     UIApplication.shared.setMinimumBackgroundFetchInterval(.oneHour)
 
-    self.contactCacheDataWorker.reloadSystemContactsIfNeeded { [weak self] _ in
+    self.contactCacheDataWorker.reloadSystemContactsIfNeeded(force: false) { [weak self] _ in
       self?.persistenceManager.matchContactsIfPossible()
     }
   }
@@ -494,7 +494,7 @@ class AppCoordinator: CoordinatorType {
       })
     }
 
-    self.contactCacheDataWorker.reloadSystemContactsIfNeeded { [weak self] _ in
+    self.contactCacheDataWorker.reloadSystemContactsIfNeeded(force: false) { [weak self] _ in
       self?.persistenceManager.matchContactsIfPossible()
     }
   }
