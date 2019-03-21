@@ -12,7 +12,7 @@
 				<string>bitcoin</string>
 			</array>
 			<key>CFBundleURLName</key>
-			<string>org.bitcoin.BitcoinPayment</string>
+			<string>com.coinninja.CoinKeeper.url.bitcoin</string>
 		</dict>
 	</array>
 	<key>CFBundleDevelopmentRegion</key>
