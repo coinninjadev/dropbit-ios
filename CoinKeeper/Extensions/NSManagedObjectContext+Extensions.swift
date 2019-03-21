@@ -38,4 +38,20 @@ extension NSManagedObjectContext {
     }
   }
 
+  /// Saves the current context until it is saved to the persistent store.
+  /// Recursive saves will proceed regardless of whether the current context has changes.
+  func saveToDisk() throws {
+    if self.hasChanges {
+      if parent == nil {
+        let changeDesc = self.changesDescription(withLinebreaks: true)
+        print("Will save changes to persistent store: \n\(changeDesc)")
+      }
+      try self.save()
+    }
+
+    if let parentContext = self.parent {
+      try parentContext.saveToDisk()
+    }
+  }
+
 }
