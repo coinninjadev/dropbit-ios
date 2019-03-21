@@ -89,7 +89,7 @@ class ContactCacheManager: ContactCacheManagerType {
     var components: ManagedContactComponents?
     mainQueueContext.performAndWait {
       if let foundMetadata = validatedMetadata(for: number, in: mainQueueContext),
-        let displayName = foundMetadata.cachedPhoneNumber?.cachedContact?.displayName,
+        let displayName = foundMetadata.firstDisplayNameForCachedPhoneNumbers(),
         let phoneInputs = ManagedPhoneNumberInputs(countryCode: foundMetadata.countryCode, nationalNumber: foundMetadata.nationalNumber) {
         let counterpartyInputs = ManagedCounterpartyInputs(name: displayName)
         components = ManagedContactComponents(counterpartyInputs: counterpartyInputs, phonenumberInputs: phoneInputs)

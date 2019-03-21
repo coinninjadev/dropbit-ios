@@ -20,7 +20,9 @@ extension CCMValidatedMetadata {
   @NSManaged public var nationalNumber: String
   @NSManaged public var hashedGlobalNumber: String
 
-  /// To-many relationship, is singular for legacy migration reasons
+  /// To-many relationship, is singular for legacy migration reasons.
+  /// If there is more than one CCMPhoneNumber, the user has duplicates in their device Contacts.
+  /// To-many enables each CCMPhoneNumber to link to this shared CCMValidatedMetadata object.
   @NSManaged public var cachedPhoneNumber: Set<CCMPhoneNumber>
 
 }
