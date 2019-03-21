@@ -438,7 +438,7 @@ class MockPersistenceManager: PersistenceManagerType {
     }
 
     var mainQueueContext: NSManagedObjectContext {
-      return NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
+      return inMemoryCoreDataStack.context
     }
 
     func persistServerAddress(

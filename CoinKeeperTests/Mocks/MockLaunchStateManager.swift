@@ -26,6 +26,10 @@ class MockLaunchStateManager: LaunchStateManagerType {
     return true
   }
 
+  func isFirstTimeAfteriCloudRestore() -> Bool {
+    return false
+  }
+
   func shouldRegisterWallet() -> Bool {
     return false
   }

@@ -223,7 +223,9 @@ class AppCoordinator: CoordinatorType {
   }
 
   private func setInitialRootViewController() {
-    if launchStateManager.shouldRequireAuthentication {
+    if launchStateManager.isFirstTimeAfteriCloudRestore() {
+      startFirstTimeAfteriCloudRestore()
+    } else if launchStateManager.shouldRequireAuthentication {
       registerWalletWithServerIfNeeded {
         self.requireAuthenticationIfNeeded {
           self.continueSetupFlow()
@@ -559,6 +561,7 @@ class AppCoordinator: CoordinatorType {
     case .createWallet:   startCreateRecoveryWordsFlow()
     case .verifyDevice:   startDeviceVerificationFlow(shouldOrphanRoot: true)
     case .enterApp: validToStartEnteringApp()
+    case .phoneRestore: startFirstTimeAfteriCloudRestore()
     }
   }
 
@@ -714,5 +717,14 @@ class AppCoordinator: CoordinatorType {
     let viewController = PinCreationViewController.makeFromStoryboard()
     assignCoordinationDelegate(to: viewController)
     navigationController.pushViewController(viewController, animated: true)
+  }
+
+  private func startFirstTimeAfteriCloudRestore() {
+    let title = ""
+    let description = "It looks like you have restored from a backup. Please enter your 12 recovery words to restore your wallet."
+    let okAction = AlertActionConfiguration(title: "RESTORE NOW", style: .default) { self.restoreWallet() }
+    let alertViewModel = AlertControllerViewModel(title: title, description: description, actions: [okAction])
+    let alert = alertManager.alert(from: alertViewModel)
+    navigationController.topViewController()?.present(alert, animated: true)
   }
 }
