@@ -16,7 +16,6 @@ struct SyncDependencies {
   let walletWorker: WalletAddressDataWorkerType
   let databaseMigrationWorker: DatabaseMigrationWorker
   let keychainMigrationWorker: KeychainMigrationWorker
-  let contactCacheMigrationWorker: ContactCacheMigrationWorker
   let persistenceManager: PersistenceManagerType
   let networkManager: NetworkManagerType
   let connectionManager: ConnectionManagerType

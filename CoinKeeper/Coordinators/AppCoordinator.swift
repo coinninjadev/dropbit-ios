@@ -500,8 +500,12 @@ class AppCoordinator: CoordinatorType {
       })
     }
 
-    self.contactCacheDataWorker.reloadSystemContactsIfNeeded(force: false) { [weak self] _ in
-      self?.persistenceManager.matchContactsIfPossible()
+    let contactCacheMigrationWorker = self.createContactCacheMigrationWorker()
+    _ = contactCacheMigrationWorker.migrateIfPossible()
+      .done {
+        self.contactCacheDataWorker.reloadSystemContactsIfNeeded(force: false) { [weak self] _ in
+          self?.persistenceManager.matchContactsIfPossible()
+        }
     }
   }
 
