@@ -8,6 +8,7 @@
 
 import Foundation
 import PhoneNumberKit
+import CNBitcoinKit
 
 enum PaymentRecipient {
 
@@ -49,6 +50,7 @@ protocol SendPaymentViewModelType: SendPaymentDataProvider {
   var memo: String? { get set }
   var sharedMemoDesired: Bool { get set }
   var sharedMemoAllowed: Bool { get set }
+  mutating func sendMax(with data: CNBTransactionData)
 
   var paymentRecipient: PaymentRecipient? { get set }
 
@@ -114,6 +116,13 @@ struct SendPaymentViewModel: SendPaymentViewModelType {
   var requiredFeeRate: Double?
   var sharedMemoDesired = true // default is true
   var sharedMemoAllowed = true // default is true
+  private var sendMaxTransactionData: CNBTransactionData?
+
+  mutating func sendMax(with data: CNBTransactionData) {
+    self.sendMaxTransactionData = data
+    self.btcAmount = NSDecimalNumber(integerAmount: Int(data.amount), currency: .BTC)
+    primaryCurrency = .BTC
+  }
 
   private var _memo: String?
   var memo: String? {
