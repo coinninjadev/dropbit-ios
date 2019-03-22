@@ -27,4 +27,9 @@ public class CCMContact: NSManagedObject {
     self.familyName = cnContact.familyName.asNilIfEmpty()
   }
 
+  static func findAll(in context: NSManagedObjectContext) throws -> [CCMContact] {
+    let fetchRequest: NSFetchRequest<CCMContact> = CCMContact.fetchRequest()
+    return try context.fetch(fetchRequest)
+  }
+
 }

@@ -230,7 +230,7 @@ extension AppCoordinator: SendPaymentViewControllerDelegate {
         if shouldReloadContactCache {
           strongSelf.alertManager.showActivityHUD(withStatus: "Loading Contacts")
 
-          strongSelf.contactCacheDataWorker.reloadSystemContactsIfNeeded { [weak self] error in
+          strongSelf.contactCacheDataWorker.reloadSystemContactsIfNeeded(force: false) { [weak self] error in
             if let err = error, let self = self {
               os_log("Error reloading contacts cache: %@", log: self.logger, type: .error, err.localizedDescription)
             }
@@ -350,8 +350,8 @@ extension AppCoordinator: SendPaymentViewControllerDelegate {
     let context = contactCacheManager.mainQueueContext
     var validatedContact: ValidatedContact?
     context.performAndWait {
-      let foundContact = contactCacheManager.validatedMetadata(for: globalPhoneNumber, in: context)?.cachedPhoneNumber
-      validatedContact = foundContact.flatMap { ValidatedContact(cachedNumber: $0) }
+      let foundValidNumber = contactCacheManager.validatedMetadata(for: globalPhoneNumber, in: context)?.firstCachedPhoneNumberByName()
+      validatedContact = foundValidNumber.flatMap { ValidatedContact(cachedNumber: $0) }
     }
     return validatedContact
   }

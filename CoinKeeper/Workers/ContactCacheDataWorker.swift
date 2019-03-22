@@ -14,7 +14,7 @@ import PromiseKit
 
 protocol ContactCacheDataWorkerType: AnyObject {
   func refreshStatuses() -> Promise<Void>
-  func reloadSystemContactsIfNeeded(completion: ((Error?) -> Void)?)
+  func reloadSystemContactsIfNeeded(force: Bool, completion: ((Error?) -> Void)?)
 }
 
 struct CachedPhoneNumberDependencies {
@@ -69,21 +69,16 @@ class ContactCacheDataWorker: ContactCacheDataWorkerType {
     case none, fullReload, selectiveUpdate
   }
 
-  func reloadSystemContactsIfNeeded(completion: ((Error?) -> Void)?) {
+  func reloadSystemContactsIfNeeded(force: Bool, completion: ((Error?) -> Void)?) {
     let bgContext = contactCacheManager.createChildBackgroundContext()
     bgContext.perform {
-      self.neededCacheAction(in: bgContext)
+      self.neededCacheAction(force: force, in: bgContext)
         .then(in: bgContext) { self.updateCache(withAction: $0, in: bgContext) }
         .done(in: bgContext) {
           let changeDesc = bgContext.changesDescription()
           os_log("Contact cache changes: %@", log: self.logger, type: .debug, changeDesc)
 
-          if bgContext.hasChanges {
-            try bgContext.save()
-            try bgContext.parent?.performThrowingAndWait {
-              try bgContext.parent?.save()
-            }
-          }
+          try bgContext.saveRecursively()
 
           DispatchQueue.main.async {
             completion?(nil)
@@ -112,9 +107,14 @@ class ContactCacheDataWorker: ContactCacheDataWorkerType {
   }
 
   /// Compare contents of system contacts with local cache to see if the cache should be reloaded
-  private func neededCacheAction(in context: NSManagedObjectContext) -> Promise<CacheAction> {
+  private func neededCacheAction(force: Bool, in context: NSManagedObjectContext) -> Promise<CacheAction> {
     guard self.permissionManager.permissionStatus(for: .contacts) == .authorized else {
         return Promise.value(.none)
+    }
+
+    if force {
+      os_log("Contact cache will force full reload", log: self.logger, type: .debug)
+      return Promise.value(.fullReload)
     }
 
     do {
@@ -196,9 +196,9 @@ class ContactCacheDataWorker: ContactCacheDataWorkerType {
         for metadata in metadataList {
           if let responseStatus = responseDict[metadata.hashedGlobalNumber],
             let status = PhoneNumberVerificationStatus.case(forString: responseStatus) {
-            metadata.cachedPhoneNumber?.setStatusIfDifferent(status)
+            metadata.cachedPhoneNumbers.forEach { $0.setStatusIfDifferent(status) }
           } else {
-            metadata.cachedPhoneNumber?.setStatusIfDifferent(.notVerified)
+            metadata.cachedPhoneNumbers.forEach { $0.setStatusIfDifferent(.notVerified) }
           }
         }
     }

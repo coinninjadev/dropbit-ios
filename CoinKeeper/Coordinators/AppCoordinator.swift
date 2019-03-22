@@ -165,6 +165,12 @@ class AppCoordinator: CoordinatorType {
     return KeychainMigrationWorker(migrators: factory.migrators())
   }
 
+  func createContactCacheMigrationWorker() -> ContactCacheMigrationWorker {
+    let factory = ContactCacheMigratorFactory(persistenceManager: self.persistenceManager,
+                                              dataWorker: self.contactCacheDataWorker)
+    return ContactCacheMigrationWorker(migrators: factory.migrators())
+  }
+
   func createMigratorFactory(in context: NSManagedObjectContext) -> DatabaseMigratorFactory? {
     guard let wmgr = walletManager else { return nil }
     let addressDataSource = wmgr.createAddressDataSource()
@@ -340,7 +346,7 @@ class AppCoordinator: CoordinatorType {
     trackEventForFirstTimeOpeningAppIfApplicable()
     UIApplication.shared.setMinimumBackgroundFetchInterval(.oneHour)
 
-    self.contactCacheDataWorker.reloadSystemContactsIfNeeded { [weak self] _ in
+    self.contactCacheDataWorker.reloadSystemContactsIfNeeded(force: false) { [weak self] _ in
       self?.persistenceManager.matchContactsIfPossible()
     }
   }
@@ -494,9 +500,7 @@ class AppCoordinator: CoordinatorType {
       })
     }
 
-    self.contactCacheDataWorker.reloadSystemContactsIfNeeded { [weak self] _ in
-      self?.persistenceManager.matchContactsIfPossible()
-    }
+    refreshContacts()
   }
 
   func resetWalletManagerIfNeeded() {
@@ -507,9 +511,11 @@ class AppCoordinator: CoordinatorType {
     setCurrentCoin()
   }
 
+  /// Called only on first open, after didFinishLaunchingWithOptions, when appEnteredActiveState is not called
   func appBecameActive() {
     resetWalletManagerIfNeeded()
     handlePendingBitcoinURL()
+    refreshContacts()
   }
 
   /// Handle app leaving active state, either becoming inactive, entering background, or terminating.
@@ -518,6 +524,16 @@ class AppCoordinator: CoordinatorType {
     connectionManager.stop()
     self.bitcoinURLToOpen = nil
     //    UIApplication.shared.applicationIconBadgeNumber = persistenceManager.pendingInvitations().count
+  }
+
+  private func refreshContacts() {
+    let contactCacheMigrationWorker = self.createContactCacheMigrationWorker()
+    _ = contactCacheMigrationWorker.migrateIfPossible()
+      .done {
+        self.contactCacheDataWorker.reloadSystemContactsIfNeeded(force: false) { [weak self] _ in
+          self?.persistenceManager.matchContactsIfPossible()
+        }
+    }
   }
 
   func resetUserAuthenticatedState() {
