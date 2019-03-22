@@ -83,7 +83,7 @@ extension AppCoordinator: SendPaymentViewControllerDelegate {
                       completion: @escaping (Result<[WalletAddressesQueryResponse], UserProviderError>) -> Void) {
     let bgContext = persistenceManager.createBackgroundContext()
     bgContext.perform {
-      self.networkManager.queryWalletAddresses(phoneNumberHashes: [phoneNumberHash])
+      self.networkManager.queryWalletAddresses(identityHashes: [phoneNumberHash])
         .done(on: .main) { response in
           completion(.success(response))
         }.catch(on: .main) { error in

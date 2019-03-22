@@ -778,7 +778,7 @@ extension SendPaymentViewController {
       switch result {
       case .success(let addressResponses):
 
-        if let addressResponse = addressResponses.first(where: { $0.phoneNumberHash == contact.phoneNumberHash }) {
+        if let addressResponse = addressResponses.first(where: { $0.identityHash == contact.phoneNumberHash }) {
           var updatedPayload = sharedPayload
           updatedPayload.updatePubKeyState(with: addressResponse)
           strongSelf.sendTransactionForConfirmation(with: strongSelf.viewModel.sendMaxTransactionData,
@@ -820,7 +820,7 @@ extension SendPaymentViewController {
 
     switch result {
     case .success(let addressResponses):
-      if let addressResponse = addressResponses.first(where: { $0.phoneNumberHash == contact.phoneNumberHash }) {
+      if let addressResponse = addressResponses.first(where: { $0.identityHash == contact.phoneNumberHash }) {
         var updatedPayload = sharedPayload
         updatedPayload.updatePubKeyState(with: addressResponse)
 
