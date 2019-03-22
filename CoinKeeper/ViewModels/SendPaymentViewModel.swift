@@ -50,6 +50,7 @@ protocol SendPaymentViewModelType: SendPaymentDataProvider {
   var memo: String? { get set }
   var sharedMemoDesired: Bool { get set }
   var sharedMemoAllowed: Bool { get set }
+  var sendMaxTransactionData: CNBTransactionData? { get }
   mutating func sendMax(with data: CNBTransactionData)
 
   var paymentRecipient: PaymentRecipient? { get set }
@@ -116,7 +117,7 @@ struct SendPaymentViewModel: SendPaymentViewModelType {
   var requiredFeeRate: Double?
   var sharedMemoDesired = true // default is true
   var sharedMemoAllowed = true // default is true
-  private var sendMaxTransactionData: CNBTransactionData?
+  var sendMaxTransactionData: CNBTransactionData?
 
   mutating func sendMax(with data: CNBTransactionData) {
     self.sendMaxTransactionData = data
