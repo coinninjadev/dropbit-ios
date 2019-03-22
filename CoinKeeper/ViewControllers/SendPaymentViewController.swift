@@ -125,7 +125,6 @@ ValidatorAlertDisplayable {
         return delegate.viewController(self, sendMaxFundsTo: tempAddress, feeRate: feeRate)
       }
       .done {txData in
-        print(txData)
         self.viewModel.sendMax(with: txData)
         self.loadAmounts()
         self.sendMaxButton.isHidden = true

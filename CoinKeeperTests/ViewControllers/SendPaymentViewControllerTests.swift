@@ -203,19 +203,4 @@ class SendPaymentViewControllerTests: XCTestCase {
     self.sut.updateViewModel(withParsedRecipient: recipient)
     XCTAssertEqual(self.sut.viewModel.primaryCurrency, .BTC)
   }
-
-  func testSendMaxAsksCoordinationDelegateToReturnPromiseOfTxData() {
-    // given
-    let mockPersistenceManager = MockPersistenceManager()
-    let mockNetworkManager = MockNetworkManager(persistenceManager: mockPersistenceManager)
-    let mockCoordinator = MockSendPaymentViewControllerCoordinator(networkManager: mockNetworkManager)
-    sut.generalCoordinationDelegate = mockCoordinator
-    sut.viewModel.requiredFeeRate = 5.0
-
-    // when
-    sut.sendMaxButton.sendActions(for: .touchUpInside)
-
-    // then
-    XCTAssertTrue(mockCoordinator.didAskToSendMaxFunds)
-  }
 }
