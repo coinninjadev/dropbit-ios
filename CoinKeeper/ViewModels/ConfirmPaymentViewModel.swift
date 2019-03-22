@@ -66,7 +66,25 @@ struct ConfirmPaymentViewModel: ConfirmPaymentViewModelType {
     self.fee = fee
     self.outgoingTransactionData = outgoingTransactionData
     self.transactionData = transactionData
+    self.rates = rates
+  }
 
+  init(
+    btcAmount: NSDecimalNumber,
+    primaryCurrency: CurrencyCode,
+    address: String?,
+    contact: ContactType?,
+    outgoingTransactionData: OutgoingTransactionData,
+    transactionData: CNBTransactionData,
+    rates: ExchangeRates
+  ) {
+    self.btcAmount = btcAmount
+    self.contact = contact
+    self.primaryCurrency = primaryCurrency
+    self.address = address
+    self.fee = Int(transactionData.feeAmount)
+    self.outgoingTransactionData = outgoingTransactionData
+    self.transactionData = transactionData
     self.rates = rates
   }
 
