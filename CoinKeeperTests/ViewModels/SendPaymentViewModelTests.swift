@@ -16,8 +16,6 @@ class SendPaymentViewModelTests: XCTestCase {
 
   override func setUp() {
     super.setUp()
-    let kit = PhoneNumberKit()
-    let parser = CKRecipientParser(kit: kit)
     self.sut = SendPaymentViewModel(btcAmount: .zero, primaryCurrency: .BTC)
   }
 

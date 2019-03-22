@@ -36,6 +36,7 @@ protocol TransactionDataWorkerType: AnyObject {
 
 }
 
+// swiftlint:disable type_body_length
 class TransactionDataWorker: TransactionDataWorkerType {
 
   let walletManager: WalletManagerType
