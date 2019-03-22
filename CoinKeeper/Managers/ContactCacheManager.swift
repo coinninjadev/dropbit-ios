@@ -210,7 +210,7 @@ class ContactCacheManager: ContactCacheManagerType {
     let contactBatches = allContacts.chunked(by: 100)
     for contactBatch in contactBatches {
       contactBatch.forEach { context.delete($0) }
-      try context.saveToDisk()
+      try context.saveRecursively()
     }
   }
 

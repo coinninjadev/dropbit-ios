@@ -78,7 +78,7 @@ class ContactCacheDataWorker: ContactCacheDataWorkerType {
           let changeDesc = bgContext.changesDescription()
           os_log("Contact cache changes: %@", log: self.logger, type: .debug, changeDesc)
 
-          try bgContext.saveToDisk()
+          try bgContext.saveRecursively()
 
           DispatchQueue.main.async {
             completion?(nil)
