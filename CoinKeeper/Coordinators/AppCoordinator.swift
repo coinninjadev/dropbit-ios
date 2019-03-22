@@ -155,6 +155,7 @@ class AppCoordinator: CoordinatorType {
                                    persistenceManager: persistenceManager,
                                    networkManager: networkManager,
                                    analyticsManager: analyticsManager,
+                                   phoneNumberKit: self.phoneNumberKit,
                                    invitationWorkerDelegate: self)
   }
 

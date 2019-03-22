@@ -9,6 +9,7 @@
 
 import Foundation
 import CoreData
+import PhoneNumberKit
 
 @objc(CKMInvitation)
 public class CKMInvitation: NSManagedObject {
@@ -16,6 +17,7 @@ public class CKMInvitation: NSManagedObject {
   @discardableResult
   static func updateOrCreate(withAddressRequestResponse response: WalletAddressRequestResponse,
                              side: WalletAddressRequestSide,
+                             kit: PhoneNumberKit,
                              in context: NSManagedObjectContext) -> CKMInvitation {
     if let updatedInvitation = updateIfExists(withAddressRequestResponse: response, side: side, isAcknowledged: true, in: context) {
       return updatedInvitation
@@ -27,7 +29,7 @@ public class CKMInvitation: NSManagedObject {
       newTx.sortDate = response.createdAt
       // not setting newTx.date here since it isn't yet a transaction, so that the display date will fallback to the invitation.sentDate
 
-      let newInvitation = CKMInvitation(withAddressRequestResponse: response, side: side, insertInto: context)
+      let newInvitation = CKMInvitation(withAddressRequestResponse: response, side: side, kit: kit, insertInto: context)
 
       if side == .received { // On receiving side, set the initial txid with this method regardless of status.
         if let actualTxid = response.txid, actualTxid.isNotEmpty {
@@ -72,6 +74,7 @@ public class CKMInvitation: NSManagedObject {
 
   convenience public init(withAddressRequestResponse response: WalletAddressRequestResponse,
                           side: WalletAddressRequestSide,
+                          kit: PhoneNumberKit,
                           insertInto context: NSManagedObjectContext) {
     self.init(insertInto: context)
 
@@ -91,7 +94,7 @@ public class CKMInvitation: NSManagedObject {
     case .sent:     counterparty = response.metadata?.receiver
     }
     self.counterpartyPhoneNumber = counterparty.flatMap {
-      CKMPhoneNumber.findOrCreate(withMetadataParticipant: $0, in: context)
+      CKMPhoneNumber.findOrCreate(metadataParticipant: $0, kit: kit, insertInto: context) 
     }
 
     self.setTxid(to: response.txid)

@@ -48,26 +48,20 @@ public struct MetadataAmount: Decodable, CustomStringConvertible {
 }
 
 public struct MetadataParticipant: Decodable, CustomStringConvertible {
-  let countryCode: Int?
-  let phoneNumber: String?
+  let type: String
+  let identity: String
 
   public var description: String {
     var responseDesc = ""
     let propertyKeyValues: [String] = [
-      "countryCode: \(countryCode.flatMap { String($0) } ?? "-")",
-      "phoneNumber: \(phoneNumber ?? "-")"
+      "type: \(type)",
+      "identity: \(identity)"
     ]
     propertyKeyValues.forEach { desc in
       responseDesc.append("\n\t\(desc)")
     }
 
     return responseDesc
-  }
-
-  func asGlobalPhoneNumber() -> GlobalPhoneNumber? {
-    guard let countryCode = self.countryCode,
-      let number = self.phoneNumber else { return nil }
-    return GlobalPhoneNumber(countryCode: countryCode, nationalNumber: number)
   }
 
 }
@@ -101,12 +95,12 @@ public struct WalletAddressRequestMetadata: ResponseDecodable, CustomStringConve
     "usd": 8292280
     },
     "sender": {
-    "country_code": 1,
-    "phone_number": "5554441234"
+    "type": "phone",
+    "identity": "15554441234"
     },
     "receiver": {
-    "country_code": 1,
-    "phone_number": "5554441234"
+    "type": "twitter",
+    "identity": "3215789654"
     },
     "request_id": "3fbdc415-8789-490a-ad32-0c6fa3590182"
     """
@@ -141,7 +135,7 @@ public struct WalletAddressRequestResponse: ResponseDecodable, CustomStringConve
   let metadata: WalletAddressRequestMetadata?
 
   /// Hash of the phone number for the contact associated with this request
-  var phoneNumberHash: String?
+  var identityHash: String?
   var status: String?
 
   // Sent-only property
@@ -158,7 +152,7 @@ public struct WalletAddressRequestResponse: ResponseDecodable, CustomStringConve
       "status: \(status ?? "-")",
       "metadata: \(metadata?.description ?? "-")",
       "walletId: \(walletId ?? "-")",
-      "phoneNumberHash: \(phoneNumberHash ?? "-")",
+      "phoneNumberHash: \(identityHash ?? "-")",
       "txid: \(txid ?? "-")"
     ]
     propertyKeyValues.forEach { desc in
@@ -173,7 +167,7 @@ public struct WalletAddressRequestResponse: ResponseDecodable, CustomStringConve
   }
 
   static var optionalStringKeys: [WritableKeyPath<WalletAddressRequestResponse, String?>] {
-    return [\.address, \.addressPubkey, \.txid, \.phoneNumberHash, \.status, \.walletId]
+    return [\.address, \.addressPubkey, \.txid, \.identityHash, \.status, \.walletId]
   }
 
 }
@@ -192,7 +186,7 @@ extension WalletAddressRequestResponse {
                                         addressPubkey: self.addressPubkey,
                                         txid: self.txid,
                                         metadata: self.metadata,
-                                        phoneNumberHash: self.phoneNumberHash,
+                                        identityHash: self.identityHash,
                                         status: self.status,
                                         walletId: self.walletId)
   }
@@ -224,17 +218,31 @@ extension WalletAddressRequestResponse {
       [
         {
           "id": "a1bb1d88-bfc8-4085-8966-e0062278237c",
-          "created_at": 1525882145,
-          "updated_at": 1525882265,
+          "created_at": 1531921356,
+          "updated_at": 1531921356,
           "address": "1JbJbAkCXtxpko39nby44hpPenpC1xKGYw",
-          "address_pubkey":
-            "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE8xOUetsCa8EfOlDEBAfREhJqspDoyEh6Szz2in47Tv5n52m9dLYyPCbqZkOB5nTSqtscpkQD/HpykCggvx09iQ==",
-          "metadata": {},
-          "phone_number_hash": "498803d5964adce8037d2c53da0c7c7a96ce0e0f99ab99e9905f0dda59fb2e49",
-          "txid": "7f3a2790d59853fdc620b8cd23c8f68158f8bbdcd337a5f2451620d6f76d4e03",
+          "metadata": {
+            "amount": {
+              "btc": 120000000,
+              "usd": 8292280
+            },
+            "sender": {
+              "type": "phone",
+              "identity": "15554441234"
+            },
+            "receiver": {
+              "type": "twitter",
+              "identity": "3215789654"
+            },
+            "request_id": "3fbdc415-8789-490a-ad32-0c6fa3590182"
+          },
+          "identity_hash": "498803d5964adce8037d2c53da0c7c7a96ce0e0f99ab99e9905f0dda59fb2e49",
+          "request_ttl": 1531921356,
           "status": "new",
-          "user_id": "ad983e63-526d-4679-a682-c4ab052b20e1",
-          "wallet_id": "f8e8c20e-ba44-4bac-9a96-44f3b7ae955d"
+          "txid": "7f3a2790d59853fdc620b8cd23c8f68158f8bbdcd337a5f2451620d6f76d4e03",
+          "address_pubkey": "04cf39eab1213ad4a94e755fadaac4c8f2a256d7fa6b4044c7980113f7df60e24d5c1156b794d46652de2493013c6495469fbbac39d8c86495f1eebd65c7a6bddc",
+          "wallet_id": "f8e8c20e-ba44-4bac-9a96-44f3b7ae955d",
+          "delivery_status": "received"
         }
       ]
     """

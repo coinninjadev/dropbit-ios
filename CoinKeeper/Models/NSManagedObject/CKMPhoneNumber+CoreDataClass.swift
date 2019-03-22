@@ -9,6 +9,7 @@
 
 import Foundation
 import CoreData
+import PhoneNumberKit
 
 @objc(CKMPhoneNumber)
 public class CKMPhoneNumber: NSManagedObject {
@@ -19,11 +20,11 @@ public class CKMPhoneNumber: NSManagedObject {
     self.init(inputs: inputs, insertInto: context)
   }
 
-  static func findOrCreate(withMetadataParticipant participant: MetadataParticipant, in context: NSManagedObjectContext) -> CKMPhoneNumber? {
+  static func findOrCreate(withMetadataParticipant participant: MetadataParticipant, kit: PhoneNumberKit, in context: NSManagedObjectContext) -> CKMPhoneNumber? {
     guard let countryCode = participant.countryCode,
       let nationalNumber = participant.phoneNumber
       else { return nil }
-    let globalNumber = GlobalPhoneNumber(countryCode: countryCode, nationalNumber: nationalNumber)
+    let phoneNumber = GlobalPhoneNumber(participant: participant, kit: kit)
     guard let inputs = ManagedPhoneNumberInputs(phoneNumber: globalNumber) else { return nil }
     return self.findOrCreate(with: inputs, in: context)
   }

@@ -10,6 +10,7 @@ import Foundation
 
 enum UserIdentityType: String {
   case phone
+  case twitter
 }
 
 public struct CreateUserBody: Encodable {
