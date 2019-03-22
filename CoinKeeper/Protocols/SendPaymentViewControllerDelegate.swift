@@ -22,7 +22,12 @@ protocol SendPaymentViewControllerDelegate: DeviceCountryCodeProvider {
    Dismisses `viewController` and shows phone verification flow if they haven't yet verified, otherwise calls `completion`.
    */
   func viewControllerDidRequestVerificationCheck(_ viewController: UIViewController, completion: @escaping (() -> Void))
-
+  func viewController(_ viewController: UIViewController,
+                      sendingMax data: CNBTransactionData,
+                      address: String?,
+                      contact: ContactType?,
+                      rates: ExchangeRates,
+                      sharedPayload: SharedPayloadDTO)
   func viewControllerDidSendPayment(_ viewController: UIViewController,
                                     btcAmount: NSDecimalNumber,
                                     requiredFeeRate: Double?,

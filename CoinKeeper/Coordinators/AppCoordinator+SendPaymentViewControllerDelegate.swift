@@ -94,6 +94,40 @@ extension AppCoordinator: SendPaymentViewControllerDelegate {
     }
   }
 
+  private func trackTransactionType(with contact: ContactType?) {
+    if contact != nil {
+      analyticsManager.track(event: .paymentToContact, with: nil)
+    } else {
+      analyticsManager.track(event: .paymentToAddress, with: nil)
+    }
+  }
+
+  func viewController(
+    _ viewController: UIViewController,
+    sendingMax data: CNBTransactionData,
+    address: String?,
+    contact: ContactType?,
+    rates: ExchangeRates,
+    sharedPayload: SharedPayloadDTO
+    ) {
+
+    trackTransactionType(with: contact)
+
+    var outgoingTransactionData = OutgoingTransactionData.emptyInstance()
+    outgoingTransactionData.feeAmount = Int(data.feeAmount)
+    outgoingTransactionData.amount = Int(data.amount)//.asNSDecimalNumber.asFractionalUnits(of: .BTC)
+    outgoingTransactionData = configureOutgoingTransactionData(
+      with: outgoingTransactionData,
+      address: address,
+      contact: contact,
+      rates: rates,
+      sharedPayload: sharedPayload
+    )
+
+    viewController.dismiss(animated: true)
+
+  }
+
   func viewControllerDidSendPayment(_ viewController: UIViewController,
                                     btcAmount: NSDecimalNumber,
                                     requiredFeeRate: Double?,
@@ -105,30 +139,18 @@ extension AppCoordinator: SendPaymentViewControllerDelegate {
 
     guard let wmgr = walletManager else { return }
 
-    if contact != nil {
-      analyticsManager.track(event: .paymentToContact, with: nil)
-    } else {
-      analyticsManager.track(event: .paymentToAddress, with: nil)
-    }
+    trackTransactionType(with: contact)
 
     // create outgoingTransactionData DTO to populate and pass along down the send flow
     var outgoingTransactionData = OutgoingTransactionData.emptyInstance()
     outgoingTransactionData.requiredFeeRate = requiredFeeRate
-    contact.map { innerContact in
-      outgoingTransactionData.contactName = innerContact.displayName ?? ""
-      outgoingTransactionData.contactPhoneNumber = innerContact.globalPhoneNumber
-      outgoingTransactionData.contactPhoneNumberHash = innerContact.phoneNumberHash
-    }
-    address.map { outgoingTransactionData.destinationAddress = $0 }
-    outgoingTransactionData.amount = btcAmount.asFractionalUnits(of: .BTC)
-    outgoingTransactionData.sharedPayloadDTO = sharedPayload
-
-    let context = persistenceManager.createBackgroundContext()
-    context.performAndWait {
-      if wmgr.createAddressDataSource().checkAddressExists(for: outgoingTransactionData.destinationAddress, in: context) != nil {
-        outgoingTransactionData.sentToSelf = true
-      }
-    }
+    outgoingTransactionData = configureOutgoingTransactionData(
+      with: outgoingTransactionData,
+      address: address,
+      contact: contact,
+      rates: rates,
+      sharedPayload: sharedPayload
+    )
 
     viewController.dismiss(animated: true)
     networkManager.latestFees()
@@ -161,6 +183,32 @@ extension AppCoordinator: SendPaymentViewControllerDelegate {
         guard let strongSelf = self else { return }
         strongSelf.handleTransactionError(error)
     }
+  }
+
+  private func configureOutgoingTransactionData(with dto: OutgoingTransactionData,
+                                                address: String?,
+                                                contact: ContactType?,
+                                                rates: ExchangeRates,
+                                                sharedPayload: SharedPayloadDTO
+    ) -> OutgoingTransactionData {
+    guard let wmgr = self.walletManager else { return dto }
+    var copy = dto
+    contact.map { innerContact in
+      copy.contactName = innerContact.displayName ?? ""
+      copy.contactPhoneNumber = innerContact.globalPhoneNumber
+      copy.contactPhoneNumberHash = innerContact.phoneNumberHash
+    }
+    address.map { copy.destinationAddress = $0 }
+    copy.sharedPayloadDTO = sharedPayload
+
+    let context = persistenceManager.createBackgroundContext()
+    context.performAndWait {
+      if wmgr.createAddressDataSource().checkAddressExists(for: copy.destinationAddress, in: context) != nil {
+        copy.sentToSelf = true
+      }
+    }
+
+    return copy
   }
 
   private func handleInvite(btcAmount: NSDecimalNumber,
