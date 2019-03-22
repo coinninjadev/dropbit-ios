@@ -126,6 +126,15 @@ extension AppCoordinator: SendPaymentViewControllerDelegate {
 
     viewController.dismiss(animated: true)
 
+    showConfirmPayment(
+      with: outgoingTransactionData,
+      btcAmount: .zero,
+      address: address,
+      contact: contact,
+      primaryCurrency: .BTC,
+      transactionData: data,
+      rates: rates
+    )
   }
 
   func viewControllerDidSendPayment(_ viewController: UIViewController,
@@ -163,26 +172,43 @@ extension AppCoordinator: SendPaymentViewControllerDelegate {
           withFeeRate: relevantFeeRate
         )
       }
-      .done(on: .main) { (transactionData: CNBTransactionData) in
-        let confirmPayVC = ConfirmPaymentViewController.makeFromStoryboard()
-        self.assignCoordinationDelegate(to: confirmPayVC)
-        let viewModel = ConfirmPaymentViewModel(
+      .done { (transactionData: CNBTransactionData) in
+        self.showConfirmPayment(
+          with: outgoingTransactionData,
           btcAmount: btcAmount,
-          primaryCurrency: primaryCurrency,
           address: address,
           contact: contact,
-          fee: Int(transactionData.feeAmount),
-          outgoingTransactionData: outgoingTransactionData,
+          primaryCurrency: primaryCurrency,
           transactionData: transactionData,
           rates: rates
         )
-        confirmPayVC.kind = .payment(viewModel)
-        self.navigationController.present(confirmPayVC, animated: true)
       }
       .catch(on: .main) { [weak self] error in
         guard let strongSelf = self else { return }
         strongSelf.handleTransactionError(error)
     }
+  }
+
+  private func showConfirmPayment(with dto: OutgoingTransactionData,
+                                  btcAmount: NSDecimalNumber,
+                                  address: String?,
+                                  contact: ContactType?,
+                                  primaryCurrency: CurrencyCode,
+                                  transactionData: CNBTransactionData,
+                                  rates: ExchangeRates) {
+    let confirmPayVC = ConfirmPaymentViewController.makeFromStoryboard()
+    self.assignCoordinationDelegate(to: confirmPayVC)
+    let viewModel = ConfirmPaymentViewModel(
+      btcAmount: btcAmount,
+      primaryCurrency: primaryCurrency,
+      address: address,
+      contact: contact,
+      fee: Int(transactionData.feeAmount),
+      outgoingTransactionData: dto,
+      transactionData: transactionData,
+      rates: rates)
+    confirmPayVC.kind = .payment(viewModel)
+    self.navigationController.present(confirmPayVC, animated: true)
   }
 
   private func configureOutgoingTransactionData(with dto: OutgoingTransactionData,
