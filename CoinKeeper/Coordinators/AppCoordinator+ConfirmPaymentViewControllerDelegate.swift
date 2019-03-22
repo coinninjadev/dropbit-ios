@@ -37,7 +37,7 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate {
 
         guard let senderNumber = strongSelf.persistenceManager.verifiedPhoneNumber() else {
           os_log("Missing sender phone number", log: logger, type: .debug)
-          strongSelf.handleFailure(error: CKPersistenceError.missingValue(key: "phoneNumber"))
+          strongSelf.handleFailure(error: CKPersistenceError.phoneNotVerified)
           return
         }
 
