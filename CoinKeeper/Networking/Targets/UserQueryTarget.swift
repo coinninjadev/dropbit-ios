@@ -32,7 +32,7 @@ extension UserQueryTarget {
   public var task: Task {
     switch self {
     case .query(let numberHashes):
-      guard let data = queryBody(for: "phone_number_hash", value: numberHashes) else { return .requestPlain }
+      guard let data = queryBody(for: "identity_hash", value: numberHashes) else { return .requestPlain }
       return .requestCompositeData(bodyData: data, urlParameters: ["page": 1, "perPage": numberHashes.count])
     }
   }
