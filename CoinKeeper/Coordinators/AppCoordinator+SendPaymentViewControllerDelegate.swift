@@ -113,6 +113,8 @@ extension AppCoordinator: SendPaymentViewControllerDelegate {
 
     trackTransactionType(with: contact)
 
+    data.paymentAddress = address
+
     var outgoingTransactionData = OutgoingTransactionData.emptyInstance()
     outgoingTransactionData.feeAmount = Int(data.feeAmount)
     outgoingTransactionData.amount = Int(data.amount)//.asNSDecimalNumber.asFractionalUnits(of: .BTC)
@@ -125,10 +127,11 @@ extension AppCoordinator: SendPaymentViewControllerDelegate {
     )
 
     viewController.dismiss(animated: true)
+    let btcAmount = NSDecimalNumber(integerAmount: outgoingTransactionData.amount, currency: .BTC)
 
     showConfirmPayment(
       with: outgoingTransactionData,
-      btcAmount: .zero,
+      btcAmount: btcAmount,
       address: address,
       contact: contact,
       primaryCurrency: .BTC,
