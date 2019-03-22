@@ -36,6 +36,16 @@ class MockSendPaymentViewControllerCoordinator: SendPaymentViewControllerCoordin
     }
   }
 
+  func viewController(
+    _ viewController: UIViewController,
+    sendingMax data: CNBTransactionData,
+    address: String?,
+    contact: ContactType?,
+    rates: ExchangeRates,
+    sharedPayload: SharedPayloadDTO) {
+
+  }
+
   var networkManager: NetworkManagerType
   var balanceUpdateManager: BalanceUpdateManager
 
