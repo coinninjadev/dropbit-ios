@@ -32,7 +32,7 @@ protocol SendPaymentViewControllerDelegate: DeviceCountryCodeProvider {
                                     btcAmount: NSDecimalNumber,
                                     requiredFeeRate: Double?,
                                     primaryCurrency: CurrencyCode,
-                                    address: String?,
+                                    address: String,
                                     contact: ContactType?,
                                     rates: ExchangeRates,
                                     sharedPayload: SharedPayloadDTO)

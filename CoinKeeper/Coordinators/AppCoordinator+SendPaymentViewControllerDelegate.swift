@@ -141,7 +141,7 @@ extension AppCoordinator: SendPaymentViewControllerDelegate {
                                     btcAmount: NSDecimalNumber,
                                     requiredFeeRate: Double?,
                                     primaryCurrency: CurrencyCode,
-                                    address: String?,
+                                    address: String,
                                     contact: ContactType?,
                                     rates: ExchangeRates,
                                     sharedPayload: SharedPayloadDTO) {
@@ -168,7 +168,7 @@ extension AppCoordinator: SendPaymentViewControllerDelegate {
         let relevantFeeRate = outgoingTransactionData.requiredFeeRate ?? networkFeeRate
         return wmgr.transactionData(
           forPayment: btcAmount,
-          to: address ?? "",
+          to: address,
           withFeeRate: relevantFeeRate
         )
       }
