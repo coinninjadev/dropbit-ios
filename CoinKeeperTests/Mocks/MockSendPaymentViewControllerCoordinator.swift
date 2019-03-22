@@ -39,7 +39,7 @@ class MockSendPaymentViewControllerCoordinator: SendPaymentViewControllerCoordin
   func viewController(
     _ viewController: UIViewController,
     sendingMax data: CNBTransactionData,
-    address: String?,
+    address: String,
     contact: ContactType?,
     rates: ExchangeRates,
     sharedPayload: SharedPayloadDTO) {

@@ -24,7 +24,7 @@ protocol SendPaymentViewControllerDelegate: DeviceCountryCodeProvider {
   func viewControllerDidRequestVerificationCheck(_ viewController: UIViewController, completion: @escaping (() -> Void))
   func viewController(_ viewController: UIViewController,
                       sendingMax data: CNBTransactionData,
-                      address: String?,
+                      address: String,
                       contact: ContactType?,
                       rates: ExchangeRates,
                       sharedPayload: SharedPayloadDTO)
