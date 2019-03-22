@@ -23,7 +23,15 @@ public struct CreateUserBody: Encodable {
 }
 
 public struct VerifyUserBody: Encodable {
+  let type: String
+  let identity: String
   let code: String
+
+  init(phoneNumber: GlobalPhoneNumber, code: String) {
+    self.type = UserIdentityType.phone.rawValue
+    self.identity = phoneNumber.sanitizedGlobalNumber()
+    self.code = code
+  }
 }
 
 public enum UserVerificationStatus: String {
