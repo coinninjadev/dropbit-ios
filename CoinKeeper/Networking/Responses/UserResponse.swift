@@ -8,13 +8,17 @@
 
 import Foundation
 
+enum UserIdentityType: String {
+  case phone
+}
+
 public struct CreateUserBody: Encodable {
-  let countryCode: Int
-  let phoneNumber: String
+  let type: String
+  let identity: String
 
   init(phoneNumber: GlobalPhoneNumber) {
-    self.countryCode = phoneNumber.countryCode
-    self.phoneNumber = phoneNumber.nationalNumber
+    self.type = UserIdentityType.phone.rawValue
+    self.identity = phoneNumber.sanitizedGlobalNumber()
   }
 }
 
