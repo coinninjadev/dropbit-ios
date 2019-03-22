@@ -28,13 +28,13 @@ struct DeviceVerificationErrorMessageFactory {
     }
   }
 
-  func messageForCountryCodeDisabled(for code: Int, phoneNumber: GlobalPhoneNumber) -> String {
+  func messageForCountryCodeDisabled(for phoneNumber: GlobalPhoneNumber) -> String {
     var unsupportedNumberDesc = ""
     if let region = phoneNumber.regionCode {
       let country = CKCountry(regionCode: region, kit: phoneNumberKit)
       unsupportedNumberDesc = "phone numbers in \(country.localizedName)"
     } else {
-      unsupportedNumberDesc = "+\(code) phone numbers"
+      unsupportedNumberDesc = "+\(phoneNumber.countryCode) phone numbers"
     }
 
     return """
