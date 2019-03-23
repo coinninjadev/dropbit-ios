@@ -110,6 +110,9 @@ protocol PersistenceManagerType: DeviceCountryCodeProvider {
   func lastReceiveAddressIndex(in context: NSManagedObjectContext) -> Int?
   func lastChangeAddressIndex(in context: NSManagedObjectContext) -> Int?
 
+  func dustProtectionThreshold() -> Int?
+  func setDustProtectionThreshold(_ minAmount: Int?)
+
   func setLastLoginTime()
   func lastLoginTime() -> TimeInterval?
 

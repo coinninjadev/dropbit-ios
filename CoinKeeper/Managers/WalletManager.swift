@@ -232,10 +232,11 @@ class WalletManager: WalletManagerType {
       let paymentAmount = UInt(payment.asFractionalUnits(of: .BTC))
       let usableFeeRate = self.usableFeeRate(from: feeRate)
       let blockHeight = UInt(persistenceManager.integer(for: .blockheight))
+      let dustProtectionAmount = self.persistenceManager.dustProtectionThreshold()
       let bgContext = persistenceManager.createBackgroundContext()
       bgContext.performAndWait {
         let usableVouts = self.unspentVoutsRelativeToUser(in: bgContext)
-        let allAvailableOutputs = self.unspentTransactionOutputs(fromUsableUTXOs: usableVouts)
+        let allAvailableOutputs = self.unspentTransactionOutputs(fromUsableUTXOs: usableVouts, minVoutAmount: dustProtectionAmount)
 
         let txData = CNBTransactionData(
           address: address,
@@ -267,10 +268,11 @@ class WalletManager: WalletManagerType {
         seal.reject(TransactionDataError.insufficientFee)
         return
       }
+      let dustProtectionAmount = self.persistenceManager.dustProtectionThreshold()
       let bgContext = persistenceManager.createBackgroundContext()
       bgContext.performAndWait {
         let usableVouts = self.unspentVoutsRelativeToUser(in: bgContext)
-        let allAvailableOutputs = self.unspentTransactionOutputs(fromUsableUTXOs: usableVouts)
+        let allAvailableOutputs = self.unspentTransactionOutputs(fromUsableUTXOs: usableVouts, minVoutAmount: dustProtectionAmount)
         let paymentAmount = UInt(payment)
         let feeAmount = UInt(flatFee)
         let blockHeight = UInt(persistenceManager.integer(for: .blockheight))
@@ -328,10 +330,16 @@ class WalletManager: WalletManagerType {
     return vouts
   }
 
-  private func unspentTransactionOutputs(fromUsableUTXOs usableUTXOs: [CKMVout]) -> [CNBUnspentTransactionOutput] {
+  /// Provide a value for minVoutAmount to skip dust vouts
+  private func unspentTransactionOutputs(fromUsableUTXOs usableUTXOs: [CKMVout], minVoutAmount: Int?) -> [CNBUnspentTransactionOutput] {
     return usableUTXOs.compactMap { (vout: CKMVout) -> CNBUnspentTransactionOutput? in
       guard let txid = vout.transaction?.txid, let derivationPath = vout.address?.derivativePath else { return nil }
       guard let transaction = vout.transaction else { return nil }
+
+      if let minAmount = minVoutAmount, vout.amount < minAmount {
+        return nil
+      }
+
       let index = UInt(vout.index)
       let amount = UInt(vout.amount)
       let cnbDerivativePath = CNBDerivationPath(

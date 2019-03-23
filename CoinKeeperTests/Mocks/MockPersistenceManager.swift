@@ -129,6 +129,12 @@ class MockPersistenceManager: PersistenceManagerType {
     return Promise { _ in }
   }
 
+  func dustProtectionThreshold() -> Int? {
+    return nil
+  }
+
+  func setDustProtectionThreshold(_ minAmount: Int?) { }
+
   func defaultHeaders(in context: NSManagedObjectContext) -> Promise<DefaultRequestHeaders> {
     return Promise { _ in }
   }

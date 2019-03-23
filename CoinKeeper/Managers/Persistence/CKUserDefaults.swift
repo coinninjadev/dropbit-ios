@@ -42,6 +42,7 @@ class CKUserDefaults: PersistenceUserDefaultsType {
     case keychainMigrationVersions
     case contactCacheMigrationVersions
     case lastSuccessfulSyncCompletedAt
+    case dustProtectionThreshold
 
     var defaultsString: String { return self.rawValue }
   }
