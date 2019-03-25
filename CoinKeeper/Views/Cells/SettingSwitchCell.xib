@@ -20,13 +20,13 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oXL-5T-KeW">
-                        <rect key="frame" x="27" y="11.5" width="42" height="21"/>
+                        <rect key="frame" x="32" y="11.5" width="42" height="21"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="questionMarkIcon" translatesAutoresizingMaskIntoConstraints="NO" id="Gob-vH-VVn">
-                        <rect key="frame" x="77" y="12.5" width="19" height="19"/>
+                        <rect key="frame" x="82" y="12.5" width="19" height="19"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="19" id="0hk-g4-EUb"/>
                             <constraint firstAttribute="width" constant="19" id="Rxi-pH-u1n"/>
@@ -46,7 +46,7 @@
                 </constraints>
             </tableViewCellContentView>
             <constraints>
-                <constraint firstItem="oXL-5T-KeW" firstAttribute="leading" secondItem="njF-e1-oar" secondAttribute="leading" constant="27" id="2td-DR-u0N"/>
+                <constraint firstItem="oXL-5T-KeW" firstAttribute="leading" secondItem="njF-e1-oar" secondAttribute="leading" constant="32" id="2td-DR-u0N"/>
                 <constraint firstItem="oXL-5T-KeW" firstAttribute="centerY" secondItem="njF-e1-oar" secondAttribute="centerY" id="LFl-pr-MNZ"/>
                 <constraint firstItem="4pp-E9-iub" firstAttribute="centerY" secondItem="njF-e1-oar" secondAttribute="centerY" id="PkI-j1-2Fo"/>
                 <constraint firstItem="njF-e1-oar" firstAttribute="trailing" secondItem="4pp-E9-iub" secondAttribute="trailing" constant="26" id="u35-aQ-Pqq"/>

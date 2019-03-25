@@ -37,7 +37,7 @@ class SettingSwitchCell: UITableViewCell {
     selectionStyle = .none
     backgroundColor = Theme.Color.lightGrayBackground.color
 
-    settingSwitch.tintColor = Theme.Color.primaryActionButton.color
+    settingSwitch.onTintColor = Theme.Color.primaryActionButton.color
     settingSwitch.isOn = false
   }
 

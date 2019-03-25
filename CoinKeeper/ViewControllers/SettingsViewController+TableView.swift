@@ -73,7 +73,7 @@ extension SettingsViewController: UITableViewDelegate {
 
   func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
     let sectionVM = sectionViewModel(for: section)
-    return (sectionVM?.headerViewModel != nil) ? 40 : 0
+    return (sectionVM?.headerViewModel != nil) ? 60 : 0
   }
 
   func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
