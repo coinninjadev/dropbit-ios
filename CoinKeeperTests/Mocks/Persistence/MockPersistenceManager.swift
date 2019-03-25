@@ -131,6 +131,10 @@ class MockPersistenceManager: PersistenceManagerType {
     return userDefaultsManager.dustProtectionMinimumAmount()
   }
 
+  func dustProtectionIsEnabled() -> Bool {
+    return false
+  }
+
   func enableDustProtection(_ shouldEnable: Bool) {
   }
 

@@ -111,6 +111,7 @@ protocol PersistenceManagerType: DeviceCountryCodeProvider {
   func lastChangeAddressIndex(in context: NSManagedObjectContext) -> Int?
 
   func dustProtectionMinimumAmount() -> Int
+  func dustProtectionIsEnabled() -> Bool
   func enableDustProtection(_ shouldEnable: Bool)
 
   func setLastLoginTime()
@@ -268,6 +269,7 @@ protocol PersistenceUserDefaultsType: AnyObject {
 
   /// Returns zero if dust protection not enabled
   func dustProtectionMinimumAmount() -> Int
+  func dustProtectionIsEnabled() -> Bool
 
 }
 

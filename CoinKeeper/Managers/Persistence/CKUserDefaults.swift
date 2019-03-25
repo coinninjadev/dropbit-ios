@@ -174,9 +174,13 @@ class CKUserDefaults: PersistenceUserDefaultsType {
   }
 
   func dustProtectionMinimumAmount() -> Int {
-    let key = CKUserDefaults.Key.dustProtectionEnabled.defaultsString
-    let isEnabled = CKUserDefaults.standardDefaults.bool(forKey: key)
+    let isEnabled = dustProtectionIsEnabled()
     return isEnabled ? standardDustProtectionThreshold : 0
+  }
+
+  func dustProtectionIsEnabled() -> Bool {
+    let key = CKUserDefaults.Key.dustProtectionEnabled.defaultsString
+    return CKUserDefaults.standardDefaults.bool(forKey: key)
   }
 
 }

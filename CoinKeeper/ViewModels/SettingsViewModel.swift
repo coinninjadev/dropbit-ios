@@ -1,100 +1,92 @@
 //
-//  SettingsViewModel.swift
+//  SettingsCellViewModel.swift
 //  CoinKeeper
 //
-//  Created by Mitchell on 5/23/18.
+//  Created by Ben Winters on 6/22/18.
 //  Copyright © 2018 Coin Ninja, LLC. All rights reserved.
 //
 
 import Foundation
-import UIKit
 
-class SettingsViewModel: NSObject {
+struct SettingsHeaderFooterViewModel {
+  let title: String
+  let command: Command?
+}
 
+struct SettingsViewModel {
   let sectionViewModels: [SettingsSectionViewModel]
-
-  init(sectionViewModels: [SettingsSectionViewModel]) {
-    self.sectionViewModels = sectionViewModels
-    super.init()
-  }
-
-  func sectionViewModel(for section: Int) -> SettingsSectionViewModel? {
-    return sectionViewModels[safe: section]
-  }
-
-  func cellViewModel(for indexPath: IndexPath) -> SettingsCellViewModel? {
-    guard let sectionVM = sectionViewModel(for: indexPath.section) else { return nil }
-    return sectionVM.cellViewModels[safe: indexPath.row]
-  }
-
 }
 
-extension SettingsViewModel: UITableViewDataSource {
-
-  func numberOfSections(in tableView: UITableView) -> Int {
-    return sectionViewModels.count
-  }
-
-  func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return sectionViewModels[safe: section]?.cellViewModels.count ?? 0
-  }
-
-  func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    guard let cell = tableView.dequeueReusableCell(
-      withIdentifier: SettingCell.reuseIdentifier,
-      for: indexPath) as? SettingCell,
-      let cellVM = cellViewModel(for: indexPath)
-      else { return UITableViewCell() }
-
-    cell.load(with: cellVM)
-    return cell
-  }
-
+struct SettingsSectionViewModel {
+  let headerViewModel: SettingsHeaderFooterViewModel?
+  let cellViewModels: [SettingsCellViewModel]
+  let footerViewModel: SettingsHeaderFooterViewModel?
 }
 
-extension SettingsViewModel: UITableViewDelegate {
+struct SettingsCellViewModel {
+  let type: SettingsCellType
+  let command: Command?
+}
 
-  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    let cellVM = cellViewModel(for: indexPath)
-    cellVM?.command?.execute()
-  }
+enum SettingsCellType {
+  case faqs
+  case contactUs
+  case termsOfUse
+  case recoveryWords(Bool)
+  case dustProtection(enabled: Bool)
+  case privacyPolicy
+  case licenses
 
-  func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-    let sectionVM = sectionViewModel(for: section)
-    return (sectionVM?.footerViewModel != nil) ? 100.0 : 0
-  }
-
-  func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-    let sectionVM = sectionViewModel(for: section)
-    return (sectionVM?.headerViewModel != nil) ? 40 : 0
-  }
-
-  func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-    return 60.0
-  }
-
-  func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-    guard let headerModel = sectionViewModel(for: section)?.headerViewModel else { return nil }
-    guard let headerView = tableView.dequeueReusableHeaderFooterView(
-      withIdentifier: SettingsTableViewSectionHeader.reuseIdentifier) as? SettingsTableViewSectionHeader else {
-        return nil
+  /// Returns nil if the text is conditional
+  private var titleText: String? {
+    switch self {
+    case .faqs:           return "FAQs"
+    case .recoveryWords:  return nil
+    case .dustProtection: return "Dust Protection"
+    case .contactUs:      return "Contact Us"
+    case .termsOfUse:     return "Terms of Use"
+    case .privacyPolicy:  return "Privacy Policy"
+    case .licenses:       return "Open Source"
     }
-
-    headerView.load(with: headerModel)
-
-    return headerView
   }
 
-  func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-    guard let footerModel = sectionViewModel(for: section)?.footerViewModel else { return nil }
-    guard let footerView: SettingsTableViewFooter = tableView.dequeueReusableHeaderFooterView(
-      withIdentifier: SettingsTableViewFooter.reuseIdentifier) as? SettingsTableViewFooter else {
-        return nil
+  var url: URL? {
+    switch self {
+    case .faqs:           return CoinNinjaUrlFactory.buildUrl(for: .faqs)
+    case .contactUs:      return CoinNinjaUrlFactory.buildUrl(for: .contactUs)
+    case .termsOfUse:     return CoinNinjaUrlFactory.buildUrl(for: .termsOfUse)
+    case .privacyPolicy:  return CoinNinjaUrlFactory.buildUrl(for: .privacyPolicy)
+    case .dustProtection: return CoinNinjaUrlFactory.buildUrl(for: .dustProtection)
+    default:          return nil
     }
+  }
 
-    footerView.load(with: footerModel)
+  var attributedTitle: NSMutableAttributedString? {
+    let fontSize = Theme.Font.settingsCellTitle.font.pointSize
+    let textColor = Theme.Color.darkBlueText.color
 
-    return footerView
+    if let text = self.titleText {
+      return NSMutableAttributedString.regular(text, size: fontSize, color: textColor)
+    } else {
+      switch self {
+      case .recoveryWords(let verified):
+        if verified {
+          return NSMutableAttributedString.regular("Recovery Words", size: fontSize, color: textColor)
+        } else {
+          let mutableString = NSMutableAttributedString.regular("Recovery Words ", size: fontSize, color: textColor)
+          mutableString.appendRegular("(Not Backed Up)", size: fontSize, color: Theme.Color.errorRed.color)
+          return mutableString
+        }
+      default:
+        return nil
+      }
+    }
+  }
+
+  var shouldShowDisclosureIndicator: Bool {
+    switch self {
+    default:                        return true
+    }
   }
 
 }

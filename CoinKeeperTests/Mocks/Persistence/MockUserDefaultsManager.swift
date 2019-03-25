@@ -46,6 +46,10 @@ class MockUserDefaultsManager: PersistenceUserDefaultsType {
     }
   }
 
+  func dustProtectionIsEnabled() -> Bool {
+    return false
+  }
+
   func dustProtectionMinimumAmount() -> Int {
     return 0
   }

@@ -38,8 +38,8 @@ class SettingsViewControllerTests: XCTestCase {
   func testTableViewDelegateDataSourceAreConnected() {
     XCTAssertNotNil(self.sut.settingsTableView.delegate, "tableView delegate should not be nil")
     XCTAssertNotNil(self.sut.settingsTableView.dataSource, "tableView dataSource should not be nil")
-    XCTAssertTrue(self.sut.settingsTableView.delegate !== self.sut, "delegate should not be sut")
-    XCTAssertTrue(self.sut.settingsTableView.dataSource !== self.sut, "dataSource should not be sut")
+    XCTAssertTrue(self.sut.settingsTableView.delegate === self.sut, "delegate should be sut")
+    XCTAssertTrue(self.sut.settingsTableView.dataSource === self.sut, "dataSource should be sut")
     XCTAssertFalse(self.sut.resyncBlockchainButton.isHidden, "sync blockchain button should be visible by default")
     XCTAssertTrue(self.sut.sendDebuggingInfoButton.isHidden, "send debugging button should be hidden by default")
   }
@@ -91,7 +91,6 @@ class SettingsViewControllerTests: XCTestCase {
 
   // MARK: mock coordinator
   class MockCoordinator: SettingsViewControllerDelegate {
-    func viewControllerDidSelectOpenSourceLicenses(_ viewController: UIViewController) {}
 
     func verifiedPhoneNumber() -> String? {
       return nil
@@ -101,11 +100,18 @@ class SettingsViewControllerTests: XCTestCase {
       return false
     }
 
+    func dustProtectionIsEnabled() -> Bool {
+      return false
+    }
+
     func viewControllerDidSelectVerifyPhone(_ viewController: UIViewController) {}
     func viewControllerDidRequestDeleteWallet(_ viewController: UIViewController, completion: @escaping () -> Void) {}
     func viewControllerDidConfirmDeleteWallet(_ viewController: UIViewController) {}
     func viewControllerDidRequestOpenURL(_ viewController: UIViewController, url: URL) {}
     func viewControllerDidSelectRecoveryWords(_ viewController: UIViewController) {}
+    func viewControllerSendDebuggingInfo(_ viewController: UIViewController) { }
+    func viewControllerDidSelectOpenSourceLicenses(_ viewController: UIViewController) {}
+    func viewControllerDidChangeDustProtection(_ viewController: UIViewController, shouldEnable: Bool) {}
 
     var didSelectCloseWasCalled = false
     func viewControllerDidSelectClose(_ viewController: UIViewController) {
@@ -117,6 +123,5 @@ class SettingsViewControllerTests: XCTestCase {
       resyncBlockchainWasCalled = true
     }
 
-    func viewControllerSendDebuggingInfo(_ viewController: UIViewController) { }
   }
 }

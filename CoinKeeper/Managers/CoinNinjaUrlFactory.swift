@@ -10,8 +10,6 @@ import Foundation
 
 struct CoinNinjaUrlFactory {
 
-  static private let tooltipBreadcrumb: String = "tooltips/"
-
   enum CoinNinjaURL {
     case bitcoin
     case seedWords
@@ -29,6 +27,7 @@ struct CoinNinjaUrlFactory {
     case sharedMemosTooltip
     case regularTransactionTooltip
     case dropbitTransactionTooltip
+    case dustProtection
 
     var domain: String {
       switch self {
@@ -43,10 +42,15 @@ struct CoinNinjaUrlFactory {
            .detailsTooltip,
            .myAddressesTooltip,
            .sharedMemosTooltip,
+           .dustProtection,
            .regularTransactionTooltip,
            .dropbitTransactionTooltip:
         return "https://dropbit.app/"
       }
+    }
+
+    private var tooltipBreadcrumb: String {
+      return "tooltips/"
     }
 
     var path: String {
@@ -74,15 +78,17 @@ struct CoinNinjaUrlFactory {
       case .privacyPolicy:
         return "privacypolicy"
       case .detailsTooltip:
-        return "\(CoinNinjaUrlFactory.tooltipBreadcrumb)transactiondetails"
+        return "\(tooltipBreadcrumb)transactiondetails"
       case .myAddressesTooltip:
-        return "\(CoinNinjaUrlFactory.tooltipBreadcrumb)myaddresses"
+        return "\(tooltipBreadcrumb)myaddresses"
       case .sharedMemosTooltip:
-        return "\(CoinNinjaUrlFactory.tooltipBreadcrumb)sharedmemos"
+        return "\(tooltipBreadcrumb)sharedmemos"
       case .regularTransactionTooltip:
-        return "\(CoinNinjaUrlFactory.tooltipBreadcrumb)regulartransaction"
+        return "\(tooltipBreadcrumb)regulartransaction"
       case .dropbitTransactionTooltip:
-        return "\(CoinNinjaUrlFactory.tooltipBreadcrumb)dropbitransaction"
+        return "\(tooltipBreadcrumb)dropbitransaction"
+      case .dustProtection:
+        return "\(tooltipBreadcrumb)dustprotection"
       }
     }
   }

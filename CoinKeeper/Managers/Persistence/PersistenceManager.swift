@@ -402,6 +402,10 @@ class PersistenceManager: PersistenceManagerType {
     return userDefaultsManager.dustProtectionMinimumAmount()
   }
 
+  func dustProtectionIsEnabled() -> Bool {
+    return userDefaultsManager.dustProtectionIsEnabled()
+  }
+
   func enableDustProtection(_ shouldEnable: Bool) {
     let key = CKUserDefaults.Key.dustProtectionEnabled.defaultsString
     CKUserDefaults.standardDefaults.set(shouldEnable, forKey: key)
