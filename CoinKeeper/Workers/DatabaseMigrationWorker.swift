@@ -11,6 +11,7 @@ import CoreData
 import PromiseKit
 
 protocol Migratable {
+  func isMigrated() -> Bool
   func migrate()
 }
 
@@ -19,19 +20,18 @@ enum DatabaseMigrationVersion: String {
   case v4Grooming
 }
 
-class DatabaseMigrationWorker {
+class DatabaseMigrationWorker: AbstractMigrationWorker {
 
-  let migrators: [Migratable]
+  let context: NSManagedObjectContext
 
-  init(migrators: [Migratable]) {
-    self.migrators = migrators
+  init(migrators: [Migratable], in context: NSManagedObjectContext) {
+    self.context = context
+    super.init(migrators: migrators)
   }
 
-  func migrateIfPossible(in context: NSManagedObjectContext) -> Promise<Void> {
+  override func perform() {
     context.performAndWait {
-      migrators.forEach { $0.migrate() }
+      super.perform()
     }
-    return Promise.value(())
   }
-
 }

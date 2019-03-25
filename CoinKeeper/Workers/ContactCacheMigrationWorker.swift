@@ -9,17 +9,4 @@
 import Foundation
 import PromiseKit
 
-class ContactCacheMigrationWorker {
-
-  let migrators: [Migratable]
-
-  init(migrators: [Migratable]) {
-    self.migrators = migrators
-  }
-
-  func migrateIfPossible() -> Promise<Void> {
-    migrators.forEach { $0.migrate() }
-    return Promise.value(())
-  }
-
-}
+class ContactCacheMigrationWorker: AbstractMigrationWorker {}

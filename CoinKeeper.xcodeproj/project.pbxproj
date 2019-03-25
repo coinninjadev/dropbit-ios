@@ -203,6 +203,7 @@
 		3B82692920332AFD009B11EC /* KeypadEntryViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B82692820332AFD009B11EC /* KeypadEntryViewTests.swift */; };
 		3B82692B20337282009B11EC /* PinCreationViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3B82692A20337282009B11EC /* PinCreationViewController.storyboard */; };
 		3B82692D203372AC009B11EC /* PinCreationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B82692C203372AC009B11EC /* PinCreationViewController.swift */; };
+		3B86B6F1224972D000E2706E /* AbstractMigrationWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B86B6F0224972D000E2706E /* AbstractMigrationWorker.swift */; };
 		3B86F787203B6FB700D15231 /* MockAppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B86F786203B6FB700D15231 /* MockAppCoordinator.swift */; };
 		3B86F78A203C6D4E00D15231 /* PinEntryViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3B86F789203C6D4E00D15231 /* PinEntryViewController.storyboard */; };
 		3B86F78C203C6DCD00D15231 /* PinEntryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B86F78B203C6DCD00D15231 /* PinEntryViewController.swift */; };
@@ -979,6 +980,7 @@
 		3B82692820332AFD009B11EC /* KeypadEntryViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeypadEntryViewTests.swift; sourceTree = "<group>"; };
 		3B82692A20337282009B11EC /* PinCreationViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = PinCreationViewController.storyboard; sourceTree = "<group>"; };
 		3B82692C203372AC009B11EC /* PinCreationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinCreationViewController.swift; sourceTree = "<group>"; };
+		3B86B6F0224972D000E2706E /* AbstractMigrationWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AbstractMigrationWorker.swift; sourceTree = "<group>"; };
 		3B86F786203B6FB700D15231 /* MockAppCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockAppCoordinator.swift; sourceTree = "<group>"; };
 		3B86F789203C6D4E00D15231 /* PinEntryViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = PinEntryViewController.storyboard; sourceTree = "<group>"; };
 		3B86F78B203C6DCD00D15231 /* PinEntryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinEntryViewController.swift; sourceTree = "<group>"; };
@@ -1850,6 +1852,7 @@
 				3B80E27421BE9D7A00F6EF17 /* DatabaseMigrationWorker.swift */,
 				B5DDB0F421DE5ED200A25929 /* KeychainMigrationWorker.swift */,
 				3BE8AA1521F10D4200A3F0C4 /* CKCryptor.swift */,
+				3B86B6F0224972D000E2706E /* AbstractMigrationWorker.swift */,
 			);
 			path = Workers;
 			sourceTree = "<group>";
@@ -3777,6 +3780,7 @@
 				B5CFA333221E008B002B1BDD /* CCMContact+CoreDataClass.swift in Sources */,
 				308F6F09217FB12E0094D6CB /* VerticalDragView.swift in Sources */,
 				3BBEE0C1208A5DA500A7DF9F /* CKMDerivativePath+CoreDataClass.swift in Sources */,
+				3B86B6F1224972D000E2706E /* AbstractMigrationWorker.swift in Sources */,
 				B552EDFD211E33D000332BB5 /* AnalyticsManager.swift in Sources */,
 				3B1555E020D27B5000D6A70C /* TransactionVinResponse.swift in Sources */,
 				3BA360882090BAD900732C43 /* NSManagedObject+Init.swift in Sources */,
