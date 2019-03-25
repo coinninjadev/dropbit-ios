@@ -84,6 +84,20 @@ class VoutCoreDataTests: XCTestCase {
     XCTAssertEqual(spendableVouts.count, 2, "should have 2 spendable vouts")
   }
 
+  func testFindAllSpendableExcludesDustVouts() {
+    createVout(with: self.goodVoutResponse(),
+               isSpent: false, receiveIndex: 1, confirmations: 1, in: context)
+    createVout(with: self.dustVoutResponse(),
+               isSpent: false, receiveIndex: 1, confirmations: 1, in: context)
+    createVout(with: self.notDustVoutResponse(),
+               isSpent: false, receiveIndex: 1, confirmations: 1, in: context)
+
+    let dustThreshold = 1000
+    let spendableVouts = CKMVout.findAllSpendable(minAmount: dustThreshold, in: context)
+
+    XCTAssertEqual(spendableVouts.count, 1, "should have 1 spendable vouts")
+  }
+
   // MARK: private helpers
   @discardableResult
   private func createVout(with response: TransactionVoutResponse, isSpent: Bool, receiveIndex: Int,
@@ -135,6 +149,48 @@ class VoutCoreDataTests: XCTestCase {
         "type": "scripthash",
         "addresses": [
           "38eVGkkoq9LNXZ4SNYUKdX32a9ieTvZ4vd"
+        ]
+      }
+    }
+    """
+    let data = json.data(using: .utf8)!
+    //swiftlint:disable:next force_try
+    return try! JSONDecoder().decode(TransactionVoutResponse.self, from: data)
+  }
+
+  private func dustVoutResponse() -> TransactionVoutResponse {
+    let json = """
+    {
+      "value": 999,
+      "n": 0,
+      "scriptPubKey": {
+        "asm": "OP_DUP OP_HASH160 54aac92eb2398146daa547d921ed29a63891a769 OP_EQUALVERIFY OP_CHECKSIG",
+        "hex": "76a91454aac92eb2398146daa547d921ed29a63891a76988ac",
+        "reqSigs": 1,
+        "type": "pubkeyhash",
+        "addresses": [
+          "18igMXPZwZEZjNQm8JAtPfkUHY5UyQRRiD"
+        ]
+      }
+    }
+    """
+    let data = json.data(using: .utf8)!
+    //swiftlint:disable:next force_try
+    return try! JSONDecoder().decode(TransactionVoutResponse.self, from: data)
+  }
+
+  private func notDustVoutResponse() -> TransactionVoutResponse {
+    let json = """
+    {
+      "value": 1000,
+      "n": 0,
+      "scriptPubKey": {
+        "asm": "OP_DUP OP_HASH160 54aac92eb2398146daa547d921ed29a63891a769 OP_EQUALVERIFY OP_CHECKSIG",
+        "hex": "76a91454aac92eb2398146daa547d921ed29a63891a76988ac",
+        "reqSigs": 1,
+        "type": "pubkeyhash",
+        "addresses": [
+          "18igMXPZwZEZjNQm8JAtPfkUHY5UyQRRiD"
         ]
       }
     }
