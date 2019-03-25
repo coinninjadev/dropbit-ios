@@ -110,8 +110,8 @@ protocol PersistenceManagerType: DeviceCountryCodeProvider {
   func lastReceiveAddressIndex(in context: NSManagedObjectContext) -> Int?
   func lastChangeAddressIndex(in context: NSManagedObjectContext) -> Int?
 
-  func dustProtectionThreshold() -> Int?
-  func setDustProtectionThreshold(_ minAmount: Int?)
+  func dustProtectionMinimumAmount() -> Int
+  func enableDustProtection(_ shouldEnable: Bool)
 
   func setLastLoginTime()
   func lastLoginTime() -> TimeInterval?
@@ -265,6 +265,9 @@ protocol PersistenceUserDefaultsType: AnyObject {
   func deviceId() -> UUID?
   func setDeviceId(_ uuid: UUID)
   var receiveAddressIndexGaps: Set<Int> { get set }
+
+  /// Returns zero if dust protection not enabled
+  func dustProtectionMinimumAmount() -> Int
 
 }
 

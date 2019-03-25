@@ -398,15 +398,13 @@ class PersistenceManager: PersistenceManagerType {
     databaseManager.matchContactsIfPossible(with: contactCacheManager)
   }
 
-  func dustProtectionThreshold() -> Int? {
-    let key = CKUserDefaults.Key.dustProtectionThreshold.defaultsString
-    let storedValue = CKUserDefaults.standardDefaults.integer(forKey: key)
-    return (storedValue == 0) ? nil : storedValue
+  func dustProtectionMinimumAmount() -> Int {
+    return userDefaultsManager.dustProtectionMinimumAmount()
   }
 
-  func setDustProtectionThreshold(_ minAmount: Int?) {
-    let key = CKUserDefaults.Key.dustProtectionThreshold.defaultsString
-    CKUserDefaults.standardDefaults.set(minAmount, forKey: key)
+  func enableDustProtection(_ shouldEnable: Bool) {
+    let key = CKUserDefaults.Key.dustProtectionEnabled.defaultsString
+    CKUserDefaults.standardDefaults.set(shouldEnable, forKey: key)
   }
 
   func double(for key: CKUserDefaults.Key) -> Double {
