@@ -14,6 +14,10 @@ struct MigrateDatabaseV4Grooming: Migratable {
   let persistenceManager: PersistenceManagerType
   let context: NSManagedObjectContext
 
+  func isMigrated() -> Bool {
+    return persistenceManager.databaseMigrationFlag(for: .v4Grooming)
+  }
+
   func migrate() {
     let allPhoneNumbers = CKMPhoneNumber.findAll(in: context)
 
@@ -43,7 +47,7 @@ struct MigrateDatabaseV4Grooming: Migratable {
     // delete all previous instances of CKMPhoneNumber
     allPhoneNumbers.forEach { context.delete($0) }
 
-    // set flag as complete
+    // set migrated flag
     persistenceManager.setDatabaseMigrationFlag(migrated: true, for: .v4Grooming)
   }
 }

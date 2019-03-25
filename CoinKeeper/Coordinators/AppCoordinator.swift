@@ -157,7 +157,7 @@ class AppCoordinator: CoordinatorType {
   func createDatabaseMigrationWorker(in context: NSManagedObjectContext) -> DatabaseMigrationWorker? {
     guard let factory = createMigratorFactory(in: context) else { return nil }
     let migrators = factory.migrators()
-    return DatabaseMigrationWorker(migrators: migrators)
+    return DatabaseMigrationWorker(migrators: migrators, in: context)
   }
 
   func createKeychainMigrationWorker() -> KeychainMigrationWorker {

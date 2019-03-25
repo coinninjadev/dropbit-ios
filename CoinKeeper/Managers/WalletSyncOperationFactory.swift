@@ -88,7 +88,7 @@ class WalletSyncOperationFactory {
                            completion: CompletionHandler?,
                            fetchResult: ((UIBackgroundFetchResult) -> Void)?,
                            in context: NSManagedObjectContext) -> Promise<Void> {
-    return dependencies.databaseMigrationWorker.migrateIfPossible(in: context)
+    return dependencies.databaseMigrationWorker.migrateIfPossible()
       .then(in: context) { self.checkAndRecoverAuthorizationIds(with: dependencies, in: context) }
       .then(in: context) { dependencies.txDataWorker.performFetchAndStoreAllTransactionalData(in: context, fullSync: fullSync) }
       .get { _ in dependencies.connectionManager.setAPIUnreachable(false) }
