@@ -69,7 +69,7 @@ class AddressDataSourceTests: XCTestCase {
 
   func testNextAvailableReceiveIndex_returnsMinGapIndex() {
     let context = InMemoryCoreDataStack().context
-    let mockDefaults = MockPersistenceManager.MockPersistenceUserDefaultsManager()
+    let mockDefaults = MockUserDefaultsManager()
     mockDefaults.receiveAddressIndexGapsValue = [3, 8, 20]
     let mockPersistence = MockPersistenceManager(userDefaultsManager: mockDefaults)
     mockPersistence.lastReceiveAddressIndexValue = 21
@@ -81,7 +81,7 @@ class AddressDataSourceTests: XCTestCase {
 
   func testNextAvailableReceiveAddresses_skipsPendingDropBitAddresses() {
     let context = InMemoryCoreDataStack().context
-    let mockDefaults = MockPersistenceManager.MockPersistenceUserDefaultsManager()
+    let mockDefaults = MockUserDefaultsManager()
     mockDefaults.receiveAddressIndexGapsValue = []
     let mockPersistence = MockPersistenceManager(userDefaultsManager: mockDefaults)
     mockPersistence.lastReceiveAddressIndexValue = 0
@@ -100,7 +100,7 @@ class AddressDataSourceTests: XCTestCase {
 
   func testNextAvailableReceiveIndex_handlesAllSourcesCombined() {
     let context = InMemoryCoreDataStack().context
-    let mockDefaults = MockPersistenceManager.MockPersistenceUserDefaultsManager()
+    let mockDefaults = MockUserDefaultsManager()
     mockDefaults.receiveAddressIndexGapsValue = [3, 4, 6, 12]
     let mockPersistence = MockPersistenceManager(userDefaultsManager: mockDefaults)
     mockPersistence.lastReceiveAddressIndexValue = 15

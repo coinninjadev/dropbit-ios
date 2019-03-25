@@ -722,6 +722,8 @@
 		B5D3BF0A222470420073A684 /* ManagedPhoneNumberInputs.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5D3BF09222470420073A684 /* ManagedPhoneNumberInputs.swift */; };
 		B5D77CCB2221FB80002C360E /* MockPhoneNumberFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5D77CC92221FB09002C360E /* MockPhoneNumberFormatter.swift */; };
 		B5D77CCD2222002D002C360E /* MockRecipientParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5D77CCC2222002D002C360E /* MockRecipientParser.swift */; };
+		B5D833FC22492F3C00C45ABE /* MockPersistenceDatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5D833FA22492EFD00C45ABE /* MockPersistenceDatabaseManager.swift */; };
+		B5D834002249309B00C45ABE /* MockPersistenceKeychainManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5D833FE2249305200C45ABE /* MockPersistenceKeychainManager.swift */; };
 		B5DDB0F521DE5ED200A25929 /* KeychainMigrationWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5DDB0F421DE5ED200A25929 /* KeychainMigrationWorker.swift */; };
 		B5DDB0F721DE69C100A25929 /* KeychainMigratorFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5DDB0F621DE69C100A25929 /* KeychainMigratorFactory.swift */; };
 		B5DDB0F921DE6A1100A25929 /* MigrateKeychainV1toV2.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5DDB0F821DE6A1100A25929 /* MigrateKeychainV1toV2.swift */; };
@@ -1501,6 +1503,8 @@
 		B5D6BE4A21C5BD42000C0D4C /* Model v3.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Model v3.xcdatamodel"; sourceTree = "<group>"; };
 		B5D77CC92221FB09002C360E /* MockPhoneNumberFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockPhoneNumberFormatter.swift; sourceTree = "<group>"; };
 		B5D77CCC2222002D002C360E /* MockRecipientParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockRecipientParser.swift; sourceTree = "<group>"; };
+		B5D833FA22492EFD00C45ABE /* MockPersistenceDatabaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockPersistenceDatabaseManager.swift; sourceTree = "<group>"; };
+		B5D833FE2249305200C45ABE /* MockPersistenceKeychainManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockPersistenceKeychainManager.swift; sourceTree = "<group>"; };
 		B5DDB0F421DE5ED200A25929 /* KeychainMigrationWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainMigrationWorker.swift; sourceTree = "<group>"; };
 		B5DDB0F621DE69C100A25929 /* KeychainMigratorFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainMigratorFactory.swift; sourceTree = "<group>"; };
 		B5DDB0F821DE6A1100A25929 /* MigrateKeychainV1toV2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MigrateKeychainV1toV2.swift; sourceTree = "<group>"; };
@@ -2322,10 +2326,8 @@
 			isa = PBXGroup;
 			children = (
 				B50E183C214807800091EEDA /* Networking */,
+				B5D833FD22492F9F00C45ABE /* Persistence */,
 				B52770C3207574060083710E /* MockCalculatorViewModel.swift */,
-				6B8250D63C5BAA325C86E644 /* MockPersistenceManager.swift */,
-				B596702C221E2AE4008E884D /* MockContactCacheManager.swift */,
-				3B2EBF72223176D9003C0D0E /* MockUserDefaultsManager.swift */,
 				3BA389A62035C97000B599A0 /* MockPinCreationViewControllerDelegate.swift */,
 				4AF433272094103C00B11BC9 /* MockDeviceVerificationViewControllerDelegate.swift */,
 				B51894782089304E00E75C20 /* MockTransactionHistoryDetailCellDelegate.swift */,
@@ -2861,6 +2863,18 @@
 				304BAECF21FA131000065D6D /* TutorialUITests.swift */,
 			);
 			path = UITestCases;
+			sourceTree = "<group>";
+		};
+		B5D833FD22492F9F00C45ABE /* Persistence */ = {
+			isa = PBXGroup;
+			children = (
+				6B8250D63C5BAA325C86E644 /* MockPersistenceManager.swift */,
+				B596702C221E2AE4008E884D /* MockContactCacheManager.swift */,
+				B5D833FA22492EFD00C45ABE /* MockPersistenceDatabaseManager.swift */,
+				B5D833FE2249305200C45ABE /* MockPersistenceKeychainManager.swift */,
+				3B2EBF72223176D9003C0D0E /* MockUserDefaultsManager.swift */,
+			);
+			path = Persistence;
 			sourceTree = "<group>";
 		};
 		B5EABAB021FB8F1700E32E08 /* Bodies */ = {
@@ -3875,8 +3889,10 @@
 				3BDB6C532220521000E75DD2 /* SendPaymentMemoViewTests.swift in Sources */,
 				6B825AF411A9684555EA8F14 /* MockPersistenceManager.swift in Sources */,
 				3B5720782232CD1C0048A8CF /* DatabaseTests.swift in Sources */,
+				B5D833FC22492F3C00C45ABE /* MockPersistenceDatabaseManager.swift in Sources */,
 				3B5CD00D20DACD7A003FF5AD /* AddressCoreDataTests.swift in Sources */,
 				B5C9472E210E57D7002CBAE4 /* AddressRequestUpdateDisplayableTests.swift in Sources */,
+				B5D834002249309B00C45ABE /* MockPersistenceKeychainManager.swift in Sources */,
 				A29CE10D20A37F6900761B91 /* StringEmptyValidatorTests.swift in Sources */,
 				3B23129120DA7B5A0099A557 /* MockTxHistoryDetailAddressViewDelegate.swift in Sources */,
 				3B24DFBE20EBC44A00C31969 /* MockDatabaseManager.swift in Sources */,
