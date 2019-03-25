@@ -378,7 +378,8 @@ class PersistenceManager: PersistenceManagerType {
   }
 
   private func setMigrationFlag(migrated: Bool, version: String, key: CKUserDefaults.Key) {
-    let value = [version: migrated]
+    var value = CKUserDefaults.standardDefaults.value(forKey: key.defaultsString) as? [String: Bool] ?? [:]
+    value[version] = migrated
     CKUserDefaults.standardDefaults.setValue(value, forKey: key.defaultsString)
   }
 
