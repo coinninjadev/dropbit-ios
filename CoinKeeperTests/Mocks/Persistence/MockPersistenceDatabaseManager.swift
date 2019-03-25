@@ -149,4 +149,3 @@ class MockPersistenceDatabaseManager: PersistenceDatabaseType {
 
   func matchContactsIfPossible(with contactCacheManager: ContactCacheManagerType) {}
 }
-

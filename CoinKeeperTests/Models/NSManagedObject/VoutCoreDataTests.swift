@@ -54,7 +54,7 @@ class VoutCoreDataTests: XCTestCase {
     createVout(with: self.goodVoutResponse2(),
                isSpent: true, receiveIndex: 2, confirmations: 6, in: context)
 
-    let spendableVouts = CKMVout.findAllSpendable(in: context)
+    let spendableVouts = CKMVout.findAllSpendable(minAmount: 0, in: context)
 
     XCTAssertEqual(spendableVouts.count, 1, "should have 1 spendable vout")
     XCTAssertEqual(spendableVouts[0].amount, 1, "value should equal spendable vout's value")
@@ -67,7 +67,7 @@ class VoutCoreDataTests: XCTestCase {
     createVout(with: self.goodVoutResponse2(),
                isSpent: true, receiveIndex: 2, confirmations: 6, in: context)
 
-    let spendableVouts = CKMVout.findAllSpendable(in: context)
+    let spendableVouts = CKMVout.findAllSpendable(minAmount: 0, in: context)
 
     XCTAssertTrue(spendableVouts.isEmpty, "should have 0 spendable vouts")
   }
@@ -79,7 +79,7 @@ class VoutCoreDataTests: XCTestCase {
     createVout(with: self.goodVoutResponse2(),
                isSpent: false, receiveIndex: 2, confirmations: 6, in: context)
 
-    let spendableVouts = CKMVout.findAllSpendable(in: context)
+    let spendableVouts = CKMVout.findAllSpendable(minAmount: 0, in: context)
 
     XCTAssertEqual(spendableVouts.count, 2, "should have 2 spendable vouts")
   }
