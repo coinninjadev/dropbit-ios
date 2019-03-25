@@ -16,6 +16,7 @@ protocol Migratable {
 
 enum DatabaseMigrationVersion: String {
   case v1tov2
+  case v4Grooming
 }
 
 class DatabaseMigrationWorker {

@@ -33,6 +33,19 @@ public class CKMPhoneNumber: NSManagedObject {
     self.number = inputs.nationalNumber
   }
 
+  public static func findAll(in context: NSManagedObjectContext) -> [CKMPhoneNumber] {
+    let request: NSFetchRequest<CKMPhoneNumber> = CKMPhoneNumber.fetchRequest()
+    var results: [CKMPhoneNumber] = []
+    context.performAndWait {
+      do {
+        results = try context.fetch(request)
+      } catch {
+        results = []
+      }
+    }
+    return results
+  }
+
   public static func findOrCreate(withInputs inputs: ManagedPhoneNumberInputs,
                                   phoneNumberHash: String,
                                   in context: NSManagedObjectContext) -> CKMPhoneNumber {
