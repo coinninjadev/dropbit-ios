@@ -146,7 +146,7 @@ class TransactionDataWorker: TransactionDataWorkerType {
         return self.persistAndGroomTransactions(with: dto, in: context, fullSync: fullSync)
           .then { Promise.value(TransactionDataWorkerDTO(txResponses: $0).merged(with: dto)) }
       }
-      .then(in: context) { _ in self.updateSpendableBalance(in: context) }
+      .then(in: context) { _ in self.updateUnspentVouts(in: context) }
       .then(in: context) { _ in self.updateTransactionDayAveragePrices(in: context) }
   }
 
@@ -444,7 +444,7 @@ class TransactionDataWorker: TransactionDataWorkerType {
     }
   }
 
-  private func updateSpendableBalance(
+  private func updateUnspentVouts(
     in context: NSManagedObjectContext
     ) -> Promise<Void> {
     return Promise { seal in
