@@ -58,6 +58,14 @@ protocol WalletManagerType: AnyObject {
     withFlatFee flatFee: Int
     ) -> Promise<CNBTransactionData>
 
+  /// Transaction data for sending max wallet amount, minus fee, to a given address.
+  ///
+  /// - Parameters:
+  ///   - address: Destination payment address.
+  ///   - feeRate: Fee rate per bytes, in Satoshis
+  /// - Returns: A Promise that either contains a CNBTransactionData object, ro rejects if insufficient funds.
+  func transactionDataSendingMax(to address: String, withFeeRate feeRate: Double) -> Promise<CNBTransactionData>
+
   func encryptionCipherKeys(forUncompressedPublicKey pubkey: Data) -> CNBEncryptionCipherKeys
   func decryptionCipherKeys(
     forReceiveAddressPath path: CKMDerivativePath,
@@ -273,6 +281,30 @@ class WalletManager: WalletManagerType {
           paymentAmount: paymentAmount,
           flatFee: feeAmount,
           change: self.newChangePath(in: bgContext),
+          blockHeight: blockHeight
+        )
+        if let data = txData {
+          seal.fulfill(data)
+        } else {
+          seal.reject(TransactionDataError.insufficientFunds)
+        }
+      }
+    }
+  }
+
+  func transactionDataSendingMax(to address: String, withFeeRate feeRate: Double) -> Promise<CNBTransactionData> {
+    return Promise { seal in
+      let usableFeeRate = self.usableFeeRate(from: feeRate)
+      let blockHeight = UInt(persistenceManager.integer(for: .blockheight))
+      let bgContext = persistenceManager.createBackgroundContext()
+      bgContext.performAndWait {
+        let usableVouts = self.unspentVoutsRelativeToUser(in: bgContext)
+        let allAvailableOutputs = self.unspentTransactionOutputs(fromUsableUTXOs: usableVouts)
+
+        let txData = CNBTransactionData(
+          allUsableOutputs: allAvailableOutputs,
+          sendingMaxToAddress: address,
+          feeRate: usableFeeRate,
           blockHeight: blockHeight
         )
         if let data = txData {

@@ -6,7 +6,9 @@
 //  Copyright © 2018 Coin Ninja, LLC. All rights reserved.
 //
 
-import Result
+import CNBitcoinKit
+import PromiseKit
+import enum Result.Result
 
 protocol SendPaymentViewControllerDelegate: DeviceCountryCodeProvider {
   func sendPaymentViewControllerDidLoad(_ viewController: UIViewController)
@@ -20,12 +22,17 @@ protocol SendPaymentViewControllerDelegate: DeviceCountryCodeProvider {
    Dismisses `viewController` and shows phone verification flow if they haven't yet verified, otherwise calls `completion`.
    */
   func viewControllerDidRequestVerificationCheck(_ viewController: UIViewController, completion: @escaping (() -> Void))
-
+  func viewController(_ viewController: UIViewController,
+                      sendingMax data: CNBTransactionData,
+                      address: String,
+                      contact: ContactType?,
+                      rates: ExchangeRates,
+                      sharedPayload: SharedPayloadDTO)
   func viewControllerDidSendPayment(_ viewController: UIViewController,
                                     btcAmount: NSDecimalNumber,
                                     requiredFeeRate: Double?,
                                     primaryCurrency: CurrencyCode,
-                                    address: String?,
+                                    address: String,
                                     contact: ContactType?,
                                     rates: ExchangeRates,
                                     sharedPayload: SharedPayloadDTO)
@@ -48,4 +55,10 @@ protocol SendPaymentViewControllerDelegate: DeviceCountryCodeProvider {
   func showAlertForInvalidContactOrPhoneNumber(contactName: String?, displayNumber: String)
 
   func viewController(_ viewController: UIViewController, checkForContactFromGenericContact genericContact: GenericContact) -> ValidatedContact?
+
+  func viewController(
+    _ viewController: UIViewController,
+    sendMaxFundsTo address: String,
+    feeRate: Double
+  ) -> Promise<CNBTransactionData>
 }

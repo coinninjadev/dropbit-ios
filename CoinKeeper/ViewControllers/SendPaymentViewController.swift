@@ -8,8 +8,10 @@
 
 import UIKit
 import Contacts
-import Result
+import enum Result.Result
 import PhoneNumberKit
+import CNBitcoinKit
+import PromiseKit
 
 typealias SendPaymentViewControllerCoordinator = SendPaymentViewControllerDelegate &
   CurrencyValueDataSourceType & BalanceDataSource & PaymentRequestResolver & URLOpener & ViewControllerDismissable
@@ -80,6 +82,7 @@ ValidatorAlertDisplayable {
   @IBOutlet var pasteButton: CompactActionButton!
   @IBOutlet var sendButton: PrimaryActionButton!
   @IBOutlet var memoContainerView: SendPaymentMemoView!
+  @IBOutlet var sendMaxButton: LightBorderedButton!
 
   @IBAction func performClose() {
     coordinationDelegate?.viewControllerDidSelectClose(self)
@@ -110,6 +113,32 @@ ValidatorAlertDisplayable {
       try validateAndSendPayment()
     } catch {
       showValidatorAlert(for: error, title: "Invalid Transaction")
+    }
+  }
+
+  @IBAction func performSendMax() {
+    let tempAddress = ""
+    self.coordinationDelegate?.latestFees()
+      .compactMap { $0[.good] }
+      .then { feeRate -> Promise<CNBTransactionData> in
+        guard let delegate = self.coordinationDelegate else { fatalError("coordinationDelegate is required") }
+        return delegate.viewController(self, sendMaxFundsTo: tempAddress, feeRate: feeRate)
+      }
+      .done {txData in
+        self.viewModel.sendMax(with: txData)
+        self.loadAmounts()
+        self.sendMaxButton.isHidden = true
+      }
+      .catch { _ in
+        let action = AlertActionConfiguration.init(title: "OK", style: .default, action: nil)
+        let alertViewModel = AlertControllerViewModel(
+          title: "Insufficient Funds",
+          description: "There are not enough funds to cover the transaction and network fee.",
+          image: nil,
+          style: .alert,
+          actions: [action]
+        )
+        self.coordinationDelegate?.viewControllerDidRequestAlert(self, viewModel: alertViewModel)
     }
   }
 
@@ -470,6 +499,7 @@ extension SendPaymentViewController: UITextFieldDelegate {
       setPaymentRecipient(recipient)
       updateViewWithModel()
     case primaryAmountTextField:
+      sendMaxButton.isHidden = true
       guard let text = sanitizedAmountString,
         let number = NSDecimalNumber(fromString: text) else { return }
       if number == .zero {
@@ -510,6 +540,8 @@ extension SendPaymentViewController: UITextFieldDelegate {
 
     case primaryAmountTextField:
       viewModel.btcAmount = getBitcoinValueForPrimaryAmountText()
+      sendMaxButton.isHidden = viewModel.btcAmount != .zero
+      primaryAmountTextField.text = viewModel.primaryAmountInputText(withRates: self.rateManager.exchangeRates)
       loadAmounts(forPrimary: false, forSecondary: true)
     default:
       break
@@ -681,14 +713,10 @@ extension SendPaymentViewController {
                                             memo: self.viewModel.memo,
                                             amountInfo: sharedAmountInfo())
 
-    coordinationDelegate?.viewControllerDidSendPayment(self,
-                                                       btcAmount: getBitcoinValueForPrimaryAmountText(),
-                                                       requiredFeeRate: self.viewModel.requiredFeeRate,
-                                                       primaryCurrency: primaryCurrency,
-                                                       address: address,
-                                                       contact: nil,
-                                                       rates: self.rateManager.exchangeRates,
-                                                       sharedPayload: sharedPayloadDTO)
+    sendTransactionForConfirmation(with: viewModel.sendMaxTransactionData,
+                                   address: address,
+                                   contact: nil,
+                                   sharedPayload: sharedPayloadDTO)
   }
 
   /// This evaluates the contact, some of it asynchronously, before sending
@@ -741,14 +769,10 @@ extension SendPaymentViewController {
         if let addressResponse = addressResponses.first(where: { $0.phoneNumberHash == contact.phoneNumberHash }) {
           var updatedPayload = sharedPayload
           updatedPayload.updatePubKeyState(with: addressResponse)
-          strongSelf.coordinationDelegate?.viewControllerDidSendPayment(strongSelf,
-                                                                        btcAmount: strongSelf.getBitcoinValueForPrimaryAmountText(),
-                                                                        requiredFeeRate: strongSelf.viewModel.requiredFeeRate,
-                                                                        primaryCurrency: strongSelf.primaryCurrency,
-                                                                        address: addressResponse.address,
-                                                                        contact: contact,
-                                                                        rates: strongSelf.rateManager.exchangeRates,
-                                                                        sharedPayload: updatedPayload)
+          strongSelf.sendTransactionForConfirmation(with: strongSelf.viewModel.sendMaxTransactionData,
+                                                    address: addressResponse.address,
+                                                    contact: contact,
+                                                    sharedPayload: updatedPayload)
         } else {
           // The contact has not backed up their words so our fetch didn't return an address, degrade to address negotiation
           do {
@@ -780,7 +804,6 @@ extension SendPaymentViewController {
   private func handleGenericContactAddressCheckCompletion(forContact contact: ContactType,
                                                           sharedPayload: SharedPayloadDTO,
                                                           result: Result<[WalletAddressesQueryResponse], UserProviderError>) {
-    let btcValue = getBitcoinValueForPrimaryAmountText()
     var newContact = contact
 
     switch result {
@@ -790,14 +813,10 @@ extension SendPaymentViewController {
         updatedPayload.updatePubKeyState(with: addressResponse)
 
         newContact.kind = .registeredUser
-        self.coordinationDelegate?.viewControllerDidSendPayment(self,
-                                                                btcAmount: btcValue,
-                                                                requiredFeeRate: self.viewModel.requiredFeeRate,
-                                                                primaryCurrency: self.primaryCurrency,
-                                                                address: addressResponse.address,
-                                                                contact: contact,
-                                                                rates: self.rateManager.exchangeRates,
-                                                                sharedPayload: updatedPayload)
+        sendTransactionForConfirmation(with: viewModel.sendMaxTransactionData,
+                                       address: addressResponse.address,
+                                       contact: contact,
+                                       sharedPayload: updatedPayload)
       } else {
         do {
           try validateAmountAndBeginAddressNegotiation(for: newContact, kind: .invite, sharedPayload: sharedPayload)
@@ -810,4 +829,28 @@ extension SendPaymentViewController {
     }
   }
 
+  private func sendTransactionForConfirmation(with data: CNBTransactionData?,
+                                              address: String,
+                                              contact: ContactType?,
+                                              sharedPayload: SharedPayloadDTO) {
+    let rates = rateManager.exchangeRates
+    if let data = viewModel.sendMaxTransactionData {
+      coordinationDelegate?.viewController(self,
+                                           sendingMax: data,
+                                           address: address,
+                                           contact: contact,
+                                           rates: rates,
+                                           sharedPayload: sharedPayload)
+    } else {
+      self.coordinationDelegate?.viewControllerDidSendPayment(self,
+                                                              btcAmount: getBitcoinValueForPrimaryAmountText(),
+                                                              requiredFeeRate: viewModel.requiredFeeRate,
+                                                              primaryCurrency: primaryCurrency,
+                                                              address: address,
+                                                              contact: contact,
+                                                              rates: rates,
+                                                              sharedPayload: sharedPayload)
+    }
+
+  }
 }
