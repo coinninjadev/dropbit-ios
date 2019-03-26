@@ -86,7 +86,7 @@ struct CoinNinjaUrlFactory {
       case .regularTransactionTooltip:
         return "\(tooltipBreadcrumb)regulartransaction"
       case .dropbitTransactionTooltip:
-        return "\(tooltipBreadcrumb)dropbitransaction"
+        return "\(tooltipBreadcrumb)dropbittransaction"
       case .dustProtection:
         return "\(tooltipBreadcrumb)dustprotection"
       }
