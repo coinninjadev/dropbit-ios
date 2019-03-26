@@ -235,7 +235,7 @@ class WalletManager: WalletManagerType {
       let blockHeight = UInt(persistenceManager.integer(for: .blockheight))
       let bgContext = persistenceManager.createBackgroundContext()
       bgContext.performAndWait {
-        let usableVouts = self.usableVouts(in: bgContext)
+        let usableVouts = self.usableVouts(limitByPending: false, in: bgContext)
         let allAvailableOutputs = self.availableTransactionOutputs(fromUsableUTXOs: usableVouts)
 
         let txData = CNBTransactionData(
@@ -270,7 +270,7 @@ class WalletManager: WalletManagerType {
       }
       let bgContext = persistenceManager.createBackgroundContext()
       bgContext.performAndWait {
-        let usableVouts = self.usableVouts(in: bgContext)
+        let usableVouts = self.usableVouts(limitByPending: false, in: bgContext)
         let allAvailableOutputs = self.availableTransactionOutputs(fromUsableUTXOs: usableVouts)
         let paymentAmount = UInt(payment)
         let feeAmount = UInt(flatFee)
@@ -299,7 +299,7 @@ class WalletManager: WalletManagerType {
       let blockHeight = UInt(persistenceManager.integer(for: .blockheight))
       let bgContext = persistenceManager.createBackgroundContext()
       bgContext.performAndWait {
-        let usableVouts = self.usableVouts(in: bgContext)
+        let usableVouts = self.usableVouts(limitByPending: true, in: bgContext)
         let allAvailableOutputs = self.availableTransactionOutputs(fromUsableUTXOs: usableVouts)
 
         let txData = CNBTransactionData(
@@ -317,9 +317,15 @@ class WalletManager: WalletManagerType {
     }
   }
 
-  private func usableVouts(in context: NSManagedObjectContext) -> [CKMVout] {
+  /// - parameter limitByPending: true to remove the smallest vouts, to not exceed spendableBalanceNetPending()
+  private func usableVouts(limitByPending: Bool, in context: NSManagedObjectContext) -> [CKMVout] {
     let dustProtectionAmount = self.persistenceManager.dustProtectionMinimumAmount()
-    return CKMVout.findAllSpendable(minAmount: dustProtectionAmount, in: context)
+    let allSpendable = CKMVout.findAllSpendable(minAmount: dustProtectionAmount, in: context)
+    if limitByPending {
+      return limitSmallestVoutsByBalanceNetPending(allSpendable, in: context)
+    } else {
+      return allSpendable
+    }
   }
 
   private func availableTransactionOutputs(fromUsableUTXOs usableUTXOs: [CKMVout]) -> [CNBUnspentTransactionOutput] {
@@ -343,6 +349,22 @@ class WalletManager: WalletManagerType {
                                                isConfirmed: transaction.isConfirmed)
       return output
     }
+  }
+
+  private func limitSmallestVoutsByBalanceNetPending(_ vouts: [CKMVout], in context: NSManagedObjectContext) -> [CKMVout] {
+    let spendableBalance = self.spendableBalanceNetPending(in: context)
+    let sortedVouts = vouts.sorted(by: { $0.amount > $1.amount }) //largest first
+
+    var total: Int = 0
+    var results: [CKMVout] = []
+    for vout in sortedVouts {
+      let nextTotal = total + vout.amount
+      guard nextTotal <= spendableBalance else { break }
+      total = nextTotal
+      results.append(vout)
+    }
+
+    return results
   }
 
   private func newChangePath(in context: NSManagedObjectContext) -> CNBDerivationPath {
