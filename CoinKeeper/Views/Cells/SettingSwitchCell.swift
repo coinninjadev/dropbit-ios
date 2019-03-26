@@ -44,13 +44,7 @@ class SettingSwitchCell: UITableViewCell {
   func load(with viewModel: SettingsCellViewModel, delegate: SettingSwitchCellDelegate) {
     self.delegate = delegate
     titleLabel.attributedText = viewModel.type.attributedTitle
-
-    switch viewModel.type {
-    case .dustProtection(let isEnabled):
-      settingSwitch.isOn = isEnabled
-    default:
-      settingSwitch.isOn = false
-    }
+    self.settingSwitch.isOn = viewModel.type.switchIsOn
   }
 
 }

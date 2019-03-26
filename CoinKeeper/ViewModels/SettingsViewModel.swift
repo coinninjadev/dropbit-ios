@@ -89,4 +89,13 @@ enum SettingsCellType {
     }
   }
 
+  var switchIsOn: Bool {
+    switch self {
+    case .dustProtection(let isEnabled):
+      return isEnabled
+    default:
+      return false
+    }
+  }
+
 }
