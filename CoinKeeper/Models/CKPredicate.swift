@@ -85,7 +85,7 @@ struct CKPredicate {
       let canceled = InvitationStatus.canceled.rawValue
       let expired = InvitationStatus.expired.rawValue
       let statusPath = #keyPath(CKMTemporarySentTransaction.transaction.invitation.status)
-      return NSPredicate(format: "\(statusPath) == %d OR \(statusPath) == %d", canceled, expired)
+      return NSPredicate(format: "\(statusPath) == \(canceled) OR \(statusPath) == %d", expired)
     }
 
     static func withInactiveInvitation() -> NSPredicate {

@@ -68,9 +68,9 @@ public class CKMPhoneNumber: NSManagedObject {
 
   public static func find(withInputs inputs: ManagedPhoneNumberInputs, in context: NSManagedObjectContext) -> CKMPhoneNumber? {
     let ccPath = #keyPath(CKMPhoneNumber.countryCode)
-    let ccPredicate = NSPredicate(format: "\(ccPath) == %d", inputs.countryCode)
+    let ccPredicate = NSPredicate(format: "\(ccPath) == \(inputs.countryCode)")
     let numberPath = #keyPath(CKMPhoneNumber.number)
-    let numberPredicate = NSPredicate(format: "\(numberPath) == %d", inputs.nationalNumber)
+    let numberPredicate = NSPredicate(format: "\(numberPath) == \(inputs.nationalNumber)")
     let combinedPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [numberPredicate, ccPredicate])
 
     let request: NSFetchRequest<CKMPhoneNumber> = CKMPhoneNumber.fetchRequest()
