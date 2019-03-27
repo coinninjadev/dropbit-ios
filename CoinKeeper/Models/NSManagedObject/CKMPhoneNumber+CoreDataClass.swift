@@ -13,18 +13,19 @@ import CoreData
 @objc(CKMPhoneNumber)
 public class CKMPhoneNumber: NSManagedObject {
 
+  // for testing
   public convenience init?(phoneNumber: GlobalPhoneNumber, insertInto context: NSManagedObjectContext) {
     guard let inputs = ManagedPhoneNumberInputs(phoneNumber: phoneNumber) else { return nil }
     self.init(inputs: inputs, insertInto: context)
   }
 
-  public convenience init?(metadataParticipant participant: MetadataParticipant, insertInto context: NSManagedObjectContext) {
+  static func findOrCreate(withMetadataParticipant participant: MetadataParticipant, in context: NSManagedObjectContext) -> CKMPhoneNumber? {
     guard let countryCode = participant.countryCode,
       let nationalNumber = participant.phoneNumber
       else { return nil }
     let globalNumber = GlobalPhoneNumber(countryCode: countryCode, nationalNumber: nationalNumber)
     guard let inputs = ManagedPhoneNumberInputs(phoneNumber: globalNumber) else { return nil }
-    self.init(inputs: inputs, insertInto: context)
+    return self.findOrCreate(with: inputs, in: context)
   }
 
   private convenience init(inputs: ManagedPhoneNumberInputs, insertInto context: NSManagedObjectContext) {
