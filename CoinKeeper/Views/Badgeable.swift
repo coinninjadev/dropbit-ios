@@ -52,7 +52,9 @@ extension Badgeable {
         }
       }
     }
-    showBadge(shouldShow)
+    DispatchQueue.main.async {
+      self.showBadge(shouldShow)
+    }
   }
 
   private var badgeIsShown: Bool {
