@@ -22,7 +22,7 @@ extension CKMTemporarySentTransaction {
   @NSManaged public var isSentToSelf: Bool
   @NSManaged public var transaction: CKMTransaction?
 
-  /// The vouts that were reserved for this transaction by setting their isSpendable = false
+  /// The vouts that were reserved for this transaction by setting their isSpent = true
   @NSManaged public var reservedVouts: Set<CKMVout>
 
 }

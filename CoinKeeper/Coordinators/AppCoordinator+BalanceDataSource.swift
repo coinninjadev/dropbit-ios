@@ -28,7 +28,7 @@ extension AppCoordinator: BalanceDataSource {
     let context = persistenceManager.createBackgroundContext()
     var balance = 0
     context.performAndWait {
-      balance = wmgr.spendableBalanceNetPending(in: context)
+      balance = wmgr.spendableBalance(in: context)
     }
     return NSDecimalNumber(integerAmount: balance, currency: .BTC)
   }
