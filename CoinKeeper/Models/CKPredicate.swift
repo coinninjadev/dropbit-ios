@@ -107,9 +107,14 @@ struct CKPredicate {
     private static let changeKeyPath = #keyPath(CKMDerivativePath.change)
     private static let indexKeyPath = #keyPath(CKMDerivativePath.index)
     private static let serverAddressPath = #keyPath(CKMDerivativePath.serverAddress)
+    private static let addressPath = #keyPath(CKMDerivativePath.address)
 
     static func withoutServerAddress() -> NSPredicate {
       return NSPredicate(format: "\(serverAddressPath) == nil")
+    }
+
+    static func withAddress() -> NSPredicate {
+      return NSPredicate(format: "\(addressPath) != nil")
     }
 
     static func forChangeIndex(_ changeIndex: Int) -> NSPredicate {

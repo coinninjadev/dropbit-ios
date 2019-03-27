@@ -64,7 +64,7 @@ protocol PersistenceManagerType: DeviceCountryCodeProvider {
   func persistTransactionSummaries(
     from responses: [AddressTransactionSummaryResponse],
     in context: NSManagedObjectContext
-    ) -> Promise<Void>
+    )
   func persistTemporaryTransaction(
     from transactionData: CNBTransactionData,
     with outgoingTransactionData: OutgoingTransactionData,
@@ -196,11 +196,9 @@ protocol PersistenceDatabaseType: AnyObject {
     fullSync: Bool
     ) -> Promise<Void>
 
-  /// Returns set of unused receive address indices less than the max used index
   func persistTransactionSummaries(
     from responses: [AddressTransactionSummaryResponse],
-    in context: NSManagedObjectContext
-    ) -> Promise<Set<Int>>
+    in context: NSManagedObjectContext)
 
   func persistTemporaryTransaction(
     from transactionData: CNBTransactionData,
@@ -241,8 +239,8 @@ protocol PersistenceDatabaseType: AnyObject {
 
   func userVerificationStatus(in context: NSManagedObjectContext) -> UserVerificationStatus
 
-  func updateLastReceiveAddressIndex(index: Int, in context: NSManagedObjectContext)
-  func updateLastChangeAddressIndex(index: Int, in context: NSManagedObjectContext)
+  func updateLastReceiveAddressIndex(index: Int?, in context: NSManagedObjectContext)
+  func updateLastChangeAddressIndex(index: Int?, in context: NSManagedObjectContext)
 
   func lastReceiveIndex(in context: NSManagedObjectContext) -> Int?
   func lastChangeIndex(in context: NSManagedObjectContext) -> Int?

@@ -389,8 +389,8 @@ class TransactionDataWorker: TransactionDataWorkerType {
     ) -> Promise<[AddressTransactionSummaryResponse]> {
 
     let uniqueATSResponses = aggregateATSResponses.uniqued()
-    return persistenceManager.persistTransactionSummaries(from: uniqueATSResponses, in: context)
-      .then { return Promise.value(uniqueATSResponses) }
+    persistenceManager.persistTransactionSummaries(from: uniqueATSResponses, in: context)
+    return Promise.value(uniqueATSResponses)
   }
 
   private func updateTransactionDayAveragePrices(in context: NSManagedObjectContext) -> Promise<Void> {

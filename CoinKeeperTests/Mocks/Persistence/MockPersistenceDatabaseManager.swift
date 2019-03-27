@@ -65,8 +65,8 @@ class MockPersistenceDatabaseManager: PersistenceDatabaseType {
   }
 
   func deleteAll(in context: NSManagedObjectContext) {}
-  func updateLastReceiveAddressIndex(index: Int, in context: NSManagedObjectContext) {}
-  func updateLastChangeAddressIndex(index: Int, in context: NSManagedObjectContext) {}
+  func updateLastReceiveAddressIndex(index: Int?, in context: NSManagedObjectContext) {}
+  func updateLastChangeAddressIndex(index: Int?, in context: NSManagedObjectContext) {}
 
   func userVerificationStatus(in context: NSManagedObjectContext) -> UserVerificationStatus {
     return .unverified
@@ -108,16 +108,13 @@ class MockPersistenceDatabaseManager: PersistenceDatabaseType {
   func persistTransactionSummaries(
     from responses: [AddressTransactionSummaryResponse],
     in context: NSManagedObjectContext
-    ) -> Promise<Set<Int>> {
-    return Promise { _ in }
-  }
+    ) {}
 
   func persistReceivedSharedPayloads(_ payloads: [SharedPayloadV1],
                                      hasher: HashingManager,
                                      kit: PhoneNumberKit,
                                      contactCacheManager: ContactCacheManagerType,
-                                     in context: NSManagedObjectContext) {
-  }
+                                     in context: NSManagedObjectContext) {}
 
   var mainQueueContext: NSManagedObjectContext {
     return inMemoryCoreDataStack.context

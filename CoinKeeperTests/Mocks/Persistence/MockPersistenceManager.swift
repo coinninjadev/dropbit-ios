@@ -168,9 +168,7 @@ class MockPersistenceManager: PersistenceManagerType {
 
   func persistTransactionSummaries(
     from responses: [AddressTransactionSummaryResponse],
-    in context: NSManagedObjectContext) -> Promise<Void> {
-    return Promise { _ in }
-  }
+    in context: NSManagedObjectContext) {}
 
   func persistWalletId(from response: WalletResponse, in context: NSManagedObjectContext) -> Promise<Void> {
     return Promise { _ in }

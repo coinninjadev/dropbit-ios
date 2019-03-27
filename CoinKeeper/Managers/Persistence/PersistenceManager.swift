@@ -231,10 +231,23 @@ class PersistenceManager: PersistenceManagerType {
 
   func persistTransactionSummaries(
     from responses: [AddressTransactionSummaryResponse],
-    in context: NSManagedObjectContext
-    ) -> Promise<Void> {
-    return databaseManager.persistTransactionSummaries(from: responses, in: context)
-      .get { self.userDefaultsManager.receiveAddressIndexGaps = $0 }.asVoid()
+    in context: NSManagedObjectContext) {
+    databaseManager.persistTransactionSummaries(from: responses, in: context)
+    updateReceiveAddressGaps(in: context)
+  }
+
+  private func updateReceiveAddressGaps(in context: NSManagedObjectContext) {
+    let usedDerivativePaths = CKMDerivativePath.findAllReceivePathsWithoutServerAddress(in: context)
+    let usedIndexes = usedDerivativePaths.map { $0.index }
+    if let maxUsedIndex = usedIndexes.max() {
+      let fullSet = Set(Array(0...maxUsedIndex))
+      let usedSet = Set(usedIndexes)
+      let gaps: Set<Int> = fullSet.subtracting(usedSet)
+      self.userDefaultsManager.receiveAddressIndexGaps = gaps
+
+    } else {
+      self.userDefaultsManager.receiveAddressIndexGaps = []
+    }
   }
 
   func persistReceivedSharedPayloads(_ payloads: [SharedPayloadV1], kit: PhoneNumberKit, in context: NSManagedObjectContext) {

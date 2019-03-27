@@ -15,10 +15,12 @@ public class CKMWallet: NSManagedObject {
 
   public override func awakeFromInsert() {
     super.awakeFromInsert()
-    // Setting -1 as the default value ensures that getting nextReceiveIndex will start at 0
-    setPrimitiveValue(-1, forKey: #keyPath(CKMWallet.lastReceivedIndex))
-    setPrimitiveValue(-1, forKey: #keyPath(CKMWallet.lastChangeIndex))
+    setPrimitiveValue(CKMWallet.defaultLastIndex, forKey: #keyPath(CKMWallet.lastReceivedIndex))
+    setPrimitiveValue(CKMWallet.defaultLastIndex, forKey: #keyPath(CKMWallet.lastChangeIndex))
   }
+
+  // Setting -1 as the default value ensures that getting nextReceiveIndex will start at 0
+  static let defaultLastIndex: Int = -1
 
   @discardableResult
   static func findOrCreate(in context: NSManagedObjectContext) -> CKMWallet {
