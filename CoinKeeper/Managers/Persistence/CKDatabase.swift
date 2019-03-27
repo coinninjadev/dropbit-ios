@@ -79,7 +79,9 @@ class CKDatabase: PersistenceDatabaseType {
 
     context.performAndWait {
       let allServerAddresses = serverPoolAddresses(in: context)
+      let serverDerivativePaths = allServerAddresses.compactMap { $0.derivativePath }
       allServerAddresses.forEach { context.delete($0) }
+      serverDerivativePaths.forEach { context.delete($0) }
 
       CKMInvitation.find(withStatuses: [.requestSent, .addressSent], in: context).forEach { $0.status = .canceled }
       CKMInvitation.find(withStatuses: [.notSent], in: context).forEach { context.delete($0) }
