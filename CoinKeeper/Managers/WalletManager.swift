@@ -33,10 +33,6 @@ protocol WalletManagerType: AnyObject {
   /// number of confirmations affects isSpendable, returns a min of 0
   func spendableBalance(in context: NSManagedObjectContext) -> Int
 
-  /// Spendable UTXOs --minus pending or temporary transactions--,
-  /// number of confirmations affects isSpendable, returns a min of 0
-//  func spendableBalanceNetPending(in context: NSManagedObjectContext) -> Int
-
   func activeTemporarySentTxTotal(in context: NSManagedObjectContext) -> Int
 
   func transactionData(
