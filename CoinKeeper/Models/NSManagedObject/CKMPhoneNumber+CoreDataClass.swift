@@ -49,11 +49,18 @@ public class CKMPhoneNumber: NSManagedObject {
   public static func findOrCreate(withInputs inputs: ManagedPhoneNumberInputs,
                                   phoneNumberHash: String,
                                   in context: NSManagedObjectContext) -> CKMPhoneNumber {
-    let number = find(withInputs: inputs, in: context) ?? CKMPhoneNumber(inputs: inputs, insertInto: context)
+    let number = findOrCreate(with: inputs, in: context)
     number.phoneNumberHash = phoneNumberHash
     return number
   }
 
+  public static func findOrCreate(with inputs: ManagedPhoneNumberInputs, in context: NSManagedObjectContext) -> CKMPhoneNumber {
+    if let number = find(withInputs: inputs, in: context) {
+      return number
+    } else {
+      return CKMPhoneNumber(inputs: inputs, insertInto: context)
+    }
+  }
   public static func find(withGlobalPhoneNumber number: GlobalPhoneNumber, in context: NSManagedObjectContext) -> CKMPhoneNumber? {
     guard let inputs = ManagedPhoneNumberInputs(phoneNumber: number) else { return nil }
     return self.find(withInputs: inputs, in: context)
