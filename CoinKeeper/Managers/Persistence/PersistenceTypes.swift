@@ -64,7 +64,7 @@ protocol PersistenceManagerType: DeviceCountryCodeProvider {
   func persistTransactionSummaries(
     from responses: [AddressTransactionSummaryResponse],
     in context: NSManagedObjectContext
-    ) -> Promise<Void>
+    )
   func persistTemporaryTransaction(
     from transactionData: CNBTransactionData,
     with outgoingTransactionData: OutgoingTransactionData,
@@ -109,6 +109,10 @@ protocol PersistenceManagerType: DeviceCountryCodeProvider {
   func updateWalletLastIndexes(in context: NSManagedObjectContext)
   func lastReceiveAddressIndex(in context: NSManagedObjectContext) -> Int?
   func lastChangeAddressIndex(in context: NSManagedObjectContext) -> Int?
+
+  func dustProtectionMinimumAmount() -> Int
+  func dustProtectionIsEnabled() -> Bool
+  func enableDustProtection(_ shouldEnable: Bool)
 
   func setLastLoginTime()
   func lastLoginTime() -> TimeInterval?
@@ -192,11 +196,9 @@ protocol PersistenceDatabaseType: AnyObject {
     fullSync: Bool
     ) -> Promise<Void>
 
-  /// Returns set of unused receive address indices less than the max used index
   func persistTransactionSummaries(
     from responses: [AddressTransactionSummaryResponse],
-    in context: NSManagedObjectContext
-    ) -> Promise<Set<Int>>
+    in context: NSManagedObjectContext)
 
   func persistTemporaryTransaction(
     from transactionData: CNBTransactionData,
@@ -237,8 +239,8 @@ protocol PersistenceDatabaseType: AnyObject {
 
   func userVerificationStatus(in context: NSManagedObjectContext) -> UserVerificationStatus
 
-  func updateLastReceiveAddressIndex(index: Int, in context: NSManagedObjectContext)
-  func updateLastChangeAddressIndex(index: Int, in context: NSManagedObjectContext)
+  func updateLastReceiveAddressIndex(index: Int?, in context: NSManagedObjectContext)
+  func updateLastChangeAddressIndex(index: Int?, in context: NSManagedObjectContext)
 
   func lastReceiveIndex(in context: NSManagedObjectContext) -> Int?
   func lastChangeIndex(in context: NSManagedObjectContext) -> Int?
@@ -262,6 +264,10 @@ protocol PersistenceUserDefaultsType: AnyObject {
   func deviceId() -> UUID?
   func setDeviceId(_ uuid: UUID)
   var receiveAddressIndexGaps: Set<Int> { get set }
+
+  /// Returns zero if dust protection not enabled
+  func dustProtectionMinimumAmount() -> Int
+  func dustProtectionIsEnabled() -> Bool
 
 }
 

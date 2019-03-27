@@ -146,7 +146,7 @@ class TransactionDataWorker: TransactionDataWorkerType {
         return self.persistAndGroomTransactions(with: dto, in: context, fullSync: fullSync)
           .then { Promise.value(TransactionDataWorkerDTO(txResponses: $0).merged(with: dto)) }
       }
-      .then(in: context) { _ in self.updateSpendableBalance(in: context) }
+      .then(in: context) { _ in self.updateUnspentVouts(in: context) }
       .then(in: context) { _ in self.updateTransactionDayAveragePrices(in: context) }
   }
 
@@ -389,8 +389,8 @@ class TransactionDataWorker: TransactionDataWorkerType {
     ) -> Promise<[AddressTransactionSummaryResponse]> {
 
     let uniqueATSResponses = aggregateATSResponses.uniqued()
-    return persistenceManager.persistTransactionSummaries(from: uniqueATSResponses, in: context)
-      .then { return Promise.value(uniqueATSResponses) }
+    persistenceManager.persistTransactionSummaries(from: uniqueATSResponses, in: context)
+    return Promise.value(uniqueATSResponses)
   }
 
   private func updateTransactionDayAveragePrices(in context: NSManagedObjectContext) -> Promise<Void> {
@@ -444,7 +444,7 @@ class TransactionDataWorker: TransactionDataWorkerType {
     }
   }
 
-  private func updateSpendableBalance(
+  private func updateUnspentVouts(
     in context: NSManagedObjectContext
     ) -> Promise<Void> {
     return Promise { seal in

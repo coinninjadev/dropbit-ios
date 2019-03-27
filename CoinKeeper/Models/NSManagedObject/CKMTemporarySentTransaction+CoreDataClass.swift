@@ -20,7 +20,8 @@ public class CKMTemporarySentTransaction: NSManagedObject {
   }
 
   var totalAmount: Int {
-    return amount + feeAmount
+    let effectiveAmount = isSentToSelf ? 0 : amount
+    return effectiveAmount + feeAmount
   }
 
   static func findAll(in context: NSManagedObjectContext) -> [CKMTemporarySentTransaction] {

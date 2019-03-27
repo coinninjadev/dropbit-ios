@@ -231,10 +231,23 @@ class PersistenceManager: PersistenceManagerType {
 
   func persistTransactionSummaries(
     from responses: [AddressTransactionSummaryResponse],
-    in context: NSManagedObjectContext
-    ) -> Promise<Void> {
-    return databaseManager.persistTransactionSummaries(from: responses, in: context)
-      .get { self.userDefaultsManager.receiveAddressIndexGaps = $0 }.asVoid()
+    in context: NSManagedObjectContext) {
+    databaseManager.persistTransactionSummaries(from: responses, in: context)
+    updateReceiveAddressGaps(in: context)
+  }
+
+  private func updateReceiveAddressGaps(in context: NSManagedObjectContext) {
+    let usedDerivativePaths = CKMDerivativePath.findAllReceivePathsWithoutServerAddress(in: context)
+    let usedIndexes = usedDerivativePaths.map { $0.index }
+    if let maxUsedIndex = usedIndexes.max() {
+      let fullSet = Set(Array(0...maxUsedIndex))
+      let usedSet = Set(usedIndexes)
+      let gaps: Set<Int> = fullSet.subtracting(usedSet)
+      self.userDefaultsManager.receiveAddressIndexGaps = gaps
+
+    } else {
+      self.userDefaultsManager.receiveAddressIndexGaps = []
+    }
   }
 
   func persistReceivedSharedPayloads(_ payloads: [SharedPayloadV1], kit: PhoneNumberKit, in context: NSManagedObjectContext) {
@@ -396,6 +409,19 @@ class PersistenceManager: PersistenceManagerType {
 
   func matchContactsIfPossible() {
     databaseManager.matchContactsIfPossible(with: contactCacheManager)
+  }
+
+  func dustProtectionMinimumAmount() -> Int {
+    return userDefaultsManager.dustProtectionMinimumAmount()
+  }
+
+  func dustProtectionIsEnabled() -> Bool {
+    return userDefaultsManager.dustProtectionIsEnabled()
+  }
+
+  func enableDustProtection(_ shouldEnable: Bool) {
+    let key = CKUserDefaults.Key.dustProtectionEnabled.defaultsString
+    CKUserDefaults.standardDefaults.set(shouldEnable, forKey: key)
   }
 
   func double(for key: CKUserDefaults.Key) -> Double {

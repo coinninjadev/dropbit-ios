@@ -11,6 +11,7 @@ import UIKit
 protocol SettingsViewControllerDelegate: ViewControllerDismissable {
 
   func verifyIfWordsAreBackedUp() -> Bool
+  func dustProtectionIsEnabled() -> Bool
 
   func viewControllerDidRequestDeleteWallet(_ viewController: UIViewController,
                                             completion: @escaping () -> Void)
@@ -20,6 +21,7 @@ protocol SettingsViewControllerDelegate: ViewControllerDismissable {
   func viewControllerDidRequestOpenURL(_ viewController: UIViewController, url: URL)
   func viewControllerResyncBlockchain(_ viewController: UIViewController)
   func viewControllerSendDebuggingInfo(_ viewController: UIViewController)
+  func viewControllerDidChangeDustProtection(_ viewController: UIViewController, shouldEnable: Bool)
 }
 
 enum SettingsViewControllerMode: String {
@@ -95,10 +97,11 @@ class SettingsViewController: BaseViewController, StoryboardInitializable {
     updateUIForMode()
     viewModel = createViewModel()
     settingsTableView.registerNib(cellType: SettingCell.self)
+    settingsTableView.registerNib(cellType: SettingSwitchCell.self)
     settingsTableView.registerHeaderFooter(headerFooterType: SettingsTableViewFooter.self)
     settingsTableView.registerHeaderFooter(headerFooterType: SettingsTableViewSectionHeader.self)
-    settingsTableView.dataSource = self.viewModel
-    settingsTableView.delegate = self.viewModel
+    settingsTableView.dataSource = self
+    settingsTableView.delegate = self
 
     // Hide empty cell separators
     settingsTableView.tableFooterView = UIView(frame: CGRect.zero)
@@ -118,16 +121,11 @@ class SettingsViewController: BaseViewController, StoryboardInitializable {
     let sectionViewModels: [SettingsSectionViewModel]
     switch self.mode {
     case .settings:
-      sectionViewModels = [
-        SettingsSectionViewModel(headerViewModel: SettingsHeaderFooterViewModel(title: "WALLET", command: nil),
-                                 cellViewModels: [SettingsCellViewModel(type: .recoveryWords(backedUpWords()),
-                                                                        command: recoveryWordsCommand)],
-                                 footerViewModel: nil),
-        SettingsSectionViewModel(headerViewModel: SettingsHeaderFooterViewModel(title: "LICENSES", command: nil),
-                                 cellViewModels: [SettingsCellViewModel(type: .licenses,
-                                                                        command: openSourceCommand)],
-                                 footerViewModel: nil)
-      ]
+      let walletSection = walletSectionViewModel()
+      let licensesSection = SettingsSectionViewModel(headerViewModel: SettingsHeaderFooterViewModel(title: "LICENSES", command: nil),
+                                                     cellViewModels: [SettingsCellViewModel(type: .licenses, command: openSourceCommand)],
+                                                     footerViewModel: nil)
+      sectionViewModels = [walletSection, licensesSection]
 
     case .support:
       let types: [SettingsCellType] = [.faqs, .contactUs, .termsOfUse, .privacyPolicy]
@@ -141,6 +139,16 @@ class SettingsViewController: BaseViewController, StoryboardInitializable {
     }
 
     return SettingsViewModel(sectionViewModels: sectionViewModels)
+  }
+
+  private func walletSectionViewModel() -> SettingsSectionViewModel {
+    let recoveryWordsVM = SettingsCellViewModel(type: .recoveryWords(backedUpWords()), command: recoveryWordsCommand)
+    let dustProtectionEnabled = self.coordinationDelegate?.dustProtectionIsEnabled() ?? false
+    let dustCellType = SettingsCellType.dustProtection(enabled: dustProtectionEnabled)
+    let dustProtectionVM = SettingsCellViewModel(type: dustCellType, command: openURLCommand(for: dustCellType))
+    return SettingsSectionViewModel(headerViewModel: SettingsHeaderFooterViewModel(title: "WALLET", command: nil),
+                                    cellViewModels: [recoveryWordsVM, dustProtectionVM],
+                                    footerViewModel: nil)
   }
 
   private func updateUIForMode() {

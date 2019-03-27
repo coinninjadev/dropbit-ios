@@ -35,6 +35,7 @@ class DerivativePathTests: XCTestCase {
     fakePath.account = 0
     fakePath.change = 0
     fakePath.index = 0
+    fakePath.address = CKMAddress(insertInto: context)
 
     let maxIndex = CKMDerivativePath.maxUsedReceiveIndex(in: context)
 
@@ -48,6 +49,7 @@ class DerivativePathTests: XCTestCase {
     fakePath.account = 0
     fakePath.change = 0
     fakePath.index = 10
+    fakePath.address = CKMAddress(insertInto: context)
 
     let maxIndex = CKMDerivativePath.maxUsedReceiveIndex(in: context)
 
@@ -61,6 +63,7 @@ class DerivativePathTests: XCTestCase {
     usedPath.account = 0
     usedPath.change = 0
     usedPath.index = 0
+    usedPath.address = CKMAddress(insertInto: context)
 
     let serverAddressPath = CKMDerivativePath(insertInto: context)
     serverAddressPath.purpose = 49
@@ -83,6 +86,7 @@ class DerivativePathTests: XCTestCase {
     fakePath.account = 0
     fakePath.change = 1
     fakePath.index = 0
+    fakePath.address = CKMAddress(insertInto: context)
 
     let maxIndex = CKMDerivativePath.maxUsedChangeIndex(in: context)
 
@@ -96,6 +100,7 @@ class DerivativePathTests: XCTestCase {
     fakePath.account = 0
     fakePath.change = 1
     fakePath.index = 10
+    fakePath.address = CKMAddress(insertInto: context)
 
     let maxIndex = CKMDerivativePath.maxUsedChangeIndex(in: context)
 

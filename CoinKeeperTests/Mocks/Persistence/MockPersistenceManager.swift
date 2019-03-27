@@ -9,8 +9,6 @@ import PhoneNumberKit
 import PromiseKit
 @testable import DropBit
 
-// swiftlint:disable file_length
-// swiftlint:disable type_body_length
 class MockPersistenceManager: PersistenceManagerType {
 
   var keychainManager: PersistenceKeychainType
@@ -21,7 +19,7 @@ class MockPersistenceManager: PersistenceManagerType {
 
   init(keychainManager: PersistenceKeychainType = MockPersistenceKeychainManager(store: MockKeychainAccessorType()),
        databaseManager: PersistenceDatabaseType = MockPersistenceDatabaseManager(),
-       userDefaultsManager: PersistenceUserDefaultsType = MockPersistenceUserDefaultsManager(),
+       userDefaultsManager: PersistenceUserDefaultsType = MockUserDefaultsManager(),
        contactCacheManager: ContactCacheManagerType = MockContactCacheManager()
     ) {
     self.keychainManager = keychainManager
@@ -129,6 +127,17 @@ class MockPersistenceManager: PersistenceManagerType {
     return Promise { _ in }
   }
 
+  func dustProtectionMinimumAmount() -> Int {
+    return userDefaultsManager.dustProtectionMinimumAmount()
+  }
+
+  func dustProtectionIsEnabled() -> Bool {
+    return false
+  }
+
+  func enableDustProtection(_ shouldEnable: Bool) {
+  }
+
   func defaultHeaders(in context: NSManagedObjectContext) -> Promise<DefaultRequestHeaders> {
     return Promise { _ in }
   }
@@ -159,9 +168,7 @@ class MockPersistenceManager: PersistenceManagerType {
 
   func persistTransactionSummaries(
     from responses: [AddressTransactionSummaryResponse],
-    in context: NSManagedObjectContext) -> Promise<Void> {
-    return Promise { _ in }
-  }
+    in context: NSManagedObjectContext) {}
 
   func persistWalletId(from response: WalletResponse, in context: NSManagedObjectContext) -> Promise<Void> {
     return Promise { _ in }
@@ -283,291 +290,23 @@ class MockPersistenceManager: PersistenceManagerType {
     return false
   }
 
-  // MARK: KeychainManager
-  class MockPersistenceKeychainManager: PersistenceKeychainType {
-    func backup(recoveryWords words: [String]) {}
-    func deleteAll() {}
-    func unverifyUser() {}
-
-    func bool(for key: CKKeychain.Key) -> Bool? {
-      return nil
-    }
-
-    func walletWordsBackedUp() -> Bool {
-      return bool(for: .walletWordsBackedUp) ?? false
-    }
-
-    required init(store: KeychainAccessorType) { }
-
-    var valueExists = false
-    var values: [String: Any] = [:]
-    var anyValueExists = false
-
-    func store(anyValue value: Any?, key: CKKeychain.Key) -> Bool {
-      self.values[key.rawValue] = value
-      anyValueExists = (self.values[key.rawValue] != nil)
-      return anyValueExists
-    }
-    func store(valueToHash value: String?, key: CKKeychain.Key) -> Bool {
-      self.values[key.rawValue] = value
-      valueExists = (self.values[key.rawValue] != nil)
-      return valueExists
-    }
-
-    var wordsExist = false
-    func store(recoveryWords words: [String]) -> Bool {
-      self.values[CKKeychain.Key.walletWords.rawValue] = words
-      wordsExist = !words.isEmpty
-      return wordsExist
-    }
-
-    var userPinExists = false
-    func store(userPin: String) -> Bool {
-      return true
-    }
-
-    var deviceIDExists = false
-    func store(deviceID: String) -> Bool {
-      self.values[CKKeychain.Key.deviceID.rawValue] = deviceID
-      deviceIDExists = !deviceID.isEmpty
-      return deviceIDExists
-    }
-
-    func retrieveValue(for key: CKKeychain.Key) -> Any? {
-      return values[key.rawValue]
-    }
-
-  }
-
-  class MockPersistenceDatabaseManager: PersistenceDatabaseType {
-
-    func persistTemporaryTransaction(
-      from transactionData: CNBTransactionData,
-      with outgoingTransactionData: OutgoingTransactionData,
-      txid: String,
-      invitation: CKMInvitation?,
-      in context: NSManagedObjectContext) { }
-
-    func groomAddressTransactionSummaries(
-      from responses: [AddressTransactionSummaryResponse],
-      in context: NSManagedObjectContext,
-      fullSync: Bool) -> Promise<Void> {
-      return Promise { _ in }
-    }
-
-    func getAllInvitations(in context: NSManagedObjectContext) -> [CKMInvitation] {
-      return []
-    }
-
-    func getUnacknowledgedInvitations(in context: NSManagedObjectContext) -> [CKMInvitation] {
-      return []
-    }
-
-    func deleteTransactions(notIn txids: [String], in context: NSManagedObjectContext) { }
-    func unverifyUser(in context: NSManagedObjectContext) { }
-
-    func removeWalletId(in context: NSManagedObjectContext) { }
-
-    func transactionsWithoutDayAveragePrice(in context: NSManagedObjectContext) -> Promise<[CKMTransaction]> {
-      return Promise { _ in }
-    }
-
-    var inMemoryCoreDataStack = InMemoryCoreDataStack()
-
-    func createBackgroundContext() -> NSManagedObjectContext {
-      return inMemoryCoreDataStack.context
-    }
-
-    func persistentStore(for context: NSManagedObjectContext) -> NSPersistentStore? {
-      return nil
-    }
-
-    func containsRegularTransaction(in context: NSManagedObjectContext) -> IncomingOutgoingTuple {
-      return (incoming: false, outgoing: false)
-    }
-
-    func containsDropbitTransaction(in context: NSManagedObjectContext) -> IncomingOutgoingTuple {
-      return (incoming: false, outgoing: false)
-    }
-
-    func deleteAll(in context: NSManagedObjectContext) {}
-    func updateLastReceiveAddressIndex(index: Int, in context: NSManagedObjectContext) {}
-    func updateLastChangeAddressIndex(index: Int, in context: NSManagedObjectContext) {}
-
-    func userVerificationStatus(in context: NSManagedObjectContext) -> UserVerificationStatus {
-      return .unverified
-    }
-
-    func persistWalletId(_ id: String, in context: NSManagedObjectContext) -> Promise<Void> {
-      return Promise { _ in }
-    }
-
-    func persistUserId(_ id: String, in context: NSManagedObjectContext) -> Promise<CKMUser> {
-      return Promise { _ in }
-    }
-
-    func walletId(in context: NSManagedObjectContext) -> String? {
-      return nil
-    }
-
-    func userId(in context: NSManagedObjectContext) -> String? {
-      return nil
-    }
-
-    func persistVerificationStatus(_ status: String, in context: NSManagedObjectContext) -> Promise<UserVerificationStatus> {
-      return Promise { _ in }
-    }
-
-    func walletAndUserId(in context: NSManagedObjectContext) -> Promise<(walletId: String, userId: String)> {
-      return Promise { _ in }
-    }
-
-    func persistTransactions(
-      from transactionResponses: [TransactionResponse],
-      in context: NSManagedObjectContext,
-      relativeToCurrentHeight blockHeight: Int,
-      fullSync: Bool
-      ) -> Promise<Void> {
-      return Promise { _ in }
-    }
-
-    func persistTransactionSummaries(
-      from responses: [AddressTransactionSummaryResponse],
-      in context: NSManagedObjectContext
-      ) -> Promise<Set<Int>> {
-      return Promise { _ in }
-    }
-
-    func persistReceivedSharedPayloads(_ payloads: [SharedPayloadV1],
-                                       hasher: HashingManager,
-                                       kit: PhoneNumberKit,
-                                       contactCacheManager: ContactCacheManagerType,
-                                       in context: NSManagedObjectContext) {
-    }
-
-    var mainQueueContext: NSManagedObjectContext {
-      return inMemoryCoreDataStack.context
-    }
-
-    func persistServerAddress(
-      for metaAddress: CNBMetaAddress,
-      createdAt: Date,
-      wallet: CKMWallet,
-      in context: NSManagedObjectContext) -> Promise<Void> {
-      return Promise { _ in }
-    }
-
-    func serverPoolAddresses(in context: NSManagedObjectContext) -> [CKMServerAddress] {
-      return []
-    }
-
-    func addressesProvidedForReceivedPendingDropBits(in context: NSManagedObjectContext) -> [String] {
-      return []
-    }
-
-    func lastReceiveIndex(in context: NSManagedObjectContext) -> Int? {
-      return 0
-    }
-
-    func lastChangeIndex(in context: NSManagedObjectContext) -> Int? {
-      return 0
-    }
-
-    func matchContactsIfPossible(with contactCacheManager: ContactCacheManagerType) {}
-  }
-
-  class MockPersistenceUserDefaultsManager: PersistenceUserDefaultsType {
-
-    func deviceId() -> UUID? {
-      return UUID()
-    }
-
-    func setDeviceId(_ uuid: UUID) {}
-    func deleteDeviceEndpointIds() {}
-    func unverifyUser() {}
-    func deleteWallet() {}
-    func deleteAll() {}
-    func removeWalletId() {}
-    func setPendingInvitationFailed(_ invitation: PendingInvitationData) { }
-
-    var removePendingInvitationsWasCalled = false
-    func removePendingInvitation(with id: String) -> PendingInvitationData? {
-      removePendingInvitationsWasCalled = true
-      return nil
-    }
-
-    var pendingInvitationWithIDWasCalled = false
-    func pendingInvitation(with id: String) -> PendingInvitationData? {
-      pendingInvitationWithIDWasCalled = true
-      return nil
-    }
-
-    var deleteAllWasCalled = false
-    func deleteAll(in context: NSManagedObjectContext) {
-      deleteAllWasCalled = true
-    }
-
-    var persistPendingInvitationDataWasCalled = false
-    func persist(pendingInvitationData data: PendingInvitationData) {
-      persistPendingInvitationDataWasCalled = true
-    }
-
-    var getAllPendingInvitationsWasCalled = false
-    func pendingInvitations() -> [PendingInvitationData] {
-      getAllPendingInvitationsWasCalled = true
-      return []
-    }
-
-    var receiveAddressIndexGapsValue: Set<Int> = []
-    var receiveAddressIndexGaps: Set<Int> {
-      get {
-        return receiveAddressIndexGapsValue
-      }
-      set {
-        receiveAddressIndexGapsValue = newValue
-      }
-    }
-
-    // standardDefaults is not used by MockPersistenceManager, and is not accessed outside PersistenceManager (wjf, 2018-04)
-    var standardDefaults = UserDefaults(suiteName: "com.coinninja.unittests")
-    var value: [String: Any] = [:]
-  }
-
   func double(for key: CKUserDefaults.Key) -> Double {
-    let userDefaultsManager = self.userDefaultsManager as? MockPersistenceUserDefaultsManager
+    let userDefaultsManager = self.userDefaultsManager as? MockUserDefaultsManager
     return userDefaultsManager?.value[key.rawValue] as? Double ?? 0.0
   }
 
   func set(_ doubleValue: Double, for key: CKUserDefaults.Key) {
-    let userDefaultsManager = self.userDefaultsManager as? MockPersistenceUserDefaultsManager
+    let userDefaultsManager = self.userDefaultsManager as? MockUserDefaultsManager
     userDefaultsManager?.value[key.rawValue] = doubleValue
   }
 
   func integer(for key: CKUserDefaults.Key) -> Int {
-    let userDefaultsManager = self.userDefaultsManager as? MockPersistenceUserDefaultsManager
+    let userDefaultsManager = self.userDefaultsManager as? MockUserDefaultsManager
     return userDefaultsManager?.value[key.rawValue] as? Int ?? 0
   }
 
   func set(_ integerValue: Int, for key: CKUserDefaults.Key) {
-    let userDefaultsManager = self.userDefaultsManager as? MockPersistenceUserDefaultsManager
+    let userDefaultsManager = self.userDefaultsManager as? MockUserDefaultsManager
     userDefaultsManager?.value[key.rawValue] = integerValue
-  }
-}
-
-class MockKeychainAccessorType: KeychainAccessorType {
-  var wasAskedToArchive = false
-  var wasAskedToUnarchive = false
-
-  var value: [String: Any] = [:]
-
-  func archive(_ value: Any?, key: String) -> Bool {
-    wasAskedToArchive = true
-    self.value[key] = value
-    return true
-  }
-
-  func unarchive(objectForKey: String) -> Any? {
-    wasAskedToUnarchive = true
-    return self.value[objectForKey]
   }
 }

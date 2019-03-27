@@ -42,9 +42,12 @@ class CKUserDefaults: PersistenceUserDefaultsType {
     case keychainMigrationVersions
     case contactCacheMigrationVersions
     case lastSuccessfulSyncCompletedAt
+    case dustProtectionEnabled
 
     var defaultsString: String { return self.rawValue }
   }
+
+  private let standardDustProtectionThreshold: Int = 1_000
 
   private func removeValue(forKey key: Key) {
     CKUserDefaults.standardDefaults.set(nil, forKey: key.defaultsString)
@@ -169,4 +172,15 @@ class CKUserDefaults: PersistenceUserDefaultsType {
 
     CKUserDefaults.standardDefaults.set(existing, forKey: pendingKey)
   }
+
+  func dustProtectionMinimumAmount() -> Int {
+    let isEnabled = dustProtectionIsEnabled()
+    return isEnabled ? standardDustProtectionThreshold : 0
+  }
+
+  func dustProtectionIsEnabled() -> Bool {
+    let key = CKUserDefaults.Key.dustProtectionEnabled.defaultsString
+    return CKUserDefaults.standardDefaults.bool(forKey: key)
+  }
+
 }

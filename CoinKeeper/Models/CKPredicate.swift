@@ -107,9 +107,14 @@ struct CKPredicate {
     private static let changeKeyPath = #keyPath(CKMDerivativePath.change)
     private static let indexKeyPath = #keyPath(CKMDerivativePath.index)
     private static let serverAddressPath = #keyPath(CKMDerivativePath.serverAddress)
+    private static let addressPath = #keyPath(CKMDerivativePath.address)
 
     static func withoutServerAddress() -> NSPredicate {
       return NSPredicate(format: "\(serverAddressPath) == nil")
+    }
+
+    static func withAddress() -> NSPredicate {
+      return NSPredicate(format: "\(addressPath) != nil")
     }
 
     static func forChangeIndex(_ changeIndex: Int) -> NSPredicate {
@@ -247,12 +252,17 @@ struct CKPredicate {
       return NSPredicate(format: "\(path) >= %d", min)
     }
 
+    static func hasSufficientAmount(min: Int) -> NSPredicate {
+      let path = #keyPath(CKMVout.amount)
+      return NSPredicate(format: "\(path) >= %d", min)
+    }
+
     static func isSpent(value: Bool) -> NSPredicate {
       let path = #keyPath(CKMVout.isSpent)
       return NSPredicate(format: "\(path) == %@", NSNumber(value: value))
     }
 
-    static func isSpendable(minReceiveConfirmations: Int = 1) -> NSPredicate {
+    static func isSpendable(minAmount: Int, minReceiveConfirmations: Int = 1) -> NSPredicate {
       let isChangePredicate = belongsToChangeAddress()
       let receiveConfirmationsPredicate = hasSufficientConfirmations(min: minReceiveConfirmations)
       let sufficientConfirmationsPredicate = NSCompoundPredicate(type: .or, subpredicates: [isChangePredicate,
@@ -260,9 +270,11 @@ struct CKPredicate {
 
       let isOursPredicate = isOurs()
       let notSpentPredicate = isSpent(value: false)
+      let minAmountPredicate = hasSufficientAmount(min: minAmount)
 
       return NSCompoundPredicate(type: .and, subpredicates: [isOursPredicate,
                                                              notSpentPredicate,
+                                                             minAmountPredicate,
                                                              sufficientConfirmationsPredicate])
     }
 

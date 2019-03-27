@@ -33,10 +33,6 @@ protocol WalletManagerType: AnyObject {
   /// number of confirmations affects isSpendable, returns a min of 0
   func spendableBalance(in context: NSManagedObjectContext) -> Int
 
-  /// Spendable UTXOs --minus pending or temporary transactions--,
-  /// number of confirmations affects isSpendable, returns a min of 0
-  func spendableBalanceNetPending(in context: NSManagedObjectContext) -> Int
-
   func activeTemporarySentTxTotal(in context: NSManagedObjectContext) -> Int
 
   func transactionData(
@@ -154,34 +150,10 @@ class WalletManager: WalletManagerType {
   }
 
   func spendableBalance(in context: NSManagedObjectContext) -> Int {
-    var spendable = 0
-    context.performAndWait {
-      spendable = spendableBalance(netPending: false, in: context)
-    }
-    return spendable
-  }
-
-  func spendableBalanceNetPending(in context: NSManagedObjectContext) -> Int {
-    var spendable = 0
-    context.performAndWait {
-      spendable = spendableBalance(netPending: true, in: context)
-    }
-    return spendable
-  }
-
-  private func spendableBalance(netPending: Bool, in context: NSManagedObjectContext) -> Int {
-    let spendableVouts = CKMVout.findAllSpendable(in: context)
+    let minAmount = self.persistenceManager.dustProtectionMinimumAmount()
+    let spendableVouts = CKMVout.findAllSpendable(minAmount: minAmount, in: context)
     let spendableTotal = spendableVouts.reduce(0) { $0 + $1.amount }
-
-    var balance: Int = spendableTotal
-    if netPending {
-      let tempTxTotal = self.activeTemporarySentTxTotal(in: context)
-      balance -= tempTxTotal
-    }
-
-    // Vouts are marked as not spendable for more than the transaction amount until change is received,
-    // so netPending calculation may be negative during this time.
-    return max(0, balance)
+    return spendableTotal
   }
 
   init(words: [String], coin: CNBBaseCoin = BTCMainnetCoin(), persistenceManager: PersistenceManagerType = PersistenceManager()) {
@@ -234,8 +206,8 @@ class WalletManager: WalletManagerType {
       let blockHeight = UInt(persistenceManager.integer(for: .blockheight))
       let bgContext = persistenceManager.createBackgroundContext()
       bgContext.performAndWait {
-        let usableVouts = self.unspentVoutsRelativeToUser(in: bgContext)
-        let allAvailableOutputs = self.unspentTransactionOutputs(fromUsableUTXOs: usableVouts)
+        let usableVouts = self.usableVouts(in: bgContext)
+        let allAvailableOutputs = self.availableTransactionOutputs(fromUsableUTXOs: usableVouts)
 
         let txData = CNBTransactionData(
           address: address,
@@ -269,8 +241,8 @@ class WalletManager: WalletManagerType {
       }
       let bgContext = persistenceManager.createBackgroundContext()
       bgContext.performAndWait {
-        let usableVouts = self.unspentVoutsRelativeToUser(in: bgContext)
-        let allAvailableOutputs = self.unspentTransactionOutputs(fromUsableUTXOs: usableVouts)
+        let usableVouts = self.usableVouts(in: bgContext)
+        let allAvailableOutputs = self.availableTransactionOutputs(fromUsableUTXOs: usableVouts)
         let paymentAmount = UInt(payment)
         let feeAmount = UInt(flatFee)
         let blockHeight = UInt(persistenceManager.integer(for: .blockheight))
@@ -298,8 +270,8 @@ class WalletManager: WalletManagerType {
       let blockHeight = UInt(persistenceManager.integer(for: .blockheight))
       let bgContext = persistenceManager.createBackgroundContext()
       bgContext.performAndWait {
-        let usableVouts = self.unspentVoutsRelativeToUser(in: bgContext)
-        let allAvailableOutputs = self.unspentTransactionOutputs(fromUsableUTXOs: usableVouts)
+        let usableVouts = self.usableVouts(in: bgContext)
+        let allAvailableOutputs = self.availableTransactionOutputs(fromUsableUTXOs: usableVouts)
 
         let txData = CNBTransactionData(
           allUsableOutputs: allAvailableOutputs,
@@ -316,22 +288,17 @@ class WalletManager: WalletManagerType {
     }
   }
 
-  private func unspentVoutsRelativeToUser(in context: NSManagedObjectContext) -> [CKMVout] {
-    let voutFetchRequest: NSFetchRequest<CKMVout> = CKMVout.fetchRequest()
-    voutFetchRequest.predicate = CKPredicate.Vout.isSpendable()
-    var vouts: [CKMVout] = []
-    do {
-      vouts = try context.fetch(voutFetchRequest)
-    } catch {
-      os_log("Failed to fetch utxos: %@", log: self.logger, type: .error, error.localizedDescription)
-    }
-    return vouts
+  /// - parameter limitByPending: true to remove the smallest vouts, to not exceed spendableBalanceNetPending()
+  private func usableVouts(in context: NSManagedObjectContext) -> [CKMVout] {
+    let dustProtectionAmount = self.persistenceManager.dustProtectionMinimumAmount()
+    return CKMVout.findAllSpendable(minAmount: dustProtectionAmount, in: context)
   }
 
-  private func unspentTransactionOutputs(fromUsableUTXOs usableUTXOs: [CKMVout]) -> [CNBUnspentTransactionOutput] {
+  private func availableTransactionOutputs(fromUsableUTXOs usableUTXOs: [CKMVout]) -> [CNBUnspentTransactionOutput] {
     return usableUTXOs.compactMap { (vout: CKMVout) -> CNBUnspentTransactionOutput? in
       guard let txid = vout.transaction?.txid, let derivationPath = vout.address?.derivativePath else { return nil }
       guard let transaction = vout.transaction else { return nil }
+
       let index = UInt(vout.index)
       let amount = UInt(vout.amount)
       let cnbDerivativePath = CNBDerivationPath(
