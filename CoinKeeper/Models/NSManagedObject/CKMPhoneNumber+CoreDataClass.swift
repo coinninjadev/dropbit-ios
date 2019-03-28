@@ -37,12 +37,10 @@ public class CKMPhoneNumber: NSManagedObject {
   public static func findAll(in context: NSManagedObjectContext) -> [CKMPhoneNumber] {
     let request: NSFetchRequest<CKMPhoneNumber> = CKMPhoneNumber.fetchRequest()
     var results: [CKMPhoneNumber] = []
-    context.performAndWait {
-      do {
-        results = try context.fetch(request)
-      } catch {
-        results = []
-      }
+    do {
+      results = try context.fetch(request)
+    } catch {
+      results = []
     }
     return results
   }
