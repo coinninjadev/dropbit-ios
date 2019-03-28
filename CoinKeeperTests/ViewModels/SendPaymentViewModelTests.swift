@@ -9,6 +9,7 @@
 import XCTest
 import PhoneNumberKit
 @testable import DropBit
+import CNBitcoinKit
 
 class SendPaymentViewModelTests: XCTestCase {
 
@@ -56,5 +57,31 @@ class SendPaymentViewModelTests: XCTestCase {
     XCTAssertFalse(sut.shouldShowSharedMemoBox, "shouldShowSharedMemoBox should be false")
     sut.paymentRecipient = .btcAddress("fake address")
     XCTAssertFalse(sut.shouldShowSharedMemoBox, "shouldShowSharedMemoBox should be false")
+  }
+
+  // MARK: ignored validation options
+  func testWhenSendingMaxMinimumIsIgnored() {
+    // given
+    let dummyData = CNBTransactionData()
+    sut.sendMaxTransactionData = dummyData
+
+    let expectedOptions: CurrencyAmountValidationOptions = [.transactionMinimum, .invitationMaximum]
+
+    // when
+    let actualOptions = sut.standardIgnoredOptions
+
+    // then
+    XCTAssertEqual(actualOptions, expectedOptions)
+  }
+
+  func testWhenSendingInvitationMaximumIsIgnored() {
+    // given
+    let expectedOptions: CurrencyAmountValidationOptions = [.usableBalance, .transactionMinimum]
+
+    // when
+    let actualOptions = sut.invitationMaximumIgnoredOptions
+
+    // then
+    XCTAssertEqual(actualOptions, expectedOptions)
   }
 }

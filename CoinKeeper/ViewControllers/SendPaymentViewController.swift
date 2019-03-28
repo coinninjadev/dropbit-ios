@@ -663,7 +663,8 @@ extension SendPaymentViewController: SendPaymentMemoViewDelegate {
 extension SendPaymentViewController {
 
   func validateAmount(of trimmedAmountString: String) throws {
-    let amountValidator = createCurrencyAmountValidator(ignoring: [.invitationMaximum])
+    let ignoredOptions = viewModel.standardIgnoredOptions
+    let amountValidator = createCurrencyAmountValidator(ignoring: ignoredOptions)
     guard let decimal = NSDecimalNumber(fromString: trimmedAmountString), decimal.isNumber else {
       throw CurrencyAmountValidatorError.notANumber(trimmedAmountString)
     }
@@ -678,7 +679,8 @@ extension SendPaymentViewController {
       contact.kind == .invite
       else { return }
 
-    let validator = createCurrencyAmountValidator(ignoring: [.usableBalance, .transactionMinimum])
+    let ignoredOptions = viewModel.invitationMaximumIgnoredOptions
+    let validator = createCurrencyAmountValidator(ignoring: ignoredOptions)
     let converter = createCurrencyConverter(for: maximum)
     try validator.validate(value: converter)
   }
