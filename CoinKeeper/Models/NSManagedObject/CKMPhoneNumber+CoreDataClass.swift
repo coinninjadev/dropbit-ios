@@ -13,18 +13,19 @@ import CoreData
 @objc(CKMPhoneNumber)
 public class CKMPhoneNumber: NSManagedObject {
 
+  // for testing
   public convenience init?(phoneNumber: GlobalPhoneNumber, insertInto context: NSManagedObjectContext) {
     guard let inputs = ManagedPhoneNumberInputs(phoneNumber: phoneNumber) else { return nil }
     self.init(inputs: inputs, insertInto: context)
   }
 
-  public convenience init?(metadataParticipant participant: MetadataParticipant, insertInto context: NSManagedObjectContext) {
+  static func findOrCreate(withMetadataParticipant participant: MetadataParticipant, in context: NSManagedObjectContext) -> CKMPhoneNumber? {
     guard let countryCode = participant.countryCode,
       let nationalNumber = participant.phoneNumber
       else { return nil }
     let globalNumber = GlobalPhoneNumber(countryCode: countryCode, nationalNumber: nationalNumber)
     guard let inputs = ManagedPhoneNumberInputs(phoneNumber: globalNumber) else { return nil }
-    self.init(inputs: inputs, insertInto: context)
+    return self.findOrCreate(with: inputs, in: context)
   }
 
   private convenience init(inputs: ManagedPhoneNumberInputs, insertInto context: NSManagedObjectContext) {
@@ -33,14 +34,32 @@ public class CKMPhoneNumber: NSManagedObject {
     self.number = inputs.nationalNumber
   }
 
+  public static func findAll(in context: NSManagedObjectContext) -> [CKMPhoneNumber] {
+    let request: NSFetchRequest<CKMPhoneNumber> = CKMPhoneNumber.fetchRequest()
+    var results: [CKMPhoneNumber] = []
+    do {
+      results = try context.fetch(request)
+    } catch {
+      results = []
+    }
+    return results
+  }
+
   public static func findOrCreate(withInputs inputs: ManagedPhoneNumberInputs,
                                   phoneNumberHash: String,
                                   in context: NSManagedObjectContext) -> CKMPhoneNumber {
-    let number = find(withInputs: inputs, in: context) ?? CKMPhoneNumber(inputs: inputs, insertInto: context)
+    let number = findOrCreate(with: inputs, in: context)
     number.phoneNumberHash = phoneNumberHash
     return number
   }
 
+  public static func findOrCreate(with inputs: ManagedPhoneNumberInputs, in context: NSManagedObjectContext) -> CKMPhoneNumber {
+    if let number = find(withInputs: inputs, in: context) {
+      return number
+    } else {
+      return CKMPhoneNumber(inputs: inputs, insertInto: context)
+    }
+  }
   public static func find(withGlobalPhoneNumber number: GlobalPhoneNumber, in context: NSManagedObjectContext) -> CKMPhoneNumber? {
     guard let inputs = ManagedPhoneNumberInputs(phoneNumber: number) else { return nil }
     return self.find(withInputs: inputs, in: context)
@@ -48,9 +67,9 @@ public class CKMPhoneNumber: NSManagedObject {
 
   public static func find(withInputs inputs: ManagedPhoneNumberInputs, in context: NSManagedObjectContext) -> CKMPhoneNumber? {
     let ccPath = #keyPath(CKMPhoneNumber.countryCode)
-    let ccPredicate = NSPredicate(format: "\(ccPath) == %d", inputs.countryCode)
+    let ccPredicate = NSPredicate(format: "\(ccPath) == \(inputs.countryCode)")
     let numberPath = #keyPath(CKMPhoneNumber.number)
-    let numberPredicate = NSPredicate(format: "\(numberPath) == %d", inputs.nationalNumber)
+    let numberPredicate = NSPredicate(format: "\(numberPath) == \(inputs.nationalNumber)")
     let combinedPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [numberPredicate, ccPredicate])
 
     let request: NSFetchRequest<CKMPhoneNumber> = CKMPhoneNumber.fetchRequest()

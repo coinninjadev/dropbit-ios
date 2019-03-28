@@ -77,6 +77,7 @@
 		3B23126720DA6D0E0099A557 /* TransactionHistoryDetailCellAddressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B23126620DA6D0E0099A557 /* TransactionHistoryDetailCellAddressView.swift */; };
 		3B23129120DA7B5A0099A557 /* MockTxHistoryDetailAddressViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B23129020DA7B5A0099A557 /* MockTxHistoryDetailAddressViewDelegate.swift */; };
 		3B231D4F2044807E003BB50B /* LaunchStateManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B231D4E2044807E003BB50B /* LaunchStateManagerTests.swift */; };
+		3B23232E2248FEBC00514201 /* MigrateDatabaseV4Grooming.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B23232D2248FEBC00514201 /* MigrateDatabaseV4Grooming.swift */; };
 		3B24DFBE20EBC44A00C31969 /* MockDatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B24DFBD20EBC44A00C31969 /* MockDatabaseManager.swift */; };
 		3B24DFC020EBEFC100C31969 /* DerivativePathTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B24DFBF20EBEFC100C31969 /* DerivativePathTests.swift */; };
 		3B2658472215CFCC008A8615 /* MailerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B2658462215CFCC008A8615 /* MailerDelegate.swift */; };
@@ -202,6 +203,7 @@
 		3B82692920332AFD009B11EC /* KeypadEntryViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B82692820332AFD009B11EC /* KeypadEntryViewTests.swift */; };
 		3B82692B20337282009B11EC /* PinCreationViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3B82692A20337282009B11EC /* PinCreationViewController.storyboard */; };
 		3B82692D203372AC009B11EC /* PinCreationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B82692C203372AC009B11EC /* PinCreationViewController.swift */; };
+		3B86B6F1224972D000E2706E /* AbstractMigrationWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B86B6F0224972D000E2706E /* AbstractMigrationWorker.swift */; };
 		3B86F787203B6FB700D15231 /* MockAppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B86F786203B6FB700D15231 /* MockAppCoordinator.swift */; };
 		3B86F78A203C6D4E00D15231 /* PinEntryViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3B86F789203C6D4E00D15231 /* PinEntryViewController.storyboard */; };
 		3B86F78C203C6DCD00D15231 /* PinEntryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B86F78B203C6DCD00D15231 /* PinEntryViewController.swift */; };
@@ -858,6 +860,7 @@
 		3B23126620DA6D0E0099A557 /* TransactionHistoryDetailCellAddressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionHistoryDetailCellAddressView.swift; sourceTree = "<group>"; };
 		3B23129020DA7B5A0099A557 /* MockTxHistoryDetailAddressViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockTxHistoryDetailAddressViewDelegate.swift; sourceTree = "<group>"; };
 		3B231D4E2044807E003BB50B /* LaunchStateManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchStateManagerTests.swift; sourceTree = "<group>"; };
+		3B23232D2248FEBC00514201 /* MigrateDatabaseV4Grooming.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MigrateDatabaseV4Grooming.swift; sourceTree = "<group>"; };
 		3B24DFBD20EBC44A00C31969 /* MockDatabaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockDatabaseManager.swift; sourceTree = "<group>"; };
 		3B24DFBF20EBEFC100C31969 /* DerivativePathTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DerivativePathTests.swift; sourceTree = "<group>"; };
 		3B2658462215CFCC008A8615 /* MailerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailerDelegate.swift; sourceTree = "<group>"; };
@@ -981,6 +984,7 @@
 		3B82692820332AFD009B11EC /* KeypadEntryViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeypadEntryViewTests.swift; sourceTree = "<group>"; };
 		3B82692A20337282009B11EC /* PinCreationViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = PinCreationViewController.storyboard; sourceTree = "<group>"; };
 		3B82692C203372AC009B11EC /* PinCreationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinCreationViewController.swift; sourceTree = "<group>"; };
+		3B86B6F0224972D000E2706E /* AbstractMigrationWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AbstractMigrationWorker.swift; sourceTree = "<group>"; };
 		3B86F786203B6FB700D15231 /* MockAppCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockAppCoordinator.swift; sourceTree = "<group>"; };
 		3B86F789203C6D4E00D15231 /* PinEntryViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = PinEntryViewController.storyboard; sourceTree = "<group>"; };
 		3B86F78B203C6DCD00D15231 /* PinEntryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinEntryViewController.swift; sourceTree = "<group>"; };
@@ -1712,6 +1716,34 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		3B23232A2248FE5700514201 /* Database */ = {
+			isa = PBXGroup;
+			children = (
+				3B4A9F2E21BEF55F0009CDF6 /* DatabaseMigratorFactory.swift */,
+				3B80E27721BEEDD300F6EF17 /* MigrateDatabaseV1toV2.swift */,
+				3B23232D2248FEBC00514201 /* MigrateDatabaseV4Grooming.swift */,
+			);
+			path = Database;
+			sourceTree = "<group>";
+		};
+		3B23232B2248FE7300514201 /* ContactCache */ = {
+			isa = PBXGroup;
+			children = (
+				B5221D5022441CAA0081C868 /* ContactCacheMigratorFactory.swift */,
+				B5221D5222441CC30081C868 /* MigrateContactCacheV1toV2.swift */,
+			);
+			path = ContactCache;
+			sourceTree = "<group>";
+		};
+		3B23232C2248FE8900514201 /* Keychain */ = {
+			isa = PBXGroup;
+			children = (
+				B5DDB0F621DE69C100A25929 /* KeychainMigratorFactory.swift */,
+				B5DDB0F821DE6A1100A25929 /* MigrateKeychainV1toV2.swift */,
+			);
+			path = Keychain;
+			sourceTree = "<group>";
+		};
 		3B287CB921020CB000A43E57 /* Requests */ = {
 			isa = PBXGroup;
 			children = (
@@ -1828,6 +1860,7 @@
 				3B80E27421BE9D7A00F6EF17 /* DatabaseMigrationWorker.swift */,
 				B5DDB0F421DE5ED200A25929 /* KeychainMigrationWorker.swift */,
 				3BE8AA1521F10D4200A3F0C4 /* CKCryptor.swift */,
+				3B86B6F0224972D000E2706E /* AbstractMigrationWorker.swift */,
 			);
 			path = Workers;
 			sourceTree = "<group>";
@@ -1930,12 +1963,9 @@
 		3B80E27621BEEDB400F6EF17 /* Migrators */ = {
 			isa = PBXGroup;
 			children = (
-				3B4A9F2E21BEF55F0009CDF6 /* DatabaseMigratorFactory.swift */,
-				3B80E27721BEEDD300F6EF17 /* MigrateDatabaseV1toV2.swift */,
-				B5221D5022441CAA0081C868 /* ContactCacheMigratorFactory.swift */,
-				B5221D5222441CC30081C868 /* MigrateContactCacheV1toV2.swift */,
-				B5DDB0F621DE69C100A25929 /* KeychainMigratorFactory.swift */,
-				B5DDB0F821DE6A1100A25929 /* MigrateKeychainV1toV2.swift */,
+				3B23232A2248FE5700514201 /* Database */,
+				3B23232B2248FE7300514201 /* ContactCache */,
+				3B23232C2248FE8900514201 /* Keychain */,
 			);
 			path = Migrators;
 			sourceTree = "<group>";
@@ -3715,6 +3745,7 @@
 				B5EABAB221FB8F4D00E32E08 /* CreateTransactionNotificationBody.swift in Sources */,
 				B552EDFB211E33D000332BB5 /* CKAlamofireSessionManager.swift in Sources */,
 				B52F690A22417B0100790E97 /* CKDatabase.swift in Sources */,
+				3B23232E2248FEBC00514201 /* MigrateDatabaseV4Grooming.swift in Sources */,
 				B51AE4A7209398FE008380CC /* CKMPhoneNumber+CoreDataProperties.swift in Sources */,
 				300CD8F121FA668400BFF560 /* NSAttributedString+Concatenate.swift in Sources */,
 				B51F823C207BB00D00692F5B /* BalanceSecondaryAmountLabel.swift in Sources */,
@@ -3771,6 +3802,7 @@
 				B5CFA333221E008B002B1BDD /* CCMContact+CoreDataClass.swift in Sources */,
 				308F6F09217FB12E0094D6CB /* VerticalDragView.swift in Sources */,
 				3BBEE0C1208A5DA500A7DF9F /* CKMDerivativePath+CoreDataClass.swift in Sources */,
+				3B86B6F1224972D000E2706E /* AbstractMigrationWorker.swift in Sources */,
 				B552EDFD211E33D000332BB5 /* AnalyticsManager.swift in Sources */,
 				3B1555E020D27B5000D6A70C /* TransactionVinResponse.swift in Sources */,
 				3BA360882090BAD900732C43 /* NSManagedObject+Init.swift in Sources */,

@@ -43,6 +43,7 @@ class CKDatabase: PersistenceDatabaseType {
   func createBackgroundContext() -> NSManagedObjectContext {
     let bgContext = container.newBackgroundContext()
     bgContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
+    bgContext.automaticallyMergesChangesFromParent = true
     return bgContext
   }
 

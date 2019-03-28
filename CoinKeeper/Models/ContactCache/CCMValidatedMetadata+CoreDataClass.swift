@@ -23,7 +23,7 @@ public class CCMValidatedMetadata: NSManagedObject {
   static func find(withNumber phoneNumber: GlobalPhoneNumber, in context: NSManagedObjectContext) -> CCMValidatedMetadata? {
     let countryPath = #keyPath(CCMValidatedMetadata.countryCode)
     let nationalPath = #keyPath(CCMValidatedMetadata.nationalNumber)
-    let countryPredicate = NSPredicate(format: "\(countryPath) == %d", phoneNumber.countryCode)
+    let countryPredicate = NSPredicate(format: "\(countryPath) == \(phoneNumber.countryCode)")
     let nationalPredicate = NSPredicate(format: "\(nationalPath) == %@", phoneNumber.nationalNumber)
     let compoundPredicate = NSCompoundPredicate(type: .and, subpredicates: [nationalPredicate, countryPredicate])
 

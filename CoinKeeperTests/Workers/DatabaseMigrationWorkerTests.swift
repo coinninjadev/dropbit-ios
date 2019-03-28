@@ -22,13 +22,16 @@ class DatabaseMigrationWorkerTests: XCTestCase {
     let context = stack.context
 
     let migrators = [MockV1toV2()]
-    sut = DatabaseMigrationWorker(migrators: migrators)
-    _ = sut.migrateIfPossible(in: context)
+    sut = DatabaseMigrationWorker(migrators: migrators, in: context)
+    _ = sut.migrateIfPossible()
 
     migrators.forEach { XCTAssertTrue($0.migrateWasCalled) }
   }
 
   class MockV1toV2: Migratable {
+    func isMigrated() -> Bool {
+      return false
+    }
     var migrateWasCalled = false
     func migrate() {
       migrateWasCalled = true
