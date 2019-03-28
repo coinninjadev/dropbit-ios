@@ -24,8 +24,7 @@ struct MigrateDatabaseV4Grooming: Migratable {
     // filter items into dictionary where key is e164 representation
     var itemsById: [String: [CKMPhoneNumber]] = [:]
     allPhoneNumbers.forEach { number in
-      let globalNumber = GlobalPhoneNumber(countryCode: Int(number.countryCode), nationalNumber: "\(number.number)")
-      let identifier = globalNumber.asE164()
+      let identifier = number.asGlobalPhoneNumber.asE164()
       let items = (itemsById[identifier] ?? []).appending(element: number)
       itemsById[identifier] = items
     }
