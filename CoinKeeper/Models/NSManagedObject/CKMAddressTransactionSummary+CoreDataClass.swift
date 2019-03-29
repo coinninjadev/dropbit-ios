@@ -65,19 +65,16 @@ public class CKMAddressTransactionSummary: NSManagedObject {
 
     var addressTransactionSummary: CKMAddressTransactionSummary!
 
-    context.performAndWait {
-      do {
-        if let summary = try context.fetch(fetchRequest).first {
-          addressTransactionSummary = summary
-        } else {
-          addressTransactionSummary = CKMAddressTransactionSummary(insertInto: context)
-          addressTransactionSummary.configure(with: response, in: context)
-        }
-      } catch {
+    do {
+      if let summary = try context.fetch(fetchRequest).first {
+        addressTransactionSummary = summary
+      } else {
         addressTransactionSummary = CKMAddressTransactionSummary(insertInto: context)
-        addressTransactionSummary.configure(with: response, in: context)
       }
+    } catch {
+      addressTransactionSummary = CKMAddressTransactionSummary(insertInto: context)
     }
+    addressTransactionSummary.configure(with: response, in: context)
 
     return addressTransactionSummary
   }
