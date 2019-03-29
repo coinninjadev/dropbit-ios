@@ -237,7 +237,7 @@ class PersistenceManager: PersistenceManagerType {
   }
 
   private func updateReceiveAddressGaps(in context: NSManagedObjectContext) {
-    let usedDerivativePaths = CKMDerivativePath.findAllReceivePathsWithoutServerAddress(in: context)
+    let usedDerivativePaths = CKMDerivativePath.findAllReceivePathsWithAddressTransactionSummaries(in: context)
     let usedIndexes = usedDerivativePaths.map { $0.index }
     if let maxUsedIndex = usedIndexes.max() {
       let fullSet = Set(Array(0...maxUsedIndex))
