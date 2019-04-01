@@ -14,7 +14,7 @@ import os.log
 import PromiseKit
 import PhoneNumberKit
 
-protocol TransactionHistoryViewControllerDelegate: DeviceCountryCodeProvider {
+protocol TransactionHistoryViewControllerDelegate: DeviceCountryCodeProvider & BalanceContainerDelegate & BadgeUpdateDelegate {
   func viewControllerShouldSeeTransactionDetails(for viewModel: TransactionHistoryDetailCellViewModel)
   func viewControllerDidCancelDropbit()
   func viewControllerDidRequestHistoryUpdate(_ viewController: TransactionHistoryViewController)
@@ -25,6 +25,7 @@ protocol TransactionHistoryViewControllerDelegate: DeviceCountryCodeProvider {
   func viewControllerDidTapAddMemo(_ viewController: UIViewController, with completion: @escaping (String) -> Void)
   func viewControllerShouldUpdateTransaction(_ viewController: TransactionHistoryViewController,
                                              transaction: CKMTransaction) -> Promise<Void>
+  func badgingManager() -> BadgeManagerType
 }
 
 class TransactionHistoryViewController: BaseViewController, StoryboardInitializable,
@@ -106,8 +107,15 @@ PreferredCurrencyRepresentable {
     return controller
   }()
 
+  var badgeNotificationToken: NotificationToken?
+
   override func viewDidLoad() {
     super.viewDidLoad()
+
+    balanceContainer?.delegate = (generalCoordinationDelegate as? BalanceContainerDelegate)
+    (updateTransactionDelegate?.badgingManager()).map(subscribeToBadgeNotifications)
+    updateTransactionDelegate?.viewControllerDidRequestBadgeUpdate(self)
+
     self.view.backgroundColor = Theme.Color.lightGrayBackground.color
 
     self.balanceContainer.delegate = self.balanceDelegate
@@ -398,4 +406,12 @@ extension TransactionHistoryViewController: TransactionHistoryDetailCellDelegate
       updateTransactionDelegate?.viewController(self, didCancelInvitationWithID: invitationID, at: path)
     }
   }
+}
+
+extension TransactionHistoryViewController: BadgeDisplayable {
+
+  func didReceiveBadgeUpdate(badgeInfo: BadgeInfo) {
+    self.balanceContainer.leftButton.updateBadge(with: badgeInfo)
+  }
+
 }
