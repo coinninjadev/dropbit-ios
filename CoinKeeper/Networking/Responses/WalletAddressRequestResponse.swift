@@ -213,6 +213,7 @@ extension WalletAddressRequestResponse {
   }
 
   static func sampleSentData() -> Data {
+    let pubkey = "04cf39eab1213ad4a94e755fadaac4c8f2a256d7fa6b4044c7980113f7df60e24d5c1156b794d46652de2493013c6495469fbbac39d8c86495f1eebd65c7a6bddc"
     let sampleString =
     """
       [
@@ -240,7 +241,7 @@ extension WalletAddressRequestResponse {
           "request_ttl": 1531921356,
           "status": "new",
           "txid": "7f3a2790d59853fdc620b8cd23c8f68158f8bbdcd337a5f2451620d6f76d4e03",
-          "address_pubkey": "04cf39eab1213ad4a94e755fadaac4c8f2a256d7fa6b4044c7980113f7df60e24d5c1156b794d46652de2493013c6495469fbbac39d8c86495f1eebd65c7a6bddc",
+          "address_pubkey": "\(pubkey)",
           "wallet_id": "f8e8c20e-ba44-4bac-9a96-44f3b7ae955d",
           "delivery_status": "received"
         }
