@@ -142,13 +142,13 @@ enum ActionableAlertElement: String, AccessibleElement {
 enum CalculatorElement: String, AccessibleElement {
   case page
   case receiveButton
-  case menu
   case sendButton
   case balanceView
 }
 
 enum TransactionHistoryElement: String, AccessibleElement {
   case page
+  case menu
   case tutorialButton
 }
 

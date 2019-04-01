@@ -22,4 +22,12 @@ class TransactionHistoryPage: UITestPage {
     return self
   }
 
+  @discardableResult
+  func tapMenu() -> Self {
+    let menuButton = app.buttons(.transactionHistory(.menu))
+    menuButton.assertExistence(afterWait: .none, elementDesc: "menuButton")
+    menuButton.tap()
+    return self
+  }
+
 }

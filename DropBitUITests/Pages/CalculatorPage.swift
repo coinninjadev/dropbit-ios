@@ -23,14 +23,6 @@ class CalculatorPage: UITestPage {
   }
 
   @discardableResult
-  func tapMenu() -> Self {
-    let menuButton = app.buttons(.calculator(.menu))
-    menuButton.assertExistence(afterWait: .none, elementDesc: "menuButton")
-    menuButton.tap()
-    return self
-  }
-
-  @discardableResult
   func tapPay() -> Self {
     let sendButton = app.buttons(.calculator(.sendButton))
     sendButton.assertExistence(afterWait: .none, elementDesc: "sendButton")

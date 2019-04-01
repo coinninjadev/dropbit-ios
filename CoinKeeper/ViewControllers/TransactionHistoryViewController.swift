@@ -54,6 +54,7 @@ PreferredCurrencyRepresentable {
   override func accessibleViewsAndIdentifiers() -> [AccessibleViewElement] {
     return [
       (self.view, .transactionHistory(.page)),
+      (balanceContainer.leftButton, .transactionHistory(.menu)),
       (noTransactionsView.learnAboutBitcoinButton, .transactionHistory(.tutorialButton))
     ]
   }

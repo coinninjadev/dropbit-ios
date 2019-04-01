@@ -97,7 +97,6 @@ final class CalculatorViewController: BaseViewController, StoryboardInitializabl
     return [
       (self.view, .calculator(.page)),
       (receiveButton, .calculator(.receiveButton)),
-      (balanceContainer.leftButton, .calculator(.menu)),
       (sendButton, .calculator(.sendButton))
     ]
   }
