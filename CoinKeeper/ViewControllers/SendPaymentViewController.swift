@@ -199,7 +199,7 @@ ValidatorAlertDisplayable {
     if amountString.isEmpty {
       secondaryAmountLabel.text = ""
     } else {
-      let decimal = NSDecimalNumber(fromString: amountString) ?? .zero
+      let decimal = NSDecimalNumber(fromString: amountString, locale: .current) ?? .zero
       switch primaryCurrency {
       case .BTC:
         secondaryAmountLabel.text = createCurrencyConverter(for: decimal).amountStringWithSymbol(forCurrency: .USD) ?? CurrencyCode.USD.symbol
@@ -462,7 +462,7 @@ extension SendPaymentViewController {
 
   func getBitcoinValueForPrimaryAmountText() -> NSDecimalNumber {
     guard let amountString = sanitizedAmountString,
-      let decimal = NSDecimalNumber(fromString: amountString) else { return .zero }
+      let decimal = NSDecimalNumber(fromString: amountString, locale: .current) else { return .zero }
     return createCurrencyConverter(for: decimal).amount(forCurrency: .BTC) ?? 0.0
   }
 
@@ -501,7 +501,7 @@ extension SendPaymentViewController: UITextFieldDelegate {
     case primaryAmountTextField:
       sendMaxButton.isHidden = true
       guard let text = sanitizedAmountString,
-        let number = NSDecimalNumber(fromString: text) else { return }
+        let number = NSDecimalNumber(fromString: text, locale: .current) else { return }
       if number == .zero {
         textField.text = primaryCurrency.symbol
       }
@@ -597,7 +597,7 @@ extension SendPaymentViewController: UITextFieldDelegate {
       return true // allow deletion of all digits by returning early
     }
 
-    guard let newAmount = NSDecimalNumber(fromString: trimmedFinal) else { return false }
+    guard let newAmount = NSDecimalNumber(fromString: trimmedFinal, locale: .current) else { return false }
 
     guard newAmount.significantFractionalDecimalDigits <= primaryCurrency.decimalPlaces else {
       return false
@@ -665,7 +665,7 @@ extension SendPaymentViewController {
   func validateAmount(of trimmedAmountString: String) throws {
     let ignoredOptions = viewModel.standardIgnoredOptions
     let amountValidator = createCurrencyAmountValidator(ignoring: ignoredOptions)
-    guard let decimal = NSDecimalNumber(fromString: trimmedAmountString), decimal.isNumber else {
+    guard let decimal = NSDecimalNumber(fromString: trimmedAmountString, locale: .current), decimal.isNumber else {
       throw CurrencyAmountValidatorError.notANumber(trimmedAmountString)
     }
 
@@ -739,7 +739,7 @@ extension SendPaymentViewController {
 
   private func validateAmountAndBeginAddressNegotiation(for contact: ContactType, kind: ContactKind, sharedPayload: SharedPayloadDTO) throws {
     guard let amountString = sanitizedAmountString,
-      let decimal = NSDecimalNumber(fromString: amountString)
+      let decimal = NSDecimalNumber(fromString: amountString, locale: .current)
       else { return }
 
     var newContact = contact
