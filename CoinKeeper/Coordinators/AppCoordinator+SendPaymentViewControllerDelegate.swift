@@ -155,6 +155,7 @@ extension AppCoordinator: SendPaymentViewControllerDelegate {
 
     // create outgoingTransactionData DTO to populate and pass along down the send flow
     var outgoingTransactionData = OutgoingTransactionData.emptyInstance()
+    outgoingTransactionData.amount = btcAmount.asFractionalUnits(of: .BTC)
     outgoingTransactionData.requiredFeeRate = requiredFeeRate
     outgoingTransactionData = configureOutgoingTransactionData(
       with: outgoingTransactionData,
