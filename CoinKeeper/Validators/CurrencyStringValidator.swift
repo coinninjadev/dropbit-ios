@@ -27,8 +27,13 @@ enum CurrencyStringValidatorError: ValidatorTypeError {
 
 class CurrencyStringValidator: ValidatorType<String> {
 
+  let locale: Locale
+  init(locale: Locale = .current) {
+    self.locale = locale
+  }
+
   override func validate(value: String) throws {
-    let decimal = NSDecimalNumber(string: value)
+    let decimal = NSDecimalNumber(string: value, locale: self.locale)
 
     switch decimal {
     case .notANumber:
