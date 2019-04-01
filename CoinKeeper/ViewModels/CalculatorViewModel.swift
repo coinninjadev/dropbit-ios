@@ -136,7 +136,7 @@ class CalculatorViewModel: CalculatorViewModelProviding {
   // MARK: - Amount values
 
   private var currentAmount: NSDecimalNumber {
-    guard let possibleNumber = NSDecimalNumber(fromString: currentAmountRawString, locale: .current) else { return .zero }
+    guard let possibleNumber = NSDecimalNumber(fromString: currentAmountRawString) else { return .zero }
 
     return possibleNumber
   }
@@ -156,7 +156,7 @@ class CalculatorViewModel: CalculatorViewModelProviding {
 
     // count significant decimal digits for proposed string
     let potentialCurrentAmountString = currentAmountRawString + digit
-    guard let potentialCurrentAmount = NSDecimalNumber(fromString: potentialCurrentAmountString, locale: .current) else { return false }
+    guard let potentialCurrentAmount = NSDecimalNumber(fromString: potentialCurrentAmountString) else { return false }
     let potentialSignificantDecimalPlaces = potentialCurrentAmount.significantFractionalDecimalDigits
 
     // check both conditions are met
