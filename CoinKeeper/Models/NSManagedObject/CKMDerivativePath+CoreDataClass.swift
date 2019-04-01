@@ -72,16 +72,14 @@ public class CKMDerivativePath: NSManagedObject {
 
     var derivativePath: CKMDerivativePath!
 
-    context.performAndWait {
-      do {
-        if let path = try context.fetch(fetchRequest).first {
-          derivativePath = path
-        } else {
-          derivativePath = CKMDerivativePath(insertInto: context)
-        }
-      } catch {
+    do {
+      if let path = try context.fetch(fetchRequest).first {
+        derivativePath = path
+      } else {
         derivativePath = CKMDerivativePath(insertInto: context)
       }
+    } catch {
+      derivativePath = CKMDerivativePath(insertInto: context)
     }
 
     derivativePath.purpose = purpose
@@ -94,32 +92,48 @@ public class CKMDerivativePath: NSManagedObject {
     return derivativePath
   }
 
-  static func maxUsedReceiveIndex(in context: NSManagedObjectContext) -> Int {
+  static func findAllReceivePathsWithAddressTransactionSummaries(in context: NSManagedObjectContext) -> [CKMDerivativePath] {
+    let fetchRequest: NSFetchRequest<CKMDerivativePath> = CKMDerivativePath.fetchRequest()
+    fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
+      CKPredicate.DerivativePath.forChangeIndex(changeIsReceiveValue),
+      CKPredicate.DerivativePath.withAddressTransactionSummaries(),
+      CKPredicate.DerivativePath.withAddress()
+      ])
+    do {
+      return try context.fetch(fetchRequest)
+    } catch {
+      print(error.localizedDescription)
+      return []
+    }
+  }
+
+  static func maxUsedReceiveIndex(in context: NSManagedObjectContext) -> Int? {
     return maxUsedIndex(forChangeIndex: changeIsReceiveValue, in: context)
   }
 
-  static func maxUsedChangeIndex(in context: NSManagedObjectContext) -> Int {
+  static func maxUsedChangeIndex(in context: NSManagedObjectContext) -> Int? {
     return maxUsedIndex(forChangeIndex: changeIsChangeValue, in: context)
   }
 
-  private static func maxUsedIndex(forChangeIndex change: Int, in context: NSManagedObjectContext) -> Int {
+  private static func maxUsedIndex(forChangeIndex change: Int, in context: NSManagedObjectContext) -> Int? {
     let fetchRequest: NSFetchRequest<CKMDerivativePath> = CKMDerivativePath.fetchRequest()
     let changePredicate = CKPredicate.DerivativePath.forChangeIndex(change)
     let nonServerPredicate = CKPredicate.DerivativePath.withoutServerAddress()
+    let hasAddressPredicate = CKPredicate.DerivativePath.withAddress()
 
-    fetchRequest.predicate = NSCompoundPredicate(type: .and, subpredicates: [changePredicate, nonServerPredicate])
+    fetchRequest.predicate = NSCompoundPredicate(type: .and, subpredicates: [changePredicate, nonServerPredicate, hasAddressPredicate])
     fetchRequest.fetchLimit = 1
 
     let indexKeyPath = #keyPath(CKMDerivativePath.index)
     let indexSortDescriptor = NSSortDescriptor(key: indexKeyPath, ascending: false)
     fetchRequest.sortDescriptors = [indexSortDescriptor]
 
-    var maxIndex = 0
+    var maxIndex: Int?
     context.performAndWait {
       do {
-        maxIndex = try context.fetch(fetchRequest).first?.index ?? 0
+        maxIndex = try context.fetch(fetchRequest).first?.index
       } catch {
-        maxIndex = 0
+        print(error.localizedDescription)
       }
     }
     return maxIndex

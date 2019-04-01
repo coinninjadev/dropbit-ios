@@ -8,8 +8,10 @@
 
 import UIKit
 import Contacts
-import Result
+import enum Result.Result
 import PhoneNumberKit
+import CNBitcoinKit
+import PromiseKit
 
 typealias SendPaymentViewControllerCoordinator = SendPaymentViewControllerDelegate &
   CurrencyValueDataSourceType & BalanceDataSource & PaymentRequestResolver & URLOpener & ViewControllerDismissable
@@ -22,12 +24,15 @@ class SendPaymentViewController: PresentableViewController,
   PhoneNumberEntryViewDisplayable,
 ValidatorAlertDisplayable {
 
-  var viewModel: SendPaymentViewModelType = SendPaymentViewModel(btcAmount: 0, primaryCurrency: .USD,
-                                                                 parser: CKRecipientParser(kit: PhoneNumberKit()))
+  var viewModel: SendPaymentViewModelType = SendPaymentViewModel(btcAmount: 0, primaryCurrency: .USD)
   var alertManager: AlertManagerType?
   let rateManager = ExchangeRateManager()
   let phoneNumberKit = PhoneNumberKit()
   var hashingManager = HashingManager()
+
+  /// The presenter of SendPaymentViewController can set this property to provide a recipient.
+  /// It will be parsed and used to update the viewModel and view when ready.
+  var recipientDescriptionToLoad: String?
 
   var countryCodeSearchView: CountryCodeSearchView?
   let countryCodeDataSource = CountryCodePickerDataSource()
@@ -77,6 +82,7 @@ ValidatorAlertDisplayable {
   @IBOutlet var pasteButton: CompactActionButton!
   @IBOutlet var sendButton: PrimaryActionButton!
   @IBOutlet var memoContainerView: SendPaymentMemoView!
+  @IBOutlet var sendMaxButton: LightBorderedButton!
 
   @IBAction func performClose() {
     coordinationDelegate?.viewControllerDidSelectClose(self)
@@ -85,7 +91,7 @@ ValidatorAlertDisplayable {
   @IBAction func performPaste() {
     coordinationDelegate?.viewControllerDidSelectPaste(self)
     if let text = UIPasteboard.general.string {
-      pasteRecipient(fromText: text)
+      applyRecipient(inText: text)
     }
   }
 
@@ -107,6 +113,32 @@ ValidatorAlertDisplayable {
       try validateAndSendPayment()
     } catch {
       showValidatorAlert(for: error, title: "Invalid Transaction")
+    }
+  }
+
+  @IBAction func performSendMax() {
+    let tempAddress = ""
+    self.coordinationDelegate?.latestFees()
+      .compactMap { $0[.good] }
+      .then { feeRate -> Promise<CNBTransactionData> in
+        guard let delegate = self.coordinationDelegate else { fatalError("coordinationDelegate is required") }
+        return delegate.viewController(self, sendMaxFundsTo: tempAddress, feeRate: feeRate)
+      }
+      .done {txData in
+        self.viewModel.sendMax(with: txData)
+        self.loadAmounts()
+        self.sendMaxButton.isHidden = true
+      }
+      .catch { _ in
+        let action = AlertActionConfiguration.init(title: "OK", style: .default, action: nil)
+        let alertViewModel = AlertControllerViewModel(
+          title: "Insufficient Funds",
+          description: "There are not enough funds to cover the transaction and network fee.",
+          image: nil,
+          style: .alert,
+          actions: [action]
+        )
+        self.coordinationDelegate?.viewControllerDidRequestAlert(self, viewModel: alertViewModel)
     }
   }
 
@@ -152,7 +184,13 @@ ValidatorAlertDisplayable {
     super.viewWillAppear(animated)
 
     primaryAmountTextField.delegate = self
-    updateViewWithModel()
+
+    if let recipientDescription = self.recipientDescriptionToLoad {
+      self.applyRecipient(inText: recipientDescription)
+      self.recipientDescriptionToLoad = nil
+    } else {
+      updateViewWithModel()
+    }
   }
 
   @objc func primaryAmountTextFieldDidChange(_ textField: UITextField) {
@@ -258,7 +296,7 @@ extension SendPaymentViewController {
 
 extension SendPaymentViewController {
 
-  func pasteRecipient(fromText text: String) {
+  func applyRecipient(inText text: String) {
     do {
       let recipient = try viewModel.recipientParser.findSingleRecipient(inText: text, ofTypes: [.bitcoinURL, .phoneNumber])
       updateViewModel(withParsedRecipient: recipient)
@@ -300,8 +338,7 @@ extension SendPaymentViewController {
       let errorTitle = "Payment Request Error"
       switch result {
       case .success(let response):
-        let parser = CKRecipientParser(kit: self.phoneNumberKit)
-        guard let fetchedModel = SendPaymentViewModel(response: response, parser: parser),
+        guard let fetchedModel = SendPaymentViewModel(response: response),
           let fetchedAddress = fetchedModel.address,
           let fetchedAmount = fetchedModel.btcAmount else {
             self.showValidatorAlert(for: MerchantPaymentRequestError.missingOutput, title: errorTitle)
@@ -462,6 +499,7 @@ extension SendPaymentViewController: UITextFieldDelegate {
       setPaymentRecipient(recipient)
       updateViewWithModel()
     case primaryAmountTextField:
+      sendMaxButton.isHidden = true
       guard let text = sanitizedAmountString,
         let number = NSDecimalNumber(fromString: text) else { return }
       if number == .zero {
@@ -502,6 +540,8 @@ extension SendPaymentViewController: UITextFieldDelegate {
 
     case primaryAmountTextField:
       viewModel.btcAmount = getBitcoinValueForPrimaryAmountText()
+      sendMaxButton.isHidden = viewModel.btcAmount != .zero
+      primaryAmountTextField.text = viewModel.primaryAmountInputText(withRates: self.rateManager.exchangeRates)
       loadAmounts(forPrimary: false, forSecondary: true)
     default:
       break
@@ -510,7 +550,7 @@ extension SendPaymentViewController: UITextFieldDelegate {
 
   func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
     if let pasteboardText = UIPasteboard.general.string, pasteboardText == string {
-      pasteRecipient(fromText: pasteboardText)
+      applyRecipient(inText: pasteboardText)
     }
 
     switch textField {
@@ -623,7 +663,8 @@ extension SendPaymentViewController: SendPaymentMemoViewDelegate {
 extension SendPaymentViewController {
 
   func validateAmount(of trimmedAmountString: String) throws {
-    let amountValidator = createCurrencyAmountValidator(ignoring: [.invitationMaximum])
+    let ignoredOptions = viewModel.standardIgnoredOptions
+    let amountValidator = createCurrencyAmountValidator(ignoring: ignoredOptions)
     guard let decimal = NSDecimalNumber(fromString: trimmedAmountString), decimal.isNumber else {
       throw CurrencyAmountValidatorError.notANumber(trimmedAmountString)
     }
@@ -638,7 +679,8 @@ extension SendPaymentViewController {
       contact.kind == .invite
       else { return }
 
-    let validator = createCurrencyAmountValidator(ignoring: [.usableBalance, .transactionMinimum])
+    let ignoredOptions = viewModel.invitationMaximumIgnoredOptions
+    let validator = createCurrencyAmountValidator(ignoring: ignoredOptions)
     let converter = createCurrencyConverter(for: maximum)
     try validator.validate(value: converter)
   }
@@ -673,14 +715,10 @@ extension SendPaymentViewController {
                                             memo: self.viewModel.memo,
                                             amountInfo: sharedAmountInfo())
 
-    coordinationDelegate?.viewControllerDidSendPayment(self,
-                                                       btcAmount: getBitcoinValueForPrimaryAmountText(),
-                                                       requiredFeeRate: self.viewModel.requiredFeeRate,
-                                                       primaryCurrency: primaryCurrency,
-                                                       address: address,
-                                                       contact: nil,
-                                                       rates: self.rateManager.exchangeRates,
-                                                       sharedPayload: sharedPayloadDTO)
+    sendTransactionForConfirmation(with: viewModel.sendMaxTransactionData,
+                                   address: address,
+                                   contact: nil,
+                                   sharedPayload: sharedPayloadDTO)
   }
 
   /// This evaluates the contact, some of it asynchronously, before sending
@@ -733,14 +771,10 @@ extension SendPaymentViewController {
         if let addressResponse = addressResponses.first(where: { $0.phoneNumberHash == contact.phoneNumberHash }) {
           var updatedPayload = sharedPayload
           updatedPayload.updatePubKeyState(with: addressResponse)
-          strongSelf.coordinationDelegate?.viewControllerDidSendPayment(strongSelf,
-                                                                        btcAmount: strongSelf.getBitcoinValueForPrimaryAmountText(),
-                                                                        requiredFeeRate: strongSelf.viewModel.requiredFeeRate,
-                                                                        primaryCurrency: strongSelf.primaryCurrency,
-                                                                        address: addressResponse.address,
-                                                                        contact: contact,
-                                                                        rates: strongSelf.rateManager.exchangeRates,
-                                                                        sharedPayload: updatedPayload)
+          strongSelf.sendTransactionForConfirmation(with: strongSelf.viewModel.sendMaxTransactionData,
+                                                    address: addressResponse.address,
+                                                    contact: contact,
+                                                    sharedPayload: updatedPayload)
         } else {
           // The contact has not backed up their words so our fetch didn't return an address, degrade to address negotiation
           do {
@@ -772,7 +806,6 @@ extension SendPaymentViewController {
   private func handleGenericContactAddressCheckCompletion(forContact contact: ContactType,
                                                           sharedPayload: SharedPayloadDTO,
                                                           result: Result<[WalletAddressesQueryResponse], UserProviderError>) {
-    let btcValue = getBitcoinValueForPrimaryAmountText()
     var newContact = contact
 
     switch result {
@@ -782,14 +815,10 @@ extension SendPaymentViewController {
         updatedPayload.updatePubKeyState(with: addressResponse)
 
         newContact.kind = .registeredUser
-        self.coordinationDelegate?.viewControllerDidSendPayment(self,
-                                                                btcAmount: btcValue,
-                                                                requiredFeeRate: self.viewModel.requiredFeeRate,
-                                                                primaryCurrency: self.primaryCurrency,
-                                                                address: addressResponse.address,
-                                                                contact: contact,
-                                                                rates: self.rateManager.exchangeRates,
-                                                                sharedPayload: updatedPayload)
+        sendTransactionForConfirmation(with: viewModel.sendMaxTransactionData,
+                                       address: addressResponse.address,
+                                       contact: contact,
+                                       sharedPayload: updatedPayload)
       } else {
         do {
           try validateAmountAndBeginAddressNegotiation(for: newContact, kind: .invite, sharedPayload: sharedPayload)
@@ -802,4 +831,28 @@ extension SendPaymentViewController {
     }
   }
 
+  private func sendTransactionForConfirmation(with data: CNBTransactionData?,
+                                              address: String,
+                                              contact: ContactType?,
+                                              sharedPayload: SharedPayloadDTO) {
+    let rates = rateManager.exchangeRates
+    if let data = viewModel.sendMaxTransactionData {
+      coordinationDelegate?.viewController(self,
+                                           sendingMax: data,
+                                           address: address,
+                                           contact: contact,
+                                           rates: rates,
+                                           sharedPayload: sharedPayload)
+    } else {
+      self.coordinationDelegate?.viewControllerDidSendPayment(self,
+                                                              btcAmount: getBitcoinValueForPrimaryAmountText(),
+                                                              requiredFeeRate: viewModel.requiredFeeRate,
+                                                              primaryCurrency: primaryCurrency,
+                                                              address: address,
+                                                              contact: contact,
+                                                              rates: rates,
+                                                              sharedPayload: sharedPayload)
+    }
+
+  }
 }

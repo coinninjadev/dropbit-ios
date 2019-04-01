@@ -69,9 +69,7 @@ class MockDatabaseManager: PersistenceDatabaseType {
     return Promise { _ in }
   }
 
-  func persistTransactionSummaries(from responses: [AddressTransactionSummaryResponse], in context: NSManagedObjectContext) -> Promise<Set<Int>> {
-    return Promise { _ in }
-  }
+  func persistTransactionSummaries(from responses: [AddressTransactionSummaryResponse], in context: NSManagedObjectContext) {}
 
   func persistTemporaryTransaction(
     from transactionData: CNBTransactionData,
@@ -135,9 +133,9 @@ class MockDatabaseManager: PersistenceDatabaseType {
     return UserVerificationStatus.pending
   }
 
-  func updateLastReceiveAddressIndex(index: Int, in context: NSManagedObjectContext) { }
+  func updateLastReceiveAddressIndex(index: Int?, in context: NSManagedObjectContext) { }
 
-  func updateLastChangeAddressIndex(index: Int, in context: NSManagedObjectContext) { }
+  func updateLastChangeAddressIndex(index: Int?, in context: NSManagedObjectContext) { }
 
   func deleteAll(in context: NSManagedObjectContext) { }
 

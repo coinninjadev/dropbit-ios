@@ -24,7 +24,7 @@ extension CKMVout {
   @NSManaged public var address: CKMAddress?
   @NSManaged public var transaction: CKMTransaction?
 
-  /// The tempTx which reserved this vout by marking its isSpendable = false
+  /// The tempTx which reserved this vout by marking its isSpent = true
   @NSManaged public var temporarySentTransaction: CKMTemporarySentTransaction?
 
 }

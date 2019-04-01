@@ -12,12 +12,12 @@ struct MigrateKeychainV1toV2: Migratable {
 
   let persistenceManager: PersistenceManagerType
 
-  func migrate() {
-    let version = KeychainMigrationVersion.v1tov2
-    let migrated = persistenceManager.keychainMigrationFlag(for: version)
-    guard !migrated else { return }
+  func isMigrated() -> Bool {
+    return persistenceManager.keychainMigrationFlag(for: .v1tov2)
+  }
 
-    let allKeys = PersistenceManager.Keychain.Key.allCases
+  func migrate() {
+    let allKeys = CKKeychain.Key.allCases
 
     for key in allKeys {
       guard let existingValue = persistenceManager.keychainManager.retrieveValue(for: key) else { continue }
@@ -29,7 +29,8 @@ struct MigrateKeychainV1toV2: Migratable {
       persistenceManager.keychainManager.store(anyValue: existingValue, key: key)
     }
 
-    persistenceManager.setKeychainMigrationFlag(migrated: true, for: version)
+    // set migrated flag
+    persistenceManager.setKeychainMigrationFlag(migrated: true, for: .v1tov2)
   }
 
 }

@@ -19,20 +19,20 @@ protocol PersistenceManagerType: DeviceCountryCodeProvider {
   var contactCacheManager: ContactCacheManagerType { get }
   var hashingManager: HashingManager { get }
 
-  func double(for key: PersistenceManager.CKUserDefaults.Key) -> Double
-  func set(_ doubleValue: Double, for key: PersistenceManager.CKUserDefaults.Key)
-  func integer(for key: PersistenceManager.CKUserDefaults.Key) -> Int
-  func set(_ integerValue: Int, for key: PersistenceManager.CKUserDefaults.Key)
-  func set(_ stringValue: PersistenceManager.CKUserDefaults.Value, for key: PersistenceManager.CKUserDefaults.Key)
-  func set(_ string: String, for key: PersistenceManager.CKUserDefaults.Key)
-  func string(for key: PersistenceManager.CKUserDefaults.Key) -> String?
-  func set(_ array: [String], for key: PersistenceManager.CKUserDefaults.Key)
-  func array(for key: PersistenceManager.CKUserDefaults.Key) -> [String]?
-  func set(_ bool: Bool, for key: PersistenceManager.CKUserDefaults.Key)
-  func set(_ date: Date, for key: PersistenceManager.CKUserDefaults.Key)
-  func date(for key: PersistenceManager.CKUserDefaults.Key) -> Date?
+  func double(for key: CKUserDefaults.Key) -> Double
+  func set(_ doubleValue: Double, for key: CKUserDefaults.Key)
+  func integer(for key: CKUserDefaults.Key) -> Int
+  func set(_ integerValue: Int, for key: CKUserDefaults.Key)
+  func set(_ stringValue: CKUserDefaults.Value, for key: CKUserDefaults.Key)
+  func set(_ string: String, for key: CKUserDefaults.Key)
+  func string(for key: CKUserDefaults.Key) -> String?
+  func set(_ array: [String], for key: CKUserDefaults.Key)
+  func array(for key: CKUserDefaults.Key) -> [String]?
+  func set(_ bool: Bool, for key: CKUserDefaults.Key)
+  func set(_ date: Date, for key: CKUserDefaults.Key)
+  func date(for key: CKUserDefaults.Key) -> Date?
 
-  func bool(for key: PersistenceManager.CKUserDefaults.Key) -> Bool
+  func bool(for key: CKUserDefaults.Key) -> Bool
 
   func resetPersistence()
   func resetWallet()
@@ -64,7 +64,7 @@ protocol PersistenceManagerType: DeviceCountryCodeProvider {
   func persistTransactionSummaries(
     from responses: [AddressTransactionSummaryResponse],
     in context: NSManagedObjectContext
-    ) -> Promise<Void>
+    )
   func persistTemporaryTransaction(
     from transactionData: CNBTransactionData,
     with outgoingTransactionData: OutgoingTransactionData,
@@ -110,6 +110,10 @@ protocol PersistenceManagerType: DeviceCountryCodeProvider {
   func lastReceiveAddressIndex(in context: NSManagedObjectContext) -> Int?
   func lastChangeAddressIndex(in context: NSManagedObjectContext) -> Int?
 
+  func dustProtectionMinimumAmount() -> Int
+  func dustProtectionIsEnabled() -> Bool
+  func enableDustProtection(_ shouldEnable: Bool)
+
   func setLastLoginTime()
   func lastLoginTime() -> TimeInterval?
 
@@ -134,6 +138,8 @@ protocol PersistenceManagerType: DeviceCountryCodeProvider {
   func databaseMigrationFlag(for version: DatabaseMigrationVersion) -> Bool
   func setKeychainMigrationFlag(migrated: Bool, for version: KeychainMigrationVersion)
   func keychainMigrationFlag(for version: KeychainMigrationVersion) -> Bool
+  func setContactCacheMigrationFlag(migrated: Bool, for version: ContactCacheMigrationVersion)
+  func contactCacheMigrationFlag(for version: ContactCacheMigrationVersion) -> Bool
 
   /// Look for any transactions sent to a phone number without a contact name, and provide a name if found, as a convenience when viewing tx history
   func matchContactsIfPossible()
@@ -147,10 +153,10 @@ extension PersistenceManagerType {
 
 protocol PersistenceKeychainType: AnyObject {
   @discardableResult
-  func store(anyValue value: Any?, key: PersistenceManager.Keychain.Key) -> Bool
+  func store(anyValue value: Any?, key: CKKeychain.Key) -> Bool
 
   @discardableResult
-  func store(valueToHash value: String?, key: PersistenceManager.Keychain.Key) -> Bool
+  func store(valueToHash value: String?, key: CKKeychain.Key) -> Bool
 
   @discardableResult
   func store(deviceID: String) -> Bool
@@ -161,8 +167,8 @@ protocol PersistenceKeychainType: AnyObject {
   @discardableResult
   func store(userPin pin: String) -> Bool
 
-  func retrieveValue(for key: PersistenceManager.Keychain.Key) -> Any?
-  func bool(for key: PersistenceManager.Keychain.Key) -> Bool?
+  func retrieveValue(for key: CKKeychain.Key) -> Any?
+  func bool(for key: CKKeychain.Key) -> Bool?
 
   func backup(recoveryWords words: [String])
   func walletWordsBackedUp() -> Bool
@@ -190,11 +196,9 @@ protocol PersistenceDatabaseType: AnyObject {
     fullSync: Bool
     ) -> Promise<Void>
 
-  /// Returns set of unused receive address indices less than the max used index
   func persistTransactionSummaries(
     from responses: [AddressTransactionSummaryResponse],
-    in context: NSManagedObjectContext
-    ) -> Promise<Set<Int>>
+    in context: NSManagedObjectContext)
 
   func persistTemporaryTransaction(
     from transactionData: CNBTransactionData,
@@ -235,8 +239,8 @@ protocol PersistenceDatabaseType: AnyObject {
 
   func userVerificationStatus(in context: NSManagedObjectContext) -> UserVerificationStatus
 
-  func updateLastReceiveAddressIndex(index: Int, in context: NSManagedObjectContext)
-  func updateLastChangeAddressIndex(index: Int, in context: NSManagedObjectContext)
+  func updateLastReceiveAddressIndex(index: Int?, in context: NSManagedObjectContext)
+  func updateLastChangeAddressIndex(index: Int?, in context: NSManagedObjectContext)
 
   func lastReceiveIndex(in context: NSManagedObjectContext) -> Int?
   func lastChangeIndex(in context: NSManagedObjectContext) -> Int?
@@ -260,6 +264,10 @@ protocol PersistenceUserDefaultsType: AnyObject {
   func deviceId() -> UUID?
   func setDeviceId(_ uuid: UUID)
   var receiveAddressIndexGaps: Set<Int> { get set }
+
+  /// Returns zero if dust protection not enabled
+  func dustProtectionMinimumAmount() -> Int
+  func dustProtectionIsEnabled() -> Bool
 
 }
 

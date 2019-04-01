@@ -12,8 +12,13 @@ import os.log
 import MessageUI
 
 extension AppCoordinator: SettingsViewControllerDelegate {
+
   func verifyIfWordsAreBackedUp() -> Bool {
     return wordsBackedUp
+  }
+
+  func dustProtectionIsEnabled() -> Bool {
+    return self.persistenceManager.dustProtectionIsEnabled()
   }
 
   func viewControllerDidSelectRecoveryWords(_ viewController: UIViewController) {
@@ -29,6 +34,10 @@ extension AppCoordinator: SettingsViewControllerDelegate {
     let textViewController = TextViewController.makeFromStoryboard()
     textViewController.htmlString = html
     navigationController.pushViewController(textViewController, animated: true)
+  }
+
+  func viewControllerDidChangeDustProtection(_ viewController: UIViewController, shouldEnable: Bool) {
+    self.persistenceManager.enableDustProtection(shouldEnable)
   }
 
   func viewControllerDidRequestOpenURL(_ viewController: UIViewController, url: URL) {

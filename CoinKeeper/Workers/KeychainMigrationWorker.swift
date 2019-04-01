@@ -13,17 +13,4 @@ enum KeychainMigrationVersion: String {
   case v1tov2 // update accessibility setting for stored values
 }
 
-class KeychainMigrationWorker {
-
-  let migrators: [Migratable]
-
-  init(migrators: [Migratable]) {
-    self.migrators = migrators
-  }
-
-  func migrateIfPossible() -> Promise<Void> {
-    migrators.forEach { $0.migrate() }
-    return Promise.value(())
-  }
-
-}
+class KeychainMigrationWorker: AbstractMigrationWorker { }

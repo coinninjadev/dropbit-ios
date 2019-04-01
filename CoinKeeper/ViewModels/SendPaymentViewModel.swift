@@ -8,6 +8,7 @@
 
 import Foundation
 import PhoneNumberKit
+import CNBitcoinKit
 
 enum PaymentRecipient {
 
@@ -49,6 +50,8 @@ protocol SendPaymentViewModelType: SendPaymentDataProvider {
   var memo: String? { get set }
   var sharedMemoDesired: Bool { get set }
   var sharedMemoAllowed: Bool { get set }
+  var sendMaxTransactionData: CNBTransactionData? { get }
+  mutating func sendMax(with data: CNBTransactionData)
 
   var paymentRecipient: PaymentRecipient? { get set }
 
@@ -56,6 +59,9 @@ protocol SendPaymentViewModelType: SendPaymentDataProvider {
 
   func displayRecipientName() -> String?
   func displayRecipientNumber() -> String?
+
+  var standardIgnoredOptions: CurrencyAmountValidationOptions { get }
+  var invitationMaximumIgnoredOptions: CurrencyAmountValidationOptions { get }
 }
 
 extension SendPaymentViewModelType {
@@ -104,6 +110,17 @@ extension SendPaymentViewModelType {
     return primaryCurrency.symbol + amountString
   }
 
+  var standardIgnoredOptions: CurrencyAmountValidationOptions {
+    var options: CurrencyAmountValidationOptions = [.invitationMaximum]
+    if sendMaxTransactionData != nil {
+      options.insert(.transactionMinimum)
+    }
+    return options
+  }
+
+  var invitationMaximumIgnoredOptions: CurrencyAmountValidationOptions {
+    return [.usableBalance, .transactionMinimum]
+  }
 }
 
 struct SendPaymentViewModel: SendPaymentViewModelType {
@@ -114,6 +131,13 @@ struct SendPaymentViewModel: SendPaymentViewModelType {
   var requiredFeeRate: Double?
   var sharedMemoDesired = true // default is true
   var sharedMemoAllowed = true // default is true
+  var sendMaxTransactionData: CNBTransactionData?
+
+  mutating func sendMax(with data: CNBTransactionData) {
+    self.sendMaxTransactionData = data
+    self.btcAmount = NSDecimalNumber(integerAmount: Int(data.amount), currency: .BTC)
+    primaryCurrency = .BTC
+  }
 
   private var _memo: String?
   var memo: String? {
@@ -135,10 +159,9 @@ struct SendPaymentViewModel: SendPaymentViewModelType {
     }
   }
 
-  let recipientParser: RecipientParserType
+  let recipientParser: RecipientParserType = CKRecipientParser(kit: PhoneNumberKit())
 
-  init(qrCode: QRCode, primaryCurrency: CurrencyCode, parser: RecipientParserType) {
-    self.recipientParser = parser
+  init(qrCode: QRCode, primaryCurrency: CurrencyCode) {
     self.paymentRecipient = qrCode.address.flatMap { .btcAddress($0) }
     self.btcAmount = qrCode.btcAmount
     self.primaryCurrency = primaryCurrency
@@ -146,9 +169,8 @@ struct SendPaymentViewModel: SendPaymentViewModelType {
     self.memo = nil
   }
 
-  init(btcAmount: NSDecimalNumber, primaryCurrency: CurrencyCode, parser: RecipientParserType,
+  init(btcAmount: NSDecimalNumber, primaryCurrency: CurrencyCode,
        address: String? = nil, requiredFeeRate: Double? = nil, memo: String? = nil) {
-    self.recipientParser = parser
     self.paymentRecipient = address.flatMap { .btcAddress($0) }
     self.btcAmount = btcAmount
     self.primaryCurrency = primaryCurrency
@@ -156,12 +178,11 @@ struct SendPaymentViewModel: SendPaymentViewModelType {
     self.memo = memo
   }
 
-  init?(response: MerchantPaymentRequestResponse, parser: RecipientParserType) {
+  init?(response: MerchantPaymentRequestResponse) {
     guard let output = response.outputs.first else { return nil }
     let amount = NSDecimalNumber(integerAmount: output.amount, currency: .BTC)
     self.init(btcAmount: amount,
               primaryCurrency: .BTC,
-              parser: parser,
               address: output.address,
               requiredFeeRate: response.requiredFeeRate,
               memo: response.memo)

@@ -36,6 +36,7 @@ protocol TransactionDataWorkerType: AnyObject {
 
 }
 
+// swiftlint:disable type_body_length
 class TransactionDataWorker: TransactionDataWorkerType {
 
   let walletManager: WalletManagerType
@@ -64,17 +65,69 @@ class TransactionDataWorker: TransactionDataWorkerType {
     return self.performFetchAndStoreAllTransactionalData(in: context, fullSync: false)
   }
 
+  typealias AddressFetcher = (Int) -> CNBMetaAddress
+
   func performFetchAndStoreAllTransactionalData(in context: NSManagedObjectContext, fullSync: Bool) -> Promise<Void> {
     CKNotificationCenter.publish(key: .didStartSync, object: nil, userInfo: nil)
 
-    let receiveAddressFetcher: (Int) -> CNBMetaAddress = { [unowned self] in self.walletManager.createAddressDataSource().receiveAddress(at: $0) }
-    let changeAddressFetcher: (Int) -> CNBMetaAddress = { [unowned self] in self.walletManager.createAddressDataSource().changeAddress(at: $0) }
-    let minimumSeekReceiveIndex: Int? = self.minimumSeekReceiveAddressIndex(in: context)
+    let addressDataSource = self.walletManager.createAddressDataSource()
+    let receiveAddressFetcher: AddressFetcher = { addressDataSource.receiveAddress(at: $0) }
+    let changeAddressFetcher: AddressFetcher = { addressDataSource.changeAddress(at: $0) }
+
+    // Check latest CKMAddressTransactionSummary because it always represents an actual transaction
+    // Run full sync if latestTransactionDate is nil
+    let latestTransactionDate: Date? = CKMAddressTransactionSummary.findLatest(in: context)?.transaction?.date
+
+    if let latestTxDate = latestTransactionDate, !fullSync {
+      return performIncrementalFetchAndStore(latestTxDate: latestTxDate,
+                                             addressDataSource: addressDataSource,
+                                             receiveFetcher: receiveAddressFetcher,
+                                             changeFetcher: changeAddressFetcher,
+                                             in: context)
+
+    } else {
+      // Full Sync (latest transaction is unknown, relies on recursion until empty response is received)
+      let minimumSeekReceiveIndex: Int? = self.minimumSeekReceiveAddressIndex(in: context)
+
+      return fetchAddressTransactionSummaries(seekingThroughIndex: minimumSeekReceiveIndex, in: context, addressFetcher: receiveAddressFetcher)
+        .then(in: context) { self.fetchAddressTransactionSummaries(in: context, aggregatingATSResponses: $0, addressFetcher: changeAddressFetcher) }
+        .then(in: context) { self.processAddressTransactionSummaries($0, fullSync: fullSync, in: context) }
+    }
+  }
+
+  private func performIncrementalFetchAndStore(latestTxDate: Date,
+                                               addressDataSource: AddressDataSourceType,
+                                               receiveFetcher: @escaping AddressFetcher,
+                                               changeFetcher: @escaping AddressFetcher,
+                                               in context: NSManagedObjectContext) -> Promise<Void> {
+    let syncStartDate = latestTxDate.addingTimeInterval(-.oneHour)
+    let lastReceiveIndex = addressDataSource.lastReceiveIndex(in: context) ?? 0
+    let lastChangeIndex = addressDataSource.lastChangeIndex(in: context) ?? 0
+    let seekToReceiveIndex = lastReceiveIndex + gapLimit
+    let seekToChangeIndex = lastChangeIndex + gapLimit
+
+    // for each batch, pass the addresses with the date into an optional minDate parameter on networkManager.fetchTransactionSummaries()
+    return fetchIncrementalAddressTransactionSummaries(minDate: syncStartDate,
+                                                       seekingThroughIndex: seekToReceiveIndex,
+                                                       in: context,
+                                                       addressFetcher: receiveFetcher)
+      .then(in: context) { aggregateResponses in
+        return self.fetchIncrementalAddressTransactionSummaries(minDate: syncStartDate,
+                                                                seekingThroughIndex: seekToChangeIndex,
+                                                                in: context,
+                                                                aggregatingATSResponses: aggregateResponses,
+                                                                addressFetcher: changeFetcher)}
+      .then(in: context) { self.processAddressTransactionSummaries($0, fullSync: false, in: context) }
+
+  }
+
+  private func processAddressTransactionSummaries(_ aggregateATSResponses: [AddressTransactionSummaryResponse],
+                                                  fullSync: Bool,
+                                                  in context: NSManagedObjectContext) -> Promise<Void> {
+
     let highPriorityBackgroundQueue = DispatchQueue.global(qos: .userInitiated)
 
-    return fetchAddressTransactionSummaries(seekingThroughIndex: minimumSeekReceiveIndex, in: context, addressFetcher: receiveAddressFetcher)
-      .then(in: context) { self.fetchAddressTransactionSummaries(in: context, aggregatingATSResponses: $0, addressFetcher: changeAddressFetcher) }
-      .then(in: context) { self.persistAddressTransactionSummaries(with: $0, in: context) }
+    return self.persistAddressTransactionSummaries(with: aggregateATSResponses, in: context)
       .get(in: context) { _ in self.persistenceManager.updateWalletLastIndexes(in: context) }
       .then { Promise.value(TransactionDataWorkerDTO(atsResponses: $0)) }
       .then { (dto: TransactionDataWorkerDTO) -> Promise<TransactionDataWorkerDTO> in
@@ -83,7 +136,7 @@ class TransactionDataWorker: TransactionDataWorkerType {
       }
       .then(in: context) { (dto: TransactionDataWorkerDTO) -> Promise<TransactionDataWorkerDTO> in
         let txidsToSubtract: Set<String> = (fullSync) ? [] : CKMTransaction.findAllTxidsFullyConfirmed(in: context).asSet()
-        let txidsToFetch = dto.txids.asSet().subtracting(txidsToSubtract).asArray()
+        let txidsToFetch = dto.atsResponsesTxIds.asSet().subtracting(txidsToSubtract).asArray()
         return self.promisesForFetchingTransactionDetails(withTxids: txidsToFetch, in: context)
           .then(on: highPriorityBackgroundQueue, in: context) { self.processTransactionResponses($0, in: context) }
           .then { Promise.value(TransactionDataWorkerDTO(txResponses: $0).merged(with: dto)) }
@@ -93,7 +146,7 @@ class TransactionDataWorker: TransactionDataWorkerType {
         return self.persistAndGroomTransactions(with: dto, in: context, fullSync: fullSync)
           .then { Promise.value(TransactionDataWorkerDTO(txResponses: $0).merged(with: dto)) }
       }
-      .then(in: context) { _ in self.updateSpendableBalance(in: context) }
+      .then(in: context) { _ in self.updateUnspentVouts(in: context) }
       .then(in: context) { _ in self.updateTransactionDayAveragePrices(in: context) }
   }
 
@@ -166,7 +219,7 @@ class TransactionDataWorker: TransactionDataWorkerType {
     seekingThroughIndex: Int? = nil,
     in context: NSManagedObjectContext,
     aggregatingATSResponses aggregateATSResponses: [AddressTransactionSummaryResponse] = [],
-    addressFetcher: @escaping (Int) -> CNBMetaAddress
+    addressFetcher: @escaping AddressFetcher
     ) -> Promise<[AddressTransactionSummaryResponse]> {
 
     return Promise { seal in
@@ -175,7 +228,7 @@ class TransactionDataWorker: TransactionDataWorkerType {
       let addresses = metaAddresses.compactMap { $0.address }
       var aggregateATSResponsesCopy = aggregateATSResponses
 
-      networkManager.fetchTransactionSummaries(for: addresses)
+      networkManager.fetchTransactionSummaries(for: addresses, afterDate: nil)
         .then(in: context) { (atsResponses: [AddressTransactionSummaryResponse]) -> Promise<[AddressTransactionSummaryResponse]> in
           guard atsResponses.isNotEmpty else { return Promise.value(aggregateATSResponsesCopy) }
 
@@ -223,6 +276,28 @@ class TransactionDataWorker: TransactionDataWorkerType {
     }
   }
 
+  private func fetchIncrementalAddressTransactionSummaries(
+    minDate: Date,
+    seekingThroughIndex: Int,
+    in context: NSManagedObjectContext,
+    aggregatingATSResponses aggregateATSResponses: [AddressTransactionSummaryResponse] = [],
+    addressFetcher: @escaping AddressFetcher
+    ) -> Promise<[AddressTransactionSummaryResponse]> {
+
+    let batchedMetaAddresses: [[CNBMetaAddress]] = Array(0...seekingThroughIndex).map(addressFetcher).chunked(by: 20)
+    let atsFetchPromises: [Promise<[AddressTransactionSummaryResponse]>] = batchedMetaAddresses.map { metaAddressBatch in
+      let addressBatch = metaAddressBatch.compactMap { $0.address }
+      return networkManager.fetchTransactionSummaries(for: addressBatch, afterDate: minDate)
+        .map { self.responsesWithPaths(from: $0, matching: metaAddressBatch) }
+    }
+
+    return when(fulfilled: atsFetchPromises)
+      .map { batchedResponses in
+        let flattenedResponses = batchedResponses.flatMap { $0 }
+        return aggregateATSResponses + flattenedResponses
+    }
+  }
+
   private func persistAndGroomTransactions(
     with dto: TransactionDataWorkerDTO,
     in context: NSManagedObjectContext,
@@ -231,7 +306,9 @@ class TransactionDataWorker: TransactionDataWorkerType {
 
     let uniqueTxResponses = dto.txResponses.uniqued()
     let uniqueTxNotificationResponses = dto.txNotificationResponses.uniqued()
-    let expectedTxids = dto.txids
+    let localATSTxids = CKMAddressTransactionSummary.findAllTxids(in: context)
+    let expectedTxids = localATSTxids + dto.atsResponsesTxIds //combine local ATS txids with incremental ones for full set of valid txids
+
     return persistenceManager.persistTransactions(from: uniqueTxResponses, in: context, relativeToCurrentHeight: dto.blockHeight, fullSync: fullSync)
       .get(in: context) { self.decryptAndPersistSharedPayloads(from: uniqueTxNotificationResponses, in: context) }
       .get(in: context) { self.persistenceManager.deleteTransactions(notIn: expectedTxids, in: context) }
@@ -312,8 +389,8 @@ class TransactionDataWorker: TransactionDataWorkerType {
     ) -> Promise<[AddressTransactionSummaryResponse]> {
 
     let uniqueATSResponses = aggregateATSResponses.uniqued()
-    return persistenceManager.persistTransactionSummaries(from: uniqueATSResponses, in: context)
-      .then { return Promise.value(uniqueATSResponses) }
+    persistenceManager.persistTransactionSummaries(from: uniqueATSResponses, in: context)
+    return Promise.value(uniqueATSResponses)
   }
 
   private func updateTransactionDayAveragePrices(in context: NSManagedObjectContext) -> Promise<Void> {
@@ -367,7 +444,7 @@ class TransactionDataWorker: TransactionDataWorkerType {
     }
   }
 
-  private func updateSpendableBalance(
+  private func updateUnspentVouts(
     in context: NSManagedObjectContext
     ) -> Promise<Void> {
     return Promise { seal in

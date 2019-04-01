@@ -31,6 +31,9 @@ protocol AddressDataSourceType: AnyObject {
                                    indicesToSkip: Set<Int>,
                                    in context: NSManagedObjectContext) -> CNBMetaAddress?
 
+  func lastReceiveIndex(in context: NSManagedObjectContext) -> Int?
+  func lastChangeIndex(in context: NSManagedObjectContext) -> Int?
+
 }
 
 /**
@@ -64,13 +67,13 @@ class AddressDataSource: AddressDataSourceType {
     return persistenceManager.lastReceiveAddressIndex(in: context)
   }
 
-  func lastChangeAddress(in context: NSManagedObjectContext) -> Int? {
+  func lastChangeIndex(in context: NSManagedObjectContext) -> Int? {
     return persistenceManager.lastChangeAddressIndex(in: context)
   }
 
   func checkAddressExists(for address: String, in context: NSManagedObjectContext) -> CNBAddressResult? {
     let lastRecIdx = lastReceiveIndex(in: context) ?? -1
-    let lastChgIdx = lastChangeAddress(in: context) ?? -1
+    let lastChgIdx = lastChangeIndex(in: context) ?? -1
     let lastIndex = max(lastRecIdx, lastChgIdx)
     let offset = 20
     return wallet.check(forAddress: address, upTo: lastIndex + offset)

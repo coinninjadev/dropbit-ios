@@ -39,8 +39,8 @@ struct SampleInvitation {
 }
 
 struct SampleAddressTransactionSummary {
-  var txid: String?
-  var address: String?
+  var txid: String
+  var address: String
   var addressReceived: Int
   var addressSent: Int
 
@@ -56,12 +56,12 @@ struct SampleAddressTransactionSummary {
 
 class SampleTransaction: TransactionHistoryDetailCellViewModel {
 
-  var id: String?
+  var id: String
   var walletAddress: String
 
   init(
     netWalletAmount: NSDecimalNumber?,
-    id: String?,
+    id: String,
     btcReceived: NSDecimalNumber?,
     isIncoming: Bool,
     walletAddress: String,
@@ -171,7 +171,7 @@ class SampleTransaction: TransactionHistoryDetailCellViewModel {
       status: .requestSent)
     let sampleTx3 = SampleTransaction(
       netWalletAmount: nil,
-      id: nil,
+      id: "",
       btcReceived: nil,
       isIncoming: false,
       walletAddress: sampleWalletAddress,
@@ -252,7 +252,7 @@ extension CKMTransaction {
   convenience init(sampleTx: SampleTransaction, wallet: CKMWallet, insertInto context: NSManagedObjectContext) {
     self.init(insertInto: context)
 
-    self.txid = sampleTx.id ?? ""
+    self.txid = sampleTx.id
     self.confirmations = sampleTx.confirmations
     self.date = sampleTx.date
     self.sortDate = sampleTx.date

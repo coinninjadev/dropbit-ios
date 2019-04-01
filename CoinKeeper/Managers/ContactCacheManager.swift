@@ -43,7 +43,6 @@ class ContactCacheManager: ContactCacheManagerType {
 
   lazy var mainQueueContext: NSManagedObjectContext = {
     let context = self.container.viewContext
-    context.automaticallyMergesChangesFromParent = true
     context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
     if stackConfig.storeType.shouldSetQueryGeneration {
       try? context.setQueryGenerationFrom(.current)
@@ -89,7 +88,7 @@ class ContactCacheManager: ContactCacheManagerType {
     var components: ManagedContactComponents?
     mainQueueContext.performAndWait {
       if let foundMetadata = validatedMetadata(for: number, in: mainQueueContext),
-        let displayName = foundMetadata.cachedPhoneNumber?.cachedContact?.displayName,
+        let displayName = foundMetadata.firstDisplayNameForCachedPhoneNumbers(),
         let phoneInputs = ManagedPhoneNumberInputs(countryCode: foundMetadata.countryCode, nationalNumber: foundMetadata.nationalNumber) {
         let counterpartyInputs = ManagedCounterpartyInputs(name: displayName)
         components = ManagedContactComponents(counterpartyInputs: counterpartyInputs, phonenumberInputs: phoneInputs)
@@ -204,27 +203,14 @@ class ContactCacheManager: ContactCacheManagerType {
     return try context.count(for: fetchRequest)
   }
 
+  /// Uses cascade deletions and saving deletions in batches
+  /// because nullify rules don't play well with batch deletions.
   func deleteSystemContactData(in context: NSManagedObjectContext) throws {
-    let entitiesToKeep = [String(describing: CCMValidatedMetadata.self)]
-    try context.performThrowingAndWait {
-      let entitiesToDelete = self.stackConfig.model?.entities
-        .compactMap { $0.name }.filter { !entitiesToKeep.contains($0) } ?? []
-      try entitiesToDelete.forEach { entityName in
-        try self.executeBatchDeleteFor(entity: entityName, in: context)
-      }
-    }
-  }
-
-  // MARK: - Private
-  private func executeBatchDeleteFor(entity name: String, in context: NSManagedObjectContext) throws {
-    let fetch = NSFetchRequest<NSFetchRequestResult>(entityName: name)
-    let request = NSBatchDeleteRequest(fetchRequest: fetch)
-    request.resultType = .resultTypeObjectIDs
-
-    try context.performThrowingAndWait {
-      if let result = try context.execute(request) as? NSBatchDeleteResult, let objectIDs = result.result as? [NSManagedObjectID] {
-        NSManagedObjectContext.mergeChanges(fromRemoteContextSave: [NSDeletedObjectsKey: objectIDs], into: [context])
-      }
+    let allContacts = try CCMContact.findAll(in: context)
+    let contactBatches = allContacts.chunked(by: 100)
+    for contactBatch in contactBatches {
+      contactBatch.forEach { context.delete($0) }
+      try context.saveRecursively()
     }
   }
 
@@ -246,10 +232,10 @@ class ContactCacheManager: ContactCacheManagerType {
 
     // Find or create CCMValidatedMetadata, attach it to the CCMPhoneNumber
     if let foundMetadata = CCMValidatedMetadata.find(withNumber: globalNumber, in: context) {
-      foundMetadata.cachedPhoneNumber = cachedPhoneNumber
+      cachedPhoneNumber.cachedValidatedMetadata = foundMetadata
     } else {
       let newMetadata = CCMValidatedMetadata(phoneNumber: globalNumber, hashedGlobalNumber: hashedNumber, insertInto: context)
-      newMetadata.cachedPhoneNumber = cachedPhoneNumber
+      cachedPhoneNumber.cachedValidatedMetadata = newMetadata
     }
 
     return cachedPhoneNumber

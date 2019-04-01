@@ -51,12 +51,10 @@ public class CKMAddress: NSManagedObject {
 
   static func findOrCreate(withAddress address: String, in context: NSManagedObjectContext) -> CKMAddress {
     var ckmAddress: CKMAddress!
-    context.performAndWait {
-      if let foundAddress = find(withAddress: address, in: context) {
-        ckmAddress = foundAddress
-      } else {
-        ckmAddress = CKMAddress(address: address, insertInto: context)
-      }
+    if let foundAddress = find(withAddress: address, in: context) {
+      ckmAddress = foundAddress
+    } else {
+      ckmAddress = CKMAddress(address: address, insertInto: context)
     }
     return ckmAddress
   }
@@ -68,12 +66,10 @@ public class CKMAddress: NSManagedObject {
     fetchRequest.fetchLimit = 1
 
     var ckmAddress: CKMAddress?
-    context.performAndWait {
-      do {
-        ckmAddress = try context.fetch(fetchRequest).first
-      } catch {
-        ckmAddress = nil
-      }
+    do {
+      ckmAddress = try context.fetch(fetchRequest).first
+    } catch {
+      ckmAddress = nil
     }
     return ckmAddress
   }

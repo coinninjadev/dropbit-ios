@@ -18,8 +18,8 @@ extension CKMAddressTransactionSummary {
 
   @NSManaged public var received: Int
   @NSManaged public var sent: Int
-  @NSManaged public var txid: String?
-  @NSManaged public var addressId: String?
+  @NSManaged public var txid: String
+  @NSManaged public var addressId: String
   @NSManaged public var isChangeAddress: Bool
   @NSManaged public var wallet: CKMWallet?
   @NSManaged public var transaction: CKMTransaction?

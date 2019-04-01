@@ -64,7 +64,7 @@ extension AppCoordinator: SendPaymentViewControllerDelegate {
 
         } else {
           let popupString = self.persistenceManager.string(for: .invitationPopup) ?? ""
-          if let value = PersistenceManager.CKUserDefaults.Value(rawValue: popupString), case .optOut = value {
+          if let value = CKUserDefaults.Value(rawValue: popupString), case .optOut = value {
             completion()
           } else {
             self.showModalForInviteExplanation(with: viewController,
@@ -94,41 +94,75 @@ extension AppCoordinator: SendPaymentViewControllerDelegate {
     }
   }
 
+  private func trackTransactionType(with contact: ContactType?) {
+    if contact != nil {
+      analyticsManager.track(event: .paymentToContact, with: nil)
+    } else {
+      analyticsManager.track(event: .paymentToAddress, with: nil)
+    }
+  }
+
+  func viewController(
+    _ viewController: UIViewController,
+    sendingMax data: CNBTransactionData,
+    address: String,
+    contact: ContactType?,
+    rates: ExchangeRates,
+    sharedPayload: SharedPayloadDTO
+    ) {
+
+    trackTransactionType(with: contact)
+
+    data.paymentAddress = address
+
+    var outgoingTransactionData = OutgoingTransactionData.emptyInstance()
+    outgoingTransactionData.feeAmount = Int(data.feeAmount)
+    outgoingTransactionData.amount = Int(data.amount)//.asNSDecimalNumber.asFractionalUnits(of: .BTC)
+    outgoingTransactionData = configureOutgoingTransactionData(
+      with: outgoingTransactionData,
+      address: address,
+      contact: contact,
+      rates: rates,
+      sharedPayload: sharedPayload
+    )
+
+    viewController.dismiss(animated: true)
+    let btcAmount = NSDecimalNumber(integerAmount: outgoingTransactionData.amount, currency: .BTC)
+
+    showConfirmPayment(
+      with: outgoingTransactionData,
+      btcAmount: btcAmount,
+      address: address,
+      contact: contact,
+      primaryCurrency: .BTC,
+      transactionData: data,
+      rates: rates
+    )
+  }
+
   func viewControllerDidSendPayment(_ viewController: UIViewController,
                                     btcAmount: NSDecimalNumber,
                                     requiredFeeRate: Double?,
                                     primaryCurrency: CurrencyCode,
-                                    address: String?,
+                                    address: String,
                                     contact: ContactType?,
                                     rates: ExchangeRates,
                                     sharedPayload: SharedPayloadDTO) {
 
     guard let wmgr = walletManager else { return }
 
-    if contact != nil {
-      analyticsManager.track(event: .paymentToContact, with: nil)
-    } else {
-      analyticsManager.track(event: .paymentToAddress, with: nil)
-    }
+    trackTransactionType(with: contact)
 
     // create outgoingTransactionData DTO to populate and pass along down the send flow
     var outgoingTransactionData = OutgoingTransactionData.emptyInstance()
     outgoingTransactionData.requiredFeeRate = requiredFeeRate
-    contact.map { innerContact in
-      outgoingTransactionData.contactName = innerContact.displayName ?? ""
-      outgoingTransactionData.contactPhoneNumber = innerContact.globalPhoneNumber
-      outgoingTransactionData.contactPhoneNumberHash = innerContact.phoneNumberHash
-    }
-    address.map { outgoingTransactionData.destinationAddress = $0 }
-    outgoingTransactionData.amount = btcAmount.asFractionalUnits(of: .BTC)
-    outgoingTransactionData.sharedPayloadDTO = sharedPayload
-
-    let context = persistenceManager.createBackgroundContext()
-    context.performAndWait {
-      if wmgr.createAddressDataSource().checkAddressExists(for: outgoingTransactionData.destinationAddress, in: context) != nil {
-        outgoingTransactionData.sentToSelf = true
-      }
-    }
+    outgoingTransactionData = configureOutgoingTransactionData(
+      with: outgoingTransactionData,
+      address: address,
+      contact: contact,
+      rates: rates,
+      sharedPayload: sharedPayload
+    )
 
     viewController.dismiss(animated: true)
     networkManager.latestFees()
@@ -137,30 +171,73 @@ extension AppCoordinator: SendPaymentViewControllerDelegate {
         let relevantFeeRate = outgoingTransactionData.requiredFeeRate ?? networkFeeRate
         return wmgr.transactionData(
           forPayment: btcAmount,
-          to: address ?? "",
+          to: address,
           withFeeRate: relevantFeeRate
         )
       }
-      .done(on: .main) { (transactionData: CNBTransactionData) in
-        let confirmPayVC = ConfirmPaymentViewController.makeFromStoryboard()
-        self.assignCoordinationDelegate(to: confirmPayVC)
-        let viewModel = ConfirmPaymentViewModel(
+      .done { (transactionData: CNBTransactionData) in
+        self.showConfirmPayment(
+          with: outgoingTransactionData,
           btcAmount: btcAmount,
-          primaryCurrency: primaryCurrency,
           address: address,
           contact: contact,
-          fee: Int(transactionData.feeAmount),
-          outgoingTransactionData: outgoingTransactionData,
+          primaryCurrency: primaryCurrency,
           transactionData: transactionData,
           rates: rates
         )
-        confirmPayVC.kind = .payment(viewModel)
-        self.navigationController.present(confirmPayVC, animated: true)
       }
       .catch(on: .main) { [weak self] error in
         guard let strongSelf = self else { return }
         strongSelf.handleTransactionError(error)
     }
+  }
+
+  private func showConfirmPayment(with dto: OutgoingTransactionData,
+                                  btcAmount: NSDecimalNumber,
+                                  address: String?,
+                                  contact: ContactType?,
+                                  primaryCurrency: CurrencyCode,
+                                  transactionData: CNBTransactionData,
+                                  rates: ExchangeRates) {
+    let confirmPayVC = ConfirmPaymentViewController.makeFromStoryboard()
+    self.assignCoordinationDelegate(to: confirmPayVC)
+    let viewModel = ConfirmPaymentViewModel(
+      btcAmount: btcAmount,
+      primaryCurrency: primaryCurrency,
+      address: address,
+      contact: contact,
+      fee: Int(transactionData.feeAmount),
+      outgoingTransactionData: dto,
+      transactionData: transactionData,
+      rates: rates)
+    confirmPayVC.kind = .payment(viewModel)
+    self.navigationController.present(confirmPayVC, animated: true)
+  }
+
+  private func configureOutgoingTransactionData(with dto: OutgoingTransactionData,
+                                                address: String?,
+                                                contact: ContactType?,
+                                                rates: ExchangeRates,
+                                                sharedPayload: SharedPayloadDTO
+    ) -> OutgoingTransactionData {
+    guard let wmgr = self.walletManager else { return dto }
+    var copy = dto
+    contact.map { innerContact in
+      copy.contactName = innerContact.displayName ?? ""
+      copy.contactPhoneNumber = innerContact.globalPhoneNumber
+      copy.contactPhoneNumberHash = innerContact.phoneNumberHash
+    }
+    address.map { copy.destinationAddress = $0 }
+    copy.sharedPayloadDTO = sharedPayload
+
+    let context = persistenceManager.createBackgroundContext()
+    context.performAndWait {
+      if wmgr.createAddressDataSource().checkAddressExists(for: copy.destinationAddress, in: context) != nil {
+        copy.sentToSelf = true
+      }
+    }
+
+    return copy
   }
 
   private func handleInvite(btcAmount: NSDecimalNumber,
@@ -230,7 +307,7 @@ extension AppCoordinator: SendPaymentViewControllerDelegate {
         if shouldReloadContactCache {
           strongSelf.alertManager.showActivityHUD(withStatus: "Loading Contacts")
 
-          strongSelf.contactCacheDataWorker.reloadSystemContactsIfNeeded { [weak self] error in
+          strongSelf.contactCacheDataWorker.reloadSystemContactsIfNeeded(force: false) { [weak self] error in
             if let err = error, let self = self {
               os_log("Error reloading contacts cache: %@", log: self.logger, type: .error, err.localizedDescription)
             }
@@ -350,9 +427,18 @@ extension AppCoordinator: SendPaymentViewControllerDelegate {
     let context = contactCacheManager.mainQueueContext
     var validatedContact: ValidatedContact?
     context.performAndWait {
-      let foundContact = contactCacheManager.validatedMetadata(for: globalPhoneNumber, in: context)?.cachedPhoneNumber
-      validatedContact = foundContact.flatMap { ValidatedContact(cachedNumber: $0) }
+      let foundValidNumber = contactCacheManager.validatedMetadata(for: globalPhoneNumber, in: context)?.firstCachedPhoneNumberByName()
+      validatedContact = foundValidNumber.flatMap { ValidatedContact(cachedNumber: $0) }
     }
     return validatedContact
+  }
+
+  func viewController(
+    _ viewController: UIViewController,
+    sendMaxFundsTo address: String,
+    feeRate: Double) -> Promise<CNBTransactionData> {
+    guard let wmgr = walletManager else { return Promise(error: CKPersistenceError.noManagedWallet) }
+    let data = wmgr.transactionDataSendingMax(to: address, withFeeRate: feeRate)
+    return data
   }
 }

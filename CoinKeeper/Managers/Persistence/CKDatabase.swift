@@ -13,7 +13,7 @@ import PhoneNumberKit
 import PromiseKit
 import CNBitcoinKit
 
-class Database: PersistenceDatabaseType {
+class CKDatabase: PersistenceDatabaseType {
 
   let logger = OSLog(subsystem: "com.coinninja.coinkeeper.database", category: "database")
 
@@ -43,6 +43,7 @@ class Database: PersistenceDatabaseType {
   func createBackgroundContext() -> NSManagedObjectContext {
     let bgContext = container.newBackgroundContext()
     bgContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
+    bgContext.automaticallyMergesChangesFromParent = true
     return bgContext
   }
 
@@ -79,7 +80,9 @@ class Database: PersistenceDatabaseType {
 
     context.performAndWait {
       let allServerAddresses = serverPoolAddresses(in: context)
+      let serverDerivativePaths = allServerAddresses.compactMap { $0.derivativePath }.filter { $0.address == nil }
       allServerAddresses.forEach { context.delete($0) }
+      serverDerivativePaths.forEach { context.delete($0) }
 
       CKMInvitation.find(withStatuses: [.requestSent, .addressSent], in: context).forEach { $0.status = .canceled }
       CKMInvitation.find(withStatuses: [.notSent], in: context).forEach { context.delete($0) }
@@ -261,34 +264,14 @@ class Database: PersistenceDatabaseType {
 
   func persistTransactionSummaries(
     from responses: [AddressTransactionSummaryResponse],
-    in context: NSManagedObjectContext
-    ) -> Promise<Set<Int>> {
+    in context: NSManagedObjectContext) {
 
-    return Promise { seal in
-      // Construct and persist cache of address index gaps alongside persisting summaries
-      var usedReceiveAddressIndices: Set<Int> = []
+    responses.forEach { response in
+      let ats = CKMAddressTransactionSummary.findOrCreate(with: response, in: context)
 
-      responses.forEach { response in
-        let ats = CKMAddressTransactionSummary.findOrCreate(with: response, in: context)
-
-        if let pathResponse = response.derivativePathResponse, ats.isChangeAddress != pathResponse.isChangeAddress {
-          ats.isChangeAddress = pathResponse.isChangeAddress
-        }
-
-        if !ats.isChangeAddress, let index = ats.address?.derivativePath?.index { // only insert receive addresses
-          usedReceiveAddressIndices.insert(index)
-        }
+      if let pathResponse = response.derivativePathResponse, ats.isChangeAddress != pathResponse.isChangeAddress {
+        ats.isChangeAddress = pathResponse.isChangeAddress
       }
-
-      // Look for index gaps up to the server address max index to handle edge cases
-      let maxServerIndex = CKMServerAddress.maxIndex(in: context) ?? 0
-      let maxUsedIndex = usedReceiveAddressIndices.max() ?? 0
-      let maxObservedIndex = max(maxServerIndex, maxUsedIndex)
-
-      let allPotentialIndices = Array(0...maxObservedIndex).asSet()
-      let unusedReceiveAddressIndices: Set<Int> = allPotentialIndices.subtracting(usedReceiveAddressIndices)
-
-      seal.fulfill(unusedReceiveAddressIndices)
     }
   }
 
@@ -378,15 +361,15 @@ class Database: PersistenceDatabaseType {
     return results ?? []
   }
 
-  func updateLastReceiveAddressIndex(index: Int, in context: NSManagedObjectContext) {
+  func updateLastReceiveAddressIndex(index: Int?, in context: NSManagedObjectContext) {
     context.performAndWait {
-      CKMWallet.find(in: context)?.lastReceivedIndex = index
+      CKMWallet.find(in: context)?.lastReceivedIndex = index ?? CKMWallet.defaultLastIndex
     }
   }
 
-  func updateLastChangeAddressIndex(index: Int, in context: NSManagedObjectContext) {
+  func updateLastChangeAddressIndex(index: Int?, in context: NSManagedObjectContext) {
     context.performAndWait {
-      CKMWallet.find(in: context)?.lastChangeIndex = index
+      CKMWallet.find(in: context)?.lastChangeIndex = index ?? CKMWallet.defaultLastIndex
     }
   }
 
@@ -444,4 +427,4 @@ class Database: PersistenceDatabaseType {
       }
     }
   }
-} // end Database class
+}

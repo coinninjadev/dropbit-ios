@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14460.32" systemVersion="18D109" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="CCMContact" representedClassName="CCMContact" syncable="YES">
+        <attribute name="cnContactIdentifier" attributeType="String" syncable="YES"/>
+        <attribute name="displayName" attributeType="String" syncable="YES"/>
+        <attribute name="familyName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="givenName" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="cachedPhoneNumbers" toMany="YES" deletionRule="Cascade" destinationEntity="CCMPhoneNumber" inverseName="cachedContact" inverseEntity="CCMPhoneNumber" syncable="YES"/>
+        <fetchIndex name="byCNContactIdentifier">
+            <fetchIndexElement property="cnContactIdentifier" type="Binary" order="ascending"/>
+        </fetchIndex>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="cnContactIdentifier"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
+    </entity>
+    <entity name="CCMPhoneNumber" representedClassName="CCMPhoneNumber" syncable="YES">
+        <attribute name="displayNumber" attributeType="String" syncable="YES"/>
+        <attribute name="labelKey" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="sanitizedOriginalNumber" attributeType="String" syncable="YES"/>
+        <attribute name="verificationStatus" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <relationship name="cachedContact" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CCMContact" inverseName="cachedPhoneNumbers" inverseEntity="CCMContact" syncable="YES"/>
+        <relationship name="cachedValidatedMetadata" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CCMValidatedMetadata" inverseName="cachedPhoneNumbers" inverseEntity="CCMValidatedMetadata" syncable="YES"/>
+    </entity>
+    <entity name="CCMValidatedMetadata" representedClassName="CCMValidatedMetadata" syncable="YES">
+        <attribute name="countryCode" attributeType="Integer 64" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="hashedGlobalNumber" attributeType="String" syncable="YES"/>
+        <attribute name="nationalNumber" attributeType="String" syncable="YES"/>
+        <relationship name="cachedPhoneNumbers" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CCMPhoneNumber" inverseName="cachedValidatedMetadata" inverseEntity="CCMPhoneNumber" elementID="cachedPhoneNumber" syncable="YES"/>
+        <fetchIndex name="byCountryCodeAndNumber">
+            <fetchIndexElement property="countryCode" type="Binary" order="ascending"/>
+            <fetchIndexElement property="nationalNumber" type="Binary" order="ascending"/>
+        </fetchIndex>
+    </entity>
+    <elements>
+        <element name="CCMContact" positionX="-63" positionY="-18" width="128" height="120"/>
+        <element name="CCMPhoneNumber" positionX="-54" positionY="-9" width="128" height="135"/>
+        <element name="CCMValidatedMetadata" positionX="-63" positionY="36" width="128" height="105"/>
+    </elements>
+</model>

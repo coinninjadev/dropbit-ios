@@ -85,7 +85,7 @@ struct CKPredicate {
       let canceled = InvitationStatus.canceled.rawValue
       let expired = InvitationStatus.expired.rawValue
       let statusPath = #keyPath(CKMTemporarySentTransaction.transaction.invitation.status)
-      return NSPredicate(format: "\(statusPath) == %d OR \(statusPath) == %d", canceled, expired)
+      return NSPredicate(format: "\(statusPath) == \(canceled) OR \(statusPath) == %d", expired)
     }
 
     static func withInactiveInvitation() -> NSPredicate {
@@ -107,9 +107,15 @@ struct CKPredicate {
     private static let changeKeyPath = #keyPath(CKMDerivativePath.change)
     private static let indexKeyPath = #keyPath(CKMDerivativePath.index)
     private static let serverAddressPath = #keyPath(CKMDerivativePath.serverAddress)
+    private static let addressPath = #keyPath(CKMDerivativePath.address)
+    private static let atsPath = #keyPath(CKMDerivativePath.address.addressTransactionSummaries)
 
     static func withoutServerAddress() -> NSPredicate {
       return NSPredicate(format: "\(serverAddressPath) == nil")
+    }
+
+    static func withAddress() -> NSPredicate {
+      return NSPredicate(format: "\(addressPath) != nil")
     }
 
     static func forChangeIndex(_ changeIndex: Int) -> NSPredicate {
@@ -120,6 +126,10 @@ struct CKPredicate {
       return NSCompoundPredicate(andPredicateWithSubpredicates: [
         purposePredicate, coinPredicate, accountPredicate, changePredicate
         ])
+    }
+
+    static func withAddressTransactionSummaries() -> NSPredicate {
+      return NSPredicate(format: "\(atsPath).@count > 0")
     }
   }
 
@@ -247,12 +257,17 @@ struct CKPredicate {
       return NSPredicate(format: "\(path) >= %d", min)
     }
 
+    static func hasSufficientAmount(min: Int) -> NSPredicate {
+      let path = #keyPath(CKMVout.amount)
+      return NSPredicate(format: "\(path) >= %d", min)
+    }
+
     static func isSpent(value: Bool) -> NSPredicate {
       let path = #keyPath(CKMVout.isSpent)
       return NSPredicate(format: "\(path) == %@", NSNumber(value: value))
     }
 
-    static func isSpendable(minReceiveConfirmations: Int = 1) -> NSPredicate {
+    static func isSpendable(minAmount: Int, minReceiveConfirmations: Int = 1) -> NSPredicate {
       let isChangePredicate = belongsToChangeAddress()
       let receiveConfirmationsPredicate = hasSufficientConfirmations(min: minReceiveConfirmations)
       let sufficientConfirmationsPredicate = NSCompoundPredicate(type: .or, subpredicates: [isChangePredicate,
@@ -260,9 +275,11 @@ struct CKPredicate {
 
       let isOursPredicate = isOurs()
       let notSpentPredicate = isSpent(value: false)
+      let minAmountPredicate = hasSufficientAmount(min: minAmount)
 
       return NSCompoundPredicate(type: .and, subpredicates: [isOursPredicate,
                                                              notSpentPredicate,
+                                                             minAmountPredicate,
                                                              sufficientConfirmationsPredicate])
     }
 

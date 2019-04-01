@@ -67,6 +67,8 @@ class AppCoordinator: CoordinatorType {
   let phoneNumberKit = PhoneNumberKit()
   let contactStore = CNContactStore()
 
+  var bitcoinURLToOpen: BitcoinURL?
+
   lazy var contactCacheDataWorker: ContactCacheDataWorker = {
     return ContactCacheDataWorker(contactCacheManager: self.contactCacheManager,
                                   permissionManager: self.permissionManager,
@@ -155,12 +157,18 @@ class AppCoordinator: CoordinatorType {
   func createDatabaseMigrationWorker(in context: NSManagedObjectContext) -> DatabaseMigrationWorker? {
     guard let factory = createMigratorFactory(in: context) else { return nil }
     let migrators = factory.migrators()
-    return DatabaseMigrationWorker(migrators: migrators)
+    return DatabaseMigrationWorker(migrators: migrators, in: context)
   }
 
   func createKeychainMigrationWorker() -> KeychainMigrationWorker {
     let factory = KeychainMigratorFactory(persistenceManager: persistenceManager)
     return KeychainMigrationWorker(migrators: factory.migrators())
+  }
+
+  func createContactCacheMigrationWorker() -> ContactCacheMigrationWorker {
+    let factory = ContactCacheMigratorFactory(persistenceManager: self.persistenceManager,
+                                              dataWorker: self.contactCacheDataWorker)
+    return ContactCacheMigrationWorker(migrators: factory.migrators())
   }
 
   func createMigratorFactory(in context: NSManagedObjectContext) -> DatabaseMigratorFactory? {
@@ -221,7 +229,9 @@ class AppCoordinator: CoordinatorType {
   }
 
   private func setInitialRootViewController() {
-    if launchStateManager.shouldRequireAuthentication {
+    if launchStateManager.isFirstTimeAfteriCloudRestore() {
+      startFirstTimeAfteriCloudRestore()
+    } else if launchStateManager.shouldRequireAuthentication {
       registerWalletWithServerIfNeeded {
         self.requireAuthenticationIfNeeded {
           self.continueSetupFlow()
@@ -334,9 +344,9 @@ class AppCoordinator: CoordinatorType {
     trackIfUserHasWallet()
     trackIfUserHasWordsBackedUp()
     trackEventForFirstTimeOpeningAppIfApplicable()
-    UIApplication.shared.setMinimumBackgroundFetchInterval(TimeInterval(3600)) //one hour
+    UIApplication.shared.setMinimumBackgroundFetchInterval(.oneHour)
 
-    self.contactCacheDataWorker.reloadSystemContactsIfNeeded { [weak self] _ in
+    self.contactCacheDataWorker.reloadSystemContactsIfNeeded(force: false) { [weak self] _ in
       self?.persistenceManager.matchContactsIfPossible()
     }
   }
@@ -409,6 +419,24 @@ class AppCoordinator: CoordinatorType {
     navigationController.viewControllers = [drawerController]
 
     navigationController.isNavigationBarHidden = true
+
+    handlePendingBitcoinURL()
+  }
+
+  private func handlePendingBitcoinURL() {
+    guard let bitcoinURL = self.bitcoinURLToOpen, self.launchStateManager.userAuthenticated else { return }
+    self.bitcoinURLToOpen = nil
+
+    if let topVC = self.navigationController.topViewController(), let sendPaymentVC = topVC as? SendPaymentViewController {
+      sendPaymentVC.applyRecipient(inText: bitcoinURL.absoluteString)
+
+    } else {
+      let sendPaymentViewController = SendPaymentViewController.makeFromStoryboard()
+      assignCoordinationDelegate(to: sendPaymentViewController)
+      sendPaymentViewController.alertManager = self.alertManager
+      sendPaymentViewController.recipientDescriptionToLoad = bitcoinURL.absoluteString
+      navigationController.present(sendPaymentViewController, animated: true)
+    }
   }
 
   var drawerController: MMDrawerController? {
@@ -472,9 +500,7 @@ class AppCoordinator: CoordinatorType {
       })
     }
 
-    self.contactCacheDataWorker.reloadSystemContactsIfNeeded { [weak self] _ in
-      self?.persistenceManager.matchContactsIfPossible()
-    }
+    refreshContacts()
   }
 
   func resetWalletManagerIfNeeded() {
@@ -485,15 +511,29 @@ class AppCoordinator: CoordinatorType {
     setCurrentCoin()
   }
 
+  /// Called only on first open, after didFinishLaunchingWithOptions, when appEnteredActiveState is not called
   func appBecameActive() {
     resetWalletManagerIfNeeded()
+    handlePendingBitcoinURL()
+    refreshContacts()
   }
 
   /// Handle app leaving active state, either becoming inactive, entering background, or terminating.
   func appResignedActiveState() {
     persistenceManager.setLastLoginTime()
     connectionManager.stop()
+    self.bitcoinURLToOpen = nil
     //    UIApplication.shared.applicationIconBadgeNumber = persistenceManager.pendingInvitations().count
+  }
+
+  private func refreshContacts() {
+    let contactCacheMigrationWorker = self.createContactCacheMigrationWorker()
+    _ = contactCacheMigrationWorker.migrateIfPossible()
+      .done {
+        self.contactCacheDataWorker.reloadSystemContactsIfNeeded(force: false) { [weak self] _ in
+          self?.persistenceManager.matchContactsIfPossible()
+        }
+    }
   }
 
   func resetUserAuthenticatedState() {
@@ -537,6 +577,7 @@ class AppCoordinator: CoordinatorType {
     case .createWallet:   startCreateRecoveryWordsFlow()
     case .verifyDevice:   startDeviceVerificationFlow(shouldOrphanRoot: true)
     case .enterApp: validToStartEnteringApp()
+    case .phoneRestore: startFirstTimeAfteriCloudRestore()
     }
   }
 
@@ -597,8 +638,7 @@ class AppCoordinator: CoordinatorType {
 
   func showScanViewController(fallbackBTCAmount: NSDecimalNumber, primaryCurrency: CurrencyCode) {
     let scanViewController = ScanQRViewController.makeFromStoryboard()
-    let parser = CKRecipientParser(kit: self.phoneNumberKit)
-    scanViewController.fallbackPaymentViewModel = SendPaymentViewModel(btcAmount: fallbackBTCAmount, primaryCurrency: primaryCurrency, parser: parser)
+    scanViewController.fallbackPaymentViewModel = SendPaymentViewModel(btcAmount: fallbackBTCAmount, primaryCurrency: primaryCurrency)
 
     assignCoordinationDelegate(to: scanViewController)
     scanViewController.modalPresentationStyle = .formSheet
@@ -693,5 +733,14 @@ class AppCoordinator: CoordinatorType {
     let viewController = PinCreationViewController.makeFromStoryboard()
     assignCoordinationDelegate(to: viewController)
     navigationController.pushViewController(viewController, animated: true)
+  }
+
+  private func startFirstTimeAfteriCloudRestore() {
+    let title = ""
+    let description = "It looks like you have restored from a backup. Please enter your 12 recovery words to restore your wallet."
+    let okAction = AlertActionConfiguration(title: "RESTORE NOW", style: .default) { self.restoreWallet() }
+    let alertViewModel = AlertControllerViewModel(title: title, description: description, actions: [okAction])
+    let alert = alertManager.alert(from: alertViewModel)
+    navigationController.topViewController()?.present(alert, animated: true)
   }
 }

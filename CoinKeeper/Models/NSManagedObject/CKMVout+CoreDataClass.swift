@@ -153,14 +153,10 @@ public class CKMVout: NSManagedObject {
     return result
   }
 
-  static func findAllSpendable(in context: NSManagedObjectContext) -> [CKMVout] {
+  static func findAllSpendable(minAmount: Int, in context: NSManagedObjectContext) -> [CKMVout] {
     let fetchRequest: NSFetchRequest<CKMVout> = CKMVout.fetchRequest()
-    fetchRequest.predicate = CKPredicate.Vout.isSpendable()
-    var result: [CKMVout] = []
-    context.performAndWait {
-      result = (try? context.fetch(fetchRequest)) ?? []
-    }
-    return result
+    fetchRequest.predicate = CKPredicate.Vout.isSpendable(minAmount: minAmount)
+    return (try? context.fetch(fetchRequest)) ?? []
   }
 
   static func findAllUnspent(in context: NSManagedObjectContext) throws -> [CKMVout] {

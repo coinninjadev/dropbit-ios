@@ -23,7 +23,7 @@ public class CCMValidatedMetadata: NSManagedObject {
   static func find(withNumber phoneNumber: GlobalPhoneNumber, in context: NSManagedObjectContext) -> CCMValidatedMetadata? {
     let countryPath = #keyPath(CCMValidatedMetadata.countryCode)
     let nationalPath = #keyPath(CCMValidatedMetadata.nationalNumber)
-    let countryPredicate = NSPredicate(format: "\(countryPath) == %d", phoneNumber.countryCode)
+    let countryPredicate = NSPredicate(format: "\(countryPath) == \(phoneNumber.countryCode)")
     let nationalPredicate = NSPredicate(format: "\(nationalPath) == %@", phoneNumber.nationalNumber)
     let compoundPredicate = NSCompoundPredicate(type: .and, subpredicates: [nationalPredicate, countryPredicate])
 
@@ -37,6 +37,23 @@ public class CCMValidatedMetadata: NSManagedObject {
       print(error.localizedDescription)
       return nil
     }
+  }
+
+  /// It is possible for the user to have duplicates in their device contacts
+  /// that all point to the same CCMValidatedMetadata object. This provides a
+  /// consistent displayName in that situation, sorted ascending.
+  func firstCachedPhoneNumberByName() -> CCMPhoneNumber? {
+    let sorted = cachedPhoneNumbers.sorted(by: { (lhsNumber, rhsNumber) -> Bool in
+      guard let lhsName = lhsNumber.cachedContact?.displayName else { return false }
+      guard let rhsName = rhsNumber.cachedContact?.displayName else { return true }
+      return lhsName < rhsName
+    })
+
+    return sorted.first
+  }
+
+  func firstDisplayNameForCachedPhoneNumbers() -> String? {
+    return firstCachedPhoneNumberByName()?.cachedContact?.displayName
   }
 
 }

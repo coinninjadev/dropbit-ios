@@ -84,4 +84,30 @@ class LaunchStateManagerTests: XCTestCase {
     self.sut.userWasAuthenticated()
     XCTAssertFalse(self.sut.shouldRequireAuthentication, "shouldRequireAuthentication should be false if authenticated")
   }
+
+  func testAfteriCloudRestoreWhenVerifiedReturnsPhoneRestore() {
+    _ = mockPersistenceManager.keychainManager.store(anyValue: nil, key: .userPin)
+    _ = mockPersistenceManager.keychainManager.store(anyValue: nil, key: .deviceID)
+    _ = mockPersistenceManager.keychainManager.store(anyValue: nil, key: .walletWords)
+    self.sut.unauthenticateUser()
+
+    mockPersistenceManager.userVerificationStatusValue = .verified
+
+    let nextStep = self.sut.nextLaunchStep
+
+    XCTAssertEqual(nextStep, UserProfileLaunchStep.phoneRestore)
+  }
+
+  func testAfteriCloudRestoreWhenNotVerifiedReturnsEnterPin() {
+    _ = mockPersistenceManager.keychainManager.store(anyValue: nil, key: .userPin)
+    _ = mockPersistenceManager.keychainManager.store(anyValue: nil, key: .deviceID)
+    _ = mockPersistenceManager.keychainManager.store(anyValue: nil, key: .walletWords)
+    self.sut.unauthenticateUser()
+
+    mockPersistenceManager.userVerificationStatusValue = .unverified
+
+    let nextStep = self.sut.nextLaunchStep
+
+    XCTAssertEqual(nextStep, UserProfileLaunchStep.enterPin)
+  }
 }

@@ -13,10 +13,11 @@ struct MigrateDatabaseV1toV2: Migratable {
   let addressDataSource: AddressDataSourceType
   let context: NSManagedObjectContext
 
-  func migrate() {
-    let migrated = persistenceManager.databaseMigrationFlag(for: .v1tov2)
-    guard !migrated else { return }
+  func isMigrated() -> Bool {
+    return persistenceManager.databaseMigrationFlag(for: .v1tov2)
+  }
 
+  func migrate() {
     let allTransactions = CKMTransaction.findAll(in: context)
 
     // update vins
