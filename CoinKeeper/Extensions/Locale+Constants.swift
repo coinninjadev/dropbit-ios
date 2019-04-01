@@ -14,12 +14,4 @@ extension Locale {
     return Locale(identifier: "en_US")
   }
 
-  static var FR: Locale { // France
-    return Locale(identifier: "fr_FR")
-  }
-
-  static var LT: Locale { // Lithuania
-    return Locale(identifier: "lt_LT")
-  }
-
 }

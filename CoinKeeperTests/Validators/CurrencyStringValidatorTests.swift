@@ -88,3 +88,15 @@ class CurrencyStringValidatorTests: XCTestCase {
   }
 
 }
+
+extension Locale {
+
+  static var FR: Locale { // France
+    return Locale(identifier: "fr_FR")
+  }
+
+  static var LT: Locale { // Lithuania
+    return Locale(identifier: "lt_LT")
+  }
+
+}
