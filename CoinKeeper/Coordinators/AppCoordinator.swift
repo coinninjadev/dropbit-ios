@@ -409,11 +409,10 @@ class AppCoordinator: CoordinatorType {
   }
 
   func enterApp() {
-    let calculatorViewController = CalculatorViewController.makeFromStoryboard()
+    let mainViewController = self.makeTransactionHistory()
     let settingsViewController = DrawerViewController.makeFromStoryboard()
-    let drawerController = setupDrawerViewController(centerViewController: calculatorViewController,
+    let drawerController = setupDrawerViewController(centerViewController: mainViewController,
                                                      leftViewController: settingsViewController)
-    assignCoordinationDelegate(to: calculatorViewController)
     assignCoordinationDelegate(to: settingsViewController)
     navigationController.popToRootViewController(animated: false)
     navigationController.viewControllers = [drawerController]
@@ -645,14 +644,14 @@ class AppCoordinator: CoordinatorType {
     navigationController.present(scanViewController, animated: true, completion: nil)
   }
 
-  func pushTransactionHistory() {
+  func makeTransactionHistory() -> TransactionHistoryViewController {
     let txHistory = TransactionHistoryViewController.makeFromStoryboard()
     assignCoordinationDelegate(to: txHistory)
     txHistory.context = self.persistenceManager.mainQueueContext()
     txHistory.balanceProvider = self
     txHistory.balanceDelegate = self
     txHistory.urlOpener = self
-    self.navigationController.pushViewController(txHistory, animated: true)
+    return txHistory
   }
 
   /// This may fail with a 500 error if the addresses were already added during a previous installation of the same wallet

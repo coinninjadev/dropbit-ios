@@ -12,7 +12,6 @@ struct DrawerData {
   enum Kind {
     case backupWords
     case settings
-    case history
     case phone
     case spend
     case support

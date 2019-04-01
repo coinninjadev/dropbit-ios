@@ -17,25 +17,13 @@ extension AppCoordinator: BalanceContainerDelegate {
   }
 
   func containerDidTapLeftButton(in viewController: UIViewController) {
-    switch viewController {
-    case is TransactionHistoryViewController:
-      self.navigationController.popViewController(animated: true)
-
-    case is CalculatorViewController:
-      self.drawerController?.toggle(.left, animated: true, completion: nil)
-
-    default:
-      break
-    }
+    self.drawerController?.toggle(.left, animated: true, completion: nil)
   }
 
   func containerDidTapBalances(in viewController: UIViewController) {
     switch viewController {
     case is TransactionHistoryViewController:
-      break
-    case is CalculatorViewController:
-      analyticsManager.track(event: .balanceHistoryButtonPressed, with: nil)
-      self.pushTransactionHistory()
+      break // will toggle balance here
     default:
       break
     }

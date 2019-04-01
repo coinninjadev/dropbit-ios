@@ -262,7 +262,7 @@ extension TransactionHistoryViewController: UICollectionViewDelegateFlowLayout {
 
 extension TransactionHistoryViewController: BalanceDisplayable {
 
-  var balanceLeftButtonType: BalanceContainerLeftButtonType { return .back }
+  var balanceLeftButtonType: BalanceContainerLeftButtonType { return .menu }
   var primaryBalanceCurrency: CurrencyCode { return .BTC }
 
   func didUpdateExchangeRateManager(_ exchangeRateManager: ExchangeRateManager) {
