@@ -10,7 +10,7 @@ import Foundation
 
 extension Locale {
 
-  static var US: Locale {
+  static var US: Locale { // United States
     return Locale(identifier: "en_US")
   }
 
