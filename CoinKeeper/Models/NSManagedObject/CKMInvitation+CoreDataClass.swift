@@ -94,7 +94,7 @@ public class CKMInvitation: NSManagedObject {
     case .sent:     counterparty = response.metadata?.receiver
     }
     self.counterpartyPhoneNumber = counterparty.flatMap {
-      CKMPhoneNumber.findOrCreate(metadataParticipant: $0, kit: kit, insertInto: context) 
+      CKMPhoneNumber.findOrCreate(withMetadataParticipant: $0, kit: kit, in: context)
     }
 
     self.setTxid(to: response.txid)
