@@ -72,16 +72,14 @@ public class CKMDerivativePath: NSManagedObject {
 
     var derivativePath: CKMDerivativePath!
 
-    context.performAndWait {
-      do {
-        if let path = try context.fetch(fetchRequest).first {
-          derivativePath = path
-        } else {
-          derivativePath = CKMDerivativePath(insertInto: context)
-        }
-      } catch {
+    do {
+      if let path = try context.fetch(fetchRequest).first {
+        derivativePath = path
+      } else {
         derivativePath = CKMDerivativePath(insertInto: context)
       }
+    } catch {
+      derivativePath = CKMDerivativePath(insertInto: context)
     }
 
     derivativePath.purpose = purpose
@@ -94,11 +92,11 @@ public class CKMDerivativePath: NSManagedObject {
     return derivativePath
   }
 
-  static func findAllReceivePathsWithoutServerAddress(in context: NSManagedObjectContext) -> [CKMDerivativePath] {
+  static func findAllReceivePathsWithAddressTransactionSummaries(in context: NSManagedObjectContext) -> [CKMDerivativePath] {
     let fetchRequest: NSFetchRequest<CKMDerivativePath> = CKMDerivativePath.fetchRequest()
     fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
       CKPredicate.DerivativePath.forChangeIndex(changeIsReceiveValue),
-      CKPredicate.DerivativePath.withoutServerAddress(),
+      CKPredicate.DerivativePath.withAddressTransactionSummaries(),
       CKPredicate.DerivativePath.withAddress()
       ])
     do {

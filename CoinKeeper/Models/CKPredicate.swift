@@ -108,6 +108,7 @@ struct CKPredicate {
     private static let indexKeyPath = #keyPath(CKMDerivativePath.index)
     private static let serverAddressPath = #keyPath(CKMDerivativePath.serverAddress)
     private static let addressPath = #keyPath(CKMDerivativePath.address)
+    private static let atsPath = #keyPath(CKMDerivativePath.address.addressTransactionSummaries)
 
     static func withoutServerAddress() -> NSPredicate {
       return NSPredicate(format: "\(serverAddressPath) == nil")
@@ -125,6 +126,10 @@ struct CKPredicate {
       return NSCompoundPredicate(andPredicateWithSubpredicates: [
         purposePredicate, coinPredicate, accountPredicate, changePredicate
         ])
+    }
+
+    static func withAddressTransactionSummaries() -> NSPredicate {
+      return NSPredicate(format: "\(atsPath).@count > 0")
     }
   }
 

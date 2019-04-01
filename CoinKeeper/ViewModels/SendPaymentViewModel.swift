@@ -59,6 +59,9 @@ protocol SendPaymentViewModelType: SendPaymentDataProvider {
 
   func displayRecipientName() -> String?
   func displayRecipientNumber() -> String?
+
+  var standardIgnoredOptions: CurrencyAmountValidationOptions { get }
+  var invitationMaximumIgnoredOptions: CurrencyAmountValidationOptions { get }
 }
 
 extension SendPaymentViewModelType {
@@ -107,6 +110,17 @@ extension SendPaymentViewModelType {
     return primaryCurrency.symbol + amountString
   }
 
+  var standardIgnoredOptions: CurrencyAmountValidationOptions {
+    var options: CurrencyAmountValidationOptions = [.invitationMaximum]
+    if sendMaxTransactionData != nil {
+      options.insert(.transactionMinimum)
+    }
+    return options
+  }
+
+  var invitationMaximumIgnoredOptions: CurrencyAmountValidationOptions {
+    return [.usableBalance, .transactionMinimum]
+  }
 }
 
 struct SendPaymentViewModel: SendPaymentViewModelType {

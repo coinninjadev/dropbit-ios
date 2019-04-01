@@ -295,10 +295,11 @@ public class CKMTransaction: NSManagedObject {
 extension CKMTransaction: CounterpartyRepresentable {
 
   var counterpartyName: String? {
-    if let invite = invitation {
-      return invite.counterpartyName
+    if let inviteName = invitation?.counterpartyName {
+      return inviteName
     } else {
-      return phoneNumber?.counterparty?.name
+      let relevantNumber = phoneNumber ?? invitation?.counterpartyPhoneNumber
+      return relevantNumber?.counterparty?.name
     }
   }
 
