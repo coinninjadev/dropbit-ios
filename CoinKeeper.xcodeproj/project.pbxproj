@@ -128,6 +128,9 @@
 		3B44962821B16D1000A4E912 /* UIApplication+Screenshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B44962721B16D1000A4E912 /* UIApplication+Screenshot.swift */; };
 		3B455866210256020000D4A6 /* WalletAddressRequestResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B455865210256020000D4A6 /* WalletAddressRequestResponseDTO.swift */; };
 		3B4558682104EB980000D4A6 /* AppCoordinator+InvitationWorkerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B4558672104EB980000D4A6 /* AppCoordinator+InvitationWorkerDelegate.swift */; };
+		3B47037D2253B67200977784 /* SendReceiveActionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B47037C2253B67200977784 /* SendReceiveActionView.swift */; };
+		3B47037F2253B68700977784 /* SendReceiveActionView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3B47037E2253B68700977784 /* SendReceiveActionView.xib */; };
+		3B4703812253BD9F00977784 /* SendReceiveActionViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B4703802253BD9F00977784 /* SendReceiveActionViewTests.swift */; };
 		3B474153217A1582004DA223 /* MessageResponseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B474152217A1582004DA223 /* MessageResponseTests.swift */; };
 		3B474155217A4B4A004DA223 /* NetworkManager+NotificationNetworkInteractable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B474154217A4B4A004DA223 /* NetworkManager+NotificationNetworkInteractable.swift */; };
 		3B474157217E4E4E004DA223 /* URLRequest+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B474156217E4E4E004DA223 /* URLRequest+Helpers.swift */; };
@@ -909,6 +912,9 @@
 		3B44962721B16D1000A4E912 /* UIApplication+Screenshot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication+Screenshot.swift"; sourceTree = "<group>"; };
 		3B455865210256020000D4A6 /* WalletAddressRequestResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletAddressRequestResponseDTO.swift; sourceTree = "<group>"; };
 		3B4558672104EB980000D4A6 /* AppCoordinator+InvitationWorkerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppCoordinator+InvitationWorkerDelegate.swift"; sourceTree = "<group>"; };
+		3B47037C2253B67200977784 /* SendReceiveActionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendReceiveActionView.swift; sourceTree = "<group>"; };
+		3B47037E2253B68700977784 /* SendReceiveActionView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SendReceiveActionView.xib; sourceTree = "<group>"; };
+		3B4703802253BD9F00977784 /* SendReceiveActionViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendReceiveActionViewTests.swift; sourceTree = "<group>"; };
 		3B474152217A1582004DA223 /* MessageResponseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageResponseTests.swift; sourceTree = "<group>"; };
 		3B474154217A4B4A004DA223 /* NetworkManager+NotificationNetworkInteractable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NetworkManager+NotificationNetworkInteractable.swift"; sourceTree = "<group>"; };
 		3B474156217E4E4E004DA223 /* URLRequest+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URLRequest+Helpers.swift"; sourceTree = "<group>"; };
@@ -2025,6 +2031,8 @@
 				308F6F04217F97F50094D6CB /* DragIndiciatorView.swift */,
 				308F6F08217FB12E0094D6CB /* VerticalDragView.swift */,
 				3B55538321936C7D00C5A9A8 /* BarButtonFactory.swift */,
+				3B47037C2253B67200977784 /* SendReceiveActionView.swift */,
+				3B47037E2253B68700977784 /* SendReceiveActionView.xib */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -2079,6 +2087,7 @@
 				3BFA7191203F2B6B00774D59 /* SecurePinDisplayViewTests.swift */,
 				3B23126420DA6CBA0099A557 /* TransactionHistoryDetailCellAddressViewTests.swift */,
 				3BDB6C522220520F00E75DD2 /* SendPaymentMemoViewTests.swift */,
+				3B4703802253BD9F00977784 /* SendReceiveActionViewTests.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -3080,6 +3089,7 @@
 				B536D12D21F1141000C344B6 /* SendPaymentMemoView.xib in Resources */,
 				A26C767F21081D5B001EB738 /* TextViewController.storyboard in Resources */,
 				3B5052B12045FAD7000C739F /* CreateRecoveryWordsViewController.storyboard in Resources */,
+				3B47037F2253B68700977784 /* SendReceiveActionView.xib in Resources */,
 				A2A530BC20936A5B00B6F4DE /* ConfirmPaymentViewController.storyboard in Resources */,
 				308F6F03217F91A50094D6CB /* ServerAddressView.xib in Resources */,
 				3B4B39F0203773C5007B7CC8 /* PlaceholderViewController.storyboard in Resources */,
@@ -3699,6 +3709,7 @@
 				30E96A2D2178F83A008079B8 /* PhoneNumberStatusViewController.swift in Sources */,
 				B552EDF5211E33D000332BB5 /* QRCodeGenerator.swift in Sources */,
 				B505A87A2076C5BE00AACB23 /* TransactionHistoryReceiverLabel.swift in Sources */,
+				3B47037D2253B67200977784 /* SendReceiveActionView.swift in Sources */,
 				B50E18462149A1460091EEDA /* UserResponse.swift in Sources */,
 				3BC9E5562049B08000444A53 /* PrimaryActionButton.swift in Sources */,
 				3BA9F5FB208F63620047C213 /* AppCoordinator+PinVerificationDelegate.swift in Sources */,
@@ -3935,6 +3946,7 @@
 				B5D834002249309B00C45ABE /* MockPersistenceKeychainManager.swift in Sources */,
 				A29CE10D20A37F6900761B91 /* StringEmptyValidatorTests.swift in Sources */,
 				3B23129120DA7B5A0099A557 /* MockTxHistoryDetailAddressViewDelegate.swift in Sources */,
+				3B4703812253BD9F00977784 /* SendReceiveActionViewTests.swift in Sources */,
 				3B24DFBE20EBC44A00C31969 /* MockDatabaseManager.swift in Sources */,
 				B5192FAC216E893100DCC39B /* DeviceResponseTests.swift in Sources */,
 				B55D085021B6F89C007DD9E5 /* CKRecipientParserTests.swift in Sources */,
