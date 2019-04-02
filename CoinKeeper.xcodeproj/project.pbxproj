@@ -192,6 +192,7 @@
 		3B6FDAE82052DACA0091916A /* VerifyRecoveryWordsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B6FDAE72052DACA0091916A /* VerifyRecoveryWordsViewModel.swift */; };
 		3B6FDAEA2052DAD50091916A /* VerifyRecoveryWordsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B6FDAE92052DAD50091916A /* VerifyRecoveryWordsViewModelTests.swift */; };
 		3B72A289210648CF00E94171 /* PendingInvitationError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B72A288210648CF00E94171 /* PendingInvitationError.swift */; };
+		3B731D382253D97A0044B4F8 /* UIView+Fade.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B731D372253D97A0044B4F8 /* UIView+Fade.swift */; };
 		3B7B54432201E54100CB89FE /* KeyDerivation.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B7B54422201E54100CB89FE /* KeyDerivation.generated.swift */; };
 		3B80E27521BE9D7A00F6EF17 /* DatabaseMigrationWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B80E27421BE9D7A00F6EF17 /* DatabaseMigrationWorker.swift */; };
 		3B80E27821BEEDD300F6EF17 /* MigrateDatabaseV1toV2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B80E27721BEEDD300F6EF17 /* MigrateDatabaseV1toV2.swift */; };
@@ -976,6 +977,7 @@
 		3B6FDAE72052DACA0091916A /* VerifyRecoveryWordsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerifyRecoveryWordsViewModel.swift; sourceTree = "<group>"; };
 		3B6FDAE92052DAD50091916A /* VerifyRecoveryWordsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerifyRecoveryWordsViewModelTests.swift; sourceTree = "<group>"; };
 		3B72A288210648CF00E94171 /* PendingInvitationError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PendingInvitationError.swift; sourceTree = "<group>"; };
+		3B731D372253D97A0044B4F8 /* UIView+Fade.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Fade.swift"; sourceTree = "<group>"; };
 		3B7B54422201E54100CB89FE /* KeyDerivation.generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyDerivation.generated.swift; sourceTree = "<group>"; };
 		3B80E27421BE9D7A00F6EF17 /* DatabaseMigrationWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseMigrationWorker.swift; sourceTree = "<group>"; };
 		3B80E27721BEEDD300F6EF17 /* MigrateDatabaseV1toV2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MigrateDatabaseV1toV2.swift; sourceTree = "<group>"; };
@@ -1852,6 +1854,7 @@
 				B527AFBC2195CFF6007D9484 /* UIView+AccessibilityIdentifier.swift */,
 				3B44962721B16D1000A4E912 /* UIApplication+Screenshot.swift */,
 				300CD8F021FA668400BFF560 /* NSAttributedString+Concatenate.swift */,
+				3B731D372253D97A0044B4F8 /* UIView+Fade.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -3426,6 +3429,7 @@
 				A260E8CF20FCFE11008343F9 /* TutorialViewController.swift in Sources */,
 				3B82692320331189009B11EC /* UIFont+FontStrings.swift in Sources */,
 				B5B9132921419F84003A24E9 /* PhoneNumberKit+AreaCodes.swift in Sources */,
+				3B731D382253D97A0044B4F8 /* UIView+Fade.swift in Sources */,
 				3B3779EF219C6B2800F79683 /* BackupWordsReminderDrawerCell.swift in Sources */,
 				B5A42A9A217A3E0F00EB32CB /* KeyPathDescribable.swift in Sources */,
 				B5C2E02B20BC721E00F21928 /* WalletAddressResponse.swift in Sources */,
