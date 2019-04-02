@@ -217,7 +217,7 @@ class PersistenceManager: PersistenceManagerType {
   }
 
   func deregisterPhone() {
-    let context = createBackgroundContext()
+    let context = mainQueueContext()
     databaseManager.unverifyUser(in: context)
     keychainManager.unverifyUser()
     userDefaultsManager.unverifyUser()
