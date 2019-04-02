@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -47,6 +47,10 @@
                                 </collectionViewFlowLayout>
                                 <cells/>
                             </collectionView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Vc7-dJ-Wpy" customClass="SendReceiveActionView" customModule="DropBit" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="563" width="375" height="148"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </view>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="Asa-Mr-foF">
                                 <rect key="frame" x="0.0" y="667" width="375" height="581"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -66,17 +70,21 @@
                             <constraint firstItem="GX7-DA-6R2" firstAttribute="top" secondItem="e1j-lc-uTG" secondAttribute="bottom" id="7DN-fy-t7g"/>
                             <constraint firstItem="e1j-lc-uTG" firstAttribute="top" secondItem="JGv-XL-uiR" secondAttribute="top" id="ExG-BB-kqq"/>
                             <constraint firstItem="B8c-Jo-MxY" firstAttribute="bottom" secondItem="JGv-XL-uiR" secondAttribute="bottom" id="LHc-4Y-skQ"/>
+                            <constraint firstItem="Vc7-dJ-Wpy" firstAttribute="leading" secondItem="JGv-XL-uiR" secondAttribute="leading" id="NAG-gI-65L"/>
                             <constraint firstItem="e1j-lc-uTG" firstAttribute="leading" secondItem="JGv-XL-uiR" secondAttribute="leading" id="Nzs-VD-ECW"/>
                             <constraint firstItem="Asa-Mr-foF" firstAttribute="height" secondItem="GX7-DA-6R2" secondAttribute="height" id="OE2-30-eN4"/>
                             <constraint firstItem="Asa-Mr-foF" firstAttribute="leading" secondItem="JGv-XL-uiR" secondAttribute="leading" id="RE9-49-PbQ"/>
                             <constraint firstItem="JGv-XL-uiR" firstAttribute="trailing" secondItem="GX7-DA-6R2" secondAttribute="trailing" id="WgW-MD-OhW"/>
                             <constraint firstItem="Av0-bG-xgJ" firstAttribute="top" secondItem="dvX-tA-FaC" secondAttribute="top" id="XAy-Ne-KPx"/>
+                            <constraint firstItem="JGv-XL-uiR" firstAttribute="bottom" secondItem="Vc7-dJ-Wpy" secondAttribute="top" constant="104" id="Y0x-pf-ha3"/>
                             <constraint firstItem="GX7-DA-6R2" firstAttribute="leading" secondItem="JGv-XL-uiR" secondAttribute="leading" id="bLZ-Tk-V3L"/>
                             <constraint firstItem="JGv-XL-uiR" firstAttribute="trailing" secondItem="e1j-lc-uTG" secondAttribute="trailing" id="dHd-fp-VJv"/>
                             <constraint firstItem="Av0-bG-xgJ" firstAttribute="leading" secondItem="JGv-XL-uiR" secondAttribute="leading" id="dhp-1R-Qqb"/>
                             <constraint firstItem="Av0-bG-xgJ" firstAttribute="trailing" secondItem="JGv-XL-uiR" secondAttribute="trailing" id="fX8-qv-xc2"/>
                             <constraint firstItem="B8c-Jo-MxY" firstAttribute="leading" secondItem="JGv-XL-uiR" secondAttribute="leading" id="gfU-5r-ogL"/>
+                            <constraint firstItem="JGv-XL-uiR" firstAttribute="trailing" secondItem="Vc7-dJ-Wpy" secondAttribute="trailing" id="kYG-VA-aQ2"/>
                             <constraint firstItem="B8c-Jo-MxY" firstAttribute="top" secondItem="e1j-lc-uTG" secondAttribute="bottom" id="mYe-H5-wsc"/>
+                            <constraint firstAttribute="bottom" secondItem="Vc7-dJ-Wpy" secondAttribute="bottom" constant="-44" id="n9x-LX-J2U"/>
                             <constraint firstItem="Asa-Mr-foF" firstAttribute="top" secondItem="dvX-tA-FaC" secondAttribute="bottom" id="nJg-lF-C97"/>
                             <constraint firstItem="JGv-XL-uiR" firstAttribute="trailing" secondItem="B8c-Jo-MxY" secondAttribute="trailing" id="sEB-Mm-ha2"/>
                             <constraint firstItem="Asa-Mr-foF" firstAttribute="top" secondItem="GX7-DA-6R2" secondAttribute="bottom" id="tej-bZ-Suz"/>
@@ -90,6 +98,7 @@
                         <outlet property="noTransactionsView" destination="B8c-Jo-MxY" id="NfZ-Ge-gIC"/>
                         <outlet property="refreshView" destination="Av0-bG-xgJ" id="dNg-B0-57u"/>
                         <outlet property="refreshViewTopConstraint" destination="XAy-Ne-KPx" id="Itl-x4-z0W"/>
+                        <outlet property="sendReceiveActionView" destination="Vc7-dJ-Wpy" id="UvZ-dT-gHG"/>
                         <outlet property="summaryCollectionView" destination="GX7-DA-6R2" id="WdE-Nn-Ajz"/>
                         <outletCollection property="collectionViews" destination="GX7-DA-6R2" collectionClass="NSMutableArray" id="E5L-gk-blQ"/>
                         <outletCollection property="collectionViews" destination="Asa-Mr-foF" collectionClass="NSMutableArray" id="oIv-AY-qsS"/>

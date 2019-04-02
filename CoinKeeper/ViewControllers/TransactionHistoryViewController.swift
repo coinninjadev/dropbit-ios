@@ -38,6 +38,7 @@ PreferredCurrencyRepresentable {
   @IBOutlet var collectionViews: [UICollectionView]!
   @IBOutlet var refreshView: TransactionHistoryRefreshView!
   @IBOutlet var refreshViewTopConstraint: NSLayoutConstraint!
+  @IBOutlet var sendReceiveActionView: SendReceiveActionView!
 
   private enum CollectionViewType {
     case summary, detail
@@ -113,11 +114,12 @@ PreferredCurrencyRepresentable {
   override func viewDidLoad() {
     super.viewDidLoad()
 
+    self.view.backgroundColor = Theme.Color.lightGrayBackground.color
+
+    view.layoutIfNeeded()
     balanceContainer?.delegate = (generalCoordinationDelegate as? BalanceContainerDelegate)
     (updateTransactionDelegate?.badgingManager()).map(subscribeToBadgeNotifications)
     updateTransactionDelegate?.viewControllerDidRequestBadgeUpdate(self)
-
-    self.view.backgroundColor = Theme.Color.lightGrayBackground.color
 
     self.balanceContainer.delegate = self.balanceDelegate
     subscribeToRateAndBalanceUpdates()
