@@ -32,8 +32,10 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
 PreferredCurrencyRepresentable {
 
   @IBOutlet var summaryCollectionView: UICollectionView!
+  @IBOutlet var summaryCollectionViewBottomConstraint: NSLayoutConstraint!
   @IBOutlet var detailCollectionView: UICollectionView!
   @IBOutlet var detailCollectionViewTopConstraint: NSLayoutConstraint!
+  @IBOutlet var detailCollectionViewHeightConstraint: NSLayoutConstraint!
   @IBOutlet var noTransactionsView: NoTransactionsView!
   @IBOutlet var collectionViews: [UICollectionView]!
   @IBOutlet var refreshView: TransactionHistoryRefreshView!
@@ -117,6 +119,11 @@ PreferredCurrencyRepresentable {
     self.view.backgroundColor = Theme.Color.lightGrayBackground.color
 
     view.layoutIfNeeded()
+    let percent: CGFloat = 0.2
+    sendReceiveActionView.fade(style: .top, percent: percent)
+    detailCollectionViewHeightConstraint.constant = self.view.frame.height - balanceContainer.frame.height
+    summaryCollectionViewBottomConstraint.constant = sendReceiveActionView.frame.height * percent * -1
+
     balanceContainer?.delegate = (generalCoordinationDelegate as? BalanceContainerDelegate)
     (updateTransactionDelegate?.badgingManager()).map(subscribeToBadgeNotifications)
     updateTransactionDelegate?.viewControllerDidRequestBadgeUpdate(self)
