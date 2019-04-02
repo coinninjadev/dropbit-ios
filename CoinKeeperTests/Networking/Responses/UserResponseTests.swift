@@ -33,12 +33,9 @@ class UserResponseTests: XCTestCase, ResponseStringsTestable {
 extension UserResponse: EmptyStringCopyable {
   func copyWithEmptyRequiredStrings() -> UserResponse {
     return UserResponse(id: "",
-                        phoneNumberHash: "",
                         createdAt: self.createdAt,
                         updatedAt: self.updatedAt,
                         status: "",
-                        verificationTtl: self.verificationTtl,
-                        verifiedAt: self.verifiedAt,
                         walletId: self.walletId)
   }
 }
