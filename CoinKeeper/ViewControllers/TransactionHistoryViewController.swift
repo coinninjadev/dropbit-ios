@@ -26,6 +26,10 @@ protocol TransactionHistoryViewControllerDelegate: DeviceCountryCodeProvider & B
   func viewControllerShouldUpdateTransaction(_ viewController: TransactionHistoryViewController,
                                              transaction: CKMTransaction) -> Promise<Void>
   func badgingManager() -> BadgeManagerType
+
+  func viewControllerDidTapScan(_ viewController: UIViewController, converter: CurrencyConverter)
+  func viewControllerDidTapReceivePayment(_ viewController: UIViewController, converter: CurrencyConverter)
+  func viewControllerDidTapSendPayment(_ viewController: UIViewController, converter: CurrencyConverter)
 }
 
 class TransactionHistoryViewController: BaseViewController, StoryboardInitializable,
@@ -40,7 +44,11 @@ PreferredCurrencyRepresentable {
   @IBOutlet var collectionViews: [UICollectionView]!
   @IBOutlet var refreshView: TransactionHistoryRefreshView!
   @IBOutlet var refreshViewTopConstraint: NSLayoutConstraint!
-  @IBOutlet var sendReceiveActionView: SendReceiveActionView!
+  @IBOutlet var sendReceiveActionView: SendReceiveActionView! {
+    didSet {
+      sendReceiveActionView.actionDelegate = self
+    }
+  }
 
   private enum CollectionViewType {
     case summary, detail
@@ -424,4 +432,18 @@ extension TransactionHistoryViewController: BadgeDisplayable {
     self.balanceContainer.leftButton.updateBadge(with: badgeInfo)
   }
 
+}
+
+extension TransactionHistoryViewController: SendReceiveActionViewDelegate {
+  func actionViewDidSelectReceive(_ view: UIView) {
+
+  }
+
+  func actionViewDidSelectScan(_ view: UIView) {
+
+  }
+
+  func actionViewDidSelectSend(_ view: UIView) {
+
+  }
 }
