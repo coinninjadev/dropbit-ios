@@ -274,7 +274,6 @@ class AppCoordinator: CoordinatorType {
 
   private func configureBadgeTopics() {
     let topics: [BadgeTopic] = [
-      TransactionUpdateBadgeTopic(),
       UnverifiedPhoneBadgeTopic(),
       WordsNotBackedUpBadgeTopic()
     ]

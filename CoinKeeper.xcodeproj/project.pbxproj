@@ -159,7 +159,6 @@
 		3B5220F32087B29600376DD8 /* UIScreen+RelativeSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5220F22087B29600376DD8 /* UIScreen+RelativeSize.swift */; };
 		3B55538421936C7D00C5A9A8 /* BarButtonFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B55538321936C7D00C5A9A8 /* BarButtonFactory.swift */; };
 		3B5553862195C19500C5A9A8 /* BadgeTopic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5553852195C19500C5A9A8 /* BadgeTopic.swift */; };
-		3B5553882196184600C5A9A8 /* TransactionUpdateBadgeTopic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5553872196184600C5A9A8 /* TransactionUpdateBadgeTopic.swift */; };
 		3B55538A219618A100C5A9A8 /* UnverifiedPhoneBadgeTopic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B555389219618A100C5A9A8 /* UnverifiedPhoneBadgeTopic.swift */; };
 		3B55538C21961CB700C5A9A8 /* WordsNotBackedUpBadgeTopic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B55538B21961CB700C5A9A8 /* WordsNotBackedUpBadgeTopic.swift */; };
 		3B5720782232CD1C0048A8CF /* DatabaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5720772232CD1C0048A8CF /* DatabaseTests.swift */; };
@@ -944,7 +943,6 @@
 		3B5220F22087B29600376DD8 /* UIScreen+RelativeSize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIScreen+RelativeSize.swift"; sourceTree = "<group>"; };
 		3B55538321936C7D00C5A9A8 /* BarButtonFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarButtonFactory.swift; sourceTree = "<group>"; };
 		3B5553852195C19500C5A9A8 /* BadgeTopic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BadgeTopic.swift; sourceTree = "<group>"; };
-		3B5553872196184600C5A9A8 /* TransactionUpdateBadgeTopic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionUpdateBadgeTopic.swift; sourceTree = "<group>"; };
 		3B555389219618A100C5A9A8 /* UnverifiedPhoneBadgeTopic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnverifiedPhoneBadgeTopic.swift; sourceTree = "<group>"; };
 		3B55538B21961CB700C5A9A8 /* WordsNotBackedUpBadgeTopic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordsNotBackedUpBadgeTopic.swift; sourceTree = "<group>"; };
 		3B5720772232CD1C0048A8CF /* DatabaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseTests.swift; sourceTree = "<group>"; };
@@ -2175,7 +2173,6 @@
 				30E96A2821765546008079B8 /* BitcoinURL.swift */,
 				3B47415A217E5353004DA223 /* ApplicationBuildEnvironment.swift */,
 				3B5553852195C19500C5A9A8 /* BadgeTopic.swift */,
-				3B5553872196184600C5A9A8 /* TransactionUpdateBadgeTopic.swift */,
 				3B555389219618A100C5A9A8 /* UnverifiedPhoneBadgeTopic.swift */,
 				3B55538B21961CB700C5A9A8 /* WordsNotBackedUpBadgeTopic.swift */,
 				3B2E3ECF21C92FE600AE55DE /* SyncDependencies.swift */,
@@ -3556,7 +3553,6 @@
 				B54A4213207FF2E8005B40A9 /* TransactionDetailPrimaryAmountLabel.swift in Sources */,
 				308F6F01217F91980094D6CB /* ServerAddressView.swift in Sources */,
 				5B91E3A02076C85700DD9A86 /* DrawerCell.swift in Sources */,
-				3B5553882196184600C5A9A8 /* TransactionUpdateBadgeTopic.swift in Sources */,
 				3B4A9F2F21BEF55F0009CDF6 /* DatabaseMigratorFactory.swift in Sources */,
 				B5D3BF0A222470420073A684 /* ManagedPhoneNumberInputs.swift in Sources */,
 				B58E781F217FB6C3000F9796 /* BadgeManager.swift in Sources */,
