@@ -230,7 +230,7 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate {
             let voutDebugDesc = vouts.map { $0.debugDescription }.joined(separator: "\n")
             os_log("broadcast succeeded: vouts: %@", log: logger, type: .debug, voutDebugDesc)
 
-            strongSelf.persistenceManager.persistTemporaryTransaction(
+            let persistedTransaction = strongSelf.persistenceManager.persistTemporaryTransaction(
               from: transactionData,
               with: outgoingTransactionData,
               txid: txid,
@@ -242,7 +242,8 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate {
               let transactionBuilder = CNBTransactionBuilder()
               let metadata = transactionBuilder.generateTxMetadata(with: transactionData, wallet: walletCopy)
               do {
-                _ = try CKMVout.findOrCreateTemporaryVout(in: context, with: transactionData, metadata: metadata)
+                let tempVout = try CKMVout.findOrCreateTemporaryVout(in: context, with: transactionData, metadata: metadata)
+                tempVout.transaction = persistedTransaction
               } catch {
                 os_log("error creating temp vout: %@, in %@", log: logger, type: .error, error.localizedDescription, #function)
               }
