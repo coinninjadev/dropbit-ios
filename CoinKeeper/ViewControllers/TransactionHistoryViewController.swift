@@ -89,7 +89,7 @@ PreferredCurrencyRepresentable {
 
   override var generalCoordinationDelegate: AnyObject? {
     didSet {
-      if let persistedCountryCode = updateTransactionDelegate?.deviceCountryCode() {
+      if let persistedCountryCode = coordinationDelegate?.deviceCountryCode() {
         self.deviceCountryCode = persistedCountryCode
       } else if let regionCode = Locale.current.regionCode,
         let countryCode = phoneNumberKit.countryCode(for: regionCode) {
@@ -98,7 +98,7 @@ PreferredCurrencyRepresentable {
     }
   }
 
-  var updateTransactionDelegate: TransactionHistoryViewControllerDelegate? {
+  var coordinationDelegate: TransactionHistoryViewControllerDelegate? {
     return generalCoordinationDelegate as? TransactionHistoryViewControllerDelegate
   }
   var balanceNotificationToken: NotificationToken?
@@ -120,6 +120,7 @@ PreferredCurrencyRepresentable {
   }()
 
   var badgeNotificationToken: NotificationToken?
+  var currencyViewModel: CurrencyViewModel = CurrencyViewModel(currentCurrencyCode: .USD)
 
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -133,8 +134,8 @@ PreferredCurrencyRepresentable {
     summaryCollectionViewBottomConstraint.constant = sendReceiveActionView.frame.height * percent * -1
 
     balanceContainer?.delegate = (generalCoordinationDelegate as? BalanceContainerDelegate)
-    (updateTransactionDelegate?.badgingManager()).map(subscribeToBadgeNotifications)
-    updateTransactionDelegate?.viewControllerDidRequestBadgeUpdate(self)
+    (coordinationDelegate?.badgingManager()).map(subscribeToBadgeNotifications)
+    coordinationDelegate?.viewControllerDidRequestBadgeUpdate(self)
 
     self.balanceContainer.delegate = self.balanceDelegate
     subscribeToRateAndBalanceUpdates()
@@ -154,7 +155,7 @@ PreferredCurrencyRepresentable {
   override func viewWillDisappear(_ animated: Bool) {
     super.viewWillDisappear(animated)
     // In case new transactions came it while this view was open, this will hide the badge
-    updateTransactionDelegate?.viewControllerDidDisplayTransactions(self)
+    coordinationDelegate?.viewControllerDidDisplayTransactions(self)
   }
 
   internal func reloadTransactions(atIndexPaths paths: [IndexPath]) {
@@ -268,7 +269,7 @@ extension TransactionHistoryViewController: UIScrollViewDelegate {
     refreshView.fireRefreshAnimationIfNecessary()
 
     if refreshView.shouldQueueRefresh {
-      updateTransactionDelegate?.viewControllerAttemptedToRefreshTransactions(self)
+      coordinationDelegate?.viewControllerAttemptedToRefreshTransactions(self)
     }
   }
 }
@@ -292,7 +293,9 @@ extension TransactionHistoryViewController: BalanceDisplayable {
   var primaryBalanceCurrency: CurrencyCode { return .BTC }
 
   func didUpdateExchangeRateManager(_ exchangeRateManager: ExchangeRateManager) {
-    //
+    self.rateManager.exchangeRates = exchangeRateManager.exchangeRates
+    self.currencyViewModel.exchangeRates = exchangeRateManager.exchangeRates
+    collectionViews.forEach { $0.reloadData() }
   }
 
 }
@@ -361,7 +364,7 @@ extension TransactionHistoryViewController: UICollectionViewDataSource {
 
 extension TransactionHistoryViewController: NoTransactionsViewDelegate {
   func noTransactionsViewDidSelectLearnAboutBitcoin(_ view: NoTransactionsView) {
-    updateTransactionDelegate?.viewControllerDidRequestTutorial(self)
+    coordinationDelegate?.viewControllerDidRequestTutorial(self)
   }
 }
 
@@ -386,12 +389,12 @@ extension TransactionHistoryViewController: UICollectionViewDelegate {
 extension TransactionHistoryViewController: TransactionHistoryDetailCellDelegate {
 
   func shouldSaveMemo(for transaction: CKMTransaction) -> Promise<Void> {
-    guard let delegate = updateTransactionDelegate else { return Promise { seal in seal.reject(CKPersistenceError.unexpectedResult)}}
+    guard let delegate = coordinationDelegate else { return Promise { seal in seal.reject(CKPersistenceError.unexpectedResult)}}
     return delegate.viewControllerShouldUpdateTransaction(self, transaction: transaction)
   }
 
   func didTapAddMemoButton(completion: @escaping (String) -> Void) {
-    updateTransactionDelegate?.viewControllerDidTapAddMemo(self, with: completion)
+    coordinationDelegate?.viewControllerDidTapAddMemo(self, with: completion)
   }
 
   func didTapQuestionMarkButton(detailCell: TransactionHistoryDetailCell, with url: URL) {
@@ -417,11 +420,11 @@ extension TransactionHistoryViewController: TransactionHistoryDetailCellDelegate
     switch action {
     case .seeDetails:
       guard let viewModel = detailCell.viewModel else { return }
-      updateTransactionDelegate?.viewControllerShouldSeeTransactionDetails(for: viewModel)
+      coordinationDelegate?.viewControllerShouldSeeTransactionDetails(for: viewModel)
     case .cancelInvitation:
-      updateTransactionDelegate?.viewControllerDidCancelDropbit()
+      coordinationDelegate?.viewControllerDidCancelDropbit()
       guard let invitationID = frc.object(at: path).invitation?.id else { return }
-      updateTransactionDelegate?.viewController(self, didCancelInvitationWithID: invitationID, at: path)
+      coordinationDelegate?.viewController(self, didCancelInvitationWithID: invitationID, at: path)
     }
   }
 }
@@ -436,14 +439,14 @@ extension TransactionHistoryViewController: BadgeDisplayable {
 
 extension TransactionHistoryViewController: SendReceiveActionViewDelegate {
   func actionViewDidSelectReceive(_ view: UIView) {
-
+    coordinationDelegate?.viewControllerDidTapReceivePayment(self, converter: currencyViewModel.currencyConverter)
   }
 
   func actionViewDidSelectScan(_ view: UIView) {
-
+    coordinationDelegate?.viewControllerDidTapScan(self, converter: currencyViewModel.currencyConverter)
   }
 
   func actionViewDidSelectSend(_ view: UIView) {
-
+    coordinationDelegate?.viewControllerDidTapSendPayment(self, converter: currencyViewModel.currencyConverter)
   }
 }
