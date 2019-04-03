@@ -62,7 +62,9 @@ extension UserTarget {
   public var validationType: ValidationType {
     switch self {
     case .create:
-      return .customCodes([201])
+      return .customCodes([201, 501])
+    case .resendVerification:
+      return .customCodes([200, 501])
     default:
       return .successCodes
     }
@@ -93,8 +95,13 @@ extension UserTarget {
       }
     case 424:
       return countryCodeDisabledError() ?? defaultError
-    case 500:
-      return twilioNetworkError(for: response) ?? defaultError
+    case 501:
+      switch self {
+      case .create, .resendVerification:
+        return .twilioError(response)
+      default:
+        return defaultError
+      }
     default:
       return defaultError
     }

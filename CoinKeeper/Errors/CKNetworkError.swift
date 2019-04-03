@@ -29,7 +29,7 @@ enum CKNetworkError: UserNotifiableError {
   case encodingFailed(type: String)
   case decodingFailed(type: String)
   case countryCodeDisabled(Int)
-  case twilioError
+  case twilioError(Response) //server returns a successful response with 501 if Twilio responds with error
 
   /// The associated response can be used as the default value if recovering from this error
   case invalidValue(keyPath: String, value: String?, response: Decodable)
