@@ -62,4 +62,17 @@ extension AppCoordinator: DeviceVerificationCoordinatorDelegate {
     continueSetupFlow()
   }
 
+  func didReceiveTwilioError(for countryCode: Int, route: TwilioErrorRoute) {
+    let logger = OSLog(subsystem: "com.coinninja.coinkeeper.appcoordinator", category: "twilio_error")
+    os_log("Failed to send SMS to country code: %@, route: %@", log: logger, type: .error, String(countryCode), route.rawValue)
+
+    switch route {
+    case .createAddressRequest:
+      let eventValue = AnalyticsEventValue(key: .countryCode, value: "\(countryCode)")
+      analyticsManager.track(event: .dropbitInviteSMSFailed, with: eventValue)
+    default:
+      break
+    }
+  }
+
 }

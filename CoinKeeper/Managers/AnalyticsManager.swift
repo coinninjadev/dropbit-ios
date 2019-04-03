@@ -64,6 +64,7 @@ enum AnalyticsManagerEventType: String {
   case dropbitInitiationFailed = "DropBitInitiationFailed"
   case dropbitAddressProvided = "DropBitAddressProvided"
   case dropbitCompleted = "DropBitCompleted"
+  case dropbitInviteSMSFailed = "DropBitInviteSendSMSFailure"
   case coinKeeperContactPressed = "ContactPressed"
   case balanceHistoryButtonPressed = "BalanceHistoryBtn"
   case deregisterPhoneNumber = "DeregisterPhoneNumber"
@@ -93,6 +94,8 @@ enum AnalyticsManagerEventKey: String {
   case libbitcoinMessage = "LibMsg"
   case blockChainInfoCode = "BlockCode"
   case blockChainInfoMessage = "BlockMsg"
+
+  case countryCode = "CountryCode"
 }
 
 struct AnalyticsEventValue {
