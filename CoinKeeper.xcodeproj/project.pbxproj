@@ -745,6 +745,7 @@
 		B5EEDAA02209E225009434DC /* WalletSyncOperationFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5EEDA9F2209E225009434DC /* WalletSyncOperationFactory.swift */; };
 		B5F32BA62124D05E00B1F89F /* CKStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F32BA52124D05E00B1F89F /* CKStrings.swift */; };
 		B5F5CC5320EA6B1400717667 /* MoyaResponse+ErrorMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F5CC5220EA6B1400717667 /* MoyaResponse+ErrorMessage.swift */; };
+		B5F6EC2522554CF20045633B /* TwilioErrorDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F6EC2422554CF20045633B /* TwilioErrorDelegate.swift */; };
 		B5F9500A20E2D439001495E2 /* UnderlinedTextButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F9500920E2D439001495E2 /* UnderlinedTextButton.swift */; };
 		B5FAD64A20A4D962008EB727 /* AuthPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5FAD64920A4D962008EB727 /* AuthPlugin.swift */; };
 		B5FAD64C20A4DC1D008EB727 /* PublicKeyDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5FAD64B20A4DC1D008EB727 /* PublicKeyDataSource.swift */; };
@@ -1518,6 +1519,7 @@
 		B5EEDA9F2209E225009434DC /* WalletSyncOperationFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletSyncOperationFactory.swift; sourceTree = "<group>"; };
 		B5F32BA52124D05E00B1F89F /* CKStrings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CKStrings.swift; sourceTree = "<group>"; };
 		B5F5CC5220EA6B1400717667 /* MoyaResponse+ErrorMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MoyaResponse+ErrorMessage.swift"; sourceTree = "<group>"; };
+		B5F6EC2422554CF20045633B /* TwilioErrorDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwilioErrorDelegate.swift; sourceTree = "<group>"; };
 		B5F9500920E2D439001495E2 /* UnderlinedTextButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnderlinedTextButton.swift; sourceTree = "<group>"; };
 		B5FAD64920A4D962008EB727 /* AuthPlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthPlugin.swift; sourceTree = "<group>"; };
 		B5FAD64B20A4DC1D008EB727 /* PublicKeyDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublicKeyDataSource.swift; sourceTree = "<group>"; };
@@ -2159,6 +2161,7 @@
 				3BC23EF120BDCA5100877BB6 /* TransactionDataError.swift */,
 				3B287CB72101128400A43E57 /* TransactionBroadcastError.swift */,
 				B50384C520B304780091AB37 /* CKNetworkError.swift */,
+				B5F6EC2422554CF20045633B /* TwilioErrorDelegate.swift */,
 				3B0FF8C320C333DC00AADC9E /* CKPersistenceError.swift */,
 				B5A5C5A22218AF430088C4D1 /* DeviceVerificationErrorMessageFactory.swift */,
 				A25923EB20C981770005B1A0 /* AnalyticsManagerError.swift */,
@@ -3683,6 +3686,7 @@
 				3B6FDADB2050146E0091916A /* VerifyRecoveryWordCellData.swift in Sources */,
 				B582AD5020A084AD007A6459 /* CKMCounterpartyAddress+CoreDataProperties.swift in Sources */,
 				3B6749E420AA5CA40032FE02 /* CKMVout+CoreDataProperties.swift in Sources */,
+				B5F6EC2522554CF20045633B /* TwilioErrorDelegate.swift in Sources */,
 				3B6E4D59206E533D00D9CFFA /* ApiKeys.generated.swift in Sources */,
 				B552EDEF211E33D000332BB5 /* ConnectionManager.swift in Sources */,
 				B56B63782200CDD300CCC153 /* CKMTransactionSharedPayload+CoreDataProperties.swift in Sources */,
