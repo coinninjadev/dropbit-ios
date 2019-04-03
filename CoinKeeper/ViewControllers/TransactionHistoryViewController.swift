@@ -66,7 +66,10 @@ PreferredCurrencyRepresentable {
     return [
       (self.view, .transactionHistory(.page)),
       (balanceContainer.leftButton, .transactionHistory(.menu)),
-      (noTransactionsView.learnAboutBitcoinButton, .transactionHistory(.tutorialButton))
+      (noTransactionsView.learnAboutBitcoinButton, .transactionHistory(.tutorialButton)),
+      (sendReceiveActionView.receiveButton, .transactionHistory(.receiveButton)),
+      (sendReceiveActionView.sendButton, .transactionHistory(.sendButton)),
+      (balanceContainer.balanceView, .transactionHistory(.balanceView))
     ]
   }
 

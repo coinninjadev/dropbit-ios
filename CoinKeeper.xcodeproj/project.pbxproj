@@ -480,7 +480,6 @@
 		B51F1ED12199F7CB00C54B73 /* PinCreationPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51F1ED02199F7CB00C54B73 /* PinCreationPage.swift */; };
 		B51F1ED7219A17AA00C54B73 /* PushInfoPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51F1ED6219A17AA00C54B73 /* PushInfoPage.swift */; };
 		B51F1ED9219A286900C54B73 /* DeviceVerificationPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51F1ED8219A286900C54B73 /* DeviceVerificationPage.swift */; };
-		B51F1EDB219A291200C54B73 /* CalculatorPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51F1EDA219A291200C54B73 /* CalculatorPage.swift */; };
 		B51F1EDD219A29A700C54B73 /* RequestPayPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51F1EDC219A29A700C54B73 /* RequestPayPage.swift */; };
 		B51F8232207BA83C00692F5B /* TransactionHistoryViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51F8231207BA83C00692F5B /* TransactionHistoryViewControllerTests.swift */; };
 		B51F8236207BAD7500692F5B /* BalanceContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51F8235207BAD7500692F5B /* BalanceContainer.swift */; };
@@ -1277,7 +1276,6 @@
 		B51F1ED02199F7CB00C54B73 /* PinCreationPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinCreationPage.swift; sourceTree = "<group>"; };
 		B51F1ED6219A17AA00C54B73 /* PushInfoPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushInfoPage.swift; sourceTree = "<group>"; };
 		B51F1ED8219A286900C54B73 /* DeviceVerificationPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceVerificationPage.swift; sourceTree = "<group>"; };
-		B51F1EDA219A291200C54B73 /* CalculatorPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorPage.swift; sourceTree = "<group>"; };
 		B51F1EDC219A29A700C54B73 /* RequestPayPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestPayPage.swift; sourceTree = "<group>"; };
 		B51F8231207BA83C00692F5B /* TransactionHistoryViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionHistoryViewControllerTests.swift; sourceTree = "<group>"; };
 		B51F8235207BAD7500692F5B /* BalanceContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BalanceContainer.swift; sourceTree = "<group>"; };
@@ -2813,7 +2811,6 @@
 			isa = PBXGroup;
 			children = (
 				B58AFF302194DAF2001BE563 /* UITestPage.swift */,
-				B51F1EDA219A291200C54B73 /* CalculatorPage.swift */,
 				3B1BE85F21B57D0A00CCFE29 /* MemoEntryPage.swift */,
 				B51F1ED8219A286900C54B73 /* DeviceVerificationPage.swift */,
 				B51F1ED02199F7CB00C54B73 /* PinCreationPage.swift */,
@@ -4021,7 +4018,6 @@
 				B51FB0E82175221A005CBAD6 /* UITestCase.swift in Sources */,
 				3B3779FA219E1E9A00F79683 /* UITestHelpers.swift in Sources */,
 				B5D1B2D52193700D006B2BC7 /* Springboard.swift in Sources */,
-				B51F1EDB219A291200C54B73 /* CalculatorPage.swift in Sources */,
 				B58AFF332194DC24001BE563 /* RestoreWalletPage.swift in Sources */,
 				3B3779F4219C9F4800F79683 /* RecoveryWordsIntroPage.swift in Sources */,
 				B5D1B2D7219384FB006B2BC7 /* XCUIApplication+UITestArgument.swift in Sources */,
