@@ -39,10 +39,10 @@ class ImportWalletUITests: UITestCase {
 
     PushInfoPage()?.dismiss()
 
-//    CalculatorPage()
-//      .tapRequest()
-//
-//    RequestPayPage()
-//      .checkAddressLabelDisplays(expectedAddress: firstAddress)
+    TransactionHistoryPage()
+      .tapRequest()
+
+    RequestPayPage()
+      .checkAddressLabelDisplays(expectedAddress: firstAddress)
   }
 }

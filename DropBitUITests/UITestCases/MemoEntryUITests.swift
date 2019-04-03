@@ -26,16 +26,17 @@ class MemoEntryUITests: UITestCase {
     SuccessFailPage().checkWalletRecoverySucceeded().tapGoToWallet()
     DeviceVerificationPage().tapSkip()
     PushInfoPage()?.dismiss()
-//    CalculatorPage().tapPay()
-//    SendPaymentPage().tapMemoButton()
-//
-//    MemoEntryPage()
-//      .enterText("a", count: 135)
-//      .assertCharacterLimit(of: 130)
-//      .clearText()
-//      .enterText(expectedMemo)
-//      .tapToDismiss()
-//
-//    SendPaymentPage().assertMemoLabelText(equals: expectedMemo)
+    TransactionHistoryPage().tapSend()
+    SendPaymentPage().tapMemoButton()
+
+    MemoEntryPage()
+      .enterText("aaaaaaaaaa", count: 13)
+      .enterText("a")
+      .assertCharacterLimit(of: 130)
+      .clearText()
+      .enterText(expectedMemo)
+      .tapToDismiss()
+
+    SendPaymentPage().assertMemoLabelText(equals: expectedMemo)
   }
 }

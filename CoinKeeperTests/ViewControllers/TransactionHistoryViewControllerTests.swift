@@ -36,6 +36,7 @@ class TransactionHistoryViewControllerTests: XCTestCase {
     XCTAssertNotNil(self.sut.detailCollectionViewTopConstraint, "detailCollectionViewTopConstraint should be connected")
     XCTAssertNotNil(self.sut.noTransactionsView, "noTransactionsView should be connected")
     XCTAssertNotNil(self.sut.collectionViews, "collectionViews outlet collection should be connected")
+    XCTAssertNotNil(self.sut.sendReceiveActionView, "sendReceiveActionView should be connected")
   }
 
   // MARK: no transactions

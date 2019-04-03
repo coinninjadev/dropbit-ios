@@ -279,6 +279,10 @@ extension SendPaymentViewController {
     }
 
     updateMemoContainer()
+
+    if viewModel.btcAmount != .zero {
+      sendMaxButton.isHidden = true
+    }
   }
 
   func updateMemoContainer() {

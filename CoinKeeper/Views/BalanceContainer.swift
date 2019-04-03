@@ -77,7 +77,7 @@ enum BalanceContainerLeftButtonType {
 
   func accessibleViewsAndIdentifiers() -> [AccessibleViewElement] {
     return [
-      (self.balanceView, .calculator(.balanceView))
+      (self.balanceView, .transactionHistory(.balanceView))
     ]
   }
 

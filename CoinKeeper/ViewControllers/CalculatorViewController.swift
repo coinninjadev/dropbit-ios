@@ -94,11 +94,7 @@ final class CalculatorViewController: BaseViewController, StoryboardInitializabl
   }
 
   override func accessibleViewsAndIdentifiers() -> [AccessibleViewElement] {
-    return [
-      (self.view, .calculator(.page)),
-      (receiveButton, .calculator(.receiveButton)),
-      (sendButton, .calculator(.sendButton))
-    ]
+    return []
   }
 
   override func viewDidLoad() {

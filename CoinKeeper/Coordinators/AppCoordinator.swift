@@ -274,7 +274,6 @@ class AppCoordinator: CoordinatorType {
 
   private func configureBadgeTopics() {
     let topics: [BadgeTopic] = [
-      TransactionUpdateBadgeTopic(),
       UnverifiedPhoneBadgeTopic(),
       WordsNotBackedUpBadgeTopic()
     ]
@@ -713,6 +712,11 @@ class AppCoordinator: CoordinatorType {
     return pinEntryViewController
   }
 
+  func viewControllerDidRequestBadgeUpdate(_ viewController: UIViewController) {
+    self.badgeManager.publishBadgeUpdate()
+  }
+
+  // MARK: private methods
   private func insufficientBalanceDetails(for error: PendingInvitationError) -> (id: String, message: String)? {
     switch error {
     case .insufficientFundsForInvitationWithID(let id):
@@ -727,7 +731,6 @@ class AppCoordinator: CoordinatorType {
     }
   }
 
-  // MARK: private methods
   private func startFirstTimeWalletCreationFlow() {
     let viewController = PinCreationViewController.makeFromStoryboard()
     assignCoordinationDelegate(to: viewController)

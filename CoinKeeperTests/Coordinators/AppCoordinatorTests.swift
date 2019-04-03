@@ -106,7 +106,7 @@ class AppCoordinatorTests: XCTestCase {
 
     if let drawerVC = mockNavigationController.topViewController as? MMDrawerController,
       let centerVC = drawerVC.centerViewController as? TransactionHistoryViewController {
-      XCTAssertTrue(centerVC.updateTransactionDelegate === self.sut, "coordinationDelegate should be sut")
+      XCTAssertTrue(centerVC.coordinationDelegate === self.sut, "coordinationDelegate should be sut")
     } else {
       XCTFail("centerViewController should be a TransactionHistoryViewController")
     }
