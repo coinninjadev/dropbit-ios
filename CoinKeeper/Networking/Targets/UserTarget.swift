@@ -109,18 +109,4 @@ extension UserTarget {
     }
   }
 
-  private func twilioNetworkError(for response: Response) -> CKNetworkError? {
-    switch self {
-    case .create, .resendVerification:
-      if let errorRes = errorResponse(for: response),
-        let twilioError = TwilioError(response: errorRes) {
-        return .twilioError(twilioError)
-      } else {
-        return .twilioError(.unspecified)
-      }
-    default:
-      return nil
-    }
-  }
-
 }

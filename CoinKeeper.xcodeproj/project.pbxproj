@@ -660,7 +660,6 @@
 		B5A5B1B7216B88C100345468 /* MockNetworkManager+BlockchainInfoRequestable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A5B1B6216B88C100345468 /* MockNetworkManager+BlockchainInfoRequestable.swift */; };
 		B5A5B1B9216B89AD00345468 /* MockNetworkManager+CurrencyValueDataSourceType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A5B1B8216B89AD00345468 /* MockNetworkManager+CurrencyValueDataSourceType.swift */; };
 		B5A5B1BB216B8B4D00345468 /* MockNetworkManager+DeviceRequestable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A5B1BA216B8B4D00345468 /* MockNetworkManager+DeviceRequestable.swift */; };
-		B5A5C5A12218862E0088C4D1 /* TwilioError.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A5C5A02218862E0088C4D1 /* TwilioError.swift */; };
 		B5A5C5A32218AF430088C4D1 /* DeviceVerificationErrorMessageFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A5C5A22218AF430088C4D1 /* DeviceVerificationErrorMessageFactory.swift */; };
 		B5A7523C2225D90B0017DB35 /* DeviceCountryCodeProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A7523B2225D90B0017DB35 /* DeviceCountryCodeProvider.swift */; };
 		B5A7523E2225E62F0017DB35 /* HashingManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A7523D2225E62F0017DB35 /* HashingManagerTests.swift */; };
@@ -1434,7 +1433,6 @@
 		B5A5B1B6216B88C100345468 /* MockNetworkManager+BlockchainInfoRequestable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MockNetworkManager+BlockchainInfoRequestable.swift"; sourceTree = "<group>"; };
 		B5A5B1B8216B89AD00345468 /* MockNetworkManager+CurrencyValueDataSourceType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MockNetworkManager+CurrencyValueDataSourceType.swift"; sourceTree = "<group>"; };
 		B5A5B1BA216B8B4D00345468 /* MockNetworkManager+DeviceRequestable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MockNetworkManager+DeviceRequestable.swift"; sourceTree = "<group>"; };
-		B5A5C5A02218862E0088C4D1 /* TwilioError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwilioError.swift; sourceTree = "<group>"; };
 		B5A5C5A22218AF430088C4D1 /* DeviceVerificationErrorMessageFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceVerificationErrorMessageFactory.swift; sourceTree = "<group>"; };
 		B5A7523B2225D90B0017DB35 /* DeviceCountryCodeProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceCountryCodeProvider.swift; sourceTree = "<group>"; };
 		B5A7523D2225E62F0017DB35 /* HashingManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HashingManagerTests.swift; sourceTree = "<group>"; };
@@ -2171,7 +2169,6 @@
 				B5192FA1216E7BCA00DCC39B /* WalletAddressError.swift */,
 				B5192FA3216E7BEA00DCC39B /* BlockchainInfoProviderError.swift */,
 				B5E7EE7C21B04C1100E058EF /* TestError.swift */,
-				B5A5C5A02218862E0088C4D1 /* TwilioError.swift */,
 				B5A42A97217A31D800EB32CB /* UserNotifiableError.swift */,
 				B5A42A99217A3E0F00EB32CB /* KeyPathDescribable.swift */,
 				B5192FA5216E7BFF00DCC39B /* UserProviderError.swift */,
@@ -3370,7 +3367,6 @@
 				A29CE0ED20A21ED800761B91 /* AppCoordinator+ContactsViewControllerDelegate.swift in Sources */,
 				3B2E78362024D56500DA25AF /* StoryboardInitializable.swift in Sources */,
 				B5E7F21B2214670200358A24 /* CountryCodeSearchView.swift in Sources */,
-				B5A5C5A12218862E0088C4D1 /* TwilioError.swift in Sources */,
 				B5A3BA5C215193DA005EE657 /* TransactionsTarget.swift in Sources */,
 				B5860546222702FC0048979D /* HashableContact.swift in Sources */,
 				3B4741692180AC64004DA223 /* DeviceEndpointIds.swift in Sources */,
