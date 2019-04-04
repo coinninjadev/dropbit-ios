@@ -21,16 +21,11 @@ extension AppCoordinator: BalanceContainerDelegate {
   }
 
   func containerDidTapBalances(in viewController: UIViewController) {
-//    switch viewController {
-////    case is TransactionHistoryViewController:
-//    case let txController = viewController as? TransactionHistoryViewController:
-//      break
-//
-//    default:
-//      break
-//    }
     if let txHistory = viewController as? TransactionHistoryViewController {
       // save to user defaults
+      currencyController.selectedCurrency.toggle()
+      persistenceManager.setSelectedCurrency(currencyController.selectedCurrency)
+
       // tell tx history to reload from user defaults
     }
   }

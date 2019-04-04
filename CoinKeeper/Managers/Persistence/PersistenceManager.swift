@@ -485,4 +485,13 @@ class PersistenceManager: PersistenceManagerType {
     return CKUserDefaults.standardDefaults.object(forKey: key.defaultsString) as? Date
   }
 
+  func setSelectedCurrency(_ selectedCurrency: SelectedCurrency) {
+    set(stringValue: selectedCurrency.description, for: CKUserDefaults.Key.selectedCurrency)
+  }
+
+  func selectedCurrency() -> SelectedCurrency {
+    let stringValue = CKUserDefaults.standardDefaults.value(forKey: CKUserDefaults.Key.selectedCurrency.defaultsString) as? String
+    return stringValue.flatMap { SelectedCurrency(rawValue: $0) } ?? .fiat
+  }
+
 }
