@@ -27,6 +27,7 @@ extension AppCoordinator: BalanceContainerDelegate {
       persistenceManager.setSelectedCurrency(currencyController.selectedCurrency)
 
       // tell tx history to reload from user defaults
+      txHistory.updateSelectedCurrency(to: currencyController.selectedCurrency)
     }
   }
 
@@ -63,4 +64,7 @@ extension AppCoordinator {
     try? context.save()
   }
 
+  func selectedCurrency() -> SelectedCurrency {
+    return currencyController.selectedCurrency
+  }
 }

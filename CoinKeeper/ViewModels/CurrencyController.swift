@@ -23,6 +23,10 @@ enum SelectedCurrency: String {
   }
 }
 
+protocol SelectedCurrencyUpdatable: AnyObject {
+  func updateSelectedCurrency(to selectedCurrency: SelectedCurrency)
+}
+
 protocol CurrencyControllerProviding: AnyObject {
   /// Holds the currency selected by toggling currency
   var currentCurrencyCode: CurrencyCode { get set }
