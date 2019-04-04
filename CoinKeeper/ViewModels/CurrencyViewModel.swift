@@ -8,6 +8,17 @@
 
 import Foundation
 
+enum SelectedCurrency: String {
+  case BTC, fiat
+
+  mutating func toggle() {
+    switch self {
+    case .BTC: self = .fiat
+    case .fiat: self = .BTC
+    }
+  }
+}
+
 protocol CurrencyViewModelProviding: AnyObject {
   /// Holds the currency selected by toggling currency
   var currentCurrencyCode: CurrencyCode { get set }
@@ -20,10 +31,12 @@ protocol CurrencyViewModelProviding: AnyObject {
 class CurrencyViewModel: CurrencyViewModelProviding {
   var currentCurrencyCode: CurrencyCode
   var exchangeRates: ExchangeRates
+  var selectedCurrency: SelectedCurrency
 
-  init(currentCurrencyCode: CurrencyCode, exchangeRates: ExchangeRates = [:]) {
+  init(currentCurrencyCode: CurrencyCode, exchangeRates: ExchangeRates = [:], selectedCurrency: SelectedCurrency = .fiat) {
     self.currentCurrencyCode = currentCurrencyCode
     self.exchangeRates = exchangeRates
+    self.selectedCurrency = selectedCurrency
   }
 
   var currencyConverter: CurrencyConverter {
