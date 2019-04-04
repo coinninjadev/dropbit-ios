@@ -209,11 +209,12 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate {
       }
       topVC.present(composeVC, animated: true, completion: nil)
     })
-    let title = ""
+
     let formatter = CKPhoneNumberFormatter(kit: self.phoneNumberKit, format: .international)
     let recipientDesc = (try? formatter.string(from: inviteBody.receiver.globalNumber)) ?? "the recipient"
     let description = "Success! Let \(recipientDesc) know they have Bitcoin waiting for them."
-    let alert = alertManager.detailedAlert(withTitle: title, description: description, image: #imageLiteral(resourceName: "roundedAppIcon"), action: requestConfiguration)
+    let alert = alertManager.detailedAlert(withTitle: nil, description: description,
+                                           image: #imageLiteral(resourceName: "roundedAppIcon"), style: .standard, action: requestConfiguration)
     let topVC = self.navigationController.topViewController()
     topVC?.present(alert, animated: true, completion: nil)
   }

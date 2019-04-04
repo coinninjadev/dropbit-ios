@@ -43,7 +43,7 @@ extension AppCoordinator: PhoneNumberStatusViewControllerDelegate {
 
     let title = "If you change or remove your current phone number, all pending DropBits will be canceled."
     let description = "In order to change your phone number we must first remove it from your account."
-    let alert = alertManager.detailedAlert(withTitle: title, description: description, image: #imageLiteral(resourceName: "roundedAppIcon"), action: okConfiguration)
+    let alert = alertManager.detailedAlert(withTitle: title, description: description, image: #imageLiteral(resourceName: "roundedAppIcon"), style: .warning, action: okConfiguration)
     navigationController.topViewController()?.present(alert, animated: true)
   }
 

@@ -224,7 +224,7 @@ class AppCoordinator: CoordinatorType {
     " Without them you will not be notified to complete transactions which will cause them to expire."
 
     let description = "Please allow us to send you push notifications on the following prompt."
-    let alert = alertManager.detailedAlert(withTitle: title, description: description, image: #imageLiteral(resourceName: "dropBitBadgeIcon"), action: requestConfiguration)
+    let alert = alertManager.detailedAlert(withTitle: title, description: description, image: #imageLiteral(resourceName: "dropBitBadgeIcon"), style: .warning, action: requestConfiguration)
 
     navigationController.topViewController()?.present(alert, animated: true)
   }
