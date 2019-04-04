@@ -82,6 +82,7 @@
 		3B24DFBE20EBC44A00C31969 /* MockDatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B24DFBD20EBC44A00C31969 /* MockDatabaseManager.swift */; };
 		3B24DFC020EBEFC100C31969 /* DerivativePathTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B24DFBF20EBEFC100C31969 /* DerivativePathTests.swift */; };
 		3B2658472215CFCC008A8615 /* MailerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B2658462215CFCC008A8615 /* MailerDelegate.swift */; };
+		3B26F1E022566EAA00F3E00F /* AppCoordinator+SelectedCurrencyUpdatable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B26F1DF22566EAA00F3E00F /* AppCoordinator+SelectedCurrencyUpdatable.swift */; };
 		3B287CB42100FB1A00A43E57 /* AppCoordinator+ConnectionManagerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B287CB32100FB1A00A43E57 /* AppCoordinator+ConnectionManagerDelegate.swift */; };
 		3B287CB62100FB5600A43E57 /* AppCoordinator+ChildCoordinatorDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B287CB52100FB5600A43E57 /* AppCoordinator+ChildCoordinatorDelegate.swift */; };
 		3B287CB82101128400A43E57 /* TransactionBroadcastError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B287CB72101128400A43E57 /* TransactionBroadcastError.swift */; };
@@ -868,6 +869,7 @@
 		3B24DFBD20EBC44A00C31969 /* MockDatabaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockDatabaseManager.swift; sourceTree = "<group>"; };
 		3B24DFBF20EBEFC100C31969 /* DerivativePathTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DerivativePathTests.swift; sourceTree = "<group>"; };
 		3B2658462215CFCC008A8615 /* MailerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailerDelegate.swift; sourceTree = "<group>"; };
+		3B26F1DF22566EAA00F3E00F /* AppCoordinator+SelectedCurrencyUpdatable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppCoordinator+SelectedCurrencyUpdatable.swift"; sourceTree = "<group>"; };
 		3B287CB32100FB1A00A43E57 /* AppCoordinator+ConnectionManagerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppCoordinator+ConnectionManagerDelegate.swift"; sourceTree = "<group>"; };
 		3B287CB52100FB5600A43E57 /* AppCoordinator+ChildCoordinatorDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppCoordinator+ChildCoordinatorDelegate.swift"; sourceTree = "<group>"; };
 		3B287CB72101128400A43E57 /* TransactionBroadcastError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionBroadcastError.swift; sourceTree = "<group>"; };
@@ -1803,6 +1805,7 @@
 				30B08FB721F23F3C0012B4CF /* AppCoordinator+SyncManagerTypeDelegate.swift */,
 				3BB01BC2220A56F6006B4D25 /* AppCoordinator+NoConnectionViewControllerDelegate.swift */,
 				B52CC6A8221EC42800B00C9E /* AppCoordinator+ViewControllerDismissable.swift */,
+				3B26F1DF22566EAA00F3E00F /* AppCoordinator+SelectedCurrencyUpdatable.swift */,
 			);
 			path = Coordinators;
 			sourceTree = "<group>";
@@ -3379,6 +3382,7 @@
 				B54A4215207FF310005B40A9 /* TransactionDetailSecondaryAmountLabel.swift in Sources */,
 				B5C5EDE321FA41FF0032AC94 /* SharedPayloadV1.swift in Sources */,
 				B552EDF9211E33D000332BB5 /* PermissionManager.swift in Sources */,
+				3B26F1E022566EAA00F3E00F /* AppCoordinator+SelectedCurrencyUpdatable.swift in Sources */,
 				A29CE0CF2099FD6800761B91 /* AppCoordinator+SuccessFailViewControllerDelegate.swift in Sources */,
 				B552EDEE211E33D000332BB5 /* CurrencyConverter.swift in Sources */,
 				B566ED7C219B3840001A65F5 /* AccessibleViewSettable.swift in Sources */,
