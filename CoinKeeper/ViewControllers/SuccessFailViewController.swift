@@ -10,7 +10,7 @@ import UIKit
 
 protocol SuccessFailViewControllerDelegate: ViewControllerDismissable {
   func viewControllerDidRetry(_ viewController: SuccessFailViewController)
-  func viewController(_ viewController: SuccessFailViewController, success: Bool)
+  func viewController(_ viewController: SuccessFailViewController, success: Bool, completion: (() -> Void)?)
 }
 
 class SuccessFailViewController: BaseViewController, StoryboardInitializable {
@@ -56,7 +56,7 @@ class SuccessFailViewController: BaseViewController, StoryboardInitializable {
   @IBAction func actionButtonWasTouched() {
     switch mode {
     case .success:
-      coordinationDelegate?.viewController(self, success: true)
+      coordinationDelegate?.viewController(self, success: true, completion: nil)
     case .failure:
       if let retryRequestCompletion = retryCompletion {
         coordinationDelegate?.viewControllerDidRetry(self)
