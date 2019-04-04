@@ -10,6 +10,7 @@ import UIKit
 import CNBitcoinKit
 import Result
 import CoreData
+import MessageUI
 import PromiseKit
 import os.log
 
@@ -126,30 +127,95 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate {
 
       strongSelf.networkManager.createAddressRequest(body: inviteBody)
         .done(in: bgContext) { response in
-
-          bgContext.performAndWait {
-            strongSelf.handleSuccessfulInvite(outgoingInvitationDTO: outgoingInvitationDTO, response: response, in: bgContext)
-            do {
-              try bgContext.save()
-              strongSelf.set(mode: .success, for: successFailViewController)
-            } catch {
-              os_log("failed to save context in %@.\n%@", log: logger, type: .error, #function, error.localizedDescription)
-              strongSelf.set(mode: .failure, for: successFailViewController)
-              strongSelf.handleFailureInvite(error: TransactionDataError.insufficientFee)
-            }
-          }
+          strongSelf.handleAddressRequestCreationSuccess(response: response,
+                                                         invitationDTO: outgoingInvitationDTO,
+                                                         successFailVC: successFailViewController,
+                                                         in: bgContext)
         }.catch(on: .main) { error in
-          // In the edge case where we don't receive a server response due to a network failure, expected behavior
-          // is that the SharedPayloadDTO is never persisted or sent, because we don't create CKMTransaction dependency
-          // until we have acknowledgement from the server that the address request was successfully posted.
-          strongSelf.handleFailureInvite(error: error)
-          strongSelf.set(mode: .failure, for: successFailViewController)
+          strongSelf.handleAddressRequestCreationError(error,
+                                                       invitationDTO: outgoingInvitationDTO,
+                                                       inviteBody: inviteBody,
+                                                       successFailVC: successFailViewController,
+                                                       in: bgContext)
       }
     }
 
     self.navigationController.topViewController()?.present(successFailViewController, animated: false) {
       successFailViewController.retryCompletion?()
     }
+  }
+
+  private func handleAddressRequestCreationSuccess(response: WalletAddressRequestResponse,
+                                                   invitationDTO: OutgoingInvitationDTO,
+                                                   successFailVC: SuccessFailViewController,
+                                                   in context: NSManagedObjectContext) {
+    let logger = OSLog(subsystem: "com.coinninja.coinkeeper.appcoordinator", category: "invite_success")
+    context.performAndWait {
+      self.acknowledgeSuccessfulInvite(outgoingInvitationDTO: invitationDTO, response: response, in: context)
+      do {
+        try context.save()
+        self.set(mode: .success, for: successFailVC)
+      } catch {
+        os_log("failed to save context in %@.\n%@", log: logger, type: .error, #function, error.localizedDescription)
+        self.set(mode: .failure, for: successFailVC)
+        self.handleFailureInvite(error: TransactionDataError.insufficientFee)
+      }
+    }
+  }
+
+  private func handleAddressRequestCreationError(_ error: Error,
+                                                 invitationDTO: OutgoingInvitationDTO,
+                                                 inviteBody: RequestAddressBody,
+                                                 successFailVC: SuccessFailViewController,
+                                                 in context: NSManagedObjectContext) {
+    if let networkError = error as? CKNetworkError,
+      case let .twilioError(response) = networkError,
+      let typedResponse = try? response.map(WalletAddressRequestResponse.self, using: WalletAddressRequestResponse.decoder) {
+
+      self.handleAddressRequestCreationSuccess(response: typedResponse,
+                                               invitationDTO: invitationDTO,
+                                               successFailVC: successFailVC,
+                                               in: context)
+      // Dismisses both the SuccessFailVC and the ConfirmPaymentVC before showing alert
+      self.viewController(successFailVC, success: true) {
+        self.showManualInviteSMSAlert(inviteBody: inviteBody)
+      }
+
+    } else {
+      // In the edge case where we don't receive a server response due to a network failure, expected behavior
+      // is that the SharedPayloadDTO is never persisted or sent, because we don't create CKMTransaction dependency
+      // until we have acknowledgement from the server that the address request was successfully posted.
+      self.handleFailureInvite(error: error)
+      self.set(mode: .failure, for: successFailVC)
+    }
+  }
+
+  private func createInviteNotificationSMSComposer(for inviteBody: RequestAddressBody) -> MFMessageComposeViewController? {
+    guard MFMessageComposeViewController.canSendText() else { return nil }
+    let composeVC = MFMessageComposeViewController()
+    composeVC.messageComposeDelegate = self.messageComposeDelegate
+    let phoneNumber = inviteBody.receiver.globalNumber
+    composeVC.recipients = [phoneNumber.asE164()]
+    composeVC.body = "You've got Bitcoin."
+    return composeVC
+  }
+
+  private func showManualInviteSMSAlert(inviteBody: RequestAddressBody) {
+    let requestConfiguration = AlertActionConfiguration(title: "NOTIFY", style: .default, action: { [weak self] in
+      guard let strongSelf = self,
+        let composeVC = strongSelf.createInviteNotificationSMSComposer(for: inviteBody),
+        let topVC = strongSelf.navigationController.topViewController() else {
+        return
+      }
+      topVC.present(composeVC, animated: true, completion: nil)
+    })
+    let title = ""
+    let formatter = CKPhoneNumberFormatter(kit: self.phoneNumberKit, format: .international)
+    let recipientDesc = (try? formatter.string(from: inviteBody.receiver.globalNumber)) ?? "the recipient"
+    let description = "Success! Let \(recipientDesc) know they have Bitcoin waiting for them."
+    let alert = alertManager.detailedAlert(withTitle: title, description: description, image: #imageLiteral(resourceName: "roundedAppIcon"), action: requestConfiguration)
+    let topVC = self.navigationController.topViewController()
+    topVC?.present(alert, animated: true, completion: nil)
   }
 
   private func set(mode: SuccessFailViewController.Mode, for viewController: SuccessFailViewController) {
