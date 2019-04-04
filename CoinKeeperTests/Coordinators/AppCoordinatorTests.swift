@@ -708,16 +708,17 @@ class MockAlertManager: AlertManagerType {
     return alertManager.alert(withTitle: title, description: description, image: image, style: style, actionConfigs: [])
   }
 
-  func detailedAlert(withTitle title: String,
-                     description: String,
+  func detailedAlert(withTitle title: String?,
+                     description: String?,
                      image: UIImage,
+                     style: AlertMessageStyle,
                      action: AlertActionConfigurationType
     ) -> AlertControllerType {
     let alertManager = AlertManager(notificationManager:
       NotificationManager(permissionManager: PermissionManager(),
                           networkInteractor: NetworkManager(persistenceManager: PersistenceManager(),
                                                             analyticsManager: AnalyticsManager())))
-    return alertManager.detailedAlert(withTitle: title, description: description, image: image, action: action)
+    return alertManager.detailedAlert(withTitle: title, description: description, image: image, style: style, action: action)
   }
 
   func didTapBanner(_ bannerView: CKBannerView) {}
