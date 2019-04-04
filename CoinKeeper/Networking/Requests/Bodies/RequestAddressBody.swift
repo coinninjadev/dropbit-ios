@@ -23,6 +23,12 @@ struct RequestAddressUser: Codable {
   }
 }
 
+extension RequestAddressUser {
+  var globalNumber: GlobalPhoneNumber {
+    return GlobalPhoneNumber(countryCode: countryCode, nationalNumber: phoneNumber)
+  }
+}
+
 public struct RequestAddressBody: Encodable {
   let amount: RequestAddressAmount
   let sender: RequestAddressUser
