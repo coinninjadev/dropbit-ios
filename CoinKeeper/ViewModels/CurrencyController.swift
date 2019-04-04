@@ -1,5 +1,5 @@
 //
-//  CurrencyViewModel.swift
+//  CurrencyController.swift
 //  DropBit
 //
 //  Created by BJ Miller on 4/3/19.
@@ -17,9 +17,13 @@ enum SelectedCurrency: String {
     case .fiat: self = .BTC
     }
   }
+
+  var description: String {
+    return self.rawValue
+  }
 }
 
-protocol CurrencyViewModelProviding: AnyObject {
+protocol CurrencyControllerProviding: AnyObject {
   /// Holds the currency selected by toggling currency
   var currentCurrencyCode: CurrencyCode { get set }
 
@@ -28,7 +32,7 @@ protocol CurrencyViewModelProviding: AnyObject {
   var currencyConverter: CurrencyConverter { get }
 }
 
-class CurrencyViewModel: CurrencyViewModelProviding {
+class CurrencyController: CurrencyControllerProviding {
   var currentCurrencyCode: CurrencyCode
   var exchangeRates: ExchangeRates
   var selectedCurrency: SelectedCurrency

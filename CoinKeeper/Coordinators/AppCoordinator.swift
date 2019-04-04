@@ -6,7 +6,6 @@
 //  Copyright © 2018 Coin Ninja, LLC. All rights reserved.
 //
 
-import Alamofire
 import UIKit
 import CNBitcoinKit
 import MMDrawerController
@@ -61,6 +60,7 @@ class AppCoordinator: CoordinatorType {
   let uiTestArguments: [UITestArgument]
   // swiftlint:disable:next weak_delegate
   let mailComposeDelegate = MailerDelegate()
+  let currencyController: CurrencyController
 
   private let maxSecondsInBackground: TimeInterval = 30
   private let notificationLogger = OSLog(subsystem: "com.coinninja.appCoordinator", category: "notifications")
@@ -92,8 +92,12 @@ class AppCoordinator: CoordinatorType {
     serialQueueManager: SerialQueueManagerType = SerialQueueManager(),
     notificationManager: NotificationManagerType? = nil,
     messageManager: MessagesManagerType? = nil,
+    currencyController: CurrencyController = CurrencyController(currentCurrencyCode: .USD),
     uiTestArguments: [UITestArgument] = []
     ) {
+    currencyController.selectedCurrency = persistenceManager.selectedCurrency()
+    self.currencyController = currencyController
+
     self.navigationController = navigationController
     self.serialQueueManager = serialQueueManager
     self.persistenceManager = persistenceManager

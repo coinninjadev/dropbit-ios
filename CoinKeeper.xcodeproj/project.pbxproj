@@ -63,7 +63,7 @@
 		3B124E102020EB2B00431E2E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B124E0F2020EB2B00431E2E /* AppDelegate.swift */; };
 		3B124E172020EB2B00431E2E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3B124E162020EB2B00431E2E /* Assets.xcassets */; };
 		3B13439621AEDAE6006EC5FC /* LightBorderedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B13439521AEDAE6006EC5FC /* LightBorderedButton.swift */; };
-		3B13ED112254E24900905226 /* CurrencyViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B13ED102254E24900905226 /* CurrencyViewModel.swift */; };
+		3B13ED112254E24900905226 /* CurrencyController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B13ED102254E24900905226 /* CurrencyController.swift */; };
 		3B1555E020D27B5000D6A70C /* TransactionVinResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B1555DF20D27B5000D6A70C /* TransactionVinResponse.swift */; };
 		3B1555E220D27C0300D6A70C /* TransactionVoutResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B1555E120D27C0300D6A70C /* TransactionVoutResponse.swift */; };
 		3B1555E420D27CF500D6A70C /* TransactionResponseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B1555E320D27CF500D6A70C /* TransactionResponseTests.swift */; };
@@ -849,7 +849,7 @@
 		3B124E202020EB2B00431E2E /* DropBitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DropBitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		3B124E262020EB2B00431E2E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3B13439521AEDAE6006EC5FC /* LightBorderedButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightBorderedButton.swift; sourceTree = "<group>"; };
-		3B13ED102254E24900905226 /* CurrencyViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyViewModel.swift; sourceTree = "<group>"; };
+		3B13ED102254E24900905226 /* CurrencyController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyController.swift; sourceTree = "<group>"; };
 		3B1555DF20D27B5000D6A70C /* TransactionVinResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionVinResponse.swift; sourceTree = "<group>"; };
 		3B1555E120D27C0300D6A70C /* TransactionVoutResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionVoutResponse.swift; sourceTree = "<group>"; };
 		3B1555E320D27CF500D6A70C /* TransactionResponseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionResponseTests.swift; sourceTree = "<group>"; };
@@ -2327,7 +2327,7 @@
 				A293E34F20F67F390099ED69 /* SuccessFailViewModel.swift */,
 				A260E8D820FD0F28008343F9 /* TutorialScreenViewModel.swift */,
 				30349F862188A99700A32AFA /* ServerAddressViewModel.swift */,
-				3B13ED102254E24900905226 /* CurrencyViewModel.swift */,
+				3B13ED102254E24900905226 /* CurrencyController.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -3686,7 +3686,7 @@
 				A293E35220F798920099ED69 /* NoTransactionsView.swift in Sources */,
 				B56C414821F7717C005668E3 /* ConfirmPaymentMemoView.swift in Sources */,
 				B5FAD64C20A4DC1D008EB727 /* PublicKeyDataSource.swift in Sources */,
-				3B13ED112254E24900905226 /* CurrencyViewModel.swift in Sources */,
+				3B13ED112254E24900905226 /* CurrencyController.swift in Sources */,
 				A2893BC020FD4E7700E96B07 /* UIViewController+ToolbarUtilities.swift in Sources */,
 				A29CE0FC20A32B2000761B91 /* CurrencyAmountValidator.swift in Sources */,
 				B5A3BA5021516E98005EE657 /* PricingTarget.swift in Sources */,
