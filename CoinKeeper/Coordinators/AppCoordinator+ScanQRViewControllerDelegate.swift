@@ -61,6 +61,7 @@ extension AppCoordinator: ScanQRViewControllerDelegate {
                                      completion: ((SendPaymentViewController) -> Void)?) {
     let sendPaymentViewController = SendPaymentViewController.makeFromStoryboard()
     self.assignCoordinationDelegate(to: sendPaymentViewController)
+    sendPaymentViewController.alertManager = alertManager
     if let vm = viewModel {
       sendPaymentViewController.viewModel = vm
     }
