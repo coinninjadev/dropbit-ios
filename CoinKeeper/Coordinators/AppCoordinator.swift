@@ -60,6 +60,8 @@ class AppCoordinator: CoordinatorType {
   let uiTestArguments: [UITestArgument]
   // swiftlint:disable:next weak_delegate
   let mailComposeDelegate = MailerDelegate()
+  let messageComposeDelegate = MessagerDelegate()
+
   let currencyController: CurrencyController
 
   private let maxSecondsInBackground: TimeInterval = 30
