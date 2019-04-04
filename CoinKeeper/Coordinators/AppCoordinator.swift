@@ -58,8 +58,10 @@ class AppCoordinator: CoordinatorType {
   let messageManager: MessagesManagerType
   let persistenceCacheDataWorker: PersistenceCacheDataWorkerType
   let uiTestArguments: [UITestArgument]
+
   // swiftlint:disable:next weak_delegate
   let mailComposeDelegate = MailerDelegate()
+  // swiftlint:disable:next weak_delegate
   let messageComposeDelegate = MessagerDelegate()
 
   let currencyController: CurrencyController
