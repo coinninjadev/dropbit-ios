@@ -180,9 +180,9 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate {
     self.navigationController.topViewController()?.present(alert, animated: true, completion: nil)
   }
 
-  private func handleSuccessfulInvite(outgoingInvitationDTO: OutgoingInvitationDTO,
-                                      response: WalletAddressRequestResponse,
-                                      in context: NSManagedObjectContext) {
+  private func acknowledgeSuccessfulInvite(outgoingInvitationDTO: OutgoingInvitationDTO,
+                                           response: WalletAddressRequestResponse,
+                                           in context: NSManagedObjectContext) {
     analyticsManager.track(event: .dropbitInitiated, with: nil)
     context.performAndWait {
       let outgoingTransactionData = OutgoingTransactionData(
