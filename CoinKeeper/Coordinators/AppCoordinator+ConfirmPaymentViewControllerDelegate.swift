@@ -14,7 +14,7 @@ import MessageUI
 import PromiseKit
 import os.log
 
-extension AppCoordinator: ConfirmPaymentViewControllerDelegate {
+extension AppCoordinator: ConfirmPaymentViewControllerDelegate, CurrencyFormattable {
   func confirmPaymentViewControllerDidLoad(_ viewController: UIViewController) {
     analyticsManager.track(event: .confirmScreenLoaded, with: nil)
   }
@@ -196,7 +196,13 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate {
     composeVC.messageComposeDelegate = self.messageComposeDelegate
     let phoneNumber = inviteBody.receiver.globalNumber
     composeVC.recipients = [phoneNumber.asE164()]
-    composeVC.body = "You've got Bitcoin."
+    let downloadURL = CoinNinjaUrlFactory.buildUrl(for: .download)?.absoluteString ?? ""
+    let amount = NSDecimalNumber(integerAmount: inviteBody.amount.usd, currency: .USD)
+    let amountDesc = amountStringWithSymbol(amount, .USD)
+    composeVC.body = """
+      I just sent you \(amountDesc) in Bitcoin.
+      Download the DropBit app to claim it. \(downloadURL)
+      """.removingMultilineLineBreaks()
     return composeVC
   }
 
