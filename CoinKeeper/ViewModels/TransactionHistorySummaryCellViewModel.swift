@@ -206,7 +206,7 @@ class TransactionHistorySummaryCellViewModel {
     let secondaryAmountString = amounts.secondary ?? "–"
 
     if let primaryAmountString = amounts.primary {
-      return ("\(primaryAmountString)", secondaryAmountString)
+      return (primaryAmountString, secondaryAmountString)
     } else {
       return ("–", secondaryAmountString)
     }
