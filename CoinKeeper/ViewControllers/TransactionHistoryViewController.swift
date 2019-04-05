@@ -480,6 +480,9 @@ extension TransactionHistoryViewController: SelectedCurrencyUpdatable {
   func updateSelectedCurrency(to selectedCurrency: SelectedCurrency) {
     coordinationDelegate?.updateSelectedCurrency(to: selectedCurrency)
     updateViewWithBalance()
-    collectionViews.forEach { $0.reloadData() }
+
+    let summaryIndexSet = IndexSet(integersIn: (0..<summaryCollectionView.numberOfSections))
+    summaryCollectionView.reloadSections(summaryIndexSet)
+    detailCollectionView.reloadData()
   }
 }
