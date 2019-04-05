@@ -16,6 +16,7 @@ extension AppCoordinator: StartViewControllerDelegate {
   }
 
   func restoreWallet() {
+    persistenceManager.userDefaultsManager.deleteAll()
     navigationController.isNavigationBarHidden = false
     let viewController = PinCreationViewController.makeFromStoryboard()
     viewController.flow = .restore

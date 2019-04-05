@@ -100,8 +100,8 @@ struct BitcoinURLComponents {
   }
 
   static func roundedAmount(fromString amountString: String) -> NSDecimalNumber? {
-    let amt = NSDecimalNumber(string: amountString)
-    guard amt.isPositiveNumber else { return nil }
+    guard let amt = NSDecimalNumber(fromString: amountString),
+      amt.isPositiveNumber else { return nil }
 
     let handler = NSDecimalNumberHandler(roundingMode: .down,
                                          scale: 8,

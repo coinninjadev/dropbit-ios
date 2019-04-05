@@ -13,7 +13,7 @@ workspace "CoinKeeper.xcworkspace"
 scheme "CoinKeeper"
 output_name "CoinKeeper.ipa"
 output_directory "./build"
-sdk "iphoneos12.1"
+sdk "iphoneos12.2"
 include_bitcode false
 silent true
 

@@ -281,7 +281,7 @@ class CKDatabase: PersistenceDatabaseType {
     txid: String,
     invitation: CKMInvitation?,
     in context: NSManagedObjectContext
-    ) {
+    ) -> CKMTransaction {
 
     var outgoingTxDTO = outgoingTransactionData
     outgoingTxDTO.txid = txid
@@ -326,6 +326,8 @@ class CKDatabase: PersistenceDatabaseType {
     relevantTransaction.temporarySentTransaction?.reservedVouts = Set(vouts)
 
     vouts.forEach { $0.isSpent = true }
+
+    return relevantTransaction
   }
 
   func deleteTransactions(notIn txids: [String], in context: NSManagedObjectContext) {
