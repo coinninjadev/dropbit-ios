@@ -517,7 +517,6 @@
 		B52CC6A9221EC42800B00C9E /* AppCoordinator+ViewControllerDismissable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52CC6A8221EC42800B00C9E /* AppCoordinator+ViewControllerDismissable.swift */; };
 		B52CC6AB221EC63F00B00C9E /* ContactCacheDataWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52CC6AA221EC63F00B00C9E /* ContactCacheDataWorker.swift */; };
 		B52CC6AD221ED41700B00C9E /* NSManagedObjectContext+PerformRethrow.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52CC6AC221ED41700B00C9E /* NSManagedObjectContext+PerformRethrow.swift */; };
-		B52D4522208E5C6C00A56A5C /* PreferredCurrencyRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52D4521208E5C6C00A56A5C /* PreferredCurrencyRepresentable.swift */; };
 		B52D4524208E5ECA00A56A5C /* ExchangeRateUpdateable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52D4523208E5ECA00A56A5C /* ExchangeRateUpdateable.swift */; };
 		B52EF8CC21A4B0870081CB3B /* MerchantPaymentRequestResponseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52EF8CB21A4B0870081CB3B /* MerchantPaymentRequestResponseTests.swift */; };
 		B52F690A22417B0100790E97 /* CKDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52F690922417B0100790E97 /* CKDatabase.swift */; };
@@ -1307,7 +1306,6 @@
 		B52CC6A8221EC42800B00C9E /* AppCoordinator+ViewControllerDismissable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppCoordinator+ViewControllerDismissable.swift"; sourceTree = "<group>"; };
 		B52CC6AA221EC63F00B00C9E /* ContactCacheDataWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactCacheDataWorker.swift; sourceTree = "<group>"; };
 		B52CC6AC221ED41700B00C9E /* NSManagedObjectContext+PerformRethrow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSManagedObjectContext+PerformRethrow.swift"; sourceTree = "<group>"; };
-		B52D4521208E5C6C00A56A5C /* PreferredCurrencyRepresentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferredCurrencyRepresentable.swift; sourceTree = "<group>"; };
 		B52D4523208E5ECA00A56A5C /* ExchangeRateUpdateable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExchangeRateUpdateable.swift; sourceTree = "<group>"; };
 		B52EF8CB21A4B0870081CB3B /* MerchantPaymentRequestResponseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MerchantPaymentRequestResponseTests.swift; sourceTree = "<group>"; };
 		B52F690922417B0100790E97 /* CKDatabase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CKDatabase.swift; sourceTree = "<group>"; };
@@ -2572,7 +2570,6 @@
 				B589C20120C1EB72006A8FDB /* PaymentAmountValidatable.swift */,
 				B5E5032821B865A4008FBDAB /* PaymentRequestResolver.swift */,
 				B5860549222888C50048979D /* PhoneNumberEntryViewDisplayable.swift */,
-				B52D4521208E5C6C00A56A5C /* PreferredCurrencyRepresentable.swift */,
 				A2A530C720940B9900B6F4DE /* SendPaymentDataProvider.swift */,
 				3B61B6E120DD282E0021D69E /* SendPaymentViewControllerDelegate.swift */,
 				3B2E78352024D56500DA25AF /* StoryboardInitializable.swift */,
@@ -3655,7 +3652,6 @@
 				B559AF092180C9AA001D44F2 /* BadgeDisplayable.swift in Sources */,
 				B5C5EDE721FA490A0032AC94 /* SharedPayloadCodable.swift in Sources */,
 				B505D4EA21050F2000C0C8FC /* CKPredicate.swift in Sources */,
-				B52D4522208E5C6C00A56A5C /* PreferredCurrencyRepresentable.swift in Sources */,
 				A2893BBE20FD4C5A00E96B07 /* BasePageViewController.swift in Sources */,
 				A29CE10220A3517800761B91 /* CompositeValidator.swift in Sources */,
 				B5CFA336221E008B002B1BDD /* CCMPhoneNumber+CoreDataProperties.swift in Sources */,

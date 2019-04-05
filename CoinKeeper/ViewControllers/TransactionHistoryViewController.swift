@@ -34,11 +34,10 @@ protocol TransactionHistoryViewControllerDelegate: DeviceCountryCodeProvider &
   func viewControllerDidTapReceivePayment(_ viewController: UIViewController, converter: CurrencyConverter)
   func viewControllerDidTapSendPayment(_ viewController: UIViewController, converter: CurrencyConverter)
 
-  func selectedCurrency() -> SelectedCurrency
+  var currencyController: CurrencyController { get }
 }
 
-class TransactionHistoryViewController: BaseViewController, StoryboardInitializable,
-PreferredCurrencyRepresentable {
+class TransactionHistoryViewController: BaseViewController, StoryboardInitializable {
 
   @IBOutlet var summaryCollectionView: UICollectionView!
   @IBOutlet var summaryCollectionViewBottomConstraint: NSLayoutConstraint!
@@ -128,7 +127,16 @@ PreferredCurrencyRepresentable {
   }()
 
   var badgeNotificationToken: NotificationToken?
-  var currencyController: CurrencyController = CurrencyController(currentCurrencyCode: .USD)
+
+  func preferredCurrency() -> CurrencyCode {
+    guard let selected = coordinationDelegate?.currencyController.selectedCurrency else { return .USD }
+    switch selected {
+    case .BTC:
+      return .BTC
+    case .fiat:
+      return .USD
+    }
+  }
 
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -172,13 +180,13 @@ PreferredCurrencyRepresentable {
   }
 
   private func detailViewModel(at indexPath: IndexPath) -> TransactionHistoryDetailCellViewModel {
-    let transaction = self.frc.object(at: indexPath)
+    let transaction = frc.object(at: indexPath)
     return TransactionHistoryDetailCellViewModel(
       transaction: transaction,
       rates: rateManager.exchangeRates,
-      primaryCurrency: self.preferredCurrency,
-      deviceCountryCode: self.deviceCountryCode,
-      kit: self.phoneNumberKit
+      primaryCurrency: preferredCurrency(),
+      deviceCountryCode: deviceCountryCode,
+      kit: phoneNumberKit
     )
   }
 
@@ -186,9 +194,9 @@ PreferredCurrencyRepresentable {
     return TransactionHistorySummaryCellViewModel(
       transaction: transaction,
       rates: rateManager.exchangeRates,
-      primaryCurrency: preferredCurrency,
-      deviceCountryCode: self.deviceCountryCode,
-      kit: self.phoneNumberKit
+      primaryCurrency: preferredCurrency(),
+      deviceCountryCode: deviceCountryCode,
+      kit: phoneNumberKit
     )
   }
 
@@ -307,7 +315,8 @@ extension TransactionHistoryViewController: BalanceDisplayable {
   }
 
   func didUpdateExchangeRateManager(_ exchangeRateManager: ExchangeRateManager) {
-    self.currencyController.exchangeRates = exchangeRateManager.exchangeRates
+    self.rateManager.exchangeRates = exchangeRateManager.exchangeRates
+    coordinationDelegate?.currencyController.exchangeRates = exchangeRateManager.exchangeRates
     collectionViews.forEach { $0.reloadData() }
   }
 
@@ -452,15 +461,18 @@ extension TransactionHistoryViewController: BadgeDisplayable {
 
 extension TransactionHistoryViewController: SendReceiveActionViewDelegate {
   func actionViewDidSelectReceive(_ view: UIView) {
-    coordinationDelegate?.viewControllerDidTapReceivePayment(self, converter: currencyController.currencyConverter)
+    guard let coordinator = coordinationDelegate else { return }
+    coordinator.viewControllerDidTapReceivePayment(self, converter: coordinator.currencyController.currencyConverter)
   }
 
   func actionViewDidSelectScan(_ view: UIView) {
-    coordinationDelegate?.viewControllerDidTapScan(self, converter: currencyController.currencyConverter)
+    guard let coordinator = coordinationDelegate else { return }
+    coordinator.viewControllerDidTapScan(self, converter: coordinator.currencyController.currencyConverter)
   }
 
   func actionViewDidSelectSend(_ view: UIView) {
-    coordinationDelegate?.viewControllerDidTapSendPayment(self, converter: currencyController.currencyConverter)
+    guard let coordinator = coordinationDelegate else { return }
+    coordinator.viewControllerDidTapSendPayment(self, converter: coordinator.currencyController.currencyConverter)
   }
 }
 
@@ -468,6 +480,9 @@ extension TransactionHistoryViewController: SelectedCurrencyUpdatable {
   func updateSelectedCurrency(to selectedCurrency: SelectedCurrency) {
     coordinationDelegate?.updateSelectedCurrency(to: selectedCurrency)
     updateViewWithBalance()
-    // let cell view models know and reload table
+
+    let summaryIndexSet = IndexSet(integersIn: (0..<summaryCollectionView.numberOfSections))
+    summaryCollectionView.reloadSections(summaryIndexSet)
+    detailCollectionView.reloadData()
   }
 }
