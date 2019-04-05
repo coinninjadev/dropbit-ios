@@ -64,10 +64,10 @@ class TransactionHistorySummaryCellTests: XCTestCase {
     XCTAssertEqual(self.sut.dateLabel.text, viewModel.dateDescriptionFull, "dateLabel should be populated")
     XCTAssertEqual(self.sut.memoLabel.text, viewModel.memo, "memoLabel should be populated")
 
-    let primary = "- $8.66"
+    let primary = "$8.66"
     XCTAssertEqual(self.sut.primaryAmountLabel.text, primary, "primaryAmountLabel should be populated")
 
-    let secondary = "0.00123756"
+    let secondary = "\(CurrencyCode.BTC.symbol)0.00123756"
     XCTAssertEqual(self.sut.secondaryAmountLabel.text, secondary, "secondaryAmountLabel should be populated")
   }
 
@@ -98,10 +98,10 @@ class TransactionHistorySummaryCellTests: XCTestCase {
     XCTAssertEqual(self.sut.dateLabel.text, viewModel.dateDescriptionFull, "dateLabel should be populated")
     XCTAssertEqual(self.sut.memoLabel.text, viewModel.memo, "memoLabel should be populated")
 
-    let primary = "- $8.66"
+    let primary = "$8.66"
     XCTAssertEqual(self.sut.primaryAmountLabel.text, primary, "primaryAmountLabel should be populated")
 
-    let secondary = "0.00123756"
+    let secondary = "\(CurrencyCode.BTC.symbol)0.00123756"
     XCTAssertEqual(self.sut.secondaryAmountLabel.text, secondary, "secondaryAmountLabel should be populated")
   }
 
@@ -133,10 +133,10 @@ class TransactionHistorySummaryCellTests: XCTestCase {
     XCTAssertEqual(self.sut.dateLabel.text, viewModel.dateDescriptionFull, "dateLabel should be populated")
     XCTAssertEqual(self.sut.memoLabel.text, viewModel.memo, "memoLabel should be populated")
 
-    let primary = "- $8.66"
+    let primary = "$8.66"
     XCTAssertEqual(self.sut.primaryAmountLabel.text, primary, "primaryAmountLabel should be populated")
 
-    let secondary = "0.00123756"
+    let secondary = "\(CurrencyCode.BTC.symbol)0.00123756"
     XCTAssertEqual(self.sut.secondaryAmountLabel.text, secondary, "secondaryAmountLabel should be populated")
   }
 
@@ -166,10 +166,10 @@ class TransactionHistorySummaryCellTests: XCTestCase {
     XCTAssertEqual(self.sut.dateLabel.text, viewModel.dateDescriptionFull, "dateLabel should be populated")
     XCTAssertEqual(self.sut.memoLabel.text, viewModel.memo, "memoLabel should be populated")
 
-    let primary = "- $8.66"
+    let primary = "$8.66"
     XCTAssertEqual(self.sut.primaryAmountLabel.text, primary, "primaryAmountLabel should be populated")
 
-    let secondary = "0.00123756"
+    let secondary = "\(CurrencyCode.BTC.symbol)0.00123756"
     XCTAssertEqual(self.sut.secondaryAmountLabel.text, secondary, "secondaryAmountLabel should be populated")
   }
 
