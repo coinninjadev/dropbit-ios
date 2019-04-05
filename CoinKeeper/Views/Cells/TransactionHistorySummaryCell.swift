@@ -29,31 +29,31 @@ class TransactionHistorySummaryCell: UICollectionViewCell {
     return layoutAttributes
   }
 
-  func load(with cellData: TransactionHistorySummaryCellViewModel) {
-    if cellData.transactionIsInvalidated {
+  func load(with viewModel: TransactionHistorySummaryCellViewModel) {
+    if viewModel.transactionIsInvalidated {
       incomingImage.image = UIImage(named: "invalidated30")
     } else {
-      incomingImage.image = cellData.isIncoming ? UIImage(named: "incoming30") : UIImage(named: "outgoing30")
+      incomingImage.image = viewModel.isIncoming ? UIImage(named: "incoming30") : UIImage(named: "outgoing30")
     }
 
-    receiverLabel.text = cellData.counterpartyDescription.isEmpty ? cellData.receiverAddress : cellData.counterpartyDescription
-    statusLabel.text = cellData.statusDescription
-    statusLabel.isHidden = cellData.hidden
+    receiverLabel.text = viewModel.counterpartyDescription.isEmpty ? viewModel.receiverAddress : viewModel.counterpartyDescription
+    statusLabel.text = viewModel.statusDescription
+    statusLabel.isHidden = viewModel.hidden
 
-    statusLabel.textColor = cellData.descriptionColor
+    statusLabel.textColor = viewModel.descriptionColor
 
-    dateLabel.text = cellData.dateDescriptionFull
+    dateLabel.text = viewModel.dateDescriptionFull
 
     // fall back to sent amount if still pending and fees are not known
-    let converter = cellData.receivedAmountAtCurrentConverter ?? cellData.sentAmountAtCurrentConverter
-    let labels = cellData.amountLabels(for: converter)
+    let converter = viewModel.receivedAmountAtCurrentConverter ?? viewModel.sentAmountAtCurrentConverter
+    let labels = viewModel.amountLabels(for: converter)
 
     primaryAmountLabel.text = labels.primary
     secondaryAmountLabel.text = labels.secondary
-    primaryAmountLabel.textColor = cellData.isIncoming ? Theme.Color.darkBlueText.color : Theme.Color.errorRed.color
+    primaryAmountLabel.textColor = viewModel.isIncoming ? Theme.Color.darkBlueText.color : Theme.Color.errorRed.color
 
-    memoLabel.text = cellData.memo
-    memoLabel.isHidden = cellData.memo.isEmpty
+    memoLabel.text = viewModel.memo
+    memoLabel.isHidden = viewModel.memo.isEmpty
   }
 
 }

@@ -296,8 +296,9 @@ class WalletManager: WalletManagerType {
 
   private func availableTransactionOutputs(fromUsableUTXOs usableUTXOs: [CKMVout]) -> [CNBUnspentTransactionOutput] {
     return usableUTXOs.compactMap { (vout: CKMVout) -> CNBUnspentTransactionOutput? in
-      guard let txid = vout.transaction?.txid, let derivationPath = vout.address?.derivativePath else { return nil }
-      guard let transaction = vout.transaction else { return nil }
+      guard let transaction = vout.transaction,
+        let derivationPath = vout.address?.derivativePath
+        else { return nil }
 
       let index = UInt(vout.index)
       let amount = UInt(vout.amount)
@@ -308,7 +309,7 @@ class WalletManager: WalletManagerType {
         change: UInt(derivationPath.change),
         index: UInt(derivationPath.index)
       )
-      let output = CNBUnspentTransactionOutput(id: txid,
+      let output = CNBUnspentTransactionOutput(id: transaction.txid,
                                                index: index,
                                                amount: amount,
                                                derivationPath: cnbDerivativePath,

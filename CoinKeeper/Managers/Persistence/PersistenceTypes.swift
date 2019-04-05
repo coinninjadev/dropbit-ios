@@ -65,13 +65,14 @@ protocol PersistenceManagerType: DeviceCountryCodeProvider {
     from responses: [AddressTransactionSummaryResponse],
     in context: NSManagedObjectContext
     )
+  @discardableResult
   func persistTemporaryTransaction(
     from transactionData: CNBTransactionData,
     with outgoingTransactionData: OutgoingTransactionData,
     txid: String,
     invitation: CKMInvitation?,
     in context: NSManagedObjectContext
-  )
+  ) -> CKMTransaction
   func persistReceivedSharedPayloads(
     _ payloads: [SharedPayloadV1],
     kit: PhoneNumberKit,
@@ -206,7 +207,7 @@ protocol PersistenceDatabaseType: AnyObject {
     txid: String,
     invitation: CKMInvitation?,
     in context: NSManagedObjectContext
-  )
+  ) -> CKMTransaction
 
   func persistReceivedSharedPayloads(
     _ payloads: [SharedPayloadV1],

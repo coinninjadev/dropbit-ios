@@ -20,7 +20,9 @@ class MockPersistenceDatabaseManager: PersistenceDatabaseType {
     with outgoingTransactionData: OutgoingTransactionData,
     txid: String,
     invitation: CKMInvitation?,
-    in context: NSManagedObjectContext) { }
+    in context: NSManagedObjectContext) -> CKMTransaction {
+    return CKMTransaction(insertInto: context)
+  }
 
   func groomAddressTransactionSummaries(
     from responses: [AddressTransactionSummaryResponse],
