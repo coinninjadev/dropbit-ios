@@ -165,5 +165,8 @@ class CalculatorViewControllerTests: XCTestCase {
     func viewControllerDidRequestBadgeUpdate(_ viewController: UIViewController) {
     }
 
+    func selectedCurrency() -> SelectedCurrency {
+      return .BTC
+    }
   }
 }

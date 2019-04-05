@@ -17,4 +17,11 @@ class BalanceSecondaryAmountLabel: UILabel {
     numberOfLines = 1
     textAlignment = .right
   }
+
+  override var intrinsicContentSize: CGSize {
+    let buffer = CGFloat(8)
+    var size = super.intrinsicContentSize
+    size.width += buffer
+    return size
+  }
 }

@@ -1,5 +1,5 @@
 //
-//  CurrencyViewModel.swift
+//  CurrencyController.swift
 //  DropBit
 //
 //  Created by BJ Miller on 4/3/19.
@@ -8,7 +8,26 @@
 
 import Foundation
 
-protocol CurrencyViewModelProviding: AnyObject {
+enum SelectedCurrency: String {
+  case BTC, fiat
+
+  mutating func toggle() {
+    switch self {
+    case .BTC: self = .fiat
+    case .fiat: self = .BTC
+    }
+  }
+
+  var description: String {
+    return self.rawValue
+  }
+}
+
+protocol SelectedCurrencyUpdatable: AnyObject {
+  func updateSelectedCurrency(to selectedCurrency: SelectedCurrency)
+}
+
+protocol CurrencyControllerProviding: AnyObject {
   /// Holds the currency selected by toggling currency
   var currentCurrencyCode: CurrencyCode { get set }
 
@@ -17,13 +36,15 @@ protocol CurrencyViewModelProviding: AnyObject {
   var currencyConverter: CurrencyConverter { get }
 }
 
-class CurrencyViewModel: CurrencyViewModelProviding {
+class CurrencyController: CurrencyControllerProviding {
   var currentCurrencyCode: CurrencyCode
   var exchangeRates: ExchangeRates
+  var selectedCurrency: SelectedCurrency
 
-  init(currentCurrencyCode: CurrencyCode, exchangeRates: ExchangeRates = [:]) {
+  init(currentCurrencyCode: CurrencyCode, exchangeRates: ExchangeRates = [:], selectedCurrency: SelectedCurrency = .fiat) {
     self.currentCurrencyCode = currentCurrencyCode
     self.exchangeRates = exchangeRates
+    self.selectedCurrency = selectedCurrency
   }
 
   var currencyConverter: CurrencyConverter {
