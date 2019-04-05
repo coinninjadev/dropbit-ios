@@ -85,8 +85,8 @@ class PersistenceManager: PersistenceManagerType {
     txid: String,
     invitation: CKMInvitation?,
     in context: NSManagedObjectContext
-    ) {
-    databaseManager.persistTemporaryTransaction(
+    ) -> CKMTransaction {
+    return databaseManager.persistTemporaryTransaction(
       from: transactionData,
       with: outgoingTransactionData,
       txid: txid,
