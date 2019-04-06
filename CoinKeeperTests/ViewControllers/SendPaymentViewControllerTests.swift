@@ -50,6 +50,7 @@ class SendPaymentViewControllerTests: XCTestCase {
     XCTAssertNotNil(self.sut.scanButton, "scanButton should be connected")
     XCTAssertNotNil(self.sut.sendButton, "sendButton should be connected")
     XCTAssertNotNil(self.sut.sendMaxButton, "sendMaxButton should be connected")
+    XCTAssertNotNil(self.sut.toggleCurrencyButton, "toggleCurrencyButton should be connected")
     XCTAssertNotNil(self.sut.memoContainerView, "memoButton should be connected")
   }
 
@@ -94,6 +95,12 @@ class SendPaymentViewControllerTests: XCTestCase {
     let actions = self.sut.sendMaxButton.actions(forTarget: self.sut, forControlEvent: .touchUpInside) ?? []
     let selector = #selector(SendPaymentViewController.performSendMax).description
     XCTAssertTrue(actions.contains(selector), "sendMaxButton should contain action")
+  }
+
+  func testToggleCurrencyButtonContainsAction() {
+    let actions = self.sut.toggleCurrencyButton.actions(forTarget: self.sut, forControlEvent: .touchUpInside) ?? []
+    let selector = #selector(SendPaymentViewController.performCurrencyToggle).description
+    XCTAssertTrue(actions.contains(selector), "toggleCurrencyButton should contain action")
   }
 
   // MARK: actions produce results

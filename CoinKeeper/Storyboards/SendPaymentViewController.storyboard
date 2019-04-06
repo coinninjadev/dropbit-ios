@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -42,8 +42,19 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JFL-ap-dYz" userLabel="Amounts and Counterparty Container">
                                 <rect key="frame" x="24" y="74" width="327" height="223.5"/>
                                 <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WKO-3S-ilw">
+                                        <rect key="frame" x="0.0" y="34.5" width="32" height="32"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="32" id="HNs-rJ-UQ0"/>
+                                            <constraint firstAttribute="height" constant="32" id="dN3-gh-tho"/>
+                                        </constraints>
+                                        <state key="normal" title="T"/>
+                                        <connections>
+                                            <action selector="performCurrencyToggle" destination="mA3-RJ-Qjv" eventType="touchUpInside" id="YCj-0s-hdB"/>
+                                        </connections>
+                                    </button>
                                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="gVg-Q3-DyT" customClass="LimitEditTextField" customModule="DropBit" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="28" width="327" height="45"/>
+                                        <rect key="frame" x="32" y="28" width="263" height="45"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="45" id="yZw-jG-D8D"/>
                                         </constraints>
@@ -112,15 +123,17 @@
                                     <constraint firstItem="MFr-LH-oew" firstAttribute="top" secondItem="gVg-Q3-DyT" secondAttribute="bottom" constant="8" id="1dz-8a-DLZ"/>
                                     <constraint firstItem="Zoz-wS-Csm" firstAttribute="top" relation="greaterThanOrEqual" secondItem="MFr-LH-oew" secondAttribute="bottom" constant="8" id="4qI-pP-6Vm"/>
                                     <constraint firstAttribute="trailing" secondItem="04W-cu-0yT" secondAttribute="trailing" id="7s1-xz-s1h"/>
+                                    <constraint firstItem="WKO-3S-ilw" firstAttribute="centerY" secondItem="2Q4-Um-Y5Z" secondAttribute="centerY" id="Cux-Ew-eb2"/>
                                     <constraint firstItem="MFr-LH-oew" firstAttribute="leading" secondItem="JFL-ap-dYz" secondAttribute="leading" id="GUa-ZR-qgg"/>
-                                    <constraint firstItem="gVg-Q3-DyT" firstAttribute="leading" secondItem="JFL-ap-dYz" secondAttribute="leading" id="H7A-T6-Kd6"/>
+                                    <constraint firstItem="gVg-Q3-DyT" firstAttribute="leading" secondItem="JFL-ap-dYz" secondAttribute="leading" constant="32" id="H7A-T6-Kd6"/>
                                     <constraint firstItem="2Q4-Um-Y5Z" firstAttribute="centerY" secondItem="gVg-Q3-DyT" secondAttribute="centerY" id="IX6-wI-Nuf"/>
                                     <constraint firstItem="Zoz-wS-Csm" firstAttribute="leading" secondItem="JFL-ap-dYz" secondAttribute="leading" constant="8" id="JCY-ca-tal"/>
                                     <constraint firstItem="04W-cu-0yT" firstAttribute="leading" secondItem="JFL-ap-dYz" secondAttribute="leading" id="TbT-hD-FNJ"/>
                                     <constraint firstAttribute="bottom" secondItem="04W-cu-0yT" secondAttribute="bottom" constant="24" id="dgF-9k-cmr"/>
+                                    <constraint firstAttribute="leading" secondItem="WKO-3S-ilw" secondAttribute="leading" id="ezr-Uz-ear"/>
                                     <constraint firstAttribute="trailing" secondItem="2Q4-Um-Y5Z" secondAttribute="trailing" id="hti-oi-6J9"/>
                                     <constraint firstAttribute="trailing" secondItem="Zoz-wS-Csm" secondAttribute="trailing" constant="8" id="ls1-cP-xc6"/>
-                                    <constraint firstAttribute="trailing" secondItem="gVg-Q3-DyT" secondAttribute="trailing" id="pz3-sI-7TW"/>
+                                    <constraint firstAttribute="trailing" secondItem="gVg-Q3-DyT" secondAttribute="trailing" constant="32" id="pz3-sI-7TW"/>
                                     <constraint firstAttribute="bottom" secondItem="Zoz-wS-Csm" secondAttribute="bottom" constant="29" id="s8F-TP-Z7e"/>
                                     <constraint firstItem="gVg-Q3-DyT" firstAttribute="top" secondItem="JFL-ap-dYz" secondAttribute="top" constant="28" id="wFh-Vx-kGk"/>
                                     <constraint firstAttribute="trailing" secondItem="MFr-LH-oew" secondAttribute="trailing" id="xXT-Qu-IYf"/>
@@ -219,6 +232,7 @@
                         <outlet property="secondaryAmountLabel" destination="MFr-LH-oew" id="9p9-OW-ubX"/>
                         <outlet property="sendButton" destination="xMy-P4-RBB" id="CYW-nf-22m"/>
                         <outlet property="sendMaxButton" destination="2Q4-Um-Y5Z" id="0aw-nM-XZe"/>
+                        <outlet property="toggleCurrencyButton" destination="WKO-3S-ilw" id="LEl-Tc-eMY"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="9Ih-ii-wig" userLabel="First Responder" sceneMemberID="firstResponder"/>
