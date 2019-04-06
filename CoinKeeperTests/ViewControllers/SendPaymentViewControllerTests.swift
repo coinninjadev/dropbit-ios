@@ -210,4 +210,18 @@ class SendPaymentViewControllerTests: XCTestCase {
     self.sut.updateViewModel(withParsedRecipient: recipient)
     XCTAssertEqual(self.sut.viewModel.primaryCurrency, .BTC)
   }
+
+  func testTogglingCurrencyChangesViewModel() {
+    let existingPrimaryCurrency = CurrencyCode.USD
+    sut.viewModel.primaryCurrency = existingPrimaryCurrency
+    sut.updateViewWithModel()
+
+    sut.toggleCurrencyButton.sendActions(for: .touchUpInside)
+
+    let updatedPrimaryCurrency = sut.viewModel.primaryCurrency
+
+    XCTAssertNotEqual(existingPrimaryCurrency, updatedPrimaryCurrency)
+    XCTAssertEqual(updatedPrimaryCurrency, .BTC)
+    XCTAssertTrue(sut.primaryAmountTextField.text!.contains(CurrencyCode.BTC.symbol))
+  }
 }

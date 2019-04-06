@@ -149,7 +149,11 @@ ValidatorAlertDisplayable {
   }
 
   @IBAction func performCurrencyToggle() {
-    
+    switch primaryCurrency {
+    case .BTC: viewModel.primaryCurrency = .USD
+    case .USD: viewModel.primaryCurrency = .BTC
+    }
+    updateViewWithModel()
   }
 
   /// Each button should connect to this IBAction. This prevents automatically
