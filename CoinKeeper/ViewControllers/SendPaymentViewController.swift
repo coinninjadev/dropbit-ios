@@ -83,6 +83,7 @@ ValidatorAlertDisplayable {
   @IBOutlet var sendButton: PrimaryActionButton!
   @IBOutlet var memoContainerView: SendPaymentMemoView!
   @IBOutlet var sendMaxButton: LightBorderedButton!
+  @IBOutlet var toggleCurrencyButton: UIButton!
 
   @IBAction func performClose() {
     coordinationDelegate?.viewControllerDidSelectClose(self)
@@ -145,6 +146,14 @@ ValidatorAlertDisplayable {
   @IBAction func performStartPhoneEntry() {
     showPhoneEntryView(with: "")
     phoneNumberEntryView.textField?.becomeFirstResponder()
+  }
+
+  @IBAction func performCurrencyToggle() {
+    switch primaryCurrency {
+    case .BTC: viewModel.primaryCurrency = .USD
+    case .USD: viewModel.primaryCurrency = .BTC
+    }
+    updateViewWithModel()
   }
 
   /// Each button should connect to this IBAction. This prevents automatically
