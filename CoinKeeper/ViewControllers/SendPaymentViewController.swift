@@ -149,10 +149,7 @@ ValidatorAlertDisplayable {
   }
 
   @IBAction func performCurrencyToggle() {
-    switch primaryCurrency {
-    case .BTC: viewModel.primaryCurrency = .USD
-    case .USD: viewModel.primaryCurrency = .BTC
-    }
+    viewModel.togglePrimaryCurrency()
     updateViewWithModel()
   }
 

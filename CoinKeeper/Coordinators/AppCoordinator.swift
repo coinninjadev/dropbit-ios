@@ -437,6 +437,7 @@ class AppCoordinator: CoordinatorType {
       assignCoordinationDelegate(to: sendPaymentViewController)
       sendPaymentViewController.alertManager = self.alertManager
       sendPaymentViewController.recipientDescriptionToLoad = bitcoinURL.absoluteString
+      sendPaymentViewController.viewModel.updatePrimaryCurrency(to: currencyController.selectedCurrency)
       navigationController.present(sendPaymentViewController, animated: true)
     }
   }

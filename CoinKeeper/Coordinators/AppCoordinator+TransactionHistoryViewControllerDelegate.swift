@@ -132,6 +132,7 @@ extension AppCoordinator: TransactionHistoryViewControllerDelegate {
     sendPaymentViewController.alertManager = self.alertManager
     sendPaymentViewController.viewModel = SendPaymentViewModel(btcAmount: converter.btcValue,
                                                                primaryCurrency: converter.fromCurrency)
+    sendPaymentViewController.viewModel.updatePrimaryCurrency(to: currencyController.selectedCurrency)
     navigationController.present(sendPaymentViewController, animated: true)
   }
 
