@@ -39,6 +39,11 @@ public class CCMValidatedMetadata: NSManagedObject {
     }
   }
 
+  static func findAll(in context: NSManagedObjectContext) throws -> [CCMValidatedMetadata] {
+    let fetchRequest: NSFetchRequest<CCMValidatedMetadata> = CCMValidatedMetadata.fetchRequest()
+    return try context.fetch(fetchRequest)
+  }
+
   /// It is possible for the user to have duplicates in their device contacts
   /// that all point to the same CCMValidatedMetadata object. This provides a
   /// consistent displayName in that situation, sorted ascending.
