@@ -127,13 +127,9 @@ class ContactCacheManager: ContactCacheManagerType {
       ]
     )
     let hasNamePredicate = NSCompoundPredicate(notPredicateWithSubpredicate: noNamePredicate)
-
     let notSpamPredicate = NSPredicate(format: "\(#keyPath(CCMPhoneNumber.cachedContact.displayName)) != %@", "SPAM")
-
-    let notWorkPredicate = NSPredicate(format: "\(#keyPath(CCMPhoneNumber.labelKey)) != %@", CNLabelWork)
-    return NSCompoundPredicate(type: .and, subpredicates: [hasNamePredicate,
-                                                           notSpamPredicate,
-                                                           notWorkPredicate])
+    let andPredicates = [hasNamePredicate, notSpamPredicate]
+    return NSCompoundPredicate(type: .and, subpredicates: andPredicates)
   }
 
   private func frcSortDescriptors() -> [NSSortDescriptor] {
