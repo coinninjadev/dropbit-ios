@@ -203,9 +203,11 @@ class ContactCacheManager: ContactCacheManagerType {
   /// because nullify rules don't play well with batch deletions.
   func deleteSystemContactData(in context: NSManagedObjectContext) throws {
     let allContacts = try CCMContact.findAll(in: context)
-    let contactBatches = allContacts.chunked(by: 100)
-    for contactBatch in contactBatches {
-      contactBatch.forEach { context.delete($0) }
+    let allMetadata = try CCMValidatedMetadata.findAll(in: context)
+    let allObjects: [NSManagedObject] = allContacts + allMetadata
+    let batches = allObjects.chunked(by: 100)
+    for batch in batches {
+      batch.forEach { context.delete($0) }
       try context.saveRecursively()
     }
   }
