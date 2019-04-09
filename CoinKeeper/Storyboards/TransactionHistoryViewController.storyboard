@@ -32,10 +32,6 @@
                                     <constraint firstAttribute="height" constant="66" id="eDx-vv-erX"/>
                                 </constraints>
                             </view>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="B8c-Jo-MxY" customClass="NoTransactionsView" customModule="DropBit" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="86" width="375" height="581"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                            </view>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="GX7-DA-6R2">
                                 <rect key="frame" x="0.0" y="86" width="375" height="477"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -72,7 +68,6 @@
                             <constraint firstItem="JGv-XL-uiR" firstAttribute="trailing" secondItem="Asa-Mr-foF" secondAttribute="trailing" id="6vm-Vl-UGC"/>
                             <constraint firstItem="GX7-DA-6R2" firstAttribute="top" secondItem="e1j-lc-uTG" secondAttribute="bottom" id="7DN-fy-t7g"/>
                             <constraint firstItem="e1j-lc-uTG" firstAttribute="top" secondItem="JGv-XL-uiR" secondAttribute="top" id="ExG-BB-kqq"/>
-                            <constraint firstItem="B8c-Jo-MxY" firstAttribute="bottom" secondItem="JGv-XL-uiR" secondAttribute="bottom" id="LHc-4Y-skQ"/>
                             <constraint firstItem="Vc7-dJ-Wpy" firstAttribute="leading" secondItem="JGv-XL-uiR" secondAttribute="leading" id="NAG-gI-65L"/>
                             <constraint firstItem="e1j-lc-uTG" firstAttribute="leading" secondItem="JGv-XL-uiR" secondAttribute="leading" id="Nzs-VD-ECW"/>
                             <constraint firstItem="Asa-Mr-foF" firstAttribute="leading" secondItem="JGv-XL-uiR" secondAttribute="leading" id="RE9-49-PbQ"/>
@@ -83,11 +78,8 @@
                             <constraint firstItem="JGv-XL-uiR" firstAttribute="trailing" secondItem="e1j-lc-uTG" secondAttribute="trailing" id="dHd-fp-VJv"/>
                             <constraint firstItem="Av0-bG-xgJ" firstAttribute="leading" secondItem="JGv-XL-uiR" secondAttribute="leading" id="dhp-1R-Qqb"/>
                             <constraint firstItem="Av0-bG-xgJ" firstAttribute="trailing" secondItem="JGv-XL-uiR" secondAttribute="trailing" id="fX8-qv-xc2"/>
-                            <constraint firstItem="B8c-Jo-MxY" firstAttribute="leading" secondItem="JGv-XL-uiR" secondAttribute="leading" id="gfU-5r-ogL"/>
                             <constraint firstItem="JGv-XL-uiR" firstAttribute="trailing" secondItem="Vc7-dJ-Wpy" secondAttribute="trailing" id="kYG-VA-aQ2"/>
-                            <constraint firstItem="B8c-Jo-MxY" firstAttribute="top" secondItem="e1j-lc-uTG" secondAttribute="bottom" id="mYe-H5-wsc"/>
                             <constraint firstAttribute="bottom" secondItem="Vc7-dJ-Wpy" secondAttribute="bottom" constant="-44" id="n9x-LX-J2U"/>
-                            <constraint firstItem="JGv-XL-uiR" firstAttribute="trailing" secondItem="B8c-Jo-MxY" secondAttribute="trailing" id="sEB-Mm-ha2"/>
                             <constraint firstItem="Vc7-dJ-Wpy" firstAttribute="top" secondItem="GX7-DA-6R2" secondAttribute="bottom" id="xnO-b1-Ecq"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="JGv-XL-uiR"/>
@@ -97,7 +89,6 @@
                         <outlet property="detailCollectionView" destination="Asa-Mr-foF" id="Kgh-Us-vv8"/>
                         <outlet property="detailCollectionViewHeightConstraint" destination="nxV-L6-VoR" id="2sa-Ok-h7E"/>
                         <outlet property="detailCollectionViewTopConstraint" destination="2fz-yg-YoR" id="jcL-Eg-gOh"/>
-                        <outlet property="noTransactionsView" destination="B8c-Jo-MxY" id="NfZ-Ge-gIC"/>
                         <outlet property="refreshView" destination="Av0-bG-xgJ" id="dNg-B0-57u"/>
                         <outlet property="refreshViewTopConstraint" destination="XAy-Ne-KPx" id="Itl-x4-z0W"/>
                         <outlet property="sendReceiveActionView" destination="Vc7-dJ-Wpy" id="UvZ-dT-gHG"/>

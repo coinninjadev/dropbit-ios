@@ -19,6 +19,7 @@ target 'DropBit' do
   pod 'PhoneNumberKit', git: 'https://github.com/blwinters/PhoneNumberKit.git', commit: '18b0a34'
   pod 'JKSteppedProgressBar', git: 'https://github.com/MitchellMalleo/JKSteppedProgressBar.git', commit: 'a41db05'
   pod 'RNCryptor', '~> 5.0'
+  pod 'DZNEmptyDataSet', '~> 1.8'
 
   target 'DropBitTests' do
     inherit! :search_paths

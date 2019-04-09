@@ -13,6 +13,7 @@ import Gifu
 import os.log
 import PromiseKit
 import PhoneNumberKit
+import DZNEmptyDataSet
 
 protocol TransactionHistoryViewControllerDelegate: DeviceCountryCodeProvider &
   BalanceContainerDelegate &
@@ -44,7 +45,7 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
   @IBOutlet var detailCollectionView: UICollectionView!
   @IBOutlet var detailCollectionViewTopConstraint: NSLayoutConstraint!
   @IBOutlet var detailCollectionViewHeightConstraint: NSLayoutConstraint!
-  @IBOutlet var noTransactionsView: NoTransactionsView!
+//  @IBOutlet var noTransactionsView: NoTransactionsView!
   @IBOutlet var collectionViews: [UICollectionView]!
   @IBOutlet var refreshView: TransactionHistoryRefreshView!
   @IBOutlet var refreshViewTopConstraint: NSLayoutConstraint!
@@ -70,12 +71,18 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
     return [
       (self.view, .transactionHistory(.page)),
       (balanceContainer.leftButton, .transactionHistory(.menu)),
-      (noTransactionsView.learnAboutBitcoinButton, .transactionHistory(.tutorialButton)),
+//      (noTransactionsView.learnAboutBitcoinButton, .transactionHistory(.tutorialButton)),
       (sendReceiveActionView.receiveButton, .transactionHistory(.receiveButton)),
       (sendReceiveActionView.sendButton, .transactionHistory(.sendButton)),
       (balanceContainer.balanceView, .transactionHistory(.balanceView))
     ]
   }
+
+  lazy var noTransactionsView: NoTransactionsView = {
+    let view: NoTransactionsView = NoTransactionsView(frame: self.summaryCollectionView.frame) //NoTransactionsView.fromNib()
+    view.delegate = self
+    return view
+  }()
 
   private let logger = OSLog(subsystem: "com.coinninja.coinkeeper.transactionhistoryviewcontroller", category: "tx_history_view_controller")
 
@@ -141,6 +148,10 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
   override func viewDidLoad() {
     super.viewDidLoad()
 
+//    noTransactionsView.isHidden = true
+    summaryCollectionView.emptyDataSetSource = self
+    summaryCollectionView.emptyDataSetDelegate = self
+
     self.view.backgroundColor = Theme.Color.lightGrayBackground.color
 
     view.layoutIfNeeded()
@@ -164,7 +175,7 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
       self.detailCollectionView.contentInsetAdjustmentBehavior = .never
     }
 
-    noTransactionsView.delegate = self
+//    noTransactionsView.delegate = self
     showDetailCollectionView(false, animated: false)
   }
 
@@ -324,7 +335,7 @@ extension TransactionHistoryViewController: BalanceDisplayable {
 
 extension TransactionHistoryViewController: NSFetchedResultsControllerDelegate {
   func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-    updateNoTransactionsView()
+//    updateNoTransactionsView()
     collectionViews.forEach { $0.reloadData() }
   }
 }
@@ -339,16 +350,16 @@ extension TransactionHistoryViewController: UICollectionViewDataSource {
     guard let sections = frc.sections else { return 0 }
     let numberOfObjects = sections[section].numberOfObjects
 
-    updateNoTransactionsView()
+//    updateNoTransactionsView()
 
     return numberOfObjects
   }
 
-  private func updateNoTransactionsView() {
-    let allObjectsCount = frc.fetchedObjects?.count ?? 0
-    noTransactionsView.isHidden = (allObjectsCount != 0)
-    summaryCollectionView.isHidden = (allObjectsCount == 0)
-  }
+//  private func updateNoTransactionsView() {
+//    let allObjectsCount = frc.fetchedObjects?.count ?? 0
+//    noTransactionsView.isHidden = (allObjectsCount != 0)
+//    summaryCollectionView.isHidden = (allObjectsCount == 0)
+//  }
 
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
     switch collectionView {
@@ -484,5 +495,25 @@ extension TransactionHistoryViewController: SelectedCurrencyUpdatable {
     let summaryIndexSet = IndexSet(integersIn: (0..<summaryCollectionView.numberOfSections))
     summaryCollectionView.reloadSections(summaryIndexSet)
     detailCollectionView.reloadData()
+  }
+}
+
+extension TransactionHistoryViewController: DZNEmptyDataSetDelegate, DZNEmptyDataSetSource {
+  func emptyDataSetShouldBeForced(toDisplay scrollView: UIScrollView!) -> Bool {
+    let shouldShow = (frc.fetchedObjects?.count ?? 0) < 3
+    return shouldShow
+  }
+
+  func emptyDataSetShouldDisplay(_ scrollView: UIScrollView!) -> Bool {
+    let shouldShow = (frc.fetchedObjects?.count ?? 0) < 3
+    return shouldShow
+  }
+
+  func emptyDataSetShouldAllowTouch(_ scrollView: UIScrollView!) -> Bool {
+    return true
+  }
+
+  func customView(forEmptyDataSet scrollView: UIScrollView!) -> UIView! {
+    return noTransactionsView
   }
 }

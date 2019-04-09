@@ -21,9 +21,12 @@ class NoTransactionsView: UIView {
       noTransactionsTitle.textColor = Theme.Color.grayText.color
     }
   }
-  @IBOutlet var noTransactionsDetail: UILabel!
-  @IBOutlet var sendSomeBitcoinLabel: UILabel!
-  @IBOutlet var detailLabels: [UILabel]!
+  @IBOutlet var noTransactionsDetail: UILabel! {
+    didSet {
+      noTransactionsDetail.textColor = Theme.Color.grayText.color
+      noTransactionsDetail.font = Theme.Font.noTransactionsDetail.font
+    }
+  }
   @IBOutlet var learnAboutBitcoinButton: PrimaryActionButton!
 
   weak var delegate: NoTransactionsViewDelegate?
@@ -41,10 +44,6 @@ class NoTransactionsView: UIView {
   private func initalize() {
     xibSetup()
     backgroundColor = Theme.Color.lightGrayBackground.color
-    detailLabels.forEach { label in
-      label.textColor = Theme.Color.grayText.color
-      label.font = Theme.Font.noTransactionsDetail.font
-    }
   }
 
   @IBAction func learnAboutBitcoinButtonWasTapped() {
