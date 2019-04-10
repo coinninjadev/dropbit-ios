@@ -13,6 +13,9 @@ class PrimaryActionButton: UIButton {
   enum Mode {
     case standard
     case error
+    case learnBitcoin
+    case getBitcoin
+    case spendBitcoin
   }
 
   var mode: Mode = .standard {
@@ -39,6 +42,18 @@ class PrimaryActionButton: UIButton {
       backgroundColor = Theme.Color.errorRed.color
       setTitleColor(.white, for: .normal)
       setTitleColor(Theme.Color.lightGrayText.color, for: .highlighted)
+    case .learnBitcoin:
+      backgroundColor = Theme.Color.darkBlueButton.color
+      setTitleColor(Theme.Color.lightGrayText.color, for: .normal)
+      setTitleColor(Theme.Color.lightGrayText.color, for: .highlighted)
+    case .getBitcoin:
+      backgroundColor = Theme.Color.appleGreen.color
+      setTitleColor(Theme.Color.lightGrayText.color, for: .normal)
+      setTitleColor(Theme.Color.lightGrayText.color, for: .highlighted)
+    case .spendBitcoin:
+      backgroundColor = Theme.Color.mango.color
+      setTitleColor(Theme.Color.lightGrayText.color, for: .normal)
+      setTitleColor(Theme.Color.lightGrayText.color, for: .highlighted)
     }
   }
 
@@ -51,6 +66,9 @@ class PrimaryActionButton: UIButton {
         mainColor = Theme.Color.primaryActionButton.color
       case .error:
         mainColor = Theme.Color.errorRed.color
+      case .getBitcoin: mainColor = Theme.Color.appleGreen.color
+      case .learnBitcoin: mainColor = Theme.Color.darkBlueButton.color
+      case .spendBitcoin: mainColor = Theme.Color.mango.color
       }
 
       backgroundColor = isHighlighted ? Theme.Color.lightGrayButtonBackground.color : mainColor

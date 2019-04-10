@@ -11,6 +11,8 @@ import UIKit
 
 protocol NoTransactionsViewDelegate: AnyObject {
   func noTransactionsViewDidSelectLearnAboutBitcoin(_ view: NoTransactionsBaseView)
+  func noTransactionsViewDidSelectGetBitcoin(_ view: NoTransactionsBaseView)
+  func noTransactionsViewDidSelectSpendBitcoin(_ view: NoTransactionsBaseView)
 }
 
 class NoTransactionsBaseView: UIView {
@@ -44,8 +46,12 @@ class NoTransactionsBaseView: UIView {
     backgroundColor = Theme.Color.lightGrayBackground.color
   }
 
-  @IBAction func learnAboutBitcoinButtonWasTapped() {
+  @IBAction func learnAboutBitcoin() {
     delegate?.noTransactionsViewDidSelectLearnAboutBitcoin(self)
+  }
+
+  @IBAction func getBitcoin() {
+    delegate?.noTransactionsViewDidSelectGetBitcoin(self)
   }
 }
 
@@ -67,5 +73,15 @@ class TransactionHistoryNoBalanceView: NoTransactionsBaseView {
 }
 
 class TransactionHistoryWithBalanceView: NoTransactionsBaseView {
-  @IBOutlet var spendBitcoinButton: PrimaryActionButton!
+  @IBOutlet var spendBitcoinButton: PrimaryActionButton! {
+    didSet {
+      spendBitcoinButton.setTitle("SPEND BITCOIN", for: .normal)
+      spendBitcoinButton.mode = .spendBitcoin
+    }
+  }
+
+  @IBAction func spendBitcoin() {
+    delegate?.noTransactionsViewDidSelectSpendBitcoin(self)
+  }
+
 }

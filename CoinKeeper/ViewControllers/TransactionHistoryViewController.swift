@@ -45,7 +45,8 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
   @IBOutlet var detailCollectionView: UICollectionView!
   @IBOutlet var detailCollectionViewTopConstraint: NSLayoutConstraint!
   @IBOutlet var detailCollectionViewHeightConstraint: NSLayoutConstraint!
-//  @IBOutlet var noTransactionsView: NoTransactionsView!
+  @IBOutlet var transactionHistoryNoBalanceView: TransactionHistoryNoBalanceView!
+  @IBOutlet var transactionHistoryWithBalanceView: TransactionHistoryWithBalanceView!
   @IBOutlet var collectionViews: [UICollectionView]!
   @IBOutlet var refreshView: TransactionHistoryRefreshView!
   @IBOutlet var refreshViewTopConstraint: NSLayoutConstraint!
@@ -71,18 +72,11 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
     return [
       (self.view, .transactionHistory(.page)),
       (balanceContainer.leftButton, .transactionHistory(.menu)),
-//      (noTransactionsView.learnAboutBitcoinButton, .transactionHistory(.tutorialButton)),
       (sendReceiveActionView.receiveButton, .transactionHistory(.receiveButton)),
       (sendReceiveActionView.sendButton, .transactionHistory(.sendButton)),
       (balanceContainer.balanceView, .transactionHistory(.balanceView))
     ]
   }
-
-  lazy var noTransactionsView: NoTransactionsView = {
-    let view: NoTransactionsView = NoTransactionsView(frame: self.summaryCollectionView.frame) //NoTransactionsView.fromNib()
-    view.delegate = self
-    return view
-  }()
 
   private let logger = OSLog(subsystem: "com.coinninja.coinkeeper.transactionhistoryviewcontroller", category: "tx_history_view_controller")
 
@@ -148,9 +142,8 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
   override func viewDidLoad() {
     super.viewDidLoad()
 
-//    noTransactionsView.isHidden = true
-    summaryCollectionView.emptyDataSetSource = self
-    summaryCollectionView.emptyDataSetDelegate = self
+    transactionHistoryNoBalanceView.delegate = self
+    transactionHistoryWithBalanceView.delegate = self
 
     self.view.backgroundColor = Theme.Color.lightGrayBackground.color
 
@@ -175,7 +168,6 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
       self.detailCollectionView.contentInsetAdjustmentBehavior = .never
     }
 
-//    noTransactionsView.delegate = self
     showDetailCollectionView(false, animated: false)
   }
 
@@ -228,6 +220,9 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
     detailCollectionView.contentInset = UIEdgeInsets(top: 0, left: hPadding, bottom: 0, right: hPadding) // allow first and last cells to be centered
     detailCollectionView.isPagingEnabled = false
     detailCollectionView.collectionViewLayout = detailCollectionViewLayout(withHorizontalPadding: hPadding)
+
+    summaryCollectionView.emptyDataSetSource = self
+    summaryCollectionView.emptyDataSetDelegate = self
   }
 
 }
@@ -335,7 +330,6 @@ extension TransactionHistoryViewController: BalanceDisplayable {
 
 extension TransactionHistoryViewController: NSFetchedResultsControllerDelegate {
   func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-//    updateNoTransactionsView()
     collectionViews.forEach { $0.reloadData() }
   }
 }
@@ -350,16 +344,8 @@ extension TransactionHistoryViewController: UICollectionViewDataSource {
     guard let sections = frc.sections else { return 0 }
     let numberOfObjects = sections[section].numberOfObjects
 
-//    updateNoTransactionsView()
-
     return numberOfObjects
   }
-
-//  private func updateNoTransactionsView() {
-//    let allObjectsCount = frc.fetchedObjects?.count ?? 0
-//    noTransactionsView.isHidden = (allObjectsCount != 0)
-//    summaryCollectionView.isHidden = (allObjectsCount == 0)
-//  }
 
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
     switch collectionView {
@@ -396,7 +382,15 @@ extension TransactionHistoryViewController: UICollectionViewDataSource {
 }
 
 extension TransactionHistoryViewController: NoTransactionsViewDelegate {
-  func noTransactionsViewDidSelectLearnAboutBitcoin(_ view: NoTransactionsView) {
+  func noTransactionsViewDidSelectGetBitcoin(_ view: NoTransactionsBaseView) {
+
+  }
+
+  func noTransactionsViewDidSelectSpendBitcoin(_ view: NoTransactionsBaseView) {
+
+  }
+
+  func noTransactionsViewDidSelectLearnAboutBitcoin(_ view: NoTransactionsBaseView) {
     coordinationDelegate?.viewControllerDidRequestTutorial(self)
   }
 }
@@ -500,13 +494,11 @@ extension TransactionHistoryViewController: SelectedCurrencyUpdatable {
 
 extension TransactionHistoryViewController: DZNEmptyDataSetDelegate, DZNEmptyDataSetSource {
   func emptyDataSetShouldBeForced(toDisplay scrollView: UIScrollView!) -> Bool {
-    let shouldShow = (frc.fetchedObjects?.count ?? 0) < 3
-    return shouldShow
+    return shouldShowNoBalanceView || shouldShowWithBalanceView
   }
 
   func emptyDataSetShouldDisplay(_ scrollView: UIScrollView!) -> Bool {
-    let shouldShow = (frc.fetchedObjects?.count ?? 0) < 3
-    return shouldShow
+    return shouldShowNoBalanceView || shouldShowWithBalanceView
   }
 
   func emptyDataSetShouldAllowTouch(_ scrollView: UIScrollView!) -> Bool {
@@ -514,6 +506,25 @@ extension TransactionHistoryViewController: DZNEmptyDataSetDelegate, DZNEmptyDat
   }
 
   func customView(forEmptyDataSet scrollView: UIScrollView!) -> UIView! {
-    return noTransactionsView
+    if shouldShowNoBalanceView {
+      return transactionHistoryNoBalanceView
+    }
+    if shouldShowWithBalanceView {
+      return transactionHistoryWithBalanceView
+    }
+    return nil
+  }
+
+  private var shouldShowNoBalanceView: Bool {
+    return (frc.fetchedObjects?.count ?? 0) == 0
+  }
+
+  private var shouldShowWithBalanceView: Bool {
+    let numberOfItems = (frc.fetchedObjects?.count ?? 0)
+    return deviceIsSmall ? (numberOfItems == 1) : (numberOfItems <= 3)
+  }
+
+  private var deviceIsSmall: Bool {
+    return (view.frame.height < 600)
   }
 }
