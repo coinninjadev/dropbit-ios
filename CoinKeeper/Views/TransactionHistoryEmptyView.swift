@@ -1,5 +1,5 @@
 //
-//  NoTransactionsView.swift
+//  TransactionHistoryEmptyView.swift
 //  CoinKeeper
 //
 //  Created by Mitchell on 7/12/18.
@@ -10,12 +10,12 @@ import Foundation
 import UIKit
 
 protocol NoTransactionsViewDelegate: AnyObject {
-  func noTransactionsViewDidSelectLearnAboutBitcoin(_ view: NoTransactionsBaseView)
-  func noTransactionsViewDidSelectGetBitcoin(_ view: NoTransactionsBaseView)
-  func noTransactionsViewDidSelectSpendBitcoin(_ view: NoTransactionsBaseView)
+  func noTransactionsViewDidSelectLearnAboutBitcoin(_ view: TransactionHistoryEmptyView)
+  func noTransactionsViewDidSelectGetBitcoin(_ view: TransactionHistoryEmptyView)
+  func noTransactionsViewDidSelectSpendBitcoin(_ view: TransactionHistoryEmptyView)
 }
 
-class NoTransactionsBaseView: UIView {
+class TransactionHistoryEmptyView: UIView {
 
   @IBOutlet var getBitcoinButton: PrimaryActionButton! {
     didSet {
@@ -55,7 +55,7 @@ class NoTransactionsBaseView: UIView {
   }
 }
 
-class TransactionHistoryNoBalanceView: NoTransactionsBaseView {
+class TransactionHistoryNoBalanceView: TransactionHistoryEmptyView {
   @IBOutlet var noTransactionsTitle: UILabel! {
     didSet {
       noTransactionsTitle.font = Theme.Font.noTransactionsTitle.font
@@ -72,7 +72,7 @@ class TransactionHistoryNoBalanceView: NoTransactionsBaseView {
   }
 }
 
-class TransactionHistoryWithBalanceView: NoTransactionsBaseView {
+class TransactionHistoryWithBalanceView: TransactionHistoryEmptyView {
   @IBOutlet var spendBitcoinButton: PrimaryActionButton! {
     didSet {
       spendBitcoinButton.setTitle("SPEND BITCOIN", for: .normal)

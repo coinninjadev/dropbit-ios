@@ -394,7 +394,7 @@
 		A2893BC020FD4E7700E96B07 /* UIViewController+ToolbarUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2893BBF20FD4E7700E96B07 /* UIViewController+ToolbarUtilities.swift */; };
 		A2893BC220FD515900E96B07 /* AppCoordinator+TutorialViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2893BC120FD515900E96B07 /* AppCoordinator+TutorialViewControllerDelegate.swift */; };
 		A293E35020F67F390099ED69 /* SuccessFailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A293E34F20F67F390099ED69 /* SuccessFailViewModel.swift */; };
-		A293E35220F798920099ED69 /* NoTransactionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A293E35120F798920099ED69 /* NoTransactionsView.swift */; };
+		A293E35220F798920099ED69 /* TransactionHistoryEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A293E35120F798920099ED69 /* TransactionHistoryEmptyView.swift */; };
 		A29CE0C32098AD1500761B91 /* UINavigationController+TopViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A29CE0C22098AD1500761B91 /* UINavigationController+TopViewController.swift */; };
 		A29CE0C72098F84300761B91 /* SuccessFailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A29CE0C62098F84300761B91 /* SuccessFailViewController.swift */; };
 		A29CE0C92098F8CA00761B91 /* SuccessFailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A29CE0C82098F8CA00761B91 /* SuccessFailView.swift */; };
@@ -1173,7 +1173,7 @@
 		A2893BBF20FD4E7700E96B07 /* UIViewController+ToolbarUtilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+ToolbarUtilities.swift"; sourceTree = "<group>"; };
 		A2893BC120FD515900E96B07 /* AppCoordinator+TutorialViewControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppCoordinator+TutorialViewControllerDelegate.swift"; sourceTree = "<group>"; };
 		A293E34F20F67F390099ED69 /* SuccessFailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuccessFailViewModel.swift; sourceTree = "<group>"; };
-		A293E35120F798920099ED69 /* NoTransactionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoTransactionsView.swift; sourceTree = "<group>"; };
+		A293E35120F798920099ED69 /* TransactionHistoryEmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionHistoryEmptyView.swift; sourceTree = "<group>"; };
 		A29CE0C22098AD1500761B91 /* UINavigationController+TopViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UINavigationController+TopViewController.swift"; sourceTree = "<group>"; };
 		A29CE0C62098F84300761B91 /* SuccessFailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuccessFailViewController.swift; sourceTree = "<group>"; };
 		A29CE0C82098F8CA00761B91 /* SuccessFailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuccessFailView.swift; sourceTree = "<group>"; };
@@ -1994,7 +1994,7 @@
 				3BD7B73020D66F12005057A7 /* HorizontallyPaginatedCollectionViewLayout.swift */,
 				3B23126220DA6CA30099A557 /* TransactionHistoryDetailCellAddressView.xib */,
 				3B23126620DA6D0E0099A557 /* TransactionHistoryDetailCellAddressView.swift */,
-				A293E35120F798920099ED69 /* NoTransactionsView.swift */,
+				A293E35120F798920099ED69 /* TransactionHistoryEmptyView.swift */,
 				308F6F00217F91980094D6CB /* ServerAddressView.swift */,
 				308F6F02217F91A50094D6CB /* ServerAddressView.xib */,
 				B536D12A21F1140100C344B6 /* SendPaymentMemoView.swift */,
@@ -3634,7 +3634,7 @@
 				A2E52D8820BE3A3F00424E6A /* Data+HexString.swift in Sources */,
 				307DF11D2150394400260369 /* MessagesManager.swift in Sources */,
 				3B6FDAE82052DACA0091916A /* VerifyRecoveryWordsViewModel.swift in Sources */,
-				A293E35220F798920099ED69 /* NoTransactionsView.swift in Sources */,
+				A293E35220F798920099ED69 /* TransactionHistoryEmptyView.swift in Sources */,
 				B56C414821F7717C005668E3 /* ConfirmPaymentMemoView.swift in Sources */,
 				B5FAD64C20A4DC1D008EB727 /* PublicKeyDataSource.swift in Sources */,
 				3B13ED112254E24900905226 /* CurrencyController.swift in Sources */,

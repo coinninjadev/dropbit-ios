@@ -382,15 +382,15 @@ extension TransactionHistoryViewController: UICollectionViewDataSource {
 }
 
 extension TransactionHistoryViewController: NoTransactionsViewDelegate {
-  func noTransactionsViewDidSelectGetBitcoin(_ view: NoTransactionsBaseView) {
+  func noTransactionsViewDidSelectGetBitcoin(_ view: TransactionHistoryEmptyView) {
 
   }
 
-  func noTransactionsViewDidSelectSpendBitcoin(_ view: NoTransactionsBaseView) {
+  func noTransactionsViewDidSelectSpendBitcoin(_ view: TransactionHistoryEmptyView) {
 
   }
 
-  func noTransactionsViewDidSelectLearnAboutBitcoin(_ view: NoTransactionsBaseView) {
+  func noTransactionsViewDidSelectLearnAboutBitcoin(_ view: TransactionHistoryEmptyView) {
     coordinationDelegate?.viewControllerDidRequestTutorial(self)
   }
 }
