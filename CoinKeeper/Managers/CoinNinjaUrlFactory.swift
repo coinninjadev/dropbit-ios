@@ -29,10 +29,19 @@ struct CoinNinjaUrlFactory {
     case dropbitTransactionTooltip
     case dustProtection
     case download
+    case spendBitcoinOnline
+    case spendBitcoinAroundMe
+    case buyGiftCards
 
     var domain: String {
       switch self {
-      case .bitcoin, .seedWords, .whyBitcoin, .transaction, .address:
+      case .bitcoin,
+           .seedWords,
+           .whyBitcoin,
+           .transaction,
+           .address,
+           .spendBitcoinOnline,
+           .spendBitcoinAroundMe:
         return "https://www.coinninja.com/"
       case .dropBit,
            .faqs,
@@ -48,6 +57,8 @@ struct CoinNinjaUrlFactory {
            .regularTransactionTooltip,
            .dropbitTransactionTooltip:
         return "https://dropbit.app/"
+      case .buyGiftCards:
+        return "https://www.bitrefill.com/"
       }
     }
 
@@ -93,6 +104,12 @@ struct CoinNinjaUrlFactory {
         return "\(tooltipBreadcrumb)dropbittransaction"
       case .dustProtection:
         return "\(tooltipBreadcrumb)dustprotection"
+      case .spendBitcoinOnline:
+        return "news/webview/load-online"
+      case .spendBitcoinAroundMe:
+        return "news/webview/load-map"
+      case .buyGiftCards:
+        return "buy"
       }
     }
   }
