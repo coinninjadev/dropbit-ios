@@ -24,7 +24,6 @@ protocol TransactionHistoryViewControllerDelegate: DeviceCountryCodeProvider &
   func viewControllerDidRequestHistoryUpdate(_ viewController: TransactionHistoryViewController)
   func viewController(_ viewController: TransactionHistoryViewController, didCancelInvitationWithID invitationID: String, at indexPath: IndexPath)
   func viewControllerDidDisplayTransactions(_ viewController: TransactionHistoryViewController)
-  func viewControllerDidRequestTutorial(_ viewController: UIViewController)
   func viewControllerAttemptedToRefreshTransactions(_ viewController: UIViewController)
   func viewControllerDidTapAddMemo(_ viewController: UIViewController, with completion: @escaping (String) -> Void)
   func viewControllerShouldUpdateTransaction(_ viewController: TransactionHistoryViewController,
@@ -34,6 +33,10 @@ protocol TransactionHistoryViewControllerDelegate: DeviceCountryCodeProvider &
   func viewControllerDidTapScan(_ viewController: UIViewController, converter: CurrencyConverter)
   func viewControllerDidTapReceivePayment(_ viewController: UIViewController, converter: CurrencyConverter)
   func viewControllerDidTapSendPayment(_ viewController: UIViewController, converter: CurrencyConverter)
+
+  func viewControllerDidRequestTutorial(_ viewController: UIViewController)
+  func viewControllerDidTapGetBitcoin(_ viewController: UIViewController)
+  func viewControllerDidTapSpendBitcoin(_ viewController: UIViewController)
 
   var currencyController: CurrencyController { get }
 }
@@ -385,11 +388,11 @@ extension TransactionHistoryViewController: UICollectionViewDataSource {
 
 extension TransactionHistoryViewController: NoTransactionsViewDelegate {
   func noTransactionsViewDidSelectGetBitcoin(_ view: TransactionHistoryEmptyView) {
-
+    coordinationDelegate?.viewControllerDidTapGetBitcoin(self)
   }
 
   func noTransactionsViewDidSelectSpendBitcoin(_ view: TransactionHistoryEmptyView) {
-
+    coordinationDelegate?.viewControllerDidTapSpendBitcoin(self)
   }
 
   func noTransactionsViewDidSelectLearnAboutBitcoin(_ view: TransactionHistoryEmptyView) {

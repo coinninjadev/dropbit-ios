@@ -45,6 +45,14 @@ extension AppCoordinator: TransactionHistoryViewControllerDelegate {
     navigationController.present(viewController, animated: true, completion: nil)
   }
 
+  func viewControllerDidTapGetBitcoin(_ viewController: UIViewController) {
+    // show get bitcoin screen
+  }
+
+  func viewControllerDidTapSpendBitcoin(_ viewController: UIViewController) {
+    // show spend bitcoin screen
+  }
+
   func viewControllerAttemptedToRefreshTransactions(_ viewController: UIViewController) {
     serialQueueManager.enqueueOptionalIncrementalSync()
   }
