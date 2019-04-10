@@ -77,7 +77,8 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
       (balanceContainer.leftButton, .transactionHistory(.menu)),
       (sendReceiveActionView.receiveButton, .transactionHistory(.receiveButton)),
       (sendReceiveActionView.sendButton, .transactionHistory(.sendButton)),
-      (balanceContainer.balanceView, .transactionHistory(.balanceView))
+      (balanceContainer.balanceView, .transactionHistory(.balanceView)),
+      (transactionHistoryNoBalanceView.learnAboutBitcoinButton, .transactionHistory(.tutorialButton))
     ]
   }
 
