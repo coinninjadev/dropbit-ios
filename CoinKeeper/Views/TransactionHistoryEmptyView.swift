@@ -19,13 +19,13 @@ class TransactionHistoryEmptyView: UIView {
 
   @IBOutlet var getBitcoinButton: PrimaryActionButton! {
     didSet {
-      getBitcoinButton.setTitle("GET BITCOIN", for: .normal)
+      getBitcoinButton.setAttributedTitle(attributedTitle(for: getBitcoinButton), for: .normal)
       getBitcoinButton.mode = .getBitcoin
     }
   }
   @IBOutlet var learnAboutBitcoinButton: PrimaryActionButton! {
     didSet {
-      learnAboutBitcoinButton.setTitle("LEARN BITCOIN", for: .normal)
+      learnAboutBitcoinButton.setAttributedTitle(attributedTitle(for: learnAboutBitcoinButton), for: .normal)
       learnAboutBitcoinButton.mode = .learnBitcoin
     }
   }
@@ -53,6 +53,41 @@ class TransactionHistoryEmptyView: UIView {
   @IBAction func getBitcoin() {
     delegate?.noTransactionsViewDidSelectGetBitcoin(self)
   }
+
+  func image(for button: UIButton) -> UIImage? {
+    switch button {
+    case getBitcoinButton: return UIImage(imageLiteralResourceName: "getBitcoinLogo")
+    case learnAboutBitcoinButton: return UIImage(imageLiteralResourceName: "learnBitcoinLogo")
+    default: return nil
+    }
+  }
+
+  func text(for button: UIButton) -> String {
+    switch button {
+    case getBitcoinButton: return "GET BITCOIN"
+    case learnAboutBitcoinButton: return "LEARN BITCOIN"
+    default: return ""
+    }
+  }
+
+  func attributedSymbol(for button: UIButton) -> NSAttributedString {
+    let textAttribute = NSTextAttachment()
+    textAttribute.image = image(for: button)
+    let size = CGFloat(20)
+    textAttribute.bounds = CGRect(x: -0, y: (-size / (size / 4)),
+                                  width: size, height: size)
+    return NSAttributedString(attachment: textAttribute)
+  }
+
+  func attributedTitle(for button: UIButton) -> NSAttributedString {
+    let string = text(for: button)
+    let attributes: [NSAttributedString.Key: Any] = [
+      .font: Theme.Font.primaryButtonTitle.font,
+      .foregroundColor: Theme.Color.verifyWordLightGray.color
+    ]
+    let attributedString = attributedSymbol(for: button) + " " + NSAttributedString(string: string, attributes: attributes)
+    return attributedString
+  }
 }
 
 class TransactionHistoryNoBalanceView: TransactionHistoryEmptyView {
@@ -75,7 +110,7 @@ class TransactionHistoryNoBalanceView: TransactionHistoryEmptyView {
 class TransactionHistoryWithBalanceView: TransactionHistoryEmptyView {
   @IBOutlet var spendBitcoinButton: PrimaryActionButton! {
     didSet {
-      spendBitcoinButton.setTitle("SPEND BITCOIN", for: .normal)
+      spendBitcoinButton.setAttributedTitle(attributedTitle(for: spendBitcoinButton), for: .normal)
       spendBitcoinButton.mode = .spendBitcoin
     }
   }
@@ -84,4 +119,17 @@ class TransactionHistoryWithBalanceView: TransactionHistoryEmptyView {
     delegate?.noTransactionsViewDidSelectSpendBitcoin(self)
   }
 
+  override func text(for button: UIButton) -> String {
+    switch button {
+    case spendBitcoinButton: return "SPEND BITCOIN"
+    default: return super.text(for: button)
+    }
+  }
+
+  override func image(for button: UIButton) -> UIImage? {
+    switch button {
+    case spendBitcoinButton: return UIImage(imageLiteralResourceName: "spendBitcoinLogo")
+    default: return super.image(for: button)
+    }
+  }
 }

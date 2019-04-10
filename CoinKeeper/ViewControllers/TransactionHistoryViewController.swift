@@ -221,6 +221,8 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
     detailCollectionView.isPagingEnabled = false
     detailCollectionView.collectionViewLayout = detailCollectionViewLayout(withHorizontalPadding: hPadding)
 
+    collectionViews.forEach { $0.reloadData() }
+
     summaryCollectionView.emptyDataSetSource = self
     summaryCollectionView.emptyDataSetDelegate = self
   }
@@ -520,8 +522,10 @@ extension TransactionHistoryViewController: DZNEmptyDataSetDelegate, DZNEmptyDat
   }
 
   private var shouldShowWithBalanceView: Bool {
-    let numberOfItems = (frc.fetchedObjects?.count ?? 0)
-    return deviceIsSmall ? (numberOfItems == 1) : (numberOfItems <= 3)
+    let collectionViewContentBottom = summaryCollectionView.contentSize.height + summaryCollectionView.frame.origin.y
+    let withBalanceViewTop = (view.frame.height / 2.0) - (transactionHistoryWithBalanceView.frame.size.height / 2.0)
+    let isOverlapping = (collectionViewContentBottom >= withBalanceViewTop)
+    return !isOverlapping
   }
 
   private var deviceIsSmall: Bool {
