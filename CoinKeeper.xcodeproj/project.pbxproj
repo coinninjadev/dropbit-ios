@@ -82,6 +82,8 @@
 		3B24DFC020EBEFC100C31969 /* DerivativePathTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B24DFBF20EBEFC100C31969 /* DerivativePathTests.swift */; };
 		3B2658472215CFCC008A8615 /* MailerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B2658462215CFCC008A8615 /* MailerDelegate.swift */; };
 		3B26F1E022566EAA00F3E00F /* AppCoordinator+SelectedCurrencyUpdatable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B26F1DF22566EAA00F3E00F /* AppCoordinator+SelectedCurrencyUpdatable.swift */; };
+		3B27D3F8225E84CB00291B82 /* GetBitcoinViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3B27D3F7225E84CB00291B82 /* GetBitcoinViewController.storyboard */; };
+		3B27D3FA225E84E900291B82 /* GetBitcoinViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B27D3F9225E84E900291B82 /* GetBitcoinViewController.swift */; };
 		3B287CB42100FB1A00A43E57 /* AppCoordinator+ConnectionManagerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B287CB32100FB1A00A43E57 /* AppCoordinator+ConnectionManagerDelegate.swift */; };
 		3B287CB62100FB5600A43E57 /* AppCoordinator+ChildCoordinatorDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B287CB52100FB5600A43E57 /* AppCoordinator+ChildCoordinatorDelegate.swift */; };
 		3B287CB82101128400A43E57 /* TransactionBroadcastError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B287CB72101128400A43E57 /* TransactionBroadcastError.swift */; };
@@ -854,6 +856,8 @@
 		3B24DFBF20EBEFC100C31969 /* DerivativePathTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DerivativePathTests.swift; sourceTree = "<group>"; };
 		3B2658462215CFCC008A8615 /* MailerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailerDelegate.swift; sourceTree = "<group>"; };
 		3B26F1DF22566EAA00F3E00F /* AppCoordinator+SelectedCurrencyUpdatable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppCoordinator+SelectedCurrencyUpdatable.swift"; sourceTree = "<group>"; };
+		3B27D3F7225E84CB00291B82 /* GetBitcoinViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = GetBitcoinViewController.storyboard; sourceTree = "<group>"; };
+		3B27D3F9225E84E900291B82 /* GetBitcoinViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetBitcoinViewController.swift; sourceTree = "<group>"; };
 		3B287CB32100FB1A00A43E57 /* AppCoordinator+ConnectionManagerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppCoordinator+ConnectionManagerDelegate.swift"; sourceTree = "<group>"; };
 		3B287CB52100FB5600A43E57 /* AppCoordinator+ChildCoordinatorDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppCoordinator+ChildCoordinatorDelegate.swift"; sourceTree = "<group>"; };
 		3B287CB72101128400A43E57 /* TransactionBroadcastError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionBroadcastError.swift; sourceTree = "<group>"; };
@@ -2240,6 +2244,7 @@
 				30E96A2C2178F83A008079B8 /* PhoneNumberStatusViewController.swift */,
 				3B325D4C219090CD0094897C /* RecoveryWordsIntroViewController.swift */,
 				30BF4FE821B6C5C10018AE87 /* TransactionPopoverDetailsViewController.swift */,
+				3B27D3F9225E84E900291B82 /* GetBitcoinViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -2274,6 +2279,7 @@
 				3B325D50219091950094897C /* RecoveryWordsIntroViewController.storyboard */,
 				30BF4FEA21B6C6C60018AE87 /* TransactionPopoverDetailsViewController.storyboard */,
 				3B44961E21B0661300A4E912 /* MemoEntryViewController.storyboard */,
+				3B27D3F7225E84CB00291B82 /* GetBitcoinViewController.storyboard */,
 			);
 			path = Storyboards;
 			sourceTree = "<group>";
@@ -3103,6 +3109,7 @@
 				B5E7F21F22146B9000358A24 /* CountryCodePickerCell.xib in Resources */,
 				3BF8523D2023788D00EBBE44 /* StartViewController.storyboard in Resources */,
 				3B9779AF202E416700C9C933 /* Montserrat-ThinItalic.ttf in Resources */,
+				3B27D3F8225E84CB00291B82 /* GetBitcoinViewController.storyboard in Resources */,
 				A29CE0DE209B756E00761B91 /* ContactsTableViewHeader.xib in Resources */,
 				3BAB1443204EE5A7001D41A2 /* VerifyRecoveryWordsViewController.storyboard in Resources */,
 				3B325D51219091950094897C /* RecoveryWordsIntroViewController.storyboard in Resources */,
@@ -3463,6 +3470,7 @@
 				B5FBE42020DD76550029D273 /* SettingsViewModel.swift in Sources */,
 				B52A25CD2077FFF600F636A1 /* Date+Extensions.swift in Sources */,
 				3BDA2081203E17A700CBA6B1 /* BiometricError.swift in Sources */,
+				3B27D3FA225E84E900291B82 /* GetBitcoinViewController.swift in Sources */,
 				3BA9F5F2208F61A70047C213 /* BTCTestnetCoin.swift in Sources */,
 				5B91E3982076BEB500DD9A86 /* DrawerViewController.swift in Sources */,
 				3BC23EF220BDCA5100877BB6 /* TransactionDataError.swift in Sources */,
