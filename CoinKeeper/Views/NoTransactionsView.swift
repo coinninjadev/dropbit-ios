@@ -9,25 +9,24 @@
 import Foundation
 import UIKit
 
-protocol NoTransactionsViewDelegate: class {
-  func noTransactionsViewDidSelectLearnAboutBitcoin(_ view: NoTransactionsView)
+protocol NoTransactionsViewDelegate: AnyObject {
+  func noTransactionsViewDidSelectLearnAboutBitcoin(_ view: NoTransactionsBaseView)
 }
 
-class NoTransactionsView: UIView {
+class NoTransactionsBaseView: UIView {
 
-  @IBOutlet var noTransactionsTitle: UILabel! {
+  @IBOutlet var getBitcoinButton: PrimaryActionButton! {
     didSet {
-      noTransactionsTitle.font = Theme.Font.noTransactionsTitle.font
-      noTransactionsTitle.textColor = Theme.Color.grayText.color
+      getBitcoinButton.setTitle("GET BITCOIN", for: .normal)
+      getBitcoinButton.mode = .getBitcoin
     }
   }
-  @IBOutlet var noTransactionsDetail: UILabel! {
+  @IBOutlet var learnAboutBitcoinButton: PrimaryActionButton! {
     didSet {
-      noTransactionsDetail.textColor = Theme.Color.grayText.color
-      noTransactionsDetail.font = Theme.Font.noTransactionsDetail.font
+      learnAboutBitcoinButton.setTitle("LEARN BITCOIN", for: .normal)
+      learnAboutBitcoinButton.mode = .learnBitcoin
     }
   }
-  @IBOutlet var learnAboutBitcoinButton: PrimaryActionButton!
 
   weak var delegate: NoTransactionsViewDelegate?
 
@@ -42,11 +41,31 @@ class NoTransactionsView: UIView {
   }
 
   private func initalize() {
-    xibSetup()
     backgroundColor = Theme.Color.lightGrayBackground.color
   }
 
   @IBAction func learnAboutBitcoinButtonWasTapped() {
     delegate?.noTransactionsViewDidSelectLearnAboutBitcoin(self)
   }
+}
+
+class TransactionHistoryNoBalanceView: NoTransactionsBaseView {
+  @IBOutlet var noTransactionsTitle: UILabel! {
+    didSet {
+      noTransactionsTitle.font = Theme.Font.noTransactionsTitle.font
+      noTransactionsTitle.textColor = Theme.Color.grayText.color
+      noTransactionsTitle.text = "No Bitcoin...Yet!"
+    }
+  }
+  @IBOutlet var noTransactionsDetail: UILabel! {
+    didSet {
+      noTransactionsDetail.textColor = Theme.Color.grayText.color
+      noTransactionsDetail.font = Theme.Font.noTransactionsDetail.font
+      noTransactionsDetail.text = "All incoming and outgoing transactions will appear here."
+    }
+  }
+}
+
+class TransactionHistoryWithBalanceView: NoTransactionsBaseView {
+  @IBOutlet var spendBitcoinButton: PrimaryActionButton!
 }

@@ -395,7 +395,6 @@
 		A2893BC220FD515900E96B07 /* AppCoordinator+TutorialViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2893BC120FD515900E96B07 /* AppCoordinator+TutorialViewControllerDelegate.swift */; };
 		A293E35020F67F390099ED69 /* SuccessFailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A293E34F20F67F390099ED69 /* SuccessFailViewModel.swift */; };
 		A293E35220F798920099ED69 /* NoTransactionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A293E35120F798920099ED69 /* NoTransactionsView.swift */; };
-		A293E35420F798A80099ED69 /* NoTransactionsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = A293E35320F798A80099ED69 /* NoTransactionsView.xib */; };
 		A29CE0C32098AD1500761B91 /* UINavigationController+TopViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A29CE0C22098AD1500761B91 /* UINavigationController+TopViewController.swift */; };
 		A29CE0C72098F84300761B91 /* SuccessFailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A29CE0C62098F84300761B91 /* SuccessFailViewController.swift */; };
 		A29CE0C92098F8CA00761B91 /* SuccessFailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A29CE0C82098F8CA00761B91 /* SuccessFailView.swift */; };
@@ -1175,7 +1174,6 @@
 		A2893BC120FD515900E96B07 /* AppCoordinator+TutorialViewControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppCoordinator+TutorialViewControllerDelegate.swift"; sourceTree = "<group>"; };
 		A293E34F20F67F390099ED69 /* SuccessFailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuccessFailViewModel.swift; sourceTree = "<group>"; };
 		A293E35120F798920099ED69 /* NoTransactionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoTransactionsView.swift; sourceTree = "<group>"; };
-		A293E35320F798A80099ED69 /* NoTransactionsView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NoTransactionsView.xib; sourceTree = "<group>"; };
 		A29CE0C22098AD1500761B91 /* UINavigationController+TopViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UINavigationController+TopViewController.swift"; sourceTree = "<group>"; };
 		A29CE0C62098F84300761B91 /* SuccessFailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuccessFailViewController.swift; sourceTree = "<group>"; };
 		A29CE0C82098F8CA00761B91 /* SuccessFailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuccessFailView.swift; sourceTree = "<group>"; };
@@ -1997,7 +1995,6 @@
 				3B23126220DA6CA30099A557 /* TransactionHistoryDetailCellAddressView.xib */,
 				3B23126620DA6D0E0099A557 /* TransactionHistoryDetailCellAddressView.swift */,
 				A293E35120F798920099ED69 /* NoTransactionsView.swift */,
-				A293E35320F798A80099ED69 /* NoTransactionsView.xib */,
 				308F6F00217F91980094D6CB /* ServerAddressView.swift */,
 				308F6F02217F91A50094D6CB /* ServerAddressView.xib */,
 				B536D12A21F1140100C344B6 /* SendPaymentMemoView.swift */,
@@ -3109,7 +3106,6 @@
 				A29CE0DE209B756E00761B91 /* ContactsTableViewHeader.xib in Resources */,
 				3BAB1443204EE5A7001D41A2 /* VerifyRecoveryWordsViewController.storyboard in Resources */,
 				3B325D51219091950094897C /* RecoveryWordsIntroViewController.storyboard in Resources */,
-				A293E35420F798A80099ED69 /* NoTransactionsView.xib in Resources */,
 				3B44961F21B0661300A4E912 /* MemoEntryViewController.storyboard in Resources */,
 				B51F8238207BAD8500692F5B /* BalanceContainer.xib in Resources */,
 				A29CE0CD2099ED5600761B91 /* SuccessFailViewController.storyboard in Resources */,
