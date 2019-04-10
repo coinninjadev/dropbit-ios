@@ -21,23 +21,12 @@ class TutorialUITests: UITestCase {
 
     addSystemAlertMonitor()
 
-    StartPage()
-      .tapRestore()
-
-    PinCreationPage()
-      .enterSimplePin(digit: 1, times: 6)
-
-    RestoreWalletPage()
-      .enterWords(recoveryWords)
-
-    SuccessFailPage().checkWalletRecoverySucceeded()
-      .tapGoToWallet()
-
-    DeviceVerificationPage()
-      .tapSkip()
-
+    StartPage().tapRestore()
+    PinCreationPage().enterSimplePin(digit: 1, times: 6)
+    RestoreWalletPage().enterWords(recoveryWords)
+    SuccessFailPage().checkWalletRecoverySucceeded().tapGoToWallet()
+    DeviceVerificationPage().tapSkip()
     PushInfoPage()?.dismiss()
-
     TransactionHistoryPage().tapTutorialButton()
 
     let tutorialView = app.viewController(withId: .tutorial(.page))
