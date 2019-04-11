@@ -46,7 +46,10 @@ extension AppCoordinator: TransactionHistoryViewControllerDelegate {
   }
 
   func viewControllerDidTapGetBitcoin(_ viewController: UIViewController) {
-    // show get bitcoin screen
+    let controller = GetBitcoinViewController.makeFromStoryboard()
+    assignCoordinationDelegate(to: controller)
+    controller.urlOpener = self
+    navigationController.pushViewController(controller, animated: true)
   }
 
   func viewControllerDidTapSpendBitcoin(_ viewController: UIViewController) {
