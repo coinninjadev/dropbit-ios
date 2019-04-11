@@ -86,9 +86,6 @@ struct Theme {
   }
 
   enum Font {
-    case calculatorPrimaryAmount
-    case calculatorPrimarySymbol
-    case calculatorSecondaryAmount
     case confirmPaymentMemo
     case confirmPaymentSecondaryAddress
     case addMemoTitle
@@ -184,7 +181,6 @@ struct Theme {
            .phoneNumberDetail: 									return CKFont.light(13)
       case .sendingBitcoinAmount,
            .walletRecoveryDetail: 							return CKFont.light(15)
-      case .calculatorSecondaryAmount: 					return CKFont.light(18)
 
       // Regular
       case .transactionHistorySecondaryAmount,
@@ -257,9 +253,7 @@ struct Theme {
            .noTransactionsTitle,
            .tutorialTitle: 											return CKFont.medium(20)
       case .transactionDetailCounterparty: 			return CKFont.medium(22)
-      case .calculatorPrimarySymbol,
-           .transactionDetailPrimaryAmount: 		return CKFont.medium(50)
-      case .calculatorPrimaryAmount: 						return CKFont.medium(80)
+      case .transactionDetailPrimaryAmount: 		return CKFont.medium(50)
 
       // Semi-Bold
       case .progressBarNode: 										return CKFont.semiBold(11)
