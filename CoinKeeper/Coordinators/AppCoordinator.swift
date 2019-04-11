@@ -419,7 +419,7 @@ class AppCoordinator: CoordinatorType {
   }
 
   func enterApp() {
-    let mainViewController = self.makeTransactionHistory()
+    let mainViewController = makeTransactionHistory()
     let settingsViewController = DrawerViewController.makeFromStoryboard()
     let drawerController = setupDrawerViewController(centerViewController: mainViewController,
                                                      leftViewController: settingsViewController)
