@@ -22,7 +22,7 @@ final class GetBitcoinViewController: BaseViewController, StoryboardInitializabl
     headerLabel.textColor = Theme.Color.grayText.color
     headerLabel.font = Theme.Font.sendingBitcoinAmount.font
 
-
+    
   }
 
 //  private func attributedSymbol(for image: UIImage) -> NSAttributedString {
@@ -35,14 +35,17 @@ final class GetBitcoinViewController: BaseViewController, StoryboardInitializabl
 //  }
 
   @IBAction func findATM() {
-
+    guard let url = CoinNinjaUrlFactory.buildUrl(for: .atm) else { return }
+    urlOpener?.openURL(url, completionHandler: nil)
   }
 
   @IBAction func buyWithCreditCard() {
-
+    guard let url = CoinNinjaUrlFactory.buildUrl(for: .buyWithCreditCard) else { return }
+    urlOpener?.openURL(url, completionHandler: nil)
   }
 
   @IBAction func buyWithGiftCard() {
-
+    guard let url = CoinNinjaUrlFactory.buildUrl(for: .buyGiftCards) else { return }
+    urlOpener?.openURL(url, completionHandler: nil)
   }
 }

@@ -33,6 +33,7 @@ struct CoinNinjaUrlFactory {
     case spendBitcoinAroundMe
     case buyGiftCards
     case buyWithCreditCard
+    case atm
 
     var domain: String {
       switch self {
@@ -44,7 +45,8 @@ struct CoinNinjaUrlFactory {
            .spendBitcoinOnline,
            .spendBitcoinAroundMe,
            .buyGiftCards,
-           .buyWithCreditCard:
+           .buyWithCreditCard,
+           .atm:
         return "https://www.coinninja.com/"
       case .dropBit,
            .faqs,
@@ -113,6 +115,8 @@ struct CoinNinjaUrlFactory {
         return "buybitcoin/giftcards"
       case .buyWithCreditCard:
         return "buybitcoin/creditcards"
+      case .atm:
+        return "webview/load-map"
       }
     }
   }
