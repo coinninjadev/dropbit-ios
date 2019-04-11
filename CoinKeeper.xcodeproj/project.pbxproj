@@ -24,7 +24,6 @@
 		308F6F01217F91980094D6CB /* ServerAddressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 308F6F00217F91980094D6CB /* ServerAddressView.swift */; };
 		308F6F03217F91A50094D6CB /* ServerAddressView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 308F6F02217F91A50094D6CB /* ServerAddressView.xib */; };
 		308F6F05217F97F50094D6CB /* DragIndiciatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 308F6F04217F97F50094D6CB /* DragIndiciatorView.swift */; };
-		308F6F09217FB12E0094D6CB /* VerticalDragView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 308F6F08217FB12E0094D6CB /* VerticalDragView.swift */; };
 		308F6F0B2180B6260094D6CB /* AddressTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 308F6F0A2180B6260094D6CB /* AddressTableViewCell.swift */; };
 		308F6F0D2180B6350094D6CB /* AddressTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 308F6F0C2180B6350094D6CB /* AddressTableViewCell.xib */; };
 		3093B07C21EE36CF00B3EF9C /* TransactionHistoryRefreshView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3093B07B21EE36CF00B3EF9C /* TransactionHistoryRefreshView.swift */; };
@@ -794,7 +793,6 @@
 		308F6F00217F91980094D6CB /* ServerAddressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerAddressView.swift; sourceTree = "<group>"; };
 		308F6F02217F91A50094D6CB /* ServerAddressView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ServerAddressView.xib; sourceTree = "<group>"; };
 		308F6F04217F97F50094D6CB /* DragIndiciatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DragIndiciatorView.swift; sourceTree = "<group>"; };
-		308F6F08217FB12E0094D6CB /* VerticalDragView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerticalDragView.swift; sourceTree = "<group>"; };
 		308F6F0A2180B6260094D6CB /* AddressTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressTableViewCell.swift; sourceTree = "<group>"; };
 		308F6F0C2180B6350094D6CB /* AddressTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AddressTableViewCell.xib; sourceTree = "<group>"; };
 		3093B07B21EE36CF00B3EF9C /* TransactionHistoryRefreshView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionHistoryRefreshView.swift; sourceTree = "<group>"; };
@@ -2002,7 +2000,6 @@
 				B536D12A21F1140100C344B6 /* SendPaymentMemoView.swift */,
 				B536D12C21F1141000C344B6 /* SendPaymentMemoView.xib */,
 				308F6F04217F97F50094D6CB /* DragIndiciatorView.swift */,
-				308F6F08217FB12E0094D6CB /* VerticalDragView.swift */,
 				3B55538321936C7D00C5A9A8 /* BarButtonFactory.swift */,
 				3B47037C2253B67200977784 /* SendReceiveActionView.swift */,
 				3B47037E2253B68700977784 /* SendReceiveActionView.xib */,
@@ -3763,7 +3760,6 @@
 				3B86F7B4203CA2F700D15231 /* String+Hashing.swift in Sources */,
 				A200574720B5ED52007074D9 /* SettingCell.swift in Sources */,
 				B5CFA333221E008B002B1BDD /* CCMContact+CoreDataClass.swift in Sources */,
-				308F6F09217FB12E0094D6CB /* VerticalDragView.swift in Sources */,
 				3BBEE0C1208A5DA500A7DF9F /* CKMDerivativePath+CoreDataClass.swift in Sources */,
 				3B86B6F1224972D000E2706E /* AbstractMigrationWorker.swift in Sources */,
 				B552EDFD211E33D000332BB5 /* AnalyticsManager.swift in Sources */,
