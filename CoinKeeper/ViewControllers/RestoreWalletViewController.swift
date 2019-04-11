@@ -80,7 +80,7 @@ class RestoreWalletViewController: BaseViewController, StoryboardInitializable {
     super.viewDidLoad()
 
     setupNextWordEntry()
-    invalidWordButton.mode = .error
+    invalidWordButton.style = .error
     wordTextField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
     wordTextField.autocorrectionType = .no
 

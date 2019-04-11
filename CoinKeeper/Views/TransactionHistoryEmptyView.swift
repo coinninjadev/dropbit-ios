@@ -20,13 +20,13 @@ class TransactionHistoryEmptyView: UIView {
   @IBOutlet var getBitcoinButton: PrimaryActionButton! {
     didSet {
       getBitcoinButton.setAttributedTitle(attributedTitle(for: getBitcoinButton), for: .normal)
-      getBitcoinButton.mode = .getBitcoin
+      getBitcoinButton.style = .green
     }
   }
   @IBOutlet var learnAboutBitcoinButton: PrimaryActionButton! {
     didSet {
       learnAboutBitcoinButton.setAttributedTitle(attributedTitle(for: learnAboutBitcoinButton), for: .normal)
-      learnAboutBitcoinButton.mode = .learnBitcoin
+      learnAboutBitcoinButton.style = .darkBlue
     }
   }
 
@@ -111,7 +111,7 @@ class TransactionHistoryWithBalanceView: TransactionHistoryEmptyView {
   @IBOutlet var spendBitcoinButton: PrimaryActionButton! {
     didSet {
       spendBitcoinButton.setAttributedTitle(attributedTitle(for: spendBitcoinButton), for: .normal)
-      spendBitcoinButton.mode = .spendBitcoin
+      spendBitcoinButton.style = .orange
     }
   }
 

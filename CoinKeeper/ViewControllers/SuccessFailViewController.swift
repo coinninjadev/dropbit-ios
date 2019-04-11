@@ -86,7 +86,7 @@ class SuccessFailViewController: BaseViewController, StoryboardInitializable {
         self.titleLabel?.text = self.viewModel.successTitle
         self.subtitleLabel?.text = self.viewModel.successSubtitle
         self.subtitleLabel?.textColor = Theme.Color.grayText.color
-        self.actionButton?.mode = .standard
+        self.actionButton?.style = .standard
         self.actionButton?.setTitle(self.viewModel.successButtonTitle, for: .normal)
         self.successFailView?.mode = .success
       case .failure:
@@ -95,7 +95,7 @@ class SuccessFailViewController: BaseViewController, StoryboardInitializable {
         self.titleLabel?.text = self.viewModel.failTitle
         self.subtitleLabel?.text = self.viewModel.failSubtitle
         self.subtitleLabel?.textColor = Theme.Color.errorRed.color
-        self.actionButton?.mode = .error
+        self.actionButton?.style = .error
         self.actionButton?.setTitle(self.viewModel.failButtonTitle, for: .normal)
         self.successFailView?.mode = .failure
       }
