@@ -127,13 +127,9 @@ class ContactCacheManager: ContactCacheManagerType {
       ]
     )
     let hasNamePredicate = NSCompoundPredicate(notPredicateWithSubpredicate: noNamePredicate)
-
     let notSpamPredicate = NSPredicate(format: "\(#keyPath(CCMPhoneNumber.cachedContact.displayName)) != %@", "SPAM")
-
-    let notWorkPredicate = NSPredicate(format: "\(#keyPath(CCMPhoneNumber.labelKey)) != %@", CNLabelWork)
-    return NSCompoundPredicate(type: .and, subpredicates: [hasNamePredicate,
-                                                           notSpamPredicate,
-                                                           notWorkPredicate])
+    let andPredicates = [hasNamePredicate, notSpamPredicate]
+    return NSCompoundPredicate(type: .and, subpredicates: andPredicates)
   }
 
   private func frcSortDescriptors() -> [NSSortDescriptor] {
@@ -207,9 +203,11 @@ class ContactCacheManager: ContactCacheManagerType {
   /// because nullify rules don't play well with batch deletions.
   func deleteSystemContactData(in context: NSManagedObjectContext) throws {
     let allContacts = try CCMContact.findAll(in: context)
-    let contactBatches = allContacts.chunked(by: 100)
-    for contactBatch in contactBatches {
-      contactBatch.forEach { context.delete($0) }
+    let allMetadata = try CCMValidatedMetadata.findAll(in: context)
+    let allObjects: [NSManagedObject] = allContacts + allMetadata
+    let batches = allObjects.chunked(by: 100)
+    for batch in batches {
+      batch.forEach { context.delete($0) }
       try context.saveRecursively()
     }
   }

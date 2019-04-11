@@ -44,6 +44,7 @@ class CKUserDefaults: PersistenceUserDefaultsType {
     case lastSuccessfulSyncCompletedAt
     case dustProtectionEnabled
     case selectedCurrency
+    case lastContactCacheReload
 
     var defaultsString: String { return self.rawValue }
   }

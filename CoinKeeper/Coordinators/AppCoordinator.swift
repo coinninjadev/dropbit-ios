@@ -349,8 +349,15 @@ class AppCoordinator: CoordinatorType {
     trackEventForFirstTimeOpeningAppIfApplicable()
     UIApplication.shared.setMinimumBackgroundFetchInterval(.oneHour)
 
-    self.contactCacheDataWorker.reloadSystemContactsIfNeeded(force: false) { [weak self] _ in
+    let now = Date()
+    let lastContactReloadDate: Date = persistenceManager.date(for: .lastContactCacheReload) ?? .distantPast
+    let oneWeekAgo = Calendar.current.date(byAdding: .day, value: -7, to: now) ?? now
+    let shouldForce = lastContactReloadDate < oneWeekAgo
+    self.contactCacheDataWorker.reloadSystemContactsIfNeeded(force: shouldForce) { [weak self] _ in
       self?.persistenceManager.matchContactsIfPossible()
+      if shouldForce {
+        self?.persistenceManager.set(now, for: .lastContactCacheReload)
+      }
     }
   }
 
