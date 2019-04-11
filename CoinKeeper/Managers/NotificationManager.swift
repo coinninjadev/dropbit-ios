@@ -38,7 +38,6 @@ protocol NotificationManagerType: AnyObject {
 }
 
 protocol NotificationManagerDelegate: AnyObject {
-  func manager(_ manager: NotificationManagerType, didActUponInvitationResponseNotificationWithID id: String)
   func localDeviceId(_ manager: NotificationManagerType) -> String
   func persistServerDeviceId(_ serverDeviceId: String)
   func persistDeviceEndpointId(_ deviceEndpointId: String)
@@ -169,8 +168,6 @@ extension NotificationManager: UNUserNotificationCenterDelegate {
       guard UIApplication.shared.applicationState == .active else { return }
       let invitationIdentifier = response.notification.request.identifier
       os_log("invitationIdentifier: %{private}@", log: self.invitationLogger, type: .debug, invitationIdentifier)
-
-      self.delegate?.manager(self, didActUponInvitationResponseNotificationWithID: invitationIdentifier)
     }
   }
 }

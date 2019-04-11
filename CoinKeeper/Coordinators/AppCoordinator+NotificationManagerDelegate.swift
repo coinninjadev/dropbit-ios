@@ -13,9 +13,6 @@ import PromiseKit
 import CoreData
 
 extension AppCoordinator: NotificationManagerDelegate {
-  func manager(_ manager: NotificationManagerType, didActUponInvitationResponseNotificationWithID id: String) {
-  }
-
   func localDeviceId(_ manager: NotificationManagerType) -> String {
     return persistenceManager.findOrCreateDeviceId().uuidString.lowercased()
   }
