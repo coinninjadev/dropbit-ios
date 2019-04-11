@@ -22,17 +22,34 @@ final class GetBitcoinViewController: BaseViewController, StoryboardInitializabl
     headerLabel.textColor = Theme.Color.grayText.color
     headerLabel.font = Theme.Font.sendingBitcoinAmount.font
 
-    
+    let mapPinImage = UIImage(imageLiteralResourceName: "mapPin")
+    let dollarImage = UIImage(imageLiteralResourceName: "dollarSignCircle")
+    let giftCardImage = UIImage(imageLiteralResourceName: "giftCard")
+    let attributes: [NSAttributedString.Key: Any] = [
+      .font: Theme.Font.secondaryButtonTitle.font,
+      .foregroundColor: Theme.Color.lightGrayText.color
+    ]
+    let atmAttributedString = attributedSymbol(for: mapPinImage) + " " + NSAttributedString(string: "FIND BITCOIN ATM", attributes: attributes)
+    let creditCardAttributedString = attributedSymbol(for: dollarImage) + " " + NSAttributedString(string: "WITH CREDIT CARD", attributes: attributes)
+    let giftCardAttributedString = attributedSymbol(for: giftCardImage) + " " + NSAttributedString(string: "WITH GIFT CARD", attributes: attributes)
+
+    findATMButton.setAttributedTitle(atmAttributedString, for: .normal)
+    buyWithCreditCardButton.setAttributedTitle(creditCardAttributedString, for: .normal)
+    buyWithGiftCardButton.setAttributedTitle(giftCardAttributedString, for: .normal)
+
+    findATMButton.style = .standard
+    buyWithCreditCardButton.style = .green
+    buyWithGiftCardButton.style = .orange
   }
 
-//  private func attributedSymbol(for image: UIImage) -> NSAttributedString {
-//    let textAttribute = NSTextAttachment()
-//    textAttribute.image = image
-//    let size = CGFloat(20)
-//    textAttribute.bounds = CGRect(x: -0, y: (-size / (size / 4)),
-//                                  width: size, height: size)
-//    return NSAttributedString(attachment: textAttribute)
-//  }
+  private func attributedSymbol(for image: UIImage) -> NSAttributedString {
+    let textAttribute = NSTextAttachment()
+    textAttribute.image = image
+    let size = CGFloat(20)
+    textAttribute.bounds = CGRect(x: -0, y: (-size / (size / 4)),
+                                  width: size, height: size)
+    return NSAttributedString(attachment: textAttribute)
+  }
 
   @IBAction func findATM() {
     guard let url = CoinNinjaUrlFactory.buildUrl(for: .atm) else { return }
