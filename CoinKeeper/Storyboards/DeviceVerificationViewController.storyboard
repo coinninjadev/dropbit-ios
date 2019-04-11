@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -25,25 +25,25 @@
                                         <rect key="frame" x="4" y="0.0" width="367" height="366"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="her-2l-LYZ" customClass="OnboardingTitleLabel" customModule="DropBit" customModuleProvider="target">
-                                                <rect key="frame" x="167" y="0.0" width="33.5" height="10.5"/>
+                                                <rect key="frame" x="167" y="0.0" width="33.5" height="2.5"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Message" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5q8-mB-wyp" customClass="OnboardingSubtitleLabel" customModule="DropBit" customModuleProvider="target">
-                                                <rect key="frame" x="149" y="26.5" width="69" height="20.5"/>
+                                                <rect key="frame" x="149" y="18.5" width="69" height="20.5"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Error Message" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Nyk-E2-e4i" customClass="OnboardingErrorLabel" customModule="DropBit" customModuleProvider="target">
-                                                <rect key="frame" x="128" y="63" width="111" height="10.5"/>
+                                                <rect key="frame" x="128" y="55" width="111" height="2.5"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HGr-Xr-gKB" userLabel="Phone Number Container">
-                                                <rect key="frame" x="27.5" y="89.5" width="312" height="86.5"/>
+                                                <rect key="frame" x="27.5" y="73.5" width="312" height="86.5"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Example" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="s2x-ve-wvJ" userLabel="Example" customClass="ExamplePhoneNumberLabel" customModule="DropBit" customModuleProvider="target">
                                                         <rect key="frame" x="0.0" y="12" width="312" height="16.5"/>
@@ -73,7 +73,7 @@
                                                 </constraints>
                                             </view>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yW1-C5-ZBm" customClass="PrimaryActionButton" customModule="DropBit" customModuleProvider="target">
-                                                <rect key="frame" x="27.5" y="192" width="312" height="50"/>
+                                                <rect key="frame" x="27.5" y="176" width="312" height="50"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="50" id="8Rd-bT-KeG"/>
                                                     <constraint firstAttribute="width" constant="312" id="dt2-sn-TrJ"/>
@@ -84,7 +84,7 @@
                                                 </connections>
                                             </button>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sWS-Pc-gfq" customClass="PinDisplayView" customModule="DropBit" customModuleProvider="target">
-                                                <rect key="frame" x="57.5" y="258" width="252" height="48"/>
+                                                <rect key="frame" x="57.5" y="242" width="252" height="48"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="48" id="UHr-P3-4fG"/>
@@ -92,7 +92,7 @@
                                                 </constraints>
                                             </view>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QOQ-ju-pgG" customClass="UnderlinedTextButton" customModule="DropBit" customModuleProvider="target">
-                                                <rect key="frame" x="160.5" y="322" width="46" height="44"/>
+                                                <rect key="frame" x="160.5" y="306" width="46" height="44"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="44" id="8qW-he-kVf"/>
                                                 </constraints>
@@ -101,6 +101,12 @@
                                                     <action selector="resendTextMessage:" destination="9zz-dP-ccQ" eventType="touchUpInside" id="RMM-Pa-0U6"/>
                                                 </connections>
                                             </button>
+                                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="q4A-nD-zeE">
+                                                <rect key="frame" x="171" y="366" width="25" height="0.0"/>
+                                                <nil key="textColor"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                <textInputTraits key="textInputTraits"/>
+                                            </textField>
                                         </subviews>
                                     </stackView>
                                 </subviews>
@@ -138,6 +144,7 @@
                         <outlet property="errorLabel" destination="Nyk-E2-e4i" id="ezx-JS-ZfR"/>
                         <outlet property="exampleLabel" destination="s2x-ve-wvJ" id="frK-aA-VY9"/>
                         <outlet property="keypadEntryView" destination="Vfd-z8-nGV" id="Pog-jc-PDR"/>
+                        <outlet property="oneTimeCodeInputTextField" destination="q4A-nD-zeE" id="WZe-gQ-JPQ"/>
                         <outlet property="phoneNumberContainer" destination="HGr-Xr-gKB" id="gdy-gv-FzQ"/>
                         <outlet property="phoneNumberEntryView" destination="p5R-F7-HDn" id="0vt-55-AP1"/>
                         <outlet property="resendCodeButton" destination="QOQ-ju-pgG" id="cEq-NU-bhC"/>

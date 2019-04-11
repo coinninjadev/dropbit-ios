@@ -34,13 +34,6 @@ extension AppCoordinator: DrawerViewControllerDelegate {
     navigationController.present(settingsNavigationController, animated: true, completion: nil)
   }
 
-  func historyButtonWasTouched() {
-    analyticsManager.track(event: .historyButtonPressed, with: nil)
-    drawerController?.toggle(.left, animated: true) { _ in
-      self.pushTransactionHistory()
-    }
-  }
-
   func spendButtonWasTouched() {
     analyticsManager.track(event: .spendButtonPressed, with: nil)
     drawerController?.toggle(.left, animated: true) { _ in

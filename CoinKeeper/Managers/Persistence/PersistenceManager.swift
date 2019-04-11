@@ -217,7 +217,7 @@ class PersistenceManager: PersistenceManagerType {
   }
 
   func deregisterPhone() {
-    let context = createBackgroundContext()
+    let context = mainQueueContext()
     databaseManager.unverifyUser(in: context)
     keychainManager.unverifyUser()
     userDefaultsManager.unverifyUser()
@@ -483,6 +483,15 @@ class PersistenceManager: PersistenceManagerType {
 
   func date(for key: CKUserDefaults.Key) -> Date? {
     return CKUserDefaults.standardDefaults.object(forKey: key.defaultsString) as? Date
+  }
+
+  func setSelectedCurrency(_ selectedCurrency: SelectedCurrency) {
+    set(stringValue: selectedCurrency.description, for: CKUserDefaults.Key.selectedCurrency)
+  }
+
+  func selectedCurrency() -> SelectedCurrency {
+    let stringValue = CKUserDefaults.standardDefaults.value(forKey: CKUserDefaults.Key.selectedCurrency.defaultsString) as? String
+    return stringValue.flatMap { SelectedCurrency(rawValue: $0) } ?? .fiat
   }
 
 }

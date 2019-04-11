@@ -39,7 +39,7 @@ class ImportWalletUITests: UITestCase {
 
     PushInfoPage()?.dismiss()
 
-    CalculatorPage()
+    TransactionHistoryPage()
       .tapRequest()
 
     RequestPayPage()

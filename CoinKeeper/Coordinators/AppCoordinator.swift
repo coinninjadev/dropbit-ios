@@ -6,7 +6,6 @@
 //  Copyright © 2018 Coin Ninja, LLC. All rights reserved.
 //
 
-import Alamofire
 import UIKit
 import CNBitcoinKit
 import MMDrawerController
@@ -61,6 +60,7 @@ class AppCoordinator: CoordinatorType {
   let uiTestArguments: [UITestArgument]
   // swiftlint:disable:next weak_delegate
   let mailComposeDelegate = MailerDelegate()
+  let currencyController: CurrencyController
 
   private let maxSecondsInBackground: TimeInterval = 30
   private let notificationLogger = OSLog(subsystem: "com.coinninja.appCoordinator", category: "notifications")
@@ -92,8 +92,12 @@ class AppCoordinator: CoordinatorType {
     serialQueueManager: SerialQueueManagerType = SerialQueueManager(),
     notificationManager: NotificationManagerType? = nil,
     messageManager: MessagesManagerType? = nil,
+    currencyController: CurrencyController = CurrencyController(currentCurrencyCode: .USD),
     uiTestArguments: [UITestArgument] = []
     ) {
+    currencyController.selectedCurrency = persistenceManager.selectedCurrency()
+    self.currencyController = currencyController
+
     self.navigationController = navigationController
     self.serialQueueManager = serialQueueManager
     self.persistenceManager = persistenceManager
@@ -166,8 +170,8 @@ class AppCoordinator: CoordinatorType {
   }
 
   func createContactCacheMigrationWorker() -> ContactCacheMigrationWorker {
-    let factory = ContactCacheMigratorFactory(persistenceManager: self.persistenceManager,
-                                              dataWorker: self.contactCacheDataWorker)
+    let factory = ContactCacheMigratorFactory(persistenceManager: persistenceManager,
+                                              dataWorker: contactCacheDataWorker)
     return ContactCacheMigrationWorker(migrators: factory.migrators())
   }
 
@@ -274,7 +278,6 @@ class AppCoordinator: CoordinatorType {
 
   private func configureBadgeTopics() {
     let topics: [BadgeTopic] = [
-      TransactionUpdateBadgeTopic(),
       UnverifiedPhoneBadgeTopic(),
       WordsNotBackedUpBadgeTopic()
     ]
@@ -320,7 +323,7 @@ class AppCoordinator: CoordinatorType {
   }
 
   func registerWallet(completion: @escaping () -> Void) {
-    let bgContext = self.persistenceManager.createBackgroundContext()
+    let bgContext = persistenceManager.createBackgroundContext()
     let logger = OSLog(subsystem: "com.coinninja.coinkeeper.appcoordinator", category: "register_wallet")
     bgContext.perform {
       self.registerAndPersistWallet(in: bgContext).asVoid()
@@ -393,7 +396,7 @@ class AppCoordinator: CoordinatorType {
       balanceIsPositive = wmgr.spendableBalance(in: bgContext) > 0
     }
 
-    self.analyticsManager.track(property: MixpanelProperty(key: .hasBTCBalance, value: balanceIsPositive ? true : false))
+    analyticsManager.track(property: MixpanelProperty(key: .hasBTCBalance, value: balanceIsPositive ? true : false))
   }
 
   private func applyUITestArguments(_ arguments: [UITestArgument]) {
@@ -401,7 +404,7 @@ class AppCoordinator: CoordinatorType {
 
     if uiTestArguments.contains(.resetPersistence) {
       persistenceManager.resetPersistence()
-      self.walletManager = nil
+      walletManager = nil
     }
 
     if uiTestArguments.contains(.skipGlobalMessageDisplay) {
@@ -416,11 +419,10 @@ class AppCoordinator: CoordinatorType {
   }
 
   func enterApp() {
-    let calculatorViewController = CalculatorViewController.makeFromStoryboard()
+    let mainViewController = makeTransactionHistory()
     let settingsViewController = DrawerViewController.makeFromStoryboard()
-    let drawerController = setupDrawerViewController(centerViewController: calculatorViewController,
+    let drawerController = setupDrawerViewController(centerViewController: mainViewController,
                                                      leftViewController: settingsViewController)
-    assignCoordinationDelegate(to: calculatorViewController)
     assignCoordinationDelegate(to: settingsViewController)
     navigationController.popToRootViewController(animated: false)
     navigationController.viewControllers = [drawerController]
@@ -431,17 +433,18 @@ class AppCoordinator: CoordinatorType {
   }
 
   private func handlePendingBitcoinURL() {
-    guard let bitcoinURL = self.bitcoinURLToOpen, self.launchStateManager.userAuthenticated else { return }
-    self.bitcoinURLToOpen = nil
+    guard let bitcoinURL = bitcoinURLToOpen, launchStateManager.userAuthenticated else { return }
+    bitcoinURLToOpen = nil
 
-    if let topVC = self.navigationController.topViewController(), let sendPaymentVC = topVC as? SendPaymentViewController {
+    if let topVC = navigationController.topViewController(), let sendPaymentVC = topVC as? SendPaymentViewController {
       sendPaymentVC.applyRecipient(inText: bitcoinURL.absoluteString)
 
     } else {
       let sendPaymentViewController = SendPaymentViewController.makeFromStoryboard()
       assignCoordinationDelegate(to: sendPaymentViewController)
-      sendPaymentViewController.alertManager = self.alertManager
+      sendPaymentViewController.alertManager = alertManager
       sendPaymentViewController.recipientDescriptionToLoad = bitcoinURL.absoluteString
+      sendPaymentViewController.viewModel.updatePrimaryCurrency(to: currencyController.selectedCurrency)
       navigationController.present(sendPaymentViewController, animated: true)
     }
   }
@@ -529,12 +532,12 @@ class AppCoordinator: CoordinatorType {
   func appResignedActiveState() {
     persistenceManager.setLastLoginTime()
     connectionManager.stop()
-    self.bitcoinURLToOpen = nil
+    bitcoinURLToOpen = nil
     //    UIApplication.shared.applicationIconBadgeNumber = persistenceManager.pendingInvitations().count
   }
 
   private func refreshContacts() {
-    let contactCacheMigrationWorker = self.createContactCacheMigrationWorker()
+    let contactCacheMigrationWorker = createContactCacheMigrationWorker()
     _ = contactCacheMigrationWorker.migrateIfPossible()
       .done {
         self.contactCacheDataWorker.reloadSystemContactsIfNeeded(force: false) { [weak self] _ in
@@ -614,7 +617,7 @@ class AppCoordinator: CoordinatorType {
       guard persistenceManager.keychainManager.store(recoveryWords: words) else {
         fatalError("Failed to write recovery words to keychain")
       }
-      self.walletManager = WalletManager(words: words, persistenceManager: self.persistenceManager)
+      walletManager = WalletManager(words: words, persistenceManager: persistenceManager)
     case .settings:
       persistenceManager.backup(recoveryWords: words)
     }
@@ -652,20 +655,20 @@ class AppCoordinator: CoordinatorType {
     navigationController.present(scanViewController, animated: true, completion: nil)
   }
 
-  func pushTransactionHistory() {
+  func makeTransactionHistory() -> TransactionHistoryViewController {
     let txHistory = TransactionHistoryViewController.makeFromStoryboard()
     assignCoordinationDelegate(to: txHistory)
-    txHistory.context = self.persistenceManager.mainQueueContext()
+    txHistory.context = persistenceManager.mainQueueContext()
     txHistory.balanceProvider = self
     txHistory.balanceDelegate = self
     txHistory.urlOpener = self
-    self.navigationController.pushViewController(txHistory, animated: true)
+    return txHistory
   }
 
   /// This may fail with a 500 error if the addresses were already added during a previous installation of the same wallet
   func registerInitialWalletAddresses() {
     guard let walletWorker = createWalletAddressDataWorker() else { return }
-    let bgContext = self.persistenceManager.createBackgroundContext()
+    let bgContext = persistenceManager.createBackgroundContext()
     let logger = OSLog(subsystem: "com.coinninja.coinkeeper.appcoordinator", category: "register_wallet_addresses")
     let addressNumber = walletWorker.targetWalletAddressCount
     bgContext.perform {
@@ -699,10 +702,10 @@ class AppCoordinator: CoordinatorType {
     let recoveryWordsIntroViewController = RecoveryWordsIntroViewController.makeFromStoryboard()
     recoveryWordsIntroViewController.flow = .settings
     recoveryWordsIntroViewController.recoveryWords = usableWords
-    self.assignCoordinationDelegate(to: recoveryWordsIntroViewController)
-    self.navigationController.present(CNNavigationController(rootViewController: recoveryWordsIntroViewController),
-                                      animated: false,
-                                      completion: nil)
+    assignCoordinationDelegate(to: recoveryWordsIntroViewController)
+    navigationController.present(CNNavigationController(rootViewController: recoveryWordsIntroViewController),
+                                 animated: false,
+                                 completion: nil)
   }
 
   func createPinEntryViewControllerForRecoveryWords(_ words: [String]) -> PinEntryViewController {
@@ -716,11 +719,16 @@ class AppCoordinator: CoordinatorType {
       self.assignCoordinationDelegate(to: wordsViewController)
       self.navigationController.present(CNNavigationController(rootViewController: wordsViewController), animated: false, completion: nil)
     })
-    self.assignCoordinationDelegate(to: pinEntryViewController)
+    assignCoordinationDelegate(to: pinEntryViewController)
 
     return pinEntryViewController
   }
 
+  func viewControllerDidRequestBadgeUpdate(_ viewController: UIViewController) {
+    badgeManager.publishBadgeUpdate()
+  }
+
+  // MARK: private methods
   private func insufficientBalanceDetails(for error: PendingInvitationError) -> (id: String, message: String)? {
     switch error {
     case .insufficientFundsForInvitationWithID(let id):
@@ -735,7 +743,6 @@ class AppCoordinator: CoordinatorType {
     }
   }
 
-  // MARK: private methods
   private func startFirstTimeWalletCreationFlow() {
     let viewController = PinCreationViewController.makeFromStoryboard()
     assignCoordinationDelegate(to: viewController)

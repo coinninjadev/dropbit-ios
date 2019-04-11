@@ -92,4 +92,48 @@ extension AppCoordinator: TransactionHistoryViewControllerDelegate {
     badgeManager.setTransactionsDidDisplay()
   }
 
+  func viewControllerDidTapScan(_ viewController: UIViewController, converter: CurrencyConverter) {
+    analyticsManager.track(event: .scanQRButtonPressed, with: nil)
+    permissionManager.requestPermission(for: .camera) { [weak self] status in
+      switch status {
+      case .authorized:
+        self?.showScanViewController(fallbackBTCAmount: converter.btcValue, primaryCurrency: converter.fromCurrency)
+      default:
+        break
+      }
+    }
+  }
+
+  func viewControllerDidTapReceivePayment(_ viewController: UIViewController, converter: CurrencyConverter) {
+    guard let wmgr = walletManager else { return }
+    analyticsManager.track(event: .requestButtonPressed, with: nil)
+    let requestViewController = RequestPayViewController.makeFromStoryboard()
+    assignCoordinationDelegate(to: requestViewController)
+
+    var nextAddress: String?
+    let bgContext = persistenceManager.createBackgroundContext()
+    bgContext.performAndWait {
+      guard let receiveAddress = wmgr.createAddressDataSource().nextAvailableReceiveAddress(forServerPool: false,
+                                                                                            indicesToSkip: [],
+                                                                                            in: bgContext)?.address else { return }
+      nextAddress = receiveAddress
+    }
+
+    guard let address = nextAddress else { return }
+    let viewModel = RequestPayViewModel(receiveAddress: address, currencyConverter: converter)
+    requestViewController.viewModel = viewModel
+    viewController.present(requestViewController, animated: true, completion: nil)
+  }
+
+  func viewControllerDidTapSendPayment(_ viewController: UIViewController, converter: CurrencyConverter) {
+    analyticsManager.track(event: .payButtonWasPressed, with: nil)
+    let sendPaymentViewController = SendPaymentViewController.makeFromStoryboard()
+    assignCoordinationDelegate(to: sendPaymentViewController)
+    sendPaymentViewController.alertManager = self.alertManager
+    sendPaymentViewController.viewModel = SendPaymentViewModel(btcAmount: converter.btcValue,
+                                                               primaryCurrency: converter.fromCurrency)
+    sendPaymentViewController.viewModel.updatePrimaryCurrency(to: currencyController.selectedCurrency)
+    navigationController.present(sendPaymentViewController, animated: true)
+  }
+
 }

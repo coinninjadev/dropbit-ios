@@ -66,6 +66,16 @@ final class DeviceVerificationViewController: BaseViewController {
   @IBOutlet var submitPhoneNumberButton: PrimaryActionButton!
   @IBOutlet var codeDisplayView: PinDisplayView!
   @IBOutlet var resendCodeButton: UnderlinedTextButton!
+  @IBOutlet var oneTimeCodeInputTextField: UITextField! {
+    didSet {
+      if #available(iOS 12.0, *) {
+        oneTimeCodeInputTextField.isHidden = true
+        oneTimeCodeInputTextField.textContentType = .oneTimeCode
+        oneTimeCodeInputTextField.delegate = self
+        oneTimeCodeInputTextField.keyboardType = .numberPad
+      }
+    }
+  }
 
   var countryCodeSearchView: CountryCodeSearchView?
   let countryCodeDataSource = CountryCodePickerDataSource()
@@ -116,6 +126,15 @@ final class DeviceVerificationViewController: BaseViewController {
     digitEntryViewModel = DigitEntryDisplayViewModel(view: codeDisplayView, maxDigits: 6)
     updateUI()
     setupPhoneNumberEntryView(textFieldEnabled: false)
+
+    if #available(iOS 12.0, *) {
+      switch entryMode {
+      case .phoneNumberEntry: break
+      case .codeFailureCountExceeded, .codeVerification, .codeVerificationFailed:
+        keypadEntryView.alpha = 0.0
+        oneTimeCodeInputTextField.becomeFirstResponder()
+      }
+    }
   }
 
   var shouldOrphan: Bool = false
@@ -193,6 +212,7 @@ final class DeviceVerificationViewController: BaseViewController {
   }
 
   private func setDefaultHiddenViews() {
+    oneTimeCodeInputTextField.isHidden = true
     exampleLabel.isHidden = true
     phoneNumberContainer.isHidden = true
     phoneNumberEntryView.isHidden = true
@@ -320,4 +340,11 @@ extension DeviceVerificationViewController: CKPhoneNumberTextFieldDelegate {
     handleInvalidPhoneNumber()
   }
 
+}
+
+extension DeviceVerificationViewController: UITextFieldDelegate {
+  func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+    selected(digit: string)
+    return true
+  }
 }
