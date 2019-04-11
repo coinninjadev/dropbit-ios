@@ -8,7 +8,7 @@
 
 import UIKit
 
-class GetBitcoinViewController: BaseViewController {
+final class GetBitcoinViewController: BaseViewController, StoryboardInitializable {
 
   weak var urlOpener: URLOpener?
 
