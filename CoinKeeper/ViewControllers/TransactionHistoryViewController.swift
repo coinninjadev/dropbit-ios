@@ -315,7 +315,7 @@ extension TransactionHistoryViewController: BalanceDisplayable {
   }
 
   func didUpdateExchangeRateManager(_ exchangeRateManager: ExchangeRateManager) {
-    self.rateManager.exchangeRates = exchangeRateManager.exchangeRates
+    rateManager.exchangeRates = exchangeRateManager.exchangeRates
     coordinationDelegate?.currencyController.exchangeRates = exchangeRateManager.exchangeRates
     collectionViews.forEach { $0.reloadData() }
   }
