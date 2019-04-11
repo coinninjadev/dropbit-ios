@@ -43,6 +43,7 @@ class CKUserDefaults: PersistenceUserDefaultsType {
     case contactCacheMigrationVersions
     case lastSuccessfulSyncCompletedAt
     case dustProtectionEnabled
+    case lastContactCacheReload
 
     var defaultsString: String { return self.rawValue }
   }
