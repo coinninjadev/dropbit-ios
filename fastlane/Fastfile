@@ -41,7 +41,7 @@ platform :ios do
       command: "bootstrap",
       verbose: false,
       platform: 'iOS',
-      cache_builds: false
+      cache_builds: true
     )
   end
 
@@ -51,7 +51,7 @@ platform :ios do
       command: "update",
       verbose: false,
       platform: 'iOS',
-      cache_builds: false
+      cache_builds: true
     )
   end
 
