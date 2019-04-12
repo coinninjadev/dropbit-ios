@@ -40,6 +40,14 @@ final class GetBitcoinViewController: BaseViewController, StoryboardInitializabl
     findATMButton.style = .standard
     buyWithCreditCardButton.style = .green
     buyWithGiftCardButton.style = .orange
+
+    navigationController?.setNavigationBarHidden(false, animated: true)
+    navigationController?.navigationBar.tintColor = Theme.Color.darkBlueButton.color
+  }
+
+  override func viewWillDisappear(_ animated: Bool) {
+    super.viewWillDisappear(animated)
+    navigationController?.setNavigationBarHidden(true, animated: true)
   }
 
   private func attributedSymbol(for image: UIImage) -> NSAttributedString {
