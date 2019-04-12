@@ -64,29 +64,8 @@ extension SpendBitcoinViewController: UICollectionViewDataSource, UICollectionVi
   }
 
   func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-//    let cell = collectionView.cellForItem(at: indexPath)
-//    let scale = CABasicAnimation(keyPath: "transform.scale")
-//    scale.fromValue = 1.0
-//    scale.toValue = 0.92
-//    scale.duration = 0.05
-//    scale.isRemovedOnCompletion = true
-//    cell?.layer.add(scale, forKey: "scale")
+
   }
-
-//  func collectionView(_ collectionView: UICollectionView, didHighlightItemAt indexPath: IndexPath) {
-//    let cell = collectionView.cellForItem(at: indexPath)
-//    UIView.animate(withDuration: 0.1) {
-//      cell?.transform = .init(scaleX: 0.92, y: 0.92)
-//    }
-//  }
-//
-//  func collectionView(_ collectionView: UICollectionView, didUnhighlightItemAt indexPath: IndexPath) {
-//    let cell = collectionView.cellForItem(at: indexPath)
-//    UIView.animate(withDuration: 0.1) {
-//      cell?.transform = .identity
-//    }
-//  }
-
 }
 
 extension SpendBitcoinViewController: UICollectionViewDelegateFlowLayout {
