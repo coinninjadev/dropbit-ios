@@ -20,16 +20,61 @@ class BuySpendCardCollectionViewCell: UICollectionViewCell {
   @IBOutlet var backgroundTopView: UIView!
   @IBOutlet var backgroundBottomView: UIView!
   @IBOutlet var purposeImageView: UIImageView!
-  @IBOutlet var purposeLabel: UILabel!
+  @IBOutlet var purposeLabel: UILabel! {
+    didSet {
+      purposeLabel.font = Theme.Font.secondaryButtonTitle.font
+      purposeLabel.textColor = Theme.Color.lightGrayText.color
+    }
+  }
   @IBOutlet var partnerStackView: UIStackView!
+
+  override func awakeFromNib() {
+    super.awakeFromNib()
+    layer.cornerRadius = 8.0
+    layer.masksToBounds = true
+  }
+
+  private var userSelected = false
+  override var isSelected: Bool {
+    didSet {
+      userSelected = true
+      animate(highlighted: userSelected)
+    }
+  }
+
+  private func animate(highlighted: Bool) {
+    let animationOptions: UIView.AnimationOptions = [.allowUserInteraction, .curveEaseInOut]
+    UIView.animate(
+      withDuration: 0.1,
+      delay: 0,
+      usingSpringWithDamping: 1,
+      initialSpringVelocity: 0,
+      options: animationOptions,
+      animations: { self.transform = .init(scaleX: 0.95, y: 0.95) },
+      completion: { _ in
+        UIView.animate(
+          withDuration: 0.1,
+          delay: 0,
+          usingSpringWithDamping: 1,
+          initialSpringVelocity: 0,
+          options: animationOptions,
+          animations: { self.transform = .identity },
+          completion: nil
+        )
+      }
+    )
+  }
 
   func load(with viewModel: BuySpendCardViewModel) {
     backgroundTopView.backgroundColor = viewModel.cardColor
     purposeImageView.image = viewModel.purposeImage
     purposeLabel.text = viewModel.purposeText
     viewModel.partnerImages
-      .map { UIImageView(image: $0) }
-      .forEach { self.partnerStackView.addArrangedSubview($0) }
+      .forEach { (image) in
+        let imageView = UIImageView(image: image)
+        imageView.contentMode = .scaleAspectFit
+        self.partnerStackView.addArrangedSubview(imageView)
+      }
   }
 
 }

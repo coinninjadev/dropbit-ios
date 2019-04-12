@@ -56,14 +56,14 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Yhv-Q2-GTw">
                                         <rect key="frame" x="0.0" y="73.5" width="348" height="48.5"/>
                                         <subviews>
-                                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" alignment="center" spacing="6" translatesAutoresizingMaskIntoConstraints="NO" id="ASZ-la-vIo">
-                                                <rect key="frame" x="0.0" y="0.0" width="348" height="48.5"/>
+                                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="ASZ-la-vIo">
+                                                <rect key="frame" x="12" y="0.0" width="324" height="48.5"/>
                                             </stackView>
                                         </subviews>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
-                                            <constraint firstAttribute="trailing" secondItem="ASZ-la-vIo" secondAttribute="trailing" id="1nb-2F-2t6"/>
-                                            <constraint firstItem="ASZ-la-vIo" firstAttribute="leading" secondItem="Yhv-Q2-GTw" secondAttribute="leading" id="bTU-0S-JbJ"/>
+                                            <constraint firstAttribute="trailing" secondItem="ASZ-la-vIo" secondAttribute="trailing" constant="12" id="1nb-2F-2t6"/>
+                                            <constraint firstItem="ASZ-la-vIo" firstAttribute="leading" secondItem="Yhv-Q2-GTw" secondAttribute="leading" constant="12" id="bTU-0S-JbJ"/>
                                             <constraint firstItem="ASZ-la-vIo" firstAttribute="top" secondItem="Yhv-Q2-GTw" secondAttribute="top" id="gFV-kD-Mao"/>
                                             <constraint firstAttribute="bottom" secondItem="ASZ-la-vIo" secondAttribute="bottom" id="x4o-Md-Iuz"/>
                                         </constraints>
