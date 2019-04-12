@@ -18,4 +18,11 @@ extension UICollectionView {
                   forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
                   withReuseIdentifier: reusableViewType.reuseIdentifier)
   }
+
+  func dequeue<T: UICollectionViewCell>(_: T.Type, for indexPath: IndexPath) -> T {
+    guard let cell = dequeueReusableCell(withReuseIdentifier: T.reuseIdentifier, for: indexPath) as? T else {
+      fatalError("Could not dequeue cell with type \(T.reuseIdentifier)")
+    }
+    return cell
+  }
 }
