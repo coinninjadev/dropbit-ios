@@ -303,6 +303,7 @@
 		3BE8D86420D1A85200E99D24 /* TransactionResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BE8D86320D1A85200E99D24 /* TransactionResponse.swift */; };
 		3BEB594620D15AF9005EDA9E /* AddressTransactionSummaryResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BEB594520D15AF9005EDA9E /* AddressTransactionSummaryResponse.swift */; };
 		3BEC1AF42229CC8D00824A35 /* Locale+Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BEC1AF32229CC8D00824A35 /* Locale+Constants.swift */; };
+		3BEF22972260CD4A001F6D25 /* GetBitcoinViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BEF22962260CD4A001F6D25 /* GetBitcoinViewControllerTests.swift */; };
 		3BF3B0C3217379B60021E45F /* NetworkManager+SubscribeToWalletRequestable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BF3B0C2217379B60021E45F /* NetworkManager+SubscribeToWalletRequestable.swift */; };
 		3BF3B0C521737A4D0021E45F /* SubscribeToWalletTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BF3B0C421737A4D0021E45F /* SubscribeToWalletTarget.swift */; };
 		3BF3B0C7217500330021E45F /* MockNetworkManager+NotificationNetworkInteractable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BF3B0C6217500330021E45F /* MockNetworkManager+NotificationNetworkInteractable.swift */; };
@@ -1078,6 +1079,7 @@
 		3BE8D86320D1A85200E99D24 /* TransactionResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionResponse.swift; sourceTree = "<group>"; };
 		3BEB594520D15AF9005EDA9E /* AddressTransactionSummaryResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressTransactionSummaryResponse.swift; sourceTree = "<group>"; };
 		3BEC1AF32229CC8D00824A35 /* Locale+Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Locale+Constants.swift"; sourceTree = "<group>"; };
+		3BEF22962260CD4A001F6D25 /* GetBitcoinViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetBitcoinViewControllerTests.swift; sourceTree = "<group>"; };
 		3BF3B0C2217379B60021E45F /* NetworkManager+SubscribeToWalletRequestable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NetworkManager+SubscribeToWalletRequestable.swift"; sourceTree = "<group>"; };
 		3BF3B0C421737A4D0021E45F /* SubscribeToWalletTarget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscribeToWalletTarget.swift; sourceTree = "<group>"; };
 		3BF3B0C6217500330021E45F /* MockNetworkManager+NotificationNetworkInteractable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MockNetworkManager+NotificationNetworkInteractable.swift"; sourceTree = "<group>"; };
@@ -2047,6 +2049,7 @@
 				3B30AF1421B810FF009BAE5A /* ConfirmPaymentViewControllerTests.swift */,
 				30C2561221C870E600887691 /* TutorialViewControllerTests.swift */,
 				3BB01BC0220A4233006B4D25 /* NoConnectionViewControllerTests.swift */,
+				3BEF22962260CD4A001F6D25 /* GetBitcoinViewControllerTests.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -3860,6 +3863,7 @@
 				B5697273208A8E0A00835F01 /* BalanceContainerTests.swift in Sources */,
 				3B325D4F219090F80094897C /* RecoveryWordsIntroViewControllerTests.swift in Sources */,
 				B5EABABC21FBB69C00E32E08 /* MockNetworkManager+TransactionNotificationRequestable.swift in Sources */,
+				3BEF22972260CD4A001F6D25 /* GetBitcoinViewControllerTests.swift in Sources */,
 				B5D77CCD2222002D002C360E /* MockRecipientParser.swift in Sources */,
 				3BDA364120B2FCF8001E24FB /* SuccessFailViewControllerTests.swift in Sources */,
 				3B1555E420D27CF500D6A70C /* TransactionResponseTests.swift in Sources */,
