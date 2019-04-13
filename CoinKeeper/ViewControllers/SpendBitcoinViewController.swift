@@ -20,9 +20,6 @@ final class SpendBitcoinViewController: BaseViewController, StoryboardInitializa
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    navigationController?.setNavigationBarHidden(false, animated: true)
-    navigationController?.navigationBar.tintColor = Theme.Color.darkBlueButton.color
-
     cardCollectionView.delegate = self
     cardCollectionView.dataSource = self
     cardCollectionView.registerNib(cellType: BuySpendCardCollectionViewCell.self)
@@ -33,6 +30,25 @@ final class SpendBitcoinViewController: BaseViewController, StoryboardInitializa
 
     spendAroundMeButton.style = .standard
     spendOnlineButton.style = .darkBlue
+
+    let mapPinImage = UIImage(imageLiteralResourceName: "mapPin")
+    let smallMobileImage = UIImage(imageLiteralResourceName: "smallMobile")
+    let font = Theme.Font.secondaryButtonTitle.font
+    let attributes: [NSAttributedString.Key: Any] = [
+      .font: font,
+      .foregroundColor: Theme.Color.lightGrayText.color
+    ]
+    let aroundMeString = NSAttributedString(image: mapPinImage, fontDescender: font.descender, imageSize: CGSize(width: 13, height: 20)) + "  " +
+      NSAttributedString(string: "AROUND ME", attributes: attributes)
+    let onlineString = NSAttributedString(image: smallMobileImage, fontDescender: font.descender, imageSize: CGSize(width: 14, height: 23)) + "  " +
+      NSAttributedString(string: "ONLINE", attributes: attributes)
+
+    spendAroundMeButton.setAttributedTitle(aroundMeString, for: .normal)
+    spendOnlineButton.setAttributedTitle(onlineString, for: .normal)
+
+    navigationController?.setNavigationBarHidden(false, animated: true)
+    navigationController?.navigationBar.tintColor = Theme.Color.darkBlueButton.color
+
   }
 
   override func viewWillDisappear(_ animated: Bool) {

@@ -46,6 +46,8 @@ class TransactionHistoryEmptyView: UIView {
     backgroundColor = Theme.Color.lightGrayBackground.color
   }
 
+  private let buttonFont = Theme.Font.primaryButtonTitle.font
+
   @IBAction func learnAboutBitcoin() {
     delegate?.noTransactionsViewDidSelectLearnAboutBitcoin(self)
   }
@@ -54,10 +56,10 @@ class TransactionHistoryEmptyView: UIView {
     delegate?.noTransactionsViewDidSelectGetBitcoin(self)
   }
 
-  func image(for button: UIButton) -> UIImage? {
+  func image(for button: UIButton) -> (UIImage, CGSize)? {
     switch button {
-    case getBitcoinButton: return UIImage(imageLiteralResourceName: "getBitcoinLogo")
-    case learnAboutBitcoinButton: return UIImage(imageLiteralResourceName: "learnBitcoinLogo")
+    case getBitcoinButton: return (UIImage(imageLiteralResourceName: "getBitcoinLogo"), CGSize(width: 21, height: 21))
+    case learnAboutBitcoinButton: return (UIImage(imageLiteralResourceName: "learnBitcoinLogo"), CGSize(width: 22, height: 18))
     default: return nil
     }
   }
@@ -71,21 +73,19 @@ class TransactionHistoryEmptyView: UIView {
   }
 
   func attributedSymbol(for button: UIButton) -> NSAttributedString {
-    let textAttribute = NSTextAttachment()
-    textAttribute.image = image(for: button)
-    let size = CGFloat(20)
-    textAttribute.bounds = CGRect(x: -0, y: (-size / (size / 4)),
-                                  width: size, height: size)
-    return NSAttributedString(attachment: textAttribute)
+    guard let imageData = image(for: button) else { return NSAttributedString(string: "") }
+    let image = imageData.0
+    let size = imageData.1
+    return NSAttributedString(image: image, fontDescender: buttonFont.descender, imageSize: size) //NSAttributedString(attachment: textAttribute)
   }
 
   func attributedTitle(for button: UIButton) -> NSAttributedString {
     let string = text(for: button)
     let attributes: [NSAttributedString.Key: Any] = [
-      .font: Theme.Font.primaryButtonTitle.font,
+      .font: buttonFont,
       .foregroundColor: Theme.Color.verifyWordLightGray.color
     ]
-    let attributedString = attributedSymbol(for: button) + " " + NSAttributedString(string: string, attributes: attributes)
+    let attributedString = attributedSymbol(for: button) + "  " + NSAttributedString(string: string, attributes: attributes)
     return attributedString
   }
 }
@@ -126,9 +126,9 @@ class TransactionHistoryWithBalanceView: TransactionHistoryEmptyView {
     }
   }
 
-  override func image(for button: UIButton) -> UIImage? {
+  override func image(for button: UIButton) -> (UIImage, CGSize)? {
     switch button {
-    case spendBitcoinButton: return UIImage(imageLiteralResourceName: "spendBitcoinLogo")
+    case spendBitcoinButton: return (UIImage(imageLiteralResourceName: "spendBitcoinLogo"), CGSize(width: 24, height: 17))
     default: return super.image(for: button)
     }
   }
