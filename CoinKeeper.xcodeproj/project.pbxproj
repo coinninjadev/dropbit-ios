@@ -10,7 +10,7 @@
 		15EA0DA4F8BC625A4DE7976C /* Pods_DropBitTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F55D268D981AF3113DC4E852 /* Pods_DropBitTests.framework */; };
 		230DE9FD207E786300CA8B03 /* NotificationToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = 230DE9FC207E786300CA8B03 /* NotificationToken.swift */; };
 		233BDB742080E8A60076F076 /* NetworkManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 233BDB732080E8A60076F076 /* NetworkManagerTests.swift */; };
-		300CD8F121FA668400BFF560 /* NSAttributedString+Concatenate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 300CD8F021FA668400BFF560 /* NSAttributedString+Concatenate.swift */; };
+		300CD8F121FA668400BFF560 /* NSAttributedString+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 300CD8F021FA668400BFF560 /* NSAttributedString+Helpers.swift */; };
 		30349F872188A99700A32AFA /* ServerAddressViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30349F862188A99700A32AFA /* ServerAddressViewModel.swift */; };
 		304BAED021FA131000065D6D /* TutorialUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 304BAECF21FA131000065D6D /* TutorialUITests.swift */; };
 		304BAED221FA1F9700065D6D /* TransactionHistoryPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 304BAED121FA1F9700065D6D /* TransactionHistoryPage.swift */; };
@@ -786,7 +786,7 @@
 		230DE9FC207E786300CA8B03 /* NotificationToken.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationToken.swift; sourceTree = "<group>"; };
 		233BDB732080E8A60076F076 /* NetworkManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManagerTests.swift; sourceTree = "<group>"; };
 		28600897437A2629DB7CC4A3 /* Pods-DropBitTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DropBitTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-DropBitTests/Pods-DropBitTests.debug.xcconfig"; sourceTree = "<group>"; };
-		300CD8F021FA668400BFF560 /* NSAttributedString+Concatenate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSAttributedString+Concatenate.swift"; sourceTree = "<group>"; };
+		300CD8F021FA668400BFF560 /* NSAttributedString+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSAttributedString+Helpers.swift"; sourceTree = "<group>"; };
 		30349F862188A99700A32AFA /* ServerAddressViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerAddressViewModel.swift; sourceTree = "<group>"; };
 		304BAECF21FA131000065D6D /* TutorialUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialUITests.swift; sourceTree = "<group>"; };
 		304BAED121FA1F9700065D6D /* TransactionHistoryPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionHistoryPage.swift; sourceTree = "<group>"; };
@@ -1837,7 +1837,7 @@
 				3060489E218A670B009C6E86 /* UIView+Shadow.swift */,
 				B527AFBC2195CFF6007D9484 /* UIView+AccessibilityIdentifier.swift */,
 				3B44962721B16D1000A4E912 /* UIApplication+Screenshot.swift */,
-				300CD8F021FA668400BFF560 /* NSAttributedString+Concatenate.swift */,
+				300CD8F021FA668400BFF560 /* NSAttributedString+Helpers.swift */,
 				3B731D372253D97A0044B4F8 /* UIView+Fade.swift */,
 			);
 			path = Extensions;
@@ -3736,7 +3736,7 @@
 				B52F690A22417B0100790E97 /* CKDatabase.swift in Sources */,
 				3B23232E2248FEBC00514201 /* MigrateDatabaseV4Grooming.swift in Sources */,
 				B51AE4A7209398FE008380CC /* CKMPhoneNumber+CoreDataProperties.swift in Sources */,
-				300CD8F121FA668400BFF560 /* NSAttributedString+Concatenate.swift in Sources */,
+				300CD8F121FA668400BFF560 /* NSAttributedString+Helpers.swift in Sources */,
 				B51F823C207BB00D00692F5B /* BalanceSecondaryAmountLabel.swift in Sources */,
 				B56B637A2200CDF100CCC153 /* CKMTransactionSharedPayload+CoreDataClass.swift in Sources */,
 				A2A530C42093A72000B6F4DE /* AppCoordinator+ConfirmPaymentViewControllerDelegate.swift in Sources */,
