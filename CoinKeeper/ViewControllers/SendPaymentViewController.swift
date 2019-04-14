@@ -83,6 +83,7 @@ ValidatorAlertDisplayable {
   @IBOutlet var sendButton: PrimaryActionButton!
   @IBOutlet var memoContainerView: SendPaymentMemoView!
   @IBOutlet var sendMaxButton: LightBorderedButton!
+  @IBOutlet var toggleCurrencyButton: UIButton!
 
   @IBAction func performClose() {
     coordinationDelegate?.viewControllerDidSelectClose(self)
@@ -145,6 +146,11 @@ ValidatorAlertDisplayable {
   @IBAction func performStartPhoneEntry() {
     showPhoneEntryView(with: "")
     phoneNumberEntryView.textField?.becomeFirstResponder()
+  }
+
+  @IBAction func performCurrencyToggle() {
+    viewModel.togglePrimaryCurrency()
+    updateViewWithModel()
   }
 
   /// Each button should connect to this IBAction. This prevents automatically
@@ -279,6 +285,10 @@ extension SendPaymentViewController {
     }
 
     updateMemoContainer()
+
+    if viewModel.btcAmount != .zero {
+      sendMaxButton.isHidden = true
+    }
   }
 
   func updateMemoContainer() {

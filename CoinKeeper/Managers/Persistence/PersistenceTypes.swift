@@ -30,6 +30,10 @@ protocol PersistenceManagerType: DeviceCountryCodeProvider {
   func array(for key: CKUserDefaults.Key) -> [String]?
   func set(_ bool: Bool, for key: CKUserDefaults.Key)
   func set(_ date: Date, for key: CKUserDefaults.Key)
+
+  func setSelectedCurrency(_ selectedCurrency: SelectedCurrency)
+  func selectedCurrency() -> SelectedCurrency
+
   func date(for key: CKUserDefaults.Key) -> Date?
 
   func bool(for key: CKUserDefaults.Key) -> Bool

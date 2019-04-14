@@ -37,7 +37,7 @@ class TutorialUITests: UITestCase {
       .tapSkip()
 
     PushInfoPage()?.dismiss()
-    CalculatorPage().tapBalance()
+
     TransactionHistoryPage().tapTutorialButton()
 
     let tutorialView = app.viewController(withId: .tutorial(.page))

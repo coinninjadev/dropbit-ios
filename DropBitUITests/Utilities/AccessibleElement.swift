@@ -51,7 +51,6 @@ enum AccessiblePageElement {
   case createRecoveryWords(CreateRecoveryWordsElement)
   case deviceVerification(DeviceVerificationElement)
   case actionableAlert(ActionableAlertElement)
-  case calculator(CalculatorElement)
   case transactionHistory(TransactionHistoryElement)
   case requestPay(RequestPayElement)
   case recoveryWordsIntro(RecoveryWordsIntroElement)
@@ -72,7 +71,6 @@ enum AccessiblePageElement {
     case .restoreWallet(let element):             return element.identifier
     case .deviceVerification(let element):        return element.identifier
     case .actionableAlert(let element):           return element.identifier
-    case .calculator(let element):                return element.identifier
     case .requestPay(let element):                return element.identifier
     case .recoveryWordsIntro(let element):        return element.identifier
     case .bannerMessage(let element):             return element.identifier
@@ -139,17 +137,13 @@ enum ActionableAlertElement: String, AccessibleElement {
   case actionButton
 }
 
-enum CalculatorElement: String, AccessibleElement {
-  case page
-  case receiveButton
-  case menu
-  case sendButton
-  case balanceView
-}
-
 enum TransactionHistoryElement: String, AccessibleElement {
   case page
+  case menu
   case tutorialButton
+  case receiveButton
+  case sendButton
+  case balanceView
 }
 
 enum RequestPayElement: String, AccessibleElement {

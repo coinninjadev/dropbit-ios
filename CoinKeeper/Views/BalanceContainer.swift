@@ -13,6 +13,7 @@ protocol BalanceContainerDelegate: AnyObject {
   func containerDidTapBalances(in viewController: UIViewController)
   func containerDidLongPressBalances(in viewController: UIViewController)
   func isSyncCurrentlyRunning() -> Bool
+  func selectedCurrency() -> SelectedCurrency
 }
 
 struct BalanceContainerDataSource {
@@ -77,7 +78,7 @@ enum BalanceContainerLeftButtonType {
 
   func accessibleViewsAndIdentifiers() -> [AccessibleViewElement] {
     return [
-      (self.balanceView, .calculator(.balanceView))
+      (self.balanceView, .transactionHistory(.balanceView))
     ]
   }
 
@@ -116,6 +117,10 @@ enum BalanceContainerLeftButtonType {
     if let syncRunning = delegate?.isSyncCurrentlyRunning(), syncRunning == false {
       setSyncVisibility(hidden: true)
     }
+  }
+
+  private func selectedCurrency() -> SelectedCurrency {
+    return delegate?.selectedCurrency() ?? .fiat
   }
 
   private func subscribeToSyncNotifications() {

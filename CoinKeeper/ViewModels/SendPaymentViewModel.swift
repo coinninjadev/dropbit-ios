@@ -52,6 +52,8 @@ protocol SendPaymentViewModelType: SendPaymentDataProvider {
   var sharedMemoAllowed: Bool { get set }
   var sendMaxTransactionData: CNBTransactionData? { get }
   mutating func sendMax(with data: CNBTransactionData)
+  mutating func togglePrimaryCurrency()
+  mutating func updatePrimaryCurrency(to selectedCurrency: SelectedCurrency)
 
   var paymentRecipient: PaymentRecipient? { get set }
 
@@ -120,6 +122,20 @@ extension SendPaymentViewModelType {
 
   var invitationMaximumIgnoredOptions: CurrencyAmountValidationOptions {
     return [.usableBalance, .transactionMinimum]
+  }
+
+  mutating func togglePrimaryCurrency() {
+    switch primaryCurrency {
+    case .BTC: primaryCurrency = .USD
+    case .USD: primaryCurrency = .BTC
+    }
+  }
+
+  mutating func updatePrimaryCurrency(to selectedCurrency: SelectedCurrency) {
+    switch selectedCurrency {
+    case .BTC: primaryCurrency = .BTC
+    case .fiat: primaryCurrency = .USD
+    }
   }
 }
 

@@ -35,6 +35,11 @@ class MockPersistenceManager: PersistenceManagerType {
   func array(for key: CKUserDefaults.Key) -> [String]? { return nil }
   func bool(for key: CKUserDefaults.Key) -> Bool { return false }
   func date(for key: CKUserDefaults.Key) -> Date? { return nil }
+  func setSelectedCurrency(_ selectedCurrency: SelectedCurrency) {
+  }
+  func selectedCurrency() -> SelectedCurrency {
+    return .BTC
+  }
 
   var unverifyUserWasCalled = false
   func unverifyUser(in context: NSManagedObjectContext) {

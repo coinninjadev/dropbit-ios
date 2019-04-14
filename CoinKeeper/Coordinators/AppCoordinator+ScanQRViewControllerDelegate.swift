@@ -52,6 +52,7 @@ extension AppCoordinator: ScanQRViewControllerDelegate {
     } else {
       sendPaymentViewController.viewModel = SendPaymentViewModel(qrCode: qrCode, primaryCurrency: .BTC)
     }
+    sendPaymentViewController.viewModel.updatePrimaryCurrency(to: currencyController.selectedCurrency)
 
     return sendPaymentViewController
   }
@@ -65,6 +66,7 @@ extension AppCoordinator: ScanQRViewControllerDelegate {
     if let vm = viewModel {
       sendPaymentViewController.viewModel = vm
     }
+    sendPaymentViewController.viewModel.updatePrimaryCurrency(to: currencyController.selectedCurrency)
 
     viewController.dismiss(animated: true) { [weak self] in
       self?.navigationController.present(sendPaymentViewController, animated: true) {

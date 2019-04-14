@@ -30,7 +30,7 @@ class SkipRecoveryWordsUITests: UITestCase {
 
     toastLabel.swipeUp()
 
-    CalculatorPage().tapMenu()
+    TransactionHistoryPage().tapMenu()
 
     let backupWalletCell = app.staticTexts["Back Up Wallet"]
     let backupWalletCellExists = backupWalletCell.waitForExistence(timeout: 2.0)
@@ -78,7 +78,7 @@ class SkipRecoveryWordsUITests: UITestCase {
     }
 
     // verify backup wallet is gone
-    CalculatorPage().tapMenu()
+    TransactionHistoryPage().tapMenu()
     let backupWalletCell2 = app.staticTexts["Back Up Wallet"]
     let backupWalletCell2Exists = backupWalletCell2.waitForExistence(timeout: 2.0)
     XCTAssertFalse(backupWalletCell2Exists)

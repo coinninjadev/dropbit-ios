@@ -95,5 +95,9 @@ class BalanceContainerTests: XCTestCase {
       didCallIsSyncCurrentlyRunning = true
       return true
     }
+
+    func selectedCurrency() -> SelectedCurrency {
+      return .BTC
+    }
   }
 }

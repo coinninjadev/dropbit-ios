@@ -206,8 +206,7 @@ class TransactionHistorySummaryCellViewModel {
     let secondaryAmountString = amounts.secondary ?? "–"
 
     if let primaryAmountString = amounts.primary {
-      let sign = isIncoming ? "+" : "-"
-      return ("\(sign) \(primaryAmountString)", secondaryAmountString)
+      return (primaryAmountString, secondaryAmountString)
     } else {
       return ("–", secondaryAmountString)
     }
@@ -220,7 +219,7 @@ class TransactionHistorySummaryCellViewModel {
     let absSecondary = converter.amount(forCurrency: secondary)?.absoluteValue()
 
     let pString = absPrimary.flatMap { converter.amountStringWithSymbol($0, primary) }
-    let sString = absSecondary.flatMap { converter.amountStringWithoutSymbol($0, secondary) }
+    let sString = absSecondary.flatMap { converter.amountStringWithSymbol($0, secondary) }
 
     return (pString, sString)
   }
