@@ -39,7 +39,6 @@ extension AppCoordinator: DrawerViewControllerDelegate {
     drawerController?.toggle(.left, animated: true, completion: nil)
     let controller = SpendBitcoinViewController.makeFromStoryboard()
     assignCoordinationDelegate(to: controller)
-    controller.urlOpener = self
     navigationController.pushViewController(controller, animated: true)
   }
 
@@ -57,7 +56,6 @@ extension AppCoordinator: DrawerViewControllerDelegate {
     drawerController?.toggle(.left, animated: true, completion: nil)
     let controller = GetBitcoinViewController.makeFromStoryboard()
     assignCoordinationDelegate(to: controller)
-    controller.urlOpener = self
     navigationController.pushViewController(controller, animated: true)
   }
 }

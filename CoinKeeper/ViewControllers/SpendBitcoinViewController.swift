@@ -8,6 +8,12 @@
 
 import UIKit
 
+protocol SpendBitcoinViewControllerDelegate: AnyObject {
+  func viewControllerSpendBitcoinAroundMe(_ viewController: SpendBitcoinViewController)
+  func viewControllerSpendBitcoinOnline(_ viewController: SpendBitcoinViewController)
+  func viewControllerSpendGiftCards(_ viewController: SpendBitcoinViewController)
+}
+
 final class SpendBitcoinViewController: BaseViewController, StoryboardInitializable {
 
   @IBOutlet var headerLabel: UILabel!
@@ -15,7 +21,9 @@ final class SpendBitcoinViewController: BaseViewController, StoryboardInitializa
   @IBOutlet var spendAroundMeButton: PrimaryActionButton!
   @IBOutlet var spendOnlineButton: PrimaryActionButton!
 
-  weak var urlOpener: URLOpener?
+  var coordinationDelegate: SpendBitcoinViewControllerDelegate? {
+    return generalCoordinationDelegate as? SpendBitcoinViewControllerDelegate
+  }
 
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -48,7 +56,6 @@ final class SpendBitcoinViewController: BaseViewController, StoryboardInitializa
 
     navigationController?.setNavigationBarHidden(false, animated: true)
     navigationController?.navigationBar.tintColor = Theme.Color.darkBlueButton.color
-
   }
 
   override func viewWillDisappear(_ animated: Bool) {
@@ -57,13 +64,11 @@ final class SpendBitcoinViewController: BaseViewController, StoryboardInitializa
   }
 
   @IBAction func spendBitcoinAroundMe(_ sender: Any) {
-    guard let url = CoinNinjaUrlFactory.buildUrl(for: .spendBitcoinAroundMe) else { return }
-    urlOpener?.openURL(url, completionHandler: nil)
+    coordinationDelegate?.viewControllerSpendBitcoinAroundMe(self)
   }
 
   @IBAction func spendBitconOnline(_ sender: Any) {
-    guard let url = CoinNinjaUrlFactory.buildUrl(for: .spendBitcoinOnline) else { return }
-    urlOpener?.openURL(url, completionHandler: nil)
+    coordinationDelegate?.viewControllerSpendBitcoinOnline(self)
   }
 }
 
@@ -90,8 +95,7 @@ extension SpendBitcoinViewController: UICollectionViewDataSource, UICollectionVi
   }
 
   func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-    guard let url = CoinNinjaUrlFactory.buildUrl(for: .buyGiftCards) else { return }
-    urlOpener?.openURL(url, completionHandler: nil)
+    coordinationDelegate?.viewControllerSpendGiftCards(self)
   }
 }
 

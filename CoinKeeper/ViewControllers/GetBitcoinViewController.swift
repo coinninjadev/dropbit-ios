@@ -21,7 +21,9 @@ final class GetBitcoinViewController: BaseViewController, StoryboardInitializabl
   @IBOutlet var buyWithCreditCardButton: PrimaryActionButton!
   @IBOutlet var buyWithGiftCardButton: PrimaryActionButton!
 
-  weak var urlOpener: URLOpener?
+  var coordinationDelegate: GetBitcoinViewControllerDelegate? {
+    return generalCoordinationDelegate as? GetBitcoinViewControllerDelegate
+  }
 
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -69,17 +71,14 @@ final class GetBitcoinViewController: BaseViewController, StoryboardInitializabl
   }
 
   @IBAction func findATM() {
-    guard let url = CoinNinjaUrlFactory.buildUrl(for: .buyAtATM) else { return }
-    urlOpener?.openURL(url, completionHandler: nil)
+    coordinationDelegate?.viewControllerFindBitcoinATMNearMe(self)
   }
 
   @IBAction func buyWithCreditCard() {
-    guard let url = CoinNinjaUrlFactory.buildUrl(for: .buyWithCreditCard) else { return }
-    urlOpener?.openURL(url, completionHandler: nil)
+    coordinationDelegate?.viewControllerBuyWithCreditCard(self)
   }
 
   @IBAction func buyWithGiftCard() {
-    guard let url = CoinNinjaUrlFactory.buildUrl(for: .buyGiftCards) else { return }
-    urlOpener?.openURL(url, completionHandler: nil)
+    coordinationDelegate?.viewControllerBuyWithGiftCard(self)
   }
 }

@@ -12,18 +12,18 @@ import XCTest
 class GetBitcoinViewControllerTests: XCTestCase {
 
   var sut: GetBitcoinViewController!
-  var mockURLOpener: MockURLOpener!
+  var mockCoordinator: MockGetBitcoinViewControllerDelegate!
 
   override func setUp() {
     super.setUp()
     sut = GetBitcoinViewController.makeFromStoryboard()
-    mockURLOpener = MockURLOpener()
-    sut.urlOpener = mockURLOpener
+    mockCoordinator = MockGetBitcoinViewControllerDelegate()
+    sut.generalCoordinationDelegate = mockCoordinator
     _ = sut.view
   }
 
   override func tearDown() {
-    mockURLOpener = nil
+    mockCoordinator = nil
     sut = nil
     super.tearDown()
   }
@@ -56,31 +56,36 @@ class GetBitcoinViewControllerTests: XCTestCase {
   }
 
   // MARK: actions produce results
-  func testFindATMOpensURL() {
+  func testFindATMTellsCoordinator() {
     sut.findATMButton.sendActions(for: .touchUpInside)
-    XCTAssertTrue(mockURLOpener.wasAskedToOpenURL)
-    XCTAssertEqual(mockURLOpener.requestedURL?.absoluteString ?? "", "https://www.coinninja.com/webview/load-map")
+    XCTAssertTrue(mockCoordinator.wasAskedToFindATMNearMe)
   }
 
-  func testBuyWithCreditCardOpensURL() {
+  func testBuyWithCreditCardTellsCoordinator() {
     sut.buyWithCreditCardButton.sendActions(for: .touchUpInside)
-    XCTAssertTrue(mockURLOpener.wasAskedToOpenURL)
-    XCTAssertEqual(mockURLOpener.requestedURL?.absoluteString ?? "", "https://www.coinninja.com/buybitcoin/creditcards")
+    XCTAssertTrue(mockCoordinator.wasAskedToBuyWithCreditCard)
   }
 
-  func testBuyWithGiftCardOpensURL() {
+  func testBuyWithGiftCardTellsCoordinator() {
     sut.buyWithGiftCardButton.sendActions(for: .touchUpInside)
-    XCTAssertTrue(mockURLOpener.wasAskedToOpenURL)
-    XCTAssertEqual(mockURLOpener.requestedURL?.absoluteString ?? "", "https://www.coinninja.com/buybitcoin/giftcards")
+    XCTAssertTrue(mockCoordinator.wasAskedToBuyWithGiftCard)
   }
 
 }
 
-class MockURLOpener: URLOpener {
-  var wasAskedToOpenURL = false
-  var requestedURL: URL?
-  func openURL(_ url: URL, completionHandler completion: (() -> Void)?) {
-    wasAskedToOpenURL = true
-    requestedURL = url
+class MockGetBitcoinViewControllerDelegate: GetBitcoinViewControllerDelegate {
+  var wasAskedToFindATMNearMe = false
+  func viewControllerFindBitcoinATMNearMe(_ viewController: GetBitcoinViewController) {
+    wasAskedToFindATMNearMe = true
+  }
+
+  var wasAskedToBuyWithCreditCard = false
+  func viewControllerBuyWithCreditCard(_ viewController: GetBitcoinViewController) {
+    wasAskedToBuyWithCreditCard = true
+  }
+
+  var wasAskedToBuyWithGiftCard = false
+  func viewControllerBuyWithGiftCard(_ viewController: GetBitcoinViewController) {
+    wasAskedToBuyWithGiftCard = true
   }
 }
