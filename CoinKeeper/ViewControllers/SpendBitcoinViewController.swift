@@ -55,6 +55,16 @@ final class SpendBitcoinViewController: BaseViewController, StoryboardInitializa
     super.viewWillDisappear(animated)
     navigationController?.setNavigationBarHidden(true, animated: true)
   }
+
+  @IBAction func spendBitcoinAroundMe(_ sender: Any) {
+    guard let url = CoinNinjaUrlFactory.buildUrl(for: .spendBitcoinAroundMe) else { return }
+    urlOpener?.openURL(url, completionHandler: nil)
+  }
+
+  @IBAction func spendBitconOnline(_ sender: Any) {
+    guard let url = CoinNinjaUrlFactory.buildUrl(for: .spendBitcoinOnline) else { return }
+    urlOpener?.openURL(url, completionHandler: nil)
+  }
 }
 
 extension SpendBitcoinViewController: UICollectionViewDataSource, UICollectionViewDelegate {
@@ -80,7 +90,8 @@ extension SpendBitcoinViewController: UICollectionViewDataSource, UICollectionVi
   }
 
   func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-
+    guard let url = CoinNinjaUrlFactory.buildUrl(for: .buyGiftCards) else { return }
+    urlOpener?.openURL(url, completionHandler: nil)
   }
 }
 

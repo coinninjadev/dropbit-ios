@@ -60,10 +60,16 @@
                                             <constraint firstAttribute="height" constant="51" id="njC-qi-fSd"/>
                                         </constraints>
                                         <state key="normal" title="Button"/>
+                                        <connections>
+                                            <action selector="spendBitcoinAroundMe:" destination="91h-DS-BRx" eventType="touchUpInside" id="Eyv-w6-5G3"/>
+                                        </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="36J-Rq-fo0" customClass="PrimaryActionButton" customModule="DropBit" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="238" width="326" height="51"/>
                                         <state key="normal" title="Button"/>
+                                        <connections>
+                                            <action selector="spendBitconOnline:" destination="91h-DS-BRx" eventType="touchUpInside" id="QJ6-Ap-rs7"/>
+                                        </connections>
                                     </button>
                                 </subviews>
                                 <constraints>
