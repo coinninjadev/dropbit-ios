@@ -7,3 +7,17 @@
 //
 
 import Foundation
+import CoreLocation
+
+extension AppCoordinator: GetBitcoinViewControllerDelegate {
+  func viewControllerFindBitcoinATMNearMe(_ viewController: GetBitcoinViewController) {
+  }
+
+  func viewControllerBuyWithCreditCard(_ viewController: GetBitcoinViewController) {
+
+  }
+
+  func viewControllerBuyWithGiftCard(_ viewController: GetBitcoinViewController) {
+
+  }
+}

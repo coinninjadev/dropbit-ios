@@ -8,6 +8,12 @@
 
 import UIKit
 
+protocol GetBitcoinViewControllerDelegate: AnyObject {
+  func viewControllerFindBitcoinATMNearMe(_ viewController: GetBitcoinViewController)
+  func viewControllerBuyWithCreditCard(_ viewController: GetBitcoinViewController)
+  func viewControllerBuyWithGiftCard(_ viewController: GetBitcoinViewController)
+}
+
 final class GetBitcoinViewController: BaseViewController, StoryboardInitializable {
 
   @IBOutlet var headerLabel: UILabel!
