@@ -3214,7 +3214,7 @@
 			files = (
 			);
 			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-DropBit/Pods-DropBit-frameworks.sh",
+				"${SRCROOT}/Pods/Target Support Files/Pods-DropBit/Pods-DropBit-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
 				"${BUILT_PRODUCTS_DIR}/DZNEmptyDataSet/DZNEmptyDataSet.framework",
 				"${BUILT_PRODUCTS_DIR}/JKSteppedProgressBar/JKSteppedProgressBar.framework",
@@ -3245,7 +3245,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-DropBit/Pods-DropBit-frameworks.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-DropBit/Pods-DropBit-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		812926DA6AAE940CEAD66388 /* [CP] Check Pods Manifest.lock */ = {
