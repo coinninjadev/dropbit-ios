@@ -63,7 +63,7 @@ final class GetBitcoinViewController: BaseViewController, StoryboardInitializabl
   }
 
   @IBAction func findATM() {
-    guard let url = CoinNinjaUrlFactory.buildUrl(for: .atm) else { return }
+    guard let url = CoinNinjaUrlFactory.buildUrl(for: .buyAtATM) else { return }
     urlOpener?.openURL(url, completionHandler: nil)
   }
 
