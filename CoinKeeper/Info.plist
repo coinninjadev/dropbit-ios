@@ -113,5 +113,7 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Allow access to find Bitcoin ATMs or use Bitcoin near you</string>
 </dict>
 </plist>
