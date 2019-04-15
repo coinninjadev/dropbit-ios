@@ -35,15 +35,15 @@ final class GetBitcoinViewController: BaseViewController, StoryboardInitializabl
     let atmAttributedString = NSAttributedString(
       image: mapPinImage,
       fontDescender: font.descender,
-      imageSize: CGSize(width: 13, height: 20)) + " " + NSAttributedString(string: "FIND BITCOIN ATM", attributes: attributes)
+      imageSize: CGSize(width: 13, height: 20)) + "  " + NSAttributedString(string: "FIND BITCOIN ATM", attributes: attributes)
     let creditCardAttributedString = NSAttributedString(
       image: dollarImage,
       fontDescender: font.descender,
-      imageSize: CGSize(width: 22, height: 21)) + " " + NSAttributedString(string: "WITH CREDIT CARD", attributes: attributes)
+      imageSize: CGSize(width: 22, height: 21)) + "  " + NSAttributedString(string: "WITH CREDIT CARD", attributes: attributes)
     let giftCardAttributedString = NSAttributedString(
       image: giftCardImage,
       fontDescender: font.descender + 2.0,  // for a slightly higher offset than just the font's descender
-      imageSize: CGSize(width: 20, height: 13)) + " " + NSAttributedString(string: "WITH GIFT CARD", attributes: attributes)
+      imageSize: CGSize(width: 20, height: 13)) + "  " + NSAttributedString(string: "WITH GIFT CARD", attributes: attributes)
 
     findATMButton.setAttributedTitle(atmAttributedString, for: .normal)
     buyWithCreditCardButton.setAttributedTitle(creditCardAttributedString, for: .normal)
