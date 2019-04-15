@@ -23,7 +23,7 @@ extension MockNetworkManager: WalletAddressRequestable {
     return Promise.value(())
   }
 
-  func queryWalletAddresses(phoneNumberHashes: [String]) -> Promise<[WalletAddressesQueryResponse]> {
+  func queryWalletAddresses(identityHashes: [String]) -> Promise<[WalletAddressesQueryResponse]> {
     return Promise { _ in }
   }
 

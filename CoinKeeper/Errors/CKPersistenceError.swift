@@ -13,6 +13,7 @@ enum CKPersistenceError: Error, LocalizedError {
   case noWalletWords
   case noManagedWallet
   case noUser
+  case phoneNotVerified
   case unexpectedResult
   case failedToFetch(String)
 
@@ -22,6 +23,7 @@ enum CKPersistenceError: Error, LocalizedError {
     case .noWalletWords:          return "Failed to fetch recovery words from Keychain"
     case .noManagedWallet:        return "Failed to find wallet"
     case .noUser:                 return "Failed to find user"
+    case .phoneNotVerified:       return "Phone not verified. Please verify your phone number to send a DropBit."
     case .unexpectedResult:       return "Fetch request returned unexpected result"
     case .failedToFetch(let key): return "Failed to fetch results: \(key)"
     }

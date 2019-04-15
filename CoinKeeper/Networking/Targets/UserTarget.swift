@@ -102,9 +102,8 @@ extension UserTarget {
 
   private func countryCodeDisabledError() -> CKNetworkError? {
     switch self {
-    case .create(_, let createUserBody),
-         .resendVerification(_, let createUserBody):
-      return .countryCodeDisabled(createUserBody.countryCode)
+    case .create, .resendVerification:
+      return .countryCodeDisabled
     default:
       return nil
     }

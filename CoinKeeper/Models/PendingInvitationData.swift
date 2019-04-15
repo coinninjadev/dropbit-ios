@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import PhoneNumberKit
 
 struct PendingInvitationData: Codable {
   let id: String     // invitation id
@@ -35,14 +36,14 @@ extension PendingInvitationData {
   ///  Meant to be invoked on the sender side, when the receiver has fulfilled an address request.
   ///
   /// - Parameter walletAddressRequestResponse: a WalletAddressRequestResponse object.
-  init(walletAddressRequestResponse response: WalletAddressRequestResponse) {
+  init(walletAddressRequestResponse response: WalletAddressRequestResponse, kit: PhoneNumberKit) {
     self.init(
       id: response.id,
       btcAmount: response.metadata?.amount?.btc ?? 0,
       fiatAmount: response.metadata?.amount?.usd ?? 0,
       feeAmount: 0, // not incluced in WARR object
       name: nil,
-      phoneNumber: response.metadata?.sender?.asGlobalPhoneNumber(),
+      phoneNumber: response.metadata?.sender.flatMap { GlobalPhoneNumber(participant: $0, kit: kit) },
       address: response.address,
       addressPubKey: response.addressPubkey,
       userNotified: false,

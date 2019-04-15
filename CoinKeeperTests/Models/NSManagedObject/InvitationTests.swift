@@ -9,11 +9,14 @@
 @testable import DropBit
 import CoreData
 import CNBitcoinKit
+import PhoneNumberKit
 import XCTest
 
 class InvitationTests: XCTestCase {
 
   var context: NSManagedObjectContext!
+
+  let phoneNumberKit = PhoneNumberKit()
 
   override func setUp() {
     super.setUp()
@@ -43,7 +46,7 @@ class InvitationTests: XCTestCase {
                                           addressPubkey: nil,
                                           txid: nil,
                                           metadata: nil,
-                                          phoneNumberHash: nil,
+                                          identityHash: nil,
                                           status: WalletAddressRequestStatus.new.rawValue,
                                           walletId: nil)
     }
@@ -56,7 +59,7 @@ class InvitationTests: XCTestCase {
                                           addressPubkey: nil,
                                           txid: nil,
                                           metadata: nil,
-                                          phoneNumberHash: nil,
+                                          identityHash: nil,
                                           status: WalletAddressRequestStatus.expired.rawValue,
                                           walletId: nil)
     }
@@ -64,6 +67,7 @@ class InvitationTests: XCTestCase {
     (responses + excludedResponses).forEach { res in
       _ = CKMInvitation.updateOrCreate(withAddressRequestResponse: res,
                                        side: .received,
+                                       kit: self.phoneNumberKit,
                                        in: context)
     }
 

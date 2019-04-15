@@ -170,7 +170,7 @@ extension DeviceVerificationCoordinator: DeviceVerificationViewControllerDelegat
     let logger = OSLog(subsystem: "com.coinninja.coinkeeper.appcoordinator", category: "device_verification_coordinator")
     let bgContext = crDelegate.persistenceManager.createBackgroundContext()
     bgContext.perform {
-      crDelegate.networkManager.verifyUser(code: code)
+      crDelegate.networkManager.verifyUser(phoneNumber: phoneNumber, code: code)
         .then(in: bgContext) { self.checkAndPersistVerificationStatus(from: $0, crDelegate: crDelegate, in: bgContext) }
         .get(in: bgContext) { _ in
           do {
@@ -206,8 +206,8 @@ extension DeviceVerificationCoordinator: DeviceVerificationViewControllerDelegat
     }
 
     switch networkError {
-    case .countryCodeDisabled(let code):
-      let message = errorMessageFactory.messageForCountryCodeDisabled(for: code, phoneNumber: phoneNumber)
+    case .countryCodeDisabled:
+      let message = errorMessageFactory.messageForCountryCodeDisabled(for: phoneNumber)
       self.showVerificationErrorAlert(.custom(message), delegate: delegate)
 
     case .twilioError:

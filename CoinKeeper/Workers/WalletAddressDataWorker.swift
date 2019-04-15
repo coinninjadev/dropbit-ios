@@ -9,6 +9,7 @@
 import CoreData
 import Moya
 import PromiseKit
+import PhoneNumberKit
 import UIKit
 import os.log
 
@@ -54,6 +55,7 @@ class WalletAddressDataWorker: WalletAddressDataWorkerType {
   let persistenceManager: PersistenceManagerType
   let networkManager: NetworkManagerType
   let analyticsManager: AnalyticsManagerType
+  let phoneNumberKit: PhoneNumberKit
   unowned var invitationDelegate: InvitationWorkerDelegate
 
   private let logger = OSLog(subsystem: "com.coinninja.transactionDataWorker", category: "wallet_address_data_worker")
@@ -63,12 +65,14 @@ class WalletAddressDataWorker: WalletAddressDataWorkerType {
     persistenceManager: PersistenceManagerType,
     networkManager: NetworkManagerType,
     analyticsManager: AnalyticsManagerType,
+    phoneNumberKit: PhoneNumberKit,
     invitationWorkerDelegate: InvitationWorkerDelegate
     ) {
     self.walletManager = walletManager
     self.persistenceManager = persistenceManager
     self.networkManager = networkManager
     self.analyticsManager = analyticsManager
+    self.phoneNumberKit = phoneNumberKit
     self.invitationDelegate = invitationWorkerDelegate
   }
 
@@ -546,7 +550,7 @@ class WalletAddressDataWorker: WalletAddressDataWorkerType {
   /// This will ignore the status of the passed in responses and persist the status as .addressSent
   private func persistReceivedAddressRequests(_ responses: [WalletAddressRequestResponse], in context: NSManagedObjectContext) {
     responses.forEach {
-      let invitation = CKMInvitation.updateOrCreate(withAddressRequestResponse: $0, side: .received, in: context)
+      let invitation = CKMInvitation.updateOrCreate(withAddressRequestResponse: $0, side: .received, kit: self.phoneNumberKit, in: context)
       invitation.transaction?.isIncoming = true
     }
   }

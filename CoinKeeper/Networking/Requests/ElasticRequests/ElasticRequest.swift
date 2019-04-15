@@ -63,9 +63,9 @@ public struct ElasticTerms {
     return .object(["platform": arrayValue])
   }
 
-  static func object(withPhoneNumberHashes hashes: [String]) -> JSONValue {
+  static func object(withIdentityHashes hashes: [String]) -> JSONValue {
     let arrayValue = stringsToArrayValue(hashes)
-    return .object(["phone_number_hash": arrayValue])
+    return .object(["identity_hash": arrayValue])
   }
 
   private static func stringsToArrayValue(_ strings: [String]) -> JSONValue {

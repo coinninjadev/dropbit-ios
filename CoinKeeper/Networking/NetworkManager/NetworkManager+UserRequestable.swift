@@ -11,7 +11,7 @@ import PromiseKit
 protocol UserRequestable: AnyObject {
 
   func createUser(walletId: String, phoneNumber: GlobalPhoneNumber) -> Promise<UserResponse>
-  func verifyUser(code: String) -> Promise<UserResponse>
+  func verifyUser(phoneNumber: GlobalPhoneNumber, code: String) -> Promise<UserResponse>
   func getUser() -> Promise<UserResponse>
   func queryUsers(phoneNumberHashes: [String]) -> Promise<StringDictResponse>
 
@@ -58,8 +58,8 @@ extension NetworkManager: UserRequestable {
     }
   }
 
-  func verifyUser(code: String) -> Promise<UserResponse> {
-    let body = VerifyUserBody(code: code)
+  func verifyUser(phoneNumber: GlobalPhoneNumber, code: String) -> Promise<UserResponse> {
+    let body = VerifyUserBody(phoneNumber: phoneNumber, code: code)
     return cnProvider.request(UserTarget.verify(body))
   }
 

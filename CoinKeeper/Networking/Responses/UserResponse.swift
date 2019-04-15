@@ -8,18 +8,31 @@
 
 import Foundation
 
+enum UserIdentityType: String {
+  case phone
+  case twitter
+}
+
 public struct CreateUserBody: Encodable {
-  let countryCode: Int
-  let phoneNumber: String
+  let type: String
+  let identity: String
 
   init(phoneNumber: GlobalPhoneNumber) {
-    self.countryCode = phoneNumber.countryCode
-    self.phoneNumber = phoneNumber.nationalNumber
+    self.type = UserIdentityType.phone.rawValue
+    self.identity = phoneNumber.sanitizedGlobalNumber()
   }
 }
 
 public struct VerifyUserBody: Encodable {
+  let type: String
+  let identity: String
   let code: String
+
+  init(phoneNumber: GlobalPhoneNumber, code: String) {
+    self.type = UserIdentityType.phone.rawValue
+    self.identity = phoneNumber.sanitizedGlobalNumber()
+    self.code = code
+  }
 }
 
 public enum UserVerificationStatus: String {
@@ -37,12 +50,9 @@ public enum UserResponseKey: String, KeyPathDescribable {
 public struct UserResponse: ResponseDecodable {
 
   let id: String
-  let phoneNumberHash: String
   let createdAt: Date
   let updatedAt: Date
   let status: String
-  let verificationTtl: Date?
-  let verifiedAt: Date?
   var walletId: String?
 
 }
@@ -53,19 +63,16 @@ extension UserResponse {
     return """
     {
     "id": "ad983e63-526d-4679-a682-c4ab052b20e1",
-    "phone_number_hash": "498803d5964adce8037d2c53da0c7c7a96ce0e0f99ab99e9905f0dda59fb2e49",
     "created_at": 1531921356,
     "updated_at": 1531921356,
     "status": "pending-verification",
-    "verification_ttl": 1531921356,
-    "verified_at": 1531921356,
     "wallet_id": "f8e8c20e-ba44-4bac-9a96-44f3b7ae955d"
     }
     """
   }
 
   static var requiredStringKeys: [KeyPath<UserResponse, String>] {
-    return [\.id, \.phoneNumberHash, \.status]
+    return [\.id, \.status]
   }
 
   static var optionalStringKeys: [WritableKeyPath<UserResponse, String?>] {

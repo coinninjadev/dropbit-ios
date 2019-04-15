@@ -12,8 +12,8 @@ class WalletAddressesElasticQuery: ElasticQuery {
 
   let addressPubkey = true
 
-  init(phoneNumberHashes: [String]) {
-    let terms = ElasticTerms.object(withPhoneNumberHashes: phoneNumberHashes)
+  init(identityHashes: [String]) {
+    let terms = ElasticTerms.object(withIdentityHashes: identityHashes)
     super.init(range: nil, script: nil, term: nil, terms: terms)
   }
 
