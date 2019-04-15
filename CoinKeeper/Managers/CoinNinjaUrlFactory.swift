@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import CoreLocation
 
 struct CoinNinjaUrlFactory {
 
@@ -30,11 +31,11 @@ struct CoinNinjaUrlFactory {
     case dustProtection
     case download
     case spendBitcoinOnline
-    case spendBitcoinAroundMe
+    case spendBitcoinAroundMe(CLLocationCoordinate2D)
     case spendBitcoinGiftCards
     case buyGiftCards
     case buyWithCreditCard
-    case buyAtATM
+    case buyAtATM(CLLocationCoordinate2D)
 
     var domain: String {
       switch self {
@@ -111,16 +112,16 @@ struct CoinNinjaUrlFactory {
         return "\(tooltipBreadcrumb)dustprotection"
       case .spendBitcoinOnline:
         return "spendbitcoin/online"
-      case .spendBitcoinAroundMe:
-        return "spendbitcoin/aroundme"
+      case .spendBitcoinAroundMe(let coordinate):
+        return "spendbitcoin/aroundme?lat=\(coordinate.latitude)&long=\(coordinate.longitude)"
       case .spendBitcoinGiftCards:
         return "spendbitcoin/giftcards"
       case .buyGiftCards:
         return "buybitcoin/giftcards"
       case .buyWithCreditCard:
         return "buybitcoin/creditcards"
-      case .buyAtATM:
-        return "buybitcoin/map"
+      case .buyAtATM(let coordinate):
+        return "buybitcoin/map?lat=\(coordinate.latitude)&long=\(coordinate.longitude)"
       }
     }
   }

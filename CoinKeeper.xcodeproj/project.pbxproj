@@ -79,6 +79,7 @@
 		3B231D4F2044807E003BB50B /* LaunchStateManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B231D4E2044807E003BB50B /* LaunchStateManagerTests.swift */; };
 		3B23232E2248FEBC00514201 /* MigrateDatabaseV4Grooming.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B23232D2248FEBC00514201 /* MigrateDatabaseV4Grooming.swift */; };
 		3B24466C22650261004AEE35 /* SpendBitcoinViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B24466B22650261004AEE35 /* SpendBitcoinViewControllerTests.swift */; };
+		3B24466E2265097C004AEE35 /* AppCoordinator+SpendBitcoinViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B24466D2265097B004AEE35 /* AppCoordinator+SpendBitcoinViewControllerDelegate.swift */; };
 		3B24DFBE20EBC44A00C31969 /* MockDatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B24DFBD20EBC44A00C31969 /* MockDatabaseManager.swift */; };
 		3B24DFC020EBEFC100C31969 /* DerivativePathTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B24DFBF20EBEFC100C31969 /* DerivativePathTests.swift */; };
 		3B2658472215CFCC008A8615 /* MailerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B2658462215CFCC008A8615 /* MailerDelegate.swift */; };
@@ -860,6 +861,7 @@
 		3B231D4E2044807E003BB50B /* LaunchStateManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchStateManagerTests.swift; sourceTree = "<group>"; };
 		3B23232D2248FEBC00514201 /* MigrateDatabaseV4Grooming.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MigrateDatabaseV4Grooming.swift; sourceTree = "<group>"; };
 		3B24466B22650261004AEE35 /* SpendBitcoinViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpendBitcoinViewControllerTests.swift; sourceTree = "<group>"; };
+		3B24466D2265097B004AEE35 /* AppCoordinator+SpendBitcoinViewControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppCoordinator+SpendBitcoinViewControllerDelegate.swift"; sourceTree = "<group>"; };
 		3B24DFBD20EBC44A00C31969 /* MockDatabaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockDatabaseManager.swift; sourceTree = "<group>"; };
 		3B24DFBF20EBEFC100C31969 /* DerivativePathTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DerivativePathTests.swift; sourceTree = "<group>"; };
 		3B2658462215CFCC008A8615 /* MailerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailerDelegate.swift; sourceTree = "<group>"; };
@@ -1794,6 +1796,7 @@
 				B52CC6A8221EC42800B00C9E /* AppCoordinator+ViewControllerDismissable.swift */,
 				3B26F1DF22566EAA00F3E00F /* AppCoordinator+SelectedCurrencyUpdatable.swift */,
 				3BEF22A02264B9D7001F6D25 /* AppCoordinator+GetBitcoinViewControllerDelegate.swift */,
+				3B24466D2265097B004AEE35 /* AppCoordinator+SpendBitcoinViewControllerDelegate.swift */,
 			);
 			path = Coordinators;
 			sourceTree = "<group>";
@@ -3589,6 +3592,7 @@
 				B5DDB0F921DE6A1100A25929 /* MigrateKeychainV1toV2.swift in Sources */,
 				B541DD3B21EE4A18009F38A0 /* MetaAddress.swift in Sources */,
 				B534616A2098A9B600DDC1C4 /* CKMWallet+CoreDataClass.swift in Sources */,
+				3B24466E2265097C004AEE35 /* AppCoordinator+SpendBitcoinViewControllerDelegate.swift in Sources */,
 				3BFA7194204060FA00774D59 /* DigitEntryDisplayViewModel.swift in Sources */,
 				A2A530C820940B9900B6F4DE /* SendPaymentDataProvider.swift in Sources */,
 				B52A25C12077CCEF00F636A1 /* TransactionHistoryViewController.swift in Sources */,

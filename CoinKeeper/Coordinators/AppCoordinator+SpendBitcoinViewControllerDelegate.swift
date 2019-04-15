@@ -1,5 +1,5 @@
 //
-//  AppCoordinator+GetBitcoinViewControllerDelegate.swift
+//  AppCoordinator+SpendBitcoinViewControllerDelegate.swift
 //  DropBit
 //
 //  Created by BJ Miller on 4/15/19.
@@ -9,16 +9,16 @@
 import Foundation
 import CoreLocation
 
-extension AppCoordinator: GetBitcoinViewControllerDelegate {
-  func viewControllerFindBitcoinATMNearMe(_ viewController: GetBitcoinViewController) {
+extension AppCoordinator: SpendBitcoinViewControllerDelegate {
+  func viewControllerSpendBitcoinAroundMe(_ viewController: SpendBitcoinViewController) {
     permissionManager.requestPermission(for: .location) { (status) in
       switch status {
       case .authorized, .notDetermined:
         guard let coordinate = CLLocationManager().location?.coordinate,
-          let url = CoinNinjaUrlFactory.buildUrl(for: .buyAtATM(coordinate)) else { return }
+          let url = CoinNinjaUrlFactory.buildUrl(for: .spendBitcoinAroundMe(coordinate)) else { return }
         self.openURL(url, completionHandler: nil)
       case .denied, .disabled:
-        let description = "To use the location-based services of finding Bitcoin ATMs near you," +
+        let description = "To use the location-based services for finding ways of spending Bitcoin near you," +
         " please enable location services in the iOS Settings app."
         let controller = self.alertManager.defaultAlert(withTitle: "Location Services not enabled", description: description)
         self.navigationController.topViewController()?.present(controller, animated: true, completion: nil)
@@ -26,13 +26,13 @@ extension AppCoordinator: GetBitcoinViewControllerDelegate {
     }
   }
 
-  func viewControllerBuyWithCreditCard(_ viewController: GetBitcoinViewController) {
-    guard let url = CoinNinjaUrlFactory.buildUrl(for: .buyWithCreditCard) else { return }
+  func viewControllerSpendBitcoinOnline(_ viewController: SpendBitcoinViewController) {
+    guard let url = CoinNinjaUrlFactory.buildUrl(for: .spendBitcoinOnline) else { return }
     openURL(url, completionHandler: nil)
   }
 
-  func viewControllerBuyWithGiftCard(_ viewController: GetBitcoinViewController) {
-    guard let url = CoinNinjaUrlFactory.buildUrl(for: .buyGiftCards) else { return }
+  func viewControllerSpendGiftCards(_ viewController: SpendBitcoinViewController) {
+    guard let url = CoinNinjaUrlFactory.buildUrl(for: .spendBitcoinGiftCards) else { return }
     openURL(url, completionHandler: nil)
   }
 }
