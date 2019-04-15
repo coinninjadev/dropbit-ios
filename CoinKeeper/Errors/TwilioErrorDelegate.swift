@@ -15,5 +15,5 @@ enum TwilioErrorRoute: String {
 }
 
 protocol TwilioErrorDelegate: AnyObject {
-  func didReceiveTwilioError(for countryCode: Int, route: TwilioErrorRoute)
+  func didReceiveTwilioError(for phoneNumber: String, route: TwilioErrorRoute)
 }

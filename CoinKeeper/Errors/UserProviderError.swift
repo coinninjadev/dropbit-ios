@@ -23,7 +23,7 @@ enum UserProviderError: Error, LocalizedError {
     case .noConfirmations:                  return "No confirmations"
     case .resourceAlreadyExists:            return "Resource already exists"
     case .codeInvalid:                      return "Verification code was incorrect"
-    case .twilioError(_, let body):         return "Received Twilio error for user with country code +\(body.countryCode)"
+    case .twilioError:                      return "Received Twilio error for user"
     case .userAlreadyExists(let id, _):     return "User already exists with ID: \(id)"
     case .unexpectedStatus(let status):     return "Unexpected verification status: \(status.rawValue)"
     }

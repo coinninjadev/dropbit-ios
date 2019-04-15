@@ -62,13 +62,21 @@ extension AppCoordinator: DeviceVerificationCoordinatorDelegate {
     continueSetupFlow()
   }
 
-  func didReceiveTwilioError(for countryCode: Int, route: TwilioErrorRoute) {
+  func didReceiveTwilioError(for phoneNumber: String, route: TwilioErrorRoute) {
     let logger = OSLog(subsystem: "com.coinninja.coinkeeper.appcoordinator", category: "twilio_error")
-    os_log("Failed to send SMS to country code: %@, route: %@", log: logger, type: .error, String(countryCode), route.rawValue)
+    let parser = CKPhoneNumberParser(kit: self.phoneNumberKit)
+    let e164 = "+" + phoneNumber
+
+    guard let maybeNumber = try? parser.parse(e164), let globalNumber = maybeNumber else {
+      os_log("Failed to parse phone number for Twilio error", log: logger, type: .error)
+      return
+    }
+
+    os_log("Failed to send SMS to country code: %@, route: %@", log: logger, type: .error, String(globalNumber.countryCode), route.rawValue)
 
     switch route {
     case .createAddressRequest:
-      let eventValue = AnalyticsEventValue(key: .countryCode, value: "\(countryCode)")
+      let eventValue = AnalyticsEventValue(key: .countryCode, value: "\(globalNumber.countryCode)")
       analyticsManager.track(event: .dropbitInviteSMSFailed, with: eventValue)
     default:
       break

@@ -171,14 +171,14 @@ extension DeviceVerificationCoordinator: DeviceVerificationViewControllerDelegat
           .recover { (error: Error) -> Promise<UserResponse> in
             if let providerError = error as? UserProviderError,
               case let .twilioError(userResponse, _) = providerError {
-              delegate.didReceiveTwilioError(for: body.countryCode, route: .resendVerification)
+              delegate.didReceiveTwilioError(for: body.identity, route: .resendVerification)
               return Promise.value(userResponse)
             } else {
               throw error
             }
         }
       case .twilioError(let userResponse, let body):
-        delegate.didReceiveTwilioError(for: body.countryCode, route: .createUser)
+        delegate.didReceiveTwilioError(for: body.identity, route: .createUser)
         return Promise.value(userResponse)
       default:
         return Promise(error: error)

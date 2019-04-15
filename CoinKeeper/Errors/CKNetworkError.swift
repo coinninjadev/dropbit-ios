@@ -28,7 +28,7 @@ enum CKNetworkError: UserNotifiableError {
   case unknownServerError(_ underlying: MoyaError) //500
   case encodingFailed(type: String)
   case decodingFailed(type: String)
-  case countryCodeDisabled(Int)
+  case countryCodeDisabled
   case twilioError(Response) //server returns a successful response with 501 if Twilio responds with error
 
   /// The associated response can be used as the default value if recovering from this error
@@ -59,7 +59,7 @@ enum CKNetworkError: UserNotifiableError {
     case .recordNotFound:                 return "Record not found."
     case .encodingFailed(let type):       return "Failed to encode object of type: \(type)"
     case .decodingFailed(let type):       return "Failed to decode object of type: \(type)"
-    case .countryCodeDisabled(let code):  return "Country code +\(code) not enabled"
+    case .countryCodeDisabled:            return "Country code not enabled"
     case .twilioError:                    return "Twilio responded with error."
 
     case .invalidValue(let keypath, let value, _):

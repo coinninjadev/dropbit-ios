@@ -191,10 +191,12 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate, CurrencyFormatta
   }
 
   private func createInviteNotificationSMSComposer(for inviteBody: RequestAddressBody) -> MFMessageComposeViewController? {
-    guard MFMessageComposeViewController.canSendText() else { return nil }
+    guard MFMessageComposeViewController.canSendText(),
+      let phoneNumber = inviteBody.receiver.globalNumber()
+      else { return nil }
+
     let composeVC = MFMessageComposeViewController()
     composeVC.messageComposeDelegate = self.messageComposeDelegate
-    let phoneNumber = inviteBody.receiver.globalNumber
     composeVC.recipients = [phoneNumber.asE164()]
     let downloadURL = CoinNinjaUrlFactory.buildUrl(for: .download)?.absoluteString ?? ""
     let amount = NSDecimalNumber(integerAmount: inviteBody.amount.usd, currency: .USD)
@@ -217,7 +219,13 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate, CurrencyFormatta
     })
 
     let formatter = CKPhoneNumberFormatter(kit: self.phoneNumberKit, format: .international)
-    let recipientDesc = (try? formatter.string(from: inviteBody.receiver.globalNumber)) ?? "the recipient"
+
+    var recipientDesc = "the recipient"
+    if let globalNumber = inviteBody.receiver.globalNumber(),
+      let formattedNumber = try? formatter.string(from: globalNumber) {
+      recipientDesc = formattedNumber
+    }
+
     let description = "Success! Let \(recipientDesc) know they have Bitcoin waiting for them."
     let alert = alertManager.detailedAlert(withTitle: nil, description: description,
                                            image: #imageLiteral(resourceName: "roundedAppIcon"), style: .standard, action: requestConfiguration)
