@@ -65,6 +65,7 @@ enum AnalyticsManagerEventType: String {
   case dropbitAddressProvided = "DropBitAddressProvided"
   case dropbitCompleted = "DropBitCompleted"
   case dropbitInviteSMSFailed = "DropBitInviteSendSMSFailure"
+  case verifyUserSMSFailed = "VerifyUserSendSMSFailure"
   case coinKeeperContactPressed = "ContactPressed"
   case balanceHistoryButtonPressed = "BalanceHistoryBtn"
   case deregisterPhoneNumber = "DeregisterPhoneNumber"

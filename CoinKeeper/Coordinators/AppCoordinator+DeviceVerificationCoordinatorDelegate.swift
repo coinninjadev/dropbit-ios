@@ -74,12 +74,12 @@ extension AppCoordinator: DeviceVerificationCoordinatorDelegate {
 
     os_log("Failed to send SMS to country code: %@, route: %@", log: logger, type: .error, String(globalNumber.countryCode), route.rawValue)
 
+    let eventValue = AnalyticsEventValue(key: .countryCode, value: "\(globalNumber.countryCode)")
     switch route {
     case .createAddressRequest:
-      let eventValue = AnalyticsEventValue(key: .countryCode, value: "\(globalNumber.countryCode)")
       analyticsManager.track(event: .dropbitInviteSMSFailed, with: eventValue)
-    default:
-      break
+    case .createUser, .resendVerification:
+      analyticsManager.track(event: .verifyUserSMSFailed, with: eventValue)
     }
   }
 
