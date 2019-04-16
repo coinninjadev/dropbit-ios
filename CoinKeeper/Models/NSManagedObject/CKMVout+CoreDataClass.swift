@@ -156,6 +156,7 @@ public class CKMVout: NSManagedObject {
   static func findAllSpendable(minAmount: Int, in context: NSManagedObjectContext) -> [CKMVout] {
     let fetchRequest: NSFetchRequest<CKMVout> = CKMVout.fetchRequest()
     fetchRequest.predicate = CKPredicate.Vout.isSpendable(minAmount: minAmount)
+    fetchRequest.sortDescriptors = [NSSortDescriptor(key: #keyPath(CKMVout.transaction.confirmations), ascending: false)]
     return (try? context.fetch(fetchRequest)) ?? []
   }
 
