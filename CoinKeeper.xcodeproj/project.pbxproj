@@ -7,10 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		15EA0DA4F8BC625A4DE7976C /* Pods_DropBitTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F55D268D981AF3113DC4E852 /* Pods_DropBitTests.framework */; };
+		0A50EBA1B468EC7EC79FE0FE /* Pods_DropBitUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A4EC94A9AFA9DA6291388559 /* Pods_DropBitUITests.framework */; };
+		0A715079615A16BC0E0EC6F2 /* Pods_DropBitTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A0F8AA22F90FCFE5D3048952 /* Pods_DropBitTests.framework */; };
+		0CDB24D7643ABA1B0ED88CF3 /* Pods_DropBit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 38C1749F4B68B36A2834D1DC /* Pods_DropBit.framework */; };
 		230DE9FD207E786300CA8B03 /* NotificationToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = 230DE9FC207E786300CA8B03 /* NotificationToken.swift */; };
 		233BDB742080E8A60076F076 /* NetworkManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 233BDB732080E8A60076F076 /* NetworkManagerTests.swift */; };
-		300CD8F121FA668400BFF560 /* NSAttributedString+Concatenate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 300CD8F021FA668400BFF560 /* NSAttributedString+Concatenate.swift */; };
+		300CD8F121FA668400BFF560 /* NSAttributedString+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 300CD8F021FA668400BFF560 /* NSAttributedString+Helpers.swift */; };
 		30349F872188A99700A32AFA /* ServerAddressViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30349F862188A99700A32AFA /* ServerAddressViewModel.swift */; };
 		304BAED021FA131000065D6D /* TutorialUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 304BAECF21FA131000065D6D /* TutorialUITests.swift */; };
 		304BAED221FA1F9700065D6D /* TransactionHistoryPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 304BAED121FA1F9700065D6D /* TransactionHistoryPage.swift */; };
@@ -50,7 +52,6 @@
 		30E96A35217A1207008079B8 /* PhoneNumberStatusViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30E96A34217A1207008079B8 /* PhoneNumberStatusViewControllerTests.swift */; };
 		30F0B64B2139D6C300BF7DBB /* CoinNinjaUrlFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30F0B64A2139D6C300BF7DBB /* CoinNinjaUrlFactory.swift */; };
 		39E26B9321EA7344003928F1 /* SyncingLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39E26B9221EA7344003928F1 /* SyncingLabel.swift */; };
-		3AA23D25B561BDDDF23CD6C8 /* Pods_DropBitUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 74B24DFA2A9744598BDE9113 /* Pods_DropBitUITests.framework */; };
 		3B00C265220B1FEF001FC46B /* MockConnectionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B00C264220B1FEF001FC46B /* MockConnectionManager.swift */; };
 		3B00C269220DC78B001FC46B /* DeviceEndpoint.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B00C268220DC78B001FC46B /* DeviceEndpoint.generated.swift */; };
 		3B00C26B220E07C0001FC46B /* GeneratedTestWords.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B00C26A220E07C0001FC46B /* GeneratedTestWords.generated.swift */; };
@@ -78,10 +79,13 @@
 		3B23129120DA7B5A0099A557 /* MockTxHistoryDetailAddressViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B23129020DA7B5A0099A557 /* MockTxHistoryDetailAddressViewDelegate.swift */; };
 		3B231D4F2044807E003BB50B /* LaunchStateManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B231D4E2044807E003BB50B /* LaunchStateManagerTests.swift */; };
 		3B23232E2248FEBC00514201 /* MigrateDatabaseV4Grooming.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B23232D2248FEBC00514201 /* MigrateDatabaseV4Grooming.swift */; };
+		3B24466C22650261004AEE35 /* SpendBitcoinViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B24466B22650261004AEE35 /* SpendBitcoinViewControllerTests.swift */; };
+		3B24466E2265097C004AEE35 /* AppCoordinator+SpendBitcoinViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B24466D2265097B004AEE35 /* AppCoordinator+SpendBitcoinViewControllerDelegate.swift */; };
 		3B24DFBE20EBC44A00C31969 /* MockDatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B24DFBD20EBC44A00C31969 /* MockDatabaseManager.swift */; };
 		3B24DFC020EBEFC100C31969 /* DerivativePathTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B24DFBF20EBEFC100C31969 /* DerivativePathTests.swift */; };
 		3B2658472215CFCC008A8615 /* MailerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B2658462215CFCC008A8615 /* MailerDelegate.swift */; };
 		3B26F1E022566EAA00F3E00F /* AppCoordinator+SelectedCurrencyUpdatable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B26F1DF22566EAA00F3E00F /* AppCoordinator+SelectedCurrencyUpdatable.swift */; };
+		3B27D3FA225E84E900291B82 /* GetBitcoinViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B27D3F9225E84E900291B82 /* GetBitcoinViewController.swift */; };
 		3B287CB42100FB1A00A43E57 /* AppCoordinator+ConnectionManagerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B287CB32100FB1A00A43E57 /* AppCoordinator+ConnectionManagerDelegate.swift */; };
 		3B287CB62100FB5600A43E57 /* AppCoordinator+ChildCoordinatorDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B287CB52100FB5600A43E57 /* AppCoordinator+ChildCoordinatorDelegate.swift */; };
 		3B287CB82101128400A43E57 /* TransactionBroadcastError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B287CB72101128400A43E57 /* TransactionBroadcastError.swift */; };
@@ -213,6 +217,7 @@
 		3B86F78C203C6DCD00D15231 /* PinEntryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B86F78B203C6DCD00D15231 /* PinEntryViewController.swift */; };
 		3B86F78E203C6E2300D15231 /* PinEntryViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B86F78D203C6E2300D15231 /* PinEntryViewControllerTests.swift */; };
 		3B86F7B4203CA2F700D15231 /* String+Hashing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B86F7B3203CA2F700D15231 /* String+Hashing.swift */; };
+		3B8ACA15225F96800020B684 /* GetBitcoinViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3B8ACA14225F96800020B684 /* GetBitcoinViewController.storyboard */; };
 		3B8C40BF20784A2E008283A2 /* PresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B8C40BE20784A2E008283A2 /* PresentationController.swift */; };
 		3B8C40C12078D6F1008283A2 /* PresentableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B8C40C02078D6F1008283A2 /* PresentableViewController.swift */; };
 		3B8FA48320C16F5C0074B617 /* CKMTemporarySentTransaction+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B8FA48120C16F5C0074B617 /* CKMTemporarySentTransaction+CoreDataClass.swift */; };
@@ -301,6 +306,12 @@
 		3BE8D86420D1A85200E99D24 /* TransactionResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BE8D86320D1A85200E99D24 /* TransactionResponse.swift */; };
 		3BEB594620D15AF9005EDA9E /* AddressTransactionSummaryResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BEB594520D15AF9005EDA9E /* AddressTransactionSummaryResponse.swift */; };
 		3BEC1AF42229CC8D00824A35 /* Locale+Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BEC1AF32229CC8D00824A35 /* Locale+Constants.swift */; };
+		3BEF22972260CD4A001F6D25 /* GetBitcoinViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BEF22962260CD4A001F6D25 /* GetBitcoinViewControllerTests.swift */; };
+		3BEF22992260D42E001F6D25 /* SpendBitcoinViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BEF22982260D42E001F6D25 /* SpendBitcoinViewController.swift */; };
+		3BEF229B2260D491001F6D25 /* SpendBitcoinViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3BEF229A2260D491001F6D25 /* SpendBitcoinViewController.storyboard */; };
+		3BEF229E2260DC78001F6D25 /* BuySpendCardCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BEF229C2260DC78001F6D25 /* BuySpendCardCollectionViewCell.swift */; };
+		3BEF229F2260DC78001F6D25 /* BuySpendCardCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3BEF229D2260DC78001F6D25 /* BuySpendCardCollectionViewCell.xib */; };
+		3BEF22A12264B9D8001F6D25 /* AppCoordinator+GetBitcoinViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BEF22A02264B9D7001F6D25 /* AppCoordinator+GetBitcoinViewControllerDelegate.swift */; };
 		3BF3B0C3217379B60021E45F /* NetworkManager+SubscribeToWalletRequestable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BF3B0C2217379B60021E45F /* NetworkManager+SubscribeToWalletRequestable.swift */; };
 		3BF3B0C521737A4D0021E45F /* SubscribeToWalletTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BF3B0C421737A4D0021E45F /* SubscribeToWalletTarget.swift */; };
 		3BF3B0C7217500330021E45F /* MockNetworkManager+NotificationNetworkInteractable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BF3B0C6217500330021E45F /* MockNetworkManager+NotificationNetworkInteractable.swift */; };
@@ -361,7 +372,6 @@
 		6B825AF411A9684555EA8F14 /* MockPersistenceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B8250D63C5BAA325C86E644 /* MockPersistenceManager.swift */; };
 		6B825EF6EEB51653F9B7E4A9 /* MockDigitEntryDisplayViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B8258FE5E688972EBEB03FE /* MockDigitEntryDisplayViewModel.swift */; };
 		6B825F6F378E9BC23ECB7478 /* MockPinVerificationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B825A25907EF26BC1458BDF /* MockPinVerificationDelegate.swift */; };
-		95873E9E62094E09B7FC8662 /* Pods_DropBitTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C08A0F23C02080F98EBE7D56 /* Pods_DropBitTests.framework */; };
 		A200574720B5ED52007074D9 /* SettingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A200574620B5ED52007074D9 /* SettingCell.swift */; };
 		A200574920B5F07A007074D9 /* SettingsTableViewFooter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A200574820B5F07A007074D9 /* SettingsTableViewFooter.swift */; };
 		A200574B20B5F0F4007074D9 /* SettingsTableViewFooter.xib in Resources */ = {isa = PBXBuildFile; fileRef = A200574A20B5F0F4007074D9 /* SettingsTableViewFooter.xib */; };
@@ -394,8 +404,7 @@
 		A2893BC020FD4E7700E96B07 /* UIViewController+ToolbarUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2893BBF20FD4E7700E96B07 /* UIViewController+ToolbarUtilities.swift */; };
 		A2893BC220FD515900E96B07 /* AppCoordinator+TutorialViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2893BC120FD515900E96B07 /* AppCoordinator+TutorialViewControllerDelegate.swift */; };
 		A293E35020F67F390099ED69 /* SuccessFailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A293E34F20F67F390099ED69 /* SuccessFailViewModel.swift */; };
-		A293E35220F798920099ED69 /* NoTransactionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A293E35120F798920099ED69 /* NoTransactionsView.swift */; };
-		A293E35420F798A80099ED69 /* NoTransactionsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = A293E35320F798A80099ED69 /* NoTransactionsView.xib */; };
+		A293E35220F798920099ED69 /* TransactionHistoryEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A293E35120F798920099ED69 /* TransactionHistoryEmptyView.swift */; };
 		A29CE0C32098AD1500761B91 /* UINavigationController+TopViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A29CE0C22098AD1500761B91 /* UINavigationController+TopViewController.swift */; };
 		A29CE0C72098F84300761B91 /* SuccessFailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A29CE0C62098F84300761B91 /* SuccessFailViewController.swift */; };
 		A29CE0C92098F8CA00761B91 /* SuccessFailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A29CE0C82098F8CA00761B91 /* SuccessFailView.swift */; };
@@ -754,7 +763,6 @@
 		B5FDA5C622120747001682AA /* GlobalPhoneNumber.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5FDA5C522120747001682AA /* GlobalPhoneNumber.swift */; };
 		B5FE9B67219DD96200801D3C /* MerchantPaymentRequestResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5FE9B66219DD96200801D3C /* MerchantPaymentRequestResponse.swift */; };
 		B5FEBE9220879C4200AA9F6E /* CKMInvitation+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5FEBE9020879C4200AA9F6E /* CKMInvitation+CoreDataClass.swift */; };
-		E942F4C101167378C4B41342 /* Pods_DropBit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EA595DF0598E9692C640D6F5 /* Pods_DropBit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -775,12 +783,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		14AD58C87569529758AA1BFF /* Pods-CoinKeeper.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CoinKeeper.release.xcconfig"; path = "Pods/Target Support Files/Pods-CoinKeeper/Pods-CoinKeeper.release.xcconfig"; sourceTree = "<group>"; };
-		165163DCFDBCA39E97B8A3F7 /* Pods-CoinKeeperTests.beta.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CoinKeeperTests.beta.xcconfig"; path = "Pods/Target Support Files/Pods-CoinKeeperTests/Pods-CoinKeeperTests.beta.xcconfig"; sourceTree = "<group>"; };
+		186FAC1C56DB4DFB38DA8EDB /* Pods-DropBit.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DropBit.release.xcconfig"; path = "Pods/Target Support Files/Pods-DropBit/Pods-DropBit.release.xcconfig"; sourceTree = "<group>"; };
 		230DE9FC207E786300CA8B03 /* NotificationToken.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationToken.swift; sourceTree = "<group>"; };
 		233BDB732080E8A60076F076 /* NetworkManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManagerTests.swift; sourceTree = "<group>"; };
-		28600897437A2629DB7CC4A3 /* Pods-DropBitTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DropBitTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-DropBitTests/Pods-DropBitTests.debug.xcconfig"; sourceTree = "<group>"; };
-		300CD8F021FA668400BFF560 /* NSAttributedString+Concatenate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSAttributedString+Concatenate.swift"; sourceTree = "<group>"; };
+		300CD8F021FA668400BFF560 /* NSAttributedString+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSAttributedString+Helpers.swift"; sourceTree = "<group>"; };
 		30349F862188A99700A32AFA /* ServerAddressViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerAddressViewModel.swift; sourceTree = "<group>"; };
 		304BAECF21FA131000065D6D /* TutorialUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialUITests.swift; sourceTree = "<group>"; };
 		304BAED121FA1F9700065D6D /* TransactionHistoryPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionHistoryPage.swift; sourceTree = "<group>"; };
@@ -819,6 +825,7 @@
 		30E96A302179FE2A008079B8 /* AppCoordinator+PhoneNumberStatusViewControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppCoordinator+PhoneNumberStatusViewControllerDelegate.swift"; sourceTree = "<group>"; };
 		30E96A34217A1207008079B8 /* PhoneNumberStatusViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneNumberStatusViewControllerTests.swift; sourceTree = "<group>"; };
 		30F0B64A2139D6C300BF7DBB /* CoinNinjaUrlFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinNinjaUrlFactory.swift; sourceTree = "<group>"; };
+		38C1749F4B68B36A2834D1DC /* Pods_DropBit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DropBit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		39E26B9221EA7344003928F1 /* SyncingLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncingLabel.swift; sourceTree = "<group>"; };
 		3B00C264220B1FEF001FC46B /* MockConnectionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockConnectionManager.swift; sourceTree = "<group>"; };
 		3B00C268220DC78B001FC46B /* DeviceEndpoint.generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceEndpoint.generated.swift; sourceTree = "<group>"; };
@@ -851,10 +858,13 @@
 		3B23129020DA7B5A0099A557 /* MockTxHistoryDetailAddressViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockTxHistoryDetailAddressViewDelegate.swift; sourceTree = "<group>"; };
 		3B231D4E2044807E003BB50B /* LaunchStateManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchStateManagerTests.swift; sourceTree = "<group>"; };
 		3B23232D2248FEBC00514201 /* MigrateDatabaseV4Grooming.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MigrateDatabaseV4Grooming.swift; sourceTree = "<group>"; };
+		3B24466B22650261004AEE35 /* SpendBitcoinViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpendBitcoinViewControllerTests.swift; sourceTree = "<group>"; };
+		3B24466D2265097B004AEE35 /* AppCoordinator+SpendBitcoinViewControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppCoordinator+SpendBitcoinViewControllerDelegate.swift"; sourceTree = "<group>"; };
 		3B24DFBD20EBC44A00C31969 /* MockDatabaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockDatabaseManager.swift; sourceTree = "<group>"; };
 		3B24DFBF20EBEFC100C31969 /* DerivativePathTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DerivativePathTests.swift; sourceTree = "<group>"; };
 		3B2658462215CFCC008A8615 /* MailerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailerDelegate.swift; sourceTree = "<group>"; };
 		3B26F1DF22566EAA00F3E00F /* AppCoordinator+SelectedCurrencyUpdatable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppCoordinator+SelectedCurrencyUpdatable.swift"; sourceTree = "<group>"; };
+		3B27D3F9225E84E900291B82 /* GetBitcoinViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetBitcoinViewController.swift; sourceTree = "<group>"; };
 		3B287CB32100FB1A00A43E57 /* AppCoordinator+ConnectionManagerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppCoordinator+ConnectionManagerDelegate.swift"; sourceTree = "<group>"; };
 		3B287CB52100FB5600A43E57 /* AppCoordinator+ChildCoordinatorDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppCoordinator+ChildCoordinatorDelegate.swift"; sourceTree = "<group>"; };
 		3B287CB72101128400A43E57 /* TransactionBroadcastError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionBroadcastError.swift; sourceTree = "<group>"; };
@@ -986,6 +996,7 @@
 		3B86F7B3203CA2F700D15231 /* String+Hashing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Hashing.swift"; sourceTree = "<group>"; };
 		3B86F7B5203CA3B000D15231 /* CoinKeeper-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "CoinKeeper-Bridging-Header.h"; sourceTree = "<group>"; };
 		3B86F7B9203CA4B500D15231 /* CoinKeeperTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "CoinKeeperTests-Bridging-Header.h"; sourceTree = "<group>"; };
+		3B8ACA14225F96800020B684 /* GetBitcoinViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = GetBitcoinViewController.storyboard; sourceTree = "<group>"; };
 		3B8C40BE20784A2E008283A2 /* PresentationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PresentationController.swift; sourceTree = "<group>"; };
 		3B8C40C02078D6F1008283A2 /* PresentableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentableViewController.swift; sourceTree = "<group>"; };
 		3B8FA48120C16F5C0074B617 /* CKMTemporarySentTransaction+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CKMTemporarySentTransaction+CoreDataClass.swift"; sourceTree = "<group>"; };
@@ -1075,6 +1086,12 @@
 		3BE8D86320D1A85200E99D24 /* TransactionResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionResponse.swift; sourceTree = "<group>"; };
 		3BEB594520D15AF9005EDA9E /* AddressTransactionSummaryResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressTransactionSummaryResponse.swift; sourceTree = "<group>"; };
 		3BEC1AF32229CC8D00824A35 /* Locale+Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Locale+Constants.swift"; sourceTree = "<group>"; };
+		3BEF22962260CD4A001F6D25 /* GetBitcoinViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetBitcoinViewControllerTests.swift; sourceTree = "<group>"; };
+		3BEF22982260D42E001F6D25 /* SpendBitcoinViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpendBitcoinViewController.swift; sourceTree = "<group>"; };
+		3BEF229A2260D491001F6D25 /* SpendBitcoinViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = SpendBitcoinViewController.storyboard; sourceTree = "<group>"; };
+		3BEF229C2260DC78001F6D25 /* BuySpendCardCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuySpendCardCollectionViewCell.swift; sourceTree = "<group>"; };
+		3BEF229D2260DC78001F6D25 /* BuySpendCardCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BuySpendCardCollectionViewCell.xib; sourceTree = "<group>"; };
+		3BEF22A02264B9D7001F6D25 /* AppCoordinator+GetBitcoinViewControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppCoordinator+GetBitcoinViewControllerDelegate.swift"; sourceTree = "<group>"; };
 		3BF3B0C2217379B60021E45F /* NetworkManager+SubscribeToWalletRequestable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NetworkManager+SubscribeToWalletRequestable.swift"; sourceTree = "<group>"; };
 		3BF3B0C421737A4D0021E45F /* SubscribeToWalletTarget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscribeToWalletTarget.swift; sourceTree = "<group>"; };
 		3BF3B0C6217500330021E45F /* MockNetworkManager+NotificationNetworkInteractable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MockNetworkManager+NotificationNetworkInteractable.swift"; sourceTree = "<group>"; };
@@ -1098,9 +1115,9 @@
 		3BFA7193204060FA00774D59 /* DigitEntryDisplayViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DigitEntryDisplayViewModel.swift; sourceTree = "<group>"; };
 		3BFA71972040616D00774D59 /* DigitEntryDisplayViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DigitEntryDisplayViewModelTests.swift; sourceTree = "<group>"; };
 		3BFBD15520E56A5500BC48DB /* CKMTransaction+SampleData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CKMTransaction+SampleData.swift"; sourceTree = "<group>"; };
+		3F71AB08F1B8925877925094 /* Pods-DropBit.beta.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DropBit.beta.xcconfig"; path = "Pods/Target Support Files/Pods-DropBit/Pods-DropBit.beta.xcconfig"; sourceTree = "<group>"; };
 		403AAD5D2063513900F7A2BA /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
 		403B454A2075594F00DA53E9 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
-		403E5D9C2D6107D446F5A607 /* Pods-DropBitTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DropBitTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-DropBitTests/Pods-DropBitTests.release.xcconfig"; sourceTree = "<group>"; };
 		4A251737207515FF0030FCA2 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		4A4A9DF220979C11007A47F4 /* MockNetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockNetworkManager.swift; sourceTree = "<group>"; };
 		4A75CAF82090FB0D00E8E653 /* DeviceVerificationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceVerificationViewController.swift; sourceTree = "<group>"; };
@@ -1108,10 +1125,12 @@
 		4AF4332120935C8D00B11BC9 /* DeviceVerificationCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceVerificationCoordinator.swift; sourceTree = "<group>"; };
 		4AF433252093BA8700B11BC9 /* DeviceVerificationViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = DeviceVerificationViewController.storyboard; sourceTree = "<group>"; };
 		4AF433272094103C00B11BC9 /* MockDeviceVerificationViewControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockDeviceVerificationViewControllerDelegate.swift; sourceTree = "<group>"; };
+		52ED79ED741DA7FC235B5E1C /* Pods-DropBitTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DropBitTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-DropBitTests/Pods-DropBitTests.release.xcconfig"; sourceTree = "<group>"; };
 		5B404275208CCA40005624B0 /* TransactionHistoryDetailCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransactionHistoryDetailCellViewModel.swift; sourceTree = "<group>"; usesTabs = 0; };
 		5B40427B208CCC27005624B0 /* QRCode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QRCode.swift; sourceTree = "<group>"; };
 		5B40427D208CCD02005624B0 /* SendPaymentViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SendPaymentViewController.swift; sourceTree = "<group>"; };
 		5B404283208CDD71005624B0 /* SendPaymentViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = SendPaymentViewController.storyboard; sourceTree = "<group>"; };
+		5B479B290821C4FD02C8B4A8 /* Pods-DropBitTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DropBitTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-DropBitTests/Pods-DropBitTests.debug.xcconfig"; sourceTree = "<group>"; };
 		5B62D55C2087732700E9D466 /* SendPaymentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendPaymentViewModel.swift; sourceTree = "<group>"; };
 		5B62D55E20879C4100E9D466 /* String+BitcoinRegex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+BitcoinRegex.swift"; sourceTree = "<group>"; };
 		5B91E3972076BEB500DD9A86 /* DrawerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DrawerViewController.swift; sourceTree = "<group>"; };
@@ -1126,7 +1145,7 @@
 		5BE594E0207F8F3500862A0A /* MockPermissionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockPermissionManager.swift; sourceTree = "<group>"; };
 		5BE594E4207FBE2D00862A0A /* ScanQRViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanQRViewController.swift; sourceTree = "<group>"; };
 		5BE594E6207FC62B00862A0A /* ScanQRViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = ScanQRViewController.storyboard; sourceTree = "<group>"; };
-		6B45294C0FAC33843D859904 /* Pods-DropBit.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DropBit.debug.xcconfig"; path = "Pods/Target Support Files/Pods-DropBit/Pods-DropBit.debug.xcconfig"; sourceTree = "<group>"; };
+		5E18937A316B24018624B67C /* Pods-DropBit.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DropBit.debug.xcconfig"; path = "Pods/Target Support Files/Pods-DropBit/Pods-DropBit.debug.xcconfig"; sourceTree = "<group>"; };
 		6B8250D63C5BAA325C86E644 /* MockPersistenceManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockPersistenceManager.swift; sourceTree = "<group>"; };
 		6B825602FB98CA66373F7CA6 /* AppDelegateTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegateTests.swift; sourceTree = "<group>"; };
 		6B825633F1FE7A9EA9E7A2AD /* Int+Times.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Int+Times.swift"; sourceTree = "<group>"; };
@@ -1136,12 +1155,9 @@
 		6B825B699947400167B89174 /* PersistenceManagerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersistenceManagerTests.swift; sourceTree = "<group>"; };
 		6B825D46A80DC2FF22E479A5 /* StartViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StartViewControllerTests.swift; sourceTree = "<group>"; };
 		6B825E8DEB7E0DE12824DE21 /* MockBiometricAuthenticationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockBiometricAuthenticationManager.swift; sourceTree = "<group>"; };
-		72D4D0B3AB8EC852DA7F2059 /* Pods-DropBitUITests.beta.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DropBitUITests.beta.xcconfig"; path = "Pods/Target Support Files/Pods-DropBitUITests/Pods-DropBitUITests.beta.xcconfig"; sourceTree = "<group>"; };
-		72E089572ABDEAA5B98FA9B4 /* Pods-CoinKeeper.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CoinKeeper.debug.xcconfig"; path = "Pods/Target Support Files/Pods-CoinKeeper/Pods-CoinKeeper.debug.xcconfig"; sourceTree = "<group>"; };
-		74B24DFA2A9744598BDE9113 /* Pods_DropBitUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DropBitUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		84774056667D1092195A0727 /* Pods-DropBitUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DropBitUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-DropBitUITests/Pods-DropBitUITests.release.xcconfig"; sourceTree = "<group>"; };
-		91580C74E27109C60D7FD1CF /* Pods-DropBit.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DropBit.release.xcconfig"; path = "Pods/Target Support Files/Pods-DropBit/Pods-DropBit.release.xcconfig"; sourceTree = "<group>"; };
-		998718A5D74A5A84C8BE134E /* Pods-CoinKeeperTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CoinKeeperTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-CoinKeeperTests/Pods-CoinKeeperTests.debug.xcconfig"; sourceTree = "<group>"; };
+		7922150430C8E58AE81188E7 /* Pods-DropBitTests.beta.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DropBitTests.beta.xcconfig"; path = "Pods/Target Support Files/Pods-DropBitTests/Pods-DropBitTests.beta.xcconfig"; sourceTree = "<group>"; };
+		89226DBCEEEA12C579A9ACAC /* Pods-DropBitUITests.beta.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DropBitUITests.beta.xcconfig"; path = "Pods/Target Support Files/Pods-DropBitUITests/Pods-DropBitUITests.beta.xcconfig"; sourceTree = "<group>"; };
+		A0F8AA22F90FCFE5D3048952 /* Pods_DropBitTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DropBitTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A200574620B5ED52007074D9 /* SettingCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingCell.swift; sourceTree = "<group>"; };
 		A200574820B5F07A007074D9 /* SettingsTableViewFooter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTableViewFooter.swift; sourceTree = "<group>"; };
 		A200574A20B5F0F4007074D9 /* SettingsTableViewFooter.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SettingsTableViewFooter.xib; sourceTree = "<group>"; };
@@ -1174,8 +1190,7 @@
 		A2893BBF20FD4E7700E96B07 /* UIViewController+ToolbarUtilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+ToolbarUtilities.swift"; sourceTree = "<group>"; };
 		A2893BC120FD515900E96B07 /* AppCoordinator+TutorialViewControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppCoordinator+TutorialViewControllerDelegate.swift"; sourceTree = "<group>"; };
 		A293E34F20F67F390099ED69 /* SuccessFailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuccessFailViewModel.swift; sourceTree = "<group>"; };
-		A293E35120F798920099ED69 /* NoTransactionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoTransactionsView.swift; sourceTree = "<group>"; };
-		A293E35320F798A80099ED69 /* NoTransactionsView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NoTransactionsView.xib; sourceTree = "<group>"; };
+		A293E35120F798920099ED69 /* TransactionHistoryEmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionHistoryEmptyView.swift; sourceTree = "<group>"; };
 		A29CE0C22098AD1500761B91 /* UINavigationController+TopViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UINavigationController+TopViewController.swift"; sourceTree = "<group>"; };
 		A29CE0C62098F84300761B91 /* SuccessFailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuccessFailViewController.swift; sourceTree = "<group>"; };
 		A29CE0C82098F8CA00761B91 /* SuccessFailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuccessFailView.swift; sourceTree = "<group>"; };
@@ -1214,7 +1229,8 @@
 		A2E52D6120BD937E00424E6A /* StringDictResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringDictResponse.swift; sourceTree = "<group>"; };
 		A2E52D8720BE3A3F00424E6A /* Data+HexString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data+HexString.swift"; sourceTree = "<group>"; };
 		A2E89207210A3BC10085631A /* CKPhoneNumberFormatterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CKPhoneNumberFormatterTests.swift; sourceTree = "<group>"; };
-		B2A8F053737255318D63BC2F /* Pods-DropBitTests.beta.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DropBitTests.beta.xcconfig"; path = "Pods/Target Support Files/Pods-DropBitTests/Pods-DropBitTests.beta.xcconfig"; sourceTree = "<group>"; };
+		A4EC94A9AFA9DA6291388559 /* Pods_DropBitUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DropBitUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A51D126CD51C5139725A6D03 /* Pods-DropBitUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DropBitUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-DropBitUITests/Pods-DropBitUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		B501022121F2325B00D42A71 /* UIColor+Init.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Init.swift"; sourceTree = "<group>"; };
 		B50384C520B304780091AB37 /* CKNetworkError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CKNetworkError.swift; sourceTree = "<group>"; };
 		B5054142207D00270059C8F9 /* CKMAddress+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CKMAddress+CoreDataClass.swift"; sourceTree = "<group>"; };
@@ -1530,14 +1546,7 @@
 		B5FE9B66219DD96200801D3C /* MerchantPaymentRequestResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MerchantPaymentRequestResponse.swift; sourceTree = "<group>"; };
 		B5FEBE9020879C4200AA9F6E /* CKMInvitation+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CKMInvitation+CoreDataClass.swift"; sourceTree = "<group>"; };
 		B5FEBE9120879C4200AA9F6E /* CKMInvitation+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CKMInvitation+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		C08A0F23C02080F98EBE7D56 /* Pods_DropBitTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DropBitTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		C477A287A7EC5159A77C7DDC /* Pods-CoinKeeper.beta.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CoinKeeper.beta.xcconfig"; path = "Pods/Target Support Files/Pods-CoinKeeper/Pods-CoinKeeper.beta.xcconfig"; sourceTree = "<group>"; };
-		DFE7E7B74791D9997E3E007F /* Pods_DropBit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DropBit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		EA595DF0598E9692C640D6F5 /* Pods_DropBit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DropBit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		EB77206FB9FF7ADB7AC26BFE /* Pods-CoinKeeperTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CoinKeeperTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-CoinKeeperTests/Pods-CoinKeeperTests.release.xcconfig"; sourceTree = "<group>"; };
-		ECDFD309DFA55CE8C2F431EC /* Pods-DropBitUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DropBitUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-DropBitUITests/Pods-DropBitUITests.debug.xcconfig"; sourceTree = "<group>"; };
-		EED2C3139B653C0D2602E2BF /* Pods-DropBit.beta.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DropBit.beta.xcconfig"; path = "Pods/Target Support Files/Pods-DropBit/Pods-DropBit.beta.xcconfig"; sourceTree = "<group>"; };
-		F55D268D981AF3113DC4E852 /* Pods_DropBitTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DropBitTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E3613BD1CBE78070154B3647 /* Pods-DropBitUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DropBitUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-DropBitUITests/Pods-DropBitUITests.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1550,7 +1559,7 @@
 				3B8269172032407C009B11EC /* Strongbox.framework in Frameworks */,
 				B54D205E20F908C30057A694 /* SwiftMessages.framework in Frameworks */,
 				3BB854E020220D6100190874 /* CNBitcoinKit.framework in Frameworks */,
-				E942F4C101167378C4B41342 /* Pods_DropBit.framework in Frameworks */,
+				0CDB24D7643ABA1B0ED88CF3 /* Pods_DropBit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1558,8 +1567,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				95873E9E62094E09B7FC8662 /* Pods_DropBitTests.framework in Frameworks */,
-				15EA0DA4F8BC625A4DE7976C /* Pods_DropBitTests.framework in Frameworks */,
+				0A715079615A16BC0E0EC6F2 /* Pods_DropBitTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1567,35 +1575,13 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3AA23D25B561BDDDF23CD6C8 /* Pods_DropBitUITests.framework in Frameworks */,
+				0A50EBA1B468EC7EC79FE0FE /* Pods_DropBitUITests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		36C3D03B640C77D7355128A0 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				72E089572ABDEAA5B98FA9B4 /* Pods-CoinKeeper.debug.xcconfig */,
-				14AD58C87569529758AA1BFF /* Pods-CoinKeeper.release.xcconfig */,
-				998718A5D74A5A84C8BE134E /* Pods-CoinKeeperTests.debug.xcconfig */,
-				EB77206FB9FF7ADB7AC26BFE /* Pods-CoinKeeperTests.release.xcconfig */,
-				C477A287A7EC5159A77C7DDC /* Pods-CoinKeeper.beta.xcconfig */,
-				165163DCFDBCA39E97B8A3F7 /* Pods-CoinKeeperTests.beta.xcconfig */,
-				6B45294C0FAC33843D859904 /* Pods-DropBit.debug.xcconfig */,
-				91580C74E27109C60D7FD1CF /* Pods-DropBit.release.xcconfig */,
-				EED2C3139B653C0D2602E2BF /* Pods-DropBit.beta.xcconfig */,
-				28600897437A2629DB7CC4A3 /* Pods-DropBitTests.debug.xcconfig */,
-				403E5D9C2D6107D446F5A607 /* Pods-DropBitTests.release.xcconfig */,
-				B2A8F053737255318D63BC2F /* Pods-DropBitTests.beta.xcconfig */,
-				ECDFD309DFA55CE8C2F431EC /* Pods-DropBitUITests.debug.xcconfig */,
-				84774056667D1092195A0727 /* Pods-DropBitUITests.release.xcconfig */,
-				72D4D0B3AB8EC852DA7F2059 /* Pods-DropBitUITests.beta.xcconfig */,
-			);
-			name = Pods;
-			sourceTree = "<group>";
-		};
 		3B124E032020EB2B00431E2E = {
 			isa = PBXGroup;
 			children = (
@@ -1604,7 +1590,7 @@
 				B586F4FF2175084000682D17 /* DropBitUITests */,
 				3B124E0D2020EB2B00431E2E /* Products */,
 				3B124E2F2020F1E500431E2E /* Frameworks */,
-				36C3D03B640C77D7355128A0 /* Pods */,
+				EA02DE82A9093EB33CBD2ACB /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -1687,11 +1673,9 @@
 				3B9EE8772058359400C0CC8C /* PMAlertController.framework */,
 				3B8269162032407C009B11EC /* Strongbox.framework */,
 				3BB854DF20220D6100190874 /* CNBitcoinKit.framework */,
-				EA595DF0598E9692C640D6F5 /* Pods_DropBit.framework */,
-				C08A0F23C02080F98EBE7D56 /* Pods_DropBitTests.framework */,
-				DFE7E7B74791D9997E3E007F /* Pods_DropBit.framework */,
-				F55D268D981AF3113DC4E852 /* Pods_DropBitTests.framework */,
-				74B24DFA2A9744598BDE9113 /* Pods_DropBitUITests.framework */,
+				38C1749F4B68B36A2834D1DC /* Pods_DropBit.framework */,
+				A0F8AA22F90FCFE5D3048952 /* Pods_DropBitTests.framework */,
+				A4EC94A9AFA9DA6291388559 /* Pods_DropBitUITests.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -1777,6 +1761,8 @@
 				3BB01BC2220A56F6006B4D25 /* AppCoordinator+NoConnectionViewControllerDelegate.swift */,
 				B52CC6A8221EC42800B00C9E /* AppCoordinator+ViewControllerDismissable.swift */,
 				3B26F1DF22566EAA00F3E00F /* AppCoordinator+SelectedCurrencyUpdatable.swift */,
+				3BEF22A02264B9D7001F6D25 /* AppCoordinator+GetBitcoinViewControllerDelegate.swift */,
+				3B24466D2265097B004AEE35 /* AppCoordinator+SpendBitcoinViewControllerDelegate.swift */,
 			);
 			path = Coordinators;
 			sourceTree = "<group>";
@@ -1825,7 +1811,7 @@
 				3060489E218A670B009C6E86 /* UIView+Shadow.swift */,
 				B527AFBC2195CFF6007D9484 /* UIView+AccessibilityIdentifier.swift */,
 				3B44962721B16D1000A4E912 /* UIApplication+Screenshot.swift */,
-				300CD8F021FA668400BFF560 /* NSAttributedString+Concatenate.swift */,
+				300CD8F021FA668400BFF560 /* NSAttributedString+Helpers.swift */,
 				3B731D372253D97A0044B4F8 /* UIView+Fade.swift */,
 			);
 			path = Extensions;
@@ -1895,6 +1881,8 @@
 				308F6F0C2180B6350094D6CB /* AddressTableViewCell.xib */,
 				3B3779ED219C6B2800F79683 /* BackupWordsReminderDrawerCell.swift */,
 				3B3779EE219C6B2800F79683 /* BackupWordsReminderDrawerCell.xib */,
+				3BEF229C2260DC78001F6D25 /* BuySpendCardCollectionViewCell.swift */,
+				3BEF229D2260DC78001F6D25 /* BuySpendCardCollectionViewCell.xib */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -1996,8 +1984,7 @@
 				3BD7B73020D66F12005057A7 /* HorizontallyPaginatedCollectionViewLayout.swift */,
 				3B23126220DA6CA30099A557 /* TransactionHistoryDetailCellAddressView.xib */,
 				3B23126620DA6D0E0099A557 /* TransactionHistoryDetailCellAddressView.swift */,
-				A293E35120F798920099ED69 /* NoTransactionsView.swift */,
-				A293E35320F798A80099ED69 /* NoTransactionsView.xib */,
+				A293E35120F798920099ED69 /* TransactionHistoryEmptyView.swift */,
 				308F6F00217F91980094D6CB /* ServerAddressView.swift */,
 				308F6F02217F91A50094D6CB /* ServerAddressView.xib */,
 				B536D12A21F1140100C344B6 /* SendPaymentMemoView.swift */,
@@ -2046,6 +2033,8 @@
 				3B30AF1421B810FF009BAE5A /* ConfirmPaymentViewControllerTests.swift */,
 				30C2561221C870E600887691 /* TutorialViewControllerTests.swift */,
 				3BB01BC0220A4233006B4D25 /* NoConnectionViewControllerTests.swift */,
+				3BEF22962260CD4A001F6D25 /* GetBitcoinViewControllerTests.swift */,
+				3B24466B22650261004AEE35 /* SpendBitcoinViewControllerTests.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -2243,6 +2232,8 @@
 				30E96A2C2178F83A008079B8 /* PhoneNumberStatusViewController.swift */,
 				3B325D4C219090CD0094897C /* RecoveryWordsIntroViewController.swift */,
 				30BF4FE821B6C5C10018AE87 /* TransactionPopoverDetailsViewController.swift */,
+				3B27D3F9225E84E900291B82 /* GetBitcoinViewController.swift */,
+				3BEF22982260D42E001F6D25 /* SpendBitcoinViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -2277,6 +2268,8 @@
 				3B325D50219091950094897C /* RecoveryWordsIntroViewController.storyboard */,
 				30BF4FEA21B6C6C60018AE87 /* TransactionPopoverDetailsViewController.storyboard */,
 				3B44961E21B0661300A4E912 /* MemoEntryViewController.storyboard */,
+				3B8ACA14225F96800020B684 /* GetBitcoinViewController.storyboard */,
+				3BEF229A2260D491001F6D25 /* SpendBitcoinViewController.storyboard */,
 			);
 			path = Storyboards;
 			sourceTree = "<group>";
@@ -2907,6 +2900,22 @@
 			path = PhoneNumbers;
 			sourceTree = "<group>";
 		};
+		EA02DE82A9093EB33CBD2ACB /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				5E18937A316B24018624B67C /* Pods-DropBit.debug.xcconfig */,
+				186FAC1C56DB4DFB38DA8EDB /* Pods-DropBit.release.xcconfig */,
+				3F71AB08F1B8925877925094 /* Pods-DropBit.beta.xcconfig */,
+				5B479B290821C4FD02C8B4A8 /* Pods-DropBitTests.debug.xcconfig */,
+				52ED79ED741DA7FC235B5E1C /* Pods-DropBitTests.release.xcconfig */,
+				7922150430C8E58AE81188E7 /* Pods-DropBitTests.beta.xcconfig */,
+				A51D126CD51C5139725A6D03 /* Pods-DropBitUITests.debug.xcconfig */,
+				E3613BD1CBE78070154B3647 /* Pods-DropBitUITests.release.xcconfig */,
+				89226DBCEEEA12C579A9ACAC /* Pods-DropBitUITests.beta.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -2914,13 +2923,13 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 3B124E292020EB2B00431E2E /* Build configuration list for PBXNativeTarget "DropBit" */;
 			buildPhases = (
-				F9D91A7BA99621B347BC60A4 /* [CP] Check Pods Manifest.lock */,
+				B0D44BE42DCBB1B5E5A96A38 /* [CP] Check Pods Manifest.lock */,
 				3B124E082020EB2B00431E2E /* Sources */,
 				3B124E092020EB2B00431E2E /* Frameworks */,
 				3B124E0A2020EB2B00431E2E /* Resources */,
 				3BB854E120220D6D00190874 /* Carthage Copy-Frameworks Run Script */,
 				3B3BA04D202A2A0D00093971 /* SwiftLint Run Script */,
-				4F346687AC0A9889DEF960B5 /* [CP] Embed Pods Frameworks */,
+				0D940223000A843252FE8756 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -2935,7 +2944,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 3B124E2C2020EB2B00431E2E /* Build configuration list for PBXNativeTarget "DropBitTests" */;
 			buildPhases = (
-				C49A5D9A8E32F50EFD933721 /* [CP] Check Pods Manifest.lock */,
+				EB5E5A431EBC11DBABEC5CA5 /* [CP] Check Pods Manifest.lock */,
 				3B124E1C2020EB2B00431E2E /* Sources */,
 				3B124E1D2020EB2B00431E2E /* Frameworks */,
 				3B124E1E2020EB2B00431E2E /* Resources */,
@@ -2955,7 +2964,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = B50BB1A7217512400038B5DD /* Build configuration list for PBXNativeTarget "DropBitUITests" */;
 			buildPhases = (
-				812926DA6AAE940CEAD66388 /* [CP] Check Pods Manifest.lock */,
+				E9E3CEE4849FDC7C7342F4A2 /* [CP] Check Pods Manifest.lock */,
 				B50BB19C217512400038B5DD /* Sources */,
 				B50BB19D217512400038B5DD /* Frameworks */,
 				B50BB19E217512400038B5DD /* Resources */,
@@ -3083,6 +3092,7 @@
 				A29CE0DA209B725600761B91 /* ContactCell.xib in Resources */,
 				3B9779AC202E416700C9C933 /* Montserrat-SemiBoldItalic.ttf in Resources */,
 				30E96A2F2178FA70008079B8 /* PhoneNumberStatusViewController.storyboard in Resources */,
+				3BEF229B2260D491001F6D25 /* SpendBitcoinViewController.storyboard in Resources */,
 				3B9779AA202E416700C9C933 /* Montserrat-Medium.ttf in Resources */,
 				3B82692B20337282009B11EC /* PinCreationViewController.storyboard in Resources */,
 				308F6F0D2180B6350094D6CB /* AddressTableViewCell.xib in Resources */,
@@ -3090,6 +3100,7 @@
 				3B9779A6202E416700C9C933 /* Montserrat-BlackItalic.ttf in Resources */,
 				3B9779AE202E416700C9C933 /* Montserrat-SemiBold.ttf in Resources */,
 				3B9779A4202E416700C9C933 /* Montserrat-MediumItalic.ttf in Resources */,
+				3B8ACA15225F96800020B684 /* GetBitcoinViewController.storyboard in Resources */,
 				3B82691A20330B96009B11EC /* KeypadEntryView.xib in Resources */,
 				3B9779B5202E416700C9C933 /* Montserrat-BoldItalic.ttf in Resources */,
 				3B3779F0219C6B2800F79683 /* BackupWordsReminderDrawerCell.xib in Resources */,
@@ -3108,8 +3119,8 @@
 				3B9779AF202E416700C9C933 /* Montserrat-ThinItalic.ttf in Resources */,
 				A29CE0DE209B756E00761B91 /* ContactsTableViewHeader.xib in Resources */,
 				3BAB1443204EE5A7001D41A2 /* VerifyRecoveryWordsViewController.storyboard in Resources */,
+				3BEF229F2260DC78001F6D25 /* BuySpendCardCollectionViewCell.xib in Resources */,
 				3B325D51219091950094897C /* RecoveryWordsIntroViewController.storyboard in Resources */,
-				A293E35420F798A80099ED69 /* NoTransactionsView.xib in Resources */,
 				3B44961F21B0661300A4E912 /* MemoEntryViewController.storyboard in Resources */,
 				B51F8238207BAD8500692F5B /* BalanceContainer.xib in Resources */,
 				A29CE0CD2099ED5600761B91 /* SuccessFailViewController.storyboard in Resources */,
@@ -3134,6 +3145,50 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		0D940223000A843252FE8756 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-DropBit/Pods-DropBit-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
+				"${BUILT_PRODUCTS_DIR}/DZNEmptyDataSet/DZNEmptyDataSet.framework",
+				"${BUILT_PRODUCTS_DIR}/JKSteppedProgressBar/JKSteppedProgressBar.framework",
+				"${BUILT_PRODUCTS_DIR}/MMDrawerController/MMDrawerController.framework",
+				"${BUILT_PRODUCTS_DIR}/Mixpanel-swift/Mixpanel.framework",
+				"${BUILT_PRODUCTS_DIR}/Moya/Moya.framework",
+				"${BUILT_PRODUCTS_DIR}/Permission/Permission.framework",
+				"${BUILT_PRODUCTS_DIR}/PhoneNumberKit/PhoneNumberKit.framework",
+				"${BUILT_PRODUCTS_DIR}/RNCryptor/RNCryptor.framework",
+				"${BUILT_PRODUCTS_DIR}/ReachabilitySwift/Reachability.framework",
+				"${BUILT_PRODUCTS_DIR}/Result/Result.framework",
+				"${BUILT_PRODUCTS_DIR}/SVProgressHUD/SVProgressHUD.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/DZNEmptyDataSet.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/JKSteppedProgressBar.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MMDrawerController.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Mixpanel.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Moya.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Permission.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PhoneNumberKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RNCryptor.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Reachability.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Result.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SVProgressHUD.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-DropBit/Pods-DropBit-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		3B124E372020F26B00431E2E /* Carthage Copy-Frameworks Run Script */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -3188,45 +3243,7 @@
 			shellPath = /bin/sh;
 			shellScript = "/usr/local/bin/carthage copy-frameworks\n";
 		};
-		4F346687AC0A9889DEF960B5 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-DropBit/Pods-DropBit-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
-				"${BUILT_PRODUCTS_DIR}/JKSteppedProgressBar/JKSteppedProgressBar.framework",
-				"${BUILT_PRODUCTS_DIR}/MMDrawerController/MMDrawerController.framework",
-				"${BUILT_PRODUCTS_DIR}/Mixpanel-swift/Mixpanel.framework",
-				"${BUILT_PRODUCTS_DIR}/Moya/Moya.framework",
-				"${BUILT_PRODUCTS_DIR}/Permission/Permission.framework",
-				"${BUILT_PRODUCTS_DIR}/PhoneNumberKit/PhoneNumberKit.framework",
-				"${BUILT_PRODUCTS_DIR}/RNCryptor/RNCryptor.framework",
-				"${BUILT_PRODUCTS_DIR}/ReachabilitySwift/Reachability.framework",
-				"${BUILT_PRODUCTS_DIR}/Result/Result.framework",
-				"${BUILT_PRODUCTS_DIR}/SVProgressHUD/SVProgressHUD.framework",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/JKSteppedProgressBar.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MMDrawerController.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Mixpanel.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Moya.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Permission.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PhoneNumberKit.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RNCryptor.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Reachability.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Result.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SVProgressHUD.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-DropBit/Pods-DropBit-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		812926DA6AAE940CEAD66388 /* [CP] Check Pods Manifest.lock */ = {
+		B0D44BE42DCBB1B5E5A96A38 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -3241,7 +3258,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-DropBitUITests-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-DropBit-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -3266,36 +3283,44 @@
 			shellPath = /bin/sh;
 			shellScript = "/usr/local/bin/carthage copy-frameworks\n";
 		};
-		C49A5D9A8E32F50EFD933721 /* [CP] Check Pods Manifest.lock */ = {
+		E9E3CEE4849FDC7C7342F4A2 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+			);
+			inputFileListPaths = (
 			);
 			inputPaths = (
 				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
 				"${PODS_ROOT}/Manifest.lock",
 			);
 			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-DropBitTests-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-DropBitUITests-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		F9D91A7BA99621B347BC60A4 /* [CP] Check Pods Manifest.lock */ = {
+		EB5E5A431EBC11DBABEC5CA5 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+			);
+			inputFileListPaths = (
 			);
 			inputPaths = (
 				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
 				"${PODS_ROOT}/Manifest.lock",
 			);
 			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-DropBit-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-DropBitTests-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -3465,6 +3490,7 @@
 				B5FBE42020DD76550029D273 /* SettingsViewModel.swift in Sources */,
 				B52A25CD2077FFF600F636A1 /* Date+Extensions.swift in Sources */,
 				3BDA2081203E17A700CBA6B1 /* BiometricError.swift in Sources */,
+				3B27D3FA225E84E900291B82 /* GetBitcoinViewController.swift in Sources */,
 				3BA9F5F2208F61A70047C213 /* BTCTestnetCoin.swift in Sources */,
 				5B91E3982076BEB500DD9A86 /* DrawerViewController.swift in Sources */,
 				3BC23EF220BDCA5100877BB6 /* TransactionDataError.swift in Sources */,
@@ -3516,7 +3542,9 @@
 				3B489D80216FC5750078D3F0 /* SubscriptionResponse.swift in Sources */,
 				3BE8AA1621F10D4200A3F0C4 /* CKCryptor.swift in Sources */,
 				3B287CB82101128400A43E57 /* TransactionBroadcastError.swift in Sources */,
+				3BEF22992260D42E001F6D25 /* SpendBitcoinViewController.swift in Sources */,
 				B56E15912167D955003B69D4 /* NetworkManager+WalletAddressRequestable.swift in Sources */,
+				3BEF229E2260DC78001F6D25 /* BuySpendCardCollectionViewCell.swift in Sources */,
 				3B3A1339204F3DB700E01908 /* OnboardingSubtitleLabel.swift in Sources */,
 				3B61B6E620DD4D360021D69E /* AppCoordinator+TransactionHistoryViewControllerDelegate.swift in Sources */,
 				3BE8D86420D1A85200E99D24 /* TransactionResponse.swift in Sources */,
@@ -3558,6 +3586,7 @@
 				B5DDB0F921DE6A1100A25929 /* MigrateKeychainV1toV2.swift in Sources */,
 				B541DD3B21EE4A18009F38A0 /* MetaAddress.swift in Sources */,
 				B534616A2098A9B600DDC1C4 /* CKMWallet+CoreDataClass.swift in Sources */,
+				3B24466E2265097C004AEE35 /* AppCoordinator+SpendBitcoinViewControllerDelegate.swift in Sources */,
 				3BFA7194204060FA00774D59 /* DigitEntryDisplayViewModel.swift in Sources */,
 				A2A530C820940B9900B6F4DE /* SendPaymentDataProvider.swift in Sources */,
 				B52A25C12077CCEF00F636A1 /* TransactionHistoryViewController.swift in Sources */,
@@ -3636,7 +3665,7 @@
 				A2E52D8820BE3A3F00424E6A /* Data+HexString.swift in Sources */,
 				307DF11D2150394400260369 /* MessagesManager.swift in Sources */,
 				3B6FDAE82052DACA0091916A /* VerifyRecoveryWordsViewModel.swift in Sources */,
-				A293E35220F798920099ED69 /* NoTransactionsView.swift in Sources */,
+				A293E35220F798920099ED69 /* TransactionHistoryEmptyView.swift in Sources */,
 				B56C414821F7717C005668E3 /* ConfirmPaymentMemoView.swift in Sources */,
 				B5FAD64C20A4DC1D008EB727 /* PublicKeyDataSource.swift in Sources */,
 				3B13ED112254E24900905226 /* CurrencyController.swift in Sources */,
@@ -3696,6 +3725,7 @@
 				B56B63782200CDD300CCC153 /* CKMTransactionSharedPayload+CoreDataProperties.swift in Sources */,
 				B5A3BA542151939B005EE657 /* AddressesTarget.swift in Sources */,
 				B53461722098ABBF00DDC1C4 /* CKMAddressTransactionSummary+CoreDataClass.swift in Sources */,
+				3BEF22A12264B9D8001F6D25 /* AppCoordinator+GetBitcoinViewControllerDelegate.swift in Sources */,
 				30ADA32C2162A76D00E52AF9 /* CreateDeviceBody.swift in Sources */,
 				3BF4EAF520F931860017DE00 /* PendingInvitationData.swift in Sources */,
 				3B5052BF20473FC9000C739F /* CreateRecoveryWordsCell.swift in Sources */,
@@ -3711,7 +3741,7 @@
 				B52F690A22417B0100790E97 /* CKDatabase.swift in Sources */,
 				3B23232E2248FEBC00514201 /* MigrateDatabaseV4Grooming.swift in Sources */,
 				B51AE4A7209398FE008380CC /* CKMPhoneNumber+CoreDataProperties.swift in Sources */,
-				300CD8F121FA668400BFF560 /* NSAttributedString+Concatenate.swift in Sources */,
+				300CD8F121FA668400BFF560 /* NSAttributedString+Helpers.swift in Sources */,
 				B51F823C207BB00D00692F5B /* BalanceSecondaryAmountLabel.swift in Sources */,
 				B56B637A2200CDF100CCC153 /* CKMTransactionSharedPayload+CoreDataClass.swift in Sources */,
 				A2A530C42093A72000B6F4DE /* AppCoordinator+ConfirmPaymentViewControllerDelegate.swift in Sources */,
@@ -3789,6 +3819,7 @@
 				A29CE11320A3883B00761B91 /* CurrencyAmountValidatorTests.swift in Sources */,
 				B5192FB0216E8D4A00DCC39B /* PriceTransactionResponseTests.swift in Sources */,
 				233BDB742080E8A60076F076 /* NetworkManagerTests.swift in Sources */,
+				3B24466C22650261004AEE35 /* SpendBitcoinViewControllerTests.swift in Sources */,
 				30BF4FF221B83C970018AE87 /* TransactionPopoverDetailsViewControllerTests.swift in Sources */,
 				A29CE11520A389B400761B91 /* CompositeValidatorTests.swift in Sources */,
 				3BA389A72035C97000B599A0 /* MockPinCreationViewControllerDelegate.swift in Sources */,
@@ -3854,6 +3885,7 @@
 				B5697273208A8E0A00835F01 /* BalanceContainerTests.swift in Sources */,
 				3B325D4F219090F80094897C /* RecoveryWordsIntroViewControllerTests.swift in Sources */,
 				B5EABABC21FBB69C00E32E08 /* MockNetworkManager+TransactionNotificationRequestable.swift in Sources */,
+				3BEF22972260CD4A001F6D25 /* GetBitcoinViewControllerTests.swift in Sources */,
 				B5D77CCD2222002D002C360E /* MockRecipientParser.swift in Sources */,
 				3BDA364120B2FCF8001E24FB /* SuccessFailViewControllerTests.swift in Sources */,
 				3B1555E420D27CF500D6A70C /* TransactionResponseTests.swift in Sources */,
@@ -4118,7 +4150,7 @@
 		};
 		3B124E2A2020EB2B00431E2E /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 6B45294C0FAC33843D859904 /* Pods-DropBit.debug.xcconfig */;
+			baseConfigurationReference = 5E18937A316B24018624B67C /* Pods-DropBit.debug.xcconfig */;
 			buildSettings = {
 				APP_DISPLAY_NAME = DropBitBeta;
 				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon${BUNDLE_ID_SUFFIX}";
@@ -4154,7 +4186,7 @@
 		};
 		3B124E2B2020EB2B00431E2E /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 91580C74E27109C60D7FD1CF /* Pods-DropBit.release.xcconfig */;
+			baseConfigurationReference = 186FAC1C56DB4DFB38DA8EDB /* Pods-DropBit.release.xcconfig */;
 			buildSettings = {
 				APP_DISPLAY_NAME = DropBit;
 				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon${BUNDLE_ID_SUFFIX}";
@@ -4189,7 +4221,7 @@
 		};
 		3B124E2D2020EB2B00431E2E /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 28600897437A2629DB7CC4A3 /* Pods-DropBitTests.debug.xcconfig */;
+			baseConfigurationReference = 5B479B290821C4FD02C8B4A8 /* Pods-DropBitTests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -4214,7 +4246,7 @@
 		};
 		3B124E2E2020EB2B00431E2E /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 403E5D9C2D6107D446F5A607 /* Pods-DropBitTests.release.xcconfig */;
+			baseConfigurationReference = 52ED79ED741DA7FC235B5E1C /* Pods-DropBitTests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -4292,7 +4324,7 @@
 		};
 		3B2A13E6212ADB5200B41D5C /* Beta */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = EED2C3139B653C0D2602E2BF /* Pods-DropBit.beta.xcconfig */;
+			baseConfigurationReference = 3F71AB08F1B8925877925094 /* Pods-DropBit.beta.xcconfig */;
 			buildSettings = {
 				APP_DISPLAY_NAME = DropBitBeta;
 				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon${BUNDLE_ID_SUFFIX}";
@@ -4327,7 +4359,7 @@
 		};
 		3B2A13E7212ADB5200B41D5C /* Beta */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B2A8F053737255318D63BC2F /* Pods-DropBitTests.beta.xcconfig */;
+			baseConfigurationReference = 7922150430C8E58AE81188E7 /* Pods-DropBitTests.beta.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -4351,7 +4383,7 @@
 		};
 		B50BB1A8217512400038B5DD /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = ECDFD309DFA55CE8C2F431EC /* Pods-DropBitUITests.debug.xcconfig */;
+			baseConfigurationReference = A51D126CD51C5139725A6D03 /* Pods-DropBitUITests.debug.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_WEAK = YES;
@@ -4388,7 +4420,7 @@
 		};
 		B50BB1A9217512400038B5DD /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 84774056667D1092195A0727 /* Pods-DropBitUITests.release.xcconfig */;
+			baseConfigurationReference = E3613BD1CBE78070154B3647 /* Pods-DropBitUITests.release.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_WEAK = YES;
@@ -4423,7 +4455,7 @@
 		};
 		B50BB1AA217512400038B5DD /* Beta */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 72D4D0B3AB8EC852DA7F2059 /* Pods-DropBitUITests.beta.xcconfig */;
+			baseConfigurationReference = 89226DBCEEEA12C579A9ACAC /* Pods-DropBitUITests.beta.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_WEAK = YES;

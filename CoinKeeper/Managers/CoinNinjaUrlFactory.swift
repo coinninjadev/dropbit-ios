@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import CoreLocation
 
 struct CoinNinjaUrlFactory {
 
@@ -29,10 +30,26 @@ struct CoinNinjaUrlFactory {
     case dropbitTransactionTooltip
     case dustProtection
     case download
+    case spendBitcoinOnline
+    case spendBitcoinAroundMe(CLLocationCoordinate2D)
+    case spendBitcoinGiftCards
+    case buyGiftCards
+    case buyWithCreditCard
+    case buyAtATM(CLLocationCoordinate2D)
 
     var domain: String {
       switch self {
-      case .bitcoin, .seedWords, .whyBitcoin, .transaction, .address:
+      case .bitcoin,
+           .seedWords,
+           .whyBitcoin,
+           .transaction,
+           .address,
+           .spendBitcoinOnline,
+           .spendBitcoinAroundMe,
+           .spendBitcoinGiftCards,
+           .buyGiftCards,
+           .buyWithCreditCard,
+           .buyAtATM:
         return "https://www.coinninja.com/"
       case .dropBit,
            .faqs,
@@ -93,6 +110,18 @@ struct CoinNinjaUrlFactory {
         return "\(tooltipBreadcrumb)dropbittransaction"
       case .dustProtection:
         return "\(tooltipBreadcrumb)dustprotection"
+      case .spendBitcoinOnline:
+        return "spendbitcoin/online"
+      case .spendBitcoinAroundMe(let coordinate):
+        return "spendbitcoin/aroundme?lat=\(coordinate.latitude)&long=\(coordinate.longitude)"
+      case .spendBitcoinGiftCards:
+        return "spendbitcoin/giftcards"
+      case .buyGiftCards:
+        return "buybitcoin/giftcards"
+      case .buyWithCreditCard:
+        return "buybitcoin/creditcards"
+      case .buyAtATM(let coordinate):
+        return "buybitcoin/map?lat=\(coordinate.latitude)&long=\(coordinate.longitude)"
       }
     }
   }

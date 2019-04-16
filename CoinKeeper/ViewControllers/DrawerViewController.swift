@@ -14,6 +14,7 @@ protocol DrawerViewControllerDelegate: CurrencyValueDataSourceType & BadgeUpdate
   func phoneButtonWasTouched()
   func spendButtonWasTouched()
   func supportButtonWasTouched()
+  func getBitcoinButtonWasTouched()
   func badgingManager() -> BadgeManagerType
 }
 
@@ -72,19 +73,28 @@ class DrawerViewController: BaseViewController, StoryboardInitializable {
 
   private func configureDrawerData() {
     let circularIconOffset = ViewOffset(dx: 7, dy: -2)
-    let phoneOffset = ViewOffset(dx: 4, dy: -8)
 
     let backupWordsDrawerData: () -> DrawerData? = { [weak self] in
       guard let backedUp = self?.coordinationDelegate?.badgingManager().wordsBackedUp, backedUp == false else { return nil }
       return DrawerData(image: nil, title: "Back Up Wallet", kind: .backupWords)
     }
 
+    let getBitcoinImage = UIImage(imageLiteralResourceName: "drawerGetBitcoinIcon")
+    let settingsImage = UIImage(imageLiteralResourceName: "drawerSettingsIcon")
+    let verifyIcon = UIImage(imageLiteralResourceName: "drawerPhoneVerificationIcon")
+    let spendIcon = UIImage(imageLiteralResourceName: "drawerSpendBitcoinIcon")
+    let supportIcon = UIImage(imageLiteralResourceName: "drawerSupportIcon")
+
+    let settingsCritera: BadgeInfo = [.wordsNotBackedUp: .actionNeeded]
+    let verifyCriteria: BadgeInfo = [.unverifiedPhone: .actionNeeded]
+
     let settingsData: [DrawerData] = [
       backupWordsDrawerData(),
-      DrawerData(image: #imageLiteral(resourceName: "settingsIcon"), title: "Settings", kind: .settings, badgeCriteria: [.wordsNotBackedUp: .actionNeeded], badgeOffset: circularIconOffset),
-      DrawerData(image: #imageLiteral(resourceName: "phoneDrawerIcon"), title: "Phone", kind: .phone, badgeCriteria: [.unverifiedPhone: .actionNeeded], badgeOffset: phoneOffset),
-      DrawerData(image: #imageLiteral(resourceName: "bitcoinIcon"), title: "Spend", kind: .spend),
-      DrawerData(image: #imageLiteral(resourceName: "supportIcon"), title: "Support", kind: .support)
+      DrawerData(image: getBitcoinImage, title: "Get Bitcoin", kind: .getBitcoin),
+      DrawerData(image: settingsImage, title: "Setting", kind: .settings, badgeCriteria: settingsCritera, badgeOffset: circularIconOffset),
+      DrawerData(image: verifyIcon, title: "Verify", kind: .phone, badgeCriteria: verifyCriteria, badgeOffset: circularIconOffset),
+      DrawerData(image: spendIcon, title: "Spend", kind: .spend),
+      DrawerData(image: supportIcon, title: "Support", kind: .support)
       ]
       .compactMap { $0 }
 
@@ -105,6 +115,8 @@ class DrawerViewController: BaseViewController, StoryboardInitializable {
       coordinationDelegate?.spendButtonWasTouched()
     case .support:
       coordinationDelegate?.supportButtonWasTouched()
+    case .getBitcoin:
+      coordinationDelegate?.getBitcoinButtonWasTouched()
     }
   }
 }

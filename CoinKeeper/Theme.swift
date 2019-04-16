@@ -42,6 +42,8 @@ struct Theme {
     case bannerWarn
     case warning
     case dragIndiciator
+    case appleGreen
+    case mango
 
     var color: UIColor {
       switch self {
@@ -49,8 +51,8 @@ struct Theme {
            .sendingToDarkGray: 								return UIColor(red: 0.14, green: 0.15, blue: 0.20, alpha: 1.00)
       case .searchBarLightGray: 							return UIColor(red: 0.97, green: 0.97, blue: 0.98, alpha: 1.00)
       case .darkBlueButton,
-           .darkBlueText: 										return UIColor(r: 33, g: 35, b: 50)
-      case .confirmPaymentMemo,
+           .darkBlueText,
+           .confirmPaymentMemo,
            .sendPaymentNetworkFee:						return UIColor(r: 36, g: 37, b: 54)
       case .lightBlueTint,
            .primaryActionButton: 							return UIColor(r: 44, g: 209, b: 255)
@@ -81,6 +83,8 @@ struct Theme {
            .verifyWordLightGray: 							return UIColor(r: 250, g: 250, b: 250)
       case .whiteText,
            .whiteBackground:									return UIColor(r: 255, g: 255, b: 255)
+      case .appleGreen:                       return UIColor(r: 131, g: 207, b: 28)
+      case .mango:                            return UIColor(r: 247, g: 158, b: 54)
       }
     }
   }

@@ -13,6 +13,7 @@ enum PermissionKind {
   case contacts
   case camera
   case notification
+  case location
 }
 
 protocol PermissionManagerType {
@@ -31,6 +32,8 @@ class PermissionManager: PermissionManagerType {
       permission = Permission.camera
     case .notification:
       permission = Permission.notifications
+    case .location:
+      permission = Permission.locationWhenInUse
     }
 
     permission.request { status in
@@ -46,6 +49,8 @@ class PermissionManager: PermissionManagerType {
       return Permission.camera.status
     case .notification:
       return Permission.notifications.status
+    case .location:
+      return Permission.locationWhenInUse.status
     }
   }
 }

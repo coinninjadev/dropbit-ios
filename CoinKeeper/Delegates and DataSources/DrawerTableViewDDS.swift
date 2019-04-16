@@ -11,6 +11,7 @@ import UIKit
 struct DrawerData {
   enum Kind {
     case backupWords
+    case getBitcoin
     case settings
     case phone
     case spend

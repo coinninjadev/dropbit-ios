@@ -77,6 +77,15 @@ enum AnalyticsManagerEventType: String {
   case payScreenLoaded = "PayScreenLoaded"
   case confirmScreenLoaded = "ConfirmScreenLoaded"
   case sharedPayloadSent = "SharedPayloadSent"
+  case getBitcoinButtonPressed = "GetBitcoin"
+  case learnBitcoinButtonPressed = "LearnBitcoin"
+  case spendBitcoinButtonPressed = "SpendBitcoin"
+  case buyBitcoinWithCreditCard = "BuyBitcoinWithCreditCard"
+  case buyBitcoinWithGiftCard = "BuyBitcoinWithGiftCard"
+  case buyBitcoinAtATM = "BuyBitcoinAtATM"
+  case spendOnGiftCards = "SpendOnGiftCards"
+  case spendOnAroundMe = "SpendOnAroundMe"
+  case spendOnOnline = "SpendOnOnline"
 
   var id: String {
     return self.rawValue

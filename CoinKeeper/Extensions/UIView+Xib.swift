@@ -17,15 +17,20 @@ extension UIView: XibViewType {
   @objc var xibName: String { return String(describing: type(of: self)) }
 
   func xibSetup() {
-    let view = fromNib()
-    view?.frame = bounds
-    view?.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-    view.map(addSubview)
+    guard let view = fromNib() else { return }
+    view.frame = bounds
+    view.translatesAutoresizingMaskIntoConstraints = false
+    view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+    addSubview(view)
+    view.topAnchor.constraint(equalTo: topAnchor).isActive = true
+    view.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
+    view.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = true
+    view.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
   }
 
   fileprivate func fromNib() -> UIView? {
     let nibName = xibName
-    let bundle = Bundle(for: type(of: self) as AnyClass)
+    let bundle = Bundle(for: type(of: self))
     let nib = UINib(nibName: nibName, bundle: bundle)
     let view = nib.instantiate(withOwner: self, options: nil).first as? UIView
     return view

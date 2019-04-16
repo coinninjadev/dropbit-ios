@@ -34,7 +34,8 @@ class TransactionHistoryViewControllerTests: XCTestCase {
     XCTAssertNotNil(self.sut.summaryCollectionView, "summaryCollectionView should be connected")
     XCTAssertNotNil(self.sut.detailCollectionView, "detailCollectionView should be connected")
     XCTAssertNotNil(self.sut.detailCollectionViewTopConstraint, "detailCollectionViewTopConstraint should be connected")
-    XCTAssertNotNil(self.sut.noTransactionsView, "noTransactionsView should be connected")
+    XCTAssertNotNil(self.sut.transactionHistoryNoBalanceView, "transactionHistoryNoBalanceView should be connected")
+    XCTAssertNotNil(self.sut.transactionHistoryWithBalanceView, "transactionHistoryWithBalanceView should be connected")
     XCTAssertNotNil(self.sut.collectionViews, "collectionViews outlet collection should be connected")
     XCTAssertNotNil(self.sut.sendReceiveActionView, "sendReceiveActionView should be connected")
   }
@@ -42,7 +43,6 @@ class TransactionHistoryViewControllerTests: XCTestCase {
   // MARK: no transactions
   func testNoTransactionsShowsNoTransactionsViewAndHidesSummaryCollectionView() {
     sut.summaryCollectionView.reloadData()
-    XCTAssertFalse(sut.noTransactionsView.isHidden, "noTransactionsView should be visible when no transactions are in context")
-    XCTAssertTrue(sut.summaryCollectionView.isHidden, "summaryCollectionView should be hidden when no transactions are in context")
+    XCTAssertFalse(sut.transactionHistoryNoBalanceView.isHidden, "noTransactionsView should be visible when no transactions are in context")
   }
 }
