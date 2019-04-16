@@ -126,6 +126,9 @@ extension DeviceVerificationCoordinator: DeviceVerificationViewControllerDelegat
         .catch { [weak self] error in
           os_log("Failed to request code: %@", log: logger, type: .error, error.localizedDescription)
           self?.handleResendError(error)
+          if let providerError = error as? UserProviderError, case let .twilioError = providerError {
+            crDelegate.didReceiveTwilioError(for: body.identity, route: .resendVerification)
+          }
       }
     }
   }
