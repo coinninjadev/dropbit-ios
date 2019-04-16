@@ -46,12 +46,14 @@ extension AppCoordinator: TransactionHistoryViewControllerDelegate {
   }
 
   func viewControllerDidTapGetBitcoin(_ viewController: UIViewController) {
+    analyticsManager.track(event: .getBitcoinButtonPressed, with: nil)
     let controller = GetBitcoinViewController.makeFromStoryboard()
     assignCoordinationDelegate(to: controller)
     navigationController.pushViewController(controller, animated: true)
   }
 
   func viewControllerDidTapSpendBitcoin(_ viewController: UIViewController) {
+    analyticsManager.track(event: .spendBitcoinButtonPressed, with: nil)
     let controller = SpendBitcoinViewController.makeFromStoryboard()
     assignCoordinationDelegate(to: controller)
     navigationController.pushViewController(controller, animated: true)

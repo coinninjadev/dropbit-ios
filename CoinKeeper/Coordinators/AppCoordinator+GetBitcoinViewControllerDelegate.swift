@@ -11,6 +11,7 @@ import CoreLocation
 
 extension AppCoordinator: GetBitcoinViewControllerDelegate {
   func viewControllerFindBitcoinATMNearMe(_ viewController: GetBitcoinViewController) {
+    analyticsManager.track(event: .buyBitcoinAtATM, with: nil)
     permissionManager.requestPermission(for: .location) { (status) in
       switch status {
       case .authorized, .notDetermined:
@@ -27,11 +28,13 @@ extension AppCoordinator: GetBitcoinViewControllerDelegate {
   }
 
   func viewControllerBuyWithCreditCard(_ viewController: GetBitcoinViewController) {
+    analyticsManager.track(event: .buyBitcoinWithCreditCard, with: nil)
     guard let url = CoinNinjaUrlFactory.buildUrl(for: .buyWithCreditCard) else { return }
     openURL(url, completionHandler: nil)
   }
 
   func viewControllerBuyWithGiftCard(_ viewController: GetBitcoinViewController) {
+    analyticsManager.track(event: .buyBitcoinWithGiftCard, with: nil)
     guard let url = CoinNinjaUrlFactory.buildUrl(for: .buyGiftCards) else { return }
     openURL(url, completionHandler: nil)
   }
