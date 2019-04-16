@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import PhoneNumberKit
 
 struct RequestAddressAmount: Codable {
   let usd: Int
@@ -20,6 +21,18 @@ struct RequestAddressUser: Codable {
   init(phoneNumber: GlobalPhoneNumber) {
     self.type = UserIdentityType.phone.rawValue
     self.identity = phoneNumber.sanitizedGlobalNumber()
+  }
+}
+
+extension RequestAddressUser {
+  func globalNumber() -> GlobalPhoneNumber? {
+    let parser = CKPhoneNumberParser(kit: PhoneNumberKit())
+    do {
+      let e164 = "+" + identity
+      return try parser.parse(e164)
+    } catch {
+      return nil
+    }
   }
 }
 

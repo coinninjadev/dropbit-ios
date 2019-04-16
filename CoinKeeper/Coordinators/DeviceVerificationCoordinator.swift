@@ -11,7 +11,7 @@ import PromiseKit
 import UIKit
 import os.log
 
-protocol DeviceVerificationCoordinatorDelegate: AnyObject {
+protocol DeviceVerificationCoordinatorDelegate: TwilioErrorDelegate {
   var launchStateManager: LaunchStateManagerType { get }
   var networkManager: NetworkManagerType { get }
   var walletManager: WalletManagerType? { get }
@@ -150,18 +150,42 @@ extension DeviceVerificationCoordinator: DeviceVerificationViewControllerDelegat
 
     return delegate.networkManager.createUser(walletId: walletId, phoneNumber: phoneNumber)
       .recover { (error: Error) -> Promise<UserResponse> in
-        // If createUser results in statusCode 200, that function rejects with .userAlreadyExists and we recover by calling resendVerification()
-        if let providerError = error as? UserProviderError,
-          case let UserProviderError.userAlreadyExists(userId, body) = providerError {
-
-          //ignore walletId available in the error in case it is different from the walletId we provided
-          let resendHeaders = DefaultRequestHeaders(walletId: walletId, userId: userId)
-          return delegate.networkManager.resendVerification(headers: resendHeaders, body: body)
-        } else {
-          throw error
-        }
+        return self.handleCreateUserError(error, walletId: walletId, delegate: delegate)
       }
       .then(in: context) { delegate.persistenceManager.persistUserId(from: $0, in: context) }
+  }
+
+  /// If createUser results in statusCode 200, that function rejects with .userAlreadyExists and
+  /// we recover by calling resendVerification(). In the case of a Twilio error, we notify the delegate
+  /// for analytics and continue as normal. In both cases we eventually return a UserResponse so that
+  /// we can persist the userId returned by the server.
+  private func handleCreateUserError(_ error: Error,
+                                     walletId: String,
+                                     delegate: DeviceVerificationCoordinatorDelegate) -> Promise<UserResponse> {
+    if let providerError = error as? UserProviderError {
+      switch providerError {
+      case .userAlreadyExists(let userId, let body):
+        //ignore walletId available in the error in case it is different from the walletId we provided
+        let resendHeaders = DefaultRequestHeaders(walletId: walletId, userId: userId)
+        return delegate.networkManager.resendVerification(headers: resendHeaders, body: body)
+          .recover { (error: Error) -> Promise<UserResponse> in
+            if let providerError = error as? UserProviderError,
+              case let .twilioError(userResponse, _) = providerError {
+              delegate.didReceiveTwilioError(for: body.identity, route: .resendVerification)
+              return Promise.value(userResponse)
+            } else {
+              throw error
+            }
+        }
+      case .twilioError(let userResponse, let body):
+        delegate.didReceiveTwilioError(for: body.identity, route: .createUser)
+        return Promise.value(userResponse)
+      default:
+        return Promise(error: error)
+      }
+    } else {
+      return Promise(error: error)
+    }
   }
 
   func viewController(_ codeEntryViewController: DeviceVerificationViewController, didEnterCode code: String, completion: @escaping (Bool) -> Void) {

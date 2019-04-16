@@ -58,8 +58,12 @@ class AppCoordinator: CoordinatorType {
   let messageManager: MessagesManagerType
   let persistenceCacheDataWorker: PersistenceCacheDataWorkerType
   let uiTestArguments: [UITestArgument]
+
   // swiftlint:disable:next weak_delegate
   let mailComposeDelegate = MailerDelegate()
+  // swiftlint:disable:next weak_delegate
+  let messageComposeDelegate = MessagerDelegate()
+
   let currencyController: CurrencyController
 
   private let maxSecondsInBackground: TimeInterval = 30
@@ -220,7 +224,7 @@ class AppCoordinator: CoordinatorType {
     " Without them you will not be notified to complete transactions which will cause them to expire."
 
     let description = "Please allow us to send you push notifications on the following prompt."
-    let alert = alertManager.detailedAlert(withTitle: title, description: description, image: #imageLiteral(resourceName: "dropBitBadgeIcon"), action: requestConfiguration)
+    let alert = alertManager.detailedAlert(withTitle: title, description: description, image: #imageLiteral(resourceName: "dropBitBadgeIcon"), style: .warning, action: requestConfiguration)
 
     navigationController.topViewController()?.present(alert, animated: true)
   }

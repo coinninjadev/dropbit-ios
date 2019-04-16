@@ -18,12 +18,12 @@ extension AppCoordinator: SuccessFailViewControllerDelegate {
     }
   }
 
-  func viewController(_ viewController: SuccessFailViewController, success: Bool) {
+  func viewController(_ viewController: SuccessFailViewController, success: Bool, completion: (() -> Void)?) {
     switch viewController.viewModel.flow {
     case .payment:
       CKNotificationCenter.publish(key: .didSendTransactionSuccessfully)
       viewController.dismiss(animated: false) { [weak self] in
-        self?.navigationController.topViewController()?.dismiss(animated: true)
+        self?.navigationController.topViewController()?.dismiss(animated: true, completion: completion)
       }
     case .restoreWallet:
       startDeviceVerificationFlow(shouldOrphanRoot: true)

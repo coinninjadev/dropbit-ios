@@ -52,4 +52,17 @@ extension WalletAddressRequestsTarget {
     }
   }
 
+  func networkError(for moyaError: MoyaError) -> CKNetworkError? {
+    let defaultError = defaultNetworkError(for: moyaError)
+
+    // 501: Successfully created address request, but Twilio failed to send SMS
+    if let statusCode = moyaError.unacceptableStatusCode,
+      let response = moyaError.response,
+      statusCode == 501, case .create = self {
+      return CKNetworkError.twilioError(response)
+    } else {
+      return defaultError
+    }
+  }
+
 }

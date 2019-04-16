@@ -50,9 +50,10 @@ protocol AlertManagerType: CKBannerViewDelegate {
     actionConfigs: [AlertActionConfigurationType]
     ) -> AlertControllerType
 
-  func detailedAlert(withTitle title: String,
-                     description: String,
+  func detailedAlert(withTitle title: String?,
+                     description: String?,
                      image: UIImage,
+                     style: AlertMessageStyle,
                      action: AlertActionConfigurationType
     ) -> AlertControllerType
 
@@ -139,6 +140,10 @@ protocol AlertActionConfigurationType {
   var action: (() -> Void)? { get }
 }
 
+enum AlertMessageStyle {
+  case standard, warning
+}
+
 enum AlertActionStyle {
   case cancel, `default`
 
@@ -217,12 +222,13 @@ class AlertManager: AlertManagerType {
     return createAlert(withTitle: title, description: description, image: image, style: style, actionConfigs: actionConfigs)
   }
 
-  func detailedAlert(withTitle title: String,
-                     description: String,
+  func detailedAlert(withTitle title: String?,
+                     description: String?,
                      image: UIImage,
+                     style: AlertMessageStyle,
                      action: AlertActionConfigurationType) -> AlertControllerType {
     let alert = ActionableAlertViewController.makeFromStoryboard()
-    alert.setup(with: title, description: description, image: image, action: action)
+    alert.setup(with: title, description: description, image: image, style: style, action: action)
     alert.modalTransitionStyle = .crossDissolve
     alert.modalPresentationStyle = .overCurrentContext
 

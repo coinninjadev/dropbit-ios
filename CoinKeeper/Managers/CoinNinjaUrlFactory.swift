@@ -28,6 +28,7 @@ struct CoinNinjaUrlFactory {
     case regularTransactionTooltip
     case dropbitTransactionTooltip
     case dustProtection
+    case download
 
     var domain: String {
       switch self {
@@ -43,6 +44,7 @@ struct CoinNinjaUrlFactory {
            .myAddressesTooltip,
            .sharedMemosTooltip,
            .dustProtection,
+           .download,
            .regularTransactionTooltip,
            .dropbitTransactionTooltip:
         return "https://dropbit.app/"
@@ -65,6 +67,8 @@ struct CoinNinjaUrlFactory {
         return "whybitcoin"
       case .dropBit:
         return "dropbit"
+      case .download:
+        return "download"
       case .transaction(let id):
         return "tx/\(id)"
       case .address(let id):
@@ -93,8 +97,7 @@ struct CoinNinjaUrlFactory {
     }
   }
 
-  static func buildUrl(for url: CoinNinjaURL? = nil) -> URL? {
-    guard let url = url else { return nil }
+  static func buildUrl(for url: CoinNinjaURL) -> URL? {
     return URL(string: url.domain + url.path)
   }
 }

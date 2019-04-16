@@ -29,7 +29,7 @@ enum CKNetworkError: UserNotifiableError {
   case encodingFailed(type: String)
   case decodingFailed(type: String)
   case countryCodeDisabled
-  case twilioError(TwilioError)
+  case twilioError(Response) //server returns a successful response with 501 if Twilio responds with error
 
   /// The associated response can be used as the default value if recovering from this error
   case invalidValue(keyPath: String, value: String?, response: Decodable)
@@ -60,7 +60,7 @@ enum CKNetworkError: UserNotifiableError {
     case .encodingFailed(let type):       return "Failed to encode object of type: \(type)"
     case .decodingFailed(let type):       return "Failed to decode object of type: \(type)"
     case .countryCodeDisabled:            return "Country code not enabled"
-    case .twilioError(let error):         return "\(error.rawValue)"
+    case .twilioError:                    return "Twilio responded with error."
 
     case .invalidValue(let keypath, let value, _):
       let valueDesc = value ?? "nil"
