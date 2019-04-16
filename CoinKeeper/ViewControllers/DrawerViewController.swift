@@ -14,7 +14,7 @@ protocol DrawerViewControllerDelegate: CurrencyValueDataSourceType & BadgeUpdate
   func phoneButtonWasTouched()
   func spendButtonWasTouched()
   func supportButtonWasTouched()
-  func getBitcoiunButtonWasTouched()
+  func getBitcoinButtonWasTouched()
   func badgingManager() -> BadgeManagerType
 }
 
@@ -116,7 +116,7 @@ class DrawerViewController: BaseViewController, StoryboardInitializable {
     case .support:
       coordinationDelegate?.supportButtonWasTouched()
     case .getBitcoin:
-      coordinationDelegate?.getBitcoiunButtonWasTouched()
+      coordinationDelegate?.getBitcoinButtonWasTouched()
     }
   }
 }

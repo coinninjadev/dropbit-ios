@@ -44,7 +44,7 @@ class SpendBitcoinViewControllerTests: XCTestCase {
 
   func testSpendOnlineButtonContainsAction() {
     let actions = sut.spendOnlineButton.actions(forTarget: sut, forControlEvent: .touchUpInside) ?? []
-    let expected = #selector(SpendBitcoinViewController.spendBitconOnline(_:)).description
+    let expected = #selector(SpendBitcoinViewController.spendBitcoinOnline(_:)).description
     XCTAssertTrue(actions.contains(expected))
   }
 

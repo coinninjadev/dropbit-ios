@@ -67,7 +67,7 @@ final class SpendBitcoinViewController: BaseViewController, StoryboardInitializa
     coordinationDelegate?.viewControllerSpendBitcoinAroundMe(self)
   }
 
-  @IBAction func spendBitconOnline(_ sender: Any) {
+  @IBAction func spendBitcoinOnline(_ sender: Any) {
     coordinationDelegate?.viewControllerSpendBitcoinOnline(self)
   }
 }
