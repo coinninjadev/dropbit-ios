@@ -50,7 +50,12 @@ struct CoinNinjaUrlFactory {
            .buyGiftCards,
            .buyWithCreditCard,
            .buyAtATM:
+        #if DEBUG
+        return "https://test.coinninja.net/"
+        #else
         return "https://www.coinninja.com/"
+        #endif
+
       case .dropBit,
            .faqs,
            .contactUs,
@@ -111,9 +116,9 @@ struct CoinNinjaUrlFactory {
       case .dustProtection:
         return "\(tooltipBreadcrumb)dustprotection"
       case .spendBitcoinOnline:
-        return "spendbitcoin/online"
+        return "news/webview/load-online"
       case .spendBitcoinAroundMe(let coordinate):
-        return "spendbitcoin/aroundme?lat=\(coordinate.latitude)&long=\(coordinate.longitude)"
+        return "news/webview/load-map?lat=\(coordinate.latitude)&long=\(coordinate.longitude)&type=spend"
       case .spendBitcoinGiftCards:
         return "spendbitcoin/giftcards"
       case .buyGiftCards:
@@ -121,7 +126,7 @@ struct CoinNinjaUrlFactory {
       case .buyWithCreditCard:
         return "buybitcoin/creditcards"
       case .buyAtATM(let coordinate):
-        return "buybitcoin/map?lat=\(coordinate.latitude)&long=\(coordinate.longitude)"
+        return "news/webview/load-map?lat=\(coordinate.latitude)&long=\(coordinate.longitude)&type=atms"
       }
     }
   }
