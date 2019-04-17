@@ -72,30 +72,39 @@ extension AppCoordinator: TransactionHistoryViewControllerDelegate {
     navigationController.topViewController()?.present(viewController, animated: true, completion: nil)
   }
 
-  func viewControllerDidCancelDropbit() {
-    analyticsManager.track(event: .cancelDropbitPressed, with: nil)
-  }
-
   func viewController(_ viewController: TransactionHistoryViewController, didCancelInvitationWithID invitationID: String, at indexPath: IndexPath) {
-    guard let walletWorker = createWalletAddressDataWorker() else { return }
-    let context = persistenceManager.createBackgroundContext()
-    context.performAndWait {
-      walletWorker.cancelInvitation(withID: invitationID, in: context)
-        .done(in: context) {
-          context.performAndWait {
-            try? context.save()
-          }
 
-          DispatchQueue.main.async {
-            // Manual reloading is necessary because the frc will not automatically reload
-            // since the status change is made to the related invitation and not the transaction.
-            viewController.reloadTransactions(atIndexPaths: [indexPath])
+    let neverMindAction = AlertActionConfiguration(title: "Never mind", style: .cancel, action: nil)
+    let cancelInvitationAction = AlertActionConfiguration(title: "Cancel DropBit", style: .default, action: { [weak self] in
+      guard let strongSelf = self, let walletWorker = strongSelf.createWalletAddressDataWorker() else { return }
+      let context = strongSelf.persistenceManager.createBackgroundContext()
+      context.performAndWait {
+        walletWorker.cancelInvitation(withID: invitationID, in: context)
+          .done(in: context) {
+            context.performAndWait {
+              try? context.save()
+            }
+
+            strongSelf.analyticsManager.track(event: .cancelDropbitPressed, with: nil)
+
+            DispatchQueue.main.async {
+              // Manual reloading is necessary because the frc will not automatically reload
+              // since the status change is made to the related invitation and not the transaction.
+              viewController.reloadTransactions(atIndexPaths: [indexPath])
+            }
           }
+          .catch { error in
+            strongSelf.alertManager.showError(message: "Failed to cancel invitation.\nError details: \(error.localizedDescription)", forDuration: 5.0)
         }
-        .catch { error in
-          self.alertManager.showError(message: "Failed to cancel invitation.\nError details: \(error.localizedDescription)", forDuration: 5.0)
       }
-    }
+    })
+
+    let alert = alertManager.alert(withTitle: "Cancel DropBit",
+                                   description: "Are you sure you want to cancel this DropBit invitation?",
+                                   image: nil,
+                                   style: .alert,
+                                   actionConfigs: [neverMindAction, cancelInvitationAction])
+    viewController.present(alert, animated: true, completion: nil)
   }
 
   func viewControllerDidRequestHistoryUpdate(_ viewController: TransactionHistoryViewController) {
