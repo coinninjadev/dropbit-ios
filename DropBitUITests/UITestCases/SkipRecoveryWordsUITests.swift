@@ -19,16 +19,19 @@ class SkipRecoveryWordsUITests: UITestCase {
   func testSkippingRecoveryWordsShowsBadgeInDrawer() {
     StartPage().tapNewWallet()
     PinCreationPage().enterSimplePin(digit: 1, times: 6)
-    RecoveryWordsIntroPage().tapSkip()
-    app.buttons["OK, skip"].tap()
     DeviceVerificationPage().tapSkip()
     PushInfoPage()?.dismiss()
 
-    let toastLabel = app.staticTexts["Don't forget to back up your wallet. You could lose your Bitcoin if you don't."]
-    let toastExists = toastLabel.waitForExistence(timeout: 2)
-    XCTAssert(toastExists)
-
-    toastLabel.swipeUp()
+//    let title = "Remember to backup your wallet to ensure your Bitcoin is secure in case your phone" +
+//    " is ever lost or stolen. Tap here to backup now."
+//
+//    let predicate = NSPredicate(format: "label == \(title)")
+////    let toastLabel = app.staticTexts[title]
+//    let toastLabel = app.staticTexts.containing(predicate).firstMatch
+//    let toastExists = toastLabel.waitForExistence(timeout: 5)
+//    XCTAssert(toastExists)
+//
+//    toastLabel.swipeUp()
 
     TransactionHistoryPage().tapMenu()
 
