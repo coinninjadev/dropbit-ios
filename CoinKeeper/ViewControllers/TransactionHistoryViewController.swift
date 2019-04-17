@@ -20,7 +20,6 @@ protocol TransactionHistoryViewControllerDelegate: DeviceCountryCodeProvider &
   BadgeUpdateDelegate &
   SelectedCurrencyUpdatable {
   func viewControllerShouldSeeTransactionDetails(for viewModel: TransactionHistoryDetailCellViewModel)
-  func viewControllerDidCancelDropbit()
   func viewControllerDidRequestHistoryUpdate(_ viewController: TransactionHistoryViewController)
   func viewController(_ viewController: TransactionHistoryViewController, didCancelInvitationWithID invitationID: String, at indexPath: IndexPath)
   func viewControllerDidDisplayTransactions(_ viewController: TransactionHistoryViewController)
@@ -455,7 +454,6 @@ extension TransactionHistoryViewController: TransactionHistoryDetailCellDelegate
       guard let viewModel = detailCell.viewModel else { return }
       coordinationDelegate?.viewControllerShouldSeeTransactionDetails(for: viewModel)
     case .cancelInvitation:
-      coordinationDelegate?.viewControllerDidCancelDropbit()
       guard let invitationID = frc.object(at: path).invitation?.id else { return }
       coordinationDelegate?.viewController(self, didCancelInvitationWithID: invitationID, at: path)
     }
