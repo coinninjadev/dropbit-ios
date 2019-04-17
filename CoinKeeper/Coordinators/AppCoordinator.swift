@@ -474,7 +474,10 @@ class AppCoordinator: CoordinatorType {
     guard !isBackedUp && !backupWordsReminderShown else { return }
     let title = "Remember to backup your wallet to ensure your Bitcoin is secure in case your phone" +
     " is ever lost or stolen. Tap here to backup now."
-    alertManager.showBanner(with: title, duration: nil, alertKind: .error)
+    alertManager.showBanner(with: title, duration: nil, alertKind: .error) { [weak self] in
+      self?.analyticsManager.track(event: .backupWordsButtonPressed, with: nil)
+      self?.showWordRecoveryFlow()
+    }
     persistenceManager.set(true, for: .backupWordsReminderShown)
   }
 
