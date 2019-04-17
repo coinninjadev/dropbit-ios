@@ -39,12 +39,7 @@ struct CoinNinjaUrlFactory {
 
     var domain: String {
       switch self {
-      case .bitcoin,
-           .seedWords,
-           .whyBitcoin,
-           .transaction,
-           .address,
-           .spendBitcoinOnline,
+      case .spendBitcoinOnline,
            .spendBitcoinAroundMe,
            .spendBitcoinGiftCards,
            .buyGiftCards,
@@ -55,7 +50,12 @@ struct CoinNinjaUrlFactory {
         #else
         return "https://www.coinninja.com/"
         #endif
-
+      case .bitcoin,
+           .seedWords,
+           .whyBitcoin,
+           .transaction,
+           .address:
+        return "https://www.coinninja.com/"
       case .dropBit,
            .faqs,
            .contactUs,
