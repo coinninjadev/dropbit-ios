@@ -269,8 +269,9 @@ class AlertManager: AlertManagerType {
       bannerView.completion = completion
 
       if let action = tapAction {
-        bannerView.tapHandler = { _ in
-          self?.bannerManager.hide()
+        bannerView.tapHandler = { [weak bannerView] _ in
+          guard let banner = bannerView else { return }
+          self?.didTapBanner(banner)
           action()
         }
       }
