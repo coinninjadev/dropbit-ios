@@ -693,6 +693,7 @@ class MockAlertManager: AlertManagerType {
   func showBanner(with message: String, duration: AlertDuration) { }
   func showBanner(with message: String, duration: AlertDuration, alertKind kind: CKBannerViewKind) { }
   func showBanner(with message: String, alertKind kind: CKBannerViewKind) { }
+  func showBanner(with message: String, duration: AlertDuration?, alertKind kind: CKBannerViewKind, tapAction: (() -> Void)?) {}
   func showAlert(for update: AddressRequestUpdateDisplayable) { }
 
   func alert(withTitle title: String,

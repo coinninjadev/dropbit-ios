@@ -69,27 +69,6 @@ class AppCoordinatorStartVCDelegateTests: XCTestCase {
     }
   }
 
-  func testWhenCreatingWalletLaunchStateManagerDoesNotRequireAuth() {
-    // user is already authenticated
-    let mockPersistenceManager = MockPersistenceManager()
-    let mockLaunchStateManager = MockLaunchStateManager(persistenceManager: mockPersistenceManager)
-    mockLaunchStateManager.nextLaunchStep = .createWallet
-    _ = mockPersistenceManager.keychainManager.store(valueToHash: "foo", key: .userPin)
-
-    let mockNavigationController = MockNavigationController()
-    mockNavigationController.viewControllers = [StartViewController.makeFromStoryboard()]
-    mockLaunchStateManager.mockShouldRequireAuthentication = false
-
-    mockLaunchStateManager.nextLaunchStep = .createWallet
-    self.sut = AppCoordinator(navigationController: mockNavigationController, launchStateManager: mockLaunchStateManager)
-    TestHelpers.initializeWindow(with: mockNavigationController)
-    self.sut.start()
-
-    self.sut.createWallet()
-
-    XCTAssertTrue(mockNavigationController.pushedViewController is RecoveryWordsIntroViewController, "pushes CreateRecoveryWordsVC to the stack")
-  }
-
   func testCreatingWalletWhenDeviceNotVerifiedBehavesProperly() {
     let mockNavigationController = MockNavigationController()
     let mockPersistenceManager = MockPersistenceManager()

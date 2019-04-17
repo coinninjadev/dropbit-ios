@@ -91,7 +91,7 @@ class DrawerViewController: BaseViewController, StoryboardInitializable {
     let settingsData: [DrawerData] = [
       backupWordsDrawerData(),
       DrawerData(image: getBitcoinImage, title: "Get Bitcoin", kind: .getBitcoin),
-      DrawerData(image: settingsImage, title: "Setting", kind: .settings, badgeCriteria: settingsCritera, badgeOffset: circularIconOffset),
+      DrawerData(image: settingsImage, title: "Settings", kind: .settings, badgeCriteria: settingsCritera, badgeOffset: circularIconOffset),
       DrawerData(image: verifyIcon, title: "Verify", kind: .phone, badgeCriteria: verifyCriteria, badgeOffset: circularIconOffset),
       DrawerData(image: spendIcon, title: "Spend", kind: .spend),
       DrawerData(image: supportIcon, title: "Support", kind: .support)
