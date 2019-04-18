@@ -341,6 +341,9 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate, CurrencyFormatta
         }
         .done(on: .main) {
           successFailViewController.mode = .success
+
+          strongSelf.showShareTransactionIfAppropriate()
+
           self?.analyticsManager.track(property: MixpanelProperty(key: .hasSent, value: true))
           self?.trackIfUserHasABalance()
         }.catch { error in
@@ -395,4 +398,16 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate, CurrencyFormatta
     DispatchQueue.main.async { self.navigationController.topViewController()?.present(alert, animated: true) }
   }
 
+  private func showShareTransactionIfAppropriate() {
+    if self.persistenceManager.userDefaultsManager.dontShowShareTransaction {
+      return
+    }
+
+    if let topVC = self.navigationController.topViewController() {
+      DispatchQueue.main.asyncAfter(deadline: .now() + 1.2) {
+        let twitterVC = ShareTransactionViewController.newInstance(delegate: self)
+        topVC.present(twitterVC, animated: true, completion: nil)
+      }
+    }
+  }
 }
