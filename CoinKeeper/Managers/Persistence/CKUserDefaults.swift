@@ -45,6 +45,7 @@ class CKUserDefaults: PersistenceUserDefaultsType {
     case dustProtectionEnabled
     case selectedCurrency
     case lastContactCacheReload
+    case dontShowShareTransaction
 
     var defaultsString: String { return self.rawValue }
   }
@@ -173,6 +174,17 @@ class CKUserDefaults: PersistenceUserDefaultsType {
     existing[invitation.id] = data
 
     CKUserDefaults.standardDefaults.set(existing, forKey: pendingKey)
+  }
+
+  var dontShowShareTransaction: Bool {
+    get {
+      let key = CKUserDefaults.Key.dontShowShareTransaction.defaultsString
+      return CKUserDefaults.standardDefaults.bool(forKey: key)
+    }
+    set {
+      let key = CKUserDefaults.Key.dontShowShareTransaction.defaultsString
+      CKUserDefaults.standardDefaults.set(newValue, forKey: key)
+    }
   }
 
   func dustProtectionMinimumAmount() -> Int {

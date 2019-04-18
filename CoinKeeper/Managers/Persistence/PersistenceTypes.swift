@@ -269,6 +269,7 @@ protocol PersistenceUserDefaultsType: AnyObject {
   func deviceId() -> UUID?
   func setDeviceId(_ uuid: UUID)
   var receiveAddressIndexGaps: Set<Int> { get set }
+  var dontShowShareTransaction: Bool { get set }
 
   /// Returns zero if dust protection not enabled
   func dustProtectionMinimumAmount() -> Int
