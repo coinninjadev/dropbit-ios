@@ -56,6 +56,7 @@ class NetworkManager: NetworkManagerType {
   let cnProvider: CoinNinjaProviderType
 
   let blockchainInfoProvider = BlockchainInfoProvider()
+  let blockstreamProvider = BlockstreamProvider()
 
   var lastExchangeRateCheck = Date(timeIntervalSince1970: 0)
   var lastFeesCheck = Date(timeIntervalSince1970: 0)

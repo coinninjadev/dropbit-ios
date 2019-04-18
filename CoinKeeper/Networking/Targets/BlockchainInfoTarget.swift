@@ -34,7 +34,7 @@ extension BlockchainInfoTarget: TargetType {
   }
 
   public var sampleData: Data {
-    return ("paste actual sample data here").data(using: String.Encoding.utf8)!
+    return ("paste actual sample data here").data(using: .utf8)!
   }
 
   public var task: Task {
