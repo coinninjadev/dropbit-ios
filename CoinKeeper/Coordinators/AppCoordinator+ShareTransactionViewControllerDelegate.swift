@@ -18,11 +18,10 @@ extension AppCoordinator: ShareTransactionViewControllerDelegate {
 
       var comps = URLComponents()
       comps.scheme = "twitter"
-      comps.path = "post"
+      comps.host = "post"
       comps.queryItems = [URLQueryItem(name: "message", value: message)]
       if let url = comps.url {
-        print("Will open Twitter: \(url.absoluteString)")
-        self.openURL(url, completionHandler: nil)
+        UIApplication.shared.open(url, options: [:], completionHandler: nil)
       } else {
         print("Failed to open Twitter")
       }
