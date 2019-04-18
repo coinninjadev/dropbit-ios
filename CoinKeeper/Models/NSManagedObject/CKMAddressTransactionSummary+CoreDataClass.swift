@@ -130,6 +130,26 @@ public class CKMAddressTransactionSummary: NSManagedObject {
     }
   }
 
+  static func find(byAddress address: String, voutValue: Int, in context: NSManagedObjectContext) -> CKMAddressTransactionSummary? {
+    let fetchRequest: NSFetchRequest<CKMAddressTransactionSummary> = CKMAddressTransactionSummary.fetchRequest()
+    let addressKey = #keyPath(CKMAddressTransactionSummary.addressId)
+    let voutKey = #keyPath(CKMAddressTransactionSummary.received)
+
+    let addressPredicate = NSPredicate(format: "\(addressKey) = %@", address)
+    let voutPredicate = NSPredicate(format: "\(voutKey) = %d", voutValue)
+    let predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [addressPredicate, voutPredicate])
+
+    fetchRequest.predicate = predicate
+    fetchRequest.fetchLimit = 1
+
+    do {
+      let ats = try context.fetch(fetchRequest).first
+      return ats
+    } catch {
+      return nil
+    }
+  }
+
   func configure(
     with response: AddressTransactionSummaryResponse,
     in context: NSManagedObjectContext
