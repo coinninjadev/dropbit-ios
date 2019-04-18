@@ -131,6 +131,10 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate, CurrencyFormatta
                                                          invitationDTO: outgoingInvitationDTO,
                                                          successFailVC: successFailViewController,
                                                          in: bgContext)
+          // Call this separately from handleAddressRequestCreationSuccess so
+          // that it doesn't interrupt Twilio error SMS fallback flow
+          strongSelf.showShareTransactionIfAppropriate()
+
         }.catch(on: .main) { error in
           strongSelf.handleAddressRequestCreationError(error,
                                                        invitationDTO: outgoingInvitationDTO,
