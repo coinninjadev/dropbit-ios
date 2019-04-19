@@ -408,7 +408,7 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate, CurrencyFormatta
     }
 
     if let topVC = self.navigationController.topViewController() {
-      DispatchQueue.main.asyncAfter(deadline: .now() + 1.2) {
+      DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
         let twitterVC = ShareTransactionViewController.newInstance(delegate: self)
         topVC.present(twitterVC, animated: true, completion: nil)
       }
