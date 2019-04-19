@@ -57,9 +57,7 @@ class ShareTransactionViewController: UIViewController, StoryboardInitializable 
     bottomMessageLabel.textColor = Theme.Color.darkBlueText.color
     bottomMessageLabel.font = Theme.Font.shareTransactionMessage.font
 
-    twitterButton.backgroundColor = Theme.Color.primaryActionButton.color
-    twitterButton.layer.masksToBounds = true
-    twitterButton.layer.cornerRadius = 4
+    configureTwitterButton()
 
     nextTimeButton.titleLabel?.font = Theme.Font.primaryButtonTitle.font
     nextTimeButton.setTitleColor(Theme.Color.darkBlueText.color, for: .normal)
@@ -71,6 +69,26 @@ class ShareTransactionViewController: UIViewController, StoryboardInitializable 
     dontAskAgainFadedBackground.backgroundColor = Theme.Color.primaryActionButton.color
     dontAskAgainFadedBackground.layer.masksToBounds = true
     dontAskAgainFadedBackground.layer.cornerRadius = 4
+  }
+
+  private func configureTwitterButton() {
+    let font = Theme.Font.compactButtonTitle.font
+    let attributes: [NSAttributedString.Key: Any] = [
+      .font: font,
+      .foregroundColor: Theme.Color.whiteText.color
+    ]
+
+    let birdImage = UIImage(imageLiteralResourceName: "twitterBird")
+    let attributedBird = NSAttributedString(image: birdImage,
+                                            fontDescender: font.descender,
+                                            imageSize: CGSize(width: 20, height: 16))
+    let attributedTwitter = NSAttributedString(string: "  TWITTER", attributes: attributes)
+    let attributedTitle = attributedBird + attributedTwitter
+
+    twitterButton.setAttributedTitle(attributedTitle, for: .normal)
+    twitterButton.backgroundColor = Theme.Color.primaryActionButton.color
+    twitterButton.layer.masksToBounds = true
+    twitterButton.layer.cornerRadius = 4
   }
 
 }
