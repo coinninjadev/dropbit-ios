@@ -10,14 +10,15 @@ import Foundation
 import UIKit
 
 extension AppCoordinator: ViewControllerDontShowable {
+
   func viewControllerRequestedDontShowAgain(_ viewController: UIViewController) {
     switch viewController {
     case is ShareTransactionViewController:
-      print("Don't show share tx again")
       self.persistenceManager.userDefaultsManager.dontShowShareTransaction = true
-
+      viewController.dismiss(animated: true, completion: nil)
     default:
       break
     }
   }
+
 }
