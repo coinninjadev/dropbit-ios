@@ -602,36 +602,14 @@ class WalletAddressDataWorker: WalletAddressDataWorkerType {
 
     let dto = WalletAddressRequestResponseDTO()
 
-    // guard against already funded
-    if let existingATS = CKMAddressTransactionSummary.find(byAddress: address, voutValue: pendingInvitationData.btcAmount, in: context) {
-      let txid = existingATS.txid
-      return self.completeWalletAddressRequestFulfillmentLocally(
-        with: dto,
-        outgoingTransactionData: outgoingTransactionData,
-        txid: txid,
-        pendingInvitationData: pendingInvitationData,
-        pendingInvitation: pendingInvitation,
-        in: context
-      )
-    }
-
-    return Promise { seal in
-
-      // guard against insufficient funds
-      var spendableBalance = 0
-      context.performAndWait {
-        spendableBalance = walletManager.spendableBalance(in: context)
-      }
-      guard spendableBalance >= pendingInvitation.totalPendingAmount else {
-        seal.reject(PendingInvitationError.insufficientFundsForInvitationWithID(pendingInvitationData.id))
-        return
-      }
-
-      walletManager.transactionData(forPayment: pendingInvitationData.btcAmount, to: address, withFlatFee: pendingInvitationData.feeAmount)
-        .get { dto.transactionData = $0 }
-        .then { self.networkManager.broadcastTx(with: $0) }
-        .then { (txid: String) -> Promise<PendingInvitationData> in
-          self.completeWalletAddressRequestFulfillmentLocally(
+    let tempAddress = "32D9RGK8qVaLMgaEEThfRGjXEmJDQWxLn1"
+    return self.networkManager.fetchTransactionSummaries(for: tempAddress)
+      .then { (summaryResponses: [AddressTransactionSummaryResponse]) -> Promise<PendingInvitationData> in
+        // guard against already funded
+        let maybeFound = summaryResponses.first { $0.vout == pendingInvitationData.btcAmount }
+        if let found = maybeFound {
+          let txid = found.txid
+          return self.completeWalletAddressRequestFulfillmentLocally(
             with: dto,
             outgoingTransactionData: outgoingTransactionData,
             txid: txid,
@@ -639,38 +617,65 @@ class WalletAddressDataWorker: WalletAddressDataWorkerType {
             pendingInvitation: pendingInvitation,
             in: context
           )
-        }
-        .catch { error in
-          // Don't mark the PendingInvitationData as failed to broadcast in this scenario, don't want to accidentally double-send
-          if error is MoyaError {
-            seal.reject(error)
-            return
-          }
+        } else {
+          return Promise { seal in
 
-          self.persistenceManager.userDefaultsManager.setPendingInvitationFailed(pendingInvitationData)
-
-          if let txDataError = error as? TransactionDataError {
-            switch txDataError {
-            case .insufficientFunds: seal.reject(PendingInvitationError.insufficientFundsForInvitationWithID(pendingInvitationData.id))
-            case .insufficientFee:
-              seal.reject(PendingInvitationError.insufficientFeeForInvitationWithID(pendingInvitationData.id))
+            // guard against insufficient funds
+            var spendableBalance = 0
+            context.performAndWait {
+              spendableBalance = self.walletManager.spendableBalance(in: context)
             }
-            return
-          }
+            guard spendableBalance >= pendingInvitation.totalPendingAmount else {
+              seal.reject(PendingInvitationError.insufficientFundsForInvitationWithID(pendingInvitationData.id))
+              return
+            }
 
-          let nsError = error as NSError
-          let errorCode = TransactionBroadcastError(errorCode: nsError.code)
-          switch errorCode {
-          case .broadcastTimedOut:
-            seal.reject(TransactionBroadcastError.broadcastTimedOut)
-          case .networkUnreachable:
-            seal.reject(TransactionBroadcastError.networkUnreachable)
-          case .unknown:
-            seal.reject(TransactionBroadcastError.unknown)
-          case .insufficientFee:
-            seal.reject(PendingInvitationError.insufficientFeeForInvitationWithID(pendingInvitationData.id))
+            self.walletManager.transactionData(forPayment: pendingInvitationData.btcAmount, to: address, withFlatFee: pendingInvitationData.feeAmount)
+              .get { dto.transactionData = $0 }
+              .then { self.networkManager.broadcastTx(with: $0) }
+              .then { (txid: String) -> Promise<PendingInvitationData> in
+                self.completeWalletAddressRequestFulfillmentLocally(
+                  with: dto,
+                  outgoingTransactionData: outgoingTransactionData,
+                  txid: txid,
+                  pendingInvitationData: pendingInvitationData,
+                  pendingInvitation: pendingInvitation,
+                  in: context
+                )
+              }
+              .catch { error in
+                // Don't mark the PendingInvitationData as failed to broadcast in this scenario, don't want to accidentally double-send
+                if error is MoyaError {
+                  seal.reject(error)
+                  return
+                }
+
+                self.persistenceManager.userDefaultsManager.setPendingInvitationFailed(pendingInvitationData)
+
+                if let txDataError = error as? TransactionDataError {
+                  switch txDataError {
+                  case .insufficientFunds: seal.reject(PendingInvitationError.insufficientFundsForInvitationWithID(pendingInvitationData.id))
+                  case .insufficientFee:
+                    seal.reject(PendingInvitationError.insufficientFeeForInvitationWithID(pendingInvitationData.id))
+                  }
+                  return
+                }
+
+                let nsError = error as NSError
+                let errorCode = TransactionBroadcastError(errorCode: nsError.code)
+                switch errorCode {
+                case .broadcastTimedOut:
+                  seal.reject(TransactionBroadcastError.broadcastTimedOut)
+                case .networkUnreachable:
+                  seal.reject(TransactionBroadcastError.networkUnreachable)
+                case .unknown:
+                  seal.reject(TransactionBroadcastError.unknown)
+                case .insufficientFee:
+                  seal.reject(PendingInvitationError.insufficientFeeForInvitationWithID(pendingInvitationData.id))
+                }
+            }
           }
-      }
+        }
     }
   }
 
