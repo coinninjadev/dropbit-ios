@@ -297,6 +297,8 @@
 		3BDA364120B2FCF8001E24FB /* SuccessFailViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BDA364020B2FCF8001E24FB /* SuccessFailViewControllerTests.swift */; };
 		3BDA364320B4D50E001E24FB /* SpendableBalanceError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BDA364220B4D50E001E24FB /* SpendableBalanceError.swift */; };
 		3BDB6C532220521000E75DD2 /* SendPaymentMemoViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BDB6C522220520F00E75DD2 /* SendPaymentMemoViewTests.swift */; };
+		3BDFADFC2267AEFF0077DEF2 /* BlockstreamTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BDFADFB2267AEFF0077DEF2 /* BlockstreamTarget.swift */; };
+		3BDFADFE2267B1FB0077DEF2 /* BlockstreamProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BDFADFD2267B1FB0077DEF2 /* BlockstreamProvider.swift */; };
 		3BE8AA1621F10D4200A3F0C4 /* CKCryptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BE8AA1521F10D4200A3F0C4 /* CKCryptor.swift */; };
 		3BE8AA1821F1149100A3F0C4 /* CKCryptorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BE8AA1721F1149100A3F0C4 /* CKCryptorTests.swift */; };
 		3BE8D85E20D16FAE00E99D24 /* DerivativePathResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BE8D85D20D16FAE00E99D24 /* DerivativePathResponse.swift */; };
@@ -1079,6 +1081,8 @@
 		3BDA364020B2FCF8001E24FB /* SuccessFailViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuccessFailViewControllerTests.swift; sourceTree = "<group>"; };
 		3BDA364220B4D50E001E24FB /* SpendableBalanceError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpendableBalanceError.swift; sourceTree = "<group>"; };
 		3BDB6C522220520F00E75DD2 /* SendPaymentMemoViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendPaymentMemoViewTests.swift; sourceTree = "<group>"; };
+		3BDFADFB2267AEFF0077DEF2 /* BlockstreamTarget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockstreamTarget.swift; sourceTree = "<group>"; };
+		3BDFADFD2267B1FB0077DEF2 /* BlockstreamProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockstreamProvider.swift; sourceTree = "<group>"; };
 		3BE8AA1521F10D4200A3F0C4 /* CKCryptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CKCryptor.swift; sourceTree = "<group>"; };
 		3BE8AA1721F1149100A3F0C4 /* CKCryptorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CKCryptorTests.swift; sourceTree = "<group>"; };
 		3BE8D85D20D16FAE00E99D24 /* DerivativePathResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DerivativePathResponse.swift; sourceTree = "<group>"; };
@@ -2818,6 +2822,7 @@
 				B5A3BA5F2151940E005EE657 /* WalletAddressRequestsTarget.swift */,
 				B56512F52153DDA500A5D044 /* WalletCheckInTarget.swift */,
 				3B474164217FB6A4004DA223 /* GeneralSubscriptionTarget.swift */,
+				3BDFADFB2267AEFF0077DEF2 /* BlockstreamTarget.swift */,
 			);
 			path = Targets;
 			sourceTree = "<group>";
@@ -2836,6 +2841,7 @@
 			children = (
 				B5C8F5C4216D37D300E3E85B /* CoinNinjaProvider.swift */,
 				B53D7ECD2119FE3900D1DCBF /* BlockchainInfoProvider.swift */,
+				3BDFADFD2267B1FB0077DEF2 /* BlockstreamProvider.swift */,
 			);
 			path = Providers;
 			sourceTree = "<group>";
@@ -3265,7 +3271,7 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		B50BB1B02175176F0038B5DD /* Carthage Copy-Frameworks Run Script */ = {
+		98C33AD97F2ED9E2B3137B7E /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -3273,20 +3279,26 @@
 			inputFileListPaths = (
 			);
 			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
 			);
-			name = "Carthage Copy-Frameworks Run Script";
+			name = "[CP] Check Pods Manifest.lock";
 			outputFileListPaths = (
 			);
 			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-DropBitTests-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "/usr/local/bin/carthage copy-frameworks\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
 		};
 		E10C8A2E158E9C2D80723E11 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+			);
+			inputFileListPaths = (
 			);
 			inputFileListPaths = (
 			);
@@ -3388,6 +3400,7 @@
 				B552EDE9211E33D000332BB5 /* BiometricAuthenticationManager.swift in Sources */,
 				B5EABAAF21FB8E8B00E32E08 /* TransactionNotificationTarget.swift in Sources */,
 				4AF4332220935C8D00B11BC9 /* DeviceVerificationCoordinator.swift in Sources */,
+				3BDFADFE2267B1FB0077DEF2 /* BlockstreamProvider.swift in Sources */,
 				B505A87C2076C79700AACB23 /* TransactionHistoryDetailLabel.swift in Sources */,
 				B5EEDAA02209E225009434DC /* WalletSyncOperationFactory.swift in Sources */,
 				3B287CB62100FB5600A43E57 /* AppCoordinator+ChildCoordinatorDelegate.swift in Sources */,
@@ -3621,6 +3634,7 @@
 				3B61B6E220DD282E0021D69E /* SendPaymentViewControllerDelegate.swift in Sources */,
 				3B124E102020EB2B00431E2E /* AppDelegate.swift in Sources */,
 				3BD7B73120D66F12005057A7 /* HorizontallyPaginatedCollectionViewLayout.swift in Sources */,
+				3BDFADFC2267AEFF0077DEF2 /* BlockstreamTarget.swift in Sources */,
 				B5221D5322441CC30081C868 /* MigrateContactCacheV1toV2.swift in Sources */,
 				B56E15972167DB26003B69D4 /* NetworkManager+WalletRequestable.swift in Sources */,
 				B5A42A98217A31D800EB32CB /* UserNotifiableError.swift in Sources */,

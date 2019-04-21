@@ -100,10 +100,10 @@ enum AnalyticsManagerEventKey: String {
   case sharingEnabled = "SharingEnabled"
   case errorMessage = "ErrorMsg"
 
-  case libbitcoinCode = "LibCode"
-  case libbitcoinMessage = "LibMsg"
   case blockChainInfoCode = "BlockCode"
   case blockChainInfoMessage = "BlockMsg"
+  case blockstreamInfoCode = "BlockstreamCode"
+  case blockstreamInfoMessage = "BlockstreamMsg"
 
   case countryCode = "CountryCode"
 }
