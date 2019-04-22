@@ -39,7 +39,11 @@ class MockPersistenceDatabaseManager: PersistenceDatabaseType {
     return []
   }
 
-  func deleteTransactions(notIn txids: [String], in context: NSManagedObjectContext) { }
+  var deleteTransactionsFromResponsesWasCalled = false
+  func deleteTransactions(notIn txids: [String], in context: NSManagedObjectContext) {
+    deleteTransactionsFromResponsesWasCalled = true
+  }
+
   func unverifyUser(in context: NSManagedObjectContext) { }
 
   func removeWalletId(in context: NSManagedObjectContext) { }

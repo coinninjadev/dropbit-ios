@@ -79,7 +79,6 @@
 		3B23232E2248FEBC00514201 /* MigrateDatabaseV4Grooming.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B23232D2248FEBC00514201 /* MigrateDatabaseV4Grooming.swift */; };
 		3B24466C22650261004AEE35 /* SpendBitcoinViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B24466B22650261004AEE35 /* SpendBitcoinViewControllerTests.swift */; };
 		3B24466E2265097C004AEE35 /* AppCoordinator+SpendBitcoinViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B24466D2265097B004AEE35 /* AppCoordinator+SpendBitcoinViewControllerDelegate.swift */; };
-		3B24DFBE20EBC44A00C31969 /* MockDatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B24DFBD20EBC44A00C31969 /* MockDatabaseManager.swift */; };
 		3B24DFC020EBEFC100C31969 /* DerivativePathTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B24DFBF20EBEFC100C31969 /* DerivativePathTests.swift */; };
 		3B2658472215CFCC008A8615 /* MailerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B2658462215CFCC008A8615 /* MailerDelegate.swift */; };
 		3B26F1E022566EAA00F3E00F /* AppCoordinator+SelectedCurrencyUpdatable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B26F1DF22566EAA00F3E00F /* AppCoordinator+SelectedCurrencyUpdatable.swift */; };
@@ -864,7 +863,6 @@
 		3B23232D2248FEBC00514201 /* MigrateDatabaseV4Grooming.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MigrateDatabaseV4Grooming.swift; sourceTree = "<group>"; };
 		3B24466B22650261004AEE35 /* SpendBitcoinViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpendBitcoinViewControllerTests.swift; sourceTree = "<group>"; };
 		3B24466D2265097B004AEE35 /* AppCoordinator+SpendBitcoinViewControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppCoordinator+SpendBitcoinViewControllerDelegate.swift"; sourceTree = "<group>"; };
-		3B24DFBD20EBC44A00C31969 /* MockDatabaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockDatabaseManager.swift; sourceTree = "<group>"; };
 		3B24DFBF20EBEFC100C31969 /* DerivativePathTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DerivativePathTests.swift; sourceTree = "<group>"; };
 		3B2658462215CFCC008A8615 /* MailerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailerDelegate.swift; sourceTree = "<group>"; };
 		3B26F1DF22566EAA00F3E00F /* AppCoordinator+SelectedCurrencyUpdatable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppCoordinator+SelectedCurrencyUpdatable.swift"; sourceTree = "<group>"; };
@@ -2380,7 +2378,6 @@
 				5BE594E0207F8F3500862A0A /* MockPermissionManager.swift */,
 				B5E7EE7E21B088F200E058EF /* MockSendPaymentViewControllerCoordinator.swift */,
 				3B23129020DA7B5A0099A557 /* MockTxHistoryDetailAddressViewDelegate.swift */,
-				3B24DFBD20EBC44A00C31969 /* MockDatabaseManager.swift */,
 				3B9A8DF821503E6500C78C2C /* MockWalletDelegate.swift */,
 				3B325D552190B1770094897C /* MockRecoveryWordsIntroViewControllerDelegate.swift */,
 				3B695C2521CAC993007D0741 /* MockOperationQueue.swift */,
@@ -3945,7 +3942,6 @@
 				A29CE10D20A37F6900761B91 /* StringEmptyValidatorTests.swift in Sources */,
 				3B23129120DA7B5A0099A557 /* MockTxHistoryDetailAddressViewDelegate.swift in Sources */,
 				3B4703812253BD9F00977784 /* SendReceiveActionViewTests.swift in Sources */,
-				3B24DFBE20EBC44A00C31969 /* MockDatabaseManager.swift in Sources */,
 				B5192FAC216E893100DCC39B /* DeviceResponseTests.swift in Sources */,
 				B55D085021B6F89C007DD9E5 /* CKRecipientParserTests.swift in Sources */,
 				B52EF8CC21A4B0870081CB3B /* MerchantPaymentRequestResponseTests.swift in Sources */,
