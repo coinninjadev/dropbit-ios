@@ -335,6 +335,10 @@ class CKDatabase: PersistenceDatabaseType {
     transactionsToRemove.forEach { context.delete($0) }
   }
 
+  func latestTransaction(in context: NSManagedObjectContext) -> CKMTransaction? {
+    return CKMTransaction.findLatest(in: context)
+  }
+
   func getAllInvitations(in context: NSManagedObjectContext) -> [CKMInvitation] {
     return CKMInvitation.getAllInvitations(in: context)
   }

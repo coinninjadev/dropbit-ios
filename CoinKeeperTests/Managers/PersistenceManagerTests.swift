@@ -11,13 +11,13 @@ class PersistenceManagerTests: XCTestCase {
   var sut: PersistenceManager!
   var mockKeychainAccessor: MockKeychainAccessorType!
   var mockKeychainManager: CKKeychain!
-  var mockDatabaseManager: MockDatabaseManager!
+  var mockDatabaseManager: MockPersistenceDatabaseManager!
   var mockUserDefaultsManager: MockUserDefaultsManager!
   var mockContactCacheManager: MockContactCacheManager!
 
   override func setUp() {
     super.setUp()
-    mockDatabaseManager = MockDatabaseManager()
+    mockDatabaseManager = MockPersistenceDatabaseManager()
     mockContactCacheManager = MockContactCacheManager()
     mockKeychainAccessor = MockKeychainAccessorType()
     mockUserDefaultsManager = MockUserDefaultsManager()
@@ -74,7 +74,7 @@ class PersistenceManagerTests: XCTestCase {
 
   // MARK: database
   func testGroomingTransactionsDelegatesToDatabaseManager() {
-    let mockDatabaseManager = MockDatabaseManager()
+    let mockDatabaseManager = MockPersistenceDatabaseManager()
     self.sut = PersistenceManager(databaseManager: mockDatabaseManager)
 
     _ = self.sut.deleteTransactions(notIn: [], in: InMemoryCoreDataStack().context)

@@ -131,6 +131,10 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate, CurrencyFormatta
                                                          invitationDTO: outgoingInvitationDTO,
                                                          successFailVC: successFailViewController,
                                                          in: bgContext)
+          // Call this separately from handleAddressRequestCreationSuccess so
+          // that it doesn't interrupt Twilio error SMS fallback flow
+          strongSelf.showShareTransactionIfAppropriate()
+
         }.catch(on: .main) { error in
           strongSelf.handleAddressRequestCreationError(error,
                                                        invitationDTO: outgoingInvitationDTO,
@@ -341,6 +345,9 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate, CurrencyFormatta
         }
         .done(on: .main) {
           successFailViewController.mode = .success
+
+          strongSelf.showShareTransactionIfAppropriate()
+
           self?.analyticsManager.track(property: MixpanelProperty(key: .hasSent, value: true))
           self?.trackIfUserHasABalance()
         }.catch { error in
@@ -395,4 +402,16 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate, CurrencyFormatta
     DispatchQueue.main.async { self.navigationController.topViewController()?.present(alert, animated: true) }
   }
 
+  private func showShareTransactionIfAppropriate() {
+    if self.persistenceManager.userDefaultsManager.dontShowShareTransaction {
+      return
+    }
+
+    if let topVC = self.navigationController.topViewController() {
+      DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+        let twitterVC = ShareTransactionViewController.newInstance(delegate: self)
+        topVC.present(twitterVC, animated: true, completion: nil)
+      }
+    }
+  }
 }
