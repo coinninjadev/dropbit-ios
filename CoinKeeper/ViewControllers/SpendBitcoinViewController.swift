@@ -58,11 +58,6 @@ final class SpendBitcoinViewController: BaseViewController, StoryboardInitializa
     navigationController?.navigationBar.tintColor = Theme.Color.darkBlueButton.color
   }
 
-  override func viewWillDisappear(_ animated: Bool) {
-    super.viewWillDisappear(animated)
-    navigationController?.setNavigationBarHidden(true, animated: true)
-  }
-
   @IBAction func spendBitcoinAroundMe(_ sender: Any) {
     coordinationDelegate?.viewControllerSpendBitcoinAroundMe(self)
   }
