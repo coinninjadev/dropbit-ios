@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import os.log
 import UIKit
 
 extension AppCoordinator: ShareTransactionViewControllerDelegate {
@@ -27,7 +28,8 @@ extension AppCoordinator: ShareTransactionViewControllerDelegate {
       if let url = comps.url {
         UIApplication.shared.open(url, options: [:], completionHandler: nil)
       } else {
-        print("Failed to open Twitter")
+        let logger = OSLog(subsystem: "com.coinninja.appCoordinator", category: "ShareTransaction")
+        os_log("%@: Failed to create Twitter URL from components", log: logger, type: .error, #function)
       }
     }
   }
