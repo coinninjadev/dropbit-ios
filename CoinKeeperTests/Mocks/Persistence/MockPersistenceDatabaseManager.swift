@@ -94,6 +94,10 @@ class MockPersistenceDatabaseManager: PersistenceDatabaseType {
     return nil
   }
 
+  func latestTransaction(in context: NSManagedObjectContext) -> CKMTransaction? {
+    return nil
+  }
+
   func persistVerificationStatus(_ status: String, in context: NSManagedObjectContext) -> Promise<UserVerificationStatus> {
     return Promise { _ in }
   }

@@ -222,6 +222,7 @@ protocol PersistenceDatabaseType: AnyObject {
   )
 
   func deleteTransactions(notIn txids: [String], in context: NSManagedObjectContext)
+  func latestTransaction(in context: NSManagedObjectContext) -> CKMTransaction?
 
   func transactionsWithoutDayAveragePrice(in context: NSManagedObjectContext) -> Promise<[CKMTransaction]>
 
