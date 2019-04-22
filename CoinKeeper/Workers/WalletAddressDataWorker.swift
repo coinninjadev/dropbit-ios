@@ -602,9 +602,8 @@ class WalletAddressDataWorker: WalletAddressDataWorkerType {
 
     let dto = WalletAddressRequestResponseDTO()
 
-    let tempAddress = "32D9RGK8qVaLMgaEEThfRGjXEmJDQWxLn1"
-    return self.networkManager.fetchTransactionSummaries(for: tempAddress)
-      .then { (summaryResponses: [AddressTransactionSummaryResponse]) -> Promise<PendingInvitationData> in
+    return self.networkManager.fetchTransactionSummaries(for: address)
+      .then(in: context) { (summaryResponses: [AddressTransactionSummaryResponse]) -> Promise<PendingInvitationData> in
         // guard against already funded
         let maybeFound = summaryResponses.first { $0.vout == pendingInvitationData.btcAmount }
         if let found = maybeFound {
@@ -622,10 +621,12 @@ class WalletAddressDataWorker: WalletAddressDataWorkerType {
 
             // guard against insufficient funds
             var spendableBalance = 0
+            var totalPendingAmount = 0
             context.performAndWait {
               spendableBalance = self.walletManager.spendableBalance(in: context)
+              totalPendingAmount = pendingInvitation.totalPendingAmount
             }
-            guard spendableBalance >= pendingInvitation.totalPendingAmount else {
+            guard spendableBalance >= totalPendingAmount else {
               seal.reject(PendingInvitationError.insufficientFundsForInvitationWithID(pendingInvitationData.id))
               return
             }
@@ -633,7 +634,7 @@ class WalletAddressDataWorker: WalletAddressDataWorkerType {
             self.walletManager.transactionData(forPayment: pendingInvitationData.btcAmount, to: address, withFlatFee: pendingInvitationData.feeAmount)
               .get { dto.transactionData = $0 }
               .then { self.networkManager.broadcastTx(with: $0) }
-              .then { (txid: String) -> Promise<PendingInvitationData> in
+              .then(in: context) { (txid: String) -> Promise<PendingInvitationData> in
                 self.completeWalletAddressRequestFulfillmentLocally(
                   with: dto,
                   outgoingTransactionData: outgoingTransactionData,
@@ -691,15 +692,24 @@ class WalletAddressDataWorker: WalletAddressDataWorkerType {
                                                               walletManager: self.walletManager)
       .get { dto.txid = $0 }
       .get(in: context) { (txid: String) in
-        guard let transactionData = dto.transactionData else {
-          let key = WalletAddressRequestResponseDTOKey.transactionData
-          throw CKNetworkError.responseMissingValue(keyPath: key.path) }
-        self.persistenceManager.persistTemporaryTransaction(
-          from: transactionData,
-          with: outgoingTransactionData,
-          txid: txid,
-          invitation: pendingInvitation,
-          in: context)
+        if let transactionData = dto.transactionData {
+          self.persistenceManager.persistTemporaryTransaction(
+            from: transactionData,
+            with: outgoingTransactionData,
+            txid: txid,
+            invitation: pendingInvitation,
+            in: context)
+        } else {
+          // update and match them manually, partially matching code in `persistTemporaryTransaction`
+          pendingInvitation.setTxid(to: txid)
+          pendingInvitation.status = .completed
+          if let existingTransaction = CKMTransaction.find(byTxid: txid, in: context), pendingInvitation.transaction !== existingTransaction {
+            let txToRemove = pendingInvitation.transaction
+            pendingInvitation.transaction = existingTransaction
+            txToRemove.map { context.delete($0) }
+            existingTransaction.phoneNumber = pendingInvitation.counterpartyPhoneNumber
+          }
+        }
 
         if pendingInvitation.status == .completed {
           self.analyticsManager.track(event: .dropbitCompleted, with: nil)
