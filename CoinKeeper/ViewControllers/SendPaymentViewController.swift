@@ -172,6 +172,7 @@ ValidatorAlertDisplayable {
   override func viewDidLoad() {
     super.viewDidLoad()
 
+    setupMenuController()
     registerForRateUpdates()
     updateRatesAndView()
     setupKeyboardDoneButton(for: [primaryAmountTextField, phoneNumberEntryView.textField], action: #selector(doneButtonWasPressed))
@@ -253,6 +254,13 @@ extension SendPaymentViewController {
     entryView.textField.isUserInteractionEnabled = true
 
     updateRecipientContainerContentType(forRecipient: viewModel.paymentRecipient)
+  }
+
+  fileprivate func setupMenuController() {
+    let controller = UIMenuController.shared
+    let pasteItem = UIMenuItem(title: "Paste", action: #selector(performPaste))
+    controller.menuItems = [pasteItem]
+    controller.update()
   }
 
   fileprivate func setupListenerForTextViewChange() {
@@ -864,5 +872,11 @@ extension SendPaymentViewController {
                                                               sharedPayload: sharedPayload)
     }
 
+  }
+}
+
+extension SendPaymentViewController {
+  override func canPerformAction(_ action: Selector, withSender sender: Any?) -> Bool {
+    return (action == #selector(performPaste))
   }
 }

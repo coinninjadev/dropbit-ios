@@ -74,6 +74,10 @@ class CKPhoneNumberTextField: PhoneNumberTextField {
     }
   }
 
+  override func canPerformAction(_ action: Selector, withSender sender: Any?) -> Bool {
+    return false
+  }
+
 }
 
 extension CKPhoneNumberTextField: KeypadEntryViewDelegate {
