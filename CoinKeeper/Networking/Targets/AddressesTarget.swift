@@ -13,6 +13,7 @@ public enum AddressesTarget: CoinNinjaTargetType {
 
   /// multiAddress params - addresses: [String], pageNumber: Int, perPage: Int
   case query([String], Int, Int, Date?)
+  case address(String)
 
 }
 
@@ -24,13 +25,15 @@ extension AddressesTarget {
 
   var subPath: String? {
     switch self {
-    case .query:            return "query"
+    case .query:                return "query"
+    case .address(let address): return address
     }
   }
 
   public var method: Method {
     switch self {
-    case .query:  return .post
+    case .query:    return .post
+    case .address:  return .get
     }
   }
 
@@ -39,6 +42,8 @@ extension AddressesTarget {
     case .query(let addresses, let page, let perPage, let minDate):
       guard let data = queryBody(addresses: addresses, minDate: minDate) else { return .requestPlain }
       return .requestCompositeData(bodyData: data, urlParameters: ["page": page, "perPage": perPage])
+    case .address:
+      return .requestPlain
     }
   }
 

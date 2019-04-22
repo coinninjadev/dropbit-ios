@@ -37,7 +37,7 @@ extension GeneralSubscriptionTarget {
   public var validationType: ValidationType {
     switch self {
     case .getSubscriptions: return .customCodes([200])
-    case .subscribe:        return .customCodes([201])
+    case .subscribe:        return .customCodes([201, 500]) // 500 is acceptable due to test envs
     }
   }
 
