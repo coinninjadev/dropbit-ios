@@ -13,13 +13,17 @@ extension AppCoordinator: ShareTransactionViewControllerDelegate {
 
   func viewControllerRequestedShareTransactionOnTwitter(_ viewController: UIViewController) {
     viewController.dismiss(animated: true) {
-      // get memo for latest transaction and create tweet body
-      let message = "Hello world!"
+      var defaultTweetText = ""
+      let bgContext = self.persistenceManager.createBackgroundContext()
+      bgContext.performAndWait {
+        let latestTx = self.persistenceManager.databaseManager.latestTransaction(in: bgContext)
+        defaultTweetText = self.tweetText(withMemo: latestTx?.memo)
+      }
 
       var comps = URLComponents()
       comps.scheme = "twitter"
       comps.host = "post"
-      comps.queryItems = [URLQueryItem(name: "message", value: message)]
+      comps.queryItems = [URLQueryItem(name: "message", value: defaultTweetText)]
       if let url = comps.url {
         UIApplication.shared.open(url, options: [:], completionHandler: nil)
       } else {
@@ -27,4 +31,22 @@ extension AppCoordinator: ShareTransactionViewControllerDelegate {
       }
     }
   }
+
+  private func tweetText(withMemo memo: String?) -> String {
+    let randomInt = Int.random(in: 0...1)
+    if let memoText = memo {
+      if randomInt == 0 {
+        return "I just used #Bitcoin for \(memoText) via @dropbitapp"
+      } else {
+        return "Today I used #Bitcoin for \(memoText) via @dropbitapp"
+      }
+    } else {
+      if randomInt == 0 {
+        return "I just used #Bitcoin instead of fiat via @dropbitapp"
+      } else {
+        return "I just sent #Bitcoin using @dropbitapp and wow was that easy!"
+      }
+    }
+  }
+
 }
