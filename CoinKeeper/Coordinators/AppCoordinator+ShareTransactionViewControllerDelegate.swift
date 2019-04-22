@@ -34,7 +34,7 @@ extension AppCoordinator: ShareTransactionViewControllerDelegate {
 
   private func tweetText(withMemo memo: String?) -> String {
     let randomInt = Int.random(in: 0...1)
-    if let memoText = memo {
+    if let memoText = memo?.lowercasingFirstLetter() {
       if randomInt == 0 {
         return "I just used #Bitcoin for \(memoText) via @dropbitapp"
       } else {
