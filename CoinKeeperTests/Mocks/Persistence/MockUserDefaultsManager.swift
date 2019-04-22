@@ -54,6 +54,8 @@ class MockUserDefaultsManager: PersistenceUserDefaultsType {
     return 0
   }
 
+  var dontShowShareTransaction: Bool = false
+
   // standardDefaults is not used by MockPersistenceManager, and is not accessed outside PersistenceManager (wjf, 2018-04)
   var standardDefaults = UserDefaults(suiteName: "com.coinninja.unittests")
   var value: [String: Any] = [:]
