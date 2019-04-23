@@ -15,6 +15,7 @@
                 <outlet property="balanceView" destination="RhC-AE-0Io" id="gqE-ac-Q25"/>
                 <outlet property="balancesLongPressRecognizer" destination="amp-Qp-EKe" id="g9i-Oa-KoZ"/>
                 <outlet property="balancesTapGestureRecognizer" destination="Xge-fw-AZP" id="3yT-XI-IJq"/>
+                <outlet property="dropBitMeButton" destination="MhN-3t-rHg" id="WCp-WL-61G"/>
                 <outlet property="leftButton" destination="sLU-EL-8bo" id="s3Y-cz-qzN"/>
                 <outlet property="primaryAmountLabel" destination="Lkf-0h-dhB" id="2Aw-j4-807"/>
                 <outlet property="secondaryAmountLabel" destination="OHI-XW-waq" id="0vv-Ki-kHM"/>

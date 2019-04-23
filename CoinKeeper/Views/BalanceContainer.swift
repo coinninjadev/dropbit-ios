@@ -51,6 +51,7 @@ enum BalanceContainerLeftButtonType {
   weak var delegate: BalanceContainerDelegate?
 
   @IBOutlet var leftButton: BalanceContainerLeftButton!
+  @IBOutlet var dropBitMeButton: UIButton!
   @IBOutlet var primaryAmountLabel: BalancePrimaryAmountLabel!
   @IBOutlet var secondaryAmountLabel: BalanceSecondaryAmountLabel!
   @IBOutlet var balanceView: UIView!
@@ -68,8 +69,8 @@ enum BalanceContainerLeftButtonType {
   }
 
   @IBAction func didTapDropBitMe(_ button: UIButton) {
-    guard let delegate = delegate, let parent = parentViewController else { return }
-    let imageFrame = button.imageRect(forContentRect: button.frame)
+    guard let delegate = delegate, let parent = parentViewController,
+      let imageFrame = self.getDropBitMeButtonImageFrame() else { return }
     delegate.containerDidTapDropBitMe(in: parent, buttonImageFrame: imageFrame)
   }
 
@@ -87,6 +88,11 @@ enum BalanceContainerLeftButtonType {
     return [
       (self.balanceView, .transactionHistory(.balanceView))
     ]
+  }
+
+  internal func getDropBitMeButtonImageFrame() -> CGRect? {
+    guard let button = dropBitMeButton else { return nil }
+    return button.imageRect(forContentRect: button.frame)
   }
 
   required init?(coder aDecoder: NSCoder) {
