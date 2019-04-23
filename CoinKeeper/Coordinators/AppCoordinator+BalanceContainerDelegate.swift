@@ -10,6 +10,7 @@ import UIKit
 import CoreData
 
 extension AppCoordinator: BalanceContainerDelegate {
+
   func isSyncCurrentlyRunning() -> Bool {
     let syncOperations = serialQueueManager.queue.operations(ofType: .syncWallet(.standard),
                                                              ignoringAssociatedType: true)
@@ -18,6 +19,10 @@ extension AppCoordinator: BalanceContainerDelegate {
 
   func containerDidTapLeftButton(in viewController: UIViewController) {
     self.drawerController?.toggle(.left, animated: true, completion: nil)
+  }
+
+  func containerDidTapDropBitMe(in viewController: UIViewController, buttonImageFrame: CGRect) {
+    print(buttonImageFrame)
   }
 
   func containerDidTapBalances(in viewController: UIViewController) {

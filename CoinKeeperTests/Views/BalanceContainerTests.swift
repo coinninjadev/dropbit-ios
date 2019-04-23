@@ -80,6 +80,8 @@ class BalanceContainerTests: XCTestCase {
       didTapLeftWasCalled = true
     }
 
+    func containerDidTapDropBitMe(in viewController: UIViewController, buttonImageFrame: CGRect) {}
+
     var didTapBalanceWasCalled = false
     func containerDidTapBalances(in viewController: UIViewController) {
       didTapBalanceWasCalled = true

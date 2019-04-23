@@ -10,6 +10,7 @@ import UIKit
 
 protocol BalanceContainerDelegate: AnyObject {
   func containerDidTapLeftButton(in viewController: UIViewController)
+  func containerDidTapDropBitMe(in viewController: UIViewController, buttonImageFrame: CGRect)
   func containerDidTapBalances(in viewController: UIViewController)
   func containerDidLongPressBalances(in viewController: UIViewController)
   func isSyncCurrentlyRunning() -> Bool
@@ -64,6 +65,12 @@ enum BalanceContainerLeftButtonType {
   @IBAction func didTapLeftButton(_ sender: Any) {
     guard let delegate = delegate, let parent = parentViewController else { return }
     delegate.containerDidTapLeftButton(in: parent)
+  }
+
+  @IBAction func didTapDropBitMe(_ button: UIButton) {
+    guard let delegate = delegate, let parent = parentViewController else { return }
+    let imageFrame = button.imageRect(forContentRect: button.frame)
+    delegate.containerDidTapDropBitMe(in: parent, buttonImageFrame: imageFrame)
   }
 
   @IBAction func didTapBalances(_ sender: UITapGestureRecognizer) {
