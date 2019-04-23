@@ -222,6 +222,7 @@ protocol PersistenceDatabaseType: AnyObject {
   )
 
   func deleteTransactions(notIn txids: [String], in context: NSManagedObjectContext)
+  func latestTransaction(in context: NSManagedObjectContext) -> CKMTransaction?
 
   func transactionsWithoutDayAveragePrice(in context: NSManagedObjectContext) -> Promise<[CKMTransaction]>
 
@@ -269,6 +270,7 @@ protocol PersistenceUserDefaultsType: AnyObject {
   func deviceId() -> UUID?
   func setDeviceId(_ uuid: UUID)
   var receiveAddressIndexGaps: Set<Int> { get set }
+  var dontShowShareTransaction: Bool { get set }
 
   /// Returns zero if dust protection not enabled
   func dustProtectionMinimumAmount() -> Int

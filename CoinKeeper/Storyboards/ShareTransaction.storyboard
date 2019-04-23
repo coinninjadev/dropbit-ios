@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina5_5" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Share Transaction View Controller-->
+        <scene sceneID="ctn-fS-qRr">
+            <objects>
+                <viewController storyboardIdentifier="ShareTransactionViewController" id="Tcj-17-Wnf" customClass="ShareTransactionViewController" customModule="DropBit" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="hKv-5B-one">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Hg9-XS-MlV" userLabel="Faded button background">
+                                <rect key="frame" x="62.666666666666657" y="629" width="289" height="54"/>
+                                <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fiv-1b-Y3H">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.87334118150684936" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </view>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="shareTransactionBackground" translatesAutoresizingMaskIntoConstraints="NO" id="blh-ob-qwV">
+                                <rect key="frame" x="50.666666666666657" y="119" width="313" height="506"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="506" id="PcZ-kj-EQL"/>
+                                    <constraint firstAttribute="width" constant="313" id="Xcx-2F-8TJ"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Spread awareness by telling your friends you used Bitcoin." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NJ5-mx-kAk">
+                                <rect key="frame" x="70.666666666666686" y="466.33333333333331" width="273" height="40.666666666666686"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nD4-1H-cbb">
+                                <rect key="frame" x="82.666666666666686" y="523" width="249" height="50"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="3Ca-xf-gt1"/>
+                                </constraints>
+                                <state key="normal" title="Twitter"/>
+                                <connections>
+                                    <action selector="performTwitter:" destination="Tcj-17-Wnf" eventType="touchUpInside" id="8VR-tu-8Ir"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2Sd-34-8eO">
+                                <rect key="frame" x="62.666666666666657" y="581" width="289" height="44"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="QXh-sX-MvY"/>
+                                </constraints>
+                                <state key="normal" title="I'll share next time"/>
+                                <connections>
+                                    <action selector="performNextTime:" destination="Tcj-17-Wnf" eventType="touchUpInside" id="bds-yE-xhX"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BqE-vb-vKA">
+                                <rect key="frame" x="62.666666666666657" y="629" width="289" height="50"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" priority="900" constant="50" id="4fJ-2E-AwA"/>
+                                </constraints>
+                                <state key="normal" title="Don't ask me again"/>
+                                <connections>
+                                    <action selector="performDontAskAgain:" destination="Tcj-17-Wnf" eventType="touchUpInside" id="tXY-YY-Lie"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="The best way to help increase the price of Bitcoin is to spread awareness and adoption." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="StD-eA-5sJ">
+                                <rect key="frame" x="70.666666666666686" y="139" width="273" height="61"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstAttribute="bottom" secondItem="fiv-1b-Y3H" secondAttribute="bottom" id="2Ji-qT-fCj"/>
+                            <constraint firstItem="nD4-1H-cbb" firstAttribute="top" secondItem="NJ5-mx-kAk" secondAttribute="bottom" constant="16" id="47G-cv-kgs"/>
+                            <constraint firstItem="StD-eA-5sJ" firstAttribute="trailing" secondItem="blh-ob-qwV" secondAttribute="trailing" constant="-20" id="6Bg-Ok-rNL"/>
+                            <constraint firstAttribute="top" secondItem="fiv-1b-Y3H" secondAttribute="top" id="7iW-XC-4kE"/>
+                            <constraint firstItem="2Sd-34-8eO" firstAttribute="bottom" secondItem="blh-ob-qwV" secondAttribute="bottom" id="9PR-hz-o1C"/>
+                            <constraint firstItem="StD-eA-5sJ" firstAttribute="top" secondItem="blh-ob-qwV" secondAttribute="top" constant="20" id="BHU-oo-o4z"/>
+                            <constraint firstItem="Hg9-XS-MlV" firstAttribute="top" secondItem="BqE-vb-vKA" secondAttribute="top" id="CoE-JP-QoD"/>
+                            <constraint firstAttribute="leading" secondItem="fiv-1b-Y3H" secondAttribute="leading" id="DYu-qo-lgd"/>
+                            <constraint firstItem="NJ5-mx-kAk" firstAttribute="trailing" secondItem="blh-ob-qwV" secondAttribute="trailing" constant="-20" id="E5I-xj-j7W"/>
+                            <constraint firstItem="blh-ob-qwV" firstAttribute="centerY" secondItem="M8g-Sc-exE" secondAttribute="centerY" constant="-6" id="IlL-yD-I4c"/>
+                            <constraint firstItem="StD-eA-5sJ" firstAttribute="leading" secondItem="blh-ob-qwV" secondAttribute="leading" constant="20" id="KE8-1e-Z6l"/>
+                            <constraint firstItem="nD4-1H-cbb" firstAttribute="leading" secondItem="blh-ob-qwV" secondAttribute="leading" constant="32" id="N72-U6-0wg"/>
+                            <constraint firstItem="nD4-1H-cbb" firstAttribute="trailing" secondItem="blh-ob-qwV" secondAttribute="trailing" constant="-32" id="VCB-pQ-lJL"/>
+                            <constraint firstItem="M8g-Sc-exE" firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="BqE-vb-vKA" secondAttribute="bottom" constant="4" id="VtY-DP-tY6"/>
+                            <constraint firstItem="2Sd-34-8eO" firstAttribute="leading" secondItem="blh-ob-qwV" secondAttribute="leading" constant="12" id="d7N-fd-HKK"/>
+                            <constraint firstItem="BqE-vb-vKA" firstAttribute="leading" secondItem="blh-ob-qwV" secondAttribute="leading" constant="12" id="epm-QF-jDq"/>
+                            <constraint firstItem="blh-ob-qwV" firstAttribute="centerX" secondItem="M8g-Sc-exE" secondAttribute="centerX" id="ihb-hk-mtO"/>
+                            <constraint firstItem="2Sd-34-8eO" firstAttribute="top" secondItem="nD4-1H-cbb" secondAttribute="bottom" constant="8" id="jl4-Jo-a4S"/>
+                            <constraint firstItem="Hg9-XS-MlV" firstAttribute="leading" secondItem="BqE-vb-vKA" secondAttribute="leading" id="lPy-AB-bli"/>
+                            <constraint firstAttribute="trailing" secondItem="fiv-1b-Y3H" secondAttribute="trailing" id="nOj-GO-jfe"/>
+                            <constraint firstItem="BqE-vb-vKA" firstAttribute="trailing" secondItem="blh-ob-qwV" secondAttribute="trailing" constant="-12" id="sRl-6T-tRQ"/>
+                            <constraint firstItem="BqE-vb-vKA" firstAttribute="top" secondItem="blh-ob-qwV" secondAttribute="bottom" constant="4" id="t8p-sb-Mob"/>
+                            <constraint firstItem="Hg9-XS-MlV" firstAttribute="trailing" secondItem="BqE-vb-vKA" secondAttribute="trailing" id="uOV-Re-pL8"/>
+                            <constraint firstItem="Hg9-XS-MlV" firstAttribute="bottom" secondItem="BqE-vb-vKA" secondAttribute="bottom" constant="4" id="xAK-Ad-f54"/>
+                            <constraint firstItem="2Sd-34-8eO" firstAttribute="trailing" secondItem="blh-ob-qwV" secondAttribute="trailing" constant="-12" id="xUI-6A-aPJ"/>
+                            <constraint firstItem="NJ5-mx-kAk" firstAttribute="leading" secondItem="blh-ob-qwV" secondAttribute="leading" constant="20" id="z2a-1V-Ysa"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="M8g-Sc-exE"/>
+                    </view>
+                    <connections>
+                        <outlet property="bottomMessageLabel" destination="NJ5-mx-kAk" id="FEV-Vo-Yoc"/>
+                        <outlet property="dontAskAgainButton" destination="BqE-vb-vKA" id="9Fy-Gu-mUW"/>
+                        <outlet property="dontAskAgainFadedBackground" destination="Hg9-XS-MlV" id="f6B-BR-vKk"/>
+                        <outlet property="nextTimeButton" destination="2Sd-34-8eO" id="3qq-jW-Vms"/>
+                        <outlet property="topMessageLabel" destination="StD-eA-5sJ" id="k0A-Oo-dCT"/>
+                        <outlet property="twitterButton" destination="nD4-1H-cbb" id="R2c-tE-WF6"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="JtM-hl-V4q" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-32" y="110"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="shareTransactionBackground" width="313" height="506"/>
+    </resources>
+</document>

@@ -29,7 +29,7 @@ struct BroadcastInfo: Error {
 
   enum Destination {
     case bci(Encoded)
-    case libbitcoin(Encoded)
+    case blockstream(Encoded)
   }
 
   init(destination: Destination) {
@@ -47,10 +47,14 @@ extension NetworkManager: TransactionBroadcastable {
     let walletCopy = wmgr.createWalletCopy()
     let transactionBuilder = CNBTransactionBuilder()
     let metadata = transactionBuilder.generateTxMetadata(with: transactionData, wallet: walletCopy)
-    let libbitcoinPromise = self.broadcastToLibbitcoin(with: transactionData)
     let blockchainInfoPromise = blockchainInfoProvider.broadcastTransaction(with: metadata)
+    let blockstreamPromise = blockstreamProvider.broadcastTransaction(with: metadata)
+    let promises = [
+      blockchainInfoPromise,
+      blockstreamPromise
+    ]
 
-    return when(resolved: [libbitcoinPromise, blockchainInfoPromise])
+    return when(resolved: promises)
       .then { [weak self] (results: [PromiseKit.Result<BroadcastInfo>]) -> Promise<String> in
         var success = false
         var txid = ""
@@ -66,9 +70,9 @@ extension NetworkManager: TransactionBroadcastable {
             case .bci(let encoded):
               analyticEvents.append(AnalyticsEventValue(key: .blockChainInfoCode, value: String(describing: encoded.statusCode)))
               analyticEvents.append(AnalyticsEventValue(key: .blockChainInfoMessage, value: encoded.statusMessage))
-            case .libbitcoin(let encoded):
-              analyticEvents.append(AnalyticsEventValue(key: .libbitcoinCode, value: String(describing: encoded.statusCode)))
-              analyticEvents.append(AnalyticsEventValue(key: .libbitcoinMessage, value: encoded.statusMessage))
+            case .blockstream(let encoded):
+              analyticEvents.append(AnalyticsEventValue(key: .blockstreamInfoCode, value: String(describing: encoded.statusCode)))
+              analyticEvents.append(AnalyticsEventValue(key: .blockstreamInfoMessage, value: encoded.statusMessage))
             }
           case .rejected(let error):
             success = success || false
@@ -79,9 +83,9 @@ extension NetworkManager: TransactionBroadcastable {
               case .bci(let encoded):
                 analyticEvents.append(AnalyticsEventValue(key: .blockChainInfoCode, value: String(describing: encoded.statusCode)))
                 analyticEvents.append(AnalyticsEventValue(key: .blockChainInfoMessage, value: encoded.statusMessage))
-              case .libbitcoin(let encoded):
-                analyticEvents.append(AnalyticsEventValue(key: .libbitcoinCode, value: String(describing: encoded.statusCode)))
-                analyticEvents.append(AnalyticsEventValue(key: .libbitcoinMessage, value: encoded.statusMessage))
+              case .blockstream(let encoded):
+                analyticEvents.append(AnalyticsEventValue(key: .blockstreamInfoCode, value: String(describing: encoded.statusCode)))
+                analyticEvents.append(AnalyticsEventValue(key: .blockstreamInfoMessage, value: encoded.statusMessage))
               }
             }
           }
@@ -94,32 +98,6 @@ extension NetworkManager: TransactionBroadcastable {
           self?.analyticsManager.track(event: .paymentSentFailed, with: analyticEvents)
           return Promise(error: returnError)
         }
-    }
-  }
-
-  private func broadcastToLibbitcoin(with transactionData: CNBTransactionData) -> Promise<BroadcastInfo> {
-    guard let wmgr = walletDelegate?.mainWalletManager() else { return Promise(error: CKPersistenceError.noWalletWords) }
-    let walletCopy = wmgr.createWalletCopy()
-    return Promise { seal in
-      let transactionBuilder = CNBTransactionBuilder()
-      DispatchQueue.global(qos: .background).async {
-        transactionBuilder.broadcast(
-          with: transactionData,
-          wallet: walletCopy,
-          success: { (txid: String) in
-            var info = BroadcastInfo(destination: .libbitcoin(BroadcastInfo.Encoded(statusCode: "0", statusMessage: "Success")))
-            info.txid = txid
-            seal.fulfill(info)
-        },
-          failure: { (error: Error) in
-            let nsError = error as NSError
-            let errorMessage = nsError.userInfo[kLibbitcoinErrorMessage] as? String ?? ""
-            let errorCode = nsError.userInfo[kLibbitcoinErrorCode] as? String ?? ""
-            let info = BroadcastInfo(destination: .libbitcoin(BroadcastInfo.Encoded(statusCode: errorCode, statusMessage: errorMessage)))
-            seal.reject(info)
-        }
-        )
-      }
     }
   }
 
