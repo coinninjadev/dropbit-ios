@@ -82,9 +82,7 @@ class MockPersistenceDatabaseManager: PersistenceDatabaseType {
     return Promise { _ in }
   }
 
-  func persistUserId(_ id: String, in context: NSManagedObjectContext) -> Promise<CKMUser> {
-    return Promise { _ in }
-  }
+  func persistUserId(_ id: String, in context: NSManagedObjectContext) { }
 
   func walletId(in context: NSManagedObjectContext) -> String? {
     return nil

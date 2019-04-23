@@ -154,17 +154,13 @@ class CKDatabase: PersistenceDatabaseType {
     return CKMUser.find(in: context)?.verificationStatusCase ?? .unverified
   }
 
-  func persistUserId(_ id: String, in context: NSManagedObjectContext) -> Promise<CKMUser> {
-    return Promise { seal in
-      context.performAndWait {
-        let user = CKMUser.updateOrCreate(with: id, in: context)
-        do {
-          try context.save()
-          seal.fulfill(user)
-        } catch {
-          os_log("Failed to save context with user ID: %@", log: logger, type: .error, error.localizedDescription)
-          seal.reject(error)
-        }
+  func persistUserId(_ id: String, in context: NSManagedObjectContext) {
+    context.performAndWait {
+      _ = CKMUser.updateOrCreate(with: id, in: context)
+      do {
+        try context.save()
+      } catch {
+        os_log("Failed to save context with user ID: %@", log: logger, type: .error, error.localizedDescription)
       }
     }
   }

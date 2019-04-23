@@ -53,7 +53,7 @@ protocol PersistenceManagerType: DeviceCountryCodeProvider {
   func persistUnacknowledgedInvitation(in context: NSManagedObjectContext, with btcPair: BitcoinUSDPair,
                                        contact: ContactType, fee: Int, acknowledgementId: String)
   func persistWalletId(from response: WalletResponse, in context: NSManagedObjectContext) -> Promise<Void>
-  func persistUserId(from response: UserResponse, in context: NSManagedObjectContext) -> Promise<CKMUser>
+  func persistUserId(_ userId: String, in context: NSManagedObjectContext)
   func persistVerificationStatus(from response: UserResponse, in context: NSManagedObjectContext) -> Promise<UserVerificationStatus>
   func persistAddedWalletAddresses(
     from responses: [WalletAddressResponse],
@@ -227,7 +227,7 @@ protocol PersistenceDatabaseType: AnyObject {
   func transactionsWithoutDayAveragePrice(in context: NSManagedObjectContext) -> Promise<[CKMTransaction]>
 
   func persistWalletId(_ id: String, in context: NSManagedObjectContext) -> Promise<Void>
-  func persistUserId(_ id: String, in context: NSManagedObjectContext) -> Promise<CKMUser>
+  func persistUserId(_ id: String, in context: NSManagedObjectContext)
   func persistVerificationStatus(_ status: String, in context: NSManagedObjectContext) -> Promise<UserVerificationStatus>
   func persistServerAddress(for metaAddress: CNBMetaAddress, createdAt: Date, wallet: CKMWallet, in context: NSManagedObjectContext) -> Promise<Void>
   func containsRegularTransaction(in context: NSManagedObjectContext) -> IncomingOutgoingTuple
