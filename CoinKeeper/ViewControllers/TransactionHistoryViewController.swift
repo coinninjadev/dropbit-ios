@@ -214,6 +214,7 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
   private func setupCollectionViews() {
     summaryCollectionView.registerNib(cellType: TransactionHistorySummaryCell.self)
     detailCollectionView.registerNib(cellType: TransactionHistoryDetailCell.self)
+    detailCollectionView.registerNib(cellType: TransactionHistoryDetailInvalidCell.self)
     summaryCollectionView.alwaysBounceVertical = true
 
     for cView in self.collectionViews {
@@ -374,15 +375,35 @@ extension TransactionHistoryViewController: UICollectionViewDataSource {
       return cell
 
     case detailCollectionView:
-      guard let cell = collectionView.dequeueReusableCell(
-        withReuseIdentifier: TransactionHistoryDetailCell.reuseIdentifier,
-        for: indexPath) as? TransactionHistoryDetailCell
-        else { return UICollectionViewCell() }
+//      var cell: UICollectionViewCell!
+//      guard let cell = collectionView.dequeueReusableCell(
+//        withReuseIdentifier: TransactionHistoryDetailCell.reuseIdentifier,
+//        for: indexPath) as? TransactionHistoryDetailCell
+//        else { return UICollectionViewCell() }
 
       let vm = detailViewModel(at: indexPath)
-      cell.load(with: vm, delegate: self)
 
-      return cell
+      if let invitation = vm.transaction?.invitation {
+        switch invitation.status {
+        case .canceled, .expired:
+          let cell = detailCollectionView.dequeue(TransactionHistoryDetailInvalidCell.self, for: indexPath)
+        // idea: make `load` be `loadedWith` and return self for chaining
+          cell.load(with: vm, delegate: self)
+          return cell
+        default:
+          let cell: TransactionHistoryDetailCell = detailCollectionView.dequeue(TransactionHistoryDetailCell.self, for: indexPath)
+          cell.load(with: vm, delegate: self)
+          return cell
+        }
+      } else {
+        let cell: TransactionHistoryDetailCell = detailCollectionView.dequeue(TransactionHistoryDetailCell.self, for: indexPath)
+        cell.load(with: vm, delegate: self)
+        return cell
+      }
+
+//      cell.load(with: vm, delegate: self)
+//
+//      return cell
 
     default:
       return UICollectionViewCell()
@@ -424,7 +445,6 @@ extension TransactionHistoryViewController: UICollectionViewDelegate {
 }
 
 extension TransactionHistoryViewController: TransactionHistoryDetailCellDelegate {
-
   func shouldSaveMemo(for transaction: CKMTransaction) -> Promise<Void> {
     guard let delegate = coordinationDelegate else { return Promise { seal in seal.reject(CKPersistenceError.unexpectedResult)}}
     return delegate.viewControllerShouldUpdateTransaction(self, transaction: transaction)
@@ -434,11 +454,11 @@ extension TransactionHistoryViewController: TransactionHistoryDetailCellDelegate
     coordinationDelegate?.viewControllerDidTapAddMemo(self, with: completion)
   }
 
-  func didTapQuestionMarkButton(detailCell: TransactionHistoryDetailCell, with url: URL) {
+  func didTapQuestionMarkButton(detailCell: TransactionHistoryDetailBaseCell, with url: URL) {
     urlOpener?.openURL(url, completionHandler: nil)
   }
 
-  func didTapClose(detailCell: TransactionHistoryDetailCell) {
+  func didTapClose(detailCell: TransactionHistoryDetailBaseCell) {
     showDetailCollectionView(false, animated: true)
   }
 
