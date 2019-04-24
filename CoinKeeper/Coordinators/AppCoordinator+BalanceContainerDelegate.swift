@@ -21,11 +21,11 @@ extension AppCoordinator: BalanceContainerDelegate {
     self.drawerController?.toggle(.left, animated: true, completion: nil)
   }
 
-  func containerDidTapDropBitMe(in viewController: UIViewController, avatarImageFrame: CGRect) {
-    presentDropBitMeViewController(avatarImageFrame: avatarImageFrame, verifiedFirstTime: false)
+  func containerDidTapDropBitMe(in viewController: UIViewController) {
+    presentDropBitMeViewController(verifiedFirstTime: false)
   }
 
-  func presentDropBitMeViewController(avatarImageFrame: CGRect, verifiedFirstTime: Bool) {
+  func presentDropBitMeViewController(verifiedFirstTime: Bool) {
     guard let topVC = self.navigationController.topViewController() else { return }
 
     var config: DropBitMeConfig = .notVerified
@@ -33,7 +33,7 @@ extension AppCoordinator: BalanceContainerDelegate {
       config = .verified(url, verifiedFirstTime)
     }
 
-    let dropBitMeVC = DropBitMeViewController.newInstance(config: config, avatarFrame: avatarImageFrame, delegate: self)
+    let dropBitMeVC = DropBitMeViewController.newInstance(config: config, delegate: self)
     topVC.present(dropBitMeVC, animated: true, completion: nil)
   }
 

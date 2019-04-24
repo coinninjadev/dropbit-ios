@@ -22,7 +22,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CmH-34-pbi">
-                                        <rect key="frame" x="192" y="44" width="30" height="30"/>
+                                        <rect key="frame" x="192" y="62" width="30" height="30"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="30" id="Fkf-bf-AnL"/>
                                             <constraint firstAttribute="height" constant="30" id="pjc-v2-heY"/>
@@ -33,14 +33,14 @@
                                         </connections>
                                     </button>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="triangle" translatesAutoresizingMaskIntoConstraints="NO" id="Fbz-Q2-ZyF">
-                                        <rect key="frame" x="201" y="84" width="12" height="8"/>
+                                        <rect key="frame" x="201" y="102" width="12" height="8"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="8" id="2p0-DI-hUr"/>
                                             <constraint firstAttribute="width" constant="12" id="6aR-Mc-5Yg"/>
                                         </constraints>
                                     </imageView>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Lib-Qt-M93">
-                                        <rect key="frame" x="22" y="90" width="370" height="400"/>
+                                        <rect key="frame" x="22" y="108" width="370" height="400"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="OUg-w8-XIP">
                                                 <rect key="frame" x="14" y="16" width="342" height="368"/>
@@ -143,7 +143,7 @@
                         <constraints>
                             <constraint firstItem="CmH-34-pbi" firstAttribute="centerX" secondItem="Y06-z1-ymU" secondAttribute="centerX" id="TF2-v9-8d0"/>
                             <constraint firstItem="mR4-31-PMS" firstAttribute="leading" secondItem="4cb-Ne-oMh" secondAttribute="leading" id="TS2-CE-bSY"/>
-                            <constraint firstItem="Y06-z1-ymU" firstAttribute="top" secondItem="CmH-34-pbi" secondAttribute="top" id="fM7-Og-o80"/>
+                            <constraint firstItem="Y06-z1-ymU" firstAttribute="top" secondItem="CmH-34-pbi" secondAttribute="top" constant="-18" id="fM7-Og-o80"/>
                             <constraint firstItem="mR4-31-PMS" firstAttribute="top" secondItem="4cb-Ne-oMh" secondAttribute="top" id="nf2-SR-tcF"/>
                             <constraint firstAttribute="trailing" secondItem="mR4-31-PMS" secondAttribute="trailing" id="qwU-31-gYT"/>
                             <constraint firstAttribute="bottom" secondItem="mR4-31-PMS" secondAttribute="bottom" id="xXK-Ny-ugg"/>

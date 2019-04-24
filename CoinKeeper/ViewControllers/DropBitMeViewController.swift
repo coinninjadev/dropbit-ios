@@ -25,7 +25,6 @@ enum DropBitMeConfig {
 class DropBitMeViewController: UIViewController, StoryboardInitializable {
 
   private var config: DropBitMeConfig = .notVerified
-  private var avatarImageFrame: CGRect!
   private weak var delegate: DropBitMeViewControllerDelegate!
 
   @IBOutlet var semiOpaqueBackgroundView: UIView!
@@ -78,12 +77,11 @@ class DropBitMeViewController: UIViewController, StoryboardInitializable {
     }
   }
 
-  static func newInstance(config: DropBitMeConfig, avatarFrame: CGRect, delegate: DropBitMeViewControllerDelegate) -> DropBitMeViewController {
+  static func newInstance(config: DropBitMeConfig, delegate: DropBitMeViewControllerDelegate) -> DropBitMeViewController {
     let vc = DropBitMeViewController.makeFromStoryboard()
     vc.modalTransitionStyle = .crossDissolve
     vc.modalPresentationStyle = .overFullScreen
     vc.config = config
-    vc.avatarImageFrame = avatarFrame
     vc.delegate = delegate
     return vc
   }
@@ -92,8 +90,6 @@ class DropBitMeViewController: UIViewController, StoryboardInitializable {
     super.viewDidLoad()
 
     semiOpaqueBackgroundView.backgroundColor = UIColor.black.withAlphaComponent(0.6)
-    avatarButtonTopConstraint.constant = -self.avatarImageFrame.minY
-    avatarButton.setNeedsUpdateConstraints()
     popoverBackgroundView.layer.masksToBounds = true
     popoverBackgroundView.layer.cornerRadius = 10
 
