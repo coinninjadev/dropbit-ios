@@ -22,7 +22,24 @@ extension AppCoordinator: BalanceContainerDelegate {
   }
 
   func containerDidTapDropBitMe(in viewController: UIViewController, buttonImageFrame: CGRect) {
-    print(buttonImageFrame)
+    guard let topVC = self.navigationController.topViewController() else { return }
+
+    var config: DropBitMeConfig = .notVerified
+    if let phoneHash = self.verifiedPhoneNumberHash(),
+      let url = CoinNinjaUrlFactory.buildUrl(for: .dropBitMe(phoneNumberHash: phoneHash, twitterUsername: nil)) {
+      config = .verified(url, false)
+    }
+
+    let dropBitMeVC = DropBitMeViewController.newInstance(config: config, avatarFrame: buttonImageFrame, delegate: self)
+    topVC.present(dropBitMeVC, animated: true, completion: nil)
+  }
+
+  func verifiedPhoneNumberHash() -> String? {
+    let hasher = HashingManager()
+    guard let phoneNumber = self.persistenceManager.verifiedPhoneNumber(),
+      let salt = try? hasher.salt() else { return nil }
+
+    return hasher.hash(phoneNumber: phoneNumber, salt: salt, parsedNumber: nil, kit: self.phoneNumberKit)
   }
 
   func containerDidTapBalances(in viewController: UIViewController) {
