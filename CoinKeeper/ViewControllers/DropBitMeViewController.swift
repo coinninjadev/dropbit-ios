@@ -35,6 +35,7 @@ class DropBitMeViewController: UIViewController, StoryboardInitializable {
   @IBOutlet var popoverBackgroundView: UIView!
 
   @IBOutlet var verificationSuccessButton: UIButton! // use button for built-in content inset handling
+  @IBOutlet var headerSpacer: UIView!
   @IBOutlet var dropBitMeLogo: UIImageView!
   @IBOutlet var messageLabel: UILabel!
   @IBOutlet var dropBitMeURLButton: LightBorderedButton!
@@ -97,7 +98,7 @@ class DropBitMeViewController: UIViewController, StoryboardInitializable {
     popoverBackgroundView.layer.cornerRadius = 10
 
     setupVerificationSuccessButton()
-
+    headerSpacer.isHidden = true
     messageLabel.textColor = Theme.Color.darkBlueText.color
     messageLabel.font = Theme.Font.popoverMessage.font
 
@@ -128,6 +129,7 @@ class DropBitMeViewController: UIViewController, StoryboardInitializable {
     switch config {
     case .verified(let url, let firstTimeVerified):
       verificationSuccessButton.isHidden = !firstTimeVerified
+      headerSpacer.isHidden = firstTimeVerified
       dropBitMeURLButton.setTitle(url.absoluteString, for: .normal)
       primaryButton.style = .standard
       primaryButton.setTitle("SHARE ON TWITTER", for: .normal)
