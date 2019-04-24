@@ -83,8 +83,8 @@ extension DeviceVerificationCoordinator: DeviceVerificationViewControllerDelegat
     let bgContext = crDelegate.persistenceManager.createBackgroundContext()
     bgContext.perform {
       crDelegate.registerAndPersistWallet(in: bgContext)
-        .then(in: bgContext) { self.registerAndPersistUser(with: phoneNumber, delegate: crDelegate, in: bgContext) }
-        .done(on: .main) { _ in
+        .then(in: bgContext) { _ in self.registerAndPersistUser(with: phoneNumber, delegate: crDelegate, in: bgContext) }
+        .done(on: .main) {
 
           crDelegate.alertManager.hideActivityHUD(withDelay: self.minHudDisplayDuration) {
             // Push code entry view controller
@@ -141,7 +141,7 @@ extension DeviceVerificationCoordinator: DeviceVerificationViewControllerDelegat
 
   private func registerAndPersistUser(with phoneNumber: GlobalPhoneNumber,
                                       delegate: DeviceVerificationCoordinatorDelegate,
-                                      in context: NSManagedObjectContext) -> Promise<CKMUser> {
+                                      in context: NSManagedObjectContext) -> Promise<Void> {
 
     var maybeWalletId: String?
     context.performAndWait {
@@ -153,9 +153,9 @@ extension DeviceVerificationCoordinator: DeviceVerificationViewControllerDelegat
 
     return delegate.networkManager.createUser(walletId: walletId, phoneNumber: phoneNumber)
       .recover { (error: Error) -> Promise<UserResponse> in
-        return self.handleCreateUserError(error, walletId: walletId, delegate: delegate)
+        return self.handleCreateUserError(error, walletId: walletId, delegate: delegate, in: context)
       }
-      .then(in: context) { delegate.persistenceManager.persistUserId(from: $0, in: context) }
+      .get(in: context) { delegate.persistenceManager.persistUserId($0.id, in: context) }.asVoid()
   }
 
   /// If createUser results in statusCode 200, that function rejects with .userAlreadyExists and
@@ -164,12 +164,15 @@ extension DeviceVerificationCoordinator: DeviceVerificationViewControllerDelegat
   /// we can persist the userId returned by the server.
   private func handleCreateUserError(_ error: Error,
                                      walletId: String,
-                                     delegate: DeviceVerificationCoordinatorDelegate) -> Promise<UserResponse> {
+                                     delegate: DeviceVerificationCoordinatorDelegate,
+                                     in context: NSManagedObjectContext) -> Promise<UserResponse> {
     if let providerError = error as? UserProviderError {
       switch providerError {
       case .userAlreadyExists(let userId, let body):
         //ignore walletId available in the error in case it is different from the walletId we provided
         let resendHeaders = DefaultRequestHeaders(walletId: walletId, userId: userId)
+        delegate.persistenceManager.persistUserId(userId, in: context)
+
         return delegate.networkManager.resendVerification(headers: resendHeaders, body: body)
           .recover { (error: Error) -> Promise<UserResponse> in
             if let providerError = error as? UserProviderError,
