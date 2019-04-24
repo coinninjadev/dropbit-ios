@@ -549,6 +549,7 @@
 		B53D7ECC2119FCA300D1DCBF /* BCITransactionResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53D7ECB2119FCA300D1DCBF /* BCITransactionResponse.swift */; };
 		B53D7ECE2119FE3900D1DCBF /* BlockchainInfoProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53D7ECD2119FE3900D1DCBF /* BlockchainInfoProvider.swift */; };
 		B53D7ED0211A443700D1DCBF /* BlockchainInfoProviderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53D7ECF211A443700D1DCBF /* BlockchainInfoProviderTests.swift */; };
+		B54090F82270AC7D00E53B80 /* AppCoordinator+DropBitMeViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54090F72270AC7D00E53B80 /* AppCoordinator+DropBitMeViewControllerDelegate.swift */; };
 		B54159CB20A5DEBF0048F495 /* CKMUser+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54159C920A5DEBF0048F495 /* CKMUser+CoreDataClass.swift */; };
 		B54159CC20A5DEBF0048F495 /* CKMUser+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54159CA20A5DEBF0048F495 /* CKMUser+CoreDataProperties.swift */; };
 		B54159CE20A60C720048F495 /* WalletResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54159CD20A60C720048F495 /* WalletResponse.swift */; };
@@ -777,6 +778,9 @@
 		B5FDA5C622120747001682AA /* GlobalPhoneNumber.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5FDA5C522120747001682AA /* GlobalPhoneNumber.swift */; };
 		B5FE9B67219DD96200801D3C /* MerchantPaymentRequestResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5FE9B66219DD96200801D3C /* MerchantPaymentRequestResponse.swift */; };
 		B5FEBE9220879C4200AA9F6E /* CKMInvitation+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5FEBE9020879C4200AA9F6E /* CKMInvitation+CoreDataClass.swift */; };
+		B5FFFFC0226FB44E0029DB62 /* DropBitMeViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B5FFFFBF226FB44E0029DB62 /* DropBitMeViewController.storyboard */; };
+		B5FFFFC2226FB4710029DB62 /* DropBitMeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5FFFFC1226FB4710029DB62 /* DropBitMeViewController.swift */; };
+		FA18AFAF2E16657DC26C7D2F /* Pods_DropBitUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9EF68D1C7C04D9E5BC95A59E /* Pods_DropBitUITests.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1343,6 +1347,7 @@
 		B53D7ECB2119FCA300D1DCBF /* BCITransactionResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BCITransactionResponse.swift; sourceTree = "<group>"; };
 		B53D7ECD2119FE3900D1DCBF /* BlockchainInfoProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockchainInfoProvider.swift; sourceTree = "<group>"; };
 		B53D7ECF211A443700D1DCBF /* BlockchainInfoProviderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockchainInfoProviderTests.swift; sourceTree = "<group>"; };
+		B54090F72270AC7D00E53B80 /* AppCoordinator+DropBitMeViewControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppCoordinator+DropBitMeViewControllerDelegate.swift"; sourceTree = "<group>"; };
 		B54159C920A5DEBF0048F495 /* CKMUser+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CKMUser+CoreDataClass.swift"; sourceTree = "<group>"; };
 		B54159CA20A5DEBF0048F495 /* CKMUser+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CKMUser+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		B54159CD20A60C720048F495 /* WalletResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletResponse.swift; sourceTree = "<group>"; };
@@ -1574,6 +1579,13 @@
 		DE4F078435C07F253BFE2364 /* Pods-DropBit.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DropBit.debug.xcconfig"; path = "Pods/Target Support Files/Pods-DropBit/Pods-DropBit.debug.xcconfig"; sourceTree = "<group>"; };
 		DF6A0FCDDDCFA861541E73B4 /* Pods-DropBit.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DropBit.release.xcconfig"; path = "Pods/Target Support Files/Pods-DropBit/Pods-DropBit.release.xcconfig"; sourceTree = "<group>"; };
 		F8BD6316AF9CC6F3FF49A744 /* Pods-DropBit.beta.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DropBit.beta.xcconfig"; path = "Pods/Target Support Files/Pods-DropBit/Pods-DropBit.beta.xcconfig"; sourceTree = "<group>"; };
+		B5FFFFBF226FB44E0029DB62 /* DropBitMeViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = DropBitMeViewController.storyboard; sourceTree = "<group>"; };
+		B5FFFFC1226FB4710029DB62 /* DropBitMeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropBitMeViewController.swift; sourceTree = "<group>"; };
+		C643DEC1A1C5E8F46B932141 /* Pods-DropBitUITests.beta.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DropBitUITests.beta.xcconfig"; path = "Pods/Target Support Files/Pods-DropBitUITests/Pods-DropBitUITests.beta.xcconfig"; sourceTree = "<group>"; };
+		D7E99D7A5911DA70342872A0 /* Pods-DropBitTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DropBitTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-DropBitTests/Pods-DropBitTests.release.xcconfig"; sourceTree = "<group>"; };
+		DCDE55F4D482481C005E3F22 /* Pods_DropBit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DropBit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E44CAD6725FC69A64153747D /* Pods-DropBitTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DropBitTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-DropBitTests/Pods-DropBitTests.debug.xcconfig"; sourceTree = "<group>"; };
+		F539536BF1062461F386C238 /* Pods-DropBitUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DropBitUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-DropBitUITests/Pods-DropBitUITests.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1776,6 +1788,7 @@
 				3BA9F602208F6CEA0047C213 /* AppCoordinator+CreateRecoveryWordsViewControllerDelegate.swift */,
 				3BA9F60C208F6EA20047C213 /* AppCoordinator+CurrencyValueManager.swift */,
 				B541DF5420A3312500C621EB /* AppCoordinator+DeviceVerificationCoordinatorDelegate.swift */,
+				B54090F72270AC7D00E53B80 /* AppCoordinator+DropBitMeViewControllerDelegate.swift */,
 				B50E1838214805D80091EEDA /* AppCoordinator+HeaderDelegate.swift */,
 				3BA9F5F8208F63480047C213 /* AppCoordinator+PinCreationViewControllerDelegate.swift */,
 				3BA9F5FC208F63D40047C213 /* AppCoordinator+PinEntryViewControllerDelegate.swift */,
@@ -2255,6 +2268,7 @@
 				3B5052B22045FAFA000C739F /* CreateRecoveryWordsViewController.swift */,
 				4A75CAF82090FB0D00E8E653 /* DeviceVerificationViewController.swift */,
 				5B91E3972076BEB500DD9A86 /* DrawerViewController.swift */,
+				B5FFFFC1226FB4710029DB62 /* DropBitMeViewController.swift */,
 				A216D78E20B30C25005FBAC2 /* NoConnectionViewController.swift */,
 				3B82692C203372AC009B11EC /* PinCreationViewController.swift */,
 				3B86F78B203C6DCD00D15231 /* PinEntryViewController.swift */,
@@ -2294,6 +2308,7 @@
 				3B5052B02045FAD7000C739F /* CreateRecoveryWordsViewController.storyboard */,
 				4AF433252093BA8700B11BC9 /* DeviceVerificationViewController.storyboard */,
 				5B91E3992076C02200DD9A86 /* DrawerViewController.storyboard */,
+				B5FFFFBF226FB44E0029DB62 /* DropBitMeViewController.storyboard */,
 				3BC456FE20288D7300CC36B1 /* LaunchScreen.storyboard */,
 				A216D79020B30C51005FBAC2 /* NoConnectionViewController.storyboard */,
 				3B82692A20337282009B11EC /* PinCreationViewController.storyboard */,
@@ -3114,6 +3129,7 @@
 				A216D79120B30C51005FBAC2 /* NoConnectionViewController.storyboard in Resources */,
 				3093B07E21EE36E400B3EF9C /* TransactionHistoryRefreshView.xib in Resources */,
 				3B9779B1202E416700C9C933 /* Montserrat-Light.ttf in Resources */,
+				B5FFFFC0226FB44E0029DB62 /* DropBitMeViewController.storyboard in Resources */,
 				B5B0DC81221364140010AB2A /* PhoneNumberEntryView.xib in Resources */,
 				3B6FDAD7204F4BA50091916A /* VerifyRecoveryWordCell.xib in Resources */,
 				403B454B2075594F00DA53E9 /* Settings.bundle in Resources */,
@@ -3584,6 +3600,7 @@
 				3B3A1339204F3DB700E01908 /* OnboardingSubtitleLabel.swift in Sources */,
 				3B61B6E620DD4D360021D69E /* AppCoordinator+TransactionHistoryViewControllerDelegate.swift in Sources */,
 				3BE8D86420D1A85200E99D24 /* TransactionResponse.swift in Sources */,
+				B5FFFFC2226FB4710029DB62 /* DropBitMeViewController.swift in Sources */,
 				B5A3BA622151941E005EE657 /* WalletAddressesTarget.swift in Sources */,
 				3B4558682104EB980000D4A6 /* AppCoordinator+InvitationWorkerDelegate.swift in Sources */,
 				B53461772098C61D00DDC1C4 /* TransactionHistorySummaryCellViewModel.swift in Sources */,
@@ -3700,6 +3717,7 @@
 				3B6749E120AA5CA40032FE02 /* CKMVin+CoreDataClass.swift in Sources */,
 				3093B07C21EE36CF00B3EF9C /* TransactionHistoryRefreshView.swift in Sources */,
 				B5C9472C210E08C3002CBAE4 /* AddressRequestUpdateDisplayable.swift in Sources */,
+				B54090F82270AC7D00E53B80 /* AppCoordinator+DropBitMeViewControllerDelegate.swift in Sources */,
 				B5B27E902088D91800D4DB89 /* NSMutableAttributedString+Constructors.swift in Sources */,
 				A2E52D8820BE3A3F00424E6A /* Data+HexString.swift in Sources */,
 				307DF11D2150394400260369 /* MessagesManager.swift in Sources */,

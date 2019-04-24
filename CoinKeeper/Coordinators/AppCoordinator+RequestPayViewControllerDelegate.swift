@@ -8,6 +8,10 @@
 
 import UIKit
 
+protocol CopyToClipboardMessageDisplayable: AnyObject {
+  func viewControllerSuccessfullyCopiedToClipboard(message: String, viewController: UIViewController)
+}
+
 extension AppCoordinator: RequestPayViewControllerDelegate {
 
   func viewControllerDidSelectSendRequest(_ viewController: UIViewController, payload: [Any]) {
@@ -32,8 +36,8 @@ extension AppCoordinator: RequestPayViewControllerDelegate {
     viewController.present(controller, animated: true, completion: nil)
   }
 
-  func viewControllerSuccessfullyCopiedToClipboard(_ viewController: UIViewController) {
-    alertManager.showSuccess(message: "Address copied to clipboard!", forDuration: 2.0)
+  func viewControllerSuccessfullyCopiedToClipboard(message: String, viewController: UIViewController) {
+    alertManager.showSuccess(message: message, forDuration: 2.0)
   }
 
 }
