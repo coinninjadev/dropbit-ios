@@ -21,15 +21,19 @@ extension AppCoordinator: BalanceContainerDelegate {
     self.drawerController?.toggle(.left, animated: true, completion: nil)
   }
 
-  func containerDidTapDropBitMe(in viewController: UIViewController, buttonImageFrame: CGRect) {
+  func containerDidTapDropBitMe(in viewController: UIViewController, avatarImageFrame: CGRect) {
+    presentDropBitMeViewController(avatarImageFrame: avatarImageFrame)
+  }
+
+  func presentDropBitMeViewController(avatarImageFrame: CGRect) {
     guard let topVC = self.navigationController.topViewController() else { return }
 
     var config: DropBitMeConfig = .notVerified
     if let url = dropBitMeURL() {
-      config = .verified(url, false)
+      config = .verified(url, true)
     }
 
-    let dropBitMeVC = DropBitMeViewController.newInstance(config: config, avatarFrame: buttonImageFrame, delegate: self)
+    let dropBitMeVC = DropBitMeViewController.newInstance(config: config, avatarFrame: avatarImageFrame, delegate: self)
     topVC.present(dropBitMeVC, animated: true, completion: nil)
   }
 
