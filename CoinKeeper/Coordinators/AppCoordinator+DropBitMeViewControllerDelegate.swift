@@ -23,10 +23,6 @@ extension AppCoordinator: DropBitMeViewControllerDelegate {
     print(#function)
   }
 
-  func viewControllerDidTapVerifyAccount(_ viewController: UIViewController) {
-    print(#function)
-  }
-
   func viewControllerDidTapShareOnTwitter(_ viewController: UIViewController) {
     print(#function)
   }
