@@ -180,6 +180,7 @@ struct Theme {
     case popoverMessage
     case popoverActionButton
     case popoverSecondaryButton
+    case popoverStatusLabel
 
     var font: UIFont {
       switch self {
@@ -277,6 +278,7 @@ struct Theme {
            .requestPayAddress: 									return CKFont.semiBold(13)
       case .settingsSectionHeader,
            .popoverActionButton,
+           .popoverStatusLabel,
            .shareTransactionTitle: 							return CKFont.semiBold(14)
       case .phoneNumberStatus: 									return CKFont.semiBold(25)
       case .keypadButton: 											return CKFont.semiBold(28)

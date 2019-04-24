@@ -34,7 +34,7 @@ class DropBitMeViewController: UIViewController, StoryboardInitializable {
   @IBOutlet var popoverArrowImage: UIImageView!
   @IBOutlet var popoverBackgroundView: UIView!
 
-  @IBOutlet var verificationSuccessView: UIView!
+  @IBOutlet var verificationSuccessButton: UIButton! // use button for built-in content inset handling
   @IBOutlet var dropBitMeLogo: UIImageView!
   @IBOutlet var messageLabel: UILabel!
   @IBOutlet var dropBitMeURLButton: LightBorderedButton!
@@ -90,11 +90,13 @@ class DropBitMeViewController: UIViewController, StoryboardInitializable {
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    semiOpaqueBackgroundView.backgroundColor = UIColor.black.withAlphaComponent(0.7)
+    semiOpaqueBackgroundView.backgroundColor = UIColor.black.withAlphaComponent(0.6)
     avatarButtonTopConstraint.constant = -self.avatarImageFrame.minY
     avatarButton.setNeedsUpdateConstraints()
     popoverBackgroundView.layer.masksToBounds = true
     popoverBackgroundView.layer.cornerRadius = 10
+
+    setupVerificationSuccessButton()
 
     messageLabel.textColor = Theme.Color.darkBlueText.color
     messageLabel.font = Theme.Font.popoverMessage.font
@@ -108,13 +110,24 @@ class DropBitMeViewController: UIViewController, StoryboardInitializable {
     configure(with: self.config)
   }
 
+  private func setupVerificationSuccessButton() {
+    verificationSuccessButton.isUserInteractionEnabled = false
+    verificationSuccessButton.setTitle("You've been verified!", for: .normal)
+    verificationSuccessButton.contentEdgeInsets = UIEdgeInsets(top: 0, left: 24, bottom: 0, right: 24)
+    verificationSuccessButton.layer.masksToBounds = true
+    verificationSuccessButton.layer.cornerRadius = verificationSuccessButton.frame.height/2
+    verificationSuccessButton.backgroundColor = Theme.Color.primaryActionButton.color
+    verificationSuccessButton.setTitleColor(Theme.Color.whiteText.color, for: .normal)
+    verificationSuccessButton.titleLabel?.font = Theme.Font.popoverStatusLabel.font
+  }
+
   private func configure(with config: DropBitMeConfig) {
     self.config = config
     self.messageLabel.text = self.message
 
     switch config {
     case .verified(let url, let firstTimeVerified):
-      verificationSuccessView.isHidden = !firstTimeVerified
+      verificationSuccessButton.isHidden = !firstTimeVerified
       dropBitMeURLButton.setTitle(url.absoluteString, for: .normal)
       primaryButton.style = .standard
       primaryButton.setTitle("SHARE ON TWITTER", for: .normal)
@@ -122,10 +135,11 @@ class DropBitMeViewController: UIViewController, StoryboardInitializable {
     case .notVerified:
       primaryButton.style = .standard
       primaryButton.setTitle("VERIFY MY ACCOUNT", for: .normal)
-      verificationSuccessView.isHidden = true
+      verificationSuccessButton.isHidden = true
       secondaryButton.isHidden = true
 
     case .disabled:
+      verificationSuccessButton.isHidden = true
       primaryButton.style = .darkBlue
       primaryButton.setTitle("ENABLE MY URL", for: .normal)
     }

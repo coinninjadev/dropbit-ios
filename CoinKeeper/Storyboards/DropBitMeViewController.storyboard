@@ -43,23 +43,31 @@
                                         <rect key="frame" x="22" y="90" width="370" height="400"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="OUg-w8-XIP">
-                                                <rect key="frame" x="14" y="0.0" width="342" height="384"/>
+                                                <rect key="frame" x="14" y="16" width="342" height="368"/>
                                                 <subviews>
-                                                    <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="GRg-VM-cDV">
-                                                        <rect key="frame" x="0.0" y="0.0" width="342" height="50"/>
-                                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                    </view>
-                                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" image="dropBitMeLogo" translatesAutoresizingMaskIntoConstraints="NO" id="0wc-d6-BAK">
-                                                        <rect key="frame" x="0.0" y="75.5" width="342" height="35"/>
-                                                    </imageView>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="L7a-2J-mK4">
-                                                        <rect key="frame" x="0.0" y="136.5" width="342" height="20.5"/>
+                                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" alignment="center" spacing="24" translatesAutoresizingMaskIntoConstraints="NO" id="Zt5-Tw-qtZ">
+                                                        <rect key="frame" x="0.0" y="0.0" width="342" height="89"/>
+                                                        <subviews>
+                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OGG-o3-a77">
+                                                                <rect key="frame" x="148" y="0.0" width="46" height="30"/>
+                                                                <constraints>
+                                                                    <constraint firstAttribute="height" constant="30" id="CEr-gL-XAa"/>
+                                                                </constraints>
+                                                                <state key="normal" title="Button"/>
+                                                            </button>
+                                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="dropBitMeLogo" translatesAutoresizingMaskIntoConstraints="NO" id="0wc-d6-BAK">
+                                                                <rect key="frame" x="78" y="54" width="186" height="35"/>
+                                                            </imageView>
+                                                        </subviews>
+                                                    </stackView>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="L7a-2J-mK4">
+                                                        <rect key="frame" x="0.0" y="116" width="342" height="20.5"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                         <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
-                                                    <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cfQ-3f-nkG" customClass="LightBorderedButton" customModule="DropBit" customModuleProvider="target">
-                                                        <rect key="frame" x="0.0" y="182.5" width="342" height="50"/>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cfQ-3f-nkG" customClass="LightBorderedButton" customModule="DropBit" customModuleProvider="target">
+                                                        <rect key="frame" x="0.0" y="164" width="342" height="50"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="50" id="w34-Jm-xcM"/>
                                                         </constraints>
@@ -68,8 +76,8 @@
                                                             <action selector="copyDropBitURL:" destination="cAj-CK-POh" eventType="touchUpInside" id="XQs-Qv-Lda"/>
                                                         </connections>
                                                     </button>
-                                                    <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QlU-jH-Ezk" customClass="PrimaryActionButton" customModule="DropBit" customModuleProvider="target">
-                                                        <rect key="frame" x="0.0" y="258.5" width="342" height="50"/>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QlU-jH-Ezk" customClass="PrimaryActionButton" customModule="DropBit" customModuleProvider="target">
+                                                        <rect key="frame" x="0.0" y="241" width="342" height="50"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="50" id="fUU-rW-TQ7"/>
                                                         </constraints>
@@ -79,7 +87,7 @@
                                                         </connections>
                                                     </button>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dyd-R3-OKb">
-                                                        <rect key="frame" x="0.0" y="334" width="342" height="50"/>
+                                                        <rect key="frame" x="0.0" y="318" width="342" height="50"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="50" id="t1I-EV-E3e"/>
                                                         </constraints>
@@ -108,7 +116,7 @@
                                             <constraint firstAttribute="bottom" secondItem="OUg-w8-XIP" secondAttribute="bottom" constant="16" id="G0F-4O-Nvo"/>
                                             <constraint firstAttribute="trailing" secondItem="bzU-un-NnK" secondAttribute="trailing" id="KDS-Zw-5N2"/>
                                             <constraint firstAttribute="trailing" secondItem="OUg-w8-XIP" secondAttribute="trailing" constant="14" id="OXm-Kx-PZT"/>
-                                            <constraint firstItem="OUg-w8-XIP" firstAttribute="top" secondItem="Lib-Qt-M93" secondAttribute="top" id="abg-jE-eAx"/>
+                                            <constraint firstItem="OUg-w8-XIP" firstAttribute="top" secondItem="Lib-Qt-M93" secondAttribute="top" constant="16" id="abg-jE-eAx"/>
                                             <constraint firstItem="OUg-w8-XIP" firstAttribute="leading" secondItem="Lib-Qt-M93" secondAttribute="leading" constant="14" id="bcW-Oz-PWD"/>
                                             <constraint firstItem="bzU-un-NnK" firstAttribute="top" secondItem="Lib-Qt-M93" secondAttribute="top" id="vK8-Mc-Cb5"/>
                                         </constraints>
@@ -146,7 +154,7 @@
                         <outlet property="primaryButton" destination="QlU-jH-Ezk" id="mXR-Ji-aub"/>
                         <outlet property="secondaryButton" destination="dyd-R3-OKb" id="f3R-OW-x5x"/>
                         <outlet property="semiOpaqueBackgroundView" destination="mR4-31-PMS" id="Uzv-vK-ni5"/>
-                        <outlet property="verificationSuccessView" destination="GRg-VM-cDV" id="9ai-2a-bAN"/>
+                        <outlet property="verificationSuccessButton" destination="OGG-o3-a77" id="Qri-4V-rtj"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="nrQ-Zw-PvI" userLabel="First Responder" sceneMemberID="firstResponder"/>
