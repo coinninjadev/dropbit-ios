@@ -22,15 +22,15 @@ extension AppCoordinator: BalanceContainerDelegate {
   }
 
   func containerDidTapDropBitMe(in viewController: UIViewController, avatarImageFrame: CGRect) {
-    presentDropBitMeViewController(avatarImageFrame: avatarImageFrame)
+    presentDropBitMeViewController(avatarImageFrame: avatarImageFrame, verifiedFirstTime: false)
   }
 
-  func presentDropBitMeViewController(avatarImageFrame: CGRect) {
+  func presentDropBitMeViewController(avatarImageFrame: CGRect, verifiedFirstTime: Bool) {
     guard let topVC = self.navigationController.topViewController() else { return }
 
     var config: DropBitMeConfig = .notVerified
     if let url = dropBitMeURL() {
-      config = .verified(url, true)
+      config = .verified(url, verifiedFirstTime)
     }
 
     let dropBitMeVC = DropBitMeViewController.newInstance(config: config, avatarFrame: avatarImageFrame, delegate: self)
