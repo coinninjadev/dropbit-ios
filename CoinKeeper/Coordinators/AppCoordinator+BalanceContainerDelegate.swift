@@ -25,13 +25,17 @@ extension AppCoordinator: BalanceContainerDelegate {
     guard let topVC = self.navigationController.topViewController() else { return }
 
     var config: DropBitMeConfig = .notVerified
-    if let phoneHash = self.verifiedPhoneNumberHash(),
-      let url = CoinNinjaUrlFactory.buildUrl(for: .dropBitMe(phoneNumberHash: phoneHash, twitterUsername: nil)) {
+    if let url = dropBitMeURL() {
       config = .verified(url, false)
     }
 
     let dropBitMeVC = DropBitMeViewController.newInstance(config: config, avatarFrame: buttonImageFrame, delegate: self)
     topVC.present(dropBitMeVC, animated: true, completion: nil)
+  }
+
+  func dropBitMeURL() -> URL? {
+    guard let phoneHash = self.verifiedPhoneNumberHash() else { return nil }
+    return CoinNinjaUrlFactory.buildUrl(for: .dropBitMe(phoneNumberHash: phoneHash, twitterUsername: nil))
   }
 
   func verifiedPhoneNumberHash() -> String? {
