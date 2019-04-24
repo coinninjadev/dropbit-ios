@@ -94,12 +94,13 @@ class DropBitMeViewController: UIViewController, StoryboardInitializable {
     popoverBackgroundView.layer.cornerRadius = 10
 
     setupVerificationSuccessButton()
-    headerSpacer.isHidden = true
+
     messageLabel.textColor = Theme.Color.darkBlueText.color
     messageLabel.font = Theme.Font.popoverMessage.font
 
     dropBitMeURLButton.titleLabel?.font = Theme.Font.popoverMessage.font
     dropBitMeURLButton.setTitleColor(Theme.Color.darkBlueText.color, for: .normal)
+    dropBitMeURLButton.isHidden = true
 
     secondaryButton.setTitleColor(Theme.Color.darkBlueText.color, for: .normal)
     secondaryButton.titleLabel?.font = Theme.Font.popoverSecondaryButton.font
