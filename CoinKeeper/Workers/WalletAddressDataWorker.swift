@@ -33,7 +33,7 @@ protocol WalletAddressDataWorkerType: AnyObject {
 
   func updateReceivedAddressRequests(in context: NSManagedObjectContext) -> Promise<Void>
 
-  func updateSentAddressRequests(in context: NSManagedObjectContext) -> Promise<[PendingInvitationData]>
+  func updateSentAddressRequests(in context: NSManagedObjectContext) -> Promise<Void>
 
   func cancelInvitation(withID invitationID: String, in context: NSManagedObjectContext) -> Promise<Void>
 
@@ -121,7 +121,7 @@ class WalletAddressDataWorker: WalletAddressDataWorkerType {
 
   func updateReceivedAddressRequests(in context: NSManagedObjectContext) -> Promise<Void> {
     guard persistenceManager.userId(in: context) != nil else {
-      return Promise { $0.fulfill(()) }
+      return Promise(error: CKNetworkError.userNotVerified)
     }
 
     return self.networkManager.getWalletAddressRequests(forSide: .received)
@@ -131,9 +131,9 @@ class WalletAddressDataWorker: WalletAddressDataWorkerType {
   }
 
   /// Promise value is an array of PendingInvitationData which were successfully broadcast, currently a single object or empty.
-  func updateSentAddressRequests(in context: NSManagedObjectContext) -> Promise<[PendingInvitationData]> {
+  func updateSentAddressRequests(in context: NSManagedObjectContext) -> Promise<Void> {
     guard persistenceManager.userId(in: context) != nil else {
-      return Promise { $0.fulfill([]) }
+      return Promise.value(())
     }
 
     return checkForExpiredAndCanceledSentInvitations(in: context)
@@ -396,7 +396,7 @@ class WalletAddressDataWorker: WalletAddressDataWorkerType {
       }.asVoid()
   }
 
-  private func checkAndExecuteSentInvitations(in context: NSManagedObjectContext) -> Promise<[PendingInvitationData]> {
+  private func checkAndExecuteSentInvitations(in context: NSManagedObjectContext) -> Promise<Void> {
     return invitationDelegate.fetchAndHandleSentWalletAddressRequests()
       .then(in: context) { self.handleFulfilledInvitations(responses: $0, in: context) }
   }
@@ -404,7 +404,7 @@ class WalletAddressDataWorker: WalletAddressDataWorkerType {
   private func handleFulfilledInvitations(
     responses: [PendingInvitationData],
     in context: NSManagedObjectContext
-    ) -> Promise<[PendingInvitationData]> {
+    ) -> Promise<Void> {
 
     //    UIApplication.shared.applicationIconBadgeNumber = responses.count
 
@@ -419,16 +419,10 @@ class WalletAddressDataWorker: WalletAddressDataWorkerType {
     })
 
     guard let firstResponse = sortedResponses.first else {
-      return Promise { $0.fulfill([]) }
+      return Promise.value(())
     }
 
-    var fulfillPromise: Promise<[PendingInvitationData]>!
-
-    context.performAndWait {
-      fulfillPromise = when(fulfilled: [self.fulfillInvitationRequest(with: firstResponse, in: context)])
-    }
-
-    return fulfillPromise
+    return self.fulfillInvitationRequest(with: firstResponse, in: context)
   }
 
   private func ensureLocalServerAddressParity(
@@ -569,7 +563,7 @@ class WalletAddressDataWorker: WalletAddressDataWorkerType {
   private func fulfillInvitationRequest(
     with pendingInvitationData: PendingInvitationData,
     in context: NSManagedObjectContext
-    ) -> Promise<PendingInvitationData> {
+    ) -> Promise<Void> {
 
     guard let address = pendingInvitationData.address else {
       return Promise(error: PendingInvitationError.noAddressProvided)
@@ -603,7 +597,7 @@ class WalletAddressDataWorker: WalletAddressDataWorkerType {
     let dto = WalletAddressRequestResponseDTO()
 
     return self.networkManager.fetchTransactionSummaries(for: address)
-      .then(in: context) { (summaryResponses: [AddressTransactionSummaryResponse]) -> Promise<PendingInvitationData> in
+      .then(in: context) { (summaryResponses: [AddressTransactionSummaryResponse]) -> Promise<Void> in
         // guard against already funded
         let maybeFound = summaryResponses.first { $0.vout == pendingInvitationData.btcAmount }
         if let found = maybeFound {
@@ -617,65 +611,63 @@ class WalletAddressDataWorker: WalletAddressDataWorkerType {
             in: context
           )
         } else {
-          return Promise { seal in
 
-            // guard against insufficient funds
-            var spendableBalance = 0
-            var totalPendingAmount = 0
-            context.performAndWait {
-              spendableBalance = self.walletManager.spendableBalance(in: context)
-              totalPendingAmount = pendingInvitation.totalPendingAmount
-            }
-            guard spendableBalance >= totalPendingAmount else {
-              seal.reject(PendingInvitationError.insufficientFundsForInvitationWithID(pendingInvitationData.id))
-              return
-            }
-
-            self.walletManager.transactionData(forPayment: pendingInvitationData.btcAmount, to: address, withFlatFee: pendingInvitationData.feeAmount)
-              .get { dto.transactionData = $0 }
-              .then { self.networkManager.broadcastTx(with: $0) }
-              .then(in: context) { (txid: String) -> Promise<PendingInvitationData> in
-                self.completeWalletAddressRequestFulfillmentLocally(
-                  with: dto,
-                  outgoingTransactionData: outgoingTransactionData,
-                  txid: txid,
-                  pendingInvitationData: pendingInvitationData,
-                  pendingInvitation: pendingInvitation,
-                  in: context
-                )
-              }
-              .catch { error in
-                // Don't mark the PendingInvitationData as failed to broadcast in this scenario, don't want to accidentally double-send
-                if error is MoyaError {
-                  seal.reject(error)
-                  return
-                }
-
-                self.persistenceManager.userDefaultsManager.setPendingInvitationFailed(pendingInvitationData)
-
-                if let txDataError = error as? TransactionDataError {
-                  switch txDataError {
-                  case .insufficientFunds: seal.reject(PendingInvitationError.insufficientFundsForInvitationWithID(pendingInvitationData.id))
-                  case .insufficientFee:
-                    seal.reject(PendingInvitationError.insufficientFeeForInvitationWithID(pendingInvitationData.id))
-                  }
-                  return
-                }
-
-                let nsError = error as NSError
-                let errorCode = TransactionBroadcastError(errorCode: nsError.code)
-                switch errorCode {
-                case .broadcastTimedOut:
-                  seal.reject(TransactionBroadcastError.broadcastTimedOut)
-                case .networkUnreachable:
-                  seal.reject(TransactionBroadcastError.networkUnreachable)
-                case .unknown:
-                  seal.reject(TransactionBroadcastError.unknown)
-                case .insufficientFee:
-                  seal.reject(PendingInvitationError.insufficientFeeForInvitationWithID(pendingInvitationData.id))
-                }
-            }
+          // guard against insufficient funds
+          var spendableBalance = 0
+          var totalPendingAmount = 0
+          context.performAndWait {
+            spendableBalance = self.walletManager.spendableBalance(in: context)
+            totalPendingAmount = pendingInvitation.totalPendingAmount
           }
+          guard spendableBalance >= totalPendingAmount else {
+            return Promise(error: PendingInvitationError.insufficientFundsForInvitationWithID(pendingInvitationData.id))
+          }
+
+          return self.walletManager.transactionData(
+            forPayment: pendingInvitationData.btcAmount,
+            to: address, withFlatFee: pendingInvitationData.feeAmount)
+            .get { dto.transactionData = $0 }
+            .then { self.networkManager.broadcastTx(with: $0) }
+            .then(in: context) { (txid: String) -> Promise<Void> in
+              self.completeWalletAddressRequestFulfillmentLocally(
+                with: dto,
+                outgoingTransactionData: outgoingTransactionData,
+                txid: txid,
+                pendingInvitationData: pendingInvitationData,
+                pendingInvitation: pendingInvitation,
+                in: context
+              )
+            }
+            .recover { (error) -> Promise<Void> in
+              // Don't mark the PendingInvitationData as failed to broadcast in this scenario, don't want to accidentally double-send
+              if error is MoyaError {
+                throw error
+              }
+
+              self.persistenceManager.userDefaultsManager.setPendingInvitationFailed(pendingInvitationData)
+
+              if let txDataError = error as? TransactionDataError {
+                switch txDataError {
+                case .insufficientFunds:
+                  throw PendingInvitationError.insufficientFundsForInvitationWithID(pendingInvitationData.id)
+                case .insufficientFee:
+                  throw PendingInvitationError.insufficientFeeForInvitationWithID(pendingInvitationData.id)
+                }
+              }
+
+              let nsError = error as NSError
+              let errorCode = TransactionBroadcastError(errorCode: nsError.code)
+              switch errorCode {
+              case .broadcastTimedOut:
+                throw TransactionBroadcastError.broadcastTimedOut
+              case .networkUnreachable:
+                throw TransactionBroadcastError.networkUnreachable
+              case .unknown:
+                throw TransactionBroadcastError.unknown
+              case .insufficientFee:
+                throw PendingInvitationError.insufficientFeeForInvitationWithID(pendingInvitationData.id)
+              }
+            }
         }
     }
   }
@@ -686,7 +678,7 @@ class WalletAddressDataWorker: WalletAddressDataWorkerType {
     txid: String,
     pendingInvitationData: PendingInvitationData,
     pendingInvitation: CKMInvitation,
-    in context: NSManagedObjectContext) -> Promise<PendingInvitationData> {
+    in context: NSManagedObjectContext) -> Promise<Void> {
 
     return self.networkManager.postSharedPayloadIfAppropriate(withOutgoingTxData: outgoingTransactionData.copy(withTxid: txid),
                                                               walletManager: self.walletManager)
@@ -722,7 +714,7 @@ class WalletAddressDataWorker: WalletAddressDataWorkerType {
         return self.networkManager.updateWalletAddressRequest(for: pendingInvitationData.id, with: request)
       }
       .then { _ in
-        return Promise.value(pendingInvitationData)
+        return Promise.value(())
     }
   }
 

@@ -10,6 +10,7 @@ import Foundation
 import PromiseKit
 import CoreData
 import UIKit
+import os.log
 
 protocol WalletSyncDelegate: AnyObject {
   func syncManagerDidRequestDependencies(in context: NSManagedObjectContext) -> Promise<SyncDependencies>
@@ -63,9 +64,22 @@ class WalletSyncOperationFactory {
               .catch(in: context) { error in
                 strongSelf.handleSyncRoutineError(error, in: context)
                 completion?(error)
-                fetchResult?(.failed)
 
               }.finally {
+                context.performAndWait {
+                  do {
+                    try context.save()
+                  } catch {
+                    let logger = OSLog(subsystem: "com.coinninja.coinkeeper.walletsyncoperationfactory", category: "perform_sync")
+                    os_log("failed to save context in %@. error: %@", log: logger, type: .error, #function, error.localizedDescription)
+                  }
+                  CKNotificationCenter.publish(key: .didFinishSync, object: nil, userInfo: nil)
+                }
+                CKNotificationCenter.publish(key: .didUpdateBalance, object: nil, userInfo: nil)
+
+                dependencies.persistenceManager.set(Date(), for: .lastSuccessfulSyncCompletedAt)
+                completion?(nil)
+
                 sync.finish()
                 backgroundTaskId.map { UIApplication.shared.endBackgroundTask($0) }
             }
@@ -95,7 +109,7 @@ class WalletSyncOperationFactory {
       .then(in: context) { dependencies.walletWorker.updateServerPoolAddresses(in: context) }
       .then(in: context) { dependencies.walletWorker.updateReceivedAddressRequests(in: context) }
       .then(in: context) { _ in dependencies.walletWorker.updateSentAddressRequests(in: context) }
-      .recover { error -> Promise<[PendingInvitationData]> in
+      .recover { error -> Promise<Void> in
         if let providerError = error as? CKNetworkError {
           switch providerError {
           case .userNotVerified:
@@ -105,25 +119,16 @@ class WalletSyncOperationFactory {
         } else {
           throw error
         }
-        return Promise { $0.fulfill([]) }
+        return Promise.value(())
       }
       .then(in: context) { _ in self.fetchAndFulfillReceivedAddressRequests(with: dependencies, in: context) }
       .then(in: context) { _ in dependencies.delegate.showAlertsForSyncedChanges(in: context) }
       .done(in: context) {
-        context.performAndWait {
-          if let fetchResultHandler = fetchResult {
-            let fetchResult: UIBackgroundFetchResult = context.insertedObjects.isNotEmpty ||
-              context.updatedObjects.isNotEmpty ? .newData : .noData
-            fetchResultHandler(fetchResult)
-          }
-
-          try? context.save()
-          CKNotificationCenter.publish(key: .didFinishSync, object: nil, userInfo: nil)
+        if let fetchResultHandler = fetchResult {
+          let fetchResult: UIBackgroundFetchResult = context.insertedObjects.isNotEmpty ||
+            context.updatedObjects.isNotEmpty ? .newData : .noData
+          fetchResultHandler(fetchResult)
         }
-        CKNotificationCenter.publish(key: .didUpdateBalance, object: nil, userInfo: nil)
-
-        dependencies.persistenceManager.set(Date(), for: .lastSuccessfulSyncCompletedAt)
-        completion?(nil)
     }
   }
 
