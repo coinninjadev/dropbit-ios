@@ -222,6 +222,8 @@ class AppCoordinator: CoordinatorType {
         default:
           break
         }
+
+        self?.presentDropBitMeViewController(verifiedFirstTime: true)
       }
     })
 
