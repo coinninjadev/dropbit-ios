@@ -79,7 +79,7 @@
                             <constraint firstItem="UtL-ss-iVC" firstAttribute="height" secondItem="WFJ-4S-Rgy" secondAttribute="height" id="owv-Zf-JhB"/>
                         </constraints>
                     </stackView>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GiX-t1-ouu" customClass="TransactionDetailPrimaryAmountLabel" customModule="DropBit" customModuleProvider="target">
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="GiX-t1-ouu" customClass="TransactionDetailPrimaryAmountLabel" customModule="DropBit" customModuleProvider="target">
                         <rect key="frame" x="159" y="220" width="42" height="0.0"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <nil key="textColor"/>
