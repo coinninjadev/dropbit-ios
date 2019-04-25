@@ -100,7 +100,6 @@ class DropBitMeViewController: UIViewController, StoryboardInitializable {
 
     dropBitMeURLButton.titleLabel?.font = Theme.Font.popoverMessage.font
     dropBitMeURLButton.setTitleColor(Theme.Color.darkBlueText.color, for: .normal)
-    dropBitMeURLButton.isHidden = true
 
     secondaryButton.setTitleColor(Theme.Color.darkBlueText.color, for: .normal)
     secondaryButton.titleLabel?.font = Theme.Font.popoverSecondaryButton.font
@@ -119,26 +118,27 @@ class DropBitMeViewController: UIViewController, StoryboardInitializable {
     verificationSuccessButton.titleLabel?.font = Theme.Font.popoverStatusLabel.font
   }
 
-  private func configure(with config: DropBitMeConfig) {
+  func configure(with config: DropBitMeConfig) {
     self.config = config
     self.messageLabel.text = self.message
+    dropBitMeURLButton.isHidden = true
+    verificationSuccessButton.isHidden = true
 
     switch config {
     case .verified(let url, let firstTimeVerified):
       verificationSuccessButton.isHidden = !firstTimeVerified
       headerSpacer.isHidden = firstTimeVerified
       dropBitMeURLButton.setTitle(url.absoluteString, for: .normal)
+      dropBitMeURLButton.isHidden = false
       primaryButton.style = .standard
       primaryButton.setTitle("SHARE ON TWITTER", for: .normal)
       secondaryButton.setTitle("Disable my DropBit.me URL", for: .normal)
     case .notVerified:
       primaryButton.style = .standard
       primaryButton.setTitle("VERIFY MY ACCOUNT", for: .normal)
-      verificationSuccessButton.isHidden = true
       secondaryButton.isHidden = true
 
     case .disabled:
-      verificationSuccessButton.isHidden = true
       primaryButton.style = .darkBlue
       primaryButton.setTitle("ENABLE MY URL", for: .normal)
     }
@@ -147,15 +147,15 @@ class DropBitMeViewController: UIViewController, StoryboardInitializable {
   private var message: String {
     switch config {
     case .verified:
-      return "DropBit.me is your personal webpage created to safely request and receive Bitcoin. Keep this URL and share freely."
+      return "DropBit.me is your personal URL created to safely request and receive Bitcoin. Keep this URL and share freely."
     case .notVerified:
       return """
       Verifying your account with phone or Twitter will also allow you to send Bitcoin without an address.
 
-      You will then be given a DropBit.me webpage to safely request and receive Bitcoin.
+      You will then be given a DropBit.me URL to safely request and receive Bitcoin.
       """
     case .disabled:
-      return "DropBit.me is a personal webpage created to safely request and receive Bitcoin directly to your wallet."
+      return "DropBit.me is a personal URL created to safely request and receive Bitcoin directly to your wallet."
     }
   }
 }
