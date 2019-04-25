@@ -97,26 +97,17 @@ class TransactionHistoryDetailBaseCell: UICollectionViewCell {
     self.delegate = delegate
     self.viewModel = viewModel
 
-    // incomingImage
     incomingImage.image = viewModel.imageForTransactionDirection
-    // dateLabel
     dateLabel.text = viewModel.dateDescriptionFull
-    // statusLabel
     statusLabel.text = viewModel.statusDescription
     statusLabel.textColor = viewModel.descriptionColor
-    // counterPartyLabel
     let isEqualToReceiverAddress = (viewModel.receiverAddress ?? "") == viewModel.counterpartyDescription
     counterpartyLabel.text = isEqualToReceiverAddress ? nil : viewModel.counterpartyDescription
-    // primaryAmountLabel
     primaryAmountLabel.text = viewModel.primaryAmountLabel
-    // secondaryAmountLabel
     secondaryAmountLabel.attributedText = viewModel.secondaryAmountLabel
-    // historicalValuesLabel
     historicalValuesLabel.text = nil
     historicalValuesLabel.attributedText = viewModel.historicalAmountsAttributedString()
-    // addMemoButton
     addMemoButton.isHidden = !viewModel.memo.isEmpty
-    // memoContainerView
     memoContainerView.isHidden = viewModel.memo.isEmpty
     memoContainerView.configure(
       memo: viewModel.memo,
@@ -125,6 +116,5 @@ class TransactionHistoryDetailBaseCell: UICollectionViewCell {
       isIncoming: viewModel.isIncoming,
       recipientName: nil)
   }
-
 
 }

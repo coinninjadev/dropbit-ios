@@ -24,52 +24,19 @@ enum TransactionDetailAction: Int {
   }
 }
 
-//protocol TransactionHistoryDetailCellDelegate: class {
-//  func didTapQuestionMarkButton(detailCell: TransactionHistoryDetailCell, with url: URL)
-//  func didTapClose(detailCell: TransactionHistoryDetailCell)
-//  func didTapAddress(detailCell: TransactionHistoryDetailCell)
-//  func didTapBottomButton(detailCell: TransactionHistoryDetailCell, action: TransactionDetailAction)
-//  func didTapAddMemoButton(completion: @escaping (String) -> Void)
-//  func shouldSaveMemo(for transaction: CKMTransaction) -> Promise<Void>
-//}
-
 class TransactionHistoryDetailCell: TransactionHistoryDetailBaseCell {
 
-//  @IBOutlet var incomingImage: UIImageView!
-//  @IBOutlet var statusLabel: TransactionDetailStatusLabel!
-//  @IBOutlet var counterpartyLabel: TransactionDetailCounterpartyLabel!
   @IBOutlet var addressView: TransactionHistoryDetailCellAddressView!
   @IBOutlet var amountSummaryStack: UIStackView!
-//  @IBOutlet var primaryAmountLabel: TransactionDetailPrimaryAmountLabel!
-//  @IBOutlet var secondaryAmountLabel: TransactionDetailSecondaryAmountLabel!
-//  @IBOutlet var historicalValuesLabel: UILabel! //use attributedText
   @IBOutlet var messageContainer: TransactionDetailsInfoContainer!
   @IBOutlet var messageLabel: TransactionDetailMessageLabel!
-//  @IBOutlet var dateLabel: TransactionDetailDateLabel!
   @IBOutlet var warningLabel: TransactionDetailWarningLabel!
   @IBOutlet var bottomButtonContainer: UIView!
   @IBOutlet var bottomButton: TransactionDetailBottomButton!
   @IBOutlet var progressView: SteppedProgressBar!
-//  @IBOutlet var closeButton: UIButton!
-//  @IBOutlet var questionMarkButton: UIButton!
-//  @IBOutlet var addMemoButton: UIButton! {
-//    didSet {
-//      addMemoButton.setTitleColor(Theme.Color.grayText.color, for: .normal)
-//      addMemoButton.titleLabel?.font = Theme.Font.addMemoTitle.font
-//    }
-//  }
-//
-//  @IBOutlet var memoContainerView: ConfirmPaymentMemoView!
-
   @IBOutlet var bottomStackView: UIStackView!
   @IBOutlet var bottomStackViewHeightConstraint: NSLayoutConstraint!
   @IBOutlet var progressBarWidthConstraint: NSLayoutConstraint!
-
-//  var viewModel: TransactionHistoryDetailCellViewModel?
-
-//  @IBAction func didTapClose(_ sender: Any) {
-//    delegate?.didTapClose(detailCell: self)
-//  }
 
   @IBAction func didTapBottomButton(_ sender: UIButton) {
     guard let action = TransactionDetailAction(rawValue: sender.tag) else {
@@ -78,52 +45,6 @@ class TransactionHistoryDetailCell: TransactionHistoryDetailBaseCell {
 
     delegate?.didTapBottomButton(detailCell: self, action: action)
   }
-
-//  @IBAction func didTapAddMemoButton(_ sender: UIButton) {
-//    delegate?.didTapAddMemoButton { [weak self] memo in
-//      guard let vm = self?.viewModel, let delegate = self?.delegate, let tx = vm.transaction else { return }
-//      tx.memo = memo
-//
-//      delegate.shouldSaveMemo(for: tx)
-//        .done {
-//          vm.memo = memo
-//          self?.load(with: vm, delegate: delegate)
-//        }.catch { error in
-//          let logger = OSLog(subsystem: "com.coinninja.coinkeeper.appcoordinator", category: "add_memo")
-//          os_log("failed to add memo: %@", log: logger, type: .error, error.localizedDescription)
-//      }
-//    }
-//  }
-
-//  @IBAction func didTapQuestionMarkButton(_ sender: UIButton) {
-//    guard let url: URL = viewModel?.invitationStatus != nil ?
-//      CoinNinjaUrlFactory.buildUrl(for: .dropbitTransactionTooltip) : CoinNinjaUrlFactory.buildUrl(for: .regularTransactionTooltip) else { return }
-//
-//    delegate?.didTapQuestionMarkButton(detailCell: self, with: url)
-//  }
-
-//  weak var delegate: TransactionHistoryDetailCellDelegate?
-
-//  override func awakeFromNib() {
-//    super.awakeFromNib()
-//
-//    backgroundColor = UIColor.white
-//    layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
-//    layer.cornerRadius = 13
-//
-//    // Shadow
-//    layer.shadowColor = UIColor.black.cgColor
-//    layer.shadowOpacity = 0.5
-//    layer.shadowRadius = 2
-//    layer.shadowOffset = CGSize(width: 0, height: 4)
-//    self.clipsToBounds = false
-//    layer.masksToBounds = false
-//  }
-
-//  override func prepareForReuse() {
-//    super.prepareForReuse()
-//    viewModel = nil
-//  }
 
   override func load(with vm: TransactionHistoryDetailCellViewModel, delegate: TransactionHistoryDetailCellDelegate) {
     viewModel = vm

@@ -311,6 +311,8 @@
 		3BEF229E2260DC78001F6D25 /* BuySpendCardCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BEF229C2260DC78001F6D25 /* BuySpendCardCollectionViewCell.swift */; };
 		3BEF229F2260DC78001F6D25 /* BuySpendCardCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3BEF229D2260DC78001F6D25 /* BuySpendCardCollectionViewCell.xib */; };
 		3BEF22A12264B9D8001F6D25 /* AppCoordinator+GetBitcoinViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BEF22A02264B9D7001F6D25 /* AppCoordinator+GetBitcoinViewControllerDelegate.swift */; };
+		3BEF348E22708E88002E4DB5 /* TransactionHistoryDetailPreBroadcastCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BEF348C22708E88002E4DB5 /* TransactionHistoryDetailPreBroadcastCell.swift */; };
+		3BEF348F22708E88002E4DB5 /* TransactionHistoryDetailPreBroadcastCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3BEF348D22708E88002E4DB5 /* TransactionHistoryDetailPreBroadcastCell.xib */; };
 		3BF3B0C3217379B60021E45F /* NetworkManager+SubscribeToWalletRequestable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BF3B0C2217379B60021E45F /* NetworkManager+SubscribeToWalletRequestable.swift */; };
 		3BF3B0C521737A4D0021E45F /* SubscribeToWalletTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BF3B0C421737A4D0021E45F /* SubscribeToWalletTarget.swift */; };
 		3BF3B0C7217500330021E45F /* MockNetworkManager+NotificationNetworkInteractable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BF3B0C6217500330021E45F /* MockNetworkManager+NotificationNetworkInteractable.swift */; };
@@ -1101,6 +1103,8 @@
 		3BEF229C2260DC78001F6D25 /* BuySpendCardCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuySpendCardCollectionViewCell.swift; sourceTree = "<group>"; };
 		3BEF229D2260DC78001F6D25 /* BuySpendCardCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BuySpendCardCollectionViewCell.xib; sourceTree = "<group>"; };
 		3BEF22A02264B9D7001F6D25 /* AppCoordinator+GetBitcoinViewControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppCoordinator+GetBitcoinViewControllerDelegate.swift"; sourceTree = "<group>"; };
+		3BEF348C22708E88002E4DB5 /* TransactionHistoryDetailPreBroadcastCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionHistoryDetailPreBroadcastCell.swift; sourceTree = "<group>"; };
+		3BEF348D22708E88002E4DB5 /* TransactionHistoryDetailPreBroadcastCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TransactionHistoryDetailPreBroadcastCell.xib; sourceTree = "<group>"; };
 		3BF3B0C2217379B60021E45F /* NetworkManager+SubscribeToWalletRequestable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NetworkManager+SubscribeToWalletRequestable.swift"; sourceTree = "<group>"; };
 		3BF3B0C421737A4D0021E45F /* SubscribeToWalletTarget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscribeToWalletTarget.swift; sourceTree = "<group>"; };
 		3BF3B0C6217500330021E45F /* MockNetworkManager+NotificationNetworkInteractable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MockNetworkManager+NotificationNetworkInteractable.swift"; sourceTree = "<group>"; };
@@ -2320,6 +2324,8 @@
 				3BF88B83226F5C9400B94474 /* TransactionHistoryDetailInvalidCell.xib */,
 				3BF88B86226F5E2500B94474 /* TransactionHistoryDetailBaseCell.swift */,
 				3BF88B88226F651F00B94474 /* TransactionHistoryDetailValidBaseCell.swift */,
+				3BEF348C22708E88002E4DB5 /* TransactionHistoryDetailPreBroadcastCell.swift */,
+				3BEF348D22708E88002E4DB5 /* TransactionHistoryDetailPreBroadcastCell.xib */,
 			);
 			path = TransactionDetail;
 			sourceTree = "<group>";
@@ -3151,6 +3157,7 @@
 				B5E7F219221466EE00358A24 /* CountryCodeSearchView.xib in Resources */,
 				3B23126320DA6CA30099A557 /* TransactionHistoryDetailCellAddressView.xib in Resources */,
 				B5E7F21F22146B9000358A24 /* CountryCodePickerCell.xib in Resources */,
+				3BEF348F22708E88002E4DB5 /* TransactionHistoryDetailPreBroadcastCell.xib in Resources */,
 				3BF8523D2023788D00EBBE44 /* StartViewController.storyboard in Resources */,
 				3B9779AF202E416700C9C933 /* Montserrat-ThinItalic.ttf in Resources */,
 				A29CE0DE209B756E00761B91 /* ContactsTableViewHeader.xib in Resources */,
@@ -3446,6 +3453,7 @@
 				30B08FB821F23F3C0012B4CF /* AppCoordinator+SyncManagerTypeDelegate.swift in Sources */,
 				B54159CC20A5DEBF0048F495 /* CKMUser+CoreDataProperties.swift in Sources */,
 				230DE9FD207E786300CA8B03 /* NotificationToken.swift in Sources */,
+				3BEF348E22708E88002E4DB5 /* TransactionHistoryDetailPreBroadcastCell.swift in Sources */,
 				B55D085221B72397007DD9E5 /* CKPhoneNumberParser.swift in Sources */,
 				B582409420920E3F005D2F90 /* CompactActionButton.swift in Sources */,
 				3B23126720DA6D0E0099A557 /* TransactionHistoryDetailCellAddressView.swift in Sources */,

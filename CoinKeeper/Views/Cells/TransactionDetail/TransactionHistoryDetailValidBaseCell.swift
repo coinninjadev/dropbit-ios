@@ -13,22 +13,35 @@ class TransactionHistoryDetailValidBaseCell: TransactionHistoryDetailBaseCell {
 
   @IBOutlet var progressBarWidthConstraint: NSLayoutConstraint!
   @IBOutlet var progressView: SteppedProgressBar!
+  @IBOutlet var addressView: TransactionHistoryDetailCellAddressView!
 
   func setupProgressBar(with viewModel: TransactionHistoryDetailCellViewModel) {
     let shouldHide: Bool
-    if let invitationStatus = viewModel.invitationStatus {
+    if viewModel.invitationStatus != nil {
       progressView.titles = ["", "", "", "", ""]
       progressView.stepTitles = ["1", "2", "3", "4", "✓"]
-      shouldHide = invitationStatus == .expired || invitationStatus == .canceled || viewModel.broadcastFailed
       progressBarWidthConstraint.constant = 250
     } else {
       progressView.titles = ["", "", ""]
       progressView.stepTitles = ["1", "2", "✓"]
-      shouldHide = viewModel.broadcastFailed
       progressBarWidthConstraint.constant = 130
     }
 
+    shouldHide = viewModel.broadcastFailed
     progressView.currentTab = viewModel.currentSelectedTab
     progressView.isHidden = shouldHide
+  }
+
+  override func load(with viewModel: TransactionHistoryDetailCellViewModel, delegate: TransactionHistoryDetailCellDelegate) {
+    super.load(with: viewModel, delegate: delegate)
+
+    addressView.selectionDelegate = self
+    addressView.load(with: viewModel)
+  }
+}
+
+extension TransactionHistoryDetailValidBaseCell: TransactionHistoryDetailAddressViewDelegate {
+  func addressViewDidSelectAddress(_ addressView: TransactionHistoryDetailCellAddressView) {
+//    self.delegate?.didTapAddress(detailCell: self)
   }
 }

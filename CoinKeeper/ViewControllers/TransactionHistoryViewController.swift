@@ -215,6 +215,7 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
     summaryCollectionView.registerNib(cellType: TransactionHistorySummaryCell.self)
     detailCollectionView.registerNib(cellType: TransactionHistoryDetailCell.self)
     detailCollectionView.registerNib(cellType: TransactionHistoryDetailInvalidCell.self)
+    detailCollectionView.registerNib(cellType: TransactionHistoryDetailPreBroadcastCell.self)
     summaryCollectionView.alwaysBounceVertical = true
 
     for cView in self.collectionViews {
@@ -375,12 +376,6 @@ extension TransactionHistoryViewController: UICollectionViewDataSource {
       return cell
 
     case detailCollectionView:
-//      var cell: UICollectionViewCell!
-//      guard let cell = collectionView.dequeueReusableCell(
-//        withReuseIdentifier: TransactionHistoryDetailCell.reuseIdentifier,
-//        for: indexPath) as? TransactionHistoryDetailCell
-//        else { return UICollectionViewCell() }
-
       let vm = detailViewModel(at: indexPath)
 
       if let invitation = vm.transaction?.invitation {
@@ -388,6 +383,10 @@ extension TransactionHistoryViewController: UICollectionViewDataSource {
         case .canceled, .expired:
           let cell = detailCollectionView.dequeue(TransactionHistoryDetailInvalidCell.self, for: indexPath)
         // idea: make `load` be `loadedWith` and return self for chaining
+          cell.load(with: vm, delegate: self)
+          return cell
+        case .addressSent:
+          let cell = detailCollectionView.dequeue(TransactionHistoryDetailPreBroadcastCell.self, for: indexPath)
           cell.load(with: vm, delegate: self)
           return cell
         default:
@@ -400,10 +399,6 @@ extension TransactionHistoryViewController: UICollectionViewDataSource {
         cell.load(with: vm, delegate: self)
         return cell
       }
-
-//      cell.load(with: vm, delegate: self)
-//
-//      return cell
 
     default:
       return UICollectionViewCell()
