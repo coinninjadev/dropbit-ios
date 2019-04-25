@@ -33,6 +33,10 @@ class TransactionHistoryDetailBaseCell: UICollectionViewCell {
     didSet {
       addMemoButton.setTitleColor(Theme.Color.grayText.color, for: .normal)
       addMemoButton.titleLabel?.font = Theme.Font.addMemoTitle.font
+      addMemoButton.setTitle("  Add Memo", for: .normal)
+      let plusImage = UIImage(imageLiteralResourceName: "plusIcon").withRenderingMode(.alwaysTemplate)
+      addMemoButton.setImage(plusImage, for: .normal)
+      addMemoButton.tintColor = Theme.Color.grayText.color
     }
   }
   @IBOutlet var memoContainerView: ConfirmPaymentMemoView!

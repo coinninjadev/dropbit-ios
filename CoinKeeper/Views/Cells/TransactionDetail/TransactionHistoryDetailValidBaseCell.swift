@@ -16,6 +16,11 @@ class TransactionHistoryDetailValidBaseCell: TransactionHistoryDetailBaseCell {
   @IBOutlet var addressView: TransactionHistoryDetailCellAddressView!
 
   func setupProgressBar(with viewModel: TransactionHistoryDetailCellViewModel) {
+    progressView.activeColor = Theme.Color.successGreen.color
+    progressView.inactiveColor = Theme.Color.lightGrayText.color
+    progressView.inactiveTextColor = progressView.inactiveColor
+    progressView.stepFont = Theme.Font.progressBarNode.font
+
     let shouldHide: Bool
     if viewModel.invitationStatus != nil {
       progressView.titles = ["", "", "", "", ""]

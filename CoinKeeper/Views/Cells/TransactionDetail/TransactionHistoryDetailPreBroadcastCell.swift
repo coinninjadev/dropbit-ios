@@ -12,10 +12,15 @@ class TransactionHistoryDetailPreBroadcastCell: TransactionHistoryDetailValidBas
 
   @IBOutlet var messageContainer: TransactionDetailsInfoContainer!
   @IBOutlet var messageLabel: TransactionDetailMessageLabel!
+  @IBOutlet var messageContainerHeightConstraint: NSLayoutConstraint!
 
   override func load(with viewModel: TransactionHistoryDetailCellViewModel, delegate: TransactionHistoryDetailCellDelegate) {
     super.load(with: viewModel, delegate: delegate)
     messageLabel.text = viewModel.messageLabel
+    messageContainer.isHidden = viewModel.messageLabel == nil
+    messageLabel.isHidden = viewModel.messageLabel == nil
+    messageContainerHeightConstraint.constant = messageLabel.intrinsicContentSize.height + 16
     setupProgressBar(with: viewModel)
+    layoutIfNeeded()
   }
 }

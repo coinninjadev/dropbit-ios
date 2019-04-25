@@ -55,13 +55,13 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="PVB-b5-rqf" customClass="TransactionDetailPrimaryAmountLabel" customModule="DropBit" customModuleProvider="target">
-                        <rect key="frame" x="159" y="210" width="42" height="20.5"/>
+                        <rect key="frame" x="159" y="210" width="42" height="20"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="j5I-Ng-t2r">
-                        <rect key="frame" x="8" y="238.5" width="344" height="245.5"/>
+                        <rect key="frame" x="8" y="238" width="344" height="246"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" verticalCompressionResistancePriority="751" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fJn-Cf-Sn1" customClass="TransactionDetailSecondaryAmountLabel" customModule="DropBit" customModuleProvider="target">
                                 <rect key="frame" x="151" y="0.0" width="42" height="20.5"/>
@@ -75,22 +75,38 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2pm-yR-54f">
-                                <rect key="frame" x="149" y="65" width="46" height="33"/>
-                                <state key="normal" title="Button"/>
-                            </button>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0ZE-KU-7Lg" customClass="ConfirmPaymentMemoView" customModule="DropBit" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="110" width="344" height="70.5"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                            </view>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="hHW-m7-E2g">
+                                <rect key="frame" x="0.0" y="65" width="344" height="116"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" verticalCompressionResistancePriority="749" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="xWR-sL-gbH" userLabel="top buffer view">
+                                        <rect key="frame" x="52" y="0.0" width="240" height="0.0"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </view>
+                                    <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="751" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2pm-yR-54f">
+                                        <rect key="frame" x="149" y="12" width="46" height="30"/>
+                                        <state key="normal" title="Button"/>
+                                    </button>
+                                    <view contentMode="scaleToFill" verticalCompressionResistancePriority="751" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0ZE-KU-7Lg" customClass="ConfirmPaymentMemoView" customModule="DropBit" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="54" width="344" height="50"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </view>
+                                    <view contentMode="scaleToFill" verticalCompressionResistancePriority="749" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="mbv-EV-kaI" userLabel="bottom buffer view">
+                                        <rect key="frame" x="52" y="116" width="240" height="0.0"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </view>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstItem="xWR-sL-gbH" firstAttribute="height" secondItem="mbv-EV-kaI" secondAttribute="height" id="U23-Zm-diP"/>
+                                </constraints>
+                            </stackView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="biq-EA-EIs" customClass="TransactionDetailWarningLabel" customModule="DropBit" customModuleProvider="target">
-                                <rect key="frame" x="151" y="192.5" width="42" height="20.5"/>
+                                <rect key="frame" x="151" y="193" width="42" height="20.5"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="RT6-N2-m4e" customClass="TransactionDetailDateLabel" customModule="DropBit" customModuleProvider="target">
-                                <rect key="frame" x="151" y="225" width="42" height="20.5"/>
+                                <rect key="frame" x="151" y="225.5" width="42" height="20.5"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -101,17 +117,17 @@
                         <rect key="frame" x="8" y="125" width="344" height="77"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zew-q1-9rY">
-                                <rect key="frame" x="0.0" y="0.0" width="344" height="28"/>
+                                <rect key="frame" x="0.0" y="0.0" width="344" height="28.5"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="56N-0V-teq" customClass="TransactionDetailCounterpartyLabel" customModule="DropBit" customModuleProvider="target">
-                                <rect key="frame" x="151" y="28" width="42" height="20.5"/>
+                                <rect key="frame" x="151" y="28.5" width="42" height="20.5"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="a6S-Ht-Tay">
-                                <rect key="frame" x="0.0" y="48.5" width="344" height="28.5"/>
+                                <rect key="frame" x="0.0" y="49" width="344" height="28"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </view>
                         </subviews>
