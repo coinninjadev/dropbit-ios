@@ -13,8 +13,8 @@ import os.log
 protocol TransactionHistoryDetailCellDelegate: class {
   func didTapQuestionMarkButton(detailCell: TransactionHistoryDetailBaseCell, with url: URL)
   func didTapClose(detailCell: TransactionHistoryDetailBaseCell)
-  func didTapAddress(detailCell: TransactionHistoryDetailCell)
-  func didTapBottomButton(detailCell: TransactionHistoryDetailCell, action: TransactionDetailAction)
+  func didTapAddress(detailCell: TransactionHistoryDetailBaseCell)
+  func didTapBottomButton(detailCell: TransactionHistoryDetailBaseCell, action: TransactionDetailAction)
   func didTapAddMemoButton(completion: @escaping (String) -> Void)
   func shouldSaveMemo(for transaction: CKMTransaction) -> Promise<Void>
 }

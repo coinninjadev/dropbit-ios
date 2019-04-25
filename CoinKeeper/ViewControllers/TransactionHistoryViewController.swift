@@ -213,9 +213,8 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
 
   private func setupCollectionViews() {
     summaryCollectionView.registerNib(cellType: TransactionHistorySummaryCell.self)
-    detailCollectionView.registerNib(cellType: TransactionHistoryDetailCell.self)
     detailCollectionView.registerNib(cellType: TransactionHistoryDetailInvalidCell.self)
-    detailCollectionView.registerNib(cellType: TransactionHistoryDetailPreBroadcastCell.self)
+    detailCollectionView.registerNib(cellType: TransactionHistoryDetailValidCell.self)
     summaryCollectionView.alwaysBounceVertical = true
 
     for cView in self.collectionViews {
@@ -382,20 +381,15 @@ extension TransactionHistoryViewController: UICollectionViewDataSource {
         switch invitation.status {
         case .canceled, .expired:
           let cell = detailCollectionView.dequeue(TransactionHistoryDetailInvalidCell.self, for: indexPath)
-        // idea: make `load` be `loadedWith` and return self for chaining
-          cell.load(with: vm, delegate: self)
-          return cell
-        case .addressSent:
-          let cell = detailCollectionView.dequeue(TransactionHistoryDetailPreBroadcastCell.self, for: indexPath)
           cell.load(with: vm, delegate: self)
           return cell
         default:
-          let cell: TransactionHistoryDetailCell = detailCollectionView.dequeue(TransactionHistoryDetailCell.self, for: indexPath)
+          let cell = detailCollectionView.dequeue(TransactionHistoryDetailValidCell.self, for: indexPath)
           cell.load(with: vm, delegate: self)
           return cell
         }
       } else {
-        let cell: TransactionHistoryDetailCell = detailCollectionView.dequeue(TransactionHistoryDetailCell.self, for: indexPath)
+        let cell = detailCollectionView.dequeue(TransactionHistoryDetailValidCell.self, for: indexPath)
         cell.load(with: vm, delegate: self)
         return cell
       }
@@ -429,6 +423,7 @@ extension TransactionHistoryViewController: UICollectionViewDelegate {
 
       // Show detail collection view scrolled to the same indexPath as the selected summary cell
       detailCollectionView.scrollToItem(at: indexPath, at: .left, animated: false)
+      detailCollectionView.reloadItems(at: [indexPath])
       showDetailCollectionView(true, animated: true)
 
     case detailCollectionView:
@@ -457,7 +452,7 @@ extension TransactionHistoryViewController: TransactionHistoryDetailCellDelegate
     showDetailCollectionView(false, animated: true)
   }
 
-  func didTapAddress(detailCell: TransactionHistoryDetailCell) {
+  func didTapAddress(detailCell: TransactionHistoryDetailBaseCell) {
     guard let path = self.detailCollectionView.indexPath(for: detailCell),
       let address = self.detailViewModel(at: path).receiverAddress,
       let addressURL = CoinNinjaUrlFactory.buildUrl(for: .address(id: address))
@@ -466,7 +461,7 @@ extension TransactionHistoryViewController: TransactionHistoryDetailCellDelegate
     urlOpener?.openURL(addressURL, completionHandler: nil)
   }
 
-  func didTapBottomButton(detailCell: TransactionHistoryDetailCell, action: TransactionDetailAction) {
+  func didTapBottomButton(detailCell: TransactionHistoryDetailBaseCell, action: TransactionDetailAction) {
     guard let path = detailCollectionView.indexPath(for: detailCell) else { return }
 
     switch action {
