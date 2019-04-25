@@ -549,8 +549,4 @@ extension TransactionHistoryViewController: DZNEmptyDataSetDelegate, DZNEmptyDat
     let isOverlapping = (collectionViewContentBottom >= withBalanceViewTop)
     return !isOverlapping
   }
-
-  private var deviceIsSmall: Bool {
-    return (view.frame.height < 600)
-  }
 }
