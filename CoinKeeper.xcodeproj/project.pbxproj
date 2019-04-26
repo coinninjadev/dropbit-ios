@@ -509,6 +509,7 @@
 		B51FB0E621751F75005CBAD6 /* CNNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BA389A82035E62F00B599A0 /* CNNavigationController.swift */; };
 		B51FB0E82175221A005CBAD6 /* UITestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51FB0E72175221A005CBAD6 /* UITestCase.swift */; };
 		B52053E1227B6D3000E5D2ED /* AlertManager+Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52053E0227B6D3000E5D2ED /* AlertManager+Constants.swift */; };
+		B520DFE722734085004C7D9E /* NetworkManager+DropBitMeRequestable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B520DFE622734085004C7D9E /* NetworkManager+DropBitMeRequestable.swift */; };
 		B521E85F218785B8002DB8C2 /* CoreDataObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = B559AF1021811FDD001D44F2 /* CoreDataObserver.swift */; };
 		B5221D5122441CAA0081C868 /* ContactCacheMigratorFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5221D5022441CAA0081C868 /* ContactCacheMigratorFactory.swift */; };
 		B5221D5322441CC30081C868 /* MigrateContactCacheV1toV2.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5221D5222441CC30081C868 /* MigrateContactCacheV1toV2.swift */; };
@@ -1309,6 +1310,7 @@
 		B51F823D207BDEC900692F5B /* UIView+ParentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+ParentViewController.swift"; sourceTree = "<group>"; };
 		B51FB0E72175221A005CBAD6 /* UITestCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITestCase.swift; sourceTree = "<group>"; };
 		B52053E0227B6D3000E5D2ED /* AlertManager+Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AlertManager+Constants.swift"; sourceTree = "<group>"; };
+		B520DFE622734085004C7D9E /* NetworkManager+DropBitMeRequestable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NetworkManager+DropBitMeRequestable.swift"; sourceTree = "<group>"; };
 		B5221D4F2243FFB70081C868 /* ContactCache v2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "ContactCache v2.xcdatamodel"; sourceTree = "<group>"; };
 		B5221D5022441CAA0081C868 /* ContactCacheMigratorFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactCacheMigratorFactory.swift; sourceTree = "<group>"; };
 		B5221D5222441CC30081C868 /* MigrateContactCacheV1toV2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MigrateContactCacheV1toV2.swift; sourceTree = "<group>"; };
@@ -2722,6 +2724,7 @@
 				B56E15A02167E6F1003B69D4 /* NetworkManager+CurrencyValueDataSourceType.swift */,
 				B56E15A62167EAE6003B69D4 /* NetworkManager+DeviceRequestable.swift */,
 				B5C8F5CA216D3A8800E3E85B /* NetworkManager+DeviceEndpointRequestable.swift */,
+				B520DFE622734085004C7D9E /* NetworkManager+DropBitMeRequestable.swift */,
 				B52B1E0B21A315DC0000B9CF /* NetworkManager+MerchantPaymentRequestRequestable.swift */,
 				B56E15A42167EAAD003B69D4 /* NetworkManager+MessagesRequestable.swift */,
 				B56E15A22167EA26003B69D4 /* NetworkManager+PricingRequestable.swift */,
@@ -3581,6 +3584,7 @@
 				B51AE4AD2093B5F3008380CC /* CKMInvitation+CoreDataProperties.swift in Sources */,
 				B56F75D22272367300B5EE74 /* DropBitMeTarget.swift in Sources */,
 				3BFA7190203F2B5500774D59 /* PinDisplayView.swift in Sources */,
+				B520DFE722734085004C7D9E /* NetworkManager+DropBitMeRequestable.swift in Sources */,
 				3B5052B32045FAFA000C739F /* CreateRecoveryWordsViewController.swift in Sources */,
 				B5192FA2216E7BCA00DCC39B /* WalletAddressError.swift in Sources */,
 				3BAB1447204EE6BB001D41A2 /* BaseViewController.swift in Sources */,

@@ -9,6 +9,10 @@
 import Foundation
 import Moya
 
+public struct DropBitMeBody: Encodable {
+  let enabled: Bool
+}
+
 /// An object nested within the UserResponse
 public struct DropBitMeResponse: ResponseCodable {
   let id: String

@@ -12,7 +12,7 @@ public enum DropBitMeTarget: CoinNinjaTargetType {
   typealias ResponseType = DropBitMeResponse
 
   case get
-  case update(DropBitMeResponse)
+  case update(DropBitMeBody)
 
 }
 
