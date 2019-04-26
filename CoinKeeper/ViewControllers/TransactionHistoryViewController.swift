@@ -422,8 +422,9 @@ extension TransactionHistoryViewController: UICollectionViewDelegate {
     case summaryCollectionView:
 
       // Show detail collection view scrolled to the same indexPath as the selected summary cell
+      let indexPaths = collectionView.indexPathsForVisibleItems
+      detailCollectionView.reloadItems(at: indexPaths)
       detailCollectionView.scrollToItem(at: indexPath, at: .left, animated: false)
-      detailCollectionView.reloadItems(at: [indexPath])
       showDetailCollectionView(true, animated: true)
 
     case detailCollectionView:
