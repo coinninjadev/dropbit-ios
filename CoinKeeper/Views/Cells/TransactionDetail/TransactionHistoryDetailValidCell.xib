@@ -27,10 +27,10 @@
                         </constraints>
                     </imageView>
                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="YxG-0I-pcu">
-                        <rect key="frame" x="0.0" y="117" width="360" height="115"/>
+                        <rect key="frame" x="12" y="117" width="336" height="113"/>
                         <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" axis="vertical" alignment="center" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="tWZ-Sw-nHI">
-                                <rect key="frame" x="115" y="0.0" width="130" height="35.5"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="tWZ-Sw-nHI">
+                                <rect key="frame" x="103" y="0.0" width="130" height="33.5"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dum-dC-T6E" customClass="SteppedProgressBar" customModule="JKSteppedProgressBar">
                                         <rect key="frame" x="0.0" y="0.0" width="130" height="25"/>
@@ -40,28 +40,28 @@
                                             <constraint firstAttribute="height" constant="25" id="0EX-2T-FbN"/>
                                         </constraints>
                                     </view>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" verticalCompressionResistancePriority="751" ambiguous="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6eD-f4-eiO" customClass="TransactionDetailStatusLabel" customModule="DropBit" customModuleProvider="target">
-                                        <rect key="frame" x="44" y="29" width="42" height="6.5"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" verticalCompressionResistancePriority="751" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6eD-f4-eiO" customClass="TransactionDetailStatusLabel" customModule="DropBit" customModuleProvider="target">
+                                        <rect key="frame" x="44" y="29" width="42" height="4.5"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                 </subviews>
                             </stackView>
-                            <view contentMode="scaleToFill" verticalHuggingPriority="249" verticalCompressionResistancePriority="749" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="UtL-ss-iVC" userLabel="middle buffer view">
-                                <rect key="frame" x="60" y="45.5" width="240" height="0.0"/>
+                            <view contentMode="scaleToFill" verticalHuggingPriority="249" verticalCompressionResistancePriority="749" translatesAutoresizingMaskIntoConstraints="NO" id="UtL-ss-iVC" userLabel="middle buffer view">
+                                <rect key="frame" x="48" y="43.5" width="240" height="0.0"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </view>
-                            <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" axis="vertical" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="37Q-hB-r71">
-                                <rect key="frame" x="60" y="55.5" width="240" height="49.5"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="37Q-hB-r71">
+                                <rect key="frame" x="48" y="53.5" width="240" height="49.5"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" verticalCompressionResistancePriority="751" ambiguous="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fzt-L2-dOw" customClass="TransactionDetailCounterpartyLabel" customModule="DropBit" customModuleProvider="target">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" verticalCompressionResistancePriority="1000" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fzt-L2-dOw" customClass="TransactionDetailCounterpartyLabel" customModule="DropBit" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="0.0" width="240" height="20.5"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hLb-Hq-5s7" customClass="TransactionHistoryDetailCellAddressView" customModule="DropBit" customModuleProvider="target">
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hLb-Hq-5s7" customClass="TransactionHistoryDetailCellAddressView" customModule="DropBit" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="24.5" width="240" height="25"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
@@ -71,7 +71,7 @@
                                 </subviews>
                             </stackView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WFJ-4S-Rgy" userLabel="bottom buffer view">
-                                <rect key="frame" x="60" y="115" width="240" height="0.0"/>
+                                <rect key="frame" x="48" y="113" width="240" height="0.0"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </view>
                         </subviews>
@@ -79,14 +79,14 @@
                             <constraint firstItem="UtL-ss-iVC" firstAttribute="height" secondItem="WFJ-4S-Rgy" secondAttribute="height" id="owv-Zf-JhB"/>
                         </constraints>
                     </stackView>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="GiX-t1-ouu" customClass="TransactionDetailPrimaryAmountLabel" customModule="DropBit" customModuleProvider="target">
-                        <rect key="frame" x="159" y="220" width="42" height="0.0"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="GiX-t1-ouu" customClass="TransactionDetailPrimaryAmountLabel" customModule="DropBit" customModuleProvider="target">
+                        <rect key="frame" x="159" y="218" width="42" height="4"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="13" translatesAutoresizingMaskIntoConstraints="NO" id="HhA-Mw-oMV">
-                        <rect key="frame" x="22" y="228" width="316" height="256"/>
+                        <rect key="frame" x="22" y="230" width="316" height="254"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7bI-qJ-R1m" customClass="TransactionDetailSecondaryAmountLabel" customModule="DropBit" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="0.0" width="316" height="0.0"/>
@@ -94,35 +94,35 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" ambiguous="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ca5-B2-QYX">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ca5-B2-QYX">
                                 <rect key="frame" x="0.0" y="13" width="316" height="0.0"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" axis="vertical" alignment="center" spacing="13" translatesAutoresizingMaskIntoConstraints="NO" id="G4d-NH-1u9" userLabel="Memo Stack View">
-                                <rect key="frame" x="0.0" y="26" width="316" height="85"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="13" translatesAutoresizingMaskIntoConstraints="NO" id="G4d-NH-1u9" userLabel="Memo Stack View">
+                                <rect key="frame" x="0.0" y="26" width="316" height="83"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" verticalCompressionResistancePriority="749" translatesAutoresizingMaskIntoConstraints="NO" id="7cs-Up-bPJ" userLabel="top buffer view">
                                         <rect key="frame" x="38" y="0.0" width="240" height="0.0"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </view>
-                                    <button opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AaP-xk-DBt">
+                                    <button opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AaP-xk-DBt">
                                         <rect key="frame" x="135" y="13" width="46" height="0.0"/>
                                         <state key="normal" title="Button"/>
                                         <connections>
                                             <action selector="didTapAddMemoButton:" destination="gTV-IL-0wX" eventType="touchUpInside" id="ffb-Yy-Is9"/>
                                         </connections>
                                     </button>
-                                    <view contentMode="scaleToFill" verticalCompressionResistancePriority="751" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Dmg-ch-A7F" customClass="ConfirmPaymentMemoView" customModule="DropBit" customModuleProvider="target">
-                                        <rect key="frame" x="38" y="26" width="240" height="46"/>
+                                    <view contentMode="scaleToFill" verticalCompressionResistancePriority="751" translatesAutoresizingMaskIntoConstraints="NO" id="Dmg-ch-A7F" customClass="ConfirmPaymentMemoView" customModule="DropBit" customModuleProvider="target">
+                                        <rect key="frame" x="38" y="26" width="240" height="44"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="44" id="AeH-aF-w1e"/>
                                         </constraints>
                                     </view>
-                                    <view contentMode="scaleToFill" verticalCompressionResistancePriority="749" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="oWX-jX-Isr" userLabel="bottom buffer view">
-                                        <rect key="frame" x="38" y="85" width="240" height="0.0"/>
+                                    <view contentMode="scaleToFill" verticalCompressionResistancePriority="749" translatesAutoresizingMaskIntoConstraints="NO" id="oWX-jX-Isr" userLabel="bottom buffer view">
+                                        <rect key="frame" x="38" y="83" width="240" height="0.0"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </view>
                                 </subviews>
@@ -130,8 +130,8 @@
                                     <constraint firstItem="oWX-jX-Isr" firstAttribute="height" secondItem="7cs-Up-bPJ" secondAttribute="height" id="LEA-Pm-Lrj"/>
                                 </constraints>
                             </stackView>
-                            <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="bR9-tN-fDA">
-                                <rect key="frame" x="0.0" y="124" width="316" height="94"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="bR9-tN-fDA">
+                                <rect key="frame" x="0.0" y="122" width="316" height="94"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="tqV-1x-bnX" customClass="TransactionDetailsInfoContainer" customModule="DropBit" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="0.0" width="316" height="44"/>
@@ -164,15 +164,15 @@
                                     </button>
                                 </subviews>
                             </stackView>
-                            <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="d8V-VH-nZh" userLabel="buffer view">
-                                <rect key="frame" x="0.0" y="231" width="316" height="12"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="d8V-VH-nZh" userLabel="buffer view">
+                                <rect key="frame" x="0.0" y="229" width="316" height="12"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="12" id="jaJ-QN-VPc"/>
                                 </constraints>
                             </view>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" verticalCompressionResistancePriority="751" ambiguous="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1bD-K3-Kso" customClass="TransactionDetailDateLabel" customModule="DropBit" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="256" width="316" height="0.0"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" verticalCompressionResistancePriority="751" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1bD-K3-Kso" customClass="TransactionDetailDateLabel" customModule="DropBit" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="254" width="316" height="0.0"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -209,16 +209,18 @@
                 <constraint firstAttribute="trailing" secondItem="NgB-5f-0UF" secondAttribute="trailing" constant="5" id="AnQ-Pe-uhL"/>
                 <constraint firstItem="xcI-7b-2Eg" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="5" id="LFX-yk-QIA"/>
                 <constraint firstItem="GiX-t1-ouu" firstAttribute="centerY" secondItem="gTV-IL-0wX" secondAttribute="centerY" multiplier="0.8" id="QXC-7m-UDl"/>
-                <constraint firstAttribute="trailing" secondItem="YxG-0I-pcu" secondAttribute="trailing" id="RJt-ID-tpz"/>
+                <constraint firstAttribute="trailing" secondItem="YxG-0I-pcu" secondAttribute="trailing" constant="12" id="RJt-ID-tpz"/>
                 <constraint firstItem="HhA-Mw-oMV" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="22" id="US4-hc-T0k"/>
                 <constraint firstItem="GiX-t1-ouu" firstAttribute="centerX" secondItem="gTV-IL-0wX" secondAttribute="centerX" id="c09-WD-91n"/>
+                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="GiX-t1-ouu" secondAttribute="trailing" constant="8" id="cOf-Jq-iub"/>
                 <constraint firstItem="YxG-0I-pcu" firstAttribute="top" secondItem="x26-Nq-lHv" secondAttribute="bottom" constant="12" id="j8h-Cs-Mk9"/>
                 <constraint firstItem="xcI-7b-2Eg" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="5" id="kRN-p1-cI5"/>
                 <constraint firstItem="YxG-0I-pcu" firstAttribute="bottom" secondItem="GiX-t1-ouu" secondAttribute="top" constant="12" id="kmm-to-tFo"/>
+                <constraint firstItem="GiX-t1-ouu" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="8" id="ndT-A4-ABB"/>
                 <constraint firstItem="HhA-Mw-oMV" firstAttribute="top" secondItem="GiX-t1-ouu" secondAttribute="bottom" constant="8" id="oJw-9r-Vun"/>
                 <constraint firstAttribute="trailing" secondItem="HhA-Mw-oMV" secondAttribute="trailing" constant="22" id="qYO-pI-HJb"/>
                 <constraint firstItem="NgB-5f-0UF" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="5" id="xEZ-l3-w02"/>
-                <constraint firstItem="YxG-0I-pcu" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="xKo-cx-0UQ"/>
+                <constraint firstItem="YxG-0I-pcu" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="12" id="xKo-cx-0UQ"/>
                 <constraint firstItem="x26-Nq-lHv" firstAttribute="centerX" secondItem="gTV-IL-0wX" secondAttribute="centerX" id="z4O-oa-Y57"/>
                 <constraint firstItem="ZTg-uK-7eu" firstAttribute="bottom" secondItem="HhA-Mw-oMV" secondAttribute="bottom" constant="32" id="zv0-fg-sFe"/>
             </constraints>
