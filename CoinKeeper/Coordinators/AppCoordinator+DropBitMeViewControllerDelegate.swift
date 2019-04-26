@@ -27,23 +27,31 @@ extension AppCoordinator: DropBitMeViewControllerDelegate {
               dropbitMeVC.configure(with: .verified(url, urlInfo.enabled))
             }
           }
-
         }
       }
       .catch { error in
         self.alertManager.showError(message: "Failed to change DropBit.me URL status. Error: \(error.localizedDescription)", forDuration: 3.0)
-    }
+      }
       .finally {
         self.alertManager.hideActivityHUD(withDelay: nil, completion: nil)
     }
   }
 
   func viewControllerDidTapLearnMore(_ viewController: UIViewController) {
-    print(#function)
+    guard let url = CoinNinjaUrlFactory.buildUrl(for: .dropBitMeLearnMore) else { return }
+    self.openURL(url, completionHandler: nil)
   }
 
   func viewControllerDidTapShareOnTwitter(_ viewController: UIViewController) {
-    print(#function)
+    let context = self.persistenceManager.mainQueueContext()
+    guard let urlInfo = self.persistenceManager.getUserPublicURLInfo(in: context),
+      let url = CoinNinjaUrlFactory.buildUrl(for: .dropBitMe(publicURLId: urlInfo.id))
+      else { return }
+
+    viewController.dismiss(animated: true) {
+      let message = "Pay me in #Bitcoin using my Dropbit.me \(url.absoluteString)"
+      print(message)
+    }
   }
 
 }
