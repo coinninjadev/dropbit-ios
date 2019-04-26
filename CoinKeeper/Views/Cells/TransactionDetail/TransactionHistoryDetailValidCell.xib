@@ -85,7 +85,7 @@
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="13" translatesAutoresizingMaskIntoConstraints="NO" id="HhA-Mw-oMV">
+                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" spacing="13" translatesAutoresizingMaskIntoConstraints="NO" id="HhA-Mw-oMV">
                         <rect key="frame" x="22" y="230" width="316" height="254"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7bI-qJ-R1m" customClass="TransactionDetailSecondaryAmountLabel" customModule="DropBit" customModuleProvider="target">
@@ -130,53 +130,58 @@
                                     <constraint firstItem="oWX-jX-Isr" firstAttribute="height" secondItem="7cs-Up-bPJ" secondAttribute="height" id="LEA-Pm-Lrj"/>
                                 </constraints>
                             </stackView>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="bR9-tN-fDA">
-                                <rect key="frame" x="0.0" y="122" width="316" height="94"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="13" translatesAutoresizingMaskIntoConstraints="NO" id="8AX-cC-BVu">
+                                <rect key="frame" x="0.0" y="122" width="316" height="132"/>
                                 <subviews>
-                                    <view contentMode="scaleToFill" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="tqV-1x-bnX" customClass="TransactionDetailsInfoContainer" customModule="DropBit" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="0.0" width="316" height="44"/>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="bR9-tN-fDA">
+                                        <rect key="frame" x="0.0" y="0.0" width="316" height="94"/>
                                         <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vJT-iV-gek" customClass="TransactionDetailMessageLabel" customModule="DropBit" customModuleProvider="target">
-                                                <rect key="frame" x="14.5" y="2" width="287" height="40"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                <nil key="textColor"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
+                                            <view contentMode="scaleToFill" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="tqV-1x-bnX" customClass="TransactionDetailsInfoContainer" customModule="DropBit" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="0.0" width="316" height="44"/>
+                                                <subviews>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vJT-iV-gek" customClass="TransactionDetailMessageLabel" customModule="DropBit" customModuleProvider="target">
+                                                        <rect key="frame" x="14.5" y="2" width="287" height="40"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                        <nil key="textColor"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                </subviews>
+                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" secondItem="vJT-iV-gek" secondAttribute="width" multiplier="1.1" id="5dc-To-wOS"/>
+                                                    <constraint firstItem="vJT-iV-gek" firstAttribute="centerY" secondItem="tqV-1x-bnX" secondAttribute="centerY" id="Lbd-7W-AzU"/>
+                                                    <constraint firstAttribute="height" constant="44" id="TM4-dC-cMf"/>
+                                                    <constraint firstItem="vJT-iV-gek" firstAttribute="centerX" secondItem="tqV-1x-bnX" secondAttribute="centerX" id="duk-GU-KHm"/>
+                                                    <constraint firstAttribute="height" secondItem="vJT-iV-gek" secondAttribute="height" multiplier="1.1" id="gV1-iJ-q0a"/>
+                                                </constraints>
+                                            </view>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xxv-sM-Z5W" customClass="TransactionDetailBottomButton" customModule="DropBit" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="44" width="316" height="50"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="50" id="Utd-FB-9Aa"/>
+                                                </constraints>
+                                                <state key="normal" title="Button"/>
+                                                <connections>
+                                                    <action selector="didTapBottomButton:" destination="gTV-IL-0wX" eventType="touchUpInside" id="VPe-k5-Izx"/>
+                                                </connections>
+                                            </button>
                                         </subviews>
+                                    </stackView>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="d8V-VH-nZh" userLabel="buffer view">
+                                        <rect key="frame" x="0.0" y="107" width="316" height="12"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
-                                            <constraint firstAttribute="width" secondItem="vJT-iV-gek" secondAttribute="width" multiplier="1.1" id="5dc-To-wOS"/>
-                                            <constraint firstItem="vJT-iV-gek" firstAttribute="centerY" secondItem="tqV-1x-bnX" secondAttribute="centerY" id="Lbd-7W-AzU"/>
-                                            <constraint firstAttribute="height" constant="44" id="TM4-dC-cMf"/>
-                                            <constraint firstItem="vJT-iV-gek" firstAttribute="centerX" secondItem="tqV-1x-bnX" secondAttribute="centerX" id="duk-GU-KHm"/>
-                                            <constraint firstAttribute="height" secondItem="vJT-iV-gek" secondAttribute="height" multiplier="1.1" id="gV1-iJ-q0a"/>
+                                            <constraint firstAttribute="height" constant="12" id="jaJ-QN-VPc"/>
                                         </constraints>
                                     </view>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xxv-sM-Z5W" customClass="TransactionDetailBottomButton" customModule="DropBit" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="44" width="316" height="50"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="50" id="Utd-FB-9Aa"/>
-                                        </constraints>
-                                        <state key="normal" title="Button"/>
-                                        <connections>
-                                            <action selector="didTapBottomButton:" destination="gTV-IL-0wX" eventType="touchUpInside" id="VPe-k5-Izx"/>
-                                        </connections>
-                                    </button>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" verticalCompressionResistancePriority="751" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1bD-K3-Kso" customClass="TransactionDetailDateLabel" customModule="DropBit" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="132" width="316" height="0.0"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
                                 </subviews>
                             </stackView>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="d8V-VH-nZh" userLabel="buffer view">
-                                <rect key="frame" x="0.0" y="229" width="316" height="12"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="12" id="jaJ-QN-VPc"/>
-                                </constraints>
-                            </view>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" verticalCompressionResistancePriority="751" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1bD-K3-Kso" customClass="TransactionDetailDateLabel" customModule="DropBit" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="254" width="316" height="0.0"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                         </subviews>
                     </stackView>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xcI-7b-2Eg">
