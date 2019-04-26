@@ -58,7 +58,6 @@ enum BalanceContainerLeftButtonType {
   @IBOutlet var balancesTapGestureRecognizer: UITapGestureRecognizer!
   @IBOutlet var balancesLongPressRecognizer: UILongPressGestureRecognizer!
   @IBOutlet var syncActivityIndicator: UIImageView!
-  @IBOutlet var syncLabel: SyncingLabel!
 
   var startSyncNotificationToken: NotificationToken?
   var finishSyncNotificationToken: NotificationToken?
@@ -149,7 +148,6 @@ enum BalanceContainerLeftButtonType {
   }
 
   private func setSyncVisibility(hidden: Bool) {
-    syncLabel.isHidden = hidden
     syncActivityIndicator.isHidden = hidden
   }
 

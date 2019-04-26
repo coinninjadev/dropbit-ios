@@ -49,7 +49,6 @@
 		30E96A312179FE2A008079B8 /* AppCoordinator+PhoneNumberStatusViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30E96A302179FE2A008079B8 /* AppCoordinator+PhoneNumberStatusViewControllerDelegate.swift */; };
 		30E96A35217A1207008079B8 /* PhoneNumberStatusViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30E96A34217A1207008079B8 /* PhoneNumberStatusViewControllerTests.swift */; };
 		30F0B64B2139D6C300BF7DBB /* CoinNinjaUrlFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30F0B64A2139D6C300BF7DBB /* CoinNinjaUrlFactory.swift */; };
-		39E26B9321EA7344003928F1 /* SyncingLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39E26B9221EA7344003928F1 /* SyncingLabel.swift */; };
 		3B00C265220B1FEF001FC46B /* MockConnectionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B00C264220B1FEF001FC46B /* MockConnectionManager.swift */; };
 		3B00C269220DC78B001FC46B /* DeviceEndpoint.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B00C268220DC78B001FC46B /* DeviceEndpoint.generated.swift */; };
 		3B00C26B220E07C0001FC46B /* GeneratedTestWords.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B00C26A220E07C0001FC46B /* GeneratedTestWords.generated.swift */; };
@@ -846,7 +845,6 @@
 		30E96A302179FE2A008079B8 /* AppCoordinator+PhoneNumberStatusViewControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppCoordinator+PhoneNumberStatusViewControllerDelegate.swift"; sourceTree = "<group>"; };
 		30E96A34217A1207008079B8 /* PhoneNumberStatusViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneNumberStatusViewControllerTests.swift; sourceTree = "<group>"; };
 		30F0B64A2139D6C300BF7DBB /* CoinNinjaUrlFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinNinjaUrlFactory.swift; sourceTree = "<group>"; };
-		39E26B9221EA7344003928F1 /* SyncingLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncingLabel.swift; sourceTree = "<group>"; };
 		3B00C264220B1FEF001FC46B /* MockConnectionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockConnectionManager.swift; sourceTree = "<group>"; };
 		3B00C268220DC78B001FC46B /* DeviceEndpoint.generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceEndpoint.generated.swift; sourceTree = "<group>"; };
 		3B00C26A220E07C0001FC46B /* GeneratedTestWords.generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GeneratedTestWords.generated.swift; sourceTree = "<group>"; };
@@ -2775,7 +2773,6 @@
 				B54A4212207FF2E8005B40A9 /* TransactionDetailPrimaryAmountLabel.swift */,
 				B54A4214207FF310005B40A9 /* TransactionDetailSecondaryAmountLabel.swift */,
 				B530DFBC2108CF8400A0B1A8 /* TransactionDetailWarningLabel.swift */,
-				39E26B9221EA7344003928F1 /* SyncingLabel.swift */,
 			);
 			path = Labels;
 			sourceTree = "<group>";
@@ -3778,7 +3775,6 @@
 				3BA9F607208F6D2A0047C213 /* AppCoordinator+DrawerViewControllerDelegate.swift in Sources */,
 				B50FD13E215D681B00155BE1 /* AppCoordinator+TransactionAlerts.swift in Sources */,
 				3B6FDAD6204F4BA50091916A /* VerifyRecoveryWordCell.swift in Sources */,
-				39E26B9321EA7344003928F1 /* SyncingLabel.swift in Sources */,
 				3B6DCA1D2034B83700B87EF9 /* KeypadDigitView.swift in Sources */,
 				3B9A8DF52150371800C78C2C /* WalletDelegateType.swift in Sources */,
 				B56E15A32167EA26003B69D4 /* NetworkManager+PricingRequestable.swift in Sources */,
