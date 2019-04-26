@@ -132,6 +132,17 @@ class PersistenceManager: PersistenceManagerType {
     databaseManager.persistUserId(userId, in: context)
   }
 
+  func persistUserPublicURLInfo(_ info: UserPublicURLInfo, in context: NSManagedObjectContext) {
+    let user = CKMUser.find(in: context)
+    user?.publicURLId = info.id
+    user?.publicURLIsEnabled = info.enabled
+  }
+
+  func getUserPublicURLInfo(in context: NSManagedObjectContext) -> UserPublicURLInfo? {
+    guard let user = CKMUser.find(in: context), let publicURLId = user.publicURLId else { return nil }
+    return UserPublicURLInfo(id: publicURLId, enabled: user.publicURLIsEnabled)
+  }
+
   func persistVerificationStatus(from response: UserResponse, in context: NSManagedObjectContext) -> Promise<UserVerificationStatus> {
     return databaseManager.persistVerificationStatus(response.status, in: context)
   }

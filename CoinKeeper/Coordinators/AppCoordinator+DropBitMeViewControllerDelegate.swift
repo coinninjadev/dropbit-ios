@@ -14,23 +14,19 @@ extension AppCoordinator: DropBitMeViewControllerDelegate {
   func viewControllerDidEnableDropBitMeURL(_ viewController: UIViewController, shouldEnable: Bool) {
     let bgContext = self.persistenceManager.createBackgroundContext()
     self.alertManager.showActivityHUD(withStatus: nil)
-    self.networkManager.updateDropBitMe(enabled: shouldEnable)
+    self.networkManager.updateUserPublicURL(enabled: shouldEnable)
       .get(in: bgContext) { response in
-        
+        self.persistenceManager.persistUserPublicURLInfo(response, in: bgContext)
       }
       .done(in: bgContext) { response in
-
+        try bgContext.save()
       }
       .catch { error in
-        self.alertManager.showError(message: "Failed to change DropBit enabled. \(error.localizedDescription)", forDuration: 3.0)
+        self.alertManager.showError(message: "Failed to change DropBit.me URL status. Error: \(error.localizedDescription)", forDuration: 3.0)
     }
       .finally {
         self.alertManager.hideActivityHUD(withDelay: nil, completion: nil)
     }
-  }
-
-  func viewControllerDidTapDisableDropBitMeURL(_ viewController: UIViewController) {
-    print(#function)
   }
 
   func viewControllerDidTapLearnMore(_ viewController: UIViewController) {
