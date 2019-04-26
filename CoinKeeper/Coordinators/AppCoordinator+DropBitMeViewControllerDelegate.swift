@@ -11,8 +11,22 @@ import UIKit
 
 extension AppCoordinator: DropBitMeViewControllerDelegate {
 
-  func viewControllerDidTapEnableDropBitMeURL(_ viewController: UIViewController) {
-    print(#function)
+  func viewControllerDidEnableDropBitMeURL(_ viewController: UIViewController, shouldEnable: Bool) {
+    let bgContext = self.persistenceManager.createBackgroundContext()
+    self.alertManager.showActivityHUD(withStatus: nil)
+    self.networkManager.updateDropBitMe(enabled: shouldEnable)
+      .get(in: bgContext) { response in
+        
+      }
+      .done(in: bgContext) { response in
+
+      }
+      .catch { error in
+        self.alertManager.showError(message: "Failed to change DropBit enabled. \(error.localizedDescription)", forDuration: 3.0)
+    }
+      .finally {
+        self.alertManager.hideActivityHUD(withDelay: nil, completion: nil)
+    }
   }
 
   func viewControllerDidTapDisableDropBitMeURL(_ viewController: UIViewController) {
