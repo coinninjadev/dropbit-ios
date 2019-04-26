@@ -18,8 +18,17 @@ extension AppCoordinator: DropBitMeViewControllerDelegate {
       .get(in: bgContext) { response in
         self.persistenceManager.persistUserPublicURLInfo(response, in: bgContext)
       }
-      .done(in: bgContext) { response in
+      .done(in: bgContext) { _ in
         try bgContext.save()
+        if let urlInfo = self.persistenceManager.getUserPublicURLInfo(in: bgContext) {
+          DispatchQueue.main.async {
+            if let dropbitMeVC = viewController as? DropBitMeViewController,
+              let url = CoinNinjaUrlFactory.buildUrl(for: .dropBitMe(publicURLId: urlInfo.id)) {
+              dropbitMeVC.configure(with: .verified(url, urlInfo.enabled))
+            }
+          }
+
+        }
       }
       .catch { error in
         self.alertManager.showError(message: "Failed to change DropBit.me URL status. Error: \(error.localizedDescription)", forDuration: 3.0)

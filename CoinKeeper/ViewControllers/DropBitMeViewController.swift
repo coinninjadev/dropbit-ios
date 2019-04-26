@@ -19,6 +19,18 @@ enum DropBitMeConfig {
   case verified(URL, Bool) // true to show "You've been verified!" first time after verification
   case notVerified
   case disabled
+
+  init(publicURLInfo: UserPublicURLInfo?, verifiedFirstTime: Bool) {
+    if let info = publicURLInfo {
+      if info.enabled, let url = CoinNinjaUrlFactory.buildUrl(for: .dropBitMe(publicURLId: info.id)) {
+        self = .verified(url, verifiedFirstTime)
+      } else {
+        self = .disabled
+      }
+    } else {
+      self = .notVerified
+    }
+  }
 }
 
 class DropBitMeViewController: UIViewController, StoryboardInitializable {
