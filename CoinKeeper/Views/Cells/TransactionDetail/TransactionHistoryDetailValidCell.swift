@@ -32,6 +32,7 @@ class TransactionHistoryDetailValidCell: TransactionHistoryDetailBaseCell {
   @IBOutlet var messageContainer: TransactionDetailsInfoContainer!
   @IBOutlet var messageLabel: TransactionDetailMessageLabel!
   @IBOutlet var messageContainerHeightConstraint: NSLayoutConstraint!
+  @IBOutlet var bottomBufferView: UIView!
 
   // MARK: lifecycle
   override func load(with viewModel: TransactionHistoryDetailCellViewModel, delegate: TransactionHistoryDetailCellDelegate) {
@@ -46,6 +47,8 @@ class TransactionHistoryDetailValidCell: TransactionHistoryDetailBaseCell {
     addressView.load(with: viewModel)
 
     configureBottomButton(with: viewModel)
+
+    bottomBufferView.isHidden = (UIScreen.main.relativeSize == .short)
 
     layoutIfNeeded()
   }

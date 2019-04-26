@@ -228,6 +228,7 @@
             <connections>
                 <outlet property="addMemoButton" destination="AaP-xk-DBt" id="CZh-CY-mZz"/>
                 <outlet property="addressView" destination="hLb-Hq-5s7" id="1wK-Bk-dSx"/>
+                <outlet property="bottomBufferView" destination="d8V-VH-nZh" id="Vd3-wg-sez"/>
                 <outlet property="bottomButton" destination="xxv-sM-Z5W" id="8D8-7p-m6F"/>
                 <outlet property="closeButton" destination="NgB-5f-0UF" id="jKq-ld-MT1"/>
                 <outlet property="counterpartyLabel" destination="fzt-L2-dOw" id="G25-pU-IoZ"/>
