@@ -9,22 +9,22 @@
 import Foundation
 import PromiseKit
 
-protocol DropBitMeRequestable: AnyObject {
+protocol UserPublicURLRequestable: AnyObject {
 
-  func getDropBitMe() -> Promise<DropBitMeResponse>
-  func updateDropBitMe(enabled: Bool) -> Promise<DropBitMeResponse>
+  func getUserPublicURL() -> Promise<UserPublicURLResponse>
+  func updateUserPublicURL(enabled: Bool) -> Promise<UserPublicURLResponse>
 
 }
 
-extension NetworkManager: DropBitMeRequestable {
+extension NetworkManager: UserPublicURLRequestable {
 
-  func getDropBitMe() -> Promise<DropBitMeResponse> {
-    return cnProvider.request(DropBitMeTarget.get)
+  func getUserPublicURL() -> Promise<UserPublicURLResponse> {
+    return cnProvider.request(UserPublicURLTarget.get)
   }
 
-  func updateDropBitMe(enabled: Bool) -> Promise<DropBitMeResponse> {
-    let body = DropBitMeBody(enabled: enabled)
-    return cnProvider.request(DropBitMeTarget.update(body))
+  func updateUserPublicURL(enabled: Bool) -> Promise<UserPublicURLResponse> {
+    let body = UserPublicURLBody(enabled: enabled)
+    return cnProvider.request(UserPublicURLTarget.update(body))
   }
 
 }
