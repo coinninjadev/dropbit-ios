@@ -15,8 +15,6 @@ class TransactionHistoryDetailInvalidCell: TransactionHistoryDetailBaseCell {
 
   override func load(with viewModel: TransactionHistoryDetailCellViewModel, delegate: TransactionHistoryDetailCellDelegate) {
     super.load(with: viewModel, delegate: delegate)
-    statusLabel.text = viewModel.statusDescription
-    statusLabel.textColor = viewModel.descriptionColor
     warningLabel.text = viewModel.warningMessageLabel
     layoutIfNeeded()
   }
