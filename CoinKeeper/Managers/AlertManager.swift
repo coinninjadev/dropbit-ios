@@ -50,9 +50,10 @@ protocol AlertManagerType: CKBannerViewDelegate {
     actionConfigs: [AlertActionConfigurationType]
     ) -> AlertControllerType
 
-  func detailedAlert(withTitle title: String,
-                     description: String,
+  func detailedAlert(withTitle title: String?,
+                     description: String?,
                      image: UIImage,
+                     style: AlertMessageStyle,
                      action: AlertActionConfigurationType
     ) -> AlertControllerType
 
@@ -77,6 +78,7 @@ protocol AlertManagerType: CKBannerViewDelegate {
   func showBanner(with message: String)
   func showBanner(with message: String, duration: AlertDuration?)
   func showBanner(with message: String, duration: AlertDuration?, alertKind kind: CKBannerViewKind)
+  func showBanner(with message: String, duration: AlertDuration?, alertKind kind: CKBannerViewKind, tapAction: (() -> Void)?)
 
   /// This may be used to show either a banner or a local notification, depending on launchType (background status)
   func showAlert(for update: AddressRequestUpdateDisplayable)
@@ -96,7 +98,7 @@ extension AlertManagerType {
 
   // Satisfies protocol requirement and redirects to function with duration if this function without duration is called
   func showBanner(with message: String) {
-    showBanner(with: message, duration: .default, alertKind: .info) // default parameter
+    showBanner(with: message, duration: .default, alertKind: .info, tapAction: nil) // default parameter
   }
 
 }
@@ -137,6 +139,10 @@ protocol AlertActionConfigurationType {
   var title: String { get }
   var style: AlertActionStyle { get }
   var action: (() -> Void)? { get }
+}
+
+enum AlertMessageStyle {
+  case standard, warning
 }
 
 enum AlertActionStyle {
@@ -217,12 +223,13 @@ class AlertManager: AlertManagerType {
     return createAlert(withTitle: title, description: description, image: image, style: style, actionConfigs: actionConfigs)
   }
 
-  func detailedAlert(withTitle title: String,
-                     description: String,
+  func detailedAlert(withTitle title: String?,
+                     description: String?,
                      image: UIImage,
+                     style: AlertMessageStyle,
                      action: AlertActionConfigurationType) -> AlertControllerType {
     let alert = ActionableAlertViewController.makeFromStoryboard()
-    alert.setup(with: title, description: description, image: image, action: action)
+    alert.setup(with: title, description: description, image: image, style: style, action: action)
     alert.modalTransitionStyle = .crossDissolve
     alert.modalPresentationStyle = .overCurrentContext
 
@@ -230,16 +237,21 @@ class AlertManager: AlertManagerType {
   }
 
   func showBanner(with message: String, duration: AlertDuration?) {
-    showBanner(with: message, duration: duration, alertKind: .info, completion: nil)
+    showBanner(with: message, duration: duration, alertKind: .info, tapAction: nil, completion: nil)
   }
 
   func showBanner(with message: String, duration: AlertDuration?, alertKind kind: CKBannerViewKind) {
-    showBanner(with: message, duration: duration, alertKind: kind, completion: nil)
+    showBanner(with: message, duration: duration, alertKind: kind, tapAction: nil, completion: nil)
+  }
+
+  func showBanner(with message: String, duration: AlertDuration?, alertKind kind: CKBannerViewKind, tapAction: (() -> Void)? = nil) {
+    showBanner(with: message, duration: duration, alertKind: kind, tapAction: tapAction, completion: nil, url: nil)
   }
 
   private func showBanner(with message: String,
                           duration: AlertDuration?,
                           alertKind kind: CKBannerViewKind = .info,
+                          tapAction: (() -> Void)? = nil,
                           completion: (() -> Void)?, url: URL? = nil) {
     DispatchQueue.main.async { [weak self] in
       guard let strongSelf = self else { return }
@@ -255,6 +267,14 @@ class AlertManager: AlertManagerType {
       bannerView.configure(message: message, image: closeImage, alertKind: kind, delegate: strongSelf)
       bannerView.url = url
       bannerView.completion = completion
+
+      if let action = tapAction {
+        bannerView.tapHandler = { [weak bannerView] _ in
+          guard let banner = bannerView else { return }
+          self?.didTapBanner(banner)
+          action()
+        }
+      }
 
       let config = strongSelf.createConfig(with: duration)
       strongSelf.bannerManager.show(config: config, view: bannerView)

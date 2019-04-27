@@ -15,7 +15,7 @@ extension MockNetworkManager: UserRequestable {
     return Promise { _ in }
   }
 
-  func verifyUser(code: String) -> Promise<UserResponse> {
+  func verifyUser(phoneNumber: GlobalPhoneNumber, code: String) -> Promise<UserResponse> {
     return Promise { _ in }
   }
 

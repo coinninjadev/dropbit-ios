@@ -10,7 +10,7 @@ import UIKit
 
 protocol SuccessFailViewControllerDelegate: ViewControllerDismissable {
   func viewControllerDidRetry(_ viewController: SuccessFailViewController)
-  func viewController(_ viewController: SuccessFailViewController, success: Bool)
+  func viewController(_ viewController: SuccessFailViewController, success: Bool, completion: (() -> Void)?)
 }
 
 class SuccessFailViewController: BaseViewController, StoryboardInitializable {
@@ -56,7 +56,7 @@ class SuccessFailViewController: BaseViewController, StoryboardInitializable {
   @IBAction func actionButtonWasTouched() {
     switch mode {
     case .success:
-      coordinationDelegate?.viewController(self, success: true)
+      coordinationDelegate?.viewController(self, success: true, completion: nil)
     case .failure:
       if let retryRequestCompletion = retryCompletion {
         coordinationDelegate?.viewControllerDidRetry(self)
@@ -86,7 +86,7 @@ class SuccessFailViewController: BaseViewController, StoryboardInitializable {
         self.titleLabel?.text = self.viewModel.successTitle
         self.subtitleLabel?.text = self.viewModel.successSubtitle
         self.subtitleLabel?.textColor = Theme.Color.grayText.color
-        self.actionButton?.mode = .standard
+        self.actionButton?.style = .standard
         self.actionButton?.setTitle(self.viewModel.successButtonTitle, for: .normal)
         self.successFailView?.mode = .success
       case .failure:
@@ -95,7 +95,7 @@ class SuccessFailViewController: BaseViewController, StoryboardInitializable {
         self.titleLabel?.text = self.viewModel.failTitle
         self.subtitleLabel?.text = self.viewModel.failSubtitle
         self.subtitleLabel?.textColor = Theme.Color.errorRed.color
-        self.actionButton?.mode = .error
+        self.actionButton?.style = .error
         self.actionButton?.setTitle(self.viewModel.failButtonTitle, for: .normal)
         self.successFailView?.mode = .failure
       }

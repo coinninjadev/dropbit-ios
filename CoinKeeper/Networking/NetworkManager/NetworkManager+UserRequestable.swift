@@ -11,7 +11,7 @@ import PromiseKit
 protocol UserRequestable: AnyObject {
 
   func createUser(walletId: String, phoneNumber: GlobalPhoneNumber) -> Promise<UserResponse>
-  func verifyUser(code: String) -> Promise<UserResponse>
+  func verifyUser(phoneNumber: GlobalPhoneNumber, code: String) -> Promise<UserResponse>
   func getUser() -> Promise<UserResponse>
   func queryUsers(phoneNumberHashes: [String]) -> Promise<StringDictResponse>
 
@@ -47,19 +47,25 @@ extension NetworkManager: UserRequestable {
     return cnProvider.request(UserTarget.create(headers, body))
       .recover { error -> Promise<UserResponse> in
 
-        if let networkError = error as? CKNetworkError,
-          case let .recordAlreadyExists(response) = networkError {
-          let result = try response.map(UserResponse.self, using: UserResponse.decoder)
-          throw UserProviderError.userAlreadyExists(result.id, body)
-
+        if let networkError = error as? CKNetworkError {
+          switch networkError {
+          case .recordAlreadyExists(let response):
+            let userResponse = try response.map(UserResponse.self, using: UserResponse.decoder)
+            throw UserProviderError.userAlreadyExists(userResponse.id, body)
+          case .twilioError(let response):
+            let userResponse = try response.map(UserResponse.self, using: UserResponse.decoder)
+            throw UserProviderError.twilioError(userResponse, body)
+          default:
+            throw error
+          }
         } else {
           throw error
         }
     }
   }
 
-  func verifyUser(code: String) -> Promise<UserResponse> {
-    let body = VerifyUserBody(code: code)
+  func verifyUser(phoneNumber: GlobalPhoneNumber, code: String) -> Promise<UserResponse> {
+    let body = VerifyUserBody(phoneNumber: phoneNumber, code: code)
     return cnProvider.request(UserTarget.verify(body))
   }
 
@@ -81,6 +87,14 @@ extension NetworkManager: UserRequestable {
   /// pass in the headers as a combined struct so that the struct can be used as the value of the preceding promise
   func resendVerification(headers: DefaultRequestHeaders, body: CreateUserBody) -> Promise<UserResponse> {
     return cnProvider.request(UserTarget.resendVerification(headers, body))
+      .recover { error -> Promise<UserResponse> in
+        if let networkError = error as? CKNetworkError, case let .twilioError(response) = networkError {
+          let userResponse = try response.map(UserResponse.self, using: UserResponse.decoder)
+          throw UserProviderError.twilioError(userResponse, body)
+        } else {
+          throw error
+        }
+    }
   }
 
 }

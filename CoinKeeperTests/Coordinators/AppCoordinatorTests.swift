@@ -693,6 +693,7 @@ class MockAlertManager: AlertManagerType {
   func showBanner(with message: String, duration: AlertDuration) { }
   func showBanner(with message: String, duration: AlertDuration, alertKind kind: CKBannerViewKind) { }
   func showBanner(with message: String, alertKind kind: CKBannerViewKind) { }
+  func showBanner(with message: String, duration: AlertDuration?, alertKind kind: CKBannerViewKind, tapAction: (() -> Void)?) {}
   func showAlert(for update: AddressRequestUpdateDisplayable) { }
 
   func alert(withTitle title: String,
@@ -708,16 +709,17 @@ class MockAlertManager: AlertManagerType {
     return alertManager.alert(withTitle: title, description: description, image: image, style: style, actionConfigs: [])
   }
 
-  func detailedAlert(withTitle title: String,
-                     description: String,
+  func detailedAlert(withTitle title: String?,
+                     description: String?,
                      image: UIImage,
+                     style: AlertMessageStyle,
                      action: AlertActionConfigurationType
     ) -> AlertControllerType {
     let alertManager = AlertManager(notificationManager:
       NotificationManager(permissionManager: PermissionManager(),
                           networkInteractor: NetworkManager(persistenceManager: PersistenceManager(),
                                                             analyticsManager: AnalyticsManager())))
-    return alertManager.detailedAlert(withTitle: title, description: description, image: image, action: action)
+    return alertManager.detailedAlert(withTitle: title, description: description, image: image, style: style, action: action)
   }
 
   func didTapBanner(_ bannerView: CKBannerView) {}

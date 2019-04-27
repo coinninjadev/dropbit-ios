@@ -1,5 +1,6 @@
 PODS:
   - Alamofire (4.8.1)
+  - DZNEmptyDataSet (1.8.1)
   - JKSteppedProgressBar (0.5.0)
   - Mixpanel-swift (2.5.7):
     - Mixpanel-swift/Complete (= 2.5.7)
@@ -26,6 +27,8 @@ PODS:
   - Permission/Contacts (2.0.4):
     - Permission/Core
   - Permission/Core (2.0.4)
+  - Permission/Location (2.0.4):
+    - Permission/Core
   - Permission/Notifications (2.0.4):
     - Permission/Core
   - PhoneNumberKit (2.6.0):
@@ -40,12 +43,14 @@ PODS:
   - SVProgressHUD (2.2.5)
 
 DEPENDENCIES:
+  - DZNEmptyDataSet (~> 1.8)
   - JKSteppedProgressBar (from `https://github.com/MitchellMalleo/JKSteppedProgressBar.git`, commit `a41db05`)
   - Mixpanel-swift (~> 2.5.0)
   - MMDrawerController (~> 0.5.7)
   - Moya (~> 11.0.2)
   - Permission/Camera (from `https://github.com/pahmed/Permission.git`, commit `8b47d5f`)
   - Permission/Contacts (from `https://github.com/pahmed/Permission.git`, commit `8b47d5f`)
+  - Permission/Location (from `https://github.com/pahmed/Permission.git`, commit `8b47d5f`)
   - Permission/Notifications (from `https://github.com/pahmed/Permission.git`, commit `8b47d5f`)
   - PhoneNumberKit (from `https://github.com/blwinters/PhoneNumberKit.git`, commit `18b0a34`)
   - ReachabilitySwift
@@ -56,6 +61,7 @@ DEPENDENCIES:
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - Alamofire
+    - DZNEmptyDataSet
     - Mixpanel-swift
     - MMDrawerController
     - Moya
@@ -88,6 +94,7 @@ CHECKOUT OPTIONS:
 
 SPEC CHECKSUMS:
   Alamofire: 16ce2c353fb72865124ddae8a57c5942388f4f11
+  DZNEmptyDataSet: 9525833b9e68ac21c30253e1d3d7076cc828eaa7
   JKSteppedProgressBar: e61561a7faee1a4a216ac4510b4b6d1a3760e318
   Mixpanel-swift: d4de197db883e9dbba162fee6751db5e7766971b
   MMDrawerController: 7a4cf8e25596bf2434e03ce50d22a8608ddee6a1
@@ -99,6 +106,6 @@ SPEC CHECKSUMS:
   RNCryptor: c93d19029dcf7ff160aca0f24d6c9e7b0d82f664
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
 
-PODFILE CHECKSUM: 746f18e8a78f8a56d22f7b832774c263cd8e58ba
+PODFILE CHECKSUM: 8c571c559edbd892941c2b271157a43958f593bb
 
 COCOAPODS: 1.5.3

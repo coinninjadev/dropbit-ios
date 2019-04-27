@@ -39,7 +39,11 @@ class MockPersistenceDatabaseManager: PersistenceDatabaseType {
     return []
   }
 
-  func deleteTransactions(notIn txids: [String], in context: NSManagedObjectContext) { }
+  var deleteTransactionsFromResponsesWasCalled = false
+  func deleteTransactions(notIn txids: [String], in context: NSManagedObjectContext) {
+    deleteTransactionsFromResponsesWasCalled = true
+  }
+
   func unverifyUser(in context: NSManagedObjectContext) { }
 
   func removeWalletId(in context: NSManagedObjectContext) { }
@@ -78,15 +82,17 @@ class MockPersistenceDatabaseManager: PersistenceDatabaseType {
     return Promise { _ in }
   }
 
-  func persistUserId(_ id: String, in context: NSManagedObjectContext) -> Promise<CKMUser> {
-    return Promise { _ in }
-  }
+  func persistUserId(_ id: String, in context: NSManagedObjectContext) { }
 
   func walletId(in context: NSManagedObjectContext) -> String? {
     return nil
   }
 
   func userId(in context: NSManagedObjectContext) -> String? {
+    return nil
+  }
+
+  func latestTransaction(in context: NSManagedObjectContext) -> CKMTransaction? {
     return nil
   }
 

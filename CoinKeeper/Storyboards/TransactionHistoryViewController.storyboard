@@ -32,10 +32,6 @@
                                     <constraint firstAttribute="height" constant="66" id="eDx-vv-erX"/>
                                 </constraints>
                             </view>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="B8c-Jo-MxY" customClass="NoTransactionsView" customModule="DropBit" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="86" width="375" height="581"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                            </view>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="GX7-DA-6R2">
                                 <rect key="frame" x="0.0" y="86" width="375" height="477"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -72,7 +68,6 @@
                             <constraint firstItem="JGv-XL-uiR" firstAttribute="trailing" secondItem="Asa-Mr-foF" secondAttribute="trailing" id="6vm-Vl-UGC"/>
                             <constraint firstItem="GX7-DA-6R2" firstAttribute="top" secondItem="e1j-lc-uTG" secondAttribute="bottom" id="7DN-fy-t7g"/>
                             <constraint firstItem="e1j-lc-uTG" firstAttribute="top" secondItem="JGv-XL-uiR" secondAttribute="top" id="ExG-BB-kqq"/>
-                            <constraint firstItem="B8c-Jo-MxY" firstAttribute="bottom" secondItem="JGv-XL-uiR" secondAttribute="bottom" id="LHc-4Y-skQ"/>
                             <constraint firstItem="Vc7-dJ-Wpy" firstAttribute="leading" secondItem="JGv-XL-uiR" secondAttribute="leading" id="NAG-gI-65L"/>
                             <constraint firstItem="e1j-lc-uTG" firstAttribute="leading" secondItem="JGv-XL-uiR" secondAttribute="leading" id="Nzs-VD-ECW"/>
                             <constraint firstItem="Asa-Mr-foF" firstAttribute="leading" secondItem="JGv-XL-uiR" secondAttribute="leading" id="RE9-49-PbQ"/>
@@ -83,11 +78,8 @@
                             <constraint firstItem="JGv-XL-uiR" firstAttribute="trailing" secondItem="e1j-lc-uTG" secondAttribute="trailing" id="dHd-fp-VJv"/>
                             <constraint firstItem="Av0-bG-xgJ" firstAttribute="leading" secondItem="JGv-XL-uiR" secondAttribute="leading" id="dhp-1R-Qqb"/>
                             <constraint firstItem="Av0-bG-xgJ" firstAttribute="trailing" secondItem="JGv-XL-uiR" secondAttribute="trailing" id="fX8-qv-xc2"/>
-                            <constraint firstItem="B8c-Jo-MxY" firstAttribute="leading" secondItem="JGv-XL-uiR" secondAttribute="leading" id="gfU-5r-ogL"/>
                             <constraint firstItem="JGv-XL-uiR" firstAttribute="trailing" secondItem="Vc7-dJ-Wpy" secondAttribute="trailing" id="kYG-VA-aQ2"/>
-                            <constraint firstItem="B8c-Jo-MxY" firstAttribute="top" secondItem="e1j-lc-uTG" secondAttribute="bottom" id="mYe-H5-wsc"/>
                             <constraint firstAttribute="bottom" secondItem="Vc7-dJ-Wpy" secondAttribute="bottom" constant="-44" id="n9x-LX-J2U"/>
-                            <constraint firstItem="JGv-XL-uiR" firstAttribute="trailing" secondItem="B8c-Jo-MxY" secondAttribute="trailing" id="sEB-Mm-ha2"/>
                             <constraint firstItem="Vc7-dJ-Wpy" firstAttribute="top" secondItem="GX7-DA-6R2" secondAttribute="bottom" id="xnO-b1-Ecq"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="JGv-XL-uiR"/>
@@ -97,17 +89,134 @@
                         <outlet property="detailCollectionView" destination="Asa-Mr-foF" id="Kgh-Us-vv8"/>
                         <outlet property="detailCollectionViewHeightConstraint" destination="nxV-L6-VoR" id="2sa-Ok-h7E"/>
                         <outlet property="detailCollectionViewTopConstraint" destination="2fz-yg-YoR" id="jcL-Eg-gOh"/>
-                        <outlet property="noTransactionsView" destination="B8c-Jo-MxY" id="NfZ-Ge-gIC"/>
                         <outlet property="refreshView" destination="Av0-bG-xgJ" id="dNg-B0-57u"/>
                         <outlet property="refreshViewTopConstraint" destination="XAy-Ne-KPx" id="Itl-x4-z0W"/>
                         <outlet property="sendReceiveActionView" destination="Vc7-dJ-Wpy" id="UvZ-dT-gHG"/>
                         <outlet property="summaryCollectionView" destination="GX7-DA-6R2" id="WdE-Nn-Ajz"/>
                         <outlet property="summaryCollectionViewBottomConstraint" destination="xnO-b1-Ecq" id="AZR-qO-qIy"/>
+                        <outlet property="transactionHistoryNoBalanceView" destination="Ktw-Zy-1lf" id="TOP-P2-OHv"/>
+                        <outlet property="transactionHistoryWithBalanceView" destination="Ew6-Jf-eqb" id="MXo-6q-XxK"/>
                         <outletCollection property="collectionViews" destination="GX7-DA-6R2" collectionClass="NSMutableArray" id="E5L-gk-blQ"/>
                         <outletCollection property="collectionViews" destination="Asa-Mr-foF" collectionClass="NSMutableArray" id="oIv-AY-qsS"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SDm-Er-8Pv" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <view contentMode="scaleToFill" id="Ktw-Zy-1lf" customClass="TransactionHistoryNoBalanceView" customModule="DropBit" customModuleProvider="target">
+                    <rect key="frame" x="0.0" y="0.0" width="240" height="210"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <subviews>
+                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" spacing="19" translatesAutoresizingMaskIntoConstraints="NO" id="rGj-2l-nX3">
+                            <rect key="frame" x="36" y="10" width="168" height="190"/>
+                            <subviews>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" verticalCompressionResistancePriority="751" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ehM-GN-H0i">
+                                    <rect key="frame" x="0.0" y="0.0" width="168" height="20.5"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                    <nil key="textColor"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" verticalCompressionResistancePriority="751" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SNz-Of-VsA">
+                                    <rect key="frame" x="0.0" y="39.5" width="168" height="20.5"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                    <nil key="textColor"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="9" translatesAutoresizingMaskIntoConstraints="NO" id="pTG-qY-BBs">
+                                    <rect key="frame" x="0.0" y="79" width="168" height="111"/>
+                                    <subviews>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XXe-17-1Q2" customClass="PrimaryActionButton" customModule="DropBit" customModuleProvider="target">
+                                            <rect key="frame" x="0.0" y="0.0" width="168" height="51"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="51" id="nGS-kS-KEi"/>
+                                            </constraints>
+                                            <state key="normal" title="Get Bitcoin"/>
+                                            <connections>
+                                                <action selector="getBitcoin" destination="Ktw-Zy-1lf" eventType="touchUpInside" id="fJW-8p-S14"/>
+                                            </connections>
+                                        </button>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wep-5O-LIJ" customClass="PrimaryActionButton" customModule="DropBit" customModuleProvider="target">
+                                            <rect key="frame" x="0.0" y="60" width="168" height="51"/>
+                                            <state key="normal" title="Learn Bitcoin"/>
+                                            <connections>
+                                                <action selector="learnAboutBitcoin" destination="Ktw-Zy-1lf" eventType="touchUpInside" id="LmD-IX-YNf"/>
+                                            </connections>
+                                        </button>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="wep-5O-LIJ" firstAttribute="height" secondItem="XXe-17-1Q2" secondAttribute="height" id="P8q-p0-Qrc"/>
+                                    </constraints>
+                                </stackView>
+                            </subviews>
+                        </stackView>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstItem="rGj-2l-nX3" firstAttribute="top" relation="greaterThanOrEqual" secondItem="mhD-3j-Kid" secondAttribute="top" constant="8" id="HG6-V5-DdT"/>
+                        <constraint firstItem="rGj-2l-nX3" firstAttribute="centerX" secondItem="Ktw-Zy-1lf" secondAttribute="centerX" id="PYw-9h-qeg"/>
+                        <constraint firstItem="rGj-2l-nX3" firstAttribute="width" secondItem="Ktw-Zy-1lf" secondAttribute="width" multiplier="0.7" id="dcQ-HK-isL"/>
+                        <constraint firstItem="rGj-2l-nX3" firstAttribute="centerY" secondItem="Ktw-Zy-1lf" secondAttribute="centerY" id="lBP-mW-qWZ"/>
+                        <constraint firstItem="mhD-3j-Kid" firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="rGj-2l-nX3" secondAttribute="bottom" constant="8" id="vP9-Vw-5ng"/>
+                    </constraints>
+                    <viewLayoutGuide key="safeArea" id="mhD-3j-Kid"/>
+                    <connections>
+                        <outlet property="getBitcoinButton" destination="XXe-17-1Q2" id="NmY-QN-fEf"/>
+                        <outlet property="learnAboutBitcoinButton" destination="wep-5O-LIJ" id="Me9-6X-4fW"/>
+                        <outlet property="noTransactionsDetail" destination="SNz-Of-VsA" id="DVJ-js-sQ6"/>
+                        <outlet property="noTransactionsTitle" destination="ehM-GN-H0i" id="Pbl-fm-QbE"/>
+                    </connections>
+                </view>
+                <view contentMode="scaleToFill" id="Ew6-Jf-eqb" customClass="TransactionHistoryWithBalanceView" customModule="DropBit" customModuleProvider="target">
+                    <rect key="frame" x="0.0" y="0.0" width="240" height="187"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <subviews>
+                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="9" translatesAutoresizingMaskIntoConstraints="NO" id="2o1-Ga-aS5">
+                            <rect key="frame" x="36" y="8" width="168" height="171"/>
+                            <subviews>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Oj5-Ua-avq" customClass="PrimaryActionButton" customModule="DropBit" customModuleProvider="target">
+                                    <rect key="frame" x="0.0" y="0.0" width="168" height="51"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="51" id="Xu7-pV-L3G"/>
+                                    </constraints>
+                                    <state key="normal" title="Get Bitcoin"/>
+                                    <connections>
+                                        <action selector="getBitcoin" destination="Ew6-Jf-eqb" eventType="touchUpInside" id="ZyO-wg-4dg"/>
+                                    </connections>
+                                </button>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hiW-0W-H8G" customClass="PrimaryActionButton" customModule="DropBit" customModuleProvider="target">
+                                    <rect key="frame" x="0.0" y="60" width="168" height="51"/>
+                                    <state key="normal" title="Learn Bitcoin"/>
+                                    <connections>
+                                        <action selector="learnAboutBitcoin" destination="Ew6-Jf-eqb" eventType="touchUpInside" id="Tqz-GC-r6I"/>
+                                    </connections>
+                                </button>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hB7-Jf-4qE" customClass="PrimaryActionButton" customModule="DropBit" customModuleProvider="target">
+                                    <rect key="frame" x="0.0" y="120" width="168" height="51"/>
+                                    <state key="normal" title="Spend Bitcoin"/>
+                                    <connections>
+                                        <action selector="spendBitcoin" destination="Ew6-Jf-eqb" eventType="touchUpInside" id="vXI-fl-OVZ"/>
+                                    </connections>
+                                </button>
+                            </subviews>
+                            <constraints>
+                                <constraint firstItem="hiW-0W-H8G" firstAttribute="height" secondItem="Oj5-Ua-avq" secondAttribute="height" id="90T-ZD-P38"/>
+                                <constraint firstItem="hB7-Jf-4qE" firstAttribute="height" secondItem="Oj5-Ua-avq" secondAttribute="height" id="DF3-tg-ukK"/>
+                            </constraints>
+                        </stackView>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstItem="bK5-EN-s5l" firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="2o1-Ga-aS5" secondAttribute="bottom" constant="8" id="53X-VV-q1f"/>
+                        <constraint firstItem="2o1-Ga-aS5" firstAttribute="top" relation="greaterThanOrEqual" secondItem="bK5-EN-s5l" secondAttribute="top" constant="8" id="CFI-sW-QXc"/>
+                        <constraint firstItem="2o1-Ga-aS5" firstAttribute="centerY" secondItem="Ew6-Jf-eqb" secondAttribute="centerY" id="F7R-nl-b06"/>
+                        <constraint firstItem="2o1-Ga-aS5" firstAttribute="centerX" secondItem="Ew6-Jf-eqb" secondAttribute="centerX" id="LHQ-U2-BZX"/>
+                        <constraint firstItem="2o1-Ga-aS5" firstAttribute="width" secondItem="Ew6-Jf-eqb" secondAttribute="width" multiplier="0.7" id="qkv-8P-hNI"/>
+                    </constraints>
+                    <viewLayoutGuide key="safeArea" id="bK5-EN-s5l"/>
+                    <connections>
+                        <outlet property="getBitcoinButton" destination="Oj5-Ua-avq" id="BA1-n6-PaT"/>
+                        <outlet property="learnAboutBitcoinButton" destination="hiW-0W-H8G" id="0zU-hd-8FC"/>
+                        <outlet property="spendBitcoinButton" destination="hB7-Jf-4qE" id="2vX-FQ-PGZ"/>
+                    </connections>
+                </view>
             </objects>
             <point key="canvasLocation" x="-471.19999999999999" y="-35.532233883058474"/>
         </scene>

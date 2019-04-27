@@ -12,7 +12,7 @@ protocol WalletAddressRequestable: AnyObject {
   func addWalletAddress(body: AddWalletAddressBody) -> Promise<WalletAddressResponse>
   func getWalletAddresses() -> Promise<[WalletAddressResponse]>
   func deleteWalletAddress(_ address: String) -> Promise<Void>
-  func queryWalletAddresses(phoneNumberHashes: [String]) -> Promise<[WalletAddressesQueryResponse]>
+  func queryWalletAddresses(identityHashes: [String]) -> Promise<[WalletAddressesQueryResponse]>
 }
 
 extension NetworkManager: WalletAddressRequestable {
@@ -29,8 +29,8 @@ extension NetworkManager: WalletAddressRequestable {
     return cnProvider.requestVoid(WalletAddressesTarget.delete(address))
   }
 
-  func queryWalletAddresses(phoneNumberHashes: [String]) -> Promise<[WalletAddressesQueryResponse]> {
-    let query = WalletAddressesElasticQuery(phoneNumberHashes: phoneNumberHashes)
+  func queryWalletAddresses(identityHashes: [String]) -> Promise<[WalletAddressesQueryResponse]> {
+    let query = WalletAddressesElasticQuery(identityHashes: identityHashes)
     let body = ElasticRequest(query: query)
     return cnProvider.requestList(WalletAddressesQueryTarget.query(body))
   }

@@ -181,9 +181,7 @@ class MockPersistenceManager: PersistenceManagerType {
     return Promise { _ in }
   }
 
-  func persistUserId(from response: UserResponse, in context: NSManagedObjectContext) -> Promise<CKMUser> {
-    return Promise { _ in }
-  }
+  func persistUserId(_ userId: String, in context: NSManagedObjectContext) { }
 
   func persistAddedWalletAddresses(
     from responses: [WalletAddressResponse],

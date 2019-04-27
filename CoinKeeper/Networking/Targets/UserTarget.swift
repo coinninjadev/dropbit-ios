@@ -62,7 +62,9 @@ extension UserTarget {
   public var validationType: ValidationType {
     switch self {
     case .create:
-      return .customCodes([201])
+      return .customCodes([201, 501])
+    case .resendVerification:
+      return .customCodes([200, 501])
     default:
       return .successCodes
     }
@@ -93,8 +95,13 @@ extension UserTarget {
       }
     case 424:
       return countryCodeDisabledError() ?? defaultError
-    case 500:
-      return twilioNetworkError(for: response) ?? defaultError
+    case 501:
+      switch self {
+      case .create, .resendVerification:
+        return .twilioError(response)
+      default:
+        return defaultError
+      }
     default:
       return defaultError
     }
@@ -102,23 +109,8 @@ extension UserTarget {
 
   private func countryCodeDisabledError() -> CKNetworkError? {
     switch self {
-    case .create(_, let createUserBody),
-         .resendVerification(_, let createUserBody):
-      return .countryCodeDisabled(createUserBody.countryCode)
-    default:
-      return nil
-    }
-  }
-
-  private func twilioNetworkError(for response: Response) -> CKNetworkError? {
-    switch self {
     case .create, .resendVerification:
-      if let errorRes = errorResponse(for: response),
-        let twilioError = TwilioError(response: errorRes) {
-        return .twilioError(twilioError)
-      } else {
-        return .twilioError(.unspecified)
-      }
+      return .countryCodeDisabled
     default:
       return nil
     }

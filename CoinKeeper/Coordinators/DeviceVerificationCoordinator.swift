@@ -11,7 +11,7 @@ import PromiseKit
 import UIKit
 import os.log
 
-protocol DeviceVerificationCoordinatorDelegate: AnyObject {
+protocol DeviceVerificationCoordinatorDelegate: TwilioErrorDelegate {
   var launchStateManager: LaunchStateManagerType { get }
   var networkManager: NetworkManagerType { get }
   var walletManager: WalletManagerType? { get }
@@ -83,8 +83,8 @@ extension DeviceVerificationCoordinator: DeviceVerificationViewControllerDelegat
     let bgContext = crDelegate.persistenceManager.createBackgroundContext()
     bgContext.perform {
       crDelegate.registerAndPersistWallet(in: bgContext)
-        .then(in: bgContext) { self.registerAndPersistUser(with: phoneNumber, delegate: crDelegate, in: bgContext) }
-        .done(on: .main) { _ in
+        .then(in: bgContext) { _ in self.registerAndPersistUser(with: phoneNumber, delegate: crDelegate, in: bgContext) }
+        .done(on: .main) {
 
           crDelegate.alertManager.hideActivityHUD(withDelay: self.minHudDisplayDuration) {
             // Push code entry view controller
@@ -126,6 +126,9 @@ extension DeviceVerificationCoordinator: DeviceVerificationViewControllerDelegat
         .catch { [weak self] error in
           os_log("Failed to request code: %@", log: logger, type: .error, error.localizedDescription)
           self?.handleResendError(error)
+          if let providerError = error as? UserProviderError, case .twilioError = providerError {
+            crDelegate.didReceiveTwilioError(for: body.identity, route: .resendVerification)
+          }
       }
     }
   }
@@ -138,7 +141,7 @@ extension DeviceVerificationCoordinator: DeviceVerificationViewControllerDelegat
 
   private func registerAndPersistUser(with phoneNumber: GlobalPhoneNumber,
                                       delegate: DeviceVerificationCoordinatorDelegate,
-                                      in context: NSManagedObjectContext) -> Promise<CKMUser> {
+                                      in context: NSManagedObjectContext) -> Promise<Void> {
 
     var maybeWalletId: String?
     context.performAndWait {
@@ -150,18 +153,45 @@ extension DeviceVerificationCoordinator: DeviceVerificationViewControllerDelegat
 
     return delegate.networkManager.createUser(walletId: walletId, phoneNumber: phoneNumber)
       .recover { (error: Error) -> Promise<UserResponse> in
-        // If createUser results in statusCode 200, that function rejects with .userAlreadyExists and we recover by calling resendVerification()
-        if let providerError = error as? UserProviderError,
-          case let UserProviderError.userAlreadyExists(userId, body) = providerError {
-
-          //ignore walletId available in the error in case it is different from the walletId we provided
-          let resendHeaders = DefaultRequestHeaders(walletId: walletId, userId: userId)
-          return delegate.networkManager.resendVerification(headers: resendHeaders, body: body)
-        } else {
-          throw error
-        }
+        return self.handleCreateUserError(error, walletId: walletId, delegate: delegate, in: context)
       }
-      .then(in: context) { delegate.persistenceManager.persistUserId(from: $0, in: context) }
+      .get(in: context) { delegate.persistenceManager.persistUserId($0.id, in: context) }.asVoid()
+  }
+
+  /// If createUser results in statusCode 200, that function rejects with .userAlreadyExists and
+  /// we recover by calling resendVerification(). In the case of a Twilio error, we notify the delegate
+  /// for analytics and continue as normal. In both cases we eventually return a UserResponse so that
+  /// we can persist the userId returned by the server.
+  private func handleCreateUserError(_ error: Error,
+                                     walletId: String,
+                                     delegate: DeviceVerificationCoordinatorDelegate,
+                                     in context: NSManagedObjectContext) -> Promise<UserResponse> {
+    if let providerError = error as? UserProviderError {
+      switch providerError {
+      case .userAlreadyExists(let userId, let body):
+        //ignore walletId available in the error in case it is different from the walletId we provided
+        let resendHeaders = DefaultRequestHeaders(walletId: walletId, userId: userId)
+        delegate.persistenceManager.persistUserId(userId, in: context)
+
+        return delegate.networkManager.resendVerification(headers: resendHeaders, body: body)
+          .recover { (error: Error) -> Promise<UserResponse> in
+            if let providerError = error as? UserProviderError,
+              case let .twilioError(userResponse, _) = providerError {
+              delegate.didReceiveTwilioError(for: body.identity, route: .resendVerification)
+              return Promise.value(userResponse)
+            } else {
+              throw error
+            }
+        }
+      case .twilioError(let userResponse, let body):
+        delegate.didReceiveTwilioError(for: body.identity, route: .createUser)
+        return Promise.value(userResponse)
+      default:
+        return Promise(error: error)
+      }
+    } else {
+      return Promise(error: error)
+    }
   }
 
   func viewController(_ codeEntryViewController: DeviceVerificationViewController, didEnterCode code: String, completion: @escaping (Bool) -> Void) {
@@ -170,7 +200,7 @@ extension DeviceVerificationCoordinator: DeviceVerificationViewControllerDelegat
     let logger = OSLog(subsystem: "com.coinninja.coinkeeper.appcoordinator", category: "device_verification_coordinator")
     let bgContext = crDelegate.persistenceManager.createBackgroundContext()
     bgContext.perform {
-      crDelegate.networkManager.verifyUser(code: code)
+      crDelegate.networkManager.verifyUser(phoneNumber: phoneNumber, code: code)
         .then(in: bgContext) { self.checkAndPersistVerificationStatus(from: $0, crDelegate: crDelegate, in: bgContext) }
         .get(in: bgContext) { _ in
           do {
@@ -206,8 +236,8 @@ extension DeviceVerificationCoordinator: DeviceVerificationViewControllerDelegat
     }
 
     switch networkError {
-    case .countryCodeDisabled(let code):
-      let message = errorMessageFactory.messageForCountryCodeDisabled(for: code, phoneNumber: phoneNumber)
+    case .countryCodeDisabled:
+      let message = errorMessageFactory.messageForCountryCodeDisabled(for: phoneNumber)
       self.showVerificationErrorAlert(.custom(message), delegate: delegate)
 
     case .twilioError:

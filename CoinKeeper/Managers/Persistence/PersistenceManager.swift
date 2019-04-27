@@ -124,10 +124,12 @@ class PersistenceManager: PersistenceManagerType {
     return databaseManager.persistWalletId(response.id, in: context)
   }
 
-  func persistUserId(from response: UserResponse, in context: NSManagedObjectContext) -> Promise<CKMUser> {
-    let userId = response.id
+  /// Will only persist a non-empty string to protect when that is returned by the server for some routes
+  func persistUserId(_ userId: String, in context: NSManagedObjectContext) {
+    guard userId.isNotEmpty else { return }
+
     set(stringValue: userId, for: .userID)
-    return databaseManager.persistUserId(userId, in: context)
+    databaseManager.persistUserId(userId, in: context)
   }
 
   func persistVerificationStatus(from response: UserResponse, in context: NSManagedObjectContext) -> Promise<UserVerificationStatus> {

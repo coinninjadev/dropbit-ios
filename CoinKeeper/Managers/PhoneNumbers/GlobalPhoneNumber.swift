@@ -29,6 +29,24 @@ public struct GlobalPhoneNumber: Codable, CustomStringConvertible {
     self.regionCode = regionCode ?? parsedNumber.regionID
   }
 
+  init?(e164: String, kit: PhoneNumberKit) {
+    do {
+      let parsedNumber = try kit.parse(e164)
+      self.init(parsedNumber: parsedNumber)
+    } catch {
+      return nil
+    }
+  }
+
+  init?(participant: MetadataParticipant, kit: PhoneNumberKit) {
+    guard let identityType = UserIdentityType(rawValue: participant.type),
+      identityType == .phone
+      else { return nil }
+
+    let e164 = "+" + participant.identity
+    self.init(e164: e164, kit: kit)
+  }
+
   func sanitizedNationalNumber() -> String {
     let invalidCharacters = CharacterSet.decimalDigits.inverted
     return nationalNumber.components(separatedBy: invalidCharacters).joined()

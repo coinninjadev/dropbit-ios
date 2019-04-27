@@ -33,7 +33,7 @@ extension AppCoordinator: InvitationWorkerDelegate {
         pendingInvitationData.addressPubKey = response.addressPubkey
         return pendingInvitationData
       } else {
-        return PendingInvitationData(walletAddressRequestResponse: response)
+        return PendingInvitationData(walletAddressRequestResponse: response, kit: self.phoneNumberKit)
       }
     }
 

@@ -16,4 +16,8 @@ extension MockNetworkManager: AddressRequestable {
     return Promise { _ in }
   }
 
+  func fetchTransactionSummaries(for address: String) -> Promise<[AddressTransactionSummaryResponse]> {
+    return Promise { _ in }
+  }
+
 }

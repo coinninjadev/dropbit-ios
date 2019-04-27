@@ -195,6 +195,20 @@ public class CKMTransaction: NSManagedObject {
     NSSortDescriptor(key: #keyPath(CKMTransaction.sortDate), ascending: false)
   ]
 
+  static func findLatest(in context: NSManagedObjectContext) -> CKMTransaction? {
+    let fetchRequest: NSFetchRequest<CKMTransaction> = CKMTransaction.fetchRequest()
+    fetchRequest.fetchLimit = 1
+    fetchRequest.sortDescriptors = transactionHistorySortDescriptors
+
+    do {
+      return try context.fetch(fetchRequest).first
+    } catch {
+      let logger = OSLog(subsystem: "com.coinninja.coinkeeper.ckmtransaction", category: "CKMTransaction")
+      os_log("Could not execute fetch request for latest transaction: %@", log: logger, type: .error, error.localizedDescription)
+      return nil
+    }
+  }
+
   var isCancellable: Bool {
     guard let invite = invitation else { return false }
     let cancellableStatuses: [InvitationStatus] = [.notSent, .requestSent, .addressSent]

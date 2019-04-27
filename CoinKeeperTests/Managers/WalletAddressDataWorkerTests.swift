@@ -9,6 +9,7 @@
 import Foundation
 import XCTest
 import Moya
+import PhoneNumberKit
 import PromiseKit
 import CoreData
 @testable import DropBit
@@ -25,6 +26,8 @@ class WalletAddressDataWorkerTests: XCTestCase {
   var mockWalletDelegate: MockWalletDelegate!
   var mockInvitationDelegate: MockInvitationDelegate!
 
+  let phoneNumberKit = PhoneNumberKit()
+
   override func setUp() {
     super.setUp()
 
@@ -39,6 +42,7 @@ class WalletAddressDataWorkerTests: XCTestCase {
                                   persistenceManager: mockPersistenceManager,
                                   networkManager: mockNetworkManager,
                                   analyticsManager: mockAnalyticsManager,
+                                  phoneNumberKit: phoneNumberKit,
                                   invitationWorkerDelegate: mockInvitationDelegate
     )
   }
@@ -121,11 +125,14 @@ class WalletAddressDataWorkerTests: XCTestCase {
                                                       addressPubkey: nil,
                                                       txid: broadcastTxid,
                                                       metadata: nil,
-                                                      phoneNumberHash: nil,
+                                                      identityHash: nil,
                                                       status: WalletAddressRequestStatus.completed.rawValue,
                                                       walletId: nil)
 
-    let invitation = CKMInvitation(withAddressRequestResponse: sampleResponse, side: .received, insertInto: stack.context)
+    let invitation = CKMInvitation(withAddressRequestResponse: sampleResponse,
+                                   side: .received,
+                                   kit: self.phoneNumberKit,
+                                   insertInto: stack.context)
     placeholderTx.invitation = invitation
 
     let actualTx = CKMTransaction(insertInto: stack.context)
@@ -154,11 +161,14 @@ class WalletAddressDataWorkerTests: XCTestCase {
                                                       addressPubkey: nil,
                                                       txid: nil,
                                                       metadata: nil,
-                                                      phoneNumberHash: nil,
+                                                      identityHash: nil,
                                                       status: WalletAddressRequestStatus.new.rawValue,
                                                       walletId: nil)
 
-    let invitation = CKMInvitation(withAddressRequestResponse: sampleResponse, side: .received, insertInto: stack.context)
+    let invitation = CKMInvitation(withAddressRequestResponse: sampleResponse,
+                                   side: .received,
+                                   kit: self.phoneNumberKit,
+                                   insertInto: stack.context)
     placeholderTx.invitation = invitation
 
     let actualTx = CKMTransaction(insertInto: stack.context)

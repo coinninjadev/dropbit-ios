@@ -36,9 +36,10 @@ extension AppCoordinator: DrawerViewControllerDelegate {
 
   func spendButtonWasTouched() {
     analyticsManager.track(event: .spendButtonPressed, with: nil)
-    drawerController?.toggle(.left, animated: true) { _ in
-      self.openURL(URL(string: "https://coinninja.com/news/where-can-i-spend-my-bitcoin")!, completionHandler: nil)
-    }
+    drawerController?.toggle(.left, animated: true, completion: nil)
+    let controller = SpendBitcoinViewController.makeFromStoryboard()
+    assignCoordinationDelegate(to: controller)
+    navigationController.pushViewController(controller, animated: true)
   }
 
   func supportButtonWasTouched() {
@@ -48,5 +49,13 @@ extension AppCoordinator: DrawerViewControllerDelegate {
     settingsViewController.mode = .support
     assignCoordinationDelegate(to: settingsViewController)
     navigationController.present(settingsViewController, animated: true, completion: nil)
+  }
+
+  func getBitcoinButtonWasTouched() {
+    analyticsManager.track(event: .getBitcoinButtonPressed, with: nil)
+    drawerController?.toggle(.left, animated: true, completion: nil)
+    let controller = GetBitcoinViewController.makeFromStoryboard()
+    assignCoordinationDelegate(to: controller)
+    navigationController.pushViewController(controller, animated: true)
   }
 }

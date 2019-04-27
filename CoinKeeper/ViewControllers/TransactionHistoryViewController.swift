@@ -13,17 +13,16 @@ import Gifu
 import os.log
 import PromiseKit
 import PhoneNumberKit
+import DZNEmptyDataSet
 
 protocol TransactionHistoryViewControllerDelegate: DeviceCountryCodeProvider &
   BalanceContainerDelegate &
   BadgeUpdateDelegate &
   SelectedCurrencyUpdatable {
   func viewControllerShouldSeeTransactionDetails(for viewModel: TransactionHistoryDetailCellViewModel)
-  func viewControllerDidCancelDropbit()
   func viewControllerDidRequestHistoryUpdate(_ viewController: TransactionHistoryViewController)
   func viewController(_ viewController: TransactionHistoryViewController, didCancelInvitationWithID invitationID: String, at indexPath: IndexPath)
   func viewControllerDidDisplayTransactions(_ viewController: TransactionHistoryViewController)
-  func viewControllerDidRequestTutorial(_ viewController: UIViewController)
   func viewControllerAttemptedToRefreshTransactions(_ viewController: UIViewController)
   func viewControllerDidTapAddMemo(_ viewController: UIViewController, with completion: @escaping (String) -> Void)
   func viewControllerShouldUpdateTransaction(_ viewController: TransactionHistoryViewController,
@@ -33,6 +32,10 @@ protocol TransactionHistoryViewControllerDelegate: DeviceCountryCodeProvider &
   func viewControllerDidTapScan(_ viewController: UIViewController, converter: CurrencyConverter)
   func viewControllerDidTapReceivePayment(_ viewController: UIViewController, converter: CurrencyConverter)
   func viewControllerDidTapSendPayment(_ viewController: UIViewController, converter: CurrencyConverter)
+
+  func viewControllerDidRequestTutorial(_ viewController: UIViewController)
+  func viewControllerDidTapGetBitcoin(_ viewController: UIViewController)
+  func viewControllerDidTapSpendBitcoin(_ viewController: UIViewController)
 
   var currencyController: CurrencyController { get }
 }
@@ -44,7 +47,8 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
   @IBOutlet var detailCollectionView: UICollectionView!
   @IBOutlet var detailCollectionViewTopConstraint: NSLayoutConstraint!
   @IBOutlet var detailCollectionViewHeightConstraint: NSLayoutConstraint!
-  @IBOutlet var noTransactionsView: NoTransactionsView!
+  @IBOutlet var transactionHistoryNoBalanceView: TransactionHistoryNoBalanceView!
+  @IBOutlet var transactionHistoryWithBalanceView: TransactionHistoryWithBalanceView!
   @IBOutlet var collectionViews: [UICollectionView]!
   @IBOutlet var refreshView: TransactionHistoryRefreshView!
   @IBOutlet var refreshViewTopConstraint: NSLayoutConstraint!
@@ -70,10 +74,10 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
     return [
       (self.view, .transactionHistory(.page)),
       (balanceContainer.leftButton, .transactionHistory(.menu)),
-      (noTransactionsView.learnAboutBitcoinButton, .transactionHistory(.tutorialButton)),
       (sendReceiveActionView.receiveButton, .transactionHistory(.receiveButton)),
       (sendReceiveActionView.sendButton, .transactionHistory(.sendButton)),
-      (balanceContainer.balanceView, .transactionHistory(.balanceView))
+      (balanceContainer.balanceView, .transactionHistory(.balanceView)),
+      (transactionHistoryNoBalanceView.learnAboutBitcoinButton, .transactionHistory(.tutorialButton))
     ]
   }
 
@@ -141,6 +145,9 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
   override func viewDidLoad() {
     super.viewDidLoad()
 
+    transactionHistoryNoBalanceView.delegate = self
+    transactionHistoryWithBalanceView.delegate = self
+
     self.view.backgroundColor = Theme.Color.lightGrayBackground.color
 
     view.layoutIfNeeded()
@@ -164,8 +171,12 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
       self.detailCollectionView.contentInsetAdjustmentBehavior = .never
     }
 
-    noTransactionsView.delegate = self
     showDetailCollectionView(false, animated: false)
+  }
+
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+    navigationController?.setNavigationBarHidden(true, animated: true)
   }
 
   override func viewWillDisappear(_ animated: Bool) {
@@ -217,6 +228,11 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
     detailCollectionView.contentInset = UIEdgeInsets(top: 0, left: hPadding, bottom: 0, right: hPadding) // allow first and last cells to be centered
     detailCollectionView.isPagingEnabled = false
     detailCollectionView.collectionViewLayout = detailCollectionViewLayout(withHorizontalPadding: hPadding)
+
+    collectionViews.forEach { $0.reloadData() }
+
+    summaryCollectionView.emptyDataSetSource = self
+    summaryCollectionView.emptyDataSetDelegate = self
   }
 
 }
@@ -324,7 +340,6 @@ extension TransactionHistoryViewController: BalanceDisplayable {
 
 extension TransactionHistoryViewController: NSFetchedResultsControllerDelegate {
   func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-    updateNoTransactionsView()
     collectionViews.forEach { $0.reloadData() }
   }
 }
@@ -339,15 +354,7 @@ extension TransactionHistoryViewController: UICollectionViewDataSource {
     guard let sections = frc.sections else { return 0 }
     let numberOfObjects = sections[section].numberOfObjects
 
-    updateNoTransactionsView()
-
     return numberOfObjects
-  }
-
-  private func updateNoTransactionsView() {
-    let allObjectsCount = frc.fetchedObjects?.count ?? 0
-    noTransactionsView.isHidden = (allObjectsCount != 0)
-    summaryCollectionView.isHidden = (allObjectsCount == 0)
   }
 
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -385,7 +392,15 @@ extension TransactionHistoryViewController: UICollectionViewDataSource {
 }
 
 extension TransactionHistoryViewController: NoTransactionsViewDelegate {
-  func noTransactionsViewDidSelectLearnAboutBitcoin(_ view: NoTransactionsView) {
+  func noTransactionsViewDidSelectGetBitcoin(_ view: TransactionHistoryEmptyView) {
+    coordinationDelegate?.viewControllerDidTapGetBitcoin(self)
+  }
+
+  func noTransactionsViewDidSelectSpendBitcoin(_ view: TransactionHistoryEmptyView) {
+    coordinationDelegate?.viewControllerDidTapSpendBitcoin(self)
+  }
+
+  func noTransactionsViewDidSelectLearnAboutBitcoin(_ view: TransactionHistoryEmptyView) {
     coordinationDelegate?.viewControllerDidRequestTutorial(self)
   }
 }
@@ -444,7 +459,6 @@ extension TransactionHistoryViewController: TransactionHistoryDetailCellDelegate
       guard let viewModel = detailCell.viewModel else { return }
       coordinationDelegate?.viewControllerShouldSeeTransactionDetails(for: viewModel)
     case .cancelInvitation:
-      coordinationDelegate?.viewControllerDidCancelDropbit()
       guard let invitationID = frc.object(at: path).invitation?.id else { return }
       coordinationDelegate?.viewController(self, didCancelInvitationWithID: invitationID, at: path)
     }
@@ -484,5 +498,44 @@ extension TransactionHistoryViewController: SelectedCurrencyUpdatable {
     let summaryIndexSet = IndexSet(integersIn: (0..<summaryCollectionView.numberOfSections))
     summaryCollectionView.reloadSections(summaryIndexSet)
     detailCollectionView.reloadData()
+  }
+}
+
+extension TransactionHistoryViewController: DZNEmptyDataSetDelegate, DZNEmptyDataSetSource {
+  func emptyDataSetShouldBeForced(toDisplay scrollView: UIScrollView!) -> Bool {
+    return shouldShowNoBalanceView || shouldShowWithBalanceView
+  }
+
+  func emptyDataSetShouldDisplay(_ scrollView: UIScrollView!) -> Bool {
+    return shouldShowNoBalanceView || shouldShowWithBalanceView
+  }
+
+  func emptyDataSetShouldAllowTouch(_ scrollView: UIScrollView!) -> Bool {
+    return true
+  }
+
+  func customView(forEmptyDataSet scrollView: UIScrollView!) -> UIView! {
+    if shouldShowNoBalanceView {
+      return transactionHistoryNoBalanceView
+    }
+    if shouldShowWithBalanceView {
+      return transactionHistoryWithBalanceView
+    }
+    return nil
+  }
+
+  private var shouldShowNoBalanceView: Bool {
+    return (frc.fetchedObjects?.count ?? 0) == 0
+  }
+
+  private var shouldShowWithBalanceView: Bool {
+    let collectionViewContentBottom = summaryCollectionView.contentSize.height + summaryCollectionView.frame.origin.y
+    let withBalanceViewTop = (view.frame.height / 2.0) - (transactionHistoryWithBalanceView.frame.size.height / 2.0)
+    let isOverlapping = (collectionViewContentBottom >= withBalanceViewTop)
+    return !isOverlapping
+  }
+
+  private var deviceIsSmall: Bool {
+    return (view.frame.height < 600)
   }
 }

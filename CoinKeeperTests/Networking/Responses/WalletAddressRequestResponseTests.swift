@@ -79,8 +79,12 @@ class WalletAddressRequestResponseTests: XCTestCase, ResponseStringsTestable {
       XCTAssertEqual(response.address, "1JbJbAkCXtxpko39nby44hpPenpC1xKGYw")
       XCTAssertEqual(response.status, "new")
       XCTAssertEqual(response.walletId, "f8e8c20e-ba44-4bac-9a96-44f3b7ae955d")
-      XCTAssertEqual(response.phoneNumberHash, "498803d5964adce8037d2c53da0c7c7a96ce0e0f99ab99e9905f0dda59fb2e49")
-      XCTAssertEqual(response.createdAt.timeIntervalSinceReferenceDate, 1525882145)
+      XCTAssertEqual(response.metadata?.sender?.type, "phone")
+      XCTAssertEqual(response.metadata?.sender?.identity, "15554441234")
+      XCTAssertEqual(response.metadata?.receiver?.type, "twitter")
+      XCTAssertEqual(response.metadata?.receiver?.identity, "3215789654")
+      XCTAssertEqual(response.identityHash, "498803d5964adce8037d2c53da0c7c7a96ce0e0f99ab99e9905f0dda59fb2e49")
+      XCTAssertEqual(response.createdAt.timeIntervalSinceReferenceDate, 1531921356)
     } catch {
       XCTFail("decoding failed")
     }
@@ -196,7 +200,7 @@ class WalletAddressRequestResponseTests: XCTestCase, ResponseStringsTestable {
       let res = try response.validateStringValues()
       XCTAssertNil(res.address, "address should be nil")
       XCTAssertNil(res.txid, "txid should be nil")
-      XCTAssertNil(res.phoneNumberHash, "phoneNumberHash should be nil")
+      XCTAssertNil(res.identityHash, "phoneNumberHash should be nil")
       XCTAssertNil(res.status, "status should be nil")
       XCTAssertNil(res.walletId, "walletId should be nil")
     } catch {
@@ -227,7 +231,7 @@ extension WalletAddressRequestResponse {
                                         addressPubkey: self.addressPubkey,
                                         txid: self.txid,
                                         metadata: metadata,
-                                        phoneNumberHash: self.phoneNumberHash,
+                                        identityHash: self.identityHash,
                                         status: self.status,
                                         walletId: self.walletId)
   }
@@ -240,7 +244,7 @@ extension WalletAddressRequestResponse {
                                         addressPubkey: "",
                                         txid: "",
                                         metadata: self.metadata,
-                                        phoneNumberHash: "",
+                                        identityHash: "",
                                         status: "",
                                         walletId: "")
   }
@@ -256,7 +260,7 @@ extension WalletAddressRequestResponse: EmptyStringCopyable {
                                         addressPubkey: self.addressPubkey,
                                         txid: self.txid,
                                         metadata: self.metadata,
-                                        phoneNumberHash: self.phoneNumberHash,
+                                        identityHash: self.identityHash,
                                         status: self.status,
                                         walletId: self.walletId)
   }

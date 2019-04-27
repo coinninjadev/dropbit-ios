@@ -58,8 +58,12 @@ class AppCoordinator: CoordinatorType {
   let messageManager: MessagesManagerType
   let persistenceCacheDataWorker: PersistenceCacheDataWorkerType
   let uiTestArguments: [UITestArgument]
+
   // swiftlint:disable:next weak_delegate
   let mailComposeDelegate = MailerDelegate()
+  // swiftlint:disable:next weak_delegate
+  let messageComposeDelegate = MessagerDelegate()
+
   let currencyController: CurrencyController
 
   private let maxSecondsInBackground: TimeInterval = 30
@@ -155,6 +159,7 @@ class AppCoordinator: CoordinatorType {
                                    persistenceManager: persistenceManager,
                                    networkManager: networkManager,
                                    analyticsManager: analyticsManager,
+                                   phoneNumberKit: self.phoneNumberKit,
                                    invitationWorkerDelegate: self)
   }
 
@@ -219,7 +224,7 @@ class AppCoordinator: CoordinatorType {
     " Without them you will not be notified to complete transactions which will cause them to expire."
 
     let description = "Please allow us to send you push notifications on the following prompt."
-    let alert = alertManager.detailedAlert(withTitle: title, description: description, image: #imageLiteral(resourceName: "dropBitBadgeIcon"), action: requestConfiguration)
+    let alert = alertManager.detailedAlert(withTitle: title, description: description, image: #imageLiteral(resourceName: "dropBitBadgeIcon"), style: .warning, action: requestConfiguration)
 
     navigationController.topViewController()?.present(alert, animated: true)
   }
@@ -467,8 +472,12 @@ class AppCoordinator: CoordinatorType {
     let isBackedUp = launchStateManager.walletIsBackedUp()
     let backupWordsReminderShown = persistenceManager.bool(for: .backupWordsReminderShown)
     guard !isBackedUp && !backupWordsReminderShown else { return }
-    let title = "Don't forget to back up your wallet. You could lose your Bitcoin if you don't."
-    alertManager.showBanner(with: title, duration: nil, alertKind: .error)
+    let title = "Remember to backup your wallet to ensure your Bitcoin is secure in case your phone" +
+    " is ever lost or stolen. Tap here to backup now."
+    alertManager.showBanner(with: title, duration: nil, alertKind: .error) { [weak self] in
+      self?.analyticsManager.track(event: .backupWordsButtonPressed, with: nil)
+      self?.showWordRecoveryFlow()
+    }
     persistenceManager.set(true, for: .backupWordsReminderShown)
   }
 
@@ -593,10 +602,9 @@ class AppCoordinator: CoordinatorType {
 
   func startCreateRecoveryWordsFlow(animated: Bool = true) {
     func performFunction() {
-      let viewController = RecoveryWordsIntroViewController.makeFromStoryboard()
-      viewController.recoveryWords = WalletManager.createMnemonicWords()
-      assignCoordinationDelegate(to: viewController)
-      navigationController.pushViewController(viewController, animated: animated)
+      let words = WalletManager.createMnemonicWords()
+      self.saveSuccessfulWords(words: words, isBackedUp: false, flow: .createWallet)
+      self.continueCreateWalletFlow()
     }
 
     guard !launchStateManager.shouldRequireAuthentication else {

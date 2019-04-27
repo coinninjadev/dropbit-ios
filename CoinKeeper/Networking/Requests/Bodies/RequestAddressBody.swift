@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import PhoneNumberKit
 
 struct RequestAddressAmount: Codable {
   let usd: Int
@@ -14,8 +15,25 @@ struct RequestAddressAmount: Codable {
 }
 
 struct RequestAddressUser: Codable {
-  let countryCode: Int
-  let phoneNumber: String
+  let type: String
+  let identity: String
+
+  init(phoneNumber: GlobalPhoneNumber) {
+    self.type = UserIdentityType.phone.rawValue
+    self.identity = phoneNumber.sanitizedGlobalNumber()
+  }
+}
+
+extension RequestAddressUser {
+  func globalNumber() -> GlobalPhoneNumber? {
+    let parser = CKPhoneNumberParser(kit: PhoneNumberKit())
+    do {
+      let e164 = "+" + identity
+      return try parser.parse(e164)
+    } catch {
+      return nil
+    }
+  }
 }
 
 public struct RequestAddressBody: Encodable {
@@ -27,10 +45,8 @@ public struct RequestAddressBody: Encodable {
   init(amount: BitcoinUSDPair, receiverNumber: GlobalPhoneNumber, senderNumber: GlobalPhoneNumber, requestId: String) {
     self.amount = RequestAddressAmount(usd: amount.usdAmount.asFractionalUnits(of: .USD),
                                        btc: amount.btcAmount.asFractionalUnits(of: .BTC))
-    self.sender = RequestAddressUser(countryCode: senderNumber.countryCode,
-                                     phoneNumber: senderNumber.nationalNumber)
-    self.receiver = RequestAddressUser(countryCode: receiverNumber.countryCode,
-                                       phoneNumber: receiverNumber.nationalNumber)
+    self.sender = RequestAddressUser(phoneNumber: senderNumber)
+    self.receiver = RequestAddressUser(phoneNumber: receiverNumber)
     self.requestId = requestId
   }
 }

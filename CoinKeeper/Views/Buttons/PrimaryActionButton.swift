@@ -10,14 +10,17 @@ import UIKit
 
 class PrimaryActionButton: UIButton {
 
-  enum Mode {
+  enum Style {
     case standard
     case error
+    case darkBlue
+    case green
+    case orange
   }
 
-  var mode: Mode = .standard {
+  var style: Style = .standard {
     didSet {
-      setModeStyling()
+      setStyling()
     }
   }
 
@@ -26,11 +29,11 @@ class PrimaryActionButton: UIButton {
     layer.cornerRadius = 4.0
     titleLabel?.font = Theme.Font.primaryButtonTitle.font
 
-    setModeStyling()
+    setStyling()
   }
 
-  private func setModeStyling() {
-    switch mode {
+  private func setStyling() {
+    switch style {
     case .standard:
       backgroundColor = Theme.Color.primaryActionButton.color
       setTitleColor(Theme.Color.lightGrayText.color, for: .normal)
@@ -39,6 +42,18 @@ class PrimaryActionButton: UIButton {
       backgroundColor = Theme.Color.errorRed.color
       setTitleColor(.white, for: .normal)
       setTitleColor(Theme.Color.lightGrayText.color, for: .highlighted)
+    case .darkBlue:
+      backgroundColor = Theme.Color.darkBlueButton.color
+      setTitleColor(Theme.Color.lightGrayText.color, for: .normal)
+      setTitleColor(Theme.Color.lightGrayText.color, for: .highlighted)
+    case .green:
+      backgroundColor = Theme.Color.appleGreen.color
+      setTitleColor(Theme.Color.lightGrayText.color, for: .normal)
+      setTitleColor(Theme.Color.lightGrayText.color, for: .highlighted)
+    case .orange:
+      backgroundColor = Theme.Color.mango.color
+      setTitleColor(Theme.Color.lightGrayText.color, for: .normal)
+      setTitleColor(Theme.Color.lightGrayText.color, for: .highlighted)
     }
   }
 
@@ -46,11 +61,14 @@ class PrimaryActionButton: UIButton {
     didSet {
       var mainColor: UIColor
 
-      switch mode {
+      switch style {
       case .standard:
         mainColor = Theme.Color.primaryActionButton.color
       case .error:
         mainColor = Theme.Color.errorRed.color
+      case .green: mainColor = Theme.Color.appleGreen.color
+      case .darkBlue: mainColor = Theme.Color.darkBlueButton.color
+      case .orange: mainColor = Theme.Color.mango.color
       }
 
       backgroundColor = isHighlighted ? Theme.Color.lightGrayButtonBackground.color : mainColor

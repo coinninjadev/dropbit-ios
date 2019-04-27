@@ -16,9 +16,9 @@ class TransactionHistoryPage: UITestPage {
 
   @discardableResult
   func tapTutorialButton() -> Self {
-    let receiveButton = app.buttons(.transactionHistory(.tutorialButton))
-    receiveButton.assertExistence(afterWait: .none, elementDesc: "learnAboutBitcoinButton")
-    receiveButton.tap()
+    let tutorialButton = app.buttons(.transactionHistory(.tutorialButton))
+    tutorialButton.assertExistence(afterWait: .default, elementDesc: "learnAboutBitcoinButton")
+    tutorialButton.tap()
     return self
   }
 

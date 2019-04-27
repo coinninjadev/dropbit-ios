@@ -83,7 +83,7 @@ class SuccessFailViewControllerTests: XCTestCase {
     func viewControllerDidRetry(_ viewController: SuccessFailViewController) {}
 
     var wasToldAboutSuccess = false
-    func viewController(_ viewController: SuccessFailViewController, success: Bool) {
+    func viewController(_ viewController: SuccessFailViewController, success: Bool, completion: (() -> Void)?) {
       wasToldAboutSuccess = true
     }
 
