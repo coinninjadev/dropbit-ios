@@ -174,6 +174,11 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
     showDetailCollectionView(false, animated: false)
   }
 
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+    navigationController?.setNavigationBarHidden(true, animated: true)
+  }
+
   override func viewWillDisappear(_ animated: Bool) {
     super.viewWillDisappear(animated)
     // In case new transactions came it while this view was open, this will hide the badge

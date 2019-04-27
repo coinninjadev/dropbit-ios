@@ -47,6 +47,7 @@ public enum UserResponseKey: String, KeyPathDescribable {
   case id, phoneNumberHash, createdAt, updatedAt, status, verificationTtl, verifiedAt, walletId
 }
 
+/// For /resend response: id: "" and timestamps: 0
 public struct UserResponse: ResponseDecodable {
 
   let id: String
@@ -72,7 +73,7 @@ extension UserResponse {
   }
 
   static var requiredStringKeys: [KeyPath<UserResponse, String>] {
-    return [\.id, \.status]
+    return [\.status]
   }
 
   static var optionalStringKeys: [WritableKeyPath<UserResponse, String?>] {

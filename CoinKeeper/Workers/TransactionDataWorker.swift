@@ -153,8 +153,14 @@ class TransactionDataWorker: TransactionDataWorkerType {
   private func fetchAndMergeTransactionNotifications(dto: TransactionDataWorkerDTO) -> Promise<TransactionDataWorkerDTO> {
     let fourteenDaysAgo = Calendar.current.date(byAdding: .day, value: -14, to: Date()) ?? Date()
     let relevantTxids = dto.txResponses.filter { ($0.date ?? Date()) > fourteenDaysAgo }.map { $0.txid }
-    let txNotificationPromises = relevantTxids.map { self.networkManager.fetchTransactionNotifications(forTxid: $0) }
-    return when(fulfilled: txNotificationPromises).flatMapValues { $0 }
+
+    var txidIterator = relevantTxids.makeIterator()
+    let promiseIterator = AnyIterator<Promise<[TransactionNotificationResponse]>> {
+      guard let txid = txidIterator.next() else { return nil }
+      return self.networkManager.fetchTransactionNotifications(forTxid: txid)
+    }
+
+    return when(fulfilled: promiseIterator, concurrently: 5).flatMapValues { $0 } // flatten to single array of TransactionNotificationResponse
       .then { responses -> Promise<TransactionDataWorkerDTO> in
         let combinedDTO = TransactionDataWorkerDTO(txNotificationResponses: responses).merged(with: dto)
         return Promise.value(combinedDTO)

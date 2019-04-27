@@ -11,12 +11,17 @@ import PromiseKit
 
 protocol AddressRequestable: AnyObject {
   func fetchTransactionSummaries(for addresses: [String], afterDate: Date?) -> Promise<[AddressTransactionSummaryResponse]>
+  func fetchTransactionSummaries(for address: String) -> Promise<[AddressTransactionSummaryResponse]>
 }
 
 extension NetworkManager: AddressRequestable {
 
   func fetchTransactionSummaries(for addresses: [String], afterDate: Date?) -> Promise<[AddressTransactionSummaryResponse]> {
     return atsResponses(for: addresses, afterDate: afterDate)
+  }
+
+  func fetchTransactionSummaries(for address: String) -> Promise<[AddressTransactionSummaryResponse]> {
+    return cnProvider.requestList(AddressesTarget.address(address))
   }
 
   private func atsResponses(

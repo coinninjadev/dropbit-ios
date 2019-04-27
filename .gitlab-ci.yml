@@ -37,7 +37,6 @@ build_test_flight:
   only:
     - /^release-.*$/
     - develop
-  allow_failure: true
 
 build_archive:
   stage: archive

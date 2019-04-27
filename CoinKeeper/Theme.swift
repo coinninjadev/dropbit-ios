@@ -173,6 +173,7 @@ struct Theme {
     case progressBarNode
     case shareTransactionTitle
     case searchResultText
+    case shareTransactionMessage
 
     var font: UIFont {
       switch self {
@@ -250,6 +251,7 @@ struct Theme {
            .recoverySubtitle1,
            .deleteWalletTitle: 									return CKFont.medium(15)
       case .transactionHistoryPrimaryAmount: 		return CKFont.medium(16)
+      case .shareTransactionMessage:            return CKFont.medium(17)
       case .onboardingTitle,
            .addressesStored,
            .balancePrimaryAmount: 							return CKFont.medium(19)
