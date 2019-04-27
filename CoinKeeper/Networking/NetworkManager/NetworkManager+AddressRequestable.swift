@@ -43,7 +43,12 @@ extension NetworkManager: AddressRequestable {
         }
       }
       .then { (responses: [AddressTransactionSummaryResponse]) -> Promise<[AddressTransactionSummaryResponse]> in
-        if responses.count == perPage {
+        // NOTE: Currently the server passes the `perPage` parameter to elastic search which uses it to limit `Transaction` objects.
+        // The server then maps those results into `AddressTransaction` objects (i.e. `AddressTransactionSummaryResponse`), each of which
+        // represent the details of a single address for the transaction. So there are typically more of these objects than the Transaction
+        // objects which means that the `perPage` variable defined here will not be strictly observed by response,
+        // e.g. a query where perPage=25 could return 37 AddressTransactionSummaryResponse objects that represent 25 transactions.
+        if responses.count >= perPage {
           let nextPage = page + 1
           let combined = aggregateResponses + responses
           os_log("combined response count: %d", log: self.logger, type: .debug, combined.count)
