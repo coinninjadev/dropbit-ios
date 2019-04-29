@@ -129,11 +129,11 @@ class AddressDataSource: AddressDataSourceType {
 
   func receiveAddressesUpToMaxUsed(in context: NSManagedObjectContext) -> [String] {
     let max = (self.lastReceiveIndex(in: context) ?? -1) + gapLimit
-    return (0..<max).map(receiveAddress).map { $0.address }
+    return (0...max).map(receiveAddress).map { $0.address }
   }
 
   func changeAddressesUpToMaxUsed(in context: NSManagedObjectContext) -> [String] {
     let max = (self.lastChangeIndex(in: context) ?? -1) + gapLimit
-    return (0..<max).map(changeAddress).map { $0.address }
+    return (0...max).map(changeAddress).map { $0.address }
   }
 }
