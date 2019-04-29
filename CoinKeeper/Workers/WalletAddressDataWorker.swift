@@ -406,17 +406,7 @@ class WalletAddressDataWorker: WalletAddressDataWorkerType {
     in context: NSManagedObjectContext
     ) -> Promise<Void> {
 
-    //    UIApplication.shared.applicationIconBadgeNumber = responses.count
-
-    let sortedResponses = responses.sorted(by: { (lhs: PendingInvitationData, rhs: PendingInvitationData) -> Bool in
-
-      let lhsFailedAt = lhs.failedToSendAt ?? .distantPast
-      let rhsFailedAt = rhs.failedToSendAt ?? .distantPast
-
-      // The oldest failedToSendAt date should be first, to rotate through them in case of broadcast failure
-      // If both are nil (.distantPast), order doesn't matter
-      return lhsFailedAt < rhsFailedAt
-    })
+    let sortedResponses = responses.sorted()
 
     guard let firstResponse = sortedResponses.first else {
       return Promise.value(())
