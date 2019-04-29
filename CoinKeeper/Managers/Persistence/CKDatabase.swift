@@ -97,7 +97,17 @@ class CKDatabase: PersistenceDatabaseType {
       }
     }
 
-    user.map { self.mainQueueContext.refresh($0, mergeChanges: true) }
+    user.map { user in
+      self.mainQueueContext.refresh(user, mergeChanges: true)
+      self.mainQueueContext.perform {
+        do {
+          // trigger didSave notification on main queue to update UI through observers
+          try self.mainQueueContext.save()
+        } catch {
+          os_log("failed to save context in %@. error: %@", log: self.logger, type: .error, #function, error.localizedDescription)
+        }
+      }
+    }
   }
 
   func removeWalletId(in context: NSManagedObjectContext) {
