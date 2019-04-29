@@ -113,7 +113,7 @@ extension PMKFinalizer {
     _ body: @escaping () -> Swift.Void) {
 
     context.performAndWait {
-      self.finally(on: on, flags: flags, body)
+      body()
     }
   }
 }
