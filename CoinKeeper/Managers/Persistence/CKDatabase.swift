@@ -24,6 +24,7 @@ class CKDatabase: PersistenceDatabaseType {
     let context = self.container.viewContext
     context.automaticallyMergesChangesFromParent = true
     context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
+    context.name = "MainQueueContext"
     if stackConfig.storeType.shouldSetQueryGeneration {
       try? context.setQueryGenerationFrom(.current)
     }
@@ -44,6 +45,7 @@ class CKDatabase: PersistenceDatabaseType {
     let bgContext = container.newBackgroundContext()
     bgContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
     bgContext.automaticallyMergesChangesFromParent = true
+    bgContext.name = "BackgroundContext_\(Date().timeIntervalSince1970)"
     return bgContext
   }
 
