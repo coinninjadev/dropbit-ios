@@ -138,7 +138,10 @@ class PersistenceManager: PersistenceManagerType {
 
   /// Call this to reset the user state to match the state of tapping Skip on verification
   func unverifyUser(in context: NSManagedObjectContext) {
+    // Perform on both contexts to ensure that willSave/didSave observers receive notification on main queue for badge updates
     databaseManager.unverifyUser(in: context)
+    databaseManager.unverifyUser(in: self.mainQueueContext())
+
     userDefaultsManager.unverifyUser()
     keychainManager.unverifyUser()
   }
