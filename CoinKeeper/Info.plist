@@ -115,5 +115,7 @@
 	</array>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Allow access to find Bitcoin ATMs or use Bitcoin near you</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Allow access to find Bitcoin ATMs or use Bitcoin near you</string>
 </dict>
 </plist>
