@@ -134,12 +134,20 @@ class PersistenceManager: PersistenceManagerType {
 
   func persistUserPublicURLInfo(_ info: UserPublicURLInfo, in context: NSManagedObjectContext) {
     let user = CKMUser.find(in: context)
-    user?.publicURLIsEnabled = info.enabled
+    user?.publicURLIsEnabled = info.isEnabled
   }
 
   func getUserPublicURLInfo(in context: NSManagedObjectContext) -> UserPublicURLInfo? {
-    guard let user = CKMUser.find(in: context), let publicURLId = user.publicURLId else { return nil }
-    return UserPublicURLInfo(id: publicURLId, enabled: user.publicURLIsEnabled)
+    let hasher = HashingManager()
+    let kit = PhoneNumberKit()
+    guard let user = CKMUser.find(in: context),
+      let salt = try? hasher.salt(),
+      let phoneNumber = self.verifiedPhoneNumber() else { return nil }
+
+    let hash = hasher.hash(phoneNumber: phoneNumber, salt: salt, parsedNumber: nil, kit: kit)
+    let phoneIdentity = PublicURLIdentity(fullPhoneHash: hash)
+
+    return UserPublicURLInfo(private: !user.publicURLIsEnabled, identities: [phoneIdentity])
   }
 
   func persistVerificationStatus(from response: UserResponse, in context: NSManagedObjectContext) -> Promise<UserVerificationStatus> {
