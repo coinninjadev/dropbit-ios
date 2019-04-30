@@ -55,6 +55,7 @@ public struct UserResponse: ResponseDecodable {
   let updatedAt: Date
   let status: String
   var walletId: String?
+  var publicUrl: UserPublicURLResponse?
 
 }
 
@@ -68,6 +69,7 @@ extension UserResponse {
     "updated_at": 1531921356,
     "status": "pending-verification",
     "wallet_id": "f8e8c20e-ba44-4bac-9a96-44f3b7ae955d"
+    "public_url": \(UserPublicURLResponse.sampleJSON)
     }
     """
   }

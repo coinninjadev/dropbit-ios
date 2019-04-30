@@ -22,10 +22,13 @@ enum DropBitMeConfig {
 
   init(publicURLInfo: UserPublicURLInfo?, verifiedFirstTime: Bool) {
     if let info = publicURLInfo {
-      if info.enabled, let url = CoinNinjaUrlFactory.buildUrl(for: .dropBitMe(publicURLId: info.id)) {
+      if info.private {
+        self = .disabled
+      } else if let identity = info.primaryIdentity,
+        let url = CoinNinjaUrlFactory.buildUrl(for: .dropBitMe(handle: identity.handle)) {
         self = .verified(url, verifiedFirstTime)
       } else {
-        self = .disabled
+        self = .disabled //this should not be reached since a user cannot exist without an identity
       }
     } else {
       self = .notVerified

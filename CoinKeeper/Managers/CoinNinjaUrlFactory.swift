@@ -36,7 +36,7 @@ struct CoinNinjaUrlFactory {
     case buyGiftCards
     case buyWithCreditCard
     case buyAtATM(CLLocationCoordinate2D)
-    case dropBitMe(publicURLId: String)
+    case dropBitMe(handle: String)
     case dropBitMeLearnMore
 
     var domain: String {
@@ -132,8 +132,8 @@ struct CoinNinjaUrlFactory {
         return "buybitcoin/creditcards"
       case .buyAtATM(let coordinate):
         return "news/webview/load-map?lat=\(coordinate.latitude)&long=\(coordinate.longitude)&type=atms"
-      case .dropBitMe(let id):
-        return id
+      case .dropBitMe(let handle):
+        return handle
       case .dropBitMeLearnMore:
         return "learnmore"
       }
