@@ -134,7 +134,6 @@ class PersistenceManager: PersistenceManagerType {
 
   func persistUserPublicURLInfo(_ info: UserPublicURLInfo, in context: NSManagedObjectContext) {
     let user = CKMUser.find(in: context)
-    user?.publicURLId = info.id
     user?.publicURLIsEnabled = info.enabled
   }
 
