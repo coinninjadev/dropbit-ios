@@ -23,8 +23,9 @@ extension AppCoordinator: DropBitMeViewControllerDelegate {
         if let urlInfo = self.persistenceManager.getUserPublicURLInfo(in: bgContext) {
           DispatchQueue.main.async {
             if let dropbitMeVC = viewController as? DropBitMeViewController,
-              let url = CoinNinjaUrlFactory.buildUrl(for: .dropBitMe(publicURLId: urlInfo.id)) {
-              dropbitMeVC.configure(with: .verified(url, urlInfo.enabled))
+              let handle = urlInfo.primaryIdentity?.handle,
+              let url = CoinNinjaUrlFactory.buildUrl(for: .dropBitMe(publicURLHandle: handle)) {
+              dropbitMeVC.configure(with: .verified(url, urlInfo.isEnabled))
             }
           }
         }
@@ -45,7 +46,8 @@ extension AppCoordinator: DropBitMeViewControllerDelegate {
   func viewControllerDidTapShareOnTwitter(_ viewController: UIViewController) {
     let context = self.persistenceManager.mainQueueContext()
     guard let urlInfo = self.persistenceManager.getUserPublicURLInfo(in: context),
-      let url = CoinNinjaUrlFactory.buildUrl(for: .dropBitMe(publicURLId: urlInfo.id))
+      let handle = urlInfo.primaryIdentity?.handle,
+      let url = CoinNinjaUrlFactory.buildUrl(for: .dropBitMe(publicURLHandle: handle))
       else { return }
 
     viewController.dismiss(animated: true) {
