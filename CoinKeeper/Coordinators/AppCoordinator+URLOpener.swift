@@ -11,8 +11,16 @@ import SafariServices
 
 extension AppCoordinator: URLOpener {
   func openURL(_ url: URL, completionHandler completion: (() -> Void)?) {
-    let safariController = SFSafariViewController(url: url)
-    safariController.modalPresentationStyle = .overFullScreen
-    navigationController.topViewController()?.present(safariController, animated: true, completion: completion)
+    openURL(url, externally: false, completionHandler: completion)
+  }
+
+  func openURL(_ url: URL, externally: Bool, completionHandler completion: (() -> Void)?) {
+    if externally {
+      UIApplication.shared.open(url, options: [], completionHandler: completion)
+    } else {
+      let safariController = SFSafariViewController(url: url)
+      safariController.modalPresentationStyle = .overFullScreen
+      navigationController.topViewController()?.present(safariController, animated: true, completion: completion)
+    }
   }
 }
