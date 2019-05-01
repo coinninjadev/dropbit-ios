@@ -53,7 +53,7 @@ class CountryCodeSearchView: UIView {
 
   private func configureSearchField() {
     searchContainer.backgroundColor = Theme.Color.whiteBackground.color
-    searchSeparator.backgroundColor = Theme.Color.searchResultSeparator.color
+    searchSeparator.backgroundColor = Theme.Color.graySeparator.color
 
     let textColor = Theme.Color.searchResultGrayText.color
     searchTextField.textAlignment = .left

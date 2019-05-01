@@ -18,10 +18,16 @@ class GetBitcoinCopiedAddressViewController: UIViewController, StoryboardInitial
   @IBOutlet var separatorView: UIView!
   @IBOutlet var confirmationButton: UIButton!
 
+  @IBAction func confirm(_ sender: Any) {
+    delegate.viewControllerDidSelectClose(self)
+  }
+
   private weak var delegate: ViewControllerDismissable!
   private var address = ""
   static func newInstance(address: String, delegate: ViewControllerDismissable) -> GetBitcoinCopiedAddressViewController {
     let vc = GetBitcoinCopiedAddressViewController.makeFromStoryboard()
+    vc.modalPresentationStyle = .overFullScreen
+    vc.modalTransitionStyle = .crossDissolve
     vc.delegate = delegate
     vc.address = address
     return vc
@@ -39,6 +45,27 @@ class GetBitcoinCopiedAddressViewController: UIViewController, StoryboardInitial
     semiOpaqueBackground.backgroundColor = Theme.Color.semiOpaquePopoverBackground.color
     alertBackground.backgroundColor = Theme.Color.lightGrayBackground.color
     alertBackground.setCornerRadius(9)
+
+    addressLabelContainer.backgroundColor = Theme.Color.whiteBackground.color
+    addressLabelContainer.layer.borderColor = Theme.Color.borderDarkGray.color.cgColor
+    addressLabelContainer.layer.borderWidth = 1 / UIScreen.main.nativeScale
+    addressLabelContainer.setCornerRadius(4)
+
+    addressLabel.font = Theme.Font.copiedAddress.font
+    addressLabel.textColor = Theme.Color.darkBlueText.color
+    addressLabel.lineBreakMode = .byTruncatingMiddle
+
+    messageLabel.text = """
+    When buying Bitcoin you will need to provide a Bitcoin address to recieve funds.
+    We’ve went ahead and copied your DropBit Bitcoin address to your clipboard.
+    """.removingMultilineLineBreaks()
+    messageLabel.font = Theme.Font.popoverMessage.font
+    messageLabel.textColor = Theme.Color.darkBlueText.color
+
+    separatorView.backgroundColor = Theme.Color.graySeparator.color
+
+    confirmationButton.setTitleColor(Theme.Color.lightBlueTint.color, for: .normal)
+    confirmationButton.titleLabel?.font = Theme.Font.popoverActionButton.font
   }
 
 }

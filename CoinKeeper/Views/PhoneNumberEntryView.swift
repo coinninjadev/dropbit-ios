@@ -54,7 +54,7 @@ class PhoneNumberEntryView: UIView {
     adjustCorners(squareBottom: false)
 
     countryCodeButton.backgroundColor = Theme.Color.flagButtonBackground.color
-    buttonSeparator.backgroundColor = Theme.Color.searchResultSeparator.color
+    buttonSeparator.backgroundColor = Theme.Color.graySeparator.color
     separatorWidthConstraint.constant = 1 / UIScreen.main.nativeScale
 
     countryCodeButton.titleLabel?.font = PhoneNumberEntryView.flagFont

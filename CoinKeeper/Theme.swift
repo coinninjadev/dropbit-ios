@@ -25,7 +25,7 @@ struct Theme {
     case mediumGrayText
     case flagButtonBackground
     case searchResultGrayText
-    case searchResultSeparator
+    case graySeparator
     case selectedCellBackground
     case lightGrayBackground, lightGrayText
     case extraLightGrayBackground
@@ -51,7 +51,7 @@ struct Theme {
       case .settingsDarkGray,
            .sendingToDarkGray: 								return UIColor(red: 0.14, green: 0.15, blue: 0.20, alpha: 1.00)
       case .searchBarLightGray: 							return UIColor(red: 0.97, green: 0.97, blue: 0.98, alpha: 1.00)
-      case .semiOpaquePopoverBackground:      return UIColor.black.withAlphaComponent(0.6)
+      case .semiOpaquePopoverBackground:      return UIColor.black.withAlphaComponent(0.7)
       case .darkBlueButton,
            .darkBlueText,
            .confirmPaymentMemo,
@@ -66,7 +66,7 @@ struct Theme {
       case .searchResultGrayText,
            .memoInfoText: 										return UIColor(r: 172, g: 172, b: 172)
       case .mediumGrayText: 									return UIColor(r: 184, g: 184, b: 184)
-      case .searchResultSeparator,
+      case .graySeparator,
            .dragIndiciator:										return UIColor(r: 216, g: 216, b: 216)
       case .bannerWarn: 											return UIColor(r: 224, g: 177, b: 0)
       case .memoBorder,
@@ -176,6 +176,9 @@ struct Theme {
     case shareTransactionTitle
     case searchResultText
     case shareTransactionMessage
+    case copiedAddress
+    case popoverMessage
+    case popoverActionButton
 
     var font: UIFont {
       switch self {
@@ -196,6 +199,7 @@ struct Theme {
       case .settingsCellTitle,
            .transactionHistoryDetail,
            .wordCountDetail,
+           .copiedAddress,
            .selectWordDetail: 									return CKFont.regular(12)
       case .bannerMessage,
            .transactionDetailAmountBreakdown,
@@ -266,8 +270,10 @@ struct Theme {
       // Semi-Bold
       case .progressBarNode: 										return CKFont.semiBold(11)
       case .alertActionTitle,
+           .popoverMessage,
            .requestPayAddress: 									return CKFont.semiBold(13)
       case .settingsSectionHeader,
+           .popoverActionButton,
            .shareTransactionTitle: 							return CKFont.semiBold(14)
       case .phoneNumberStatus: 									return CKFont.semiBold(25)
       case .keypadButton: 											return CKFont.semiBold(28)

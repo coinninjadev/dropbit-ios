@@ -22,16 +22,16 @@
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="itT-9s-3IO">
-                                        <rect key="frame" x="64" y="391.5" width="286" height="113"/>
+                                        <rect key="frame" x="64" y="371.5" width="286" height="153"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalCentering" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="N1E-ZV-mv1">
-                                                <rect key="frame" x="0.0" y="0.0" width="286" height="57"/>
+                                                <rect key="frame" x="0.0" y="26" width="286" height="57"/>
                                                 <subviews>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7C1-MB-N2E" userLabel="Address Label Container">
-                                                        <rect key="frame" x="0.0" y="0.0" width="286" height="28.5"/>
+                                                        <rect key="frame" x="21" y="0.0" width="244" height="28.5"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="imj-Rm-Q97">
-                                                                <rect key="frame" x="4" y="4" width="278" height="20.5"/>
+                                                                <rect key="frame" x="4" y="4" width="236" height="20.5"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                 <nil key="textColor"/>
                                                                 <nil key="highlightedColor"/>
@@ -41,12 +41,16 @@
                                                         <constraints>
                                                             <constraint firstAttribute="trailing" secondItem="imj-Rm-Q97" secondAttribute="trailing" constant="4" id="Iau-hG-9CT"/>
                                                             <constraint firstItem="imj-Rm-Q97" firstAttribute="top" secondItem="7C1-MB-N2E" secondAttribute="top" constant="4" id="LJk-Xw-I79"/>
+                                                            <constraint firstAttribute="width" constant="244" id="Uts-nc-BDm"/>
                                                             <constraint firstAttribute="bottom" secondItem="imj-Rm-Q97" secondAttribute="bottom" constant="4" id="cAH-PE-d9D"/>
                                                             <constraint firstItem="imj-Rm-Q97" firstAttribute="leading" secondItem="7C1-MB-N2E" secondAttribute="leading" constant="4" id="yC3-aP-WSn"/>
                                                         </constraints>
                                                     </view>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aNe-AB-ruR">
-                                                        <rect key="frame" x="122" y="36.5" width="42" height="20.5"/>
+                                                        <rect key="frame" x="20.5" y="36.5" width="245" height="20.5"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="width" constant="245" id="dZk-Z7-JOm"/>
+                                                        </constraints>
                                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                         <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
@@ -54,18 +58,21 @@
                                                 </subviews>
                                             </stackView>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XSJ-2N-9CC">
-                                                <rect key="frame" x="0.0" y="73" width="286" height="1"/>
+                                                <rect key="frame" x="0.0" y="109" width="286" height="1"/>
                                                 <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="1" id="J4R-h6-5Lm"/>
                                                 </constraints>
                                             </view>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="58L-FD-TJk">
-                                                <rect key="frame" x="0.0" y="73" width="286" height="40"/>
+                                                <rect key="frame" x="0.0" y="109" width="286" height="44"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="height" constant="40" id="HbJ-cS-6Ed"/>
+                                                    <constraint firstAttribute="height" constant="44" id="HbJ-cS-6Ed"/>
                                                 </constraints>
                                                 <state key="normal" title="OK"/>
+                                                <connections>
+                                                    <action selector="confirm:" destination="Zol-O7-zkC" eventType="touchUpInside" id="K3u-qQ-UBf"/>
+                                                </connections>
                                             </button>
                                         </subviews>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -74,11 +81,11 @@
                                             <constraint firstItem="XSJ-2N-9CC" firstAttribute="top" secondItem="58L-FD-TJk" secondAttribute="top" id="DUg-at-p7C"/>
                                             <constraint firstItem="XSJ-2N-9CC" firstAttribute="leading" secondItem="itT-9s-3IO" secondAttribute="leading" id="EfZ-hq-8ek"/>
                                             <constraint firstItem="58L-FD-TJk" firstAttribute="leading" secondItem="itT-9s-3IO" secondAttribute="leading" id="Ex0-Jf-ZV4"/>
-                                            <constraint firstItem="N1E-ZV-mv1" firstAttribute="top" secondItem="itT-9s-3IO" secondAttribute="top" id="FVe-rU-Z1Z"/>
+                                            <constraint firstItem="N1E-ZV-mv1" firstAttribute="top" secondItem="itT-9s-3IO" secondAttribute="top" constant="26" id="FVe-rU-Z1Z"/>
                                             <constraint firstAttribute="bottom" secondItem="58L-FD-TJk" secondAttribute="bottom" id="Foc-MN-Ur0"/>
                                             <constraint firstAttribute="trailing" secondItem="XSJ-2N-9CC" secondAttribute="trailing" id="ILi-gF-AxE"/>
                                             <constraint firstItem="N1E-ZV-mv1" firstAttribute="leading" secondItem="itT-9s-3IO" secondAttribute="leading" id="UDU-nU-tlO"/>
-                                            <constraint firstItem="58L-FD-TJk" firstAttribute="top" secondItem="N1E-ZV-mv1" secondAttribute="bottom" constant="16" id="bBg-sF-175"/>
+                                            <constraint firstItem="58L-FD-TJk" firstAttribute="top" secondItem="N1E-ZV-mv1" secondAttribute="bottom" constant="26" id="bBg-sF-175"/>
                                             <constraint firstAttribute="width" constant="286" id="pCJ-Tt-ccY"/>
                                             <constraint firstAttribute="trailing" secondItem="N1E-ZV-mv1" secondAttribute="trailing" id="sTF-aU-WU0"/>
                                         </constraints>
@@ -112,7 +119,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="g0i-cB-HNv" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="160.86956521739131" y="26.785714285714285"/>
+            <point key="canvasLocation" x="48" y="25"/>
         </scene>
     </scenes>
 </document>

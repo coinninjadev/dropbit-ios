@@ -18,8 +18,19 @@ protocol ViewControllerDismissable: AnyObject {
 extension AppCoordinator: ViewControllerDismissable {
 
   func viewControllerDidSelectClose(_ viewController: UIViewController) {
+    var completion: (() -> Void)?
+    switch viewController {
+    case is GetBitcoinCopiedAddressViewController:
+      completion = {
+        guard let url = CoinNinjaUrlFactory.buildUrl(for: .buyWithCreditCard) else { return }
+        self.openURLExternally(url, completionHandler: nil)
+      }
+    default:
+      break
+    }
+
     DispatchQueue.main.async {
-      viewController.dismiss(animated: true, completion: nil)
+      viewController.dismiss(animated: true, completion: completion)
     }
   }
 }

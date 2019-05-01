@@ -8,6 +8,7 @@
 
 import Foundation
 import CoreLocation
+import UIKit
 
 extension AppCoordinator: GetBitcoinViewControllerDelegate {
   func viewControllerFindBitcoinATMNearMe(_ viewController: GetBitcoinViewController) {
@@ -29,8 +30,18 @@ extension AppCoordinator: GetBitcoinViewControllerDelegate {
 
   func viewControllerBuyWithCreditCard(_ viewController: GetBitcoinViewController) {
     analyticsManager.track(event: .buyBitcoinWithCreditCard, with: nil)
-    guard let url = CoinNinjaUrlFactory.buildUrl(for: .buyWithCreditCard) else { return }
-    openURL(url, completionHandler: nil)
+    guard let addressSource = self.walletManager?.createAddressDataSource() else { return }
+    let context = persistenceManager.mainQueueContext()
+    let nextAddress = addressSource.nextAvailableReceiveAddress(forServerPool: false,
+                                                                indicesToSkip: [],
+                                                                in: context)?.address
+
+    if let address = nextAddress, let topVC = self.navigationController.topViewController() {
+      UIPasteboard.general.string = address
+      let copiedAddressVC = GetBitcoinCopiedAddressViewController.newInstance(address: address,
+                                                                              delegate: self)
+      topVC.present(copiedAddressVC, animated: true, completion: nil)
+    }
   }
 
   func viewControllerBuyWithGiftCard(_ viewController: GetBitcoinViewController) {
