@@ -39,8 +39,7 @@ class KeypadDigitView: UIView {
   }
   @IBOutlet var circleView: UIView! {
     didSet {
-      circleView.layer.masksToBounds = true
-      circleView.layer.cornerRadius = self.frame.width / 6.0
+      circleView.setCornerRadius(self.frame.width / 6.0)
       updateUI()
     }
   }

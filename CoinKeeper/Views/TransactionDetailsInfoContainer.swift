@@ -13,8 +13,7 @@ class TransactionDetailsInfoContainer: UIView {
   override func awakeFromNib() {
     super.awakeFromNib()
 
-    clipsToBounds = true
-    layer.cornerRadius = 9
+    setCornerRadius(9)
     backgroundColor = Theme.Color.extraLightGrayBackground.color
     layer.borderWidth = 1
     layer.borderColor = Theme.Color.lightGrayOutline.color.cgColor

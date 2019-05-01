@@ -11,8 +11,7 @@ import UIKit
 class PresentableViewController: BaseViewController, UIViewControllerTransitioningDelegate {
   override func viewDidLoad() {
     super.viewDidLoad()
-    view.layer.cornerRadius = 20
-    view.layer.masksToBounds = true
+    view.setCornerRadius(20)
     view.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
   }
 

@@ -8,7 +8,7 @@
 
 import UIKit
 
-class GetBitcoinCopiedAddressViewController: UIViewController, StoryboardInitializable, ViewControllerDismissable {
+class GetBitcoinCopiedAddressViewController: UIViewController, StoryboardInitializable {
 
   @IBOutlet var semiOpaqueBackground: UIView!
   @IBOutlet var alertBackground: UIView!
@@ -38,9 +38,7 @@ class GetBitcoinCopiedAddressViewController: UIViewController, StoryboardInitial
     self.view.backgroundColor = .clear
     semiOpaqueBackground.backgroundColor = Theme.Color.semiOpaquePopoverBackground.color
     alertBackground.backgroundColor = Theme.Color.lightGrayBackground.color
-    alertBackground
+    alertBackground.setCornerRadius(9)
   }
-
-
 
 }

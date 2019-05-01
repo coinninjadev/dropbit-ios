@@ -108,8 +108,8 @@ class TransactionHistoryDetailCell: UICollectionViewCell {
     super.awakeFromNib()
 
     backgroundColor = UIColor.white
+    setCornerRadius(13)
     layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
-    layer.cornerRadius = 13
 
     // Shadow
     layer.shadowColor = UIColor.black.cgColor

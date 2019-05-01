@@ -598,6 +598,7 @@
 		B566ED7C219B3840001A65F5 /* AccessibleViewSettable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B566ED7B219B3840001A65F5 /* AccessibleViewSettable.swift */; };
 		B56788AD227A3C2C00A39534 /* GetBitcoinCopiedAddressViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B56788AC227A3C2C00A39534 /* GetBitcoinCopiedAddressViewController.storyboard */; };
 		B56788AF227A3C5600A39534 /* GetBitcoinCopiedAddressViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56788AE227A3C5600A39534 /* GetBitcoinCopiedAddressViewController.swift */; };
+		B56788B1227A430300A39534 /* UIView+CornerRadius.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56788B0227A430300A39534 /* UIView+CornerRadius.swift */; };
 		B567CBEB20C5534400105C2C /* NSManagedObjectContext+Changes.swift in Sources */ = {isa = PBXBuildFile; fileRef = B567CBEA20C5534400105C2C /* NSManagedObjectContext+Changes.swift */; };
 		B5697271208A428A00835F01 /* BalanceDisplayable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5697270208A428A00835F01 /* BalanceDisplayable.swift */; };
 		B5697273208A8E0A00835F01 /* BalanceContainerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5697272208A8E0A00835F01 /* BalanceContainerTests.swift */; };
@@ -1386,6 +1387,7 @@
 		B566ED7B219B3840001A65F5 /* AccessibleViewSettable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessibleViewSettable.swift; sourceTree = "<group>"; };
 		B56788AC227A3C2C00A39534 /* GetBitcoinCopiedAddressViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = GetBitcoinCopiedAddressViewController.storyboard; sourceTree = "<group>"; };
 		B56788AE227A3C5600A39534 /* GetBitcoinCopiedAddressViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetBitcoinCopiedAddressViewController.swift; sourceTree = "<group>"; };
+		B56788B0227A430300A39534 /* UIView+CornerRadius.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+CornerRadius.swift"; sourceTree = "<group>"; };
 		B567CBEA20C5534400105C2C /* NSManagedObjectContext+Changes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSManagedObjectContext+Changes.swift"; sourceTree = "<group>"; };
 		B5697270208A428A00835F01 /* BalanceDisplayable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BalanceDisplayable.swift; sourceTree = "<group>"; };
 		B5697272208A8E0A00835F01 /* BalanceContainerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BalanceContainerTests.swift; sourceTree = "<group>"; };
@@ -1837,6 +1839,7 @@
 				3B82691B20330C6A009B11EC /* UIView+Xib.swift */,
 				B51F823D207BDEC900692F5B /* UIView+ParentViewController.swift */,
 				A260E8DA20FD312B008343F9 /* UIView+Enabler.swift */,
+				B56788B0227A430300A39534 /* UIView+CornerRadius.swift */,
 				A2893BBF20FD4E7700E96B07 /* UIViewController+ToolbarUtilities.swift */,
 				3B302F252123160800A7E070 /* PromiseKit+CoreData.swift */,
 				3B474156217E4E4E004DA223 /* URLRequest+Helpers.swift */,
@@ -3785,6 +3788,7 @@
 				B51F823A207BB00000692F5B /* BalancePrimaryAmountLabel.swift in Sources */,
 				3BA360842090B0C100732C43 /* CKMTransaction+CoreDataClass.swift in Sources */,
 				307DF11B21500BF100260369 /* ElasticRequest.swift in Sources */,
+				B56788B1227A430300A39534 /* UIView+CornerRadius.swift in Sources */,
 				B530DFBD2108CF8400A0B1A8 /* TransactionDetailWarningLabel.swift in Sources */,
 				A2A530CE20977A8A00B6F4DE /* ConfirmPaymentViewModel.swift in Sources */,
 				B5FE9B67219DD96200801D3C /* MerchantPaymentRequestResponse.swift in Sources */,

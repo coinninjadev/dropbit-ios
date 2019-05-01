@@ -44,8 +44,7 @@ class ActionableAlertViewController: AlertControllerType, StoryboardInitializabl
 
     setAccessibilityIdentifiers()
     view.isOpaque = false
-    containerView.layer.cornerRadius = 10.0
-    containerView.clipsToBounds = true
+    containerView.setCornerRadius(10)
 
     imageView.image = image
 

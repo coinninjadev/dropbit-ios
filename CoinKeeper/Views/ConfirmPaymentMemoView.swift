@@ -30,8 +30,7 @@ class ConfirmPaymentMemoView: UIView {
   override func awakeFromNib() {
     super.awakeFromNib()
     backgroundColor = .clear
-    self.clipsToBounds = true
-    self.layer.cornerRadius = 6
+    self.setCornerRadius(6)
     self.layer.borderWidth = 1
     self.layer.borderColor = Theme.Color.lightGrayOutline.color.cgColor
     separatorView.backgroundColor = Theme.Color.lightGrayOutline.color

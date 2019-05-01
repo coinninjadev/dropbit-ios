@@ -83,8 +83,7 @@ extension Badgeable {
     badge.translatesAutoresizingMaskIntoConstraints = false
 
     let diameter = BadgeView.standardDiameter
-    badge.clipsToBounds = true
-    badge.layer.cornerRadius = diameter/2 // create circle
+    badge.setCornerRadius(diameter/2) // create circle
 
     badgeTarget.addSubview(badge)
 
