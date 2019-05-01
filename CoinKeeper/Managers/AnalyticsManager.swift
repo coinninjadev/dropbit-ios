@@ -86,6 +86,9 @@ enum AnalyticsManagerEventType: String {
   case spendOnGiftCards = "SpendOnGiftCards"
   case spendOnAroundMe = "SpendOnAroundMe"
   case spendOnOnline = "SpendOnOnline"
+  case sharePromptTwitter = "ShareViaTwitter"
+  case sharePromptNextTime = "ShareNextTime"
+  case sharePromptNever = "ShareNever"
 
   var id: String {
     return self.rawValue
