@@ -44,12 +44,14 @@ struct Theme {
     case dragIndiciator
     case appleGreen
     case mango
+    case semiOpaquePopoverBackground
 
     var color: UIColor {
       switch self {
       case .settingsDarkGray,
            .sendingToDarkGray: 								return UIColor(red: 0.14, green: 0.15, blue: 0.20, alpha: 1.00)
       case .searchBarLightGray: 							return UIColor(red: 0.97, green: 0.97, blue: 0.98, alpha: 1.00)
+      case .semiOpaquePopoverBackground:      return UIColor.black.withAlphaComponent(0.6)
       case .darkBlueButton,
            .darkBlueText,
            .confirmPaymentMemo,
