@@ -223,7 +223,9 @@ class AppCoordinator: CoordinatorType {
           break
         }
 
-        self?.presentDropBitMeViewController(verifiedFirstTime: true)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+          self?.presentDropBitMeViewController(verifiedFirstTime: true)
+        }
       }
     })
 
