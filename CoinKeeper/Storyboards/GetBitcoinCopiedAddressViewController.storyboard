@@ -22,10 +22,10 @@
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="itT-9s-3IO">
-                                        <rect key="frame" x="64" y="371.5" width="286" height="153"/>
+                                        <rect key="frame" x="64" y="365.5" width="286" height="165"/>
                                         <subviews>
-                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalCentering" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="N1E-ZV-mv1">
-                                                <rect key="frame" x="0.0" y="26" width="286" height="57"/>
+                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalCentering" alignment="center" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="N1E-ZV-mv1">
+                                                <rect key="frame" x="0.0" y="26" width="286" height="69"/>
                                                 <subviews>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7C1-MB-N2E" userLabel="Address Label Container">
                                                         <rect key="frame" x="21" y="0.0" width="244" height="28.5"/>
@@ -47,7 +47,7 @@
                                                         </constraints>
                                                     </view>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aNe-AB-ruR">
-                                                        <rect key="frame" x="20.5" y="36.5" width="245" height="20.5"/>
+                                                        <rect key="frame" x="20.5" y="48.5" width="245" height="20.5"/>
                                                         <constraints>
                                                             <constraint firstAttribute="width" constant="245" id="dZk-Z7-JOm"/>
                                                         </constraints>
@@ -58,14 +58,14 @@
                                                 </subviews>
                                             </stackView>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XSJ-2N-9CC">
-                                                <rect key="frame" x="0.0" y="109" width="286" height="1"/>
+                                                <rect key="frame" x="0.0" y="121" width="286" height="1"/>
                                                 <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="1" id="J4R-h6-5Lm"/>
                                                 </constraints>
                                             </view>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="58L-FD-TJk">
-                                                <rect key="frame" x="0.0" y="109" width="286" height="44"/>
+                                                <rect key="frame" x="0.0" y="121" width="286" height="44"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="44" id="HbJ-cS-6Ed"/>
                                                 </constraints>
