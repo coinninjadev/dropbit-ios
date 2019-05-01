@@ -15,6 +15,7 @@ extension AppCoordinator: ViewControllerDontShowable {
     switch viewController {
     case is ShareTransactionViewController:
       self.persistenceManager.userDefaultsManager.dontShowShareTransaction = true
+      self.analyticsManager.track(event: .sharePromptNever, with: nil)
       viewController.dismiss(animated: true, completion: nil)
     default:
       break
