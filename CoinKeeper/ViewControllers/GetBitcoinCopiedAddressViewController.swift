@@ -8,15 +8,18 @@
 
 import UIKit
 
-typealias GetBitcoinCopiedAddressViewControllerDelegate = ViewControllerDismissable & URLOpener
+protocol GetBitcoinCopiedAddressViewControllerDelegate: ViewControllerDismissable, URLOpener {
+  func viewControllerDidCopyAddress(_ viewController: UIViewController)
+  func viewControllerRequestedAuthenticationSuspension(_ viewController: UIViewController)
+}
 
 class GetBitcoinCopiedAddressViewController: UIViewController, StoryboardInitializable {
 
   @IBOutlet var semiOpaqueBackground: UIView!
   @IBOutlet var alertBackground: UIView!
   @IBOutlet var bitcoinIconBackground: UIView!
-  @IBOutlet var addressLabelContainer: UIView!
-  @IBOutlet var addressLabel: UILabel!
+  @IBOutlet var addressButton: UIButton!
+
   @IBOutlet var messageLabel: UILabel!
   @IBOutlet var confirmationButton: UIButton!
 
@@ -24,8 +27,13 @@ class GetBitcoinCopiedAddressViewController: UIViewController, StoryboardInitial
     delegate.viewControllerDidSelectClose(self)
   }
 
+  @IBAction func copyAddress(_ sender: Any) {
+    UIPasteboard.general.string = address
+    delegate.viewControllerDidCopyAddress(self)
+  }
+
   @IBAction func confirm(_ sender: Any) {
-    // TODO: suspend authentication on open for 15 minutes
+    delegate.viewControllerRequestedAuthenticationSuspension(self)
     delegate.openURLExternally(destinationURL, completionHandler: nil)
   }
 
@@ -49,7 +57,7 @@ class GetBitcoinCopiedAddressViewController: UIViewController, StoryboardInitial
     super.viewDidLoad()
 
     setupViews()
-    addressLabel.text = address
+    addressButton.setTitle(address, for: .normal)
   }
 
   private func setupViews() {
@@ -61,14 +69,10 @@ class GetBitcoinCopiedAddressViewController: UIViewController, StoryboardInitial
     bitcoinIconBackground.backgroundColor = Theme.Color.mango.color
     bitcoinIconBackground.setCornerRadius(bitcoinIconBackground.frame.width/2)
 
-    addressLabelContainer.backgroundColor = Theme.Color.whiteBackground.color
-    addressLabelContainer.layer.borderColor = Theme.Color.borderDarkGray.color.cgColor
-    addressLabelContainer.layer.borderWidth = 1 / UIScreen.main.nativeScale
-    addressLabelContainer.setCornerRadius(4)
-
-    addressLabel.font = Theme.Font.copiedAddress.font
-    addressLabel.textColor = Theme.Color.darkBlueText.color
-    addressLabel.lineBreakMode = .byTruncatingMiddle
+    addressButton.backgroundColor = Theme.Color.whiteBackground.color
+    addressButton.setTitleColor(Theme.Color.darkBlueText.color, for: .normal)
+    addressButton.titleLabel?.font = Theme.Font.copiedAddress.font
+    addressButton.titleLabel?.lineBreakMode = .byTruncatingMiddle
 
     messageLabel.text = """
     You will need a Bitcoin address so we went ahead and
