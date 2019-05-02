@@ -8,6 +8,8 @@
 
 import UIKit
 
+typealias GetBitcoinCopiedAddressViewControllerDelegate = ViewControllerDismissable & URLOpener
+
 class GetBitcoinCopiedAddressViewController: UIViewController, StoryboardInitializable {
 
   @IBOutlet var semiOpaqueBackground: UIView!
@@ -19,17 +21,22 @@ class GetBitcoinCopiedAddressViewController: UIViewController, StoryboardInitial
   @IBOutlet var confirmationButton: UIButton!
 
   @IBAction func confirm(_ sender: Any) {
-    delegate.viewControllerDidSelectClose(self)
+    delegate.openURLExternally(destinationURL, completionHandler: nil)
   }
 
-  private weak var delegate: ViewControllerDismissable!
   private var address = ""
-  static func newInstance(address: String, delegate: ViewControllerDismissable) -> GetBitcoinCopiedAddressViewController {
+  private var destinationURL: URL!
+  private weak var delegate: GetBitcoinCopiedAddressViewControllerDelegate!
+
+  static func newInstance(address: String,
+                          destinationURL: URL,
+                          delegate: GetBitcoinCopiedAddressViewControllerDelegate) -> GetBitcoinCopiedAddressViewController {
     let vc = GetBitcoinCopiedAddressViewController.makeFromStoryboard()
     vc.modalPresentationStyle = .overFullScreen
     vc.modalTransitionStyle = .crossDissolve
-    vc.delegate = delegate
     vc.address = address
+    vc.destinationURL = destinationURL
+    vc.delegate = delegate
     return vc
   }
 

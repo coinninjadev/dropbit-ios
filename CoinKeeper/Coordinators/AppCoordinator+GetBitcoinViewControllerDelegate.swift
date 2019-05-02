@@ -30,6 +30,17 @@ extension AppCoordinator: GetBitcoinViewControllerDelegate {
 
   func viewControllerBuyWithCreditCard(_ viewController: GetBitcoinViewController) {
     analyticsManager.track(event: .buyBitcoinWithCreditCard, with: nil)
+    guard let url = CoinNinjaUrlFactory.buildUrl(for: .buyWithCreditCard) else { return }
+    copyNextAddressAndPresentVC(destinationURL: url)
+  }
+
+  func viewControllerBuyWithGiftCard(_ viewController: GetBitcoinViewController) {
+    analyticsManager.track(event: .buyBitcoinWithGiftCard, with: nil)
+    guard let url = CoinNinjaUrlFactory.buildUrl(for: .buyGiftCards) else { return }
+    copyNextAddressAndPresentVC(destinationURL: url)
+  }
+
+  private func copyNextAddressAndPresentVC(destinationURL: URL) {
     guard let addressSource = self.walletManager?.createAddressDataSource() else { return }
     let context = persistenceManager.mainQueueContext()
     let nextAddress = addressSource.nextAvailableReceiveAddress(forServerPool: false,
@@ -39,14 +50,9 @@ extension AppCoordinator: GetBitcoinViewControllerDelegate {
     if let address = nextAddress, let topVC = self.navigationController.topViewController() {
       UIPasteboard.general.string = address
       let copiedAddressVC = GetBitcoinCopiedAddressViewController.newInstance(address: address,
+                                                                              destinationURL: destinationURL,
                                                                               delegate: self)
       topVC.present(copiedAddressVC, animated: true, completion: nil)
     }
-  }
-
-  func viewControllerBuyWithGiftCard(_ viewController: GetBitcoinViewController) {
-    analyticsManager.track(event: .buyBitcoinWithGiftCard, with: nil)
-    guard let url = CoinNinjaUrlFactory.buildUrl(for: .buyGiftCards) else { return }
-    openURL(url, completionHandler: nil)
   }
 }
