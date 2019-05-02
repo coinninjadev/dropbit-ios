@@ -14,7 +14,7 @@ class TransactionDetailMessageLabel: UILabel {
     font = Theme.Font.transactionDetailAmountBreakdown.font
     textColor = Theme.Color.grayText.color
     isHidden = false
-    textAlignment = .left
+    textAlignment = .center
     numberOfLines = 0
   }
 }

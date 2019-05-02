@@ -13,6 +13,7 @@ protocol ViewControllerDontShowable: AnyObject {
 }
 protocol ShareTransactionViewControllerDelegate: ViewControllerDismissable, ViewControllerDontShowable {
   func viewControllerRequestedShareTransactionOnTwitter(_ viewController: UIViewController)
+  func viewControllerRequestedShareNextTime(_ viewController: UIViewController)
 }
 
 class ShareTransactionViewController: UIViewController, StoryboardInitializable {
@@ -29,7 +30,7 @@ class ShareTransactionViewController: UIViewController, StoryboardInitializable 
   }
 
   @IBAction func performNextTime(_ sender: Any) {
-    delegate?.viewControllerDidSelectClose(self)
+    delegate?.viewControllerRequestedShareNextTime(self)
   }
 
   @IBAction func performDontAskAgain(_ sender: Any) {

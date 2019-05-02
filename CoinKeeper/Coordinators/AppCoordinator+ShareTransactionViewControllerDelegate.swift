@@ -13,6 +13,8 @@ import UIKit
 extension AppCoordinator: ShareTransactionViewControllerDelegate {
 
   func viewControllerRequestedShareTransactionOnTwitter(_ viewController: UIViewController) {
+    self.analyticsManager.track(event: .sharePromptTwitter, with: nil)
+
     viewController.dismiss(animated: true) {
       var defaultTweetText = ""
       let bgContext = self.persistenceManager.createBackgroundContext()
@@ -32,6 +34,11 @@ extension AppCoordinator: ShareTransactionViewControllerDelegate {
         os_log("%@: Failed to create Twitter URL from components", log: logger, type: .error, #function)
       }
     }
+  }
+
+  func viewControllerRequestedShareNextTime(_ viewController: UIViewController) {
+    self.analyticsManager.track(event: .sharePromptNextTime, with: nil)
+    viewController.dismiss(animated: true, completion: nil)
   }
 
   private func tweetText(withMemo memo: String?) -> String {
