@@ -622,6 +622,7 @@
 		B56E15A72167EAE6003B69D4 /* NetworkManager+DeviceRequestable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56E15A62167EAE6003B69D4 /* NetworkManager+DeviceRequestable.swift */; };
 		B5779F6E216D3DCB00E52B27 /* DeviceEndpointTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5779F6D216D3DCB00E52B27 /* DeviceEndpointTarget.swift */; };
 		B5779F76216D4C3000E52B27 /* MockNetworkManager+DeviceEndpointRequestable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5779F75216D4C3000E52B27 /* MockNetworkManager+DeviceEndpointRequestable.swift */; };
+		B57AC62F227B871500E495C3 /* UIView+CornerRadius.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56788B0227A430300A39534 /* UIView+CornerRadius.swift */; };
 		B57AF7FE2268A6A800E5B0A6 /* ShareTransactionViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B57AF7FD2268A6A800E5B0A6 /* ShareTransactionViewController.storyboard */; };
 		B57AF8002268A95E00E5B0A6 /* ShareTransactionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B57AF7FF2268A95E00E5B0A6 /* ShareTransactionViewController.swift */; };
 		B57AF8022268C78400E5B0A6 /* AppCoordinator+ShareTransactionViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B57AF8012268C78400E5B0A6 /* AppCoordinator+ShareTransactionViewControllerDelegate.swift */; };
@@ -4019,6 +4020,7 @@
 				304BAED021FA131000065D6D /* TutorialUITests.swift in Sources */,
 				B58AFF312194DAF2001BE563 /* UITestPage.swift in Sources */,
 				3B3779FC219E20AD00F79683 /* CreateRecoveryWordsCellPage.swift in Sources */,
+				B57AC62F227B871500E495C3 /* UIView+CornerRadius.swift in Sources */,
 				B51F1ED9219A286900C54B73 /* DeviceVerificationPage.swift in Sources */,
 				B51FB0E021751BED005CBAD6 /* Theme.swift in Sources */,
 				B51F1ED12199F7CB00C54B73 /* PinCreationPage.swift in Sources */,
