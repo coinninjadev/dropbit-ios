@@ -40,7 +40,8 @@ class TransactionHistoryDetailValidCell: TransactionHistoryDetailBaseCell {
     messageLabel.text = viewModel.messageLabel
     messageContainer.isHidden = viewModel.messageLabel == nil
     messageLabel.isHidden = viewModel.messageLabel == nil
-    messageContainerHeightConstraint.constant = messageLabel.intrinsicContentSize.height + 16
+    layoutIfNeeded()
+    messageContainerHeightConstraint.constant = messageLabel.intrinsicContentSize.height + 20
     setupProgressBar(with: viewModel)
 
     addressView.selectionDelegate = self

@@ -14,6 +14,16 @@ protocol TransactionHistoryDetailAddressViewDelegate: AnyObject {
 
 class TransactionHistoryDetailCellAddressView: UIView {
 
+  override var isHidden: Bool {
+    didSet {
+      if isHidden {
+        allViews?.forEach { $0.isHidden = true }
+      } else {
+        viewModel.map { load(with: $0) }
+      }
+    }
+  }
+
   // MARK: outlets
   @IBOutlet var addressContainerView: UIView!
   @IBOutlet var addressTextButton: UIButton! {
@@ -23,9 +33,11 @@ class TransactionHistoryDetailCellAddressView: UIView {
   }
   @IBOutlet var addressImageButton: UIButton!
   @IBOutlet var addressStatusLabel: TransactionDetailStatusLabel!
+  @IBOutlet var allViews: [UIView]!
 
   // MARK: variables
   weak var selectionDelegate: TransactionHistoryDetailAddressViewDelegate?
+  var viewModel: TransactionHistoryDetailCellViewModel?
 
   // MARK: initialization and setup
   required init?(coder aDecoder: NSCoder) {
@@ -54,7 +66,7 @@ class TransactionHistoryDetailCellAddressView: UIView {
 
   // MARK: loading
   func load(with viewModel: TransactionHistoryDetailCellViewModel) {
-
+    self.viewModel = viewModel
     if let invitationStatus = viewModel.invitationStatus {
       switch invitationStatus {
       case .completed, .addressSent:
@@ -82,6 +94,7 @@ class TransactionHistoryDetailCellAddressView: UIView {
 
     addressTextButton.isEnabled = !viewModel.broadcastFailed
     addressImageButton.isHidden = (viewModel.broadcastFailed || !viewModel.addressButtonIsActive)
+    layoutIfNeeded()
   }
 
 }
