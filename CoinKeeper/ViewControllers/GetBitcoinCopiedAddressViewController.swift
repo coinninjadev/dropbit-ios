@@ -14,13 +14,19 @@ class GetBitcoinCopiedAddressViewController: UIViewController, StoryboardInitial
 
   @IBOutlet var semiOpaqueBackground: UIView!
   @IBOutlet var alertBackground: UIView!
+  @IBOutlet var bitcoinIconBackground: UIView!
   @IBOutlet var addressLabelContainer: UIView!
   @IBOutlet var addressLabel: UILabel!
   @IBOutlet var messageLabel: UILabel!
   @IBOutlet var separatorView: UIView!
   @IBOutlet var confirmationButton: UIButton!
 
+  @IBAction func close(_ sender: Any) {
+    delegate.viewControllerDidSelectClose(self)
+  }
+
   @IBAction func confirm(_ sender: Any) {
+    // TODO: suspend authentication on open for 15 minutes
     delegate.openURLExternally(destinationURL, completionHandler: nil)
   }
 
@@ -53,6 +59,9 @@ class GetBitcoinCopiedAddressViewController: UIViewController, StoryboardInitial
     alertBackground.backgroundColor = Theme.Color.lightGrayBackground.color
     alertBackground.setCornerRadius(9)
 
+    bitcoinIconBackground.backgroundColor = Theme.Color.mango.color
+    bitcoinIconBackground.setCornerRadius(bitcoinIconBackground.frame.width/2)
+
     addressLabelContainer.backgroundColor = Theme.Color.whiteBackground.color
     addressLabelContainer.layer.borderColor = Theme.Color.borderDarkGray.color.cgColor
     addressLabelContainer.layer.borderWidth = 1 / UIScreen.main.nativeScale
@@ -71,7 +80,9 @@ class GetBitcoinCopiedAddressViewController: UIViewController, StoryboardInitial
 
     separatorView.backgroundColor = Theme.Color.graySeparator.color
 
-    confirmationButton.setTitleColor(Theme.Color.lightBlueTint.color, for: .normal)
+    confirmationButton.setTitle("OK, GET BITCOIN", for: .normal)
+    confirmationButton.backgroundColor = Theme.Color.primaryActionButton.color
+    confirmationButton.setTitleColor(Theme.Color.whiteText.color, for: .normal)
     confirmationButton.titleLabel?.font = Theme.Font.popoverActionButton.font
   }
 
