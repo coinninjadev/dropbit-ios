@@ -9,8 +9,14 @@
 import Foundation
 import CoreLocation
 import UIKit
+import os.log
 
 extension AppCoordinator: GetBitcoinViewControllerDelegate {
+
+  fileprivate var logger: OSLog {
+    return OSLog(subsystem: "com.coinninja.appCoordinator", category: "GetBitcoinViewControllerDelegate")
+  }
+
   func viewControllerFindBitcoinATMNearMe(_ viewController: GetBitcoinViewController) {
     analyticsManager.track(event: .buyBitcoinAtATM, with: nil)
     permissionManager.requestPermission(for: .location) { (status) in
@@ -62,5 +68,10 @@ extension AppCoordinator: GetBitcoinCopiedAddressViewControllerDelegate {
     self.alertManager.showSuccessHUD(withStatus: "Address copied to clipboard!", duration: 2.0, completion: nil)
   }
 
+  func viewControllerRequestedAuthenticationSuspension(_ viewController: UIViewController) {
+    let suspendUntilDate = Date().addingTimeInterval(15*60)
+    os_log("Will suspend authentication until %@ or next open", log: logger, type: .debug, suspendUntilDate as CVarArg)
+    self.suspendAuthenticationOnceUntil = suspendUntilDate
+  }
 
 }

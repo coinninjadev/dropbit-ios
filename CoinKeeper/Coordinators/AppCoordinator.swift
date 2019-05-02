@@ -67,6 +67,11 @@ class AppCoordinator: CoordinatorType {
   let currencyController: CurrencyController
 
   private let maxSecondsInBackground: TimeInterval = 30
+
+  /// Assign a future date and upon app open, this will skip the need
+  /// for authentication (only once), up until the specified date.
+  var suspendAuthenticationOnceUntil: Date?
+
   private let notificationLogger = OSLog(subsystem: "com.coinninja.appCoordinator", category: "notifications")
   let phoneNumberKit = PhoneNumberKit()
   let contactStore = CNContactStore()
@@ -504,22 +509,32 @@ class AppCoordinator: CoordinatorType {
     resetWalletManagerIfNeeded()
     connectionManager.start()
 
+    analyticsManager.track(event: .appOpen, with: nil)
+
+    authenticateOnBecomingActiveIfNeeded()
+
+    refreshContacts()
+  }
+
+  private func authenticateOnBecomingActiveIfNeeded() {
     // check keychain time interval for resigned time, and if within 30 sec, don't require
     let now = Date().timeIntervalSince1970
     let lastLogin = persistenceManager.lastLoginTime() ?? Date.distantPast.timeIntervalSince1970
 
-    analyticsManager.track(event: .appOpen, with: nil)
+    if let suspendUntil = self.suspendAuthenticationOnceUntil, suspendUntil > Date() {
+      self.suspendAuthenticationOnceUntil = nil
+    } else {
+      self.suspendAuthenticationOnceUntil = nil
 
-    let secondsSinceLastLogin = now - lastLogin
-    if secondsSinceLastLogin > maxSecondsInBackground {
-      dismissAllModalViewControllers()
-      resetUserAuthenticatedState()
-      requireAuthenticationIfNeeded(whenAuthenticated: {
-        self.continueSetupFlow()
-      })
+      let secondsSinceLastLogin = now - lastLogin
+      if secondsSinceLastLogin > maxSecondsInBackground {
+        dismissAllModalViewControllers()
+        resetUserAuthenticatedState()
+        requireAuthenticationIfNeeded(whenAuthenticated: {
+          self.continueSetupFlow()
+        })
+      }
     }
-
-    refreshContacts()
   }
 
   func resetWalletManagerIfNeeded() {
