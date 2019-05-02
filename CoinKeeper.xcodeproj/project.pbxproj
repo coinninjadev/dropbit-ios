@@ -631,7 +631,6 @@
 		B57C2436207415F400F9519A /* CurrencyCodeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B57C2435207415F400F9519A /* CurrencyCodeTests.swift */; };
 		B57F06832243CF0200C147D2 /* TimeInterval+Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = B57F06822243CF0200C147D2 /* TimeInterval+Constants.swift */; };
 		B5823FD8207E83A600B12A35 /* TransactionHistorySummaryCellTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5823FD7207E83A600B12A35 /* TransactionHistorySummaryCellTests.swift */; };
-		B5823FE1207EA72500B12A35 /* TransactionHistoryDetailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5823FDF207EA72500B12A35 /* TransactionHistoryDetailCell.swift */; };
 		B5823FE2207EA72500B12A35 /* TransactionHistoryDetailCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B5823FE0207EA72500B12A35 /* TransactionHistoryDetailCell.xib */; };
 		B582409420920E3F005D2F90 /* CompactActionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B582409320920E3F005D2F90 /* CompactActionButton.swift */; };
 		B582AD4F20A084AD007A6459 /* CKMCounterpartyAddress+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = B582AD4D20A084AD007A6459 /* CKMCounterpartyAddress+CoreDataClass.swift */; };
@@ -1422,7 +1421,6 @@
 		B57C2435207415F400F9519A /* CurrencyCodeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyCodeTests.swift; sourceTree = "<group>"; };
 		B57F06822243CF0200C147D2 /* TimeInterval+Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TimeInterval+Constants.swift"; sourceTree = "<group>"; };
 		B5823FD7207E83A600B12A35 /* TransactionHistorySummaryCellTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionHistorySummaryCellTests.swift; sourceTree = "<group>"; };
-		B5823FDF207EA72500B12A35 /* TransactionHistoryDetailCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionHistoryDetailCell.swift; sourceTree = "<group>"; };
 		B5823FE0207EA72500B12A35 /* TransactionHistoryDetailCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TransactionHistoryDetailCell.xib; sourceTree = "<group>"; };
 		B582409320920E3F005D2F90 /* CompactActionButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompactActionButton.swift; sourceTree = "<group>"; };
 		B582AD4D20A084AD007A6459 /* CKMCounterpartyAddress+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CKMCounterpartyAddress+CoreDataClass.swift"; sourceTree = "<group>"; };
@@ -1902,7 +1900,6 @@
 				B5E7F21D22146B9000358A24 /* CountryCodePickerCell.xib */,
 				B54BDCE92086447500B71D6B /* TransactionHistorySummaryCell.swift */,
 				B54BDCEA2086447500B71D6B /* TransactionHistorySummaryCell.xib */,
-				B5823FDF207EA72500B12A35 /* TransactionHistoryDetailCell.swift */,
 				B5823FE0207EA72500B12A35 /* TransactionHistoryDetailCell.xib */,
 				B5B53C9B2107CAA5006C7B67 /* TransactionDetailsInfoContainer.swift */,
 				3B6FDAD4204F4BA50091916A /* VerifyRecoveryWordCell.swift */,
@@ -3465,7 +3462,6 @@
 				B52CC6A7221E401E00B00C9E /* CCMValidatedMetadata+CoreDataProperties.swift in Sources */,
 				B536D12B21F1140100C344B6 /* SendPaymentMemoView.swift in Sources */,
 				B5BA5247223AA38E001165FC /* CKMTransaction+FetchRequests.swift in Sources */,
-				B5823FE1207EA72500B12A35 /* TransactionHistoryDetailCell.swift in Sources */,
 				A200575520B6F2D0007074D9 /* Command.swift in Sources */,
 				B505414D207D10DD0059C8F9 /* InMemoryCoreDataStack.swift in Sources */,
 				B53804FA209A4B020096DA33 /* URLOpener.swift in Sources */,
