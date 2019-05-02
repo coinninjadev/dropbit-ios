@@ -44,10 +44,7 @@ class WalletSyncOperationFactory {
           let bgContext = dependencies.bgContext
           let isFullSync = walletSyncType == .comprehensive
 
-          var backgroundTaskId: UIBackgroundTaskIdentifier?
-          if fetchResult != nil {
-            backgroundTaskId = UIApplication.shared.beginBackgroundTask(expirationHandler: nil)
-          }
+          let backgroundTaskId = UIApplication.shared.beginBackgroundTask(expirationHandler: nil)
 
           operation.task = { [weak self] sync in
             guard let strongSelf = self else {
@@ -73,15 +70,15 @@ class WalletSyncOperationFactory {
                     let logger = OSLog(subsystem: "com.coinninja.coinkeeper.walletsyncoperationfactory", category: "perform_sync")
                     os_log("failed to save context in %@. error: %@", log: logger, type: .error, #function, error.localizedDescription)
                   }
-                  CKNotificationCenter.publish(key: .didFinishSync, object: nil, userInfo: nil)
                 }
+                CKNotificationCenter.publish(key: .didFinishSync, object: nil, userInfo: nil)
                 CKNotificationCenter.publish(key: .didUpdateBalance, object: nil, userInfo: nil)
 
                 dependencies.persistenceManager.set(Date(), for: .lastSuccessfulSyncCompletedAt)
                 completion?(nil)
 
                 sync.finish()
-                backgroundTaskId.map { UIApplication.shared.endBackgroundTask($0) }
+                UIApplication.shared.endBackgroundTask(backgroundTaskId)
             }
           }
 

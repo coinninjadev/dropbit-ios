@@ -51,7 +51,9 @@ extension NSManagedObjectContext {
     try self.save()
 
     if let parentContext = self.parent {
-      try parentContext.saveRecursively()
+      try parentContext.performThrowingAndWait {
+        try parentContext.saveRecursively()
+      }
     }
   }
 

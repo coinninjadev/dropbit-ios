@@ -34,6 +34,8 @@ protocol AddressDataSourceType: AnyObject {
   func lastReceiveIndex(in context: NSManagedObjectContext) -> Int?
   func lastChangeIndex(in context: NSManagedObjectContext) -> Int?
 
+  func receiveAddressesUpToMaxUsed(in context: NSManagedObjectContext) -> [String]
+  func changeAddressesUpToMaxUsed(in context: NSManagedObjectContext) -> [String]
 }
 
 /**
@@ -43,6 +45,8 @@ class AddressDataSource: AddressDataSourceType {
 
   private let wallet: CNBHDWallet
   private let persistenceManager: PersistenceManagerType
+
+  private let gapLimit = 20
 
   init(wallet: CNBHDWallet, persistenceManager: PersistenceManagerType) {
     self.wallet = wallet
@@ -75,8 +79,7 @@ class AddressDataSource: AddressDataSourceType {
     let lastRecIdx = lastReceiveIndex(in: context) ?? -1
     let lastChgIdx = lastChangeIndex(in: context) ?? -1
     let lastIndex = max(lastRecIdx, lastChgIdx)
-    let offset = 20
-    return wallet.check(forAddress: address, upTo: lastIndex + offset)
+    return wallet.check(forAddress: address, upTo: lastIndex + gapLimit)
   }
 
   func nextAvailableReceiveAddress(forServerPool: Bool, indicesToSkip: Set<Int> = [], in context: NSManagedObjectContext) -> CNBMetaAddress? {
@@ -124,4 +127,13 @@ class AddressDataSource: AddressDataSourceType {
     return Int(next)
   }
 
+  func receiveAddressesUpToMaxUsed(in context: NSManagedObjectContext) -> [String] {
+    let max = (self.lastReceiveIndex(in: context) ?? -1) + gapLimit
+    return (0...max).map(receiveAddress).map { $0.address }
+  }
+
+  func changeAddressesUpToMaxUsed(in context: NSManagedObjectContext) -> [String] {
+    let max = (self.lastChangeIndex(in: context) ?? -1) + gapLimit
+    return (0...max).map(changeAddress).map { $0.address }
+  }
 }
