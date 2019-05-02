@@ -494,6 +494,8 @@ class AlertManager: AlertManagerType {
     }
   }
 
+        SVProgressHUD.setMinimumSize(SVProgressHUD.defaultMinimumSize)
+        SVProgressHUD.setImageViewSize(SVProgressHUD.defaultImageViewSize)
 }
 
 extension AlertManager {
