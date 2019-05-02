@@ -56,3 +56,11 @@ extension AppCoordinator: GetBitcoinViewControllerDelegate {
     }
   }
 }
+
+extension AppCoordinator: GetBitcoinCopiedAddressViewControllerDelegate {
+  func viewControllerDidCopyAddress(_ viewController: UIViewController) {
+    self.alertManager.showSuccessHUD(withStatus: "Address copied to clipboard!", duration: 2.0, completion: nil)
+  }
+
+
+}
