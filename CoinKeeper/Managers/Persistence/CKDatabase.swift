@@ -24,6 +24,7 @@ class CKDatabase: PersistenceDatabaseType {
     let context = self.container.viewContext
     context.automaticallyMergesChangesFromParent = true
     context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
+    context.name = "MainQueueContext"
     if stackConfig.storeType.shouldSetQueryGeneration {
       try? context.setQueryGenerationFrom(.current)
     }
@@ -44,6 +45,7 @@ class CKDatabase: PersistenceDatabaseType {
     let bgContext = container.newBackgroundContext()
     bgContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
     bgContext.automaticallyMergesChangesFromParent = true
+    bgContext.name = "BackgroundContext_\(Date().timeIntervalSince1970)"
     return bgContext
   }
 
@@ -96,8 +98,6 @@ class CKDatabase: PersistenceDatabaseType {
         os_log("failed to save context in %@. error: %@", log: logger, type: .error, #function, error.localizedDescription)
       }
     }
-
-    user.map { self.mainQueueContext.refresh($0, mergeChanges: true) }
   }
 
   func removeWalletId(in context: NSManagedObjectContext) {

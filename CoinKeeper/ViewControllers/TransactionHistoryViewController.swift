@@ -213,7 +213,8 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
 
   private func setupCollectionViews() {
     summaryCollectionView.registerNib(cellType: TransactionHistorySummaryCell.self)
-    detailCollectionView.registerNib(cellType: TransactionHistoryDetailCell.self)
+    detailCollectionView.registerNib(cellType: TransactionHistoryDetailInvalidCell.self)
+    detailCollectionView.registerNib(cellType: TransactionHistoryDetailValidCell.self)
     summaryCollectionView.alwaysBounceVertical = true
 
     for cView in self.collectionViews {
@@ -374,15 +375,24 @@ extension TransactionHistoryViewController: UICollectionViewDataSource {
       return cell
 
     case detailCollectionView:
-      guard let cell = collectionView.dequeueReusableCell(
-        withReuseIdentifier: TransactionHistoryDetailCell.reuseIdentifier,
-        for: indexPath) as? TransactionHistoryDetailCell
-        else { return UICollectionViewCell() }
-
       let vm = detailViewModel(at: indexPath)
-      cell.load(with: vm, delegate: self)
 
-      return cell
+      if let invitation = vm.transaction?.invitation {
+        switch invitation.status {
+        case .canceled, .expired:
+          let cell = detailCollectionView.dequeue(TransactionHistoryDetailInvalidCell.self, for: indexPath)
+          cell.load(with: vm, delegate: self)
+          return cell
+        default:
+          let cell = detailCollectionView.dequeue(TransactionHistoryDetailValidCell.self, for: indexPath)
+          cell.load(with: vm, delegate: self)
+          return cell
+        }
+      } else {
+        let cell = detailCollectionView.dequeue(TransactionHistoryDetailValidCell.self, for: indexPath)
+        cell.load(with: vm, delegate: self)
+        return cell
+      }
 
     default:
       return UICollectionViewCell()
@@ -412,6 +422,8 @@ extension TransactionHistoryViewController: UICollectionViewDelegate {
     case summaryCollectionView:
 
       // Show detail collection view scrolled to the same indexPath as the selected summary cell
+      let indexPaths = collectionView.indexPathsForVisibleItems
+      detailCollectionView.reloadItems(at: indexPaths)
       detailCollectionView.scrollToItem(at: indexPath, at: .left, animated: false)
       showDetailCollectionView(true, animated: true)
 
@@ -424,7 +436,6 @@ extension TransactionHistoryViewController: UICollectionViewDelegate {
 }
 
 extension TransactionHistoryViewController: TransactionHistoryDetailCellDelegate {
-
   func shouldSaveMemo(for transaction: CKMTransaction) -> Promise<Void> {
     guard let delegate = coordinationDelegate else { return Promise { seal in seal.reject(CKPersistenceError.unexpectedResult)}}
     return delegate.viewControllerShouldUpdateTransaction(self, transaction: transaction)
@@ -434,15 +445,15 @@ extension TransactionHistoryViewController: TransactionHistoryDetailCellDelegate
     coordinationDelegate?.viewControllerDidTapAddMemo(self, with: completion)
   }
 
-  func didTapQuestionMarkButton(detailCell: TransactionHistoryDetailCell, with url: URL) {
+  func didTapQuestionMarkButton(detailCell: TransactionHistoryDetailBaseCell, with url: URL) {
     urlOpener?.openURL(url, completionHandler: nil)
   }
 
-  func didTapClose(detailCell: TransactionHistoryDetailCell) {
+  func didTapClose(detailCell: TransactionHistoryDetailBaseCell) {
     showDetailCollectionView(false, animated: true)
   }
 
-  func didTapAddress(detailCell: TransactionHistoryDetailCell) {
+  func didTapAddress(detailCell: TransactionHistoryDetailBaseCell) {
     guard let path = self.detailCollectionView.indexPath(for: detailCell),
       let address = self.detailViewModel(at: path).receiverAddress,
       let addressURL = CoinNinjaUrlFactory.buildUrl(for: .address(id: address))
@@ -451,7 +462,7 @@ extension TransactionHistoryViewController: TransactionHistoryDetailCellDelegate
     urlOpener?.openURL(addressURL, completionHandler: nil)
   }
 
-  func didTapBottomButton(detailCell: TransactionHistoryDetailCell, action: TransactionDetailAction) {
+  func didTapBottomButton(detailCell: TransactionHistoryDetailBaseCell, action: TransactionDetailAction) {
     guard let path = detailCollectionView.indexPath(for: detailCell) else { return }
 
     switch action {
@@ -533,9 +544,5 @@ extension TransactionHistoryViewController: DZNEmptyDataSetDelegate, DZNEmptyDat
     let withBalanceViewTop = (view.frame.height / 2.0) - (transactionHistoryWithBalanceView.frame.size.height / 2.0)
     let isOverlapping = (collectionViewContentBottom >= withBalanceViewTop)
     return !isOverlapping
-  }
-
-  private var deviceIsSmall: Bool {
-    return (view.frame.height < 600)
   }
 }

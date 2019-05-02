@@ -11,29 +11,34 @@ import PromiseKit
 @testable import DropBit
 
 class MockTransactionHistoryDetailCellDelegate: TransactionHistoryDetailCellDelegate {
-
-  func didTapAddMemoButton(completion: @escaping (String) -> Void) {}
-  func shouldSaveMemo(for transaction: CKMTransaction) -> Promise<Void> {
-    return Promise { _ in }
+  var tappedQuestionMark = false
+  func didTapQuestionMarkButton(detailCell: TransactionHistoryDetailBaseCell, with url: URL) {
+    tappedQuestionMark = true
   }
 
-  func didTapQuestionMarkButton(detailCell: TransactionHistoryDetailCell, with url: URL) {}
-
   var tappedClose = false
-  func didTapClose(detailCell: TransactionHistoryDetailCell) {
+  func didTapClose(detailCell: TransactionHistoryDetailBaseCell) {
     tappedClose = true
   }
 
   var tappedAddress = false
-  func didTapAddress(detailCell: TransactionHistoryDetailCell) {
+  func didTapAddress(detailCell: TransactionHistoryDetailBaseCell) {
     tappedAddress = true
   }
 
   var tappedBottomButton = false
-  var transactionDetailAction: TransactionDetailAction = .seeDetails
-  func didTapBottomButton(detailCell: TransactionHistoryDetailCell, action: TransactionDetailAction) {
+  var transactionDetailAction = TransactionDetailAction.seeDetails
+  func didTapBottomButton(detailCell: TransactionHistoryDetailBaseCell, action: TransactionDetailAction) {
     tappedBottomButton = true
     transactionDetailAction = action
   }
 
+  var tappedAddMemo = false
+  func didTapAddMemoButton(completion: @escaping (String) -> Void) {
+    tappedAddMemo = true
+  }
+
+  func shouldSaveMemo(for transaction: CKMTransaction) -> Promise<Void> {
+    return Promise { _ in }
+  }
 }

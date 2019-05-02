@@ -29,6 +29,7 @@ class DeviceVerificationCoordinator: ChildCoordinatorType {
   weak var delegate: ChildCoordinatorDelegate?
 
   var userSuppliedPhoneNumber: GlobalPhoneNumber?
+  let logger = OSLog(subsystem: "com.coinninja.coinkeeper.deviceverificationcoordinator", category: "device_verification_coordinator")
 
   // MARK: private var
   private var codeEntryFailureCount = 0
@@ -97,9 +98,15 @@ extension DeviceVerificationCoordinator: DeviceVerificationViewControllerDelegat
 
         }
         .catch(on: .main, policy: .allErrors) { error in
-          let logger = OSLog(subsystem: "com.coinninja.coinkeeper.appcoordinator", category: "device_verification_coordinator")
-          os_log("User registration failed: %@", log: logger, type: .error, error.localizedDescription)
+          os_log("User registration failed: %@", log: self.logger, type: .error, error.localizedDescription)
           self.handleUserRegistrationFailure(withError: error, phoneNumber: phoneNumber, delegate: crDelegate)
+        }
+        .finally(in: bgContext) {
+          do {
+            try bgContext.save()
+          } catch {
+            os_log("User registration failed: %@", log: self.logger, type: .error, error.localizedDescription)
+          }
       }
     }
   }
@@ -111,7 +118,6 @@ extension DeviceVerificationCoordinator: DeviceVerificationViewControllerDelegat
       return
     }
 
-    let logger = OSLog(subsystem: "com.coinninja.coinkeeper.appcoordinator", category: "device_verification_coordinator")
     let bgContext = crDelegate.persistenceManager.createBackgroundContext()
     bgContext.perform {
       let body = CreateUserBody(phoneNumber: phoneNumber)
@@ -121,10 +127,9 @@ extension DeviceVerificationCoordinator: DeviceVerificationViewControllerDelegat
           guard let strongSelf = self, let coordinationDelegate = strongSelf.coordinationDelegate else { return }
           coordinationDelegate.alertManager.showSuccess(message: "You will receive a verification code SMS shortly",
                                                         forDuration: 2.0)
-          os_log("Successfully requested code resend", log: logger, type: .info)
+          os_log("Successfully requested code resend", log: strongSelf.logger, type: .info)
         }
         .catch { [weak self] error in
-          os_log("Failed to request code: %@", log: logger, type: .error, error.localizedDescription)
           self?.handleResendError(error)
           if let providerError = error as? UserProviderError, case .twilioError = providerError {
             crDelegate.didReceiveTwilioError(for: body.identity, route: .resendVerification)
@@ -135,6 +140,7 @@ extension DeviceVerificationCoordinator: DeviceVerificationViewControllerDelegat
 
   private func handleResendError(_ error: Error) {
     guard let coordinationDelegate = self.coordinationDelegate else { return }
+    os_log("Failed to request code: %@", log: self.logger, type: .error, error.localizedDescription)
     let message = errorMessageFactory.messageForResendCodeFailure(error: error)
     self.showVerificationErrorAlert(.custom(message), delegate: coordinationDelegate)
   }

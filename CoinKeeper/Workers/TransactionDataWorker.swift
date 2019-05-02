@@ -118,7 +118,6 @@ class TransactionDataWorker: TransactionDataWorkerType {
                                                                 aggregatingATSResponses: aggregateResponses,
                                                                 addressFetcher: changeFetcher)}
       .then(in: context) { self.processAddressTransactionSummaries($0, fullSync: false, in: context) }
-
   }
 
   private func processAddressTransactionSummaries(_ aggregateATSResponses: [AddressTransactionSummaryResponse],
@@ -177,20 +176,21 @@ class TransactionDataWorker: TransactionDataWorkerType {
   }
 
   private func processTransactionResponses(_ responses: [TransactionResponse], in context: NSManagedObjectContext) -> Promise<[TransactionResponse]> {
+    let dataSource = self.walletManager.createAddressDataSource()
+    let searchableAddresses = dataSource.receiveAddressesUpToMaxUsed(in: context) +
+      dataSource.changeAddressesUpToMaxUsed(in: context)
     return Promise { seal in
       let results = responses.map { response -> TransactionResponse in
         // any changes to this method should also change CKMTransaction's calculateIsSentToSelf calculation
         var copy = response
-        let dataSource = self.walletManager.createAddressDataSource()
 
         let allVoutAddresses = response.voutResponses.flatMap { $0.addresses }
         let ownedVoutAddresses = allVoutAddresses
-          .compactMap { dataSource.checkAddressExists(for: $0, in: context) }
-          .compactMap { $0.address }
+          .filter { searchableAddresses.contains($0) }
 
         let vinAddresses = response.vinResponses.flatMap { $0.addresses }
         let numberOfVinsBelongingToWallet = vinAddresses
-          .compactMap { dataSource.checkAddressExists(for: $0, in: context) }
+          .filter { searchableAddresses.contains($0) }
           .count
 
         let isSentToSelf = (allVoutAddresses.count == ownedVoutAddresses.count) && (numberOfVinsBelongingToWallet == vinAddresses.count)
@@ -438,7 +438,6 @@ class TransactionDataWorker: TransactionDataWorkerType {
           default:
             throw providerError
           }
-
         } else {
           throw error
         }
@@ -479,7 +478,6 @@ class TransactionDataWorker: TransactionDataWorkerType {
           seal.reject(SpendableBalanceError.vinFetchFailed)
         }
       }
-
       seal.fulfill(())
     }
   }
@@ -488,12 +486,14 @@ class TransactionDataWorker: TransactionDataWorkerType {
     withTxids txids: [String],
     in context: NSManagedObjectContext
     ) -> Promise<[TransactionResponse]> {
-
     guard txids.isNotEmpty else { return Promise.value([]) }
     let chunkSize = 25
     let batchedTxids = txids.chunked(by: chunkSize)
-
-    let promises = batchedTxids.map { self.networkManager.fetchTransactionDetails(for: $0) }
-    return when(fulfilled: promises).flatMapValues { $0 }
+    var batchIterator = batchedTxids.makeIterator()
+    let promiseIterator = AnyIterator<Promise<[TransactionResponse]>> {
+      guard let batch = batchIterator.next() else { return nil }
+      return self.networkManager.fetchTransactionDetails(for: batch)
+    }
+    return when(fulfilled: promiseIterator, concurrently: 5).flatMapValues { $0 }
   }
 }

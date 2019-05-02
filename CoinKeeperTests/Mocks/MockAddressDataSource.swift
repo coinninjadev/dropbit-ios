@@ -11,6 +11,14 @@ import CNBitcoinKit
 
 class MockAddressDataSource: AddressDataSourceType {
 
+  func receiveAddressesUpToMaxUsed(in context: NSManagedObjectContext) -> [String] {
+    return []
+  }
+
+  func changeAddressesUpToMaxUsed(in context: NSManagedObjectContext) -> [String] {
+    return []
+  }
+
   var receiveAddressValue: CNBMetaAddress!
   func receiveAddress(at index: Int) -> CNBMetaAddress {
     return receiveAddressValue

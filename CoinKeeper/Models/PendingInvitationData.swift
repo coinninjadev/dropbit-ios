@@ -53,3 +53,11 @@ extension PendingInvitationData {
   }
 
 }
+
+extension PendingInvitationData: Comparable {
+  static func < (lhs: PendingInvitationData, rhs: PendingInvitationData) -> Bool {
+    let lhsFailedAt = lhs.failedToSendAt ?? .distantPast
+    let rhsFailedAt = rhs.failedToSendAt ?? .distantPast
+    return lhsFailedAt < rhsFailedAt
+  }
+}
