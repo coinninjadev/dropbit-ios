@@ -18,7 +18,6 @@ class GetBitcoinCopiedAddressViewController: UIViewController, StoryboardInitial
   @IBOutlet var addressLabelContainer: UIView!
   @IBOutlet var addressLabel: UILabel!
   @IBOutlet var messageLabel: UILabel!
-  @IBOutlet var separatorView: UIView!
   @IBOutlet var confirmationButton: UIButton!
 
   @IBAction func close(_ sender: Any) {
@@ -72,18 +71,17 @@ class GetBitcoinCopiedAddressViewController: UIViewController, StoryboardInitial
     addressLabel.lineBreakMode = .byTruncatingMiddle
 
     messageLabel.text = """
-    When buying Bitcoin you will need to provide a Bitcoin address to recieve funds.
-    We’ve went ahead and copied your DropBit Bitcoin address to your clipboard.
+    You will need a Bitcoin address so we went ahead and
+    copied your DropBit Bitcoin address to your clipboard.
     """.removingMultilineLineBreaks()
     messageLabel.font = Theme.Font.popoverMessage.font
     messageLabel.textColor = Theme.Color.darkBlueText.color
-
-    separatorView.backgroundColor = Theme.Color.graySeparator.color
 
     confirmationButton.setTitle("OK, GET BITCOIN", for: .normal)
     confirmationButton.backgroundColor = Theme.Color.primaryActionButton.color
     confirmationButton.setTitleColor(Theme.Color.whiteText.color, for: .normal)
     confirmationButton.titleLabel?.font = Theme.Font.popoverActionButton.font
+    confirmationButton.setCornerRadius(4)
   }
 
 }
