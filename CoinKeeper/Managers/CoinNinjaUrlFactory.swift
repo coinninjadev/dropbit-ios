@@ -135,7 +135,7 @@ struct CoinNinjaUrlFactory {
       case .dropBitMe(let handle):
         return handle
       case .dropBitMeLearnMore:
-        return "learnmore"
+        return ""
       }
     }
   }
