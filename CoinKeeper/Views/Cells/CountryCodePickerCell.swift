@@ -24,7 +24,7 @@ class CountryCodePickerCell: UITableViewCell {
     countryCodeLabel.textColor = Theme.Color.searchResultGrayText.color
     countryNameLabel.font = Theme.Font.searchResultText.font
     countryCodeLabel.font = Theme.Font.searchResultText.font
-    separatorView.backgroundColor = Theme.Color.searchResultSeparator.color
+    separatorView.backgroundColor = Theme.Color.graySeparator.color
 
     self.selectionStyle = .none
   }

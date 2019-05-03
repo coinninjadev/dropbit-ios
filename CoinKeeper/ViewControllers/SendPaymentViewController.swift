@@ -66,7 +66,7 @@ ValidatorAlertDisplayable {
   @IBOutlet var bitcoinAddressButton: UIButton! {
     didSet {
       bitcoinAddressButton.isHidden = true
-      bitcoinAddressButton.layer.cornerRadius = 4.0
+      bitcoinAddressButton.applyCornerRadius(4)
       bitcoinAddressButton.layer.borderColor = Theme.Color.lightGrayOutline.color.cgColor
       bitcoinAddressButton.layer.borderWidth = 1.0
       bitcoinAddressButton.titleLabel?.font = Theme.Font.sendingAmountToAddress.font

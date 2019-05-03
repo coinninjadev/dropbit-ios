@@ -53,8 +53,7 @@ class TransactionPopoverDetailsViewController: BaseViewController, StoryboardIni
     txidLabel.textColor = Theme.Color.darkBlueText.color
     shareTransactionButton.setTitleColor(Theme.Color.lightBlueTint.color, for: .normal)
     shareTransactionButton.titleLabel?.font = Theme.Font.shareTransactionTitle.font
-    containerView.layer.cornerRadius = 15
-    containerView.clipsToBounds = true
+    containerView.applyCornerRadius(15)
     setupViewWithModel()
     addDismissibleTapToBackground()
   }

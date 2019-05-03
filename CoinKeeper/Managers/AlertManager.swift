@@ -85,9 +85,10 @@ protocol AlertManagerType: CKBannerViewDelegate {
 
   // used for showing new transactions incoming message
   func showIncomingTransactionAlert(for receivedAmount: Int, with rates: ExchangeRates)
-  func showActivityHUD(withStatus status: String?)
 
+  func showActivityHUD(withStatus status: String?)
   func hideActivityHUD(withDelay delay: TimeInterval?, completion: (() -> Void)?)
+  func showSuccessHUD(withStatus status: String?, duration: TimeInterval, completion: (() -> Void)?)
 
   func showBannerAlert(for response: MessageResponse, completion: (() -> Void)?)
 
@@ -491,6 +492,20 @@ class AlertManager: AlertManagerType {
   func hideActivityHUD(withDelay delay: TimeInterval?, completion: (() -> Void)?) {
     DispatchQueue.main.async {
       SVProgressHUD.dismiss(withDelay: delay ?? 0, completion: completion)
+    }
+  }
+
+  func showSuccessHUD(withStatus status: String?, duration: TimeInterval, completion: (() -> Void)?) {
+    guard let successImage = UIImage(named: "hudCheckmark") else { return }
+    DispatchQueue.main.async {
+      SVProgressHUD.setImageViewSize(CGSize(width: 35, height: 26))
+      SVProgressHUD.setMinimumSize(CGSize(width: 172, height: 120))
+      SVProgressHUD.show(successImage, status: status)
+      SVProgressHUD.dismiss(withDelay: duration) {
+        SVProgressHUD.setMinimumSize(SVProgressHUD.defaultMinimumSize)
+        SVProgressHUD.setImageViewSize(SVProgressHUD.defaultImageViewSize)
+        completion?()
+      }
     }
   }
 

@@ -10,4 +10,5 @@ import Foundation
 
 protocol URLOpener: AnyObject {
   func openURL(_ url: URL, completionHandler completion: (() -> Void)?)
+  func openURLExternally(_ url: URL, completionHandler completion: ((Bool) -> Void)?)
 }
