@@ -265,8 +265,7 @@ extension SendPaymentViewController {
   }
 
   fileprivate func formatAddressScanView() {
-    addressScanButtonContainerView.layer.cornerRadius = 4.0
-    addressScanButtonContainerView.layer.masksToBounds = true
+    addressScanButtonContainerView.applyCornerRadius(4)
     addressScanButtonContainerView.layer.borderColor = Theme.Color.lightGrayOutline.color.cgColor
     addressScanButtonContainerView.layer.borderWidth = 1.0
 
