@@ -26,15 +26,37 @@ extension NSAttributedString {
     return result
   }
 
-  convenience init(image: UIImage, fontDescender descender: CGFloat, imageSize size: CGSize = CGSize(width: 20, height: 20)) {
+  convenience init(image: UIImage,
+                   fontDescender: CGFloat,
+                   imageSize: CGSize = CGSize(width: 20, height: 20)) {
     let textAttribute = NSTextAttachment()
     textAttribute.image = image
     textAttribute.bounds = CGRect(
       x: 0,
-      y: descender, //(-size.height / (size.height / 3)),
-      width: size.width,
-      height: size.height
+      y: fontDescender, //(-size.height / (size.height / 3)),
+      width: imageSize.width,
+      height: imageSize.height
     )
     self.init(attachment: textAttribute)
   }
+
+  convenience init(imageName: String,
+                   imageSize: CGSize = CGSize(width: 20, height: 20),
+                   title: String,
+                   textColor: UIColor,
+                   font: UIFont) {
+
+    let attributes: [NSAttributedString.Key: Any] = [
+      .font: font,
+      .foregroundColor: textColor
+    ]
+
+    let image = UIImage(imageLiteralResourceName: imageName)
+    let attributedImage = NSAttributedString(image: image,
+                                            fontDescender: font.descender,
+                                            imageSize: imageSize)
+    let attributedText = NSAttributedString(string: "  \(title)", attributes: attributes)
+    self.init(attributedString: attributedImage + attributedText)
+  }
+
 }
