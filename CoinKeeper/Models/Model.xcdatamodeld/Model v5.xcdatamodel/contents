@@ -124,7 +124,7 @@
     </entity>
     <entity name="CKMUser" representedClassName="CKMUser" versionHashModifier="1" syncable="YES">
         <attribute name="id" attributeType="String" syncable="YES"/>
-        <attribute name="publicURLIsEnabled" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="publicURLIsPrivate" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="verificationStatus" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="wallet" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CKMWallet" inverseName="user" inverseEntity="CKMWallet" syncable="YES"/>
     </entity>

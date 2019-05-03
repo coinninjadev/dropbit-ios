@@ -16,7 +16,6 @@ protocol NetworkManagerType: HeaderDelegate &
   CurrencyValueDataSourceType &
   DeviceRequestable &
   DeviceEndpointRequestable &
-  UserPublicURLRequestable &
   MerchantPaymentRequestRequestable &
   MessageRequestable &
   PricingRequestable &

@@ -14,9 +14,9 @@ extension AppCoordinator: DropBitMeViewControllerDelegate {
   func viewControllerDidEnableDropBitMeURL(_ viewController: UIViewController, shouldEnable: Bool) {
     let bgContext = self.persistenceManager.createBackgroundContext()
     self.alertManager.showActivityHUD(withStatus: nil)
-    self.networkManager.updateUserPublicURL(enabled: shouldEnable)
+    self.networkManager.updateUserPublicURL(isPrivate: !shouldEnable) // reverse boolean for isEnabled (view) vs. isPrivate (server)
       .get(in: bgContext) { response in
-        self.persistenceManager.persistUserPublicURLInfo(response, in: bgContext)
+        self.persistenceManager.persistUserPublicURLInfo(from: response, in: bgContext)
       }
       .done(in: bgContext) { _ in
         try bgContext.save()
@@ -24,7 +24,7 @@ extension AppCoordinator: DropBitMeViewControllerDelegate {
           DispatchQueue.main.async {
             if let dropbitMeVC = viewController as? DropBitMeViewController,
               let handle = urlInfo.primaryIdentity?.handle,
-              let url = CoinNinjaUrlFactory.buildUrl(for: .dropBitMe(publicURLHandle: handle)) {
+              let url = CoinNinjaUrlFactory.buildUrl(for: .dropBitMe(handle: handle)) {
               dropbitMeVC.configure(with: .verified(url, urlInfo.isEnabled))
             }
           }
@@ -47,7 +47,7 @@ extension AppCoordinator: DropBitMeViewControllerDelegate {
     let context = self.persistenceManager.mainQueueContext()
     guard let urlInfo = self.persistenceManager.getUserPublicURLInfo(in: context),
       let handle = urlInfo.primaryIdentity?.handle,
-      let url = CoinNinjaUrlFactory.buildUrl(for: .dropBitMe(publicURLHandle: handle))
+      let url = CoinNinjaUrlFactory.buildUrl(for: .dropBitMe(handle: handle))
       else { return }
 
     viewController.dismiss(animated: true) {
