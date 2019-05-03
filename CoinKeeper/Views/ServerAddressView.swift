@@ -58,12 +58,12 @@ class ServerAddressView: UIView {
     addressTableView.isScrollEnabled = false
     addressTableView.dataSource = self
     addressTableView.registerNib(cellType: AddressTableViewCell.self)
-    addressTableView.setCornerRadius(10)
+    addressTableView.applyCornerRadius(10)
     addressTableView.layer.borderColor = Theme.Color.borderDarkGray.color.cgColor
     addressTableView.layer.borderWidth = 0.5
     addressTableView.separatorInset = .zero
 
-    setCornerRadius(13)
+    applyCornerRadius(13)
     layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
   }
 }

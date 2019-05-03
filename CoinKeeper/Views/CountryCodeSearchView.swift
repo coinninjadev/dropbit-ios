@@ -37,7 +37,7 @@ class CountryCodeSearchView: UIView {
   func setup() {
     backgroundColor = Theme.Color.lightGrayBackground.color
     tableView.backgroundColor = .clear
-    setCornerRadius(6)
+    applyCornerRadius(6)
     layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
     layer.borderColor = Theme.Color.borderDarkGray.color.cgColor
     layer.borderWidth = 1.0

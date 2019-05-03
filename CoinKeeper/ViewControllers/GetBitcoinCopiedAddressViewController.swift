@@ -64,10 +64,10 @@ class GetBitcoinCopiedAddressViewController: UIViewController, StoryboardInitial
     self.view.backgroundColor = .clear
     semiOpaqueBackground.backgroundColor = Theme.Color.semiOpaquePopoverBackground.color
     alertBackground.backgroundColor = Theme.Color.lightGrayBackground.color
-    alertBackground.setCornerRadius(9)
+    alertBackground.applyCornerRadius(9)
 
     bitcoinIconBackground.backgroundColor = Theme.Color.mango.color
-    bitcoinIconBackground.setCornerRadius(bitcoinIconBackground.frame.width/2)
+    bitcoinIconBackground.applyCornerRadius(bitcoinIconBackground.frame.width/2)
 
     addressButton.backgroundColor = Theme.Color.whiteBackground.color
     addressButton.setTitleColor(Theme.Color.darkBlueText.color, for: .normal)
@@ -85,7 +85,7 @@ class GetBitcoinCopiedAddressViewController: UIViewController, StoryboardInitial
     confirmationButton.backgroundColor = Theme.Color.primaryActionButton.color
     confirmationButton.setTitleColor(Theme.Color.whiteText.color, for: .normal)
     confirmationButton.titleLabel?.font = Theme.Font.popoverActionButton.font
-    confirmationButton.setCornerRadius(4)
+    confirmationButton.applyCornerRadius(4)
   }
 
 }

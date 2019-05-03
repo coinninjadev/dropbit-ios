@@ -45,7 +45,7 @@ final class RequestPayViewController: PresentableViewController, StoryboardIniti
   @IBOutlet var receiveAddressTapGesture: UITapGestureRecognizer!
   @IBOutlet var receiveAddressBGView: UIView! {
     didSet {
-      receiveAddressBGView.setCornerRadius(4)
+      receiveAddressBGView.applyCornerRadius(4)
       receiveAddressBGView.layer.borderColor = Theme.Color.lightGrayOutline.color.cgColor
       receiveAddressBGView.layer.borderWidth = 2.0
       receiveAddressBGView.backgroundColor = .clear

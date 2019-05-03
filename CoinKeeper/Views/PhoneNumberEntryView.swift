@@ -46,7 +46,7 @@ class PhoneNumberEntryView: UIView {
   override func awakeFromNib() {
     super.awakeFromNib()
 
-    setCornerRadius(6)
+    applyCornerRadius(6)
     layer.borderColor = Theme.Color.lightBlueTint.color.cgColor
     layer.borderWidth = 1.0
     textField.borderStyle = .none

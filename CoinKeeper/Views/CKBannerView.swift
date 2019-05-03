@@ -73,7 +73,7 @@ class CKBannerView: MessageView, AccessibleViewSettable {
 
     // Use custom background view
     backgroundColor = .clear
-    backingView.setCornerRadius(6)
+    backingView.applyCornerRadius(6)
     backingView.backgroundColor = kind.backgroundColor
 
     messageLabel.text = message

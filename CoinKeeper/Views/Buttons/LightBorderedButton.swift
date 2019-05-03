@@ -13,7 +13,7 @@ class LightBorderedButton: UIButton {
   override func awakeFromNib() {
     super.awakeFromNib()
     backgroundColor = .clear
-    setCornerRadius(5)
+    applyCornerRadius(5)
     let borderColor = Theme.Color.grayText.color.withAlphaComponent(0.8)
     layer.borderColor = borderColor.cgColor
     layer.borderWidth = 1.0 / UIScreen.main.nativeScale

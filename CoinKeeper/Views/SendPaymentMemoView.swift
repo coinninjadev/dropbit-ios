@@ -44,7 +44,7 @@ class SendPaymentMemoView: UIView {
   override func awakeFromNib() {
     super.awakeFromNib()
     backgroundColor = .clear
-    setCornerRadius(6)
+    applyCornerRadius(6)
     self.layer.borderWidth = 1
     self.layer.borderColor = Theme.Color.lightGrayOutline.color.cgColor
 
@@ -57,7 +57,7 @@ class SendPaymentMemoView: UIView {
     setupGestureRecognizers()
 
     checkboxBackgroundView.backgroundColor = Theme.Color.primaryActionButton.color
-    checkboxBackgroundView.setCornerRadius(3)
+    checkboxBackgroundView.applyCornerRadius(3)
 
     checkboxDescriptionLabel.text = "Securely send this memo with your transaction"
     checkboxDescriptionLabel.textColor = Theme.Color.memoInfoText.color

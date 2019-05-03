@@ -29,7 +29,7 @@ final class MemoEntryViewController: BaseViewController, StoryboardInitializable
   @IBOutlet var backgroundContentImageView: UIImageView!
   @IBOutlet var textEntryContainerView: UIView! {
     didSet {
-      textEntryContainerView.setCornerRadius(15.0)
+      textEntryContainerView.applyCornerRadius(15.0)
     }
   }
   @IBOutlet var textView: UITextView! {

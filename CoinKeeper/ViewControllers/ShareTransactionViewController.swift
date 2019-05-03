@@ -68,7 +68,7 @@ class ShareTransactionViewController: UIViewController, StoryboardInitializable 
     dontAskAgainButton.titleLabel?.font = Theme.Font.primaryButtonTitle.font
     dontAskAgainButton.setTitleColor(Theme.Color.grayText.color, for: .normal)
     dontAskAgainFadedBackground.backgroundColor = Theme.Color.primaryActionButton.color
-    dontAskAgainFadedBackground.setCornerRadius(4)
+    dontAskAgainFadedBackground.applyCornerRadius(4)
   }
 
   private func configureTwitterButton() {
@@ -87,7 +87,7 @@ class ShareTransactionViewController: UIViewController, StoryboardInitializable 
 
     twitterButton.setAttributedTitle(attributedTitle, for: .normal)
     twitterButton.backgroundColor = Theme.Color.primaryActionButton.color
-    twitterButton.setCornerRadius(4)
+    twitterButton.applyCornerRadius(4)
   }
 
 }
