@@ -38,6 +38,9 @@ extension AppCoordinator: SendPaymentViewControllerDelegate {
     analyticsManager.track(event: .pasteButtonPressed, with: nil)
   }
 
+  func viewControllerDidPressTwitter(_ viewController: UIViewController) {
+  }
+
   func viewControllerDidBeginAddressNegotiation(_ viewController: UIViewController,
                                                 btcAmount: NSDecimalNumber,
                                                 primaryCurrency: CurrencyCode,
