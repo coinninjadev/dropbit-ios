@@ -71,6 +71,10 @@ class MockSendPaymentViewControllerCoordinator: SendPaymentViewControllerCoordin
     return Promise.value([:])
   }
 
+  func viewControllerDidPressTwitter(_ viewController: UIViewController) {
+
+  }
+
   var didTapScan = false
   func viewControllerDidPressScan(_ viewController: UIViewController, btcAmount: NSDecimalNumber, primaryCurrency: CurrencyCode) {
     didTapScan = true

@@ -14,6 +14,7 @@ protocol SendPaymentViewControllerDelegate: DeviceCountryCodeProvider {
   func sendPaymentViewControllerDidLoad(_ viewController: UIViewController)
   func viewControllerDidPressScan(_ viewController: UIViewController, btcAmount: NSDecimalNumber, primaryCurrency: CurrencyCode)
   func viewControllerDidPressContacts(_ viewController: UIViewController & SelectedValidContactDelegate)
+  func viewControllerDidPressTwitter(_ viewController: UIViewController)
   func viewController(_ viewController: UIViewController,
                       checkingCachedAddressesFor phoneNumberHash: String,
                       completion: @escaping (Result<[WalletAddressesQueryResponse], UserProviderError>) -> Void)
