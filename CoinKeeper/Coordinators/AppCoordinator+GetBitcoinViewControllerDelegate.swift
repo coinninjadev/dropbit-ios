@@ -69,7 +69,7 @@ extension AppCoordinator: GetBitcoinCopiedAddressViewControllerDelegate {
   }
 
   func viewControllerRequestedAuthenticationSuspension(_ viewController: UIViewController) {
-    let suspendUntilDate = Date().addingTimeInterval(15*60)
+    let suspendUntilDate = Calendar.current.date(byAdding: .minute, value: 15, to: Date())
     os_log("Will suspend authentication until %@ or next open", log: logger, type: .debug, suspendUntilDate as CVarArg)
     self.suspendAuthenticationOnceUntil = suspendUntilDate
   }
