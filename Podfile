@@ -37,7 +37,7 @@ post_install do |installer|
   installer.pods_project.targets.each do |target|
     unless target.name.include?('DropBit') then
       target.build_configurations.each do |config|
-        config.build_settings['DEBUG_INFORMATION_FORMAT'] = 'DWARF' if config.name == 'Release'
+        config.build_settings['DEBUG_INFORMATION_FORMAT'] = 'DWARF'
       end
     end
   end
