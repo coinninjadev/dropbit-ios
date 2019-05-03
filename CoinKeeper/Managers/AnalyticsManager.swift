@@ -57,6 +57,7 @@ enum AnalyticsManagerEventType: String {
   case contactsButtonPressed = "ContactsBtn"
   case scanButtonPressed = "ScanBtn"
   case pasteButtonPressed = "PasteBtn"
+  case twitterButtonPressed = "TwitterBtn"
   case shareTransactionPressed = "ShareTransIDBtn"
   case cancelDropbitPressed = "CancelDropBit"
   case whatIsDropbitPressed = "WhatIsDropBit"

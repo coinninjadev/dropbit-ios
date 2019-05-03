@@ -39,6 +39,7 @@ extension AppCoordinator: SendPaymentViewControllerDelegate {
   }
 
   func viewControllerDidPressTwitter(_ viewController: UIViewController) {
+    analyticsManager.track(event: .twitterButtonPressed, with: nil)
   }
 
   func viewControllerDidBeginAddressNegotiation(_ viewController: UIViewController,
