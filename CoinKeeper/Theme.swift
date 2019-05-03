@@ -34,6 +34,7 @@ struct Theme {
     case settingsDarkGray, sendingToDarkGray
     case containerBackgroundGray
     case borderDarkGray
+    case backgroundDarkGray
     case darkGray
     case sendPaymentNetworkFee
     case successGreen
@@ -71,6 +72,7 @@ struct Theme {
       case .bannerWarn: 											return UIColor(r: 224, g: 177, b: 0)
       case .memoBorder,
            .borderDarkGray,
+           .backgroundDarkGray,
            .selectedCellBackground: 					return UIColor(r: 224, g: 224, b: 224)
       case .lightGrayOutline,
            .lightGrayButtonBackground: 				return UIColor(r: 227, g: 227, b: 227)
