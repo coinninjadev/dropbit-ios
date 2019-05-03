@@ -98,13 +98,40 @@
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="04W-cu-0yT">
                                         <rect key="frame" x="0.0" y="99.5" width="327" height="100"/>
                                         <subviews>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uXj-RN-p47">
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vbE-29-4pS">
                                                 <rect key="frame" x="0.0" y="0.0" width="327" height="50"/>
-                                                <state key="normal" title="Button"/>
-                                                <connections>
-                                                    <action selector="performStartPhoneEntry" destination="mA3-RJ-Qjv" eventType="touchUpInside" id="7WJ-L8-JcH"/>
-                                                </connections>
-                                            </button>
+                                                <subviews>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uXj-RN-p47">
+                                                        <rect key="frame" x="0.0" y="0.0" width="283" height="50"/>
+                                                        <state key="normal" title="Button"/>
+                                                        <connections>
+                                                            <action selector="performStartPhoneEntry" destination="mA3-RJ-Qjv" eventType="touchUpInside" id="7WJ-L8-JcH"/>
+                                                        </connections>
+                                                    </button>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BiE-1k-9jN">
+                                                        <rect key="frame" x="283" y="0.0" width="44" height="50"/>
+                                                        <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="width" constant="44" id="65L-SO-r8J"/>
+                                                        </constraints>
+                                                        <state key="normal" image="qrcodeStatic"/>
+                                                        <connections>
+                                                            <action selector="performScan" destination="mA3-RJ-Qjv" eventType="touchUpInside" id="3tG-ow-BsU"/>
+                                                        </connections>
+                                                    </button>
+                                                </subviews>
+                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="bottom" secondItem="uXj-RN-p47" secondAttribute="bottom" id="At2-s3-yTB"/>
+                                                    <constraint firstAttribute="trailing" secondItem="BiE-1k-9jN" secondAttribute="trailing" id="Axo-0g-AlP"/>
+                                                    <constraint firstAttribute="bottom" secondItem="BiE-1k-9jN" secondAttribute="bottom" id="Wa6-KP-83R"/>
+                                                    <constraint firstItem="BiE-1k-9jN" firstAttribute="top" secondItem="vbE-29-4pS" secondAttribute="top" id="bkk-1b-O5c"/>
+                                                    <constraint firstItem="uXj-RN-p47" firstAttribute="leading" secondItem="vbE-29-4pS" secondAttribute="leading" id="eC1-YD-Taz"/>
+                                                    <constraint firstItem="uXj-RN-p47" firstAttribute="trailing" secondItem="BiE-1k-9jN" secondAttribute="leading" id="ig0-uY-D2Q"/>
+                                                    <constraint firstItem="uXj-RN-p47" firstAttribute="top" secondItem="vbE-29-4pS" secondAttribute="top" id="pmH-m3-vHu"/>
+                                                    <constraint firstAttribute="height" constant="50" id="yKn-K3-VKf"/>
+                                                </constraints>
+                                            </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="C51-D8-1VB" customClass="PhoneNumberEntryView" customModule="DropBit" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="50" width="327" height="50"/>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -113,9 +140,6 @@
                                                 </constraints>
                                             </view>
                                         </subviews>
-                                        <constraints>
-                                            <constraint firstItem="uXj-RN-p47" firstAttribute="height" secondItem="C51-D8-1VB" secondAttribute="height" id="MhG-Bu-6cJ"/>
-                                        </constraints>
                                     </stackView>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -155,10 +179,10 @@
                                         <constraints>
                                             <constraint firstAttribute="height" constant="44" id="9b5-1p-b4e"/>
                                         </constraints>
-                                        <state key="normal" title="SCAN"/>
+                                        <state key="normal" title="TWITTER"/>
                                         <connections>
                                             <action selector="dismissKeyboard" destination="mA3-RJ-Qjv" eventType="touchUpInside" id="cx8-9v-SbA"/>
-                                            <action selector="performScan" destination="mA3-RJ-Qjv" eventType="touchUpInside" id="OHR-m8-j6e"/>
+                                            <action selector="performTwitter" destination="mA3-RJ-Qjv" eventType="touchUpInside" id="pZw-Mm-ZWw"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="C8U-pc-1eS" customClass="CompactActionButton" customModule="DropBit" customModuleProvider="target">
@@ -218,6 +242,7 @@
                         <viewLayoutGuide key="safeArea" id="eLP-S6-dcJ"/>
                     </view>
                     <connections>
+                        <outlet property="addressScanButtonContainerView" destination="vbE-29-4pS" id="C2T-nD-E2B"/>
                         <outlet property="bitcoinAddressButton" destination="uXj-RN-p47" id="ueR-ts-6sw"/>
                         <outlet property="closeButton" destination="ZK3-ob-Jzc" id="qZw-Qx-w2e"/>
                         <outlet property="contactsButton" destination="MQN-rV-aED" id="ZOh-5B-laM"/>
@@ -228,11 +253,12 @@
                         <outlet property="primaryAmountTextField" destination="gVg-Q3-DyT" id="DrG-x5-mwd"/>
                         <outlet property="recipientDisplayNameLabel" destination="La8-Sv-kGN" id="a19-eD-upO"/>
                         <outlet property="recipientDisplayNumberLabel" destination="NUe-iQ-oIx" id="BOh-Rz-BG1"/>
-                        <outlet property="scanButton" destination="Zvc-Ce-tCL" id="ByK-hb-s8H"/>
+                        <outlet property="scanButton" destination="BiE-1k-9jN" id="roX-2f-XZ8"/>
                         <outlet property="secondaryAmountLabel" destination="MFr-LH-oew" id="9p9-OW-ubX"/>
                         <outlet property="sendButton" destination="xMy-P4-RBB" id="CYW-nf-22m"/>
                         <outlet property="sendMaxButton" destination="2Q4-Um-Y5Z" id="0aw-nM-XZe"/>
                         <outlet property="toggleCurrencyButton" destination="WKO-3S-ilw" id="LEl-Tc-eMY"/>
+                        <outlet property="twitterButton" destination="Zvc-Ce-tCL" id="ByK-hb-s8H"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="9Ih-ii-wig" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -242,6 +268,7 @@
     </scenes>
     <resources>
         <image name="close" width="14" height="14"/>
+        <image name="qrcodeStatic" width="19" height="18"/>
         <image name="toggle" width="20" height="15"/>
     </resources>
 </document>
