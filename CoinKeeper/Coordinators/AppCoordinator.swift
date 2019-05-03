@@ -517,23 +517,22 @@ class AppCoordinator: CoordinatorType {
   }
 
   private func authenticateOnBecomingActiveIfNeeded() {
+    defer { self.suspendAuthenticationOnceUntil = nil }
+    if let suspendUntil = self.suspendAuthenticationOnceUntil, suspendUntil > Date() {
+      return
+    }
+
     // check keychain time interval for resigned time, and if within 30 sec, don't require
     let now = Date().timeIntervalSince1970
     let lastLogin = persistenceManager.lastLoginTime() ?? Date.distantPast.timeIntervalSince1970
 
-    if let suspendUntil = self.suspendAuthenticationOnceUntil, suspendUntil > Date() {
-      self.suspendAuthenticationOnceUntil = nil
-    } else {
-      self.suspendAuthenticationOnceUntil = nil
-
-      let secondsSinceLastLogin = now - lastLogin
-      if secondsSinceLastLogin > maxSecondsInBackground {
-        dismissAllModalViewControllers()
-        resetUserAuthenticatedState()
-        requireAuthenticationIfNeeded(whenAuthenticated: {
-          self.continueSetupFlow()
-        })
-      }
+    let secondsSinceLastLogin = now - lastLogin
+    if secondsSinceLastLogin > maxSecondsInBackground {
+      dismissAllModalViewControllers()
+      resetUserAuthenticatedState()
+      requireAuthenticationIfNeeded(whenAuthenticated: {
+        self.continueSetupFlow()
+      })
     }
   }
 
