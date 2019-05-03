@@ -53,7 +53,7 @@ protocol PersistenceManagerType: DeviceCountryCodeProvider {
   func persistUnacknowledgedInvitation(in context: NSManagedObjectContext, with btcPair: BitcoinUSDPair,
                                        contact: ContactType, fee: Int, acknowledgementId: String)
   func persistWalletId(from response: WalletResponse, in context: NSManagedObjectContext) -> Promise<Void>
-  func persistUserId(from response: UserResponse, in context: NSManagedObjectContext) -> Promise<CKMUser>
+  func persistUserId(_ userId: String, in context: NSManagedObjectContext)
   func persistUserPublicURLInfo(from response: UserResponse, in context: NSManagedObjectContext)
   func getUserPublicURLInfo(in context: NSManagedObjectContext) -> UserPublicURLInfo?
   func persistVerificationStatus(from response: UserResponse, in context: NSManagedObjectContext) -> Promise<UserVerificationStatus>
