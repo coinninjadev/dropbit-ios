@@ -274,7 +274,6 @@ struct Theme {
       case .progressBarNode: 										return CKFont.semiBold(11)
       case .popoverSecondaryButton:             return CKFont.semiBold(12)
       case .alertActionTitle,
-           .popoverMessage,
            .requestPayAddress: 									return CKFont.semiBold(13)
       case .settingsSectionHeader,
            .popoverActionButton,
