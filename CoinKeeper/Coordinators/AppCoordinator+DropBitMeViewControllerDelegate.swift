@@ -56,7 +56,7 @@ extension AppCoordinator: DropBitMeViewControllerDelegate {
 
     viewController.dismiss(animated: true) {
       let message = "Pay me in #Bitcoin using my Dropbit.me \(url.absoluteString)"
-      print(message)
+      self.openTwitterURL(withMessage: message)
     }
   }
 
