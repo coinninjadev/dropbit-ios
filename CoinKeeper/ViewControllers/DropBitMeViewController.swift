@@ -137,6 +137,7 @@ class DropBitMeViewController: UIViewController, StoryboardInitializable {
     self.messageLabel.text = self.message
     dropBitMeURLButton.isHidden = true
     verificationSuccessButton.isHidden = true
+    secondaryButton.isHidden = false
 
     switch config {
     case .verified(let url, let firstTimeVerified):
@@ -155,6 +156,7 @@ class DropBitMeViewController: UIViewController, StoryboardInitializable {
     case .disabled:
       primaryButton.style = .darkBlue
       primaryButton.setTitle("ENABLE MY URL", for: .normal)
+      secondaryButton.setTitle("Learn more", for: .normal)
     }
   }
 

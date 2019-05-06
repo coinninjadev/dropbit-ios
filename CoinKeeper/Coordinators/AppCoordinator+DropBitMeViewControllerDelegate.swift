@@ -25,7 +25,11 @@ extension AppCoordinator: DropBitMeViewControllerDelegate {
             if let dropbitMeVC = viewController as? DropBitMeViewController,
               let handle = urlInfo.primaryIdentity?.handle,
               let url = CoinNinjaUrlFactory.buildUrl(for: .dropBitMe(handle: handle)) {
-              dropbitMeVC.configure(with: .verified(url, firstTime: false))
+              if urlInfo.isEnabled {
+                dropbitMeVC.configure(with: .verified(url, firstTime: false))
+              } else {
+                dropbitMeVC.configure(with: .disabled)
+              }
             }
           }
         }
