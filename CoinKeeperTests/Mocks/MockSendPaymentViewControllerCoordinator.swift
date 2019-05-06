@@ -72,7 +72,7 @@ class MockSendPaymentViewControllerCoordinator: SendPaymentViewControllerCoordin
   }
 
   var didTapTwitter = false
-  func viewControllerDidPressTwitter(_ viewController: UIViewController) {
+  func viewControllerDidPressTwitter(_ viewController: UIViewController & SelectedValidContactDelegate) {
     didTapTwitter = true
   }
 
