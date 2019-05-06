@@ -140,14 +140,14 @@ class ContactsViewController: PresentableViewController, StoryboardInitializable
     let contactsTitle = NSAttributedString(imageName: "contactsIcon",
                                            imageSize: CGSize(width: 9, height: 14),
                                            title: "CONTACTS",
-                                           textColor: textColor,
+                                           sharedColor: textColor,
                                            font: font)
     contactsButton.setAttributedTitle(contactsTitle, for: .normal)
 
     let twitterTitle = NSAttributedString(imageName: "twitterBird",
-                                          imageSize: CGSize(width: 20, height: 16),
+                                          imageSize: CGSize(width: 14, height: 12),
                                           title: "TWITTER",
-                                          textColor: textColor,
+                                          sharedColor: textColor,
                                           font: font)
     twitterButton.setAttributedTitle(twitterTitle, for: .normal)
   }

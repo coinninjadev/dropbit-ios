@@ -40,18 +40,19 @@ extension NSAttributedString {
     self.init(attachment: textAttribute)
   }
 
+  /// `sharedColor` is used for both the titleColor and a mask of the image
   convenience init(imageName: String,
                    imageSize: CGSize = CGSize(width: 20, height: 20),
                    title: String,
-                   textColor: UIColor,
+                   sharedColor: UIColor,
                    font: UIFont) {
 
     let attributes: [NSAttributedString.Key: Any] = [
       .font: font,
-      .foregroundColor: textColor
+      .foregroundColor: sharedColor
     ]
 
-    let image = UIImage(imageLiteralResourceName: imageName)
+    let image = UIImage(imageLiteralResourceName: imageName).maskWithColor(color: sharedColor)
     let attributedImage = NSAttributedString(image: image,
                                             fontDescender: font.descender,
                                             imageSize: imageSize)
