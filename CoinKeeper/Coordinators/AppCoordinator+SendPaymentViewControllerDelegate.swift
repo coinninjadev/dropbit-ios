@@ -318,12 +318,12 @@ extension AppCoordinator: SendPaymentViewControllerDelegate {
             }
 
             self?.alertManager.hideActivityHUD(withDelay: nil) {
-              self?.presentContacts(selectionDelegate: viewController)
+              self?.presentPhoneContacts(selectionDelegate: viewController)
             }
           }
 
         } else {
-          strongSelf.presentContacts(selectionDelegate: viewController)
+          strongSelf.presentPhoneContacts(selectionDelegate: viewController)
         }
 
       default:
@@ -332,11 +332,9 @@ extension AppCoordinator: SendPaymentViewControllerDelegate {
     }
   }
 
-  private func presentContacts(selectionDelegate viewController: SelectedValidContactDelegate) {
-    let contactsViewController = ContactsViewController.makeFromStoryboard()
-    contactsViewController.selectionDelegate = viewController
-    self.assignCoordinationDelegate(to: contactsViewController)
-    contactsViewController.modalPresentationStyle = .overFullScreen
+  private func presentPhoneContacts(selectionDelegate viewController: SelectedValidContactDelegate) {
+    let contactsViewController = ContactsViewController.newInstance(mode: .contacts,
+                                                                    coordinationDelegate: self, selectionDelegate: viewController)
     self.navigationController.topViewController()?.present(contactsViewController, animated: true)
   }
 
