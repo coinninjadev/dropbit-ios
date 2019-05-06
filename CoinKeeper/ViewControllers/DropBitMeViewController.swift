@@ -16,7 +16,7 @@ protocol DropBitMeViewControllerDelegate: ViewControllerDismissable, CopyToClipb
 }
 
 enum DropBitMeConfig {
-  case verified(URL, Bool) // true to show "You've been verified!" first time after verification
+  case verified(URL, firstTime: Bool) // true to show "You've been verified!" at top of popover, first time after verification
   case notVerified
   case disabled
 
@@ -26,7 +26,7 @@ enum DropBitMeConfig {
         self = .disabled
       } else if let identity = info.primaryIdentity,
         let url = CoinNinjaUrlFactory.buildUrl(for: .dropBitMe(handle: identity.handle)) {
-        self = .verified(url, verifiedFirstTime)
+        self = .verified(url, firstTime: verifiedFirstTime)
       } else {
         self = .disabled //this should not be reached since a user cannot exist without an identity
       }
