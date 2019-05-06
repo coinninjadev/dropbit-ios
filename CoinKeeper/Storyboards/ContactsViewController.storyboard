@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -12,19 +13,11 @@
         <!--Contacts View Controller-->
         <scene sceneID="NhP-eX-ZLg">
             <objects>
-                <viewController storyboardIdentifier="ContactsViewController" id="WGe-a8-FUy" customClass="ContactsViewController" customModule="CoinKeeper" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ContactsViewController" id="WGe-a8-FUy" customClass="ContactsViewController" customModule="DropBit" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="faL-EV-nLm">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="3S7-LR-X0d">
-                                <rect key="frame" x="0.0" y="126" width="375" height="541"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                            </tableView>
-                            <searchBar contentMode="redraw" searchBarStyle="minimal" placeholder="Search Contacts" translatesAutoresizingMaskIntoConstraints="NO" id="Uou-h4-fH0">
-                                <rect key="frame" x="0.0" y="70" width="375" height="56"/>
-                                <textInputTraits key="textInputTraits"/>
-                            </searchBar>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RHC-rG-Hne">
                                 <rect key="frame" x="312" y="30" width="44" height="44"/>
                                 <constraints>
@@ -36,8 +29,58 @@
                                     <action selector="closeButtonWasTouched" destination="WGe-a8-FUy" eventType="touchUpInside" id="woz-Xh-OPA"/>
                                 </connections>
                             </button>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="S1s-xL-cfc">
+                                <rect key="frame" x="41.5" y="74" width="292" height="50"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Skn-aU-dA4">
+                                        <rect key="frame" x="0.0" y="0.0" width="146" height="50"/>
+                                        <state key="normal" title="CONTACTS"/>
+                                        <connections>
+                                            <action selector="toggleDataSource:" destination="WGe-a8-FUy" eventType="touchUpInside" id="1y4-Db-NQE"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BGx-58-B1R">
+                                        <rect key="frame" x="146" y="0.0" width="146" height="50"/>
+                                        <state key="normal" title="TWITTER"/>
+                                        <connections>
+                                            <action selector="toggleDataSource:" destination="WGe-a8-FUy" eventType="touchUpInside" id="s3m-Dc-0zM"/>
+                                        </connections>
+                                    </button>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qdw-c1-6C8">
+                                        <rect key="frame" x="0.0" y="49" width="83" height="1"/>
+                                        <color key="backgroundColor" red="0.46202266219999999" green="0.83828371759999998" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="83" id="fsR-1R-er9"/>
+                                            <constraint firstAttribute="height" constant="1" id="u6J-MS-40S"/>
+                                        </constraints>
+                                    </view>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="qdw-c1-6C8" secondAttribute="bottom" id="DHB-Xe-rmJ"/>
+                                    <constraint firstAttribute="width" constant="292" id="EJl-1d-bEU"/>
+                                    <constraint firstItem="Skn-aU-dA4" firstAttribute="leading" secondItem="S1s-xL-cfc" secondAttribute="leading" id="KQp-Q2-fE0"/>
+                                    <constraint firstAttribute="trailing" secondItem="BGx-58-B1R" secondAttribute="trailing" id="SSg-RK-hIL"/>
+                                    <constraint firstAttribute="bottom" secondItem="BGx-58-B1R" secondAttribute="bottom" id="UzA-97-EXm"/>
+                                    <constraint firstItem="Skn-aU-dA4" firstAttribute="top" secondItem="S1s-xL-cfc" secondAttribute="top" id="a1I-kD-xFL"/>
+                                    <constraint firstItem="qdw-c1-6C8" firstAttribute="leading" secondItem="S1s-xL-cfc" secondAttribute="leading" id="ag7-Uc-iW2"/>
+                                    <constraint firstAttribute="height" constant="50" id="hF1-l8-lKm"/>
+                                    <constraint firstItem="BGx-58-B1R" firstAttribute="top" secondItem="S1s-xL-cfc" secondAttribute="top" id="hz3-Td-emi"/>
+                                    <constraint firstAttribute="bottom" secondItem="Skn-aU-dA4" secondAttribute="bottom" id="hzr-ke-aQd"/>
+                                    <constraint firstItem="BGx-58-B1R" firstAttribute="leading" secondItem="Skn-aU-dA4" secondAttribute="trailing" id="olu-HQ-qNe"/>
+                                    <constraint firstItem="Skn-aU-dA4" firstAttribute="width" secondItem="BGx-58-B1R" secondAttribute="width" id="pld-1O-aE9"/>
+                                </constraints>
+                            </view>
+                            <searchBar contentMode="redraw" searchBarStyle="minimal" placeholder="Search" translatesAutoresizingMaskIntoConstraints="NO" id="Uou-h4-fH0">
+                                <rect key="frame" x="0.0" y="132" width="375" height="56"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </searchBar>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="3S7-LR-X0d">
+                                <rect key="frame" x="0.0" y="188" width="375" height="479"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </tableView>
                             <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="tVT-qa-3A8">
-                                <rect key="frame" x="177" y="323.5" width="20" height="20"/>
+                                <rect key="frame" x="177.5" y="323.5" width="20" height="20"/>
                             </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -48,19 +91,26 @@
                             <constraint firstItem="A3p-5W-kTA" firstAttribute="trailing" secondItem="RHC-rG-Hne" secondAttribute="trailing" constant="19" id="PMY-fL-gN7"/>
                             <constraint firstItem="RHC-rG-Hne" firstAttribute="top" secondItem="A3p-5W-kTA" secondAttribute="top" constant="10" id="QVe-L1-xGK"/>
                             <constraint firstItem="tVT-qa-3A8" firstAttribute="centerX" secondItem="faL-EV-nLm" secondAttribute="centerX" id="ZOE-3H-fac"/>
+                            <constraint firstItem="Uou-h4-fH0" firstAttribute="top" secondItem="S1s-xL-cfc" secondAttribute="bottom" constant="8" id="afA-hn-iMh"/>
                             <constraint firstItem="A3p-5W-kTA" firstAttribute="bottom" secondItem="3S7-LR-X0d" secondAttribute="bottom" id="bMm-cx-gQu"/>
                             <constraint firstItem="3S7-LR-X0d" firstAttribute="leading" secondItem="A3p-5W-kTA" secondAttribute="leading" id="dnT-Tk-xbi"/>
-                            <constraint firstItem="Uou-h4-fH0" firstAttribute="top" secondItem="A3p-5W-kTA" secondAttribute="top" constant="50" id="kcW-Vc-oyh"/>
                             <constraint firstItem="tVT-qa-3A8" firstAttribute="centerY" secondItem="faL-EV-nLm" secondAttribute="centerY" id="lLk-qb-mSx"/>
+                            <constraint firstItem="S1s-xL-cfc" firstAttribute="top" secondItem="RHC-rG-Hne" secondAttribute="bottom" id="prJ-fX-Zaj"/>
                             <constraint firstItem="3S7-LR-X0d" firstAttribute="top" secondItem="Uou-h4-fH0" secondAttribute="bottom" id="shL-bJ-4iU"/>
+                            <constraint firstItem="S1s-xL-cfc" firstAttribute="centerX" secondItem="A3p-5W-kTA" secondAttribute="centerX" id="uIn-dq-H11"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="A3p-5W-kTA"/>
                     </view>
                     <connections>
                         <outlet property="activityIndiciator" destination="tVT-qa-3A8" id="OJL-sG-qgX"/>
                         <outlet property="closeButton" destination="RHC-rG-Hne" id="yy9-Cb-Lhv"/>
+                        <outlet property="contactsButton" destination="Skn-aU-dA4" id="cMg-Ku-UUc"/>
+                        <outlet property="indicatorLeadingConstraint" destination="ag7-Uc-iW2" id="18r-Cg-zmc"/>
+                        <outlet property="modeContainerView" destination="S1s-xL-cfc" id="wtR-5s-njA"/>
                         <outlet property="searchBar" destination="Uou-h4-fH0" id="R3I-1V-bqe"/>
+                        <outlet property="selectedButtonIndicator" destination="qdw-c1-6C8" id="e54-mF-kNQ"/>
                         <outlet property="tableView" destination="3S7-LR-X0d" id="oPQ-kd-crV"/>
+                        <outlet property="twitterButton" destination="BGx-58-B1R" id="F36-o5-JYO"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0GU-Wm-cFe" userLabel="First Responder" sceneMemberID="firstResponder"/>

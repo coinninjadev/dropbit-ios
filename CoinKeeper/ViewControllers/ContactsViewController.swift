@@ -36,14 +36,73 @@ protocol SelectedValidContactDelegate: AnyObject {
   func update(withSelectedContact contact: ContactType)
 }
 
+enum ContactsViewControllerMode {
+  case contacts
+  case twitter
+}
+
 class ContactsViewController: PresentableViewController, StoryboardInitializable {
 
   @IBOutlet var tableView: UITableView!
   @IBOutlet var closeButton: UIButton!
+  @IBOutlet var modeContainerView: UIView!
+  @IBOutlet var contactsButton: UIButton!
+  @IBOutlet var twitterButton: UIButton!
+  @IBOutlet var selectedButtonIndicator: UIView!
+  @IBOutlet var indicatorLeadingConstraint: NSLayoutConstraint!
   @IBOutlet var searchBar: UISearchBar!
   @IBOutlet var activityIndiciator: UIActivityIndicatorView!
 
+  @IBAction func toggleDataSource(_ sender: UIButton) {
+    if sender != button(forMode: self.mode) {
+      setSelectedButton(to: sender)
+    }
+  }
+
+  private func button(forMode mode: ContactsViewControllerMode) -> UIButton {
+    switch mode {
+    case .contacts: return contactsButton
+    case .twitter:  return twitterButton
+    }
+  }
+
+  private func setSelectedButton(to button: UIButton, animated: Bool = true) {
+    if button == contactsButton {
+      mode = .contacts
+    } else if button == twitterButton {
+      mode = .twitter
+    }
+
+    let duration: TimeInterval = animated ? 0.3 : 0
+    UIView.animate(withDuration: duration) {
+      self.indicatorLeadingConstraint.constant = self.indicatorOffset(for: button)
+      self.modeContainerView.layoutIfNeeded()
+    }
+  }
+
+  private func indicatorOffset(for button: UIButton) -> CGFloat {
+    let indicatorWidth = selectedButtonIndicator.frame.width
+    let buttonWidth = button.frame.width
+    let buttonXPosition = button.frame.minX
+    let centeringOffset = (buttonWidth - indicatorWidth)/2
+    let fullOffset = buttonXPosition + centeringOffset
+    return fullOffset
+  }
+
   private let logger = OSLog(subsystem: "com.coinninja.coinkeeper.contactsviewcontroller", category: "contacts_view_controller")
+
+  var mode: ContactsViewControllerMode = .contacts
+
+  static func newInstance(mode: ContactsViewControllerMode,
+                          coordinationDelegate: ContactsViewControllerDelegate,
+                          selectionDelegate: SelectedValidContactDelegate) -> ContactsViewController {
+    let vc = ContactsViewController.makeFromStoryboard()
+    vc.mode = mode
+    vc.generalCoordinationDelegate = coordinationDelegate
+    vc.selectionDelegate = selectionDelegate
+    vc.modalPresentationStyle = .overFullScreen
+    return vc
+  }
 
   var coordinationDelegate: ContactsViewControllerDelegate? {
     return generalCoordinationDelegate as? ContactsViewControllerDelegate
@@ -75,14 +134,36 @@ class ContactsViewController: PresentableViewController, StoryboardInitializable
     }
   }
 
+  private func setupModeSelector() {
+    let textColor = Theme.Color.darkBlueText.color
+    let font = Theme.Font.compactButtonTitle.font
+    let contactsTitle = NSAttributedString(imageName: "contactsIcon",
+                                           imageSize: CGSize(width: 9, height: 14),
+                                           title: "CONTACTS",
+                                           sharedColor: textColor,
+                                           font: font)
+    contactsButton.setAttributedTitle(contactsTitle, for: .normal)
+
+    let twitterTitle = NSAttributedString(imageName: "twitterBird",
+                                          imageSize: CGSize(width: 14, height: 12),
+                                          title: "TWITTER",
+                                          sharedColor: textColor,
+                                          font: font)
+    twitterButton.setAttributedTitle(twitterTitle, for: .normal)
+  }
+
   override func viewDidLoad() {
     super.viewDidLoad()
 
+    setupModeSelector()
     setupTableView()
     styleSearchBar()
 
     activityIndiciator.hidesWhenStopped = true
     searchBar.delegate = self
+
+    let buttonToSelect = self.button(forMode: mode)
+    setSelectedButton(to: buttonToSelect, animated: false)
 
     refreshContactVerificationStatuses()
   }
