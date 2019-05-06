@@ -59,8 +59,10 @@ public struct UserResponse: ResponseDecodable {
   let updatedAt: Date
   let status: String
   var walletId: String?
-  let `private`: Bool
-  let identities: [PublicURLIdentity]
+
+  // These properties are only available on the /user GET route
+  let `private`: Bool?
+  let identities: [PublicURLIdentity]?
 
 }
 

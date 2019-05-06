@@ -134,7 +134,7 @@ class PersistenceManager: PersistenceManagerType {
 
   func persistUserPublicURLInfo(from response: UserResponse, in context: NSManagedObjectContext) {
     let user = CKMUser.find(in: context)
-    user?.publicURLIsPrivate = response.private
+    user?.publicURLIsPrivate = response.private ?? false
   }
 
   func getUserPublicURLInfo(in context: NSManagedObjectContext) -> UserPublicURLInfo? {
