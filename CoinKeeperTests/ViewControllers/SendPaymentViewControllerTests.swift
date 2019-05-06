@@ -47,7 +47,7 @@ class SendPaymentViewControllerTests: XCTestCase {
     XCTAssertNotNil(self.sut.recipientDisplayNumberLabel, "recipientDisplayNumberLabel should be connected")
     XCTAssertNotNil(self.sut.pasteButton, "pasteButton should be connected")
     XCTAssertNotNil(self.sut.contactsButton, "contactsButton should be connected")
-    XCTAssertNotNil(self.sut.scanButton, "scanButton should be connected")
+    XCTAssertNotNil(self.sut.twitterButton, "twitterButton should be connected")
     XCTAssertNotNil(self.sut.sendButton, "sendButton should be connected")
     XCTAssertNotNil(self.sut.sendMaxButton, "sendMaxButton should be connected")
     XCTAssertNotNil(self.sut.toggleCurrencyButton, "toggleCurrencyButton should be connected")
@@ -71,6 +71,12 @@ class SendPaymentViewControllerTests: XCTestCase {
     let actions = self.sut.scanButton.actions(forTarget: self.sut, forControlEvent: .touchUpInside) ?? []
     let selector = #selector(SendPaymentViewController.performScan).description
     XCTAssertTrue(actions.contains(selector), "scanButton should contain action")
+  }
+
+  func testTwitterButtonContainsAction() {
+    let actions = self.sut.twitterButton.actions(forTarget: self.sut, forControlEvent: .touchUpInside) ?? []
+    let selector = #selector(SendPaymentViewController.performTwitter).description
+    XCTAssertTrue(actions.contains(selector), "twitterButton should contain action")
   }
 
   func testSendButtonContainsAction() {
@@ -122,6 +128,11 @@ class SendPaymentViewControllerTests: XCTestCase {
   func testScanButtonTappedProducesResult() {
     self.sut.scanButton.sendActions(for: .touchUpInside)
     XCTAssertTrue(mockCoordinator.didTapScan)
+  }
+
+  func testTwitterButtonTappedProducesResult() {
+    self.sut.twitterButton.sendActions(for: .touchUpInside)
+    XCTAssertTrue(mockCoordinator.didTapTwitter)
   }
 
   func testBitcoinURLPasteWithoutAmount() {

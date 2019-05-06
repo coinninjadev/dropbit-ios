@@ -30,8 +30,7 @@ class BuySpendCardCollectionViewCell: UICollectionViewCell {
 
   override func awakeFromNib() {
     super.awakeFromNib()
-    layer.cornerRadius = 8.0
-    layer.masksToBounds = true
+    applyCornerRadius(8)
   }
 
   private var userSelected = false

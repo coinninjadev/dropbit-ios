@@ -61,25 +61,19 @@ ValidatorAlertDisplayable {
   @IBOutlet var primaryAmountTextField: LimitEditTextField!
   @IBOutlet var secondaryAmountLabel: UILabel!
 
-  // Can display a formatted phone number or the Bitcoin address
   @IBOutlet var phoneNumberEntryView: PhoneNumberEntryView!
-  @IBOutlet var bitcoinAddressButton: UIButton! {
-    didSet {
-      bitcoinAddressButton.isHidden = true
-      bitcoinAddressButton.layer.cornerRadius = 4.0
-      bitcoinAddressButton.layer.borderColor = Theme.Color.lightGrayOutline.color.cgColor
-      bitcoinAddressButton.layer.borderWidth = 1.0
-      bitcoinAddressButton.titleLabel?.font = Theme.Font.sendingAmountToAddress.font
-      bitcoinAddressButton.setTitleColor(Theme.Color.grayText.color, for: .normal)
-    }
-  }
+
+  @IBOutlet var addressScanButtonContainerView: UIView!
+  @IBOutlet var bitcoinAddressButton: UIButton!
+  @IBOutlet var scanButton: UIButton!
 
   @IBOutlet var recipientDisplayNameLabel: UILabel!
   @IBOutlet var recipientDisplayNumberLabel: UILabel!
 
   @IBOutlet var contactsButton: CompactActionButton!
-  @IBOutlet var scanButton: CompactActionButton!
+  @IBOutlet var twitterButton: CompactActionButton!
   @IBOutlet var pasteButton: CompactActionButton!
+
   @IBOutlet var sendButton: PrimaryActionButton!
   @IBOutlet var memoContainerView: SendPaymentMemoView!
   @IBOutlet var sendMaxButton: LightBorderedButton!
@@ -98,6 +92,10 @@ ValidatorAlertDisplayable {
 
   @IBAction func performContacts() {
     coordinationDelegate?.viewControllerDidPressContacts(self)
+  }
+
+  @IBAction func performTwitter() {
+    coordinationDelegate?.viewControllerDidPressTwitter(self)
   }
 
   @IBAction func performScan() {
@@ -178,6 +176,8 @@ ValidatorAlertDisplayable {
     setupKeyboardDoneButton(for: [primaryAmountTextField, phoneNumberEntryView.textField], action: #selector(doneButtonWasPressed))
     setupListenerForTextViewChange()
     setupLabels()
+    setupButtons()
+    formatAddressScanView()
     setupPhoneNumberEntryView(textFieldEnabled: true)
     formatPhoneNumberEntryView()
     memoContainerView.delegate = self
@@ -237,6 +237,42 @@ extension SendPaymentViewController {
     payTitleLabel.textColor = Theme.Color.darkBlueText.color
     secondaryAmountLabel.textColor = Theme.Color.grayText.color
     secondaryAmountLabel.font = Theme.Font.requestPaySecondaryCurrency.font
+  }
+
+  fileprivate func setupButtons() {
+    let textColor = Theme.Color.whiteText.color
+    let font = Theme.Font.compactButtonTitle.font
+    let contactsTitle = NSAttributedString(imageName: "contactsIcon",
+                                           imageSize: CGSize(width: 9, height: 14),
+                                           title: "CONTACTS",
+                                           textColor: textColor,
+                                           font: font)
+    contactsButton.setAttributedTitle(contactsTitle, for: .normal)
+
+    let twitterTitle = NSAttributedString(imageName: "twitterBird",
+                                          imageSize: CGSize(width: 20, height: 16),
+                                          title: "TWITTER",
+                                          textColor: textColor,
+                                          font: font)
+    twitterButton.setAttributedTitle(twitterTitle, for: .normal)
+
+    let pasteTitle = NSAttributedString(imageName: "pasteIcon",
+                                        imageSize: CGSize(width: 16, height: 14),
+                                        title: "PASTE",
+                                        textColor: textColor,
+                                        font: font)
+    pasteButton.setAttributedTitle(pasteTitle, for: .normal)
+  }
+
+  fileprivate func formatAddressScanView() {
+    addressScanButtonContainerView.applyCornerRadius(4)
+    addressScanButtonContainerView.layer.borderColor = Theme.Color.lightGrayOutline.color.cgColor
+    addressScanButtonContainerView.layer.borderWidth = 1.0
+
+    bitcoinAddressButton.titleLabel?.font = Theme.Font.sendingAmountToAddress.font
+    bitcoinAddressButton.setTitleColor(Theme.Color.grayText.color, for: .normal)
+
+    scanButton.backgroundColor = Theme.Color.backgroundDarkGray.color
   }
 
   fileprivate func formatPhoneNumberEntryView() {
@@ -409,19 +445,19 @@ extension SendPaymentViewController {
   }
 
   private func showBitcoinAddressRecipient(with title: String) {
-    self.bitcoinAddressButton.isHidden = false
+    self.addressScanButtonContainerView.isHidden = false
     self.phoneNumberEntryView.isHidden = true
     self.bitcoinAddressButton.setTitle(title, for: .normal)
   }
 
   private func showPhoneEntryView(with title: String) {
-    self.bitcoinAddressButton.isHidden = true
+    self.addressScanButtonContainerView.isHidden = true
     self.phoneNumberEntryView.isHidden = false
     self.phoneNumberEntryView.textField.text = title
   }
 
   private func showPhoneEntryView(with contact: GenericContact) {
-    self.bitcoinAddressButton.isHidden = true
+    self.addressScanButtonContainerView.isHidden = true
     self.phoneNumberEntryView.isHidden = false
 
     let region = phoneNumberEntryView.selectedRegion
@@ -432,7 +468,7 @@ extension SendPaymentViewController {
   }
 
   private func hideRecipientInputViews() {
-    self.bitcoinAddressButton.isHidden = true
+    self.addressScanButtonContainerView.isHidden = true
     self.phoneNumberEntryView.isHidden = true
   }
 

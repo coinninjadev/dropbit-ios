@@ -71,6 +71,11 @@ class MockSendPaymentViewControllerCoordinator: SendPaymentViewControllerCoordin
     return Promise.value([:])
   }
 
+  var didTapTwitter = false
+  func viewControllerDidPressTwitter(_ viewController: UIViewController) {
+    didTapTwitter = true
+  }
+
   var didTapScan = false
   func viewControllerDidPressScan(_ viewController: UIViewController, btcAmount: NSDecimalNumber, primaryCurrency: CurrencyCode) {
     didTapScan = true
@@ -148,5 +153,6 @@ class MockSendPaymentViewControllerCoordinator: SendPaymentViewControllerCoordin
   }
 
   func openURL(_ url: URL, completionHandler completion: (() -> Void)?) { }
+  func openURLExternally(_ url: URL, completionHandler completion: ((Bool) -> Void)?) { }
 
 }

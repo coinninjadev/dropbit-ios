@@ -26,8 +26,7 @@ class TransactionHistoryDetailBaseCell: UICollectionViewCell {
     didSet {
       underlyingContentView.backgroundColor = UIColor.white
       underlyingContentView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
-      underlyingContentView.layer.cornerRadius = 13
-      underlyingContentView.layer.masksToBounds = true
+      underlyingContentView.applyCornerRadius(13)
     }
   }
   @IBOutlet var closeButton: UIButton!
@@ -61,7 +60,7 @@ class TransactionHistoryDetailBaseCell: UICollectionViewCell {
 
     backgroundColor = UIColor.white
     layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
-    layer.cornerRadius = 13
+    applyCornerRadius(13)
 
     // Shadow
     layer.shadowColor = UIColor.black.cgColor

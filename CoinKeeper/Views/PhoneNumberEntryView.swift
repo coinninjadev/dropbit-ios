@@ -46,16 +46,15 @@ class PhoneNumberEntryView: UIView {
   override func awakeFromNib() {
     super.awakeFromNib()
 
-    layer.cornerRadius = 6.0
+    applyCornerRadius(6)
     layer.borderColor = Theme.Color.lightBlueTint.color.cgColor
     layer.borderWidth = 1.0
-    clipsToBounds = true
     textField.borderStyle = .none
 
     adjustCorners(squareBottom: false)
 
     countryCodeButton.backgroundColor = Theme.Color.flagButtonBackground.color
-    buttonSeparator.backgroundColor = Theme.Color.searchResultSeparator.color
+    buttonSeparator.backgroundColor = Theme.Color.graySeparator.color
     separatorWidthConstraint.constant = 1 / UIScreen.main.nativeScale
 
     countryCodeButton.titleLabel?.font = PhoneNumberEntryView.flagFont
