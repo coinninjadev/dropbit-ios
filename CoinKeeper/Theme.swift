@@ -181,6 +181,8 @@ struct Theme {
     case copiedAddress
     case popoverMessage
     case popoverActionButton
+    case verificationIdentity
+    case verificationActionTitle
 
     var font: UIFont {
       switch self {
@@ -193,6 +195,7 @@ struct Theme {
            .phoneNumberDetail: 									return CKFont.light(13)
       case .sendingBitcoinAmount,
            .walletRecoveryDetail: 							return CKFont.light(15)
+      case .verificationIdentity:               return CKFont.light(18)
 
       // Regular
       case .transactionHistorySecondaryAmount,
@@ -231,7 +234,8 @@ struct Theme {
            .passFailSubtitle,
            .noTransactionsDetail: 							return CKFont.regular(15)
       case .settingsPrice: 											return CKFont.regular(16)
-      case .requestPaySecondaryCurrency: 				return CKFont.regular(17)
+      case .requestPaySecondaryCurrency,
+           .verificationActionTitle:     				return CKFont.regular(17)
       case .sendingAmountToPhoneNumber:         return CKFont.regular(20)
       case .sendingAmountTo: 										return CKFont.regular(26)
       case .deviceVerificationPhoneNumber:			return CKFont.regular(28)
