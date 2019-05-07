@@ -4,7 +4,6 @@
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="Stack View standard spacing" minToolsVersion="9.0"/>
@@ -40,7 +39,7 @@
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" verticalCompressionResistancePriority="752" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Umr-q3-q6S">
-                                <rect key="frame" x="32" y="113" width="311" height="67"/>
+                                <rect key="frame" x="32" y="113" width="311" height="40.5"/>
                                 <attributedString key="attributedText">
                                     <fragment content="Verify your phone number and twitter name to send Bitcoin to mobile and twitter contacts without an address.">
                                         <attributes>
@@ -52,20 +51,21 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VNI-1F-k3X">
-                                <rect key="frame" x="12" y="207" width="351" height="273"/>
+                                <rect key="frame" x="20" y="173.5" width="335" height="340"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalCentering" translatesAutoresizingMaskIntoConstraints="NO" id="HGN-bF-zLH" userLabel="Phone Stack View">
-                                        <rect key="frame" x="20" y="20" width="311" height="51"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="335" height="146"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iLL-z5-KJh" customClass="VerifiedStatusView" customModule="DropBit" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="0.0" width="311" height="0.0"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="335" height="51"/>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="51" id="WTH-LE-uDm"/>
                                                 </constraints>
+                                                <viewLayoutGuide key="safeArea" id="WBU-VW-ZLk"/>
                                             </view>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MTE-fv-Pv4" customClass="ChangeRemoveVerificationButton" customModule="DropBit" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="0.0" width="311" height="0.0"/>
+                                                <rect key="frame" x="0.0" y="51" width="335" height="44"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="44" id="Bit-Hg-a3b"/>
                                                 </constraints>
@@ -75,7 +75,7 @@
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8dO-Ic-Zck" customClass="PrimaryActionButton" customModule="DropBit" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="0.0" width="311" height="51"/>
+                                                <rect key="frame" x="0.0" y="95" width="335" height="51"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="51" id="CF4-f3-gQ5"/>
                                                 </constraints>
@@ -85,22 +85,20 @@
                                                 </connections>
                                             </button>
                                         </subviews>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="51" id="VdV-ZO-HtH"/>
-                                        </constraints>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalCentering" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="RkQ-xy-zMd" userLabel="Twitter Stack View">
-                                        <rect key="frame" x="20" y="91" width="311" height="162"/>
+                                        <rect key="frame" x="0.0" y="178" width="335" height="162"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="npa-pj-4j2" customClass="VerifiedStatusView" customModule="DropBit" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="0.0" width="311" height="51"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="335" height="51"/>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="51" id="Kkg-gW-x4b"/>
                                                 </constraints>
+                                                <viewLayoutGuide key="safeArea" id="f3v-fK-A5q"/>
                                             </view>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9Km-MS-fb6" customClass="ChangeRemoveVerificationButton" customModule="DropBit" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="59" width="311" height="44"/>
+                                                <rect key="frame" x="0.0" y="59" width="335" height="44"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="44" id="Qyg-7f-awf"/>
                                                 </constraints>
@@ -110,7 +108,7 @@
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="p9B-Zw-YcI" customClass="PrimaryActionButton" customModule="DropBit" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="111" width="311" height="51"/>
+                                                <rect key="frame" x="0.0" y="111" width="335" height="51"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="51" id="yVD-Ba-eaB"/>
                                                 </constraints>
@@ -124,13 +122,13 @@
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
-                                    <constraint firstItem="RkQ-xy-zMd" firstAttribute="top" secondItem="HGN-bF-zLH" secondAttribute="bottom" constant="20" id="NNE-hr-rVz"/>
-                                    <constraint firstItem="HGN-bF-zLH" firstAttribute="top" secondItem="VNI-1F-k3X" secondAttribute="top" constant="20" id="SB1-ND-gJ5"/>
-                                    <constraint firstAttribute="bottom" secondItem="RkQ-xy-zMd" secondAttribute="bottom" constant="20" id="Tfp-Iv-v7G"/>
-                                    <constraint firstItem="RkQ-xy-zMd" firstAttribute="leading" secondItem="VNI-1F-k3X" secondAttribute="leading" constant="20" id="dYT-vH-aW0"/>
-                                    <constraint firstAttribute="trailing" secondItem="HGN-bF-zLH" secondAttribute="trailing" constant="20" id="omu-As-yD5"/>
-                                    <constraint firstItem="HGN-bF-zLH" firstAttribute="leading" secondItem="VNI-1F-k3X" secondAttribute="leading" constant="20" id="s92-eF-WU9"/>
-                                    <constraint firstAttribute="trailing" secondItem="RkQ-xy-zMd" secondAttribute="trailing" constant="20" id="sR5-iQ-LNX"/>
+                                    <constraint firstItem="RkQ-xy-zMd" firstAttribute="top" secondItem="HGN-bF-zLH" secondAttribute="bottom" constant="32" id="NNE-hr-rVz"/>
+                                    <constraint firstItem="HGN-bF-zLH" firstAttribute="top" secondItem="VNI-1F-k3X" secondAttribute="top" id="SB1-ND-gJ5"/>
+                                    <constraint firstAttribute="bottom" secondItem="RkQ-xy-zMd" secondAttribute="bottom" id="Tfp-Iv-v7G"/>
+                                    <constraint firstItem="RkQ-xy-zMd" firstAttribute="leading" secondItem="VNI-1F-k3X" secondAttribute="leading" id="dYT-vH-aW0"/>
+                                    <constraint firstAttribute="trailing" secondItem="HGN-bF-zLH" secondAttribute="trailing" id="omu-As-yD5"/>
+                                    <constraint firstItem="HGN-bF-zLH" firstAttribute="leading" secondItem="VNI-1F-k3X" secondAttribute="leading" id="s92-eF-WU9"/>
+                                    <constraint firstAttribute="trailing" secondItem="RkQ-xy-zMd" secondAttribute="trailing" id="sR5-iQ-LNX"/>
                                 </constraints>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" verticalCompressionResistancePriority="752" text="Privacy is very important to us. Your number is securely hashed before it is stored." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ooh-9n-HBB">
@@ -159,8 +157,8 @@
                         <constraints>
                             <constraint firstItem="Jhc-x4-QDf" firstAttribute="leading" secondItem="YF7-fp-n8s" secondAttribute="leading" constant="7" id="0Gi-ww-8K2"/>
                             <constraint firstItem="Umr-q3-q6S" firstAttribute="leading" secondItem="YF7-fp-n8s" secondAttribute="leading" constant="32" id="0X3-bg-t5K"/>
-                            <constraint firstItem="VNI-1F-k3X" firstAttribute="top" relation="greaterThanOrEqual" secondItem="Umr-q3-q6S" secondAttribute="bottom" constant="8" id="6Fr-UX-8dz"/>
-                            <constraint firstItem="ooh-9n-HBB" firstAttribute="top" relation="greaterThanOrEqual" secondItem="VNI-1F-k3X" secondAttribute="bottom" constant="8" id="6Ks-YP-RzK"/>
+                            <constraint firstItem="VNI-1F-k3X" firstAttribute="top" relation="greaterThanOrEqual" secondItem="Umr-q3-q6S" secondAttribute="bottom" constant="20" id="6Fr-UX-8dz"/>
+                            <constraint firstItem="ooh-9n-HBB" firstAttribute="top" relation="greaterThanOrEqual" secondItem="VNI-1F-k3X" secondAttribute="bottom" constant="20" id="6Ks-YP-RzK"/>
                             <constraint firstItem="YF7-fp-n8s" firstAttribute="trailing" secondItem="MoI-82-UyA" secondAttribute="trailing" constant="19" id="6pd-bu-daK"/>
                             <constraint firstAttribute="trailing" secondItem="Ukn-MD-3f2" secondAttribute="trailing" id="CbV-Qj-bTM"/>
                             <constraint firstItem="VNI-1F-k3X" firstAttribute="centerY" secondItem="YF7-fp-n8s" secondAttribute="centerY" id="CoQ-vz-qOn"/>
@@ -170,9 +168,9 @@
                             <constraint firstItem="Umr-q3-q6S" firstAttribute="top" secondItem="MhA-aE-vXX" secondAttribute="bottom" constant="30" id="IDr-XS-XXY"/>
                             <constraint firstItem="YF7-fp-n8s" firstAttribute="trailing" secondItem="Umr-q3-q6S" secondAttribute="trailing" constant="32" id="IHf-iW-ON6"/>
                             <constraint firstItem="YF7-fp-n8s" firstAttribute="trailing" secondItem="Jhc-x4-QDf" secondAttribute="trailing" constant="7" id="Iml-qZ-pkE"/>
-                            <constraint firstItem="VNI-1F-k3X" firstAttribute="leading" secondItem="YF7-fp-n8s" secondAttribute="leading" constant="12" id="O3Z-3l-8AU"/>
+                            <constraint firstItem="VNI-1F-k3X" firstAttribute="leading" secondItem="YF7-fp-n8s" secondAttribute="leading" constant="20" id="O3Z-3l-8AU"/>
                             <constraint firstItem="Ukn-MD-3f2" firstAttribute="leading" secondItem="YF7-fp-n8s" secondAttribute="leading" id="ODq-pn-1SF"/>
-                            <constraint firstItem="YF7-fp-n8s" firstAttribute="trailing" secondItem="VNI-1F-k3X" secondAttribute="trailing" constant="12" id="Okd-mZ-1ZB"/>
+                            <constraint firstItem="YF7-fp-n8s" firstAttribute="trailing" secondItem="VNI-1F-k3X" secondAttribute="trailing" constant="20" id="Okd-mZ-1ZB"/>
                             <constraint firstItem="Ukn-MD-3f2" firstAttribute="top" secondItem="V0H-3S-dx0" secondAttribute="top" id="Omb-ca-A4d"/>
                             <constraint firstItem="Jhc-x4-QDf" firstAttribute="centerX" secondItem="V0H-3S-dx0" secondAttribute="centerX" id="QtD-14-10s"/>
                             <constraint firstItem="ooh-9n-HBB" firstAttribute="leading" secondItem="YF7-fp-n8s" secondAttribute="leading" constant="32" id="ScK-si-fsz"/>
@@ -194,7 +192,7 @@
                         <outlet property="changeRemoveTwitterButton" destination="9Km-MS-fb6" id="dG7-8H-bJz"/>
                         <outlet property="closeButton" destination="MoI-82-UyA" id="kCo-E8-WAs"/>
                         <outlet property="phoneNumberNavigationTitle" destination="MhA-aE-vXX" id="9Hx-j8-YiS"/>
-                        <outlet property="phoneVerificationStatusView" destination="iLL-z5-KJh" id="9R2-dX-DL5"/>
+                        <outlet property="phoneVerificationStatusView" destination="iLL-z5-KJh" id="0Jf-jq-d0v"/>
                         <outlet property="privacyLabel" destination="ooh-9n-HBB" id="JzN-Z5-ZwN"/>
                         <outlet property="serverAddressBackgroundView" destination="Ukn-MD-3f2" id="tN7-II-sFD"/>
                         <outlet property="serverAddressView" destination="Jhc-x4-QDf" id="6lK-D5-T0R"/>

@@ -15,9 +15,12 @@ extension AppCoordinator: PhoneNumberStatusViewControllerDelegate {
     // do something
   }
 
-
   func verifiedPhoneNumber() -> GlobalPhoneNumber? {
     return persistenceManager.verifiedPhoneNumber()
+  }
+
+  func verifiedTwitterHandle() -> String? {
+    return nil
   }
 
   func viewControllerDidRequestAddresses() -> [ServerAddressViewModel] {

@@ -12,6 +12,7 @@ import PhoneNumberKit
 
 protocol PhoneNumberStatusViewControllerDelegate: ViewControllerDismissable {
   func verifiedPhoneNumber() -> GlobalPhoneNumber?
+  func verifiedTwitterHandle() -> String?
   func viewControllerDidRequestAddresses() -> [ServerAddressViewModel]
   func viewControllerDidRequestOpenURL(_ viewController: UIViewController, url: URL)
   func viewControllerDidSelectVerifyPhone(_ viewController: UIViewController)
@@ -61,50 +62,73 @@ class PhoneNumberStatusViewController: BaseViewController, StoryboardInitializab
     serverAddressView.delegate = self
     serverAddressViewVerticalConstraint.constant = UIScreen.main.bounds.height
 
+    let verifyButtonAttributes: [NSAttributedString.Key: AnyObject] = [
+      .font: Theme.Font.verificationActionTitle.font,
+      .foregroundColor: Theme.Color.lightGrayText.color
+    ]
+
+    // phone number start
     if let phoneNumber = coordinationDelegate?.verifiedPhoneNumber() {
       let formatter = CKPhoneNumberFormatter(kit: self.phoneNumberKit, format: .national)
+      phoneVerificationStatusView.isHidden = false
+      changeRemovePhoneButton.isHidden = false
+      verifyPhoneNumberPrimaryButton.isHidden = true
       do {
         let identity = try formatter.string(from: phoneNumber)
         phoneVerificationStatusView.load(with: .phone, identityString: identity)
       } catch {
         phoneVerificationStatusView.load(with: .phone, identityString: phoneNumber.asE164())
       }
-      changeRemovePhoneButton.isHidden = false
-      verifyPhoneNumberPrimaryButton.isHidden = true
       setupAddressUI()
     } else {
       serverAddressView.isHidden = true
       addressButton.isHidden = true
-      phoneVerificationStatusView.load(with: .phone, identityString: "(440) 503-3607")
-      changeRemovePhoneButton.isHidden = false
-      verifyPhoneNumberPrimaryButton.isHidden = true
+      phoneVerificationStatusView.isHidden = true
+      let verifyPhoneButtonTitle = NSAttributedString(
+        imageName: "phoneDrawerIcon", 
+        imageSize: CGSize(width: 13, height: 22),
+        title: "VERIFY PHONE NUMBER", 
+        textColor: Theme.Color.lightGrayText.color,
+        font: Theme.Font.verificationActionTitle.font)
+      verifyPhoneNumberPrimaryButton.setTitle(nil, for: .normal)
+      verifyPhoneNumberPrimaryButton.setAttributedTitle(verifyPhoneButtonTitle, for: .normal)
+      changeRemovePhoneButton.isHidden = true
+      verifyPhoneNumberPrimaryButton.isHidden = false
     }
+    // phone number end
 
-    twitterVerificationStatusView.load(with: .twitter, identityString: "@bjmillerltd")
-    changeRemoveTwitterButton.isHidden = false
-    verifyTwitterPrimaryButton.isHidden = true
+    // twitter start
+    if let handle = coordinationDelegate?.verifiedTwitterHandle() {
+      twitterVerificationStatusView.isHidden = false
+      changeRemoveTwitterButton.isHidden = false
+      verifyTwitterPrimaryButton.isHidden = true
+      twitterVerificationStatusView.load(with: .twitter, identityString: handle)
+    } else {
+      twitterVerificationStatusView.isHidden = true
+      changeRemoveTwitterButton.isHidden = true
+      verifyTwitterPrimaryButton.isHidden = false
+      verifyTwitterPrimaryButton.setTitle(nil, for: .normal)
 
-    let twitterTitle = NSAttributedString(imageName: "twitterBird",
-                                          imageSize: CGSize(width: 20, height: 16),
-                                          title: "VERIFY TWITTER ACCOUNT",
-                                          textColor: Theme.Color.lightGrayText.color,
-                                          font: Theme.Font.verificationActionTitle.font)
-    verifyTwitterPrimaryButton.setTitle(nil, for: .normal)
-    verifyTwitterPrimaryButton.setAttributedTitle(twitterTitle, for: .normal)
-    let phoneTitle = NSAttributedString(imageName: "phoneDrawerIcon",
-                                        imageSize: CGSize(width: 13, height: 22),
-                                        title: "VERIFY PHONE NUMBER",
-                                        textColor: Theme.Color.lightGrayText.color,
-                                        font: Theme.Font.verificationActionTitle.font)
-    verifyPhoneNumberPrimaryButton.setTitle(nil, for: .normal)
-    verifyPhoneNumberPrimaryButton.setAttributedTitle(phoneTitle, for: .normal)
+      let verifyTwitterButtonTitle = NSAttributedString(
+        imageName: "twitterBird",
+        imageSize: CGSize(width: 20, height: 16),
+        title: "VERIFY TWITTER ACCOUNT",
+        textColor: Theme.Color.lightGrayText.color,
+        font: Theme.Font.verificationActionTitle.font)
+
+      verifyTwitterPrimaryButton.setAttributedTitle(verifyTwitterButtonTitle, for: .normal)
+    }
+    // twitter end
 
     let attributes: [NSAttributedString.Key: Any] = [.foregroundColor: Theme.Color.lightBlueTint.color,
                                                      .font: Theme.Font.serverAddressTitle.font,
                                                      .underlineStyle: 1,
                                                      .underlineColor: Theme.Color.lightBlueTint.color]
+
     let attributedString = NSAttributedString(string: "View DropBit addresses", attributes: attributes)
     addressButton.setAttributedTitle(attributedString, for: .normal)
+
+    view.layoutIfNeeded()
   }
 
   private func setupAddressUI() {
