@@ -74,7 +74,11 @@ struct CoinNinjaUrlFactory {
         return "https://dropbit.app/"
       case .dropBitMe,
            .dropBitMeLearnMore:
+        #if DEBUG
+        return "https://test.dropbit.me/"
+        #else
         return "https://dropbit.me/"
+        #endif
       }
     }
 
