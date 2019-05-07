@@ -222,6 +222,10 @@ class AppCoordinator: CoordinatorType {
         default:
           break
         }
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+          self?.presentDropBitMeViewController(verifiedFirstTime: true)
+        }
       }
     })
 
@@ -271,7 +275,7 @@ class AppCoordinator: CoordinatorType {
 
         // StartViewController is the default root VC
         // Child coordinator will push DeviceVerificationViewController onto stack in its start() method
-        startDeviceVerificationFlow(shouldOrphanRoot: true)
+        startDeviceVerificationFlow(shouldOrphanRoot: true, isInitialSetupFlow: true)
       } else if launchStateManager.isFirstTime() {
         startNewWalletFlow()
       }
@@ -608,9 +612,9 @@ class AppCoordinator: CoordinatorType {
     switch launchStateManager.nextLaunchStep {
     case .enterPin:       startFirstTimeWalletCreationFlow()
     case .createWallet:   startCreateRecoveryWordsFlow()
-    case .verifyDevice:   startDeviceVerificationFlow(shouldOrphanRoot: true)
-    case .enterApp: validToStartEnteringApp()
-    case .phoneRestore: startFirstTimeAfteriCloudRestore()
+    case .verifyDevice:   startDeviceVerificationFlow(shouldOrphanRoot: true, isInitialSetupFlow: true)
+    case .enterApp:       validToStartEnteringApp()
+    case .phoneRestore:   startFirstTimeAfteriCloudRestore()
     }
   }
 
@@ -651,10 +655,11 @@ class AppCoordinator: CoordinatorType {
     }
   }
 
-  func startDeviceVerificationFlow(shouldOrphanRoot: Bool) {
+  func startDeviceVerificationFlow(shouldOrphanRoot: Bool, isInitialSetupFlow: Bool) {
     func performFunction() {
 
       let childCoordinator = DeviceVerificationCoordinator(navigationController, shouldOrphanRoot: shouldOrphanRoot)
+      childCoordinator.isInitialSetupFlow = isInitialSetupFlow
       startChildCoordinator(childCoordinator: childCoordinator)
     }
 

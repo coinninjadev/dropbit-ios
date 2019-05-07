@@ -28,7 +28,7 @@ extension AppCoordinator: DeviceVerificationCoordinatorDelegate {
       .then(in: context) { self.persistenceManager.persistWalletId(from: $0, in: context) }
   }
 
-  func coordinator(_ coordinator: DeviceVerificationCoordinator, didVerify phoneNumber: GlobalPhoneNumber) {
+  func coordinator(_ coordinator: DeviceVerificationCoordinator, didVerify phoneNumber: GlobalPhoneNumber, isInitialSetupFlow: Bool) {
     analyticsManager.track(event: .phoneVerified, with: nil)
     analyticsManager.track(property: MixpanelProperty(key: .phoneVerified, value: true))
 
@@ -44,9 +44,12 @@ extension AppCoordinator: DeviceVerificationCoordinatorDelegate {
                                                       completion: nil, fetchResult: nil)
     childCoordinatorDidComplete(childCoordinator: coordinator)
     continueSetupFlow()
-    alertManager.showBanner(
-      with: "Your phone number has been successfully verified. You can now send DropBits to your contacts.",
-      duration: .custom(5))
+
+    if !isInitialSetupFlow {
+      DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+        self.presentDropBitMeViewController(verifiedFirstTime: true)
+      }
+    }
   }
 
   func coordinatorSkippedPhoneVerification(_ coordinator: DeviceVerificationCoordinator) {

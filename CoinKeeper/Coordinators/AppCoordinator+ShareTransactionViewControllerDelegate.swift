@@ -23,16 +23,21 @@ extension AppCoordinator: ShareTransactionViewControllerDelegate {
         defaultTweetText = self.tweetText(withMemo: latestTx?.memo)
       }
 
-      var comps = URLComponents()
-      comps.scheme = "twitter"
-      comps.host = "post"
-      comps.queryItems = [URLQueryItem(name: "message", value: defaultTweetText)]
-      if let url = comps.url {
-        UIApplication.shared.open(url, options: [:], completionHandler: nil)
-      } else {
-        let logger = OSLog(subsystem: "com.coinninja.appCoordinator", category: "ShareTransaction")
-        os_log("%@: Failed to create Twitter URL from components", log: logger, type: .error, #function)
-      }
+      self.openTwitterURL(withMessage: defaultTweetText)
+    }
+  }
+
+  /// Create and open `twitter:` URL to begin a post in the Twitter app with the provided message
+  func openTwitterURL(withMessage message: String) {
+    var comps = URLComponents()
+    comps.scheme = "twitter"
+    comps.host = "post"
+    comps.queryItems = [URLQueryItem(name: "message", value: message)]
+    if let url = comps.url {
+      UIApplication.shared.open(url, options: [:], completionHandler: nil)
+    } else {
+      let logger = OSLog(subsystem: "com.coinninja.appCoordinator", category: "ShareOnTwitter")
+      os_log("%@: Failed to create Twitter URL from components", log: logger, type: .error, #function)
     }
   }
 

@@ -8,9 +8,9 @@
 
 import UIKit
 
-protocol RequestPayViewControllerDelegate: ViewControllerDismissable {
+protocol RequestPayViewControllerDelegate: ViewControllerDismissable, CopyToClipboardMessageDisplayable {
   func viewControllerDidSelectSendRequest(_ viewController: UIViewController, payload: [Any])
-  func viewControllerSuccessfullyCopiedToClipboard(_ viewController: UIViewController)
+
 }
 
 final class RequestPayViewController: PresentableViewController, StoryboardInitializable {
@@ -108,6 +108,6 @@ final class RequestPayViewController: PresentableViewController, StoryboardIniti
 
   @IBAction func addressTapped(_ sender: UITapGestureRecognizer) {
     UIPasteboard.general.string = viewModel?.bitcoinUrl.components.address
-    coordinationDelegate?.viewControllerSuccessfullyCopiedToClipboard(self)
+    coordinationDelegate?.viewControllerSuccessfullyCopiedToClipboard(message: "Address copied to clipboard!", viewController: self)
   }
 }

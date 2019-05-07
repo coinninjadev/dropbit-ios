@@ -179,6 +179,8 @@ struct Theme {
     case copiedAddress
     case popoverMessage
     case popoverActionButton
+    case popoverSecondaryButton
+    case popoverStatusLabel
 
     var font: UIFont {
       switch self {
@@ -227,6 +229,7 @@ struct Theme {
            .phoneNumberStatusTitle,
            .lockoutError,
            .passFailSubtitle,
+           .popoverMessage,
            .noTransactionsDetail: 							return CKFont.regular(15)
       case .settingsPrice: 											return CKFont.regular(16)
       case .requestPaySecondaryCurrency: 				return CKFont.regular(17)
@@ -269,11 +272,12 @@ struct Theme {
 
       // Semi-Bold
       case .progressBarNode: 										return CKFont.semiBold(11)
+      case .popoverSecondaryButton:             return CKFont.semiBold(12)
       case .alertActionTitle,
-           .popoverMessage,
            .requestPayAddress: 									return CKFont.semiBold(13)
       case .settingsSectionHeader,
            .popoverActionButton,
+           .popoverStatusLabel,
            .shareTransactionTitle: 							return CKFont.semiBold(14)
       case .phoneNumberStatus: 									return CKFont.semiBold(25)
       case .keypadButton: 											return CKFont.semiBold(28)
