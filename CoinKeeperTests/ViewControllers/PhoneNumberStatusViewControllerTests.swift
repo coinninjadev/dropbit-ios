@@ -113,6 +113,10 @@ class PhoneNumberStatusViewControllerTests: XCTestCase {
       return nil
     }
 
+    func verifiedTwitterHandle() -> String? {
+      return nil
+    }
+
     var didSelectAddressButton = false
     func viewControllerDidRequestAddresses() -> [ServerAddressViewModel] {
       didSelectAddressButton = true

@@ -62,11 +62,6 @@ class PhoneNumberStatusViewController: BaseViewController, StoryboardInitializab
     serverAddressView.delegate = self
     serverAddressViewVerticalConstraint.constant = UIScreen.main.bounds.height
 
-    let verifyButtonAttributes: [NSAttributedString.Key: AnyObject] = [
-      .font: Theme.Font.verificationActionTitle.font,
-      .foregroundColor: Theme.Color.lightGrayText.color
-    ]
-
     // phone number start
     if let phoneNumber = coordinationDelegate?.verifiedPhoneNumber() {
       let formatter = CKPhoneNumberFormatter(kit: self.phoneNumberKit, format: .national)
