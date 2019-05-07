@@ -10,79 +10,31 @@ import Foundation
 import UIKit
 import PhoneNumberKit
 
-protocol PhoneNumberStatusViewControllerDelegate: class {
+protocol PhoneNumberStatusViewControllerDelegate: ViewControllerDismissable {
   func verifiedPhoneNumber() -> GlobalPhoneNumber?
   func viewControllerDidRequestAddresses() -> [ServerAddressViewModel]
   func viewControllerDidRequestOpenURL(_ viewController: UIViewController, url: URL)
   func viewControllerDidSelectVerifyPhone(_ viewController: UIViewController)
+  func viewControllerDidSelectVerifyTwitter(_ viewController: UIViewController)
   func viewControllerDidRequestToUnverify(_ viewController: UIViewController, successfulCompletion: @escaping () -> Void)
 }
 
 class PhoneNumberStatusViewController: BaseViewController, StoryboardInitializable {
 
   @IBOutlet var serverAddressViewVerticalConstraint: NSLayoutConstraint!
-  @IBOutlet var serverAddressView: ServerAddressView! {
-    didSet {
-      serverAddressView.delegate = self
-    }
-  }
-
-  @IBOutlet var titleLabel: UILabel! {
-    didSet {
-      titleLabel.font = Theme.Font.phoneNumberStatusTitle.font
-      titleLabel.textColor = Theme.Color.grayText.color
-    }
-  }
-
+  @IBOutlet var serverAddressView: ServerAddressView!
+  @IBOutlet var titleLabel: UILabel!
   @IBOutlet var serverAddressBackgroundView: UIView!
-
-  @IBOutlet var phoneNumberNavigationTitle: UILabel! {
-    didSet {
-      phoneNumberNavigationTitle.font = Theme.Font.onboardingSubtitle.font
-      phoneNumberNavigationTitle.textColor = Theme.Color.darkBlueText.color
-    }
-  }
-  @IBOutlet var privacyLabel: UILabel! {
-    didSet {
-      privacyLabel.font = Theme.Font.phoneNumberStatusPrivacy.font
-      privacyLabel.textColor = Theme.Color.darkBlueText.color
-    }
-  }
+  @IBOutlet var phoneNumberNavigationTitle: UILabel!
+  @IBOutlet var privacyLabel: UILabel!
   @IBOutlet var verifyPhoneNumberPrimaryButton: PrimaryActionButton!
-  @IBOutlet var changeRemoveButton: UIButton! {
-    didSet {
-      changeRemoveButton.setTitleColor(Theme.Color.errorRed.color, for: .normal)
-      changeRemoveButton.titleLabel?.font = Theme.Font.removeNumberError.font
-    }
-  }
-  @IBOutlet var unverifiedPhoneStackView: UIStackView!
-  @IBOutlet var verifiedPhoneStackView: UIStackView!
+  @IBOutlet var verifyTwitterPrimaryButton: PrimaryActionButton!
+  @IBOutlet var changeRemovePhoneButton: ChangeRemoveVerificationButton!
+  @IBOutlet var changeRemoveTwitterButton: ChangeRemoveVerificationButton!
+  @IBOutlet var phoneVerificationStatusView: VerifiedStatusView!
+  @IBOutlet var twitterVerificationStatusView: VerifiedStatusView!
   @IBOutlet var closeButton: UIButton!
-
-  @IBOutlet var verifyPhoneNumberLabel: UILabel! {
-    didSet {
-      verifyPhoneNumberLabel.font = Theme.Font.phoneNumberStatusTitle.font
-      verifyPhoneNumberLabel.textColor = Theme.Color.grayText.color
-    }
-  }
-
-  @IBOutlet var phoneNumberLabel: UILabel! {
-    didSet {
-      phoneNumberLabel.font = Theme.Font.phoneNumberStatus.font
-      phoneNumberLabel.textColor = Theme.Color.darkBlueText.color
-    }
-  }
-
-  @IBOutlet var addressButton: UIButton! {
-    didSet {
-      let attributes: [NSAttributedString.Key: Any] = [.foregroundColor: Theme.Color.lightBlueTint.color,
-                                                       .font: Theme.Font.serverAddressTitle.font,
-                                                       .underlineStyle: 1,
-                                                       .underlineColor: Theme.Color.lightBlueTint.color]
-      let attributedString = NSAttributedString(string: "View DropBit addresses", attributes: attributes)
-      addressButton.setAttributedTitle(attributedString, for: .normal)
-    }
-  }
+  @IBOutlet var addressButton: UIButton!
 
   var coordinationDelegate: PhoneNumberStatusViewControllerDelegate? {
     return generalCoordinationDelegate as? PhoneNumberStatusViewControllerDelegate
@@ -93,31 +45,65 @@ class PhoneNumberStatusViewController: BaseViewController, StoryboardInitializab
 
   override func viewDidLoad() {
     super.viewDidLoad()
-
     setupUI()
   }
 
   private func setupUI() {
+    verifyPhoneNumberPrimaryButton.style = .darkBlue
+    verifyTwitterPrimaryButton.style = .standard
+    privacyLabel.font = Theme.Font.phoneNumberStatusPrivacy.font
+    privacyLabel.textColor = Theme.Color.darkBlueText.color
+    phoneNumberNavigationTitle.font = Theme.Font.onboardingSubtitle.font
+    phoneNumberNavigationTitle.textColor = Theme.Color.darkBlueText.color
+    titleLabel.font = Theme.Font.phoneNumberStatusTitle.font
+    titleLabel.textColor = Theme.Color.grayText.color
+    serverAddressView.delegate = self
     serverAddressViewVerticalConstraint.constant = UIScreen.main.bounds.height
 
     if let phoneNumber = coordinationDelegate?.verifiedPhoneNumber() {
-      unverifiedPhoneStackView.isHidden = true
-      verifiedPhoneStackView.isHidden = false
-
       let formatter = CKPhoneNumberFormatter(kit: self.phoneNumberKit, format: .national)
       do {
-        phoneNumberLabel.text = try formatter.string(from: phoneNumber)
+        let identity = try formatter.string(from: phoneNumber)
+        phoneVerificationStatusView.load(with: .phone, identityString: identity)
       } catch {
-        phoneNumberLabel.text = phoneNumber.asE164()
+        phoneVerificationStatusView.load(with: .phone, identityString: phoneNumber.asE164())
       }
-
+      changeRemovePhoneButton.isHidden = false
+      verifyPhoneNumberPrimaryButton.isHidden = true
       setupAddressUI()
     } else {
       serverAddressView.isHidden = true
       addressButton.isHidden = true
-      unverifiedPhoneStackView.isHidden = false
-      verifiedPhoneStackView.isHidden = true
+      phoneVerificationStatusView.load(with: .phone, identityString: "(440) 503-3607")
+      changeRemovePhoneButton.isHidden = false
+      verifyPhoneNumberPrimaryButton.isHidden = true
     }
+
+    twitterVerificationStatusView.load(with: .twitter, identityString: "@bjmillerltd")
+    changeRemoveTwitterButton.isHidden = false
+    verifyTwitterPrimaryButton.isHidden = true
+
+    let twitterTitle = NSAttributedString(imageName: "twitterBird",
+                                          imageSize: CGSize(width: 20, height: 16),
+                                          title: "VERIFY TWITTER ACCOUNT",
+                                          textColor: Theme.Color.lightGrayText.color,
+                                          font: Theme.Font.verificationActionTitle.font)
+    verifyTwitterPrimaryButton.setTitle(nil, for: .normal)
+    verifyTwitterPrimaryButton.setAttributedTitle(twitterTitle, for: .normal)
+    let phoneTitle = NSAttributedString(imageName: "phoneDrawerIcon",
+                                        imageSize: CGSize(width: 13, height: 22),
+                                        title: "VERIFY PHONE NUMBER",
+                                        textColor: Theme.Color.lightGrayText.color,
+                                        font: Theme.Font.verificationActionTitle.font)
+    verifyPhoneNumberPrimaryButton.setTitle(nil, for: .normal)
+    verifyPhoneNumberPrimaryButton.setAttributedTitle(phoneTitle, for: .normal)
+
+    let attributes: [NSAttributedString.Key: Any] = [.foregroundColor: Theme.Color.lightBlueTint.color,
+                                                     .font: Theme.Font.serverAddressTitle.font,
+                                                     .underlineStyle: 1,
+                                                     .underlineColor: Theme.Color.lightBlueTint.color]
+    let attributedString = NSAttributedString(string: "View DropBit addresses", attributes: attributes)
+    addressButton.setAttributedTitle(attributedString, for: .normal)
   }
 
   private func setupAddressUI() {
@@ -140,7 +126,7 @@ class PhoneNumberStatusViewController: BaseViewController, StoryboardInitializab
   }
 
   @IBAction func closeButtonWasTouched() {
-    dismiss(animated: true, completion: nil)
+    coordinationDelegate?.viewControllerDidSelectClose(self)
   }
 
   @IBAction func addressButtonWasTouched() {
@@ -152,11 +138,21 @@ class PhoneNumberStatusViewController: BaseViewController, StoryboardInitializab
     })
   }
 
-  @IBAction func verifyPhoneNumberPrimaryButtonWasTouched() {
+  @IBAction func verifyPhoneNumber() {
     coordinationDelegate?.viewControllerDidSelectVerifyPhone(self)
   }
 
-  @IBAction func changeRemoveButtonWasTouched() {
+  @IBAction func verifyTwitter() {
+
+  }
+
+  @IBAction func changeRemovePhone() {
+//    coordinationDelegate?.viewControllerDidRequestToUnverify(self, successfulCompletion: { [weak self] in
+//      self?.setupUI()
+//    })
+  }
+
+  @IBAction func changeRemoveTwitter() {
     coordinationDelegate?.viewControllerDidRequestToUnverify(self, successfulCompletion: { [weak self] in
       self?.setupUI()
     })

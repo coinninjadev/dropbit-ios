@@ -12,10 +12,13 @@ import XCTest
 
 class PhoneNumberStatusViewControllerTests: XCTestCase {
   var sut: PhoneNumberStatusViewController!
+  var mockCoordinator: MockCoordinator!
 
   override func setUp() {
     super.setUp()
     self.sut = PhoneNumberStatusViewController.makeFromStoryboard()
+    mockCoordinator = MockCoordinator()
+    self.sut.generalCoordinationDelegate = mockCoordinator
     _ = self.sut.view
   }
 
@@ -30,20 +33,102 @@ class PhoneNumberStatusViewControllerTests: XCTestCase {
     XCTAssertNotNil(self.sut.phoneNumberNavigationTitle, "phoneNumberNavigationTitle should be connected")
     XCTAssertNotNil(self.sut.privacyLabel, "privacyLabel should be connected")
     XCTAssertNotNil(self.sut.verifyPhoneNumberPrimaryButton, "verifyPhoneNumberPrimaryButton should be connected")
-    XCTAssertNotNil(self.sut.changeRemoveButton, "changeRemoveButton should be connected")
-    XCTAssertNotNil(self.sut.unverifiedPhoneStackView, "unverifiedPhoneStackView should be connected")
-    XCTAssertNotNil(self.sut.verifiedPhoneStackView, "verifiedPhoneStackView should be connected")
+    XCTAssertNotNil(self.sut.changeRemoveTwitterButton, "changeRemoveTwitterButton should be connected")
     XCTAssertNotNil(self.sut.closeButton, "closeButton should be connected")
-    XCTAssertNotNil(self.sut.verifyPhoneNumberLabel, "verifyPhoneNumberLabel should be connected")
-    XCTAssertNotNil(self.sut.phoneNumberLabel, "phoneNumberLabel should be connected")
+    XCTAssertNotNil(sut.phoneVerificationStatusView, "phoneVerificationStatusView should be connected")
+    XCTAssertNotNil(sut.twitterVerificationStatusView, "twitterVerificationStatusView should be connected")
   }
 
-  func testButtonActions() {
-    let closeButtonAction = self.sut.closeButton.actions(forTarget: self.sut, forControlEvent: .touchUpInside) ?? []
-    let verifyPhoneNumberAction = self.sut.verifyPhoneNumberPrimaryButton.actions(forTarget: self.sut, forControlEvent: .touchUpInside) ?? []
-    let closeSelector = #selector(PhoneNumberStatusViewController.closeButtonWasTouched)
-    let verifySelector = #selector(PhoneNumberStatusViewController.verifyPhoneNumberPrimaryButtonWasTouched)
-    XCTAssertTrue(closeButtonAction.contains(closeSelector.description), "wordButtonOne should contain action")
-    XCTAssertTrue(verifyPhoneNumberAction.contains(verifySelector.description), "wordButtonTwo should contain action")
+  // MARK: buttons contain actions
+  func testCloseButtonContainsAction() {
+    let actions = sut.closeButton.actions(forTarget: sut, forControlEvent: .touchUpInside) ?? []
+    let expected = #selector(PhoneNumberStatusViewController.closeButtonWasTouched).description
+    XCTAssertTrue(actions.contains(expected), "closeButton should contain action")
+  }
+
+  func testAddressButtonContainsAction() {
+    let actions = sut.addressButton.actions(forTarget: sut, forControlEvent: .touchUpInside) ?? []
+    let expected = #selector(PhoneNumberStatusViewController.addressButtonWasTouched).description
+    XCTAssertTrue(actions.contains(expected), "addressButton should contain action")
+  }
+
+  func testChangeRemoveTwitterButtonContainsAction() {
+    let actions = sut.changeRemoveTwitterButton.actions(forTarget: sut, forControlEvent: .touchUpInside) ?? []
+    let expected = #selector(PhoneNumberStatusViewController.changeRemoveTwitter).description
+    XCTAssertTrue(actions.contains(expected), "changeRemoveTwitterButton should contain action")
+  }
+
+  func testChangeRemovePhoneButtonContainsAction() {
+    let actions = sut.changeRemovePhoneButton.actions(forTarget: sut, forControlEvent: .touchUpInside) ?? []
+    let expected = #selector(PhoneNumberStatusViewController.changeRemovePhone).description
+    XCTAssertTrue(actions.contains(expected), "changeRemovePhoneButton should contain action")
+  }
+
+  func testVerifyPhoneButtonContainsAction() {
+    let actions = sut.verifyPhoneNumberPrimaryButton.actions(forTarget: sut, forControlEvent: .touchUpInside) ?? []
+    let expected = #selector(PhoneNumberStatusViewController.verifyPhoneNumber).description
+    XCTAssertTrue(actions.contains(expected), "verifyPhoneNumberPrimaryButton should contain action")
+  }
+
+  func testVerifyTwitterButtonContainsAction() {
+    let actions = sut.verifyTwitterPrimaryButton.actions(forTarget: sut, forControlEvent: .touchUpInside) ?? []
+    let expected = #selector(PhoneNumberStatusViewController.verifyTwitter).description
+    XCTAssertTrue(actions.contains(expected), "verifyTwitterPrimaryButton should contain action")
+  }
+
+  // MARK: actions produce results
+  func testCloseButtonTellsCoordinator() {
+    sut.closeButton.sendActions(for: .touchUpInside)
+    XCTAssertTrue(mockCoordinator.didSelectClose)
+  }
+
+  func testAddressesButtonTellsCoordinator() {
+    sut.addressButton.sendActions(for: .touchUpInside)
+    XCTAssertTrue(mockCoordinator.didSelectAddressButton)
+  }
+
+  func testVerifyPhoneButtonTellsCoordinator() {
+    sut.verifyPhoneNumberPrimaryButton.sendActions(for: .touchUpInside)
+    XCTAssertTrue(mockCoordinator.didSelectVerifyPhone)
+  }
+
+  func testVerifyTwitterButtonmTellsCoordinator() {
+    sut.verifyTwitterPrimaryButton.sendActions(for: .touchUpInside)
+    XCTAssertTrue(mockCoordinator.didSelectVerifyTwitter)
+  }
+
+  // MARK: private
+  class MockCoordinator: PhoneNumberStatusViewControllerDelegate {
+    func verifiedPhoneNumber() -> GlobalPhoneNumber? {
+      return nil
+    }
+
+    var didSelectAddressButton = false
+    func viewControllerDidRequestAddresses() -> [ServerAddressViewModel] {
+      didSelectAddressButton = true
+    }
+    func viewControllerDidRequestOpenURL(_ viewController: UIViewController, url: URL) {
+
+    }
+
+    var didSelectVerifyPhone = false
+    func viewControllerDidSelectVerifyPhone(_ viewController: UIViewController) {
+      didSelectVerifyPhone = true
+    }
+
+    var didSelectVerifyTwitter = false
+    func viewControllerDidSelectVerifyTwitter(_ viewController: UIViewController) {
+      didSelectVerifyTwitter = true
+    }
+
+    func viewControllerDidRequestToUnverify(_ viewController: UIViewController, successfulCompletion: @escaping () -> Void) {
+
+    }
+
+    var didSelectClose = false
+    func viewControllerDidSelectClose(_ viewController: UIViewController) {
+      didSelectClose = true
+    }
   }
 }
+

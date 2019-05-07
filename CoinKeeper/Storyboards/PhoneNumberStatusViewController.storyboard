@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="Stack View standard spacing" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -19,8 +19,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="PHONE NUMBER STATUS" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MhA-aE-vXX">
-                                <rect key="frame" x="88.5" y="40" width="198.5" height="43"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="VERIFICATIONS" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MhA-aE-vXX">
+                                <rect key="frame" x="127.5" y="40" width="120.5" height="43"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="43" id="eVP-5a-jzX"/>
                                 </constraints>
@@ -39,90 +39,110 @@
                                     <action selector="closeButtonWasTouched" destination="wct-uq-10C" eventType="touchUpInside" id="asD-tD-kLq"/>
                                 </connections>
                             </button>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="Ogm-lb-Q03">
-                                <rect key="frame" x="35" y="113" width="305" height="509"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" verticalCompressionResistancePriority="752" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Umr-q3-q6S">
+                                <rect key="frame" x="32" y="113" width="311" height="67"/>
+                                <attributedString key="attributedText">
+                                    <fragment content="Verify your phone number and twitter name to send Bitcoin to mobile and twitter contacts without an address.">
+                                        <attributes>
+                                            <font key="NSFont" metaFont="system" size="17"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" lineSpacing="3" tighteningFactorForTruncation="0.0"/>
+                                        </attributes>
+                                    </fragment>
+                                </attributedString>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VNI-1F-k3X">
+                                <rect key="frame" x="12" y="207" width="351" height="273"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Umr-q3-q6S">
-                                        <rect key="frame" x="0.0" y="0.0" width="305" height="90.5"/>
-                                        <attributedString key="attributedText">
-                                            <fragment>
-                                                <string key="content">Verify your phone number to use the DropBit feature. DropBit allows you to send Bitcoin directly to your contacts by using their mobile number.</string>
-                                                <attributes>
-                                                    <font key="NSFont" metaFont="system" size="17"/>
-                                                    <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" lineSpacing="3" tighteningFactorForTruncation="0.0"/>
-                                                </attributes>
-                                            </fragment>
-                                        </attributedString>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="8nE-ea-hbg">
-                                        <rect key="frame" x="0.0" y="124" width="305" height="227"/>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalCentering" translatesAutoresizingMaskIntoConstraints="NO" id="HGN-bF-zLH" userLabel="Phone Stack View">
+                                        <rect key="frame" x="20" y="20" width="311" height="51"/>
                                         <subviews>
-                                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="phoneStatusIcon" translatesAutoresizingMaskIntoConstraints="NO" id="LHb-K7-UfD">
-                                                <rect key="frame" x="0.0" y="0.0" width="305" height="36"/>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iLL-z5-KJh" customClass="VerifiedStatusView" customModule="DropBit" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="0.0" width="311" height="51"/>
+                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="height" constant="36" id="Ay4-vj-gtE"/>
+                                                    <constraint firstAttribute="height" constant="51" id="WTH-LE-uDm"/>
                                                 </constraints>
-                                            </imageView>
-                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" translatesAutoresizingMaskIntoConstraints="NO" id="HGN-bF-zLH">
-                                                <rect key="frame" x="0.0" y="56" width="305" height="51"/>
-                                                <subviews>
-                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8dO-Ic-Zck" customClass="PrimaryActionButton" customModule="DropBit" customModuleProvider="target">
-                                                        <rect key="frame" x="0.0" y="0.0" width="305" height="51"/>
-                                                        <constraints>
-                                                            <constraint firstAttribute="height" constant="51" id="CF4-f3-gQ5"/>
-                                                        </constraints>
-                                                        <state key="normal" title="VERIFY PHONE NUMBER"/>
-                                                        <connections>
-                                                            <action selector="verifyPhoneNumberPrimaryButtonWasTouched" destination="wct-uq-10C" eventType="touchUpInside" id="iCQ-HJ-PIk"/>
-                                                        </connections>
-                                                    </button>
-                                                </subviews>
+                                            </view>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MTE-fv-Pv4" customClass="ChangeRemoveVerificationButton" customModule="DropBit" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="51" width="311" height="0.0"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="height" constant="51" id="VdV-ZO-HtH"/>
+                                                    <constraint firstAttribute="height" constant="44" id="Bit-Hg-a3b"/>
                                                 </constraints>
-                                            </stackView>
-                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="RkQ-xy-zMd">
-                                                <rect key="frame" x="0.0" y="127" width="305" height="100"/>
-                                                <subviews>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="Verified Number:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UFP-s8-fid">
-                                                        <rect key="frame" x="0.0" y="0.0" width="305" height="30"/>
-                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                        <nil key="textColor"/>
-                                                        <nil key="highlightedColor"/>
-                                                    </label>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="(xxx) - xxx - xxxx" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zjn-9X-oAb">
-                                                        <rect key="frame" x="0.0" y="35" width="305" height="30"/>
-                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                        <nil key="textColor"/>
-                                                        <nil key="highlightedColor"/>
-                                                    </label>
-                                                    <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9Km-MS-fb6">
-                                                        <rect key="frame" x="0.0" y="70" width="305" height="30"/>
-                                                        <state key="normal" title="CHANGE/REMOVE"/>
-                                                        <connections>
-                                                            <action selector="changeRemoveButtonWasTouched" destination="wct-uq-10C" eventType="touchUpInside" id="jBW-5v-32W"/>
-                                                        </connections>
-                                                    </button>
-                                                </subviews>
-                                            </stackView>
+                                                <state key="normal" title="CHANGE/REMOVE"/>
+                                                <connections>
+                                                    <action selector="changeRemovePhone" destination="wct-uq-10C" eventType="touchUpInside" id="Mmn-fc-IdW"/>
+                                                </connections>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8dO-Ic-Zck" customClass="PrimaryActionButton" customModule="DropBit" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="51" width="311" height="0.0"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="51" id="CF4-f3-gQ5"/>
+                                                </constraints>
+                                                <state key="normal" title="VERIFY PHONE NUMBER"/>
+                                                <connections>
+                                                    <action selector="verifyPhoneNumber" destination="wct-uq-10C" eventType="touchUpInside" id="7FE-k2-fXC"/>
+                                                </connections>
+                                            </button>
+                                        </subviews>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="51" id="VdV-ZO-HtH"/>
+                                        </constraints>
+                                    </stackView>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalCentering" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="RkQ-xy-zMd" userLabel="Twitter Stack View">
+                                        <rect key="frame" x="20" y="91" width="311" height="162"/>
+                                        <subviews>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="npa-pj-4j2" customClass="VerifiedStatusView" customModule="DropBit" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="0.0" width="311" height="51"/>
+                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="51" id="Kkg-gW-x4b"/>
+                                                </constraints>
+                                            </view>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9Km-MS-fb6" customClass="ChangeRemoveVerificationButton" customModule="DropBit" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="59" width="311" height="44"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="44" id="Qyg-7f-awf"/>
+                                                </constraints>
+                                                <state key="normal" title="CHANGE/REMOVE"/>
+                                                <connections>
+                                                    <action selector="changeRemoveTwitter" destination="wct-uq-10C" eventType="touchUpInside" id="jBW-5v-32W"/>
+                                                </connections>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="p9B-Zw-YcI" customClass="PrimaryActionButton" customModule="DropBit" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="111" width="311" height="51"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="51" id="yVD-Ba-eaB"/>
+                                                </constraints>
+                                                <state key="normal" title="VERIFY TWITTER ACCOUNT"/>
+                                            </button>
                                         </subviews>
                                     </stackView>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="Privacy is very important to us. Your number is securely hashed and encrypted before it is stored." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ooh-9n-HBB">
-                                        <rect key="frame" x="0.0" y="384.5" width="305" height="61"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <nil key="textColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ntT-5K-f52">
-                                        <rect key="frame" x="0.0" y="479" width="305" height="30"/>
-                                        <state key="normal" title="View DropBit addresses"/>
-                                        <connections>
-                                            <action selector="addressButtonWasTouched" destination="wct-uq-10C" eventType="touchUpInside" id="fxM-Y9-ij0"/>
-                                        </connections>
-                                    </button>
                                 </subviews>
-                            </stackView>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstItem="RkQ-xy-zMd" firstAttribute="top" secondItem="HGN-bF-zLH" secondAttribute="bottom" constant="20" id="NNE-hr-rVz"/>
+                                    <constraint firstItem="HGN-bF-zLH" firstAttribute="top" secondItem="VNI-1F-k3X" secondAttribute="top" constant="20" id="SB1-ND-gJ5"/>
+                                    <constraint firstAttribute="bottom" secondItem="RkQ-xy-zMd" secondAttribute="bottom" constant="20" id="Tfp-Iv-v7G"/>
+                                    <constraint firstItem="RkQ-xy-zMd" firstAttribute="leading" secondItem="VNI-1F-k3X" secondAttribute="leading" constant="20" id="dYT-vH-aW0"/>
+                                    <constraint firstAttribute="trailing" secondItem="HGN-bF-zLH" secondAttribute="trailing" constant="20" id="omu-As-yD5"/>
+                                    <constraint firstItem="HGN-bF-zLH" firstAttribute="leading" secondItem="VNI-1F-k3X" secondAttribute="leading" constant="20" id="s92-eF-WU9"/>
+                                    <constraint firstAttribute="trailing" secondItem="RkQ-xy-zMd" secondAttribute="trailing" constant="20" id="sR5-iQ-LNX"/>
+                                </constraints>
+                            </view>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" verticalCompressionResistancePriority="752" text="Privacy is very important to us. Your number is securely hashed before it is stored." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ooh-9n-HBB">
+                                <rect key="frame" x="32" y="543" width="311" height="61"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ntT-5K-f52">
+                                <rect key="frame" x="32" y="617" width="311" height="10"/>
+                                <state key="normal" title="View DropBit addresses"/>
+                                <connections>
+                                    <action selector="addressButtonWasTouched" destination="wct-uq-10C" eventType="touchUpInside" id="fxM-Y9-ij0"/>
+                                </connections>
+                            </button>
                             <view alpha="0.0" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ukn-MD-3f2">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -135,41 +155,51 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="Jhc-x4-QDf" firstAttribute="leading" secondItem="YF7-fp-n8s" secondAttribute="leading" constant="7" id="0Gi-ww-8K2"/>
-                            <constraint firstItem="Ogm-lb-Q03" firstAttribute="leading" secondItem="YF7-fp-n8s" secondAttribute="leading" constant="35" id="1Er-Cy-C7e"/>
+                            <constraint firstItem="Umr-q3-q6S" firstAttribute="leading" secondItem="YF7-fp-n8s" secondAttribute="leading" constant="32" id="0X3-bg-t5K"/>
+                            <constraint firstItem="VNI-1F-k3X" firstAttribute="top" relation="greaterThanOrEqual" secondItem="Umr-q3-q6S" secondAttribute="bottom" constant="8" id="6Fr-UX-8dz"/>
+                            <constraint firstItem="ooh-9n-HBB" firstAttribute="top" relation="greaterThanOrEqual" secondItem="VNI-1F-k3X" secondAttribute="bottom" constant="8" id="6Ks-YP-RzK"/>
                             <constraint firstItem="YF7-fp-n8s" firstAttribute="trailing" secondItem="MoI-82-UyA" secondAttribute="trailing" constant="19" id="6pd-bu-daK"/>
                             <constraint firstAttribute="trailing" secondItem="Ukn-MD-3f2" secondAttribute="trailing" id="CbV-Qj-bTM"/>
+                            <constraint firstItem="VNI-1F-k3X" firstAttribute="centerY" secondItem="YF7-fp-n8s" secondAttribute="centerY" id="CoQ-vz-qOn"/>
                             <constraint firstItem="MhA-aE-vXX" firstAttribute="top" secondItem="YF7-fp-n8s" secondAttribute="top" constant="20" id="EfL-5j-mUK"/>
-                            <constraint firstItem="Ogm-lb-Q03" firstAttribute="centerX" secondItem="V0H-3S-dx0" secondAttribute="centerX" id="IQX-8V-iGs"/>
+                            <constraint firstItem="YF7-fp-n8s" firstAttribute="trailing" secondItem="ntT-5K-f52" secondAttribute="trailing" constant="32" id="Gkx-Rf-48U"/>
+                            <constraint firstItem="ntT-5K-f52" firstAttribute="leading" secondItem="YF7-fp-n8s" secondAttribute="leading" constant="32" id="I1t-Us-Are"/>
+                            <constraint firstItem="Umr-q3-q6S" firstAttribute="top" secondItem="MhA-aE-vXX" secondAttribute="bottom" constant="30" id="IDr-XS-XXY"/>
+                            <constraint firstItem="YF7-fp-n8s" firstAttribute="trailing" secondItem="Umr-q3-q6S" secondAttribute="trailing" constant="32" id="IHf-iW-ON6"/>
                             <constraint firstItem="YF7-fp-n8s" firstAttribute="trailing" secondItem="Jhc-x4-QDf" secondAttribute="trailing" constant="7" id="Iml-qZ-pkE"/>
+                            <constraint firstItem="VNI-1F-k3X" firstAttribute="leading" secondItem="YF7-fp-n8s" secondAttribute="leading" constant="12" id="O3Z-3l-8AU"/>
                             <constraint firstItem="Ukn-MD-3f2" firstAttribute="leading" secondItem="YF7-fp-n8s" secondAttribute="leading" id="ODq-pn-1SF"/>
+                            <constraint firstItem="YF7-fp-n8s" firstAttribute="trailing" secondItem="VNI-1F-k3X" secondAttribute="trailing" constant="12" id="Okd-mZ-1ZB"/>
                             <constraint firstItem="Ukn-MD-3f2" firstAttribute="top" secondItem="V0H-3S-dx0" secondAttribute="top" id="Omb-ca-A4d"/>
                             <constraint firstItem="Jhc-x4-QDf" firstAttribute="centerX" secondItem="V0H-3S-dx0" secondAttribute="centerX" id="QtD-14-10s"/>
+                            <constraint firstItem="ooh-9n-HBB" firstAttribute="leading" secondItem="YF7-fp-n8s" secondAttribute="leading" constant="32" id="ScK-si-fsz"/>
                             <constraint firstItem="Jhc-x4-QDf" firstAttribute="top" secondItem="YF7-fp-n8s" secondAttribute="top" constant="660" id="Wh5-qP-bg3"/>
-                            <constraint firstItem="YF7-fp-n8s" firstAttribute="trailing" secondItem="Ogm-lb-Q03" secondAttribute="trailing" constant="35" id="XPk-7j-p3W"/>
                             <constraint firstItem="MoI-82-UyA" firstAttribute="top" secondItem="YF7-fp-n8s" secondAttribute="top" constant="19" id="XWQ-I7-Oe0"/>
-                            <constraint firstItem="Ogm-lb-Q03" firstAttribute="top" secondItem="MhA-aE-vXX" secondAttribute="bottom" constant="30" id="YoX-zK-VMY"/>
                             <constraint firstItem="Jhc-x4-QDf" firstAttribute="height" secondItem="V0H-3S-dx0" secondAttribute="height" multiplier="0.85" id="aV9-Bd-exB"/>
+                            <constraint firstItem="ntT-5K-f52" firstAttribute="top" secondItem="ooh-9n-HBB" secondAttribute="bottom" constant="13" id="bOO-O2-3Ix"/>
                             <constraint firstItem="MhA-aE-vXX" firstAttribute="centerX" secondItem="V0H-3S-dx0" secondAttribute="centerX" id="fbT-f1-RD0"/>
+                            <constraint firstItem="YF7-fp-n8s" firstAttribute="bottom" secondItem="ooh-9n-HBB" secondAttribute="bottom" constant="63" id="jiR-Fb-pno"/>
                             <constraint firstAttribute="bottom" secondItem="Ukn-MD-3f2" secondAttribute="bottom" id="juS-mv-xyS"/>
-                            <constraint firstAttribute="bottom" secondItem="Ogm-lb-Q03" secondAttribute="bottom" constant="45" id="yJT-5A-f06"/>
+                            <constraint firstItem="YF7-fp-n8s" firstAttribute="trailing" secondItem="ooh-9n-HBB" secondAttribute="trailing" constant="32" id="lMm-sI-nNd"/>
+                            <constraint firstItem="YF7-fp-n8s" firstAttribute="bottom" secondItem="ntT-5K-f52" secondAttribute="bottom" constant="40" id="u2M-G4-rS0"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="YF7-fp-n8s"/>
                     </view>
                     <connections>
                         <outlet property="addressButton" destination="ntT-5K-f52" id="Yks-Id-ftu"/>
-                        <outlet property="changeRemoveButton" destination="9Km-MS-fb6" id="dG7-8H-bJz"/>
+                        <outlet property="changeRemovePhoneButton" destination="MTE-fv-Pv4" id="hfi-G0-a3J"/>
+                        <outlet property="changeRemoveTwitterButton" destination="9Km-MS-fb6" id="dG7-8H-bJz"/>
                         <outlet property="closeButton" destination="MoI-82-UyA" id="kCo-E8-WAs"/>
-                        <outlet property="phoneNumberLabel" destination="zjn-9X-oAb" id="Vts-Id-IZo"/>
                         <outlet property="phoneNumberNavigationTitle" destination="MhA-aE-vXX" id="9Hx-j8-YiS"/>
+                        <outlet property="phoneVerificationStatusView" destination="iLL-z5-KJh" id="9R2-dX-DL5"/>
                         <outlet property="privacyLabel" destination="ooh-9n-HBB" id="JzN-Z5-ZwN"/>
                         <outlet property="serverAddressBackgroundView" destination="Ukn-MD-3f2" id="tN7-II-sFD"/>
                         <outlet property="serverAddressView" destination="Jhc-x4-QDf" id="6lK-D5-T0R"/>
                         <outlet property="serverAddressViewVerticalConstraint" destination="Wh5-qP-bg3" id="dSY-sx-q1J"/>
                         <outlet property="titleLabel" destination="Umr-q3-q6S" id="OX4-qO-iAP"/>
-                        <outlet property="unverifiedPhoneStackView" destination="HGN-bF-zLH" id="sbM-5X-ELK"/>
-                        <outlet property="verifiedPhoneStackView" destination="RkQ-xy-zMd" id="4II-eF-WV5"/>
-                        <outlet property="verifyPhoneNumberLabel" destination="UFP-s8-fid" id="KYS-H3-nXK"/>
-                        <outlet property="verifyPhoneNumberPrimaryButton" destination="8dO-Ic-Zck" id="rmA-77-8ah"/>
+                        <outlet property="twitterVerificationStatusView" destination="npa-pj-4j2" id="OhZ-SJ-U5s"/>
+                        <outlet property="verifyPhoneNumberPrimaryButton" destination="8dO-Ic-Zck" id="kMS-iV-lqf"/>
+                        <outlet property="verifyTwitterPrimaryButton" destination="p9B-Zw-YcI" id="QiJ-m3-efg"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Pyh-YI-3Hm" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -179,6 +209,5 @@
     </scenes>
     <resources>
         <image name="close" width="14" height="14"/>
-        <image name="phoneStatusIcon" width="24" height="37"/>
     </resources>
 </document>

@@ -11,6 +11,10 @@ import UIKit
 import os.log
 
 extension AppCoordinator: PhoneNumberStatusViewControllerDelegate {
+  func viewControllerDidSelectVerifyTwitter(_ viewController: UIViewController) {
+    // do something
+  }
+
 
   func verifiedPhoneNumber() -> GlobalPhoneNumber? {
     return persistenceManager.verifiedPhoneNumber()
