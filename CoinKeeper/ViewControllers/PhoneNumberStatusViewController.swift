@@ -16,7 +16,8 @@ protocol PhoneNumberStatusViewControllerDelegate: ViewControllerDismissable {
   func viewControllerDidRequestOpenURL(_ viewController: UIViewController, url: URL)
   func viewControllerDidSelectVerifyPhone(_ viewController: UIViewController)
   func viewControllerDidSelectVerifyTwitter(_ viewController: UIViewController)
-  func viewControllerDidRequestToUnverify(_ viewController: UIViewController, successfulCompletion: @escaping () -> Void)
+  func viewControllerDidRequestToUnverifyPhone(_ viewController: UIViewController, successfulCompletion: @escaping () -> Void)
+  func viewControllerDidRequestToUnverifyTwitter(_ viewController: UIViewController, successfulCompletion: @escaping () -> Void)
 }
 
 class PhoneNumberStatusViewController: BaseViewController, StoryboardInitializable {
@@ -143,17 +144,17 @@ class PhoneNumberStatusViewController: BaseViewController, StoryboardInitializab
   }
 
   @IBAction func verifyTwitter() {
-
+    coordinationDelegate?.viewControllerDidSelectVerifyTwitter(self)
   }
 
   @IBAction func changeRemovePhone() {
-//    coordinationDelegate?.viewControllerDidRequestToUnverify(self, successfulCompletion: { [weak self] in
-//      self?.setupUI()
-//    })
+    coordinationDelegate?.viewControllerDidRequestToUnverifyPhone(self, successfulCompletion: { [weak self] in
+      self?.setupUI()
+    })
   }
 
   @IBAction func changeRemoveTwitter() {
-    coordinationDelegate?.viewControllerDidRequestToUnverify(self, successfulCompletion: { [weak self] in
+    coordinationDelegate?.viewControllerDidRequestToUnverifyTwitter(self, successfulCompletion: { [weak self] in
       self?.setupUI()
     })
   }

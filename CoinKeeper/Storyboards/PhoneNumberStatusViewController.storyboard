@@ -58,14 +58,14 @@
                                         <rect key="frame" x="20" y="20" width="311" height="51"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iLL-z5-KJh" customClass="VerifiedStatusView" customModule="DropBit" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="0.0" width="311" height="51"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="311" height="0.0"/>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="51" id="WTH-LE-uDm"/>
                                                 </constraints>
                                             </view>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MTE-fv-Pv4" customClass="ChangeRemoveVerificationButton" customModule="DropBit" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="51" width="311" height="0.0"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="311" height="0.0"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="44" id="Bit-Hg-a3b"/>
                                                 </constraints>
@@ -75,7 +75,7 @@
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8dO-Ic-Zck" customClass="PrimaryActionButton" customModule="DropBit" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="51" width="311" height="0.0"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="311" height="51"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="51" id="CF4-f3-gQ5"/>
                                                 </constraints>
@@ -115,6 +115,9 @@
                                                     <constraint firstAttribute="height" constant="51" id="yVD-Ba-eaB"/>
                                                 </constraints>
                                                 <state key="normal" title="VERIFY TWITTER ACCOUNT"/>
+                                                <connections>
+                                                    <action selector="verifyTwitter" destination="wct-uq-10C" eventType="touchUpInside" id="dr9-Lh-kGB"/>
+                                                </connections>
                                             </button>
                                         </subviews>
                                     </stackView>

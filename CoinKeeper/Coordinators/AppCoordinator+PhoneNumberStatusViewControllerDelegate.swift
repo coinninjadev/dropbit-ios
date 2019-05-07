@@ -32,7 +32,7 @@ extension AppCoordinator: PhoneNumberStatusViewControllerDelegate {
     return addresses
   }
 
-  func viewControllerDidRequestToUnverify(_ viewController: UIViewController, successfulCompletion: @escaping () -> Void) {
+  func viewControllerDidRequestToUnverifyPhone(_ viewController: UIViewController, successfulCompletion: @escaping () -> Void) {
     let okConfiguration = AlertActionConfiguration(title: "OK", style: .default, action: {
       let title = "Are you sure you want to remove your number? You will be able to add a new number after your current number is removed."
       let removeConfiguration = self.createRemoveConfiguration(with: self.createTryAgainConfiguration(viewController, with: successfulCompletion),
@@ -51,6 +51,10 @@ extension AppCoordinator: PhoneNumberStatusViewControllerDelegate {
     navigationController.topViewController()?.present(alert, animated: true)
   }
 
+  func viewControllerDidRequestToUnverifyTwitter(_ viewController: UIViewController, successfulCompletion: @escaping () -> Void) {
+
+  }
+
   func viewControllerDidSelectVerifyPhone(_ viewController: UIViewController) {
     viewController.dismiss(animated: true) {
       self.startDeviceVerificationFlow(shouldOrphanRoot: false)
@@ -66,7 +70,7 @@ extension AppCoordinator: PhoneNumberStatusViewControllerDelegate {
                                            with successfulCompletion: @escaping () -> Void) -> AlertActionConfiguration {
     return AlertActionConfiguration(title: "Try Again", style: .default, action: {
       self.analyticsManager.track(event: .tryAgainToDeverify, with: nil)
-      self.viewControllerDidRequestToUnverify(viewController, successfulCompletion: successfulCompletion)
+      self.viewControllerDidRequestToUnverifyPhone(viewController, successfulCompletion: successfulCompletion)
     })
   }
 
