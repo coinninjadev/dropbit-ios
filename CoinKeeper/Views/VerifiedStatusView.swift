@@ -20,13 +20,18 @@ class VerifiedStatusView: UIView {
   override func awakeFromNib() {
     super.awakeFromNib()
     xibSetup()
+    applyCornerRadius(5.0)
   }
 
   func load(with userIdentityType: UserIdentityType, identityString: String) {
     self.userIdentityType = userIdentityType
     switch userIdentityType {
-    case .phone: decorationBackgroundView.backgroundColor = Theme.Color.darkBlueButton.color
-    case .twitter: decorationBackgroundView.backgroundColor = Theme.Color.lightBlueTint.color
+    case .phone:
+      decorationBackgroundView.backgroundColor = Theme.Color.darkBlueButton.color
+      decorationImageView.image = UIImage(imageLiteralResourceName: "twitterBird")
+    case .twitter:
+      decorationBackgroundView.backgroundColor = Theme.Color.lightBlueTint.color
+      decorationImageView.image = UIImage(imageLiteralResourceName: "phoneDrawerIcon")
     }
 
     identityLabel.text = identityString
