@@ -312,7 +312,6 @@ class PersistenceManager: PersistenceManagerType {
       let deviceEndpointId = string(for: .deviceEndpointId) else {
         return nil
     }
-
     return DeviceEndpointIds(serverDevice: serverDeviceId, endpoint: deviceEndpointId)
   }
 
@@ -454,7 +453,6 @@ class PersistenceManager: PersistenceManagerType {
     guard let array = CKUserDefaults.standardDefaults.array(forKey: key.defaultsString) as? [String] else {
       return nil
     }
-
     return array
   }
 
@@ -498,5 +496,4 @@ class PersistenceManager: PersistenceManagerType {
     let stringValue = CKUserDefaults.standardDefaults.value(forKey: CKUserDefaults.Key.selectedCurrency.defaultsString) as? String
     return stringValue.flatMap { SelectedCurrency(rawValue: $0) } ?? .fiat
   }
-
 }

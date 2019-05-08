@@ -80,9 +80,9 @@ class PhoneNumberStatusViewController: BaseViewController, StoryboardInitializab
       addressButton.isHidden = true
       phoneVerificationStatusView.isHidden = true
       let verifyPhoneButtonTitle = NSAttributedString(
-        imageName: "phoneDrawerIcon", 
+        imageName: "phoneDrawerIcon",
         imageSize: CGSize(width: 13, height: 22),
-        title: "VERIFY PHONE NUMBER", 
+        title: "VERIFY PHONE NUMBER",
         textColor: Theme.Color.lightGrayText.color,
         font: Theme.Font.verificationActionTitle.font)
       verifyPhoneNumberPrimaryButton.setTitle(nil, for: .normal)

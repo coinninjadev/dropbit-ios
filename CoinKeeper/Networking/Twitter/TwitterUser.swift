@@ -31,4 +31,3 @@ struct TwitterUser: Decodable {
 
   var profileImageData: Data?
 }
-
