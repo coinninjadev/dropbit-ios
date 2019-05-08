@@ -28,10 +28,10 @@ class VerifiedStatusView: UIView {
     switch userIdentityType {
     case .phone:
       decorationBackgroundView.backgroundColor = Theme.Color.darkBlueButton.color
-      decorationImageView.image = UIImage(imageLiteralResourceName: "twitterBird")
+      decorationImageView.image = UIImage(imageLiteralResourceName: "phoneDrawerIcon")
     case .twitter:
       decorationBackgroundView.backgroundColor = Theme.Color.lightBlueTint.color
-      decorationImageView.image = UIImage(imageLiteralResourceName: "phoneDrawerIcon")
+      decorationImageView.image = UIImage(imageLiteralResourceName: "twitterBird")
     }
 
     identityLabel.text = identityString
