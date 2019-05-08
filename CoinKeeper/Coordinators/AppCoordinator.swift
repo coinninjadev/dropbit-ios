@@ -14,6 +14,7 @@ import Permission
 import AVFoundation
 import PromiseKit
 import CoreData
+import CoreLocation
 import os.log
 import PhoneNumberKit
 import MessageUI
@@ -63,6 +64,8 @@ class AppCoordinator: CoordinatorType {
   let mailComposeDelegate = MailerDelegate()
   // swiftlint:disable:next weak_delegate
   let messageComposeDelegate = MessagerDelegate()
+  // swiftlint:disable:next weak_delegate
+  let locationDelegate = LocationManagerDelegate()
 
   let currencyController: CurrencyController
 
@@ -75,6 +78,7 @@ class AppCoordinator: CoordinatorType {
   private let notificationLogger = OSLog(subsystem: "com.coinninja.appCoordinator", category: "notifications")
   let phoneNumberKit = PhoneNumberKit()
   let contactStore = CNContactStore()
+  let locationManager = CLLocationManager()
 
   var bitcoinURLToOpen: BitcoinURL?
 
@@ -135,6 +139,7 @@ class AppCoordinator: CoordinatorType {
     self.messageManager = MessageManager(alertManager: alertMgr, persistenceManager: persistenceManager)
     self.notificationManager = notificationMgr
     self.notificationManager.delegate = self
+    self.locationManager.delegate = self.locationDelegate
 
     setCurrentCoin()
 
@@ -553,6 +558,10 @@ class AppCoordinator: CoordinatorType {
     resetWalletManagerIfNeeded()
     handlePendingBitcoinURL()
     refreshContacts()
+
+    if self.permissionManager.permissionStatus(for: .location) == .authorized {
+      self.locationManager.requestLocation()
+    }
   }
 
   /// Handle app leaving active state, either becoming inactive, entering background, or terminating.
