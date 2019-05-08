@@ -62,6 +62,13 @@ class MockPersistenceKeychainManager: PersistenceKeychainType {
     return values[key.rawValue]
   }
 
+  func store(oauthCredentials: TwitterOAuthStorage) -> Bool {
+    return true
+  }
+
+  func oauthCredentials() -> TwitterOAuthStorage? {
+    return nil
+  }
 }
 
 class MockKeychainAccessorType: KeychainAccessorType {

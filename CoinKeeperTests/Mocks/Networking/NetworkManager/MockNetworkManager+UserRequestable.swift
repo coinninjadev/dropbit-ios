@@ -11,11 +11,15 @@ import PromiseKit
 
 extension MockNetworkManager: UserRequestable {
 
-  func createUser(walletId: String, phoneNumber: GlobalPhoneNumber) -> Promise<UserResponse> {
+  func createUser(walletId: String, body: CreateUserBody) -> Promise<UserResponse> {
     return Promise { _ in }
   }
 
   func verifyUser(phoneNumber: GlobalPhoneNumber, code: String) -> Promise<UserResponse> {
+    return Promise { _ in }
+  }
+
+  func verifyUser(twitterCredentials: TwitterOAuthStorage) -> Promise<UserResponse> {
     return Promise { _ in }
   }
 
