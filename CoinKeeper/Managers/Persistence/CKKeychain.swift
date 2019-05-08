@@ -21,6 +21,10 @@ class CKKeychain: PersistenceKeychainType {
     case countryCode
     case phoneNumber
     case lockoutDate
+    case twitterOAuthToken
+    case twitterOAuthTokenSecret
+    case twitterUserId
+    case twitterScreenName
   }
 
   private var tempWordStorage: [String]?
@@ -45,6 +49,23 @@ class CKKeychain: PersistenceKeychainType {
   @discardableResult
   func store(deviceID: String) -> Bool {
     return store.archive(deviceID, key: CKKeychain.Key.deviceID.rawValue)
+  }
+
+  @discardableResult
+  func store(oauthCredentials: TwitterOAuthStorage) -> Bool {
+    var success = store.archive(oauthCredentials.twitterOAuthToken, key: CKKeychain.Key.twitterOAuthToken.rawValue)
+    success = success || store.archive(oauthCredentials.twitterOAuthTokenSecret, key: CKKeychain.Key.twitterOAuthTokenSecret.rawValue)
+    success = success || store.archive(oauthCredentials.twitterUserId, key: CKKeychain.Key.twitterUserId.rawValue)
+    success = success || store.archive(oauthCredentials.twitterScreenName, key: CKKeychain.Key.twitterScreenName.rawValue)
+    return success
+  }
+
+  func oauthCredentials() -> TwitterOAuthStorage? {
+    guard let token = store.unarchive(objectForKey: CKKeychain.Key.twitterOAuthToken) as? String,
+          let tokenSecret = store.unarchive(objectForKey: CKKeychain.Key.twitterOAuthTokenSecret) as? String,
+          let userId = store.unarchive(objectForKey: CKKeychain.Key.twitterUserId) as? String,
+          let screenName = store.unarchive(objectForKey: CKKeychain.Key.twitterScreenName) as? String else { return nil }
+    return TwitterOAuthStorage(twitterOAuthToken: token, twitterOAuthTokenSecret: tokenSecret, twitterUserId: userId, twitterScreenName: screenName)
   }
 
   func backup(recoveryWords words: [String]) {

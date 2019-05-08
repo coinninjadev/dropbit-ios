@@ -9,6 +9,7 @@
 import os.log
 import PromiseKit
 import Moya
+import OAuthSwift
 
 protocol NetworkManagerType: HeaderDelegate &
   AddressRequestable &
@@ -73,6 +74,16 @@ class NetworkManager: NetworkManagerType {
 
     self.cnProvider.headerDelegate = self
   }
+
+  lazy var twitterOAuthManager: OAuth1Swift = {
+    return OAuth1Swift(
+      consumerKey: twitterOAuth.consumerKey,
+      consumerSecret: twitterOAuth.consumerSecret,
+      requestTokenUrl: twitterOAuth.requestTokenURL,
+      authorizeUrl: twitterOAuth.authorizeURL,
+      accessTokenUrl: twitterOAuth.accessTokenURL
+    )
+  }()
 
   func start() {
     // Setup exchange rate, network fees, block height, etc.

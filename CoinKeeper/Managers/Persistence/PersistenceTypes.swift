@@ -172,11 +172,16 @@ protocol PersistenceKeychainType: AnyObject {
   @discardableResult
   func store(userPin pin: String) -> Bool
 
+  @discardableResult
+  func store(oauthCredentials: TwitterOAuthStorage) -> Bool
+
   func retrieveValue(for key: CKKeychain.Key) -> Any?
   func bool(for key: CKKeychain.Key) -> Bool?
 
   func backup(recoveryWords words: [String])
   func walletWordsBackedUp() -> Bool
+
+  func oauthCredentials() -> TwitterOAuthStorage?
 
   func deleteAll()
   func unverifyUser()
