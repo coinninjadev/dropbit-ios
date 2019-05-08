@@ -10,8 +10,9 @@ import PromiseKit
 
 protocol UserRequestable: AnyObject {
 
-  func createUser(walletId: String, phoneNumber: GlobalPhoneNumber) -> Promise<UserResponse>
+  func createUser(walletId: String, body: CreateUserBody) -> Promise<UserResponse>
   func verifyUser(phoneNumber: GlobalPhoneNumber, code: String) -> Promise<UserResponse>
+  func verifyUser(twitterCredentials: TwitterOAuthStorage) -> Promise<UserResponse>
   func getUser() -> Promise<UserResponse>
   func queryUsers(phoneNumberHashes: [String]) -> Promise<StringDictResponse>
 
@@ -41,9 +42,8 @@ public struct CreateUserHeaders: CKRequestHeadersProvider {
 
 extension NetworkManager: UserRequestable {
 
-  func createUser(walletId: String, phoneNumber: GlobalPhoneNumber) -> Promise<UserResponse> {
+  func createUser(walletId: String, body: CreateUserBody) -> Promise<UserResponse> {
     let headers = CreateUserHeaders(walletId: walletId)
-    let body = CreateUserBody(phoneNumber: phoneNumber)
     return cnProvider.request(UserTarget.create(headers, body))
       .recover { error -> Promise<UserResponse> in
 
@@ -66,6 +66,11 @@ extension NetworkManager: UserRequestable {
 
   func verifyUser(phoneNumber: GlobalPhoneNumber, code: String) -> Promise<UserResponse> {
     let body = VerifyUserBody(phoneNumber: phoneNumber, code: code)
+    return cnProvider.request(UserTarget.verify(body))
+  }
+
+  func verifyUser(twitterCredentials: TwitterOAuthStorage) -> Promise<UserResponse> {
+    let body = VerifyUserBody(twitterCredentials: twitterCredentials)
     return cnProvider.request(UserTarget.verify(body))
   }
 

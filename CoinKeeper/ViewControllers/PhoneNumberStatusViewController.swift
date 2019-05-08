@@ -97,7 +97,8 @@ class PhoneNumberStatusViewController: BaseViewController, StoryboardInitializab
       twitterVerificationStatusView.isHidden = false
       changeRemoveTwitterButton.isHidden = false
       verifyTwitterPrimaryButton.isHidden = true
-      twitterVerificationStatusView.load(with: .twitter, identityString: handle)
+      let identity = "@" + handle
+      twitterVerificationStatusView.load(with: .twitter, identityString: identity)
     } else {
       twitterVerificationStatusView.isHidden = true
       changeRemoveTwitterButton.isHidden = true

@@ -12,7 +12,10 @@ import os.log
 
 extension AppCoordinator: PhoneNumberStatusViewControllerDelegate {
   func viewControllerDidSelectVerifyTwitter(_ viewController: UIViewController) {
-    // do something
+    viewController.dismiss(animated: true) {
+      self.navigationController.setNavigationBarHidden(true, animated: true)
+      self.startDeviceVerificationFlow(userIdentityType: .twitter, shouldOrphanRoot: false)
+    }
   }
 
   func verifiedPhoneNumber() -> GlobalPhoneNumber? {
@@ -20,7 +23,7 @@ extension AppCoordinator: PhoneNumberStatusViewControllerDelegate {
   }
 
   func verifiedTwitterHandle() -> String? {
-    return nil
+    return persistenceManager.keychainManager.oauthCredentials()?.twitterScreenName
   }
 
   func viewControllerDidRequestAddresses() -> [ServerAddressViewModel] {
@@ -60,7 +63,7 @@ extension AppCoordinator: PhoneNumberStatusViewControllerDelegate {
 
   func viewControllerDidSelectVerifyPhone(_ viewController: UIViewController) {
     viewController.dismiss(animated: true) {
-      self.startDeviceVerificationFlow(shouldOrphanRoot: false)
+      self.startDeviceVerificationFlow(userIdentityType: .phone, shouldOrphanRoot: false)
       self.navigationController.isNavigationBarHidden = false
     }
   }

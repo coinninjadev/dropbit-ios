@@ -24,6 +24,7 @@ protocol NetworkManagerType: HeaderDelegate &
   TransactionBroadcastable &
   TransactionRequestable &
   TransactionNotificationRequestable &
+  TwitterRequestable &
   UserRequestable &
   WalletRequestable &
   WalletAddressRequestable &

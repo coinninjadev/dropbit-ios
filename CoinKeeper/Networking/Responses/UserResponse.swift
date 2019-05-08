@@ -21,6 +21,11 @@ public struct CreateUserBody: Encodable {
     self.type = UserIdentityType.phone.rawValue
     self.identity = phoneNumber.sanitizedGlobalNumber()
   }
+
+  init(twitterCredentials: TwitterOAuthStorage) {
+    self.type = UserIdentityType.twitter.rawValue
+    self.identity = twitterCredentials.twitterUserId
+  }
 }
 
 public struct VerifyUserBody: Encodable {
@@ -32,6 +37,12 @@ public struct VerifyUserBody: Encodable {
     self.type = UserIdentityType.phone.rawValue
     self.identity = phoneNumber.sanitizedGlobalNumber()
     self.code = code
+  }
+
+  init(twitterCredentials: TwitterOAuthStorage) {
+    self.type = UserIdentityType.twitter.rawValue
+    self.identity = twitterCredentials.twitterUserId
+    self.code = twitterCredentials.twitterOAuthToken + ":" + twitterCredentials.twitterOAuthTokenSecret
   }
 }
 

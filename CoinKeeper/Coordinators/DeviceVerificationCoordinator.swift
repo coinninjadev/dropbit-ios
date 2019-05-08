@@ -36,6 +36,7 @@ class DeviceVerificationCoordinator: ChildCoordinatorType {
   private let maxCodeEntryFailures = 3
   private let minHudDisplayDuration: TimeInterval = 0.5
   private let shouldOrphanRoot: Bool
+  private let userIdentityType: UserIdentityType
 
   private let errorMessageFactory = DeviceVerificationErrorMessageFactory()
 
@@ -43,17 +44,36 @@ class DeviceVerificationCoordinator: ChildCoordinatorType {
     return delegate as? DeviceVerificationCoordinatorDelegate
   }
 
-  required init(_ navigationController: UINavigationController, shouldOrphanRoot: Bool = true) {
+  required init(_ navigationController: UINavigationController, userIdentityType: UserIdentityType, shouldOrphanRoot: Bool = true) {
     self.navigationController = navigationController
     self.userSuppliedPhoneNumber = nil
+    self.userIdentityType = userIdentityType
     self.shouldOrphanRoot = shouldOrphanRoot
   }
 
   func start() {
-    let phoneEntryViewController = DeviceVerificationViewController.makeFromStoryboard()
-    phoneEntryViewController.shouldOrphan = shouldOrphanRoot
-    assignCoordinationDelegate(to: phoneEntryViewController)
-    navigationController.pushViewController(phoneEntryViewController, animated: true)
+    switch userIdentityType {
+    case .phone:
+      let viewController = DeviceVerificationViewController.makeFromStoryboard()
+      viewController.shouldOrphan = shouldOrphanRoot
+      assignCoordinationDelegate(to: viewController)
+      navigationController.pushViewController(viewController, animated: true)
+    case .twitter:
+      guard let coordinator = coordinationDelegate else { return }
+      let context = coordinator.persistenceManager.createBackgroundContext()
+      var credentials: TwitterOAuthStorage!
+      coordinator.networkManager.authorizedTwitterCredentials()
+        .get { credentials = $0 }
+        .then { return Promise.value(CreateUserBody(twitterCredentials: $0)) }
+        .then(in: context) { self.registerAndPersistUser(with: $0, delegate: coordinator, in: context) }
+        .then { _ -> Promise<UserResponse> in coordinator.networkManager.verifyUser(twitterCredentials: credentials) }
+        .done { (response: UserResponse) in
+          os_log("user response: %@", log: self.logger, type: .debug, response.id)
+        }
+        .catch { error in
+          os_log("failed to create or verify user in %@. error: %@", log: self.logger, type: .error, #function, error.localizedDescription)
+        }
+    }
   }
 
 }
@@ -84,7 +104,10 @@ extension DeviceVerificationCoordinator: DeviceVerificationViewControllerDelegat
     let bgContext = crDelegate.persistenceManager.createBackgroundContext()
     bgContext.perform {
       crDelegate.registerAndPersistWallet(in: bgContext)
-        .then(in: bgContext) { _ in self.registerAndPersistUser(with: phoneNumber, delegate: crDelegate, in: bgContext) }
+        .then(in: bgContext) { _ -> Promise<Void> in
+          let body = CreateUserBody(phoneNumber: phoneNumber)
+          return self.registerAndPersistUser(with: body, delegate: crDelegate, in: bgContext)
+        }
         .done(on: .main) {
 
           crDelegate.alertManager.hideActivityHUD(withDelay: self.minHudDisplayDuration) {
@@ -145,9 +168,9 @@ extension DeviceVerificationCoordinator: DeviceVerificationViewControllerDelegat
     self.showVerificationErrorAlert(.custom(message), delegate: coordinationDelegate)
   }
 
-  private func registerAndPersistUser(with phoneNumber: GlobalPhoneNumber,
-                                      delegate: DeviceVerificationCoordinatorDelegate,
-                                      in context: NSManagedObjectContext) -> Promise<Void> {
+  fileprivate func registerAndPersistUser(with body: CreateUserBody,
+                                          delegate: DeviceVerificationCoordinatorDelegate,
+                                          in context: NSManagedObjectContext) -> Promise<Void> {
 
     var maybeWalletId: String?
     context.performAndWait {
@@ -157,7 +180,7 @@ extension DeviceVerificationCoordinator: DeviceVerificationViewControllerDelegat
       return Promise { $0.reject(CKPersistenceError.missingValue(key: "wallet ID")) }
     }
 
-    return delegate.networkManager.createUser(walletId: walletId, phoneNumber: phoneNumber)
+    return delegate.networkManager.createUser(walletId: walletId, body: body)
       .recover { (error: Error) -> Promise<UserResponse> in
         return self.handleCreateUserError(error, walletId: walletId, delegate: delegate, in: context)
       }

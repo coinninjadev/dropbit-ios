@@ -28,6 +28,7 @@ extension TwitterUser: CustomDebugStringConvertible {
 
 protocol TwitterRequestable: AnyObject {
   func getCurrentTwitterUser() -> Promise<TwitterUser>
+  func authorizedTwitterCredentials() -> Promise<TwitterOAuthStorage>
 }
 
 extension TwitterOAuth {
@@ -38,7 +39,11 @@ extension TwitterOAuth {
 
 extension NetworkManager: TwitterRequestable {
   func getCurrentTwitterUser() -> Promise<TwitterUser> {
-    return authorize().then { self.retrieveCurrentUser(with: $0.twitterScreenName) }
+    return authorize().then { self.retrieveCurrentUser(with: $0.twitterUserId) }
+  }
+
+  func authorizedTwitterCredentials() -> Promise<TwitterOAuthStorage> {
+    return authorize()
   }
 
   private func authorize() -> Promise<TwitterOAuthStorage> {
@@ -52,39 +57,35 @@ extension NetworkManager: TwitterRequestable {
       } else {
         twitterOAuthManager.authorize(
           withCallbackURL: twitterOAuth.callbackURL,
-          success: { (credential: OAuthSwiftCredential, response: OAuthSwiftResponse?, params: OAuthSwift.Parameters) in
-            print("oauth token: \(credential.oauthToken)")
-            print("oauth token secret: \(credential.oauthTokenSecret)")
-            print("oauth refresh token: \(credential.oauthRefreshToken)")
-            print("params: \(params)")
-            print("user id: \(params["user_id"])")
-            print("screen name: \(params["screen_name"])")
-            // do request here
-            print("foo")
-
-            guard let userId = params["user_id"] as? String, let screenName = params["screen_name"] as? String
-              else { seal.reject(TwitterOAuthError.noUserFound) }
+          success: { (credential: OAuthSwiftCredential, _: OAuthSwiftResponse?, params: OAuthSwift.Parameters) in
+            guard let userId = params["user_id"] as? String, let screenName = params["screen_name"] as? String else {
+              seal.reject(TwitterOAuthError.noUserFound)
+              return
+            }
             let credentials = TwitterOAuthStorage(
               twitterOAuthToken: credential.oauthToken,
               twitterOAuthTokenSecret: credential.oauthTokenSecret,
               twitterUserId: userId,
               twitterScreenName: screenName)
-            _ = self.persistenceManager.keychainManager.store(oauthCredentials: credentials)
+
+            self.persistenceManager.keychainManager.store(oauthCredentials: credentials)
 
             seal.fulfill(credentials)
-          }) { (error: OAuthSwiftError) in
+          },
+          failure: { (error: OAuthSwiftError) in
             print("failed. error: \(error.localizedDescription)")
             seal.reject(error)
           }
+        )
       }
     }
   }
 
-  private func retrieveCurrentUser(with username: String) -> Promise<TwitterUser> {
+  private func retrieveCurrentUser(with userId: String) -> Promise<TwitterUser> {
     return Promise { seal in
       twitterOAuthManager.client.get(
         TwitterEndpoints.getUser.urlString,
-        parameters: ["screen_name": username],
+        parameters: ["user_id": userId],
         headers: nil,
         success: { (response: OAuthSwiftResponse) in
           do {
