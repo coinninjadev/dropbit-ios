@@ -461,6 +461,7 @@
 		B505A87E2076C96100AACB23 /* TransactionHistoryMemoLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B505A87D2076C96100AACB23 /* TransactionHistoryMemoLabel.swift */; };
 		B505D4EA21050F2000C0C8FC /* CKPredicate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B505D4E921050F2000C0C8FC /* CKPredicate.swift */; };
 		B505D4EC2106456000C0C8FC /* WalletAddressDataWorkerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B505D4EB2106456000C0C8FC /* WalletAddressDataWorkerTests.swift */; };
+		B5090D902283244700E57423 /* LocationManagerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5090D8F2283244700E57423 /* LocationManagerDelegate.swift */; };
 		B50ACBB0216627AB00E877DF /* DevicesTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50ACBAF216627AB00E877DF /* DevicesTarget.swift */; };
 		B50ACBB221662C7B00E877DF /* CoinNinjaTargetType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50ACBB121662C7B00E877DF /* CoinNinjaTargetType.swift */; };
 		B50BB1AF2175126B0038B5DD /* XCUIApplication+WaitAndAssert.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50BB1AD2175126B0038B5DD /* XCUIApplication+WaitAndAssert.swift */; };
@@ -508,7 +509,6 @@
 		B51FB0E621751F75005CBAD6 /* CNNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BA389A82035E62F00B599A0 /* CNNavigationController.swift */; };
 		B51FB0E82175221A005CBAD6 /* UITestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51FB0E72175221A005CBAD6 /* UITestCase.swift */; };
 		B52053E1227B6D3000E5D2ED /* AlertManager+Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52053E0227B6D3000E5D2ED /* AlertManager+Constants.swift */; };
-		B520DFE722734085004C7D9E /* NetworkManager+DropBitMeRequestable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B520DFE622734085004C7D9E /* NetworkManager+DropBitMeRequestable.swift */; };
 		B521E85F218785B8002DB8C2 /* CoreDataObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = B559AF1021811FDD001D44F2 /* CoreDataObserver.swift */; };
 		B5221D5122441CAA0081C868 /* ContactCacheMigratorFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5221D5022441CAA0081C868 /* ContactCacheMigratorFactory.swift */; };
 		B5221D5322441CC30081C868 /* MigrateContactCacheV1toV2.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5221D5222441CC30081C868 /* MigrateContactCacheV1toV2.swift */; };
@@ -780,7 +780,6 @@
 		B5FEBE9220879C4200AA9F6E /* CKMInvitation+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5FEBE9020879C4200AA9F6E /* CKMInvitation+CoreDataClass.swift */; };
 		B5FFFFC0226FB44E0029DB62 /* DropBitMeViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B5FFFFBF226FB44E0029DB62 /* DropBitMeViewController.storyboard */; };
 		B5FFFFC2226FB4710029DB62 /* DropBitMeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5FFFFC1226FB4710029DB62 /* DropBitMeViewController.swift */; };
-		FA18AFAF2E16657DC26C7D2F /* Pods_DropBitUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9EF68D1C7C04D9E5BC95A59E /* Pods_DropBitUITests.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1263,6 +1262,7 @@
 		B505A87D2076C96100AACB23 /* TransactionHistoryMemoLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionHistoryMemoLabel.swift; sourceTree = "<group>"; };
 		B505D4E921050F2000C0C8FC /* CKPredicate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CKPredicate.swift; sourceTree = "<group>"; };
 		B505D4EB2106456000C0C8FC /* WalletAddressDataWorkerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletAddressDataWorkerTests.swift; sourceTree = "<group>"; };
+		B5090D8F2283244700E57423 /* LocationManagerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManagerDelegate.swift; sourceTree = "<group>"; };
 		B50ACBAF216627AB00E877DF /* DevicesTarget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DevicesTarget.swift; sourceTree = "<group>"; };
 		B50ACBB121662C7B00E877DF /* CoinNinjaTargetType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinNinjaTargetType.swift; sourceTree = "<group>"; };
 		B50BB1A0217512400038B5DD /* DropBitUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DropBitUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1306,7 +1306,6 @@
 		B51F823D207BDEC900692F5B /* UIView+ParentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+ParentViewController.swift"; sourceTree = "<group>"; };
 		B51FB0E72175221A005CBAD6 /* UITestCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITestCase.swift; sourceTree = "<group>"; };
 		B52053E0227B6D3000E5D2ED /* AlertManager+Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AlertManager+Constants.swift"; sourceTree = "<group>"; };
-		B520DFE622734085004C7D9E /* NetworkManager+DropBitMeRequestable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NetworkManager+DropBitMeRequestable.swift"; sourceTree = "<group>"; };
 		B520DFE822734EAE004C7D9E /* Model v5.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Model v5.xcdatamodel"; sourceTree = "<group>"; };
 		B5221D4F2243FFB70081C868 /* ContactCache v2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "ContactCache v2.xcdatamodel"; sourceTree = "<group>"; };
 		B5221D5022441CAA0081C868 /* ContactCacheMigratorFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactCacheMigratorFactory.swift; sourceTree = "<group>"; };
@@ -1576,17 +1575,12 @@
 		B5FE9B66219DD96200801D3C /* MerchantPaymentRequestResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MerchantPaymentRequestResponse.swift; sourceTree = "<group>"; };
 		B5FEBE9020879C4200AA9F6E /* CKMInvitation+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CKMInvitation+CoreDataClass.swift"; sourceTree = "<group>"; };
 		B5FEBE9120879C4200AA9F6E /* CKMInvitation+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CKMInvitation+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		B5FFFFBF226FB44E0029DB62 /* DropBitMeViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = DropBitMeViewController.storyboard; sourceTree = "<group>"; };
+		B5FFFFC1226FB4710029DB62 /* DropBitMeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropBitMeViewController.swift; sourceTree = "<group>"; };
 		D284129DA4FD63157667BE07 /* Pods-DropBitTests.beta.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DropBitTests.beta.xcconfig"; path = "Pods/Target Support Files/Pods-DropBitTests/Pods-DropBitTests.beta.xcconfig"; sourceTree = "<group>"; };
 		DE4F078435C07F253BFE2364 /* Pods-DropBit.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DropBit.debug.xcconfig"; path = "Pods/Target Support Files/Pods-DropBit/Pods-DropBit.debug.xcconfig"; sourceTree = "<group>"; };
 		DF6A0FCDDDCFA861541E73B4 /* Pods-DropBit.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DropBit.release.xcconfig"; path = "Pods/Target Support Files/Pods-DropBit/Pods-DropBit.release.xcconfig"; sourceTree = "<group>"; };
 		F8BD6316AF9CC6F3FF49A744 /* Pods-DropBit.beta.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DropBit.beta.xcconfig"; path = "Pods/Target Support Files/Pods-DropBit/Pods-DropBit.beta.xcconfig"; sourceTree = "<group>"; };
-		B5FFFFBF226FB44E0029DB62 /* DropBitMeViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = DropBitMeViewController.storyboard; sourceTree = "<group>"; };
-		B5FFFFC1226FB4710029DB62 /* DropBitMeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropBitMeViewController.swift; sourceTree = "<group>"; };
-		C643DEC1A1C5E8F46B932141 /* Pods-DropBitUITests.beta.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DropBitUITests.beta.xcconfig"; path = "Pods/Target Support Files/Pods-DropBitUITests/Pods-DropBitUITests.beta.xcconfig"; sourceTree = "<group>"; };
-		D7E99D7A5911DA70342872A0 /* Pods-DropBitTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DropBitTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-DropBitTests/Pods-DropBitTests.release.xcconfig"; sourceTree = "<group>"; };
-		DCDE55F4D482481C005E3F22 /* Pods_DropBit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DropBit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		E44CAD6725FC69A64153747D /* Pods-DropBitTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DropBitTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-DropBitTests/Pods-DropBitTests.debug.xcconfig"; sourceTree = "<group>"; };
-		F539536BF1062461F386C238 /* Pods-DropBitUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DropBitUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-DropBitUITests/Pods-DropBitUITests.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1897,6 +1891,7 @@
 			children = (
 				3B5052B72046E686000C739F /* CreateRecoveryWordsCollectionDDS.swift */,
 				5B91E39B2076C34700DD9A86 /* DrawerTableViewDDS.swift */,
+				B5090D8F2283244700E57423 /* LocationManagerDelegate.swift */,
 				B5FAD64B20A4DC1D008EB727 /* PublicKeyDataSource.swift */,
 				3B2658462215CFCC008A8615 /* MailerDelegate.swift */,
 				B597AF6E225682F600660B0E /* MessagerDelegate.swift */,
@@ -3675,6 +3670,7 @@
 				B582AD4F20A084AD007A6459 /* CKMCounterpartyAddress+CoreDataClass.swift in Sources */,
 				3B61B6E220DD282E0021D69E /* SendPaymentViewControllerDelegate.swift in Sources */,
 				3B124E102020EB2B00431E2E /* AppDelegate.swift in Sources */,
+				B5090D902283244700E57423 /* LocationManagerDelegate.swift in Sources */,
 				3BD7B73120D66F12005057A7 /* HorizontallyPaginatedCollectionViewLayout.swift in Sources */,
 				3BDFADFC2267AEFF0077DEF2 /* BlockstreamTarget.swift in Sources */,
 				B5221D5322441CC30081C868 /* MigrateContactCacheV1toV2.swift in Sources */,
