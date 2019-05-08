@@ -30,6 +30,16 @@
 				<string>bitcoin</string>
 			</array>
 		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>com.coinninja.CoinKeeper.twitter</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>dropbit</string>
+			</array>
+		</dict>
 	</array>
 	<key>CFBundleVersion</key>
 	<string>1</string>
@@ -70,6 +80,10 @@
 	<string>This will allow you to transact Bitcoin directly with your contacts</string>
 	<key>NSFaceIDUsageDescription</key>
 	<string>You can use Face ID to unlock DropBit</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Allow access to find Bitcoin ATMs or use Bitcoin near you</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Allow access to find Bitcoin ATMs or use Bitcoin near you</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Montserrat-Black.ttf</string>
@@ -113,9 +127,5 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Allow access to find Bitcoin ATMs or use Bitcoin near you</string>
-	<key>NSLocationAlwaysUsageDescription</key>
-	<string>Allow access to find Bitcoin ATMs or use Bitcoin near you</string>
 </dict>
 </plist>
