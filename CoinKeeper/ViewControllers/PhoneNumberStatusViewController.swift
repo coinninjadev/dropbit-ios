@@ -74,10 +74,7 @@ class PhoneNumberStatusViewController: BaseViewController, StoryboardInitializab
       } catch {
         phoneVerificationStatusView.load(with: .phone, identityString: phoneNumber.asE164())
       }
-      setupAddressUI()
     } else {
-      serverAddressView.isHidden = true
-      addressButton.isHidden = true
       phoneVerificationStatusView.isHidden = true
       let verifyPhoneButtonTitle = NSAttributedString(
         imageName: "phoneDrawerIcon",
@@ -115,6 +112,8 @@ class PhoneNumberStatusViewController: BaseViewController, StoryboardInitializab
       verifyTwitterPrimaryButton.setAttributedTitle(verifyTwitterButtonTitle, for: .normal)
     }
     // twitter end
+
+    setupAddressUI()
 
     let attributes: [NSAttributedString.Key: Any] = [.foregroundColor: Theme.Color.lightBlueTint.color,
                                                      .font: Theme.Font.serverAddressTitle.font,
