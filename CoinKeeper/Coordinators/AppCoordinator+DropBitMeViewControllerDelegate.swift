@@ -17,6 +17,11 @@ extension AppCoordinator: DropBitMeViewControllerDelegate {
     self.networkManager.updateUserPublicURL(isPrivate: !shouldEnable) // reverse boolean for isEnabled (view) vs. isPrivate (server)
       .get(in: bgContext) { response in
         self.persistenceManager.persistUserPublicURLInfo(from: response, in: bgContext)
+
+        let isPrivate = response.private ?? false
+        let event: AnalyticsManagerEventType = isPrivate ? .dropBitMeDisabled : .dropBitMeReenabled
+        self.analyticsManager.track(event: event, with: nil)
+        self.analyticsManager.track(property: MixpanelProperty(key: .isDropBitMeEnabled, value: !isPrivate))
       }
       .done(in: bgContext) { _ in
         try bgContext.save()
