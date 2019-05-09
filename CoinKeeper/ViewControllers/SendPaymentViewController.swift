@@ -395,12 +395,14 @@ extension SendPaymentViewController {
       case .btcAddress(let btcAddress):
         self.showBitcoinAddressRecipient(with: btcAddress)
       case .phoneNumber(let contact):
-        if let validatedContact = self.coordinationDelegate?.viewController(self, checkForContactFromGenericContact: contact) {
-          self.viewModel.paymentRecipient = PaymentRecipient.contact(validatedContact)
-          self.updateViewWithModel()
-          self.hideRecipientInputViews()
-        } else {
-          self.showPhoneEntryView(with: contact)
+        self.coordinationDelegate?.viewController(self, checkForContactFromGenericContact: contact) { possibleValidatedContact in
+          if let validatedContact = possibleValidatedContact {
+            self.viewModel.paymentRecipient = PaymentRecipient.contact(validatedContact)
+            self.updateViewWithModel()
+            self.hideRecipientInputViews()
+          } else {
+            self.showPhoneEntryView(with: contact)
+          }
         }
       case .contact:
         self.hideRecipientInputViews()

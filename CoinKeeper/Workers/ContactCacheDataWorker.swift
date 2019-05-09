@@ -15,6 +15,7 @@ import PromiseKit
 protocol ContactCacheDataWorkerType: AnyObject {
   func refreshStatuses() -> Promise<Void>
   func reloadSystemContactsIfNeeded(force: Bool, completion: ((Error?) -> Void)?)
+  func refreshStatus(forPhoneNumber phoneNumber: GlobalPhoneNumber, completion: @escaping ((ValidatedContact?) -> Void))
 }
 
 struct CachedPhoneNumberDependencies {
@@ -62,6 +63,26 @@ class ContactCacheDataWorker: ContactCacheDataWorkerType {
         try bgContext.parent?.performThrowingAndWait {
           try bgContext.parent?.save()
         }
+    }
+  }
+
+  func refreshStatus(forPhoneNumber phoneNumber: GlobalPhoneNumber, completion: @escaping ((ValidatedContact?) -> Void)) {
+    let context = contactCacheManager.mainQueueContext
+    if let metadata = contactCacheManager.validatedMetadata(for: phoneNumber, in: context) {
+      _ = self.fetchAndPersistStatuses(fromMetadata: [metadata], in: context)
+        .done {
+          try context.save()
+          context.refresh(metadata, mergeChanges: true)
+          let foundValidNumber = metadata.firstCachedPhoneNumberByName()
+          let validatedContact = foundValidNumber.flatMap { ValidatedContact(cachedNumber: $0) }
+          completion(validatedContact)
+        }
+        .catch { error in
+          os_log("Failed to check status for phone number: %@", log: self.logger, type: .error, error.localizedDescription)
+          completion(nil)
+      }
+    } else {
+      completion(nil)
     }
   }
 
