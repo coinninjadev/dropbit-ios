@@ -33,6 +33,10 @@ extension AppCoordinator: DeviceVerificationCoordinatorDelegate {
     analyticsManager.track(property: MixpanelProperty(key: .phoneVerified, value: true))
 
     let logger = OSLog(subsystem: "com.coinninja.coinkeeper.appcoordinator", category: "phone_verification")
+    completeVerification(from: coordinator, logger: logger)
+  }
+
+  private func completeVerification(from coordinator: DeviceVerificationCoordinator, logger: OSLog) {
     if launchStateManager.profileIsActivated() {
       os_log("Profile is activated, will register wallet addresses", log: logger, type: .debug)
       registerInitialWalletAddresses()
@@ -47,6 +51,13 @@ extension AppCoordinator: DeviceVerificationCoordinatorDelegate {
     alertManager.showBanner(
       with: "Your phone number has been successfully verified. You can now send DropBits to your contacts.",
       duration: .custom(5))
+  }
+
+  func coordinator(_ coordinator: DeviceVerificationCoordinator, didVerify twitterCredentials: TwitterOAuthStorage) {
+    analyticsManager.track(event: .twitterVerified, with: nil)
+    analyticsManager.track(property: MixpanelProperty(key: .twitterVerified, value: true))
+    let logger = OSLog(subsystem: "com.coinninja.coinkeeper.appcoordinator", category: "twitter_verification")
+    completeVerification(from: coordinator, logger: logger)
   }
 
   func coordinatorSkippedPhoneVerification(_ coordinator: DeviceVerificationCoordinator) {

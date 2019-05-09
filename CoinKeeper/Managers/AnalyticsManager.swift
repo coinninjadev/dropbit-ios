@@ -13,6 +13,7 @@ import os.log
 enum AnalyticsManagerPropertiesType: String {
   case hasWallet = "Has Wallet"
   case phoneVerified = "Phone Verified"
+  case twitterVerified = "Twitter Verified"
   case wordsBackedUp = "Backed Up"
   case hasBTCBalance = "Has BTC Balance"
   case hasSent = "Has Sent"
@@ -33,6 +34,7 @@ enum AnalyticsManagerEventType: String {
   case retryFailedPayment = "RetryFailedPayment"
   case wordsBackedup = "WordsBackedUp"
   case phoneVerified = "PhoneVerified"
+  case twitterVerified = "TwitterVerified"
   case phoneAutoDeverified = "PhoneAutoDeverified"
   case skipPhoneVerification = "SkipPhoneVerification"
   case paymentToContact = "ContactSend"

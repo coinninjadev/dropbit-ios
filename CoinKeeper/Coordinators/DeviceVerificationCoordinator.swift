@@ -19,6 +19,7 @@ protocol DeviceVerificationCoordinatorDelegate: TwilioErrorDelegate {
   var alertManager: AlertManagerType { get }
 
   func coordinator(_ coordinator: DeviceVerificationCoordinator, didVerify phoneNumber: GlobalPhoneNumber)
+  func coordinator(_ coordinator: DeviceVerificationCoordinator, didVerify twitterCredentials: TwitterOAuthStorage)
   func coordinatorSkippedPhoneVerification(_ coordinator: DeviceVerificationCoordinator)
   func registerAndPersistWallet(in context: NSManagedObjectContext) -> Promise<Void>
 }
@@ -59,17 +60,26 @@ class DeviceVerificationCoordinator: ChildCoordinatorType {
       assignCoordinationDelegate(to: viewController)
       navigationController.pushViewController(viewController, animated: true)
     case .twitter:
-      guard let coordinator = coordinationDelegate else { return }
-      let context = coordinator.persistenceManager.createBackgroundContext()
+      guard let delegate = coordinationDelegate else { return }
+      let context = delegate.persistenceManager.createBackgroundContext()
       var credentials: TwitterOAuthStorage!
-      coordinator.networkManager.authorizedTwitterCredentials()
+      delegate.networkManager.authorizedTwitterCredentials()
         .get { credentials = $0 }
         .then { return Promise.value(CreateUserBody(twitterCredentials: $0)) }
-        .then(in: context) { self.registerAndPersistUser(with: $0, delegate: coordinator, in: context) }
-        .then { _ -> Promise<UserResponse> in coordinator.networkManager.verifyUser(twitterCredentials: credentials) }
-        .done { (response: UserResponse) in
+        .then(in: context) { self.registerAndPersistUser(with: $0, delegate: delegate, in: context) }
+        .then { _ -> Promise<UserResponse> in delegate.networkManager.verifyUser(twitterCredentials: credentials) }
+        .then { (response: UserResponse) -> Promise<Void> in
           os_log("user response: %@", log: self.logger, type: .debug, response.id)
+          return self.checkAndPersistVerificationStatus(from: response, crDelegate: delegate, in: context)
         }
+        .get(in: context) { _ in
+          do {
+            try context.save()
+          } catch {
+            os_log("failed to save context in %@. error: %@", log: self.logger, type: .error, #function, error.localizedDescription)
+          }
+        }
+        .done { _ in delegate.coordinator(self, didVerify: credentials) }
         .catch { error in
           os_log("failed to create or verify user in %@. error: %@", log: self.logger, type: .error, #function, error.localizedDescription)
         }
