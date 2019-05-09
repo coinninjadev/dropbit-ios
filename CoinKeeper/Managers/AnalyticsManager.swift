@@ -19,7 +19,7 @@ enum AnalyticsManagerPropertiesType: String {
   case hasReceived = "Has Received"
   case hasSentDropBit = "Has Sent DropBit"
   case hasReceivedDropBit = "Has Received DropBit"
-  case isDropBitMeEnabled = "IsDropBitMeEnabled"
+  case isDropBitMeEnabled = "DropBitMe Enabled"
 }
 
 enum AnalyticsManagerEventType: String {
