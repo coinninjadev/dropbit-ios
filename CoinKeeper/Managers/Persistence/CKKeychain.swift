@@ -114,9 +114,13 @@ class CKKeychain: PersistenceKeychainType {
     Key.allCases.forEach { self.store(anyValue: nil, key: $0) }
   }
 
-  func unverifyUser() {
-    self.store(anyValue: nil, key: .countryCode)
-    self.store(anyValue: nil, key: .phoneNumber)
+  func unverifyUser(for identity: UserIdentityType) {
+    var keys: [CKKeychain.Key] = []
+    switch identity {
+    case .phone: keys = [.countryCode, .phoneNumber]
+    case .twitter: keys = [.twitterUserId, .twitterScreenName, .twitterOAuthToken, .twitterOAuthTokenSecret]
+    }
+    keys.forEach { self.store(anyValue: nil, key: $0) }
 
     // Prevent reprompting user to verify on next launch
     self.store(anyValue: true, key: .skippedVerification)

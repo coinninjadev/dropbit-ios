@@ -143,7 +143,8 @@ class PersistenceManager: PersistenceManagerType {
     databaseManager.unverifyUser(in: self.mainQueueContext())
 
     userDefaultsManager.unverifyUser()
-    keychainManager.unverifyUser()
+    keychainManager.unverifyUser(for: .phone)
+    keychainManager.unverifyUser(for: .twitter)
   }
 
   func removeWalletId(in context: NSManagedObjectContext) {
@@ -221,10 +222,12 @@ class PersistenceManager: PersistenceManagerType {
     return databaseManager.lastChangeIndex(in: context)
   }
 
+  /// Should be called when last identity is deverified
   func deregisterPhone() {
     let context = mainQueueContext()
     databaseManager.unverifyUser(in: context)
-    keychainManager.unverifyUser()
+    keychainManager.unverifyUser(for: .phone)
+    keychainManager.unverifyUser(for: .twitter)
     userDefaultsManager.unverifyUser()
   }
 
@@ -414,6 +417,19 @@ class PersistenceManager: PersistenceManagerType {
 
   func matchContactsIfPossible() {
     databaseManager.matchContactsIfPossible(with: contactCacheManager)
+  }
+
+  func verifiedIdentities() -> [UserIdentityType] {
+    let context = mainQueueContext()
+    guard userIsVerified(in: context) else { return [] }
+    var retVal: [UserIdentityType] = []
+    if keychainManager.oauthCredentials() != nil {
+      retVal.append(.twitter)
+    }
+    if verifiedPhoneNumber() != nil {
+      retVal.append(.phone)
+    }
+    return retVal
   }
 
   func dustProtectionMinimumAmount() -> Int {

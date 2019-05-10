@@ -13,6 +13,15 @@ enum UserIdentityType: String {
   case twitter
 }
 
+extension UserIdentityType {
+  var identityDescription: String {
+    switch self {
+    case .phone: return "phone number"
+    case .twitter: return "twitter account"
+    }
+  }
+}
+
 public struct CreateUserBody: Encodable {
   let type: String
   let identity: String

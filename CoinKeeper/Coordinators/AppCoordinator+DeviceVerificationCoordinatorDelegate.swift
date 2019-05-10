@@ -33,31 +33,14 @@ extension AppCoordinator: DeviceVerificationCoordinatorDelegate {
     analyticsManager.track(property: MixpanelProperty(key: .phoneVerified, value: true))
 
     let logger = OSLog(subsystem: "com.coinninja.coinkeeper.appcoordinator", category: "phone_verification")
-    completeVerification(from: coordinator, logger: logger)
-  }
-
-  private func completeVerification(from coordinator: DeviceVerificationCoordinator, logger: OSLog) {
-    if launchStateManager.profileIsActivated() {
-      os_log("Profile is activated, will register wallet addresses", log: logger, type: .debug)
-      registerInitialWalletAddresses()
-    }
-
-    persistenceManager.keychainManager.store(anyValue: NSNumber(value: false), key: .skippedVerification)
-
-    serialQueueManager.enqueueWalletSyncIfAppropriate(type: .comprehensive, policy: .skipIfSpecificOperationExists,
-                                                      completion: nil, fetchResult: nil)
-    childCoordinatorDidComplete(childCoordinator: coordinator)
-    continueSetupFlow()
-    alertManager.showBanner(
-      with: "Your phone number has been successfully verified. You can now send DropBits to your contacts.",
-      duration: .custom(5))
+    completeVerification(from: coordinator, userIdentityType: .phone, logger: logger)
   }
 
   func coordinator(_ coordinator: DeviceVerificationCoordinator, didVerify twitterCredentials: TwitterOAuthStorage) {
     analyticsManager.track(event: .twitterVerified, with: nil)
     analyticsManager.track(property: MixpanelProperty(key: .twitterVerified, value: true))
     let logger = OSLog(subsystem: "com.coinninja.coinkeeper.appcoordinator", category: "twitter_verification")
-    completeVerification(from: coordinator, logger: logger)
+    completeVerification(from: coordinator, userIdentityType: .twitter, logger: logger)
   }
 
   func coordinatorSkippedPhoneVerification(_ coordinator: DeviceVerificationCoordinator) {
@@ -94,4 +77,22 @@ extension AppCoordinator: DeviceVerificationCoordinatorDelegate {
     }
   }
 
+  private func completeVerification(from coordinator: DeviceVerificationCoordinator, userIdentityType: UserIdentityType, logger: OSLog) {
+    let verifiedIdentities = persistenceManager.verifiedIdentities()
+    if launchStateManager.profileIsActivated() && verifiedIdentities.count == 1 {
+      os_log("Profile is activated, will register wallet addresses", log: logger, type: .debug)
+      registerInitialWalletAddresses()
+    }
+
+    persistenceManager.keychainManager.store(anyValue: NSNumber(value: false), key: .skippedVerification)
+
+    serialQueueManager.enqueueWalletSyncIfAppropriate(type: .comprehensive, policy: .skipIfSpecificOperationExists,
+                                                      completion: nil, fetchResult: nil)
+    childCoordinatorDidComplete(childCoordinator: coordinator)
+    continueSetupFlow()
+    let desc = userIdentityType.identityDescription
+    alertManager.showBanner(
+      with: "Your \(desc) has been successfully verified. You can now send DropBits to your \(userIdentityType.rawValue) contacts.",
+      duration: .custom(5))
+  }
 }

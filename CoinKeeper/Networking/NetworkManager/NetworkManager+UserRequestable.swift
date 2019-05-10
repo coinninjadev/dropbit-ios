@@ -22,6 +22,7 @@ protocol UserRequestable: AnyObject {
    */
   func resendVerification(headers: DefaultRequestHeaders, body: CreateUserBody) -> Promise<UserResponse>
 
+  func deleteIdentity(headers: DefaultRequestHeaders, identity: String) -> Promise<Void>
 }
 
 /**
@@ -102,4 +103,7 @@ extension NetworkManager: UserRequestable {
     }
   }
 
+  func deleteIdentity(headers: DefaultRequestHeaders, identity: String) -> Promise<Void> {
+    return cnProvider.requestVoid(UserTarget.deleteIdentity(headers, identity))
+  }
 }

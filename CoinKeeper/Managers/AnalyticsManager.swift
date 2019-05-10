@@ -72,6 +72,7 @@ enum AnalyticsManagerEventType: String {
   case coinKeeperContactPressed = "ContactPressed"
   case balanceHistoryButtonPressed = "BalanceHistoryBtn"
   case deregisterPhoneNumber = "DeregisterPhoneNumber"
+  case deregisterTwitter = "DeregisterTwitter"
   case tryAgainToDeverify = "TryAgainToDeregister"
   case syncBlockchain = "SyncBlockchainPressed"
   case viewWords = "ViewWords"
