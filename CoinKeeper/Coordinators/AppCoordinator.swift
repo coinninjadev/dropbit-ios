@@ -363,9 +363,7 @@ class AppCoordinator: CoordinatorType {
 
     // fetch transaction information for receive and change addresses, update server addresses
     registerForBalanceSaveNotifications()
-    trackIfUserHasWallet()
-    trackIfUserHasWordsBackedUp()
-    trackEventForFirstTimeOpeningAppIfApplicable()
+    trackAnalytics()
     UIApplication.shared.setMinimumBackgroundFetchInterval(.oneHour)
 
     let now = Date()
@@ -378,6 +376,13 @@ class AppCoordinator: CoordinatorType {
         self?.persistenceManager.set(now, for: .lastContactCacheReload)
       }
     }
+  }
+
+  private func trackAnalytics() {
+    trackEventForFirstTimeOpeningAppIfApplicable()
+    trackIfUserHasWallet()
+    trackIfUserHasWordsBackedUp()
+    trackIfDropBitMeIsEnabled()
   }
 
   private func trackEventForFirstTimeOpeningAppIfApplicable() {
@@ -400,6 +405,14 @@ class AppCoordinator: CoordinatorType {
       analyticsManager.track(property: MixpanelProperty(key: .wordsBackedUp, value: false))
     } else {
       analyticsManager.track(property: MixpanelProperty(key: .wordsBackedUp, value: true))
+    }
+  }
+
+  private func trackIfDropBitMeIsEnabled() {
+    let bgContext = self.persistenceManager.createBackgroundContext()
+    bgContext.perform {
+      let isEnabled = self.persistenceManager.getUserPublicURLInfo(in: bgContext)?.isEnabled ?? false
+      self.analyticsManager.track(property: MixpanelProperty(key: .isDropBitMeEnabled, value: isEnabled))
     }
   }
 

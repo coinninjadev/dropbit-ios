@@ -150,6 +150,7 @@ extension AppCoordinator: SerialQueueManagerDelegate {
       let debugMessage = "Failed to get \(recordType.rawValue): \(error.responseDescription)"
       let eventValue = AnalyticsEventValue(key: .errorMessage, value: debugMessage)
       self.analyticsManager.track(event: .phoneAutoDeverified, with: eventValue)
+      self.analyticsManager.track(property: MixpanelProperty(key: .isDropBitMeEnabled, value: false))
     }
 
     self.persistenceManager.unverifyUser(in: context)
