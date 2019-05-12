@@ -22,6 +22,14 @@ protocol TransactionHistoryDetailCellDelegate: class {
 class TransactionHistoryDetailBaseCell: UICollectionViewCell {
 
   // MARK: outlets
+  @IBOutlet var underlyingContentView: UIView! {
+    didSet {
+      underlyingContentView.backgroundColor = UIColor.white
+      underlyingContentView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+      underlyingContentView.layer.cornerRadius = 13
+      underlyingContentView.layer.masksToBounds = true
+    }
+  }
   @IBOutlet var closeButton: UIButton!
   @IBOutlet var questionMarkButton: UIButton!
   @IBOutlet var incomingImage: UIImageView!

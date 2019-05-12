@@ -42,6 +42,10 @@ public enum UserVerificationStatus: String {
   case verified
 }
 
+public struct UserPatchPrivateBody: Encodable {
+  let `private`: Bool
+}
+
 public enum UserResponseKey: String, KeyPathDescribable {
   public typealias ObjectType = UserResponse
   case id, phoneNumberHash, createdAt, updatedAt, status, verificationTtl, verifiedAt, walletId
@@ -56,6 +60,10 @@ public struct UserResponse: ResponseDecodable {
   let status: String
   var walletId: String?
 
+  // These properties are only available on the /user GET route
+  let `private`: Bool?
+  let identities: [PublicURLIdentity]?
+
 }
 
 extension UserResponse {
@@ -67,7 +75,18 @@ extension UserResponse {
     "created_at": 1531921356,
     "updated_at": 1531921356,
     "status": "pending-verification",
-    "wallet_id": "f8e8c20e-ba44-4bac-9a96-44f3b7ae955d"
+    "wallet_id": "f8e8c20e-ba44-4bac-9a96-44f3b7ae955d",
+    "private": false,
+    "identities": [
+      {
+      "type": "phone",
+      "handle": "abcdef123456"
+      },
+      {
+      "type": "twitter",
+      "handle": "jack"
+      }
+    ]
     }
     """
   }
@@ -78,6 +97,57 @@ extension UserResponse {
 
   static var optionalStringKeys: [WritableKeyPath<UserResponse, String?>] {
     return [\.walletId]
+  }
+
+}
+
+struct UserPublicURLInfo {
+  let `private`: Bool
+  let identities: [PublicURLIdentity]
+
+  var primaryIdentity: PublicURLIdentity? {
+    return identities.sorted().first
+  }
+
+  var isEnabled: Bool {
+    return !`private`
+  }
+
+}
+
+struct PublicURLIdentity: ResponseCodable, Comparable {
+
+  let type: String
+  let handle: String
+
+  static var sampleJSON: String {
+    return """
+    {
+    "type": "phone"
+    "handle": "abcdef123456"
+    }
+    """
+  }
+
+  init(fullPhoneHash: String) {
+    self.type = UserIdentityType.phone.rawValue
+    self.handle = String(fullPhoneHash.prefix(12))
+  }
+
+  static var requiredStringKeys: [KeyPath<PublicURLIdentity, String>] {
+    return [\.type, \.handle]
+  }
+
+  static var optionalStringKeys: [WritableKeyPath<PublicURLIdentity, String?>] {
+    return []
+  }
+
+  static func < (lhs: PublicURLIdentity, rhs: PublicURLIdentity) -> Bool {
+    guard let lhsType = UserIdentityType(rawValue: lhs.type) else {
+      return false
+    }
+
+    return lhsType == .twitter
   }
 
 }

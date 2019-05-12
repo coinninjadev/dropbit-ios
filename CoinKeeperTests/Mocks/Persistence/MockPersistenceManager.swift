@@ -252,6 +252,11 @@ class MockPersistenceManager: PersistenceManagerType {
     return Promise { _ in }
   }
 
+  func persistUserPublicURLInfo(from response: UserResponse, in context: NSManagedObjectContext) { }
+  func getUserPublicURLInfo(in context: NSManagedObjectContext) -> UserPublicURLInfo? {
+    return nil
+  }
+
   func deviceEndpointIds() -> DeviceEndpointIds? {
     return nil
   }

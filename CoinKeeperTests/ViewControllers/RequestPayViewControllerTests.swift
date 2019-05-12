@@ -105,7 +105,7 @@ class RequestPayViewControllerTests: XCTestCase {
   // MARK: mock coordinator
   class MockCoordinator: RequestPayViewControllerDelegate {
     var copiedToClipboardWasCalled = false
-    func viewControllerSuccessfullyCopiedToClipboard(_ viewController: UIViewController) {
+    func viewControllerSuccessfullyCopiedToClipboard(message: String, viewController: UIViewController) {
       copiedToClipboardWasCalled = true
     }
 
@@ -120,5 +120,6 @@ class RequestPayViewControllerTests: XCTestCase {
       didSelectSendRequestWasCalled = true
       self.payload = payload
     }
+
   }
 }

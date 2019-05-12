@@ -8,9 +8,9 @@
 
 import UIKit
 
-protocol RequestPayViewControllerDelegate: ViewControllerDismissable {
+protocol RequestPayViewControllerDelegate: ViewControllerDismissable, CopyToClipboardMessageDisplayable {
   func viewControllerDidSelectSendRequest(_ viewController: UIViewController, payload: [Any])
-  func viewControllerSuccessfullyCopiedToClipboard(_ viewController: UIViewController)
+
 }
 
 final class RequestPayViewController: PresentableViewController, StoryboardInitializable {
@@ -45,10 +45,9 @@ final class RequestPayViewController: PresentableViewController, StoryboardIniti
   @IBOutlet var receiveAddressTapGesture: UITapGestureRecognizer!
   @IBOutlet var receiveAddressBGView: UIView! {
     didSet {
-      receiveAddressBGView.layer.cornerRadius = 4.0
+      receiveAddressBGView.applyCornerRadius(4)
       receiveAddressBGView.layer.borderColor = Theme.Color.lightGrayOutline.color.cgColor
       receiveAddressBGView.layer.borderWidth = 2.0
-      receiveAddressBGView.layer.masksToBounds = true
       receiveAddressBGView.backgroundColor = .clear
     }
   }
@@ -109,6 +108,6 @@ final class RequestPayViewController: PresentableViewController, StoryboardIniti
 
   @IBAction func addressTapped(_ sender: UITapGestureRecognizer) {
     UIPasteboard.general.string = viewModel?.bitcoinUrl.components.address
-    coordinationDelegate?.viewControllerSuccessfullyCopiedToClipboard(self)
+    coordinationDelegate?.viewControllerSuccessfullyCopiedToClipboard(message: "Address copied to clipboard!", viewController: self)
   }
 }

@@ -764,6 +764,8 @@ class MockAlertManager: AlertManagerType {
     wasAskedToHideActivityHUD = true
   }
 
+  func showSuccessHUD(withStatus status: String?, duration: TimeInterval, completion: (() -> Void)?) { }
+
   func showIncomingTransactionAlert(for receivedAmount: Int, with rates: ExchangeRates) { }
 
 }

@@ -14,6 +14,7 @@ import Permission
 import AVFoundation
 import PromiseKit
 import CoreData
+import CoreLocation
 import os.log
 import PhoneNumberKit
 import MessageUI
@@ -63,13 +64,21 @@ class AppCoordinator: CoordinatorType {
   let mailComposeDelegate = MailerDelegate()
   // swiftlint:disable:next weak_delegate
   let messageComposeDelegate = MessagerDelegate()
+  // swiftlint:disable:next weak_delegate
+  let locationDelegate = LocationManagerDelegate()
 
   let currencyController: CurrencyController
 
   private let maxSecondsInBackground: TimeInterval = 30
+
+  /// Assign a future date and upon app open, this will skip the need
+  /// for authentication (only once), up until the specified date.
+  var suspendAuthenticationOnceUntil: Date?
+
   private let notificationLogger = OSLog(subsystem: "com.coinninja.appCoordinator", category: "notifications")
   let phoneNumberKit = PhoneNumberKit()
   let contactStore = CNContactStore()
+  let locationManager = CLLocationManager()
 
   var bitcoinURLToOpen: BitcoinURL?
 
@@ -130,6 +139,7 @@ class AppCoordinator: CoordinatorType {
     self.messageManager = MessageManager(alertManager: alertMgr, persistenceManager: persistenceManager)
     self.notificationManager = notificationMgr
     self.notificationManager.delegate = self
+    self.locationManager.delegate = self.locationDelegate
 
     setCurrentCoin()
 
@@ -217,6 +227,10 @@ class AppCoordinator: CoordinatorType {
         default:
           break
         }
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+          self?.presentDropBitMeViewController(verifiedFirstTime: true)
+        }
       }
     })
 
@@ -266,7 +280,7 @@ class AppCoordinator: CoordinatorType {
 
         // StartViewController is the default root VC
         // Child coordinator will push DeviceVerificationViewController onto stack in its start() method
-        startDeviceVerificationFlow(shouldOrphanRoot: true)
+        startDeviceVerificationFlow(shouldOrphanRoot: true, isInitialSetupFlow: true)
       } else if launchStateManager.isFirstTime() {
         startNewWalletFlow()
       }
@@ -349,9 +363,7 @@ class AppCoordinator: CoordinatorType {
 
     // fetch transaction information for receive and change addresses, update server addresses
     registerForBalanceSaveNotifications()
-    trackIfUserHasWallet()
-    trackIfUserHasWordsBackedUp()
-    trackEventForFirstTimeOpeningAppIfApplicable()
+    trackAnalytics()
     UIApplication.shared.setMinimumBackgroundFetchInterval(.oneHour)
 
     let now = Date()
@@ -364,6 +376,13 @@ class AppCoordinator: CoordinatorType {
         self?.persistenceManager.set(now, for: .lastContactCacheReload)
       }
     }
+  }
+
+  private func trackAnalytics() {
+    trackEventForFirstTimeOpeningAppIfApplicable()
+    trackIfUserHasWallet()
+    trackIfUserHasWordsBackedUp()
+    trackIfDropBitMeIsEnabled()
   }
 
   private func trackEventForFirstTimeOpeningAppIfApplicable() {
@@ -386,6 +405,14 @@ class AppCoordinator: CoordinatorType {
       analyticsManager.track(property: MixpanelProperty(key: .wordsBackedUp, value: false))
     } else {
       analyticsManager.track(property: MixpanelProperty(key: .wordsBackedUp, value: true))
+    }
+  }
+
+  private func trackIfDropBitMeIsEnabled() {
+    let bgContext = self.persistenceManager.createBackgroundContext()
+    bgContext.perform {
+      let isEnabled = self.persistenceManager.getUserPublicURLInfo(in: bgContext)?.isEnabled ?? false
+      self.analyticsManager.track(property: MixpanelProperty(key: .isDropBitMeEnabled, value: isEnabled))
     }
   }
 
@@ -504,11 +531,22 @@ class AppCoordinator: CoordinatorType {
     resetWalletManagerIfNeeded()
     connectionManager.start()
 
+    analyticsManager.track(event: .appOpen, with: nil)
+
+    authenticateOnBecomingActiveIfNeeded()
+
+    refreshContacts()
+  }
+
+  private func authenticateOnBecomingActiveIfNeeded() {
+    defer { self.suspendAuthenticationOnceUntil = nil }
+    if let suspendUntil = self.suspendAuthenticationOnceUntil, suspendUntil > Date() {
+      return
+    }
+
     // check keychain time interval for resigned time, and if within 30 sec, don't require
     let now = Date().timeIntervalSince1970
     let lastLogin = persistenceManager.lastLoginTime() ?? Date.distantPast.timeIntervalSince1970
-
-    analyticsManager.track(event: .appOpen, with: nil)
 
     let secondsSinceLastLogin = now - lastLogin
     if secondsSinceLastLogin > maxSecondsInBackground {
@@ -518,8 +556,6 @@ class AppCoordinator: CoordinatorType {
         self.continueSetupFlow()
       })
     }
-
-    refreshContacts()
   }
 
   func resetWalletManagerIfNeeded() {
@@ -535,6 +571,10 @@ class AppCoordinator: CoordinatorType {
     resetWalletManagerIfNeeded()
     handlePendingBitcoinURL()
     refreshContacts()
+
+    if self.permissionManager.permissionStatus(for: .location) == .authorized {
+      self.locationManager.requestLocation()
+    }
   }
 
   /// Handle app leaving active state, either becoming inactive, entering background, or terminating.
@@ -594,9 +634,9 @@ class AppCoordinator: CoordinatorType {
     switch launchStateManager.nextLaunchStep {
     case .enterPin:       startFirstTimeWalletCreationFlow()
     case .createWallet:   startCreateRecoveryWordsFlow()
-    case .verifyDevice:   startDeviceVerificationFlow(shouldOrphanRoot: true)
-    case .enterApp: validToStartEnteringApp()
-    case .phoneRestore: startFirstTimeAfteriCloudRestore()
+    case .verifyDevice:   startDeviceVerificationFlow(shouldOrphanRoot: true, isInitialSetupFlow: true)
+    case .enterApp:       validToStartEnteringApp()
+    case .phoneRestore:   startFirstTimeAfteriCloudRestore()
     }
   }
 
@@ -637,10 +677,11 @@ class AppCoordinator: CoordinatorType {
     }
   }
 
-  func startDeviceVerificationFlow(shouldOrphanRoot: Bool) {
+  func startDeviceVerificationFlow(shouldOrphanRoot: Bool, isInitialSetupFlow: Bool) {
     func performFunction() {
 
       let childCoordinator = DeviceVerificationCoordinator(navigationController, shouldOrphanRoot: shouldOrphanRoot)
+      childCoordinator.isInitialSetupFlow = isInitialSetupFlow
       startChildCoordinator(childCoordinator: childCoordinator)
     }
 

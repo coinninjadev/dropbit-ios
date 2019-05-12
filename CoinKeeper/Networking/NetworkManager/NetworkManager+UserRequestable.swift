@@ -14,6 +14,7 @@ protocol UserRequestable: AnyObject {
   func verifyUser(phoneNumber: GlobalPhoneNumber, code: String) -> Promise<UserResponse>
   func getUser() -> Promise<UserResponse>
   func queryUsers(phoneNumberHashes: [String]) -> Promise<StringDictResponse>
+  func updateUserPublicURL(isPrivate: Bool) -> Promise<UserResponse>
 
   /**
    This is typically used when the entered verification code is incorrect or expired.
@@ -95,6 +96,10 @@ extension NetworkManager: UserRequestable {
           throw error
         }
     }
+  }
+
+  func updateUserPublicURL(isPrivate: Bool) -> Promise<UserResponse> {
+    return cnProvider.request(UserTarget.updateIsPrivate(isPrivate))
   }
 
 }

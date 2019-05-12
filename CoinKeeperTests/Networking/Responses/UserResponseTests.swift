@@ -36,6 +36,9 @@ extension UserResponse: EmptyStringCopyable {
                         createdAt: self.createdAt,
                         updatedAt: self.updatedAt,
                         status: "",
-                        walletId: self.walletId)
+                        walletId: self.walletId,
+                        private: false,
+                        identities: []
+    )
   }
 }

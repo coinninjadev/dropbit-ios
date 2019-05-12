@@ -129,6 +129,12 @@ class MockSendPaymentViewControllerCoordinator: SendPaymentViewControllerCoordin
 
   }
 
+  func viewController(_ viewController: UIViewController,
+                      checkForContactFromGenericContact genericContact: GenericContact,
+                      completion: @escaping ((ValidatedContact?) -> Void)) {
+    completion(nil)
+  }
+
   func sendPaymentViewControllerDidLoad(_ viewController: UIViewController) {
 
   }
@@ -148,5 +154,6 @@ class MockSendPaymentViewControllerCoordinator: SendPaymentViewControllerCoordin
   }
 
   func openURL(_ url: URL, completionHandler completion: (() -> Void)?) { }
+  func openURLExternally(_ url: URL, completionHandler completion: ((Bool) -> Void)?) { }
 
 }

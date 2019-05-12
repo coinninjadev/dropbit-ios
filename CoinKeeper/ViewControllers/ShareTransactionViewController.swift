@@ -13,6 +13,7 @@ protocol ViewControllerDontShowable: AnyObject {
 }
 protocol ShareTransactionViewControllerDelegate: ViewControllerDismissable, ViewControllerDontShowable {
   func viewControllerRequestedShareTransactionOnTwitter(_ viewController: UIViewController)
+  func viewControllerRequestedShareNextTime(_ viewController: UIViewController)
 }
 
 class ShareTransactionViewController: UIViewController, StoryboardInitializable {
@@ -29,7 +30,7 @@ class ShareTransactionViewController: UIViewController, StoryboardInitializable 
   }
 
   @IBAction func performNextTime(_ sender: Any) {
-    delegate?.viewControllerDidSelectClose(self)
+    delegate?.viewControllerRequestedShareNextTime(self)
   }
 
   @IBAction func performDontAskAgain(_ sender: Any) {
@@ -67,8 +68,7 @@ class ShareTransactionViewController: UIViewController, StoryboardInitializable 
     dontAskAgainButton.titleLabel?.font = Theme.Font.primaryButtonTitle.font
     dontAskAgainButton.setTitleColor(Theme.Color.grayText.color, for: .normal)
     dontAskAgainFadedBackground.backgroundColor = Theme.Color.primaryActionButton.color
-    dontAskAgainFadedBackground.layer.masksToBounds = true
-    dontAskAgainFadedBackground.layer.cornerRadius = 4
+    dontAskAgainFadedBackground.applyCornerRadius(4)
   }
 
   private func configureTwitterButton() {
@@ -87,8 +87,7 @@ class ShareTransactionViewController: UIViewController, StoryboardInitializable 
 
     twitterButton.setAttributedTitle(attributedTitle, for: .normal)
     twitterButton.backgroundColor = Theme.Color.primaryActionButton.color
-    twitterButton.layer.masksToBounds = true
-    twitterButton.layer.cornerRadius = 4
+    twitterButton.applyCornerRadius(4)
   }
 
 }

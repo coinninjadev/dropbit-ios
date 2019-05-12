@@ -15,4 +15,8 @@ extension AppCoordinator: URLOpener {
     safariController.modalPresentationStyle = .overFullScreen
     navigationController.topViewController()?.present(safariController, animated: true, completion: completion)
   }
+
+  func openURLExternally(_ url: URL, completionHandler completion: ((Bool) -> Void)?) {
+    UIApplication.shared.open(url, options: [:], completionHandler: completion)
+  }
 }

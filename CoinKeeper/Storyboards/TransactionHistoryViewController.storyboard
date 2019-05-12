@@ -123,21 +123,21 @@
                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="9" translatesAutoresizingMaskIntoConstraints="NO" id="pTG-qY-BBs">
                                     <rect key="frame" x="0.0" y="79" width="168" height="111"/>
                                     <subviews>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XXe-17-1Q2" customClass="PrimaryActionButton" customModule="DropBit" customModuleProvider="target">
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wep-5O-LIJ" customClass="PrimaryActionButton" customModule="DropBit" customModuleProvider="target">
                                             <rect key="frame" x="0.0" y="0.0" width="168" height="51"/>
+                                            <state key="normal" title="Learn Bitcoin"/>
+                                            <connections>
+                                                <action selector="learnAboutBitcoin" destination="Ktw-Zy-1lf" eventType="touchUpInside" id="LmD-IX-YNf"/>
+                                            </connections>
+                                        </button>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XXe-17-1Q2" customClass="PrimaryActionButton" customModule="DropBit" customModuleProvider="target">
+                                            <rect key="frame" x="0.0" y="60" width="168" height="51"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="51" id="nGS-kS-KEi"/>
                                             </constraints>
                                             <state key="normal" title="Get Bitcoin"/>
                                             <connections>
                                                 <action selector="getBitcoin" destination="Ktw-Zy-1lf" eventType="touchUpInside" id="fJW-8p-S14"/>
-                                            </connections>
-                                        </button>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wep-5O-LIJ" customClass="PrimaryActionButton" customModule="DropBit" customModuleProvider="target">
-                                            <rect key="frame" x="0.0" y="60" width="168" height="51"/>
-                                            <state key="normal" title="Learn Bitcoin"/>
-                                            <connections>
-                                                <action selector="learnAboutBitcoin" destination="Ktw-Zy-1lf" eventType="touchUpInside" id="LmD-IX-YNf"/>
                                             </connections>
                                         </button>
                                     </subviews>
@@ -171,21 +171,21 @@
                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="9" translatesAutoresizingMaskIntoConstraints="NO" id="2o1-Ga-aS5">
                             <rect key="frame" x="36" y="8" width="168" height="171"/>
                             <subviews>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Oj5-Ua-avq" customClass="PrimaryActionButton" customModule="DropBit" customModuleProvider="target">
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hiW-0W-H8G" customClass="PrimaryActionButton" customModule="DropBit" customModuleProvider="target">
                                     <rect key="frame" x="0.0" y="0.0" width="168" height="51"/>
+                                    <state key="normal" title="Learn Bitcoin"/>
+                                    <connections>
+                                        <action selector="learnAboutBitcoin" destination="Ew6-Jf-eqb" eventType="touchUpInside" id="Tqz-GC-r6I"/>
+                                    </connections>
+                                </button>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Oj5-Ua-avq" customClass="PrimaryActionButton" customModule="DropBit" customModuleProvider="target">
+                                    <rect key="frame" x="0.0" y="60" width="168" height="51"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="51" id="Xu7-pV-L3G"/>
                                     </constraints>
                                     <state key="normal" title="Get Bitcoin"/>
                                     <connections>
                                         <action selector="getBitcoin" destination="Ew6-Jf-eqb" eventType="touchUpInside" id="ZyO-wg-4dg"/>
-                                    </connections>
-                                </button>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hiW-0W-H8G" customClass="PrimaryActionButton" customModule="DropBit" customModuleProvider="target">
-                                    <rect key="frame" x="0.0" y="60" width="168" height="51"/>
-                                    <state key="normal" title="Learn Bitcoin"/>
-                                    <connections>
-                                        <action selector="learnAboutBitcoin" destination="Ew6-Jf-eqb" eventType="touchUpInside" id="Tqz-GC-r6I"/>
                                     </connections>
                                 </button>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hB7-Jf-4qE" customClass="PrimaryActionButton" customModule="DropBit" customModuleProvider="target">
