@@ -22,21 +22,6 @@ extension UserIdentityType {
   }
 }
 
-public struct CreateUserBody: Encodable {
-  let type: String
-  let identity: String
-
-  init(phoneNumber: GlobalPhoneNumber) {
-    self.type = UserIdentityType.phone.rawValue
-    self.identity = phoneNumber.sanitizedGlobalNumber()
-  }
-
-  init(twitterCredentials: TwitterOAuthStorage) {
-    self.type = UserIdentityType.twitter.rawValue
-    self.identity = twitterCredentials.twitterUserId
-  }
-}
-
 public struct VerifyUserBody: Encodable {
   let type: String
   let identity: String

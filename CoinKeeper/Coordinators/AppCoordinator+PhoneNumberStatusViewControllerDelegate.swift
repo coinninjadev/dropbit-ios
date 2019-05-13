@@ -148,9 +148,7 @@ extension AppCoordinator: PhoneNumberStatusViewControllerDelegate {
   }
 
   private func unverifyTwitterConfiguration(identity: String) -> Promise<Void> {
-    let context = persistenceManager.mainQueueContext()
-    return self.persistenceManager.defaultHeaders(in: context)
-      .then { self.networkManager.deleteIdentity(headers: $0, identity: identity) }
+    return self.networkManager.deleteIdentity(identity: identity)
       .done { _ in
         self.alertManager.hideActivityHUD(withDelay: nil, completion: nil)
         self.analyticsManager.track(event: .deregisterTwitter, with: nil)
@@ -160,9 +158,7 @@ extension AppCoordinator: PhoneNumberStatusViewControllerDelegate {
   }
 
   private func unverifyPhoneConfiguration(identity: String) -> Promise<Void> {
-    let context = persistenceManager.mainQueueContext()
-    return self.persistenceManager.defaultHeaders(in: context)
-      .then { self.networkManager.deleteIdentity(headers: $0, identity: identity) }
+    return self.networkManager.deleteIdentity(identity: identity)
       .done { _ in
         self.alertManager.hideActivityHUD(withDelay: nil, completion: nil)
         self.analyticsManager.track(event: .deregisterPhoneNumber, with: nil)

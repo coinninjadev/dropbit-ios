@@ -221,6 +221,9 @@
 		3B86F78E203C6E2300D15231 /* PinEntryViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B86F78D203C6E2300D15231 /* PinEntryViewControllerTests.swift */; };
 		3B86F7B4203CA2F700D15231 /* String+Hashing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B86F7B3203CA2F700D15231 /* String+Hashing.swift */; };
 		3B8ACA15225F96800020B684 /* GetBitcoinViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3B8ACA14225F96800020B684 /* GetBitcoinViewController.storyboard */; };
+		3B8B19312289BB25003BA4D7 /* AuthenticationSuspendable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B8B19302289BB25003BA4D7 /* AuthenticationSuspendable.swift */; };
+		3B8B19332289C1EF003BA4D7 /* UserIdentityResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B8B19322289C1EF003BA4D7 /* UserIdentityResponse.swift */; };
+		3B8B19352289C44B003BA4D7 /* UserIdentityTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B8B19342289C44B003BA4D7 /* UserIdentityTarget.swift */; };
 		3B8C40BF20784A2E008283A2 /* PresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B8C40BE20784A2E008283A2 /* PresentationController.swift */; };
 		3B8C40C12078D6F1008283A2 /* PresentableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B8C40C02078D6F1008283A2 /* PresentableViewController.swift */; };
 		3B8FA48320C16F5C0074B617 /* CKMTemporarySentTransaction+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B8FA48120C16F5C0074B617 /* CKMTemporarySentTransaction+CoreDataClass.swift */; };
@@ -1028,6 +1031,9 @@
 		3B86F7B5203CA3B000D15231 /* CoinKeeper-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "CoinKeeper-Bridging-Header.h"; sourceTree = "<group>"; };
 		3B86F7B9203CA4B500D15231 /* CoinKeeperTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "CoinKeeperTests-Bridging-Header.h"; sourceTree = "<group>"; };
 		3B8ACA14225F96800020B684 /* GetBitcoinViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = GetBitcoinViewController.storyboard; sourceTree = "<group>"; };
+		3B8B19302289BB25003BA4D7 /* AuthenticationSuspendable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationSuspendable.swift; sourceTree = "<group>"; };
+		3B8B19322289C1EF003BA4D7 /* UserIdentityResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserIdentityResponse.swift; sourceTree = "<group>"; };
+		3B8B19342289C44B003BA4D7 /* UserIdentityTarget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserIdentityTarget.swift; sourceTree = "<group>"; };
 		3B8C40BE20784A2E008283A2 /* PresentationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PresentationController.swift; sourceTree = "<group>"; };
 		3B8C40C02078D6F1008283A2 /* PresentableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentableViewController.swift; sourceTree = "<group>"; };
 		3B8FA48120C16F5C0074B617 /* CKMTemporarySentTransaction+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CKMTemporarySentTransaction+CoreDataClass.swift"; sourceTree = "<group>"; };
@@ -2568,6 +2574,7 @@
 				3B489D7F216FC5750078D3F0 /* SubscriptionResponse.swift */,
 				3B474160217FAE32004DA223 /* GeneralSubscriptionResponse.swift */,
 				3B474162217FB589004DA223 /* SubscriptionAvailableTopicResponse.swift */,
+				3B8B19322289C1EF003BA4D7 /* UserIdentityResponse.swift */,
 			);
 			path = Responses;
 			sourceTree = "<group>";
@@ -2643,6 +2650,7 @@
 				3B9A8DF42150371800C78C2C /* WalletDelegateType.swift */,
 				30BF4FEF21B728FA0018AE87 /* PopoverViewControllerType.swift */,
 				3B695C1F21CA9F9B007D0741 /* OperationQueueType.swift */,
+				3B8B19302289BB25003BA4D7 /* AuthenticationSuspendable.swift */,
 			);
 			path = Protocols;
 			sourceTree = "<group>";
@@ -2913,6 +2921,7 @@
 				B56512F52153DDA500A5D044 /* WalletCheckInTarget.swift */,
 				3B474164217FB6A4004DA223 /* GeneralSubscriptionTarget.swift */,
 				3BDFADFB2267AEFF0077DEF2 /* BlockstreamTarget.swift */,
+				3B8B19342289C44B003BA4D7 /* UserIdentityTarget.swift */,
 			);
 			path = Targets;
 			sourceTree = "<group>";
@@ -3445,6 +3454,7 @@
 				307DF11F2151676900260369 /* JSONValue.swift in Sources */,
 				3B8C40C12078D6F1008283A2 /* PresentableViewController.swift in Sources */,
 				B54A4215207FF310005B40A9 /* TransactionDetailSecondaryAmountLabel.swift in Sources */,
+				3B8B19332289C1EF003BA4D7 /* UserIdentityResponse.swift in Sources */,
 				B5C5EDE321FA41FF0032AC94 /* SharedPayloadV1.swift in Sources */,
 				B552EDF9211E33D000332BB5 /* PermissionManager.swift in Sources */,
 				3B26F1E022566EAA00F3E00F /* AppCoordinator+SelectedCurrencyUpdatable.swift in Sources */,
@@ -3741,6 +3751,7 @@
 				3BC9E5522047440900444A53 /* CreateRecoveryWordCellData.swift in Sources */,
 				3B474157217E4E4E004DA223 /* URLRequest+Helpers.swift in Sources */,
 				308F6F05217F97F50094D6CB /* DragIndiciatorView.swift in Sources */,
+				3B8B19312289BB25003BA4D7 /* AuthenticationSuspendable.swift in Sources */,
 				3BF3B0C521737A4D0021E45F /* SubscribeToWalletTarget.swift in Sources */,
 				B5EBFD0F215C01E30008EB4A /* MockAddressDataSource.swift in Sources */,
 				B58AFF2E21948891001BE563 /* UITestDefaultsKey.swift in Sources */,
@@ -3760,6 +3771,7 @@
 				B54090F82270AC7D00E53B80 /* AppCoordinator+DropBitMeViewControllerDelegate.swift in Sources */,
 				B5B27E902088D91800D4DB89 /* NSMutableAttributedString+Constructors.swift in Sources */,
 				A2E52D8820BE3A3F00424E6A /* Data+HexString.swift in Sources */,
+				3B8B19352289C44B003BA4D7 /* UserIdentityTarget.swift in Sources */,
 				307DF11D2150394400260369 /* MessagesManager.swift in Sources */,
 				3B6FDAE82052DACA0091916A /* VerifyRecoveryWordsViewModel.swift in Sources */,
 				A293E35220F798920099ED69 /* TransactionHistoryEmptyView.swift in Sources */,

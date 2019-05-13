@@ -11,7 +11,7 @@ import PromiseKit
 
 extension MockNetworkManager: UserRequestable {
 
-  func createUser(walletId: String, body: CreateUserBody) -> Promise<UserResponse> {
+  func createUser(walletId: String, body: UserIdentityBody) -> Promise<UserResponse> {
     return Promise { _ in }
   }
 
@@ -35,7 +35,7 @@ extension MockNetworkManager: UserRequestable {
     return Promise { _ in }
   }
 
-  func resendVerification(headers: DefaultRequestHeaders, body: CreateUserBody) -> Promise<UserResponse> {
+  func resendVerification(headers: DefaultRequestHeaders, body: UserIdentityBody) -> Promise<UserResponse> {
     return Promise { _ in }
   }
 

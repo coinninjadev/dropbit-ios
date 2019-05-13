@@ -11,15 +11,15 @@ import Moya
 public enum UserTarget: CoinNinjaTargetType {
   typealias ResponseType = UserResponse
 
-  case create(CreateUserHeaders, CreateUserBody)
+  case create(CreateUserHeaders, UserIdentityBody)
   case get
   case verify(VerifyUserBody)
   case updateIsPrivate(Bool)
 
   /// Headers reference UserID returned by server instead of local persistence
-  case resendVerification(DefaultRequestHeaders, CreateUserBody)
+  case resendVerification(DefaultRequestHeaders, UserIdentityBody)
 
-  case deleteIdentity(DefaultRequestHeaders, String)
+  case deleteIdentity(String)
 }
 
 extension UserTarget {
@@ -32,7 +32,7 @@ extension UserTarget {
     switch self {
     case .verify: return "verify"
     case .resendVerification: return "resend"
-    case .deleteIdentity(_, let identity): return "identity/\(identity)"
+    case .deleteIdentity(let identity): return "identity/\(identity)"
     default: return nil
     }
   }
@@ -58,7 +58,6 @@ extension UserTarget {
 
     case .verify(let body):
       return .requestCustomJSONEncodable(body, encoder: customEncoder)
-
     case .resendVerification(_, let body):
       return .requestCustomJSONEncodable(body, encoder: customEncoder)
     case .updateIsPrivate(let isPrivate):
@@ -82,7 +81,6 @@ extension UserTarget {
     switch self {
     case .create(let headers, _):             return headers.dictionary
     case .resendVerification(let headers, _): return headers.dictionary
-    case .deleteIdentity(let headers, _):     return headers.dictionary
     default:                                  return nil
     }
   }

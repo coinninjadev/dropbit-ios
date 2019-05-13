@@ -28,19 +28,16 @@ extension AppCoordinator: DeviceVerificationCoordinatorDelegate {
       .then(in: context) { self.persistenceManager.persistWalletId(from: $0, in: context) }
   }
 
-  func coordinator(_ coordinator: DeviceVerificationCoordinator, didVerify phoneNumber: GlobalPhoneNumber, isInitialSetupFlow: Bool) {
-    analyticsManager.track(event: .phoneVerified, with: nil)
-    analyticsManager.track(property: MixpanelProperty(key: .phoneVerified, value: true))
-
-    let logger = OSLog(subsystem: "com.coinninja.coinkeeper.appcoordinator", category: "phone_verification")
-    completeVerification(from: coordinator, userIdentityType: .phone, logger: logger, isInitialSetupFlow: false)
-  }
-
-  func coordinator(_ coordinator: DeviceVerificationCoordinator, didVerify twitterCredentials: TwitterOAuthStorage, isInitialSetupFlow: Bool) {
-    analyticsManager.track(event: .twitterVerified, with: nil)
-    analyticsManager.track(property: MixpanelProperty(key: .twitterVerified, value: true))
-    let logger = OSLog(subsystem: "com.coinninja.coinkeeper.appcoordinator", category: "twitter_verification")
-    completeVerification(from: coordinator, userIdentityType: .twitter, logger: logger, isInitialSetupFlow: false)
+  func coordinator(_ coordinator: DeviceVerificationCoordinator, didVerify type: UserIdentityType, isInitialSetupFlow: Bool) {
+    switch type {
+    case .phone:
+      analyticsManager.track(event: .phoneVerified, with: nil)
+      analyticsManager.track(property: MixpanelProperty(key: .phoneVerified, value: true))
+    case .twitter:
+      analyticsManager.track(event: .twitterVerified, with: nil)
+      analyticsManager.track(property: MixpanelProperty(key: .twitterVerified, value: true))
+    }
+    completeVerification(from: coordinator, userIdentityType: type, isInitialSetupFlow: isInitialSetupFlow)
   }
 
   func coordinatorSkippedPhoneVerification(_ coordinator: DeviceVerificationCoordinator) {
@@ -80,8 +77,10 @@ extension AppCoordinator: DeviceVerificationCoordinatorDelegate {
   private func completeVerification(
     from coordinator: DeviceVerificationCoordinator,
     userIdentityType: UserIdentityType,
-    logger: OSLog,
     isInitialSetupFlow: Bool) {
+
+    let logger = OSLog(subsystem: "com.coinninja.coinkeeper.appcoordinator", category: "verification")
+
     let verifiedIdentities = persistenceManager.verifiedIdentities()
     if launchStateManager.profileIsActivated() && verifiedIdentities.count == 1 {
       os_log("Profile is activated, will register wallet addresses", log: logger, type: .debug)

@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 import PhoneNumberKit
 
-protocol PhoneNumberStatusViewControllerDelegate: ViewControllerDismissable {
+protocol PhoneNumberStatusViewControllerDelegate: ViewControllerDismissable, AuthenticationSuspendable {
   func verifiedPhoneNumber() -> GlobalPhoneNumber?
   func verifiedTwitterHandle() -> String?
   func viewControllerDidRequestAddresses() -> [ServerAddressViewModel]
@@ -163,6 +163,7 @@ class PhoneNumberStatusViewController: BaseViewController, StoryboardInitializab
   }
 
   @IBAction func verifyTwitter() {
+    coordinationDelegate?.viewControllerRequestedAuthenticationSuspension(self)
     coordinationDelegate?.viewControllerDidSelectVerifyTwitter(self)
   }
 
