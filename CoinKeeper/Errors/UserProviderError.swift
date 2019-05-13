@@ -13,8 +13,8 @@ enum UserProviderError: Error, LocalizedError {
   case noConfirmations
   case codeInvalid
   case unexpectedStatus(UserVerificationStatus)
-  case userAlreadyExists(String, CreateUserBody) //user ID, body
-  case twilioError(UserResponse, CreateUserBody)
+  case userAlreadyExists(String, UserIdentityBody) //user ID, body
+  case twilioError(UserResponse, UserIdentityBody)
   case resourceAlreadyExists
 
   var errorDescription: String? {

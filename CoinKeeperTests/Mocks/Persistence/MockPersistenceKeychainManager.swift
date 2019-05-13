@@ -12,7 +12,7 @@ import Foundation
 class MockPersistenceKeychainManager: PersistenceKeychainType {
   func backup(recoveryWords words: [String]) {}
   func deleteAll() {}
-  func unverifyUser() {}
+  func unverifyUser(for identity: UserIdentityType) {}
 
   func bool(for key: CKKeychain.Key) -> Bool? {
     return nil
@@ -62,6 +62,13 @@ class MockPersistenceKeychainManager: PersistenceKeychainType {
     return values[key.rawValue]
   }
 
+  func store(oauthCredentials: TwitterOAuthStorage) -> Bool {
+    return true
+  }
+
+  func oauthCredentials() -> TwitterOAuthStorage? {
+    return nil
+  }
 }
 
 class MockKeychainAccessorType: KeychainAccessorType {

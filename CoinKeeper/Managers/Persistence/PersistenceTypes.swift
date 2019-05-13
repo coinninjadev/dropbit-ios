@@ -100,7 +100,7 @@ protocol PersistenceManagerType: DeviceCountryCodeProvider {
   func unverifyUser(in context: NSManagedObjectContext)
 
   func verifiedPhoneNumber() -> GlobalPhoneNumber?
-  func deregisterPhone()
+  func unverifyAllIdentities()
 
   /// Called when local walletId is no longer valid on server
   func removeWalletId(in context: NSManagedObjectContext)
@@ -150,6 +150,8 @@ protocol PersistenceManagerType: DeviceCountryCodeProvider {
 
   /// Look for any transactions sent to a phone number without a contact name, and provide a name if found, as a convenience when viewing tx history
   func matchContactsIfPossible()
+
+  func verifiedIdentities() -> [UserIdentityType]
 }
 
 extension PersistenceManagerType {
@@ -174,14 +176,19 @@ protocol PersistenceKeychainType: AnyObject {
   @discardableResult
   func store(userPin pin: String) -> Bool
 
+  @discardableResult
+  func store(oauthCredentials: TwitterOAuthStorage) -> Bool
+
   func retrieveValue(for key: CKKeychain.Key) -> Any?
   func bool(for key: CKKeychain.Key) -> Bool?
 
   func backup(recoveryWords words: [String])
   func walletWordsBackedUp() -> Bool
 
+  func oauthCredentials() -> TwitterOAuthStorage?
+
   func deleteAll()
-  func unverifyUser()
+  func unverifyUser(for identity: UserIdentityType)
 
   init(store: KeychainAccessorType)
 }

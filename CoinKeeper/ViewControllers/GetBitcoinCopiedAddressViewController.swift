@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol GetBitcoinCopiedAddressViewControllerDelegate: ViewControllerDismissable, URLOpener {
+protocol GetBitcoinCopiedAddressViewControllerDelegate: ViewControllerDismissable, URLOpener, AuthenticationSuspendable {
   func viewControllerDidCopyAddress(_ viewController: UIViewController)
   func viewControllerRequestedAuthenticationSuspension(_ viewController: UIViewController)
 }

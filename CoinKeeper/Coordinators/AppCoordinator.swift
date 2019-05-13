@@ -280,7 +280,7 @@ class AppCoordinator: CoordinatorType {
 
         // StartViewController is the default root VC
         // Child coordinator will push DeviceVerificationViewController onto stack in its start() method
-        startDeviceVerificationFlow(shouldOrphanRoot: true, isInitialSetupFlow: true)
+        startDeviceVerificationFlow(userIdentityType: .phone, shouldOrphanRoot: true, isInitialSetupFlow: true)
       } else if launchStateManager.isFirstTime() {
         startNewWalletFlow()
       }
@@ -634,7 +634,7 @@ class AppCoordinator: CoordinatorType {
     switch launchStateManager.nextLaunchStep {
     case .enterPin:       startFirstTimeWalletCreationFlow()
     case .createWallet:   startCreateRecoveryWordsFlow()
-    case .verifyDevice:   startDeviceVerificationFlow(shouldOrphanRoot: true, isInitialSetupFlow: true)
+    case .verifyDevice:   startDeviceVerificationFlow(userIdentityType: .phone, shouldOrphanRoot: true, isInitialSetupFlow: true)
     case .enterApp:       validToStartEnteringApp()
     case .phoneRestore:   startFirstTimeAfteriCloudRestore()
     }
@@ -677,10 +677,10 @@ class AppCoordinator: CoordinatorType {
     }
   }
 
-  func startDeviceVerificationFlow(shouldOrphanRoot: Bool, isInitialSetupFlow: Bool) {
+  func startDeviceVerificationFlow(userIdentityType type: UserIdentityType, shouldOrphanRoot: Bool, isInitialSetupFlow: Bool) {
     func performFunction() {
 
-      let childCoordinator = DeviceVerificationCoordinator(navigationController, shouldOrphanRoot: shouldOrphanRoot)
+      let childCoordinator = DeviceVerificationCoordinator(navigationController, userIdentityType: type, shouldOrphanRoot: shouldOrphanRoot)
       childCoordinator.isInitialSetupFlow = isInitialSetupFlow
       startChildCoordinator(childCoordinator: childCoordinator)
     }

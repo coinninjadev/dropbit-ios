@@ -136,11 +136,20 @@ extension AppCoordinator: SerialQueueManagerDelegate {
   private func unverifyUser(forError error: MoyaError, recordType: RecordType, in context: NSManagedObjectContext) {
     let isDeviceUUIDMismatch = error.responseDescription.contains(NetworkErrorIdentifier.deviceUUIDMismatch.rawValue)
 
+    var deviceDescriptions: [String] = []
+    if persistenceManager.verifiedPhoneNumber() != nil {
+      deviceDescriptions.append("phone number")
+    }
+    if persistenceManager.keychainManager.oauthCredentials() != nil {
+      deviceDescriptions.append("twitter account")
+    }
+    let deviceDescription = deviceDescriptions.joined(separator: " or ")
     let errorMessage: String
     if isDeviceUUIDMismatch {
-      errorMessage = "The phone number associated with this device is no longer registered. A new device has been registered with this phone number."
+      errorMessage = "The \(deviceDescription) associated with this device is no longer registered." +
+      " A new device has been registered with this \(deviceDescription)."
     } else {
-      errorMessage = "The phone number associated with this device has been unregistered."
+      errorMessage = "The \(deviceDescription) associated with this device has been unregistered."
     }
 
     // Prevent showing banner if they have already been unverified

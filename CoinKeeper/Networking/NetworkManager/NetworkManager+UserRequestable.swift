@@ -10,8 +10,10 @@ import PromiseKit
 
 protocol UserRequestable: AnyObject {
 
-  func createUser(walletId: String, phoneNumber: GlobalPhoneNumber) -> Promise<UserResponse>
-  func verifyUser(phoneNumber: GlobalPhoneNumber, code: String) -> Promise<UserResponse>
+  func createUser(walletId: String, body: UserIdentityBody) -> Promise<UserResponse>
+  func verifyUser(body: VerifyUserBody) -> Promise<UserResponse>
+  func addIdentity(body: UserIdentityBody) -> Promise<UserIdentityResponse>
+  func deleteIdentity(identity: String) -> Promise<Void>
   func getUser() -> Promise<UserResponse>
   func queryUsers(phoneNumberHashes: [String]) -> Promise<StringDictResponse>
   func updateUserPublicURL(isPrivate: Bool) -> Promise<UserResponse>
@@ -20,7 +22,7 @@ protocol UserRequestable: AnyObject {
    This is typically used when the entered verification code is incorrect or expired.
    This may also be used in case of 200 response on createUser() to continue verification with an already registered user.
    */
-  func resendVerification(headers: DefaultRequestHeaders, body: CreateUserBody) -> Promise<UserResponse>
+  func resendVerification(headers: DefaultRequestHeaders, body: UserIdentityBody) -> Promise<UserResponse>
 
 }
 
@@ -42,9 +44,8 @@ public struct CreateUserHeaders: CKRequestHeadersProvider {
 
 extension NetworkManager: UserRequestable {
 
-  func createUser(walletId: String, phoneNumber: GlobalPhoneNumber) -> Promise<UserResponse> {
+  func createUser(walletId: String, body: UserIdentityBody) -> Promise<UserResponse> {
     let headers = CreateUserHeaders(walletId: walletId)
-    let body = CreateUserBody(phoneNumber: phoneNumber)
     return cnProvider.request(UserTarget.create(headers, body))
       .recover { error -> Promise<UserResponse> in
 
@@ -65,9 +66,12 @@ extension NetworkManager: UserRequestable {
     }
   }
 
-  func verifyUser(phoneNumber: GlobalPhoneNumber, code: String) -> Promise<UserResponse> {
-    let body = VerifyUserBody(phoneNumber: phoneNumber, code: code)
+  func verifyUser(body: VerifyUserBody) -> Promise<UserResponse> {
     return cnProvider.request(UserTarget.verify(body))
+  }
+
+  func addIdentity(body: UserIdentityBody) -> Promise<UserIdentityResponse> {
+    return cnProvider.request(UserIdentityTarget.add(body))
   }
 
   func getUser() -> Promise<UserResponse> {
@@ -86,7 +90,7 @@ extension NetworkManager: UserRequestable {
   }
 
   /// pass in the headers as a combined struct so that the struct can be used as the value of the preceding promise
-  func resendVerification(headers: DefaultRequestHeaders, body: CreateUserBody) -> Promise<UserResponse> {
+  func resendVerification(headers: DefaultRequestHeaders, body: UserIdentityBody) -> Promise<UserResponse> {
     return cnProvider.request(UserTarget.resendVerification(headers, body))
       .recover { error -> Promise<UserResponse> in
         if let networkError = error as? CKNetworkError, case let .twilioError(response) = networkError {
@@ -98,8 +102,11 @@ extension NetworkManager: UserRequestable {
     }
   }
 
+  func deleteIdentity(identity: String) -> Promise<Void> {
+    return cnProvider.requestVoid(UserTarget.deleteIdentity(identity))
+  }
+
   func updateUserPublicURL(isPrivate: Bool) -> Promise<UserResponse> {
     return cnProvider.request(UserTarget.updateIsPrivate(isPrivate))
   }
-
 }

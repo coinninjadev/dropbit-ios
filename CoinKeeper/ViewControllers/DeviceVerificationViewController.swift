@@ -20,7 +20,7 @@ protocol DeviceVerificationViewControllerDelegate: AnyObject {
   func viewControllerShouldShowSkipButton() -> Bool
 }
 
-enum DeviceVerificationError {
+enum DeviceVerificationError: Error {
   case codeFailureLimitExceeded
   case incorrectCode
   case invalidPhoneNumber //failed local parsing

@@ -157,6 +157,9 @@
 		3B5052BB2046E6AD000C739F /* CreateRecoveryWordsCollectionDDSTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5052BA2046E6AD000C739F /* CreateRecoveryWordsCollectionDDSTests.swift */; };
 		3B5052BF20473FC9000C739F /* CreateRecoveryWordsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5052BD20473FC9000C739F /* CreateRecoveryWordsCell.swift */; };
 		3B5220F32087B29600376DD8 /* UIScreen+RelativeSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5220F22087B29600376DD8 /* UIScreen+RelativeSize.swift */; };
+		3B547A6E2280A6F1007B0366 /* VerifiedStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B547A6D2280A6F0007B0366 /* VerifiedStatusView.swift */; };
+		3B547A702280A6FD007B0366 /* VerifiedStatusView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3B547A6F2280A6FD007B0366 /* VerifiedStatusView.xib */; };
+		3B547A722280AEE5007B0366 /* ChangeRemoveVerificationButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B547A712280AEE5007B0366 /* ChangeRemoveVerificationButton.swift */; };
 		3B55538421936C7D00C5A9A8 /* BarButtonFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B55538321936C7D00C5A9A8 /* BarButtonFactory.swift */; };
 		3B5553862195C19500C5A9A8 /* BadgeTopic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5553852195C19500C5A9A8 /* BadgeTopic.swift */; };
 		3B55538A219618A100C5A9A8 /* UnverifiedPhoneBadgeTopic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B555389219618A100C5A9A8 /* UnverifiedPhoneBadgeTopic.swift */; };
@@ -195,6 +198,8 @@
 		3B6FDAEA2052DAD50091916A /* VerifyRecoveryWordsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B6FDAE92052DAD50091916A /* VerifyRecoveryWordsViewModelTests.swift */; };
 		3B72A289210648CF00E94171 /* PendingInvitationError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B72A288210648CF00E94171 /* PendingInvitationError.swift */; };
 		3B731D382253D97A0044B4F8 /* UIView+Fade.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B731D372253D97A0044B4F8 /* UIView+Fade.swift */; };
+		3B73B2752281E33900F4C551 /* TwitterOAuth.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B73B2742281E33900F4C551 /* TwitterOAuth.generated.swift */; };
+		3B73B2782281F78700F4C551 /* NetworkManager+Twitter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B73B2772281F78700F4C551 /* NetworkManager+Twitter.swift */; };
 		3B7B54432201E54100CB89FE /* KeyDerivation.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B7B54422201E54100CB89FE /* KeyDerivation.generated.swift */; };
 		3B80E27521BE9D7A00F6EF17 /* DatabaseMigrationWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B80E27421BE9D7A00F6EF17 /* DatabaseMigrationWorker.swift */; };
 		3B80E27821BEEDD300F6EF17 /* MigrateDatabaseV1toV2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B80E27721BEEDD300F6EF17 /* MigrateDatabaseV1toV2.swift */; };
@@ -216,6 +221,9 @@
 		3B86F78E203C6E2300D15231 /* PinEntryViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B86F78D203C6E2300D15231 /* PinEntryViewControllerTests.swift */; };
 		3B86F7B4203CA2F700D15231 /* String+Hashing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B86F7B3203CA2F700D15231 /* String+Hashing.swift */; };
 		3B8ACA15225F96800020B684 /* GetBitcoinViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3B8ACA14225F96800020B684 /* GetBitcoinViewController.storyboard */; };
+		3B8B19312289BB25003BA4D7 /* AuthenticationSuspendable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B8B19302289BB25003BA4D7 /* AuthenticationSuspendable.swift */; };
+		3B8B19332289C1EF003BA4D7 /* UserIdentityResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B8B19322289C1EF003BA4D7 /* UserIdentityResponse.swift */; };
+		3B8B19352289C44B003BA4D7 /* UserIdentityTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B8B19342289C44B003BA4D7 /* UserIdentityTarget.swift */; };
 		3B8C40BF20784A2E008283A2 /* PresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B8C40BE20784A2E008283A2 /* PresentationController.swift */; };
 		3B8C40C12078D6F1008283A2 /* PresentableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B8C40C02078D6F1008283A2 /* PresentableViewController.swift */; };
 		3B8FA48320C16F5C0074B617 /* CKMTemporarySentTransaction+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B8FA48120C16F5C0074B617 /* CKMTemporarySentTransaction+CoreDataClass.swift */; };
@@ -298,6 +306,7 @@
 		3BDA364120B2FCF8001E24FB /* SuccessFailViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BDA364020B2FCF8001E24FB /* SuccessFailViewControllerTests.swift */; };
 		3BDA364320B4D50E001E24FB /* SpendableBalanceError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BDA364220B4D50E001E24FB /* SpendableBalanceError.swift */; };
 		3BDB6C532220521000E75DD2 /* SendPaymentMemoViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BDB6C522220520F00E75DD2 /* SendPaymentMemoViewTests.swift */; };
+		3BDBE63422839A6B009C23CB /* MockNeworkManager+Twitter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BDBE632228399F9009C23CB /* MockNeworkManager+Twitter.swift */; };
 		3BDFADFC2267AEFF0077DEF2 /* BlockstreamTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BDFADFB2267AEFF0077DEF2 /* BlockstreamTarget.swift */; };
 		3BDFADFE2267B1FB0077DEF2 /* BlockstreamProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BDFADFD2267B1FB0077DEF2 /* BlockstreamProvider.swift */; };
 		3BE8AA1621F10D4200A3F0C4 /* CKCryptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BE8AA1521F10D4200A3F0C4 /* CKCryptor.swift */; };
@@ -369,10 +378,14 @@
 		5BE594E5207FBE2D00862A0A /* ScanQRViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BE594E4207FBE2D00862A0A /* ScanQRViewController.swift */; };
 		5BE594E7207FC62B00862A0A /* ScanQRViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5BE594E6207FC62B00862A0A /* ScanQRViewController.storyboard */; };
 		6B82500CB8AD79F2E4EFEEA7 /* KeypadDigitViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B825B5BBD3CF394D91012EC /* KeypadDigitViewTests.swift */; };
+		6B8250ED374C8B86F2476F5E /* TwitterUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B825E5230DBCE1D556CE554 /* TwitterUser.swift */; };
+		6B8251C70D7A84BE41054D50 /* TwitterEndpoints.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B82518D286A7B5A1BCA2F3D /* TwitterEndpoints.swift */; };
 		6B82536EB33070AAF0DDEB73 /* PersistenceManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B825B699947400167B89174 /* PersistenceManagerTests.swift */; };
+		6B8253F8F9ED1EF8937C46A3 /* TwitterOAuthStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B825047995FCB01E17D9B77 /* TwitterOAuthStorage.swift */; };
 		6B8255C03822227D00EC3C53 /* MockBiometricAuthenticationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B825E8DEB7E0DE12824DE21 /* MockBiometricAuthenticationManager.swift */; };
 		6B8256904D0FFECD50249C41 /* AppDelegateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B825602FB98CA66373F7CA6 /* AppDelegateTests.swift */; };
 		6B825725398E721FC77D910B /* Int+Times.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B825633F1FE7A9EA9E7A2AD /* Int+Times.swift */; };
+		6B825A4324515C70495D2ECC /* TwitterOAuthError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B8250862F23128ECF665817 /* TwitterOAuthError.swift */; };
 		6B825A888F3B197A24268349 /* StartViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B825D46A80DC2FF22E479A5 /* StartViewControllerTests.swift */; };
 		6B825AF411A9684555EA8F14 /* MockPersistenceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B8250D63C5BAA325C86E644 /* MockPersistenceManager.swift */; };
 		6B825EF6EEB51653F9B7E4A9 /* MockDigitEntryDisplayViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B8258FE5E688972EBEB03FE /* MockDigitEntryDisplayViewModel.swift */; };
@@ -952,6 +965,9 @@
 		3B5052BA2046E6AD000C739F /* CreateRecoveryWordsCollectionDDSTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateRecoveryWordsCollectionDDSTests.swift; sourceTree = "<group>"; };
 		3B5052BD20473FC9000C739F /* CreateRecoveryWordsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateRecoveryWordsCell.swift; sourceTree = "<group>"; };
 		3B5220F22087B29600376DD8 /* UIScreen+RelativeSize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIScreen+RelativeSize.swift"; sourceTree = "<group>"; };
+		3B547A6D2280A6F0007B0366 /* VerifiedStatusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerifiedStatusView.swift; sourceTree = "<group>"; };
+		3B547A6F2280A6FD007B0366 /* VerifiedStatusView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = VerifiedStatusView.xib; sourceTree = "<group>"; };
+		3B547A712280AEE5007B0366 /* ChangeRemoveVerificationButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeRemoveVerificationButton.swift; sourceTree = "<group>"; };
 		3B55538321936C7D00C5A9A8 /* BarButtonFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarButtonFactory.swift; sourceTree = "<group>"; };
 		3B5553852195C19500C5A9A8 /* BadgeTopic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BadgeTopic.swift; sourceTree = "<group>"; };
 		3B555389219618A100C5A9A8 /* UnverifiedPhoneBadgeTopic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnverifiedPhoneBadgeTopic.swift; sourceTree = "<group>"; };
@@ -990,6 +1006,8 @@
 		3B6FDAE92052DAD50091916A /* VerifyRecoveryWordsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerifyRecoveryWordsViewModelTests.swift; sourceTree = "<group>"; };
 		3B72A288210648CF00E94171 /* PendingInvitationError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PendingInvitationError.swift; sourceTree = "<group>"; };
 		3B731D372253D97A0044B4F8 /* UIView+Fade.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Fade.swift"; sourceTree = "<group>"; };
+		3B73B2742281E33900F4C551 /* TwitterOAuth.generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TwitterOAuth.generated.swift; sourceTree = "<group>"; };
+		3B73B2772281F78700F4C551 /* NetworkManager+Twitter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NetworkManager+Twitter.swift"; sourceTree = "<group>"; };
 		3B7B54422201E54100CB89FE /* KeyDerivation.generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyDerivation.generated.swift; sourceTree = "<group>"; };
 		3B80E27421BE9D7A00F6EF17 /* DatabaseMigrationWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseMigrationWorker.swift; sourceTree = "<group>"; };
 		3B80E27721BEEDD300F6EF17 /* MigrateDatabaseV1toV2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MigrateDatabaseV1toV2.swift; sourceTree = "<group>"; };
@@ -1013,6 +1031,9 @@
 		3B86F7B5203CA3B000D15231 /* CoinKeeper-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "CoinKeeper-Bridging-Header.h"; sourceTree = "<group>"; };
 		3B86F7B9203CA4B500D15231 /* CoinKeeperTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "CoinKeeperTests-Bridging-Header.h"; sourceTree = "<group>"; };
 		3B8ACA14225F96800020B684 /* GetBitcoinViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = GetBitcoinViewController.storyboard; sourceTree = "<group>"; };
+		3B8B19302289BB25003BA4D7 /* AuthenticationSuspendable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationSuspendable.swift; sourceTree = "<group>"; };
+		3B8B19322289C1EF003BA4D7 /* UserIdentityResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserIdentityResponse.swift; sourceTree = "<group>"; };
+		3B8B19342289C44B003BA4D7 /* UserIdentityTarget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserIdentityTarget.swift; sourceTree = "<group>"; };
 		3B8C40BE20784A2E008283A2 /* PresentationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PresentationController.swift; sourceTree = "<group>"; };
 		3B8C40C02078D6F1008283A2 /* PresentableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentableViewController.swift; sourceTree = "<group>"; };
 		3B8FA48120C16F5C0074B617 /* CKMTemporarySentTransaction+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CKMTemporarySentTransaction+CoreDataClass.swift"; sourceTree = "<group>"; };
@@ -1096,6 +1117,7 @@
 		3BDA364020B2FCF8001E24FB /* SuccessFailViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuccessFailViewControllerTests.swift; sourceTree = "<group>"; };
 		3BDA364220B4D50E001E24FB /* SpendableBalanceError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpendableBalanceError.swift; sourceTree = "<group>"; };
 		3BDB6C522220520F00E75DD2 /* SendPaymentMemoViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendPaymentMemoViewTests.swift; sourceTree = "<group>"; };
+		3BDBE632228399F9009C23CB /* MockNeworkManager+Twitter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MockNeworkManager+Twitter.swift"; sourceTree = "<group>"; };
 		3BDFADFB2267AEFF0077DEF2 /* BlockstreamTarget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockstreamTarget.swift; sourceTree = "<group>"; };
 		3BDFADFD2267B1FB0077DEF2 /* BlockstreamProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockstreamProvider.swift; sourceTree = "<group>"; };
 		3BE8AA1521F10D4200A3F0C4 /* CKCryptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CKCryptor.swift; sourceTree = "<group>"; };
@@ -1166,7 +1188,10 @@
 		5BE594E4207FBE2D00862A0A /* ScanQRViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanQRViewController.swift; sourceTree = "<group>"; };
 		5BE594E6207FC62B00862A0A /* ScanQRViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = ScanQRViewController.storyboard; sourceTree = "<group>"; };
 		668943CC46EA739CD7DD49D9 /* Pods-DropBitTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DropBitTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-DropBitTests/Pods-DropBitTests.release.xcconfig"; sourceTree = "<group>"; };
+		6B825047995FCB01E17D9B77 /* TwitterOAuthStorage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TwitterOAuthStorage.swift; sourceTree = "<group>"; };
+		6B8250862F23128ECF665817 /* TwitterOAuthError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TwitterOAuthError.swift; sourceTree = "<group>"; };
 		6B8250D63C5BAA325C86E644 /* MockPersistenceManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockPersistenceManager.swift; sourceTree = "<group>"; };
+		6B82518D286A7B5A1BCA2F3D /* TwitterEndpoints.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TwitterEndpoints.swift; sourceTree = "<group>"; };
 		6B825602FB98CA66373F7CA6 /* AppDelegateTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegateTests.swift; sourceTree = "<group>"; };
 		6B825633F1FE7A9EA9E7A2AD /* Int+Times.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Int+Times.swift"; sourceTree = "<group>"; };
 		6B8258FE5E688972EBEB03FE /* MockDigitEntryDisplayViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockDigitEntryDisplayViewModel.swift; sourceTree = "<group>"; };
@@ -1174,6 +1199,7 @@
 		6B825B5BBD3CF394D91012EC /* KeypadDigitViewTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeypadDigitViewTests.swift; sourceTree = "<group>"; };
 		6B825B699947400167B89174 /* PersistenceManagerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersistenceManagerTests.swift; sourceTree = "<group>"; };
 		6B825D46A80DC2FF22E479A5 /* StartViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StartViewControllerTests.swift; sourceTree = "<group>"; };
+		6B825E5230DBCE1D556CE554 /* TwitterUser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TwitterUser.swift; sourceTree = "<group>"; };
 		6B825E8DEB7E0DE12824DE21 /* MockBiometricAuthenticationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockBiometricAuthenticationManager.swift; sourceTree = "<group>"; };
 		772F87C31D9EC76E80D62126 /* Pods-DropBitTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DropBitTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-DropBitTests/Pods-DropBitTests.debug.xcconfig"; sourceTree = "<group>"; };
 		84EF2F348873692AA156A7DB /* Pods_DropBitTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DropBitTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1971,6 +1997,7 @@
 				3B00C268220DC78B001FC46B /* DeviceEndpoint.generated.swift */,
 				3B00C26A220E07C0001FC46B /* GeneratedTestWords.generated.swift */,
 				3B7B54422201E54100CB89FE /* KeyDerivation.generated.swift */,
+				3B73B2742281E33900F4C551 /* TwitterOAuth.generated.swift */,
 			);
 			path = Autogenerated;
 			sourceTree = "<group>";
@@ -1982,6 +2009,18 @@
 				3B47909620F12E0F00BD5599 /* CKDateFormatterTests.swift */,
 			);
 			path = Helpers;
+			sourceTree = "<group>";
+		};
+		3B73B2762281F77000F4C551 /* Twitter */ = {
+			isa = PBXGroup;
+			children = (
+				3B73B2772281F78700F4C551 /* NetworkManager+Twitter.swift */,
+				6B825047995FCB01E17D9B77 /* TwitterOAuthStorage.swift */,
+				6B8250862F23128ECF665817 /* TwitterOAuthError.swift */,
+				6B82518D286A7B5A1BCA2F3D /* TwitterEndpoints.swift */,
+				6B825E5230DBCE1D556CE554 /* TwitterUser.swift */,
+			);
+			path = Twitter;
 			sourceTree = "<group>";
 		};
 		3B80E27621BEEDB400F6EF17 /* Migrators */ = {
@@ -2047,6 +2086,8 @@
 				3B55538321936C7D00C5A9A8 /* BarButtonFactory.swift */,
 				3B47037C2253B67200977784 /* SendReceiveActionView.swift */,
 				3B47037E2253B68700977784 /* SendReceiveActionView.xib */,
+				3B547A6D2280A6F0007B0366 /* VerifiedStatusView.swift */,
+				3B547A6F2280A6FD007B0366 /* VerifiedStatusView.xib */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -2248,6 +2289,7 @@
 				3B287CB921020CB000A43E57 /* Requests */,
 				B50C869820D80AE000B4FA6B /* Responses */,
 				B5A3BA4E21516DF7005EE657 /* Targets */,
+				3B73B2762281F77000F4C551 /* Twitter */,
 				3B4741682180AC64004DA223 /* DeviceEndpointIds.swift */,
 			);
 			path = Networking;
@@ -2532,6 +2574,7 @@
 				3B489D7F216FC5750078D3F0 /* SubscriptionResponse.swift */,
 				3B474160217FAE32004DA223 /* GeneralSubscriptionResponse.swift */,
 				3B474162217FB589004DA223 /* SubscriptionAvailableTopicResponse.swift */,
+				3B8B19322289C1EF003BA4D7 /* UserIdentityResponse.swift */,
 			);
 			path = Responses;
 			sourceTree = "<group>";
@@ -2607,6 +2650,7 @@
 				3B9A8DF42150371800C78C2C /* WalletDelegateType.swift */,
 				30BF4FEF21B728FA0018AE87 /* PopoverViewControllerType.swift */,
 				3B695C1F21CA9F9B007D0741 /* OperationQueueType.swift */,
+				3B8B19302289BB25003BA4D7 /* AuthenticationSuspendable.swift */,
 			);
 			path = Protocols;
 			sourceTree = "<group>";
@@ -2779,6 +2823,7 @@
 				3B13439521AEDAE6006EC5FC /* LightBorderedButton.swift */,
 				B54A421A2080066E005B40A9 /* TransactionDetailBottomButton.swift */,
 				3B325D522190A37B0094897C /* SecondaryActionButton.swift */,
+				3B547A712280AEE5007B0366 /* ChangeRemoveVerificationButton.swift */,
 			);
 			path = Buttons;
 			sourceTree = "<group>";
@@ -2814,6 +2859,7 @@
 				B5C8F5BC216CF04900E3E85B /* MockNetworkManager+WalletAddressRequestRequestable.swift */,
 				3BF3B0C6217500330021E45F /* MockNetworkManager+NotificationNetworkInteractable.swift */,
 				3BF3B0C8217500870021E45F /* MockNetworkManager+SubscribeToWalletRequestable.swift */,
+				3BDBE632228399F9009C23CB /* MockNeworkManager+Twitter.swift */,
 			);
 			path = NetworkManager;
 			sourceTree = "<group>";
@@ -2875,6 +2921,7 @@
 				B56512F52153DDA500A5D044 /* WalletCheckInTarget.swift */,
 				3B474164217FB6A4004DA223 /* GeneralSubscriptionTarget.swift */,
 				3BDFADFB2267AEFF0077DEF2 /* BlockstreamTarget.swift */,
+				3B8B19342289C44B003BA4D7 /* UserIdentityTarget.swift */,
 			);
 			path = Targets;
 			sourceTree = "<group>";
@@ -3118,6 +3165,7 @@
 				3B5052B12045FAD7000C739F /* CreateRecoveryWordsViewController.storyboard in Resources */,
 				3B47037F2253B68700977784 /* SendReceiveActionView.xib in Resources */,
 				A2A530BC20936A5B00B6F4DE /* ConfirmPaymentViewController.storyboard in Resources */,
+				3B547A702280A6FD007B0366 /* VerifiedStatusView.xib in Resources */,
 				308F6F03217F91A50094D6CB /* ServerAddressView.xib in Resources */,
 				3B4B39F0203773C5007B7CC8 /* PlaceholderViewController.storyboard in Resources */,
 				B52A25C32077CD3400F636A1 /* TransactionHistoryViewController.storyboard in Resources */,
@@ -3246,6 +3294,7 @@
 				"$(SRCROOT)/Carthage/Build/iOS/PromiseKit.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/SwiftMessages.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/Gifu.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/OAuthSwift.framework",
 			);
 			name = "Carthage Copy-Frameworks Run Script";
 			outputPaths = (
@@ -3255,6 +3304,7 @@
 				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/PromiseKit.framework",
 				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/SwiftMessages.framework",
 				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/Gifu.framework",
+				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/OAuthSwift.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -3404,6 +3454,7 @@
 				307DF11F2151676900260369 /* JSONValue.swift in Sources */,
 				3B8C40C12078D6F1008283A2 /* PresentableViewController.swift in Sources */,
 				B54A4215207FF310005B40A9 /* TransactionDetailSecondaryAmountLabel.swift in Sources */,
+				3B8B19332289C1EF003BA4D7 /* UserIdentityResponse.swift in Sources */,
 				B5C5EDE321FA41FF0032AC94 /* SharedPayloadV1.swift in Sources */,
 				B552EDF9211E33D000332BB5 /* PermissionManager.swift in Sources */,
 				3B26F1E022566EAA00F3E00F /* AppCoordinator+SelectedCurrencyUpdatable.swift in Sources */,
@@ -3477,6 +3528,7 @@
 				3B23126720DA6D0E0099A557 /* TransactionHistoryDetailCellAddressView.swift in Sources */,
 				B542BE752237093800E01C30 /* ExamplePhoneNumberLabel.swift in Sources */,
 				3BA9F60F208F6EBF0047C213 /* AppCoordinator+RequestPayViewControllerDelegate.swift in Sources */,
+				3B73B2752281E33900F4C551 /* TwitterOAuth.generated.swift in Sources */,
 				4A75CAF92090FB0D00E8E653 /* DeviceVerificationViewController.swift in Sources */,
 				B526760720F5059F003144A7 /* PriceTransactionResponse.swift in Sources */,
 				B5221D55224427C40081C868 /* ContactCacheMigrationWorker.swift in Sources */,
@@ -3621,6 +3673,7 @@
 				3B44961D21B065C200A4E912 /* MemoEntryViewController.swift in Sources */,
 				B527AFBD2195CFF6007D9484 /* UIView+AccessibilityIdentifier.swift in Sources */,
 				B5DDB0F521DE5ED200A25929 /* KeychainMigrationWorker.swift in Sources */,
+				3B547A6E2280A6F1007B0366 /* VerifiedStatusView.swift in Sources */,
 				B5E7FAE521372DD600997972 /* String+Multiline.swift in Sources */,
 				3BAB1445204EE5D3001D41A2 /* VerifyRecoveryWordsViewController.swift in Sources */,
 				A22B196020EC1DA80084E8E9 /* AppCoordinator+RestoreWalletViewControllerDelegate.swift in Sources */,
@@ -3643,6 +3696,7 @@
 				B5C8F5C7216D397900E3E85B /* CreateDeviceEndpointBody.swift in Sources */,
 				A25923EC20C981770005B1A0 /* AnalyticsManagerError.swift in Sources */,
 				3B325D532190A37B0094897C /* SecondaryActionButton.swift in Sources */,
+				3B547A722280AEE5007B0366 /* ChangeRemoveVerificationButton.swift in Sources */,
 				B5E7F22122148ECA00358A24 /* FlagEmojiFactory.swift in Sources */,
 				30B663202162AFF00011296C /* DeviceResponse.swift in Sources */,
 				B5E7EE7B21B02FFB00E058EF /* ValidatorAlertDisplayable.swift in Sources */,
@@ -3697,6 +3751,7 @@
 				3BC9E5522047440900444A53 /* CreateRecoveryWordCellData.swift in Sources */,
 				3B474157217E4E4E004DA223 /* URLRequest+Helpers.swift in Sources */,
 				308F6F05217F97F50094D6CB /* DragIndiciatorView.swift in Sources */,
+				3B8B19312289BB25003BA4D7 /* AuthenticationSuspendable.swift in Sources */,
 				3BF3B0C521737A4D0021E45F /* SubscribeToWalletTarget.swift in Sources */,
 				B5EBFD0F215C01E30008EB4A /* MockAddressDataSource.swift in Sources */,
 				B58AFF2E21948891001BE563 /* UITestDefaultsKey.swift in Sources */,
@@ -3716,6 +3771,7 @@
 				B54090F82270AC7D00E53B80 /* AppCoordinator+DropBitMeViewControllerDelegate.swift in Sources */,
 				B5B27E902088D91800D4DB89 /* NSMutableAttributedString+Constructors.swift in Sources */,
 				A2E52D8820BE3A3F00424E6A /* Data+HexString.swift in Sources */,
+				3B8B19352289C44B003BA4D7 /* UserIdentityTarget.swift in Sources */,
 				307DF11D2150394400260369 /* MessagesManager.swift in Sources */,
 				3B6FDAE82052DACA0091916A /* VerifyRecoveryWordsViewModel.swift in Sources */,
 				A293E35220F798920099ED69 /* TransactionHistoryEmptyView.swift in Sources */,
@@ -3825,6 +3881,7 @@
 				3B41AE6C210A6C9700155AAC /* LaunchType.swift in Sources */,
 				3B4B39F2203773E1007B7CC8 /* PlaceholderViewController.swift in Sources */,
 				B51F823E207BDEC900692F5B /* UIView+ParentViewController.swift in Sources */,
+				3B73B2782281F78700F4C551 /* NetworkManager+Twitter.swift in Sources */,
 				3BA9F5F7208F62DA0047C213 /* AppCoordinator+StartViewControllerDelegate.swift in Sources */,
 				B51F823A207BB00000692F5B /* BalancePrimaryAmountLabel.swift in Sources */,
 				3BA360842090B0C100732C43 /* CKMTransaction+CoreDataClass.swift in Sources */,
@@ -3864,6 +3921,10 @@
 				3BFBD15620E56A5500BC48DB /* CKMTransaction+SampleData.swift in Sources */,
 				B52A25C72077D02100F636A1 /* UITableView+ReusableView.swift in Sources */,
 				3B474163217FB589004DA223 /* SubscriptionAvailableTopicResponse.swift in Sources */,
+				6B8253F8F9ED1EF8937C46A3 /* TwitterOAuthStorage.swift in Sources */,
+				6B825A4324515C70495D2ECC /* TwitterOAuthError.swift in Sources */,
+				6B8251C70D7A84BE41054D50 /* TwitterEndpoints.swift in Sources */,
+				6B8250ED374C8B86F2476F5E /* TwitterUser.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3906,6 +3967,7 @@
 				3BF41AB4207507B3008B3D0A /* RequestPayViewControllerTests.swift in Sources */,
 				B5457124217E63F000FF3A5A /* NetworkManagerIntegrationTests.swift in Sources */,
 				B5A5B1B3216B854500345468 /* MockNetworkManager+WalletRequestable.swift in Sources */,
+				3BDBE63422839A6B009C23CB /* MockNeworkManager+Twitter.swift in Sources */,
 				3B47909720F12E0F00BD5599 /* CKDateFormatterTests.swift in Sources */,
 				3B1555EA20D2D48D00D6A70C /* VoutCoreDataTests.swift in Sources */,
 				3B8FF11020346730003436EE /* AppCoordinatorTests.swift in Sources */,

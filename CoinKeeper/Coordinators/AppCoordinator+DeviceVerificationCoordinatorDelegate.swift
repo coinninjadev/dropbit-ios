@@ -28,28 +28,16 @@ extension AppCoordinator: DeviceVerificationCoordinatorDelegate {
       .then(in: context) { self.persistenceManager.persistWalletId(from: $0, in: context) }
   }
 
-  func coordinator(_ coordinator: DeviceVerificationCoordinator, didVerify phoneNumber: GlobalPhoneNumber, isInitialSetupFlow: Bool) {
-    analyticsManager.track(event: .phoneVerified, with: nil)
-    analyticsManager.track(property: MixpanelProperty(key: .phoneVerified, value: true))
-
-    let logger = OSLog(subsystem: "com.coinninja.coinkeeper.appcoordinator", category: "phone_verification")
-    if launchStateManager.profileIsActivated() {
-      os_log("Profile is activated, will register wallet addresses", log: logger, type: .debug)
-      registerInitialWalletAddresses()
+  func coordinator(_ coordinator: DeviceVerificationCoordinator, didVerify type: UserIdentityType, isInitialSetupFlow: Bool) {
+    switch type {
+    case .phone:
+      analyticsManager.track(event: .phoneVerified, with: nil)
+      analyticsManager.track(property: MixpanelProperty(key: .phoneVerified, value: true))
+    case .twitter:
+      analyticsManager.track(event: .twitterVerified, with: nil)
+      analyticsManager.track(property: MixpanelProperty(key: .twitterVerified, value: true))
     }
-
-    persistenceManager.keychainManager.store(anyValue: NSNumber(value: false), key: .skippedVerification)
-
-    serialQueueManager.enqueueWalletSyncIfAppropriate(type: .comprehensive, policy: .skipIfSpecificOperationExists,
-                                                      completion: nil, fetchResult: nil)
-    childCoordinatorDidComplete(childCoordinator: coordinator)
-    continueSetupFlow()
-
-    if !isInitialSetupFlow {
-      DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-        self.presentDropBitMeViewController(verifiedFirstTime: true)
-      }
-    }
+    completeVerification(from: coordinator, userIdentityType: type, isInitialSetupFlow: isInitialSetupFlow)
   }
 
   func coordinatorSkippedPhoneVerification(_ coordinator: DeviceVerificationCoordinator) {
@@ -86,4 +74,34 @@ extension AppCoordinator: DeviceVerificationCoordinatorDelegate {
     }
   }
 
+  private func completeVerification(
+    from coordinator: DeviceVerificationCoordinator,
+    userIdentityType: UserIdentityType,
+    isInitialSetupFlow: Bool) {
+
+    let logger = OSLog(subsystem: "com.coinninja.coinkeeper.appcoordinator", category: "verification")
+
+    let verifiedIdentities = persistenceManager.verifiedIdentities()
+    if launchStateManager.profileIsActivated() && verifiedIdentities.count == 1 {
+      os_log("Profile is activated, will register wallet addresses", log: logger, type: .debug)
+      registerInitialWalletAddresses()
+    }
+
+    persistenceManager.keychainManager.store(anyValue: NSNumber(value: false), key: .skippedVerification)
+
+    serialQueueManager.enqueueWalletSyncIfAppropriate(type: .comprehensive, policy: .skipIfSpecificOperationExists,
+                                                      completion: nil, fetchResult: nil)
+    childCoordinatorDidComplete(childCoordinator: coordinator)
+    continueSetupFlow()
+    let desc = userIdentityType.identityDescription
+    alertManager.showBanner(
+      with: "Your \(desc) has been successfully verified. You can now send DropBits to your \(userIdentityType.rawValue) contacts.",
+      duration: .custom(5))
+
+    if !isInitialSetupFlow {
+      DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+        self.presentDropBitMeViewController(verifiedFirstTime: true)
+      }
+    }
+  }
 }

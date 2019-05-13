@@ -18,7 +18,7 @@ protocol DeviceVerificationCoordinatorDelegate: TwilioErrorDelegate {
   var persistenceManager: PersistenceManagerType { get }
   var alertManager: AlertManagerType { get }
 
-  func coordinator(_ coordinator: DeviceVerificationCoordinator, didVerify phoneNumber: GlobalPhoneNumber, isInitialSetupFlow: Bool)
+  func coordinator(_ coordinator: DeviceVerificationCoordinator, didVerify type: UserIdentityType, isInitialSetupFlow: Bool)
   func coordinatorSkippedPhoneVerification(_ coordinator: DeviceVerificationCoordinator)
   func registerAndPersistWallet(in context: NSManagedObjectContext) -> Promise<Void>
 }
@@ -37,6 +37,7 @@ class DeviceVerificationCoordinator: ChildCoordinatorType {
   private let maxCodeEntryFailures = 3
   private let minHudDisplayDuration: TimeInterval = 0.5
   private let shouldOrphanRoot: Bool
+  private let userIdentityType: UserIdentityType
 
   private let errorMessageFactory = DeviceVerificationErrorMessageFactory()
 
@@ -44,19 +45,54 @@ class DeviceVerificationCoordinator: ChildCoordinatorType {
     return delegate as? DeviceVerificationCoordinatorDelegate
   }
 
-  required init(_ navigationController: UINavigationController, shouldOrphanRoot: Bool = true) {
+  required init(_ navigationController: UINavigationController, userIdentityType: UserIdentityType, shouldOrphanRoot: Bool = true) {
     self.navigationController = navigationController
     self.userSuppliedPhoneNumber = nil
+    self.userIdentityType = userIdentityType
     self.shouldOrphanRoot = shouldOrphanRoot
   }
 
   func start() {
-    let phoneEntryViewController = DeviceVerificationViewController.makeFromStoryboard()
-    phoneEntryViewController.shouldOrphan = shouldOrphanRoot
-    assignCoordinationDelegate(to: phoneEntryViewController)
-    navigationController.pushViewController(phoneEntryViewController, animated: true)
+    switch userIdentityType {
+    case .phone:
+      let viewController = DeviceVerificationViewController.makeFromStoryboard()
+      viewController.shouldOrphan = shouldOrphanRoot
+      assignCoordinationDelegate(to: viewController)
+      navigationController.pushViewController(viewController, animated: true)
+    case .twitter:
+      guard let delegate = coordinationDelegate else { return }
+      let context = delegate.persistenceManager.createBackgroundContext()
+      delegate.networkManager.authorizedTwitterCredentials()
+        .then { self.addTwitterUserIdentity(credentials: $0, delegate: delegate, in: context) }
+        .then { body -> Promise<UserResponse> in delegate.networkManager.verifyUser(body: body)}
+        .then { (response: UserResponse) -> Promise<Void> in
+          os_log("user response: %@", log: self.logger, type: .debug, response.id)
+          return self.checkAndPersistVerificationStatus(from: response, crDelegate: delegate, in: context)
+        }
+        .get(in: context) { _ in
+          do {
+            try context.save()
+          } catch {
+            os_log("failed to save context in %@. error: %@", log: self.logger, type: .error, #function, error.localizedDescription)
+          }
+        }
+        .done { _ in delegate.coordinator(self, didVerify: .twitter, isInitialSetupFlow: self.isInitialSetupFlow) }
+        .catch { error in
+          os_log("failed to create or verify user in %@. error: %@", log: self.logger, type: .error, #function, error.localizedDescription)
+        }
+    }
   }
 
+  func addTwitterUserIdentity(
+    credentials: TwitterOAuthStorage,
+    delegate: DeviceVerificationCoordinatorDelegate,
+    in context: NSManagedObjectContext) -> Promise<VerifyUserBody> {
+
+    let userIdentityBody = UserIdentityBody(twitterCredentials: credentials)
+    return self.registerAndPersistUserIfNecessary(with: userIdentityBody, delegate: delegate, in: context)
+      .then { delegate.networkManager.addIdentity(body: $0) }
+      .then { _ in return Promise.value(VerifyUserBody(twitterCredentials: credentials)) }
+  }
 }
 
 extension DeviceVerificationCoordinator: DeviceVerificationViewControllerDelegate {
@@ -85,8 +121,11 @@ extension DeviceVerificationCoordinator: DeviceVerificationViewControllerDelegat
     let bgContext = crDelegate.persistenceManager.createBackgroundContext()
     bgContext.perform {
       crDelegate.registerAndPersistWallet(in: bgContext)
-        .then(in: bgContext) { _ in self.registerAndPersistUser(with: phoneNumber, delegate: crDelegate, in: bgContext) }
-        .done(on: .main) {
+        .then(in: bgContext) { _ -> Promise<UserIdentityBody> in
+          let body = UserIdentityBody(phoneNumber: phoneNumber)
+          return self.registerAndPersistUserIfNecessary(with: body, delegate: crDelegate, in: bgContext)
+        }
+        .done(on: .main) { _ in
 
           crDelegate.alertManager.hideActivityHUD(withDelay: self.minHudDisplayDuration) {
             // Push code entry view controller
@@ -121,7 +160,7 @@ extension DeviceVerificationCoordinator: DeviceVerificationViewControllerDelegat
 
     let bgContext = crDelegate.persistenceManager.createBackgroundContext()
     bgContext.perform {
-      let body = CreateUserBody(phoneNumber: phoneNumber)
+      let body = UserIdentityBody(phoneNumber: phoneNumber)
       crDelegate.persistenceManager.defaultHeaders(in: bgContext)
         .then { crDelegate.networkManager.resendVerification(headers: $0, body: body) }
         .done { [weak self] _ in
@@ -146,9 +185,12 @@ extension DeviceVerificationCoordinator: DeviceVerificationViewControllerDelegat
     self.showVerificationErrorAlert(.custom(message), delegate: coordinationDelegate)
   }
 
-  private func registerAndPersistUser(with phoneNumber: GlobalPhoneNumber,
-                                      delegate: DeviceVerificationCoordinatorDelegate,
-                                      in context: NSManagedObjectContext) -> Promise<Void> {
+  fileprivate func registerAndPersistUserIfNecessary(with body: UserIdentityBody,
+                                                     delegate: DeviceVerificationCoordinatorDelegate,
+                                                     in context: NSManagedObjectContext) -> Promise<UserIdentityBody> {
+
+    // bail if user exists already
+    guard delegate.persistenceManager.userId(in: context) == nil else { return Promise.value(body) }
 
     var maybeWalletId: String?
     context.performAndWait {
@@ -158,11 +200,12 @@ extension DeviceVerificationCoordinator: DeviceVerificationViewControllerDelegat
       return Promise { $0.reject(CKPersistenceError.missingValue(key: "wallet ID")) }
     }
 
-    return delegate.networkManager.createUser(walletId: walletId, phoneNumber: phoneNumber)
+    return delegate.networkManager.createUser(walletId: walletId, body: body)
       .recover { (error: Error) -> Promise<UserResponse> in
         return self.handleCreateUserError(error, walletId: walletId, delegate: delegate, in: context)
       }
-      .get(in: context) { delegate.persistenceManager.persistUserId($0.id, in: context) }.asVoid()
+      .get(in: context) { delegate.persistenceManager.persistUserId($0.id, in: context) }
+      .then { _ in Promise.value(body) }
   }
 
   /// If createUser results in statusCode 200, that function rejects with .userAlreadyExists and
@@ -207,7 +250,8 @@ extension DeviceVerificationCoordinator: DeviceVerificationViewControllerDelegat
     let logger = OSLog(subsystem: "com.coinninja.coinkeeper.appcoordinator", category: "device_verification_coordinator")
     let bgContext = crDelegate.persistenceManager.createBackgroundContext()
     bgContext.perform {
-      crDelegate.networkManager.verifyUser(phoneNumber: phoneNumber, code: code)
+      let body = VerifyUserBody(phoneNumber: phoneNumber, code: code)
+      crDelegate.networkManager.verifyUser(body: body)
         .then(in: bgContext) { self.checkAndPersistVerificationStatus(from: $0, crDelegate: crDelegate, in: bgContext) }
         .get(in: bgContext) { _ in
           do {
@@ -339,7 +383,7 @@ extension DeviceVerificationCoordinator: DeviceVerificationViewControllerDelegat
   }
 
   private func codeWasVerified(phoneNumber: GlobalPhoneNumber) {
-    coordinationDelegate?.coordinator(self, didVerify: phoneNumber, isInitialSetupFlow: self.isInitialSetupFlow)
+    coordinationDelegate?.coordinator(self, didVerify: .phone, isInitialSetupFlow: self.isInitialSetupFlow)
   }
 
   private func codeFailureCountExceeded() {
