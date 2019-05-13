@@ -22,8 +22,11 @@ extension AppCoordinator: GetBitcoinViewControllerDelegate {
     permissionManager.requestPermission(for: .location) { (status) in
       switch status {
       case .authorized, .notDetermined:
-        guard let coordinate = CLLocationManager().location?.coordinate,
-          let url = CoinNinjaUrlFactory.buildUrl(for: .buyAtATM(coordinate)) else { return }
+        guard let coordinate = self.locationManager.location?.coordinate,
+          let url = CoinNinjaUrlFactory.buildUrl(for: .buyAtATM(coordinate)) else {
+            self.locationManager.requestLocation() //Attempt to repair for next location request
+            return
+        }
         self.openURL(url, completionHandler: nil)
       case .denied, .disabled:
         let description = "To use the location-based services of finding Bitcoin ATMs near you," +

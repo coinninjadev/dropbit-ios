@@ -374,7 +374,7 @@ extension AppCoordinator: SendPaymentViewControllerDelegate {
       guard let strongSelf = self else { return }
       viewController.dismiss(animated: true, completion: {
         strongSelf.navigationController.isNavigationBarHidden = false
-        strongSelf.startDeviceVerificationFlow(shouldOrphanRoot: false)
+        strongSelf.startDeviceVerificationFlow(shouldOrphanRoot: false, isInitialSetupFlow: false)
       })
     }
     let configs = [notNowAction, verifyAction]
@@ -427,15 +427,11 @@ extension AppCoordinator: SendPaymentViewControllerDelegate {
     return persistenceManager.deviceCountryCode()
   }
 
-  func viewController(_ viewController: UIViewController, checkForContactFromGenericContact genericContact: GenericContact) -> ValidatedContact? {
-    let globalPhoneNumber = genericContact.globalPhoneNumber
-    let context = contactCacheManager.mainQueueContext
-    var validatedContact: ValidatedContact?
-    context.performAndWait {
-      let foundValidNumber = contactCacheManager.validatedMetadata(for: globalPhoneNumber, in: context)?.firstCachedPhoneNumberByName()
-      validatedContact = foundValidNumber.flatMap { ValidatedContact(cachedNumber: $0) }
-    }
-    return validatedContact
+  func viewController(_ viewController: UIViewController,
+                      checkForContactFromGenericContact genericContact: GenericContact,
+                      completion: @escaping ((ValidatedContact?) -> Void)) {
+    self.contactCacheDataWorker.refreshStatus(forPhoneNumber: genericContact.globalPhoneNumber,
+                                              completion: completion)
   }
 
   func viewController(

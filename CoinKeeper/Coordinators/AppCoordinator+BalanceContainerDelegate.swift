@@ -10,6 +10,7 @@ import UIKit
 import CoreData
 
 extension AppCoordinator: BalanceContainerDelegate {
+
   func isSyncCurrentlyRunning() -> Bool {
     let syncOperations = serialQueueManager.queue.operations(ofType: .syncWallet(.standard),
                                                              ignoringAssociatedType: true)
@@ -18,6 +19,21 @@ extension AppCoordinator: BalanceContainerDelegate {
 
   func containerDidTapLeftButton(in viewController: UIViewController) {
     self.drawerController?.toggle(.left, animated: true, completion: nil)
+  }
+
+  func containerDidTapDropBitMe(in viewController: UIViewController) {
+    presentDropBitMeViewController(verifiedFirstTime: false)
+  }
+
+  func presentDropBitMeViewController(verifiedFirstTime: Bool) {
+    guard let topVC = self.navigationController.topViewController() else { return }
+
+    let context = self.persistenceManager.mainQueueContext()
+    let publicURLInfo: UserPublicURLInfo? = self.persistenceManager.getUserPublicURLInfo(in: context)
+    let config = DropBitMeConfig(publicURLInfo: publicURLInfo, verifiedFirstTime: verifiedFirstTime)
+
+    let dropBitMeVC = DropBitMeViewController.newInstance(config: config, delegate: self)
+    topVC.present(dropBitMeVC, animated: true, completion: nil)
   }
 
   func containerDidTapBalances(in viewController: UIViewController) {

@@ -134,6 +134,12 @@ class MockSendPaymentViewControllerCoordinator: SendPaymentViewControllerCoordin
 
   }
 
+  func viewController(_ viewController: UIViewController,
+                      checkForContactFromGenericContact genericContact: GenericContact,
+                      completion: @escaping ((ValidatedContact?) -> Void)) {
+    completion(nil)
+  }
+
   func sendPaymentViewControllerDidLoad(_ viewController: UIViewController) {
 
   }

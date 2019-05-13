@@ -36,6 +36,8 @@ struct CoinNinjaUrlFactory {
     case buyGiftCards
     case buyWithCreditCard
     case buyAtATM(CLLocationCoordinate2D)
+    case dropBitMe(handle: String)
+    case dropBitMeLearnMore
 
     var domain: String {
       switch self {
@@ -70,6 +72,13 @@ struct CoinNinjaUrlFactory {
            .regularTransactionTooltip,
            .dropbitTransactionTooltip:
         return "https://dropbit.app/"
+      case .dropBitMe,
+           .dropBitMeLearnMore:
+        #if DEBUG
+        return "https://test.dropbit.me/"
+        #else
+        return "https://dropbit.me/"
+        #endif
       }
     }
 
@@ -127,6 +136,10 @@ struct CoinNinjaUrlFactory {
         return "buybitcoin/creditcards"
       case .buyAtATM(let coordinate):
         return "news/webview/load-map?lat=\(coordinate.latitude)&long=\(coordinate.longitude)&type=atms"
+      case .dropBitMe(let handle):
+        return handle
+      case .dropBitMeLearnMore:
+        return ""
       }
     }
   }

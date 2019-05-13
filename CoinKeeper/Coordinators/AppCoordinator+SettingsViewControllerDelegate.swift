@@ -92,6 +92,7 @@ extension AppCoordinator: SettingsViewControllerDelegate {
           self.analyticsManager.track(property: MixpanelProperty(key: .phoneVerified, value: false))
           self.analyticsManager.track(property: MixpanelProperty(key: .wordsBackedUp, value: false))
           self.analyticsManager.track(property: MixpanelProperty(key: .hasBTCBalance, value: false))
+          self.analyticsManager.track(property: MixpanelProperty(key: .isDropBitMeEnabled, value: false))
         }.catch { error in
           let logger = OSLog(subsystem: "com.coinninja.coinkeeper.AppCoordinator", category: "delete_wallet")
           os_log("Error in %@: %@", log: logger, type: .error, #function, error.localizedDescription)
