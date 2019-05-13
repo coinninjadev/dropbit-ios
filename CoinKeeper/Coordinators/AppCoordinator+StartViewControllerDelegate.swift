@@ -15,6 +15,10 @@ extension AppCoordinator: StartViewControllerDelegate {
     continueSetupFlow()
   }
 
+  func claimInvite() {
+    navigationController.isNavigationBarHidden = false
+  }
+
   func restoreWallet() {
     persistenceManager.userDefaultsManager.deleteAll()
     navigationController.isNavigationBarHidden = false

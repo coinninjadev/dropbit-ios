@@ -11,6 +11,7 @@ import UIKit
 protocol StartViewControllerDelegate: AnyObject {
   func createWallet()
   func restoreWallet()
+  func claimInvite()
   func clearPin()
   func requireAuthenticationIfNeeded(whenAuthenticated: (() -> Void)?)
 }
@@ -21,8 +22,10 @@ final class StartViewController: BaseViewController {
     return generalCoordinationDelegate as? StartViewControllerDelegate
   }
 
-  @IBOutlet var createWalletButton: PrimaryActionButton!
-  @IBOutlet var restoreWalletButton: SecondaryActionButton!
+  @IBOutlet var restoreWalletButton: UIButton!
+  @IBOutlet var claimInviteButton: UIButton!
+  @IBOutlet var newWalletButton: UIButton!
+
   @IBOutlet var blockchainImage: UIImageView!
   @IBOutlet var logoImage: UIImageView!
   @IBOutlet var logoImageVerticalConstraint: NSLayoutConstraint!
@@ -41,11 +44,45 @@ final class StartViewController: BaseViewController {
     ]
   }
 
+  @IBAction func restoreWalletButtonTapped(_ sender: UIButton) {
+    coordinationDelegate?.restoreWallet()
+  }
+
+  @IBAction func claimBitcoinFromInviteTapped(_ sender: UIButton) {
+    coordinationDelegate?.claimInvite()
+  }
+
+  @IBAction func newWalletButtonTapped(_ sender: UIButton) {
+    coordinationDelegate?.createWallet()
+  }
+
   // MARK: view lifecycle
   override func viewDidLoad() {
     super.viewDidLoad()
 
+    configureButtons()
     toggleAnimatableViews(show: false)
+  }
+
+  private func configureButtons() {
+    let restoreTitle = NSAttributedString(imageName: "rightArrow",
+                                          imageSize: CGSize(width: 8, height: 12),
+                                          title: "Restore Wallet",
+                                          sharedColor: Theme.Color.darkBlueText.color,
+                                          font: Theme.Font.restoreWalletButton.font,
+                                          imageOffset: CGPoint(x: 0, y: 1),
+                                          trailingImage: true)
+    restoreWalletButton.setAttributedTitle(restoreTitle, for: .normal)
+
+    claimInviteButton.setTitle("CLAIM BITCOIN FROM INVITE", for: .normal)
+    claimInviteButton.backgroundColor = Theme.Color.darkBlueButton.color
+    claimInviteButton.applyCornerRadius(4)
+    claimInviteButton.setTitleColor(Theme.Color.whiteText.color, for: .normal)
+    claimInviteButton.titleLabel?.font = Theme.Font.primaryButtonTitle.font
+
+    newWalletButton.setTitle("NEW WALLET", for: .normal)
+    newWalletButton.setTitleColor(Theme.Color.lightBlueTint.color, for: .normal)
+    newWalletButton.titleLabel?.font = Theme.Font.primaryButtonTitle.font
   }
 
   private func toggleAnimatableViews(show: Bool) {
@@ -73,18 +110,6 @@ final class StartViewController: BaseViewController {
       self.toggleAnimatableViews(show: true)
       self.view.layoutIfNeeded()
     })
-  }
-
-  @IBAction func createWalletButtonTapped(_ sender: UIButton) {
-    coordinationDelegate?.createWallet()
-  }
-
-  @IBAction func restoreWalletButtonTapped(_ sender: UIButton) {
-    coordinationDelegate?.restoreWallet()
-  }
-
-  @IBAction func clearPinTapped(_ sender: UIButton) {
-    coordinationDelegate?.clearPin()
   }
 
 }
