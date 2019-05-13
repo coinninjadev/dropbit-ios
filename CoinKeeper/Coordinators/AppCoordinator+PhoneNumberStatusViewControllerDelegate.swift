@@ -71,8 +71,8 @@ extension AppCoordinator: PhoneNumberStatusViewControllerDelegate {
 
   func viewControllerDidSelectVerifyPhone(_ viewController: UIViewController) {
     viewController.dismiss(animated: true) {
+      self.navigationController.setNavigationBarHidden(false, animated: false) // don't animate so as to hide "Back" button
       self.startDeviceVerificationFlow(userIdentityType: .phone, shouldOrphanRoot: false, isInitialSetupFlow: false)
-      self.navigationController.setNavigationBarHidden(false, animated: true)
     }
   }
 
