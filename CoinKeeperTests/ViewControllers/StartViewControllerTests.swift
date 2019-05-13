@@ -23,7 +23,7 @@ class StartViewControllerTests: XCTestCase {
   }
 
   func testOutletsAreConnected() {
-    XCTAssertNotNil(self.sut.createWalletButton, "createWalletButton should be connected")
+    XCTAssertNotNil(self.sut.createWalletButton, "newWalletButton should be connected")
     XCTAssertNotNil(self.sut.restoreWalletButton, "restoreWalletButton should be connected")
     XCTAssertNotNil(self.sut.blockchainImage, "blockchainImage should be connected")
     XCTAssertNotNil(self.sut.logoImage, "logoImage should be connected")
@@ -39,15 +39,15 @@ class StartViewControllerTests: XCTestCase {
     let expectedText = "NEW WALLET"
     let expectedColor = Theme.Color.lightGrayText.color
 
-    XCTAssertEqual(self.sut.createWalletButton.title(for: .normal), expectedText, "createWalletButton text should match")
-    XCTAssertEqual(self.sut.createWalletButton.currentTitleColor, expectedColor, "createWalletButton color should match")
-    XCTAssertTrue(self.sut.createWalletButton.isHidden, "createWalletButton should be hidden")
-    XCTAssertEqual(self.sut.createWalletButton.alpha, 0, "createWalletButton alpha should be 0")
+    XCTAssertEqual(self.sut.createWalletButton.title(for: .normal), expectedText, "newWalletButton text should match")
+    XCTAssertEqual(self.sut.createWalletButton.currentTitleColor, expectedColor, "newWalletButton color should match")
+    XCTAssertTrue(self.sut.createWalletButton.isHidden, "newWalletButton should be hidden")
+    XCTAssertEqual(self.sut.createWalletButton.alpha, 0, "newWalletButton alpha should be 0")
 
     // trigger new animated state
     self.sut.viewDidAppear(false)
-    XCTAssertFalse(self.sut.createWalletButton.isHidden, "createWalletButton should not be hidden")
-    XCTAssertEqual(self.sut.createWalletButton.alpha, 1, "createWalletButton alpha should be 1")
+    XCTAssertFalse(self.sut.createWalletButton.isHidden, "newWalletButton should not be hidden")
+    XCTAssertEqual(self.sut.createWalletButton.alpha, 1, "newWalletButton alpha should be 1")
   }
 
   func testRestoreWalletButtonInitialState() {
@@ -118,7 +118,7 @@ class StartViewControllerTests: XCTestCase {
   func testCreateWalletButtonContainsAction() {
     let actions = self.sut.createWalletButton.actions(forTarget: self.sut, forControlEvent: .touchUpInside) ?? []
     let createWalletSelector = #selector(StartViewController.createWalletButtonTapped(_:)).description
-    XCTAssertTrue(actions.contains(createWalletSelector), "createWalletButton should contain action")
+    XCTAssertTrue(actions.contains(createWalletSelector), "newWalletButton should contain action")
   }
 
   func testRestoreWalletButtonContainsAction() {
