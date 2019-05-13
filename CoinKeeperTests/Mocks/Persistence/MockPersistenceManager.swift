@@ -75,6 +75,9 @@ class MockPersistenceManager: PersistenceManagerType {
   }
 
   func matchContactsIfPossible() { databaseManager.matchContactsIfPossible(with: self.contactCacheManager) }
+  func verifiedIdentities() -> [UserIdentityType] {
+    return []
+  }
 
   var unacknowledgedInvitations: [CKMInvitation] = []
   func getUnacknowledgedInvitations(in context: NSManagedObjectContext) -> [CKMInvitation] {

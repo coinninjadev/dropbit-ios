@@ -13,6 +13,7 @@ protocol UserRequestable: AnyObject {
   func createUser(walletId: String, body: UserIdentityBody) -> Promise<UserResponse>
   func verifyUser(body: VerifyUserBody) -> Promise<UserResponse>
   func addIdentity(body: UserIdentityBody) -> Promise<UserIdentityResponse>
+  func deleteIdentity(identity: String) -> Promise<Void>
   func getUser() -> Promise<UserResponse>
   func queryUsers(phoneNumberHashes: [String]) -> Promise<StringDictResponse>
   func updateUserPublicURL(isPrivate: Bool) -> Promise<UserResponse>
@@ -23,7 +24,6 @@ protocol UserRequestable: AnyObject {
    */
   func resendVerification(headers: DefaultRequestHeaders, body: UserIdentityBody) -> Promise<UserResponse>
 
-  func deleteIdentity(identity: String) -> Promise<Void>
 }
 
 /**

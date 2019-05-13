@@ -151,5 +151,7 @@ class PhoneNumberStatusViewControllerTests: XCTestCase {
     func viewControllerDidSelectClose(_ viewController: UIViewController) {
       didSelectClose = true
     }
+
+    var suspendAuthenticationOnceUntil: Date?
   }
 }

@@ -15,11 +15,15 @@ extension MockNetworkManager: UserRequestable {
     return Promise { _ in }
   }
 
-  func verifyUser(phoneNumber: GlobalPhoneNumber, code: String) -> Promise<UserResponse> {
+  func verifyUser(body: VerifyUserBody) -> Promise<UserResponse> {
     return Promise { _ in }
   }
 
-  func verifyUser(twitterCredentials: TwitterOAuthStorage) -> Promise<UserResponse> {
+  func addIdentity(body: UserIdentityBody) -> Promise<UserIdentityResponse> {
+    return Promise { _ in }
+  }
+
+  func deleteIdentity(identity: String) -> Promise<Void> {
     return Promise { _ in }
   }
 
@@ -42,5 +46,4 @@ extension MockNetworkManager: UserRequestable {
   func updateUserPublicURL(isPrivate: Bool) -> Promise<UserResponse> {
     return Promise { _ in }
   }
-
 }
