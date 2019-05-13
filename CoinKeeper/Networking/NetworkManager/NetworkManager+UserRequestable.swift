@@ -15,6 +15,7 @@ protocol UserRequestable: AnyObject {
   func verifyUser(twitterCredentials: TwitterOAuthStorage) -> Promise<UserResponse>
   func getUser() -> Promise<UserResponse>
   func queryUsers(phoneNumberHashes: [String]) -> Promise<StringDictResponse>
+  func updateUserPublicURL(isPrivate: Bool) -> Promise<UserResponse>
 
   /**
    This is typically used when the entered verification code is incorrect or expired.
@@ -105,5 +106,9 @@ extension NetworkManager: UserRequestable {
 
   func deleteIdentity(headers: DefaultRequestHeaders, identity: String) -> Promise<Void> {
     return cnProvider.requestVoid(UserTarget.deleteIdentity(headers, identity))
+  }
+
+  func updateUserPublicURL(isPrivate: Bool) -> Promise<UserResponse> {
+    return cnProvider.request(UserTarget.updateIsPrivate(isPrivate))
   }
 }

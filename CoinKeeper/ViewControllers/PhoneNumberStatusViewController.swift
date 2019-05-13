@@ -80,7 +80,7 @@ class PhoneNumberStatusViewController: BaseViewController, StoryboardInitializab
         imageName: "phoneDrawerIcon",
         imageSize: CGSize(width: 13, height: 22),
         title: "VERIFY PHONE NUMBER",
-        textColor: Theme.Color.lightGrayText.color,
+        sharedColor: Theme.Color.lightGrayText.color,
         font: Theme.Font.verificationActionTitle.font)
       verifyPhoneNumberPrimaryButton.setTitle(nil, for: .normal)
       verifyPhoneNumberPrimaryButton.setAttributedTitle(verifyPhoneButtonTitle, for: .normal)
@@ -106,7 +106,7 @@ class PhoneNumberStatusViewController: BaseViewController, StoryboardInitializab
         imageName: "twitterBird",
         imageSize: CGSize(width: 20, height: 16),
         title: "VERIFY TWITTER ACCOUNT",
-        textColor: Theme.Color.lightGrayText.color,
+        sharedColor: Theme.Color.lightGrayText.color,
         font: Theme.Font.verificationActionTitle.font)
 
       verifyTwitterPrimaryButton.setAttributedTitle(verifyTwitterButtonTitle, for: .normal)

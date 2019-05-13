@@ -20,6 +20,7 @@ enum AnalyticsManagerPropertiesType: String {
   case hasReceived = "Has Received"
   case hasSentDropBit = "Has Sent DropBit"
   case hasReceivedDropBit = "Has Received DropBit"
+  case isDropBitMeEnabled = "DropBitMe Enabled"
 }
 
 enum AnalyticsManagerEventType: String {
@@ -93,6 +94,8 @@ enum AnalyticsManagerEventType: String {
   case sharePromptTwitter = "ShareViaTwitter"
   case sharePromptNextTime = "ShareNextTime"
   case sharePromptNever = "ShareNever"
+  case dropBitMeDisabled = "DropBitMeDisabled"
+  case dropBitMeReenabled = "DropBitMeReenabled"
 
   var id: String {
     return self.rawValue

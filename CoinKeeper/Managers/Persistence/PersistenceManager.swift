@@ -132,6 +132,24 @@ class PersistenceManager: PersistenceManagerType {
     databaseManager.persistUserId(userId, in: context)
   }
 
+  func persistUserPublicURLInfo(from response: UserResponse, in context: NSManagedObjectContext) {
+    let user = CKMUser.find(in: context)
+    user?.publicURLIsPrivate = response.private ?? false
+  }
+
+  func getUserPublicURLInfo(in context: NSManagedObjectContext) -> UserPublicURLInfo? {
+    let hasher = HashingManager()
+    let kit = PhoneNumberKit()
+    guard let user = CKMUser.find(in: context),
+      let salt = try? hasher.salt(),
+      let phoneNumber = self.verifiedPhoneNumber() else { return nil }
+
+    let hash = hasher.hash(phoneNumber: phoneNumber, salt: salt, parsedNumber: nil, kit: kit)
+    let phoneIdentity = PublicURLIdentity(fullPhoneHash: hash)
+
+    return UserPublicURLInfo(private: user.publicURLIsPrivate, identities: [phoneIdentity])
+  }
+
   func persistVerificationStatus(from response: UserResponse, in context: NSManagedObjectContext) -> Promise<UserVerificationStatus> {
     return databaseManager.persistVerificationStatus(response.status, in: context)
   }

@@ -72,7 +72,7 @@ class MockSendPaymentViewControllerCoordinator: SendPaymentViewControllerCoordin
   }
 
   var didTapTwitter = false
-  func viewControllerDidPressTwitter(_ viewController: UIViewController) {
+  func viewControllerDidPressTwitter(_ viewController: UIViewController & SelectedValidContactDelegate) {
     didTapTwitter = true
   }
 
@@ -132,6 +132,12 @@ class MockSendPaymentViewControllerCoordinator: SendPaymentViewControllerCoordin
     memoIsShared: Bool,
     sharedPayload: SharedPayloadDTO) {
 
+  }
+
+  func viewController(_ viewController: UIViewController,
+                      checkForContactFromGenericContact genericContact: GenericContact,
+                      completion: @escaping ((ValidatedContact?) -> Void)) {
+    completion(nil)
   }
 
   func sendPaymentViewControllerDidLoad(_ viewController: UIViewController) {

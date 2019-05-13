@@ -146,7 +146,8 @@ extension AppCoordinator: SerialQueueManagerDelegate {
     let deviceDescription = deviceDescriptions.joined(separator: " or ")
     let errorMessage: String
     if isDeviceUUIDMismatch {
-      errorMessage = "The \(deviceDescription) associated with this device is no longer registered. A new device has been registered with this \(deviceDescription)."
+      errorMessage = "The \(deviceDescription) associated with this device is no longer registered." +
+      " A new device has been registered with this \(deviceDescription)."
     } else {
       errorMessage = "The \(deviceDescription) associated with this device has been unregistered."
     }
@@ -158,6 +159,7 @@ extension AppCoordinator: SerialQueueManagerDelegate {
       let debugMessage = "Failed to get \(recordType.rawValue): \(error.responseDescription)"
       let eventValue = AnalyticsEventValue(key: .errorMessage, value: debugMessage)
       self.analyticsManager.track(event: .phoneAutoDeverified, with: eventValue)
+      self.analyticsManager.track(property: MixpanelProperty(key: .isDropBitMeEnabled, value: false))
     }
 
     self.persistenceManager.unverifyUser(in: context)

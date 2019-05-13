@@ -28,19 +28,19 @@ extension AppCoordinator: DeviceVerificationCoordinatorDelegate {
       .then(in: context) { self.persistenceManager.persistWalletId(from: $0, in: context) }
   }
 
-  func coordinator(_ coordinator: DeviceVerificationCoordinator, didVerify phoneNumber: GlobalPhoneNumber) {
+  func coordinator(_ coordinator: DeviceVerificationCoordinator, didVerify phoneNumber: GlobalPhoneNumber, isInitialSetupFlow: Bool) {
     analyticsManager.track(event: .phoneVerified, with: nil)
     analyticsManager.track(property: MixpanelProperty(key: .phoneVerified, value: true))
 
     let logger = OSLog(subsystem: "com.coinninja.coinkeeper.appcoordinator", category: "phone_verification")
-    completeVerification(from: coordinator, userIdentityType: .phone, logger: logger)
+    completeVerification(from: coordinator, userIdentityType: .phone, logger: logger, isInitialSetupFlow: false)
   }
 
-  func coordinator(_ coordinator: DeviceVerificationCoordinator, didVerify twitterCredentials: TwitterOAuthStorage) {
+  func coordinator(_ coordinator: DeviceVerificationCoordinator, didVerify twitterCredentials: TwitterOAuthStorage, isInitialSetupFlow: Bool) {
     analyticsManager.track(event: .twitterVerified, with: nil)
     analyticsManager.track(property: MixpanelProperty(key: .twitterVerified, value: true))
     let logger = OSLog(subsystem: "com.coinninja.coinkeeper.appcoordinator", category: "twitter_verification")
-    completeVerification(from: coordinator, userIdentityType: .twitter, logger: logger)
+    completeVerification(from: coordinator, userIdentityType: .twitter, logger: logger, isInitialSetupFlow: false)
   }
 
   func coordinatorSkippedPhoneVerification(_ coordinator: DeviceVerificationCoordinator) {
@@ -77,7 +77,11 @@ extension AppCoordinator: DeviceVerificationCoordinatorDelegate {
     }
   }
 
-  private func completeVerification(from coordinator: DeviceVerificationCoordinator, userIdentityType: UserIdentityType, logger: OSLog) {
+  private func completeVerification(
+    from coordinator: DeviceVerificationCoordinator,
+    userIdentityType: UserIdentityType,
+    logger: OSLog,
+    isInitialSetupFlow: Bool) {
     let verifiedIdentities = persistenceManager.verifiedIdentities()
     if launchStateManager.profileIsActivated() && verifiedIdentities.count == 1 {
       os_log("Profile is activated, will register wallet addresses", log: logger, type: .debug)
@@ -94,5 +98,11 @@ extension AppCoordinator: DeviceVerificationCoordinatorDelegate {
     alertManager.showBanner(
       with: "Your \(desc) has been successfully verified. You can now send DropBits to your \(userIdentityType.rawValue) contacts.",
       duration: .custom(5))
+
+    if !isInitialSetupFlow {
+      DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+        self.presentDropBitMeViewController(verifiedFirstTime: true)
+      }
+    }
   }
 }

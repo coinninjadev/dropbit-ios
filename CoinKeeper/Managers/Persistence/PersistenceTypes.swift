@@ -54,6 +54,8 @@ protocol PersistenceManagerType: DeviceCountryCodeProvider {
                                        contact: ContactType, fee: Int, acknowledgementId: String)
   func persistWalletId(from response: WalletResponse, in context: NSManagedObjectContext) -> Promise<Void>
   func persistUserId(_ userId: String, in context: NSManagedObjectContext)
+  func persistUserPublicURLInfo(from response: UserResponse, in context: NSManagedObjectContext)
+  func getUserPublicURLInfo(in context: NSManagedObjectContext) -> UserPublicURLInfo?
   func persistVerificationStatus(from response: UserResponse, in context: NSManagedObjectContext) -> Promise<UserVerificationStatus>
   func persistAddedWalletAddresses(
     from responses: [WalletAddressResponse],

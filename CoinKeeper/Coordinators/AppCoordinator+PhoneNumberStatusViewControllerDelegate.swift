@@ -65,13 +65,13 @@ extension AppCoordinator: PhoneNumberStatusViewControllerDelegate {
   func viewControllerDidSelectVerifyTwitter(_ viewController: UIViewController) {
     viewController.dismiss(animated: true) {
       self.navigationController.setNavigationBarHidden(true, animated: true)
-      self.startDeviceVerificationFlow(userIdentityType: .twitter, shouldOrphanRoot: false)
+      self.startDeviceVerificationFlow(userIdentityType: .twitter, shouldOrphanRoot: false, isInitialSetupFlow: false)
     }
   }
 
   func viewControllerDidSelectVerifyPhone(_ viewController: UIViewController) {
     viewController.dismiss(animated: true) {
-      self.startDeviceVerificationFlow(userIdentityType: .phone, shouldOrphanRoot: false)
+      self.startDeviceVerificationFlow(userIdentityType: .phone, shouldOrphanRoot: false, isInitialSetupFlow: false)
       self.navigationController.setNavigationBarHidden(false, animated: true)
     }
   }

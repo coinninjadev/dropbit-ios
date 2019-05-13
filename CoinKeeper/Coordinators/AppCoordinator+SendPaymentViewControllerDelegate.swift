@@ -38,8 +38,9 @@ extension AppCoordinator: SendPaymentViewControllerDelegate {
     analyticsManager.track(event: .pasteButtonPressed, with: nil)
   }
 
-  func viewControllerDidPressTwitter(_ viewController: UIViewController) {
+  func viewControllerDidPressTwitter(_ viewController: UIViewController & SelectedValidContactDelegate) {
     analyticsManager.track(event: .twitterButtonPressed, with: nil)
+    self.presentContacts(mode: .twitter, selectionDelegate: viewController)
   }
 
   func viewControllerDidBeginAddressNegotiation(_ viewController: UIViewController,
@@ -318,12 +319,12 @@ extension AppCoordinator: SendPaymentViewControllerDelegate {
             }
 
             self?.alertManager.hideActivityHUD(withDelay: nil) {
-              self?.presentContacts(selectionDelegate: viewController)
+              self?.presentContacts(mode: .contacts, selectionDelegate: viewController)
             }
           }
 
         } else {
-          strongSelf.presentContacts(selectionDelegate: viewController)
+          strongSelf.presentContacts(mode: .contacts, selectionDelegate: viewController)
         }
 
       default:
@@ -332,11 +333,10 @@ extension AppCoordinator: SendPaymentViewControllerDelegate {
     }
   }
 
-  private func presentContacts(selectionDelegate viewController: SelectedValidContactDelegate) {
-    let contactsViewController = ContactsViewController.makeFromStoryboard()
-    contactsViewController.selectionDelegate = viewController
-    self.assignCoordinationDelegate(to: contactsViewController)
-    contactsViewController.modalPresentationStyle = .overFullScreen
+  private func presentContacts(mode: ContactsViewControllerMode, selectionDelegate viewController: SelectedValidContactDelegate) {
+    let contactsViewController = ContactsViewController.newInstance(mode: mode,
+                                                                    coordinationDelegate: self,
+                                                                    selectionDelegate: viewController)
     self.navigationController.topViewController()?.present(contactsViewController, animated: true)
   }
 
@@ -374,7 +374,7 @@ extension AppCoordinator: SendPaymentViewControllerDelegate {
       guard let strongSelf = self else { return }
       viewController.dismiss(animated: true, completion: {
         strongSelf.navigationController.isNavigationBarHidden = false
-        strongSelf.startDeviceVerificationFlow(userIdentityType: .phone, shouldOrphanRoot: false)
+        strongSelf.startDeviceVerificationFlow(userIdentityType: .phone, shouldOrphanRoot: false, isInitialSetupFlow: false)
       })
     }
     let configs = [notNowAction, verifyAction]
@@ -427,15 +427,11 @@ extension AppCoordinator: SendPaymentViewControllerDelegate {
     return persistenceManager.deviceCountryCode()
   }
 
-  func viewController(_ viewController: UIViewController, checkForContactFromGenericContact genericContact: GenericContact) -> ValidatedContact? {
-    let globalPhoneNumber = genericContact.globalPhoneNumber
-    let context = contactCacheManager.mainQueueContext
-    var validatedContact: ValidatedContact?
-    context.performAndWait {
-      let foundValidNumber = contactCacheManager.validatedMetadata(for: globalPhoneNumber, in: context)?.firstCachedPhoneNumberByName()
-      validatedContact = foundValidNumber.flatMap { ValidatedContact(cachedNumber: $0) }
-    }
-    return validatedContact
+  func viewController(_ viewController: UIViewController,
+                      checkForContactFromGenericContact genericContact: GenericContact,
+                      completion: @escaping ((ValidatedContact?) -> Void)) {
+    self.contactCacheDataWorker.refreshStatus(forPhoneNumber: genericContact.globalPhoneNumber,
+                                              completion: completion)
   }
 
   func viewController(

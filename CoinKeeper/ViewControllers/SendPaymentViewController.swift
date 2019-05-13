@@ -245,21 +245,21 @@ extension SendPaymentViewController {
     let contactsTitle = NSAttributedString(imageName: "contactsIcon",
                                            imageSize: CGSize(width: 9, height: 14),
                                            title: "CONTACTS",
-                                           textColor: textColor,
+                                           sharedColor: textColor,
                                            font: font)
     contactsButton.setAttributedTitle(contactsTitle, for: .normal)
 
     let twitterTitle = NSAttributedString(imageName: "twitterBird",
                                           imageSize: CGSize(width: 20, height: 16),
                                           title: "TWITTER",
-                                          textColor: textColor,
+                                          sharedColor: textColor,
                                           font: font)
     twitterButton.setAttributedTitle(twitterTitle, for: .normal)
 
     let pasteTitle = NSAttributedString(imageName: "pasteIcon",
                                         imageSize: CGSize(width: 16, height: 14),
                                         title: "PASTE",
-                                        textColor: textColor,
+                                        sharedColor: textColor,
                                         font: font)
     pasteButton.setAttributedTitle(pasteTitle, for: .normal)
   }
@@ -431,12 +431,14 @@ extension SendPaymentViewController {
       case .btcAddress(let btcAddress):
         self.showBitcoinAddressRecipient(with: btcAddress)
       case .phoneNumber(let contact):
-        if let validatedContact = self.coordinationDelegate?.viewController(self, checkForContactFromGenericContact: contact) {
-          self.viewModel.paymentRecipient = PaymentRecipient.contact(validatedContact)
-          self.updateViewWithModel()
-          self.hideRecipientInputViews()
-        } else {
-          self.showPhoneEntryView(with: contact)
+        self.coordinationDelegate?.viewController(self, checkForContactFromGenericContact: contact) { possibleValidatedContact in
+          if let validatedContact = possibleValidatedContact {
+            self.viewModel.paymentRecipient = PaymentRecipient.contact(validatedContact)
+            self.updateViewWithModel()
+            self.hideRecipientInputViews()
+          } else {
+            self.showPhoneEntryView(with: contact)
+          }
         }
       case .contact:
         self.hideRecipientInputViews()

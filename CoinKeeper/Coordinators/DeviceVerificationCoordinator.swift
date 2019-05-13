@@ -18,8 +18,9 @@ protocol DeviceVerificationCoordinatorDelegate: TwilioErrorDelegate {
   var persistenceManager: PersistenceManagerType { get }
   var alertManager: AlertManagerType { get }
 
-  func coordinator(_ coordinator: DeviceVerificationCoordinator, didVerify phoneNumber: GlobalPhoneNumber)
-  func coordinator(_ coordinator: DeviceVerificationCoordinator, didVerify twitterCredentials: TwitterOAuthStorage)
+  func coordinator(_ coordinator: DeviceVerificationCoordinator, didVerify phoneNumber: GlobalPhoneNumber, isInitialSetupFlow: Bool)
+  func coordinator(_ coordinator: DeviceVerificationCoordinator, didVerify twitterCredentials: TwitterOAuthStorage, isInitialSetupFlow: Bool)
+  //func coordinator(_ coordinator: DeviceVerificationCoordinator, didVerify phoneNumber: GlobalPhoneNumber, isInitialSetupFlow: Bool)
   func coordinatorSkippedPhoneVerification(_ coordinator: DeviceVerificationCoordinator)
   func registerAndPersistWallet(in context: NSManagedObjectContext) -> Promise<Void>
 }
@@ -31,6 +32,7 @@ class DeviceVerificationCoordinator: ChildCoordinatorType {
 
   var userSuppliedPhoneNumber: GlobalPhoneNumber?
   let logger = OSLog(subsystem: "com.coinninja.coinkeeper.deviceverificationcoordinator", category: "device_verification_coordinator")
+  var isInitialSetupFlow = true
 
   // MARK: private var
   private var codeEntryFailureCount = 0
@@ -79,7 +81,7 @@ class DeviceVerificationCoordinator: ChildCoordinatorType {
             os_log("failed to save context in %@. error: %@", log: self.logger, type: .error, #function, error.localizedDescription)
           }
         }
-        .done { _ in delegate.coordinator(self, didVerify: credentials) }
+        .done { _ in delegate.coordinator(self, didVerify: credentials, isInitialSetupFlow: false) }
         .catch { error in
           os_log("failed to create or verify user in %@. error: %@", log: self.logger, type: .error, #function, error.localizedDescription)
         }
@@ -371,7 +373,7 @@ extension DeviceVerificationCoordinator: DeviceVerificationViewControllerDelegat
   }
 
   private func codeWasVerified(phoneNumber: GlobalPhoneNumber) {
-    coordinationDelegate?.coordinator(self, didVerify: phoneNumber)
+    coordinationDelegate?.coordinator(self, didVerify: phoneNumber, isInitialSetupFlow: self.isInitialSetupFlow)
   }
 
   private func codeFailureCountExceeded() {

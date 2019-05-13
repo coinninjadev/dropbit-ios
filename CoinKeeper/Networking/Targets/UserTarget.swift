@@ -14,6 +14,7 @@ public enum UserTarget: CoinNinjaTargetType {
   case create(CreateUserHeaders, CreateUserBody)
   case get
   case verify(VerifyUserBody)
+  case updateIsPrivate(Bool)
 
   /// Headers reference UserID returned by server instead of local persistence
   case resendVerification(DefaultRequestHeaders, CreateUserBody)
@@ -38,11 +39,12 @@ extension UserTarget {
 
   public var method: Method {
     switch self {
-    case .create:               return .post
     case .get:                  return .get
-    case .verify,
+    case .create,
+         .verify,
          .resendVerification:   return .post
     case .deleteIdentity:       return .delete
+    case .updateIsPrivate:      return .patch
     }
   }
 
@@ -58,6 +60,9 @@ extension UserTarget {
       return .requestCustomJSONEncodable(body, encoder: customEncoder)
 
     case .resendVerification(_, let body):
+      return .requestCustomJSONEncodable(body, encoder: customEncoder)
+    case .updateIsPrivate(let isPrivate):
+      let body = UserPatchPrivateBody(private: isPrivate)
       return .requestCustomJSONEncodable(body, encoder: customEncoder)
     }
   }

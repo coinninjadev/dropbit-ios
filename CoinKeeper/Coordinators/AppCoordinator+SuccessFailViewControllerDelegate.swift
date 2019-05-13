@@ -26,8 +26,7 @@ extension AppCoordinator: SuccessFailViewControllerDelegate {
         self?.navigationController.topViewController()?.dismiss(animated: true, completion: completion)
       }
     case .restoreWallet:
-      startDeviceVerificationFlow(userIdentityType: .phone, shouldOrphanRoot: true)
+      startDeviceVerificationFlow(userIdentityType: .phone, shouldOrphanRoot: true, isInitialSetupFlow: true)
     }
   }
-
 }

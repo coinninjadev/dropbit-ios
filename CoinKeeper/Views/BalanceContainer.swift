@@ -10,6 +10,7 @@ import UIKit
 
 protocol BalanceContainerDelegate: AnyObject {
   func containerDidTapLeftButton(in viewController: UIViewController)
+  func containerDidTapDropBitMe(in viewController: UIViewController)
   func containerDidTapBalances(in viewController: UIViewController)
   func containerDidLongPressBalances(in viewController: UIViewController)
   func isSyncCurrentlyRunning() -> Bool
@@ -50,13 +51,13 @@ enum BalanceContainerLeftButtonType {
   weak var delegate: BalanceContainerDelegate?
 
   @IBOutlet var leftButton: BalanceContainerLeftButton!
+  @IBOutlet var dropBitMeButton: UIButton!
   @IBOutlet var primaryAmountLabel: BalancePrimaryAmountLabel!
   @IBOutlet var secondaryAmountLabel: BalanceSecondaryAmountLabel!
   @IBOutlet var balanceView: UIView!
   @IBOutlet var balancesTapGestureRecognizer: UITapGestureRecognizer!
   @IBOutlet var balancesLongPressRecognizer: UILongPressGestureRecognizer!
   @IBOutlet var syncActivityIndicator: UIImageView!
-  @IBOutlet var syncLabel: SyncingLabel!
 
   var startSyncNotificationToken: NotificationToken?
   var finishSyncNotificationToken: NotificationToken?
@@ -64,6 +65,11 @@ enum BalanceContainerLeftButtonType {
   @IBAction func didTapLeftButton(_ sender: Any) {
     guard let delegate = delegate, let parent = parentViewController else { return }
     delegate.containerDidTapLeftButton(in: parent)
+  }
+
+  @IBAction func didTapDropBitMe(_ button: UIButton) {
+    guard let delegate = delegate, let parent = parentViewController else { return }
+    delegate.containerDidTapDropBitMe(in: parent)
   }
 
   @IBAction func didTapBalances(_ sender: UITapGestureRecognizer) {
@@ -142,7 +148,6 @@ enum BalanceContainerLeftButtonType {
   }
 
   private func setSyncVisibility(hidden: Bool) {
-    syncLabel.isHidden = hidden
     syncActivityIndicator.isHidden = hidden
   }
 

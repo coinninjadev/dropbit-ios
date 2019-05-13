@@ -39,4 +39,8 @@ extension MockNetworkManager: UserRequestable {
     return Promise { _ in }
   }
 
+  func updateUserPublicURL(isPrivate: Bool) -> Promise<UserResponse> {
+    return Promise { _ in }
+  }
+
 }
