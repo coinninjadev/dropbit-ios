@@ -100,7 +100,7 @@ protocol PersistenceManagerType: DeviceCountryCodeProvider {
   func unverifyUser(in context: NSManagedObjectContext)
 
   func verifiedPhoneNumber() -> GlobalPhoneNumber?
-  func deregisterPhone()
+  func unverifyAllIdentities()
 
   /// Called when local walletId is no longer valid on server
   func removeWalletId(in context: NSManagedObjectContext)

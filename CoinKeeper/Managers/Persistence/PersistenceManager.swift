@@ -241,7 +241,7 @@ class PersistenceManager: PersistenceManagerType {
   }
 
   /// Should be called when last identity is deverified
-  func deregisterPhone() {
+  func unverifyAllIdentities() {
     let context = mainQueueContext()
     databaseManager.unverifyUser(in: context)
     keychainManager.unverifyUser(for: .phone)

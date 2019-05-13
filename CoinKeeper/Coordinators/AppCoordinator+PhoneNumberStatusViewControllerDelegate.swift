@@ -122,15 +122,6 @@ extension AppCoordinator: PhoneNumberStatusViewControllerDelegate {
     return AlertActionConfiguration(title: "Remove", style: .cancel, action: {
       self.alertManager.showActivityHUD(withStatus: nil)
       self.unverifyVerifiedIdentity(identityType: identityType, allVerifiedIdentities: verifiedIdentities)
-        .then { _ -> Promise<Void> in
-          // if there was only one identity, which was removed in `unverifyVerifiedIdentity`, then reset wallet
-          if verifiedIdentities.count == 1 {
-            self.persistenceManager.deregisterPhone()
-            return self.networkManager.resetWallet()
-          } else {
-            return Promise.value(())
-          }
-        }
         .done(on: .main) {
           successfulCompletion()
         }.catch { error in
@@ -147,49 +138,41 @@ extension AppCoordinator: PhoneNumberStatusViewControllerDelegate {
     })
   }
 
-  private func unverifyTwitterConfiguration(identity: String) -> Promise<Void> {
-    return self.networkManager.deleteIdentity(identity: identity)
-      .done { _ in
-        self.alertManager.hideActivityHUD(withDelay: nil, completion: nil)
-        self.analyticsManager.track(event: .deregisterTwitter, with: nil)
-        self.persistenceManager.keychainManager.unverifyUser(for: .twitter)
-        self.analyticsManager.track(property: MixpanelProperty(key: .twitterVerified, value: false))
-    }
-  }
-
-  private func unverifyPhoneConfiguration(identity: String) -> Promise<Void> {
-    return self.networkManager.deleteIdentity(identity: identity)
-      .done { _ in
-        self.alertManager.hideActivityHUD(withDelay: nil, completion: nil)
-        self.analyticsManager.track(event: .deregisterPhoneNumber, with: nil)
-        self.persistenceManager.keychainManager.unverifyUser(for: .phone)
-        self.analyticsManager.track(property: MixpanelProperty(key: .phoneVerified, value: false))
+  private func unverifyConfiguration(for type: UserIdentityType) {
+    self.alertManager.hideActivityHUD(withDelay: nil, completion: nil)
+    self.persistenceManager.keychainManager.unverifyUser(for: type)
+    switch type {
+    case .phone:
+      self.analyticsManager.track(event: .deregisterPhoneNumber, with: nil)
+      self.analyticsManager.track(property: MixpanelProperty(key: .phoneVerified, value: false))
+    case .twitter:
+      self.analyticsManager.track(event: .deregisterTwitter, with: nil)
+      self.analyticsManager.track(property: MixpanelProperty(key: .twitterVerified, value: false))
     }
   }
 
   private func unverifyVerifiedIdentity(identityType: UserIdentityType, allVerifiedIdentities: [UserIdentityType]) -> Promise<Void> {
-    let hashingManager = HashingManager()
     var identityToRemove = ""
     switch identityType {
-    case .twitter:
-      if allVerifiedIdentities.contains(.twitter),
-        let creds = persistenceManager.keychainManager.oauthCredentials() {
-        identityToRemove = creds.twitterUserId
-        return unverifyTwitterConfiguration(identity: identityToRemove)
-      } else {
-        return Promise(error: DeviceVerificationError.invalidPhoneNumber)
-      }
     case .phone:
-      if allVerifiedIdentities.contains(.phone),
+      let hashingManager = HashingManager()
+      guard allVerifiedIdentities.contains(.phone),
         let phoneNumber = persistenceManager.verifiedPhoneNumber(),
-        let salt = try? hashingManager.salt() {
-
-        identityToRemove = HashingManager().hash(phoneNumber: phoneNumber, salt: salt, parsedNumber: nil, kit: phoneNumberKit)
-        return unverifyPhoneConfiguration(identity: identityToRemove)
-      } else {
-        return Promise(error: DeviceVerificationError.invalidPhoneNumber)
-      }
+        let salt = try? hashingManager.salt() else { return Promise(error: DeviceVerificationError.invalidPhoneNumber) }
+      identityToRemove = hashingManager.hash(phoneNumber: phoneNumber, salt: salt, parsedNumber: nil, kit: self.phoneNumberKit)
+    case .twitter:
+      guard allVerifiedIdentities.contains(.phone),
+        let creds = persistenceManager.keychainManager.oauthCredentials()
+        else { return Promise(error: DeviceVerificationError.invalidPhoneNumber) }
+      identityToRemove = creds.twitterUserId
     }
 
+    return self.networkManager.deleteIdentity(identity: identityToRemove)
+      .get { _ in
+        self.unverifyConfiguration(for: identityType)
+        if allVerifiedIdentities.count == 1 {
+          self.persistenceManager.unverifyAllIdentities()
+        }
+      }
   }
 }
