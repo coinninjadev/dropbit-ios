@@ -17,7 +17,7 @@ extension AppCoordinator: PhoneNumberStatusViewControllerDelegate {
   }
 
   func verifiedTwitterHandle() -> String? {
-    return persistenceManager.keychainManager.oauthCredentials()?.twitterScreenName
+    return persistenceManager.keychainManager.oauthCredentials()?.formattedScreenName
   }
 
   func viewControllerDidRequestAddresses() -> [ServerAddressViewModel] {

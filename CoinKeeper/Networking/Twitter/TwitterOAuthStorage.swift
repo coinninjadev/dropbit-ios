@@ -14,3 +14,9 @@ struct TwitterOAuthStorage {
   let twitterUserId: String
   let twitterScreenName: String
 }
+
+extension TwitterOAuthStorage {
+  var formattedScreenName: String {
+    return "@" + twitterScreenName
+  }
+}

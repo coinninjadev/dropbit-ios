@@ -139,6 +139,11 @@ struct PublicURLIdentity: ResponseCodable, Comparable {
     self.handle = String(fullPhoneHash.prefix(12))
   }
 
+  init(twitterCredentials: TwitterOAuthStorage) {
+    self.type = UserIdentityType.twitter.rawValue
+    self.handle = twitterCredentials.formattedScreenName
+  }
+
   static var requiredStringKeys: [KeyPath<PublicURLIdentity, String>] {
     return [\.type, \.handle]
   }

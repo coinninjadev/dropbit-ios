@@ -138,16 +138,27 @@ class PersistenceManager: PersistenceManagerType {
   }
 
   func getUserPublicURLInfo(in context: NSManagedObjectContext) -> UserPublicURLInfo? {
+    guard let user = CKMUser.find(in: context) else { return nil }
+    let phoneIdentity = self.phoneIdentity(for: user, in: context)
+    let twitterIdentity = self.twitterIdentity()
+    let identities = [phoneIdentity, twitterIdentity].compactMap { $0 }
+
+    return UserPublicURLInfo(private: user.publicURLIsPrivate, identities: identities)
+  }
+
+  private func twitterIdentity() -> PublicURLIdentity? {
+    guard let creds = keychainManager.oauthCredentials() else { return nil }
+    return PublicURLIdentity(twitterCredentials: creds)
+  }
+  private func phoneIdentity(for user: CKMUser, in context: NSManagedObjectContext) -> PublicURLIdentity? {
     let hasher = HashingManager()
     let kit = PhoneNumberKit()
-    guard let user = CKMUser.find(in: context),
-      let salt = try? hasher.salt(),
+    guard let salt = try? hasher.salt(),
       let phoneNumber = self.verifiedPhoneNumber() else { return nil }
 
     let hash = hasher.hash(phoneNumber: phoneNumber, salt: salt, parsedNumber: nil, kit: kit)
     let phoneIdentity = PublicURLIdentity(fullPhoneHash: hash)
-
-    return UserPublicURLInfo(private: user.publicURLIsPrivate, identities: [phoneIdentity])
+    return phoneIdentity
   }
 
   func persistVerificationStatus(from response: UserResponse, in context: NSManagedObjectContext) -> Promise<UserVerificationStatus> {
