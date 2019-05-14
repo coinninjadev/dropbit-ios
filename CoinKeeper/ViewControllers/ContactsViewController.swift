@@ -131,6 +131,7 @@ class ContactsViewController: PresentableViewController, StoryboardInitializable
     tableView.registerNib(cellType: TwitterUserTableViewCell.self)
     tableView.registerHeaderFooter(headerFooterType: ContactsTableViewHeader.self)
     tableView.tableFooterView = UIView()
+    searchBar.searchTextField?.text = nil
 
     tableView.delegate = self
     switch mode {
@@ -144,6 +145,7 @@ class ContactsViewController: PresentableViewController, StoryboardInitializable
       }
     case .twitter:
       tableView.dataSource = self.twitterUserDataSource
+      twitterUserDataSource.update(users: [])
       tableView.reloadData()
     }
 
@@ -208,7 +210,6 @@ class ContactsViewController: PresentableViewController, StoryboardInitializable
     searchBar.resignFirstResponder()
     coordinationDelegate?.viewControllerDidSelectClose(self)
   }
-
 }
 
 extension ContactsViewController: UISearchBarDelegate {
@@ -241,6 +242,16 @@ extension ContactsViewController: UISearchBarDelegate {
     }
   }
 
+  func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+    searchBar.resignFirstResponder()
+    switch mode {
+    case .contacts: break
+    case .twitter:
+      guard let delegate = coordinationDelegate, let text = searchBar.text else { return }
+      _ = delegate.searchForTwitterUsers(with: text)
+        .done { self.twitterUserDataSource.update(users: $0) }
+    }
+  }
 }
 
 extension ContactsViewController: UITableViewDelegate, UITableViewDataSource {

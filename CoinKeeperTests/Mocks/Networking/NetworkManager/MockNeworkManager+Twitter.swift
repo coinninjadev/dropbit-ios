@@ -18,4 +18,8 @@ extension MockNetworkManager: TwitterRequestable {
   func authorizedTwitterCredentials() -> Promise<TwitterOAuthStorage> {
     return Promise { _ in }
   }
+
+  func findTwitterUsers(using term: String) -> Promise<[TwitterUser]> {
+    return Promise { _ in }
+  }
 }
