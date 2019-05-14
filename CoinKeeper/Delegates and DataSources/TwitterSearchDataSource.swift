@@ -10,14 +10,30 @@ import UIKit
 
 class TwitterSearchDataSource: NSObject, UITableViewDataSource {
   private(set) var users: [TwitterUser] = []
+  private(set) var defaultFriends: [TwitterUser] = []
   private weak var tableView: UITableView?
+
+  var shouldReloadFriends: Bool {
+    return users.isEmpty
+  }
 
   init(tableView: UITableView) {
     self.tableView = tableView
   }
 
+  func updateDefaultFriends(_ friends: [TwitterUser]) {
+    self.defaultFriends = friends
+    self.users = friends
+    tableView?.reloadData()
+  }
+
   func update(users: [TwitterUser]) {
     self.users = users
+    tableView?.reloadData()
+  }
+
+  func reset() {
+    users = defaultFriends
     tableView?.reloadData()
   }
 
