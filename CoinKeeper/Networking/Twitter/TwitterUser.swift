@@ -31,3 +31,9 @@ struct TwitterUser: Decodable {
 
   var profileImageData: Data?
 }
+
+extension TwitterUser {
+  var formattedScreenName: String {
+    return "@" + screenName
+  }
+}
