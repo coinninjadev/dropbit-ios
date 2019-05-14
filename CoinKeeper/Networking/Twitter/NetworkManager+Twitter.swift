@@ -29,6 +29,7 @@ extension TwitterUser: CustomDebugStringConvertible {
 protocol TwitterRequestable: AnyObject {
   func getCurrentTwitterUser() -> Promise<TwitterUser>
   func authorizedTwitterCredentials() -> Promise<TwitterOAuthStorage>
+  func findTwitterUsers(using term: String) -> Promise<[TwitterUser]>
 }
 
 extension TwitterOAuth {
@@ -44,6 +45,51 @@ extension NetworkManager: TwitterRequestable {
 
   func authorizedTwitterCredentials() -> Promise<TwitterOAuthStorage> {
     return authorize()
+  }
+
+  func findTwitterUsers(using term: String) -> Promise<[TwitterUser]> {
+    return authorize()
+      .then { _ in self.performTwitterSearch(using: term) }
+      .then { (users: [TwitterUser]) -> Promise<[TwitterUser]> in
+        let promises = users.map { self.userWithImage(for: $0) }
+        return when(fulfilled: promises)
+      }
+  }
+
+  private func performTwitterSearch(using term: String) -> Promise<[TwitterUser]> {
+    return Promise { seal in
+      twitterOAuthManager.client.get(
+        TwitterEndpoints.search.urlString,
+        parameters: ["q": term, "count": 5],
+        headers: nil,
+        success: { (response: OAuthSwiftResponse) in
+          do {
+            let users = try TwitterUser.decoder.decode([TwitterUser].self, from: response.data)
+            seal.fulfill(users)
+          } catch {
+            seal.reject(error)
+          }
+      },
+        failure: { (error: OAuthSwiftError) in
+          seal.reject(error)
+      })
+    }
+  }
+
+  private func userWithImage(for user: TwitterUser) -> Promise<TwitterUser> {
+    guard let url = user.profileImageURL else { return Promise.value(user) }
+    return Promise { seal in
+      DispatchQueue(label: "profile image").async {
+        do {
+          let data = try Data(contentsOf: url)
+          var copyUser = user
+          copyUser.profileImageData = data
+          seal.fulfill(copyUser)
+        } catch {
+          seal.fulfill(user)
+        }
+      }
+    }
   }
 
   private func authorize() -> Promise<TwitterOAuthStorage> {
