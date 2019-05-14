@@ -75,4 +75,7 @@ extension AppCoordinator: ContactsViewControllerDelegate {
     navigationController.topViewController()?.present(alert, animated: true)
   }
 
+  func searchForTwitterUsers(with searchTerm: String) -> Promise<[TwitterUser]> {
+    return networkManager.findTwitterUsers(using: searchTerm)
+  }
 }
