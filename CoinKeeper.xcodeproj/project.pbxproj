@@ -167,6 +167,9 @@
 		3B5720782232CD1C0048A8CF /* DatabaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5720772232CD1C0048A8CF /* DatabaseTests.swift */; };
 		3B57207B223300160048A8CF /* SQLiteCoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B57207A223300160048A8CF /* SQLiteCoreDataStack.swift */; };
 		3B57207D2233004E0048A8CF /* BaseCoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B57207C2233004E0048A8CF /* BaseCoreDataStack.swift */; };
+		3B5A88A0228AFC850082BBA4 /* CNContactSearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5A889F228AFC850082BBA4 /* CNContactSearchBar.swift */; };
+		3B5A88A2228B08FE0082BBA4 /* ContactCellPrimaryLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5A88A1228B08FE0082BBA4 /* ContactCellPrimaryLabel.swift */; };
+		3B5A88A4228B09260082BBA4 /* ContactCellSecondaryLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5A88A3228B09260082BBA4 /* ContactCellSecondaryLabel.swift */; };
 		3B5CD00C20DACD7A003FF5AD /* ServerAddressCoreDataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5CD00A20DACD79003FF5AD /* ServerAddressCoreDataTests.swift */; };
 		3B5CD00D20DACD7A003FF5AD /* AddressCoreDataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5CD00B20DACD7A003FF5AD /* AddressCoreDataTests.swift */; };
 		3B61B6E220DD282E0021D69E /* SendPaymentViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B61B6E120DD282E0021D69E /* SendPaymentViewControllerDelegate.swift */; };
@@ -975,6 +978,9 @@
 		3B5720772232CD1C0048A8CF /* DatabaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseTests.swift; sourceTree = "<group>"; };
 		3B57207A223300160048A8CF /* SQLiteCoreDataStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SQLiteCoreDataStack.swift; sourceTree = "<group>"; };
 		3B57207C2233004E0048A8CF /* BaseCoreDataStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseCoreDataStack.swift; sourceTree = "<group>"; };
+		3B5A889F228AFC850082BBA4 /* CNContactSearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CNContactSearchBar.swift; sourceTree = "<group>"; };
+		3B5A88A1228B08FE0082BBA4 /* ContactCellPrimaryLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactCellPrimaryLabel.swift; sourceTree = "<group>"; };
+		3B5A88A3228B09260082BBA4 /* ContactCellSecondaryLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactCellSecondaryLabel.swift; sourceTree = "<group>"; };
 		3B5CD00A20DACD79003FF5AD /* ServerAddressCoreDataTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServerAddressCoreDataTests.swift; sourceTree = "<group>"; };
 		3B5CD00B20DACD7A003FF5AD /* AddressCoreDataTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddressCoreDataTests.swift; sourceTree = "<group>"; };
 		3B61B6E120DD282E0021D69E /* SendPaymentViewControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendPaymentViewControllerDelegate.swift; sourceTree = "<group>"; };
@@ -2088,6 +2094,7 @@
 				3B47037E2253B68700977784 /* SendReceiveActionView.xib */,
 				3B547A6D2280A6F0007B0366 /* VerifiedStatusView.swift */,
 				3B547A6F2280A6FD007B0366 /* VerifiedStatusView.xib */,
+				3B5A889F228AFC850082BBA4 /* CNContactSearchBar.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -2806,6 +2813,8 @@
 				B54A4212207FF2E8005B40A9 /* TransactionDetailPrimaryAmountLabel.swift */,
 				B54A4214207FF310005B40A9 /* TransactionDetailSecondaryAmountLabel.swift */,
 				B530DFBC2108CF8400A0B1A8 /* TransactionDetailWarningLabel.swift */,
+				3B5A88A1228B08FE0082BBA4 /* ContactCellPrimaryLabel.swift */,
+				3B5A88A3228B09260082BBA4 /* ContactCellSecondaryLabel.swift */,
 			);
 			path = Labels;
 			sourceTree = "<group>";
@@ -3728,6 +3737,7 @@
 				3BD7B73120D66F12005057A7 /* HorizontallyPaginatedCollectionViewLayout.swift in Sources */,
 				3BDFADFC2267AEFF0077DEF2 /* BlockstreamTarget.swift in Sources */,
 				B5221D5322441CC30081C868 /* MigrateContactCacheV1toV2.swift in Sources */,
+				3B5A88A0228AFC850082BBA4 /* CNContactSearchBar.swift in Sources */,
 				B56E15972167DB26003B69D4 /* NetworkManager+WalletRequestable.swift in Sources */,
 				B5A42A98217A31D800EB32CB /* UserNotifiableError.swift in Sources */,
 				A29CE0C72098F84300761B91 /* SuccessFailViewController.swift in Sources */,
@@ -3892,9 +3902,11 @@
 				B5FE9B67219DD96200801D3C /* MerchantPaymentRequestResponse.swift in Sources */,
 				3BEB594620D15AF9005EDA9E /* AddressTransactionSummaryResponse.swift in Sources */,
 				3B2EBF71223010DC003C0D0E /* ManagedContactComponents.swift in Sources */,
+				3B5A88A2228B08FE0082BBA4 /* ContactCellPrimaryLabel.swift in Sources */,
 				B56E158D2167C176003B69D4 /* NetworkManager+AddressRequestable.swift in Sources */,
 				B5B53C9C2107CAA5006C7B67 /* TransactionDetailsInfoContainer.swift in Sources */,
 				A245C6D020D9537400D99983 /* RequestAddressBody.swift in Sources */,
+				3B5A88A4228B09260082BBA4 /* ContactCellSecondaryLabel.swift in Sources */,
 				3BA9F611208F6EDB0047C213 /* AppCoordinator+BalanceContainerDelegate.swift in Sources */,
 				B5A98AEB224176C300DEF96F /* CKUserDefaults.swift in Sources */,
 				B5054149207D00270059C8F9 /* CKMAddress+CoreDataProperties.swift in Sources */,
