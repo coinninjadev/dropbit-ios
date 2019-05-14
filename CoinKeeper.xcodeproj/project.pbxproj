@@ -167,6 +167,9 @@
 		3B5720782232CD1C0048A8CF /* DatabaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5720772232CD1C0048A8CF /* DatabaseTests.swift */; };
 		3B57207B223300160048A8CF /* SQLiteCoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B57207A223300160048A8CF /* SQLiteCoreDataStack.swift */; };
 		3B57207D2233004E0048A8CF /* BaseCoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B57207C2233004E0048A8CF /* BaseCoreDataStack.swift */; };
+		3B5A889A228AEFE10082BBA4 /* TwitterSearchDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5A8899228AEFE10082BBA4 /* TwitterSearchDataSource.swift */; };
+		3B5A889D228AF3D90082BBA4 /* TwitterUserTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5A889B228AF3D90082BBA4 /* TwitterUserTableViewCell.swift */; };
+		3B5A889E228AF3D90082BBA4 /* TwitterUserTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3B5A889C228AF3D90082BBA4 /* TwitterUserTableViewCell.xib */; };
 		3B5A88A0228AFC850082BBA4 /* CNContactSearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5A889F228AFC850082BBA4 /* CNContactSearchBar.swift */; };
 		3B5A88A2228B08FE0082BBA4 /* ContactCellPrimaryLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5A88A1228B08FE0082BBA4 /* ContactCellPrimaryLabel.swift */; };
 		3B5A88A4228B09260082BBA4 /* ContactCellSecondaryLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5A88A3228B09260082BBA4 /* ContactCellSecondaryLabel.swift */; };
@@ -978,6 +981,9 @@
 		3B5720772232CD1C0048A8CF /* DatabaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseTests.swift; sourceTree = "<group>"; };
 		3B57207A223300160048A8CF /* SQLiteCoreDataStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SQLiteCoreDataStack.swift; sourceTree = "<group>"; };
 		3B57207C2233004E0048A8CF /* BaseCoreDataStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseCoreDataStack.swift; sourceTree = "<group>"; };
+		3B5A8899228AEFE10082BBA4 /* TwitterSearchDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwitterSearchDataSource.swift; sourceTree = "<group>"; };
+		3B5A889B228AF3D90082BBA4 /* TwitterUserTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwitterUserTableViewCell.swift; sourceTree = "<group>"; };
+		3B5A889C228AF3D90082BBA4 /* TwitterUserTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TwitterUserTableViewCell.xib; sourceTree = "<group>"; };
 		3B5A889F228AFC850082BBA4 /* CNContactSearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CNContactSearchBar.swift; sourceTree = "<group>"; };
 		3B5A88A1228B08FE0082BBA4 /* ContactCellPrimaryLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactCellPrimaryLabel.swift; sourceTree = "<group>"; };
 		3B5A88A3228B09260082BBA4 /* ContactCellSecondaryLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactCellSecondaryLabel.swift; sourceTree = "<group>"; };
@@ -1929,6 +1935,7 @@
 				B597AF6E225682F600660B0E /* MessagerDelegate.swift */,
 				B5B0DC7A221349C70010AB2A /* CountryCodePickerDataSource.swift */,
 				3B6FDAE02052CE5C0091916A /* VerifyRecoveryWordsCollectionViewDDS.swift */,
+				3B5A8899228AEFE10082BBA4 /* TwitterSearchDataSource.swift */,
 			);
 			path = "Delegates and DataSources";
 			sourceTree = "<group>";
@@ -1969,6 +1976,8 @@
 				3B3779EE219C6B2800F79683 /* BackupWordsReminderDrawerCell.xib */,
 				3BEF229C2260DC78001F6D25 /* BuySpendCardCollectionViewCell.swift */,
 				3BEF229D2260DC78001F6D25 /* BuySpendCardCollectionViewCell.xib */,
+				3B5A889B228AF3D90082BBA4 /* TwitterUserTableViewCell.swift */,
+				3B5A889C228AF3D90082BBA4 /* TwitterUserTableViewCell.xib */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -3174,6 +3183,7 @@
 				3B5052B12045FAD7000C739F /* CreateRecoveryWordsViewController.storyboard in Resources */,
 				3B47037F2253B68700977784 /* SendReceiveActionView.xib in Resources */,
 				A2A530BC20936A5B00B6F4DE /* ConfirmPaymentViewController.storyboard in Resources */,
+				3B5A889E228AF3D90082BBA4 /* TwitterUserTableViewCell.xib in Resources */,
 				3B547A702280A6FD007B0366 /* VerifiedStatusView.xib in Resources */,
 				308F6F03217F91A50094D6CB /* ServerAddressView.xib in Resources */,
 				3B4B39F0203773C5007B7CC8 /* PlaceholderViewController.storyboard in Resources */,
@@ -3861,7 +3871,9 @@
 				3B23232E2248FEBC00514201 /* MigrateDatabaseV4Grooming.swift in Sources */,
 				B51AE4A7209398FE008380CC /* CKMPhoneNumber+CoreDataProperties.swift in Sources */,
 				300CD8F121FA668400BFF560 /* NSAttributedString+Helpers.swift in Sources */,
+				3B5A889A228AEFE10082BBA4 /* TwitterSearchDataSource.swift in Sources */,
 				B51F823C207BB00D00692F5B /* BalanceSecondaryAmountLabel.swift in Sources */,
+				3B5A889D228AF3D90082BBA4 /* TwitterUserTableViewCell.swift in Sources */,
 				B56B637A2200CDF100CCC153 /* CKMTransactionSharedPayload+CoreDataClass.swift in Sources */,
 				A2A530C42093A72000B6F4DE /* AppCoordinator+ConfirmPaymentViewControllerDelegate.swift in Sources */,
 				B56E15A52167EAAD003B69D4 /* NetworkManager+MessagesRequestable.swift in Sources */,
