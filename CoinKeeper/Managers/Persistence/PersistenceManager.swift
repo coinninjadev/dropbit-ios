@@ -119,9 +119,9 @@ class PersistenceManager: PersistenceManagerType {
     return databaseManager.getAllInvitations(in: context)
   }
 
-  func persistWalletId(from response: WalletResponse, in context: NSManagedObjectContext) -> Promise<Void> {
+  func persistWalletId(from response: WalletResponse, in context: NSManagedObjectContext) throws {
     set(stringValue: response.id, for: .walletID)
-    return databaseManager.persistWalletId(response.id, in: context)
+    try databaseManager.persistWalletId(response.id, in: context)
   }
 
   /// Will only persist a non-empty string to protect when that is returned by the server for some routes

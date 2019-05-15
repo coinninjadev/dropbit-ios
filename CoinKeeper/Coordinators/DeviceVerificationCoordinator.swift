@@ -317,10 +317,13 @@ extension DeviceVerificationCoordinator: DeviceVerificationViewControllerDelegat
     let bgContext = crDelegate.persistenceManager.createBackgroundContext()
     bgContext.perform {
       crDelegate.registerAndPersistWallet(in: bgContext)
-        .done {
+        .done(in: bgContext) {
+          try bgContext.save()
 
-          crDelegate.alertManager.hideActivityHUD(withDelay: self.minHudDisplayDuration) {
-            crDelegate.coordinatorSkippedPhoneVerification(self)
+          DispatchQueue.main.async {
+            crDelegate.alertManager.hideActivityHUD(withDelay: self.minHudDisplayDuration) {
+              crDelegate.coordinatorSkippedPhoneVerification(self)
+            }
           }
         }
         .catch { error in

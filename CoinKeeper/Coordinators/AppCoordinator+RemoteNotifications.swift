@@ -57,5 +57,5 @@ extension AppCoordinator {
 
     navigationController.topViewController()?.present(alert, animated: true)
   }
-  
+
 }

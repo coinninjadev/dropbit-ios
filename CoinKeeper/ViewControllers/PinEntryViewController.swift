@@ -13,6 +13,7 @@ protocol PinEntryViewControllerDelegate: ViewControllerDismissable {
   func checkMatch(for digits: String) -> Bool
   func viewControllerDidTryBiometrics(_ pinEntryViewController: PinEntryViewController)
   func viewControllerDidSuccessfullyAuthenticate(_ pinEntryViewController: PinEntryViewController)
+  func pinExists() -> Bool
   var biometricType: BiometricType { get }
 }
 
@@ -30,6 +31,7 @@ final class PinEntryViewController: BaseViewController, StoryboardInitializable 
   }
 
   private var shouldAttemptToUseBiometrics: Bool {
+    guard let delegate = coordinationDelegate, delegate.pinExists() else { return false }
     switch mode {
     case .recoveryWords, .walletDeletion:
       return false

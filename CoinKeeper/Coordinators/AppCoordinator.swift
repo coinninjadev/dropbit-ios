@@ -20,7 +20,6 @@ import PhoneNumberKit
 import MessageUI
 import Contacts
 
-// swiftlint:disable file_length
 protocol CoordinatorType: class {
   func start()
 }
@@ -39,7 +38,6 @@ protocol ChildCoordinatorDelegate: class {
   func childCoordinatorDidComplete(childCoordinator: ChildCoordinatorType)
 }
 
-// swiftlint:disable type_body_length
 class AppCoordinator: CoordinatorType {
   let navigationController: UINavigationController
   let persistenceManager: PersistenceManagerType
@@ -206,8 +204,13 @@ class AppCoordinator: CoordinatorType {
     let bgContext = persistenceManager.createBackgroundContext()
     let logger = OSLog(subsystem: "com.coinninja.coinkeeper.appcoordinator", category: "register_wallet")
     bgContext.perform {
-      self.registerAndPersistWallet(in: bgContext).asVoid()
-        .done(on: .main) { completion() }
+      self.registerAndPersistWallet(in: bgContext)
+        .done(in: bgContext) {
+          try bgContext.save()
+          DispatchQueue.main.async {
+            completion()
+          }
+        }
         .catch { os_log("failed to register and persist wallet: %@", log: logger, type: .error, $0.localizedDescription) }
     }
   }

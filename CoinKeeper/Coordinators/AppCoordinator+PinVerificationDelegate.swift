@@ -14,7 +14,7 @@ extension AppCoordinator: PinVerificationDelegate {
     launchStateManager.userWasAuthenticated()
 
     let finally: (() -> Void)? = { [weak self] in
-      self?.startDeviceVerificationFlow(shouldOrphanRoot: false, selectedSetupFlow: flow)
+      self?.continueSetupFlow()
     }
 
     biometricsAuthenticationManager.authenticate(

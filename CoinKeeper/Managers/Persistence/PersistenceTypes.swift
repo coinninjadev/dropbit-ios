@@ -52,7 +52,7 @@ protocol PersistenceManagerType: DeviceCountryCodeProvider {
   func deleteWallet(in context: NSManagedObjectContext)
   func persistUnacknowledgedInvitation(in context: NSManagedObjectContext, with btcPair: BitcoinUSDPair,
                                        contact: ContactType, fee: Int, acknowledgementId: String)
-  func persistWalletId(from response: WalletResponse, in context: NSManagedObjectContext) -> Promise<Void>
+  func persistWalletId(from response: WalletResponse, in context: NSManagedObjectContext) throws
   func persistUserId(_ userId: String, in context: NSManagedObjectContext)
   func persistUserPublicURLInfo(from response: UserResponse, in context: NSManagedObjectContext)
   func getUserPublicURLInfo(in context: NSManagedObjectContext) -> UserPublicURLInfo?
@@ -228,7 +228,7 @@ protocol PersistenceDatabaseType: AnyObject {
 
   func transactionsWithoutDayAveragePrice(in context: NSManagedObjectContext) -> Promise<[CKMTransaction]>
 
-  func persistWalletId(_ id: String, in context: NSManagedObjectContext) -> Promise<Void>
+  func persistWalletId(_ id: String, in context: NSManagedObjectContext) throws
   func persistUserId(_ id: String, in context: NSManagedObjectContext)
   func persistVerificationStatus(_ status: String, in context: NSManagedObjectContext) -> Promise<UserVerificationStatus>
   func persistServerAddress(for metaAddress: CNBMetaAddress, createdAt: Date, wallet: CKMWallet, in context: NSManagedObjectContext) -> Promise<Void>

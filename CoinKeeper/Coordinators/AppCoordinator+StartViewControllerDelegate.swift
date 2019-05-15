@@ -10,27 +10,30 @@ import UIKit
 
 extension AppCoordinator: StartViewControllerDelegate {
 
-  func createWallet() {
-    navigationController.isNavigationBarHidden = false
-    launchStateManager.selectedSetupFlow = .newWallet
-    continueSetupFlow()
+  func restoreWallet() {
+    startSetupFlow(.restoreWallet)
   }
 
   func claimInvite() {
-    navigationController.isNavigationBarHidden = false
-    launchStateManager.selectedSetupFlow = .claimInvite
-    continueSetupFlow()
+    startSetupFlow(.claimInvite)
   }
 
-  func restoreWallet() {
-    persistenceManager.userDefaultsManager.deleteAll()
+  func createWallet() {
+    startSetupFlow(.newWallet)
+  }
+
+  private func startSetupFlow(_ flow: SetupFlow) {
     navigationController.isNavigationBarHidden = false
-    let viewController = PinCreationViewController.makeFromStoryboard()
-    viewController.flow = .restore
-    assignCoordinationDelegate(to: viewController)
-    navigationController.pushViewController(viewController, animated: true)
-    launchStateManager.selectedSetupFlow = .restoreWallet
-    continueSetupFlow()
+    launchStateManager.selectedSetupFlow = flow
+
+    switch flow {
+    case .restoreWallet:
+      persistenceManager.userDefaultsManager.deleteAll()
+      continueSetupFlow()
+
+    case .newWallet, .claimInvite:
+      startNewWalletFlow()
+    }
   }
 
   /// temporary function for debugging

@@ -25,7 +25,7 @@ extension AppCoordinator: DeviceVerificationCoordinatorDelegate {
     }
 
     return self.networkManager.createWallet(withPublicKey: wmgr.hexEncodedPublicKey)
-      .then(in: context) { self.persistenceManager.persistWalletId(from: $0, in: context) }
+      .get(in: context) { try self.persistenceManager.persistWalletId(from: $0, in: context) }.asVoid()
   }
 
   func coordinator(_ coordinator: DeviceVerificationCoordinator, didVerify phoneNumber: GlobalPhoneNumber, isInitialSetupFlow: Bool) {

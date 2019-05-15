@@ -20,6 +20,7 @@ protocol LaunchStateManagerType: AnyObject {
   func currentProperties() -> LaunchStateProperties
   func profileIsActivated() -> Bool
   func deviceIsVerified() -> Bool
+  func pinExists() -> Bool
   func walletExists() -> Bool
   func walletIsBackedUp() -> Bool
   func shouldRegisterWallet() -> Bool
@@ -91,6 +92,10 @@ class LaunchStateManager: LaunchStateManagerType {
     }
   }
 
+  func pinExists() -> Bool {
+    return currentProperties().contains(.pinExists)
+  }
+
   func walletExists() -> Bool {
     return currentProperties().contains(.walletExists)
   }
@@ -145,7 +150,7 @@ class LaunchStateManager: LaunchStateManagerType {
   private(set) var userAuthenticated: Bool = false
 
   var shouldRequireAuthentication: Bool {
-    guard !isFirstTime() else { return false }
+    guard !isFirstTime(), pinExists() else { return false }
     return !userAuthenticated && launchType == .userInitiated
   }
 

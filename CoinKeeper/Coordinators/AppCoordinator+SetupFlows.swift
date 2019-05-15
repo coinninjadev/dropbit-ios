@@ -47,17 +47,19 @@ extension AppCoordinator {
 
   func continueSetupFlow() {
     let properties = launchStateManager.currentProperties()
+    let selectedFlow = launchStateManager.selectedSetupFlow
+    let pinAndWalletExist = properties.contains([.pinExists, .walletExists])
 
-    if properties.contains([.pinExists, .walletExists]) && verificationSatisfied {
+    if pinAndWalletExist && verificationSatisfied {
       validToStartEnteringApp()
-    } else if properties.contains(.walletExists) {
-      startDeviceVerificationFlow(shouldOrphanRoot: true, selectedSetupFlow: launchStateManager.selectedSetupFlow)
+    } else if pinAndWalletExist {
+      startDeviceVerificationFlow(shouldOrphanRoot: true, selectedSetupFlow: selectedFlow)
     } else {
-
+      startPinCreation(flow: selectedFlow)
     }
   }
 
-  func startNewWalletFlow(animated: Bool = true) {
+  func startNewWalletFlow() {
     func createWalletAndContinue() {
       let words = WalletManager.createMnemonicWords()
       self.saveSuccessfulWords(words: words, didBackUp: false)
@@ -120,9 +122,11 @@ extension AppCoordinator {
     startVerificationFlow()
   }
 
+  /// This calls store(recoveryWords:) which only holds them in memory
+  /// until a PIN is entered, then saves both in the keychain at the same time.
   func saveSuccessfulWords(words: [String], didBackUp: Bool) {
     trackIfUserHasWordsBackedUp()
-    persistenceManager.backup(recoveryWords: words)
+    persistenceManager.keychainManager.store(recoveryWords: words)
 
     //This wouldn't be called when we allow them to set up a wallet without backing up their words
     //Important to store boolean as NSNumber for the keychain
