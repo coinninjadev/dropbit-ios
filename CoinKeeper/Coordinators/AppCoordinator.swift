@@ -69,7 +69,7 @@ class AppCoordinator: CoordinatorType {
 
   let currencyController: CurrencyController
 
-  private let maxSecondsInBackground: TimeInterval = 30
+  let maxSecondsInBackground: TimeInterval = 30
 
   /// Assign a future date and upon app open, this will skip the need
   /// for authentication (only once), up until the specified date.
@@ -183,7 +183,8 @@ class AppCoordinator: CoordinatorType {
 
         // StartViewController is the default root VC
         // Child coordinator will push DeviceVerificationViewController onto stack in its start() method
-        startDeviceVerificationFlow(shouldOrphanRoot: true, isInitialSetupFlow: true)
+        startDeviceVerificationFlow(shouldOrphanRoot: true, selectedSetupFlow: .newWallet)
+
       } else if launchStateManager.isFirstTime() {
         let startVC = StartViewController.makeFromStoryboard()
         assignCoordinationDelegate(to: startVC)
@@ -193,6 +194,7 @@ class AppCoordinator: CoordinatorType {
   }
 
   func validToStartEnteringApp() {
+    launchStateManager.selectedSetupFlow = nil
     enterApp()
     checkForBackendMessages()
     checkForWordsBackedUp()
@@ -256,23 +258,6 @@ class AppCoordinator: CoordinatorType {
     childCoordinator.start()
   }
 
-  private func handlePendingBitcoinURL() {
-    guard let bitcoinURL = bitcoinURLToOpen, launchStateManager.userAuthenticated else { return }
-    bitcoinURLToOpen = nil
-
-    if let topVC = navigationController.topViewController(), let sendPaymentVC = topVC as? SendPaymentViewController {
-      sendPaymentVC.applyRecipient(inText: bitcoinURL.absoluteString)
-
-    } else {
-      let sendPaymentViewController = SendPaymentViewController.makeFromStoryboard()
-      assignCoordinationDelegate(to: sendPaymentViewController)
-      sendPaymentViewController.alertManager = alertManager
-      sendPaymentViewController.recipientDescriptionToLoad = bitcoinURL.absoluteString
-      sendPaymentViewController.viewModel.updatePrimaryCurrency(to: currencyController.selectedCurrency)
-      navigationController.present(sendPaymentViewController, animated: true)
-    }
-  }
-
   private func checkForBackendMessages() {
     let logger = OSLog(subsystem: "com.coinninja.coinkeeper.appcoordinator", category: "messages")
     networkManager.queryForMessages()
@@ -283,68 +268,7 @@ class AppCoordinator: CoordinatorType {
                                            type: .error, $0.localizedDescription) }
   }
 
-  private func setupDrawerViewController(centerViewController: UIViewController, leftViewController: UIViewController) -> MMDrawerController {
-    let drawerWidth: CGFloat = 118.0
-    let drawerController = MMDrawerController(center: centerViewController,
-                                              leftDrawerViewController: leftViewController)
-    drawerController?.setMaximumLeftDrawerWidth(drawerWidth, animated: false, completion: nil)
-    drawerController?.closeDrawerGestureModeMask = [.tapCenterView, .tapNavigationBar]
-    drawerController?.showsShadow = false
-    return drawerController!
-  }
-
-  /// Handle app becoming active
-  func appEnteredActiveState() {
-    resetWalletManagerIfNeeded()
-    connectionManager.start()
-
-    analyticsManager.track(event: .appOpen, with: nil)
-
-    authenticateOnBecomingActiveIfNeeded()
-
-    refreshContacts()
-  }
-
-  private func authenticateOnBecomingActiveIfNeeded() {
-    defer { self.suspendAuthenticationOnceUntil = nil }
-    if let suspendUntil = self.suspendAuthenticationOnceUntil, suspendUntil > Date() {
-      return
-    }
-
-    // check keychain time interval for resigned time, and if within 30 sec, don't require
-    let now = Date().timeIntervalSince1970
-    let lastLogin = persistenceManager.lastLoginTime() ?? Date.distantPast.timeIntervalSince1970
-
-    let secondsSinceLastLogin = now - lastLogin
-    if secondsSinceLastLogin > maxSecondsInBackground {
-      dismissAllModalViewControllers()
-      resetUserAuthenticatedState()
-      requireAuthenticationIfNeeded(whenAuthenticated: {
-        self.continueSetupFlow()
-      })
-    }
-  }
-
-  /// Called only on first open, after didFinishLaunchingWithOptions, when appEnteredActiveState is not called
-  func appBecameActive() {
-    resetWalletManagerIfNeeded()
-    handlePendingBitcoinURL()
-    refreshContacts()
-
-    if self.permissionManager.permissionStatus(for: .location) == .authorized {
-      self.locationManager.requestLocation()
-    }
-  }
-
-  /// Handle app leaving active state, either becoming inactive, entering background, or terminating.
-  func appResignedActiveState() {
-    persistenceManager.setLastLoginTime()
-    connectionManager.stop()
-    bitcoinURLToOpen = nil
-    //    UIApplication.shared.applicationIconBadgeNumber = persistenceManager.pendingInvitations().count
-  }
-
-  private func refreshContacts() {
+  func refreshContacts() {
     let contactCacheMigrationWorker = createContactCacheMigrationWorker()
     _ = contactCacheMigrationWorker.migrateIfPossible()
       .done {
@@ -359,23 +283,10 @@ class AppCoordinator: CoordinatorType {
     launchStateManager.unauthenticateUser()
   }
 
-  private func dismissAllModalViewControllers() {
-    UIApplication.shared.keyWindow?.rootViewController?.dismiss(animated: false, completion: nil)
-  }
-
   func setCurrentCoin() {
     let isTestnet = UserDefaults.standard.bool(forKey: "ontestnet")
     let coin: CNBBaseCoin = isTestnet ? BTCTestnetCoin() : BTCMainnetCoin()
     walletManager?.coin = coin
-  }
-
-  func showScanViewController(fallbackBTCAmount: NSDecimalNumber, primaryCurrency: CurrencyCode) {
-    let scanViewController = ScanQRViewController.makeFromStoryboard()
-    scanViewController.fallbackPaymentViewModel = SendPaymentViewModel(btcAmount: fallbackBTCAmount, primaryCurrency: primaryCurrency)
-
-    assignCoordinationDelegate(to: scanViewController)
-    scanViewController.modalPresentationStyle = .formSheet
-    navigationController.present(scanViewController, animated: true, completion: nil)
   }
 
 }

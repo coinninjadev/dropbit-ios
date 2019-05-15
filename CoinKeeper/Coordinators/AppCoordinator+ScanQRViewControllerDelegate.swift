@@ -75,4 +75,13 @@ extension AppCoordinator: ScanQRViewControllerDelegate {
     }
   }
 
+  func showScanViewController(fallbackBTCAmount: NSDecimalNumber, primaryCurrency: CurrencyCode) {
+    let scanViewController = ScanQRViewController.makeFromStoryboard()
+    scanViewController.fallbackPaymentViewModel = SendPaymentViewModel(btcAmount: fallbackBTCAmount, primaryCurrency: primaryCurrency)
+
+    assignCoordinationDelegate(to: scanViewController)
+    scanViewController.modalPresentationStyle = .formSheet
+    navigationController.present(scanViewController, animated: true, completion: nil)
+  }
+
 }

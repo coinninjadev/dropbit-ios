@@ -553,6 +553,7 @@
 		B5401C5B228C7AE8004C77BC /* AppCoordinator+Analytics.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5401C5A228C7AE7004C77BC /* AppCoordinator+Analytics.swift */; };
 		B5401C5D228C89D1004C77BC /* AppCoordinator+Factory.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5401C5C228C89D1004C77BC /* AppCoordinator+Factory.swift */; };
 		B5401C5F228C8DB1004C77BC /* AppCoordinator+RemoteNotifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5401C5E228C8DB1004C77BC /* AppCoordinator+RemoteNotifications.swift */; };
+		B5401C61228C9437004C77BC /* AppCoordinator+Lifecycle.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5401C60228C9437004C77BC /* AppCoordinator+Lifecycle.swift */; };
 		B54090F82270AC7D00E53B80 /* AppCoordinator+DropBitMeViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54090F72270AC7D00E53B80 /* AppCoordinator+DropBitMeViewControllerDelegate.swift */; };
 		B54159CB20A5DEBF0048F495 /* CKMUser+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54159C920A5DEBF0048F495 /* CKMUser+CoreDataClass.swift */; };
 		B54159CC20A5DEBF0048F495 /* CKMUser+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54159CA20A5DEBF0048F495 /* CKMUser+CoreDataProperties.swift */; };
@@ -1355,6 +1356,7 @@
 		B5401C5A228C7AE7004C77BC /* AppCoordinator+Analytics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppCoordinator+Analytics.swift"; sourceTree = "<group>"; };
 		B5401C5C228C89D1004C77BC /* AppCoordinator+Factory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppCoordinator+Factory.swift"; sourceTree = "<group>"; };
 		B5401C5E228C8DB1004C77BC /* AppCoordinator+RemoteNotifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppCoordinator+RemoteNotifications.swift"; sourceTree = "<group>"; };
+		B5401C60228C9437004C77BC /* AppCoordinator+Lifecycle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppCoordinator+Lifecycle.swift"; sourceTree = "<group>"; };
 		B54090F72270AC7D00E53B80 /* AppCoordinator+DropBitMeViewControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppCoordinator+DropBitMeViewControllerDelegate.swift"; sourceTree = "<group>"; };
 		B54159C920A5DEBF0048F495 /* CKMUser+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CKMUser+CoreDataClass.swift"; sourceTree = "<group>"; };
 		B54159CA20A5DEBF0048F495 /* CKMUser+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CKMUser+CoreDataProperties.swift"; sourceTree = "<group>"; };
@@ -1780,6 +1782,7 @@
 			isa = PBXGroup;
 			children = (
 				3B2E78322024C76D00DA25AF /* AppCoordinator.swift */,
+				B5401C60228C9437004C77BC /* AppCoordinator+Lifecycle.swift */,
 				B5401C5E228C8DB1004C77BC /* AppCoordinator+RemoteNotifications.swift */,
 				B5401C58228C7890004C77BC /* AppCoordinator+SetupFlows.swift */,
 				B5401C5C228C89D1004C77BC /* AppCoordinator+Factory.swift */,
@@ -3474,6 +3477,7 @@
 				3B3779EF219C6B2800F79683 /* BackupWordsReminderDrawerCell.swift in Sources */,
 				B5A42A9A217A3E0F00EB32CB /* KeyPathDescribable.swift in Sources */,
 				B5C2E02B20BC721E00F21928 /* WalletAddressResponse.swift in Sources */,
+				B5401C61228C9437004C77BC /* AppCoordinator+Lifecycle.swift in Sources */,
 				3BB05AC1209CF407000297E1 /* Typealiases.swift in Sources */,
 				A29CE0C92098F8CA00761B91 /* SuccessFailView.swift in Sources */,
 				B5457126217E6D8900FF3A5A /* ResponseCodable.swift in Sources */,

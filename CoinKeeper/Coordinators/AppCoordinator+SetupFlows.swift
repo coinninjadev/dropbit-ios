@@ -8,6 +8,8 @@
 
 import Foundation
 import os.log
+import UIKit
+import MMDrawerController
 
 extension AppCoordinator {
 
@@ -182,7 +184,7 @@ extension AppCoordinator {
     return pinEntryViewController
   }
 
-  func makeTransactionHistory() -> TransactionHistoryViewController {
+  private func makeTransactionHistory() -> TransactionHistoryViewController {
     let txHistory = TransactionHistoryViewController.makeFromStoryboard()
     assignCoordinationDelegate(to: txHistory)
     txHistory.context = persistenceManager.mainQueueContext()
@@ -190,6 +192,16 @@ extension AppCoordinator {
     txHistory.balanceDelegate = self
     txHistory.urlOpener = self
     return txHistory
+  }
+
+  private func setupDrawerViewController(centerViewController: UIViewController, leftViewController: UIViewController) -> MMDrawerController {
+    let drawerWidth: CGFloat = 118.0
+    let drawerController = MMDrawerController(center: centerViewController,
+                                              leftDrawerViewController: leftViewController)
+    drawerController?.setMaximumLeftDrawerWidth(drawerWidth, animated: false, completion: nil)
+    drawerController?.closeDrawerGestureModeMask = [.tapCenterView, .tapNavigationBar]
+    drawerController?.showsShadow = false
+    return drawerController!
   }
 
 }
