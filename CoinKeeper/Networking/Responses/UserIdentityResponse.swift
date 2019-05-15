@@ -8,7 +8,7 @@
 
 import Foundation
 
-public struct UserIdentityResponse: ResponseDecodable {
+public struct UserIdentityResponse: UserIdentifiable, ResponseDecodable {
   let id: String
   let type: String
   let identity: String

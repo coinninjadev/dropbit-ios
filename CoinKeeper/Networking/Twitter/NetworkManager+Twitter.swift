@@ -149,8 +149,6 @@ extension NetworkManager: TwitterRequestable {
               twitterUserId: userId,
               twitterScreenName: screenName)
 
-            self.persistenceManager.keychainManager.store(oauthCredentials: credentials)
-
             seal.fulfill(credentials)
           },
           failure: { (error: OAuthSwiftError) in

@@ -56,8 +56,12 @@ public enum UserResponseKey: String, KeyPathDescribable {
   case id, phoneNumberHash, createdAt, updatedAt, status, verificationTtl, verifiedAt, walletId
 }
 
+protocol UserIdentifiable {
+  var id: String { get }
+}
+
 /// For /resend response: id: "" and timestamps: 0
-public struct UserResponse: ResponseDecodable {
+public struct UserResponse: UserIdentifiable, ResponseDecodable {
 
   let id: String
   let createdAt: Date
