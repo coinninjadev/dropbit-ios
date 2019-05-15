@@ -236,10 +236,9 @@ extension ContactsViewController: UISearchBarDelegate {
       if searchText.isEmpty {
         twitterUserDataSource.reset()
       }
-      activityIndiciator.startAnimating()
-      _ = coordinationDelegate?.searchForTwitterUsers(with: searchText)
-        .get(on: .main) { _ in self.activityIndiciator.stopAnimating() }
-        .done { self.twitterUserDataSource.update(users: $0) }
+      let fetchSelector = #selector(performTwitterSearch)
+      NSObject.cancelPreviousPerformRequests(withTarget: self, selector: fetchSelector, object: nil)
+      self.perform(fetchSelector, with: nil, afterDelay: 0.5)
     }
   }
 
@@ -250,6 +249,17 @@ extension ContactsViewController: UISearchBarDelegate {
     } catch {
       print(error.localizedDescription)
     }
+  }
+
+  @objc func performTwitterSearch() {
+    guard let term = searchBar.text else {
+      twitterUserDataSource.reset()
+      return
+    }
+    activityIndiciator.startAnimating()
+    _ = coordinationDelegate?.searchForTwitterUsers(with: term)
+      .get(on: .main) { _ in self.activityIndiciator.stopAnimating() }
+      .done { self.twitterUserDataSource.update(users: $0) }
   }
 
   func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
