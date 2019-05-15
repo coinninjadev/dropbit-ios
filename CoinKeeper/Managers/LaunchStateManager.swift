@@ -14,9 +14,9 @@ protocol LaunchStateManagerType: AnyObject {
   var shouldRequireAuthentication: Bool { get }
   var launchType: LaunchType { get set }
   var skippedVerification: Bool { get }
-  var nextLaunchStep: UserProfileLaunchStep { get }
   var userAuthenticated: Bool { get }
   init(persistenceManager: PersistenceManagerType)
+  func currentProperties() -> LaunchStateProperties
   func profileIsActivated() -> Bool
   func deviceIsVerified() -> Bool
   func walletExists() -> Bool
@@ -32,40 +32,34 @@ protocol LaunchStateManagerType: AnyObject {
  Uses OptionSet to allow users to complete these steps in any order and at any time.
  Each option represents a boolean condition.
  */
-struct UserProfileOptionSet: OptionSet {
+struct LaunchStateProperties: OptionSet {
   let rawValue: Int
 
-  static let pinEntered = UserProfileOptionSet(rawValue: 1 << 0)
-  static let walletExists = UserProfileOptionSet(rawValue: 1 << 1)
-  static let wordsBackedUp = UserProfileOptionSet(rawValue: 1 << 2)
-  static let deviceVerified = UserProfileOptionSet(rawValue: 1 << 3)
-}
-
-enum UserProfileLaunchStep: Int {
-  case enterPin
-  case createWallet //covers both persisting words and checking that the user backed them up
-  case verifyDevice //covers both registering the wallet and verifying the phone number
-  case enterApp
-  case phoneRestore // for when a phone is replaced/upgraded, per se, and database is restored but not keychain entries
+  static let pinExists = LaunchStateProperties(rawValue: 1 << 0)
+  static let walletExists = LaunchStateProperties(rawValue: 1 << 1)
+  static let wordsBackedUp = LaunchStateProperties(rawValue: 1 << 2)
+  static let deviceVerified = LaunchStateProperties(rawValue: 1 << 3)
 }
 
 class LaunchStateManager: LaunchStateManagerType {
+
   private let persistenceManager: PersistenceManagerType
   var launchType: LaunchType = .userInitiated
+  var selectedSetupFlow: SetupFlow?
 
   required init(persistenceManager: PersistenceManagerType) {
     self.persistenceManager = persistenceManager
   }
 
   func walletIsBackedUp() -> Bool {
-    return retrieveProfileOptions().contains(.wordsBackedUp)
+    return currentProperties().contains(.wordsBackedUp)
   }
 
-  private func retrieveProfileOptions() -> UserProfileOptionSet {
-    var options: UserProfileOptionSet = []
+  func currentProperties() -> LaunchStateProperties {
+    var options: LaunchStateProperties = []
 
     if persistenceManager.keychainManager.retrieveValue(for: .userPin) != nil {
-      options.insert(.pinEntered)
+      options.insert(.pinExists)
     }
 
     if persistenceManager.walletWords() != nil {
@@ -97,7 +91,7 @@ class LaunchStateManager: LaunchStateManagerType {
   }
 
   func walletExists() -> Bool {
-    return retrieveProfileOptions().contains(.walletExists)
+    return currentProperties().contains(.walletExists)
   }
 
   /**
@@ -105,7 +99,7 @@ class LaunchStateManager: LaunchStateManagerType {
    while the wallet ID is not persisted across installations.
    */
   func shouldRegisterWallet() -> Bool {
-    let walletExists = retrieveProfileOptions().contains(.walletExists)
+    let walletExists = currentProperties().contains(.walletExists)
 
     let bgContext = persistenceManager.createBackgroundContext()
     let walletIdExists = persistenceManager.walletId(in: bgContext) != nil
@@ -115,61 +109,33 @@ class LaunchStateManager: LaunchStateManagerType {
     return walletExists && !walletIdExists
   }
 
-  /**
-   This is intended for the initial setup process and determining the next step.
-   This is not intended for identifying skipped steps once they are in the app.
-   That requires looking at the underlying option set in profileOptions.
-
-   Note that backing up the words is a skippable part of the createWallet step,
-   so it is a separate option, but not a separate step.
-   */
-  var nextLaunchStep: UserProfileLaunchStep {
-    let options = retrieveProfileOptions()
-    // Option set checks ordered in reverse of steps
-    if options.contains([.pinEntered, .walletExists, .deviceVerified]) {
-      return .enterApp
-
-    } else if options.contains([.pinEntered, .walletExists]) {
-      return skippedVerification ? .enterApp : .verifyDevice
-
-    } else if options.contains([.pinEntered]) {
-      return .createWallet
-
-    } else if isFirstTimeAfteriCloudRestore(with: options) {
-      return .phoneRestore
-
-    } else {
-      return .enterPin
-    }
-  }
-
   func isFirstTime() -> Bool {
-    let options = retrieveProfileOptions()
-    return options.isEmpty || isFirstTimeAfteriCloudRestore(with: options)
+    let properties = currentProperties()
+    return properties.isEmpty || isFirstTimeAfteriCloudRestore(with: properties)
   }
 
   func isFirstTimeAfteriCloudRestore() -> Bool {
-    return isFirstTimeAfteriCloudRestore(with: retrieveProfileOptions())
+    return isFirstTimeAfteriCloudRestore(with: currentProperties())
   }
 
-  private func isFirstTimeAfteriCloudRestore(with options: UserProfileOptionSet) -> Bool {
-    return options.contains([.deviceVerified]) && options.subtracting(.deviceVerified).isEmpty
+  private func isFirstTimeAfteriCloudRestore(with properties: LaunchStateProperties) -> Bool {
+    return properties == .deviceVerified
   }
 
   func deviceIsVerified() -> Bool {
-    return retrieveProfileOptions().contains(.deviceVerified)
+    return currentProperties().contains(.deviceVerified)
   }
 
   func profileIsActivated() -> Bool {
-    let criteria: UserProfileOptionSet = [.wordsBackedUp, .deviceVerified]
-    let options = retrieveProfileOptions()
+    let criteria: LaunchStateProperties = [.wordsBackedUp, .deviceVerified]
+    let properties = currentProperties()
 
     let logger = OSLog(subsystem: "com.coinninja.coinkeeper.appcoordinator", category: "launch_state_manager")
-    let wordsBackedUp = options.contains(.wordsBackedUp)
-    let deviceVerified = options.contains(.deviceVerified)
+    let wordsBackedUp = properties.contains(.wordsBackedUp)
+    let deviceVerified = properties.contains(.deviceVerified)
     os_log("Words backed up: %d, Device verified: %d", log: logger, type: .debug, wordsBackedUp, deviceVerified)
 
-    return criteria.isSubset(of: options)
+    return criteria.isSubset(of: properties)
   }
 
   // MARK: In-Memory Status

@@ -275,8 +275,9 @@ class AppCoordinator: CoordinatorType {
 
       // Take user directly to phone verification if wallet exists but wallet ID does not
       // This will register the wallet if needed after a reinstall
+      let launchProperties = launchStateManager.currentProperties()
       if launchStateManager.shouldRegisterWallet(),
-        launchStateManager.nextLaunchStep == .verifyDevice {
+        launchProperties.contains(.pinExists) {
 
         // StartViewController is the default root VC
         // Child coordinator will push DeviceVerificationViewController onto stack in its start() method
