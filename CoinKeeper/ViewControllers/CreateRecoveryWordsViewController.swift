@@ -1,5 +1,5 @@
 //
-//  CreateRecoveryWordsViewController.swift
+//  BackupRecoveryWordsViewController.swift
 //  CoinKeeper
 //
 //  Created by BJ Miller on 2/27/18.
@@ -8,14 +8,13 @@
 
 import UIKit
 
-protocol CreateRecoveryWordsViewControllerDelegate: AnyObject {
-  func viewController(_ viewController: UIViewController, didFinishWords words: [String], in flow: RecoveryWordsFlow)
+protocol BackupRecoveryWordsViewControllerDelegate: AnyObject {
+  func viewController(_ viewController: UIViewController, didFinishWords words: [String])
   func viewController(_ viewController: UIViewController, shouldPromptToSkipWords words: [String])
 }
 
-final class CreateRecoveryWordsViewController: BaseViewController, StoryboardInitializable {
+final class BackupRecoveryWordsViewController: BaseViewController, StoryboardInitializable {
 
-  var flow: RecoveryWordsFlow = .createWallet
   var wordsBackedUp: Bool = false
 
   // MARK: outlets
@@ -45,15 +44,15 @@ final class CreateRecoveryWordsViewController: BaseViewController, StoryboardIni
   // MARK: variables
   var recoveryWords: [String] = [] {
     didSet {
-      wordCollectionViewDDS = CreateRecoveryWordsCollectionDDS(words: recoveryWords) { [weak self] (index) in
+      wordCollectionViewDDS = BackupRecoveryWordsCollectionDDS(words: recoveryWords) { [weak self] (index) in
         self?.collectionViewDidDisplay(at: index)
       }
     }
   }
-  var coordinationDelegate: CreateRecoveryWordsViewControllerDelegate? {
-    return generalCoordinationDelegate as? CreateRecoveryWordsViewControllerDelegate
+  var coordinationDelegate: BackupRecoveryWordsViewControllerDelegate? {
+    return generalCoordinationDelegate as? BackupRecoveryWordsViewControllerDelegate
   }
-  var wordCollectionViewDDS: CreateRecoveryWordsCollectionDDS!
+  var wordCollectionViewDDS: BackupRecoveryWordsCollectionDDS!
 
   override func accessibleViewsAndIdentifiers() -> [AccessibleViewElement] {
     return [
@@ -65,7 +64,7 @@ final class CreateRecoveryWordsViewController: BaseViewController, StoryboardIni
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    wordCollectionView.registerNib(cellType: CreateRecoveryWordsCell.self)
+    wordCollectionView.registerNib(cellType: BackupRecoveryWordsCell.self)
 
     wordCollectionView.delegate = wordCollectionViewDDS
     wordCollectionView.dataSource = wordCollectionViewDDS
@@ -80,21 +79,14 @@ final class CreateRecoveryWordsViewController: BaseViewController, StoryboardIni
 
   override func viewWillAppear(_ animated: Bool) {
     collectionViewDidDisplay(at: currentIndex() ?? 0)
-    switch flow {
-    case .createWallet:
-      closeButton.isHidden = true
-      let skipButton = BarButtonFactory.skipButton(withTarget: self, selector: #selector(skipBackupRecoveryWords))
-      navigationItem.rightBarButtonItem = skipButton
-    case .settings:
-      closeButton.isHidden = false
-      navigationItem.rightBarButtonItem = nil
-    }
+    closeButton.isHidden = false
+    navigationItem.rightBarButtonItem = nil
   }
 
   // MARK: actions
   @IBAction func nextButtonTapped(_ sender: UIButton) {
     if let currentIndex = currentIndex(), indexIsLast(index: currentIndex) {
-      coordinationDelegate?.viewController(self, didFinishWords: recoveryWords, in: flow)
+      coordinationDelegate?.viewController(self, didFinishWords: recoveryWords)
     } else {
       showItem(direction: .next)
     }

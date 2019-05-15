@@ -1,5 +1,5 @@
 //
-//  CreateRecoveryWordsCellTests.swift
+//  BackupRecoveryWordsCellTests.swift
 //  DropBitTests
 //
 //  Created by BJ Miller on 3/6/18.
@@ -10,12 +10,12 @@ import UIKit
 @testable import DropBit
 import XCTest
 
-class CreateRecoveryWordsCellTests: XCTestCase {
-  var sut: CreateRecoveryWordsCell!
+class BackupRecoveryWordsCellTests: XCTestCase {
+  var sut: BackupRecoveryWordsCell!
 
   override func setUp() {
     super.setUp()
-    self.sut = CreateRecoveryWordsCell.nib().instantiate(withOwner: self, options: nil).first as? CreateRecoveryWordsCell
+    self.sut = BackupRecoveryWordsCell.nib().instantiate(withOwner: self, options: nil).first as? BackupRecoveryWordsCell
     self.sut.awakeFromNib()
   }
 
@@ -44,7 +44,7 @@ class CreateRecoveryWordsCellTests: XCTestCase {
     let initialWord = "jalapeno"
     let expectedWord = "jalapeno".uppercased()
     let expectedStatus = "word 1 of 12"
-    let data = CreateRecoveryWordCellData(word: initialWord, currentIndex: 1, total: 12)
+    let data = BackupRecoveryWordCellData(word: initialWord, currentIndex: 1, total: 12)
 
     self.sut.load(with: data)
 

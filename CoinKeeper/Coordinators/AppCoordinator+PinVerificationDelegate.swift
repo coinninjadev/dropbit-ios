@@ -9,23 +9,12 @@
 import UIKit
 
 extension AppCoordinator: PinVerificationDelegate {
-  func pinWasVerified(digits: String, for flow: PinCreationViewController.Flow) {
+  func pinWasVerified(digits: String, for flow: SetupFlow?) {
     _ = persistenceManager.keychainManager.store(userPin: digits)
     launchStateManager.userWasAuthenticated()
 
-    var finally: (() -> Void)?
-
-    switch flow {
-    case .creation:
-      finally = { [weak self] in
-        self?.startCreateRecoveryWordsFlow()
-      }
-    case .restore:
-      finally = { [weak self] in
-        let viewController = RestoreWalletViewController.makeFromStoryboard()
-        self?.assignCoordinationDelegate(to: viewController)
-        self?.navigationController.pushViewController(viewController, animated: true)
-      }
+    let finally: (() -> Void)? = { [weak self] in
+      self?.startDeviceVerificationFlow(shouldOrphanRoot: false, selectedSetupFlow: flow)
     }
 
     biometricsAuthenticationManager.authenticate(

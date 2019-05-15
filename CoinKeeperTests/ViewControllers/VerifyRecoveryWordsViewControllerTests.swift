@@ -151,12 +151,12 @@ class VerifyRecoveryWordsViewControllerTests: XCTestCase {
   class MockCoordinator: VerifyRecoveryWordsViewControllerDelegate {
 
     var wordVerificationSucceededWasCalled = false
-    func viewController(_ viewController: UIViewController, didSuccessfullyVerifyWords words: [String], in flow: RecoveryWordsFlow) {
+    func viewController(_ viewController: UIViewController, didSuccessfullyVerifyWords words: [String]) {
       wordVerificationSucceededWasCalled = true
     }
 
     var viewControllerDidSkipBackupWasCalled = false
-    func viewController(_ viewController: UIViewController, didSkipBackingUpWords words: [String], in flow: RecoveryWordsFlow) {
+    func viewController(_ viewController: UIViewController, didSkipBackingUpWords words: [String]) {
       viewControllerDidSkipBackupWasCalled = true
     }
 

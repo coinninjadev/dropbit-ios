@@ -48,7 +48,7 @@ extension AppCoordinator: VerifyRecoveryWordsViewControllerDelegate {
 
   private func viewControllerResetRecoveryWords(_ viewController: UIViewController) {
     viewController.navigationController?.viewControllers
-      .compactMap { $0 as? CreateRecoveryWordsViewController }
+      .compactMap { $0 as? BackupRecoveryWordsViewController }
       .first
       .map { $0.reviewAllRecoveryWords() }
   }

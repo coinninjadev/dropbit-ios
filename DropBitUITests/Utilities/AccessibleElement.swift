@@ -48,14 +48,14 @@ enum AccessiblePageElement {
   case pinCreation(PinCreationElement)
   case pinEntry(PinEntryElement)
   case restoreWallet(RestoreWalletElement)
-  case createRecoveryWords(CreateRecoveryWordsElement)
+  case createRecoveryWords(BackupRecoveryWordsElement)
   case deviceVerification(DeviceVerificationElement)
   case actionableAlert(ActionableAlertElement)
   case transactionHistory(TransactionHistoryElement)
   case requestPay(RequestPayElement)
   case recoveryWordsIntro(RecoveryWordsIntroElement)
   case bannerMessage(SwiftMessagesBannerElement)
-  case createRecoveryWordsCell(CreateRecoveryWordsCellElement)
+  case backupRecoveryWordsCell(BackupRecoveryWordsCellElement)
   case verifyRecoveryWordsCell(VerifyRecoveryWordsCellElement)
   case memoEntry(MemoEntryElement)
   case sendPayment(SendPaymentElement)
@@ -74,7 +74,7 @@ enum AccessiblePageElement {
     case .requestPay(let element):                return element.identifier
     case .recoveryWordsIntro(let element):        return element.identifier
     case .bannerMessage(let element):             return element.identifier
-    case .createRecoveryWordsCell(let element):   return element.identifier
+    case .backupRecoveryWordsCell(let element):   return element.identifier
     case .verifyRecoveryWordsCell(let element):   return element.identifier
     case .memoEntry(let element):                 return element.identifier
     case .sendPayment(let element):               return element.identifier
@@ -86,11 +86,11 @@ enum AccessiblePageElement {
 
 // MARK: - Page-specific UI element enums
 
-enum CreateRecoveryWordsElement: String, AccessibleElement {
+enum BackupRecoveryWordsElement: String, AccessibleElement {
   case page
 }
 
-enum CreateRecoveryWordsCellElement: String, AccessibleElement {
+enum BackupRecoveryWordsCellElement: String, AccessibleElement {
   case page
   case wordLabel
 }
