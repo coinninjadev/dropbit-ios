@@ -15,6 +15,6 @@ extension AppCoordinator: RecoveryWordsIntroViewControllerDelegate {
   }
 
   func viewController(_ viewController: UIViewController, didSkipWords words: [String]) {
-    self.viewController(viewController, didSkipBackingUp: words)
+    self.viewController(viewController, didSkipBackingUpWords: words)
   }
 }

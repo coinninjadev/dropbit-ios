@@ -28,6 +28,6 @@ extension AppCoordinator: BackupRecoveryWordsViewControllerDelegate {
   }
 
   func viewController(_ viewController: UIViewController, shouldPromptToSkipWords words: [String]) {
-    self.viewController(viewController, didSkipBackingUp: words)
+    self.viewController(viewController, didSkipBackingUpWords: words)
   }
 }

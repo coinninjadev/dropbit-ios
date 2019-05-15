@@ -11,7 +11,7 @@ import UIKit
 
 extension AppCoordinator: RestoreWalletViewControllerDelegate {
   func viewControllerDidSubmitWords(words: [String]) {
-    saveSuccessfulWords(words: words)
+    saveSuccessfulWords(words: words, didBackUp: true)
     analyticsManager.track(event: .restoreWallet, with: nil)
     let successFailController = SuccessFailViewController.makeFromStoryboard()
     successFailController.viewModel.flow = .restoreWallet

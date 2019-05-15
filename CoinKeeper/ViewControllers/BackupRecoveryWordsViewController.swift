@@ -20,6 +20,7 @@ final class BackupRecoveryWordsViewController: BaseViewController, StoryboardIni
   // MARK: outlets
   @IBOutlet var titleLabel: OnboardingTitleLabel!
   @IBOutlet var subtitleLabel: OnboardingSubtitleLabel!
+
   @IBOutlet var wordCollectionView: UICollectionView! {
     didSet {
       wordCollectionView.backgroundColor = .clear
@@ -27,11 +28,13 @@ final class BackupRecoveryWordsViewController: BaseViewController, StoryboardIni
       wordCollectionView.isUserInteractionEnabled = false
     }
   }
+
   @IBOutlet var nextButton: PrimaryActionButton! {
     didSet {
       nextButton.setTitle("NEXT", for: .normal)
     }
   }
+
   @IBOutlet var backButton: PrimaryActionButton! {
     didSet {
       backButton.setTitle("BACK", for: .normal)
