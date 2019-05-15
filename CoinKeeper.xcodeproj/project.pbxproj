@@ -1781,6 +1781,7 @@
 		3B2E78312024C75F00DA25AF /* Coordinators */ = {
 			isa = PBXGroup;
 			children = (
+				4AF4332120935C8D00B11BC9 /* DeviceVerificationCoordinator.swift */,
 				3B2E78322024C76D00DA25AF /* AppCoordinator.swift */,
 				B5401C60228C9437004C77BC /* AppCoordinator+Lifecycle.swift */,
 				B5401C5E228C8DB1004C77BC /* AppCoordinator+RemoteNotifications.swift */,
@@ -1812,7 +1813,6 @@
 				A29CE0CE2099FD6800761B91 /* AppCoordinator+SuccessFailViewControllerDelegate.swift */,
 				B53804FB209A4C070096DA33 /* AppCoordinator+URLOpener.swift */,
 				3BA9F604208F6D060047C213 /* AppCoordinator+VerifyRecoveryWordsViewControllerDelegate.swift */,
-				4AF4332120935C8D00B11BC9 /* DeviceVerificationCoordinator.swift */,
 				A200574E20B5FD68007074D9 /* AppCoordinator+SettingsViewControllerDelegate.swift */,
 				3B61B6E520DD4D360021D69E /* AppCoordinator+TransactionHistoryViewControllerDelegate.swift */,
 				A22B195F20EC1DA80084E8E9 /* AppCoordinator+RestoreWalletViewControllerDelegate.swift */,
