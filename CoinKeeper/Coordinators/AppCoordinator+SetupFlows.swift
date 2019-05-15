@@ -7,8 +7,13 @@
 //
 
 import Foundation
+import os.log
 
 extension AppCoordinator {
+
+  var wordsBackedUp: Bool {
+    return launchStateManager.walletIsBackedUp()
+  }
 
   var verificationSatisfied: Bool {
     return launchStateManager.deviceIsVerified() || launchStateManager.skippedVerification
@@ -16,6 +21,20 @@ extension AppCoordinator {
 
   var isFirstTimeOpeningApp: Bool {
     return !persistenceManager.bool(for: .firstTimeOpeningApp)
+  }
+
+  func enterApp() {
+    let mainViewController = makeTransactionHistory()
+    let settingsViewController = DrawerViewController.makeFromStoryboard()
+    let drawerController = setupDrawerViewController(centerViewController: mainViewController,
+                                                     leftViewController: settingsViewController)
+    assignCoordinationDelegate(to: settingsViewController)
+    navigationController.popToRootViewController(animated: false)
+    navigationController.viewControllers = [drawerController]
+
+    navigationController.isNavigationBarHidden = true
+
+    handlePendingBitcoinURL()
   }
 
   func continueSetupFlow() {
@@ -105,9 +124,8 @@ extension AppCoordinator {
   }
 
   func checkForWordsBackedUp() {
-    let isBackedUp = launchStateManager.walletIsBackedUp()
     let backupWordsReminderShown = persistenceManager.bool(for: .backupWordsReminderShown)
-    guard !isBackedUp && !backupWordsReminderShown else { return }
+    guard !wordsBackedUp && !backupWordsReminderShown else { return }
     let title = "Remember to backup your wallet to ensure your Bitcoin is secure in case your phone" +
     " is ever lost or stolen. Tap here to backup now."
     alertManager.showBanner(with: title, duration: nil, alertKind: .error) { [weak self] in
@@ -123,6 +141,55 @@ extension AppCoordinator {
     } else {
       completion()
     }
+  }
+
+  /// Show the recovery word backup flow.
+  ///
+  /// - Parameter words: If no parameter is passed in, the default behavior will search the keychain for stored words. Ensure 12 words are passed in.
+  func showWordRecoveryFlow(with words: [String] = []) {
+    let logger = OSLog(subsystem: "com.coinninja.coinkeeper.appcoordinator", category: "show_recovery")
+    guard let wmgr = walletManager else {
+      os_log("WalletManager is nil in %@", log: logger, type: .error, #function)
+      return }
+
+    let usableWords = words.isEmpty ? wmgr.mnemonicWords() : []
+
+    guard usableWords.count == 12 else {
+      os_log("Failed to receive 12 words in %@", log: logger, type: .error, #function)
+      return
+    }
+
+    let recoveryWordsIntroViewController = RecoveryWordsIntroViewController.makeFromStoryboard()
+    recoveryWordsIntroViewController.recoveryWords = usableWords
+    assignCoordinationDelegate(to: recoveryWordsIntroViewController)
+    navigationController.present(CNNavigationController(rootViewController: recoveryWordsIntroViewController),
+                                 animated: false,
+                                 completion: nil)
+  }
+
+  func createPinEntryViewControllerForRecoveryWords(_ words: [String]) -> PinEntryViewController {
+    let pinEntryViewController = PinEntryViewController.makeFromStoryboard()
+    pinEntryViewController.mode = .recoveryWords(completion: { _ in
+      let wordsViewController = BackupRecoveryWordsViewController.makeFromStoryboard()
+      wordsViewController.recoveryWords = words
+      wordsViewController.wordsBackedUp = self.wordsBackedUp
+      self.analyticsManager.track(event: .viewWords, with: nil)
+      self.assignCoordinationDelegate(to: wordsViewController)
+      self.navigationController.present(CNNavigationController(rootViewController: wordsViewController), animated: false, completion: nil)
+    })
+    assignCoordinationDelegate(to: pinEntryViewController)
+
+    return pinEntryViewController
+  }
+
+  func makeTransactionHistory() -> TransactionHistoryViewController {
+    let txHistory = TransactionHistoryViewController.makeFromStoryboard()
+    assignCoordinationDelegate(to: txHistory)
+    txHistory.context = persistenceManager.mainQueueContext()
+    txHistory.balanceProvider = self
+    txHistory.balanceDelegate = self
+    txHistory.urlOpener = self
+    return txHistory
   }
 
 }

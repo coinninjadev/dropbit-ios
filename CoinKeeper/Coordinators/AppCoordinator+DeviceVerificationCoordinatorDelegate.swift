@@ -86,4 +86,22 @@ extension AppCoordinator: DeviceVerificationCoordinatorDelegate {
     }
   }
 
+  /// This may fail with a 500 error if the addresses were already added during a previous installation of the same wallet
+  private func registerInitialWalletAddresses() {
+    guard let walletWorker = createWalletAddressDataWorker() else { return }
+    let bgContext = persistenceManager.createBackgroundContext()
+    let logger = OSLog(subsystem: "com.coinninja.coinkeeper.appcoordinator", category: "register_wallet_addresses")
+    let addressNumber = walletWorker.targetWalletAddressCount
+    bgContext.perform {
+      walletWorker.deleteAllAddressesOnServer()
+        .then(in: bgContext) { walletWorker.registerAndPersistServerAddresses(number: addressNumber, in: bgContext) }
+        .get(in: bgContext) { _ in
+          bgContext.perform {
+            try? bgContext.save()
+          }
+        }
+        .catch(policy: .allErrors) { os_log("failed to register wallet addresses: %@", log: logger, type: .error, $0.localizedDescription) }
+    }
+  }
+
 }
