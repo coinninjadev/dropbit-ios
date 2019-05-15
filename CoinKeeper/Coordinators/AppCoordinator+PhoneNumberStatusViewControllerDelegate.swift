@@ -49,7 +49,7 @@ extension AppCoordinator: PhoneNumberStatusViewControllerDelegate {
 
   func viewControllerDidSelectVerifyPhone(_ viewController: UIViewController) {
     viewController.dismiss(animated: true) {
-      self.startDeviceVerificationFlow(shouldOrphanRoot: false, isInitialSetupFlow: false)
+      self.startDeviceVerificationFlow(shouldOrphanRoot: false, selectedSetupFlow: nil)
       self.navigationController.isNavigationBarHidden = false
     }
   }

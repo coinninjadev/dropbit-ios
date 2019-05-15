@@ -11,6 +11,12 @@ import os.log
 import UIKit
 import MMDrawerController
 
+enum SetupFlow {
+  case newWallet
+  case restoreWallet
+  case claimInvite
+}
+
 extension AppCoordinator {
 
   var wordsBackedUp: Bool {

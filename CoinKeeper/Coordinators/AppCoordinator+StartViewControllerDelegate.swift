@@ -12,11 +12,14 @@ extension AppCoordinator: StartViewControllerDelegate {
 
   func createWallet() {
     navigationController.isNavigationBarHidden = false
+    launchStateManager.selectedSetupFlow = .newWallet
     continueSetupFlow()
   }
 
   func claimInvite() {
     navigationController.isNavigationBarHidden = false
+    launchStateManager.selectedSetupFlow = .claimInvite
+    continueSetupFlow()
   }
 
   func restoreWallet() {
@@ -26,6 +29,8 @@ extension AppCoordinator: StartViewControllerDelegate {
     viewController.flow = .restore
     assignCoordinationDelegate(to: viewController)
     navigationController.pushViewController(viewController, animated: true)
+    launchStateManager.selectedSetupFlow = .restoreWallet
+    continueSetupFlow()
   }
 
   /// temporary function for debugging
