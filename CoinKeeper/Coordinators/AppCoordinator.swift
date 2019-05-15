@@ -149,53 +149,6 @@ class AppCoordinator: CoordinatorType {
     self.serialQueueManager.delegate = self
   }
 
-  func badgingManager() -> BadgeManagerType {
-    return badgeManager
-  }
-
-  /// This function ensures we are always working with the current instance of the WalletManager
-  func createTransactionDataWorker() -> TransactionDataWorker? {
-    guard let wmgr = walletManager else { return nil }
-    return TransactionDataWorker(walletManager: wmgr,
-                                 persistenceManager: persistenceManager,
-                                 networkManager: networkManager,
-                                 analyticsManager: analyticsManager)
-  }
-
-  /// This function ensures we are always working with the current instance of the WalletManager
-  func createWalletAddressDataWorker() -> WalletAddressDataWorker? {
-    guard let wmgr = walletManager else { return nil }
-    return WalletAddressDataWorker(walletManager: wmgr,
-                                   persistenceManager: persistenceManager,
-                                   networkManager: networkManager,
-                                   analyticsManager: analyticsManager,
-                                   phoneNumberKit: self.phoneNumberKit,
-                                   invitationWorkerDelegate: self)
-  }
-
-  func createDatabaseMigrationWorker(in context: NSManagedObjectContext) -> DatabaseMigrationWorker? {
-    guard let factory = createMigratorFactory(in: context) else { return nil }
-    let migrators = factory.migrators()
-    return DatabaseMigrationWorker(migrators: migrators, in: context)
-  }
-
-  func createKeychainMigrationWorker() -> KeychainMigrationWorker {
-    let factory = KeychainMigratorFactory(persistenceManager: persistenceManager)
-    return KeychainMigrationWorker(migrators: factory.migrators())
-  }
-
-  func createContactCacheMigrationWorker() -> ContactCacheMigrationWorker {
-    let factory = ContactCacheMigratorFactory(persistenceManager: persistenceManager,
-                                              dataWorker: contactCacheDataWorker)
-    return ContactCacheMigrationWorker(migrators: factory.migrators())
-  }
-
-  func createMigratorFactory(in context: NSManagedObjectContext) -> DatabaseMigratorFactory? {
-    guard let wmgr = walletManager else { return nil }
-    let addressDataSource = wmgr.createAddressDataSource()
-    return DatabaseMigratorFactory(persistenceManager: persistenceManager, addressDataSource: addressDataSource, context: context)
-  }
-
   func registerForRemoteNotifications(with deviceToken: Data) {
     let token = deviceToken.hexString
     persistenceManager.set(token, for: .devicePushToken)
@@ -243,14 +196,6 @@ class AppCoordinator: CoordinatorType {
     navigationController.topViewController()?.present(alert, animated: true)
   }
 
-  var isReadyToEnterApp: Bool {
-    return launchStateManager.deviceIsVerified() || launchStateManager.skippedVerification
-  }
-
-  var isFirstTimeOpeningApp: Bool {
-    return !persistenceManager.bool(for: .firstTimeOpeningApp)
-  }
-
   private func setInitialRootViewController() {
     if launchStateManager.isFirstTimeAfteriCloudRestore() {
       startFirstTimeAfteriCloudRestore()
@@ -260,7 +205,7 @@ class AppCoordinator: CoordinatorType {
           self.continueSetupFlow()
         }
       }
-    } else if isReadyToEnterApp {
+    } else if verificationSatisfied {
 
       // If user previously skipped registering the device and reinstalled,
       // the skipped state is still in the keychain but the wallet needs to be registered again.
@@ -283,7 +228,9 @@ class AppCoordinator: CoordinatorType {
         // Child coordinator will push DeviceVerificationViewController onto stack in its start() method
         startDeviceVerificationFlow(shouldOrphanRoot: true, isInitialSetupFlow: true)
       } else if launchStateManager.isFirstTime() {
-        startNewWalletFlow()
+        let startVC = StartViewController.makeFromStoryboard()
+        assignCoordinationDelegate(to: startVC)
+        navigationController.viewControllers = [startVC]
       }
     }
   }
@@ -303,43 +250,6 @@ class AppCoordinator: CoordinatorType {
     ]
     topics.forEach { badgeManager.add(topic: $0) }
     badgeManager.publishBadgeUpdate()
-  }
-
-  private func startNewWalletFlow() {
-    let startVC = StartViewController.makeFromStoryboard()
-    assignCoordinationDelegate(to: startVC)
-    navigationController.viewControllers = [startVC]
-  }
-
-  func viewController(_ viewController: UIViewController, didSkipBackingUp words: [String], flow: RecoveryWordsFlow) {
-    let backupNowConfig = AlertActionConfiguration(title: "Back up now", style: .cancel, action: nil)
-    let skipConfig = AlertActionConfiguration(title: "OK, skip", style: .default) {
-      self.saveSuccessfulWords(words: words, isBackedUp: false, flow: flow)
-      self.continueNavigation(with: viewController, for: flow)
-    }
-    let title = "You will have restricted use of the DropBit features until your wallet" +
-    " is backed up. Please backup as soon as you are able."
-    let alert = alertManager.alert(withTitle: title, description: nil, image: nil, style: .alert, actionConfigs: [backupNowConfig, skipConfig])
-    navigationController.topViewController()?.present(alert, animated: true)
-  }
-
-  func continueNavigation(with viewController: UIViewController, for flow: RecoveryWordsFlow) {
-    switch flow {
-    case .settings:
-      viewController.dismiss(animated: true, completion: nil)
-    case .createWallet:
-      continueCreateWalletFlow()
-    }
-  }
-
-  func trackWordsBackedUp(_ isBackedUp: Bool) {
-    let wordsBackupEventType: AnalyticsManagerEventType = isBackedUp ? .wordsBackedup : .skipWordsBackedup
-    analyticsManager.track(event: wordsBackupEventType, with: nil)
-  }
-
-  private func continueCreateWalletFlow() {
-    analyticsManager.track(event: .createWallet, with: nil)
-    continueSetupFlow()
   }
 
   func registerWallet(completion: @escaping () -> Void) {
@@ -441,27 +351,6 @@ class AppCoordinator: CoordinatorType {
       }.catch(policy: .allErrors) { os_log("failed to show messages: %@",
                                            log: logger,
                                            type: .error, $0.localizedDescription) }
-  }
-
-  private func checkForWordsBackedUp() {
-    let isBackedUp = launchStateManager.walletIsBackedUp()
-    let backupWordsReminderShown = persistenceManager.bool(for: .backupWordsReminderShown)
-    guard !isBackedUp && !backupWordsReminderShown else { return }
-    let title = "Remember to backup your wallet to ensure your Bitcoin is secure in case your phone" +
-    " is ever lost or stolen. Tap here to backup now."
-    alertManager.showBanner(with: title, duration: nil, alertKind: .error) { [weak self] in
-      self?.analyticsManager.track(event: .backupWordsButtonPressed, with: nil)
-      self?.showWordRecoveryFlow()
-    }
-    persistenceManager.set(true, for: .backupWordsReminderShown)
-  }
-
-  private func registerWalletWithServerIfNeeded(completion: @escaping () -> Void) {
-    if launchStateManager.shouldRegisterWallet() {
-      registerWallet(completion: completion)
-    } else {
-      completion()
-    }
   }
 
   private func setupDrawerViewController(centerViewController: UIViewController, leftViewController: UIViewController) -> MMDrawerController {
@@ -578,71 +467,6 @@ class AppCoordinator: CoordinatorType {
     walletManager?.coin = coin
   }
 
-  func continueSetupFlow() {
-    switch launchStateManager.nextLaunchStep {
-    case .enterPin:       startFirstTimeWalletCreationFlow()
-    case .createWallet:   startCreateRecoveryWordsFlow()
-    case .verifyDevice:   startDeviceVerificationFlow(shouldOrphanRoot: true, isInitialSetupFlow: true)
-    case .enterApp:       validToStartEnteringApp()
-    case .phoneRestore:   startFirstTimeAfteriCloudRestore()
-    }
-  }
-
-  func startCreateRecoveryWordsFlow(animated: Bool = true) {
-    func performFunction() {
-      let words = WalletManager.createMnemonicWords()
-      self.saveSuccessfulWords(words: words, isBackedUp: false, flow: .createWallet)
-      self.continueCreateWalletFlow()
-    }
-
-    guard !launchStateManager.shouldRequireAuthentication else {
-      requireAuthenticationIfNeeded(whenAuthenticated: performFunction)
-      return
-    }
-    guard let topVC = navigationController.topViewController,
-      !(topVC is CreateRecoveryWordsViewController) else { return }
-
-    performFunction()
-  }
-
-  func saveSuccessfulWords(words: [String], isBackedUp: Bool = true, flow: RecoveryWordsFlow) {
-    trackWordsBackedUp(isBackedUp)
-
-    switch flow {
-    case .createWallet:
-      guard persistenceManager.keychainManager.store(recoveryWords: words) else {
-        fatalError("Failed to write recovery words to keychain")
-      }
-      walletManager = WalletManager(words: words, persistenceManager: persistenceManager)
-    case .settings:
-      persistenceManager.backup(recoveryWords: words)
-    }
-
-    //This wouldn't be called when we allow them to set up a wallet without backing up their words
-    //Important to store boolean as NSNumber for the keychain
-    guard persistenceManager.keychainManager.store(anyValue: NSNumber(value: isBackedUp), key: .walletWordsBackedUp) else {
-      fatalError("Failed to write status to keychain for walletWordsBackedUp")
-    }
-  }
-
-  func startDeviceVerificationFlow(shouldOrphanRoot: Bool, isInitialSetupFlow: Bool) {
-    func performFunction() {
-
-      let childCoordinator = DeviceVerificationCoordinator(navigationController, shouldOrphanRoot: shouldOrphanRoot)
-      childCoordinator.isInitialSetupFlow = isInitialSetupFlow
-      startChildCoordinator(childCoordinator: childCoordinator)
-    }
-
-    guard !launchStateManager.shouldRequireAuthentication else {
-      requireAuthenticationIfNeeded(whenAuthenticated: performFunction)
-      return
-    }
-    guard let topVC = navigationController.topViewController,
-      !(topVC is DeviceVerificationViewController) else { return }
-
-    performFunction()
-  }
-
   func showScanViewController(fallbackBTCAmount: NSDecimalNumber, primaryCurrency: CurrencyCode) {
     let scanViewController = ScanQRViewController.makeFromStoryboard()
     scanViewController.fallbackPaymentViewModel = SendPaymentViewModel(btcAmount: fallbackBTCAmount, primaryCurrency: primaryCurrency)
@@ -740,18 +564,4 @@ class AppCoordinator: CoordinatorType {
     }
   }
 
-  private func startFirstTimeWalletCreationFlow() {
-    let viewController = PinCreationViewController.makeFromStoryboard()
-    assignCoordinationDelegate(to: viewController)
-    navigationController.pushViewController(viewController, animated: true)
-  }
-
-  private func startFirstTimeAfteriCloudRestore() {
-    let title = ""
-    let description = "It looks like you have restored from a backup. Please enter your 12 recovery words to restore your wallet."
-    let okAction = AlertActionConfiguration(title: "RESTORE NOW", style: .default) { self.restoreWallet() }
-    let alertViewModel = AlertControllerViewModel(title: title, description: description, actions: [okAction])
-    let alert = alertManager.alert(from: alertViewModel)
-    navigationController.topViewController()?.present(alert, animated: true)
-  }
 }

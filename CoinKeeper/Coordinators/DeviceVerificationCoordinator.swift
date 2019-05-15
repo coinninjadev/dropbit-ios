@@ -30,7 +30,11 @@ class DeviceVerificationCoordinator: ChildCoordinatorType {
 
   var userSuppliedPhoneNumber: GlobalPhoneNumber?
   let logger = OSLog(subsystem: "com.coinninja.coinkeeper.deviceverificationcoordinator", category: "device_verification_coordinator")
-  var isInitialSetupFlow = true
+  var selectedSetupFlow: SetupFlow?
+
+  var isInitialSetupFlow: Bool {
+    return selectedSetupFlow != nil
+  }
 
   // MARK: private var
   private var codeEntryFailureCount = 0

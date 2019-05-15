@@ -549,7 +549,9 @@
 		B53D7ECC2119FCA300D1DCBF /* BCITransactionResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53D7ECB2119FCA300D1DCBF /* BCITransactionResponse.swift */; };
 		B53D7ECE2119FE3900D1DCBF /* BlockchainInfoProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53D7ECD2119FE3900D1DCBF /* BlockchainInfoProvider.swift */; };
 		B53D7ED0211A443700D1DCBF /* BlockchainInfoProviderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53D7ECF211A443700D1DCBF /* BlockchainInfoProviderTests.swift */; };
+		B5401C59228C7890004C77BC /* AppCoordinator+SetupFlows.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5401C58228C7890004C77BC /* AppCoordinator+SetupFlows.swift */; };
 		B5401C5B228C7AE8004C77BC /* AppCoordinator+Analytics.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5401C5A228C7AE7004C77BC /* AppCoordinator+Analytics.swift */; };
+		B5401C5D228C89D1004C77BC /* AppCoordinator+Factory.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5401C5C228C89D1004C77BC /* AppCoordinator+Factory.swift */; };
 		B54090F82270AC7D00E53B80 /* AppCoordinator+DropBitMeViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54090F72270AC7D00E53B80 /* AppCoordinator+DropBitMeViewControllerDelegate.swift */; };
 		B54159CB20A5DEBF0048F495 /* CKMUser+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54159C920A5DEBF0048F495 /* CKMUser+CoreDataClass.swift */; };
 		B54159CC20A5DEBF0048F495 /* CKMUser+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54159CA20A5DEBF0048F495 /* CKMUser+CoreDataProperties.swift */; };
@@ -1348,7 +1350,9 @@
 		B53D7ECB2119FCA300D1DCBF /* BCITransactionResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BCITransactionResponse.swift; sourceTree = "<group>"; };
 		B53D7ECD2119FE3900D1DCBF /* BlockchainInfoProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockchainInfoProvider.swift; sourceTree = "<group>"; };
 		B53D7ECF211A443700D1DCBF /* BlockchainInfoProviderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockchainInfoProviderTests.swift; sourceTree = "<group>"; };
+		B5401C58228C7890004C77BC /* AppCoordinator+SetupFlows.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppCoordinator+SetupFlows.swift"; sourceTree = "<group>"; };
 		B5401C5A228C7AE7004C77BC /* AppCoordinator+Analytics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppCoordinator+Analytics.swift"; sourceTree = "<group>"; };
+		B5401C5C228C89D1004C77BC /* AppCoordinator+Factory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppCoordinator+Factory.swift"; sourceTree = "<group>"; };
 		B54090F72270AC7D00E53B80 /* AppCoordinator+DropBitMeViewControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppCoordinator+DropBitMeViewControllerDelegate.swift"; sourceTree = "<group>"; };
 		B54159C920A5DEBF0048F495 /* CKMUser+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CKMUser+CoreDataClass.swift"; sourceTree = "<group>"; };
 		B54159CA20A5DEBF0048F495 /* CKMUser+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CKMUser+CoreDataProperties.swift"; sourceTree = "<group>"; };
@@ -1774,6 +1778,8 @@
 			isa = PBXGroup;
 			children = (
 				3B2E78322024C76D00DA25AF /* AppCoordinator.swift */,
+				B5401C58228C7890004C77BC /* AppCoordinator+SetupFlows.swift */,
+				B5401C5C228C89D1004C77BC /* AppCoordinator+Factory.swift */,
 				B5401C5A228C7AE7004C77BC /* AppCoordinator+Analytics.swift */,
 				3B4558672104EB980000D4A6 /* AppCoordinator+InvitationWorkerDelegate.swift */,
 				B50FD13D215D681B00155BE1 /* AppCoordinator+TransactionAlerts.swift */,
@@ -3411,6 +3417,7 @@
 				B5C5EDE321FA41FF0032AC94 /* SharedPayloadV1.swift in Sources */,
 				B552EDF9211E33D000332BB5 /* PermissionManager.swift in Sources */,
 				3B26F1E022566EAA00F3E00F /* AppCoordinator+SelectedCurrencyUpdatable.swift in Sources */,
+				B5401C59228C7890004C77BC /* AppCoordinator+SetupFlows.swift in Sources */,
 				A29CE0CF2099FD6800761B91 /* AppCoordinator+SuccessFailViewControllerDelegate.swift in Sources */,
 				B552EDEE211E33D000332BB5 /* CurrencyConverter.swift in Sources */,
 				B566ED7C219B3840001A65F5 /* AccessibleViewSettable.swift in Sources */,
@@ -3478,6 +3485,7 @@
 				3BEF348E22708E88002E4DB5 /* TransactionHistoryDetailValidCell.swift in Sources */,
 				B55D085221B72397007DD9E5 /* CKPhoneNumberParser.swift in Sources */,
 				B582409420920E3F005D2F90 /* CompactActionButton.swift in Sources */,
+				B5401C5D228C89D1004C77BC /* AppCoordinator+Factory.swift in Sources */,
 				3B23126720DA6D0E0099A557 /* TransactionHistoryDetailCellAddressView.swift in Sources */,
 				B542BE752237093800E01C30 /* ExamplePhoneNumberLabel.swift in Sources */,
 				3BA9F60F208F6EBF0047C213 /* AppCoordinator+RequestPayViewControllerDelegate.swift in Sources */,

@@ -51,7 +51,7 @@ extension AppCoordinator: SerialQueueManagerDelegate {
   func predefineSyncDependencies(in context: NSManagedObjectContext, inBackground background: Bool) -> Promise<SyncDependencies> {
     let logger = OSLog(subsystem: "com.coinninja.coinkeeper.appcoordinator", category: "sync_transactions")
 
-    guard (launchStateManager.userAuthenticated && self.isReadyToEnterApp) || background else {
+    guard (launchStateManager.userAuthenticated && self.verificationSatisfied) || background else {
       os_log("**Sync routine prevented by pending pin entry or verification step", log: logger, type: .debug)
       return Promise(error: SyncRoutineError.notReady)
     }

@@ -15,7 +15,7 @@ protocol DrawerViewControllerDelegate: CurrencyValueDataSourceType & BadgeUpdate
   func spendButtonWasTouched()
   func supportButtonWasTouched()
   func getBitcoinButtonWasTouched()
-  func badgingManager() -> BadgeManagerType
+  var badgeManager: BadgeManagerType { get }
 }
 
 class DrawerViewController: BaseViewController, StoryboardInitializable {
@@ -24,7 +24,7 @@ class DrawerViewController: BaseViewController, StoryboardInitializable {
       drawerTableViewDDS?.currencyValueManager = coordinationDelegate
       drawerTableView?.reloadData() // rebuild header with price data; Note: drawerTableView may not yet exist
       coordinationDelegate?.viewControllerDidRequestBadgeUpdate(self)
-      (coordinationDelegate?.badgingManager()).map(subscribeToBadgeNotifications)
+      (coordinationDelegate?.badgeManager).map(subscribeToBadgeNotifications)
       self.configureDrawerData()
     }
   }
@@ -75,7 +75,7 @@ class DrawerViewController: BaseViewController, StoryboardInitializable {
     let circularIconOffset = ViewOffset(dx: 7, dy: -2)
 
     let backupWordsDrawerData: () -> DrawerData? = { [weak self] in
-      guard let backedUp = self?.coordinationDelegate?.badgingManager().wordsBackedUp, backedUp == false else { return nil }
+      guard let backedUp = self?.coordinationDelegate?.badgeManager.wordsBackedUp, backedUp == false else { return nil }
       return DrawerData(image: nil, title: "Back Up Wallet", kind: .backupWords)
     }
 

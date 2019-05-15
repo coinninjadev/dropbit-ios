@@ -27,7 +27,6 @@ protocol TransactionHistoryViewControllerDelegate: DeviceCountryCodeProvider &
   func viewControllerDidTapAddMemo(_ viewController: UIViewController, with completion: @escaping (String) -> Void)
   func viewControllerShouldUpdateTransaction(_ viewController: TransactionHistoryViewController,
                                              transaction: CKMTransaction) -> Promise<Void>
-  func badgingManager() -> BadgeManagerType
 
   func viewControllerDidTapScan(_ viewController: UIViewController, converter: CurrencyConverter)
   func viewControllerDidTapReceivePayment(_ viewController: UIViewController, converter: CurrencyConverter)
@@ -37,6 +36,7 @@ protocol TransactionHistoryViewControllerDelegate: DeviceCountryCodeProvider &
   func viewControllerDidTapGetBitcoin(_ viewController: UIViewController)
   func viewControllerDidTapSpendBitcoin(_ viewController: UIViewController)
 
+  var badgeManager: BadgeManagerType { get }
   var currencyController: CurrencyController { get }
 }
 
@@ -157,7 +157,7 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
     summaryCollectionViewBottomConstraint.constant = sendReceiveActionView.frame.height * percent * -1
 
     balanceContainer?.delegate = (generalCoordinationDelegate as? BalanceContainerDelegate)
-    (coordinationDelegate?.badgingManager()).map(subscribeToBadgeNotifications)
+    (coordinationDelegate?.badgeManager).map(subscribeToBadgeNotifications)
     coordinationDelegate?.viewControllerDidRequestBadgeUpdate(self)
 
     self.balanceContainer.delegate = self.balanceDelegate

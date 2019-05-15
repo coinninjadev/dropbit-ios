@@ -14,6 +14,7 @@ protocol LaunchStateManagerType: AnyObject {
   var shouldRequireAuthentication: Bool { get }
   var launchType: LaunchType { get set }
   var skippedVerification: Bool { get }
+  var selectedSetupFlow: SetupFlow? { get set }
   var userAuthenticated: Bool { get }
   init(persistenceManager: PersistenceManagerType)
   func currentProperties() -> LaunchStateProperties
