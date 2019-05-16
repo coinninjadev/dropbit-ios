@@ -152,7 +152,7 @@ public struct WalletAddressRequestResponse: ResponseDecodable, CustomStringConve
       "status: \(status ?? "-")",
       "metadata: \(metadata?.description ?? "-")",
       "walletId: \(walletId ?? "-")",
-      "phoneNumberHash: \(identityHash ?? "-")",
+      "identityHash: \(identityHash ?? "-")",
       "txid: \(txid ?? "-")"
     ]
     propertyKeyValues.forEach { desc in

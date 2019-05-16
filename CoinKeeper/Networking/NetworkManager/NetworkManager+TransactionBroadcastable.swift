@@ -126,7 +126,7 @@ extension NetworkManager: TransactionBroadcastable {
         let sharingObservantPayload = sharedPayloadDTO.shouldShare ? encryptedPayload : ""
         let body = CreateTransactionNotificationBody(txid: outgoingTxData.txid,
                                                      address: outgoingTxData.destinationAddress,
-                                                     phoneNumberHash: outgoingTxData.contactPhoneNumberHash,
+                                                     identityHash: outgoingTxData.contactPhoneNumberHash,
                                                      encryptedPayload: sharingObservantPayload,
                                                      encryptedFormat: "1")
         return self.addTransactionNotification(body: body)
