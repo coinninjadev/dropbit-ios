@@ -41,7 +41,7 @@ extension AppCoordinator: PinVerificationDelegate {
       navigationController.topViewController.flatMap { $0 as? PinCreationViewController }?.entryMode = .pinVerificationFailed
     case is PinEntryViewController:
       let lockoutDate = Date().timeIntervalSince1970 + 300  // 300s = 5m
-      self.persistenceManager.keychainManager.store(anyValue: lockoutDate, key: .lockoutDate)
+      self.persistenceManager.keychainManager.store(anyValue: lockoutDate, key: .lockoutDate).cauterize()
     default: break
     }
   }

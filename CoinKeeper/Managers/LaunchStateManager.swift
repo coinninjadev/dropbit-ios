@@ -183,7 +183,7 @@ class LaunchStateManager: LaunchStateManagerType {
   }
 
   func userWasAuthenticated() {
-    persistenceManager.setLastLoginTime()
+    persistenceManager.setLastLoginTime().cauterize()
     userAuthenticated = true
   }
 

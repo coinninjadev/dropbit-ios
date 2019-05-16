@@ -314,7 +314,9 @@ class AppCoordinator: CoordinatorType {
     let backupNowConfig = AlertActionConfiguration(title: "Back up now", style: .cancel, action: nil)
     let skipConfig = AlertActionConfiguration(title: "OK, skip", style: .default) {
       self.saveSuccessfulWords(words: words, isBackedUp: false, flow: flow)
-      self.continueNavigation(with: viewController, for: flow)
+        .done(on: .main) {
+          self.continueNavigation(with: viewController, for: flow)
+        }.cauterize()
     }
     let title = "You will have restricted use of the DropBit features until your wallet" +
     " is backed up. Please backup as soon as you are able."
@@ -578,11 +580,19 @@ class AppCoordinator: CoordinatorType {
   }
 
   /// Handle app leaving active state, either becoming inactive, entering background, or terminating.
-  func appResignedActiveState() {
-    persistenceManager.setLastLoginTime()
+  func appWillResignActiveState() {
+    let logger = OSLog(subsystem: "com.coinninja.coinkeeper.appcoordinator", category: "willResignActive")
+    let backgroundTaskId = UIApplication.shared.beginBackgroundTask(expirationHandler: nil)
     connectionManager.stop()
     bitcoinURLToOpen = nil
-    //    UIApplication.shared.applicationIconBadgeNumber = persistenceManager.pendingInvitations().count
+    persistenceManager.setLastLoginTime()
+      .catch { error in
+        os_log("Failed to set lastLoginTime: %@", log: logger, type: .error, error.localizedDescription)
+      }
+      .finally {
+        UIApplication.shared.endBackgroundTask(backgroundTaskId)
+    }
+    //UIApplication.shared.applicationIconBadgeNumber = persistenceManager.pendingInvitations().count
   }
 
   private func refreshContacts() {
@@ -644,7 +654,9 @@ class AppCoordinator: CoordinatorType {
     func performFunction() {
       let words = WalletManager.createMnemonicWords()
       self.saveSuccessfulWords(words: words, isBackedUp: false, flow: .createWallet)
-      self.continueCreateWalletFlow()
+        .done(on: .main) {
+          self.continueCreateWalletFlow()
+        }.cauterize()
     }
 
     guard !launchStateManager.shouldRequireAuthentication else {
@@ -657,23 +669,23 @@ class AppCoordinator: CoordinatorType {
     performFunction()
   }
 
-  func saveSuccessfulWords(words: [String], isBackedUp: Bool = true, flow: RecoveryWordsFlow) {
+  func saveSuccessfulWords(words: [String], isBackedUp: Bool = true, flow: RecoveryWordsFlow) -> Promise<Void> {
     trackWordsBackedUp(isBackedUp)
-
-    switch flow {
-    case .createWallet:
-      guard persistenceManager.keychainManager.store(recoveryWords: words) else {
-        fatalError("Failed to write recovery words to keychain")
-      }
-      walletManager = WalletManager(words: words, persistenceManager: persistenceManager)
-    case .settings:
-      persistenceManager.backup(recoveryWords: words)
-    }
 
     //This wouldn't be called when we allow them to set up a wallet without backing up their words
     //Important to store boolean as NSNumber for the keychain
-    guard persistenceManager.keychainManager.store(anyValue: NSNumber(value: isBackedUp), key: .walletWordsBackedUp) else {
-      fatalError("Failed to write status to keychain for walletWordsBackedUp")
+
+    switch flow {
+    case .createWallet:
+      return persistenceManager.keychainManager.store(recoveryWords: words)
+        .get { self.walletManager = WalletManager(words: words, persistenceManager: self.persistenceManager) }
+        .then { self.persistenceManager.keychainManager.store(anyValue: NSNumber(value: isBackedUp), key: .walletWordsBackedUp) }
+        .recover { fatalError($0.localizedDescription) }
+
+    case .settings:
+      return persistenceManager.backup(recoveryWords: words)
+        .then { self.persistenceManager.keychainManager.store(anyValue: NSNumber(value: isBackedUp), key: .walletWordsBackedUp) }
+        .recover { fatalError($0.localizedDescription) }
     }
   }
 

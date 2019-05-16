@@ -8,11 +8,18 @@
 
 import Foundation
 import UIKit
+import PromiseKit
 
 extension AppCoordinator: RestoreWalletViewControllerDelegate {
   func viewControllerDidSubmitWords(words: [String]) {
-    saveSuccessfulWords(words: words, flow: .createWallet)
-    analyticsManager.track(event: .restoreWallet, with: nil)
+    self.saveSuccessfulWords(words: words, flow: .createWallet)
+      .get {
+        self.analyticsManager.track(event: .restoreWallet, with: nil)
+        self.showSuccessFail(forWords: words)
+      }.cauterize()
+  }
+
+  private func showSuccessFail(forWords words: [String]) {
     let successFailController = SuccessFailViewController.makeFromStoryboard()
     successFailController.viewModel.flow = .restoreWallet
     successFailController.retryCompletion = {
@@ -32,4 +39,5 @@ extension AppCoordinator: RestoreWalletViewControllerDelegate {
     navigationController.orphanDisplayingViewController()
     successFailController.retryCompletion?()
   }
+
 }

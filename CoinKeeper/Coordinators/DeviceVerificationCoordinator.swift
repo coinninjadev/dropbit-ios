@@ -216,10 +216,9 @@ extension DeviceVerificationCoordinator: DeviceVerificationViewControllerDelegat
             os_log("Failed to save context. %@", log: logger, type: .error, error.localizedDescription)
           }
         }
+        .then { crDelegate.persistenceManager.keychainManager.store(anyValue: phoneNumber.countryCode, key: .countryCode) }
+        .then { crDelegate.persistenceManager.keychainManager.store(anyValue: phoneNumber.nationalNumber, key: .phoneNumber) }
         .done(on: .main) { _ in
-
-          crDelegate.persistenceManager.keychainManager.store(anyValue: phoneNumber.countryCode, key: .countryCode)
-          crDelegate.persistenceManager.keychainManager.store(anyValue: phoneNumber.nationalNumber, key: .phoneNumber)
 
           // Tell delegate to continue app flow
           self.codeWasVerified(phoneNumber: phoneNumber)
