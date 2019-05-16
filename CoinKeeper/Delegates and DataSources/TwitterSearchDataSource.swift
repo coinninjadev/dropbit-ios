@@ -37,6 +37,10 @@ class TwitterSearchDataSource: NSObject, UITableViewDataSource {
     tableView?.reloadData()
   }
 
+  func user(at indexPath: IndexPath) -> TwitterUser {
+    return users[indexPath.row]
+  }
+
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     return users.count
   }
