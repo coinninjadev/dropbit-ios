@@ -339,7 +339,9 @@ class PersistenceManager: PersistenceManagerType {
   }
 
   func setLastLoginTime() {
-    _ = keychainManager.store(anyValue: Date().timeIntervalSince1970, key: .lastTimeEnteredBackground)
+    DispatchQueue.global().async {
+      _ = self.keychainManager.store(anyValue: Date().timeIntervalSince1970, key: .lastTimeEnteredBackground)
+    }
   }
 
   func lastLoginTime() -> TimeInterval? {
