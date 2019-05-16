@@ -39,6 +39,20 @@ extension UserIdentityBody {
       return nil
     }
   }
+
+  var identityHash: String {
+    guard let identityType = UserIdentityType(rawValue: type) else { fatalError("invalid type") }
+    switch identityType {
+    case .phone:
+      return globalNumber()?.hashed() ?? ""
+    case .twitter:
+      return identity
+    }
+  }
+
+  var identityType: UserIdentityType {
+    return UserIdentityType(rawValue: type) ?? .phone
+  }
 }
 
 public struct RequestAddressBody: Encodable {

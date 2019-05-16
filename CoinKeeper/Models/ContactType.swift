@@ -18,18 +18,51 @@ protocol ContactType {
 
   var kind: ContactKind { get set }
   var displayName: String? { get }
+  var displayIdentity: String { get }
+  var userIdentityBody: UserIdentityBody { get }
+}
+
+extension ContactType {
+  var identityType: UserIdentityType {
+    return userIdentityBody.identityType
+  }
+
+  var identityHash: String {
+    return userIdentityBody.identityHash
+  }
+}
+
+protocol PhoneContactType: ContactType {
   var displayNumber: String { get }
   var phoneNumberHash: String { get }
   var globalPhoneNumber: GlobalPhoneNumber { get }
-
 }
 
-struct ValidatedContact: ContactType {
+extension PhoneContactType {
+  var phoneNumberHash: String {
+    return globalPhoneNumber.hashed()
+  }
+
+  var userIdentityBody: UserIdentityBody {
+    return UserIdentityBody(phoneNumber: globalPhoneNumber)
+  }
+
+  var displayIdentity: String {
+    return displayNumber
+  }
+}
+
+protocol TwitterContactType: ContactType {
+  var displayHandle: String { get }
+  var identityHash: String { get }
+  var twitterUser: TwitterUser { get }
+}
+
+struct ValidatedContact: PhoneContactType {
 
   var kind: ContactKind
   let displayName: String?
   let displayNumber: String
-  let phoneNumberHash: String
   let globalPhoneNumber: GlobalPhoneNumber
 
   init?(cachedNumber: CCMPhoneNumber) {
@@ -44,25 +77,22 @@ struct ValidatedContact: ContactType {
 
     self.displayName = displayName
     self.displayNumber = cachedNumber.displayNumber
-    self.phoneNumberHash = metadata.hashedGlobalNumber
     self.globalPhoneNumber = GlobalPhoneNumber(countryCode: metadata.countryCode, nationalNumber: metadata.nationalNumber)
   }
 
 }
 
-struct GenericContact: ContactType {
+struct GenericContact: PhoneContactType {
 
   var kind: ContactKind
   var displayName: String?
   var displayNumber: String
-  var phoneNumberHash: String
   var globalPhoneNumber: GlobalPhoneNumber
 
   init(phoneNumber: GlobalPhoneNumber, hash: String, formatted: String) {
     self.kind = .generic
     self.displayName = nil
     self.displayNumber = formatted
-    self.phoneNumberHash = hash
     self.globalPhoneNumber = phoneNumber
   }
 

@@ -15,10 +15,12 @@ enum PaymentRecipient {
   /// Associated value does not contain "bitcoin:"
   case btcAddress(String)
 
-  case contact(ContactType)
+  case contact(PhoneContactType)
 
   /// Manually entered, not set from Contacts. Associated value is digits only.
   case phoneNumber(GenericContact)
+
+  case twitterContact(TwitterContactType)
 
   init?(parsedRecipient: CKParsedRecipient) {
     switch parsedRecipient {
@@ -60,7 +62,7 @@ protocol SendPaymentViewModelType: SendPaymentDataProvider {
   func displayStyle(for recipient: PaymentRecipient?) -> RecipientDisplayStyle
 
   func displayRecipientName() -> String?
-  func displayRecipientNumber() -> String?
+  func displayRecipientIdentity() -> String?
 
   var standardIgnoredOptions: CurrencyAmountValidationOptions { get }
   var invitationMaximumIgnoredOptions: CurrencyAmountValidationOptions { get }
@@ -92,9 +94,10 @@ extension SendPaymentViewModelType {
   var shouldShowSharedMemoBox: Bool {
     if let recipient = paymentRecipient {
       switch recipient {
-      case .btcAddress:   return false
-      case .contact:      return true && sharedMemoAllowed
-      case .phoneNumber:  return true && sharedMemoAllowed
+      case .btcAddress:     return false
+      case .contact:        return true && sharedMemoAllowed
+      case .phoneNumber:    return true && sharedMemoAllowed
+      case .twitterContact: return true && sharedMemoAllowed
       }
     } else {
       return true && sharedMemoAllowed //show it by default
@@ -212,7 +215,7 @@ struct SendPaymentViewModel: SendPaymentViewModelType {
     switch recipient {
     case .phoneNumber, .btcAddress:
       return .textField
-    case .contact:
+    case .contact, .twitterContact:
       return .label
     }
   }
@@ -222,17 +225,20 @@ struct SendPaymentViewModel: SendPaymentViewModelType {
     switch recipient {
     case .btcAddress: return nil
     case .contact(let contact): return contact.displayName
+    case .twitterContact(let contact): return contact.displayName
     case .phoneNumber: return nil
     }
   }
 
-  func displayRecipientNumber() -> String? {
+  func displayRecipientIdentity() -> String? {
     guard let recipient = self.paymentRecipient else { return nil }
     switch recipient {
     case .btcAddress: return nil
     case .contact(let contact):
       let formatter = CKPhoneNumberFormatter(kit: PhoneNumberKit(), format: .international)
       return (try? formatter.string(from: contact.globalPhoneNumber)) ?? ""
+    case .twitterContact(let contact):
+      return contact.displayIdentity
     case .phoneNumber: return nil
     }
   }
@@ -241,8 +247,9 @@ struct SendPaymentViewModel: SendPaymentViewModelType {
     guard let r = recipient else { return .textField }
     switch r {
     case .btcAddress,
-         .phoneNumber:  return .textField
-    case .contact:      return .label
+         .phoneNumber:    return .textField
+    case .contact,
+         .twitterContact: return .label
     }
   }
 
