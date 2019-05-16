@@ -135,7 +135,7 @@ class AppCoordinatorTests: XCTestCase {
     let mockPersistenceManager = MockPersistenceManager()
     self.sut = AppCoordinator(persistenceManager: mockPersistenceManager)
 
-    self.sut.appResignedActiveState()
+    self.sut.appWillResignActiveState()
 
     XCTAssertTrue(mockPersistenceManager.setLastLoginTimeWasCalled, "should tell persistenceManager to set last login time")
   }
