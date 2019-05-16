@@ -114,6 +114,8 @@
 		3B3779FC219E20AD00F79683 /* CreateRecoveryWordsCellPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B3779FB219E20AD00F79683 /* CreateRecoveryWordsCellPage.swift */; };
 		3B3779FE219EE7D900F79683 /* VerifyRecoveryWordsCellPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B3779FD219EE7D900F79683 /* VerifyRecoveryWordsCellPage.swift */; };
 		3B3779FF219EEA9F00F79683 /* Int+Times.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B825633F1FE7A9EA9E7A2AD /* Int+Times.swift */; };
+		3B37B93F228DDEB7002239AF /* CKMTwitterContact+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B37B93D228DDEB7002239AF /* CKMTwitterContact+CoreDataClass.swift */; };
+		3B37B940228DDEB7002239AF /* CKMTwitterContact+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B37B93E228DDEB7002239AF /* CKMTwitterContact+CoreDataProperties.swift */; };
 		3B3A1339204F3DB700E01908 /* OnboardingSubtitleLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B3A1338204F3DB700E01908 /* OnboardingSubtitleLabel.swift */; };
 		3B3F10FF2056B256003F86EF /* MockVerifyRecoveryWordsSelectionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B3F10FE2056B256003F86EF /* MockVerifyRecoveryWordsSelectionDelegate.swift */; };
 		3B3F11012056D7AB003F86EF /* MockVerifyRecoveryWordsResultDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B3F11002056D7AB003F86EF /* MockVerifyRecoveryWordsResultDelegate.swift */; };
@@ -928,6 +930,9 @@
 		3B3779F9219E1E9A00F79683 /* UITestHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITestHelpers.swift; sourceTree = "<group>"; };
 		3B3779FB219E20AD00F79683 /* CreateRecoveryWordsCellPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateRecoveryWordsCellPage.swift; sourceTree = "<group>"; };
 		3B3779FD219EE7D900F79683 /* VerifyRecoveryWordsCellPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerifyRecoveryWordsCellPage.swift; sourceTree = "<group>"; };
+		3B37B93C228DDD6F002239AF /* Model v6.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Model v6.xcdatamodel"; sourceTree = "<group>"; };
+		3B37B93D228DDEB7002239AF /* CKMTwitterContact+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CKMTwitterContact+CoreDataClass.swift"; sourceTree = "<group>"; };
+		3B37B93E228DDEB7002239AF /* CKMTwitterContact+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CKMTwitterContact+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		3B3A1338204F3DB700E01908 /* OnboardingSubtitleLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingSubtitleLabel.swift; sourceTree = "<group>"; };
 		3B3F10FE2056B256003F86EF /* MockVerifyRecoveryWordsSelectionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockVerifyRecoveryWordsSelectionDelegate.swift; sourceTree = "<group>"; };
 		3B3F11002056D7AB003F86EF /* MockVerifyRecoveryWordsResultDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockVerifyRecoveryWordsResultDelegate.swift; sourceTree = "<group>"; };
@@ -2674,6 +2679,8 @@
 		B51F824F207BF62F00692F5B /* NSManagedObject */ = {
 			isa = PBXGroup;
 			children = (
+				3B37B93D228DDEB7002239AF /* CKMTwitterContact+CoreDataClass.swift */,
+				3B37B93E228DDEB7002239AF /* CKMTwitterContact+CoreDataProperties.swift */,
 				3B071A5320C2EEDD009C2BF6 /* CKMCounterpartyName+CoreDataClass.swift */,
 				3B071A5420C2EEDD009C2BF6 /* CKMCounterpartyName+CoreDataProperties.swift */,
 				3B6749DD20AA5CA40032FE02 /* CKMVin+CoreDataClass.swift */,
@@ -3492,6 +3499,7 @@
 				B56E15952167DAD0003B69D4 /* NetworkManager+TransactionRequestable.swift in Sources */,
 				B55D085621B723FF007DD9E5 /* CKRecipientParserAccessoryTypes.swift in Sources */,
 				B52CC6A9221EC42800B00C9E /* AppCoordinator+ViewControllerDismissable.swift in Sources */,
+				3B37B940228DDEB7002239AF /* CKMTwitterContact+CoreDataProperties.swift in Sources */,
 				B518226220BF191A00AA3E36 /* CKMServerAddress+CoreDataClass.swift in Sources */,
 				B552EDF8211E33D000332BB5 /* TransactionDataWorker.swift in Sources */,
 				A260E8D920FD0F28008343F9 /* TutorialScreenViewModel.swift in Sources */,
@@ -3700,6 +3708,7 @@
 				3BA9F5FD208F63D40047C213 /* AppCoordinator+PinEntryViewControllerDelegate.swift in Sources */,
 				B5EABAB421FB900400E32E08 /* TransactionNotificationResponse.swift in Sources */,
 				3B071A5520C2EEDD009C2BF6 /* CKMCounterpartyName+CoreDataClass.swift in Sources */,
+				3B37B93F228DDEB7002239AF /* CKMTwitterContact+CoreDataClass.swift in Sources */,
 				3BA389A92035E62F00B599A0 /* CNNavigationController.swift in Sources */,
 				B54A4217207FF365005B40A9 /* TransactionDetailBreakdownLabel.swift in Sources */,
 				3B071A5620C2EEDD009C2BF6 /* CKMCounterpartyName+CoreDataProperties.swift in Sources */,
@@ -4679,13 +4688,14 @@
 		403AAD5C2063513900F7A2BA /* Model.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				3B37B93C228DDD6F002239AF /* Model v6.xcdatamodel */,
 				B520DFE822734EAE004C7D9E /* Model v5.xcdatamodel */,
 				B56B63762200C82D00CCC153 /* Model v4.xcdatamodel */,
 				B5D6BE4A21C5BD42000C0D4C /* Model v3.xcdatamodel */,
 				3BC8011821B995DF008D15E6 /* Model v2.xcdatamodel */,
 				403AAD5D2063513900F7A2BA /* Model.xcdatamodel */,
 			);
-			currentVersion = B520DFE822734EAE004C7D9E /* Model v5.xcdatamodel */;
+			currentVersion = 3B37B93C228DDD6F002239AF /* Model v6.xcdatamodel */;
 			path = Model.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
