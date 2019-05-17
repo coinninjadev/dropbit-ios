@@ -74,7 +74,7 @@ extension NetworkManager: UserRequestable {
   func verifyUser(body: VerifyUserBody, credentials: TwitterOAuthStorage? = nil) -> Promise<UserResponse> {
     return cnProvider.request(UserTarget.verify(body))
       .get { _ in
-        _ = credentials.map { creds in
+        if let creds = credentials {
           self.persistenceManager.keychainManager.store(oauthCredentials: creds)
         }
       }
