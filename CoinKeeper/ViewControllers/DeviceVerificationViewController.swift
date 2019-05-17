@@ -24,6 +24,7 @@ enum DeviceVerificationError: Error {
   case codeFailureLimitExceeded
   case incorrectCode
   case invalidPhoneNumber //failed local parsing
+  case missingTwitterIdentity
 
   var displayMessage: String {
     switch self {
@@ -33,6 +34,8 @@ enum DeviceVerificationError: Error {
       return "Incorrect code.\nPlease try again."
     case .invalidPhoneNumber:
       return "Invalid phone number. Please make sure you have entered the correct number."
+    case .missingTwitterIdentity:
+      return "Missing Twitter verification. Please authorize DropBit to use Twitter as an authentication mechanism."
     }
   }
 }

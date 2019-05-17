@@ -163,7 +163,7 @@ extension AppCoordinator: PhoneNumberStatusViewControllerDelegate {
     case .twitter:
       guard allVerifiedIdentities.contains(.twitter),
         let creds = persistenceManager.keychainManager.oauthCredentials()
-        else { return Promise(error: DeviceVerificationError.invalidPhoneNumber) }
+        else { return Promise(error: DeviceVerificationError.missingTwitterIdentity) }
       identityToRemove = creds.twitterUserId
     }
 
