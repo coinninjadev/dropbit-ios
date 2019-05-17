@@ -175,8 +175,8 @@ class PersistenceManager: PersistenceManagerType {
     keychainManager.deleteAll()
   }
 
-  func backup(recoveryWords words: [String]) -> Promise<Void> {
-    return keychainManager.backup(recoveryWords: words)
+  func backup(recoveryWords words: [String], isBackedUp: Bool) -> Promise<Void> {
+    return keychainManager.backup(recoveryWords: words, isBackedUp: isBackedUp)
   }
 
   func walletWordsBackedUp() -> Bool {

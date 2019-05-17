@@ -98,7 +98,7 @@ class MockPersistenceManager: PersistenceManagerType {
     return nil
   }
 
-  func backup(recoveryWords words: [String]) -> Promise<Void> {
+  func backup(recoveryWords words: [String], isBackedUp: Bool) -> Promise<Void> {
     return .value(())
   }
 

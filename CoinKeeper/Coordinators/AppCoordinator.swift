@@ -682,8 +682,7 @@ class AppCoordinator: CoordinatorType {
         .recover { fatalError($0.localizedDescription) }
 
     case .settings:
-      return persistenceManager.backup(recoveryWords: words)
-        .then { self.persistenceManager.keychainManager.store(anyValue: NSNumber(value: isBackedUp), key: .walletWordsBackedUp) }
+      return persistenceManager.backup(recoveryWords: words, isBackedUp: isBackedUp)
         .recover { fatalError($0.localizedDescription) }
     }
   }

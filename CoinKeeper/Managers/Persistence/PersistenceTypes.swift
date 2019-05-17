@@ -135,7 +135,7 @@ protocol PersistenceManagerType: DeviceCountryCodeProvider {
   func pendingInvitations() -> [PendingInvitationData]
   func pendingInvitation(with id: String) -> PendingInvitationData?
 
-  func backup(recoveryWords words: [String]) -> Promise<Void>
+  func backup(recoveryWords words: [String], isBackedUp: Bool) -> Promise<Void>
   func walletWordsBackedUp() -> Bool
 
   @discardableResult
@@ -170,7 +170,7 @@ protocol PersistenceKeychainType: AnyObject {
   func store(deviceID: String) -> Promise<Void>
   func store(recoveryWords words: [String], isBackedUp: Bool) -> Promise<Void>
   func store(userPin pin: String) -> Promise<Void>
-  func backup(recoveryWords words: [String]) -> Promise<Void>
+  func backup(recoveryWords words: [String], isBackedUp: Bool) -> Promise<Void>
 
   func retrieveValue(for key: CKKeychain.Key) -> Any?
   func bool(for key: CKKeychain.Key) -> Bool?

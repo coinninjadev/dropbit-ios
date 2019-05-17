@@ -11,7 +11,7 @@ import PromiseKit
 @testable import DropBit
 
 class MockPersistenceKeychainManager: PersistenceKeychainType {
-  func backup(recoveryWords words: [String]) -> Promise<Void> {
+  func backup(recoveryWords words: [String], isBackedUp: Bool) -> Promise<Void> {
     return .value(())
   }
 
