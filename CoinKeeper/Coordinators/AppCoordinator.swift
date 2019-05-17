@@ -669,7 +669,7 @@ class AppCoordinator: CoordinatorType {
     performFunction()
   }
 
-  func saveSuccessfulWords(words: [String], isBackedUp: Bool = true, flow: RecoveryWordsFlow) -> Promise<Void> {
+  func saveSuccessfulWords(words: [String], isBackedUp: Bool, flow: RecoveryWordsFlow) -> Promise<Void> {
     trackWordsBackedUp(isBackedUp)
 
     //This wouldn't be called when we allow them to set up a wallet without backing up their words

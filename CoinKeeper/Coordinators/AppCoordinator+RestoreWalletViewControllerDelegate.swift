@@ -12,7 +12,7 @@ import PromiseKit
 
 extension AppCoordinator: RestoreWalletViewControllerDelegate {
   func viewControllerDidSubmitWords(words: [String]) {
-    self.saveSuccessfulWords(words: words, flow: .createWallet)
+    self.saveSuccessfulWords(words: words, isBackedUp: true, flow: .createWallet)
       .get {
         self.analyticsManager.track(event: .restoreWallet, with: nil)
         self.showSuccessFail(forWords: words)
