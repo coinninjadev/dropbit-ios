@@ -27,6 +27,11 @@ public struct UserIdentityBody: Codable {
     self.type = UserIdentityType.twitter.rawValue
     self.identity = twitterCredentials.twitterUserId
   }
+
+  init(twitterUser: TwitterUser) {
+    self.type = UserIdentityType.twitter.rawValue
+    self.identity = twitterUser.idStr
+  }
 }
 
 extension UserIdentityBody {
@@ -61,11 +66,11 @@ public struct RequestAddressBody: Encodable {
   let receiver: UserIdentityBody
   let requestId: String
 
-  init(amount: BitcoinUSDPair, receiverNumber: GlobalPhoneNumber, senderNumber: GlobalPhoneNumber, requestId: String) {
+  init(amount: BitcoinUSDPair, receiver: UserIdentityBody, sender: UserIdentityBody, requestId: String) {
     self.amount = RequestAddressAmount(usd: amount.usdAmount.asFractionalUnits(of: .USD),
                                        btc: amount.btcAmount.asFractionalUnits(of: .BTC))
-    self.sender = UserIdentityBody(phoneNumber: senderNumber)
-    self.receiver = UserIdentityBody(phoneNumber: receiverNumber)
+    self.sender = sender
+    self.receiver = receiver
     self.requestId = requestId
   }
 }
