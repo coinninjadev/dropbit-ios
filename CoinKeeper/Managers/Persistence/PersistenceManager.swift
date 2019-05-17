@@ -365,20 +365,29 @@ class PersistenceManager: PersistenceManagerType {
 
   func persistUnacknowledgedInvitation(in context: NSManagedObjectContext, with btcPair: BitcoinUSDPair,
                                        contact: ContactType, fee: Int, acknowledgementId: String) {
-    guard let inputs = ManagedPhoneNumberInputs(phoneNumber: contact.globalPhoneNumber) else { return }
-    context.performAndWait {
-      let phoneNumber = CKMPhoneNumber.findOrCreate(withInputs: inputs,
-                                                    phoneNumberHash: contact.phoneNumberHash, in: context)
-      let invitation = CKMInvitation(insertInto: context)
-      invitation.id = CKMInvitation.unacknowledgementPrefix + acknowledgementId
-      invitation.btcAmount = btcPair.btcAmount.asFractionalUnits(of: .BTC)
-      invitation.usdAmountAtTimeOfInvitation = btcPair.usdAmount.asFractionalUnits(of: .USD)
-      invitation.counterpartyName = contact.displayName
-      invitation.counterpartyPhoneNumber = phoneNumber
-      invitation.status = .notSent
-      invitation.setFlatFee(to: fee)
-      self.userDefaultsManager.persist(pendingInvitationData: invitation.pendingInvitationData)
+    let invitation = CKMInvitation(insertInto: context)
+    invitation.id = CKMInvitation.unacknowledgementPrefix + acknowledgementId
+    invitation.btcAmount = btcPair.btcAmount.asFractionalUnits(of: .BTC)
+    invitation.usdAmountAtTimeOfInvitation = btcPair.usdAmount.asFractionalUnits(of: .USD)
+    invitation.counterpartyName = contact.displayName
+    invitation.status = .notSent
+    invitation.setFlatFee(to: fee)
+    switch contact.identityType {
+    case .phone:
+      guard let phoneContact = contact as? PhoneContactType,
+        let inputs = ManagedPhoneNumberInputs(phoneNumber: phoneContact.globalPhoneNumber) else { return }
+      context.performAndWait {
+        let phoneNumber = CKMPhoneNumber.findOrCreate(withInputs: inputs,
+                                                      phoneNumberHash: phoneContact.phoneNumberHash, in: context)
+        invitation.counterpartyPhoneNumber = phoneNumber
+      }
+    case.twitter:
+      guard let twitterContact = contact as? TwitterContactType else { return }
+      let managedTwitterContact = CKMTwitterContact.findOrCreate(with: twitterContact, in: context)
+      invitation.counterpartyTwitterContact = managedTwitterContact
+      break
     }
+    self.userDefaultsManager.persist(pendingInvitationData: invitation.pendingInvitationData)
   }
 
   func pendingInvitations() -> [PendingInvitationData] {
