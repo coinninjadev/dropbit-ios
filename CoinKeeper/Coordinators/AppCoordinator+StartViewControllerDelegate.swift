@@ -38,8 +38,8 @@ extension AppCoordinator: StartViewControllerDelegate {
 
   /// temporary function for debugging
   func clearPin() {
-    persistenceManager.keychainManager.store(anyValue: nil, key: .userPin)
-    persistenceManager.keychainManager.store(anyValue: nil, key: .walletWords)
+    persistenceManager.keychainManager.storeSynchronously(anyValue: nil, key: .userPin)
+    persistenceManager.keychainManager.storeSynchronously(anyValue: nil, key: .walletWords)
     launchStateManager.unauthenticateUser()
   }
 

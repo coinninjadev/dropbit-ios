@@ -16,6 +16,7 @@ enum CKPersistenceError: Error, LocalizedError {
   case phoneNotVerified
   case unexpectedResult
   case failedToFetch(String)
+  case keychainWriteFailed(key: String)
 
   var errorDescription: String? {
     switch self {
@@ -26,6 +27,7 @@ enum CKPersistenceError: Error, LocalizedError {
     case .phoneNotVerified:       return "Phone not verified. Please verify your phone number to send a DropBit."
     case .unexpectedResult:       return "Fetch request returned unexpected result"
     case .failedToFetch(let key): return "Failed to fetch results: \(key)"
+    case .keychainWriteFailed(let key): return "Failed to store value in keychain for key: \(key)"
     }
   }
 }

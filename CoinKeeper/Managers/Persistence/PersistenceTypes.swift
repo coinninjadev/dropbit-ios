@@ -121,7 +121,7 @@ protocol PersistenceManagerType: DeviceCountryCodeProvider {
   func dustProtectionIsEnabled() -> Bool
   func enableDustProtection(_ shouldEnable: Bool)
 
-  func setLastLoginTime()
+  func setLastLoginTime() -> Promise<Void>
   func lastLoginTime() -> TimeInterval?
 
   /// Returns either the stored UUID or the one that has just been created and stored
@@ -135,7 +135,7 @@ protocol PersistenceManagerType: DeviceCountryCodeProvider {
   func pendingInvitations() -> [PendingInvitationData]
   func pendingInvitation(with id: String) -> PendingInvitationData?
 
-  func backup(recoveryWords words: [String])
+  func backup(recoveryWords words: [String], isBackedUp: Bool) -> Promise<Void>
   func walletWordsBackedUp() -> Bool
 
   @discardableResult
@@ -159,25 +159,22 @@ extension PersistenceManagerType {
 }
 
 protocol PersistenceKeychainType: AnyObject {
-  @discardableResult
-  func store(anyValue value: Any?, key: CKKeychain.Key) -> Bool
 
+  /// Generally you should write to the keychain asynchronously using the other functions,
+  /// which return a Promise so that the keychain is not accessed concurrently. Use this function judiciously.
   @discardableResult
-  func store(valueToHash value: String?, key: CKKeychain.Key) -> Bool
+  func storeSynchronously(anyValue value: Any?, key: CKKeychain.Key) -> Bool
 
-  @discardableResult
-  func store(deviceID: String) -> Bool
-
-  @discardableResult
-  func store(recoveryWords words: [String]) -> Bool
-
-  @discardableResult
-  func store(userPin pin: String) -> Bool
+  func store(anyValue value: Any?, key: CKKeychain.Key) -> Promise<Void>
+  func store(valueToHash value: String?, key: CKKeychain.Key) -> Promise<Void>
+  func store(deviceID: String) -> Promise<Void>
+  func store(recoveryWords words: [String], isBackedUp: Bool) -> Promise<Void>
+  func store(userPin pin: String) -> Promise<Void>
+  func backup(recoveryWords words: [String], isBackedUp: Bool) -> Promise<Void>
 
   func retrieveValue(for key: CKKeychain.Key) -> Any?
   func bool(for key: CKKeychain.Key) -> Bool?
 
-  func backup(recoveryWords words: [String])
   func walletWordsBackedUp() -> Bool
 
   func deleteAll()

@@ -23,12 +23,14 @@ extension AppCoordinator: VerifyRecoveryWordsViewControllerDelegate {
     navigationController.topViewController()?.present(alert, animated: true)
   }
 
-  func viewController(_ viewController: UIViewController, didSuccessfullyVerifyWords words: [String]) {
-    saveSuccessfulWords(words: words, didBackUp: true)
-    analyticsManager.track(property: MixpanelProperty(key: .hasWallet, value: true))
-    self.analyticsManager.track(property: MixpanelProperty(key: .wordsBackedUp, value: true))
-    badgeManager.publishBadgeUpdate()
-    viewController.dismiss(animated: true, completion: nil)
+  func viewController(_ viewController: UIViewController, didSuccessfullyVerifyWords words: [String], in flow: RecoveryWordsFlow) {
+    saveSuccessfulWords(words: words, isBackedUp: true, flow: flow)
+      .done(on: .main) {
+        self.analyticsManager.track(property: MixpanelProperty(key: .hasWallet, value: true))
+        self.analyticsManager.track(property: MixpanelProperty(key: .wordsBackedUp, value: true))
+        self.badgeManager.publishBadgeUpdate()
+        viewController.dismiss(animated: true, completion: nil)
+    }.cauterize()
   }
 
   func viewControllerFailedWordVerification(_ viewController: UIViewController) {

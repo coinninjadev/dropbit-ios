@@ -175,8 +175,8 @@ class PersistenceManager: PersistenceManagerType {
     keychainManager.deleteAll()
   }
 
-  func backup(recoveryWords words: [String]) {
-    keychainManager.backup(recoveryWords: words)
+  func backup(recoveryWords words: [String], isBackedUp: Bool) -> Promise<Void> {
+    return keychainManager.backup(recoveryWords: words, isBackedUp: isBackedUp)
   }
 
   func walletWordsBackedUp() -> Bool {
@@ -338,8 +338,8 @@ class PersistenceManager: PersistenceManagerType {
     userDefaultsManager.deleteDeviceEndpointIds()
   }
 
-  func setLastLoginTime() {
-    _ = keychainManager.store(anyValue: Date().timeIntervalSince1970, key: .lastTimeEnteredBackground)
+  func setLastLoginTime() -> Promise<Void> {
+    return self.keychainManager.store(anyValue: Date().timeIntervalSince1970, key: .lastTimeEnteredBackground)
   }
 
   func lastLoginTime() -> TimeInterval? {

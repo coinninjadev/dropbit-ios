@@ -32,7 +32,7 @@ class AppDelegateTests: XCTestCase {
 
   // MARK: resigning active
   func testResigningActiveTellsCoordinatorAppResigned() {
-    self.sut.applicationDidEnterBackground(UIApplication.shared)
+    self.sut.applicationWillResignActive(UIApplication.shared)
     XCTAssertTrue(mockCoordinator.wasAskedToResignActiveState)
   }
 }
