@@ -8,6 +8,7 @@
 
 import Foundation
 import os.log
+import PromiseKit
 import UIKit
 import MMDrawerController
 
@@ -59,12 +60,14 @@ extension AppCoordinator {
     }
   }
 
-  func startNewWalletFlow() {
+  func startNewWalletFlow(flow: SetupFlow) {
     func createWalletAndContinue() {
       let words = WalletManager.createMnemonicWords()
       self.saveSuccessfulWords(words: words, didBackUp: false)
-      analyticsManager.track(event: .createWallet, with: nil)
-      self.continueSetupFlow()
+        .done(on: .main) { _ in
+          self.analyticsManager.track(event: .createWallet, with: nil)
+          self.continueSetupFlow()
+      }.cauterize()
     }
 
     guard !launchStateManager.shouldRequireAuthentication else {
@@ -124,15 +127,9 @@ extension AppCoordinator {
 
   /// This calls store(recoveryWords:) which only holds them in memory
   /// until a PIN is entered, then saves both in the keychain at the same time.
-  func saveSuccessfulWords(words: [String], didBackUp: Bool) {
+  func saveSuccessfulWords(words: [String], didBackUp: Bool) -> Promise<Void> {
     trackIfUserHasWordsBackedUp()
-    persistenceManager.keychainManager.store(recoveryWords: words)
-
-    //This wouldn't be called when we allow them to set up a wallet without backing up their words
-    //Important to store boolean as NSNumber for the keychain
-    guard persistenceManager.keychainManager.store(anyValue: NSNumber(value: didBackUp), key: .walletWordsBackedUp) else {
-      fatalError("Failed to write status to keychain for walletWordsBackedUp")
-    }
+    return persistenceManager.keychainManager.store(recoveryWords: words, isBackedUp: didBackUp)
   }
 
   func checkForWordsBackedUp() {

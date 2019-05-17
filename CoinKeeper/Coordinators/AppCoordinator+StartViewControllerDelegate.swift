@@ -32,7 +32,7 @@ extension AppCoordinator: StartViewControllerDelegate {
       continueSetupFlow()
 
     case .newWallet, .claimInvite:
-      startNewWalletFlow()
+      startNewWalletFlow(flow: flow)
     }
   }
 
