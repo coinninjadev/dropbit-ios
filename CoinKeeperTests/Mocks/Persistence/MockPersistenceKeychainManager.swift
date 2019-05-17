@@ -59,7 +59,7 @@ class MockPersistenceKeychainManager: PersistenceKeychainType {
   }
 
   var wordsExist = false
-  func store(recoveryWords words: [String]) -> Promise<Void> {
+  func store(recoveryWords words: [String], isBackedUp: Bool) -> Promise<Void> {
     let key = CKKeychain.Key.walletWords.rawValue
     self.values[key] = words
     wordsExist = !words.isEmpty

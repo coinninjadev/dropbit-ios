@@ -677,9 +677,8 @@ class AppCoordinator: CoordinatorType {
 
     switch flow {
     case .createWallet:
-      return persistenceManager.keychainManager.store(recoveryWords: words)
+      return persistenceManager.keychainManager.store(recoveryWords: words, isBackedUp: isBackedUp)
         .get { self.walletManager = WalletManager(words: words, persistenceManager: self.persistenceManager) }
-        .then { self.persistenceManager.keychainManager.store(anyValue: NSNumber(value: isBackedUp), key: .walletWordsBackedUp) }
         .recover { fatalError($0.localizedDescription) }
 
     case .settings:

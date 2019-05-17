@@ -77,16 +77,22 @@ class CKKeychain: PersistenceKeychainType {
   }
 
   @discardableResult
-  func store(recoveryWords words: [String]) -> Promise<Void> {
+  func store(recoveryWords words: [String], isBackedUp: Bool) -> Promise<Void> {
     if let pin = tempPinHashStorage { // store pin and wallet together
       return storeOnSerialBackgroundQueue(value: pin, key: CKKeychain.Key.userPin.rawValue)
         .get { self.tempPinHashStorage = nil }
         .then { self.storeOnSerialBackgroundQueue(value: words, key: CKKeychain.Key.walletWords.rawValue) }
+        .then { self.storeWalletWordsBackedUp(isBackedUp) }
 
     } else {
       tempWordStorage = words
-      return Promise.value(())
+      return self.storeWalletWordsBackedUp(isBackedUp)
     }
+  }
+
+  private func storeWalletWordsBackedUp(_ isBackedUp: Bool) -> Promise<Void> {
+    return self.storeOnSerialBackgroundQueue(value: NSNumber(value: isBackedUp),
+                                             key: CKKeychain.Key.walletWordsBackedUp.rawValue)
   }
 
   func walletWordsBackedUp() -> Bool {

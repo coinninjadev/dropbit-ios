@@ -183,7 +183,7 @@ class AppCoordinatorTests: XCTestCase {
       let mockPersistenceManager = MockPersistenceManager()
       mockPersistenceManager.walletIdValue = ""
       mockPersistenceManager.userIdValue = ""
-      mockPersistenceManager.keychainManager.store(recoveryWords: [""])
+      mockPersistenceManager.keychainManager.store(recoveryWords: [""], isBackedUp: true)
 
       let mockLaunchStateManager = MockLaunchStateManager(persistenceManager: mockPersistenceManager)
       mockLaunchStateManager.userAuthenticatedValue = true
@@ -211,7 +211,7 @@ class AppCoordinatorTests: XCTestCase {
         mockPersistenceManager.userIdValue = nil
       }
 
-      mockPersistenceManager.keychainManager.store(recoveryWords: [""])
+      mockPersistenceManager.keychainManager.store(recoveryWords: [""], isBackedUp: true)
       mockPersistenceManager.userVerificationStatusValue = .verified
 
       let mockLaunchStateManager = MockLaunchStateManager(persistenceManager: mockPersistenceManager)
