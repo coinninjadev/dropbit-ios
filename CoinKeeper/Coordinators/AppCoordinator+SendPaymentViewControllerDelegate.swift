@@ -73,7 +73,7 @@ extension AppCoordinator: SendPaymentViewControllerDelegate {
             completion()
           } else {
             self.showModalForInviteExplanation(with: viewController,
-                                               phoneNumber: contact.displayNumber,
+                                               phoneNumber: contact.displayIdentity,
                                                completion: completion)
           }
         }

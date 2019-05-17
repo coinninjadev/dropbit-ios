@@ -309,7 +309,7 @@ extension SendPaymentViewController {
     phoneNumberEntryView.textField.text = ""
 
     self.recipientDisplayNameLabel.text = viewModel.contact?.displayName
-    self.recipientDisplayNumberLabel.text = viewModel.contact?.displayNumber
+    self.recipientDisplayNumberLabel.text = viewModel.contact?.displayIdentity
 
     let displayStyle = viewModel.displayStyle(for: viewModel.paymentRecipient)
     switch displayStyle {
@@ -325,7 +325,7 @@ extension SendPaymentViewController {
       recipientDisplayNameLabel.alpha = 1.0
       recipientDisplayNumberLabel.alpha = 1.0
       recipientDisplayNameLabel.text = viewModel.displayRecipientName()
-      recipientDisplayNumberLabel.text = viewModel.displayRecipientNumber()
+      recipientDisplayNumberLabel.text = viewModel.displayRecipientIdentity()
     }
 
     updateMemoContainer()

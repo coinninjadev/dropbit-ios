@@ -111,8 +111,16 @@ class ConfirmPaymentViewController: PresentableViewController, StoryboardInitial
   }
 
   private func updateRecipient(with viewModel: ConfirmPaymentViewModelType) {
-    let formatter = CKPhoneNumberFormatter(kit: PhoneNumberKit(), format: .international)
-    let formattedNumber = viewModel.contact.flatMap { try? formatter.string(from: $0.globalPhoneNumber) }
+    guard let contact = viewModel.contact else { return }
+    var displayIdentity = ""
+    switch contact.identityType {
+    case .phone:
+      guard let phoneContact = contact as? PhoneContactType else { return }
+      let formatter = CKPhoneNumberFormatter(kit: PhoneNumberKit(), format: .international)
+      displayIdentity = (try? formatter.string(from: phoneContact.globalPhoneNumber)) ?? ""
+    case .twitter:
+      displayIdentity = contact.displayIdentity
+    }
 
     // Hide address labels by default, unhide as needed
     // Contact label is always shown, set text to nil to hide
@@ -128,17 +136,17 @@ class ConfirmPaymentViewController: PresentableViewController, StoryboardInitial
     if let contact = viewModel.contact {
       switch contact.kind {
       case .generic:
-        contactLabel.text = formattedNumber
+        contactLabel.text = displayIdentity
         secondaryAddressLabel.isHidden = false
       case .invite:
         if contact.displayName == nil {
-          contactLabel.text = formattedNumber
+          contactLabel.text = displayIdentity
         } else {
-          primaryAddressLabel.text = formattedNumber
+          primaryAddressLabel.text = displayIdentity
           primaryAddressLabel.isHidden = false
         }
       case .registeredUser:
-        primaryAddressLabel.text = formattedNumber
+        primaryAddressLabel.text = displayIdentity
         primaryAddressLabel.isHidden = false // phone number
         secondaryAddressLabel.isHidden = false // address
       }
