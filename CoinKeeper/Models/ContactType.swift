@@ -15,7 +15,6 @@ enum ContactKind {
 }
 
 protocol ContactType {
-
   var kind: ContactKind { get set }
   var displayName: String? { get }
   var displayIdentity: String { get }
@@ -96,4 +95,33 @@ struct GenericContact: PhoneContactType {
     self.globalPhoneNumber = phoneNumber
   }
 
+}
+
+struct TwitterContact: TwitterContactType {
+  var kind: ContactKind = .invite
+  var twitterUser: TwitterUser
+
+  var userIdentityBody: UserIdentityBody {
+    return UserIdentityBody(twitterUser: twitterUser)
+  }
+
+  var displayHandle: String {
+    return twitterUser.formattedScreenName
+  }
+
+  var identityHash: String {
+    return twitterUser.idStr
+  }
+
+  var displayName: String? {
+    return twitterUser.name
+  }
+
+  var displayIdentity: String {
+    return displayHandle
+  }
+
+  init(twitterUser: TwitterUser) {
+    self.twitterUser = twitterUser
+  }
 }
