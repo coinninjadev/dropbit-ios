@@ -228,11 +228,7 @@ extension AppCoordinator: SendPaymentViewControllerDelegate {
     ) -> OutgoingTransactionData {
     guard let wmgr = self.walletManager else { return dto }
     var copy = dto
-    contact.map { innerContact in
-      copy.contactName = innerContact.displayName ?? ""
-      copy.contactPhoneNumber = innerContact.globalPhoneNumber
-      copy.contactPhoneNumberHash = innerContact.phoneNumberHash
-    }
+    contact.map { copy.contact = $0 }
     address.map { copy.destinationAddress = $0 }
     copy.sharedPayloadDTO = sharedPayload
 

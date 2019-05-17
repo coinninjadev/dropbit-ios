@@ -10,9 +10,7 @@ import Foundation
 
 public struct OutgoingTransactionData {
   var txid: String
-  var contactName: String
-  var contactPhoneNumber: GlobalPhoneNumber?
-  var contactPhoneNumberHash: String
+  var contact: ContactType?
   var destinationAddress: String
   var amount: Int
   var feeAmount: Int
@@ -21,12 +19,15 @@ public struct OutgoingTransactionData {
   var sharedPayloadDTO: SharedPayloadDTO?
 
   static func emptyInstance() -> OutgoingTransactionData {
-    return OutgoingTransactionData(txid: "", contactName: "",
-                                   contactPhoneNumber: nil,
-                                   contactPhoneNumberHash: "",
-                                   destinationAddress: "",
-                                   amount: 0, feeAmount: 0, sentToSelf: false,
-                                   requiredFeeRate: nil, sharedPayloadDTO: SharedPayloadDTO.emptyInstance())
+    return OutgoingTransactionData(
+      txid: "",
+      contact: nil,
+      destinationAddress: "",
+      amount: 0,
+      feeAmount: 0,
+      sentToSelf: false,
+      requiredFeeRate: 0,
+      sharedPayloadDTO: SharedPayloadDTO.emptyInstance())
   }
 
   func copy(withTxid txid: String) -> OutgoingTransactionData {
@@ -34,5 +35,18 @@ public struct OutgoingTransactionData {
     copy.txid = txid
     return copy
   }
+}
 
+extension OutgoingTransactionData {
+  var displayName: String {
+    return contact?.displayName ?? ""
+  }
+
+  var displayIdentity: String {
+    return contact?.displayIdentity ?? ""
+  }
+
+  var phoneNumberHash: String? {
+    return (contact as? PhoneContactType)?.phoneNumberHash
+  }
 }
