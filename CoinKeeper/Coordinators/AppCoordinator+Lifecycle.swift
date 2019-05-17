@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import os.log
 
 extension AppCoordinator {
 
@@ -55,12 +56,22 @@ extension AppCoordinator {
   }
 
   /// Handle app leaving active state, either becoming inactive, entering background, or terminating.
-  func appResignedActiveState() {
-    persistenceManager.setLastLoginTime()
+  func appWillResignActiveState() {
+    let logger = OSLog(subsystem: "com.coinninja.coinkeeper.appcoordinator", category: "willResignActive")
+    let backgroundTaskId = UIApplication.shared.beginBackgroundTask(expirationHandler: nil)
     connectionManager.stop()
     bitcoinURLToOpen = nil
-    //    UIApplication.shared.applicationIconBadgeNumber = persistenceManager.pendingInvitations().count
+
+    persistenceManager.setLastLoginTime()
+      .catch { error in
+        os_log("Failed to set lastLoginTime: %@", log: logger, type: .error, error.localizedDescription)
+      }
+      .finally {
+        UIApplication.shared.endBackgroundTask(backgroundTaskId)
+    }
+    //UIApplication.shared.applicationIconBadgeNumber = persistenceManager.pendingInvitations().count
   }
+
 
   func handlePendingBitcoinURL() {
     guard let bitcoinURL = bitcoinURLToOpen, launchStateManager.userAuthenticated else { return }
