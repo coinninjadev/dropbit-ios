@@ -18,11 +18,8 @@ struct TwitterUser: Decodable {
   let idStr: String
   let name: String
   let screenName: String
-  let location: String?
   let description: String?
   let url: String?
-  let followersCount: Int?
-  let friendsCount: Int?
   let profileImageUrlHttps: String?
 
   var profileImageURL: URL? {
@@ -30,4 +27,10 @@ struct TwitterUser: Decodable {
   }
 
   var profileImageData: Data?
+}
+
+extension TwitterUser {
+  var formattedScreenName: String {
+    return "@" + screenName
+  }
 }

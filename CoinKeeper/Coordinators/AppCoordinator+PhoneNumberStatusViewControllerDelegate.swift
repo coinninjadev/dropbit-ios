@@ -161,9 +161,9 @@ extension AppCoordinator: PhoneNumberStatusViewControllerDelegate {
         let salt = try? hashingManager.salt() else { return Promise(error: DeviceVerificationError.invalidPhoneNumber) }
       identityToRemove = hashingManager.hash(phoneNumber: phoneNumber, salt: salt, parsedNumber: nil, kit: self.phoneNumberKit)
     case .twitter:
-      guard allVerifiedIdentities.contains(.phone),
+      guard allVerifiedIdentities.contains(.twitter),
         let creds = persistenceManager.keychainManager.oauthCredentials()
-        else { return Promise(error: DeviceVerificationError.invalidPhoneNumber) }
+        else { return Promise(error: DeviceVerificationError.missingTwitterIdentity) }
       identityToRemove = creds.twitterUserId
     }
 

@@ -64,7 +64,7 @@ class DeviceVerificationCoordinator: ChildCoordinatorType {
       let context = delegate.persistenceManager.createBackgroundContext()
       delegate.networkManager.authorizedTwitterCredentials()
         .then { self.addTwitterUserIdentity(credentials: $0, delegate: delegate, in: context) }
-        .then { body -> Promise<UserResponse> in delegate.networkManager.verifyUser(body: body)}
+        .then { body, creds -> Promise<UserResponse> in delegate.networkManager.verifyUser(body: body, credentials: creds) }
         .then { (response: UserResponse) -> Promise<Void> in
           os_log("user response: %@", log: self.logger, type: .debug, response.id)
           return self.checkAndPersistVerificationStatus(from: response, crDelegate: delegate, in: context)
@@ -86,12 +86,11 @@ class DeviceVerificationCoordinator: ChildCoordinatorType {
   func addTwitterUserIdentity(
     credentials: TwitterOAuthStorage,
     delegate: DeviceVerificationCoordinatorDelegate,
-    in context: NSManagedObjectContext) -> Promise<VerifyUserBody> {
+    in context: NSManagedObjectContext) -> Promise<(VerifyUserBody, TwitterOAuthStorage)> {
 
     let userIdentityBody = UserIdentityBody(twitterCredentials: credentials)
     return self.registerAndPersistUserIfNecessary(with: userIdentityBody, delegate: delegate, in: context)
-      .then { delegate.networkManager.addIdentity(body: $0) }
-      .then { _ in return Promise.value(VerifyUserBody(twitterCredentials: credentials)) }
+      .then { _ in return Promise.value((VerifyUserBody(twitterCredentials: credentials), credentials)) }
   }
 }
 
@@ -189,9 +188,6 @@ extension DeviceVerificationCoordinator: DeviceVerificationViewControllerDelegat
                                                      delegate: DeviceVerificationCoordinatorDelegate,
                                                      in context: NSManagedObjectContext) -> Promise<UserIdentityBody> {
 
-    // bail if user exists already
-    guard delegate.persistenceManager.userId(in: context) == nil else { return Promise.value(body) }
-
     var maybeWalletId: String?
     context.performAndWait {
       maybeWalletId = delegate.persistenceManager.walletId(in: context)
@@ -200,12 +196,28 @@ extension DeviceVerificationCoordinator: DeviceVerificationViewControllerDelegat
       return Promise { $0.reject(CKPersistenceError.missingValue(key: "wallet ID")) }
     }
 
-    return delegate.networkManager.createUser(walletId: walletId, body: body)
-      .recover { (error: Error) -> Promise<UserResponse> in
+    return self.createUserOrIdentity(walletId: walletId, body: body, delegate: delegate, in: context)
+      .recover { (error: Error) -> Promise<UserIdentifiable> in
         return self.handleCreateUserError(error, walletId: walletId, delegate: delegate, in: context)
+          .map { $0 as UserIdentifiable }
       }
-      .get(in: context) { delegate.persistenceManager.persistUserId($0.id, in: context) }
       .then { _ in Promise.value(body) }
+  }
+
+  private func createUserOrIdentity(
+    walletId: String,
+    body: UserIdentityBody,
+    delegate: DeviceVerificationCoordinatorDelegate,
+    in context: NSManagedObjectContext
+    ) -> Promise<UserIdentifiable> {
+    let verifiedIdentities = delegate.persistenceManager.verifiedIdentities()
+    if verifiedIdentities.count == 1 {
+      return delegate.networkManager.addIdentity(body: body).map { $0 as UserIdentifiable }
+    } else {
+      return delegate.networkManager.createUser(walletId: walletId, body: body)
+        .get(in: context) { delegate.persistenceManager.persistUserId($0.id, in: context) }
+        .map { $0 as UserIdentifiable }
+    }
   }
 
   /// If createUser results in statusCode 200, that function rejects with .userAlreadyExists and

@@ -17,10 +17,7 @@ extension TwitterUser: CustomDebugStringConvertible {
            id: \(idStr)
            name: \(name)
            screenName: \(screenName)
-           location: \(location ?? "not provided")
            url: \(url ?? "not provided")
-           followersCount: \(followersCount ?? 0)
-           friendsCount: \(friendsCount ?? 0)
            ***
            """
   }
@@ -29,6 +26,9 @@ extension TwitterUser: CustomDebugStringConvertible {
 protocol TwitterRequestable: AnyObject {
   func getCurrentTwitterUser() -> Promise<TwitterUser>
   func authorizedTwitterCredentials() -> Promise<TwitterOAuthStorage>
+  func findTwitterUsers(using term: String) -> Promise<[TwitterUser]>
+  func defaultFollowingList() -> Promise<[TwitterUser]>
+  func selected(user: TwitterUser) -> Promise<Void>
 }
 
 extension TwitterOAuth {
@@ -44,6 +44,91 @@ extension NetworkManager: TwitterRequestable {
 
   func authorizedTwitterCredentials() -> Promise<TwitterOAuthStorage> {
     return authorize()
+  }
+
+  func findTwitterUsers(using term: String) -> Promise<[TwitterUser]> {
+    return authorize()
+      .then { _ in self.performTwitterSearch(using: term) }
+      .then { self.usersWithImages(for: $0) }
+  }
+
+  func defaultFollowingList() -> Promise<[TwitterUser]> {
+    return authorize()
+      .then { _ in
+        self.fetchDefaultFriends()
+      }
+      .then {
+        self.usersWithImages(for: $0)
+    }
+  }
+
+  func selected(user: TwitterUser) -> Promise<Void> {
+    return Promise { _ in }
+  }
+
+  // MARK: private
+  private func performTwitterSearch(using term: String) -> Promise<[TwitterUser]> {
+    return Promise { seal in
+      twitterOAuthManager.client.get(
+        TwitterEndpoints.search.urlString,
+        parameters: ["q": term, "count": 5],
+        headers: nil,
+        success: { (response: OAuthSwiftResponse) in
+          do {
+            let users = try TwitterUser.decoder.decode([TwitterUser].self, from: response.data)
+            seal.fulfill(users)
+          } catch {
+            seal.reject(error)
+          }
+      },
+        failure: { (error: OAuthSwiftError) in
+          seal.reject(error)
+      })
+    }
+  }
+
+  struct TwitterFriends: Decodable {
+    let users: [TwitterUser]
+  }
+  private func fetchDefaultFriends() -> Promise<[TwitterUser]> {
+    return Promise { seal in
+      twitterOAuthManager.client.get(
+        TwitterEndpoints.friends.urlString,
+        parameters: ["skip_status": true, "count": 20, "include_user_entities": false],
+        headers: nil,
+        success: { (response: OAuthSwiftResponse) in
+          do {
+            let users = try TwitterUser.decoder.decode(TwitterFriends.self, from: response.data).users
+            seal.fulfill(users)
+          } catch {
+            seal.reject(error)
+          }
+      },
+        failure: { (error: OAuthSwiftError) in
+          seal.reject(error)
+      })
+    }
+  }
+
+  private func usersWithImages(for users: [TwitterUser]) -> Promise<[TwitterUser]> {
+    let promises = users.map { self.userWithImage(for: $0) }
+    return when(fulfilled: promises)
+  }
+
+  private func userWithImage(for user: TwitterUser) -> Promise<TwitterUser> {
+    guard let url = user.profileImageURL else { return Promise.value(user) }
+    return Promise { seal in
+      DispatchQueue(label: "profile image").async {
+        do {
+          let data = try Data(contentsOf: url)
+          var copyUser = user
+          copyUser.profileImageData = data
+          seal.fulfill(copyUser)
+        } catch {
+          seal.fulfill(user)
+        }
+      }
+    }
   }
 
   private func authorize() -> Promise<TwitterOAuthStorage> {
@@ -67,8 +152,6 @@ extension NetworkManager: TwitterRequestable {
               twitterOAuthTokenSecret: credential.oauthTokenSecret,
               twitterUserId: userId,
               twitterScreenName: screenName)
-
-            self.persistenceManager.keychainManager.store(oauthCredentials: credentials)
 
             seal.fulfill(credentials)
           },

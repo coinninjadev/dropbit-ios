@@ -71,7 +71,7 @@
                                     <constraint firstItem="Skn-aU-dA4" firstAttribute="width" secondItem="BGx-58-B1R" secondAttribute="width" id="pld-1O-aE9"/>
                                 </constraints>
                             </view>
-                            <searchBar contentMode="redraw" searchBarStyle="minimal" placeholder="Search" translatesAutoresizingMaskIntoConstraints="NO" id="Uou-h4-fH0">
+                            <searchBar contentMode="redraw" searchBarStyle="minimal" placeholder="Search" translatesAutoresizingMaskIntoConstraints="NO" id="Uou-h4-fH0" customClass="CNContactSearchBar" customModule="DropBit" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="132" width="375" height="56"/>
                                 <textInputTraits key="textInputTraits"/>
                             </searchBar>

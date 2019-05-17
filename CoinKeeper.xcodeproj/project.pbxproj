@@ -167,6 +167,12 @@
 		3B5720782232CD1C0048A8CF /* DatabaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5720772232CD1C0048A8CF /* DatabaseTests.swift */; };
 		3B57207B223300160048A8CF /* SQLiteCoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B57207A223300160048A8CF /* SQLiteCoreDataStack.swift */; };
 		3B57207D2233004E0048A8CF /* BaseCoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B57207C2233004E0048A8CF /* BaseCoreDataStack.swift */; };
+		3B5A889A228AEFE10082BBA4 /* TwitterSearchDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5A8899228AEFE10082BBA4 /* TwitterSearchDataSource.swift */; };
+		3B5A889D228AF3D90082BBA4 /* TwitterUserTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5A889B228AF3D90082BBA4 /* TwitterUserTableViewCell.swift */; };
+		3B5A889E228AF3D90082BBA4 /* TwitterUserTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3B5A889C228AF3D90082BBA4 /* TwitterUserTableViewCell.xib */; };
+		3B5A88A0228AFC850082BBA4 /* CNContactSearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5A889F228AFC850082BBA4 /* CNContactSearchBar.swift */; };
+		3B5A88A2228B08FE0082BBA4 /* ContactCellPrimaryLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5A88A1228B08FE0082BBA4 /* ContactCellPrimaryLabel.swift */; };
+		3B5A88A4228B09260082BBA4 /* ContactCellSecondaryLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5A88A3228B09260082BBA4 /* ContactCellSecondaryLabel.swift */; };
 		3B5CD00C20DACD7A003FF5AD /* ServerAddressCoreDataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5CD00A20DACD79003FF5AD /* ServerAddressCoreDataTests.swift */; };
 		3B5CD00D20DACD7A003FF5AD /* AddressCoreDataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5CD00B20DACD7A003FF5AD /* AddressCoreDataTests.swift */; };
 		3B61B6E220DD282E0021D69E /* SendPaymentViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B61B6E120DD282E0021D69E /* SendPaymentViewControllerDelegate.swift */; };
@@ -975,6 +981,12 @@
 		3B5720772232CD1C0048A8CF /* DatabaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseTests.swift; sourceTree = "<group>"; };
 		3B57207A223300160048A8CF /* SQLiteCoreDataStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SQLiteCoreDataStack.swift; sourceTree = "<group>"; };
 		3B57207C2233004E0048A8CF /* BaseCoreDataStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseCoreDataStack.swift; sourceTree = "<group>"; };
+		3B5A8899228AEFE10082BBA4 /* TwitterSearchDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwitterSearchDataSource.swift; sourceTree = "<group>"; };
+		3B5A889B228AF3D90082BBA4 /* TwitterUserTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwitterUserTableViewCell.swift; sourceTree = "<group>"; };
+		3B5A889C228AF3D90082BBA4 /* TwitterUserTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TwitterUserTableViewCell.xib; sourceTree = "<group>"; };
+		3B5A889F228AFC850082BBA4 /* CNContactSearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CNContactSearchBar.swift; sourceTree = "<group>"; };
+		3B5A88A1228B08FE0082BBA4 /* ContactCellPrimaryLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactCellPrimaryLabel.swift; sourceTree = "<group>"; };
+		3B5A88A3228B09260082BBA4 /* ContactCellSecondaryLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactCellSecondaryLabel.swift; sourceTree = "<group>"; };
 		3B5CD00A20DACD79003FF5AD /* ServerAddressCoreDataTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServerAddressCoreDataTests.swift; sourceTree = "<group>"; };
 		3B5CD00B20DACD7A003FF5AD /* AddressCoreDataTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddressCoreDataTests.swift; sourceTree = "<group>"; };
 		3B61B6E120DD282E0021D69E /* SendPaymentViewControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendPaymentViewControllerDelegate.swift; sourceTree = "<group>"; };
@@ -1923,6 +1935,7 @@
 				B597AF6E225682F600660B0E /* MessagerDelegate.swift */,
 				B5B0DC7A221349C70010AB2A /* CountryCodePickerDataSource.swift */,
 				3B6FDAE02052CE5C0091916A /* VerifyRecoveryWordsCollectionViewDDS.swift */,
+				3B5A8899228AEFE10082BBA4 /* TwitterSearchDataSource.swift */,
 			);
 			path = "Delegates and DataSources";
 			sourceTree = "<group>";
@@ -1963,6 +1976,8 @@
 				3B3779EE219C6B2800F79683 /* BackupWordsReminderDrawerCell.xib */,
 				3BEF229C2260DC78001F6D25 /* BuySpendCardCollectionViewCell.swift */,
 				3BEF229D2260DC78001F6D25 /* BuySpendCardCollectionViewCell.xib */,
+				3B5A889B228AF3D90082BBA4 /* TwitterUserTableViewCell.swift */,
+				3B5A889C228AF3D90082BBA4 /* TwitterUserTableViewCell.xib */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -2088,6 +2103,7 @@
 				3B47037E2253B68700977784 /* SendReceiveActionView.xib */,
 				3B547A6D2280A6F0007B0366 /* VerifiedStatusView.swift */,
 				3B547A6F2280A6FD007B0366 /* VerifiedStatusView.xib */,
+				3B5A889F228AFC850082BBA4 /* CNContactSearchBar.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -2806,6 +2822,8 @@
 				B54A4212207FF2E8005B40A9 /* TransactionDetailPrimaryAmountLabel.swift */,
 				B54A4214207FF310005B40A9 /* TransactionDetailSecondaryAmountLabel.swift */,
 				B530DFBC2108CF8400A0B1A8 /* TransactionDetailWarningLabel.swift */,
+				3B5A88A1228B08FE0082BBA4 /* ContactCellPrimaryLabel.swift */,
+				3B5A88A3228B09260082BBA4 /* ContactCellSecondaryLabel.swift */,
 			);
 			path = Labels;
 			sourceTree = "<group>";
@@ -3165,6 +3183,7 @@
 				3B5052B12045FAD7000C739F /* CreateRecoveryWordsViewController.storyboard in Resources */,
 				3B47037F2253B68700977784 /* SendReceiveActionView.xib in Resources */,
 				A2A530BC20936A5B00B6F4DE /* ConfirmPaymentViewController.storyboard in Resources */,
+				3B5A889E228AF3D90082BBA4 /* TwitterUserTableViewCell.xib in Resources */,
 				3B547A702280A6FD007B0366 /* VerifiedStatusView.xib in Resources */,
 				308F6F03217F91A50094D6CB /* ServerAddressView.xib in Resources */,
 				3B4B39F0203773C5007B7CC8 /* PlaceholderViewController.storyboard in Resources */,
@@ -3728,6 +3747,7 @@
 				3BD7B73120D66F12005057A7 /* HorizontallyPaginatedCollectionViewLayout.swift in Sources */,
 				3BDFADFC2267AEFF0077DEF2 /* BlockstreamTarget.swift in Sources */,
 				B5221D5322441CC30081C868 /* MigrateContactCacheV1toV2.swift in Sources */,
+				3B5A88A0228AFC850082BBA4 /* CNContactSearchBar.swift in Sources */,
 				B56E15972167DB26003B69D4 /* NetworkManager+WalletRequestable.swift in Sources */,
 				B5A42A98217A31D800EB32CB /* UserNotifiableError.swift in Sources */,
 				A29CE0C72098F84300761B91 /* SuccessFailViewController.swift in Sources */,
@@ -3851,7 +3871,9 @@
 				3B23232E2248FEBC00514201 /* MigrateDatabaseV4Grooming.swift in Sources */,
 				B51AE4A7209398FE008380CC /* CKMPhoneNumber+CoreDataProperties.swift in Sources */,
 				300CD8F121FA668400BFF560 /* NSAttributedString+Helpers.swift in Sources */,
+				3B5A889A228AEFE10082BBA4 /* TwitterSearchDataSource.swift in Sources */,
 				B51F823C207BB00D00692F5B /* BalanceSecondaryAmountLabel.swift in Sources */,
+				3B5A889D228AF3D90082BBA4 /* TwitterUserTableViewCell.swift in Sources */,
 				B56B637A2200CDF100CCC153 /* CKMTransactionSharedPayload+CoreDataClass.swift in Sources */,
 				A2A530C42093A72000B6F4DE /* AppCoordinator+ConfirmPaymentViewControllerDelegate.swift in Sources */,
 				B56E15A52167EAAD003B69D4 /* NetworkManager+MessagesRequestable.swift in Sources */,
@@ -3892,9 +3914,11 @@
 				B5FE9B67219DD96200801D3C /* MerchantPaymentRequestResponse.swift in Sources */,
 				3BEB594620D15AF9005EDA9E /* AddressTransactionSummaryResponse.swift in Sources */,
 				3B2EBF71223010DC003C0D0E /* ManagedContactComponents.swift in Sources */,
+				3B5A88A2228B08FE0082BBA4 /* ContactCellPrimaryLabel.swift in Sources */,
 				B56E158D2167C176003B69D4 /* NetworkManager+AddressRequestable.swift in Sources */,
 				B5B53C9C2107CAA5006C7B67 /* TransactionDetailsInfoContainer.swift in Sources */,
 				A245C6D020D9537400D99983 /* RequestAddressBody.swift in Sources */,
+				3B5A88A4228B09260082BBA4 /* ContactCellSecondaryLabel.swift in Sources */,
 				3BA9F611208F6EDB0047C213 /* AppCoordinator+BalanceContainerDelegate.swift in Sources */,
 				B5A98AEB224176C300DEF96F /* CKUserDefaults.swift in Sources */,
 				B5054149207D00270059C8F9 /* CKMAddress+CoreDataProperties.swift in Sources */,
