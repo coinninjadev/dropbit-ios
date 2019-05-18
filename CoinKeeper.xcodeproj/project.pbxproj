@@ -121,6 +121,7 @@
 		3B3F11012056D7AB003F86EF /* MockVerifyRecoveryWordsResultDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B3F11002056D7AB003F86EF /* MockVerifyRecoveryWordsResultDelegate.swift */; };
 		3B3F1103205700A6003F86EF /* OnboardingErrorLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B3F1102205700A6003F86EF /* OnboardingErrorLabel.swift */; };
 		3B41AE6C210A6C9700155AAC /* LaunchType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B41AE6B210A6C9700155AAC /* LaunchType.swift */; };
+		3B42ACFA229023AD00C2E30D /* OutgoingTransactionDropBitType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B42ACF9229023AD00C2E30D /* OutgoingTransactionDropBitType.swift */; };
 		3B43B4FE220B19EC008966CA /* AppCoordinator+NoConnectionViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B43B4FD220B19EC008966CA /* AppCoordinator+NoConnectionViewControllerTests.swift */; };
 		3B43C11E20D01FE80001378D /* AppCoordinator+StartVCDelegateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B43C11D20D01FE80001378D /* AppCoordinator+StartVCDelegateTests.swift */; };
 		3B43C12220D03B190001378D /* CheckInResponseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B43C12120D03B190001378D /* CheckInResponseTests.swift */; };
@@ -937,6 +938,7 @@
 		3B3F11002056D7AB003F86EF /* MockVerifyRecoveryWordsResultDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockVerifyRecoveryWordsResultDelegate.swift; sourceTree = "<group>"; };
 		3B3F1102205700A6003F86EF /* OnboardingErrorLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingErrorLabel.swift; sourceTree = "<group>"; };
 		3B41AE6B210A6C9700155AAC /* LaunchType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchType.swift; sourceTree = "<group>"; };
+		3B42ACF9229023AD00C2E30D /* OutgoingTransactionDropBitType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutgoingTransactionDropBitType.swift; sourceTree = "<group>"; };
 		3B43B4FD220B19EC008966CA /* AppCoordinator+NoConnectionViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppCoordinator+NoConnectionViewControllerTests.swift"; sourceTree = "<group>"; };
 		3B43C11D20D01FE80001378D /* AppCoordinator+StartVCDelegateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppCoordinator+StartVCDelegateTests.swift"; sourceTree = "<group>"; };
 		3B43C12120D03B190001378D /* CheckInResponseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInResponseTests.swift; sourceTree = "<group>"; };
@@ -2242,6 +2244,7 @@
 				B5B0DC7C22134AE00010AB2A /* CKCountry.swift */,
 				B5E7F22022148ECA00358A24 /* FlagEmojiFactory.swift */,
 				3B071A5120C2C3ED009C2BF6 /* OutgoingTransactionData.swift */,
+				3B42ACF9229023AD00C2E30D /* OutgoingTransactionDropBitType.swift */,
 				3B934D2120EFE53A00979ADC /* TransactionDataWorkerDTO.swift */,
 				3B41AE6B210A6C9700155AAC /* LaunchType.swift */,
 				30E96A2821765546008079B8 /* BitcoinURL.swift */,
@@ -3565,6 +3568,7 @@
 				B5F32BA62124D05E00B1F89F /* CKStrings.swift in Sources */,
 				B5EABAB621FB932E00E32E08 /* NetworkManager+TransactionNotificationRequestable.swift in Sources */,
 				3BA9F5FF208F642F0047C213 /* AppCoordinator+ScanQRViewControllerDelegate.swift in Sources */,
+				3B42ACFA229023AD00C2E30D /* OutgoingTransactionDropBitType.swift in Sources */,
 				B5FDA5C622120747001682AA /* GlobalPhoneNumber.swift in Sources */,
 				A29CE0DC209B755C00761B91 /* ContactsTableViewHeader.swift in Sources */,
 				B5976AD521552F8500774073 /* WalletAddressesQueryTarget.swift in Sources */,

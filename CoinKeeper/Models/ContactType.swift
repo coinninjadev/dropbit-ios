@@ -19,6 +19,7 @@ protocol ContactType {
   var displayName: String? { get }
   var displayIdentity: String { get }
   var userIdentityBody: UserIdentityBody { get }
+  var dropBitType: OutgoingTransactionDropBitType { get }
 }
 
 extension ContactType {
@@ -49,6 +50,10 @@ extension PhoneContactType {
   var displayIdentity: String {
     return displayNumber
   }
+
+  var dropBitType: OutgoingTransactionDropBitType {
+    return .phone(self)
+  }
 }
 
 protocol TwitterContactType: ContactType {
@@ -57,10 +62,16 @@ protocol TwitterContactType: ContactType {
   var twitterUser: TwitterUser { get }
 }
 
+extension TwitterContactType {
+  var dropBitType: OutgoingTransactionDropBitType {
+    return .twitter(self)
+  }
+}
+
 struct ValidatedContact: PhoneContactType {
 
   var kind: ContactKind
-  let displayName: String?
+  var displayName: String?
   let displayNumber: String
   let globalPhoneNumber: GlobalPhoneNumber
 

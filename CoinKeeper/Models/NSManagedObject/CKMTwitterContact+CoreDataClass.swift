@@ -34,6 +34,16 @@ public class CKMTwitterContact: NSManagedObject {
     return twitterContact
   }
 
+  func asTwitterUser() -> TwitterUser {
+    return TwitterUser(idStr: identityHash,
+                       name: displayName,
+                       screenName: displayScreenName,
+                       description: nil,
+                       url: nil,
+                       profileImageUrlHttps: nil,
+                       profileImageData: profileImageData)
+  }
+
   private func configure(with contact: TwitterContactType, in context: NSManagedObjectContext) {
     self.identityHash = contact.identityHash
     self.displayName = contact.displayName ?? ""

@@ -161,14 +161,18 @@ public class CKMTransaction: NSManagedObject {
       if let number = phoneNumber {
         number.configure(with: outgoingTransactionData, in: context)
         self.phoneNumber = number
-
-      } else if let contactNumber = outgoingTransactionData.contactPhoneNumber,
-        let inputs = ManagedPhoneNumberInputs(phoneNumber: contactNumber) {
-        let number = CKMPhoneNumber.findOrCreate(withInputs: inputs,
-                                                 phoneNumberHash: outgoingTransactionData.contactPhoneNumberHash,
-                                                 in: context)
-        number.configure(with: outgoingTransactionData, in: context)
-        self.phoneNumber = number
+      } else {
+        switch outgoingTransactionData.dropBitType {
+        case .phone(let phoneContact):
+          if let inputs = ManagedPhoneNumberInputs(phoneNumber: phoneContact.globalPhoneNumber) {
+            let number = CKMPhoneNumber.findOrCreate(withInputs: inputs, phoneNumberHash: phoneContact.phoneNumberHash, in: context)
+            number.configure(with: outgoingTransactionData, in: context)
+          }
+        case .twitter(let twitterContact):
+          let managedContact = CKMTwitterContact.findOrCreate(with: twitterContact, in: context)
+          self.twitterContact = managedContact
+        case .none: break
+        }
       }
     }
   }

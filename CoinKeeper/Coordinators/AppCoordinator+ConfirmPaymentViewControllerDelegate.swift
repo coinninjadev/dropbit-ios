@@ -276,7 +276,7 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate, CurrencyFormatta
     context.performAndWait {
       let outgoingTransactionData = OutgoingTransactionData(
         txid: CKMTransaction.invitationTxidPrefix + response.id,
-        contact: outgoingInvitationDTO.contact,
+        dropBitType: outgoingInvitationDTO.contact.dropBitType,
         destinationAddress: "",
         amount: outgoingInvitationDTO.btcPair.btcAmount.asFractionalUnits(of: .BTC),
         feeAmount: outgoingInvitationDTO.fee,

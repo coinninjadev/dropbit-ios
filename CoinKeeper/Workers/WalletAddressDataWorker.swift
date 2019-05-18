@@ -196,11 +196,21 @@ class WalletAddressDataWorker: WalletAddressDataWorkerType {
       // In this edge case where the initial invitation wasn't immediately acknowledged due to the
       // server response being interrupted, we pass nil instead of the original shared payload.
 
+      var contact: ContactType?
+
+      if let managedPhoneNumber = invitation.counterpartyPhoneNumber {
+        let global = managedPhoneNumber.asGlobalPhoneNumber
+        var tempContact = GenericContact(phoneNumber: global, formatted: global.asE164())
+        tempContact.displayName = invitation.counterpartyName ?? ""
+        contact = tempContact
+      } else if let managedContact = invitation.counterpartyTwitterContact {
+        let twitterUser = managedContact.asTwitterUser()
+        contact = TwitterContact(twitterUser: twitterUser)
+      }
+
       let outgoingTransactionData = OutgoingTransactionData(
         txid: CKMTransaction.invitationTxidPrefix + response.id,
-        contactName: invitation.counterpartyName ?? "",
-        contactPhoneNumber: invitation.counterpartyPhoneNumber?.asGlobalPhoneNumber,
-        contactPhoneNumberHash: invitation.counterpartyPhoneNumber?.phoneNumberHash ?? "",
+        dropBitType: contact?.dropBitType ?? .none,
         destinationAddress: "",
         amount: invitation.btcAmount,
         feeAmount: invitation.fees,
@@ -569,27 +579,22 @@ class WalletAddressDataWorker: WalletAddressDataWorkerType {
 
     let sharedPayloadDTO = self.sharedPayload(invitation: pendingInvitation, walletAddressRequestResponse: response)
 
-    var displayName = ""
-    var displayIdentity = ""
-    var identityHash = ""
+    var contact: ContactType?
     // create outgoing dto object
     if let twitterContact = pendingInvitation.counterpartyTwitterContact {
-      displayName = twitterContact.displayName
-      displayIdentity = twitterContact.displayScreenName
-      identityHash = twitterContact.identityHash
+      let twitterUser = twitterContact.asTwitterUser()
+      contact = TwitterContact(twitterUser: twitterUser)
     } else if let phoneContact = pendingInvitation.counterpartyPhoneNumber {
-      displayName = phoneContact.counterparty?.name ?? ""
-      displayIdentity = phoneContact.asGlobalPhoneNumber.asE164()
-      identityHash = phoneContact.asGlobalPhoneNumber.hashed()
+      let global = phoneContact.asGlobalPhoneNumber
+      let genericContact = GenericContact(phoneNumber: global, formatted: global.asE164())
+      contact = genericContact
     }
 
     let btcAmount = pendingInvitation.btcAmount
 
     let outgoingTransactionData = OutgoingTransactionData(
       txid: "",
-      displayName: displayName,
-      displayIdentity: displayIdentity,
-      identityHash: identityHash,
+      dropBitType: contact?.dropBitType ?? .none,
       destinationAddress: address,
       amount: btcAmount,
       feeAmount: pendingInvitation.fees,

@@ -10,7 +10,10 @@ import Foundation
 
 public struct OutgoingTransactionData {
   var txid: String
-  var contact: ContactType?
+  var displayName: String
+  var displayIdentity: String
+  var identityHash: String
+  var dropBitType: OutgoingTransactionDropBitType
   var destinationAddress: String
   var amount: Int
   var feeAmount: Int
@@ -21,13 +24,36 @@ public struct OutgoingTransactionData {
   static func emptyInstance() -> OutgoingTransactionData {
     return OutgoingTransactionData(
       txid: "",
-      contact: nil,
+      dropBitType: .none,
       destinationAddress: "",
       amount: 0,
       feeAmount: 0,
       sentToSelf: false,
       requiredFeeRate: 0,
       sharedPayloadDTO: SharedPayloadDTO.emptyInstance())
+  }
+
+  init(
+    txid: String,
+    dropBitType: OutgoingTransactionDropBitType,
+    destinationAddress: String,
+    amount: Int,
+    feeAmount: Int,
+    sentToSelf: Bool,
+    requiredFeeRate: Double?,
+    sharedPayloadDTO: SharedPayloadDTO?) {
+    self.txid = txid
+    self.dropBitType = dropBitType
+    self.displayName = dropBitType.displayName ?? "" //contact.displayName ?? ""
+    self.displayIdentity = dropBitType.displayIdentity //contact.displayIdentity
+    self.identityHash = dropBitType.identityHash //contact.identityHash
+
+    self.destinationAddress = destinationAddress
+    self.amount = amount
+    self.feeAmount = feeAmount
+    self.sentToSelf = sentToSelf
+    self.requiredFeeRate = requiredFeeRate
+    self.sharedPayloadDTO = sharedPayloadDTO
   }
 
   func copy(withTxid txid: String) -> OutgoingTransactionData {
@@ -38,15 +64,7 @@ public struct OutgoingTransactionData {
 }
 
 extension OutgoingTransactionData {
-  var displayName: String {
-    return contact?.displayName ?? ""
-  }
-
-  var displayIdentity: String {
-    return contact?.displayIdentity ?? ""
-  }
-
   var phoneNumberHash: String? {
-    return (contact as? PhoneContactType)?.phoneNumberHash
+    return identityHash
   }
 }
