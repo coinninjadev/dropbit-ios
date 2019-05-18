@@ -2,7 +2,7 @@
 //  CKMTwitterContact+CoreDataProperties.swift
 //  DropBit
 //
-//  Created by BJ Miller on 5/16/19.
+//  Created by BJ Miller on 5/17/19.
 //  Copyright © 2019 Coin Ninja, LLC. All rights reserved.
 //
 //
@@ -19,6 +19,7 @@ extension CKMTwitterContact {
   @NSManaged public var identityHash: String
   @NSManaged public var displayName: String
   @NSManaged public var displayScreenName: String
+  @NSManaged public var profileImageData: Data?
   @NSManaged public var transactions: Set<CKMTransaction>
   @NSManaged public var invitations: Set<CKMInvitation>
 
