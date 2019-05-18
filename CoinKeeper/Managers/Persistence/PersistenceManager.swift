@@ -359,10 +359,6 @@ class PersistenceManager: PersistenceManagerType {
     return keychainManager.retrieveValue(for: .lastTimeEnteredBackground) as? TimeInterval
   }
 
-  func persist(pendingInvitationData data: PendingInvitationData) {
-    userDefaultsManager.persist(pendingInvitationData: data)
-  }
-
   func persistUnacknowledgedInvitation(in context: NSManagedObjectContext, with btcPair: BitcoinUSDPair,
                                        contact: ContactType, fee: Int, acknowledgementId: String) {
     let invitation = CKMInvitation(insertInto: context)
@@ -387,19 +383,6 @@ class PersistenceManager: PersistenceManagerType {
       invitation.counterpartyTwitterContact = managedTwitterContact
       break
     }
-    self.userDefaultsManager.persist(pendingInvitationData: invitation.pendingInvitationData)
-  }
-
-  func pendingInvitations() -> [PendingInvitationData] {
-    return userDefaultsManager.pendingInvitations()
-  }
-
-  func pendingInvitation(with id: String) -> PendingInvitationData? {
-    return userDefaultsManager.pendingInvitation(with: id)
-  }
-
-  func removePendingInvitationData(with id: String) -> PendingInvitationData? {
-    return userDefaultsManager.removePendingInvitation(with: id)
   }
 
   func addressesProvidedForReceivedPendingDropBits(in context: NSManagedObjectContext) -> [String] {
@@ -450,7 +433,6 @@ class PersistenceManager: PersistenceManagerType {
     transaction.configure(with: outgoingTransactionData, in: context)
     transaction.configureNewSenderSharedPayload(with: outgoingTransactionData.sharedPayloadDTO, in: context)
     invitation.transaction = transaction
-    self.persist(pendingInvitationData: invitation.pendingInvitationData)
   }
 
   func matchContactsIfPossible() {

@@ -341,7 +341,6 @@
 		3BF41AB8207694EA008B3D0A /* RequestPayViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BF41AB7207694EA008B3D0A /* RequestPayViewModel.swift */; };
 		3BF41ABA2076951B008B3D0A /* RequestPayViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BF41AB92076951B008B3D0A /* RequestPayViewModelTests.swift */; };
 		3BF4EAF320F906540017DE00 /* Set+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BF4EAF220F906540017DE00 /* Set+Helpers.swift */; };
-		3BF4EAF520F931860017DE00 /* PendingInvitationData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BF4EAF420F931860017DE00 /* PendingInvitationData.swift */; };
 		3BF5807E20E2ADC500DD7F95 /* Applicable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BF5807D20E2ADC500DD7F95 /* Applicable.swift */; };
 		3BF5808020E3AFA100DD7F95 /* TransactionDataWorkerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BF5807F20E3AFA100DD7F95 /* TransactionDataWorkerTests.swift */; };
 		3BF62FF521826B3A0012E454 /* GeneralSubscriptionResponseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BF62FF421826B3A0012E454 /* GeneralSubscriptionResponseTests.swift */; };
@@ -1162,7 +1161,6 @@
 		3BF41AB7207694EA008B3D0A /* RequestPayViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestPayViewModel.swift; sourceTree = "<group>"; };
 		3BF41AB92076951B008B3D0A /* RequestPayViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestPayViewModelTests.swift; sourceTree = "<group>"; };
 		3BF4EAF220F906540017DE00 /* Set+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Set+Helpers.swift"; sourceTree = "<group>"; };
-		3BF4EAF420F931860017DE00 /* PendingInvitationData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PendingInvitationData.swift; sourceTree = "<group>"; };
 		3BF5807D20E2ADC500DD7F95 /* Applicable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Applicable.swift; sourceTree = "<group>"; };
 		3BF5807F20E3AFA100DD7F95 /* TransactionDataWorkerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDataWorkerTests.swift; sourceTree = "<group>"; };
 		3BF62FF421826B3A0012E454 /* GeneralSubscriptionResponseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralSubscriptionResponseTests.swift; sourceTree = "<group>"; };
@@ -2245,7 +2243,6 @@
 				B5E7F22022148ECA00358A24 /* FlagEmojiFactory.swift */,
 				3B071A5120C2C3ED009C2BF6 /* OutgoingTransactionData.swift */,
 				3B934D2120EFE53A00979ADC /* TransactionDataWorkerDTO.swift */,
-				3BF4EAF420F931860017DE00 /* PendingInvitationData.swift */,
 				3B41AE6B210A6C9700155AAC /* LaunchType.swift */,
 				30E96A2821765546008079B8 /* BitcoinURL.swift */,
 				3B47415A217E5353004DA223 /* ApplicationBuildEnvironment.swift */,
@@ -3864,7 +3861,6 @@
 				B53461722098ABBF00DDC1C4 /* CKMAddressTransactionSummary+CoreDataClass.swift in Sources */,
 				3BEF22A12264B9D8001F6D25 /* AppCoordinator+GetBitcoinViewControllerDelegate.swift in Sources */,
 				30ADA32C2162A76D00E52AF9 /* CreateDeviceBody.swift in Sources */,
-				3BF4EAF520F931860017DE00 /* PendingInvitationData.swift in Sources */,
 				3B5052BF20473FC9000C739F /* CreateRecoveryWordsCell.swift in Sources */,
 				B57AF8002268A95E00E5B0A6 /* ShareTransactionViewController.swift in Sources */,
 				3B55538A219618A100C5A9A8 /* UnverifiedPhoneBadgeTopic.swift in Sources */,

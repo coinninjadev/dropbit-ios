@@ -131,15 +131,8 @@ protocol PersistenceManagerType: DeviceCountryCodeProvider {
   func deviceEndpointIds() -> DeviceEndpointIds?
   func deleteDeviceEndpointIds()
 
-  func persist(pendingInvitationData data: PendingInvitationData)
-  func pendingInvitations() -> [PendingInvitationData]
-  func pendingInvitation(with id: String) -> PendingInvitationData?
-
   func backup(recoveryWords words: [String])
   func walletWordsBackedUp() -> Bool
-
-  @discardableResult
-  func removePendingInvitationData(with id: String) -> PendingInvitationData?
 
   func setDatabaseMigrationFlag(migrated: Bool, for version: DatabaseMigrationVersion)
   func databaseMigrationFlag(for version: DatabaseMigrationVersion) -> Bool
@@ -271,11 +264,6 @@ protocol PersistenceUserDefaultsType: AnyObject {
   func unverifyUser()
   func removeWalletId()
   func deleteDeviceEndpointIds()
-  func persist(pendingInvitationData data: PendingInvitationData)
-  func pendingInvitations() -> [PendingInvitationData]
-  func pendingInvitation(with id: String) -> PendingInvitationData?
-  func removePendingInvitation(with id: String) -> PendingInvitationData?
-  func setPendingInvitationFailed(_ invitation: PendingInvitationData)
   func deviceId() -> UUID?
   func setDeviceId(_ uuid: UUID)
   var receiveAddressIndexGaps: Set<Int> { get set }

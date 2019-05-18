@@ -110,16 +110,4 @@ struct AddressRequestUpdate: AddressRequestUpdateDisplayable {
     self.side = InvitationSide(requestSide: requestSide)
     self.status = CKMInvitation.statusToPersist(for: responseStatus, side: requestSide)
   }
-
-  init(pendingInvitationData data: PendingInvitationData, status: InvitationStatus, formatter: PhoneNumberFormatterType) {
-    self.phoneNumberFormatter = formatter
-    self.addressRequestId = data.id
-    self.receiverName = data.name
-    self.receiverPhoneNumber = data.phoneNumber
-    self.btcAmount = data.btcAmount
-    self.fiatAmount = data.fiatAmount
-    self.side = .sender
-    self.status = status
-  }
-
 }
