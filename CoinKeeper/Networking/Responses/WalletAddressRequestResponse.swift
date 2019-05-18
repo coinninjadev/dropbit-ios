@@ -281,3 +281,13 @@ extension WalletAddressRequestResponse {
   }
 
 }
+
+extension WalletAddressRequestResponse: Comparable {
+  public static func < (lhs: WalletAddressRequestResponse, rhs: WalletAddressRequestResponse) -> Bool {
+    return lhs.createdAt < rhs.createdAt
+  }
+
+  public static func == (lhs: WalletAddressRequestResponse, rhs: WalletAddressRequestResponse) -> Bool {
+    return lhs.id == rhs.id
+  }
+}
