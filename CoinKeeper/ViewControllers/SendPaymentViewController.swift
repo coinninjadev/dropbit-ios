@@ -550,7 +550,7 @@ extension SendPaymentViewController: UITextFieldDelegate {
     case phoneNumberEntryView.textField:
       let defaultCountry = CKCountry(locale: .current, kit: self.phoneNumberKit)
       let phoneNumber = GlobalPhoneNumber(countryCode: defaultCountry.countryCode, nationalNumber: "")
-      let contact = GenericContact(phoneNumber: phoneNumber, hash: "", formatted: "")
+      let contact = GenericContact(phoneNumber: phoneNumber, formatted: "")
       let recipient = PaymentRecipient.phoneNumber(contact)
       setPaymentRecipient(recipient)
       updateViewWithModel()
@@ -586,7 +586,7 @@ extension SendPaymentViewController: UITextFieldDelegate {
           let hashedPhoneNumber = hashingManager.hash(phoneNumber: globalPhoneNumber, salt: salt, parsedNumber: nil, kit: self.phoneNumberKit)
           let formattedPhoneNumber = try CKPhoneNumberFormatter(kit: self.phoneNumberKit, format: .international)
             .string(from: globalPhoneNumber)
-          let contact = GenericContact(phoneNumber: globalPhoneNumber, hash: hashedPhoneNumber, formatted: formattedPhoneNumber)
+          let contact = GenericContact(phoneNumber: globalPhoneNumber, formatted: formattedPhoneNumber)
           let recipient = PaymentRecipient.phoneNumber(contact)
           setPaymentRecipient(recipient)
         }

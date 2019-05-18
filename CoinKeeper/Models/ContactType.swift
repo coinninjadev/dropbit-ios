@@ -99,7 +99,7 @@ struct GenericContact: PhoneContactType {
   var displayNumber: String
   var globalPhoneNumber: GlobalPhoneNumber
 
-  init(phoneNumber: GlobalPhoneNumber, hash: String, formatted: String) {
+  init(phoneNumber: GlobalPhoneNumber, formatted: String) {
     self.kind = .generic
     self.displayName = nil
     self.displayNumber = formatted

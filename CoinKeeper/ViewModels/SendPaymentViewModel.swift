@@ -29,7 +29,7 @@ enum PaymentRecipient {
       self = .btcAddress(address)
 
     case .phoneNumber(let number):
-      self = .phoneNumber(GenericContact(phoneNumber: number, hash: "", formatted: ""))
+      self = .phoneNumber(GenericContact(phoneNumber: number, formatted: ""))
     }
   }
 
