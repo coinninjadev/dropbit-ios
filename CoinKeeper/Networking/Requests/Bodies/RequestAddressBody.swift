@@ -36,12 +36,17 @@ public struct UserIdentityBody: Codable {
 
 extension UserIdentityBody {
   func globalNumber() -> GlobalPhoneNumber? {
-    let parser = CKPhoneNumberParser(kit: PhoneNumberKit())
-    do {
-      let e164 = "+" + identity
-      return try parser.parse(e164)
-    } catch {
-      return nil
+    guard let identityType = UserIdentityType(rawValue: type) else { return nil }
+    switch identityType {
+    case .phone:
+      let parser = CKPhoneNumberParser(kit: PhoneNumberKit())
+      do {
+        let e164 = "+" + identity
+        return try parser.parse(e164)
+      } catch {
+        return nil
+      }
+    case .twitter: return nil
     }
   }
 
