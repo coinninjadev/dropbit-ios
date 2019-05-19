@@ -381,7 +381,6 @@ class PersistenceManager: PersistenceManagerType {
       guard let twitterContact = contact as? TwitterContactType else { return }
       let managedTwitterContact = CKMTwitterContact.findOrCreate(with: twitterContact, in: context)
       invitation.counterpartyTwitterContact = managedTwitterContact
-      break
     }
   }
 
