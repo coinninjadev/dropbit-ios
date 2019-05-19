@@ -166,7 +166,7 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate, CurrencyFormatta
       } catch {
         os_log("failed to save context in %@.\n%@", log: logger, type: .error, #function, error.localizedDescription)
         self.set(mode: .failure, for: successFailVC)
-        self.handleFailureInvite(error: TransactionDataError.insufficientFee)
+        self.handleFailureInvite(error: error)
       }
     }
   }

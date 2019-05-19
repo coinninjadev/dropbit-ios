@@ -432,6 +432,8 @@ class PersistenceManager: PersistenceManagerType {
     transaction.configure(with: outgoingTransactionData, in: context)
     transaction.configureNewSenderSharedPayload(with: outgoingTransactionData.sharedPayloadDTO, in: context)
     invitation.transaction = transaction
+    invitation.counterpartyTwitterContact = transaction.twitterContact
+    invitation.counterpartyPhoneNumber = transaction.phoneNumber
   }
 
   func matchContactsIfPossible() {

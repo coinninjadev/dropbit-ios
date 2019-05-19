@@ -31,6 +31,8 @@ public class CKMTwitterContact: NSManagedObject {
       twitterContact = CKMTwitterContact(insertInto: context)
     }
 
+    twitterContact.configure(with: contact, in: context)
+
     return twitterContact
   }
 

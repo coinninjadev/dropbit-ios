@@ -17,6 +17,7 @@ struct RequestAddressAmount: Codable {
 public struct UserIdentityBody: Codable {
   let type: String
   let identity: String
+  var handle: String?
 
   init(phoneNumber: GlobalPhoneNumber) {
     self.type = UserIdentityType.phone.rawValue
@@ -26,11 +27,13 @@ public struct UserIdentityBody: Codable {
   init(twitterCredentials: TwitterOAuthStorage) {
     self.type = UserIdentityType.twitter.rawValue
     self.identity = twitterCredentials.twitterUserId
+    self.handle = twitterCredentials.formattedScreenName
   }
 
   init(twitterUser: TwitterUser) {
     self.type = UserIdentityType.twitter.rawValue
     self.identity = twitterUser.idStr
+    self.handle = twitterUser.formattedScreenName
   }
 }
 
