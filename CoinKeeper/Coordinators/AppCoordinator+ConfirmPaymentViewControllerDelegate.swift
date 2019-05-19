@@ -113,13 +113,13 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate, CurrencyFormatta
     let successFailViewController = SuccessFailViewController.makeFromStoryboard()
     successFailViewController.modalPresentationStyle = .overFullScreen
     assignCoordinationDelegate(to: successFailViewController)
-    persistenceManager.persistUnacknowledgedInvitation(in: bgContext,
-                                                       with: outgoingInvitationDTO.btcPair,
-                                                       contact: outgoingInvitationDTO.contact,
-                                                       fee: outgoingInvitationDTO.fee,
-                                                       acknowledgementId: inviteBody.requestId)
-
     bgContext.performAndWait {
+      persistenceManager.persistUnacknowledgedInvitation(in: bgContext,
+                                                         with: outgoingInvitationDTO.btcPair,
+                                                         contact: outgoingInvitationDTO.contact,
+                                                         fee: outgoingInvitationDTO.fee,
+                                                         acknowledgementId: inviteBody.requestId)
+
       do {
         try bgContext.save()
       } catch {
