@@ -16,7 +16,7 @@ protocol UserRequestable: AnyObject {
   func addIdentity(body: UserIdentityBody) -> Promise<UserIdentityResponse>
   func deleteIdentity(identity: String) -> Promise<Void>
   func getUser() -> Promise<UserResponse>
-  func queryUsers(phoneNumberHashes: [String]) -> Promise<StringDictResponse>
+  func queryUsers(identityHashes: [String]) -> Promise<StringDictResponse>
   func updateUserPublicURL(isPrivate: Bool) -> Promise<UserResponse>
 
   /**
@@ -88,8 +88,8 @@ extension NetworkManager: UserRequestable {
     return cnProvider.request(UserTarget.get)
   }
 
-  func queryUsers(phoneNumberHashes: [String]) -> Promise<StringDictResponse> {
-    return cnProvider.requestObject(UserQueryTarget.query(phoneNumberHashes))
+  func queryUsers(identityHashes: [String]) -> Promise<StringDictResponse> {
+    return cnProvider.requestObject(UserQueryTarget.query(identityHashes))
       .then { (jsonObject: JSONObject) -> Promise<StringDictResponse> in
         guard let stringDict = jsonObject as? [String: String] else {
           throw CKNetworkError.badResponse

@@ -239,7 +239,7 @@ class ContactCacheDataWorker: ContactCacheDataWorkerType {
   private func batchedPhoneNumbers(from phoneNumberHashes: [String],
                                    batchLimit: Int = 100) -> Promise<[StringDictResponse]> {
     let batched = phoneNumberHashes.chunked(by: batchLimit)
-    let batchedPhoneNumberPromises = batched.map { self.userRequester.queryUsers(phoneNumberHashes: $0) }
+    let batchedPhoneNumberPromises = batched.map { self.userRequester.queryUsers(identityHashes: $0) }
     return when(fulfilled: batchedPhoneNumberPromises)
   }
 
