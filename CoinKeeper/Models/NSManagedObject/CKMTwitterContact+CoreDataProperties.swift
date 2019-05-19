@@ -20,6 +20,7 @@ extension CKMTwitterContact {
   @NSManaged public var displayName: String
   @NSManaged public var displayScreenName: String
   @NSManaged public var profileImageData: Data?
+  @NSManaged public var verificationStatus: UserIdentityVerificationStatus
   @NSManaged public var transactions: Set<CKMTransaction>
   @NSManaged public var invitations: Set<CKMInvitation>
 

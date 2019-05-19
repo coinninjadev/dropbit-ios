@@ -48,5 +48,9 @@ public class CKMTwitterContact: NSManagedObject {
     self.identityHash = contact.identityHash
     self.displayName = contact.displayName ?? ""
     self.displayScreenName = contact.displayIdentity
+    switch contact.kind {
+    case .invite, .generic: self.verificationStatus = .notVerified
+    case .registeredUser: self.verificationStatus = .verified
+    }
   }
 }

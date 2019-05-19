@@ -10,15 +10,15 @@
 import Foundation
 import CoreData
 
-/// notVerified is both used for numbers that have begun registration but not fully verified,
-/// as well as for numbers that are unknown to the server.
+/// notVerified is both used for identities that have begun registration but not fully verified,
+/// as well as for identities that are unknown to the server.
 /// The rawValue is used for section order on Contacts screen and must be ascending to match the section order.
-@objc public enum PhoneNumberVerificationStatus: Int16 {
+@objc public enum UserIdentityVerificationStatus: Int16 {
   case verified = 0
   case notVerified
 
   /// Turns server response string into enum case that can be persisted
-  static func `case`(forString string: String) -> PhoneNumberVerificationStatus? {
+  static func `case`(forString string: String) -> UserIdentityVerificationStatus? {
     switch string {
     case "new",
          "pending":   return .notVerified
@@ -46,7 +46,7 @@ extension CCMPhoneNumber {
   /// Use CNContact.localizedString(forKey:) to generate a display string for the phone number type
   @NSManaged public var labelKey: String?
 
-  @NSManaged public var verificationStatus: PhoneNumberVerificationStatus
+  @NSManaged public var verificationStatus: UserIdentityVerificationStatus
 
   @NSManaged public var cachedContact: CCMContact?
   @NSManaged public var cachedValidatedMetadata: CCMValidatedMetadata?
