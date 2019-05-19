@@ -15,7 +15,7 @@ enum PaymentRecipient {
   /// Associated value does not contain "bitcoin:"
   case btcAddress(String)
 
-  case contact(PhoneContactType)
+  case contact(ContactType)
 
   /// Manually entered, not set from Contacts. Associated value is digits only.
   case phoneNumber(GenericContact)
@@ -235,8 +235,9 @@ struct SendPaymentViewModel: SendPaymentViewModelType {
     switch recipient {
     case .btcAddress: return nil
     case .contact(let contact):
+      guard let phoneContact = contact as? PhoneContactType else { return nil }
       let formatter = CKPhoneNumberFormatter(kit: PhoneNumberKit(), format: .international)
-      return (try? formatter.string(from: contact.globalPhoneNumber)) ?? ""
+      return (try? formatter.string(from: phoneContact.globalPhoneNumber)) ?? ""
     case .twitterContact(let contact):
       return contact.displayIdentity
     case .phoneNumber: return nil
