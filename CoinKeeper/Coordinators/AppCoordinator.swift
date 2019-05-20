@@ -261,6 +261,67 @@ class AppCoordinator: CoordinatorType {
     childCoordinator.start()
   }
 
+  /// Handle app becoming active
+  func appEnteredActiveState() {
+    resetWalletManagerIfNeeded()
+    connectionManager.start()
+
+    analyticsManager.track(event: .appOpen, with: nil)
+
+    authenticateOnBecomingActiveIfNeeded()
+
+    refreshContacts()
+  }
+
+  /// Called only on first open, after didFinishLaunchingWithOptions, when appEnteredActiveState is not called
+  func appBecameActive() {
+    resetWalletManagerIfNeeded()
+    handlePendingBitcoinURL()
+    refreshContacts()
+
+    if self.permissionManager.permissionStatus(for: .location) == .authorized {
+      self.locationManager.requestLocation()
+    }
+  }
+
+  /// Handle app leaving active state, either becoming inactive, entering background, or terminating.
+  func appWillResignActiveState() {
+    let logger = OSLog(subsystem: "com.coinninja.coinkeeper.appcoordinator", category: "willResignActive")
+    let backgroundTaskId = UIApplication.shared.beginBackgroundTask(expirationHandler: nil)
+    connectionManager.stop()
+    bitcoinURLToOpen = nil
+
+    persistenceManager.setLastLoginTime()
+      .catch { error in
+        os_log("Failed to set lastLoginTime: %@", log: logger, type: .error, error.localizedDescription)
+      }
+      .finally {
+        UIApplication.shared.endBackgroundTask(backgroundTaskId)
+    }
+    //UIApplication.shared.applicationIconBadgeNumber = persistenceManager.pendingInvitations().count
+  }
+
+  private func authenticateOnBecomingActiveIfNeeded() {
+    defer { self.suspendAuthenticationOnceUntil = nil }
+    if let suspendUntil = self.suspendAuthenticationOnceUntil, suspendUntil > Date() {
+      return
+    }
+
+    // check keychain time interval for resigned time, and if within 30 sec, don't require
+    let now = Date().timeIntervalSince1970
+    let lastLogin = persistenceManager.lastLoginTime() ?? Date.distantPast.timeIntervalSince1970
+
+    let secondsSinceLastLogin = now - lastLogin
+    if secondsSinceLastLogin > maxSecondsInBackground {
+      //dismissAllModalViewControllers
+      UIApplication.shared.keyWindow?.rootViewController?.dismiss(animated: false, completion: nil)
+      resetUserAuthenticatedState()
+      requireAuthenticationIfNeeded(whenAuthenticated: {
+        self.continueSetupFlow()
+      })
+    }
+  }
+
   private func checkForBackendMessages() {
     let logger = OSLog(subsystem: "com.coinninja.coinkeeper.appcoordinator", category: "messages")
     networkManager.queryForMessages()
