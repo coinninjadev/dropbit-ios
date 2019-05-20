@@ -311,7 +311,7 @@ class AppCoordinatorTests: XCTestCase {
     let expectation = XCTestExpectation(description: "testSyncRoutineCallsGetWallet")
     let mocks = mocksForTestingSyncRoutine()
     mocks.launchState.skippedVerificationValue = false
-    mocks.launchState.nextLaunchStep = .createWallet  // something other than .enterApp
+    mocks.launchState.userAuthenticatedValue = false
 
     self.sut = AppCoordinator(persistenceManager: mocks.persistence,
                               launchStateManager: mocks.launchState,
@@ -333,7 +333,7 @@ class AppCoordinatorTests: XCTestCase {
   func testSyncRoutineMissingRecoveryWordsRejectsWithError() {
     let expectation = XCTestExpectation(description: "testSyncRoutineCallsGetWallet")
     let mocks = mocksForTestingSyncRoutine()
-    mocks.persistence.keychainManager.store(anyValue: nil, key: .walletWords)
+    _ = mocks.persistence.keychainManager.store(anyValue: nil, key: .walletWords)
 
     self.sut = AppCoordinator(persistenceManager: mocks.persistence,
                               launchStateManager: mocks.launchState,
