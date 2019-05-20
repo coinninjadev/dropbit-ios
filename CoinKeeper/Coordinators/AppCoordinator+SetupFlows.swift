@@ -54,7 +54,7 @@ extension AppCoordinator {
     if pinAndWalletExist && verificationSatisfied {
       validToStartEnteringApp()
     } else if pinAndWalletExist {
-      startDeviceVerificationFlow(shouldOrphanRoot: true, selectedSetupFlow: selectedFlow)
+      startDeviceVerificationFlow(userIdentityType: .phone, shouldOrphanRoot: true, selectedSetupFlow: selectedFlow)
     } else {
       startPinCreation(flow: selectedFlow)
     }
@@ -96,9 +96,9 @@ extension AppCoordinator {
     navigationController.topViewController()?.present(alert, animated: true)
   }
 
-  func startDeviceVerificationFlow(shouldOrphanRoot: Bool, selectedSetupFlow: SetupFlow?) {
+  func startDeviceVerificationFlow(userIdentityType type: UserIdentityType, shouldOrphanRoot: Bool, selectedSetupFlow: SetupFlow?) {
     func startVerificationFlow() {
-      let childCoordinator = DeviceVerificationCoordinator(navigationController, shouldOrphanRoot: shouldOrphanRoot)
+      let childCoordinator = DeviceVerificationCoordinator(navigationController, userIdentityType: type, shouldOrphanRoot: shouldOrphanRoot)
       childCoordinator.selectedSetupFlow = selectedSetupFlow
       startChildCoordinator(childCoordinator: childCoordinator)
     }
