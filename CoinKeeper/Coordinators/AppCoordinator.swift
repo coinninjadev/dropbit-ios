@@ -200,6 +200,12 @@ class AppCoordinator: CoordinatorType {
     badgeManager.setupTopics()
   }
 
+  func setWalletManagerWithPersistedWords() {
+    if let words = self.persistenceManager.walletWords() {
+      self.walletManager = WalletManager(words: words, persistenceManager: self.persistenceManager)
+    }
+  }
+
   func registerWallet(completion: @escaping () -> Void) {
     let bgContext = persistenceManager.createBackgroundContext()
     let logger = OSLog(subsystem: "com.coinninja.coinkeeper.appcoordinator", category: "register_wallet")

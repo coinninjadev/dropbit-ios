@@ -12,6 +12,7 @@ extension AppCoordinator: PinVerificationDelegate {
 
   func pinWasVerified(digits: String, for flow: SetupFlow?) {
     persistenceManager.keychainManager.store(userPin: digits)
+      .get { _ in self.setWalletManagerWithPersistedWords() }
       .done { _ in
         self.launchStateManager.userWasAuthenticated()
         let action = self.postVerificationAction(forFlow: flow)
@@ -24,7 +25,7 @@ extension AppCoordinator: PinVerificationDelegate {
     switch flow {
     case .newWallet, .claimInvite:
       return { [weak self] in
-        self?.startNewWalletFlow(flow: flow)
+        self?.continueSetupFlow()
       }
 
     case .restoreWallet:

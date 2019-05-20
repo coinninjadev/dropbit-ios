@@ -130,6 +130,7 @@ extension AppCoordinator {
   func saveSuccessfulWords(words: [String], didBackUp: Bool) -> Promise<Void> {
     trackIfUserHasWordsBackedUp()
     return persistenceManager.keychainManager.store(recoveryWords: words, isBackedUp: didBackUp)
+      .get { _ in self.setWalletManagerWithPersistedWords() }
   }
 
   func checkForWordsBackedUp() {
