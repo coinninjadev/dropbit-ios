@@ -49,6 +49,7 @@ class TransactionHistoryDetailBaseCell: UICollectionViewCell {
   @IBOutlet var memoContainerView: ConfirmPaymentMemoView!
   @IBOutlet var statusLabel: TransactionDetailStatusLabel!
   @IBOutlet var counterpartyLabel: TransactionDetailCounterpartyLabel!
+  @IBOutlet var twitterImage: UIImageView!
 
   // MARK: variables
   var viewModel: TransactionHistoryDetailCellViewModel?
@@ -114,6 +115,7 @@ class TransactionHistoryDetailBaseCell: UICollectionViewCell {
     statusLabel.textColor = viewModel.descriptionColor
     let isEqualToReceiverAddress = (viewModel.receiverAddress ?? "") == viewModel.counterpartyDescription
     counterpartyLabel.text = isEqualToReceiverAddress ? nil : viewModel.counterpartyDescription
+    twitterImage.isHidden = !viewModel.isTwitterContact
     primaryAmountLabel.text = viewModel.primaryAmountLabel
     secondaryAmountLabel.attributedText = viewModel.secondaryAmountLabel
     historicalValuesLabel.text = nil

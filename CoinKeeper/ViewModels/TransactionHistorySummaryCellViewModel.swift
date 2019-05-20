@@ -116,6 +116,11 @@ class TransactionHistorySummaryCellViewModel {
     return tx.temporarySentTransaction != nil
   }
 
+  var isTwitterContact: Bool {
+    guard let tx = transaction else { return false }
+    return tx.twitterContact != nil
+  }
+
   /// overridden by detail cell model
   var invitationStatusDescription: String? {
     guard let status = invitationStatus else { return nil }

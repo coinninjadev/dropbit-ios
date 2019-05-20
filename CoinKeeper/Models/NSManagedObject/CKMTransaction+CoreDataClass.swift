@@ -313,7 +313,9 @@ public class CKMTransaction: NSManagedObject {
 extension CKMTransaction: CounterpartyRepresentable {
 
   var counterpartyName: String? {
-    if let inviteName = invitation?.counterpartyName {
+    if let twitterCounterparty = invitation?.counterpartyTwitterContact {
+      return twitterCounterparty.displayScreenName
+    } else if let inviteName = invitation?.counterpartyName {
       return inviteName
     } else {
       let relevantNumber = phoneNumber ?? invitation?.counterpartyPhoneNumber

@@ -37,9 +37,8 @@ class TransactionHistorySummaryCell: UICollectionViewCell {
       incomingImage.image = viewModel.isIncoming ? UIImage(named: "incoming30") : UIImage(named: "outgoing30")
     }
 
-    let receiverLabelString = viewModel.counterpartyDescription.isEmpty ? viewModel.receiverAddress : viewModel.counterpartyDescription
-    receiverLabel.text = receiverLabelString
-    twitterImage.isHidden = !((receiverLabelString ?? "").contains("@"))
+    receiverLabel.text = viewModel.counterpartyDescription.isEmpty ? viewModel.receiverAddress : viewModel.counterpartyDescription
+    twitterImage.isHidden = !viewModel.isTwitterContact
     statusLabel.text = viewModel.statusDescription
     statusLabel.isHidden = viewModel.hidden
 
