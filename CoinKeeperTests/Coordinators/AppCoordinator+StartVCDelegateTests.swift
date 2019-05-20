@@ -82,6 +82,7 @@ class AppCoordinatorStartVCDelegateTests: XCTestCase {
     let mockNavigationController = MockNavigationController()
     mockNavigationController.viewControllers = [StartViewController.makeFromStoryboard()]
     mockLaunchStateManager.mockShouldRequireAuthentication = false
+    mockLaunchStateManager.deviceIsVerifiedValue = true
 
     self.sut = AppCoordinator(navigationController: mockNavigationController,
                               persistenceManager: mockPersistenceManager,

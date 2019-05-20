@@ -94,8 +94,9 @@ class MockLaunchStateManager: LaunchStateManagerType {
     return false
   }
 
+  var deviceIsVerifiedValue = false
   func deviceIsVerified() -> Bool {
-    return true
+    return deviceIsVerifiedValue
   }
 
 }

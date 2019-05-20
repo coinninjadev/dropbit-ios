@@ -27,12 +27,15 @@ class AppCoordinatorTests: XCTestCase {
 
   // MARK: calling start
   @discardableResult
-  private func setupStart(step: UserProfileLaunchStep) -> (MockLaunchStateManager, MockAnalyticsManager) {
+  private func setupStart() -> (MockLaunchStateManager, MockAnalyticsManager) {
     let mockPersistenceManager = MockPersistenceManager()
     mockPersistenceManager.setDidTutorial(false)
     let mockAnalyticsManager = MockAnalyticsManager()
     let mockLaunchStateManager = MockLaunchStateManager(persistenceManager: mockPersistenceManager)
-    mockLaunchStateManager.nextLaunchStep = step
+    mockLaunchStateManager.mockShouldRequireAuthentication = false
+    mockLaunchStateManager.skippedVerificationValue = false
+    mockLaunchStateManager.deviceIsVerifiedValue = false
+
     let nav = CNNavigationController(rootViewController: StartViewController.makeFromStoryboard())
     self.sut = AppCoordinator(navigationController: nav,
                               persistenceManager: mockPersistenceManager,
@@ -44,15 +47,17 @@ class AppCoordinatorTests: XCTestCase {
 
   // MARK: first time
   func testFirstTimeBehavior() {
-    let (_, mockAnalyticsManager) = setupStart(step: .enterPin)
+    let (mockLaunchStateManager, mockAnalyticsManager) = setupStart()
+    mockLaunchStateManager.mockShouldRequireAuthentication = false
+
     self.sut.start()
 
-    XCTAssertTrue(self.sut.navigationController.topViewController is StartViewController, "topViewController should be a TutorialViewController")
+    XCTAssertTrue(self.sut.navigationController.topViewController is StartViewController, "topViewController should be a StartViewController")
 
     if let startVC = self.sut.navigationController.topViewController as? StartViewController {
       XCTAssertTrue(startVC.coordinationDelegate === self.sut, "coordinationDelegate should be sut")
     } else {
-      XCTFail("topViewController should be a TutorialViewController")
+      XCTFail("topViewController should be a StartViewController")
     }
 
     XCTAssertTrue(mockAnalyticsManager.startWasCalled, "analytics manager should start")
@@ -63,37 +68,12 @@ class AppCoordinatorTests: XCTestCase {
   }
 
   // MARK: pin entered
-  func testCallingStartWhenPinEnteredBehavesProperly() {
-    setupStart(step: .createWallet)
-    self.sut.start()
-
-    XCTAssertTrue(self.sut.navigationController.topViewController is StartViewController)
-
-    if let startVC = self.sut.navigationController.topViewController as? StartViewController {
-      XCTAssertTrue(startVC.coordinationDelegate === self.sut, "coordinationDelegate should be sut")
-    } else {
-      XCTFail("topViewController should be a TutorialViewController")
-    }
-  }
-
-  func testCallingStartWhenWalletExistsBehavesProperly() {
-    setupStart(step: .verifyDevice)
-    self.sut.start()
-
-    XCTAssertTrue(self.sut.navigationController.topViewController is StartViewController)
-
-    if let startVC = self.sut.navigationController.topViewController as? StartViewController {
-      XCTAssertTrue(startVC.coordinationDelegate === self.sut, "coordinationDelegate should be sut")
-    } else {
-      XCTFail("topViewController should be a TutorialViewController")
-    }
-  }
 
   func testCallingStartWhenDeviceVerifiedBehavesProperly() {
     let mockPersistenceManager = MockPersistenceManager()
     mockPersistenceManager.setDidTutorial(true)
     let mockLaunchStateManager = MockLaunchStateManager(persistenceManager: mockPersistenceManager)
-    mockLaunchStateManager.nextLaunchStep = .enterApp
+    mockLaunchStateManager.deviceIsVerifiedValue = true
     let mockNavigationController = MockNavigationController()
     mockNavigationController.viewControllers = [StartViewController.makeFromStoryboard()]
     self.sut = AppCoordinator(navigationController: mockNavigationController,
@@ -122,7 +102,7 @@ class AppCoordinatorTests: XCTestCase {
 
     XCTAssertTrue(mockPersistenceManager.wasAskedForLastLoginTime, "should ask persistenceManager for last login time")
 
-    mockPersistenceManager.setLastLoginTime()
+    _ = mockPersistenceManager.setLastLoginTime()
     let lastLoginTime: TimeInterval = mockPersistenceManager.lastLoginTime()! - 60
     mockPersistenceManager.setLastMockLogin(timeInterval: lastLoginTime)
 
@@ -163,7 +143,6 @@ class AppCoordinatorTests: XCTestCase {
     let mockNavigationController = MockNavigationController()
     let startVC = StartViewController.makeFromStoryboard()
     mockNavigationController.viewControllers = [startVC]
-    mockLaunchStateManager.nextLaunchStep = .createWallet
     mockLaunchStateManager.mockShouldRequireAuthentication = false
 
     self.sut.appEnteredActiveState() // to call requireAuthentication...
@@ -183,7 +162,7 @@ class AppCoordinatorTests: XCTestCase {
       let mockPersistenceManager = MockPersistenceManager()
       mockPersistenceManager.walletIdValue = ""
       mockPersistenceManager.userIdValue = ""
-      mockPersistenceManager.keychainManager.store(recoveryWords: [""], isBackedUp: true)
+      _ = mockPersistenceManager.keychainManager.store(recoveryWords: [""], isBackedUp: true)
 
       let mockLaunchStateManager = MockLaunchStateManager(persistenceManager: mockPersistenceManager)
       mockLaunchStateManager.userAuthenticatedValue = true
@@ -211,7 +190,7 @@ class AppCoordinatorTests: XCTestCase {
         mockPersistenceManager.userIdValue = nil
       }
 
-      mockPersistenceManager.keychainManager.store(recoveryWords: [""], isBackedUp: true)
+      _ = mockPersistenceManager.keychainManager.store(recoveryWords: [""], isBackedUp: true)
       mockPersistenceManager.userVerificationStatusValue = .verified
 
       let mockLaunchStateManager = MockLaunchStateManager(persistenceManager: mockPersistenceManager)
