@@ -80,18 +80,6 @@ extension AppCoordinator {
     createWalletAndContinue()
   }
 
-  private func startFirstTimeWalletCreationFlow(_ flow: SetupFlow) {
-    switch flow {
-    case .restoreWallet:
-      let viewController = RestoreWalletViewController.makeFromStoryboard()
-      assignCoordinationDelegate(to: viewController)
-      navigationController.pushViewController(viewController, animated: true)
-
-    case .newWallet, .claimInvite:
-      startPinCreation(flow: flow)
-    }
-  }
-
   private func startPinCreation(flow: SetupFlow?) {
     let viewController = PinCreationViewController.makeFromStoryboard()
     viewController.setupFlow = flow
