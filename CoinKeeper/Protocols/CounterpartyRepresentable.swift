@@ -15,7 +15,7 @@ protocol CounterpartyRepresentable: AnyObject {
   var counterpartyName: String? { get }
   var counterpartyAddressId: String? { get }
 
-  func counterpartyPhoneNumber(deviceCountryCode: Int?, kit: PhoneNumberKit) -> String?
+  func counterpartyDisplayIdentity(deviceCountryCode: Int?, kit: PhoneNumberKit) -> String?
 
 }
 
@@ -24,8 +24,8 @@ extension CounterpartyRepresentable {
   func counterpartyDisplayDescription(deviceCountryCode: Int?, kit: PhoneNumberKit) -> String? {
     if let name = counterpartyName {
       return name
-    } else if let number = counterpartyPhoneNumber(deviceCountryCode: deviceCountryCode, kit: kit) {
-      return number
+    } else if let identity = counterpartyDisplayIdentity(deviceCountryCode: deviceCountryCode, kit: kit) {
+      return identity
     } else {
       return counterpartyAddressId
     }

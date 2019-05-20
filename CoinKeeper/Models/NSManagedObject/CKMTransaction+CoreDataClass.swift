@@ -321,17 +321,24 @@ extension CKMTransaction: CounterpartyRepresentable {
     }
   }
 
-  func counterpartyPhoneNumber(deviceCountryCode: Int?, kit: PhoneNumberKit) -> String? {
-    guard let relevantPhoneNumber = invitation?.counterpartyPhoneNumber ?? phoneNumber else { return nil }
-    let globalPhoneNumber = relevantPhoneNumber.asGlobalPhoneNumber
-
-    var format: PhoneNumberFormat = .international
-    if let code = deviceCountryCode {
-      format = (code == globalPhoneNumber.countryCode) ? .national : .international
+  func counterpartyDisplayIdentity(deviceCountryCode: Int?, kit: PhoneNumberKit) -> String? {
+    if let counterpartyTwitterContact = self.twitterContact {
+      return counterpartyTwitterContact.displayScreenName  // should include @-sign
     }
-    let formatter = CKPhoneNumberFormatter(kit: kit, format: format)
 
-    return try? formatter.string(from: globalPhoneNumber)
+    if let relevantPhoneNumber = invitation?.counterpartyPhoneNumber ?? phoneNumber {
+      let globalPhoneNumber = relevantPhoneNumber.asGlobalPhoneNumber
+
+      var format: PhoneNumberFormat = .international
+      if let code = deviceCountryCode {
+        format = (code == globalPhoneNumber.countryCode) ? .national : .international
+      }
+      let formatter = CKPhoneNumberFormatter(kit: kit, format: format)
+
+      return try? formatter.string(from: globalPhoneNumber)
+    }
+
+    return nil
   }
 
   var counterpartyAddressId: String? {
