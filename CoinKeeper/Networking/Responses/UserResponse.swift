@@ -8,7 +8,7 @@
 
 import Foundation
 
-enum UserIdentityType: String {
+enum UserIdentityType: String, Codable {
   case phone
   case twitter
 }
@@ -53,7 +53,7 @@ public struct UserPatchPrivateBody: Encodable {
 
 public enum UserResponseKey: String, KeyPathDescribable {
   public typealias ObjectType = UserResponse
-  case id, phoneNumberHash, createdAt, updatedAt, status, verificationTtl, verifiedAt, walletId
+  case status
 }
 
 protocol UserIdentifiable {

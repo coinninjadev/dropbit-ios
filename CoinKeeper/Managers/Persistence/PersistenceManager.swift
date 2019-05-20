@@ -287,7 +287,7 @@ class PersistenceManager: PersistenceManagerType {
     }
   }
 
-  func persistReceivedSharedPayloads(_ payloads: [SharedPayloadV1], kit: PhoneNumberKit, in context: NSManagedObjectContext) {
+  func persistReceivedSharedPayloads(_ payloads: [SharedPayloadV2], kit: PhoneNumberKit, in context: NSManagedObjectContext) {
     let hasher = self.hashingManager
     databaseManager.persistReceivedSharedPayloads(
       payloads,

@@ -80,7 +80,7 @@ protocol PersistenceManagerType: DeviceCountryCodeProvider {
     in context: NSManagedObjectContext
   ) -> CKMTransaction
   func persistReceivedSharedPayloads(
-    _ payloads: [SharedPayloadV1],
+    _ payloads: [SharedPayloadV2],
     kit: PhoneNumberKit,
     in context: NSManagedObjectContext
   )
@@ -216,7 +216,7 @@ protocol PersistenceDatabaseType: AnyObject {
   ) -> CKMTransaction
 
   func persistReceivedSharedPayloads(
-    _ payloads: [SharedPayloadV1],
+    _ payloads: [SharedPayloadV2],
     hasher: HashingManager,
     kit: PhoneNumberKit,
     contactCacheManager: ContactCacheManagerType,

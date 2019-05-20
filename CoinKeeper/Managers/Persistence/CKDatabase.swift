@@ -214,7 +214,7 @@ class CKDatabase: PersistenceDatabaseType {
   }
 
   func persistReceivedSharedPayloads(
-    _ payloads: [SharedPayloadV1],
+    _ payloads: [SharedPayloadV2],
     hasher: HashingManager,
     kit: PhoneNumberKit,
     contactCacheManager: ContactCacheManagerType,
@@ -234,17 +234,25 @@ class CKDatabase: PersistenceDatabaseType {
         tx.memo = payload.info.memo
       }
 
-      let phoneNumber = payload.profile.globalPhoneNumber()
-      let phoneNumberHash = hasher.hash(phoneNumber: phoneNumber, salt: salt, parsedNumber: nil, kit: kit)
+      guard let profile = payload.profile else { continue }
+      switch profile.type {
+      case .phone:
+        guard let phoneNumber = profile.globalPhoneNumber() else { continue }
+        let phoneNumberHash = hasher.hash(phoneNumber: phoneNumber, salt: salt, parsedNumber: nil, kit: kit)
+        if tx.phoneNumber == nil, let inputs = ManagedPhoneNumberInputs(phoneNumber: phoneNumber) {
+          tx.phoneNumber = CKMPhoneNumber.findOrCreate(withInputs: inputs,
+                                                       phoneNumberHash: phoneNumberHash,
+                                                       in: context)
 
-      if tx.phoneNumber == nil, let inputs = ManagedPhoneNumberInputs(phoneNumber: phoneNumber) {
-        tx.phoneNumber = CKMPhoneNumber.findOrCreate(withInputs: inputs,
-                                                     phoneNumberHash: phoneNumberHash,
-                                                     in: context)
-
-        let counterpartyInputs = contactCacheManager.managedContactComponents(forGlobalPhoneNumber: phoneNumber)?.counterpartyInputs
-        if let name = counterpartyInputs?.name {
-          tx.phoneNumber?.counterparty = CKMCounterparty.findOrCreate(with: name, in: context)
+          let counterpartyInputs = contactCacheManager.managedContactComponents(forGlobalPhoneNumber: phoneNumber)?.counterpartyInputs
+          if let name = counterpartyInputs?.name {
+            tx.phoneNumber?.counterparty = CKMCounterparty.findOrCreate(with: name, in: context)
+          }
+        }
+      case .twitter:
+        guard let twitterContact = profile.twitterContact() else { continue }
+        if tx.twitterContact == nil {
+          tx.twitterContact = CKMTwitterContact.findOrCreate(with: twitterContact, in: context)
         }
       }
 

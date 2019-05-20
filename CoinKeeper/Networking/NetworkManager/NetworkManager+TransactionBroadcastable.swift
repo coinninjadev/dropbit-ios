@@ -108,19 +108,19 @@ extension NetworkManager: TransactionBroadcastable {
       return Promise.value(outgoingTxData.txid)
     }
 
-    guard let senderNumber = self.persistenceManager.verifiedPhoneNumber() else {
-      return Promise(error: CKPersistenceError.missingValue(key: "phoneNumber"))
+    switch outgoingTxData.dropBitType {
+    case .none: return Promise(error: CKPersistenceError.missingValue(key: "identity"))
+    default: break
     }
 
     guard let amountInfo = sharedPayloadDTO.amountInfo else {
       return Promise(error: CKPersistenceError.missingValue(key: "amountInfo"))
     }
 
-    let payload = SharedPayloadV1(txid: outgoingTxData.txid,
+    let payload = SharedPayloadV2(txid: outgoingTxData.txid,
                                   memo: sharedPayloadDTO.memo,
                                   amountInfo: amountInfo,
-                                  senderPhoneNumber: senderNumber)
-
+                                  dropBitType: outgoingTxData.dropBitType)
     return walletManager.encryptPayload(payload, addressPubKey: addressPubKey)
       .then { encryptedPayload -> Promise<Void> in
         let sharingObservantPayload = sharedPayloadDTO.shouldShare ? encryptedPayload : ""
