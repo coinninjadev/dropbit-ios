@@ -106,7 +106,7 @@
 		3B325D572190B2CE0094897C /* MockRecoveryWordsIntroViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B325D552190B1770094897C /* MockRecoveryWordsIntroViewControllerDelegate.swift */; };
 		3B3779EF219C6B2800F79683 /* BackupWordsReminderDrawerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B3779ED219C6B2800F79683 /* BackupWordsReminderDrawerCell.swift */; };
 		3B3779F0219C6B2800F79683 /* BackupWordsReminderDrawerCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3B3779EE219C6B2800F79683 /* BackupWordsReminderDrawerCell.xib */; };
-		3B3779F2219C9DE100F79683 /* SkipRecoveryWordsUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B3779F1219C9DE100F79683 /* SkipRecoveryWordsUITests.swift */; };
+		3B3779F2219C9DE100F79683 /* NewWalletUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B3779F1219C9DE100F79683 /* NewWalletUITests.swift */; };
 		3B3779F4219C9F4800F79683 /* RecoveryWordsIntroPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B3779F3219C9F4800F79683 /* RecoveryWordsIntroPage.swift */; };
 		3B3779F6219CA79100F79683 /* SwiftMessagesBannerPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B3779F5219CA79100F79683 /* SwiftMessagesBannerPage.swift */; };
 		3B3779F8219DB6C800F79683 /* PinEntryPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B3779F7219DB6C800F79683 /* PinEntryPage.swift */; };
@@ -907,7 +907,7 @@
 		3B325D552190B1770094897C /* MockRecoveryWordsIntroViewControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockRecoveryWordsIntroViewControllerDelegate.swift; sourceTree = "<group>"; };
 		3B3779ED219C6B2800F79683 /* BackupWordsReminderDrawerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupWordsReminderDrawerCell.swift; sourceTree = "<group>"; };
 		3B3779EE219C6B2800F79683 /* BackupWordsReminderDrawerCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BackupWordsReminderDrawerCell.xib; sourceTree = "<group>"; };
-		3B3779F1219C9DE100F79683 /* SkipRecoveryWordsUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkipRecoveryWordsUITests.swift; sourceTree = "<group>"; };
+		3B3779F1219C9DE100F79683 /* NewWalletUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewWalletUITests.swift; sourceTree = "<group>"; };
 		3B3779F3219C9F4800F79683 /* RecoveryWordsIntroPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecoveryWordsIntroPage.swift; sourceTree = "<group>"; };
 		3B3779F5219CA79100F79683 /* SwiftMessagesBannerPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftMessagesBannerPage.swift; sourceTree = "<group>"; };
 		3B3779F7219DB6C800F79683 /* PinEntryPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinEntryPage.swift; sourceTree = "<group>"; };
@@ -2946,7 +2946,7 @@
 			children = (
 				B51FB0E72175221A005CBAD6 /* UITestCase.swift */,
 				B5D1B2CB219337C6006B2BC7 /* ImportWalletUITests.swift */,
-				3B3779F1219C9DE100F79683 /* SkipRecoveryWordsUITests.swift */,
+				3B3779F1219C9DE100F79683 /* NewWalletUITests.swift */,
 				3B1BE86121B57F9300CCFE29 /* MemoEntryUITests.swift */,
 				304BAECF21FA131000065D6D /* TutorialUITests.swift */,
 			);
@@ -4054,7 +4054,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B51FB0E521751D15005CBAD6 /* UIFont+FontStrings.swift in Sources */,
-				3B3779F2219C9DE100F79683 /* SkipRecoveryWordsUITests.swift in Sources */,
+				3B3779F2219C9DE100F79683 /* NewWalletUITests.swift in Sources */,
 				3B3779F8219DB6C800F79683 /* PinEntryPage.swift in Sources */,
 				B5D1B2CC219337C6006B2BC7 /* ImportWalletUITests.swift in Sources */,
 				B58AFF392194E828001BE563 /* AccessibleElement.swift in Sources */,

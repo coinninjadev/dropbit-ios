@@ -1,5 +1,5 @@
 //
-//  SkipRecoveryWordsUITests.swift
+//  NewWalletUITests.swift
 //  DropBitUITests
 //
 //  Created by BJ Miller on 11/14/18.
@@ -8,7 +8,7 @@
 
 import XCTest
 
-class SkipRecoveryWordsUITests: UITestCase {
+class NewWalletUITests: UITestCase {
 
   override func setUp() {
     super.setUp()
