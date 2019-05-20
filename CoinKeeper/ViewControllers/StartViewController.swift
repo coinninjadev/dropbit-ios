@@ -40,7 +40,9 @@ final class StartViewController: BaseViewController {
 
   override func accessibleViewsAndIdentifiers() -> [AccessibleViewElement] {
     return [
-      (self.view, .start(.page))
+      (self.view, .start(.page)),
+      (self.newWalletButton, .start(.newWallet)),
+      (self.restoreWalletButton, .start(.restoreWallet))
     ]
   }
 

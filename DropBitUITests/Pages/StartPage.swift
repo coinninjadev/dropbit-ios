@@ -16,7 +16,7 @@ class StartPage: UITestPage {
 
   @discardableResult
   func tapRestore() -> Self {
-    let restoreButton = app.buttons["Restore from backup"]
+    let restoreButton = app.buttons(.start(.restoreWallet))
     restoreButton.assertExistence(afterWait: .none, elementDesc: "restoreButton")
     restoreButton.tap()
     return self
@@ -24,7 +24,7 @@ class StartPage: UITestPage {
 
   @discardableResult
   func tapNewWallet() -> Self {
-    let button = app.buttons["NEW WALLET"]
+    let button = app.buttons(.start(.newWallet))
     button.assertExistence(afterWait: .none, elementDesc: "newWalletButton")
     button.tap()
     return self

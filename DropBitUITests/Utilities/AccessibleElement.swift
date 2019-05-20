@@ -106,6 +106,8 @@ enum TutorialElement: String, AccessibleElement {
 
 enum StartElement: String, AccessibleElement {
   case page
+  case restoreWallet
+  case newWallet
 }
 
 enum SuccessFailElement: String, AccessibleElement {

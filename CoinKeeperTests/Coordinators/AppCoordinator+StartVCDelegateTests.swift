@@ -24,32 +24,9 @@ class AppCoordinatorStartVCDelegateTests: XCTestCase {
     super.tearDown()
   }
 
-  func testWhenNoPinCreatedPushesPinCreationToNav() {
-    let mockNavigationController = MockNavigationController()
-    let mockPersistenceManager = MockPersistenceManager()
-    let mockLaunchStateManager = MockLaunchStateManager(persistenceManager: mockPersistenceManager)
-    mockLaunchStateManager.nextLaunchStep = .enterPin
-    self.sut = AppCoordinator(
-      navigationController: mockNavigationController,
-      persistenceManager: mockPersistenceManager,
-      launchStateManager: mockLaunchStateManager
-    )
-
-    self.sut.createWallet()
-
-    XCTAssertTrue(mockNavigationController.pushedViewController is PinCreationViewController, "pushed vc should be PinCreationVC")
-
-    if let pinCreationVC = mockNavigationController.pushedViewController as? PinCreationViewController {
-      XCTAssertTrue(pinCreationVC.coordinationDelegate === self.sut, "coordinationDelegate should be sut")
-    } else {
-      XCTFail("pushed vc should be PinCreationVC")
-    }
-  }
-
   func testWhenPinCreatedLaunchStateManagerRequiresAuthentication() {
     let mockPersistenceManager = MockPersistenceManager()
     let mockLaunchStateManager = MockLaunchStateManager(persistenceManager: mockPersistenceManager)
-    mockLaunchStateManager.nextLaunchStep = .createWallet
     _ = mockPersistenceManager.keychainManager.store(valueToHash: "foo", key: .userPin)
     self.sut = AppCoordinator(persistenceManager: mockPersistenceManager, launchStateManager: mockLaunchStateManager)
     TestHelpers.initializeWindow(with: self.sut.navigationController)
@@ -73,7 +50,6 @@ class AppCoordinatorStartVCDelegateTests: XCTestCase {
     let mockNavigationController = MockNavigationController()
     let mockPersistenceManager = MockPersistenceManager()
     let mockLaunchStateManager = MockLaunchStateManager(persistenceManager: mockPersistenceManager)
-    mockLaunchStateManager.nextLaunchStep = .verifyDevice
     self.sut = AppCoordinator(
       navigationController: mockNavigationController,
       persistenceManager: mockPersistenceManager,
@@ -84,10 +60,19 @@ class AppCoordinatorStartVCDelegateTests: XCTestCase {
 
     self.sut.createWallet()
 
-    XCTAssertTrue(mockNavigationController.pushedViewController is DeviceVerificationViewController, "pushedVC should be DeviceVerificationVC")
+    let expectation = XCTestExpectation(description: "pin entry")
 
-    let viewController = mockNavigationController.pushedViewController as? DeviceVerificationViewController
-    XCTAssertTrue(viewController?.coordinationDelegate === self.sut.childCoordinators.first, "coordinationDelegate should be sut")
+    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+      XCTAssertTrue(mockNavigationController.pushedViewController is PinCreationViewController,
+                    "pushed view controller should be PinCreationViewController")
+
+      let viewController = mockNavigationController.pushedViewController as? PinCreationViewController
+      XCTAssertTrue(viewController?.coordinationDelegate === self.sut, "coordinationDelegate should be sut")
+
+      expectation.fulfill()
+    }
+
+    wait(for: [expectation], timeout: 2)
   }
 
   func testCreatingWalletWhenOnboardingFlowCompletedPopsToRoot() {
@@ -98,7 +83,6 @@ class AppCoordinatorStartVCDelegateTests: XCTestCase {
     mockNavigationController.viewControllers = [StartViewController.makeFromStoryboard()]
     mockLaunchStateManager.mockShouldRequireAuthentication = false
 
-    mockLaunchStateManager.nextLaunchStep = .enterApp
     self.sut = AppCoordinator(navigationController: mockNavigationController,
                               persistenceManager: mockPersistenceManager,
                               launchStateManager: mockLaunchStateManager)
