@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="72" id="KGk-i7-Jjw" customClass="TwitterUserTableViewCell" customModule="DropBit" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="72"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="71.5"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="meF-IJ-yOu">
+                        <rect key="frame" x="32" y="8" width="256" height="55.5"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="WPo-xN-hIC">
+                                <rect key="frame" x="0.0" y="9.5" width="37" height="37"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="WPo-xN-hIC" secondAttribute="height" multiplier="1:1" id="gMC-9c-LPW"/>
+                                    <constraint firstAttribute="width" constant="37" id="ngC-7y-zWB"/>
+                                </constraints>
+                            </imageView>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="hil-l9-MCP">
+                                <rect key="frame" x="53" y="5.5" width="150" height="45"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nk0-cR-JlI" customClass="ContactCellPrimaryLabel" customModule="DropBit" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="0.0" width="150" height="20.5"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QcG-R0-FKr" customClass="ContactCellSecondaryLabel" customModule="DropBit" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="24.5" width="150" height="20.5"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                            </stackView>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="dropBitIcon" translatesAutoresizingMaskIntoConstraints="NO" id="I6d-lk-rfw">
+                                <rect key="frame" x="219" y="9.5" width="37" height="37"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="I6d-lk-rfw" secondAttribute="height" multiplier="1:1" id="IW9-Ex-5qB"/>
+                                    <constraint firstAttribute="width" constant="37" id="c7S-2k-fhP"/>
+                                </constraints>
+                            </imageView>
+                        </subviews>
+                    </stackView>
+                </subviews>
+                <constraints>
+                    <constraint firstAttribute="bottom" secondItem="meF-IJ-yOu" secondAttribute="bottom" constant="8" id="9OO-Zq-mRe"/>
+                    <constraint firstItem="meF-IJ-yOu" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="8" id="WiQ-j2-vD3"/>
+                    <constraint firstItem="meF-IJ-yOu" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="32" id="h4Y-a4-YBd"/>
+                    <constraint firstAttribute="trailing" secondItem="meF-IJ-yOu" secondAttribute="trailing" constant="32" id="mUH-bd-1PC"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <connections>
+                <outlet property="avatarImageView" destination="WPo-xN-hIC" id="JPj-aG-hQg"/>
+                <outlet property="dropbitImageView" destination="I6d-lk-rfw" id="YwR-5W-ac9"/>
+                <outlet property="nameLabel" destination="nk0-cR-JlI" id="Ozh-nI-Sdh"/>
+                <outlet property="screenNameLabel" destination="QcG-R0-FKr" id="dHx-VQ-Hu1"/>
+            </connections>
+            <point key="canvasLocation" x="47.826086956521742" y="44.196428571428569"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="dropBitIcon" width="37" height="37"/>
+    </resources>
+</document>

@@ -138,16 +138,27 @@ class PersistenceManager: PersistenceManagerType {
   }
 
   func getUserPublicURLInfo(in context: NSManagedObjectContext) -> UserPublicURLInfo? {
+    guard let user = CKMUser.find(in: context) else { return nil }
+    let phoneIdentity = self.phoneIdentity(for: user, in: context)
+    let twitterIdentity = self.twitterIdentity()
+    let identities = [phoneIdentity, twitterIdentity].compactMap { $0 }
+
+    return UserPublicURLInfo(private: user.publicURLIsPrivate, identities: identities)
+  }
+
+  private func twitterIdentity() -> PublicURLIdentity? {
+    guard let creds = keychainManager.oauthCredentials() else { return nil }
+    return PublicURLIdentity(twitterCredentials: creds)
+  }
+  private func phoneIdentity(for user: CKMUser, in context: NSManagedObjectContext) -> PublicURLIdentity? {
     let hasher = HashingManager()
     let kit = PhoneNumberKit()
-    guard let user = CKMUser.find(in: context),
-      let salt = try? hasher.salt(),
+    guard let salt = try? hasher.salt(),
       let phoneNumber = self.verifiedPhoneNumber() else { return nil }
 
     let hash = hasher.hash(phoneNumber: phoneNumber, salt: salt, parsedNumber: nil, kit: kit)
     let phoneIdentity = PublicURLIdentity(fullPhoneHash: hash)
-
-    return UserPublicURLInfo(private: user.publicURLIsPrivate, identities: [phoneIdentity])
+    return phoneIdentity
   }
 
   func persistVerificationStatus(from response: UserResponse, in context: NSManagedObjectContext) -> Promise<UserVerificationStatus> {
@@ -161,7 +172,8 @@ class PersistenceManager: PersistenceManagerType {
     databaseManager.unverifyUser(in: self.mainQueueContext())
 
     userDefaultsManager.unverifyUser()
-    keychainManager.unverifyUser()
+    keychainManager.unverifyUser(for: .phone)
+    keychainManager.unverifyUser(for: .twitter)
   }
 
   func removeWalletId(in context: NSManagedObjectContext) {
@@ -239,10 +251,12 @@ class PersistenceManager: PersistenceManagerType {
     return databaseManager.lastChangeIndex(in: context)
   }
 
-  func deregisterPhone() {
+  /// Should be called when last identity is deverified
+  func unverifyAllIdentities() {
     let context = mainQueueContext()
     databaseManager.unverifyUser(in: context)
-    keychainManager.unverifyUser()
+    keychainManager.unverifyUser(for: .phone)
+    keychainManager.unverifyUser(for: .twitter)
     userDefaultsManager.unverifyUser()
   }
 
@@ -330,7 +344,6 @@ class PersistenceManager: PersistenceManagerType {
       let deviceEndpointId = string(for: .deviceEndpointId) else {
         return nil
     }
-
     return DeviceEndpointIds(serverDevice: serverDeviceId, endpoint: deviceEndpointId)
   }
 
@@ -435,6 +448,19 @@ class PersistenceManager: PersistenceManagerType {
     databaseManager.matchContactsIfPossible(with: contactCacheManager)
   }
 
+  func verifiedIdentities() -> [UserIdentityType] {
+    let context = mainQueueContext()
+    guard userIsVerified(in: context) else { return [] }
+    var retVal: [UserIdentityType] = []
+    if keychainManager.oauthCredentials() != nil {
+      retVal.append(.twitter)
+    }
+    if verifiedPhoneNumber() != nil {
+      retVal.append(.phone)
+    }
+    return retVal
+  }
+
   func dustProtectionMinimumAmount() -> Int {
     return userDefaultsManager.dustProtectionMinimumAmount()
   }
@@ -472,7 +498,6 @@ class PersistenceManager: PersistenceManagerType {
     guard let array = CKUserDefaults.standardDefaults.array(forKey: key.defaultsString) as? [String] else {
       return nil
     }
-
     return array
   }
 
@@ -516,5 +541,4 @@ class PersistenceManager: PersistenceManagerType {
     let stringValue = CKUserDefaults.standardDefaults.value(forKey: CKUserDefaults.Key.selectedCurrency.defaultsString) as? String
     return stringValue.flatMap { SelectedCurrency(rawValue: $0) } ?? .fiat
   }
-
 }

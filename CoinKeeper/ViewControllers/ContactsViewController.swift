@@ -30,6 +30,10 @@ protocol ContactsViewControllerDelegate: ViewControllerDismissable, URLOpener {
                                           validSelectionDelegate: SelectedValidContactDelegate)
 
   func showAlertForInvalidContactOrPhoneNumber(contactName: String?, displayNumber: String)
+  func showAlertForNoTwitterAuthorization()
+  func searchForTwitterUsers(with searchTerm: String) -> Promise<[TwitterUser]>
+  func defaultTwitterFriends() -> Promise<[TwitterUser]>
+  func viewController(_ viewController: UIViewController, didSelectTwitterUser user: TwitterUser)
 }
 
 protocol SelectedValidContactDelegate: AnyObject {
@@ -50,7 +54,7 @@ class ContactsViewController: PresentableViewController, StoryboardInitializable
   @IBOutlet var twitterButton: UIButton!
   @IBOutlet var selectedButtonIndicator: UIView!
   @IBOutlet var indicatorLeadingConstraint: NSLayoutConstraint!
-  @IBOutlet var searchBar: UISearchBar!
+  @IBOutlet var searchBar: CNContactSearchBar!
   @IBOutlet var activityIndiciator: UIActivityIndicatorView!
 
   @IBAction func toggleDataSource(_ sender: UIButton) {
@@ -58,6 +62,10 @@ class ContactsViewController: PresentableViewController, StoryboardInitializable
       setSelectedButton(to: sender)
     }
   }
+
+  private lazy var twitterUserDataSource: TwitterSearchDataSource = {
+    return TwitterSearchDataSource(tableView: self.tableView)
+  }()
 
   private func button(forMode mode: ContactsViewControllerMode) -> UIButton {
     switch mode {
@@ -72,6 +80,8 @@ class ContactsViewController: PresentableViewController, StoryboardInitializable
     } else if button == twitterButton {
       mode = .twitter
     }
+
+    setupTableView()
 
     let duration: TimeInterval = animated ? 0.3 : 0
     UIView.animate(withDuration: duration) {
@@ -113,6 +123,7 @@ class ContactsViewController: PresentableViewController, StoryboardInitializable
   var frc: NSFetchedResultsController<CCMPhoneNumber>!
 
   func setupTableView() {
+    activityIndiciator.stopAnimating()
     guard let delegate = coordinationDelegate else { return }
     self.frc = delegate.createFetchedResultsController()
     self.frc.delegate = self
@@ -121,17 +132,37 @@ class ContactsViewController: PresentableViewController, StoryboardInitializable
     view.backgroundColor = Theme.Color.lightGrayBackground.color
 
     tableView.registerNib(cellType: ContactCell.self)
+    tableView.registerNib(cellType: TwitterUserTableViewCell.self)
     tableView.registerHeaderFooter(headerFooterType: ContactsTableViewHeader.self)
     tableView.tableFooterView = UIView()
+    searchBar.searchTextField?.text = nil
 
     tableView.delegate = self
-    tableView.dataSource = self
-
-    do {
-      try self.frc.performFetch()
-    } catch {
-      os_log("Contacts FRC failed to perform fetch: %@", log: logger, type: .error, error.localizedDescription)
+    switch mode {
+    case .contacts:
+      tableView.dataSource = self
+      do {
+        try self.frc.performFetch()
+        tableView.reloadData()
+      } catch {
+        os_log("Contacts FRC failed to perform fetch: %@", log: logger, type: .error, error.localizedDescription)
+      }
+    case .twitter:
+      tableView.dataSource = self.twitterUserDataSource
+      if twitterUserDataSource.shouldReloadFriends {
+        activityIndiciator.startAnimating()
+        coordinationDelegate?.defaultTwitterFriends()
+          .done(on: .main) { self.twitterUserDataSource.updateDefaultFriends($0) }
+          .catch { error in
+            self.coordinationDelegate?.showAlertForNoTwitterAuthorization()
+            os_log("failed to fetch twitter friends: %@", log: self.logger, type: .error, error.localizedDescription)
+          }
+          .finally { self.activityIndiciator.stopAnimating() }
+      } else {
+        twitterUserDataSource.reset()
+      }
     }
+
   }
 
   private func setupModeSelector() {
@@ -157,7 +188,7 @@ class ContactsViewController: PresentableViewController, StoryboardInitializable
 
     setupModeSelector()
     setupTableView()
-    styleSearchBar()
+    setupSearchBar()
 
     activityIndiciator.hidesWhenStopped = true
     searchBar.delegate = self
@@ -180,21 +211,9 @@ class ContactsViewController: PresentableViewController, StoryboardInitializable
     }
   }
 
-  private func styleSearchBar() {
-    guard let textField = searchBar.value(forKey: "_searchField") as? UITextField else {
-      return
-    }
-
-    textField.borderStyle = .none
-    textField.font = Theme.Font.searchPlaceholderLabel.font
-    textField.backgroundColor = Theme.Color.lightGrayBackground.color
-    let leadingOffset = UIOffset(horizontal: CGFloat(30), vertical: CGFloat(0))
-    searchBar.setPositionAdjustment(leadingOffset, for: .search)
-    textField.backgroundColor = Theme.Color.searchBarLightGray.color
-
+  private func setupSearchBar() {
+    guard let textField = searchBar.searchTextField else { return }
     setupKeyboardDoneButton(for: [textField], action: #selector(doneButtonWasPressed))
-    searchBar.searchTextPositionAdjustment = UIOffset(horizontal: 10.0, vertical: 0.0)
-    searchBar.backgroundColor = Theme.Color.searchBarLightGray.color
   }
 
   @objc func doneButtonWasPressed() {
@@ -205,18 +224,28 @@ class ContactsViewController: PresentableViewController, StoryboardInitializable
     searchBar.resignFirstResponder()
     coordinationDelegate?.viewControllerDidSelectClose(self)
   }
-
 }
 
 extension ContactsViewController: UISearchBarDelegate {
 
   func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-    // To limit fetch frequency, call frc.performFetch() a moment after last key press.
-    frc.fetchRequest.predicate = coordinationDelegate?.predicate(forSearch: searchText)
+    switch mode {
+    case .contacts:
+      // To limit fetch frequency, call frc.performFetch() a moment after last key press.
+      frc.fetchRequest.predicate = coordinationDelegate?.predicate(forSearch: searchText)
 
-    let fetchSelector = #selector(performFetchForSearch)
-    NSObject.cancelPreviousPerformRequests(withTarget: self, selector: fetchSelector, object: nil)
-    self.perform(fetchSelector, with: nil, afterDelay: 0.25)
+      let fetchSelector = #selector(performFetchForSearch)
+      NSObject.cancelPreviousPerformRequests(withTarget: self, selector: fetchSelector, object: nil)
+      self.perform(fetchSelector, with: nil, afterDelay: 0.25)
+    case .twitter:
+      guard searchText.count > 2 else { return }
+      if searchText.isEmpty {
+        twitterUserDataSource.reset()
+      }
+      let fetchSelector = #selector(performTwitterSearch)
+      NSObject.cancelPreviousPerformRequests(withTarget: self, selector: fetchSelector, object: nil)
+      self.perform(fetchSelector, with: nil, afterDelay: 0.5)
+    }
   }
 
   @objc func performFetchForSearch() {
@@ -228,6 +257,35 @@ extension ContactsViewController: UISearchBarDelegate {
     }
   }
 
+  @objc func performTwitterSearch() {
+    guard let term = searchBar.text else {
+      twitterUserDataSource.reset()
+      return
+    }
+    activityIndiciator.startAnimating()
+    _ = coordinationDelegate?.searchForTwitterUsers(with: term)
+      .get(on: .main) { _ in self.activityIndiciator.stopAnimating() }
+      .done { self.twitterUserDataSource.update(users: $0) }
+  }
+
+  func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+    searchBar.resignFirstResponder()
+    switch mode {
+    case .contacts: break
+    case .twitter:
+      guard let delegate = coordinationDelegate, let text = searchBar.text else { return }
+      activityIndiciator.startAnimating()
+      _ = delegate.searchForTwitterUsers(with: text)
+        .get(on: .main) { _ in self.activityIndiciator.stopAnimating() }
+        .done { self.twitterUserDataSource.update(users: $0) }
+    }
+  }
+
+  func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+    if (searchBar.text ?? "").isEmpty {
+      twitterUserDataSource.update(users: [])
+    }
+  }
 }
 
 extension ContactsViewController: UITableViewDelegate, UITableViewDataSource {
@@ -280,7 +338,7 @@ extension ContactsViewController: UITableViewDelegate, UITableViewDataSource {
   }
 
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    self.didSelectCachedNumber(at: indexPath)
+    self.didSelectContact(at: indexPath)
   }
 
 }
@@ -296,15 +354,20 @@ extension ContactsViewController: NSFetchedResultsControllerDelegate {
 
 extension ContactsViewController: ContactCellDelegate {
 
-  func didSelectCachedNumber(at indexPath: IndexPath) {
-    guard let delegate = self.selectionDelegate else { return }
+  func didSelectContact(at indexPath: IndexPath) {
+    switch mode {
+    case .contacts:
+      guard let delegate = self.selectionDelegate else { return }
 
-    let cachedNumber = frc.object(at: indexPath)
-    trackEvent(forSelectedNumber: cachedNumber)
+      let cachedNumber = frc.object(at: indexPath)
+      trackEvent(forSelectedNumber: cachedNumber)
 
-    coordinationDelegate?.viewControllerDidSelectPhoneNumber(self,
-                                                             cachedNumber: cachedNumber,
-                                                             validSelectionDelegate: delegate)
+      coordinationDelegate?.viewControllerDidSelectPhoneNumber(self,
+                                                               cachedNumber: cachedNumber,
+                                                               validSelectionDelegate: delegate)
+    case .twitter:
+      break // hit API with snowflake to find user
+    }
   }
 
   private func trackEvent(forSelectedNumber number: CCMPhoneNumber) {
@@ -318,12 +381,12 @@ extension ContactsViewController: ContactCellDelegate {
 
   func sendButtonWasTouched(inCell cell: ContactCell) {
     guard let path = tableView.indexPath(for: cell) else { return }
-    didSelectCachedNumber(at: path)
+    didSelectContact(at: path)
   }
 
   func inviteButtonWasTouched(inCell cell: ContactCell) {
     guard let path = tableView.indexPath(for: cell) else { return }
-    didSelectCachedNumber(at: path)
+    didSelectContact(at: path)
   }
 
 }

@@ -60,7 +60,7 @@ class MockPersistenceManager: PersistenceManagerType {
   func walletWords() -> [String]? {
     return keychainManager.retrieveValue(for: .walletWords) as? [String]
   }
-  func deregisterPhone() {}
+  func unverifyAllIdentities() {}
   func persist(pendingInvitationData data: PendingInvitationData) {}
   func persistUnacknowledgedInvitation(in context: NSManagedObjectContext, with btcPair: BitcoinUSDPair,
                                        contact: ContactType, fee: Int, acknowledgementId: String) {}
@@ -75,6 +75,9 @@ class MockPersistenceManager: PersistenceManagerType {
   }
 
   func matchContactsIfPossible() { databaseManager.matchContactsIfPossible(with: self.contactCacheManager) }
+  func verifiedIdentities() -> [UserIdentityType] {
+    return []
+  }
 
   var unacknowledgedInvitations: [CKMInvitation] = []
   func getUnacknowledgedInvitations(in context: NSManagedObjectContext) -> [CKMInvitation] {

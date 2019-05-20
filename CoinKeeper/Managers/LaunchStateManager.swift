@@ -73,9 +73,9 @@ class LaunchStateManager: LaunchStateManagerType {
       options.insert(.wordsBackedUp)
     }
 
-    let bgContext = persistenceManager.databaseManager.createBackgroundContext()
-    bgContext.performAndWait {
-      if persistenceManager.userVerificationStatus(in: bgContext) == .verified {
+    let context = persistenceManager.mainQueueContext()
+    context.performAndWait {
+      if persistenceManager.userVerificationStatus(in: context) == .verified {
         options.insert(.deviceVerified)
       }
     }

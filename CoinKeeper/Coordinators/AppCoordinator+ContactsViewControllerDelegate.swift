@@ -49,6 +49,15 @@ extension AppCoordinator: ContactsViewControllerDelegate {
     self.navigationController.topViewController()?.present(alert, animated: true)
   }
 
+  func showAlertForNoTwitterAuthorization() {
+    let message = """
+    In order to send bitcoin to a Twitter contact, you must authorize DropBit with your Twitter account.
+    """
+
+    let alert = self.alertManager.defaultAlert(withTitle: "No access to Twitter", description: message)
+    self.navigationController.topViewController()?.present(alert, animated: true)
+  }
+
   func viewControllerDidRequestRefreshVerificationStatuses(_ viewController: UIViewController, completion: @escaping ((Error?) -> Void)) {
     self.contactCacheDataWorker.refreshStatuses()
       .done { completion(nil) }
@@ -75,4 +84,15 @@ extension AppCoordinator: ContactsViewControllerDelegate {
     navigationController.topViewController()?.present(alert, animated: true)
   }
 
+  func searchForTwitterUsers(with searchTerm: String) -> Promise<[TwitterUser]> {
+    return networkManager.findTwitterUsers(using: searchTerm)
+  }
+
+  func defaultTwitterFriends() -> Promise<[TwitterUser]> {
+    return networkManager.defaultFollowingList()
+  }
+
+  func viewController(_ viewController: UIViewController, didSelectTwitterUser user: TwitterUser) {
+
+  }
 }

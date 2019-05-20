@@ -181,8 +181,7 @@ class AppCoordinator: CoordinatorType {
 
         // StartViewController is the default root VC
         // Child coordinator will push DeviceVerificationViewController onto stack in its start() method
-        startDeviceVerificationFlow(shouldOrphanRoot: true, selectedSetupFlow: .newWallet)
-
+        startDeviceVerificationFlow(userIdentityType: .phone, shouldOrphanRoot: true, selectedSetupFlow: .newWallet)
       } else if launchStateManager.isFirstTime() {
         let startVC = StartViewController.makeFromStoryboard()
         assignCoordinationDelegate(to: startVC)
