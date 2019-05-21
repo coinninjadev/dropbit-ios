@@ -43,16 +43,13 @@ class TransactionHistorySummaryCellTests: XCTestCase {
     let expectedAddress = "3NNE2SY73JkrupbWKu6iVCsGjrcNKXH4hR"
     let otd = OutgoingTransactionData(
       txid: "123txid",
-      contactName: "",
-      contactPhoneNumber: nil,
-      contactPhoneNumberHash: "",
+      dropBitType: .none,
       destinationAddress: expectedAddress,
       amount: 123_456,
       feeAmount: 300,
       sentToSelf: false,
       requiredFeeRate: nil,
-      sharedPayloadDTO: testPayloadDTO
-    )
+      sharedPayloadDTO: testPayloadDTO)
     let viewModel = sampleData(with: otd)
 
     // when
@@ -75,18 +72,18 @@ class TransactionHistorySummaryCellTests: XCTestCase {
     // given
     let expectedAddress = "3NNE2SY73JkrupbWKu6iVCsGjrcNKXH4hR"
     let expectedName = "Indiana Jones"
+    let number = GlobalPhoneNumber(countryCode: 1, nationalNumber: "3305551212")
+    let phoneContact = ValidatedContact(kind: .invite, displayName: expectedName, displayNumber: number.asE164(), globalPhoneNumber: number)
+    let dropBitType = OutgoingTransactionDropBitType.phone(phoneContact)
     let otd = OutgoingTransactionData(
       txid: "123txid",
-      contactName: expectedName,
-      contactPhoneNumber: GlobalPhoneNumber(countryCode: 1, nationalNumber: "3305551212"),
-      contactPhoneNumberHash: "",
+      dropBitType: dropBitType,
       destinationAddress: expectedAddress,
       amount: 123_456,
       feeAmount: 300,
       sentToSelf: false,
       requiredFeeRate: nil,
-      sharedPayloadDTO: testPayloadDTO
-    )
+      sharedPayloadDTO: testPayloadDTO)
     let viewModel = sampleData(with: otd)
 
     // when
@@ -110,18 +107,19 @@ class TransactionHistorySummaryCellTests: XCTestCase {
     let expectedAddress = "3NNE2SY73JkrupbWKu6iVCsGjrcNKXH4hR"
     let unformattedPhone = "3305551212"
     let formattedPhone = "+1 330-555-1212"
+    let number = GlobalPhoneNumber(countryCode: 1, nationalNumber: unformattedPhone)
+    let phoneContact = GenericContact(phoneNumber: number, formatted: formattedPhone)
+    let dropBitType = OutgoingTransactionDropBitType.phone(phoneContact)
     let otd = OutgoingTransactionData(
       txid: "123txid",
-      contactName: "",
-      contactPhoneNumber: GlobalPhoneNumber(countryCode: 1, nationalNumber: unformattedPhone),
-      contactPhoneNumberHash: "",
+      dropBitType: dropBitType,
       destinationAddress: expectedAddress,
       amount: 123_456,
       feeAmount: 300,
       sentToSelf: false,
       requiredFeeRate: nil,
-      sharedPayloadDTO: testPayloadDTO
-    )
+      sharedPayloadDTO: testPayloadDTO)
+
     let viewModel = sampleData(with: otd)
 
     // when
@@ -145,16 +143,13 @@ class TransactionHistorySummaryCellTests: XCTestCase {
     let expectedAddress = "3NNE2SY73JkrupbWKu6iVCsGjrcNKXH4hR"
     let otd = OutgoingTransactionData(
       txid: "123txid",
-      contactName: "",
-      contactPhoneNumber: nil,
-      contactPhoneNumberHash: "",
+      dropBitType: .none,
       destinationAddress: expectedAddress,
       amount: 123_456,
       feeAmount: 300,
       sentToSelf: false,
       requiredFeeRate: nil,
-      sharedPayloadDTO: testPayloadDTO
-    )
+      sharedPayloadDTO: testPayloadDTO)
     let viewModel = sampleData(with: otd)
 
     // when
@@ -176,8 +171,9 @@ class TransactionHistorySummaryCellTests: XCTestCase {
   // MARK: private methods
   private func sampleData(with otd: OutgoingTransactionData, phoneFormat: PhoneNumberFormat = .national) -> TransactionHistoryDetailCellViewModel {
     let stack = InMemoryCoreDataStack()
-    let transaction = CKMTransaction(insertInto: stack.context)
-    transaction.configure(with: otd, in: stack.context)
+//    let transaction = CKMTransaction(insertInto: stack.context)
+//    transaction.configure(with: otd, in: stack.context)
+    let transaction = CKMTransaction.findOrCreate(with: otd, in: stack.context)
     let rates: ExchangeRates = [.BTC: 1, .USD: 7000]
 
     let viewModel = TransactionHistoryDetailCellViewModel(

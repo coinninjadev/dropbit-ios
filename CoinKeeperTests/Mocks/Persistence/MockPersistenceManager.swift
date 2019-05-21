@@ -61,7 +61,6 @@ class MockPersistenceManager: PersistenceManagerType {
     return keychainManager.retrieveValue(for: .walletWords) as? [String]
   }
   func unverifyAllIdentities() {}
-  func persist(pendingInvitationData data: PendingInvitationData) {}
   func persistUnacknowledgedInvitation(in context: NSManagedObjectContext, with btcPair: BitcoinUSDPair,
                                        contact: ContactType, fee: Int, acknowledgementId: String) {}
   func deleteTransactions(notIn txids: [String], in context: NSManagedObjectContext) {}
@@ -97,19 +96,7 @@ class MockPersistenceManager: PersistenceManagerType {
     return Promise { _ in }
   }
 
-  func removePendingInvitationData(with id: String) -> PendingInvitationData? {
-    return nil
-  }
-
   func backup(recoveryWords words: [String]) {}
-
-  func pendingInvitations() -> [PendingInvitationData] {
-    return []
-  }
-
-  func pendingInvitation(with id: String) -> PendingInvitationData? {
-    return nil
-  }
 
   func containsRegularTransaction(in context: NSManagedObjectContext) -> IncomingOutgoingTuple {
     return (incoming: false, outgoing: false)
@@ -128,7 +115,7 @@ class MockPersistenceManager: PersistenceManagerType {
     return CKMTransaction(insertInto: context)
   }
 
-  func persistReceivedSharedPayloads(_ payloads: [SharedPayloadV1], kit: PhoneNumberKit, in context: NSManagedObjectContext) { }
+  func persistReceivedSharedPayloads(_ payloads: [SharedPayloadV2], kit: PhoneNumberKit, in context: NSManagedObjectContext) { }
 
   func groomAddressTransactionSummaries(
     from responses: [AddressTransactionSummaryResponse],

@@ -16,24 +16,10 @@ class MockUserDefaultsManager: PersistenceUserDefaultsType {
   func unverifyUser() {}
   func removeWalletId() {}
   func deleteDeviceEndpointIds() {}
-  func persist(pendingInvitationData data: PendingInvitationData) {}
-  func setPendingInvitationFailed(_ invitation: PendingInvitationData) {}
   func setDeviceId(_ uuid: UUID) {}
 
   func deviceId() -> UUID? {
     return UUID()
-  }
-
-  func removePendingInvitation(with id: String) -> PendingInvitationData? {
-    return nil
-  }
-
-  func pendingInvitation(with id: String) -> PendingInvitationData? {
-    return nil
-  }
-
-  func pendingInvitations() -> [PendingInvitationData] {
-    return []
   }
 
   var receiveAddressIndexGapsValue: Set<Int> = []

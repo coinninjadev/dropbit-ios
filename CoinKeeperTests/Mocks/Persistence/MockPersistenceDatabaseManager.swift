@@ -118,7 +118,7 @@ class MockPersistenceDatabaseManager: PersistenceDatabaseType {
     in context: NSManagedObjectContext
     ) {}
 
-  func persistReceivedSharedPayloads(_ payloads: [SharedPayloadV1],
+  func persistReceivedSharedPayloads(_ payloads: [SharedPayloadV2],
                                      hasher: HashingManager,
                                      kit: PhoneNumberKit,
                                      contactCacheManager: ContactCacheManagerType,

@@ -39,7 +39,7 @@ extension MockNetworkManager: UserRequestable {
     return Promise { $0.reject(error) }
   }
 
-  func queryUsers(phoneNumberHashes: [String]) -> Promise<StringDictResponse> {
+  func queryUsers(identityHashes: [String]) -> Promise<StringDictResponse> {
     return Promise { _ in }
   }
 
