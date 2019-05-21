@@ -39,7 +39,16 @@ extension TwitterOAuth {
 
 extension NetworkManager: TwitterRequestable {
   func getCurrentTwitterUser() -> Promise<TwitterUser> {
-    return authorize().then { self.retrieveCurrentUser(with: $0.twitterUserId) }
+    return authorize()
+      .then { self.retrieveCurrentUser(with: $0.twitterUserId) }
+      .get({ (twitterUser: TwitterUser) in
+        let context = self.persistenceManager.createBackgroundContext()
+        context.performAndWait {
+          let user = CKMUser.find(in: context)
+          user?.avatar = twitterUser.profileImageData
+          try? context.save()
+        }
+      })
   }
 
   func authorizedTwitterCredentials() -> Promise<TwitterOAuthStorage> {
@@ -86,6 +95,7 @@ extension NetworkManager: TwitterRequestable {
   struct TwitterFriends: Decodable {
     let users: [TwitterUser]
   }
+
   private func fetchDefaultFriends() -> Promise<[TwitterUser]> {
     return Promise { seal in
       twitterOAuthManager.client.get(
