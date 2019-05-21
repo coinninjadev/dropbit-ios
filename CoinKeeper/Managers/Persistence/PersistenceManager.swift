@@ -428,8 +428,7 @@ class PersistenceManager: PersistenceManagerType {
                              in context: NSManagedObjectContext) {
     guard let invitation = CKMInvitation.updateIfExists(withAddressRequestResponse: response,
                                                         side: .sent, isAcknowledged: false, in: context) else { return }
-    let transaction = CKMTransaction(insertInto: context)
-    transaction.configure(with: outgoingTransactionData, in: context)
+    let transaction = CKMTransaction.findOrCreate(with: outgoingTransactionData, in: context)
     transaction.configureNewSenderSharedPayload(with: outgoingTransactionData.sharedPayloadDTO, in: context)
     invitation.transaction = transaction
     invitation.counterpartyTwitterContact = transaction.twitterContact
