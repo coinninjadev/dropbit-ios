@@ -167,6 +167,7 @@ public class CKMTransaction: NSManagedObject {
           if let inputs = ManagedPhoneNumberInputs(phoneNumber: phoneContact.globalPhoneNumber) {
             let number = CKMPhoneNumber.findOrCreate(withInputs: inputs, phoneNumberHash: phoneContact.phoneNumberHash, in: context)
             number.configure(with: outgoingTransactionData, in: context)
+            self.phoneNumber = number
           }
         case .twitter(let twitterContact):
           let managedContact = CKMTwitterContact.findOrCreate(with: twitterContact, in: context)
