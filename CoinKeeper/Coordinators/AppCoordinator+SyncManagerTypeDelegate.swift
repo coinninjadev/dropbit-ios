@@ -68,17 +68,17 @@ extension AppCoordinator: SerialQueueManagerDelegate {
     }
     wmgr.resetWallet(with: keychainWords)  // this is a safety precaution to ensure the current wallet instance contains current words
 
-    guard let txDataWorker = createTransactionDataWorker(),
-      let walletWorker = createWalletAddressDataWorker() else {
+    guard let txDataWorker = workerFactory.createTransactionDataWorker(),
+      let walletWorker = workerFactory.createWalletAddressDataWorker(delegate: self) else {
         return Promise(error: SyncRoutineError.missingWorkers)
     }
 
-    guard let dbWorker = self.createDatabaseMigrationWorker(in: context) else {
+    guard let dbWorker = self.workerFactory.createDatabaseMigrationWorker(in: context) else {
       os_log("database migration worker does not exist in sync routine", log: logger, type: .error)
       return Promise(error: SyncRoutineError.missingDatabaseMigrationWorker)
     }
 
-    let keychainWorker = self.createKeychainMigrationWorker()
+    let keychainWorker = self.workerFactory.createKeychainMigrationWorker()
 
     let syncHelpers = SyncDependencies(
       walletManager: wmgr,
