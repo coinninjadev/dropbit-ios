@@ -124,58 +124,6 @@ class CKUserDefaults: PersistenceUserDefaultsType {
     }
   }
 
-  func persist(pendingInvitationData invitationData: PendingInvitationData) {
-    guard let data = invitationData.asData() else { return }
-    let pendingKey = CKUserDefaults.Key.pendingInvitations.defaultsString
-    var existing: [String: Data] = [:]
-    if let value = CKUserDefaults.standardDefaults.dictionary(forKey: pendingKey) as? [String: Data] {
-      existing = value
-    }
-    let toMerge: [String: Data] = [invitationData.id: data]
-    let merged = existing.merging(toMerge, uniquingKeysWith: { (_, new) in new })
-    CKUserDefaults.standardDefaults.set(merged, forKey: pendingKey)
-  }
-
-  func pendingInvitations() -> [PendingInvitationData] {
-    let pendingKey = CKUserDefaults.Key.pendingInvitations.defaultsString
-    guard let pendingInvitations = CKUserDefaults.standardDefaults.dictionary(forKey: pendingKey) as? [String: Data] else { return [] }
-    return pendingInvitations.values.compactMap { PendingInvitationData.decode(from: $0) }
-  }
-
-  func pendingInvitation(with id: String) -> PendingInvitationData? {
-    let pendingKey = CKUserDefaults.Key.pendingInvitations.defaultsString
-    guard let pendingInvitations = CKUserDefaults.standardDefaults.dictionary(forKey: pendingKey) as? [String: Data] else { return nil }
-    return pendingInvitations[id].flatMap { PendingInvitationData.decode(from: $0) }
-  }
-
-  @discardableResult
-  func removePendingInvitation(with id: String) -> PendingInvitationData? {
-    let pendingKey = CKUserDefaults.Key.pendingInvitations.defaultsString
-    var existing: [String: Data] = [:]
-    if let value = CKUserDefaults.standardDefaults.dictionary(forKey: pendingKey) as? [String: Data] {
-      existing = value
-    }
-    let removed = existing.removeValue(forKey: id).flatMap { PendingInvitationData.decode(from: $0) }
-    CKUserDefaults.standardDefaults.set(existing, forKey: pendingKey)
-    return removed
-  }
-
-  func setPendingInvitationFailed(_ invitation: PendingInvitationData) {
-    var newInvitation = invitation
-    newInvitation.failedToSendAt = Date()
-    guard let data = newInvitation.asData() else { return }
-
-    let pendingKey = CKUserDefaults.Key.pendingInvitations.defaultsString
-    var existing: [String: Data] = [:]
-    if let value = CKUserDefaults.standardDefaults.dictionary(forKey: pendingKey) as? [String: Data] {
-      existing = value
-    }
-
-    existing[invitation.id] = data
-
-    CKUserDefaults.standardDefaults.set(existing, forKey: pendingKey)
-  }
-
   var dontShowShareTransaction: Bool {
     get {
       let key = CKUserDefaults.Key.dontShowShareTransaction.defaultsString

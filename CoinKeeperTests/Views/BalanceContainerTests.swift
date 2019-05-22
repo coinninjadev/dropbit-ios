@@ -8,6 +8,7 @@
 
 import UIKit
 @testable import DropBit
+import PromiseKit
 import XCTest
 
 class BalanceContainerTests: XCTestCase {
@@ -100,6 +101,10 @@ class BalanceContainerTests: XCTestCase {
 
     func selectedCurrency() -> SelectedCurrency {
       return .BTC
+    }
+
+    func dropBitMeAvatar() -> Promise<UIImage> {
+      return Promise { _ in }
     }
   }
 }

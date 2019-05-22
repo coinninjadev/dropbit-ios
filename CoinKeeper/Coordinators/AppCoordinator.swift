@@ -266,6 +266,8 @@ class AppCoordinator: CoordinatorType {
     if uiTestArguments.contains(.skipGlobalMessageDisplay) {
       messageManager.setShouldShowGlobalMessaging(false)
     }
+
+    networkManager.uiTestArguments = uiTestArguments
   }
 
   func startChildCoordinator(childCoordinator: ChildCoordinatorType) {

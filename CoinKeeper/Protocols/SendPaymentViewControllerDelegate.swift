@@ -16,8 +16,7 @@ protocol SendPaymentViewControllerDelegate: DeviceCountryCodeProvider {
   func viewControllerDidPressContacts(_ viewController: UIViewController & SelectedValidContactDelegate)
   func viewControllerDidPressTwitter(_ viewController: UIViewController & SelectedValidContactDelegate)
   func viewController(_ viewController: UIViewController,
-                      checkingCachedAddressesFor phoneNumberHash: String,
-                      completion: @escaping (Result<[WalletAddressesQueryResponse], UserProviderError>) -> Void)
+                      checkingVerificationStatusFor identityHash: String) -> Promise<[WalletAddressesQueryResponse]>
 
   /**
    Dismisses `viewController` and shows phone verification flow if they haven't yet verified, otherwise calls `completion`.
@@ -58,6 +57,9 @@ protocol SendPaymentViewControllerDelegate: DeviceCountryCodeProvider {
   func viewController(_ viewController: UIViewController,
                       checkForContactFromGenericContact genericContact: GenericContact,
                       completion: @escaping ((ValidatedContact?) -> Void))
+
+  func viewController(_ viewController: UIViewController,
+                      checkForVerifiedTwitterContact twitterContact: TwitterContactType) -> Promise<TwitterContactType>
 
   func viewController(
     _ viewController: UIViewController,

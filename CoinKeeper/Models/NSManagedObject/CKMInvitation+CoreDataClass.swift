@@ -230,22 +230,6 @@ public class CKMInvitation: NSManagedObject {
     return results.compactMap { $0.addressProvidedToSender }
   }
 
-  var pendingInvitationData: PendingInvitationData {
-    return PendingInvitationData(
-      id: self.id,
-      btcAmount: self.btcAmount,
-      fiatAmount: self.fiatAmount,
-      feeAmount: self.fees,
-      name: self.counterpartyName,
-      phoneNumber: self.counterpartyPhoneNumber?.asGlobalPhoneNumber,
-      address: nil,
-      addressPubKey: nil,
-      userNotified: false,
-      failedToSendAt: nil,
-      memo: self.transaction?.memo
-    )
-  }
-
   var isFulfillable: Bool {
     switch status {
     case .completed, .canceled, .expired: return false

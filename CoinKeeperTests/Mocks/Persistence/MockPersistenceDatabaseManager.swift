@@ -15,6 +15,8 @@ import PromiseKit
 
 class MockPersistenceDatabaseManager: PersistenceDatabaseType {
 
+  var sharedPayloadManager: SharedPayloadManagerType = SharedPayloadManager()
+  
   func persistTemporaryTransaction(
     from transactionData: CNBTransactionData,
     with outgoingTransactionData: OutgoingTransactionData,
@@ -116,7 +118,7 @@ class MockPersistenceDatabaseManager: PersistenceDatabaseType {
     in context: NSManagedObjectContext
     ) {}
 
-  func persistReceivedSharedPayloads(_ payloads: [SharedPayloadV1],
+  func persistReceivedSharedPayloads(_ payloads: [SharedPayloadV2],
                                      hasher: HashingManager,
                                      kit: PhoneNumberKit,
                                      contactCacheManager: ContactCacheManagerType,

@@ -12,7 +12,7 @@ class ImportWalletUITests: UITestCase {
 
   override func setUp() {
     super.setUp()
-    app.appendTestArguments([.resetPersistence])
+    app.appendTestArguments([.resetPersistence, .skipTwitterAuthentication])
     app.launch()
   }
 

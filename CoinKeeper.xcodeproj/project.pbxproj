@@ -114,11 +114,14 @@
 		3B3779FC219E20AD00F79683 /* BackupRecoveryWordsCellPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B3779FB219E20AD00F79683 /* BackupRecoveryWordsCellPage.swift */; };
 		3B3779FE219EE7D900F79683 /* VerifyRecoveryWordsCellPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B3779FD219EE7D900F79683 /* VerifyRecoveryWordsCellPage.swift */; };
 		3B3779FF219EEA9F00F79683 /* Int+Times.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B825633F1FE7A9EA9E7A2AD /* Int+Times.swift */; };
+		3B37B93F228DDEB7002239AF /* CKMTwitterContact+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B37B93D228DDEB7002239AF /* CKMTwitterContact+CoreDataClass.swift */; };
+		3B37B940228DDEB7002239AF /* CKMTwitterContact+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B37B93E228DDEB7002239AF /* CKMTwitterContact+CoreDataProperties.swift */; };
 		3B3A1339204F3DB700E01908 /* OnboardingSubtitleLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B3A1338204F3DB700E01908 /* OnboardingSubtitleLabel.swift */; };
 		3B3F10FF2056B256003F86EF /* MockVerifyRecoveryWordsSelectionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B3F10FE2056B256003F86EF /* MockVerifyRecoveryWordsSelectionDelegate.swift */; };
 		3B3F11012056D7AB003F86EF /* MockVerifyRecoveryWordsResultDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B3F11002056D7AB003F86EF /* MockVerifyRecoveryWordsResultDelegate.swift */; };
 		3B3F1103205700A6003F86EF /* OnboardingErrorLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B3F1102205700A6003F86EF /* OnboardingErrorLabel.swift */; };
 		3B41AE6C210A6C9700155AAC /* LaunchType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B41AE6B210A6C9700155AAC /* LaunchType.swift */; };
+		3B42ACFA229023AD00C2E30D /* OutgoingTransactionDropBitType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B42ACF9229023AD00C2E30D /* OutgoingTransactionDropBitType.swift */; };
 		3B43B4FE220B19EC008966CA /* AppCoordinator+NoConnectionViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B43B4FD220B19EC008966CA /* AppCoordinator+NoConnectionViewControllerTests.swift */; };
 		3B43C11E20D01FE80001378D /* AppCoordinator+StartVCDelegateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B43C11D20D01FE80001378D /* AppCoordinator+StartVCDelegateTests.swift */; };
 		3B43C12220D03B190001378D /* CheckInResponseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B43C12120D03B190001378D /* CheckInResponseTests.swift */; };
@@ -207,6 +210,7 @@
 		3B73B2752281E33900F4C551 /* TwitterOAuth.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B73B2742281E33900F4C551 /* TwitterOAuth.generated.swift */; };
 		3B73B2782281F78700F4C551 /* NetworkManager+Twitter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B73B2772281F78700F4C551 /* NetworkManager+Twitter.swift */; };
 		3B7B54432201E54100CB89FE /* KeyDerivation.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B7B54422201E54100CB89FE /* KeyDerivation.generated.swift */; };
+		3B7E2D572292EC7400891E4A /* SharedPayloadV2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B7E2D562292EC7400891E4A /* SharedPayloadV2.swift */; };
 		3B80E27521BE9D7A00F6EF17 /* DatabaseMigrationWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B80E27421BE9D7A00F6EF17 /* DatabaseMigrationWorker.swift */; };
 		3B80E27821BEEDD300F6EF17 /* MigrateDatabaseV1toV2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B80E27721BEEDD300F6EF17 /* MigrateDatabaseV1toV2.swift */; };
 		3B80E27B21BEF04500F6EF17 /* DatabaseMigrationWorkerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B80E27A21BEF04500F6EF17 /* DatabaseMigrationWorkerTests.swift */; };
@@ -304,6 +308,7 @@
 		3BC9E5542047516A00444A53 /* UICollectionView+ReusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC9E5532047516A00444A53 /* UICollectionView+ReusableView.swift */; };
 		3BC9E5562049B08000444A53 /* PrimaryActionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC9E5552049B08000444A53 /* PrimaryActionButton.swift */; };
 		3BC9E55C204D92AC00444A53 /* BackupRecoveryWordsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3BC9E55A204D92AC00444A53 /* BackupRecoveryWordsCell.xib */; };
+		3BCC3BAF2295CBB100B8FB66 /* SharedPayloadManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BCC3BAE2295CBB100B8FB66 /* SharedPayloadManager.swift */; };
 		3BD013172272478300C92771 /* TransactionHistoryDetailValidCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3BD013162272478300C92771 /* TransactionHistoryDetailValidCell.xib */; };
 		3BD7B73120D66F12005057A7 /* HorizontallyPaginatedCollectionViewLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BD7B73020D66F12005057A7 /* HorizontallyPaginatedCollectionViewLayout.swift */; };
 		3BDA207F203DE6F600CBA6B1 /* BiometricAuthenticationManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BDA207E203DE6F600CBA6B1 /* BiometricAuthenticationManagerTests.swift */; };
@@ -339,7 +344,6 @@
 		3BF41AB8207694EA008B3D0A /* RequestPayViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BF41AB7207694EA008B3D0A /* RequestPayViewModel.swift */; };
 		3BF41ABA2076951B008B3D0A /* RequestPayViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BF41AB92076951B008B3D0A /* RequestPayViewModelTests.swift */; };
 		3BF4EAF320F906540017DE00 /* Set+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BF4EAF220F906540017DE00 /* Set+Helpers.swift */; };
-		3BF4EAF520F931860017DE00 /* PendingInvitationData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BF4EAF420F931860017DE00 /* PendingInvitationData.swift */; };
 		3BF5807E20E2ADC500DD7F95 /* Applicable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BF5807D20E2ADC500DD7F95 /* Applicable.swift */; };
 		3BF5808020E3AFA100DD7F95 /* TransactionDataWorkerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BF5807F20E3AFA100DD7F95 /* TransactionDataWorkerTests.swift */; };
 		3BF62FF521826B3A0012E454 /* GeneralSubscriptionResponseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BF62FF421826B3A0012E454 /* GeneralSubscriptionResponseTests.swift */; };
@@ -933,11 +937,15 @@
 		3B3779F9219E1E9A00F79683 /* UITestHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITestHelpers.swift; sourceTree = "<group>"; };
 		3B3779FB219E20AD00F79683 /* BackupRecoveryWordsCellPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupRecoveryWordsCellPage.swift; sourceTree = "<group>"; };
 		3B3779FD219EE7D900F79683 /* VerifyRecoveryWordsCellPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerifyRecoveryWordsCellPage.swift; sourceTree = "<group>"; };
+		3B37B93C228DDD6F002239AF /* Model v6.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Model v6.xcdatamodel"; sourceTree = "<group>"; };
+		3B37B93D228DDEB7002239AF /* CKMTwitterContact+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CKMTwitterContact+CoreDataClass.swift"; sourceTree = "<group>"; };
+		3B37B93E228DDEB7002239AF /* CKMTwitterContact+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CKMTwitterContact+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		3B3A1338204F3DB700E01908 /* OnboardingSubtitleLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingSubtitleLabel.swift; sourceTree = "<group>"; };
 		3B3F10FE2056B256003F86EF /* MockVerifyRecoveryWordsSelectionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockVerifyRecoveryWordsSelectionDelegate.swift; sourceTree = "<group>"; };
 		3B3F11002056D7AB003F86EF /* MockVerifyRecoveryWordsResultDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockVerifyRecoveryWordsResultDelegate.swift; sourceTree = "<group>"; };
 		3B3F1102205700A6003F86EF /* OnboardingErrorLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingErrorLabel.swift; sourceTree = "<group>"; };
 		3B41AE6B210A6C9700155AAC /* LaunchType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchType.swift; sourceTree = "<group>"; };
+		3B42ACF9229023AD00C2E30D /* OutgoingTransactionDropBitType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutgoingTransactionDropBitType.swift; sourceTree = "<group>"; };
 		3B43B4FD220B19EC008966CA /* AppCoordinator+NoConnectionViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppCoordinator+NoConnectionViewControllerTests.swift"; sourceTree = "<group>"; };
 		3B43C11D20D01FE80001378D /* AppCoordinator+StartVCDelegateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppCoordinator+StartVCDelegateTests.swift"; sourceTree = "<group>"; };
 		3B43C12120D03B190001378D /* CheckInResponseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInResponseTests.swift; sourceTree = "<group>"; };
@@ -1026,6 +1034,7 @@
 		3B73B2742281E33900F4C551 /* TwitterOAuth.generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TwitterOAuth.generated.swift; sourceTree = "<group>"; };
 		3B73B2772281F78700F4C551 /* NetworkManager+Twitter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NetworkManager+Twitter.swift"; sourceTree = "<group>"; };
 		3B7B54422201E54100CB89FE /* KeyDerivation.generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyDerivation.generated.swift; sourceTree = "<group>"; };
+		3B7E2D562292EC7400891E4A /* SharedPayloadV2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedPayloadV2.swift; sourceTree = "<group>"; };
 		3B80E27421BE9D7A00F6EF17 /* DatabaseMigrationWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseMigrationWorker.swift; sourceTree = "<group>"; };
 		3B80E27721BEEDD300F6EF17 /* MigrateDatabaseV1toV2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MigrateDatabaseV1toV2.swift; sourceTree = "<group>"; };
 		3B80E27A21BEF04500F6EF17 /* DatabaseMigrationWorkerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseMigrationWorkerTests.swift; sourceTree = "<group>"; };
@@ -1126,6 +1135,7 @@
 		3BC9E5532047516A00444A53 /* UICollectionView+ReusableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UICollectionView+ReusableView.swift"; sourceTree = "<group>"; };
 		3BC9E5552049B08000444A53 /* PrimaryActionButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrimaryActionButton.swift; sourceTree = "<group>"; };
 		3BC9E55A204D92AC00444A53 /* BackupRecoveryWordsCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BackupRecoveryWordsCell.xib; sourceTree = "<group>"; };
+		3BCC3BAE2295CBB100B8FB66 /* SharedPayloadManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedPayloadManager.swift; sourceTree = "<group>"; };
 		3BD013162272478300C92771 /* TransactionHistoryDetailValidCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TransactionHistoryDetailValidCell.xib; sourceTree = "<group>"; };
 		3BD7B73020D66F12005057A7 /* HorizontallyPaginatedCollectionViewLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HorizontallyPaginatedCollectionViewLayout.swift; sourceTree = "<group>"; };
 		3BDA207E203DE6F600CBA6B1 /* BiometricAuthenticationManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BiometricAuthenticationManagerTests.swift; sourceTree = "<group>"; };
@@ -1162,7 +1172,6 @@
 		3BF41AB7207694EA008B3D0A /* RequestPayViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestPayViewModel.swift; sourceTree = "<group>"; };
 		3BF41AB92076951B008B3D0A /* RequestPayViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestPayViewModelTests.swift; sourceTree = "<group>"; };
 		3BF4EAF220F906540017DE00 /* Set+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Set+Helpers.swift"; sourceTree = "<group>"; };
-		3BF4EAF420F931860017DE00 /* PendingInvitationData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PendingInvitationData.swift; sourceTree = "<group>"; };
 		3BF5807D20E2ADC500DD7F95 /* Applicable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Applicable.swift; sourceTree = "<group>"; };
 		3BF5807F20E3AFA100DD7F95 /* TransactionDataWorkerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDataWorkerTests.swift; sourceTree = "<group>"; };
 		3BF62FF421826B3A0012E454 /* GeneralSubscriptionResponseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralSubscriptionResponseTests.swift; sourceTree = "<group>"; };
@@ -2016,6 +2025,7 @@
 				B52F690922417B0100790E97 /* CKDatabase.swift */,
 				B5A98AE62241741F00DEF96F /* CKKeychain.swift */,
 				B5A98AEA224176C300DEF96F /* CKUserDefaults.swift */,
+				3BCC3BAE2295CBB100B8FB66 /* SharedPayloadManager.swift */,
 			);
 			path = Persistence;
 			sourceTree = "<group>";
@@ -2254,8 +2264,8 @@
 				B5B0DC7C22134AE00010AB2A /* CKCountry.swift */,
 				B5E7F22022148ECA00358A24 /* FlagEmojiFactory.swift */,
 				3B071A5120C2C3ED009C2BF6 /* OutgoingTransactionData.swift */,
+				3B42ACF9229023AD00C2E30D /* OutgoingTransactionDropBitType.swift */,
 				3B934D2120EFE53A00979ADC /* TransactionDataWorkerDTO.swift */,
-				3BF4EAF420F931860017DE00 /* PendingInvitationData.swift */,
 				3B41AE6B210A6C9700155AAC /* LaunchType.swift */,
 				30E96A2821765546008079B8 /* BitcoinURL.swift */,
 				3B47415A217E5353004DA223 /* ApplicationBuildEnvironment.swift */,
@@ -2266,6 +2276,7 @@
 				3B69FBE921B83ED200C561E2 /* OutgoingInvitationDTO.swift */,
 				B5AC4F8421F9119A000ABAE8 /* SharedPayloadDTO.swift */,
 				B5C5EDE221FA41FF0032AC94 /* SharedPayloadV1.swift */,
+				3B7E2D562292EC7400891E4A /* SharedPayloadV2.swift */,
 				B5C5EDE621FA490A0032AC94 /* SharedPayloadCodable.swift */,
 				B541DD3A21EE4A18009F38A0 /* MetaAddress.swift */,
 			);
@@ -2689,6 +2700,8 @@
 		B51F824F207BF62F00692F5B /* NSManagedObject */ = {
 			isa = PBXGroup;
 			children = (
+				3B37B93D228DDEB7002239AF /* CKMTwitterContact+CoreDataClass.swift */,
+				3B37B93E228DDEB7002239AF /* CKMTwitterContact+CoreDataProperties.swift */,
 				3B071A5320C2EEDD009C2BF6 /* CKMCounterpartyName+CoreDataClass.swift */,
 				3B071A5420C2EEDD009C2BF6 /* CKMCounterpartyName+CoreDataProperties.swift */,
 				3B6749DD20AA5CA40032FE02 /* CKMVin+CoreDataClass.swift */,
@@ -3510,6 +3523,7 @@
 				B56E15952167DAD0003B69D4 /* NetworkManager+TransactionRequestable.swift in Sources */,
 				B55D085621B723FF007DD9E5 /* CKRecipientParserAccessoryTypes.swift in Sources */,
 				B52CC6A9221EC42800B00C9E /* AppCoordinator+ViewControllerDismissable.swift in Sources */,
+				3B37B940228DDEB7002239AF /* CKMTwitterContact+CoreDataProperties.swift in Sources */,
 				B518226220BF191A00AA3E36 /* CKMServerAddress+CoreDataClass.swift in Sources */,
 				B552EDF8211E33D000332BB5 /* TransactionDataWorker.swift in Sources */,
 				A260E8D920FD0F28008343F9 /* TutorialScreenViewModel.swift in Sources */,
@@ -3580,6 +3594,7 @@
 				B5F32BA62124D05E00B1F89F /* CKStrings.swift in Sources */,
 				B5EABAB621FB932E00E32E08 /* NetworkManager+TransactionNotificationRequestable.swift in Sources */,
 				3BA9F5FF208F642F0047C213 /* AppCoordinator+ScanQRViewControllerDelegate.swift in Sources */,
+				3B42ACFA229023AD00C2E30D /* OutgoingTransactionDropBitType.swift in Sources */,
 				B5FDA5C622120747001682AA /* GlobalPhoneNumber.swift in Sources */,
 				A29CE0DC209B755C00761B91 /* ContactsTableViewHeader.swift in Sources */,
 				B5976AD521552F8500774073 /* WalletAddressesQueryTarget.swift in Sources */,
@@ -3720,6 +3735,7 @@
 				3BA9F5FD208F63D40047C213 /* AppCoordinator+PinEntryViewControllerDelegate.swift in Sources */,
 				B5EABAB421FB900400E32E08 /* TransactionNotificationResponse.swift in Sources */,
 				3B071A5520C2EEDD009C2BF6 /* CKMCounterpartyName+CoreDataClass.swift in Sources */,
+				3B37B93F228DDEB7002239AF /* CKMTwitterContact+CoreDataClass.swift in Sources */,
 				3BA389A92035E62F00B599A0 /* CNNavigationController.swift in Sources */,
 				B54A4217207FF365005B40A9 /* TransactionDetailBreakdownLabel.swift in Sources */,
 				3B071A5620C2EEDD009C2BF6 /* CKMCounterpartyName+CoreDataProperties.swift in Sources */,
@@ -3795,6 +3811,7 @@
 				3BF3B0C521737A4D0021E45F /* SubscribeToWalletTarget.swift in Sources */,
 				B5EBFD0F215C01E30008EB4A /* MockAddressDataSource.swift in Sources */,
 				B58AFF2E21948891001BE563 /* UITestDefaultsKey.swift in Sources */,
+				3BCC3BAF2295CBB100B8FB66 /* SharedPayloadManager.swift in Sources */,
 				3BF4EAF320F906540017DE00 /* Set+Helpers.swift in Sources */,
 				30BF4FF021B728FA0018AE87 /* PopoverViewControllerType.swift in Sources */,
 				3BF41AB8207694EA008B3D0A /* RequestPayViewModel.swift in Sources */,
@@ -3871,11 +3888,11 @@
 				3B6E4D59206E533D00D9CFFA /* ApiKeys.generated.swift in Sources */,
 				B552EDEF211E33D000332BB5 /* ConnectionManager.swift in Sources */,
 				B56B63782200CDD300CCC153 /* CKMTransactionSharedPayload+CoreDataProperties.swift in Sources */,
+				3B7E2D572292EC7400891E4A /* SharedPayloadV2.swift in Sources */,
 				B5A3BA542151939B005EE657 /* AddressesTarget.swift in Sources */,
 				B53461722098ABBF00DDC1C4 /* CKMAddressTransactionSummary+CoreDataClass.swift in Sources */,
 				3BEF22A12264B9D8001F6D25 /* AppCoordinator+GetBitcoinViewControllerDelegate.swift in Sources */,
 				30ADA32C2162A76D00E52AF9 /* CreateDeviceBody.swift in Sources */,
-				3BF4EAF520F931860017DE00 /* PendingInvitationData.swift in Sources */,
 				3B5052BF20473FC9000C739F /* BackupRecoveryWordsCell.swift in Sources */,
 				B57AF8002268A95E00E5B0A6 /* ShareTransactionViewController.swift in Sources */,
 				3B55538A219618A100C5A9A8 /* UnverifiedPhoneBadgeTopic.swift in Sources */,
@@ -4699,13 +4716,14 @@
 		403AAD5C2063513900F7A2BA /* Model.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				3B37B93C228DDD6F002239AF /* Model v6.xcdatamodel */,
 				B520DFE822734EAE004C7D9E /* Model v5.xcdatamodel */,
 				B56B63762200C82D00CCC153 /* Model v4.xcdatamodel */,
 				B5D6BE4A21C5BD42000C0D4C /* Model v3.xcdatamodel */,
 				3BC8011821B995DF008D15E6 /* Model v2.xcdatamodel */,
 				403AAD5D2063513900F7A2BA /* Model.xcdatamodel */,
 			);
-			currentVersion = B520DFE822734EAE004C7D9E /* Model v5.xcdatamodel */;
+			currentVersion = 3B37B93C228DDD6F002239AF /* Model v6.xcdatamodel */;
 			path = Model.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

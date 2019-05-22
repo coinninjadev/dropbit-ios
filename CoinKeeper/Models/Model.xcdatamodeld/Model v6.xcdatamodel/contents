@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14490.99" systemVersion="18E226" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="CKMAddress" representedClassName="CKMAddress" versionHashModifier="1" syncable="YES">
+        <attribute name="addressId" attributeType="String" syncable="YES"/>
+        <relationship name="addressTransactionSummaries" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CKMAddressTransactionSummary" inverseName="address" inverseEntity="CKMAddressTransactionSummary" syncable="YES"/>
+        <relationship name="derivativePath" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="CKMDerivativePath" inverseName="address" inverseEntity="CKMDerivativePath" syncable="YES"/>
+        <relationship name="vouts" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CKMVout" inverseName="address" inverseEntity="CKMVout" syncable="YES"/>
+        <fetchIndex name="byAddressId">
+            <fetchIndexElement property="addressId" type="Binary" order="ascending"/>
+        </fetchIndex>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="addressId"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
+    </entity>
+    <entity name="CKMAddressTransactionSummary" representedClassName="CKMAddressTransactionSummary" versionHashModifier="1" syncable="YES">
+        <attribute name="addressId" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="isChangeAddress" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="received" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="sent" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="txid" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="address" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CKMAddress" inverseName="addressTransactionSummaries" inverseEntity="CKMAddress" syncable="YES"/>
+        <relationship name="transaction" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CKMTransaction" inverseName="addressTransactionSummaries" inverseEntity="CKMTransaction" syncable="YES"/>
+        <relationship name="wallet" optional="YES" maxCount="1" deletionRule="No Action" destinationEntity="CKMWallet" inverseName="addressTransactionSummaries" inverseEntity="CKMWallet" syncable="YES"/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="addressId"/>
+                <constraint value="txid"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
+    </entity>
+    <entity name="CKMCounterparty" representedClassName="CKMCounterparty" versionHashModifier="1" syncable="YES">
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="phoneNumbers" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CKMPhoneNumber" inverseName="counterparty" inverseEntity="CKMPhoneNumber" syncable="YES"/>
+    </entity>
+    <entity name="CKMCounterpartyAddress" representedClassName="CKMCounterpartyAddress" versionHashModifier="1" syncable="YES">
+        <attribute name="addressId" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="transactions" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CKMTransaction" inverseName="counterpartyAddress" inverseEntity="CKMTransaction" syncable="YES"/>
+    </entity>
+    <entity name="CKMDerivativePath" representedClassName="CKMDerivativePath" versionHashModifier="1" syncable="YES">
+        <attribute name="account" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="change" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="coin" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="fullPath" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="index" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="purpose" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <relationship name="address" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CKMAddress" inverseName="derivativePath" inverseEntity="CKMAddress" syncable="YES"/>
+        <relationship name="serverAddress" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CKMServerAddress" inverseName="derivativePath" inverseEntity="CKMServerAddress" syncable="YES"/>
+    </entity>
+    <entity name="CKMInvitation" representedClassName="CKMInvitation" versionHashModifier="1" syncable="YES">
+        <attribute name="addressProvidedToSender" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="btcAmount" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="completedAt" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="counterpartyName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="fees" attributeType="Integer 64" defaultValueString="1" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="id" attributeType="String" syncable="YES"/>
+        <attribute name="sentDate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="status" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="txid" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="usdAmountAtTimeOfInvitation" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <relationship name="counterpartyPhoneNumber" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CKMPhoneNumber" inverseName="invitations" inverseEntity="CKMPhoneNumber" syncable="YES"/>
+        <relationship name="counterpartyTwitterContact" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CKMTwitterContact" inverseName="invitations" inverseEntity="CKMTwitterContact" syncable="YES"/>
+        <relationship name="transaction" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CKMTransaction" inverseName="invitation" inverseEntity="CKMTransaction" syncable="YES"/>
+    </entity>
+    <entity name="CKMPhoneNumber" representedClassName="CKMPhoneNumber" versionHashModifier="1" syncable="YES">
+        <attribute name="countryCode" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="number" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="phoneNumberHash" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="status" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="counterparty" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="CKMCounterparty" inverseName="phoneNumbers" inverseEntity="CKMCounterparty" syncable="YES"/>
+        <relationship name="invitations" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CKMInvitation" inverseName="counterpartyPhoneNumber" inverseEntity="CKMInvitation" syncable="YES"/>
+        <relationship name="transactions" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CKMTransaction" inverseName="phoneNumber" inverseEntity="CKMTransaction" syncable="YES"/>
+    </entity>
+    <entity name="CKMServerAddress" representedClassName="CKMServerAddress" versionHashModifier="1" syncable="YES">
+        <attribute name="address" attributeType="String" syncable="YES"/>
+        <attribute name="createdAt" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <relationship name="derivativePath" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CKMDerivativePath" inverseName="serverAddress" inverseEntity="CKMDerivativePath" syncable="YES"/>
+        <relationship name="wallet" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CKMWallet" inverseName="serverAddresses" inverseEntity="CKMWallet" syncable="YES"/>
+    </entity>
+    <entity name="CKMTemporarySentTransaction" representedClassName="CKMTemporarySentTransaction" versionHashModifier="1" syncable="YES">
+        <attribute name="amount" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="createdAt" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="feeAmount" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="isSentToSelf" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
+        <relationship name="reservedVouts" toMany="YES" deletionRule="Nullify" destinationEntity="CKMVout" inverseName="temporarySentTransaction" inverseEntity="CKMVout" syncable="YES"/>
+        <relationship name="transaction" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CKMTransaction" inverseName="temporarySentTransaction" inverseEntity="CKMTransaction" syncable="YES"/>
+    </entity>
+    <entity name="CKMTransaction" representedClassName="CKMTransaction" versionHashModifier="1" syncable="YES">
+        <attribute name="blockHash" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="broadcastedAt" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="broadcastFailed" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="confirmations" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="date" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="dayAveragePrice" optional="YES" attributeType="Decimal" syncable="YES"/>
+        <attribute name="isIncoming" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="isSentToSelf" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="memo" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="network" optional="YES" attributeType="String" defaultValueString="btc://main" syncable="YES"/>
+        <attribute name="sortDate" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="txid" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="addressTransactionSummaries" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="CKMAddressTransactionSummary" inverseName="transaction" inverseEntity="CKMAddressTransactionSummary" syncable="YES"/>
+        <relationship name="counterpartyAddress" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CKMCounterpartyAddress" inverseName="transactions" inverseEntity="CKMCounterpartyAddress" syncable="YES"/>
+        <relationship name="invitation" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="CKMInvitation" inverseName="transaction" inverseEntity="CKMInvitation" syncable="YES"/>
+        <relationship name="phoneNumber" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CKMPhoneNumber" inverseName="transactions" inverseEntity="CKMPhoneNumber" syncable="YES"/>
+        <relationship name="sharedPayload" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="CKMTransactionSharedPayload" inverseName="transaction" inverseEntity="CKMTransactionSharedPayload" syncable="YES"/>
+        <relationship name="temporarySentTransaction" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="CKMTemporarySentTransaction" inverseName="transaction" inverseEntity="CKMTemporarySentTransaction" syncable="YES"/>
+        <relationship name="twitterContact" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CKMTwitterContact" inverseName="transactions" inverseEntity="CKMTwitterContact" syncable="YES"/>
+        <relationship name="vins" toMany="YES" deletionRule="Cascade" destinationEntity="CKMVin" inverseName="transaction" inverseEntity="CKMVin" syncable="YES"/>
+        <relationship name="vouts" toMany="YES" deletionRule="Cascade" destinationEntity="CKMVout" inverseName="transaction" inverseEntity="CKMVout" syncable="YES"/>
+        <fetchIndex name="byTxid">
+            <fetchIndexElement property="txid" type="Binary" order="ascending"/>
+        </fetchIndex>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="txid"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
+    </entity>
+    <entity name="CKMTransactionSharedPayload" representedClassName="CKMTransactionSharedPayload" syncable="YES">
+        <attribute name="fiatAmount" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="fiatCurrency" attributeType="String" syncable="YES"/>
+        <attribute name="receivedPayload" optional="YES" attributeType="Binary" allowsExternalBinaryDataStorage="YES" syncable="YES"/>
+        <attribute name="sharingDesired" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
+        <relationship name="transaction" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CKMTransaction" inverseName="sharedPayload" inverseEntity="CKMTransaction" syncable="YES"/>
+    </entity>
+    <entity name="CKMTwitterContact" representedClassName="CKMTwitterContact" syncable="YES">
+        <attribute name="displayName" attributeType="String" syncable="YES"/>
+        <attribute name="displayScreenName" attributeType="String" syncable="YES"/>
+        <attribute name="identityHash" attributeType="String" syncable="YES"/>
+        <attribute name="profileImageData" optional="YES" attributeType="Binary" allowsExternalBinaryDataStorage="YES" syncable="YES"/>
+        <attribute name="verificationStatus" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <relationship name="invitations" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CKMInvitation" inverseName="counterpartyTwitterContact" inverseEntity="CKMInvitation" syncable="YES"/>
+        <relationship name="transactions" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CKMTransaction" inverseName="twitterContact" inverseEntity="CKMTransaction" syncable="YES"/>
+        <fetchIndex name="byPropertyIndex">
+            <fetchIndexElement property="identityHash" type="Binary" order="ascending"/>
+        </fetchIndex>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="identityHash"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
+    </entity>
+    <entity name="CKMUser" representedClassName="CKMUser" versionHashModifier="1" syncable="YES">
+        <attribute name="avatar" optional="YES" attributeType="Binary" allowsExternalBinaryDataStorage="YES" syncable="YES"/>
+        <attribute name="id" attributeType="String" syncable="YES"/>
+        <attribute name="publicURLIsPrivate" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="verificationStatus" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="wallet" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CKMWallet" inverseName="user" inverseEntity="CKMWallet" syncable="YES"/>
+    </entity>
+    <entity name="CKMVin" representedClassName="CKMVin" versionHashModifier="1" syncable="YES">
+        <attribute name="addressIDs" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="amount" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="belongsToWallet" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="previousTxid" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="previousVoutIndex" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <relationship name="transaction" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="CKMTransaction" inverseName="vins" inverseEntity="CKMTransaction" syncable="YES"/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="previousTxid"/>
+                <constraint value="previousVoutIndex"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
+    </entity>
+    <entity name="CKMVout" representedClassName="CKMVout" versionHashModifier="1" syncable="YES">
+        <attribute name="addressIDs" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="amount" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="index" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="isSpent" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="txid" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="address" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CKMAddress" inverseName="vouts" inverseEntity="CKMAddress" syncable="YES"/>
+        <relationship name="temporarySentTransaction" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CKMTemporarySentTransaction" inverseName="reservedVouts" inverseEntity="CKMTemporarySentTransaction" syncable="YES"/>
+        <relationship name="transaction" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="CKMTransaction" inverseName="vouts" inverseEntity="CKMTransaction" syncable="YES"/>
+        <fetchIndex name="byTxidAndIndex">
+            <fetchIndexElement property="txid" type="Binary" order="ascending"/>
+            <fetchIndexElement property="index" type="Binary" order="ascending"/>
+        </fetchIndex>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="txid"/>
+                <constraint value="index"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
+    </entity>
+    <entity name="CKMWallet" representedClassName="CKMWallet" versionHashModifier="1" syncable="YES">
+        <attribute name="id" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="lastChangeIndex" attributeType="Integer 64" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="lastReceivedIndex" attributeType="Integer 64" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="lastSyncBlockHash" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="lastSyncDate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <relationship name="addressTransactionSummaries" toMany="YES" deletionRule="Cascade" destinationEntity="CKMAddressTransactionSummary" inverseName="wallet" inverseEntity="CKMAddressTransactionSummary" syncable="YES"/>
+        <relationship name="serverAddresses" toMany="YES" deletionRule="Nullify" destinationEntity="CKMServerAddress" inverseName="wallet" inverseEntity="CKMServerAddress" syncable="YES"/>
+        <relationship name="user" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CKMUser" inverseName="wallet" inverseEntity="CKMUser" syncable="YES"/>
+    </entity>
+    <elements>
+        <element name="CKMAddress" positionX="-1170" positionY="315" width="128" height="103"/>
+        <element name="CKMAddressTransactionSummary" positionX="-1377" positionY="315" width="128" height="165"/>
+        <element name="CKMCounterparty" positionX="-1964" positionY="-63" width="128" height="73"/>
+        <element name="CKMCounterpartyAddress" positionX="-1935" positionY="351" width="128" height="73"/>
+        <element name="CKMDerivativePath" positionX="-972" positionY="315" width="128" height="163"/>
+        <element name="CKMInvitation" positionX="-1674" positionY="-36" width="144" height="240"/>
+        <element name="CKMPhoneNumber" positionX="-2009" positionY="99" width="128" height="150"/>
+        <element name="CKMServerAddress" positionX="-1143" positionY="108" width="128" height="103"/>
+        <element name="CKMTemporarySentTransaction" positionX="-1928" positionY="459" width="128" height="135"/>
+        <element name="CKMTransaction" positionX="-1667" positionY="317" width="128" height="360"/>
+        <element name="CKMTransactionSharedPayload" positionX="-1809" positionY="81" width="128" height="120"/>
+        <element name="CKMTwitterContact" positionX="-1800" positionY="90" width="128" height="150"/>
+        <element name="CKMUser" positionX="-1523" positionY="144" width="128" height="120"/>
+        <element name="CKMVin" positionX="-1845" positionY="657" width="128" height="133"/>
+        <element name="CKMVout" positionX="-1503" positionY="639" width="128" height="165"/>
+        <element name="CKMWallet" positionX="-1368" positionY="99" width="128" height="165"/>
+    </elements>
+</model>

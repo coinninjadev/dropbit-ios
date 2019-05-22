@@ -260,6 +260,18 @@ class PersistenceManager: PersistenceManagerType {
     userDefaultsManager.unverifyUser()
   }
 
+  func senderIdentity(forOutgoingDropBitType type: OutgoingTransactionDropBitType) -> UserIdentityBody? {
+    switch type {
+    case .twitter:
+      guard let creds = keychainManager.oauthCredentials() else { return nil }
+      return UserIdentityBody(twitterCredentials: creds)
+    case .phone:
+      guard let number = verifiedPhoneNumber() else { return nil }
+      return UserIdentityBody(phoneNumber: number)
+    case .none: return nil
+    }
+  }
+
   func verifiedPhoneNumber() -> GlobalPhoneNumber? {
     guard let nationalNumber = keychainManager.retrieveValue(for: .phoneNumber) as? String else { return nil }
     let countryCode = keychainManager.retrieveValue(for: .countryCode) as? Int ?? 1 //default to 1 for legacy users
@@ -287,9 +299,9 @@ class PersistenceManager: PersistenceManagerType {
     }
   }
 
-  func persistReceivedSharedPayloads(_ payloads: [SharedPayloadV1], kit: PhoneNumberKit, in context: NSManagedObjectContext) {
+  func persistReceivedSharedPayloads(_ payloads: [Data], kit: PhoneNumberKit, in context: NSManagedObjectContext) {
     let hasher = self.hashingManager
-    databaseManager.persistReceivedSharedPayloads(
+    databaseManager.sharedPayloadManager.persistReceivedSharedPayloads(
       payloads,
       hasher: hasher,
       kit: kit,
@@ -359,38 +371,29 @@ class PersistenceManager: PersistenceManagerType {
     return keychainManager.retrieveValue(for: .lastTimeEnteredBackground) as? TimeInterval
   }
 
-  func persist(pendingInvitationData data: PendingInvitationData) {
-    userDefaultsManager.persist(pendingInvitationData: data)
-  }
-
   func persistUnacknowledgedInvitation(in context: NSManagedObjectContext, with btcPair: BitcoinUSDPair,
                                        contact: ContactType, fee: Int, acknowledgementId: String) {
-    guard let inputs = ManagedPhoneNumberInputs(phoneNumber: contact.globalPhoneNumber) else { return }
-    context.performAndWait {
-      let phoneNumber = CKMPhoneNumber.findOrCreate(withInputs: inputs,
-                                                    phoneNumberHash: contact.phoneNumberHash, in: context)
-      let invitation = CKMInvitation(insertInto: context)
-      invitation.id = CKMInvitation.unacknowledgementPrefix + acknowledgementId
-      invitation.btcAmount = btcPair.btcAmount.asFractionalUnits(of: .BTC)
-      invitation.usdAmountAtTimeOfInvitation = btcPair.usdAmount.asFractionalUnits(of: .USD)
-      invitation.counterpartyName = contact.displayName
-      invitation.counterpartyPhoneNumber = phoneNumber
-      invitation.status = .notSent
-      invitation.setFlatFee(to: fee)
-      self.userDefaultsManager.persist(pendingInvitationData: invitation.pendingInvitationData)
+    let invitation = CKMInvitation(insertInto: context)
+    invitation.id = CKMInvitation.unacknowledgementPrefix + acknowledgementId
+    invitation.btcAmount = btcPair.btcAmount.asFractionalUnits(of: .BTC)
+    invitation.usdAmountAtTimeOfInvitation = btcPair.usdAmount.asFractionalUnits(of: .USD)
+    invitation.counterpartyName = contact.displayName
+    invitation.status = .notSent
+    invitation.setFlatFee(to: fee)
+    switch contact.identityType {
+    case .phone:
+      guard let phoneContact = contact as? PhoneContactType,
+        let inputs = ManagedPhoneNumberInputs(phoneNumber: phoneContact.globalPhoneNumber) else { return }
+      context.performAndWait {
+        let phoneNumber = CKMPhoneNumber.findOrCreate(withInputs: inputs,
+                                                      phoneNumberHash: phoneContact.phoneNumberHash, in: context)
+        invitation.counterpartyPhoneNumber = phoneNumber
+      }
+    case.twitter:
+      guard let twitterContact = contact as? TwitterContactType else { return }
+      let managedTwitterContact = CKMTwitterContact.findOrCreate(with: twitterContact, in: context)
+      invitation.counterpartyTwitterContact = managedTwitterContact
     }
-  }
-
-  func pendingInvitations() -> [PendingInvitationData] {
-    return userDefaultsManager.pendingInvitations()
-  }
-
-  func pendingInvitation(with id: String) -> PendingInvitationData? {
-    return userDefaultsManager.pendingInvitation(with: id)
-  }
-
-  func removePendingInvitationData(with id: String) -> PendingInvitationData? {
-    return userDefaultsManager.removePendingInvitation(with: id)
   }
 
   func addressesProvidedForReceivedPendingDropBits(in context: NSManagedObjectContext) -> [String] {
@@ -437,11 +440,11 @@ class PersistenceManager: PersistenceManagerType {
                              in context: NSManagedObjectContext) {
     guard let invitation = CKMInvitation.updateIfExists(withAddressRequestResponse: response,
                                                         side: .sent, isAcknowledged: false, in: context) else { return }
-    let transaction = CKMTransaction(insertInto: context)
-    transaction.configure(with: outgoingTransactionData, in: context)
+    let transaction = CKMTransaction.findOrCreate(with: outgoingTransactionData, in: context)
     transaction.configureNewSenderSharedPayload(with: outgoingTransactionData.sharedPayloadDTO, in: context)
     invitation.transaction = transaction
-    self.persist(pendingInvitationData: invitation.pendingInvitationData)
+    invitation.counterpartyTwitterContact = transaction.twitterContact
+    invitation.counterpartyPhoneNumber = transaction.phoneNumber
   }
 
   func matchContactsIfPossible() {

@@ -38,21 +38,41 @@ extension TwitterOAuth {
 }
 
 extension NetworkManager: TwitterRequestable {
+
+  /// Any internal- or public-level methods should return dummy values if UI testing
+  var isNotUITesting: Bool {
+    let isUITesting = uiTestArguments.contains(.skipTwitterAuthentication)
+    return !isUITesting
+  }
+
   func getCurrentTwitterUser() -> Promise<TwitterUser> {
-    return authorize().then { self.retrieveCurrentUser(with: $0.twitterUserId) }
+    guard isNotUITesting else { return Promise.value(TwitterUser.emptyInstance()) }
+    return authorize()
+      .then { self.retrieveCurrentUser(with: $0.twitterUserId) }
+      .get({ (twitterUser: TwitterUser) in
+        let context = self.persistenceManager.createBackgroundContext()
+        context.performAndWait {
+          let user = CKMUser.find(in: context)
+          user?.avatar = twitterUser.profileImageData
+          try? context.save()
+        }
+      })
   }
 
   func authorizedTwitterCredentials() -> Promise<TwitterOAuthStorage> {
+    guard isNotUITesting else { return Promise.value(TwitterOAuthStorage.emptyInstance()) }
     return authorize()
   }
 
   func findTwitterUsers(using term: String) -> Promise<[TwitterUser]> {
+    guard isNotUITesting else { return Promise.value([TwitterUser.emptyInstance()]) }
     return authorize()
       .then { _ in self.performTwitterSearch(using: term) }
       .then { self.usersWithImages(for: $0) }
   }
 
   func defaultFollowingList() -> Promise<[TwitterUser]> {
+    guard isNotUITesting else { return Promise.value([TwitterUser.emptyInstance()]) }
     return authorize()
       .then { _ in
         self.fetchDefaultFriends()
@@ -90,6 +110,7 @@ extension NetworkManager: TwitterRequestable {
   struct TwitterFriends: Decodable {
     let users: [TwitterUser]
   }
+
   private func fetchDefaultFriends() -> Promise<[TwitterUser]> {
     return Promise { seal in
       twitterOAuthManager.client.get(

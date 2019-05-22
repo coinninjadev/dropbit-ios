@@ -12,6 +12,7 @@ import enum Result.Result
 import PhoneNumberKit
 import CNBitcoinKit
 import PromiseKit
+import os.log
 
 typealias SendPaymentViewControllerCoordinator = SendPaymentViewControllerDelegate &
   CurrencyValueDataSourceType & BalanceDataSource & PaymentRequestResolver & URLOpener & ViewControllerDismissable
@@ -309,7 +310,7 @@ extension SendPaymentViewController {
     phoneNumberEntryView.textField.text = ""
 
     self.recipientDisplayNameLabel.text = viewModel.contact?.displayName
-    self.recipientDisplayNumberLabel.text = viewModel.contact?.displayNumber
+    self.recipientDisplayNumberLabel.text = viewModel.contact?.displayIdentity
 
     let displayStyle = viewModel.displayStyle(for: viewModel.paymentRecipient)
     switch displayStyle {
@@ -325,7 +326,7 @@ extension SendPaymentViewController {
       recipientDisplayNameLabel.alpha = 1.0
       recipientDisplayNumberLabel.alpha = 1.0
       recipientDisplayNameLabel.text = viewModel.displayRecipientName()
-      recipientDisplayNumberLabel.text = viewModel.displayRecipientNumber()
+      recipientDisplayNumberLabel.text = viewModel.displayRecipientIdentity()
     }
 
     updateMemoContainer()
@@ -442,6 +443,20 @@ extension SendPaymentViewController {
         }
       case .contact:
         self.hideRecipientInputViews()
+      case .twitterContact(let twitterContact):
+        self.coordinationDelegate?.viewController(self, checkForVerifiedTwitterContact: twitterContact)
+          .done { (contact: TwitterContactType) in
+            self.viewModel.paymentRecipient = PaymentRecipient.twitterContact(contact)
+            self.updateViewWithModel()
+            self.hideRecipientInputViews()
+          }
+          .catch { (error: Error) in
+            if let userProviderError = error as? UserProviderError {
+              // user query returned no known verification status
+              let logger = OSLog(subsystem: "com.coinninja.coinkeeper.sendpaymentviewcontroller", category: "verification")
+              os_log("no verification status found: %@", log: logger, type: .error, userProviderError.localizedDescription)
+            }
+          }
       }
     }
   }
@@ -478,8 +493,14 @@ extension SendPaymentViewController {
 
 extension SendPaymentViewController: SelectedValidContactDelegate {
   func update(withSelectedContact contact: ContactType) {
-    self.setPaymentRecipient(.contact(contact))
-    self.updateViewWithModel()
+    setPaymentRecipient(.contact(contact))
+    updateViewWithModel()
+  }
+
+  func update(withSelectedTwitterUser twitterUser: TwitterUser) {
+    let contact = TwitterContact(twitterUser: twitterUser)
+    setPaymentRecipient(.twitterContact(contact))
+    updateViewWithModel()
   }
 }
 
@@ -550,7 +571,7 @@ extension SendPaymentViewController: UITextFieldDelegate {
     case phoneNumberEntryView.textField:
       let defaultCountry = CKCountry(locale: .current, kit: self.phoneNumberKit)
       let phoneNumber = GlobalPhoneNumber(countryCode: defaultCountry.countryCode, nationalNumber: "")
-      let contact = GenericContact(phoneNumber: phoneNumber, hash: "", formatted: "")
+      let contact = GenericContact(phoneNumber: phoneNumber, formatted: "")
       let recipient = PaymentRecipient.phoneNumber(contact)
       setPaymentRecipient(recipient)
       updateViewWithModel()
@@ -582,11 +603,9 @@ extension SendPaymentViewController: UITextFieldDelegate {
         switch recipient {
         case .bitcoinURL: updateViewModel(withParsedRecipient: recipient)
         case .phoneNumber(let globalPhoneNumber):
-          let salt = try hashingManager.salt()
-          let hashedPhoneNumber = hashingManager.hash(phoneNumber: globalPhoneNumber, salt: salt, parsedNumber: nil, kit: self.phoneNumberKit)
           let formattedPhoneNumber = try CKPhoneNumberFormatter(kit: self.phoneNumberKit, format: .international)
             .string(from: globalPhoneNumber)
-          let contact = GenericContact(phoneNumber: globalPhoneNumber, hash: hashedPhoneNumber, formatted: formattedPhoneNumber)
+          let contact = GenericContact(phoneNumber: globalPhoneNumber, formatted: formattedPhoneNumber)
           let recipient = PaymentRecipient.phoneNumber(contact)
           setPaymentRecipient(recipient)
         }
@@ -752,6 +771,8 @@ extension SendPaymentViewController {
       try validatePayment(toContact: genericContact)
     case .btcAddress(let address):
       try validatePayment(toAddress: address)
+    case .twitterContact(let contact):
+      try validatePayment(toContact: contact)
     }
   }
 
@@ -800,7 +821,11 @@ extension SendPaymentViewController {
 
     var newContact = contact
     newContact.kind = kind
-    self.setPaymentRecipient(.contact(newContact))
+    switch contact.dropBitType {
+    case .phone(let contact): self.setPaymentRecipient(.contact(contact))
+    case .twitter(let contact): self.setPaymentRecipient(.twitterContact(contact))
+    case .none: break
+    }
 
     try validateInvitationMaximum(decimal)
     coordinationDelegate?.viewControllerDidBeginAddressNegotiation(self,
@@ -818,32 +843,27 @@ extension SendPaymentViewController {
   }
 
   private func validateRegisteredContact(_ contact: ContactType, sharedPayload: SharedPayloadDTO) {
-    coordinationDelegate?.viewController(self, checkingCachedAddressesFor: contact.phoneNumberHash, completion: { [weak self] result in
-      guard let strongSelf = self else { return }
-
-      switch result {
-      case .success(let addressResponses):
-
-        if let addressResponse = addressResponses.first(where: { $0.identityHash == contact.phoneNumberHash }) {
+    coordinationDelegate?.viewController(self, checkingVerificationStatusFor: contact.identityHash)
+      .done { (responses: [WalletAddressesQueryResponse]) in
+        if let addressResponse = responses.first(where: { $0.identityHash == contact.identityHash }) {
           var updatedPayload = sharedPayload
           updatedPayload.updatePubKeyState(with: addressResponse)
-          strongSelf.sendTransactionForConfirmation(with: strongSelf.viewModel.sendMaxTransactionData,
-                                                    address: addressResponse.address,
-                                                    contact: contact,
-                                                    sharedPayload: updatedPayload)
+          self.sendTransactionForConfirmation(with: self.viewModel.sendMaxTransactionData,
+                                              address: addressResponse.address,
+                                              contact: contact,
+                                              sharedPayload: updatedPayload)
         } else {
           // The contact has not backed up their words so our fetch didn't return an address, degrade to address negotiation
           do {
-            try strongSelf.validateAmountAndBeginAddressNegotiation(for: contact, kind: .registeredUser, sharedPayload: sharedPayload)
+            try self.validateAmountAndBeginAddressNegotiation(for: contact, kind: .registeredUser, sharedPayload: sharedPayload)
           } catch {
-            strongSelf.handleContactValidationError(error)
+            self.handleContactValidationError(error)
           }
         }
-
-      case .failure(let error):
-        strongSelf.handleContactValidationError(error)
       }
-    })
+      .catch { error in
+        self.handleContactValidationError(error)
+    }
   }
 
   private func validateGenericContact(_ contact: ContactType, sharedPayload: SharedPayloadDTO) {
@@ -853,37 +873,36 @@ extension SendPaymentViewController {
         let delegate = localSelf.coordinationDelegate
         else { return }
 
-      delegate.viewController(localSelf, checkingCachedAddressesFor: contact.phoneNumberHash, completion: { [weak self] result in
-        self?.handleGenericContactAddressCheckCompletion(forContact: contact, sharedPayload: sharedPayload, result: result)
-      })
+      delegate.viewController(localSelf, checkingVerificationStatusFor: contact.identityHash)
+        .done { (responses: [WalletAddressesQueryResponse]) in
+          self?.handleGenericContactAddressCheckCompletion(forContact: contact, sharedPayload: sharedPayload, responses: responses)
+        }
+        .catch { error in
+          self?.handleContactValidationError(error)
+        }
     }
   }
 
   private func handleGenericContactAddressCheckCompletion(forContact contact: ContactType,
                                                           sharedPayload: SharedPayloadDTO,
-                                                          result: Result<[WalletAddressesQueryResponse], UserProviderError>) {
+                                                          responses: [WalletAddressesQueryResponse]) {
     var newContact = contact
 
-    switch result {
-    case .success(let addressResponses):
-      if let addressResponse = addressResponses.first(where: { $0.identityHash == contact.phoneNumberHash }) {
-        var updatedPayload = sharedPayload
-        updatedPayload.updatePubKeyState(with: addressResponse)
+    if let addressResponse = responses.first(where: { $0.identityHash == contact.identityHash }) {
+      var updatedPayload = sharedPayload
+      updatedPayload.updatePubKeyState(with: addressResponse)
 
-        newContact.kind = .registeredUser
-        sendTransactionForConfirmation(with: viewModel.sendMaxTransactionData,
-                                       address: addressResponse.address,
-                                       contact: contact,
-                                       sharedPayload: updatedPayload)
-      } else {
-        do {
-          try validateAmountAndBeginAddressNegotiation(for: newContact, kind: .invite, sharedPayload: sharedPayload)
-        } catch {
-          self.handleContactValidationError(error)
-        }
+      newContact.kind = .registeredUser
+      sendTransactionForConfirmation(with: viewModel.sendMaxTransactionData,
+                                     address: addressResponse.address,
+                                     contact: newContact,
+                                     sharedPayload: updatedPayload)
+    } else {
+      do {
+        try validateAmountAndBeginAddressNegotiation(for: newContact, kind: .invite, sharedPayload: sharedPayload)
+      } catch {
+        self.handleContactValidationError(error)
       }
-    case .failure(let error):
-      self.handleContactValidationError(error)
     }
   }
 

@@ -30,7 +30,13 @@ struct TwitterUser: Decodable {
 }
 
 extension TwitterUser {
-  var formattedScreenName: String {
-    return "@" + screenName
+  static func emptyInstance() -> TwitterUser {
+    return TwitterUser(idStr: "",
+                       name: "",
+                       screenName: "",
+                       description: nil,
+                       url: nil,
+                       profileImageUrlHttps: nil,
+                       profileImageData: nil)
   }
 }

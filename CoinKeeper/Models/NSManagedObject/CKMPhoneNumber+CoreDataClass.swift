@@ -105,8 +105,9 @@ public class CKMPhoneNumber: NSManagedObject {
   }
 
   public func configure(with outgoingTransactionData: OutgoingTransactionData, in context: NSManagedObjectContext) {
-    guard outgoingTransactionData.contactName.isNotEmpty else { return }
-    self.counterparty = CKMCounterparty.findOrCreate(with: outgoingTransactionData.contactName, in: context)
+    let name = outgoingTransactionData.displayName
+    guard name.isNotEmpty else { return }
+    self.counterparty = CKMCounterparty.findOrCreate(with: name, in: context)
   }
 
   var asGlobalPhoneNumber: GlobalPhoneNumber {

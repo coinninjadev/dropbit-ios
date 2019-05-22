@@ -19,6 +19,7 @@ extension CKMUser {
   @NSManaged public var id: String
   @NSManaged public var verificationStatus: String?
   @NSManaged public var publicURLIsPrivate: Bool
+  @NSManaged public var avatar: Data?
   @NSManaged public var wallet: CKMWallet?
 
 }

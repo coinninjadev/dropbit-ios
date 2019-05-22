@@ -19,4 +19,11 @@ extension TwitterOAuthStorage {
   var formattedScreenName: String {
     return "@" + twitterScreenName
   }
+
+  static func emptyInstance() -> TwitterOAuthStorage {
+    return TwitterOAuthStorage(twitterOAuthToken: "",
+                               twitterOAuthTokenSecret: "",
+                               twitterUserId: "",
+                               twitterScreenName: "")
+  }
 }

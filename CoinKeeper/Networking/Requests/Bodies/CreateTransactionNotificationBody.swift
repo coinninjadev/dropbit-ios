@@ -11,7 +11,7 @@ import Foundation
 public struct CreateTransactionNotificationBody: Encodable {
   let txid: String
   let address: String
-  let phoneNumberHash: String
+  let identityHash: String
   let encryptedPayload: String
   let encryptedFormat: String
 }

@@ -152,7 +152,7 @@ public struct WalletAddressRequestResponse: ResponseDecodable, CustomStringConve
       "status: \(status ?? "-")",
       "metadata: \(metadata?.description ?? "-")",
       "walletId: \(walletId ?? "-")",
-      "phoneNumberHash: \(identityHash ?? "-")",
+      "identityHash: \(identityHash ?? "-")",
       "txid: \(txid ?? "-")"
     ]
     propertyKeyValues.forEach { desc in
@@ -280,4 +280,14 @@ extension WalletAddressRequestResponse {
     return stringValidatedResponse
   }
 
+}
+
+extension WalletAddressRequestResponse: Comparable {
+  public static func < (lhs: WalletAddressRequestResponse, rhs: WalletAddressRequestResponse) -> Bool {
+    return lhs.createdAt < rhs.createdAt
+  }
+
+  public static func == (lhs: WalletAddressRequestResponse, rhs: WalletAddressRequestResponse) -> Bool {
+    return lhs.id == rhs.id
+  }
 }

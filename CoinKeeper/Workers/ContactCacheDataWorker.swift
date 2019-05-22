@@ -216,7 +216,7 @@ class ContactCacheDataWorker: ContactCacheDataWorkerType {
 
         for metadata in metadataList {
           if let responseStatus = responseDict[metadata.hashedGlobalNumber],
-            let status = PhoneNumberVerificationStatus.case(forString: responseStatus) {
+            let status = UserIdentityVerificationStatus.case(forString: responseStatus) {
             metadata.cachedPhoneNumbers.forEach { $0.setStatusIfDifferent(status) }
           } else {
             metadata.cachedPhoneNumbers.forEach { $0.setStatusIfDifferent(.notVerified) }
@@ -239,7 +239,7 @@ class ContactCacheDataWorker: ContactCacheDataWorkerType {
   private func batchedPhoneNumbers(from phoneNumberHashes: [String],
                                    batchLimit: Int = 100) -> Promise<[StringDictResponse]> {
     let batched = phoneNumberHashes.chunked(by: batchLimit)
-    let batchedPhoneNumberPromises = batched.map { self.userRequester.queryUsers(phoneNumberHashes: $0) }
+    let batchedPhoneNumberPromises = batched.map { self.userRequester.queryUsers(identityHashes: $0) }
     return when(fulfilled: batchedPhoneNumberPromises)
   }
 

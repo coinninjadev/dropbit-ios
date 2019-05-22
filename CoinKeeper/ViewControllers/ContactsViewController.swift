@@ -33,11 +33,14 @@ protocol ContactsViewControllerDelegate: ViewControllerDismissable, URLOpener {
   func showAlertForNoTwitterAuthorization()
   func searchForTwitterUsers(with searchTerm: String) -> Promise<[TwitterUser]>
   func defaultTwitterFriends() -> Promise<[TwitterUser]>
-  func viewController(_ viewController: UIViewController, didSelectTwitterUser user: TwitterUser)
+  func viewController(_ viewController: UIViewController,
+                      didSelectTwitterUser user: TwitterUser,
+                      validSelectionDelegate: SelectedValidContactDelegate)
 }
 
 protocol SelectedValidContactDelegate: AnyObject {
   func update(withSelectedContact contact: ContactType)
+  func update(withSelectedTwitterUser twitterUser: TwitterUser)
 }
 
 enum ContactsViewControllerMode {
@@ -355,18 +358,17 @@ extension ContactsViewController: NSFetchedResultsControllerDelegate {
 extension ContactsViewController: ContactCellDelegate {
 
   func didSelectContact(at indexPath: IndexPath) {
+    guard let delegate = self.selectionDelegate else { return }
     switch mode {
     case .contacts:
-      guard let delegate = self.selectionDelegate else { return }
-
       let cachedNumber = frc.object(at: indexPath)
       trackEvent(forSelectedNumber: cachedNumber)
-
       coordinationDelegate?.viewControllerDidSelectPhoneNumber(self,
                                                                cachedNumber: cachedNumber,
                                                                validSelectionDelegate: delegate)
     case .twitter:
-      break // hit API with snowflake to find user
+      let twitterUser = twitterUserDataSource.user(at: indexPath)
+      coordinationDelegate?.viewController(self, didSelectTwitterUser: twitterUser, validSelectionDelegate: delegate)
     }
   }
 
