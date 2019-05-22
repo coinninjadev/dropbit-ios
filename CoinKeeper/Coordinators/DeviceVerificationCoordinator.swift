@@ -92,23 +92,28 @@ class DeviceVerificationCoordinator: ChildCoordinatorType {
   private func startTwitterVerification() {
     guard let delegate = coordinationDelegate else { return }
     let context = delegate.persistenceManager.createBackgroundContext()
-    delegate.networkManager.authorizedTwitterCredentials()
-      .then { self.addTwitterUserIdentity(credentials: $0, delegate: delegate, in: context) }
-      .then { body, creds -> Promise<UserResponse> in delegate.networkManager.verifyUser(body: body, credentials: creds) }
-      .then { (response: UserResponse) -> Promise<Void> in
-        os_log("user response: %@", log: self.logger, type: .debug, response.id)
-        return self.checkAndPersistVerificationStatus(from: response, crDelegate: delegate, in: context)
-      }
-      .get(in: context) { _ in
-        do {
-          try context.save()
-        } catch {
-          os_log("failed to save context in %@. error: %@", log: self.logger, type: .error, #function, error.localizedDescription)
+    context.perform {
+      self.registerAndPersistWalletIfNecessary(delegate: delegate, in: context)
+        .then(in: context) { delegate.networkManager.authorizedTwitterCredentials() }
+        .then(in: context) { self.addTwitterUserIdentity(credentials: $0, delegate: delegate, in: context) }
+        .then(in: context) { body, creds -> Promise<UserResponse> in
+          return delegate.networkManager.verifyUser(body: body, credentials: creds)
         }
+        .then(in: context) { (response: UserResponse) -> Promise<Void> in
+          os_log("user response: %@", log: self.logger, type: .debug, response.id)
+          return self.checkAndPersistVerificationStatus(from: response, crDelegate: delegate, in: context)
+        }
+        .get(in: context) { _ in
+          do {
+            try context.save()
+          } catch {
+            os_log("failed to save context in %@. error: %@", log: self.logger, type: .error, #function, error.localizedDescription)
+          }
+        }
+        .done { _ in delegate.coordinator(self, didVerify: .twitter, isInitialSetupFlow: self.isInitialSetupFlow) }
+        .catch { error in
+          os_log("failed to create or verify user in %@. error: %@", log: self.logger, type: .error, #function, error.localizedDescription)
       }
-      .done { _ in delegate.coordinator(self, didVerify: .twitter, isInitialSetupFlow: self.isInitialSetupFlow) }
-      .catch { error in
-        os_log("failed to create or verify user in %@. error: %@", log: self.logger, type: .error, #function, error.localizedDescription)
     }
   }
 
@@ -216,6 +221,15 @@ extension DeviceVerificationCoordinator: DeviceVerificationViewControllerDelegat
     os_log("Failed to request code: %@", log: self.logger, type: .error, error.localizedDescription)
     let message = errorMessageFactory.messageForResendCodeFailure(error: error)
     self.showVerificationErrorAlert(.custom(message), delegate: coordinationDelegate)
+  }
+
+  fileprivate func registerAndPersistWalletIfNecessary(delegate: DeviceVerificationCoordinatorDelegate,
+                                                       in context: NSManagedObjectContext) -> Promise<Void> {
+    if delegate.persistenceManager.walletId(in: context) == nil {
+      return delegate.registerAndPersistWallet(in: context)
+    } else {
+      return .value(()) //registration not needed
+    }
   }
 
   fileprivate func registerAndPersistUserIfNecessary(with body: UserIdentityBody,
