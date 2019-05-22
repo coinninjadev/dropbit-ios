@@ -62,6 +62,7 @@ class BadgeManager: BadgeManagerType {
     publishBadgeUpdate()
   }
 
+  /// Only call this function from the main thread
   func badgeInfo(for userInfo: [AnyHashable: Any]) -> BadgeInfo {
     // aggregate a dictionary and return it, mutated by the userInfo
     var badgeInfo: BadgeInfo = [:]

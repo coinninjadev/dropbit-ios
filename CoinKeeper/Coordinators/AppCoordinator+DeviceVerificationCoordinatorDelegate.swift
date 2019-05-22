@@ -38,7 +38,7 @@ extension AppCoordinator: DeviceVerificationCoordinatorDelegate {
       registerInitialWalletAddresses()
     }
 
-    persistenceManager.keychainManager.store(anyValue: NSNumber(value: false), key: .skippedVerification)
+    persistenceManager.keychainManager.storeSynchronously(anyValue: NSNumber(value: false), key: .skippedVerification)
 
     serialQueueManager.enqueueWalletSyncIfAppropriate(type: .comprehensive, policy: .skipIfSpecificOperationExists,
                                                       completion: nil, fetchResult: nil)
@@ -57,10 +57,9 @@ extension AppCoordinator: DeviceVerificationCoordinatorDelegate {
     let logger = OSLog(subsystem: "com.coinninja.coinkeeper.appcoordinator", category: "phone_verification")
     os_log("Skipped verification", log: logger, type: .debug)
 
-    persistenceManager.keychainManager.store(anyValue: NSNumber(value: true), key: .skippedVerification)
-
+    persistenceManager.keychainManager.storeSynchronously(anyValue: NSNumber(value: true), key: .skippedVerification)
     serialQueueManager.enqueueWalletSyncIfAppropriate(type: .comprehensive, policy: .skipIfSpecificOperationExists,
-                                                      completion: nil, fetchResult: nil)
+                                                           completion: nil, fetchResult: nil)
     childCoordinatorDidComplete(childCoordinator: coordinator)
     continueSetupFlow()
   }
