@@ -78,6 +78,10 @@ class MockPersistenceManager: PersistenceManagerType {
     return []
   }
 
+  func senderIdentity(forOutgoingDropBitType type: OutgoingTransactionDropBitType) -> UserIdentityBody? {
+    return nil
+  }
+
   var unacknowledgedInvitations: [CKMInvitation] = []
   func getUnacknowledgedInvitations(in context: NSManagedObjectContext) -> [CKMInvitation] {
     return unacknowledgedInvitations
@@ -117,7 +121,7 @@ class MockPersistenceManager: PersistenceManagerType {
     return CKMTransaction(insertInto: context)
   }
 
-  func persistReceivedSharedPayloads(_ payloads: [SharedPayloadV2], kit: PhoneNumberKit, in context: NSManagedObjectContext) { }
+  func persistReceivedSharedPayloads(_ payloads: [Data], kit: PhoneNumberKit, in context: NSManagedObjectContext) { }
 
   func groomAddressTransactionSummaries(
     from responses: [AddressTransactionSummaryResponse],
