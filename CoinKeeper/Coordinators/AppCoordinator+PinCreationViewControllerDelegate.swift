@@ -12,7 +12,7 @@ extension AppCoordinator: PinCreationViewControllerDelegate {
   func viewControllerFullyEnteredPin(_ viewController: PinCreationViewController, digits: String) {
     let verifyVC = PinCreationViewController.makeFromStoryboard()
     verifyVC.entryMode = .pinVerification(digits: digits)
-    verifyVC.flow = viewController.flow
+    verifyVC.setupFlow = viewController.setupFlow
     verifyVC.verificationDelegate = self
     navigationController.pushViewController(verifyVC, animated: true)
   }

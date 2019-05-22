@@ -320,7 +320,7 @@ extension DeviceVerificationViewController: KeypadEntryViewDelegate {
 
     case .codeFailureCountExceeded:
       let logger = OSLog(subsystem: "com.coinninja.coinkeeper.deviceverificationviewcontroller", category: "device_verification_view_controller")
-      os_log("Devide verification failed three times", log: logger, type: .error)
+      os_log("Device verification failed three times", log: logger, type: .error)
 
     case .phoneNumberEntry:
       break

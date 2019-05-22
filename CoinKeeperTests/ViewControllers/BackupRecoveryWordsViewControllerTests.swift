@@ -1,5 +1,5 @@
 //
-//  CreateRecoveryWordsViewControllerTests.swift
+//  BackupRecoveryWordsViewControllerTests.swift
 //  DropBitTests
 //
 //  Created by BJ Miller on 2/27/18.
@@ -10,12 +10,12 @@ import UIKit
 @testable import DropBit
 import XCTest
 
-class CreateRecoveryWordsViewControllerTests: XCTestCase {
-  var sut: CreateRecoveryWordsViewController!
+class BackupRecoveryWordsViewControllerTests: XCTestCase {
+  var sut: BackupRecoveryWordsViewController!
 
   override func setUp() {
     super.setUp()
-    self.sut = CreateRecoveryWordsViewController.makeFromStoryboard()
+    self.sut = BackupRecoveryWordsViewController.makeFromStoryboard()
     _ = self.sut.view
   }
 
@@ -72,13 +72,13 @@ class CreateRecoveryWordsViewControllerTests: XCTestCase {
   // MARK: outlets contain actions
   func testNextButtonContainsAction() {
     let actions = self.sut.nextButton.actions(forTarget: self.sut, forControlEvent: .touchUpInside) ?? []
-    let nextSelector = #selector(CreateRecoveryWordsViewController.nextButtonTapped(_:)).description
+    let nextSelector = #selector(BackupRecoveryWordsViewController.nextButtonTapped(_:)).description
     XCTAssertTrue(actions.contains(nextSelector), "nextButton should contain action")
   }
 
   func testBackButtonContainsAction() {
     let actions = self.sut.backButton.actions(forTarget: self.sut, forControlEvent: .touchUpInside) ?? []
-    let backSelector = #selector(CreateRecoveryWordsViewController.backButtonTapped(_:)).description
+    let backSelector = #selector(BackupRecoveryWordsViewController.backButtonTapped(_:)).description
     XCTAssertTrue(actions.contains(backSelector), "backButton should contain action")
   }
 
@@ -219,11 +219,11 @@ class CreateRecoveryWordsViewControllerTests: XCTestCase {
     XCTAssertTrue(self.sut.backButton.isHidden)
   }
 
-  class MockCoordinator: CreateRecoveryWordsViewControllerDelegate {
+  class MockCoordinator: BackupRecoveryWordsViewControllerDelegate {
 
     var wasAskedToVerifyWords = false
     var words: [String] = []
-    func viewController(_ viewController: UIViewController, didFinishWords words: [String], in flow: RecoveryWordsFlow) {
+    func viewController(_ viewController: UIViewController, didFinishWords words: [String]) {
       wasAskedToVerifyWords = true
       self.words = words
     }

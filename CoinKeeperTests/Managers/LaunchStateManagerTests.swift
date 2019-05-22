@@ -92,13 +92,10 @@ class LaunchStateManagerTests: XCTestCase {
     self.sut.unauthenticateUser()
 
     mockPersistenceManager.userVerificationStatusValue = .verified
-
-    let nextStep = self.sut.nextLaunchStep
-
-    XCTAssertEqual(nextStep, UserProfileLaunchStep.phoneRestore)
+    XCTAssertTrue(self.sut.isFirstTimeAfteriCloudRestore())
   }
 
-  func testAfteriCloudRestoreWhenNotVerifiedReturnsEnterPin() {
+  func testAfteriCloudRestoreWhenNotVerifiedPropertiesAreEmpty() {
     _ = mockPersistenceManager.keychainManager.store(anyValue: nil, key: .userPin)
     _ = mockPersistenceManager.keychainManager.store(anyValue: nil, key: .deviceID)
     _ = mockPersistenceManager.keychainManager.store(anyValue: nil, key: .walletWords)
@@ -106,8 +103,6 @@ class LaunchStateManagerTests: XCTestCase {
 
     mockPersistenceManager.userVerificationStatusValue = .unverified
 
-    let nextStep = self.sut.nextLaunchStep
-
-    XCTAssertEqual(nextStep, UserProfileLaunchStep.enterPin)
+    XCTAssertTrue(self.sut.currentProperties().isEmpty)
   }
 }

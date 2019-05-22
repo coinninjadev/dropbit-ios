@@ -1,5 +1,5 @@
 //
-//  CreateRecoveryWordsCell.swift
+//  BackupRecoveryWordsCell.swift
 //  CoinKeeper
 //
 //  Created by BJ Miller on 2/28/18.
@@ -8,14 +8,14 @@
 
 import UIKit
 
-class CreateRecoveryWordsCell: UICollectionViewCell, AccessibleViewSettable {
+class BackupRecoveryWordsCell: UICollectionViewCell, AccessibleViewSettable {
 
   @IBOutlet var wordLabel: UILabel!
   @IBOutlet var statusLabel: UILabel!
 
   func accessibleViewsAndIdentifiers() -> [AccessibleViewElement] {
     return [
-      (wordLabel, .createRecoveryWordsCell(.wordLabel))
+      (wordLabel, .backupRecoveryWordsCell(.wordLabel))
     ]
   }
   override func awakeFromNib() {
@@ -30,7 +30,7 @@ class CreateRecoveryWordsCell: UICollectionViewCell, AccessibleViewSettable {
     statusLabel.textColor = Theme.Color.grayText.color
   }
 
-  func load(with data: CreateRecoveryWordCellData) {
+  func load(with data: BackupRecoveryWordCellData) {
     wordLabel.text = data.word.uppercased()
     statusLabel.text = "word \(data.currentIndex) of \(data.total)"
   }

@@ -11,16 +11,25 @@ import UIKit
 
 extension AppCoordinator: VerifyRecoveryWordsViewControllerDelegate {
 
-  func viewController(_ viewController: UIViewController, didSkipBackingUpWords words: [String], in flow: RecoveryWordsFlow) {
-    self.viewController(viewController, didSkipBackingUp: words, flow: flow)
+  func viewController(_ viewController: UIViewController, didSkipBackingUpWords words: [String]) {
+    let backupNowConfig = AlertActionConfiguration(title: "Back up now", style: .cancel, action: nil)
+    let skipConfig = AlertActionConfiguration(title: "OK, skip", style: .default) {
+      viewController.dismiss(animated: true, completion: nil)
+    }
+    let title = "You will have restricted use of the DropBit features until your wallet" +
+    " is backed up. Please backup as soon as you are able."
+    let alert = alertManager.alert(withTitle: title, description: nil, image: nil, style: .alert, actionConfigs: [backupNowConfig, skipConfig])
+    navigationController.topViewController()?.present(alert, animated: true)
   }
 
-  func viewController(_ viewController: UIViewController, didSuccessfullyVerifyWords words: [String], in flow: RecoveryWordsFlow) {
-    saveSuccessfulWords(words: words, isBackedUp: true, flow: flow)
-    analyticsManager.track(property: MixpanelProperty(key: .hasWallet, value: true))
-    self.analyticsManager.track(property: MixpanelProperty(key: .wordsBackedUp, value: true))
-    badgeManager.publishBadgeUpdate()
-    continueNavigation(with: viewController, for: flow)
+  func viewController(_ viewController: UIViewController, didSuccessfullyVerifyWords words: [String]) {
+    saveSuccessfulWords(words: words, didBackUp: true)
+      .done(on: .main) {
+        self.analyticsManager.track(property: MixpanelProperty(key: .hasWallet, value: true))
+        self.analyticsManager.track(property: MixpanelProperty(key: .wordsBackedUp, value: true))
+        self.badgeManager.publishBadgeUpdate()
+        viewController.dismiss(animated: true, completion: nil)
+    }.cauterize()
   }
 
   func viewControllerFailedWordVerification(_ viewController: UIViewController) {
@@ -48,7 +57,7 @@ extension AppCoordinator: VerifyRecoveryWordsViewControllerDelegate {
 
   private func viewControllerResetRecoveryWords(_ viewController: UIViewController) {
     viewController.navigationController?.viewControllers
-      .compactMap { $0 as? CreateRecoveryWordsViewController }
+      .compactMap { $0 as? BackupRecoveryWordsViewController }
       .first
       .map { $0.reviewAllRecoveryWords() }
   }

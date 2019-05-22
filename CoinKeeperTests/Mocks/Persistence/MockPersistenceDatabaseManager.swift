@@ -78,9 +78,7 @@ class MockPersistenceDatabaseManager: PersistenceDatabaseType {
     return .unverified
   }
 
-  func persistWalletId(_ id: String, in context: NSManagedObjectContext) -> Promise<Void> {
-    return Promise { _ in }
-  }
+  func persistWalletId(_ id: String, in context: NSManagedObjectContext) throws { }
 
   func persistUserId(_ id: String, in context: NSManagedObjectContext) { }
 

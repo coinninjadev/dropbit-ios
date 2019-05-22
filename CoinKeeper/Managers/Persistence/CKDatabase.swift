@@ -118,24 +118,12 @@ class CKDatabase: PersistenceDatabaseType {
     return id
   }
 
-  func persistWalletId(_ id: String, in context: NSManagedObjectContext) -> Promise<Void> {
-    return Promise { seal in
-      context.performAndWait {
-        guard let wallet = CKMWallet.find(in: context) else {
-          seal.reject(CKPersistenceError.noManagedWallet)
-          return
-        }
-
-        wallet.id = id
-
-        do {
-          try context.save()
-          seal.fulfill(())
-        } catch {
-          seal.reject(error)
-        }
-      }
+  func persistWalletId(_ id: String, in context: NSManagedObjectContext) throws {
+    guard let wallet = CKMWallet.find(in: context) else {
+      throw CKPersistenceError.noManagedWallet
     }
+
+    wallet.id = id
   }
 
   func containsRegularTransaction(in context: NSManagedObjectContext) -> IncomingOutgoingTuple {
