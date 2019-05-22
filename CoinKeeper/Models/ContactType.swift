@@ -117,7 +117,7 @@ struct TwitterContact: TwitterContactType {
   }
 
   var displayHandle: String {
-    return twitterUser.formattedScreenName
+    return twitterUser.name
   }
 
   var identityHash: String {
