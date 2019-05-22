@@ -92,7 +92,9 @@ extension AppCoordinator: ContactsViewControllerDelegate {
     return networkManager.defaultFollowingList()
   }
 
-  func viewController(_ viewController: UIViewController, didSelectTwitterUser user: TwitterUser, validSelectionDelegate: SelectedValidContactDelegate) {
+  func viewController(_ viewController: UIViewController,
+                      didSelectTwitterUser user: TwitterUser,
+                      validSelectionDelegate: SelectedValidContactDelegate) {
     validSelectionDelegate.update(withSelectedTwitterUser: user)
     viewController.dismiss(animated: true, completion: nil)
   }
