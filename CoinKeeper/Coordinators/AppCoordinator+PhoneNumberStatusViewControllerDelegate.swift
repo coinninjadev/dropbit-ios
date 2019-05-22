@@ -148,6 +148,12 @@ extension AppCoordinator: PhoneNumberStatusViewControllerDelegate {
     case .twitter:
       self.analyticsManager.track(event: .deregisterTwitter, with: nil)
       self.analyticsManager.track(property: MixpanelProperty(key: .twitterVerified, value: false))
+      let context = persistenceManager.mainQueueContext()
+      context.perform {
+        let user = CKMUser.find(in: context)
+        user?.avatar = nil
+        try? context.save()
+      }
     }
   }
 
