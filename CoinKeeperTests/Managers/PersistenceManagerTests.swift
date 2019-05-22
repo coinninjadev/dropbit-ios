@@ -96,54 +96,6 @@ class PersistenceManagerTests: XCTestCase {
   }
 
   // MARK: user defaults
-  func testPendingInvitationsWithIDReturnsProperInvitationData() {
-    let pendingInv1 = PendingInvitationData(
-      id: "1",
-      btcAmount: 1,
-      fiatAmount: 1,
-      feeAmount: 1,
-      name: "one",
-      phoneNumber: GlobalPhoneNumber(countryCode: 1, nationalNumber: "3305551212"),
-      address: nil,
-      addressPubKey: nil,
-      userNotified: false,
-      failedToSendAt: nil,
-      memo: "test memo"
-    )
-    let pendingInv2 = PendingInvitationData(
-      id: "2",
-      btcAmount: 2,
-      fiatAmount: 1,
-      feeAmount: 2,
-      name: nil,
-      phoneNumber: nil,
-      address: nil,
-      addressPubKey: nil,
-      userNotified: false,
-      failedToSendAt: nil,
-      memo: "test memo"
-    )
-
-    let userDefaultsManager = CKUserDefaults()
-    self.sut = PersistenceManager(userDefaultsManager: userDefaultsManager)
-
-    self.sut.persist(pendingInvitationData: pendingInv1)
-    self.sut.persist(pendingInvitationData: pendingInv2)
-
-    let actualInvite = self.sut.pendingInvitation(with: "1")
-
-    XCTAssertEqual(actualInvite?.id ?? "0", "1")
-    XCTAssertEqual(actualInvite?.btcAmount ?? 0, 1)
-    XCTAssertEqual(actualInvite?.feeAmount ?? 0, 1)
-    XCTAssertEqual(actualInvite?.name ?? "", "one")
-    XCTAssertEqual(actualInvite?.phoneNumber?.nationalNumber ?? "", "3305551212")
-    XCTAssertEqual(actualInvite?.memo ?? "", "test memo")
-
-    userDefaultsManager.removePendingInvitation(with: "1")
-    userDefaultsManager.removePendingInvitation(with: "2")
-    XCTAssertEqual(userDefaultsManager.pendingInvitations().count, 0, "removal should remove all pending from user defaults")
-  }
-
   func testReceiveAddressIndexGaps() {
     XCTAssertTrue(sut.userDefaultsManager.receiveAddressIndexGaps.isEmpty, "receiveAddressIndexGaps should be empty at start of test")
 

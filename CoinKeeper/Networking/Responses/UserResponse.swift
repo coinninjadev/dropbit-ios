@@ -8,18 +8,17 @@
 
 import Foundation
 
-enum UserIdentityType: String {
+enum UserIdentityType: String, Codable {
   case phone
   case twitter
 }
 
-public struct CreateUserBody: Encodable {
-  let type: String
-  let identity: String
-
-  init(phoneNumber: GlobalPhoneNumber) {
-    self.type = UserIdentityType.phone.rawValue
-    self.identity = phoneNumber.sanitizedGlobalNumber()
+extension UserIdentityType {
+  var identityDescription: String {
+    switch self {
+    case .phone: return "phone number"
+    case .twitter: return "twitter account"
+    }
   }
 }
 
@@ -32,6 +31,12 @@ public struct VerifyUserBody: Encodable {
     self.type = UserIdentityType.phone.rawValue
     self.identity = phoneNumber.sanitizedGlobalNumber()
     self.code = code
+  }
+
+  init(twitterCredentials: TwitterOAuthStorage) {
+    self.type = UserIdentityType.twitter.rawValue
+    self.identity = twitterCredentials.twitterUserId
+    self.code = twitterCredentials.twitterOAuthToken + ":" + twitterCredentials.twitterOAuthTokenSecret
   }
 }
 
@@ -48,11 +53,15 @@ public struct UserPatchPrivateBody: Encodable {
 
 public enum UserResponseKey: String, KeyPathDescribable {
   public typealias ObjectType = UserResponse
-  case id, phoneNumberHash, createdAt, updatedAt, status, verificationTtl, verifiedAt, walletId
+  case status
+}
+
+protocol UserIdentifiable {
+  var id: String { get }
 }
 
 /// For /resend response: id: "" and timestamps: 0
-public struct UserResponse: ResponseDecodable {
+public struct UserResponse: UserIdentifiable, ResponseDecodable {
 
   let id: String
   let createdAt: Date
@@ -132,6 +141,11 @@ struct PublicURLIdentity: ResponseCodable, Comparable {
   init(fullPhoneHash: String) {
     self.type = UserIdentityType.phone.rawValue
     self.handle = String(fullPhoneHash.prefix(12))
+  }
+
+  init(twitterCredentials: TwitterOAuthStorage) {
+    self.type = UserIdentityType.twitter.rawValue
+    self.handle = twitterCredentials.formattedScreenName
   }
 
   static var requiredStringKeys: [KeyPath<PublicURLIdentity, String>] {

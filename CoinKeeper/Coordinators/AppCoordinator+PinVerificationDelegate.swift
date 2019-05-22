@@ -9,8 +9,10 @@
 import UIKit
 
 extension AppCoordinator: PinVerificationDelegate {
-  func pinWasVerified(digits: String, for flow: PinCreationViewController.Flow) {
+
+  func pinWasVerified(digits: String, for flow: SetupFlow?) {
     persistenceManager.keychainManager.store(userPin: digits)
+      .get { _ in self.setWalletManagerWithPersistedWords() }
       .done { _ in
         self.launchStateManager.userWasAuthenticated()
         let action = self.postVerificationAction(forFlow: flow)
@@ -18,13 +20,15 @@ extension AppCoordinator: PinVerificationDelegate {
       }.cauterize()
   }
 
-  private func postVerificationAction(forFlow flow: PinCreationViewController.Flow) -> (() -> Void) {
+  private func postVerificationAction(forFlow flow: SetupFlow?) -> (() -> Void) {
+    guard let flow = flow else { return { } }
     switch flow {
-    case .creation:
+    case .newWallet, .claimInvite:
       return { [weak self] in
-        self?.startCreateRecoveryWordsFlow()
+        self?.continueSetupFlow()
       }
-    case .restore:
+
+    case .restoreWallet:
       return { [weak self] in
         let viewController = RestoreWalletViewController.makeFromStoryboard()
         self?.assignCoordinationDelegate(to: viewController)

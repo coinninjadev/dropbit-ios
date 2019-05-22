@@ -18,7 +18,7 @@ class MockRecoveryWordsIntroViewControllerDelegate: RecoveryWordsIntroViewContro
   }
 
   var wasAskedToBackupRecoveryWords = false
-  func viewController(_ viewController: UIViewController, didChooseToBackupWords words: [String], in flow: RecoveryWordsFlow) {
+  func viewController(_ viewController: UIViewController, didChooseToBackupWords words: [String]) {
     wasAskedToBackupRecoveryWords = true
   }
 

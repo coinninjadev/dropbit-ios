@@ -26,8 +26,7 @@ class TransactionHistoryDetailBaseCell: UICollectionViewCell {
     didSet {
       underlyingContentView.backgroundColor = UIColor.white
       underlyingContentView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
-      underlyingContentView.layer.cornerRadius = 13
-      underlyingContentView.layer.masksToBounds = true
+      underlyingContentView.applyCornerRadius(13)
     }
   }
   @IBOutlet var closeButton: UIButton!
@@ -50,6 +49,7 @@ class TransactionHistoryDetailBaseCell: UICollectionViewCell {
   @IBOutlet var memoContainerView: ConfirmPaymentMemoView!
   @IBOutlet var statusLabel: TransactionDetailStatusLabel!
   @IBOutlet var counterpartyLabel: TransactionDetailCounterpartyLabel!
+  @IBOutlet var twitterImage: UIImageView!
 
   // MARK: variables
   var viewModel: TransactionHistoryDetailCellViewModel?
@@ -61,7 +61,7 @@ class TransactionHistoryDetailBaseCell: UICollectionViewCell {
 
     backgroundColor = UIColor.white
     layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
-    layer.cornerRadius = 13
+    applyCornerRadius(13)
 
     // Shadow
     layer.shadowColor = UIColor.black.cgColor
@@ -115,6 +115,7 @@ class TransactionHistoryDetailBaseCell: UICollectionViewCell {
     statusLabel.textColor = viewModel.descriptionColor
     let isEqualToReceiverAddress = (viewModel.receiverAddress ?? "") == viewModel.counterpartyDescription
     counterpartyLabel.text = isEqualToReceiverAddress ? nil : viewModel.counterpartyDescription
+    twitterImage.isHidden = !viewModel.isTwitterContact
     primaryAmountLabel.text = viewModel.primaryAmountLabel
     secondaryAmountLabel.attributedText = viewModel.secondaryAmountLabel
     historicalValuesLabel.text = nil

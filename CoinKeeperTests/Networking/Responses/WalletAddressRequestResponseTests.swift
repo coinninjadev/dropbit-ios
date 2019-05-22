@@ -200,7 +200,7 @@ class WalletAddressRequestResponseTests: XCTestCase, ResponseStringsTestable {
       let res = try response.validateStringValues()
       XCTAssertNil(res.address, "address should be nil")
       XCTAssertNil(res.txid, "txid should be nil")
-      XCTAssertNil(res.identityHash, "phoneNumberHash should be nil")
+      XCTAssertNil(res.identityHash, "identityHash should be nil")
       XCTAssertNil(res.status, "status should be nil")
       XCTAssertNil(res.walletId, "walletId should be nil")
     } catch {

@@ -71,6 +71,11 @@ class MockSendPaymentViewControllerCoordinator: SendPaymentViewControllerCoordin
     return Promise.value([:])
   }
 
+  var didTapTwitter = false
+  func viewControllerDidPressTwitter(_ viewController: UIViewController & SelectedValidContactDelegate) {
+    didTapTwitter = true
+  }
+
   var didTapScan = false
   func viewControllerDidPressScan(_ viewController: UIViewController, btcAmount: NSDecimalNumber, primaryCurrency: CurrencyCode) {
     didTapScan = true
@@ -83,9 +88,14 @@ class MockSendPaymentViewControllerCoordinator: SendPaymentViewControllerCoordin
 
   func viewController(
     _ viewController: UIViewController,
-    checkingCachedAddressesFor phoneNumberHash: String,
-    completion: @escaping (Result<[WalletAddressesQueryResponse], UserProviderError>) -> Void) {
+    checkingVerificationStatusFor identityHash: String) -> Promise<[WalletAddressesQueryResponse]> {
+    return Promise { _ in }
+  }
 
+  func viewController(
+    _ viewController: UIViewController,
+    checkForVerifiedTwitterContact twitterContact: TwitterContactType) -> Promise<TwitterContactType> {
+    return Promise { _ in }
   }
 
   func viewControllerDidRequestVerificationCheck(_ viewController: UIViewController, completion: @escaping (() -> Void)) {

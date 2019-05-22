@@ -51,7 +51,7 @@ extension AppCoordinator: SerialQueueManagerDelegate {
   func predefineSyncDependencies(in context: NSManagedObjectContext, inBackground background: Bool) -> Promise<SyncDependencies> {
     let logger = OSLog(subsystem: "com.coinninja.coinkeeper.appcoordinator", category: "sync_transactions")
 
-    guard (launchStateManager.userAuthenticated && self.isReadyToEnterApp) || background else {
+    guard (launchStateManager.userAuthenticated && self.verificationSatisfied) || background else {
       os_log("**Sync routine prevented by pending pin entry or verification step", log: logger, type: .debug)
       return Promise(error: SyncRoutineError.notReady)
     }
@@ -68,17 +68,17 @@ extension AppCoordinator: SerialQueueManagerDelegate {
     }
     wmgr.resetWallet(with: keychainWords)  // this is a safety precaution to ensure the current wallet instance contains current words
 
-    guard let txDataWorker = createTransactionDataWorker(),
-      let walletWorker = createWalletAddressDataWorker() else {
+    guard let txDataWorker = workerFactory.createTransactionDataWorker(),
+      let walletWorker = workerFactory.createWalletAddressDataWorker(delegate: self) else {
         return Promise(error: SyncRoutineError.missingWorkers)
     }
 
-    guard let dbWorker = self.createDatabaseMigrationWorker(in: context) else {
+    guard let dbWorker = self.workerFactory.createDatabaseMigrationWorker(in: context) else {
       os_log("database migration worker does not exist in sync routine", log: logger, type: .error)
       return Promise(error: SyncRoutineError.missingDatabaseMigrationWorker)
     }
 
-    let keychainWorker = self.createKeychainMigrationWorker()
+    let keychainWorker = self.workerFactory.createKeychainMigrationWorker()
 
     let syncHelpers = SyncDependencies(
       walletManager: wmgr,
@@ -136,11 +136,20 @@ extension AppCoordinator: SerialQueueManagerDelegate {
   private func unverifyUser(forError error: MoyaError, recordType: RecordType, in context: NSManagedObjectContext) {
     let isDeviceUUIDMismatch = error.responseDescription.contains(NetworkErrorIdentifier.deviceUUIDMismatch.rawValue)
 
+    var deviceDescriptions: [String] = []
+    if persistenceManager.verifiedPhoneNumber() != nil {
+      deviceDescriptions.append("phone number")
+    }
+    if persistenceManager.keychainManager.oauthCredentials() != nil {
+      deviceDescriptions.append("twitter account")
+    }
+    let deviceDescription = deviceDescriptions.joined(separator: " or ")
     let errorMessage: String
     if isDeviceUUIDMismatch {
-      errorMessage = "The phone number associated with this device is no longer registered. A new device has been registered with this phone number."
+      errorMessage = "The \(deviceDescription) associated with this device is no longer registered." +
+      " A new device has been registered with this \(deviceDescription)."
     } else {
-      errorMessage = "The phone number associated with this device has been unregistered."
+      errorMessage = "The \(deviceDescription) associated with this device has been unregistered."
     }
 
     // Prevent showing banner if they have already been unverified

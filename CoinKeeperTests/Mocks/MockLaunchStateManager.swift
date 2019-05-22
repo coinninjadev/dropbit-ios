@@ -11,6 +11,11 @@
 class MockLaunchStateManager: LaunchStateManagerType {
 
   var launchType: LaunchType = .userInitiated
+  var selectedSetupFlow: SetupFlow?
+
+  func currentProperties() -> LaunchStateProperties {
+    return []
+  }
 
   var userAuthenticatedValue = false
   var userAuthenticated: Bool {
@@ -42,6 +47,11 @@ class MockLaunchStateManager: LaunchStateManagerType {
   var isWalletBackedUp = false
   func walletIsBackedUp() -> Bool {
     return isWalletBackedUp
+  }
+
+  var pinExistsValue = false
+  func pinExists() -> Bool {
+    return pinExistsValue
   }
 
   var wasAskedForShouldRequireAuthentication = false
@@ -80,15 +90,13 @@ class MockLaunchStateManager: LaunchStateManagerType {
     unverifyDeviceWasCalled = true
   }
 
-  // To be set directly for testing
-  var nextLaunchStep: UserProfileLaunchStep = .enterPin
-
   func profileIsActivated() -> Bool {
     return false
   }
 
+  var deviceIsVerifiedValue = false
   func deviceIsVerified() -> Bool {
-    return nextLaunchStep == .enterApp
+    return deviceIsVerifiedValue
   }
 
 }

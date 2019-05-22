@@ -9,6 +9,7 @@
 import os.log
 import PromiseKit
 import Moya
+import OAuthSwift
 
 protocol NetworkManagerType: HeaderDelegate &
   AddressRequestable &
@@ -23,6 +24,7 @@ protocol NetworkManagerType: HeaderDelegate &
   TransactionBroadcastable &
   TransactionRequestable &
   TransactionNotificationRequestable &
+  TwitterRequestable &
   UserRequestable &
   WalletRequestable &
   WalletAddressRequestable &
@@ -36,6 +38,7 @@ NotificationNetworkInteractable {
   func start()
   func updateCachedMetadata() -> Promise<CheckInResponse>
   func handleUpdateCachedMetadataError(error: Error)
+  var uiTestArguments: [UITestArgument] { get set }
 }
 
 extension NetworkManagerType {
@@ -63,6 +66,8 @@ class NetworkManager: NetworkManagerType {
 
   let logger = OSLog(subsystem: "com.coinninja.NetworkManager", category: "network_requests")
 
+  var uiTestArguments: [UITestArgument] = []
+
   init(persistenceManager: PersistenceManagerType,
        analyticsManager: AnalyticsManagerType = AnalyticsManager(),
        coinNinjaProvider: CoinNinjaProviderType = CoinNinjaProvider()) {
@@ -73,6 +78,16 @@ class NetworkManager: NetworkManagerType {
 
     self.cnProvider.headerDelegate = self
   }
+
+  lazy var twitterOAuthManager: OAuth1Swift = {
+    return OAuth1Swift(
+      consumerKey: twitterOAuth.consumerKey,
+      consumerSecret: twitterOAuth.consumerSecret,
+      requestTokenUrl: twitterOAuth.requestTokenURL,
+      authorizeUrl: twitterOAuth.authorizeURL,
+      accessTokenUrl: twitterOAuth.accessTokenURL
+    )
+  }()
 
   func start() {
     // Setup exchange rate, network fees, block height, etc.

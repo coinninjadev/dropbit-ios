@@ -189,20 +189,17 @@ class TransactionHistoryDetailCellAddressViewTests: XCTestCase {
     // given
     let expectedAddress = "3NNE2SY73JkrupbWKu6iVCsGjrcNKXH4hR"
     let stack = InMemoryCoreDataStack()
+    let indianaJones = GenericContact(phoneNumber: GlobalPhoneNumber(countryCode: 1, nationalNumber: "3305551212"), formatted: "")
     let otd = OutgoingTransactionData(
       txid: "123txid",
-      contactName: "Indiana Jones",
-      contactPhoneNumber: GlobalPhoneNumber(countryCode: 1, nationalNumber: "3305551212"),
-      contactPhoneNumberHash: "",
+      dropBitType: .phone(indianaJones),
       destinationAddress: expectedAddress,
       amount: 1,
       feeAmount: 1,
       sentToSelf: false,
       requiredFeeRate: nil,
-      sharedPayloadDTO: testPayloadDTO
-    )
-    let transaction = CKMTransaction(insertInto: stack.context)
-    transaction.configure(with: otd, in: stack.context)
+      sharedPayloadDTO: testPayloadDTO)
+    let transaction = CKMTransaction.findOrCreate(with: otd, in: stack.context)
     let rates: ExchangeRates = [.BTC: 1, .USD: 7000]
 
     let viewModel = TransactionHistoryDetailCellViewModel(
@@ -226,20 +223,22 @@ class TransactionHistoryDetailCellAddressViewTests: XCTestCase {
     // given
     let expectedAddress = "3NNE2SY73JkrupbWKu6iVCsGjrcNKXH4hR"
     let stack = InMemoryCoreDataStack()
+    let globalNumber = GlobalPhoneNumber(countryCode: 1, nationalNumber: "3305551212")
+    let indianaJones = ValidatedContact(
+      kind: .registeredUser,
+      displayName: "Indiana Jones",
+      displayNumber: "+1 (330) 555-1212",
+      globalPhoneNumber: globalNumber)
     let otd = OutgoingTransactionData(
       txid: "123txid",
-      contactName: "Indiana Jones",
-      contactPhoneNumber: GlobalPhoneNumber(countryCode: 1, nationalNumber: "3305551212"),
-      contactPhoneNumberHash: "",
+      dropBitType: .phone(indianaJones),
       destinationAddress: expectedAddress,
       amount: 1,
       feeAmount: 1,
       sentToSelf: false,
       requiredFeeRate: nil,
-      sharedPayloadDTO: testPayloadDTO
-    )
-    let transaction = CKMTransaction(insertInto: stack.context)
-    transaction.configure(with: otd, in: stack.context)
+      sharedPayloadDTO: testPayloadDTO)
+    let transaction = CKMTransaction.findOrCreate(with: otd, in: stack.context)
     let invitation = CKMInvitation(insertInto: stack.context)
     transaction.invitation = invitation
     let rates: ExchangeRates = [.BTC: 1, .USD: 7000]
@@ -275,20 +274,23 @@ class TransactionHistoryDetailCellAddressViewTests: XCTestCase {
     // given
     let expectedAddress = "3NNE2SY73JkrupbWKu6iVCsGjrcNKXH4hR"
     let stack = InMemoryCoreDataStack()
+    let globalNumber = GlobalPhoneNumber(countryCode: 1, nationalNumber: "3305551212")
+    let indianaJones = ValidatedContact(
+      kind: .registeredUser,
+      displayName: "Indiana Jones",
+      displayNumber: "+1 (330) 555-1212",
+      globalPhoneNumber: globalNumber)
     let otd = OutgoingTransactionData(
       txid: "123txid",
-      contactName: "Indiana Jones",
-      contactPhoneNumber: GlobalPhoneNumber(countryCode: 1, nationalNumber: "3305551212"),
-      contactPhoneNumberHash: "",
+      dropBitType: .phone(indianaJones),
       destinationAddress: expectedAddress,
       amount: 1,
       feeAmount: 1,
       sentToSelf: false,
       requiredFeeRate: nil,
-      sharedPayloadDTO: testPayloadDTO
-    )
-    let transaction = CKMTransaction(insertInto: stack.context)
-    transaction.configure(with: otd, in: stack.context)
+      sharedPayloadDTO: testPayloadDTO)
+
+    let transaction = CKMTransaction.findOrCreate(with: otd, in: stack.context)
     let invitation = CKMInvitation(insertInto: stack.context)
     transaction.invitation = invitation
     let rates: ExchangeRates = [.BTC: 1, .USD: 7000]
@@ -390,5 +392,17 @@ class TransactionHistoryDetailCellAddressViewTests: XCTestCase {
     XCTAssertTrue(self.sut.addressContainerView.isHidden, "addressContainerView should be hidden")
     XCTAssertTrue(self.sut.addressStatusLabel.isHidden, "addressStatusLabel should be hidden")
     XCTAssertEqual(self.sut.addressTextButton.title(for: .normal), expectedAddress, "addressTextButton title should equal destination address")
+  }
+}
+
+extension ValidatedContact {
+  init(kind: ContactKind,
+       displayName: String,
+       displayNumber: String,
+       globalPhoneNumber: GlobalPhoneNumber) {
+    self.kind = kind
+    self.displayName = displayName
+    self.displayNumber = displayNumber
+    self.globalPhoneNumber = globalPhoneNumber
   }
 }

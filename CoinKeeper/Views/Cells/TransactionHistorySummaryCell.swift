@@ -11,6 +11,7 @@ import UIKit
 class TransactionHistorySummaryCell: UICollectionViewCell {
 
   @IBOutlet var incomingImage: UIImageView!
+  @IBOutlet var twitterImage: UIImageView!
   @IBOutlet var receiverLabel: TransactionHistoryReceiverLabel!
   @IBOutlet var statusLabel: TransactionHistoryDetailLabel!
   @IBOutlet var dateLabel: TransactionHistoryDetailLabel!
@@ -37,6 +38,7 @@ class TransactionHistorySummaryCell: UICollectionViewCell {
     }
 
     receiverLabel.text = viewModel.counterpartyDescription.isEmpty ? viewModel.receiverAddress : viewModel.counterpartyDescription
+    twitterImage.isHidden = !viewModel.isTwitterContact
     statusLabel.text = viewModel.statusDescription
     statusLabel.isHidden = viewModel.hidden
 

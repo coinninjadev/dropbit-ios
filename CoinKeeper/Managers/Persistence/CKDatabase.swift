@@ -20,6 +20,8 @@ class CKDatabase: PersistenceDatabaseType {
   private let stackConfig: CoreDataStackConfig
   private let container: NSPersistentContainer
 
+  var sharedPayloadManager: SharedPayloadManagerType = SharedPayloadManager()
+
   lazy var mainQueueContext: NSManagedObjectContext = {
     let context = self.container.viewContext
     context.automaticallyMergesChangesFromParent = true
@@ -118,24 +120,12 @@ class CKDatabase: PersistenceDatabaseType {
     return id
   }
 
-  func persistWalletId(_ id: String, in context: NSManagedObjectContext) -> Promise<Void> {
-    return Promise { seal in
-      context.performAndWait {
-        guard let wallet = CKMWallet.find(in: context) else {
-          seal.reject(CKPersistenceError.noManagedWallet)
-          return
-        }
-
-        wallet.id = id
-
-        do {
-          try context.save()
-          seal.fulfill(())
-        } catch {
-          seal.reject(error)
-        }
-      }
+  func persistWalletId(_ id: String, in context: NSManagedObjectContext) throws {
+    guard let wallet = CKMWallet.find(in: context) else {
+      throw CKPersistenceError.noManagedWallet
     }
+
+    wallet.id = id
   }
 
   func containsRegularTransaction(in context: NSManagedObjectContext) -> IncomingOutgoingTuple {
@@ -210,51 +200,6 @@ class CKDatabase: PersistenceDatabaseType {
         _ = CKMTransaction.findOrCreate(with: $0, in: context, relativeToBlockHeight: blockHeight, fullSync: fullSync)
       }
       seal.fulfill(())
-    }
-  }
-
-  func persistReceivedSharedPayloads(
-    _ payloads: [SharedPayloadV1],
-    hasher: HashingManager,
-    kit: PhoneNumberKit,
-    contactCacheManager: ContactCacheManagerType,
-    in context: NSManagedObjectContext) {
-    let salt: Data
-    do {
-      salt = try hasher.salt()
-    } catch {
-      os_log("Failed to get salt for hashing shared payload phone number: %@", log: logger, type: .error, error.localizedDescription)
-      return
-    }
-
-    for payload in payloads {
-      guard let tx = CKMTransaction.find(byTxid: payload.txid, in: context) else { continue }
-
-      if tx.memo == nil {
-        tx.memo = payload.info.memo
-      }
-
-      let phoneNumber = payload.profile.globalPhoneNumber()
-      let phoneNumberHash = hasher.hash(phoneNumber: phoneNumber, salt: salt, parsedNumber: nil, kit: kit)
-
-      if tx.phoneNumber == nil, let inputs = ManagedPhoneNumberInputs(phoneNumber: phoneNumber) {
-        tx.phoneNumber = CKMPhoneNumber.findOrCreate(withInputs: inputs,
-                                                     phoneNumberHash: phoneNumberHash,
-                                                     in: context)
-
-        let counterpartyInputs = contactCacheManager.managedContactComponents(forGlobalPhoneNumber: phoneNumber)?.counterpartyInputs
-        if let name = counterpartyInputs?.name {
-          tx.phoneNumber?.counterparty = CKMCounterparty.findOrCreate(with: name, in: context)
-        }
-      }
-
-      let payloadAsData = try? payload.encoded()
-      let ckmSharedPayload = CKMTransactionSharedPayload(sharingDesired: true,
-                                                         fiatAmount: payload.info.amount,
-                                                         fiatCurrency: payload.info.currency,
-                                                         receivedPayload: payloadAsData,
-                                                         insertInto: context)
-      tx.sharedPayload = ckmSharedPayload
     }
   }
 

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import OAuthSwift
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -68,6 +69,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   }
 
   func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
+    if url.scheme == "dropbit" {
+      OAuthSwift.handle(url: url)
+      return true
+    }
+
     guard let bitcoinURL = BitcoinURL(string: url.absoluteString) else {
       return false
     }

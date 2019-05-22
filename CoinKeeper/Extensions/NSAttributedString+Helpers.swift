@@ -26,15 +26,49 @@ extension NSAttributedString {
     return result
   }
 
-  convenience init(image: UIImage, fontDescender descender: CGFloat, imageSize size: CGSize = CGSize(width: 20, height: 20)) {
+  convenience init(image: UIImage,
+                   fontDescender: CGFloat,
+                   imageSize: CGSize = CGSize(width: 20, height: 20),
+                   offset: CGPoint = .zero) {
     let textAttribute = NSTextAttachment()
     textAttribute.image = image
     textAttribute.bounds = CGRect(
       x: 0,
-      y: descender, //(-size.height / (size.height / 3)),
-      width: size.width,
-      height: size.height
-    )
+      y: fontDescender, //(-size.height / (size.height / 3)),
+      width: imageSize.width,
+      height: imageSize.height
+    ).offsetBy(dx: offset.x, dy: offset.y)
+
     self.init(attachment: textAttribute)
   }
+
+  /// `sharedColor` is used for both the titleColor and a mask of the image
+  convenience init(imageName: String,
+                   imageSize: CGSize = CGSize(width: 20, height: 20),
+                   title: String,
+                   sharedColor: UIColor,
+                   font: UIFont,
+                   imageOffset: CGPoint = .zero,
+                   trailingImage: Bool = false) {
+
+    let attributes: [NSAttributedString.Key: Any] = [
+      .font: font,
+      .foregroundColor: sharedColor
+    ]
+
+    let image = UIImage(imageLiteralResourceName: imageName).maskWithColor(color: sharedColor)
+    let attributedImage = NSAttributedString(image: image,
+                                            fontDescender: font.descender,
+                                            imageSize: imageSize,
+                                            offset: imageOffset)
+    let space = "  "
+    let attributedText = NSAttributedString(string: title, attributes: attributes)
+
+    if trailingImage {
+      self.init(attributedString: attributedText + space + attributedImage)
+    } else {
+      self.init(attributedString: attributedImage + space + attributedText)
+    }
+  }
+
 }

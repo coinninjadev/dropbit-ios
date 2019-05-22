@@ -19,6 +19,8 @@ class MockNetworkManager: NetworkManagerType {
   var persistenceManager: PersistenceManagerType
   var analyticsManager: AnalyticsManagerType
 
+  var uiTestArguments: [UITestArgument] = []
+
   init(persistenceManager: PersistenceManagerType,
        analyticsManager: AnalyticsManagerType = AnalyticsManager()) {
 

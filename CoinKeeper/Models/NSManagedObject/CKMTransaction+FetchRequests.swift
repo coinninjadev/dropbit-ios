@@ -180,4 +180,29 @@ extension CKMTransaction {
     return transaction
   }
 
+  static func findOrCreate(with data: OutgoingTransactionData, in context: NSManagedObjectContext) -> CKMTransaction {
+    let fetchRequest: NSFetchRequest<CKMTransaction> = CKMTransaction.fetchRequest()
+    fetchRequest.fetchLimit = 1
+    let keyPath = #keyPath(CKMTransaction.txid)
+    let invitationTxid = CKMTransaction.invitationTxidPrefix + data.txid
+    let txidPredicate = NSPredicate(format: "\(keyPath) = %@", data.txid)
+    let invitationPredicate = NSPredicate(format: "\(keyPath) = %@", invitationTxid)
+    let predicate = NSCompoundPredicate(orPredicateWithSubpredicates: [txidPredicate, invitationPredicate])
+    fetchRequest.predicate = predicate
+
+    let transaction: CKMTransaction
+    do {
+      if let foundTx = try context.fetch(fetchRequest).first {
+        transaction = foundTx
+      } else {
+        transaction = CKMTransaction(insertInto: context)
+      }
+    } catch {
+      transaction = CKMTransaction(insertInto: context)
+    }
+
+    transaction.configure(with: data, in: context)
+    return transaction
+  }
+
 }

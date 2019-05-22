@@ -70,11 +70,4 @@ extension AppCoordinator: GetBitcoinCopiedAddressViewControllerDelegate {
   func viewControllerDidCopyAddress(_ viewController: UIViewController) {
     self.alertManager.showSuccessHUD(withStatus: "Address copied to clipboard!", duration: 2.0, completion: nil)
   }
-
-  func viewControllerRequestedAuthenticationSuspension(_ viewController: UIViewController) {
-    guard let suspendUntilDate = Calendar.current.date(byAdding: .minute, value: 15, to: Date()) else { return }
-    os_log("Will suspend authentication until %@ or next open", log: logger, type: .debug, suspendUntilDate as CVarArg)
-    self.suspendAuthenticationOnceUntil = suspendUntilDate
-  }
-
 }

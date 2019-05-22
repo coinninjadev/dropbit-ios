@@ -67,3 +67,11 @@ public struct GlobalPhoneNumber: Codable, CustomStringConvertible {
 }
 
 extension GlobalPhoneNumber: Equatable {}
+
+extension GlobalPhoneNumber {
+  func hashed() -> String {
+    let hashingManager = HashingManager()
+    guard let salt = try? hashingManager.salt() else { fatalError("error: missing salt") }
+    return hashingManager.hash(phoneNumber: self, salt: salt, parsedNumber: nil, kit: PhoneNumberKit())
+  }
+}

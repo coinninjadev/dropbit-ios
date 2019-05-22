@@ -12,6 +12,7 @@ import XCTest
 
 class PinEntryViewControllerTests: XCTestCase {
   var sut: PinEntryViewController!
+  var mockCoordinator: MockCoordinator!
 
   override func setUp() {
     super.setUp()
@@ -27,7 +28,7 @@ class PinEntryViewControllerTests: XCTestCase {
   private func setupDelegates() -> (MockCoordinator, MockDigitEntryDisplayViewModel) {
     let mockViewModel = MockDigitEntryDisplayViewModel(view: self.sut.securePinDisplayView)
     self.sut.digitEntryDisplayViewModel = mockViewModel
-    let mockCoordinator = MockCoordinator()
+    self.mockCoordinator = MockCoordinator()
     self.sut.generalCoordinationDelegate = mockCoordinator
     return (mockCoordinator, mockViewModel)
   }
@@ -86,8 +87,8 @@ class PinEntryViewControllerTests: XCTestCase {
   }
 
   func testBiometricButtonAfterAnimationsAlphaChanges() {
+    _ = setupDelegates()
     self.sut.viewDidAppear(false)
-
     XCTAssertEqual(self.sut.biometricButton.alpha, 1, "biometricsButton alpha should equal 1")
   }
 
@@ -202,7 +203,7 @@ class PinEntryViewControllerTests: XCTestCase {
 
   // MARK: mock coordinator class
   class MockCoordinator: PinEntryViewControllerDelegate, PinVerificationDelegate {
-    func pinWasVerified(digits: String, for flow: PinCreationViewController.Flow) {
+    func pinWasVerified(digits: String, for flow: SetupFlow?) {
     }
 
     func viewControllerPinFailureCountExceeded(_ viewController: UIViewController) {
@@ -225,6 +226,10 @@ class PinEntryViewControllerTests: XCTestCase {
     func checkMatch(for digits: String) -> Bool {
       checkMatchForDigitsWasCalled = true
       return expectedDigits == digits
+    }
+
+    func pinExists() -> Bool {
+      return true
     }
 
     var mockBiometricType = BiometricType.none

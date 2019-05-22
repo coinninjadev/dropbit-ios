@@ -34,6 +34,7 @@ struct Theme {
     case settingsDarkGray, sendingToDarkGray
     case containerBackgroundGray
     case borderDarkGray
+    case backgroundDarkGray
     case darkGray
     case sendPaymentNetworkFee
     case successGreen
@@ -71,6 +72,7 @@ struct Theme {
       case .bannerWarn: 											return UIColor(r: 224, g: 177, b: 0)
       case .memoBorder,
            .borderDarkGray,
+           .backgroundDarkGray,
            .selectedCellBackground: 					return UIColor(r: 224, g: 224, b: 224)
       case .lightGrayOutline,
            .lightGrayButtonBackground: 				return UIColor(r: 227, g: 227, b: 227)
@@ -179,8 +181,11 @@ struct Theme {
     case copiedAddress
     case popoverMessage
     case popoverActionButton
+    case verificationIdentity
+    case verificationActionTitle
     case popoverSecondaryButton
     case popoverStatusLabel
+    case restoreWalletButton
 
     var font: UIFont {
       switch self {
@@ -193,6 +198,7 @@ struct Theme {
            .phoneNumberDetail: 									return CKFont.light(13)
       case .sendingBitcoinAmount,
            .walletRecoveryDetail: 							return CKFont.light(15)
+      case .verificationIdentity:               return CKFont.light(18)
 
       // Regular
       case .transactionHistorySecondaryAmount,
@@ -202,6 +208,7 @@ struct Theme {
            .transactionHistoryDetail,
            .wordCountDetail,
            .copiedAddress,
+           .restoreWalletButton,
            .selectWordDetail: 									return CKFont.regular(12)
       case .bannerMessage,
            .transactionDetailAmountBreakdown,
@@ -232,7 +239,8 @@ struct Theme {
            .popoverMessage,
            .noTransactionsDetail: 							return CKFont.regular(15)
       case .settingsPrice: 											return CKFont.regular(16)
-      case .requestPaySecondaryCurrency: 				return CKFont.regular(17)
+      case .requestPaySecondaryCurrency,
+           .verificationActionTitle:     				return CKFont.regular(17)
       case .sendingAmountToPhoneNumber:         return CKFont.regular(20)
       case .sendingAmountTo: 										return CKFont.regular(26)
       case .deviceVerificationPhoneNumber:			return CKFont.regular(28)

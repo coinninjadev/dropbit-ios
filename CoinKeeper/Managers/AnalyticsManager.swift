@@ -13,6 +13,7 @@ import os.log
 enum AnalyticsManagerPropertiesType: String {
   case hasWallet = "Has Wallet"
   case phoneVerified = "Phone Verified"
+  case twitterVerified = "Twitter Verified"
   case wordsBackedUp = "Backed Up"
   case hasBTCBalance = "Has BTC Balance"
   case hasSent = "Has Sent"
@@ -23,7 +24,6 @@ enum AnalyticsManagerPropertiesType: String {
 }
 
 enum AnalyticsManagerEventType: String {
-  case skipWordsBackedup = "SkipWordsBackedup"
   case userDidOpenTutorial = "UserDidOpenTutorial"
   case foreignWalletAddressDetected = "ForeignWalletAddressDetected"
   case invalidServerResponse = "InvalidServerResponse"
@@ -34,6 +34,7 @@ enum AnalyticsManagerEventType: String {
   case retryFailedPayment = "RetryFailedPayment"
   case wordsBackedup = "WordsBackedUp"
   case phoneVerified = "PhoneVerified"
+  case twitterVerified = "TwitterVerified"
   case phoneAutoDeverified = "PhoneAutoDeverified"
   case skipPhoneVerification = "SkipPhoneVerification"
   case paymentToContact = "ContactSend"
@@ -57,6 +58,7 @@ enum AnalyticsManagerEventType: String {
   case contactsButtonPressed = "ContactsBtn"
   case scanButtonPressed = "ScanBtn"
   case pasteButtonPressed = "PasteBtn"
+  case twitterButtonPressed = "TwitterBtn"
   case shareTransactionPressed = "ShareTransIDBtn"
   case cancelDropbitPressed = "CancelDropBit"
   case whatIsDropbitPressed = "WhatIsDropBit"
@@ -70,6 +72,7 @@ enum AnalyticsManagerEventType: String {
   case coinKeeperContactPressed = "ContactPressed"
   case balanceHistoryButtonPressed = "BalanceHistoryBtn"
   case deregisterPhoneNumber = "DeregisterPhoneNumber"
+  case deregisterTwitter = "DeregisterTwitter"
   case tryAgainToDeverify = "TryAgainToDeregister"
   case syncBlockchain = "SyncBlockchainPressed"
   case viewWords = "ViewWords"

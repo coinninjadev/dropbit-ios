@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreData
+import PromiseKit
 
 extension AppCoordinator: BalanceContainerDelegate {
 
@@ -49,6 +50,28 @@ extension AppCoordinator: BalanceContainerDelegate {
 
   func containerDidLongPressBalances(in viewController: UIViewController) {
     //
+  }
+
+  func dropBitMeAvatar() -> Promise<UIImage> {
+    let defaultImage = UIImage(imageLiteralResourceName: "dropBitMeAvatarPlaceholder")
+    let context = persistenceManager.mainQueueContext()
+
+    if let user = CKMUser.find(in: context) {
+      if let avatar = user.avatar {
+        let image = UIImage(data: avatar) ?? defaultImage
+        return Promise.value(image)
+      } else if persistenceManager.keychainManager.oauthCredentials() != nil {
+        return networkManager.getCurrentTwitterUser()
+          .then { (user: TwitterUser) -> Promise<UIImage> in
+            let image = user.profileImageData.flatMap { UIImage(data: $0) } ?? defaultImage
+            return Promise.value(image)
+          }
+      } else {
+        return Promise.value(defaultImage)
+      }
+    } else {
+      return Promise.value(defaultImage)
+    }
   }
 
 }

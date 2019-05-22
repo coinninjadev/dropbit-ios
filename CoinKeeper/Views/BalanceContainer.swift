@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import PromiseKit
 
 protocol BalanceContainerDelegate: AnyObject {
   func containerDidTapLeftButton(in viewController: UIViewController)
@@ -15,6 +16,7 @@ protocol BalanceContainerDelegate: AnyObject {
   func containerDidLongPressBalances(in viewController: UIViewController)
   func isSyncCurrentlyRunning() -> Bool
   func selectedCurrency() -> SelectedCurrency
+  func dropBitMeAvatar() -> Promise<UIImage>
 }
 
 struct BalanceContainerDataSource {
@@ -101,6 +103,7 @@ enum BalanceContainerLeftButtonType {
   private func initialize() {
     backgroundColor = .clear
     xibSetup()
+    dropBitMeButton.setImage(nil, for: .normal)
     leftButton.badgeDisplayCriteria = BalanceContainerLeftButtonType.menu.badgeCriteria
     guard let imageData = UIImage.data(asset: "syncing") else { return }
     syncActivityIndicator.prepareForAnimation(withGIFData: imageData)
@@ -112,6 +115,14 @@ enum BalanceContainerLeftButtonType {
   func update(with dataSource: BalanceContainerDataSource) {
     leftButton.setImage(dataSource.leftButtonType.image, for: .normal)
     leftButton.badgeDisplayCriteria = dataSource.leftButtonType.badgeCriteria
+
+    _ = delegate?.dropBitMeAvatar()
+      .done { (image: UIImage) in
+        self.dropBitMeButton.setImage(image, for: .normal)
+        let imageView = self.dropBitMeButton.imageView
+        let radius = (imageView?.frame.width ?? 0) / 2.0
+        imageView?.applyCornerRadius(radius)
+    }
 
     let primaryCurrency = dataSource.primaryCurrency
     let secondaryCurrency = dataSource.converter.otherCurrency(forCurrency: primaryCurrency) ?? .USD

@@ -20,10 +20,11 @@ protocol DeviceVerificationViewControllerDelegate: AnyObject {
   func viewControllerShouldShowSkipButton() -> Bool
 }
 
-enum DeviceVerificationError {
+enum DeviceVerificationError: Error {
   case codeFailureLimitExceeded
   case incorrectCode
   case invalidPhoneNumber //failed local parsing
+  case missingTwitterIdentity
 
   var displayMessage: String {
     switch self {
@@ -33,6 +34,8 @@ enum DeviceVerificationError {
       return "Incorrect code.\nPlease try again."
     case .invalidPhoneNumber:
       return "Invalid phone number. Please make sure you have entered the correct number."
+    case .missingTwitterIdentity:
+      return "Missing Twitter verification. Please authorize DropBit to use Twitter as an authentication mechanism."
     }
   }
 }
@@ -317,7 +320,7 @@ extension DeviceVerificationViewController: KeypadEntryViewDelegate {
 
     case .codeFailureCountExceeded:
       let logger = OSLog(subsystem: "com.coinninja.coinkeeper.deviceverificationviewcontroller", category: "device_verification_view_controller")
-      os_log("Devide verification failed three times", log: logger, type: .error)
+      os_log("Device verification failed three times", log: logger, type: .error)
 
     case .phoneNumberEntry:
       break

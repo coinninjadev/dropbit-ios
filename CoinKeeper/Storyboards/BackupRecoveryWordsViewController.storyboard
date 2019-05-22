@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Backup Recovery Words View Controller-->
+        <scene sceneID="DiC-rQ-vgx">
+            <objects>
+                <viewController storyboardIdentifier="BackupRecoveryWordsViewController" id="imn-jB-8MO" customClass="BackupRecoveryWordsViewController" customModule="DropBit" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Jkw-ve-rrz">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Recovery Words" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="acj-9m-ngZ" customClass="OnboardingTitleLabel" customModule="DropBit" customModuleProvider="target">
+                                <rect key="frame" x="144.5" y="44" width="125" height="20.5"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Be sure to write your words down on a piece of paper." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="u69-zH-JpS" customClass="OnboardingSubtitleLabel" customModule="DropBit" customModuleProvider="target">
+                                <rect key="frame" x="44" y="76.5" width="326" height="41"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" pagingEnabled="YES" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="lP2-Co-Ro9">
+                                <rect key="frame" x="0.0" y="227" width="414" height="520"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="Y1s-Nq-fr4">
+                                    <size key="itemSize" width="375" height="340"/>
+                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                </collectionViewFlowLayout>
+                                <cells/>
+                            </collectionView>
+                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="14" translatesAutoresizingMaskIntoConstraints="NO" id="5i4-tf-aIv">
+                                <rect key="frame" x="20" y="791" width="374" height="51"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vA4-CL-p6d" customClass="PrimaryActionButton" customModule="DropBit" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="0.0" width="180" height="51"/>
+                                        <state key="normal" title="Button"/>
+                                        <connections>
+                                            <action selector="backButtonTapped:" destination="imn-jB-8MO" eventType="touchUpInside" id="Bhn-17-aY9"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ou6-vR-sxo" customClass="PrimaryActionButton" customModule="DropBit" customModuleProvider="target">
+                                        <rect key="frame" x="194" y="0.0" width="180" height="51"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="51" id="TgR-ji-D1H"/>
+                                        </constraints>
+                                        <state key="normal" title="Button"/>
+                                        <connections>
+                                            <action selector="nextButtonTapped:" destination="imn-jB-8MO" eventType="touchUpInside" id="h5M-Cs-tnU"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="51" id="vnK-n6-iCb"/>
+                                </constraints>
+                            </stackView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Cjk-8p-IFh">
+                                <rect key="frame" x="350" y="24" width="44" height="44"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="OQv-VC-WYL"/>
+                                    <constraint firstAttribute="width" constant="44" id="zpl-Tz-WV8"/>
+                                </constraints>
+                                <state key="normal" image="close"/>
+                                <connections>
+                                    <action selector="closeButtonTapped:" destination="imn-jB-8MO" eventType="touchUpInside" id="ioT-8q-L3I"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" red="0.95686274510000002" green="0.95686274510000002" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstItem="5i4-tf-aIv" firstAttribute="top" secondItem="lP2-Co-Ro9" secondAttribute="bottom" constant="44" id="0Hd-m5-uNc"/>
+                            <constraint firstAttribute="trailing" secondItem="u69-zH-JpS" secondAttribute="trailing" constant="44" id="0dq-nO-sgc"/>
+                            <constraint firstItem="5i4-tf-aIv" firstAttribute="leading" secondItem="AlH-sK-i0g" secondAttribute="leading" constant="20" id="5cS-9t-2sB"/>
+                            <constraint firstItem="u69-zH-JpS" firstAttribute="top" secondItem="acj-9m-ngZ" secondAttribute="bottom" constant="12" id="6Iq-S7-R7v"/>
+                            <constraint firstItem="u69-zH-JpS" firstAttribute="centerX" secondItem="Jkw-ve-rrz" secondAttribute="centerX" id="8lb-Ld-Wpa"/>
+                            <constraint firstItem="acj-9m-ngZ" firstAttribute="top" secondItem="AlH-sK-i0g" secondAttribute="top" id="D7M-tk-Fgq"/>
+                            <constraint firstItem="acj-9m-ngZ" firstAttribute="centerX" secondItem="Jkw-ve-rrz" secondAttribute="centerX" id="Pf4-SL-4th"/>
+                            <constraint firstItem="u69-zH-JpS" firstAttribute="leading" secondItem="Jkw-ve-rrz" secondAttribute="leading" constant="44" id="UhZ-sb-w9I"/>
+                            <constraint firstItem="AlH-sK-i0g" firstAttribute="bottom" secondItem="5i4-tf-aIv" secondAttribute="bottom" constant="20" id="YZe-6B-xyV"/>
+                            <constraint firstItem="lP2-Co-Ro9" firstAttribute="top" secondItem="u69-zH-JpS" secondAttribute="bottom" constant="109.5" id="YdK-SO-6c1"/>
+                            <constraint firstItem="Cjk-8p-IFh" firstAttribute="top" secondItem="AlH-sK-i0g" secondAttribute="top" constant="-20" id="dAf-7k-JvU"/>
+                            <constraint firstItem="AlH-sK-i0g" firstAttribute="trailing" secondItem="lP2-Co-Ro9" secondAttribute="trailing" id="gZT-9e-na6"/>
+                            <constraint firstItem="AlH-sK-i0g" firstAttribute="trailing" secondItem="5i4-tf-aIv" secondAttribute="trailing" constant="20" id="rE9-Om-uiX"/>
+                            <constraint firstItem="AlH-sK-i0g" firstAttribute="trailing" secondItem="Cjk-8p-IFh" secondAttribute="trailing" constant="20" id="slL-q2-OjB"/>
+                            <constraint firstItem="lP2-Co-Ro9" firstAttribute="leading" secondItem="AlH-sK-i0g" secondAttribute="leading" id="yC7-N6-uoG"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="AlH-sK-i0g"/>
+                    </view>
+                    <connections>
+                        <outlet property="backButton" destination="vA4-CL-p6d" id="eVp-gw-c3p"/>
+                        <outlet property="closeButton" destination="Cjk-8p-IFh" id="eB5-F6-p28"/>
+                        <outlet property="nextButton" destination="Ou6-vR-sxo" id="cA7-P9-AGO"/>
+                        <outlet property="subtitleLabel" destination="u69-zH-JpS" id="6w5-ht-LjZ"/>
+                        <outlet property="titleLabel" destination="acj-9m-ngZ" id="bRr-8T-MpH"/>
+                        <outlet property="wordCollectionView" destination="lP2-Co-Ro9" id="zKk-uG-n7I"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="DmS-C6-rvV" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-380" y="174"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="close" width="14" height="14"/>
+    </resources>
+</document>

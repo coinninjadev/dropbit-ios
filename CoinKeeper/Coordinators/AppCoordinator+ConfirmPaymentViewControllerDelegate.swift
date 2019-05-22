@@ -34,17 +34,21 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate, CurrencyFormatta
           return
         }
 
-        let receiverNumber = outgoingInvitationDTO.contact.globalPhoneNumber
+        let receiver = outgoingInvitationDTO.contact.userIdentityBody
 
-        guard let senderNumber = strongSelf.persistenceManager.verifiedPhoneNumber() else {
-          os_log("Missing sender phone number", log: logger, type: .debug)
-          strongSelf.handleFailure(error: CKPersistenceError.phoneNotVerified)
-          return
+        let sender: UserIdentityBody
+        switch receiver.identityType {
+        case .phone:
+          guard let number = strongSelf.persistenceManager.verifiedPhoneNumber() else { return }
+          sender = UserIdentityBody(phoneNumber: number)
+        case .twitter:
+          guard let creds = strongSelf.persistenceManager.keychainManager.oauthCredentials() else { return }
+          sender = UserIdentityBody(twitterCredentials: creds)
         }
 
         let inviteBody = RequestAddressBody(amount: outgoingInvitationDTO.btcPair,
-                                            receiverNumber: receiverNumber,
-                                            senderNumber: senderNumber,
+                                            receiver: receiver,
+                                            sender: sender,
                                             requestId: UUID().uuidString.lowercased())
         strongSelf.handleSuccessfulInviteVerification(with: inviteBody, outgoingInvitationDTO: outgoingInvitationDTO)
       case .failure(let error):
@@ -109,13 +113,13 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate, CurrencyFormatta
     let successFailViewController = SuccessFailViewController.makeFromStoryboard()
     successFailViewController.modalPresentationStyle = .overFullScreen
     assignCoordinationDelegate(to: successFailViewController)
-    persistenceManager.persistUnacknowledgedInvitation(in: bgContext,
-                                                       with: outgoingInvitationDTO.btcPair,
-                                                       contact: outgoingInvitationDTO.contact,
-                                                       fee: outgoingInvitationDTO.fee,
-                                                       acknowledgementId: inviteBody.requestId)
-
     bgContext.performAndWait {
+      persistenceManager.persistUnacknowledgedInvitation(in: bgContext,
+                                                         with: outgoingInvitationDTO.btcPair,
+                                                         contact: outgoingInvitationDTO.contact,
+                                                         fee: outgoingInvitationDTO.fee,
+                                                         acknowledgementId: inviteBody.requestId)
+
       do {
         try bgContext.save()
       } catch {
@@ -162,7 +166,7 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate, CurrencyFormatta
       } catch {
         os_log("failed to save context in %@.\n%@", log: logger, type: .error, #function, error.localizedDescription)
         self.set(mode: .failure, for: successFailVC)
-        self.handleFailureInvite(error: TransactionDataError.insufficientFee)
+        self.handleFailureInvite(error: error)
       }
     }
   }
@@ -272,9 +276,7 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate, CurrencyFormatta
     context.performAndWait {
       let outgoingTransactionData = OutgoingTransactionData(
         txid: CKMTransaction.invitationTxidPrefix + response.id,
-        contactName: outgoingInvitationDTO.contact.displayName ?? "",
-        contactPhoneNumber: outgoingInvitationDTO.contact.globalPhoneNumber,
-        contactPhoneNumberHash: outgoingInvitationDTO.contact.phoneNumberHash,
+        dropBitType: outgoingInvitationDTO.contact.dropBitType,
         destinationAddress: "",
         amount: outgoingInvitationDTO.btcPair.btcAmount.asFractionalUnits(of: .BTC),
         feeAmount: outgoingInvitationDTO.fee,

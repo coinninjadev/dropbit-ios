@@ -130,7 +130,6 @@ class WalletAddressDataWorker: WalletAddressDataWorkerType {
       }.asVoid()
   }
 
-  /// Promise value is an array of PendingInvitationData which were successfully broadcast, currently a single object or empty.
   func updateSentAddressRequests(in context: NSManagedObjectContext) -> Promise<Void> {
     guard persistenceManager.userId(in: context) != nil else {
       return Promise.value(())
@@ -142,7 +141,7 @@ class WalletAddressDataWorker: WalletAddressDataWorkerType {
       .then(in: context) { self.checkAndExecuteSentInvitations(in: context) }
   }
 
-  /// Update request on the server and if it succeeds, update the local CKMInvitation and PendingInvitationData.
+  /// Update request on the server and if it succeeds, update the local CKMInvitation.
   func cancelInvitation(withID invitationID: String, in context: NSManagedObjectContext) -> Promise<Void> {
     let request = WalletAddressRequest(walletAddressRequestStatus: .canceled)
     return networkManager.updateWalletAddressRequest(for: invitationID, with: request)
@@ -153,7 +152,6 @@ class WalletAddressDataWorker: WalletAddressDataWorkerType {
 
     guard let foundInvitation = CKMInvitation.find(withId: response.id, in: context), foundInvitation.status != .canceled else { return }
 
-    self.persistenceManager.removePendingInvitationData(with: response.id)
     foundInvitation.status = .canceled
     foundInvitation.transaction?.temporarySentTransaction.map { context.delete($0) }
   }
@@ -197,11 +195,21 @@ class WalletAddressDataWorker: WalletAddressDataWorkerType {
       // In this edge case where the initial invitation wasn't immediately acknowledged due to the
       // server response being interrupted, we pass nil instead of the original shared payload.
 
+      var contact: ContactType?
+
+      if let managedPhoneNumber = invitation.counterpartyPhoneNumber {
+        let global = managedPhoneNumber.asGlobalPhoneNumber
+        var tempContact = GenericContact(phoneNumber: global, formatted: global.asE164())
+        tempContact.displayName = invitation.counterpartyName ?? ""
+        contact = tempContact
+      } else if let managedContact = invitation.counterpartyTwitterContact {
+        let twitterUser = managedContact.asTwitterUser()
+        contact = TwitterContact(twitterUser: twitterUser)
+      }
+
       let outgoingTransactionData = OutgoingTransactionData(
         txid: CKMTransaction.invitationTxidPrefix + response.id,
-        contactName: invitation.counterpartyName ?? "",
-        contactPhoneNumber: invitation.counterpartyPhoneNumber?.asGlobalPhoneNumber,
-        contactPhoneNumberHash: invitation.counterpartyPhoneNumber?.phoneNumberHash ?? "",
+        dropBitType: contact?.dropBitType ?? .none,
         destinationAddress: "",
         amount: invitation.btcAmount,
         feeAmount: invitation.fees,
@@ -402,7 +410,7 @@ class WalletAddressDataWorker: WalletAddressDataWorkerType {
   }
 
   private func handleFulfilledInvitations(
-    responses: [PendingInvitationData],
+    responses: [WalletAddressRequestResponse],
     in context: NSManagedObjectContext
     ) -> Promise<Void> {
 
@@ -544,41 +552,50 @@ class WalletAddressDataWorker: WalletAddressDataWorkerType {
   ///   persist a temporary transaction if needed, and clear the pending invitation data from UserDefaults.
   ///
   /// - Parameters:
-  ///   - pendingInvitationData: A copy of the local PendingInvitationData object representing a pending invitation. If this has an address property,
-  ///     the transaction will be fulfilled.
+  ///   - response: An object representing a wallet address request.
   ///   - context: NSManagedObjectContext within which any managed objects will be used. This should be called using `perform` by the caller
-  /// - Returns: A Promise containing a PendingInvitationData object upon successfully processing.
+  /// - Returns: A Promise containing void upon successfully processing.
 
   // swiftlint:disable cyclomatic_complexity
   private func fulfillInvitationRequest(
-    with pendingInvitationData: PendingInvitationData,
+    with response: WalletAddressRequestResponse,
     in context: NSManagedObjectContext
     ) -> Promise<Void> {
 
-    guard let address = pendingInvitationData.address else {
+    guard let address = response.address else {
       return Promise(error: PendingInvitationError.noAddressProvided)
     }
 
     var maybeInvitation: CKMInvitation?
     context.performAndWait {
-      maybeInvitation = CKMInvitation.find(withId: pendingInvitationData.id, in: context)
+      maybeInvitation = CKMInvitation.find(withId: response.id, in: context)
     }
     guard let pendingInvitation = maybeInvitation,
       pendingInvitation.isFulfillable else {
         return Promise(error: PendingInvitationError.noSentInvitationExistsForID)
     }
 
-    let sharedPayloadDTO = self.sharedPayload(invitation: pendingInvitation, pendingInvitationData: pendingInvitationData)
+    let sharedPayloadDTO = self.sharedPayload(invitation: pendingInvitation, walletAddressRequestResponse: response)
 
+    var contact: ContactType?
     // create outgoing dto object
+    if let twitterContact = pendingInvitation.counterpartyTwitterContact {
+      let twitterUser = twitterContact.asTwitterUser()
+      contact = TwitterContact(twitterUser: twitterUser)
+    } else if let phoneContact = pendingInvitation.counterpartyPhoneNumber {
+      let global = phoneContact.asGlobalPhoneNumber
+      let genericContact = GenericContact(phoneNumber: global, formatted: global.asE164())
+      contact = genericContact
+    }
+
+    let btcAmount = pendingInvitation.btcAmount
+
     let outgoingTransactionData = OutgoingTransactionData(
       txid: "",
-      contactName: pendingInvitationData.name ?? "",
-      contactPhoneNumber: pendingInvitationData.phoneNumber,
-      contactPhoneNumberHash: pendingInvitation.counterpartyPhoneNumber?.phoneNumberHash ?? "",
+      dropBitType: contact?.dropBitType ?? .none,
       destinationAddress: address,
-      amount: pendingInvitationData.btcAmount,
-      feeAmount: pendingInvitationData.feeAmount,
+      amount: btcAmount,
+      feeAmount: pendingInvitation.fees,
       sentToSelf: false,
       requiredFeeRate: nil,
       sharedPayloadDTO: sharedPayloadDTO
@@ -589,14 +606,14 @@ class WalletAddressDataWorker: WalletAddressDataWorkerType {
     return self.networkManager.fetchTransactionSummaries(for: address)
       .then(in: context) { (summaryResponses: [AddressTransactionSummaryResponse]) -> Promise<Void> in
         // guard against already funded
-        let maybeFound = summaryResponses.first { $0.vout == pendingInvitationData.btcAmount }
+        let maybeFound = summaryResponses.first { $0.vout == btcAmount }
         if let found = maybeFound {
           let txid = found.txid
           return self.completeWalletAddressRequestFulfillmentLocally(
             with: dto,
             outgoingTransactionData: outgoingTransactionData,
             txid: txid,
-            pendingInvitationData: pendingInvitationData,
+            invitationId: response.id,
             pendingInvitation: pendingInvitation,
             in: context
           )
@@ -610,12 +627,12 @@ class WalletAddressDataWorker: WalletAddressDataWorkerType {
             totalPendingAmount = pendingInvitation.totalPendingAmount
           }
           guard spendableBalance >= totalPendingAmount else {
-            return Promise(error: PendingInvitationError.insufficientFundsForInvitationWithID(pendingInvitationData.id))
+            return Promise(error: PendingInvitationError.insufficientFundsForInvitationWithID(response.id))
           }
 
           return self.walletManager.transactionData(
-            forPayment: pendingInvitationData.btcAmount,
-            to: address, withFlatFee: pendingInvitationData.feeAmount)
+            forPayment: btcAmount,
+            to: address, withFlatFee: pendingInvitation.fees)
             .get { dto.transactionData = $0 }
             .then { self.networkManager.broadcastTx(with: $0) }
             .then(in: context) { (txid: String) -> Promise<Void> in
@@ -623,25 +640,22 @@ class WalletAddressDataWorker: WalletAddressDataWorkerType {
                 with: dto,
                 outgoingTransactionData: outgoingTransactionData,
                 txid: txid,
-                pendingInvitationData: pendingInvitationData,
+                invitationId: response.id,
                 pendingInvitation: pendingInvitation,
                 in: context
               )
             }
             .recover { (error) -> Promise<Void> in
-              // Don't mark the PendingInvitationData as failed to broadcast in this scenario, don't want to accidentally double-send
               if error is MoyaError {
                 throw error
               }
 
-              self.persistenceManager.userDefaultsManager.setPendingInvitationFailed(pendingInvitationData)
-
               if let txDataError = error as? TransactionDataError {
                 switch txDataError {
                 case .insufficientFunds:
-                  throw PendingInvitationError.insufficientFundsForInvitationWithID(pendingInvitationData.id)
+                  throw PendingInvitationError.insufficientFundsForInvitationWithID(response.id)
                 case .insufficientFee:
-                  throw PendingInvitationError.insufficientFeeForInvitationWithID(pendingInvitationData.id)
+                  throw PendingInvitationError.insufficientFeeForInvitationWithID(response.id)
                 }
               }
 
@@ -655,7 +669,7 @@ class WalletAddressDataWorker: WalletAddressDataWorkerType {
               case .unknown:
                 throw TransactionBroadcastError.unknown
               case .insufficientFee:
-                throw PendingInvitationError.insufficientFeeForInvitationWithID(pendingInvitationData.id)
+                throw PendingInvitationError.insufficientFeeForInvitationWithID(response.id)
               }
             }
         }
@@ -666,7 +680,7 @@ class WalletAddressDataWorker: WalletAddressDataWorkerType {
     with dto: WalletAddressRequestResponseDTO,
     outgoingTransactionData: OutgoingTransactionData,
     txid: String,
-    pendingInvitationData: PendingInvitationData,
+    invitationId: String,
     pendingInvitation: CKMInvitation,
     in context: NSManagedObjectContext) -> Promise<Void> {
 
@@ -698,28 +712,29 @@ class WalletAddressDataWorker: WalletAddressDataWorkerType {
         }
 
       }
-      .get { _ in self.persistenceManager.removePendingInvitationData(with: pendingInvitationData.id) }
       .then { (txid: String) -> Promise<WalletAddressRequestResponse> in
         let request = WalletAddressRequest(walletAddressRequestStatus: .completed, txid: txid)
-        return self.networkManager.updateWalletAddressRequest(for: pendingInvitationData.id, with: request)
+        return self.networkManager.updateWalletAddressRequest(for: invitationId, with: request)
       }
       .then { _ in
         return Promise.value(())
     }
   }
 
-  private func sharedPayload(invitation: CKMInvitation, pendingInvitationData: PendingInvitationData) -> SharedPayloadDTO {
+  private func sharedPayload(
+    invitation: CKMInvitation,
+    walletAddressRequestResponse response: WalletAddressRequestResponse) -> SharedPayloadDTO {
     if let ckmPayload = invitation.transaction?.sharedPayload,
       let fiatCode = CurrencyCode(rawValue: ckmPayload.fiatCurrency),
-      let pubKey = pendingInvitationData.addressPubKey {
+      let pubKey = response.addressPubkey {
       let amountInfo = SharedPayloadAmountInfo(fiatCurrency: fiatCode, fiatAmount: ckmPayload.fiatAmount)
       return SharedPayloadDTO(addressPubKeyState: .known(pubKey),
                               sharingDesired: ckmPayload.sharingDesired,
-                              memo: pendingInvitationData.memo,
+                              memo: invitation.transaction?.memo,
                               amountInfo: amountInfo)
 
     } else {
-      return SharedPayloadDTO(addressPubKeyState: .none, sharingDesired: false, memo: pendingInvitationData.memo, amountInfo: nil)
+      return SharedPayloadDTO(addressPubKeyState: .none, sharingDesired: false, memo: invitation.transaction?.memo, amountInfo: nil)
     }
   }
 

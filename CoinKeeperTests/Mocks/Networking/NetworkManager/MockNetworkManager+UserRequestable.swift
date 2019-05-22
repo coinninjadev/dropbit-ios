@@ -11,11 +11,23 @@ import PromiseKit
 
 extension MockNetworkManager: UserRequestable {
 
-  func createUser(walletId: String, phoneNumber: GlobalPhoneNumber) -> Promise<UserResponse> {
+  func createUser(walletId: String, body: UserIdentityBody) -> Promise<UserResponse> {
     return Promise { _ in }
   }
 
-  func verifyUser(phoneNumber: GlobalPhoneNumber, code: String) -> Promise<UserResponse> {
+  func verifyUser(body: VerifyUserBody) -> Promise<UserResponse> {
+    return Promise { _ in }
+  }
+
+  func verifyUser(body: VerifyUserBody, credentials: TwitterOAuthStorage?) -> Promise<UserResponse> {
+    return Promise { _ in }
+  }
+
+  func addIdentity(body: UserIdentityBody) -> Promise<UserIdentityResponse> {
+    return Promise { _ in }
+  }
+
+  func deleteIdentity(identity: String) -> Promise<Void> {
     return Promise { _ in }
   }
 
@@ -27,16 +39,15 @@ extension MockNetworkManager: UserRequestable {
     return Promise { $0.reject(error) }
   }
 
-  func queryUsers(phoneNumberHashes: [String]) -> Promise<StringDictResponse> {
+  func queryUsers(identityHashes: [String]) -> Promise<StringDictResponse> {
     return Promise { _ in }
   }
 
-  func resendVerification(headers: DefaultRequestHeaders, body: CreateUserBody) -> Promise<UserResponse> {
+  func resendVerification(headers: DefaultRequestHeaders, body: UserIdentityBody) -> Promise<UserResponse> {
     return Promise { _ in }
   }
 
   func updateUserPublicURL(isPrivate: Bool) -> Promise<UserResponse> {
     return Promise { _ in }
   }
-
 }
