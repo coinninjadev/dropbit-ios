@@ -1,5 +1,5 @@
 //
-//  CreateRecoveryWordsCollectionDDSTests.swift
+//  BackupRecoveryWordsCollectionDDSTests.swift
 //  DropBitTests
 //
 //  Created by BJ Miller on 2/28/18.
@@ -10,8 +10,8 @@ import UIKit
 @testable import DropBit
 import XCTest
 
-class CreateRecoveryWordsCollectionDDSTests: XCTestCase {
-  var sut: CreateRecoveryWordsCollectionDDS!
+class BackupRecoveryWordsCollectionDDSTests: XCTestCase {
+  var sut: BackupRecoveryWordsCollectionDDS!
   var fakeCollectionView: UICollectionView!
   var words: [String] = []
 
@@ -21,7 +21,7 @@ class CreateRecoveryWordsCollectionDDSTests: XCTestCase {
     let layout = UICollectionViewFlowLayout()
     self.fakeCollectionView = UICollectionView(frame: frame, collectionViewLayout: layout)
     self.words = TestHelpers.fakeWords()
-    self.sut = CreateRecoveryWordsCollectionDDS(words: self.words, cellDisplayedHandler: { _ in })
+    self.sut = BackupRecoveryWordsCollectionDDS(words: self.words, cellDisplayedHandler: { _ in })
     self.fakeCollectionView.dataSource = self.sut
   }
 

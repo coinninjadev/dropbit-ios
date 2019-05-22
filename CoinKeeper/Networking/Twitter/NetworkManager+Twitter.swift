@@ -74,8 +74,12 @@ extension NetworkManager: TwitterRequestable {
   func defaultFollowingList() -> Promise<[TwitterUser]> {
     guard isNotUITesting else { return Promise.value([TwitterUser.emptyInstance()]) }
     return authorize()
-      .then { _ in self.fetchDefaultFriends() }
-      .then { self.usersWithImages(for: $0) }
+      .then { _ in
+        self.fetchDefaultFriends()
+      }
+      .then {
+        self.usersWithImages(for: $0)
+    }
   }
 
   func selected(user: TwitterUser) -> Promise<Void> {

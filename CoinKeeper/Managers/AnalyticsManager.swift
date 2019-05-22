@@ -24,7 +24,6 @@ enum AnalyticsManagerPropertiesType: String {
 }
 
 enum AnalyticsManagerEventType: String {
-  case skipWordsBackedup = "SkipWordsBackedup"
   case userDidOpenTutorial = "UserDidOpenTutorial"
   case foreignWalletAddressDetected = "ForeignWalletAddressDetected"
   case invalidServerResponse = "InvalidServerResponse"

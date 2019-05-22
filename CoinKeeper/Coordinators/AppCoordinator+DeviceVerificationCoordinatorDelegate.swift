@@ -18,14 +18,14 @@ extension AppCoordinator: DeviceVerificationCoordinatorDelegate {
    Call this after the seed words are backed up or skipped.
    */
   func registerAndPersistWallet(in context: NSManagedObjectContext) -> Promise<Void> {
-    guard let wmgr = walletManager else { return Promise(error: CKPersistenceError.noWalletWords) }
+    guard let wmgr = walletManager else { return Promise(error: CKPersistenceError.noWalletManager) }
     // Skip registration if wallet was previously registered and persisted
     guard self.persistenceManager.walletId(in: context) == nil else {
       return Promise { $0.fulfill(()) }
     }
 
     return self.networkManager.createWallet(withPublicKey: wmgr.hexEncodedPublicKey)
-      .then(in: context) { self.persistenceManager.persistWalletId(from: $0, in: context) }
+      .get(in: context) { try self.persistenceManager.persistWalletId(from: $0, in: context) }.asVoid()
   }
 
   func coordinator(_ coordinator: DeviceVerificationCoordinator, didVerify type: UserIdentityType, isInitialSetupFlow: Bool) {
@@ -45,10 +45,9 @@ extension AppCoordinator: DeviceVerificationCoordinatorDelegate {
     let logger = OSLog(subsystem: "com.coinninja.coinkeeper.appcoordinator", category: "phone_verification")
     os_log("Skipped verification", log: logger, type: .debug)
 
-    persistenceManager.keychainManager.store(anyValue: NSNumber(value: true), key: .skippedVerification)
-
+    persistenceManager.keychainManager.storeSynchronously(anyValue: NSNumber(value: true), key: .skippedVerification)
     serialQueueManager.enqueueWalletSyncIfAppropriate(type: .comprehensive, policy: .skipIfSpecificOperationExists,
-                                                      completion: nil, fetchResult: nil)
+                                                           completion: nil, fetchResult: nil)
     childCoordinatorDidComplete(childCoordinator: coordinator)
     continueSetupFlow()
   }
@@ -74,6 +73,20 @@ extension AppCoordinator: DeviceVerificationCoordinatorDelegate {
     }
   }
 
+  /// This may fail with a 500 error if the addresses were already added during a previous installation of the same wallet
+  private func registerInitialWalletAddresses() {
+    guard let walletWorker = workerFactory.createWalletAddressDataWorker(delegate: self) else { return }
+    let bgContext = persistenceManager.createBackgroundContext()
+    let logger = OSLog(subsystem: "com.coinninja.coinkeeper.appcoordinator", category: "register_wallet_addresses")
+    let addressNumber = walletWorker.targetWalletAddressCount
+    walletWorker.deleteAllAddressesOnServer()
+      .then(in: bgContext) { walletWorker.registerAndPersistServerAddresses(number: addressNumber, in: bgContext) }
+      .get(in: bgContext) { _ in
+        try? bgContext.save()
+      }
+      .catch(policy: .allErrors) { os_log("failed to register wallet addresses: %@", log: logger, type: .error, $0.localizedDescription) }
+  }
+
   private func completeVerification(
     from coordinator: DeviceVerificationCoordinator,
     userIdentityType: UserIdentityType,
@@ -87,7 +100,7 @@ extension AppCoordinator: DeviceVerificationCoordinatorDelegate {
       registerInitialWalletAddresses()
     }
 
-    persistenceManager.keychainManager.store(anyValue: NSNumber(value: false), key: .skippedVerification)
+    persistenceManager.keychainManager.storeSynchronously(anyValue: NSNumber(value: false), key: .skippedVerification)
 
     serialQueueManager.enqueueWalletSyncIfAppropriate(type: .comprehensive, policy: .skipIfSpecificOperationExists,
                                                       completion: nil, fetchResult: nil)

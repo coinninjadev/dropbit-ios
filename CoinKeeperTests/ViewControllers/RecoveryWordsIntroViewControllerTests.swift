@@ -62,9 +62,4 @@ class RecoveryWordsIntroViewControllerTests: XCTestCase {
     XCTAssertTrue(mockDelegate.wasAskedToSkipRecoveryWords)
   }
 
-  // MARK: initial state
-  func testFlowInitialState() {
-    XCTAssertEqual(sut.flow, .createWallet)
-  }
-
 }

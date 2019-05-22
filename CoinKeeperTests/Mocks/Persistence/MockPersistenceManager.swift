@@ -96,7 +96,9 @@ class MockPersistenceManager: PersistenceManagerType {
     return Promise { _ in }
   }
 
-  func backup(recoveryWords words: [String]) {}
+  func backup(recoveryWords words: [String], isBackedUp: Bool) -> Promise<Void> {
+    return .value(())
+  }
 
   func containsRegularTransaction(in context: NSManagedObjectContext) -> IncomingOutgoingTuple {
     return (incoming: false, outgoing: false)
@@ -167,9 +169,7 @@ class MockPersistenceManager: PersistenceManagerType {
     from responses: [AddressTransactionSummaryResponse],
     in context: NSManagedObjectContext) {}
 
-  func persistWalletId(from response: WalletResponse, in context: NSManagedObjectContext) -> Promise<Void> {
-    return Promise { _ in }
-  }
+  func persistWalletId(from response: WalletResponse, in context: NSManagedObjectContext) throws { }
 
   func persistUserId(_ userId: String, in context: NSManagedObjectContext) { }
 
@@ -209,9 +209,10 @@ class MockPersistenceManager: PersistenceManagerType {
 
   var setLastLoginTimeWasCalled = false
   private var lastTimeEnteredBackground: TimeInterval = Date().timeIntervalSince1970
-  func setLastLoginTime() {
+  func setLastLoginTime() -> Promise<Void> {
     setLastLoginTimeWasCalled = true
     lastTimeEnteredBackground = Date().timeIntervalSince1970
+    return .value(())
   }
 
   func setLastMockLogin(timeInterval: TimeInterval) {

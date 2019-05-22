@@ -119,9 +119,9 @@ class PersistenceManager: PersistenceManagerType {
     return databaseManager.getAllInvitations(in: context)
   }
 
-  func persistWalletId(from response: WalletResponse, in context: NSManagedObjectContext) -> Promise<Void> {
+  func persistWalletId(from response: WalletResponse, in context: NSManagedObjectContext) throws {
     set(stringValue: response.id, for: .walletID)
-    return databaseManager.persistWalletId(response.id, in: context)
+    try databaseManager.persistWalletId(response.id, in: context)
   }
 
   /// Will only persist a non-empty string to protect when that is returned by the server for some routes
@@ -187,8 +187,8 @@ class PersistenceManager: PersistenceManagerType {
     keychainManager.deleteAll()
   }
 
-  func backup(recoveryWords words: [String]) {
-    keychainManager.backup(recoveryWords: words)
+  func backup(recoveryWords words: [String], isBackedUp: Bool) -> Promise<Void> {
+    return keychainManager.backup(recoveryWords: words, isBackedUp: isBackedUp)
   }
 
   func walletWordsBackedUp() -> Bool {
@@ -351,8 +351,8 @@ class PersistenceManager: PersistenceManagerType {
     userDefaultsManager.deleteDeviceEndpointIds()
   }
 
-  func setLastLoginTime() {
-    _ = keychainManager.store(anyValue: Date().timeIntervalSince1970, key: .lastTimeEnteredBackground)
+  func setLastLoginTime() -> Promise<Void> {
+    return self.keychainManager.store(anyValue: Date().timeIntervalSince1970, key: .lastTimeEnteredBackground)
   }
 
   func lastLoginTime() -> TimeInterval? {

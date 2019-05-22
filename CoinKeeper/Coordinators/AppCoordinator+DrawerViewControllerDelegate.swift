@@ -8,6 +8,12 @@
 
 import UIKit
 
+extension AppCoordinator: BadgeUpdateDelegate {
+  func viewControllerDidRequestBadgeUpdate(_ viewController: UIViewController) {
+    badgeManager.publishBadgeUpdate()
+  }
+}
+
 extension AppCoordinator: DrawerViewControllerDelegate {
 
   func backupWordsWasTouched() {

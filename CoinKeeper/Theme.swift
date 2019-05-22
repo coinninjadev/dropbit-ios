@@ -185,6 +185,7 @@ struct Theme {
     case verificationActionTitle
     case popoverSecondaryButton
     case popoverStatusLabel
+    case restoreWalletButton
 
     var font: UIFont {
       switch self {
@@ -207,6 +208,7 @@ struct Theme {
            .transactionHistoryDetail,
            .wordCountDetail,
            .copiedAddress,
+           .restoreWalletButton,
            .selectWordDetail: 									return CKFont.regular(12)
       case .bannerMessage,
            .transactionDetailAmountBreakdown,

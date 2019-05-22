@@ -41,7 +41,6 @@ extension AppCoordinator {
   }
 
   private func invitationsWithStatusUpdates(in context: NSManagedObjectContext) -> [CKMInvitation] {
-    // No need to create alerts from the broadcasted PendingInvitationData since we also identify their change in status here.
     let invitations = CKMInvitation.find(withStatuses: [.completed, .expired, .canceled], in: context)
     let statusPath = #keyPath(CKMInvitation.status)
     let changedInvitations = invitations.filter { $0.changedValues().keys.contains(statusPath) }

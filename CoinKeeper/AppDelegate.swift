@@ -30,8 +30,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     return true
   }
 
-  func applicationDidEnterBackground(_ application: UIApplication) {
-    coordinator?.appResignedActiveState()
+  func applicationWillResignActive(_ application: UIApplication) {
+    coordinator?.appWillResignActiveState()
   }
 
   func applicationWillEnterForeground(_ application: UIApplication) {

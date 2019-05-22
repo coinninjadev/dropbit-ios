@@ -9,7 +9,7 @@
 import UIKit
 
 protocol RecoveryWordsIntroViewControllerDelegate: AnyObject {
-  func viewController(_ viewController: UIViewController, didChooseToBackupWords words: [String], in flow: RecoveryWordsFlow)
+  func viewController(_ viewController: UIViewController, didChooseToBackupWords words: [String])
   func verifyIfWordsAreBackedUp() -> Bool
   func viewController(_ viewController: UIViewController, didSkipWords words: [String])
 }
@@ -30,7 +30,6 @@ final class RecoveryWordsIntroViewController: BaseViewController, StoryboardInit
     return generalCoordinationDelegate as? RecoveryWordsIntroViewControllerDelegate
   }
 
-  var flow: RecoveryWordsFlow = .createWallet
   var recoveryWords: [String] = []
 
   override func viewDidLoad() {
@@ -73,14 +72,8 @@ final class RecoveryWordsIntroViewController: BaseViewController, StoryboardInit
 
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
-    switch flow {
-    case .settings:
-      skipButton.isHidden = true
-      closeButton.isHidden = false
-    case .createWallet:
-      skipButton.isHidden = false
-      closeButton.isHidden = true
-    }
+    skipButton.isHidden = true
+    closeButton.isHidden = false
   }
 
   @IBAction func closeButtonTapped(_ sender: UIButton) {
@@ -88,7 +81,7 @@ final class RecoveryWordsIntroViewController: BaseViewController, StoryboardInit
   }
 
   @IBAction func proceedButtonTapped(_ sender: UIButton) {
-    coordinationDelegate?.viewController(self, didChooseToBackupWords: recoveryWords, in: flow)
+    coordinationDelegate?.viewController(self, didChooseToBackupWords: recoveryWords)
   }
 
   @IBAction func skipButtonTapped(_ sender: UIButton) {

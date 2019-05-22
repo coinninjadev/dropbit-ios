@@ -30,7 +30,11 @@ class DeviceVerificationCoordinator: ChildCoordinatorType {
 
   var userSuppliedPhoneNumber: GlobalPhoneNumber?
   let logger = OSLog(subsystem: "com.coinninja.coinkeeper.deviceverificationcoordinator", category: "device_verification_coordinator")
-  var isInitialSetupFlow = true
+  var selectedSetupFlow: SetupFlow?
+
+  var isInitialSetupFlow: Bool {
+    return selectedSetupFlow != nil
+  }
 
   // MARK: private var
   private var codeEntryFailureCount = 0
@@ -272,10 +276,9 @@ extension DeviceVerificationCoordinator: DeviceVerificationViewControllerDelegat
             os_log("Failed to save context. %@", log: logger, type: .error, error.localizedDescription)
           }
         }
+        .then { crDelegate.persistenceManager.keychainManager.store(anyValue: phoneNumber.countryCode, key: .countryCode) }
+        .then { crDelegate.persistenceManager.keychainManager.store(anyValue: phoneNumber.nationalNumber, key: .phoneNumber) }
         .done(on: .main) { _ in
-
-          crDelegate.persistenceManager.keychainManager.store(anyValue: phoneNumber.countryCode, key: .countryCode)
-          crDelegate.persistenceManager.keychainManager.store(anyValue: phoneNumber.nationalNumber, key: .phoneNumber)
 
           // Tell delegate to continue app flow
           self.codeWasVerified(phoneNumber: phoneNumber)
@@ -369,10 +372,13 @@ extension DeviceVerificationCoordinator: DeviceVerificationViewControllerDelegat
     let bgContext = crDelegate.persistenceManager.createBackgroundContext()
     bgContext.perform {
       crDelegate.registerAndPersistWallet(in: bgContext)
-        .done {
+        .done(in: bgContext) {
+          try bgContext.save()
 
-          crDelegate.alertManager.hideActivityHUD(withDelay: self.minHudDisplayDuration) {
-            crDelegate.coordinatorSkippedPhoneVerification(self)
+          DispatchQueue.main.async {
+            crDelegate.alertManager.hideActivityHUD(withDelay: self.minHudDisplayDuration) {
+              crDelegate.coordinatorSkippedPhoneVerification(self)
+            }
           }
         }
         .catch { error in

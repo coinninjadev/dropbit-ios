@@ -1,5 +1,5 @@
 //
-//  CreateRecoveryWordsCellPage.swift
+//  BackupRecoveryWordsCellPage.swift
 //  DropBitUITests
 //
 //  Created by BJ Miller on 11/15/18.
@@ -8,14 +8,14 @@
 
 import XCTest
 
-class CreateRecoveryWordsCellPage: UITestPage {
+class BackupRecoveryWordsCellPage: UITestPage {
 
   init() {
-    super.init(page: .createRecoveryWordsCell(.page))
+    super.init(page: .backupRecoveryWordsCell(.page))
   }
 
   func recoveryWordString() -> String {
-    let wordLabel = app.staticTexts(.createRecoveryWordsCell(.wordLabel))
+    let wordLabel = app.staticTexts(.backupRecoveryWordsCell(.wordLabel))
     return wordLabel.title
   }
 

@@ -65,14 +65,14 @@ extension AppCoordinator: PhoneNumberStatusViewControllerDelegate {
   func viewControllerDidSelectVerifyTwitter(_ viewController: UIViewController) {
     viewController.dismiss(animated: true) {
       self.navigationController.setNavigationBarHidden(true, animated: true)
-      self.startDeviceVerificationFlow(userIdentityType: .twitter, shouldOrphanRoot: false, isInitialSetupFlow: false)
+      self.startDeviceVerificationFlow(userIdentityType: .twitter, shouldOrphanRoot: false, selectedSetupFlow: nil)
     }
   }
 
   func viewControllerDidSelectVerifyPhone(_ viewController: UIViewController) {
     viewController.dismiss(animated: true) {
       self.navigationController.setNavigationBarHidden(false, animated: false) // don't animate so as to hide "Back" button
-      self.startDeviceVerificationFlow(userIdentityType: .phone, shouldOrphanRoot: false, isInitialSetupFlow: false)
+      self.startDeviceVerificationFlow(userIdentityType: .phone, shouldOrphanRoot: false, selectedSetupFlow: nil)
     }
   }
 
@@ -163,7 +163,7 @@ extension AppCoordinator: PhoneNumberStatusViewControllerDelegate {
     case .twitter:
       guard allVerifiedIdentities.contains(.twitter),
         let creds = persistenceManager.keychainManager.oauthCredentials()
-        else { return Promise(error: DeviceVerificationError.invalidPhoneNumber) }
+        else { return Promise(error: DeviceVerificationError.missingTwitterIdentity) }
       identityToRemove = creds.twitterUserId
     }
 

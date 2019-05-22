@@ -28,7 +28,8 @@ extension NSAttributedString {
 
   convenience init(image: UIImage,
                    fontDescender: CGFloat,
-                   imageSize: CGSize = CGSize(width: 20, height: 20)) {
+                   imageSize: CGSize = CGSize(width: 20, height: 20),
+                   offset: CGPoint = .zero) {
     let textAttribute = NSTextAttachment()
     textAttribute.image = image
     textAttribute.bounds = CGRect(
@@ -36,7 +37,8 @@ extension NSAttributedString {
       y: fontDescender, //(-size.height / (size.height / 3)),
       width: imageSize.width,
       height: imageSize.height
-    )
+    ).offsetBy(dx: offset.x, dy: offset.y)
+
     self.init(attachment: textAttribute)
   }
 
@@ -45,7 +47,9 @@ extension NSAttributedString {
                    imageSize: CGSize = CGSize(width: 20, height: 20),
                    title: String,
                    sharedColor: UIColor,
-                   font: UIFont) {
+                   font: UIFont,
+                   imageOffset: CGPoint = .zero,
+                   trailingImage: Bool = false) {
 
     let attributes: [NSAttributedString.Key: Any] = [
       .font: font,
@@ -55,9 +59,16 @@ extension NSAttributedString {
     let image = UIImage(imageLiteralResourceName: imageName).maskWithColor(color: sharedColor)
     let attributedImage = NSAttributedString(image: image,
                                             fontDescender: font.descender,
-                                            imageSize: imageSize)
-    let attributedText = NSAttributedString(string: "  \(title)", attributes: attributes)
-    self.init(attributedString: attributedImage + attributedText)
+                                            imageSize: imageSize,
+                                            offset: imageOffset)
+    let space = "  "
+    let attributedText = NSAttributedString(string: title, attributes: attributes)
+
+    if trailingImage {
+      self.init(attributedString: attributedText + space + attributedImage)
+    } else {
+      self.init(attributedString: attributedImage + space + attributedText)
+    }
   }
 
 }

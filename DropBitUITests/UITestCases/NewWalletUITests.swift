@@ -1,5 +1,5 @@
 //
-//  SkipRecoveryWordsUITests.swift
+//  NewWalletUITests.swift
 //  DropBitUITests
 //
 //  Created by BJ Miller on 11/14/18.
@@ -8,7 +8,7 @@
 
 import XCTest
 
-class SkipRecoveryWordsUITests: UITestCase {
+class NewWalletUITests: UITestCase {
 
   override func setUp() {
     super.setUp()
@@ -56,7 +56,7 @@ class SkipRecoveryWordsUITests: UITestCase {
     // discover recovery words
     var words: [String] = []
     for index in (0..<12) {
-      let word = app.staticTexts(.createRecoveryWordsCell(.wordLabel), assertionWait: .custom(1.0)).label
+      let word = app.staticTexts(.backupRecoveryWordsCell(.wordLabel), assertionWait: .custom(1.0)).label
       words.append(word)
       let buttonTitle = index == 11 ? "VERIFY" : "NEXT"
       app.buttons[buttonTitle].tap()

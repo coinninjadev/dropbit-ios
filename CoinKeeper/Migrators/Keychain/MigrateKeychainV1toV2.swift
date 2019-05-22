@@ -23,10 +23,10 @@ struct MigrateKeychainV1toV2: Migratable {
       guard let existingValue = persistenceManager.keychainManager.retrieveValue(for: key) else { continue }
 
       // store nil before changing accessibility to avoid errors
-      persistenceManager.keychainManager.store(anyValue: nil, key: key)
+      persistenceManager.keychainManager.storeSynchronously(anyValue: nil, key: key)
 
       // re-store the value, which will store it with the current accessibility level
-      persistenceManager.keychainManager.store(anyValue: existingValue, key: key)
+      persistenceManager.keychainManager.storeSynchronously(anyValue: existingValue, key: key)
     }
 
     // set migrated flag

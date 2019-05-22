@@ -7,10 +7,14 @@
 //
 
 import Foundation
+import PromiseKit
 @testable import DropBit
 
 class MockPersistenceKeychainManager: PersistenceKeychainType {
-  func backup(recoveryWords words: [String]) {}
+  func backup(recoveryWords words: [String], isBackedUp: Bool) -> Promise<Void> {
+    return .value(())
+  }
+
   func deleteAll() {}
   func unverifyUser(for identity: UserIdentityType) {}
 
@@ -28,34 +32,51 @@ class MockPersistenceKeychainManager: PersistenceKeychainType {
   var values: [String: Any] = [:]
   var anyValueExists = false
 
-  func store(anyValue value: Any?, key: CKKeychain.Key) -> Bool {
-    self.values[key.rawValue] = value
-    anyValueExists = (self.values[key.rawValue] != nil)
-    return anyValueExists
+  private func promise(forExistence exists: Bool, key: String) -> Promise<Void> {
+    if exists {
+      return .value(())
+    } else {
+      return Promise(error: CKPersistenceError.missingValue(key: key))
+    }
   }
-  func store(valueToHash value: String?, key: CKKeychain.Key) -> Bool {
+
+  func storeSynchronously(anyValue value: Any?, key: CKKeychain.Key) -> Bool {
     self.values[key.rawValue] = value
     valueExists = (self.values[key.rawValue] != nil)
     return valueExists
   }
 
+  func store(anyValue value: Any?, key: CKKeychain.Key) -> Promise<Void> {
+    self.values[key.rawValue] = value
+    anyValueExists = (self.values[key.rawValue] != nil)
+    return promise(forExistence: anyValueExists, key: key.rawValue)
+  }
+
+  func store(valueToHash value: String?, key: CKKeychain.Key) -> Promise<Void> {
+    self.values[key.rawValue] = value
+    valueExists = (self.values[key.rawValue] != nil)
+    return promise(forExistence: valueExists, key: key.rawValue)
+  }
+
   var wordsExist = false
-  func store(recoveryWords words: [String]) -> Bool {
-    self.values[CKKeychain.Key.walletWords.rawValue] = words
+  func store(recoveryWords words: [String], isBackedUp: Bool) -> Promise<Void> {
+    let key = CKKeychain.Key.walletWords.rawValue
+    self.values[key] = words
     wordsExist = !words.isEmpty
-    return wordsExist
+    return promise(forExistence: wordsExist, key: key)
   }
 
   var userPinExists = false
-  func store(userPin: String) -> Bool {
-    return true
+  func store(userPin: String) -> Promise<Void> {
+    return .value(())
   }
 
   var deviceIDExists = false
-  func store(deviceID: String) -> Bool {
-    self.values[CKKeychain.Key.deviceID.rawValue] = deviceID
+  func store(deviceID: String) -> Promise<Void> {
+    let key = CKKeychain.Key.deviceID.rawValue
+    self.values[key] = deviceID
     deviceIDExists = !deviceID.isEmpty
-    return deviceIDExists
+    return promise(forExistence: deviceIDExists, key: key)
   }
 
   func retrieveValue(for key: CKKeychain.Key) -> Any? {

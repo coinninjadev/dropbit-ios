@@ -46,4 +46,8 @@ extension AppCoordinator: PinEntryViewControllerDelegate {
   var biometricType: BiometricType {
     return biometricsAuthenticationManager.biometricType
   }
+
+  func pinExists() -> Bool {
+    return launchStateManager.pinExists()
+  }
 }

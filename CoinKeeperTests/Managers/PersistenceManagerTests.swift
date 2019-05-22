@@ -4,6 +4,7 @@
 //
 
 import XCTest
+import PromiseKit
 @testable import DropBit
 import Strongbox
 
@@ -43,33 +44,45 @@ class PersistenceManagerTests: XCTestCase {
   }
 
   // MARK: keychain
-  private func setupKeychainTests() {
+  private func setupKeychainTests() -> Promise<Void> {
     let keychainManager = CKKeychain(store: mockKeychainAccessor)
     self.sut = PersistenceManager(keychainManager: keychainManager)
-    _ = self.sut.keychainManager.store(valueToHash: "foo", key: .userPin)
+    return self.sut.keychainManager.store(valueToHash: "foo", key: .userPin)
   }
 
   func testStoringValueInKeychainTellsAccessorToStore() {
+    let expectation = XCTestExpectation(description: "setupKeychain")
     setupKeychainTests()
-    XCTAssertTrue(mockKeychainAccessor.wasAskedToArchive, "keychain accessor should store value")
+      .done {
+        XCTAssertTrue(self.mockKeychainAccessor.wasAskedToArchive, "keychain accessor should store value")
+        expectation.fulfill()
+      }.cauterize()
+    wait(for: [expectation], timeout: 3.0)
   }
 
   func testRetrievingValueTellsAccessorToRetrieve() {
+    let expectation = XCTestExpectation(description: "setupKeychain")
     setupKeychainTests()
+      .done {
+        let actualValue = self.sut.keychainManager.retrieveValue(for: .userPin) as? String ?? ""
 
-    let actualValue = self.sut.keychainManager.retrieveValue(for: .userPin) as? String ?? ""
-
-    XCTAssertTrue(mockKeychainAccessor.wasAskedToUnarchive, "keychain accessor should return value")
-    XCTAssertEqual(actualValue, "foo".sha256(), "value should equal expected value")
+        XCTAssertTrue(self.mockKeychainAccessor.wasAskedToUnarchive, "keychain accessor should return value")
+        XCTAssertEqual(actualValue, "foo".sha256(), "value should equal expected value")
+        expectation.fulfill()
+      }.cauterize()
+    wait(for: [expectation], timeout: 3.0)
   }
 
   func testClearingValueRemovesFromStorage() {
+    let expectation = XCTestExpectation(description: "setupKeychain")
     setupKeychainTests()
-
-    _ = self.sut.keychainManager.store(anyValue: nil, key: .userPin)
-
-    let newValue = self.sut.keychainManager.retrieveValue(for: .userPin)
-    XCTAssertNil(newValue, "keychain value should be nil after removal")
+      .then { self.sut.keychainManager.store(anyValue: nil, key: .userPin) }
+      .done {
+        let newValue = self.sut.keychainManager.retrieveValue(for: .userPin)
+        XCTAssertNil(newValue, "keychain value should be nil after removal")
+        expectation.fulfill()
+      }.cauterize()
+    wait(for: [expectation], timeout: 3.0)
   }
 
   // MARK: database

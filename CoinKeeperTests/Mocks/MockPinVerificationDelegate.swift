@@ -11,7 +11,7 @@ class MockPinVerificationDelegate: PinVerificationDelegate {
   var pinFailCountExceeded = false
   var digits: String = ""
 
-  func pinWasVerified(digits: String, for flow: PinCreationViewController.Flow) {
+  func pinWasVerified(digits: String, for flow: SetupFlow?) {
     pinWasVerified = true
     self.digits = digits
   }

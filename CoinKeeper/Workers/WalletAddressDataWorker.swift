@@ -130,7 +130,6 @@ class WalletAddressDataWorker: WalletAddressDataWorkerType {
       }.asVoid()
   }
 
-  /// Promise value is an array of PendingInvitationData which were successfully broadcast, currently a single object or empty.
   func updateSentAddressRequests(in context: NSManagedObjectContext) -> Promise<Void> {
     guard persistenceManager.userId(in: context) != nil else {
       return Promise.value(())
@@ -142,7 +141,7 @@ class WalletAddressDataWorker: WalletAddressDataWorkerType {
       .then(in: context) { self.checkAndExecuteSentInvitations(in: context) }
   }
 
-  /// Update request on the server and if it succeeds, update the local CKMInvitation and PendingInvitationData.
+  /// Update request on the server and if it succeeds, update the local CKMInvitation.
   func cancelInvitation(withID invitationID: String, in context: NSManagedObjectContext) -> Promise<Void> {
     let request = WalletAddressRequest(walletAddressRequestStatus: .canceled)
     return networkManager.updateWalletAddressRequest(for: invitationID, with: request)
@@ -553,10 +552,9 @@ class WalletAddressDataWorker: WalletAddressDataWorkerType {
   ///   persist a temporary transaction if needed, and clear the pending invitation data from UserDefaults.
   ///
   /// - Parameters:
-  ///   - pendingInvitationData: A copy of the local PendingInvitationData object representing a pending invitation. If this has an address property,
-  ///     the transaction will be fulfilled.
+  ///   - response: An object representing a wallet address request.
   ///   - context: NSManagedObjectContext within which any managed objects will be used. This should be called using `perform` by the caller
-  /// - Returns: A Promise containing a PendingInvitationData object upon successfully processing.
+  /// - Returns: A Promise containing void upon successfully processing.
 
   // swiftlint:disable cyclomatic_complexity
   private func fulfillInvitationRequest(
@@ -648,7 +646,6 @@ class WalletAddressDataWorker: WalletAddressDataWorkerType {
               )
             }
             .recover { (error) -> Promise<Void> in
-              // Don't mark the PendingInvitationData as failed to broadcast in this scenario, don't want to accidentally double-send
               if error is MoyaError {
                 throw error
               }

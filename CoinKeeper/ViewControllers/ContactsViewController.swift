@@ -30,6 +30,7 @@ protocol ContactsViewControllerDelegate: ViewControllerDismissable, URLOpener {
                                           validSelectionDelegate: SelectedValidContactDelegate)
 
   func showAlertForInvalidContactOrPhoneNumber(contactName: String?, displayNumber: String)
+  func showAlertForNoTwitterAuthorization()
   func searchForTwitterUsers(with searchTerm: String) -> Promise<[TwitterUser]>
   func defaultTwitterFriends() -> Promise<[TwitterUser]>
   func viewController(_ viewController: UIViewController,
@@ -125,6 +126,7 @@ class ContactsViewController: PresentableViewController, StoryboardInitializable
   var frc: NSFetchedResultsController<CCMPhoneNumber>!
 
   func setupTableView() {
+    activityIndiciator.stopAnimating()
     guard let delegate = coordinationDelegate else { return }
     self.frc = delegate.createFetchedResultsController()
     self.frc.delegate = self
@@ -152,9 +154,13 @@ class ContactsViewController: PresentableViewController, StoryboardInitializable
       tableView.dataSource = self.twitterUserDataSource
       if twitterUserDataSource.shouldReloadFriends {
         activityIndiciator.startAnimating()
-        _ = coordinationDelegate?.defaultTwitterFriends()
-          .get(on: .main) { _ in self.activityIndiciator.stopAnimating() }
-          .done { self.twitterUserDataSource.updateDefaultFriends($0) }
+        coordinationDelegate?.defaultTwitterFriends()
+          .done(on: .main) { self.twitterUserDataSource.updateDefaultFriends($0) }
+          .catch { error in
+            self.coordinationDelegate?.showAlertForNoTwitterAuthorization()
+            os_log("failed to fetch twitter friends: %@", log: self.logger, type: .error, error.localizedDescription)
+          }
+          .finally { self.activityIndiciator.stopAnimating() }
       } else {
         twitterUserDataSource.reset()
       }

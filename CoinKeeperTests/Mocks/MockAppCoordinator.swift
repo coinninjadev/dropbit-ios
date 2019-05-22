@@ -16,7 +16,7 @@ class MockAppCoordinator: AppCoordinator {
     wasAskedToEnterActiveState = true
   }
 
-  override func appResignedActiveState() {
+  override func appWillResignActiveState() {
     wasAskedToResignActiveState = true
   }
 }
