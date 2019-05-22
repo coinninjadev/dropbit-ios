@@ -22,7 +22,7 @@ final class StartViewController: BaseViewController {
     return generalCoordinationDelegate as? StartViewControllerDelegate
   }
 
-  var restoreWalletButton: UIButton!
+  let restoreWalletButton = UIButton(type: .custom)
   @IBOutlet var claimInviteButton: UIButton!
   @IBOutlet var newWalletButton: UIButton!
 
@@ -67,7 +67,6 @@ final class StartViewController: BaseViewController {
   }
 
   private func configureButtons() {
-    restoreWalletButton = UIButton(type: .custom)
     restoreWalletButton.frame = CGRect(x: 0, y: 0, width: 100, height: 40)
     restoreWalletButton.backgroundColor = .clear
     restoreWalletButton.addTarget(self, action: #selector(restoreWalletButtonTapped), for: .touchUpInside)

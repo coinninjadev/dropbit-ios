@@ -124,7 +124,7 @@ class StartViewControllerTests: XCTestCase {
 
   func testRestoreWalletButtonContainsAction() {
     let actions = self.sut.restoreWalletButton.actions(forTarget: self.sut, forControlEvent: .touchUpInside) ?? []
-    let restoreSelector = #selector(StartViewController.restoreWalletButtonTapped(_:)).description
+    let restoreSelector = #selector(StartViewController.restoreWalletButtonTapped).description
     XCTAssertTrue(actions.contains(restoreSelector), "restoreWalletButton should contain action")
   }
 
