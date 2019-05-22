@@ -260,6 +260,18 @@ class PersistenceManager: PersistenceManagerType {
     userDefaultsManager.unverifyUser()
   }
 
+  func senderIdentity(forOutgoingDropBitType type: OutgoingTransactionDropBitType) -> UserIdentityBody? {
+    switch type {
+    case .twitter:
+      guard let creds = keychainManager.oauthCredentials() else { return nil }
+      return UserIdentityBody(twitterCredentials: creds)
+    case .phone:
+      guard let number = verifiedPhoneNumber() else { return nil }
+      return UserIdentityBody(phoneNumber: number)
+    case .none: return nil
+    }
+  }
+
   func verifiedPhoneNumber() -> GlobalPhoneNumber? {
     guard let nationalNumber = keychainManager.retrieveValue(for: .phoneNumber) as? String else { return nil }
     let countryCode = keychainManager.retrieveValue(for: .countryCode) as? Int ?? 1 //default to 1 for legacy users

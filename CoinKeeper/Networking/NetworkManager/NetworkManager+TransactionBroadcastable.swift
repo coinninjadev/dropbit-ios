@@ -117,10 +117,14 @@ extension NetworkManager: TransactionBroadcastable {
       return Promise(error: CKPersistenceError.missingValue(key: "amountInfo"))
     }
 
+    guard let senderIdentityBody = persistenceManager.senderIdentity(forOutgoingDropBitType: outgoingTxData.dropBitType) else {
+      return Promise(error: CKPersistenceError.missingValue(key: "identity"))
+    }
+
     let payload = SharedPayloadV2(txid: outgoingTxData.txid,
                                   memo: sharedPayloadDTO.memo,
                                   amountInfo: amountInfo,
-                                  dropBitType: outgoingTxData.dropBitType)
+                                  senderIdentity: senderIdentityBody)
     return walletManager.encryptPayload(payload, addressPubKey: addressPubKey)
       .then { encryptedPayload -> Promise<Void> in
         let sharingObservantPayload = sharedPayloadDTO.shouldShare ? encryptedPayload : ""

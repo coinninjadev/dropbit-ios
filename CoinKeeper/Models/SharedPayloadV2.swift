@@ -70,15 +70,15 @@ struct SharedPayloadV2: SharedPayloadCodable {
   let info: SharedPayloadInfoV1
   let profile: SharedPayloadProfileV2?
 
-  init(txid: String, memo: String?, amountInfo: SharedPayloadAmountInfo, dropBitType: OutgoingTransactionDropBitType) {
+  init(txid: String, memo: String?, amountInfo: SharedPayloadAmountInfo, senderIdentity: UserIdentityBody) {
     self.meta = SharedPayloadMetadata(version: 1)
     self.txid = txid
     self.info = SharedPayloadInfoV1(memo: memo ?? "", amountInfo: amountInfo)
-    switch dropBitType {
-    case .phone(let phoneContact): self.profile = SharedPayloadProfileV2(globalPhoneNumber: phoneContact.globalPhoneNumber)
-    case .twitter(let twitterContact): self.profile = SharedPayloadProfileV2(twitterContact: twitterContact)
-    case .none: self.profile = nil
-    }
+    self.profile = SharedPayloadProfileV2(type: senderIdentity.identityType,
+                                          identity: senderIdentity.identity,
+                                          displayName: senderIdentity.handle,
+                                          dropbitMe: nil,
+                                          avatar: nil)
   }
 }
 
