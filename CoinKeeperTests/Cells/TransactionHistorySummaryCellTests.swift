@@ -171,8 +171,6 @@ class TransactionHistorySummaryCellTests: XCTestCase {
   // MARK: private methods
   private func sampleData(with otd: OutgoingTransactionData, phoneFormat: PhoneNumberFormat = .national) -> TransactionHistoryDetailCellViewModel {
     let stack = InMemoryCoreDataStack()
-//    let transaction = CKMTransaction(insertInto: stack.context)
-//    transaction.configure(with: otd, in: stack.context)
     let transaction = CKMTransaction.findOrCreate(with: otd, in: stack.context)
     let rates: ExchangeRates = [.BTC: 1, .USD: 7000]
 
