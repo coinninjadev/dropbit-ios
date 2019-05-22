@@ -15,7 +15,7 @@ extension AppCoordinator: StartViewControllerDelegate {
   }
 
   func claimInvite() {
-    startSetupFlow(.claimInvite)
+    startSetupFlow(.claimInvite(method: nil))
   }
 
   func createWallet() {

@@ -30,8 +30,8 @@ class DeviceVerificationCoordinator: ChildCoordinatorType {
 
   var userSuppliedPhoneNumber: GlobalPhoneNumber?
   let logger = OSLog(subsystem: "com.coinninja.coinkeeper.deviceverificationcoordinator", category: "device_verification_coordinator")
-  var selectedSetupFlow: SetupFlow?
 
+  var selectedSetupFlow: SetupFlow?
   var isInitialSetupFlow: Bool {
     return selectedSetupFlow != nil
   }
@@ -57,34 +57,64 @@ class DeviceVerificationCoordinator: ChildCoordinatorType {
   }
 
   func start() {
-    switch userIdentityType {
-    case .phone:
-      let viewController = DeviceVerificationViewController.makeFromStoryboard()
-      viewController.shouldOrphan = shouldOrphanRoot
-      assignCoordinationDelegate(to: viewController)
-      navigationController.pushViewController(viewController, animated: true)
-    case .twitter:
-      guard let delegate = coordinationDelegate else { return }
-      let context = delegate.persistenceManager.createBackgroundContext()
-      delegate.networkManager.authorizedTwitterCredentials()
-        .then { self.addTwitterUserIdentity(credentials: $0, delegate: delegate, in: context) }
-        .then { body, creds -> Promise<UserResponse> in delegate.networkManager.verifyUser(body: body, credentials: creds) }
-        .then { (response: UserResponse) -> Promise<Void> in
-          os_log("user response: %@", log: self.logger, type: .debug, response.id)
-          return self.checkAndPersistVerificationStatus(from: response, crDelegate: delegate, in: context)
-        }
-        .get(in: context) { _ in
-          do {
-            try context.save()
-          } catch {
-            os_log("failed to save context in %@. error: %@", log: self.logger, type: .error, #function, error.localizedDescription)
-          }
-        }
-        .done { _ in delegate.coordinator(self, didVerify: .twitter, isInitialSetupFlow: self.isInitialSetupFlow) }
-        .catch { error in
-          os_log("failed to create or verify user in %@. error: %@", log: self.logger, type: .error, #function, error.localizedDescription)
-        }
+    continueDeviceVerificationFlow()
+  }
+
+  fileprivate func continueDeviceVerificationFlow() {
+    if let selectedFlow = selectedSetupFlow, case let .claimInvite(method) = selectedFlow {
+      if let selectedMethod = method {
+        self.startVerification(forType: selectedMethod)
+      } else {
+        // flow is .claimInvite, but method not yet selected
+        self.startClaimInvite()
+      }
+    } else {
+      self.startVerification(forType: userIdentityType)
     }
+  }
+
+  private func startVerification(forType type: UserIdentityType) {
+    switch type {
+    case .phone:
+      startPhoneVerification()
+    case .twitter:
+      startTwitterVerification()
+    }
+  }
+
+  private func startPhoneVerification() {
+    let viewController = DeviceVerificationViewController.makeFromStoryboard()
+    viewController.shouldOrphan = shouldOrphanRoot
+    assignCoordinationDelegate(to: viewController)
+    navigationController.pushViewController(viewController, animated: true)
+  }
+
+  private func startTwitterVerification() {
+    guard let delegate = coordinationDelegate else { return }
+    let context = delegate.persistenceManager.createBackgroundContext()
+    delegate.networkManager.authorizedTwitterCredentials()
+      .then { self.addTwitterUserIdentity(credentials: $0, delegate: delegate, in: context) }
+      .then { body, creds -> Promise<UserResponse> in delegate.networkManager.verifyUser(body: body, credentials: creds) }
+      .then { (response: UserResponse) -> Promise<Void> in
+        os_log("user response: %@", log: self.logger, type: .debug, response.id)
+        return self.checkAndPersistVerificationStatus(from: response, crDelegate: delegate, in: context)
+      }
+      .get(in: context) { _ in
+        do {
+          try context.save()
+        } catch {
+          os_log("failed to save context in %@. error: %@", log: self.logger, type: .error, #function, error.localizedDescription)
+        }
+      }
+      .done { _ in delegate.coordinator(self, didVerify: .twitter, isInitialSetupFlow: self.isInitialSetupFlow) }
+      .catch { error in
+        os_log("failed to create or verify user in %@. error: %@", log: self.logger, type: .error, #function, error.localizedDescription)
+    }
+  }
+
+  private func startClaimInvite() {
+    let vc = ClaimInviteMethodViewController.newInstance(delegate: self)
+    navigationController.pushViewController(vc, animated: true)
   }
 
   func addTwitterUserIdentity(
@@ -408,4 +438,13 @@ extension DeviceVerificationCoordinator: DeviceVerificationViewControllerDelegat
     navigationController.popViewController(animated: true)
     navigationController.topViewController.flatMap { $0 as? DeviceVerificationViewController }?.entryMode = .codeFailureCountExceeded
   }
+}
+
+extension DeviceVerificationCoordinator: ClaimInviteMethodViewControllerDelegate {
+
+  func viewControllerDidSelectClaimInvite(using method: UserIdentityType, viewController: UIViewController) {
+    self.selectedSetupFlow = .claimInvite(method: method)
+    self.continueDeviceVerificationFlow()
+  }
+
 }
