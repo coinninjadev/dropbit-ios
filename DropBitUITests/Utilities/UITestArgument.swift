@@ -13,6 +13,7 @@ import Foundation
 enum UITestArgument: String {
   case resetPersistence
   case skipGlobalMessageDisplay
+  case skipTwitterAuthentication
 
   static let prefix = "ui-test-argument-"
 

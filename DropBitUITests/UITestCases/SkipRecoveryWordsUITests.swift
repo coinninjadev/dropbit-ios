@@ -12,7 +12,7 @@ class SkipRecoveryWordsUITests: UITestCase {
 
   override func setUp() {
     super.setUp()
-    app.appendTestArguments([.resetPersistence, .skipGlobalMessageDisplay])
+    app.appendTestArguments([.resetPersistence, .skipGlobalMessageDisplay, .skipTwitterAuthentication])
     app.launch()
   }
 
