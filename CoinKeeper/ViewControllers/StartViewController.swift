@@ -22,7 +22,7 @@ final class StartViewController: BaseViewController {
     return generalCoordinationDelegate as? StartViewControllerDelegate
   }
 
-  @IBOutlet var restoreWalletButton: UIButton!
+  var restoreWalletButton: UIButton!
   @IBOutlet var claimInviteButton: UIButton!
   @IBOutlet var newWalletButton: UIButton!
 
@@ -46,7 +46,7 @@ final class StartViewController: BaseViewController {
     ]
   }
 
-  @IBAction func restoreWalletButtonTapped(_ sender: UIButton) {
+  @objc func restoreWalletButtonTapped() {
     coordinationDelegate?.restoreWallet()
   }
 
@@ -67,6 +67,10 @@ final class StartViewController: BaseViewController {
   }
 
   private func configureButtons() {
+    restoreWalletButton = UIButton(type: .custom)
+    restoreWalletButton.frame = CGRect(x: 0, y: 0, width: 100, height: 40)
+    restoreWalletButton.backgroundColor = .clear
+    restoreWalletButton.addTarget(self, action: #selector(restoreWalletButtonTapped), for: .touchUpInside)
     let restoreTitle = NSAttributedString(imageName: "rightArrow",
                                           imageSize: CGSize(width: 8, height: 12),
                                           title: "Restore Wallet",
@@ -75,6 +79,7 @@ final class StartViewController: BaseViewController {
                                           imageOffset: CGPoint(x: 0, y: 1),
                                           trailingImage: true)
     restoreWalletButton.setAttributedTitle(restoreTitle, for: .normal)
+    self.navigationItem.titleView = restoreWalletButton
 
     claimInviteButton.setTitle("CLAIM BITCOIN FROM INVITE", for: .normal)
     claimInviteButton.backgroundColor = Theme.Color.darkBlueButton.color
@@ -88,7 +93,8 @@ final class StartViewController: BaseViewController {
   }
 
   private func toggleAnimatableViews(show: Bool) {
-    animatableViews.forEach { view in
+    guard let views = animatableViews else { return }
+    (views + [restoreWalletButton as UIView]).forEach { view in
       view.alpha = show ? 1.0 : 0.0
       view.isHidden = !show
     }

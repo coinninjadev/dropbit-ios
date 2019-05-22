@@ -75,16 +75,6 @@
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="blockchainImage" translatesAutoresizingMaskIntoConstraints="NO" id="IAf-Dy-hdx">
                                 <rect key="frame" x="8" y="0.0" width="375" height="400"/>
                             </imageView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yep-pO-v4t">
-                                <rect key="frame" x="0.0" y="28" width="375" height="50"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="50" id="gZn-PK-ZZ8"/>
-                                </constraints>
-                                <state key="normal" title="Button"/>
-                                <connections>
-                                    <action selector="restoreWalletButtonTapped:" destination="q8X-KO-IOT" eventType="touchUpInside" id="gFp-1J-zF1"/>
-                                </connections>
-                            </button>
                         </subviews>
                         <color key="backgroundColor" red="0.95686274510000002" green="0.95686274510000002" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
@@ -96,17 +86,14 @@
                             <constraint firstItem="IAf-Dy-hdx" firstAttribute="top" secondItem="kBV-GD-12V" secondAttribute="top" id="LNl-oT-30d"/>
                             <constraint firstItem="4qN-Cw-sbR" firstAttribute="trailing" secondItem="k0W-r3-c5t" secondAttribute="trailing" id="R5L-nI-YpY"/>
                             <constraint firstItem="w3N-rS-PQo" firstAttribute="bottom" secondItem="k0W-r3-c5t" secondAttribute="bottom" constant="20" id="RIl-s0-GMX"/>
-                            <constraint firstItem="yep-pO-v4t" firstAttribute="top" secondItem="w3N-rS-PQo" secondAttribute="top" constant="8" id="WQR-QW-LG3"/>
                             <constraint firstItem="CRC-uf-fAq" firstAttribute="centerX" secondItem="kBV-GD-12V" secondAttribute="centerX" id="Z2w-za-PYe"/>
                             <constraint firstItem="4qN-Cw-sbR" firstAttribute="leading" secondItem="k0W-r3-c5t" secondAttribute="leading" id="fXD-V7-TtU"/>
                             <constraint firstItem="IAf-Dy-hdx" firstAttribute="height" secondItem="kBV-GD-12V" secondAttribute="height" multiplier="0.6" id="h63-mD-Lv7"/>
                             <constraint firstItem="yIP-lc-RFH" firstAttribute="centerY" secondItem="kBV-GD-12V" secondAttribute="centerY" id="hgF-Bb-vVa"/>
                             <constraint firstItem="k0W-r3-c5t" firstAttribute="centerX" secondItem="kBV-GD-12V" secondAttribute="centerX" id="m69-Jt-Ygz"/>
                             <constraint firstItem="yIP-lc-RFH" firstAttribute="centerX" secondItem="kBV-GD-12V" secondAttribute="centerX" id="oRQ-xg-o4m"/>
-                            <constraint firstItem="w3N-rS-PQo" firstAttribute="trailing" secondItem="yep-pO-v4t" secondAttribute="trailing" id="snN-A5-lOQ"/>
                             <constraint firstItem="4qN-Cw-sbR" firstAttribute="height" secondItem="k0W-r3-c5t" secondAttribute="height" id="yGm-K4-BYn"/>
                             <constraint firstItem="CRC-uf-fAq" firstAttribute="top" secondItem="yIP-lc-RFH" secondAttribute="bottom" constant="23" id="z09-5W-24v"/>
-                            <constraint firstItem="yep-pO-v4t" firstAttribute="leading" secondItem="w3N-rS-PQo" secondAttribute="leading" id="zvK-BK-KFt"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="w3N-rS-PQo"/>
                     </view>
@@ -116,14 +103,12 @@
                         <outlet property="logoImage" destination="yIP-lc-RFH" id="mvJ-K1-KCu"/>
                         <outlet property="logoImageVerticalConstraint" destination="hgF-Bb-vVa" id="HON-0G-33P"/>
                         <outlet property="newWalletButton" destination="k0W-r3-c5t" id="i2V-Y4-biN"/>
-                        <outlet property="restoreWalletButton" destination="yep-pO-v4t" id="Hnc-Qu-iUN"/>
                         <outlet property="welcomeBGView" destination="CRC-uf-fAq" id="VWo-1A-xoY"/>
                         <outlet property="welcomeBGViewTopConstraint" destination="z09-5W-24v" id="0UI-PO-2cV"/>
                         <outlet property="welcomeLabel" destination="aOW-zu-cJp" id="qJ8-mA-4Zp"/>
                         <outletCollection property="animatableViews" destination="4qN-Cw-sbR" collectionClass="NSMutableArray" id="d23-5f-pYv"/>
                         <outletCollection property="animatableViews" destination="k0W-r3-c5t" collectionClass="NSMutableArray" id="Dzr-Pf-J1I"/>
                         <outletCollection property="animatableViews" destination="CRC-uf-fAq" collectionClass="NSMutableArray" id="xyy-uf-LXC"/>
-                        <outletCollection property="animatableViews" destination="yep-pO-v4t" collectionClass="NSMutableArray" id="3Uv-t1-6Za"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tZM-jX-4SF" userLabel="First Responder" sceneMemberID="firstResponder"/>
