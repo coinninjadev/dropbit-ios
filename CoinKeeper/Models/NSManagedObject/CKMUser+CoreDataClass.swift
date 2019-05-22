@@ -33,13 +33,11 @@ public class CKMUser: NSManagedObject {
     fetchRequest.fetchLimit = 1
 
     var user: CKMUser?
-    context.performAndWait {
-      do {
-        let results = try context.fetch(fetchRequest)
-        user = results.first
-      } catch {
-        user = nil
-      }
+    do {
+      let results = try context.fetch(fetchRequest)
+      user = results.first
+    } catch {
+      user = nil
     }
     return user
   }

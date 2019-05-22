@@ -8,6 +8,7 @@
 
 import Foundation
 import Strongbox
+import PromiseKit
 
 class CKKeychain: PersistenceKeychainType {
 
@@ -26,6 +27,8 @@ class CKKeychain: PersistenceKeychainType {
   private var tempWordStorage: [String]?
   private var tempPinHashStorage: String?
 
+  private let serialQueue = DispatchQueue(label: "com.coinkeeper.ckkeychain.serial")
+
   let store: KeychainAccessorType
 
   required init(store: KeychainAccessorType = Strongbox()) {
@@ -33,34 +36,64 @@ class CKKeychain: PersistenceKeychainType {
   }
 
   @discardableResult
-  func store(anyValue value: Any?, key: CKKeychain.Key) -> Bool {
-    return store.archive(value, key: key.rawValue)
+  func storeSynchronously(anyValue value: Any?, key: CKKeychain.Key) -> Bool {
+    return self.store.archive(value, key: key.rawValue)
   }
 
   @discardableResult
-  func store(valueToHash value: String?, key: CKKeychain.Key) -> Bool {
-    return store.archive(value?.sha256(), key: key.rawValue)
+  func store(anyValue value: Any?, key: CKKeychain.Key) -> Promise<Void> {
+    return storeOnSerialBackgroundQueue(value: value, key: key.rawValue)
   }
 
   @discardableResult
-  func store(deviceID: String) -> Bool {
-    return store.archive(deviceID, key: CKKeychain.Key.deviceID.rawValue)
-  }
-
-  func backup(recoveryWords words: [String]) {
-    _ = store.archive(words, key: CKKeychain.Key.walletWords.rawValue)
+  func store(valueToHash value: String?, key: CKKeychain.Key) -> Promise<Void> {
+    return storeOnSerialBackgroundQueue(value: value?.sha256(), key: key.rawValue)
   }
 
   @discardableResult
-  func store(recoveryWords words: [String]) -> Bool {
+  func store(deviceID: String) -> Promise<Void> {
+    return storeOnSerialBackgroundQueue(value: deviceID, key: CKKeychain.Key.deviceID.rawValue)
+  }
+
+  func backup(recoveryWords words: [String], isBackedUp: Bool) -> Promise<Void> {
+    return storeOnSerialBackgroundQueue(value: words, key: CKKeychain.Key.walletWords.rawValue)
+      .then { self.storeWalletWordsBackedUp(isBackedUp) }
+  }
+
+  /// Apple advises to avoid accessing the keychain concurrently, but it is thread-safe
+  private func storeOnSerialBackgroundQueue(value: Any?, key: String) -> Promise<Void> {
+    return Promise { seal in
+      self.serialQueue.async {
+        let success = self.store.archive(value, key: key)
+
+        DispatchQueue.main.async {
+          if success {
+            seal.fulfill(())
+          } else {
+            seal.reject(CKPersistenceError.keychainWriteFailed(key: key))
+          }
+        }
+      }
+    }
+  }
+
+  @discardableResult
+  func store(recoveryWords words: [String], isBackedUp: Bool) -> Promise<Void> {
     if let pin = tempPinHashStorage { // store pin and wallet together
-      _ = store.archive(pin, key: CKKeychain.Key.userPin.rawValue)
-      tempPinHashStorage = nil
-      return store.archive(words, key: CKKeychain.Key.walletWords.rawValue)
+      return storeOnSerialBackgroundQueue(value: pin, key: CKKeychain.Key.userPin.rawValue)
+        .get { self.tempPinHashStorage = nil }
+        .then { self.storeOnSerialBackgroundQueue(value: words, key: CKKeychain.Key.walletWords.rawValue) }
+        .then { self.storeWalletWordsBackedUp(isBackedUp) }
+
     } else {
       tempWordStorage = words
-      return false
+      return self.storeWalletWordsBackedUp(isBackedUp)
     }
+  }
+
+  private func storeWalletWordsBackedUp(_ isBackedUp: Bool) -> Promise<Void> {
+    return self.storeOnSerialBackgroundQueue(value: NSNumber(value: isBackedUp),
+                                             key: CKKeychain.Key.walletWordsBackedUp.rawValue)
   }
 
   func walletWordsBackedUp() -> Bool {
@@ -68,16 +101,16 @@ class CKKeychain: PersistenceKeychainType {
   }
 
   @discardableResult
-  func store(userPin pin: String) -> Bool {
+  func store(userPin pin: String) -> Promise<Void> {
     let pinHash = pin.sha256()
 
     if let words = tempWordStorage { // store pin and wallet together
-      _ = store.archive(words, key: CKKeychain.Key.walletWords.rawValue)
-      tempWordStorage = nil
-      return store.archive(pinHash, key: CKKeychain.Key.userPin.rawValue)
+      return storeOnSerialBackgroundQueue(value: words, key: CKKeychain.Key.walletWords.rawValue)
+        .get { self.tempWordStorage = nil }
+        .then { self.storeOnSerialBackgroundQueue(value: pinHash, key: CKKeychain.Key.userPin.rawValue) }
     } else {
       tempPinHashStorage = pinHash
-      return false
+      return Promise.value(())
     }
   }
 

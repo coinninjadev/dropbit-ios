@@ -17,10 +17,12 @@ extension AppCoordinator: VerifyRecoveryWordsViewControllerDelegate {
 
   func viewController(_ viewController: UIViewController, didSuccessfullyVerifyWords words: [String], in flow: RecoveryWordsFlow) {
     saveSuccessfulWords(words: words, isBackedUp: true, flow: flow)
-    analyticsManager.track(property: MixpanelProperty(key: .hasWallet, value: true))
-    self.analyticsManager.track(property: MixpanelProperty(key: .wordsBackedUp, value: true))
-    badgeManager.publishBadgeUpdate()
-    continueNavigation(with: viewController, for: flow)
+      .done(on: .main) {
+        self.analyticsManager.track(property: MixpanelProperty(key: .hasWallet, value: true))
+        self.analyticsManager.track(property: MixpanelProperty(key: .wordsBackedUp, value: true))
+        self.badgeManager.publishBadgeUpdate()
+        self.continueNavigation(with: viewController, for: flow)
+    }.cauterize()
   }
 
   func viewControllerFailedWordVerification(_ viewController: UIViewController) {

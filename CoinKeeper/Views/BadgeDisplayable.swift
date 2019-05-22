@@ -47,8 +47,10 @@ extension BadgeDisplayable {
         guard let localSelf = self else { return }
         guard let userInfo = notification.userInfo else { return }
 
-        let badgeInfo = badgeManager.badgeInfo(for: userInfo)
-        localSelf.didReceiveBadgeUpdate(badgeInfo: badgeInfo)
+        DispatchQueue.main.async {
+          let badgeInfo = badgeManager.badgeInfo(for: userInfo)
+          localSelf.didReceiveBadgeUpdate(badgeInfo: badgeInfo)
+        }
     })
   }
 
