@@ -20,6 +20,8 @@ class CKDatabase: PersistenceDatabaseType {
   private let stackConfig: CoreDataStackConfig
   private let container: NSPersistentContainer
 
+  var sharedPayloadManager: SharedPayloadManagerType = SharedPayloadManager()
+
   lazy var mainQueueContext: NSManagedObjectContext = {
     let context = self.container.viewContext
     context.automaticallyMergesChangesFromParent = true
@@ -198,59 +200,6 @@ class CKDatabase: PersistenceDatabaseType {
         _ = CKMTransaction.findOrCreate(with: $0, in: context, relativeToBlockHeight: blockHeight, fullSync: fullSync)
       }
       seal.fulfill(())
-    }
-  }
-
-  func persistReceivedSharedPayloads(
-    _ payloads: [SharedPayloadV2],
-    hasher: HashingManager,
-    kit: PhoneNumberKit,
-    contactCacheManager: ContactCacheManagerType,
-    in context: NSManagedObjectContext) {
-    let salt: Data
-    do {
-      salt = try hasher.salt()
-    } catch {
-      os_log("Failed to get salt for hashing shared payload phone number: %@", log: logger, type: .error, error.localizedDescription)
-      return
-    }
-
-    for payload in payloads {
-      guard let tx = CKMTransaction.find(byTxid: payload.txid, in: context) else { continue }
-
-      if tx.memo == nil {
-        tx.memo = payload.info.memo
-      }
-
-      guard let profile = payload.profile else { continue }
-      switch profile.type {
-      case .phone:
-        guard let phoneNumber = profile.globalPhoneNumber() else { continue }
-        let phoneNumberHash = hasher.hash(phoneNumber: phoneNumber, salt: salt, parsedNumber: nil, kit: kit)
-        if tx.phoneNumber == nil, let inputs = ManagedPhoneNumberInputs(phoneNumber: phoneNumber) {
-          tx.phoneNumber = CKMPhoneNumber.findOrCreate(withInputs: inputs,
-                                                       phoneNumberHash: phoneNumberHash,
-                                                       in: context)
-
-          let counterpartyInputs = contactCacheManager.managedContactComponents(forGlobalPhoneNumber: phoneNumber)?.counterpartyInputs
-          if let name = counterpartyInputs?.name {
-            tx.phoneNumber?.counterparty = CKMCounterparty.findOrCreate(with: name, in: context)
-          }
-        }
-      case .twitter:
-        guard let twitterContact = profile.twitterContact() else { continue }
-        if tx.twitterContact == nil {
-          tx.twitterContact = CKMTwitterContact.findOrCreate(with: twitterContact, in: context)
-        }
-      }
-
-      let payloadAsData = try? payload.encoded()
-      let ckmSharedPayload = CKMTransactionSharedPayload(sharingDesired: true,
-                                                         fiatAmount: payload.info.amount,
-                                                         fiatCurrency: payload.info.currency,
-                                                         receivedPayload: payloadAsData,
-                                                         insertInto: context)
-      tx.sharedPayload = ckmSharedPayload
     }
   }
 

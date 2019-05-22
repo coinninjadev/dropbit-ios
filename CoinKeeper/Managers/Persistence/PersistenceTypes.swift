@@ -80,7 +80,7 @@ protocol PersistenceManagerType: DeviceCountryCodeProvider {
     in context: NSManagedObjectContext
   ) -> CKMTransaction
   func persistReceivedSharedPayloads(
-    _ payloads: [SharedPayloadV2],
+    _ payloads: [Data],
     kit: PhoneNumberKit,
     in context: NSManagedObjectContext
   )
@@ -186,6 +186,7 @@ protocol PersistenceKeychainType: AnyObject {
 protocol PersistenceDatabaseType: AnyObject {
 
   var mainQueueContext: NSManagedObjectContext { get }
+  var sharedPayloadManager: SharedPayloadManagerType { get set }
 
   func createBackgroundContext() -> NSManagedObjectContext
 
@@ -211,14 +212,6 @@ protocol PersistenceDatabaseType: AnyObject {
     invitation: CKMInvitation?,
     in context: NSManagedObjectContext
   ) -> CKMTransaction
-
-  func persistReceivedSharedPayloads(
-    _ payloads: [SharedPayloadV2],
-    hasher: HashingManager,
-    kit: PhoneNumberKit,
-    contactCacheManager: ContactCacheManagerType,
-    in context: NSManagedObjectContext
-  )
 
   func deleteTransactions(notIn txids: [String], in context: NSManagedObjectContext)
   func latestTransaction(in context: NSManagedObjectContext) -> CKMTransaction?
