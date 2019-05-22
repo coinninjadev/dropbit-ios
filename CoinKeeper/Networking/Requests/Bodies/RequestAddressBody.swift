@@ -54,7 +54,6 @@ extension UserIdentityBody {
   }
 
   var identityHash: String {
-    guard let identityType = UserIdentityType(rawValue: type) else { fatalError("invalid type") }
     switch identityType {
     case .phone:
       return globalNumber()?.hashed() ?? ""
