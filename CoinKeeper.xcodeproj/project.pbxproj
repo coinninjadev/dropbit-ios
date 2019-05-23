@@ -670,6 +670,8 @@
 		B582AD4F20A084AD007A6459 /* CKMCounterpartyAddress+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = B582AD4D20A084AD007A6459 /* CKMCounterpartyAddress+CoreDataClass.swift */; };
 		B582AD5020A084AD007A6459 /* CKMCounterpartyAddress+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = B582AD4E20A084AD007A6459 /* CKMCounterpartyAddress+CoreDataProperties.swift */; };
 		B582AE6C21A306B400594A9C /* BitcoinURLTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BF3B0CA217761C50021E45F /* BitcoinURLTests.swift */; };
+		B5839FAF22949E98006BA6AF /* ClaimInviteMethodViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5839FAE22949E98006BA6AF /* ClaimInviteMethodViewController.swift */; };
+		B5839FB122949EE5006BA6AF /* ClaimInviteMethodViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B5839FB022949EE5006BA6AF /* ClaimInviteMethodViewController.storyboard */; };
 		B584766C20E1411900F5FE60 /* TransactionHistoryPrimaryAmountLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51A14B62081266600F5DE23 /* TransactionHistoryPrimaryAmountLabel.swift */; };
 		B584767020E141BF00F5FE60 /* SettingsTableViewSectionHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = B584766F20E141BF00F5FE60 /* SettingsTableViewSectionHeader.swift */; };
 		B584767220E141DC00F5FE60 /* SettingsTableViewSectionHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = B584767120E141DC00F5FE60 /* SettingsTableViewSectionHeader.xib */; };
@@ -1497,6 +1499,8 @@
 		B582409320920E3F005D2F90 /* CompactActionButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompactActionButton.swift; sourceTree = "<group>"; };
 		B582AD4D20A084AD007A6459 /* CKMCounterpartyAddress+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CKMCounterpartyAddress+CoreDataClass.swift"; sourceTree = "<group>"; };
 		B582AD4E20A084AD007A6459 /* CKMCounterpartyAddress+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CKMCounterpartyAddress+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		B5839FAE22949E98006BA6AF /* ClaimInviteMethodViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClaimInviteMethodViewController.swift; sourceTree = "<group>"; };
+		B5839FB022949EE5006BA6AF /* ClaimInviteMethodViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = ClaimInviteMethodViewController.storyboard; sourceTree = "<group>"; };
 		B584766F20E141BF00F5FE60 /* SettingsTableViewSectionHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTableViewSectionHeader.swift; sourceTree = "<group>"; };
 		B584767120E141DC00F5FE60 /* SettingsTableViewSectionHeader.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SettingsTableViewSectionHeader.xib; sourceTree = "<group>"; };
 		B5860545222702FC0048979D /* HashableContact.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HashableContact.swift; sourceTree = "<group>"; };
@@ -2344,6 +2348,7 @@
 				3BAB1446204EE6BB001D41A2 /* BaseViewController.swift */,
 				3B5052B22045FAFA000C739F /* BackupRecoveryWordsViewController.swift */,
 				3BA389A82035E62F00B599A0 /* CNNavigationController.swift */,
+				B5839FAE22949E98006BA6AF /* ClaimInviteMethodViewController.swift */,
 				A2A530C120936A7F00B6F4DE /* ConfirmPaymentViewController.swift */,
 				A29CE0D1209B70BD00761B91 /* ContactsViewController.swift */,
 				4A75CAF82090FB0D00E8E653 /* DeviceVerificationViewController.swift */,
@@ -2383,6 +2388,7 @@
 		3BF8523B2023788200EBBE44 /* Storyboards */ = {
 			isa = PBXGroup;
 			children = (
+				B5839FB022949EE5006BA6AF /* ClaimInviteMethodViewController.storyboard */,
 				A2A530BB20936A5B00B6F4DE /* ConfirmPaymentViewController.storyboard */,
 				A29CE0D3209B713B00761B91 /* ContactsViewController.storyboard */,
 				3B5052B02045FAD7000C739F /* BackupRecoveryWordsViewController.storyboard */,
@@ -3227,6 +3233,7 @@
 				3BC9E55C204D92AC00444A53 /* BackupRecoveryWordsCell.xib in Resources */,
 				5B91E3A22076C86400DD9A86 /* DrawerCell.xib in Resources */,
 				30BF4FEB21B6C6C60018AE87 /* TransactionPopoverDetailsViewController.storyboard in Resources */,
+				B5839FB122949EE5006BA6AF /* ClaimInviteMethodViewController.storyboard in Resources */,
 				3B9779A8202E416700C9C933 /* Montserrat-ExtraBoldItalic.ttf in Resources */,
 				B56C414621F7713B005668E3 /* ConfirmPaymentMemoView.xib in Resources */,
 				4AF433262093BD4100B11BC9 /* DeviceVerificationViewController.storyboard in Resources */,
@@ -3775,6 +3782,7 @@
 				3B474155217A4B4A004DA223 /* NetworkManager+NotificationNetworkInteractable.swift in Sources */,
 				B5192FA6216E7BFF00DCC39B /* UserProviderError.swift in Sources */,
 				5B62D55F20879C4100E9D466 /* String+BitcoinRegex.swift in Sources */,
+				B5839FAF22949E98006BA6AF /* ClaimInviteMethodViewController.swift in Sources */,
 				3B302F262123160800A7E070 /* PromiseKit+CoreData.swift in Sources */,
 				B582AD4F20A084AD007A6459 /* CKMCounterpartyAddress+CoreDataClass.swift in Sources */,
 				3B61B6E220DD282E0021D69E /* SendPaymentViewControllerDelegate.swift in Sources */,

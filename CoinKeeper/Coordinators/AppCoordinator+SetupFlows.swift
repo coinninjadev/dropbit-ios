@@ -15,7 +15,7 @@ import MMDrawerController
 enum SetupFlow {
   case newWallet
   case restoreWallet
-  case claimInvite
+  case claimInvite(method: UserIdentityType?) //associated value should be nil until user selects invite method
 }
 
 extension AppCoordinator {
