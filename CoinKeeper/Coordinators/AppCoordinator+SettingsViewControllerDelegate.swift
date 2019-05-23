@@ -84,9 +84,9 @@ extension AppCoordinator: SettingsViewControllerDelegate {
           return Promise.value(()) // don't show error, just go on with deleting wallet.
         }
         .then { self.networkManager.resetWallet() }
+        .get { try self.deleteAndResetWalletLocally() }
         .done(on: .main) { _ in
           self.analyticsManager.track(event: .deleteWallet, with: nil)
-          self.deleteAndResetWalletLocally()
           self.showStartViewController()
           self.analyticsManager.track(property: MixpanelProperty(key: .hasWallet, value: false))
           self.analyticsManager.track(property: MixpanelProperty(key: .phoneVerified, value: false))
@@ -194,8 +194,8 @@ extension AppCoordinator: SettingsViewControllerDelegate {
       .get { self.persistenceManager.deleteDeviceEndpointIds() }
   }
 
-  private func deleteAndResetWalletLocally() {
-    persistenceManager.resetWallet()
+  private func deleteAndResetWalletLocally() throws {
+    try persistenceManager.resetWallet()
     resetUserAuthenticatedState()
     walletManager = nil
   }

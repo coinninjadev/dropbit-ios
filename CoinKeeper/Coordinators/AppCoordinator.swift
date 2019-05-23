@@ -258,9 +258,14 @@ class AppCoordinator: CoordinatorType {
   private func applyUITestArguments(_ arguments: [UITestArgument]) {
     if arguments.isEmpty { return }
 
+    let logger = OSLog(subsystem: "com.coinninja.coinkeeper.appcoordinator", category: "UI_Test_Arguments")
     if uiTestArguments.contains(.resetPersistence) {
-      persistenceManager.resetPersistence()
-      walletManager = nil
+      do {
+        try persistenceManager.resetPersistence()
+        walletManager = nil
+      } catch {
+        os_log("Failed to reset persistence in %@, error: %@", log: logger, type: .error, #function, error.localizedDescription)
+      }
     }
 
     if uiTestArguments.contains(.skipGlobalMessageDisplay) {

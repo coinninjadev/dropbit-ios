@@ -38,8 +38,8 @@ protocol PersistenceManagerType: DeviceCountryCodeProvider {
 
   func bool(for key: CKUserDefaults.Key) -> Bool
 
-  func resetPersistence()
-  func resetWallet()
+  func resetPersistence() throws
+  func resetWallet() throws
   func walletWords() -> [String]?
 
   func createBackgroundContext() -> NSManagedObjectContext

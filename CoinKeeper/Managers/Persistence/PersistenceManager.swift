@@ -34,18 +34,18 @@ class PersistenceManager: PersistenceManagerType {
     return databaseManager.createBackgroundContext()
   }
 
-  func resetPersistence() {
-    self.resetWallet()
+  func resetPersistence() throws {
+    try self.resetWallet()
     self.userDefaultsManager.deleteAll()
     self.keychainManager.deleteAll()
   }
 
-  func resetWallet() {
+  func resetWallet() throws {
     let bgContext = self.createBackgroundContext()
     self.deleteWallet(in: bgContext)
-    bgContext.performAndWait {
+    try bgContext.performThrowingAndWait {
       _ = CKMWallet.findOrCreate(in: bgContext)
-      try? bgContext.save()
+      try bgContext.save()
     }
   }
 
