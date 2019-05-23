@@ -25,35 +25,35 @@
                                         <rect key="frame" x="4" y="0.0" width="367" height="366"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="her-2l-LYZ" customClass="OnboardingTitleLabel" customModule="DropBit" customModuleProvider="target">
-                                                <rect key="frame" x="167" y="0.0" width="33.5" height="2.5"/>
+                                                <rect key="frame" x="167" y="0.0" width="33.5" height="0.0"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Message" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5q8-mB-wyp" customClass="OnboardingSubtitleLabel" customModule="DropBit" customModuleProvider="target">
-                                                <rect key="frame" x="149" y="18.5" width="69" height="20.5"/>
+                                                <rect key="frame" x="149" y="16" width="69" height="15"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Error Message" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Nyk-E2-e4i" customClass="OnboardingErrorLabel" customModule="DropBit" customModuleProvider="target">
-                                                <rect key="frame" x="128" y="55" width="111" height="2.5"/>
+                                                <rect key="frame" x="128" y="47" width="111" height="0.0"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HGr-Xr-gKB" userLabel="Phone Number Container">
-                                                <rect key="frame" x="27.5" y="73.5" width="312" height="86.5"/>
+                                                <rect key="frame" x="27.5" y="63" width="312" height="15"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Example" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="s2x-ve-wvJ" userLabel="Example" customClass="ExamplePhoneNumberLabel" customModule="DropBit" customModuleProvider="target">
-                                                        <rect key="frame" x="0.0" y="12" width="312" height="16.5"/>
+                                                        <rect key="frame" x="0.0" y="12" width="312" height="20.5"/>
                                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                         <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="p5R-F7-HDn" customClass="PhoneNumberEntryView" customModule="DropBit" customModuleProvider="target">
-                                                        <rect key="frame" x="0.0" y="36.5" width="312" height="50"/>
+                                                        <rect key="frame" x="0.0" y="40.5" width="312" height="50"/>
                                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="50" id="8Kh-9G-x7Q"/>
@@ -72,6 +72,51 @@
                                                     <constraint firstItem="p5R-F7-HDn" firstAttribute="leading" secondItem="HGr-Xr-gKB" secondAttribute="leading" id="qcb-f5-Mga"/>
                                                 </constraints>
                                             </view>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Xld-nD-eKh" userLabel="Or View">
+                                                <rect key="frame" x="63.5" y="94" width="240" height="0.0"/>
+                                                <subviews>
+                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jPe-xd-OxD">
+                                                        <rect key="frame" x="8" y="-1" width="83" height="2"/>
+                                                        <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" constant="2" id="8qY-H6-YHI"/>
+                                                        </constraints>
+                                                    </view>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="M6U-fj-Eab">
+                                                        <rect key="frame" x="99" y="-10.5" width="42" height="20.5"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                        <nil key="textColor"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hcc-yc-yQM">
+                                                        <rect key="frame" x="149" y="-1" width="83" height="2"/>
+                                                        <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    </view>
+                                                </subviews>
+                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <constraints>
+                                                    <constraint firstItem="hcc-yc-yQM" firstAttribute="centerY" secondItem="Xld-nD-eKh" secondAttribute="centerY" id="1Ud-T8-mfr"/>
+                                                    <constraint firstItem="hcc-yc-yQM" firstAttribute="leading" secondItem="M6U-fj-Eab" secondAttribute="trailing" constant="8" id="6HM-sN-ftq"/>
+                                                    <constraint firstItem="M6U-fj-Eab" firstAttribute="centerY" secondItem="Xld-nD-eKh" secondAttribute="centerY" id="DXb-FP-eUH"/>
+                                                    <constraint firstItem="jPe-xd-OxD" firstAttribute="leading" secondItem="Xld-nD-eKh" secondAttribute="leading" constant="8" id="LEO-ts-6jf"/>
+                                                    <constraint firstItem="M6U-fj-Eab" firstAttribute="centerX" secondItem="Xld-nD-eKh" secondAttribute="centerX" id="OLo-Xe-XWx"/>
+                                                    <constraint firstItem="hcc-yc-yQM" firstAttribute="height" secondItem="jPe-xd-OxD" secondAttribute="height" id="VLK-Ev-p8m"/>
+                                                    <constraint firstItem="M6U-fj-Eab" firstAttribute="leading" secondItem="jPe-xd-OxD" secondAttribute="trailing" constant="8" id="eGP-no-htD"/>
+                                                    <constraint firstItem="jPe-xd-OxD" firstAttribute="centerY" secondItem="Xld-nD-eKh" secondAttribute="centerY" id="ghR-JP-B7Q"/>
+                                                    <constraint firstAttribute="trailing" secondItem="hcc-yc-yQM" secondAttribute="trailing" constant="8" id="nNx-2W-Yc6"/>
+                                                </constraints>
+                                            </view>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3Xg-Kg-KLU" userLabel="Twitter Button" customClass="PrimaryActionButton" customModule="DropBit" customModuleProvider="target">
+                                                <rect key="frame" x="37.5" y="110" width="292" height="50"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="50" id="BOW-P0-JMe"/>
+                                                    <constraint firstAttribute="width" constant="292" id="rtc-17-x3m"/>
+                                                </constraints>
+                                                <state key="normal" title="Button"/>
+                                                <connections>
+                                                    <action selector="verifyTwitter:" destination="9zz-dP-ccQ" eventType="touchUpInside" id="Vyn-nc-LTv"/>
+                                                </connections>
+                                            </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yW1-C5-ZBm" customClass="PrimaryActionButton" customModule="DropBit" customModuleProvider="target">
                                                 <rect key="frame" x="27.5" y="176" width="312" height="50"/>
                                                 <constraints>
@@ -145,12 +190,17 @@
                         <outlet property="exampleLabel" destination="s2x-ve-wvJ" id="frK-aA-VY9"/>
                         <outlet property="keypadEntryView" destination="Vfd-z8-nGV" id="Pog-jc-PDR"/>
                         <outlet property="oneTimeCodeInputTextField" destination="q4A-nD-zeE" id="WZe-gQ-JPQ"/>
+                        <outlet property="orLabel" destination="M6U-fj-Eab" id="pGA-1t-6e4"/>
+                        <outlet property="orLeftLineView" destination="jPe-xd-OxD" id="5qz-DK-lnM"/>
+                        <outlet property="orRightLineView" destination="hcc-yc-yQM" id="KnH-aR-auf"/>
+                        <outlet property="orView" destination="Xld-nD-eKh" id="b3W-Js-b2m"/>
                         <outlet property="phoneNumberContainer" destination="HGr-Xr-gKB" id="gdy-gv-FzQ"/>
                         <outlet property="phoneNumberEntryView" destination="p5R-F7-HDn" id="0vt-55-AP1"/>
                         <outlet property="resendCodeButton" destination="QOQ-ju-pgG" id="cEq-NU-bhC"/>
                         <outlet property="submitPhoneNumberButton" destination="yW1-C5-ZBm" id="O9D-dZ-R4C"/>
                         <outlet property="subtitleLabel" destination="5q8-mB-wyp" id="LJh-is-ms6"/>
                         <outlet property="titleLabel" destination="her-2l-LYZ" id="mIh-nP-ApH"/>
+                        <outlet property="twitterButton" destination="3Xg-Kg-KLU" id="Ox1-Cd-SEk"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="APG-a0-Ise" userLabel="First Responder" sceneMemberID="firstResponder"/>

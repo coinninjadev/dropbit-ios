@@ -41,7 +41,7 @@ class DeviceVerificationCoordinator: ChildCoordinatorType {
   private let maxCodeEntryFailures = 3
   private let minHudDisplayDuration: TimeInterval = 0.5
   private let shouldOrphanRoot: Bool
-  private let userIdentityType: UserIdentityType
+  private var userIdentityType: UserIdentityType
 
   private let errorMessageFactory = DeviceVerificationErrorMessageFactory()
 
@@ -146,6 +146,11 @@ extension DeviceVerificationCoordinator: DeviceVerificationViewControllerDelegat
     } else {
       return true
     }
+  }
+
+  func viewControllerDidSelectVerifyTwitter(_ viewController: UIViewController) {
+    self.userIdentityType = .twitter
+    continueDeviceVerificationFlow()
   }
 
   func viewController(_ phoneNumberEntryViewController: DeviceVerificationViewController, didEnterPhoneNumber phoneNumber: GlobalPhoneNumber) {
