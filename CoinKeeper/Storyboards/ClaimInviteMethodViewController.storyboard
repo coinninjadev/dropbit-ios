@@ -35,7 +35,7 @@
                                     <constraint firstItem="Ikn-0u-wvI" firstAttribute="centerY" secondItem="h0G-w1-0NS" secondAttribute="centerY" id="lgt-Zj-pAa"/>
                                 </constraints>
                             </view>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7NA-dg-JfL">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7NA-dg-JfL" customClass="PrimaryActionButton" customModule="DropBit" customModuleProvider="target">
                                 <rect key="frame" x="89.5" y="393" width="235" height="50"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="235" id="hbO-hB-Jsl"/>
@@ -46,7 +46,7 @@
                                     <action selector="performTwitter:" destination="j2L-hF-Aac" eventType="touchUpInside" id="cl8-3v-wNL"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7ea-hc-3HD">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7ea-hc-3HD" customClass="PrimaryActionButton" customModule="DropBit" customModuleProvider="target">
                                 <rect key="frame" x="89.5" y="463" width="235" height="50"/>
                                 <state key="normal" title="SMS"/>
                                 <connections>

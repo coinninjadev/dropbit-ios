@@ -24,8 +24,8 @@ class ClaimInviteMethodViewController: BaseViewController, StoryboardInitializab
   }
 
   @IBOutlet var messageLabel: UILabel!
-  @IBOutlet var twitterButton: UIButton!
-  @IBOutlet var smsButton: UIButton!
+  @IBOutlet var twitterButton: PrimaryActionButton!
+  @IBOutlet var smsButton: PrimaryActionButton!
 
   @IBAction func performTwitter(_ sender: Any) {
     delegate?.viewControllerDidSelectClaimInvite(using: .twitter, viewController: self)
@@ -45,10 +45,8 @@ class ClaimInviteMethodViewController: BaseViewController, StoryboardInitializab
   }
 
   private func configureButtons() {
-    twitterButton.backgroundColor = Theme.Color.primaryActionButton.color
-    smsButton.backgroundColor = Theme.Color.darkBlueButton.color
-    twitterButton.applyCornerRadius(5)
-    smsButton.applyCornerRadius(5)
+    twitterButton.style = .standard
+    smsButton.style = .darkBlue
 
     let twitterTitle = NSAttributedString(imageName: "twitterBird",
                                           imageSize: CGSize(width: 20, height: 17),
