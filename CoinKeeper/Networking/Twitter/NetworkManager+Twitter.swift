@@ -8,6 +8,7 @@
 
 import PromiseKit
 import OAuthSwift
+import CoreData
 
 extension TwitterUser: CustomDebugStringConvertible {
   var debugDescription: String {
@@ -25,6 +26,7 @@ extension TwitterUser: CustomDebugStringConvertible {
 
 protocol TwitterRequestable: AnyObject {
   func getCurrentTwitterUser() -> Promise<TwitterUser>
+  func getCurrentTwitterUser(in context: NSManagedObjectContext) -> Promise<TwitterUser>
   func authorizedTwitterCredentials() -> Promise<TwitterOAuthStorage>
   func findTwitterUsers(using term: String) -> Promise<[TwitterUser]>
   func defaultFollowingList() -> Promise<[TwitterUser]>
@@ -45,18 +47,22 @@ extension NetworkManager: TwitterRequestable {
     return !isUITesting
   }
 
-  func getCurrentTwitterUser() -> Promise<TwitterUser> {
+  func getCurrentTwitterUser(in context: NSManagedObjectContext) -> Promise<TwitterUser> {
     guard isNotUITesting else { return Promise.value(TwitterUser.emptyInstance()) }
     return authorize()
       .then { self.retrieveCurrentUser(with: $0.twitterUserId) }
       .get({ (twitterUser: TwitterUser) in
-        let context = self.persistenceManager.createBackgroundContext()
         context.performAndWait {
           let user = CKMUser.find(in: context)
           user?.avatar = twitterUser.profileImageData
           try? context.save()
         }
       })
+  }
+
+  /// default context is mainQueueContext
+  func getCurrentTwitterUser() -> Promise<TwitterUser> {
+    return getCurrentTwitterUser(in: persistenceManager.mainQueueContext())
   }
 
   func authorizedTwitterCredentials() -> Promise<TwitterOAuthStorage> {

@@ -103,6 +103,7 @@ class DeviceVerificationCoordinator: ChildCoordinatorType {
           os_log("user response: %@", log: self.logger, type: .debug, response.id)
           return self.checkAndPersistVerificationStatus(from: response, crDelegate: delegate, in: context)
         }
+        .then(in: context) { _ in delegate.networkManager.getCurrentTwitterUser(in: context) }
         .get(in: context) { _ in
           do {
             try context.save()
