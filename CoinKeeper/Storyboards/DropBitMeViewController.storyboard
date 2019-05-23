@@ -40,10 +40,10 @@
                                         </constraints>
                                     </imageView>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Lib-Qt-M93">
-                                        <rect key="frame" x="22" y="108" width="370" height="400"/>
+                                        <rect key="frame" x="22" y="108" width="370" height="486"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="OUg-w8-XIP">
-                                                <rect key="frame" x="14" y="16" width="342" height="368"/>
+                                                <rect key="frame" x="14" y="16" width="342" height="454"/>
                                                 <subviews>
                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" alignment="center" spacing="24" translatesAutoresizingMaskIntoConstraints="NO" id="Zt5-Tw-qtZ">
                                                         <rect key="frame" x="0.0" y="0.0" width="342" height="129"/>
@@ -67,24 +67,46 @@
                                                             </imageView>
                                                         </subviews>
                                                     </stackView>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="L7a-2J-mK4">
-                                                        <rect key="frame" x="0.0" y="151" width="342" height="20.5"/>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="753" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="L7a-2J-mK4">
+                                                        <rect key="frame" x="0.0" y="157.5" width="342" height="20.5"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                         <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
-                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cfQ-3f-nkG" customClass="LightBorderedButton" customModule="DropBit" customModuleProvider="target">
-                                                        <rect key="frame" x="0.0" y="194" width="342" height="50"/>
+                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="IAM-nX-IpG">
+                                                        <rect key="frame" x="0.0" y="207" width="342" height="110"/>
+                                                        <subviews>
+                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cfQ-3f-nkG" customClass="LightBorderedButton" customModule="DropBit" customModuleProvider="target">
+                                                                <rect key="frame" x="0.0" y="60" width="342" height="50"/>
+                                                                <constraints>
+                                                                    <constraint firstAttribute="height" constant="50" id="w34-Jm-xcM"/>
+                                                                </constraints>
+                                                                <state key="normal" title="Button"/>
+                                                                <connections>
+                                                                    <action selector="copyDropBitURL:" destination="cAj-CK-POh" eventType="touchUpInside" id="XQs-Qv-Lda"/>
+                                                                </connections>
+                                                            </button>
+                                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="70A-al-cyx">
+                                                                <rect key="frame" x="138" y="0.0" width="66" height="66"/>
+                                                                <constraints>
+                                                                    <constraint firstAttribute="height" constant="66" id="UUf-Az-LTo"/>
+                                                                    <constraint firstAttribute="width" secondItem="70A-al-cyx" secondAttribute="height" multiplier="1:1" id="aRE-vD-I4Y"/>
+                                                                </constraints>
+                                                            </imageView>
+                                                        </subviews>
+                                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <constraints>
-                                                            <constraint firstAttribute="height" constant="50" id="w34-Jm-xcM"/>
+                                                            <constraint firstAttribute="trailing" secondItem="cfQ-3f-nkG" secondAttribute="trailing" id="QLm-Ra-VcT"/>
+                                                            <constraint firstAttribute="bottom" secondItem="cfQ-3f-nkG" secondAttribute="bottom" id="TG1-sh-o0c"/>
+                                                            <constraint firstItem="cfQ-3f-nkG" firstAttribute="leading" secondItem="IAM-nX-IpG" secondAttribute="leading" id="g8T-gi-3l3"/>
+                                                            <constraint firstItem="70A-al-cyx" firstAttribute="centerX" secondItem="IAM-nX-IpG" secondAttribute="centerX" id="h0Z-kB-Srg"/>
+                                                            <constraint firstItem="70A-al-cyx" firstAttribute="bottom" secondItem="cfQ-3f-nkG" secondAttribute="top" constant="6" id="rCe-hN-M8z"/>
+                                                            <constraint firstAttribute="height" constant="110" id="vtt-eG-oRO"/>
+                                                            <constraint firstItem="70A-al-cyx" firstAttribute="top" secondItem="IAM-nX-IpG" secondAttribute="top" id="wLM-0g-92e"/>
                                                         </constraints>
-                                                        <state key="normal" title="Button"/>
-                                                        <connections>
-                                                            <action selector="copyDropBitURL:" destination="cAj-CK-POh" eventType="touchUpInside" id="XQs-Qv-Lda"/>
-                                                        </connections>
-                                                    </button>
+                                                    </view>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QlU-jH-Ezk" customClass="PrimaryActionButton" customModule="DropBit" customModuleProvider="target">
-                                                        <rect key="frame" x="0.0" y="266" width="342" height="50"/>
+                                                        <rect key="frame" x="0.0" y="345.5" width="342" height="50"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="50" id="fUU-rW-TQ7"/>
                                                         </constraints>
@@ -94,7 +116,7 @@
                                                         </connections>
                                                     </button>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dyd-R3-OKb">
-                                                        <rect key="frame" x="0.0" y="338" width="342" height="30"/>
+                                                        <rect key="frame" x="0.0" y="424" width="342" height="30"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="30" id="t1I-EV-E3e"/>
                                                         </constraints>
@@ -119,7 +141,7 @@
                                         </subviews>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="400" id="9FH-1U-fQS"/>
+                                            <constraint firstAttribute="height" constant="486" id="9FH-1U-fQS"/>
                                             <constraint firstAttribute="bottom" secondItem="OUg-w8-XIP" secondAttribute="bottom" constant="16" id="G0F-4O-Nvo"/>
                                             <constraint firstAttribute="trailing" secondItem="bzU-un-NnK" secondAttribute="trailing" id="KDS-Zw-5N2"/>
                                             <constraint firstAttribute="trailing" secondItem="OUg-w8-XIP" secondAttribute="trailing" constant="14" id="OXm-Kx-PZT"/>
@@ -153,6 +175,7 @@
                     <connections>
                         <outlet property="avatarButton" destination="CmH-34-pbi" id="eR4-t2-9k1"/>
                         <outlet property="avatarButtonTopConstraint" destination="fM7-Og-o80" id="mcf-tr-OMi"/>
+                        <outlet property="avatarImageView" destination="70A-al-cyx" id="82o-aB-Jnp"/>
                         <outlet property="dropBitMeLogo" destination="0wc-d6-BAK" id="nzJ-Rf-vPu"/>
                         <outlet property="dropBitMeURLButton" destination="cfQ-3f-nkG" id="zJS-NT-vQ0"/>
                         <outlet property="headerSpacer" destination="TBG-7k-hSV" id="AGr-8L-z0X"/>

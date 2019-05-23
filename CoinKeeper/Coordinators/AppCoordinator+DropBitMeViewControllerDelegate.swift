@@ -26,15 +26,19 @@ extension AppCoordinator: DropBitMeViewControllerDelegate {
       .done(in: bgContext) { _ in
         try bgContext.save()
         if let urlInfo = self.persistenceManager.getUserPublicURLInfo(in: bgContext) {
+          let avatarData = CKMUser.find(in: bgContext)?.avatar
           DispatchQueue.main.async {
             if let dropbitMeVC = viewController as? DropBitMeViewController,
               let handle = urlInfo.primaryIdentity?.handle,
               let url = CoinNinjaUrlFactory.buildUrl(for: .dropBitMe(handle: handle)) {
+              var state: DropBitMeConfig.DropBitMeState = .notVerified
               if urlInfo.isEnabled {
-                dropbitMeVC.configure(with: .verified(url, firstTime: false))
+                state = .verified(url, firstTime: false)
               } else {
-                dropbitMeVC.configure(with: .disabled)
+                state = .disabled
               }
+              let config = DropBitMeConfig(state: state, userAvatarData: avatarData)
+              dropbitMeVC.configure(with: config)
             }
           }
         }
