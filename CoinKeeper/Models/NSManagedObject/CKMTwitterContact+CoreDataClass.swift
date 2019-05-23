@@ -13,6 +13,10 @@ import CoreData
 @objc(CKMTwitterContact)
 public class CKMTwitterContact: NSManagedObject {
 
+  var formattedScreenName: String {
+    return "@" + displayScreenName
+  }
+
   static func findOrCreate(with contact: TwitterContactType, in context: NSManagedObjectContext) -> CKMTwitterContact {
     let fetchRequest: NSFetchRequest<CKMTwitterContact> = CKMTwitterContact.fetchRequest()
     let idKeyPath = #keyPath(CKMTwitterContact.identityHash)
@@ -49,7 +53,7 @@ public class CKMTwitterContact: NSManagedObject {
   private func configure(with contact: TwitterContactType, in context: NSManagedObjectContext) {
     self.identityHash = contact.identityHash
     self.displayName = contact.displayName ?? ""
-    self.displayScreenName = contact.displayIdentity
+    self.displayScreenName = contact.displayIdentity.dropFirstCharacter(ifEquals: "@")
     switch contact.kind {
     case .invite, .generic: self.verificationStatus = .notVerified
     case .registeredUser: self.verificationStatus = .verified

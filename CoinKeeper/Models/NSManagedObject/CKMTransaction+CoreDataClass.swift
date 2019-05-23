@@ -326,7 +326,7 @@ extension CKMTransaction: CounterpartyRepresentable {
 
   func counterpartyDisplayIdentity(deviceCountryCode: Int?, kit: PhoneNumberKit) -> String? {
     if let counterpartyTwitterContact = self.twitterContact {
-      return counterpartyTwitterContact.displayScreenName  // should include @-sign
+      return counterpartyTwitterContact.formattedScreenName  // should include @-sign
     }
 
     if let relevantPhoneNumber = invitation?.counterpartyPhoneNumber ?? phoneNumber {
