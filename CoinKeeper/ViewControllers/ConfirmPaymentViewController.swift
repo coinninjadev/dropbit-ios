@@ -50,6 +50,8 @@ class ConfirmPaymentViewController: PresentableViewController, StoryboardInitial
   @IBOutlet var memoContainerView: ConfirmPaymentMemoView!
   @IBOutlet var secondaryAddressLabel: UILabel!
   @IBOutlet var tapAndHoldLabel: UILabel!
+  @IBOutlet var avatarBackgroundView: UIView!
+  @IBOutlet var avatarImageView: UIImageView!
 
   var coordinationDelegate: ConfirmPaymentViewControllerDelegate? {
     return generalCoordinationDelegate as? ConfirmPaymentViewControllerDelegate
@@ -118,8 +120,16 @@ class ConfirmPaymentViewController: PresentableViewController, StoryboardInitial
       guard let phoneContact = contact as? PhoneContactType else { return }
       let formatter = CKPhoneNumberFormatter(kit: PhoneNumberKit(), format: .international)
       displayIdentity = (try? formatter.string(from: phoneContact.globalPhoneNumber)) ?? ""
+      avatarBackgroundView.isHidden = true
     case .twitter:
       displayIdentity = contact.displayIdentity
+      guard let twitterContact = contact as? TwitterContact else { return }
+      avatarBackgroundView.isHidden = false
+      if let data = twitterContact.twitterUser.profileImageData {
+        avatarImageView.image = UIImage(data: data)
+        let radius = avatarImageView.frame.width / 2.0
+        avatarImageView.applyCornerRadius(radius)
+      }
     }
 
     // Hide address labels by default, unhide as needed
