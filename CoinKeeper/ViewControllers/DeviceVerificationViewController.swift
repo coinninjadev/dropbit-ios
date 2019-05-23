@@ -115,7 +115,15 @@ final class DeviceVerificationViewController: BaseViewController {
 
   // MARK: variables
 
-  var shouldShowTwitterButton = false
+  var selectedSetupFlow: SetupFlow?
+  var shouldShowTwitterButton: Bool {
+    guard let selectedFlow = selectedSetupFlow else { return false }
+    switch selectedFlow {
+      case .newWallet, .restoreWallet:  return true
+      case .claimInvite:                return false
+    }
+  }
+
   var countryCodeSearchView: CountryCodeSearchView?
   let countryCodeDataSource = CountryCodePickerDataSource()
   let phoneNumberKit = PhoneNumberKit()

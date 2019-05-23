@@ -84,6 +84,7 @@ class DeviceVerificationCoordinator: ChildCoordinatorType {
 
   private func startPhoneVerification() {
     let viewController = DeviceVerificationViewController.makeFromStoryboard()
+    viewController.selectedSetupFlow = selectedSetupFlow
     viewController.shouldOrphan = shouldOrphanRoot
     assignCoordinationDelegate(to: viewController)
     navigationController.pushViewController(viewController, animated: true)
