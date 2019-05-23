@@ -16,7 +16,7 @@ public class CKMTwitterContact: NSManagedObject {
   static func findOrCreate(with contact: TwitterContactType, in context: NSManagedObjectContext) -> CKMTwitterContact {
     let fetchRequest: NSFetchRequest<CKMTwitterContact> = CKMTwitterContact.fetchRequest()
     let idKeyPath = #keyPath(CKMTwitterContact.identityHash)
-    let predicate = NSPredicate(format: "%K == %@", idKeyPath, contact.identityHash)
+    let predicate = NSPredicate(format: "\(idKeyPath) = %@", contact.identityHash)
     fetchRequest.predicate = predicate
     fetchRequest.fetchLimit = 1
 

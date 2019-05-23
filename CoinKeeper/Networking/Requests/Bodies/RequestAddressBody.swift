@@ -33,7 +33,7 @@ public struct UserIdentityBody: Codable {
   init(twitterUser: TwitterUser) {
     self.type = UserIdentityType.twitter.rawValue
     self.identity = twitterUser.idStr
-    self.handle = twitterUser.name
+    self.handle = twitterUser.formattedScreenName
   }
 }
 

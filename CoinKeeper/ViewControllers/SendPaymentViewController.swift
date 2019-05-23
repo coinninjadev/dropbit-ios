@@ -446,7 +446,7 @@ extension SendPaymentViewController {
       case .twitterContact(let twitterContact):
         self.coordinationDelegate?.viewController(self, checkForVerifiedTwitterContact: twitterContact)
           .done { (contact: TwitterContactType) in
-            self.viewModel.paymentRecipient = PaymentRecipient.twitterContact(contact)
+            self.viewModel.paymentRecipient = paymentRecipient
             self.updateViewWithModel()
             self.hideRecipientInputViews()
           }
