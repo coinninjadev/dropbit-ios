@@ -132,6 +132,8 @@ class ContactsViewController: PresentableViewController, StoryboardInitializable
 
   var frc: NSFetchedResultsController<CCMPhoneNumber>!
 
+  private var needsVerificationStatusRefresh: Bool = false
+
   func setupTableView() {
     activityIndiciator.stopAnimating()
     guard let delegate = coordinationDelegate else { return }
@@ -360,7 +362,12 @@ extension ContactsViewController: NSFetchedResultsControllerDelegate {
 
   // Not implementing animations because when the results update, it only uses tableView.move(...) which doesn't animate
   func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-    tableView.reloadData()
+    if needsVerificationStatusRefresh {
+      self.needsVerificationStatusRefresh = false
+      self.refreshContactVerificationStatuses() // postpone reloading tableView until next frc update with verification statuses
+    } else {
+      tableView.reloadData()
+    }
   }
 
 }
@@ -442,7 +449,9 @@ extension ContactsViewController: DZNEmptyDataSetSource {
 extension ContactsViewController: ContactsEmptyViewDelegate {
   func viewDidSelectPrimaryAction(_ view: UIView) {
     coordinationDelegate?.viewControllerDidRequestPermission(self, for: .contacts) { status in
-      print(status.description)
+      if status == .authorized {
+        self.needsVerificationStatusRefresh = true //refresh statuses after frc loads cached contacts
+      }
     }
   }
 }
