@@ -207,8 +207,8 @@ class ContactCacheDataWorker: ContactCacheDataWorkerType {
 
   private func fetchAndPersistStatuses(fromMetadata metadataList: [CCMValidatedMetadata],
                                        in context: NSManagedObjectContext) -> Promise<Void> {
-
     let phoneNumberHashes = metadataList.map { $0.hashedGlobalNumber }
+    guard phoneNumberHashes.isNotEmpty else { return .value(()) }
 
     return self.batchedPhoneNumbers(from: phoneNumberHashes)
       .then { self.reduceResults(from: $0) }
