@@ -24,16 +24,16 @@ class ContactsEmptyView: UIView {
 
   required init?(coder aDecoder: NSCoder) {
     super.init(coder: aDecoder)
-    xibSetup()
+    initialize()
   }
 
   override init(frame: CGRect) {
     super.init(frame: frame)
-    xibSetup()
+    initialize()
   }
 
-  override func awakeFromNib() {
-    super.awakeFromNib()
+  private func initialize() {
+    xibSetup()
     backgroundColor = .clear
     descriptionLabel.text = "Your contacts will be shown here once you allow DropBit to access them."
     descriptionLabel.textColor = Theme.Color.grayText.color
