@@ -117,8 +117,7 @@ struct TwitterContact: TwitterContactType {
   }
 
   var displayHandle: String {
-    guard !twitterUser.screenName.contains("@") else { return twitterUser.screenName }
-    return "@" + twitterUser.screenName
+    return twitterUser.formattedScreenName
   }
 
   var identityHash: String {
