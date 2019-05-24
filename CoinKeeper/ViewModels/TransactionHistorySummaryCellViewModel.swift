@@ -118,7 +118,12 @@ class TransactionHistorySummaryCellViewModel {
 
   var isTwitterContact: Bool {
     guard let tx = transaction else { return false }
-    return tx.twitterContact != nil
+    if tx.twitterContact != nil {
+      return true
+    } else if let invitation = tx.invitation, invitation.counterpartyTwitterContact != nil {
+      return true
+    }
+    return false
   }
 
   /// overridden by detail cell model

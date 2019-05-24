@@ -14,6 +14,7 @@ import CoreData
 public class CKMTwitterContact: NSManagedObject {
 
   var formattedScreenName: String {
+    guard !displayScreenName.starts(with: "@") else { return displayScreenName }
     return "@" + displayScreenName
   }
 

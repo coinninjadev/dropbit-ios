@@ -315,7 +315,7 @@ extension CKMTransaction: CounterpartyRepresentable {
 
   var counterpartyName: String? {
     if let twitterCounterparty = invitation?.counterpartyTwitterContact {
-      return twitterCounterparty.displayScreenName
+      return twitterCounterparty.formattedScreenName
     } else if let inviteName = invitation?.counterpartyName {
       return inviteName
     } else {
