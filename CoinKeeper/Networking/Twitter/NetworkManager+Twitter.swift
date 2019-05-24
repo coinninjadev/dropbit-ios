@@ -8,7 +8,6 @@
 
 import PromiseKit
 import OAuthSwift
-import CoreData
 
 extension TwitterUser: CustomDebugStringConvertible {
   var debugDescription: String {
