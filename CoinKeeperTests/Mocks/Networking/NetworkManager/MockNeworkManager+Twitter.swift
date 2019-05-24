@@ -9,9 +9,14 @@
 import Foundation
 @testable import DropBit
 import PromiseKit
+import CoreData
 
 extension MockNetworkManager: TwitterRequestable {
   func getCurrentTwitterUser() -> Promise<TwitterUser> {
+    return Promise { _ in }
+  }
+
+  func getCurrentTwitterUser(in context: NSManagedObjectContext) -> Promise<TwitterUser> {
     return Promise { _ in }
   }
 
