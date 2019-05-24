@@ -71,4 +71,12 @@ extension NSAttributedString {
     }
   }
 
+  convenience init(string: String, color: UIColor, font: UIFont) {
+    let attributes: [NSAttributedString.Key: Any] = [
+      .font: font,
+      .foregroundColor: color
+    ]
+    self.init(string: string, attributes: attributes)
+  }
+
 }

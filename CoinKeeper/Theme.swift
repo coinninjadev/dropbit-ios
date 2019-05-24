@@ -108,6 +108,7 @@ struct Theme {
     case primaryButtonTitle
     case compactButtonTitle
     case secondaryButtonTitle
+    case emptyStateDescription
     case alertActionTitle, alertTitle
     case settingsVersion
     case settingsTitle
@@ -224,6 +225,7 @@ struct Theme {
            .serverAddressTitle,
            .alertDetails,
            .phoneNumberEntry,
+           .emptyStateDescription,
            .secondaryButtonTitle: 							return CKFont.regular(14)
       case .onboardingSubtitle,
            .balanceSecondaryAmount,
