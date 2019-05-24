@@ -343,6 +343,11 @@ extension TransactionHistoryViewController: NSFetchedResultsControllerDelegate {
   func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
     collectionViews.forEach { $0.reloadData() }
   }
+
+  func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+    transactionHistoryWithBalanceView.isHidden = true
+    transactionHistoryNoBalanceView.isHidden = true
+  }
 }
 
 extension TransactionHistoryViewController: UICollectionViewDataSource {
@@ -527,9 +532,11 @@ extension TransactionHistoryViewController: DZNEmptyDataSetDelegate, DZNEmptyDat
 
   func customView(forEmptyDataSet scrollView: UIScrollView!) -> UIView! {
     if shouldShowNoBalanceView {
+      transactionHistoryNoBalanceView.isHidden = false
       return transactionHistoryNoBalanceView
     }
     if shouldShowWithBalanceView {
+      transactionHistoryWithBalanceView.isHidden = false
       return transactionHistoryWithBalanceView
     }
     return nil
