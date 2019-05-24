@@ -12,9 +12,9 @@ import PhoneNumberKit
 struct SharedPayloadProfileV2: Codable {
   let type: UserIdentityType
   let identity: String
-  let displayName: String?
-  let dropbitMe: String?
-  let avatar: String?
+  var displayName: String?
+  var dropbitMe: String?
+  var avatar: String?
 }
 
 extension SharedPayloadProfileV2 {
@@ -24,6 +24,14 @@ extension SharedPayloadProfileV2 {
     self.displayName = nil
     self.dropbitMe = nil
     self.avatar = nil
+  }
+
+  func copy(byUpdatingIdentity newIdentity: String) -> SharedPayloadProfileV2 {
+    return SharedPayloadProfileV2(type: self.type,
+                                  identity: newIdentity,
+                                  displayName: self.displayName,
+                                  dropbitMe: self.dropbitMe,
+                                  avatar: self.avatar)
   }
 
   /// Return GlobalPhoneNumber instance from `identity`. Return nil if `identity` is not a phone number.
@@ -68,7 +76,7 @@ struct SharedPayloadV2: SharedPayloadCodable {
   let meta: SharedPayloadMetadata
   let txid: String
   let info: SharedPayloadInfoV1
-  let profile: SharedPayloadProfileV2?
+  var profile: SharedPayloadProfileV2?
 
   init(txid: String, memo: String?, amountInfo: SharedPayloadAmountInfo, senderIdentity: UserIdentityBody) {
     self.meta = SharedPayloadMetadata(version: 1)

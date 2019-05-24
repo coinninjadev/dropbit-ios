@@ -19,6 +19,12 @@ public struct UserIdentityBody: Codable {
   let identity: String
   var handle: String?
 
+  init(type: String, identity: String, handle: String?) {
+    self.type = type
+    self.identity = identity
+    self.handle = handle
+  }
+
   init(phoneNumber: GlobalPhoneNumber) {
     self.type = UserIdentityType.phone.rawValue
     self.identity = phoneNumber.sanitizedGlobalNumber()
@@ -34,6 +40,13 @@ public struct UserIdentityBody: Codable {
     self.type = UserIdentityType.twitter.rawValue
     self.identity = twitterUser.idStr
     self.handle = twitterUser.formattedScreenName
+  }
+
+  static func sharedPayloadBody(twitterCredentials: TwitterOAuthStorage) -> UserIdentityBody {
+    let joinedIdentity = twitterCredentials.twitterUserId + ":" + twitterCredentials.twitterScreenName
+    return UserIdentityBody(type: UserIdentityType.twitter.rawValue,
+                            identity: joinedIdentity,
+                            handle: twitterCredentials.formattedScreenName)
   }
 }
 
