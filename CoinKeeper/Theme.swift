@@ -187,6 +187,8 @@ struct Theme {
     case popoverSecondaryButton
     case popoverStatusLabel
     case restoreWalletButton
+    case tweetMethodRecipient
+    case tweetMethodMessage
 
     var font: UIFont {
       switch self {
@@ -265,6 +267,7 @@ struct Theme {
            .transactionHistoryReceiver,
            .removeNumberError,
            .sendingAmountToAddress,
+           .tweetMethodMessage,
            .backToPreviousWord: 								return CKFont.medium(14)
       case .contactTitle,
            .recoverySubtitle1,
@@ -276,6 +279,7 @@ struct Theme {
            .balancePrimaryAmount: 							return CKFont.medium(19)
       case .passFailTitle,
            .noTransactionsTitle,
+           .tweetMethodRecipient,
            .tutorialTitle: 											return CKFont.medium(20)
       case .transactionDetailCounterparty: 			return CKFont.medium(22)
       case .transactionDetailPrimaryAmount: 		return CKFont.medium(50)

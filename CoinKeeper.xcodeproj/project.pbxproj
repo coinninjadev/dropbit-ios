@@ -604,6 +604,8 @@
 		B54D206420F926110057A694 /* UIImage+Mask.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54D206320F926110057A694 /* UIImage+Mask.swift */; };
 		B54DE68322982C7F009D67CE /* ContactsEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54DE68222982C7F009D67CE /* ContactsEmptyView.swift */; };
 		B54DE68522982C88009D67CE /* ContactsEmptyView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B54DE68422982C88009D67CE /* ContactsEmptyView.xib */; };
+		B54DE68722987463009D67CE /* TweetMethodViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B54DE68622987463009D67CE /* TweetMethodViewController.storyboard */; };
+		B54DE6892298747B009D67CE /* TweetMethodViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54DE6882298747B009D67CE /* TweetMethodViewController.swift */; };
 		B54F8FA420C3088300294F50 /* CurrencyFormattable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54F8FA320C3088300294F50 /* CurrencyFormattable.swift */; };
 		B552EDE9211E33D000332BB5 /* BiometricAuthenticationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B552EDD3211E33D000332BB5 /* BiometricAuthenticationManager.swift */; };
 		B552EDEB211E33D000332BB5 /* LaunchStateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B552EDD5211E33D000332BB5 /* LaunchStateManager.swift */; };
@@ -1436,6 +1438,8 @@
 		B54D206320F926110057A694 /* UIImage+Mask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Mask.swift"; sourceTree = "<group>"; };
 		B54DE68222982C7F009D67CE /* ContactsEmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactsEmptyView.swift; sourceTree = "<group>"; };
 		B54DE68422982C88009D67CE /* ContactsEmptyView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ContactsEmptyView.xib; sourceTree = "<group>"; };
+		B54DE68622987463009D67CE /* TweetMethodViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = TweetMethodViewController.storyboard; sourceTree = "<group>"; };
+		B54DE6882298747B009D67CE /* TweetMethodViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TweetMethodViewController.swift; sourceTree = "<group>"; };
 		B54F8FA320C3088300294F50 /* CurrencyFormattable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyFormattable.swift; sourceTree = "<group>"; };
 		B552EDD3211E33D000332BB5 /* BiometricAuthenticationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BiometricAuthenticationManager.swift; sourceTree = "<group>"; };
 		B552EDD5211E33D000332BB5 /* LaunchStateManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LaunchStateManager.swift; sourceTree = "<group>"; };
@@ -2381,6 +2385,7 @@
 				A2E0300120EABF8E00E160E9 /* RestoreWalletViewController.swift */,
 				A260E8CE20FCFE11008343F9 /* TutorialViewController.swift */,
 				A260E8D420FD0C57008343F9 /* TutorialScreenViewController.swift */,
+				B54DE6882298747B009D67CE /* TweetMethodViewController.swift */,
 				A2893BBD20FD4C5A00E96B07 /* BasePageViewController.swift */,
 				A26C767C21081CB1001EB738 /* TextViewController.swift */,
 				30B6632721666B300011296C /* ActionableAlertViewController.swift */,
@@ -2422,6 +2427,7 @@
 				A260E8D220FCFE96008343F9 /* TutorialViewController.storyboard */,
 				A260E8D620FD0C67008343F9 /* TutorialScreenViewController.storyboard */,
 				A26C767E21081D5B001EB738 /* TextViewController.storyboard */,
+				B54DE68622987463009D67CE /* TweetMethodViewController.storyboard */,
 				30B6632B21666B5C0011296C /* ActionableAlertViewController.storyboard */,
 				30E96A2E2178FA70008079B8 /* PhoneNumberStatusViewController.storyboard */,
 				3B325D50219091950094897C /* RecoveryWordsIntroViewController.storyboard */,
@@ -3270,6 +3276,7 @@
 				3BF41AB2207506AC008B3D0A /* RequestPayViewController.storyboard in Resources */,
 				3B9779A6202E416700C9C933 /* Montserrat-BlackItalic.ttf in Resources */,
 				3B9779AE202E416700C9C933 /* Montserrat-SemiBold.ttf in Resources */,
+				B54DE68722987463009D67CE /* TweetMethodViewController.storyboard in Resources */,
 				3B9779A4202E416700C9C933 /* Montserrat-MediumItalic.ttf in Resources */,
 				3BD013172272478300C92771 /* TransactionHistoryDetailValidCell.xib in Resources */,
 				3B8ACA15225F96800020B684 /* GetBitcoinViewController.storyboard in Resources */,
@@ -3972,6 +3979,7 @@
 				3B2EBF71223010DC003C0D0E /* ManagedContactComponents.swift in Sources */,
 				3B5A88A2228B08FE0082BBA4 /* ContactCellPrimaryLabel.swift in Sources */,
 				B56E158D2167C176003B69D4 /* NetworkManager+AddressRequestable.swift in Sources */,
+				B54DE6892298747B009D67CE /* TweetMethodViewController.swift in Sources */,
 				B5B53C9C2107CAA5006C7B67 /* TransactionDetailsInfoContainer.swift in Sources */,
 				A245C6D020D9537400D99983 /* RequestAddressBody.swift in Sources */,
 				3B5A88A4228B09260082BBA4 /* ContactCellSecondaryLabel.swift in Sources */,
