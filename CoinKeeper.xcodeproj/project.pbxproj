@@ -601,6 +601,8 @@
 		B54D206020F9218A0057A694 /* CKBannerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B54D205F20F9218A0057A694 /* CKBannerView.xib */; };
 		B54D206220F921A20057A694 /* CKBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54D206120F921A20057A694 /* CKBannerView.swift */; };
 		B54D206420F926110057A694 /* UIImage+Mask.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54D206320F926110057A694 /* UIImage+Mask.swift */; };
+		B54DE68322982C7F009D67CE /* ContactsEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54DE68222982C7F009D67CE /* ContactsEmptyView.swift */; };
+		B54DE68522982C88009D67CE /* ContactsEmptyView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B54DE68422982C88009D67CE /* ContactsEmptyView.xib */; };
 		B54F8FA420C3088300294F50 /* CurrencyFormattable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54F8FA320C3088300294F50 /* CurrencyFormattable.swift */; };
 		B552EDE9211E33D000332BB5 /* BiometricAuthenticationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B552EDD3211E33D000332BB5 /* BiometricAuthenticationManager.swift */; };
 		B552EDEB211E33D000332BB5 /* LaunchStateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B552EDD5211E33D000332BB5 /* LaunchStateManager.swift */; };
@@ -1430,6 +1432,8 @@
 		B54D205F20F9218A0057A694 /* CKBannerView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CKBannerView.xib; sourceTree = "<group>"; };
 		B54D206120F921A20057A694 /* CKBannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CKBannerView.swift; sourceTree = "<group>"; };
 		B54D206320F926110057A694 /* UIImage+Mask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Mask.swift"; sourceTree = "<group>"; };
+		B54DE68222982C7F009D67CE /* ContactsEmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactsEmptyView.swift; sourceTree = "<group>"; };
+		B54DE68422982C88009D67CE /* ContactsEmptyView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ContactsEmptyView.xib; sourceTree = "<group>"; };
 		B54F8FA320C3088300294F50 /* CurrencyFormattable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyFormattable.swift; sourceTree = "<group>"; };
 		B552EDD3211E33D000332BB5 /* BiometricAuthenticationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BiometricAuthenticationManager.swift; sourceTree = "<group>"; };
 		B552EDD5211E33D000332BB5 /* LaunchStateManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LaunchStateManager.swift; sourceTree = "<group>"; };
@@ -2122,6 +2126,8 @@
 				3B23126220DA6CA30099A557 /* TransactionHistoryDetailCellAddressView.xib */,
 				3B23126620DA6D0E0099A557 /* TransactionHistoryDetailCellAddressView.swift */,
 				A293E35120F798920099ED69 /* TransactionHistoryEmptyView.swift */,
+				B54DE68222982C7F009D67CE /* ContactsEmptyView.swift */,
+				B54DE68422982C88009D67CE /* ContactsEmptyView.xib */,
 				308F6F00217F91980094D6CB /* ServerAddressView.swift */,
 				308F6F02217F91A50094D6CB /* ServerAddressView.xib */,
 				B536D12A21F1140100C344B6 /* SendPaymentMemoView.swift */,
@@ -3227,6 +3233,7 @@
 				3B9779B1202E416700C9C933 /* Montserrat-Light.ttf in Resources */,
 				B5FFFFC0226FB44E0029DB62 /* DropBitMeViewController.storyboard in Resources */,
 				B5B0DC81221364140010AB2A /* PhoneNumberEntryView.xib in Resources */,
+				B54DE68522982C88009D67CE /* ContactsEmptyView.xib in Resources */,
 				3B6FDAD7204F4BA50091916A /* VerifyRecoveryWordCell.xib in Resources */,
 				403B454B2075594F00DA53E9 /* Settings.bundle in Resources */,
 				3BC456FF20288D7300CC36B1 /* LaunchScreen.storyboard in Resources */,
@@ -3994,6 +4001,7 @@
 				6B825A4324515C70495D2ECC /* TwitterOAuthError.swift in Sources */,
 				6B8251C70D7A84BE41054D50 /* TwitterEndpoints.swift in Sources */,
 				6B8250ED374C8B86F2476F5E /* TwitterUser.swift in Sources */,
+				B54DE68322982C7F009D67CE /* ContactsEmptyView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
