@@ -10,6 +10,8 @@ import UIKit
 import CoreData
 import PromiseKit
 import os.log
+import DZNEmptyDataSet
+import Permission
 
 protocol ContactsViewControllerDelegate: ViewControllerDismissable, URLOpener {
 
@@ -21,7 +23,8 @@ protocol ContactsViewControllerDelegate: ViewControllerDismissable, URLOpener {
 
   /// The delegate should show a hud and disable interactions, check the API for any changes in the verification
   /// status of all cached numbers, and persist the changes such that the `frc` is updated automatically.
-  func viewControllerDidRequestRefreshVerificationStatuses(_ viewController: UIViewController, completion: @escaping ((Error?) -> Void))
+  func viewControllerDidRequestRefreshVerificationStatuses(_ viewController: UIViewController,
+                                                           completion: @escaping ((Error?) -> Void))
 
   /// The delegate should evaluate whether the phone number is a valid recipient and if valid,
   /// call update() on the `validSelectionDelegate`.
@@ -36,6 +39,10 @@ protocol ContactsViewControllerDelegate: ViewControllerDismissable, URLOpener {
   func viewController(_ viewController: UIViewController,
                       didSelectTwitterUser user: TwitterUser,
                       validSelectionDelegate: SelectedValidContactDelegate)
+  func permissionStatus(for kind: PermissionKind) -> PermissionStatus
+  func viewControllerDidRequestPermission(_ viewController: UIViewController,
+                                          for kind: PermissionKind,
+                                          completion: @escaping (PermissionStatus) -> Void)
 }
 
 protocol SelectedValidContactDelegate: AnyObject {
@@ -125,6 +132,8 @@ class ContactsViewController: PresentableViewController, StoryboardInitializable
 
   var frc: NSFetchedResultsController<CCMPhoneNumber>!
 
+  private var needsVerificationStatusRefresh: Bool = false
+
   func setupTableView() {
     activityIndiciator.stopAnimating()
     guard let delegate = coordinationDelegate else { return }
@@ -141,6 +150,9 @@ class ContactsViewController: PresentableViewController, StoryboardInitializable
     searchBar.searchTextField?.text = nil
 
     tableView.delegate = self
+    tableView.emptyDataSetSource = self
+    tableView.emptyDataSetDelegate = self
+
     switch mode {
     case .contacts:
       tableView.dataSource = self
@@ -350,7 +362,12 @@ extension ContactsViewController: NSFetchedResultsControllerDelegate {
 
   // Not implementing animations because when the results update, it only uses tableView.move(...) which doesn't animate
   func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-    tableView.reloadData()
+    if needsVerificationStatusRefresh {
+      self.needsVerificationStatusRefresh = false
+      self.refreshContactVerificationStatuses() // postpone reloading tableView until next frc update with verification statuses
+    } else {
+      tableView.reloadData()
+    }
   }
 
 }
@@ -403,4 +420,38 @@ extension ContactsViewController: ContactsTableViewHeaderDelegate {
     delegate.openURL(url, completionHandler: nil)
   }
 
+}
+
+extension ContactsViewController: DZNEmptyDataSetDelegate {
+
+  func emptyDataSetShouldDisplay(_ scrollView: UIScrollView!) -> Bool {
+    switch self.mode {
+    case .contacts:
+      let contactPermissionStatus = coordinationDelegate?.permissionStatus(for: .contacts) ?? .notDetermined
+      return contactPermissionStatus != .authorized
+    case .twitter:
+      return false
+    }
+  }
+
+}
+
+extension ContactsViewController: DZNEmptyDataSetSource {
+
+  func customView(forEmptyDataSet scrollView: UIScrollView!) -> UIView! {
+    let emptyStateView = ContactsEmptyView(frame: CGRect(x: 0, y: 0, width: 280, height: 106))
+    emptyStateView.delegate = self
+    return emptyStateView
+  }
+
+}
+
+extension ContactsViewController: ContactsEmptyViewDelegate {
+  func viewDidSelectPrimaryAction(_ view: UIView) {
+    coordinationDelegate?.viewControllerDidRequestPermission(self, for: .contacts) { status in
+      if status == .authorized {
+        self.needsVerificationStatusRefresh = true //refresh statuses after frc loads cached contacts
+      }
+    }
+  }
 }

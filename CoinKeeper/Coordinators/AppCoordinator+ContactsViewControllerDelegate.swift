@@ -12,6 +12,7 @@ import enum Result.Result
 import PromiseKit
 import os.log
 import CoreData
+import Permission
 
 extension AppCoordinator: ContactsViewControllerDelegate {
 
@@ -98,4 +99,15 @@ extension AppCoordinator: ContactsViewControllerDelegate {
     validSelectionDelegate.update(withSelectedTwitterUser: user)
     viewController.dismiss(animated: true, completion: nil)
   }
+
+  func permissionStatus(for kind: PermissionKind) -> PermissionStatus {
+    return self.permissionManager.permissionStatus(for: kind)
+  }
+
+  func viewControllerDidRequestPermission(_ viewController: UIViewController,
+                                          for kind: PermissionKind,
+                                          completion: @escaping (PermissionStatus) -> Void) {
+    self.permissionManager.requestPermission(for: kind, completion: completion)
+  }
+
 }
