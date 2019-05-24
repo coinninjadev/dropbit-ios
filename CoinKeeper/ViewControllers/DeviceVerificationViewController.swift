@@ -18,6 +18,7 @@ protocol DeviceVerificationViewControllerDelegate: AnyObject {
   func viewControllerDidRequestResendCode(_ viewController: DeviceVerificationViewController)
   func viewControllerDidSkipPhoneVerification(_ viewController: DeviceVerificationViewController)
   func viewControllerShouldShowSkipButton() -> Bool
+  func viewControllerDidSelectVerifyTwitter(_ viewController: UIViewController)
 }
 
 enum DeviceVerificationError: Error {
@@ -80,9 +81,15 @@ final class DeviceVerificationViewController: BaseViewController {
     }
   }
 
-  var countryCodeSearchView: CountryCodeSearchView?
-  let countryCodeDataSource = CountryCodePickerDataSource()
-  let phoneNumberKit = PhoneNumberKit()
+  @IBOutlet var orView: UIView!
+  @IBOutlet var orLeftLineView: UIView!
+  @IBOutlet var orLabel: UILabel!
+  @IBOutlet var orRightLineView: UIView!
+  @IBOutlet var twitterButton: PrimaryActionButton!
+
+  @IBAction func verifyTwitter(_ sender: Any) {
+    coordinationDelegate?.viewControllerDidSelectVerifyTwitter(self)
+  }
 
   @IBAction func resendTextMessage(_ sender: Any) {
     coordinationDelegate?.viewControllerDidRequestResendCode(self)
@@ -107,6 +114,20 @@ final class DeviceVerificationViewController: BaseViewController {
   }
 
   // MARK: variables
+
+  var selectedSetupFlow: SetupFlow?
+  var shouldShowTwitterButton: Bool {
+    guard let selectedFlow = selectedSetupFlow else { return false }
+    switch selectedFlow {
+      case .newWallet, .restoreWallet:  return true
+      case .claimInvite:                return false
+    }
+  }
+
+  var countryCodeSearchView: CountryCodeSearchView?
+  let countryCodeDataSource = CountryCodePickerDataSource()
+  let phoneNumberKit = PhoneNumberKit()
+
   var coordinationDelegate: DeviceVerificationViewControllerDelegate? {
     return generalCoordinationDelegate as? DeviceVerificationViewControllerDelegate
   }
@@ -127,6 +148,7 @@ final class DeviceVerificationViewController: BaseViewController {
     super.viewDidLoad()
 
     digitEntryViewModel = DigitEntryDisplayViewModel(view: codeDisplayView, maxDigits: 6)
+    configureTwitterViews()
     updateUI()
     setupPhoneNumberEntryView(textFieldEnabled: false)
 
@@ -178,6 +200,7 @@ final class DeviceVerificationViewController: BaseViewController {
       phoneNumberContainer.isHidden = false
       phoneNumberEntryView.isHidden = false
       keypadEntryView.delegate = self.phoneNumberEntryView.textField
+      showTwitterViews(self.shouldShowTwitterButton)
 
     case .codeVerification(let phoneNumber):
       updatePrimaryLabels(title: enterYourCode, message: normalCodeMessage(with: phoneNumber))
@@ -193,6 +216,28 @@ final class DeviceVerificationViewController: BaseViewController {
       updateErrorLabel(with: DeviceVerificationError.codeFailureLimitExceeded.displayMessage)
       phoneNumberEntryView.isHidden = false
     }
+  }
+
+  private func showTwitterViews(_ shouldShow: Bool) {
+    orView.isHidden = !shouldShow
+    twitterButton.isHidden = !shouldShow
+  }
+
+  private func configureTwitterViews() {
+    let twitterBlue = Theme.Color.lightBlueTint.color
+    orLeftLineView.backgroundColor = twitterBlue
+    orRightLineView.backgroundColor = twitterBlue
+    orLabel.textColor = twitterBlue
+    orLabel.text = "OR"
+    orLabel.font = Theme.Font.primaryButtonTitle.font
+    twitterButton.style = .standard
+
+    let twitterTitle = NSAttributedString(imageName: "twitterBird",
+                                          imageSize: CGSize(width: 20, height: 17),
+                                          title: "VERIFY TWITTER ACCOUNT",
+                                          sharedColor: Theme.Color.lightGrayText.color,
+                                          font: Theme.Font.primaryButtonTitle.font)
+    twitterButton.setAttributedTitle(twitterTitle, for: .normal)
   }
 
   private func updatePrimaryLabels(title: String, message: String) {
@@ -215,6 +260,8 @@ final class DeviceVerificationViewController: BaseViewController {
   }
 
   private func setDefaultHiddenViews() {
+    orView.isHidden = true
+    twitterButton.isHidden = true
     oneTimeCodeInputTextField.isHidden = true
     exampleLabel.isHidden = true
     phoneNumberContainer.isHidden = true

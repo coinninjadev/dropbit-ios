@@ -6,6 +6,7 @@
 //  Copyright © 2018 Coin Ninja, LLC. All rights reserved.
 //
 
+import UIKit
 @testable import DropBit
 
 class MockDeviceVerificationViewControllerDelegate: DeviceVerificationViewControllerDelegate {
@@ -35,6 +36,11 @@ class MockDeviceVerificationViewControllerDelegate: DeviceVerificationViewContro
   var verificationSkipped = false
   func viewControllerDidSkipPhoneVerification(_ viewController: DeviceVerificationViewController) {
     verificationSkipped = true
+  }
+
+  var twitterWasSelected = false
+  func viewControllerDidSelectVerifyTwitter(_ viewController: UIViewController) {
+    twitterWasSelected = true
   }
 
 }
