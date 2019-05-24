@@ -238,9 +238,15 @@ class ContactCacheDataWorker: ContactCacheDataWorkerType {
 
   private func batchedPhoneNumbers(from phoneNumberHashes: [String],
                                    batchLimit: Int = 100) -> Promise<[StringDictResponse]> {
-    let batched = phoneNumberHashes.chunked(by: batchLimit)
-    let batchedPhoneNumberPromises = batched.map { self.userRequester.queryUsers(identityHashes: $0) }
-    return when(fulfilled: batchedPhoneNumberPromises)
+    let phoneHashBatches = phoneNumberHashes.chunked(by: batchLimit)
+
+    var batchIterator = phoneHashBatches.makeIterator()
+    let promiseIterator = AnyIterator<Promise<StringDictResponse>> {
+      guard let phoneHashBatch = batchIterator.next() else { return nil }
+      return self.userRequester.queryUsers(identityHashes: phoneHashBatch)
+    }
+
+    return when(fulfilled: promiseIterator, concurrently: 5)
   }
 
   private func reduceResults(from responses: [StringDictResponse]) -> Promise<StringDictResponse> {
