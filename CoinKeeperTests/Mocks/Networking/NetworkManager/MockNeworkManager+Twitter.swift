@@ -10,17 +10,10 @@ import Foundation
 @testable import DropBit
 import PromiseKit
 import CoreData
+import OAuthSwift
 
 extension MockNetworkManager: TwitterRequestable {
-  func getCurrentTwitterUser() -> Promise<TwitterUser> {
-    return Promise { _ in }
-  }
-
-  func getCurrentTwitterUser(in context: NSManagedObjectContext) -> Promise<TwitterUser> {
-    return Promise { _ in }
-  }
-
-  func authorizedTwitterCredentials() -> Promise<TwitterOAuthStorage> {
+  func authorizeTwitterUser() -> Promise<TwitterOAuthStorage> {
     return Promise { _ in }
   }
 
@@ -32,7 +25,11 @@ extension MockNetworkManager: TwitterRequestable {
     return Promise { _ in }
   }
 
-  func selected(user: TwitterUser) -> Promise<Void> {
+  func retrieveCurrentUser(with userId: String) -> Promise<TwitterUser> {
     return Promise { _ in }
+  }
+
+  var twitterOAuthManager: OAuth1Swift {
+    return OAuth1Swift(consumerKey: "", consumerSecret: "")
   }
 }

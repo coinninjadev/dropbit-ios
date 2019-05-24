@@ -17,6 +17,7 @@ protocol DeviceVerificationCoordinatorDelegate: TwilioErrorDelegate {
   var walletManager: WalletManagerType? { get }
   var persistenceManager: PersistenceManagerType { get }
   var alertManager: AlertManagerType { get }
+  var twitterAccessManager: TwitterAccessManagerType { get }
 
   func coordinator(_ coordinator: DeviceVerificationCoordinator, didVerify type: UserIdentityType, isInitialSetupFlow: Bool)
   func coordinatorSkippedPhoneVerification(_ coordinator: DeviceVerificationCoordinator)
@@ -94,7 +95,7 @@ class DeviceVerificationCoordinator: ChildCoordinatorType {
     let context = delegate.persistenceManager.createBackgroundContext()
     context.perform {
       self.registerAndPersistWalletIfNecessary(delegate: delegate, in: context)
-        .then(in: context) { delegate.networkManager.authorizedTwitterCredentials() }
+        .then(in: context) { delegate.twitterAccessManager.authorizedTwitterCredentials() }
         .then(in: context) { self.addTwitterUserIdentity(credentials: $0, delegate: delegate, in: context) }
         .then(in: context) { body, creds -> Promise<UserResponse> in
           return delegate.networkManager.verifyUser(body: body, credentials: creds)
@@ -103,7 +104,7 @@ class DeviceVerificationCoordinator: ChildCoordinatorType {
           os_log("user response: %@", log: self.logger, type: .debug, response.id)
           return self.checkAndPersistVerificationStatus(from: response, crDelegate: delegate, in: context)
         }
-        .then(in: context) { _ in delegate.networkManager.getCurrentTwitterUser(in: context) }
+        .then(in: context) { _ in delegate.twitterAccessManager.getCurrentTwitterUser(in: context) }
         .get(in: context) { _ in
           do {
             try context.save()

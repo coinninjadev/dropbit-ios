@@ -85,11 +85,11 @@ extension AppCoordinator: ContactsViewControllerDelegate {
   }
 
   func searchForTwitterUsers(with searchTerm: String) -> Promise<[TwitterUser]> {
-    return networkManager.findTwitterUsers(using: searchTerm)
+    return twitterAccessManager.findTwitterUsers(using: searchTerm)
   }
 
   func defaultTwitterFriends() -> Promise<[TwitterUser]> {
-    return networkManager.defaultFollowingList()
+    return twitterAccessManager.defaultFollowingList()
   }
 
   func viewController(_ viewController: UIViewController,

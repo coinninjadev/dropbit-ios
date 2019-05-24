@@ -62,7 +62,7 @@ extension AppCoordinator: BalanceContainerDelegate {
         let image = UIImage(data: avatar) ?? defaultImage
         return Promise.value(image)
       } else if persistenceManager.keychainManager.oauthCredentials() != nil {
-        return networkManager.getCurrentTwitterUser()
+        return twitterAccessManager.getCurrentTwitterUser()
           .then { (user: TwitterUser) -> Promise<UIImage> in
             let image = user.profileImageData.flatMap { UIImage(data: $0) } ?? defaultImage
             return Promise.value(image)

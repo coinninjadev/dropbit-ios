@@ -56,6 +56,7 @@ class AppCoordinator: CoordinatorType {
   let notificationManager: NotificationManagerType
   let messageManager: MessagesManagerType
   let persistenceCacheDataWorker: PersistenceCacheDataWorkerType
+  let twitterAccessManager: TwitterAccessManagerType
   let uiTestArguments: [UITestArgument]
 
   // swiftlint:disable:next weak_delegate
@@ -112,6 +113,7 @@ class AppCoordinator: CoordinatorType {
     notificationManager: NotificationManagerType? = nil,
     messageManager: MessagesManagerType? = nil,
     currencyController: CurrencyController = CurrencyController(currentCurrencyCode: .USD),
+    twitterAccessManager: TwitterAccessManagerType? = nil,
     uiTestArguments: [UITestArgument] = []
     ) {
     currencyController.selectedCurrency = persistenceManager.selectedCurrency()
@@ -138,6 +140,9 @@ class AppCoordinator: CoordinatorType {
     self.uiTestArguments = uiTestArguments
 
     self.persistenceCacheDataWorker = PersistenceCacheDataWorker(persistenceManager: persistenceManager, analyticsManager: analyticsManager)
+
+    let twitterMgr = twitterAccessManager ?? TwitterAccessManager(networkManager: theNetworkManager, persistenceManager: persistenceManager)
+    self.twitterAccessManager = twitterMgr
 
     let notificationMgr = notificationManager ?? NotificationManager(permissionManager: permissionManager, networkInteractor: theNetworkManager)
     let alertMgr = alertManager ?? AlertManager(notificationManager: notificationMgr)
@@ -267,7 +272,7 @@ class AppCoordinator: CoordinatorType {
       messageManager.setShouldShowGlobalMessaging(false)
     }
 
-    networkManager.uiTestArguments = uiTestArguments
+    twitterAccessManager.uiTestArguments = uiTestArguments
   }
 
   func startChildCoordinator(childCoordinator: ChildCoordinatorType) {

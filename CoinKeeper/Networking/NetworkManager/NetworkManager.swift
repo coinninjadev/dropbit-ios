@@ -38,7 +38,6 @@ NotificationNetworkInteractable {
   func start()
   func updateCachedMetadata() -> Promise<CheckInResponse>
   func handleUpdateCachedMetadataError(error: Error)
-  var uiTestArguments: [UITestArgument] { get set }
 }
 
 extension NetworkManagerType {
@@ -65,8 +64,6 @@ class NetworkManager: NetworkManagerType {
   var lastFeesCheck = Date(timeIntervalSince1970: 0)
 
   let logger = OSLog(subsystem: "com.coinninja.NetworkManager", category: "network_requests")
-
-  var uiTestArguments: [UITestArgument] = []
 
   init(persistenceManager: PersistenceManagerType,
        analyticsManager: AnalyticsManagerType = AnalyticsManager(),
