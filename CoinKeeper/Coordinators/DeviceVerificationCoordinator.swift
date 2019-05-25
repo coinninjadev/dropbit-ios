@@ -91,11 +91,11 @@ class DeviceVerificationCoordinator: ChildCoordinatorType {
   }
 
   private func startTwitterVerification() {
-    guard let delegate = coordinationDelegate else { return }
+    guard let delegate = coordinationDelegate, let presentingViewController = navigationController.topViewController() else { return }
     let context = delegate.persistenceManager.createBackgroundContext()
     context.perform {
       self.registerAndPersistWalletIfNecessary(delegate: delegate, in: context)
-        .then(in: context) { delegate.twitterAccessManager.authorizedTwitterCredentials() }
+        .then(in: context) { delegate.twitterAccessManager.authorizedTwitterCredentials(presentingViewController: presentingViewController) }
         .then(in: context) { self.addTwitterUserIdentity(credentials: $0, delegate: delegate, in: context) }
         .then(in: context) { body, creds -> Promise<UserResponse> in
           return delegate.networkManager.verifyUser(body: body, credentials: creds)

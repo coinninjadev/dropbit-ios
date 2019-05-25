@@ -8,15 +8,15 @@
 
 import CoreData
 import PromiseKit
-import Foundation
+import UIKit
 import OAuthSwift
 
 protocol TwitterAccessManagerType: AnyObject {
   func getCurrentTwitterUser() -> Promise<TwitterUser>
   func getCurrentTwitterUser(in context: NSManagedObjectContext) -> Promise<TwitterUser>
-  func authorizedTwitterCredentials() -> Promise<TwitterOAuthStorage>
-  func findTwitterUsers(using term: String) -> Promise<[TwitterUser]>
-  func defaultFollowingList() -> Promise<[TwitterUser]>
+  func authorizedTwitterCredentials(presentingViewController controller: UIViewController) -> Promise<TwitterOAuthStorage>
+  func findTwitterUsers(using term: String, fromViewController controller: UIViewController) -> Promise<[TwitterUser]>
+  func defaultFollowingList(fromViewController controller: UIViewController) -> Promise<[TwitterUser]>
 
   var uiTestArguments: [UITestArgument] { get set }
 }
@@ -58,18 +58,24 @@ class TwitterAccessManager: TwitterAccessManagerType {
     return getCurrentTwitterUser(in: persistenceManager.mainQueueContext())
   }
 
-  func authorizedTwitterCredentials() -> Promise<TwitterOAuthStorage> {
+  func authorizedTwitterCredentials(presentingViewController controller: UIViewController) -> Promise<TwitterOAuthStorage> {
     guard isNotUITesting else { return Promise.value(TwitterOAuthStorage.emptyInstance()) }
+    let handler = SafariURLHandler(viewController: controller, oauthSwift: networkManager.twitterOAuthManager)
+    networkManager.twitterOAuthManager.authorizeURLHandler = handler
     return authorize()
   }
 
-  func findTwitterUsers(using term: String) -> Promise<[TwitterUser]> {
+  func findTwitterUsers(using term: String, fromViewController controller: UIViewController) -> Promise<[TwitterUser]> {
     guard isNotUITesting else { return Promise.value([TwitterUser.emptyInstance()]) }
+    let handler = SafariURLHandler(viewController: controller, oauthSwift: networkManager.twitterOAuthManager)
+    networkManager.twitterOAuthManager.authorizeURLHandler = handler
     return authorize().then { _ in self.networkManager.findTwitterUsers(using: term) }
   }
 
-  func defaultFollowingList() -> Promise<[TwitterUser]> {
+  func defaultFollowingList(fromViewController controller: UIViewController) -> Promise<[TwitterUser]> {
     guard isNotUITesting else { return Promise.value([TwitterUser.emptyInstance()]) }
+    let handler = SafariURLHandler(viewController: controller, oauthSwift: networkManager.twitterOAuthManager)
+    networkManager.twitterOAuthManager.authorizeURLHandler = handler
     return authorize().then { _ in self.networkManager.defaultFollowingList() }
   }
 
