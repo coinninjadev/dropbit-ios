@@ -31,10 +31,16 @@ class TransactionHistorySummaryCell: UICollectionViewCell {
   }
 
   func load(with viewModel: TransactionHistorySummaryCellViewModel) {
-    if viewModel.transactionIsInvalidated {
-      incomingImage.image = UIImage(named: "invalidated30")
+    if viewModel.isTwitterContact, let avatar = viewModel.counterpartyAvatar {
+      incomingImage.image = avatar
+      let radius = incomingImage.frame.width / 2.0
+      incomingImage.applyCornerRadius(radius)
     } else {
-      incomingImage.image = viewModel.isIncoming ? UIImage(named: "incoming30") : UIImage(named: "outgoing30")
+      if viewModel.transactionIsInvalidated {
+        incomingImage.image = UIImage(named: "invalidated30")
+      } else {
+        incomingImage.image = viewModel.isIncoming ? UIImage(named: "incoming30") : UIImage(named: "outgoing30")
+      }
     }
 
     receiverLabel.text = viewModel.counterpartyDescription.isEmpty ? viewModel.receiverAddress : viewModel.counterpartyDescription
@@ -52,7 +58,7 @@ class TransactionHistorySummaryCell: UICollectionViewCell {
 
     primaryAmountLabel.text = labels.primary
     secondaryAmountLabel.text = labels.secondary
-    primaryAmountLabel.textColor = viewModel.isIncoming ? Theme.Color.darkBlueText.color : Theme.Color.errorRed.color
+    primaryAmountLabel.textColor = viewModel.isIncoming ? Theme.Color.darkBlueText.color : Theme.Color.red.color
 
     memoLabel.text = viewModel.memo
     memoLabel.isHidden = viewModel.memo.isEmpty

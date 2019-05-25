@@ -11,7 +11,7 @@ import UIKit
 class ChangeRemoveVerificationButton: UIButton {
   override func awakeFromNib() {
     super.awakeFromNib()
-    setTitleColor(Theme.Color.errorRed.color, for: .normal)
+    setTitleColor(Theme.Color.red.color, for: .normal)
     titleLabel?.font = Theme.Font.removeNumberError.font
   }
 }

@@ -12,7 +12,7 @@ class TransactionDetailWarningLabel: UILabel {
   override func awakeFromNib() {
     super.awakeFromNib()
     font = Theme.Font.transactionDetailWarning.font
-    textColor = Theme.Color.errorRed.color
+    textColor = Theme.Color.red.color
     isHidden = false
     numberOfLines = 0
     textAlignment = .center

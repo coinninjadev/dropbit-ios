@@ -39,7 +39,7 @@ class PrimaryActionButton: UIButton {
       setTitleColor(Theme.Color.lightGrayText.color, for: .normal)
       setTitleColor(Theme.Color.lightGrayText.color, for: .highlighted)
     case .error:
-      backgroundColor = Theme.Color.errorRed.color
+      backgroundColor = Theme.Color.red.color
       setTitleColor(.white, for: .normal)
       setTitleColor(Theme.Color.lightGrayText.color, for: .highlighted)
     case .darkBlue:
@@ -65,7 +65,7 @@ class PrimaryActionButton: UIButton {
       case .standard:
         mainColor = Theme.Color.primaryActionButton.color
       case .error:
-        mainColor = Theme.Color.errorRed.color
+        mainColor = Theme.Color.red.color
       case .green: mainColor = Theme.Color.appleGreen.color
       case .darkBlue: mainColor = Theme.Color.darkBlueButton.color
       case .orange: mainColor = Theme.Color.mango.color

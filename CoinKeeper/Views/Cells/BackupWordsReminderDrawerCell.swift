@@ -12,7 +12,7 @@ class BackupWordsReminderDrawerCell: UITableViewCell {
 
   @IBOutlet var backingView: UIView! {
     didSet {
-      backingView.backgroundColor = Theme.Color.errorRed.color
+      backingView.backgroundColor = Theme.Color.red.color
       backingView.applyCornerRadius(8)
     }
   }

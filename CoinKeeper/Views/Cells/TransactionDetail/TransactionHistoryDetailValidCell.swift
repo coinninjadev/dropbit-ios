@@ -72,7 +72,7 @@ class TransactionHistoryDetailValidCell: TransactionHistoryDetailBaseCell {
 
     switch action {
     case .cancelInvitation:
-      bottomButton.backgroundColor = Theme.Color.errorRed.color
+      bottomButton.backgroundColor = Theme.Color.red.color
     case .seeDetails:
       bottomButton.backgroundColor = Theme.Color.darkBlueButton.color
     }
