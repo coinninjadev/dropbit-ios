@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 import CNBitcoinKit
 import PhoneNumberKit
 
@@ -26,6 +27,7 @@ class TransactionHistorySummaryCellViewModel {
   var primaryCurrency: CurrencyCode
   var date: Date?
   var memo: String
+  var counterpartyAvatar: UIImage?
 
   private(set) var transaction: CKMTransaction?
 
@@ -58,6 +60,10 @@ class TransactionHistorySummaryCellViewModel {
     let sentToMyselfText = "Sent to myself"
 
     self.isIncoming = transaction.isIncoming
+    let possibleTwitterContact = transaction.twitterContact ?? transaction.invitation?.counterpartyTwitterContact
+    if let data = possibleTwitterContact?.profileImageData {
+      self.counterpartyAvatar = UIImage(data: data)
+    }
 
     if isIncoming {
       counterpartyDescription = counterpartyDesc

@@ -55,6 +55,7 @@ public class CKMTwitterContact: NSManagedObject {
     self.identityHash = contact.identityHash
     self.displayName = contact.displayName ?? ""
     self.displayScreenName = contact.displayIdentity.dropFirstCharacter(ifEquals: "@")
+    self.profileImageData = contact.twitterUser.profileImageData
     switch contact.kind {
     case .invite, .generic: self.verificationStatus = .notVerified
     case .registeredUser: self.verificationStatus = .verified

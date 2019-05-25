@@ -498,9 +498,17 @@ extension SendPaymentViewController: SelectedValidContactDelegate {
   }
 
   func update(withSelectedTwitterUser twitterUser: TwitterUser) {
-    let contact = TwitterContact(twitterUser: twitterUser)
-    setPaymentRecipient(.twitterContact(contact))
-    updateViewWithModel()
+    var contact = TwitterContact(twitterUser: twitterUser)
+    coordinationDelegate?.viewController(self, checkingVerificationStatusFor: twitterUser.idStr)
+      .done { (responses: [WalletAddressesQueryResponse]) in
+        contact.kind = (responses.isEmpty) ? .invite : .registeredUser
+        self.setPaymentRecipient(.twitterContact(contact))
+        self.updateViewWithModel()
+      }
+      .catch { error in
+        let logger = OSLog(subsystem: "com.coinninja.coinkeeper.sendpaymentviewcontroller", category: "verification")
+        os_log("failed to fetch verification status for %@. error: %@", log: logger, type: .error, twitterUser.idStr, error.localizedDescription)
+    }
   }
 }
 
