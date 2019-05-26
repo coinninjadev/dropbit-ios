@@ -41,6 +41,8 @@ class ConfirmPaymentViewControllerTests: XCTestCase {
     XCTAssertNotNil(sut.primaryCurrencyLabel, "primaryCurrencyLabel should be connected")
     XCTAssertNotNil(sut.secondaryCurrencyLabel, "secondaryCurrencyLabel should be connected")
     XCTAssertNotNil(sut.memoContainerView, "memoContainerView should be connected")
+    XCTAssertNotNil(sut.avatarBackgroundView, "avatarBackgroundView should be connected")
+    XCTAssertNotNil(sut.avatarImageView, "avatarImageView should be connected")
   }
 
   // MARK: buttons contain actions

@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 import CNBitcoinKit
 import PhoneNumberKit
 
@@ -26,6 +27,7 @@ class TransactionHistorySummaryCellViewModel {
   var primaryCurrency: CurrencyCode
   var date: Date?
   var memo: String
+  var counterpartyAvatar: UIImage?
 
   private(set) var transaction: CKMTransaction?
 
@@ -58,6 +60,10 @@ class TransactionHistorySummaryCellViewModel {
     let sentToMyselfText = "Sent to myself"
 
     self.isIncoming = transaction.isIncoming
+    let possibleTwitterContact = transaction.twitterContact ?? transaction.invitation?.counterpartyTwitterContact
+    if let data = possibleTwitterContact?.profileImageData {
+      self.counterpartyAvatar = UIImage(data: data)
+    }
 
     if isIncoming {
       counterpartyDescription = counterpartyDesc
@@ -118,7 +124,12 @@ class TransactionHistorySummaryCellViewModel {
 
   var isTwitterContact: Bool {
     guard let tx = transaction else { return false }
-    return tx.twitterContact != nil
+    if tx.twitterContact != nil {
+      return true
+    } else if let invitation = tx.invitation, invitation.counterpartyTwitterContact != nil {
+      return true
+    }
+    return false
   }
 
   /// overridden by detail cell model
@@ -159,7 +170,7 @@ class TransactionHistorySummaryCellViewModel {
   }
 
   var descriptionColor: UIColor {
-    guard !transactionIsInvalidated else { return Theme.Color.errorRed.color}
+    guard !transactionIsInvalidated else { return Theme.Color.red.color}
     if isConfirmed {
       return Theme.Color.grayText.color
     } else {

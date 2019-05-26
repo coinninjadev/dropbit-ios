@@ -30,8 +30,9 @@ extension AppCoordinator: BalanceContainerDelegate {
     guard let topVC = self.navigationController.topViewController() else { return }
 
     let context = self.persistenceManager.mainQueueContext()
+    let avatarData = CKMUser.find(in: context)?.avatar
     let publicURLInfo: UserPublicURLInfo? = self.persistenceManager.getUserPublicURLInfo(in: context)
-    let config = DropBitMeConfig(publicURLInfo: publicURLInfo, verifiedFirstTime: verifiedFirstTime)
+    let config = DropBitMeConfig(publicURLInfo: publicURLInfo, verifiedFirstTime: verifiedFirstTime, userAvatarData: avatarData)
 
     let dropBitMeVC = DropBitMeViewController.newInstance(config: config, delegate: self)
     topVC.present(dropBitMeVC, animated: true, completion: nil)
@@ -61,7 +62,7 @@ extension AppCoordinator: BalanceContainerDelegate {
         let image = UIImage(data: avatar) ?? defaultImage
         return Promise.value(image)
       } else if persistenceManager.keychainManager.oauthCredentials() != nil {
-        return networkManager.getCurrentTwitterUser()
+        return twitterAccessManager.getCurrentTwitterUser()
           .then { (user: TwitterUser) -> Promise<UIImage> in
             let image = user.profileImageData.flatMap { UIImage(data: $0) } ?? defaultImage
             return Promise.value(image)

@@ -29,7 +29,7 @@ struct Theme {
     case selectedCellBackground
     case lightGrayBackground, lightGrayText
     case extraLightGrayBackground
-    case errorRed
+    case red
     case verifyWordLightGray
     case settingsDarkGray, sendingToDarkGray
     case containerBackgroundGray
@@ -76,7 +76,7 @@ struct Theme {
            .selectedCellBackground: 					return UIColor(r: 224, g: 224, b: 224)
       case .lightGrayOutline,
            .lightGrayButtonBackground: 				return UIColor(r: 227, g: 227, b: 227)
-      case .errorRed: 												return UIColor(r: 231, g: 108, b: 108)
+      case .red: 												return UIColor(r: 231, g: 108, b: 108)
       case .warning: 													return UIColor(r: 235, g: 153, b: 57)
       case .lightGrayBackground,
            .lightGrayText: 										return UIColor(r: 244, g: 244, b: 244)

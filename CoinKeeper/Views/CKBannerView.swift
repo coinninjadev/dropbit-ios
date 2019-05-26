@@ -13,7 +13,7 @@ enum CKBannerViewKind {
 
   var backgroundColor: UIColor {
     switch self {
-    case .error: return Theme.Color.errorRed.color
+    case .error: return Theme.Color.red.color
     case .warn: return Theme.Color.bannerWarn.color
     case .success: return Theme.Color.bannerSuccess.color
     case .info: return Theme.Color.darkBlueButton.color

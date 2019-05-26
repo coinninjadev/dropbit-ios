@@ -34,8 +34,8 @@ protocol ContactsViewControllerDelegate: ViewControllerDismissable, URLOpener {
 
   func showAlertForInvalidContactOrPhoneNumber(contactName: String?, displayNumber: String)
   func showAlertForNoTwitterAuthorization()
-  func searchForTwitterUsers(with searchTerm: String) -> Promise<[TwitterUser]>
-  func defaultTwitterFriends() -> Promise<[TwitterUser]>
+  func viewController(_ viewController: UIViewController, searchForTwitterUsersWith searchTerm: String) -> Promise<[TwitterUser]>
+  func viewControllerDidRequestDefaultTwitterFriends(_ viewController: UIViewController) -> Promise<[TwitterUser]>
   func viewController(_ viewController: UIViewController,
                       didSelectTwitterUser user: TwitterUser,
                       validSelectionDelegate: SelectedValidContactDelegate)
@@ -166,7 +166,7 @@ class ContactsViewController: PresentableViewController, StoryboardInitializable
       tableView.dataSource = self.twitterUserDataSource
       if twitterUserDataSource.shouldReloadFriends {
         activityIndiciator.startAnimating()
-        coordinationDelegate?.defaultTwitterFriends()
+        coordinationDelegate?.viewControllerDidRequestDefaultTwitterFriends(self)
           .done(on: .main) { self.twitterUserDataSource.updateDefaultFriends($0) }
           .catch { error in
             self.coordinationDelegate?.showAlertForNoTwitterAuthorization()
@@ -278,7 +278,7 @@ extension ContactsViewController: UISearchBarDelegate {
       return
     }
     activityIndiciator.startAnimating()
-    _ = coordinationDelegate?.searchForTwitterUsers(with: term)
+    _ = coordinationDelegate?.viewController(self, searchForTwitterUsersWith: term)
       .get(on: .main) { _ in self.activityIndiciator.stopAnimating() }
       .done { self.twitterUserDataSource.update(users: $0) }
   }
@@ -288,9 +288,9 @@ extension ContactsViewController: UISearchBarDelegate {
     switch mode {
     case .contacts: break
     case .twitter:
-      guard let delegate = coordinationDelegate, let text = searchBar.text else { return }
+      guard let delegate = coordinationDelegate, let term = searchBar.text else { return }
       activityIndiciator.startAnimating()
-      _ = delegate.searchForTwitterUsers(with: text)
+      _ = delegate.viewController(self, searchForTwitterUsersWith: term)
         .get(on: .main) { _ in self.activityIndiciator.stopAnimating() }
         .done { self.twitterUserDataSource.update(users: $0) }
     }

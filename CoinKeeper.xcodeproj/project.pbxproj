@@ -300,6 +300,7 @@
 		3BB01BC3220A56F6006B4D25 /* AppCoordinator+NoConnectionViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BB01BC2220A56F6006B4D25 /* AppCoordinator+NoConnectionViewControllerDelegate.swift */; };
 		3BB05AC1209CF407000297E1 /* Typealiases.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BB05AC0209CF407000297E1 /* Typealiases.swift */; };
 		3BB854E020220D6100190874 /* CNBitcoinKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3BB854DF20220D6100190874 /* CNBitcoinKit.framework */; };
+		3BBB3CF72298658C00C417EA /* TwitterAccessManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BBB3CF62298658C00C417EA /* TwitterAccessManager.swift */; };
 		3BBEE0C1208A5DA500A7DF9F /* CKMDerivativePath+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BBEE0B7208A5DA500A7DF9F /* CKMDerivativePath+CoreDataClass.swift */; };
 		3BBEE0C2208A5DA500A7DF9F /* CKMDerivativePath+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BBEE0B8208A5DA500A7DF9F /* CKMDerivativePath+CoreDataProperties.swift */; };
 		3BC23EF220BDCA5100877BB6 /* TransactionDataError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC23EF120BDCA5100877BB6 /* TransactionDataError.swift */; };
@@ -1130,6 +1131,7 @@
 		3BB01BC2220A56F6006B4D25 /* AppCoordinator+NoConnectionViewControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppCoordinator+NoConnectionViewControllerDelegate.swift"; sourceTree = "<group>"; };
 		3BB05AC0209CF407000297E1 /* Typealiases.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Typealiases.swift; sourceTree = "<group>"; };
 		3BB854DF20220D6100190874 /* CNBitcoinKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CNBitcoinKit.framework; path = Carthage/Build/iOS/CNBitcoinKit.framework; sourceTree = "<group>"; };
+		3BBB3CF62298658C00C417EA /* TwitterAccessManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwitterAccessManager.swift; sourceTree = "<group>"; };
 		3BBEE0B7208A5DA500A7DF9F /* CKMDerivativePath+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CKMDerivativePath+CoreDataClass.swift"; sourceTree = "<group>"; };
 		3BBEE0B8208A5DA500A7DF9F /* CKMDerivativePath+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CKMDerivativePath+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		3BC23EF120BDCA5100877BB6 /* TransactionDataError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDataError.swift; sourceTree = "<group>"; };
@@ -2067,6 +2069,7 @@
 				6B8250862F23128ECF665817 /* TwitterOAuthError.swift */,
 				6B82518D286A7B5A1BCA2F3D /* TwitterEndpoints.swift */,
 				6B825E5230DBCE1D556CE554 /* TwitterUser.swift */,
+				3BBB3CF62298658C00C417EA /* TwitterAccessManager.swift */,
 			);
 			path = Twitter;
 			sourceTree = "<group>";
@@ -3935,6 +3938,7 @@
 				B584766C20E1411900F5FE60 /* TransactionHistoryPrimaryAmountLabel.swift in Sources */,
 				B5B3E4C72072AE2400222FF4 /* NSDecimalNumber+SignificantDecimals.swift in Sources */,
 				3B72A289210648CF00E94171 /* PendingInvitationError.swift in Sources */,
+				3BBB3CF72298658C00C417EA /* TwitterAccessManager.swift in Sources */,
 				B552EDEC211E33D000332BB5 /* CoinNinjaUrlFactory.swift in Sources */,
 				B51F8236207BAD7500692F5B /* BalanceContainer.swift in Sources */,
 				3B474167217FB853004DA223 /* GeneralTopicSubscriptionBody.swift in Sources */,

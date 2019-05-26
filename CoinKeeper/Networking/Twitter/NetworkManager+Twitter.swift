@@ -24,11 +24,12 @@ extension TwitterUser: CustomDebugStringConvertible {
 }
 
 protocol TwitterRequestable: AnyObject {
-  func getCurrentTwitterUser() -> Promise<TwitterUser>
-  func authorizedTwitterCredentials() -> Promise<TwitterOAuthStorage>
+  func authorizeTwitterUser() -> Promise<TwitterOAuthStorage>
   func findTwitterUsers(using term: String) -> Promise<[TwitterUser]>
   func defaultFollowingList() -> Promise<[TwitterUser]>
-  func selected(user: TwitterUser) -> Promise<Void>
+  func retrieveCurrentUser(with userId: String) -> Promise<TwitterUser>
+
+  var twitterOAuthManager: OAuth1Swift { get }
 }
 
 extension TwitterOAuth {
@@ -39,51 +40,13 @@ extension TwitterOAuth {
 
 extension NetworkManager: TwitterRequestable {
 
-  /// Any internal- or public-level methods should return dummy values if UI testing
-  var isNotUITesting: Bool {
-    let isUITesting = uiTestArguments.contains(.skipTwitterAuthentication)
-    return !isUITesting
-  }
-
-  func getCurrentTwitterUser() -> Promise<TwitterUser> {
-    guard isNotUITesting else { return Promise.value(TwitterUser.emptyInstance()) }
-    return authorize()
-      .then { self.retrieveCurrentUser(with: $0.twitterUserId) }
-      .get({ (twitterUser: TwitterUser) in
-        let context = self.persistenceManager.createBackgroundContext()
-        context.performAndWait {
-          let user = CKMUser.find(in: context)
-          user?.avatar = twitterUser.profileImageData
-          try? context.save()
-        }
-      })
-  }
-
-  func authorizedTwitterCredentials() -> Promise<TwitterOAuthStorage> {
-    guard isNotUITesting else { return Promise.value(TwitterOAuthStorage.emptyInstance()) }
-    return authorize()
-  }
-
   func findTwitterUsers(using term: String) -> Promise<[TwitterUser]> {
-    guard isNotUITesting else { return Promise.value([TwitterUser.emptyInstance()]) }
-    return authorize()
-      .then { _ in self.performTwitterSearch(using: term) }
+    return performTwitterSearch(using: term)
       .then { self.usersWithImages(for: $0) }
   }
 
   func defaultFollowingList() -> Promise<[TwitterUser]> {
-    guard isNotUITesting else { return Promise.value([TwitterUser.emptyInstance()]) }
-    return authorize()
-      .then { _ in
-        self.fetchDefaultFriends()
-      }
-      .then {
-        self.usersWithImages(for: $0)
-    }
-  }
-
-  func selected(user: TwitterUser) -> Promise<Void> {
-    return Promise { _ in }
+    return fetchDefaultFriends().then { self.usersWithImages(for: $0) }
   }
 
   // MARK: private
@@ -152,40 +115,32 @@ extension NetworkManager: TwitterRequestable {
     }
   }
 
-  private func authorize() -> Promise<TwitterOAuthStorage> {
+  func authorizeTwitterUser() -> Promise<TwitterOAuthStorage> {
     return Promise { seal in
-      if let credentials = persistenceManager.keychainManager.oauthCredentials() {
-        let newCredential = OAuthSwiftCredential(consumerKey: twitterOAuth.consumerKey, consumerSecret: twitterOAuth.consumerSecret)
-        newCredential.oauthToken = credentials.twitterOAuthToken
-        newCredential.oauthTokenSecret = credentials.twitterOAuthTokenSecret
-        twitterOAuthManager.client = OAuthSwiftClient(credential: newCredential)
-        seal.fulfill(credentials)
-      } else {
-        twitterOAuthManager.authorize(
-          withCallbackURL: twitterOAuth.callbackURL,
-          success: { (credential: OAuthSwiftCredential, _: OAuthSwiftResponse?, params: OAuthSwift.Parameters) in
-            guard let userId = params["user_id"] as? String, let screenName = params["screen_name"] as? String else {
-              seal.reject(TwitterOAuthError.noUserFound)
-              return
-            }
-            let credentials = TwitterOAuthStorage(
-              twitterOAuthToken: credential.oauthToken,
-              twitterOAuthTokenSecret: credential.oauthTokenSecret,
-              twitterUserId: userId,
-              twitterScreenName: screenName)
-
-            seal.fulfill(credentials)
-          },
-          failure: { (error: OAuthSwiftError) in
-            print("failed. error: \(error.localizedDescription)")
-            seal.reject(error)
+      twitterOAuthManager.authorize(
+        withCallbackURL: twitterOAuth.callbackURL,
+        success: { (credential: OAuthSwiftCredential, _: OAuthSwiftResponse?, params: OAuthSwift.Parameters) in
+          guard let userId = params["user_id"] as? String, let screenName = params["screen_name"] as? String else {
+            seal.reject(TwitterOAuthError.noUserFound)
+            return
           }
-        )
+          let credentials = TwitterOAuthStorage(
+            twitterOAuthToken: credential.oauthToken,
+            twitterOAuthTokenSecret: credential.oauthTokenSecret,
+            twitterUserId: userId,
+            twitterScreenName: screenName)
+
+          seal.fulfill(credentials)
+      },
+        failure: { (error: OAuthSwiftError) in
+          print("failed. error: \(error.localizedDescription)")
+          seal.reject(error)
       }
+      )
     }
   }
 
-  private func retrieveCurrentUser(with userId: String) -> Promise<TwitterUser> {
+  func retrieveCurrentUser(with userId: String) -> Promise<TwitterUser> {
     return Promise { seal in
       twitterOAuthManager.client.get(
         TwitterEndpoints.getUser.urlString,

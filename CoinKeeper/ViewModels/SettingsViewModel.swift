@@ -74,7 +74,7 @@ enum SettingsCellType {
           return NSMutableAttributedString.regular("Recovery Words", size: fontSize, color: textColor)
         } else {
           let mutableString = NSMutableAttributedString.regular("Recovery Words ", size: fontSize, color: textColor)
-          mutableString.appendRegular("(Not Backed Up)", size: fontSize, color: Theme.Color.errorRed.color)
+          mutableString.appendRegular("(Not Backed Up)", size: fontSize, color: Theme.Color.red.color)
           return mutableString
         }
       default:

@@ -264,7 +264,7 @@ class PersistenceManager: PersistenceManagerType {
     switch type {
     case .twitter:
       guard let creds = keychainManager.oauthCredentials() else { return nil }
-      return UserIdentityBody(twitterCredentials: creds)
+      return UserIdentityBody.sharedPayloadBody(twitterCredentials: creds)
     case .phone:
       guard let number = verifiedPhoneNumber() else { return nil }
       return UserIdentityBody(phoneNumber: number)

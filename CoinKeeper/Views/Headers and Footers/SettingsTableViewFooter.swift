@@ -24,7 +24,7 @@ class SettingsTableViewFooter: UITableViewHeaderFooterView {
 
     _backgroundView.backgroundColor = Theme.Color.lightGrayBackground.color
     deleteWalletButton.titleLabel?.font = Theme.Font.deleteWalletTitle.font
-    deleteWalletButton.setTitleColor(Theme.Color.errorRed.color, for: .normal)
+    deleteWalletButton.setTitleColor(Theme.Color.red.color, for: .normal)
   }
 
   func load(with viewModel: SettingsHeaderFooterViewModel) {
