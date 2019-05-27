@@ -195,7 +195,9 @@ extension AppCoordinator {
     let drawerController = MMDrawerController(center: centerViewController,
                                               leftDrawerViewController: leftViewController)
     drawerController?.setMaximumLeftDrawerWidth(drawerWidth, animated: false, completion: nil)
-    drawerController?.closeDrawerGestureModeMask = [.tapCenterView, .tapNavigationBar]
+    drawerController?.closeDrawerGestureModeMask = [.tapCenterView, .tapNavigationBar, .panningCenterView]
+    drawerController?.openDrawerGestureModeMask = [.bezelPanningCenterView]
+    drawerController?.shouldStretchDrawer = false
     drawerController?.showsShadow = false
     return drawerController!
   }
