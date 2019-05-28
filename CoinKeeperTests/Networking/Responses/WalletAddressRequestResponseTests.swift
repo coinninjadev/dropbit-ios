@@ -233,6 +233,7 @@ extension WalletAddressRequestResponse {
                                         metadata: metadata,
                                         identityHash: self.identityHash,
                                         status: self.status,
+                                        deliveryId: nil,
                                         walletId: self.walletId)
   }
 
@@ -246,6 +247,7 @@ extension WalletAddressRequestResponse {
                                         metadata: self.metadata,
                                         identityHash: "",
                                         status: "",
+                                        deliveryId: "",
                                         walletId: "")
   }
 
@@ -262,6 +264,7 @@ extension WalletAddressRequestResponse: EmptyStringCopyable {
                                         metadata: self.metadata,
                                         identityHash: self.identityHash,
                                         status: self.status,
+                                        deliveryId: self.deliveryId,
                                         walletId: self.walletId)
   }
 }

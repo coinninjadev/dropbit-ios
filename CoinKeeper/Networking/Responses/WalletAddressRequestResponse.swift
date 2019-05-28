@@ -138,7 +138,10 @@ public struct WalletAddressRequestResponse: ResponseDecodable, CustomStringConve
   var identityHash: String?
   var status: String?
 
-  // Sent-only property
+  /// ID of the tweet or Twilio SMS sent by the server
+  var deliveryId: String?
+
+  /// Sent-only property
   var walletId: String?
 
   public var description: String {
@@ -167,7 +170,7 @@ public struct WalletAddressRequestResponse: ResponseDecodable, CustomStringConve
   }
 
   static var optionalStringKeys: [WritableKeyPath<WalletAddressRequestResponse, String?>] {
-    return [\.address, \.addressPubkey, \.txid, \.identityHash, \.status, \.walletId]
+    return [\.address, \.addressPubkey, \.txid, \.identityHash, \.status, \.deliveryId, \.walletId]
   }
 
 }
@@ -188,6 +191,7 @@ extension WalletAddressRequestResponse {
                                         metadata: self.metadata,
                                         identityHash: self.identityHash,
                                         status: self.status,
+                                        deliveryId: self.deliveryId,
                                         walletId: self.walletId)
   }
 

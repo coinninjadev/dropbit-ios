@@ -11,6 +11,7 @@ import Foundation
 public struct WalletAddressRequest: Encodable {
   let status: String
   let txid: String?
+  let suppress: Bool?
 }
 
 extension WalletAddressRequest {
@@ -23,8 +24,9 @@ extension WalletAddressRequest {
     """.data(using: .utf8)!
   }
 
-  init(walletAddressRequestStatus: WalletAddressRequestStatus, txid: String? = nil) {
+  init(walletAddressRequestStatus: WalletAddressRequestStatus, txid: String? = nil, suppress: Bool? = nil) {
     self.status = walletAddressRequestStatus.rawValue
     self.txid = txid
+    self.suppress = suppress
   }
 }
