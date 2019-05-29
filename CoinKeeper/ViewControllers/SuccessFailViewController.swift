@@ -8,28 +8,21 @@
 
 import UIKit
 
-protocol SuccessFailViewControllerDelegate: ViewControllerDismissable {
+protocol SuccessFailViewControllerDelegate: ViewControllerDismissable, URLOpener {
   func viewControllerDidRetry(_ viewController: SuccessFailViewController)
   func viewController(_ viewController: SuccessFailViewController, success: Bool, completion: (() -> Void)?)
 }
 
 class SuccessFailViewController: BaseViewController, StoryboardInitializable {
 
-  enum Mode {
-    case pending
-    case success
-    case failure
+  var action: (() -> Void)?
+
+  func setMode(_ mode: SuccessFailView.Mode) {
+    self.viewModel.mode = mode
+    reloadViewWithModel()
   }
 
-  var retryCompletion: (() -> Void)?
-
-  var mode: Mode = .pending {
-    didSet {
-      setupModeStyling()
-    }
-  }
-
-  var viewModel: SuccessFailViewModel = SuccessFailViewModel()
+  var viewModel: SuccessFailViewModel = SuccessFailViewModel(mode: .pending)
 
   var coordinationDelegate: SuccessFailViewControllerDelegate? {
     return generalCoordinationDelegate as? SuccessFailViewControllerDelegate
@@ -51,17 +44,24 @@ class SuccessFailViewController: BaseViewController, StoryboardInitializable {
       subtitleLabel.adjustsFontSizeToFitWidth = true
     }
   }
+
+  @IBOutlet var urlButton: UIButton!
   @IBOutlet var actionButton: PrimaryActionButton!
 
+  @IBAction func urlButtonWasTouched(_ sender: Any) {
+    guard let url = viewModel.url else { return }
+    coordinationDelegate?.openURLExternally(url, completionHandler: nil)
+  }
+
   @IBAction func actionButtonWasTouched() {
-    switch mode {
+    switch viewModel.mode {
     case .success:
       coordinationDelegate?.viewController(self, success: true, completion: nil)
     case .failure:
-      if let retryRequestCompletion = retryCompletion {
+      if let retryAction = action {
         coordinationDelegate?.viewControllerDidRetry(self)
-        mode = .pending
-        retryRequestCompletion()
+        self.setMode(.pending)
+        retryAction()
       }
     default:
       break
@@ -70,36 +70,6 @@ class SuccessFailViewController: BaseViewController, StoryboardInitializable {
 
   @IBAction func closeButtonWasTouched() {
     coordinationDelegate?.viewControllerDidSelectClose(self)
-  }
-
-  private func setupModeStyling() {
-    DispatchQueue.main.async {
-      switch self.mode {
-      case .pending:
-        self.actionButton?.alpha = 0.0
-        self.titleLabel?.alpha = 0.0
-        self.successFailView?.mode = .pending
-      case .success:
-        self.closeButton?.alpha = 0.0
-        self.actionButton?.alpha = 1.0
-        self.titleLabel?.alpha = 1.0
-        self.titleLabel?.text = self.viewModel.successTitle
-        self.subtitleLabel?.text = self.viewModel.successSubtitle
-        self.subtitleLabel?.textColor = Theme.Color.grayText.color
-        self.actionButton?.style = .standard
-        self.actionButton?.setTitle(self.viewModel.successButtonTitle, for: .normal)
-        self.successFailView?.mode = .success
-      case .failure:
-        self.actionButton?.alpha = 1.0
-        self.titleLabel?.alpha = 1.0
-        self.titleLabel?.text = self.viewModel.failTitle
-        self.subtitleLabel?.text = self.viewModel.failSubtitle
-        self.subtitleLabel?.textColor = Theme.Color.red.color
-        self.actionButton?.style = .error
-        self.actionButton?.setTitle(self.viewModel.failButtonTitle, for: .normal)
-        self.successFailView?.mode = .failure
-      }
-    }
   }
 
   override func accessibleViewsAndIdentifiers() -> [AccessibleViewElement] {
@@ -117,14 +87,37 @@ class SuccessFailViewController: BaseViewController, StoryboardInitializable {
 
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
-    setupModeStyling()
+    reloadViewWithModel()
+  }
 
-    switch viewModel.flow {
-    case .payment:
-      closeButton?.alpha = 1.0
-    case .restoreWallet:
-      closeButton?.alpha = 0.0
+  func reloadViewWithModel() {
+    guard viewIfLoaded != nil else { return }
+
+    DispatchQueue.main.async {
+      self.configureView(with: self.viewModel)
     }
+  }
+
+  private func configureView(with vm: SuccessFailViewModel) {
+    closeButton.alpha = alpha(for: vm.shouldShowCloseButton)
+    closeButton.isUserInteractionEnabled = vm.shouldShowCloseButton
+
+    titleLabel.text = vm.title
+    successFailView.mode = vm.mode
+
+    subtitleLabel.text = vm.subtitle
+    subtitleLabel.textColor = Theme.Color.grayText.color
+    subtitleLabel.isHidden = !vm.shouldShowSubtitle
+    urlButton.isHidden = !vm.shouldShowURLButton
+
+    actionButton.style = vm.primaryButtonStyle
+    actionButton.setTitle(vm.primaryButtonTitle, for: .normal)
+    actionButton.alpha = alpha(for: vm.shouldShowPrimaryButton)
+    actionButton.isUserInteractionEnabled = vm.shouldShowPrimaryButton
+  }
+
+  private func alpha(for shouldShow: Bool) -> CGFloat {
+    return shouldShow ? 1.0 : 0.0
   }
 
 }

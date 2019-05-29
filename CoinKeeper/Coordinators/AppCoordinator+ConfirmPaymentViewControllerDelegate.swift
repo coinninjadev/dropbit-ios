@@ -126,7 +126,7 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate, CurrencyFormatta
         os_log("failed to save context in %@.\n%@", log: logger, type: .error, #function, error.localizedDescription)
       }
     }
-    successFailViewController.retryCompletion = { [weak self] in
+    successFailViewController.action = { [weak self] in
       guard let strongSelf = self else { return }
 
       strongSelf.networkManager.createAddressRequest(body: inviteBody)
@@ -149,7 +149,7 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate, CurrencyFormatta
     }
 
     self.navigationController.topViewController()?.present(successFailViewController, animated: false) {
-      successFailViewController.retryCompletion?()
+      successFailViewController.action?()
     }
   }
 
@@ -162,7 +162,7 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate, CurrencyFormatta
       self.acknowledgeSuccessfulInvite(outgoingInvitationDTO: invitationDTO, response: response, in: context)
       do {
         try context.save()
-        self.set(mode: .success, for: successFailVC)
+        successFailVC.setMode(.success)
 
         if case let .twitter(twitterContact) = invitationDTO.contact.dropBitType {
           DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
@@ -177,7 +177,7 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate, CurrencyFormatta
 
       } catch {
         os_log("failed to save context in %@.\n%@", log: logger, type: .error, #function, error.localizedDescription)
-        self.set(mode: .failure, for: successFailVC)
+        successFailVC.setMode(.failure)
         self.handleFailureInvite(error: error)
       }
     }
@@ -206,7 +206,7 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate, CurrencyFormatta
       // is that the SharedPayloadDTO is never persisted or sent, because we don't create CKMTransaction dependency
       // until we have acknowledgement from the server that the address request was successfully posted.
       self.handleFailureInvite(error: error)
-      self.set(mode: .failure, for: successFailVC)
+      successFailVC.setMode(.failure)
     }
   }
 
@@ -251,12 +251,6 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate, CurrencyFormatta
                                            image: #imageLiteral(resourceName: "roundedAppIcon"), style: .standard, action: requestConfiguration)
     let topVC = self.navigationController.topViewController()
     topVC?.present(alert, animated: true, completion: nil)
-  }
-
-  private func set(mode: SuccessFailViewController.Mode, for viewController: SuccessFailViewController) {
-    DispatchQueue.main.async {
-      viewController.mode = mode
-    }
   }
 
   private func handleFailureInvite(error: Error) {
@@ -308,7 +302,7 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate, CurrencyFormatta
     let successFailViewController = SuccessFailViewController.makeFromStoryboard()
     successFailViewController.modalPresentationStyle = .overFullScreen
     assignCoordinationDelegate(to: successFailViewController)
-    successFailViewController.retryCompletion = { [weak self] in
+    successFailViewController.action = { [weak self] in
       guard let strongSelf = self else { return }
 
       strongSelf.networkManager.updateCachedMetadata()
@@ -358,7 +352,7 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate, CurrencyFormatta
           return Promise.value(())
         }
         .done(on: .main) {
-          successFailViewController.mode = .success
+          successFailViewController.setMode(.success)
 
           strongSelf.showShareTransactionIfAppropriate(dropBitType: .none)
 
@@ -386,14 +380,14 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate, CurrencyFormatta
 
           } else {
             strongSelf.handleFailure(error: error, action: {
-              DispatchQueue.main.async { successFailViewController.mode = .failure }
+              successFailViewController.setMode(.failure)
             })
           }
       }
     }
 
     self.navigationController.topViewController()?.present(successFailViewController, animated: false) {
-      successFailViewController.retryCompletion?()
+      successFailViewController.action?()
     }
   }
 

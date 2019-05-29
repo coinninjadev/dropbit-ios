@@ -7,62 +7,100 @@
 //
 
 import Foundation
+import UIKit
 
-struct SuccessFailViewModel {
-  enum Flow {
-    case payment
-    case restoreWallet
+/// Provides default values appropriate for most success/fail scenarios.
+/// Create a subclass if customization is needed.
+class SuccessFailViewModel {
+  var mode: SuccessFailView.Mode
+  var url: URL?
+  var shouldShowCloseButton: Bool = true
+
+  required init(mode: SuccessFailView.Mode) {
+    self.mode = mode
   }
 
-  var flow: Flow = .payment
-
-  var successTitle: String {
-    switch flow {
-    case .payment:
-      return "SUCCESS"
-    case .restoreWallet:
-      return "WALLET RECOVERED"
+  var title: String? {
+    switch mode {
+    case .pending:  return nil
+    case .success:  return "SUCCESS"
+    case .failure:  return "FAILED"
     }
   }
 
-  var successButtonTitle: String {
-    switch flow {
-    case .payment:
-      return "OK"
-    case .restoreWallet:
-      return "GO TO MY WALLET"
+  var subtitle: String? {
+    return nil
+  }
+
+  var subtitleTextColor: UIColor {
+    switch mode {
+    case .pending, .success:  return Theme.Color.grayText.color
+    case .failure:            return Theme.Color.errorRed.color
     }
   }
 
-  var successSubtitle: String {
-    switch flow {
-    case .payment:
-      return ""
-    case .restoreWallet:
-      return "Your wallet is being imported"
+  var primaryButtonTitle: String? {
+    switch mode {
+    case .pending:    return nil
+    case .success:    return "OK"
+    case .failure:    return "TRY AGAIN"
     }
   }
 
-  var failTitle: String {
-    switch flow {
-    case .payment, .restoreWallet:
-      return "FAILED"
+  var primaryButtonStyle: PrimaryActionButton.Style {
+    switch mode {
+    case .pending, .success:  return .standard
+    case .failure:            return .error
     }
   }
 
-  var failSubtitle: String {
-    switch flow {
-    case .payment:
-      return ""
-    case .restoreWallet:
-      return "Failed to import your wallet. \nPlease try again"
+  var shouldShowTitle: Bool {
+    return title != nil
+  }
+
+  var shouldShowSubtitle: Bool {
+    return subtitle != nil
+  }
+
+  var shouldShowURLButton: Bool {
+    return url != nil
+  }
+
+  var shouldShowPrimaryButton: Bool {
+    return primaryButtonTitle != nil
+  }
+
+}
+
+///Subclass for flow identification
+class PaymentSuccessFailViewModel: SuccessFailViewModel { }
+
+class RestoreWalletSuccessFailViewModel: SuccessFailViewModel {
+
+  required init(mode: SuccessFailView.Mode) {
+    super.init(mode: mode)
+  }
+
+  override var title: String? {
+    switch mode {
+    case .success:  return "WALLET RECOVERED"
+    default:        return super.title
     }
   }
 
-  var failButtonTitle: String {
-    switch flow {
-    case .payment, .restoreWallet:
-      return "TRY AGAIN"
+  override var subtitle: String? {
+    switch mode {
+    case .pending:  return super.subtitle
+    case .success:  return "Your wallet is being imported"
+    case .failure:  return "Failed to import your wallet. \nPlease try again"
     }
   }
+
+  override var primaryButtonTitle: String? {
+    switch mode {
+    case .success:  return "GO TO MY WALLET"
+    default:        return super.primaryButtonTitle
+    }
+  }
+
 }
