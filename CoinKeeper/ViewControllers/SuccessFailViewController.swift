@@ -15,7 +15,17 @@ protocol SuccessFailViewControllerDelegate: ViewControllerDismissable, URLOpener
 
 class SuccessFailViewController: BaseViewController, StoryboardInitializable {
 
+  var viewModel: SuccessFailViewModel = SuccessFailViewModel(mode: .pending)
   var action: (() -> Void)?
+
+  static func newInstance(viewModel: SuccessFailViewModel,
+                          delegate: SuccessFailViewControllerDelegate) -> SuccessFailViewController {
+    let vc = SuccessFailViewController.makeFromStoryboard()
+    vc.viewModel = viewModel
+    vc.generalCoordinationDelegate = delegate
+    vc.modalPresentationStyle = .overFullScreen
+    return vc
+  }
 
   func setMode(_ mode: SuccessFailView.Mode) {
     self.viewModel.mode = mode
@@ -26,8 +36,6 @@ class SuccessFailViewController: BaseViewController, StoryboardInitializable {
     self.viewModel.url = url
     reloadViewWithModel()
   }
-
-  var viewModel: SuccessFailViewModel = SuccessFailViewModel(mode: .pending)
 
   var coordinationDelegate: SuccessFailViewControllerDelegate? {
     return generalCoordinationDelegate as? SuccessFailViewControllerDelegate
@@ -50,7 +58,7 @@ class SuccessFailViewController: BaseViewController, StoryboardInitializable {
     }
   }
 
-  @IBOutlet var urlButton: UIButton!
+  @IBOutlet var urlButton: PrimaryActionButton!
   @IBOutlet var actionButton: PrimaryActionButton!
 
   @IBAction func urlButtonWasTouched(_ sender: Any) {
@@ -113,6 +121,8 @@ class SuccessFailViewController: BaseViewController, StoryboardInitializable {
     subtitleLabel.text = vm.subtitle
     subtitleLabel.textColor = Theme.Color.grayText.color
     subtitleLabel.isHidden = !vm.shouldShowSubtitle
+
+    urlButton.style = .darkBlue
     urlButton.isHidden = !vm.shouldShowURLButton
     urlButton.setTitle(vm.urlButtonTitle, for: .normal)
     urlButton.setTitleColor(Theme.Color.primaryActionButton.color, for: .normal)

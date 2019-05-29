@@ -56,10 +56,11 @@ class SuccessFailViewModel {
 
   /// Returns a string without the URL scheme
   var urlButtonTitle: String? {
-    guard let url = url, let scheme = url.scheme else { return nil }
-    let substringToTrim = scheme + "://"
-    let trimmedString = String(url.absoluteString.dropFirst(substringToTrim.count))
-    return trimmedString.uppercased()
+    if url == nil {
+      return nil
+    } else {
+      return "VIEW TWEET"
+    }
   }
 
   var shouldShowTitle: Bool {

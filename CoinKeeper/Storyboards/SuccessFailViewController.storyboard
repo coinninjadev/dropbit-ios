@@ -52,8 +52,8 @@
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KAq-x7-Z9m">
-                                        <rect key="frame" x="148.5" y="140" width="46" height="50"/>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KAq-x7-Z9m" customClass="PrimaryActionButton" customModule="DropBit" customModuleProvider="target">
+                                        <rect key="frame" x="25" y="140" width="293" height="50"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="50" id="fSv-Wx-Xr4"/>
                                         </constraints>
@@ -81,8 +81,10 @@
                             <constraint firstItem="v0v-YA-VV3" firstAttribute="trailing" secondItem="TcY-dE-XeF" secondAttribute="trailing" constant="41" id="B1Q-A4-ehO"/>
                             <constraint firstItem="v0v-YA-VV3" firstAttribute="bottom" secondItem="TcY-dE-XeF" secondAttribute="bottom" constant="29" id="BUq-IY-Igv"/>
                             <constraint firstItem="McW-pv-Feo" firstAttribute="bottom" secondItem="TIc-PE-BH9" secondAttribute="top" constant="8" id="DcU-oG-rbf"/>
+                            <constraint firstItem="KAq-x7-Z9m" firstAttribute="leading" secondItem="TcY-dE-XeF" secondAttribute="leading" id="DdI-jv-yoB"/>
                             <constraint firstItem="TcY-dE-XeF" firstAttribute="leading" secondItem="v0v-YA-VV3" secondAttribute="leading" constant="41" id="Kas-w4-S89"/>
                             <constraint firstItem="OQm-mR-5Li" firstAttribute="top" secondItem="v0v-YA-VV3" secondAttribute="top" constant="19" id="U6V-q3-Pdh"/>
+                            <constraint firstItem="KAq-x7-Z9m" firstAttribute="trailing" secondItem="TcY-dE-XeF" secondAttribute="trailing" id="aCp-o9-Xc0"/>
                             <constraint firstItem="TcY-dE-XeF" firstAttribute="top" secondItem="TIc-PE-BH9" secondAttribute="bottom" constant="8" id="fch-Sx-v2U"/>
                             <constraint firstItem="TIc-PE-BH9" firstAttribute="leading" secondItem="v0v-YA-VV3" secondAttribute="leading" constant="16" id="fsp-la-q2C"/>
                             <constraint firstItem="McW-pv-Feo" firstAttribute="top" secondItem="UjV-di-5WC" secondAttribute="bottom" constant="30" id="ow3-aF-ECa"/>
