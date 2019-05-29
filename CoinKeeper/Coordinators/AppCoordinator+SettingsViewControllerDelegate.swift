@@ -44,7 +44,8 @@ extension AppCoordinator: SettingsViewControllerDelegate {
   }
 
   func viewController(_ viewController: UIViewController, didEnableYearlyHighNotification didEnable: Bool) {
-    // TODO: create setter for yearly high in persistenceManager
+    persistenceManager.updateYearlyPriceHighNotification(enabled: didEnable)
+    // TODO: post network call to unsubscribe if didEnable is false, subscribe if true
   }
 
   func viewController(_ viewController: UIViewController, didRequestOpenURL url: URL) {

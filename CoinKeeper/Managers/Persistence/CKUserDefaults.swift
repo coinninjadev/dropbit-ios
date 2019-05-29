@@ -51,6 +51,13 @@ class CKUserDefaults: PersistenceUserDefaultsType {
     var defaultsString: String { return self.rawValue }
   }
 
+  init() {
+    let yearlyPriceHighKey = CKUserDefaults.Key.yearlyPriceHighNotificationEnabled.defaultsString
+    if CKUserDefaults.standardDefaults.object(forKey: yearlyPriceHighKey) == nil {
+      CKUserDefaults.standardDefaults.set(true, forKey: yearlyPriceHighKey)
+    }
+  }
+
   private let standardDustProtectionThreshold: Int = 1_000
 
   private func removeValue(forKey key: Key) {
