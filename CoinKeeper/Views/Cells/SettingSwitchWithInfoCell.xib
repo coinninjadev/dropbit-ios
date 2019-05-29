@@ -40,7 +40,7 @@
                     <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4pp-E9-iub">
                         <rect key="frame" x="245" y="6.5" width="51" height="31"/>
                         <connections>
-                            <action selector="toggle:" destination="KGk-i7-Jjw" eventType="valueChanged" id="FgJ-Uf-aFs"/>
+                            <action selector="toggle:" destination="KGk-i7-Jjw" eventType="valueChanged" id="YW9-RE-Sv3"/>
                         </connections>
                     </switch>
                 </subviews>
@@ -55,8 +55,8 @@
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
                 <outlet property="infoButton" destination="IAk-GW-VGW" id="73k-HR-Gdv"/>
-                <outlet property="settingSwitch" destination="4pp-E9-iub" id="Psy-gE-YFe"/>
-                <outlet property="titleLabel" destination="oXL-5T-KeW" id="68F-yj-Nmc"/>
+                <outlet property="settingSwitch" destination="4pp-E9-iub" id="H5C-U6-ym3"/>
+                <outlet property="titleLabel" destination="oXL-5T-KeW" id="OMs-MI-5Rx"/>
             </connections>
             <point key="canvasLocation" x="41.600000000000001" y="46.776611694152926"/>
         </tableViewCell>

@@ -37,6 +37,8 @@ extension SettingsViewController: UITableViewDataSource {
       (cell as? SettingSwitchWithInfoCell)?.delegate = self
     case .recoveryWords:
       cell = tableView.dequeue(SettingsRecoveryWordsCell.self, for: indexPath)
+    case .yearlyHighPushNotification:
+      cell = tableView.dequeue(SettingSwitchCell.self, for: indexPath)
     default:
       cell = tableView.dequeue(SettingCell.self, for: indexPath)
     }
@@ -49,15 +51,7 @@ extension SettingsViewController: UITableViewDataSource {
 extension SettingsViewController: UITableViewDelegate {
 
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    guard let cellVM = cellViewModel(for: indexPath) else { return }
-    guard let coordinator = coordinationDelegate else { return }
-    switch cellVM.type {
-    case .dustProtection:
-      let didEnable = !coordinator.dustProtectionIsEnabled()
-      coordinationDelegate?.viewController(self, didEnableDustProtection: didEnable)
-    default:
-      cellVM.command?.execute()
-    }
+    cellViewModel(for: indexPath)?.command?.execute()
   }
 
   func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {

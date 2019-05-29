@@ -210,6 +210,8 @@
 		3B73B2752281E33900F4C551 /* TwitterOAuth.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B73B2742281E33900F4C551 /* TwitterOAuth.generated.swift */; };
 		3B73B2782281F78700F4C551 /* NetworkManager+Twitter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B73B2772281F78700F4C551 /* NetworkManager+Twitter.swift */; };
 		3B7B54432201E54100CB89FE /* KeyDerivation.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B7B54422201E54100CB89FE /* KeyDerivation.generated.swift */; };
+		3B7D1951229F167600C07FBE /* SettingSwitchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B7D194F229F167600C07FBE /* SettingSwitchCell.swift */; };
+		3B7D1952229F167600C07FBE /* SettingSwitchCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3B7D1950229F167600C07FBE /* SettingSwitchCell.xib */; };
 		3B7E2D572292EC7400891E4A /* SharedPayloadV2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B7E2D562292EC7400891E4A /* SharedPayloadV2.swift */; };
 		3B80E27521BE9D7A00F6EF17 /* DatabaseMigrationWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B80E27421BE9D7A00F6EF17 /* DatabaseMigrationWorker.swift */; };
 		3B80E27821BEEDD300F6EF17 /* MigrateDatabaseV1toV2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B80E27721BEEDD300F6EF17 /* MigrateDatabaseV1toV2.swift */; };
@@ -1046,6 +1048,8 @@
 		3B73B2742281E33900F4C551 /* TwitterOAuth.generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TwitterOAuth.generated.swift; sourceTree = "<group>"; };
 		3B73B2772281F78700F4C551 /* NetworkManager+Twitter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NetworkManager+Twitter.swift"; sourceTree = "<group>"; };
 		3B7B54422201E54100CB89FE /* KeyDerivation.generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyDerivation.generated.swift; sourceTree = "<group>"; };
+		3B7D194F229F167600C07FBE /* SettingSwitchCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingSwitchCell.swift; sourceTree = "<group>"; };
+		3B7D1950229F167600C07FBE /* SettingSwitchCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SettingSwitchCell.xib; sourceTree = "<group>"; };
 		3B7E2D562292EC7400891E4A /* SharedPayloadV2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedPayloadV2.swift; sourceTree = "<group>"; };
 		3B80E27421BE9D7A00F6EF17 /* DatabaseMigrationWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseMigrationWorker.swift; sourceTree = "<group>"; };
 		3B80E27721BEEDD300F6EF17 /* MigrateDatabaseV1toV2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MigrateDatabaseV1toV2.swift; sourceTree = "<group>"; };
@@ -2019,6 +2023,8 @@
 				A200574C20B5F70F007074D9 /* SettingCell.xib */,
 				B5D834052249680600C45ABE /* SettingSwitchWithInfoCell.swift */,
 				B5D834062249680600C45ABE /* SettingSwitchWithInfoCell.xib */,
+				3B7D194F229F167600C07FBE /* SettingSwitchCell.swift */,
+				3B7D1950229F167600C07FBE /* SettingSwitchCell.xib */,
 				308F6F0A2180B6260094D6CB /* AddressTableViewCell.swift */,
 				308F6F0C2180B6350094D6CB /* AddressTableViewCell.xib */,
 				3B3779ED219C6B2800F79683 /* BackupWordsReminderDrawerCell.swift */,
@@ -3262,6 +3268,7 @@
 				403B454B2075594F00DA53E9 /* Settings.bundle in Resources */,
 				3BC456FF20288D7300CC36B1 /* LaunchScreen.storyboard in Resources */,
 				3BCBFCB4229EADF400F633BA /* SupportViewController.storyboard in Resources */,
+				3B7D1952229F167600C07FBE /* SettingSwitchCell.xib in Resources */,
 				3BC9E55C204D92AC00444A53 /* BackupRecoveryWordsCell.xib in Resources */,
 				5B91E3A22076C86400DD9A86 /* DrawerCell.xib in Resources */,
 				30BF4FEB21B6C6C60018AE87 /* TransactionPopoverDetailsViewController.storyboard in Resources */,
@@ -3769,6 +3776,7 @@
 				3B44961D21B065C200A4E912 /* MemoEntryViewController.swift in Sources */,
 				B527AFBD2195CFF6007D9484 /* UIView+AccessibilityIdentifier.swift in Sources */,
 				B5DDB0F521DE5ED200A25929 /* KeychainMigrationWorker.swift in Sources */,
+				3B7D1951229F167600C07FBE /* SettingSwitchCell.swift in Sources */,
 				3B547A6E2280A6F1007B0366 /* VerifiedStatusView.swift in Sources */,
 				B5E7FAE521372DD600997972 /* String+Multiline.swift in Sources */,
 				3BAB1445204EE5D3001D41A2 /* VerifyRecoveryWordsViewController.swift in Sources */,

@@ -78,6 +78,7 @@ class SettingsViewController: BaseViewController, StoryboardInitializable {
     viewModel = createViewModel()
     settingsTableView.registerNib(cellType: SettingCell.self)
     settingsTableView.registerNib(cellType: SettingsRecoveryWordsCell.self)
+    settingsTableView.registerNib(cellType: SettingSwitchCell.self)
     settingsTableView.registerNib(cellType: SettingSwitchWithInfoCell.self)
     settingsTableView.registerHeaderFooter(headerFooterType: SettingsTableViewSectionHeader.self)
     settingsTableView.dataSource = self
