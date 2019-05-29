@@ -112,9 +112,8 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate, CurrencyFormatta
       return
     }
     let bgContext = persistenceManager.createBackgroundContext()
-    let successFailViewController = SuccessFailViewController.makeFromStoryboard()
-    successFailViewController.modalPresentationStyle = .overFullScreen
-    assignCoordinationDelegate(to: successFailViewController)
+    let successFailViewController = SuccessFailViewController.newInstance(viewModel: PaymentSuccessFailViewModel(mode: .pending),
+                                                                          delegate: self)
     bgContext.performAndWait {
       persistenceManager.persistUnacknowledgedInvitation(in: bgContext,
                                                          with: outgoingInvitationDTO.btcPair,
@@ -311,9 +310,8 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate, CurrencyFormatta
     outgoingTransactionData: OutgoingTransactionData
     ) {
     let logger = OSLog(subsystem: "com.coinninja.coinkeeper.appcoordinator", category: "successful_payment_verification")
-    let successFailViewController = SuccessFailViewController.makeFromStoryboard()
-    successFailViewController.modalPresentationStyle = .overFullScreen
-    assignCoordinationDelegate(to: successFailViewController)
+    let successFailViewController = SuccessFailViewController.newInstance(viewModel: PaymentSuccessFailViewModel(mode: .pending),
+                                                                          delegate: self)
     successFailViewController.action = { [weak self] in
       guard let strongSelf = self else { return }
 
