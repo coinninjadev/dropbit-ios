@@ -8,6 +8,11 @@
 
 import Foundation
 
+enum SubscriptionTopicType: String {
+  case general
+  case btcHigh = "btc_high"
+}
+
 struct SubscriptionAvailableTopicResponse: ResponseDecodable {
   let id: String
   let createdAt: Int
@@ -34,4 +39,10 @@ struct SubscriptionAvailableTopicResponse: ResponseDecodable {
   }
 
   static var optionalStringKeys: [WritableKeyPath<SubscriptionAvailableTopicResponse, String?>] { return [] }
+}
+
+extension SubscriptionAvailableTopicResponse {
+  var type: SubscriptionTopicType {
+    return SubscriptionTopicType(rawValue: name) ?? .general
+  }
 }

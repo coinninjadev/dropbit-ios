@@ -123,6 +123,8 @@ protocol PersistenceManagerType: DeviceCountryCodeProvider {
   func dustProtectionIsEnabled() -> Bool
   func enableDustProtection(_ shouldEnable: Bool)
 
+  func yearlyPriceHighNotificationIsEnabled() -> Bool
+  
   func setLastLoginTime() -> Promise<Void>
   func lastLoginTime() -> TimeInterval?
 
@@ -265,6 +267,7 @@ protocol PersistenceUserDefaultsType: AnyObject {
   func dustProtectionMinimumAmount() -> Int
   func dustProtectionIsEnabled() -> Bool
 
+  func yearlyPriceHighNotificationIsEnabled() -> Bool
 }
 
 extension PersistenceUserDefaultsType {

@@ -27,11 +27,11 @@ extension MockNetworkManager: NotificationNetworkInteractable {
     return Promise { _ in }
   }
 
-  func getGeneralSubscriptions(withDeviceEndpointResponse response: DeviceEndpointResponse) -> Promise<GeneralSubscriptionResponse> {
+  func getSubscriptionInfo(withDeviceEndpointResponse response: DeviceEndpointResponse) -> Promise<SubscriptionInfoResponse> {
     return Promise { _ in }
   }
 
-  func subscribeToGeneralTopics(deviceEndpointIds: DeviceEndpointIds, body: GeneralTopicSubscriptionBody) -> Promise<GeneralSubscriptionResponse> {
+  func subscribeToGeneralTopics(deviceEndpointIds: DeviceEndpointIds, body: NotificationTopicSubscriptionBody) -> Promise<SubscriptionInfoResponse> {
     return Promise { _ in }
   }
 }

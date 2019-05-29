@@ -28,4 +28,14 @@ extension AppCoordinator: NotificationManagerDelegate {
   func deleteDeviceEndpointIds() {
     persistenceManager.deleteDeviceEndpointIds()
   }
+
+  func shouldSubscribeToTopic(withName name: String) -> Bool {
+    guard let type = SubscriptionTopicType(rawValue: name) else { return false }
+    switch type {
+    case .general: return true
+    case .btcHigh:
+      let shouldShowYearlyHigh = persistenceManager.yearlyPriceHighNotificationIsEnabled()
+      return shouldShowYearlyHigh
+    }
+  }
 }

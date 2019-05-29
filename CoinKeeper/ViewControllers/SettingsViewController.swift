@@ -12,16 +12,18 @@ protocol SettingsViewControllerDelegate: ViewControllerDismissable {
 
   func verifyIfWordsAreBackedUp() -> Bool
   func dustProtectionIsEnabled() -> Bool
+  func yearlyHighPushNotificationIsSubscribed() -> Bool
 
   func viewControllerDidRequestDeleteWallet(_ viewController: UIViewController,
                                             completion: @escaping () -> Void)
   func viewControllerDidConfirmDeleteWallet(_ viewController: UIViewController)
   func viewControllerDidSelectOpenSourceLicenses(_ viewController: UIViewController)
   func viewControllerDidSelectRecoveryWords(_ viewController: UIViewController)
-  func viewControllerDidRequestOpenURL(_ viewController: UIViewController, url: URL)
+  func viewController(_ viewController: UIViewController, didRequestOpenURL url: URL)
   func viewControllerResyncBlockchain(_ viewController: UIViewController)
   func viewControllerSendDebuggingInfo(_ viewController: UIViewController)
-  func viewControllerDidChangeDustProtection(_ viewController: UIViewController, shouldEnable: Bool)
+  func viewController(_ viewController: UIViewController, didEnableDustProtection didEnable: Bool)
+  func viewController(_ viewController: UIViewController, didEnableYearlyHighNotification didEnable: Bool)
 }
 
 enum SettingsViewControllerMode: String {
@@ -122,9 +124,10 @@ class SettingsViewController: BaseViewController, StoryboardInitializable {
     switch self.mode {
     case .settings:
       let walletSection = walletSectionViewModel()
-      let licensesSection = SettingsSectionViewModel(headerViewModel: SettingsHeaderFooterViewModel(title: "LICENSES", command: nil),
-                                                     cellViewModels: [SettingsCellViewModel(type: .licenses, command: openSourceCommand)],
-                                                     footerViewModel: nil)
+      let licensesSection = SettingsSectionViewModel(
+        headerViewModel: SettingsHeaderFooterViewModel(title: "LICENSES", command: nil),
+        cellViewModels: [SettingsCellViewModel(type: .licenses, command: openSourceCommand)],
+        footerViewModel: nil)
       sectionViewModels = [walletSection, licensesSection]
 
     case .support:
@@ -146,9 +149,14 @@ class SettingsViewController: BaseViewController, StoryboardInitializable {
     let dustProtectionEnabled = self.coordinationDelegate?.dustProtectionIsEnabled() ?? false
     let dustCellType = SettingsCellType.dustProtection(enabled: dustProtectionEnabled)
     let dustProtectionVM = SettingsCellViewModel(type: dustCellType, command: openURLCommand(for: dustCellType))
-    return SettingsSectionViewModel(headerViewModel: SettingsHeaderFooterViewModel(title: "WALLET", command: nil),
-                                    cellViewModels: [recoveryWordsVM, dustProtectionVM],
-                                    footerViewModel: nil)
+
+    let isYearlyHighPushEnabled = self.coordinationDelegate?.yearlyHighPushNotificationIsSubscribed() ?? false
+    let yearlyHighType = SettingsCellType.yearlyHighPushNotification(enabled: isYearlyHighPushEnabled)
+    let yearlyHighViewModel = SettingsCellViewModel(type: yearlyHighType, command: yearlyHighPriceCommand)
+    return SettingsSectionViewModel(
+      headerViewModel: SettingsHeaderFooterViewModel(title: "WALLET", command: nil),
+      cellViewModels: [recoveryWordsVM, dustProtectionVM, yearlyHighViewModel],
+      footerViewModel: nil)
   }
 
   private func updateUIForMode() {
@@ -193,7 +201,15 @@ extension SettingsViewController {
     return Command(action: { [weak self] in
       guard let localSelf = self else { return }
       guard let url = type.url else { return }
-      localSelf.coordinationDelegate?.viewControllerDidRequestOpenURL(localSelf, url: url)
+      localSelf.coordinationDelegate?.viewController(localSelf, didRequestOpenURL: url)
+    })
+  }
+
+  var yearlyHighPriceCommand: Command {
+    return Command(action: { [weak self] in
+      guard let localSelf = self, let delegate = localSelf.coordinationDelegate else { return }
+      let didEnable = !delegate.yearlyHighPushNotificationIsSubscribed()
+      delegate.viewController(localSelf, didEnableYearlyHighNotification: didEnable)
     })
   }
 

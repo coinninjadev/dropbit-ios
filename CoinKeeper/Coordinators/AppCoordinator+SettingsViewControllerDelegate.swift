@@ -18,7 +18,11 @@ extension AppCoordinator: SettingsViewControllerDelegate {
   }
 
   func dustProtectionIsEnabled() -> Bool {
-    return self.persistenceManager.dustProtectionIsEnabled()
+    return persistenceManager.dustProtectionIsEnabled()
+  }
+
+  func yearlyHighPushNotificationIsSubscribed() -> Bool {
+    return persistenceManager.yearlyPriceHighNotificationIsEnabled()
   }
 
   func viewControllerDidSelectRecoveryWords(_ viewController: UIViewController) {
@@ -36,11 +40,15 @@ extension AppCoordinator: SettingsViewControllerDelegate {
     navigationController.pushViewController(textViewController, animated: true)
   }
 
-  func viewControllerDidChangeDustProtection(_ viewController: UIViewController, shouldEnable: Bool) {
-    self.persistenceManager.enableDustProtection(shouldEnable)
+  func viewController(_ viewController: UIViewController, didEnableDustProtection didEnable: Bool) {
+    self.persistenceManager.enableDustProtection(didEnable)
   }
 
-  func viewControllerDidRequestOpenURL(_ viewController: UIViewController, url: URL) {
+  func viewController(_ viewController: UIViewController, didEnableYearlyHighNotification didEnable: Bool) {
+    // TODO: create setter for yearly high in persistenceManager
+  }
+
+  func viewController(_ viewController: UIViewController, didRequestOpenURL url: URL) {
     openURL(url, completionHandler: nil)
   }
 

@@ -1,5 +1,5 @@
 //
-//  GeneralSubscriptionTarget.swift
+//  NotificationTopicSubscriptionTarget.swift
 //  DropBit
 //
 //  Created by BJ Miller on 10/23/18.
@@ -8,14 +8,14 @@
 
 import Moya
 
-public enum GeneralSubscriptionTarget: CoinNinjaTargetType {
-  typealias ResponseType = GeneralSubscriptionResponse
+public enum NotificationTopicSubscriptionTarget: CoinNinjaTargetType {
+  typealias ResponseType = SubscriptionInfoResponse
 
   case getSubscriptions(DeviceEndpointIds)
-  case subscribe(DeviceEndpointIds, GeneralTopicSubscriptionBody)
+  case subscribe(DeviceEndpointIds, NotificationTopicSubscriptionBody)
 }
 
-extension GeneralSubscriptionTarget {
+extension NotificationTopicSubscriptionTarget {
   var basePath: String {
     return "devices"
   }

@@ -477,6 +477,10 @@ class PersistenceManager: PersistenceManagerType {
     CKUserDefaults.standardDefaults.set(shouldEnable, forKey: key)
   }
 
+  func yearlyPriceHighNotificationIsEnabled() -> Bool {
+    return userDefaultsManager.yearlyPriceHighNotificationIsEnabled()
+  }
+
   func double(for key: CKUserDefaults.Key) -> Double {
     return CKUserDefaults.standardDefaults.double(forKey: key.defaultsString)
   }

@@ -8,12 +8,6 @@
 
 import UIKit
 
-extension SettingsViewController: SettingSwitchCellDelegate {
-  func settingSwitchCell(_ cell: SettingSwitchCell, didToggle isOn: Bool) {
-    self.coordinationDelegate?.viewControllerDidChangeDustProtection(self, shouldEnable: isOn)
-  }
-}
-
 extension SettingsViewController: UITableViewDataSource {
 
   func sectionViewModel(for section: Int) -> SettingsSectionViewModel? {
@@ -37,26 +31,16 @@ extension SettingsViewController: UITableViewDataSource {
     guard let cellVM = cellViewModel(for: indexPath) else { return UITableViewCell() }
     switch cellVM.type {
     case .dustProtection:
-      guard let cell = tableView.dequeueReusableCell(
-        withIdentifier: SettingSwitchCell.reuseIdentifier,
-        for: indexPath) as? SettingSwitchCell
-        else { return UITableViewCell() }
-
-      cell.load(with: cellVM, delegate: self)
+      let cell = tableView.dequeue(SettingSwitchCell.self, for: indexPath)
+      cell.load(with: cellVM)
       return cell
 
     default:
-      guard let cell = tableView.dequeueReusableCell(
-        withIdentifier: SettingCell.reuseIdentifier,
-        for: indexPath) as? SettingCell
-        else { return UITableViewCell() }
-
+      let cell = tableView.dequeue(SettingCell.self, for: indexPath)
       cell.load(with: cellVM)
       return cell
     }
-
   }
-
 }
 
 extension SettingsViewController: UITableViewDelegate {

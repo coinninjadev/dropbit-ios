@@ -1,5 +1,5 @@
 //
-//  GeneralTopicSubscriptionBody.swift
+//  NotificationTopicSubscriptionBody.swift
 //  DropBit
 //
 //  Created by BJ Miller on 10/23/18.
@@ -8,6 +8,6 @@
 
 import Foundation
 
-public struct GeneralTopicSubscriptionBody: Encodable {
+public struct NotificationTopicSubscriptionBody: Encodable {
   let topicIds: [String]
 }

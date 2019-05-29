@@ -1,5 +1,5 @@
 //
-//  GeneralSubscriptionResponse.swift
+//  SubscriptionInfoResponse.swift
 //  DropBit
 //
 //  Created by BJ Miller on 10/23/18.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct GeneralSubscriptionResponse: ResponseDecodable {
+struct SubscriptionInfoResponse: ResponseDecodable {
   let subscriptions: [SubscriptionResponse]
   let availableTopics: [SubscriptionAvailableTopicResponse]
 
@@ -25,6 +25,6 @@ struct GeneralSubscriptionResponse: ResponseDecodable {
     """
   }
 
-  static var requiredStringKeys: [KeyPath<GeneralSubscriptionResponse, String>] { return [] }
-  static var optionalStringKeys: [WritableKeyPath<GeneralSubscriptionResponse, String?>] { return [] }
+  static var requiredStringKeys: [KeyPath<SubscriptionInfoResponse, String>] { return [] }
+  static var optionalStringKeys: [WritableKeyPath<SubscriptionInfoResponse, String?>] { return [] }
 }

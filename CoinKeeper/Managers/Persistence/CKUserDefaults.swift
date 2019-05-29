@@ -46,6 +46,7 @@ class CKUserDefaults: PersistenceUserDefaultsType {
     case selectedCurrency
     case lastContactCacheReload
     case dontShowShareTransaction
+    case yearlyPriceHighNotificationEnabled
 
     var defaultsString: String { return self.rawValue }
   }
@@ -92,7 +93,8 @@ class CKUserDefaults: PersistenceUserDefaultsType {
       .pendingInvitations,
       .backupWordsReminderShown,
       .unseenTransactionChangesExist,
-      .lastSuccessfulSyncCompletedAt
+      .lastSuccessfulSyncCompletedAt,
+      .yearlyPriceHighNotificationEnabled
       ])
     CKUserDefaults.standardDefaults.synchronize()
   }
@@ -142,6 +144,11 @@ class CKUserDefaults: PersistenceUserDefaultsType {
 
   func dustProtectionIsEnabled() -> Bool {
     let key = CKUserDefaults.Key.dustProtectionEnabled.defaultsString
+    return CKUserDefaults.standardDefaults.bool(forKey: key)
+  }
+
+  func yearlyPriceHighNotificationIsEnabled() -> Bool {
+    let key = CKUserDefaults.Key.yearlyPriceHighNotificationEnabled.defaultsString
     return CKUserDefaults.standardDefaults.bool(forKey: key)
   }
 

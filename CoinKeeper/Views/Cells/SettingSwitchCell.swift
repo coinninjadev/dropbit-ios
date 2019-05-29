@@ -8,13 +8,9 @@
 
 import UIKit
 
-protocol SettingSwitchCellDelegate: AnyObject {
-  func settingSwitchCell(_ cell: SettingSwitchCell, didToggle isOn: Bool)
-}
-
 class SettingSwitchCell: UITableViewCell {
 
-  weak var delegate: SettingSwitchCellDelegate?
+  var viewModel: SettingsCellViewModel?
 
   @IBOutlet var settingSwitch: UISwitch!
 
@@ -28,7 +24,7 @@ class SettingSwitchCell: UITableViewCell {
   }
 
   @IBAction func toggle(_ sender: UISwitch) {
-    delegate?.settingSwitchCell(self, didToggle: sender.isOn)
+    viewModel?.command?.execute()
   }
 
   // MARK: view instantiation
@@ -41,8 +37,8 @@ class SettingSwitchCell: UITableViewCell {
     settingSwitch.isOn = false
   }
 
-  func load(with viewModel: SettingsCellViewModel, delegate: SettingSwitchCellDelegate) {
-    self.delegate = delegate
+  func load(with viewModel: SettingsCellViewModel) {
+    self.viewModel = viewModel
     titleLabel.attributedText = viewModel.type.attributedTitle
     self.settingSwitch.isOn = viewModel.type.switchIsOn
   }

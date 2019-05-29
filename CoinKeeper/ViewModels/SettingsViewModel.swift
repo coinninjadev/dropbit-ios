@@ -34,6 +34,7 @@ enum SettingsCellType {
   case termsOfUse
   case recoveryWords(Bool)
   case dustProtection(enabled: Bool)
+  case yearlyHighPushNotification(enabled: Bool)
   case privacyPolicy
   case licenses
 
@@ -43,6 +44,7 @@ enum SettingsCellType {
     case .faqs:           return "FAQs"
     case .recoveryWords:  return nil
     case .dustProtection: return "Dust Protection"
+    case .yearlyHighPushNotification: return "Bitcoin Yearly High Price Notification"
     case .contactUs:      return "Contact Us"
     case .termsOfUse:     return "Terms of Use"
     case .privacyPolicy:  return "Privacy Policy"
@@ -85,13 +87,14 @@ enum SettingsCellType {
 
   var shouldShowDisclosureIndicator: Bool {
     switch self {
-    default:                        return true
+    default: return true
     }
   }
 
   var switchIsOn: Bool {
     switch self {
-    case .dustProtection(let isEnabled):
+    case .dustProtection(let isEnabled),
+         .yearlyHighPushNotification(let isEnabled):
       return isEnabled
     default:
       return false
