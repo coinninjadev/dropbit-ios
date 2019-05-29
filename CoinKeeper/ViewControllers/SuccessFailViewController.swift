@@ -95,7 +95,6 @@ class SuccessFailViewController: BaseViewController, StoryboardInitializable {
 
   override func viewDidLoad() {
     super.viewDidLoad()
-    titleLabel?.alpha = 0.0
   }
 
   override func viewWillAppear(_ animated: Bool) {
