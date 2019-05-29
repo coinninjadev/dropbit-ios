@@ -164,11 +164,21 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate, CurrencyFormatta
         try context.save()
         successFailVC.setMode(.success)
 
+        // When TweetMethodViewController requests DropBit send the tweet,
+        // we need to pass the resulting tweet ID back to the SuccessFailViewController,
+        // which doesn't have a direct relationship to the TweetMethodViewController.
+        let tweetCompletion: TweetCompletionHandler = { [weak successFailVC] (tweetId: String?) in
+          guard let id = tweetId else { return }
+          let twitterURL = URL(string: "https://twitter.com/x=\(id)")
+          successFailVC?.setURL(twitterURL)
+        }
+
         if case let .twitter(twitterContact) = invitationDTO.contact.dropBitType {
           DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
             if let topVC = self.navigationController.topViewController() {
               let tweetMethodVC = TweetMethodViewController.newInstance(twitterRecipient: twitterContact,
                                                                         addressRequestResponse: response,
+                                                                        tweetCompletion: tweetCompletion,
                                                                         delegate: self)
               topVC.present(tweetMethodVC, animated: true, completion: nil)
             }
@@ -427,18 +437,19 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate, CurrencyFormatta
 
 extension AppCoordinator: TweetMethodViewControllerDelegate {
 
-  func viewControllerRequestedDropBitSendTweet(_ viewController: UIViewController, response: WalletAddressRequestResponse) {
-    patchAddressRequestAndDismiss(viewController, response: response, suppress: false)
+  func viewControllerRequestedDropBitSendTweet(_ viewController: UIViewController, response: WalletAddressRequestResponse, tweetCompletion: @escaping TweetCompletionHandler) {
+    patchAddressRequestAndDismiss(viewController, response: response, suppress: false, tweetCompletion: tweetCompletion)
   }
 
   func viewControllerRequestedUserSendTweet(_ viewController: UIViewController, response: WalletAddressRequestResponse) {
-    patchAddressRequestAndDismiss(viewController, response: response, suppress: true)
+    patchAddressRequestAndDismiss(viewController, response: response, suppress: true, tweetCompletion: nil)
   }
 
-  private func patchAddressRequestAndDismiss(_ viewController: UIViewController, response: WalletAddressRequestResponse, suppress: Bool) {
+  private func patchAddressRequestAndDismiss(_ viewController: UIViewController, response: WalletAddressRequestResponse, suppress: Bool, tweetCompletion: TweetCompletionHandler?) {
     let body = WalletAddressRequest(suppress: suppress)
     self.networkManager.updateWalletAddressRequest(for: response.id, with: body)
-      .done(on: .main) { _ in
+      .done(on: .main) { response in
+        tweetCompletion?(response.deliveryId)
         viewController.dismiss(animated: true, completion: nil)
       }
       .catch { error in

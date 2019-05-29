@@ -8,9 +8,12 @@
 
 import UIKit
 
+typealias TweetCompletionHandler = (_ tweetId: String?) -> Void
+
 protocol TweetMethodViewControllerDelegate: AnyObject {
   func viewControllerRequestedDropBitSendTweet(_ viewController: UIViewController,
-                                               response: WalletAddressRequestResponse)
+                                               response: WalletAddressRequestResponse,
+                                               tweetCompletion: @escaping TweetCompletionHandler)
   func viewControllerRequestedUserSendTweet(_ viewController: UIViewController,
                                             response: WalletAddressRequestResponse)
 }
@@ -20,13 +23,16 @@ class TweetMethodViewController: BaseViewController, StoryboardInitializable {
   private weak var delegate: TweetMethodViewControllerDelegate?
   private var recipient: TwitterContactType!
   private var addressRequestResponse: WalletAddressRequestResponse!
+  private var tweetCompletion: TweetCompletionHandler!
 
   static func newInstance(twitterRecipient: TwitterContactType,
                           addressRequestResponse: WalletAddressRequestResponse,
+                          tweetCompletion: @escaping TweetCompletionHandler,
                           delegate: TweetMethodViewControllerDelegate) -> TweetMethodViewController {
     let vc = TweetMethodViewController.makeFromStoryboard()
     vc.recipient = twitterRecipient
     vc.addressRequestResponse = addressRequestResponse
+    vc.tweetCompletion = tweetCompletion
     vc.delegate = delegate
     vc.modalTransitionStyle = .crossDissolve
     vc.modalPresentationStyle = .overFullScreen
@@ -42,7 +48,11 @@ class TweetMethodViewController: BaseViewController, StoryboardInitializable {
   @IBOutlet var manualTweetButton: PrimaryActionButton!
 
   @IBAction func performDropBitTweet(_ sender: Any) {
-    delegate?.viewControllerRequestedDropBitSendTweet(self, response: addressRequestResponse)
+    delegate?.viewControllerRequestedDropBitSendTweet(
+      self,
+      response: addressRequestResponse,
+      tweetCompletion: tweetCompletion
+    )
   }
 
   @IBAction func performManualTweet(_ sender: Any) {
