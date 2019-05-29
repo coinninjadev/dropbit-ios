@@ -309,6 +309,11 @@
 		3BC9E5542047516A00444A53 /* UICollectionView+ReusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC9E5532047516A00444A53 /* UICollectionView+ReusableView.swift */; };
 		3BC9E5562049B08000444A53 /* PrimaryActionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC9E5552049B08000444A53 /* PrimaryActionButton.swift */; };
 		3BC9E55C204D92AC00444A53 /* BackupRecoveryWordsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3BC9E55A204D92AC00444A53 /* BackupRecoveryWordsCell.xib */; };
+		3BCBFCB4229EADF400F633BA /* SupportViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3BCBFCB3229EADF400F633BA /* SupportViewController.storyboard */; };
+		3BCBFCB8229EAE8800F633BA /* SupportViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BCBFCB7229EAE8800F633BA /* SupportViewController.swift */; };
+		3BCBFCBA229EB05000F633BA /* SettingsTitleLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BCBFCB9229EB05000F633BA /* SettingsTitleLabel.swift */; };
+		3BCBFCC0229EBA6800F633BA /* SupportViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BCBFCBF229EBA6800F633BA /* SupportViewControllerTests.swift */; };
+		3BCBFCC2229EBF2200F633BA /* AppCoordinator+SupportViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BCBFCC1229EBF2200F633BA /* AppCoordinator+SupportViewControllerDelegate.swift */; };
 		3BCC3BAF2295CBB100B8FB66 /* SharedPayloadManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BCC3BAE2295CBB100B8FB66 /* SharedPayloadManager.swift */; };
 		3BD013172272478300C92771 /* TransactionHistoryDetailValidCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3BD013162272478300C92771 /* TransactionHistoryDetailValidCell.xib */; };
 		3BD7B73120D66F12005057A7 /* HorizontallyPaginatedCollectionViewLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BD7B73020D66F12005057A7 /* HorizontallyPaginatedCollectionViewLayout.swift */; };
@@ -1141,6 +1146,11 @@
 		3BC9E5532047516A00444A53 /* UICollectionView+ReusableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UICollectionView+ReusableView.swift"; sourceTree = "<group>"; };
 		3BC9E5552049B08000444A53 /* PrimaryActionButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrimaryActionButton.swift; sourceTree = "<group>"; };
 		3BC9E55A204D92AC00444A53 /* BackupRecoveryWordsCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BackupRecoveryWordsCell.xib; sourceTree = "<group>"; };
+		3BCBFCB3229EADF400F633BA /* SupportViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = SupportViewController.storyboard; sourceTree = "<group>"; };
+		3BCBFCB7229EAE8800F633BA /* SupportViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupportViewController.swift; sourceTree = "<group>"; };
+		3BCBFCB9229EB05000F633BA /* SettingsTitleLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTitleLabel.swift; sourceTree = "<group>"; };
+		3BCBFCBF229EBA6800F633BA /* SupportViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupportViewControllerTests.swift; sourceTree = "<group>"; };
+		3BCBFCC1229EBF2200F633BA /* AppCoordinator+SupportViewControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppCoordinator+SupportViewControllerDelegate.swift"; sourceTree = "<group>"; };
 		3BCC3BAE2295CBB100B8FB66 /* SharedPayloadManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedPayloadManager.swift; sourceTree = "<group>"; };
 		3BD013162272478300C92771 /* TransactionHistoryDetailValidCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TransactionHistoryDetailValidCell.xib; sourceTree = "<group>"; };
 		3BD7B73020D66F12005057A7 /* HorizontallyPaginatedCollectionViewLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HorizontallyPaginatedCollectionViewLayout.swift; sourceTree = "<group>"; };
@@ -1865,6 +1875,7 @@
 				3BA9F5FE208F642F0047C213 /* AppCoordinator+ScanQRViewControllerDelegate.swift */,
 				3BA9F600208F6CC50047C213 /* AppCoordinator+SendPaymentViewControllerDelegate.swift */,
 				3BA9F606208F6D2A0047C213 /* AppCoordinator+DrawerViewControllerDelegate.swift */,
+				3BCBFCC1229EBF2200F633BA /* AppCoordinator+SupportViewControllerDelegate.swift */,
 				3BA9F5F6208F62DA0047C213 /* AppCoordinator+StartViewControllerDelegate.swift */,
 				A29CE0CE2099FD6800761B91 /* AppCoordinator+SuccessFailViewControllerDelegate.swift */,
 				B53804FB209A4C070096DA33 /* AppCoordinator+URLOpener.swift */,
@@ -2184,6 +2195,7 @@
 				3BB01BC0220A4233006B4D25 /* NoConnectionViewControllerTests.swift */,
 				3BEF22962260CD4A001F6D25 /* GetBitcoinViewControllerTests.swift */,
 				3B24466B22650261004AEE35 /* SpendBitcoinViewControllerTests.swift */,
+				3BCBFCBF229EBA6800F633BA /* SupportViewControllerTests.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -2390,6 +2402,7 @@
 				3B27D3F9225E84E900291B82 /* GetBitcoinViewController.swift */,
 				B56788AE227A3C5600A39534 /* GetBitcoinCopiedAddressViewController.swift */,
 				3BEF22982260D42E001F6D25 /* SpendBitcoinViewController.swift */,
+				3BCBFCB7229EAE8800F633BA /* SupportViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -2430,6 +2443,7 @@
 				3B8ACA14225F96800020B684 /* GetBitcoinViewController.storyboard */,
 				B56788AC227A3C2C00A39534 /* GetBitcoinCopiedAddressViewController.storyboard */,
 				3BEF229A2260D491001F6D25 /* SpendBitcoinViewController.storyboard */,
+				3BCBFCB3229EADF400F633BA /* SupportViewController.storyboard */,
 			);
 			path = Storyboards;
 			sourceTree = "<group>";
@@ -2867,6 +2881,7 @@
 				B530DFBC2108CF8400A0B1A8 /* TransactionDetailWarningLabel.swift */,
 				3B5A88A1228B08FE0082BBA4 /* ContactCellPrimaryLabel.swift */,
 				3B5A88A3228B09260082BBA4 /* ContactCellSecondaryLabel.swift */,
+				3BCBFCB9229EB05000F633BA /* SettingsTitleLabel.swift */,
 			);
 			path = Labels;
 			sourceTree = "<group>";
@@ -3240,6 +3255,7 @@
 				3B6FDAD7204F4BA50091916A /* VerifyRecoveryWordCell.xib in Resources */,
 				403B454B2075594F00DA53E9 /* Settings.bundle in Resources */,
 				3BC456FF20288D7300CC36B1 /* LaunchScreen.storyboard in Resources */,
+				3BCBFCB4229EADF400F633BA /* SupportViewController.storyboard in Resources */,
 				3BC9E55C204D92AC00444A53 /* BackupRecoveryWordsCell.xib in Resources */,
 				5B91E3A22076C86400DD9A86 /* DrawerCell.xib in Resources */,
 				30BF4FEB21B6C6C60018AE87 /* TransactionPopoverDetailsViewController.storyboard in Resources */,
@@ -3875,6 +3891,7 @@
 				B5CFA32A221DF594002B1BDD /* ContactCacheManager.swift in Sources */,
 				30E96A2D2178F83A008079B8 /* PhoneNumberStatusViewController.swift in Sources */,
 				B552EDF5211E33D000332BB5 /* QRCodeGenerator.swift in Sources */,
+				3BCBFCC2229EBF2200F633BA /* AppCoordinator+SupportViewControllerDelegate.swift in Sources */,
 				B505A87A2076C5BE00AACB23 /* TransactionHistoryReceiverLabel.swift in Sources */,
 				3B47037D2253B67200977784 /* SendReceiveActionView.swift in Sources */,
 				B50E18462149A1460091EEDA /* UserResponse.swift in Sources */,
@@ -3946,6 +3963,7 @@
 				3BA360852090B0C100732C43 /* CKMTransaction+CoreDataProperties.swift in Sources */,
 				3B86F78C203C6DCD00D15231 /* PinEntryViewController.swift in Sources */,
 				B5A3BA5E215193E6005EE657 /* UserTarget.swift in Sources */,
+				3BCBFCBA229EB05000F633BA /* SettingsTitleLabel.swift in Sources */,
 				B5FEBE9220879C4200AA9F6E /* CKMInvitation+CoreDataClass.swift in Sources */,
 				B52A25C92077E42100F636A1 /* GrayCellSeparator.swift in Sources */,
 				B5A5C5A32218AF430088C4D1 /* DeviceVerificationErrorMessageFactory.swift in Sources */,
@@ -3961,6 +3979,7 @@
 				B51F823E207BDEC900692F5B /* UIView+ParentViewController.swift in Sources */,
 				3B73B2782281F78700F4C551 /* NetworkManager+Twitter.swift in Sources */,
 				3BA9F5F7208F62DA0047C213 /* AppCoordinator+StartViewControllerDelegate.swift in Sources */,
+				3BCBFCB8229EAE8800F633BA /* SupportViewController.swift in Sources */,
 				B51F823A207BB00000692F5B /* BalancePrimaryAmountLabel.swift in Sources */,
 				3BA360842090B0C100732C43 /* CKMTransaction+CoreDataClass.swift in Sources */,
 				307DF11B21500BF100260369 /* ElasticRequest.swift in Sources */,
@@ -4080,6 +4099,7 @@
 				3BF41ABA2076951B008B3D0A /* RequestPayViewModelTests.swift in Sources */,
 				3B231D4F2044807E003BB50B /* LaunchStateManagerTests.swift in Sources */,
 				B5697273208A8E0A00835F01 /* BalanceContainerTests.swift in Sources */,
+				3BCBFCC0229EBA6800F633BA /* SupportViewControllerTests.swift in Sources */,
 				3B325D4F219090F80094897C /* RecoveryWordsIntroViewControllerTests.swift in Sources */,
 				B5EABABC21FBB69C00E32E08 /* MockNetworkManager+TransactionNotificationRequestable.swift in Sources */,
 				3BEF22972260CD4A001F6D25 /* GetBitcoinViewControllerTests.swift in Sources */,

@@ -9,7 +9,6 @@
 import PromiseKit
 import UIKit
 import os.log
-import MessageUI
 
 extension AppCoordinator: SettingsViewControllerDelegate {
 
@@ -135,61 +134,6 @@ extension AppCoordinator: SettingsViewControllerDelegate {
       completion: completion,
       fetchResult: nil
     )
-  }
-
-  func viewControllerSendDebuggingInfo(_ viewController: UIViewController) {
-    // show confirmation first
-    let message = "The debug report will not include any data allowing us access to your Bitcoin. However, " +
-    "it may contain personal information, such as phone numbers and memos.\n"
-    let cancelAction = AlertActionConfiguration(title: "Cancel", style: .cancel, action: nil)
-    let okAction = AlertActionConfiguration(title: "OK", style: .default) { [weak self] in
-      self?.presentDebugInfo(from: viewController)
-    }
-    let actions: [AlertActionConfigurationType] = [cancelAction, okAction]
-    let alertViewModel = AlertControllerViewModel(title: message, description: nil, image: nil, style: .alert, actions: actions)
-    let alertController = alertManager.alert(from: alertViewModel)
-    viewController.present(alertController, animated: true, completion: nil)
-  }
-
-  private func presentDebugInfo(from viewController: UIViewController) {
-    guard let dbFileURL = self.persistenceManager.persistentStore()?.url else {
-        self.alertManager.hideActivityHUD(withDelay: 0) {
-          self.alertManager.showError(message: "Failed to find database", forDuration: 4.0)
-        }
-        return
-    }
-    guard MFMailComposeViewController.canSendMail() else {
-      self.alertManager.hideActivityHUD(withDelay: 0) {
-        self.alertManager.showError(message: "Your mail client is not configured", forDuration: 4.0)
-      }
-      return
-    }
-
-    let mailVC = MFMailComposeViewController()
-    mailVC.setToRecipients(["hello@coinninja.com"])
-    mailVC.setSubject("Debug info")
-    let iosVersion = UIDevice.current.systemVersion
-    let versionKey: String = "CFBundleShortVersionString"
-    let dropBitVersion = "\(Bundle.main.infoDictionary?[versionKey] ?? "Unknown")"
-    let body =
-    """
-    This debugging info is shared with the engineers to diagnose potential issues.
-
-    Describe here what issues you are experiencing:
-
-
-
-    ----------------------------------
-    iOS version: \(iosVersion)
-    DropBit version: \(dropBitVersion)
-    """
-    mailVC.setMessageBody(body, isHTML: false)
-    if let dbData = try? Data(contentsOf: dbFileURL) {
-      mailVC.addAttachmentData(dbData, mimeType: "application/vnd.sqlite3", fileName: "CoinNinjaDB.sqlite")
-    }
-    mailVC.mailComposeDelegate = self.mailComposeDelegate
-
-    viewController.present(mailVC, animated: true, completion: nil)
   }
 
   private func deleteDeviceEndpoint() -> Promise<Void> {

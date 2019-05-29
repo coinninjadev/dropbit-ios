@@ -51,10 +51,9 @@ extension AppCoordinator: DrawerViewControllerDelegate {
   func supportButtonWasTouched() {
     analyticsManager.track(event: .supportButtonPressed, with: nil)
     drawerController?.toggle(.left, animated: true, completion: nil)
-    let settingsViewController = SettingsViewController.makeFromStoryboard()
-    settingsViewController.mode = .support
-    assignCoordinationDelegate(to: settingsViewController)
-    navigationController.present(settingsViewController, animated: true, completion: nil)
+    let viewController = SupportViewController.newInstance(with: self)
+    assignCoordinationDelegate(to: viewController)
+    navigationController.present(viewController, animated: true, completion: nil)
   }
 
   func getBitcoinButtonWasTouched() {

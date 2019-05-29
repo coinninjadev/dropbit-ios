@@ -141,6 +141,10 @@ class MockPersistenceManager: PersistenceManagerType {
   func enableDustProtection(_ shouldEnable: Bool) {
   }
 
+  func yearlyPriceHighNotificationIsEnabled() -> Bool {
+    return userDefaultsManager.yearlyPriceHighNotificationIsEnabled()
+  }
+
   func defaultHeaders(in context: NSManagedObjectContext) -> Promise<DefaultRequestHeaders> {
     return Promise { _ in }
   }

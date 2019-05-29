@@ -124,7 +124,7 @@ protocol PersistenceManagerType: DeviceCountryCodeProvider {
   func enableDustProtection(_ shouldEnable: Bool)
 
   func yearlyPriceHighNotificationIsEnabled() -> Bool
-  
+
   func setLastLoginTime() -> Promise<Void>
   func lastLoginTime() -> TimeInterval?
 

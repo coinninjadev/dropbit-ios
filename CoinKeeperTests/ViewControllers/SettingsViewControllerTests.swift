@@ -107,11 +107,12 @@ class SettingsViewControllerTests: XCTestCase {
     func viewControllerDidSelectVerifyPhone(_ viewController: UIViewController) {}
     func viewControllerDidRequestDeleteWallet(_ viewController: UIViewController, completion: @escaping () -> Void) {}
     func viewControllerDidConfirmDeleteWallet(_ viewController: UIViewController) {}
-    func viewControllerDidRequestOpenURL(_ viewController: UIViewController, url: URL) {}
+    func viewController(_ viewController: UIViewController, didRequestOpenURL url: URL) {}
     func viewControllerDidSelectRecoveryWords(_ viewController: UIViewController) {}
     func viewControllerSendDebuggingInfo(_ viewController: UIViewController) { }
     func viewControllerDidSelectOpenSourceLicenses(_ viewController: UIViewController) {}
-    func viewControllerDidChangeDustProtection(_ viewController: UIViewController, shouldEnable: Bool) {}
+    func viewController(_ viewController: UIViewController, didEnableDustProtection didEnable: Bool) {}
+    func viewController(_ viewController: UIViewController, didEnableYearlyHighNotification didEnable: Bool) {}
 
     var didSelectCloseWasCalled = false
     func viewControllerDidSelectClose(_ viewController: UIViewController) {
@@ -123,5 +124,8 @@ class SettingsViewControllerTests: XCTestCase {
       resyncBlockchainWasCalled = true
     }
 
+    func yearlyHighPushNotificationIsSubscribed() -> Bool {
+      return true
+    }
   }
 }
