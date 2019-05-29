@@ -9,23 +9,32 @@
 import UIKit
 
 protocol TweetMethodViewControllerDelegate: AnyObject {
-  func viewControllerRequestedDropBitSendTweet(_ viewController: UIViewController)
-  func viewControllerRequestedUserSendTweet(_ viewController: UIViewController)
+  func viewControllerRequestedDropBitSendTweet(_ viewController: UIViewController,
+                                               response: WalletAddressRequestResponse)
+  func viewControllerRequestedUserSendTweet(_ viewController: UIViewController,
+                                            response: WalletAddressRequestResponse)
 }
 
 class TweetMethodViewController: BaseViewController, StoryboardInitializable {
 
   private weak var delegate: TweetMethodViewControllerDelegate?
-  private var recipient: TwitterContact!
+  private var recipient: TwitterContactType!
+  private var addressRequestResponse: WalletAddressRequestResponse!
 
-  static func newInstance(twitterRecipient: TwitterContact,
+  static func newInstance(twitterRecipient: TwitterContactType,
+                          addressRequestResponse: WalletAddressRequestResponse,
                           delegate: TweetMethodViewControllerDelegate) -> TweetMethodViewController {
     let vc = TweetMethodViewController.makeFromStoryboard()
     vc.recipient = twitterRecipient
+    vc.addressRequestResponse = addressRequestResponse
     vc.delegate = delegate
+    vc.modalTransitionStyle = .crossDissolve
+    vc.modalPresentationStyle = .overFullScreen
     return vc
   }
 
+  @IBOutlet var semiOpaqueBackgroundView: UIView!
+  @IBOutlet var backgroundView: UIView!
   @IBOutlet var avatarImageView: UIImageView!
   @IBOutlet var screenNameLabel: UILabel!
   @IBOutlet var messageLabel: UILabel!
@@ -33,20 +42,23 @@ class TweetMethodViewController: BaseViewController, StoryboardInitializable {
   @IBOutlet var manualTweetButton: PrimaryActionButton!
 
   @IBAction func performDropBitTweet(_ sender: Any) {
-    delegate?.viewControllerRequestedDropBitSendTweet(self)
+    delegate?.viewControllerRequestedDropBitSendTweet(self, response: addressRequestResponse)
   }
 
   @IBAction func performManualTweet(_ sender: Any) {
-    delegate?.viewControllerRequestedUserSendTweet(self)
+    delegate?.viewControllerRequestedUserSendTweet(self, response: addressRequestResponse)
   }
 
   override func viewDidLoad() {
     super.viewDidLoad()
 
+    view.backgroundColor = .clear
+    semiOpaqueBackgroundView.backgroundColor = Theme.Color.semiOpaquePopoverBackground.color
+    backgroundView.applyCornerRadius(9)
     self.configureViews(with: recipient)
   }
 
-  private func configureViews(with recipient: TwitterContact) {
+  private func configureViews(with recipient: TwitterContactType) {
     avatarImageView.applyCornerRadius(avatarImageView.frame.width/2)
     if let imageData = recipient.twitterUser.profileImageData {
       avatarImageView.image = UIImage(data: imageData)

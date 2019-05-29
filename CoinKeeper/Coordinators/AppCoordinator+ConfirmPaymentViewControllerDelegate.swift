@@ -417,3 +417,30 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate, CurrencyFormatta
     }
   }
 }
+
+extension AppCoordinator: TweetMethodViewControllerDelegate {
+
+  func viewControllerRequestedDropBitSendTweet(_ viewController: UIViewController, response: WalletAddressRequestResponse) {
+    patchAddressRequestAndDismiss(viewController, response: response, suppress: false)
+  }
+
+  func viewControllerRequestedUserSendTweet(_ viewController: UIViewController, response: WalletAddressRequestResponse) {
+    patchAddressRequestAndDismiss(viewController, response: response, suppress: true)
+  }
+
+  private func patchAddressRequestAndDismiss(_ viewController: UIViewController, response: WalletAddressRequestResponse, suppress: Bool) {
+    let body = WalletAddressRequest(suppress: suppress)
+    self.networkManager.updateWalletAddressRequest(for: response.id, with: body)
+      .done(on: .main) { _ in
+        viewController.dismiss(animated: true, completion: nil)
+      }
+      .catch { error in
+        viewController.dismiss(animated: true) {
+          let action = suppress ? "update request" : "send tweet"
+          let alert = self.alertManager.defaultAlert(withTitle: "Failed to \(action)", description: error.localizedDescription)
+          self.navigationController.topViewController()?.present(alert, animated: true, completion: nil)
+        }
+    }
+  }
+
+}
