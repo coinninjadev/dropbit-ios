@@ -57,7 +57,7 @@ class ClaimInviteMethodViewController: BaseViewController, StoryboardInitializab
 
     let smsTitle = NSAttributedString(imageName: "claimInviteSMS",
                                       imageSize: CGSize(width: 13, height: 23),
-                                      title: "I GOT A SMS",
+                                      title: "I GOT AN SMS",
                                       sharedColor: Theme.Color.lightGrayText.color,
                                       font: Theme.Font.primaryButtonTitle.font,
                                       imageOffset: CGPoint(x: 0, y: -3))
