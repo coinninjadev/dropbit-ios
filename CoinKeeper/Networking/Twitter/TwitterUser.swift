@@ -45,3 +45,20 @@ extension TwitterUser {
                        profileImageData: nil)
   }
 }
+
+extension TwitterUser: TwitterUserFormattable {
+  var twitterScreenName: String {
+    return screenName
+  }
+}
+
+protocol TwitterUserFormattable {
+  var twitterScreenName: String { get }
+}
+
+extension TwitterUserFormattable {
+  var formattedScreenName: String {
+    let isFormatted = twitterScreenName.first == "@"
+    return isFormatted ? twitterScreenName : "@\(twitterScreenName)"
+  }
+}
