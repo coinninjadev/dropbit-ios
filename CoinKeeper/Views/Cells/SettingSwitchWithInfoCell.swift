@@ -1,5 +1,5 @@
 //
-//  SettingSwitchCell.swift
+//  SettingSwitchWithInfoCell.swift
 //  DropBit
 //
 //  Created by Ben Winters on 3/25/19.
@@ -12,7 +12,7 @@ protocol SettingSwitchCellDelegate: AnyObject {
   func tableViewCellDidSelectInfoButton(_ cell: UITableViewCell, viewModel: SettingsCellViewModel?)
 }
 
-class SettingSwitchCell: SettingsBaseCell {
+class SettingSwitchWithInfoCell: SettingsBaseCell {
 
   var viewModel: SettingsCellViewModel?
   weak var delegate: SettingSwitchCellDelegate?

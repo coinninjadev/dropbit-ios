@@ -780,8 +780,8 @@
 		B5D77CCD2222002D002C360E /* MockRecipientParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5D77CCC2222002D002C360E /* MockRecipientParser.swift */; };
 		B5D833FC22492F3C00C45ABE /* MockPersistenceDatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5D833FA22492EFD00C45ABE /* MockPersistenceDatabaseManager.swift */; };
 		B5D834002249309B00C45ABE /* MockPersistenceKeychainManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5D833FE2249305200C45ABE /* MockPersistenceKeychainManager.swift */; };
-		B5D834072249680600C45ABE /* SettingSwitchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5D834052249680600C45ABE /* SettingSwitchCell.swift */; };
-		B5D834082249680600C45ABE /* SettingSwitchCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B5D834062249680600C45ABE /* SettingSwitchCell.xib */; };
+		B5D834072249680600C45ABE /* SettingSwitchWithInfoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5D834052249680600C45ABE /* SettingSwitchWithInfoCell.swift */; };
+		B5D834082249680600C45ABE /* SettingSwitchWithInfoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B5D834062249680600C45ABE /* SettingSwitchWithInfoCell.xib */; };
 		B5D8340A224971E400C45ABE /* SettingsViewController+TableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5D83409224971E400C45ABE /* SettingsViewController+TableView.swift */; };
 		B5DDB0F521DE5ED200A25929 /* KeychainMigrationWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5DDB0F421DE5ED200A25929 /* KeychainMigrationWorker.swift */; };
 		B5DDB0F721DE69C100A25929 /* KeychainMigratorFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5DDB0F621DE69C100A25929 /* KeychainMigratorFactory.swift */; };
@@ -1617,8 +1617,8 @@
 		B5D77CCC2222002D002C360E /* MockRecipientParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockRecipientParser.swift; sourceTree = "<group>"; };
 		B5D833FA22492EFD00C45ABE /* MockPersistenceDatabaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockPersistenceDatabaseManager.swift; sourceTree = "<group>"; };
 		B5D833FE2249305200C45ABE /* MockPersistenceKeychainManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockPersistenceKeychainManager.swift; sourceTree = "<group>"; };
-		B5D834052249680600C45ABE /* SettingSwitchCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingSwitchCell.swift; sourceTree = "<group>"; };
-		B5D834062249680600C45ABE /* SettingSwitchCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SettingSwitchCell.xib; sourceTree = "<group>"; };
+		B5D834052249680600C45ABE /* SettingSwitchWithInfoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingSwitchWithInfoCell.swift; sourceTree = "<group>"; };
+		B5D834062249680600C45ABE /* SettingSwitchWithInfoCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SettingSwitchWithInfoCell.xib; sourceTree = "<group>"; };
 		B5D83409224971E400C45ABE /* SettingsViewController+TableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SettingsViewController+TableView.swift"; sourceTree = "<group>"; };
 		B5DDB0F421DE5ED200A25929 /* KeychainMigrationWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainMigrationWorker.swift; sourceTree = "<group>"; };
 		B5DDB0F621DE69C100A25929 /* KeychainMigratorFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainMigratorFactory.swift; sourceTree = "<group>"; };
@@ -2017,8 +2017,8 @@
 				A29CE0D9209B725600761B91 /* ContactCell.xib */,
 				A200574620B5ED52007074D9 /* SettingCell.swift */,
 				A200574C20B5F70F007074D9 /* SettingCell.xib */,
-				B5D834052249680600C45ABE /* SettingSwitchCell.swift */,
-				B5D834062249680600C45ABE /* SettingSwitchCell.xib */,
+				B5D834052249680600C45ABE /* SettingSwitchWithInfoCell.swift */,
+				B5D834062249680600C45ABE /* SettingSwitchWithInfoCell.xib */,
 				308F6F0A2180B6260094D6CB /* AddressTableViewCell.swift */,
 				308F6F0C2180B6350094D6CB /* AddressTableViewCell.xib */,
 				3B3779ED219C6B2800F79683 /* BackupWordsReminderDrawerCell.swift */,
@@ -3272,7 +3272,7 @@
 				3B9779A7202E416700C9C933 /* Montserrat-Black.ttf in Resources */,
 				3B9779B0202E416700C9C933 /* Montserrat-ExtraBold.ttf in Resources */,
 				3BF88B85226F5C9400B94474 /* TransactionHistoryDetailInvalidCell.xib in Resources */,
-				B5D834082249680600C45ABE /* SettingSwitchCell.xib in Resources */,
+				B5D834082249680600C45ABE /* SettingSwitchWithInfoCell.xib in Resources */,
 				3B124E172020EB2B00431E2E /* Assets.xcassets in Resources */,
 				30B6632C21666B5C0011296C /* ActionableAlertViewController.storyboard in Resources */,
 				A220A97D20B5E10C00C30149 /* SettingsViewController.storyboard in Resources */,
@@ -3640,7 +3640,7 @@
 				A29CE0DC209B755C00761B91 /* ContactsTableViewHeader.swift in Sources */,
 				B5976AD521552F8500774073 /* WalletAddressesQueryTarget.swift in Sources */,
 				B54A420D207FAB6D005B40A9 /* TransactionDetailStatusLabel.swift in Sources */,
-				B5D834072249680600C45ABE /* SettingSwitchCell.swift in Sources */,
+				B5D834072249680600C45ABE /* SettingSwitchWithInfoCell.swift in Sources */,
 				B5D8340A224971E400C45ABE /* SettingsViewController+TableView.swift in Sources */,
 				B501022221F2325B00D42A71 /* UIColor+Init.swift in Sources */,
 				B52CC6A7221E401E00B00C9E /* CCMValidatedMetadata+CoreDataProperties.swift in Sources */,

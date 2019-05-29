@@ -33,8 +33,8 @@ extension SettingsViewController: UITableViewDataSource {
 
     switch cellVM.type {
     case .dustProtection:
-      cell = tableView.dequeue(SettingSwitchCell.self, for: indexPath)
-      (cell as? SettingSwitchCell)?.delegate = self
+      cell = tableView.dequeue(SettingSwitchWithInfoCell.self, for: indexPath)
+      (cell as? SettingSwitchWithInfoCell)?.delegate = self
     case .recoveryWords:
       cell = tableView.dequeue(SettingsRecoveryWordsCell.self, for: indexPath)
     default:
