@@ -46,10 +46,12 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate, CurrencyFormatta
           sender = UserIdentityBody(twitterCredentials: creds)
         }
 
+        let shouldSuppress = receiver.identityType == .twitter
         let inviteBody = RequestAddressBody(amount: outgoingInvitationDTO.btcPair,
                                             receiver: receiver,
                                             sender: sender,
-                                            requestId: UUID().uuidString.lowercased())
+                                            requestId: UUID().uuidString.lowercased(),
+                                            suppress: shouldSuppress)
         strongSelf.handleSuccessfulInviteVerification(with: inviteBody, outgoingInvitationDTO: outgoingInvitationDTO)
       case .failure(let error):
         strongSelf.handleFailure(error: error)
