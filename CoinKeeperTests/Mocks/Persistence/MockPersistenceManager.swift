@@ -145,6 +145,8 @@ class MockPersistenceManager: PersistenceManagerType {
     return userDefaultsManager.yearlyPriceHighNotificationIsEnabled()
   }
 
+  func updateYearlyPriceHighNotification(enabled: Bool) {}
+
   func defaultHeaders(in context: NSManagedObjectContext) -> Promise<DefaultRequestHeaders> {
     return Promise { _ in }
   }
