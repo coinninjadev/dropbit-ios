@@ -437,7 +437,9 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate, CurrencyFormatta
 
 extension AppCoordinator: TweetMethodViewControllerDelegate {
 
-  func viewControllerRequestedDropBitSendTweet(_ viewController: UIViewController, response: WalletAddressRequestResponse, tweetCompletion: @escaping TweetCompletionHandler) {
+  func viewControllerRequestedDropBitSendTweet(_ viewController: UIViewController,
+                                               response: WalletAddressRequestResponse,
+                                               tweetCompletion: @escaping TweetCompletionHandler) {
     patchAddressRequestAndDismiss(viewController, response: response, suppress: false, tweetCompletion: tweetCompletion)
   }
 
@@ -445,7 +447,10 @@ extension AppCoordinator: TweetMethodViewControllerDelegate {
     patchAddressRequestAndDismiss(viewController, response: response, suppress: true, tweetCompletion: nil)
   }
 
-  private func patchAddressRequestAndDismiss(_ viewController: UIViewController, response: WalletAddressRequestResponse, suppress: Bool, tweetCompletion: TweetCompletionHandler?) {
+  private func patchAddressRequestAndDismiss(_ viewController: UIViewController,
+                                             response: WalletAddressRequestResponse,
+                                             suppress: Bool,
+                                             tweetCompletion: TweetCompletionHandler?) {
     let body = WalletAddressRequest(suppress: suppress)
     self.networkManager.updateWalletAddressRequest(for: response.id, with: body)
       .done(on: .main) { response in
