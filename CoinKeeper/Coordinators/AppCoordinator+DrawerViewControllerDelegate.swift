@@ -33,9 +33,7 @@ extension AppCoordinator: DrawerViewControllerDelegate {
   func settingsButtonWasTouched() {
     analyticsManager.track(event: .settingsButtonPressed, with: nil)
     drawerController?.toggle(.left, animated: true, completion: nil)
-    let settingsViewController = SettingsViewController.makeFromStoryboard()
-    settingsViewController.mode = .settings
-    assignCoordinationDelegate(to: settingsViewController)
+    let settingsViewController = SettingsViewController.newInstance(with: self)
     let settingsNavigationController = CNNavigationController(rootViewController: settingsViewController)
     navigationController.present(settingsNavigationController, animated: true, completion: nil)
   }

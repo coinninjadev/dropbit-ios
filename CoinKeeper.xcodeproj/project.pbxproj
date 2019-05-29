@@ -314,6 +314,10 @@
 		3BCBFCBA229EB05000F633BA /* SettingsTitleLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BCBFCB9229EB05000F633BA /* SettingsTitleLabel.swift */; };
 		3BCBFCC0229EBA6800F633BA /* SupportViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BCBFCBF229EBA6800F633BA /* SupportViewControllerTests.swift */; };
 		3BCBFCC2229EBF2200F633BA /* AppCoordinator+SupportViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BCBFCC1229EBF2200F633BA /* AppCoordinator+SupportViewControllerDelegate.swift */; };
+		3BCBFCC6229EE91E00F633BA /* SettingsCellTitleLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BCBFCC5229EE91E00F633BA /* SettingsCellTitleLabel.swift */; };
+		3BCBFCC8229EF15400F633BA /* SettingsBaseCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BCBFCC7229EF15400F633BA /* SettingsBaseCell.swift */; };
+		3BCBFCCB229EF71D00F633BA /* SettingsRecoveryWordsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BCBFCC9229EF71D00F633BA /* SettingsRecoveryWordsCell.swift */; };
+		3BCBFCCC229EF71D00F633BA /* SettingsRecoveryWordsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3BCBFCCA229EF71D00F633BA /* SettingsRecoveryWordsCell.xib */; };
 		3BCC3BAF2295CBB100B8FB66 /* SharedPayloadManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BCC3BAE2295CBB100B8FB66 /* SharedPayloadManager.swift */; };
 		3BD013172272478300C92771 /* TransactionHistoryDetailValidCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3BD013162272478300C92771 /* TransactionHistoryDetailValidCell.xib */; };
 		3BD7B73120D66F12005057A7 /* HorizontallyPaginatedCollectionViewLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BD7B73020D66F12005057A7 /* HorizontallyPaginatedCollectionViewLayout.swift */; };
@@ -409,8 +413,6 @@
 		82BBAA00B578197D41A79491 /* Pods_DropBitTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84EF2F348873692AA156A7DB /* Pods_DropBitTests.framework */; };
 		9A1E74A331E80079D7804522 /* Pods_DropBitUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 937F2E4F5096CC2F5D9C8514 /* Pods_DropBitUITests.framework */; };
 		A200574720B5ED52007074D9 /* SettingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A200574620B5ED52007074D9 /* SettingCell.swift */; };
-		A200574920B5F07A007074D9 /* SettingsTableViewFooter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A200574820B5F07A007074D9 /* SettingsTableViewFooter.swift */; };
-		A200574B20B5F0F4007074D9 /* SettingsTableViewFooter.xib in Resources */ = {isa = PBXBuildFile; fileRef = A200574A20B5F0F4007074D9 /* SettingsTableViewFooter.xib */; };
 		A200574D20B5F70F007074D9 /* SettingCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A200574C20B5F70F007074D9 /* SettingCell.xib */; };
 		A200574F20B5FD68007074D9 /* AppCoordinator+SettingsViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A200574E20B5FD68007074D9 /* AppCoordinator+SettingsViewControllerDelegate.swift */; };
 		A200575520B6F2D0007074D9 /* Command.swift in Sources */ = {isa = PBXBuildFile; fileRef = A200575420B6F2D0007074D9 /* Command.swift */; };
@@ -1151,6 +1153,10 @@
 		3BCBFCB9229EB05000F633BA /* SettingsTitleLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTitleLabel.swift; sourceTree = "<group>"; };
 		3BCBFCBF229EBA6800F633BA /* SupportViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupportViewControllerTests.swift; sourceTree = "<group>"; };
 		3BCBFCC1229EBF2200F633BA /* AppCoordinator+SupportViewControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppCoordinator+SupportViewControllerDelegate.swift"; sourceTree = "<group>"; };
+		3BCBFCC5229EE91E00F633BA /* SettingsCellTitleLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsCellTitleLabel.swift; sourceTree = "<group>"; };
+		3BCBFCC7229EF15400F633BA /* SettingsBaseCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsBaseCell.swift; sourceTree = "<group>"; };
+		3BCBFCC9229EF71D00F633BA /* SettingsRecoveryWordsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsRecoveryWordsCell.swift; sourceTree = "<group>"; };
+		3BCBFCCA229EF71D00F633BA /* SettingsRecoveryWordsCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SettingsRecoveryWordsCell.xib; sourceTree = "<group>"; };
 		3BCC3BAE2295CBB100B8FB66 /* SharedPayloadManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedPayloadManager.swift; sourceTree = "<group>"; };
 		3BD013162272478300C92771 /* TransactionHistoryDetailValidCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TransactionHistoryDetailValidCell.xib; sourceTree = "<group>"; };
 		3BD7B73020D66F12005057A7 /* HorizontallyPaginatedCollectionViewLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HorizontallyPaginatedCollectionViewLayout.swift; sourceTree = "<group>"; };
@@ -1248,8 +1254,6 @@
 		86585F8563C4D658432BA834 /* Pods-DropBitUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DropBitUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-DropBitUITests/Pods-DropBitUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		937F2E4F5096CC2F5D9C8514 /* Pods_DropBitUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DropBitUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A200574620B5ED52007074D9 /* SettingCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingCell.swift; sourceTree = "<group>"; };
-		A200574820B5F07A007074D9 /* SettingsTableViewFooter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTableViewFooter.swift; sourceTree = "<group>"; };
-		A200574A20B5F0F4007074D9 /* SettingsTableViewFooter.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SettingsTableViewFooter.xib; sourceTree = "<group>"; };
 		A200574C20B5F70F007074D9 /* SettingCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SettingCell.xib; sourceTree = "<group>"; };
 		A200574E20B5FD68007074D9 /* AppCoordinator+SettingsViewControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppCoordinator+SettingsViewControllerDelegate.swift"; sourceTree = "<group>"; };
 		A200575420B6F2D0007074D9 /* Command.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Command.swift; sourceTree = "<group>"; };
@@ -2023,6 +2027,9 @@
 				3BEF229D2260DC78001F6D25 /* BuySpendCardCollectionViewCell.xib */,
 				3B5A889B228AF3D90082BBA4 /* TwitterUserTableViewCell.swift */,
 				3B5A889C228AF3D90082BBA4 /* TwitterUserTableViewCell.xib */,
+				3BCBFCC7229EF15400F633BA /* SettingsBaseCell.swift */,
+				3BCBFCC9229EF71D00F633BA /* SettingsRecoveryWordsCell.swift */,
+				3BCBFCCA229EF71D00F633BA /* SettingsRecoveryWordsCell.xib */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -2506,8 +2513,6 @@
 				A29CE0DD209B756E00761B91 /* ContactsTableViewHeader.xib */,
 				5B927C1F2077A12200DCDCAE /* DrawerTableViewHeader.swift */,
 				5B927C232078009F00DCDCAE /* DrawerTableViewHeader.xib */,
-				A200574820B5F07A007074D9 /* SettingsTableViewFooter.swift */,
-				A200574A20B5F0F4007074D9 /* SettingsTableViewFooter.xib */,
 				B584766F20E141BF00F5FE60 /* SettingsTableViewSectionHeader.swift */,
 				B584767120E141DC00F5FE60 /* SettingsTableViewSectionHeader.xib */,
 			);
@@ -2882,6 +2887,7 @@
 				3B5A88A1228B08FE0082BBA4 /* ContactCellPrimaryLabel.swift */,
 				3B5A88A3228B09260082BBA4 /* ContactCellSecondaryLabel.swift */,
 				3BCBFCB9229EB05000F633BA /* SettingsTitleLabel.swift */,
+				3BCBFCC5229EE91E00F633BA /* SettingsCellTitleLabel.swift */,
 			);
 			path = Labels;
 			sourceTree = "<group>";
@@ -3286,6 +3292,7 @@
 				3BF41AB2207506AC008B3D0A /* RequestPayViewController.storyboard in Resources */,
 				3B9779A6202E416700C9C933 /* Montserrat-BlackItalic.ttf in Resources */,
 				3B9779AE202E416700C9C933 /* Montserrat-SemiBold.ttf in Resources */,
+				3BCBFCCC229EF71D00F633BA /* SettingsRecoveryWordsCell.xib in Resources */,
 				3B9779A4202E416700C9C933 /* Montserrat-MediumItalic.ttf in Resources */,
 				3BD013172272478300C92771 /* TransactionHistoryDetailValidCell.xib in Resources */,
 				3B8ACA15225F96800020B684 /* GetBitcoinViewController.storyboard in Resources */,
@@ -3296,7 +3303,6 @@
 				5B927C242078009F00DCDCAE /* DrawerTableViewHeader.xib in Resources */,
 				3B6DCA1B2034B76F00B87EF9 /* KeypadDigitView.xib in Resources */,
 				3B9779AB202E416700C9C933 /* Montserrat-Bold.ttf in Resources */,
-				A200574B20B5F0F4007074D9 /* SettingsTableViewFooter.xib in Resources */,
 				A200574D20B5F70F007074D9 /* SettingCell.xib in Resources */,
 				A260E8D320FCFE96008343F9 /* TutorialViewController.storyboard in Resources */,
 				3B9779B2202E416700C9C933 /* Montserrat-Italic.ttf in Resources */,
@@ -3588,6 +3594,7 @@
 				B5FAD64A20A4D962008EB727 /* AuthPlugin.swift in Sources */,
 				A260E8CF20FCFE11008343F9 /* TutorialViewController.swift in Sources */,
 				3B82692320331189009B11EC /* UIFont+FontStrings.swift in Sources */,
+				3BCBFCC6229EE91E00F633BA /* SettingsCellTitleLabel.swift in Sources */,
 				B5B9132921419F84003A24E9 /* PhoneNumberKit+AreaCodes.swift in Sources */,
 				3B731D382253D97A0044B4F8 /* UIView+Fade.swift in Sources */,
 				3BF88B84226F5C9400B94474 /* TransactionHistoryDetailInvalidCell.swift in Sources */,
@@ -3606,6 +3613,7 @@
 				3B6FDADD205029A40091916A /* Sequence+Shuffled.swift in Sources */,
 				30B08FB821F23F3C0012B4CF /* AppCoordinator+SyncManagerTypeDelegate.swift in Sources */,
 				B54159CC20A5DEBF0048F495 /* CKMUser+CoreDataProperties.swift in Sources */,
+				3BCBFCC8229EF15400F633BA /* SettingsBaseCell.swift in Sources */,
 				230DE9FD207E786300CA8B03 /* NotificationToken.swift in Sources */,
 				3BEF348E22708E88002E4DB5 /* TransactionHistoryDetailValidCell.swift in Sources */,
 				B55D085221B72397007DD9E5 /* CKPhoneNumberParser.swift in Sources */,
@@ -3698,6 +3706,7 @@
 				B51AE4AA2093AED4008380CC /* String+Substrings.swift in Sources */,
 				B5EBFD11215C07270008EB4A /* AddressDataSource.swift in Sources */,
 				B56512F62153DDA500A5D044 /* WalletCheckInTarget.swift in Sources */,
+				3BCBFCCB229EF71D00F633BA /* SettingsRecoveryWordsCell.swift in Sources */,
 				B5C8F5C9216D39A300E3E85B /* DeviceEndpointResponse.swift in Sources */,
 				B54A421B2080066E005B40A9 /* TransactionDetailBottomButton.swift in Sources */,
 				B54A4219207FF38F005B40A9 /* TransactionDetailDateLabel.swift in Sources */,
@@ -4011,7 +4020,6 @@
 				B57AF8022268C78400E5B0A6 /* AppCoordinator+ShareTransactionViewControllerDelegate.swift in Sources */,
 				3BA360882090BAD900732C43 /* NSManagedObject+Init.swift in Sources */,
 				3B3F1103205700A6003F86EF /* OnboardingErrorLabel.swift in Sources */,
-				A200574920B5F07A007074D9 /* SettingsTableViewFooter.swift in Sources */,
 				B55D085421B723BE007DD9E5 /* CKBitcoinURLParser.swift in Sources */,
 				3BA9F601208F6CC50047C213 /* AppCoordinator+SendPaymentViewControllerDelegate.swift in Sources */,
 				3B1555E220D27C0300D6A70C /* TransactionVoutResponse.swift in Sources */,

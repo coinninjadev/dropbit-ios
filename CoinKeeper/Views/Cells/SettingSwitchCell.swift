@@ -8,38 +8,38 @@
 
 import UIKit
 
-class SettingSwitchCell: UITableViewCell {
+protocol SettingSwitchCellDelegate: AnyObject {
+  func tableViewCellDidSelectInfoButton(_ cell: UITableViewCell, viewModel: SettingsCellViewModel?)
+}
+
+class SettingSwitchCell: SettingsBaseCell {
 
   var viewModel: SettingsCellViewModel?
-
-  @IBOutlet var settingSwitch: UISwitch!
+  weak var delegate: SettingSwitchCellDelegate?
 
   // MARK: outlets
-  @IBOutlet var titleLabel: UILabel! {
-    didSet {
-      // These may be overridden by the SettingsCellViewModel
-      titleLabel.font = Theme.Font.settingTitle.font
-      titleLabel.textColor = Theme.Color.darkBlueText.color
-    }
-  }
+  @IBOutlet var titleLabel: SettingsCellTitleLabel!
+  @IBOutlet var settingSwitch: UISwitch!
+  @IBOutlet var infoButton: UIButton!
 
   @IBAction func toggle(_ sender: UISwitch) {
     viewModel?.command?.execute()
   }
 
+  @IBAction func showInfo() {
+    delegate?.tableViewCellDidSelectInfoButton(self, viewModel: viewModel)
+  }
+
   // MARK: view instantiation
   override func awakeFromNib() {
     super.awakeFromNib()
-    selectionStyle = .none
-    backgroundColor = Theme.Color.lightGrayBackground.color
-
     settingSwitch.onTintColor = Theme.Color.primaryActionButton.color
     settingSwitch.isOn = false
   }
 
-  func load(with viewModel: SettingsCellViewModel) {
+  override func load(with viewModel: SettingsCellViewModel) {
     self.viewModel = viewModel
-    titleLabel.attributedText = viewModel.type.attributedTitle
+    titleLabel.text = viewModel.type.titleText
     self.settingSwitch.isOn = viewModel.type.switchIsOn
   }
 

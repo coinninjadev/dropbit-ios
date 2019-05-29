@@ -98,7 +98,8 @@ extension SupportViewController: UITableViewDelegate, UITableViewDataSource {
       withIdentifier: SettingsTableViewSectionHeader.reuseIdentifier) as? SettingsTableViewSectionHeader else {
         return nil
     }
-    headerView.titleLabel.text = "SUPPORT"
+    let viewModel = SettingsHeaderFooterViewModel(title: "SUPPORT")
+    headerView.load(with: viewModel)
     return headerView
   }
 

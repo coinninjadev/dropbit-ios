@@ -46,6 +46,11 @@ class SupportViewControllerTests: XCTestCase {
     }
   }
 
+  func testTableViewDelegateAndDataSource() {
+    XCTAssertTrue(sut.tableView.delegate === sut, "delegate should be sut")
+    XCTAssertTrue(sut.tableView.dataSource === sut, "dataSource should be sut")
+  }
+
   // MARK: buttons contain actions
   func testCloseButtonsContainsAction() {
     let actions = sut.closeButton.actions(forTarget: sut, forControlEvent: .touchUpInside) ?? []

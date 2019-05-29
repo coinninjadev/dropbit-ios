@@ -12,81 +12,68 @@ import XCTest
 
 class SettingsViewControllerTests: XCTestCase {
   var sut: SettingsViewController!
+  var mockCoordinator: MockCoordinator!
 
   override func setUp() {
     super.setUp()
-    self.sut = SettingsViewController.makeFromStoryboard()
-    _ = self.sut.view
+    mockCoordinator = MockCoordinator()
+    sut = SettingsViewController.newInstance(with: mockCoordinator)
+    _ = sut.view
   }
 
   override func tearDown() {
+    mockCoordinator = nil
     self.sut = nil
     super.tearDown()
   }
 
   // MARK: outlets
   func testOutletsAreConnected() {
-    XCTAssertNotNil(self.sut.settingsTitleLabel, "settingsTitleLabel should be connected")
     XCTAssertNotNil(self.sut.closeButton, "closeButton should be connected")
     XCTAssertNotNil(self.sut.settingsTableView, "settingsTableView should be connected")
     XCTAssertNotNil(self.sut.deleteWalletButton, "deleteWalletButton should be connected")
     XCTAssertNotNil(self.sut.resyncBlockchainButton, "resyncBlockchainButton should be connected")
-    XCTAssertNotNil(self.sut.sendDebuggingInfoButton, "sendDebuggingInfoButton should be connected")
   }
 
   // MARK: initial state
   func testTableViewDelegateDataSourceAreConnected() {
-    XCTAssertNotNil(self.sut.settingsTableView.delegate, "tableView delegate should not be nil")
-    XCTAssertNotNil(self.sut.settingsTableView.dataSource, "tableView dataSource should not be nil")
-    XCTAssertTrue(self.sut.settingsTableView.delegate === self.sut, "delegate should be sut")
-    XCTAssertTrue(self.sut.settingsTableView.dataSource === self.sut, "dataSource should be sut")
-    XCTAssertFalse(self.sut.resyncBlockchainButton.isHidden, "sync blockchain button should be visible by default")
-    XCTAssertTrue(self.sut.sendDebuggingInfoButton.isHidden, "send debugging button should be hidden by default")
-  }
-
-  func testSupportModeInitialState() {
-    sut.mode = .support
-    sut.viewDidLoad() // call again to invoke simulating view loading
-    XCTAssertTrue(self.sut.resyncBlockchainButton.isHidden, "sync blockchain button should be visible by default")
-    XCTAssertFalse(self.sut.sendDebuggingInfoButton.isHidden, "send debugging button should be hidden by default")
+    XCTAssertTrue(self.sut.settingsTableView.delegate === sut, "delegate should be sut")
+    XCTAssertTrue(self.sut.settingsTableView.dataSource === sut, "dataSource should be sut")
   }
 
   // MARK: buttons contain actions
   func testCloseButtonContainsAction() {
-    let actions = self.sut.closeButton.actions(forTarget: self.sut, forControlEvent: .touchUpInside) ?? []
-    let closeSelector = #selector(SettingsViewController.closeButtonWasTouched).description
+    let actions = sut.closeButton.actions(forTarget: sut, forControlEvent: .touchUpInside) ?? []
+    let closeSelector = #selector(SettingsViewController.close).description
     XCTAssertTrue(actions.contains(closeSelector), "closeButton should contain action")
   }
 
   func testDeleteWalletButtonContainsAction() {
-    let actions = self.sut.deleteWalletButton.actions(forTarget: self.sut, forControlEvent: .touchUpInside) ?? []
+    let actions = sut.deleteWalletButton.actions(forTarget: sut, forControlEvent: .touchUpInside) ?? []
     let selector = #selector(SettingsViewController.deleteWallet(_:)).description
     XCTAssertTrue(actions.contains(selector), "deleteWalletButton should contain action")
   }
 
   func testResyncBlockchainButtonContainsAction() {
-    let actions = self.sut.resyncBlockchainButton.actions(forTarget: self.sut, forControlEvent: .touchUpInside) ?? []
+    let actions = sut.resyncBlockchainButton.actions(forTarget: sut, forControlEvent: .touchUpInside) ?? []
     let selector = #selector(SettingsViewController.resyncBlockchain(_:)).description
     XCTAssertTrue(actions.contains(selector), "resyncBlockchainButton should contain action")
   }
 
   // MARK: actions produce results
   func testCloseButtonTellsDelegate() {
-    let mockCoordinator = MockCoordinator()
-    self.sut.generalCoordinationDelegate = mockCoordinator
-
     sut.closeButton.sendActions(for: .touchUpInside)
-
     XCTAssertTrue(mockCoordinator.didSelectCloseWasCalled, "should tell delegate that close was tapped")
   }
 
   func testResyncBlockchainButtonTellsDelegate() {
-    let mockCoordinator = MockCoordinator()
-    sut.generalCoordinationDelegate = mockCoordinator
-
     sut.resyncBlockchainButton.sendActions(for: .touchUpInside)
-
     XCTAssertTrue(mockCoordinator.resyncBlockchainWasCalled, "should tell delegate that resync blockchain was tapped")
+  }
+
+  func testDeleteWalletButtonTellsDelegate() {
+    sut.deleteWalletButton.sendActions(for: .touchUpInside)
+    XCTAssertTrue(mockCoordinator.deleteWalletWasRequested, "should tell delegate to delete wallet")
   }
 
   // MARK: mock coordinator
@@ -105,7 +92,11 @@ class SettingsViewControllerTests: XCTestCase {
     }
 
     func viewControllerDidSelectVerifyPhone(_ viewController: UIViewController) {}
-    func viewControllerDidRequestDeleteWallet(_ viewController: UIViewController, completion: @escaping () -> Void) {}
+
+    var deleteWalletWasRequested = false
+    func viewControllerDidRequestDeleteWallet(_ viewController: UIViewController, completion: @escaping () -> Void) {
+      deleteWalletWasRequested = true
+    }
     func viewControllerDidConfirmDeleteWallet(_ viewController: UIViewController) {}
     func viewController(_ viewController: UIViewController, didRequestOpenURL url: URL) {}
     func viewControllerDidSelectRecoveryWords(_ viewController: UIViewController) {}

@@ -21,30 +21,16 @@ protocol SettingsViewControllerDelegate: ViewControllerDismissable {
   func viewControllerDidSelectRecoveryWords(_ viewController: UIViewController)
   func viewController(_ viewController: UIViewController, didRequestOpenURL url: URL)
   func viewControllerResyncBlockchain(_ viewController: UIViewController)
-  func viewControllerSendDebuggingInfo(_ viewController: UIViewController)
   func viewController(_ viewController: UIViewController, didEnableDustProtection didEnable: Bool)
   func viewController(_ viewController: UIViewController, didEnableYearlyHighNotification didEnable: Bool)
 }
 
-enum SettingsViewControllerMode: String {
-  case settings
-  case support
-}
-
 class SettingsViewController: BaseViewController, StoryboardInitializable {
 
-  var mode: SettingsViewControllerMode = .settings
   var viewModel: SettingsViewModel!
 
   var coordinationDelegate: SettingsViewControllerDelegate? {
     return generalCoordinationDelegate as? SettingsViewControllerDelegate
-  }
-
-  @IBOutlet var settingsTitleLabel: UILabel! {
-    didSet {
-      settingsTitleLabel.font = Theme.Font.onboardingSubtitle.font
-      settingsTitleLabel.textColor = Theme.Color.darkBlueText.color
-    }
   }
 
   @IBOutlet var closeButton: UIButton!
@@ -63,11 +49,6 @@ class SettingsViewController: BaseViewController, StoryboardInitializable {
     }
   }
   @IBOutlet var resyncBlockchainButton: PrimaryActionButton!
-  @IBOutlet var sendDebuggingInfoButton: PrimaryActionButton! {
-    didSet {
-      sendDebuggingInfoButton.setTitle("SEND DEBUG INFO", for: .normal)
-    }
-  }
 
   @IBAction func deleteWallet(_ sender: Any) {
     coordinationDelegate?.viewControllerDidRequestDeleteWallet(self, completion: {
@@ -80,27 +61,24 @@ class SettingsViewController: BaseViewController, StoryboardInitializable {
     coordinationDelegate?.viewControllerResyncBlockchain(self)
   }
 
-  @IBAction func sendDebuggingInfo(_ sender: Any) {
-    coordinationDelegate?.viewControllerSendDebuggingInfo(self)
+  @IBAction func close() {
+    coordinationDelegate?.viewControllerDidSelectClose(self)
   }
 
-  required init?(coder aDecoder: NSCoder) {
-    super.init(coder: aDecoder)
-    initalize()
-  }
-
-  private func initalize() {
-    modalPresentationStyle = .formSheet
+  static func newInstance(with delegate: SettingsViewControllerDelegate) -> SettingsViewController {
+    let controller = SettingsViewController.makeFromStoryboard()
+    controller.generalCoordinationDelegate = delegate
+    controller.modalPresentationStyle = .formSheet
+    return controller
   }
 
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    updateUIForMode()
     viewModel = createViewModel()
     settingsTableView.registerNib(cellType: SettingCell.self)
+    settingsTableView.registerNib(cellType: SettingsRecoveryWordsCell.self)
     settingsTableView.registerNib(cellType: SettingSwitchCell.self)
-    settingsTableView.registerHeaderFooter(headerFooterType: SettingsTableViewFooter.self)
     settingsTableView.registerHeaderFooter(headerFooterType: SettingsTableViewSectionHeader.self)
     settingsTableView.dataSource = self
     settingsTableView.delegate = self
@@ -115,37 +93,23 @@ class SettingsViewController: BaseViewController, StoryboardInitializable {
     navigationController?.isNavigationBarHidden = true
   }
 
-  private func backedUpWords() -> Bool {
+  private func isWalletBackedUp() -> Bool {
     return coordinationDelegate?.verifyIfWordsAreBackedUp() ?? false
   }
 
   private func createViewModel() -> SettingsViewModel {
     let sectionViewModels: [SettingsSectionViewModel]
-    switch self.mode {
-    case .settings:
       let walletSection = walletSectionViewModel()
       let licensesSection = SettingsSectionViewModel(
-        headerViewModel: SettingsHeaderFooterViewModel(title: "LICENSES", command: nil),
-        cellViewModels: [SettingsCellViewModel(type: .licenses, command: openSourceCommand)],
-        footerViewModel: nil)
+        headerViewModel: SettingsHeaderFooterViewModel(title: "LICENSES"),
+        cellViewModels: [SettingsCellViewModel(type: .licenses, command: openSourceCommand)])
       sectionViewModels = [walletSection, licensesSection]
-
-    case .support:
-      let types: [SettingsCellType] = [.faqs, .contactUs, .termsOfUse, .privacyPolicy]
-      let cellViewModels = types.map { SettingsCellViewModel(type: $0, command: self.openURLCommand(for: $0)) }
-      sectionViewModels = [
-        SettingsSectionViewModel(headerViewModel: SettingsHeaderFooterViewModel(title: "SUPPORT", command: nil),
-                                 cellViewModels: cellViewModels,
-                                 footerViewModel: nil)
-      ]
-
-    }
 
     return SettingsViewModel(sectionViewModels: sectionViewModels)
   }
 
   private func walletSectionViewModel() -> SettingsSectionViewModel {
-    let recoveryWordsVM = SettingsCellViewModel(type: .recoveryWords(backedUpWords()), command: recoveryWordsCommand)
+    let recoveryWordsVM = SettingsCellViewModel(type: .recoveryWords(isWalletBackedUp()), command: recoveryWordsCommand)
     let dustProtectionEnabled = self.coordinationDelegate?.dustProtectionIsEnabled() ?? false
     let dustCellType = SettingsCellType.dustProtection(enabled: dustProtectionEnabled)
     let dustProtectionVM = SettingsCellViewModel(type: dustCellType, command: openURLCommand(for: dustCellType))
@@ -154,27 +118,8 @@ class SettingsViewController: BaseViewController, StoryboardInitializable {
     let yearlyHighType = SettingsCellType.yearlyHighPushNotification(enabled: isYearlyHighPushEnabled)
     let yearlyHighViewModel = SettingsCellViewModel(type: yearlyHighType, command: yearlyHighPriceCommand)
     return SettingsSectionViewModel(
-      headerViewModel: SettingsHeaderFooterViewModel(title: "WALLET", command: nil),
-      cellViewModels: [recoveryWordsVM, dustProtectionVM, yearlyHighViewModel],
-      footerViewModel: nil)
-  }
-
-  private func updateUIForMode() {
-    settingsTitleLabel.text = mode.rawValue.uppercased()
-    deleteWalletButton.isHidden = (mode != .settings)
-
-    switch mode {
-    case .settings:
-      sendDebuggingInfoButton.isHidden = true
-      resyncBlockchainButton.isHidden = false
-    case .support:
-      sendDebuggingInfoButton.isHidden = false
-      resyncBlockchainButton.isHidden = true
-    }
-  }
-
-  @IBAction func closeButtonWasTouched() {
-    coordinationDelegate?.viewControllerDidSelectClose(self)
+      headerViewModel: SettingsHeaderFooterViewModel(title: "WALLET"),
+      cellViewModels: [recoveryWordsVM, dustProtectionVM, yearlyHighViewModel])
   }
 
 }
@@ -200,8 +145,9 @@ extension SettingsViewController {
   func openURLCommand(for type: SettingsCellType) -> Command {
     return Command(action: { [weak self] in
       guard let localSelf = self else { return }
-      guard let url = type.url else { return }
-      localSelf.coordinationDelegate?.viewController(localSelf, didRequestOpenURL: url)
+      guard let coordinator = localSelf.coordinationDelegate else { return }
+      let didEnable = !coordinator.dustProtectionIsEnabled()
+      coordinator.viewController(localSelf, didEnableDustProtection: didEnable)
     })
   }
 
@@ -213,4 +159,16 @@ extension SettingsViewController {
     })
   }
 
+}
+
+extension SettingsViewController: SettingSwitchCellDelegate {
+  func tableViewCellDidSelectInfoButton(_ cell: UITableViewCell, viewModel: SettingsCellViewModel?) {
+    guard let vm = viewModel else { return }
+    switch vm.type {
+    case .dustProtection:
+      guard let url = vm.type.url else { return }
+      coordinationDelegate?.viewController(self, didRequestOpenURL: url)
+    default: break
+    }
+  }
 }

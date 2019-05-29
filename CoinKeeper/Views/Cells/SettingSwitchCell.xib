@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -19,19 +19,24 @@
                 <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oXL-5T-KeW">
-                        <rect key="frame" x="32" y="11.5" width="42" height="21"/>
-                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                        <nil key="textColor"/>
-                        <nil key="highlightedColor"/>
-                    </label>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="questionMarkIcon" translatesAutoresizingMaskIntoConstraints="NO" id="Gob-vH-VVn">
-                        <rect key="frame" x="82" y="12.5" width="19" height="19"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="19" id="0hk-g4-EUb"/>
-                            <constraint firstAttribute="width" constant="19" id="Rxi-pH-u1n"/>
-                        </constraints>
-                    </imageView>
+                    <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="LAz-QC-mpX">
+                        <rect key="frame" x="32" y="11" width="72" height="22"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oXL-5T-KeW" customClass="SettingsCellTitleLabel" customModule="DropBit" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="0.0" width="42" height="22"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IAk-GW-VGW">
+                                <rect key="frame" x="50" y="0.0" width="22" height="22"/>
+                                <state key="normal" image="questionMarkIcon"/>
+                                <connections>
+                                    <action selector="showInfo" destination="KGk-i7-Jjw" eventType="touchUpInside" id="rYz-AK-l5k"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                    </stackView>
                     <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4pp-E9-iub">
                         <rect key="frame" x="245" y="6.5" width="51" height="31"/>
                         <connections>
@@ -40,19 +45,16 @@
                     </switch>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="Gob-vH-VVn" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="0PP-J7-nAu"/>
-                    <constraint firstItem="Gob-vH-VVn" firstAttribute="leading" secondItem="oXL-5T-KeW" secondAttribute="trailing" constant="8" id="afm-fh-ufT"/>
-                    <constraint firstItem="4pp-E9-iub" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="Gob-vH-VVn" secondAttribute="trailing" constant="8" id="n9j-vm-VS8"/>
+                    <constraint firstAttribute="trailing" secondItem="4pp-E9-iub" secondAttribute="trailing" constant="26" id="JVX-KI-Bdv"/>
+                    <constraint firstItem="LAz-QC-mpX" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="32" id="KVr-2x-bPT"/>
+                    <constraint firstItem="LAz-QC-mpX" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="P0P-o1-EpR"/>
+                    <constraint firstItem="4pp-E9-iub" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="LAz-QC-mpX" secondAttribute="trailing" constant="8" id="Rkq-Kt-Pc3"/>
+                    <constraint firstItem="4pp-E9-iub" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="xiF-W9-AyY"/>
                 </constraints>
             </tableViewCellContentView>
-            <constraints>
-                <constraint firstItem="oXL-5T-KeW" firstAttribute="leading" secondItem="njF-e1-oar" secondAttribute="leading" constant="32" id="2td-DR-u0N"/>
-                <constraint firstItem="oXL-5T-KeW" firstAttribute="centerY" secondItem="njF-e1-oar" secondAttribute="centerY" id="LFl-pr-MNZ"/>
-                <constraint firstItem="4pp-E9-iub" firstAttribute="centerY" secondItem="njF-e1-oar" secondAttribute="centerY" id="PkI-j1-2Fo"/>
-                <constraint firstItem="njF-e1-oar" firstAttribute="trailing" secondItem="4pp-E9-iub" secondAttribute="trailing" constant="26" id="u35-aQ-Pqq"/>
-            </constraints>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
+                <outlet property="infoButton" destination="IAk-GW-VGW" id="73k-HR-Gdv"/>
                 <outlet property="settingSwitch" destination="4pp-E9-iub" id="Psy-gE-YFe"/>
                 <outlet property="titleLabel" destination="oXL-5T-KeW" id="68F-yj-Nmc"/>
             </connections>

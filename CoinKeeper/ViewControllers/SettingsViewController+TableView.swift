@@ -29,30 +29,35 @@ extension SettingsViewController: UITableViewDataSource {
 
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     guard let cellVM = cellViewModel(for: indexPath) else { return UITableViewCell() }
+    let cell: SettingsBaseCell
+
     switch cellVM.type {
     case .dustProtection:
-      let cell = tableView.dequeue(SettingSwitchCell.self, for: indexPath)
-      cell.load(with: cellVM)
-      return cell
-
+      cell = tableView.dequeue(SettingSwitchCell.self, for: indexPath)
+      (cell as? SettingSwitchCell)?.delegate = self
+    case .recoveryWords:
+      cell = tableView.dequeue(SettingsRecoveryWordsCell.self, for: indexPath)
     default:
-      let cell = tableView.dequeue(SettingCell.self, for: indexPath)
-      cell.load(with: cellVM)
-      return cell
+      cell = tableView.dequeue(SettingCell.self, for: indexPath)
     }
+
+    cell.load(with: cellVM)
+    return cell
   }
 }
 
 extension SettingsViewController: UITableViewDelegate {
 
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    let cellVM = cellViewModel(for: indexPath)
-    cellVM?.command?.execute()
-  }
-
-  func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-    let sectionVM = sectionViewModel(for: section)
-    return (sectionVM?.footerViewModel != nil) ? 100.0 : 0
+    guard let cellVM = cellViewModel(for: indexPath) else { return }
+    guard let coordinator = coordinationDelegate else { return }
+    switch cellVM.type {
+    case .dustProtection:
+      let didEnable = !coordinator.dustProtectionIsEnabled()
+      coordinationDelegate?.viewController(self, didEnableDustProtection: didEnable)
+    default:
+      cellVM.command?.execute()
+    }
   }
 
   func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
@@ -75,17 +80,4 @@ extension SettingsViewController: UITableViewDelegate {
 
     return headerView
   }
-
-  func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-    guard let footerModel = sectionViewModel(for: section)?.footerViewModel else { return nil }
-    guard let footerView: SettingsTableViewFooter = tableView.dequeueReusableHeaderFooterView(
-      withIdentifier: SettingsTableViewFooter.reuseIdentifier) as? SettingsTableViewFooter else {
-        return nil
-    }
-
-    footerView.load(with: footerModel)
-
-    return footerView
-  }
-
 }
