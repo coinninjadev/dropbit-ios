@@ -22,6 +22,11 @@ class SuccessFailViewController: BaseViewController, StoryboardInitializable {
     reloadViewWithModel()
   }
 
+  func setURL(_ url: URL?) {
+    self.viewModel.url = url
+    reloadViewWithModel()
+  }
+
   var viewModel: SuccessFailViewModel = SuccessFailViewModel(mode: .pending)
 
   var coordinationDelegate: SuccessFailViewControllerDelegate? {
@@ -90,7 +95,7 @@ class SuccessFailViewController: BaseViewController, StoryboardInitializable {
     reloadViewWithModel()
   }
 
-  func reloadViewWithModel() {
+  private func reloadViewWithModel() {
     guard viewIfLoaded != nil else { return }
 
     DispatchQueue.main.async {
@@ -109,6 +114,8 @@ class SuccessFailViewController: BaseViewController, StoryboardInitializable {
     subtitleLabel.textColor = Theme.Color.grayText.color
     subtitleLabel.isHidden = !vm.shouldShowSubtitle
     urlButton.isHidden = !vm.shouldShowURLButton
+    urlButton.setTitle(vm.urlButtonTitle, for: .normal)
+    urlButton.setTitleColor(Theme.Color.primaryActionButton.color, for: .normal)
 
     actionButton.style = vm.primaryButtonStyle
     actionButton.setTitle(vm.primaryButtonTitle, for: .normal)
