@@ -163,6 +163,18 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate, CurrencyFormatta
       do {
         try context.save()
         self.set(mode: .success, for: successFailVC)
+
+        if case let .twitter(twitterContact) = invitationDTO.contact.dropBitType {
+          DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+            if let topVC = self.navigationController.topViewController() {
+              let tweetMethodVC = TweetMethodViewController.newInstance(twitterRecipient: twitterContact,
+                                                                        addressRequestResponse: response,
+                                                                        delegate: self)
+              topVC.present(tweetMethodVC, animated: true, completion: nil)
+            }
+          }
+        }
+
       } catch {
         os_log("failed to save context in %@.\n%@", log: logger, type: .error, #function, error.localizedDescription)
         self.set(mode: .failure, for: successFailVC)
