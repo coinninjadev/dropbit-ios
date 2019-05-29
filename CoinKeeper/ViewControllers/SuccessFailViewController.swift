@@ -125,7 +125,6 @@ class SuccessFailViewController: BaseViewController, StoryboardInitializable {
     urlButton.style = .darkBlue
     urlButton.isHidden = !vm.shouldShowURLButton
     urlButton.setTitle(vm.urlButtonTitle, for: .normal)
-    urlButton.setTitleColor(Theme.Color.primaryActionButton.color, for: .normal)
 
     actionButton.style = vm.primaryButtonStyle
     actionButton.setTitle(vm.primaryButtonTitle, for: .normal)

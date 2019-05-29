@@ -43,27 +43,41 @@
                                     <constraint firstAttribute="width" constant="127" id="xsY-ox-8o0"/>
                                 </constraints>
                             </view>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="TIc-PE-BH9">
-                                <rect key="frame" x="16" y="389" width="343" height="190"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aNZ-9l-p9c" userLabel="Stack Container">
+                                <rect key="frame" x="40" y="405" width="295" height="174"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pzc-dT-I6R">
-                                        <rect key="frame" x="0.0" y="0.0" width="343" height="132"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <nil key="textColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KAq-x7-Z9m" customClass="PrimaryActionButton" customModule="DropBit" customModuleProvider="target">
-                                        <rect key="frame" x="25" y="140" width="293" height="50"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="50" id="fSv-Wx-Xr4"/>
-                                        </constraints>
-                                        <state key="normal" title="Button"/>
-                                        <connections>
-                                            <action selector="urlButtonWasTouched:" destination="6uW-kN-tKT" eventType="touchUpInside" id="yQ1-0S-6cs"/>
-                                        </connections>
-                                    </button>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalCentering" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="TIc-PE-BH9">
+                                        <rect key="frame" x="0.0" y="0.0" width="295" height="174"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pzc-dT-I6R">
+                                                <rect key="frame" x="0.0" y="0.0" width="295" height="124"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KAq-x7-Z9m" customClass="PrimaryActionButton" customModule="DropBit" customModuleProvider="target">
+                                                <rect key="frame" x="72.5" y="124" width="150" height="50"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="150" id="d0q-eY-oVb"/>
+                                                    <constraint firstAttribute="height" constant="50" id="fSv-Wx-Xr4"/>
+                                                </constraints>
+                                                <state key="normal" title="Button"/>
+                                                <connections>
+                                                    <action selector="urlButtonWasTouched:" destination="6uW-kN-tKT" eventType="touchUpInside" id="yQ1-0S-6cs"/>
+                                                </connections>
+                                            </button>
+                                        </subviews>
+                                    </stackView>
                                 </subviews>
-                            </stackView>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstItem="TIc-PE-BH9" firstAttribute="leading" secondItem="aNZ-9l-p9c" secondAttribute="leading" id="FmY-qg-oE6"/>
+                                    <constraint firstItem="TIc-PE-BH9" firstAttribute="top" relation="greaterThanOrEqual" secondItem="aNZ-9l-p9c" secondAttribute="top" id="HKW-Dd-vI2"/>
+                                    <constraint firstItem="TIc-PE-BH9" firstAttribute="centerY" secondItem="aNZ-9l-p9c" secondAttribute="centerY" id="Z4u-q0-eeY"/>
+                                    <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="TIc-PE-BH9" secondAttribute="bottom" id="bxU-IO-fu3"/>
+                                    <constraint firstAttribute="trailing" secondItem="TIc-PE-BH9" secondAttribute="trailing" id="ose-xN-krT"/>
+                                </constraints>
+                            </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TcY-dE-XeF" customClass="PrimaryActionButton" customModule="DropBit" customModuleProvider="target">
                                 <rect key="frame" x="41" y="587" width="293" height="51"/>
                                 <constraints>
@@ -79,17 +93,15 @@
                         <constraints>
                             <constraint firstItem="v0v-YA-VV3" firstAttribute="trailing" secondItem="OQm-mR-5Li" secondAttribute="trailing" constant="19" id="7tI-nn-0MW"/>
                             <constraint firstItem="v0v-YA-VV3" firstAttribute="trailing" secondItem="TcY-dE-XeF" secondAttribute="trailing" constant="41" id="B1Q-A4-ehO"/>
+                            <constraint firstItem="aNZ-9l-p9c" firstAttribute="top" secondItem="McW-pv-Feo" secondAttribute="bottom" constant="8" id="B8Z-ig-s1P"/>
                             <constraint firstItem="v0v-YA-VV3" firstAttribute="bottom" secondItem="TcY-dE-XeF" secondAttribute="bottom" constant="29" id="BUq-IY-Igv"/>
-                            <constraint firstItem="McW-pv-Feo" firstAttribute="bottom" secondItem="TIc-PE-BH9" secondAttribute="top" constant="8" id="DcU-oG-rbf"/>
-                            <constraint firstItem="KAq-x7-Z9m" firstAttribute="leading" secondItem="TcY-dE-XeF" secondAttribute="leading" id="DdI-jv-yoB"/>
+                            <constraint firstItem="aNZ-9l-p9c" firstAttribute="leading" secondItem="v0v-YA-VV3" secondAttribute="leading" constant="40" id="CNK-jy-KcA"/>
                             <constraint firstItem="TcY-dE-XeF" firstAttribute="leading" secondItem="v0v-YA-VV3" secondAttribute="leading" constant="41" id="Kas-w4-S89"/>
                             <constraint firstItem="OQm-mR-5Li" firstAttribute="top" secondItem="v0v-YA-VV3" secondAttribute="top" constant="19" id="U6V-q3-Pdh"/>
-                            <constraint firstItem="KAq-x7-Z9m" firstAttribute="trailing" secondItem="TcY-dE-XeF" secondAttribute="trailing" id="aCp-o9-Xc0"/>
-                            <constraint firstItem="TcY-dE-XeF" firstAttribute="top" secondItem="TIc-PE-BH9" secondAttribute="bottom" constant="8" id="fch-Sx-v2U"/>
-                            <constraint firstItem="TIc-PE-BH9" firstAttribute="leading" secondItem="v0v-YA-VV3" secondAttribute="leading" constant="16" id="fsp-la-q2C"/>
                             <constraint firstItem="McW-pv-Feo" firstAttribute="top" secondItem="UjV-di-5WC" secondAttribute="bottom" constant="30" id="ow3-aF-ECa"/>
                             <constraint firstItem="McW-pv-Feo" firstAttribute="centerY" secondItem="XXc-7M-g9R" secondAttribute="centerY" id="vTf-dD-9dq"/>
-                            <constraint firstItem="v0v-YA-VV3" firstAttribute="trailing" secondItem="TIc-PE-BH9" secondAttribute="trailing" constant="16" id="wd5-xq-XKG"/>
+                            <constraint firstItem="v0v-YA-VV3" firstAttribute="trailing" secondItem="aNZ-9l-p9c" secondAttribute="trailing" constant="40" id="voy-l9-cNg"/>
+                            <constraint firstItem="TcY-dE-XeF" firstAttribute="top" secondItem="aNZ-9l-p9c" secondAttribute="bottom" constant="8" id="vxl-hf-mUe"/>
                             <constraint firstItem="McW-pv-Feo" firstAttribute="centerX" secondItem="XXc-7M-g9R" secondAttribute="centerX" id="yRd-4j-hZJ"/>
                             <constraint firstItem="UjV-di-5WC" firstAttribute="centerX" secondItem="XXc-7M-g9R" secondAttribute="centerX" id="yk5-ft-mE0"/>
                         </constraints>
@@ -106,7 +118,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="qxk-0z-NPA" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1449" y="-192"/>
+            <point key="canvasLocation" x="-1476" y="-562"/>
         </scene>
     </scenes>
     <resources>
