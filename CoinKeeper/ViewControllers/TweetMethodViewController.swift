@@ -10,7 +10,7 @@ import UIKit
 
 typealias TweetCompletionHandler = (_ tweetId: String?) -> Void
 
-protocol TweetMethodViewControllerDelegate: AnyObject {
+protocol TweetMethodViewControllerDelegate: ViewControllerDismissable {
   func viewControllerRequestedDropBitSendTweet(_ viewController: UIViewController,
                                                response: WalletAddressRequestResponse,
                                                tweetCompletion: @escaping TweetCompletionHandler)
@@ -24,6 +24,7 @@ class TweetMethodViewController: BaseViewController, StoryboardInitializable {
   private var recipient: TwitterContactType!
   private var addressRequestResponse: WalletAddressRequestResponse!
   private var tweetCompletion: TweetCompletionHandler!
+  private var receiverNotifiedRecently = false // Twitter and our server limit how often we can tweet at each user
 
   static func newInstance(twitterRecipient: TwitterContactType,
                           addressRequestResponse: WalletAddressRequestResponse,
@@ -32,6 +33,7 @@ class TweetMethodViewController: BaseViewController, StoryboardInitializable {
     let vc = TweetMethodViewController.makeFromStoryboard()
     vc.recipient = twitterRecipient
     vc.addressRequestResponse = addressRequestResponse
+    vc.receiverNotifiedRecently = addressRequestResponse.notificationWasDuplicate
     vc.tweetCompletion = tweetCompletion
     vc.delegate = delegate
     vc.modalTransitionStyle = .crossDissolve
@@ -48,11 +50,15 @@ class TweetMethodViewController: BaseViewController, StoryboardInitializable {
   @IBOutlet var manualTweetButton: PrimaryActionButton!
 
   @IBAction func performDropBitTweet(_ sender: Any) {
-    delegate?.viewControllerRequestedDropBitSendTweet(
-      self,
-      response: addressRequestResponse,
-      tweetCompletion: tweetCompletion
-    )
+    if receiverNotifiedRecently {
+      delegate?.viewControllerDidSelectClose(self)
+    } else {
+      delegate?.viewControllerRequestedDropBitSendTweet(
+        self,
+        response: addressRequestResponse,
+        tweetCompletion: tweetCompletion
+      )
+    }
   }
 
   @IBAction func performManualTweet(_ sender: Any) {
@@ -82,16 +88,40 @@ class TweetMethodViewController: BaseViewController, StoryboardInitializable {
 
     messageLabel.font = Theme.Font.tweetMethodMessage.font
     messageLabel.textColor = Theme.Color.darkBlueText.color
-    messageLabel.text = """
-    You’ve sent Bitcoin to \(recipient.displayHandle) on Twitter.
-    You can notify the receiver with a tweet or to maintain privacy
-    we can notify them with a tweet from our account.
-    """.removingMultilineLineBreaks()
+    messageLabel.text = messageText(with: recipient)
 
     dropBitTweetButton.style = .darkBlue
     manualTweetButton.style = .standard
-    dropBitTweetButton.setTitle("LET DROPBIT SEND THE TWEET", for: .normal)
-    manualTweetButton.setTitle("I'LL SEND THE TWEET MYSELF", for: .normal)
+    dropBitTweetButton.setTitle(dropBitTweetButtonTitle, for: .normal)
+    manualTweetButton.setTitle(manualTweetButtonTitle, for: .normal)
+  }
+
+  private func messageText(with recipient: TwitterContactType) -> String {
+    let start = "You’ve sent Bitcoin to \(recipient.displayHandle) on Twitter"
+    if receiverNotifiedRecently {
+      return "\(start) and they have been invited to DropBit. You can remind them with a tweet."
+    } else {
+      return """
+        \(start). You can notify the receiver with a tweet or to maintain privacy
+        we can notify them with a tweet from our account.
+        """.removingMultilineLineBreaks()
+    }
+  }
+
+  private var dropBitTweetButtonTitle: String {
+    if receiverNotifiedRecently {
+      return "OK"
+    } else {
+      return "LET DROPBIT SEND THE TWEET"
+    }
+  }
+
+  private var manualTweetButtonTitle: String {
+    if receiverNotifiedRecently {
+      return "I'LL SEND A TWEET"
+    } else {
+      return "I'LL SEND THE TWEET MYSELF"
+    }
   }
 
 }
