@@ -35,7 +35,7 @@ class SuccessFailViewModel {
   var subtitleTextColor: UIColor {
     switch mode {
     case .pending, .success:  return Theme.Color.grayText.color
-    case .failure:            return Theme.Color.errorRed.color
+    case .failure:            return Theme.Color.red.color
     }
   }
 
