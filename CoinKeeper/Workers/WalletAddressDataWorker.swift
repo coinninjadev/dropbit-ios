@@ -555,8 +555,6 @@ class WalletAddressDataWorker: WalletAddressDataWorkerType {
   ///   - response: An object representing a wallet address request.
   ///   - context: NSManagedObjectContext within which any managed objects will be used. This should be called using `perform` by the caller
   /// - Returns: A Promise containing void upon successfully processing.
-
-  // swiftlint:disable cyclomatic_complexity
   private func fulfillInvitationRequest(
     with response: WalletAddressRequestResponse,
     in context: NSManagedObjectContext
@@ -645,34 +643,36 @@ class WalletAddressDataWorker: WalletAddressDataWorkerType {
                 in: context
               )
             }
-            .recover { (error) -> Promise<Void> in
-              if error is MoyaError {
-                throw error
-              }
-
-              if let txDataError = error as? TransactionDataError {
-                switch txDataError {
-                case .insufficientFunds:
-                  throw PendingInvitationError.insufficientFundsForInvitationWithID(response.id)
-                case .insufficientFee:
-                  throw PendingInvitationError.insufficientFeeForInvitationWithID(response.id)
-                }
-              }
-
-              let nsError = error as NSError
-              let errorCode = TransactionBroadcastError(errorCode: nsError.code)
-              switch errorCode {
-              case .broadcastTimedOut:
-                throw TransactionBroadcastError.broadcastTimedOut
-              case .networkUnreachable:
-                throw TransactionBroadcastError.networkUnreachable
-              case .unknown:
-                throw TransactionBroadcastError.unknown
-              case .insufficientFee:
-                throw PendingInvitationError.insufficientFeeForInvitationWithID(response.id)
-              }
-            }
+            .recover { self.mapTransactionBroadcastError($0, forResponse: response) }
         }
+    }
+  }
+
+  private func mapTransactionBroadcastError(_ error: Error, forResponse response: WalletAddressRequestResponse) -> Promise<Void> {
+    if error is MoyaError {
+      return Promise(error: error)
+    }
+
+    if let txDataError = error as? TransactionDataError {
+      switch txDataError {
+      case .insufficientFunds:
+        return Promise(error: PendingInvitationError.insufficientFundsForInvitationWithID(response.id))
+      case .insufficientFee:
+        return Promise(error: PendingInvitationError.insufficientFeeForInvitationWithID(response.id))
+      }
+    }
+
+    let nsError = error as NSError
+    let errorCode = TransactionBroadcastError(errorCode: nsError.code)
+    switch errorCode {
+    case .broadcastTimedOut:
+      return Promise(error: TransactionBroadcastError.broadcastTimedOut)
+    case .networkUnreachable:
+      return Promise(error: TransactionBroadcastError.networkUnreachable)
+    case .unknown:
+      return Promise(error: TransactionBroadcastError.unknown)
+    case .insufficientFee:
+      return Promise(error: PendingInvitationError.insufficientFeeForInvitationWithID(response.id))
     }
   }
 
