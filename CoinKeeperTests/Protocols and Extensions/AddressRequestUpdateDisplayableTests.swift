@@ -15,8 +15,10 @@ struct AddressRequestUpdateTestObject: AddressRequestUpdateDisplayable {
   var addressRequestId: String = UUID().uuidString
   var senderName: String?
   var senderPhoneNumber: GlobalPhoneNumber?
+  var senderHandle: String?
   var receiverName: String?
   var receiverPhoneNumber: GlobalPhoneNumber?
+  var receiverHandle: String?
   var btcAmount: Int = 0
   var fiatAmount: Int = 0
   var side: InvitationSide = .sender
