@@ -30,11 +30,6 @@ struct TwitterUser: Decodable {
 }
 
 extension TwitterUser {
-  var formattedScreenName: String {
-    guard !screenName.starts(with: "@") else { return screenName }
-    return "@" + screenName
-  }
-
   static func emptyInstance() -> TwitterUser {
     return TwitterUser(idStr: "",
                        name: "",

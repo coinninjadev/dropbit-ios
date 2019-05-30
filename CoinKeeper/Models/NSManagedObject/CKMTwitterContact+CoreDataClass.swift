@@ -11,11 +11,10 @@ import Foundation
 import CoreData
 
 @objc(CKMTwitterContact)
-public class CKMTwitterContact: NSManagedObject {
+public class CKMTwitterContact: NSManagedObject, TwitterUserFormattable {
 
-  var formattedScreenName: String {
-    guard !displayScreenName.starts(with: "@") else { return displayScreenName }
-    return "@" + displayScreenName
+  var twitterScreenName: String {
+    return displayScreenName
   }
 
   static func findOrCreate(with contact: TwitterContactType, in context: NSManagedObjectContext) -> CKMTwitterContact {
