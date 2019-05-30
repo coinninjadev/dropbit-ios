@@ -376,6 +376,7 @@ extension ContactsViewController: ContactCellDelegate {
 
   func didSelectContact(at indexPath: IndexPath) {
     guard let delegate = self.selectionDelegate else { return }
+    self.searchBar.searchTextField?.resignFirstResponder()
     switch mode {
     case .contacts:
       let cachedNumber = frc.object(at: indexPath)
