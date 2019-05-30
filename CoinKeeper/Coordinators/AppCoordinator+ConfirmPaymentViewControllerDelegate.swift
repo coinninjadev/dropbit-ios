@@ -34,22 +34,18 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate, CurrencyFormatta
           return
         }
 
-        let receiver = outgoingInvitationDTO.contact.userIdentityBody
+        let receiverBody = outgoingInvitationDTO.contact.userIdentityBody
 
-        let sender: UserIdentityBody
-        switch receiver.identityType {
-        case .phone:
-          guard let number = strongSelf.persistenceManager.verifiedPhoneNumber() else { return }
-          sender = UserIdentityBody(phoneNumber: number)
-        case .twitter:
-          guard let creds = strongSelf.persistenceManager.keychainManager.oauthCredentials() else { return }
-          sender = UserIdentityBody(twitterCredentials: creds)
+        let senderBodyFactory = SenderBodyFactory(persistenceManager: strongSelf.persistenceManager)
+        guard let senderBody = senderBodyFactory.preferredSenderBody(forReceiverType: receiverBody.identityType) else {
+          print("Failed to create sender body")
+          return
         }
 
-        let shouldSuppress = receiver.identityType == .twitter
+        let shouldSuppress = receiverBody.identityType == .twitter
         let inviteBody = RequestAddressBody(amount: outgoingInvitationDTO.btcPair,
-                                            receiver: receiver,
-                                            sender: sender,
+                                            receiver: receiverBody,
+                                            sender: senderBody,
                                             requestId: UUID().uuidString.lowercased(),
                                             suppress: shouldSuppress)
         strongSelf.handleSuccessfulInviteVerification(with: inviteBody, outgoingInvitationDTO: outgoingInvitationDTO)
