@@ -559,6 +559,7 @@
 		B52EF8CC21A4B0870081CB3B /* MerchantPaymentRequestResponseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52EF8CB21A4B0870081CB3B /* MerchantPaymentRequestResponseTests.swift */; };
 		B52F690A22417B0100790E97 /* CKDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52F690922417B0100790E97 /* CKDatabase.swift */; };
 		B52F897622A0095B00763CC1 /* SenderBodyFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52F897522A0095B00763CC1 /* SenderBodyFactory.swift */; };
+		B52F897822A06DBE00763CC1 /* AppCoordinator+TweetMethodViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52F897722A06DBE00763CC1 /* AppCoordinator+TweetMethodViewControllerDelegate.swift */; };
 		B530DFBD2108CF8400A0B1A8 /* TransactionDetailWarningLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B530DFBC2108CF8400A0B1A8 /* TransactionDetailWarningLabel.swift */; };
 		B534616A2098A9B600DDC1C4 /* CKMWallet+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53461682098A9B600DDC1C4 /* CKMWallet+CoreDataClass.swift */; };
 		B534616B2098A9B600DDC1C4 /* CKMWallet+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53461692098A9B600DDC1C4 /* CKMWallet+CoreDataProperties.swift */; };
@@ -1394,6 +1395,7 @@
 		B52EF8CB21A4B0870081CB3B /* MerchantPaymentRequestResponseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MerchantPaymentRequestResponseTests.swift; sourceTree = "<group>"; };
 		B52F690922417B0100790E97 /* CKDatabase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CKDatabase.swift; sourceTree = "<group>"; };
 		B52F897522A0095B00763CC1 /* SenderBodyFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SenderBodyFactory.swift; sourceTree = "<group>"; };
+		B52F897722A06DBE00763CC1 /* AppCoordinator+TweetMethodViewControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppCoordinator+TweetMethodViewControllerDelegate.swift"; sourceTree = "<group>"; };
 		B530DFBC2108CF8400A0B1A8 /* TransactionDetailWarningLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDetailWarningLabel.swift; sourceTree = "<group>"; };
 		B53461682098A9B600DDC1C4 /* CKMWallet+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CKMWallet+CoreDataClass.swift"; sourceTree = "<group>"; };
 		B53461692098A9B600DDC1C4 /* CKMWallet+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CKMWallet+CoreDataProperties.swift"; sourceTree = "<group>"; };
@@ -1856,6 +1858,7 @@
 				3BA9F60A208F6E870047C213 /* AppCoordinator+BalanceDataSource.swift */,
 				3B287CB52100FB5600A43E57 /* AppCoordinator+ChildCoordinatorDelegate.swift */,
 				A2A530C32093A72000B6F4DE /* AppCoordinator+ConfirmPaymentViewControllerDelegate.swift */,
+				B52F897722A06DBE00763CC1 /* AppCoordinator+TweetMethodViewControllerDelegate.swift */,
 				3B287CB32100FB1A00A43E57 /* AppCoordinator+ConnectionManagerDelegate.swift */,
 				A29CE0EC20A21ED800761B91 /* AppCoordinator+ContactsViewControllerDelegate.swift */,
 				3BA9F602208F6CEA0047C213 /* AppCoordinator+CreateRecoveryWordsViewControllerDelegate.swift */,
@@ -3804,6 +3807,7 @@
 				B5192FA6216E7BFF00DCC39B /* UserProviderError.swift in Sources */,
 				5B62D55F20879C4100E9D466 /* String+BitcoinRegex.swift in Sources */,
 				B5839FAF22949E98006BA6AF /* ClaimInviteMethodViewController.swift in Sources */,
+				B52F897822A06DBE00763CC1 /* AppCoordinator+TweetMethodViewControllerDelegate.swift in Sources */,
 				3B302F262123160800A7E070 /* PromiseKit+CoreData.swift in Sources */,
 				B582AD4F20A084AD007A6459 /* CKMCounterpartyAddress+CoreDataClass.swift in Sources */,
 				3B61B6E220DD282E0021D69E /* SendPaymentViewControllerDelegate.swift in Sources */,
