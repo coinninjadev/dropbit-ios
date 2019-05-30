@@ -125,6 +125,14 @@ enum WalletAddressRequestResponseKey: String, KeyPathDescribable {
   case btcAmount, usdAmount, metadata
 }
 
+enum DeliveryStatus: String {
+  case new
+  case failed
+  case pending //may be set by Twilio callback
+  case received
+  case suppress
+}
+
 /// This struct should be used for both requests sent and received
 public struct WalletAddressRequestResponse: ResponseDecodable, CustomStringConvertible {
 
@@ -144,6 +152,8 @@ public struct WalletAddressRequestResponse: ResponseDecodable, CustomStringConve
 
   /// ID of the tweet or Twilio SMS sent by the server
   var deliveryId: String?
+
+  var deliveryStatus: String?
 
   /// Sent-only property
   var walletId: String?
@@ -186,6 +196,14 @@ extension WalletAddressRequestResponse {
     return status.flatMap { WalletAddressRequestStatus(rawValue: $0) }
   }
 
+  var deliveryStatusCase: DeliveryStatus? {
+    return deliveryStatus.flatMap { DeliveryStatus(rawValue: $0) }
+  }
+
+  var notificationWasDuplicate: Bool {
+    return deliveryId == "duplicate"
+  }
+
   func copy(withAddress address: String) -> WalletAddressRequestResponse {
     return WalletAddressRequestResponse(id: self.id,
                                         createdAt: self.createdAt,
@@ -197,6 +215,7 @@ extension WalletAddressRequestResponse {
                                         identityHash: self.identityHash,
                                         status: self.status,
                                         deliveryId: self.deliveryId,
+                                        deliveryStatus: self.deliveryStatus,
                                         walletId: self.walletId)
   }
 

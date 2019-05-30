@@ -49,6 +49,7 @@ class InvitationTests: XCTestCase {
                                           identityHash: nil,
                                           status: WalletAddressRequestStatus.new.rawValue,
                                           deliveryId: nil,
+                                          deliveryStatus: nil,
                                           walletId: nil)
     }
 
@@ -63,6 +64,7 @@ class InvitationTests: XCTestCase {
                                           identityHash: nil,
                                           status: WalletAddressRequestStatus.expired.rawValue,
                                           deliveryId: nil,
+                                          deliveryStatus: nil,
                                           walletId: nil)
     }
 
