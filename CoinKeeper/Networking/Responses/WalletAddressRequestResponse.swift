@@ -152,6 +152,7 @@ public struct WalletAddressRequestResponse: ResponseDecodable, CustomStringConve
 
   /// ID of the tweet or Twilio SMS sent by the server
   var deliveryId: String?
+  static let duplicateDeliveryID = "duplicate"
 
   var deliveryStatus: String?
 
@@ -201,7 +202,7 @@ extension WalletAddressRequestResponse {
   }
 
   var notificationWasDuplicate: Bool {
-    return deliveryId == "duplicate"
+    return deliveryId == WalletAddressRequestResponse.duplicateDeliveryID
   }
 
   func copy(withAddress address: String) -> WalletAddressRequestResponse {
