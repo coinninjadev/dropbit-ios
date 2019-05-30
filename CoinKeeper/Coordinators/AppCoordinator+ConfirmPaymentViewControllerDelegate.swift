@@ -451,7 +451,31 @@ extension AppCoordinator: TweetMethodViewControllerDelegate {
   }
 
   func viewControllerRequestedUserSendTweet(_ viewController: UIViewController, response: WalletAddressRequestResponse) {
+    let logger = OSLog(subsystem: "com.coinninja.coinkeeper.appcoordinator", category: "invitation_tweet")
+    guard let receiverHandle = response.metadata?.receiver?.handle, receiverHandle.isNotEmpty else {
+      os_log("WalletAddressRequestResponse does not contain receiver's handle, %@", log: logger, type: .error, #function)
+      return
+    }
 
+    let downloadURL = CoinNinjaUrlFactory.buildUrl(for: .download)?.absoluteString ?? ""
+    let message = "\(receiverHandle) I just sent you Bitcoin using DropBit. You can download the app here: \(downloadURL)"
+    let shareSheet = UIActivityViewController(activityItems: [message], applicationActivities: nil)
+    shareSheet.excludedActivityTypes = [
+      .addToReadingList,
+      .assignToContact,
+      .markupAsPDF,
+      .openInIBooks,
+      .postToFacebook,
+      .postToFlickr,
+      .postToTencentWeibo,
+      .postToVimeo,
+      .postToWeibo,
+      .saveToCameraRoll
+    ]
+
+    viewController.dismiss(animated: true, completion: {
+      self.navigationController.topViewController()?.present(shareSheet, animated: true, completion: nil)
+    })
   }
 
 }
