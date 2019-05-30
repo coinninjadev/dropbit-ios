@@ -458,7 +458,7 @@ extension AppCoordinator: TweetMethodViewControllerDelegate {
     }
 
     let downloadURL = CoinNinjaUrlFactory.buildUrl(for: .download)?.absoluteString ?? ""
-    let message = "\(receiverHandle) I just sent you Bitcoin using DropBit. You can download the app here: \(downloadURL)"
+    let message = "\(receiverHandle) I just sent you Bitcoin using DropBit. Download the app to claim it here: \(downloadURL)"
     let shareSheet = UIActivityViewController(activityItems: [message], applicationActivities: nil)
     shareSheet.excludedActivityTypes = [
       .addToReadingList,
