@@ -22,6 +22,14 @@ protocol SharedPayloadManagerType: AnyObject {
 
 class SharedPayloadManager: SharedPayloadManagerType {
 
+  struct PayloadPersistenceDependencies {
+    let hasher: HashingManager
+    let kit: PhoneNumberKit
+    let salt: Data
+    let contactCacheManager: ContactCacheManagerType
+    let context: NSManagedObjectContext
+  }
+
   func persistReceivedSharedPayloads(
     _ payloads: [Data],
     hasher: HashingManager,
@@ -36,54 +44,46 @@ class SharedPayloadManager: SharedPayloadManagerType {
       return
     }
 
+    let dependencies = PayloadPersistenceDependencies(
+      hasher: hasher,
+      kit: kit,
+      salt: salt,
+      contactCacheManager: contactCacheManager,
+      context: context
+    )
+
     if let v1Payloads = self.payloadsAsV1(from: payloads) {
-      self.persistReceivedV1SharedPayloads(payloads: v1Payloads,
-                                           hasher: hasher,
-                                           kit: kit,
-                                           salt: salt,
-                                           contactCacheManager: contactCacheManager,
-                                           in: context)
+      self.persistReceivedV1SharedPayloads(v1Payloads, with: dependencies)
     }
 
     if let v2Payloads = self.payloadsAsV2(from: payloads) {
-      self.persistReceivedV2SharedPayloads(payloads: v2Payloads,
-                                           hasher: hasher,
-                                           kit: kit,
-                                           salt: salt,
-                                           contactCacheManager: contactCacheManager,
-                                           in: context)
+      self.persistReceivedV2SharedPayloads(v2Payloads, with: dependencies)
     }
   }
 
   // MARK: private
   private let logger = OSLog(subsystem: "com.coinninja.coinkeeper.database", category: "shared_payloads")
 
-  private func persistReceivedV1SharedPayloads(
-    payloads: [SharedPayloadV1],
-    hasher: HashingManager,
-    kit: PhoneNumberKit,
-    salt: Data,
-    contactCacheManager: ContactCacheManagerType,
-    in context: NSManagedObjectContext) {
+  private func persistReceivedV1SharedPayloads(_ payloads: [SharedPayloadV1], with deps: PayloadPersistenceDependencies) {
 
     for payload in payloads {
-      guard let tx = CKMTransaction.find(byTxid: payload.txid, in: context) else { continue }
+      guard let tx = CKMTransaction.find(byTxid: payload.txid, in: deps.context) else { continue }
 
       if tx.memo == nil {
         tx.memo = payload.info.memo
       }
 
       let phoneNumber = payload.profile.globalPhoneNumber()
-      let phoneNumberHash = hasher.hash(phoneNumber: phoneNumber, salt: salt, parsedNumber: nil, kit: kit)
+      let phoneNumberHash = deps.hasher.hash(phoneNumber: phoneNumber, salt: deps.salt, parsedNumber: nil, kit: deps.kit)
 
       if tx.phoneNumber == nil, let inputs = ManagedPhoneNumberInputs(phoneNumber: phoneNumber) {
         tx.phoneNumber = CKMPhoneNumber.findOrCreate(withInputs: inputs,
                                                      phoneNumberHash: phoneNumberHash,
-                                                     in: context)
+                                                     in: deps.context)
 
-        let counterpartyInputs = contactCacheManager.managedContactComponents(forGlobalPhoneNumber: phoneNumber)?.counterpartyInputs
+        let counterpartyInputs = deps.contactCacheManager.managedContactComponents(forGlobalPhoneNumber: phoneNumber)?.counterpartyInputs
         if let name = counterpartyInputs?.name {
-          tx.phoneNumber?.counterparty = CKMCounterparty.findOrCreate(with: name, in: context)
+          tx.phoneNumber?.counterparty = CKMCounterparty.findOrCreate(with: name, in: deps.context)
         }
       }
 
@@ -92,21 +92,15 @@ class SharedPayloadManager: SharedPayloadManagerType {
                                                          fiatAmount: payload.info.amount,
                                                          fiatCurrency: payload.info.currency,
                                                          receivedPayload: payloadAsData,
-                                                         insertInto: context)
+                                                         insertInto: deps.context)
       tx.sharedPayload = ckmSharedPayload
     }
   }
 
-  private func persistReceivedV2SharedPayloads(
-    payloads: [SharedPayloadV2],
-    hasher: HashingManager,
-    kit: PhoneNumberKit,
-    salt: Data,
-    contactCacheManager: ContactCacheManagerType,
-    in context: NSManagedObjectContext) {
+  private func persistReceivedV2SharedPayloads(_ payloads: [SharedPayloadV2], with deps: PayloadPersistenceDependencies) {
 
     for payload in payloads {
-      guard let tx = CKMTransaction.find(byTxid: payload.txid, in: context) else { continue }
+      guard let tx = CKMTransaction.find(byTxid: payload.txid, in: deps.context) else { continue }
 
       if tx.memo == nil {
         tx.memo = payload.info.memo
@@ -116,21 +110,12 @@ class SharedPayloadManager: SharedPayloadManagerType {
       switch profile.type {
       case .phone:
         guard let phoneNumber = profile.globalPhoneNumber() else { continue }
-        let phoneNumberHash = hasher.hash(phoneNumber: phoneNumber, salt: salt, parsedNumber: nil, kit: kit)
-        if tx.phoneNumber == nil, let inputs = ManagedPhoneNumberInputs(phoneNumber: phoneNumber) {
-          tx.phoneNumber = CKMPhoneNumber.findOrCreate(withInputs: inputs,
-                                                       phoneNumberHash: phoneNumberHash,
-                                                       in: context)
+        self.configureTransaction(tx, withPhoneNumber: phoneNumber, dependencies: deps)
 
-          let counterpartyInputs = contactCacheManager.managedContactComponents(forGlobalPhoneNumber: phoneNumber)?.counterpartyInputs
-          if let name = counterpartyInputs?.name {
-            tx.phoneNumber?.counterparty = CKMCounterparty.findOrCreate(with: name, in: context)
-          }
-        }
       case .twitter:
         guard let twitterContact = profile.twitterContact() else { continue }
         if tx.twitterContact == nil {
-          tx.twitterContact = CKMTwitterContact.findOrCreate(with: twitterContact, in: context)
+          tx.twitterContact = CKMTwitterContact.findOrCreate(with: twitterContact, in: deps.context)
         }
       }
 
@@ -139,8 +124,29 @@ class SharedPayloadManager: SharedPayloadManagerType {
                                                          fiatAmount: payload.info.amount,
                                                          fiatCurrency: payload.info.currency,
                                                          receivedPayload: payloadAsData,
-                                                         insertInto: context)
+                                                         insertInto: deps.context)
       tx.sharedPayload = ckmSharedPayload
+    }
+  }
+
+  private func configureTransaction(_ tx: CKMTransaction,
+                                    withPhoneNumber phoneNumber: GlobalPhoneNumber,
+                                    dependencies deps: PayloadPersistenceDependencies) {
+    guard tx.phoneNumber == nil, let inputs = ManagedPhoneNumberInputs(phoneNumber: phoneNumber) else {
+      return
+    }
+
+    let phoneNumberHash = deps.hasher.hash(phoneNumber: phoneNumber,
+                                           salt: deps.salt,
+                                           parsedNumber: nil,
+                                           kit: deps.kit)
+    tx.phoneNumber = CKMPhoneNumber.findOrCreate(withInputs: inputs,
+                                                 phoneNumberHash: phoneNumberHash,
+                                                 in: deps.context)
+
+    let counterpartyInputs = deps.contactCacheManager.managedContactComponents(forGlobalPhoneNumber: phoneNumber)?.counterpartyInputs
+    if let name = counterpartyInputs?.name {
+      tx.phoneNumber?.counterparty = CKMCounterparty.findOrCreate(with: name, in: deps.context)
     }
   }
 
