@@ -56,6 +56,8 @@
 		3B071A5220C2C3ED009C2BF6 /* OutgoingTransactionData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B071A5120C2C3ED009C2BF6 /* OutgoingTransactionData.swift */; };
 		3B071A5520C2EEDD009C2BF6 /* CKMCounterpartyName+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B071A5320C2EEDD009C2BF6 /* CKMCounterpartyName+CoreDataClass.swift */; };
 		3B071A5620C2EEDD009C2BF6 /* CKMCounterpartyName+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B071A5420C2EEDD009C2BF6 /* CKMCounterpartyName+CoreDataProperties.swift */; };
+		3B0C4FDE22A1AC31000FE760 /* VerfiedTwitterUserIndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B0C4FDD22A1AC31000FE760 /* VerfiedTwitterUserIndicatorView.swift */; };
+		3B0C4FE022A1ACBD000FE760 /* VerfiedTwitterUserIndicatorView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3B0C4FDF22A1ACBD000FE760 /* VerfiedTwitterUserIndicatorView.xib */; };
 		3B0FF8C420C333DC00AADC9E /* CKPersistenceError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B0FF8C320C333DC00AADC9E /* CKPersistenceError.swift */; };
 		3B124E102020EB2B00431E2E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B124E0F2020EB2B00431E2E /* AppDelegate.swift */; };
 		3B124E172020EB2B00431E2E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3B124E162020EB2B00431E2E /* Assets.xcassets */; };
@@ -885,6 +887,8 @@
 		3B071A5120C2C3ED009C2BF6 /* OutgoingTransactionData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutgoingTransactionData.swift; sourceTree = "<group>"; };
 		3B071A5320C2EEDD009C2BF6 /* CKMCounterpartyName+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CKMCounterpartyName+CoreDataClass.swift"; sourceTree = "<group>"; };
 		3B071A5420C2EEDD009C2BF6 /* CKMCounterpartyName+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CKMCounterpartyName+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		3B0C4FDD22A1AC31000FE760 /* VerfiedTwitterUserIndicatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerfiedTwitterUserIndicatorView.swift; sourceTree = "<group>"; };
+		3B0C4FDF22A1ACBD000FE760 /* VerfiedTwitterUserIndicatorView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = VerfiedTwitterUserIndicatorView.xib; sourceTree = "<group>"; };
 		3B0FF8C320C333DC00AADC9E /* CKPersistenceError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CKPersistenceError.swift; sourceTree = "<group>"; };
 		3B11042C20D2E6D60011E2CF /* CoinKeeper.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = CoinKeeper.entitlements; sourceTree = "<group>"; };
 		3B124E0C2020EB2B00431E2E /* DropBit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DropBit.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -2152,6 +2156,8 @@
 				3B547A6D2280A6F0007B0366 /* VerifiedStatusView.swift */,
 				3B547A6F2280A6FD007B0366 /* VerifiedStatusView.xib */,
 				3B5A889F228AFC850082BBA4 /* CNContactSearchBar.swift */,
+				3B0C4FDD22A1AC31000FE760 /* VerfiedTwitterUserIndicatorView.swift */,
+				3B0C4FDF22A1ACBD000FE760 /* VerfiedTwitterUserIndicatorView.xib */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -3241,6 +3247,7 @@
 				3B5A889E228AF3D90082BBA4 /* TwitterUserTableViewCell.xib in Resources */,
 				3B547A702280A6FD007B0366 /* VerifiedStatusView.xib in Resources */,
 				308F6F03217F91A50094D6CB /* ServerAddressView.xib in Resources */,
+				3B0C4FE022A1ACBD000FE760 /* VerfiedTwitterUserIndicatorView.xib in Resources */,
 				3B4B39F0203773C5007B7CC8 /* PlaceholderViewController.storyboard in Resources */,
 				B52A25C32077CD3400F636A1 /* TransactionHistoryViewController.storyboard in Resources */,
 				A216D79120B30C51005FBAC2 /* NoConnectionViewController.storyboard in Resources */,
@@ -4006,6 +4013,7 @@
 				B552EDFD211E33D000332BB5 /* AnalyticsManager.swift in Sources */,
 				3B1555E020D27B5000D6A70C /* TransactionVinResponse.swift in Sources */,
 				B57AF8022268C78400E5B0A6 /* AppCoordinator+ShareTransactionViewControllerDelegate.swift in Sources */,
+				3B0C4FDE22A1AC31000FE760 /* VerfiedTwitterUserIndicatorView.swift in Sources */,
 				3BA360882090BAD900732C43 /* NSManagedObject+Init.swift in Sources */,
 				3B3F1103205700A6003F86EF /* OnboardingErrorLabel.swift in Sources */,
 				A200574920B5F07A007074D9 /* SettingsTableViewFooter.swift in Sources */,

@@ -46,6 +46,7 @@ public class CKMTwitterContact: NSManagedObject, TwitterUserFormattable {
                        screenName: displayScreenName,
                        description: nil,
                        url: nil,
+                       verified: verifiedTwitterUser,
                        profileImageUrlHttps: nil,
                        profileImageData: profileImageData)
   }
