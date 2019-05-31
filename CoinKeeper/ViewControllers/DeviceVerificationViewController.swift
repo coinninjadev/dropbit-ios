@@ -119,8 +119,8 @@ final class DeviceVerificationViewController: BaseViewController {
   var shouldShowTwitterButton: Bool {
     guard let selectedFlow = selectedSetupFlow else { return false }
     switch selectedFlow {
-      case .newWallet, .restoreWallet:  return true
-      case .claimInvite:                return false
+    case .newWallet, .restoreWallet:  return true
+    case .claimInvite:                return false
     }
   }
 

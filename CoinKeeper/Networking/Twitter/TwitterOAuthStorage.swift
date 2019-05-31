@@ -15,10 +15,7 @@ struct TwitterOAuthStorage {
   let twitterScreenName: String
 }
 
-extension TwitterOAuthStorage {
-  var formattedScreenName: String {
-    return "@" + twitterScreenName
-  }
+extension TwitterOAuthStorage: TwitterUserFormattable {
 
   static func emptyInstance() -> TwitterOAuthStorage {
     return TwitterOAuthStorage(twitterOAuthToken: "",

@@ -58,7 +58,7 @@ class SuccessFailViewControllerTests: XCTestCase {
   func testActionButtonTellsDelegateUponSuccess() {
     let mockCoordinator = MockCoordinator()
     self.sut.generalCoordinationDelegate = mockCoordinator
-    self.sut.mode = .success
+    self.sut.setMode(.success)
 
     self.sut.actionButton.sendActions(for: .touchUpInside)
 
@@ -68,14 +68,14 @@ class SuccessFailViewControllerTests: XCTestCase {
   func testActionButtonCallsRetryHandlerUponFailure() {
     let mockCoordinator = MockCoordinator()
     self.sut.generalCoordinationDelegate = mockCoordinator
-    self.sut.mode = .failure
+    self.sut.setMode(.failure)
     var handlerExecuted = false
-    self.sut.retryCompletion = { handlerExecuted = true }
+    self.sut.action = { handlerExecuted = true }
 
     self.sut.actionButton.sendActions(for: .touchUpInside)
 
     XCTAssertTrue(handlerExecuted, "retryRequestCompletion should execute upon failure")
-    XCTAssertEqual(self.sut.mode, .pending, "mode should change to pending upon failure")
+    XCTAssertEqual(self.sut.viewModel.mode, .pending, "mode should change to pending upon failure")
   }
 
   // MARK: mock coordinator
@@ -93,5 +93,8 @@ class SuccessFailViewControllerTests: XCTestCase {
     func viewControllerDidSelectClose(_ viewController: UIViewController) {
       wasAskedToClose = true
     }
+
+    func openURL(_ url: URL, completionHandler completion: (() -> Void)?) { }
+    func openURLExternally(_ url: URL, completionHandler completion: ((Bool) -> Void)?) { }
   }
 }

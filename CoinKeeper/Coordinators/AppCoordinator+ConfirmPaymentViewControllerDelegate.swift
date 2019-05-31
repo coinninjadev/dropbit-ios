@@ -34,21 +34,17 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate, CurrencyFormatta
           return
         }
 
-        let receiver = outgoingInvitationDTO.contact.userIdentityBody
+        let receiverBody = outgoingInvitationDTO.contact.userIdentityBody
 
-        let sender: UserIdentityBody
-        switch receiver.identityType {
-        case .phone:
-          guard let number = strongSelf.persistenceManager.verifiedPhoneNumber() else { return }
-          sender = UserIdentityBody(phoneNumber: number)
-        case .twitter:
-          guard let creds = strongSelf.persistenceManager.keychainManager.oauthCredentials() else { return }
-          sender = UserIdentityBody(twitterCredentials: creds)
+        let senderBodyFactory = SenderBodyFactory(persistenceManager: strongSelf.persistenceManager)
+        guard let senderBody = senderBodyFactory.preferredSenderBody(forReceiverType: receiverBody.identityType) else {
+          print("Failed to create sender body")
+          return
         }
 
         let inviteBody = RequestAddressBody(amount: outgoingInvitationDTO.btcPair,
-                                            receiver: receiver,
-                                            sender: sender,
+                                            receiver: receiverBody,
+                                            sender: senderBody,
                                             requestId: UUID().uuidString.lowercased())
         strongSelf.handleSuccessfulInviteVerification(with: inviteBody, outgoingInvitationDTO: outgoingInvitationDTO)
       case .failure(let error):
@@ -110,9 +106,8 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate, CurrencyFormatta
       return
     }
     let bgContext = persistenceManager.createBackgroundContext()
-    let successFailViewController = SuccessFailViewController.makeFromStoryboard()
-    successFailViewController.modalPresentationStyle = .overFullScreen
-    assignCoordinationDelegate(to: successFailViewController)
+    let successFailViewController = SuccessFailViewController.newInstance(viewModel: PaymentSuccessFailViewModel(mode: .pending),
+                                                                          delegate: self)
     bgContext.performAndWait {
       persistenceManager.persistUnacknowledgedInvitation(in: bgContext,
                                                          with: outgoingInvitationDTO.btcPair,
@@ -126,7 +121,7 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate, CurrencyFormatta
         os_log("failed to save context in %@.\n%@", log: logger, type: .error, #function, error.localizedDescription)
       }
     }
-    successFailViewController.retryCompletion = { [weak self] in
+    successFailViewController.action = { [weak self] in
       guard let strongSelf = self else { return }
 
       strongSelf.networkManager.createAddressRequest(body: inviteBody)
@@ -137,7 +132,7 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate, CurrencyFormatta
                                                          in: bgContext)
           // Call this separately from handleAddressRequestCreationSuccess so
           // that it doesn't interrupt Twilio error SMS fallback flow
-          strongSelf.showShareTransactionIfAppropriate()
+          strongSelf.showShareTransactionIfAppropriate(dropBitType: outgoingInvitationDTO.contact.dropBitType)
 
         }.catch(on: .main) { error in
           strongSelf.handleAddressRequestCreationError(error,
@@ -149,7 +144,7 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate, CurrencyFormatta
     }
 
     self.navigationController.topViewController()?.present(successFailViewController, animated: false) {
-      successFailViewController.retryCompletion?()
+      successFailViewController.action?()
     }
   }
 
@@ -162,10 +157,32 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate, CurrencyFormatta
       self.acknowledgeSuccessfulInvite(outgoingInvitationDTO: invitationDTO, response: response, in: context)
       do {
         try context.save()
-        self.set(mode: .success, for: successFailVC)
+        successFailVC.setMode(.success)
+
+        // When TweetMethodViewController requests DropBit send the tweet,
+        // we need to pass the resulting tweet ID back to the SuccessFailViewController,
+        // which doesn't have a direct relationship to the TweetMethodViewController.
+        let tweetCompletion: TweetCompletionHandler = { [weak successFailVC] (tweetId: String?) in
+          guard let id = tweetId, tweetId != WalletAddressRequestResponse.duplicateDeliveryID else { return }
+          let twitterURL = URL(string: TwitterEndpoints.tweetURL(id).urlString)
+          successFailVC?.setURL(twitterURL)
+        }
+
+        if case let .twitter(twitterContact) = invitationDTO.contact.dropBitType {
+          DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+            if let topVC = self.navigationController.topViewController() {
+              let tweetMethodVC = TweetMethodViewController.newInstance(twitterRecipient: twitterContact,
+                                                                        addressRequestResponse: response,
+                                                                        tweetCompletion: tweetCompletion,
+                                                                        delegate: self)
+              topVC.present(tweetMethodVC, animated: true, completion: nil)
+            }
+          }
+        }
+
       } catch {
         os_log("failed to save context in %@.\n%@", log: logger, type: .error, #function, error.localizedDescription)
-        self.set(mode: .failure, for: successFailVC)
+        successFailVC.setMode(.failure)
         self.handleFailureInvite(error: error)
       }
     }
@@ -194,7 +211,7 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate, CurrencyFormatta
       // is that the SharedPayloadDTO is never persisted or sent, because we don't create CKMTransaction dependency
       // until we have acknowledgement from the server that the address request was successfully posted.
       self.handleFailureInvite(error: error)
-      self.set(mode: .failure, for: successFailVC)
+      successFailVC.setMode(.failure)
     }
   }
 
@@ -239,12 +256,6 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate, CurrencyFormatta
                                            image: #imageLiteral(resourceName: "roundedAppIcon"), style: .standard, action: requestConfiguration)
     let topVC = self.navigationController.topViewController()
     topVC?.present(alert, animated: true, completion: nil)
-  }
-
-  private func set(mode: SuccessFailViewController.Mode, for viewController: SuccessFailViewController) {
-    DispatchQueue.main.async {
-      viewController.mode = mode
-    }
   }
 
   private func handleFailureInvite(error: Error) {
@@ -293,10 +304,9 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate, CurrencyFormatta
     outgoingTransactionData: OutgoingTransactionData
     ) {
     let logger = OSLog(subsystem: "com.coinninja.coinkeeper.appcoordinator", category: "successful_payment_verification")
-    let successFailViewController = SuccessFailViewController.makeFromStoryboard()
-    successFailViewController.modalPresentationStyle = .overFullScreen
-    assignCoordinationDelegate(to: successFailViewController)
-    successFailViewController.retryCompletion = { [weak self] in
+    let successFailViewController = SuccessFailViewController.newInstance(viewModel: PaymentSuccessFailViewModel(mode: .pending),
+                                                                          delegate: self)
+    successFailViewController.action = { [weak self] in
       guard let strongSelf = self else { return }
 
       strongSelf.networkManager.updateCachedMetadata()
@@ -346,9 +356,9 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate, CurrencyFormatta
           return Promise.value(())
         }
         .done(on: .main) {
-          successFailViewController.mode = .success
+          successFailViewController.setMode(.success)
 
-          strongSelf.showShareTransactionIfAppropriate()
+          strongSelf.showShareTransactionIfAppropriate(dropBitType: .none)
 
           self?.analyticsManager.track(property: MixpanelProperty(key: .hasSent, value: true))
           self?.trackIfUserHasABalance()
@@ -374,14 +384,14 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate, CurrencyFormatta
 
           } else {
             strongSelf.handleFailure(error: error, action: {
-              DispatchQueue.main.async { successFailViewController.mode = .failure }
+              successFailViewController.setMode(.failure)
             })
           }
       }
     }
 
     self.navigationController.topViewController()?.present(successFailViewController, animated: false) {
-      successFailViewController.retryCompletion?()
+      successFailViewController.action?()
     }
   }
 
@@ -404,7 +414,8 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate, CurrencyFormatta
     DispatchQueue.main.async { self.navigationController.topViewController()?.present(alert, animated: true) }
   }
 
-  private func showShareTransactionIfAppropriate() {
+  private func showShareTransactionIfAppropriate(dropBitType: OutgoingTransactionDropBitType) {
+    if case .twitter = dropBitType { return }
     if self.persistenceManager.userDefaultsManager.dontShowShareTransaction {
       return
     }

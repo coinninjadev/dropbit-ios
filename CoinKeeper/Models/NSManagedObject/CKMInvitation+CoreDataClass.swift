@@ -267,6 +267,13 @@ extension CKMInvitation: AddressRequestUpdateDisplayable {
     }
   }
 
+  var senderHandle: String? {
+    switch side {
+    case .sender:   return nil
+    case .receiver: return counterpartyTwitterContact?.formattedScreenName
+    }
+  }
+
   var receiverName: String? {
     switch side {
     case .sender:   return counterpartyName
@@ -277,6 +284,13 @@ extension CKMInvitation: AddressRequestUpdateDisplayable {
   var receiverPhoneNumber: GlobalPhoneNumber? {
     switch side {
     case .sender:   return counterpartyPhoneNumber?.asGlobalPhoneNumber
+    case .receiver: return nil
+    }
+  }
+
+  var receiverHandle: String? {
+    switch side {
+    case .sender:   return counterpartyTwitterContact?.formattedScreenName
     case .receiver: return nil
     }
   }

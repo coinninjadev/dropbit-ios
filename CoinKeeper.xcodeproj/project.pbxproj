@@ -558,6 +558,8 @@
 		B52D4524208E5ECA00A56A5C /* ExchangeRateUpdateable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52D4523208E5ECA00A56A5C /* ExchangeRateUpdateable.swift */; };
 		B52EF8CC21A4B0870081CB3B /* MerchantPaymentRequestResponseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52EF8CB21A4B0870081CB3B /* MerchantPaymentRequestResponseTests.swift */; };
 		B52F690A22417B0100790E97 /* CKDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52F690922417B0100790E97 /* CKDatabase.swift */; };
+		B52F897622A0095B00763CC1 /* SenderBodyFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52F897522A0095B00763CC1 /* SenderBodyFactory.swift */; };
+		B52F897822A06DBE00763CC1 /* AppCoordinator+TweetMethodViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52F897722A06DBE00763CC1 /* AppCoordinator+TweetMethodViewControllerDelegate.swift */; };
 		B530DFBD2108CF8400A0B1A8 /* TransactionDetailWarningLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B530DFBC2108CF8400A0B1A8 /* TransactionDetailWarningLabel.swift */; };
 		B534616A2098A9B600DDC1C4 /* CKMWallet+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53461682098A9B600DDC1C4 /* CKMWallet+CoreDataClass.swift */; };
 		B534616B2098A9B600DDC1C4 /* CKMWallet+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53461692098A9B600DDC1C4 /* CKMWallet+CoreDataProperties.swift */; };
@@ -604,6 +606,8 @@
 		B54D206420F926110057A694 /* UIImage+Mask.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54D206320F926110057A694 /* UIImage+Mask.swift */; };
 		B54DE68322982C7F009D67CE /* ContactsEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54DE68222982C7F009D67CE /* ContactsEmptyView.swift */; };
 		B54DE68522982C88009D67CE /* ContactsEmptyView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B54DE68422982C88009D67CE /* ContactsEmptyView.xib */; };
+		B54DE68722987463009D67CE /* TweetMethodViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B54DE68622987463009D67CE /* TweetMethodViewController.storyboard */; };
+		B54DE6892298747B009D67CE /* TweetMethodViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54DE6882298747B009D67CE /* TweetMethodViewController.swift */; };
 		B54F8FA420C3088300294F50 /* CurrencyFormattable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54F8FA320C3088300294F50 /* CurrencyFormattable.swift */; };
 		B552EDE9211E33D000332BB5 /* BiometricAuthenticationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B552EDD3211E33D000332BB5 /* BiometricAuthenticationManager.swift */; };
 		B552EDEB211E33D000332BB5 /* LaunchStateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B552EDD5211E33D000332BB5 /* LaunchStateManager.swift */; };
@@ -1390,6 +1394,8 @@
 		B52D4523208E5ECA00A56A5C /* ExchangeRateUpdateable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExchangeRateUpdateable.swift; sourceTree = "<group>"; };
 		B52EF8CB21A4B0870081CB3B /* MerchantPaymentRequestResponseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MerchantPaymentRequestResponseTests.swift; sourceTree = "<group>"; };
 		B52F690922417B0100790E97 /* CKDatabase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CKDatabase.swift; sourceTree = "<group>"; };
+		B52F897522A0095B00763CC1 /* SenderBodyFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SenderBodyFactory.swift; sourceTree = "<group>"; };
+		B52F897722A06DBE00763CC1 /* AppCoordinator+TweetMethodViewControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppCoordinator+TweetMethodViewControllerDelegate.swift"; sourceTree = "<group>"; };
 		B530DFBC2108CF8400A0B1A8 /* TransactionDetailWarningLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDetailWarningLabel.swift; sourceTree = "<group>"; };
 		B53461682098A9B600DDC1C4 /* CKMWallet+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CKMWallet+CoreDataClass.swift"; sourceTree = "<group>"; };
 		B53461692098A9B600DDC1C4 /* CKMWallet+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CKMWallet+CoreDataProperties.swift"; sourceTree = "<group>"; };
@@ -1436,6 +1442,8 @@
 		B54D206320F926110057A694 /* UIImage+Mask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Mask.swift"; sourceTree = "<group>"; };
 		B54DE68222982C7F009D67CE /* ContactsEmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactsEmptyView.swift; sourceTree = "<group>"; };
 		B54DE68422982C88009D67CE /* ContactsEmptyView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ContactsEmptyView.xib; sourceTree = "<group>"; };
+		B54DE68622987463009D67CE /* TweetMethodViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = TweetMethodViewController.storyboard; sourceTree = "<group>"; };
+		B54DE6882298747B009D67CE /* TweetMethodViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TweetMethodViewController.swift; sourceTree = "<group>"; };
 		B54F8FA320C3088300294F50 /* CurrencyFormattable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyFormattable.swift; sourceTree = "<group>"; };
 		B552EDD3211E33D000332BB5 /* BiometricAuthenticationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BiometricAuthenticationManager.swift; sourceTree = "<group>"; };
 		B552EDD5211E33D000332BB5 /* LaunchStateManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LaunchStateManager.swift; sourceTree = "<group>"; };
@@ -1850,6 +1858,7 @@
 				3BA9F60A208F6E870047C213 /* AppCoordinator+BalanceDataSource.swift */,
 				3B287CB52100FB5600A43E57 /* AppCoordinator+ChildCoordinatorDelegate.swift */,
 				A2A530C32093A72000B6F4DE /* AppCoordinator+ConfirmPaymentViewControllerDelegate.swift */,
+				B52F897722A06DBE00763CC1 /* AppCoordinator+TweetMethodViewControllerDelegate.swift */,
 				3B287CB32100FB1A00A43E57 /* AppCoordinator+ConnectionManagerDelegate.swift */,
 				A29CE0EC20A21ED800761B91 /* AppCoordinator+ContactsViewControllerDelegate.swift */,
 				3BA9F602208F6CEA0047C213 /* AppCoordinator+CreateRecoveryWordsViewControllerDelegate.swift */,
@@ -1954,6 +1963,7 @@
 				B5DDB0F421DE5ED200A25929 /* KeychainMigrationWorker.swift */,
 				3BE8AA1521F10D4200A3F0C4 /* CKCryptor.swift */,
 				3B86B6F0224972D000E2706E /* AbstractMigrationWorker.swift */,
+				B52F897522A0095B00763CC1 /* SenderBodyFactory.swift */,
 			);
 			path = Workers;
 			sourceTree = "<group>";
@@ -2381,6 +2391,7 @@
 				A2E0300120EABF8E00E160E9 /* RestoreWalletViewController.swift */,
 				A260E8CE20FCFE11008343F9 /* TutorialViewController.swift */,
 				A260E8D420FD0C57008343F9 /* TutorialScreenViewController.swift */,
+				B54DE6882298747B009D67CE /* TweetMethodViewController.swift */,
 				A2893BBD20FD4C5A00E96B07 /* BasePageViewController.swift */,
 				A26C767C21081CB1001EB738 /* TextViewController.swift */,
 				30B6632721666B300011296C /* ActionableAlertViewController.swift */,
@@ -2422,6 +2433,7 @@
 				A260E8D220FCFE96008343F9 /* TutorialViewController.storyboard */,
 				A260E8D620FD0C67008343F9 /* TutorialScreenViewController.storyboard */,
 				A26C767E21081D5B001EB738 /* TextViewController.storyboard */,
+				B54DE68622987463009D67CE /* TweetMethodViewController.storyboard */,
 				30B6632B21666B5C0011296C /* ActionableAlertViewController.storyboard */,
 				30E96A2E2178FA70008079B8 /* PhoneNumberStatusViewController.storyboard */,
 				3B325D50219091950094897C /* RecoveryWordsIntroViewController.storyboard */,
@@ -3270,6 +3282,7 @@
 				3BF41AB2207506AC008B3D0A /* RequestPayViewController.storyboard in Resources */,
 				3B9779A6202E416700C9C933 /* Montserrat-BlackItalic.ttf in Resources */,
 				3B9779AE202E416700C9C933 /* Montserrat-SemiBold.ttf in Resources */,
+				B54DE68722987463009D67CE /* TweetMethodViewController.storyboard in Resources */,
 				3B9779A4202E416700C9C933 /* Montserrat-MediumItalic.ttf in Resources */,
 				3BD013172272478300C92771 /* TransactionHistoryDetailValidCell.xib in Resources */,
 				3B8ACA15225F96800020B684 /* GetBitcoinViewController.storyboard in Resources */,
@@ -3549,6 +3562,7 @@
 				A2A530BE20936A6C00B6F4DE /* FloatingPoint+DegreeToRadians.swift in Sources */,
 				B552EDE9211E33D000332BB5 /* BiometricAuthenticationManager.swift in Sources */,
 				B5EABAAF21FB8E8B00E32E08 /* TransactionNotificationTarget.swift in Sources */,
+				B52F897622A0095B00763CC1 /* SenderBodyFactory.swift in Sources */,
 				4AF4332220935C8D00B11BC9 /* DeviceVerificationCoordinator.swift in Sources */,
 				3BDFADFE2267B1FB0077DEF2 /* BlockstreamProvider.swift in Sources */,
 				B505A87C2076C79700AACB23 /* TransactionHistoryDetailLabel.swift in Sources */,
@@ -3793,6 +3807,7 @@
 				B5192FA6216E7BFF00DCC39B /* UserProviderError.swift in Sources */,
 				5B62D55F20879C4100E9D466 /* String+BitcoinRegex.swift in Sources */,
 				B5839FAF22949E98006BA6AF /* ClaimInviteMethodViewController.swift in Sources */,
+				B52F897822A06DBE00763CC1 /* AppCoordinator+TweetMethodViewControllerDelegate.swift in Sources */,
 				3B302F262123160800A7E070 /* PromiseKit+CoreData.swift in Sources */,
 				B582AD4F20A084AD007A6459 /* CKMCounterpartyAddress+CoreDataClass.swift in Sources */,
 				3B61B6E220DD282E0021D69E /* SendPaymentViewControllerDelegate.swift in Sources */,
@@ -3972,6 +3987,7 @@
 				3B2EBF71223010DC003C0D0E /* ManagedContactComponents.swift in Sources */,
 				3B5A88A2228B08FE0082BBA4 /* ContactCellPrimaryLabel.swift in Sources */,
 				B56E158D2167C176003B69D4 /* NetworkManager+AddressRequestable.swift in Sources */,
+				B54DE6892298747B009D67CE /* TweetMethodViewController.swift in Sources */,
 				B5B53C9C2107CAA5006C7B67 /* TransactionDetailsInfoContainer.swift in Sources */,
 				A245C6D020D9537400D99983 /* RequestAddressBody.swift in Sources */,
 				3B5A88A4228B09260082BBA4 /* ContactCellSecondaryLabel.swift in Sources */,

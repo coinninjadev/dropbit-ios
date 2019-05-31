@@ -20,24 +20,20 @@ extension AppCoordinator: RestoreWalletViewControllerDelegate {
   }
 
   private func showSuccessFail(forWords words: [String]) {
-    let successFailController = SuccessFailViewController.makeFromStoryboard()
-    successFailController.viewModel.flow = .restoreWallet
-    successFailController.retryCompletion = {
+    let successFailController = SuccessFailViewController.newInstance(viewModel: RestoreWalletSuccessFailViewModel(mode: .pending),
+                                                                      delegate: self)
+    successFailController.action = {
       if let words = self.persistenceManager.walletWords() {
         self.walletManager = WalletManager(words: words, persistenceManager: self.persistenceManager)
-        DispatchQueue.main.async {
-          successFailController.mode = .success
-        }
+        successFailController.setMode(.success)
       } else {
-        DispatchQueue.main.async {
-          successFailController.mode = .failure
-        }
+        successFailController.setMode(.failure)
       }
     }
-    assignCoordinationDelegate(to: successFailController)
+
     navigationController.pushViewController(successFailController, animated: true)
     navigationController.orphanDisplayingViewController()
-    successFailController.retryCompletion?()
+    successFailController.action?()
   }
 
 }

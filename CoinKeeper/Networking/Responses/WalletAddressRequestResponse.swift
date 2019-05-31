@@ -50,12 +50,14 @@ public struct MetadataAmount: Decodable, CustomStringConvertible {
 public struct MetadataParticipant: Decodable, CustomStringConvertible {
   let type: String
   let identity: String
+  let handle: String?
 
   public var description: String {
     var responseDesc = ""
     let propertyKeyValues: [String] = [
       "type: \(type)",
-      "identity: \(identity)"
+      "identity: \(identity)",
+      "handle: \(handle ?? "-")"
     ]
     propertyKeyValues.forEach { desc in
       responseDesc.append("\n\t\(desc)")
@@ -72,6 +74,7 @@ public struct WalletAddressRequestMetadata: ResponseDecodable, CustomStringConve
   let sender: MetadataParticipant?
   let receiver: MetadataParticipant?
   var requestId: String?
+  let suppress: Bool?
 
   public var description: String {
     var responseDesc = ""
@@ -103,6 +106,7 @@ public struct WalletAddressRequestMetadata: ResponseDecodable, CustomStringConve
     "identity": "3215789654"
     },
     "request_id": "3fbdc415-8789-490a-ad32-0c6fa3590182"
+    "suppress": false
     """
   }
 
@@ -119,6 +123,14 @@ public struct WalletAddressRequestMetadata: ResponseDecodable, CustomStringConve
 enum WalletAddressRequestResponseKey: String, KeyPathDescribable {
   typealias ObjectType = WalletAddressRequestResponse
   case btcAmount, usdAmount, metadata
+}
+
+enum DeliveryStatus: String {
+  case new
+  case failed
+  case pending //may be set by Twilio callback
+  case received
+  case suppress
 }
 
 /// This struct should be used for both requests sent and received
@@ -138,7 +150,13 @@ public struct WalletAddressRequestResponse: ResponseDecodable, CustomStringConve
   var identityHash: String?
   var status: String?
 
-  // Sent-only property
+  /// ID of the tweet or Twilio SMS sent by the server
+  var deliveryId: String?
+  static let duplicateDeliveryID = "duplicate"
+
+  var deliveryStatus: String?
+
+  /// Sent-only property
   var walletId: String?
 
   public var description: String {
@@ -152,6 +170,7 @@ public struct WalletAddressRequestResponse: ResponseDecodable, CustomStringConve
       "status: \(status ?? "-")",
       "metadata: \(metadata?.description ?? "-")",
       "walletId: \(walletId ?? "-")",
+      "deliveryId: \(deliveryId ?? "-")",
       "identityHash: \(identityHash ?? "-")",
       "txid: \(txid ?? "-")"
     ]
@@ -167,7 +186,7 @@ public struct WalletAddressRequestResponse: ResponseDecodable, CustomStringConve
   }
 
   static var optionalStringKeys: [WritableKeyPath<WalletAddressRequestResponse, String?>] {
-    return [\.address, \.addressPubkey, \.txid, \.identityHash, \.status, \.walletId]
+    return [\.address, \.addressPubkey, \.txid, \.identityHash, \.status, \.deliveryId, \.walletId]
   }
 
 }
@@ -176,6 +195,14 @@ extension WalletAddressRequestResponse {
 
   var statusCase: WalletAddressRequestStatus? {
     return status.flatMap { WalletAddressRequestStatus(rawValue: $0) }
+  }
+
+  var deliveryStatusCase: DeliveryStatus? {
+    return deliveryStatus.flatMap { DeliveryStatus(rawValue: $0) }
+  }
+
+  var notificationWasDuplicate: Bool {
+    return deliveryId == WalletAddressRequestResponse.duplicateDeliveryID
   }
 
   func copy(withAddress address: String) -> WalletAddressRequestResponse {
@@ -188,6 +215,8 @@ extension WalletAddressRequestResponse {
                                         metadata: self.metadata,
                                         identityHash: self.identityHash,
                                         status: self.status,
+                                        deliveryId: self.deliveryId,
+                                        deliveryStatus: self.deliveryStatus,
                                         walletId: self.walletId)
   }
 
@@ -205,6 +234,7 @@ extension WalletAddressRequestResponse {
     "updated_at": 1525882265,
     "address": "1JbJbAkCXtxpko39nby44hpPenpC1xKGYw",
     "address_pubkey": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE8xOUetsCa8EfOlDEBAfREhJqspDoyEh6Szz2in47Tv5n52m9dLYyPCbqZkOB5nTSqtscpkQD/HpykCggvx09iQ==",
+    "delivery_id" : "SM8c8fa5e6f2bb4058bdf76c1758a3e080",
     "sender": "498803d5964adce8037d2c53da0c7c7a96ce0e0f99ab99e9905f0dda59fb2e49",
     "txid": "7f3a2790d59853fdc620b8cd23c8f68158f8bbdcd337a5f2451620d6f76d4e03",
     "status": "new"
