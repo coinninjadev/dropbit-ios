@@ -83,11 +83,11 @@ class CKKeychain: PersistenceKeychainType {
 
   @discardableResult
   func store(oauthCredentials: TwitterOAuthStorage) -> Bool {
-    let success1 = store.archive(oauthCredentials.twitterOAuthToken, key: CKKeychain.Key.twitterOAuthToken.rawValue)
-    let success2 = store.archive(oauthCredentials.twitterOAuthTokenSecret, key: CKKeychain.Key.twitterOAuthTokenSecret.rawValue)
-    let success3 = store.archive(oauthCredentials.twitterUserId, key: CKKeychain.Key.twitterUserId.rawValue)
-    let success4 = store.archive(oauthCredentials.twitterScreenName, key: CKKeychain.Key.twitterScreenName.rawValue)
-    return success1 || success2 || success3 || success4
+    let success1 = storeSynchronously(anyValue: oauthCredentials.twitterOAuthToken, key: CKKeychain.Key.twitterOAuthToken)
+    let success2 = storeSynchronously(anyValue: oauthCredentials.twitterOAuthTokenSecret, key: CKKeychain.Key.twitterOAuthTokenSecret)
+    let success3 = storeSynchronously(anyValue: oauthCredentials.twitterUserId, key: CKKeychain.Key.twitterUserId)
+    let success4 = storeSynchronously(anyValue: oauthCredentials.twitterScreenName, key: CKKeychain.Key.twitterScreenName)
+    return success1 && success2 && success3 && success4
   }
 
   func oauthCredentials() -> TwitterOAuthStorage? {
