@@ -157,10 +157,10 @@ class CKKeychain: PersistenceKeychainType {
     case .phone: keys = [.countryCode, .phoneNumber]
     case .twitter: keys = [.twitterUserId, .twitterScreenName, .twitterOAuthToken, .twitterOAuthTokenSecret]
     }
-    keys.forEach { self.store(anyValue: nil, key: $0) }
+    keys.forEach { self.storeSynchronously(anyValue: nil, key: $0) }
 
     // Prevent reprompting user to verify on next launch
-    self.store(anyValue: true, key: .skippedVerification)
+    self.storeSynchronously(anyValue: true, key: .skippedVerification)
   }
 
 }
