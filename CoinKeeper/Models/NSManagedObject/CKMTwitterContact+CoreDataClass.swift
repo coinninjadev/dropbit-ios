@@ -53,7 +53,7 @@ public class CKMTwitterContact: NSManagedObject, TwitterUserFormattable {
   private func configure(with contact: TwitterContactType, in context: NSManagedObjectContext) {
     self.identityHash = contact.identityHash
     self.displayName = contact.displayName ?? ""
-    self.displayScreenName = contact.displayHandle
+    self.displayScreenName = contact.displayHandle.dropFirstCharacter(ifEquals: "@")
     self.profileImageData = contact.twitterUser.profileImageData
     switch contact.kind {
     case .invite, .generic: self.verificationStatus = .notVerified
