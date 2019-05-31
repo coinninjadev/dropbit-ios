@@ -166,7 +166,7 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate, CurrencyFormatta
         // which doesn't have a direct relationship to the TweetMethodViewController.
         let tweetCompletion: TweetCompletionHandler = { [weak successFailVC] (tweetId: String?) in
           guard let id = tweetId, tweetId != WalletAddressRequestResponse.duplicateDeliveryID else { return }
-          let twitterURL = URL(string: "https://twitter.com/i/web/status/\(id)")
+          let twitterURL = URL(string: TwitterEndpoints.tweetURL(id).urlString)
           successFailVC?.setURL(twitterURL)
         }
 
