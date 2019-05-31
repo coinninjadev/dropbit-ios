@@ -547,9 +547,6 @@ extension TransactionHistoryViewController: DZNEmptyDataSetDelegate, DZNEmptyDat
   }
 
   private var shouldShowWithBalanceView: Bool {
-    let collectionViewContentBottom = summaryCollectionView.contentSize.height + summaryCollectionView.frame.origin.y
-    let withBalanceViewTop = (view.frame.height / 2.0) - (transactionHistoryWithBalanceView.frame.size.height / 2.0)
-    let isOverlapping = (collectionViewContentBottom >= withBalanceViewTop)
-    return !isOverlapping
+    return (frc.fetchedObjects?.count ?? 0) == 1
   }
 }
