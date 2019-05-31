@@ -53,7 +53,7 @@ protocol TwitterUserFormattable {
 
 extension TwitterUserFormattable {
   var formattedScreenName: String {
-    let isFormatted = twitterScreenName.first == "@"
+    let isFormatted = twitterScreenName.starts(with: "@")
     return isFormatted ? twitterScreenName : "@\(twitterScreenName)"
   }
 }
