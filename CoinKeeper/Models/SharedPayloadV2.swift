@@ -67,6 +67,7 @@ extension SharedPayloadProfileV2 {
       screenName: screenName,
       description: nil,
       url: nil,
+      verified: false,
       profileImageUrlHttps: nil,
       profileImageData: nil)
   }

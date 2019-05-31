@@ -10,12 +10,15 @@ import UIKit
 
 class VerfiedTwitterUserIndicatorView: UIView {
 
-    /*
-    // Only override draw() if you perform custom drawing.
-    // An empty implementation adversely affects performance during animation.
-    override func draw(_ rect: CGRect) {
-        // Drawing code
-    }
-    */
+  @IBOutlet var checkmarkImageView: UIImageView!
+  @IBOutlet var coloredBackgroundView: UIView!
 
+  override func awakeFromNib() {
+    super.awakeFromNib()
+    xibSetup()
+    backgroundColor = .clear
+    coloredBackgroundView.backgroundColor = Theme.Color.lightBlueTint.color
+    let radius = coloredBackgroundView.frame.width / 2.0
+    coloredBackgroundView.applyCornerRadius(radius)
+  }
 }

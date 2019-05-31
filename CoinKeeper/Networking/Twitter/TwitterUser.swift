@@ -20,6 +20,7 @@ struct TwitterUser: Decodable {
   let screenName: String
   let description: String?
   let url: String?
+  let verified: Bool
   let profileImageUrlHttps: String?
 
   var profileImageURL: URL? {
@@ -41,6 +42,7 @@ extension TwitterUser {
                        screenName: "",
                        description: nil,
                        url: nil,
+                       verified: false,
                        profileImageUrlHttps: nil,
                        profileImageData: nil)
   }
