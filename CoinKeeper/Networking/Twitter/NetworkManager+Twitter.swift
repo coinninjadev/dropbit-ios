@@ -134,6 +134,8 @@ extension NetworkManager: TwitterRequestable {
       },
         failure: { (error: OAuthSwiftError) in
           print("failed. error: \(error.localizedDescription)")
+          // "Invalid or expired token"
+          // "This feature is temporarily unavailable"
           seal.reject(error)
       }
       )
