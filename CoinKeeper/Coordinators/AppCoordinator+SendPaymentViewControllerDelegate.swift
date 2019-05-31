@@ -44,11 +44,12 @@ extension AppCoordinator: SendPaymentViewControllerDelegate {
 
   func viewControllerDidPressTwitter(_ viewController: UIViewController & SelectedValidContactDelegate) {
     analyticsManager.track(event: .twitterButtonPressed, with: nil)
-    if userIsTwitterVerified {
-      self.presentContacts(mode: .twitter, selectionDelegate: viewController)
-    } else {
-      self.viewControllerDidSelectVerifyTwitter(viewController)
+    guard userIsTwitterVerified else {
+      showModalForTwitterVerification(with: viewController)
+      return
     }
+
+    self.presentContacts(mode: .twitter, selectionDelegate: viewController)
   }
 
   func viewControllerDidBeginAddressNegotiation(_ viewController: UIViewController,
@@ -296,7 +297,7 @@ extension AppCoordinator: SendPaymentViewControllerDelegate {
 
   func viewControllerDidPressContacts(_ viewController: UIViewController & SelectedValidContactDelegate) {
     analyticsManager.track(event: .contactsButtonPressed, with: nil)
-    guard launchStateManager.deviceIsVerified() else {
+    guard persistenceManager.verifiedPhoneNumber() != nil else {
       showModalForPhoneVerification(with: viewController)
       return
     }
@@ -366,18 +367,29 @@ extension AppCoordinator: SendPaymentViewControllerDelegate {
     viewController.present(alert, animated: true)
   }
 
+  private func showModalForTwitterVerification(with viewController: UIViewController) {
+    let title = "\n In order to use the send by Twitter feature you must verify with your Twitter account \n"
+    showModalForMissingVerification(with: viewController, alertTitle: title, identityType: .twitter)
+  }
+
   private func showModalForPhoneVerification(with viewController: UIViewController) {
     let title = "\n In order to use the send by SMS feature you must verify your phone \n"
+    showModalForMissingVerification(with: viewController, alertTitle: title, identityType: .phone)
+  }
+
+  private func showModalForMissingVerification(with viewController: UIViewController,
+                                               alertTitle: String,
+                                               identityType: UserIdentityType) {
     let notNowAction = AlertActionConfiguration(title: "Not Now", style: .default, action: nil)
     let verifyAction = AlertActionConfiguration(title: "Verify", style: .default) { [weak self] in
       guard let strongSelf = self else { return }
       viewController.dismiss(animated: true, completion: {
         strongSelf.navigationController.isNavigationBarHidden = false
-        strongSelf.startDeviceVerificationFlow(userIdentityType: .phone, shouldOrphanRoot: false, selectedSetupFlow: nil)
+        strongSelf.startDeviceVerificationFlow(userIdentityType: identityType, shouldOrphanRoot: false, selectedSetupFlow: nil)
       })
     }
     let configs = [notNowAction, verifyAction]
-    let alert = alertManager.alert(withTitle: title, description: nil, image: nil, style: .alert, actionConfigs: configs)
+    let alert = alertManager.alert(withTitle: alertTitle, description: nil, image: nil, style: .alert, actionConfigs: configs)
     viewController.present(alert, animated: true)
   }
 
