@@ -53,6 +53,7 @@ protocol NotificationNetworkInteractable: AnyObject {
   func subscribeToWalletTopic(withDeviceEndpointResponse response: DeviceEndpointResponse) -> Promise<SubscriptionResponse>
   func subscribeToTopics(deviceEndpointIds: DeviceEndpointIds, body: NotificationTopicSubscriptionBody) -> Promise<SubscriptionInfoResponse>
   @discardableResult func removeEndpoints(from responses: [DeviceEndpointResponse]) -> Promise<Void>
+  func unsubscribeToTopics(deviceEndpointIds: DeviceEndpointIds, topicId: String) -> Promise<Void>
 }
 
 class NotificationManager: NSObject, NotificationManagerType {

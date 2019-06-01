@@ -24,4 +24,8 @@ extension NetworkManager: NotificationNetworkInteractable {
     let promises = ids.map { return cnProvider.requestVoid(DeviceEndpointTarget.delete($0)) }
     return when(fulfilled: promises)
   }
+
+  func unsubscribeToTopics(deviceEndpointIds: DeviceEndpointIds, topicId: String) -> Promise<Void> {
+    return cnProvider.requestVoid(NotificationTopicSubscriptionTarget.unsubscribe(deviceEndpointIds, topicId))
+  }
 }
