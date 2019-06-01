@@ -17,6 +17,8 @@ public enum WalletAddressRequestsTarget: CoinNinjaTargetType {
   /// updateWalletAddressRequest params - id: String, request: WalletAddressRequest
   case update(String, WalletAddressRequest)
 
+  case suppressTweet(String, WalletAddressRequest)
+
 }
 
 extension WalletAddressRequestsTarget {
@@ -27,17 +29,19 @@ extension WalletAddressRequestsTarget {
 
   var subPath: String? {
     switch self {
-    case .create:             return nil
-    case .get(let side):      return side.urlComponent
-    case .update(let id, _):  return id
+    case .create:                       return nil
+    case .get(let side):                return side.urlComponent
+    case .update(let id, _):            return id
+    case .suppressTweet(let id, _):     return id
     }
   }
 
   public var method: Method {
     switch self {
-    case .create:   return .post
-    case .get:      return .get
-    case .update:   return .patch
+    case .create:           return .post
+    case .get:              return .get
+    case .update,
+         .suppressTweet:    return .patch
     }
   }
 
@@ -47,7 +51,8 @@ extension WalletAddressRequestsTarget {
       return .requestCustomJSONEncodable(body, encoder: customEncoder)
     case .get:
       return .requestPlain
-    case .update(_, let request):
+    case .update(_, let request),
+         .suppressTweet(_, let request):
       return .requestJSONEncodable(request)
     }
   }

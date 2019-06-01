@@ -127,6 +127,8 @@ class WalletAddressDataWorkerTests: XCTestCase {
                                                       metadata: nil,
                                                       identityHash: nil,
                                                       status: WalletAddressRequestStatus.completed.rawValue,
+                                                      deliveryId: nil,
+                                                      deliveryStatus: nil,
                                                       walletId: nil)
 
     let invitation = CKMInvitation(withAddressRequestResponse: sampleResponse,
@@ -163,6 +165,8 @@ class WalletAddressDataWorkerTests: XCTestCase {
                                                       metadata: nil,
                                                       identityHash: nil,
                                                       status: WalletAddressRequestStatus.new.rawValue,
+                                                      deliveryId: nil,
+                                                      deliveryStatus: nil,
                                                       walletId: nil)
 
     let invitation = CKMInvitation(withAddressRequestResponse: sampleResponse,

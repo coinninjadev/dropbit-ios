@@ -67,6 +67,7 @@ extension SharedPayloadProfileV2 {
       screenName: screenName,
       description: nil,
       url: nil,
+      verified: false,
       profileImageUrlHttps: nil,
       profileImageData: nil)
   }
@@ -79,7 +80,7 @@ struct SharedPayloadV2: SharedPayloadCodable {
   var profile: SharedPayloadProfileV2?
 
   init(txid: String, memo: String?, amountInfo: SharedPayloadAmountInfo, senderIdentity: UserIdentityBody) {
-    self.meta = SharedPayloadMetadata(version: 1)
+    self.meta = SharedPayloadMetadata(version: 2)
     self.txid = txid
     self.info = SharedPayloadInfoV1(memo: memo ?? "", amountInfo: amountInfo)
     self.profile = SharedPayloadProfileV2(type: senderIdentity.identityType,

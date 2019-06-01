@@ -296,20 +296,16 @@ class TransactionHistoryDetailCellAddressViewTests: XCTestCase {
     let rates: ExchangeRates = [.BTC: 1, .USD: 7000]
 
     var viewModel = TransactionHistoryDetailCellViewModel(
-      transaction: transaction,
-      rates: rates,
-      primaryCurrency: .USD,
-      deviceCountryCode: nil,
+      transaction: transaction, rates: rates,
+      primaryCurrency: .USD, deviceCountryCode: nil,
       kit: PhoneNumberKit()
     )
 
     // .notSent
     invitation.status = .notSent
     viewModel = TransactionHistoryDetailCellViewModel(
-      transaction: transaction,
-      rates: rates,
-      primaryCurrency: .USD,
-      deviceCountryCode: nil,
+      transaction: transaction, rates: rates,
+      primaryCurrency: .USD, deviceCountryCode: nil,
       kit: PhoneNumberKit()
     )
 
@@ -324,10 +320,8 @@ class TransactionHistoryDetailCellAddressViewTests: XCTestCase {
     // .requestSent
     invitation.status = .requestSent
     viewModel = TransactionHistoryDetailCellViewModel(
-      transaction: transaction,
-      rates: rates,
-      primaryCurrency: .USD,
-      deviceCountryCode: nil,
+      transaction: transaction, rates: rates,
+      primaryCurrency: .USD, deviceCountryCode: nil,
       kit: PhoneNumberKit()
     )
 
@@ -342,10 +336,8 @@ class TransactionHistoryDetailCellAddressViewTests: XCTestCase {
     // .addressSent
     invitation.status = .addressSent
     viewModel = TransactionHistoryDetailCellViewModel(
-      transaction: transaction,
-      rates: rates,
-      primaryCurrency: .USD,
-      deviceCountryCode: nil,
+      transaction: transaction, rates: rates,
+      primaryCurrency: .USD, deviceCountryCode: nil,
       kit: PhoneNumberKit()
     )
 
@@ -360,10 +352,8 @@ class TransactionHistoryDetailCellAddressViewTests: XCTestCase {
     // .canceled
     invitation.status = .canceled
     viewModel = TransactionHistoryDetailCellViewModel(
-      transaction: transaction,
-      rates: rates,
-      primaryCurrency: .USD,
-      deviceCountryCode: nil,
+      transaction: transaction, rates: rates,
+      primaryCurrency: .USD, deviceCountryCode: nil,
       kit: PhoneNumberKit()
     )
 
@@ -378,10 +368,8 @@ class TransactionHistoryDetailCellAddressViewTests: XCTestCase {
     // .expired
     invitation.status = .expired
     viewModel = TransactionHistoryDetailCellViewModel(
-      transaction: transaction,
-      rates: rates,
-      primaryCurrency: .USD,
-      deviceCountryCode: nil,
+      transaction: transaction, rates: rates,
+      primaryCurrency: .USD, deviceCountryCode: nil,
       kit: PhoneNumberKit()
     )
 

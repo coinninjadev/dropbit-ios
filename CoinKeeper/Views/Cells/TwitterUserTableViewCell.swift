@@ -14,11 +14,13 @@ class TwitterUserTableViewCell: UITableViewCell {
   @IBOutlet var nameLabel: ContactCellPrimaryLabel!
   @IBOutlet var screenNameLabel: ContactCellSecondaryLabel!
   @IBOutlet var dropbitImageView: UIImageView!
+  @IBOutlet var verifiedTwitterUserIndicatorView: VerfiedTwitterUserIndicatorView!
 
   func load(with user: TwitterUser) {
     avatarImageView.image = user.profileImageData.flatMap { UIImage(data: $0) }
     avatarImageView.applyCornerRadius(avatarImageView.frame.width / 2.0)
     nameLabel.text = user.name
     screenNameLabel.text = user.name
+    verifiedTwitterUserIndicatorView.isHidden = !user.verified
   }
 }

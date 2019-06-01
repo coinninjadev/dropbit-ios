@@ -13,7 +13,8 @@ import PhoneNumberKit
 struct HashingManager {
 
   func salt() throws -> Data {
-    guard let salt = keyDerivation.salt.data(using: .utf8) else {
+    guard keyDerivation.salt.isNotEmpty,
+      let salt = keyDerivation.salt.data(using: .utf8) else {
       throw CKPersistenceError.missingValue(key: "salt as Data")
     }
     return salt

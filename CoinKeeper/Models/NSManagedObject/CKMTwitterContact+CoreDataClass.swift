@@ -11,11 +11,10 @@ import Foundation
 import CoreData
 
 @objc(CKMTwitterContact)
-public class CKMTwitterContact: NSManagedObject {
+public class CKMTwitterContact: NSManagedObject, TwitterUserFormattable {
 
-  var formattedScreenName: String {
-    guard !displayScreenName.starts(with: "@") else { return displayScreenName }
-    return "@" + displayScreenName
+  var twitterScreenName: String {
+    return displayScreenName
   }
 
   static func findOrCreate(with contact: TwitterContactType, in context: NSManagedObjectContext) -> CKMTwitterContact {
@@ -47,6 +46,7 @@ public class CKMTwitterContact: NSManagedObject {
                        screenName: displayScreenName,
                        description: nil,
                        url: nil,
+                       verified: verifiedTwitterUser,
                        profileImageUrlHttps: nil,
                        profileImageData: profileImageData)
   }
@@ -54,7 +54,7 @@ public class CKMTwitterContact: NSManagedObject {
   private func configure(with contact: TwitterContactType, in context: NSManagedObjectContext) {
     self.identityHash = contact.identityHash
     self.displayName = contact.displayName ?? ""
-    self.displayScreenName = contact.displayIdentity.dropFirstCharacter(ifEquals: "@")
+    self.displayScreenName = contact.displayHandle.dropFirstCharacter(ifEquals: "@")
     self.profileImageData = contact.twitterUser.profileImageData
     switch contact.kind {
     case .invite, .generic: self.verificationStatus = .notVerified

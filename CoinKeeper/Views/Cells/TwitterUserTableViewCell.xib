@@ -30,16 +30,33 @@
                                 </constraints>
                             </imageView>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="hil-l9-MCP">
-                                <rect key="frame" x="53" y="5.5" width="150" height="45"/>
+                                <rect key="frame" x="53" y="7" width="150" height="41.5"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nk0-cR-JlI" customClass="ContactCellPrimaryLabel" customModule="DropBit" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="0.0" width="150" height="20.5"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <nil key="textColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
+                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="fYH-8f-smD">
+                                        <rect key="frame" x="0.0" y="0.0" width="150" height="17"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nk0-cR-JlI" customClass="ContactCellPrimaryLabel" customModule="DropBit" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="0.0" width="42" height="17"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mgJ-M4-oto" customClass="VerfiedTwitterUserIndicatorView" customModule="DropBit" customModuleProvider="target">
+                                                <rect key="frame" x="46" y="0.0" width="17" height="17"/>
+                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="17" id="FT2-nx-XbA"/>
+                                                    <constraint firstAttribute="width" secondItem="mgJ-M4-oto" secondAttribute="height" multiplier="1:1" id="cvF-vj-4G5"/>
+                                                </constraints>
+                                            </view>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Rog-pE-fHf" userLabel="Buffer View">
+                                                <rect key="frame" x="67" y="0.0" width="83" height="17"/>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            </view>
+                                        </subviews>
+                                    </stackView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QcG-R0-FKr" customClass="ContactCellSecondaryLabel" customModule="DropBit" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="24.5" width="150" height="20.5"/>
+                                        <rect key="frame" x="0.0" y="21" width="150" height="20.5"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
@@ -69,6 +86,7 @@
                 <outlet property="dropbitImageView" destination="I6d-lk-rfw" id="YwR-5W-ac9"/>
                 <outlet property="nameLabel" destination="nk0-cR-JlI" id="Ozh-nI-Sdh"/>
                 <outlet property="screenNameLabel" destination="QcG-R0-FKr" id="dHx-VQ-Hu1"/>
+                <outlet property="verifiedTwitterUserIndicatorView" destination="mgJ-M4-oto" id="EKc-6w-VTh"/>
             </connections>
             <point key="canvasLocation" x="47.826086956521742" y="44.196428571428569"/>
         </tableViewCell>

@@ -84,12 +84,17 @@ public struct RequestAddressBody: Encodable {
   let sender: UserIdentityBody
   let receiver: UserIdentityBody
   let requestId: String
+  let suppress: Bool
 
-  init(amount: BitcoinUSDPair, receiver: UserIdentityBody, sender: UserIdentityBody, requestId: String) {
+  init(amount: BitcoinUSDPair,
+       receiver: UserIdentityBody,
+       sender: UserIdentityBody,
+       requestId: String) {
     self.amount = RequestAddressAmount(usd: amount.usdAmount.asFractionalUnits(of: .USD),
                                        btc: amount.btcAmount.asFractionalUnits(of: .BTC))
     self.sender = sender
     self.receiver = receiver
     self.requestId = requestId
+    self.suppress = receiver.identityType == .twitter
   }
 }
