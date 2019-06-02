@@ -41,6 +41,9 @@ protocol NotificationManagerDelegate: AnyObject {
   func persistDeviceEndpointId(_ deviceEndpointId: String)
   func deleteDeviceEndpointIds()
   func shouldSubscribeToTopic(withName name: String) -> Bool
+  func unsubscribeFromTopicsIfNeeded(
+    with response: SubscriptionInfoResponse,
+    deviceEndpointIds: DeviceEndpointIds) -> Promise<SubscriptionInfoResponse>
 }
 
 protocol NotificationNetworkInteractable: AnyObject {
@@ -151,6 +154,7 @@ class NotificationManager: NSObject, NotificationManagerType {
     ) -> Promise<SubscriptionInfoResponse> {
     guard let localDelegate = delegate else { return Promise(error: CKPersistenceError.missingValue(key: "notificationManagerDelegate")) }
     return networkInteractor.getSubscriptionInfo(withDeviceEndpointResponse: response)
+      .then { localDelegate.unsubscribeFromTopicsIfNeeded(with: $0, deviceEndpointIds: DeviceEndpointIds(response: response)) }
       .map { $0.availableTopics }
       .filterValues { localDelegate.shouldSubscribeToTopic(withName: $0.name) }
       .mapValues { $0.id }

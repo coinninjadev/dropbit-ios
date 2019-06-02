@@ -113,7 +113,7 @@ class SettingsViewController: BaseViewController, StoryboardInitializable {
     let recoveryWordsVM = SettingsCellViewModel(type: .recoveryWords(isWalletBackedUp()), command: recoveryWordsCommand)
     let dustProtectionEnabled = self.coordinationDelegate?.dustProtectionIsEnabled() ?? false
     let dustCellType = SettingsCellType.dustProtection(enabled: dustProtectionEnabled)
-    let dustProtectionVM = SettingsCellViewModel(type: dustCellType, command: openURLCommand(for: dustCellType))
+    let dustProtectionVM = SettingsCellViewModel(type: dustCellType, command: dustProtectionCommand(for: dustCellType))
 
     let isYearlyHighPushEnabled = self.coordinationDelegate?.yearlyHighPushNotificationIsSubscribed() ?? false
     let yearlyHighType = SettingsCellType.yearlyHighPushNotification(enabled: isYearlyHighPushEnabled)
@@ -143,7 +143,7 @@ extension SettingsViewController {
     })
   }
 
-  func openURLCommand(for type: SettingsCellType) -> Command {
+  func dustProtectionCommand(for type: SettingsCellType) -> Command {
     return Command(action: { [weak self] in
       guard let localSelf = self else { return }
       guard let coordinator = localSelf.coordinationDelegate else { return }
