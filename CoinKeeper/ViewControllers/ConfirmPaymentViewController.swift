@@ -113,7 +113,26 @@ class ConfirmPaymentViewController: PresentableViewController, StoryboardInitial
   }
 
   private func updateRecipient(with viewModel: ConfirmPaymentViewModelType) {
-    guard let contact = viewModel.contact else { return }
+    // Hide address labels by default, unhide as needed
+    // Contact label is always shown, set text to nil to hide
+    primaryAddressLabel.isHidden = true
+    secondaryAddressLabel.isHidden = true
+
+    // Set default contact and address label values
+    contactLabel.text = viewModel.contact?.displayName
+    primaryAddressLabel.text = viewModel.address
+    secondaryAddressLabel.text = viewModel.address
+
+    if let contact = viewModel.contact {
+      // May refer to either an actual contact or a manually entered phone number
+      updateView(withContact: contact)
+    } else {
+      // Recipient is btc address
+      primaryAddressLabel.isHidden = false
+    }
+  }
+
+  private func updateView(withContact contact: ContactType) {
     var displayIdentity = ""
     switch contact.identityType {
     case .phone:
@@ -132,37 +151,21 @@ class ConfirmPaymentViewController: PresentableViewController, StoryboardInitial
       }
     }
 
-    // Hide address labels by default, unhide as needed
-    // Contact label is always shown, set text to nil to hide
-    primaryAddressLabel.isHidden = true
-    secondaryAddressLabel.isHidden = true
-
-    // Set default contact and address label values
-    contactLabel.text = viewModel.contact?.displayName
-    primaryAddressLabel.text = viewModel.address
-    secondaryAddressLabel.text = viewModel.address
-
-    // May refer to either an actual contact or a manually entered phone number
-    if let contact = viewModel.contact {
-      switch contact.kind {
-      case .generic:
+    switch contact.kind {
+    case .generic:
+      contactLabel.text = displayIdentity
+      secondaryAddressLabel.isHidden = false
+    case .invite:
+      if contact.displayName == nil {
         contactLabel.text = displayIdentity
-        secondaryAddressLabel.isHidden = false
-      case .invite:
-        if contact.displayName == nil {
-          contactLabel.text = displayIdentity
-        } else {
-          primaryAddressLabel.text = displayIdentity
-          primaryAddressLabel.isHidden = false
-        }
-      case .registeredUser:
+      } else {
         primaryAddressLabel.text = displayIdentity
-        primaryAddressLabel.isHidden = false // phone number
-        secondaryAddressLabel.isHidden = false // address
+        primaryAddressLabel.isHidden = false
       }
-    } else {
-      // btc address
-      primaryAddressLabel.isHidden = false
+    case .registeredUser:
+      primaryAddressLabel.text = displayIdentity
+      primaryAddressLabel.isHidden = false // phone number
+      secondaryAddressLabel.isHidden = false // address
     }
   }
 
