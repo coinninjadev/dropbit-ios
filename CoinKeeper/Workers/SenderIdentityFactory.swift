@@ -1,5 +1,5 @@
 //
-//  SenderBodyFactory.swift
+//  SenderIdentityFactory.swift
 //  DropBit
 //
 //  Created by Ben Winters on 5/30/19.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct SenderBodyFactory {
+struct SenderIdentityFactory {
   let persistenceManager: PersistenceManagerType
 
   func preferredSenderBody(forReceiverType receiverIdentityType: UserIdentityType) -> UserIdentityBody? {
@@ -18,6 +18,21 @@ struct SenderBodyFactory {
     switch receiverIdentityType {
     case .phone:    return phoneBody ?? twitterBody
     case .twitter:  return twitterBody ?? phoneBody
+    }
+  }
+
+  func preferredSharedPayloadSenderIdentity(forDropBitType type: OutgoingTransactionDropBitType) -> UserIdentityBody? {
+    let phoneBody: UserIdentityBody? = senderPhoneBody()
+
+    var twitterBody: UserIdentityBody?
+    if let creds = persistenceManager.keychainManager.oauthCredentials() {
+      twitterBody = UserIdentityBody.sharedPayloadBody(twitterCredentials: creds)
+    }
+
+    switch type {
+    case .phone:    return phoneBody ?? twitterBody
+    case .twitter:  return twitterBody ?? phoneBody
+    case .none:     return nil
     }
   }
 

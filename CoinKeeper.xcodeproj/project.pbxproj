@@ -569,7 +569,6 @@
 		B52D4524208E5ECA00A56A5C /* ExchangeRateUpdateable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52D4523208E5ECA00A56A5C /* ExchangeRateUpdateable.swift */; };
 		B52EF8CC21A4B0870081CB3B /* MerchantPaymentRequestResponseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52EF8CB21A4B0870081CB3B /* MerchantPaymentRequestResponseTests.swift */; };
 		B52F690A22417B0100790E97 /* CKDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52F690922417B0100790E97 /* CKDatabase.swift */; };
-		B52F897622A0095B00763CC1 /* SenderBodyFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52F897522A0095B00763CC1 /* SenderBodyFactory.swift */; };
 		B52F897822A06DBE00763CC1 /* AppCoordinator+TweetMethodViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52F897722A06DBE00763CC1 /* AppCoordinator+TweetMethodViewControllerDelegate.swift */; };
 		B530DFBD2108CF8400A0B1A8 /* TransactionDetailWarningLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B530DFBC2108CF8400A0B1A8 /* TransactionDetailWarningLabel.swift */; };
 		B534616A2098A9B600DDC1C4 /* CKMWallet+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53461682098A9B600DDC1C4 /* CKMWallet+CoreDataClass.swift */; };
@@ -675,6 +674,7 @@
 		B56E15A72167EAE6003B69D4 /* NetworkManager+DeviceRequestable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56E15A62167EAE6003B69D4 /* NetworkManager+DeviceRequestable.swift */; };
 		B5779F6E216D3DCB00E52B27 /* DeviceEndpointTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5779F6D216D3DCB00E52B27 /* DeviceEndpointTarget.swift */; };
 		B5779F76216D4C3000E52B27 /* MockNetworkManager+DeviceEndpointRequestable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5779F75216D4C3000E52B27 /* MockNetworkManager+DeviceEndpointRequestable.swift */; };
+		B57837E122A56A9D006538C0 /* SenderIdentityFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = B57837E022A56A9D006538C0 /* SenderIdentityFactory.swift */; };
 		B57AC62F227B871500E495C3 /* UIView+CornerRadius.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56788B0227A430300A39534 /* UIView+CornerRadius.swift */; };
 		B57AF7FE2268A6A800E5B0A6 /* ShareTransactionViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B57AF7FD2268A6A800E5B0A6 /* ShareTransactionViewController.storyboard */; };
 		B57AF8002268A95E00E5B0A6 /* ShareTransactionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B57AF7FF2268A95E00E5B0A6 /* ShareTransactionViewController.swift */; };
@@ -1416,7 +1416,6 @@
 		B52D4523208E5ECA00A56A5C /* ExchangeRateUpdateable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExchangeRateUpdateable.swift; sourceTree = "<group>"; };
 		B52EF8CB21A4B0870081CB3B /* MerchantPaymentRequestResponseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MerchantPaymentRequestResponseTests.swift; sourceTree = "<group>"; };
 		B52F690922417B0100790E97 /* CKDatabase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CKDatabase.swift; sourceTree = "<group>"; };
-		B52F897522A0095B00763CC1 /* SenderBodyFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SenderBodyFactory.swift; sourceTree = "<group>"; };
 		B52F897722A06DBE00763CC1 /* AppCoordinator+TweetMethodViewControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppCoordinator+TweetMethodViewControllerDelegate.swift"; sourceTree = "<group>"; };
 		B530DFBC2108CF8400A0B1A8 /* TransactionDetailWarningLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDetailWarningLabel.swift; sourceTree = "<group>"; };
 		B53461682098A9B600DDC1C4 /* CKMWallet+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CKMWallet+CoreDataClass.swift"; sourceTree = "<group>"; };
@@ -1524,6 +1523,7 @@
 		B56E15A62167EAE6003B69D4 /* NetworkManager+DeviceRequestable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NetworkManager+DeviceRequestable.swift"; sourceTree = "<group>"; };
 		B5779F6D216D3DCB00E52B27 /* DeviceEndpointTarget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceEndpointTarget.swift; sourceTree = "<group>"; };
 		B5779F75216D4C3000E52B27 /* MockNetworkManager+DeviceEndpointRequestable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MockNetworkManager+DeviceEndpointRequestable.swift"; sourceTree = "<group>"; };
+		B57837E022A56A9D006538C0 /* SenderIdentityFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SenderIdentityFactory.swift; sourceTree = "<group>"; };
 		B57AF7FD2268A6A800E5B0A6 /* ShareTransactionViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = ShareTransactionViewController.storyboard; sourceTree = "<group>"; };
 		B57AF7FF2268A95E00E5B0A6 /* ShareTransactionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareTransactionViewController.swift; sourceTree = "<group>"; };
 		B57AF8012268C78400E5B0A6 /* AppCoordinator+ShareTransactionViewControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppCoordinator+ShareTransactionViewControllerDelegate.swift"; sourceTree = "<group>"; };
@@ -1986,7 +1986,7 @@
 				B5DDB0F421DE5ED200A25929 /* KeychainMigrationWorker.swift */,
 				3BE8AA1521F10D4200A3F0C4 /* CKCryptor.swift */,
 				3B86B6F0224972D000E2706E /* AbstractMigrationWorker.swift */,
-				B52F897522A0095B00763CC1 /* SenderBodyFactory.swift */,
+				B57837E022A56A9D006538C0 /* SenderIdentityFactory.swift */,
 			);
 			path = Workers;
 			sourceTree = "<group>";
@@ -3598,7 +3598,6 @@
 				A2A530BE20936A6C00B6F4DE /* FloatingPoint+DegreeToRadians.swift in Sources */,
 				B552EDE9211E33D000332BB5 /* BiometricAuthenticationManager.swift in Sources */,
 				B5EABAAF21FB8E8B00E32E08 /* TransactionNotificationTarget.swift in Sources */,
-				B52F897622A0095B00763CC1 /* SenderBodyFactory.swift in Sources */,
 				4AF4332220935C8D00B11BC9 /* DeviceVerificationCoordinator.swift in Sources */,
 				3BDFADFE2267B1FB0077DEF2 /* BlockstreamProvider.swift in Sources */,
 				B505A87C2076C79700AACB23 /* TransactionHistoryDetailLabel.swift in Sources */,
@@ -3801,6 +3800,7 @@
 				3B547A6E2280A6F1007B0366 /* VerifiedStatusView.swift in Sources */,
 				B5E7FAE521372DD600997972 /* String+Multiline.swift in Sources */,
 				3BAB1445204EE5D3001D41A2 /* VerifyRecoveryWordsViewController.swift in Sources */,
+				B57837E122A56A9D006538C0 /* SenderIdentityFactory.swift in Sources */,
 				A22B196020EC1DA80084E8E9 /* AppCoordinator+RestoreWalletViewControllerDelegate.swift in Sources */,
 				B5B0DC7F221363910010AB2A /* PhoneNumberEntryView.swift in Sources */,
 				3BA9F5FD208F63D40047C213 /* AppCoordinator+PinEntryViewControllerDelegate.swift in Sources */,
