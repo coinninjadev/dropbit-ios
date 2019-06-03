@@ -45,8 +45,12 @@ extension AppCoordinator: SettingsViewControllerDelegate {
 
   func viewController(_ viewController: UIViewController, didEnableYearlyHighNotification didEnable: Bool) {
     persistenceManager.updateYearlyPriceHighNotification(enabled: didEnable)
-    if let token = persistenceManager.string(for: .devicePushToken) {
-      notificationManager.performRegistrationIfNeeded(forPushToken: token)
+    guard persistenceManager.string(for: .devicePushToken) != nil else { return }
+
+    if didEnable {
+      notificationManager.subscribeToTopic(type: .btcHigh)
+    } else {
+      notificationManager.unsubscribeFromTopic(type: .btcHigh)
     }
   }
 

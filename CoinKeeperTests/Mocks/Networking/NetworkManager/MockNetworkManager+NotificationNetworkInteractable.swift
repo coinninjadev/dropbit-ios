@@ -35,7 +35,11 @@ extension MockNetworkManager: NotificationNetworkInteractable {
     return Promise { _ in }
   }
 
-  func unsubscribeToTopics(deviceEndpointIds: DeviceEndpointIds, topicId: String) -> Promise<Void> {
+  func getSubscriptionInfo(withDeviceEndpointIds endpointIds: DeviceEndpointIds) -> Promise<SubscriptionInfoResponse> {
+    return Promise { _ in }
+  }
+
+  func unsubscribeFromTopic(topicId: String, deviceEndpointIds: DeviceEndpointIds) -> Promise<Void> {
     return Promise { _ in }
   }
 }

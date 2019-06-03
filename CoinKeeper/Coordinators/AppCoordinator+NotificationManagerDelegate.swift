@@ -29,6 +29,7 @@ extension AppCoordinator: NotificationManagerDelegate {
     persistenceManager.deleteDeviceEndpointIds()
   }
 
+  /// used to determine if topic should even be considered for subscription
   func shouldSubscribeToTopic(withName name: String) -> Bool {
     guard let type = SubscriptionTopicType(rawValue: name) else { return false }
     switch type {
@@ -39,38 +40,76 @@ extension AppCoordinator: NotificationManagerDelegate {
     }
   }
 
-  func unsubscribeFromTopicsIfNeeded(
-    with response: SubscriptionInfoResponse,
-    deviceEndpointIds: DeviceEndpointIds) -> Promise<SubscriptionInfoResponse> {
-    let activeSubscriptions = response.subscriptions
-    let toUnsubscribe = activeSubscriptions.first { (innerResponse) -> Bool in
-      let maybeTopicResponse = response.availableTopics.first(where: { $0.id == innerResponse.ownerId })
-      guard let topicResponse = maybeTopicResponse else { return false }
-      switch topicResponse.type {
-      case .btcHigh:
-        let shouldUnsubscribe = self.shouldUnsubscribeFromTopic(topicResponse, subscribedTopics: activeSubscriptions)
-        return shouldUnsubscribe
-      case .general:
-        return false
-      }
-    }
-    if let toUnsubscribe = toUnsubscribe {
-      return networkManager.unsubscribeToTopics(deviceEndpointIds: deviceEndpointIds, topicId: toUnsubscribe.ownerId)
-        .then { _ in return Promise.value(response) }
-    } else {
-      return Promise.value(response)
+  func pushToken() -> String? {
+    return persistenceManager.string(for: .devicePushToken)
+  }
+
+  func unsubscribeFromTopic(type: SubscriptionTopicType, deviceEndpointIds: DeviceEndpointIds) -> Promise<Void> {
+    // 1. search subscribed topics for type
+    return networkManager.getSubscriptionInfo(withDeviceEndpointIds: deviceEndpointIds)
+      .then { (subscriptionInfoResponse: SubscriptionInfoResponse) -> Promise<Void> in
+        let subscriptions = subscriptionInfoResponse.subscriptions
+        let availableTopics = subscriptionInfoResponse.availableTopics
+        let maybeTopic = availableTopics.first(where: { $0.type == type })
+        // 2. get topic to unsubscribe from, if any, and ask if should unsubscribe
+        if let topic = maybeTopic, self.shouldUnsubscribeFromTopic(topic, subscribedTopics: subscriptions) {
+          // 3. if should, unsubscribe
+          return self.networkManager.unsubscribeFromTopic(topicId: topic.id, deviceEndpointIds: deviceEndpointIds)
+        } else {
+          return Promise.value(())
+        }
     }
   }
 
-  func shouldUnsubscribeFromTopic(_ topic: SubscriptionAvailableTopicResponse, subscribedTopics: [SubscriptionResponse]) -> Bool {
+  func subscribeToTopic(type: SubscriptionTopicType, deviceEndpointIds: DeviceEndpointIds) -> Promise<Void> {
+    // 1. search subscribed topics for type
+    return self.networkManager.getSubscriptionInfo(withDeviceEndpointIds: deviceEndpointIds)
+      .then { (subInfoResponse: SubscriptionInfoResponse) -> Promise<Void> in
+        let subscriptions = subInfoResponse.subscriptions
+        let availableTopics = subInfoResponse.availableTopics
+        let maybeTopic = availableTopics.first(where: { $0.type == type })
+        // 2. get topic to unsubscribe from, if any, and ask if should unsubscribe
+        if let topic = maybeTopic, self.shouldSubscribeToTopic(topic, subscribedTopics: subscriptions) {
+          // 3. if should, subscribe
+          let body = NotificationTopicSubscriptionBody(topicIds: [topic.id])
+          return self.networkManager
+            .subscribeToTopics(deviceEndpointIds: deviceEndpointIds, body: body)
+            .asVoid()
+        } else {
+          return Promise.value(())
+        }
+      }
+  }
+
+  func updateNotificationEnabled(_ enabled: Bool, forType type: SubscriptionTopicType) {
+    switch type {
+    case .btcHigh: persistenceManager.set(enabled, for: .yearlyPriceHighNotificationEnabled)
+    case .general: break
+    }
+  }
+
+  private func shouldUnsubscribeFromTopic(_ topic: SubscriptionAvailableTopicResponse, subscribedTopics: [SubscriptionResponse]) -> Bool {
     guard let type = SubscriptionTopicType(rawValue: topic.name) else { return false }
     switch type {
     case .general: return false
     case .btcHigh:
-      let isSubscribed = subscribedTopics.contains(where: { subResponse -> Bool in subResponse.ownerId == topic.id })
+      let isSubscribed = subscribedTopics.contains(where: { $0.ownerId == topic.id })
       let isSettingDisabled = !persistenceManager.yearlyPriceHighNotificationIsEnabled()
       let shouldUnsubscribe = isSettingDisabled && isSubscribed
       return shouldUnsubscribe
+    }
+  }
+
+  /// used locally in this file, cross-comparing existing subscriptions, to determine if subscription is needed`
+  private func shouldSubscribeToTopic(_ topic: SubscriptionAvailableTopicResponse, subscribedTopics: [SubscriptionResponse]) -> Bool {
+    let type = topic.type
+    switch type {
+    case .general: return true
+    case .btcHigh:
+      let isSubscribed = subscribedTopics.contains(where: { $0.ownerId == topic.id })
+      let isSettingEnabled = persistenceManager.yearlyPriceHighNotificationIsEnabled()
+      let shouldSubscribe = isSettingEnabled && !isSubscribed
+      return shouldSubscribe
     }
   }
 }

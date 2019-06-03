@@ -33,6 +33,9 @@ protocol NotificationManagerType: AnyObject {
   func performRegistrationIfNeeded(forPushToken pushToken: String)
 
   @discardableResult func removeSubscriptions() -> Promise<Void>
+
+  @discardableResult func unsubscribeFromTopic(type: SubscriptionTopicType) -> Promise<Void>
+  @discardableResult func subscribeToTopic(type: SubscriptionTopicType) -> Promise<Void>
 }
 
 protocol NotificationManagerDelegate: AnyObject {
@@ -41,9 +44,10 @@ protocol NotificationManagerDelegate: AnyObject {
   func persistDeviceEndpointId(_ deviceEndpointId: String)
   func deleteDeviceEndpointIds()
   func shouldSubscribeToTopic(withName name: String) -> Bool
-  func unsubscribeFromTopicsIfNeeded(
-    with response: SubscriptionInfoResponse,
-    deviceEndpointIds: DeviceEndpointIds) -> Promise<SubscriptionInfoResponse>
+  func pushToken() -> String?
+  func updateNotificationEnabled(_ enabled: Bool, forType type: SubscriptionTopicType)
+  @discardableResult func unsubscribeFromTopic(type: SubscriptionTopicType, deviceEndpointIds: DeviceEndpointIds) -> Promise<Void>
+  @discardableResult func subscribeToTopic(type: SubscriptionTopicType, deviceEndpointIds: DeviceEndpointIds) -> Promise<Void>
 }
 
 protocol NotificationNetworkInteractable: AnyObject {
@@ -51,12 +55,15 @@ protocol NotificationNetworkInteractable: AnyObject {
   func getDeviceEndpoints(serverDeviceId: String) -> Promise<[DeviceEndpointResponse]>
   func getWalletSubscriptions() -> Promise<[SubscriptionResponse]>
   func getSubscriptionInfo(withDeviceEndpointResponse response: DeviceEndpointResponse) -> Promise<SubscriptionInfoResponse>
+  func getSubscriptionInfo(withDeviceEndpointIds endpointIds: DeviceEndpointIds) -> Promise<SubscriptionInfoResponse>
   func createDevice(forLocalUUIDString localDeviceId: String) -> Promise<DeviceResponse>
   func createDeviceEndpoint(forPushToken pushToken: String, serverDeviceId: String) -> Promise<DeviceEndpointResponse>
   func subscribeToWalletTopic(withDeviceEndpointResponse response: DeviceEndpointResponse) -> Promise<SubscriptionResponse>
-  func subscribeToTopics(deviceEndpointIds: DeviceEndpointIds, body: NotificationTopicSubscriptionBody) -> Promise<SubscriptionInfoResponse>
+  @discardableResult func subscribeToTopics(
+    deviceEndpointIds: DeviceEndpointIds,
+    body: NotificationTopicSubscriptionBody) -> Promise<SubscriptionInfoResponse>
   @discardableResult func removeEndpoints(from responses: [DeviceEndpointResponse]) -> Promise<Void>
-  func unsubscribeToTopics(deviceEndpointIds: DeviceEndpointIds, topicId: String) -> Promise<Void>
+  @discardableResult func unsubscribeFromTopic(topicId: String, deviceEndpointIds: DeviceEndpointIds) -> Promise<Void>
 }
 
 class NotificationManager: NSObject, NotificationManagerType {
@@ -115,15 +122,7 @@ class NotificationManager: NSObject, NotificationManagerType {
   }
 
   private func createDeviceEndpointIfNeeded(withPushToken token: String, serverDeviceId: String) -> Promise<DeviceEndpointResponse> {
-    return networkInteractor.getDeviceEndpoints(serverDeviceId: serverDeviceId)
-      .filterValues { $0.token == token }
-      .then { (responses: [DeviceEndpointResponse]) -> Promise<DeviceEndpointResponse> in
-        if let last = responses.last { // not empty
-          return Promise.value(last)
-        } else {
-          return self.networkInteractor.createDeviceEndpoint(forPushToken: token, serverDeviceId: serverDeviceId)
-        }
-      }
+    return deviceEndpointResponse(token: token)
       .get { self.delegate?.persistDeviceEndpointId($0.id) }
   }
 
@@ -154,16 +153,59 @@ class NotificationManager: NSObject, NotificationManagerType {
     ) -> Promise<SubscriptionInfoResponse> {
     guard let localDelegate = delegate else { return Promise(error: CKPersistenceError.missingValue(key: "notificationManagerDelegate")) }
     return networkInteractor.getSubscriptionInfo(withDeviceEndpointResponse: response)
-      .then { localDelegate.unsubscribeFromTopicsIfNeeded(with: $0, deviceEndpointIds: DeviceEndpointIds(response: response)) }
-      .map { $0.availableTopics }
+      .then { (subInfoResponse: SubscriptionInfoResponse) -> Promise<[SubscriptionAvailableTopicResponse]> in
+        self.syncKnownSubscriptions(with: subInfoResponse)
+        let subscribedIds = subInfoResponse.subscriptions.map { $0.ownerId }.asSet()
+        let availableIds = subInfoResponse.availableTopics.map { $0.id }.asSet()
+        let unsubscribedIds = availableIds.subtracting(subscribedIds)
+        let topics = subInfoResponse.availableTopics.filter { unsubscribedIds.contains($0.id) }
+        return Promise.value(topics)
+      }
       .filterValues { localDelegate.shouldSubscribeToTopic(withName: $0.name) }
       .mapValues { $0.id }
       .then { Promise.value(NotificationTopicSubscriptionBody(topicIds: $0)) }
       .then { body in self.networkInteractor.subscribeToTopics(deviceEndpointIds: DeviceEndpointIds(response: response), body: body) }
   }
 
-  private func shouldSubscribeToNotifications(forType type: SubscriptionTopicType) -> Bool {
-    return true
+  private func syncKnownSubscriptions(with subscriptionInfo: SubscriptionInfoResponse) {
+    let subscriptions = subscriptionInfo.subscriptions
+    let availableTopics = subscriptionInfo.availableTopics
+    for availableTopic in availableTopics {
+      let isEnabled = subscriptions.first(where: { $0.ownerId == availableTopic.id }) != nil
+      delegate?.updateNotificationEnabled(isEnabled, forType: availableTopic.type)
+    }
+  }
+
+  @discardableResult
+  func subscribeToTopic(type: SubscriptionTopicType) -> Promise<Void> {
+    guard let delegate = delegate else { return Promise(error: CKPersistenceError.missingValue(key: "delegate")) }
+    return self.deviceEndpointResponse()
+      .then { delegate.subscribeToTopic(type: type, deviceEndpointIds: DeviceEndpointIds(response: $0)) }
+  }
+
+  @discardableResult
+  func unsubscribeFromTopic(type: SubscriptionTopicType) -> Promise<Void> {
+    guard let delegate = delegate else { return Promise(error: CKPersistenceError.missingValue(key: "delegate")) }
+    return self.deviceEndpointResponse()
+      .then { delegate.unsubscribeFromTopic(type: type, deviceEndpointIds: DeviceEndpointIds(response: $0)) }
+  }
+
+  private func deviceEndpointResponse(token: String? = nil) -> Promise<DeviceEndpointResponse> {
+    guard let localDelegate = delegate else { return Promise(error: CKPersistenceError.missingValue(key: "delegate")) }
+    let localDeviceID = localDelegate.localDeviceId(self)
+    let maybeToken = token ?? localDelegate.pushToken()
+    guard let localToken = maybeToken else { return Promise(error: CKPersistenceError.missingValue(key: "push token")) }
+    return networkInteractor.getDevice(forLocalUUIDString: localDeviceID)
+      .then { self.networkInteractor.getDeviceEndpoints(serverDeviceId: $0.id) }
+      .filterValues { $0.token == localToken }
+      .then { (responses: [DeviceEndpointResponse]) -> Promise<DeviceEndpointResponse> in
+        if let last = responses.last { // not empty
+          return Promise.value(last)
+        } else {
+          throw CKPersistenceError.missingValue(key: "device endpoint response")
+        }
+    }
+
   }
 
   @discardableResult
@@ -174,6 +216,7 @@ class NotificationManager: NSObject, NotificationManagerType {
       .then { self.networkInteractor.removeEndpoints(from: $0) }
       .done { self.delegate?.deleteDeviceEndpointIds() }
   }
+
 }
 
 extension NotificationManager: UNUserNotificationCenterDelegate {
