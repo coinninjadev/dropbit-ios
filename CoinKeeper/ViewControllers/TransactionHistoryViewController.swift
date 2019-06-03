@@ -315,7 +315,7 @@ extension TransactionHistoryViewController: UICollectionViewDelegateFlowLayout {
     let transaction = frc.object(at: indexPath)
     var height: CGFloat = 66
     height += !transaction.isConfirmed ? 20 : 0
-    height += transaction.memo != nil ? 25 : 0
+    height += (transaction.memo?.asNilIfEmpty() != nil) ? 25 : 0
     return CGSize(width: self.view.frame.width, height: height)
   }
 }

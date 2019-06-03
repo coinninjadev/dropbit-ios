@@ -69,8 +69,8 @@ class SharedPayloadManager: SharedPayloadManagerType {
     for payload in payloads {
       guard let tx = CKMTransaction.find(byTxid: payload.txid, in: deps.context) else { continue }
 
-      if tx.memo == nil {
-        tx.memo = payload.info.memo
+      if tx.memo == nil, let validMemo = payload.info.memo.asNilIfEmpty() {
+        tx.memo = validMemo
       }
 
       let phoneNumber = payload.profile.globalPhoneNumber()
@@ -102,8 +102,8 @@ class SharedPayloadManager: SharedPayloadManagerType {
     for payload in payloads {
       guard let tx = CKMTransaction.find(byTxid: payload.txid, in: deps.context) else { continue }
 
-      if tx.memo == nil {
-        tx.memo = payload.info.memo
+      if tx.memo == nil, let validMemo = payload.info.memo.asNilIfEmpty() {
+        tx.memo = validMemo
       }
 
       guard let profile = payload.profile else { continue }
