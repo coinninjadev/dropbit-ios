@@ -104,7 +104,9 @@ extension NetworkManager: TransactionBroadcastable {
   func postSharedPayloadIfAppropriate(withOutgoingTxData outgoingTxData: OutgoingTransactionData,
                                       walletManager: WalletManagerType) -> Promise<String> {
     guard let sharedPayloadDTO = outgoingTxData.sharedPayloadDTO,
-      case let .known(addressPubKey) = sharedPayloadDTO.addressPubKeyState else {
+      case let .known(addressPubKey) = sharedPayloadDTO.addressPubKeyState,
+      let senderIdentityBody = outgoingTxData.sharedPayloadSenderIdentity else {
+        //Skip posting payload and just return the txid
       return Promise.value(outgoingTxData.txid)
     }
 
@@ -115,10 +117,6 @@ extension NetworkManager: TransactionBroadcastable {
 
     guard let amountInfo = sharedPayloadDTO.amountInfo else {
       return Promise(error: CKPersistenceError.missingValue(key: "amountInfo"))
-    }
-
-    guard let senderIdentityBody = outgoingTxData.sharedPayloadSenderIdentity else {
-      return Promise(error: CKPersistenceError.missingValue(key: "sharedPayloadSenderIdentity"))
     }
 
     let payload = SharedPayloadV2(txid: outgoingTxData.txid,
