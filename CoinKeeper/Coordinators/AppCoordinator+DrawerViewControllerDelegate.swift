@@ -50,7 +50,6 @@ extension AppCoordinator: DrawerViewControllerDelegate {
     analyticsManager.track(event: .supportButtonPressed, with: nil)
     drawerController?.toggle(.left, animated: true, completion: nil)
     let viewController = SupportViewController.newInstance(with: self)
-    assignCoordinationDelegate(to: viewController)
     navigationController.present(viewController, animated: true, completion: nil)
   }
 
