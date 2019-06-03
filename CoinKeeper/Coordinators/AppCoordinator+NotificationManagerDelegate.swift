@@ -89,7 +89,7 @@ extension AppCoordinator: NotificationManagerDelegate {
   }
 
   private func shouldUnsubscribeFromTopic(_ topic: SubscriptionAvailableTopicResponse, subscribedTopics: [SubscriptionResponse]) -> Bool {
-    guard let type = SubscriptionTopicType(rawValue: topic.name) else { return false }
+    let type = topic.type
     switch type {
     case .general: return false
     case .btcHigh:
