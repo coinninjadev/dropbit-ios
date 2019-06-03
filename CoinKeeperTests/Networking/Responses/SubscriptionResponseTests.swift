@@ -45,6 +45,7 @@ extension SubscriptionResponse: EmptyStringCopyable {
                                 createdAt: self.createdAt,
                                 updatedAt: self.updatedAt,
                                 ownerType: "",
+                                ownerId: "",
                                 deviceEndpoint: self.deviceEndpoint,
                                 deviceEndpointId: "")
   }

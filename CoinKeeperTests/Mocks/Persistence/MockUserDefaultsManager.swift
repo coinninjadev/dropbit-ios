@@ -40,6 +40,10 @@ class MockUserDefaultsManager: PersistenceUserDefaultsType {
     return 0
   }
 
+  func yearlyPriceHighNotificationIsEnabled() -> Bool {
+    return true
+  }
+
   var dontShowShareTransaction: Bool = false
 
   // standardDefaults is not used by MockPersistenceManager, and is not accessed outside PersistenceManager (wjf, 2018-04)

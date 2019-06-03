@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -27,32 +27,24 @@
                                 </constraints>
                                 <state key="normal" image="close"/>
                                 <connections>
-                                    <action selector="closeButtonWasTouched" destination="VZY-9Z-ZtP" eventType="touchUpInside" id="0wA-Cp-9Yf"/>
-                                    <action selector="closeButtonWasTouched" destination="VZY-9Z-ZtP" eventType="touchUpOutside" id="12M-yA-LLJ"/>
+                                    <action selector="close" destination="VZY-9Z-ZtP" eventType="touchUpInside" id="0wA-Cp-9Yf"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="SETTINGS" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pKO-yy-nRa">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="SETTINGS" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pKO-yy-nRa" customClass="SettingsTitleLabel" customModule="DropBit" customModuleProvider="target">
                                 <rect key="frame" x="147.5" y="40" width="80.5" height="20.5"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="nBx-xg-S8T">
-                                <rect key="frame" x="0.0" y="90.5" width="375" height="392.5"/>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="60" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="nBx-xg-S8T">
+                                <rect key="frame" x="0.0" y="90.5" width="375" height="444.5"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </tableView>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="Zrr-HX-Agz">
-                                <rect key="frame" x="12" y="483" width="351" height="144"/>
+                                <rect key="frame" x="12" y="535" width="351" height="92"/>
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Bjv-WB-zGJ" customClass="PrimaryActionButton" customModule="DropBit" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="0.0" width="351" height="40"/>
-                                        <state key="normal" title="Send Debugging Info"/>
-                                        <connections>
-                                            <action selector="sendDebuggingInfo:" destination="VZY-9Z-ZtP" eventType="touchUpInside" id="R12-21-Kwp"/>
-                                        </connections>
-                                    </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oTC-j1-H7K" customClass="PrimaryActionButton" customModule="DropBit" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="52" width="351" height="40"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="351" height="40"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="40" id="OwV-sz-yfp"/>
                                         </constraints>
@@ -62,7 +54,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7wB-vf-jXx">
-                                        <rect key="frame" x="0.0" y="104" width="351" height="40"/>
+                                        <rect key="frame" x="0.0" y="52" width="351" height="40"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="40" id="xKH-c6-ES8"/>
                                         </constraints>
@@ -72,9 +64,6 @@
                                         </connections>
                                     </button>
                                 </subviews>
-                                <constraints>
-                                    <constraint firstItem="Bjv-WB-zGJ" firstAttribute="height" secondItem="oTC-j1-H7K" secondAttribute="height" id="AZz-9R-QkK"/>
-                                </constraints>
                             </stackView>
                         </subviews>
                         <constraints>
@@ -89,7 +78,6 @@
                             <constraint firstItem="BJB-NX-RJw" firstAttribute="bottom" secondItem="Zrr-HX-Agz" secondAttribute="bottom" constant="40" id="mdJ-yL-CDl"/>
                             <constraint firstItem="nBx-xg-S8T" firstAttribute="top" secondItem="pKO-yy-nRa" secondAttribute="bottom" constant="30" id="mvJ-D7-9Am"/>
                             <constraint firstItem="pKO-yy-nRa" firstAttribute="top" secondItem="BJB-NX-RJw" secondAttribute="top" constant="20" id="pMv-ER-tdK"/>
-                            <constraint firstItem="pKO-yy-nRa" firstAttribute="centerX" secondItem="MGU-nP-sJR" secondAttribute="centerX" id="rsr-Q0-pDC"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="BJB-NX-RJw"/>
                     </view>
@@ -97,9 +85,7 @@
                         <outlet property="closeButton" destination="FLQ-oH-dKS" id="TWf-SJ-78g"/>
                         <outlet property="deleteWalletButton" destination="7wB-vf-jXx" id="uYV-R7-c0A"/>
                         <outlet property="resyncBlockchainButton" destination="oTC-j1-H7K" id="XUz-fp-KeI"/>
-                        <outlet property="sendDebuggingInfoButton" destination="Bjv-WB-zGJ" id="BwG-y9-1Cm"/>
                         <outlet property="settingsTableView" destination="nBx-xg-S8T" id="ZXc-Ru-c5A"/>
-                        <outlet property="settingsTitleLabel" destination="pKO-yy-nRa" id="DGc-vy-87a"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="MP2-Xe-3dU" userLabel="First Responder" sceneMemberID="firstResponder"/>

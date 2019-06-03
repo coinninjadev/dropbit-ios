@@ -14,7 +14,7 @@ protocol PhoneNumberStatusViewControllerDelegate: ViewControllerDismissable, Aut
   func verifiedPhoneNumber() -> GlobalPhoneNumber?
   func verifiedTwitterHandle() -> String?
   func viewControllerDidRequestAddresses() -> [ServerAddressViewModel]
-  func viewControllerDidRequestOpenURL(_ viewController: UIViewController, url: URL)
+  func viewController(_ viewController: UIViewController, didRequestOpenURL url: URL)
   func viewControllerDidSelectVerifyPhone(_ viewController: UIViewController)
   func viewControllerDidSelectVerifyTwitter(_ viewController: UIViewController)
   func viewControllerDidRequestToUnverifyPhone(_ viewController: UIViewController, successfulCompletion: @escaping () -> Void)
@@ -191,6 +191,6 @@ extension PhoneNumberStatusViewController: ServerAddressViewDelegate {
 
   func didPressQuestionMarkButton() {
     guard let url = CoinNinjaUrlFactory.buildUrl(for: .myAddressesTooltip) else { return }
-    coordinationDelegate?.viewControllerDidRequestOpenURL(self, url: url)
+    coordinationDelegate?.viewController(self, didRequestOpenURL: url)
   }
 }

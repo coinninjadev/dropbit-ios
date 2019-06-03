@@ -123,9 +123,7 @@ class PhoneNumberStatusViewControllerTests: XCTestCase {
       return []
     }
 
-    func viewControllerDidRequestOpenURL(_ viewController: UIViewController, url: URL) {
-
-    }
+    func viewController(_ viewController: UIViewController, didRequestOpenURL url: URL) {}
 
     var didSelectVerifyPhone = false
     func viewControllerDidSelectVerifyPhone(_ viewController: UIViewController) {

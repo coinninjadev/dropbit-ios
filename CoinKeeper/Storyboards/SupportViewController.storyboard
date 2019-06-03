@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Support View Controller-->
+        <scene sceneID="ez8-yW-ahb">
+            <objects>
+                <viewController storyboardIdentifier="SupportViewController" id="cLl-2H-CR6" customClass="SupportViewController" customModule="DropBit" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="9QI-da-zwp">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qmb-Jw-Cdm" customClass="PrimaryActionButton" customModule="DropBit" customModuleProvider="target">
+                                <rect key="frame" x="12" y="772" width="390" height="50"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="Gdv-SK-qhD"/>
+                                </constraints>
+                                <state key="normal" title="Button"/>
+                                <connections>
+                                    <action selector="sendDebugInfo" destination="cLl-2H-CR6" eventType="touchUpInside" id="Dxq-UD-keu"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sL9-UJ-zdM">
+                                <rect key="frame" x="362" y="52" width="44" height="44"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="sL9-UJ-zdM" secondAttribute="height" multiplier="1:1" id="S7u-XW-SRc"/>
+                                    <constraint firstAttribute="height" constant="44" id="p9f-zH-g3r"/>
+                                </constraints>
+                                <state key="normal" image="close"/>
+                                <connections>
+                                    <action selector="close" destination="cLl-2H-CR6" eventType="touchUpInside" id="d1u-Ey-2eV"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="SUPPORT" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fBa-9l-gEK" customClass="SettingsTitleLabel" customModule="DropBit" customModuleProvider="target">
+                                <rect key="frame" x="168" y="64" width="78" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="wgw-wo-hkc">
+                                <rect key="frame" x="12" y="115" width="390" height="649"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="QoP-kw-gDZ" firstAttribute="trailing" secondItem="qmb-Jw-Cdm" secondAttribute="trailing" constant="12" id="0Dy-b4-PAp"/>
+                            <constraint firstItem="QoP-kw-gDZ" firstAttribute="trailing" secondItem="sL9-UJ-zdM" secondAttribute="trailing" constant="8" id="2F9-hj-9ex"/>
+                            <constraint firstItem="fBa-9l-gEK" firstAttribute="top" secondItem="QoP-kw-gDZ" secondAttribute="top" constant="20" id="83d-cR-6bP"/>
+                            <constraint firstItem="qmb-Jw-Cdm" firstAttribute="leading" secondItem="QoP-kw-gDZ" secondAttribute="leading" constant="12" id="ERd-o4-aqV"/>
+                            <constraint firstItem="QoP-kw-gDZ" firstAttribute="trailing" secondItem="wgw-wo-hkc" secondAttribute="trailing" constant="12" id="Gvw-fG-3T7"/>
+                            <constraint firstItem="fBa-9l-gEK" firstAttribute="centerX" secondItem="9QI-da-zwp" secondAttribute="centerX" id="NNT-yG-iwE"/>
+                            <constraint firstItem="wgw-wo-hkc" firstAttribute="leading" secondItem="QoP-kw-gDZ" secondAttribute="leading" constant="12" id="U81-jE-abX"/>
+                            <constraint firstItem="sL9-UJ-zdM" firstAttribute="top" secondItem="QoP-kw-gDZ" secondAttribute="top" constant="8" id="VKz-uf-hYj"/>
+                            <constraint firstItem="wgw-wo-hkc" firstAttribute="top" secondItem="fBa-9l-gEK" secondAttribute="bottom" constant="30" id="mHW-oM-KvL"/>
+                            <constraint firstItem="qmb-Jw-Cdm" firstAttribute="top" secondItem="wgw-wo-hkc" secondAttribute="bottom" constant="8" id="or9-R7-HQX"/>
+                            <constraint firstItem="QoP-kw-gDZ" firstAttribute="bottom" secondItem="qmb-Jw-Cdm" secondAttribute="bottom" constant="40" id="rqn-7O-Vvi"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="QoP-kw-gDZ"/>
+                    </view>
+                    <connections>
+                        <outlet property="closeButton" destination="sL9-UJ-zdM" id="OLS-n4-IEY"/>
+                        <outlet property="sendDebugInfoButton" destination="qmb-Jw-Cdm" id="rW5-yy-vK1"/>
+                        <outlet property="tableView" destination="wgw-wo-hkc" id="b24-CK-59i"/>
+                        <outlet property="titleLabel" destination="fBa-9l-gEK" id="ZW0-yY-71O"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="xmN-Eg-hRc" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="211.59420289855075" y="-234.375"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="close" width="14" height="14"/>
+    </resources>
+</document>
