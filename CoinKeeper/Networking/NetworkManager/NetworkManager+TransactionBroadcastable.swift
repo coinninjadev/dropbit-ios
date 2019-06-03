@@ -109,7 +109,7 @@ extension NetworkManager: TransactionBroadcastable {
     }
 
     switch outgoingTxData.dropBitType {
-    case .none: return Promise(error: CKPersistenceError.missingValue(key: "identity"))
+    case .none: return Promise(error: CKPersistenceError.missingValue(key: "outgoingTxData.dropBitType"))
     default: break
     }
 
@@ -117,8 +117,8 @@ extension NetworkManager: TransactionBroadcastable {
       return Promise(error: CKPersistenceError.missingValue(key: "amountInfo"))
     }
 
-    guard let senderIdentityBody = persistenceManager.senderIdentity(forOutgoingDropBitType: outgoingTxData.dropBitType) else {
-      return Promise(error: CKPersistenceError.missingValue(key: "identity"))
+    guard let senderIdentityBody = outgoingTxData.sharedPayloadSenderIdentity else {
+      return Promise(error: CKPersistenceError.missingValue(key: "sharedPayloadSenderIdentity"))
     }
 
     let payload = SharedPayloadV2(txid: outgoingTxData.txid,

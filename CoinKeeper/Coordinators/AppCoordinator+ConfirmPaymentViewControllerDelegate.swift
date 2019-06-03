@@ -36,7 +36,7 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate, CurrencyFormatta
 
         let receiverBody = outgoingInvitationDTO.contact.userIdentityBody
 
-        let senderBodyFactory = SenderBodyFactory(persistenceManager: strongSelf.persistenceManager)
+        let senderBodyFactory = SenderIdentityFactory(persistenceManager: strongSelf.persistenceManager)
         guard let senderBody = senderBodyFactory.preferredSenderBody(forReceiverType: receiverBody.identityType) else {
           print("Failed to create sender body")
           return
@@ -71,6 +71,10 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate, CurrencyFormatta
     let amountInfo = SharedPayloadAmountInfo(converter: converter)
     var outgoingTxDataWithAmount = outgoingTransactionData
     outgoingTxDataWithAmount.sharedPayloadDTO?.amountInfo = amountInfo
+
+    let senderIdentityFactory = SenderIdentityFactory(persistenceManager: persistenceManager)
+    let senderIdentity = senderIdentityFactory.preferredSharedPayloadSenderIdentity(forDropBitType: outgoingTransactionData.dropBitType)
+    outgoingTxDataWithAmount.sharedPayloadSenderIdentity = senderIdentity
 
     let usdThreshold = 100_00
     let shouldDisableBiometrics = amountInfo.fiatAmount > usdThreshold
