@@ -297,7 +297,8 @@ extension AppCoordinator: SendPaymentViewControllerDelegate {
 
   func viewControllerDidPressContacts(_ viewController: UIViewController & SelectedValidContactDelegate) {
     analyticsManager.track(event: .contactsButtonPressed, with: nil)
-    guard persistenceManager.verifiedPhoneNumber() != nil else {
+    let mainContext = persistenceManager.mainQueueContext()
+    guard persistenceManager.userIsVerified(in: mainContext) else {
       showModalForPhoneVerification(with: viewController)
       return
     }
