@@ -147,7 +147,7 @@ protocol PersistenceManagerType: DeviceCountryCodeProvider {
   /// Look for any transactions sent to a phone number without a contact name, and provide a name if found, as a convenience when viewing tx history
   func matchContactsIfPossible()
 
-  func verifiedIdentities() -> [UserIdentityType]
+  func verifiedIdentities(in context: NSManagedObjectContext) -> [UserIdentityType]
 }
 
 extension PersistenceManagerType {

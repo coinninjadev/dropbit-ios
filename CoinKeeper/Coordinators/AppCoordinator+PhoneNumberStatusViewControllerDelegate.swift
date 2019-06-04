@@ -116,7 +116,7 @@ extension AppCoordinator: PhoneNumberStatusViewControllerDelegate {
     with tryAgainConfiguration: AlertActionConfiguration,
     successfulCompletion: @escaping () -> Void) -> AlertActionConfiguration {
 
-    let verifiedIdentities = persistenceManager.verifiedIdentities()
+    let verifiedIdentities = persistenceManager.verifiedIdentities(in: persistenceManager.mainQueueContext())
 
     let logger = OSLog(subsystem: "com.coinninja.coinkeeper.appcoordinator", category: "unverify_phone")
     return AlertActionConfiguration(title: "Remove", style: .cancel, action: {

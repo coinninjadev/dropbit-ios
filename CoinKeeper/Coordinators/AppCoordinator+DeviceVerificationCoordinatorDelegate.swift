@@ -94,7 +94,7 @@ extension AppCoordinator: DeviceVerificationCoordinatorDelegate {
 
     let logger = OSLog(subsystem: "com.coinninja.coinkeeper.appcoordinator", category: "verification")
 
-    let verifiedIdentities = persistenceManager.verifiedIdentities()
+    let verifiedIdentities = persistenceManager.verifiedIdentities(in: persistenceManager.mainQueueContext())
     if launchStateManager.profileIsActivated() && verifiedIdentities.count == 1 {
       os_log("Profile is activated, will register wallet addresses", log: logger, type: .debug)
       registerInitialWalletAddresses()

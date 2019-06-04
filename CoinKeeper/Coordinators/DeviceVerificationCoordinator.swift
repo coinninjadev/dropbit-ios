@@ -267,7 +267,7 @@ extension DeviceVerificationCoordinator: DeviceVerificationViewControllerDelegat
     delegate: DeviceVerificationCoordinatorDelegate,
     in context: NSManagedObjectContext
     ) -> Promise<UserIdentifiable> {
-    let verifiedIdentities = delegate.persistenceManager.verifiedIdentities()
+    let verifiedIdentities = delegate.persistenceManager.verifiedIdentities(in: context)
     if verifiedIdentities.count == 1 {
       return delegate.networkManager.addIdentity(body: body).map { $0 as UserIdentifiable }
     } else {
