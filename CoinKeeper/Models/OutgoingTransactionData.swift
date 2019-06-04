@@ -21,6 +21,9 @@ public struct OutgoingTransactionData {
   var requiredFeeRate: Double? // BIP 70
   var sharedPayloadDTO: SharedPayloadDTO?
 
+  /// identity property is structured according to SharedPayload requirements
+  var sharedPayloadSenderIdentity: UserIdentityBody?
+
   static func emptyInstance() -> OutgoingTransactionData {
     return OutgoingTransactionData(
       txid: "",

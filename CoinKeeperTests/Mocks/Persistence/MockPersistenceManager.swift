@@ -78,10 +78,6 @@ class MockPersistenceManager: PersistenceManagerType {
     return []
   }
 
-  func senderIdentity(forOutgoingDropBitType type: OutgoingTransactionDropBitType) -> UserIdentityBody? {
-    return nil
-  }
-
   var unacknowledgedInvitations: [CKMInvitation] = []
   func getUnacknowledgedInvitations(in context: NSManagedObjectContext) -> [CKMInvitation] {
     return unacknowledgedInvitations
