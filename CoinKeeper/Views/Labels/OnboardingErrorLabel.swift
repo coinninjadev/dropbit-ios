@@ -11,7 +11,7 @@ import UIKit
 class OnboardingErrorLabel: UILabel {
   override func awakeFromNib() {
     super.awakeFromNib()
-    font = Theme.Font.onboardingSubtitle.font
+    font = CKFont.regular(15)
     textColor = Theme.Color.red.color
     isHidden = true
     numberOfLines = 2

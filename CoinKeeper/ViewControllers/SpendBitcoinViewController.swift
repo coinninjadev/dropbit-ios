@@ -34,14 +34,14 @@ final class SpendBitcoinViewController: BaseViewController, StoryboardInitializa
     cardCollectionView.backgroundColor = .clear
 
     headerLabel.textColor = Theme.Color.grayText.color
-    headerLabel.font = Theme.Font.sendingBitcoinAmount.font
+    headerLabel.font = CKFont.light(15)
 
     spendAroundMeButton.style = .standard
     spendOnlineButton.style = .darkBlue
 
     let mapPinImage = UIImage(imageLiteralResourceName: "mapPin")
     let smallMobileImage = UIImage(imageLiteralResourceName: "smallMobile")
-    let font = Theme.Font.secondaryButtonTitle.font
+    let font = CKFont.secondaryButtonTitle
     let attributes: [NSAttributedString.Key: Any] = [
       .font: font,
       .foregroundColor: Theme.Color.lightGrayText.color

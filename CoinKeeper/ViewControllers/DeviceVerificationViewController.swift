@@ -229,14 +229,14 @@ final class DeviceVerificationViewController: BaseViewController {
     orRightLineView.backgroundColor = twitterBlue
     orLabel.textColor = twitterBlue
     orLabel.text = "OR"
-    orLabel.font = Theme.Font.primaryButtonTitle.font
+    orLabel.font = CKFont.primaryButtonTitle
     twitterButton.style = .standard
 
     let twitterTitle = NSAttributedString(imageName: "twitterBird",
                                           imageSize: CGSize(width: 20, height: 17),
                                           title: "VERIFY TWITTER ACCOUNT",
                                           sharedColor: Theme.Color.lightGrayText.color,
-                                          font: Theme.Font.primaryButtonTitle.font)
+                                          font: CKFont.primaryButtonTitle)
     twitterButton.setAttributedTitle(twitterTitle, for: .normal)
   }
 

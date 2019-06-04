@@ -27,7 +27,7 @@ class PrimaryActionButton: UIButton {
   override func awakeFromNib() {
     super.awakeFromNib()
     applyCornerRadius(4)
-    titleLabel?.font = Theme.Font.primaryButtonTitle.font
+    titleLabel?.font = CKFont.primaryButtonTitle
 
     setStyling()
   }

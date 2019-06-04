@@ -17,7 +17,7 @@ class LightBorderedButton: UIButton {
     let borderColor = Theme.Color.grayText.color.withAlphaComponent(0.8)
     layer.borderColor = borderColor.cgColor
     layer.borderWidth = 1.0 / UIScreen.main.nativeScale
-    titleLabel?.font = Theme.Font.secondaryButtonTitle.font
+    titleLabel?.font = CKFont.secondaryButtonTitle
     contentHorizontalAlignment = .center
     contentEdgeInsets = UIEdgeInsets(top: 4, left: 6, bottom: 4, right: 6)
     setTitleColor(borderColor, for: .normal)

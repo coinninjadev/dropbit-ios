@@ -405,13 +405,13 @@ class AlertManager: AlertManagerType {
     case .walkthrough: pmStyle = .alert
     }
     let alert = PMAlertController(title: title, description: description ?? "", image: image, style: pmStyle)
-    alert.alertTitle.font = Theme.Font.alertTitle.font
+    alert.alertTitle.font = CKFont.medium(13)
     alert.alertTitle.textColor = Theme.Color.darkBlueText.color
     alert.alertDescription.isHidden = (description == nil)
     alert.gravityDismissAnimation = false
     actionConfigs.forEach { actionConfig in
       let action = PMAlertAction(title: actionConfig.title, style: self.pmAlertStyle(from: actionConfig.style), action: actionConfig.action)
-      action.titleLabel?.font = Theme.Font.alertActionTitle.font
+      action.titleLabel?.font = CKFont.semiBold(13)
       action.setTitleColor(Theme.Color.primaryActionButton.color, for: .normal)
       alert.addAction(action)
     }

@@ -52,7 +52,7 @@ class SendPaymentMemoView: UIView {
     bottomBackgroundView.backgroundColor = Theme.Color.grayMemoBackground.color
     separatorView.backgroundColor = Theme.Color.lightGrayOutline.color
 
-    memoLabel.font = Theme.Font.secondaryButtonTitle.font
+    memoLabel.font = CKFont.secondaryButtonTitle
 
     setupGestureRecognizers()
 
@@ -61,7 +61,7 @@ class SendPaymentMemoView: UIView {
 
     checkboxDescriptionLabel.text = "Securely send this memo with your transaction"
     checkboxDescriptionLabel.textColor = Theme.Color.memoInfoText.color
-    checkboxDescriptionLabel.font = Theme.Font.disclaimerText.font
+    checkboxDescriptionLabel.font = CKFont.regular(10)
   }
 
   func setupGestureRecognizers() {

@@ -58,37 +58,37 @@ class ConfirmPaymentViewController: PresentableViewController, StoryboardInitial
   }
 
   private func setupViews() {
-    titleLabel.font = Theme.Font.onboardingSubtitle.font
+    titleLabel.font = CKFont.regular(15)
     titleLabel.textColor = Theme.Color.darkBlueText.color
 
     primaryCurrencyLabel.textAlignment = .center
     primaryCurrencyLabel.textColor = Theme.Color.lightBlueTint.color
-    primaryCurrencyLabel.font = Theme.Font.requestPayPrimaryCurrency.font
+    primaryCurrencyLabel.font = CKFont.regular(35)
 
     secondaryCurrencyLabel.textAlignment = .center
     secondaryCurrencyLabel.textColor = Theme.Color.grayText.color
-    secondaryCurrencyLabel.font = Theme.Font.requestPaySecondaryCurrency.font
+    secondaryCurrencyLabel.font = CKFont.regular(17)
 
     networkFeeLabel.textAlignment = .center
-    networkFeeLabel.font = Theme.Font.sendPaymentNetworkFee.font
+    networkFeeLabel.font = CKFont.light(11)
     networkFeeLabel.textColor = Theme.Color.sendPaymentNetworkFee.color
 
     contactLabel.backgroundColor = UIColor.clear
-    contactLabel.font = Theme.Font.sendingAmountTo.font
+    contactLabel.font = CKFont.regular(26)
     contactLabel.adjustsFontSizeToFitWidth = true
 
     primaryAddressLabel.backgroundColor = UIColor.clear
-    primaryAddressLabel.font = Theme.Font.sendingAmountToAddress.font
+    primaryAddressLabel.font = CKFont.medium(14)
     primaryAddressLabel.adjustsFontSizeToFitWidth = true
 
     memoContainerView.isHidden = true
 
     secondaryAddressLabel.textAlignment = .center
     secondaryAddressLabel.textColor = Theme.Color.grayText.color
-    secondaryAddressLabel.font = Theme.Font.confirmPaymentSecondaryAddress.font
+    secondaryAddressLabel.font = CKFont.regular(13)
 
     tapAndHoldLabel.textColor = Theme.Color.darkGray.color
-    tapAndHoldLabel.font = Theme.Font.tapReminderTitle.font
+    tapAndHoldLabel.font = CKFont.medium(13)
   }
 
   private func updateView(with viewModel: ConfirmPaymentViewModelType) {

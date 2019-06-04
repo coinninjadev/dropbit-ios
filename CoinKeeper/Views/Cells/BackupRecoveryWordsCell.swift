@@ -23,10 +23,10 @@ class BackupRecoveryWordsCell: UICollectionViewCell, AccessibleViewSettable {
 
     setAccessibilityIdentifiers()
 
-    wordLabel.font = Theme.Font.createRecoveryWord.font
+    wordLabel.font = CKFont.bold(35)
     wordLabel.textColor = Theme.Color.darkBlueText.color
 
-    statusLabel.font = Theme.Font.createRecoveryWordStatus.font
+    statusLabel.font = CKFont.medium(14)
     statusLabel.textColor = Theme.Color.grayText.color
   }
 

@@ -13,7 +13,7 @@ class AddressTableViewCell: UITableViewCell {
   @IBOutlet var addressLabel: UILabel! {
     didSet {
       addressLabel.textColor = Theme.Color.grayText.color
-      addressLabel.font = Theme.Font.serverAddress.font
+      addressLabel.font = CKFont.medium(13)
       addressLabel.adjustsFontSizeToFitWidth = true
     }
   }
@@ -21,7 +21,7 @@ class AddressTableViewCell: UITableViewCell {
   @IBOutlet var derivationPathLabel: UILabel! {
     didSet {
       derivationPathLabel.textColor = Theme.Color.darkBlueText.color
-      derivationPathLabel.font = Theme.Font.serverAddress.font
+      derivationPathLabel.font = CKFont.medium(13)
     }
   }
 

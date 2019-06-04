@@ -11,7 +11,7 @@ import UIKit
 class BalancePrimaryAmountLabel: UILabel {
   override func awakeFromNib() {
     super.awakeFromNib()
-    font = Theme.Font.balancePrimaryAmount.font
+    font = CKFont.medium(19)
     textColor = Theme.Color.darkBlueText.color
     isHidden = false
     numberOfLines = 1

@@ -11,7 +11,7 @@ import UIKit
 class TransactionDetailSecondaryAmountLabel: UILabel {
   override func awakeFromNib() {
     super.awakeFromNib()
-    font = Theme.Font.transactionDetailSecondaryAmount.font
+    font = CKFont.regular(15)
     textColor = Theme.Color.grayText.color
     isHidden = false
     numberOfLines = 1

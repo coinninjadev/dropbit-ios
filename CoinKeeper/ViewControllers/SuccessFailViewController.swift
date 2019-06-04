@@ -46,14 +46,14 @@ class SuccessFailViewController: BaseViewController, StoryboardInitializable {
 
   @IBOutlet var titleLabel: UILabel! {
     didSet {
-      titleLabel.font = Theme.Font.passFailTitle.font
+      titleLabel.font = CKFont.medium(20)
       titleLabel.textColor = Theme.Color.grayText.color
     }
   }
 
   @IBOutlet var subtitleLabel: UILabel! {
     didSet {
-      subtitleLabel.font = Theme.Font.passFailSubtitle.font
+      subtitleLabel.font = CKFont.regular(15)
       subtitleLabel.adjustsFontSizeToFitWidth = true
     }
   }

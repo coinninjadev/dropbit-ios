@@ -19,27 +19,27 @@ final class RequestPayViewController: PresentableViewController, StoryboardIniti
   @IBOutlet var closeButton: UIButton!
   @IBOutlet var titleLabel: UILabel! {
     didSet {
-      titleLabel.font = Theme.Font.onboardingSubtitle.font
+      titleLabel.font = CKFont.regular(15)
       titleLabel.textColor = Theme.Color.darkBlueText.color
     }
   }
   @IBOutlet var primaryCurrencyLabel: UILabel! {
     didSet {
       primaryCurrencyLabel.textColor = Theme.Color.lightBlueTint.color
-      primaryCurrencyLabel.font = Theme.Font.requestPayPrimaryCurrency.font
+      primaryCurrencyLabel.font = CKFont.regular(35)
     }
   }
   @IBOutlet var secondaryCurrencyLabel: UILabel! {
     didSet {
       secondaryCurrencyLabel.textColor = Theme.Color.grayText.color
-      secondaryCurrencyLabel.font = Theme.Font.requestPaySecondaryCurrency.font
+      secondaryCurrencyLabel.font = CKFont.regular(17)
     }
   }
   @IBOutlet var qrImageView: UIImageView!
   @IBOutlet var receiveAddressLabel: UILabel! {
     didSet {
       receiveAddressLabel.textColor = Theme.Color.darkBlueText.color
-      receiveAddressLabel.font = Theme.Font.requestPayAddress.font
+      receiveAddressLabel.font = CKFont.semiBold(13)
     }
   }
   @IBOutlet var receiveAddressTapGesture: UITapGestureRecognizer!
@@ -54,7 +54,7 @@ final class RequestPayViewController: PresentableViewController, StoryboardIniti
   @IBOutlet var tapInstructionLabel: UILabel! {
     didSet {
       tapInstructionLabel.textColor = Theme.Color.grayText.color
-      tapInstructionLabel.font = Theme.Font.smallInfoLabel.font
+      tapInstructionLabel.font = CKFont.medium(10)
     }
   }
   @IBOutlet var sendRequestButton: PrimaryActionButton! {

@@ -232,17 +232,17 @@ ValidatorAlertDisplayable {
 extension SendPaymentViewController {
 
   fileprivate func setupLabels() {
-    recipientDisplayNameLabel.font = Theme.Font.sendingAmountTo.font
-    recipientDisplayNumberLabel.font = Theme.Font.sendingAmountToPhoneNumber.font
-    payTitleLabel.font = Theme.Font.onboardingSubtitle.font
+    recipientDisplayNameLabel.font = CKFont.regular(26)
+    recipientDisplayNumberLabel.font = CKFont.regular(20)
+    payTitleLabel.font = CKFont.regular(15)
     payTitleLabel.textColor = Theme.Color.darkBlueText.color
     secondaryAmountLabel.textColor = Theme.Color.grayText.color
-    secondaryAmountLabel.font = Theme.Font.requestPaySecondaryCurrency.font
+    secondaryAmountLabel.font = CKFont.regular(17)
   }
 
   fileprivate func setupButtons() {
     let textColor = Theme.Color.whiteText.color
-    let font = Theme.Font.compactButtonTitle.font
+    let font = CKFont.compactButtonTitle
     let contactsTitle = NSAttributedString(imageName: "contactsIcon",
                                            imageSize: CGSize(width: 9, height: 14),
                                            title: "CONTACTS",
@@ -270,7 +270,7 @@ extension SendPaymentViewController {
     addressScanButtonContainerView.layer.borderColor = Theme.Color.lightGrayOutline.color.cgColor
     addressScanButtonContainerView.layer.borderWidth = 1.0
 
-    bitcoinAddressButton.titleLabel?.font = Theme.Font.sendingAmountToAddress.font
+    bitcoinAddressButton.titleLabel?.font = CKFont.medium(14)
     bitcoinAddressButton.setTitleColor(Theme.Color.grayText.color, for: .normal)
 
     scanButton.backgroundColor = Theme.Color.backgroundDarkGray.color
@@ -283,7 +283,7 @@ extension SendPaymentViewController {
     entryView.textField.delegate = self
     entryView.textField.backgroundColor = UIColor.clear
     entryView.textField.autocorrectionType = .no
-    entryView.textField.font = Theme.Font.sendingAmountToAddress.font
+    entryView.textField.font = CKFont.medium(14)
     entryView.textField.textColor = Theme.Color.sendingToDarkGray.color
     entryView.textField.adjustsFontSizeToFitWidth = true
     entryView.textField.keyboardType = .numberPad

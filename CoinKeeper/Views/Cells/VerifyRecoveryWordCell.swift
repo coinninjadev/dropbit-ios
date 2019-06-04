@@ -40,7 +40,7 @@ class VerifyRecoveryWordCell: UICollectionViewCell, AccessibleViewSettable {
     wordLabelBackgroundView.layer.borderWidth = 1.0
     wordLabelBackgroundView.applyCornerRadius(4)
     spacerView.backgroundColor = .clear
-    wordLabel.font = Theme.Font.primaryButtonTitle.font
+    wordLabel.font = CKFont.primaryButtonTitle
     wordLabel.textColor = Theme.Color.darkBlueText.color
   }
 

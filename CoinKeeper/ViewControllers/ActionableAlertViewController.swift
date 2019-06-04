@@ -63,7 +63,7 @@ class ActionableAlertViewController: AlertControllerType, StoryboardInitializabl
     titleContainer.isHidden = shouldHideTitle
     titleLabel.isHidden = shouldHideTitle
 
-    titleLabel.font = Theme.Font.alertDetails.font
+    titleLabel.font = CKFont.regular(14)
 
     let paragraphStyle = NSMutableParagraphStyle()
     paragraphStyle.alignment = .center
@@ -85,7 +85,7 @@ class ActionableAlertViewController: AlertControllerType, StoryboardInitializabl
     case .warning:
       detailLabel.textColor = Theme.Color.red.color
     }
-    detailLabel.font = Theme.Font.alertDetails.font
+    detailLabel.font = CKFont.regular(14)
     detailLabel.text = displayDescription
   }
 

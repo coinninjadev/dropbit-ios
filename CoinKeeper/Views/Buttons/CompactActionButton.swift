@@ -12,7 +12,7 @@ class CompactActionButton: PrimaryActionButton {
 
   override func awakeFromNib() {
     super.awakeFromNib()
-    titleLabel?.font = Theme.Font.compactButtonTitle.font
+    titleLabel?.font = CKFont.compactButtonTitle
   }
 
 }

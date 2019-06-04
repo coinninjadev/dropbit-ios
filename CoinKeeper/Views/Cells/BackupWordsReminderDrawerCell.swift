@@ -19,7 +19,7 @@ class BackupWordsReminderDrawerCell: UITableViewCell {
 
   @IBOutlet var titleLabel: UILabel! {
     didSet {
-      titleLabel.font = Theme.Font.alertTitle.font
+      titleLabel.font = CKFont.medium(13)
       titleLabel.textColor = Theme.Color.whiteText.color
     }
   }

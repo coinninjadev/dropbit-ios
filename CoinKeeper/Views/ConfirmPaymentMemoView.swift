@@ -40,10 +40,10 @@ class ConfirmPaymentMemoView: UIView {
 
     memoLabel.textAlignment = .center
     memoLabel.textColor = Theme.Color.confirmPaymentMemo.color
-    memoLabel.font = Theme.Font.confirmPaymentMemo.font
+    memoLabel.font = CKFont.regular(14)
 
     isSharedDescriptionLabel.textColor = Theme.Color.grayText.color
-    isSharedDescriptionLabel.font = Theme.Font.disclaimerText.font
+    isSharedDescriptionLabel.font = CKFont.regular(10)
   }
 
   /// This view as a whole should be hidden if no memo. `isSent` determines past/future tense.

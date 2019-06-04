@@ -71,20 +71,20 @@ class GetBitcoinCopiedAddressViewController: UIViewController, StoryboardInitial
 
     addressButton.backgroundColor = Theme.Color.whiteBackground.color
     addressButton.setTitleColor(Theme.Color.darkBlueText.color, for: .normal)
-    addressButton.titleLabel?.font = Theme.Font.copiedAddress.font
+    addressButton.titleLabel?.font = CKFont.regular(12)
     addressButton.titleLabel?.lineBreakMode = .byTruncatingMiddle
 
     messageLabel.text = """
     You will need a Bitcoin address so we went ahead and
     copied your DropBit Bitcoin address to your clipboard.
     """.removingMultilineLineBreaks()
-    messageLabel.font = Theme.Font.popoverMessage.font
+    messageLabel.font = CKFont.popoverMessage
     messageLabel.textColor = Theme.Color.darkBlueText.color
 
     confirmationButton.setTitle("OK, GET BITCOIN", for: .normal)
     confirmationButton.backgroundColor = Theme.Color.primaryActionButton.color
     confirmationButton.setTitleColor(Theme.Color.whiteText.color, for: .normal)
-    confirmationButton.titleLabel?.font = Theme.Font.popoverActionButton.font
+    confirmationButton.titleLabel?.font = CKFont.semiBold(14)
     confirmationButton.applyCornerRadius(4)
   }
 

@@ -25,7 +25,7 @@ class ContactsTableViewHeader: UITableViewHeaderFooterView {
   @IBOutlet var titleLabel: UILabel! {
     didSet {
       titleLabel.textColor = .white
-      titleLabel.font = Theme.Font.inviteHeaderTitle.font
+      titleLabel.font = CKFont.medium(12)
       titleLabel.text = "Send \(CKStrings.dropBitWithTrademark)"
     }
   }

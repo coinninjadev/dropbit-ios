@@ -67,7 +67,7 @@ class PinEntryViewControllerTests: XCTestCase {
 
   func testErrorLabelInitialState() {
     let expectedText = "Incorrect PIN. Please try again."
-    let expectedFont = Theme.Font.onboardingSubtitle.font
+    let expectedFont = CKFont.regular(15)
     let expectedColor = Theme.Color.red.color
 
     XCTAssertEqual(self.sut.errorLabel.text, expectedText, "errorLabel text should equal expected text")

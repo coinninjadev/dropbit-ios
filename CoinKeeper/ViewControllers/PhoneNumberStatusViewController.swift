@@ -53,11 +53,11 @@ class PhoneNumberStatusViewController: BaseViewController, StoryboardInitializab
   private func setupUI() {
     verifyPhoneNumberPrimaryButton.style = .darkBlue
     verifyTwitterPrimaryButton.style = .standard
-    privacyLabel.font = Theme.Font.phoneNumberStatusPrivacy.font
+    privacyLabel.font = CKFont.light(13)
     privacyLabel.textColor = Theme.Color.darkBlueText.color
-    phoneNumberNavigationTitle.font = Theme.Font.onboardingSubtitle.font
+    phoneNumberNavigationTitle.font = CKFont.regular(15)
     phoneNumberNavigationTitle.textColor = Theme.Color.darkBlueText.color
-    titleLabel.font = Theme.Font.phoneNumberStatusTitle.font
+    titleLabel.font = CKFont.regular(15)
     titleLabel.textColor = Theme.Color.grayText.color
     serverAddressView.delegate = self
     serverAddressViewVerticalConstraint.constant = UIScreen.main.bounds.height
@@ -81,7 +81,7 @@ class PhoneNumberStatusViewController: BaseViewController, StoryboardInitializab
         imageSize: CGSize(width: 13, height: 22),
         title: "VERIFY PHONE NUMBER",
         sharedColor: Theme.Color.lightGrayText.color,
-        font: Theme.Font.verificationActionTitle.font)
+        font: CKFont.regular(17))
       verifyPhoneNumberPrimaryButton.setTitle(nil, for: .normal)
       verifyPhoneNumberPrimaryButton.setAttributedTitle(verifyPhoneButtonTitle, for: .normal)
       changeRemovePhoneButton.isHidden = true
@@ -107,7 +107,7 @@ class PhoneNumberStatusViewController: BaseViewController, StoryboardInitializab
         imageSize: CGSize(width: 20, height: 16),
         title: "VERIFY TWITTER ACCOUNT",
         sharedColor: Theme.Color.lightGrayText.color,
-        font: Theme.Font.verificationActionTitle.font)
+        font: CKFont.regular(17))
 
       verifyTwitterPrimaryButton.setAttributedTitle(verifyTwitterButtonTitle, for: .normal)
     }
@@ -116,7 +116,7 @@ class PhoneNumberStatusViewController: BaseViewController, StoryboardInitializab
     setupAddressUI()
 
     let attributes: [NSAttributedString.Key: Any] = [.foregroundColor: Theme.Color.lightBlueTint.color,
-                                                     .font: Theme.Font.serverAddressTitle.font,
+                                                     .font: CKFont.regular(14),
                                                      .underlineStyle: 1,
                                                      .underlineColor: Theme.Color.lightBlueTint.color]
 

@@ -28,12 +28,12 @@ final class GetBitcoinViewController: BaseViewController, StoryboardInitializabl
   override func viewDidLoad() {
     super.viewDidLoad()
     headerLabel.textColor = Theme.Color.grayText.color
-    headerLabel.font = Theme.Font.sendingBitcoinAmount.font
+    headerLabel.font = CKFont.light(15)
 
     let mapPinImage = UIImage(imageLiteralResourceName: "mapPin")
     let dollarImage = UIImage(imageLiteralResourceName: "dollarSignCircle")
     let giftCardImage = UIImage(imageLiteralResourceName: "giftCard")
-    let font = Theme.Font.secondaryButtonTitle.font
+    let font = CKFont.secondaryButtonTitle
     let attributes: [NSAttributedString.Key: Any] = [
       .font: font,
       .foregroundColor: Theme.Color.lightGrayText.color

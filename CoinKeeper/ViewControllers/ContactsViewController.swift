@@ -182,7 +182,7 @@ class ContactsViewController: PresentableViewController, StoryboardInitializable
 
   private func setupModeSelector() {
     let textColor = Theme.Color.darkBlueText.color
-    let font = Theme.Font.compactButtonTitle.font
+    let font = CKFont.compactButtonTitle
     let contactsTitle = NSAttributedString(imageName: "contactsIcon",
                                            imageSize: CGSize(width: 9, height: 14),
                                            title: "CONTACTS",

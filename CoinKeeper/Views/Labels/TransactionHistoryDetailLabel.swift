@@ -11,7 +11,7 @@ import UIKit
 class TransactionHistoryDetailLabel: UILabel {
   override func awakeFromNib() {
     super.awakeFromNib()
-    font = Theme.Font.transactionHistoryDetail.font
+    font = CKFont.regular(12)
     textColor = Theme.Color.grayText.color
     isHidden = false
     numberOfLines = 1

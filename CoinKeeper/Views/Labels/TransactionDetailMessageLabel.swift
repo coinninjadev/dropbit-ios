@@ -11,7 +11,7 @@ import UIKit
 class TransactionDetailMessageLabel: UILabel {
   override func awakeFromNib() {
     super.awakeFromNib()
-    font = Theme.Font.transactionDetailAmountBreakdown.font
+    font = CKFont.regular(13)
     textColor = Theme.Color.grayText.color
     isHidden = false
     textAlignment = .center
