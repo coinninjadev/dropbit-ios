@@ -137,10 +137,12 @@ extension AppCoordinator: SerialQueueManagerDelegate {
     let isDeviceUUIDMismatch = error.responseDescription.contains(NetworkErrorIdentifier.deviceUUIDMismatch.rawValue)
 
     var deviceDescriptions: [String] = []
-    if persistenceManager.verifiedPhoneNumber() != nil {
+
+    let verifiedTypes = persistenceManager.verifiedIdentities(in: context)
+    if verifiedTypes.contains(.phone) {
       deviceDescriptions.append("phone number")
     }
-    if persistenceManager.keychainManager.oauthCredentials() != nil {
+    if verifiedTypes.contains(.twitter) {
       deviceDescriptions.append("twitter account")
     }
     let deviceDescription = deviceDescriptions.joined(separator: " or ")

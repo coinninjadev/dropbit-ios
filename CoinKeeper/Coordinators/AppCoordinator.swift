@@ -359,11 +359,11 @@ class AppCoordinator: CoordinatorType {
   }
 
   private func refreshTwitterAvatar() {
-    guard persistenceManager.keychainManager.oauthCredentials() != nil else {
+    let bgContext = persistenceManager.createBackgroundContext()
+    guard persistenceManager.userIsVerified(using: .twitter, in: bgContext) else {
       return
     }
 
-    let bgContext = persistenceManager.createBackgroundContext()
     bgContext.performAndWait {
       twitterAccessManager.refreshTwitterAvatar(in: bgContext)
         .done(on: .main) { didChange in

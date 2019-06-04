@@ -93,6 +93,8 @@ protocol PersistenceManagerType: DeviceCountryCodeProvider {
   func userId(in context: NSManagedObjectContext) -> String?
   func userVerificationStatus(in context: NSManagedObjectContext) -> UserVerificationStatus
   func userIsVerified(in context: NSManagedObjectContext) -> Bool
+  func userIsVerified(using type: UserIdentityType, in context: NSManagedObjectContext) -> Bool
+
   func getAllInvitations(in context: NSManagedObjectContext) -> [CKMInvitation]
   func getUnacknowledgedInvitations(in context: NSManagedObjectContext) -> [CKMInvitation]
 

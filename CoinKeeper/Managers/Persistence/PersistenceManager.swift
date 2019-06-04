@@ -240,6 +240,11 @@ class PersistenceManager: PersistenceManagerType {
     return retVal
   }
 
+  func userIsVerified(using type: UserIdentityType, in context: NSManagedObjectContext) -> Bool {
+    let verifiedTypes = verifiedIdentities(in: context)
+    return verifiedTypes.contains(type)
+  }
+
   func userVerificationStatus(in context: NSManagedObjectContext) -> UserVerificationStatus {
     return databaseManager.userVerificationStatus(in: context)
   }
