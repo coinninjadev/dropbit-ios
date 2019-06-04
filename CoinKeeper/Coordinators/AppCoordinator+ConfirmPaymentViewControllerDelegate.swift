@@ -36,8 +36,8 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate, CurrencyFormatta
 
         let receiverBody = outgoingInvitationDTO.contact.userIdentityBody
 
-        let senderBodyFactory = SenderIdentityFactory(persistenceManager: strongSelf.persistenceManager)
-        guard let senderBody = senderBodyFactory.preferredSenderBody(forReceiverType: receiverBody.identityType) else {
+        let senderIdentityFactory = SenderIdentityFactory(persistenceManager: strongSelf.persistenceManager)
+        guard let senderBody = senderIdentityFactory.preferredSenderBody(forReceiverType: receiverBody.identityType) else {
           print("Failed to create sender body")
           return
         }
