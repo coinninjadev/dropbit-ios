@@ -14,6 +14,7 @@ import OAuthSwift
 protocol TwitterAccessManagerType: AnyObject {
   func getCurrentTwitterUser() -> Promise<TwitterUser>
   func getCurrentTwitterUser(in context: NSManagedObjectContext) -> Promise<TwitterUser>
+  func refreshTwitterAvatar(in context: NSManagedObjectContext) -> Promise<Bool> //did change
   func authorizedTwitterCredentials(presentingViewController controller: UIViewController) -> Promise<TwitterOAuthStorage>
   func findTwitterUsers(using term: String, fromViewController controller: UIViewController) -> Promise<[TwitterUser]>
   func defaultFollowingList(fromViewController controller: UIViewController) -> Promise<[TwitterUser]>
@@ -44,10 +45,10 @@ class TwitterAccessManager: TwitterAccessManagerType {
     return authorize()
       .then { self.networkManager.retrieveCurrentUser(with: $0.twitterUserId) }
       .get({ (twitterUser: TwitterUser) in
-        context.performAndWait {
+        try context.performThrowingAndWait {
           let user = CKMUser.find(in: context)
           user?.avatar = twitterUser.profileImageData
-          try? context.save()
+          try context.save()
         }
       })
   }
@@ -56,6 +57,15 @@ class TwitterAccessManager: TwitterAccessManagerType {
   func getCurrentTwitterUser() -> Promise<TwitterUser> {
     guard isNotUITesting else { return Promise.value(TwitterUser.emptyInstance()) }
     return getCurrentTwitterUser(in: persistenceManager.mainQueueContext())
+  }
+
+  func refreshTwitterAvatar(in context: NSManagedObjectContext) -> Promise<Bool> {
+    let originalAvatar = CKMUser.find(in: context)?.avatar
+    return getCurrentTwitterUser(in: context)
+      .then { twitterUser -> Promise<Bool> in
+        let avatarDidChange = twitterUser.profileImageData != originalAvatar
+        return Promise.value(avatarDidChange)
+    }
   }
 
   func authorizedTwitterCredentials(presentingViewController controller: UIViewController) -> Promise<TwitterOAuthStorage> {

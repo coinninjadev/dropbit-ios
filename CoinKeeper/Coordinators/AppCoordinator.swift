@@ -306,6 +306,7 @@ class AppCoordinator: CoordinatorType {
 
     authenticateOnBecomingActiveIfNeeded()
 
+    refreshTwitterAvatar()
     refreshContacts()
   }
 
@@ -354,6 +355,22 @@ class AppCoordinator: CoordinatorType {
       requireAuthenticationIfNeeded(whenAuthenticated: {
         self.continueSetupFlow()
       })
+    }
+  }
+
+  private func refreshTwitterAvatar() {
+    guard persistenceManager.keychainManager.oauthCredentials() != nil else {
+      return
+    }
+
+    let bgContext = persistenceManager.createBackgroundContext()
+    bgContext.performAndWait {
+      twitterAccessManager.refreshTwitterAvatar(in: bgContext)
+        .done(on: .main) { didChange in
+          if didChange {
+            CKNotificationCenter.publish(key: .didUpdateAvatar)
+          }
+        }.cauterize()
     }
   }
 
