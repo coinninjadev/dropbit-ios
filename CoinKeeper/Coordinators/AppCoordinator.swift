@@ -165,6 +165,8 @@ class AppCoordinator: CoordinatorType {
   }
 
   private func setInitialRootViewController() {
+    deleteStaleCredentialsIfNeeded()
+
     if launchStateManager.isFirstTimeAfteriCloudRestore() {
       startFirstTimeAfteriCloudRestore()
     } else if launchStateManager.shouldRequireAuthentication {
@@ -200,6 +202,15 @@ class AppCoordinator: CoordinatorType {
         assignCoordinationDelegate(to: startVC)
         navigationController.viewControllers = [startVC]
       }
+    }
+  }
+
+  /// Useful to clear out old credentials from the keychain when the app is reinstalled
+  private func deleteStaleCredentialsIfNeeded() {
+    let context = persistenceManager.mainQueueContext()
+    let credsExist = persistenceManager.keychainManager.oauthCredentials() != nil
+    if credsExist && CKMUser.find(in: context) == nil {
+      persistenceManager.keychainManager.unverifyUser(for: .twitter)
     }
   }
 
