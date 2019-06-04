@@ -20,13 +20,13 @@ class RestoreWalletViewController: BaseViewController, StoryboardInitializable {
   @IBOutlet var detailLabel: OnboardingSubtitleLabel!
   @IBOutlet var selectWordLabel: UILabel! {
     didSet {
-      selectWordLabel.textColor = Theme.Color.darkBlueText.color
+      selectWordLabel.textColor = .darkBlueText
       selectWordLabel.font = CKFont.regular(12)
     }
   }
   @IBOutlet var wordTextField: UITextField! {
     didSet {
-      wordTextField.textColor = Theme.Color.lightBlueTint.color
+      wordTextField.textColor = .lightBlueTint
       wordTextField.textAlignment = .center
       wordTextField.font = CKFont.medium(12)
     }
@@ -34,7 +34,7 @@ class RestoreWalletViewController: BaseViewController, StoryboardInitializable {
   @IBOutlet var wordCountLabel: UILabel! {
     didSet {
       wordCountLabel.font = CKFont.regular(12)
-      wordCountLabel.textColor = Theme.Color.grayText.color
+      wordCountLabel.textColor = .grayText
     }
   }
   @IBOutlet var wordButtonOne: PrimaryActionButton!
@@ -54,11 +54,11 @@ class RestoreWalletViewController: BaseViewController, StoryboardInitializable {
 
   private var keypadToolbar: UIToolbar = {
     let keypadToolbar: UIToolbar = UIToolbar()
-    keypadToolbar.backgroundColor = Theme.Color.lightGrayBackground.color
+    keypadToolbar.backgroundColor = .lightGrayBackground
     let doneButton = UIBarButtonItem(title: "BACK TO PREVIOUS WORD", style: .done, target: self, action: #selector(previousWordButtonWasTouched))
     let attributes: [NSAttributedString.Key: Any] = [
       .font: CKFont.medium(14),
-      .foregroundColor: Theme.Color.lightBlueTint.color]
+      .foregroundColor: UIColor.lightBlueTint]
     doneButton.setTitleTextAttributes(attributes, for: .normal)
     let flexibleSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
 

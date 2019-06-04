@@ -170,11 +170,11 @@ class TransactionHistorySummaryCellViewModel {
   }
 
   var descriptionColor: UIColor {
-    guard !transactionIsInvalidated else { return Theme.Color.red.color}
+    guard !transactionIsInvalidated else { return .red}
     if isConfirmed {
-      return Theme.Color.grayText.color
+      return .grayText
     } else {
-      return Theme.Color.warning.color
+      return .warning
     }
   }
 

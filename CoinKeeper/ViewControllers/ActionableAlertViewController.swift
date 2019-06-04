@@ -81,9 +81,9 @@ class ActionableAlertViewController: AlertControllerType, StoryboardInitializabl
   private func configureDetailLabel() {
     switch messageStyle {
     case .standard:
-      detailLabel.textColor = Theme.Color.darkBlueText.color
+      detailLabel.textColor = .darkBlueText
     case .warning:
-      detailLabel.textColor = Theme.Color.red.color
+      detailLabel.textColor = .red
     }
     detailLabel.font = CKFont.regular(14)
     detailLabel.text = displayDescription

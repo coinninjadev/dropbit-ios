@@ -43,7 +43,7 @@ class TutorialScreenViewController: BaseViewController, StoryboardInitializable 
   @IBOutlet var disclaimerLabel: UILabel! {
     didSet {
       disclaimerLabel.font = CKFont.regular(10)
-      disclaimerLabel.textColor = Theme.Color.lightBlueTint.color
+      disclaimerLabel.textColor = .lightBlueTint
     }
   }
   @IBOutlet var actionButton: PrimaryActionButton!
@@ -91,7 +91,7 @@ class TutorialScreenViewController: BaseViewController, StoryboardInitializable 
   }
 
   private func setupUI() {
-    view.backgroundColor = Theme.Color.darkBlueText.color
+    view.backgroundColor = .darkBlueText
     titleLabel.text = viewModel?.title
     detailLabel.attributedText = viewModel?.detail
 
@@ -104,7 +104,7 @@ class TutorialScreenViewController: BaseViewController, StoryboardInitializable 
 
     if let title = viewModel?.link?.title {
       linkButton.enable()
-      linkButton.setUnderlinedTitle(title, size: 13, color: Theme.Color.lightBlueTint.color)
+      linkButton.setUnderlinedTitle(title, size: 13, color: .lightBlueTint)
     } else {
       linkButton.disable()
     }

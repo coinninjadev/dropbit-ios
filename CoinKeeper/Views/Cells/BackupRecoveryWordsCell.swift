@@ -24,10 +24,10 @@ class BackupRecoveryWordsCell: UICollectionViewCell, AccessibleViewSettable {
     setAccessibilityIdentifiers()
 
     wordLabel.font = CKFont.bold(35)
-    wordLabel.textColor = Theme.Color.darkBlueText.color
+    wordLabel.textColor = .darkBlueText
 
     statusLabel.font = CKFont.medium(14)
-    statusLabel.textColor = Theme.Color.grayText.color
+    statusLabel.textColor = .grayText
   }
 
   func load(with data: BackupRecoveryWordCellData) {

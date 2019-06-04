@@ -59,19 +59,19 @@ class ConfirmPaymentViewController: PresentableViewController, StoryboardInitial
 
   private func setupViews() {
     titleLabel.font = CKFont.regular(15)
-    titleLabel.textColor = Theme.Color.darkBlueText.color
+    titleLabel.textColor = .darkBlueText
 
     primaryCurrencyLabel.textAlignment = .center
-    primaryCurrencyLabel.textColor = Theme.Color.lightBlueTint.color
+    primaryCurrencyLabel.textColor = .lightBlueTint
     primaryCurrencyLabel.font = CKFont.regular(35)
 
     secondaryCurrencyLabel.textAlignment = .center
-    secondaryCurrencyLabel.textColor = Theme.Color.grayText.color
+    secondaryCurrencyLabel.textColor = .grayText
     secondaryCurrencyLabel.font = CKFont.regular(17)
 
     networkFeeLabel.textAlignment = .center
     networkFeeLabel.font = CKFont.light(11)
-    networkFeeLabel.textColor = Theme.Color.sendPaymentNetworkFee.color
+    networkFeeLabel.textColor = .darkBlueText
 
     contactLabel.backgroundColor = UIColor.clear
     contactLabel.font = CKFont.regular(26)
@@ -84,10 +84,10 @@ class ConfirmPaymentViewController: PresentableViewController, StoryboardInitial
     memoContainerView.isHidden = true
 
     secondaryAddressLabel.textAlignment = .center
-    secondaryAddressLabel.textColor = Theme.Color.grayText.color
+    secondaryAddressLabel.textColor = .grayText
     secondaryAddressLabel.font = CKFont.regular(13)
 
-    tapAndHoldLabel.textColor = Theme.Color.darkGray.color
+    tapAndHoldLabel.textColor = .darkGray
     tapAndHoldLabel.font = CKFont.medium(13)
   }
 

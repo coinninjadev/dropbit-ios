@@ -19,7 +19,7 @@ class SettingSwitchCell: SettingsBaseCell {
   // MARK: view instantiation
   override func awakeFromNib() {
     super.awakeFromNib()
-    settingSwitch.onTintColor = Theme.Color.primaryActionButton.color
+    settingSwitch.onTintColor = .primaryActionButton
     settingSwitch.isOn = false
   }
 

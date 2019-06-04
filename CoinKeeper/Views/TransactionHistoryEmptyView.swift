@@ -43,7 +43,7 @@ class TransactionHistoryEmptyView: UIView {
   }
 
   private func initalize() {
-    backgroundColor = Theme.Color.lightGrayBackground.color
+    backgroundColor = .lightGrayBackground
   }
 
   private let buttonFont: UIFont = CKFont.primaryButtonTitle
@@ -83,7 +83,7 @@ class TransactionHistoryEmptyView: UIView {
     let string = text(for: button)
     let attributes: [NSAttributedString.Key: Any] = [
       .font: buttonFont,
-      .foregroundColor: Theme.Color.verifyWordLightGray.color
+      .foregroundColor: UIColor.verifyWordLightGray
     ]
     let attributedString = attributedSymbol(for: button) + "  " + NSAttributedString(string: string, attributes: attributes)
     return attributedString
@@ -94,13 +94,13 @@ class TransactionHistoryNoBalanceView: TransactionHistoryEmptyView {
   @IBOutlet var noTransactionsTitle: UILabel! {
     didSet {
       noTransactionsTitle.font = CKFont.medium(20)
-      noTransactionsTitle.textColor = Theme.Color.grayText.color
+      noTransactionsTitle.textColor = .grayText
       noTransactionsTitle.text = "No Bitcoin...Yet!"
     }
   }
   @IBOutlet var noTransactionsDetail: UILabel! {
     didSet {
-      noTransactionsDetail.textColor = Theme.Color.grayText.color
+      noTransactionsDetail.textColor = .grayText
       noTransactionsDetail.font = CKFont.regular(15)
       noTransactionsDetail.text = "All incoming and outgoing transactions will appear here."
     }

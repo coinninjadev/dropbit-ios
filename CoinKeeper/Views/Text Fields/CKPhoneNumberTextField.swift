@@ -40,7 +40,7 @@ class CKPhoneNumberTextField: PhoneNumberTextField {
   }
 
   private func setup() {
-    textColor = Theme.Color.grayText.color
+    textColor = .grayText
     font = CKFont.regular(14)
   }
 

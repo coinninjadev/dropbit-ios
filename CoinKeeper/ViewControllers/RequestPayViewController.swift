@@ -20,25 +20,25 @@ final class RequestPayViewController: PresentableViewController, StoryboardIniti
   @IBOutlet var titleLabel: UILabel! {
     didSet {
       titleLabel.font = CKFont.regular(15)
-      titleLabel.textColor = Theme.Color.darkBlueText.color
+      titleLabel.textColor = .darkBlueText
     }
   }
   @IBOutlet var primaryCurrencyLabel: UILabel! {
     didSet {
-      primaryCurrencyLabel.textColor = Theme.Color.lightBlueTint.color
+      primaryCurrencyLabel.textColor = .lightBlueTint
       primaryCurrencyLabel.font = CKFont.regular(35)
     }
   }
   @IBOutlet var secondaryCurrencyLabel: UILabel! {
     didSet {
-      secondaryCurrencyLabel.textColor = Theme.Color.grayText.color
+      secondaryCurrencyLabel.textColor = .grayText
       secondaryCurrencyLabel.font = CKFont.regular(17)
     }
   }
   @IBOutlet var qrImageView: UIImageView!
   @IBOutlet var receiveAddressLabel: UILabel! {
     didSet {
-      receiveAddressLabel.textColor = Theme.Color.darkBlueText.color
+      receiveAddressLabel.textColor = .darkBlueText
       receiveAddressLabel.font = CKFont.semiBold(13)
     }
   }
@@ -46,14 +46,14 @@ final class RequestPayViewController: PresentableViewController, StoryboardIniti
   @IBOutlet var receiveAddressBGView: UIView! {
     didSet {
       receiveAddressBGView.applyCornerRadius(4)
-      receiveAddressBGView.layer.borderColor = Theme.Color.lightGrayOutline.color.cgColor
+      receiveAddressBGView.layer.borderColor = UIColor.lightGrayOutline.cgColor
       receiveAddressBGView.layer.borderWidth = 2.0
       receiveAddressBGView.backgroundColor = .clear
     }
   }
   @IBOutlet var tapInstructionLabel: UILabel! {
     didSet {
-      tapInstructionLabel.textColor = Theme.Color.grayText.color
+      tapInstructionLabel.textColor = .grayText
       tapInstructionLabel.font = CKFont.medium(10)
     }
   }

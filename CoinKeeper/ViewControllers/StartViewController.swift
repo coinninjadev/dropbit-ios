@@ -73,7 +73,7 @@ final class StartViewController: BaseViewController {
     let restoreTitle = NSAttributedString(imageName: "rightArrow",
                                           imageSize: CGSize(width: 8, height: 12),
                                           title: "Restore Wallet",
-                                          sharedColor: Theme.Color.darkBlueText.color,
+                                          sharedColor: .darkBlueText,
                                           font: CKFont.regular(12),
                                           imageOffset: CGPoint(x: 0, y: 1),
                                           trailingImage: true)
@@ -81,13 +81,13 @@ final class StartViewController: BaseViewController {
     self.navigationItem.titleView = restoreWalletButton
 
     claimInviteButton.setTitle("CLAIM BITCOIN FROM INVITE", for: .normal)
-    claimInviteButton.backgroundColor = Theme.Color.darkBlueButton.color
+    claimInviteButton.backgroundColor = .darkBlueButton
     claimInviteButton.applyCornerRadius(4)
-    claimInviteButton.setTitleColor(Theme.Color.whiteText.color, for: .normal)
+    claimInviteButton.setTitleColor(.whiteText, for: .normal)
     claimInviteButton.titleLabel?.font = CKFont.primaryButtonTitle
 
     newWalletButton.setTitle("NEW WALLET", for: .normal)
-    newWalletButton.setTitleColor(Theme.Color.lightBlueTint.color, for: .normal)
+    newWalletButton.setTitleColor(.lightBlueTint, for: .normal)
     newWalletButton.titleLabel?.font = CKFont.primaryButtonTitle
   }
 

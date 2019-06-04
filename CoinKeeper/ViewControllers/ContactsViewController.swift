@@ -140,8 +140,8 @@ class ContactsViewController: PresentableViewController, StoryboardInitializable
     self.frc = delegate.createFetchedResultsController()
     self.frc.delegate = self
 
-    tableView.backgroundColor = Theme.Color.lightGrayBackground.color
-    view.backgroundColor = Theme.Color.lightGrayBackground.color
+    tableView.backgroundColor = .lightGrayBackground
+    view.backgroundColor = .lightGrayBackground
 
     tableView.registerNib(cellType: ContactCell.self)
     tableView.registerNib(cellType: TwitterUserTableViewCell.self)
@@ -181,7 +181,7 @@ class ContactsViewController: PresentableViewController, StoryboardInitializable
   }
 
   private func setupModeSelector() {
-    let textColor = Theme.Color.darkBlueText.color
+    let textColor = UIColor.darkBlueText
     let font = CKFont.compactButtonTitle
     let contactsTitle = NSAttributedString(imageName: "contactsIcon",
                                            imageSize: CGSize(width: 9, height: 14),

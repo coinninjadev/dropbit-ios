@@ -33,7 +33,7 @@ final class SpendBitcoinViewController: BaseViewController, StoryboardInitializa
     cardCollectionView.registerNib(cellType: BuySpendCardCollectionViewCell.self)
     cardCollectionView.backgroundColor = .clear
 
-    headerLabel.textColor = Theme.Color.grayText.color
+    headerLabel.textColor = .grayText
     headerLabel.font = CKFont.light(15)
 
     spendAroundMeButton.style = .standard
@@ -44,7 +44,7 @@ final class SpendBitcoinViewController: BaseViewController, StoryboardInitializa
     let font = CKFont.secondaryButtonTitle
     let attributes: [NSAttributedString.Key: Any] = [
       .font: font,
-      .foregroundColor: Theme.Color.lightGrayText.color
+      .foregroundColor: UIColor.lightGrayText
     ]
     let aroundMeString = NSAttributedString(image: mapPinImage, fontDescender: font.descender, imageSize: CGSize(width: 13, height: 20)) + "  " +
       NSAttributedString(string: "AROUND ME", attributes: attributes)
@@ -55,7 +55,7 @@ final class SpendBitcoinViewController: BaseViewController, StoryboardInitializa
     spendOnlineButton.setAttributedTitle(onlineString, for: .normal)
 
     navigationController?.setNavigationBarHidden(false, animated: true)
-    navigationController?.navigationBar.tintColor = Theme.Color.darkBlueButton.color
+    navigationController?.navigationBar.tintColor = .darkBlueButton
   }
 
   @IBAction func spendBitcoinAroundMe(_ sender: Any) {
@@ -77,7 +77,7 @@ extension SpendBitcoinViewController: UICollectionViewDataSource, UICollectionVi
     let viewModel = BuySpendCardViewModel(
       purposeImage: UIImage(imageLiteralResourceName: "giftCard"),
       purposeText: "BUY GIFT CARDS",
-      cardColor: Theme.Color.appleGreen.color,
+      cardColor: .appleGreen,
       partnerImages: [
         UIImage(imageLiteralResourceName: "partnerAmazon"),
         UIImage(imageLiteralResourceName: "partnerTarget"),

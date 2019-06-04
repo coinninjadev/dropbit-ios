@@ -23,7 +23,7 @@ class ServerAddressView: UIView {
   }
   @IBOutlet var tableFooterLabel: UILabel! {
     didSet {
-      tableFooterLabel.textColor = Theme.Color.darkBlueText.color
+      tableFooterLabel.textColor = .darkBlueText
       tableFooterLabel.font = CKFont.medium(12)
       tableFooterLabel.adjustsFontSizeToFitWidth = true
     }
@@ -53,13 +53,13 @@ class ServerAddressView: UIView {
 
   private func initalize() {
     xibSetup()
-    backgroundColor = Theme.Color.lightGrayBackground.color
+    backgroundColor = .lightGrayBackground
     addressTableView.delegate = self
     addressTableView.isScrollEnabled = false
     addressTableView.dataSource = self
     addressTableView.registerNib(cellType: AddressTableViewCell.self)
     addressTableView.applyCornerRadius(10)
-    addressTableView.layer.borderColor = Theme.Color.borderDarkGray.color.cgColor
+    addressTableView.layer.borderColor = UIColor.borderDarkGray.cgColor
     addressTableView.layer.borderWidth = 0.5
     addressTableView.separatorInset = .zero
 

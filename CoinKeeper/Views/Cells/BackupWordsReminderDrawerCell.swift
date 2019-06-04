@@ -12,7 +12,7 @@ class BackupWordsReminderDrawerCell: UITableViewCell {
 
   @IBOutlet var backingView: UIView! {
     didSet {
-      backingView.backgroundColor = Theme.Color.red.color
+      backingView.backgroundColor = .red
       backingView.applyCornerRadius(8)
     }
   }
@@ -20,7 +20,7 @@ class BackupWordsReminderDrawerCell: UITableViewCell {
   @IBOutlet var titleLabel: UILabel! {
     didSet {
       titleLabel.font = CKFont.medium(13)
-      titleLabel.textColor = Theme.Color.whiteText.color
+      titleLabel.textColor = .whiteText
     }
   }
 

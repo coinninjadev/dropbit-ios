@@ -46,7 +46,7 @@ extension KeypadEntryViewDelegate {
   @IBOutlet var backButton: KeypadButton!
   @IBOutlet var allButtons: [KeypadButton]!
 
-  @IBInspectable var buttonColor: UIColor? = Theme.Color.primaryActionButton.color {
+  @IBInspectable var buttonColor: UIColor? = .primaryActionButton {
     didSet {
       self.tintColor = buttonColor
     }

@@ -58,7 +58,7 @@ class TransactionHistorySummaryCell: UICollectionViewCell {
 
     primaryAmountLabel.text = labels.primary
     secondaryAmountLabel.text = labels.secondary
-    primaryAmountLabel.textColor = viewModel.isIncoming ? Theme.Color.darkBlueText.color : Theme.Color.red.color
+    primaryAmountLabel.textColor = viewModel.isIncoming ? .darkBlueText : .red
 
     memoLabel.text = viewModel.memo
     memoLabel.isHidden = viewModel.memo.isEmpty

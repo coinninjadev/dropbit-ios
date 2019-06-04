@@ -20,6 +20,6 @@ class SettingsTableViewSectionHeader: UITableViewHeaderFooterView {
     super.awakeFromNib()
 
     titleLabel.font = CKFont.semiBold(14)
-    titleLabel.textColor = Theme.Color.darkBlueText.color
+    titleLabel.textColor = .darkBlueText
   }
 }

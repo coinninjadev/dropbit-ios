@@ -69,7 +69,7 @@ class TweetMethodViewController: BaseViewController, StoryboardInitializable {
     super.viewDidLoad()
 
     view.backgroundColor = .clear
-    semiOpaqueBackgroundView.backgroundColor = Theme.Color.semiOpaquePopoverBackground.color
+    semiOpaqueBackgroundView.backgroundColor = .semiOpaquePopoverBackground
     backgroundView.applyCornerRadius(9)
     self.configureViews(with: recipient)
   }
@@ -83,11 +83,11 @@ class TweetMethodViewController: BaseViewController, StoryboardInitializable {
     }
 
     screenNameLabel.font = CKFont.medium(20)
-    screenNameLabel.textColor = Theme.Color.darkBlueText.color
+    screenNameLabel.textColor = .darkBlueText
     screenNameLabel.text = recipient.displayHandle
 
     messageLabel.font = CKFont.medium(14)
-    messageLabel.textColor = Theme.Color.darkBlueText.color
+    messageLabel.textColor = .darkBlueText
     messageLabel.text = messageText(with: recipient)
 
     dropBitTweetButton.style = .darkBlue

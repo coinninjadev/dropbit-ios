@@ -54,11 +54,11 @@ class PhoneNumberStatusViewController: BaseViewController, StoryboardInitializab
     verifyPhoneNumberPrimaryButton.style = .darkBlue
     verifyTwitterPrimaryButton.style = .standard
     privacyLabel.font = CKFont.light(13)
-    privacyLabel.textColor = Theme.Color.darkBlueText.color
+    privacyLabel.textColor = .darkBlueText
     phoneNumberNavigationTitle.font = CKFont.regular(15)
-    phoneNumberNavigationTitle.textColor = Theme.Color.darkBlueText.color
+    phoneNumberNavigationTitle.textColor = .darkBlueText
     titleLabel.font = CKFont.regular(15)
-    titleLabel.textColor = Theme.Color.grayText.color
+    titleLabel.textColor = .grayText
     serverAddressView.delegate = self
     serverAddressViewVerticalConstraint.constant = UIScreen.main.bounds.height
 
@@ -80,7 +80,7 @@ class PhoneNumberStatusViewController: BaseViewController, StoryboardInitializab
         imageName: "phoneDrawerIcon",
         imageSize: CGSize(width: 13, height: 22),
         title: "VERIFY PHONE NUMBER",
-        sharedColor: Theme.Color.lightGrayText.color,
+        sharedColor: .lightGrayText,
         font: CKFont.regular(17))
       verifyPhoneNumberPrimaryButton.setTitle(nil, for: .normal)
       verifyPhoneNumberPrimaryButton.setAttributedTitle(verifyPhoneButtonTitle, for: .normal)
@@ -106,7 +106,7 @@ class PhoneNumberStatusViewController: BaseViewController, StoryboardInitializab
         imageName: "twitterBird",
         imageSize: CGSize(width: 20, height: 16),
         title: "VERIFY TWITTER ACCOUNT",
-        sharedColor: Theme.Color.lightGrayText.color,
+        sharedColor: .lightGrayText,
         font: CKFont.regular(17))
 
       verifyTwitterPrimaryButton.setAttributedTitle(verifyTwitterButtonTitle, for: .normal)
@@ -115,10 +115,10 @@ class PhoneNumberStatusViewController: BaseViewController, StoryboardInitializab
 
     setupAddressUI()
 
-    let attributes: [NSAttributedString.Key: Any] = [.foregroundColor: Theme.Color.lightBlueTint.color,
+    let attributes: [NSAttributedString.Key: Any] = [.foregroundColor: UIColor.lightBlueTint,
                                                      .font: CKFont.regular(14),
                                                      .underlineStyle: 1,
-                                                     .underlineColor: Theme.Color.lightBlueTint.color]
+                                                     .underlineColor: UIColor.lightBlueTint]
 
     let attributedString = NSAttributedString(string: "View DropBit addresses", attributes: attributes)
     addressButton.setAttributedTitle(attributedString, for: .normal)

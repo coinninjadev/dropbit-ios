@@ -62,15 +62,15 @@ class GetBitcoinCopiedAddressViewController: UIViewController, StoryboardInitial
 
   private func setupViews() {
     self.view.backgroundColor = .clear
-    semiOpaqueBackground.backgroundColor = Theme.Color.semiOpaquePopoverBackground.color
-    alertBackground.backgroundColor = Theme.Color.lightGrayBackground.color
+    semiOpaqueBackground.backgroundColor = .semiOpaquePopoverBackground
+    alertBackground.backgroundColor = .lightGrayBackground
     alertBackground.applyCornerRadius(9)
 
-    bitcoinIconBackground.backgroundColor = Theme.Color.mango.color
+    bitcoinIconBackground.backgroundColor = .mango
     bitcoinIconBackground.applyCornerRadius(bitcoinIconBackground.frame.width/2)
 
-    addressButton.backgroundColor = Theme.Color.whiteBackground.color
-    addressButton.setTitleColor(Theme.Color.darkBlueText.color, for: .normal)
+    addressButton.backgroundColor = .whiteBackground
+    addressButton.setTitleColor(.darkBlueText, for: .normal)
     addressButton.titleLabel?.font = CKFont.regular(12)
     addressButton.titleLabel?.lineBreakMode = .byTruncatingMiddle
 
@@ -79,11 +79,11 @@ class GetBitcoinCopiedAddressViewController: UIViewController, StoryboardInitial
     copied your DropBit Bitcoin address to your clipboard.
     """.removingMultilineLineBreaks()
     messageLabel.font = CKFont.popoverMessage
-    messageLabel.textColor = Theme.Color.darkBlueText.color
+    messageLabel.textColor = .darkBlueText
 
     confirmationButton.setTitle("OK, GET BITCOIN", for: .normal)
-    confirmationButton.backgroundColor = Theme.Color.primaryActionButton.color
-    confirmationButton.setTitleColor(Theme.Color.whiteText.color, for: .normal)
+    confirmationButton.backgroundColor = .primaryActionButton
+    confirmationButton.setTitleColor(.whiteText, for: .normal)
     confirmationButton.titleLabel?.font = CKFont.semiBold(14)
     confirmationButton.applyCornerRadius(4)
   }

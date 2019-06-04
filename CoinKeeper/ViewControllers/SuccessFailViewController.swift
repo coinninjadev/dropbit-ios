@@ -47,7 +47,7 @@ class SuccessFailViewController: BaseViewController, StoryboardInitializable {
   @IBOutlet var titleLabel: UILabel! {
     didSet {
       titleLabel.font = CKFont.medium(20)
-      titleLabel.textColor = Theme.Color.grayText.color
+      titleLabel.textColor = .grayText
     }
   }
 
@@ -118,7 +118,7 @@ class SuccessFailViewController: BaseViewController, StoryboardInitializable {
     successFailView.mode = vm.mode
 
     subtitleLabel.text = vm.subtitle
-    subtitleLabel.textColor = Theme.Color.grayText.color
+    subtitleLabel.textColor = .grayText
     subtitleLabel.isHidden = !vm.shouldShowSubtitle
 
     urlButton.style = .darkBlue

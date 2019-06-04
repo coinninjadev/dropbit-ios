@@ -12,7 +12,7 @@ class TransactionHistoryMemoLabel: UILabel {
   override func awakeFromNib() {
     super.awakeFromNib()
     font = CKFont.regular(14)
-    textColor = Theme.Color.darkBlueText.color
+    textColor = .darkBlueText
     isHidden = true
     numberOfLines = 1
     textAlignment = .left

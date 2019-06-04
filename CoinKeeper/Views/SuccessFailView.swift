@@ -140,14 +140,14 @@ class SuccessFailView: UIView {
   }()
 
   private func animateForLoading() {
-    backgroundShapeLayer.strokeColor = Theme.Color.grayText.color.cgColor
+    backgroundShapeLayer.strokeColor = UIColor.grayText.cgColor
     layer.addSublayer(foregroundShapeLayer)
     foregroundShapeLayer.add(generateAnimation(), forKey: "strokeLineAnimation")
     foregroundShapeLayer.add(rotateAnimation, forKey: "transform.rotation.z")
   }
 
   private func animateForSuccess() {
-    backgroundShapeLayer.strokeColor = Theme.Color.successGreen.color.cgColor
+    backgroundShapeLayer.strokeColor = UIColor.successGreen.cgColor
     layer.addSublayer(checkmarkBackgroundShapeLayer)
     layer.addSublayer(checkmarkForegroundShapeLayer)
 
@@ -155,7 +155,7 @@ class SuccessFailView: UIView {
   }
 
   private func animateForFailure() {
-    backgroundShapeLayer.strokeColor = Theme.Color.red.color.cgColor
+    backgroundShapeLayer.strokeColor = UIColor.red.cgColor
     layer.addSublayer(errorForegroundShapeLayerLeftBottom)
     layer.addSublayer(errorForegroundShapeLayerLeftTop)
     layer.addSublayer(errorBackgroundShapeLayerLeftBottom)
@@ -189,7 +189,7 @@ class SuccessFailView: UIView {
 
     backgroundShapeLayer.path = backgroundBezierPath.cgPath
     backgroundShapeLayer.lineWidth = lineWidth
-    backgroundShapeLayer.strokeColor = Theme.Color.grayText.color.cgColor
+    backgroundShapeLayer.strokeColor = UIColor.grayText.cgColor
     backgroundShapeLayer.fillColor = UIColor.clear.cgColor
     backgroundShapeLayer.lineCap = CAShapeLayerLineCap.round
     backgroundShapeLayer.bounds = bounds
@@ -199,7 +199,7 @@ class SuccessFailView: UIView {
     foregroundShapeLayer.lineCap = CAShapeLayerLineCap.round
     foregroundShapeLayer.fillColor = UIColor.clear.cgColor
     foregroundShapeLayer.lineWidth = lineWidth
-    foregroundShapeLayer.strokeColor = Theme.Color.lightBlueTint.color.cgColor
+    foregroundShapeLayer.strokeColor = UIColor.lightBlueTint.cgColor
     foregroundShapeLayer.frame = bounds
     foregroundShapeLayer.bounds = bounds
 
@@ -221,7 +221,7 @@ class SuccessFailView: UIView {
     errorBackgroundShapeLayerLeftTop.path = leftTopErrorBezierPath.cgPath
     errorBackgroundShapeLayerLeftTop.lineCap = CAShapeLayerLineCap.round
     errorBackgroundShapeLayerLeftTop.lineWidth = lineWidth
-    errorBackgroundShapeLayerLeftTop.strokeColor = Theme.Color.grayText.color.cgColor
+    errorBackgroundShapeLayerLeftTop.strokeColor = UIColor.grayText.cgColor
     errorBackgroundShapeLayerLeftTop.fillColor = UIColor.clear.cgColor
     errorBackgroundShapeLayerLeftTop.strokeEnd = 1.0
     errorBackgroundShapeLayerLeftTop.zPosition = -1
@@ -229,7 +229,7 @@ class SuccessFailView: UIView {
     errorBackgroundShapeLayerLeftBottom.path = leftBottomErrorBezierPath.cgPath
     errorBackgroundShapeLayerLeftBottom.lineCap = CAShapeLayerLineCap.round
     errorBackgroundShapeLayerLeftBottom.lineWidth = lineWidth
-    errorBackgroundShapeLayerLeftBottom.strokeColor = Theme.Color.grayText.color.cgColor
+    errorBackgroundShapeLayerLeftBottom.strokeColor = UIColor.grayText.cgColor
     errorBackgroundShapeLayerLeftBottom.fillColor = UIColor.clear.cgColor
     errorBackgroundShapeLayerLeftBottom.strokeEnd = 1.0
     errorBackgroundShapeLayerLeftBottom.zPosition = -1
@@ -237,14 +237,14 @@ class SuccessFailView: UIView {
     errorForegroundShapeLayerLeftTop.path = leftTopErrorBezierPath.cgPath
     errorForegroundShapeLayerLeftTop.lineCap = CAShapeLayerLineCap.round
     errorForegroundShapeLayerLeftTop.lineWidth = lineWidth
-    errorForegroundShapeLayerLeftTop.strokeColor = Theme.Color.red.color.cgColor
+    errorForegroundShapeLayerLeftTop.strokeColor = UIColor.red.cgColor
     errorForegroundShapeLayerLeftTop.fillColor = UIColor.clear.cgColor
     errorForegroundShapeLayerLeftTop.strokeEnd = 1.0
 
     errorForegroundShapeLayerLeftBottom.path = leftBottomErrorBezierPath.cgPath
     errorForegroundShapeLayerLeftBottom.lineCap = CAShapeLayerLineCap.round
     errorForegroundShapeLayerLeftBottom.lineWidth = lineWidth
-    errorForegroundShapeLayerLeftBottom.strokeColor = Theme.Color.red.color.cgColor
+    errorForegroundShapeLayerLeftBottom.strokeColor = UIColor.red.cgColor
     errorForegroundShapeLayerLeftBottom.fillColor = UIColor.clear.cgColor
     errorForegroundShapeLayerLeftBottom.strokeEnd = 1.0
   }
@@ -262,7 +262,7 @@ class SuccessFailView: UIView {
     checkmarkBackgroundShapeLayer.path = checkmarkBezierPath.cgPath
     checkmarkBackgroundShapeLayer.lineCap = CAShapeLayerLineCap.round
     checkmarkBackgroundShapeLayer.lineWidth = lineWidth
-    checkmarkBackgroundShapeLayer.strokeColor = Theme.Color.grayText.color.cgColor
+    checkmarkBackgroundShapeLayer.strokeColor = UIColor.grayText.cgColor
     checkmarkBackgroundShapeLayer.fillColor = UIColor.clear.cgColor
     checkmarkBackgroundShapeLayer.strokeEnd = 1.0
     checkmarkBackgroundShapeLayer.zPosition = -1
@@ -270,7 +270,7 @@ class SuccessFailView: UIView {
     checkmarkForegroundShapeLayer.path = checkmarkBezierPath.cgPath
     checkmarkForegroundShapeLayer.lineCap = CAShapeLayerLineCap.round
     checkmarkForegroundShapeLayer.lineWidth = lineWidth
-    checkmarkForegroundShapeLayer.strokeColor = Theme.Color.successGreen.color.cgColor
+    checkmarkForegroundShapeLayer.strokeColor = UIColor.successGreen.cgColor
     checkmarkForegroundShapeLayer.fillColor = UIColor.clear.cgColor
     checkmarkForegroundShapeLayer.strokeEnd = 1.0
   }

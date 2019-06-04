@@ -35,7 +35,7 @@ class BackupRecoveryWordsViewControllerTests: XCTestCase {
 
   // MARK: initial state
   func testBackgroundColorIsClear() {
-    XCTAssertEqual(self.sut.view.backgroundColor, Theme.Color.lightGrayBackground.color)
+    XCTAssertEqual(self.sut.view.backgroundColor, .lightGrayBackground)
   }
 
   func testCollectionViewInitialState() {
@@ -136,7 +136,7 @@ class BackupRecoveryWordsViewControllerTests: XCTestCase {
     XCTAssertEqual(self.sut.wordCollectionView.indexPathsForVisibleItems.first?.item, 10)
     XCTAssertFalse(self.sut.backButton.isHidden, "backButton should be visible")
     XCTAssertEqual(self.sut.nextButton.title(for: .normal), "NEXT")
-    XCTAssertEqual(self.sut.nextButton.backgroundColor, Theme.Color.primaryActionButton.color)
+    XCTAssertEqual(self.sut.nextButton.backgroundColor, .primaryActionButton)
 
     // when
     self.sut.nextButton.sendActions(for: .touchUpInside)
@@ -146,7 +146,7 @@ class BackupRecoveryWordsViewControllerTests: XCTestCase {
     XCTAssertEqual(self.sut.wordCollectionView.indexPathsForVisibleItems.first?.item, 11)
     XCTAssertFalse(self.sut.backButton.isHidden, "backButton should show after tapping Next")
     XCTAssertEqual(self.sut.nextButton.title(for: .normal), "VERIFY")
-    XCTAssertEqual(self.sut.nextButton.backgroundColor, Theme.Color.darkBlueButton.color)
+    XCTAssertEqual(self.sut.nextButton.backgroundColor, .darkBlueButton)
   }
 
   func testTappingNextButtonWhenOnLastWordTellsDelegateToVerifyWords() {
@@ -170,7 +170,7 @@ class BackupRecoveryWordsViewControllerTests: XCTestCase {
 
     // initially
     XCTAssertEqual(self.sut.nextButton.title(for: .normal), "VERIFY")
-    XCTAssertEqual(self.sut.nextButton.backgroundColor, Theme.Color.darkBlueButton.color)
+    XCTAssertEqual(self.sut.nextButton.backgroundColor, .darkBlueButton)
     XCTAssertEqual(self.sut.wordCollectionView.indexPathsForVisibleItems.first?.item, 11)
 
     // when
@@ -179,7 +179,7 @@ class BackupRecoveryWordsViewControllerTests: XCTestCase {
 
     // then
     XCTAssertEqual(self.sut.nextButton.title(for: .normal), "NEXT")
-    XCTAssertEqual(self.sut.nextButton.backgroundColor, Theme.Color.primaryActionButton.color)
+    XCTAssertEqual(self.sut.nextButton.backgroundColor, .primaryActionButton)
     XCTAssertEqual(self.sut.wordCollectionView.indexPathsForVisibleItems.first?.item, 10)
   }
 

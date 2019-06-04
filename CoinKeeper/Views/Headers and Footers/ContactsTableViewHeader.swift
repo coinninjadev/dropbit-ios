@@ -19,7 +19,7 @@ class ContactsTableViewHeader: UITableViewHeaderFooterView {
   @IBOutlet var _backgroundView: UIView!
   @IBOutlet var whatIsButton: UnderlinedTextButton! {
     didSet {
-      whatIsButton.setUnderlinedTitle("What is DropBit?", size: 10, color: Theme.Color.lightBlueTint.color)
+      whatIsButton.setUnderlinedTitle("What is DropBit?", size: 10, color: .lightBlueTint)
     }
   }
   @IBOutlet var titleLabel: UILabel! {
@@ -33,7 +33,7 @@ class ContactsTableViewHeader: UITableViewHeaderFooterView {
   override func awakeFromNib() {
     super.awakeFromNib()
 
-    _backgroundView.backgroundColor = Theme.Color.darkBlueButton.color
+    _backgroundView.backgroundColor = .darkBlueButton
   }
 
   @IBAction func whatIsButtonWasTouched() {

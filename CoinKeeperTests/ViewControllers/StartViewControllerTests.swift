@@ -37,7 +37,7 @@ class StartViewControllerTests: XCTestCase {
   // MARK: initial state
   func testCreateWalletButtonInitialState() {
     let expectedText = "NEW WALLET"
-    let expectedColor = Theme.Color.lightBlueTint.color
+    let expectedColor = .lightBlueTint
 
     XCTAssertEqual(self.sut.newWalletButton.title(for: .normal), expectedText, "newWalletButton text should match")
     XCTAssertEqual(self.sut.newWalletButton.currentTitleColor, expectedColor, "newWalletButton color should match")
@@ -52,7 +52,7 @@ class StartViewControllerTests: XCTestCase {
 
   func testRestoreWalletButtonInitialState() {
     let expectedText = "Restore Wallet"
-    let expectedColor = Theme.Color.darkBlueText.color
+    let expectedColor = .darkBlueText
 
     let buttonTitleText = self.sut.restoreWalletButton.attributedTitle(for: .normal)?.string ?? ""
     XCTAssertTrue(buttonTitleText.contains(expectedText), "restoreWalletButton text should match")

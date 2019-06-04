@@ -235,13 +235,13 @@ extension SendPaymentViewController {
     recipientDisplayNameLabel.font = CKFont.regular(26)
     recipientDisplayNumberLabel.font = CKFont.regular(20)
     payTitleLabel.font = CKFont.regular(15)
-    payTitleLabel.textColor = Theme.Color.darkBlueText.color
-    secondaryAmountLabel.textColor = Theme.Color.grayText.color
+    payTitleLabel.textColor = .darkBlueText
+    secondaryAmountLabel.textColor = .grayText
     secondaryAmountLabel.font = CKFont.regular(17)
   }
 
   fileprivate func setupButtons() {
-    let textColor = Theme.Color.whiteText.color
+    let textColor = UIColor.whiteText
     let font = CKFont.compactButtonTitle
     let contactsTitle = NSAttributedString(imageName: "contactsIcon",
                                            imageSize: CGSize(width: 9, height: 14),
@@ -267,24 +267,24 @@ extension SendPaymentViewController {
 
   fileprivate func formatAddressScanView() {
     addressScanButtonContainerView.applyCornerRadius(4)
-    addressScanButtonContainerView.layer.borderColor = Theme.Color.lightGrayOutline.color.cgColor
+    addressScanButtonContainerView.layer.borderColor = UIColor.lightGrayOutline.cgColor
     addressScanButtonContainerView.layer.borderWidth = 1.0
 
     bitcoinAddressButton.titleLabel?.font = CKFont.medium(14)
-    bitcoinAddressButton.setTitleColor(Theme.Color.grayText.color, for: .normal)
+    bitcoinAddressButton.setTitleColor(.grayText, for: .normal)
 
-    scanButton.backgroundColor = Theme.Color.backgroundDarkGray.color
+    scanButton.backgroundColor = .backgroundDarkGray
   }
 
   fileprivate func formatPhoneNumberEntryView() {
     guard let entryView = phoneNumberEntryView else { return }
     entryView.backgroundColor = UIColor.clear
-    entryView.layer.borderColor = Theme.Color.lightGrayOutline.color.cgColor
+    entryView.layer.borderColor = UIColor.lightGrayOutline.cgColor
     entryView.textField.delegate = self
     entryView.textField.backgroundColor = UIColor.clear
     entryView.textField.autocorrectionType = .no
     entryView.textField.font = CKFont.medium(14)
-    entryView.textField.textColor = Theme.Color.sendingToDarkGray.color
+    entryView.textField.textColor = .sendingToDarkGray
     entryView.textField.adjustsFontSizeToFitWidth = true
     entryView.textField.keyboardType = .numberPad
     entryView.textField.textAlignment = .center

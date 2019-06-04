@@ -46,21 +46,21 @@ class SendPaymentMemoView: UIView {
     backgroundColor = .clear
     applyCornerRadius(6)
     self.layer.borderWidth = 1
-    self.layer.borderColor = Theme.Color.lightGrayOutline.color.cgColor
+    self.layer.borderColor = UIColor.lightGrayOutline.cgColor
 
-    topBackgroundView.backgroundColor = Theme.Color.whiteBackground.color
-    bottomBackgroundView.backgroundColor = Theme.Color.grayMemoBackground.color
-    separatorView.backgroundColor = Theme.Color.lightGrayOutline.color
+    topBackgroundView.backgroundColor = .whiteBackground
+    bottomBackgroundView.backgroundColor = .grayMemoBackground
+    separatorView.backgroundColor = .lightGrayOutline
 
     memoLabel.font = CKFont.secondaryButtonTitle
 
     setupGestureRecognizers()
 
-    checkboxBackgroundView.backgroundColor = Theme.Color.primaryActionButton.color
+    checkboxBackgroundView.backgroundColor = .primaryActionButton
     checkboxBackgroundView.applyCornerRadius(3)
 
     checkboxDescriptionLabel.text = "Securely send this memo with your transaction"
-    checkboxDescriptionLabel.textColor = Theme.Color.memoInfoText.color
+    checkboxDescriptionLabel.textColor = .memoInfoText
     checkboxDescriptionLabel.font = CKFont.regular(10)
   }
 
@@ -91,10 +91,10 @@ class SendPaymentMemoView: UIView {
 
     if let actualTitle = memo, actualTitle.isNotEmpty {
       memoLabel.text = actualTitle
-      memoLabel.textColor = Theme.Color.darkBlueText.color
+      memoLabel.textColor = .darkBlueText
     } else {
       memoLabel.text = "Add a memo"
-      memoLabel.textColor = Theme.Color.grayText.color
+      memoLabel.textColor = .grayText
     }
   }
 

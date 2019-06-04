@@ -13,12 +13,12 @@ class BadgeView: UIView {
 
   required init?(coder aDecoder: NSCoder) {
     super.init(coder: aDecoder)
-    backgroundColor = Theme.Color.red.color
+    backgroundColor = .red
   }
 
   override init(frame: CGRect) {
     super.init(frame: frame)
-    backgroundColor = Theme.Color.red.color
+    backgroundColor = .red
   }
 
   convenience init() {

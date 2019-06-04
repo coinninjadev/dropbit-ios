@@ -13,7 +13,7 @@ class SettingsTitleLabel: UILabel {
   override func awakeFromNib() {
     super.awakeFromNib()
     font = CKFont.regular(15)
-    textColor = Theme.Color.darkBlueText.color
+    textColor = .darkBlueText
   }
 
 }

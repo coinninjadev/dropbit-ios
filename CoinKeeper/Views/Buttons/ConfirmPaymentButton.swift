@@ -75,7 +75,7 @@ class ConfirmPaymentButton: UIButton {
     backgroundShapeLayer.path = backgroundBezierPath.cgPath
     backgroundShapeLayer.lineCap = CAShapeLayerLineCap.round
     backgroundShapeLayer.lineWidth = frame.size.height / lineWidthDivisor
-    backgroundShapeLayer.strokeColor = Theme.Color.grayText.color.cgColor
+    backgroundShapeLayer.strokeColor = UIColor.grayText.cgColor
     backgroundShapeLayer.fillColor = UIColor.clear.cgColor
     backgroundShapeLayer.strokeEnd = 1.0
     backgroundShapeLayer.zPosition = -1
@@ -86,7 +86,7 @@ class ConfirmPaymentButton: UIButton {
     foregroundShapeLayer.lineCap = CAShapeLayerLineCap.round
     foregroundShapeLayer.fillColor = UIColor.clear.cgColor
     foregroundShapeLayer.lineWidth = frame.size.height / lineWidthDivisor
-    foregroundShapeLayer.strokeColor = Theme.Color.lightBlueTint.color.cgColor
+    foregroundShapeLayer.strokeColor = UIColor.lightBlueTint.cgColor
     foregroundShapeLayer.speed = 1.0
     foregroundShapeLayer.timeOffset = 0.0
     foregroundShapeLayer.beginTime = 0.0

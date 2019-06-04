@@ -13,7 +13,7 @@ class BarButtonFactory {
     let skipButton = UIBarButtonItem(title: "skip", style: .plain, target: target, action: selector)
     let attributes: [NSAttributedString.Key: Any] = [
       .font: CKFont.regular(15),
-      .foregroundColor: Theme.Color.darkBlueButton.color
+      .foregroundColor: UIColor.darkBlueButton
     ]
     skipButton.setTitleTextAttributes(attributes, for: .normal)
     return skipButton

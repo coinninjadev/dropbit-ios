@@ -12,7 +12,7 @@ class BalancePrimaryAmountLabel: UILabel {
   override func awakeFromNib() {
     super.awakeFromNib()
     font = CKFont.medium(19)
-    textColor = Theme.Color.darkBlueText.color
+    textColor = .darkBlueText
     isHidden = false
     numberOfLines = 1
     textAlignment = .right

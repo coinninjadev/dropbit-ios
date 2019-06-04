@@ -72,15 +72,15 @@ class TransactionHistoryDetailValidCell: TransactionHistoryDetailBaseCell {
 
     switch action {
     case .cancelInvitation:
-      bottomButton.backgroundColor = Theme.Color.red.color
+      bottomButton.backgroundColor = .red
     case .seeDetails:
-      bottomButton.backgroundColor = Theme.Color.darkBlueButton.color
+      bottomButton.backgroundColor = .darkBlueButton
     }
   }
 
   private func setupProgressBar(with viewModel: TransactionHistoryDetailCellViewModel) {
-    progressView.activeColor = Theme.Color.successGreen.color
-    progressView.inactiveColor = Theme.Color.lightGrayText.color
+    progressView.activeColor = .successGreen
+    progressView.inactiveColor = .lightGrayText
     progressView.inactiveTextColor = progressView.inactiveColor
     progressView.stepFont = CKFont.semiBold(11)
 

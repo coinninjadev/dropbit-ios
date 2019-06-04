@@ -22,11 +22,11 @@ class CNContactSearchBar: UISearchBar {
 
     textField.borderStyle = .none
     textField.font = CKFont.medium(12)
-    textField.backgroundColor = Theme.Color.lightGrayBackground.color
+    textField.backgroundColor = .lightGrayBackground
     let leadingOffset = UIOffset(horizontal: CGFloat(30), vertical: CGFloat(0))
     setPositionAdjustment(leadingOffset, for: .search)
-    textField.backgroundColor = Theme.Color.searchBarLightGray.color
+    textField.backgroundColor = .searchBarLightGray
     searchTextPositionAdjustment = UIOffset(horizontal: 10.0, vertical: 0.0)
-    backgroundColor = Theme.Color.searchBarLightGray.color
+    backgroundColor = .searchBarLightGray
   }
 }

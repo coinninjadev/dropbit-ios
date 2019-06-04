@@ -32,17 +32,17 @@ class ConfirmPaymentMemoView: UIView {
     backgroundColor = .clear
     self.applyCornerRadius(6)
     self.layer.borderWidth = 1
-    self.layer.borderColor = Theme.Color.lightGrayOutline.color.cgColor
-    separatorView.backgroundColor = Theme.Color.lightGrayOutline.color
+    self.layer.borderColor = UIColor.lightGrayOutline.cgColor
+    separatorView.backgroundColor = .lightGrayOutline
 
-    topBackgroundView.backgroundColor = Theme.Color.lightGrayBackground.color
-    bottomBackgroundView.backgroundColor = Theme.Color.whiteBackground.color
+    topBackgroundView.backgroundColor = .lightGrayBackground
+    bottomBackgroundView.backgroundColor = .whiteBackground
 
     memoLabel.textAlignment = .center
-    memoLabel.textColor = Theme.Color.confirmPaymentMemo.color
+    memoLabel.textColor = .darkBlueText
     memoLabel.font = CKFont.regular(14)
 
-    isSharedDescriptionLabel.textColor = Theme.Color.grayText.color
+    isSharedDescriptionLabel.textColor = .grayText
     isSharedDescriptionLabel.font = CKFont.regular(10)
   }
 
