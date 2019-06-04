@@ -323,7 +323,6 @@ class AppCoordinator: CoordinatorType {
       .finally {
         UIApplication.shared.endBackgroundTask(backgroundTaskId)
     }
-    //UIApplication.shared.applicationIconBadgeNumber = persistenceManager.pendingInvitations().count
   }
 
   private func authenticateOnBecomingActiveIfNeeded() {
