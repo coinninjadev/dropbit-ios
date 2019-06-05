@@ -24,7 +24,7 @@ class SettingSwitchCell: SettingsBaseCell {
   }
 
   @IBAction func toggle(_ sender: UISwitch) {
-    viewModel?.command?.execute()
+    viewModel?.didToggle(control: sender)
   }
 
   override func load(with viewModel: SettingsCellViewModel) {

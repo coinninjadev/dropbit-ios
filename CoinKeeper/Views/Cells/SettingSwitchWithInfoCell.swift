@@ -8,18 +8,13 @@
 
 import UIKit
 
-protocol SettingSwitchCellDelegate: AnyObject {
-  func tableViewCellDidSelectInfoButton(_ cell: UITableViewCell, viewModel: SettingsCellViewModel?)
-}
-
 class SettingSwitchWithInfoCell: SettingSwitchCell {
-
-  weak var delegate: SettingSwitchCellDelegate?
 
   // MARK: outlets
   @IBOutlet var infoButton: UIButton!
 
+  // MARK: actions
   @IBAction func showInfo() {
-    delegate?.tableViewCellDidSelectInfoButton(self, viewModel: viewModel)
+    viewModel?.showInfo()
   }
 }
