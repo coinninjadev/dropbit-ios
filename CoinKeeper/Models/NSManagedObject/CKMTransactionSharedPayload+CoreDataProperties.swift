@@ -15,10 +15,12 @@ extension CKMTransactionSharedPayload {
     return NSFetchRequest<CKMTransactionSharedPayload>(entityName: "CKMTransactionSharedPayload")
   }
 
-  @NSManaged public var sharingDesired: Bool
   @NSManaged public var fiatAmount: Int
   @NSManaged public var fiatCurrency: String
   @NSManaged public var receivedPayload: Data?
   @NSManaged public var transaction: CKMTransaction?
+
+  /// Represents that the sender shared a memo, not all shared payloads include a memo
+  @NSManaged public var sharingDesired: Bool
 
 }
