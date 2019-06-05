@@ -69,10 +69,7 @@ class SharedPayloadManager: SharedPayloadManagerType {
     for payload in payloads {
       guard let tx = CKMTransaction.find(byTxid: payload.txid, in: deps.context) else { continue }
 
-      if tx.memo == nil, let validMemo = payload.info.memo.asNilIfEmpty() {
-        tx.memo = validMemo
-      }
-
+      let memoWasShared = configureTransaction(tx, withMemoIfAppropriate: payload.info.memo)
       let phoneNumber = payload.profile.globalPhoneNumber()
       let phoneNumberHash = deps.hasher.hash(phoneNumber: phoneNumber, salt: deps.salt, parsedNumber: nil, kit: deps.kit)
 
@@ -88,7 +85,7 @@ class SharedPayloadManager: SharedPayloadManagerType {
       }
 
       let payloadAsData = try? payload.encoded()
-      let ckmSharedPayload = CKMTransactionSharedPayload(sharingDesired: true,
+      let ckmSharedPayload = CKMTransactionSharedPayload(sharingDesired: memoWasShared,
                                                          fiatAmount: payload.info.amount,
                                                          fiatCurrency: payload.info.currency,
                                                          receivedPayload: payloadAsData,
@@ -102,9 +99,7 @@ class SharedPayloadManager: SharedPayloadManagerType {
     for payload in payloads {
       guard let tx = CKMTransaction.find(byTxid: payload.txid, in: deps.context) else { continue }
 
-      if tx.memo == nil, let validMemo = payload.info.memo.asNilIfEmpty() {
-        tx.memo = validMemo
-      }
+      let memoWasShared = configureTransaction(tx, withMemoIfAppropriate: payload.info.memo)
 
       guard let profile = payload.profile else { continue }
       switch profile.type {
@@ -120,7 +115,7 @@ class SharedPayloadManager: SharedPayloadManagerType {
       }
 
       let payloadAsData = try? payload.encoded()
-      let ckmSharedPayload = CKMTransactionSharedPayload(sharingDesired: true,
+      let ckmSharedPayload = CKMTransactionSharedPayload(sharingDesired: memoWasShared,
                                                          fiatAmount: payload.info.amount,
                                                          fiatCurrency: payload.info.currency,
                                                          receivedPayload: payloadAsData,
@@ -148,6 +143,13 @@ class SharedPayloadManager: SharedPayloadManagerType {
     if let name = counterpartyInputs?.name {
       tx.phoneNumber?.counterparty = CKMCounterparty.findOrCreate(with: name, in: deps.context)
     }
+  }
+
+  /// Returns true if memo parameter was non-empty
+  private func configureTransaction(_ tx: CKMTransaction, withMemoIfAppropriate memo: String) -> Bool {
+    guard memo.isNotEmpty else { return false }
+    if tx.memo == nil { tx.memo = memo }
+    return true
   }
 
   private func payloadsAsV1(from payloads: [Data]) -> [SharedPayloadV1]? {
