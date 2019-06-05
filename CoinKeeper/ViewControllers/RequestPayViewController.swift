@@ -19,42 +19,42 @@ final class RequestPayViewController: PresentableViewController, StoryboardIniti
   @IBOutlet var closeButton: UIButton!
   @IBOutlet var titleLabel: UILabel! {
     didSet {
-      titleLabel.font = Theme.Font.onboardingSubtitle.font
-      titleLabel.textColor = Theme.Color.darkBlueText.color
+      titleLabel.font = .regular(15)
+      titleLabel.textColor = .darkBlueText
     }
   }
   @IBOutlet var primaryCurrencyLabel: UILabel! {
     didSet {
-      primaryCurrencyLabel.textColor = Theme.Color.lightBlueTint.color
-      primaryCurrencyLabel.font = Theme.Font.requestPayPrimaryCurrency.font
+      primaryCurrencyLabel.textColor = .lightBlueTint
+      primaryCurrencyLabel.font = .regular(35)
     }
   }
   @IBOutlet var secondaryCurrencyLabel: UILabel! {
     didSet {
-      secondaryCurrencyLabel.textColor = Theme.Color.grayText.color
-      secondaryCurrencyLabel.font = Theme.Font.requestPaySecondaryCurrency.font
+      secondaryCurrencyLabel.textColor = .grayText
+      secondaryCurrencyLabel.font = .regular(17)
     }
   }
   @IBOutlet var qrImageView: UIImageView!
   @IBOutlet var receiveAddressLabel: UILabel! {
     didSet {
-      receiveAddressLabel.textColor = Theme.Color.darkBlueText.color
-      receiveAddressLabel.font = Theme.Font.requestPayAddress.font
+      receiveAddressLabel.textColor = .darkBlueText
+      receiveAddressLabel.font = .semiBold(13)
     }
   }
   @IBOutlet var receiveAddressTapGesture: UITapGestureRecognizer!
   @IBOutlet var receiveAddressBGView: UIView! {
     didSet {
       receiveAddressBGView.applyCornerRadius(4)
-      receiveAddressBGView.layer.borderColor = Theme.Color.lightGrayOutline.color.cgColor
+      receiveAddressBGView.layer.borderColor = UIColor.lightGrayOutline.cgColor
       receiveAddressBGView.layer.borderWidth = 2.0
       receiveAddressBGView.backgroundColor = .clear
     }
   }
   @IBOutlet var tapInstructionLabel: UILabel! {
     didSet {
-      tapInstructionLabel.textColor = Theme.Color.grayText.color
-      tapInstructionLabel.font = Theme.Font.smallInfoLabel.font
+      tapInstructionLabel.textColor = .grayText
+      tapInstructionLabel.font = .medium(10)
     }
   }
   @IBOutlet var sendRequestButton: PrimaryActionButton! {

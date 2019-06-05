@@ -47,14 +47,14 @@ final class RecoveryWordsIntroViewController: BaseViewController, StoryboardInit
   }
 
   private func configureUI() {
-    titleLabel.font = Theme.Font.onboardingTitle.font
-    subtitle1Label.font = Theme.Font.recoverySubtitle1.font
-    subtitle2Label.font = Theme.Font.recoverySubtitle2.font
-    restoreInfoLabel.font = Theme.Font.onboardingSubtitle.font
-    estimatedTimeLabel.font = Theme.Font.recoverySubtitle2.font
+    titleLabel.font = .medium(19)
+    subtitle1Label.font = .medium(15)
+    subtitle2Label.font = .regular(13)
+    restoreInfoLabel.font = .regular(15)
+    estimatedTimeLabel.font = .regular(13)
 
-    [titleLabel, subtitle1Label, restoreInfoLabel].forEach { $0?.textColor = Theme.Color.grayText.color }
-    [subtitle2Label, estimatedTimeLabel].forEach { $0?.textColor = Theme.Color.darkBlueText.color }
+    [titleLabel, subtitle1Label, restoreInfoLabel].forEach { $0?.textColor = .grayText }
+    [subtitle2Label, estimatedTimeLabel].forEach { $0?.textColor = .darkBlueText }
 
     switch coordinationDelegate?.verifyIfWordsAreBackedUp() {
     case false?:

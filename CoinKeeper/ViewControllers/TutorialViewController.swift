@@ -107,7 +107,7 @@ class TutorialViewController: BasePageViewController, StoryboardInitializable {
 
   private func setupPageControl() {
     pageControl.currentPage = 0
-    pageControl.pageIndicatorTintColor = Theme.Color.mediumGrayText.color
+    pageControl.pageIndicatorTintColor = .mediumGrayText
     pageControl.currentPageIndicatorTintColor = .black
     pageControl.numberOfPages = viewModels.count
     view.addSubview(pageControl)

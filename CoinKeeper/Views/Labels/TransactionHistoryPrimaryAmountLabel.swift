@@ -11,7 +11,7 @@ import UIKit
 class TransactionHistoryPrimaryAmountLabel: UILabel {
   override func awakeFromNib() {
     super.awakeFromNib()
-    font = Theme.Font.transactionHistoryPrimaryAmount.font
+    font = .medium(16)
     isHidden = false
     numberOfLines = 1
     textAlignment = .right

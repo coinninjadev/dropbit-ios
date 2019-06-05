@@ -11,7 +11,7 @@ import UIKit
 class ContactCellSecondaryLabel: UILabel {
   override func awakeFromNib() {
     super.awakeFromNib()
-    textColor = Theme.Color.grayText.color
-    font = Theme.Font.phoneNumberDetail.font
+    textColor = .grayText
+    font = .light(13)
   }
 }

@@ -28,7 +28,7 @@ class TransactionHistoryDetailCellAddressView: UIView {
   @IBOutlet var addressContainerView: UIView!
   @IBOutlet var addressTextButton: UIButton! {
     didSet {
-      addressTextButton.titleLabel?.font = Theme.Font.transactionDetailAddress.font
+      addressTextButton.titleLabel?.font = .medium(13)
     }
   }
   @IBOutlet var addressImageButton: UIButton!
@@ -89,8 +89,8 @@ class TransactionHistoryDetailCellAddressView: UIView {
 
     // this should be populated with the address also, just previously hidden, now visible
     addressTextButton.setTitle(viewModel.receiverAddress, for: .normal)
-    addressTextButton.setTitleColor(Theme.Color.lightBlueTint.color, for: .normal)
-    addressTextButton.setTitleColor(Theme.Color.grayText.color, for: .disabled)
+    addressTextButton.setTitleColor(.lightBlueTint, for: .normal)
+    addressTextButton.setTitleColor(.grayText, for: .disabled)
 
     addressTextButton.isEnabled = !viewModel.broadcastFailed
     addressImageButton.isHidden = (viewModel.broadcastFailed || !viewModel.addressButtonIsActive)

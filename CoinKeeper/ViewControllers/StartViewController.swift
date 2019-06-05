@@ -73,22 +73,22 @@ final class StartViewController: BaseViewController {
     let restoreTitle = NSAttributedString(imageName: "rightArrow",
                                           imageSize: CGSize(width: 8, height: 12),
                                           title: "Restore Wallet",
-                                          sharedColor: Theme.Color.darkBlueText.color,
-                                          font: Theme.Font.restoreWalletButton.font,
+                                          sharedColor: .darkBlueText,
+                                          font: .regular(12),
                                           imageOffset: CGPoint(x: 0, y: 1),
                                           trailingImage: true)
     restoreWalletButton.setAttributedTitle(restoreTitle, for: .normal)
     self.navigationItem.titleView = restoreWalletButton
 
     claimInviteButton.setTitle("CLAIM BITCOIN FROM INVITE", for: .normal)
-    claimInviteButton.backgroundColor = Theme.Color.darkBlueButton.color
+    claimInviteButton.backgroundColor = .darkBlueButton
     claimInviteButton.applyCornerRadius(4)
-    claimInviteButton.setTitleColor(Theme.Color.whiteText.color, for: .normal)
-    claimInviteButton.titleLabel?.font = Theme.Font.primaryButtonTitle.font
+    claimInviteButton.setTitleColor(.whiteText, for: .normal)
+    claimInviteButton.titleLabel?.font = .primaryButtonTitle
 
     newWalletButton.setTitle("NEW WALLET", for: .normal)
-    newWalletButton.setTitleColor(Theme.Color.lightBlueTint.color, for: .normal)
-    newWalletButton.titleLabel?.font = Theme.Font.primaryButtonTitle.font
+    newWalletButton.setTitleColor(.lightBlueTint, for: .normal)
+    newWalletButton.titleLabel?.font = .primaryButtonTitle
   }
 
   private func toggleAnimatableViews(show: Bool) {

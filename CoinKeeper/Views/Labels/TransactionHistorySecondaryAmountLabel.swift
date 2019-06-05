@@ -11,8 +11,8 @@ import UIKit
 class TransactionHistorySecondaryAmountLabel: UILabel {
   override func awakeFromNib() {
     super.awakeFromNib()
-    font = Theme.Font.transactionHistorySecondaryAmount.font
-    textColor = Theme.Color.grayText.color
+    font = .regular(10)
+    textColor = .grayText
     isHidden = false
     numberOfLines = 1
     textAlignment = .right

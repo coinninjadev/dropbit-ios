@@ -45,7 +45,7 @@ class KeypadEntryViewTests: XCTestCase {
 
   // MARK: inspectable variables
   func testSettingColorSetsColorForAllButtons() {
-    let initialColor = Theme.Color.primaryActionButton.color
+    let initialColor = UIColor.primaryActionButton
     let expectedColor = UIColor.black
 
     // initial assertions

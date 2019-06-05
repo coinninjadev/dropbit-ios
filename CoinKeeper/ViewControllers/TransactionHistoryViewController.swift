@@ -148,7 +148,7 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
     transactionHistoryNoBalanceView.delegate = self
     transactionHistoryWithBalanceView.delegate = self
 
-    self.view.backgroundColor = Theme.Color.lightGrayBackground.color
+    self.view.backgroundColor = .lightGrayBackground
 
     view.layoutIfNeeded()
     let percent: CGFloat = 0.2

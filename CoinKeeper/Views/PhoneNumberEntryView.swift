@@ -47,14 +47,14 @@ class PhoneNumberEntryView: UIView {
     super.awakeFromNib()
 
     applyCornerRadius(6)
-    layer.borderColor = Theme.Color.lightBlueTint.color.cgColor
+    layer.borderColor = UIColor.lightBlueTint.cgColor
     layer.borderWidth = 1.0
     textField.borderStyle = .none
 
     adjustCorners(squareBottom: false)
 
-    countryCodeButton.backgroundColor = Theme.Color.flagButtonBackground.color
-    buttonSeparator.backgroundColor = Theme.Color.graySeparator.color
+    countryCodeButton.backgroundColor = .flagButtonBackground
+    buttonSeparator.backgroundColor = .graySeparator
     separatorWidthConstraint.constant = 1 / UIScreen.main.nativeScale
 
     countryCodeButton.titleLabel?.font = PhoneNumberEntryView.flagFont

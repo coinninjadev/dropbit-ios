@@ -11,7 +11,7 @@ import UIKit
 class OnboardingSubtitleLabel: UILabel {
   override func awakeFromNib() {
     super.awakeFromNib()
-    font = Theme.Font.onboardingSubtitle.font
-    textColor = Theme.Color.grayText.color
+    font = .regular(15)
+    textColor = .grayText
   }
 }

@@ -46,14 +46,14 @@ class SuccessFailViewController: BaseViewController, StoryboardInitializable {
 
   @IBOutlet var titleLabel: UILabel! {
     didSet {
-      titleLabel.font = Theme.Font.passFailTitle.font
-      titleLabel.textColor = Theme.Color.grayText.color
+      titleLabel.font = .medium(20)
+      titleLabel.textColor = .grayText
     }
   }
 
   @IBOutlet var subtitleLabel: UILabel! {
     didSet {
-      subtitleLabel.font = Theme.Font.passFailSubtitle.font
+      subtitleLabel.font = .regular(15)
       subtitleLabel.adjustsFontSizeToFitWidth = true
     }
   }
@@ -118,7 +118,7 @@ class SuccessFailViewController: BaseViewController, StoryboardInitializable {
     successFailView.mode = vm.mode
 
     subtitleLabel.text = vm.subtitle
-    subtitleLabel.textColor = Theme.Color.grayText.color
+    subtitleLabel.textColor = .grayText
     subtitleLabel.isHidden = !vm.shouldShowSubtitle
 
     urlButton.style = .darkBlue

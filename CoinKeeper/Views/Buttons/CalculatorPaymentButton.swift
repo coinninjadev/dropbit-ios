@@ -20,8 +20,8 @@ import UIKit
   }
 
   private func initialize() {
-    setTitleColor(Theme.Color.lightGrayText.color, for: .normal)
-    titleLabel?.font = Theme.Font.primaryButtonTitle.font
+    setTitleColor(.lightGrayText, for: .normal)
+    titleLabel?.font = .primaryButtonTitle
     backgroundColor = .clear
     adjustsImageWhenHighlighted = true
   }

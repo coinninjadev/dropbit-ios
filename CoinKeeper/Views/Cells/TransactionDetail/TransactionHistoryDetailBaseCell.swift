@@ -38,12 +38,12 @@ class TransactionHistoryDetailBaseCell: UICollectionViewCell {
   @IBOutlet var historicalValuesLabel: UILabel! //use attributedText
   @IBOutlet var addMemoButton: UIButton! {
     didSet {
-      addMemoButton.setTitleColor(Theme.Color.grayText.color, for: .normal)
-      addMemoButton.titleLabel?.font = Theme.Font.addMemoTitle.font
+      addMemoButton.setTitleColor(.grayText, for: .normal)
+      addMemoButton.titleLabel?.font = .regular(15)
       addMemoButton.setTitle("  Add Memo", for: .normal)
       let plusImage = UIImage(imageLiteralResourceName: "plusIcon").withRenderingMode(.alwaysTemplate)
       addMemoButton.setImage(plusImage, for: .normal)
-      addMemoButton.tintColor = Theme.Color.grayText.color
+      addMemoButton.tintColor = .grayText
     }
   }
   @IBOutlet var memoContainerView: ConfirmPaymentMemoView!

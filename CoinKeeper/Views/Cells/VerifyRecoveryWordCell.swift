@@ -35,13 +35,13 @@ class VerifyRecoveryWordCell: UICollectionViewCell, AccessibleViewSettable {
   // MARK: view instantiation
   override func awakeFromNib() {
     super.awakeFromNib()
-    wordLabelBackgroundView.backgroundColor = Theme.Color.verifyWordLightGray.color
-    wordLabelBackgroundView.layer.borderColor = Theme.Color.lightGrayOutline.color.cgColor
+    wordLabelBackgroundView.backgroundColor = .verifyWordLightGray
+    wordLabelBackgroundView.layer.borderColor = UIColor.lightGrayOutline.cgColor
     wordLabelBackgroundView.layer.borderWidth = 1.0
     wordLabelBackgroundView.applyCornerRadius(4)
     spacerView.backgroundColor = .clear
-    wordLabel.font = Theme.Font.primaryButtonTitle.font
-    wordLabel.textColor = Theme.Color.darkBlueText.color
+    wordLabel.font = .primaryButtonTitle
+    wordLabel.textColor = .darkBlueText
   }
 
   func accessibleViewsAndIdentifiers() -> [AccessibleViewElement] {

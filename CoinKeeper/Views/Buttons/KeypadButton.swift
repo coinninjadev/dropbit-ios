@@ -21,7 +21,7 @@ class KeypadButton: UIButton {
 
   private func initialize() {
     // Don't set titleColor so we inherit the superview's tintColor (wjf, 2018-04)
-    titleLabel?.font = Theme.Font.keypadButton.font
+    titleLabel?.font = .semiBold(28)
     backgroundColor = .clear
     adjustsImageWhenHighlighted = true
   }

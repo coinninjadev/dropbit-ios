@@ -38,7 +38,7 @@ class SendReceiveActionView: UIView {
 
     backgroundColor = .clear
 
-    maskedView.backgroundColor = Theme.Color.lightGrayBackground.color
+    maskedView.backgroundColor = .lightGrayBackground
   }
 
   @IBAction func receiveTapped(_ sender: UIButton) {

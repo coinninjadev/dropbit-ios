@@ -32,18 +32,18 @@ class TutorialScreenViewController: BaseViewController, StoryboardInitializable 
   @IBOutlet var titleLabel: UILabel! {
     didSet {
       titleLabel.adjustsFontSizeToFitWidth = true
-      titleLabel.font = Theme.Font.tutorialTitle.font
+      titleLabel.font = .medium(20)
     }
   }
   @IBOutlet var detailLabel: UILabel! {
     didSet {
-      detailLabel.font = Theme.Font.tutorialDetail.font
+      detailLabel.font = .regular(13)
     }
   }
   @IBOutlet var disclaimerLabel: UILabel! {
     didSet {
-      disclaimerLabel.font = Theme.Font.disclaimerText.font
-      disclaimerLabel.textColor = Theme.Color.lightBlueTint.color
+      disclaimerLabel.font = .regular(10)
+      disclaimerLabel.textColor = .lightBlueTint
     }
   }
   @IBOutlet var actionButton: PrimaryActionButton!
@@ -91,7 +91,7 @@ class TutorialScreenViewController: BaseViewController, StoryboardInitializable 
   }
 
   private func setupUI() {
-    view.backgroundColor = Theme.Color.darkBlueText.color
+    view.backgroundColor = .darkBlueText
     titleLabel.text = viewModel?.title
     detailLabel.attributedText = viewModel?.detail
 
@@ -104,7 +104,7 @@ class TutorialScreenViewController: BaseViewController, StoryboardInitializable 
 
     if let title = viewModel?.link?.title {
       linkButton.enable()
-      linkButton.setUnderlinedTitle(title, size: 13, color: Theme.Color.lightBlueTint.color)
+      linkButton.setUnderlinedTitle(title, size: 13, color: .lightBlueTint)
     } else {
       linkButton.disable()
     }

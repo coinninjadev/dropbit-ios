@@ -25,8 +25,8 @@ class ContactCell: UITableViewCell {
   override func awakeFromNib() {
     super.awakeFromNib()
     selectionStyle = .none
-    backgroundColor = Theme.Color.lightGrayBackground.color
-    sendButton.setTitleColor(Theme.Color.lightBlueTint.color, for: .normal)
+    backgroundColor = .lightGrayBackground
+    sendButton.setTitleColor(.lightBlueTint, for: .normal)
   }
 
   func load(with number: CCMPhoneNumber) {

@@ -43,8 +43,8 @@ class SettingsViewController: BaseViewController, StoryboardInitializable {
   }
   @IBOutlet var deleteWalletButton: UIButton! {
     didSet {
-      deleteWalletButton.setTitleColor(Theme.Color.red.color, for: .normal)
-      deleteWalletButton.titleLabel?.font = Theme.Font.deleteWalletTitle.font
+      deleteWalletButton.setTitleColor(.darkPeach, for: .normal)
+      deleteWalletButton.titleLabel?.font = .medium(15)
       deleteWalletButton.setTitle("DELETE WALLET", for: .normal)
     }
   }

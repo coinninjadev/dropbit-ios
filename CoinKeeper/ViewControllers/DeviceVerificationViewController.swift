@@ -224,19 +224,19 @@ final class DeviceVerificationViewController: BaseViewController {
   }
 
   private func configureTwitterViews() {
-    let twitterBlue = Theme.Color.lightBlueTint.color
+    let twitterBlue = UIColor.lightBlueTint
     orLeftLineView.backgroundColor = twitterBlue
     orRightLineView.backgroundColor = twitterBlue
     orLabel.textColor = twitterBlue
     orLabel.text = "OR"
-    orLabel.font = Theme.Font.primaryButtonTitle.font
+    orLabel.font = .primaryButtonTitle
     twitterButton.style = .standard
 
     let twitterTitle = NSAttributedString(imageName: "twitterBird",
                                           imageSize: CGSize(width: 20, height: 17),
                                           title: "VERIFY TWITTER ACCOUNT",
-                                          sharedColor: Theme.Color.lightGrayText.color,
-                                          font: Theme.Font.primaryButtonTitle.font)
+                                          sharedColor: .lightGrayText,
+                                          font: .primaryButtonTitle)
     twitterButton.setAttributedTitle(twitterTitle, for: .normal)
   }
 
@@ -296,7 +296,7 @@ final class DeviceVerificationViewController: BaseViewController {
     switch entryMode {
     case .codeVerification, .codeVerificationFailed:
       resendCodeButton.isHidden = false
-      resendCodeButton.setUnderlinedTitle("Resend Text Message", size: 14, color: Theme.Color.darkBlueText.color)
+      resendCodeButton.setUnderlinedTitle("Resend Text Message", size: 14, color: .darkBlueText)
 
     case .phoneNumberEntry, .codeFailureCountExceeded:
       resendCodeButton.isHidden = true

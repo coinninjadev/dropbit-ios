@@ -27,16 +27,16 @@ final class GetBitcoinViewController: BaseViewController, StoryboardInitializabl
 
   override func viewDidLoad() {
     super.viewDidLoad()
-    headerLabel.textColor = Theme.Color.grayText.color
-    headerLabel.font = Theme.Font.sendingBitcoinAmount.font
+    headerLabel.textColor = .grayText
+    headerLabel.font = .light(15)
 
     let mapPinImage = UIImage(imageLiteralResourceName: "mapPin")
     let dollarImage = UIImage(imageLiteralResourceName: "dollarSignCircle")
     let giftCardImage = UIImage(imageLiteralResourceName: "giftCard")
-    let font = Theme.Font.secondaryButtonTitle.font
+    let font = UIFont.secondaryButtonTitle
     let attributes: [NSAttributedString.Key: Any] = [
       .font: font,
-      .foregroundColor: Theme.Color.lightGrayText.color
+      .foregroundColor: UIColor.lightGrayText
     ]
 
     // The font descender relates to the bottom y-coordinate, offset from the baseline, of the receiver’s longest descender.
@@ -62,7 +62,7 @@ final class GetBitcoinViewController: BaseViewController, StoryboardInitializabl
     buyWithGiftCardButton.style = .orange
 
     navigationController?.setNavigationBarHidden(false, animated: true)
-    navigationController?.navigationBar.tintColor = Theme.Color.darkBlueButton.color
+    navigationController?.navigationBar.tintColor = .darkBlueButton
   }
 
   @IBAction func findATM() {

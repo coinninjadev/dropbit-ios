@@ -17,7 +17,7 @@ class VerfiedTwitterUserIndicatorView: UIView {
     super.awakeFromNib()
     xibSetup()
     backgroundColor = .clear
-    coloredBackgroundView.backgroundColor = Theme.Color.lightBlueTint.color
+    coloredBackgroundView.backgroundColor = .lightBlueTint
     let radius = coloredBackgroundView.frame.width / 2.0
     coloredBackgroundView.applyCornerRadius(radius)
   }

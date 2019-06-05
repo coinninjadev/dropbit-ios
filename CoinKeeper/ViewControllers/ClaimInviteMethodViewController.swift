@@ -39,8 +39,8 @@ class ClaimInviteMethodViewController: BaseViewController, StoryboardInitializab
     super.viewDidLoad()
 
     messageLabel.text = "How were you sent Bitcoin?"
-    messageLabel.font = Theme.Font.onboardingSubtitle.font
-    messageLabel.textColor = Theme.Color.grayText.color
+    messageLabel.font = .regular(15)
+    messageLabel.textColor = .grayText
     configureButtons()
   }
 
@@ -51,15 +51,15 @@ class ClaimInviteMethodViewController: BaseViewController, StoryboardInitializab
     let twitterTitle = NSAttributedString(imageName: "twitterBird",
                                           imageSize: CGSize(width: 20, height: 17),
                                           title: "I GOT A TWEET",
-                                          sharedColor: Theme.Color.lightGrayText.color,
-                                          font: Theme.Font.primaryButtonTitle.font)
+                                          sharedColor: .lightGrayText,
+                                          font: .primaryButtonTitle)
     twitterButton.setAttributedTitle(twitterTitle, for: .normal)
 
     let smsTitle = NSAttributedString(imageName: "claimInviteSMS",
                                       imageSize: CGSize(width: 13, height: 23),
                                       title: "I GOT AN SMS",
-                                      sharedColor: Theme.Color.lightGrayText.color,
-                                      font: Theme.Font.primaryButtonTitle.font,
+                                      sharedColor: .lightGrayText,
+                                      font: .primaryButtonTitle,
                                       imageOffset: CGPoint(x: 0, y: -3))
     smsButton.setAttributedTitle(smsTitle, for: .normal)
   }

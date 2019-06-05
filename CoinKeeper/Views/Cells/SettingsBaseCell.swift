@@ -13,7 +13,7 @@ class SettingsBaseCell: UITableViewCell {
   override func awakeFromNib() {
     super.awakeFromNib()
     selectionStyle = .none
-    backgroundColor = Theme.Color.lightGrayBackground.color
+    backgroundColor = .lightGrayBackground
   }
 
   /// By default does nothing. Subclasses can override to perform custom loading.

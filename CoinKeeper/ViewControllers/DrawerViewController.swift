@@ -45,14 +45,14 @@ class DrawerViewController: BaseViewController, StoryboardInitializable {
     super.viewDidLoad()
 
     versionLabel.textColor = UIColor.white
-    versionLabel.font = Theme.Font.settingsVersion.font
+    versionLabel.font = .light(10)
     versionLabel.text = "Version \(Bundle.main.infoDictionary?[versionKey] ?? "Unknown")"
 
     drawerTableView.registerNib(cellType: DrawerCell.self)
     drawerTableView.registerNib(cellType: BackupWordsReminderDrawerCell.self)
     drawerTableView.registerHeaderFooter(headerFooterType: DrawerTableViewHeader.self)
 
-    view.backgroundColor = Theme.Color.settingsDarkGray.color
+    view.backgroundColor = .settingsDarkGray
 
     drawerTableViewDDS = DrawerTableViewDDS { [weak self] (kind) in
       self?.buttonWasTouched(for: kind)

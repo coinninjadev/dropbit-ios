@@ -262,7 +262,7 @@ class AlertManager: AlertManagerType {
       let padding: CGFloat = 8
       let width: CGFloat = (UIApplication.shared.keyWindow?.frame.width ?? 0) - (padding * 2)
       bannerView.frame = CGRect(x: padding, y: padding, width: width, height: 76)
-      let foregroundColor = Theme.Color.whiteText.color
+      let foregroundColor = UIColor.whiteText
 
       let closeImage = UIImage(named: "close")?.withRenderingMode(.alwaysTemplate).maskWithColor(color: foregroundColor)
       bannerView.configure(message: message, image: closeImage, alertKind: kind, delegate: strongSelf)
@@ -405,14 +405,14 @@ class AlertManager: AlertManagerType {
     case .walkthrough: pmStyle = .alert
     }
     let alert = PMAlertController(title: title, description: description ?? "", image: image, style: pmStyle)
-    alert.alertTitle.font = Theme.Font.alertTitle.font
-    alert.alertTitle.textColor = Theme.Color.darkBlueText.color
+    alert.alertTitle.font = .medium(13)
+    alert.alertTitle.textColor = .darkBlueText
     alert.alertDescription.isHidden = (description == nil)
     alert.gravityDismissAnimation = false
     actionConfigs.forEach { actionConfig in
       let action = PMAlertAction(title: actionConfig.title, style: self.pmAlertStyle(from: actionConfig.style), action: actionConfig.action)
-      action.titleLabel?.font = Theme.Font.alertActionTitle.font
-      action.setTitleColor(Theme.Color.primaryActionButton.color, for: .normal)
+      action.titleLabel?.font = .semiBold(13)
+      action.setTitleColor(.primaryActionButton, for: .normal)
       alert.addAction(action)
     }
 

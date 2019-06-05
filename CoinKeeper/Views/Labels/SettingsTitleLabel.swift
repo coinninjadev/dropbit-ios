@@ -12,8 +12,8 @@ class SettingsTitleLabel: UILabel {
 
   override func awakeFromNib() {
     super.awakeFromNib()
-    font = Theme.Font.onboardingSubtitle.font
-    textColor = Theme.Color.darkBlueText.color
+    font = .regular(15)
+    textColor = .darkBlueText
   }
 
 }

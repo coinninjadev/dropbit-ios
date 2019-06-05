@@ -232,17 +232,17 @@ ValidatorAlertDisplayable {
 extension SendPaymentViewController {
 
   fileprivate func setupLabels() {
-    recipientDisplayNameLabel.font = Theme.Font.sendingAmountTo.font
-    recipientDisplayNumberLabel.font = Theme.Font.sendingAmountToPhoneNumber.font
-    payTitleLabel.font = Theme.Font.onboardingSubtitle.font
-    payTitleLabel.textColor = Theme.Color.darkBlueText.color
-    secondaryAmountLabel.textColor = Theme.Color.grayText.color
-    secondaryAmountLabel.font = Theme.Font.requestPaySecondaryCurrency.font
+    recipientDisplayNameLabel.font = .regular(26)
+    recipientDisplayNumberLabel.font = .regular(20)
+    payTitleLabel.font = .regular(15)
+    payTitleLabel.textColor = .darkBlueText
+    secondaryAmountLabel.textColor = .grayText
+    secondaryAmountLabel.font = .regular(17)
   }
 
   fileprivate func setupButtons() {
-    let textColor = Theme.Color.whiteText.color
-    let font = Theme.Font.compactButtonTitle.font
+    let textColor = UIColor.whiteText
+    let font = UIFont.compactButtonTitle
     let contactsTitle = NSAttributedString(imageName: "contactsIcon",
                                            imageSize: CGSize(width: 9, height: 14),
                                            title: "CONTACTS",
@@ -267,24 +267,24 @@ extension SendPaymentViewController {
 
   fileprivate func formatAddressScanView() {
     addressScanButtonContainerView.applyCornerRadius(4)
-    addressScanButtonContainerView.layer.borderColor = Theme.Color.lightGrayOutline.color.cgColor
+    addressScanButtonContainerView.layer.borderColor = UIColor.lightGrayOutline.cgColor
     addressScanButtonContainerView.layer.borderWidth = 1.0
 
-    bitcoinAddressButton.titleLabel?.font = Theme.Font.sendingAmountToAddress.font
-    bitcoinAddressButton.setTitleColor(Theme.Color.grayText.color, for: .normal)
+    bitcoinAddressButton.titleLabel?.font = .medium(14)
+    bitcoinAddressButton.setTitleColor(.grayText, for: .normal)
 
-    scanButton.backgroundColor = Theme.Color.backgroundDarkGray.color
+    scanButton.backgroundColor = .backgroundDarkGray
   }
 
   fileprivate func formatPhoneNumberEntryView() {
     guard let entryView = phoneNumberEntryView else { return }
     entryView.backgroundColor = UIColor.clear
-    entryView.layer.borderColor = Theme.Color.lightGrayOutline.color.cgColor
+    entryView.layer.borderColor = UIColor.lightGrayOutline.cgColor
     entryView.textField.delegate = self
     entryView.textField.backgroundColor = UIColor.clear
     entryView.textField.autocorrectionType = .no
-    entryView.textField.font = Theme.Font.sendingAmountToAddress.font
-    entryView.textField.textColor = Theme.Color.sendingToDarkGray.color
+    entryView.textField.font = .medium(14)
+    entryView.textField.textColor = .sendingToDarkGray
     entryView.textField.adjustsFontSizeToFitWidth = true
     entryView.textField.keyboardType = .numberPad
     entryView.textField.textAlignment = .center

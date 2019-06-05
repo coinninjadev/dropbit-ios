@@ -11,8 +11,8 @@ import UIKit
 class OnboardingErrorLabel: UILabel {
   override func awakeFromNib() {
     super.awakeFromNib()
-    font = Theme.Font.onboardingSubtitle.font
-    textColor = Theme.Color.red.color
+    font = .regular(15)
+    textColor = .darkPeach
     isHidden = true
     numberOfLines = 2
     textAlignment = .center

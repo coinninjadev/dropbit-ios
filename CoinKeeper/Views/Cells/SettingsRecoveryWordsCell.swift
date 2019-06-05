@@ -13,7 +13,7 @@ class SettingsRecoveryWordsCell: SettingsBaseCell {
   @IBOutlet var titleLabel: SettingsCellTitleLabel!
   @IBOutlet var notBackedUpLabel: SettingsCellTitleLabel! {
     didSet {
-      notBackedUpLabel.textColor = Theme.Color.red.color
+      notBackedUpLabel.textColor = .darkPeach
     }
   }
 

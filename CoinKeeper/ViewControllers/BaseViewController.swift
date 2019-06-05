@@ -27,7 +27,7 @@ class BaseViewController: UIViewController, Coordination, AccessibleViewSettable
 
   override func viewDidLoad() {
     super.viewDidLoad()
-    view.backgroundColor = Theme.Color.lightGrayBackground.color
+    view.backgroundColor = .lightGrayBackground
     setAccessibilityIdentifiers()
   }
 

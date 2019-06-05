@@ -11,7 +11,7 @@ import UIKit
 class SettingsCellTitleLabel: UILabel {
   override func awakeFromNib() {
     super.awakeFromNib()
-    font = Theme.Font.settingTitle.font
-    textColor = Theme.Color.darkBlueText.color
+    font = .light(13)
+    textColor = .darkBlueText
   }
 }

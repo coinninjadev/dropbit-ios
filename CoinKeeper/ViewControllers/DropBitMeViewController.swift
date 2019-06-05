@@ -129,14 +129,14 @@ class DropBitMeViewController: UIViewController, StoryboardInitializable {
 
     setupVerificationSuccessButton()
 
-    messageLabel.textColor = Theme.Color.darkBlueText.color
-    messageLabel.font = Theme.Font.popoverMessage.font
+    messageLabel.textColor = .darkBlueText
+    messageLabel.font = .popoverMessage
 
-    dropBitMeURLButton.titleLabel?.font = Theme.Font.popoverMessage.font
-    dropBitMeURLButton.setTitleColor(Theme.Color.darkBlueText.color, for: .normal)
+    dropBitMeURLButton.titleLabel?.font = .popoverMessage
+    dropBitMeURLButton.setTitleColor(.darkBlueText, for: .normal)
 
-    secondaryButton.setTitleColor(Theme.Color.darkBlueText.color, for: .normal)
-    secondaryButton.titleLabel?.font = Theme.Font.popoverSecondaryButton.font
+    secondaryButton.setTitleColor(.darkBlueText, for: .normal)
+    secondaryButton.titleLabel?.font = .semiBold(12)
 
     configure(with: self.config)
   }
@@ -147,9 +147,9 @@ class DropBitMeViewController: UIViewController, StoryboardInitializable {
     verificationSuccessButton.contentEdgeInsets = UIEdgeInsets(top: 0, left: 24, bottom: 0, right: 24)
     verificationSuccessButton.layer.masksToBounds = true
     verificationSuccessButton.layer.cornerRadius = verificationSuccessButton.frame.height/2
-    verificationSuccessButton.backgroundColor = Theme.Color.primaryActionButton.color
-    verificationSuccessButton.setTitleColor(Theme.Color.whiteText.color, for: .normal)
-    verificationSuccessButton.titleLabel?.font = Theme.Font.popoverStatusLabel.font
+    verificationSuccessButton.backgroundColor = .primaryActionButton
+    verificationSuccessButton.setTitleColor(.whiteText, for: .normal)
+    verificationSuccessButton.titleLabel?.font = .semiBold(14)
   }
 
   func configure(with config: DropBitMeConfig) {
