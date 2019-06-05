@@ -33,8 +33,6 @@ extension UIColor {
   static var mango: UIColor { return UIColor(r: 247, g: 158, b: 54) }
 
   // MARK: Grays
-  static var searchBarLightGray: UIColor { return UIColor(red: 0.97, green: 0.97, blue: 0.98, alpha: 1.00) }
-
   static var darkGray: UIColor { return UIColor(r: 155, g: 155, b: 155) }
   static var grayText: UIColor { return darkGray }
 
@@ -65,6 +63,7 @@ extension UIColor {
   static var extraLightGrayBackground: UIColor { return UIColor(r: 250, g: 250, b: 250) }
   static var containerBackgroundGray: UIColor { return extraLightGrayBackground }
   static var verifyWordLightGray: UIColor { return extraLightGrayBackground }
+  static var searchBarBackground: UIColor { return extraLightGrayBackground }
 
   static var whiteText: UIColor { return UIColor(r: 255, g: 255, b: 255) }
   static var whiteBackground: UIColor { return whiteText }
