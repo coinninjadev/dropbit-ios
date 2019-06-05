@@ -74,7 +74,7 @@ class TransactionHistoryDetailValidCell: TransactionHistoryDetailBaseCell {
     case .cancelInvitation:
       bottomButton.backgroundColor = .darkPeach
     case .seeDetails:
-      bottomButton.backgroundColor = .darkBlueButton
+      bottomButton.backgroundColor = .darkBlueBackground
     }
   }
 

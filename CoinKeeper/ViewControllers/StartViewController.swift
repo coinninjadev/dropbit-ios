@@ -81,7 +81,7 @@ final class StartViewController: BaseViewController {
     self.navigationItem.titleView = restoreWalletButton
 
     claimInviteButton.setTitle("CLAIM BITCOIN FROM INVITE", for: .normal)
-    claimInviteButton.backgroundColor = .darkBlueButton
+    claimInviteButton.backgroundColor = .darkBlueBackground
     claimInviteButton.applyCornerRadius(4)
     claimInviteButton.setTitleColor(.whiteText, for: .normal)
     claimInviteButton.titleLabel?.font = .primaryButtonTitle

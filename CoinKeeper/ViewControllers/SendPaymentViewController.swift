@@ -284,7 +284,7 @@ extension SendPaymentViewController {
     entryView.textField.backgroundColor = UIColor.clear
     entryView.textField.autocorrectionType = .no
     entryView.textField.font = .medium(14)
-    entryView.textField.textColor = .sendingToDarkGray
+    entryView.textField.textColor = .darkBlueText
     entryView.textField.adjustsFontSizeToFitWidth = true
     entryView.textField.keyboardType = .numberPad
     entryView.textField.textAlignment = .center

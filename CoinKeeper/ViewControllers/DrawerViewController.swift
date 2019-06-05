@@ -52,7 +52,7 @@ class DrawerViewController: BaseViewController, StoryboardInitializable {
     drawerTableView.registerNib(cellType: BackupWordsReminderDrawerCell.self)
     drawerTableView.registerHeaderFooter(headerFooterType: DrawerTableViewHeader.self)
 
-    view.backgroundColor = .settingsDarkGray
+    view.backgroundColor = .darkBlueBackground
 
     drawerTableViewDDS = DrawerTableViewDDS { [weak self] (kind) in
       self?.buttonWasTouched(for: kind)

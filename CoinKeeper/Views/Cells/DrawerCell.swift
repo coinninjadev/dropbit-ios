@@ -23,7 +23,7 @@ class DrawerCell: UITableViewCell, Badgeable {
     selectionStyle = .none
     titleLabel.font = .light(11.6)
     titleLabel.textColor = UIColor.white
-    backgroundColor = .settingsDarkGray
+    backgroundColor = .darkBlueBackground
   }
 
   func load(with data: DrawerData, badgeInfo: BadgeInfo) {

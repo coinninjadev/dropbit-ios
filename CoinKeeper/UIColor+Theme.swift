@@ -12,7 +12,7 @@ extension UIColor {
 
   // MARK: Colors
   static var darkBlueText: UIColor { return UIColor(r: 36, g: 37, b: 54) }
-  static var darkBlueButton: UIColor { return darkBlueText }
+  static var darkBlueBackground: UIColor { return darkBlueText }
 
   static var lightBlueTint: UIColor { return UIColor(r: 44, g: 209, b: 255) }
   static var primaryActionButton: UIColor { return lightBlueTint }
@@ -33,9 +33,6 @@ extension UIColor {
   static var mango: UIColor { return UIColor(r: 247, g: 158, b: 54) }
 
   // MARK: Grays
-  static var settingsDarkGray: UIColor { return UIColor(red: 0.14, green: 0.15, blue: 0.20, alpha: 1.00) }
-  static var sendingToDarkGray: UIColor { return settingsDarkGray }
-
   static var searchBarLightGray: UIColor { return UIColor(red: 0.97, green: 0.97, blue: 0.98, alpha: 1.00) }
 
   static var darkGray: UIColor { return UIColor(r: 155, g: 155, b: 155) }

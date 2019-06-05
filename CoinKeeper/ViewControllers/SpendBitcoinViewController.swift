@@ -55,7 +55,7 @@ final class SpendBitcoinViewController: BaseViewController, StoryboardInitializa
     spendOnlineButton.setAttributedTitle(onlineString, for: .normal)
 
     navigationController?.setNavigationBarHidden(false, animated: true)
-    navigationController?.navigationBar.tintColor = .darkBlueButton
+    navigationController?.navigationBar.tintColor = .darkBlueBackground
   }
 
   @IBAction func spendBitcoinAroundMe(_ sender: Any) {

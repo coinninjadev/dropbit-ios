@@ -32,7 +32,7 @@ class BackupRecoveryWordsCellTests: XCTestCase {
 
   // MARK: initial state
   func testWordLabelInitialState() {
-    XCTAssertEqual(self.sut.wordLabel.textColor, .darkBlueButton, "wordLabel textColor should be darkBlueButton")
+    XCTAssertEqual(self.sut.wordLabel.textColor, .darkBlueText, "wordLabel textColor should be darkBlueText")
   }
 
   func testStatusLabelInitialState() {

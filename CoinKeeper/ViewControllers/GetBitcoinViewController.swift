@@ -62,7 +62,7 @@ final class GetBitcoinViewController: BaseViewController, StoryboardInitializabl
     buyWithGiftCardButton.style = .orange
 
     navigationController?.setNavigationBarHidden(false, animated: true)
-    navigationController?.navigationBar.tintColor = .darkBlueButton
+    navigationController?.navigationBar.tintColor = .darkBlueBackground
   }
 
   @IBAction func findATM() {

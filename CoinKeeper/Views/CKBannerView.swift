@@ -16,7 +16,7 @@ enum CKBannerViewKind {
     case .error: return .darkPeach
     case .warn: return .bannerWarn
     case .success: return .bannerSuccess
-    case .info: return .darkBlueButton
+    case .info: return .darkBlueBackground
     }
   }
 
