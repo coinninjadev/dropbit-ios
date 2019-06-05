@@ -28,7 +28,7 @@ protocol TwitterRequestable: AnyObject {
   func authorizeTwitterUser() -> Promise<TwitterOAuthStorage>
   func findTwitterUsers(using term: String) -> Promise<[TwitterUser]>
   func defaultFollowingList() -> Promise<[TwitterUser]>
-  func retrieveCurrentUser(with userId: String) -> Promise<TwitterUser>
+  func retrieveTwitterUser(with userId: String) -> Promise<TwitterUser>
 
   var twitterOAuthManager: OAuth1Swift { get }
   func resetTwitterOAuthManager()
@@ -150,7 +150,7 @@ extension NetworkManager: TwitterRequestable {
     }
   }
 
-  func retrieveCurrentUser(with userId: String) -> Promise<TwitterUser> {
+  func retrieveTwitterUser(with userId: String) -> Promise<TwitterUser> {
     return Promise { seal in
       twitterOAuthManager.client.get(
         TwitterEndpoints.getUser.urlString,

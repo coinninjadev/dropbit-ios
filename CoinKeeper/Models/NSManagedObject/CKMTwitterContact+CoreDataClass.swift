@@ -40,6 +40,19 @@ public class CKMTwitterContact: NSManagedObject, TwitterUserFormattable {
     return twitterContact
   }
 
+  static func findAllNeedingInflated(in context: NSManagedObjectContext) -> [CKMTwitterContact] {
+    let fetchRequest: NSFetchRequest<CKMTwitterContact> = CKMTwitterContact.fetchRequest()
+    let dataKeyPath = #keyPath(CKMTwitterContact.profileImageData)
+    let predicate = NSPredicate(format: "\(dataKeyPath) = nil")
+    fetchRequest.predicate = predicate
+
+    do {
+      return try context.fetch(fetchRequest)
+    } catch {
+      return []
+    }
+  }
+
   func asTwitterUser() -> TwitterUser {
     return TwitterUser(idStr: identityHash,
                        name: displayName,
@@ -51,7 +64,7 @@ public class CKMTwitterContact: NSManagedObject, TwitterUserFormattable {
                        profileImageData: profileImageData)
   }
 
-  private func configure(with contact: TwitterContactType, in context: NSManagedObjectContext) {
+  func configure(with contact: TwitterContactType, in context: NSManagedObjectContext) {
     self.identityHash = contact.identityHash
     self.displayName = contact.displayName ?? ""
     self.displayScreenName = contact.displayHandle.dropFirstCharacter(ifEquals: "@")

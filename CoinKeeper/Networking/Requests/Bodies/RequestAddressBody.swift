@@ -42,6 +42,12 @@ public struct UserIdentityBody: Codable {
     self.handle = twitterUser.formattedScreenName
   }
 
+  init(participant: MetadataParticipant) {
+    self.type = UserIdentityType.twitter.rawValue
+    self.identity = participant.identity
+    self.handle = participant.handle
+  }
+
   static func sharedPayloadBody(twitterCredentials: TwitterOAuthStorage) -> UserIdentityBody {
     let joinedIdentity = twitterCredentials.twitterUserId + ":" + twitterCredentials.twitterScreenName
     return UserIdentityBody(type: UserIdentityType.twitter.rawValue,
@@ -76,6 +82,10 @@ extension UserIdentityBody {
 
   var identityType: UserIdentityType {
     return UserIdentityType(rawValue: type) ?? .phone
+  }
+
+  func twitterUser() -> TwitterUser {
+    return TwitterUser(idStr: identity, name: "", screenName: handle ?? "", description: nil, url: nil, verified: false, profileImageUrlHttps: nil, profileImageData: nil)
   }
 }
 

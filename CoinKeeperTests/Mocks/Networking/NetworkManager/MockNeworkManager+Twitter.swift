@@ -25,7 +25,7 @@ extension MockNetworkManager: TwitterRequestable {
     return Promise { _ in }
   }
 
-  func retrieveCurrentUser(with userId: String) -> Promise<TwitterUser> {
+  func retrieveTwitterUser(with userId: String) -> Promise<TwitterUser> {
     return Promise { _ in }
   }
 

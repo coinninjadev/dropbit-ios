@@ -18,6 +18,7 @@ protocol TwitterAccessManagerType: AnyObject {
   func authorizedTwitterCredentials(presentingViewController controller: UIViewController) -> Promise<TwitterOAuthStorage>
   func findTwitterUsers(using term: String, fromViewController controller: UIViewController) -> Promise<[TwitterUser]>
   func defaultFollowingList(fromViewController controller: UIViewController) -> Promise<[TwitterUser]>
+  func inflateTwitterUsersIfNeeded(in context: NSManagedObjectContext) -> Promise<Void>
 
   var uiTestArguments: [UITestArgument] { get set }
 }
@@ -43,7 +44,7 @@ class TwitterAccessManager: TwitterAccessManagerType {
   func getCurrentTwitterUser(in context: NSManagedObjectContext) -> Promise<TwitterUser> {
     guard isNotUITesting else { return Promise.value(TwitterUser.emptyInstance()) }
     return authorize()
-      .then { self.networkManager.retrieveCurrentUser(with: $0.twitterUserId) }
+      .then { self.networkManager.retrieveTwitterUser(with: $0.twitterUserId) }
       .get({ (twitterUser: TwitterUser) in
         try context.performThrowingAndWait {
           let user = CKMUser.find(in: context)
@@ -87,6 +88,26 @@ class TwitterAccessManager: TwitterAccessManagerType {
     let handler = SafariURLHandler(viewController: controller, oauthSwift: networkManager.twitterOAuthManager)
     networkManager.twitterOAuthManager.authorizeURLHandler = handler
     return authorize().then { _ in self.networkManager.defaultFollowingList() }
+  }
+
+  func inflateTwitterUsersIfNeeded(in context: NSManagedObjectContext) -> Promise<Void> {
+    guard isNotUITesting else { return Promise.value(()) }
+    guard persistenceManager.userIsVerified(using: .twitter, in: context) else { return Promise.value(()) }
+    let inflatable = CKMTwitterContact.findAllNeedingInflated(in: context)
+    guard inflatable.isNotEmpty else { return Promise.value(()) }
+    let promises = inflatable.map { ckmTwitterContact -> Promise<Void> in
+      return self.networkManager.retrieveTwitterUser(with: ckmTwitterContact.identityHash)
+        .then(in: context) { (twitterUser: TwitterUser) -> Promise<Void> in
+          var twitterContact = TwitterContact(twitterUser: twitterUser)
+          switch ckmTwitterContact.verificationStatus {
+          case .notVerified: twitterContact.kind = .generic
+          case .verified: twitterContact.kind = .registeredUser
+          }
+          ckmTwitterContact.configure(with: twitterContact, in: context)
+          return Promise.value(())
+      }
+    }
+    return when(resolved: promises).asVoid()
   }
 
   // MARK: private

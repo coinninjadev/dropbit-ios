@@ -120,6 +120,7 @@ class WalletSyncOperationFactory {
       }
       .then(in: context) { _ in self.fetchAndFulfillReceivedAddressRequests(with: dependencies, in: context) }
       .then(in: context) { _ in dependencies.delegate.showAlertsForSyncedChanges(in: context) }
+      .then(in: context) { _ in dependencies.twitterAccessManager.inflateTwitterUsersIfNeeded(in: context) }
       .done(in: context) {
         if let fetchResultHandler = fetchResult {
           let fetchResult: UIBackgroundFetchResult = context.insertedObjects.isNotEmpty ||
