@@ -156,8 +156,10 @@ class SerialQueueManager: SerialQueueManagerType {
   }
 
   func enqueueOptionalIncrementalSync() {
-    self.enqueueWalletSyncIfAppropriate(type: .standard, policy: .skipIfSimilarOperationExists,
-                                        completion: nil, fetchResult: nil)
+    self.enqueueWalletSyncIfAppropriate(type: .standard,
+                                        policy: .skipIfSimilarOperationExists,
+                                        completion: nil,
+                                        fetchResult: nil)
   }
 
   func enqueueWalletSyncIfAppropriate(type: WalletSyncType,

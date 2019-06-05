@@ -21,4 +21,5 @@ struct SyncDependencies {
   let connectionManager: ConnectionManagerType
   // swiftlint:disable:next weak_delegate
   let delegate: SerialQueueManagerDelegate
+  let twitterAccessManager: TwitterAccessManagerType
 }
