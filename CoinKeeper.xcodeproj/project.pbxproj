@@ -3209,7 +3209,7 @@
 				TargetAttributes = {
 					3B124E0B2020EB2B00431E2E = {
 						CreatedOnToolsVersion = 9.2;
-						LastSwiftMigration = 1000;
+						LastSwiftMigration = 1020;
 						ProvisioningStyle = Manual;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
@@ -3225,13 +3225,13 @@
 					};
 					3B124E1F2020EB2B00431E2E = {
 						CreatedOnToolsVersion = 9.2;
-						LastSwiftMigration = 1000;
+						LastSwiftMigration = 1020;
 						ProvisioningStyle = Automatic;
 						TestTargetID = 3B124E0B2020EB2B00431E2E;
 					};
 					B50BB19F217512400038B5DD = {
 						CreatedOnToolsVersion = 10.0;
-						LastSwiftMigration = 1000;
+						LastSwiftMigration = 1020;
 						ProvisioningStyle = Automatic;
 						TestTargetID = 3B124E0B2020EB2B00431E2E;
 					};
@@ -4447,7 +4447,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "match Development com.coinninja.CoinKeeper.beta";
 				SWIFT_OBJC_BRIDGING_HEADER = "CoinKeeper/CoinKeeper-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -4482,7 +4482,7 @@
 				PROVISIONING_PROFILE = "694ecd33-d17f-4e96-a9db-f8bfc8a03853";
 				PROVISIONING_PROFILE_SPECIFIER = "match AppStore com.coinninja.CoinKeeper";
 				SWIFT_OBJC_BRIDGING_HEADER = "CoinKeeper/CoinKeeper-Bridging-Header.h";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -4507,7 +4507,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "CoinKeeperTests/CoinKeeperTests-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/DropBit.app/DropBit";
 			};
@@ -4531,7 +4531,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.coinninja.CoinKeeperTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "CoinKeeperTests/CoinKeeperTests-Bridging-Header.h";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/DropBit.app/DropBit";
 			};
@@ -4620,7 +4620,7 @@
 				PROVISIONING_PROFILE = "42b0ba9a-8528-486e-9a1a-0e4a58abd92f";
 				PROVISIONING_PROFILE_SPECIFIER = "match AppStore com.coinninja.CoinKeeper.beta";
 				SWIFT_OBJC_BRIDGING_HEADER = "CoinKeeper/CoinKeeper-Bridging-Header.h";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -4644,7 +4644,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.coinninja.CoinKeeperTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "CoinKeeperTests/CoinKeeperTests-Bridging-Header.h";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/DropBit.app/DropBit";
 			};
@@ -4681,7 +4681,7 @@
 				PROVISIONING_PROFILE = "694ecd33-d17f-4e96-a9db-f8bfc8a03853";
 				SWIFT_OBJC_BRIDGING_HEADER = "DropBitUITests/DropBitUITests-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_TARGET_NAME = DropBit;
 			};
@@ -4716,7 +4716,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "694ecd33-d17f-4e96-a9db-f8bfc8a03853";
 				SWIFT_OBJC_BRIDGING_HEADER = "DropBitUITests/DropBitUITests-Bridging-Header.h";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_TARGET_NAME = DropBit;
 			};
@@ -4751,7 +4751,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "694ecd33-d17f-4e96-a9db-f8bfc8a03853";
 				SWIFT_OBJC_BRIDGING_HEADER = "DropBitUITests/DropBitUITests-Bridging-Header.h";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_TARGET_NAME = DropBit;
 			};
