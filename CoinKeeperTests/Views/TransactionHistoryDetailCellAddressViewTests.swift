@@ -382,15 +382,3 @@ class TransactionHistoryDetailCellAddressViewTests: XCTestCase {
     XCTAssertEqual(self.sut.addressTextButton.title(for: .normal), expectedAddress, "addressTextButton title should equal destination address")
   }
 }
-
-extension ValidatedContact {
-  init(kind: ContactKind,
-       displayName: String,
-       displayNumber: String,
-       globalPhoneNumber: GlobalPhoneNumber) {
-    self.kind = kind
-    self.displayName = displayName
-    self.displayNumber = displayNumber
-    self.globalPhoneNumber = globalPhoneNumber
-  }
-}
