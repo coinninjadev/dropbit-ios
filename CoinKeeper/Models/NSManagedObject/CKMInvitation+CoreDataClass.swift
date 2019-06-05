@@ -93,8 +93,24 @@ public class CKMInvitation: NSManagedObject {
     case .received: counterparty = response.metadata?.sender
     case .sent:     counterparty = response.metadata?.receiver
     }
-    self.counterpartyPhoneNumber = counterparty.flatMap {
-      CKMPhoneNumber.findOrCreate(withMetadataParticipant: $0, kit: kit, in: context)
+
+    // Associate this invitation with twitter contact of the opposite side
+    if let unwrappedCounterparty = counterparty, let type = UserIdentityType(rawValue: unwrappedCounterparty.type) {
+
+      switch type {
+      case .phone:
+        self.counterpartyPhoneNumber = counterparty.flatMap {
+          CKMPhoneNumber.findOrCreate(withMetadataParticipant: $0, kit: kit, in: context)
+        }
+      case .twitter:
+        self.counterpartyTwitterContact = counterparty.flatMap({ (participant: MetadataParticipant) -> CKMTwitterContact? in
+          let identity = UserIdentityBody(participant: participant)
+          var twitterContact = TwitterContact(twitterUser: identity.twitterUser())
+          twitterContact.kind = .registeredUser
+          let ckmTwitterContact = CKMTwitterContact.findOrCreate(with: twitterContact, in: context)
+          return ckmTwitterContact
+        })
+      }
     }
 
     self.setTxid(to: response.txid)
