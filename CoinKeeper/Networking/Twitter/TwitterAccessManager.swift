@@ -97,15 +97,14 @@ class TwitterAccessManager: TwitterAccessManagerType {
     guard inflatable.isNotEmpty else { return Promise.value(()) }
     let promises = inflatable.map { ckmTwitterContact -> Promise<Void> in
       return self.networkManager.retrieveTwitterUser(with: ckmTwitterContact.identityHash)
-        .then(in: context) { (twitterUser: TwitterUser) -> Promise<Void> in
+        .get(in: context) { (twitterUser: TwitterUser) in
           var twitterContact = TwitterContact(twitterUser: twitterUser)
           switch ckmTwitterContact.verificationStatus {
           case .notVerified: twitterContact.kind = .generic
           case .verified: twitterContact.kind = .registeredUser
           }
           ckmTwitterContact.configure(with: twitterContact, in: context)
-          return Promise.value(())
-      }
+      }.asVoid()
     }
     return when(resolved: promises).asVoid()
   }
