@@ -228,6 +228,23 @@ class PersistenceManager: PersistenceManagerType {
     return userVerificationStatus(in: context) == .verified
   }
 
+  func verifiedIdentities(in context: NSManagedObjectContext) -> [UserIdentityType] {
+    guard userIsVerified(in: context) else { return [] }
+    var retVal: [UserIdentityType] = []
+    if keychainManager.oauthCredentials() != nil {
+      retVal.append(.twitter)
+    }
+    if verifiedPhoneNumber() != nil {
+      retVal.append(.phone)
+    }
+    return retVal
+  }
+
+  func userIsVerified(using type: UserIdentityType, in context: NSManagedObjectContext) -> Bool {
+    let verifiedTypes = verifiedIdentities(in: context)
+    return verifiedTypes.contains(type)
+  }
+
   func userVerificationStatus(in context: NSManagedObjectContext) -> UserVerificationStatus {
     return databaseManager.userVerificationStatus(in: context)
   }
@@ -437,19 +454,6 @@ class PersistenceManager: PersistenceManagerType {
 
   func matchContactsIfPossible() {
     databaseManager.matchContactsIfPossible(with: contactCacheManager)
-  }
-
-  func verifiedIdentities() -> [UserIdentityType] {
-    let context = mainQueueContext()
-    guard userIsVerified(in: context) else { return [] }
-    var retVal: [UserIdentityType] = []
-    if keychainManager.oauthCredentials() != nil {
-      retVal.append(.twitter)
-    }
-    if verifiedPhoneNumber() != nil {
-      retVal.append(.phone)
-    }
-    return retVal
   }
 
   func dustProtectionMinimumAmount() -> Int {

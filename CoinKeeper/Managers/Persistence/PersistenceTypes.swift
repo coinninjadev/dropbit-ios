@@ -93,6 +93,8 @@ protocol PersistenceManagerType: DeviceCountryCodeProvider {
   func userId(in context: NSManagedObjectContext) -> String?
   func userVerificationStatus(in context: NSManagedObjectContext) -> UserVerificationStatus
   func userIsVerified(in context: NSManagedObjectContext) -> Bool
+  func userIsVerified(using type: UserIdentityType, in context: NSManagedObjectContext) -> Bool
+
   func getAllInvitations(in context: NSManagedObjectContext) -> [CKMInvitation]
   func getUnacknowledgedInvitations(in context: NSManagedObjectContext) -> [CKMInvitation]
 
@@ -147,7 +149,7 @@ protocol PersistenceManagerType: DeviceCountryCodeProvider {
   /// Look for any transactions sent to a phone number without a contact name, and provide a name if found, as a convenience when viewing tx history
   func matchContactsIfPossible()
 
-  func verifiedIdentities() -> [UserIdentityType]
+  func verifiedIdentities(in context: NSManagedObjectContext) -> [UserIdentityType]
 }
 
 extension PersistenceManagerType {

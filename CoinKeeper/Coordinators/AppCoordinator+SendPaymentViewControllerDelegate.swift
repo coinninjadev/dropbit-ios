@@ -38,13 +38,10 @@ extension AppCoordinator: SendPaymentViewControllerDelegate {
     analyticsManager.track(event: .pasteButtonPressed, with: nil)
   }
 
-  private var userIsTwitterVerified: Bool {
-    return persistenceManager.keychainManager.oauthCredentials() != nil
-  }
-
   func viewControllerDidPressTwitter(_ viewController: UIViewController & SelectedValidContactDelegate) {
     analyticsManager.track(event: .twitterButtonPressed, with: nil)
-    guard userIsTwitterVerified else {
+    let context = persistenceManager.mainQueueContext()
+    guard persistenceManager.userIsVerified(using: .twitter, in: context) else {
       showModalForTwitterVerification(with: viewController)
       return
     }

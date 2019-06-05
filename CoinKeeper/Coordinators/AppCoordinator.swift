@@ -165,6 +165,8 @@ class AppCoordinator: CoordinatorType {
   }
 
   private func setInitialRootViewController() {
+    deleteStaleCredentialsIfNeeded()
+
     if launchStateManager.isFirstTimeAfteriCloudRestore() {
       startFirstTimeAfteriCloudRestore()
     } else if launchStateManager.shouldRequireAuthentication {
@@ -200,6 +202,15 @@ class AppCoordinator: CoordinatorType {
         assignCoordinationDelegate(to: startVC)
         navigationController.viewControllers = [startVC]
       }
+    }
+  }
+
+  /// Useful to clear out old credentials from the keychain when the app is reinstalled
+  private func deleteStaleCredentialsIfNeeded() {
+    let context = persistenceManager.mainQueueContext()
+    let credsExist = persistenceManager.keychainManager.oauthCredentials() != nil
+    if credsExist && CKMUser.find(in: context) == nil {
+      persistenceManager.keychainManager.unverifyUser(for: .twitter)
     }
   }
 
@@ -295,6 +306,7 @@ class AppCoordinator: CoordinatorType {
 
     authenticateOnBecomingActiveIfNeeded()
 
+    refreshTwitterAvatar()
     refreshContacts()
   }
 
@@ -323,7 +335,6 @@ class AppCoordinator: CoordinatorType {
       .finally {
         UIApplication.shared.endBackgroundTask(backgroundTaskId)
     }
-    //UIApplication.shared.applicationIconBadgeNumber = persistenceManager.pendingInvitations().count
   }
 
   private func authenticateOnBecomingActiveIfNeeded() {
@@ -344,6 +355,22 @@ class AppCoordinator: CoordinatorType {
       requireAuthenticationIfNeeded(whenAuthenticated: {
         self.continueSetupFlow()
       })
+    }
+  }
+
+  private func refreshTwitterAvatar() {
+    let bgContext = persistenceManager.createBackgroundContext()
+    bgContext.performAndWait {
+      guard persistenceManager.userIsVerified(using: .twitter, in: bgContext) else {
+        return
+      }
+
+      twitterAccessManager.refreshTwitterAvatar(in: bgContext)
+        .done(on: .main) { didChange in
+          if didChange {
+            CKNotificationCenter.publish(key: .didUpdateAvatar)
+          }
+        }.cauterize()
     }
   }
 
