@@ -33,7 +33,7 @@ extension UIColor {
   static var mango: UIColor { return UIColor(r: 247, g: 158, b: 54) }
 
   // MARK: Grays
-  static var settingsDarkGray: UIColor { return UIColor(r: 0.14, g: 0.15, b: 0.20) }
+  static var settingsDarkGray: UIColor { return UIColor(red: 0.14, green: 0.15, blue: 0.20, alpha: 1.00) }
   static var sendingToDarkGray: UIColor { return settingsDarkGray }
 
   static var searchBarLightGray: UIColor { return UIColor(red: 0.97, green: 0.97, blue: 0.98, alpha: 1.00) }
