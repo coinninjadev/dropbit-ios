@@ -100,76 +100,50 @@ class SettingsViewController: BaseViewController, StoryboardInitializable {
 
   private func createViewModel() -> SettingsViewModel {
     let sectionViewModels: [SettingsSectionViewModel]
-      let walletSection = walletSectionViewModel()
-      let licensesSection = SettingsSectionViewModel(
-        headerViewModel: SettingsHeaderFooterViewModel(title: "LICENSES"),
-        cellViewModels: [SettingsCellViewModel(type: .licenses, command: openSourceCommand)])
-      sectionViewModels = [walletSection, licensesSection]
+    let walletSection = walletSectionViewModel()
+    let licensesType = SettingsCellType.licenses { [weak self] in
+      guard let localSelf = self else { return }
+      localSelf.coordinationDelegate?.viewControllerDidSelectOpenSourceLicenses(localSelf)
+    }
+    let licensesSection = SettingsSectionViewModel(
+      headerViewModel: SettingsHeaderFooterViewModel(title: "LICENSES"),
+      cellViewModels: [SettingsCellViewModel(type: licensesType)])
+    sectionViewModels = [walletSection, licensesSection]
 
     return SettingsViewModel(sectionViewModels: sectionViewModels)
   }
 
   private func walletSectionViewModel() -> SettingsSectionViewModel {
-    let recoveryWordsVM = SettingsCellViewModel(type: .recoveryWords(isWalletBackedUp()), command: recoveryWordsCommand)
-    let dustProtectionEnabled = self.coordinationDelegate?.dustProtectionIsEnabled() ?? false
-    let dustCellType = SettingsCellType.dustProtection(enabled: dustProtectionEnabled)
-    let dustProtectionVM = SettingsCellViewModel(type: dustCellType, command: dustProtectionCommand(for: dustCellType))
-
-    let isYearlyHighPushEnabled = self.coordinationDelegate?.yearlyHighPushNotificationIsSubscribed() ?? false
-    let yearlyHighType = SettingsCellType.yearlyHighPushNotification(enabled: isYearlyHighPushEnabled)
-    let yearlyHighViewModel = SettingsCellViewModel(type: yearlyHighType, command: yearlyHighPriceCommand)
-    return SettingsSectionViewModel(
-      headerViewModel: SettingsHeaderFooterViewModel(title: "WALLET"),
-      cellViewModels: [recoveryWordsVM, dustProtectionVM, yearlyHighViewModel])
-  }
-
-}
-
-// MARK: - Command Actions
-
-extension SettingsViewController {
-
-  var openSourceCommand: Command {
-    return Command(action: { [weak self] in
-      guard let localSelf = self else { return }
-      localSelf.coordinationDelegate?.viewControllerDidSelectOpenSourceLicenses(localSelf)
-    })
-  }
-
-  var recoveryWordsCommand: Command {
-    return Command(action: { [weak self] in
+    let recoveryWordsType = SettingsCellType.recoveryWords(isWalletBackedUp()) { [weak self] in
       guard let localSelf = self else { return }
       localSelf.coordinationDelegate?.viewControllerDidSelectRecoveryWords(localSelf)
-    })
-  }
-
-  func dustProtectionCommand(for type: SettingsCellType) -> Command {
-    return Command(action: { [weak self] in
-      guard let localSelf = self else { return }
-      guard let coordinator = localSelf.coordinationDelegate else { return }
-      let didEnable = !coordinator.dustProtectionIsEnabled()
-      coordinator.viewController(localSelf, didEnableDustProtection: didEnable)
-    })
-  }
-
-  var yearlyHighPriceCommand: Command {
-    return Command(action: { [weak self] in
-      guard let localSelf = self, let delegate = localSelf.coordinationDelegate else { return }
-      let didEnable = !delegate.yearlyHighPushNotificationIsSubscribed()
-      delegate.viewController(localSelf, didEnableYearlyHighNotification: didEnable)
-    })
-  }
-
-}
-
-extension SettingsViewController: SettingSwitchCellDelegate {
-  func tableViewCellDidSelectInfoButton(_ cell: UITableViewCell, viewModel: SettingsCellViewModel?) {
-    guard let vm = viewModel else { return }
-    switch vm.type {
-    case .dustProtection:
-      guard let url = vm.type.url else { return }
-      coordinationDelegate?.viewController(self, didRequestOpenURL: url)
-    default: break
     }
+    let recoveryWordsVM = SettingsCellViewModel(type: recoveryWordsType)
+
+    let dustProtectionEnabled = self.coordinationDelegate?.dustProtectionIsEnabled() ?? false
+    let dustCellType = SettingsCellType.dustProtection(
+      enabled: dustProtectionEnabled,
+      infoAction: { [weak self] (type: SettingsCellType) in
+        guard let localSelf = self, let url = type.url else { return }
+        localSelf.coordinationDelegate?.viewController(localSelf, didRequestOpenURL: url)
+      },
+      onChange: { [weak self] (didEnable: Bool) in
+        guard let localSelf = self else { return }
+        localSelf.coordinationDelegate?.viewController(localSelf, didEnableDustProtection: didEnable)
+      }
+    )
+    let dustProtectionVM = SettingsCellViewModel(type: dustCellType)
+
+    let isYearlyHighPushEnabled = self.coordinationDelegate?.yearlyHighPushNotificationIsSubscribed() ?? false
+    let yearlyHighType = SettingsCellType.yearlyHighPushNotification(enabled: isYearlyHighPushEnabled) { [weak self] (didEnable: Bool) in
+      guard let localSelf = self else { return }
+      localSelf.coordinationDelegate?.viewController(localSelf, didEnableYearlyHighNotification: didEnable)
+    }
+    let yearlyHighVM = SettingsCellViewModel(type: yearlyHighType)
+
+    return SettingsSectionViewModel(
+      headerViewModel: SettingsHeaderFooterViewModel(title: "WALLET"),
+      cellViewModels: [recoveryWordsVM, dustProtectionVM, yearlyHighVM])
   }
+
 }
