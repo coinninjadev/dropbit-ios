@@ -8,6 +8,7 @@
 
 import PromiseKit
 import OAuthSwift
+import os.log
 
 extension TwitterUser: CustomDebugStringConvertible {
   var debugDescription: String {
@@ -30,6 +31,7 @@ protocol TwitterRequestable: AnyObject {
   func retrieveCurrentUser(with userId: String) -> Promise<TwitterUser>
 
   var twitterOAuthManager: OAuth1Swift { get }
+  func resetTwitterOAuthManager()
 }
 
 extension TwitterOAuth {
@@ -133,11 +135,17 @@ extension NetworkManager: TwitterRequestable {
           seal.fulfill(credentials)
       },
         failure: { (error: OAuthSwiftError) in
-          print("failed. error: \(error.localizedDescription)")
+          let logger = OSLog(subsystem: "com.coinninja.networkmanager", category: "twitter_oauth")
+          os_log("oauth failure in %@. error: %@", log: logger, type: .error, #function, error.localizedDescription)
           // "Invalid or expired token"
           // "This feature is temporarily unavailable"
-          seal.reject(error)
-      }
+          if error.errorCode == CKOAuthError.invalidOrExpiredToken.errorCode || error.localizedDescription.contains("Invalid or expired token") {
+            self.resetTwitterOAuthManager()
+            seal.reject(CKOAuthError.invalidOrExpiredToken)
+          } else {
+            seal.reject(error)
+          }
+        }
       )
     }
   }

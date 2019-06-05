@@ -29,7 +29,7 @@ extension MockNetworkManager: TwitterRequestable {
     return Promise { _ in }
   }
 
-  var twitterOAuthManager: OAuth1Swift {
-    return OAuth1Swift(consumerKey: "", consumerSecret: "")
+  func resetTwitterOAuthManager() {
+
   }
 }
