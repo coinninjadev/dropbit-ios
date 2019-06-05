@@ -155,7 +155,7 @@ class SuccessFailView: UIView {
   }
 
   private func animateForFailure() {
-    backgroundShapeLayer.strokeColor = UIColor.red.cgColor
+    backgroundShapeLayer.strokeColor = UIColor.darkPeach.cgColor
     layer.addSublayer(errorForegroundShapeLayerLeftBottom)
     layer.addSublayer(errorForegroundShapeLayerLeftTop)
     layer.addSublayer(errorBackgroundShapeLayerLeftBottom)
@@ -237,14 +237,14 @@ class SuccessFailView: UIView {
     errorForegroundShapeLayerLeftTop.path = leftTopErrorBezierPath.cgPath
     errorForegroundShapeLayerLeftTop.lineCap = CAShapeLayerLineCap.round
     errorForegroundShapeLayerLeftTop.lineWidth = lineWidth
-    errorForegroundShapeLayerLeftTop.strokeColor = UIColor.red.cgColor
+    errorForegroundShapeLayerLeftTop.strokeColor = UIColor.darkPeach.cgColor
     errorForegroundShapeLayerLeftTop.fillColor = UIColor.clear.cgColor
     errorForegroundShapeLayerLeftTop.strokeEnd = 1.0
 
     errorForegroundShapeLayerLeftBottom.path = leftBottomErrorBezierPath.cgPath
     errorForegroundShapeLayerLeftBottom.lineCap = CAShapeLayerLineCap.round
     errorForegroundShapeLayerLeftBottom.lineWidth = lineWidth
-    errorForegroundShapeLayerLeftBottom.strokeColor = UIColor.red.cgColor
+    errorForegroundShapeLayerLeftBottom.strokeColor = UIColor.darkPeach.cgColor
     errorForegroundShapeLayerLeftBottom.fillColor = UIColor.clear.cgColor
     errorForegroundShapeLayerLeftBottom.strokeEnd = 1.0
   }

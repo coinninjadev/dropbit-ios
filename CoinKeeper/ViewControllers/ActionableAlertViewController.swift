@@ -83,7 +83,7 @@ class ActionableAlertViewController: AlertControllerType, StoryboardInitializabl
     case .standard:
       detailLabel.textColor = .darkBlueText
     case .warning:
-      detailLabel.textColor = .red
+      detailLabel.textColor = .darkPeach
     }
     detailLabel.font = .regular(14)
     detailLabel.text = displayDescription

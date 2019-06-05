@@ -9,7 +9,7 @@
 import UIKit
 
 extension UIColor {
-  
+
   // MARK: Colors
   static var darkBlueText: UIColor { return UIColor(r: 36, g: 37, b: 54) }
   static var darkBlueButton: UIColor { return darkBlueText }
@@ -24,7 +24,7 @@ extension UIColor {
 
   static var bannerWarn: UIColor { return UIColor(r: 224, g: 177, b: 0) }
 
-  static var red: UIColor { return UIColor(r: 231, g: 108, b: 108) }
+  static var darkPeach: UIColor { return UIColor(r: 231, g: 108, b: 108) }
 
   static var warning: UIColor { return UIColor(r: 235, g: 153, b: 57) }
 

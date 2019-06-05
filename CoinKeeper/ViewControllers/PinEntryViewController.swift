@@ -117,7 +117,7 @@ final class PinEntryViewController: BaseViewController, StoryboardInitializable 
 
   @IBOutlet var errorLabel: UILabel! {
     didSet {
-      errorLabel.textColor = .red
+      errorLabel.textColor = .darkPeach
       errorLabel.font = .regular(15)
       self.resetErrorLabel()
     }

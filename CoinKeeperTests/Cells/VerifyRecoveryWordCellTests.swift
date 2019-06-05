@@ -38,7 +38,7 @@ class VerifyRecoveryWordCellTests: XCTestCase {
 
   // MARK: initial state
   func testWordLabelBackgroundViewInitialState() {
-    let color = .verifyWordLightGray
+    let color = UIColor.verifyWordLightGray
     XCTAssertEqual(self.sut.wordLabelBackgroundView.backgroundColor, color, "wordLabelBackgroundView color should be set")
   }
 

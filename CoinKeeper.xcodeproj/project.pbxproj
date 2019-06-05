@@ -712,6 +712,7 @@
 		B58AFF3B2194F0FF001BE563 /* AccessibleElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = B58AFF382194E828001BE563 /* AccessibleElement.swift */; };
 		B58E781F217FB6C3000F9796 /* BadgeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B58E781E217FB6C3000F9796 /* BadgeManager.swift */; };
 		B590742721AC6764001D674E /* CoinNinjaTargetTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B590742621AC6764001D674E /* CoinNinjaTargetTests.swift */; };
+		B591BB4822A80A3F0069D110 /* UIColor+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = B514536322A7207500F7DA41 /* UIColor+Theme.swift */; };
 		B596702E221E2B1A008E884D /* MockContactCacheManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B596702C221E2AE4008E884D /* MockContactCacheManager.swift */; };
 		B59729B5209B6A2B0012AD14 /* BalanceUpdateable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59729B4209B6A2B0012AD14 /* BalanceUpdateable.swift */; };
 		B5976AD321552AFC00774073 /* UserQueryTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5976AD221552AFC00774073 /* UserQueryTarget.swift */; };
@@ -4269,6 +4270,7 @@
 				B58AFF312194DAF2001BE563 /* UITestPage.swift in Sources */,
 				3B3779FC219E20AD00F79683 /* BackupRecoveryWordsCellPage.swift in Sources */,
 				B57AC62F227B871500E495C3 /* UIView+CornerRadius.swift in Sources */,
+				B591BB4822A80A3F0069D110 /* UIColor+Theme.swift in Sources */,
 				B51F1ED9219A286900C54B73 /* DeviceVerificationPage.swift in Sources */,
 				B51FB0E021751BED005CBAD6 /* UIFont+Theme.swift in Sources */,
 				B51F1ED12199F7CB00C54B73 /* PinCreationPage.swift in Sources */,
