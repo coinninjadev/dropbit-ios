@@ -71,7 +71,7 @@ class PrimaryActionButton: UIButton {
       case .orange: mainColor = .mango
       }
 
-      backgroundColor = isHighlighted ? .lightGrayButtonBackground : mainColor
+      backgroundColor = isHighlighted ? .mediumGrayBackground : mainColor
     }
   }
 }

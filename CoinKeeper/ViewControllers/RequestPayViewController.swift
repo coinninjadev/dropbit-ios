@@ -46,7 +46,7 @@ final class RequestPayViewController: PresentableViewController, StoryboardIniti
   @IBOutlet var receiveAddressBGView: UIView! {
     didSet {
       receiveAddressBGView.applyCornerRadius(4)
-      receiveAddressBGView.layer.borderColor = UIColor.lightGrayOutline.cgColor
+      receiveAddressBGView.layer.borderColor = UIColor.mediumGrayBorder.cgColor
       receiveAddressBGView.layer.borderWidth = 2.0
       receiveAddressBGView.backgroundColor = .clear
     }

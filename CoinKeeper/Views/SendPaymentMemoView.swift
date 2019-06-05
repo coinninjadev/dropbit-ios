@@ -46,11 +46,11 @@ class SendPaymentMemoView: UIView {
     backgroundColor = .clear
     applyCornerRadius(6)
     self.layer.borderWidth = 1
-    self.layer.borderColor = UIColor.lightGrayOutline.cgColor
+    self.layer.borderColor = UIColor.mediumGrayBorder.cgColor
 
     topBackgroundView.backgroundColor = .whiteBackground
-    bottomBackgroundView.backgroundColor = .grayMemoBackground
-    separatorView.backgroundColor = .lightGrayOutline
+    bottomBackgroundView.backgroundColor = .lightGrayBackground
+    separatorView.backgroundColor = .mediumGrayBorder
 
     memoLabel.font = .secondaryButtonTitle
 
@@ -60,7 +60,7 @@ class SendPaymentMemoView: UIView {
     checkboxBackgroundView.applyCornerRadius(3)
 
     checkboxDescriptionLabel.text = "Securely send this memo with your transaction"
-    checkboxDescriptionLabel.textColor = .memoInfoText
+    checkboxDescriptionLabel.textColor = .darkGrayText
     checkboxDescriptionLabel.font = .regular(10)
   }
 

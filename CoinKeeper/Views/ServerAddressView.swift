@@ -59,7 +59,7 @@ class ServerAddressView: UIView {
     addressTableView.dataSource = self
     addressTableView.registerNib(cellType: AddressTableViewCell.self)
     addressTableView.applyCornerRadius(10)
-    addressTableView.layer.borderColor = UIColor.darkGrayBorder.cgColor
+    addressTableView.layer.borderColor = UIColor.mediumGrayBorder.cgColor
     addressTableView.layer.borderWidth = 0.5
     addressTableView.separatorInset = .zero
 

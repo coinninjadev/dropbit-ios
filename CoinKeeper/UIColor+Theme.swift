@@ -34,34 +34,22 @@ extension UIColor {
 
   // MARK: Grays
   static var darkGrayText: UIColor { return UIColor(r: 155, g: 155, b: 155) }
-
-  static var searchResultGrayText: UIColor { return UIColor(r: 172, g: 172, b: 172) }
-  static var memoInfoText: UIColor { return searchResultGrayText }
+  static var dragIndicator: UIColor { return darkGrayText }
 
   static var pageIndicator: UIColor { return UIColor(r: 184, g: 184, b: 184) }
 
   static var graySeparator: UIColor { return UIColor(r: 216, g: 216, b: 216) }
-  static var dragIndicator: UIColor { return searchResultGrayText }
 
   static var semiOpaquePopoverBackground: UIColor { return UIColor.black.withAlphaComponent(0.7) }
 
-  static var darkGrayBackground: UIColor { return UIColor(r: 224, g: 224, b: 224) }
-  static var darkGrayBorder: UIColor { return darkGrayBackground }
-  static var darkGrayCellSeparator: UIColor { return darkGrayBackground }
+  static var mediumGrayBackground: UIColor { return UIColor(r: 224, g: 224, b: 224) }
+  static var mediumGrayBorder: UIColor { return mediumGrayBackground }
 
-  static var lightGrayButtonBackground: UIColor { return UIColor(r: 227, g: 227, b: 227) }
-  static var lightGrayOutline: UIColor { return lightGrayButtonBackground }
-
-  static var lightGrayText: UIColor { return UIColor(r: 244, g: 244, b: 244) }
-  static var lightGrayBackground: UIColor { return lightGrayText }
-
-  static var grayMemoBackground: UIColor { return UIColor(r: 247, g: 247, b: 247) }
-  static var flagButtonBackground: UIColor { return grayMemoBackground }
+  static var lightGrayBackground: UIColor { return UIColor(r: 244, g: 244, b: 244) }
+  static var lightGrayText: UIColor { return lightGrayBackground }
 
   static var extraLightGrayBackground: UIColor { return UIColor(r: 250, g: 250, b: 250) }
   static var extraLightGrayText: UIColor { return extraLightGrayBackground }
-  static var verifyWordBackground: UIColor { return extraLightGrayBackground }
-  static var searchBarBackground: UIColor { return extraLightGrayBackground }
 
   static var whiteText: UIColor { return UIColor(r: 255, g: 255, b: 255) }
   static var whiteBackground: UIColor { return whiteText }

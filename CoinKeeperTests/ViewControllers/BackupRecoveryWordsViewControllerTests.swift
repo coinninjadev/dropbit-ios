@@ -146,7 +146,7 @@ class BackupRecoveryWordsViewControllerTests: XCTestCase {
     XCTAssertEqual(self.sut.wordCollectionView.indexPathsForVisibleItems.first?.item, 11)
     XCTAssertFalse(self.sut.backButton.isHidden, "backButton should show after tapping Next")
     XCTAssertEqual(self.sut.nextButton.title(for: .normal), "VERIFY")
-    XCTAssertEqual(self.sut.nextButton.backgroundColor, .darkBlueButton)
+    XCTAssertEqual(self.sut.nextButton.backgroundColor, .darkBlueBackground)
   }
 
   func testTappingNextButtonWhenOnLastWordTellsDelegateToVerifyWords() {
@@ -170,7 +170,7 @@ class BackupRecoveryWordsViewControllerTests: XCTestCase {
 
     // initially
     XCTAssertEqual(self.sut.nextButton.title(for: .normal), "VERIFY")
-    XCTAssertEqual(self.sut.nextButton.backgroundColor, .darkBlueButton)
+    XCTAssertEqual(self.sut.nextButton.backgroundColor, .darkBlueBackground)
     XCTAssertEqual(self.sut.wordCollectionView.indexPathsForVisibleItems.first?.item, 11)
 
     // when

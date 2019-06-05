@@ -267,19 +267,19 @@ extension SendPaymentViewController {
 
   fileprivate func formatAddressScanView() {
     addressScanButtonContainerView.applyCornerRadius(4)
-    addressScanButtonContainerView.layer.borderColor = UIColor.lightGrayOutline.cgColor
+    addressScanButtonContainerView.layer.borderColor = UIColor.mediumGrayBorder.cgColor
     addressScanButtonContainerView.layer.borderWidth = 1.0
 
     bitcoinAddressButton.titleLabel?.font = .medium(14)
     bitcoinAddressButton.setTitleColor(.darkGrayText, for: .normal)
 
-    scanButton.backgroundColor = .darkGrayBackground
+    scanButton.backgroundColor = .mediumGrayBackground
   }
 
   fileprivate func formatPhoneNumberEntryView() {
     guard let entryView = phoneNumberEntryView else { return }
     entryView.backgroundColor = UIColor.clear
-    entryView.layer.borderColor = UIColor.lightGrayOutline.cgColor
+    entryView.layer.borderColor = UIColor.mediumGrayBorder.cgColor
     entryView.textField.delegate = self
     entryView.textField.backgroundColor = UIColor.clear
     entryView.textField.autocorrectionType = .no

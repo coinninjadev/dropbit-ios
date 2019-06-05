@@ -16,7 +16,7 @@ class TransactionDetailsInfoContainer: UIView {
     applyCornerRadius(9)
     backgroundColor = .extraLightGrayBackground
     layer.borderWidth = 1
-    layer.borderColor = UIColor.lightGrayOutline.cgColor
+    layer.borderColor = UIColor.mediumGrayBorder.cgColor
   }
 
 }

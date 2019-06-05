@@ -39,7 +39,7 @@ class CountryCodeSearchView: UIView {
     tableView.backgroundColor = .clear
     applyCornerRadius(6)
     layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
-    layer.borderColor = UIColor.darkGrayBorder.cgColor
+    layer.borderColor = UIColor.mediumGrayBorder.cgColor
     layer.borderWidth = 1.0
 
     tableView.registerNib(cellType: CountryCodePickerCell.self)
@@ -55,7 +55,7 @@ class CountryCodeSearchView: UIView {
     searchContainer.backgroundColor = .whiteBackground
     searchSeparator.backgroundColor = .graySeparator
 
-    let textColor = UIColor.searchResultGrayText
+    let textColor = UIColor.darkGrayText
     searchTextField.textAlignment = .left
     searchTextField.textColor = textColor
     searchTextField.font = .regular(10)
