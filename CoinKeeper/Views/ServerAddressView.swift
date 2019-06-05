@@ -18,13 +18,13 @@ class ServerAddressView: UIView {
   @IBOutlet var titleLabel: UILabel! {
     didSet {
       titleLabel.text = "DropBit Addresses"
-      titleLabel.font = CKFont.medium(19)
+      titleLabel.font = .medium(19)
     }
   }
   @IBOutlet var tableFooterLabel: UILabel! {
     didSet {
       tableFooterLabel.textColor = .darkBlueText
-      tableFooterLabel.font = CKFont.medium(12)
+      tableFooterLabel.font = .medium(12)
       tableFooterLabel.adjustsFontSizeToFitWidth = true
     }
   }

@@ -11,7 +11,7 @@ import UIKit
 class TransactionDetailDateLabel: UILabel {
   override func awakeFromNib() {
     super.awakeFromNib()
-    font = CKFont.regular(13)
+    font = .regular(13)
     textColor = .grayText
     isHidden = false
     numberOfLines = 1

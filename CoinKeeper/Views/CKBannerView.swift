@@ -81,7 +81,7 @@ class CKBannerView: MessageView, AccessibleViewSettable {
     closeButton.setImage(image, for: .normal)
     closeButton.setAccessibilityId(.bannerMessage(.close))
 
-    messageLabel.font = CKFont.regular(13)
+    messageLabel.font = .regular(13)
     messageLabel.textColor = kind.textColor
     self.url = url
   }

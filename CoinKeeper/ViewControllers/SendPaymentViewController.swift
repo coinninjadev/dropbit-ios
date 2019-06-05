@@ -232,17 +232,17 @@ ValidatorAlertDisplayable {
 extension SendPaymentViewController {
 
   fileprivate func setupLabels() {
-    recipientDisplayNameLabel.font = CKFont.regular(26)
-    recipientDisplayNumberLabel.font = CKFont.regular(20)
-    payTitleLabel.font = CKFont.regular(15)
+    recipientDisplayNameLabel.font = .regular(26)
+    recipientDisplayNumberLabel.font = .regular(20)
+    payTitleLabel.font = .regular(15)
     payTitleLabel.textColor = .darkBlueText
     secondaryAmountLabel.textColor = .grayText
-    secondaryAmountLabel.font = CKFont.regular(17)
+    secondaryAmountLabel.font = .regular(17)
   }
 
   fileprivate func setupButtons() {
     let textColor = UIColor.whiteText
-    let font = CKFont.compactButtonTitle
+    let font = UIFont.compactButtonTitle
     let contactsTitle = NSAttributedString(imageName: "contactsIcon",
                                            imageSize: CGSize(width: 9, height: 14),
                                            title: "CONTACTS",
@@ -270,7 +270,7 @@ extension SendPaymentViewController {
     addressScanButtonContainerView.layer.borderColor = UIColor.lightGrayOutline.cgColor
     addressScanButtonContainerView.layer.borderWidth = 1.0
 
-    bitcoinAddressButton.titleLabel?.font = CKFont.medium(14)
+    bitcoinAddressButton.titleLabel?.font = .medium(14)
     bitcoinAddressButton.setTitleColor(.grayText, for: .normal)
 
     scanButton.backgroundColor = .backgroundDarkGray
@@ -283,7 +283,7 @@ extension SendPaymentViewController {
     entryView.textField.delegate = self
     entryView.textField.backgroundColor = UIColor.clear
     entryView.textField.autocorrectionType = .no
-    entryView.textField.font = CKFont.medium(14)
+    entryView.textField.font = .medium(14)
     entryView.textField.textColor = .sendingToDarkGray
     entryView.textField.adjustsFontSizeToFitWidth = true
     entryView.textField.keyboardType = .numberPad

@@ -41,7 +41,7 @@ class CKPhoneNumberTextField: PhoneNumberTextField {
 
   private func setup() {
     textColor = .grayText
-    font = CKFont.regular(14)
+    font = .regular(14)
   }
 
   func update(withCountry country: CKCountry, nationalNumber natl: String? = nil) {

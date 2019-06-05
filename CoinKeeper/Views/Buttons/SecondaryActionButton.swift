@@ -13,7 +13,7 @@ class SecondaryActionButton: UIButton {
   override func awakeFromNib() {
     super.awakeFromNib()
     setTitleColor(.darkBlueButton, for: .normal)
-    titleLabel?.font = CKFont.secondaryButtonTitle
+    titleLabel?.font = .secondaryButtonTitle
   }
 
 }

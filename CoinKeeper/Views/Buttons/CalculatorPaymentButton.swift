@@ -21,7 +21,7 @@ import UIKit
 
   private func initialize() {
     setTitleColor(.lightGrayText, for: .normal)
-    titleLabel?.font = CKFont.primaryButtonTitle
+    titleLabel?.font = .primaryButtonTitle
     backgroundColor = .clear
     adjustsImageWhenHighlighted = true
   }

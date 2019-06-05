@@ -27,7 +27,7 @@ class LimitEditTextField: UITextField {
     backgroundColor = UIColor.clear
     textColor = .lightBlueTint
     keyboardType = .decimalPad
-    font = CKFont.regular(30)
+    font = .regular(30)
     shouldDisableActions = true
   }
 }

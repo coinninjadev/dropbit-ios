@@ -1,5 +1,5 @@
 //
-//  CKFont.swift
+//  UIFont+Theme.swift
 //  CoinKeeper
 //
 //  Created by BJ Miller on 2/2/18.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-struct CKFont {
+extension UIFont {
 
   static func light(_ size: CGFloat) -> UIFont {
     return UIFont(name: .montserratLight, size: size)
@@ -31,19 +31,19 @@ struct CKFont {
   }
 
   static var primaryButtonTitle: UIFont {
-    return CKFont.medium(14)
+    return .medium(14)
   }
 
   static var compactButtonTitle: UIFont {
-    return CKFont.medium(12)
+    return .medium(12)
   }
 
   static var secondaryButtonTitle: UIFont {
-    return CKFont.regular(14)
+    return .regular(14)
   }
 
   static var popoverMessage: UIFont {
-    return CKFont.regular(15)
+    return .regular(15)
   }
 
 }

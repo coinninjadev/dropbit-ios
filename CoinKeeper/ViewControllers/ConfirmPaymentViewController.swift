@@ -58,37 +58,37 @@ class ConfirmPaymentViewController: PresentableViewController, StoryboardInitial
   }
 
   private func setupViews() {
-    titleLabel.font = CKFont.regular(15)
+    titleLabel.font = .regular(15)
     titleLabel.textColor = .darkBlueText
 
     primaryCurrencyLabel.textAlignment = .center
     primaryCurrencyLabel.textColor = .lightBlueTint
-    primaryCurrencyLabel.font = CKFont.regular(35)
+    primaryCurrencyLabel.font = .regular(35)
 
     secondaryCurrencyLabel.textAlignment = .center
     secondaryCurrencyLabel.textColor = .grayText
-    secondaryCurrencyLabel.font = CKFont.regular(17)
+    secondaryCurrencyLabel.font = .regular(17)
 
     networkFeeLabel.textAlignment = .center
-    networkFeeLabel.font = CKFont.light(11)
+    networkFeeLabel.font = .light(11)
     networkFeeLabel.textColor = .darkBlueText
 
     contactLabel.backgroundColor = UIColor.clear
-    contactLabel.font = CKFont.regular(26)
+    contactLabel.font = .regular(26)
     contactLabel.adjustsFontSizeToFitWidth = true
 
     primaryAddressLabel.backgroundColor = UIColor.clear
-    primaryAddressLabel.font = CKFont.medium(14)
+    primaryAddressLabel.font = .medium(14)
     primaryAddressLabel.adjustsFontSizeToFitWidth = true
 
     memoContainerView.isHidden = true
 
     secondaryAddressLabel.textAlignment = .center
     secondaryAddressLabel.textColor = .grayText
-    secondaryAddressLabel.font = CKFont.regular(13)
+    secondaryAddressLabel.font = .regular(13)
 
     tapAndHoldLabel.textColor = .darkGray
-    tapAndHoldLabel.font = CKFont.medium(13)
+    tapAndHoldLabel.font = .medium(13)
   }
 
   private func updateView(with viewModel: ConfirmPaymentViewModelType) {

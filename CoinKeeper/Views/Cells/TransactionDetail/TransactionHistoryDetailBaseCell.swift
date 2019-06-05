@@ -39,7 +39,7 @@ class TransactionHistoryDetailBaseCell: UICollectionViewCell {
   @IBOutlet var addMemoButton: UIButton! {
     didSet {
       addMemoButton.setTitleColor(.grayText, for: .normal)
-      addMemoButton.titleLabel?.font = CKFont.regular(15)
+      addMemoButton.titleLabel?.font = .regular(15)
       addMemoButton.setTitle("  Add Memo", for: .normal)
       let plusImage = UIImage(imageLiteralResourceName: "plusIcon").withRenderingMode(.alwaysTemplate)
       addMemoButton.setImage(plusImage, for: .normal)

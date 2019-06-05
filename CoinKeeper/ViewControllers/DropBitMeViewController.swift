@@ -130,13 +130,13 @@ class DropBitMeViewController: UIViewController, StoryboardInitializable {
     setupVerificationSuccessButton()
 
     messageLabel.textColor = .darkBlueText
-    messageLabel.font = CKFont.popoverMessage
+    messageLabel.font = .popoverMessage
 
-    dropBitMeURLButton.titleLabel?.font = CKFont.popoverMessage
+    dropBitMeURLButton.titleLabel?.font = .popoverMessage
     dropBitMeURLButton.setTitleColor(.darkBlueText, for: .normal)
 
     secondaryButton.setTitleColor(.darkBlueText, for: .normal)
-    secondaryButton.titleLabel?.font = CKFont.semiBold(12)
+    secondaryButton.titleLabel?.font = .semiBold(12)
 
     configure(with: self.config)
   }
@@ -149,7 +149,7 @@ class DropBitMeViewController: UIViewController, StoryboardInitializable {
     verificationSuccessButton.layer.cornerRadius = verificationSuccessButton.frame.height/2
     verificationSuccessButton.backgroundColor = .primaryActionButton
     verificationSuccessButton.setTitleColor(.whiteText, for: .normal)
-    verificationSuccessButton.titleLabel?.font = CKFont.semiBold(14)
+    verificationSuccessButton.titleLabel?.font = .semiBold(14)
   }
 
   func configure(with config: DropBitMeConfig) {

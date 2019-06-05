@@ -74,7 +74,7 @@ final class StartViewController: BaseViewController {
                                           imageSize: CGSize(width: 8, height: 12),
                                           title: "Restore Wallet",
                                           sharedColor: .darkBlueText,
-                                          font: CKFont.regular(12),
+                                          font: .regular(12),
                                           imageOffset: CGPoint(x: 0, y: 1),
                                           trailingImage: true)
     restoreWalletButton.setAttributedTitle(restoreTitle, for: .normal)
@@ -84,11 +84,11 @@ final class StartViewController: BaseViewController {
     claimInviteButton.backgroundColor = .darkBlueButton
     claimInviteButton.applyCornerRadius(4)
     claimInviteButton.setTitleColor(.whiteText, for: .normal)
-    claimInviteButton.titleLabel?.font = CKFont.primaryButtonTitle
+    claimInviteButton.titleLabel?.font = .primaryButtonTitle
 
     newWalletButton.setTitle("NEW WALLET", for: .normal)
     newWalletButton.setTitleColor(.lightBlueTint, for: .normal)
-    newWalletButton.titleLabel?.font = CKFont.primaryButtonTitle
+    newWalletButton.titleLabel?.font = .primaryButtonTitle
   }
 
   private func toggleAnimatableViews(show: Bool) {

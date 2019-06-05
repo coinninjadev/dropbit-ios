@@ -36,8 +36,8 @@ class DrawerTableViewHeader: UITableViewHeaderFooterView {
     priceLabel.textColor = UIColor.white
     priceTitleLabel.textColor = UIColor.white
     priceTitleLabel.text = "Current Price"
-    priceTitleLabel.font = CKFont.light(11.6)
-    priceLabel.font = CKFont.regular(16)
+    priceTitleLabel.font = .light(11.6)
+    priceLabel.font = .regular(16)
     _backgroundView.backgroundColor = .settingsDarkGray
 
     refreshDisplayedPrice()

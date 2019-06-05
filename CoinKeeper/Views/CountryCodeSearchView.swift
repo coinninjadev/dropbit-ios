@@ -58,7 +58,7 @@ class CountryCodeSearchView: UIView {
     let textColor = UIColor.searchResultGrayText
     searchTextField.textAlignment = .left
     searchTextField.textColor = textColor
-    searchTextField.font = CKFont.regular(10)
+    searchTextField.font = .regular(10)
 
     let paragraphStyle = NSMutableParagraphStyle()
     paragraphStyle.alignment = .left

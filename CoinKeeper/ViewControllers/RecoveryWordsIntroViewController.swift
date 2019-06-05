@@ -47,11 +47,11 @@ final class RecoveryWordsIntroViewController: BaseViewController, StoryboardInit
   }
 
   private func configureUI() {
-    titleLabel.font = CKFont.medium(19)
-    subtitle1Label.font = CKFont.medium(15)
-    subtitle2Label.font = CKFont.regular(13)
-    restoreInfoLabel.font = CKFont.regular(15)
-    estimatedTimeLabel.font = CKFont.regular(13)
+    titleLabel.font = .medium(19)
+    subtitle1Label.font = .medium(15)
+    subtitle2Label.font = .regular(13)
+    restoreInfoLabel.font = .regular(15)
+    estimatedTimeLabel.font = .regular(13)
 
     [titleLabel, subtitle1Label, restoreInfoLabel].forEach { $0?.textColor = .grayText }
     [subtitle2Label, estimatedTimeLabel].forEach { $0?.textColor = .darkBlueText }

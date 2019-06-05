@@ -11,7 +11,7 @@ import UIKit
 class TransactionDetailPrimaryAmountLabel: UILabel {
   override func awakeFromNib() {
     super.awakeFromNib()
-    font = CKFont.medium(50)
+    font = .medium(50)
     textColor = .darkBlueText
     isHidden = false
     numberOfLines = 1

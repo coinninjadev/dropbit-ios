@@ -14,6 +14,6 @@ class TransactionDetailBottomButton: UIButton {
     applyCornerRadius(4)
     backgroundColor = .darkBlueButton
     setTitleColor(.extraLightGrayBackground, for: .normal)
-    titleLabel?.font = CKFont.primaryButtonTitle
+    titleLabel?.font = .primaryButtonTitle
   }
 }

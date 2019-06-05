@@ -32,17 +32,17 @@ class TutorialScreenViewController: BaseViewController, StoryboardInitializable 
   @IBOutlet var titleLabel: UILabel! {
     didSet {
       titleLabel.adjustsFontSizeToFitWidth = true
-      titleLabel.font = CKFont.medium(20)
+      titleLabel.font = .medium(20)
     }
   }
   @IBOutlet var detailLabel: UILabel! {
     didSet {
-      detailLabel.font = CKFont.regular(13)
+      detailLabel.font = .regular(13)
     }
   }
   @IBOutlet var disclaimerLabel: UILabel! {
     didSet {
-      disclaimerLabel.font = CKFont.regular(10)
+      disclaimerLabel.font = .regular(10)
       disclaimerLabel.textColor = .lightBlueTint
     }
   }

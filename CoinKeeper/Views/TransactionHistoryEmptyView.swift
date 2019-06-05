@@ -46,7 +46,7 @@ class TransactionHistoryEmptyView: UIView {
     backgroundColor = .lightGrayBackground
   }
 
-  private let buttonFont: UIFont = CKFont.primaryButtonTitle
+  private let buttonFont: UIFont = .primaryButtonTitle
 
   @IBAction func learnAboutBitcoin() {
     delegate?.noTransactionsViewDidSelectLearnAboutBitcoin(self)
@@ -93,7 +93,7 @@ class TransactionHistoryEmptyView: UIView {
 class TransactionHistoryNoBalanceView: TransactionHistoryEmptyView {
   @IBOutlet var noTransactionsTitle: UILabel! {
     didSet {
-      noTransactionsTitle.font = CKFont.medium(20)
+      noTransactionsTitle.font = .medium(20)
       noTransactionsTitle.textColor = .grayText
       noTransactionsTitle.text = "No Bitcoin...Yet!"
     }
@@ -101,7 +101,7 @@ class TransactionHistoryNoBalanceView: TransactionHistoryEmptyView {
   @IBOutlet var noTransactionsDetail: UILabel! {
     didSet {
       noTransactionsDetail.textColor = .grayText
-      noTransactionsDetail.font = CKFont.regular(15)
+      noTransactionsDetail.font = .regular(15)
       noTransactionsDetail.text = "All incoming and outgoing transactions will appear here."
     }
   }

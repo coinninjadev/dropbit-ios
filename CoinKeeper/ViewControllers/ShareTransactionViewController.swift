@@ -53,26 +53,26 @@ class ShareTransactionViewController: UIViewController, StoryboardInitializable 
 
   private func configureView() {
     topMessageLabel.textColor = .lightGrayText
-    topMessageLabel.font = CKFont.medium(17)
+    topMessageLabel.font = .medium(17)
 
     bottomMessageLabel.textColor = .darkBlueText
-    bottomMessageLabel.font = CKFont.medium(17)
+    bottomMessageLabel.font = .medium(17)
 
     configureTwitterButton()
 
-    nextTimeButton.titleLabel?.font = CKFont.primaryButtonTitle
+    nextTimeButton.titleLabel?.font = .primaryButtonTitle
     nextTimeButton.setTitleColor(.darkBlueText, for: .normal)
 
     // semi-opaque view sits between the button and the separate backing view
     // so that title and background have correct color
-    dontAskAgainButton.titleLabel?.font = CKFont.primaryButtonTitle
+    dontAskAgainButton.titleLabel?.font = .primaryButtonTitle
     dontAskAgainButton.setTitleColor(.grayText, for: .normal)
     dontAskAgainFadedBackground.backgroundColor = .primaryActionButton
     dontAskAgainFadedBackground.applyCornerRadius(4)
   }
 
   private func configureTwitterButton() {
-    let font = CKFont.compactButtonTitle
+    let font = UIFont.compactButtonTitle
     let attributes: [NSAttributedString.Key: Any] = [
       .font: font,
       .foregroundColor: UIColor.whiteText

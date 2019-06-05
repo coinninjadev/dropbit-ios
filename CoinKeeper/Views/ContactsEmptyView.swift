@@ -37,7 +37,7 @@ class ContactsEmptyView: UIView {
     backgroundColor = .clear
     descriptionLabel.text = "Your contacts will be shown here once you allow DropBit to access them."
     descriptionLabel.textColor = .grayText
-    descriptionLabel.font = CKFont.regular(14)
+    descriptionLabel.font = .regular(14)
     primaryButton.setTitle("ALLOW ACCESS TO CONTACTS", for: .normal)
   }
 

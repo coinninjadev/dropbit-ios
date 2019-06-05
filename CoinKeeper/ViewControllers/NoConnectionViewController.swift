@@ -26,7 +26,7 @@ class NoConnectionViewController: BaseViewController, StoryboardInitializable {
 
   override func viewDidLoad() {
     super.viewDidLoad()
-    noConnectionLabel.font = CKFont.regular(15)
+    noConnectionLabel.font = .regular(15)
     activitySpinner.startAnimating()
     activitySpinner.isHidden = true
   }

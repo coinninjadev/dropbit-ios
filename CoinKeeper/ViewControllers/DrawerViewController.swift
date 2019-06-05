@@ -45,7 +45,7 @@ class DrawerViewController: BaseViewController, StoryboardInitializable {
     super.viewDidLoad()
 
     versionLabel.textColor = UIColor.white
-    versionLabel.font = CKFont.light(10)
+    versionLabel.font = .light(10)
     versionLabel.text = "Version \(Bundle.main.infoDictionary?[versionKey] ?? "Unknown")"
 
     drawerTableView.registerNib(cellType: DrawerCell.self)

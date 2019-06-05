@@ -68,7 +68,7 @@ final class MemoEntryViewController: BaseViewController, StoryboardInitializable
     textView.text = memo
 
     countLabels.forEach { label in
-      label.font = CKFont.regular(12)
+      label.font = .regular(12)
       label.textColor = .grayText
     }
     currentCountLabel.text = "\(textView.text.count)"

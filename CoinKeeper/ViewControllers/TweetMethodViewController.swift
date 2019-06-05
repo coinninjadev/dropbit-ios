@@ -82,11 +82,11 @@ class TweetMethodViewController: BaseViewController, StoryboardInitializable {
       avatarImageView.isHidden = true
     }
 
-    screenNameLabel.font = CKFont.medium(20)
+    screenNameLabel.font = .medium(20)
     screenNameLabel.textColor = .darkBlueText
     screenNameLabel.text = recipient.displayHandle
 
-    messageLabel.font = CKFont.medium(14)
+    messageLabel.font = .medium(14)
     messageLabel.textColor = .darkBlueText
     messageLabel.text = messageText(with: recipient)
 

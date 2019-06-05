@@ -11,7 +11,7 @@ import UIKit
 class ContactCellPrimaryLabel: UILabel {
   override func awakeFromNib() {
     super.awakeFromNib()
-    font = CKFont.medium(15)
+    font = .medium(15)
     textColor = .darkBlueText
   }
 }

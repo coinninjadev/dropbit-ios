@@ -100,7 +100,7 @@ final class PinEntryViewController: BaseViewController, StoryboardInitializable 
       }
 
       pinConfirmLabel.textColor = .grayText
-      pinConfirmLabel.font = CKFont.regular(15)
+      pinConfirmLabel.font = .regular(15)
     }
   }
 
@@ -118,7 +118,7 @@ final class PinEntryViewController: BaseViewController, StoryboardInitializable 
   @IBOutlet var errorLabel: UILabel! {
     didSet {
       errorLabel.textColor = .red
-      errorLabel.font = CKFont.regular(15)
+      errorLabel.font = .regular(15)
       self.resetErrorLabel()
     }
   }
@@ -130,7 +130,7 @@ final class PinEntryViewController: BaseViewController, StoryboardInitializable 
   }
   @IBOutlet var lockoutErrorLabel: UILabel! {
     didSet {
-      lockoutErrorLabel.font = CKFont.regular(15)
+      lockoutErrorLabel.font = .regular(15)
       lockoutErrorLabel.textColor = .whiteText
       lockoutErrorLabel.text = "Too many incorrect attempts. Please wait 5 minutes and try entering your PIN again."
     }

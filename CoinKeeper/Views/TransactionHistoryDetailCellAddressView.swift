@@ -28,7 +28,7 @@ class TransactionHistoryDetailCellAddressView: UIView {
   @IBOutlet var addressContainerView: UIView!
   @IBOutlet var addressTextButton: UIButton! {
     didSet {
-      addressTextButton.titleLabel?.font = CKFont.medium(13)
+      addressTextButton.titleLabel?.font = .medium(13)
     }
   }
   @IBOutlet var addressImageButton: UIButton!

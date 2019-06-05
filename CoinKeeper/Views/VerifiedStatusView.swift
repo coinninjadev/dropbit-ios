@@ -36,10 +36,10 @@ class VerifiedStatusView: UIView {
 
     identityLabel.text = identityString
     identityLabel.textColor = .darkBlueText
-    identityLabel.font = CKFont.light(18)
+    identityLabel.font = .light(18)
 
     verificationStatusLabel.textColor = .appleGreen
-    verificationStatusLabel.font = CKFont.secondaryButtonTitle
+    verificationStatusLabel.font = .secondaryButtonTitle
     verificationStatusLabel.text = "Verified"
   }
 }

@@ -82,7 +82,7 @@ class TransactionHistoryDetailValidCell: TransactionHistoryDetailBaseCell {
     progressView.activeColor = .successGreen
     progressView.inactiveColor = .lightGrayText
     progressView.inactiveTextColor = progressView.inactiveColor
-    progressView.stepFont = CKFont.semiBold(11)
+    progressView.stepFont = .semiBold(11)
 
     let shouldHide: Bool
     if viewModel.invitationStatus != nil {

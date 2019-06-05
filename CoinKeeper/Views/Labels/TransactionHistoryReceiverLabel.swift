@@ -11,7 +11,7 @@ import UIKit
 class TransactionHistoryReceiverLabel: UILabel {
   override func awakeFromNib() {
     super.awakeFromNib()
-    font = CKFont.medium(14)
+    font = .medium(14)
     textColor = .darkBlueText
     isHidden = false
     numberOfLines = 1

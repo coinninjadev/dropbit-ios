@@ -11,7 +11,7 @@ import UIKit
 class TransactionDetailCounterpartyLabel: UILabel {
   override func awakeFromNib() {
     super.awakeFromNib()
-    font = CKFont.medium(22)
+    font = .medium(22)
     textColor = .darkBlueText
     isHidden = false
     numberOfLines = 1

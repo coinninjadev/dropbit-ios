@@ -11,7 +11,7 @@ import UIKit
 class BalanceSecondaryAmountLabel: UILabel {
   override func awakeFromNib() {
     super.awakeFromNib()
-    font = CKFont.regular(15)
+    font = .regular(15)
     textColor = .grayText
     isHidden = false
     numberOfLines = 1

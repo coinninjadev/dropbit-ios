@@ -53,11 +53,11 @@ class PhoneNumberStatusViewController: BaseViewController, StoryboardInitializab
   private func setupUI() {
     verifyPhoneNumberPrimaryButton.style = .darkBlue
     verifyTwitterPrimaryButton.style = .standard
-    privacyLabel.font = CKFont.light(13)
+    privacyLabel.font = .light(13)
     privacyLabel.textColor = .darkBlueText
-    phoneNumberNavigationTitle.font = CKFont.regular(15)
+    phoneNumberNavigationTitle.font = .regular(15)
     phoneNumberNavigationTitle.textColor = .darkBlueText
-    titleLabel.font = CKFont.regular(15)
+    titleLabel.font = .regular(15)
     titleLabel.textColor = .grayText
     serverAddressView.delegate = self
     serverAddressViewVerticalConstraint.constant = UIScreen.main.bounds.height
@@ -81,7 +81,7 @@ class PhoneNumberStatusViewController: BaseViewController, StoryboardInitializab
         imageSize: CGSize(width: 13, height: 22),
         title: "VERIFY PHONE NUMBER",
         sharedColor: .lightGrayText,
-        font: CKFont.regular(17))
+        font: .regular(17))
       verifyPhoneNumberPrimaryButton.setTitle(nil, for: .normal)
       verifyPhoneNumberPrimaryButton.setAttributedTitle(verifyPhoneButtonTitle, for: .normal)
       changeRemovePhoneButton.isHidden = true
@@ -107,7 +107,7 @@ class PhoneNumberStatusViewController: BaseViewController, StoryboardInitializab
         imageSize: CGSize(width: 20, height: 16),
         title: "VERIFY TWITTER ACCOUNT",
         sharedColor: .lightGrayText,
-        font: CKFont.regular(17))
+        font: .regular(17))
 
       verifyTwitterPrimaryButton.setAttributedTitle(verifyTwitterButtonTitle, for: .normal)
     }
@@ -116,7 +116,7 @@ class PhoneNumberStatusViewController: BaseViewController, StoryboardInitializab
     setupAddressUI()
 
     let attributes: [NSAttributedString.Key: Any] = [.foregroundColor: UIColor.lightBlueTint,
-                                                     .font: CKFont.regular(14),
+                                                     .font: UIFont.regular(14),
                                                      .underlineStyle: 1,
                                                      .underlineColor: UIColor.lightBlueTint]
 

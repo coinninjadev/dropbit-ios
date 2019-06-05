@@ -22,7 +22,7 @@ class BuySpendCardCollectionViewCell: UICollectionViewCell {
   @IBOutlet var purposeImageView: UIImageView!
   @IBOutlet var purposeLabel: UILabel! {
     didSet {
-      purposeLabel.font = CKFont.secondaryButtonTitle
+      purposeLabel.font = .secondaryButtonTitle
       purposeLabel.textColor = .lightGrayText
     }
   }
