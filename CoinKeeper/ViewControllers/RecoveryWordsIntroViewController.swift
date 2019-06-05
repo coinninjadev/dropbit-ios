@@ -53,7 +53,7 @@ final class RecoveryWordsIntroViewController: BaseViewController, StoryboardInit
     restoreInfoLabel.font = .regular(15)
     estimatedTimeLabel.font = .regular(13)
 
-    [titleLabel, subtitle1Label, restoreInfoLabel].forEach { $0?.textColor = .grayText }
+    [titleLabel, subtitle1Label, restoreInfoLabel].forEach { $0?.textColor = .darkGrayText }
     [subtitle2Label, estimatedTimeLabel].forEach { $0?.textColor = .darkBlueText }
 
     switch coordinationDelegate?.verifyIfWordsAreBackedUp() {

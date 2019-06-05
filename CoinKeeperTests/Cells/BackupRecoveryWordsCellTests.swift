@@ -36,7 +36,7 @@ class BackupRecoveryWordsCellTests: XCTestCase {
   }
 
   func testStatusLabelInitialState() {
-    XCTAssertEqual(self.sut.statusLabel.textColor, .grayText, "statusLabel textColor should be grayText")
+    XCTAssertEqual(self.sut.statusLabel.textColor, .darkGrayText, "statusLabel textColor should be grayText")
   }
 
   // MARK: load method

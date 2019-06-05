@@ -12,6 +12,6 @@ class OnboardingSubtitleLabel: UILabel {
   override func awakeFromNib() {
     super.awakeFromNib()
     font = .regular(15)
-    textColor = .grayText
+    textColor = .darkGrayText
   }
 }

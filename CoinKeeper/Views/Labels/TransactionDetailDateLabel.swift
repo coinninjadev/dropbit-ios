@@ -12,7 +12,7 @@ class TransactionDetailDateLabel: UILabel {
   override func awakeFromNib() {
     super.awakeFromNib()
     font = .regular(13)
-    textColor = .grayText
+    textColor = .darkGrayText
     isHidden = false
     numberOfLines = 1
     textAlignment = .center

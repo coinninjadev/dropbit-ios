@@ -27,7 +27,7 @@ final class GetBitcoinViewController: BaseViewController, StoryboardInitializabl
 
   override func viewDidLoad() {
     super.viewDidLoad()
-    headerLabel.textColor = .grayText
+    headerLabel.textColor = .darkGrayText
     headerLabel.font = .light(15)
 
     let mapPinImage = UIImage(imageLiteralResourceName: "mapPin")

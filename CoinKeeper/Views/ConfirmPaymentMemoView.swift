@@ -42,7 +42,7 @@ class ConfirmPaymentMemoView: UIView {
     memoLabel.textColor = .darkBlueText
     memoLabel.font = .regular(14)
 
-    isSharedDescriptionLabel.textColor = .grayText
+    isSharedDescriptionLabel.textColor = .darkGrayText
     isSharedDescriptionLabel.font = .regular(10)
   }
 

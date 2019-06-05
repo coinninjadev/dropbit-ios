@@ -94,7 +94,7 @@ class SendPaymentMemoView: UIView {
       memoLabel.textColor = .darkBlueText
     } else {
       memoLabel.text = "Add a memo"
-      memoLabel.textColor = .grayText
+      memoLabel.textColor = .darkGrayText
     }
   }
 

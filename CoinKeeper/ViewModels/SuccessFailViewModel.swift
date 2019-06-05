@@ -34,7 +34,7 @@ class SuccessFailViewModel {
 
   var subtitleTextColor: UIColor {
     switch mode {
-    case .pending, .success:  return .grayText
+    case .pending, .success:  return .darkGrayText
     case .failure:            return .darkPeach
     }
   }

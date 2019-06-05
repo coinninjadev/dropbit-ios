@@ -11,6 +11,6 @@ import UIKit
 class GrayCellSeparator: UIView {
   override func awakeFromNib() {
     super.awakeFromNib()
-    self.backgroundColor = .selectedCellBackground
+    self.backgroundColor = .darkGrayCellSeparator
   }
 }

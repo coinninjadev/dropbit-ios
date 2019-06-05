@@ -33,7 +33,7 @@ final class SpendBitcoinViewController: BaseViewController, StoryboardInitializa
     cardCollectionView.registerNib(cellType: BuySpendCardCollectionViewCell.self)
     cardCollectionView.backgroundColor = .clear
 
-    headerLabel.textColor = .grayText
+    headerLabel.textColor = .darkGrayText
     headerLabel.font = .light(15)
 
     spendAroundMeButton.style = .standard

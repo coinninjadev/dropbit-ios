@@ -31,7 +31,7 @@ final class RequestPayViewController: PresentableViewController, StoryboardIniti
   }
   @IBOutlet var secondaryCurrencyLabel: UILabel! {
     didSet {
-      secondaryCurrencyLabel.textColor = .grayText
+      secondaryCurrencyLabel.textColor = .darkGrayText
       secondaryCurrencyLabel.font = .regular(17)
     }
   }
@@ -53,7 +53,7 @@ final class RequestPayViewController: PresentableViewController, StoryboardIniti
   }
   @IBOutlet var tapInstructionLabel: UILabel! {
     didSet {
-      tapInstructionLabel.textColor = .grayText
+      tapInstructionLabel.textColor = .darkGrayText
       tapInstructionLabel.font = .medium(10)
     }
   }

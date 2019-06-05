@@ -35,7 +35,7 @@ class VerifyRecoveryWordCell: UICollectionViewCell, AccessibleViewSettable {
   // MARK: view instantiation
   override func awakeFromNib() {
     super.awakeFromNib()
-    wordLabelBackgroundView.backgroundColor = .verifyWordLightGray
+    wordLabelBackgroundView.backgroundColor = .verifyWordBackground
     wordLabelBackgroundView.layer.borderColor = UIColor.lightGrayOutline.cgColor
     wordLabelBackgroundView.layer.borderWidth = 1.0
     wordLabelBackgroundView.applyCornerRadius(4)

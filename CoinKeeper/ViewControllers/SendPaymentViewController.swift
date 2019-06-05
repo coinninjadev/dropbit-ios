@@ -236,7 +236,7 @@ extension SendPaymentViewController {
     recipientDisplayNumberLabel.font = .regular(20)
     payTitleLabel.font = .regular(15)
     payTitleLabel.textColor = .darkBlueText
-    secondaryAmountLabel.textColor = .grayText
+    secondaryAmountLabel.textColor = .darkGrayText
     secondaryAmountLabel.font = .regular(17)
   }
 
@@ -271,9 +271,9 @@ extension SendPaymentViewController {
     addressScanButtonContainerView.layer.borderWidth = 1.0
 
     bitcoinAddressButton.titleLabel?.font = .medium(14)
-    bitcoinAddressButton.setTitleColor(.grayText, for: .normal)
+    bitcoinAddressButton.setTitleColor(.darkGrayText, for: .normal)
 
-    scanButton.backgroundColor = .backgroundDarkGray
+    scanButton.backgroundColor = .darkGrayBackground
   }
 
   fileprivate func formatPhoneNumberEntryView() {

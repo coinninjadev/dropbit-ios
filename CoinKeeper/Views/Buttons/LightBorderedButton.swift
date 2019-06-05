@@ -14,7 +14,7 @@ class LightBorderedButton: UIButton {
     super.awakeFromNib()
     backgroundColor = .clear
     applyCornerRadius(5)
-    let borderColor = UIColor.grayText.withAlphaComponent(0.8)
+    let borderColor = UIColor.darkGrayText.withAlphaComponent(0.8)
     layer.borderColor = borderColor.cgColor
     layer.borderWidth = 1.0 / UIScreen.main.nativeScale
     titleLabel?.font = .secondaryButtonTitle

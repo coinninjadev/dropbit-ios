@@ -90,7 +90,7 @@ class TransactionHistoryDetailCellAddressView: UIView {
     // this should be populated with the address also, just previously hidden, now visible
     addressTextButton.setTitle(viewModel.receiverAddress, for: .normal)
     addressTextButton.setTitleColor(.lightBlueTint, for: .normal)
-    addressTextButton.setTitleColor(.grayText, for: .disabled)
+    addressTextButton.setTitleColor(.darkGrayText, for: .disabled)
 
     addressTextButton.isEnabled = !viewModel.broadcastFailed
     addressImageButton.isHidden = (viewModel.broadcastFailed || !viewModel.addressButtonIsActive)
