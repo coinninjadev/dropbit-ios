@@ -9,6 +9,7 @@
 import PromiseKit
 import UIKit
 import os.log
+import Permission
 
 extension AppCoordinator: SettingsViewControllerDelegate {
 
@@ -21,7 +22,11 @@ extension AppCoordinator: SettingsViewControllerDelegate {
   }
 
   func yearlyHighPushNotificationIsSubscribed() -> Bool {
-    return persistenceManager.yearlyPriceHighNotificationIsEnabled()
+    let permission = permissionManager.permissionStatus(for: .notification)
+    let permissionGranted = permission == .authorized
+    let hasPushToken = persistenceManager.string(for: .devicePushToken) != nil
+    let isEnabled = persistenceManager.yearlyPriceHighNotificationIsEnabled()
+    return isEnabled && permissionGranted && hasPushToken
   }
 
   func viewControllerDidSelectRecoveryWords(_ viewController: UIViewController) {
@@ -43,14 +48,30 @@ extension AppCoordinator: SettingsViewControllerDelegate {
     self.persistenceManager.enableDustProtection(didEnable)
   }
 
-  func viewController(_ viewController: UIViewController, didEnableYearlyHighNotification didEnable: Bool) {
-    persistenceManager.updateYearlyPriceHighNotification(enabled: didEnable)
-    guard persistenceManager.string(for: .devicePushToken) != nil else { return }
+  func viewController(_ viewController: UIViewController, didEnableYearlyHighNotification didEnable: Bool, completion: @escaping () -> Void) {
+    permissionManager.requestPermission(for: .notification) { (status: PermissionStatus) in
+      switch status {
+      case .authorized, .notDetermined:
+        guard self.persistenceManager.string(for: .devicePushToken) != nil else {
+          self.requestPushNotificationDialogueIfNeeded()
+          completion()
+          return
+        }
 
-    if didEnable {
-      notificationManager.subscribeToTopic(type: .btcHigh)
-    } else {
-      notificationManager.unsubscribeFromTopic(type: .btcHigh)
+        self.persistenceManager.updateYearlyPriceHighNotification(enabled: didEnable)
+
+        if didEnable {
+          self.notificationManager.subscribeToTopic(type: .btcHigh)
+            .ensure { completion() }.cauterize()
+
+        } else {
+          self.notificationManager.unsubscribeFromTopic(type: .btcHigh)
+            .ensure { completion() }.cauterize()
+        }
+
+      case .denied, .disabled:
+        completion()
+      }
     }
   }
 

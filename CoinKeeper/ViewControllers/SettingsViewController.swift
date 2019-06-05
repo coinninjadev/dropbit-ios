@@ -22,7 +22,7 @@ protocol SettingsViewControllerDelegate: ViewControllerDismissable {
   func viewController(_ viewController: UIViewController, didRequestOpenURL url: URL)
   func viewControllerResyncBlockchain(_ viewController: UIViewController)
   func viewController(_ viewController: UIViewController, didEnableDustProtection didEnable: Bool)
-  func viewController(_ viewController: UIViewController, didEnableYearlyHighNotification didEnable: Bool)
+  func viewController(_ viewController: UIViewController, didEnableYearlyHighNotification didEnable: Bool, completion: @escaping () -> Void)
 }
 
 class SettingsViewController: BaseViewController, StoryboardInitializable {
@@ -92,6 +92,7 @@ class SettingsViewController: BaseViewController, StoryboardInitializable {
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     navigationController?.isNavigationBarHidden = true
+    settingsTableView.reloadData()
   }
 
   private func isWalletBackedUp() -> Bool {
@@ -137,7 +138,15 @@ class SettingsViewController: BaseViewController, StoryboardInitializable {
     let isYearlyHighPushEnabled = self.coordinationDelegate?.yearlyHighPushNotificationIsSubscribed() ?? false
     let yearlyHighType = SettingsCellType.yearlyHighPushNotification(enabled: isYearlyHighPushEnabled) { [weak self] (didEnable: Bool) in
       guard let localSelf = self else { return }
-      localSelf.coordinationDelegate?.viewController(localSelf, didEnableYearlyHighNotification: didEnable)
+      localSelf.coordinationDelegate?.viewController(
+        localSelf,
+        didEnableYearlyHighNotification: didEnable,
+        completion: { [weak self] in
+          guard let localSelf = self else { return }
+          localSelf.viewModel = localSelf.createViewModel()
+          localSelf.settingsTableView.reloadData()
+        }
+      )
     }
     let yearlyHighVM = SettingsCellViewModel(type: yearlyHighType)
 

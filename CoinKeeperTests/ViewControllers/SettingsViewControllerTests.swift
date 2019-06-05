@@ -23,22 +23,22 @@ class SettingsViewControllerTests: XCTestCase {
 
   override func tearDown() {
     mockCoordinator = nil
-    self.sut = nil
+    sut = nil
     super.tearDown()
   }
 
   // MARK: outlets
   func testOutletsAreConnected() {
-    XCTAssertNotNil(self.sut.closeButton, "closeButton should be connected")
-    XCTAssertNotNil(self.sut.settingsTableView, "settingsTableView should be connected")
-    XCTAssertNotNil(self.sut.deleteWalletButton, "deleteWalletButton should be connected")
-    XCTAssertNotNil(self.sut.resyncBlockchainButton, "resyncBlockchainButton should be connected")
+    XCTAssertNotNil(sut.closeButton, "closeButton should be connected")
+    XCTAssertNotNil(sut.settingsTableView, "settingsTableView should be connected")
+    XCTAssertNotNil(sut.deleteWalletButton, "deleteWalletButton should be connected")
+    XCTAssertNotNil(sut.resyncBlockchainButton, "resyncBlockchainButton should be connected")
   }
 
   // MARK: initial state
   func testTableViewDelegateDataSourceAreConnected() {
-    XCTAssertTrue(self.sut.settingsTableView.delegate === sut, "delegate should be sut")
-    XCTAssertTrue(self.sut.settingsTableView.dataSource === sut, "dataSource should be sut")
+    XCTAssertTrue(sut.settingsTableView.delegate === sut, "delegate should be sut")
+    XCTAssertTrue(sut.settingsTableView.dataSource === sut, "dataSource should be sut")
   }
 
   // MARK: buttons contain actions
@@ -103,7 +103,7 @@ class SettingsViewControllerTests: XCTestCase {
     func viewControllerSendDebuggingInfo(_ viewController: UIViewController) { }
     func viewControllerDidSelectOpenSourceLicenses(_ viewController: UIViewController) {}
     func viewController(_ viewController: UIViewController, didEnableDustProtection didEnable: Bool) {}
-    func viewController(_ viewController: UIViewController, didEnableYearlyHighNotification didEnable: Bool) {}
+    func viewController(_ viewController: UIViewController, didEnableYearlyHighNotification didEnable: Bool, completion: () -> Void) {}
 
     var didSelectCloseWasCalled = false
     func viewControllerDidSelectClose(_ viewController: UIViewController) {
