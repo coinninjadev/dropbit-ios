@@ -144,7 +144,7 @@ extension AppCoordinator: SerialQueueManagerDelegate {
       deviceDescriptions.append("phone number")
     }
     if verifiedTypes.contains(.twitter) {
-      deviceDescriptions.append("twitter account")
+      deviceDescriptions.append("Twitter account")
     }
     let deviceDescription = deviceDescriptions.joined(separator: " or ")
     let errorMessage: String

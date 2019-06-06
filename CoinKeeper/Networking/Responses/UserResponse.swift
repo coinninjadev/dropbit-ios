@@ -11,13 +11,20 @@ import Foundation
 enum UserIdentityType: String, Codable {
   case phone
   case twitter
+
+  var displayDescription: String {
+    switch self {
+    case .phone:    return "phone"
+    case .twitter:  return "Twitter"
+    }
+  }
 }
 
 extension UserIdentityType {
   var identityDescription: String {
     switch self {
     case .phone: return "phone number"
-    case .twitter: return "twitter account"
+    case .twitter: return "Twitter account"
     }
   }
 }
