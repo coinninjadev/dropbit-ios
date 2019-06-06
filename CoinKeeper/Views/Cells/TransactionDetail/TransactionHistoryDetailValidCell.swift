@@ -87,11 +87,11 @@ class TransactionHistoryDetailValidCell: TransactionHistoryDetailBaseCell {
     let shouldHide: Bool
     if viewModel.invitationStatus != nil {
       progressView.titles = ["", "", "", "", ""]
-      progressView.titles = ["1", "2", "3", "4", "✓"]
+      progressView.stepTitles = ["1", "2", "3", "4", "✓"]
       progressBarWidthConstraint.constant = 250
     } else {
       progressView.titles = ["", "", ""]
-      progressView.titles = ["1", "2", "✓"]
+      progressView.stepTitles = ["1", "2", "✓"]
       progressBarWidthConstraint.constant = 130
     }
 

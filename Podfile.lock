@@ -44,7 +44,7 @@ PODS:
 
 DEPENDENCIES:
   - DZNEmptyDataSet (~> 1.8)
-  - JKSteppedProgressBar (from `https://github.com/MitchellMalleo/JKSteppedProgressBar.git`, commit `72403a1`)
+  - JKSteppedProgressBar (from `https://github.com/MitchellMalleo/JKSteppedProgressBar.git`, commit `0519aa3`)
   - Mixpanel-swift (~> 2.6.2)
   - MMDrawerController (~> 0.6.0)
   - Moya (~> 13.0.1)
@@ -71,7 +71,7 @@ SPEC REPOS:
 
 EXTERNAL SOURCES:
   JKSteppedProgressBar:
-    :commit: 72403a1
+    :commit: 0519aa3
     :git: https://github.com/MitchellMalleo/JKSteppedProgressBar.git
   Permission:
     :commit: 659c257
@@ -82,7 +82,7 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   JKSteppedProgressBar:
-    :commit: 72403a1
+    :commit: 0519aa3
     :git: https://github.com/MitchellMalleo/JKSteppedProgressBar.git
   Permission:
     :commit: 659c257
@@ -105,6 +105,6 @@ SPEC CHECKSUMS:
   RNCryptor: a369134686cd2ad391323cc856b62e591193ba79
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
 
-PODFILE CHECKSUM: fe494d982e3fe3ffe9137331546cee6cdb1bc8b1
+PODFILE CHECKSUM: 9342ea4c077bde580426e23539879e5c2a8a2a44
 
 COCOAPODS: 1.6.1
