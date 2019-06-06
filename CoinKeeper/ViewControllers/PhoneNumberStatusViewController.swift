@@ -58,7 +58,7 @@ class PhoneNumberStatusViewController: BaseViewController, StoryboardInitializab
     phoneNumberNavigationTitle.font = .regular(15)
     phoneNumberNavigationTitle.textColor = .darkBlueText
     titleLabel.font = .regular(15)
-    titleLabel.textColor = .grayText
+    titleLabel.textColor = .darkGrayText
     serverAddressView.delegate = self
     serverAddressViewVerticalConstraint.constant = UIScreen.main.bounds.height
 

@@ -12,7 +12,7 @@ class TransactionHistoryDetailLabel: UILabel {
   override func awakeFromNib() {
     super.awakeFromNib()
     font = .regular(12)
-    textColor = .grayText
+    textColor = .darkGrayText
     isHidden = false
     numberOfLines = 1
     textAlignment = .left

@@ -20,8 +20,8 @@ class CountryCodePickerCell: UITableViewCell {
     backgroundColor = .clear
     countryNameLabel.textAlignment = .left
     countryCodeLabel.textAlignment = .right
-    countryNameLabel.textColor = .searchResultGrayText
-    countryCodeLabel.textColor = .searchResultGrayText
+    countryNameLabel.textColor = .darkGrayText
+    countryCodeLabel.textColor = .darkGrayText
     countryNameLabel.font = .regular(10)
     countryCodeLabel.font = .regular(10)
     separatorView.backgroundColor = .graySeparator

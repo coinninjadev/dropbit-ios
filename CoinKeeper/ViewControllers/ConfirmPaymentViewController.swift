@@ -66,7 +66,7 @@ class ConfirmPaymentViewController: PresentableViewController, StoryboardInitial
     primaryCurrencyLabel.font = .regular(35)
 
     secondaryCurrencyLabel.textAlignment = .center
-    secondaryCurrencyLabel.textColor = .grayText
+    secondaryCurrencyLabel.textColor = .darkGrayText
     secondaryCurrencyLabel.font = .regular(17)
 
     networkFeeLabel.textAlignment = .center
@@ -84,10 +84,10 @@ class ConfirmPaymentViewController: PresentableViewController, StoryboardInitial
     memoContainerView.isHidden = true
 
     secondaryAddressLabel.textAlignment = .center
-    secondaryAddressLabel.textColor = .grayText
+    secondaryAddressLabel.textColor = .darkGrayText
     secondaryAddressLabel.font = .regular(13)
 
-    tapAndHoldLabel.textColor = .darkGray
+    tapAndHoldLabel.textColor = .darkGrayText
     tapAndHoldLabel.font = .medium(13)
   }
 

@@ -12,7 +12,7 @@ class TransactionDetailMessageLabel: UILabel {
   override func awakeFromNib() {
     super.awakeFromNib()
     font = .regular(13)
-    textColor = .grayText
+    textColor = .darkGrayText
     isHidden = false
     textAlignment = .center
     numberOfLines = 0

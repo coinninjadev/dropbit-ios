@@ -27,7 +27,7 @@ class BackupRecoveryWordsCell: UICollectionViewCell, AccessibleViewSettable {
     wordLabel.textColor = .darkBlueText
 
     statusLabel.font = .medium(14)
-    statusLabel.textColor = .grayText
+    statusLabel.textColor = .darkGrayText
   }
 
   func load(with data: BackupRecoveryWordCellData) {

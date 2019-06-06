@@ -12,7 +12,7 @@ import UIKit
 class AddressTableViewCell: UITableViewCell {
   @IBOutlet var addressLabel: UILabel! {
     didSet {
-      addressLabel.textColor = .grayText
+      addressLabel.textColor = .darkGrayText
       addressLabel.font = .medium(13)
       addressLabel.adjustsFontSizeToFitWidth = true
     }

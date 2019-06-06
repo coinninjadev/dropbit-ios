@@ -12,7 +12,7 @@ class TransactionDetailBottomButton: UIButton {
   override func awakeFromNib() {
     super.awakeFromNib()
     applyCornerRadius(4)
-    backgroundColor = .darkBlueButton
+    backgroundColor = .darkBlueBackground
     setTitleColor(.extraLightGrayBackground, for: .normal)
     titleLabel?.font = .primaryButtonTitle
   }

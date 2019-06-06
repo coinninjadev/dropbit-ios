@@ -12,7 +12,7 @@ class TransactionDetailSecondaryAmountLabel: UILabel {
   override func awakeFromNib() {
     super.awakeFromNib()
     font = .regular(15)
-    textColor = .grayText
+    textColor = .darkGrayText
     isHidden = false
     numberOfLines = 1
     textAlignment = .center

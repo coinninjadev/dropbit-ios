@@ -19,7 +19,7 @@ class UnderlinedTextButton: UIButton {
     let normalString = NSMutableAttributedString.medium(text, size: size, color: color)
     normalString.underlineText()
 
-    let highlightedString = NSMutableAttributedString.medium(text, size: size, color: .grayText)
+    let highlightedString = NSMutableAttributedString.medium(text, size: size, color: .darkGrayText)
     highlightedString.underlineText()
 
     setAttributedTitle(normalString, for: .normal)

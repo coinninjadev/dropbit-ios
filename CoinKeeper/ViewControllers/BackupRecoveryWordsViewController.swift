@@ -151,7 +151,7 @@ final class BackupRecoveryWordsViewController: BaseViewController, StoryboardIni
     let finalIndexTitle = wordsBackedUp ? "FINISH" : "VERIFY"
     nextButton.setTitle(indexIsLast(index: index) ? finalIndexTitle : "NEXT", for: .normal)
 
-    let color: UIColor = indexIsLast(index: index) ? .darkBlueButton : .primaryActionButton
+    let color: UIColor = indexIsLast(index: index) ? .darkBlueBackground : .primaryActionButton
     nextButton.backgroundColor = color
 
     backButton.isHidden = !((1..<recoveryWords.count) ~= index)

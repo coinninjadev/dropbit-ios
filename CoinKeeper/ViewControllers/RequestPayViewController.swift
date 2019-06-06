@@ -31,7 +31,7 @@ final class RequestPayViewController: PresentableViewController, StoryboardIniti
   }
   @IBOutlet var secondaryCurrencyLabel: UILabel! {
     didSet {
-      secondaryCurrencyLabel.textColor = .grayText
+      secondaryCurrencyLabel.textColor = .darkGrayText
       secondaryCurrencyLabel.font = .regular(17)
     }
   }
@@ -46,14 +46,14 @@ final class RequestPayViewController: PresentableViewController, StoryboardIniti
   @IBOutlet var receiveAddressBGView: UIView! {
     didSet {
       receiveAddressBGView.applyCornerRadius(4)
-      receiveAddressBGView.layer.borderColor = UIColor.lightGrayOutline.cgColor
+      receiveAddressBGView.layer.borderColor = UIColor.mediumGrayBorder.cgColor
       receiveAddressBGView.layer.borderWidth = 2.0
       receiveAddressBGView.backgroundColor = .clear
     }
   }
   @IBOutlet var tapInstructionLabel: UILabel! {
     didSet {
-      tapInstructionLabel.textColor = .grayText
+      tapInstructionLabel.textColor = .darkGrayText
       tapInstructionLabel.font = .medium(10)
     }
   }

@@ -33,7 +33,7 @@ final class SpendBitcoinViewController: BaseViewController, StoryboardInitializa
     cardCollectionView.registerNib(cellType: BuySpendCardCollectionViewCell.self)
     cardCollectionView.backgroundColor = .clear
 
-    headerLabel.textColor = .grayText
+    headerLabel.textColor = .darkGrayText
     headerLabel.font = .light(15)
 
     spendAroundMeButton.style = .standard
@@ -55,7 +55,7 @@ final class SpendBitcoinViewController: BaseViewController, StoryboardInitializa
     spendOnlineButton.setAttributedTitle(onlineString, for: .normal)
 
     navigationController?.setNavigationBarHidden(false, animated: true)
-    navigationController?.navigationBar.tintColor = .darkBlueButton
+    navigationController?.navigationBar.tintColor = .darkBlueBackground
   }
 
   @IBAction func spendBitcoinAroundMe(_ sender: Any) {

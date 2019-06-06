@@ -33,7 +33,7 @@ class ContactsTableViewHeader: UITableViewHeaderFooterView {
   override func awakeFromNib() {
     super.awakeFromNib()
 
-    _backgroundView.backgroundColor = .darkBlueButton
+    _backgroundView.backgroundColor = .darkBlueBackground
   }
 
   @IBAction func whatIsButtonWasTouched() {

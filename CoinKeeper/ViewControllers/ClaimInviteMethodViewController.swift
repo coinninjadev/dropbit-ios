@@ -40,7 +40,7 @@ class ClaimInviteMethodViewController: BaseViewController, StoryboardInitializab
 
     messageLabel.text = "How were you sent Bitcoin?"
     messageLabel.font = .regular(15)
-    messageLabel.textColor = .grayText
+    messageLabel.textColor = .darkGrayText
     configureButtons()
   }
 

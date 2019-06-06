@@ -236,7 +236,7 @@ extension SendPaymentViewController {
     recipientDisplayNumberLabel.font = .regular(20)
     payTitleLabel.font = .regular(15)
     payTitleLabel.textColor = .darkBlueText
-    secondaryAmountLabel.textColor = .grayText
+    secondaryAmountLabel.textColor = .darkGrayText
     secondaryAmountLabel.font = .regular(17)
   }
 
@@ -267,24 +267,24 @@ extension SendPaymentViewController {
 
   fileprivate func formatAddressScanView() {
     addressScanButtonContainerView.applyCornerRadius(4)
-    addressScanButtonContainerView.layer.borderColor = UIColor.lightGrayOutline.cgColor
+    addressScanButtonContainerView.layer.borderColor = UIColor.mediumGrayBorder.cgColor
     addressScanButtonContainerView.layer.borderWidth = 1.0
 
     bitcoinAddressButton.titleLabel?.font = .medium(14)
-    bitcoinAddressButton.setTitleColor(.grayText, for: .normal)
+    bitcoinAddressButton.setTitleColor(.darkGrayText, for: .normal)
 
-    scanButton.backgroundColor = .backgroundDarkGray
+    scanButton.backgroundColor = .mediumGrayBackground
   }
 
   fileprivate func formatPhoneNumberEntryView() {
     guard let entryView = phoneNumberEntryView else { return }
     entryView.backgroundColor = UIColor.clear
-    entryView.layer.borderColor = UIColor.lightGrayOutline.cgColor
+    entryView.layer.borderColor = UIColor.mediumGrayBorder.cgColor
     entryView.textField.delegate = self
     entryView.textField.backgroundColor = UIColor.clear
     entryView.textField.autocorrectionType = .no
     entryView.textField.font = .medium(14)
-    entryView.textField.textColor = .sendingToDarkGray
+    entryView.textField.textColor = .darkBlueText
     entryView.textField.adjustsFontSizeToFitWidth = true
     entryView.textField.keyboardType = .numberPad
     entryView.textField.textAlignment = .center

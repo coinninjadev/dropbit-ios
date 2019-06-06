@@ -66,7 +66,7 @@ class ShareTransactionViewController: UIViewController, StoryboardInitializable 
     // semi-opaque view sits between the button and the separate backing view
     // so that title and background have correct color
     dontAskAgainButton.titleLabel?.font = .primaryButtonTitle
-    dontAskAgainButton.setTitleColor(.grayText, for: .normal)
+    dontAskAgainButton.setTitleColor(.darkGrayText, for: .normal)
     dontAskAgainFadedBackground.backgroundColor = .primaryActionButton
     dontAskAgainFadedBackground.applyCornerRadius(4)
   }

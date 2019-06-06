@@ -25,8 +25,8 @@ class CNContactSearchBar: UISearchBar {
     textField.backgroundColor = .lightGrayBackground
     let leadingOffset = UIOffset(horizontal: CGFloat(30), vertical: CGFloat(0))
     setPositionAdjustment(leadingOffset, for: .search)
-    textField.backgroundColor = .searchBarLightGray
+    textField.backgroundColor = .extraLightGrayBackground
     searchTextPositionAdjustment = UIOffset(horizontal: 10.0, vertical: 0.0)
-    backgroundColor = .searchBarLightGray
+    backgroundColor = .extraLightGrayBackground
   }
 }

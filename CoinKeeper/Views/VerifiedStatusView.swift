@@ -27,7 +27,7 @@ class VerifiedStatusView: UIView {
     self.userIdentityType = userIdentityType
     switch userIdentityType {
     case .phone:
-      decorationBackgroundView.backgroundColor = .darkBlueButton
+      decorationBackgroundView.backgroundColor = .darkBlueBackground
       decorationImageView.image = UIImage(imageLiteralResourceName: "phoneDrawerIcon")
     case .twitter:
       decorationBackgroundView.backgroundColor = .lightBlueTint

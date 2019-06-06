@@ -27,7 +27,7 @@ final class GetBitcoinViewController: BaseViewController, StoryboardInitializabl
 
   override func viewDidLoad() {
     super.viewDidLoad()
-    headerLabel.textColor = .grayText
+    headerLabel.textColor = .darkGrayText
     headerLabel.font = .light(15)
 
     let mapPinImage = UIImage(imageLiteralResourceName: "mapPin")
@@ -62,7 +62,7 @@ final class GetBitcoinViewController: BaseViewController, StoryboardInitializabl
     buyWithGiftCardButton.style = .orange
 
     navigationController?.setNavigationBarHidden(false, animated: true)
-    navigationController?.navigationBar.tintColor = .darkBlueButton
+    navigationController?.navigationBar.tintColor = .darkBlueBackground
   }
 
   @IBAction func findATM() {

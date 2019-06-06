@@ -34,7 +34,7 @@ class RestoreWalletViewController: BaseViewController, StoryboardInitializable {
   @IBOutlet var wordCountLabel: UILabel! {
     didSet {
       wordCountLabel.font = .regular(12)
-      wordCountLabel.textColor = .grayText
+      wordCountLabel.textColor = .darkGrayText
     }
   }
   @IBOutlet var wordButtonOne: PrimaryActionButton!

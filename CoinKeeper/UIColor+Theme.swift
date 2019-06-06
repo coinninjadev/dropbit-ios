@@ -12,7 +12,7 @@ extension UIColor {
 
   // MARK: Colors
   static var darkBlueText: UIColor { return UIColor(r: 36, g: 37, b: 54) }
-  static var darkBlueButton: UIColor { return darkBlueText }
+  static var darkBlueBackground: UIColor { return darkBlueText }
 
   static var lightBlueTint: UIColor { return UIColor(r: 44, g: 209, b: 255) }
   static var primaryActionButton: UIColor { return lightBlueTint }
@@ -33,41 +33,23 @@ extension UIColor {
   static var mango: UIColor { return UIColor(r: 247, g: 158, b: 54) }
 
   // MARK: Grays
-  static var settingsDarkGray: UIColor { return UIColor(r: 0.14, g: 0.15, b: 0.20) }
-  static var sendingToDarkGray: UIColor { return settingsDarkGray }
+  static var darkGrayText: UIColor { return UIColor(r: 155, g: 155, b: 155) }
+  static var dragIndicator: UIColor { return darkGrayText }
 
-  static var searchBarLightGray: UIColor { return UIColor(red: 0.97, green: 0.97, blue: 0.98, alpha: 1.00) }
-
-  static var darkGray: UIColor { return UIColor(r: 155, g: 155, b: 155) }
-  static var grayText: UIColor { return darkGray }
-
-  static var searchResultGrayText: UIColor { return UIColor(r: 172, g: 172, b: 172) }
-  static var memoInfoText: UIColor { return searchResultGrayText }
-
-  static var mediumGrayText: UIColor { return UIColor(r: 184, g: 184, b: 184) }
+  static var pageIndicator: UIColor { return UIColor(r: 184, g: 184, b: 184) }
 
   static var graySeparator: UIColor { return UIColor(r: 216, g: 216, b: 216) }
-  static var dragIndicator: UIColor { return searchResultGrayText }
 
   static var semiOpaquePopoverBackground: UIColor { return UIColor.black.withAlphaComponent(0.7) }
 
-  static var backgroundDarkGray: UIColor { return UIColor(r: 224, g: 224, b: 224) }
-  static var memoBorder: UIColor { return backgroundDarkGray }
-  static var borderDarkGray: UIColor { return backgroundDarkGray }
-  static var selectedCellBackground: UIColor { return backgroundDarkGray }
+  static var mediumGrayBackground: UIColor { return UIColor(r: 224, g: 224, b: 224) }
+  static var mediumGrayBorder: UIColor { return mediumGrayBackground }
 
-  static var lightGrayOutline: UIColor { return UIColor(r: 227, g: 227, b: 227) }
-  static var lightGrayButtonBackground: UIColor { return lightGrayOutline }
-
-  static var lightGrayText: UIColor { return UIColor(r: 244, g: 244, b: 244) }
-  static var lightGrayBackground: UIColor { return lightGrayText }
-
-  static var grayMemoBackground: UIColor { return UIColor(r: 247, g: 247, b: 247) }
-  static var flagButtonBackground: UIColor { return grayMemoBackground }
+  static var lightGrayBackground: UIColor { return UIColor(r: 244, g: 244, b: 244) }
+  static var lightGrayText: UIColor { return lightGrayBackground }
 
   static var extraLightGrayBackground: UIColor { return UIColor(r: 250, g: 250, b: 250) }
-  static var containerBackgroundGray: UIColor { return extraLightGrayBackground }
-  static var verifyWordLightGray: UIColor { return extraLightGrayBackground }
+  static var extraLightGrayText: UIColor { return extraLightGrayBackground }
 
   static var whiteText: UIColor { return UIColor(r: 255, g: 255, b: 255) }
   static var whiteBackground: UIColor { return whiteText }

@@ -140,7 +140,7 @@ class SuccessFailView: UIView {
   }()
 
   private func animateForLoading() {
-    backgroundShapeLayer.strokeColor = UIColor.grayText.cgColor
+    backgroundShapeLayer.strokeColor = UIColor.darkGrayText.cgColor
     layer.addSublayer(foregroundShapeLayer)
     foregroundShapeLayer.add(generateAnimation(), forKey: "strokeLineAnimation")
     foregroundShapeLayer.add(rotateAnimation, forKey: "transform.rotation.z")
@@ -189,7 +189,7 @@ class SuccessFailView: UIView {
 
     backgroundShapeLayer.path = backgroundBezierPath.cgPath
     backgroundShapeLayer.lineWidth = lineWidth
-    backgroundShapeLayer.strokeColor = UIColor.grayText.cgColor
+    backgroundShapeLayer.strokeColor = UIColor.darkGrayText.cgColor
     backgroundShapeLayer.fillColor = UIColor.clear.cgColor
     backgroundShapeLayer.lineCap = CAShapeLayerLineCap.round
     backgroundShapeLayer.bounds = bounds
@@ -221,7 +221,7 @@ class SuccessFailView: UIView {
     errorBackgroundShapeLayerLeftTop.path = leftTopErrorBezierPath.cgPath
     errorBackgroundShapeLayerLeftTop.lineCap = CAShapeLayerLineCap.round
     errorBackgroundShapeLayerLeftTop.lineWidth = lineWidth
-    errorBackgroundShapeLayerLeftTop.strokeColor = UIColor.grayText.cgColor
+    errorBackgroundShapeLayerLeftTop.strokeColor = UIColor.darkGrayText.cgColor
     errorBackgroundShapeLayerLeftTop.fillColor = UIColor.clear.cgColor
     errorBackgroundShapeLayerLeftTop.strokeEnd = 1.0
     errorBackgroundShapeLayerLeftTop.zPosition = -1
@@ -229,7 +229,7 @@ class SuccessFailView: UIView {
     errorBackgroundShapeLayerLeftBottom.path = leftBottomErrorBezierPath.cgPath
     errorBackgroundShapeLayerLeftBottom.lineCap = CAShapeLayerLineCap.round
     errorBackgroundShapeLayerLeftBottom.lineWidth = lineWidth
-    errorBackgroundShapeLayerLeftBottom.strokeColor = UIColor.grayText.cgColor
+    errorBackgroundShapeLayerLeftBottom.strokeColor = UIColor.darkGrayText.cgColor
     errorBackgroundShapeLayerLeftBottom.fillColor = UIColor.clear.cgColor
     errorBackgroundShapeLayerLeftBottom.strokeEnd = 1.0
     errorBackgroundShapeLayerLeftBottom.zPosition = -1
@@ -262,7 +262,7 @@ class SuccessFailView: UIView {
     checkmarkBackgroundShapeLayer.path = checkmarkBezierPath.cgPath
     checkmarkBackgroundShapeLayer.lineCap = CAShapeLayerLineCap.round
     checkmarkBackgroundShapeLayer.lineWidth = lineWidth
-    checkmarkBackgroundShapeLayer.strokeColor = UIColor.grayText.cgColor
+    checkmarkBackgroundShapeLayer.strokeColor = UIColor.darkGrayText.cgColor
     checkmarkBackgroundShapeLayer.fillColor = UIColor.clear.cgColor
     checkmarkBackgroundShapeLayer.strokeEnd = 1.0
     checkmarkBackgroundShapeLayer.zPosition = -1

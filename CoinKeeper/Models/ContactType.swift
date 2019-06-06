@@ -90,6 +90,17 @@ struct ValidatedContact: PhoneContactType {
     self.globalPhoneNumber = GlobalPhoneNumber(countryCode: metadata.countryCode, nationalNumber: metadata.nationalNumber)
   }
 
+  /// Use for test instances only
+  init(kind: ContactKind,
+       displayName: String,
+       displayNumber: String,
+       globalPhoneNumber: GlobalPhoneNumber) {
+    self.kind = kind
+    self.displayName = displayName
+    self.displayNumber = displayNumber
+    self.globalPhoneNumber = globalPhoneNumber
+  }
+
 }
 
 struct GenericContact: PhoneContactType {

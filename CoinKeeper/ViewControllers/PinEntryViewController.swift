@@ -99,7 +99,7 @@ final class PinEntryViewController: BaseViewController, StoryboardInitializable 
         pinConfirmLabel.alpha = 1.0
       }
 
-      pinConfirmLabel.textColor = .grayText
+      pinConfirmLabel.textColor = .darkGrayText
       pinConfirmLabel.font = .regular(15)
     }
   }

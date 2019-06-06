@@ -12,6 +12,6 @@ class ExamplePhoneNumberLabel: UILabel {
   override func awakeFromNib() {
     super.awakeFromNib()
     font = .regular(13)
-    textColor = .grayText
+    textColor = .darkGrayText
   }
 }
