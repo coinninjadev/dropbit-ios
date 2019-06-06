@@ -7,19 +7,19 @@ target 'DropBit' do
   use_frameworks!
 
   # Pods for CoinKeeper
-  pod 'Mixpanel-swift', '~> 2.5.0'
-  pod 'MMDrawerController', '~> 0.5.7'
-  pod 'Permission/Camera', git: 'https://github.com/pahmed/Permission.git', commit: '8b47d5f'
-  pod 'Permission/Notifications', git: 'https://github.com/pahmed/Permission.git', commit: '8b47d5f'
-  pod 'Permission/Contacts', git: 'https://github.com/pahmed/Permission.git', commit: '8b47d5f'
-  pod 'Permission/Location', git: 'https://github.com/pahmed/Permission.git', commit: '8b47d5f'
-  pod 'SVProgressHUD'
+  pod 'Mixpanel-swift', '~> 2.6.2'
+  pod 'MMDrawerController', '~> 0.6.0'
+  pod 'Permission/Camera', git: 'https://github.com/SixFiveSoftware/Permission.git', commit: '659c257'
+  pod 'Permission/Notifications', git: 'https://github.com/SixFiveSoftware/Permission.git', commit: '659c257'
+  pod 'Permission/Contacts', git: 'https://github.com/SixFiveSoftware/Permission.git', commit: '659c257'
+  pod 'Permission/Location', git: 'https://github.com/SixFiveSoftware/Permission.git', commit: '659c257'
+  pod 'SVProgressHUD', '~> 2.2.5'
   pod 'Moya', '~> 11.0.2'
-  pod 'Result'
-  pod 'ReachabilitySwift'
+  # pod 'Result'
+  pod 'ReachabilitySwift', '~> 4.3.1'
   pod 'PhoneNumberKit', git: 'https://github.com/blwinters/PhoneNumberKit.git', commit: '18b0a34'
-  pod 'JKSteppedProgressBar', git: 'https://github.com/MitchellMalleo/JKSteppedProgressBar.git', commit: 'a41db05'
-  pod 'RNCryptor', '~> 5.0'
+  pod 'JKSteppedProgressBar', git: 'https://github.com/MitchellMalleo/JKSteppedProgressBar.git', commit: '72403a1'
+  pod 'RNCryptor', '~> 5.1.0'
   pod 'DZNEmptyDataSet', '~> 1.8'
 
   target 'DropBitTests' do
