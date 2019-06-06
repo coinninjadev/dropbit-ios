@@ -583,16 +583,20 @@ class WalletAddressDataWorker: WalletAddressDataWorkerType {
     }
 
     let btcAmount = pendingInvitation.btcAmount
+    let dropBitType: OutgoingTransactionDropBitType = contact?.dropBitType ?? .none
+    let identityFactory = SenderIdentityFactory(persistenceManager: self.persistenceManager)
+    let senderIdentity = identityFactory.preferredSharedPayloadSenderIdentity(forDropBitType: dropBitType)
 
     let outgoingTransactionData = OutgoingTransactionData(
       txid: "",
-      dropBitType: contact?.dropBitType ?? .none,
+      dropBitType: dropBitType,
       destinationAddress: address,
       amount: btcAmount,
       feeAmount: pendingInvitation.fees,
       sentToSelf: false,
       requiredFeeRate: nil,
-      sharedPayloadDTO: sharedPayloadDTO
+      sharedPayloadDTO: sharedPayloadDTO,
+      sharedPayloadSenderIdentity: senderIdentity
     )
 
     let dto = WalletAddressRequestResponseDTO()
