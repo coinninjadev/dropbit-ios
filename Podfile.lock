@@ -17,11 +17,11 @@ PODS:
     - MMDrawerController/Core
   - MMDrawerController/Subclass (0.6.0):
     - MMDrawerController/Core
-  - Moya (11.0.2):
-    - Moya/Core (= 11.0.2)
-  - Moya/Core (11.0.2):
+  - Moya (13.0.1):
+    - Moya/Core (= 13.0.1)
+  - Moya/Core (13.0.1):
     - Alamofire (~> 4.1)
-    - Result (~> 3.0)
+    - Result (~> 4.1)
   - Permission/Camera (2.0.4):
     - Permission/Core
   - Permission/Contacts (2.0.4):
@@ -38,7 +38,7 @@ PODS:
   - PhoneNumberKit/UIKit (2.6.0):
     - PhoneNumberKit/PhoneNumberKitCore
   - ReachabilitySwift (4.3.1)
-  - Result (3.2.4)
+  - Result (4.1.0)
   - RNCryptor (5.1.0)
   - SVProgressHUD (2.2.5)
 
@@ -47,7 +47,7 @@ DEPENDENCIES:
   - JKSteppedProgressBar (from `https://github.com/MitchellMalleo/JKSteppedProgressBar.git`, commit `72403a1`)
   - Mixpanel-swift (~> 2.6.2)
   - MMDrawerController (~> 0.6.0)
-  - Moya (~> 11.0.2)
+  - Moya (~> 13.0.1)
   - Permission/Camera (from `https://github.com/SixFiveSoftware/Permission.git`, commit `659c257`)
   - Permission/Contacts (from `https://github.com/SixFiveSoftware/Permission.git`, commit `659c257`)
   - Permission/Location (from `https://github.com/SixFiveSoftware/Permission.git`, commit `659c257`)
@@ -97,14 +97,14 @@ SPEC CHECKSUMS:
   JKSteppedProgressBar: e61561a7faee1a4a216ac4510b4b6d1a3760e318
   Mixpanel-swift: eea98bb65fd80e992a9ecb3a0a421eca542ea72f
   MMDrawerController: e3a54a5570388463ad3b36975251575b50c4e1a0
-  Moya: a725035953bc1c0eb1be505ab903984501d82440
+  Moya: f4a4b80ff2f8a4ffc208dfb31cd91636622fee6e
   Permission: c53c7235f14d76cd2851364df0a7cf05b464037f
   PhoneNumberKit: 167ee1f0bbb6efce7c62559e620eae745595532f
   ReachabilitySwift: 4032e2f59586e11e3b0ebe15b167abdd587a388b
-  Result: d2d07204ce72856f1fd9130bbe42c35a7b0fea10
+  Result: bd966fac789cc6c1563440b348ab2598cc24d5c7
   RNCryptor: a369134686cd2ad391323cc856b62e591193ba79
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
 
-PODFILE CHECKSUM: be190ba7ce49eec43c1f44cbe4e385dee4488681
+PODFILE CHECKSUM: fe494d982e3fe3ffe9137331546cee6cdb1bc8b1
 
 COCOAPODS: 1.6.1
