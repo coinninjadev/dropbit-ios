@@ -108,7 +108,7 @@ extension AppCoordinator: DeviceVerificationCoordinatorDelegate {
     continueSetupFlow()
     let desc = userIdentityType.identityDescription
     alertManager.showBanner(
-      with: "Your \(desc) has been successfully verified. You can now send DropBits to your \(userIdentityType.rawValue) contacts.",
+      with: "Your \(desc) has been successfully verified. You can now send DropBits to your \(userIdentityType.displayDescription) contacts.",
       duration: .custom(5))
 
     if !isInitialSetupFlow {

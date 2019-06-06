@@ -14,33 +14,29 @@ import PhoneNumberKit
 @objc(CKMInvitation)
 public class CKMInvitation: NSManagedObject {
 
+  /// Use only for received address requests
   @discardableResult
-  static func updateOrCreate(withAddressRequestResponse response: WalletAddressRequestResponse,
-                             side: WalletAddressRequestSide,
+  static func updateOrCreate(withReceivedAddressRequestResponse response: WalletAddressRequestResponse,
                              kit: PhoneNumberKit,
                              in context: NSManagedObjectContext) -> CKMInvitation {
-    if let updatedInvitation = updateIfExists(withAddressRequestResponse: response, side: side, isAcknowledged: true, in: context) {
+    if let updatedInvitation = updateIfExists(withAddressRequestResponse: response, side: .received, isAcknowledged: true, in: context) {
       return updatedInvitation
 
     } else {
       // This creation logic mainly handles the receiver side, but may be elaborated upon for the sender in the future
 
-      let newTx = CKMTransaction(insertInto: context)
-      newTx.sortDate = response.createdAt
+      let newInvitation = CKMInvitation(withAddressRequestResponse: response, side: .received, kit: kit, insertInto: context)
+
+      let maybeTxid = response.txid?.asNilIfEmpty()
+      let tx = maybeTxid.flatMap { CKMTransaction.find(byTxid: $0, in: context) } ?? CKMTransaction(insertInto: context)
+
+      tx.txid = maybeTxid ?? CKMTransaction.prefixedTxid(for: newInvitation)
+
+      tx.sortDate = response.createdAt
       // not setting newTx.date here since it isn't yet a transaction, so that the display date will fallback to the invitation.sentDate
 
-      let newInvitation = CKMInvitation(withAddressRequestResponse: response, side: side, kit: kit, insertInto: context)
-
-      if side == .received { // On receiving side, set the initial txid with this method regardless of status.
-        if let actualTxid = response.txid, actualTxid.isNotEmpty {
-          newTx.txid = actualTxid
-        } else {
-          newTx.setTxid(withInvitation: newInvitation)
-        }
-      }
-
-      newTx.invitation = newInvitation
-      newTx.isIncoming = newTx.calculateIsIncoming(in: context)
+      tx.invitation = newInvitation
+      tx.isIncoming = tx.calculateIsIncoming(in: context)
 
       if newInvitation.status == .addressSent, let address = response.address {
         newInvitation.addressProvidedToSender = address
@@ -59,8 +55,11 @@ public class CKMInvitation: NSManagedObject {
     guard let foundInvitation = find(withId: queryId, in: context) else { return nil }
     foundInvitation.sentDate = response.createdAt
     foundInvitation.id = response.id
+
     let requestStatus = response.statusCase ?? .new
-    foundInvitation.status = CKMInvitation.statusToPersist(for: requestStatus, side: side)
+    let statusToPersist = CKMInvitation.statusToPersist(for: requestStatus, side: side)
+    foundInvitation.setStatusIfDifferent(to: statusToPersist)
+
     foundInvitation.setTxid(to: response.txid) // both txids are optional, placeholder txid is only on CKMTransaction
 
     if foundInvitation.status == .addressSent, let address = response.address {

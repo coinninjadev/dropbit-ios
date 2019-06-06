@@ -542,7 +542,7 @@ class WalletAddressDataWorker: WalletAddressDataWorkerType {
   /// This will ignore the status of the passed in responses and persist the status as .addressSent
   private func persistReceivedAddressRequests(_ responses: [WalletAddressRequestResponse], in context: NSManagedObjectContext) {
     responses.forEach {
-      let invitation = CKMInvitation.updateOrCreate(withAddressRequestResponse: $0, side: .received, kit: self.phoneNumberKit, in: context)
+      let invitation = CKMInvitation.updateOrCreate(withReceivedAddressRequestResponse: $0, kit: self.phoneNumberKit, in: context)
       invitation.transaction?.isIncoming = true
     }
   }
@@ -564,11 +564,7 @@ class WalletAddressDataWorker: WalletAddressDataWorkerType {
       return Promise(error: PendingInvitationError.noAddressProvided)
     }
 
-    var maybeInvitation: CKMInvitation?
-    context.performAndWait {
-      maybeInvitation = CKMInvitation.find(withId: response.id, in: context)
-    }
-    guard let pendingInvitation = maybeInvitation,
+    guard let pendingInvitation = CKMInvitation.find(withId: response.id, in: context),
       pendingInvitation.isFulfillable else {
         return Promise(error: PendingInvitationError.noSentInvitationExistsForID)
     }
@@ -587,16 +583,20 @@ class WalletAddressDataWorker: WalletAddressDataWorkerType {
     }
 
     let btcAmount = pendingInvitation.btcAmount
+    let dropBitType: OutgoingTransactionDropBitType = contact?.dropBitType ?? .none
+    let identityFactory = SenderIdentityFactory(persistenceManager: self.persistenceManager)
+    let senderIdentity = identityFactory.preferredSharedPayloadSenderIdentity(forDropBitType: dropBitType)
 
     let outgoingTransactionData = OutgoingTransactionData(
       txid: "",
-      dropBitType: contact?.dropBitType ?? .none,
+      dropBitType: dropBitType,
       destinationAddress: address,
       amount: btcAmount,
       feeAmount: pendingInvitation.fees,
       sentToSelf: false,
       requiredFeeRate: nil,
-      sharedPayloadDTO: sharedPayloadDTO
+      sharedPayloadDTO: sharedPayloadDTO,
+      sharedPayloadSenderIdentity: senderIdentity
     )
 
     let dto = WalletAddressRequestResponseDTO()
@@ -618,12 +618,8 @@ class WalletAddressDataWorker: WalletAddressDataWorkerType {
         } else {
 
           // guard against insufficient funds
-          var spendableBalance = 0
-          var totalPendingAmount = 0
-          context.performAndWait {
-            spendableBalance = self.walletManager.spendableBalance(in: context)
-            totalPendingAmount = pendingInvitation.totalPendingAmount
-          }
+          let spendableBalance = self.walletManager.spendableBalance(in: context)
+          let totalPendingAmount = pendingInvitation.totalPendingAmount
           guard spendableBalance >= totalPendingAmount else {
             return Promise(error: PendingInvitationError.insufficientFundsForInvitationWithID(response.id))
           }

@@ -44,7 +44,8 @@ public struct OutgoingTransactionData {
     feeAmount: Int,
     sentToSelf: Bool,
     requiredFeeRate: Double?,
-    sharedPayloadDTO: SharedPayloadDTO?) {
+    sharedPayloadDTO: SharedPayloadDTO?,
+    sharedPayloadSenderIdentity: UserIdentityBody? = nil) {
     self.txid = txid
     self.dropBitType = dropBitType
     self.displayName = dropBitType.displayName ?? "" //contact.displayName ?? ""
@@ -57,6 +58,7 @@ public struct OutgoingTransactionData {
     self.sentToSelf = sentToSelf
     self.requiredFeeRate = requiredFeeRate
     self.sharedPayloadDTO = sharedPayloadDTO
+    self.sharedPayloadSenderIdentity = sharedPayloadSenderIdentity
   }
 
   func copy(withTxid txid: String) -> OutgoingTransactionData {

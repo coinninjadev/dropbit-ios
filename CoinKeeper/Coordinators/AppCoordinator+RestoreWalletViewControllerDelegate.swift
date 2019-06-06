@@ -21,7 +21,6 @@ extension AppCoordinator: RestoreWalletViewControllerDelegate {
 
   private func showSuccessFail(forWords words: [String]) {
     let viewModel = RestoreWalletSuccessFailViewModel(mode: .pending)
-    viewModel.shouldShowCloseButton = false
     let successFailController = SuccessFailViewController.newInstance(viewModel: viewModel,
                                                                       delegate: self)
     successFailController.action = {

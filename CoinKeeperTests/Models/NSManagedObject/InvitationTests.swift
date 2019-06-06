@@ -69,8 +69,7 @@ class InvitationTests: XCTestCase {
     }
 
     (responses + excludedResponses).forEach { res in
-      _ = CKMInvitation.updateOrCreate(withAddressRequestResponse: res,
-                                       side: .received,
+      _ = CKMInvitation.updateOrCreate(withReceivedAddressRequestResponse: res,
                                        kit: self.phoneNumberKit,
                                        in: context)
     }

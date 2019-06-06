@@ -64,4 +64,10 @@ extension CKMInvitation {
     self.fees = max(flatFee, 1)
   }
 
+  func setStatusIfDifferent(to newStatus: InvitationStatus) {
+    if status != newStatus {
+      status = newStatus
+    }
+  }
+
 }

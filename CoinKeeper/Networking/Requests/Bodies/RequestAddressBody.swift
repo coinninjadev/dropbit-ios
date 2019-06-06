@@ -85,7 +85,14 @@ extension UserIdentityBody {
   }
 
   func twitterUser() -> TwitterUser {
-    return TwitterUser(idStr: identity, name: "", screenName: handle ?? "", description: nil, url: nil, verified: false, profileImageUrlHttps: nil, profileImageData: nil)
+    return TwitterUser(idStr: identity,
+                       name: "",
+                       screenName: handle ?? "",
+                       description: nil,
+                       url: nil,
+                       verified: false,
+                       profileImageUrlHttps: nil,
+                       profileImageData: nil)
   }
 }
 
