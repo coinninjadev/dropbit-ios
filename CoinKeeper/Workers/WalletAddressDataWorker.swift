@@ -564,11 +564,7 @@ class WalletAddressDataWorker: WalletAddressDataWorkerType {
       return Promise(error: PendingInvitationError.noAddressProvided)
     }
 
-    var maybeInvitation: CKMInvitation?
-    context.performAndWait {
-      maybeInvitation = CKMInvitation.find(withId: response.id, in: context)
-    }
-    guard let pendingInvitation = maybeInvitation,
+    guard let pendingInvitation = CKMInvitation.find(withId: response.id, in: context),
       pendingInvitation.isFulfillable else {
         return Promise(error: PendingInvitationError.noSentInvitationExistsForID)
     }
@@ -618,12 +614,8 @@ class WalletAddressDataWorker: WalletAddressDataWorkerType {
         } else {
 
           // guard against insufficient funds
-          var spendableBalance = 0
-          var totalPendingAmount = 0
-          context.performAndWait {
-            spendableBalance = self.walletManager.spendableBalance(in: context)
-            totalPendingAmount = pendingInvitation.totalPendingAmount
-          }
+          let spendableBalance = self.walletManager.spendableBalance(in: context)
+          let totalPendingAmount = pendingInvitation.totalPendingAmount
           guard spendableBalance >= totalPendingAmount else {
             return Promise(error: PendingInvitationError.insufficientFundsForInvitationWithID(response.id))
           }
