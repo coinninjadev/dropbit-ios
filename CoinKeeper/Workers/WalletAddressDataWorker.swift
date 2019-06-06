@@ -542,7 +542,7 @@ class WalletAddressDataWorker: WalletAddressDataWorkerType {
   /// This will ignore the status of the passed in responses and persist the status as .addressSent
   private func persistReceivedAddressRequests(_ responses: [WalletAddressRequestResponse], in context: NSManagedObjectContext) {
     responses.forEach {
-      let invitation = CKMInvitation.updateOrCreate(withAddressRequestResponse: $0, side: .received, kit: self.phoneNumberKit, in: context)
+      let invitation = CKMInvitation.updateOrCreate(withReceivedAddressRequestResponse: $0, kit: self.phoneNumberKit, in: context)
       invitation.transaction?.isIncoming = true
     }
   }

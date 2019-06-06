@@ -34,11 +34,6 @@ public class CKMTransaction: NSManagedObject {
     return !isInviteOrFailed
   }
 
-  func setTxid(withInvitation invitation: CKMInvitation) {
-    let combinedString = CKMTransaction.invitationTxidPrefix + invitation.id
-    self.txid = combinedString
-  }
-
   private func removeTemporaryTransactionIfNeeded(in context: NSManagedObjectContext) {
     context.performAndWait {
       temporarySentTransaction.map { context.delete($0) }
@@ -194,6 +189,10 @@ public class CKMTransaction: NSManagedObject {
                                                      fiatCurrency: amountInfo.fiatCurrencyCode.rawValue,
                                                      receivedPayload: nil,
                                                      insertInto: context)
+  }
+
+  static func prefixedTxid(for invitation: CKMInvitation) -> String {
+    return CKMTransaction.invitationTxidPrefix + invitation.id
   }
 
   static let transactionHistorySortDescriptors: [NSSortDescriptor] = [
