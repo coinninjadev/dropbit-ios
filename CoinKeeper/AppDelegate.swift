@@ -17,15 +17,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
   func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 
-    window = UIWindow()
-    let viewController = StartViewController.makeFromStoryboard()
-    let navigationController = CNNavigationController(rootViewController: viewController)
-    window?.rootViewController = navigationController
-    window?.makeKeyAndVisible()
-
-    let uiTestArguments = ProcessInfo.processInfo.arguments.compactMap { UITestArgument(string: $0) }
-    coordinator = AppCoordinator(navigationController: navigationController, uiTestArguments: uiTestArguments)
-    coordinator?.start()
+    setupCoordinator()
 
     return true
   }
@@ -69,6 +61,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   }
 
   func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
+    if coordinator == nil {
+      setupCoordinator()
+    }
+
     if url.scheme == "dropbit" {
       OAuthSwift.handle(url: url)
       return true
@@ -83,4 +79,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     return true
   }
 
+  // MARK: private
+  private func setupCoordinator() {
+    window = UIWindow()
+    let viewController = StartViewController.makeFromStoryboard()
+    let navigationController = CNNavigationController(rootViewController: viewController)
+    window?.rootViewController = navigationController
+    window?.makeKeyAndVisible()
+
+    let uiTestArguments = ProcessInfo.processInfo.arguments.compactMap { UITestArgument(string: $0) }
+    coordinator = AppCoordinator(navigationController: navigationController, uiTestArguments: uiTestArguments)
+    coordinator?.start()
+  }
 }
