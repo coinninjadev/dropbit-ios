@@ -9,7 +9,7 @@
 import Foundation
 
 enum CKOAuthError: Int, Error {
-  case invalidOrExpiredToken = 89
+  case invalidOrExpiredToken = -11
 
   var errorCode: Int {
     return self.rawValue
