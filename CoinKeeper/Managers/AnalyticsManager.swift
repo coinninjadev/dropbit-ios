@@ -67,6 +67,7 @@ enum AnalyticsManagerEventType: String {
   case dropbitInitiationFailed = "DropBitInitiationFailed"
   case dropbitAddressProvided = "DropBitAddressProvided"
   case dropbitCompleted = "DropBitCompleted"
+  case twitterSendComplete = "TwitterSendComplete"
   case dropbitInviteSMSFailed = "DropBitInviteSendSMSFailure"
   case verifyUserSMSFailed = "VerifyUserSendSMSFailure"
   case coinKeeperContactPressed = "ContactPressed"
@@ -95,6 +96,8 @@ enum AnalyticsManagerEventType: String {
   case sharePromptNever = "ShareNever"
   case dropBitMeDisabled = "DropBitMeDisabled"
   case dropBitMeReenabled = "DropBitMeReenabled"
+  case sendTweetViaDropBit = "SendTweetViaDropBit"
+  case sendTweetManually = "SendTweetManually"
 
   var id: String {
     return self.rawValue
