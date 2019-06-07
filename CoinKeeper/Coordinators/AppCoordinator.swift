@@ -326,7 +326,6 @@ class AppCoordinator: CoordinatorType {
     let logger = OSLog(subsystem: "com.coinninja.coinkeeper.appcoordinator", category: "willResignActive")
     let backgroundTaskId = UIApplication.shared.beginBackgroundTask(expirationHandler: nil)
     connectionManager.stop()
-    bitcoinURLToOpen = nil
 
     persistenceManager.setLastLoginTime()
       .catch { error in
