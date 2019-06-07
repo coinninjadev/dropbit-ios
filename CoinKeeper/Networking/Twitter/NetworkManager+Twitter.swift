@@ -118,6 +118,11 @@ extension NetworkManager: TwitterRequestable {
   }
 
   func authorizeTwitterUser() -> Promise<TwitterOAuthStorage> {
+    // reset the manager to get a clean token state, but keep handler if exists.
+    let handler = twitterOAuthManager.authorizeURLHandler
+    resetTwitterOAuthManager()
+    twitterOAuthManager.authorizeURLHandler = handler
+
     return Promise { seal in
       twitterOAuthManager.authorize(
         withCallbackURL: twitterOAuth.callbackURL,
@@ -137,9 +142,7 @@ extension NetworkManager: TwitterRequestable {
         failure: { (error: OAuthSwiftError) in
           let logger = OSLog(subsystem: "com.coinninja.networkmanager", category: "twitter_oauth")
           os_log("oauth failure in %@. error: %@", log: logger, type: .error, #function, error.localizedDescription)
-          // "Invalid or expired token"
-          // "This feature is temporarily unavailable"
-          if error.errorCode == CKOAuthError.invalidOrExpiredToken.errorCode || error.localizedDescription.contains("Invalid or expired token") {
+          if error.errorCode == CKOAuthError.invalidOrExpiredToken.errorCode {
             self.resetTwitterOAuthManager()
             seal.reject(CKOAuthError.invalidOrExpiredToken)
           } else {

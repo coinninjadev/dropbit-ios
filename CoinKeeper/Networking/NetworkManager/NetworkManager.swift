@@ -94,17 +94,6 @@ class NetworkManager: NetworkManagerType {
       accessTokenUrl: twitterOAuth.accessTokenURL
     )
   }
-  /*
-  lazy var twitterOAuthManager: OAuth1Swift = {
-    return OAuth1Swift(
-      consumerKey: twitterOAuth.consumerKey,
-      consumerSecret: twitterOAuth.consumerSecret,
-      requestTokenUrl: twitterOAuth.requestTokenURL,
-      authorizeUrl: twitterOAuth.authorizeURL,
-      accessTokenUrl: twitterOAuth.accessTokenURL
-    )
-  }()
- */
 
   func start() {
     // Setup exchange rate, network fees, block height, etc.

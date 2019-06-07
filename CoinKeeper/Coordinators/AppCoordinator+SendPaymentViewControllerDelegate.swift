@@ -382,7 +382,6 @@ extension AppCoordinator: SendPaymentViewControllerDelegate {
     let verifyAction = AlertActionConfiguration(title: "Verify", style: .default) { [weak self] in
       guard let strongSelf = self else { return }
       viewController.dismiss(animated: true, completion: {
-        strongSelf.navigationController.isNavigationBarHidden = false
         strongSelf.startDeviceVerificationFlow(userIdentityType: identityType, shouldOrphanRoot: false, selectedSetupFlow: nil)
       })
     }
