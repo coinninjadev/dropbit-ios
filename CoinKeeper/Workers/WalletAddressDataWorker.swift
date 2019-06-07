@@ -705,6 +705,9 @@ class WalletAddressDataWorker: WalletAddressDataWorkerType {
 
         if pendingInvitation.status == .completed {
           self.analyticsManager.track(event: .dropbitCompleted, with: nil)
+          if case .twitter = outgoingTransactionData.dropBitType {
+            self.analyticsManager.track(event: .twitterSendComplete, with: nil)
+          }
         }
 
       }

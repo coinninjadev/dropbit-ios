@@ -365,6 +365,9 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate, CurrencyFormatta
           strongSelf.showShareTransactionIfAppropriate(dropBitType: .none)
 
           self?.analyticsManager.track(property: MixpanelProperty(key: .hasSent, value: true))
+          if case .twitter = outgoingTransactionData.dropBitType {
+            self?.analyticsManager.track(event: .twitterSendComplete, with: nil)
+          }
           self?.trackIfUserHasABalance()
         }.catch { error in
           let nsError = error as NSError
