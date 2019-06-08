@@ -125,6 +125,7 @@ extension AppCoordinator: SettingsViewControllerDelegate {
           self.showStartViewController()
           self.analyticsManager.track(property: MixpanelProperty(key: .hasWallet, value: false))
           self.analyticsManager.track(property: MixpanelProperty(key: .phoneVerified, value: false))
+          self.analyticsManager.track(property: MixpanelProperty(key: .twitterVerified, value: false))
           self.analyticsManager.track(property: MixpanelProperty(key: .wordsBackedUp, value: false))
           self.analyticsManager.track(property: MixpanelProperty(key: .hasBTCBalance, value: false))
           self.analyticsManager.track(property: MixpanelProperty(key: .isDropBitMeEnabled, value: false))
