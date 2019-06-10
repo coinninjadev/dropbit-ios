@@ -30,11 +30,21 @@ class TransactionHistorySummaryCell: UICollectionViewCell {
     return layoutAttributes
   }
 
+  override func prepareForReuse() {
+    super.prepareForReuse()
+    incomingImage.layer.borderColor = nil
+    incomingImage.layer.borderWidth = 0
+    incomingImage.layer.cornerRadius = 0
+  }
+
   func load(with viewModel: TransactionHistorySummaryCellViewModel) {
     if viewModel.isTwitterContact, let avatar = viewModel.counterpartyAvatar {
       incomingImage.image = avatar
       let radius = incomingImage.frame.width / 2.0
       incomingImage.applyCornerRadius(radius)
+      let borderColor: UIColor = viewModel.isIncoming ? .appleGreen : .darkPeach
+      incomingImage.layer.borderColor = borderColor.cgColor
+      incomingImage.layer.borderWidth = 2.0
     } else {
       if viewModel.transactionIsInvalidated {
         incomingImage.image = UIImage(named: "invalidated30")
