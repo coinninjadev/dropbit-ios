@@ -208,9 +208,17 @@ class AppCoordinator: CoordinatorType {
   /// Useful to clear out old credentials from the keychain when the app is reinstalled
   private func deleteStaleCredentialsIfNeeded() {
     let context = persistenceManager.mainQueueContext()
-    let credsExist = persistenceManager.keychainManager.oauthCredentials() != nil
-    if credsExist && CKMUser.find(in: context) == nil {
+    let user = CKMUser.find(in: context)
+    guard user == nil else { return }
+
+    let twitterCredsExist = persistenceManager.keychainManager.oauthCredentials() != nil
+    if twitterCredsExist {
       persistenceManager.keychainManager.unverifyUser(for: .twitter)
+    }
+
+    let phoneExists = persistenceManager.verifiedPhoneNumber() != nil
+    if phoneExists {
+      persistenceManager.keychainManager.unverifyUser(for: .phone)
     }
   }
 
