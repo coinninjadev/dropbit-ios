@@ -59,8 +59,9 @@ class ConfirmPaymentButton: UIButton {
 
   private func startAnimation() {
     foregroundShapeLayer.add(circleAnimation, forKey: "draw")
-    backgroundShapeLayer.transform = CATransform3DMakeScale(2.0, 2.0, 1.0)
-    foregroundShapeLayer.transform = CATransform3DMakeScale(2.0, 2.0, 1.0)
+    let scale: CGFloat = 1.5
+    backgroundShapeLayer.transform = CATransform3DMakeScale(scale, scale, 1.0)
+    foregroundShapeLayer.transform = CATransform3DMakeScale(scale, scale, 1.0)
   }
 
   private func setupLines() {
