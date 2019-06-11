@@ -52,7 +52,7 @@ DEPENDENCIES:
   - Permission/Contacts (from `https://github.com/SixFiveSoftware/Permission.git`, commit `659c257`)
   - Permission/Location (from `https://github.com/SixFiveSoftware/Permission.git`, commit `659c257`)
   - Permission/Notifications (from `https://github.com/SixFiveSoftware/Permission.git`, commit `659c257`)
-  - PhoneNumberKit (from `https://github.com/blwinters/PhoneNumberKit.git`, commit `18b0a34`)
+  - PhoneNumberKit (from `https://github.com/blwinters/PhoneNumberKit.git`, commit `4603819`)
   - ReachabilitySwift (~> 4.3.1)
   - RNCryptor (~> 5.1.0)
   - SVProgressHUD (~> 2.2.5)
@@ -77,7 +77,7 @@ EXTERNAL SOURCES:
     :commit: 659c257
     :git: https://github.com/SixFiveSoftware/Permission.git
   PhoneNumberKit:
-    :commit: 18b0a34
+    :commit: '4603819'
     :git: https://github.com/blwinters/PhoneNumberKit.git
 
 CHECKOUT OPTIONS:
@@ -88,7 +88,7 @@ CHECKOUT OPTIONS:
     :commit: 659c257
     :git: https://github.com/SixFiveSoftware/Permission.git
   PhoneNumberKit:
-    :commit: 18b0a34
+    :commit: '4603819'
     :git: https://github.com/blwinters/PhoneNumberKit.git
 
 SPEC CHECKSUMS:
@@ -105,6 +105,6 @@ SPEC CHECKSUMS:
   RNCryptor: a369134686cd2ad391323cc856b62e591193ba79
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
 
-PODFILE CHECKSUM: 9342ea4c077bde580426e23539879e5c2a8a2a44
+PODFILE CHECKSUM: d5540f5cedb2f493632f5c5f287c423bf19a0e49
 
 COCOAPODS: 1.7.1
