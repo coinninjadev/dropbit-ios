@@ -2,9 +2,9 @@ PODS:
   - Alamofire (4.8.2)
   - DZNEmptyDataSet (1.8.1)
   - JKSteppedProgressBar (0.5.0)
-  - Mixpanel-swift (2.6.2):
-    - Mixpanel-swift/Complete (= 2.6.2)
-  - Mixpanel-swift/Complete (2.6.2)
+  - Mixpanel-swift (2.6.3):
+    - Mixpanel-swift/Complete (= 2.6.3)
+  - Mixpanel-swift/Complete (2.6.3)
   - MMDrawerController (0.6.0):
     - MMDrawerController/Core (= 0.6.0)
     - MMDrawerController/MMDrawerBarButtonItem (= 0.6.0)
@@ -95,7 +95,7 @@ SPEC CHECKSUMS:
   Alamofire: ae5c501addb7afdbb13687d7f2f722c78734c2d3
   DZNEmptyDataSet: 9525833b9e68ac21c30253e1d3d7076cc828eaa7
   JKSteppedProgressBar: e61561a7faee1a4a216ac4510b4b6d1a3760e318
-  Mixpanel-swift: eea98bb65fd80e992a9ecb3a0a421eca542ea72f
+  Mixpanel-swift: b022ad6cc352f916581b4f223f8a1e76d047fbe3
   MMDrawerController: e3a54a5570388463ad3b36975251575b50c4e1a0
   Moya: f4a4b80ff2f8a4ffc208dfb31cd91636622fee6e
   Permission: c53c7235f14d76cd2851364df0a7cf05b464037f
@@ -107,4 +107,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 9342ea4c077bde580426e23539879e5c2a8a2a44
 
-COCOAPODS: 1.6.1
+COCOAPODS: 1.7.1
