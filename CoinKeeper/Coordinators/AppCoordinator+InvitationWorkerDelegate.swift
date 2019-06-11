@@ -12,6 +12,7 @@ import PromiseKit
 
 protocol InvitationWorkerDelegate: AnyObject {
   func fetchAndHandleSentWalletAddressRequests() -> Promise<[WalletAddressRequestResponse]>
+  func didBroadcastTransaction()
 }
 
 extension AppCoordinator: InvitationWorkerDelegate {
@@ -19,4 +20,11 @@ extension AppCoordinator: InvitationWorkerDelegate {
   func fetchAndHandleSentWalletAddressRequests() -> Promise<[WalletAddressRequestResponse]> {
     return self.networkManager.getSatisfiedSentWalletAddressRequests()
   }
+
+  func didBroadcastTransaction() {
+    DispatchQueue.main.asyncAfter(deadline: .now() + 8.0) { [weak self] in
+      self?.serialQueueManager.enqueueOptionalIncrementalSync()
+    }
+  }
+
 }
