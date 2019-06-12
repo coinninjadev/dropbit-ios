@@ -166,7 +166,7 @@ extension TutorialViewController: UIPageViewControllerDelegate {
   func pageViewController(_ pageViewController: UIPageViewController, willTransitionTo pendingViewControllers: [UIViewController]) {
     guard let nextViewController = pendingViewControllers.first as? TutorialScreenViewController,
       let viewModel = nextViewController.viewModel,
-      let index = viewModels.index(of: viewModel) else { return }
+      let index = viewModels.firstIndex(of: viewModel) else { return }
 
     pageControl.currentPage = index
 
@@ -177,7 +177,7 @@ extension TutorialViewController: UIPageViewControllerDelegate {
                           previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
     guard let nextViewController = previousViewControllers.first as? TutorialScreenViewController,
       let viewModel = nextViewController.viewModel,
-      let index = viewModels.index(of: viewModel) else { return }
+      let index = viewModels.firstIndex(of: viewModel) else { return }
 
     if !completed {
       pageControl.currentPage = index
@@ -202,7 +202,7 @@ extension TutorialViewController: UIPageViewControllerDataSource {
   func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
     guard let viewModel = (viewController as? TutorialScreenViewController)?.viewModel else { return nil }
 
-    let index = viewModels.index(of: viewModel) ?? 0
+    let index = viewModels.firstIndex(of: viewModel) ?? 0
     var newPageViewController: TutorialScreenViewController?
 
     if index > viewModels.startIndex {
@@ -217,7 +217,7 @@ extension TutorialViewController: UIPageViewControllerDataSource {
   func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
     guard let viewModel = (viewController as? TutorialScreenViewController)?.viewModel else { return nil }
 
-    let index = viewModels.index(of: viewModel) ?? 0
+    let index = viewModels.firstIndex(of: viewModel) ?? 0
     var newPageViewController: TutorialScreenViewController?
 
     if index < viewModels.endIndex - 1 {

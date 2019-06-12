@@ -77,17 +77,19 @@ struct HashingManager {
     var derivedKeyData = Data(repeating: 0, count: keyByteCount)
     var localDerivedKeyData = Data(repeating: 0, count: keyByteCount)
 
-    let derivationStatus = localDerivedKeyData.withUnsafeMutableBytes { derivedKeyBytes in
-      salt.withUnsafeBytes { saltBytes in
-
-        CCKeyDerivationPBKDF(
-          CCPBKDFAlgorithm(kCCPBKDF2),
-          password, passwordData.count,
-          saltBytes, salt.count,
-          hash,
-          UInt32(rounds),
-          derivedKeyBytes, derivedKeyData.count)
-      }
+    let derivationStatus = localDerivedKeyData.withUnsafeMutableBytes { (outputBytes: UnsafeMutableRawBufferPointer) -> Int32 in
+      let status = CCKeyDerivationPBKDF(
+        CCPBKDFAlgorithm(kCCPBKDF2),
+        password,
+        passwordData.count,
+        String(data: salt, encoding: .utf8),
+        salt.count,
+        hash,
+        UInt32(rounds),
+        outputBytes.baseAddress?.assumingMemoryBound(to: UInt8.self),
+        derivedKeyData.count
+      )
+      return status
     }
 
     if derivationStatus != 0 {
@@ -97,4 +99,5 @@ struct HashingManager {
     derivedKeyData = localDerivedKeyData
     return derivedKeyData
   }
+
 }
