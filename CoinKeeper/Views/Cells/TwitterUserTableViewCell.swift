@@ -20,7 +20,7 @@ class TwitterUserTableViewCell: UITableViewCell {
     avatarImageView.image = user.profileImageData.flatMap { UIImage(data: $0) }
     avatarImageView.applyCornerRadius(avatarImageView.frame.width / 2.0)
     nameLabel.text = user.name
-    screenNameLabel.text = user.name
+    screenNameLabel.text = user.formattedScreenName
     verifiedTwitterUserIndicatorView.isHidden = !user.verified
   }
 }

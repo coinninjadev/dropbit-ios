@@ -19,6 +19,7 @@ extension AppCoordinator: TweetMethodViewControllerDelegate {
     self.networkManager.updateWalletAddressRequest(for: response.id, with: body)
       .done(on: .main) { response in
         tweetCompletion(response.deliveryId)
+        self.analyticsManager.track(event: .sendTweetViaDropBit, with: nil)
         viewController.dismiss(animated: true, completion: nil)
       }
       .catch { error in
@@ -30,6 +31,8 @@ extension AppCoordinator: TweetMethodViewControllerDelegate {
   }
 
   func viewControllerRequestedUserSendTweet(_ viewController: UIViewController, response: WalletAddressRequestResponse) {
+    self.analyticsManager.track(event: .sendTweetManually, with: nil)
+
     let logger = OSLog(subsystem: "com.coinninja.coinkeeper.appcoordinator", category: "invitation_tweet")
     guard let receiverHandle = response.metadata?.receiver?.handle, receiverHandle.isNotEmpty else {
       os_log("WalletAddressRequestResponse does not contain receiver's handle, %@", log: logger, type: .error, #function)

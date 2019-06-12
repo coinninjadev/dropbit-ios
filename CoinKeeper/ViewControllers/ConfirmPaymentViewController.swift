@@ -137,12 +137,14 @@ class ConfirmPaymentViewController: PresentableViewController, StoryboardInitial
     switch contact.identityType {
     case .phone:
       guard let phoneContact = contact as? PhoneContactType else { return }
+      contactLabel.isHidden = false
       let formatter = CKPhoneNumberFormatter(kit: PhoneNumberKit(), format: .international)
       displayIdentity = (try? formatter.string(from: phoneContact.globalPhoneNumber)) ?? ""
       avatarBackgroundView.isHidden = true
     case .twitter:
       displayIdentity = contact.displayIdentity
       guard let twitterContact = contact as? TwitterContact else { return }
+      contactLabel.isHidden = true
       avatarBackgroundView.isHidden = false
       if let data = twitterContact.twitterUser.profileImageData {
         avatarImageView.image = UIImage(data: data)

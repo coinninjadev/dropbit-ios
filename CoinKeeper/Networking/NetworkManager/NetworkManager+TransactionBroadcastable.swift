@@ -119,17 +119,17 @@ extension NetworkManager: TransactionBroadcastable {
       return Promise(error: CKPersistenceError.missingValue(key: "amountInfo"))
     }
 
+    let sharingObservantMemo = sharedPayloadDTO.shouldShare ? (sharedPayloadDTO.memo ?? "") : ""
     let payload = SharedPayloadV2(txid: outgoingTxData.txid,
-                                  memo: sharedPayloadDTO.memo,
+                                  memo: sharingObservantMemo,
                                   amountInfo: amountInfo,
                                   senderIdentity: senderIdentityBody)
     return walletManager.encryptPayload(payload, addressPubKey: addressPubKey)
       .then { encryptedPayload -> Promise<Void> in
-        let sharingObservantPayload = sharedPayloadDTO.shouldShare ? encryptedPayload : ""
         let body = CreateTransactionNotificationBody(txid: outgoingTxData.txid,
                                                      address: outgoingTxData.destinationAddress,
                                                      identityHash: outgoingTxData.identityHash,
-                                                     encryptedPayload: sharingObservantPayload,
+                                                     encryptedPayload: encryptedPayload,
                                                      encryptedFormat: "1")
         return self.addTransactionNotification(body: body)
       }
