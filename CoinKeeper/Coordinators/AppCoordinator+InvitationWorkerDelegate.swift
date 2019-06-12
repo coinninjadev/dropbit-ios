@@ -11,33 +11,12 @@ import CoreData
 import PromiseKit
 
 protocol InvitationWorkerDelegate: AnyObject {
-  func fetchAndHandleSentWalletAddressRequests() -> Promise<[PendingInvitationData]>
+  func fetchAndHandleSentWalletAddressRequests() -> Promise<[WalletAddressRequestResponse]>
 }
 
 extension AppCoordinator: InvitationWorkerDelegate {
 
-  func fetchAndHandleSentWalletAddressRequests() -> Promise<[PendingInvitationData]> {
+  func fetchAndHandleSentWalletAddressRequests() -> Promise<[WalletAddressRequestResponse]> {
     return self.networkManager.getSatisfiedSentWalletAddressRequests()
-      .then { self.matchingPendingInvitations(from: $0) }
   }
-
-  // MARK: private helpers
-  private func matchingPendingInvitations(from responses: [WalletAddressRequestResponse]) -> Promise<[PendingInvitationData]> {
-
-    let foundIDs = responses.compactMap { $0.id }
-    guard foundIDs.isNotEmpty else { return Promise.value([]) }
-
-    let localPendingInvitations = responses.compactMap { (response: WalletAddressRequestResponse) -> PendingInvitationData? in
-      if var pendingInvitationData = self.persistenceManager.pendingInvitation(with: response.id) {
-        pendingInvitationData.address = response.address
-        pendingInvitationData.addressPubKey = response.addressPubkey
-        return pendingInvitationData
-      } else {
-        return PendingInvitationData(walletAddressRequestResponse: response, kit: self.phoneNumberKit)
-      }
-    }
-
-    return Promise.value(localPendingInvitations)
-  }
-
 }

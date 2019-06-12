@@ -10,6 +10,7 @@ import Foundation
 @testable import DropBit
 import PromiseKit
 import CNBitcoinKit
+import OAuthSwift
 
 class MockNetworkManager: NetworkManagerType {
 
@@ -18,6 +19,9 @@ class MockNetworkManager: NetworkManagerType {
 
   var persistenceManager: PersistenceManagerType
   var analyticsManager: AnalyticsManagerType
+
+  var uiTestArguments: [UITestArgument] = []
+  var twitterOAuthManager: OAuth1Swift = OAuth1Swift(consumerKey: "", consumerSecret: "")
 
   init(persistenceManager: PersistenceManagerType,
        analyticsManager: AnalyticsManagerType = AnalyticsManager()) {

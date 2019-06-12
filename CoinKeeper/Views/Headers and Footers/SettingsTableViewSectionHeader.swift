@@ -19,7 +19,7 @@ class SettingsTableViewSectionHeader: UITableViewHeaderFooterView {
   override func awakeFromNib() {
     super.awakeFromNib()
 
-    titleLabel.font = Theme.Font.settingsSectionHeader.font
-    titleLabel.textColor = Theme.Color.darkBlueText.color
+    titleLabel.font = .semiBold(14)
+    titleLabel.textColor = .darkBlueText
   }
 }

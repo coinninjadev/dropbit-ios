@@ -38,8 +38,8 @@ protocol PersistenceManagerType: DeviceCountryCodeProvider {
 
   func bool(for key: CKUserDefaults.Key) -> Bool
 
-  func resetPersistence()
-  func resetWallet()
+  func resetPersistence() throws
+  func resetWallet() throws
   func walletWords() -> [String]?
 
   func createBackgroundContext() -> NSManagedObjectContext
@@ -52,7 +52,7 @@ protocol PersistenceManagerType: DeviceCountryCodeProvider {
   func deleteWallet(in context: NSManagedObjectContext)
   func persistUnacknowledgedInvitation(in context: NSManagedObjectContext, with btcPair: BitcoinUSDPair,
                                        contact: ContactType, fee: Int, acknowledgementId: String)
-  func persistWalletId(from response: WalletResponse, in context: NSManagedObjectContext) -> Promise<Void>
+  func persistWalletId(from response: WalletResponse, in context: NSManagedObjectContext) throws
   func persistUserId(_ userId: String, in context: NSManagedObjectContext)
   func persistUserPublicURLInfo(from response: UserResponse, in context: NSManagedObjectContext)
   func getUserPublicURLInfo(in context: NSManagedObjectContext) -> UserPublicURLInfo?
@@ -80,7 +80,7 @@ protocol PersistenceManagerType: DeviceCountryCodeProvider {
     in context: NSManagedObjectContext
   ) -> CKMTransaction
   func persistReceivedSharedPayloads(
-    _ payloads: [SharedPayloadV1],
+    _ payloads: [Data],
     kit: PhoneNumberKit,
     in context: NSManagedObjectContext
   )
@@ -93,6 +93,8 @@ protocol PersistenceManagerType: DeviceCountryCodeProvider {
   func userId(in context: NSManagedObjectContext) -> String?
   func userVerificationStatus(in context: NSManagedObjectContext) -> UserVerificationStatus
   func userIsVerified(in context: NSManagedObjectContext) -> Bool
+  func userIsVerified(using type: UserIdentityType, in context: NSManagedObjectContext) -> Bool
+
   func getAllInvitations(in context: NSManagedObjectContext) -> [CKMInvitation]
   func getUnacknowledgedInvitations(in context: NSManagedObjectContext) -> [CKMInvitation]
 
@@ -100,7 +102,7 @@ protocol PersistenceManagerType: DeviceCountryCodeProvider {
   func unverifyUser(in context: NSManagedObjectContext)
 
   func verifiedPhoneNumber() -> GlobalPhoneNumber?
-  func deregisterPhone()
+  func unverifyAllIdentities()
 
   /// Called when local walletId is no longer valid on server
   func removeWalletId(in context: NSManagedObjectContext)
@@ -121,6 +123,9 @@ protocol PersistenceManagerType: DeviceCountryCodeProvider {
   func dustProtectionIsEnabled() -> Bool
   func enableDustProtection(_ shouldEnable: Bool)
 
+  func yearlyPriceHighNotificationIsEnabled() -> Bool
+  func updateYearlyPriceHighNotification(enabled: Bool)
+
   func setLastLoginTime() -> Promise<Void>
   func lastLoginTime() -> TimeInterval?
 
@@ -131,15 +136,8 @@ protocol PersistenceManagerType: DeviceCountryCodeProvider {
   func deviceEndpointIds() -> DeviceEndpointIds?
   func deleteDeviceEndpointIds()
 
-  func persist(pendingInvitationData data: PendingInvitationData)
-  func pendingInvitations() -> [PendingInvitationData]
-  func pendingInvitation(with id: String) -> PendingInvitationData?
-
   func backup(recoveryWords words: [String], isBackedUp: Bool) -> Promise<Void>
   func walletWordsBackedUp() -> Bool
-
-  @discardableResult
-  func removePendingInvitationData(with id: String) -> PendingInvitationData?
 
   func setDatabaseMigrationFlag(migrated: Bool, for version: DatabaseMigrationVersion)
   func databaseMigrationFlag(for version: DatabaseMigrationVersion) -> Bool
@@ -150,6 +148,8 @@ protocol PersistenceManagerType: DeviceCountryCodeProvider {
 
   /// Look for any transactions sent to a phone number without a contact name, and provide a name if found, as a convenience when viewing tx history
   func matchContactsIfPossible()
+
+  func verifiedIdentities(in context: NSManagedObjectContext) -> [UserIdentityType]
 }
 
 extension PersistenceManagerType {
@@ -172,13 +172,18 @@ protocol PersistenceKeychainType: AnyObject {
   func store(userPin pin: String) -> Promise<Void>
   func backup(recoveryWords words: [String], isBackedUp: Bool) -> Promise<Void>
 
+  @discardableResult
+  func store(oauthCredentials: TwitterOAuthStorage) -> Bool
+
   func retrieveValue(for key: CKKeychain.Key) -> Any?
   func bool(for key: CKKeychain.Key) -> Bool?
 
   func walletWordsBackedUp() -> Bool
 
+  func oauthCredentials() -> TwitterOAuthStorage?
+
   func deleteAll()
-  func unverifyUser()
+  func unverifyUser(for identity: UserIdentityType)
 
   init(store: KeychainAccessorType)
 }
@@ -186,6 +191,7 @@ protocol PersistenceKeychainType: AnyObject {
 protocol PersistenceDatabaseType: AnyObject {
 
   var mainQueueContext: NSManagedObjectContext { get }
+  var sharedPayloadManager: SharedPayloadManagerType { get set }
 
   func createBackgroundContext() -> NSManagedObjectContext
 
@@ -212,20 +218,12 @@ protocol PersistenceDatabaseType: AnyObject {
     in context: NSManagedObjectContext
   ) -> CKMTransaction
 
-  func persistReceivedSharedPayloads(
-    _ payloads: [SharedPayloadV1],
-    hasher: HashingManager,
-    kit: PhoneNumberKit,
-    contactCacheManager: ContactCacheManagerType,
-    in context: NSManagedObjectContext
-  )
-
   func deleteTransactions(notIn txids: [String], in context: NSManagedObjectContext)
   func latestTransaction(in context: NSManagedObjectContext) -> CKMTransaction?
 
   func transactionsWithoutDayAveragePrice(in context: NSManagedObjectContext) -> Promise<[CKMTransaction]>
 
-  func persistWalletId(_ id: String, in context: NSManagedObjectContext) -> Promise<Void>
+  func persistWalletId(_ id: String, in context: NSManagedObjectContext) throws
   func persistUserId(_ id: String, in context: NSManagedObjectContext)
   func persistVerificationStatus(_ status: String, in context: NSManagedObjectContext) -> Promise<UserVerificationStatus>
   func persistServerAddress(for metaAddress: CNBMetaAddress, createdAt: Date, wallet: CKMWallet, in context: NSManagedObjectContext) -> Promise<Void>
@@ -261,11 +259,6 @@ protocol PersistenceUserDefaultsType: AnyObject {
   func unverifyUser()
   func removeWalletId()
   func deleteDeviceEndpointIds()
-  func persist(pendingInvitationData data: PendingInvitationData)
-  func pendingInvitations() -> [PendingInvitationData]
-  func pendingInvitation(with id: String) -> PendingInvitationData?
-  func removePendingInvitation(with id: String) -> PendingInvitationData?
-  func setPendingInvitationFailed(_ invitation: PendingInvitationData)
   func deviceId() -> UUID?
   func setDeviceId(_ uuid: UUID)
   var receiveAddressIndexGaps: Set<Int> { get set }
@@ -275,6 +268,7 @@ protocol PersistenceUserDefaultsType: AnyObject {
   func dustProtectionMinimumAmount() -> Int
   func dustProtectionIsEnabled() -> Bool
 
+  func yearlyPriceHighNotificationIsEnabled() -> Bool
 }
 
 extension PersistenceUserDefaultsType {

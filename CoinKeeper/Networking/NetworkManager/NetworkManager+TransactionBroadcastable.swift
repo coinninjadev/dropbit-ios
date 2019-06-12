@@ -104,30 +104,32 @@ extension NetworkManager: TransactionBroadcastable {
   func postSharedPayloadIfAppropriate(withOutgoingTxData outgoingTxData: OutgoingTransactionData,
                                       walletManager: WalletManagerType) -> Promise<String> {
     guard let sharedPayloadDTO = outgoingTxData.sharedPayloadDTO,
-      case let .known(addressPubKey) = sharedPayloadDTO.addressPubKeyState else {
+      case let .known(addressPubKey) = sharedPayloadDTO.addressPubKeyState,
+      let senderIdentityBody = outgoingTxData.sharedPayloadSenderIdentity else {
+        //Skip posting payload and just return the txid
       return Promise.value(outgoingTxData.txid)
     }
 
-    guard let senderNumber = self.persistenceManager.verifiedPhoneNumber() else {
-      return Promise(error: CKPersistenceError.missingValue(key: "phoneNumber"))
+    switch outgoingTxData.dropBitType {
+    case .none: return Promise(error: CKPersistenceError.missingValue(key: "outgoingTxData.dropBitType"))
+    default: break
     }
 
     guard let amountInfo = sharedPayloadDTO.amountInfo else {
       return Promise(error: CKPersistenceError.missingValue(key: "amountInfo"))
     }
 
-    let payload = SharedPayloadV1(txid: outgoingTxData.txid,
-                                  memo: sharedPayloadDTO.memo,
+    let sharingObservantMemo = sharedPayloadDTO.shouldShare ? (sharedPayloadDTO.memo ?? "") : ""
+    let payload = SharedPayloadV2(txid: outgoingTxData.txid,
+                                  memo: sharingObservantMemo,
                                   amountInfo: amountInfo,
-                                  senderPhoneNumber: senderNumber)
-
+                                  senderIdentity: senderIdentityBody)
     return walletManager.encryptPayload(payload, addressPubKey: addressPubKey)
       .then { encryptedPayload -> Promise<Void> in
-        let sharingObservantPayload = sharedPayloadDTO.shouldShare ? encryptedPayload : ""
         let body = CreateTransactionNotificationBody(txid: outgoingTxData.txid,
                                                      address: outgoingTxData.destinationAddress,
-                                                     phoneNumberHash: outgoingTxData.contactPhoneNumberHash,
-                                                     encryptedPayload: sharingObservantPayload,
+                                                     identityHash: outgoingTxData.identityHash,
+                                                     encryptedPayload: encryptedPayload,
                                                      encryptedFormat: "1")
         return self.addTransactionNotification(body: body)
       }

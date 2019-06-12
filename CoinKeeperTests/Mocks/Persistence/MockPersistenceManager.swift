@@ -60,8 +60,7 @@ class MockPersistenceManager: PersistenceManagerType {
   func walletWords() -> [String]? {
     return keychainManager.retrieveValue(for: .walletWords) as? [String]
   }
-  func deregisterPhone() {}
-  func persist(pendingInvitationData data: PendingInvitationData) {}
+  func unverifyAllIdentities() {}
   func persistUnacknowledgedInvitation(in context: NSManagedObjectContext, with btcPair: BitcoinUSDPair,
                                        contact: ContactType, fee: Int, acknowledgementId: String) {}
   func deleteTransactions(notIn txids: [String], in context: NSManagedObjectContext) {}
@@ -75,6 +74,14 @@ class MockPersistenceManager: PersistenceManagerType {
   }
 
   func matchContactsIfPossible() { databaseManager.matchContactsIfPossible(with: self.contactCacheManager) }
+  func verifiedIdentities(in context: NSManagedObjectContext) -> [UserIdentityType] {
+    return []
+  }
+
+  var userIsVerifiedValue = true
+  func userIsVerified(using type: UserIdentityType, in context: NSManagedObjectContext) -> Bool {
+    return userIsVerifiedValue
+  }
 
   var unacknowledgedInvitations: [CKMInvitation] = []
   func getUnacknowledgedInvitations(in context: NSManagedObjectContext) -> [CKMInvitation] {
@@ -94,20 +101,8 @@ class MockPersistenceManager: PersistenceManagerType {
     return Promise { _ in }
   }
 
-  func removePendingInvitationData(with id: String) -> PendingInvitationData? {
-    return nil
-  }
-
   func backup(recoveryWords words: [String], isBackedUp: Bool) -> Promise<Void> {
     return .value(())
-  }
-
-  func pendingInvitations() -> [PendingInvitationData] {
-    return []
-  }
-
-  func pendingInvitation(with id: String) -> PendingInvitationData? {
-    return nil
   }
 
   func containsRegularTransaction(in context: NSManagedObjectContext) -> IncomingOutgoingTuple {
@@ -127,7 +122,7 @@ class MockPersistenceManager: PersistenceManagerType {
     return CKMTransaction(insertInto: context)
   }
 
-  func persistReceivedSharedPayloads(_ payloads: [SharedPayloadV1], kit: PhoneNumberKit, in context: NSManagedObjectContext) { }
+  func persistReceivedSharedPayloads(_ payloads: [Data], kit: PhoneNumberKit, in context: NSManagedObjectContext) { }
 
   func groomAddressTransactionSummaries(
     from responses: [AddressTransactionSummaryResponse],
@@ -146,6 +141,12 @@ class MockPersistenceManager: PersistenceManagerType {
 
   func enableDustProtection(_ shouldEnable: Bool) {
   }
+
+  func yearlyPriceHighNotificationIsEnabled() -> Bool {
+    return userDefaultsManager.yearlyPriceHighNotificationIsEnabled()
+  }
+
+  func updateYearlyPriceHighNotification(enabled: Bool) {}
 
   func defaultHeaders(in context: NSManagedObjectContext) -> Promise<DefaultRequestHeaders> {
     return Promise { _ in }
@@ -179,9 +180,7 @@ class MockPersistenceManager: PersistenceManagerType {
     from responses: [AddressTransactionSummaryResponse],
     in context: NSManagedObjectContext) {}
 
-  func persistWalletId(from response: WalletResponse, in context: NSManagedObjectContext) -> Promise<Void> {
-    return Promise { _ in }
-  }
+  func persistWalletId(from response: WalletResponse, in context: NSManagedObjectContext) throws { }
 
   func persistUserId(_ userId: String, in context: NSManagedObjectContext) { }
 

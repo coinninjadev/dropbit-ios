@@ -59,17 +59,17 @@ class KeypadDigitView: UIView {
     xibSetup()
   }
 
-  @IBInspectable var letterColor: UIColor? = Theme.Color.lightBlueTint.color {
+  @IBInspectable var letterColor: UIColor? = .lightBlueTint {
     didSet {
       updateUI()
     }
   }
-  @IBInspectable var bottomBarColor: UIColor? = Theme.Color.lightBlueTint.color {
+  @IBInspectable var bottomBarColor: UIColor? = .lightBlueTint {
     didSet {
       updateUI()
     }
   }
-  @IBInspectable var circleColor: UIColor? = Theme.Color.lightBlueTint.color {
+  @IBInspectable var circleColor: UIColor? = .lightBlueTint {
     didSet {
       updateUI()
     }

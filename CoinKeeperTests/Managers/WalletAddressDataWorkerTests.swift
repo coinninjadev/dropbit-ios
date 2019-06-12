@@ -62,7 +62,7 @@ class WalletAddressDataWorkerTests: XCTestCase {
       try? WalletAddressRequestResponse.decoder.decode(WalletAddressRequestResponse.self, from: WalletAddressRequestResponse.sampleData)
 
     let globalNumber = GlobalPhoneNumber(countryCode: 1, nationalNumber: "330-555-4969")
-    generateUnacknowledgedInvitation(with: GenericContact(phoneNumber: globalNumber, hash: "", formatted: ""), in: stack.context)
+    generateUnacknowledgedInvitation(with: GenericContact(phoneNumber: globalNumber, formatted: ""), in: stack.context)
 
     let invitation = CKMInvitation.findUnacknowledgedInvitations(in: stack.context)[0]
     mockPersistenceManager.unacknowledgedInvitations = [invitation]
@@ -82,7 +82,7 @@ class WalletAddressDataWorkerTests: XCTestCase {
       try? WalletAddressRequestResponse.decoder.decode(WalletAddressRequestResponse.self, from: WalletAddressRequestResponse.sampleData)
 
     let globalNumber = GlobalPhoneNumber(countryCode: 1, nationalNumber: "330-555-4969")
-    generateUnacknowledgedInvitation(with: GenericContact(phoneNumber: globalNumber, hash: "", formatted: ""), in: stack.context)
+    generateUnacknowledgedInvitation(with: GenericContact(phoneNumber: globalNumber, formatted: ""), in: stack.context)
 
     let otherInvitation = CKMInvitation(insertInto: stack.context)
 
@@ -127,6 +127,8 @@ class WalletAddressDataWorkerTests: XCTestCase {
                                                       metadata: nil,
                                                       identityHash: nil,
                                                       status: WalletAddressRequestStatus.completed.rawValue,
+                                                      deliveryId: nil,
+                                                      deliveryStatus: nil,
                                                       walletId: nil)
 
     let invitation = CKMInvitation(withAddressRequestResponse: sampleResponse,
@@ -163,6 +165,8 @@ class WalletAddressDataWorkerTests: XCTestCase {
                                                       metadata: nil,
                                                       identityHash: nil,
                                                       status: WalletAddressRequestStatus.new.rawValue,
+                                                      deliveryId: nil,
+                                                      deliveryStatus: nil,
                                                       walletId: nil)
 
     let invitation = CKMInvitation(withAddressRequestResponse: sampleResponse,
@@ -248,7 +252,7 @@ class WalletAddressDataWorkerTests: XCTestCase {
 }
 
 class MockInvitationDelegate: InvitationWorkerDelegate {
-  func fetchAndHandleSentWalletAddressRequests() -> Promise<[PendingInvitationData]> {
-    return Promise.value([])
+  func fetchAndHandleSentWalletAddressRequests() -> Promise<[WalletAddressRequestResponse]> {
+    return Promise { _ in }
   }
 }

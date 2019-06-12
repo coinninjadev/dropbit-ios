@@ -32,18 +32,18 @@ class ConfirmPaymentMemoView: UIView {
     backgroundColor = .clear
     self.applyCornerRadius(6)
     self.layer.borderWidth = 1
-    self.layer.borderColor = Theme.Color.lightGrayOutline.color.cgColor
-    separatorView.backgroundColor = Theme.Color.lightGrayOutline.color
+    self.layer.borderColor = UIColor.mediumGrayBorder.cgColor
+    separatorView.backgroundColor = .mediumGrayBorder
 
-    topBackgroundView.backgroundColor = Theme.Color.lightGrayBackground.color
-    bottomBackgroundView.backgroundColor = Theme.Color.whiteBackground.color
+    topBackgroundView.backgroundColor = .lightGrayBackground
+    bottomBackgroundView.backgroundColor = .whiteBackground
 
     memoLabel.textAlignment = .center
-    memoLabel.textColor = Theme.Color.confirmPaymentMemo.color
-    memoLabel.font = Theme.Font.confirmPaymentMemo.font
+    memoLabel.textColor = .darkBlueText
+    memoLabel.font = .regular(14)
 
-    isSharedDescriptionLabel.textColor = Theme.Color.grayText.color
-    isSharedDescriptionLabel.font = Theme.Font.disclaimerText.font
+    isSharedDescriptionLabel.textColor = .darkGrayText
+    isSharedDescriptionLabel.font = .regular(10)
   }
 
   /// This view as a whole should be hidden if no memo. `isSent` determines past/future tense.

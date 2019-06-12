@@ -9,7 +9,7 @@
 import PromiseKit
 import UIKit
 import os.log
-import MessageUI
+import Permission
 
 extension AppCoordinator: SettingsViewControllerDelegate {
 
@@ -18,7 +18,15 @@ extension AppCoordinator: SettingsViewControllerDelegate {
   }
 
   func dustProtectionIsEnabled() -> Bool {
-    return self.persistenceManager.dustProtectionIsEnabled()
+    return persistenceManager.dustProtectionIsEnabled()
+  }
+
+  func yearlyHighPushNotificationIsSubscribed() -> Bool {
+    let permission = permissionManager.permissionStatus(for: .notification)
+    let permissionGranted = permission == .authorized
+    let hasPushToken = persistenceManager.string(for: .devicePushToken) != nil
+    let isEnabled = persistenceManager.yearlyPriceHighNotificationIsEnabled()
+    return isEnabled && permissionGranted && hasPushToken
   }
 
   func viewControllerDidSelectRecoveryWords(_ viewController: UIViewController) {
@@ -36,11 +44,38 @@ extension AppCoordinator: SettingsViewControllerDelegate {
     navigationController.pushViewController(textViewController, animated: true)
   }
 
-  func viewControllerDidChangeDustProtection(_ viewController: UIViewController, shouldEnable: Bool) {
-    self.persistenceManager.enableDustProtection(shouldEnable)
+  func viewController(_ viewController: UIViewController, didEnableDustProtection didEnable: Bool) {
+    self.persistenceManager.enableDustProtection(didEnable)
   }
 
-  func viewControllerDidRequestOpenURL(_ viewController: UIViewController, url: URL) {
+  func viewController(_ viewController: UIViewController, didEnableYearlyHighNotification didEnable: Bool, completion: @escaping () -> Void) {
+    permissionManager.requestPermission(for: .notification) { (status: PermissionStatus) in
+      switch status {
+      case .authorized, .notDetermined:
+        guard self.persistenceManager.string(for: .devicePushToken) != nil else {
+          self.requestPushNotificationDialogueIfNeeded()
+          completion()
+          return
+        }
+
+        self.persistenceManager.updateYearlyPriceHighNotification(enabled: didEnable)
+
+        if didEnable {
+          self.notificationManager.subscribeToTopic(type: .btcHigh)
+            .ensure { completion() }.cauterize()
+
+        } else {
+          self.notificationManager.unsubscribeFromTopic(type: .btcHigh)
+            .ensure { completion() }.cauterize()
+        }
+
+      case .denied, .disabled:
+        completion()
+      }
+    }
+  }
+
+  func viewController(_ viewController: UIViewController, didRequestOpenURL url: URL) {
     openURL(url, completionHandler: nil)
   }
 
@@ -84,12 +119,13 @@ extension AppCoordinator: SettingsViewControllerDelegate {
           return Promise.value(()) // don't show error, just go on with deleting wallet.
         }
         .then { self.networkManager.resetWallet() }
+        .get { try self.deleteAndResetWalletLocally() }
         .done(on: .main) { _ in
           self.analyticsManager.track(event: .deleteWallet, with: nil)
-          self.deleteAndResetWalletLocally()
           self.showStartViewController()
           self.analyticsManager.track(property: MixpanelProperty(key: .hasWallet, value: false))
           self.analyticsManager.track(property: MixpanelProperty(key: .phoneVerified, value: false))
+          self.analyticsManager.track(property: MixpanelProperty(key: .twitterVerified, value: false))
           self.analyticsManager.track(property: MixpanelProperty(key: .wordsBackedUp, value: false))
           self.analyticsManager.track(property: MixpanelProperty(key: .hasBTCBalance, value: false))
           self.analyticsManager.track(property: MixpanelProperty(key: .isDropBitMeEnabled, value: false))
@@ -129,61 +165,6 @@ extension AppCoordinator: SettingsViewControllerDelegate {
     )
   }
 
-  func viewControllerSendDebuggingInfo(_ viewController: UIViewController) {
-    // show confirmation first
-    let message = "The debug report will not include any data allowing us access to your Bitcoin. However, " +
-    "it may contain personal information, such as phone numbers and memos.\n"
-    let cancelAction = AlertActionConfiguration(title: "Cancel", style: .cancel, action: nil)
-    let okAction = AlertActionConfiguration(title: "OK", style: .default) { [weak self] in
-      self?.presentDebugInfo(from: viewController)
-    }
-    let actions: [AlertActionConfigurationType] = [cancelAction, okAction]
-    let alertViewModel = AlertControllerViewModel(title: message, description: nil, image: nil, style: .alert, actions: actions)
-    let alertController = alertManager.alert(from: alertViewModel)
-    viewController.present(alertController, animated: true, completion: nil)
-  }
-
-  private func presentDebugInfo(from viewController: UIViewController) {
-    guard let dbFileURL = self.persistenceManager.persistentStore()?.url else {
-        self.alertManager.hideActivityHUD(withDelay: 0) {
-          self.alertManager.showError(message: "Failed to find database", forDuration: 4.0)
-        }
-        return
-    }
-    guard MFMailComposeViewController.canSendMail() else {
-      self.alertManager.hideActivityHUD(withDelay: 0) {
-        self.alertManager.showError(message: "Your mail client is not configured", forDuration: 4.0)
-      }
-      return
-    }
-
-    let mailVC = MFMailComposeViewController()
-    mailVC.setToRecipients(["hello@coinninja.com"])
-    mailVC.setSubject("Debug info")
-    let iosVersion = UIDevice.current.systemVersion
-    let versionKey: String = "CFBundleShortVersionString"
-    let dropBitVersion = "\(Bundle.main.infoDictionary?[versionKey] ?? "Unknown")"
-    let body =
-    """
-    This debugging info is shared with the engineers to diagnose potential issues.
-
-    Describe here what issues you are experiencing:
-
-
-
-    ----------------------------------
-    iOS version: \(iosVersion)
-    DropBit version: \(dropBitVersion)
-    """
-    mailVC.setMessageBody(body, isHTML: false)
-    if let dbData = try? Data(contentsOf: dbFileURL) {
-      mailVC.addAttachmentData(dbData, mimeType: "application/vnd.sqlite3", fileName: "CoinNinjaDB.sqlite")
-    }
-    mailVC.mailComposeDelegate = self.mailComposeDelegate
-
-    viewController.present(mailVC, animated: true, completion: nil)
-  }
-
   private func deleteDeviceEndpoint() -> Promise<Void> {
     guard let endpointIds = persistenceManager.deviceEndpointIds() else {
       return .value(())
@@ -194,8 +175,8 @@ extension AppCoordinator: SettingsViewControllerDelegate {
       .get { self.persistenceManager.deleteDeviceEndpointIds() }
   }
 
-  private func deleteAndResetWalletLocally() {
-    persistenceManager.resetWallet()
+  private func deleteAndResetWalletLocally() throws {
+    try persistenceManager.resetWallet()
     resetUserAuthenticatedState()
     walletManager = nil
   }

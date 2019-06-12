@@ -25,7 +25,7 @@ public class CCMPhoneNumber: NSManagedObject {
   }
 
   /// Prevents Core Data from reporting objects as updated just because the property was set
-  func setStatusIfDifferent(_ newStatus: PhoneNumberVerificationStatus) {
+  func setStatusIfDifferent(_ newStatus: UserIdentityVerificationStatus) {
     if self.verificationStatus != newStatus {
       self.verificationStatus = newStatus
     }

@@ -50,43 +50,45 @@ class ConfirmPaymentViewController: PresentableViewController, StoryboardInitial
   @IBOutlet var memoContainerView: ConfirmPaymentMemoView!
   @IBOutlet var secondaryAddressLabel: UILabel!
   @IBOutlet var tapAndHoldLabel: UILabel!
+  @IBOutlet var avatarBackgroundView: UIView!
+  @IBOutlet var avatarImageView: UIImageView!
 
   var coordinationDelegate: ConfirmPaymentViewControllerDelegate? {
     return generalCoordinationDelegate as? ConfirmPaymentViewControllerDelegate
   }
 
   private func setupViews() {
-    titleLabel.font = Theme.Font.onboardingSubtitle.font
-    titleLabel.textColor = Theme.Color.darkBlueText.color
+    titleLabel.font = .regular(15)
+    titleLabel.textColor = .darkBlueText
 
     primaryCurrencyLabel.textAlignment = .center
-    primaryCurrencyLabel.textColor = Theme.Color.lightBlueTint.color
-    primaryCurrencyLabel.font = Theme.Font.requestPayPrimaryCurrency.font
+    primaryCurrencyLabel.textColor = .lightBlueTint
+    primaryCurrencyLabel.font = .regular(35)
 
     secondaryCurrencyLabel.textAlignment = .center
-    secondaryCurrencyLabel.textColor = Theme.Color.grayText.color
-    secondaryCurrencyLabel.font = Theme.Font.requestPaySecondaryCurrency.font
+    secondaryCurrencyLabel.textColor = .darkGrayText
+    secondaryCurrencyLabel.font = .regular(17)
 
     networkFeeLabel.textAlignment = .center
-    networkFeeLabel.font = Theme.Font.sendPaymentNetworkFee.font
-    networkFeeLabel.textColor = Theme.Color.sendPaymentNetworkFee.color
+    networkFeeLabel.font = .light(11)
+    networkFeeLabel.textColor = .darkBlueText
 
     contactLabel.backgroundColor = UIColor.clear
-    contactLabel.font = Theme.Font.sendingAmountTo.font
+    contactLabel.font = .regular(26)
     contactLabel.adjustsFontSizeToFitWidth = true
 
     primaryAddressLabel.backgroundColor = UIColor.clear
-    primaryAddressLabel.font = Theme.Font.sendingAmountToAddress.font
+    primaryAddressLabel.font = .medium(14)
     primaryAddressLabel.adjustsFontSizeToFitWidth = true
 
     memoContainerView.isHidden = true
 
     secondaryAddressLabel.textAlignment = .center
-    secondaryAddressLabel.textColor = Theme.Color.grayText.color
-    secondaryAddressLabel.font = Theme.Font.confirmPaymentSecondaryAddress.font
+    secondaryAddressLabel.textColor = .darkGrayText
+    secondaryAddressLabel.font = .regular(13)
 
-    tapAndHoldLabel.textColor = Theme.Color.darkGray.color
-    tapAndHoldLabel.font = Theme.Font.tapReminderTitle.font
+    tapAndHoldLabel.textColor = .darkGrayText
+    tapAndHoldLabel.font = .medium(13)
   }
 
   private func updateView(with viewModel: ConfirmPaymentViewModelType) {
@@ -111,9 +113,6 @@ class ConfirmPaymentViewController: PresentableViewController, StoryboardInitial
   }
 
   private func updateRecipient(with viewModel: ConfirmPaymentViewModelType) {
-    let formatter = CKPhoneNumberFormatter(kit: PhoneNumberKit(), format: .international)
-    let formattedNumber = viewModel.contact.flatMap { try? formatter.string(from: $0.globalPhoneNumber) }
-
     // Hide address labels by default, unhide as needed
     // Contact label is always shown, set text to nil to hide
     primaryAddressLabel.isHidden = true
@@ -124,27 +123,51 @@ class ConfirmPaymentViewController: PresentableViewController, StoryboardInitial
     primaryAddressLabel.text = viewModel.address
     secondaryAddressLabel.text = viewModel.address
 
-    // May refer to either an actual contact or a manually entered phone number
     if let contact = viewModel.contact {
-      switch contact.kind {
-      case .generic:
-        contactLabel.text = formattedNumber
-        secondaryAddressLabel.isHidden = false
-      case .invite:
-        if contact.displayName == nil {
-          contactLabel.text = formattedNumber
-        } else {
-          primaryAddressLabel.text = formattedNumber
-          primaryAddressLabel.isHidden = false
-        }
-      case .registeredUser:
-        primaryAddressLabel.text = formattedNumber
-        primaryAddressLabel.isHidden = false // phone number
-        secondaryAddressLabel.isHidden = false // address
-      }
+      // May refer to either an actual contact or a manually entered phone number
+      updateView(withContact: contact)
     } else {
-      // btc address
+      // Recipient is btc address
       primaryAddressLabel.isHidden = false
+    }
+  }
+
+  private func updateView(withContact contact: ContactType) {
+    var displayIdentity = ""
+    switch contact.identityType {
+    case .phone:
+      guard let phoneContact = contact as? PhoneContactType else { return }
+      contactLabel.isHidden = false
+      let formatter = CKPhoneNumberFormatter(kit: PhoneNumberKit(), format: .international)
+      displayIdentity = (try? formatter.string(from: phoneContact.globalPhoneNumber)) ?? ""
+      avatarBackgroundView.isHidden = true
+    case .twitter:
+      displayIdentity = contact.displayIdentity
+      guard let twitterContact = contact as? TwitterContact else { return }
+      contactLabel.isHidden = true
+      avatarBackgroundView.isHidden = false
+      if let data = twitterContact.twitterUser.profileImageData {
+        avatarImageView.image = UIImage(data: data)
+        let radius = avatarImageView.frame.width / 2.0
+        avatarImageView.applyCornerRadius(radius)
+      }
+    }
+
+    switch contact.kind {
+    case .generic:
+      contactLabel.text = displayIdentity
+      secondaryAddressLabel.isHidden = false
+    case .invite:
+      if contact.displayName == nil {
+        contactLabel.text = displayIdentity
+      } else {
+        primaryAddressLabel.text = displayIdentity
+        primaryAddressLabel.isHidden = false
+      }
+    case .registeredUser:
+      primaryAddressLabel.text = displayIdentity
+      primaryAddressLabel.isHidden = false // phone number
+      secondaryAddressLabel.isHidden = false // address
     }
   }
 

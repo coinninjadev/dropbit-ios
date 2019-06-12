@@ -12,6 +12,7 @@ import enum Result.Result
 import PromiseKit
 import os.log
 import CoreData
+import Permission
 
 extension AppCoordinator: ContactsViewControllerDelegate {
 
@@ -49,6 +50,15 @@ extension AppCoordinator: ContactsViewControllerDelegate {
     self.navigationController.topViewController()?.present(alert, animated: true)
   }
 
+  func showAlertForNoTwitterAuthorization() {
+    let message = """
+    In order to send bitcoin to a Twitter contact, you must authorize DropBit with your Twitter account.
+    """
+
+    let alert = self.alertManager.defaultAlert(withTitle: "No access to Twitter", description: message)
+    self.navigationController.topViewController()?.present(alert, animated: true)
+  }
+
   func viewControllerDidRequestRefreshVerificationStatuses(_ viewController: UIViewController, completion: @escaping ((Error?) -> Void)) {
     self.contactCacheDataWorker.refreshStatuses()
       .done { completion(nil) }
@@ -73,6 +83,31 @@ extension AppCoordinator: ContactsViewControllerDelegate {
     }
     let alert = alertManager.alert(withTitle: title, description: detail, image: nil, style: .alert, actionConfigs: [okConfig])
     navigationController.topViewController()?.present(alert, animated: true)
+  }
+
+  func viewControllerDidRequestDefaultTwitterFriends(_ viewController: UIViewController) -> Promise<[TwitterUser]> {
+    return twitterAccessManager.defaultFollowingList(fromViewController: viewController)
+  }
+
+  func viewController(_ viewController: UIViewController, searchForTwitterUsersWith searchTerm: String) -> Promise<[TwitterUser]> {
+    return twitterAccessManager.findTwitterUsers(using: searchTerm, fromViewController: viewController)
+  }
+
+  func viewController(_ viewController: UIViewController,
+                      didSelectTwitterUser user: TwitterUser,
+                      validSelectionDelegate: SelectedValidContactDelegate) {
+    validSelectionDelegate.update(withSelectedTwitterUser: user)
+    viewController.dismiss(animated: true, completion: nil)
+  }
+
+  func permissionStatus(for kind: PermissionKind) -> PermissionStatus {
+    return self.permissionManager.permissionStatus(for: kind)
+  }
+
+  func viewControllerDidRequestPermission(_ viewController: UIViewController,
+                                          for kind: PermissionKind,
+                                          completion: @escaping (PermissionStatus) -> Void) {
+    self.permissionManager.requestPermission(for: kind, completion: completion)
   }
 
 }

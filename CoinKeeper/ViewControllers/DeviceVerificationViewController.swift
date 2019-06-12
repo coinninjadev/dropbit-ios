@@ -18,12 +18,14 @@ protocol DeviceVerificationViewControllerDelegate: AnyObject {
   func viewControllerDidRequestResendCode(_ viewController: DeviceVerificationViewController)
   func viewControllerDidSkipPhoneVerification(_ viewController: DeviceVerificationViewController)
   func viewControllerShouldShowSkipButton() -> Bool
+  func viewControllerDidSelectVerifyTwitter(_ viewController: UIViewController)
 }
 
-enum DeviceVerificationError {
+enum DeviceVerificationError: Error {
   case codeFailureLimitExceeded
   case incorrectCode
   case invalidPhoneNumber //failed local parsing
+  case missingTwitterIdentity
 
   var displayMessage: String {
     switch self {
@@ -33,6 +35,8 @@ enum DeviceVerificationError {
       return "Incorrect code.\nPlease try again."
     case .invalidPhoneNumber:
       return "Invalid phone number. Please make sure you have entered the correct number."
+    case .missingTwitterIdentity:
+      return "Missing Twitter verification. Please authorize DropBit to use Twitter as an authentication mechanism."
     }
   }
 }
@@ -77,9 +81,15 @@ final class DeviceVerificationViewController: BaseViewController {
     }
   }
 
-  var countryCodeSearchView: CountryCodeSearchView?
-  let countryCodeDataSource = CountryCodePickerDataSource()
-  let phoneNumberKit = PhoneNumberKit()
+  @IBOutlet var orView: UIView!
+  @IBOutlet var orLeftLineView: UIView!
+  @IBOutlet var orLabel: UILabel!
+  @IBOutlet var orRightLineView: UIView!
+  @IBOutlet var twitterButton: PrimaryActionButton!
+
+  @IBAction func verifyTwitter(_ sender: Any) {
+    coordinationDelegate?.viewControllerDidSelectVerifyTwitter(self)
+  }
 
   @IBAction func resendTextMessage(_ sender: Any) {
     coordinationDelegate?.viewControllerDidRequestResendCode(self)
@@ -104,6 +114,20 @@ final class DeviceVerificationViewController: BaseViewController {
   }
 
   // MARK: variables
+
+  var selectedSetupFlow: SetupFlow?
+  var shouldShowTwitterButton: Bool {
+    guard let selectedFlow = selectedSetupFlow else { return false }
+    switch selectedFlow {
+    case .newWallet, .restoreWallet:  return true
+    case .claimInvite:                return false
+    }
+  }
+
+  var countryCodeSearchView: CountryCodeSearchView?
+  let countryCodeDataSource = CountryCodePickerDataSource()
+  let phoneNumberKit = PhoneNumberKit()
+
   var coordinationDelegate: DeviceVerificationViewControllerDelegate? {
     return generalCoordinationDelegate as? DeviceVerificationViewControllerDelegate
   }
@@ -124,6 +148,7 @@ final class DeviceVerificationViewController: BaseViewController {
     super.viewDidLoad()
 
     digitEntryViewModel = DigitEntryDisplayViewModel(view: codeDisplayView, maxDigits: 6)
+    configureTwitterViews()
     updateUI()
     setupPhoneNumberEntryView(textFieldEnabled: false)
 
@@ -175,6 +200,7 @@ final class DeviceVerificationViewController: BaseViewController {
       phoneNumberContainer.isHidden = false
       phoneNumberEntryView.isHidden = false
       keypadEntryView.delegate = self.phoneNumberEntryView.textField
+      showTwitterViews(self.shouldShowTwitterButton)
 
     case .codeVerification(let phoneNumber):
       updatePrimaryLabels(title: enterYourCode, message: normalCodeMessage(with: phoneNumber))
@@ -190,6 +216,28 @@ final class DeviceVerificationViewController: BaseViewController {
       updateErrorLabel(with: DeviceVerificationError.codeFailureLimitExceeded.displayMessage)
       phoneNumberEntryView.isHidden = false
     }
+  }
+
+  private func showTwitterViews(_ shouldShow: Bool) {
+    orView.isHidden = !shouldShow
+    twitterButton.isHidden = !shouldShow
+  }
+
+  private func configureTwitterViews() {
+    let twitterBlue = UIColor.lightBlueTint
+    orLeftLineView.backgroundColor = twitterBlue
+    orRightLineView.backgroundColor = twitterBlue
+    orLabel.textColor = twitterBlue
+    orLabel.text = "OR"
+    orLabel.font = .primaryButtonTitle
+    twitterButton.style = .standard
+
+    let twitterTitle = NSAttributedString(imageName: "twitterBird",
+                                          imageSize: CGSize(width: 20, height: 17),
+                                          title: "VERIFY TWITTER ACCOUNT",
+                                          sharedColor: .lightGrayText,
+                                          font: .primaryButtonTitle)
+    twitterButton.setAttributedTitle(twitterTitle, for: .normal)
   }
 
   private func updatePrimaryLabels(title: String, message: String) {
@@ -212,6 +260,8 @@ final class DeviceVerificationViewController: BaseViewController {
   }
 
   private func setDefaultHiddenViews() {
+    orView.isHidden = true
+    twitterButton.isHidden = true
     oneTimeCodeInputTextField.isHidden = true
     exampleLabel.isHidden = true
     phoneNumberContainer.isHidden = true
@@ -246,7 +296,7 @@ final class DeviceVerificationViewController: BaseViewController {
     switch entryMode {
     case .codeVerification, .codeVerificationFailed:
       resendCodeButton.isHidden = false
-      resendCodeButton.setUnderlinedTitle("Resend Text Message", size: 14, color: Theme.Color.darkBlueText.color)
+      resendCodeButton.setUnderlinedTitle("Resend Text Message", size: 14, color: .darkBlueText)
 
     case .phoneNumberEntry, .codeFailureCountExceeded:
       resendCodeButton.isHidden = true
@@ -317,7 +367,7 @@ extension DeviceVerificationViewController: KeypadEntryViewDelegate {
 
     case .codeFailureCountExceeded:
       let logger = OSLog(subsystem: "com.coinninja.coinkeeper.deviceverificationviewcontroller", category: "device_verification_view_controller")
-      os_log("Devide verification failed three times", log: logger, type: .error)
+      os_log("Device verification failed three times", log: logger, type: .error)
 
     case .phoneNumberEntry:
       break

@@ -10,24 +10,27 @@ import UIKit
 
 extension AppCoordinator: SuccessFailViewControllerDelegate {
   func viewControllerDidRetry(_ viewController: SuccessFailViewController) {
-    switch viewController.viewModel.flow {
-    case .payment:
+    switch viewController.viewModel {
+    case is PaymentSuccessFailViewModel:
       viewControllerDidRetryPayment()
-    case .restoreWallet:
+    case is RestoreWalletSuccessFailViewModel:
       navigationController.popToViewController(navigationController.viewControllers[1], animated: true)
+    default:
+      break
     }
   }
 
   func viewController(_ viewController: SuccessFailViewController, success: Bool, completion: (() -> Void)?) {
-    switch viewController.viewModel.flow {
-    case .payment:
+    switch viewController.viewModel {
+    case is PaymentSuccessFailViewModel:
       CKNotificationCenter.publish(key: .didSendTransactionSuccessfully)
       viewController.dismiss(animated: false) { [weak self] in
         self?.navigationController.topViewController()?.dismiss(animated: true, completion: completion)
       }
-    case .restoreWallet:
-      startDeviceVerificationFlow(shouldOrphanRoot: true, isInitialSetupFlow: true)
+    case is RestoreWalletSuccessFailViewModel:
+      startDeviceVerificationFlow(userIdentityType: .phone, shouldOrphanRoot: true, selectedSetupFlow: .restoreWallet)
+    default:
+      break
     }
   }
-
 }

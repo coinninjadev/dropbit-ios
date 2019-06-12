@@ -26,8 +26,7 @@ class TransactionHistoryDetailBaseCell: UICollectionViewCell {
     didSet {
       underlyingContentView.backgroundColor = UIColor.white
       underlyingContentView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
-      underlyingContentView.layer.cornerRadius = 13
-      underlyingContentView.layer.masksToBounds = true
+      underlyingContentView.applyCornerRadius(13)
     }
   }
   @IBOutlet var closeButton: UIButton!
@@ -39,17 +38,18 @@ class TransactionHistoryDetailBaseCell: UICollectionViewCell {
   @IBOutlet var historicalValuesLabel: UILabel! //use attributedText
   @IBOutlet var addMemoButton: UIButton! {
     didSet {
-      addMemoButton.setTitleColor(Theme.Color.grayText.color, for: .normal)
-      addMemoButton.titleLabel?.font = Theme.Font.addMemoTitle.font
+      addMemoButton.setTitleColor(.darkGrayText, for: .normal)
+      addMemoButton.titleLabel?.font = .regular(15)
       addMemoButton.setTitle("  Add Memo", for: .normal)
       let plusImage = UIImage(imageLiteralResourceName: "plusIcon").withRenderingMode(.alwaysTemplate)
       addMemoButton.setImage(plusImage, for: .normal)
-      addMemoButton.tintColor = Theme.Color.grayText.color
+      addMemoButton.tintColor = .darkGrayText
     }
   }
   @IBOutlet var memoContainerView: ConfirmPaymentMemoView!
   @IBOutlet var statusLabel: TransactionDetailStatusLabel!
   @IBOutlet var counterpartyLabel: TransactionDetailCounterpartyLabel!
+  @IBOutlet var twitterImage: UIImageView!
 
   // MARK: variables
   var viewModel: TransactionHistoryDetailCellViewModel?
@@ -61,7 +61,7 @@ class TransactionHistoryDetailBaseCell: UICollectionViewCell {
 
     backgroundColor = UIColor.white
     layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
-    layer.cornerRadius = 13
+    applyCornerRadius(13)
 
     // Shadow
     layer.shadowColor = UIColor.black.cgColor
@@ -115,6 +115,7 @@ class TransactionHistoryDetailBaseCell: UICollectionViewCell {
     statusLabel.textColor = viewModel.descriptionColor
     let isEqualToReceiverAddress = (viewModel.receiverAddress ?? "") == viewModel.counterpartyDescription
     counterpartyLabel.text = isEqualToReceiverAddress ? nil : viewModel.counterpartyDescription
+    twitterImage.isHidden = !viewModel.isTwitterContact
     primaryAmountLabel.text = viewModel.primaryAmountLabel
     secondaryAmountLabel.attributedText = viewModel.secondaryAmountLabel
     historicalValuesLabel.text = nil

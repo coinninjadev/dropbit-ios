@@ -48,6 +48,8 @@ class InvitationTests: XCTestCase {
                                           metadata: nil,
                                           identityHash: nil,
                                           status: WalletAddressRequestStatus.new.rawValue,
+                                          deliveryId: nil,
+                                          deliveryStatus: nil,
                                           walletId: nil)
     }
 
@@ -61,12 +63,13 @@ class InvitationTests: XCTestCase {
                                           metadata: nil,
                                           identityHash: nil,
                                           status: WalletAddressRequestStatus.expired.rawValue,
+                                          deliveryId: nil,
+                                          deliveryStatus: nil,
                                           walletId: nil)
     }
 
     (responses + excludedResponses).forEach { res in
-      _ = CKMInvitation.updateOrCreate(withAddressRequestResponse: res,
-                                       side: .received,
+      _ = CKMInvitation.updateOrCreate(withReceivedAddressRequestResponse: res,
                                        kit: self.phoneNumberKit,
                                        in: context)
     }

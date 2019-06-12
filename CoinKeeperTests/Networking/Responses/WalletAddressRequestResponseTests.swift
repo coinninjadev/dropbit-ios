@@ -100,7 +100,8 @@ class WalletAddressRequestResponseTests: XCTestCase, ResponseStringsTestable {
     let btcResponse = sample.copy(withMetadata: WalletAddressRequestMetadata(amount: nilBTCAmount,
                                                                              sender: nil,
                                                                              receiver: nil,
-                                                                             requestId: nil))
+                                                                             requestId: nil,
+                                                                             suppress: nil))
     XCTAssertThrowsError(try WalletAddressRequestResponse.validateResponse(btcResponse),
                          "WalletAddressRequestResponse with nil btcAmount should throw error", { _ in })
 
@@ -108,7 +109,8 @@ class WalletAddressRequestResponseTests: XCTestCase, ResponseStringsTestable {
     let usdResponse = sample.copy(withMetadata: WalletAddressRequestMetadata(amount: nilUSDAmount,
                                                                              sender: nil,
                                                                              receiver: nil,
-                                                                             requestId: nil))
+                                                                             requestId: nil,
+                                                                             suppress: nil))
     XCTAssertThrowsError(try WalletAddressRequestResponse.validateResponse(usdResponse),
                          "WalletAddressRequestResponse with nil usdAmount should throw error", { _ in })
   }
@@ -123,7 +125,8 @@ class WalletAddressRequestResponseTests: XCTestCase, ResponseStringsTestable {
     let btcResponse = sample.copy(withMetadata: WalletAddressRequestMetadata(amount: zeroBTCAmount,
                                                                              sender: nil,
                                                                              receiver: nil,
-                                                                             requestId: nil))
+                                                                             requestId: nil,
+                                                                             suppress: nil))
     XCTAssertThrowsError(try WalletAddressRequestResponse.validateResponse(btcResponse),
                          "WalletAddressRequestResponse with btcAmount == 0 should throw error", { _ in })
 
@@ -131,7 +134,8 @@ class WalletAddressRequestResponseTests: XCTestCase, ResponseStringsTestable {
     let usdResponse = sample.copy(withMetadata: WalletAddressRequestMetadata(amount: zeroUSDAmount,
                                                                              sender: nil,
                                                                              receiver: nil,
-                                                                             requestId: nil))
+                                                                             requestId: nil,
+                                                                             suppress: nil))
     XCTAssertThrowsError(try WalletAddressRequestResponse.validateResponse(usdResponse),
                          "WalletAddressRequestResponse with usdAmount == 0 should throw error", { _ in })
   }
@@ -146,7 +150,8 @@ class WalletAddressRequestResponseTests: XCTestCase, ResponseStringsTestable {
     let btcResponse = sample.copy(withMetadata: WalletAddressRequestMetadata(amount: negativeBTCAmount,
                                                                              sender: nil,
                                                                              receiver: nil,
-                                                                             requestId: nil))
+                                                                             requestId: nil,
+                                                                             suppress: nil))
     XCTAssertThrowsError(try WalletAddressRequestResponse.validateResponse(btcResponse),
                          "WalletAddressRequestResponse with negative btcAmount should throw error", { _ in })
 
@@ -154,7 +159,8 @@ class WalletAddressRequestResponseTests: XCTestCase, ResponseStringsTestable {
     let usdResponse = sample.copy(withMetadata: WalletAddressRequestMetadata(amount: negativeUSDAmount,
                                                                              sender: nil,
                                                                              receiver: nil,
-                                                                             requestId: nil))
+                                                                             requestId: nil,
+                                                                             suppress: nil))
     XCTAssertThrowsError(try WalletAddressRequestResponse.validateResponse(usdResponse),
                          "WalletAddressRequestResponse with negative usdAmount should throw error", { _ in })
   }
@@ -169,7 +175,8 @@ class WalletAddressRequestResponseTests: XCTestCase, ResponseStringsTestable {
     let response = sample.copy(withMetadata: WalletAddressRequestMetadata(amount: zeroBTCAmount,
                                                                           sender: nil,
                                                                           receiver: nil,
-                                                                          requestId: nil))
+                                                                          requestId: nil,
+                                                                          suppress: nil))
     XCTAssertNoThrow(try WalletAddressRequestResponse.validateResponse(response),
                      "WalletAddressRequestResponse with positive btcAmount and usdAmount should not throw error")
   }
@@ -184,7 +191,8 @@ class WalletAddressRequestResponseTests: XCTestCase, ResponseStringsTestable {
     let response = sample.copy(withMetadata: WalletAddressRequestMetadata(amount: maxBTCAmount,
                                                                           sender: nil,
                                                                           receiver: nil,
-                                                                          requestId: nil))
+                                                                          requestId: nil,
+                                                                          suppress: nil))
     XCTAssertThrowsError(try WalletAddressRequestResponse.validateResponse(response),
                          "WalletAddressRequestResponse with max satoshi amount should throw error", { _ in })
   }
@@ -200,7 +208,7 @@ class WalletAddressRequestResponseTests: XCTestCase, ResponseStringsTestable {
       let res = try response.validateStringValues()
       XCTAssertNil(res.address, "address should be nil")
       XCTAssertNil(res.txid, "txid should be nil")
-      XCTAssertNil(res.identityHash, "phoneNumberHash should be nil")
+      XCTAssertNil(res.identityHash, "identityHash should be nil")
       XCTAssertNil(res.status, "status should be nil")
       XCTAssertNil(res.walletId, "walletId should be nil")
     } catch {
@@ -233,6 +241,8 @@ extension WalletAddressRequestResponse {
                                         metadata: metadata,
                                         identityHash: self.identityHash,
                                         status: self.status,
+                                        deliveryId: nil,
+                                        deliveryStatus: nil,
                                         walletId: self.walletId)
   }
 
@@ -246,6 +256,8 @@ extension WalletAddressRequestResponse {
                                         metadata: self.metadata,
                                         identityHash: "",
                                         status: "",
+                                        deliveryId: "",
+                                        deliveryStatus: "",
                                         walletId: "")
   }
 
@@ -262,6 +274,8 @@ extension WalletAddressRequestResponse: EmptyStringCopyable {
                                         metadata: self.metadata,
                                         identityHash: self.identityHash,
                                         status: self.status,
+                                        deliveryId: self.deliveryId,
+                                        deliveryStatus: nil,
                                         walletId: self.walletId)
   }
 }

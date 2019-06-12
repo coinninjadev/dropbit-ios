@@ -14,33 +14,29 @@ import PhoneNumberKit
 @objc(CKMInvitation)
 public class CKMInvitation: NSManagedObject {
 
+  /// Use only for received address requests
   @discardableResult
-  static func updateOrCreate(withAddressRequestResponse response: WalletAddressRequestResponse,
-                             side: WalletAddressRequestSide,
+  static func updateOrCreate(withReceivedAddressRequestResponse response: WalletAddressRequestResponse,
                              kit: PhoneNumberKit,
                              in context: NSManagedObjectContext) -> CKMInvitation {
-    if let updatedInvitation = updateIfExists(withAddressRequestResponse: response, side: side, isAcknowledged: true, in: context) {
+    if let updatedInvitation = updateIfExists(withAddressRequestResponse: response, side: .received, isAcknowledged: true, in: context) {
       return updatedInvitation
 
     } else {
       // This creation logic mainly handles the receiver side, but may be elaborated upon for the sender in the future
 
-      let newTx = CKMTransaction(insertInto: context)
-      newTx.sortDate = response.createdAt
+      let newInvitation = CKMInvitation(withAddressRequestResponse: response, side: .received, kit: kit, insertInto: context)
+
+      let maybeTxid = response.txid?.asNilIfEmpty()
+      let tx = maybeTxid.flatMap { CKMTransaction.find(byTxid: $0, in: context) } ?? CKMTransaction(insertInto: context)
+
+      tx.txid = maybeTxid ?? CKMTransaction.prefixedTxid(for: newInvitation)
+
+      tx.sortDate = response.createdAt
       // not setting newTx.date here since it isn't yet a transaction, so that the display date will fallback to the invitation.sentDate
 
-      let newInvitation = CKMInvitation(withAddressRequestResponse: response, side: side, kit: kit, insertInto: context)
-
-      if side == .received { // On receiving side, set the initial txid with this method regardless of status.
-        if let actualTxid = response.txid, actualTxid.isNotEmpty {
-          newTx.txid = actualTxid
-        } else {
-          newTx.setTxid(withInvitation: newInvitation)
-        }
-      }
-
-      newTx.invitation = newInvitation
-      newTx.isIncoming = newTx.calculateIsIncoming(in: context)
+      tx.invitation = newInvitation
+      tx.isIncoming = tx.calculateIsIncoming(in: context)
 
       if newInvitation.status == .addressSent, let address = response.address {
         newInvitation.addressProvidedToSender = address
@@ -59,8 +55,11 @@ public class CKMInvitation: NSManagedObject {
     guard let foundInvitation = find(withId: queryId, in: context) else { return nil }
     foundInvitation.sentDate = response.createdAt
     foundInvitation.id = response.id
+
     let requestStatus = response.statusCase ?? .new
-    foundInvitation.status = CKMInvitation.statusToPersist(for: requestStatus, side: side)
+    let statusToPersist = CKMInvitation.statusToPersist(for: requestStatus, side: side)
+    foundInvitation.setStatusIfDifferent(to: statusToPersist)
+
     foundInvitation.setTxid(to: response.txid) // both txids are optional, placeholder txid is only on CKMTransaction
 
     if foundInvitation.status == .addressSent, let address = response.address {
@@ -93,8 +92,24 @@ public class CKMInvitation: NSManagedObject {
     case .received: counterparty = response.metadata?.sender
     case .sent:     counterparty = response.metadata?.receiver
     }
-    self.counterpartyPhoneNumber = counterparty.flatMap {
-      CKMPhoneNumber.findOrCreate(withMetadataParticipant: $0, kit: kit, in: context)
+
+    // Associate this invitation with twitter contact of the opposite side
+    if let unwrappedCounterparty = counterparty, let type = UserIdentityType(rawValue: unwrappedCounterparty.type) {
+
+      switch type {
+      case .phone:
+        self.counterpartyPhoneNumber = counterparty.flatMap {
+          CKMPhoneNumber.findOrCreate(withMetadataParticipant: $0, kit: kit, in: context)
+        }
+      case .twitter:
+        self.counterpartyTwitterContact = counterparty.flatMap({ (participant: MetadataParticipant) -> CKMTwitterContact? in
+          let identity = UserIdentityBody(participant: participant)
+          var twitterContact = TwitterContact(twitterUser: identity.twitterUser())
+          twitterContact.kind = .registeredUser
+          let ckmTwitterContact = CKMTwitterContact.findOrCreate(with: twitterContact, in: context)
+          return ckmTwitterContact
+        })
+      }
     }
 
     self.setTxid(to: response.txid)
@@ -230,22 +245,6 @@ public class CKMInvitation: NSManagedObject {
     return results.compactMap { $0.addressProvidedToSender }
   }
 
-  var pendingInvitationData: PendingInvitationData {
-    return PendingInvitationData(
-      id: self.id,
-      btcAmount: self.btcAmount,
-      fiatAmount: self.fiatAmount,
-      feeAmount: self.fees,
-      name: self.counterpartyName,
-      phoneNumber: self.counterpartyPhoneNumber?.asGlobalPhoneNumber,
-      address: nil,
-      addressPubKey: nil,
-      userNotified: false,
-      failedToSendAt: nil,
-      memo: self.transaction?.memo
-    )
-  }
-
   var isFulfillable: Bool {
     switch status {
     case .completed, .canceled, .expired: return false
@@ -283,6 +282,13 @@ extension CKMInvitation: AddressRequestUpdateDisplayable {
     }
   }
 
+  var senderHandle: String? {
+    switch side {
+    case .sender:   return nil
+    case .receiver: return counterpartyTwitterContact?.formattedScreenName
+    }
+  }
+
   var receiverName: String? {
     switch side {
     case .sender:   return counterpartyName
@@ -293,6 +299,13 @@ extension CKMInvitation: AddressRequestUpdateDisplayable {
   var receiverPhoneNumber: GlobalPhoneNumber? {
     switch side {
     case .sender:   return counterpartyPhoneNumber?.asGlobalPhoneNumber
+    case .receiver: return nil
+    }
+  }
+
+  var receiverHandle: String? {
+    switch side {
+    case .sender:   return counterpartyTwitterContact?.formattedScreenName
     case .receiver: return nil
     }
   }

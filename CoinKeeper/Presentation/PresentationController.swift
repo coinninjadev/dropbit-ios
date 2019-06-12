@@ -30,8 +30,7 @@ class PresentationController: UIPresentationController {
 
     transitionCoordinator.animateAlongsideTransition(in: presentingViewController.view, animation: { _ in
       self.presentingViewController.view.transform = CGAffineTransform(scaleX: 0.9, y: 0.9)
-      self.presentingViewController.view.layer.cornerRadius = 20.0
-      self.presentingViewController.view.layer.masksToBounds = true
+      self.presentingViewController.view.applyCornerRadius(20)
       self.presentingViewController.view.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
       if !transitionCoordinator.isInteractive {
         (self.presentingViewController as? BaseViewController)?.statusBarStyle = .lightContent
@@ -59,8 +58,7 @@ class PresentationController: UIPresentationController {
 
     transitionCoordinator.animateAlongsideTransition(in: presentingViewController.view, animation: { _ in
       self.presentingViewController.view.transform = CGAffineTransform.identity
-      self.presentingViewController.view.layer.cornerRadius = 0.0
-      self.presentingViewController.view.layer.masksToBounds = true
+      self.presentingViewController.view.applyCornerRadius(0)
       self.presentingViewController.view.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
       if !transitionCoordinator.isInteractive {
         (self.presentingViewController as? BaseViewController)?.statusBarStyle = .default

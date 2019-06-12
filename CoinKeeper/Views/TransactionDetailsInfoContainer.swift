@@ -14,9 +14,9 @@ class TransactionDetailsInfoContainer: UIView {
     super.awakeFromNib()
 
     applyCornerRadius(9)
-    backgroundColor = Theme.Color.extraLightGrayBackground.color
+    backgroundColor = .extraLightGrayBackground
     layer.borderWidth = 1
-    layer.borderColor = Theme.Color.lightGrayOutline.color.cgColor
+    layer.borderColor = UIColor.mediumGrayBorder.cgColor
   }
 
 }

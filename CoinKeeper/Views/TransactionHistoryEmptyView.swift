@@ -43,10 +43,10 @@ class TransactionHistoryEmptyView: UIView {
   }
 
   private func initalize() {
-    backgroundColor = Theme.Color.lightGrayBackground.color
+    backgroundColor = .lightGrayBackground
   }
 
-  private let buttonFont = Theme.Font.primaryButtonTitle.font
+  private let buttonFont: UIFont = .primaryButtonTitle
 
   @IBAction func learnAboutBitcoin() {
     delegate?.noTransactionsViewDidSelectLearnAboutBitcoin(self)
@@ -83,7 +83,7 @@ class TransactionHistoryEmptyView: UIView {
     let string = text(for: button)
     let attributes: [NSAttributedString.Key: Any] = [
       .font: buttonFont,
-      .foregroundColor: Theme.Color.verifyWordLightGray.color
+      .foregroundColor: UIColor.extraLightGrayText
     ]
     let attributedString = attributedSymbol(for: button) + "  " + NSAttributedString(string: string, attributes: attributes)
     return attributedString
@@ -93,15 +93,15 @@ class TransactionHistoryEmptyView: UIView {
 class TransactionHistoryNoBalanceView: TransactionHistoryEmptyView {
   @IBOutlet var noTransactionsTitle: UILabel! {
     didSet {
-      noTransactionsTitle.font = Theme.Font.noTransactionsTitle.font
-      noTransactionsTitle.textColor = Theme.Color.grayText.color
+      noTransactionsTitle.font = .medium(20)
+      noTransactionsTitle.textColor = .darkGrayText
       noTransactionsTitle.text = "No Bitcoin...Yet!"
     }
   }
   @IBOutlet var noTransactionsDetail: UILabel! {
     didSet {
-      noTransactionsDetail.textColor = Theme.Color.grayText.color
-      noTransactionsDetail.font = Theme.Font.noTransactionsDetail.font
+      noTransactionsDetail.textColor = .darkGrayText
+      noTransactionsDetail.font = .regular(15)
       noTransactionsDetail.text = "All incoming and outgoing transactions will appear here."
     }
   }

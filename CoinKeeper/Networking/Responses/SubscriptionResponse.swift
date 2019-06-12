@@ -11,6 +11,7 @@ import Foundation
 enum SubscriptionType: String {
   case wallet = "Wallet"
   case general = "General"
+  case topic = "Topic"
 }
 
 struct SubscriptionResponse: ResponseDecodable {
@@ -19,6 +20,7 @@ struct SubscriptionResponse: ResponseDecodable {
   let createdAt: Int
   let updatedAt: Int
   let ownerType: String
+  let ownerId: String // the topic id matched from available topics response
   let deviceEndpoint: DeviceEndpointResponse
   let deviceEndpointId: String
 

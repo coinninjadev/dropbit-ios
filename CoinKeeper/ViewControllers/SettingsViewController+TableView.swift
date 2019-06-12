@@ -8,12 +8,6 @@
 
 import UIKit
 
-extension SettingsViewController: SettingSwitchCellDelegate {
-  func settingSwitchCell(_ cell: SettingSwitchCell, didToggle isOn: Bool) {
-    self.coordinationDelegate?.viewControllerDidChangeDustProtection(self, shouldEnable: isOn)
-  }
-}
-
 extension SettingsViewController: UITableViewDataSource {
 
   func sectionViewModel(for section: Int) -> SettingsSectionViewModel? {
@@ -35,40 +29,28 @@ extension SettingsViewController: UITableViewDataSource {
 
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     guard let cellVM = cellViewModel(for: indexPath) else { return UITableViewCell() }
+    let cell: SettingsBaseCell
+
     switch cellVM.type {
     case .dustProtection:
-      guard let cell = tableView.dequeueReusableCell(
-        withIdentifier: SettingSwitchCell.reuseIdentifier,
-        for: indexPath) as? SettingSwitchCell
-        else { return UITableViewCell() }
-
-      cell.load(with: cellVM, delegate: self)
-      return cell
-
+      cell = tableView.dequeue(SettingSwitchWithInfoCell.self, for: indexPath)
+    case .recoveryWords:
+      cell = tableView.dequeue(SettingsRecoveryWordsCell.self, for: indexPath)
+    case .yearlyHighPushNotification:
+      cell = tableView.dequeue(SettingSwitchCell.self, for: indexPath)
     default:
-      guard let cell = tableView.dequeueReusableCell(
-        withIdentifier: SettingCell.reuseIdentifier,
-        for: indexPath) as? SettingCell
-        else { return UITableViewCell() }
-
-      cell.load(with: cellVM)
-      return cell
+      cell = tableView.dequeue(SettingCell.self, for: indexPath)
     }
 
+    cell.load(with: cellVM)
+    return cell
   }
-
 }
 
 extension SettingsViewController: UITableViewDelegate {
 
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    let cellVM = cellViewModel(for: indexPath)
-    cellVM?.command?.execute()
-  }
-
-  func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-    let sectionVM = sectionViewModel(for: section)
-    return (sectionVM?.footerViewModel != nil) ? 100.0 : 0
+    cellViewModel(for: indexPath)?.didTapRow()
   }
 
   func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
@@ -91,17 +73,4 @@ extension SettingsViewController: UITableViewDelegate {
 
     return headerView
   }
-
-  func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-    guard let footerModel = sectionViewModel(for: section)?.footerViewModel else { return nil }
-    guard let footerView: SettingsTableViewFooter = tableView.dequeueReusableHeaderFooterView(
-      withIdentifier: SettingsTableViewFooter.reuseIdentifier) as? SettingsTableViewFooter else {
-        return nil
-    }
-
-    footerView.load(with: footerModel)
-
-    return footerView
-  }
-
 }

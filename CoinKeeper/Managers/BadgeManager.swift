@@ -12,6 +12,7 @@ import UIKit
 typealias BadgeInfo = [BadgeTopicType: BadgeTopicStatus]
 
 protocol BadgeManagerType: CoreDataObserver {
+  func setupTopics()
   func add(topic: BadgeTopic)
   func publishBadgeUpdate()
   func setTransactionsDidDisplay()
@@ -38,6 +39,15 @@ class BadgeManager: BadgeManagerType {
 
   var wordsBackedUp: Bool {
     return persistenceManager.walletWordsBackedUp()
+  }
+
+  func setupTopics() {
+    let topics: [BadgeTopic] = [
+      UnverifiedPhoneBadgeTopic(),
+      WordsNotBackedUpBadgeTopic()
+    ]
+    topics.forEach { self.add(topic: $0) }
+    publishBadgeUpdate()
   }
 
   func add(topic: BadgeTopic) {

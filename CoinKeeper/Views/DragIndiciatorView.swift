@@ -22,8 +22,8 @@ class DragIndicatiorView: UIView {
   }
 
   private func initialize() {
-    backgroundColor = Theme.Color.dragIndiciator.color
-    layer.cornerRadius = 2.5
+    backgroundColor = UIColor.dragIndicator
+    applyCornerRadius(2.5)
 
     setupConstraints()
   }

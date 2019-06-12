@@ -15,21 +15,64 @@ enum ContactKind {
 }
 
 protocol ContactType {
-
   var kind: ContactKind { get set }
   var displayName: String? { get }
+  var displayIdentity: String { get }
+  var userIdentityBody: UserIdentityBody { get }
+  var dropBitType: OutgoingTransactionDropBitType { get }
+}
+
+extension ContactType {
+  var identityType: UserIdentityType {
+    return userIdentityBody.identityType
+  }
+
+  var identityHash: String {
+    return userIdentityBody.identityHash
+  }
+}
+
+protocol PhoneContactType: ContactType {
   var displayNumber: String { get }
   var phoneNumberHash: String { get }
   var globalPhoneNumber: GlobalPhoneNumber { get }
-
 }
 
-struct ValidatedContact: ContactType {
+extension PhoneContactType {
+  var phoneNumberHash: String {
+    return globalPhoneNumber.hashed()
+  }
+
+  var userIdentityBody: UserIdentityBody {
+    return UserIdentityBody(phoneNumber: globalPhoneNumber)
+  }
+
+  var displayIdentity: String {
+    return displayNumber
+  }
+
+  var dropBitType: OutgoingTransactionDropBitType {
+    return .phone(self)
+  }
+}
+
+protocol TwitterContactType: ContactType {
+  var displayHandle: String { get }
+  var identityHash: String { get }
+  var twitterUser: TwitterUser { get }
+}
+
+extension TwitterContactType {
+  var dropBitType: OutgoingTransactionDropBitType {
+    return .twitter(self)
+  }
+}
+
+struct ValidatedContact: PhoneContactType {
 
   var kind: ContactKind
-  let displayName: String?
+  var displayName: String?
   let displayNumber: String
-  let phoneNumberHash: String
   let globalPhoneNumber: GlobalPhoneNumber
 
   init?(cachedNumber: CCMPhoneNumber) {
@@ -44,26 +87,63 @@ struct ValidatedContact: ContactType {
 
     self.displayName = displayName
     self.displayNumber = cachedNumber.displayNumber
-    self.phoneNumberHash = metadata.hashedGlobalNumber
     self.globalPhoneNumber = GlobalPhoneNumber(countryCode: metadata.countryCode, nationalNumber: metadata.nationalNumber)
+  }
+
+  /// Use for test instances only
+  init(kind: ContactKind,
+       displayName: String,
+       displayNumber: String,
+       globalPhoneNumber: GlobalPhoneNumber) {
+    self.kind = kind
+    self.displayName = displayName
+    self.displayNumber = displayNumber
+    self.globalPhoneNumber = globalPhoneNumber
   }
 
 }
 
-struct GenericContact: ContactType {
+struct GenericContact: PhoneContactType {
 
   var kind: ContactKind
   var displayName: String?
   var displayNumber: String
-  var phoneNumberHash: String
   var globalPhoneNumber: GlobalPhoneNumber
 
-  init(phoneNumber: GlobalPhoneNumber, hash: String, formatted: String) {
+  init(phoneNumber: GlobalPhoneNumber, formatted: String) {
     self.kind = .generic
     self.displayName = nil
     self.displayNumber = formatted
-    self.phoneNumberHash = hash
     self.globalPhoneNumber = phoneNumber
   }
 
+}
+
+struct TwitterContact: TwitterContactType {
+  var kind: ContactKind = .invite
+  var twitterUser: TwitterUser
+
+  var userIdentityBody: UserIdentityBody {
+    return UserIdentityBody(twitterUser: twitterUser)
+  }
+
+  var displayHandle: String {
+    return twitterUser.formattedScreenName
+  }
+
+  var identityHash: String {
+    return twitterUser.idStr
+  }
+
+  var displayName: String? {
+    return twitterUser.name
+  }
+
+  var displayIdentity: String {
+    return displayHandle
+  }
+
+  init(twitterUser: TwitterUser) {
+    self.twitterUser = twitterUser
+  }
 }

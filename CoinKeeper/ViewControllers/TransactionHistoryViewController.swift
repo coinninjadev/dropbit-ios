@@ -27,7 +27,6 @@ protocol TransactionHistoryViewControllerDelegate: DeviceCountryCodeProvider &
   func viewControllerDidTapAddMemo(_ viewController: UIViewController, with completion: @escaping (String) -> Void)
   func viewControllerShouldUpdateTransaction(_ viewController: TransactionHistoryViewController,
                                              transaction: CKMTransaction) -> Promise<Void>
-  func badgingManager() -> BadgeManagerType
 
   func viewControllerDidTapScan(_ viewController: UIViewController, converter: CurrencyConverter)
   func viewControllerDidTapReceivePayment(_ viewController: UIViewController, converter: CurrencyConverter)
@@ -37,6 +36,7 @@ protocol TransactionHistoryViewControllerDelegate: DeviceCountryCodeProvider &
   func viewControllerDidTapGetBitcoin(_ viewController: UIViewController)
   func viewControllerDidTapSpendBitcoin(_ viewController: UIViewController)
 
+  var badgeManager: BadgeManagerType { get }
   var currencyController: CurrencyController { get }
 }
 
@@ -148,7 +148,7 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
     transactionHistoryNoBalanceView.delegate = self
     transactionHistoryWithBalanceView.delegate = self
 
-    self.view.backgroundColor = Theme.Color.lightGrayBackground.color
+    self.view.backgroundColor = .lightGrayBackground
 
     view.layoutIfNeeded()
     let percent: CGFloat = 0.2
@@ -157,7 +157,7 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
     summaryCollectionViewBottomConstraint.constant = sendReceiveActionView.frame.height * percent * -1
 
     balanceContainer?.delegate = (generalCoordinationDelegate as? BalanceContainerDelegate)
-    (coordinationDelegate?.badgingManager()).map(subscribeToBadgeNotifications)
+    (coordinationDelegate?.badgeManager).map(subscribeToBadgeNotifications)
     coordinationDelegate?.viewControllerDidRequestBadgeUpdate(self)
 
     self.balanceContainer.delegate = self.balanceDelegate
@@ -315,7 +315,7 @@ extension TransactionHistoryViewController: UICollectionViewDelegateFlowLayout {
     let transaction = frc.object(at: indexPath)
     var height: CGFloat = 66
     height += !transaction.isConfirmed ? 20 : 0
-    height += transaction.memo != nil ? 25 : 0
+    height += (transaction.memo?.asNilIfEmpty() != nil) ? 25 : 0
     return CGSize(width: self.view.frame.width, height: height)
   }
 }
@@ -342,6 +342,11 @@ extension TransactionHistoryViewController: BalanceDisplayable {
 extension TransactionHistoryViewController: NSFetchedResultsControllerDelegate {
   func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
     collectionViews.forEach { $0.reloadData() }
+  }
+
+  func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+    transactionHistoryWithBalanceView.isHidden = true
+    transactionHistoryNoBalanceView.isHidden = true
   }
 }
 
@@ -527,9 +532,11 @@ extension TransactionHistoryViewController: DZNEmptyDataSetDelegate, DZNEmptyDat
 
   func customView(forEmptyDataSet scrollView: UIScrollView!) -> UIView! {
     if shouldShowNoBalanceView {
+      transactionHistoryNoBalanceView.isHidden = false
       return transactionHistoryNoBalanceView
     }
     if shouldShowWithBalanceView {
+      transactionHistoryWithBalanceView.isHidden = false
       return transactionHistoryWithBalanceView
     }
     return nil
@@ -540,9 +547,6 @@ extension TransactionHistoryViewController: DZNEmptyDataSetDelegate, DZNEmptyDat
   }
 
   private var shouldShowWithBalanceView: Bool {
-    let collectionViewContentBottom = summaryCollectionView.contentSize.height + summaryCollectionView.frame.origin.y
-    let withBalanceViewTop = (view.frame.height / 2.0) - (transactionHistoryWithBalanceView.frame.size.height / 2.0)
-    let isOverlapping = (collectionViewContentBottom >= withBalanceViewTop)
-    return !isOverlapping
+    return (frc.fetchedObjects?.count ?? 0) == 1
   }
 }

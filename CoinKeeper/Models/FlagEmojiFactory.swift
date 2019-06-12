@@ -13,9 +13,7 @@ struct FlagEmojiFactory {
   func emojiFlag(for regionCode: String) -> String? {
     let lowercasedCode = regionCode.lowercased()
     guard lowercasedCode.count == 2 else { return nil }
-    let cumulativeResult = lowercasedCode.unicodeScalars.reduce(true, { accum, scalar in
-      return accum && isLowercaseASCIIScalar(scalar) }
-    )
+    let cumulativeResult = lowercasedCode.unicodeScalars.allSatisfy { isLowercaseASCIIScalar($0) }
     guard cumulativeResult == true else { return nil }
 
     let indicatorSymbols = lowercasedCode.unicodeScalars.compactMap { regionalIndicatorSymbol(for: $0) }

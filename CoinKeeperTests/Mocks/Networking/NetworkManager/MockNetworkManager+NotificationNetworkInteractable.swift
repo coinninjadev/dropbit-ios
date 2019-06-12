@@ -11,6 +11,10 @@ import Foundation
 import PromiseKit
 
 extension MockNetworkManager: NotificationNetworkInteractable {
+  func subscribeToTopics(deviceEndpointIds: DeviceEndpointIds, body: NotificationTopicSubscriptionBody) -> Promise<SubscriptionInfoResponse> {
+    return Promise { _ in }
+  }
+
   func getWalletSubscriptions() -> Promise<[SubscriptionResponse]> {
     return Promise { _ in }
   }
@@ -27,11 +31,15 @@ extension MockNetworkManager: NotificationNetworkInteractable {
     return Promise { _ in }
   }
 
-  func getGeneralSubscriptions(withDeviceEndpointResponse response: DeviceEndpointResponse) -> Promise<GeneralSubscriptionResponse> {
+  func getSubscriptionInfo(withDeviceEndpointResponse response: DeviceEndpointResponse) -> Promise<SubscriptionInfoResponse> {
     return Promise { _ in }
   }
 
-  func subscribeToGeneralTopics(deviceEndpointIds: DeviceEndpointIds, body: GeneralTopicSubscriptionBody) -> Promise<GeneralSubscriptionResponse> {
+  func getSubscriptionInfo(withDeviceEndpointIds endpointIds: DeviceEndpointIds) -> Promise<SubscriptionInfoResponse> {
+    return Promise { _ in }
+  }
+
+  func unsubscribeFromTopic(topicId: String, deviceEndpointIds: DeviceEndpointIds) -> Promise<Void> {
     return Promise { _ in }
   }
 }

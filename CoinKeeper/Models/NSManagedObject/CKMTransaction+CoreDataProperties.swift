@@ -31,6 +31,7 @@ extension CKMTransaction {
   @NSManaged public var vins: Set<CKMVin>
   @NSManaged public var vouts: Set<CKMVout>
   @NSManaged public var phoneNumber: CKMPhoneNumber?
+  @NSManaged public var twitterContact: CKMTwitterContact?
   @NSManaged public var counterpartyAddress: CKMCounterpartyAddress?
   @NSManaged public var isIncoming: Bool
   @NSManaged public var memo: String?

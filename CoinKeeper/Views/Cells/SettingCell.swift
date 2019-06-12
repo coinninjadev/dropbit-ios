@@ -8,28 +8,12 @@
 
 import UIKit
 
-class SettingCell: UITableViewCell {
+class SettingCell: SettingsBaseCell {
 
   // MARK: outlets
-  @IBOutlet var chevronImageView: UIImageView!
-  @IBOutlet var titleLabel: UILabel! {
-    didSet {
-      // These may be overridden by the SettingsCellViewModel
-      titleLabel.font = Theme.Font.settingTitle.font
-      titleLabel.textColor = Theme.Color.darkBlueText.color
-    }
-  }
+  @IBOutlet var titleLabel: SettingsCellTitleLabel!
 
-  // MARK: view instantiation
-  override func awakeFromNib() {
-    super.awakeFromNib()
-    selectionStyle = .none
-    backgroundColor = Theme.Color.lightGrayBackground.color
+  override func load(with viewModel: SettingsCellViewModel) {
+    titleLabel.text = viewModel.type.titleText
   }
-
-  func load(with viewModel: SettingsCellViewModel) {
-    titleLabel.attributedText = viewModel.type.attributedTitle
-    chevronImageView.isHidden = !viewModel.type.shouldShowDisclosureIndicator
-  }
-
 }

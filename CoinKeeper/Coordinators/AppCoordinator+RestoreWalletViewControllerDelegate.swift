@@ -12,7 +12,7 @@ import PromiseKit
 
 extension AppCoordinator: RestoreWalletViewControllerDelegate {
   func viewControllerDidSubmitWords(words: [String]) {
-    self.saveSuccessfulWords(words: words, isBackedUp: true, flow: .createWallet)
+    self.saveSuccessfulWords(words: words, didBackUp: true)
       .get {
         self.analyticsManager.track(event: .restoreWallet, with: nil)
         self.showSuccessFail(forWords: words)
@@ -20,24 +20,22 @@ extension AppCoordinator: RestoreWalletViewControllerDelegate {
   }
 
   private func showSuccessFail(forWords words: [String]) {
-    let successFailController = SuccessFailViewController.makeFromStoryboard()
-    successFailController.viewModel.flow = .restoreWallet
-    successFailController.retryCompletion = {
+    let viewModel = RestoreWalletSuccessFailViewModel(mode: .pending)
+    let successFailController = SuccessFailViewController.newInstance(viewModel: viewModel,
+                                                                      delegate: self)
+    successFailController.action = {
       if let words = self.persistenceManager.walletWords() {
         self.walletManager = WalletManager(words: words, persistenceManager: self.persistenceManager)
-        DispatchQueue.main.async {
-          successFailController.mode = .success
-        }
+        successFailController.setMode(.success)
       } else {
-        DispatchQueue.main.async {
-          successFailController.mode = .failure
-        }
+        successFailController.setMode(.failure)
       }
     }
-    assignCoordinationDelegate(to: successFailController)
+
     navigationController.pushViewController(successFailController, animated: true)
     navigationController.orphanDisplayingViewController()
-    successFailController.retryCompletion?()
+    navigationController.setNavigationBarHidden(true, animated: false)
+    successFailController.action?()
   }
 
 }

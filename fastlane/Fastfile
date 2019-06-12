@@ -76,7 +76,12 @@ platform :ios do
       "deviceEndpointTestApplication=#{ENV['DEVICE_ENDPOINT_TEST_APPLICATION']}",
       "fakeWords=#{ENV['GENERATED_FAKE_WORDS']}",
       "recoverOnlyWords=#{ENV['GENERATED_RECOVER_ONLY_WORDS']}",
-      "recoverOnlyFirstAddress=#{ENV['GENERATED_RECOVER_FIRST_ADDRESS']}"
+      "recoverOnlyFirstAddress=#{ENV['GENERATED_RECOVER_FIRST_ADDRESS']}",
+      "twitterConsumerKey=#{ENV['TWITTER_CONSUMER_KEY']}",
+      "twitterConsumerSecret=#{ENV['TWITTER_CONSUMER_SECRET']}",
+      "twitterRequestTokenURL=#{ENV['TWITTER_REQUEST_TOKEN_URL']}",
+      "twitterAuthorizeURL=#{ENV['TWITTER_AUTHORIZE_URL']}",
+      "twitterAccessTokenURL=#{ENV['TWITTER_ACCESS_TOKEN_URL']}"
     ].join(',')
     sh(
       "/usr/local/bin/sourcery",

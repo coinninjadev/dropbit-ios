@@ -13,7 +13,7 @@ protocol PinCreationViewControllerDelegate: AnyObject {
 }
 
 protocol PinVerificationDelegate: AnyObject {
-  func pinWasVerified(digits: String, for flow: PinCreationViewController.Flow)
+  func pinWasVerified(digits: String, for flow: SetupFlow?)
   func viewControllerPinFailureCountExceeded(_ viewController: UIViewController)
   func viewControllerShouldAllowPinEntry() -> Bool
 }
@@ -32,11 +32,6 @@ final class PinCreationViewController: BaseViewController {
     case pinVerificationFailed
   }
 
-  enum Flow {
-    case creation
-    case restore
-  }
-
   @IBOutlet var keypadEntryView: KeypadEntryView! {
     didSet {
       keypadEntryView.entryMode = .pin
@@ -52,7 +47,7 @@ final class PinCreationViewController: BaseViewController {
   }
   @IBOutlet var securePinDisplayView: SecurePinDisplayView!
 
-  var flow: Flow = .creation
+  var setupFlow: SetupFlow?
 
   // MARK: variables
   var coordinationDelegate: PinCreationViewControllerDelegate? {
@@ -129,7 +124,7 @@ extension PinCreationViewController: KeypadEntryViewDelegate {
     case .pinEntry: coordinationDelegate?.viewControllerFullyEnteredPin(self, digits: digitEntryDisplayViewModel.digits)
     case .pinVerification(let previousDigits):
       if digitEntryDisplayViewModel.digits == previousDigits {
-        verificationDelegate?.pinWasVerified(digits: previousDigits, for: flow)
+        verificationDelegate?.pinWasVerified(digits: previousDigits, for: self.setupFlow)
       } else {
         handleVerificationFailure()
       }

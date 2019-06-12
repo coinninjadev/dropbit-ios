@@ -27,7 +27,7 @@ class PrimaryActionButton: UIButton {
   override func awakeFromNib() {
     super.awakeFromNib()
     applyCornerRadius(4)
-    titleLabel?.font = Theme.Font.primaryButtonTitle.font
+    titleLabel?.font = .primaryButtonTitle
 
     setStyling()
   }
@@ -35,25 +35,25 @@ class PrimaryActionButton: UIButton {
   private func setStyling() {
     switch style {
     case .standard:
-      backgroundColor = Theme.Color.primaryActionButton.color
-      setTitleColor(Theme.Color.lightGrayText.color, for: .normal)
-      setTitleColor(Theme.Color.lightGrayText.color, for: .highlighted)
+      backgroundColor = .primaryActionButton
+      setTitleColor(.lightGrayText, for: .normal)
+      setTitleColor(.lightGrayText, for: .highlighted)
     case .error:
-      backgroundColor = Theme.Color.errorRed.color
+      backgroundColor = .darkPeach
       setTitleColor(.white, for: .normal)
-      setTitleColor(Theme.Color.lightGrayText.color, for: .highlighted)
+      setTitleColor(.lightGrayText, for: .highlighted)
     case .darkBlue:
-      backgroundColor = Theme.Color.darkBlueButton.color
-      setTitleColor(Theme.Color.lightGrayText.color, for: .normal)
-      setTitleColor(Theme.Color.lightGrayText.color, for: .highlighted)
+      backgroundColor = .darkBlueBackground
+      setTitleColor(.lightGrayText, for: .normal)
+      setTitleColor(.lightGrayText, for: .highlighted)
     case .green:
-      backgroundColor = Theme.Color.appleGreen.color
-      setTitleColor(Theme.Color.lightGrayText.color, for: .normal)
-      setTitleColor(Theme.Color.lightGrayText.color, for: .highlighted)
+      backgroundColor = .appleGreen
+      setTitleColor(.lightGrayText, for: .normal)
+      setTitleColor(.lightGrayText, for: .highlighted)
     case .orange:
-      backgroundColor = Theme.Color.mango.color
-      setTitleColor(Theme.Color.lightGrayText.color, for: .normal)
-      setTitleColor(Theme.Color.lightGrayText.color, for: .highlighted)
+      backgroundColor = .mango
+      setTitleColor(.lightGrayText, for: .normal)
+      setTitleColor(.lightGrayText, for: .highlighted)
     }
   }
 
@@ -63,15 +63,15 @@ class PrimaryActionButton: UIButton {
 
       switch style {
       case .standard:
-        mainColor = Theme.Color.primaryActionButton.color
+        mainColor = .primaryActionButton
       case .error:
-        mainColor = Theme.Color.errorRed.color
-      case .green: mainColor = Theme.Color.appleGreen.color
-      case .darkBlue: mainColor = Theme.Color.darkBlueButton.color
-      case .orange: mainColor = Theme.Color.mango.color
+        mainColor = .darkPeach
+      case .green: mainColor = .appleGreen
+      case .darkBlue: mainColor = .darkBlueBackground
+      case .orange: mainColor = .mango
       }
 
-      backgroundColor = isHighlighted ? Theme.Color.lightGrayButtonBackground.color : mainColor
+      backgroundColor = isHighlighted ? .mediumGrayBackground : mainColor
     }
   }
 }

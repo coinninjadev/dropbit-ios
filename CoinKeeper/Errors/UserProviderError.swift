@@ -13,9 +13,11 @@ enum UserProviderError: Error, LocalizedError {
   case noConfirmations
   case codeInvalid
   case unexpectedStatus(UserVerificationStatus)
-  case userAlreadyExists(String, CreateUserBody) //user ID, body
-  case twilioError(UserResponse, CreateUserBody)
+  case userAlreadyExists(String, UserIdentityBody) //user ID, body
+  case twilioError(UserResponse, UserIdentityBody)
   case resourceAlreadyExists
+  case userNotVerified
+  case noVerificationStatusFound
 
   var errorDescription: String? {
     switch self {
@@ -26,6 +28,8 @@ enum UserProviderError: Error, LocalizedError {
     case .twilioError:                      return "Received Twilio error for user"
     case .userAlreadyExists(let id, _):     return "User already exists with ID: \(id)"
     case .unexpectedStatus(let status):     return "Unexpected verification status: \(status.rawValue)"
+    case .userNotVerified:                  return "Requested user is not a verified DropBit user"
+    case .noVerificationStatusFound:        return "No verification status found for user"
     }
   }
 

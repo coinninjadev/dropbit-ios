@@ -1,0 +1,15 @@
+public struct TwitterOAuth {
+  let consumerKey: String
+  let consumerSecret: String
+	let requestTokenURL: String
+	let authorizeURL: String
+	let accessTokenURL: String
+}
+
+public let twitterOAuth = TwitterOAuth(
+	consumerKey: "{{ argument.twitterConsumerKey }}", 
+	consumerSecret: "{{ argument.twitterConsumerSecret }}",
+	requestTokenURL: "{{ argument.twitterRequestTokenURL }}",
+	authorizeURL: "{{ argument.twitterAuthorizeURL }}",
+	accessTokenURL: "{{ argument.twitterAccessTokenURL }}"
+)

@@ -17,8 +17,10 @@ protocol AddressRequestUpdateDisplayable {
   var addressRequestId: String { get }
   var senderName: String? { get }
   var senderPhoneNumber: GlobalPhoneNumber? { get }
+  var senderHandle: String? { get }
   var receiverName: String? { get }
   var receiverPhoneNumber: GlobalPhoneNumber? { get }
+  var receiverHandle: String? { get }
   var btcAmount: Int { get }
   var fiatAmount: Int { get }
   var side: InvitationSide { get }
@@ -46,20 +48,20 @@ extension AddressRequestUpdateDisplayable {
   }
 
   func senderDescription(phoneFormatter: PhoneNumberFormatterType) -> String {
-    if let name = senderName {
-      return name
-    } else if let number = senderPhoneNumber(formattedWith: phoneFormatter) {
-      return number
+    if let displayName = senderName ?? senderHandle {
+      return displayName
+    } else if let formattedNumber = senderPhoneNumber(formattedWith: phoneFormatter) {
+      return formattedNumber
     } else {
       return "Someone"
     }
   }
 
   func receiverDescription(phoneFormatter: PhoneNumberFormatterType) -> String {
-    if let name = receiverName {
-      return name
-    } else if let number = receiverPhoneNumber(formattedWith: phoneFormatter) {
-      return number
+    if let displayName = receiverName ?? receiverHandle {
+      return displayName
+    } else if let formattedNumber = receiverPhoneNumber(formattedWith: phoneFormatter) {
+      return formattedNumber
     } else {
       return "Someone"
     }
@@ -90,8 +92,10 @@ struct AddressRequestUpdate: AddressRequestUpdateDisplayable {
   var addressRequestId: String
   var senderName: String?
   var senderPhoneNumber: GlobalPhoneNumber?
+  var senderHandle: String?
   var receiverName: String?
   var receiverPhoneNumber: GlobalPhoneNumber?
+  var receiverHandle: String?
   var txid: String?
   var btcAmount: Int
   var fiatAmount: Int
@@ -110,16 +114,4 @@ struct AddressRequestUpdate: AddressRequestUpdateDisplayable {
     self.side = InvitationSide(requestSide: requestSide)
     self.status = CKMInvitation.statusToPersist(for: responseStatus, side: requestSide)
   }
-
-  init(pendingInvitationData data: PendingInvitationData, status: InvitationStatus, formatter: PhoneNumberFormatterType) {
-    self.phoneNumberFormatter = formatter
-    self.addressRequestId = data.id
-    self.receiverName = data.name
-    self.receiverPhoneNumber = data.phoneNumber
-    self.btcAmount = data.btcAmount
-    self.fiatAmount = data.fiatAmount
-    self.side = .sender
-    self.status = status
-  }
-
 }

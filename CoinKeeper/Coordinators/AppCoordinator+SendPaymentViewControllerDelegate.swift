@@ -38,6 +38,17 @@ extension AppCoordinator: SendPaymentViewControllerDelegate {
     analyticsManager.track(event: .pasteButtonPressed, with: nil)
   }
 
+  func viewControllerDidPressTwitter(_ viewController: UIViewController & SelectedValidContactDelegate) {
+    analyticsManager.track(event: .twitterButtonPressed, with: nil)
+    let context = persistenceManager.mainQueueContext()
+    guard persistenceManager.userIsVerified(using: .twitter, in: context) else {
+      showModalForTwitterVerification(with: viewController)
+      return
+    }
+
+    self.presentContacts(mode: .twitter, selectionDelegate: viewController)
+  }
+
   func viewControllerDidBeginAddressNegotiation(_ viewController: UIViewController,
                                                 btcAmount: NSDecimalNumber,
                                                 primaryCurrency: CurrencyCode,
@@ -68,7 +79,7 @@ extension AppCoordinator: SendPaymentViewControllerDelegate {
             completion()
           } else {
             self.showModalForInviteExplanation(with: viewController,
-                                               phoneNumber: contact.displayNumber,
+                                               phoneNumber: contact.displayIdentity,
                                                completion: completion)
           }
         }
@@ -79,19 +90,9 @@ extension AppCoordinator: SendPaymentViewControllerDelegate {
   }
 
   func viewController(_ viewController: UIViewController,
-                      checkingCachedAddressesFor phoneNumberHash: String,
-                      completion: @escaping (Result<[WalletAddressesQueryResponse], UserProviderError>) -> Void) {
-    let bgContext = persistenceManager.createBackgroundContext()
-    bgContext.perform {
-      self.networkManager.queryWalletAddresses(identityHashes: [phoneNumberHash])
-        .done(on: .main) { response in
-          completion(.success(response))
-        }.catch(on: .main) { error in
-          os_log("failed to request address for phone hash: %{private}@.\n%@",
-                 log: self.logger, type: .error, phoneNumberHash, error.localizedDescription)
-          completion(.failure(.noData))
-      }
-    }
+                      checkingVerificationStatusFor identityHash: String) -> Promise<[WalletAddressesQueryResponse]> {
+
+    return self.networkManager.queryWalletAddresses(identityHashes: [identityHash])
   }
 
   private func trackTransactionType(with contact: ContactType?) {
@@ -223,10 +224,11 @@ extension AppCoordinator: SendPaymentViewControllerDelegate {
     ) -> OutgoingTransactionData {
     guard let wmgr = self.walletManager else { return dto }
     var copy = dto
-    contact.map { innerContact in
-      copy.contactName = innerContact.displayName ?? ""
-      copy.contactPhoneNumber = innerContact.globalPhoneNumber
-      copy.contactPhoneNumberHash = innerContact.phoneNumberHash
+    copy.dropBitType = contact?.dropBitType ?? .none
+    if let innerContact = contact {
+      copy.displayName = innerContact.displayName ?? ""
+      copy.displayIdentity = innerContact.displayIdentity
+      copy.identityHash = innerContact.identityHash
     }
     address.map { copy.destinationAddress = $0 }
     copy.sharedPayloadDTO = sharedPayload
@@ -292,7 +294,8 @@ extension AppCoordinator: SendPaymentViewControllerDelegate {
 
   func viewControllerDidPressContacts(_ viewController: UIViewController & SelectedValidContactDelegate) {
     analyticsManager.track(event: .contactsButtonPressed, with: nil)
-    guard launchStateManager.deviceIsVerified() else {
+    let mainContext = persistenceManager.mainQueueContext()
+    guard persistenceManager.userIsVerified(in: mainContext) else {
       showModalForPhoneVerification(with: viewController)
       return
     }
@@ -314,12 +317,12 @@ extension AppCoordinator: SendPaymentViewControllerDelegate {
             }
 
             self?.alertManager.hideActivityHUD(withDelay: nil) {
-              self?.presentContacts(selectionDelegate: viewController)
+              self?.presentContacts(mode: .contacts, selectionDelegate: viewController)
             }
           }
 
         } else {
-          strongSelf.presentContacts(selectionDelegate: viewController)
+          strongSelf.presentContacts(mode: .contacts, selectionDelegate: viewController)
         }
 
       default:
@@ -328,11 +331,10 @@ extension AppCoordinator: SendPaymentViewControllerDelegate {
     }
   }
 
-  private func presentContacts(selectionDelegate viewController: SelectedValidContactDelegate) {
-    let contactsViewController = ContactsViewController.makeFromStoryboard()
-    contactsViewController.selectionDelegate = viewController
-    self.assignCoordinationDelegate(to: contactsViewController)
-    contactsViewController.modalPresentationStyle = .overFullScreen
+  private func presentContacts(mode: ContactsViewControllerMode, selectionDelegate viewController: SelectedValidContactDelegate) {
+    let contactsViewController = ContactsViewController.newInstance(mode: mode,
+                                                                    coordinationDelegate: self,
+                                                                    selectionDelegate: viewController)
     self.navigationController.topViewController()?.present(contactsViewController, animated: true)
   }
 
@@ -363,18 +365,28 @@ extension AppCoordinator: SendPaymentViewControllerDelegate {
     viewController.present(alert, animated: true)
   }
 
+  private func showModalForTwitterVerification(with viewController: UIViewController) {
+    let title = "\n In order to use the send by Twitter feature you must verify with your Twitter account \n"
+    showModalForMissingVerification(with: viewController, alertTitle: title, identityType: .twitter)
+  }
+
   private func showModalForPhoneVerification(with viewController: UIViewController) {
     let title = "\n In order to use the send by SMS feature you must verify your phone \n"
+    showModalForMissingVerification(with: viewController, alertTitle: title, identityType: .phone)
+  }
+
+  private func showModalForMissingVerification(with viewController: UIViewController,
+                                               alertTitle: String,
+                                               identityType: UserIdentityType) {
     let notNowAction = AlertActionConfiguration(title: "Not Now", style: .default, action: nil)
     let verifyAction = AlertActionConfiguration(title: "Verify", style: .default) { [weak self] in
       guard let strongSelf = self else { return }
       viewController.dismiss(animated: true, completion: {
-        strongSelf.navigationController.isNavigationBarHidden = false
-        strongSelf.startDeviceVerificationFlow(shouldOrphanRoot: false, isInitialSetupFlow: false)
+        strongSelf.startDeviceVerificationFlow(userIdentityType: identityType, shouldOrphanRoot: false, selectedSetupFlow: nil)
       })
     }
     let configs = [notNowAction, verifyAction]
-    let alert = alertManager.alert(withTitle: title, description: nil, image: nil, style: .alert, actionConfigs: configs)
+    let alert = alertManager.alert(withTitle: alertTitle, description: nil, image: nil, style: .alert, actionConfigs: configs)
     viewController.present(alert, animated: true)
   }
 
@@ -428,6 +440,24 @@ extension AppCoordinator: SendPaymentViewControllerDelegate {
                       completion: @escaping ((ValidatedContact?) -> Void)) {
     self.contactCacheDataWorker.refreshStatus(forPhoneNumber: genericContact.globalPhoneNumber,
                                               completion: completion)
+  }
+
+  func viewController(_ viewController: UIViewController,
+                      checkForVerifiedTwitterContact twitterContact: TwitterContactType) -> Promise<TwitterContactType> {
+    return self.networkManager.queryUsers(identityHashes: [twitterContact.identityHash])
+      .then { (response: StringDictResponse) -> Promise<TwitterContactType> in
+        let statusString = response[twitterContact.identityHash] ?? ""
+        let status = UserIdentityVerificationStatus.case(forString: statusString) ?? .notVerified
+        var contact = twitterContact
+        switch status {
+        case .verified:
+          contact.kind = .registeredUser
+          return Promise.value(contact)
+        case .notVerified:
+          contact.kind = .invite
+          return Promise.value(contact)
+        }
+      }
   }
 
   func viewController(

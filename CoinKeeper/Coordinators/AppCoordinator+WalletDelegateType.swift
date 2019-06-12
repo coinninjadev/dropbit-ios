@@ -9,7 +9,17 @@
 import Foundation
 
 extension AppCoordinator: WalletDelegateType {
+
   func mainWalletManager() -> WalletManagerType? {
     return walletManager
   }
+
+  func resetWalletManagerIfNeeded() {
+    if walletManager == nil,
+      let words = persistenceManager.walletWords() {
+      walletManager = WalletManager(words: words, persistenceManager: persistenceManager)
+    }
+    setCurrentCoin()
+  }
+
 }

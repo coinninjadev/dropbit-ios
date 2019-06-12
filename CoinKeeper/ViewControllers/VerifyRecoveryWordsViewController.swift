@@ -8,14 +8,9 @@
 
 import UIKit
 
-enum RecoveryWordsFlow {
-  case createWallet
-  case settings
-}
-
 protocol VerifyRecoveryWordsViewControllerDelegate: AnyObject {
-  func viewController(_ viewController: UIViewController, didSuccessfullyVerifyWords words: [String], in flow: RecoveryWordsFlow)
-  func viewController(_ viewController: UIViewController, didSkipBackingUpWords words: [String], in flow: RecoveryWordsFlow)
+  func viewController(_ viewController: UIViewController, didSuccessfullyVerifyWords words: [String])
+  func viewController(_ viewController: UIViewController, didSkipBackingUpWords words: [String])
   func viewControllerFailedWordVerification(_ viewController: UIViewController)
   func viewControllerWordVerificationMaxFailuresAttempted(_ viewController: UIViewController)
 }
@@ -33,8 +28,6 @@ final class VerifyRecoveryWordsViewController: BaseViewController, StoryboardIni
       verificationCollectionView.isScrollEnabled = false
     }
   }
-
-  var flow: RecoveryWordsFlow = .createWallet
 
   // MARK: variables
   var viewModel: VerifyRecoveryWordsViewModelType?
@@ -66,19 +59,13 @@ final class VerifyRecoveryWordsViewController: BaseViewController, StoryboardIni
   }
 
   override func viewWillAppear(_ animated: Bool) {
-    switch flow {
-    case .createWallet:
-      let skipButton = BarButtonFactory.skipButton(withTarget: self, selector: #selector(skipBackupRecoveryWords))
-      navigationItem.rightBarButtonItem = skipButton
-      closeButton.isHidden = true
-    case .settings:
-      navigationItem.rightBarButtonItem = nil
-      closeButton.isHidden = false
-    }
+    super.viewWillAppear(animated)
+    navigationItem.rightBarButtonItem = nil
+    closeButton.isHidden = false
   }
 
   @objc func skipBackupRecoveryWords() {
-    coordinationDelegate?.viewController(self, didSkipBackingUpWords: recoveryWords, in: flow)
+    coordinationDelegate?.viewController(self, didSkipBackingUpWords: recoveryWords)
   }
 
   @IBAction func closeButtonTapped() {
@@ -100,7 +87,7 @@ extension VerifyRecoveryWordsViewController: VerifyRecoveryWordsResultDelegate {
   }
 
   func secondMatchFound() {
-    coordinationDelegate?.viewController(self, didSuccessfullyVerifyWords: recoveryWords, in: flow)
+    coordinationDelegate?.viewController(self, didSuccessfullyVerifyWords: recoveryWords)
   }
 
   func errorFound() {

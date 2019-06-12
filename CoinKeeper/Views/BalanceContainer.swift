@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import PromiseKit
 
 protocol BalanceContainerDelegate: AnyObject {
   func containerDidTapLeftButton(in viewController: UIViewController)
@@ -15,6 +16,7 @@ protocol BalanceContainerDelegate: AnyObject {
   func containerDidLongPressBalances(in viewController: UIViewController)
   func isSyncCurrentlyRunning() -> Bool
   func selectedCurrency() -> SelectedCurrency
+  func dropBitMeAvatar() -> Promise<UIImage>
 }
 
 struct BalanceContainerDataSource {
@@ -61,6 +63,7 @@ enum BalanceContainerLeftButtonType {
 
   var startSyncNotificationToken: NotificationToken?
   var finishSyncNotificationToken: NotificationToken?
+  var updateAvatarNotificationToken: NotificationToken?
 
   @IBAction func didTapLeftButton(_ sender: Any) {
     guard let delegate = delegate, let parent = parentViewController else { return }
@@ -101,17 +104,20 @@ enum BalanceContainerLeftButtonType {
   private func initialize() {
     backgroundColor = .clear
     xibSetup()
+    dropBitMeButton.setImage(nil, for: .normal)
     leftButton.badgeDisplayCriteria = BalanceContainerLeftButtonType.menu.badgeCriteria
     guard let imageData = UIImage.data(asset: "syncing") else { return }
     syncActivityIndicator.prepareForAnimation(withGIFData: imageData)
     syncActivityIndicator.startAnimatingGIF()
-    subscribeToSyncNotifications()
+    subscribeToNotifications()
     setAccessibilityIdentifiers()
   }
 
   func update(with dataSource: BalanceContainerDataSource) {
     leftButton.setImage(dataSource.leftButtonType.image, for: .normal)
     leftButton.badgeDisplayCriteria = dataSource.leftButtonType.badgeCriteria
+
+    updateAvatar()
 
     let primaryCurrency = dataSource.primaryCurrency
     let secondaryCurrency = dataSource.converter.otherCurrency(forCurrency: primaryCurrency) ?? .USD
@@ -129,13 +135,17 @@ enum BalanceContainerLeftButtonType {
     return delegate?.selectedCurrency() ?? .fiat
   }
 
-  private func subscribeToSyncNotifications() {
+  private func subscribeToNotifications() {
     startSyncNotificationToken = CKNotificationCenter.subscribe(key: .didStartSync, object: nil, queue: nil) { [weak self] (_) in
       self?.handleStartSync()
     }
 
     finishSyncNotificationToken = CKNotificationCenter.subscribe(key: .didFinishSync, object: nil, queue: nil) { [weak self] (_) in
       self?.handleFinishSync()
+    }
+
+    updateAvatarNotificationToken = CKNotificationCenter.subscribe(key: .didUpdateAvatar, object: nil, queue: nil) { [weak self] (_) in
+      self?.updateAvatar()
     }
   }
 
@@ -145,6 +155,16 @@ enum BalanceContainerLeftButtonType {
 
   private func handleFinishSync() {
     setSyncVisibility(hidden: true)
+  }
+
+  private func updateAvatar() {
+    delegate?.dropBitMeAvatar()
+      .done { (image: UIImage) in
+        self.dropBitMeButton.setImage(image, for: .normal)
+        let imageView = self.dropBitMeButton.imageView
+        let radius = (imageView?.frame.width ?? 0) / 2.0
+        imageView?.applyCornerRadius(radius)
+      }.cauterize()
   }
 
   private func setSyncVisibility(hidden: Bool) {

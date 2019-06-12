@@ -12,16 +12,16 @@ import UIKit
 class AddressTableViewCell: UITableViewCell {
   @IBOutlet var addressLabel: UILabel! {
     didSet {
-      addressLabel.textColor = Theme.Color.grayText.color
-      addressLabel.font = Theme.Font.serverAddress.font
+      addressLabel.textColor = .darkGrayText
+      addressLabel.font = .medium(13)
       addressLabel.adjustsFontSizeToFitWidth = true
     }
   }
 
   @IBOutlet var derivationPathLabel: UILabel! {
     didSet {
-      derivationPathLabel.textColor = Theme.Color.darkBlueText.color
-      derivationPathLabel.font = Theme.Font.serverAddress.font
+      derivationPathLabel.textColor = .darkBlueText
+      derivationPathLabel.font = .medium(13)
     }
   }
 
@@ -33,7 +33,7 @@ class AddressTableViewCell: UITableViewCell {
   override func awakeFromNib() {
     super.awakeFromNib()
     selectionStyle = .none
-    backgroundColor = Theme.Color.lightGrayBackground.color
+    backgroundColor = .lightGrayBackground
     derivationPathLabel.isHidden = true
   }
 

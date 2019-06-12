@@ -189,20 +189,17 @@ class TransactionHistoryDetailCellAddressViewTests: XCTestCase {
     // given
     let expectedAddress = "3NNE2SY73JkrupbWKu6iVCsGjrcNKXH4hR"
     let stack = InMemoryCoreDataStack()
+    let indianaJones = GenericContact(phoneNumber: GlobalPhoneNumber(countryCode: 1, nationalNumber: "3305551212"), formatted: "")
     let otd = OutgoingTransactionData(
       txid: "123txid",
-      contactName: "Indiana Jones",
-      contactPhoneNumber: GlobalPhoneNumber(countryCode: 1, nationalNumber: "3305551212"),
-      contactPhoneNumberHash: "",
+      dropBitType: .phone(indianaJones),
       destinationAddress: expectedAddress,
       amount: 1,
       feeAmount: 1,
       sentToSelf: false,
       requiredFeeRate: nil,
-      sharedPayloadDTO: testPayloadDTO
-    )
-    let transaction = CKMTransaction(insertInto: stack.context)
-    transaction.configure(with: otd, in: stack.context)
+      sharedPayloadDTO: testPayloadDTO)
+    let transaction = CKMTransaction.findOrCreate(with: otd, in: stack.context)
     let rates: ExchangeRates = [.BTC: 1, .USD: 7000]
 
     let viewModel = TransactionHistoryDetailCellViewModel(
@@ -226,20 +223,22 @@ class TransactionHistoryDetailCellAddressViewTests: XCTestCase {
     // given
     let expectedAddress = "3NNE2SY73JkrupbWKu6iVCsGjrcNKXH4hR"
     let stack = InMemoryCoreDataStack()
+    let globalNumber = GlobalPhoneNumber(countryCode: 1, nationalNumber: "3305551212")
+    let indianaJones = ValidatedContact(
+      kind: .registeredUser,
+      displayName: "Indiana Jones",
+      displayNumber: "+1 (330) 555-1212",
+      globalPhoneNumber: globalNumber)
     let otd = OutgoingTransactionData(
       txid: "123txid",
-      contactName: "Indiana Jones",
-      contactPhoneNumber: GlobalPhoneNumber(countryCode: 1, nationalNumber: "3305551212"),
-      contactPhoneNumberHash: "",
+      dropBitType: .phone(indianaJones),
       destinationAddress: expectedAddress,
       amount: 1,
       feeAmount: 1,
       sentToSelf: false,
       requiredFeeRate: nil,
-      sharedPayloadDTO: testPayloadDTO
-    )
-    let transaction = CKMTransaction(insertInto: stack.context)
-    transaction.configure(with: otd, in: stack.context)
+      sharedPayloadDTO: testPayloadDTO)
+    let transaction = CKMTransaction.findOrCreate(with: otd, in: stack.context)
     let invitation = CKMInvitation(insertInto: stack.context)
     transaction.invitation = invitation
     let rates: ExchangeRates = [.BTC: 1, .USD: 7000]
@@ -275,39 +274,38 @@ class TransactionHistoryDetailCellAddressViewTests: XCTestCase {
     // given
     let expectedAddress = "3NNE2SY73JkrupbWKu6iVCsGjrcNKXH4hR"
     let stack = InMemoryCoreDataStack()
+    let globalNumber = GlobalPhoneNumber(countryCode: 1, nationalNumber: "3305551212")
+    let indianaJones = ValidatedContact(
+      kind: .registeredUser,
+      displayName: "Indiana Jones",
+      displayNumber: "+1 (330) 555-1212",
+      globalPhoneNumber: globalNumber)
     let otd = OutgoingTransactionData(
       txid: "123txid",
-      contactName: "Indiana Jones",
-      contactPhoneNumber: GlobalPhoneNumber(countryCode: 1, nationalNumber: "3305551212"),
-      contactPhoneNumberHash: "",
+      dropBitType: .phone(indianaJones),
       destinationAddress: expectedAddress,
       amount: 1,
       feeAmount: 1,
       sentToSelf: false,
       requiredFeeRate: nil,
-      sharedPayloadDTO: testPayloadDTO
-    )
-    let transaction = CKMTransaction(insertInto: stack.context)
-    transaction.configure(with: otd, in: stack.context)
+      sharedPayloadDTO: testPayloadDTO)
+
+    let transaction = CKMTransaction.findOrCreate(with: otd, in: stack.context)
     let invitation = CKMInvitation(insertInto: stack.context)
     transaction.invitation = invitation
     let rates: ExchangeRates = [.BTC: 1, .USD: 7000]
 
     var viewModel = TransactionHistoryDetailCellViewModel(
-      transaction: transaction,
-      rates: rates,
-      primaryCurrency: .USD,
-      deviceCountryCode: nil,
+      transaction: transaction, rates: rates,
+      primaryCurrency: .USD, deviceCountryCode: nil,
       kit: PhoneNumberKit()
     )
 
     // .notSent
     invitation.status = .notSent
     viewModel = TransactionHistoryDetailCellViewModel(
-      transaction: transaction,
-      rates: rates,
-      primaryCurrency: .USD,
-      deviceCountryCode: nil,
+      transaction: transaction, rates: rates,
+      primaryCurrency: .USD, deviceCountryCode: nil,
       kit: PhoneNumberKit()
     )
 
@@ -322,10 +320,8 @@ class TransactionHistoryDetailCellAddressViewTests: XCTestCase {
     // .requestSent
     invitation.status = .requestSent
     viewModel = TransactionHistoryDetailCellViewModel(
-      transaction: transaction,
-      rates: rates,
-      primaryCurrency: .USD,
-      deviceCountryCode: nil,
+      transaction: transaction, rates: rates,
+      primaryCurrency: .USD, deviceCountryCode: nil,
       kit: PhoneNumberKit()
     )
 
@@ -340,10 +336,8 @@ class TransactionHistoryDetailCellAddressViewTests: XCTestCase {
     // .addressSent
     invitation.status = .addressSent
     viewModel = TransactionHistoryDetailCellViewModel(
-      transaction: transaction,
-      rates: rates,
-      primaryCurrency: .USD,
-      deviceCountryCode: nil,
+      transaction: transaction, rates: rates,
+      primaryCurrency: .USD, deviceCountryCode: nil,
       kit: PhoneNumberKit()
     )
 
@@ -358,10 +352,8 @@ class TransactionHistoryDetailCellAddressViewTests: XCTestCase {
     // .canceled
     invitation.status = .canceled
     viewModel = TransactionHistoryDetailCellViewModel(
-      transaction: transaction,
-      rates: rates,
-      primaryCurrency: .USD,
-      deviceCountryCode: nil,
+      transaction: transaction, rates: rates,
+      primaryCurrency: .USD, deviceCountryCode: nil,
       kit: PhoneNumberKit()
     )
 
@@ -376,10 +368,8 @@ class TransactionHistoryDetailCellAddressViewTests: XCTestCase {
     // .expired
     invitation.status = .expired
     viewModel = TransactionHistoryDetailCellViewModel(
-      transaction: transaction,
-      rates: rates,
-      primaryCurrency: .USD,
-      deviceCountryCode: nil,
+      transaction: transaction, rates: rates,
+      primaryCurrency: .USD, deviceCountryCode: nil,
       kit: PhoneNumberKit()
     )
 

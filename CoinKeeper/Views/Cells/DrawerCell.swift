@@ -21,9 +21,9 @@ class DrawerCell: UITableViewCell, Badgeable {
   override func awakeFromNib() {
     super.awakeFromNib()
     selectionStyle = .none
-    titleLabel.font = Theme.Font.settingsTitle.font
+    titleLabel.font = .light(11.6)
     titleLabel.textColor = UIColor.white
-    backgroundColor = Theme.Color.settingsDarkGray.color
+    backgroundColor = .darkBlueBackground
   }
 
   func load(with data: DrawerData, badgeInfo: BadgeInfo) {

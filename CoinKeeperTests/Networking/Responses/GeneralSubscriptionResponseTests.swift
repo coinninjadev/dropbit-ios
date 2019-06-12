@@ -10,7 +10,7 @@ import XCTest
 @testable import DropBit
 
 class GeneralSubscriptionResponseTests: XCTestCase, ResponseStringsTestable {
-  typealias ResponseType = GeneralSubscriptionResponse
+  typealias ResponseType = SubscriptionInfoResponse
 
   func testDecodingSampleJSONProducesCorrectProperties() {
     guard let response = decodedSampleJSON() else {
@@ -34,8 +34,8 @@ class GeneralSubscriptionResponseTests: XCTestCase, ResponseStringsTestable {
 
 }
 
-extension GeneralSubscriptionResponse: EmptyStringCopyable {
-  func copyWithEmptyRequiredStrings() -> GeneralSubscriptionResponse {
-    return GeneralSubscriptionResponse(subscriptions: self.subscriptions, availableTopics: self.availableTopics)
+extension SubscriptionInfoResponse: EmptyStringCopyable {
+  func copyWithEmptyRequiredStrings() -> SubscriptionInfoResponse {
+    return SubscriptionInfoResponse(subscriptions: self.subscriptions, availableTopics: self.availableTopics)
   }
 }

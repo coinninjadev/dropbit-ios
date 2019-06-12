@@ -11,8 +11,8 @@ import UIKit
 class TransactionDetailBreakdownLabel: UILabel {
   override func awakeFromNib() {
     super.awakeFromNib()
-    font = Theme.Font.transactionDetailAmountBreakdown.font
-    textColor = Theme.Color.grayText.color
+    font = .regular(13)
+    textColor = .darkGrayText
     isHidden = false
     numberOfLines = 1
   }

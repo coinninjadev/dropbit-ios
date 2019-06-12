@@ -49,10 +49,10 @@ class TransactionPopoverDetailsViewController: BaseViewController, StoryboardIni
   private func setupUI() {
     view.isOpaque = false
     view.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.85)
-    txidLabel.font = Theme.Font.shareTransactionTitle.font
-    txidLabel.textColor = Theme.Color.darkBlueText.color
-    shareTransactionButton.setTitleColor(Theme.Color.lightBlueTint.color, for: .normal)
-    shareTransactionButton.titleLabel?.font = Theme.Font.shareTransactionTitle.font
+    txidLabel.font = .semiBold(14)
+    txidLabel.textColor = .darkBlueText
+    shareTransactionButton.setTitleColor(.lightBlueTint, for: .normal)
+    shareTransactionButton.titleLabel?.font = .semiBold(14)
     containerView.applyCornerRadius(15)
     setupViewWithModel()
     addDismissibleTapToBackground()

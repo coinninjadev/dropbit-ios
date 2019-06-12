@@ -59,8 +59,9 @@ class ConfirmPaymentButton: UIButton {
 
   private func startAnimation() {
     foregroundShapeLayer.add(circleAnimation, forKey: "draw")
-    backgroundShapeLayer.transform = CATransform3DMakeScale(2.0, 2.0, 1.0)
-    foregroundShapeLayer.transform = CATransform3DMakeScale(2.0, 2.0, 1.0)
+    let scale: CGFloat = 1.5
+    backgroundShapeLayer.transform = CATransform3DMakeScale(scale, scale, 1.0)
+    foregroundShapeLayer.transform = CATransform3DMakeScale(scale, scale, 1.0)
   }
 
   private func setupLines() {
@@ -75,7 +76,7 @@ class ConfirmPaymentButton: UIButton {
     backgroundShapeLayer.path = backgroundBezierPath.cgPath
     backgroundShapeLayer.lineCap = CAShapeLayerLineCap.round
     backgroundShapeLayer.lineWidth = frame.size.height / lineWidthDivisor
-    backgroundShapeLayer.strokeColor = Theme.Color.grayText.color.cgColor
+    backgroundShapeLayer.strokeColor = UIColor.darkGrayText.cgColor
     backgroundShapeLayer.fillColor = UIColor.clear.cgColor
     backgroundShapeLayer.strokeEnd = 1.0
     backgroundShapeLayer.zPosition = -1
@@ -86,7 +87,7 @@ class ConfirmPaymentButton: UIButton {
     foregroundShapeLayer.lineCap = CAShapeLayerLineCap.round
     foregroundShapeLayer.fillColor = UIColor.clear.cgColor
     foregroundShapeLayer.lineWidth = frame.size.height / lineWidthDivisor
-    foregroundShapeLayer.strokeColor = Theme.Color.lightBlueTint.color.cgColor
+    foregroundShapeLayer.strokeColor = UIColor.lightBlueTint.cgColor
     foregroundShapeLayer.speed = 1.0
     foregroundShapeLayer.timeOffset = 0.0
     foregroundShapeLayer.beginTime = 0.0

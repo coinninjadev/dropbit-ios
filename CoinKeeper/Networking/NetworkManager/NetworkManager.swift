@@ -9,6 +9,7 @@
 import os.log
 import PromiseKit
 import Moya
+import OAuthSwift
 
 protocol NetworkManagerType: HeaderDelegate &
   AddressRequestable &
@@ -23,6 +24,7 @@ protocol NetworkManagerType: HeaderDelegate &
   TransactionBroadcastable &
   TransactionRequestable &
   TransactionNotificationRequestable &
+  TwitterRequestable &
   UserRequestable &
   WalletRequestable &
   WalletAddressRequestable &
@@ -60,6 +62,7 @@ class NetworkManager: NetworkManagerType {
 
   var lastExchangeRateCheck = Date(timeIntervalSince1970: 0)
   var lastFeesCheck = Date(timeIntervalSince1970: 0)
+  var twitterOAuthManager: OAuth1Swift
 
   let logger = OSLog(subsystem: "com.coinninja.NetworkManager", category: "network_requests")
 
@@ -71,7 +74,25 @@ class NetworkManager: NetworkManagerType {
     self.analyticsManager = analyticsManager
     self.cnProvider = coinNinjaProvider
 
+    self.twitterOAuthManager = OAuth1Swift(
+      consumerKey: twitterOAuth.consumerKey,
+      consumerSecret: twitterOAuth.consumerSecret,
+      requestTokenUrl: twitterOAuth.requestTokenURL,
+      authorizeUrl: twitterOAuth.authorizeURL,
+      accessTokenUrl: twitterOAuth.accessTokenURL
+    )
+
     self.cnProvider.headerDelegate = self
+  }
+
+  func resetTwitterOAuthManager() {
+    self.twitterOAuthManager = OAuth1Swift(
+      consumerKey: twitterOAuth.consumerKey,
+      consumerSecret: twitterOAuth.consumerSecret,
+      requestTokenUrl: twitterOAuth.requestTokenURL,
+      authorizeUrl: twitterOAuth.authorizeURL,
+      accessTokenUrl: twitterOAuth.accessTokenURL
+    )
   }
 
   func start() {

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -38,6 +38,7 @@
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" verticalCompressionResistancePriority="751" text="The simplest way to send and receive Bitcoin" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aOW-zu-cJp">
                                         <rect key="frame" x="0.0" y="0.0" width="287" height="37"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <fontDescription key="fontDescription" name="Montserrat-Light" family="Montserrat" pointSize="15"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
@@ -51,24 +52,24 @@
                                     <constraint firstAttribute="bottom" secondItem="aOW-zu-cJp" secondAttribute="bottom" id="qFL-yr-4T3"/>
                                 </constraints>
                             </view>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4qN-Cw-sbR" customClass="PrimaryActionButton" customModule="DropBit" customModuleProvider="target">
-                                <rect key="frame" x="75" y="547" width="225" height="44"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4qN-Cw-sbR">
+                                <rect key="frame" x="34.5" y="535" width="306" height="50"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="306" id="GEE-Iz-9H9"/>
+                                    <constraint firstAttribute="height" constant="50" id="fSX-Rh-w4I"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" name="Montserrat-Regular" family="Montserrat" pointSize="12"/>
-                                <state key="normal" title="NEW WALLET"/>
+                                <state key="normal" title="Button"/>
                                 <connections>
-                                    <action selector="createWalletButtonTapped:" destination="q8X-KO-IOT" eventType="touchUpInside" id="q3l-uC-San"/>
+                                    <action selector="claimBitcoinFromInviteTapped:" destination="q8X-KO-IOT" eventType="touchUpInside" id="ryT-qn-njm"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="k0W-r3-c5t" customClass="SecondaryActionButton" customModule="DropBit" customModuleProvider="target">
-                                <rect key="frame" x="75" y="603" width="225" height="44"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="225" id="ONi-hm-Hdz"/>
-                                    <constraint firstAttribute="height" constant="44" id="q1l-PY-zWf"/>
-                                </constraints>
+                                <rect key="frame" x="34.5" y="597" width="306" height="50"/>
                                 <fontDescription key="fontDescription" name="Montserrat-Regular" family="Montserrat" pointSize="12"/>
-                                <state key="normal" title="Restore from backup"/>
+                                <state key="normal" title="Button"/>
                                 <connections>
-                                    <action selector="restoreWalletButtonTapped:" destination="q8X-KO-IOT" eventType="touchUpInside" id="RBg-f7-Jzr"/>
+                                    <action selector="newWalletButtonTapped:" destination="q8X-KO-IOT" eventType="touchUpInside" id="18a-jx-I6s"/>
                                 </connections>
                             </button>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="blockchainImage" translatesAutoresizingMaskIntoConstraints="NO" id="IAf-Dy-hdx">
@@ -98,10 +99,10 @@
                     </view>
                     <connections>
                         <outlet property="blockchainImage" destination="IAf-Dy-hdx" id="14l-Av-QHH"/>
-                        <outlet property="createWalletButton" destination="4qN-Cw-sbR" id="rcf-f5-Qd5"/>
+                        <outlet property="claimInviteButton" destination="4qN-Cw-sbR" id="NSE-jA-jhm"/>
                         <outlet property="logoImage" destination="yIP-lc-RFH" id="mvJ-K1-KCu"/>
                         <outlet property="logoImageVerticalConstraint" destination="hgF-Bb-vVa" id="HON-0G-33P"/>
-                        <outlet property="restoreWalletButton" destination="k0W-r3-c5t" id="56a-jw-IoM"/>
+                        <outlet property="newWalletButton" destination="k0W-r3-c5t" id="i2V-Y4-biN"/>
                         <outlet property="welcomeBGView" destination="CRC-uf-fAq" id="VWo-1A-xoY"/>
                         <outlet property="welcomeBGViewTopConstraint" destination="z09-5W-24v" id="0UI-PO-2cV"/>
                         <outlet property="welcomeLabel" destination="aOW-zu-cJp" id="qJ8-mA-4Zp"/>

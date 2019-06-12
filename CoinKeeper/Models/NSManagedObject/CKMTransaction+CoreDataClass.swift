@@ -34,11 +34,6 @@ public class CKMTransaction: NSManagedObject {
     return !isInviteOrFailed
   }
 
-  func setTxid(withInvitation invitation: CKMInvitation) {
-    let combinedString = CKMTransaction.invitationTxidPrefix + invitation.id
-    self.txid = combinedString
-  }
-
   private func removeTemporaryTransactionIfNeeded(in context: NSManagedObjectContext) {
     context.performAndWait {
       temporarySentTransaction.map { context.delete($0) }
@@ -161,14 +156,19 @@ public class CKMTransaction: NSManagedObject {
       if let number = phoneNumber {
         number.configure(with: outgoingTransactionData, in: context)
         self.phoneNumber = number
-
-      } else if let contactNumber = outgoingTransactionData.contactPhoneNumber,
-        let inputs = ManagedPhoneNumberInputs(phoneNumber: contactNumber) {
-        let number = CKMPhoneNumber.findOrCreate(withInputs: inputs,
-                                                 phoneNumberHash: outgoingTransactionData.contactPhoneNumberHash,
-                                                 in: context)
-        number.configure(with: outgoingTransactionData, in: context)
-        self.phoneNumber = number
+      } else {
+        switch outgoingTransactionData.dropBitType {
+        case .phone(let phoneContact):
+          if let inputs = ManagedPhoneNumberInputs(phoneNumber: phoneContact.globalPhoneNumber) {
+            let number = CKMPhoneNumber.findOrCreate(withInputs: inputs, phoneNumberHash: phoneContact.phoneNumberHash, in: context)
+            number.configure(with: outgoingTransactionData, in: context)
+            self.phoneNumber = number
+          }
+        case .twitter(let twitterContact):
+          let managedContact = CKMTwitterContact.findOrCreate(with: twitterContact, in: context)
+          self.twitterContact = managedContact
+        case .none: break
+        }
       }
     }
   }
@@ -189,6 +189,10 @@ public class CKMTransaction: NSManagedObject {
                                                      fiatCurrency: amountInfo.fiatCurrencyCode.rawValue,
                                                      receivedPayload: nil,
                                                      insertInto: context)
+  }
+
+  static func prefixedTxid(for invitation: CKMInvitation) -> String {
+    return CKMTransaction.invitationTxidPrefix + invitation.id
   }
 
   static let transactionHistorySortDescriptors: [NSSortDescriptor] = [
@@ -309,7 +313,9 @@ public class CKMTransaction: NSManagedObject {
 extension CKMTransaction: CounterpartyRepresentable {
 
   var counterpartyName: String? {
-    if let inviteName = invitation?.counterpartyName {
+    if let twitterCounterparty = invitation?.counterpartyTwitterContact {
+      return twitterCounterparty.formattedScreenName
+    } else if let inviteName = invitation?.counterpartyName {
       return inviteName
     } else {
       let relevantNumber = phoneNumber ?? invitation?.counterpartyPhoneNumber
@@ -317,17 +323,24 @@ extension CKMTransaction: CounterpartyRepresentable {
     }
   }
 
-  func counterpartyPhoneNumber(deviceCountryCode: Int?, kit: PhoneNumberKit) -> String? {
-    guard let relevantPhoneNumber = invitation?.counterpartyPhoneNumber ?? phoneNumber else { return nil }
-    let globalPhoneNumber = relevantPhoneNumber.asGlobalPhoneNumber
-
-    var format: PhoneNumberFormat = .international
-    if let code = deviceCountryCode {
-      format = (code == globalPhoneNumber.countryCode) ? .national : .international
+  func counterpartyDisplayIdentity(deviceCountryCode: Int?, kit: PhoneNumberKit) -> String? {
+    if let counterpartyTwitterContact = self.twitterContact {
+      return counterpartyTwitterContact.formattedScreenName  // should include @-sign
     }
-    let formatter = CKPhoneNumberFormatter(kit: kit, format: format)
 
-    return try? formatter.string(from: globalPhoneNumber)
+    if let relevantPhoneNumber = invitation?.counterpartyPhoneNumber ?? phoneNumber {
+      let globalPhoneNumber = relevantPhoneNumber.asGlobalPhoneNumber
+
+      var format: PhoneNumberFormat = .international
+      if let code = deviceCountryCode {
+        format = (code == globalPhoneNumber.countryCode) ? .national : .international
+      }
+      let formatter = CKPhoneNumberFormatter(kit: kit, format: format)
+
+      return try? formatter.string(from: globalPhoneNumber)
+    }
+
+    return nil
   }
 
   var counterpartyAddressId: String? {

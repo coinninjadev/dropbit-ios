@@ -17,21 +17,16 @@ class ContactCell: UITableViewCell {
 
   weak var delegate: ContactCellDelegate?
 
-  @IBOutlet var nameLabel: UILabel!
+  @IBOutlet var nameLabel: ContactCellPrimaryLabel!
   @IBOutlet var sendButton: UIButton!
-  @IBOutlet var phoneNumberLabel: UILabel!
+  @IBOutlet var phoneNumberLabel: ContactCellSecondaryLabel!
   @IBOutlet var inviteButton: UIButton!
 
   override func awakeFromNib() {
     super.awakeFromNib()
     selectionStyle = .none
-    backgroundColor = Theme.Color.lightGrayBackground.color
-
-    nameLabel.font = Theme.Font.contactTitle.font
-    nameLabel.textColor = Theme.Color.darkBlueText.color
-    sendButton.setTitleColor(Theme.Color.lightBlueTint.color, for: .normal)
-    phoneNumberLabel.textColor = Theme.Color.grayText.color
-    phoneNumberLabel.font = Theme.Font.phoneNumberDetail.font
+    backgroundColor = .lightGrayBackground
+    sendButton.setTitleColor(.lightBlueTint, for: .normal)
   }
 
   func load(with number: CCMPhoneNumber) {

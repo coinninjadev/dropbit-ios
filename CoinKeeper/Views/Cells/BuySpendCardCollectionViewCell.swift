@@ -22,8 +22,8 @@ class BuySpendCardCollectionViewCell: UICollectionViewCell {
   @IBOutlet var purposeImageView: UIImageView!
   @IBOutlet var purposeLabel: UILabel! {
     didSet {
-      purposeLabel.font = Theme.Font.secondaryButtonTitle.font
-      purposeLabel.textColor = Theme.Color.lightGrayText.color
+      purposeLabel.font = .secondaryButtonTitle
+      purposeLabel.textColor = .lightGrayText
     }
   }
   @IBOutlet var partnerStackView: UIStackView!

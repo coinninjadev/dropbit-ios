@@ -207,8 +207,8 @@ class ContactCacheDataWorker: ContactCacheDataWorkerType {
 
   private func fetchAndPersistStatuses(fromMetadata metadataList: [CCMValidatedMetadata],
                                        in context: NSManagedObjectContext) -> Promise<Void> {
-
     let phoneNumberHashes = metadataList.map { $0.hashedGlobalNumber }
+    guard phoneNumberHashes.isNotEmpty else { return .value(()) }
 
     return self.batchedPhoneNumbers(from: phoneNumberHashes)
       .then { self.reduceResults(from: $0) }
@@ -216,7 +216,7 @@ class ContactCacheDataWorker: ContactCacheDataWorkerType {
 
         for metadata in metadataList {
           if let responseStatus = responseDict[metadata.hashedGlobalNumber],
-            let status = PhoneNumberVerificationStatus.case(forString: responseStatus) {
+            let status = UserIdentityVerificationStatus.case(forString: responseStatus) {
             metadata.cachedPhoneNumbers.forEach { $0.setStatusIfDifferent(status) }
           } else {
             metadata.cachedPhoneNumbers.forEach { $0.setStatusIfDifferent(.notVerified) }
@@ -238,9 +238,15 @@ class ContactCacheDataWorker: ContactCacheDataWorkerType {
 
   private func batchedPhoneNumbers(from phoneNumberHashes: [String],
                                    batchLimit: Int = 100) -> Promise<[StringDictResponse]> {
-    let batched = phoneNumberHashes.chunked(by: batchLimit)
-    let batchedPhoneNumberPromises = batched.map { self.userRequester.queryUsers(phoneNumberHashes: $0) }
-    return when(fulfilled: batchedPhoneNumberPromises)
+    let phoneHashBatches = phoneNumberHashes.chunked(by: batchLimit)
+
+    var batchIterator = phoneHashBatches.makeIterator()
+    let promiseIterator = AnyIterator<Promise<StringDictResponse>> {
+      guard let phoneHashBatch = batchIterator.next() else { return nil }
+      return self.userRequester.queryUsers(identityHashes: phoneHashBatch)
+    }
+
+    return when(fulfilled: promiseIterator, concurrently: 5)
   }
 
   private func reduceResults(from responses: [StringDictResponse]) -> Promise<StringDictResponse> {

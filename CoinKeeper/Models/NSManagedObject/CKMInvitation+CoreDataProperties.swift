@@ -29,6 +29,7 @@ extension CKMInvitation {
   @NSManaged public var status: InvitationStatus
   @NSManaged public var counterpartyName: String?
   @NSManaged public var counterpartyPhoneNumber: CKMPhoneNumber?
+  @NSManaged public var counterpartyTwitterContact: CKMTwitterContact?
   @NSManaged public var transaction: CKMTransaction?
   @NSManaged public var addressProvidedToSender: String?
 
@@ -61,6 +62,12 @@ extension CKMInvitation {
 
   func setFlatFee(to flatFee: Int) {
     self.fees = max(flatFee, 1)
+  }
+
+  func setStatusIfDifferent(to newStatus: InvitationStatus) {
+    if status != newStatus {
+      status = newStatus
+    }
   }
 
 }

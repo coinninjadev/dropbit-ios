@@ -13,16 +13,16 @@ enum CKBannerViewKind {
 
   var backgroundColor: UIColor {
     switch self {
-    case .error: return Theme.Color.errorRed.color
-    case .warn: return Theme.Color.bannerWarn.color
-    case .success: return Theme.Color.bannerSuccess.color
-    case .info: return Theme.Color.darkBlueButton.color
+    case .error: return .darkPeach
+    case .warn: return .bannerWarn
+    case .success: return .bannerSuccess
+    case .info: return .darkBlueBackground
     }
   }
 
   var textColor: UIColor {
     switch self {
-    case .info, .error, .warn, .success: return Theme.Color.whiteText.color
+    case .info, .error, .warn, .success: return .whiteText
     }
   }
 }
@@ -81,7 +81,7 @@ class CKBannerView: MessageView, AccessibleViewSettable {
     closeButton.setImage(image, for: .normal)
     closeButton.setAccessibilityId(.bannerMessage(.close))
 
-    messageLabel.font = Theme.Font.bannerMessage.font
+    messageLabel.font = .regular(13)
     messageLabel.textColor = kind.textColor
     self.url = url
   }

@@ -32,7 +32,7 @@ class CNNavigationController: UINavigationController {
     navigationBar.shadowImage = UIImage()
     navigationBar.isTranslucent = true
     navigationBar.setBackgroundImage(UIImage(), for: .default)
-    navigationBar.tintColor = Theme.Color.lightBlueTint.color
+    navigationBar.tintColor = .lightBlueTint
   }
 
   override func pushViewController(_ viewController: UIViewController, animated: Bool) {

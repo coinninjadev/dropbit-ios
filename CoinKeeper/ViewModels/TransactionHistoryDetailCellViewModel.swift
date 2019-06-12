@@ -257,7 +257,7 @@ extension TransactionHistoryDetailCellViewModel {
   func historicalAmountsAttributedString() -> NSAttributedString {
     // Using bold and regular strings
     let fontSize: CGFloat = 14.0
-    let color = Theme.Color.darkBlueText.color
+    let color = UIColor.darkBlueText
     let attributes = TextAttributes(size: fontSize, color: color)
     let attributedString = NSMutableAttributedString.medium("", size: fontSize, color: color)
 

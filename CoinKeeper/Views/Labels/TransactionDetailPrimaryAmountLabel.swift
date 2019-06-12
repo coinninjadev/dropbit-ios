@@ -11,8 +11,8 @@ import UIKit
 class TransactionDetailPrimaryAmountLabel: UILabel {
   override func awakeFromNib() {
     super.awakeFromNib()
-    font = Theme.Font.transactionDetailPrimaryAmount.font
-    textColor = Theme.Color.darkBlueText.color
+    font = .medium(50)
+    textColor = .darkBlueText
     isHidden = false
     numberOfLines = 1
     textAlignment = .center

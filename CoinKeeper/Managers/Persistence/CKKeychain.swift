@@ -22,6 +22,10 @@ class CKKeychain: PersistenceKeychainType {
     case countryCode
     case phoneNumber
     case lockoutDate
+    case twitterOAuthToken
+    case twitterOAuthTokenSecret
+    case twitterUserId
+    case twitterScreenName
   }
 
   private var tempWordStorage: [String]?
@@ -78,6 +82,27 @@ class CKKeychain: PersistenceKeychainType {
   }
 
   @discardableResult
+  func store(oauthCredentials: TwitterOAuthStorage) -> Bool {
+    let success1 = storeSynchronously(anyValue: oauthCredentials.twitterOAuthToken, key: CKKeychain.Key.twitterOAuthToken)
+    let success2 = storeSynchronously(anyValue: oauthCredentials.twitterOAuthTokenSecret, key: CKKeychain.Key.twitterOAuthTokenSecret)
+    let success3 = storeSynchronously(anyValue: oauthCredentials.twitterUserId, key: CKKeychain.Key.twitterUserId)
+    let success4 = storeSynchronously(anyValue: oauthCredentials.twitterScreenName, key: CKKeychain.Key.twitterScreenName)
+    return success1 && success2 && success3 && success4
+  }
+
+  func oauthCredentials() -> TwitterOAuthStorage? {
+    guard let token = store.unarchive(objectForKey: CKKeychain.Key.twitterOAuthToken.rawValue) as? String,
+          let tokenSecret = store.unarchive(objectForKey: CKKeychain.Key.twitterOAuthTokenSecret.rawValue) as? String,
+          let userId = store.unarchive(objectForKey: CKKeychain.Key.twitterUserId.rawValue) as? String,
+          let screenName = store.unarchive(objectForKey: CKKeychain.Key.twitterScreenName.rawValue) as? String else { return nil }
+    return TwitterOAuthStorage(twitterOAuthToken: token, twitterOAuthTokenSecret: tokenSecret, twitterUserId: userId, twitterScreenName: screenName)
+  }
+
+  func backup(recoveryWords words: [String]) {
+    _ = store.archive(words, key: CKKeychain.Key.walletWords.rawValue)
+  }
+
+  @discardableResult
   func store(recoveryWords words: [String], isBackedUp: Bool) -> Promise<Void> {
     if let pin = tempPinHashStorage { // store pin and wallet together
       return storeOnSerialBackgroundQueue(value: pin, key: CKKeychain.Key.userPin.rawValue)
@@ -126,12 +151,16 @@ class CKKeychain: PersistenceKeychainType {
     Key.allCases.forEach { self.store(anyValue: nil, key: $0) }
   }
 
-  func unverifyUser() {
-    self.store(anyValue: nil, key: .countryCode)
-    self.store(anyValue: nil, key: .phoneNumber)
+  func unverifyUser(for identity: UserIdentityType) {
+    var keys: [CKKeychain.Key] = []
+    switch identity {
+    case .phone: keys = [.countryCode, .phoneNumber]
+    case .twitter: keys = [.twitterUserId, .twitterScreenName, .twitterOAuthToken, .twitterOAuthTokenSecret]
+    }
+    keys.forEach { self.storeSynchronously(anyValue: nil, key: $0) }
 
     // Prevent reprompting user to verify on next launch
-    self.store(anyValue: true, key: .skippedVerification)
+    self.storeSynchronously(anyValue: true, key: .skippedVerification)
   }
 
 }
