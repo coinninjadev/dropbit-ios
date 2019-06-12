@@ -72,6 +72,8 @@ extension UserTarget {
       return .customCodes([201, 501])
     case .resendVerification:
       return .customCodes([200, 501])
+    case .deleteIdentity:
+      return .customCodes([204, 404])
     default:
       return .successCodes
     }
