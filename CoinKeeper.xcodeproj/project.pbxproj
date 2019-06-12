@@ -649,6 +649,7 @@
 		B55D085421B723BE007DD9E5 /* CKBitcoinURLParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = B55D085321B723BE007DD9E5 /* CKBitcoinURLParser.swift */; };
 		B55D085621B723FF007DD9E5 /* CKRecipientParserAccessoryTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = B55D085521B723FF007DD9E5 /* CKRecipientParserAccessoryTypes.swift */; };
 		B56512F62153DDA500A5D044 /* WalletCheckInTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56512F52153DDA500A5D044 /* WalletCheckInTarget.swift */; };
+		B56639CD22B151E400FA0EC3 /* TransactionShareable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56639CC22B151E400FA0EC3 /* TransactionShareable.swift */; };
 		B566ED7C219B3840001A65F5 /* AccessibleViewSettable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B566ED7B219B3840001A65F5 /* AccessibleViewSettable.swift */; };
 		B56788AD227A3C2C00A39534 /* GetBitcoinCopiedAddressViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B56788AC227A3C2C00A39534 /* GetBitcoinCopiedAddressViewController.storyboard */; };
 		B56788AF227A3C5600A39534 /* GetBitcoinCopiedAddressViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56788AE227A3C5600A39534 /* GetBitcoinCopiedAddressViewController.swift */; };
@@ -1500,6 +1501,7 @@
 		B55D085321B723BE007DD9E5 /* CKBitcoinURLParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CKBitcoinURLParser.swift; sourceTree = "<group>"; };
 		B55D085521B723FF007DD9E5 /* CKRecipientParserAccessoryTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CKRecipientParserAccessoryTypes.swift; sourceTree = "<group>"; };
 		B56512F52153DDA500A5D044 /* WalletCheckInTarget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletCheckInTarget.swift; sourceTree = "<group>"; };
+		B56639CC22B151E400FA0EC3 /* TransactionShareable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionShareable.swift; sourceTree = "<group>"; };
 		B566ED7B219B3840001A65F5 /* AccessibleViewSettable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessibleViewSettable.swift; sourceTree = "<group>"; };
 		B56788AC227A3C2C00A39534 /* GetBitcoinCopiedAddressViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = GetBitcoinCopiedAddressViewController.storyboard; sourceTree = "<group>"; };
 		B56788AE227A3C5600A39534 /* GetBitcoinCopiedAddressViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetBitcoinCopiedAddressViewController.swift; sourceTree = "<group>"; };
@@ -1993,6 +1995,7 @@
 				B5B0DC7A221349C70010AB2A /* CountryCodePickerDataSource.swift */,
 				3B6FDAE02052CE5C0091916A /* VerifyRecoveryWordsCollectionViewDDS.swift */,
 				3B5A8899228AEFE10082BBA4 /* TwitterSearchDataSource.swift */,
+				B56639CC22B151E400FA0EC3 /* TransactionShareable.swift */,
 			);
 			path = "Delegates and DataSources";
 			sourceTree = "<group>";
@@ -3775,6 +3778,7 @@
 				B5F9500A20E2D439001495E2 /* UnderlinedTextButton.swift in Sources */,
 				3B474165217FB6A4004DA223 /* NotificationTopicSubscriptionTarget.swift in Sources */,
 				A29CE10820A3684700761B91 /* StringEmptyValidator.swift in Sources */,
+				B56639CD22B151E400FA0EC3 /* TransactionShareable.swift in Sources */,
 				B541DF5520A3312500C621EB /* AppCoordinator+DeviceVerificationCoordinatorDelegate.swift in Sources */,
 				B54A420F207FF11C005B40A9 /* TransactionDetailCounterpartyLabel.swift in Sources */,
 				3BE8D85E20D16FAE00E99D24 /* DerivativePathResponse.swift in Sources */,

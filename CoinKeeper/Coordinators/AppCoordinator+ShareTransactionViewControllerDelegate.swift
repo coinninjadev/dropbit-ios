@@ -12,15 +12,19 @@ import UIKit
 
 extension AppCoordinator: ShareTransactionViewControllerDelegate {
 
-  func viewControllerRequestedShareTransactionOnTwitter(_ viewController: UIViewController) {
+  func viewControllerRequestedShareTransactionOnTwitter(_ viewController: UIViewController, transaction: CKMTransaction?) {
     self.analyticsManager.track(event: .sharePromptTwitter, with: nil)
 
     viewController.dismiss(animated: true) {
       var defaultTweetText = ""
-      let bgContext = self.persistenceManager.createBackgroundContext()
-      bgContext.performAndWait {
-        let latestTx = self.persistenceManager.databaseManager.latestTransaction(in: bgContext)
-        defaultTweetText = self.tweetText(withMemo: latestTx?.memo)
+      if let tx = transaction {
+        defaultTweetText = self.tweetText(withMemo: tx.memo)
+      } else {
+        let bgContext = self.persistenceManager.createBackgroundContext()
+        bgContext.performAndWait {
+          let latestTx = self.persistenceManager.databaseManager.latestTransaction(in: bgContext)
+          defaultTweetText = self.tweetText(withMemo: latestTx?.memo)
+        }
       }
 
       self.openTwitterURL(withMessage: defaultTweetText)

@@ -13,6 +13,7 @@ import os.log
 protocol TransactionHistoryDetailCellDelegate: class {
   func didTapQuestionMarkButton(detailCell: TransactionHistoryDetailBaseCell, with url: URL)
   func didTapClose(detailCell: TransactionHistoryDetailBaseCell)
+  func didTapTwitterShare(detailCell: TransactionHistoryDetailBaseCell)
   func didTapAddress(detailCell: TransactionHistoryDetailBaseCell)
   func didTapBottomButton(detailCell: TransactionHistoryDetailBaseCell, action: TransactionDetailAction)
   func didTapAddMemoButton(completion: @escaping (String) -> Void)
@@ -50,6 +51,7 @@ class TransactionHistoryDetailBaseCell: UICollectionViewCell {
   @IBOutlet var statusLabel: TransactionDetailStatusLabel!
   @IBOutlet var counterpartyLabel: TransactionDetailCounterpartyLabel!
   @IBOutlet var twitterImage: UIImageView!
+  @IBOutlet var twitterShareButton: UIButton!
 
   // MARK: variables
   var viewModel: TransactionHistoryDetailCellViewModel?
@@ -99,6 +101,10 @@ class TransactionHistoryDetailBaseCell: UICollectionViewCell {
       CoinNinjaUrlFactory.buildUrl(for: .dropbitTransactionTooltip) : CoinNinjaUrlFactory.buildUrl(for: .regularTransactionTooltip) else { return }
 
     delegate?.didTapQuestionMarkButton(detailCell: self, with: url)
+  }
+
+  @IBAction func didTapTwitterShare(_ sender: Any) {
+    delegate?.didTapTwitterShare(detailCell: self)
   }
 
   @IBAction func didTapClose(_ sender: Any) {

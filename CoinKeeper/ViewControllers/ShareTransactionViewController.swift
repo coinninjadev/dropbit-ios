@@ -11,8 +11,8 @@ import UIKit
 protocol ViewControllerDontShowable: AnyObject {
   func viewControllerRequestedDontShowAgain(_ viewController: UIViewController)
 }
-protocol ShareTransactionViewControllerDelegate: ViewControllerDismissable, ViewControllerDontShowable {
-  func viewControllerRequestedShareTransactionOnTwitter(_ viewController: UIViewController)
+
+protocol ShareTransactionViewControllerDelegate: ViewControllerDismissable, ViewControllerDontShowable, TransactionShareable {
   func viewControllerRequestedShareNextTime(_ viewController: UIViewController)
 }
 
@@ -26,7 +26,7 @@ class ShareTransactionViewController: UIViewController, StoryboardInitializable 
   @IBOutlet var dontAskAgainFadedBackground: UIView!
 
   @IBAction func performTwitter(_ sender: Any) {
-    delegate?.viewControllerRequestedShareTransactionOnTwitter(self)
+    delegate?.viewControllerRequestedShareTransactionOnTwitter(self, transaction: nil)
   }
 
   @IBAction func performNextTime(_ sender: Any) {

@@ -18,7 +18,8 @@ import DZNEmptyDataSet
 protocol TransactionHistoryViewControllerDelegate: DeviceCountryCodeProvider &
   BalanceContainerDelegate &
   BadgeUpdateDelegate &
-  SelectedCurrencyUpdatable {
+  SelectedCurrencyUpdatable &
+  TransactionShareable {
   func viewControllerShouldSeeTransactionDetails(for viewModel: TransactionHistoryDetailCellViewModel)
   func viewControllerDidRequestHistoryUpdate(_ viewController: TransactionHistoryViewController)
   func viewController(_ viewController: TransactionHistoryViewController, didCancelInvitationWithID invitationID: String, at indexPath: IndexPath)
@@ -452,6 +453,12 @@ extension TransactionHistoryViewController: TransactionHistoryDetailCellDelegate
 
   func didTapQuestionMarkButton(detailCell: TransactionHistoryDetailBaseCell, with url: URL) {
     urlOpener?.openURL(url, completionHandler: nil)
+  }
+
+  func didTapTwitterShare(detailCell: TransactionHistoryDetailBaseCell) {
+    guard let path = self.detailCollectionView.indexPath(for: detailCell) else { return }
+    let tx = frc.object(at: path)
+    coordinationDelegate?.viewControllerRequestedShareTransactionOnTwitter(self, transaction: tx)
   }
 
   func didTapClose(detailCell: TransactionHistoryDetailBaseCell) {
