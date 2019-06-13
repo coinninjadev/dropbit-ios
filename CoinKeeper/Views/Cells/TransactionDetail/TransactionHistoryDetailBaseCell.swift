@@ -51,7 +51,7 @@ class TransactionHistoryDetailBaseCell: UICollectionViewCell {
   @IBOutlet var statusLabel: TransactionDetailStatusLabel!
   @IBOutlet var counterpartyLabel: TransactionDetailCounterpartyLabel!
   @IBOutlet var twitterImage: UIImageView!
-  @IBOutlet var twitterShareButton: UIButton!
+  @IBOutlet var twitterShareButton: PrimaryActionButton!
 
   // MARK: variables
   var viewModel: TransactionHistoryDetailCellViewModel?
@@ -115,6 +115,7 @@ class TransactionHistoryDetailBaseCell: UICollectionViewCell {
     self.delegate = delegate
     self.viewModel = viewModel
 
+    configureTwitterShareButton()
     incomingImage.image = viewModel.imageForTransactionDirection
     dateLabel.text = viewModel.dateDescriptionFull
     statusLabel.text = viewModel.statusDescription
@@ -134,6 +135,18 @@ class TransactionHistoryDetailBaseCell: UICollectionViewCell {
       isSent: true,
       isIncoming: viewModel.isIncoming,
       recipientName: nil)
+  }
+
+  private func configureTwitterShareButton() {
+    twitterShareButton?.configure(
+      withTitle: "SHARE",
+      font: .medium(10),
+      foregroundColor: .lightGrayText,
+      imageName: "twitterBird",
+      imageSize: CGSize(width: 10, height: 10),
+      titleEdgeInsets: UIEdgeInsets(top: 0, left: 2, bottom: 0, right: -2),
+      contentEdgeInsets: UIEdgeInsets(top: 4, left: 0, bottom: 4, right: 4)
+    )
   }
 
 }
