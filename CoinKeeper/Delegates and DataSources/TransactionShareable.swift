@@ -10,6 +10,7 @@ import UIKit
 
 protocol TransactionShareable: AnyObject {
   /// Pass nil for the transaction to share the latest transaction
-  func viewControllerRequestedShareTransactionOnTwitter(_ viewController: UIViewController, transaction: CKMTransaction?)
+  func viewControllerRequestedShareTransactionOnTwitter(_ viewController: UIViewController,
+                                                        transaction: CKMTransaction?,
+                                                        shouldDismiss: Bool)
 }
-

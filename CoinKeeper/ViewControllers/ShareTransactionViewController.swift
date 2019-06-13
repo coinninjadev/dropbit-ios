@@ -26,7 +26,7 @@ class ShareTransactionViewController: UIViewController, StoryboardInitializable 
   @IBOutlet var dontAskAgainFadedBackground: UIView!
 
   @IBAction func performTwitter(_ sender: Any) {
-    delegate?.viewControllerRequestedShareTransactionOnTwitter(self, transaction: nil)
+    delegate?.viewControllerRequestedShareTransactionOnTwitter(self, transaction: nil, shouldDismiss: true)
   }
 
   @IBAction func performNextTime(_ sender: Any) {

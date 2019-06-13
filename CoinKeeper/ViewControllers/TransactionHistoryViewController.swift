@@ -458,7 +458,7 @@ extension TransactionHistoryViewController: TransactionHistoryDetailCellDelegate
   func didTapTwitterShare(detailCell: TransactionHistoryDetailBaseCell) {
     guard let path = self.detailCollectionView.indexPath(for: detailCell) else { return }
     let tx = frc.object(at: path)
-    coordinationDelegate?.viewControllerRequestedShareTransactionOnTwitter(self, transaction: tx)
+    coordinationDelegate?.viewControllerRequestedShareTransactionOnTwitter(self, transaction: tx, shouldDismiss: false)
   }
 
   func didTapClose(detailCell: TransactionHistoryDetailBaseCell) {

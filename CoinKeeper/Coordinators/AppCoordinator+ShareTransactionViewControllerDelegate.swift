@@ -12,23 +12,33 @@ import UIKit
 
 extension AppCoordinator: ShareTransactionViewControllerDelegate {
 
-  func viewControllerRequestedShareTransactionOnTwitter(_ viewController: UIViewController, transaction: CKMTransaction?) {
+  func viewControllerRequestedShareTransactionOnTwitter(_ viewController: UIViewController,
+                                                        transaction: CKMTransaction?,
+                                                        shouldDismiss: Bool) {
     self.analyticsManager.track(event: .sharePromptTwitter, with: nil)
 
-    viewController.dismiss(animated: true) {
-      var defaultTweetText = ""
-      if let tx = transaction {
-        defaultTweetText = self.tweetText(withMemo: tx.memo)
-      } else {
-        let bgContext = self.persistenceManager.createBackgroundContext()
-        bgContext.performAndWait {
-          let latestTx = self.persistenceManager.databaseManager.latestTransaction(in: bgContext)
-          defaultTweetText = self.tweetText(withMemo: latestTx?.memo)
-        }
+    if shouldDismiss {
+      viewController.dismiss(animated: true) {
+        self.shareTransactionOnTwitter(transaction)
       }
-
-      self.openTwitterURL(withMessage: defaultTweetText)
+    } else {
+      shareTransactionOnTwitter(transaction)
     }
+  }
+
+  private func shareTransactionOnTwitter(_ transaction: CKMTransaction?) {
+    var defaultTweetText = ""
+    if let tx = transaction {
+      defaultTweetText = self.tweetText(withMemo: tx.memo)
+    } else {
+      let bgContext = self.persistenceManager.createBackgroundContext()
+      bgContext.performAndWait {
+        let latestTx = self.persistenceManager.databaseManager.latestTransaction(in: bgContext)
+        defaultTweetText = self.tweetText(withMemo: latestTx?.memo)
+      }
+    }
+
+    self.openTwitterURL(withMessage: defaultTweetText)
   }
 
   /// Create and open `twitter:` URL to begin a post in the Twitter app with the provided message
