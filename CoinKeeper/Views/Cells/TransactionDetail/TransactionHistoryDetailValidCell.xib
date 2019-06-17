@@ -23,17 +23,36 @@
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="K2H-9f-uij">
                         <rect key="frame" x="0.0" y="0.0" width="360" height="484"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xcI-7b-2Eg">
-                                <rect key="frame" x="5" y="5" width="44" height="44"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="MyT-kf-JkQ">
+                                <rect key="frame" x="10" y="5" width="107" height="44"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6Q7-sU-DGF" customClass="PrimaryActionButton" customModule="DropBit" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="9" width="63" height="26"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="26" id="6Ry-VO-ZnE"/>
+                                            <constraint firstAttribute="width" constant="63" id="gY9-Jg-teF"/>
+                                        </constraints>
+                                        <state key="normal" title="Button"/>
+                                        <connections>
+                                            <action selector="didTapTwitterShare:" destination="gTV-IL-0wX" eventType="touchUpInside" id="OmG-5o-tHi"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xcI-7b-2Eg">
+                                        <rect key="frame" x="63" y="0.0" width="44" height="44"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" secondItem="xcI-7b-2Eg" secondAttribute="height" multiplier="1:1" id="CK1-hn-VbS"/>
+                                            <constraint firstAttribute="height" constant="44" id="glY-7d-ldL"/>
+                                        </constraints>
+                                        <state key="normal" image="questionMarkIcon"/>
+                                        <connections>
+                                            <action selector="didTapQuestionMarkButton:" destination="gTV-IL-0wX" eventType="touchUpInside" id="X0q-MM-M34"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
                                 <constraints>
-                                    <constraint firstAttribute="width" secondItem="xcI-7b-2Eg" secondAttribute="height" multiplier="1:1" id="CK1-hn-VbS"/>
-                                    <constraint firstAttribute="height" constant="44" id="glY-7d-ldL"/>
+                                    <constraint firstAttribute="height" constant="44" id="M2x-tx-CuS"/>
                                 </constraints>
-                                <state key="normal" image="questionMarkIcon"/>
-                                <connections>
-                                    <action selector="didTapQuestionMarkButton:" destination="gTV-IL-0wX" eventType="touchUpInside" id="X0q-MM-M34"/>
-                                </connections>
-                            </button>
+                            </stackView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NgB-5f-0UF">
                                 <rect key="frame" x="311" y="5" width="44" height="44"/>
                                 <constraints>
@@ -249,7 +268,8 @@
                         <constraints>
                             <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="GiX-t1-ouu" secondAttribute="trailing" id="1rz-dQ-1VS"/>
                             <constraint firstAttribute="trailing" secondItem="YxG-0I-pcu" secondAttribute="trailing" constant="4" id="3Y3-Mb-6y4"/>
-                            <constraint firstItem="xcI-7b-2Eg" firstAttribute="leading" secondItem="K2H-9f-uij" secondAttribute="leading" constant="5" id="6ls-34-lk3"/>
+                            <constraint firstItem="MyT-kf-JkQ" firstAttribute="leading" secondItem="K2H-9f-uij" secondAttribute="leading" constant="10" id="7Iu-Oq-e9C"/>
+                            <constraint firstItem="MyT-kf-JkQ" firstAttribute="top" secondItem="K2H-9f-uij" secondAttribute="top" constant="5" id="Hg9-C9-h1l"/>
                             <constraint firstItem="x26-Nq-lHv" firstAttribute="top" secondItem="K2H-9f-uij" secondAttribute="top" constant="20" id="Jo8-BY-uOA"/>
                             <constraint firstAttribute="trailing" secondItem="NgB-5f-0UF" secondAttribute="trailing" constant="5" id="Kri-Ze-07A"/>
                             <constraint firstItem="ca5-B2-QYX" firstAttribute="top" secondItem="7bI-qJ-R1m" secondAttribute="bottom" constant="8" id="OGt-dG-wOI"/>
@@ -261,7 +281,6 @@
                             <constraint firstItem="HhA-Mw-oMV" firstAttribute="top" secondItem="ca5-B2-QYX" secondAttribute="bottom" constant="8" id="f6g-5G-HOD"/>
                             <constraint firstItem="7bI-qJ-R1m" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="K2H-9f-uij" secondAttribute="leading" constant="8" id="gVB-Oe-9Og"/>
                             <constraint firstItem="7bI-qJ-R1m" firstAttribute="top" secondItem="GiX-t1-ouu" secondAttribute="bottom" constant="8" id="h9C-Kl-7EZ"/>
-                            <constraint firstItem="xcI-7b-2Eg" firstAttribute="top" secondItem="K2H-9f-uij" secondAttribute="top" constant="5" id="iUL-f5-K5t"/>
                             <constraint firstItem="ca5-B2-QYX" firstAttribute="centerX" secondItem="K2H-9f-uij" secondAttribute="centerX" id="odh-nu-hqY"/>
                             <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="ca5-B2-QYX" secondAttribute="trailing" constant="8" id="p6z-iG-zpf"/>
                             <constraint firstItem="7bI-qJ-R1m" firstAttribute="centerX" secondItem="K2H-9f-uij" secondAttribute="centerX" id="pgP-mg-gDR"/>
@@ -306,6 +325,7 @@
                 <outlet property="secondaryAmountLabel" destination="7bI-qJ-R1m" id="29e-yM-3o4"/>
                 <outlet property="statusLabel" destination="6eD-f4-eiO" id="kRS-kv-cRS"/>
                 <outlet property="twitterImage" destination="qk5-E8-Xmo" id="6cR-0k-9J4"/>
+                <outlet property="twitterShareButton" destination="6Q7-sU-DGF" id="eiA-kd-ME9"/>
                 <outlet property="underlyingContentView" destination="K2H-9f-uij" id="gU5-pn-T4u"/>
             </connections>
             <point key="canvasLocation" x="47.826086956521742" y="35.491071428571423"/>
