@@ -1,5 +1,5 @@
 //
-//  AppCoordinator+PhoneNumberStatusViewControllerDelegate.swift
+//  AppCoordinator+VerificationStatusViewControllerDelegate.swift
 //  DropBit
 //
 //  Created by Mitch on 10/19/18.
@@ -11,7 +11,7 @@ import UIKit
 import PromiseKit
 import os.log
 
-extension AppCoordinator: PhoneNumberStatusViewControllerDelegate {
+extension AppCoordinator: VerificationStatusViewControllerDelegate {
   func verifiedPhoneNumber() -> GlobalPhoneNumber? {
     return persistenceManager.verifiedPhoneNumber()
   }
@@ -70,6 +70,13 @@ extension AppCoordinator: PhoneNumberStatusViewControllerDelegate {
   }
 
   func viewControllerDidSelectVerifyPhone(_ viewController: UIViewController) {
+    viewController.dismiss(animated: true) {
+      self.navigationController.setNavigationBarHidden(false, animated: false) // don't animate so as to hide "Back" button
+      self.startDeviceVerificationFlow(userIdentityType: .phone, shouldOrphanRoot: false, selectedSetupFlow: nil)
+    }
+  }
+
+  func viewControllerDidSelectVerify(_ viewController: UIViewController) {
     viewController.dismiss(animated: true) {
       self.navigationController.setNavigationBarHidden(false, animated: false) // don't animate so as to hide "Back" button
       self.startDeviceVerificationFlow(userIdentityType: .phone, shouldOrphanRoot: false, selectedSetupFlow: nil)

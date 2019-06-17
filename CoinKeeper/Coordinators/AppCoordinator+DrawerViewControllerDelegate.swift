@@ -25,7 +25,7 @@ extension AppCoordinator: DrawerViewControllerDelegate {
   func phoneButtonWasTouched() {
     analyticsManager.track(event: .phoneButtonPressed, with: nil)
     drawerController?.toggle(.left, animated: true, completion: nil)
-    let phoneNumberStatusViewController = PhoneNumberStatusViewController.makeFromStoryboard()
+    let phoneNumberStatusViewController = VerificationStatusViewController.makeFromStoryboard()
     assignCoordinationDelegate(to: phoneNumberStatusViewController)
     navigationController.present(phoneNumberStatusViewController, animated: true, completion: nil)
   }

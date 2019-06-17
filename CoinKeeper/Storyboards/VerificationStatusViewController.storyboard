@@ -4,16 +4,17 @@
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
+        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="Stack View standard spacing" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Phone Number Status View Controller-->
+        <!--Verification Status View Controller-->
         <scene sceneID="olt-7A-Z9s">
             <objects>
-                <viewController storyboardIdentifier="PhoneNumberStatusViewController" id="wct-uq-10C" customClass="PhoneNumberStatusViewController" customModule="DropBit" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="VerificationStatusViewController" id="wct-uq-10C" customClass="VerificationStatusViewController" customModule="DropBit" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="V0H-3S-dx0">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
