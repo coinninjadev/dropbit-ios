@@ -42,7 +42,7 @@
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" verticalCompressionResistancePriority="752" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Umr-q3-q6S">
                                 <rect key="frame" x="32" y="113" width="311" height="40.5"/>
                                 <attributedString key="attributedText">
-                                    <fragment content="Verify your phone number and twitter name to send Bitcoin to mobile and twitter contacts without an address.">
+                                    <fragment content="Verify your phone number and Twitter name to send Bitcoin to mobile and Twitter contacts without an address.">
                                         <attributes>
                                             <font key="NSFont" metaFont="system" size="17"/>
                                             <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" lineSpacing="3" tighteningFactorForTruncation="0.0"/>
