@@ -220,10 +220,9 @@ class MockPersistenceManager: PersistenceManagerType {
 
   var setLastLoginTimeWasCalled = false
   private var lastTimeEnteredBackground: TimeInterval = Date().timeIntervalSince1970
-  func setLastLoginTime() -> Promise<Void> {
+  func setLastLoginTime() {
     setLastLoginTimeWasCalled = true
     lastTimeEnteredBackground = Date().timeIntervalSince1970
-    return .value(())
   }
 
   func setLastMockLogin(timeInterval: TimeInterval) {

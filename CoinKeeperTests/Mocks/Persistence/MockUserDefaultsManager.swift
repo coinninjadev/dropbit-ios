@@ -44,6 +44,10 @@ class MockUserDefaultsManager: PersistenceUserDefaultsType {
     return true
   }
 
+  func lastLoginTime() -> TimeInterval? {
+    return nil
+  }
+
   var dontShowShareTransaction: Bool = false
 
   // standardDefaults is not used by MockPersistenceManager, and is not accessed outside PersistenceManager (wjf, 2018-04)
