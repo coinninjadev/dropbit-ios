@@ -255,4 +255,5 @@ class MockInvitationDelegate: InvitationWorkerDelegate {
   func fetchAndHandleSentWalletAddressRequests() -> Promise<[WalletAddressRequestResponse]> {
     return Promise { _ in }
   }
+  func didBroadcastTransaction() { }
 }
