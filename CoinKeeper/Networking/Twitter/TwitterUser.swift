@@ -24,14 +24,9 @@ struct TwitterUser: Decodable {
   let profileImageUrlHttps: String?
 
   var profileImageURL: URL? {
-    return profileImageUrlHttps.flatMap { (urlString: String) -> URL? in
-      if let subrange = urlString.range(of: "_normal") {
-        var copy = urlString
-        copy.removeSubrange(subrange)
-        return URL(string: copy)
-      }
-      return URL(string: urlString)
-    }
+    return profileImageUrlHttps
+      .map { $0.replacingOccurrences(of: "_normal.", with: ".") }
+      .flatMap { URL(string: $0) }
   }
 
   var profileImageData: Data?

@@ -126,7 +126,7 @@ protocol PersistenceManagerType: DeviceCountryCodeProvider {
   func yearlyPriceHighNotificationIsEnabled() -> Bool
   func updateYearlyPriceHighNotification(enabled: Bool)
 
-  func setLastLoginTime() -> Promise<Void>
+  func setLastLoginTime()
   func lastLoginTime() -> TimeInterval?
 
   /// Returns either the stored UUID or the one that has just been created and stored
@@ -261,6 +261,7 @@ protocol PersistenceUserDefaultsType: AnyObject {
   func deleteDeviceEndpointIds()
   func deviceId() -> UUID?
   func setDeviceId(_ uuid: UUID)
+  func lastLoginTime() -> TimeInterval?
   var receiveAddressIndexGaps: Set<Int> { get set }
   var dontShowShareTransaction: Bool { get set }
 
