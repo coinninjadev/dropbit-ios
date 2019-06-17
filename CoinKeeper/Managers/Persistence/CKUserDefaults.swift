@@ -28,7 +28,6 @@ class CKUserDefaults: PersistenceUserDefaultsType {
     case didTutorial
     case walletID // for background fetching purposes
     case userID   // for background fetching purposes
-    case pendingInvitations  // [String: [String: Data]]
     case uuid // deviceID
     case shownMessageIds
     case lastPublishedMessageTimeInterval
@@ -98,7 +97,6 @@ class CKUserDefaults: PersistenceUserDefaultsType {
       .walletID,
       .unseenTransactionChangesExist,
       .userID,
-      .pendingInvitations,
       .backupWordsReminderShown,
       .unseenTransactionChangesExist,
       .lastSuccessfulSyncCompletedAt,
@@ -116,7 +114,7 @@ class CKUserDefaults: PersistenceUserDefaultsType {
   }
 
   func unverifyUser() {
-    removeValues(forKeys: [.pendingInvitations, .userID])
+    removeValues(forKeys: [.userID])
   }
 
   let indexGapKey = CKUserDefaults.Key.receiveAddressIndexGaps.rawValue
