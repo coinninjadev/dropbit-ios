@@ -369,6 +369,8 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate, CurrencyFormatta
             self?.analyticsManager.track(event: .twitterSendComplete, with: nil)
           }
           self?.trackIfUserHasABalance()
+
+          strongSelf.didBroadcastTransaction()
         }.catch { error in
           let nsError = error as NSError
           let broadcastError = TransactionBroadcastError(errorCode: nsError.code)

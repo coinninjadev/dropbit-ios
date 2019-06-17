@@ -421,6 +421,7 @@ class WalletAddressDataWorker: WalletAddressDataWorkerType {
     }
 
     return self.fulfillInvitationRequest(with: firstResponse, in: context)
+      .get { self.invitationDelegate.didBroadcastTransaction() }
   }
 
   private func ensureLocalServerAddressParity(
