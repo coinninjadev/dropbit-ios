@@ -78,8 +78,7 @@ extension AppCoordinator: VerificationStatusViewControllerDelegate {
 
   func viewControllerDidSelectVerify(_ viewController: UIViewController) {
     viewController.dismiss(animated: true) {
-      self.navigationController.setNavigationBarHidden(false, animated: false) // don't animate so as to hide "Back" button
-      self.startDeviceVerificationFlow(userIdentityType: .phone, shouldOrphanRoot: false, selectedSetupFlow: nil)
+      self.showVerificationStatusViewController()
     }
   }
 

@@ -22,12 +22,16 @@ extension AppCoordinator: DrawerViewControllerDelegate {
     self.showWordRecoveryFlow()
   }
 
-  func phoneButtonWasTouched() {
+  func verifyButtonWasTouched() {
     analyticsManager.track(event: .phoneButtonPressed, with: nil)
     drawerController?.toggle(.left, animated: true, completion: nil)
-    let phoneNumberStatusViewController = VerificationStatusViewController.makeFromStoryboard()
-    assignCoordinationDelegate(to: phoneNumberStatusViewController)
-    navigationController.present(phoneNumberStatusViewController, animated: true, completion: nil)
+    showVerificationStatusViewController()
+  }
+
+  func showVerificationStatusViewController() {
+    let verificationStatusViewController = VerificationStatusViewController.makeFromStoryboard()
+    assignCoordinationDelegate(to: verificationStatusViewController)
+    navigationController.present(verificationStatusViewController, animated: true, completion: nil)
   }
 
   func settingsButtonWasTouched() {

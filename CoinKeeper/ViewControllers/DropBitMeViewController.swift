@@ -11,7 +11,7 @@ import UIKit
 protocol DropBitMeViewControllerDelegate: ViewControllerDismissable, CopyToClipboardMessageDisplayable {
   func viewControllerDidEnableDropBitMeURL(_ viewController: UIViewController, shouldEnable: Bool)
   func viewControllerDidTapLearnMore(_ viewController: UIViewController)
-  func viewControllerDidSelectVerifyPhone(_ viewController: UIViewController)
+  func viewControllerDidSelectVerify(_ viewController: UIViewController)
   func viewControllerDidTapShareOnTwitter(_ viewController: UIViewController)
 }
 
@@ -93,7 +93,7 @@ class DropBitMeViewController: UIViewController, StoryboardInitializable {
     case .verified:
       delegate.viewControllerDidTapShareOnTwitter(self)
     case .notVerified:
-      delegate.viewControllerDidSelectVerifyPhone(self)
+      delegate.viewControllerDidSelectVerify(self)
     case .disabled:
       delegate.viewControllerDidEnableDropBitMeURL(self, shouldEnable: true)
     }
