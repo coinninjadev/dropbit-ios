@@ -331,17 +331,10 @@ class AppCoordinator: CoordinatorType {
 
   /// Handle app leaving active state, either becoming inactive, entering background, or terminating.
   func appWillResignActiveState() {
-    let logger = OSLog(subsystem: "com.coinninja.coinkeeper.appcoordinator", category: "willResignActive")
     let backgroundTaskId = UIApplication.shared.beginBackgroundTask(expirationHandler: nil)
     connectionManager.stop()
-
     persistenceManager.setLastLoginTime()
-      .catch { error in
-        os_log("Failed to set lastLoginTime: %@", log: logger, type: .error, error.localizedDescription)
-      }
-      .finally {
-        UIApplication.shared.endBackgroundTask(backgroundTaskId)
-    }
+    UIApplication.shared.endBackgroundTask(backgroundTaskId)
   }
 
   private func authenticateOnBecomingActiveIfNeeded() {

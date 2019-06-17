@@ -368,12 +368,12 @@ class PersistenceManager: PersistenceManagerType {
     userDefaultsManager.deleteDeviceEndpointIds()
   }
 
-  func setLastLoginTime() -> Promise<Void> {
-    return self.keychainManager.store(anyValue: Date().timeIntervalSince1970, key: .lastTimeEnteredBackground)
+  func setLastLoginTime() {
+    CKUserDefaults.standardDefaults.set(Date().timeIntervalSince1970, forKey: CKUserDefaults.Key.lastTimeEnteredBackground.defaultsString)
   }
 
   func lastLoginTime() -> TimeInterval? {
-    return keychainManager.retrieveValue(for: .lastTimeEnteredBackground) as? TimeInterval
+    return userDefaultsManager.lastLoginTime()
   }
 
   func persistUnacknowledgedInvitation(in context: NSManagedObjectContext, with btcPair: BitcoinUSDPair,
