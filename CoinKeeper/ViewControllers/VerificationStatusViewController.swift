@@ -1,5 +1,5 @@
 //
-//  PhoneNumberStatusViewController.swift
+//  VerificationStatusViewController.swift
 //  DropBit
 //
 //  Created by Mitch on 10/18/18.
@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 import PhoneNumberKit
 
-protocol PhoneNumberStatusViewControllerDelegate: ViewControllerDismissable, AuthenticationSuspendable {
+protocol VerificationStatusViewControllerDelegate: ViewControllerDismissable, AuthenticationSuspendable {
   func verifiedPhoneNumber() -> GlobalPhoneNumber?
   func verifiedTwitterHandle() -> String?
   func viewControllerDidRequestAddresses() -> [ServerAddressViewModel]
@@ -21,7 +21,7 @@ protocol PhoneNumberStatusViewControllerDelegate: ViewControllerDismissable, Aut
   func viewControllerDidRequestToUnverifyTwitter(_ viewController: UIViewController, successfulCompletion: @escaping () -> Void)
 }
 
-class PhoneNumberStatusViewController: BaseViewController, StoryboardInitializable {
+class VerificationStatusViewController: BaseViewController, StoryboardInitializable {
 
   @IBOutlet var serverAddressViewVerticalConstraint: NSLayoutConstraint!
   @IBOutlet var serverAddressView: ServerAddressView!
@@ -38,8 +38,8 @@ class PhoneNumberStatusViewController: BaseViewController, StoryboardInitializab
   @IBOutlet var closeButton: UIButton!
   @IBOutlet var addressButton: UIButton!
 
-  var coordinationDelegate: PhoneNumberStatusViewControllerDelegate? {
-    return generalCoordinationDelegate as? PhoneNumberStatusViewControllerDelegate
+  var coordinationDelegate: VerificationStatusViewControllerDelegate? {
+    return generalCoordinationDelegate as? VerificationStatusViewControllerDelegate
   }
 
   let serverAddressUpperPercentageMultiplier: CGFloat = 0.15
@@ -180,7 +180,7 @@ class PhoneNumberStatusViewController: BaseViewController, StoryboardInitializab
   }
 }
 
-extension PhoneNumberStatusViewController: ServerAddressViewDelegate {
+extension VerificationStatusViewController: ServerAddressViewDelegate {
   func didPressCloseButton() {
     UIView.animate(withDuration: 0.5, delay: 0.0, options: .curveEaseInOut, animations: { [weak self] in
       self?.serverAddressBackgroundView.alpha = 0.0

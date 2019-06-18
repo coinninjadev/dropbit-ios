@@ -43,10 +43,10 @@
 		30C0974E219C64F80064F19E /* Int+NSDecimalNumber.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30C0974D219C64F80064F19E /* Int+NSDecimalNumber.swift */; };
 		30C2561321C870E600887691 /* TutorialViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30C2561221C870E600887691 /* TutorialViewControllerTests.swift */; };
 		30E96A2921765546008079B8 /* BitcoinURL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30E96A2821765546008079B8 /* BitcoinURL.swift */; };
-		30E96A2D2178F83A008079B8 /* PhoneNumberStatusViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30E96A2C2178F83A008079B8 /* PhoneNumberStatusViewController.swift */; };
-		30E96A2F2178FA70008079B8 /* PhoneNumberStatusViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 30E96A2E2178FA70008079B8 /* PhoneNumberStatusViewController.storyboard */; };
-		30E96A312179FE2A008079B8 /* AppCoordinator+PhoneNumberStatusViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30E96A302179FE2A008079B8 /* AppCoordinator+PhoneNumberStatusViewControllerDelegate.swift */; };
-		30E96A35217A1207008079B8 /* PhoneNumberStatusViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30E96A34217A1207008079B8 /* PhoneNumberStatusViewControllerTests.swift */; };
+		30E96A2D2178F83A008079B8 /* VerificationStatusViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30E96A2C2178F83A008079B8 /* VerificationStatusViewController.swift */; };
+		30E96A2F2178FA70008079B8 /* VerificationStatusViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 30E96A2E2178FA70008079B8 /* VerificationStatusViewController.storyboard */; };
+		30E96A312179FE2A008079B8 /* AppCoordinator+VerificationStatusViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30E96A302179FE2A008079B8 /* AppCoordinator+VerificationStatusViewControllerDelegate.swift */; };
+		30E96A35217A1207008079B8 /* VerificationStatusViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30E96A34217A1207008079B8 /* VerificationStatusViewControllerTests.swift */; };
 		30F0B64B2139D6C300BF7DBB /* CoinNinjaUrlFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30F0B64A2139D6C300BF7DBB /* CoinNinjaUrlFactory.swift */; };
 		3B00C265220B1FEF001FC46B /* MockConnectionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B00C264220B1FEF001FC46B /* MockConnectionManager.swift */; };
 		3B00C269220DC78B001FC46B /* DeviceEndpoint.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B00C268220DC78B001FC46B /* DeviceEndpoint.generated.swift */; };
@@ -890,10 +890,10 @@
 		30C0974D219C64F80064F19E /* Int+NSDecimalNumber.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Int+NSDecimalNumber.swift"; sourceTree = "<group>"; };
 		30C2561221C870E600887691 /* TutorialViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialViewControllerTests.swift; sourceTree = "<group>"; };
 		30E96A2821765546008079B8 /* BitcoinURL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BitcoinURL.swift; sourceTree = "<group>"; };
-		30E96A2C2178F83A008079B8 /* PhoneNumberStatusViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneNumberStatusViewController.swift; sourceTree = "<group>"; };
-		30E96A2E2178FA70008079B8 /* PhoneNumberStatusViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = PhoneNumberStatusViewController.storyboard; sourceTree = "<group>"; };
-		30E96A302179FE2A008079B8 /* AppCoordinator+PhoneNumberStatusViewControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppCoordinator+PhoneNumberStatusViewControllerDelegate.swift"; sourceTree = "<group>"; };
-		30E96A34217A1207008079B8 /* PhoneNumberStatusViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneNumberStatusViewControllerTests.swift; sourceTree = "<group>"; };
+		30E96A2C2178F83A008079B8 /* VerificationStatusViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerificationStatusViewController.swift; sourceTree = "<group>"; };
+		30E96A2E2178FA70008079B8 /* VerificationStatusViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = VerificationStatusViewController.storyboard; sourceTree = "<group>"; };
+		30E96A302179FE2A008079B8 /* AppCoordinator+VerificationStatusViewControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppCoordinator+VerificationStatusViewControllerDelegate.swift"; sourceTree = "<group>"; };
+		30E96A34217A1207008079B8 /* VerificationStatusViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerificationStatusViewControllerTests.swift; sourceTree = "<group>"; };
 		30F0B64A2139D6C300BF7DBB /* CoinNinjaUrlFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinNinjaUrlFactory.swift; sourceTree = "<group>"; };
 		3B00C264220B1FEF001FC46B /* MockConnectionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockConnectionManager.swift; sourceTree = "<group>"; };
 		3B00C268220DC78B001FC46B /* DeviceEndpoint.generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceEndpoint.generated.swift; sourceTree = "<group>"; };
@@ -1901,7 +1901,7 @@
 				A2893BC120FD515900E96B07 /* AppCoordinator+TutorialViewControllerDelegate.swift */,
 				3BA9FA8320FE852C0011C6C4 /* AppCoordinator+NotificationManagerDelegate.swift */,
 				3B9A8DF62150388F00C78C2C /* AppCoordinator+WalletDelegateType.swift */,
-				30E96A302179FE2A008079B8 /* AppCoordinator+PhoneNumberStatusViewControllerDelegate.swift */,
+				30E96A302179FE2A008079B8 /* AppCoordinator+VerificationStatusViewControllerDelegate.swift */,
 				3BACDB982190B7DB0006F2D4 /* AppCoordinator+RecoveryWordsIntroViewControllerDelegate.swift */,
 				30BF4FEC21B6E42A0018AE87 /* AppCoordinator+TransactionPopoverDetailsViewControllerDelegate.swift */,
 				3B44962221B06DE200A4E912 /* AppCoordinator+MemoEntryViewControllerDelegate.swift */,
@@ -2211,7 +2211,7 @@
 				B51F8231207BA83C00692F5B /* TransactionHistoryViewControllerTests.swift */,
 				3BAB1448204EE7FD001D41A2 /* VerifyRecoveryWordsViewControllerTests.swift */,
 				A22C43CD20F3C84000041DF6 /* RestoreWalletViewControllerTests.swift */,
-				30E96A34217A1207008079B8 /* PhoneNumberStatusViewControllerTests.swift */,
+				30E96A34217A1207008079B8 /* VerificationStatusViewControllerTests.swift */,
 				3B325D4E219090F80094897C /* RecoveryWordsIntroViewControllerTests.swift */,
 				30BF4FF121B83C970018AE87 /* TransactionPopoverDetailsViewControllerTests.swift */,
 				3B44962021B0665B00A4E912 /* MemoEntryViewControllerTests.swift */,
@@ -2423,7 +2423,7 @@
 				A2893BBD20FD4C5A00E96B07 /* BasePageViewController.swift */,
 				A26C767C21081CB1001EB738 /* TextViewController.swift */,
 				30B6632721666B300011296C /* ActionableAlertViewController.swift */,
-				30E96A2C2178F83A008079B8 /* PhoneNumberStatusViewController.swift */,
+				30E96A2C2178F83A008079B8 /* VerificationStatusViewController.swift */,
 				3B325D4C219090CD0094897C /* RecoveryWordsIntroViewController.swift */,
 				30BF4FE821B6C5C10018AE87 /* TransactionPopoverDetailsViewController.swift */,
 				3B27D3F9225E84E900291B82 /* GetBitcoinViewController.swift */,
@@ -2464,7 +2464,7 @@
 				A26C767E21081D5B001EB738 /* TextViewController.storyboard */,
 				B54DE68622987463009D67CE /* TweetMethodViewController.storyboard */,
 				30B6632B21666B5C0011296C /* ActionableAlertViewController.storyboard */,
-				30E96A2E2178FA70008079B8 /* PhoneNumberStatusViewController.storyboard */,
+				30E96A2E2178FA70008079B8 /* VerificationStatusViewController.storyboard */,
 				3B325D50219091950094897C /* RecoveryWordsIntroViewController.storyboard */,
 				30BF4FEA21B6C6C60018AE87 /* TransactionPopoverDetailsViewController.storyboard */,
 				3B44961E21B0661300A4E912 /* MemoEntryViewController.storyboard */,
@@ -3324,7 +3324,7 @@
 				3B9779B4202E416700C9C933 /* Montserrat-ExtraLight.ttf in Resources */,
 				A29CE0DA209B725600761B91 /* ContactCell.xib in Resources */,
 				3B9779AC202E416700C9C933 /* Montserrat-SemiBoldItalic.ttf in Resources */,
-				30E96A2F2178FA70008079B8 /* PhoneNumberStatusViewController.storyboard in Resources */,
+				30E96A2F2178FA70008079B8 /* VerificationStatusViewController.storyboard in Resources */,
 				3BEF229B2260D491001F6D25 /* SpendBitcoinViewController.storyboard in Resources */,
 				3B9779AA202E416700C9C933 /* Montserrat-Medium.ttf in Resources */,
 				3B82692B20337282009B11EC /* PinCreationViewController.storyboard in Resources */,
@@ -3732,7 +3732,7 @@
 				B54159CE20A60C720048F495 /* WalletResponse.swift in Sources */,
 				B57B78DD20B4878F007B71CB /* CKDateFormatter.swift in Sources */,
 				B5A3BA602151940E005EE657 /* WalletAddressRequestsTarget.swift in Sources */,
-				30E96A312179FE2A008079B8 /* AppCoordinator+PhoneNumberStatusViewControllerDelegate.swift in Sources */,
+				30E96A312179FE2A008079B8 /* AppCoordinator+VerificationStatusViewControllerDelegate.swift in Sources */,
 				B5AC4F8321F8EBD5000ABAE8 /* WalletAddressesElasticQuery.swift in Sources */,
 				3B2E78302024AEA100DA25AF /* UIFont+Theme.swift in Sources */,
 				5B40427C208CCC27005624B0 /* QRCode.swift in Sources */,
@@ -3962,7 +3962,7 @@
 				B5CFA334221E008B002B1BDD /* CCMContact+CoreDataProperties.swift in Sources */,
 				B52B1E0C21A315DC0000B9CF /* NetworkManager+MerchantPaymentRequestRequestable.swift in Sources */,
 				B5CFA32A221DF594002B1BDD /* ContactCacheManager.swift in Sources */,
-				30E96A2D2178F83A008079B8 /* PhoneNumberStatusViewController.swift in Sources */,
+				30E96A2D2178F83A008079B8 /* VerificationStatusViewController.swift in Sources */,
 				B552EDF5211E33D000332BB5 /* QRCodeGenerator.swift in Sources */,
 				3BCBFCC2229EBF2200F633BA /* AppCoordinator+SupportViewControllerDelegate.swift in Sources */,
 				B505A87A2076C5BE00AACB23 /* TransactionHistoryReceiverLabel.swift in Sources */,
@@ -4128,7 +4128,7 @@
 				3B5052BB2046E6AD000C739F /* BackupRecoveryWordsCollectionDDSTests.swift in Sources */,
 				3B5052B52045FB5C000C739F /* BackupRecoveryWordsViewControllerTests.swift in Sources */,
 				A2E89208210A3BC10085631A /* CKPhoneNumberFormatterTests.swift in Sources */,
-				30E96A35217A1207008079B8 /* PhoneNumberStatusViewControllerTests.swift in Sources */,
+				30E96A35217A1207008079B8 /* VerificationStatusViewControllerTests.swift in Sources */,
 				4AF433282094103C00B11BC9 /* MockDeviceVerificationViewControllerDelegate.swift in Sources */,
 				A29CE10F20A3845C00761B91 /* BitcoinAddressValidatorTests.swift in Sources */,
 				3B44962121B0665B00A4E912 /* MemoEntryViewControllerTests.swift in Sources */,

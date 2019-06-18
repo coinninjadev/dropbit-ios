@@ -13,7 +13,7 @@ struct DrawerData {
     case backupWords
     case getBitcoin
     case settings
-    case phone
+    case verify
     case spend
     case support
   }

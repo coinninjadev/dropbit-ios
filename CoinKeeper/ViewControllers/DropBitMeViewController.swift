@@ -11,7 +11,7 @@ import UIKit
 protocol DropBitMeViewControllerDelegate: ViewControllerDismissable, CopyToClipboardMessageDisplayable {
   func viewControllerDidEnableDropBitMeURL(_ viewController: UIViewController, shouldEnable: Bool)
   func viewControllerDidTapLearnMore(_ viewController: UIViewController)
-  func viewControllerDidSelectVerifyPhone(_ viewController: UIViewController)
+  func viewControllerDidSelectVerify(_ viewController: UIViewController)
   func viewControllerDidTapShareOnTwitter(_ viewController: UIViewController)
 }
 
@@ -69,10 +69,11 @@ class DropBitMeViewController: UIViewController, StoryboardInitializable {
   @IBOutlet var headerSpacer: UIView!
   @IBOutlet var dropBitMeLogo: UIImageView!
   @IBOutlet var messageLabel: UILabel!
+  @IBOutlet var avatarURLContainer: UIView!
+  @IBOutlet var avatarImageView: UIImageView!
   @IBOutlet var dropBitMeURLButton: LightBorderedButton!
   @IBOutlet var primaryButton: PrimaryActionButton!
   @IBOutlet var secondaryButton: UIButton!
-  @IBOutlet var avatarImageView: UIImageView!
 
   @IBAction func performClose(_ sender: Any) {
     delegate.viewControllerDidSelectClose(self)
@@ -93,7 +94,7 @@ class DropBitMeViewController: UIViewController, StoryboardInitializable {
     case .verified:
       delegate.viewControllerDidTapShareOnTwitter(self)
     case .notVerified:
-      delegate.viewControllerDidSelectVerifyPhone(self)
+      delegate.viewControllerDidSelectVerify(self)
     case .disabled:
       delegate.viewControllerDidEnableDropBitMeURL(self, shouldEnable: true)
     }
@@ -155,16 +156,16 @@ class DropBitMeViewController: UIViewController, StoryboardInitializable {
   func configure(with config: DropBitMeConfig) {
     self.config = config
     self.messageLabel.text = self.message
-    dropBitMeURLButton.isHidden = true
     verificationSuccessButton.isHidden = true
     secondaryButton.isHidden = false
+    avatarURLContainer.isHidden = true
 
     switch config.state {
     case .verified(let url, let firstTimeVerified):
       verificationSuccessButton.isHidden = !firstTimeVerified
       headerSpacer.isHidden = firstTimeVerified
+      avatarURLContainer.isHidden = false
       dropBitMeURLButton.setTitle(url.absoluteString, for: .normal)
-      dropBitMeURLButton.isHidden = false
       primaryButton.style = .standard
       primaryButton.setTitle("SHARE ON TWITTER", for: .normal)
       secondaryButton.setTitle("Disable my DropBit.me URL", for: .normal)
@@ -173,19 +174,18 @@ class DropBitMeViewController: UIViewController, StoryboardInitializable {
       avatarImageView.image = config.avatar
       let radius = avatarImageView.frame.width / 2.0
       avatarImageView.applyCornerRadius(radius)
+
     case .notVerified:
       primaryButton.style = .standard
       primaryButton.setTitle("VERIFY MY ACCOUNT", for: .normal)
       secondaryButton.isHidden = true
       avatarButton.alpha = 0.0
-      avatarImageView.image = nil
 
     case .disabled:
       primaryButton.style = .darkBlue
       primaryButton.setTitle("ENABLE MY URL", for: .normal)
       secondaryButton.setTitle("Learn more", for: .normal)
       avatarButton.alpha = 0.0
-      avatarImageView.image = nil
     }
   }
 
