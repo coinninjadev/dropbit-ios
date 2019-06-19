@@ -773,6 +773,16 @@
 		B5C5EDE321FA41FF0032AC94 /* SharedPayloadV1.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5C5EDE221FA41FF0032AC94 /* SharedPayloadV1.swift */; };
 		B5C5EDE721FA490A0032AC94 /* SharedPayloadCodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5C5EDE621FA490A0032AC94 /* SharedPayloadCodable.swift */; };
 		B5C5FEDB22BA834800287FF7 /* PersistenceBrokerTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5C5FEDA22BA834800287FF7 /* PersistenceBrokerTypes.swift */; };
+		B5C5FEE322BAAFD900287FF7 /* MockPersistenceBrokers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5C5FEDC22BAA8EC00287FF7 /* MockPersistenceBrokers.swift */; };
+		B5C5FEE422BAB2F400287FF7 /* MockActivityBroker.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5C5FEE122BAAD2100287FF7 /* MockActivityBroker.swift */; };
+		B5C5FEE522BAB2F900287FF7 /* MockUserBroker.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5C5FEDF22BAA95100287FF7 /* MockUserBroker.swift */; };
+		B5C5FEE822BABFA300287FF7 /* MockWalletBroker.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5C5FEE722BABFA300287FF7 /* MockWalletBroker.swift */; };
+		B5C5FEEA22BAC0A400287FF7 /* MockCheckInBroker.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5C5FEE922BAC0A400287FF7 /* MockCheckInBroker.swift */; };
+		B5C5FEEC22BAC0F000287FF7 /* MockDeviceBroker.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5C5FEEB22BAC0F000287FF7 /* MockDeviceBroker.swift */; };
+		B5C5FEEE22BAC15300287FF7 /* MockInvitationBroker.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5C5FEED22BAC15300287FF7 /* MockInvitationBroker.swift */; };
+		B5C5FEF022BAC1A100287FF7 /* MockMigrationBroker.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5C5FEEF22BAC1A100287FF7 /* MockMigrationBroker.swift */; };
+		B5C5FEF222BAC1F500287FF7 /* MockPreferencesBroker.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5C5FEF122BAC1F500287FF7 /* MockPreferencesBroker.swift */; };
+		B5C5FEF422BAC24300287FF7 /* MockTransactionBroker.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5C5FEF322BAC24300287FF7 /* MockTransactionBroker.swift */; };
 		B5C8F5B5216CED9200E3E85B /* MockNetworkManager+TransactionBroadcastable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5C8F5B4216CED9200E3E85B /* MockNetworkManager+TransactionBroadcastable.swift */; };
 		B5C8F5B7216CEE3A00E3E85B /* MockNetworkManager+TransactionRequestable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5C8F5B6216CEE3A00E3E85B /* MockNetworkManager+TransactionRequestable.swift */; };
 		B5C8F5B9216CEEBF00E3E85B /* MockNetworkManager+UserRequestable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5C8F5B8216CEEBF00E3E85B /* MockNetworkManager+UserRequestable.swift */; };
@@ -1631,6 +1641,16 @@
 		B5C5EDE221FA41FF0032AC94 /* SharedPayloadV1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedPayloadV1.swift; sourceTree = "<group>"; };
 		B5C5EDE621FA490A0032AC94 /* SharedPayloadCodable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedPayloadCodable.swift; sourceTree = "<group>"; };
 		B5C5FEDA22BA834800287FF7 /* PersistenceBrokerTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceBrokerTypes.swift; sourceTree = "<group>"; };
+		B5C5FEDC22BAA8EC00287FF7 /* MockPersistenceBrokers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockPersistenceBrokers.swift; sourceTree = "<group>"; };
+		B5C5FEDF22BAA95100287FF7 /* MockUserBroker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockUserBroker.swift; sourceTree = "<group>"; };
+		B5C5FEE122BAAD2100287FF7 /* MockActivityBroker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockActivityBroker.swift; sourceTree = "<group>"; };
+		B5C5FEE722BABFA300287FF7 /* MockWalletBroker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockWalletBroker.swift; sourceTree = "<group>"; };
+		B5C5FEE922BAC0A400287FF7 /* MockCheckInBroker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockCheckInBroker.swift; sourceTree = "<group>"; };
+		B5C5FEEB22BAC0F000287FF7 /* MockDeviceBroker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockDeviceBroker.swift; sourceTree = "<group>"; };
+		B5C5FEED22BAC15300287FF7 /* MockInvitationBroker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockInvitationBroker.swift; sourceTree = "<group>"; };
+		B5C5FEEF22BAC1A100287FF7 /* MockMigrationBroker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockMigrationBroker.swift; sourceTree = "<group>"; };
+		B5C5FEF122BAC1F500287FF7 /* MockPreferencesBroker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockPreferencesBroker.swift; sourceTree = "<group>"; };
+		B5C5FEF322BAC24300287FF7 /* MockTransactionBroker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockTransactionBroker.swift; sourceTree = "<group>"; };
 		B5C8F5B4216CED9200E3E85B /* MockNetworkManager+TransactionBroadcastable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MockNetworkManager+TransactionBroadcastable.swift"; sourceTree = "<group>"; };
 		B5C8F5B6216CEE3A00E3E85B /* MockNetworkManager+TransactionRequestable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MockNetworkManager+TransactionRequestable.swift"; sourceTree = "<group>"; };
 		B5C8F5B8216CEEBF00E3E85B /* MockNetworkManager+UserRequestable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MockNetworkManager+UserRequestable.swift"; sourceTree = "<group>"; };
@@ -3092,6 +3112,23 @@
 			path = Providers;
 			sourceTree = "<group>";
 		};
+		B5C5FEE622BABF8400287FF7 /* Brokers */ = {
+			isa = PBXGroup;
+			children = (
+				B5C5FEDC22BAA8EC00287FF7 /* MockPersistenceBrokers.swift */,
+				B5C5FEE122BAAD2100287FF7 /* MockActivityBroker.swift */,
+				B5C5FEE922BAC0A400287FF7 /* MockCheckInBroker.swift */,
+				B5C5FEEB22BAC0F000287FF7 /* MockDeviceBroker.swift */,
+				B5C5FEED22BAC15300287FF7 /* MockInvitationBroker.swift */,
+				B5C5FEEF22BAC1A100287FF7 /* MockMigrationBroker.swift */,
+				B5C5FEF122BAC1F500287FF7 /* MockPreferencesBroker.swift */,
+				B5C5FEF322BAC24300287FF7 /* MockTransactionBroker.swift */,
+				B5C5FEDF22BAA95100287FF7 /* MockUserBroker.swift */,
+				B5C5FEE722BABFA300287FF7 /* MockWalletBroker.swift */,
+			);
+			path = Brokers;
+			sourceTree = "<group>";
+		};
 		B5CFA32E221DFE53002B1BDD /* ContactCache */ = {
 			isa = PBXGroup;
 			children = (
@@ -3140,6 +3177,7 @@
 				B5D833FA22492EFD00C45ABE /* MockPersistenceDatabaseManager.swift */,
 				B5D833FE2249305200C45ABE /* MockPersistenceKeychainManager.swift */,
 				3B2EBF72223176D9003C0D0E /* MockUserDefaultsManager.swift */,
+				B5C5FEE622BABF8400287FF7 /* Brokers */,
 			);
 			path = Persistence;
 			sourceTree = "<group>";
@@ -4168,6 +4206,7 @@
 				3B24466C22650261004AEE35 /* SpendBitcoinViewControllerTests.swift in Sources */,
 				30BF4FF221B83C970018AE87 /* TransactionPopoverDetailsViewControllerTests.swift in Sources */,
 				A29CE11520A389B400761B91 /* CompositeValidatorTests.swift in Sources */,
+				B5C5FEE822BABFA300287FF7 /* MockWalletBroker.swift in Sources */,
 				3BA389A72035C97000B599A0 /* MockPinCreationViewControllerDelegate.swift in Sources */,
 				3B325D572190B2CE0094897C /* MockRecoveryWordsIntroViewControllerDelegate.swift in Sources */,
 				3B2EBF7522318476003C0D0E /* ContactCacheManagerTests.swift in Sources */,
@@ -4206,6 +4245,7 @@
 				B5192F93216E6EFA00DCC39B /* MockCoinNinjaProvider.swift in Sources */,
 				3BE8AA1821F1149100A3F0C4 /* CKCryptorTests.swift in Sources */,
 				B586099921B9CBBA004C5AB7 /* MockDeviceUUIDMismatchErrorResponse.swift in Sources */,
+				B5C5FEF222BAC1F500287FF7 /* MockPreferencesBroker.swift in Sources */,
 				B524B242216CEB5200F669F4 /* MockNetworkManager+MessageRequestable.swift in Sources */,
 				A22C43CE20F3C84000041DF6 /* RestoreWalletViewControllerTests.swift in Sources */,
 				B5A5B1BB216B8B4D00345468 /* MockNetworkManager+DeviceRequestable.swift in Sources */,
@@ -4222,6 +4262,7 @@
 				B5264B2F21909196009164F6 /* ResponseStringsTestable.swift in Sources */,
 				3B1555E820D2C47000D6A70C /* VinCoreDataTests.swift in Sources */,
 				B57C2436207415F400F9519A /* CurrencyCodeTests.swift in Sources */,
+				B5C5FEEC22BAC0F000287FF7 /* MockDeviceBroker.swift in Sources */,
 				B51F8232207BA83C00692F5B /* TransactionHistoryViewControllerTests.swift in Sources */,
 				3BFA71982040616D00774D59 /* DigitEntryDisplayViewModelTests.swift in Sources */,
 				B586099F21B9EA23004C5AB7 /* MockMoyaError.swift in Sources */,
@@ -4229,6 +4270,7 @@
 				3BF41ABA2076951B008B3D0A /* RequestPayViewModelTests.swift in Sources */,
 				3B231D4F2044807E003BB50B /* LaunchStateManagerTests.swift in Sources */,
 				B5697273208A8E0A00835F01 /* BalanceContainerTests.swift in Sources */,
+				B5C5FEF422BAC24300287FF7 /* MockTransactionBroker.swift in Sources */,
 				3BCBFCC0229EBA6800F633BA /* SupportViewControllerTests.swift in Sources */,
 				3B325D4F219090F80094897C /* RecoveryWordsIntroViewControllerTests.swift in Sources */,
 				B5EABABC21FBB69C00E32E08 /* MockNetworkManager+TransactionNotificationRequestable.swift in Sources */,
@@ -4238,6 +4280,8 @@
 				3B1555E420D27CF500D6A70C /* TransactionResponseTests.swift in Sources */,
 				3B474172218201D9004DA223 /* SubscriptionResponseTests.swift in Sources */,
 				3B8FF10D20337495003436EE /* PinCreationViewControllerTests.swift in Sources */,
+				B5C5FEF022BAC1A100287FF7 /* MockMigrationBroker.swift in Sources */,
+				B5C5FEE422BAB2F400287FF7 /* MockActivityBroker.swift in Sources */,
 				3B82692920332AFD009B11EC /* KeypadEntryViewTests.swift in Sources */,
 				3B86F787203B6FB700D15231 /* MockAppCoordinator.swift in Sources */,
 				3B6BCBF2227365D000950105 /* TransactionHistoryDetailValidCellTests.swift in Sources */,
@@ -4248,6 +4292,7 @@
 				3B6FDAEA2052DAD50091916A /* VerifyRecoveryWordsViewModelTests.swift in Sources */,
 				3B6FDAE32052CE7B0091916A /* VerifyRecoveryWordsCollectionViewDDSTests.swift in Sources */,
 				B5823FD8207E83A600B12A35 /* TransactionHistorySummaryCellTests.swift in Sources */,
+				B5C5FEE322BAAFD900287FF7 /* MockPersistenceBrokers.swift in Sources */,
 				3B00C265220B1FEF001FC46B /* MockConnectionManager.swift in Sources */,
 				30626FD721C15B9C00E7A2DE /* MockNetworkManager+MerchantPaymentRequestRequestable.swift in Sources */,
 				B5EBFD17215C28470008EB4A /* InvitationTests.swift in Sources */,
@@ -4263,6 +4308,7 @@
 				3B9A8DFA2150414300C78C2C /* MockWalletDelegate.swift in Sources */,
 				3B30AF1521B810FF009BAE5A /* ConfirmPaymentViewControllerTests.swift in Sources */,
 				3B6E4D5D206E5AB500D9CFFA /* MockAnalyticsManager.swift in Sources */,
+				B5C5FEEA22BAC0A400287FF7 /* MockCheckInBroker.swift in Sources */,
 				B5A5B1B9216B89AD00345468 /* MockNetworkManager+CurrencyValueDataSourceType.swift in Sources */,
 				B5A5B1B7216B88C100345468 /* MockNetworkManager+BlockchainInfoRequestable.swift in Sources */,
 				B5A5B1B5216B87AD00345468 /* MockNetworkManager+AddressRequestable.swift in Sources */,
@@ -4285,10 +4331,12 @@
 				A29CE11120A385FE00761B91 /* CurrencyStringValidatorTests.swift in Sources */,
 				6B82500CB8AD79F2E4EFEEA7 /* KeypadDigitViewTests.swift in Sources */,
 				3B80E27B21BEF04500F6EF17 /* DatabaseMigrationWorkerTests.swift in Sources */,
+				B5C5FEE522BAB2F900287FF7 /* MockUserBroker.swift in Sources */,
 				6B825F6F378E9BC23ECB7478 /* MockPinVerificationDelegate.swift in Sources */,
 				B582AE6C21A306B400594A9C /* BitcoinURLTests.swift in Sources */,
 				3B43B4FE220B19EC008966CA /* AppCoordinator+NoConnectionViewControllerTests.swift in Sources */,
 				B5EBFD14215C08050008EB4A /* AddressDataSourceTests.swift in Sources */,
+				B5C5FEEE22BAC15300287FF7 /* MockInvitationBroker.swift in Sources */,
 				3BFA7192203F2B6B00774D59 /* SecurePinDisplayViewTests.swift in Sources */,
 				B5192FB4216E938000DCC39B /* StringDictResponseTests.swift in Sources */,
 				3B9EE87C2058370000C0CC8C /* AlertManagerTests.swift in Sources */,
