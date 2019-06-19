@@ -92,11 +92,6 @@ class MockPersistenceManager: PersistenceManagerType {
                              response: WalletAddressRequestResponse,
                              in context: NSManagedObjectContext) {}
 
-  func setDidTutorial(_ boolValue: Bool) {
-    let number = NSNumber(value: boolValue)
-    self.set(Int(truncating: number), for: .didTutorial)
-  }
-
   func transactionsWithoutDayAveragePrice(in context: NSManagedObjectContext) -> Promise<[CKMTransaction]> {
     return Promise { _ in }
   }

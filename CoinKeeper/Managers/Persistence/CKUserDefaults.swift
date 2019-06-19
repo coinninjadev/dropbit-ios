@@ -25,7 +25,6 @@ class CKUserDefaults: PersistenceUserDefaultsType {
     case feeBetter
     case feeGood
     case blockheight
-    case didTutorial
     case walletID // for background fetching purposes
     case userID   // for background fetching purposes
     case uuid // deviceID
@@ -91,7 +90,6 @@ class CKUserDefaults: PersistenceUserDefaultsType {
       .feeBest,
       .feeBetter,
       .feeGood,
-      .didTutorial,
       .blockheight,
       .receiveAddressIndexGaps,
       .walletID,

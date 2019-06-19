@@ -29,7 +29,6 @@ class AppCoordinatorTests: XCTestCase {
   @discardableResult
   private func setupStart() -> (MockLaunchStateManager, MockAnalyticsManager) {
     let mockPersistenceManager = MockPersistenceManager()
-    mockPersistenceManager.setDidTutorial(false)
     let mockAnalyticsManager = MockAnalyticsManager()
     let mockLaunchStateManager = MockLaunchStateManager(persistenceManager: mockPersistenceManager)
     mockLaunchStateManager.mockShouldRequireAuthentication = false
@@ -71,7 +70,6 @@ class AppCoordinatorTests: XCTestCase {
 
   func testCallingStartWhenDeviceVerifiedBehavesProperly() {
     let mockPersistenceManager = MockPersistenceManager()
-    mockPersistenceManager.setDidTutorial(true)
     let mockLaunchStateManager = MockLaunchStateManager(persistenceManager: mockPersistenceManager)
     mockLaunchStateManager.deviceIsVerifiedValue = true
     let mockNavigationController = MockNavigationController()
