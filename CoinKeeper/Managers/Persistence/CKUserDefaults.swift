@@ -47,6 +47,7 @@ class CKUserDefaults: PersistenceUserDefaultsType {
     case lastContactCacheReload
     case dontShowShareTransaction
     case yearlyPriceHighNotificationEnabled
+    case lastTimeEnteredBackground
 
     var defaultsString: String { return self.rawValue }
   }
@@ -157,6 +158,11 @@ class CKUserDefaults: PersistenceUserDefaultsType {
   func yearlyPriceHighNotificationIsEnabled() -> Bool {
     let key = CKUserDefaults.Key.yearlyPriceHighNotificationEnabled.defaultsString
     return CKUserDefaults.standardDefaults.bool(forKey: key)
+  }
+
+  func lastLoginTime() -> TimeInterval? {
+    let key = CKUserDefaults.Key.lastTimeEnteredBackground.defaultsString
+    return CKUserDefaults.standardDefaults.double(forKey: key)
   }
 
 }

@@ -57,7 +57,7 @@ extension AppCoordinator: DeviceVerificationCoordinatorDelegate {
     let parser = CKPhoneNumberParser(kit: self.phoneNumberKit)
     let e164 = "+" + phoneNumber
 
-    guard let maybeNumber = try? parser.parse(e164), let globalNumber = maybeNumber else {
+    guard let globalNumber = try? parser.parse(e164) else {
       os_log("Failed to parse phone number for Twilio error", log: logger, type: .error)
       return
     }
