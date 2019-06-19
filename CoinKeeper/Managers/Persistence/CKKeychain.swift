@@ -18,7 +18,6 @@ class CKKeychain: PersistenceKeychainType {
     case walletWords
     case walletWordsBackedUp // Bool as NSNumber
     case skippedVerification // Bool as NSNumber
-    case lastTimeEnteredBackground
     case countryCode
     case phoneNumber
     case lockoutDate

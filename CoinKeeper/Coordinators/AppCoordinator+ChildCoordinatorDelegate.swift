@@ -8,7 +8,7 @@
 
 extension AppCoordinator: ChildCoordinatorDelegate {
   func childCoordinatorDidComplete(childCoordinator: ChildCoordinatorType) {
-    if let index = childCoordinators.index(where: { $0 === childCoordinator }) {
+    if let index = childCoordinators.firstIndex(where: { $0 === childCoordinator }) {
       // Joy. No remove(object:) in swift
       childCoordinators.remove(at: index)
     }

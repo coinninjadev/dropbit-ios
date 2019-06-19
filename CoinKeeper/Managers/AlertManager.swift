@@ -308,6 +308,7 @@ class AlertManager: AlertManagerType {
         self.showBanner(with: message)
       case .background, .inactive:
         self.notificationManager.showNotification(with: NotificationDescription(title: "", body: message))
+      @unknown default: break
       }
     }
   }
@@ -333,6 +334,7 @@ class AlertManager: AlertManagerType {
           self.showBanner(with: message)
         case .background, .inactive:
           self.notificationManager.showNotification(with: NotificationDescription(title: "DropBit completed", body: message))
+        @unknown default: break
         }
       }
     case .canceled:
