@@ -115,7 +115,7 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
   }
   var balanceNotificationToken: NotificationToken?
 
-  var context: NSManagedObjectContext!
+  unowned var context: NSManagedObjectContext!
 
   lazy var frc: NSFetchedResultsController<CKMTransaction> = {
     let fetchRequest: NSFetchRequest<CKMTransaction> = CKMTransaction.fetchRequest()
