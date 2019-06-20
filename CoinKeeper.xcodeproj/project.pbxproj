@@ -608,6 +608,7 @@
 		B5457128217E6F1700FF3A5A /* BodyCodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5457127217E6F1700FF3A5A /* BodyCodable.swift */; };
 		B54913A522BBB61200ACC7D7 /* AlertConfigurationTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54913A422BBB61200ACC7D7 /* AlertConfigurationTypes.swift */; };
 		B54913A722BC0B1000ACC7D7 /* AdjustableFeesViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B54913A622BC0B1000ACC7D7 /* AdjustableFeesViewController.storyboard */; };
+		B54913A922BC21A500ACC7D7 /* AdjustableFeesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54913A822BC21A500ACC7D7 /* AdjustableFeesViewController.swift */; };
 		B54A420D207FAB6D005B40A9 /* TransactionDetailStatusLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54A420C207FAB6D005B40A9 /* TransactionDetailStatusLabel.swift */; };
 		B54A420F207FF11C005B40A9 /* TransactionDetailCounterpartyLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54A420E207FF11C005B40A9 /* TransactionDetailCounterpartyLabel.swift */; };
 		B54A4213207FF2E8005B40A9 /* TransactionDetailPrimaryAmountLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54A4212207FF2E8005B40A9 /* TransactionDetailPrimaryAmountLabel.swift */; };
@@ -1485,6 +1486,7 @@
 		B5457127217E6F1700FF3A5A /* BodyCodable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BodyCodable.swift; sourceTree = "<group>"; };
 		B54913A422BBB61200ACC7D7 /* AlertConfigurationTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertConfigurationTypes.swift; sourceTree = "<group>"; };
 		B54913A622BC0B1000ACC7D7 /* AdjustableFeesViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = AdjustableFeesViewController.storyboard; sourceTree = "<group>"; };
+		B54913A822BC21A500ACC7D7 /* AdjustableFeesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdjustableFeesViewController.swift; sourceTree = "<group>"; };
 		B54A420C207FAB6D005B40A9 /* TransactionDetailStatusLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDetailStatusLabel.swift; sourceTree = "<group>"; };
 		B54A420E207FF11C005B40A9 /* TransactionDetailCounterpartyLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDetailCounterpartyLabel.swift; sourceTree = "<group>"; };
 		B54A4212207FF2E8005B40A9 /* TransactionDetailPrimaryAmountLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDetailPrimaryAmountLabel.swift; sourceTree = "<group>"; };
@@ -2452,6 +2454,7 @@
 			children = (
 				3B44961C21B065C200A4E912 /* MemoEntryViewController.swift */,
 				3BAB1446204EE6BB001D41A2 /* BaseViewController.swift */,
+				B54913A822BC21A500ACC7D7 /* AdjustableFeesViewController.swift */,
 				3B5052B22045FAFA000C739F /* BackupRecoveryWordsViewController.swift */,
 				3BA389A82035E62F00B599A0 /* CNNavigationController.swift */,
 				B5839FAE22949E98006BA6AF /* ClaimInviteMethodViewController.swift */,
@@ -4175,6 +4178,7 @@
 				B56788B1227A430300A39534 /* UIView+CornerRadius.swift in Sources */,
 				B530DFBD2108CF8400A0B1A8 /* TransactionDetailWarningLabel.swift in Sources */,
 				A2A530CE20977A8A00B6F4DE /* ConfirmPaymentViewModel.swift in Sources */,
+				B54913A922BC21A500ACC7D7 /* AdjustableFeesViewController.swift in Sources */,
 				B5FE9B67219DD96200801D3C /* MerchantPaymentRequestResponse.swift in Sources */,
 				3BEB594620D15AF9005EDA9E /* AddressTransactionSummaryResponse.swift in Sources */,
 				3B2EBF71223010DC003C0D0E /* ManagedContactComponents.swift in Sources */,
