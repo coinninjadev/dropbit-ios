@@ -784,6 +784,7 @@
 		B5C5FEF022BAC1A100287FF7 /* MockMigrationBroker.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5C5FEEF22BAC1A100287FF7 /* MockMigrationBroker.swift */; };
 		B5C5FEF222BAC1F500287FF7 /* MockPreferencesBroker.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5C5FEF122BAC1F500287FF7 /* MockPreferencesBroker.swift */; };
 		B5C5FEF422BAC24300287FF7 /* MockTransactionBroker.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5C5FEF322BAC24300287FF7 /* MockTransactionBroker.swift */; };
+		B5C5FEF622BAE1A900287FF7 /* MockedPersistenceTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5C5FEF522BAE1A900287FF7 /* MockedPersistenceTestCase.swift */; };
 		B5C8F5B5216CED9200E3E85B /* MockNetworkManager+TransactionBroadcastable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5C8F5B4216CED9200E3E85B /* MockNetworkManager+TransactionBroadcastable.swift */; };
 		B5C8F5B7216CEE3A00E3E85B /* MockNetworkManager+TransactionRequestable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5C8F5B6216CEE3A00E3E85B /* MockNetworkManager+TransactionRequestable.swift */; };
 		B5C8F5B9216CEEBF00E3E85B /* MockNetworkManager+UserRequestable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5C8F5B8216CEEBF00E3E85B /* MockNetworkManager+UserRequestable.swift */; };
@@ -1653,6 +1654,7 @@
 		B5C5FEEF22BAC1A100287FF7 /* MockMigrationBroker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockMigrationBroker.swift; sourceTree = "<group>"; };
 		B5C5FEF122BAC1F500287FF7 /* MockPreferencesBroker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockPreferencesBroker.swift; sourceTree = "<group>"; };
 		B5C5FEF322BAC24300287FF7 /* MockTransactionBroker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockTransactionBroker.swift; sourceTree = "<group>"; };
+		B5C5FEF522BAE1A900287FF7 /* MockedPersistenceTestCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockedPersistenceTestCase.swift; sourceTree = "<group>"; };
 		B5C8F5B4216CED9200E3E85B /* MockNetworkManager+TransactionBroadcastable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MockNetworkManager+TransactionBroadcastable.swift"; sourceTree = "<group>"; };
 		B5C8F5B6216CEE3A00E3E85B /* MockNetworkManager+TransactionRequestable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MockNetworkManager+TransactionRequestable.swift"; sourceTree = "<group>"; };
 		B5C8F5B8216CEEBF00E3E85B /* MockNetworkManager+UserRequestable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MockNetworkManager+UserRequestable.swift"; sourceTree = "<group>"; };
@@ -1830,6 +1832,7 @@
 		3B124E232020EB2B00431E2E /* CoinKeeperTests */ = {
 			isa = PBXGroup;
 			children = (
+				B5C5FEF522BAE1A900287FF7 /* MockedPersistenceTestCase.swift */,
 				3BAB143F204EBDF9001D41A2 /* Cells */,
 				3B8FF10E203466D2003436EE /* Coordinators */,
 				3B5052B92046E698000C739F /* Delegates and DataSources */,
@@ -4298,6 +4301,7 @@
 				B5823FD8207E83A600B12A35 /* TransactionHistorySummaryCellTests.swift in Sources */,
 				B5C5FEE322BAAFD900287FF7 /* MockPersistenceBrokers.swift in Sources */,
 				3B00C265220B1FEF001FC46B /* MockConnectionManager.swift in Sources */,
+				B5C5FEF622BAE1A900287FF7 /* MockedPersistenceTestCase.swift in Sources */,
 				30626FD721C15B9C00E7A2DE /* MockNetworkManager+MerchantPaymentRequestRequestable.swift in Sources */,
 				B5EBFD17215C28470008EB4A /* InvitationTests.swift in Sources */,
 				6B82536EB33070AAF0DDEB73 /* PersistenceManagerTests.swift in Sources */,

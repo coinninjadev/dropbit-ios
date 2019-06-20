@@ -9,7 +9,13 @@
 import Foundation
 @testable import DropBit
 
-class MockPersistenceBrokerInputs {
+protocol PersistenceBrokerInputsType: AnyObject {
+  var keychain: PersistenceKeychainType { get }
+  var database: PersistenceDatabaseType { get }
+  var defaults: PersistenceUserDefaultsType { get }
+}
+
+class PersistenceBrokerInputs: PersistenceBrokerInputsType {
   let keychain: PersistenceKeychainType
   let database: PersistenceDatabaseType
   let defaults: PersistenceUserDefaultsType
@@ -22,68 +28,89 @@ class MockPersistenceBrokerInputs {
   }
 }
 
-class MockPersistenceBrokers: PersistenceBrokersType {
+class MockPersistenceBrokerInputs: PersistenceBrokerInputsType {
 
-  let activity: ActivityBrokerType
-  let checkIn: CheckInBrokerType
-  let device: DeviceBrokerType
-  let invitation: InvitationBrokerType
-  let migration: MigrationBrokerType
-  let preferences: PreferencesBrokerType
-  let transaction: TransactionBrokerType
-  let user: UserBrokerType
-  let wallet: WalletBrokerType
+  let mockKeychain: MockPersistenceKeychainManager
+  let mockDatabase: MockPersistenceDatabaseManager
+  let mockDefaults: MockUserDefaultsManager
 
-  init(mockActivityBroker: ActivityBrokerType,
-       mockCheckInBroker: CheckInBrokerType,
-       mockDeviceBroker: DeviceBrokerType,
-       mockInvitationBroker: InvitationBrokerType,
-       mockMigrationBroker: MigrationBrokerType,
-       mockPreferencesBroker: PreferencesBrokerType,
-       mockTransactionBroker: TransactionBrokerType,
-       mockUserBroker: UserBrokerType,
-       mockWalletBroker: WalletBrokerType) {
-    self.activity = mockActivityBroker
-    self.checkIn = mockCheckInBroker
-    self.device = mockDeviceBroker
-    self.invitation = mockInvitationBroker
-    self.migration = mockMigrationBroker
-    self.preferences = mockPreferencesBroker
-    self.transaction = mockTransactionBroker
-    self.user = mockUserBroker
-    self.wallet = mockWalletBroker
+  init(mockKeychain: MockPersistenceKeychainManager,
+       mockDatabase: MockPersistenceDatabaseManager,
+       mockDefaults: MockUserDefaultsManager) {
+    self.mockKeychain = mockKeychain
+    self.mockDatabase = mockDatabase
+    self.mockDefaults = mockDefaults
   }
 
-  init(inputs: MockPersistenceBrokerInputs,
-       mockActivityBroker: ActivityBrokerType? = nil,
-       mockCheckInBroker: CheckInBrokerType? = nil,
-       mockDeviceBroker: DeviceBrokerType? = nil,
-       mockInvitationBroker: InvitationBrokerType? = nil,
-       mockMigrationBroker: MigrationBrokerType? = nil,
-       mockPreferencesBroker: PreferencesBrokerType? = nil,
-       mockTransactionBroker: TransactionBrokerType? = nil,
-       mockUserBroker: UserBrokerType? = nil,
-       mockWalletBroker: WalletBrokerType? = nil) {
+  var keychain: PersistenceKeychainType { return mockKeychain }
+  var database: PersistenceDatabaseType { return mockDatabase }
+  var defaults: PersistenceUserDefaultsType { return mockDefaults }
+
+  static func newInstance() -> MockPersistenceBrokerInputs {
+    let mockKeychain = MockPersistenceKeychainManager(store: MockKeychainAccessorType())
+    return MockPersistenceBrokerInputs(mockKeychain: mockKeychain,
+                                       mockDatabase: MockPersistenceDatabaseManager(),
+                                       mockDefaults: MockUserDefaultsManager()
+    )
+  }
+
+}
+
+class MockPersistenceBrokers: PersistenceBrokersType {
+
+  let mockActivity: MockActivityBroker
+  let mockCheckIn: MockCheckInBroker
+  let mockDevice: MockDeviceBroker
+  let mockInvitation: MockInvitationBroker
+  let mockMigration: MockMigrationBroker
+  let mockPreferences: MockPreferencesBroker
+  let mockTransaction: MockTransactionBroker
+  let mockUser: MockUserBroker
+  let mockWallet: MockWalletBroker
+
+  init(activity: MockActivityBroker,
+       checkIn: MockCheckInBroker,
+       device: MockDeviceBroker,
+       invitation: MockInvitationBroker,
+       migration: MockMigrationBroker,
+       preferences: MockPreferencesBroker,
+       transaction: MockTransactionBroker,
+       user: MockUserBroker,
+       wallet: MockWalletBroker) {
+    self.mockActivity = activity
+    self.mockCheckIn = checkIn
+    self.mockDevice = device
+    self.mockInvitation = invitation
+    self.mockMigration = migration
+    self.mockPreferences = preferences
+    self.mockTransaction = transaction
+    self.mockUser = user
+    self.mockWallet = wallet
+  }
+
+  init(inputs: PersistenceBrokerInputsType) {
     let keychain = inputs.keychain
     let database = inputs.database
     let defaults = inputs.defaults
-    self.activity = mockActivityBroker ?? MockActivityBroker(keychain, database, defaults)
-    self.checkIn = mockCheckInBroker ?? MockCheckInBroker(keychain, database, defaults)
-    self.device = mockDeviceBroker ?? MockDeviceBroker(keychain, database, defaults)
-    self.invitation = mockInvitationBroker ?? MockInvitationBroker(keychain, database, defaults)
-    self.migration = mockMigrationBroker ?? MockMigrationBroker(keychain, database, defaults)
-    self.preferences = mockPreferencesBroker ?? MockPreferencesBroker(keychain, database, defaults)
-    self.transaction = mockTransactionBroker ?? MockTransactionBroker(keychain, database, defaults)
-    self.user = mockUserBroker ?? MockUserBroker(keychain, database, defaults)
-    self.wallet = mockWalletBroker ?? MockWalletBroker(keychain, database, defaults)
+    self.mockActivity = MockActivityBroker(keychain, database, defaults)
+    self.mockCheckIn = MockCheckInBroker(keychain, database, defaults)
+    self.mockDevice = MockDeviceBroker(keychain, database, defaults)
+    self.mockInvitation = MockInvitationBroker(keychain, database, defaults)
+    self.mockMigration = MockMigrationBroker(keychain, database, defaults)
+    self.mockPreferences = MockPreferencesBroker(keychain, database, defaults)
+    self.mockTransaction = MockTransactionBroker(keychain, database, defaults)
+    self.mockUser = MockUserBroker(keychain, database, defaults)
+    self.mockWallet = MockWalletBroker(keychain, database, defaults)
   }
 
-  static func mockInputs() -> MockPersistenceBrokerInputs {
-    let mockKeychain = MockPersistenceKeychainManager(store: MockKeychainAccessorType())
-    return MockPersistenceBrokerInputs(keychain: mockKeychain,
-                                       database: MockPersistenceDatabaseManager(),
-                                       defaults: MockUserDefaultsManager()
-    )
-  }
+  var activity: ActivityBrokerType { return mockActivity }
+  var checkIn: CheckInBrokerType { return mockCheckIn }
+  var device: DeviceBrokerType { return mockDevice }
+  var invitation: InvitationBrokerType { return mockInvitation }
+  var migration: MigrationBrokerType { return mockMigration }
+  var preferences: PreferencesBrokerType { return mockPreferences }
+  var transaction: TransactionBrokerType { return mockTransaction }
+  var user: UserBrokerType { return mockUser }
+  var wallet: WalletBrokerType { return mockWallet }
 
 }
