@@ -78,7 +78,7 @@ extension AppCoordinator: ContactsViewControllerDelegate {
 
   func viewControllerDidEncounterError(_ viewController: UIViewController, error: Error) {
     let title = "Error", detail = "Unable to connect to server. Please try again. \n\n\(error.localizedDescription)"
-    let okConfig = AlertActionConfiguration(title: "Ok", style: .default) {
+    let okConfig = AlertActionConfiguration(title: "OK", style: .default) {
       viewController.dismiss(animated: true, completion: nil)
     }
     let alert = alertManager.alert(withTitle: title, description: detail, image: nil, style: .alert, actionConfigs: [okConfig])

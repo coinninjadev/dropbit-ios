@@ -356,7 +356,7 @@ extension AppCoordinator: SendPaymentViewControllerDelegate {
       strongSelf.persistenceManager.brokers.preferences.didOptOutOfInvitationPopup = true
       completion()
     }
-    let okAction = AlertActionConfiguration(title: "Ok", style: .default) {
+    let okAction = AlertActionConfiguration(title: "OK", style: .default) {
       completion()
     }
     let configs = [dontShowAction, okAction]
