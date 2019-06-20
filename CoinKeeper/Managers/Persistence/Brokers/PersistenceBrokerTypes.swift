@@ -101,6 +101,8 @@ protocol PreferencesBrokerType: AnyObject {
   var selectedCurrency: SelectedCurrency { get set }
   var dontShowShareTransaction: Bool { get set }
   var didOptOutOfInvitationPopup: Bool { get set }
+  var adjustableFeesIsEnabled: Bool { get set }
+  var preferredTransactionFeeMode: TransactionFeeMode { get set }
 
 }
 

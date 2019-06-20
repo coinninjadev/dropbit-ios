@@ -75,4 +75,19 @@ class PreferencesBroker: CKPersistenceBroker, PreferencesBrokerType {
     }
   }
 
+  var adjustableFeesIsEnabled: Bool {
+    get { return userDefaultsManager.bool(for: .adjustableFeesEnabled) }
+    set { userDefaultsManager.set(newValue, for: .adjustableFeesEnabled) }
+  }
+
+  var preferredTransactionFeeMode: TransactionFeeMode {
+    get {
+      let rawValue = userDefaultsManager.integer(for: .preferredTransactionFeeMode)
+      return TransactionFeeMode.mode(for: rawValue)
+    }
+    set {
+      userDefaultsManager.set(newValue.rawValue, for: .preferredTransactionFeeMode)
+    }
+  }
+
 }
