@@ -6,7 +6,6 @@
 //  Copyright © 2019 Coin Ninja, LLC. All rights reserved.
 //
 
-import PMAlertController
 import UIKit
 
 typealias AlertControllerType = UIViewController & AlertControllerProtocol
@@ -30,59 +29,6 @@ struct AlertControllerViewModel {
 
   var shouldCreateDefaultAlert: Bool {
     return image == nil && style == .alert && actions.isEmpty
-  }
-}
-
-protocol AlertControllerProtocol: AnyObject {
-  var displayTitle: String? { get }
-  var displayDescription: String? { get }
-  var image: UIImage? { get }
-  var actions: [AlertActionConfigurationType] { get }
-}
-
-extension PMAlertController: AlertControllerProtocol {
-  var displayTitle: String? {
-    return alertTitle.text
-  }
-  var displayDescription: String? {
-    return alertDescription.text
-  }
-  var image: UIImage? {
-    return self.alertImage.image
-  }
-  var actions: [AlertActionConfigurationType] {
-    return self
-      .alertActionStackView
-      .arrangedSubviews
-      .compactMap { $0 as? PMAlertAction }
-      .compactMap { pmAlertAction -> AlertActionConfigurationType in
-        return AlertActionConfiguration(
-          title: pmAlertAction.title(for: .normal) ?? "",
-          style: AlertActionStyle(from: pmAlertAction.actionStyle),
-          action: nil  // nil because PMAlertAction's `action` property is `fileprivate`
-        )
-    }
-  }
-}
-
-protocol AlertActionConfigurationType {
-  var title: String { get }
-  var style: AlertActionStyle { get }
-  var action: (() -> Void)? { get }
-}
-
-enum AlertMessageStyle {
-  case standard, warning
-}
-
-enum AlertActionStyle {
-  case cancel, `default`
-
-  init(from pmAlertActionStyle: PMAlertActionStyle) {
-    switch pmAlertActionStyle {
-    case .cancel: self = .cancel
-    case .default: self = .default
-    }
   }
 }
 
