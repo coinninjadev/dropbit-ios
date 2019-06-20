@@ -14,20 +14,27 @@ import PromiseKit
 
 class MockTransactionBroker: CKPersistenceBroker, TransactionBrokerType {
 
-  func persistTransactions(from transactionResponses: [TransactionResponse], in context: NSManagedObjectContext, relativeToCurrentHeight blockHeight: Int, fullSync: Bool) -> Promise<Void> {
+  func persistTransactions(from transactionResponses: [TransactionResponse],
+                           in context: NSManagedObjectContext,
+                           relativeToCurrentHeight blockHeight: Int,
+                           fullSync: Bool) -> Promise<Void> {
     return Promise { _ in }
   }
 
-  func persistTemporaryTransaction(from transactionData: CNBTransactionData, with outgoingTransactionData: OutgoingTransactionData, txid: String, invitation: CKMInvitation?, in context: NSManagedObjectContext) -> CKMTransaction {
+  func persistTemporaryTransaction(from transactionData: CNBTransactionData,
+                                   with outgoingTransactionData: OutgoingTransactionData,
+                                   txid: String,
+                                   invitation: CKMInvitation?,
+                                   in context: NSManagedObjectContext) -> CKMTransaction {
     return CKMTransaction(insertInto: context)
   }
 
   func containsRegularTransaction(in context: NSManagedObjectContext) -> IncomingOutgoingTuple {
-    return (false, false)
+    return (incoming: false, outgoing: false)
   }
 
   func containsDropbitTransaction(in context: NSManagedObjectContext) -> IncomingOutgoingTuple {
-    return (false, false)
+    return (incoming: false, outgoing: false)
   }
 
   func deleteTransactions(notIn txids: [String], in context: NSManagedObjectContext) { }

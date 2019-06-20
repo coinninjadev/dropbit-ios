@@ -23,15 +23,20 @@ class MockUserBroker: CKPersistenceBroker, UserBrokerType {
     return Promise { _ in }
   }
 
-  func unverifyUser(in context: NSManagedObjectContext) { }
+  var unverifyUserWasCalled = false
+  func unverifyUser(in context: NSManagedObjectContext) {
+    unverifyUserWasCalled = true
+  }
+
   func unverifyAllIdentities() { }
 
   func verifiedPhoneNumber() -> GlobalPhoneNumber? {
     return nil
   }
 
+  var userIdValue: String?
   func userId(in context: NSManagedObjectContext) -> String? {
-    return nil
+    return userIdValue
   }
 
   func verifiedIdentities(in context: NSManagedObjectContext) -> [UserIdentityType] {
@@ -42,12 +47,14 @@ class MockUserBroker: CKPersistenceBroker, UserBrokerType {
     return false
   }
 
+  var userIsVerifiedValue = true
   func userIsVerified(using type: UserIdentityType, in context: NSManagedObjectContext) -> Bool {
-    return false
+    return userIsVerifiedValue
   }
 
+  var userVerificationStatusValue: UserVerificationStatus = .unverified
   func userVerificationStatus(in context: NSManagedObjectContext) -> UserVerificationStatus {
-    return .pending
+    return userVerificationStatusValue
   }
 
   func serverPoolAddresses(in context: NSManagedObjectContext) -> [CKMServerAddress] {

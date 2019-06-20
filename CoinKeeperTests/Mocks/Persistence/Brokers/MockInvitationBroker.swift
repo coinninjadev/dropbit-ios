@@ -13,20 +13,29 @@ import PromiseKit
 @testable import DropBit
 
 class MockInvitationBroker: CKPersistenceBroker, InvitationBrokerType {
+
+  var unacknowledgedInvitations: [CKMInvitation] = []
   func getUnacknowledgedInvitations(in context: NSManagedObjectContext) -> [CKMInvitation] {
-    return []
+    return unacknowledgedInvitations
   }
 
   func getAllInvitations(in context: NSManagedObjectContext) -> [CKMInvitation] {
     return []
   }
 
-  func persistUnacknowledgedInvitation(in context: NSManagedObjectContext, with btcPair: BitcoinUSDPair, contact: ContactType, fee: Int, acknowledgementId: String) { }
+  func persistUnacknowledgedInvitation(in context: NSManagedObjectContext,
+                                       with btcPair: BitcoinUSDPair,
+                                       contact: ContactType,
+                                       fee: Int,
+                                       acknowledgementId: String) { }
 
+  var addressValuesForReceivedPendingDropBits: [String] = []
   func addressesProvidedForReceivedPendingDropBits(in context: NSManagedObjectContext) -> [String] {
-    return []
+    return addressValuesForReceivedPendingDropBits
   }
 
-  func acknowledgeInvitation(with outgoingTransactionData: OutgoingTransactionData, response: WalletAddressRequestResponse, in context: NSManagedObjectContext) { }
+  func acknowledgeInvitation(with outgoingTransactionData: OutgoingTransactionData,
+                             response: WalletAddressRequestResponse,
+                             in context: NSManagedObjectContext) { }
 
 }

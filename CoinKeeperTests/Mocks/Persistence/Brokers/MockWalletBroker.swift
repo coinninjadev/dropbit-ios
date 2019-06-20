@@ -13,19 +13,24 @@ import PromiseKit
 @testable import DropBit
 
 class MockWalletBroker: CKPersistenceBroker, WalletBrokerType {
+
+  var walletIdValue: String?
   func walletId(in context: NSManagedObjectContext) -> String? {
-    return nil
+    return walletIdValue
   }
 
   func resetWallet() throws { }
 
   func walletWords() -> [String]? {
-    return nil
+    return keychainManager.retrieveValue(for: .walletWords) as? [String]
   }
 
   func persistWalletId(from response: WalletResponse, in context: NSManagedObjectContext) throws { }
 
-  func removeWalletId(in context: NSManagedObjectContext) { }
+  var removeWalletIdWasCalled = false
+  func removeWalletId(in context: NSManagedObjectContext) {
+    removeWalletIdWasCalled = true
+  }
 
   func deleteWallet(in context: NSManagedObjectContext) { }
 
@@ -34,24 +39,34 @@ class MockWalletBroker: CKPersistenceBroker, WalletBrokerType {
   }
 
   func walletWordsBackedUp() -> Bool {
-    return false
+    return keychainManager.walletWordsBackedUp()
   }
 
-  func persistAddedWalletAddresses(from responses: [WalletAddressResponse], metaAddresses: [CNBMetaAddress], in context: NSManagedObjectContext) -> Promise<Void> {
+  func persistAddedWalletAddresses(from responses: [WalletAddressResponse],
+                                   metaAddresses: [CNBMetaAddress],
+                                   in context: NSManagedObjectContext) -> Promise<Void> {
     return Promise { _ in }
   }
 
   func updateWalletLastIndexes(in context: NSManagedObjectContext) { }
 
-  func lastReceiveAddressIndex(in context: NSManagedObjectContext) -> Int? {
-    return nil
-  }
-
   func lastChangeAddressIndex(in context: NSManagedObjectContext) -> Int? {
     return nil
   }
 
-  var receiveAddressIndexGaps: Set<Int> = []
+  var lastReceiveAddressIndexValue: Int?
+  func lastReceiveAddressIndex(in context: NSManagedObjectContext) -> Int? {
+    return lastReceiveAddressIndexValue
+  }
 
+  var receiveAddressIndexGapsValue: Set<Int> = []
+  var receiveAddressIndexGaps: Set<Int> {
+    get {
+      return receiveAddressIndexGapsValue
+    }
+    set {
+      receiveAddressIndexGapsValue = newValue
+    }
+  }
 
 }
