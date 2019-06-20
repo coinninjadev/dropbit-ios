@@ -604,6 +604,7 @@
 		B5457124217E63F000FF3A5A /* NetworkManagerIntegrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5457123217E63F000FF3A5A /* NetworkManagerIntegrationTests.swift */; };
 		B5457126217E6D8900FF3A5A /* ResponseCodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5457125217E6D8900FF3A5A /* ResponseCodable.swift */; };
 		B5457128217E6F1700FF3A5A /* BodyCodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5457127217E6F1700FF3A5A /* BodyCodable.swift */; };
+		B54913A522BBB61200ACC7D7 /* AlertConfigurationTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54913A422BBB61200ACC7D7 /* AlertConfigurationTypes.swift */; };
 		B54A420D207FAB6D005B40A9 /* TransactionDetailStatusLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54A420C207FAB6D005B40A9 /* TransactionDetailStatusLabel.swift */; };
 		B54A420F207FF11C005B40A9 /* TransactionDetailCounterpartyLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54A420E207FF11C005B40A9 /* TransactionDetailCounterpartyLabel.swift */; };
 		B54A4213207FF2E8005B40A9 /* TransactionDetailPrimaryAmountLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54A4212207FF2E8005B40A9 /* TransactionDetailPrimaryAmountLabel.swift */; };
@@ -1475,6 +1476,7 @@
 		B5457123217E63F000FF3A5A /* NetworkManagerIntegrationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManagerIntegrationTests.swift; sourceTree = "<group>"; };
 		B5457125217E6D8900FF3A5A /* ResponseCodable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResponseCodable.swift; sourceTree = "<group>"; };
 		B5457127217E6F1700FF3A5A /* BodyCodable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BodyCodable.swift; sourceTree = "<group>"; };
+		B54913A422BBB61200ACC7D7 /* AlertConfigurationTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertConfigurationTypes.swift; sourceTree = "<group>"; };
 		B54A420C207FAB6D005B40A9 /* TransactionDetailStatusLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDetailStatusLabel.swift; sourceTree = "<group>"; };
 		B54A420E207FF11C005B40A9 /* TransactionDetailCounterpartyLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDetailCounterpartyLabel.swift; sourceTree = "<group>"; };
 		B54A4212207FF2E8005B40A9 /* TransactionDetailPrimaryAmountLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDetailPrimaryAmountLabel.swift; sourceTree = "<group>"; };
@@ -2871,6 +2873,7 @@
 				B552EDDA211E33D000332BB5 /* NotificationManager.swift */,
 				B5A7523B2225D90B0017DB35 /* DeviceCountryCodeProvider.swift */,
 				B552EDDC211E33D000332BB5 /* AlertManager.swift */,
+				B54913A422BBB61200ACC7D7 /* AlertConfigurationTypes.swift */,
 				B52053E0227B6D3000E5D2ED /* AlertManager+Constants.swift */,
 				B5CFA329221DF594002B1BDD /* ContactCacheManager.swift */,
 				B5860545222702FC0048979D /* HashableContact.swift */,
@@ -3782,6 +3785,7 @@
 				B5FDA5C622120747001682AA /* GlobalPhoneNumber.swift in Sources */,
 				A29CE0DC209B755C00761B91 /* ContactsTableViewHeader.swift in Sources */,
 				B5976AD521552F8500774073 /* WalletAddressesQueryTarget.swift in Sources */,
+				B54913A522BBB61200ACC7D7 /* AlertConfigurationTypes.swift in Sources */,
 				B54A420D207FAB6D005B40A9 /* TransactionDetailStatusLabel.swift in Sources */,
 				B5D834072249680600C45ABE /* SettingSwitchWithInfoCell.swift in Sources */,
 				B5D8340A224971E400C45ABE /* SettingsViewController+TableView.swift in Sources */,
