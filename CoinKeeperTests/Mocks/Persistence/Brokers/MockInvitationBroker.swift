@@ -23,11 +23,9 @@ class MockInvitationBroker: CKPersistenceBroker, InvitationBrokerType {
     return []
   }
 
-  func persistUnacknowledgedInvitation(in context: NSManagedObjectContext,
-                                       with btcPair: BitcoinUSDPair,
-                                       contact: ContactType,
-                                       fee: Int,
-                                       acknowledgementId: String) { }
+  func persistUnacknowledgedInvitation(withDTO outgoingDTO: OutgoingInvitationDTO,
+                                       acknowledgementId: String,
+                                       in context: NSManagedObjectContext) { }
 
   var addressValuesForReceivedPendingDropBits: [String] = []
   func addressesProvidedForReceivedPendingDropBits(in context: NSManagedObjectContext) -> [String] {

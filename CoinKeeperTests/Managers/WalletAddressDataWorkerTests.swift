@@ -97,15 +97,14 @@ class WalletAddressDataWorkerTests: MockedPersistenceTestCase {
   }
 
   private func generateUnacknowledgedInvitation(with contact: ContactType, in context: NSManagedObjectContext) {
-    let pair: BitcoinUSDPair = (btcAmount: 1, usdAmount: 7000)
     let acknowledgementId = UUID().uuidString
+    let pair: BitcoinUSDPair = (btcAmount: 1, usdAmount: 7000)
+    let outgoingInvitationDTO = OutgoingInvitationDTO(contact: contact, btcPair: pair, fee: 19, sharedPayloadDTO: nil)
+
     PersistenceManager().brokers.invitation.persistUnacknowledgedInvitation(
-      in: context,
-      with: pair,
-      contact: contact,
-      fee: 19,
-      acknowledgementId: acknowledgementId
-    )
+      withDTO: outgoingInvitationDTO,
+      acknowledgementId: acknowledgementId,
+      in: context)
   }
 
   func testLinkFulfilledAddressRequestsWithTransaction() {

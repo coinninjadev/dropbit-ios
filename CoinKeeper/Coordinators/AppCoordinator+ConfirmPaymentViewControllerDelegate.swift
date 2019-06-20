@@ -114,12 +114,9 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate, CurrencyFormatta
                                                                           delegate: self)
     bgContext.performAndWait {
       persistenceManager.brokers.invitation.persistUnacknowledgedInvitation(
-        in: bgContext,
-        with: outgoingInvitationDTO.btcPair,
-        contact: outgoingInvitationDTO.contact,
-        fee: outgoingInvitationDTO.fee,
-        acknowledgementId: inviteBody.requestId
-      )
+        withDTO: outgoingInvitationDTO,
+        acknowledgementId: inviteBody.requestId,
+        in: bgContext)
 
       do {
         try bgContext.save()

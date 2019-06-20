@@ -18,15 +18,18 @@ class InvitationBroker: CKPersistenceBroker, InvitationBrokerType {
     return databaseManager.getAllInvitations(in: context)
   }
 
-  func persistUnacknowledgedInvitation(in context: NSManagedObjectContext, with btcPair: BitcoinUSDPair,
-                                       contact: ContactType, fee: Int, acknowledgementId: String) {
+  func persistUnacknowledgedInvitation(withDTO outgoingDTO: OutgoingInvitationDTO,
+                                       acknowledgementId: String,
+                                       in context: NSManagedObjectContext) {
+    let contact = outgoingDTO.contact
+
     let invitation = CKMInvitation(insertInto: context)
     invitation.id = CKMInvitation.unacknowledgementPrefix + acknowledgementId
-    invitation.btcAmount = btcPair.btcAmount.asFractionalUnits(of: .BTC)
-    invitation.usdAmountAtTimeOfInvitation = btcPair.usdAmount.asFractionalUnits(of: .USD)
+    invitation.btcAmount = outgoingDTO.btcPair.btcAmount.asFractionalUnits(of: .BTC)
+    invitation.usdAmountAtTimeOfInvitation = outgoingDTO.btcPair.usdAmount.asFractionalUnits(of: .USD)
     invitation.counterpartyName = contact.displayName
     invitation.status = .notSent
-    invitation.setFlatFee(to: fee)
+    invitation.setFlatFee(to: outgoingDTO.fee)
     switch contact.identityType {
     case .phone:
       guard let phoneContact = contact as? PhoneContactType,
