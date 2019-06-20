@@ -607,6 +607,7 @@
 		B5457126217E6D8900FF3A5A /* ResponseCodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5457125217E6D8900FF3A5A /* ResponseCodable.swift */; };
 		B5457128217E6F1700FF3A5A /* BodyCodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5457127217E6F1700FF3A5A /* BodyCodable.swift */; };
 		B54913A522BBB61200ACC7D7 /* AlertConfigurationTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54913A422BBB61200ACC7D7 /* AlertConfigurationTypes.swift */; };
+		B54913A722BC0B1000ACC7D7 /* AdjustableFeesViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B54913A622BC0B1000ACC7D7 /* AdjustableFeesViewController.storyboard */; };
 		B54A420D207FAB6D005B40A9 /* TransactionDetailStatusLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54A420C207FAB6D005B40A9 /* TransactionDetailStatusLabel.swift */; };
 		B54A420F207FF11C005B40A9 /* TransactionDetailCounterpartyLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54A420E207FF11C005B40A9 /* TransactionDetailCounterpartyLabel.swift */; };
 		B54A4213207FF2E8005B40A9 /* TransactionDetailPrimaryAmountLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54A4212207FF2E8005B40A9 /* TransactionDetailPrimaryAmountLabel.swift */; };
@@ -1483,6 +1484,7 @@
 		B5457125217E6D8900FF3A5A /* ResponseCodable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResponseCodable.swift; sourceTree = "<group>"; };
 		B5457127217E6F1700FF3A5A /* BodyCodable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BodyCodable.swift; sourceTree = "<group>"; };
 		B54913A422BBB61200ACC7D7 /* AlertConfigurationTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertConfigurationTypes.swift; sourceTree = "<group>"; };
+		B54913A622BC0B1000ACC7D7 /* AdjustableFeesViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = AdjustableFeesViewController.storyboard; sourceTree = "<group>"; };
 		B54A420C207FAB6D005B40A9 /* TransactionDetailStatusLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDetailStatusLabel.swift; sourceTree = "<group>"; };
 		B54A420E207FF11C005B40A9 /* TransactionDetailCounterpartyLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDetailCounterpartyLabel.swift; sourceTree = "<group>"; };
 		B54A4212207FF2E8005B40A9 /* TransactionDetailPrimaryAmountLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDetailPrimaryAmountLabel.swift; sourceTree = "<group>"; };
@@ -2494,6 +2496,7 @@
 		3BF8523B2023788200EBBE44 /* Storyboards */ = {
 			isa = PBXGroup;
 			children = (
+				B54913A622BC0B1000ACC7D7 /* AdjustableFeesViewController.storyboard */,
 				B5839FB022949EE5006BA6AF /* ClaimInviteMethodViewController.storyboard */,
 				A2A530BB20936A5B00B6F4DE /* ConfirmPaymentViewController.storyboard */,
 				A29CE0D3209B713B00761B91 /* ContactsViewController.storyboard */,
@@ -3441,6 +3444,7 @@
 				5B927C242078009F00DCDCAE /* DrawerTableViewHeader.xib in Resources */,
 				3B6DCA1B2034B76F00B87EF9 /* KeypadDigitView.xib in Resources */,
 				3B9779AB202E416700C9C933 /* Montserrat-Bold.ttf in Resources */,
+				B54913A722BC0B1000ACC7D7 /* AdjustableFeesViewController.storyboard in Resources */,
 				A200574D20B5F70F007074D9 /* SettingCell.xib in Resources */,
 				A260E8D320FCFE96008343F9 /* TutorialViewController.storyboard in Resources */,
 				3B9779B2202E416700C9C933 /* Montserrat-Italic.ttf in Resources */,
