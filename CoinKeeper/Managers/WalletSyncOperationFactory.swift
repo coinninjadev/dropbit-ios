@@ -106,18 +106,7 @@ class WalletSyncOperationFactory {
       .then(in: context) { dependencies.walletWorker.updateServerPoolAddresses(in: context) }
       .then(in: context) { dependencies.walletWorker.updateReceivedAddressRequests(in: context) }
       .then(in: context) { _ in dependencies.walletWorker.updateSentAddressRequests(in: context) }
-      .recover { error -> Promise<Void> in
-        if let providerError = error as? CKNetworkError {
-          switch providerError {
-          case .userNotVerified:
-            break
-          default: throw error
-          }
-        } else {
-          throw error
-        }
-        return Promise.value(())
-      }
+      .recover(self.recoverSyncError)
       .then(in: context) { _ in self.fetchAndFulfillReceivedAddressRequests(with: dependencies, in: context) }
       .then(in: context) { _ in dependencies.delegate.showAlertsForSyncedChanges(in: context) }
       .then(in: context) { _ in dependencies.twitterAccessManager.inflateTwitterUsersIfNeeded(in: context) }
@@ -127,6 +116,17 @@ class WalletSyncOperationFactory {
             context.updatedObjects.isNotEmpty ? .newData : .noData
           fetchResultHandler(fetchResult)
         }
+    }
+  }
+
+  private func recoverSyncError(_ error: Error) -> Promise<Void> {
+    if let providerError = error as? CKNetworkError {
+      switch providerError {
+      case .userNotVerified:  return Promise.value(())
+      default:                return Promise(error: error)
+      }
+    } else {
+      return Promise(error: error)
     }
   }
 
