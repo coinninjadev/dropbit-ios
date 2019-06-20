@@ -20,7 +20,7 @@ class MessageManager: MessagesManagerType {
   private var persistenceManager: PersistenceManagerType
 
   private var shownMessageIds: [String] {
-    return persistenceManager.array(for: .shownMessageIds) ?? []
+    return persistenceManager.brokers.activity.shownMessageIds
   }
 
   private var shouldShowGlobalMessages = true
@@ -38,13 +38,14 @@ class MessageManager: MessagesManagerType {
     guard shouldShowGlobalMessages else { return }
 
     guard var newMessages = checkForNew(messages), !newMessages.isEmpty else { return }
-    var newestPublishedMessageTimeInterval: Double = persistenceManager.double(for: .lastPublishedMessageTimeInterval)
+    var newestPublishedMessageTimeInterval: Double = persistenceManager.brokers.activity.lastPublishedMessageTime ?? 0
     newMessages.sort()
 
     for message in newMessages {
       self.alertManager.showBannerAlert(for: message, completion: { [weak self] in
         guard let strongSelf = self else { return }
-        strongSelf.persistenceManager.set([message.id] + strongSelf.shownMessageIds, for: .shownMessageIds)
+        let newShownMessageIds = [message.id] + strongSelf.shownMessageIds
+        strongSelf.persistenceManager.brokers.activity.shownMessageIds = newShownMessageIds
       })
 
       if message.publishedAt > newestPublishedMessageTimeInterval {
@@ -52,17 +53,17 @@ class MessageManager: MessagesManagerType {
       }
     }
 
-    persistenceManager.set(newestPublishedMessageTimeInterval, for: .lastPublishedMessageTimeInterval)
+    persistenceManager.brokers.activity.lastPublishedMessageTime = newestPublishedMessageTimeInterval
   }
 
   private func checkForNew(_ messages: [MessageResponse]) -> [MessageResponse]? {
     guard !messages.isEmpty else { return nil }
-    return messages.filter { !shownMessageIds.contains($0.id) }
+    return messages.filter { !persistenceManager.brokers.activity.shownMessageIds.contains($0.id) }
   }
 
   //Not currently being used since metadata usage is currently not defined, but should be used once metadata is more defined
   private func filterStale(_ messages: [MessageResponse]) -> [MessageResponse] {
-    let lastTimeInterval = persistenceManager.double(for: .lastPublishedMessageTimeInterval)
+    let lastTimeInterval = persistenceManager.brokers.activity.lastPublishedMessageTime ?? 0
     return messages.filter { ($0.metadata?.displayTtl ?? 0.0) > lastTimeInterval }
   }
 }

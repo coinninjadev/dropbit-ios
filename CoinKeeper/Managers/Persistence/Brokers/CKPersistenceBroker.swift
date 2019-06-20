@@ -23,4 +23,13 @@ class CKPersistenceBroker {
     self.userDefaultsManager = userDefaultsManager
   }
 
+  convenience init(
+    _ keychainManager: PersistenceKeychainType,
+    _ databaseManager: PersistenceDatabaseType,
+    _ userDefaultsManager: PersistenceUserDefaultsType) {
+    self.init(keychainManager: keychainManager,
+              databaseManager: databaseManager,
+              userDefaultsManager: userDefaultsManager)
+  }
+
 }

@@ -12,7 +12,6 @@ import SVProgressHUD
 import SwiftMessages
 import PhoneNumberKit
 
-
 enum AlertManagerButtonLayout {
   case horizontal
   case vertical

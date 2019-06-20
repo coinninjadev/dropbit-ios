@@ -16,7 +16,7 @@ extension AppCoordinator: DropBitMeViewControllerDelegate {
     self.alertManager.showActivityHUD(withStatus: nil)
     self.networkManager.updateUserPublicURL(isPrivate: !shouldEnable) // reverse boolean for isEnabled (view) vs. isPrivate (server)
       .get(in: bgContext) { response in
-        self.persistenceManager.persistUserPublicURLInfo(from: response, in: bgContext)
+        self.persistenceManager.brokers.user.persistUserPublicURLInfo(from: response, in: bgContext)
 
         let isPrivate = response.private ?? false
         let event: AnalyticsManagerEventType = isPrivate ? .dropBitMeDisabled : .dropBitMeReenabled
@@ -25,7 +25,7 @@ extension AppCoordinator: DropBitMeViewControllerDelegate {
       }
       .done(in: bgContext) { _ in
         try bgContext.save()
-        if let urlInfo = self.persistenceManager.getUserPublicURLInfo(in: bgContext) {
+        if let urlInfo = self.persistenceManager.brokers.user.getUserPublicURLInfo(in: bgContext) {
           let avatarData = CKMUser.find(in: bgContext)?.avatar
           DispatchQueue.main.async {
             if let dropbitMeVC = viewController as? DropBitMeViewController,
@@ -58,7 +58,7 @@ extension AppCoordinator: DropBitMeViewControllerDelegate {
 
   func viewControllerDidTapShareOnTwitter(_ viewController: UIViewController) {
     let context = self.persistenceManager.mainQueueContext()
-    guard let urlInfo = self.persistenceManager.getUserPublicURLInfo(in: context),
+    guard let urlInfo = self.persistenceManager.brokers.user.getUserPublicURLInfo(in: context),
       let handle = urlInfo.primaryIdentity?.handle,
       let url = CoinNinjaUrlFactory.buildUrl(for: .dropBitMe(handle: handle))
       else { return }
