@@ -38,6 +38,7 @@ class MockedPersistenceTestCase: XCTestCase {
     mockPersistenceManager = nil
     mockLaunchStateManager = nil
     mockDatabaseManager = nil
+    mockUserDefaultsManager = nil
   }
 
 }
