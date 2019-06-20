@@ -46,8 +46,8 @@ class PersistenceCacheDataWorker: PersistenceCacheDataWorkerType {
     let bgContext = persistenceManager.createBackgroundContext()
     bgContext.perform { [weak self] in
       guard let strongSelf = self else { return }
-      strongSelf.regularTransactionsCacheTuple = strongSelf.persistenceManager.containsRegularTransaction(in: bgContext)
-      strongSelf.dropbitTransactionsCacheTuple = strongSelf.persistenceManager.containsDropbitTransaction(in: bgContext)
+      strongSelf.regularTransactionsCacheTuple = strongSelf.persistenceManager.brokers.transaction.containsRegularTransaction(in: bgContext)
+      strongSelf.dropbitTransactionsCacheTuple = strongSelf.persistenceManager.brokers.transaction.containsDropbitTransaction(in: bgContext)
       strongSelf.trackTypesOfTransactions()
     }
   }

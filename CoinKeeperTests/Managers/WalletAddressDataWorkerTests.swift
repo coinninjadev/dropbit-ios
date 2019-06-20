@@ -14,10 +14,9 @@ import PromiseKit
 import CoreData
 @testable import DropBit
 
-class WalletAddressDataWorkerTests: XCTestCase {
+class WalletAddressDataWorkerTests: MockedPersistenceTestCase {
   var sut: WalletAddressDataWorker!
 
-  var mockPersistenceManager: MockPersistenceManager!
   var mockNetworkManager: MockNetworkManager!
   var mockWalletManager: MockWalletManager!
   var mockAnalyticsManager: MockAnalyticsManager!
@@ -31,8 +30,7 @@ class WalletAddressDataWorkerTests: XCTestCase {
   override func setUp() {
     super.setUp()
 
-    mockPersistenceManager = MockPersistenceManager()
-    mockPersistenceManager.userIdValue = "34gvbew4gv-qw3yrq3fjh-w3qruihwefs-3fsw34g"
+    mockBrokers.mockUser.userIdValue = "34gvbew4gv-qw3yrq3fjh-w3qruihwefs-3fsw34g"
     mockNetworkManager = MockNetworkManager(persistenceManager: mockPersistenceManager, analyticsManager: MockAnalyticsManager())
     mockWalletManager = MockWalletManager(words: [])
     mockInvitationDelegate = MockInvitationDelegate()
@@ -65,7 +63,7 @@ class WalletAddressDataWorkerTests: XCTestCase {
     generateUnacknowledgedInvitation(with: GenericContact(phoneNumber: globalNumber, formatted: ""), in: stack.context)
 
     let invitation = CKMInvitation.findUnacknowledgedInvitations(in: stack.context)[0]
-    mockPersistenceManager.unacknowledgedInvitations = [invitation]
+    mockBrokers.mockInvitation.unacknowledgedInvitations = [invitation]
 
     sut.handleUnacknowledgedSentInvitations(in: stack.context).done {
       XCTAssertTrue(!stack.context.insertedObjects.contains(invitation), "unacknowledged invitation should be deleted")
@@ -87,7 +85,7 @@ class WalletAddressDataWorkerTests: XCTestCase {
     let otherInvitation = CKMInvitation(insertInto: stack.context)
 
     let unacknowledgedInvitation = CKMInvitation.findUnacknowledgedInvitations(in: stack.context)[0]
-    mockPersistenceManager.unacknowledgedInvitations = [unacknowledgedInvitation]
+    mockBrokers.mockInvitation.unacknowledgedInvitations = [unacknowledgedInvitation]
 
     sut.handleUnacknowledgedSentInvitations(in: stack.context).done {
       XCTAssertTrue(!stack.context.insertedObjects.contains(unacknowledgedInvitation), "unacknowledged invitation should be deleted")
@@ -99,13 +97,14 @@ class WalletAddressDataWorkerTests: XCTestCase {
   }
 
   private func generateUnacknowledgedInvitation(with contact: ContactType, in context: NSManagedObjectContext) {
-    let pair: BitcoinUSDPair = (btcAmount: 1, usdAmount: 7000)
     let acknowledgementId = UUID().uuidString
-    PersistenceManager().persistUnacknowledgedInvitation(in: context,
-                                                         with: pair,
-                                                         contact: contact,
-                                                         fee: 19,
-                                                         acknowledgementId: acknowledgementId)
+    let pair: BitcoinUSDPair = (btcAmount: 1, usdAmount: 7000)
+    let outgoingInvitationDTO = OutgoingInvitationDTO(contact: contact, btcPair: pair, fee: 19, sharedPayloadDTO: nil)
+
+    PersistenceManager().brokers.invitation.persistUnacknowledgedInvitation(
+      withDTO: outgoingInvitationDTO,
+      acknowledgementId: acknowledgementId,
+      in: context)
   }
 
   func testLinkFulfilledAddressRequestsWithTransaction() {

@@ -16,7 +16,7 @@ extension AppCoordinator: WalletDelegateType {
 
   func resetWalletManagerIfNeeded() {
     if walletManager == nil,
-      let words = persistenceManager.walletWords() {
+      let words = persistenceManager.brokers.wallet.walletWords() {
       walletManager = WalletManager(words: words, persistenceManager: persistenceManager)
     }
     setCurrentCoin()

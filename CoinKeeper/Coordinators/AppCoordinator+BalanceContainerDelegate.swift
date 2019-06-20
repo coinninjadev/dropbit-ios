@@ -31,7 +31,7 @@ extension AppCoordinator: BalanceContainerDelegate {
 
     let context = self.persistenceManager.mainQueueContext()
     let avatarData = CKMUser.find(in: context)?.avatar
-    let publicURLInfo: UserPublicURLInfo? = self.persistenceManager.getUserPublicURLInfo(in: context)
+    let publicURLInfo: UserPublicURLInfo? = self.persistenceManager.brokers.user.getUserPublicURLInfo(in: context)
     let config = DropBitMeConfig(publicURLInfo: publicURLInfo, verifiedFirstTime: verifiedFirstTime, userAvatarData: avatarData)
 
     let dropBitMeVC = DropBitMeViewController.newInstance(config: config, delegate: self)
@@ -42,7 +42,7 @@ extension AppCoordinator: BalanceContainerDelegate {
     if let txHistory = viewController as? TransactionHistoryViewController {
       // save to user defaults
       currencyController.selectedCurrency.toggle()
-      persistenceManager.setSelectedCurrency(currencyController.selectedCurrency)
+      persistenceManager.brokers.preferences.selectedCurrency = currencyController.selectedCurrency
 
       // tell tx history to reload from user defaults
       txHistory.updateSelectedCurrency(to: currencyController.selectedCurrency)
@@ -61,7 +61,7 @@ extension AppCoordinator: BalanceContainerDelegate {
       if let avatar = user.avatar {
         let image = UIImage(data: avatar) ?? defaultImage
         return Promise.value(image)
-      } else if persistenceManager.userIsVerified(using: .twitter, in: context) {
+      } else if persistenceManager.brokers.user.userIsVerified(using: .twitter, in: context) {
         return twitterAccessManager.getCurrentTwitterUser()
           .then { (user: TwitterUser) -> Promise<UIImage> in
             let image = user.profileImageData.flatMap { UIImage(data: $0) } ?? defaultImage

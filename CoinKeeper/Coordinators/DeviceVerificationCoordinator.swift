@@ -234,7 +234,7 @@ extension DeviceVerificationCoordinator: DeviceVerificationViewControllerDelegat
 
   fileprivate func registerAndPersistWalletIfNecessary(delegate: DeviceVerificationCoordinatorDelegate,
                                                        in context: NSManagedObjectContext) -> Promise<Void> {
-    if delegate.persistenceManager.walletId(in: context) == nil {
+    if delegate.persistenceManager.brokers.wallet.walletId(in: context) == nil {
       return delegate.registerAndPersistWallet(in: context)
     } else {
       return .value(()) //registration not needed
@@ -247,7 +247,7 @@ extension DeviceVerificationCoordinator: DeviceVerificationViewControllerDelegat
 
     var maybeWalletId: String?
     context.performAndWait {
-      maybeWalletId = delegate.persistenceManager.walletId(in: context)
+      maybeWalletId = delegate.persistenceManager.brokers.wallet.walletId(in: context)
     }
     guard let walletId = maybeWalletId else {
       return Promise { $0.reject(CKPersistenceError.missingValue(key: "wallet ID")) }
@@ -267,12 +267,12 @@ extension DeviceVerificationCoordinator: DeviceVerificationViewControllerDelegat
     delegate: DeviceVerificationCoordinatorDelegate,
     in context: NSManagedObjectContext
     ) -> Promise<UserIdentifiable> {
-    let verifiedIdentities = delegate.persistenceManager.verifiedIdentities(in: context)
+    let verifiedIdentities = delegate.persistenceManager.brokers.user.verifiedIdentities(in: context)
     if verifiedIdentities.count == 1 {
       return delegate.networkManager.addIdentity(body: body).map { $0 as UserIdentifiable }
     } else {
       return delegate.networkManager.createUser(walletId: walletId, body: body)
-        .get(in: context) { delegate.persistenceManager.persistUserId($0.id, in: context) }
+        .get(in: context) { delegate.persistenceManager.brokers.user.persistUserId($0.id, in: context) }
         .map { $0 as UserIdentifiable }
     }
   }
@@ -290,7 +290,7 @@ extension DeviceVerificationCoordinator: DeviceVerificationViewControllerDelegat
       case .userAlreadyExists(let userId, let body):
         //ignore walletId available in the error in case it is different from the walletId we provided
         let resendHeaders = DefaultRequestHeaders(walletId: walletId, userId: userId)
-        delegate.persistenceManager.persistUserId(userId, in: context)
+        delegate.persistenceManager.brokers.user.persistUserId(userId, in: context)
 
         return delegate.networkManager.resendVerification(headers: resendHeaders, body: body)
           .recover { (error: Error) -> Promise<UserResponse> in
@@ -413,7 +413,7 @@ extension DeviceVerificationCoordinator: DeviceVerificationViewControllerDelegat
       return Promise { $0.reject(UserProviderError.unexpectedStatus(statusCase)) }
     }
 
-    return crDelegate.persistenceManager.persistVerificationStatus(from: response, in: context).asVoid()
+    return crDelegate.persistenceManager.brokers.user.persistVerificationStatus(from: response, in: context).asVoid()
   }
 
   func viewControllerDidSkipPhoneVerification(_ viewController: DeviceVerificationViewController) {

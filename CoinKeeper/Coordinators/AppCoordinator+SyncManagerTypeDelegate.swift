@@ -41,7 +41,7 @@ extension AppCoordinator: SerialQueueManagerDelegate {
     return self.showAlertsForAddressRequestUpdates(in: context)
       .then(in: context) { _ -> Promise<Void> in
         // Skip showing banners for transactions downloaded during initial sync
-        guard self.persistenceManager.date(for: .lastSuccessfulSyncCompletedAt) != nil else {
+        guard self.persistenceManager.brokers.activity.lastSuccessfulSync != nil else {
           return Promise.value(())
         }
         return self.showAlertsForIncomingTransactions(in: context)
@@ -57,7 +57,7 @@ extension AppCoordinator: SerialQueueManagerDelegate {
     }
 
     // Ensure the wallet is using the words from the keychain before sending any requests, especially deverification checks
-    guard let keychainWords = self.persistenceManager.walletWords() else {
+    guard let keychainWords = self.persistenceManager.brokers.wallet.walletWords() else {
       os_log("wallet does not yet exist, stopping sync", log: logger, type: .debug)
       return Promise(error: SyncRoutineError.missingRecoveryWords)
     }
@@ -117,7 +117,7 @@ extension AppCoordinator: SerialQueueManagerDelegate {
     case .wallet:
       context.performAndWait {
         self.unverifyUser(forError: moyaError, recordType: recordType, in: context)
-        self.persistenceManager.removeWalletId(in: context)
+        self.persistenceManager.brokers.wallet.removeWalletId(in: context)
       }
 
     case .unknown:
@@ -139,7 +139,7 @@ extension AppCoordinator: SerialQueueManagerDelegate {
 
     var deviceDescriptions: [String] = []
 
-    let verifiedTypes = persistenceManager.verifiedIdentities(in: context)
+    let verifiedTypes = persistenceManager.brokers.user.verifiedIdentities(in: context)
     if verifiedTypes.contains(.phone) {
       deviceDescriptions.append("phone number")
     }
@@ -156,7 +156,7 @@ extension AppCoordinator: SerialQueueManagerDelegate {
     }
 
     // Prevent showing banner if they have already been unverified
-    if self.persistenceManager.userVerificationStatus(in: context) == .verified {
+    if self.persistenceManager.brokers.user.userVerificationStatus(in: context) == .verified {
       self.alertManager.showBanner(with: errorMessage, duration: .default, alertKind: .error)
 
       let debugMessage = "Failed to get \(recordType.rawValue): \(error.responseDescription)"
@@ -165,7 +165,7 @@ extension AppCoordinator: SerialQueueManagerDelegate {
       self.analyticsManager.track(property: MixpanelProperty(key: .isDropBitMeEnabled, value: false))
     }
 
-    self.persistenceManager.unverifyUser(in: context)
+    self.persistenceManager.brokers.user.unverifyUser(in: context)
   }
 
   func handleMissingWalletError(_ error: CKPersistenceError) {

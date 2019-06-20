@@ -13,7 +13,7 @@ struct MigrateKeychainV1toV2: Migratable {
   let persistenceManager: PersistenceManagerType
 
   func isMigrated() -> Bool {
-    return persistenceManager.keychainMigrationFlag(for: .v1tov2)
+    return persistenceManager.brokers.migration.keychainMigrationFlag(for: .v1tov2)
   }
 
   func migrate() {
@@ -30,7 +30,7 @@ struct MigrateKeychainV1toV2: Migratable {
     }
 
     // set migrated flag
-    persistenceManager.setKeychainMigrationFlag(migrated: true, for: .v1tov2)
+    persistenceManager.brokers.migration.setKeychainMigrationFlag(migrated: true, for: .v1tov2)
   }
 
 }

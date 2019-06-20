@@ -46,7 +46,7 @@ extension AppCoordinator: VerifyRecoveryWordsViewControllerDelegate {
 
   func viewControllerWordVerificationMaxFailuresAttempted(_ viewController: UIViewController) {
     let title = "\n Too many attempts. Please review your recovery words and ensure you write them down.\n"
-    let okAction = AlertActionConfiguration(title: "Ok", style: .default) { [weak self] in
+    let okAction = AlertActionConfiguration(title: "OK", style: .default) { [weak self] in
       viewController.navigationController?.popViewController(animated: true)
       self?.viewControllerResetRecoveryWords(viewController)
     }
