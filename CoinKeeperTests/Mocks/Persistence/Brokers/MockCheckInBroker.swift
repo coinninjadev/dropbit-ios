@@ -16,7 +16,7 @@ class MockCheckInBroker: CKPersistenceBroker, CheckInBrokerType {
 
   var cachedBTCUSDRate: Double = 0
 
-  var cachedBlockheight: Int = 0
+  var cachedBlockHeight: Int = 0
 
   var cachedBestFee: Double = 0
 

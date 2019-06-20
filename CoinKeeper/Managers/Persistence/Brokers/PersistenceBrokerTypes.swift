@@ -45,7 +45,7 @@ protocol ActivityBrokerType: AnyObject {
 protocol CheckInBrokerType: AnyObject {
 
   var cachedBTCUSDRate: Double { get set }
-  var cachedBlockheight: Int { get set }
+  var cachedBlockHeight: Int { get set }
   var cachedBestFee: Double { get set }
   var cachedBetterFee: Double { get set }
   var cachedGoodFee: Double { get set }

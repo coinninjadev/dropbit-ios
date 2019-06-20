@@ -15,7 +15,7 @@ class CheckInBroker: CKPersistenceBroker, CheckInBrokerType {
     set { userDefaultsManager.set(newValue, for: .exchangeRateBTCUSD) }
   }
 
-  var cachedBlockheight: Int {
+  var cachedBlockHeight: Int {
     get { return userDefaultsManager.integer(for: .blockheight) }
     set { userDefaultsManager.set(newValue, for: .blockheight) }
   }

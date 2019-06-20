@@ -203,7 +203,7 @@ class WalletManager: WalletManagerType {
     return Promise { seal in
       let paymentAmount = UInt(payment.asFractionalUnits(of: .BTC))
       let usableFeeRate = self.usableFeeRate(from: feeRate)
-      let blockHeight = UInt(persistenceManager.brokers.checkIn.cachedBlockheight)
+      let blockHeight = UInt(persistenceManager.brokers.checkIn.cachedBlockHeight)
       let bgContext = persistenceManager.createBackgroundContext()
       bgContext.performAndWait {
         let usableVouts = self.usableVouts(in: bgContext)
@@ -245,7 +245,7 @@ class WalletManager: WalletManagerType {
         let allAvailableOutputs = self.availableTransactionOutputs(fromUsableUTXOs: usableVouts)
         let paymentAmount = UInt(payment)
         let feeAmount = UInt(flatFee)
-        let blockHeight = UInt(persistenceManager.brokers.checkIn.cachedBlockheight)
+        let blockHeight = UInt(persistenceManager.brokers.checkIn.cachedBlockHeight)
 
         let txData = CNBTransactionData(
           address: address,
@@ -267,7 +267,7 @@ class WalletManager: WalletManagerType {
   func transactionDataSendingMax(to address: String, withFeeRate feeRate: Double) -> Promise<CNBTransactionData> {
     return Promise { seal in
       let usableFeeRate = self.usableFeeRate(from: feeRate)
-      let blockHeight = UInt(persistenceManager.brokers.checkIn.cachedBlockheight)
+      let blockHeight = UInt(persistenceManager.brokers.checkIn.cachedBlockHeight)
       let bgContext = persistenceManager.createBackgroundContext()
       bgContext.performAndWait {
         let usableVouts = self.usableVouts(in: bgContext)

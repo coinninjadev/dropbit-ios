@@ -86,7 +86,7 @@ extension NetworkManager: CurrencyValueDataSourceType {
     guard walletId != nil else {
       let fees = FeesResponse(max: broker.cachedBestFee, avg: broker.cachedBetterFee, min: broker.cachedGoodFee)
       let pricing = PriceResponse(last: broker.cachedBTCUSDRate)
-      let response = CheckInResponse(blockheight: broker.cachedBlockheight, fees: fees, pricing: pricing)
+      let response = CheckInResponse(blockheight: broker.cachedBlockHeight, fees: fees, pricing: pricing)
       return Promise.value(response)
     }
 
@@ -102,7 +102,7 @@ extension NetworkManager: CurrencyValueDataSourceType {
     broker.cachedBetterFee = max(response.fees.better, 0)
     broker.cachedGoodFee = max(response.fees.good, 0)
     broker.cachedBTCUSDRate = (response.pricing.last > 0) ? response.pricing.last : broker.cachedBTCUSDRate
-    broker.cachedBlockheight = (response.blockheight > 0) ? response.blockheight : broker.cachedBlockheight
+    broker.cachedBlockHeight = (response.blockheight > 0) ? response.blockheight : broker.cachedBlockHeight
     CKNotificationCenter.publish(key: .didUpdateFees)
     CKNotificationCenter.publish(key: .didUpdateExchangeRates, userInfo: ["value": broker.cachedBTCUSDRate])
     return Promise { $0.fulfill(response) }
