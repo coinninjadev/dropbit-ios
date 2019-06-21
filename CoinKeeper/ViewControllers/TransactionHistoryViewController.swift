@@ -157,7 +157,6 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
     detailCollectionViewHeightConstraint.constant = self.view.frame.height - balanceContainer.frame.height
     summaryCollectionViewBottomConstraint.constant = sendReceiveActionView.frame.height * percent * -1
 
-    balanceContainer?.delegate = (generalCoordinationDelegate as? BalanceContainerDelegate)
     (coordinationDelegate?.badgeManager).map(subscribeToBadgeNotifications)
     coordinationDelegate?.viewControllerDidRequestBadgeUpdate(self)
 
