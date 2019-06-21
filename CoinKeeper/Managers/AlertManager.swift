@@ -241,7 +241,7 @@ class AlertManager: AlertManagerType {
       self.showBanner(with: message, duration: .default, alertKind: .error)
     case .expired:
       let message = """
-        For security purposes we can only allow 24 hours for a \(CKStrings.dropBitWithTrademark) to be completed.
+        For security purposes we can only allow 48 hours for a \(CKStrings.dropBitWithTrademark) to be completed.
         Your DropBit sent to \(receiverDesc) has expired. Please try sending again.
         """.removingMultilineLineBreaks()
       self.showBanner(with: message, duration: .default, alertKind: .error)
@@ -265,7 +265,7 @@ class AlertManager: AlertManagerType {
       self.showBanner(with: message, duration: .default, alertKind: .error)
     case .expired:
       let message = """
-        For security purposes we can only allow 24 hours for a \(CKStrings.dropBitWithTrademark) to be completed.
+        For security purposes we can only allow 48 hours for a \(CKStrings.dropBitWithTrademark) to be completed.
         Your DropBit from \(senderDesc) has expired.
         """.removingMultilineLineBreaks()
       self.showBanner(with: message, duration: .default, alertKind: .error)
