@@ -52,11 +52,10 @@ class WalletSyncOperationFactory {
               return
             }
 
-            strongSelf.performSync(operation,
-                              with: dependencies,
-                              fullSync: isFullSync,
-                              completion: completion,
-                              in: bgContext)
+            strongSelf.performSync(with: dependencies,
+                                   fullSync: isFullSync,
+                                   completion: completion,
+                                   in: bgContext)
               .catch(in: bgContext) { error in
                 strongSelf.handleSyncRoutineError(error, in: bgContext)
                 completion?(error)
@@ -98,8 +97,7 @@ class WalletSyncOperationFactory {
     }
   }
 
-  private func performSync(_ operation: AsynchronousOperation,
-                           with dependencies: SyncDependencies,
+  private func performSync(with dependencies: SyncDependencies,
                            fullSync: Bool,
                            completion: CompletionHandler?,
                            in context: NSManagedObjectContext) -> Promise<Void> {
