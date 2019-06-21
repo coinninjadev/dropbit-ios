@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import PhoneNumberKit
 @testable import DropBit
 import XCTest
 
