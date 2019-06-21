@@ -62,9 +62,9 @@ class WalletSyncOperationFactory {
 
               }.finally {
                 if let fetchResultHandler = fetchResult {
-                  let fetchResult: UIBackgroundFetchResult = bgContext.insertedObjects.isNotEmpty ||
+                  let result: UIBackgroundFetchResult = bgContext.insertedObjects.isNotEmpty ||
                     bgContext.updatedObjects.isNotEmpty ? .newData : .noData
-                  fetchResultHandler(fetchResult)
+                  fetchResultHandler(result)
                 }
 
                 bgContext.performAndWait {

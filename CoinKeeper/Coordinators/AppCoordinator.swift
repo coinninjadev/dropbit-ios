@@ -260,12 +260,15 @@ class AppCoordinator: CoordinatorType {
     networkManager.start()
     connectionManager.delegate = self
 
-    setInitialRootViewController()
 
     // fetch transaction information for receive and change addresses, update server addresses
+    UIApplication.shared.setMinimumBackgroundFetchInterval(.oneHour)
+
+    guard UIApplication.shared.applicationState != .background else { return }
+
+    setInitialRootViewController()
     registerForBalanceSaveNotifications()
     trackAnalytics()
-    UIApplication.shared.setMinimumBackgroundFetchInterval(.oneHour)
 
     let now = Date()
     let lastContactReloadDate: Date = persistenceManager.date(for: .lastContactCacheReload) ?? .distantPast
