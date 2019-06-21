@@ -56,16 +56,21 @@ class WalletSyncOperationFactory {
                               with: dependencies,
                               fullSync: isFullSync,
                               completion: completion,
-                              fetchResult: fetchResult,
                               in: bgContext)
-              .catch(in: context) { error in
-                strongSelf.handleSyncRoutineError(error, in: context)
+              .catch(in: bgContext) { error in
+                strongSelf.handleSyncRoutineError(error, in: bgContext)
                 completion?(error)
 
               }.finally {
-                context.performAndWait {
+                if let fetchResultHandler = fetchResult {
+                  let fetchResult: UIBackgroundFetchResult = bgContext.insertedObjects.isNotEmpty ||
+                    bgContext.updatedObjects.isNotEmpty ? .newData : .noData
+                  fetchResultHandler(fetchResult)
+                }
+
+                bgContext.performAndWait {
                   do {
-                    try context.save()
+                    try bgContext.save()
                   } catch {
                     let logger = OSLog(subsystem: "com.coinninja.coinkeeper.walletsyncoperationfactory", category: "perform_sync")
                     os_log("failed to save context in %@. error: %@", log: logger, type: .error, #function, error.localizedDescription)
@@ -97,7 +102,6 @@ class WalletSyncOperationFactory {
                            with dependencies: SyncDependencies,
                            fullSync: Bool,
                            completion: CompletionHandler?,
-                           fetchResult: ((UIBackgroundFetchResult) -> Void)?,
                            in context: NSManagedObjectContext) -> Promise<Void> {
     return dependencies.databaseMigrationWorker.migrateIfPossible()
       .then(in: context) { self.checkAndRecoverAuthorizationIds(with: dependencies, in: context) }
@@ -121,13 +125,6 @@ class WalletSyncOperationFactory {
       .then(in: context) { _ in self.fetchAndFulfillReceivedAddressRequests(with: dependencies, in: context) }
       .then(in: context) { _ in dependencies.delegate.showAlertsForSyncedChanges(in: context) }
       .then(in: context) { _ in dependencies.twitterAccessManager.inflateTwitterUsersIfNeeded(in: context) }
-      .done(in: context) {
-        if let fetchResultHandler = fetchResult {
-          let fetchResult: UIBackgroundFetchResult = context.insertedObjects.isNotEmpty ||
-            context.updatedObjects.isNotEmpty ? .newData : .noData
-          fetchResultHandler(fetchResult)
-        }
-    }
   }
 
   func checkAndRecoverAuthorizationIds(with dependencies: SyncDependencies, in context: NSManagedObjectContext) -> Promise<Void> {
