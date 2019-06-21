@@ -76,7 +76,7 @@ public class CKMTransaction: NSManagedObject {
 
       isIncoming = calculateIsIncoming(in: context)
 
-      let atss = CKMAddressTransactionSummary.find(by: txResponse.txid, in: context)
+      let atss = CKMAddressTransactionSummary.find(byTxid: txResponse.txid, in: context)
       addressTransactionSummaries = atss.asSet()
       atss.forEach { $0.transaction = self } // just being extra careful to ensure bi-directional integrity
 
@@ -295,7 +295,10 @@ public class CKMTransaction: NSManagedObject {
     }
 
     // ourAddresses are addresses we own by relationship to AddressTransactionSummary objects
-    let ourAddressIds = Set(addressTransactionSummaries.compactMap { $0.address?.addressId })
+    guard let context = self.managedObjectContext else { return nil }
+    let ourAddressStrings = addressTransactionSummaries.map { $0.addressId }
+    let ourAddresses = CKMAddress.find(withAddresses: ourAddressStrings, in: context)
+    let ourAddressIds = ourAddresses.map { $0.addressId }.asSet()
 
     // firstOutgoing is first vout addressID where ourAddresses doesn't appear in vout's addressIDs
     let firstOutgoing = vouts.compactMap { self.firstVoutAddress(from: Set($0.addressIDs), notMatchingAddresses: ourAddressIds) }.first
