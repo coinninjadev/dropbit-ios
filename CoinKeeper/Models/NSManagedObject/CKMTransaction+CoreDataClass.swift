@@ -229,22 +229,24 @@ public class CKMTransaction: NSManagedObject {
 
   /// Returns sum of `amount` value from all vins
   var sumVins: Int {
-    return vins.reduce(0) { $0 + $1.amount }
+    return NSArray(array: vins.asArray()).value(forKeyPath: "@sum.amount") as? Int ?? 0
   }
 
   /// Returns sum of `amount` value from all vouts
   var sumVouts: Int {
-    return vouts.reduce(0) { $0 + $1.amount }
+    return NSArray(array: vouts.asArray()).value(forKeyPath: "@sum.amount") as? Int ?? 0
   }
 
   /// Returns sent amount from vins, relative to addresses owned by user's wallet
   var myVins: Int {
-    return vins.filter { $0.belongsToWallet }.reduce(0) { $0 + $1.amount }
+    let vinsToUse = vins.filter { $0.belongsToWallet }
+    return NSArray(array: vinsToUse.asArray()).value(forKeyPath: "@sum.amount") as? Int ?? 0
   }
 
   /// Returns received amount from vouts, relative to addresses owned by user's wallet
   var myVouts: Int {
-    return vouts.filter { $0.address != nil }.reduce(0) { $0 + $1.amount }
+    let voutsToUse = vouts.filter { $0.address != nil }
+    return NSArray(array: voutsToUse.asArray()).value(forKeyPath: "@sum.amount") as? Int ?? 0
   }
 
   /// networkFee is calculated in Satoshis, should be sum(vin) - sum(vout), but only vin/vout pertaining to our addresses
