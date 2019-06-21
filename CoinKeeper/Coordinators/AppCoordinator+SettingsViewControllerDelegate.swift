@@ -109,6 +109,11 @@ extension AppCoordinator: SettingsViewControllerDelegate {
     settingsViewController?.present(alert, animated: true)
   }
 
+  func viewControllerDidSelectAdjustableFees(_ viewController: UIViewController) {
+    let adjustableFeesVC = AdjustableFeesViewController.newInstance(delegate: self)
+    viewController.navigationController?.pushViewController(adjustableFeesVC, animated: true)
+  }
+
   func viewControllerDidConfirmDeleteWallet(_ viewController: UIViewController) {
     let deleteWalletOperation = AsynchronousOperation(operationType: .deleteWallet)
     deleteWalletOperation.task = { [weak self, weak innerOp = deleteWalletOperation] in

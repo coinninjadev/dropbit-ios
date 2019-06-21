@@ -19,6 +19,7 @@ protocol SettingsViewControllerDelegate: ViewControllerDismissable, ViewControll
   func viewControllerDidConfirmDeleteWallet(_ viewController: UIViewController)
   func viewControllerDidSelectOpenSourceLicenses(_ viewController: UIViewController)
   func viewControllerDidSelectRecoveryWords(_ viewController: UIViewController)
+  func viewControllerDidSelectAdjustableFees(_ viewController: UIViewController)
   func viewControllerResyncBlockchain(_ viewController: UIViewController)
   func viewController(_ viewController: UIViewController, didEnableDustProtection didEnable: Bool)
   func viewController(_ viewController: UIViewController, didEnableYearlyHighNotification didEnable: Bool, completion: @escaping () -> Void)
@@ -159,9 +160,15 @@ class SettingsViewController: BaseViewController, StoryboardInitializable {
     }
     let yearlyHighVM = SettingsCellViewModel(type: yearlyHighType)
 
+    let adjustableFeesAction: BasicAction = { [weak self] in
+      guard let localSelf = self else { return }
+      localSelf.coordinationDelegate?.viewControllerDidSelectAdjustableFees(localSelf)
+    }
+    let adjustableFeesVM = SettingsCellViewModel(type: .adjustableFees(action: adjustableFeesAction))
+
     return SettingsSectionViewModel(
       headerViewModel: SettingsHeaderFooterViewModel(title: "WALLET"),
-      cellViewModels: [recoveryWordsVM, dustProtectionVM, yearlyHighVM])
+      cellViewModels: [recoveryWordsVM, dustProtectionVM, yearlyHighVM, adjustableFeesVM])
   }
 
 }
