@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol SettingsViewControllerDelegate: ViewControllerDismissable {
+protocol SettingsViewControllerDelegate: ViewControllerDismissable, ViewControllerURLDelegate {
 
   func verifyIfWordsAreBackedUp() -> Bool
   func dustProtectionIsEnabled() -> Bool
@@ -19,7 +19,6 @@ protocol SettingsViewControllerDelegate: ViewControllerDismissable {
   func viewControllerDidConfirmDeleteWallet(_ viewController: UIViewController)
   func viewControllerDidSelectOpenSourceLicenses(_ viewController: UIViewController)
   func viewControllerDidSelectRecoveryWords(_ viewController: UIViewController)
-  func viewController(_ viewController: UIViewController, didRequestOpenURL url: URL)
   func viewControllerResyncBlockchain(_ viewController: UIViewController)
   func viewController(_ viewController: UIViewController, didEnableDustProtection didEnable: Bool)
   func viewController(_ viewController: UIViewController, didEnableYearlyHighNotification didEnable: Bool, completion: @escaping () -> Void)
