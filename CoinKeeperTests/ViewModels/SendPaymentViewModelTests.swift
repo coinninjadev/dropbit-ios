@@ -7,7 +7,6 @@
 //
 
 import XCTest
-import PhoneNumberKit
 @testable import DropBit
 import CNBitcoinKit
 

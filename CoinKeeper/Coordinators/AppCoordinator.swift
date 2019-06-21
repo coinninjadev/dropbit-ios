@@ -38,6 +38,8 @@ protocol ChildCoordinatorDelegate: class {
   func childCoordinatorDidComplete(childCoordinator: ChildCoordinatorType)
 }
 
+let phoneNumberKit = PhoneNumberKit()
+
 class AppCoordinator: CoordinatorType {
   let navigationController: UINavigationController
   let persistenceManager: PersistenceManagerType
@@ -75,7 +77,6 @@ class AppCoordinator: CoordinatorType {
   var suspendAuthenticationOnceUntil: Date?
 
   private let notificationLogger = OSLog(subsystem: "com.coinninja.appCoordinator", category: "notifications")
-  let phoneNumberKit = PhoneNumberKit()
   let contactStore = CNContactStore()
   let locationManager = CLLocationManager()
 
@@ -93,7 +94,6 @@ class AppCoordinator: CoordinatorType {
     return WorkerFactory(persistenceManager: self.persistenceManager,
                          networkManager: self.networkManager,
                          analyticsManager: self.analyticsManager,
-                         phoneNumberKit: self.phoneNumberKit,
                          walletManagerProvider: self)
   }()
 

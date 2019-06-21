@@ -169,7 +169,7 @@ class ContactCacheManager: ContactCacheManagerType {
         let sanitizedForParsing = originalPhoneNumber.removingNonDecimalCharacters(keepingCharactersIn: "+")
 
         do {
-          let parsedNumber = try inputs.kit.parse(sanitizedForParsing, ignoreType: false)
+          let parsedNumber = try phoneNumberKit.parse(sanitizedForParsing, ignoreType: false)
           // CCMPhoneNumber objects don't use findOrCreate, because there may be duplicate contacts
           // and we don't want to delete all instances of a phone number if the duplicate is removed
           let cachedPhoneNumber = self.createCachedPhoneNumber(for: parsedNumber,
@@ -219,8 +219,8 @@ class ContactCacheManager: ContactCacheManagerType {
                                        in context: NSManagedObjectContext) -> CCMPhoneNumber {
     // Create inputs
     let globalNumber = GlobalPhoneNumber(parsedNumber: parsedNumber)
-    let hashedNumber = inputs.hasher.hash(phoneNumber: globalNumber, salt: inputs.salt, parsedNumber: parsedNumber, kit: inputs.kit)
-    let formattedNumber = self.format(number: parsedNumber, kit: inputs.kit, deviceCountryCode: inputs.deviceCountryCode)
+    let hashedNumber = inputs.hasher.hash(phoneNumber: globalNumber, salt: inputs.salt, parsedNumber: parsedNumber)
+    let formattedNumber = self.format(number: parsedNumber, deviceCountryCode: inputs.deviceCountryCode)
 
     // Create new CCMPhoneNumber
     let cachedPhoneNumber = CCMPhoneNumber(formattedNumber: formattedNumber,
@@ -239,10 +239,10 @@ class ContactCacheManager: ContactCacheManagerType {
     return cachedPhoneNumber
   }
 
-  private func format(number: PhoneNumber, kit: PhoneNumberKit, deviceCountryCode: Int) -> String {
+  private func format(number: PhoneNumber, deviceCountryCode: Int) -> String {
     let numberIsInternational = deviceCountryCode != Int(number.countryCode)
     let formatType: PhoneNumberFormat = numberIsInternational ? .international : .national
-    return kit.format(number, toType: formatType)
+    return phoneNumberKit.format(number, toType: formatType)
   }
 
 }

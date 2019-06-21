@@ -7,11 +7,9 @@
 //
 
 import Foundation
-import PhoneNumberKit
 
 protocol CountryCodePickerDataSourceType: AnyObject {
 
-  var phoneNumberKit: PhoneNumberKit { get }
   var searchText: String? { get set }
   var allCountries: [CKCountry] { get set }
   var filteredCountries: [CKCountry] { get set }
@@ -75,8 +73,6 @@ extension CountryCodePickerDataSourceType {
 }
 
 class CountryCodePickerDataSource: CountryCodePickerDataSourceType {
-
-  let phoneNumberKit = PhoneNumberKit()
 
   var searchText: String?
   var allCountries: [CKCountry] = []

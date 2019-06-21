@@ -9,7 +9,6 @@
 import CoreData
 import os.log
 import Contacts
-import PhoneNumberKit
 import PromiseKit
 
 protocol ContactCacheDataWorkerType: AnyObject {
@@ -19,7 +18,6 @@ protocol ContactCacheDataWorkerType: AnyObject {
 }
 
 struct CachedPhoneNumberDependencies {
-  let kit: PhoneNumberKit
   let hasher: HashingManager
   let salt: Data
   let formatter: CNContactFormatter
@@ -38,7 +36,6 @@ class ContactCacheDataWorker: ContactCacheDataWorkerType {
 
   let logger = OSLog(subsystem: "com.coinninja.coinkeeper.contactcache", category: "data_worker")
 
-  let phoneNumberKit = PhoneNumberKit()
   let hashingManager = HashingManager()
 
   init(contactCacheManager: ContactCacheManagerType,
@@ -262,7 +259,6 @@ class ContactCacheDataWorker: ContactCacheDataWorkerType {
     let countryCode = self.countryCodeProvider?.deviceCountryCode() ?? 1
 
     let dependencies = CachedPhoneNumberDependencies(
-      kit: self.phoneNumberKit,
       hasher: self.hashingManager,
       salt: salt,
       formatter: CNContactFormatter(),

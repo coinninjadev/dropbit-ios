@@ -7,14 +7,11 @@
 //
 
 import UIKit
-import PhoneNumberKit
 @testable import DropBit
 import XCTest
 
 class TransactionHistorySummaryCellTests: XCTestCase {
   var sut: TransactionHistorySummaryCell!
-
-  let phoneNumberKit = PhoneNumberKit()
 
   override func setUp() {
     super.setUp()
@@ -178,8 +175,7 @@ class TransactionHistorySummaryCellTests: XCTestCase {
       transaction: transaction,
       rates: rates,
       primaryCurrency: .USD,
-      deviceCountryCode: nil,
-      kit: PhoneNumberKit()
+      deviceCountryCode: nil
     )
 
     return viewModel

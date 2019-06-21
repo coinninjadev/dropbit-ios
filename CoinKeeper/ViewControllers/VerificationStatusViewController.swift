@@ -8,7 +8,6 @@
 
 import Foundation
 import UIKit
-import PhoneNumberKit
 
 protocol VerificationStatusViewControllerDelegate: ViewControllerDismissable, AuthenticationSuspendable {
   func verifiedPhoneNumber() -> GlobalPhoneNumber?
@@ -43,7 +42,6 @@ class VerificationStatusViewController: BaseViewController, StoryboardInitializa
   }
 
   let serverAddressUpperPercentageMultiplier: CGFloat = 0.15
-  let phoneNumberKit = PhoneNumberKit()
 
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -64,7 +62,7 @@ class VerificationStatusViewController: BaseViewController, StoryboardInitializa
 
     // phone number start
     if let phoneNumber = coordinationDelegate?.verifiedPhoneNumber() {
-      let formatter = CKPhoneNumberFormatter(kit: self.phoneNumberKit, format: .national)
+      let formatter = CKPhoneNumberFormatter(format: .national)
       phoneVerificationStatusView.isHidden = false
       changeRemovePhoneButton.isHidden = false
       verifyPhoneNumberPrimaryButton.isHidden = true

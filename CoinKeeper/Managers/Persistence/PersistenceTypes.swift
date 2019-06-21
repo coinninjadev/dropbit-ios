@@ -9,7 +9,6 @@
 import CNBitcoinKit
 import CoreData
 import PromiseKit
-import PhoneNumberKit
 import Strongbox
 
 protocol PersistenceManagerType: DeviceCountryCodeProvider {
@@ -81,7 +80,6 @@ protocol PersistenceManagerType: DeviceCountryCodeProvider {
   ) -> CKMTransaction
   func persistReceivedSharedPayloads(
     _ payloads: [Data],
-    kit: PhoneNumberKit,
     in context: NSManagedObjectContext
   )
   func deleteTransactions(notIn txids: [String], in context: NSManagedObjectContext)

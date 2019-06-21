@@ -5,7 +5,6 @@
 
 import CNBitcoinKit
 import CoreData
-import PhoneNumberKit
 import PromiseKit
 @testable import DropBit
 
@@ -122,7 +121,7 @@ class MockPersistenceManager: PersistenceManagerType {
     return CKMTransaction(insertInto: context)
   }
 
-  func persistReceivedSharedPayloads(_ payloads: [Data], kit: PhoneNumberKit, in context: NSManagedObjectContext) { }
+  func persistReceivedSharedPayloads(_ payloads: [Data], in context: NSManagedObjectContext) { }
 
   func groomAddressTransactionSummaries(
     from responses: [AddressTransactionSummaryResponse],

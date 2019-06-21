@@ -12,7 +12,6 @@ import CNBitcoinKit
 import Gifu
 import os.log
 import PromiseKit
-import PhoneNumberKit
 import DZNEmptyDataSet
 
 protocol TransactionHistoryViewControllerDelegate: DeviceCountryCodeProvider &
@@ -84,9 +83,8 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
 
   private let logger = OSLog(subsystem: "com.coinninja.coinkeeper.transactionhistoryviewcontroller", category: "tx_history_view_controller")
 
-  private let phoneNumberKit = PhoneNumberKit()
   lazy var phoneFormatter: CKPhoneNumberFormatter = {
-    return CKPhoneNumberFormatter(kit: self.phoneNumberKit, format: .national)
+    return CKPhoneNumberFormatter(format: .national)
   }()
 
   var deviceCountryCode: Int?
@@ -196,8 +194,7 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
       transaction: transaction,
       rates: rateManager.exchangeRates,
       primaryCurrency: preferredCurrency(),
-      deviceCountryCode: deviceCountryCode,
-      kit: phoneNumberKit
+      deviceCountryCode: deviceCountryCode
     )
   }
 
@@ -206,8 +203,7 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
       transaction: transaction,
       rates: rateManager.exchangeRates,
       primaryCurrency: preferredCurrency(),
-      deviceCountryCode: deviceCountryCode,
-      kit: phoneNumberKit
+      deviceCountryCode: deviceCountryCode
     )
   }
 

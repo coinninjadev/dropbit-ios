@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import PhoneNumberKit
 
 /**
  The properties represented here can be used to compose an alert/notification regarding
@@ -102,13 +101,13 @@ struct AddressRequestUpdate: AddressRequestUpdateDisplayable {
   var side: InvitationSide
   var status: InvitationStatus
 
-  init?(response: WalletAddressRequestResponse, requestSide: WalletAddressRequestSide, formatter: PhoneNumberFormatterType, kit: PhoneNumberKit) {
+  init?(response: WalletAddressRequestResponse, requestSide: WalletAddressRequestSide, formatter: PhoneNumberFormatterType) {
     guard let responseStatus = response.statusCase else { return nil }
     self.phoneNumberFormatter = formatter
     self.txid = response.txid
     self.addressRequestId = response.id
-    self.senderPhoneNumber = response.metadata?.sender.flatMap { GlobalPhoneNumber(participant: $0, kit: kit) }
-    self.receiverPhoneNumber = response.metadata?.receiver.flatMap { GlobalPhoneNumber(participant: $0, kit: kit) }
+    self.senderPhoneNumber = response.metadata?.sender.flatMap { GlobalPhoneNumber(participant: $0) }
+    self.receiverPhoneNumber = response.metadata?.receiver.flatMap { GlobalPhoneNumber(participant: $0) }
     self.btcAmount = response.metadata?.amount?.btc ?? 0
     self.fiatAmount = response.metadata?.amount?.usd ?? 0
     self.side = InvitationSide(requestSide: requestSide)

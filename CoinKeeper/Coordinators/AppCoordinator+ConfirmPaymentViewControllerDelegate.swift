@@ -247,7 +247,7 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate, CurrencyFormatta
       topVC.present(composeVC, animated: true, completion: nil)
     })
 
-    let formatter = CKPhoneNumberFormatter(kit: self.phoneNumberKit, format: .international)
+    let formatter = CKPhoneNumberFormatter(format: .international)
 
     var recipientDesc = "the recipient"
     if let globalNumber = inviteBody.receiver.globalNumber(),

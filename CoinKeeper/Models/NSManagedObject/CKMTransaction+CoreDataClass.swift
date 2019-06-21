@@ -326,7 +326,7 @@ extension CKMTransaction: CounterpartyRepresentable {
     }
   }
 
-  func counterpartyDisplayIdentity(deviceCountryCode: Int?, kit: PhoneNumberKit) -> String? {
+  func counterpartyDisplayIdentity(deviceCountryCode: Int?) -> String? {
     if let counterpartyTwitterContact = self.twitterContact {
       return counterpartyTwitterContact.formattedScreenName  // should include @-sign
     }
@@ -338,7 +338,7 @@ extension CKMTransaction: CounterpartyRepresentable {
       if let code = deviceCountryCode {
         format = (code == globalPhoneNumber.countryCode) ? .national : .international
       }
-      let formatter = CKPhoneNumberFormatter(kit: kit, format: format)
+      let formatter = CKPhoneNumberFormatter(format: format)
 
       return try? formatter.string(from: globalPhoneNumber)
     }

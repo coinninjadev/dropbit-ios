@@ -31,7 +31,6 @@ class TransactionHistorySummaryCell: UICollectionViewCell {
     return layoutAttributes
   }
 
-
   override func prepareForReuse() {
     super.prepareForReuse()
     incomingImage.layer.borderColor = nil

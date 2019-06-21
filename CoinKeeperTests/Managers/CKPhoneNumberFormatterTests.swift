@@ -8,11 +8,8 @@
 
 @testable import DropBit
 import XCTest
-import PhoneNumberKit
 
 class CKPhoneNumberFormatterTests: XCTestCase {
-
-  let kit = PhoneNumberKit()
 
   override func setUp() {
     super.setUp()
@@ -28,10 +25,10 @@ class CKPhoneNumberFormatterTests: XCTestCase {
     let expectedNational = "(321) 555-1212"
     let expectedInternational = "+1 321-555-1212"
 
-    let nationalFormatter = CKPhoneNumberFormatter(kit: self.kit, format: .national)
+    let nationalFormatter = CKPhoneNumberFormatter(format: .national)
     let nationalFormatted = (try? nationalFormatter.string(from: usNumber)) ?? ""
 
-    let internationalFormatter = CKPhoneNumberFormatter(kit: self.kit, format: .international)
+    let internationalFormatter = CKPhoneNumberFormatter(format: .international)
     let internationalFormatted = (try? internationalFormatter.string(from: usNumber)) ?? ""
 
     XCTAssertEqual(nationalFormatted, expectedNational, "National formats should be equal")

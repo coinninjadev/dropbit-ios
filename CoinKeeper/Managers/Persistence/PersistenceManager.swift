@@ -7,7 +7,6 @@ import CNBitcoinKit
 import Foundation
 import CoreData
 import PromiseKit
-import PhoneNumberKit
 import os.log
 
 class PersistenceManager: PersistenceManagerType {
@@ -152,11 +151,10 @@ class PersistenceManager: PersistenceManagerType {
   }
   private func phoneIdentity(for user: CKMUser, in context: NSManagedObjectContext) -> PublicURLIdentity? {
     let hasher = HashingManager()
-    let kit = PhoneNumberKit()
     guard let salt = try? hasher.salt(),
       let phoneNumber = self.verifiedPhoneNumber() else { return nil }
 
-    let hash = hasher.hash(phoneNumber: phoneNumber, salt: salt, parsedNumber: nil, kit: kit)
+    let hash = hasher.hash(phoneNumber: phoneNumber, salt: salt, parsedNumber: nil)
     let phoneIdentity = PublicURLIdentity(fullPhoneHash: hash)
     return phoneIdentity
   }
@@ -304,12 +302,11 @@ class PersistenceManager: PersistenceManagerType {
     }
   }
 
-  func persistReceivedSharedPayloads(_ payloads: [Data], kit: PhoneNumberKit, in context: NSManagedObjectContext) {
+  func persistReceivedSharedPayloads(_ payloads: [Data], in context: NSManagedObjectContext) {
     let hasher = self.hashingManager
     databaseManager.sharedPayloadManager.persistReceivedSharedPayloads(
       payloads,
       hasher: hasher,
-      kit: kit,
       contactCacheManager: contactCacheManager,
       in: context)
   }

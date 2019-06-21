@@ -9,7 +9,6 @@
 import Foundation
 import os.log
 import CoreData
-import PhoneNumberKit
 import PromiseKit
 import CNBitcoinKit
 
