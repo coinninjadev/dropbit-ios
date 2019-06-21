@@ -26,11 +26,6 @@ class TextViewController: BaseViewController, StoryboardInitializable {
     setupUI()
   }
 
-  override func viewWillAppear(_ animated: Bool) {
-    super.viewWillAppear(animated)
-    navigationController?.isNavigationBarHidden = false
-  }
-
   func setupUI() {
     guard let htmlString = htmlString else { return }
     webView.scrollView.showsVerticalScrollIndicator = false

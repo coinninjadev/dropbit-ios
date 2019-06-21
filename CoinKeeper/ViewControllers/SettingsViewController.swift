@@ -32,7 +32,6 @@ class SettingsViewController: BaseViewController, StoryboardInitializable {
     return generalCoordinationDelegate as? SettingsViewControllerDelegate
   }
 
-  @IBOutlet var closeButton: UIButton!
   @IBOutlet var settingsTableView: UITableView! {
     didSet {
       settingsTableView.backgroundColor = .clear
@@ -60,7 +59,7 @@ class SettingsViewController: BaseViewController, StoryboardInitializable {
     coordinationDelegate?.viewControllerResyncBlockchain(self)
   }
 
-  @IBAction func close() {
+  @objc func close() {
     coordinationDelegate?.viewControllerDidSelectClose(self)
   }
 
@@ -73,6 +72,9 @@ class SettingsViewController: BaseViewController, StoryboardInitializable {
 
   override func viewDidLoad() {
     super.viewDidLoad()
+
+    setNavBarTitle()
+    navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "close"), style: .plain, target: self, action: #selector(self.close))
 
     viewModel = createViewModel()
     settingsTableView.registerNib(cellType: SettingCell.self)
@@ -90,8 +92,16 @@ class SettingsViewController: BaseViewController, StoryboardInitializable {
 
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
-    navigationController?.isNavigationBarHidden = true
     settingsTableView.reloadData()
+  }
+
+  override func viewDidDisappear(_ animated: Bool) {
+    super.viewDidDisappear(animated)
+    setNavBarTitle()
+  }
+
+  private func setNavBarTitle() {
+    self.navigationItem.title = "SETTINGS"
   }
 
   private func isWalletBackedUp() -> Bool {
