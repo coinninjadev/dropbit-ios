@@ -73,7 +73,7 @@ class WalletAddressDataWorker: WalletAddressDataWorkerType {
   }
 
   func updateServerPoolAddresses(in context: NSManagedObjectContext) -> Promise<Void> {
-    let verificationStatus = persistenceManager.userVerificationStatus(in: context)
+    let verificationStatus = persistenceManager.brokers.user.userVerificationStatus(in: context)
     guard verificationStatus == .verified else { return Promise { $0.fulfill(()) } }
 
     let addressSource = self.walletManager.createAddressDataSource()
@@ -87,7 +87,7 @@ class WalletAddressDataWorker: WalletAddressDataWorkerType {
   func registerAndPersistServerAddresses(number: Int, in context: NSManagedObjectContext) -> Promise<Void> {
     guard number > 0 else { return Promise { $0.fulfill(()) } }
 
-    let verificationStatus = persistenceManager.userVerificationStatus(in: context)
+    let verificationStatus = persistenceManager.brokers.user.userVerificationStatus(in: context)
     guard verificationStatus == .verified else { return Promise { $0.fulfill(()) } }
 
     let addressDataSource = self.walletManager.createAddressDataSource()
@@ -103,7 +103,7 @@ class WalletAddressDataWorker: WalletAddressDataWorkerType {
         os_log("Added wallet addresses to server:", log: self.logger, type: .debug)
         responses.forEach { os_log("\t%{private}@", log: self.logger, type: .debug, $0.address)}
 
-        return self.persistenceManager.persistAddedWalletAddresses(from: responses, metaAddresses: metaAddresses, in: context)
+        return self.persistenceManager.brokers.wallet.persistAddedWalletAddresses(from: responses, metaAddresses: metaAddresses, in: context)
     }
   }
 
@@ -116,7 +116,7 @@ class WalletAddressDataWorker: WalletAddressDataWorkerType {
   }
 
   func updateReceivedAddressRequests(in context: NSManagedObjectContext) -> Promise<Void> {
-    guard persistenceManager.userId(in: context) != nil else {
+    guard persistenceManager.brokers.user.userId(in: context) != nil else {
       return Promise(error: CKNetworkError.userNotVerified)
     }
 
@@ -127,7 +127,7 @@ class WalletAddressDataWorker: WalletAddressDataWorkerType {
   }
 
   func updateSentAddressRequests(in context: NSManagedObjectContext) -> Promise<Void> {
-    guard persistenceManager.userId(in: context) != nil else {
+    guard persistenceManager.brokers.user.userId(in: context) != nil else {
       return Promise.value(())
     }
 
@@ -156,7 +156,7 @@ class WalletAddressDataWorker: WalletAddressDataWorkerType {
     return self.networkManager.getWalletAddressRequests(forSide: .sent)
       .then(in: context) { (responses: [WalletAddressRequestResponse]) -> Promise<Void> in
         let serverAcknowledgedIds = responses.compactMap { $0.metadata?.requestId }.asSet()
-        let unacknowledgedInvitations = self.persistenceManager.getUnacknowledgedInvitations(in: context)
+        let unacknowledgedInvitations = self.persistenceManager.brokers.invitation.getUnacknowledgedInvitations(in: context)
 
         for invitation in unacknowledgedInvitations {
           if serverAcknowledgedIds.contains(invitation.sanitizedId),
@@ -173,7 +173,7 @@ class WalletAddressDataWorker: WalletAddressDataWorkerType {
 
   private func cancelUnknownInvitationRequestsIfNecessary(_ responses: [WalletAddressRequestResponse],
                                                           in context: NSManagedObjectContext) -> Promise<Void> {
-    let allLocalInvitationIds = persistenceManager.getAllInvitations(in: context).map { $0.id }.asSet()
+    let allLocalInvitationIds = persistenceManager.brokers.invitation.getAllInvitations(in: context).map { $0.id }.asSet()
     let responseIds = responses.filter { $0.statusCase == .new }.map { $0.id }.asSet()
     guard allLocalInvitationIds.isNotEmpty else { return Promise.value(()) }
 
@@ -213,7 +213,7 @@ class WalletAddressDataWorker: WalletAddressDataWorkerType {
         requiredFeeRate: nil,
         sharedPayloadDTO: nil)
 
-      self.persistenceManager.acknowledgeInvitation(with: outgoingTransactionData, response: response, in: context)
+      self.persistenceManager.brokers.invitation.acknowledgeInvitation(with: outgoingTransactionData, response: response, in: context)
     }
   }
 
@@ -465,7 +465,7 @@ class WalletAddressDataWorker: WalletAddressDataWorkerType {
     return self.deleteAddressesFromServer(usedAddressIds)
       .get(in: context) { _ in
         usedServerAddresses.forEach { context.delete($0) }
-        self.persistenceManager.updateWalletLastIndexes(in: context)
+        self.persistenceManager.brokers.wallet.updateWalletLastIndexes(in: context)
       }
       .map { deletedAddressIds -> Int in
         os_log("Deleted addresses from server:", log: self.logger, type: .debug)
@@ -682,7 +682,7 @@ class WalletAddressDataWorker: WalletAddressDataWorkerType {
       .get { dto.txid = $0 }
       .get(in: context) { (txid: String) in
         if let transactionData = dto.transactionData {
-          self.persistenceManager.persistTemporaryTransaction(
+          self.persistenceManager.brokers.transaction.persistTemporaryTransaction(
             from: transactionData,
             with: outgoingTransactionData,
             txid: txid,

@@ -52,13 +52,13 @@ class WalletSyncOperationFactory {
               return
             }
 
+            var caughtError: Error?
             strongSelf.performSync(with: dependencies,
                                    fullSync: isFullSync,
-                                   completion: completion,
                                    in: bgContext)
               .catch(in: bgContext) { error in
+                caughtError = error
                 strongSelf.handleSyncRoutineError(error, in: bgContext)
-                completion?(error)
 
               }.finally {
                 if let fetchResultHandler = fetchResult {
@@ -78,8 +78,8 @@ class WalletSyncOperationFactory {
                 CKNotificationCenter.publish(key: .didFinishSync, object: nil, userInfo: nil)
                 CKNotificationCenter.publish(key: .didUpdateBalance, object: nil, userInfo: nil)
 
-                dependencies.persistenceManager.set(Date(), for: .lastSuccessfulSyncCompletedAt)
-                completion?(nil)
+                dependencies.persistenceManager.brokers.activity.lastSuccessfulSync = Date()
+                completion?(caughtError) //Only call completion handler once
 
                 sync.finish()
                 UIApplication.shared.endBackgroundTask(backgroundTaskId)
@@ -99,7 +99,6 @@ class WalletSyncOperationFactory {
 
   private func performSync(with dependencies: SyncDependencies,
                            fullSync: Bool,
-                           completion: CompletionHandler?,
                            in context: NSManagedObjectContext) -> Promise<Void> {
     return dependencies.databaseMigrationWorker.migrateIfPossible()
       .then(in: context) { self.checkAndRecoverAuthorizationIds(with: dependencies, in: context) }
@@ -108,26 +107,26 @@ class WalletSyncOperationFactory {
       .then(in: context) { dependencies.walletWorker.updateServerPoolAddresses(in: context) }
       .then(in: context) { dependencies.walletWorker.updateReceivedAddressRequests(in: context) }
       .then(in: context) { _ in dependencies.walletWorker.updateSentAddressRequests(in: context) }
-      .recover { error -> Promise<Void> in
-        if let providerError = error as? CKNetworkError {
-          switch providerError {
-          case .userNotVerified:
-            break
-          default: throw error
-          }
-        } else {
-          throw error
-        }
-        return Promise.value(())
-      }
+      .recover(self.recoverSyncError)
       .then(in: context) { _ in self.fetchAndFulfillReceivedAddressRequests(with: dependencies, in: context) }
       .then(in: context) { _ in dependencies.delegate.showAlertsForSyncedChanges(in: context) }
       .then(in: context) { _ in dependencies.twitterAccessManager.inflateTwitterUsersIfNeeded(in: context) }
   }
 
+  private func recoverSyncError(_ error: Error) -> Promise<Void> {
+    if let providerError = error as? CKNetworkError {
+      switch providerError {
+      case .userNotVerified:  return Promise.value(())
+      default:                return Promise(error: error)
+      }
+    } else {
+      return Promise(error: error)
+    }
+  }
+
   func checkAndRecoverAuthorizationIds(with dependencies: SyncDependencies, in context: NSManagedObjectContext) -> Promise<Void> {
-    let walletId: String? = dependencies.persistenceManager.walletId(in: context)
-    let userId: String? = dependencies.persistenceManager.userId(in: context)
+    let walletId: String? = dependencies.persistenceManager.brokers.wallet.walletId(in: context)
+    let userId: String? = dependencies.persistenceManager.brokers.user.userId(in: context)
 
     if userId != nil {
       return dependencies.networkManager.getUser().asVoid()
@@ -136,7 +135,7 @@ class WalletSyncOperationFactory {
       return dependencies.networkManager.getWallet().asVoid()
 
     } else { // walletId is nil
-      guard let keychainWords = dependencies.persistenceManager.walletWords() else {
+      guard let keychainWords = dependencies.persistenceManager.brokers.wallet.walletWords() else {
         return Promise { $0.reject(CKPersistenceError.noWalletWords) }
       }
 
@@ -147,7 +146,7 @@ class WalletSyncOperationFactory {
   }
 
   func fetchAndFulfillReceivedAddressRequests(with dependencies: SyncDependencies, in context: NSManagedObjectContext) -> Promise<Void> {
-    let verificationStatus = dependencies.persistenceManager.userVerificationStatus(in: context)
+    let verificationStatus = dependencies.persistenceManager.brokers.user.userVerificationStatus(in: context)
     guard verificationStatus == .verified else { return Promise { $0.fulfill(()) } }
     return dependencies.walletWorker.fetchAndFulfillReceivedAddressRequests(in: context).asVoid()
   }

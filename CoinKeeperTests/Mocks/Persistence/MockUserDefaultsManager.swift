@@ -11,47 +11,10 @@ import Foundation
 
 class MockUserDefaultsManager: PersistenceUserDefaultsType {
 
+  let standardDefaults: UserDefaults = UserDefaults(suiteName: "com.coinninja.unittests")!
+
   func deleteAll() {}
   func deleteWallet() {}
   func unverifyUser() {}
-  func removeWalletId() {}
-  func deleteDeviceEndpointIds() {}
-  func setDeviceId(_ uuid: UUID) {}
-
-  func deviceId() -> UUID? {
-    return UUID()
-  }
-
-  var receiveAddressIndexGapsValue: Set<Int> = []
-  var receiveAddressIndexGaps: Set<Int> {
-    get {
-      return receiveAddressIndexGapsValue
-    }
-    set {
-      receiveAddressIndexGapsValue = newValue
-    }
-  }
-
-  func dustProtectionIsEnabled() -> Bool {
-    return false
-  }
-
-  func dustProtectionMinimumAmount() -> Int {
-    return 0
-  }
-
-  func yearlyPriceHighNotificationIsEnabled() -> Bool {
-    return true
-  }
-
-  func lastLoginTime() -> TimeInterval? {
-    return nil
-  }
-
-  var dontShowShareTransaction: Bool = false
-
-  // standardDefaults is not used by MockPersistenceManager, and is not accessed outside PersistenceManager (wjf, 2018-04)
-  var standardDefaults = UserDefaults(suiteName: "com.coinninja.unittests")
-  var value: [String: Any] = [:]
 
 }

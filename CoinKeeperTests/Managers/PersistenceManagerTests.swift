@@ -8,17 +8,14 @@ import PromiseKit
 @testable import DropBit
 import Strongbox
 
-class PersistenceManagerTests: XCTestCase {
+class PersistenceManagerTests: MockedPersistenceTestCase {
   var sut: PersistenceManager!
   var mockKeychainAccessor: MockKeychainAccessorType!
   var mockKeychainManager: CKKeychain!
-  var mockDatabaseManager: MockPersistenceDatabaseManager!
-  var mockUserDefaultsManager: MockUserDefaultsManager!
   var mockContactCacheManager: MockContactCacheManager!
 
   override func setUp() {
     super.setUp()
-    mockDatabaseManager = MockPersistenceDatabaseManager()
     mockContactCacheManager = MockContactCacheManager()
     mockKeychainAccessor = MockKeychainAccessorType()
     mockUserDefaultsManager = MockUserDefaultsManager()
@@ -28,7 +25,8 @@ class PersistenceManagerTests: XCTestCase {
       keychainManager: mockKeychainManager,
       databaseManager: mockDatabaseManager,
       userDefaultsManager: mockUserDefaultsManager,
-      contactCacheManager: mockContactCacheManager
+      contactCacheManager: mockContactCacheManager,
+      brokers: mockBrokers
     )
   }
 
@@ -90,19 +88,19 @@ class PersistenceManagerTests: XCTestCase {
     let mockDatabaseManager = MockPersistenceDatabaseManager()
     self.sut = PersistenceManager(databaseManager: mockDatabaseManager)
 
-    _ = self.sut.deleteTransactions(notIn: [], in: InMemoryCoreDataStack().context)
+    _ = self.sut.brokers.transaction.deleteTransactions(notIn: [], in: InMemoryCoreDataStack().context)
 
     XCTAssertTrue(mockDatabaseManager.deleteTransactionsFromResponsesWasCalled, "should tell databaseManager to handle grooming")
   }
 
   // MARK: user defaults
   func testReceiveAddressIndexGaps() {
-    XCTAssertTrue(sut.userDefaultsManager.receiveAddressIndexGaps.isEmpty, "receiveAddressIndexGaps should be empty at start of test")
+    XCTAssertTrue(sut.brokers.wallet.receiveAddressIndexGaps.isEmpty, "receiveAddressIndexGaps should be empty at start of test")
 
     let expectedGaps = Set([1, 3, 5, 28])
-    sut.userDefaultsManager.receiveAddressIndexGaps = expectedGaps
+    sut.brokers.wallet.receiveAddressIndexGaps = expectedGaps
 
-    XCTAssertEqual(sut.userDefaultsManager.receiveAddressIndexGaps, expectedGaps, "receiveAddressIndexGaps should equal the gaps that were set")
+    XCTAssertEqual(sut.brokers.wallet.receiveAddressIndexGaps, expectedGaps, "receiveAddressIndexGaps should equal the gaps that were set")
   }
 
   // MARK: contact matching
@@ -115,7 +113,7 @@ class PersistenceManagerTests: XCTestCase {
     sut = PersistenceManager(
       keychainManager: mockKeychainManager,
       databaseManager: mockDBMgr,
-      userDefaultsManager: mockUserDefaultsManager,
+      userDefaultsManager: self.mockUserDefaultsManager,
       contactCacheManager: mockContactCacheMgr
     )
 

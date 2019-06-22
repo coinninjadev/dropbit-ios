@@ -124,7 +124,7 @@ class TransactionDataWorker: TransactionDataWorkerType {
     let highPriorityBackgroundQueue = DispatchQueue.global(qos: .userInitiated)
 
     return self.persistAddressTransactionSummaries(with: aggregateATSResponses, in: context)
-      .get(in: context) { _ in self.persistenceManager.updateWalletLastIndexes(in: context) }
+      .get(in: context) { _ in self.persistenceManager.brokers.wallet.updateWalletLastIndexes(in: context) }
       .then { Promise.value(TransactionDataWorkerDTO(atsResponses: $0)) }
       .then { (dto: TransactionDataWorkerDTO) -> Promise<TransactionDataWorkerDTO> in
         return self.networkManager.updateCachedMetadata()
@@ -166,7 +166,7 @@ class TransactionDataWorker: TransactionDataWorkerType {
   private func minimumSeekReceiveAddressIndex(in context: NSManagedObjectContext) -> Int? {
     var potentialIndices: Set<Int?> = []
     potentialIndices.insert(CKMServerAddress.maxIndex(in: context))
-    potentialIndices.insert(persistenceManager.lastReceiveAddressIndex(in: context))
+    potentialIndices.insert(persistenceManager.brokers.wallet.lastReceiveAddressIndex(in: context))
 
     let validIndices = potentialIndices.compactMap { $0 }.filter { $0 > 0 }
     return validIndices.max()
@@ -312,9 +312,12 @@ class TransactionDataWorker: TransactionDataWorkerType {
     let localATSTxids = CKMAddressTransactionSummary.findAllTxids(in: context)
     let expectedTxids = localATSTxids + dto.atsResponsesTxIds //combine local ATS txids with incremental ones for full set of valid txids
 
-    return persistenceManager.persistTransactions(from: uniqueTxResponses, in: context, relativeToCurrentHeight: dto.blockHeight, fullSync: fullSync)
+    return persistenceManager.brokers.transaction.persistTransactions(from: uniqueTxResponses,
+                                                                      in: context,
+                                                                      relativeToCurrentHeight: dto.blockHeight,
+                                                                      fullSync: fullSync)
       .get(in: context) { self.decryptAndPersistSharedPayloads(from: uniqueTxNotificationResponses, in: context) }
-      .get(in: context) { self.persistenceManager.deleteTransactions(notIn: expectedTxids, in: context) }
+      .get(in: context) { self.persistenceManager.brokers.transaction.deleteTransactions(notIn: expectedTxids, in: context) }
       .then(in: context) { self.groomFailedTransactions(notIn: expectedTxids, in: context) }
       .then { return Promise.value(uniqueTxResponses) }
   }
@@ -396,7 +399,7 @@ class TransactionDataWorker: TransactionDataWorkerType {
   }
 
   private func updateTransactionDayAveragePrices(in context: NSManagedObjectContext) -> Promise<Void> {
-    return self.persistenceManager.transactionsWithoutDayAveragePrice(in: context)
+    return self.persistenceManager.brokers.transaction.transactionsWithoutDayAveragePrice(in: context)
       .then(in: context) { self.fetchAndSetDayAveragePrices(for: $0, in: context) }
   }
 
@@ -449,7 +452,6 @@ class TransactionDataWorker: TransactionDataWorkerType {
     in context: NSManagedObjectContext
     ) -> Promise<Void> {
     return Promise { seal in
-
       // fetch all unspent vouts, these may or may not belong to our wallet (address != nil)
       var unspentVouts: [CKMVout] = []
       do {

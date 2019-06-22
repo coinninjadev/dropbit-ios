@@ -116,7 +116,7 @@ class AppCoordinator: CoordinatorType {
     twitterAccessManager: TwitterAccessManagerType? = nil,
     uiTestArguments: [UITestArgument] = []
     ) {
-    currencyController.selectedCurrency = persistenceManager.selectedCurrency()
+    currencyController.selectedCurrency = persistenceManager.brokers.preferences.selectedCurrency
     self.currencyController = currencyController
 
     self.navigationController = navigationController
@@ -127,7 +127,7 @@ class AppCoordinator: CoordinatorType {
     self.launchStateManager = theLaunchStateManager
     self.badgeManager = BadgeManager(persistenceManager: persistenceManager)
     self.analyticsManager = analyticsManager
-    if let words = persistenceManager.walletWords() {
+    if let words = persistenceManager.brokers.wallet.walletWords() {
       self.walletManager = WalletManager(words: words, persistenceManager: persistenceManager)
     }
     self.balanceUpdateManager = BalanceUpdateManager()
@@ -216,7 +216,7 @@ class AppCoordinator: CoordinatorType {
       persistenceManager.keychainManager.unverifyUser(for: .twitter)
     }
 
-    let phoneExists = persistenceManager.verifiedPhoneNumber() != nil
+    let phoneExists = persistenceManager.brokers.user.verifiedPhoneNumber() != nil
     if phoneExists {
       persistenceManager.keychainManager.unverifyUser(for: .phone)
     }
@@ -232,7 +232,7 @@ class AppCoordinator: CoordinatorType {
   }
 
   func setWalletManagerWithPersistedWords() {
-    if let words = self.persistenceManager.walletWords() {
+    if let words = self.persistenceManager.brokers.wallet.walletWords() {
       self.walletManager = WalletManager(words: words, persistenceManager: self.persistenceManager)
     }
   }
@@ -260,7 +260,6 @@ class AppCoordinator: CoordinatorType {
     networkManager.start()
     connectionManager.delegate = self
 
-
     // fetch transaction information for receive and change addresses, update server addresses
     UIApplication.shared.setMinimumBackgroundFetchInterval(.oneHour)
 
@@ -271,13 +270,13 @@ class AppCoordinator: CoordinatorType {
     trackAnalytics()
 
     let now = Date()
-    let lastContactReloadDate: Date = persistenceManager.date(for: .lastContactCacheReload) ?? .distantPast
+    let lastContactReloadDate: Date = persistenceManager.brokers.activity.lastContactCacheReload ?? .distantPast
     let oneWeekAgo = Calendar.current.date(byAdding: .day, value: -7, to: now) ?? now
     let shouldForce = lastContactReloadDate < oneWeekAgo
     self.contactCacheDataWorker.reloadSystemContactsIfNeeded(force: shouldForce) { [weak self] _ in
       self?.persistenceManager.matchContactsIfPossible()
       if shouldForce {
-        self?.persistenceManager.set(now, for: .lastContactCacheReload)
+        self?.persistenceManager.brokers.activity.lastContactCacheReload = now
       }
     }
   }
@@ -336,7 +335,7 @@ class AppCoordinator: CoordinatorType {
   func appWillResignActiveState() {
     let backgroundTaskId = UIApplication.shared.beginBackgroundTask(expirationHandler: nil)
     connectionManager.stop()
-    persistenceManager.setLastLoginTime()
+    persistenceManager.brokers.activity.setLastLoginTime()
     UIApplication.shared.endBackgroundTask(backgroundTaskId)
   }
 
@@ -348,7 +347,7 @@ class AppCoordinator: CoordinatorType {
 
     // check keychain time interval for resigned time, and if within 30 sec, don't require
     let now = Date().timeIntervalSince1970
-    let lastLogin = persistenceManager.lastLoginTime() ?? Date.distantPast.timeIntervalSince1970
+    let lastLogin = persistenceManager.brokers.activity.lastLoginTime ?? Date.distantPast.timeIntervalSince1970
 
     let secondsSinceLastLogin = now - lastLogin
     if secondsSinceLastLogin > maxSecondsInBackground {
@@ -364,7 +363,7 @@ class AppCoordinator: CoordinatorType {
   private func refreshTwitterAvatar() {
     let bgContext = persistenceManager.createBackgroundContext()
     bgContext.performAndWait {
-      guard persistenceManager.userIsVerified(using: .twitter, in: bgContext) else {
+      guard persistenceManager.brokers.user.userIsVerified(using: .twitter, in: bgContext) else {
         return
       }
 

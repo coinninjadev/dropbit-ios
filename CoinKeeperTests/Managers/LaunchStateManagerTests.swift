@@ -10,13 +10,12 @@ import UIKit
 @testable import DropBit
 import XCTest
 
-class LaunchStateManagerTests: XCTestCase {
+class LaunchStateManagerTests: MockedPersistenceTestCase {
   var sut: LaunchStateManager!
-  var mockPersistenceManager: MockPersistenceManager!
 
   override func setUp() {
     super.setUp()
-    self.mockPersistenceManager = MockPersistenceManager()
+
     self.sut = LaunchStateManager(persistenceManager: mockPersistenceManager)
   }
 
@@ -91,7 +90,7 @@ class LaunchStateManagerTests: XCTestCase {
     _ = mockPersistenceManager.keychainManager.store(anyValue: nil, key: .walletWords)
     self.sut.unauthenticateUser()
 
-    mockPersistenceManager.userVerificationStatusValue = .verified
+    mockBrokers.mockUser.userVerificationStatusValue = .verified
     XCTAssertTrue(self.sut.isFirstTimeAfteriCloudRestore())
   }
 
@@ -101,7 +100,7 @@ class LaunchStateManagerTests: XCTestCase {
     _ = mockPersistenceManager.keychainManager.store(anyValue: nil, key: .walletWords)
     self.sut.unauthenticateUser()
 
-    mockPersistenceManager.userVerificationStatusValue = .unverified
+    mockBrokers.mockUser.userVerificationStatusValue = .unverified
 
     XCTAssertTrue(self.sut.currentProperties().isEmpty)
   }
