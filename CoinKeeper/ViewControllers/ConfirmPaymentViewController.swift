@@ -44,6 +44,9 @@ class ConfirmPaymentViewController: PresentableViewController, StoryboardInitial
   @IBOutlet var primaryCurrencyLabel: UILabel!
   @IBOutlet var secondaryCurrencyLabel: UILabel!
   @IBOutlet var networkFeeLabel: UILabel!
+  @IBOutlet var adjustableFeesContainer: UIView!
+  @IBOutlet var adjustableFeesControl: UISegmentedControl!
+  @IBOutlet var adjustableFeesLabel: UILabel!
   @IBOutlet var contactLabel: UILabel!
   @IBOutlet var primaryAddressLabel: UILabel!
   @IBOutlet var memoContainerView: ConfirmPaymentMemoView!
@@ -88,6 +91,17 @@ class ConfirmPaymentViewController: PresentableViewController, StoryboardInitial
 
     tapAndHoldLabel.textColor = .darkGrayText
     tapAndHoldLabel.font = .medium(13)
+
+    adjustableFeesControl.tintColor = .primaryActionButton
+    adjustableFeesControl.backgroundColor = .lightGrayBackground
+    adjustableFeesControl.setTitleTextAttributes([
+      .font: UIFont.medium(10),
+      .foregroundColor: UIColor.deselectedGrayText
+      ], for: .normal)
+    adjustableFeesControl.setTitleTextAttributes([
+      .font: UIFont.medium(10),
+      .foregroundColor: UIColor.whiteText
+      ], for: .selected)
   }
 
   private func updateView(with viewModel: ConfirmPaymentViewModelType) {
@@ -101,14 +115,28 @@ class ConfirmPaymentViewController: PresentableViewController, StoryboardInitial
     primaryCurrencyLabel.text = amounts.primary
     secondaryCurrencyLabel.attributedText = amounts.secondary
 
+    updateFees(with: viewModel.feesViewModel)
+
+    let fee = viewModel.feesViewModel.applicableFee
     let feeConverter = CurrencyConverter(rates: viewModel.rates,
-                                         fromAmount: NSDecimalNumber(integerAmount: viewModel.fee, currency: .BTC),
+                                         fromAmount: NSDecimalNumber(integerAmount: fee, currency: .BTC),
                                          fromCurrency: .BTC,
                                          toCurrency: .USD)
 
     let btcFee = String(describing: feeConverter.amount(forCurrency: .BTC) ?? 0)
     let fiatFee = feeConverter.amountStringWithSymbol(forCurrency: .USD) ?? ""
     networkFeeLabel.text = "Network Fee \(btcFee) (\(fiatFee))"
+  }
+
+  private func updateFees(with viewModel: ConfirmAdjustableFeesViewModel) {
+    adjustableFeesContainer.isHidden = !viewModel.adjustableFeesEnabled
+    adjustableFeesControl.selectedSegmentIndex = viewModel.selectedModeIndex
+    adjustableFeesLabel.attributedText = viewModel.attributedWaitTimeDescription
+
+    for (i, model) in viewModel.segmentModels.enumerated() {
+      adjustableFeesControl.setTitle(model.title, forSegmentAt: i)
+      adjustableFeesControl.setEnabled(model.isEnabled, forSegmentAt: i)
+    }
   }
 
   private func updateRecipient(with viewModel: ConfirmPaymentViewModelType) {
@@ -239,7 +267,7 @@ class ConfirmPaymentViewController: PresentableViewController, StoryboardInitial
     let pair = (btcAmount: btcAmount, usdAmount: converter.amount(forCurrency: .USD) ?? NSDecimalNumber(decimal: 0.0))
     let outgoingInvitationDTO = OutgoingInvitationDTO(contact: contact,
                                                       btcPair: pair,
-                                                      fee: viewModel.fee,
+                                                      fee: viewModel.feesViewModel.applicableFee,
                                                       sharedPayloadDTO: viewModel.sharedPayloadDTO)
     coordinationDelegate?.viewControllerDidConfirmInvite(self, outgoingInvitationDTO: outgoingInvitationDTO)
   }

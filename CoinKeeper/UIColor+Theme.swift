@@ -37,6 +37,7 @@ extension UIColor {
   static var dragIndicator: UIColor { return darkGrayText }
 
   static var pageIndicator: UIColor { return UIColor(r: 184, g: 184, b: 184) }
+  static var deselectedGrayText: UIColor { return pageIndicator }
 
   static var graySeparator: UIColor { return UIColor(r: 216, g: 216, b: 216) }
 
