@@ -15,9 +15,9 @@ protocol ConfirmPaymentViewModelType: SendPaymentDataProvider {
   var contact: ContactType? { get }
   var btcAmount: NSDecimalNumber? { get }
   var primaryCurrency: CurrencyCode { get }
-  var fee: Int { get }
   var rates: ExchangeRates { get }
   var sharedPayloadDTO: SharedPayloadDTO? { get }
+  var feesViewModel: ConfirmAdjustableFeesViewModel { get }
 }
 
 struct ConfirmPaymentInviteViewModel: ConfirmPaymentViewModelType {
@@ -25,7 +25,7 @@ struct ConfirmPaymentInviteViewModel: ConfirmPaymentViewModelType {
   var contact: ContactType?
   var btcAmount: NSDecimalNumber?
   let primaryCurrency: CurrencyCode
-  let fee: Int
+  var feesViewModel: ConfirmAdjustableFeesViewModel
   let rates: ExchangeRates
   let sharedPayloadDTO: SharedPayloadDTO?
 
@@ -40,10 +40,13 @@ struct ConfirmPaymentViewModel: ConfirmPaymentViewModelType {
   var contact: ContactType?
   var btcAmount: NSDecimalNumber?
   var primaryCurrency: CurrencyCode
-  var fee: Int
+  var feesViewModel: ConfirmAdjustableFeesViewModel
   var outgoingTransactionData: OutgoingTransactionData
-  var transactionData: CNBTransactionData
   var rates: ExchangeRates
+
+  var transactionData: CNBTransactionData {
+    return feesViewModel.applicableTransactionData
+  }
 
   var sharedPayloadDTO: SharedPayloadDTO? {
     return outgoingTransactionData.sharedPayloadDTO
@@ -54,18 +57,16 @@ struct ConfirmPaymentViewModel: ConfirmPaymentViewModelType {
     primaryCurrency: CurrencyCode,
     address: String?,
     contact: ContactType?,
-    fee: Int,
+    feeAdjustableTxData: FeeAdjustableTransactionData,
     outgoingTransactionData: OutgoingTransactionData,
-    transactionData: CNBTransactionData,
     rates: ExchangeRates
     ) {
     self.btcAmount = btcAmount
     self.contact = contact
     self.primaryCurrency = primaryCurrency
     self.address = address
-    self.fee = fee
+    self.feesViewModel = ConfirmAdjustableFeesViewModel(adjustableFeeData: feeAdjustableTxData)
     self.outgoingTransactionData = outgoingTransactionData
-    self.transactionData = transactionData
     self.rates = rates
   }
 
@@ -75,17 +76,152 @@ struct ConfirmPaymentViewModel: ConfirmPaymentViewModelType {
     address: String?,
     contact: ContactType?,
     outgoingTransactionData: OutgoingTransactionData,
-    transactionData: CNBTransactionData,
+    feeAdjustableTxData: FeeAdjustableTransactionData,
     rates: ExchangeRates
   ) {
     self.btcAmount = btcAmount
     self.contact = contact
     self.primaryCurrency = primaryCurrency
     self.address = address
-    self.fee = Int(transactionData.feeAmount)
     self.outgoingTransactionData = outgoingTransactionData
-    self.transactionData = transactionData
+    self.feesViewModel = ConfirmAdjustableFeesViewModel(adjustableFeeData: feeAdjustableTxData)
     self.rates = rates
   }
 
+}
+
+struct FeeRates {
+  let high: Double
+  let medium: Double
+  let low: Double
+
+  init?(fees: Fees) {
+    guard let high = fees[.best], let medium = fees[.better], let low = fees[.good] else { return nil }
+    self.high = high
+    self.medium = medium
+    self.low = low
+  }
+}
+
+class FeeAdjustableTransactionData {
+
+  let adjustableFeesEnabled: Bool
+  let defaultFeeMode: TransactionFeeMode
+  var requiredFeeTxData: CNBTransactionData?
+  let highFeeTxData: CNBTransactionData?
+  let mediumFeeTxData: CNBTransactionData?
+  let lowFeeTxData: CNBTransactionData // must not be nil
+
+  init(isEnabled: Bool,
+       defaultFeeMode: TransactionFeeMode,
+       highFeeTxData: CNBTransactionData?,
+       mediumFeeTxData: CNBTransactionData?,
+       lowFeeTxData: CNBTransactionData) {
+    self.adjustableFeesEnabled = isEnabled
+    self.highFeeTxData = highFeeTxData
+    self.mediumFeeTxData = mediumFeeTxData
+    self.lowFeeTxData = lowFeeTxData
+    self.defaultFeeMode = defaultFeeMode
+  }
+
+}
+
+class ConfirmAdjustableFeesViewModel: FeeAdjustableTransactionData {
+
+  var selectedFeeMode: TransactionFeeMode
+
+  override init(isEnabled: Bool,
+                defaultFeeMode: TransactionFeeMode,
+                highFeeTxData: CNBTransactionData?,
+                mediumFeeTxData: CNBTransactionData?,
+                lowFeeTxData: CNBTransactionData) {
+    self.selectedFeeMode = defaultFeeMode
+    super.init(isEnabled: isEnabled,
+               defaultFeeMode: defaultFeeMode,
+               highFeeTxData: highFeeTxData,
+               mediumFeeTxData: mediumFeeTxData,
+               lowFeeTxData: lowFeeTxData)
+  }
+
+  convenience init(adjustableFeeData data: FeeAdjustableTransactionData) {
+    self.init(isEnabled: data.adjustableFeesEnabled,
+              defaultFeeMode: data.defaultFeeMode,
+              highFeeTxData: data.highFeeTxData,
+              mediumFeeTxData: data.mediumFeeTxData,
+              lowFeeTxData: data.lowFeeTxData)
+  }
+
+  private let sortedModes: [TransactionFeeMode] = [.fast, .slow, .cheap]
+
+  var selectedModeIndex: Int {
+    return sortedModes.firstIndex(of: selectedFeeMode) ?? 0
+  }
+
+  var segmentModels: [AdjustableFeesSegmentViewModel] {
+    return sortedModes.map { mode in
+      return AdjustableFeesSegmentViewModel(title: self.title(for: mode),
+                                            isEnabled: self.transactionData(for: mode) != nil,
+                                            isSelected: mode == self.selectedFeeMode)
+    }
+  }
+
+  var applicableFeeMode: TransactionFeeMode {
+    if adjustableFeesEnabled {
+      return selectedFeeMode
+    } else {
+      return defaultFeeMode
+    }
+  }
+
+  var applicableFee: Int {
+    return fee(for: applicableFeeMode) ?? Int(lowFeeTxData.feeAmount)
+  }
+
+  var applicableTransactionData: CNBTransactionData {
+    return transactionData(for: applicableFeeMode) ?? lowFeeTxData
+  }
+
+  func transactionData(for mode: TransactionFeeMode) -> CNBTransactionData? {
+    switch mode {
+    case .fast:   return highFeeTxData
+    case .slow:   return mediumFeeTxData
+    case .cheap:  return lowFeeTxData
+    }
+  }
+
+  func fee(for mode: TransactionFeeMode) -> Int? {
+    guard let txData = transactionData(for: mode) else { return nil }
+    return Int(txData.feeAmount)
+  }
+
+  private func title(for mode: TransactionFeeMode) -> String {
+    switch mode {
+    case .fast:   return "FAST"
+    case .slow:   return "SLOW"
+    case .cheap:  return "CHEAP"
+    }
+  }
+
+  private var waitTimeDescription: String {
+    switch selectedFeeMode {
+    case .fast:   return "10 minutes"
+    case .slow:   return "20-60 minutes"
+    case .cheap:  return "24 hours+"
+    }
+  }
+
+  var attributedWaitTimeDescription: NSAttributedString {
+    let attrString = NSMutableAttributedString.light("Approximate wait time: ",
+                                                     size: 11,
+                                                     color: .darkBlueText)
+    attrString.appendSemiBold(waitTimeDescription, size: 11)
+    return attrString
+  }
+
+}
+
+struct AdjustableFeesSegmentViewModel {
+  let title: String
+  let isEnabled: Bool
+  let isSelected: Bool
 }

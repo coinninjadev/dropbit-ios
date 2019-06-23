@@ -166,9 +166,8 @@ extension AppCoordinator: SendPaymentViewControllerDelegate {
     )
 
     viewController.dismiss(animated: true)
-    networkManager.latestFees()
-      .compactMap { $0[.best] }
-      .then { (networkFeeRate: Double) -> Promise<CNBTransactionData> in
+    networkManager.latestFees().compactMap { FeeRates(fees: $0) }
+      .then { (rates: FeeRates) -> Promise<CNBTransactionData> in
         let relevantFeeRate = outgoingTransactionData.requiredFeeRate ?? networkFeeRate
         return wmgr.transactionData(
           forPayment: btcAmount,
@@ -183,7 +182,7 @@ extension AppCoordinator: SendPaymentViewControllerDelegate {
           address: address,
           contact: contact,
           primaryCurrency: primaryCurrency,
-          transactionData: transactionData,
+          feeAdjustableTxData: transactionData,
           rates: rates
         )
       }
@@ -198,19 +197,17 @@ extension AppCoordinator: SendPaymentViewControllerDelegate {
                                   address: String?,
                                   contact: ContactType?,
                                   primaryCurrency: CurrencyCode,
-                                  transactionData: CNBTransactionData,
+                                  feeAdjustableTxData: FeeAdjustableTransactionData,
                                   rates: ExchangeRates) {
     let confirmPayVC = ConfirmPaymentViewController.makeFromStoryboard()
     self.assignCoordinationDelegate(to: confirmPayVC)
-    let viewModel = ConfirmPaymentViewModel(
-      btcAmount: btcAmount,
-      primaryCurrency: primaryCurrency,
-      address: address,
-      contact: contact,
-      fee: Int(transactionData.feeAmount),
-      outgoingTransactionData: dto,
-      transactionData: transactionData,
-      rates: rates)
+    let viewModel = ConfirmPaymentViewModel(btcAmount: btcAmount,
+                                            primaryCurrency: primaryCurrency,
+                                            address: address,
+                                            contact: contact,
+                                            feeData: feeAdjustableTxData,
+                                            outgoingTransactionData: dto,
+                                            rates: rates)
     confirmPayVC.kind = .payment(viewModel)
     self.navigationController.present(confirmPayVC, animated: true)
   }

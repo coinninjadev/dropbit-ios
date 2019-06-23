@@ -22,6 +22,7 @@ protocol CurrencyValueDataSourceType: AnyObject {
 // This timeout ensures we don't fetch exchange rates or fees more frequently than the specified interval in seconds
 private let sTimeoutIntervalBetweenNetworkRequests: TimeInterval  = 5.0
 
+/// Follows names of API
 enum FeeType: String {
   case good, better, best
 }

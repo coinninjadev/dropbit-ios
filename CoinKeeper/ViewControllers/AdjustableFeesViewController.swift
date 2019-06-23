@@ -21,14 +21,6 @@ enum TransactionFeeMode: Int {
     return TransactionFeeMode(rawValue: int) ?? .defaultMode
   }
 
-  var waitTimeDescription: String {
-    switch self {
-    case .fast:   return "10 minutes"
-    case .slow:   return "20-60 minutes"
-    case .cheap:  return "24 hours+"
-    }
-  }
-
 }
 
 struct AdjustableFeesDataSource {
