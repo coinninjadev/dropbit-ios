@@ -50,10 +50,10 @@ extension WalletAddressDataWorkerType {
 // swiftlint:disable type_body_length
 class WalletAddressDataWorker: WalletAddressDataWorkerType {
 
-  let walletManager: WalletManagerType
-  let persistenceManager: PersistenceManagerType
-  let networkManager: NetworkManagerType
-  let analyticsManager: AnalyticsManagerType
+  unowned let walletManager: WalletManagerType
+  unowned let persistenceManager: PersistenceManagerType
+  unowned let networkManager: NetworkManagerType
+  unowned let analyticsManager: AnalyticsManagerType
   unowned var invitationDelegate: InvitationWorkerDelegate
 
   private let logger = OSLog(subsystem: "com.coinninja.transactionDataWorker", category: "wallet_address_data_worker")

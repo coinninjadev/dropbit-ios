@@ -24,7 +24,7 @@ protocol BadgeManagerType: CoreDataObserver {
 
 class BadgeManager: BadgeManagerType {
 
-  private let persistenceManager: PersistenceManagerType
+  private unowned let persistenceManager: PersistenceManagerType
   private var willSaveContextToken: NotificationToken?
   private var didSaveContextToken: NotificationToken?
 
