@@ -106,14 +106,14 @@ struct FeeRates {
 class FeeAdjustableTransactionData {
 
   let adjustableFeesEnabled: Bool
-  let defaultFeeMode: TransactionFeeMode
+  let defaultFeeMode: TransactionFeeType
   var requiredFeeTxData: CNBTransactionData?
   let highFeeTxData: CNBTransactionData?
   let mediumFeeTxData: CNBTransactionData?
   let lowFeeTxData: CNBTransactionData // must not be nil
 
   init(isEnabled: Bool,
-       defaultFeeMode: TransactionFeeMode,
+       defaultFeeMode: TransactionFeeType,
        highFeeTxData: CNBTransactionData?,
        mediumFeeTxData: CNBTransactionData?,
        lowFeeTxData: CNBTransactionData) {
@@ -128,10 +128,10 @@ class FeeAdjustableTransactionData {
 
 class ConfirmAdjustableFeesViewModel: FeeAdjustableTransactionData {
 
-  var selectedFeeMode: TransactionFeeMode
+  var selectedFeeMode: TransactionFeeType
 
   override init(isEnabled: Bool,
-                defaultFeeMode: TransactionFeeMode,
+                defaultFeeMode: TransactionFeeType,
                 highFeeTxData: CNBTransactionData?,
                 mediumFeeTxData: CNBTransactionData?,
                 lowFeeTxData: CNBTransactionData) {
@@ -151,7 +151,7 @@ class ConfirmAdjustableFeesViewModel: FeeAdjustableTransactionData {
               lowFeeTxData: data.lowFeeTxData)
   }
 
-  private let sortedModes: [TransactionFeeMode] = [.fast, .slow, .cheap]
+  private let sortedModes: [TransactionFeeType] = [.fast, .slow, .cheap]
 
   var selectedModeIndex: Int {
     return sortedModes.firstIndex(of: selectedFeeMode) ?? 0
@@ -165,7 +165,7 @@ class ConfirmAdjustableFeesViewModel: FeeAdjustableTransactionData {
     }
   }
 
-  var applicableFeeMode: TransactionFeeMode {
+  var applicableFeeMode: TransactionFeeType {
     if adjustableFeesEnabled {
       return selectedFeeMode
     } else {
@@ -181,7 +181,7 @@ class ConfirmAdjustableFeesViewModel: FeeAdjustableTransactionData {
     return transactionData(for: applicableFeeMode) ?? lowFeeTxData
   }
 
-  func transactionData(for mode: TransactionFeeMode) -> CNBTransactionData? {
+  func transactionData(for mode: TransactionFeeType) -> CNBTransactionData? {
     switch mode {
     case .fast:   return highFeeTxData
     case .slow:   return mediumFeeTxData
@@ -189,12 +189,12 @@ class ConfirmAdjustableFeesViewModel: FeeAdjustableTransactionData {
     }
   }
 
-  func fee(for mode: TransactionFeeMode) -> Int? {
+  func fee(for mode: TransactionFeeType) -> Int? {
     guard let txData = transactionData(for: mode) else { return nil }
     return Int(txData.feeAmount)
   }
 
-  private func title(for mode: TransactionFeeMode) -> String {
+  private func title(for mode: TransactionFeeType) -> String {
     switch mode {
     case .fast:   return "FAST"
     case .slow:   return "SLOW"

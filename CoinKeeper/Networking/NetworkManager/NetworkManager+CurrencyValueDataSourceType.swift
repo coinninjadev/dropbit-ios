@@ -23,7 +23,7 @@ protocol CurrencyValueDataSourceType: AnyObject {
 private let sTimeoutIntervalBetweenNetworkRequests: TimeInterval  = 5.0
 
 /// Follows names of API
-enum FeeType: String {
+enum ResponseFeeType: String {
   case good, better, best
 }
 
@@ -35,7 +35,7 @@ typealias ExchangeRates = [CurrencyCode: Double]
 typealias ExchangeRatesRequest = (ExchangeRates) -> Void
 
 /// The fee values represent the current cost of a transaction in satoshis/byte
-typealias Fees = [FeeType: Double]
+typealias Fees = [ResponseFeeType: Double]
 
 /// The closure type to be passed to the AppCoordinator when requesting the latest fees.
 /// This closure should be called on the main queue.

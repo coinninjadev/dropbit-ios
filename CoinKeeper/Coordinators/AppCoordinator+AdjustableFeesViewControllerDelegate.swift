@@ -15,7 +15,7 @@ extension AppCoordinator: AdjustableFeesViewControllerDelegate {
     set { persistenceManager.brokers.preferences.adjustableFeesIsEnabled = newValue }
   }
 
-  var preferredTransactionFeeMode: TransactionFeeMode {
+  var preferredTransactionFeeMode: TransactionFeeType {
     get { return persistenceManager.brokers.preferences.preferredTransactionFeeMode }
     set { persistenceManager.brokers.preferences.preferredTransactionFeeMode = newValue }
   }

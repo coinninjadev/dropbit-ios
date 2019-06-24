@@ -10,7 +10,7 @@ import UIKit
 
 struct AdjustableFeesCellViewModel {
   let isSelected: Bool
-  let mode: TransactionFeeMode
+  let mode: TransactionFeeType
   var description: String {
     switch mode {
     case .fast:   return "Fast: Approximately 10 minutes"

@@ -8,17 +8,17 @@
 
 import UIKit
 
-enum TransactionFeeMode: Int {
+enum TransactionFeeType: Int {
   case fast = 1 //UserDefaults returns 0 by default, 1 allows us to distinguish
   case slow
   case cheap
 
-  static var defaultMode: TransactionFeeMode {
+  static var `default`: TransactionFeeType {
     return .fast
   }
 
-  static func mode(for int: Int) -> TransactionFeeMode {
-    return TransactionFeeMode(rawValue: int) ?? .defaultMode
+  static func mode(for int: Int) -> TransactionFeeType {
+    return TransactionFeeType(rawValue: int) ?? .default
   }
 
 }
@@ -31,14 +31,14 @@ struct AdjustableFeesDataSource {
     return cellViewModels[safe: indexPath.row]
   }
 
-  func selectedMode() -> TransactionFeeMode? {
+  func selectedMode() -> TransactionFeeType? {
     return cellViewModels.first(where: { $0.isSelected })?.mode
   }
 
-  init(isEnabled: Bool, selectedMode: TransactionFeeMode) {
+  init(isEnabled: Bool, selectedMode: TransactionFeeType) {
     self.adjustableFeesEnabled = isEnabled
 
-    let orderedModes: [TransactionFeeMode] = [.fast, .slow, .cheap]
+    let orderedModes: [TransactionFeeType] = [.fast, .slow, .cheap]
     self.cellViewModels = orderedModes.map { mode in
       return AdjustableFeesCellViewModel(isSelected: mode == selectedMode, mode: mode)
     }
@@ -48,7 +48,7 @@ struct AdjustableFeesDataSource {
 
 protocol AdjustableFeesViewControllerDelegate: ViewControllerURLDelegate {
   var adjustableFeesIsEnabled: Bool { get set }
-  var preferredTransactionFeeMode: TransactionFeeMode { get set }
+  var preferredTransactionFeeMode: TransactionFeeType { get set }
 }
 
 class AdjustableFeesViewController: BaseViewController, StoryboardInitializable {
