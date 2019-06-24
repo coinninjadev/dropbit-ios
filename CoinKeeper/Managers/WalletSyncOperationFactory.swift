@@ -38,17 +38,18 @@ class WalletSyncOperationFactory {
     }
 
     return Promise { seal in
-      let operation = AsynchronousOperation(operationType: .syncWallet(walletSyncType))
       queueDelegate.syncManagerDidRequestDependencies(in: context)
         .done(in: context) { dependencies in
+          let operation = AsynchronousOperation(operationType: .syncWallet(walletSyncType))
           let bgContext = dependencies.bgContext
           let isFullSync = walletSyncType == .comprehensive
 
           let backgroundTaskId = UIApplication.shared.beginBackgroundTask(expirationHandler: nil)
 
-          operation.task = { [weak self] sync in
-            guard let strongSelf = self else {
-              seal.reject(SyncRoutineError.missingSyncTask)
+          operation.task = { [weak self, weak innerOp = operation, weak innerSeal = seal] in
+            guard let strongSelf = self,
+              let strongOperation = innerOp else {
+              innerSeal?.reject(SyncRoutineError.missingSyncTask)
               return
             }
 
@@ -81,7 +82,7 @@ class WalletSyncOperationFactory {
                 dependencies.persistenceManager.brokers.activity.lastSuccessfulSync = Date()
                 completion?(caughtError) //Only call completion handler once
 
-                sync.finish()
+                strongOperation.finish()
                 UIApplication.shared.endBackgroundTask(backgroundTaskId)
             }
           }
