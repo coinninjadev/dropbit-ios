@@ -41,7 +41,7 @@ extension AppCoordinator: SendPaymentViewControllerDelegate {
   func viewControllerDidPressTwitter(_ viewController: UIViewController & SelectedValidContactDelegate) {
     analyticsManager.track(event: .twitterButtonPressed, with: nil)
     let context = persistenceManager.mainQueueContext()
-    guard persistenceManager.userIsVerified(using: .twitter, in: context) else {
+    guard persistenceManager.brokers.user.userIsVerified(using: .twitter, in: context) else {
       showModalForTwitterVerification(with: viewController)
       return
     }
@@ -74,8 +74,7 @@ extension AppCoordinator: SendPaymentViewControllerDelegate {
           completion()
 
         } else {
-          let popupString = self.persistenceManager.string(for: .invitationPopup) ?? ""
-          if let value = CKUserDefaults.Value(rawValue: popupString), case .optOut = value {
+          if self.persistenceManager.brokers.preferences.didOptOutOfInvitationPopup {
             completion()
           } else {
             self.showModalForInviteExplanation(with: viewController,
@@ -295,7 +294,7 @@ extension AppCoordinator: SendPaymentViewControllerDelegate {
   func viewControllerDidPressContacts(_ viewController: UIViewController & SelectedValidContactDelegate) {
     analyticsManager.track(event: .contactsButtonPressed, with: nil)
     let mainContext = persistenceManager.mainQueueContext()
-    guard persistenceManager.userIsVerified(in: mainContext) else {
+    guard persistenceManager.brokers.user.userIsVerified(in: mainContext) else {
       showModalForPhoneVerification(with: viewController)
       return
     }
@@ -354,10 +353,10 @@ extension AppCoordinator: SendPaymentViewControllerDelegate {
     """
     let dontShowAction = AlertActionConfiguration(title: "Don't show this message again", style: .default) { [weak self] in
       guard let strongSelf = self else { return }
-      strongSelf.persistenceManager.set(.optOut, for: .invitationPopup)
+      strongSelf.persistenceManager.brokers.preferences.didOptOutOfInvitationPopup = true
       completion()
     }
-    let okAction = AlertActionConfiguration(title: "Ok", style: .default) {
+    let okAction = AlertActionConfiguration(title: "OK", style: .default) {
       completion()
     }
     let configs = [dontShowAction, okAction]
@@ -428,7 +427,7 @@ extension AppCoordinator: SendPaymentViewControllerDelegate {
 
   func viewControllerShouldInitiallyAllowMemoSharing(_ viewController: SendPaymentViewController) -> Bool {
     let context = persistenceManager.mainQueueContext()
-    return persistenceManager.userIsVerified(in: context)
+    return persistenceManager.brokers.user.userIsVerified(in: context)
   }
 
   func deviceCountryCode() -> Int? {

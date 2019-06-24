@@ -1,5 +1,5 @@
 //
-//  AppCoordinator+PhoneNumberStatusViewControllerDelegate.swift
+//  AppCoordinator+VerificationStatusViewControllerDelegate.swift
 //  DropBit
 //
 //  Created by Mitch on 10/19/18.
@@ -11,9 +11,9 @@ import UIKit
 import PromiseKit
 import os.log
 
-extension AppCoordinator: PhoneNumberStatusViewControllerDelegate {
+extension AppCoordinator: VerificationStatusViewControllerDelegate {
   func verifiedPhoneNumber() -> GlobalPhoneNumber? {
-    return persistenceManager.verifiedPhoneNumber()
+    return persistenceManager.brokers.user.verifiedPhoneNumber()
   }
 
   func verifiedTwitterHandle() -> String? {
@@ -25,7 +25,7 @@ extension AppCoordinator: PhoneNumberStatusViewControllerDelegate {
 
     let context = persistenceManager.createBackgroundContext()
     context.performAndWait {
-      addresses = persistenceManager.serverPoolAddresses(in: context)
+      addresses = persistenceManager.brokers.user.serverPoolAddresses(in: context)
         .compactMap { ServerAddressViewModel(serverAddress: $0) }
     }
 
@@ -76,6 +76,12 @@ extension AppCoordinator: PhoneNumberStatusViewControllerDelegate {
     }
   }
 
+  func viewControllerDidSelectVerify(_ viewController: UIViewController) {
+    viewController.dismiss(animated: true) {
+      self.showVerificationStatusViewController()
+    }
+  }
+
   private func unverifyOKConfiguration(
     title: String,
     identityType: UserIdentityType,
@@ -116,7 +122,7 @@ extension AppCoordinator: PhoneNumberStatusViewControllerDelegate {
     with tryAgainConfiguration: AlertActionConfiguration,
     successfulCompletion: @escaping () -> Void) -> AlertActionConfiguration {
 
-    let verifiedIdentities = persistenceManager.verifiedIdentities(in: persistenceManager.mainQueueContext())
+    let verifiedIdentities = persistenceManager.brokers.user.verifiedIdentities(in: persistenceManager.mainQueueContext())
 
     let logger = OSLog(subsystem: "com.coinninja.coinkeeper.appcoordinator", category: "unverify_phone")
     return AlertActionConfiguration(title: "Remove", style: .cancel, action: {
@@ -163,7 +169,7 @@ extension AppCoordinator: PhoneNumberStatusViewControllerDelegate {
     case .phone:
       let hashingManager = HashingManager()
       guard allVerifiedIdentities.contains(.phone),
-        let phoneNumber = persistenceManager.verifiedPhoneNumber(),
+        let phoneNumber = persistenceManager.brokers.user.verifiedPhoneNumber(),
         let salt = try? hashingManager.salt() else { return Promise(error: DeviceVerificationError.invalidPhoneNumber) }
       identityToRemove = hashingManager.hash(phoneNumber: phoneNumber, salt: salt, parsedNumber: nil, kit: self.phoneNumberKit)
     case .twitter:
@@ -177,7 +183,7 @@ extension AppCoordinator: PhoneNumberStatusViewControllerDelegate {
       .get { _ in
         self.unverifyConfiguration(for: identityType)
         if allVerifiedIdentities.count == 1 {
-          self.persistenceManager.unverifyAllIdentities()
+          self.persistenceManager.brokers.user.unverifyAllIdentities()
         }
       }
   }

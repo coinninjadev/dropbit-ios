@@ -44,7 +44,7 @@ extension NetworkManager: CurrencyValueDataSourceType {
 
   func latestExchangeRates(responseHandler: ExchangeRatesRequest) {
     // return latest exchange rates
-    let usdRate = self.cachedBTCUSDRate
+    let usdRate = self.persistenceManager.brokers.checkIn.cachedBTCUSDRate
     responseHandler([.BTC: 1.0, .USD: usdRate])
 
     // re-fetch the latest exchange rates
@@ -53,10 +53,10 @@ extension NetworkManager: CurrencyValueDataSourceType {
 
   func latestFees() -> Promise<Fees> {
     return Promise { seal in
-      let bestFee = self.cachedBestFee
-      let betterFee = self.cachedBetterFee
-      let goodFee = self.cachedGoodFee
-      seal.fulfill([.best: bestFee, .better: betterFee, .good: goodFee])
+      let broker = self.persistenceManager.brokers.checkIn
+      seal.fulfill([.best: broker.cachedBestFee,
+                    .better: broker.cachedBetterFee,
+                    .good: broker.cachedGoodFee])
 
       // re-fetch the latest fees
       self.refetchLatestMetadataIfNecessary()
@@ -80,12 +80,13 @@ extension NetworkManager: CurrencyValueDataSourceType {
     let context = persistenceManager.createBackgroundContext()
     var walletId: String?
     context.performAndWait {
-      walletId = self.persistenceManager.walletId(in: context)
+      walletId = self.persistenceManager.brokers.wallet.walletId(in: context)
     }
+    let broker = persistenceManager.brokers.checkIn
     guard walletId != nil else {
-      let fees = FeesResponse(max: cachedBestFee, avg: cachedBetterFee, min: cachedGoodFee)
-      let pricing = PriceResponse(last: cachedBTCUSDRate)
-      let response = CheckInResponse(blockheight: cachedBlockheight, fees: fees, pricing: pricing)
+      let fees = FeesResponse(max: broker.cachedBestFee, avg: broker.cachedBetterFee, min: broker.cachedGoodFee)
+      let pricing = PriceResponse(last: broker.cachedBTCUSDRate)
+      let response = CheckInResponse(blockheight: broker.cachedBlockHeight, fees: fees, pricing: pricing)
       return Promise.value(response)
     }
 
@@ -96,38 +97,15 @@ extension NetworkManager: CurrencyValueDataSourceType {
   /// Exposed as `internal` for testing purposes, but should only be called from `updateCachedMetadata` in the promise chain.
   /// Should not be exposed in NetworkManagerType protocol.
   func handleCheckIn(response: CheckInResponse) -> Promise<CheckInResponse> {
-    cachedBestFee = max(response.fees.best, 0)
-    cachedBetterFee = max(response.fees.better, 0)
-    cachedGoodFee = max(response.fees.good, 0)
-    cachedBTCUSDRate = (response.pricing.last > 0) ? response.pricing.last : cachedBTCUSDRate
-    cachedBlockheight = (response.blockheight > 0) ? response.blockheight : cachedBlockheight
+    let broker = persistenceManager.brokers.checkIn
+    broker.cachedBestFee = max(response.fees.best, 0)
+    broker.cachedBetterFee = max(response.fees.better, 0)
+    broker.cachedGoodFee = max(response.fees.good, 0)
+    broker.cachedBTCUSDRate = (response.pricing.last > 0) ? response.pricing.last : broker.cachedBTCUSDRate
+    broker.cachedBlockHeight = (response.blockheight > 0) ? response.blockheight : broker.cachedBlockHeight
     CKNotificationCenter.publish(key: .didUpdateFees)
-    CKNotificationCenter.publish(key: .didUpdateExchangeRates, userInfo: ["value": cachedBTCUSDRate])
+    CKNotificationCenter.publish(key: .didUpdateExchangeRates, userInfo: ["value": broker.cachedBTCUSDRate])
     return Promise { $0.fulfill(response) }
   }
 
-  private var cachedBTCUSDRate: Double {
-    get { return persistenceManager.double(for: .exchangeRateBTCUSD) }
-    set { persistenceManager.set(newValue, for: .exchangeRateBTCUSD) }
-  }
-
-  private var cachedBlockheight: Int {
-    get { return persistenceManager.integer(for: .blockheight) }
-    set { persistenceManager.set(newValue, for: .blockheight) }
-  }
-
-  private var cachedBestFee: Double {
-    get { return persistenceManager.double(for: .feeBest) }
-    set { persistenceManager.set(newValue, for: .feeBest) }
-  }
-
-  private var cachedBetterFee: Double {
-    get { return persistenceManager.double(for: .feeBetter) }
-    set { persistenceManager.set(newValue, for: .feeBetter) }
-  }
-
-  private var cachedGoodFee: Double {
-    get { return persistenceManager.double(for: .feeGood) }
-    set { persistenceManager.set(newValue, for: .feeGood) }
-  }
 }

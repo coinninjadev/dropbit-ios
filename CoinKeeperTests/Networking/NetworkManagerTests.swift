@@ -36,7 +36,7 @@ class NetworkManagerTests: XCTestCase {
   func testFetchingLatestExchangeRatesAfterInitializationRetrievesCachedValue() {
     self.sut.start()
     var rates: ExchangeRates = [:]
-    let expectedRate = self.persistenceManager.double(for: .exchangeRateBTCUSD)
+    let expectedRate = self.persistenceManager.brokers.checkIn.cachedBTCUSDRate
     self.sut.latestExchangeRates { (ratesParam) in
       rates = ratesParam
     }
@@ -47,9 +47,9 @@ class NetworkManagerTests: XCTestCase {
   // MARK: fees
   func testFetchingFeesAfterInitializationRetreivesCachedValue() {
     self.sut.start()
-    let expectedBestFee = self.persistenceManager.double(for: .feeBest)
-    let expectedBetterFee = self.persistenceManager.double(for: .feeBetter)
-    let expectedGoodFee = self.persistenceManager.double(for: .feeGood)
+    let expectedBestFee = self.persistenceManager.brokers.checkIn.cachedBestFee
+    let expectedBetterFee = self.persistenceManager.brokers.checkIn.cachedBetterFee
+    let expectedGoodFee = self.persistenceManager.brokers.checkIn.cachedGoodFee
 
     let expectation = XCTestExpectation(description: "cached fees")
     _ = self.sut.latestFees()

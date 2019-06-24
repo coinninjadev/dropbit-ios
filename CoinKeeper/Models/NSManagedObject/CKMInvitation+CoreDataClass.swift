@@ -348,7 +348,7 @@ extension CKMInvitation: AddressRequestUpdateDisplayable {
   /// the invitation was canceled, possibly due to insufficient funds or sender canceled
   case canceled
 
-  /// either the sender or receiver did not handle the request within 24 hours of the previous step
+  /// either the sender or receiver did not handle the request within 48 hours of the previous step
   case expired
 
   public var description: String {

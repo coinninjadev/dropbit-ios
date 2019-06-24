@@ -12,35 +12,6 @@ import SVProgressHUD
 import SwiftMessages
 import PhoneNumberKit
 
-typealias AlertControllerType = UIViewController & AlertControllerProtocol
-
-struct AlertControllerViewModel {
-  var title: String
-  var description: String?
-  var image: UIImage?
-  var style: AlertManager.AlertStyle = .alert
-  var actions: [AlertActionConfigurationType] = []
-
-  init(title: String, description: String? = nil,
-       image: UIImage? = nil, style: AlertManager.AlertStyle = .alert,
-       actions: [AlertActionConfigurationType] = []) {
-    self.title = title
-    self.description = description
-    self.image = image
-    self.style = style
-    self.actions = actions
-  }
-
-  var shouldCreateDefaultAlert: Bool {
-    return image == nil && style == .alert && actions.isEmpty
-  }
-}
-
-enum AlertManagerButtonLayout {
-  case horizontal
-  case vertical
-}
-
 protocol AlertManagerType: CKBannerViewDelegate {
   func alert(
     withTitle title: String,
@@ -102,77 +73,6 @@ extension AlertManagerType {
     showBanner(with: message, duration: .default, alertKind: .info, tapAction: nil) // default parameter
   }
 
-}
-
-protocol AlertControllerProtocol: AnyObject {
-  var displayTitle: String? { get }
-  var displayDescription: String? { get }
-  var image: UIImage? { get }
-  var actions: [AlertActionConfigurationType] { get }
-}
-
-extension PMAlertController: AlertControllerProtocol {
-  var displayTitle: String? {
-    return alertTitle.text
-  }
-  var displayDescription: String? {
-    return alertDescription.text
-  }
-  var image: UIImage? {
-    return self.alertImage.image
-  }
-  var actions: [AlertActionConfigurationType] {
-    return self
-      .alertActionStackView
-      .arrangedSubviews
-      .compactMap { $0 as? PMAlertAction }
-      .compactMap { pmAlertAction -> AlertActionConfigurationType in
-        return AlertActionConfiguration(
-          title: pmAlertAction.title(for: .normal) ?? "",
-          style: AlertActionStyle(from: pmAlertAction.actionStyle),
-          action: nil  // nil because PMAlertAction's `action` property is `fileprivate`
-        )
-    }
-  }
-}
-
-protocol AlertActionConfigurationType {
-  var title: String { get }
-  var style: AlertActionStyle { get }
-  var action: (() -> Void)? { get }
-}
-
-enum AlertMessageStyle {
-  case standard, warning
-}
-
-enum AlertActionStyle {
-  case cancel, `default`
-
-  init(from pmAlertActionStyle: PMAlertActionStyle) {
-    switch pmAlertActionStyle {
-    case .cancel: self = .cancel
-    case .default: self = .default
-    }
-  }
-}
-
-struct AlertActionConfiguration: AlertActionConfigurationType {
-  let title: String
-  let style: AlertActionStyle
-  let action: (() -> Void)?
-}
-
-enum AlertDuration {
-  case `default`
-  case custom(TimeInterval)
-
-  var value: TimeInterval {
-    switch self {
-    case .default:              return 5.0
-    case .custom(let duration): return duration
-    }
-  }
 }
 
 class AlertManager: AlertManagerType {
@@ -343,7 +243,7 @@ class AlertManager: AlertManagerType {
       self.showBanner(with: message, duration: .default, alertKind: .error)
     case .expired:
       let message = """
-        For security purposes we can only allow 24 hours for a \(CKStrings.dropBitWithTrademark) to be completed.
+        For security purposes we can only allow 48 hours for a \(CKStrings.dropBitWithTrademark) to be completed.
         Your DropBit sent to \(receiverDesc) has expired. Please try sending again.
         """.removingMultilineLineBreaks()
       self.showBanner(with: message, duration: .default, alertKind: .error)
@@ -367,7 +267,7 @@ class AlertManager: AlertManagerType {
       self.showBanner(with: message, duration: .default, alertKind: .error)
     case .expired:
       let message = """
-        For security purposes we can only allow 24 hours for a \(CKStrings.dropBitWithTrademark) to be completed.
+        For security purposes we can only allow 48 hours for a \(CKStrings.dropBitWithTrademark) to be completed.
         Your DropBit from \(senderDesc) has expired.
         """.removingMultilineLineBreaks()
       self.showBanner(with: message, duration: .default, alertKind: .error)
@@ -380,16 +280,11 @@ class AlertManager: AlertManagerType {
     var title: String = response.body, kind: CKBannerViewKind
 
     switch response.level {
-    case .warn:
-      kind = .warn
-    case .info:
-      kind = .info
-    case .success:
-      kind = .success
-    case .error:
-      kind = .error
-    default:
-      kind = .info
+    case .warn:     kind = .warn
+    case .info:     kind = .info
+    case .success:  kind = .success
+    case .error:    kind = .error
+    default:        kind = .info
     }
 
     showBanner(with: title, duration: nil, alertKind: kind, completion: completion, url: response.link)
@@ -529,3 +424,62 @@ extension AlertManager {
     self.bannerManager.hide()
   }
 }
+
+protocol AlertControllerProtocol: AnyObject {
+  var displayTitle: String? { get }
+  var displayDescription: String? { get }
+  var image: UIImage? { get }
+  var actions: [AlertActionConfigurationType] { get }
+}
+
+extension PMAlertController: AlertControllerProtocol {
+  var displayTitle: String? {
+    return alertTitle.text
+  }
+  var displayDescription: String? {
+    return alertDescription.text
+  }
+  var image: UIImage? {
+    return self.alertImage.image
+  }
+  var actions: [AlertActionConfigurationType] {
+    return self
+      .alertActionStackView
+      .arrangedSubviews
+      .compactMap { $0 as? PMAlertAction }
+      .compactMap { pmAlertAction -> AlertActionConfigurationType in
+        return AlertActionConfiguration(
+          title: pmAlertAction.title(for: .normal) ?? "",
+          style: AlertActionStyle(from: pmAlertAction.actionStyle),
+          action: nil  // nil because PMAlertAction's `action` property is `fileprivate`
+        )
+    }
+  }
+}
+
+protocol AlertActionConfigurationType {
+  var title: String { get }
+  var style: AlertActionStyle { get }
+  var action: (() -> Void)? { get }
+}
+
+enum AlertMessageStyle {
+  case standard, warning
+}
+
+enum AlertActionStyle {
+  case cancel, `default`
+
+  init(from pmAlertActionStyle: PMAlertActionStyle) {
+    switch pmAlertActionStyle {
+    case .cancel: self = .cancel
+    case .default: self = .default
+    }
+  }
+}
+
+enum AlertManagerButtonLayout {
+  case horizontal
+  case vertical
+}
+

@@ -394,7 +394,11 @@ extension DeviceVerificationViewController: CKPhoneNumberTextFieldDelegate {
 
 extension DeviceVerificationViewController: UITextFieldDelegate {
   func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-    selected(digit: string)
+    if string.isEmpty {
+      selectedBack()
+    } else {
+      selected(digit: string)
+    }
     return true
   }
 }

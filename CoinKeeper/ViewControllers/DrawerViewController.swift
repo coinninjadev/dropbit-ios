@@ -11,7 +11,7 @@ import UIKit
 protocol DrawerViewControllerDelegate: CurrencyValueDataSourceType & BadgeUpdateDelegate {
   func backupWordsWasTouched()
   func settingsButtonWasTouched()
-  func phoneButtonWasTouched()
+  func verifyButtonWasTouched()
   func spendButtonWasTouched()
   func supportButtonWasTouched()
   func getBitcoinButtonWasTouched()
@@ -92,7 +92,7 @@ class DrawerViewController: BaseViewController, StoryboardInitializable {
       backupWordsDrawerData(),
       DrawerData(image: getBitcoinImage, title: "Get Bitcoin", kind: .getBitcoin),
       DrawerData(image: settingsImage, title: "Settings", kind: .settings, badgeCriteria: settingsCritera, badgeOffset: circularIconOffset),
-      DrawerData(image: verifyIcon, title: "Verify", kind: .phone, badgeCriteria: verifyCriteria, badgeOffset: circularIconOffset),
+      DrawerData(image: verifyIcon, title: "Verify", kind: .verify, badgeCriteria: verifyCriteria, badgeOffset: circularIconOffset),
       DrawerData(image: spendIcon, title: "Spend", kind: .spend),
       DrawerData(image: supportIcon, title: "Support", kind: .support)
       ]
@@ -109,8 +109,8 @@ class DrawerViewController: BaseViewController, StoryboardInitializable {
       coordinationDelegate?.backupWordsWasTouched()
     case .settings:
       coordinationDelegate?.settingsButtonWasTouched()
-    case .phone:
-      coordinationDelegate?.phoneButtonWasTouched()
+    case .verify:
+      coordinationDelegate?.verifyButtonWasTouched()
     case .spend:
       coordinationDelegate?.spendButtonWasTouched()
     case .support:

@@ -64,7 +64,7 @@ class LaunchStateManager: LaunchStateManagerType {
       options.insert(.pinExists)
     }
 
-    if persistenceManager.walletWords() != nil {
+    if persistenceManager.brokers.wallet.walletWords() != nil {
       options.insert(.walletExists)
     }
 
@@ -75,7 +75,7 @@ class LaunchStateManager: LaunchStateManagerType {
 
     let context = persistenceManager.mainQueueContext()
     context.performAndWait {
-      if persistenceManager.userVerificationStatus(in: context) == .verified {
+      if persistenceManager.brokers.user.userVerificationStatus(in: context) == .verified {
         options.insert(.deviceVerified)
       }
     }
@@ -108,7 +108,7 @@ class LaunchStateManager: LaunchStateManagerType {
     let walletExists = currentProperties().contains(.walletExists)
 
     let bgContext = persistenceManager.createBackgroundContext()
-    let walletIdExists = persistenceManager.walletId(in: bgContext) != nil
+    let walletIdExists = persistenceManager.brokers.wallet.walletId(in: bgContext) != nil
 
     let logger = OSLog(subsystem: "com.coinninja.coinkeeper.appcoordinator", category: "launch_state_manager")
     os_log("Wallet exists: %d, wallet ID exists: %d", log: logger, type: .debug, walletExists, walletIdExists)
@@ -155,7 +155,7 @@ class LaunchStateManager: LaunchStateManagerType {
   }
 
   func userWasAuthenticated() {
-    persistenceManager.setLastLoginTime()
+    persistenceManager.brokers.activity.setLastLoginTime()
     userAuthenticated = true
   }
 

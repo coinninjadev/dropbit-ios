@@ -18,9 +18,9 @@ extension AppCoordinator {
   }
 
   func trackEventForFirstTimeOpeningAppIfApplicable() {
-    if isFirstTimeOpeningApp {
+    if persistenceManager.brokers.activity.isFirstTimeOpeningApp {
       analyticsManager.track(event: .firstOpen, with: nil)
-      persistenceManager.set(true, for: .firstTimeOpeningApp)
+      persistenceManager.brokers.activity.isFirstTimeOpeningApp = false
     }
   }
 
@@ -43,7 +43,7 @@ extension AppCoordinator {
   func trackIfDropBitMeIsEnabled() {
     let bgContext = self.persistenceManager.createBackgroundContext()
     bgContext.perform {
-      let isEnabled = self.persistenceManager.getUserPublicURLInfo(in: bgContext)?.isEnabled ?? false
+      let isEnabled = self.persistenceManager.brokers.user.getUserPublicURLInfo(in: bgContext)?.isEnabled ?? false
       self.analyticsManager.track(property: MixpanelProperty(key: .isDropBitMeEnabled, value: isEnabled))
     }
   }

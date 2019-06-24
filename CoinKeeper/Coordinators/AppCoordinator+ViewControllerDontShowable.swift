@@ -14,7 +14,7 @@ extension AppCoordinator: ViewControllerDontShowable {
   func viewControllerRequestedDontShowAgain(_ viewController: UIViewController) {
     switch viewController {
     case is ShareTransactionViewController:
-      self.persistenceManager.userDefaultsManager.dontShowShareTransaction = true
+      self.persistenceManager.brokers.preferences.dontShowShareTransaction = true
       self.analyticsManager.track(event: .sharePromptNever, with: nil)
       viewController.dismiss(animated: true, completion: nil)
     default:

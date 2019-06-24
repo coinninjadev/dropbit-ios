@@ -150,7 +150,7 @@ class WalletManager: WalletManagerType {
   }
 
   func spendableBalance(in context: NSManagedObjectContext) -> Int {
-    let minAmount = self.persistenceManager.dustProtectionMinimumAmount()
+    let minAmount = self.persistenceManager.brokers.preferences.dustProtectionMinimumAmount
     let spendableVouts = CKMVout.findAllSpendable(minAmount: minAmount, in: context)
     let spendableTotal = spendableVouts.reduce(0) { $0 + $1.amount }
     return spendableTotal
@@ -203,7 +203,7 @@ class WalletManager: WalletManagerType {
     return Promise { seal in
       let paymentAmount = UInt(payment.asFractionalUnits(of: .BTC))
       let usableFeeRate = self.usableFeeRate(from: feeRate)
-      let blockHeight = UInt(persistenceManager.integer(for: .blockheight))
+      let blockHeight = UInt(persistenceManager.brokers.checkIn.cachedBlockHeight)
       let bgContext = persistenceManager.createBackgroundContext()
       bgContext.performAndWait {
         let usableVouts = self.usableVouts(in: bgContext)
@@ -245,7 +245,7 @@ class WalletManager: WalletManagerType {
         let allAvailableOutputs = self.availableTransactionOutputs(fromUsableUTXOs: usableVouts)
         let paymentAmount = UInt(payment)
         let feeAmount = UInt(flatFee)
-        let blockHeight = UInt(persistenceManager.integer(for: .blockheight))
+        let blockHeight = UInt(persistenceManager.brokers.checkIn.cachedBlockHeight)
 
         let txData = CNBTransactionData(
           address: address,
@@ -267,7 +267,7 @@ class WalletManager: WalletManagerType {
   func transactionDataSendingMax(to address: String, withFeeRate feeRate: Double) -> Promise<CNBTransactionData> {
     return Promise { seal in
       let usableFeeRate = self.usableFeeRate(from: feeRate)
-      let blockHeight = UInt(persistenceManager.integer(for: .blockheight))
+      let blockHeight = UInt(persistenceManager.brokers.checkIn.cachedBlockHeight)
       let bgContext = persistenceManager.createBackgroundContext()
       bgContext.performAndWait {
         let usableVouts = self.usableVouts(in: bgContext)
@@ -290,7 +290,7 @@ class WalletManager: WalletManagerType {
 
   /// - parameter limitByPending: true to remove the smallest vouts, to not exceed spendableBalanceNetPending()
   private func usableVouts(in context: NSManagedObjectContext) -> [CKMVout] {
-    let dustProtectionAmount = self.persistenceManager.dustProtectionMinimumAmount()
+    let dustProtectionAmount = self.persistenceManager.brokers.preferences.dustProtectionMinimumAmount
     return CKMVout.findAllSpendable(minAmount: dustProtectionAmount, in: context)
   }
 

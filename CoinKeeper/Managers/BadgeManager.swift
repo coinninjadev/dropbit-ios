@@ -38,7 +38,7 @@ class BadgeManager: BadgeManagerType {
   }
 
   var wordsBackedUp: Bool {
-    return persistenceManager.walletWordsBackedUp()
+    return persistenceManager.brokers.wallet.walletWordsBackedUp()
   }
 
   func setupTopics() {
@@ -68,7 +68,7 @@ class BadgeManager: BadgeManagerType {
   }
 
   func setTransactionsDidDisplay() {
-    persistenceManager.set(false, for: .unseenTransactionChangesExist)
+    persistenceManager.brokers.activity.unseenTransactionChangesExist = false
     publishBadgeUpdate()
   }
 
