@@ -18,14 +18,14 @@ extension AppCoordinator: SettingsViewControllerDelegate {
   }
 
   func dustProtectionIsEnabled() -> Bool {
-    return persistenceManager.dustProtectionIsEnabled()
+    return persistenceManager.brokers.preferences.dustProtectionIsEnabled
   }
 
   func yearlyHighPushNotificationIsSubscribed() -> Bool {
     let permission = permissionManager.permissionStatus(for: .notification)
     let permissionGranted = permission == .authorized
-    let hasPushToken = persistenceManager.string(for: .devicePushToken) != nil
-    let isEnabled = persistenceManager.yearlyPriceHighNotificationIsEnabled()
+    let hasPushToken = persistenceManager.brokers.device.pushToken != nil
+    let isEnabled = persistenceManager.brokers.preferences.yearlyPriceHighNotificationIsEnabled
     return isEnabled && permissionGranted && hasPushToken
   }
 
@@ -45,20 +45,20 @@ extension AppCoordinator: SettingsViewControllerDelegate {
   }
 
   func viewController(_ viewController: UIViewController, didEnableDustProtection didEnable: Bool) {
-    self.persistenceManager.enableDustProtection(didEnable)
+    self.persistenceManager.brokers.preferences.dustProtectionIsEnabled = didEnable
   }
 
   func viewController(_ viewController: UIViewController, didEnableYearlyHighNotification didEnable: Bool, completion: @escaping () -> Void) {
     permissionManager.requestPermission(for: .notification) { (status: PermissionStatus) in
       switch status {
       case .authorized, .notDetermined:
-        guard self.persistenceManager.string(for: .devicePushToken) != nil else {
+        guard self.persistenceManager.brokers.device.pushToken != nil else {
           self.requestPushNotificationDialogueIfNeeded()
           completion()
           return
         }
 
-        self.persistenceManager.updateYearlyPriceHighNotification(enabled: didEnable)
+        self.persistenceManager.brokers.preferences.yearlyPriceHighNotificationIsEnabled = didEnable
 
         if didEnable {
           self.notificationManager.subscribeToTopic(type: .btcHigh)
@@ -166,17 +166,17 @@ extension AppCoordinator: SettingsViewControllerDelegate {
   }
 
   private func deleteDeviceEndpoint() -> Promise<Void> {
-    guard let endpointIds = persistenceManager.deviceEndpointIds() else {
+    guard let endpointIds = persistenceManager.brokers.device.deviceEndpointIds() else {
       return .value(())
     }
 
     // Delete IDs locally only if the server request was successful
     return self.networkManager.deleteDeviceEndpoint(forIds: endpointIds)
-      .get { self.persistenceManager.deleteDeviceEndpointIds() }
+      .get { self.persistenceManager.brokers.device.deleteDeviceEndpointIds() }
   }
 
   private func deleteAndResetWalletLocally() throws {
-    try persistenceManager.resetWallet()
+    try persistenceManager.brokers.wallet.resetWallet()
     resetUserAuthenticatedState()
     walletManager = nil
   }

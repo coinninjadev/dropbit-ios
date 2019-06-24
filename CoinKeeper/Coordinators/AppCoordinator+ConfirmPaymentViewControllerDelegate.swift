@@ -113,11 +113,10 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate, CurrencyFormatta
     let successFailViewController = SuccessFailViewController.newInstance(viewModel: PaymentSuccessFailViewModel(mode: .pending),
                                                                           delegate: self)
     bgContext.performAndWait {
-      persistenceManager.persistUnacknowledgedInvitation(in: bgContext,
-                                                         with: outgoingInvitationDTO.btcPair,
-                                                         contact: outgoingInvitationDTO.contact,
-                                                         fee: outgoingInvitationDTO.fee,
-                                                         acknowledgementId: inviteBody.requestId)
+      persistenceManager.brokers.invitation.persistUnacknowledgedInvitation(
+        withDTO: outgoingInvitationDTO,
+        acknowledgementId: inviteBody.requestId,
+        in: bgContext)
 
       do {
         try bgContext.save()
@@ -299,7 +298,7 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate, CurrencyFormatta
         requiredFeeRate: nil,
         sharedPayloadDTO: outgoingInvitationDTO.sharedPayloadDTO
       )
-      self.persistenceManager.acknowledgeInvitation(with: outgoingTransactionData, response: response, in: context)
+      self.persistenceManager.brokers.invitation.acknowledgeInvitation(with: outgoingTransactionData, response: response, in: context)
     }
   }
 
@@ -331,7 +330,7 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate, CurrencyFormatta
             let voutDebugDesc = vouts.map { $0.debugDescription }.joined(separator: "\n")
             os_log("broadcast succeeded: vouts: %@", log: logger, type: .debug, voutDebugDesc)
 
-            let persistedTransaction = strongSelf.persistenceManager.persistTemporaryTransaction(
+            let persistedTransaction = strongSelf.persistenceManager.brokers.transaction.persistTemporaryTransaction(
               from: transactionData,
               with: outgoingTransactionData,
               txid: txid,
@@ -369,6 +368,8 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate, CurrencyFormatta
             self?.analyticsManager.track(event: .twitterSendComplete, with: nil)
           }
           self?.trackIfUserHasABalance()
+
+          strongSelf.didBroadcastTransaction()
         }.catch { error in
           let nsError = error as NSError
           let broadcastError = TransactionBroadcastError(errorCode: nsError.code)
@@ -423,7 +424,7 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate, CurrencyFormatta
 
   private func showShareTransactionIfAppropriate(dropBitType: OutgoingTransactionDropBitType) {
     if case .twitter = dropBitType { return }
-    if self.persistenceManager.userDefaultsManager.dontShowShareTransaction {
+    if self.persistenceManager.brokers.preferences.dontShowShareTransaction {
       return
     }
 

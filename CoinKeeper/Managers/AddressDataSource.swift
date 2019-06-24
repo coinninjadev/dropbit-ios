@@ -62,17 +62,17 @@ class AddressDataSource: AddressDataSourceType {
   }
 
   func nextChangeAddress(in context: NSManagedObjectContext) -> CNBMetaAddress {
-    let lastIndex = persistenceManager.lastChangeAddressIndex(in: context) ?? -1
+    let lastIndex = persistenceManager.brokers.wallet.lastChangeAddressIndex(in: context) ?? -1
     let nextChangeIndex = lastIndex + 1
     return changeAddress(at: nextChangeIndex)
   }
 
   func lastReceiveIndex(in context: NSManagedObjectContext) -> Int? {
-    return persistenceManager.lastReceiveAddressIndex(in: context)
+    return persistenceManager.brokers.wallet.lastReceiveAddressIndex(in: context)
   }
 
   func lastChangeIndex(in context: NSManagedObjectContext) -> Int? {
-    return persistenceManager.lastChangeAddressIndex(in: context)
+    return persistenceManager.brokers.wallet.lastChangeAddressIndex(in: context)
   }
 
   func checkAddressExists(for address: String, in context: NSManagedObjectContext) -> CNBAddressResult? {
@@ -96,15 +96,15 @@ class AddressDataSource: AddressDataSourceType {
     var localIndicesToSkip = indicesToSkip
 
     if forServerPool {
-      localIndicesToSkip = persistenceManager.serverPoolAddresses(in: context).compactMap { $0.derivativePath?.index }.asSet()
+      localIndicesToSkip = persistenceManager.brokers.user.serverPoolAddresses(in: context).compactMap { $0.derivativePath?.index }.asSet()
     }
 
-    let pendingDropBitAddresses: [String] = persistenceManager.addressesProvidedForReceivedPendingDropBits(in: context)
+    let pendingDropBitAddresses: [String] = persistenceManager.brokers.invitation.addressesProvidedForReceivedPendingDropBits(in: context)
 
     let startIndex = (lastReceiveIndex(in: context) ?? -1) + 1
     let endIndex = startIndex + 20
     let futureAddressIndices = (startIndex..<endIndex).map { Int($0) }
-    let remainingGapIndices = persistenceManager.userDefaultsManager.receiveAddressIndexGaps
+    let remainingGapIndices = persistenceManager.brokers.wallet.receiveAddressIndexGaps
       .subtracting(localIndicesToSkip).asArray()
       .filter { $0 < startIndex }
       .sorted()

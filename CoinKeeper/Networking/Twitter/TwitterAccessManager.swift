@@ -92,7 +92,7 @@ class TwitterAccessManager: TwitterAccessManagerType {
 
   func inflateTwitterUsersIfNeeded(in context: NSManagedObjectContext) -> Promise<Void> {
     guard isNotUITesting else { return Promise.value(()) }
-    guard persistenceManager.userIsVerified(using: .twitter, in: context) else { return Promise.value(()) }
+    guard persistenceManager.brokers.user.userIsVerified(using: .twitter, in: context) else { return Promise.value(()) }
     let inflatable = CKMTwitterContact.findAllNeedingInflated(in: context)
     guard inflatable.isNotEmpty else { return Promise.value(()) }
     let promises = inflatable.map { ckmTwitterContact -> Promise<Void> in

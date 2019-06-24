@@ -28,10 +28,6 @@ extension AppCoordinator {
     return launchStateManager.deviceIsVerified() || launchStateManager.skippedVerification
   }
 
-  var isFirstTimeOpeningApp: Bool {
-    return !persistenceManager.bool(for: .firstTimeOpeningApp)
-  }
-
   func enterApp() {
     let mainViewController = makeTransactionHistory()
     let settingsViewController = DrawerViewController.makeFromStoryboard()
@@ -122,7 +118,7 @@ extension AppCoordinator {
   }
 
   func checkForWordsBackedUp() {
-    let backupWordsReminderShown = persistenceManager.bool(for: .backupWordsReminderShown)
+    let backupWordsReminderShown = persistenceManager.brokers.activity.backupWordsReminderShown
     guard !wordsBackedUp && !backupWordsReminderShown else { return }
     let title = "Remember to backup your wallet to ensure your Bitcoin is secure in case your phone" +
     " is ever lost or stolen. Tap here to backup now."
@@ -130,7 +126,7 @@ extension AppCoordinator {
       self?.analyticsManager.track(event: .backupWordsButtonPressed, with: nil)
       self?.showWordRecoveryFlow()
     }
-    persistenceManager.set(true, for: .backupWordsReminderShown)
+    persistenceManager.brokers.activity.backupWordsReminderShown = true
   }
 
   func registerWalletWithServerIfNeeded(completion: @escaping () -> Void) {

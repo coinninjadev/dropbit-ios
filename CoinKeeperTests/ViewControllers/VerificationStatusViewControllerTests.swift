@@ -1,5 +1,5 @@
 //
-//  PhoneNumberStatusViewControllerTests.swift
+//  VerificationStatusViewControllerTests.swift
 //  DropBitTests
 //
 //  Created by Mitch on 10/19/18.
@@ -10,13 +10,13 @@ import Foundation
 @testable import DropBit
 import XCTest
 
-class PhoneNumberStatusViewControllerTests: XCTestCase {
-  var sut: PhoneNumberStatusViewController!
+class VerificationStatusViewControllerTests: XCTestCase {
+  var sut: VerificationStatusViewController!
   var mockCoordinator: MockCoordinator!
 
   override func setUp() {
     super.setUp()
-    self.sut = PhoneNumberStatusViewController.makeFromStoryboard()
+    self.sut = VerificationStatusViewController.makeFromStoryboard()
     mockCoordinator = MockCoordinator()
     self.sut.generalCoordinationDelegate = mockCoordinator
     _ = self.sut.view
@@ -47,37 +47,37 @@ class PhoneNumberStatusViewControllerTests: XCTestCase {
   // MARK: buttons contain actions
   func testCloseButtonContainsAction() {
     let actions = sut.closeButton.actions(forTarget: sut, forControlEvent: .touchUpInside) ?? []
-    let expected = #selector(PhoneNumberStatusViewController.closeButtonWasTouched).description
+    let expected = #selector(VerificationStatusViewController.closeButtonWasTouched).description
     XCTAssertTrue(actions.contains(expected), "closeButton should contain action")
   }
 
   func testAddressButtonContainsAction() {
     let actions = sut.addressButton.actions(forTarget: sut, forControlEvent: .touchUpInside) ?? []
-    let expected = #selector(PhoneNumberStatusViewController.addressButtonWasTouched).description
+    let expected = #selector(VerificationStatusViewController.addressButtonWasTouched).description
     XCTAssertTrue(actions.contains(expected), "addressButton should contain action")
   }
 
   func testChangeRemoveTwitterButtonContainsAction() {
     let actions = sut.changeRemoveTwitterButton.actions(forTarget: sut, forControlEvent: .touchUpInside) ?? []
-    let expected = #selector(PhoneNumberStatusViewController.changeRemoveTwitter).description
+    let expected = #selector(VerificationStatusViewController.changeRemoveTwitter).description
     XCTAssertTrue(actions.contains(expected), "changeRemoveTwitterButton should contain action")
   }
 
   func testChangeRemovePhoneButtonContainsAction() {
     let actions = sut.changeRemovePhoneButton.actions(forTarget: sut, forControlEvent: .touchUpInside) ?? []
-    let expected = #selector(PhoneNumberStatusViewController.changeRemovePhone).description
+    let expected = #selector(VerificationStatusViewController.changeRemovePhone).description
     XCTAssertTrue(actions.contains(expected), "changeRemovePhoneButton should contain action")
   }
 
   func testVerifyPhoneButtonContainsAction() {
     let actions = sut.verifyPhoneNumberPrimaryButton.actions(forTarget: sut, forControlEvent: .touchUpInside) ?? []
-    let expected = #selector(PhoneNumberStatusViewController.verifyPhoneNumber).description
+    let expected = #selector(VerificationStatusViewController.verifyPhoneNumber).description
     XCTAssertTrue(actions.contains(expected), "verifyPhoneNumberPrimaryButton should contain action")
   }
 
   func testVerifyTwitterButtonContainsAction() {
     let actions = sut.verifyTwitterPrimaryButton.actions(forTarget: sut, forControlEvent: .touchUpInside) ?? []
-    let expected = #selector(PhoneNumberStatusViewController.verifyTwitter).description
+    let expected = #selector(VerificationStatusViewController.verifyTwitter).description
     XCTAssertTrue(actions.contains(expected), "verifyTwitterPrimaryButton should contain action")
   }
 
@@ -108,7 +108,7 @@ class PhoneNumberStatusViewControllerTests: XCTestCase {
   }
 
   // MARK: private
-  class MockCoordinator: PhoneNumberStatusViewControllerDelegate {
+  class MockCoordinator: VerificationStatusViewControllerDelegate {
     func verifiedPhoneNumber() -> GlobalPhoneNumber? {
       return nil
     }

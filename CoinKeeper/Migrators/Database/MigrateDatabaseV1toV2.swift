@@ -14,7 +14,7 @@ struct MigrateDatabaseV1toV2: Migratable {
   let context: NSManagedObjectContext
 
   func isMigrated() -> Bool {
-    return persistenceManager.databaseMigrationFlag(for: .v1tov2)
+    return persistenceManager.brokers.migration.databaseMigrationFlag(for: .v1tov2)
   }
 
   func migrate() {
@@ -39,6 +39,6 @@ struct MigrateDatabaseV1toV2: Migratable {
     }
 
     // set migrated flag
-    persistenceManager.setDatabaseMigrationFlag(migrated: true, for: .v1tov2)
+    persistenceManager.brokers.migration.setDatabaseMigrationFlag(migrated: true, for: .v1tov2)
   }
 }

@@ -37,7 +37,7 @@ struct SenderIdentityFactory {
   }
 
   private func senderPhoneBody() -> UserIdentityBody? {
-    guard let number = persistenceManager.verifiedPhoneNumber() else { return nil }
+    guard let number = persistenceManager.brokers.user.verifiedPhoneNumber() else { return nil }
     return UserIdentityBody(phoneNumber: number)
   }
 

@@ -15,7 +15,7 @@ struct MigrateContactCacheV1toV2: Migratable {
   let logger: OSLog
 
   func isMigrated() -> Bool {
-    return persistenceManager.contactCacheMigrationFlag(for: .v1tov2)
+    return persistenceManager.brokers.migration.contactCacheMigrationFlag(for: .v1tov2)
   }
 
   func migrate() {
@@ -23,7 +23,7 @@ struct MigrateContactCacheV1toV2: Migratable {
       if let error = error {
         os_log("Failed to force reload contact cache: %@", log: self.logger, type: .error, error.localizedDescription)
       } else {
-        self.persistenceManager.setContactCacheMigrationFlag(migrated: true, for: .v1tov2)
+        self.persistenceManager.brokers.migration.setContactCacheMigrationFlag(migrated: true, for: .v1tov2)
       }
     }
   }

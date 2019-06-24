@@ -14,7 +14,7 @@ class UnverifiedPhoneBadgeTopic: BadgeTopic {
   }
 
   override func badgeStatus(from persistenceManager: PersistenceManagerType, in context: NSManagedObjectContext) -> BadgeTopicStatus {
-    return persistenceManager.userIsVerified(in: context) ? [.inactive] : [.actionNeeded]
+    return persistenceManager.brokers.user.userIsVerified(in: context) ? [.inactive] : [.actionNeeded]
   }
 
   override func changesShouldTriggerBadgeUpdate(persistenceManager: PersistenceManagerType, in context: NSManagedObjectContext) -> Bool {

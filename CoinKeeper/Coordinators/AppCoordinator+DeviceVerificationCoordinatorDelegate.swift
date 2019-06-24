@@ -20,12 +20,12 @@ extension AppCoordinator: DeviceVerificationCoordinatorDelegate {
   func registerAndPersistWallet(in context: NSManagedObjectContext) -> Promise<Void> {
     guard let wmgr = walletManager else { return Promise(error: CKPersistenceError.noWalletManager) }
     // Skip registration if wallet was previously registered and persisted
-    guard self.persistenceManager.walletId(in: context) == nil else {
+    guard self.persistenceManager.brokers.wallet.walletId(in: context) == nil else {
       return Promise { $0.fulfill(()) }
     }
 
     return self.networkManager.createWallet(withPublicKey: wmgr.hexEncodedPublicKey)
-      .get(in: context) { try self.persistenceManager.persistWalletId(from: $0, in: context) }.asVoid()
+      .get(in: context) { try self.persistenceManager.brokers.wallet.persistWalletId(from: $0, in: context) }.asVoid()
   }
 
   func coordinator(_ coordinator: DeviceVerificationCoordinator, didVerify type: UserIdentityType, isInitialSetupFlow: Bool) {
@@ -94,7 +94,7 @@ extension AppCoordinator: DeviceVerificationCoordinatorDelegate {
 
     let logger = OSLog(subsystem: "com.coinninja.coinkeeper.appcoordinator", category: "verification")
 
-    let verifiedIdentities = persistenceManager.verifiedIdentities(in: persistenceManager.mainQueueContext())
+    let verifiedIdentities = persistenceManager.brokers.user.verifiedIdentities(in: persistenceManager.mainQueueContext())
     if launchStateManager.profileIsActivated() && verifiedIdentities.count == 1 {
       os_log("Profile is activated, will register wallet addresses", log: logger, type: .debug)
       registerInitialWalletAddresses()

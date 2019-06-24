@@ -18,29 +18,7 @@ protocol PersistenceManagerType: DeviceCountryCodeProvider {
   var userDefaultsManager: PersistenceUserDefaultsType { get }
   var contactCacheManager: ContactCacheManagerType { get }
   var hashingManager: HashingManager { get }
-
-  func double(for key: CKUserDefaults.Key) -> Double
-  func set(_ doubleValue: Double, for key: CKUserDefaults.Key)
-  func integer(for key: CKUserDefaults.Key) -> Int
-  func set(_ integerValue: Int, for key: CKUserDefaults.Key)
-  func set(_ stringValue: CKUserDefaults.Value, for key: CKUserDefaults.Key)
-  func set(_ string: String, for key: CKUserDefaults.Key)
-  func string(for key: CKUserDefaults.Key) -> String?
-  func set(_ array: [String], for key: CKUserDefaults.Key)
-  func array(for key: CKUserDefaults.Key) -> [String]?
-  func set(_ bool: Bool, for key: CKUserDefaults.Key)
-  func set(_ date: Date, for key: CKUserDefaults.Key)
-
-  func setSelectedCurrency(_ selectedCurrency: SelectedCurrency)
-  func selectedCurrency() -> SelectedCurrency
-
-  func date(for key: CKUserDefaults.Key) -> Date?
-
-  func bool(for key: CKUserDefaults.Key) -> Bool
-
-  func resetPersistence() throws
-  func resetWallet() throws
-  func walletWords() -> [String]?
+  var brokers: PersistenceBrokersType { get }
 
   func createBackgroundContext() -> NSManagedObjectContext
   func mainQueueContext() -> NSManagedObjectContext
@@ -49,112 +27,27 @@ protocol PersistenceManagerType: DeviceCountryCodeProvider {
   func persistentStore() -> NSPersistentStore?
   func persistentStore(for context: NSManagedObjectContext) -> NSPersistentStore?
 
-  func deleteWallet(in context: NSManagedObjectContext)
-  func persistUnacknowledgedInvitation(in context: NSManagedObjectContext, with btcPair: BitcoinUSDPair,
-                                       contact: ContactType, fee: Int, acknowledgementId: String)
-  func persistWalletId(from response: WalletResponse, in context: NSManagedObjectContext) throws
-  func persistUserId(_ userId: String, in context: NSManagedObjectContext)
-  func persistUserPublicURLInfo(from response: UserResponse, in context: NSManagedObjectContext)
-  func getUserPublicURLInfo(in context: NSManagedObjectContext) -> UserPublicURLInfo?
-  func persistVerificationStatus(from response: UserResponse, in context: NSManagedObjectContext) -> Promise<UserVerificationStatus>
-  func persistAddedWalletAddresses(
-    from responses: [WalletAddressResponse],
-    metaAddresses: [CNBMetaAddress],
-    in context: NSManagedObjectContext) -> Promise<Void>
-  func persistTransactions(
-    from transactionResponses: [TransactionResponse],
-    in context: NSManagedObjectContext,
-    relativeToCurrentHeight blockHeight: Int,
-    fullSync: Bool
-    ) -> Promise<Void>
+  func resetPersistence() throws
+
+  func defaultHeaders(in context: NSManagedObjectContext) -> Promise<DefaultRequestHeaders>
+
   func persistTransactionSummaries(
     from responses: [AddressTransactionSummaryResponse],
-    in context: NSManagedObjectContext
-    )
-  @discardableResult
-  func persistTemporaryTransaction(
-    from transactionData: CNBTransactionData,
-    with outgoingTransactionData: OutgoingTransactionData,
-    txid: String,
-    invitation: CKMInvitation?,
-    in context: NSManagedObjectContext
-  ) -> CKMTransaction
+    in context: NSManagedObjectContext)
+
   func persistReceivedSharedPayloads(
     _ payloads: [Data],
     kit: PhoneNumberKit,
-    in context: NSManagedObjectContext
-  )
-  func deleteTransactions(notIn txids: [String], in context: NSManagedObjectContext)
-  func transactionsWithoutDayAveragePrice(in context: NSManagedObjectContext) -> Promise<[CKMTransaction]>
-  func containsRegularTransaction(in context: NSManagedObjectContext) -> IncomingOutgoingTuple
-  func containsDropbitTransaction(in context: NSManagedObjectContext) -> IncomingOutgoingTuple
-
-  func walletId(in context: NSManagedObjectContext) -> String?
-  func userId(in context: NSManagedObjectContext) -> String?
-  func userVerificationStatus(in context: NSManagedObjectContext) -> UserVerificationStatus
-  func userIsVerified(in context: NSManagedObjectContext) -> Bool
-  func userIsVerified(using type: UserIdentityType, in context: NSManagedObjectContext) -> Bool
-
-  func getAllInvitations(in context: NSManagedObjectContext) -> [CKMInvitation]
-  func getUnacknowledgedInvitations(in context: NSManagedObjectContext) -> [CKMInvitation]
-
-  /// Called when local userId is no longer valid on server
-  func unverifyUser(in context: NSManagedObjectContext)
-
-  func verifiedPhoneNumber() -> GlobalPhoneNumber?
-  func unverifyAllIdentities()
-
-  /// Called when local walletId is no longer valid on server
-  func removeWalletId(in context: NSManagedObjectContext)
-
-  func serverPoolAddresses(in context: NSManagedObjectContext) -> [CKMServerAddress]
-  func defaultHeaders(in context: NSManagedObjectContext) -> Promise<DefaultRequestHeaders>
-  func acknowledgeInvitation(with outgoingTransactionData: OutgoingTransactionData,
-                             response: WalletAddressRequestResponse,
-                             in context: NSManagedObjectContext)
-
-  func addressesProvidedForReceivedPendingDropBits(in context: NSManagedObjectContext) -> [String]
-
-  func updateWalletLastIndexes(in context: NSManagedObjectContext)
-  func lastReceiveAddressIndex(in context: NSManagedObjectContext) -> Int?
-  func lastChangeAddressIndex(in context: NSManagedObjectContext) -> Int?
-
-  func dustProtectionMinimumAmount() -> Int
-  func dustProtectionIsEnabled() -> Bool
-  func enableDustProtection(_ shouldEnable: Bool)
-
-  func yearlyPriceHighNotificationIsEnabled() -> Bool
-  func updateYearlyPriceHighNotification(enabled: Bool)
-
-  func setLastLoginTime()
-  func lastLoginTime() -> TimeInterval?
-
-  /// Returns either the stored UUID or the one that has just been created and stored
-  @discardableResult
-  func findOrCreateDeviceId() -> UUID
-
-  func deviceEndpointIds() -> DeviceEndpointIds?
-  func deleteDeviceEndpointIds()
-
-  func backup(recoveryWords words: [String], isBackedUp: Bool) -> Promise<Void>
-  func walletWordsBackedUp() -> Bool
-
-  func setDatabaseMigrationFlag(migrated: Bool, for version: DatabaseMigrationVersion)
-  func databaseMigrationFlag(for version: DatabaseMigrationVersion) -> Bool
-  func setKeychainMigrationFlag(migrated: Bool, for version: KeychainMigrationVersion)
-  func keychainMigrationFlag(for version: KeychainMigrationVersion) -> Bool
-  func setContactCacheMigrationFlag(migrated: Bool, for version: ContactCacheMigrationVersion)
-  func contactCacheMigrationFlag(for version: ContactCacheMigrationVersion) -> Bool
+    in context: NSManagedObjectContext)
 
   /// Look for any transactions sent to a phone number without a contact name, and provide a name if found, as a convenience when viewing tx history
   func matchContactsIfPossible()
 
-  func verifiedIdentities(in context: NSManagedObjectContext) -> [UserIdentityType]
 }
 
 extension PersistenceManagerType {
   func deviceCountryCode() -> Int? {
-    return verifiedPhoneNumber()?.countryCode
+    return brokers.user.verifiedPhoneNumber()?.countryCode
   }
 }
 
@@ -253,28 +146,97 @@ protocol PersistenceDatabaseType: AnyObject {
 
 protocol PersistenceUserDefaultsType: AnyObject {
 
-  static var standardDefaults: UserDefaults { get }
+  /// Avoid using the methods of UserDefaults directly,
+  /// use the extension functions with CKUserDefaults.Key instead.
+  var standardDefaults: UserDefaults { get }
+
   func deleteAll()
   func deleteWallet()
   func unverifyUser()
-  func removeWalletId()
-  func deleteDeviceEndpointIds()
-  func deviceId() -> UUID?
-  func setDeviceId(_ uuid: UUID)
-  func lastLoginTime() -> TimeInterval?
-  var receiveAddressIndexGaps: Set<Int> { get set }
-  var dontShowShareTransaction: Bool { get set }
 
-  /// Returns zero if dust protection not enabled
-  func dustProtectionMinimumAmount() -> Int
-  func dustProtectionIsEnabled() -> Bool
-
-  func yearlyPriceHighNotificationIsEnabled() -> Bool
 }
 
 extension PersistenceUserDefaultsType {
 
-  static var standardDefaults: UserDefaults { return UserDefaults.standard }
+  func double(for key: CKUserDefaults.Key) -> Double {
+    return standardDefaults.double(forKey: key.defaultsString)
+  }
+
+  func set(_ doubleValue: Double, for key: CKUserDefaults.Key) {
+    standardDefaults.set(doubleValue, forKey: key.defaultsString)
+  }
+
+  func integer(for key: CKUserDefaults.Key) -> Int {
+    return standardDefaults.integer(forKey: key.defaultsString)
+  }
+
+  func set(_ integerValue: Int, for key: CKUserDefaults.Key) {
+    standardDefaults.set(integerValue, forKey: key.defaultsString)
+  }
+
+  func string(for key: CKUserDefaults.Key) -> String? {
+    return standardDefaults.string(forKey: key.defaultsString)
+  }
+
+  func array(for key: CKUserDefaults.Key) -> [Any]? {
+    return standardDefaults.array(forKey: key.defaultsString)
+  }
+
+  func set(_ array: [String], for key: CKUserDefaults.Key) {
+    standardDefaults.set(array, forKey: key.defaultsString)
+  }
+
+  func set(_ string: String, for key: CKUserDefaults.Key) {
+    standardDefaults.set(string, forKey: key.defaultsString)
+  }
+
+  func set(_ stringValue: CKUserDefaults.Value, for key: CKUserDefaults.Key) {
+    set(stringValue.defaultsString, for: key)
+  }
+
+  func set(stringValue: String, for key: CKUserDefaults.Key) {
+    standardDefaults.set(stringValue, forKey: key.defaultsString)
+  }
+
+  func set(_ bool: Bool, for key: CKUserDefaults.Key) {
+    standardDefaults.set(bool, forKey: key.defaultsString)
+  }
+
+  func bool(for key: CKUserDefaults.Key) -> Bool {
+    return standardDefaults.bool(forKey: key.defaultsString)
+  }
+
+  func set(_ date: Date, for key: CKUserDefaults.Key) {
+    standardDefaults.set(date, forKey: key.defaultsString)
+  }
+
+  func date(for key: CKUserDefaults.Key) -> Date? {
+    return standardDefaults.object(forKey: key.defaultsString) as? Date
+  }
+
+  func object(for key: CKUserDefaults.Key) -> Any? {
+    return standardDefaults.object(forKey: key.defaultsString)
+  }
+
+  func set(_ object: Any?, for key: CKUserDefaults.Key) {
+    standardDefaults.set(object, forKey: key.defaultsString)
+  }
+
+  func value(for key: CKUserDefaults.Key) -> Any? {
+    return standardDefaults.value(forKey: key.defaultsString)
+  }
+
+  func setValue(_ value: Any?, for key: CKUserDefaults.Key) {
+    standardDefaults.setValue(value, forKey: key.defaultsString)
+  }
+
+  func removeValue(for key: CKUserDefaults.Key) {
+    standardDefaults.set(nil, forKey: key.defaultsString)
+  }
+
+  func removeValues(forKeys keys: [CKUserDefaults.Key]) {
+    keys.forEach { removeValue(for: $0) }
+  }
 
 }
 

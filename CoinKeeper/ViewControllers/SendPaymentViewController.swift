@@ -632,7 +632,7 @@ extension SendPaymentViewController: UITextFieldDelegate {
   }
 
   func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-    if let pasteboardText = UIPasteboard.general.string, pasteboardText == string {
+    if let pasteboardText = UIPasteboard.general.string, pasteboardText.isNotEmpty, pasteboardText == string {
       applyRecipient(inText: pasteboardText)
     }
 

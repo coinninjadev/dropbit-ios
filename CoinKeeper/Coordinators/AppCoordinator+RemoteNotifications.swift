@@ -13,8 +13,7 @@ extension AppCoordinator {
 
   func registerForRemoteNotifications(with deviceToken: Data) {
     let token = deviceToken.hexString
-    persistenceManager.set(token, for: .devicePushToken)
-
+    persistenceManager.brokers.device.setDeviceToken(string: token)
     notificationManager.performRegistrationIfNeeded(forPushToken: token)
   }
 

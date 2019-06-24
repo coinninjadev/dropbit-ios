@@ -21,6 +21,11 @@ class MockTransactionHistoryDetailCellDelegate: TransactionHistoryDetailCellDele
     tappedClose = true
   }
 
+  var tappedTwitterShare = false
+  func didTapTwitterShare(detailCell: TransactionHistoryDetailBaseCell) {
+    tappedTwitterShare = true
+  }
+
   var tappedAddress = false
   func didTapAddress(detailCell: TransactionHistoryDetailBaseCell) {
     tappedAddress = true

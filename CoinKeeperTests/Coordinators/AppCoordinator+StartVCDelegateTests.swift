@@ -77,7 +77,6 @@ class AppCoordinatorStartVCDelegateTests: XCTestCase {
 
   func testCreatingWalletWhenOnboardingFlowCompletedPopsToRoot() {
     let mockPersistenceManager = MockPersistenceManager()
-    mockPersistenceManager.setDidTutorial(true)
     let mockLaunchStateManager = MockLaunchStateManager(persistenceManager: mockPersistenceManager)
     let mockNavigationController = MockNavigationController()
     mockNavigationController.viewControllers = [StartViewController.makeFromStoryboard()]

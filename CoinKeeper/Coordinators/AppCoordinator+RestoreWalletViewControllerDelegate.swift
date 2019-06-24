@@ -24,7 +24,7 @@ extension AppCoordinator: RestoreWalletViewControllerDelegate {
     let successFailController = SuccessFailViewController.newInstance(viewModel: viewModel,
                                                                       delegate: self)
     successFailController.action = {
-      if let words = self.persistenceManager.walletWords() {
+      if let words = self.persistenceManager.brokers.wallet.walletWords() {
         self.walletManager = WalletManager(words: words, persistenceManager: self.persistenceManager)
         successFailController.setMode(.success)
       } else {

@@ -14,19 +14,19 @@ import CoreData
 
 extension AppCoordinator: NotificationManagerDelegate {
   func localDeviceId(_ manager: NotificationManagerType) -> String {
-    return persistenceManager.findOrCreateDeviceId().uuidString.lowercased()
+    return persistenceManager.brokers.device.findOrCreateDeviceId().uuidString.lowercased()
   }
 
   func persistServerDeviceId(_ serverDeviceId: String) {
-    persistenceManager.set(serverDeviceId, for: .coinNinjaServerDeviceId)
+    persistenceManager.brokers.device.serverDeviceId = serverDeviceId
   }
 
   func persistDeviceEndpointId(_ deviceEndpointId: String) {
-    persistenceManager.set(deviceEndpointId, for: .deviceEndpointId)
+    persistenceManager.brokers.device.deviceEndpointId = deviceEndpointId
   }
 
   func deleteDeviceEndpointIds() {
-    persistenceManager.deleteDeviceEndpointIds()
+    persistenceManager.brokers.device.deleteDeviceEndpointIds()
   }
 
   /// used to determine if topic should even be considered for subscription
@@ -35,13 +35,12 @@ extension AppCoordinator: NotificationManagerDelegate {
     switch type {
     case .general: return true
     case .btcHigh:
-      let shouldSubscribe = persistenceManager.yearlyPriceHighNotificationIsEnabled()
-      return shouldSubscribe
+      return persistenceManager.brokers.preferences.yearlyPriceHighNotificationIsEnabled
     }
   }
 
   func pushToken() -> String? {
-    return persistenceManager.string(for: .devicePushToken)
+    return persistenceManager.brokers.device.pushToken
   }
 
   func unsubscribeFromTopic(type: SubscriptionTopicType, deviceEndpointIds: DeviceEndpointIds) -> Promise<Void> {
@@ -83,7 +82,7 @@ extension AppCoordinator: NotificationManagerDelegate {
 
   func updateNotificationEnabled(_ enabled: Bool, forType type: SubscriptionTopicType) {
     switch type {
-    case .btcHigh: persistenceManager.set(enabled, for: .yearlyPriceHighNotificationEnabled)
+    case .btcHigh: persistenceManager.brokers.preferences.yearlyPriceHighNotificationIsEnabled = enabled
     case .general: break
     }
   }
@@ -94,7 +93,7 @@ extension AppCoordinator: NotificationManagerDelegate {
     case .general: return false
     case .btcHigh:
       let isSubscribed = subscribedTopics.contains(where: { $0.ownerId == topic.id })
-      let isSettingDisabled = !persistenceManager.yearlyPriceHighNotificationIsEnabled()
+      let isSettingDisabled = !persistenceManager.brokers.preferences.yearlyPriceHighNotificationIsEnabled
       let shouldUnsubscribe = isSettingDisabled && isSubscribed
       return shouldUnsubscribe
     }
@@ -107,7 +106,7 @@ extension AppCoordinator: NotificationManagerDelegate {
     case .general: return true
     case .btcHigh:
       let isSubscribed = subscribedTopics.contains(where: { $0.ownerId == topic.id })
-      let isSettingEnabled = persistenceManager.yearlyPriceHighNotificationIsEnabled()
+      let isSettingEnabled = persistenceManager.brokers.preferences.yearlyPriceHighNotificationIsEnabled
       let shouldSubscribe = isSettingEnabled && !isSubscribed
       return shouldSubscribe
     }
