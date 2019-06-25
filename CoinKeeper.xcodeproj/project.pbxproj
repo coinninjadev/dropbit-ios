@@ -602,6 +602,7 @@
 		B541DD3B21EE4A18009F38A0 /* MetaAddress.swift in Sources */ = {isa = PBXBuildFile; fileRef = B541DD3A21EE4A18009F38A0 /* MetaAddress.swift */; };
 		B541DF5520A3312500C621EB /* AppCoordinator+DeviceVerificationCoordinatorDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B541DF5420A3312500C621EB /* AppCoordinator+DeviceVerificationCoordinatorDelegate.swift */; };
 		B541DF5720A332DA00C621EB /* AppCoordinator+PlaceholderViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B541DF5620A332D900C621EB /* AppCoordinator+PlaceholderViewControllerDelegate.swift */; };
+		B542147E22C103750048B81A /* AdjustableTransactionFeeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B542147D22C103750048B81A /* AdjustableTransactionFeeViewModel.swift */; };
 		B542BE752237093800E01C30 /* ExamplePhoneNumberLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B542BE742237093800E01C30 /* ExamplePhoneNumberLabel.swift */; };
 		B5457124217E63F000FF3A5A /* NetworkManagerIntegrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5457123217E63F000FF3A5A /* NetworkManagerIntegrationTests.swift */; };
 		B5457126217E6D8900FF3A5A /* ResponseCodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5457125217E6D8900FF3A5A /* ResponseCodable.swift */; };
@@ -1484,6 +1485,7 @@
 		B541DD3A21EE4A18009F38A0 /* MetaAddress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetaAddress.swift; sourceTree = "<group>"; };
 		B541DF5420A3312500C621EB /* AppCoordinator+DeviceVerificationCoordinatorDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppCoordinator+DeviceVerificationCoordinatorDelegate.swift"; sourceTree = "<group>"; };
 		B541DF5620A332D900C621EB /* AppCoordinator+PlaceholderViewControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppCoordinator+PlaceholderViewControllerDelegate.swift"; sourceTree = "<group>"; };
+		B542147D22C103750048B81A /* AdjustableTransactionFeeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdjustableTransactionFeeViewModel.swift; sourceTree = "<group>"; };
 		B542BE742237093800E01C30 /* ExamplePhoneNumberLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExamplePhoneNumberLabel.swift; sourceTree = "<group>"; };
 		B5457123217E63F000FF3A5A /* NetworkManagerIntegrationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManagerIntegrationTests.swift; sourceTree = "<group>"; };
 		B5457125217E6D8900FF3A5A /* ResponseCodable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResponseCodable.swift; sourceTree = "<group>"; };
@@ -2573,6 +2575,7 @@
 				3BF41AB7207694EA008B3D0A /* RequestPayViewModel.swift */,
 				5B62D55C2087732700E9D466 /* SendPaymentViewModel.swift */,
 				A2A530CD20977A8A00B6F4DE /* ConfirmPaymentViewModel.swift */,
+				B542147D22C103750048B81A /* AdjustableTransactionFeeViewModel.swift */,
 				A293E34F20F67F390099ED69 /* SuccessFailViewModel.swift */,
 				A260E8D820FD0F28008343F9 /* TutorialScreenViewModel.swift */,
 				30349F862188A99700A32AFA /* ServerAddressViewModel.swift */,
@@ -3821,6 +3824,7 @@
 				B5976AD521552F8500774073 /* WalletAddressesQueryTarget.swift in Sources */,
 				B54913A522BBB61200ACC7D7 /* AlertConfigurationTypes.swift in Sources */,
 				B54A420D207FAB6D005B40A9 /* TransactionDetailStatusLabel.swift in Sources */,
+				B542147E22C103750048B81A /* AdjustableTransactionFeeViewModel.swift in Sources */,
 				B5D834072249680600C45ABE /* SettingSwitchWithInfoCell.swift in Sources */,
 				B5D8340A224971E400C45ABE /* SettingsViewController+TableView.swift in Sources */,
 				B501022221F2325B00D42A71 /* UIColor+Init.swift in Sources */,
