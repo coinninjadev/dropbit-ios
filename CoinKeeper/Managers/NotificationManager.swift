@@ -195,14 +195,16 @@ class NotificationManager: NSObject, NotificationManagerType {
     let localDeviceID = localDelegate.localDeviceId(self)
     let maybeToken = token ?? localDelegate.pushToken()
     guard let localToken = maybeToken else { return Promise(error: CKPersistenceError.missingValue(key: "push token")) }
+    var serverDeviceId = ""
     return networkInteractor.getDevice(forLocalUUIDString: localDeviceID)
+      .get { serverDeviceId = $0.id }
       .then { self.networkInteractor.getDeviceEndpoints(serverDeviceId: $0.id) }
       .filterValues { $0.token == localToken }
       .then { (responses: [DeviceEndpointResponse]) -> Promise<DeviceEndpointResponse> in
         if let last = responses.last { // not empty
           return Promise.value(last)
         } else {
-          throw CKPersistenceError.missingValue(key: "device endpoint response")
+          return self.networkInteractor.createDeviceEndpoint(forPushToken: localToken, serverDeviceId: serverDeviceId)
         }
     }
 
