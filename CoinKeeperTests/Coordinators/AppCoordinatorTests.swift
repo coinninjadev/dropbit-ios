@@ -347,7 +347,7 @@ class AppCoordinatorTests: MockedPersistenceTestCase {
 
     sut.serialQueueManager.enqueueWalletSyncIfAppropriate(type: .standard, policy: .always,
                                                           completion: completion, fetchResult: nil)
-    wait(for: [expectation], timeout: 3.0)
+    wait(for: [expectation], timeout: 10.0)
   }
 
   func testCheckAndRecoverAuthorizationIds_authorizationErrorRemovesWalletId() {
@@ -373,7 +373,7 @@ class AppCoordinatorTests: MockedPersistenceTestCase {
 
     sut.serialQueueManager.enqueueWalletSyncIfAppropriate(type: .standard, policy: .always,
                                                           completion: completion, fetchResult: nil)
-    wait(for: [expectation], timeout: 3.0)
+    wait(for: [expectation], timeout: 10.0)
   }
 
 }
