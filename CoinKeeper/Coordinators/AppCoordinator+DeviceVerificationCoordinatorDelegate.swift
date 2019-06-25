@@ -54,7 +54,7 @@ extension AppCoordinator: DeviceVerificationCoordinatorDelegate {
 
   func didReceiveTwilioError(for phoneNumber: String, route: TwilioErrorRoute) {
     let logger = OSLog(subsystem: "com.coinninja.coinkeeper.appcoordinator", category: "twilio_error")
-    let parser = CKPhoneNumberParser(kit: self.phoneNumberKit)
+    let parser = CKPhoneNumberParser()
     let e164 = "+" + phoneNumber
 
     guard let globalNumber = try? parser.parse(e164) else {

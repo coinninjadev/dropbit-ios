@@ -111,33 +111,34 @@ extension AppCoordinator: SettingsViewControllerDelegate {
 
   func viewControllerDidConfirmDeleteWallet(_ viewController: UIViewController) {
     let deleteWalletOperation = AsynchronousOperation(operationType: .deleteWallet)
-    deleteWalletOperation.task = { operation in
-      _ = self.deleteDeviceEndpoint()
+    deleteWalletOperation.task = { [weak self, weak innerOp = deleteWalletOperation] in
+      guard let localSelf = self, let localOperation = innerOp else { return }
+      _ = localSelf.deleteDeviceEndpoint()
         .recover { (error: Error) -> Promise<Void> in
           let logger = OSLog(subsystem: "com.coinninja.coinkeeper.AppCoordinator", category: "delete_wallet")
           os_log("failed to delete endpoint in %@: %@", log: logger, type: .error, #function, error.localizedDescription)
           return Promise.value(()) // don't show error, just go on with deleting wallet.
         }
-        .then { self.networkManager.resetWallet() }
-        .get { try self.deleteAndResetWalletLocally() }
+        .then { localSelf.networkManager.resetWallet() }
+        .get { try localSelf.deleteAndResetWalletLocally() }
         .done(on: .main) { _ in
-          self.analyticsManager.track(event: .deleteWallet, with: nil)
-          self.showStartViewController()
-          self.analyticsManager.track(property: MixpanelProperty(key: .hasWallet, value: false))
-          self.analyticsManager.track(property: MixpanelProperty(key: .phoneVerified, value: false))
-          self.analyticsManager.track(property: MixpanelProperty(key: .twitterVerified, value: false))
-          self.analyticsManager.track(property: MixpanelProperty(key: .wordsBackedUp, value: false))
-          self.analyticsManager.track(property: MixpanelProperty(key: .hasBTCBalance, value: false))
-          self.analyticsManager.track(property: MixpanelProperty(key: .isDropBitMeEnabled, value: false))
+          localSelf.analyticsManager.track(event: .deleteWallet, with: nil)
+          localSelf.showStartViewController()
+          localSelf.analyticsManager.track(property: MixpanelProperty(key: .hasWallet, value: false))
+          localSelf.analyticsManager.track(property: MixpanelProperty(key: .phoneVerified, value: false))
+          localSelf.analyticsManager.track(property: MixpanelProperty(key: .twitterVerified, value: false))
+          localSelf.analyticsManager.track(property: MixpanelProperty(key: .wordsBackedUp, value: false))
+          localSelf.analyticsManager.track(property: MixpanelProperty(key: .hasBTCBalance, value: false))
+          localSelf.analyticsManager.track(property: MixpanelProperty(key: .isDropBitMeEnabled, value: false))
         }.catch { error in
           let logger = OSLog(subsystem: "com.coinninja.coinkeeper.AppCoordinator", category: "delete_wallet")
           os_log("Error in %@: %@", log: logger, type: .error, #function, error.localizedDescription)
         }.finally {
-          operation.finish()
+          localOperation.finish()
       }
     }
 
-    self.serialQueueManager.enqueueOperationIfAppropriate(deleteWalletOperation, policy: .skipIfSimilarOperationExists)
+    serialQueueManager.enqueueOperationIfAppropriate(deleteWalletOperation, policy: .skipIfSimilarOperationExists)
   }
 
   func viewControllerResyncBlockchain(_ viewController: UIViewController) {

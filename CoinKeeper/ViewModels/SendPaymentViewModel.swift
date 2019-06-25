@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import PhoneNumberKit
 import CNBitcoinKit
 
 enum PaymentRecipient {
@@ -178,7 +177,7 @@ struct SendPaymentViewModel: SendPaymentViewModelType {
     }
   }
 
-  let recipientParser: RecipientParserType = CKRecipientParser(kit: PhoneNumberKit())
+  let recipientParser: RecipientParserType = CKRecipientParser()
 
   init(qrCode: QRCode, primaryCurrency: CurrencyCode) {
     self.paymentRecipient = qrCode.address.flatMap { .btcAddress($0) }
@@ -236,7 +235,7 @@ struct SendPaymentViewModel: SendPaymentViewModelType {
     case .btcAddress: return nil
     case .contact(let contact):
       guard let phoneContact = contact as? PhoneContactType else { return nil }
-      let formatter = CKPhoneNumberFormatter(kit: PhoneNumberKit(), format: .international)
+      let formatter = CKPhoneNumberFormatter(format: .international)
       return (try? formatter.string(from: phoneContact.globalPhoneNumber)) ?? ""
     case .twitterContact(let contact):
       return contact.displayIdentity

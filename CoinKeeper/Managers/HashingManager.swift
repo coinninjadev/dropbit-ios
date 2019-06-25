@@ -23,16 +23,16 @@ struct HashingManager {
   /// This function always requires a GlobalPhoneNumber for hashing. If a parsedNumber is already available, providing
   /// it will skip the step of parsing the global number in this function, increasing efficiency. Passing nil for the parsedNumber
   /// and relying on parsing inside this function is acceptable and the more common scenario.
-  func hash(phoneNumber number: GlobalPhoneNumber, salt: Data, parsedNumber: PhoneNumber?, kit: PhoneNumberKit) -> String {
-    let normalizedNumber = normalizeNumber(number, parsedNumber: parsedNumber, kit: kit)
+  func hash(phoneNumber number: GlobalPhoneNumber, salt: Data, parsedNumber: PhoneNumber?) -> String {
+    let normalizedNumber = normalizeNumber(number, parsedNumber: parsedNumber)
     return pbkdf2SHA256(password: normalizedNumber,
                         salt: salt,
                         keyByteCount: 32,
                         rounds: keyDerivation.iterations)
   }
 
-  private func normalizeNumber(_ number: GlobalPhoneNumber, parsedNumber: PhoneNumber?, kit: PhoneNumberKit) -> String {
-    let transformablePhoneNumber: PhoneNumber? = parsedNumber ?? (try? kit.parse(number.asE164()))
+  private func normalizeNumber(_ number: GlobalPhoneNumber, parsedNumber: PhoneNumber?) -> String {
+    let transformablePhoneNumber: PhoneNumber? = parsedNumber ?? (try? phoneNumberKit.parse(number.asE164()))
 
     let originalNationalNumber = number.sanitizedNationalNumber()
     let trimmedNationalNumber = originalNationalNumber.dropFirstCharacter(ifEquals: "0")
@@ -42,8 +42,8 @@ struct HashingManager {
     let token = "$1"
 
     if let number = transformablePhoneNumber,
-      let regionCode = kit.getRegionCode(of: number),
-      let transformRule = kit.nationalPrefixTransformRule(forCountry: regionCode),
+      let regionCode = phoneNumberKit.getRegionCode(of: number),
+      let transformRule = phoneNumberKit.nationalPrefixTransformRule(forCountry: regionCode),
       transformRule.contains(token) {
 
       // The prefix precedes the token in the transform rule

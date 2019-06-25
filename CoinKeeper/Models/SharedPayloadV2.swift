@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import PhoneNumberKit
 
 struct SharedPayloadProfileV2: Codable {
   let type: UserIdentityType
@@ -37,7 +36,7 @@ extension SharedPayloadProfileV2 {
   /// Return GlobalPhoneNumber instance from `identity`. Return nil if `identity` is not a phone number.
   func globalPhoneNumber() -> GlobalPhoneNumber? {
     guard type == .phone else { return nil }
-    return GlobalPhoneNumber(e164: identity, kit: PhoneNumberKit())
+    return GlobalPhoneNumber(e164: identity)
   }
 
   init(twitterContact: TwitterContactType) {

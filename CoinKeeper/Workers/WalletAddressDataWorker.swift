@@ -9,7 +9,6 @@
 import CoreData
 import Moya
 import PromiseKit
-import PhoneNumberKit
 import UIKit
 import os.log
 
@@ -51,11 +50,10 @@ extension WalletAddressDataWorkerType {
 // swiftlint:disable type_body_length
 class WalletAddressDataWorker: WalletAddressDataWorkerType {
 
-  let walletManager: WalletManagerType
-  let persistenceManager: PersistenceManagerType
-  let networkManager: NetworkManagerType
-  let analyticsManager: AnalyticsManagerType
-  let phoneNumberKit: PhoneNumberKit
+  unowned let walletManager: WalletManagerType
+  unowned let persistenceManager: PersistenceManagerType
+  unowned let networkManager: NetworkManagerType
+  unowned let analyticsManager: AnalyticsManagerType
   unowned var invitationDelegate: InvitationWorkerDelegate
 
   private let logger = OSLog(subsystem: "com.coinninja.transactionDataWorker", category: "wallet_address_data_worker")
@@ -65,14 +63,12 @@ class WalletAddressDataWorker: WalletAddressDataWorkerType {
     persistenceManager: PersistenceManagerType,
     networkManager: NetworkManagerType,
     analyticsManager: AnalyticsManagerType,
-    phoneNumberKit: PhoneNumberKit,
     invitationWorkerDelegate: InvitationWorkerDelegate
     ) {
     self.walletManager = walletManager
     self.persistenceManager = persistenceManager
     self.networkManager = networkManager
     self.analyticsManager = analyticsManager
-    self.phoneNumberKit = phoneNumberKit
     self.invitationDelegate = invitationWorkerDelegate
   }
 
@@ -543,7 +539,7 @@ class WalletAddressDataWorker: WalletAddressDataWorkerType {
   /// This will ignore the status of the passed in responses and persist the status as .addressSent
   private func persistReceivedAddressRequests(_ responses: [WalletAddressRequestResponse], in context: NSManagedObjectContext) {
     responses.forEach {
-      let invitation = CKMInvitation.updateOrCreate(withReceivedAddressRequestResponse: $0, kit: self.phoneNumberKit, in: context)
+      let invitation = CKMInvitation.updateOrCreate(withReceivedAddressRequestResponse: $0, in: context)
       invitation.transaction?.isIncoming = true
     }
   }

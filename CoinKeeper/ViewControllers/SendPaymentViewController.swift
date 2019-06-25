@@ -28,7 +28,6 @@ ValidatorAlertDisplayable {
   var viewModel: SendPaymentViewModelType = SendPaymentViewModel(btcAmount: 0, primaryCurrency: .USD)
   var alertManager: AlertManagerType?
   let rateManager = ExchangeRateManager()
-  let phoneNumberKit = PhoneNumberKit()
   var hashingManager = HashingManager()
 
   /// The presenter of SendPaymentViewController can set this property to provide a recipient.
@@ -478,7 +477,7 @@ extension SendPaymentViewController {
     self.phoneNumberEntryView.isHidden = false
 
     let region = phoneNumberEntryView.selectedRegion
-    let country = CKCountry(regionCode: region, kit: self.phoneNumberKit)
+    let country = CKCountry(regionCode: region)
     let number = contact.globalPhoneNumber.nationalNumber
 
     self.phoneNumberEntryView.textField.update(withCountry: country, nationalNumber: number)
@@ -577,7 +576,7 @@ extension SendPaymentViewController: UITextFieldDelegate {
   func textFieldDidBeginEditing(_ textField: UITextField) {
     switch textField {
     case phoneNumberEntryView.textField:
-      let defaultCountry = CKCountry(locale: .current, kit: self.phoneNumberKit)
+      let defaultCountry = CKCountry(locale: .current)
       let phoneNumber = GlobalPhoneNumber(countryCode: defaultCountry.countryCode, nationalNumber: "")
       let contact = GenericContact(phoneNumber: phoneNumber, formatted: "")
       let recipient = PaymentRecipient.phoneNumber(contact)
@@ -611,7 +610,7 @@ extension SendPaymentViewController: UITextFieldDelegate {
         switch recipient {
         case .bitcoinURL: updateViewModel(withParsedRecipient: recipient)
         case .phoneNumber(let globalPhoneNumber):
-          let formattedPhoneNumber = try CKPhoneNumberFormatter(kit: self.phoneNumberKit, format: .international)
+          let formattedPhoneNumber = try CKPhoneNumberFormatter(format: .international)
             .string(from: globalPhoneNumber)
           let contact = GenericContact(phoneNumber: globalPhoneNumber, formatted: formattedPhoneNumber)
           let recipient = PaymentRecipient.phoneNumber(contact)

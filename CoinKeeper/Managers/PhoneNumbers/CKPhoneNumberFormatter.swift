@@ -15,17 +15,15 @@ protocol PhoneNumberFormatterType: AnyObject {
 
 class CKPhoneNumberFormatter: PhoneNumberFormatterType {
 
-  private let kit: PhoneNumberKit
   private let format: PhoneNumberFormat
 
-  init(kit: PhoneNumberKit, format: PhoneNumberFormat) {
-    self.kit = kit
+  init(format: PhoneNumberFormat) {
     self.format = format
   }
 
   func string(from phoneNumber: GlobalPhoneNumber) throws -> String {
-    let parsedNumber = try kit.parse(phoneNumber.asE164())
-    return kit.format(parsedNumber, toType: self.format)
+    let parsedNumber = try phoneNumberKit.parse(phoneNumber.asE164())
+    return phoneNumberKit.format(parsedNumber, toType: self.format)
   }
 
 }

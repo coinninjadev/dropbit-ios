@@ -43,7 +43,11 @@ extension AppCoordinator: StartViewControllerDelegate {
     launchStateManager.unauthenticateUser()
   }
 
-  func requireAuthenticationIfNeeded(whenAuthenticated: (() -> Void)?) {
+  func requireAuthenticationIfNeeded() {
+    requireAuthenticationIfNeeded(whenAuthenticated: {})
+  }
+
+  func requireAuthenticationIfNeeded(whenAuthenticated: @escaping () -> Void) {
     connectionManager.delegate?.connectionManager(connectionManager, didChangeStatusTo: connectionManager.status)
     guard launchStateManager.shouldRequireAuthentication,
       !(navigationController.topViewController()?.isKind(of: PinEntryViewController.classForCoder()) ?? true)

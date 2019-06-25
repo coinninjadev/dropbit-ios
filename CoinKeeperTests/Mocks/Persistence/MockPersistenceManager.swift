@@ -5,7 +5,6 @@
 
 import CNBitcoinKit
 import CoreData
-import PhoneNumberKit
 import PromiseKit
 @testable import DropBit
 
@@ -58,7 +57,7 @@ class MockPersistenceManager: PersistenceManagerType {
     from responses: [AddressTransactionSummaryResponse],
     in context: NSManagedObjectContext) {}
 
-  func persistReceivedSharedPayloads(_ payloads: [Data], kit: PhoneNumberKit, in context: NSManagedObjectContext) { }
+  func persistReceivedSharedPayloads(_ payloads: [Data], in context: NSManagedObjectContext) { }
 
   func matchContactsIfPossible() {
     databaseManager.matchContactsIfPossible(with: self.contactCacheManager)

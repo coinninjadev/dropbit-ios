@@ -57,20 +57,13 @@ class NoConnectionViewController: BaseViewController, StoryboardInitializable {
 
   private func blurViewStack() {
     let keyWindowLayer = UIApplication.shared.keyWindow?.layer
-    UIGraphicsBeginImageContext(view.frame.size)
-
-    guard let layer = keyWindowLayer, let context = UIGraphicsGetCurrentContext() else {
-      return
-    }
-
-    layer.render(in: context)
-    let imageContextScreenshot = UIGraphicsGetImageFromCurrentImageContext()
-    UIGraphicsEndImageContext()
+    let size = view.frame.size
+    let renderer = UIGraphicsImageRenderer(size: size)
+    let screenshot = renderer.image { keyWindowLayer?.render(in: $0.cgContext) }
 
     let blurRadius = 5
 
-    guard let screenshot = imageContextScreenshot,
-      let ciimage = CIImage(image: screenshot),
+    guard let ciimage = CIImage(image: screenshot),
       let affineFilter = CIFilter(name: "CIAffineClamp"),
       let gaussianFilter = CIFilter(name: "CIGaussianBlur") else {
         return

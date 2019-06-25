@@ -9,14 +9,11 @@
 @testable import DropBit
 import CoreData
 import CNBitcoinKit
-import PhoneNumberKit
 import XCTest
 
 class InvitationTests: XCTestCase {
 
   var context: NSManagedObjectContext!
-
-  let phoneNumberKit = PhoneNumberKit()
 
   override func setUp() {
     super.setUp()
@@ -70,7 +67,6 @@ class InvitationTests: XCTestCase {
 
     (responses + excludedResponses).forEach { res in
       _ = CKMInvitation.updateOrCreate(withReceivedAddressRequestResponse: res,
-                                       kit: self.phoneNumberKit,
                                        in: context)
     }
 

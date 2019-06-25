@@ -14,8 +14,6 @@ import XCTest
 class TransactionHistorySummaryCellTests: XCTestCase {
   var sut: TransactionHistorySummaryCell!
 
-  let phoneNumberKit = PhoneNumberKit()
-
   override func setUp() {
     super.setUp()
     self.sut = TransactionHistorySummaryCell.nib().instantiate(withOwner: self, options: nil).first as? TransactionHistorySummaryCell
@@ -178,8 +176,7 @@ class TransactionHistorySummaryCellTests: XCTestCase {
       transaction: transaction,
       rates: rates,
       primaryCurrency: .USD,
-      deviceCountryCode: nil,
-      kit: PhoneNumberKit()
+      deviceCountryCode: nil
     )
 
     return viewModel

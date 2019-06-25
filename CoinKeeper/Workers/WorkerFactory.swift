@@ -8,7 +8,6 @@
 
 import Foundation
 import CoreData
-import PhoneNumberKit
 
 /// The actual wallet manager object may change its seed words during the course of the app,
 /// so we request the current instance of it each time through this provider.
@@ -23,18 +22,15 @@ class WorkerFactory {
   let persistenceManager: PersistenceManagerType
   let networkManager: NetworkManagerType
   let analyticsManager: AnalyticsManagerType
-  let phoneNumberKit: PhoneNumberKit
   weak var wmgrProvider: WalletManagerProvider?
 
   init(persistenceManager: PersistenceManagerType,
        networkManager: NetworkManagerType,
        analyticsManager: AnalyticsManagerType,
-       phoneNumberKit: PhoneNumberKit,
        walletManagerProvider: WalletManagerProvider) {
     self.persistenceManager = persistenceManager
     self.networkManager = networkManager
     self.analyticsManager = analyticsManager
-    self.phoneNumberKit = phoneNumberKit
     self.wmgrProvider = walletManagerProvider
   }
 
@@ -54,7 +50,6 @@ class WorkerFactory {
                                    persistenceManager: persistenceManager,
                                    networkManager: networkManager,
                                    analyticsManager: analyticsManager,
-                                   phoneNumberKit: self.phoneNumberKit,
                                    invitationWorkerDelegate: delegate)
   }
 

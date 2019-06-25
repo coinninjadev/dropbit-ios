@@ -48,17 +48,25 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     requestBackgroundSync(completion: completionHandler)
   }
 
-  func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any],
+  func application(_ application: UIApplication,
+                   didReceiveRemoteNotification userInfo: [AnyHashable: Any],
                    fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
     requestBackgroundSync(completion: completionHandler)
   }
 
   private func requestBackgroundSync(completion completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-    guard let coordinator = coordinator else { completionHandler(.failed); return }
-    DispatchQueue.main.async {
+    if coordinator == nil {
+      setupCoordinator()
+    }
+    DispatchQueue.main.async { [weak self] in
       guard UIApplication.shared.applicationState != .active else { completionHandler(.noData); return }
-      coordinator.serialQueueManager.enqueueWalletSyncIfAppropriate(type: .standard, policy: .always,
-                                                                    completion: nil, fetchResult: completionHandler)
+      DispatchQueue.global(qos: .background).async {
+        self?.coordinator?.serialQueueManager.enqueueWalletSyncIfAppropriate(type: .standard,
+                                                                             policy: .always,
+                                                                             completion: nil,
+                                                                             fetchResult: completionHandler
+        )
+      }
     }
   }
 

@@ -7,11 +7,8 @@
 //
 
 import Foundation
-import PhoneNumberKit
 
 struct DeviceVerificationErrorMessageFactory {
-
-  let phoneNumberKit = PhoneNumberKit()
 
   static let defaultFailureMessage = "There was a problem registering your phone number. Please verify it is correctly entered and try again."
 
@@ -31,7 +28,7 @@ struct DeviceVerificationErrorMessageFactory {
   func messageForCountryCodeDisabled(for phoneNumber: GlobalPhoneNumber) -> String {
     var unsupportedNumberDesc = ""
     if let region = phoneNumber.regionCode {
-      let country = CKCountry(regionCode: region, kit: phoneNumberKit)
+      let country = CKCountry(regionCode: region)
       unsupportedNumberDesc = "phone numbers in \(country.localizedName)"
     } else {
       unsupportedNumberDesc = "+\(phoneNumber.countryCode) phone numbers"

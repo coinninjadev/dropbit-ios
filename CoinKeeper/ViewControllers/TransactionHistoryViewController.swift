@@ -12,7 +12,6 @@ import CNBitcoinKit
 import Gifu
 import os.log
 import PromiseKit
-import PhoneNumberKit
 import DZNEmptyDataSet
 
 protocol TransactionHistoryViewControllerDelegate: DeviceCountryCodeProvider &
@@ -84,9 +83,8 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
 
   private let logger = OSLog(subsystem: "com.coinninja.coinkeeper.transactionhistoryviewcontroller", category: "tx_history_view_controller")
 
-  private let phoneNumberKit = PhoneNumberKit()
   lazy var phoneFormatter: CKPhoneNumberFormatter = {
-    return CKPhoneNumberFormatter(kit: self.phoneNumberKit, format: .national)
+    return CKPhoneNumberFormatter(format: .national)
   }()
 
   var deviceCountryCode: Int?
@@ -115,7 +113,7 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
   }
   var balanceNotificationToken: NotificationToken?
 
-  var context: NSManagedObjectContext!
+  unowned var context: NSManagedObjectContext!
 
   lazy var frc: NSFetchedResultsController<CKMTransaction> = {
     let fetchRequest: NSFetchRequest<CKMTransaction> = CKMTransaction.fetchRequest()
@@ -157,7 +155,6 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
     detailCollectionViewHeightConstraint.constant = self.view.frame.height - balanceContainer.frame.height
     summaryCollectionViewBottomConstraint.constant = sendReceiveActionView.frame.height * percent * -1
 
-    balanceContainer?.delegate = (generalCoordinationDelegate as? BalanceContainerDelegate)
     (coordinationDelegate?.badgeManager).map(subscribeToBadgeNotifications)
     coordinationDelegate?.viewControllerDidRequestBadgeUpdate(self)
 
@@ -197,8 +194,7 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
       transaction: transaction,
       rates: rateManager.exchangeRates,
       primaryCurrency: preferredCurrency(),
-      deviceCountryCode: deviceCountryCode,
-      kit: phoneNumberKit
+      deviceCountryCode: deviceCountryCode
     )
   }
 
@@ -207,8 +203,7 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
       transaction: transaction,
       rates: rateManager.exchangeRates,
       primaryCurrency: preferredCurrency(),
-      deviceCountryCode: deviceCountryCode,
-      kit: phoneNumberKit
+      deviceCountryCode: deviceCountryCode
     )
   }
 

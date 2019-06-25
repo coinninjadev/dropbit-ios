@@ -29,22 +29,22 @@ public struct GlobalPhoneNumber: Codable, CustomStringConvertible {
     self.regionCode = regionCode ?? parsedNumber.regionID
   }
 
-  init?(e164: String, kit: PhoneNumberKit) {
+  init?(e164: String) {
     do {
-      let parsedNumber = try kit.parse(e164)
+      let parsedNumber = try phoneNumberKit.parse(e164)
       self.init(parsedNumber: parsedNumber)
     } catch {
       return nil
     }
   }
 
-  init?(participant: MetadataParticipant, kit: PhoneNumberKit) {
+  init?(participant: MetadataParticipant) {
     guard let identityType = UserIdentityType(rawValue: participant.type),
       identityType == .phone
       else { return nil }
 
     let e164 = "+" + participant.identity
-    self.init(e164: e164, kit: kit)
+    self.init(e164: e164)
   }
 
   func sanitizedNationalNumber() -> String {
@@ -72,6 +72,6 @@ extension GlobalPhoneNumber {
   func hashed() -> String {
     let hashingManager = HashingManager()
     guard let salt = try? hashingManager.salt() else { fatalError("error: missing salt") }
-    return hashingManager.hash(phoneNumber: self, salt: salt, parsedNumber: nil, kit: PhoneNumberKit())
+    return hashingManager.hash(phoneNumber: self, salt: salt, parsedNumber: nil)
   }
 }

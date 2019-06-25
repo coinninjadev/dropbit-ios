@@ -26,7 +26,8 @@ class TransactionHistorySummaryCell: UICollectionViewCell {
 
   // part of auto-sizing
   override func preferredLayoutAttributesFitting(_ layoutAttributes: UICollectionViewLayoutAttributes) -> UICollectionViewLayoutAttributes {
-    layoutAttributes.bounds.size.height = systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).height
+    let height = systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).height
+    layoutAttributes.bounds.size.height = height
     return layoutAttributes
   }
 

@@ -37,68 +37,59 @@ class WalletSyncOperationFactory {
       return Promise.init(error: SyncRoutineError.missingQueueDelegate)
     }
 
-    return Promise { seal in
-      let operation = AsynchronousOperation(operationType: .syncWallet(walletSyncType))
-      queueDelegate.syncManagerDidRequestDependencies(in: context)
-        .done(in: context) { dependencies in
-          let bgContext = dependencies.bgContext
-          let isFullSync = walletSyncType == .comprehensive
+    return queueDelegate.syncManagerDidRequestDependencies(in: context)
+      .then(in: context) { dependencies -> Promise<AsynchronousOperation> in
+        let operation = AsynchronousOperation(operationType: .syncWallet(walletSyncType))
+        let bgContext = dependencies.bgContext
+        let isFullSync = walletSyncType == .comprehensive
 
-          let backgroundTaskId = UIApplication.shared.beginBackgroundTask(expirationHandler: nil)
+        let backgroundTaskId = UIApplication.shared.beginBackgroundTask(expirationHandler: nil)
 
-          operation.task = { [weak self] sync in
-            guard let strongSelf = self else {
-              seal.reject(SyncRoutineError.missingSyncTask)
-              return
+        operation.task = { [weak self, weak innerOp = operation] in
+          guard let strongSelf = self, let strongOperation = innerOp else { return }
+
+          var caughtError: Error?
+          strongSelf.performSync(with: dependencies, fullSync: isFullSync, in: bgContext)
+            .catch(in: bgContext) { error in
+              caughtError = error
+              strongSelf.handleSyncRoutineError(error, in: bgContext)
             }
-
-            var caughtError: Error?
-            strongSelf.performSync(operation,
-                              with: dependencies,
-                              fullSync: isFullSync,
-                              fetchResult: fetchResult,
-                              in: bgContext)
-              .catch(in: context) { error in
-                caughtError = error
-                strongSelf.handleSyncRoutineError(error, in: context)
-
-              }.finally {
-                context.performAndWait {
-                  do {
-                    try context.save()
-                  } catch {
-                    let logger = OSLog(subsystem: "com.coinninja.coinkeeper.walletsyncoperationfactory", category: "perform_sync")
-                    os_log("failed to save context in %@. error: %@", log: logger, type: .error, #function, error.localizedDescription)
-                  }
+            .finally {
+              bgContext.performAndWait {
+                do {
+                  try bgContext.save()
+                } catch {
+                  let logger = OSLog(subsystem: "com.coinninja.coinkeeper.walletsyncoperationfactory", category: "perform_sync")
+                  os_log("failed to save context in %@. error: %@", log: logger, type: .error, #function, error.localizedDescription)
                 }
-                CKNotificationCenter.publish(key: .didFinishSync, object: nil, userInfo: nil)
-                CKNotificationCenter.publish(key: .didUpdateBalance, object: nil, userInfo: nil)
+              }
 
-                dependencies.persistenceManager.brokers.activity.lastSuccessfulSync = Date()
-                completion?(caughtError) //Only call completion handler once
+              CKNotificationCenter.publish(key: .didFinishSync, object: nil, userInfo: nil)
+              CKNotificationCenter.publish(key: .didUpdateBalance, object: nil, userInfo: nil)
 
-                sync.finish()
-                UIApplication.shared.endBackgroundTask(backgroundTaskId)
-            }
+              dependencies.persistenceManager.brokers.activity.lastSuccessfulSync = Date()
+              completion?(caughtError) //Only call completion handler once
+
+              if let fetchResultHandler = fetchResult {
+                let result: UIBackgroundFetchResult = bgContext.insertedObjects.isNotEmpty ||
+                  bgContext.updatedObjects.isNotEmpty ? .newData : .noData
+                fetchResultHandler(result)
+              }
+
+              strongOperation.finish()
+              UIApplication.shared.endBackgroundTask(backgroundTaskId)
           }
+        }
 
-          if operation.task != nil {
-            seal.fulfill(operation)
-          } else {
-            seal.reject(SyncRoutineError.missingSyncTask)
-          }
-        }.catch { error in
-          seal.reject(error)
-      }
+        return Promise.value(operation)
     }
   }
 
-  private func performSync(_ operation: AsynchronousOperation,
-                           with dependencies: SyncDependencies,
+  private func performSync(with dependencies: SyncDependencies,
                            fullSync: Bool,
-                           fetchResult: ((UIBackgroundFetchResult) -> Void)?,
                            in context: NSManagedObjectContext) -> Promise<Void> {
     return dependencies.databaseMigrationWorker.migrateIfPossible()
+      .then { _ in dependencies.keychainMigrationWorker.migrateIfPossible() }
       .then(in: context) { self.checkAndRecoverAuthorizationIds(with: dependencies, in: context) }
       .then(in: context) { dependencies.txDataWorker.performFetchAndStoreAllTransactionalData(in: context, fullSync: fullSync) }
       .get { _ in dependencies.connectionManager.setAPIUnreachable(false) }
@@ -109,13 +100,6 @@ class WalletSyncOperationFactory {
       .then(in: context) { _ in self.fetchAndFulfillReceivedAddressRequests(with: dependencies, in: context) }
       .then(in: context) { _ in dependencies.delegate.showAlertsForSyncedChanges(in: context) }
       .then(in: context) { _ in dependencies.twitterAccessManager.inflateTwitterUsersIfNeeded(in: context) }
-      .done(in: context) {
-        if let fetchResultHandler = fetchResult {
-          let fetchResult: UIBackgroundFetchResult = context.insertedObjects.isNotEmpty ||
-            context.updatedObjects.isNotEmpty ? .newData : .noData
-          fetchResultHandler(fetchResult)
-        }
-    }
   }
 
   private func recoverSyncError(_ error: Error) -> Promise<Void> {
