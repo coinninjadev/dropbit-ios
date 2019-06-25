@@ -29,7 +29,6 @@ class SettingsViewControllerTests: XCTestCase {
 
   // MARK: outlets
   func testOutletsAreConnected() {
-    XCTAssertNotNil(sut.closeButton, "closeButton should be connected")
     XCTAssertNotNil(sut.settingsTableView, "settingsTableView should be connected")
     XCTAssertNotNil(sut.deleteWalletButton, "deleteWalletButton should be connected")
     XCTAssertNotNil(sut.resyncBlockchainButton, "resyncBlockchainButton should be connected")
@@ -39,13 +38,6 @@ class SettingsViewControllerTests: XCTestCase {
   func testTableViewDelegateDataSourceAreConnected() {
     XCTAssertTrue(sut.settingsTableView.delegate === sut, "delegate should be sut")
     XCTAssertTrue(sut.settingsTableView.dataSource === sut, "dataSource should be sut")
-  }
-
-  // MARK: buttons contain actions
-  func testCloseButtonContainsAction() {
-    let actions = sut.closeButton.actions(forTarget: sut, forControlEvent: .touchUpInside) ?? []
-    let closeSelector = #selector(SettingsViewController.close).description
-    XCTAssertTrue(actions.contains(closeSelector), "closeButton should contain action")
   }
 
   func testDeleteWalletButtonContainsAction() {
@@ -62,7 +54,9 @@ class SettingsViewControllerTests: XCTestCase {
 
   // MARK: actions produce results
   func testCloseButtonTellsDelegate() {
-    sut.closeButton.sendActions(for: .touchUpInside)
+    let barButtonItem = sut.navigationItem.rightBarButtonItem!
+    UIApplication.shared.sendAction(barButtonItem.action!, to: barButtonItem.target!, from: nil, for: nil)
+    //.sendActions(for: .touchUpInside)
     XCTAssertTrue(mockCoordinator.didSelectCloseWasCalled, "should tell delegate that close was tapped")
   }
 
@@ -104,6 +98,7 @@ class SettingsViewControllerTests: XCTestCase {
     func viewControllerDidSelectOpenSourceLicenses(_ viewController: UIViewController) {}
     func viewController(_ viewController: UIViewController, didEnableDustProtection didEnable: Bool) {}
     func viewController(_ viewController: UIViewController, didEnableYearlyHighNotification didEnable: Bool, completion: () -> Void) {}
+    func viewControllerDidSelectAdjustableFees(_ viewController: UIViewController) {}
 
     var didSelectCloseWasCalled = false
     func viewControllerDidSelectClose(_ viewController: UIViewController) {
