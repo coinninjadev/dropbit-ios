@@ -37,64 +37,51 @@ class WalletSyncOperationFactory {
       return Promise.init(error: SyncRoutineError.missingQueueDelegate)
     }
 
-    return Promise { seal in
-      queueDelegate.syncManagerDidRequestDependencies(in: context)
-        .done(in: context) { dependencies in
-          let operation = AsynchronousOperation(operationType: .syncWallet(walletSyncType))
-          let bgContext = dependencies.bgContext
-          let isFullSync = walletSyncType == .comprehensive
+    return queueDelegate.syncManagerDidRequestDependencies(in: context)
+      .then(in: context) { dependencies -> Promise<AsynchronousOperation> in
+        let operation = AsynchronousOperation(operationType: .syncWallet(walletSyncType))
+        let bgContext = dependencies.bgContext
+        let isFullSync = walletSyncType == .comprehensive
 
-          let backgroundTaskId = UIApplication.shared.beginBackgroundTask(expirationHandler: nil)
+        let backgroundTaskId = UIApplication.shared.beginBackgroundTask(expirationHandler: nil)
 
-          operation.task = { [weak self, weak innerOp = operation, weak innerSeal = seal] in
-            guard let strongSelf = self,
-              let strongOperation = innerOp else {
-              innerSeal?.reject(SyncRoutineError.missingSyncTask)
-              return
+        operation.task = { [weak self, weak innerOp = operation] in
+          guard let strongSelf = self, let strongOperation = innerOp else { return }
+
+          var caughtError: Error?
+          strongSelf.performSync(with: dependencies, fullSync: isFullSync, in: bgContext)
+            .catch(in: bgContext) { error in
+              caughtError = error
+              strongSelf.handleSyncRoutineError(error, in: bgContext)
             }
-
-            var caughtError: Error?
-            strongSelf.performSync(with: dependencies,
-                                   fullSync: isFullSync,
-                                   in: bgContext)
-              .catch(in: bgContext) { error in
-                caughtError = error
-                strongSelf.handleSyncRoutineError(error, in: bgContext)
-
-              }.finally {
-                if let fetchResultHandler = fetchResult {
-                  let result: UIBackgroundFetchResult = bgContext.insertedObjects.isNotEmpty ||
-                    bgContext.updatedObjects.isNotEmpty ? .newData : .noData
-                  fetchResultHandler(result)
+            .finally {
+              bgContext.performAndWait {
+                do {
+                  try bgContext.save()
+                } catch {
+                  let logger = OSLog(subsystem: "com.coinninja.coinkeeper.walletsyncoperationfactory", category: "perform_sync")
+                  os_log("failed to save context in %@. error: %@", log: logger, type: .error, #function, error.localizedDescription)
                 }
+              }
 
-                bgContext.performAndWait {
-                  do {
-                    try bgContext.save()
-                  } catch {
-                    let logger = OSLog(subsystem: "com.coinninja.coinkeeper.walletsyncoperationfactory", category: "perform_sync")
-                    os_log("failed to save context in %@. error: %@", log: logger, type: .error, #function, error.localizedDescription)
-                  }
-                }
-                CKNotificationCenter.publish(key: .didFinishSync, object: nil, userInfo: nil)
-                CKNotificationCenter.publish(key: .didUpdateBalance, object: nil, userInfo: nil)
+              CKNotificationCenter.publish(key: .didFinishSync, object: nil, userInfo: nil)
+              CKNotificationCenter.publish(key: .didUpdateBalance, object: nil, userInfo: nil)
 
-                dependencies.persistenceManager.brokers.activity.lastSuccessfulSync = Date()
-                completion?(caughtError) //Only call completion handler once
+              dependencies.persistenceManager.brokers.activity.lastSuccessfulSync = Date()
+              completion?(caughtError) //Only call completion handler once
 
-                strongOperation.finish()
-                UIApplication.shared.endBackgroundTask(backgroundTaskId)
-            }
+              if let fetchResultHandler = fetchResult {
+                let result: UIBackgroundFetchResult = bgContext.insertedObjects.isNotEmpty ||
+                  bgContext.updatedObjects.isNotEmpty ? .newData : .noData
+                fetchResultHandler(result)
+              }
+
+              strongOperation.finish()
+              UIApplication.shared.endBackgroundTask(backgroundTaskId)
           }
+        }
 
-          if operation.task != nil {
-            seal.fulfill(operation)
-          } else {
-            seal.reject(SyncRoutineError.missingSyncTask)
-          }
-        }.catch { error in
-          seal.reject(error)
-      }
+        return Promise.value(operation)
     }
   }
 
