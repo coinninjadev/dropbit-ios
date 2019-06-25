@@ -115,9 +115,9 @@ class ConfirmPaymentViewController: PresentableViewController, StoryboardInitial
     primaryCurrencyLabel.text = amounts.primary
     secondaryCurrencyLabel.attributedText = amounts.secondary
 
-    updateFees(with: viewModel.feesViewModel)
+    updateFees(with: viewModel.feeModel)
 
-    let fee = viewModel.feesViewModel.applicableFee
+    let fee = viewModel.feeModel.feeAmount
     let feeConverter = CurrencyConverter(rates: viewModel.rates,
                                          fromAmount: NSDecimalNumber(integerAmount: fee, currency: .BTC),
                                          fromCurrency: .BTC,
@@ -128,14 +128,21 @@ class ConfirmPaymentViewController: PresentableViewController, StoryboardInitial
     networkFeeLabel.text = "Network Fee \(btcFee) (\(fiatFee))"
   }
 
-  private func updateFees(with viewModel: ConfirmAdjustableFeesViewModel) {
-    adjustableFeesContainer.isHidden = !viewModel.adjustableFeesEnabled
-    adjustableFeesControl.selectedSegmentIndex = viewModel.selectedModeIndex
-    adjustableFeesLabel.attributedText = viewModel.attributedWaitTimeDescription
+  private func updateFees(with feeModel: ConfirmTransactionFeeModel) {
 
-    for (i, model) in viewModel.segmentModels.enumerated() {
-      adjustableFeesControl.setTitle(model.title, forSegmentAt: i)
-      adjustableFeesControl.setEnabled(model.isEnabled, forSegmentAt: i)
+    switch feeModel {
+    case .adjustable(let vm):
+      adjustableFeesContainer.isHidden = false
+      adjustableFeesControl.selectedSegmentIndex = vm.selectedTypeIndex
+      for (i, model) in vm.segmentModels.enumerated() {
+        adjustableFeesControl.setTitle(model.title, forSegmentAt: i)
+        adjustableFeesControl.setEnabled(model.isEnabled, forSegmentAt: i)
+      }
+
+      adjustableFeesLabel.attributedText = vm.attributedWaitTimeDescription
+
+    case .required, .standard:
+      adjustableFeesContainer.isHidden = true
     }
   }
 
@@ -248,11 +255,16 @@ class ConfirmPaymentViewController: PresentableViewController, StoryboardInitial
   }
 
   private func confirmPayment(with viewModel: ConfirmPaymentViewModel) {
+    let activeTxData = viewModel.transactionData
+    var feeAdjustedOutgoingTxData = viewModel.outgoingTransactionData
+    feeAdjustedOutgoingTxData.amount = Int(activeTxData.amount)
+    feeAdjustedOutgoingTxData.feeAmount = Int(activeTxData.feeAmount)
+
     coordinationDelegate?.viewControllerDidConfirmPayment(
       self,
-      transactionData: viewModel.transactionData,
+      transactionData: activeTxData,
       rates: viewModel.rates,
-      outgoingTransactionData: viewModel.outgoingTransactionData
+      outgoingTransactionData: feeAdjustedOutgoingTxData
     )
   }
 
@@ -267,7 +279,7 @@ class ConfirmPaymentViewController: PresentableViewController, StoryboardInitial
     let pair = (btcAmount: btcAmount, usdAmount: converter.amount(forCurrency: .USD) ?? NSDecimalNumber(decimal: 0.0))
     let outgoingInvitationDTO = OutgoingInvitationDTO(contact: contact,
                                                       btcPair: pair,
-                                                      fee: viewModel.feesViewModel.applicableFee,
+                                                      fee: viewModel.feeModel.feeAmount,
                                                       sharedPayloadDTO: viewModel.sharedPayloadDTO)
     coordinationDelegate?.viewControllerDidConfirmInvite(self, outgoingInvitationDTO: outgoingInvitationDTO)
   }
