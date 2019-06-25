@@ -24,7 +24,7 @@ protocol BadgeManagerType: CoreDataObserver {
 
 class BadgeManager: BadgeManagerType {
 
-  private unowned let persistenceManager: PersistenceManagerType
+  private weak var persistenceManager: PersistenceManagerType?
   private var willSaveContextToken: NotificationToken?
   private var didSaveContextToken: NotificationToken?
 
@@ -38,7 +38,7 @@ class BadgeManager: BadgeManagerType {
   }
 
   var wordsBackedUp: Bool {
-    return persistenceManager.brokers.wallet.walletWordsBackedUp()
+    return persistenceManager?.brokers.wallet.walletWordsBackedUp() ?? false
   }
 
   func setupTopics() {
@@ -59,8 +59,8 @@ class BadgeManager: BadgeManagerType {
   }
 
   func badgeStatus(forTopicType badgeTopicType: BadgeTopicType, in context: NSManagedObjectContext) -> BadgeTopicStatus {
-    guard let topic = badgeTopic(for: badgeTopicType) else { return [.inactive] }
-    return topic.badgeStatus(from: persistenceManager, in: context)
+    guard let topic = badgeTopic(for: badgeTopicType), let manager = persistenceManager else { return [.inactive] }
+    return topic.badgeStatus(from: manager, in: context)
   }
 
   func publishBadgeUpdate() {
@@ -68,15 +68,15 @@ class BadgeManager: BadgeManagerType {
   }
 
   func setTransactionsDidDisplay() {
-    persistenceManager.brokers.activity.unseenTransactionChangesExist = false
+    persistenceManager?.brokers.activity.unseenTransactionChangesExist = false
     publishBadgeUpdate()
   }
 
   /// Only call this function from the main thread
   func badgeInfo(for userInfo: [AnyHashable: Any]) -> BadgeInfo {
+    guard let context = persistenceManager?.mainQueueContext() else { return BadgeInfo() }
     // aggregate a dictionary and return it, mutated by the userInfo
     var badgeInfo: BadgeInfo = [:]
-    let context = persistenceManager.mainQueueContext()
     badgeTopics.forEach { topic in
       badgeInfo[topic.badgeTopicType] = badgeStatus(forTopicType: topic.badgeTopicType, in: context)
     }
@@ -110,8 +110,9 @@ extension BadgeManager: CoreDataObserver {
   }
 
   func handleWillSaveContext(_ context: NSManagedObjectContext) {
+    guard let manager = persistenceManager else { return }
     for topic in badgeTopics {
-      if topic.changesShouldTriggerBadgeUpdate(persistenceManager: persistenceManager, in: context) {
+      if topic.changesShouldTriggerBadgeUpdate(persistenceManager: manager, in: context) {
         self.saveShouldTriggerBadgeUpdate = true
         break
       }
