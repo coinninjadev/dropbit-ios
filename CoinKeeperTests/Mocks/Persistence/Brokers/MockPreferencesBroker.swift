@@ -21,6 +21,6 @@ class MockPreferencesBroker: CKPersistenceBroker, PreferencesBrokerType {
   var dontShowShareTransaction: Bool = false
   var didOptOutOfInvitationPopup: Bool = false
   var adjustableFeesIsEnabled: Bool = false
-  var preferredTransactionFeeMode: TransactionFeeMode = TransactionFeeMode.defaultMode
+  var preferredTransactionFeeType: TransactionFeeType = .default
 
 }

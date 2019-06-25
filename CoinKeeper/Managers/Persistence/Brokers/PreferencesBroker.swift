@@ -80,7 +80,7 @@ class PreferencesBroker: CKPersistenceBroker, PreferencesBrokerType {
     set { userDefaultsManager.set(newValue, for: .adjustableFeesEnabled) }
   }
 
-  var preferredTransactionFeeMode: TransactionFeeType {
+  var preferredTransactionFeeType: TransactionFeeType {
     get {
       let rawValue = userDefaultsManager.integer(for: .preferredTransactionFeeMode)
       return TransactionFeeType.mode(for: rawValue)
