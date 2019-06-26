@@ -167,7 +167,7 @@ extension AppCoordinator: SendPaymentViewControllerDelegate {
 
     viewController.dismiss(animated: true)
     networkManager.latestFees()
-      .compactMap { $0[.good] }
+      .compactMap { $0[.best] }
       .then { (networkFeeRate: Double) -> Promise<CNBTransactionData> in
         let relevantFeeRate = outgoingTransactionData.requiredFeeRate ?? networkFeeRate
         return wmgr.transactionData(
@@ -251,7 +251,7 @@ extension AppCoordinator: SendPaymentViewControllerDelegate {
                             sharedPayload: SharedPayloadDTO) {
     guard let wmgr = walletManager else { return }
     networkManager.latestFees()
-      .compactMap { $0[.good] }
+      .compactMap { $0[.best] }
       .then { (feeRate: Double) -> Promise<CNBTransactionData> in
         return wmgr.transactionData(
           forPayment: btcAmount,

@@ -24,25 +24,25 @@ struct CheckInResponse: ResponseCodable {
 
 enum FeesResponseKey: String, KeyPathDescribable {
   typealias ObjectType = FeesResponse
-  case max, avg, min
+  case fast, med, slow
 }
 
 /// Response object for fees structure inside check-in api response
 struct FeesResponse: ResponseCodable {
-  let max: Double
-  let avg: Double
-  let min: Double
+  let fast: Double
+  let med: Double
+  let slow: Double
 
   var good: Double {
-    return min
+    return slow
   }
 
   var better: Double {
-    return avg
+    return med
   }
 
   var best: Double {
-    return max
+    return fast
   }
 
   /// Fees must be greater than or equal to this number
@@ -52,17 +52,17 @@ struct FeesResponse: ResponseCodable {
   static let validFeeCeiling: Double = 10_000_000
 
   static func validateResponse(_ response: FeesResponse) throws -> FeesResponse {
-    let maxFee = response.max
-    let avgFee = response.avg
-    let minFee = response.min
+    let bestFee = response.best
+    let betterFee = response.better
+    let goodFee = response.good
 
-    let maxError = CKNetworkError.invalidValue(keyPath: FeesResponseKey.max.path, value: String(maxFee), response: response)
-    let avgError = CKNetworkError.invalidValue(keyPath: FeesResponseKey.avg.path, value: String(avgFee), response: response)
-    let minError = CKNetworkError.invalidValue(keyPath: FeesResponseKey.min.path, value: String(minFee), response: response)
+    let bestFeeError = CKNetworkError.invalidValue(keyPath: FeesResponseKey.fast.path, value: String(bestFee), response: response)
+    let betterFeeError = CKNetworkError.invalidValue(keyPath: FeesResponseKey.med.path, value: String(betterFee), response: response)
+    let goodFeeError = CKNetworkError.invalidValue(keyPath: FeesResponseKey.slow.path, value: String(goodFee), response: response)
 
-    guard validFeeFloor <= maxFee && maxFee <= validFeeCeiling else { throw maxError }
-    guard validFeeFloor <= avgFee && avgFee <= validFeeCeiling else { throw avgError }
-    guard validFeeFloor <= minFee && minFee <= validFeeCeiling else { throw minError }
+    guard validFeeFloor <= bestFee && bestFee <= validFeeCeiling else { throw bestFeeError }
+    guard validFeeFloor <= betterFee && betterFee <= validFeeCeiling else { throw betterFeeError }
+    guard validFeeFloor <= goodFee && goodFee <= validFeeCeiling else { throw goodFeeError }
 
     let stringValidatedResponse = try response.validateStringValues()
     return stringValidatedResponse
@@ -73,7 +73,10 @@ struct FeesResponse: ResponseCodable {
     {
     "max": 347.222,
     "avg": 12.425,
-    "min": 0.98785
+    "min": 0.98785,
+    "fast": 121.723,
+    "med": 114.63,
+    "slow": 13.477
     }
     """
   }
@@ -105,37 +108,8 @@ struct PriceResponse: ResponseCodable {
   static var sampleJSON: String {
     return """
     {
-      "ask": 418.79,
-      "bid": 418.35,
       "last": 6496.79,
-      "high": 418.83,
-      "low": 417.1,
-      "open": {
-        "day": "417.73",
-        "week": "408.74",
-        "month": "439.27"
-      },
-      "averages": {
-        "daily": 418.98,
-        "weekly": 418.39,
-        "monthly": 419.76
-      },
-      "volume": 56542.49,
-      "changes": {
-        "price": {
-          "weekly": 9.92,
-          "monthly": -20.62,
-          "daily": 0.93
-        },
-        "percent": {
-          "weekly": 2.43,
-          "monthly": -4.69,
-          "daily": 0.22
-        }
-      },
-      "volume_percent": 66.42,
-      "timestamp": 1458754392,
-      "display_timestamp": "Wed, 23 Mar 2016 17:33:12 +0000"
+      "timestamp": 1458754392
     }
     """
   }
