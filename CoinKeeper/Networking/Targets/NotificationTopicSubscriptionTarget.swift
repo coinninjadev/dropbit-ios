@@ -32,9 +32,17 @@ extension NotificationTopicSubscriptionTarget {
     }
   }
 
+  private var successCodesForSubscribe: [Int] {
+    #if DEBUG
+    return [201, 500] // 500 is acceptable due to test envs
+    #else
+    return [201]
+    #endif
+  }
+
   public var validationType: ValidationType {
     switch self {
-    case .subscribe: return .customCodes([201, 500]) // 500 is acceptable due to test envs
+    case .subscribe: return .customCodes(successCodesForSubscribe)
     }
   }
 
