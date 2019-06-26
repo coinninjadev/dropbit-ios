@@ -105,37 +105,8 @@ struct PriceResponse: ResponseCodable {
   static var sampleJSON: String {
     return """
     {
-      "ask": 418.79,
-      "bid": 418.35,
       "last": 6496.79,
-      "high": 418.83,
-      "low": 417.1,
-      "open": {
-        "day": "417.73",
-        "week": "408.74",
-        "month": "439.27"
-      },
-      "averages": {
-        "daily": 418.98,
-        "weekly": 418.39,
-        "monthly": 419.76
-      },
-      "volume": 56542.49,
-      "changes": {
-        "price": {
-          "weekly": 9.92,
-          "monthly": -20.62,
-          "daily": 0.93
-        },
-        "percent": {
-          "weekly": 2.43,
-          "monthly": -4.69,
-          "daily": 0.22
-        }
-      },
-      "volume_percent": 66.42,
-      "timestamp": 1458754392,
-      "display_timestamp": "Wed, 23 Mar 2016 17:33:12 +0000"
+      "timestamp": 1458754392
     }
     """
   }
