@@ -29,20 +29,20 @@ enum FeesResponseKey: String, KeyPathDescribable {
 
 /// Response object for fees structure inside check-in api response
 struct FeesResponse: ResponseCodable {
-  let max: Double
-  let avg: Double
-  let min: Double
+  let fast: Double
+  let med: Double
+  let slow: Double
 
   var good: Double {
-    return min
+    return slow
   }
 
   var better: Double {
-    return avg
+    return med
   }
 
   var best: Double {
-    return max
+    return fast
   }
 
   /// Fees must be greater than or equal to this number
@@ -52,9 +52,9 @@ struct FeesResponse: ResponseCodable {
   static let validFeeCeiling: Double = 10_000_000
 
   static func validateResponse(_ response: FeesResponse) throws -> FeesResponse {
-    let maxFee = response.max
-    let avgFee = response.avg
-    let minFee = response.min
+    let maxFee = response.best
+    let avgFee = response.better
+    let minFee = response.good
 
     let maxError = CKNetworkError.invalidValue(keyPath: FeesResponseKey.max.path, value: String(maxFee), response: response)
     let avgError = CKNetworkError.invalidValue(keyPath: FeesResponseKey.avg.path, value: String(avgFee), response: response)
@@ -73,7 +73,10 @@ struct FeesResponse: ResponseCodable {
     {
     "max": 347.222,
     "avg": 12.425,
-    "min": 0.98785
+    "min": 0.98785,
+    "fast": 121.723,
+    "med": 114.63,
+    "slow": 13.477
     }
     """
   }
