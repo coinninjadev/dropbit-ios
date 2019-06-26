@@ -10,8 +10,8 @@ import Foundation
 import PromiseKit
 
 extension NetworkManager: NotificationNetworkInteractable {
-  func subscribeToTopics(deviceEndpointIds: DeviceEndpointIds, body: NotificationTopicSubscriptionBody) -> Promise<SubscriptionInfoResponse> {
-    return cnProvider.request(NotificationTopicSubscriptionTarget.subscribe(deviceEndpointIds, body))
+  func subscribeToTopics(deviceEndpointIds: DeviceEndpointIds, body: NotificationTopicSubscriptionBody) -> Promise<Void> {
+    return cnProvider.requestVoid(NotificationTopicSubscriptionTarget.subscribe(deviceEndpointIds, body))
   }
 
   func getSubscriptionInfo(withDeviceEndpointResponse response: DeviceEndpointResponse) -> Promise<SubscriptionInfoResponse> {
@@ -20,7 +20,7 @@ extension NetworkManager: NotificationNetworkInteractable {
   }
 
   func getSubscriptionInfo(withDeviceEndpointIds endpointIds: DeviceEndpointIds) -> Promise<SubscriptionInfoResponse> {
-    return cnProvider.request(NotificationTopicSubscriptionTarget.getSubscriptions(endpointIds))
+    return cnProvider.request(NotificationTopicSubscriptionInfoTarget.getSubscriptions(endpointIds))
   }
 
   func removeEndpoints(from responses: [DeviceEndpointResponse]) -> Promise<Void> {
@@ -30,6 +30,6 @@ extension NetworkManager: NotificationNetworkInteractable {
   }
 
   func unsubscribeFromTopic(topicId: String, deviceEndpointIds: DeviceEndpointIds) -> Promise<Void> {
-    return cnProvider.requestVoid(NotificationTopicSubscriptionTarget.unsubscribe(deviceEndpointIds, topicId))
+    return cnProvider.requestVoid(NotificationTopicSubscriptionInfoTarget.unsubscribe(deviceEndpointIds, topicId))
   }
 }

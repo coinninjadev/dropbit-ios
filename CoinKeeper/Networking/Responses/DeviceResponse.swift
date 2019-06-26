@@ -17,7 +17,7 @@ enum DeviceApplication: String, Codable {
   case dropBit = "DropBit"
 }
 
-public struct DeviceResponse: ResponseDecodable {
+public struct DeviceResponse: ResponseDecodable, Encodable {
 
   let id: String
   let createdAt: Int

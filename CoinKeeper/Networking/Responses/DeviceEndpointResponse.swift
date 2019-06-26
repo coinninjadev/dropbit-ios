@@ -8,7 +8,7 @@
 
 import Foundation
 
-public struct DeviceEndpointResponse: ResponseDecodable {
+public struct DeviceEndpointResponse: ResponseDecodable, Encodable {
 
   let id: String
   let createdAt: Int
