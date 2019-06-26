@@ -118,7 +118,7 @@ ValidatorAlertDisplayable {
   @IBAction func performSendMax() {
     let tempAddress = ""
     self.coordinationDelegate?.latestFees()
-      .compactMap { $0[.good] }
+      .compactMap { $0[.best] }
       .then { feeRate -> Promise<CNBTransactionData> in
         guard let delegate = self.coordinationDelegate else { fatalError("coordinationDelegate is required") }
         return delegate.viewController(self, sendMaxFundsTo: tempAddress, feeRate: feeRate)
