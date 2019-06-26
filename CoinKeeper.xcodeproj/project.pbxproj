@@ -71,6 +71,7 @@
 		3B1BE86021B57D0A00CCFE29 /* MemoEntryPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B1BE85F21B57D0A00CCFE29 /* MemoEntryPage.swift */; };
 		3B1BE86221B57F9300CCFE29 /* MemoEntryUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B1BE86121B57F9300CCFE29 /* MemoEntryUITests.swift */; };
 		3B1BE86421B5819500CCFE29 /* SendPaymentPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B1BE86321B5819500CCFE29 /* SendPaymentPage.swift */; };
+		3B219B3922C3B9EE007EDFCC /* Data+PrettyPrinted.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B219B3822C3B9EE007EDFCC /* Data+PrettyPrinted.swift */; };
 		3B23126320DA6CA30099A557 /* TransactionHistoryDetailCellAddressView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3B23126220DA6CA30099A557 /* TransactionHistoryDetailCellAddressView.xib */; };
 		3B23126520DA6CBA0099A557 /* TransactionHistoryDetailCellAddressViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B23126420DA6CBA0099A557 /* TransactionHistoryDetailCellAddressViewTests.swift */; };
 		3B23126720DA6D0E0099A557 /* TransactionHistoryDetailCellAddressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B23126620DA6D0E0099A557 /* TransactionHistoryDetailCellAddressView.swift */; };
@@ -947,6 +948,7 @@
 		3B1BE85F21B57D0A00CCFE29 /* MemoEntryPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoEntryPage.swift; sourceTree = "<group>"; };
 		3B1BE86121B57F9300CCFE29 /* MemoEntryUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoEntryUITests.swift; sourceTree = "<group>"; };
 		3B1BE86321B5819500CCFE29 /* SendPaymentPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendPaymentPage.swift; sourceTree = "<group>"; };
+		3B219B3822C3B9EE007EDFCC /* Data+PrettyPrinted.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data+PrettyPrinted.swift"; sourceTree = "<group>"; };
 		3B23126220DA6CA30099A557 /* TransactionHistoryDetailCellAddressView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TransactionHistoryDetailCellAddressView.xib; sourceTree = "<group>"; };
 		3B23126420DA6CBA0099A557 /* TransactionHistoryDetailCellAddressViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionHistoryDetailCellAddressViewTests.swift; sourceTree = "<group>"; };
 		3B23126620DA6D0E0099A557 /* TransactionHistoryDetailCellAddressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionHistoryDetailCellAddressView.swift; sourceTree = "<group>"; };
@@ -1974,6 +1976,7 @@
 				5B91E3A32076EDBB00DD9A86 /* Array+Helpers.swift */,
 				B523DFC120926E88008A789D /* Collection+IsNotEmpty.swift */,
 				A2E52D8720BE3A3F00424E6A /* Data+HexString.swift */,
+				3B219B3822C3B9EE007EDFCC /* Data+PrettyPrinted.swift */,
 				B52A25CC2077FFF600F636A1 /* Date+Extensions.swift */,
 				A2A530BD20936A6C00B6F4DE /* FloatingPoint+DegreeToRadians.swift */,
 				6B825633F1FE7A9EA9E7A2AD /* Int+Times.swift */,
@@ -3779,6 +3782,7 @@
 				B5221D55224427C40081C868 /* ContactCacheMigrationWorker.swift in Sources */,
 				403AAD5E2063513900F7A2BA /* Model.xcdatamodeld in Sources */,
 				30C0974E219C64F80064F19E /* Int+NSDecimalNumber.swift in Sources */,
+				3B219B3922C3B9EE007EDFCC /* Data+PrettyPrinted.swift in Sources */,
 				307DF119214C297E00260369 /* MessageResponse.swift in Sources */,
 				B552EDF6211E33D000332BB5 /* WalletManager.swift in Sources */,
 				3B44962821B16D1000A4E912 /* UIApplication+Screenshot.swift in Sources */,
