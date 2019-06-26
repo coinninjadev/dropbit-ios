@@ -76,7 +76,7 @@ class NetworkManagerIntegrationTests: XCTestCase {
       .done { _ in
         XCTFail("Should not return valid response")
       }.catch { error in
-        let expectedPath = FeesResponseKey.min.path
+        let expectedPath = FeesResponseKey.slow.path
         let expectedValue = String(testCheckInResponse.fees.good)
 
         guard let networkError = error as? CKNetworkError,

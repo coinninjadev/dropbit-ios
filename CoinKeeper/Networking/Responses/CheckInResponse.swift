@@ -24,7 +24,7 @@ struct CheckInResponse: ResponseCodable {
 
 enum FeesResponseKey: String, KeyPathDescribable {
   typealias ObjectType = FeesResponse
-  case max, avg, min
+  case fast, med, slow
 }
 
 /// Response object for fees structure inside check-in api response
@@ -52,17 +52,17 @@ struct FeesResponse: ResponseCodable {
   static let validFeeCeiling: Double = 10_000_000
 
   static func validateResponse(_ response: FeesResponse) throws -> FeesResponse {
-    let maxFee = response.best
-    let avgFee = response.better
-    let minFee = response.good
+    let bestFee = response.best
+    let betterFee = response.better
+    let goodFee = response.good
 
-    let maxError = CKNetworkError.invalidValue(keyPath: FeesResponseKey.max.path, value: String(maxFee), response: response)
-    let avgError = CKNetworkError.invalidValue(keyPath: FeesResponseKey.avg.path, value: String(avgFee), response: response)
-    let minError = CKNetworkError.invalidValue(keyPath: FeesResponseKey.min.path, value: String(minFee), response: response)
+    let bestFeeError = CKNetworkError.invalidValue(keyPath: FeesResponseKey.fast.path, value: String(bestFee), response: response)
+    let betterFeeError = CKNetworkError.invalidValue(keyPath: FeesResponseKey.med.path, value: String(betterFee), response: response)
+    let goodFeeError = CKNetworkError.invalidValue(keyPath: FeesResponseKey.slow.path, value: String(goodFee), response: response)
 
-    guard validFeeFloor <= maxFee && maxFee <= validFeeCeiling else { throw maxError }
-    guard validFeeFloor <= avgFee && avgFee <= validFeeCeiling else { throw avgError }
-    guard validFeeFloor <= minFee && minFee <= validFeeCeiling else { throw minError }
+    guard validFeeFloor <= bestFee && bestFee <= validFeeCeiling else { throw bestFeeError }
+    guard validFeeFloor <= betterFee && betterFee <= validFeeCeiling else { throw betterFeeError }
+    guard validFeeFloor <= goodFee && goodFee <= validFeeCeiling else { throw goodFeeError }
 
     let stringValidatedResponse = try response.validateStringValues()
     return stringValidatedResponse

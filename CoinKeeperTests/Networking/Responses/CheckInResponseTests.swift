@@ -87,7 +87,7 @@ class CheckInResponseTests: XCTestCase, ResponseStringsTestable {
                          "Negative max fee should throw error", { error in
                           if let networkError = error as? CKNetworkError,
                             case let .invalidValue(keyPath, value, _) = networkError {
-                            XCTAssertEqual(keyPath, FeesResponseKey.max.path, "Incorrect key description")
+                            XCTAssertEqual(keyPath, FeesResponseKey.fast.path, "Incorrect key description")
                             XCTAssertEqual(value, "-10.0", "Incorrect value description")
                           } else {
                             XCTFail("Negative fee threw incorrect error type")
@@ -107,7 +107,7 @@ class CheckInResponseTests: XCTestCase, ResponseStringsTestable {
                          "Excessive max fee should throw error", { error in
                           if let networkError = error as? CKNetworkError,
                             case let .invalidValue(keyPath, value, _) = networkError {
-                            XCTAssertEqual(keyPath, FeesResponseKey.max.path, "Incorrect key description")
+                            XCTAssertEqual(keyPath, FeesResponseKey.fast.path, "Incorrect key description")
                             XCTAssertEqual(value, "10000001.0", "Incorrect value description")
                           } else {
                             XCTFail("Excessive fee threw incorrect error type")
