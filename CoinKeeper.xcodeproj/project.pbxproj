@@ -143,7 +143,7 @@
 		3B47415B217E5353004DA223 /* ApplicationBuildEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B47415A217E5353004DA223 /* ApplicationBuildEnvironment.swift */; };
 		3B474161217FAE32004DA223 /* SubscriptionInfoResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B474160217FAE32004DA223 /* SubscriptionInfoResponse.swift */; };
 		3B474163217FB589004DA223 /* SubscriptionAvailableTopicResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B474162217FB589004DA223 /* SubscriptionAvailableTopicResponse.swift */; };
-		3B474165217FB6A4004DA223 /* NotificationTopicSubscriptionTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B474164217FB6A4004DA223 /* NotificationTopicSubscriptionTarget.swift */; };
+		3B474165217FB6A4004DA223 /* NotificationTopicSubscriptionInfoTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B474164217FB6A4004DA223 /* NotificationTopicSubscriptionInfoTarget.swift */; };
 		3B474167217FB853004DA223 /* NotificationTopicSubscriptionBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B474166217FB853004DA223 /* NotificationTopicSubscriptionBody.swift */; };
 		3B4741692180AC64004DA223 /* DeviceEndpointIds.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B4741682180AC64004DA223 /* DeviceEndpointIds.swift */; };
 		3B474172218201D9004DA223 /* SubscriptionResponseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B474171218201D9004DA223 /* SubscriptionResponseTests.swift */; };
@@ -1018,7 +1018,7 @@
 		3B47415A217E5353004DA223 /* ApplicationBuildEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationBuildEnvironment.swift; sourceTree = "<group>"; };
 		3B474160217FAE32004DA223 /* SubscriptionInfoResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionInfoResponse.swift; sourceTree = "<group>"; };
 		3B474162217FB589004DA223 /* SubscriptionAvailableTopicResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionAvailableTopicResponse.swift; sourceTree = "<group>"; };
-		3B474164217FB6A4004DA223 /* NotificationTopicSubscriptionTarget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationTopicSubscriptionTarget.swift; sourceTree = "<group>"; };
+		3B474164217FB6A4004DA223 /* NotificationTopicSubscriptionInfoTarget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationTopicSubscriptionInfoTarget.swift; sourceTree = "<group>"; };
 		3B474166217FB853004DA223 /* NotificationTopicSubscriptionBody.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationTopicSubscriptionBody.swift; sourceTree = "<group>"; };
 		3B4741682180AC64004DA223 /* DeviceEndpointIds.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceEndpointIds.swift; sourceTree = "<group>"; };
 		3B474171218201D9004DA223 /* SubscriptionResponseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionResponseTests.swift; sourceTree = "<group>"; };
@@ -3094,7 +3094,7 @@
 				B5976AD421552F8500774073 /* WalletAddressesQueryTarget.swift */,
 				B5A3BA5F2151940E005EE657 /* WalletAddressRequestsTarget.swift */,
 				B56512F52153DDA500A5D044 /* WalletCheckInTarget.swift */,
-				3B474164217FB6A4004DA223 /* NotificationTopicSubscriptionTarget.swift */,
+				3B474164217FB6A4004DA223 /* NotificationTopicSubscriptionInfoTarget.swift */,
 				3BDFADFB2267AEFF0077DEF2 /* BlockstreamTarget.swift */,
 				3B8B19342289C44B003BA4D7 /* UserIdentityTarget.swift */,
 			);
@@ -3876,7 +3876,7 @@
 				B5192FA2216E7BCA00DCC39B /* WalletAddressError.swift in Sources */,
 				3BAB1447204EE6BB001D41A2 /* BaseViewController.swift in Sources */,
 				B5F9500A20E2D439001495E2 /* UnderlinedTextButton.swift in Sources */,
-				3B474165217FB6A4004DA223 /* NotificationTopicSubscriptionTarget.swift in Sources */,
+				3B474165217FB6A4004DA223 /* NotificationTopicSubscriptionInfoTarget.swift in Sources */,
 				A29CE10820A3684700761B91 /* StringEmptyValidator.swift in Sources */,
 				B56639CD22B151E400FA0EC3 /* TransactionShareable.swift in Sources */,
 				B541DF5520A3312500C621EB /* AppCoordinator+DeviceVerificationCoordinatorDelegate.swift in Sources */,

@@ -34,8 +34,15 @@ class PreferencesBroker: CKPersistenceBroker, PreferencesBrokerType {
   }
 
   var yearlyPriceHighNotificationIsEnabled: Bool {
-    get { return userDefaultsManager.bool(for: .yearlyPriceHighNotificationEnabled) }
-    set { userDefaultsManager.set(newValue, for: .yearlyPriceHighNotificationEnabled) }
+    get {
+      if userDefaultsManager.object(for: .yearlyPriceHighNotificationEnabled) == nil {
+        userDefaultsManager.set(true, for: .yearlyPriceHighNotificationEnabled) // allow notification by default
+      }
+      return userDefaultsManager.bool(for: .yearlyPriceHighNotificationEnabled)
+    }
+    set {
+      userDefaultsManager.set(newValue, for: .yearlyPriceHighNotificationEnabled)
+    }
   }
 
   var selectedCurrency: SelectedCurrency {

@@ -11,3 +11,9 @@ import Foundation
 public struct NotificationTopicSubscriptionBody: Encodable {
   let topicIds: [String]
 }
+
+extension NotificationTopicSubscriptionBody {
+  static func emptyInstance() -> NotificationTopicSubscriptionBody {
+    return NotificationTopicSubscriptionBody(topicIds: [])
+  }
+}
