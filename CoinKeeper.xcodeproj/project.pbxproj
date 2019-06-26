@@ -71,6 +71,7 @@
 		3B1BE86021B57D0A00CCFE29 /* MemoEntryPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B1BE85F21B57D0A00CCFE29 /* MemoEntryPage.swift */; };
 		3B1BE86221B57F9300CCFE29 /* MemoEntryUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B1BE86121B57F9300CCFE29 /* MemoEntryUITests.swift */; };
 		3B1BE86421B5819500CCFE29 /* SendPaymentPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B1BE86321B5819500CCFE29 /* SendPaymentPage.swift */; };
+		3B219B3722C3AAD1007EDFCC /* NotificationTopicSubscriptionTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B219B3622C3AAD1007EDFCC /* NotificationTopicSubscriptionTarget.swift */; };
 		3B219B3922C3B9EE007EDFCC /* Data+PrettyPrinted.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B219B3822C3B9EE007EDFCC /* Data+PrettyPrinted.swift */; };
 		3B23126320DA6CA30099A557 /* TransactionHistoryDetailCellAddressView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3B23126220DA6CA30099A557 /* TransactionHistoryDetailCellAddressView.xib */; };
 		3B23126520DA6CBA0099A557 /* TransactionHistoryDetailCellAddressViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B23126420DA6CBA0099A557 /* TransactionHistoryDetailCellAddressViewTests.swift */; };
@@ -948,6 +949,7 @@
 		3B1BE85F21B57D0A00CCFE29 /* MemoEntryPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoEntryPage.swift; sourceTree = "<group>"; };
 		3B1BE86121B57F9300CCFE29 /* MemoEntryUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoEntryUITests.swift; sourceTree = "<group>"; };
 		3B1BE86321B5819500CCFE29 /* SendPaymentPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendPaymentPage.swift; sourceTree = "<group>"; };
+		3B219B3622C3AAD1007EDFCC /* NotificationTopicSubscriptionTarget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationTopicSubscriptionTarget.swift; sourceTree = "<group>"; };
 		3B219B3822C3B9EE007EDFCC /* Data+PrettyPrinted.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data+PrettyPrinted.swift"; sourceTree = "<group>"; };
 		3B23126220DA6CA30099A557 /* TransactionHistoryDetailCellAddressView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TransactionHistoryDetailCellAddressView.xib; sourceTree = "<group>"; };
 		3B23126420DA6CBA0099A557 /* TransactionHistoryDetailCellAddressViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionHistoryDetailCellAddressViewTests.swift; sourceTree = "<group>"; };
@@ -3100,6 +3102,7 @@
 				3B474164217FB6A4004DA223 /* NotificationTopicSubscriptionInfoTarget.swift */,
 				3BDFADFB2267AEFF0077DEF2 /* BlockstreamTarget.swift */,
 				3B8B19342289C44B003BA4D7 /* UserIdentityTarget.swift */,
+				3B219B3622C3AAD1007EDFCC /* NotificationTopicSubscriptionTarget.swift */,
 			);
 			path = Targets;
 			sourceTree = "<group>";
@@ -4068,6 +4071,7 @@
 				A29CE0FF20A34FC200761B91 /* ValidatorType.swift in Sources */,
 				B5CFA334221E008B002B1BDD /* CCMContact+CoreDataProperties.swift in Sources */,
 				B52B1E0C21A315DC0000B9CF /* NetworkManager+MerchantPaymentRequestRequestable.swift in Sources */,
+				3B219B3722C3AAD1007EDFCC /* NotificationTopicSubscriptionTarget.swift in Sources */,
 				B5CFA32A221DF594002B1BDD /* ContactCacheManager.swift in Sources */,
 				30E96A2D2178F83A008079B8 /* VerificationStatusViewController.swift in Sources */,
 				B552EDF5211E33D000332BB5 /* QRCodeGenerator.swift in Sources */,

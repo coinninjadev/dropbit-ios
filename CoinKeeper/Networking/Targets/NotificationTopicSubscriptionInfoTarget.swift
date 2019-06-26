@@ -12,7 +12,6 @@ public enum NotificationTopicSubscriptionInfoTarget: CoinNinjaTargetType {
   typealias ResponseType = SubscriptionInfoResponse
 
   case getSubscriptions(DeviceEndpointIds)
-  case subscribe(DeviceEndpointIds, NotificationTopicSubscriptionBody)
   case unsubscribe(DeviceEndpointIds, String) // String is the topicId
 }
 
@@ -23,8 +22,7 @@ extension NotificationTopicSubscriptionInfoTarget {
 
   var subPath: String? {
     switch self {
-    case .getSubscriptions(let ids),
-         .subscribe(let ids, _):
+    case .getSubscriptions(let ids):
       return "\(ids.serverDevice)/endpoints/\(ids.endpoint)/subscriptions"
     case .unsubscribe(let ids, let topicId):
       return "\(ids.serverDevice)/endpoints/\(ids.endpoint)/subscriptions/\(topicId)"
@@ -34,7 +32,6 @@ extension NotificationTopicSubscriptionInfoTarget {
   public var method: Method {
     switch self {
     case .getSubscriptions: return .get
-    case .subscribe:        return .post
     case .unsubscribe:      return .delete
     }
   }
@@ -42,7 +39,6 @@ extension NotificationTopicSubscriptionInfoTarget {
   public var validationType: ValidationType {
     switch self {
     case .getSubscriptions: return .customCodes([200])
-    case .subscribe:        return .customCodes([201, 500]) // 500 is acceptable due to test envs
     case .unsubscribe:      return .customCodes([204])
     }
   }
@@ -51,8 +47,6 @@ extension NotificationTopicSubscriptionInfoTarget {
     switch self {
     case .getSubscriptions, .unsubscribe:
       return .requestPlain
-    case .subscribe(_, let body):
-      return .requestCustomJSONEncodable(body, encoder: customEncoder)
     }
   }
 }

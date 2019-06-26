@@ -10,8 +10,8 @@ import Foundation
 import PromiseKit
 
 extension NetworkManager: NotificationNetworkInteractable {
-  func subscribeToTopics(deviceEndpointIds: DeviceEndpointIds, body: NotificationTopicSubscriptionBody) -> Promise<NotificationTopicSubscriptionBody> {
-    return cnProvider.request(NotificationTopicSubscriptionInfoTarget.subscribe(deviceEndpointIds, body))
+  func subscribeToTopics(deviceEndpointIds: DeviceEndpointIds, body: NotificationTopicSubscriptionBody) -> Promise<Void> {
+    return cnProvider.requestVoid(NotificationTopicSubscriptionTarget.subscribe(deviceEndpointIds, body))
   }
 
   func getSubscriptionInfo(withDeviceEndpointResponse response: DeviceEndpointResponse) -> Promise<SubscriptionInfoResponse> {
