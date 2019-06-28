@@ -30,8 +30,10 @@ extension NetworkManager: MerchantPaymentRequestRequestable {
           if let requestError = err as? MerchantPaymentRequestError {
             completion(.failure(requestError))
           } else if let responseAsString = String(data: data, encoding: .utf8) {
-            let responseAsError = MerchantPaymentRequestError.serverErrorMessage(responseAsString)
-            completion(.failure(responseAsError))
+            // The QR code represented a normal website URL instead of a BIP 70 payment request
+            let invalidURLError = MerchantPaymentRequestError.invalidURL(url, responseAsString)
+            completion(.failure(invalidURLError))
+
           } else {
             completion(.failure(.underlying(err)))
           }
