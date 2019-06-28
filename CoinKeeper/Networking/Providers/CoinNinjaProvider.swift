@@ -55,7 +55,8 @@ extension CoinNinjaProviderType {
             let validatedObject = try T.ResponseType.validateResponse(object)
             seal.fulfill(validatedObject)
           } catch {
-            seal.reject(error)
+            let mappedError = self.mappedDecodingError(for: error, typeDesc: String(describing: T.ResponseType.self))
+            seal.reject(mappedError)
           }
 
         case .failure(let error):
@@ -80,7 +81,8 @@ extension CoinNinjaProviderType {
             let validatedObjects = try objects.map { try T.ResponseType.validateResponse($0) }
             seal.fulfill(validatedObjects)
           } catch {
-            seal.reject(error)
+            let mappedError = self.mappedDecodingError(for: error, typeDesc: String(describing: T.ResponseType.self))
+            seal.reject(mappedError)
           }
 
         case .failure(let error):
@@ -138,6 +140,15 @@ extension CoinNinjaProviderType {
           }
         }
       }
+    }
+  }
+
+  /// Maps MoyaError to CKNetworkError if appropriate
+  private func mappedDecodingError(for error: Error, typeDesc: String) -> Error {
+    if let moyaError = error as? MoyaError, case .objectMapping = moyaError {
+      return CKNetworkError.decodingFailed(type: typeDesc)
+    } else {
+      return error
     }
   }
 
