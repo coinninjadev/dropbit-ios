@@ -259,7 +259,7 @@ extension AppCoordinator: SendPaymentViewControllerDelegate {
       .map { lowTxData -> AdjustableTransactionFeeViewModel in
         let maybeMediumTxData = wmgr.failableTransactionData(forPayment: btcAmount, to: address, withFeeRate: mediumRate)
         let maybeHighTxData = wmgr.failableTransactionData(forPayment: btcAmount, to: address, withFeeRate: highRate)
-        return AdjustableTransactionFeeViewModel(selectedFeeType: config.defaultFeeType,
+        return AdjustableTransactionFeeViewModel(preferredFeeType: config.defaultFeeType,
                                                  lowFeeTxData: lowTxData,
                                                  mediumFeeTxData: maybeMediumTxData,
                                                  highFeeTxData: maybeHighTxData)
@@ -278,7 +278,7 @@ extension AppCoordinator: SendPaymentViewControllerDelegate {
       .map { lowTxData -> AdjustableTransactionFeeViewModel in
         let maybeMediumTxData = wmgr.failableTransactionDataSendingMax(to: address, withFeeRate: mediumRate)
         let maybeHighTxData = wmgr.failableTransactionDataSendingMax(to: address, withFeeRate: highRate)
-        return AdjustableTransactionFeeViewModel(selectedFeeType: config.defaultFeeType,
+        return AdjustableTransactionFeeViewModel(preferredFeeType: config.defaultFeeType,
                                                  lowFeeTxData: lowTxData,
                                                  mediumFeeTxData: maybeMediumTxData,
                                                  highFeeTxData: maybeHighTxData)
@@ -292,16 +292,17 @@ extension AppCoordinator: SendPaymentViewControllerDelegate {
                                   primaryCurrency: CurrencyCode,
                                   feeModel: ConfirmTransactionFeeModel,
                                   rates: ExchangeRates) {
-    let confirmPayVC = ConfirmPaymentViewController.makeFromStoryboard()
-    self.assignCoordinationDelegate(to: confirmPayVC)
     let viewModel = ConfirmPaymentViewModel(btcAmount: btcAmount,
                                             primaryCurrency: primaryCurrency,
                                             address: address,
                                             contact: contact,
-                                            feeModel: feeModel,
                                             outgoingTransactionData: dto,
                                             rates: rates)
-    confirmPayVC.kind = .payment(viewModel)
+
+    let confirmPayVC = ConfirmPaymentViewController.newInstance(kind: .payment(viewModel),
+                                                                feeModel: feeModel,
+                                                                delegate: self)
+
     self.navigationController.present(confirmPayVC, animated: true)
   }
 
@@ -356,13 +357,11 @@ extension AppCoordinator: SendPaymentViewControllerDelegate {
                                                       contact: contact,
                                                       btcAmount: btcAmount,
                                                       primaryCurrency: primaryCurrency,
-                                                      feeModel: feeModel,
                                                       rates: rates,
                                                       sharedPayloadDTO: sharedPayload)
-        let confirmPayVC = ConfirmPaymentViewController.makeFromStoryboard()
-        self.assignCoordinationDelegate(to: confirmPayVC)
-
-        confirmPayVC.kind = .invite(viewModel)
+        let confirmPayVC = ConfirmPaymentViewController.newInstance(kind: .invite(viewModel),
+                                                                    feeModel: feeModel,
+                                                                    delegate: self)
         self.navigationController.present(confirmPayVC, animated: true)
       }
       .catch(on: .main) { [weak self] error in

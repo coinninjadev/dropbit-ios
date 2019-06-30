@@ -17,7 +17,6 @@ protocol ConfirmPaymentViewModelType: SendPaymentDataProvider {
   var primaryCurrency: CurrencyCode { get }
   var rates: ExchangeRates { get }
   var sharedPayloadDTO: SharedPayloadDTO? { get }
-  var feeModel: ConfirmTransactionFeeModel { get }
 }
 
 struct ConfirmPaymentInviteViewModel: ConfirmPaymentViewModelType {
@@ -25,7 +24,6 @@ struct ConfirmPaymentInviteViewModel: ConfirmPaymentViewModelType {
   var contact: ContactType?
   var btcAmount: NSDecimalNumber?
   let primaryCurrency: CurrencyCode
-  let feeModel: ConfirmTransactionFeeModel
   let rates: ExchangeRates
   let sharedPayloadDTO: SharedPayloadDTO?
 
@@ -40,13 +38,8 @@ struct ConfirmPaymentViewModel: ConfirmPaymentViewModelType {
   var contact: ContactType?
   var btcAmount: NSDecimalNumber?
   var primaryCurrency: CurrencyCode
-  let feeModel: ConfirmTransactionFeeModel
   var outgoingTransactionData: OutgoingTransactionData
   var rates: ExchangeRates
-
-  var transactionData: CNBTransactionData {
-    return feeModel.transactionData
-  }
 
   var sharedPayloadDTO: SharedPayloadDTO? {
     return outgoingTransactionData.sharedPayloadDTO
@@ -57,7 +50,6 @@ struct ConfirmPaymentViewModel: ConfirmPaymentViewModelType {
     primaryCurrency: CurrencyCode,
     address: String?,
     contact: ContactType?,
-    feeModel: ConfirmTransactionFeeModel,
     outgoingTransactionData: OutgoingTransactionData,
     rates: ExchangeRates
     ) {
@@ -65,26 +57,7 @@ struct ConfirmPaymentViewModel: ConfirmPaymentViewModelType {
     self.contact = contact
     self.primaryCurrency = primaryCurrency
     self.address = address
-    self.feeModel = feeModel
     self.outgoingTransactionData = outgoingTransactionData
-    self.rates = rates
-  }
-
-  init(
-    btcAmount: NSDecimalNumber,
-    primaryCurrency: CurrencyCode,
-    address: String?,
-    contact: ContactType?,
-    outgoingTransactionData: OutgoingTransactionData,
-    feeModel: ConfirmTransactionFeeModel,
-    rates: ExchangeRates
-  ) {
-    self.btcAmount = btcAmount
-    self.contact = contact
-    self.primaryCurrency = primaryCurrency
-    self.address = address
-    self.outgoingTransactionData = outgoingTransactionData
-    self.feeModel = feeModel
     self.rates = rates
   }
 

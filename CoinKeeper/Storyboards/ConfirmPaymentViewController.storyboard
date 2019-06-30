@@ -40,11 +40,11 @@
                                 <rect key="frame" x="20" y="51" width="335" height="496"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="d4a-kE-2Oh">
-                                        <rect key="frame" x="47.5" y="0.0" width="240" height="38.5"/>
+                                        <rect key="frame" x="47.5" y="0.0" width="240" height="37"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gWT-Iq-lXS">
-                                        <rect key="frame" x="0.0" y="38.5" width="335" height="77.5"/>
+                                        <rect key="frame" x="0.0" y="37" width="335" height="77.5"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="7BT-1c-Iea" userLabel="Currency Stack View">
                                                 <rect key="frame" x="20" y="0.0" width="295" height="77.5"/>
@@ -79,7 +79,7 @@
                                         </constraints>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ayN-mL-vkG">
-                                        <rect key="frame" x="47.5" y="116" width="240" height="64.5"/>
+                                        <rect key="frame" x="47.5" y="114.5" width="240" height="68.5"/>
                                         <subviews>
                                             <segmentedControl opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="1000" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="FC9-3C-E1Q">
                                                 <rect key="frame" x="29" y="8" width="182" height="29"/>
@@ -88,9 +88,12 @@
                                                     <segment title="Second"/>
                                                     <segment title="Third"/>
                                                 </segments>
+                                                <connections>
+                                                    <action selector="changeFeeType:" destination="gUB-vy-gYz" eventType="valueChanged" id="1q7-Ca-dsJ"/>
+                                                </connections>
                                             </segmentedControl>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="s2J-kq-glh">
-                                                <rect key="frame" x="0.0" y="40" width="240" height="20.5"/>
+                                                <rect key="frame" x="0.0" y="44" width="240" height="20.5"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
@@ -103,15 +106,15 @@
                                             <constraint firstAttribute="trailing" secondItem="s2J-kq-glh" secondAttribute="trailing" id="FS7-w2-QUN"/>
                                             <constraint firstItem="FC9-3C-E1Q" firstAttribute="centerX" secondItem="ayN-mL-vkG" secondAttribute="centerX" id="KcU-jj-XIC"/>
                                             <constraint firstAttribute="bottom" secondItem="s2J-kq-glh" secondAttribute="bottom" constant="4" id="sLc-Xz-5eO"/>
-                                            <constraint firstItem="s2J-kq-glh" firstAttribute="top" secondItem="FC9-3C-E1Q" secondAttribute="bottom" constant="4" id="uvm-67-3se"/>
+                                            <constraint firstItem="s2J-kq-glh" firstAttribute="top" secondItem="FC9-3C-E1Q" secondAttribute="bottom" constant="8" id="uvm-67-3se"/>
                                         </constraints>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zaD-5F-yhL">
-                                        <rect key="frame" x="47.5" y="180.5" width="240" height="38.5"/>
+                                        <rect key="frame" x="47.5" y="183" width="240" height="37.5"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </view>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="hwU-0H-AXk" userLabel="Contact Address Stack View">
-                                        <rect key="frame" x="47.5" y="219" width="240" height="238.5"/>
+                                        <rect key="frame" x="47.5" y="220.5" width="240" height="238.5"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oz1-6j-fen">
                                                 <rect key="frame" x="0.0" y="0.0" width="240" height="55"/>
@@ -174,7 +177,7 @@
                                         </subviews>
                                     </stackView>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vlc-1q-SPM">
-                                        <rect key="frame" x="47.5" y="457.5" width="240" height="38.5"/>
+                                        <rect key="frame" x="47.5" y="459" width="240" height="37"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </view>
                                 </subviews>

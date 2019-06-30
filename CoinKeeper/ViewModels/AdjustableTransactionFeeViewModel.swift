@@ -15,14 +15,25 @@ struct AdjustableTransactionFeeViewModel {
   let mediumFeeTxData: CNBTransactionData?
   let highFeeTxData: CNBTransactionData?
 
-  init(selectedFeeType: TransactionFeeType,
+  init(preferredFeeType: TransactionFeeType,
        lowFeeTxData: CNBTransactionData,
        mediumFeeTxData: CNBTransactionData?,
        highFeeTxData: CNBTransactionData?) {
-    self.selectedFeeType = selectedFeeType
+    self.selectedFeeType = preferredFeeType
     self.lowFeeTxData = lowFeeTxData
     self.mediumFeeTxData = mediumFeeTxData
     self.highFeeTxData = highFeeTxData
+
+    if transactionData(for: preferredFeeType) == nil {
+      selectedFeeType = .cheap
+    }
+  }
+
+  func copy(selecting selectedType: TransactionFeeType) -> AdjustableTransactionFeeViewModel {
+    return AdjustableTransactionFeeViewModel(preferredFeeType: selectedType,
+                                             lowFeeTxData: self.lowFeeTxData,
+                                             mediumFeeTxData: self.mediumFeeTxData,
+                                             highFeeTxData: self.highFeeTxData)
   }
 
   private let sortedFeeTypes: [TransactionFeeType] = [.fast, .slow, .cheap]
@@ -33,9 +44,10 @@ struct AdjustableTransactionFeeViewModel {
 
   var segmentModels: [AdjustableFeesSegmentViewModel] {
     return sortedFeeTypes.map { feeType in
-      return AdjustableFeesSegmentViewModel(title: self.title(for: feeType),
+      return AdjustableFeesSegmentViewModel(type: feeType,
+                                            title: self.title(for: feeType),
                                             isSelected: feeType == self.selectedFeeType,
-                                            isEnabled: self.transactionData(for: feeType) != nil)
+                                            isSelectable: self.transactionData(for: feeType) != nil)
     }
   }
 
@@ -79,7 +91,8 @@ struct AdjustableTransactionFeeViewModel {
 }
 
 struct AdjustableFeesSegmentViewModel {
+  let type: TransactionFeeType
   let title: String
   let isSelected: Bool
-  let isEnabled: Bool
+  let isSelectable: Bool
 }
