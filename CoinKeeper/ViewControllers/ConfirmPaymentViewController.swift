@@ -18,6 +18,7 @@ protocol ConfirmPaymentViewControllerDelegate: ViewControllerDismissable {
     outgoingTransactionData: OutgoingTransactionData
   )
   func viewControllerDidConfirmInvite(_ viewController: UIViewController, outgoingInvitationDTO: OutgoingInvitationDTO)
+  func viewControllerRequestedShowFeeTooExpensiveAlert(_ viewController: UIViewController)
 }
 
 typealias BitcoinUSDPair = (btcAmount: NSDecimalNumber, usdAmount: NSDecimalNumber)
@@ -57,6 +58,24 @@ class ConfirmPaymentViewController: PresentableViewController, StoryboardInitial
 
   var coordinationDelegate: ConfirmPaymentViewControllerDelegate? {
     return generalCoordinationDelegate as? ConfirmPaymentViewControllerDelegate
+  }
+
+  @IBAction func changeFeeType(_ sender: UISegmentedControl) {
+    guard let model = feeModel else { return }
+    switch model {
+    case .adjustable(let adjustableModel):
+      let selectedModel = adjustableModel.segmentModels[sender.selectedSegmentIndex]
+      if selectedModel.isSelectable {
+        let newAdjustableModel = adjustableModel.copy(selecting: selectedModel.type)
+        self.feeModel = .adjustable(newAdjustableModel)
+      } else {
+        coordinationDelegate?.viewControllerRequestedShowFeeTooExpensiveAlert(self)
+      }
+
+      self.updateFees(with: self.feeModel, rates: self.exchangeRates)
+    default:
+      break
+    }
   }
 
   private func setupViews() {
