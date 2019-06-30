@@ -271,6 +271,7 @@ extension SendPaymentViewController {
 
     bitcoinAddressButton.titleLabel?.font = .medium(14)
     bitcoinAddressButton.setTitleColor(.darkGrayText, for: .normal)
+    bitcoinAddressButton.contentEdgeInsets = UIEdgeInsets(top: 0, left: 8, bottom: 0, right: 8)
 
     scanButton.backgroundColor = .mediumGrayBackground
   }
