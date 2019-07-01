@@ -15,6 +15,7 @@ def shared_pods
   pod 'JKSteppedProgressBar', git: 'https://github.com/MitchellMalleo/JKSteppedProgressBar.git', commit: '0519aa3'
   pod 'RNCryptor', '~> 5.1.0'
   pod 'DZNEmptyDataSet', '~> 1.8'
+  pod 'Willow', '~> 5.0'
 end
 
 target 'DropBit' do
