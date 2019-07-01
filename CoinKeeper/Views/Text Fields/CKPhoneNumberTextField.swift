@@ -19,13 +19,11 @@ class CKPhoneNumberTextField: PhoneNumberTextField {
   weak var phoneNumberTextFieldDelegate: CKPhoneNumberTextFieldDelegate?
   var enteredText: String = ""
 
-  private let kit = PhoneNumberKit()
-
   private var countryCode: Int = 1
   private let defaultMaxNationalDigits = 12
 
   private func maxNationalDigits() -> Int {
-    let possibleLengths = kit.possiblePhoneNumberLengths(forCountry: defaultRegion, phoneNumberType: .mobile, lengthType: .national)
+    let possibleLengths = phoneNumberKit.possiblePhoneNumberLengths(forCountry: defaultRegion, phoneNumberType: .mobile, lengthType: .national)
     return possibleLengths.max() ?? defaultMaxNationalDigits
   }
 

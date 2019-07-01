@@ -84,7 +84,7 @@ extension NetworkManager: CurrencyValueDataSourceType {
     }
     let broker = persistenceManager.brokers.checkIn
     guard walletId != nil else {
-      let fees = FeesResponse(max: broker.cachedBestFee, avg: broker.cachedBetterFee, min: broker.cachedGoodFee)
+      let fees = FeesResponse(fast: broker.cachedBestFee, med: broker.cachedBetterFee, slow: broker.cachedGoodFee)
       let pricing = PriceResponse(last: broker.cachedBTCUSDRate)
       let response = CheckInResponse(blockheight: broker.cachedBlockHeight, fees: fees, pricing: pricing)
       return Promise.value(response)

@@ -71,6 +71,10 @@ extension CoinNinjaTargetType {
       return CKNetworkError.reachabilityFailed(moyaError)
     }
 
+    if case .objectMapping = moyaError {
+      return CKNetworkError.decodingFailed(type: String(describing: ResponseType.self))
+    }
+
     switch statusCode {
     case 400: return .badResponse
     case 401: return .unauthorized

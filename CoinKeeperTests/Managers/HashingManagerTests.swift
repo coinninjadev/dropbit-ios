@@ -9,13 +9,10 @@
 @testable import DropBit
 import Foundation
 import XCTest
-import PhoneNumberKit
 
 class HashingManagerTests: XCTestCase {
 
   var sut: HashingManager!
-
-  let kit = PhoneNumberKit()
 
   override func setUp() {
     super.setUp()
@@ -41,7 +38,7 @@ class HashingManagerTests: XCTestCase {
 
     do {
       let salt = try self.sut.salt()
-      let hashedNumber = self.sut.hash(phoneNumber: phoneNumber, salt: salt, parsedNumber: nil, kit: self.kit)
+      let hashedNumber = self.sut.hash(phoneNumber: phoneNumber, salt: salt, parsedNumber: nil)
       XCTAssertEqual(hashedNumber, expectedHash, "hashes should be equal")
     } catch {
       XCTFail(error.localizedDescription)
@@ -58,9 +55,9 @@ class HashingManagerTests: XCTestCase {
     do {
       let salt = try self.sut.salt()
       let hashedNumberWithPrefix = self.sut.hash(phoneNumber: phoneNumberWithPrefix, salt: salt,
-                                                 parsedNumber: nil, kit: self.kit)
+                                                 parsedNumber: nil)
       let hashedNumberWithoutPrefix = self.sut.hash(phoneNumber: phoneNumberWithoutPrefix, salt: salt,
-                                                    parsedNumber: nil, kit: self.kit)
+                                                    parsedNumber: nil)
 
       XCTAssertEqual(hashedNumberWithPrefix, expectedHash, "hashes should be equal")
       XCTAssertEqual(hashedNumberWithPrefix, hashedNumberWithoutPrefix, "hashes should be equal")
@@ -75,7 +72,7 @@ class HashingManagerTests: XCTestCase {
 
     do {
       let salt = try self.sut.salt()
-      let hashedNumber = self.sut.hash(phoneNumber: phoneNumber, salt: salt, parsedNumber: nil, kit: self.kit)
+      let hashedNumber = self.sut.hash(phoneNumber: phoneNumber, salt: salt, parsedNumber: nil)
       XCTAssertEqual(hashedNumber, expectedHash, "hashes should be equal")
     } catch {
       XCTFail(error.localizedDescription)
@@ -88,7 +85,7 @@ class HashingManagerTests: XCTestCase {
 
     do {
       let salt = try self.sut.salt()
-      let hashedNumber = self.sut.hash(phoneNumber: phoneNumber, salt: salt, parsedNumber: nil, kit: self.kit)
+      let hashedNumber = self.sut.hash(phoneNumber: phoneNumber, salt: salt, parsedNumber: nil)
       XCTAssertEqual(hashedNumber, expectedHash, "hashes should be equal")
     } catch {
       XCTFail(error.localizedDescription)
@@ -102,8 +99,8 @@ class HashingManagerTests: XCTestCase {
 
     do {
       let salt = try self.sut.salt()
-      let hashedNumberWithPrefix = self.sut.hash(phoneNumber: phoneNumberWithPrefix, salt: salt, parsedNumber: nil, kit: self.kit)
-      let hashedNumberWithoutPrefix = self.sut.hash(phoneNumber: phoneNumberWithoutPrefix, salt: salt, parsedNumber: nil, kit: self.kit)
+      let hashedNumberWithPrefix = self.sut.hash(phoneNumber: phoneNumberWithPrefix, salt: salt, parsedNumber: nil)
+      let hashedNumberWithoutPrefix = self.sut.hash(phoneNumber: phoneNumberWithoutPrefix, salt: salt, parsedNumber: nil)
       XCTAssertEqual(hashedNumberWithPrefix, expectedHash, "hashes should be equal")
       XCTAssertEqual(hashedNumberWithPrefix, hashedNumberWithoutPrefix, "hashes should be equal")
     } catch {

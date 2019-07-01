@@ -20,8 +20,6 @@ platform :ios do
     if !lanes_to_exclude.include?(lane)
       bundle_install
       brew(command: "bundle")
-      brew(command: "update")
-      brew(command: "upgrade")
       config_tooling
       cocoapods(repo_update: true)
       autogen

@@ -9,7 +9,6 @@
 import CNBitcoinKit
 import CoreData
 import PromiseKit
-import PhoneNumberKit
 import Strongbox
 
 protocol PersistenceManagerType: DeviceCountryCodeProvider {
@@ -37,7 +36,6 @@ protocol PersistenceManagerType: DeviceCountryCodeProvider {
 
   func persistReceivedSharedPayloads(
     _ payloads: [Data],
-    kit: PhoneNumberKit,
     in context: NSManagedObjectContext)
 
   /// Look for any transactions sent to a phone number without a contact name, and provide a name if found, as a convenience when viewing tx history

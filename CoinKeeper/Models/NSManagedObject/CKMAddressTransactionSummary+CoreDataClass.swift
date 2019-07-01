@@ -79,10 +79,9 @@ public class CKMAddressTransactionSummary: NSManagedObject {
     return addressTransactionSummary
   }
 
-  static func find(by txid: String, in context: NSManagedObjectContext) -> [CKMAddressTransactionSummary] {
+  static func find(byTxid txid: String, in context: NSManagedObjectContext) -> [CKMAddressTransactionSummary] {
     let fetchRequest: NSFetchRequest<CKMAddressTransactionSummary> = CKMAddressTransactionSummary.fetchRequest()
-    let keyPath = #keyPath(CKMAddressTransactionSummary.txid)
-    fetchRequest.predicate = NSPredicate(format: "\(keyPath) = %@", txid)
+    fetchRequest.predicate = CKPredicate.AddressTransactionSummary.matching(txid: txid)
 
     var items: [CKMAddressTransactionSummary] = []
     do {

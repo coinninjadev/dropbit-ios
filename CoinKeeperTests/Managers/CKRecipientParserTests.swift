@@ -8,17 +8,14 @@
 
 @testable import DropBit
 import XCTest
-import PhoneNumberKit
 
 class CKRecipientParserTests: XCTestCase {
 
   var sut: CKRecipientParser!
 
-  let kit = PhoneNumberKit()
-
   override func setUp() {
     super.setUp()
-    self.sut = CKRecipientParser(kit: kit)
+    self.sut = CKRecipientParser()
   }
 
   override func tearDown() {

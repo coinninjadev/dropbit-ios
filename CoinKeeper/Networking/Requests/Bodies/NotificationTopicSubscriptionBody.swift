@@ -8,6 +8,24 @@
 
 import Foundation
 
-public struct NotificationTopicSubscriptionBody: Encodable {
+public struct NotificationTopicSubscriptionBody: ResponseDecodable, Encodable {
   let topicIds: [String]
+}
+
+extension NotificationTopicSubscriptionBody {
+  static func emptyInstance() -> NotificationTopicSubscriptionBody {
+    return NotificationTopicSubscriptionBody(topicIds: [])
+  }
+
+  static var sampleJSON: String {
+    return """
+    {
+    "topic_ids": []
+    }
+    """
+  }
+
+  static var requiredStringKeys: [KeyPath<NotificationTopicSubscriptionBody, String>] { return [] }
+  static var optionalStringKeys: [WritableKeyPath<NotificationTopicSubscriptionBody, String?>] { return [] }
+
 }

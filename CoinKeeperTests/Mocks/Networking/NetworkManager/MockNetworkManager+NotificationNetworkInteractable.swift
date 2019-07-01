@@ -11,7 +11,7 @@ import Foundation
 import PromiseKit
 
 extension MockNetworkManager: NotificationNetworkInteractable {
-  func subscribeToTopics(deviceEndpointIds: DeviceEndpointIds, body: NotificationTopicSubscriptionBody) -> Promise<SubscriptionInfoResponse> {
+  func subscribeToTopics(deviceEndpointIds: DeviceEndpointIds, body: NotificationTopicSubscriptionBody) -> Promise<Void> {
     return Promise { _ in }
   }
 

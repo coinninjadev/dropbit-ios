@@ -149,7 +149,11 @@ class StartViewControllerTests: XCTestCase {
 
   class MockCoordinator: StartViewControllerDelegate {
     var appEnteredActiveStateWasCalled = false
-    func requireAuthenticationIfNeeded(whenAuthenticated: (() -> Void)?) {
+    func requireAuthenticationIfNeeded(whenAuthenticated: @escaping () -> Void) {
+      appEnteredActiveStateWasCalled = true
+    }
+
+    func requireAuthenticationIfNeeded() {
       appEnteredActiveStateWasCalled = true
     }
 

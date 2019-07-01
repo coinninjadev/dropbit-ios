@@ -102,19 +102,8 @@ struct AuthPlugin: PluginType {
   }
 
   private func prettyPrint(data: Data) {
-    let formattedData = JSONResponseDataFormatter(data)
-    let resString = String(data: formattedData, encoding: .utf8) ?? "-"
+    let resString = data.prettyPrinted()
     print("Response: \(resString)")
-  }
-
-  private func JSONResponseDataFormatter(_ data: Data) -> Data {
-    do {
-      let dataAsJSON = try JSONSerialization.jsonObject(with: data)
-      let prettyData =  try JSONSerialization.data(withJSONObject: dataAsJSON, options: .prettyPrinted)
-      return prettyData
-    } catch {
-      return data // fallback to original data if it can't be serialized.
-    }
   }
 
 }

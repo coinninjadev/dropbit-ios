@@ -74,6 +74,17 @@ public class CKMAddress: NSManagedObject {
     return ckmAddress
   }
 
+  static func find(withAddresses addresses: [String], in context: NSManagedObjectContext) -> [CKMAddress] {
+    let fetchRequest: NSFetchRequest<CKMAddress> = CKMAddress.fetchRequest()
+    fetchRequest.predicate = CKPredicate.Address.relatedTo(addresses: addresses)
+
+    do {
+      return try context.fetch(fetchRequest)
+    } catch {
+      return []
+    }
+  }
+
   private func setVoutRelationshipIfAny(in context: NSManagedObjectContext) {
     let voutFetchRequest: NSFetchRequest<CKMVout> = CKMVout.fetchRequest()
 

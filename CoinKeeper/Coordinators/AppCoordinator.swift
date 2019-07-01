@@ -38,6 +38,8 @@ protocol ChildCoordinatorDelegate: class {
   func childCoordinatorDidComplete(childCoordinator: ChildCoordinatorType)
 }
 
+let phoneNumberKit = PhoneNumberKit()
+
 class AppCoordinator: CoordinatorType {
   let navigationController: UINavigationController
   let persistenceManager: PersistenceManagerType
@@ -75,7 +77,6 @@ class AppCoordinator: CoordinatorType {
   var suspendAuthenticationOnceUntil: Date?
 
   private let notificationLogger = OSLog(subsystem: "com.coinninja.appCoordinator", category: "notifications")
-  let phoneNumberKit = PhoneNumberKit()
   let contactStore = CNContactStore()
   let locationManager = CLLocationManager()
 
@@ -93,7 +94,6 @@ class AppCoordinator: CoordinatorType {
     return WorkerFactory(persistenceManager: self.persistenceManager,
                          networkManager: self.networkManager,
                          analyticsManager: self.analyticsManager,
-                         phoneNumberKit: self.phoneNumberKit,
                          walletManagerProvider: self)
   }()
 
@@ -260,12 +260,14 @@ class AppCoordinator: CoordinatorType {
     networkManager.start()
     connectionManager.delegate = self
 
-    setInitialRootViewController()
-
     // fetch transaction information for receive and change addresses, update server addresses
+    UIApplication.shared.setMinimumBackgroundFetchInterval(.oneHour)
+
+    guard UIApplication.shared.applicationState != .background else { return }
+
+    setInitialRootViewController()
     registerForBalanceSaveNotifications()
     trackAnalytics()
-    UIApplication.shared.setMinimumBackgroundFetchInterval(.oneHour)
 
     let now = Date()
     let lastContactReloadDate: Date = persistenceManager.brokers.activity.lastContactCacheReload ?? .distantPast

@@ -78,7 +78,7 @@ public class AsynchronousOperation: Operation {
   }
 
   /// The closure to be performed by this operation
-  public var task: ((AsynchronousOperation) -> Void)?
+  public var task: (() -> Void)?
 
   // Start
 
@@ -94,7 +94,7 @@ public class AsynchronousOperation: Operation {
 
     operationStartedAt = Date()
     os_log("will begin task for operation of type: %@", log: logger, type: .debug, self.operationType.description)
-    task?(self)
+    task?()
   }
 
   /// Call this function to finish an operation that is currently executing

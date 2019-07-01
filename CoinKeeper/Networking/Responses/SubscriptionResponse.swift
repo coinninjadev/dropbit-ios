@@ -14,7 +14,7 @@ enum SubscriptionType: String {
   case topic = "Topic"
 }
 
-struct SubscriptionResponse: ResponseDecodable {
+struct SubscriptionResponse: ResponseDecodable, Encodable {
 
   let id: String
   let createdAt: Int
@@ -28,9 +28,6 @@ struct SubscriptionResponse: ResponseDecodable {
     return SubscriptionType(rawValue: ownerType) ?? .general
   }
 
-}
-
-extension SubscriptionResponse {
   static var sampleJSON: String {
     return """
     {

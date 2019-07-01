@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import PhoneNumberKit
 
 protocol CounterpartyRepresentable: AnyObject {
 
@@ -15,16 +14,16 @@ protocol CounterpartyRepresentable: AnyObject {
   var counterpartyName: String? { get }
   var counterpartyAddressId: String? { get }
 
-  func counterpartyDisplayIdentity(deviceCountryCode: Int?, kit: PhoneNumberKit) -> String?
+  func counterpartyDisplayIdentity(deviceCountryCode: Int?) -> String?
 
 }
 
 extension CounterpartyRepresentable {
 
-  func counterpartyDisplayDescription(deviceCountryCode: Int?, kit: PhoneNumberKit) -> String? {
+  func counterpartyDisplayDescription(deviceCountryCode: Int?) -> String? {
     if let name = counterpartyName {
       return name
-    } else if let identity = counterpartyDisplayIdentity(deviceCountryCode: deviceCountryCode, kit: kit) {
+    } else if let identity = counterpartyDisplayIdentity(deviceCountryCode: deviceCountryCode) {
       return identity
     } else {
       return counterpartyAddressId

@@ -9,7 +9,7 @@
 import Foundation
 
 /// The API offers much more info, but these basics are sufficient for our purposes.
-struct BCITransactionResponse: Decodable {
+struct BCITransactionResponse: Codable {
 
   let hash: String
   let time: Int

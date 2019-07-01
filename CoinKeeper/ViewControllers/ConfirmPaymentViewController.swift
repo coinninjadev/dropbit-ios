@@ -8,7 +8,6 @@
 
 import UIKit
 import CNBitcoinKit
-import PhoneNumberKit
 
 protocol ConfirmPaymentViewControllerDelegate: ViewControllerDismissable {
   func confirmPaymentViewControllerDidLoad(_ viewController: UIViewController)
@@ -138,7 +137,7 @@ class ConfirmPaymentViewController: PresentableViewController, StoryboardInitial
     case .phone:
       guard let phoneContact = contact as? PhoneContactType else { return }
       contactLabel.isHidden = false
-      let formatter = CKPhoneNumberFormatter(kit: PhoneNumberKit(), format: .international)
+      let formatter = CKPhoneNumberFormatter(format: .international)
       displayIdentity = (try? formatter.string(from: phoneContact.globalPhoneNumber)) ?? ""
       avatarBackgroundView.isHidden = true
     case .twitter:
