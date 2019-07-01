@@ -33,8 +33,8 @@ extension AppCoordinator: SerialQueueManagerDelegate {
     return self.registerAndPersistWallet(in: context).asVoid()
   }
 
-  func syncManagerDidRequestDependencies(in context: NSManagedObjectContext) -> Promise<SyncDependencies> {
-    return predefineSyncDependencies(in: context, inBackground: false)
+  func syncManagerDidRequestDependencies(in context: NSManagedObjectContext, inBackground: Bool) -> Promise<SyncDependencies> {
+    return predefineSyncDependencies(in: context, inBackground: inBackground)
   }
 
   func showAlertsForSyncedChanges(in context: NSManagedObjectContext) -> Promise<Void> {

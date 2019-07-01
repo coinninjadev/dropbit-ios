@@ -13,7 +13,7 @@ import UIKit
 import os.log
 
 protocol WalletSyncDelegate: AnyObject {
-  func syncManagerDidRequestDependencies(in context: NSManagedObjectContext) -> Promise<SyncDependencies>
+  func syncManagerDidRequestDependencies(in context: NSManagedObjectContext, inBackground: Bool) -> Promise<SyncDependencies>
   func syncManagerDidRequestBackgroundContext() -> NSManagedObjectContext
   func syncManagerDidFinishSync()
   func showAlertsForSyncedChanges(in context: NSManagedObjectContext) -> Promise<Void>
@@ -37,7 +37,9 @@ class WalletSyncOperationFactory {
       return Promise.init(error: SyncRoutineError.missingQueueDelegate)
     }
 
-    return queueDelegate.syncManagerDidRequestDependencies(in: context)
+    let inBackground = (fetchResult != nil)
+
+    return queueDelegate.syncManagerDidRequestDependencies(in: context, inBackground: inBackground)
       .then(in: context) { dependencies -> Promise<AsynchronousOperation> in
         let operation = AsynchronousOperation(operationType: .syncWallet(walletSyncType))
         let bgContext = dependencies.bgContext
