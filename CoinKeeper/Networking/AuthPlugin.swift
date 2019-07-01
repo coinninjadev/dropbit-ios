@@ -10,7 +10,6 @@ import Foundation
 import CNBitcoinKit
 import Moya
 import Result
-import os.log
 
 class TokenSource {
   var token: String?
@@ -29,7 +28,6 @@ struct AuthPlugin: PluginType {
 
   /// Handles signing the request body and composing the other DefaultHeaders
   weak var headerDelegate: HeaderDelegate?
-  let logger = OSLog(subsystem: "com.coinninja.coinkeeper.authplugin", category: "auth_plugin")
 
   func prepare(_ request: URLRequest, target: TargetType) -> URLRequest {
 
@@ -66,12 +64,11 @@ struct AuthPlugin: PluginType {
 
   func willSend(_ request: RequestType, target: TargetType) {
     guard let innerRequest = request.request else { return }
-
-    os_log("[will_send] %{private}@", log: self.logger, type: .debug, target.endpointDescription)
-    os_log("%{private}@", log: self.logger, type: .debug, innerRequest.allHTTPHeaderFields ?? [:])
+    log.debugPrivate(target.endpointDescription)
+    log.debugPrivate(innerRequest.allHTTPHeaderFields ?? [:])
     if let bodyData = innerRequest.httpBody {
       let bodyString = String(data: bodyData, encoding: .utf8) ?? "-"
-      os_log("Body: %{private}@", log: self.logger, type: .debug, bodyString)
+      log.info("Body: %@", privateArgs: [bodyString])
     }
   }
 
@@ -79,13 +76,12 @@ struct AuthPlugin: PluginType {
 
     switch result {
     case .success(let response):
-      let fullDesc = "[did_receive] \(target.endpointDescription) \(response.statusCode)"
-      os_log("%@", log: self.logger, type: .debug, fullDesc)
+      let fullDesc = "\(target.endpointDescription) \(response.statusCode)"
+      log.debug(fullDesc)
     case .failure(let error):
       let errorDesc = error.errorDescription ?? "unknown Moya error"
       let errorMessage = error.errorMessage ?? "-" //error message from server
-
-      os_log("%@ error: %@, %@", log: self.logger, type: .debug, target.endpointDescription, errorDesc, errorMessage)
+      log.error("\(target.endpointDescription) \(errorDesc), \(errorMessage)")
     }
   }
 
@@ -95,7 +91,7 @@ struct AuthPlugin: PluginType {
 
   private func prettyPrint(_ request: RequestType) {
     guard let data = request.request?.httpBody else {
-      print("No available httpBody in request")
+      log.info("No available httpBody in request")
       return
     }
     prettyPrint(data: data)
@@ -103,7 +99,7 @@ struct AuthPlugin: PluginType {
 
   private func prettyPrint(data: Data) {
     let resString = data.prettyPrinted()
-    print("Response: \(resString)")
+    log.debug("Response: \(resString)")
   }
 
 }
