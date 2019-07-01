@@ -17,9 +17,9 @@ class CKLogger: Logger {
 
   init() {
     var writers: [LogWriter] = []
-    writers.append(ConsoleWriter(method: .nslog, modifiers: [CKLogPrefixModifier()]))
+    writers.append(ConsoleWriter(method: .nslog, modifiers: [CKLogLevelModifier()]))
     do {
-      let fileWriter = try CKFileWriter()
+      let fileWriter = try CKLogFileWriter()
       writers.append(fileWriter)
     } catch {
       print("Failed to initialize CKFileWriter: \(error.localizedDescription)")
@@ -59,31 +59,57 @@ class CKLogger: Logger {
     logMessage(message, privateArgs: privateArgs, level: .error, location: location)
   }
 
+  func debugPrivate(_ privateArgs: CVarArg..., file: String = #file, function: String = #function, line: Int = #line) {
+    self.debug(self.formattingString(for: privateArgs), privateArgs: privateArgs, file: file, function: function, line: line)
+  }
+
+  func infoPrivate(_ privateArgs: CVarArg..., file: String = #file, function: String = #function, line: Int = #line) {
+    self.info(self.formattingString(for: privateArgs), privateArgs: privateArgs, file: file, function: function, line: line)
+  }
+
+  func eventPrivate(_ privateArgs: CVarArg..., file: String = #file, function: String = #function, line: Int = #line) {
+    self.event(self.formattingString(for: privateArgs), privateArgs: privateArgs, file: file, function: function, line: line)
+  }
+
+  func warnPrivate(_ privateArgs: CVarArg..., file: String = #file, function: String = #function, line: Int = #line) {
+    self.warn(self.formattingString(for: privateArgs), privateArgs: privateArgs, file: file, function: function, line: line)
+  }
+
+  func errorPrivate(_ privateArgs: CVarArg..., file: String = #file, function: String = #function, line: Int = #line) {
+    self.error(self.formattingString(for: privateArgs), privateArgs: privateArgs, file: file, function: function, line: line)
+  }
+
+  private func formattingString(for args: CVarArg...) -> String {
+    let symbols: [String] = args.map { _ in "%@" }
+    return symbols.joined(separator: ", ")
+  }
+
   private func logMessage(_ message: String, privateArgs: [CVarArg], level: LogLevel, location: String) {
     #if DEBUG
-    let prefixedMessage = "[\(location)] \(message)"
-    let string = String(format: prefixedMessage, arguments: privateArgs)
-    super.logMessage({string}, with: level)
+    let symbolicatedMessage = String(format: message, arguments: privateArgs)
+    let prefixedMessage = "[\(location)] \(symbolicatedMessage)\n"
+    super.logMessage({prefixedMessage}, with: level)
 
     #else
-    let prefixedMessage = "[\(location)] \(message)"
+    // ignore privateArgs
+    let prefixedMessage = "[\(location)] \(message)\n"
     let cleanedMessage = prefixedMessage.replacingOccurrences(of: "%@", with: "[private]")
     super.logMessage({cleanedMessage}, with: level)
     #endif
   }
 
-  private func logLocation(_ file: String, _ function: String, _ line: Int) -> String {
-    return "\(file) \(function), line: \(line)"
+  private func logLocation(_ filePath: String, _ function: String, _ line: Int) -> String {
+    let fileName = URL(fileURLWithPath: filePath).lastPathComponent
+    return "\(fileName) \(function) ln:\(line)"
   }
 
 }
 
-class CKLogPrefixModifier: LogModifier {
+class CKLogLevelModifier: LogModifier {
 
   func modifyMessage(_ message: String, with logLevel: LogLevel) -> String {
-    let timestamp = Date().debugDescription
     let levelPrefix = self.prefix(for: logLevel)
-    return "[Willow] \(timestamp) \(levelPrefix)\(message)"
+    return "\(levelPrefix)\(message)"
   }
 
   private func prefix(for logLevel: LogLevel) -> String {
@@ -102,36 +128,55 @@ class CKLogPrefixModifier: LogModifier {
 
 }
 
-class CKFileWriter: LogModifierWriter {
+class CKLogTimestampModifier: LogModifier {
+  func modifyMessage(_ message: String, with logLevel: LogLevel) -> String {
+    let timestamp = Date().debugDescription
+    return "\(timestamp) \(message)"
+  }
+}
 
-  var modifiers: [LogModifier] = [CKLogPrefixModifier()]
+class CKLogFileWriter: LogModifierWriter {
+
+  var modifiers: [LogModifier] = [CKLogLevelModifier(), CKLogTimestampModifier()]
+
+  static var fileName: String {
+    return "DropBitLog.txt"
+  }
 
   static var fileURL: URL = {
     let documentURLs = FileManager.default.urls(for: .documentDirectory, in: .allDomainsMask)
-    return documentURLs.first!.appendingPathComponent("DropBitLog.txt")
+    return documentURLs.first!.appendingPathComponent(fileName)
   }()
+
+  static func fileData() -> Data? {
+    return try? Data(contentsOf: fileURL)
+  }
 
   let fileHandle: FileHandle
 
   var lineCount: Int
   private let lineCountLowerBound = 10_000
-  private let lineCountUpperBound = 15_000 //limit frequency of line counts
+  private let lineCountUpperBound = 15_000
 
   lazy var outputStream: CKLogOutputStream = {
     return CKLogOutputStream(fileHandle)
   }()
 
   init() throws {
-    let url = CKFileWriter.fileURL
-    _ = FileManager.default.createFile(atPath: url.path, contents: nil)
-    self.fileHandle = try FileHandle(forWritingTo: url)
-    self.lineCount = CKFileWriter.countLines(fileURL: url)
+    let url = CKLogFileWriter.fileURL
+    if !FileManager.default.fileExists(atPath: url.path) {
+      _ = FileManager.default.createFile(atPath: url.path, contents: nil)
+    }
+    self.fileHandle = try FileHandle(forUpdating: url)
+    self.fileHandle.seekToEndOfFile()
+    self.lineCount = CKLogFileWriter.countLines(fileURL: url)
   }
 
   func writeMessage(_ message: String, logLevel: LogLevel) {
     updateLineCount(for: message)
     removeLinesFromFileIfNeeded()
-    outputStream.write(message)
+    let prefixedMessage = self.modifyMessage(message, logLevel: logLevel)
+    outputStream.write(prefixedMessage)
   }
 
   func writeMessage(_ message: LogMessage, logLevel: LogLevel) {
@@ -143,29 +188,34 @@ class CKFileWriter: LogModifierWriter {
     self.lineCount += newLines
   }
 
-  private func removeLinesFromFileIfNeeded() {
-    guard self.lineCount > lineCountUpperBound else { return }
-    let fileURL = CKFileWriter.fileURL
+  func removeLinesFromFileIfNeeded() {
+    guard self.lineCount > lineCountUpperBound else { return } //limit frequency of removals
+    let numberOfLinesToRemove = self.lineCount - lineCountLowerBound
+    let fileURL = CKLogFileWriter.fileURL
 
     do {
       let fileData = try Data(contentsOf: fileURL, options: .dataReadingMapped)
-      let newLineData = "\n".data(using: String.Encoding.utf8)!
+      let newLineData = "\n".data(using: .utf8)!
 
       var lineNumber = 0
-      var pos = fileData.count - 1
-      while lineNumber <= lineCountLowerBound {
+      var pos = 0
+      while lineNumber < numberOfLinesToRemove {
         // Find next newline character:
-        guard let range = fileData.range(of: newLineData, options: [.backwards], in: 0..<pos) else {
-          return // File has less than `trimmedLineCount` lines.
+        let searchRange = Range(NSRange(location: pos, length: fileData.count - pos))
+        guard let range = fileData.range(of: newLineData, options: [], in: searchRange) else {
+          return  // File has less than `numberOfLinesToRemove` lines.
         }
+
         lineNumber += 1
         pos = range.lowerBound
       }
 
+      // Now `pos` is the position where line number `numLines` begins.
       let trimmedData = fileData.subdata(in: pos..<fileData.count)
-      try trimmedData.write(to: fileURL)
+      try trimmedData.write(to: fileURL, options: [.atomic])
+      self.lineCount = lineCountLowerBound
 
-    } catch let error as NSError {
+    } catch {
       print(error.localizedDescription)
     }
   }
