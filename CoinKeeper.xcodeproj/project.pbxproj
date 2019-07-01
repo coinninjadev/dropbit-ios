@@ -499,6 +499,7 @@
 		B505D4EA21050F2000C0C8FC /* CKPredicate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B505D4E921050F2000C0C8FC /* CKPredicate.swift */; };
 		B505D4EC2106456000C0C8FC /* WalletAddressDataWorkerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B505D4EB2106456000C0C8FC /* WalletAddressDataWorkerTests.swift */; };
 		B5090D902283244700E57423 /* LocationManagerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5090D8F2283244700E57423 /* LocationManagerDelegate.swift */; };
+		B509262922CA57CF00126250 /* CKLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = B509262822CA57CF00126250 /* CKLogger.swift */; };
 		B50ACBB0216627AB00E877DF /* DevicesTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50ACBAF216627AB00E877DF /* DevicesTarget.swift */; };
 		B50ACBB221662C7B00E877DF /* CoinNinjaTargetType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50ACBB121662C7B00E877DF /* CoinNinjaTargetType.swift */; };
 		B50BB1AF2175126B0038B5DD /* XCUIApplication+WaitAndAssert.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50BB1AD2175126B0038B5DD /* XCUIApplication+WaitAndAssert.swift */; };
@@ -1385,6 +1386,7 @@
 		B505D4E921050F2000C0C8FC /* CKPredicate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CKPredicate.swift; sourceTree = "<group>"; };
 		B505D4EB2106456000C0C8FC /* WalletAddressDataWorkerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletAddressDataWorkerTests.swift; sourceTree = "<group>"; };
 		B5090D8F2283244700E57423 /* LocationManagerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManagerDelegate.swift; sourceTree = "<group>"; };
+		B509262822CA57CF00126250 /* CKLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CKLogger.swift; sourceTree = "<group>"; };
 		B50ACBAF216627AB00E877DF /* DevicesTarget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DevicesTarget.swift; sourceTree = "<group>"; };
 		B50ACBB121662C7B00E877DF /* CoinNinjaTargetType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinNinjaTargetType.swift; sourceTree = "<group>"; };
 		B50BB1A0217512400038B5DD /* DropBitUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DropBitUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -2265,6 +2267,7 @@
 				B57B78DC20B4878F007B71CB /* CKDateFormatter.swift */,
 				3BB05AC0209CF407000297E1 /* Typealiases.swift */,
 				307DF11E2151676900260369 /* JSONValue.swift */,
+				B509262822CA57CF00126250 /* CKLogger.swift */,
 				307DF12021517A8800260369 /* Global.swift */,
 			);
 			path = Helpers;
@@ -3997,6 +4000,7 @@
 				B54159CB20A5DEBF0048F495 /* CKMUser+CoreDataClass.swift in Sources */,
 				3BA9F60B208F6E870047C213 /* AppCoordinator+BalanceDataSource.swift in Sources */,
 				3B80E27521BE9D7A00F6EF17 /* DatabaseMigrationWorker.swift in Sources */,
+				B509262922CA57CF00126250 /* CKLogger.swift in Sources */,
 				B552EDF3211E33D000332BB5 /* PersistenceManager.swift in Sources */,
 				3B6749E220AA5CA40032FE02 /* CKMVin+CoreDataProperties.swift in Sources */,
 				B54F8FA420C3088300294F50 /* CurrencyFormattable.swift in Sources */,
