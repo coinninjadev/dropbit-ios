@@ -9,7 +9,6 @@
 
 import Foundation
 import CoreData
-import PhoneNumberKit
 
 @objc(CKMInvitation)
 public class CKMInvitation: NSManagedObject {
@@ -17,7 +16,6 @@ public class CKMInvitation: NSManagedObject {
   /// Use only for received address requests
   @discardableResult
   static func updateOrCreate(withReceivedAddressRequestResponse response: WalletAddressRequestResponse,
-                             kit: PhoneNumberKit,
                              in context: NSManagedObjectContext) -> CKMInvitation {
     if let updatedInvitation = updateIfExists(withAddressRequestResponse: response, side: .received, isAcknowledged: true, in: context) {
       return updatedInvitation
@@ -25,7 +23,7 @@ public class CKMInvitation: NSManagedObject {
     } else {
       // This creation logic mainly handles the receiver side, but may be elaborated upon for the sender in the future
 
-      let newInvitation = CKMInvitation(withAddressRequestResponse: response, side: .received, kit: kit, insertInto: context)
+      let newInvitation = CKMInvitation(withAddressRequestResponse: response, side: .received, insertInto: context)
 
       let maybeTxid = response.txid?.asNilIfEmpty()
       let tx = maybeTxid.flatMap { CKMTransaction.find(byTxid: $0, in: context) } ?? CKMTransaction(insertInto: context)
@@ -73,7 +71,6 @@ public class CKMInvitation: NSManagedObject {
 
   convenience public init(withAddressRequestResponse response: WalletAddressRequestResponse,
                           side: WalletAddressRequestSide,
-                          kit: PhoneNumberKit,
                           insertInto context: NSManagedObjectContext) {
     self.init(insertInto: context)
 
@@ -99,7 +96,7 @@ public class CKMInvitation: NSManagedObject {
       switch type {
       case .phone:
         self.counterpartyPhoneNumber = counterparty.flatMap {
-          CKMPhoneNumber.findOrCreate(withMetadataParticipant: $0, kit: kit, in: context)
+          CKMPhoneNumber.findOrCreate(withMetadataParticipant: $0, in: context)
         }
       case .twitter:
         self.counterpartyTwitterContact = counterparty.flatMap({ (participant: MetadataParticipant) -> CKMTwitterContact? in

@@ -12,12 +12,8 @@ extension UIApplication {
   func screenshot() -> UIImage? {
     var image: UIImage?
     guard let layer = UIApplication.shared.keyWindow?.layer else { return nil }
-    let scale = UIScreen.main.scale
-    UIGraphicsBeginImageContextWithOptions(layer.frame.size, false, scale)
-    guard let context = UIGraphicsGetCurrentContext() else { return nil }
-    layer.render(in: context)
-    image = UIGraphicsGetImageFromCurrentImageContext()
-    UIGraphicsEndImageContext()
+    let renderer = UIGraphicsImageRenderer(size: layer.frame.size)
+    image = renderer.image { layer.render(in: $0.cgContext) }
     return image
   }
 }

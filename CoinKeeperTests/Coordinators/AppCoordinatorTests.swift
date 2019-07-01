@@ -12,16 +12,24 @@ import XCTest
 import MMDrawerController
 
 class AppCoordinatorTests: MockedPersistenceTestCase {
-  var sut: AppCoordinator!
+  var sut: AppCoordinator! {
+    didSet {
+      self.skipTwitterAuth()
+    }
+  }
 
   override func setUp() {
     super.setUp()
-    self.sut = AppCoordinator(persistenceManager: mockPersistenceManager, launchStateManager: mockLaunchStateManager)
+    sut = AppCoordinator(persistenceManager: mockPersistenceManager, launchStateManager: mockLaunchStateManager)
   }
 
   override func tearDown() {
-    self.sut = nil
+    sut = nil
     super.tearDown()
+  }
+
+  private func skipTwitterAuth() {
+    sut?.twitterAccessManager.uiTestArguments = [.skipTwitterAuthentication]
   }
 
   // MARK: calling start
@@ -33,10 +41,10 @@ class AppCoordinatorTests: MockedPersistenceTestCase {
     mockLaunchStateManager.deviceIsVerifiedValue = false
 
     let nav = CNNavigationController(rootViewController: StartViewController.makeFromStoryboard())
-    self.sut = AppCoordinator(navigationController: nav,
-                              persistenceManager: mockPersistenceManager,
-                              launchStateManager: mockLaunchStateManager,
-                              analyticsManager: mockAnalyticsManager)
+    sut = AppCoordinator(navigationController: nav,
+                         persistenceManager: mockPersistenceManager,
+                         launchStateManager: mockLaunchStateManager,
+                         analyticsManager: mockAnalyticsManager)
     TestHelpers.initializeWindow(with: nav)
     return (mockLaunchStateManager, mockAnalyticsManager)
   }
@@ -46,12 +54,12 @@ class AppCoordinatorTests: MockedPersistenceTestCase {
     let (mockLaunchStateManager, mockAnalyticsManager) = setupStart()
     mockLaunchStateManager.mockShouldRequireAuthentication = false
 
-    self.sut.start()
+    sut.start()
 
-    XCTAssertTrue(self.sut.navigationController.topViewController is StartViewController, "topViewController should be a StartViewController")
+    XCTAssertTrue(sut.navigationController.topViewController is StartViewController, "topViewController should be a StartViewController")
 
-    if let startVC = self.sut.navigationController.topViewController as? StartViewController {
-      XCTAssertTrue(startVC.coordinationDelegate === self.sut, "coordinationDelegate should be sut")
+    if let startVC = sut.navigationController.topViewController as? StartViewController {
+      XCTAssertTrue(startVC.coordinationDelegate === sut, "coordinationDelegate should be sut")
     } else {
       XCTFail("topViewController should be a StartViewController")
     }
@@ -60,7 +68,7 @@ class AppCoordinatorTests: MockedPersistenceTestCase {
   }
 
   func testOperationQueueHasOneMaxConcurrentOperation() {
-    XCTAssertEqual(self.sut.serialQueueManager.queue.maxConcurrentOperationCount, 1)
+    XCTAssertEqual(sut.serialQueueManager.queue.maxConcurrentOperationCount, 1)
   }
 
   // MARK: pin entered
@@ -71,17 +79,17 @@ class AppCoordinatorTests: MockedPersistenceTestCase {
     mockLaunchStateManager.deviceIsVerifiedValue = true
     let mockNavigationController = MockNavigationController()
     mockNavigationController.viewControllers = [StartViewController.makeFromStoryboard()]
-    self.sut = AppCoordinator(navigationController: mockNavigationController,
-                              persistenceManager: mockPersistenceManager,
-                              launchStateManager: mockLaunchStateManager)
+    sut = AppCoordinator(navigationController: mockNavigationController,
+                         persistenceManager: mockPersistenceManager,
+                         launchStateManager: mockLaunchStateManager)
     TestHelpers.initializeWindow(with: mockNavigationController)
-    self.sut.start()
+    sut.start()
 
     XCTAssertTrue(mockNavigationController.topViewController is MMDrawerController, "topVC should be an MMDrawerController")
 
     if let drawerVC = mockNavigationController.topViewController as? MMDrawerController,
       let centerVC = drawerVC.centerViewController as? TransactionHistoryViewController {
-      XCTAssertTrue(centerVC.coordinationDelegate === self.sut, "coordinationDelegate should be sut")
+      XCTAssertTrue(centerVC.coordinationDelegate === sut, "coordinationDelegate should be sut")
     } else {
       XCTFail("centerViewController should be a TransactionHistoryViewController")
     }
@@ -90,7 +98,7 @@ class AppCoordinatorTests: MockedPersistenceTestCase {
   // MARK: launch state manager
   func testCallingAppEnteredActiveStateAsksPersistenceManagerForLastLoginTimeForComparison() {
 
-    self.sut.appEnteredActiveState()
+    sut.appEnteredActiveState()
 
     XCTAssertTrue(mockBrokers.mockActivity.wasAskedForLastLoginTime, "should ask activityBroker for last login time")
 
@@ -98,15 +106,13 @@ class AppCoordinatorTests: MockedPersistenceTestCase {
     let lastLoginTime: TimeInterval = mockBrokers.mockActivity.lastLoginTime! - 60
     mockBrokers.mockActivity.setLastMockLogin(timeInterval: lastLoginTime)
 
-    self.sut.appEnteredActiveState()
+    sut.appEnteredActiveState()
 
     XCTAssertTrue(mockLaunchStateManager.wasAskedForShouldRequireAuthentication, "should ask launch state mgr to auth")
   }
 
   func testCallingAppResignedActiveTellsPersistenceManagerToSetCurrentTime() {
-    self.sut = AppCoordinator(persistenceManager: mockPersistenceManager)
-
-    self.sut.appWillResignActiveState()
+    sut.appWillResignActiveState()
 
     XCTAssertTrue(mockBrokers.mockActivity.setLastLoginTimeWasCalled, "should tell persistenceManager to set last login time")
   }
@@ -115,15 +121,15 @@ class AppCoordinatorTests: MockedPersistenceTestCase {
     let mockPersistenceManager = MockPersistenceManager()
     let mockLaunchStateManager = MockLaunchStateManager(persistenceManager: mockPersistenceManager)
     let mockNavigationController = MockNavigationController()
-    self.sut = AppCoordinator(
+    sut = AppCoordinator(
       navigationController: mockNavigationController,
       launchStateManager: mockLaunchStateManager
     )
     mockLaunchStateManager.mockShouldRequireAuthentication = true
-    UIApplication.shared.keyWindow?.rootViewController = self.sut.navigationController
+    UIApplication.shared.keyWindow?.rootViewController = sut.navigationController
 
-    self.sut.appEnteredActiveState() // to call requireAuthentication...
-    self.sut.viewControllerDidSuccessfullyAuthenticate(PinEntryViewController.makeFromStoryboard())
+    sut.appEnteredActiveState() // to call requireAuthentication...
+    sut.viewControllerDidSuccessfullyAuthenticate(PinEntryViewController.makeFromStoryboard())
 
     XCTAssertTrue(mockLaunchStateManager.userWasAuthenticatedWasCalled, "should call userWasAuthenticated")
   }
@@ -136,8 +142,8 @@ class AppCoordinatorTests: MockedPersistenceTestCase {
     mockNavigationController.viewControllers = [startVC]
     mockLaunchStateManager.mockShouldRequireAuthentication = false
 
-    self.sut.appEnteredActiveState() // to call requireAuthentication...
-    self.sut.viewControllerDidSuccessfullyAuthenticate(PinEntryViewController.makeFromStoryboard())
+    sut.appEnteredActiveState() // to call requireAuthentication...
+    sut.viewControllerDidSuccessfullyAuthenticate(PinEntryViewController.makeFromStoryboard())
 
     XCTAssertEqual(mockNavigationController.viewControllers.count, 1, "nav controller should only have 1 vc")
     XCTAssertTrue(mockNavigationController.viewControllers.first is StartViewController, "nav controller top vc should be StartVC")
@@ -179,12 +185,12 @@ class AppCoordinatorTests: MockedPersistenceTestCase {
   }
 
   private func mocksForTestingUnverification() -> (network: MockNetworkManager, alert: MockAlertManager) {
-      let mockNetworkManager = MockNetworkManager(persistenceManager: mockPersistenceManager)
-      let mockAlertManager = MockAlertManager(notificationManager:
-        NotificationManager(permissionManager: PermissionManager(),
-                            networkInteractor: NetworkManager(persistenceManager: PersistenceManager(),
-                                                              analyticsManager: AnalyticsManager())))
-      return (mockNetworkManager, mockAlertManager)
+    let mockNetworkManager = MockNetworkManager(persistenceManager: mockPersistenceManager)
+    let mockAlertManager = MockAlertManager(notificationManager:
+      NotificationManager(permissionManager: PermissionManager(),
+                          networkInteractor: NetworkManager(persistenceManager: PersistenceManager(),
+                                                            analyticsManager: AnalyticsManager())))
+    return (mockNetworkManager, mockAlertManager)
   }
 
   // MARK: sync routine
@@ -192,15 +198,15 @@ class AppCoordinatorTests: MockedPersistenceTestCase {
     let expectation = XCTestExpectation(description: "testSyncRoutineCallsGetUser")
     let mocks = mocksForTestingSyncRoutine()
 
-    self.sut = AppCoordinator(persistenceManager: mockPersistenceManager,
-                              launchStateManager: mockLaunchStateManager,
-                              networkManager: mocks.network)
+    sut = AppCoordinator(persistenceManager: mockPersistenceManager,
+                         launchStateManager: mockLaunchStateManager,
+                         networkManager: mocks.network)
     let completion: CompletionHandler = { error in
       XCTAssertTrue(mocks.network.getUserWasCalled, "syncTransactionDataAndServerAddresses should call getUser")
       expectation.fulfill()
     }
-    self.sut.serialQueueManager.enqueueWalletSyncIfAppropriate(type: .standard, policy: .always,
-                                                               completion: completion, fetchResult: nil)
+    sut.serialQueueManager.enqueueWalletSyncIfAppropriate(type: .standard, policy: .always,
+                                                          completion: completion, fetchResult: nil)
 
     wait(for: [expectation], timeout: 10.0)
   }
@@ -210,15 +216,15 @@ class AppCoordinatorTests: MockedPersistenceTestCase {
     let mocks = mocksForTestingSyncRoutine()
     mockBrokers.mockUser.userIdValue = nil
 
-    self.sut = AppCoordinator(persistenceManager: mockPersistenceManager,
-                              launchStateManager: mockLaunchStateManager,
-                              networkManager: mocks.network)
+    sut = AppCoordinator(persistenceManager: mockPersistenceManager,
+                         launchStateManager: mockLaunchStateManager,
+                         networkManager: mocks.network)
     let completion: CompletionHandler = { error in
       XCTAssertTrue(mocks.network.getWalletWasCalled, "syncTransactionDataAndServerAddresses should call getWallet")
       expectation.fulfill()
     }
-    self.sut.serialQueueManager.enqueueWalletSyncIfAppropriate(type: .standard, policy: .always,
-                                                               completion: completion, fetchResult: nil)
+    sut.serialQueueManager.enqueueWalletSyncIfAppropriate(type: .standard, policy: .always,
+                                                          completion: completion, fetchResult: nil)
 
     wait(for: [expectation], timeout: 3.0)
   }
@@ -228,12 +234,12 @@ class AppCoordinatorTests: MockedPersistenceTestCase {
 
     let mocks = mocksForTestingSyncRoutine()
 
-    self.sut = AppCoordinator(persistenceManager: mockPersistenceManager,
-                              launchStateManager: mockLaunchStateManager,
-                              networkManager: mocks.network)
-    self.sut.walletManager = nil
+    sut = AppCoordinator(persistenceManager: mockPersistenceManager,
+                         launchStateManager: mockLaunchStateManager,
+                         networkManager: mocks.network)
+    sut.walletManager = nil
 
-    self.sut.predefineSyncDependencies(in: self.sut.persistenceManager.createBackgroundContext(), inBackground: false).catch { error in
+    sut.predefineSyncDependencies(in: sut.persistenceManager.createBackgroundContext(), inBackground: false).catch { error in
       if let syncRoutineError = error as? SyncRoutineError {
         XCTAssertEqual(syncRoutineError, SyncRoutineError.missingWalletManager)
       } else {
@@ -250,12 +256,12 @@ class AppCoordinatorTests: MockedPersistenceTestCase {
     let mocks = mocksForTestingSyncRoutine()
     mockLaunchStateManager.userAuthenticatedValue = false
 
-    self.sut = AppCoordinator(persistenceManager: mockPersistenceManager,
-                              launchStateManager: mockLaunchStateManager,
-                              networkManager: mocks.network)
-    self.sut.walletManager = mocks.wallet
+    sut = AppCoordinator(persistenceManager: mockPersistenceManager,
+                         launchStateManager: mockLaunchStateManager,
+                         networkManager: mocks.network)
+    sut.walletManager = mocks.wallet
 
-    self.sut.predefineSyncDependencies(in: self.sut.persistenceManager.createBackgroundContext(), inBackground: false).catch { error in
+    sut.predefineSyncDependencies(in: sut.persistenceManager.createBackgroundContext(), inBackground: false).catch { error in
       if let syncRoutineError = error as? SyncRoutineError {
         XCTAssertEqual(syncRoutineError, SyncRoutineError.notReady)
       } else {
@@ -273,12 +279,12 @@ class AppCoordinatorTests: MockedPersistenceTestCase {
     mockLaunchStateManager.skippedVerificationValue = false
     mockLaunchStateManager.userAuthenticatedValue = false
 
-    self.sut = AppCoordinator(persistenceManager: mockPersistenceManager,
-                              launchStateManager: mockLaunchStateManager,
-                              networkManager: mocks.network)
-    self.sut.walletManager = mocks.wallet
+    sut = AppCoordinator(persistenceManager: mockPersistenceManager,
+                         launchStateManager: mockLaunchStateManager,
+                         networkManager: mocks.network)
+    sut.walletManager = mocks.wallet
 
-    self.sut.predefineSyncDependencies(in: self.sut.persistenceManager.createBackgroundContext(), inBackground: false).catch { error in
+    sut.predefineSyncDependencies(in: sut.persistenceManager.createBackgroundContext(), inBackground: false).catch { error in
       if let syncRoutineError = error as? SyncRoutineError {
         XCTAssertEqual(syncRoutineError, SyncRoutineError.notReady)
       } else {
@@ -295,12 +301,12 @@ class AppCoordinatorTests: MockedPersistenceTestCase {
     let mocks = mocksForTestingSyncRoutine()
     _ = mockPersistenceManager.keychainManager.store(anyValue: nil, key: .walletWords)
 
-    self.sut = AppCoordinator(persistenceManager: mockPersistenceManager,
-                              launchStateManager: mockLaunchStateManager,
-                              networkManager: mocks.network)
-    self.sut.walletManager = mocks.wallet
+    sut = AppCoordinator(persistenceManager: mockPersistenceManager,
+                         launchStateManager: mockLaunchStateManager,
+                         networkManager: mocks.network)
+    sut.walletManager = mocks.wallet
 
-    self.sut.predefineSyncDependencies(in: self.sut.persistenceManager.createBackgroundContext(), inBackground: false).catch { error in
+    sut.predefineSyncDependencies(in: sut.persistenceManager.createBackgroundContext(), inBackground: false).catch { error in
       if let syncRoutineError = error as? SyncRoutineError {
         XCTAssertEqual(syncRoutineError, SyncRoutineError.missingRecoveryWords)
       } else {
@@ -314,10 +320,10 @@ class AppCoordinatorTests: MockedPersistenceTestCase {
 
   // MARK: delegates
   func testDelegateRelationshipsAreSet() {
-    XCTAssertNotNil(self.sut.notificationManager.delegate, "NotificationManager delegate should not be nil")
-    XCTAssertNotNil(self.sut.networkManager.headerDelegate, "NetworkManager headerDelegate should not be nil")
-    XCTAssertNotNil(self.sut.networkManager.walletDelegate, "NetworkManager walletDelegate should not be nil")
-    XCTAssertNotNil(self.sut.alertManager.urlOpener, "AlertManager urlOpener should not be nil")
+    XCTAssertNotNil(sut.notificationManager.delegate, "NotificationManager delegate should not be nil")
+    XCTAssertNotNil(sut.networkManager.headerDelegate, "NetworkManager headerDelegate should not be nil")
+    XCTAssertNotNil(sut.networkManager.walletDelegate, "NetworkManager walletDelegate should not be nil")
+    XCTAssertNotNil(sut.alertManager.urlOpener, "AlertManager urlOpener should not be nil")
   }
 
   func testCheckAndRecoverAuthorizationIds_authorizationErrorUnverifiesUser() {
@@ -328,10 +334,10 @@ class AppCoordinatorTests: MockedPersistenceTestCase {
     let moyaError = MockMoyaError.unacceptableStatusCode(code: 401, responseData: responseData)
     localMocks.network.getUserError = .shouldUnverify(moyaError, .user)
 
-    self.sut = AppCoordinator(persistenceManager: self.mockPersistenceManager,
-                              launchStateManager: self.mockLaunchStateManager,
-                              alertManager: localMocks.alert,
-                              networkManager: localMocks.network)
+    sut = AppCoordinator(persistenceManager: mockPersistenceManager,
+                         launchStateManager: mockLaunchStateManager,
+                         alertManager: localMocks.alert,
+                         networkManager: localMocks.network)
 
     let completion: CompletionHandler = { _ in
       XCTAssert(self.mockBrokers.mockUser.unverifyUserWasCalled, "should call unverifyUser")
@@ -339,9 +345,9 @@ class AppCoordinatorTests: MockedPersistenceTestCase {
       expectation.fulfill()
     }
 
-    self.sut.serialQueueManager.enqueueWalletSyncIfAppropriate(type: .standard, policy: .always,
-                                                               completion: completion, fetchResult: nil)
-    wait(for: [expectation], timeout: 3.0)
+    sut.serialQueueManager.enqueueWalletSyncIfAppropriate(type: .standard, policy: .always,
+                                                          completion: completion, fetchResult: nil)
+    wait(for: [expectation], timeout: 10.0)
   }
 
   func testCheckAndRecoverAuthorizationIds_authorizationErrorRemovesWalletId() {
@@ -353,10 +359,10 @@ class AppCoordinatorTests: MockedPersistenceTestCase {
     let moyaError = MockMoyaError.unacceptableStatusCode(code: 401, responseData: responseData)
     localMocks.network.getWalletError = .shouldUnverify(moyaError, .wallet)
 
-    self.sut = AppCoordinator(persistenceManager: self.mockPersistenceManager,
-                              launchStateManager: self.mockLaunchStateManager,
-                              alertManager: localMocks.alert,
-                              networkManager: localMocks.network)
+    sut = AppCoordinator(persistenceManager: mockPersistenceManager,
+                         launchStateManager: mockLaunchStateManager,
+                         alertManager: localMocks.alert,
+                         networkManager: localMocks.network)
 
     let completion: CompletionHandler = { _ in
       XCTAssert(self.mockBrokers.mockUser.unverifyUserWasCalled, "should call unverifyUser")
@@ -365,9 +371,9 @@ class AppCoordinatorTests: MockedPersistenceTestCase {
       expectation.fulfill()
     }
 
-    self.sut.serialQueueManager.enqueueWalletSyncIfAppropriate(type: .standard, policy: .always,
-                                                               completion: completion, fetchResult: nil)
-    wait(for: [expectation], timeout: 3.0)
+    sut.serialQueueManager.enqueueWalletSyncIfAppropriate(type: .standard, policy: .always,
+                                                          completion: completion, fetchResult: nil)
+    wait(for: [expectation], timeout: 10.0)
   }
 
 }

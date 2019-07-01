@@ -9,7 +9,6 @@
 import Foundation
 import CNBitcoinKit
 import CoreData
-import PhoneNumberKit
 import PromiseKit
 @testable import DropBit
 
@@ -120,7 +119,6 @@ class MockPersistenceDatabaseManager: PersistenceDatabaseType {
 
   func persistReceivedSharedPayloads(_ payloads: [SharedPayloadV2],
                                      hasher: HashingManager,
-                                     kit: PhoneNumberKit,
                                      contactCacheManager: ContactCacheManagerType,
                                      in context: NSManagedObjectContext) {}
 

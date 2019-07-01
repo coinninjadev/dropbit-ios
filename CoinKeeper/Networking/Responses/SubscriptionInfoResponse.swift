@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct SubscriptionInfoResponse: ResponseDecodable {
+struct SubscriptionInfoResponse: ResponseDecodable, Encodable {
   let subscriptions: [SubscriptionResponse]
   let availableTopics: [SubscriptionAvailableTopicResponse]
 

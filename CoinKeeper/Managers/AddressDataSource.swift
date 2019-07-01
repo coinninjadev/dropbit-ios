@@ -44,7 +44,7 @@ protocol AddressDataSourceType: AnyObject {
 class AddressDataSource: AddressDataSourceType {
 
   private let wallet: CNBHDWallet
-  private let persistenceManager: PersistenceManagerType
+  private unowned let persistenceManager: PersistenceManagerType
 
   private let gapLimit = 20
 

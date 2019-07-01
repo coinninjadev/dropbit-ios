@@ -163,7 +163,7 @@ extension AppCoordinator {
 
   func createPinEntryViewControllerForRecoveryWords(_ words: [String]) -> PinEntryViewController {
     let pinEntryViewController = PinEntryViewController.makeFromStoryboard()
-    pinEntryViewController.mode = .recoveryWords(completion: { _ in
+    pinEntryViewController.mode = .recoveryWords(completion: { [unowned self] _ in
       let wordsViewController = BackupRecoveryWordsViewController.makeFromStoryboard()
       wordsViewController.recoveryWords = words
       wordsViewController.wordsBackedUp = self.wordsBackedUp

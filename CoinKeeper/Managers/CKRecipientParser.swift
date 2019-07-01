@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import PhoneNumberKit
 
 protocol RecipientParserType: AnyObject {
   func findRecipients(inText text: String, ofTypes types: [CKRecipientType]) throws -> [CKParsedRecipient]
@@ -18,11 +17,7 @@ protocol RecipientParserType: AnyObject {
 class CKRecipientParser: RecipientParserType {
 
   let bitcoinURLParser = CKBitcoinURLParser()
-  let phoneNumberParser: CKPhoneNumberParser
-
-  init(kit: PhoneNumberKit) {
-    self.phoneNumberParser = CKPhoneNumberParser(kit: kit)
-  }
+  let phoneNumberParser = CKPhoneNumberParser()
 
   /// Returns an array of the detected recipients.
   /// The `text` parameter can contain extraneous text.

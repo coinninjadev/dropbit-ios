@@ -139,7 +139,7 @@ struct MixpanelProperty: Property {
   var value: MixpanelType
 }
 
-protocol AnalyticsManagerType {
+protocol AnalyticsManagerType: AnyObject {
 
   func start()
   func optOut()

@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import PhoneNumberKit
 
 struct CKCountry {
   let regionCode: String //e.g. "US", "CN"
@@ -26,15 +25,15 @@ struct CKCountry {
     self.localizedName = localizedName
   }
 
-  init(regionCode: String, kit: PhoneNumberKit) {
-    let countryCode = kit.countryCode(for: regionCode) ?? 1
+  init(regionCode: String) {
+    let countryCode = phoneNumberKit.countryCode(for: regionCode) ?? 1
     let countryName = Locale.current.localizedString(forRegionCode: regionCode) ?? ""
     self.init(regionCode: regionCode, countryCode: Int(countryCode), localizedName: countryName)
   }
 
-  init(locale: Locale, kit: PhoneNumberKit) {
+  init(locale: Locale) {
     let regionCode = locale.regionCode ?? "US"
-    self.init(regionCode: regionCode, kit: kit)
+    self.init(regionCode: regionCode)
   }
 
   /// Returns an uppercased string of the first letter of each word in the localizedName, diacritics removed.

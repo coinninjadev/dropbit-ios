@@ -12,14 +12,8 @@ import PhoneNumberKit
 class CKPhoneNumberParser: CKParser {
   typealias Result = GlobalPhoneNumber
 
-  let kit: PhoneNumberKit
-
-  init(kit: PhoneNumberKit) {
-    self.kit = kit
-  }
-
   func parse(_ string: String) throws -> GlobalPhoneNumber? {
-    let parsedNumber = try? kit.parse(string)
+    let parsedNumber = try? phoneNumberKit.parse(string)
     return parsedNumber.map { GlobalPhoneNumber(parsedNumber: $0) }
   }
 

@@ -76,7 +76,7 @@ public class CKMTransaction: NSManagedObject {
 
       isIncoming = calculateIsIncoming(in: context)
 
-      let atss = CKMAddressTransactionSummary.find(by: txResponse.txid, in: context)
+      let atss = CKMAddressTransactionSummary.find(byTxid: txResponse.txid, in: context)
       addressTransactionSummaries = atss.asSet()
       atss.forEach { $0.transaction = self } // just being extra careful to ensure bi-directional integrity
 
@@ -229,22 +229,24 @@ public class CKMTransaction: NSManagedObject {
 
   /// Returns sum of `amount` value from all vins
   var sumVins: Int {
-    return vins.reduce(0) { $0 + $1.amount }
+    return NSArray(array: vins.asArray()).value(forKeyPath: "@sum.amount") as? Int ?? 0
   }
 
   /// Returns sum of `amount` value from all vouts
   var sumVouts: Int {
-    return vouts.reduce(0) { $0 + $1.amount }
+    return NSArray(array: vouts.asArray()).value(forKeyPath: "@sum.amount") as? Int ?? 0
   }
 
   /// Returns sent amount from vins, relative to addresses owned by user's wallet
   var myVins: Int {
-    return vins.filter { $0.belongsToWallet }.reduce(0) { $0 + $1.amount }
+    let vinsToUse = vins.filter { $0.belongsToWallet }
+    return NSArray(array: vinsToUse.asArray()).value(forKeyPath: "@sum.amount") as? Int ?? 0
   }
 
   /// Returns received amount from vouts, relative to addresses owned by user's wallet
   var myVouts: Int {
-    return vouts.filter { $0.address != nil }.reduce(0) { $0 + $1.amount }
+    let voutsToUse = vouts.filter { $0.address != nil }
+    return NSArray(array: voutsToUse.asArray()).value(forKeyPath: "@sum.amount") as? Int ?? 0
   }
 
   /// networkFee is calculated in Satoshis, should be sum(vin) - sum(vout), but only vin/vout pertaining to our addresses
@@ -295,7 +297,10 @@ public class CKMTransaction: NSManagedObject {
     }
 
     // ourAddresses are addresses we own by relationship to AddressTransactionSummary objects
-    let ourAddressIds = Set(addressTransactionSummaries.compactMap { $0.address?.addressId })
+    guard let context = self.managedObjectContext else { return nil }
+    let ourAddressStrings = addressTransactionSummaries.map { $0.addressId }
+    let ourAddresses = CKMAddress.find(withAddresses: ourAddressStrings, in: context)
+    let ourAddressIds = ourAddresses.map { $0.addressId }.asSet()
 
     // firstOutgoing is first vout addressID where ourAddresses doesn't appear in vout's addressIDs
     let firstOutgoing = vouts.compactMap { self.firstVoutAddress(from: Set($0.addressIDs), notMatchingAddresses: ourAddressIds) }.first
@@ -323,7 +328,7 @@ extension CKMTransaction: CounterpartyRepresentable {
     }
   }
 
-  func counterpartyDisplayIdentity(deviceCountryCode: Int?, kit: PhoneNumberKit) -> String? {
+  func counterpartyDisplayIdentity(deviceCountryCode: Int?) -> String? {
     if let counterpartyTwitterContact = self.twitterContact {
       return counterpartyTwitterContact.formattedScreenName  // should include @-sign
     }
@@ -335,7 +340,7 @@ extension CKMTransaction: CounterpartyRepresentable {
       if let code = deviceCountryCode {
         format = (code == globalPhoneNumber.countryCode) ? .national : .international
       }
-      let formatter = CKPhoneNumberFormatter(kit: kit, format: format)
+      let formatter = CKPhoneNumberFormatter(format: format)
 
       return try? formatter.string(from: globalPhoneNumber)
     }

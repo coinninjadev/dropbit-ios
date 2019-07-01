@@ -171,7 +171,7 @@ extension AppCoordinator: VerificationStatusViewControllerDelegate {
       guard allVerifiedIdentities.contains(.phone),
         let phoneNumber = persistenceManager.brokers.user.verifiedPhoneNumber(),
         let salt = try? hashingManager.salt() else { return Promise(error: DeviceVerificationError.invalidPhoneNumber) }
-      identityToRemove = hashingManager.hash(phoneNumber: phoneNumber, salt: salt, parsedNumber: nil, kit: self.phoneNumberKit)
+      identityToRemove = hashingManager.hash(phoneNumber: phoneNumber, salt: salt, parsedNumber: nil)
     case .twitter:
       guard allVerifiedIdentities.contains(.twitter),
         let creds = persistenceManager.keychainManager.oauthCredentials()

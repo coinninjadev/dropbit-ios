@@ -8,7 +8,6 @@
 
 import Foundation
 import CNBitcoinKit
-import PhoneNumberKit
 
 /**
  Translates a Transaction object and it's relationships into a cell-displayable object.
@@ -22,8 +21,7 @@ class TransactionHistoryDetailCellViewModel: TransactionHistorySummaryCellViewMo
     transaction: CKMTransaction,
     rates: ExchangeRates,
     primaryCurrency: CurrencyCode,
-    deviceCountryCode: Int?,
-    kit: PhoneNumberKit
+    deviceCountryCode: Int?
     ) {
     let fee = transaction.networkFee
     self.isCancellable = transaction.isCancellable
@@ -34,8 +32,7 @@ class TransactionHistoryDetailCellViewModel: TransactionHistorySummaryCellViewMo
       transaction: transaction,
       rates: rates,
       primaryCurrency: primaryCurrency,
-      deviceCountryCode: deviceCountryCode,
-      kit: kit
+      deviceCountryCode: deviceCountryCode
     )
   }
 

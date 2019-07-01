@@ -304,4 +304,19 @@ struct CKPredicate {
     }
   }
 
+  struct AddressTransactionSummary {
+    static func matching(txid: String) -> NSPredicate {
+      let txidKeyPath = #keyPath(CKMAddressTransactionSummary.txid)
+      let txidPredicate = NSPredicate(format: "%K = %@", txidKeyPath, txid)
+      return txidPredicate
+    }
+  }
+
+  struct Address {
+    static func relatedTo(addresses: [String]) -> NSPredicate {
+      let addressKeyPath = #keyPath(CKMAddress.addressId)
+      let predicate = NSPredicate(format: "%K IN %@", addressKeyPath, addresses)
+      return predicate
+    }
+  }
 }

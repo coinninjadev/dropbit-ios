@@ -13,7 +13,7 @@ enum SubscriptionTopicType: String {
   case btcHigh = "btc_high"
 }
 
-struct SubscriptionAvailableTopicResponse: ResponseDecodable {
+struct SubscriptionAvailableTopicResponse: ResponseDecodable, Encodable {
   let id: String
   let createdAt: Int
   let updatedAt: Int
