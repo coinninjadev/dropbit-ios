@@ -57,9 +57,15 @@ extension AppCoordinator: SupportViewControllerDelegate {
     DropBit version: \(dropBitVersion)
     """
     mailVC.setMessageBody(body, isHTML: false)
+
     if let dbData = try? Data(contentsOf: dbFileURL) {
       mailVC.addAttachmentData(dbData, mimeType: "application/vnd.sqlite3", fileName: "CoinNinjaDB.sqlite")
     }
+
+    if let logData = CKLogFileWriter.fileData() {
+      mailVC.addAttachmentData(logData, mimeType: "text/txt", fileName: CKLogFileWriter.fileName)
+    }
+
     mailVC.mailComposeDelegate = self.mailComposeDelegate
 
     viewController.present(mailVC, animated: true, completion: nil)
