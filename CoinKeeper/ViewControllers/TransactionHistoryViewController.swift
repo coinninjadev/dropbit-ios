@@ -18,7 +18,8 @@ protocol TransactionHistoryViewControllerDelegate: DeviceCountryCodeProvider &
   BalanceContainerDelegate &
   BadgeUpdateDelegate &
   SelectedCurrencyUpdatable &
-  TransactionShareable {
+  TransactionShareable &
+  ViewControllerURLDelegate {
   func viewControllerShouldSeeTransactionDetails(for viewModel: TransactionHistoryDetailCellViewModel)
   func viewControllerDidRequestHistoryUpdate(_ viewController: TransactionHistoryViewController)
   func viewController(_ viewController: TransactionHistoryViewController, didCancelInvitationWithID invitationID: String, at indexPath: IndexPath)

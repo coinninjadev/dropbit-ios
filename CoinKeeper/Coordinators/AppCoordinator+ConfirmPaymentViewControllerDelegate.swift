@@ -96,6 +96,15 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate, CurrencyFormatta
     navigationController.topViewController()?.present(pinEntryViewController, animated: true, completion: nil)
   }
 
+  func viewControllerRequestedShowFeeTooExpensiveAlert(_ viewController: UIViewController) {
+    let message = """
+    In order to use this fee option you must adjust the amount you are sending.
+    The current amount you are sending with the cost of this fee is more than you have in your wallet.
+    """
+    let alert = alertManager.defaultAlert(withTitle: "Insufficient Funds", description: message)
+    viewController.present(alert, animated: true, completion: nil)
+  }
+
   func viewControllerDidRetryPayment() {
     analyticsManager.track(event: .retryFailedPayment, with: nil)
   }

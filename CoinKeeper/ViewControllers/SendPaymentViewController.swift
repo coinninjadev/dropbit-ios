@@ -59,7 +59,7 @@ ValidatorAlertDisplayable {
   @IBOutlet var closeButton: UIButton!
 
   @IBOutlet var primaryAmountTextField: LimitEditTextField!
-  @IBOutlet var secondaryAmountLabel: UILabel!
+  @IBOutlet var secondaryAmountLabel: TransactionDetailSecondaryAmountLabel!
 
   @IBOutlet var phoneNumberEntryView: PhoneNumberEntryView!
 
@@ -271,6 +271,7 @@ extension SendPaymentViewController {
 
     bitcoinAddressButton.titleLabel?.font = .medium(14)
     bitcoinAddressButton.setTitleColor(.darkGrayText, for: .normal)
+    bitcoinAddressButton.contentEdgeInsets = UIEdgeInsets(top: 0, left: 8, bottom: 0, right: 8)
 
     scanButton.backgroundColor = .mediumGrayBackground
   }

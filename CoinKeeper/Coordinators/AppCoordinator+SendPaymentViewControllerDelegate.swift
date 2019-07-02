@@ -104,7 +104,7 @@ extension AppCoordinator: SendPaymentViewControllerDelegate {
 
   func viewController(
     _ viewController: UIViewController,
-    sendingMax data: CNBTransactionData,
+    sendingMax txData: CNBTransactionData,
     address: String,
     contact: ContactType?,
     rates: ExchangeRates,
@@ -113,11 +113,11 @@ extension AppCoordinator: SendPaymentViewControllerDelegate {
 
     trackTransactionType(with: contact)
 
-    data.paymentAddress = address
+    txData.paymentAddress = address
 
     var outgoingTransactionData = OutgoingTransactionData.emptyInstance()
-    outgoingTransactionData.feeAmount = Int(data.feeAmount)
-    outgoingTransactionData.amount = Int(data.amount)//.asNSDecimalNumber.asFractionalUnits(of: .BTC)
+    outgoingTransactionData.feeAmount = Int(txData.feeAmount)
+    outgoingTransactionData.amount = Int(txData.amount)
     outgoingTransactionData = configureOutgoingTransactionData(
       with: outgoingTransactionData,
       address: address,
@@ -129,15 +129,49 @@ extension AppCoordinator: SendPaymentViewControllerDelegate {
     viewController.dismiss(animated: true)
     let btcAmount = NSDecimalNumber(integerAmount: outgoingTransactionData.amount, currency: .BTC)
 
-    showConfirmPayment(
-      with: outgoingTransactionData,
-      btcAmount: btcAmount,
-      address: address,
-      contact: contact,
-      primaryCurrency: .BTC,
-      transactionData: data,
-      rates: rates
-    )
+    guard let wmgr = walletManager else { return }
+    let config = TransactionFeeConfig(prefs: self.persistenceManager.brokers.preferences)
+    if config.adjustableFeesEnabled {
+      networkManager.latestFees().compactMap { FeeRates(fees: $0) }
+        .then { (feeRates: FeeRates) -> Promise<ConfirmTransactionFeeModel> in
+          //Ignore the previously-generated send max transaction data, get it for all three fee types
+          return self.adjustableFeeViewModelSendingMax(
+            config: config,
+            rates: feeRates,
+            wmgr: wmgr,
+            address: address)
+            .map { .adjustable($0) }
+
+        }
+        .done { (feeModel: ConfirmTransactionFeeModel) in
+          self.showConfirmPayment(
+            with: outgoingTransactionData,
+            btcAmount: btcAmount,
+            address: address,
+            contact: contact,
+            primaryCurrency: .BTC,
+            feeModel: feeModel,
+            rates: rates
+          )
+        }
+        .catch(on: .main) { [weak self] error in
+          guard let strongSelf = self else { return }
+          strongSelf.handleTransactionError(error)
+      }
+
+    } else {
+      // Use the previously-generated send max transaction data
+      let feeModel = ConfirmTransactionFeeModel.standard(txData)
+      showConfirmPayment(
+        with: outgoingTransactionData,
+        btcAmount: btcAmount,
+        address: address,
+        contact: contact,
+        primaryCurrency: .BTC,
+        feeModel: feeModel,
+        rates: rates
+      )
+    }
   }
 
   func viewControllerDidSendPayment(_ viewController: UIViewController,
@@ -166,24 +200,43 @@ extension AppCoordinator: SendPaymentViewControllerDelegate {
     )
 
     viewController.dismiss(animated: true)
-    networkManager.latestFees()
-      .compactMap { $0[.best] }
-      .then { (networkFeeRate: Double) -> Promise<CNBTransactionData> in
-        let relevantFeeRate = outgoingTransactionData.requiredFeeRate ?? networkFeeRate
-        return wmgr.transactionData(
-          forPayment: btcAmount,
-          to: address,
-          withFeeRate: relevantFeeRate
-        )
+    networkManager.latestFees().compactMap { FeeRates(fees: $0) }
+      .then { (rates: FeeRates) -> Promise<ConfirmTransactionFeeModel> in
+        // Take rates, get fee config, and return a fee mode
+        let config = TransactionFeeConfig(prefs: self.persistenceManager.brokers.preferences)
+
+        if let requiredFeeRate = outgoingTransactionData.requiredFeeRate {
+          return wmgr.transactionData(
+            forPayment: btcAmount,
+            to: address,
+            withFeeRate: requiredFeeRate)
+            .map { .required($0) }
+        } else if config.adjustableFeesEnabled {
+          return self.adjustableFeeViewModel(
+            config: config,
+            rates: rates,
+            wmgr: wmgr,
+            btcAmount: btcAmount,
+            address: address)
+            .map { .adjustable($0) }
+
+        } else {
+          let defaultFeeRate = rates.rate(forType: config.defaultFeeType)
+          return wmgr.transactionData(
+            forPayment: btcAmount,
+            to: address,
+            withFeeRate: defaultFeeRate)
+            .map { .standard($0) }
+        }
       }
-      .done { (transactionData: CNBTransactionData) in
+      .done { (feeModel: ConfirmTransactionFeeModel) in
         self.showConfirmPayment(
           with: outgoingTransactionData,
           btcAmount: btcAmount,
           address: address,
           contact: contact,
           primaryCurrency: primaryCurrency,
-          transactionData: transactionData,
+          feeModel: feeModel,
           rates: rates
         )
       }
@@ -193,25 +246,63 @@ extension AppCoordinator: SendPaymentViewControllerDelegate {
     }
   }
 
+  private func adjustableFeeViewModel(config: TransactionFeeConfig,
+                                      rates: FeeRates,
+                                      wmgr: WalletManagerType,
+                                      btcAmount: NSDecimalNumber,
+                                      address: String) -> Promise<AdjustableTransactionFeeViewModel> {
+    let lowRate = rates.rate(forType: .cheap)
+    let mediumRate = rates.rate(forType: .slow)
+    let highRate = rates.rate(forType: .fast)
+
+    return wmgr.transactionData(forPayment: btcAmount, to: address, withFeeRate: lowRate)
+      .map { lowTxData -> AdjustableTransactionFeeViewModel in
+        let maybeMediumTxData = wmgr.failableTransactionData(forPayment: btcAmount, to: address, withFeeRate: mediumRate)
+        let maybeHighTxData = wmgr.failableTransactionData(forPayment: btcAmount, to: address, withFeeRate: highRate)
+        return AdjustableTransactionFeeViewModel(preferredFeeType: config.defaultFeeType,
+                                                 lowFeeTxData: lowTxData,
+                                                 mediumFeeTxData: maybeMediumTxData,
+                                                 highFeeTxData: maybeHighTxData)
+    }
+  }
+
+  private func adjustableFeeViewModelSendingMax(config: TransactionFeeConfig,
+                                                rates: FeeRates,
+                                                wmgr: WalletManagerType,
+                                                address: String) -> Promise<AdjustableTransactionFeeViewModel> {
+    let lowRate = rates.rate(forType: .cheap)
+    let mediumRate = rates.rate(forType: .slow)
+    let highRate = rates.rate(forType: .fast)
+
+    return wmgr.transactionDataSendingMax(to: address, withFeeRate: lowRate)
+      .map { lowTxData -> AdjustableTransactionFeeViewModel in
+        let maybeMediumTxData = wmgr.failableTransactionDataSendingMax(to: address, withFeeRate: mediumRate)
+        let maybeHighTxData = wmgr.failableTransactionDataSendingMax(to: address, withFeeRate: highRate)
+        return AdjustableTransactionFeeViewModel(preferredFeeType: config.defaultFeeType,
+                                                 lowFeeTxData: lowTxData,
+                                                 mediumFeeTxData: maybeMediumTxData,
+                                                 highFeeTxData: maybeHighTxData)
+    }
+  }
+
   private func showConfirmPayment(with dto: OutgoingTransactionData,
                                   btcAmount: NSDecimalNumber,
                                   address: String?,
                                   contact: ContactType?,
                                   primaryCurrency: CurrencyCode,
-                                  transactionData: CNBTransactionData,
+                                  feeModel: ConfirmTransactionFeeModel,
                                   rates: ExchangeRates) {
-    let confirmPayVC = ConfirmPaymentViewController.makeFromStoryboard()
-    self.assignCoordinationDelegate(to: confirmPayVC)
-    let viewModel = ConfirmPaymentViewModel(
-      btcAmount: btcAmount,
-      primaryCurrency: primaryCurrency,
-      address: address,
-      contact: contact,
-      fee: Int(transactionData.feeAmount),
-      outgoingTransactionData: dto,
-      transactionData: transactionData,
-      rates: rates)
-    confirmPayVC.kind = .payment(viewModel)
+    let viewModel = ConfirmPaymentViewModel(btcAmount: btcAmount,
+                                            primaryCurrency: primaryCurrency,
+                                            address: address,
+                                            contact: contact,
+                                            outgoingTransactionData: dto,
+                                            rates: rates)
+
+    let confirmPayVC = ConfirmPaymentViewController.newInstance(kind: .payment(viewModel),
+                                                                feeModel: feeModel,
+                                                                delegate: self)
+
     self.navigationController.present(confirmPayVC, animated: true)
   }
 
@@ -250,29 +341,27 @@ extension AppCoordinator: SendPaymentViewControllerDelegate {
                             memoIsShared: Bool,
                             sharedPayload: SharedPayloadDTO) {
     guard let wmgr = walletManager else { return }
-    networkManager.latestFees()
-      .compactMap { $0[.best] }
-      .then { (feeRate: Double) -> Promise<CNBTransactionData> in
-        return wmgr.transactionData(
-          forPayment: btcAmount,
-          to: "",
-          withFeeRate: feeRate
-        )
-      }
-      .done(on: .main) { (transactionData: CNBTransactionData) -> Void in
-        let viewModel = ConfirmPaymentInviteViewModel(
-          address: nil,
-          contact: contact,
+    networkManager.latestFees().compactMap { FeeRates(fees: $0) }
+      .then { (feeRates: FeeRates) -> Promise<ConfirmTransactionFeeModel> in
+        let config = TransactionFeeConfig(prefs: self.persistenceManager.brokers.preferences)
+        return self.adjustableFeeViewModel(
+          config: config,
+          rates: feeRates,
+          wmgr: wmgr,
           btcAmount: btcAmount,
-          primaryCurrency: primaryCurrency,
-          fee: max(Int(transactionData.feeAmount), 1),
-          rates: rates,
-          sharedPayloadDTO: sharedPayload
-        )
-        let confirmPayVC = ConfirmPaymentViewController.makeFromStoryboard()
-        self.assignCoordinationDelegate(to: confirmPayVC)
-
-        confirmPayVC.kind = .invite(viewModel)
+          address: "")
+          .map { .adjustable($0) }
+      }
+      .done(on: .main) { (feeModel: ConfirmTransactionFeeModel) -> Void in
+        let viewModel = ConfirmPaymentInviteViewModel(address: nil,
+                                                      contact: contact,
+                                                      btcAmount: btcAmount,
+                                                      primaryCurrency: primaryCurrency,
+                                                      rates: rates,
+                                                      sharedPayloadDTO: sharedPayload)
+        let confirmPayVC = ConfirmPaymentViewController.newInstance(kind: .invite(viewModel),
+                                                                    feeModel: feeModel,
+                                                                    delegate: self)
         self.navigationController.present(confirmPayVC, animated: true)
       }
       .catch(on: .main) { [weak self] error in
