@@ -80,7 +80,7 @@ class CKLogger: Logger {
   }
 
   private func formattingString(for args: CVarArg...) -> String {
-    let symbols: [String] = args.map { _ in "%@" }
+    let symbols: [String] = Array(repeating: "%@", count: args.count)
     return symbols.joined(separator: ", ")
   }
 
