@@ -39,7 +39,7 @@ extension AppCoordinator: SupportViewControllerDelegate {
     }
 
     let mailVC = MFMailComposeViewController()
-    mailVC.setToRecipients(["hello@coinninja.com"])
+    mailVC.setToRecipients(["support@coinninja.com"])
     mailVC.setSubject("Debug info")
     let iosVersion = UIDevice.current.systemVersion
     let versionKey: String = "CFBundleShortVersionString"
