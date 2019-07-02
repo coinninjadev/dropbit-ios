@@ -15,7 +15,6 @@ import AVFoundation
 import PromiseKit
 import CoreData
 import CoreLocation
-import os.log
 import PhoneNumberKit
 import MessageUI
 import Contacts
@@ -76,7 +75,6 @@ class AppCoordinator: CoordinatorType {
   /// for authentication (only once), up until the specified date.
   var suspendAuthenticationOnceUntil: Date?
 
-  private let notificationLogger = OSLog(subsystem: "com.coinninja.appCoordinator", category: "notifications")
   let contactStore = CNContactStore()
   let locationManager = CLLocationManager()
 
@@ -239,7 +237,6 @@ class AppCoordinator: CoordinatorType {
 
   func registerWallet(completion: @escaping () -> Void) {
     let bgContext = persistenceManager.createBackgroundContext()
-    let logger = OSLog(subsystem: "com.coinninja.coinkeeper.appcoordinator", category: "register_wallet")
     bgContext.perform {
       self.registerAndPersistWallet(in: bgContext)
         .done(in: bgContext) {
@@ -248,7 +245,7 @@ class AppCoordinator: CoordinatorType {
             completion()
           }
         }
-        .catch { os_log("failed to register and persist wallet: %@", log: logger, type: .error, $0.localizedDescription) }
+        .catch { log.error($0, message: "failed to register and persist wallet") }
     }
   }
 
@@ -284,13 +281,12 @@ class AppCoordinator: CoordinatorType {
   private func applyUITestArguments(_ arguments: [UITestArgument]) {
     if arguments.isEmpty { return }
 
-    let logger = OSLog(subsystem: "com.coinninja.coinkeeper.appcoordinator", category: "UI_Test_Arguments")
     if uiTestArguments.contains(.resetPersistence) {
       do {
         try persistenceManager.resetPersistence()
         walletManager = nil
       } catch {
-        os_log("Failed to reset persistence in %@, error: %@", log: logger, type: .error, #function, error.localizedDescription)
+        log.error(error, message: "Failed to reset persistence")
       }
     }
 
@@ -377,13 +373,10 @@ class AppCoordinator: CoordinatorType {
   }
 
   private func checkForBackendMessages() {
-    let logger = OSLog(subsystem: "com.coinninja.coinkeeper.appcoordinator", category: "messages")
     networkManager.queryForMessages()
       .done { (responses: [MessageResponse]) in
         self.messageManager.showNewAndCache(responses)
-      }.catch(policy: .allErrors) { os_log("failed to show messages: %@",
-                                           log: logger,
-                                           type: .error, $0.localizedDescription) }
+      }.catch(policy: .allErrors) { log.error($0, message: "failed to show messages") }
   }
 
   func refreshContacts() {

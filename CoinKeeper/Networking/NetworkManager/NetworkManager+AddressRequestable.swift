@@ -6,7 +6,6 @@
 //  Copyright © 2018 Coin Ninja, LLC. All rights reserved.
 //
 
-import os.log
 import PromiseKit
 
 protocol AddressRequestable: AnyObject {
@@ -34,11 +33,11 @@ extension NetworkManager: AddressRequestable {
 
     let isIncremental = afterDate != nil
 
-    os_log("fetching responses for addresses: page %d, addresses: %@.", log: self.logger, type: .debug, page, addresses)
+    log.debug("fetching responses for addresses: page %d, addresses %@.", privateArgs: [page, addresses])
     return cnProvider.requestList(AddressesTarget.query(addresses, page, perPage, afterDate))
       .get { responses in
         if !isIncremental, responses.isEmpty, page == 1 {
-          os_log("response is empty during full sync, rejecting with .emptyResponse", log: self.logger, type: .debug)
+          log.debug("response is empty during full sync, rejecting with .emptyResponse")
           throw CKNetworkError.emptyResponse
         }
       }
@@ -46,11 +45,11 @@ extension NetworkManager: AddressRequestable {
         if responses.count == perPage {
           let nextPage = page + 1
           let combined = aggregateResponses + responses
-          os_log("combined response count: %d", log: self.logger, type: .debug, combined.count)
+          log.debug("combined response count: \(combined.count)")
           return self.atsResponses(for: addresses, afterDate: afterDate, page: nextPage, perPage: perPage, with: combined)
 
         } else {
-          os_log("responses count (%d) less than perPage limit, returning aggregated responses", log: self.logger, type: .debug, responses.count)
+          log.debug("responses count (\(responses.count)) less than perPage limit, returning aggregated responses")
           return Promise.value(aggregateResponses + responses)
         }
     }

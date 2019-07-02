@@ -9,7 +9,6 @@
 
 import Foundation
 import CoreData
-import os.log
 import CNBitcoinKit
 
 /**
@@ -94,8 +93,7 @@ public class CKMAddress: NSManagedObject {
       let voutsSet = Set(filteredVouts)
       self.addToVouts(voutsSet)
     } catch {
-      let logger = OSLog(subsystem: "com.coinninja.coinkeeper.appcoordinator", category: "ckmaddress")
-      os_log("Failed to fetch utxos: %@", log: logger, type: .error, error.localizedDescription)
+      log.error(error, message: "Failed to fetch utxos")
     }
   }
 

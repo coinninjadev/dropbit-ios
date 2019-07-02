@@ -102,7 +102,7 @@ public class CKMDerivativePath: NSManagedObject {
     do {
       return try context.fetch(fetchRequest)
     } catch {
-      print(error.localizedDescription)
+      log.error(error, message: nil)
       return []
     }
   }
@@ -133,7 +133,7 @@ public class CKMDerivativePath: NSManagedObject {
       do {
         maxIndex = try context.fetch(fetchRequest).first?.index
       } catch {
-        print(error.localizedDescription)
+        log.error(error, message: nil)
       }
     }
     return maxIndex

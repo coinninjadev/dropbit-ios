@@ -9,7 +9,6 @@
 import Foundation
 import SVProgressHUD
 import UIKit
-import os.log
 
 protocol DeviceVerificationViewControllerDelegate: AnyObject {
   func viewController(_ viewController: DeviceVerificationViewController, didEnterPhoneNumber phoneNumber: GlobalPhoneNumber)
@@ -363,8 +362,7 @@ extension DeviceVerificationViewController: KeypadEntryViewDelegate {
       }
 
     case .codeFailureCountExceeded:
-      let logger = OSLog(subsystem: "com.coinninja.coinkeeper.deviceverificationviewcontroller", category: "device_verification_view_controller")
-      os_log("Device verification failed three times", log: logger, type: .error)
+      log.warn("Device verification failed three times")
 
     case .phoneNumberEntry:
       break

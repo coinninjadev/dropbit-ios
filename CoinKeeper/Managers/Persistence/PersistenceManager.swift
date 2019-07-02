@@ -7,7 +7,6 @@ import CNBitcoinKit
 import Foundation
 import CoreData
 import PromiseKit
-import os.log
 
 class PersistenceManager: PersistenceManagerType {
 

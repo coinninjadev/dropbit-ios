@@ -8,7 +8,6 @@
 
 import UIKit
 import AVFoundation
-import os.log
 
 //swiftlint:disable class_delegate_protocol
 protocol ScanQRViewControllerDelegate: PaymentRequestResolver, ViewControllerDismissable {
@@ -47,8 +46,6 @@ class ScanQRViewController: BaseViewController, StoryboardInitializable {
   var isFlashlightEnabled: Bool = false
   var didCaptureQRCode = false
 
-  private let logger = OSLog(subsystem: "com.coinninja.coinkeeper.scanqrviewcontroller", category: "scan_qr_view_controller")
-
   override func viewDidLoad() {
     view.backgroundColor = UIColor.black
     if let captureDevice = AVCaptureDevice.default(for: .video) {
@@ -70,10 +67,10 @@ class ScanQRViewController: BaseViewController, StoryboardInitializable {
         view.layer.insertSublayer(previewLayer, at: 0)
         captureSession.startRunning()
       } catch {
-        os_log("Failed to capture device input: %{private}@", log: self.logger, type: .error, error.localizedDescription)
+        log.error("Failed to capture device input: %@", privateArgs: [error.localizedDescription])
       }
     } else {
-      os_log("Cannot create capture device on simulator", log: self.logger, type: .error)
+      log.error("Cannot create capture device on simulator")
     }
   }
 
@@ -95,10 +92,10 @@ class ScanQRViewController: BaseViewController, StoryboardInitializable {
         isFlashlightEnabled = !isFlashlightEnabled
         device.unlockForConfiguration()
       } catch {
-        os_log("Torch could not be used", log: self.logger, type: .error)
+        log.error("Torch could not be used")
       }
     } else {
-      os_log("Torch is not available", log: self.logger, type: .error)
+      log.error("Torch is not available")
     }
   }
 

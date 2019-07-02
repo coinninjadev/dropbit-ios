@@ -9,7 +9,6 @@
 import UIKit
 import CoreData
 import PromiseKit
-import os.log
 import DZNEmptyDataSet
 import Permission
 
@@ -109,8 +108,6 @@ class ContactsViewController: PresentableViewController, StoryboardInitializable
     return fullOffset
   }
 
-  private let logger = OSLog(subsystem: "com.coinninja.coinkeeper.contactsviewcontroller", category: "contacts_view_controller")
-
   var mode: ContactsViewControllerMode = .contacts
 
   static func newInstance(mode: ContactsViewControllerMode,
@@ -160,7 +157,7 @@ class ContactsViewController: PresentableViewController, StoryboardInitializable
         try self.frc.performFetch()
         tableView.reloadData()
       } catch {
-        os_log("Contacts FRC failed to perform fetch: %@", log: logger, type: .error, error.localizedDescription)
+        log.error(error, message: "Contacts FRC failed to perform fetch")
       }
     case .twitter:
       tableView.dataSource = self.twitterUserDataSource
@@ -170,7 +167,7 @@ class ContactsViewController: PresentableViewController, StoryboardInitializable
           .done(on: .main) { self.twitterUserDataSource.updateDefaultFriends($0) }
           .catch { error in
             self.coordinationDelegate?.showAlertForNoTwitterAuthorization()
-            os_log("failed to fetch twitter friends: %@", log: self.logger, type: .error, error.localizedDescription)
+            log.error(error, message: "failed to fetch Twitter friends")
           }
           .finally { self.activityIndiciator.stopAnimating() }
       } else {
@@ -218,8 +215,8 @@ class ContactsViewController: PresentableViewController, StoryboardInitializable
     guard let delegate = coordinationDelegate else { return }
     activityIndiciator.startAnimating()
     delegate.viewControllerDidRequestRefreshVerificationStatuses(self) { [weak self] error in
-      if let err = error, let self = self {
-        os_log("Failed to request users: %{private}@", log: self.logger, type: .error, err.localizedDescription)
+      if let err = error {
+        log.error("Failed to request users: %@", privateArgs: [err.localizedDescription])
       }
 
       self?.activityIndiciator.stopAnimating()
@@ -268,7 +265,7 @@ extension ContactsViewController: UISearchBarDelegate {
       try frc.performFetch()
       tableView.reloadData()
     } catch {
-      print(error.localizedDescription)
+      log.error(error, message: nil)
     }
   }
 

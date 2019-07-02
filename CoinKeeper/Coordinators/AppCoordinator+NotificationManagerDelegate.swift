@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import os.log
 import CNBitcoinKit
 import PromiseKit
 import CoreData

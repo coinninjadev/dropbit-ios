@@ -22,11 +22,31 @@ class CKLogger: Logger {
       let fileWriter = try CKLogFileWriter()
       writers.append(fileWriter)
     } catch {
-      print("Failed to initialize CKFileWriter: \(error.localizedDescription)")
+      log.error(error, message: "Failed to initialize CKFileWriter")
     }
     super.init(logLevels: [.all],
                writers: writers,
                executionMethod: .asynchronous(queue: loggingQueue))
+  }
+
+  func multilineTokenString(for args: [CVarArg]) -> String {
+    return Array(repeating: "\n\t%@", count: args.count).joined()
+  }
+
+  /// Convenience method to log the localizedDescription of an error, after joining it with an optional message
+  func error(_ error: Error, message: String?,
+             file: String = #file, function: String = #function, line: Int = #line) {
+    var combinedMessage = ""
+    if let msg = message {
+      combinedMessage = "\(msg), error: "
+    }
+    combinedMessage += error.localizedDescription
+    let location = self.logLocation(file, function, line)
+    logMessage(combinedMessage, privateArgs: [], level: .error, location: location)
+  }
+
+  func contextSaveError(_ error: Error, file: String = #file, function: String = #function, line: Int = #line) {
+    self.error(error, message: "failed to save context", file: file, function: function, line: line)
   }
 
   func debug(_ message: String, privateArgs: [CVarArg] = [],
@@ -93,7 +113,9 @@ class CKLogger: Logger {
     #else
     // ignore privateArgs
     let prefixedMessage = "[\(location)] \(message)\n"
-    let cleanedMessage = prefixedMessage.replacingOccurrences(of: "%@", with: "[private]")
+    let tokens = ["%@", "%d", "%i", "%f"]
+
+    let cleanedMessage = prefixedMessage.replacingOccurrences(of: tokens, with: "[private]")
     super.logMessage({cleanedMessage}, with: level)
     #endif
   }
@@ -216,7 +238,7 @@ class CKLogFileWriter: LogModifierWriter {
       self.lineCount = lineCountLowerBound
 
     } catch {
-      print(error.localizedDescription)
+      log.error(error, message: nil)
     }
   }
 

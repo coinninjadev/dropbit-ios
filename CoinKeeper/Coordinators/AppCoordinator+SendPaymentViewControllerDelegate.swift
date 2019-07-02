@@ -12,12 +12,8 @@ import enum Result.Result
 import PromiseKit
 import CNBitcoinKit
 import Permission
-import os.log
 
 extension AppCoordinator: SendPaymentViewControllerDelegate {
-  private var logger: OSLog {
-    return OSLog(subsystem: "com.coinninja.coinkeeper.appcoordinator", category: "send_payment_delegate")
-  }
 
   func viewControllerDidRequestAlert(_ viewController: UIViewController, viewModel: AlertControllerViewModel) {
     let alert: AlertControllerType
@@ -371,7 +367,7 @@ extension AppCoordinator: SendPaymentViewControllerDelegate {
   }
 
   private func handleTransactionError(_ error: Error) {
-    os_log("error in %@.\n%@", log: logger, type: .error, #function, error.localizedDescription)
+    log.error(error, message: nil)
     if let txError = error as? TransactionDataError {
       let messageDescription = txError.messageDescription
       let config = AlertActionConfiguration(title: "OK", style: .default, action: nil)
@@ -400,8 +396,8 @@ extension AppCoordinator: SendPaymentViewControllerDelegate {
           strongSelf.alertManager.showActivityHUD(withStatus: "Loading Contacts")
 
           strongSelf.contactCacheDataWorker.reloadSystemContactsIfNeeded(force: false) { [weak self] error in
-            if let err = error, let self = self {
-              os_log("Error reloading contacts cache: %@", log: self.logger, type: .error, err.localizedDescription)
+            if let err = error {
+              log.error(err, message: "Error reloading contacts cache")
             }
 
             self?.alertManager.hideActivityHUD(withDelay: nil) {

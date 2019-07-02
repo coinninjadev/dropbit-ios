@@ -30,7 +30,7 @@ extension XCUIElement {
       }
 
     case .custom(let timeout):
-      print("Waiting for existence of \(elementDesc)")
+      log.debug("Waiting for existence of \(elementDesc)")
       let exists = self.waitForExistence(timeout: timeout)
       if !exists && isRequired {
         XCTAssert(exists, "\(elementDesc) does not exist after \(timeout)s timeout")
