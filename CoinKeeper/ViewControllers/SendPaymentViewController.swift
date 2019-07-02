@@ -59,7 +59,7 @@ ValidatorAlertDisplayable {
   @IBOutlet var closeButton: UIButton!
 
   @IBOutlet var primaryAmountTextField: LimitEditTextField!
-  @IBOutlet var secondaryAmountLabel: UILabel!
+  @IBOutlet var secondaryAmountLabel: TransactionDetailSecondaryAmountLabel!
 
   @IBOutlet var phoneNumberEntryView: PhoneNumberEntryView!
 
