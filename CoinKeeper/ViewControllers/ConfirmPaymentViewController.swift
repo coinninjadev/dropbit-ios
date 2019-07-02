@@ -204,6 +204,10 @@ class ConfirmPaymentViewController: PresentableViewController, StoryboardInitial
 
   private func updateView(withContact contact: ContactType) {
     var displayIdentity = ""
+
+    avatarBackgroundView.isHidden = true
+    contactLabel.isHidden = true
+
     switch contact.identityType {
     case .phone:
       guard let phoneContact = contact as? PhoneContactType else { return }
@@ -226,6 +230,7 @@ class ConfirmPaymentViewController: PresentableViewController, StoryboardInitial
     switch contact.kind {
     case .generic:
       contactLabel.text = displayIdentity
+      contactLabel.isHidden = false
       secondaryAddressLabel.isHidden = false
     case .invite:
       if contact.displayName == nil {
