@@ -13,6 +13,14 @@ let loggingQueue = DispatchQueue(label: "com.coinkeeper.cklogger.serial", qos: .
 
 let log = CKLogger()
 
+extension LogLevel {
+  fileprivate static var systemEvent = LogLevel(rawValue: (1 << 5))
+  fileprivate static var verboseNetwork = LogLevel(rawValue: (1 << 6))
+  fileprivate static var standardDebug: LogLevel = [.debug, .info, .event, .warn, .error]
+  fileprivate static var verboseDebug: LogLevel = .all
+  fileprivate static var release: LogLevel = [.debug, .info, .event, .systemEvent, .warn, .error]
+}
+
 class CKLogger: Logger {
 
   init() {
@@ -24,9 +32,16 @@ class CKLogger: Logger {
     } catch {
       log.error(error, message: "Failed to initialize CKFileWriter")
     }
-    super.init(logLevels: [.all],
+
+    #if DEBUG
+    super.init(logLevels: .standardDebug,
                writers: writers,
                executionMethod: .asynchronous(queue: loggingQueue))
+    #else
+    super.init(logLevels: .release,
+               writers: writers,
+               executionMethod: .asynchronous(queue: loggingQueue))
+    #endif
   }
 
   private var fileWriter: CKLogFileWriter? {
@@ -73,6 +88,19 @@ class CKLogger: Logger {
              file: String = #file, function: String = #function, line: Int = #line) {
     let location = self.logLocation(file, function, line)
     logMessage(message, privateArgs: privateArgs, level: .event, location: location)
+  }
+
+  func systemEvent(_ message: String = "", privateArgs: [CVarArg] = [],
+                   file: String = #file, function: String = #function, line: Int = #line) {
+    let location = self.logLocation(file, function, line)
+    logMessage(message, privateArgs: privateArgs, level: .systemEvent, location: location)
+  }
+
+  /// Use this for debugging only, privateArgs parameter intentionally omitted
+  func verboseNetwork(_ message: String = "",
+                      file: String = #file, function: String = #function, line: Int = #line) {
+    let location = self.logLocation(file, function, line)
+    logMessage(message, privateArgs: [], level: .verboseNetwork, location: location)
   }
 
   func warn(_ message: String, privateArgs: [CVarArg] = [],
@@ -149,6 +177,8 @@ class CKLogLevelModifier: LogModifier {
       return "🔶 warning: "
     } else if logLevel.contains(.event) {
       return "🏁 event: "
+    } else if logLevel.contains(.systemEvent) {
+      return "🏁 system_event: "
     } else if logLevel.contains(.info) {
       return "🔷 info: "
     } else {

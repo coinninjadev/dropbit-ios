@@ -73,33 +73,19 @@ struct AuthPlugin: PluginType {
   }
 
   func didReceive(_ result: Result<Response, MoyaError>, target: TargetType) {
-
     switch result {
     case .success(let response):
-      let fullDesc = "\(target.endpointDescription) \(response.statusCode)"
-      log.debug(fullDesc)
+      let summary = "\(target.endpointDescription) \(response.statusCode)"
+      log.debug(summary)
+      #if DEBUG
+      let responseDesc = "Response: \n" + response.data.prettyPrinted()
+      log.verboseNetwork(responseDesc)
+      #endif
     case .failure(let error):
       let errorDesc = error.errorDescription ?? "unknown Moya error"
       let errorMessage = error.errorMessage ?? "-" //error message from server
       log.error("\(target.endpointDescription) \(errorDesc), \(errorMessage)")
     }
-  }
-
-  private func prettyPrint(_ response: Response) {
-    prettyPrint(data: response.data)
-  }
-
-  private func prettyPrint(_ request: RequestType) {
-    guard let data = request.request?.httpBody else {
-      log.info("No available httpBody in request")
-      return
-    }
-    prettyPrint(data: data)
-  }
-
-  private func prettyPrint(data: Data) {
-    let resString = data.prettyPrinted()
-    log.debug("Response: \(resString)")
   }
 
 }
