@@ -233,8 +233,8 @@ class CKLogFileWriter: LogModifierWriter {
   let fileHandle: FileHandle
 
   var lineCount: Int
-  private let lineCountLowerBound = 10_000
-  private let lineCountUpperBound = 15_000
+  private let lineCountLowerBound = 25_000
+  private let lineCountUpperBound = 30_000
 
   lazy var outputStream: CKLogOutputStream = {
     return CKLogOutputStream(fileHandle)
@@ -270,6 +270,7 @@ class CKLogFileWriter: LogModifierWriter {
     guard self.lineCount > lineCountUpperBound else { return } //limit frequency of removals
     let numberOfLinesToRemove = self.lineCount - lineCountLowerBound
     let fileURL = CKLogFileWriter.fileURL
+    self.fileHandle.synchronizeFile()
 
     do {
       let fileData = try Data(contentsOf: fileURL, options: .dataReadingMapped)
@@ -288,7 +289,7 @@ class CKLogFileWriter: LogModifierWriter {
         pos = Int(newLineDataRange.upperBound)
       }
 
-      // Now `pos` is the position where line number `numLines` begins.
+      // Now `pos` is the position where `numberOfLinesToRemove` ends.
       let trimmedData = fileData.subdata(in: pos..<fileData.count)
       try trimmedData.write(to: fileURL, options: [.atomic])
       self.lineCount = trimmedData.lineCount() ?? 0
