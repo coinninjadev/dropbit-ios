@@ -244,14 +244,14 @@ class CKLogFileWriter: LogModifierWriter {
     }
     self.fileHandle = try FileHandle(forUpdating: url)
     self.fileHandle.seekToEndOfFile()
-    self.lineCount = CKLogFileWriter.countLines(fileURL: url)
+    self.lineCount = try Data(contentsOf: url).lineCount() ?? 0
   }
 
   func writeMessage(_ message: String, logLevel: LogLevel) {
-    updateLineCount(for: message)
     removeLinesFromFileIfNeeded()
-    let prefixedMessage = self.modifyMessage(message, logLevel: logLevel)
-    outputStream.write(prefixedMessage)
+    let modifiedMessage = self.modifyMessage(message, logLevel: logLevel)
+    updateLineCount(for: modifiedMessage)
+    outputStream.write(modifiedMessage)
   }
 
   func writeMessage(_ message: LogMessage, logLevel: LogLevel) {
@@ -277,31 +277,22 @@ class CKLogFileWriter: LogModifierWriter {
       while lineNumber < numberOfLinesToRemove {
         // Find next newline character:
         let searchRange = Range(NSRange(location: pos, length: fileData.count - pos))
-        guard let range = fileData.range(of: newLineData, options: [], in: searchRange) else {
+        guard let newLineDataRange = fileData.range(of: newLineData, options: [], in: searchRange) else {
           return  // File has less than `numberOfLinesToRemove` lines.
         }
 
         lineNumber += 1
-        pos = range.lowerBound
+        pos = Int(newLineDataRange.upperBound)
       }
 
       // Now `pos` is the position where line number `numLines` begins.
       let trimmedData = fileData.subdata(in: pos..<fileData.count)
       try trimmedData.write(to: fileURL, options: [.atomic])
-      self.lineCount = lineCountLowerBound
+      self.lineCount = trimmedData.lineCount() ?? 0
 
     } catch {
       log.error(error, message: nil)
     }
-  }
-
-  static func countLines(fileURL: URL) -> Int {
-    guard let fileAsString = try? String(contentsOf: fileURL, encoding: .utf8) else {
-      return 0
-    }
-
-    let lineComponents = fileAsString.components(separatedBy: .newlines)
-    return lineComponents.count
   }
 
 }
