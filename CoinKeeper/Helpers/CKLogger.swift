@@ -161,21 +161,7 @@ class CKLogger: Logger {
 
   private func logLocation(_ filePath: String, _ function: String, _ line: Int) -> String {
     let fileName = URL(fileURLWithPath: filePath).lastPathComponent
-    let functionName = removeFunctionSignature(from: function)
-    return "\(fileName) \(functionName) ln:\(line)"
-  }
-
-  private func removeFunctionSignature(from string: String) -> String {
-    guard let openIndex = string.firstIndex(of: "("),
-      let closeIndex = string.firstIndex(of: ")")
-      else { return string }
-
-    let contentStart = string.index(after: openIndex)
-
-    var mutableString = string
-    let rangeToRemove: Range = contentStart..<closeIndex
-    mutableString.removeSubrange(rangeToRemove)
-    return mutableString
+    return "\(fileName) \(function) ln:\(line)"
   }
 
 }
