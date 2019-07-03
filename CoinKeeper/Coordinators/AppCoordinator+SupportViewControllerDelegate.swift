@@ -62,7 +62,7 @@ extension AppCoordinator: SupportViewControllerDelegate {
       mailVC.addAttachmentData(dbData, mimeType: "application/vnd.sqlite3", fileName: "CoinNinjaDB.sqlite")
     }
 
-    if let logData = CKLogFileWriter.fileData() {
+    if let logData = log.fileData() {
       mailVC.addAttachmentData(logData, mimeType: "text/txt", fileName: CKLogFileWriter.fileName)
     }
 

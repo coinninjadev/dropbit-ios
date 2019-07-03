@@ -29,6 +29,14 @@ class CKLogger: Logger {
                executionMethod: .asynchronous(queue: loggingQueue))
   }
 
+  private var fileWriter: CKLogFileWriter? {
+    return writers.compactMap({ $0 as? CKLogFileWriter }).first
+  }
+
+  func fileData() -> Data? {
+    return fileWriter?.fileData()
+  }
+
   func multilineTokenString(for args: [CVarArg]) -> String {
     return Array(repeating: "\n\t%@", count: args.count).joined()
   }
@@ -170,8 +178,9 @@ class CKLogFileWriter: LogModifierWriter {
     return documentURLs.first!.appendingPathComponent(fileName)
   }()
 
-  static func fileData() -> Data? {
-    return try? Data(contentsOf: fileURL)
+  func fileData() -> Data? {
+    fileHandle.synchronizeFile()
+    return try? Data(contentsOf: CKLogFileWriter.fileURL)
   }
 
   let fileHandle: FileHandle
