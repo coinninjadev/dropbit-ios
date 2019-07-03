@@ -24,6 +24,6 @@ extension Data {
       log.error("Failed to create string with data")
       return nil
     }
-    return string.components(separatedBy: .newlines).count
+    return string.count(of: Character("\n")) + 1
   }
 }
