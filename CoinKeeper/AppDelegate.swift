@@ -25,7 +25,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   }
 
   func applicationWillResignActive(_ application: UIApplication) {
-    log.systemEvent()
+    log.systemEvent(synchronize: true)
     coordinator?.appWillResignActiveState()
   }
 

@@ -90,10 +90,13 @@ class CKLogger: Logger {
     logMessage(message, privateArgs: privateArgs, level: .event, location: location)
   }
 
-  func systemEvent(_ message: String = "", privateArgs: [CVarArg] = [],
+  func systemEvent(_ message: String = "", privateArgs: [CVarArg] = [], synchronize: Bool = false,
                    file: String = #file, function: String = #function, line: Int = #line) {
     let location = self.logLocation(file, function, line)
     logMessage(message, privateArgs: privateArgs, level: .systemEvent, location: location)
+    if synchronize {
+      self.fileWriter?.fileHandle.synchronizeFile()
+    }
   }
 
   /// Use this for debugging only, privateArgs parameter intentionally omitted
