@@ -39,7 +39,7 @@ extension AppCoordinator: SupportViewControllerDelegate {
     }
 
     let mailVC = MFMailComposeViewController()
-    mailVC.setToRecipients(["hello@coinninja.com"])
+    mailVC.setToRecipients(["support@coinninja.com"])
     mailVC.setSubject("Debug info")
     let iosVersion = UIDevice.current.systemVersion
     let versionKey: String = "CFBundleShortVersionString"
@@ -57,9 +57,15 @@ extension AppCoordinator: SupportViewControllerDelegate {
     DropBit version: \(dropBitVersion)
     """
     mailVC.setMessageBody(body, isHTML: false)
+
     if let dbData = try? Data(contentsOf: dbFileURL) {
       mailVC.addAttachmentData(dbData, mimeType: "application/vnd.sqlite3", fileName: "CoinNinjaDB.sqlite")
     }
+
+    if let logData = log.fileData() {
+      mailVC.addAttachmentData(logData, mimeType: "text/txt", fileName: CKLogFileWriter.fileName)
+    }
+
     mailVC.mailComposeDelegate = self.mailComposeDelegate
 
     viewController.present(mailVC, animated: true, completion: nil)

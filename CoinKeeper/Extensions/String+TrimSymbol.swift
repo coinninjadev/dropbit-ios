@@ -42,4 +42,14 @@ extension String {
     }
   }
 
+  func replacingOccurrences(of substrings: [String], with replacement: String) -> String {
+    if let firstSubstring = substrings.first {
+      let partiallyReplaced = self.replacingOccurrences(of: firstSubstring, with: replacement)
+      let remainingSubstrings = substrings.dropFirst()
+      return partiallyReplaced.replacingOccurrences(of: Array(remainingSubstrings), with: replacement)
+    } else {
+      return self
+    }
+  }
+
 }

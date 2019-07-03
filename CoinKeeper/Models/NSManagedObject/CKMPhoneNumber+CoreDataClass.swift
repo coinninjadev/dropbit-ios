@@ -97,7 +97,7 @@ public class CKMPhoneNumber: NSManagedObject {
     do {
       result = try context.fetch(request)
     } catch {
-      print("error: \(error)")
+      log.error(error, message: nil)
     }
     return result
   }

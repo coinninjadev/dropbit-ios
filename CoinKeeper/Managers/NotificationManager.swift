@@ -9,7 +9,6 @@
 import Foundation
 import UIKit
 import UserNotifications
-import os.log
 import CoreData
 import PromiseKit
 
@@ -73,9 +72,6 @@ class NotificationManager: NSObject, NotificationManagerType {
   weak var delegate: NotificationManagerDelegate?
   let networkInteractor: NotificationNetworkInteractable
 
-  private let invitationLogger = OSLog(subsystem: "com.coinninja.notificationManager", category: "invitation_notification")
-  private let remoteNotificationLogger = OSLog(subsystem: "com.coinninja.coinkeeper.appcoordinator", category: "remote_notifications")
-
   required init(permissionManager: PermissionManagerType, networkInteractor: NotificationNetworkInteractable) {
     self.permissionManager = permissionManager
     self.networkInteractor = networkInteractor
@@ -105,7 +101,7 @@ class NotificationManager: NSObject, NotificationManagerType {
     registerDeviceIfNeeded(delegate: delegate)
       .then { self.createDeviceEndpointIfNeeded(withPushToken: pushToken, serverDeviceId: $0.id) }
       .then { self.createSubscriptionsIfNeeded(fromDeviceEndpointResponse: $0) }
-      .catch { os_log("%@: %@", log: self.remoteNotificationLogger, type: .error, #function, $0.localizedDescription) }
+      .catch { log.error($0, message: nil) }
   }
 
   private func registerDeviceIfNeeded(delegate: NotificationManagerDelegate) -> Promise<DeviceResponse> {
@@ -241,7 +237,7 @@ extension NotificationManager: UNUserNotificationCenterDelegate {
     DispatchQueue.main.async {
       guard UIApplication.shared.applicationState == .active else { return }
       let invitationIdentifier = response.notification.request.identifier
-      os_log("invitationIdentifier: %{private}@", log: self.invitationLogger, type: .debug, invitationIdentifier)
+      log.debug("invitationIdentifier: %@", privateArgs: [invitationIdentifier])
     }
   }
 }

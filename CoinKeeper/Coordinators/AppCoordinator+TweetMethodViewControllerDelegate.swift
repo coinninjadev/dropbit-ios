@@ -8,7 +8,6 @@
 
 import Foundation
 import UIKit
-import os.log
 
 extension AppCoordinator: TweetMethodViewControllerDelegate {
 
@@ -33,9 +32,8 @@ extension AppCoordinator: TweetMethodViewControllerDelegate {
   func viewControllerRequestedUserSendTweet(_ viewController: UIViewController, response: WalletAddressRequestResponse) {
     self.analyticsManager.track(event: .sendTweetManually, with: nil)
 
-    let logger = OSLog(subsystem: "com.coinninja.coinkeeper.appcoordinator", category: "invitation_tweet")
     guard let receiverHandle = response.metadata?.receiver?.handle, receiverHandle.isNotEmpty else {
-      os_log("WalletAddressRequestResponse does not contain receiver's handle, %@", log: logger, type: .error, #function)
+      log.error("WalletAddressRequestResponse does not contain receiver's handle")
       return
     }
 

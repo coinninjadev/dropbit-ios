@@ -9,7 +9,6 @@
 
 import Foundation
 import CoreData
-import os.log
 import PhoneNumberKit
 
 @objc(CKMTransaction)
@@ -207,8 +206,7 @@ public class CKMTransaction: NSManagedObject {
     do {
       return try context.fetch(fetchRequest).first
     } catch {
-      let logger = OSLog(subsystem: "com.coinninja.coinkeeper.ckmtransaction", category: "CKMTransaction")
-      os_log("Could not execute fetch request for latest transaction: %@", log: logger, type: .error, error.localizedDescription)
+      log.error(error, message: "Could not execute fetch request for latest transaction")
       return nil
     }
   }

@@ -9,7 +9,6 @@
 import Foundation
 import UIKit
 import CoreData
-import os.log
 import PromiseKit
 import Moya
 

@@ -149,9 +149,7 @@ class TransactionDataWorkerTests: XCTestCase {
 
           expectation.fulfill()
         }
-        .catch(policy: .allErrors) { error in
-          print(error)
-      }
+        .catch(policy: .allErrors) { log.error($0, message: nil) }
 
       wait(for: [expectation], timeout: 10.0)
     }

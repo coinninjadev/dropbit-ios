@@ -8,7 +8,6 @@
 
 import Foundation
 import Reachability
-import os.log
 
 enum ConnectionManagerStatus {
   case none
@@ -88,8 +87,7 @@ class ConnectionManager: ConnectionManagerType {
     do {
       try reachability?.startNotifier()
     } catch {
-      let logger = OSLog(subsystem: "com.coinninja.coinkeeper.appcoordinator", category: "reachability")
-      os_log("Could not start reachability notifier", log: logger, type: .error)
+      log.error(error, message: "Could not start reachability notifier")
     }
   }
 

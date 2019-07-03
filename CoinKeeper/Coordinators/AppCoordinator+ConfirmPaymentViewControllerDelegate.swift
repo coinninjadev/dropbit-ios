@@ -12,7 +12,6 @@ import Result
 import CoreData
 import MessageUI
 import PromiseKit
-import os.log
 
 extension AppCoordinator: ConfirmPaymentViewControllerDelegate, CurrencyFormattable {
   func confirmPaymentViewControllerDidLoad(_ viewController: UIViewController) {
@@ -20,7 +19,6 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate, CurrencyFormatta
   }
 
   func viewControllerDidConfirmInvite(_ viewController: UIViewController, outgoingInvitationDTO: OutgoingInvitationDTO) {
-    let logger = OSLog(subsystem: "com.coinninja.coinkeeper.appcoordinator", category: "confirm_invite")
     biometricsAuthenticationManager.resetPolicy()
     let pinEntryViewController = PinEntryViewController.makeFromStoryboard()
     assignCoordinationDelegate(to: pinEntryViewController)
@@ -29,7 +27,7 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate, CurrencyFormatta
       switch result {
       case .success:
         guard outgoingInvitationDTO.fee > 0 else {
-          os_log("DropBit invitation fee is zero", log: logger, type: .error)
+          log.error("DropBit invitation fee is zero")
           strongSelf.handleFailure(error: TransactionDataError.insufficientFee)
           return
         }
@@ -38,7 +36,7 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate, CurrencyFormatta
 
         let senderIdentityFactory = SenderIdentityFactory(persistenceManager: strongSelf.persistenceManager)
         guard let senderBody = senderIdentityFactory.preferredSenderBody(forReceiverType: receiverBody.identityType) else {
-          print("Failed to create sender body")
+          log.error("Failed to create sender body")
           return
         }
 
@@ -110,11 +108,10 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate, CurrencyFormatta
   }
 
   private func handleSuccessfulInviteVerification(with inviteBody: RequestAddressBody, outgoingInvitationDTO: OutgoingInvitationDTO) {
-    let logger = OSLog(subsystem: "com.coinninja.coinkeeper.appcoordinator", category: "invite_success")
 
     // guard against fee at 0 again, to really ensure that it is not zero before creating the network request
     guard outgoingInvitationDTO.fee > 0 else {
-      os_log("DropBit invitation fee is zero", log: logger, type: .error)
+      log.error("DropBit invitation fee is zero")
       handleFailure(error: TransactionDataError.insufficientFee)
       return
     }
@@ -130,7 +127,7 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate, CurrencyFormatta
       do {
         try bgContext.save()
       } catch {
-        os_log("failed to save context in %@.\n%@", log: logger, type: .error, #function, error.localizedDescription)
+        log.contextSaveError(error)
       }
     }
     successFailViewController.action = { [weak self] in
@@ -164,7 +161,6 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate, CurrencyFormatta
                                                    invitationDTO: OutgoingInvitationDTO,
                                                    successFailVC: SuccessFailViewController,
                                                    in context: NSManagedObjectContext) {
-    let logger = OSLog(subsystem: "com.coinninja.coinkeeper.appcoordinator", category: "invite_success")
     context.performAndWait {
       self.acknowledgeSuccessfulInvite(outgoingInvitationDTO: invitationDTO, response: response, in: context)
       do {
@@ -193,7 +189,7 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate, CurrencyFormatta
         }
 
       } catch {
-        os_log("failed to save context in %@.\n%@", log: logger, type: .error, #function, error.localizedDescription)
+        log.contextSaveError(error)
         successFailVC.setMode(.failure)
         self.handleFailureInvite(error: error)
       }
@@ -273,8 +269,7 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate, CurrencyFormatta
   private func handleFailureInvite(error: Error) {
     analyticsManager.track(event: .dropbitInitiationFailed, with: nil)
 
-    let logger = OSLog(subsystem: "com.coinninja.coinkeeper.appcoordinator", category: "invite_failure")
-    os_log("DropBit invite failed: %@", log: logger, type: .error, error.localizedDescription)
+    log.error(error, message: "DropBit invite failed")
 
     var errorMessage = ""
 
@@ -315,7 +310,6 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate, CurrencyFormatta
     with transactionData: CNBTransactionData,
     outgoingTransactionData: OutgoingTransactionData
     ) {
-    let logger = OSLog(subsystem: "com.coinninja.coinkeeper.appcoordinator", category: "successful_payment_verification")
     let successFailViewController = SuccessFailViewController.newInstance(viewModel: PaymentSuccessFailViewModel(mode: .pending),
                                                                           delegate: self)
     successFailViewController.action = { [weak self] in
@@ -337,8 +331,7 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate, CurrencyFormatta
           context.performAndWait {
             let vouts = transactionData.unspentTransactionOutputs.map { CKMVout.find(from: $0, in: context) }.compactMap { $0 }
             let voutDebugDesc = vouts.map { $0.debugDescription }.joined(separator: "\n")
-            os_log("broadcast succeeded: vouts: %@", log: logger, type: .debug, voutDebugDesc)
-
+            log.debug("Broadcast succeeded, vouts: \n\(voutDebugDesc)")
             let persistedTransaction = strongSelf.persistenceManager.brokers.transaction.persistTemporaryTransaction(
               from: transactionData,
               with: outgoingTransactionData,
@@ -355,14 +348,14 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate, CurrencyFormatta
                 let tempVout = try CKMVout.findOrCreateTemporaryVout(in: context, with: transactionData, metadata: metadata)
                 tempVout.transaction = persistedTransaction
               } catch {
-                os_log("error creating temp vout: %@, in %@", log: logger, type: .error, error.localizedDescription, #function)
+                log.error(error, message: "error creating temp vout")
               }
             }
 
             do {
               try context.save()
             } catch {
-              os_log("error saving context in %@.\n%@", log: logger, type: .error, #function, error.localizedDescription)
+              log.contextSaveError(error)
             }
           }
           return Promise.value(())
@@ -389,7 +382,7 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate, CurrencyFormatta
               let encodedTx = nsError.userInfo["encoded_tx"] as? String ?? ""
               let txid = nsError.userInfo["txid"] as? String ?? ""
               let analyticsError = "error code: \(broadcastError.rawValue) :: txid: \(txid) :: encoded_tx: \(encodedTx) :: vouts: \(voutDebugDesc)"
-              os_log("broadcast failed: %@", log: logger, type: .error, analyticsError)
+              log.error("broadcast failed, \(analyticsError)")
               let eventValue = AnalyticsEventValue(key: .broadcastFailed, value: analyticsError)
               strongSelf.analyticsManager.track(event: .paymentSentFailed, with: eventValue)
             }

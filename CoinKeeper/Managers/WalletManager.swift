@@ -9,7 +9,6 @@
 import CNBitcoinKit
 import CoreData
 import PromiseKit
-import os.log
 
 protocol WalletManagerType: AnyObject {
   static func createMnemonicWords() -> [String]
@@ -134,8 +133,6 @@ class WalletManager: WalletManagerType {
     return 5
   }
 
-  private let logger = OSLog(subsystem: "com.coinninja.coinkeeper.appcoordinator", category: "wallet_manager")
-
   func createAddressDataSource() -> AddressDataSourceType {
     return AddressDataSource(wallet: self.wallet, persistenceManager: self.persistenceManager)
   }
@@ -251,7 +248,7 @@ class WalletManager: WalletManagerType {
 
     return Promise { seal in
       guard flatFee > 0 else {
-        os_log("flatFee was zero. payment: %d, to address: %@", log: self.logger, type: .debug, payment, address)
+        log.error("flatFee was zero. payment: %d, to address: %@", privateArgs: [payment, address])
         seal.reject(TransactionDataError.insufficientFee)
         return
       }

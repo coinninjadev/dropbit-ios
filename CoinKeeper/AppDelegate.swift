@@ -16,7 +16,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   var coordinator: AppCoordinator?
 
   func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-
+    log.systemEvent()
     if coordinator == nil {
       setupCoordinator()
     }
@@ -25,32 +25,38 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   }
 
   func applicationWillResignActive(_ application: UIApplication) {
+    log.systemEvent(synchronize: true)
     coordinator?.appWillResignActiveState()
   }
 
   func applicationWillEnterForeground(_ application: UIApplication) {
+    log.systemEvent()
     coordinator?.appEnteredActiveState()
   }
 
   func applicationDidBecomeActive(_ application: UIApplication) {
+    log.systemEvent()
     coordinator?.appBecameActive()
   }
 
   func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+    log.systemEvent()
     coordinator?.registerForRemoteNotifications(with: deviceToken)
   }
 
   func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
-    print("failed to register for remote notifications")
+    log.error(error, message: "failed to register for remote notifications")
   }
 
   func application(_ application: UIApplication, performFetchWithCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+    log.systemEvent()
     requestBackgroundSync(completion: completionHandler)
   }
 
   func application(_ application: UIApplication,
                    didReceiveRemoteNotification userInfo: [AnyHashable: Any],
                    fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+    log.systemEvent()
     requestBackgroundSync(completion: completionHandler)
   }
 
@@ -71,6 +77,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   }
 
   func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
+    log.systemEvent()
     if coordinator == nil {
       setupCoordinator()
     }
@@ -91,6 +98,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
   // MARK: private
   private func setupCoordinator() {
+    log.event("Will set up coordinator")
     window = UIWindow()
     let viewController = StartViewController.makeFromStoryboard()
     let navigationController = CNNavigationController(rootViewController: viewController)

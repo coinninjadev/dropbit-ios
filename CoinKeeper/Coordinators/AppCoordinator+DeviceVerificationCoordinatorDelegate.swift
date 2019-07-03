@@ -8,7 +8,6 @@
 
 import CoreData
 import PromiseKit
-import os.log
 
 extension AppCoordinator: DeviceVerificationCoordinatorDelegate {
 
@@ -42,8 +41,7 @@ extension AppCoordinator: DeviceVerificationCoordinatorDelegate {
 
   func coordinatorSkippedPhoneVerification(_ coordinator: DeviceVerificationCoordinator) {
     analyticsManager.track(event: .skipPhoneVerification, with: nil)
-    let logger = OSLog(subsystem: "com.coinninja.coinkeeper.appcoordinator", category: "phone_verification")
-    os_log("Skipped verification", log: logger, type: .debug)
+    log.debug("Skipped verification")
 
     persistenceManager.keychainManager.storeSynchronously(anyValue: NSNumber(value: true), key: .skippedVerification)
     serialQueueManager.enqueueWalletSyncIfAppropriate(type: .comprehensive, policy: .skipIfSpecificOperationExists,
@@ -53,16 +51,15 @@ extension AppCoordinator: DeviceVerificationCoordinatorDelegate {
   }
 
   func didReceiveTwilioError(for phoneNumber: String, route: TwilioErrorRoute) {
-    let logger = OSLog(subsystem: "com.coinninja.coinkeeper.appcoordinator", category: "twilio_error")
     let parser = CKPhoneNumberParser()
     let e164 = "+" + phoneNumber
 
     guard let globalNumber = try? parser.parse(e164) else {
-      os_log("Failed to parse phone number for Twilio error", log: logger, type: .error)
+      log.error("Failed to parse phone number for Twilio error")
       return
     }
 
-    os_log("Failed to send SMS to country code: %@, route: %@", log: logger, type: .error, String(globalNumber.countryCode), route.rawValue)
+    log.error("Failed to send SMS to country code: \(String(globalNumber.countryCode)), route: \(route.rawValue)")
 
     let eventValue = AnalyticsEventValue(key: .countryCode, value: "\(globalNumber.countryCode)")
     switch route {
@@ -77,14 +74,13 @@ extension AppCoordinator: DeviceVerificationCoordinatorDelegate {
   private func registerInitialWalletAddresses() {
     guard let walletWorker = workerFactory.createWalletAddressDataWorker(delegate: self) else { return }
     let bgContext = persistenceManager.createBackgroundContext()
-    let logger = OSLog(subsystem: "com.coinninja.coinkeeper.appcoordinator", category: "register_wallet_addresses")
     let addressNumber = walletWorker.targetWalletAddressCount
     walletWorker.deleteAllAddressesOnServer()
       .then(in: bgContext) { walletWorker.registerAndPersistServerAddresses(number: addressNumber, in: bgContext) }
       .get(in: bgContext) { _ in
         try? bgContext.save()
       }
-      .catch(policy: .allErrors) { os_log("failed to register wallet addresses: %@", log: logger, type: .error, $0.localizedDescription) }
+      .catch(policy: .allErrors) { log.error($0, message: "failed to register wallet addresses") }
   }
 
   private func completeVerification(
@@ -92,11 +88,9 @@ extension AppCoordinator: DeviceVerificationCoordinatorDelegate {
     userIdentityType: UserIdentityType,
     isInitialSetupFlow: Bool) {
 
-    let logger = OSLog(subsystem: "com.coinninja.coinkeeper.appcoordinator", category: "verification")
-
     let verifiedIdentities = persistenceManager.brokers.user.verifiedIdentities(in: persistenceManager.mainQueueContext())
     if launchStateManager.profileIsActivated() && verifiedIdentities.count == 1 {
-      os_log("Profile is activated, will register wallet addresses", log: logger, type: .debug)
+      log.debug("Profile is activated, will register wallet addresses")
       registerInitialWalletAddresses()
     }
 

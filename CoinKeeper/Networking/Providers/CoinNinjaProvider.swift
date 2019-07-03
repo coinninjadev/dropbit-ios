@@ -9,7 +9,6 @@
 import Foundation
 import Moya
 import PromiseKit
-import os.log
 
 /// Closure type for signing CoinNinja API requests and adding other standard headers
 /// Data should be the request body
@@ -28,10 +27,6 @@ class CoinNinjaProvider: CoinNinjaProviderType {
 }
 
 extension CoinNinjaProviderType {
-
-  var logger: OSLog {
-    return OSLog(subsystem: "com.coinninja.coinkeeper.coinninjaprovider", category: "provider")
-  }
 
   var provider: MoyaProvider<MultiTarget> {
     var plugins: [PluginType] = []
@@ -60,7 +55,7 @@ extension CoinNinjaProviderType {
           }
 
         case .failure(let error):
-          os_log("Failure from %@ request: %{private}@", log: self.logger, type: .error, target.path, error.responseDescription)
+          log.error("Failure from \(target.path) request: %@", privateArgs: [error.responseDescription])
           if let networkError = target.networkError(for: error) {
             seal.reject(networkError)
           } else {
@@ -86,7 +81,7 @@ extension CoinNinjaProviderType {
           }
 
         case .failure(let error):
-          os_log("Failure from %@ request: %{private}@", log: self.logger, type: .error, target.path, error.responseDescription)
+          log.error("Failure from \(target.path) request: %@", privateArgs: [error.responseDescription])
           if let networkError = target.networkError(for: error) {
             seal.reject(networkError)
           } else {
@@ -105,7 +100,7 @@ extension CoinNinjaProviderType {
           seal.fulfill(())
 
         case .failure(let error):
-          os_log("Failure from %@ request: %{private}@", log: self.logger, type: .error, target.path, error.responseDescription)
+          log.error("Failure from \(target.path) request: %@", privateArgs: [error.responseDescription])
           if let networkError = target.networkError(for: error) {
             seal.reject(networkError)
           } else {
@@ -132,7 +127,7 @@ extension CoinNinjaProviderType {
           }
 
         case .failure(let error):
-          os_log("Failure from %@ request: %{private}@", log: self.logger, type: .error, target.path, error.responseDescription)
+          log.error("Failure from \(target.path) request: %@", privateArgs: [error.responseDescription])
           if let networkError = target.networkError(for: error) {
             seal.reject(networkError)
           } else {

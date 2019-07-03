@@ -34,7 +34,7 @@ public class CCMValidatedMetadata: NSManagedObject {
     do {
       return try context.fetch(request).first
     } catch {
-      print(error.localizedDescription)
+      log.error(error, message: nil)
       return nil
     }
   }

@@ -9,7 +9,6 @@
 import CoreData
 import PromiseKit
 import UIKit
-import os.log
 
 protocol DeviceVerificationCoordinatorDelegate: TwilioErrorDelegate {
   var launchStateManager: LaunchStateManagerType { get }
@@ -30,7 +29,6 @@ class DeviceVerificationCoordinator: ChildCoordinatorType {
   weak var delegate: ChildCoordinatorDelegate?
 
   var userSuppliedPhoneNumber: GlobalPhoneNumber?
-  let logger = OSLog(subsystem: "com.coinninja.coinkeeper.deviceverificationcoordinator", category: "device_verification_coordinator")
 
   var selectedSetupFlow: SetupFlow?
   var isInitialSetupFlow: Bool {
@@ -102,7 +100,7 @@ class DeviceVerificationCoordinator: ChildCoordinatorType {
           return delegate.networkManager.verifyUser(body: body, credentials: creds)
         }
         .then(in: context) { (response: UserResponse) -> Promise<Void> in
-          os_log("user response: %@", log: self.logger, type: .debug, response.id)
+          log.debug("user response: \(response.id)")
           return self.checkAndPersistVerificationStatus(from: response, crDelegate: delegate, in: context)
         }
         .then(in: context) { _ in delegate.twitterAccessManager.getCurrentTwitterUser(in: context) }
@@ -110,13 +108,13 @@ class DeviceVerificationCoordinator: ChildCoordinatorType {
           do {
             try context.save()
           } catch {
-            os_log("failed to save context in %@. error: %@", log: self.logger, type: .error, #function, error.localizedDescription)
+            log.contextSaveError(error)
           }
         }
         .done { _ in delegate.coordinator(self, didVerify: .twitter, isInitialSetupFlow: self.isInitialSetupFlow) }
         .catch { error in
           self.coordinationDelegate?.alertManager.showError(message: error.localizedDescription, forDuration: 3.0)
-          os_log("failed to create or verify user in %@. error: %@", log: self.logger, type: .error, #function, error.localizedDescription)
+          log.error(error, message: "failed to create or verify user")
       }
     }
   }
@@ -185,14 +183,14 @@ extension DeviceVerificationCoordinator: DeviceVerificationViewControllerDelegat
 
         }
         .catch(on: .main, policy: .allErrors) { error in
-          os_log("User registration failed: %@", log: self.logger, type: .error, error.localizedDescription)
+          log.error(error, message: "user registration failed")
           self.handleUserRegistrationFailure(withError: error, phoneNumber: phoneNumber, delegate: crDelegate)
         }
         .finally(in: bgContext) {
           do {
             try bgContext.save()
           } catch {
-            os_log("User registration failed: %@", log: self.logger, type: .error, error.localizedDescription)
+            log.error(error, message: "user registration failed")
           }
       }
     }
@@ -214,7 +212,7 @@ extension DeviceVerificationCoordinator: DeviceVerificationViewControllerDelegat
           guard let strongSelf = self, let coordinationDelegate = strongSelf.coordinationDelegate else { return }
           coordinationDelegate.alertManager.showSuccess(message: "You will receive a verification code SMS shortly",
                                                         forDuration: 2.0)
-          os_log("Successfully requested code resend", log: strongSelf.logger, type: .info)
+          log.info("Successfully requested code resend")
         }
         .catch { [weak self] error in
           self?.handleResendError(error)
@@ -227,7 +225,7 @@ extension DeviceVerificationCoordinator: DeviceVerificationViewControllerDelegat
 
   private func handleResendError(_ error: Error) {
     guard let coordinationDelegate = self.coordinationDelegate else { return }
-    os_log("Failed to request code: %@", log: self.logger, type: .error, error.localizedDescription)
+    log.error(error, message: "failed to request code")
     let message = errorMessageFactory.messageForResendCodeFailure(error: error)
     self.showVerificationErrorAlert(.custom(message), delegate: coordinationDelegate)
   }
@@ -316,7 +314,6 @@ extension DeviceVerificationCoordinator: DeviceVerificationViewControllerDelegat
   func viewController(_ codeEntryViewController: DeviceVerificationViewController, didEnterCode code: String, completion: @escaping (Bool) -> Void) {
     guard let crDelegate = self.coordinationDelegate else { return }
     guard let phoneNumber = self.userSuppliedPhoneNumber else { fatalError("Programmer error: call didEnterPhoneNumber: first") }
-    let logger = OSLog(subsystem: "com.coinninja.coinkeeper.appcoordinator", category: "device_verification_coordinator")
     let bgContext = crDelegate.persistenceManager.createBackgroundContext()
     bgContext.perform {
       let body = VerifyUserBody(phoneNumber: phoneNumber, code: code)
@@ -326,7 +323,7 @@ extension DeviceVerificationCoordinator: DeviceVerificationViewControllerDelegat
           do {
             try bgContext.save()
           } catch {
-            os_log("Failed to save context. %@", log: logger, type: .error, error.localizedDescription)
+            log.contextSaveError(error)
           }
         }
         .then { crDelegate.persistenceManager.keychainManager.store(anyValue: phoneNumber.countryCode, key: .countryCode) }
@@ -339,7 +336,7 @@ extension DeviceVerificationCoordinator: DeviceVerificationViewControllerDelegat
           completion(true)
         }
         .catch(on: .main) { [weak self] error in
-          os_log("Failed entering code to verify user. %@", log: logger, type: .error, error.localizedDescription)
+          log.error(error, message: "Failed entering code to verify user")
           self?.handleCodeEntryFailure(withError: error, delegate: crDelegate)
           completion(false)
       }
@@ -420,7 +417,6 @@ extension DeviceVerificationCoordinator: DeviceVerificationViewControllerDelegat
     guard let crDelegate = coordinationDelegate else { return }
 
     crDelegate.alertManager.showActivityHUD(withStatus: nil)
-    let logger = OSLog(subsystem: "com.coinninja.coinkeeper.appcoordinator", category: "device_verification_coordinator")
     // Register wallet before notifying delegate of skip
     let bgContext = crDelegate.persistenceManager.createBackgroundContext()
     bgContext.perform {
@@ -435,8 +431,8 @@ extension DeviceVerificationCoordinator: DeviceVerificationViewControllerDelegat
           }
         }
         .catch { error in
+          log.error(error, message: "Failed to register wallet")
           let message = "Failed to register wallet: \(error)"
-          os_log("Failed to register wallet: %@", log: logger, type: .error, error.localizedDescription)
           DispatchQueue.main.async {
             viewController.updateErrorLabel(with: message)
           }

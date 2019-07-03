@@ -8,7 +8,6 @@
 
 import Mixpanel
 import UIKit
-import os.log
 
 enum AnalyticsManagerPropertiesType: String {
   case hasWallet = "Has Wallet"
@@ -190,7 +189,6 @@ class AnalyticsManager: AnalyticsManagerType {
   }
 
   func track(error: AnalyticsManagerErrorType, with message: String) {
-    let logger = OSLog(subsystem: "com.coinninja.coinkeeper.AnalyticsManager", category: "track_error")
-    os_log("error name: %@, message: %@", log: logger, type: .error, error.name, message)
+    log.error(error, message: message)
   }
 }

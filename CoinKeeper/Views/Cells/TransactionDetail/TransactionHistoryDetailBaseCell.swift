@@ -8,7 +8,6 @@
 
 import UIKit
 import PromiseKit
-import os.log
 
 protocol TransactionHistoryDetailCellDelegate: class {
   func didTapQuestionMarkButton(detailCell: TransactionHistoryDetailBaseCell, with url: URL)
@@ -90,8 +89,7 @@ class TransactionHistoryDetailBaseCell: UICollectionViewCell {
           vm.memo = memo
           self?.load(with: vm, delegate: delegate)
         }.catch { error in
-          let logger = OSLog(subsystem: "com.coinninja.coinkeeper.appcoordinator", category: "add_memo")
-          os_log("failed to add memo: %@", log: logger, type: .error, error.localizedDescription)
+          log.error(error, message: "failed to add memo")
       }
     }
   }

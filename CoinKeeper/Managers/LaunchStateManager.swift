@@ -8,7 +8,6 @@
 
 import Foundation
 import UIKit
-import os.log
 
 protocol LaunchStateManagerType: AnyObject {
   var shouldRequireAuthentication: Bool { get }
@@ -110,8 +109,7 @@ class LaunchStateManager: LaunchStateManagerType {
     let bgContext = persistenceManager.createBackgroundContext()
     let walletIdExists = persistenceManager.brokers.wallet.walletId(in: bgContext) != nil
 
-    let logger = OSLog(subsystem: "com.coinninja.coinkeeper.appcoordinator", category: "launch_state_manager")
-    os_log("Wallet exists: %d, wallet ID exists: %d", log: logger, type: .debug, walletExists, walletIdExists)
+    log.debug("Wallet exists: \(walletExists), wallet ID exists: \(walletIdExists)")
     return walletExists && !walletIdExists
   }
 
@@ -136,10 +134,9 @@ class LaunchStateManager: LaunchStateManagerType {
     let criteria: LaunchStateProperties = [.wordsBackedUp, .deviceVerified]
     let properties = currentProperties()
 
-    let logger = OSLog(subsystem: "com.coinninja.coinkeeper.appcoordinator", category: "launch_state_manager")
     let wordsBackedUp = properties.contains(.wordsBackedUp)
     let deviceVerified = properties.contains(.deviceVerified)
-    os_log("Words backed up: %d, Device verified: %d", log: logger, type: .debug, wordsBackedUp, deviceVerified)
+    log.debug("Words backed up: \(wordsBackedUp), Device verified: \(deviceVerified)")
 
     return criteria.isSubset(of: properties)
   }

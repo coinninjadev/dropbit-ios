@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import os.log
 
 protocol AuthenticationSuspendable: AnyObject {
   var suspendAuthenticationOnceUntil: Date? { get set }
@@ -17,8 +16,7 @@ protocol AuthenticationSuspendable: AnyObject {
 extension AuthenticationSuspendable {
   func viewControllerRequestedAuthenticationSuspension(_ viewController: UIViewController) {
     guard let suspendUntilDate = Calendar.current.date(byAdding: .minute, value: 15, to: Date()) else { return }
-    let logger = OSLog(subsystem: "com.coinninja.coinkeeper.authenticationSuspendable", category: "suspending")
-    os_log("Will suspend authentication until %@ or next open", log: logger, type: .debug, suspendUntilDate as CVarArg)
+    log.debug("Will suspend authentication until \(suspendUntilDate.debugDescription) or next open")
     self.suspendAuthenticationOnceUntil = suspendUntilDate
   }
 }

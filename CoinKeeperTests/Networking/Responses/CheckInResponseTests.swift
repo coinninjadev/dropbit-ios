@@ -65,7 +65,7 @@ class CheckInResponseTests: XCTestCase, ResponseStringsTestable {
                          "Zero price should throw error", { error in
                           if let networkError = error as? CKNetworkError {
                             let errorDesc = networkError.errorDescription ?? "-"
-                            print("Identified sample price of 0 as invalid: \(errorDesc)")
+                            log.error("Identified sample price of 0 as invalid: \(errorDesc)")
                           }
     })
   }

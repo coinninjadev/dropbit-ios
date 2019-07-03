@@ -8,7 +8,6 @@
 
 import PromiseKit
 import OAuthSwift
-import os.log
 
 extension TwitterUser: CustomDebugStringConvertible {
   var debugDescription: String {
@@ -140,8 +139,7 @@ extension NetworkManager: TwitterRequestable {
           seal.fulfill(credentials)
       },
         failure: { (error: OAuthSwiftError) in
-          let logger = OSLog(subsystem: "com.coinninja.networkmanager", category: "twitter_oauth")
-          os_log("oauth failure in %@. error: %@", log: logger, type: .error, #function, error.localizedDescription)
+          log.error(error, message: "oauth failure")
           if error.errorCode == CKOAuthError.invalidOrExpiredToken.errorCode {
             self.resetTwitterOAuthManager()
             seal.reject(CKOAuthError.invalidOrExpiredToken)

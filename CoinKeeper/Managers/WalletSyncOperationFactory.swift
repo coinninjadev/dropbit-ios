@@ -10,7 +10,6 @@ import Foundation
 import PromiseKit
 import CoreData
 import UIKit
-import os.log
 
 protocol WalletSyncDelegate: AnyObject {
   func syncManagerDidRequestDependencies(in context: NSManagedObjectContext, inBackground: Bool) -> Promise<SyncDependencies>
@@ -61,8 +60,7 @@ class WalletSyncOperationFactory {
                 do {
                   try bgContext.save()
                 } catch {
-                  let logger = OSLog(subsystem: "com.coinninja.coinkeeper.walletsyncoperationfactory", category: "perform_sync")
-                  os_log("failed to save context in %@. error: %@", log: logger, type: .error, #function, error.localizedDescription)
+                  log.contextSaveError(error)
                 }
               }
 

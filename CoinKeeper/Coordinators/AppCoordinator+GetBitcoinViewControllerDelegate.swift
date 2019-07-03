@@ -9,13 +9,8 @@
 import Foundation
 import CoreLocation
 import UIKit
-import os.log
 
 extension AppCoordinator: GetBitcoinViewControllerDelegate {
-
-  fileprivate var logger: OSLog {
-    return OSLog(subsystem: "com.coinninja.appCoordinator", category: "GetBitcoinViewControllerDelegate")
-  }
 
   func viewControllerFindBitcoinATMNearMe(_ viewController: GetBitcoinViewController) {
     analyticsManager.track(event: .buyBitcoinAtATM, with: nil)
