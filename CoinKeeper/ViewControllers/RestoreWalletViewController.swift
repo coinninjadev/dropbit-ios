@@ -182,13 +182,15 @@ class RestoreWalletViewController: BaseViewController, StoryboardInitializable {
     }
   }
 
+  private let allWords = CNBHDWallet.allWords()
+
   @objc private func textFieldDidChange(_ textField: UITextField) {
-    guard let searchText = textField.text, searchText.count > 1 else {
+    guard let searchText = textField.text?.lowercased(), searchText.count > 1 else {
       hideAllWordButtons()
       return
     }
 
-    let words: [String] = CNBHDWallet.allWords().filter { $0.starts(with: searchText) }
+    let words: [String] = allWords.filter { $0.starts(with: searchText) }
 
     if words.count > 4 {
       setupButtons(for: Array(words[0..<4]))

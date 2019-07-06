@@ -45,4 +45,15 @@ class ImportWalletUITests: UITestCase {
     RequestPayPage()
       .checkAddressLabelDisplays(expectedAddress: firstAddress)
   }
+
+  func testRestoringWalletWithUppercaseWordsSucceeds() {
+    let recoveryWords = UITestHelpers.recoverOnlyWords().map { $0.uppercased() }
+
+    addSystemAlertMonitor()
+
+    StartPage().tapRestore()
+    PinCreationPage().enterSimplePin(digit: 1, times: 6)
+    RestoreWalletPage().enterWords(recoveryWords)
+    SuccessFailPage().checkWalletRecoverySucceeded()
+  }
 }
