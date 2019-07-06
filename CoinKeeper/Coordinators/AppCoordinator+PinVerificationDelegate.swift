@@ -10,6 +10,10 @@ import UIKit
 
 extension AppCoordinator: PinVerificationDelegate {
 
+  private var lockoutLength: UInt64 {
+    return 300
+  }
+
   func pinWasVerified(digits: String, for flow: SetupFlow?) {
     persistenceManager.keychainManager.store(userPin: digits)
       .get { _ in self.setWalletManagerWithPersistedWords() }
@@ -43,7 +47,7 @@ extension AppCoordinator: PinVerificationDelegate {
       navigationController.popViewController(animated: true)
       navigationController.topViewController.flatMap { $0 as? PinCreationViewController }?.entryMode = .pinVerificationFailed
     case is PinEntryViewController:
-      let lockoutDate = absoluteTime() + 300  // 300s = 5m
+      let lockoutDate = absoluteTime() + lockoutLength  // 300s = 5m
       self.persistenceManager.keychainManager.store(anyValue: lockoutDate, key: .lockoutDate).cauterize()
     default: break
     }
@@ -52,7 +56,12 @@ extension AppCoordinator: PinVerificationDelegate {
   func viewControllerShouldAllowPinEntry() -> Bool {
     guard let lockoutDate = self.persistenceManager.keychainManager.retrieveValue(for: .lockoutDate) as? UInt64 else { return true }
     let currentDate = absoluteTime()
-    return currentDate > lockoutDate
+    var newLockoutDate = lockoutDate
+    if (Int(lockoutDate) - Int(currentDate)) > Int(lockoutLength) {
+      newLockoutDate = currentDate + lockoutLength
+      self.persistenceManager.keychainManager.storeSynchronously(anyValue: newLockoutDate, key: .lockoutDate)
+    }
+    return currentDate > newLockoutDate
   }
 
   private func absoluteTime() -> UInt64 {
