@@ -8,9 +8,8 @@
 
 import UIKit
 
-protocol SupportViewControllerDelegate: AnyObject {
+protocol SupportViewControllerDelegate: ViewControllerURLDelegate {
   func viewControllerDidSelectClose(_ viewController: UIViewController)
-  func viewController(_ viewController: UIViewController, didRequestOpenURL url: URL)
   func viewControllerSendDebuggingInfo(_ viewController: UIViewController)
 }
 

@@ -48,6 +48,8 @@ class CKUserDefaults: PersistenceUserDefaultsType {
     case dontShowShareTransaction
     case yearlyPriceHighNotificationEnabled
     case lastTimeEnteredBackground
+    case adjustableFeesEnabled
+    case preferredTransactionFeeMode
 
     var defaultsString: String { return self.rawValue }
   }

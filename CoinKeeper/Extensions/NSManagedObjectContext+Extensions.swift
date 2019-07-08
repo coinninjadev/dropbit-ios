@@ -45,7 +45,7 @@ extension NSManagedObjectContext {
     guard self.hasChanges else { return }
     if parent == nil {
       let changeDesc = self.changesDescription(withLinebreaks: true)
-      print("Will save changes to persistent store: \n\(changeDesc)")
+      log.debug("Will save changes to persistent store: \n\(changeDesc)")
     }
 
     try self.save()

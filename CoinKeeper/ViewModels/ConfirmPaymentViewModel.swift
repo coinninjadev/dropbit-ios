@@ -15,7 +15,6 @@ protocol ConfirmPaymentViewModelType: SendPaymentDataProvider {
   var contact: ContactType? { get }
   var btcAmount: NSDecimalNumber? { get }
   var primaryCurrency: CurrencyCode { get }
-  var fee: Int { get }
   var rates: ExchangeRates { get }
   var sharedPayloadDTO: SharedPayloadDTO? { get }
 }
@@ -25,7 +24,6 @@ struct ConfirmPaymentInviteViewModel: ConfirmPaymentViewModelType {
   var contact: ContactType?
   var btcAmount: NSDecimalNumber?
   let primaryCurrency: CurrencyCode
-  let fee: Int
   let rates: ExchangeRates
   let sharedPayloadDTO: SharedPayloadDTO?
 
@@ -40,9 +38,7 @@ struct ConfirmPaymentViewModel: ConfirmPaymentViewModelType {
   var contact: ContactType?
   var btcAmount: NSDecimalNumber?
   var primaryCurrency: CurrencyCode
-  var fee: Int
   var outgoingTransactionData: OutgoingTransactionData
-  var transactionData: CNBTransactionData
   var rates: ExchangeRates
 
   var sharedPayloadDTO: SharedPayloadDTO? {
@@ -54,38 +50,65 @@ struct ConfirmPaymentViewModel: ConfirmPaymentViewModelType {
     primaryCurrency: CurrencyCode,
     address: String?,
     contact: ContactType?,
-    fee: Int,
     outgoingTransactionData: OutgoingTransactionData,
-    transactionData: CNBTransactionData,
     rates: ExchangeRates
     ) {
     self.btcAmount = btcAmount
     self.contact = contact
     self.primaryCurrency = primaryCurrency
     self.address = address
-    self.fee = fee
     self.outgoingTransactionData = outgoingTransactionData
-    self.transactionData = transactionData
     self.rates = rates
   }
 
-  init(
-    btcAmount: NSDecimalNumber,
-    primaryCurrency: CurrencyCode,
-    address: String?,
-    contact: ContactType?,
-    outgoingTransactionData: OutgoingTransactionData,
-    transactionData: CNBTransactionData,
-    rates: ExchangeRates
-  ) {
-    self.btcAmount = btcAmount
-    self.contact = contact
-    self.primaryCurrency = primaryCurrency
-    self.address = address
-    self.fee = Int(transactionData.feeAmount)
-    self.outgoingTransactionData = outgoingTransactionData
-    self.transactionData = transactionData
-    self.rates = rates
+}
+
+struct FeeRates {
+  let high: Double
+  let medium: Double
+  let low: Double
+
+  init?(fees: Fees) {
+    guard let high = fees[.best], let medium = fees[.better], let low = fees[.good] else { return nil }
+    self.high = high
+    self.medium = medium
+    self.low = low
+  }
+
+  func rate(forType type: TransactionFeeType) -> Double {
+    switch type {
+    case .fast:   return high
+    case .slow:   return medium
+    case .cheap:  return low
+    }
+  }
+}
+
+struct TransactionFeeConfig {
+  let adjustableFeesEnabled: Bool
+  let defaultFeeType: TransactionFeeType
+  init(prefs: PreferencesBrokerType) {
+    self.adjustableFeesEnabled = prefs.adjustableFeesIsEnabled
+    self.defaultFeeType = prefs.preferredTransactionFeeType
+  }
+}
+
+enum ConfirmTransactionFeeModel {
+  case standard(CNBTransactionData)
+  case required(CNBTransactionData)
+  case adjustable(AdjustableTransactionFeeViewModel)
+
+  var transactionData: CNBTransactionData {
+    switch self {
+    case .standard(let txData), .required(let txData):
+      return txData
+    case .adjustable(let vm):
+      return vm.applicableTransactionData
+    }
+  }
+
+  var feeAmount: Int {
+    return Int(transactionData.feeAmount)
   }
 
 }

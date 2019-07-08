@@ -21,7 +21,7 @@ extension ResponseDecodingTestable {
       let response = try ResponseType.decoder.decode(ResponseType.self, from: ResponseType.sampleData)
       return response
     } catch {
-      print(error)
+      log.error(error, message: nil)
       return nil
     }
   }

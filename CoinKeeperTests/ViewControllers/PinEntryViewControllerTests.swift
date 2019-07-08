@@ -156,9 +156,15 @@ class PinEntryViewControllerTests: XCTestCase {
     mockViewModel.removeAllDigits()
     mockCoordinator.expectedDigits = Array(repeating: "4", count: 6).joined()
 
+    let expectation = self.expectation(description: "successful match")
     6.times { self.sut.selected(digit: "4") }
+    
+    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+      expectation.fulfill()
+      XCTAssertTrue(mockCoordinator.successfullyAuthenticatedWasCalled, "should tell delegate of successful match")
+    }
 
-    XCTAssertTrue(mockCoordinator.successfullyAuthenticatedWasCalled, "should tell delegate of successful match")
+    wait(for: [expectation], timeout: 1.0)
   }
 
   func testAllDigitsEnteredAndNotMatchingTellsViewModelToRemoveAllDigits() {

@@ -18,4 +18,12 @@ extension Data {
       return String(data: self, encoding: .utf8) ?? "-"
     }
   }
+
+  func lineCount() -> Int? {
+    guard let string = String(data: self, encoding: .utf8) else {
+      log.error("Failed to create string with data")
+      return nil
+    }
+    return string.count(of: Character("\n")) + 1
+  }
 }

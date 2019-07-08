@@ -7,7 +7,6 @@
 //
 
 import CoreData
-import os.log
 
 extension NSManagedObject {
 
@@ -40,8 +39,7 @@ extension NSManagedObject {
         results.forEach({ context.delete($0) })
 
       } catch {
-        let logger = OSLog(subsystem: "com.coinninja.coinkeeper.appcoordinator", category: "managed_object_extension")
-        os_log("Failed to perform batch transaction delete: %@", log: logger, type: .error, error.localizedDescription)
+        log.error(error, message: "Failed to perform batch transaction delete")
         assertionFailure("Failed to perform batch transaction delete: \(error)")
       }
     }

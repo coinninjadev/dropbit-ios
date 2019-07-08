@@ -8,7 +8,6 @@
 
 import PromiseKit
 import UIKit
-import os.log
 import Permission
 
 extension AppCoordinator: SettingsViewControllerDelegate {
@@ -109,14 +108,18 @@ extension AppCoordinator: SettingsViewControllerDelegate {
     settingsViewController?.present(alert, animated: true)
   }
 
+  func viewControllerDidSelectAdjustableFees(_ viewController: UIViewController) {
+    let adjustableFeesVC = AdjustableFeesViewController.newInstance(delegate: self)
+    viewController.navigationController?.pushViewController(adjustableFeesVC, animated: true)
+  }
+
   func viewControllerDidConfirmDeleteWallet(_ viewController: UIViewController) {
     let deleteWalletOperation = AsynchronousOperation(operationType: .deleteWallet)
     deleteWalletOperation.task = { [weak self, weak innerOp = deleteWalletOperation] in
       guard let localSelf = self, let localOperation = innerOp else { return }
       _ = localSelf.deleteDeviceEndpoint()
         .recover { (error: Error) -> Promise<Void> in
-          let logger = OSLog(subsystem: "com.coinninja.coinkeeper.AppCoordinator", category: "delete_wallet")
-          os_log("failed to delete endpoint in %@: %@", log: logger, type: .error, #function, error.localizedDescription)
+          log.error(error, message: "failed to delete endpoint")
           return Promise.value(()) // don't show error, just go on with deleting wallet.
         }
         .then { localSelf.networkManager.resetWallet() }
@@ -131,8 +134,7 @@ extension AppCoordinator: SettingsViewControllerDelegate {
           localSelf.analyticsManager.track(property: MixpanelProperty(key: .hasBTCBalance, value: false))
           localSelf.analyticsManager.track(property: MixpanelProperty(key: .isDropBitMeEnabled, value: false))
         }.catch { error in
-          let logger = OSLog(subsystem: "com.coinninja.coinkeeper.AppCoordinator", category: "delete_wallet")
-          os_log("Error in %@: %@", log: logger, type: .error, #function, error.localizedDescription)
+          log.error(error, message: nil)
         }.finally {
           localOperation.finish()
       }

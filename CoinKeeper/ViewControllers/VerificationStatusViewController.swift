@@ -9,11 +9,10 @@
 import Foundation
 import UIKit
 
-protocol VerificationStatusViewControllerDelegate: ViewControllerDismissable, AuthenticationSuspendable {
+protocol VerificationStatusViewControllerDelegate: ViewControllerDismissable, AuthenticationSuspendable, ViewControllerURLDelegate {
   func verifiedPhoneNumber() -> GlobalPhoneNumber?
   func verifiedTwitterHandle() -> String?
   func viewControllerDidRequestAddresses() -> [ServerAddressViewModel]
-  func viewController(_ viewController: UIViewController, didRequestOpenURL url: URL)
   func viewControllerDidSelectVerifyPhone(_ viewController: UIViewController)
   func viewControllerDidSelectVerifyTwitter(_ viewController: UIViewController)
   func viewControllerDidRequestToUnverifyPhone(_ viewController: UIViewController, successfulCompletion: @escaping () -> Void)

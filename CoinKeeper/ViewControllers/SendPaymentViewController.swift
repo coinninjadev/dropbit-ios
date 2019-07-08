@@ -12,7 +12,6 @@ import enum Result.Result
 import PhoneNumberKit
 import CNBitcoinKit
 import PromiseKit
-import os.log
 
 typealias SendPaymentViewControllerCoordinator = SendPaymentViewControllerDelegate &
   CurrencyValueDataSourceType & BalanceDataSource & PaymentRequestResolver & URLOpener & ViewControllerDismissable
@@ -59,7 +58,7 @@ ValidatorAlertDisplayable {
   @IBOutlet var closeButton: UIButton!
 
   @IBOutlet var primaryAmountTextField: LimitEditTextField!
-  @IBOutlet var secondaryAmountLabel: UILabel!
+  @IBOutlet var secondaryAmountLabel: TransactionDetailSecondaryAmountLabel!
 
   @IBOutlet var phoneNumberEntryView: PhoneNumberEntryView!
 
@@ -271,6 +270,7 @@ extension SendPaymentViewController {
 
     bitcoinAddressButton.titleLabel?.font = .medium(14)
     bitcoinAddressButton.setTitleColor(.darkGrayText, for: .normal)
+    bitcoinAddressButton.contentEdgeInsets = UIEdgeInsets(top: 0, left: 8, bottom: 0, right: 8)
 
     scanButton.backgroundColor = .mediumGrayBackground
   }
@@ -452,8 +452,7 @@ extension SendPaymentViewController {
           .catch { (error: Error) in
             if let userProviderError = error as? UserProviderError {
               // user query returned no known verification status
-              let logger = OSLog(subsystem: "com.coinninja.coinkeeper.sendpaymentviewcontroller", category: "verification")
-              os_log("no verification status found: %@", log: logger, type: .error, userProviderError.localizedDescription)
+              log.error(userProviderError, message: "no verification status found")
             }
           }
       }
@@ -505,8 +504,7 @@ extension SendPaymentViewController: SelectedValidContactDelegate {
         self.updateViewWithModel()
       }
       .catch { error in
-        let logger = OSLog(subsystem: "com.coinninja.coinkeeper.sendpaymentviewcontroller", category: "verification")
-        os_log("failed to fetch verification status for %@. error: %@", log: logger, type: .error, twitterUser.idStr, error.localizedDescription)
+        log.error(error, message: "failed to fetch verification status for \(twitterUser.idStr)")
     }
   }
 }

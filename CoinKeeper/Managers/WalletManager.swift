@@ -9,7 +9,6 @@
 import CNBitcoinKit
 import CoreData
 import PromiseKit
-import os.log
 
 protocol WalletManagerType: AnyObject {
   static func createMnemonicWords() -> [String]
@@ -41,6 +40,11 @@ protocol WalletManagerType: AnyObject {
     withFeeRate feeRate: Double
     ) -> Promise<CNBTransactionData>
 
+  /// Returns nil instead of an error in the case of insufficient funds
+  func failableTransactionData(forPayment payment: NSDecimalNumber,
+                               to address: String,
+                               withFeeRate feeRate: Double) -> CNBTransactionData?
+
   /// Transaction data for payment to a recipient with a flat, predetermined fee.
   ///
   /// - Parameters:
@@ -61,6 +65,9 @@ protocol WalletManagerType: AnyObject {
   ///   - feeRate: Fee rate per bytes, in Satoshis
   /// - Returns: A Promise that either contains a CNBTransactionData object, ro rejects if insufficient funds.
   func transactionDataSendingMax(to address: String, withFeeRate feeRate: Double) -> Promise<CNBTransactionData>
+
+  /// Returns nil instead of an error in the case of insufficient funds
+  func failableTransactionDataSendingMax(to address: String, withFeeRate feeRate: Double) -> CNBTransactionData?
 
   func encryptionCipherKeys(forUncompressedPublicKey pubkey: Data) -> CNBEncryptionCipherKeys
   func decryptionCipherKeys(
@@ -125,8 +132,6 @@ class WalletManager: WalletManagerType {
   var minimumFeeRate: UInt {
     return 5
   }
-
-  private let logger = OSLog(subsystem: "com.coinninja.coinkeeper.appcoordinator", category: "wallet_manager")
 
   func createAddressDataSource() -> AddressDataSourceType {
     return AddressDataSource(wallet: self.wallet, persistenceManager: self.persistenceManager)
@@ -201,30 +206,38 @@ class WalletManager: WalletManagerType {
     ) -> Promise<CNBTransactionData> {
 
     return Promise { seal in
-      let paymentAmount = UInt(payment.asFractionalUnits(of: .BTC))
-      let usableFeeRate = self.usableFeeRate(from: feeRate)
-      let blockHeight = UInt(persistenceManager.brokers.checkIn.cachedBlockHeight)
-      let bgContext = persistenceManager.createBackgroundContext()
-      bgContext.performAndWait {
-        let usableVouts = self.usableVouts(in: bgContext)
-        let allAvailableOutputs = self.availableTransactionOutputs(fromUsableUTXOs: usableVouts)
-
-        let txData = CNBTransactionData(
-          address: address,
-          fromAllAvailableOutputs: allAvailableOutputs,
-          paymentAmount: paymentAmount,
-          feeRate: usableFeeRate,
-          change: self.newChangePath(in: bgContext),
-          blockHeight: blockHeight
-        )
-        if let data = txData {
-          seal.fulfill(data)
-        } else {
-          seal.reject(TransactionDataError.insufficientFunds)
-        }
+      let txData = failableTransactionData(forPayment: payment, to: address, withFeeRate: feeRate)
+      if let data = txData {
+        seal.fulfill(data)
+      } else {
+        seal.reject(TransactionDataError.insufficientFunds)
       }
     }
+  }
 
+  func failableTransactionData(
+    forPayment payment: NSDecimalNumber,
+    to address: String,
+    withFeeRate feeRate: Double) -> CNBTransactionData? {
+    let paymentAmount = UInt(payment.asFractionalUnits(of: .BTC))
+    let usableFeeRate = self.usableFeeRate(from: feeRate)
+    let blockHeight = UInt(persistenceManager.brokers.checkIn.cachedBlockHeight)
+    let bgContext = persistenceManager.createBackgroundContext()
+    var result: CNBTransactionData?
+    bgContext.performAndWait {
+      let usableVouts = self.usableVouts(in: bgContext)
+      let allAvailableOutputs = self.availableTransactionOutputs(fromUsableUTXOs: usableVouts)
+
+      result = CNBTransactionData(
+        address: address,
+        fromAllAvailableOutputs: allAvailableOutputs,
+        paymentAmount: paymentAmount,
+        feeRate: usableFeeRate,
+        change: self.newChangePath(in: bgContext),
+        blockHeight: blockHeight
+      )
+    }
+    return result
   }
 
   func transactionData(
@@ -235,7 +248,7 @@ class WalletManager: WalletManagerType {
 
     return Promise { seal in
       guard flatFee > 0 else {
-        os_log("flatFee was zero. payment: %d, to address: %@", log: self.logger, type: .debug, payment, address)
+        log.error("flatFee was zero. payment: %d, to address: %@", privateArgs: [payment, address])
         seal.reject(TransactionDataError.insufficientFee)
         return
       }
@@ -266,26 +279,33 @@ class WalletManager: WalletManagerType {
 
   func transactionDataSendingMax(to address: String, withFeeRate feeRate: Double) -> Promise<CNBTransactionData> {
     return Promise { seal in
-      let usableFeeRate = self.usableFeeRate(from: feeRate)
-      let blockHeight = UInt(persistenceManager.brokers.checkIn.cachedBlockHeight)
-      let bgContext = persistenceManager.createBackgroundContext()
-      bgContext.performAndWait {
-        let usableVouts = self.usableVouts(in: bgContext)
-        let allAvailableOutputs = self.availableTransactionOutputs(fromUsableUTXOs: usableVouts)
-
-        let txData = CNBTransactionData(
-          allUsableOutputs: allAvailableOutputs,
-          sendingMaxToAddress: address,
-          feeRate: usableFeeRate,
-          blockHeight: blockHeight
-        )
-        if let data = txData {
-          seal.fulfill(data)
-        } else {
-          seal.reject(TransactionDataError.insufficientFunds)
-        }
+      let maybeTxData = self.failableTransactionDataSendingMax(to: address, withFeeRate: feeRate)
+      if let data = maybeTxData {
+        seal.fulfill(data)
+      } else {
+        seal.reject(TransactionDataError.insufficientFunds)
       }
     }
+  }
+
+  func failableTransactionDataSendingMax(to address: String, withFeeRate feeRate: Double) -> CNBTransactionData? {
+    let usableFeeRate = self.usableFeeRate(from: feeRate)
+    let blockHeight = UInt(persistenceManager.brokers.checkIn.cachedBlockHeight)
+    let bgContext = persistenceManager.createBackgroundContext()
+
+    var result: CNBTransactionData?
+    bgContext.performAndWait {
+      let usableVouts = self.usableVouts(in: bgContext)
+      let allAvailableOutputs = self.availableTransactionOutputs(fromUsableUTXOs: usableVouts)
+
+      result = CNBTransactionData(
+        allUsableOutputs: allAvailableOutputs,
+        sendingMaxToAddress: address,
+        feeRate: usableFeeRate,
+        blockHeight: blockHeight
+      )
+    }
+    return result
   }
 
   /// - parameter limitByPending: true to remove the smallest vouts, to not exceed spendableBalanceNetPending()

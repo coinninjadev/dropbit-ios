@@ -499,6 +499,7 @@
 		B505D4EA21050F2000C0C8FC /* CKPredicate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B505D4E921050F2000C0C8FC /* CKPredicate.swift */; };
 		B505D4EC2106456000C0C8FC /* WalletAddressDataWorkerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B505D4EB2106456000C0C8FC /* WalletAddressDataWorkerTests.swift */; };
 		B5090D902283244700E57423 /* LocationManagerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5090D8F2283244700E57423 /* LocationManagerDelegate.swift */; };
+		B509262922CA57CF00126250 /* CKLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = B509262822CA57CF00126250 /* CKLogger.swift */; };
 		B50ACBB0216627AB00E877DF /* DevicesTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50ACBAF216627AB00E877DF /* DevicesTarget.swift */; };
 		B50ACBB221662C7B00E877DF /* CoinNinjaTargetType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50ACBB121662C7B00E877DF /* CoinNinjaTargetType.swift */; };
 		B50BB1AF2175126B0038B5DD /* XCUIApplication+WaitAndAssert.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50BB1AD2175126B0038B5DD /* XCUIApplication+WaitAndAssert.swift */; };
@@ -602,11 +603,18 @@
 		B541DD3B21EE4A18009F38A0 /* MetaAddress.swift in Sources */ = {isa = PBXBuildFile; fileRef = B541DD3A21EE4A18009F38A0 /* MetaAddress.swift */; };
 		B541DF5520A3312500C621EB /* AppCoordinator+DeviceVerificationCoordinatorDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B541DF5420A3312500C621EB /* AppCoordinator+DeviceVerificationCoordinatorDelegate.swift */; };
 		B541DF5720A332DA00C621EB /* AppCoordinator+PlaceholderViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B541DF5620A332D900C621EB /* AppCoordinator+PlaceholderViewControllerDelegate.swift */; };
+		B542147E22C103750048B81A /* AdjustableTransactionFeeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B542147D22C103750048B81A /* AdjustableTransactionFeeViewModel.swift */; };
 		B542BE752237093800E01C30 /* ExamplePhoneNumberLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B542BE742237093800E01C30 /* ExamplePhoneNumberLabel.swift */; };
 		B5457124217E63F000FF3A5A /* NetworkManagerIntegrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5457123217E63F000FF3A5A /* NetworkManagerIntegrationTests.swift */; };
 		B5457126217E6D8900FF3A5A /* ResponseCodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5457125217E6D8900FF3A5A /* ResponseCodable.swift */; };
 		B5457128217E6F1700FF3A5A /* BodyCodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5457127217E6F1700FF3A5A /* BodyCodable.swift */; };
 		B54913A522BBB61200ACC7D7 /* AlertConfigurationTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54913A422BBB61200ACC7D7 /* AlertConfigurationTypes.swift */; };
+		B54913A722BC0B1000ACC7D7 /* AdjustableFeesViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B54913A622BC0B1000ACC7D7 /* AdjustableFeesViewController.storyboard */; };
+		B54913A922BC21A500ACC7D7 /* AdjustableFeesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54913A822BC21A500ACC7D7 /* AdjustableFeesViewController.swift */; };
+		B54913AC22BD1A0100ACC7D7 /* AdjustableFeesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54913AA22BD1A0100ACC7D7 /* AdjustableFeesTableViewCell.swift */; };
+		B54913AD22BD1A0100ACC7D7 /* AdjustableFeesTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B54913AB22BD1A0100ACC7D7 /* AdjustableFeesTableViewCell.xib */; };
+		B54913AF22BD287500ACC7D7 /* AdjustableFeesLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54913AE22BD287500ACC7D7 /* AdjustableFeesLabel.swift */; };
+		B54913B122BD525400ACC7D7 /* AppCoordinator+AdjustableFeesViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54913B022BD525400ACC7D7 /* AppCoordinator+AdjustableFeesViewControllerDelegate.swift */; };
 		B54A420D207FAB6D005B40A9 /* TransactionDetailStatusLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54A420C207FAB6D005B40A9 /* TransactionDetailStatusLabel.swift */; };
 		B54A420F207FF11C005B40A9 /* TransactionDetailCounterpartyLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54A420E207FF11C005B40A9 /* TransactionDetailCounterpartyLabel.swift */; };
 		B54A4213207FF2E8005B40A9 /* TransactionDetailPrimaryAmountLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54A4212207FF2E8005B40A9 /* TransactionDetailPrimaryAmountLabel.swift */; };
@@ -1378,6 +1386,7 @@
 		B505D4E921050F2000C0C8FC /* CKPredicate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CKPredicate.swift; sourceTree = "<group>"; };
 		B505D4EB2106456000C0C8FC /* WalletAddressDataWorkerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletAddressDataWorkerTests.swift; sourceTree = "<group>"; };
 		B5090D8F2283244700E57423 /* LocationManagerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManagerDelegate.swift; sourceTree = "<group>"; };
+		B509262822CA57CF00126250 /* CKLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CKLogger.swift; sourceTree = "<group>"; };
 		B50ACBAF216627AB00E877DF /* DevicesTarget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DevicesTarget.swift; sourceTree = "<group>"; };
 		B50ACBB121662C7B00E877DF /* CoinNinjaTargetType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinNinjaTargetType.swift; sourceTree = "<group>"; };
 		B50BB1A0217512400038B5DD /* DropBitUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DropBitUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1478,11 +1487,18 @@
 		B541DD3A21EE4A18009F38A0 /* MetaAddress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetaAddress.swift; sourceTree = "<group>"; };
 		B541DF5420A3312500C621EB /* AppCoordinator+DeviceVerificationCoordinatorDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppCoordinator+DeviceVerificationCoordinatorDelegate.swift"; sourceTree = "<group>"; };
 		B541DF5620A332D900C621EB /* AppCoordinator+PlaceholderViewControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppCoordinator+PlaceholderViewControllerDelegate.swift"; sourceTree = "<group>"; };
+		B542147D22C103750048B81A /* AdjustableTransactionFeeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdjustableTransactionFeeViewModel.swift; sourceTree = "<group>"; };
 		B542BE742237093800E01C30 /* ExamplePhoneNumberLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExamplePhoneNumberLabel.swift; sourceTree = "<group>"; };
 		B5457123217E63F000FF3A5A /* NetworkManagerIntegrationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManagerIntegrationTests.swift; sourceTree = "<group>"; };
 		B5457125217E6D8900FF3A5A /* ResponseCodable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResponseCodable.swift; sourceTree = "<group>"; };
 		B5457127217E6F1700FF3A5A /* BodyCodable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BodyCodable.swift; sourceTree = "<group>"; };
 		B54913A422BBB61200ACC7D7 /* AlertConfigurationTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertConfigurationTypes.swift; sourceTree = "<group>"; };
+		B54913A622BC0B1000ACC7D7 /* AdjustableFeesViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = AdjustableFeesViewController.storyboard; sourceTree = "<group>"; };
+		B54913A822BC21A500ACC7D7 /* AdjustableFeesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdjustableFeesViewController.swift; sourceTree = "<group>"; };
+		B54913AA22BD1A0100ACC7D7 /* AdjustableFeesTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdjustableFeesTableViewCell.swift; sourceTree = "<group>"; };
+		B54913AB22BD1A0100ACC7D7 /* AdjustableFeesTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AdjustableFeesTableViewCell.xib; sourceTree = "<group>"; };
+		B54913AE22BD287500ACC7D7 /* AdjustableFeesLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdjustableFeesLabel.swift; sourceTree = "<group>"; };
+		B54913B022BD525400ACC7D7 /* AppCoordinator+AdjustableFeesViewControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppCoordinator+AdjustableFeesViewControllerDelegate.swift"; sourceTree = "<group>"; };
 		B54A420C207FAB6D005B40A9 /* TransactionDetailStatusLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDetailStatusLabel.swift; sourceTree = "<group>"; };
 		B54A420E207FF11C005B40A9 /* TransactionDetailCounterpartyLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDetailCounterpartyLabel.swift; sourceTree = "<group>"; };
 		B54A4212207FF2E8005B40A9 /* TransactionDetailPrimaryAmountLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDetailPrimaryAmountLabel.swift; sourceTree = "<group>"; };
@@ -1951,6 +1967,7 @@
 				B53804FB209A4C070096DA33 /* AppCoordinator+URLOpener.swift */,
 				3BA9F604208F6D060047C213 /* AppCoordinator+VerifyRecoveryWordsViewControllerDelegate.swift */,
 				A200574E20B5FD68007074D9 /* AppCoordinator+SettingsViewControllerDelegate.swift */,
+				B54913B022BD525400ACC7D7 /* AppCoordinator+AdjustableFeesViewControllerDelegate.swift */,
 				3B61B6E520DD4D360021D69E /* AppCoordinator+TransactionHistoryViewControllerDelegate.swift */,
 				A22B195F20EC1DA80084E8E9 /* AppCoordinator+RestoreWalletViewControllerDelegate.swift */,
 				A2893BC120FD515900E96B07 /* AppCoordinator+TutorialViewControllerDelegate.swift */,
@@ -2072,6 +2089,10 @@
 			isa = PBXGroup;
 			children = (
 				3BF88B81226F5B0D00B94474 /* TransactionDetail */,
+				308F6F0A2180B6260094D6CB /* AddressTableViewCell.swift */,
+				308F6F0C2180B6350094D6CB /* AddressTableViewCell.xib */,
+				B54913AA22BD1A0100ACC7D7 /* AdjustableFeesTableViewCell.swift */,
+				B54913AB22BD1A0100ACC7D7 /* AdjustableFeesTableViewCell.xib */,
 				3B5052BD20473FC9000C739F /* BackupRecoveryWordsCell.swift */,
 				3BC9E55A204D92AC00444A53 /* BackupRecoveryWordsCell.xib */,
 				B5E7F21C22146B9000358A24 /* CountryCodePickerCell.swift */,
@@ -2091,8 +2112,6 @@
 				B5D834062249680600C45ABE /* SettingSwitchWithInfoCell.xib */,
 				3B7D194F229F167600C07FBE /* SettingSwitchCell.swift */,
 				3B7D1950229F167600C07FBE /* SettingSwitchCell.xib */,
-				308F6F0A2180B6260094D6CB /* AddressTableViewCell.swift */,
-				308F6F0C2180B6350094D6CB /* AddressTableViewCell.xib */,
 				3B3779ED219C6B2800F79683 /* BackupWordsReminderDrawerCell.swift */,
 				3B3779EE219C6B2800F79683 /* BackupWordsReminderDrawerCell.xib */,
 				3BEF229C2260DC78001F6D25 /* BuySpendCardCollectionViewCell.swift */,
@@ -2248,6 +2267,7 @@
 				B57B78DC20B4878F007B71CB /* CKDateFormatter.swift */,
 				3BB05AC0209CF407000297E1 /* Typealiases.swift */,
 				307DF11E2151676900260369 /* JSONValue.swift */,
+				B509262822CA57CF00126250 /* CKLogger.swift */,
 				307DF12021517A8800260369 /* Global.swift */,
 			);
 			path = Helpers;
@@ -2450,6 +2470,7 @@
 			children = (
 				3B44961C21B065C200A4E912 /* MemoEntryViewController.swift */,
 				3BAB1446204EE6BB001D41A2 /* BaseViewController.swift */,
+				B54913A822BC21A500ACC7D7 /* AdjustableFeesViewController.swift */,
 				3B5052B22045FAFA000C739F /* BackupRecoveryWordsViewController.swift */,
 				3BA389A82035E62F00B599A0 /* CNNavigationController.swift */,
 				B5839FAE22949E98006BA6AF /* ClaimInviteMethodViewController.swift */,
@@ -2494,6 +2515,7 @@
 		3BF8523B2023788200EBBE44 /* Storyboards */ = {
 			isa = PBXGroup;
 			children = (
+				B54913A622BC0B1000ACC7D7 /* AdjustableFeesViewController.storyboard */,
 				B5839FB022949EE5006BA6AF /* ClaimInviteMethodViewController.storyboard */,
 				A2A530BB20936A5B00B6F4DE /* ConfirmPaymentViewController.storyboard */,
 				A29CE0D3209B713B00761B91 /* ContactsViewController.storyboard */,
@@ -2556,6 +2578,7 @@
 				3BF41AB7207694EA008B3D0A /* RequestPayViewModel.swift */,
 				5B62D55C2087732700E9D466 /* SendPaymentViewModel.swift */,
 				A2A530CD20977A8A00B6F4DE /* ConfirmPaymentViewModel.swift */,
+				B542147D22C103750048B81A /* AdjustableTransactionFeeViewModel.swift */,
 				A293E34F20F67F390099ED69 /* SuccessFailViewModel.swift */,
 				A260E8D820FD0F28008343F9 /* TutorialScreenViewModel.swift */,
 				30349F862188A99700A32AFA /* ServerAddressViewModel.swift */,
@@ -2963,6 +2986,7 @@
 		B584766A20E1400300F5FE60 /* Labels */ = {
 			isa = PBXGroup;
 			children = (
+				B54913AE22BD287500ACC7D7 /* AdjustableFeesLabel.swift */,
 				B51F8239207BB00000692F5B /* BalancePrimaryAmountLabel.swift */,
 				B51F823B207BB00D00692F5B /* BalanceSecondaryAmountLabel.swift */,
 				3B3F1102205700A6003F86EF /* OnboardingErrorLabel.swift */,
@@ -3370,6 +3394,7 @@
 				A29CE0D4209B713B00761B91 /* ContactsViewController.storyboard in Resources */,
 				A2E0300420EABFA800E160E9 /* RestoreWalletViewController.storyboard in Resources */,
 				3B9779A9202E416700C9C933 /* Montserrat-Regular.ttf in Resources */,
+				B54913AD22BD1A0100ACC7D7 /* AdjustableFeesTableViewCell.xib in Resources */,
 				5B91E39A2076C02200DD9A86 /* DrawerViewController.storyboard in Resources */,
 				3B9779AD202E416700C9C933 /* Montserrat-Thin.ttf in Resources */,
 				A26C768F2108BE96001EB738 /* licenses.html in Resources */,
@@ -3441,6 +3466,7 @@
 				5B927C242078009F00DCDCAE /* DrawerTableViewHeader.xib in Resources */,
 				3B6DCA1B2034B76F00B87EF9 /* KeypadDigitView.xib in Resources */,
 				3B9779AB202E416700C9C933 /* Montserrat-Bold.ttf in Resources */,
+				B54913A722BC0B1000ACC7D7 /* AdjustableFeesViewController.storyboard in Resources */,
 				A200574D20B5F70F007074D9 /* SettingCell.xib in Resources */,
 				A260E8D320FCFE96008343F9 /* TutorialViewController.storyboard in Resources */,
 				3B9779B2202E416700C9C933 /* Montserrat-Italic.ttf in Resources */,
@@ -3519,6 +3545,7 @@
 				"${BUILT_PRODUCTS_DIR}/ReachabilitySwift-framework/Reachability.framework",
 				"${BUILT_PRODUCTS_DIR}/Result-framework/Result.framework",
 				"${BUILT_PRODUCTS_DIR}/SVProgressHUD-framework/SVProgressHUD.framework",
+				"${BUILT_PRODUCTS_DIR}/Willow-framework/Willow.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
@@ -3534,6 +3561,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Reachability.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Result.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SVProgressHUD.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Willow.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -3732,6 +3760,7 @@
 				3B287CB62100FB5600A43E57 /* AppCoordinator+ChildCoordinatorDelegate.swift in Sources */,
 				A2A530C220936A7F00B6F4DE /* ConfirmPaymentViewController.swift in Sources */,
 				B56E158A2167962D003B69D4 /* GlobalMessage.swift in Sources */,
+				B54913AF22BD287500ACC7D7 /* AdjustableFeesLabel.swift in Sources */,
 				B523DFC220926E88008A789D /* Collection+IsNotEmpty.swift in Sources */,
 				A260E8C720FCD482008343F9 /* LimitEditTextField.swift in Sources */,
 				4A251738207515FF0030FCA2 /* NetworkManager.swift in Sources */,
@@ -3800,6 +3829,7 @@
 				B5976AD521552F8500774073 /* WalletAddressesQueryTarget.swift in Sources */,
 				B54913A522BBB61200ACC7D7 /* AlertConfigurationTypes.swift in Sources */,
 				B54A420D207FAB6D005B40A9 /* TransactionDetailStatusLabel.swift in Sources */,
+				B542147E22C103750048B81A /* AdjustableTransactionFeeViewModel.swift in Sources */,
 				B5D834072249680600C45ABE /* SettingSwitchWithInfoCell.swift in Sources */,
 				B5D8340A224971E400C45ABE /* SettingsViewController+TableView.swift in Sources */,
 				B501022221F2325B00D42A71 /* UIColor+Init.swift in Sources */,
@@ -3970,6 +4000,7 @@
 				B54159CB20A5DEBF0048F495 /* CKMUser+CoreDataClass.swift in Sources */,
 				3BA9F60B208F6E870047C213 /* AppCoordinator+BalanceDataSource.swift in Sources */,
 				3B80E27521BE9D7A00F6EF17 /* DatabaseMigrationWorker.swift in Sources */,
+				B509262922CA57CF00126250 /* CKLogger.swift in Sources */,
 				B552EDF3211E33D000332BB5 /* PersistenceManager.swift in Sources */,
 				3B6749E220AA5CA40032FE02 /* CKMVin+CoreDataProperties.swift in Sources */,
 				B54F8FA420C3088300294F50 /* CurrencyFormattable.swift in Sources */,
@@ -4055,6 +4086,7 @@
 				A2893BC020FD4E7700E96B07 /* UIViewController+ToolbarUtilities.swift in Sources */,
 				A29CE0FC20A32B2000761B91 /* CurrencyAmountValidator.swift in Sources */,
 				B5A3BA5021516E98005EE657 /* PricingTarget.swift in Sources */,
+				B54913AC22BD1A0100ACC7D7 /* AdjustableFeesTableViewCell.swift in Sources */,
 				5B40427E208CCD02005624B0 /* SendPaymentViewController.swift in Sources */,
 				B586054A222888C50048979D /* PhoneNumberEntryViewDisplayable.swift in Sources */,
 				A26C76792106446E001EB738 /* NSDecimalNumber+NilInitializer.swift in Sources */,
@@ -4111,6 +4143,7 @@
 				3B7E2D572292EC7400891E4A /* SharedPayloadV2.swift in Sources */,
 				B5A3BA542151939B005EE657 /* AddressesTarget.swift in Sources */,
 				B53461722098ABBF00DDC1C4 /* CKMAddressTransactionSummary+CoreDataClass.swift in Sources */,
+				B54913B122BD525400ACC7D7 /* AppCoordinator+AdjustableFeesViewControllerDelegate.swift in Sources */,
 				3BEF22A12264B9D8001F6D25 /* AppCoordinator+GetBitcoinViewControllerDelegate.swift in Sources */,
 				30ADA32C2162A76D00E52AF9 /* CreateDeviceBody.swift in Sources */,
 				3B5052BF20473FC9000C739F /* BackupRecoveryWordsCell.swift in Sources */,
@@ -4171,6 +4204,7 @@
 				B56788B1227A430300A39534 /* UIView+CornerRadius.swift in Sources */,
 				B530DFBD2108CF8400A0B1A8 /* TransactionDetailWarningLabel.swift in Sources */,
 				A2A530CE20977A8A00B6F4DE /* ConfirmPaymentViewModel.swift in Sources */,
+				B54913A922BC21A500ACC7D7 /* AdjustableFeesViewController.swift in Sources */,
 				B5FE9B67219DD96200801D3C /* MerchantPaymentRequestResponse.swift in Sources */,
 				3BEB594620D15AF9005EDA9E /* AddressTransactionSummaryResponse.swift in Sources */,
 				3B2EBF71223010DC003C0D0E /* ManagedContactComponents.swift in Sources */,

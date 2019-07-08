@@ -18,11 +18,29 @@ protocol ConfirmPaymentViewControllerDelegate: ViewControllerDismissable {
     outgoingTransactionData: OutgoingTransactionData
   )
   func viewControllerDidConfirmInvite(_ viewController: UIViewController, outgoingInvitationDTO: OutgoingInvitationDTO)
+  func viewControllerRequestedShowFeeTooExpensiveAlert(_ viewController: UIViewController)
 }
 
 typealias BitcoinUSDPair = (btcAmount: NSDecimalNumber, usdAmount: NSDecimalNumber)
 
 class ConfirmPaymentViewController: PresentableViewController, StoryboardInitializable {
+
+  static func newInstance(kind: Kind,
+                          feeModel: ConfirmTransactionFeeModel,
+                          delegate: ConfirmPaymentViewControllerDelegate) -> ConfirmPaymentViewController {
+    let vc = ConfirmPaymentViewController.makeFromStoryboard()
+    vc.generalCoordinationDelegate = delegate
+    vc.kind = kind
+    vc.feeModel = feeModel
+    switch kind {
+    case .invite(let vm):
+      vc.exchangeRates = vm.rates
+    case .payment(let vm):
+      vc.exchangeRates = vm.rates
+    }
+
+    return vc
+  }
 
   enum Kind {
     case invite(ConfirmPaymentInviteViewModel)
@@ -30,13 +48,13 @@ class ConfirmPaymentViewController: PresentableViewController, StoryboardInitial
   }
 
   var kind: Kind?
+  var feeModel: ConfirmTransactionFeeModel!
+  var exchangeRates: ExchangeRates!
 
   lazy private var confirmLongPressGestureRecognizer: UILongPressGestureRecognizer =
     UILongPressGestureRecognizer(target: self, action: #selector(confirmButtonDidConfirm))
 
   private var feedbackGenerator: UIImpactFeedbackGenerator = UIImpactFeedbackGenerator(style: .medium)
-
-  let rateManager = ExchangeRateManager()
 
   @IBOutlet var closeButton: UIButton!
   @IBOutlet var confirmButton: ConfirmPaymentButton!
@@ -44,6 +62,9 @@ class ConfirmPaymentViewController: PresentableViewController, StoryboardInitial
   @IBOutlet var primaryCurrencyLabel: UILabel!
   @IBOutlet var secondaryCurrencyLabel: UILabel!
   @IBOutlet var networkFeeLabel: UILabel!
+  @IBOutlet var adjustableFeesContainer: UIView!
+  @IBOutlet var adjustableFeesControl: UISegmentedControl!
+  @IBOutlet var adjustableFeesLabel: UILabel!
   @IBOutlet var contactLabel: UILabel!
   @IBOutlet var primaryAddressLabel: UILabel!
   @IBOutlet var memoContainerView: ConfirmPaymentMemoView!
@@ -54,6 +75,24 @@ class ConfirmPaymentViewController: PresentableViewController, StoryboardInitial
 
   var coordinationDelegate: ConfirmPaymentViewControllerDelegate? {
     return generalCoordinationDelegate as? ConfirmPaymentViewControllerDelegate
+  }
+
+  @IBAction func changeFeeType(_ sender: UISegmentedControl) {
+    guard let model = feeModel else { return }
+    switch model {
+    case .adjustable(let adjustableModel):
+      let selectedModel = adjustableModel.segmentModels[sender.selectedSegmentIndex]
+      if selectedModel.isSelectable {
+        let newAdjustableModel = adjustableModel.copy(selecting: selectedModel.type)
+        self.feeModel = .adjustable(newAdjustableModel)
+      } else {
+        coordinationDelegate?.viewControllerRequestedShowFeeTooExpensiveAlert(self)
+      }
+
+      self.updateFees(with: self.feeModel, rates: self.exchangeRates)
+    default:
+      break
+    }
   }
 
   private func setupViews() {
@@ -88,6 +127,17 @@ class ConfirmPaymentViewController: PresentableViewController, StoryboardInitial
 
     tapAndHoldLabel.textColor = .darkGrayText
     tapAndHoldLabel.font = .medium(13)
+
+    adjustableFeesControl.tintColor = .primaryActionButton
+    adjustableFeesControl.backgroundColor = .lightGrayBackground
+    adjustableFeesControl.setTitleTextAttributes([
+      .font: UIFont.medium(10),
+      .foregroundColor: UIColor.deselectedGrayText
+      ], for: .normal)
+    adjustableFeesControl.setTitleTextAttributes([
+      .font: UIFont.medium(10),
+      .foregroundColor: UIColor.whiteText
+      ], for: .selected)
   }
 
   private func updateView(with viewModel: ConfirmPaymentViewModelType) {
@@ -101,8 +151,29 @@ class ConfirmPaymentViewController: PresentableViewController, StoryboardInitial
     primaryCurrencyLabel.text = amounts.primary
     secondaryCurrencyLabel.attributedText = amounts.secondary
 
-    let feeConverter = CurrencyConverter(rates: viewModel.rates,
-                                         fromAmount: NSDecimalNumber(integerAmount: viewModel.fee, currency: .BTC),
+    updateFees(with: self.feeModel, rates: viewModel.rates)
+
+  }
+
+  private func updateFees(with feeModel: ConfirmTransactionFeeModel, rates: ExchangeRates) {
+
+    switch feeModel {
+    case .adjustable(let vm):
+      adjustableFeesContainer.isHidden = false
+      adjustableFeesControl.selectedSegmentIndex = vm.selectedTypeIndex
+      for (i, model) in vm.segmentModels.enumerated() {
+        adjustableFeesControl.setTitle(model.title, forSegmentAt: i)
+      }
+
+      adjustableFeesLabel.attributedText = vm.attributedWaitTimeDescription
+
+    case .required, .standard:
+      adjustableFeesContainer.isHidden = true
+    }
+
+    let feeDecimalAmount = NSDecimalNumber(integerAmount: feeModel.feeAmount, currency: .BTC)
+    let feeConverter = CurrencyConverter(rates: rates,
+                                         fromAmount: feeDecimalAmount,
                                          fromCurrency: .BTC,
                                          toCurrency: .USD)
 
@@ -133,6 +204,10 @@ class ConfirmPaymentViewController: PresentableViewController, StoryboardInitial
 
   private func updateView(withContact contact: ContactType) {
     var displayIdentity = ""
+
+    avatarBackgroundView.isHidden = true
+    contactLabel.isHidden = true
+
     switch contact.identityType {
     case .phone:
       guard let phoneContact = contact as? PhoneContactType else { return }
@@ -155,6 +230,7 @@ class ConfirmPaymentViewController: PresentableViewController, StoryboardInitial
     switch contact.kind {
     case .generic:
       contactLabel.text = displayIdentity
+      contactLabel.isHidden = false
       secondaryAddressLabel.isHidden = false
     case .invite:
       if contact.displayName == nil {
@@ -210,25 +286,31 @@ class ConfirmPaymentViewController: PresentableViewController, StoryboardInitial
     if confirmLongPressGestureRecognizer.state == .began {
       switch kind {
       case .invite(let viewModel):
-        confirmInvite(with: viewModel)
+        confirmInvite(with: viewModel, feeModel: self.feeModel)
       case .payment(let viewModel):
-        confirmPayment(with: viewModel)
+        confirmPayment(with: viewModel, feeModel: self.feeModel)
       }
     }
 
     confirmButton.reset()
   }
 
-  private func confirmPayment(with viewModel: ConfirmPaymentViewModel) {
+  private func confirmPayment(with viewModel: ConfirmPaymentViewModel,
+                              feeModel: ConfirmTransactionFeeModel) {
+    var feeAdjustedOutgoingTxData = viewModel.outgoingTransactionData
+    feeAdjustedOutgoingTxData.amount = Int(feeModel.transactionData.amount)
+    feeAdjustedOutgoingTxData.feeAmount = Int(feeModel.transactionData.feeAmount)
+
     coordinationDelegate?.viewControllerDidConfirmPayment(
       self,
-      transactionData: viewModel.transactionData,
+      transactionData: feeModel.transactionData,
       rates: viewModel.rates,
-      outgoingTransactionData: viewModel.outgoingTransactionData
+      outgoingTransactionData: feeAdjustedOutgoingTxData
     )
   }
 
-  private func confirmInvite(with viewModel: ConfirmPaymentInviteViewModel) {
+  private func confirmInvite(with viewModel: ConfirmPaymentInviteViewModel,
+                             feeModel: ConfirmTransactionFeeModel) {
     guard let contact = viewModel.contact, let btcAmount = viewModel.btcAmount else { return }
 
     let converter = CurrencyConverter(rates: viewModel.rates,
@@ -239,7 +321,7 @@ class ConfirmPaymentViewController: PresentableViewController, StoryboardInitial
     let pair = (btcAmount: btcAmount, usdAmount: converter.amount(forCurrency: .USD) ?? NSDecimalNumber(decimal: 0.0))
     let outgoingInvitationDTO = OutgoingInvitationDTO(contact: contact,
                                                       btcPair: pair,
-                                                      fee: viewModel.fee,
+                                                      fee: feeModel.feeAmount,
                                                       sharedPayloadDTO: viewModel.sharedPayloadDTO)
     coordinationDelegate?.viewControllerDidConfirmInvite(self, outgoingInvitationDTO: outgoingInvitationDTO)
   }

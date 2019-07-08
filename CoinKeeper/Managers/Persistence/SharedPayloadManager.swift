@@ -8,7 +8,6 @@
 
 import Foundation
 import CoreData
-import os.log
 
 protocol SharedPayloadManagerType: AnyObject {
   func persistReceivedSharedPayloads(
@@ -36,7 +35,7 @@ class SharedPayloadManager: SharedPayloadManagerType {
     do {
       salt = try hasher.salt()
     } catch {
-      os_log("Failed to get salt for hashing shared payload phone number: %@", log: logger, type: .error, error.localizedDescription)
+      log.error(error, message: "Failed to get salt for hashing shared payload phone number")
       return
     }
 
@@ -57,7 +56,6 @@ class SharedPayloadManager: SharedPayloadManagerType {
   }
 
   // MARK: private
-  private let logger = OSLog(subsystem: "com.coinninja.coinkeeper.database", category: "shared_payloads")
 
   private func persistReceivedV1SharedPayloads(_ payloads: [SharedPayloadV1], with deps: PayloadPersistenceDependencies) {
 

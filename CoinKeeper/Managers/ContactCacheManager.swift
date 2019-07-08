@@ -9,7 +9,6 @@
 import Foundation
 import CoreData
 import Contacts
-import os.log
 import PhoneNumberKit
 
 protocol ContactCacheManagerType: AnyObject {
@@ -35,8 +34,6 @@ protocol ContactCacheManagerType: AnyObject {
 }
 
 class ContactCacheManager: ContactCacheManagerType {
-
-  let logger = OSLog(subsystem: "com.coinninja.coinkeeper.contactcache", category: "manager")
 
   private let stackConfig: CoreDataStackConfig
   private let container: NSPersistentContainer
@@ -181,8 +178,7 @@ class ContactCacheManager: ContactCacheManagerType {
 
         } catch {
           // not parseable, will not create or link CCMValidatedMetadata
-          os_log("Failed to parse phone number %{private}@, reason: %@", log: self.logger,
-                 type: .error, originalPhoneNumber, error.localizedDescription)
+          log.error("Failed to parse phone number %@, error: \(error.localizedDescription)", privateArgs: [originalPhoneNumber])
           let cachedPhoneNumber = CCMPhoneNumber(formattedNumber: originalPhoneNumber,
                                                  sanitizedOriginal: sanitizedOriginal,
                                                  labelKey: labeledNumber.label,

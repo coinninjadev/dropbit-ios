@@ -33,6 +33,7 @@ class CNNavigationController: UINavigationController {
     navigationBar.isTranslucent = true
     navigationBar.setBackgroundImage(UIImage(), for: .default)
     navigationBar.tintColor = .lightBlueTint
+    navigationBar.titleTextAttributes = [.font: UIFont.regular(14)]
   }
 
   override func pushViewController(_ viewController: UIViewController, animated: Bool) {
