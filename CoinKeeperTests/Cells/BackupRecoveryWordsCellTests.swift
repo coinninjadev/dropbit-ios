@@ -41,10 +41,9 @@ class BackupRecoveryWordsCellTests: XCTestCase {
 
   // MARK: load method
   func testLoadMethodPopulatesLabels() {
-    let initialWord = "jalapeno"
-    let expectedWord = "jalapeno".uppercased()
+    let expectedWord = "jalapeno"
     let expectedStatus = "word 1 of 12"
-    let data = BackupRecoveryWordCellData(word: initialWord, currentIndex: 1, total: 12)
+    let data = BackupRecoveryWordCellData(word: expectedWord, currentIndex: 1, total: 12)
 
     self.sut.load(with: data)
 

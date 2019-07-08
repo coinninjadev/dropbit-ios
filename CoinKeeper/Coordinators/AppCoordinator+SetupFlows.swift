@@ -163,12 +163,11 @@ extension AppCoordinator {
   func createPinEntryViewControllerForRecoveryWords(_ words: [String]) -> PinEntryViewController {
     let pinEntryViewController = PinEntryViewController.makeFromStoryboard()
     pinEntryViewController.mode = .recoveryWords(completion: { [unowned self] _ in
-      let wordsViewController = BackupRecoveryWordsViewController.makeFromStoryboard()
-      wordsViewController.recoveryWords = words
-      wordsViewController.wordsBackedUp = self.wordsBackedUp
       self.analyticsManager.track(event: .viewWords, with: nil)
-      self.assignCoordinationDelegate(to: wordsViewController)
-      self.navigationController.present(CNNavigationController(rootViewController: wordsViewController), animated: false, completion: nil)
+      let controller = BackupRecoveryWordsViewController.newInstance(withDelegate: self,
+                                                                     recoveryWords: words,
+                                                                     wordsBackedUp: self.wordsBackedUp)
+      self.navigationController.present(CNNavigationController(rootViewController: controller), animated: false, completion: nil)
     })
     assignCoordinationDelegate(to: pinEntryViewController)
 
