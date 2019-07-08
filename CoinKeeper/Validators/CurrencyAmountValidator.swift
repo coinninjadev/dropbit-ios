@@ -10,7 +10,6 @@ import Foundation
 
 enum CurrencyAmountValidatorError: ValidatorTypeError {
   case invitationMaximum(Money)
-  case transactionMinimum(Money)
   case usableBalance(Money) //Should be BTC
   case notANumber(String)
 
@@ -18,8 +17,6 @@ enum CurrencyAmountValidatorError: ValidatorTypeError {
     switch self {
     case .invitationMaximum(let money):
       return "Amount exceeds send to contact maximum: \(money.displayString)"
-    case .transactionMinimum(let money):
-      return "Amount less than transaction minimum: \(money.displayString)"
     case .usableBalance(let money):
       return "Amount exceeds usable balance of \(money.displayString)"
     case .notANumber(let string):
@@ -33,10 +30,6 @@ enum CurrencyAmountValidatorError: ValidatorTypeError {
       return """
       For security reasons we limit invite trasnactions to $100.
       Once your contact has the DropBit app there are no transaction limits.
-      """
-    case .transactionMinimum(let money):
-      return """
-      Amount must be at least \(money.displayString).
       """
     case .usableBalance(let money):
       return """
@@ -57,7 +50,6 @@ struct CurrencyAmountValidationOptions: OptionSet {
   let rawValue: Int
 
   static let invitationMaximum = CurrencyAmountValidationOptions(rawValue: 1 << 0)
-  static let transactionMinimum = CurrencyAmountValidationOptions(rawValue: 1 << 1)
   static let usableBalance = CurrencyAmountValidationOptions(rawValue: 1 << 2)
 }
 
@@ -65,7 +57,6 @@ struct CurrencyAmountValidationOptions: OptionSet {
 class CurrencyAmountValidator: ValidatorType<CurrencyConverter> {
 
   static let invitationMax = Money(amount: NSDecimalNumber(value: 100), currency: .USD)
-  static let minSend = Money(amount: NSDecimalNumber(value: 1), currency: .USD)
 
   // Allows for validating against USD value while showing error message in BTC.
   let balanceNetPending: NSDecimalNumber?
@@ -82,16 +73,10 @@ class CurrencyAmountValidator: ValidatorType<CurrencyConverter> {
     let usdValue = value.amount(forCurrency: .USD) ?? .zero
 
     let maxMoney = CurrencyAmountValidator.invitationMax
-    let minMoney = CurrencyAmountValidator.minSend
 
     if !validationsToSkip.contains(.invitationMaximum),
       maxMoney.amount < usdValue {
       throw CurrencyAmountValidatorError.invitationMaximum(maxMoney)
-    }
-
-    if !validationsToSkip.contains(.transactionMinimum),
-      minMoney.amount > usdValue {
-      throw CurrencyAmountValidatorError.transactionMinimum(minMoney)
     }
 
     if !validationsToSkip.contains(.usableBalance),

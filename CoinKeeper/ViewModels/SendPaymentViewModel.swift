@@ -115,15 +115,11 @@ extension SendPaymentViewModelType {
   }
 
   var standardIgnoredOptions: CurrencyAmountValidationOptions {
-    var options: CurrencyAmountValidationOptions = [.invitationMaximum]
-    if sendMaxTransactionData != nil {
-      options.insert(.transactionMinimum)
-    }
-    return options
+    return [.invitationMaximum]
   }
 
   var invitationMaximumIgnoredOptions: CurrencyAmountValidationOptions {
-    return [.usableBalance, .transactionMinimum]
+    return [.usableBalance]
   }
 
   mutating func togglePrimaryCurrency() {
