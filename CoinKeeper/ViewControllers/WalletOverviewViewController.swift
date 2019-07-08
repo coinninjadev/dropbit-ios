@@ -17,7 +17,11 @@ class WalletOverviewViewController: BasePageViewController, StoryboardInitializa
     case requestViewController = 2
   }
   
-  var baseViewControllers: [BaseViewController] = []
+  var baseViewControllers: [BaseViewController] = [] {
+    didSet {
+      
+    }
+  }
   
   override func viewDidLoad() {
     super.viewDidLoad()

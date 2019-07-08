@@ -30,9 +30,8 @@ extension AppCoordinator {
 
   func enterApp() {
     let overviewViewController = makeOverviewController()
-    let mainViewController = makeTransactionHistory()
     let settingsViewController = DrawerViewController.makeFromStoryboard()
-    let drawerController = setupDrawerViewController(centerViewController: mainViewController,
+    let drawerController = setupDrawerViewController(centerViewController: overviewViewController,
                                                      leftViewController: settingsViewController)
     assignCoordinationDelegate(to: settingsViewController)
     navigationController.popToRootViewController(animated: false)
@@ -200,8 +199,15 @@ extension AppCoordinator {
   }
   
   private func makeOverviewController() -> WalletOverviewViewController {
-    let transactionHistoryViewController = makeTransactionHistory()
-    let requestViewController = 
+    let overviewChildViewControllers: [BaseViewController] = [makeTransactionHistory(), RequestPayViewController.makeFromStoryboard(), NewsViewController.makeFromStoryboard()]
+    
+    for viewController in overviewChildViewControllers {
+      assignCoordinationDelegate(to: viewController)
+    }
+    
+    let overviewViewController = WalletOverviewViewController.makeFromStoryboard()
+    overviewViewController.setViewControllers(overviewChildViewControllers, direction: .forward, animated: false, completion: nil)
+    return overviewViewController
   }
 
 }

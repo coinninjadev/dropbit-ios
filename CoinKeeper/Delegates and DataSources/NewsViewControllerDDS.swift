@@ -14,11 +14,14 @@ import Moya
 struct NewsData {
   var newsActionHandler: (URL) -> Void = { _ in }
   var articles: [NewsArticleResponse] = []
-  var allTimePriceData: ChartData = ChartData()
-  var monthlyPriceData: ChartData = ChartData()
-  var dailyPriceData: ChartData = ChartData()
+  var dayPriceData: LineChartDataSet = LineChartDataSet()
+  var allTimePriceData: LineChartDataSet = LineChartDataSet()
+  var yearlyPriceData: LineChartDataSet = LineChartDataSet()
+  var monthlyPriceData: LineChartDataSet = LineChartDataSet()
+  var weeklyPriceData: LineChartDataSet = LineChartDataSet()
+  var dailyPriceData: LineChartDataSet = LineChartDataSet()
   var currentPrice: String = ""
-  var priceData: ChartData = ChartData() //TODO: Set to current data set
+  var priceData: LineChartDataSet = LineChartDataSet() //TODO: Set to current data set
 }
 
 class NewsViewControllerDDS: NSObject, UITableViewDelegate, UITableViewDataSource {

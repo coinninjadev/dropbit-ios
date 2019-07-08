@@ -108,21 +108,71 @@ class NewsViewController: BaseViewController, StoryboardInitializable {
       return
     }
     
-    coordinationDelegate.viewControllerDidRequestNewsData(count: 10).then { articles in
+    coordinationDelegate.viewControllerDidRequestNewsData(count: 10).then { articles -> Promise<[PriceSummaryResponse]> in
       newsData.articles = articles
-      coordinationDelegate.viewControllerDidRequestPriceDataFor(period: .daily)
-    }.then { dailywPrice in
-      newsData.dailyPriceData = dailyPrice
-      coordinationDelegate.viewControllerDidRequestPriceDataFor(period: .monthly)
-    }.then { monthlyPrice in
-      newsData.monthlyPriceData = monthlyPrice
-      coordinationDelegate.viewControllerDidRequestPriceDataFor(period: .allTime)
+      return coordinationDelegate.viewControllerDidRequestPriceDataFor(period: .daily)
+    }.then { dailyPrice -> Promise<[PriceSummaryResponse]> in
+      newsData.dailyPriceData = LineChartDataSet(values: self.configureDailyData(data: dailyPrice), label: nil)
+      return coordinationDelegate.viewControllerDidRequestPriceDataFor(period: .monthly)
+    }.then { monthlyPrice -> Promise<[PriceSummaryResponse]> in
+      let monthlyData = self.configureMonthlyData(data: monthlyPrice)
+      newsData.weeklyPriceData = LineChartDataSet(values: monthlyData.week, label: nil)
+      newsData.monthlyPriceData = LineChartDataSet(values: monthlyData.month, label: nil)
+      return coordinationDelegate.viewControllerDidRequestPriceDataFor(period: .allTime)
     }.done { allTimePrice in
-      newsData.allTimePriceData = allTimePrice
-      newsViewControllerDDS?.newsData = newsData
-    }.catch { error in
-        
+      let allTimeData = self.configureAllTimeData(data: allTimePrice)
+      newsData.allTimePriceData = LineChartDataSet(values: allTimeData.allTime, label: nil)
+      newsData.yearlyPriceData = LineChartDataSet(values: allTimeData.year, label: nil)
+      self.newsViewControllerDDS?.newsData = newsData
     }
+  }
+  
+  private func configureMonthlyData(data: [PriceSummaryResponse]) -> (week: [ChartDataEntry], month: [ChartDataEntry]) {
+    var weekData: [ChartDataEntry] = [], monthData: [ChartDataEntry] = []
+    
+    for (index, data) in data.enumerated() {
+      guard index < 720 else { break }
+      
+      let data = ChartDataEntry(x: Double(index), y: data.average)
+      
+      if (index <= 168) {
+        weekData.append(data)
+        monthData.append(data)
+      } else {
+        monthData.append(data)
+      }
+    }
+    
+    return (week: weekData, month: monthData)
+  }
+  
+  private func configureDailyData(data: [PriceSummaryResponse]) -> [ChartDataEntry] {
+    var dailyData: [ChartDataEntry] = []
+    
+    for (index, data) in data.enumerated() {
+      guard index < 1440 else { break }
+      let data = ChartDataEntry(x: Double(index), y: data.average)
+      
+      dailyData.append(data)
+    }
+    
+    return dailyData
+  }
+  
+  private func configureAllTimeData(data: [PriceSummaryResponse]) -> (year: [ChartDataEntry], allTime: [ChartDataEntry]) {
+    var yearData: [ChartDataEntry] = [], allTimeData: [ChartDataEntry] = []
+    
+    for (index, data) in data.enumerated() {
+      let data = ChartDataEntry(x: Double(index), y: data.average)
+      
+      if (index < 365) {
+        yearData.append(data)
+      } else {
+        allTimeData.append(data)
+      }
+    }
+    
+    return (year: yearData, allTime: allTimeData)
   }
 
   @objc private func refreshDisplayedPrice() {
