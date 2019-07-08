@@ -197,14 +197,14 @@ extension AppCoordinator {
     drawerController?.showsShadow = false
     return drawerController!
   }
-  
+
   private func makeOverviewController() -> WalletOverviewViewController {
     let overviewChildViewControllers: [BaseViewController] = [makeTransactionHistory(), RequestPayViewController.makeFromStoryboard(), NewsViewController.makeFromStoryboard()]
-    
+
     for viewController in overviewChildViewControllers {
       assignCoordinationDelegate(to: viewController)
     }
-    
+
     let overviewViewController = WalletOverviewViewController.makeFromStoryboard()
     overviewViewController.setViewControllers(overviewChildViewControllers, direction: .forward, animated: false, completion: nil)
     return overviewViewController

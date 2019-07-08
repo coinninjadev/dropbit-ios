@@ -12,7 +12,7 @@ public enum PricePeriod {
   case daily
   case monthly
   case allTime
-  
+
   var urlString: String {
     switch(self) {
     case .daily: return "daily"
@@ -24,36 +24,36 @@ public enum PricePeriod {
 
 public enum PriceTarget: CoinNinjaTargetType {
   typealias ResponseType = PriceSummaryResponse
-  
+
   case price(PricePeriod)
 }
 
 extension PriceTarget {
-  
+
   var basePath: String {
     return "historic"
   }
-  
+
   var subPath: String? {
     return nil
   }
-  
+
   public var method: Method {
     return .get
   }
-  
+
   public var task: Task {
     switch self {
     case .price(let period):
-      return .requestParameters(parameters: ["period" : period.urlString], encoding: URLEncoding.default)
+      return .requestParameters(parameters: ["period": period.urlString], encoding: URLEncoding.default)
     default:  return .requestPlain
     }
   }
-  
+
   public var headers: [String: String]? {
     switch self {
     default: return nil
     }
   }
-  
+
 }

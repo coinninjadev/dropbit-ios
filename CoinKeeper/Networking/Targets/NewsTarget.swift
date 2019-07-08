@@ -10,7 +10,7 @@ import Moya
 
 public enum NewsTarget: CoinNinjaTargetType {
   typealias ResponseType = NewsArticleResponse
-  
+
   case news(Int)
 }
 
@@ -19,27 +19,27 @@ extension NewsTarget {
   var basePath: String {
     return "items"
   }
-  
+
   var subPath: String? {
     return nil
   }
-  
+
   public var method: Method {
     return .get
   }
-  
+
   public var task: Task {
     switch self {
     case .news(let count):
-      return .requestParameters(parameters: ["count" : count], encoding: URLEncoding.default)
+      return .requestParameters(parameters: ["count": count], encoding: URLEncoding.default)
     default:  return .requestPlain
     }
   }
-    
+
   public var headers: [String: String]? {
     switch self {
     default: return nil
     }
   }
-    
+
 }

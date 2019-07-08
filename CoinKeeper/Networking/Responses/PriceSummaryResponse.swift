@@ -23,7 +23,7 @@ extension PriceSummaryResponse: ResponseDecodable {
     }
     """
   }
-  
+
   static var requiredStringKeys: [KeyPath<PriceSummaryResponse, String>] { return [] }
   static var optionalStringKeys: [WritableKeyPath<PriceSummaryResponse, String?>] { return [] }
 

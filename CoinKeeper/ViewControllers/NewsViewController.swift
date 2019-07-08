@@ -107,7 +107,7 @@ class NewsViewController: BaseViewController, StoryboardInitializable {
       newsViewControllerDDS?.newsData = newsData
       return
     }
-    
+
     coordinationDelegate.viewControllerDidRequestNewsData(count: 10).then { articles -> Promise<[PriceSummaryResponse]> in
       newsData.articles = articles
       return coordinationDelegate.viewControllerDidRequestPriceDataFor(period: .daily)
@@ -126,15 +126,15 @@ class NewsViewController: BaseViewController, StoryboardInitializable {
       self.newsViewControllerDDS?.newsData = newsData
     }
   }
-  
+
   private func configureMonthlyData(data: [PriceSummaryResponse]) -> (week: [ChartDataEntry], month: [ChartDataEntry]) {
     var weekData: [ChartDataEntry] = [], monthData: [ChartDataEntry] = []
-    
+
     for (index, data) in data.enumerated() {
       guard index < 720 else { break }
-      
+
       let data = ChartDataEntry(x: Double(index), y: data.average)
-      
+
       if (index <= 168) {
         weekData.append(data)
         monthData.append(data)
@@ -142,36 +142,36 @@ class NewsViewController: BaseViewController, StoryboardInitializable {
         monthData.append(data)
       }
     }
-    
+
     return (week: weekData, month: monthData)
   }
-  
+
   private func configureDailyData(data: [PriceSummaryResponse]) -> [ChartDataEntry] {
     var dailyData: [ChartDataEntry] = []
-    
+
     for (index, data) in data.enumerated() {
       guard index < 1440 else { break }
       let data = ChartDataEntry(x: Double(index), y: data.average)
-      
+
       dailyData.append(data)
     }
-    
+
     return dailyData
   }
-  
+
   private func configureAllTimeData(data: [PriceSummaryResponse]) -> (year: [ChartDataEntry], allTime: [ChartDataEntry]) {
     var yearData: [ChartDataEntry] = [], allTimeData: [ChartDataEntry] = []
-    
+
     for (index, data) in data.enumerated() {
       let data = ChartDataEntry(x: Double(index), y: data.average)
-      
+
       if (index < 365) {
         yearData.append(data)
       } else {
         allTimeData.append(data)
       }
     }
-    
+
     return (year: yearData, allTime: allTimeData)
   }
 

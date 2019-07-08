@@ -75,7 +75,9 @@ class NewsViewControllerDDS: NSObject, UITableViewDelegate, UITableViewDataSourc
       }
     case .lineGraph?:
       if let lineGraphCell = tableView.dequeueReusableCell(withIdentifier: LineChartCell.reuseIdentifier, for: indexPath) as? LineChartCell {
-        lineGraphCell.data = newsData.priceData
+        var lineChartData = LineChartData()
+        lineChartData.addDataSet(newsData.priceData)
+        lineGraphCell.data = lineChartData
         cell = lineGraphCell
       }
     case .timePeriod?:
