@@ -17,6 +17,14 @@ protocol VerifyRecoveryWordsViewControllerDelegate: AnyObject {
 
 final class VerifyRecoveryWordsViewController: BaseViewController, StoryboardInitializable {
 
+  static func newInstance(withDelegate delegate: VerifyRecoveryWordsViewControllerDelegate,
+                          recoveryWords words: [String]) -> VerifyRecoveryWordsViewController {
+    let controller = VerifyRecoveryWordsViewController.makeFromStoryboard()
+    controller.generalCoordinationDelegate = delegate
+    controller.recoveryWords = words
+    return controller
+  }
+
   // MARK: outlets
   @IBOutlet var titleLabel: OnboardingTitleLabel!
   @IBOutlet var closeButton: UIButton!
