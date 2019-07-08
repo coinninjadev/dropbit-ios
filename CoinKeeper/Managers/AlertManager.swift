@@ -482,4 +482,3 @@ enum AlertManagerButtonLayout {
   case horizontal
   case vertical
 }
-

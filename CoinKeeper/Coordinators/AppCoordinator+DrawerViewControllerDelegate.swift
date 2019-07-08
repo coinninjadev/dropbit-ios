@@ -64,7 +64,7 @@ extension AppCoordinator: DrawerViewControllerDelegate {
     assignCoordinationDelegate(to: controller)
     navigationController.pushViewController(controller, animated: true)
   }
-  
+
   func priceHeaderWasTouched() {
     analyticsManager.track(event: .priceButtonPressed, with: nil)
     drawerController?.toggle(.left, animated: true, completion: nil)

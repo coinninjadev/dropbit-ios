@@ -29,6 +29,7 @@ extension AppCoordinator {
   }
 
   func enterApp() {
+    let overviewViewController = makeOverviewController()
     let mainViewController = makeTransactionHistory()
     let settingsViewController = DrawerViewController.makeFromStoryboard()
     let drawerController = setupDrawerViewController(centerViewController: mainViewController,
@@ -196,6 +197,11 @@ extension AppCoordinator {
     drawerController?.shouldStretchDrawer = false
     drawerController?.showsShadow = false
     return drawerController!
+  }
+  
+  private func makeOverviewController() -> WalletOverviewViewController {
+    let transactionHistoryViewController = makeTransactionHistory()
+    let requestViewController = 
   }
 
 }

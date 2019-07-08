@@ -29,12 +29,12 @@ class DrawerViewController: BaseViewController, StoryboardInitializable {
       self.configureDrawerData()
     }
   }
-  
+
   var coordinationDelegate: DrawerViewControllerDelegate? {
     return generalCoordinationDelegate as? DrawerViewControllerDelegate
   }
   var drawerTableViewDDS: DrawerTableViewDDS?
-  
+
   var badgeNotificationToken: NotificationToken?
 
   private let versionKey: String = "CFBundleShortVersionString"
@@ -57,21 +57,21 @@ class DrawerViewController: BaseViewController, StoryboardInitializable {
     view.backgroundColor = .darkBlueBackground
     setupDataSource()
   }
-  
+
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     configureDrawerData()
   }
-  
+
   private func setupDataSource() {
     let headerActionHandler: () -> Void = { [weak self] in
       self?.coordinationDelegate?.priceHeaderWasTouched()
     }
-    
+
     let settingsActionHandler: (DrawerData.Kind) -> Void = { [weak self] (kind) in
       self?.buttonWasTouched(for: kind)
     }
-    
+
     drawerTableViewDDS = DrawerTableViewDDS(headerActionHandler: headerActionHandler, settingsActionHandler: settingsActionHandler)
     drawerTableView.delegate = drawerTableViewDDS
     drawerTableView.dataSource = drawerTableViewDDS

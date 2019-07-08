@@ -10,10 +10,10 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--PriceViewController-->
+        <!--News View Controller-->
         <scene sceneID="GkJ-O7-seA">
             <objects>
-                <viewController storyboardIdentifier="PriceViewController" title="PriceViewController" id="DJB-Ia-jtv" customClass="NewsViewController" customModule="DropBit" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="PriceViewController" id="DJB-Ia-jtv" customClass="NewsViewController" customModule="DropBit" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Aa6-TX-60I">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -45,7 +45,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cX4-wN-fqh" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="163.768115942029" y="89.732142857142847"/>
+            <point key="canvasLocation" x="-114" y="86"/>
         </scene>
     </scenes>
     <resources>

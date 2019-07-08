@@ -429,6 +429,12 @@
 		A22C43CE20F3C84000041DF6 /* RestoreWalletViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A22C43CD20F3C84000041DF6 /* RestoreWalletViewControllerTests.swift */; };
 		A24525352100EBC80024D5F8 /* Gifu.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A24525342100EBC80024D5F8 /* Gifu.framework */; };
 		A245C6D020D9537400D99983 /* RequestAddressBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = A245C6CF20D9537400D99983 /* RequestAddressBody.swift */; };
+		A246C82122CA562D00AF1F52 /* NetworkManager+NewsDataRequestable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A246C82022CA562D00AF1F52 /* NetworkManager+NewsDataRequestable.swift */; };
+		A246C82322CA6F1300AF1F52 /* PriceSummaryResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = A246C82222CA6F1300AF1F52 /* PriceSummaryResponse.swift */; };
+		A246C82522CB9AFB00AF1F52 /* NewsTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = A246C82422CB9AFA00AF1F52 /* NewsTarget.swift */; };
+		A246C82722CBA83F00AF1F52 /* PriceTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = A246C82622CBA83F00AF1F52 /* PriceTarget.swift */; };
+		A246C82922CCF87500AF1F52 /* WalletOverviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A246C82822CCF87500AF1F52 /* WalletOverviewViewController.swift */; };
+		A246C82D22CCF8A000AF1F52 /* WalletOverviewViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A246C82C22CCF8A000AF1F52 /* WalletOverviewViewController.storyboard */; };
 		A25923EC20C981770005B1A0 /* AnalyticsManagerError.swift in Sources */ = {isa = PBXBuildFile; fileRef = A25923EB20C981770005B1A0 /* AnalyticsManagerError.swift */; };
 		A260E8C720FCD482008343F9 /* LimitEditTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = A260E8C620FCD482008343F9 /* LimitEditTextField.swift */; };
 		A260E8CF20FCFE11008343F9 /* TutorialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A260E8CE20FCFE11008343F9 /* TutorialViewController.swift */; };
@@ -460,7 +466,6 @@
 		A2952F7722BBBAAB00BDCE65 /* NewsTitleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2952F6D22BBBAAA00BDCE65 /* NewsTitleCell.swift */; };
 		A2952F7822BBBAAB00BDCE65 /* CandlestickChartCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A2952F6E22BBBAAB00BDCE65 /* CandlestickChartCell.xib */; };
 		A2952F7A22BBBE9500BDCE65 /* TimePeriodButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2952F7922BBBE9500BDCE65 /* TimePeriodButton.swift */; };
-		A2952F7D22BD0B7600BDCE65 /* HistoricPriceResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2952F7B22BD0B7600BDCE65 /* HistoricPriceResponse.swift */; };
 		A2952F7E22BD0B7600BDCE65 /* NewsArticleResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2952F7C22BD0B7600BDCE65 /* NewsArticleResponse.swift */; };
 		A2952F8022BD1C9500BDCE65 /* NewsViewControllerDDS.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2952F7F22BD1C9500BDCE65 /* NewsViewControllerDDS.swift */; };
 		A2952F8222BD250100BDCE65 /* AppCoordinator+NewsViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2952F8122BD250100BDCE65 /* AppCoordinator+NewsViewControllerDelegate.swift */; };
@@ -1324,6 +1329,12 @@
 		A22C43CD20F3C84000041DF6 /* RestoreWalletViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestoreWalletViewControllerTests.swift; sourceTree = "<group>"; };
 		A24525342100EBC80024D5F8 /* Gifu.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Gifu.framework; path = Carthage/Build/iOS/Gifu.framework; sourceTree = "<group>"; };
 		A245C6CF20D9537400D99983 /* RequestAddressBody.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestAddressBody.swift; sourceTree = "<group>"; };
+		A246C82022CA562D00AF1F52 /* NetworkManager+NewsDataRequestable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NetworkManager+NewsDataRequestable.swift"; sourceTree = "<group>"; };
+		A246C82222CA6F1300AF1F52 /* PriceSummaryResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PriceSummaryResponse.swift; sourceTree = "<group>"; };
+		A246C82422CB9AFA00AF1F52 /* NewsTarget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsTarget.swift; sourceTree = "<group>"; };
+		A246C82622CBA83F00AF1F52 /* PriceTarget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PriceTarget.swift; sourceTree = "<group>"; };
+		A246C82822CCF87500AF1F52 /* WalletOverviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletOverviewViewController.swift; sourceTree = "<group>"; };
+		A246C82C22CCF8A000AF1F52 /* WalletOverviewViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = WalletOverviewViewController.storyboard; sourceTree = "<group>"; };
 		A25923EB20C981770005B1A0 /* AnalyticsManagerError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsManagerError.swift; sourceTree = "<group>"; };
 		A260E8C620FCD482008343F9 /* LimitEditTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LimitEditTextField.swift; sourceTree = "<group>"; };
 		A260E8CE20FCFE11008343F9 /* TutorialViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialViewController.swift; sourceTree = "<group>"; };
@@ -1355,7 +1366,6 @@
 		A2952F6D22BBBAAA00BDCE65 /* NewsTitleCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewsTitleCell.swift; sourceTree = "<group>"; };
 		A2952F6E22BBBAAB00BDCE65 /* CandlestickChartCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CandlestickChartCell.xib; sourceTree = "<group>"; };
 		A2952F7922BBBE9500BDCE65 /* TimePeriodButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimePeriodButton.swift; sourceTree = "<group>"; };
-		A2952F7B22BD0B7600BDCE65 /* HistoricPriceResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HistoricPriceResponse.swift; sourceTree = "<group>"; };
 		A2952F7C22BD0B7600BDCE65 /* NewsArticleResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewsArticleResponse.swift; sourceTree = "<group>"; };
 		A2952F7F22BD1C9500BDCE65 /* NewsViewControllerDDS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsViewControllerDDS.swift; sourceTree = "<group>"; };
 		A2952F8122BD250100BDCE65 /* AppCoordinator+NewsViewControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppCoordinator+NewsViewControllerDelegate.swift"; sourceTree = "<group>"; };
@@ -2529,6 +2539,7 @@
 				3BEF22982260D42E001F6D25 /* SpendBitcoinViewController.swift */,
 				3BCBFCB7229EAE8800F633BA /* SupportViewController.swift */,
 				A2952F6122BA85F800BDCE65 /* NewsViewController.swift */,
+				A246C82822CCF87500AF1F52 /* WalletOverviewViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -2572,6 +2583,7 @@
 				3BEF229A2260D491001F6D25 /* SpendBitcoinViewController.storyboard */,
 				3BCBFCB3229EADF400F633BA /* SupportViewController.storyboard */,
 				A2952F6322BA88EC00BDCE65 /* NewsViewController.storyboard */,
+				A246C82C22CCF8A000AF1F52 /* WalletOverviewViewController.storyboard */,
 			);
 			path = Storyboards;
 			sourceTree = "<group>";
@@ -2788,8 +2800,8 @@
 				3B474160217FAE32004DA223 /* SubscriptionInfoResponse.swift */,
 				3B474162217FB589004DA223 /* SubscriptionAvailableTopicResponse.swift */,
 				3B8B19322289C1EF003BA4D7 /* UserIdentityResponse.swift */,
-				A2952F7B22BD0B7600BDCE65 /* HistoricPriceResponse.swift */,
 				A2952F7C22BD0B7600BDCE65 /* NewsArticleResponse.swift */,
+				A246C82222CA6F1300AF1F52 /* PriceSummaryResponse.swift */,
 			);
 			path = Responses;
 			sourceTree = "<group>";
@@ -3006,6 +3018,7 @@
 				B56E158E2167D89E003B69D4 /* NetworkManager+WalletAddressRequestRequestable.swift */,
 				3BF3B0C2217379B60021E45F /* NetworkManager+SubscribeToWalletRequestable.swift */,
 				3B474154217A4B4A004DA223 /* NetworkManager+NotificationNetworkInteractable.swift */,
+				A246C82022CA562D00AF1F52 /* NetworkManager+NewsDataRequestable.swift */,
 			);
 			path = NetworkManager;
 			sourceTree = "<group>";
@@ -3164,6 +3177,8 @@
 				3B474164217FB6A4004DA223 /* NotificationTopicSubscriptionTarget.swift */,
 				3BDFADFB2267AEFF0077DEF2 /* BlockstreamTarget.swift */,
 				3B8B19342289C44B003BA4D7 /* UserIdentityTarget.swift */,
+				A246C82422CB9AFA00AF1F52 /* NewsTarget.swift */,
+				A246C82622CBA83F00AF1F52 /* PriceTarget.swift */,
 			);
 			path = Targets;
 			sourceTree = "<group>";
@@ -3490,6 +3505,7 @@
 				3BEF229B2260D491001F6D25 /* SpendBitcoinViewController.storyboard in Resources */,
 				3B9779AA202E416700C9C933 /* Montserrat-Medium.ttf in Resources */,
 				3B82692B20337282009B11EC /* PinCreationViewController.storyboard in Resources */,
+				A246C82D22CCF8A000AF1F52 /* WalletOverviewViewController.storyboard in Resources */,
 				308F6F0D2180B6350094D6CB /* AddressTableViewCell.xib in Resources */,
 				3BF41AB2207506AC008B3D0A /* RequestPayViewController.storyboard in Resources */,
 				3B9779A6202E416700C9C933 /* Montserrat-BlackItalic.ttf in Resources */,
@@ -3761,6 +3777,7 @@
 				3B287CBB21020CC700A43E57 /* WalletAddressRequest.swift in Sources */,
 				3B30228121C9290D007F137A /* SyncRoutineError.swift in Sources */,
 				307DF11F2151676900260369 /* JSONValue.swift in Sources */,
+				A246C82522CB9AFB00AF1F52 /* NewsTarget.swift in Sources */,
 				3B8C40C12078D6F1008283A2 /* PresentableViewController.swift in Sources */,
 				B54A4215207FF310005B40A9 /* TransactionDetailSecondaryAmountLabel.swift in Sources */,
 				B5401C5F228C8DB1004C77BC /* AppCoordinator+RemoteNotifications.swift in Sources */,
@@ -3886,6 +3903,7 @@
 				3B82691C20330C6A009B11EC /* UIView+Xib.swift in Sources */,
 				B58AFF3B2194F0FF001BE563 /* AccessibleElement.swift in Sources */,
 				B5457128217E6F1700FF3A5A /* BodyCodable.swift in Sources */,
+				A246C82322CA6F1300AF1F52 /* PriceSummaryResponse.swift in Sources */,
 				3B8C40BF20784A2E008283A2 /* PresentationController.swift in Sources */,
 				A29CE10620A367DF00761B91 /* BitcoinAddressValidator.swift in Sources */,
 				3B695C2021CA9F9B007D0741 /* OperationQueueType.swift in Sources */,
@@ -3901,6 +3919,7 @@
 				B5DDB0F721DE69C100A25929 /* KeychainMigratorFactory.swift in Sources */,
 				B54D206420F926110057A694 /* UIImage+Mask.swift in Sources */,
 				B54159CE20A60C720048F495 /* WalletResponse.swift in Sources */,
+				A246C82122CA562D00AF1F52 /* NetworkManager+NewsDataRequestable.swift in Sources */,
 				B57B78DD20B4878F007B71CB /* CKDateFormatter.swift in Sources */,
 				B5A3BA602151940E005EE657 /* WalletAddressRequestsTarget.swift in Sources */,
 				30E96A312179FE2A008079B8 /* AppCoordinator+VerificationStatusViewControllerDelegate.swift in Sources */,
@@ -4083,7 +4102,6 @@
 				B5C5EDE721FA490A0032AC94 /* SharedPayloadCodable.swift in Sources */,
 				B505D4EA21050F2000C0C8FC /* CKPredicate.swift in Sources */,
 				A2893BBE20FD4C5A00E96B07 /* BasePageViewController.swift in Sources */,
-				A2952F7D22BD0B7600BDCE65 /* HistoricPriceResponse.swift in Sources */,
 				A29CE10220A3517800761B91 /* CompositeValidator.swift in Sources */,
 				B5CFA336221E008B002B1BDD /* CCMPhoneNumber+CoreDataProperties.swift in Sources */,
 				3B2EBF782232AB17003C0D0E /* CoreDataStackConfig.swift in Sources */,
@@ -4216,6 +4234,7 @@
 				3BBB3CF72298658C00C417EA /* TwitterAccessManager.swift in Sources */,
 				B552EDEC211E33D000332BB5 /* CoinNinjaUrlFactory.swift in Sources */,
 				B51F8236207BAD7500692F5B /* BalanceContainer.swift in Sources */,
+				A246C82922CCF87500AF1F52 /* WalletOverviewViewController.swift in Sources */,
 				3B474167217FB853004DA223 /* NotificationTopicSubscriptionBody.swift in Sources */,
 				B552EDFA211E33D000332BB5 /* CKPhoneNumberFormatter.swift in Sources */,
 				3BA360852090B0C100732C43 /* CKMTransaction+CoreDataProperties.swift in Sources */,
@@ -4226,6 +4245,7 @@
 				B52A25C92077E42100F636A1 /* GrayCellSeparator.swift in Sources */,
 				B5A5C5A32218AF430088C4D1 /* DeviceVerificationErrorMessageFactory.swift in Sources */,
 				A2893BC220FD515900E96B07 /* AppCoordinator+TutorialViewControllerDelegate.swift in Sources */,
+				A246C82722CBA83F00AF1F52 /* PriceTarget.swift in Sources */,
 				3BA9F603208F6CEA0047C213 /* AppCoordinator+CreateRecoveryWordsViewControllerDelegate.swift in Sources */,
 				A2952F7E22BD0B7600BDCE65 /* NewsArticleResponse.swift in Sources */,
 				B505A87E2076C96100AACB23 /* TransactionHistoryMemoLabel.swift in Sources */,

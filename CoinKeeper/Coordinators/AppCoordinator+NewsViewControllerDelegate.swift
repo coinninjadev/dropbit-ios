@@ -7,11 +7,17 @@
 //
 
 import Foundation
+import Charts
 import PromiseKit
 
 extension AppCoordinator: NewsViewControllerDelegate {
-  func viewControllerDidRequestNewsData() -> Promise<NewsData> {
-    return Promise { _ in } //TODO
+  
+  func viewControllerDidRequestPriceDataFor(period: PricePeriod) -> Promise<[PriceSummaryResponse]> {
+    return networkManager.requestPriceData(period: period)
   }
-
+  
+  func viewControllerDidRequestNewsData(count: Int) -> Promise<[NewsArticleResponse]> {
+    return networkManager.requestNewsData(count: count)
+  }
+  
 }

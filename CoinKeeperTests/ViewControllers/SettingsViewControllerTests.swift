@@ -65,7 +65,7 @@ class SettingsViewControllerTests: XCTestCase {
     sut.closeButton.sendActions(for: .touchUpInside)
     XCTAssertTrue(mockCoordinator.didSelectCloseWasCalled, "should tell delegate that close was tapped")
   }
-  
+
   func testResyncBlockchainButtonTellsDelegate() {
     sut.resyncBlockchainButton.sendActions(for: .touchUpInside)
     XCTAssertTrue(mockCoordinator.resyncBlockchainWasCalled, "should tell delegate that resync blockchain was tapped")
