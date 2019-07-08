@@ -8,12 +8,12 @@
 
 import Foundation
 
-public struct PriceSummaryResponse {
+public struct PriceSummaryResponse: ResponseDecodable {
   var average: Double
-  var time: Date
+  var time: String
 }
 
-extension PriceSummaryResponse: ResponseDecodable {
+extension PriceSummaryResponse {
 
   static var sampleJSON: String {
     return """
@@ -27,4 +27,9 @@ extension PriceSummaryResponse: ResponseDecodable {
   static var requiredStringKeys: [KeyPath<PriceSummaryResponse, String>] { return [] }
   static var optionalStringKeys: [WritableKeyPath<PriceSummaryResponse, String?>] { return [] }
 
+  static var decoder: JSONDecoder {
+    let decoder = JSONDecoder()
+    decoder.dateDecodingStrategy = .formatted(CKDateFormatter.rfc3339Decoding)
+    return decoder
+  }
 }

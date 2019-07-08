@@ -464,7 +464,7 @@
 		A2952F7522BBBAAB00BDCE65 /* PriceCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A2952F6B22BBBAAA00BDCE65 /* PriceCell.xib */; };
 		A2952F7622BBBAAB00BDCE65 /* TimePeriodCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2952F6C22BBBAAA00BDCE65 /* TimePeriodCell.swift */; };
 		A2952F7722BBBAAB00BDCE65 /* NewsTitleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2952F6D22BBBAAA00BDCE65 /* NewsTitleCell.swift */; };
-		A2952F7822BBBAAB00BDCE65 /* CandlestickChartCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A2952F6E22BBBAAB00BDCE65 /* CandlestickChartCell.xib */; };
+		A2952F7822BBBAAB00BDCE65 /* LineChartCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A2952F6E22BBBAAB00BDCE65 /* LineChartCell.xib */; };
 		A2952F7A22BBBE9500BDCE65 /* TimePeriodButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2952F7922BBBE9500BDCE65 /* TimePeriodButton.swift */; };
 		A2952F7E22BD0B7600BDCE65 /* NewsArticleResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2952F7C22BD0B7600BDCE65 /* NewsArticleResponse.swift */; };
 		A2952F8022BD1C9500BDCE65 /* NewsViewControllerDDS.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2952F7F22BD1C9500BDCE65 /* NewsViewControllerDDS.swift */; };
@@ -1365,7 +1365,7 @@
 		A2952F6B22BBBAAA00BDCE65 /* PriceCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PriceCell.xib; sourceTree = "<group>"; };
 		A2952F6C22BBBAAA00BDCE65 /* TimePeriodCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimePeriodCell.swift; sourceTree = "<group>"; };
 		A2952F6D22BBBAAA00BDCE65 /* NewsTitleCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewsTitleCell.swift; sourceTree = "<group>"; };
-		A2952F6E22BBBAAB00BDCE65 /* CandlestickChartCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CandlestickChartCell.xib; sourceTree = "<group>"; };
+		A2952F6E22BBBAAB00BDCE65 /* LineChartCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LineChartCell.xib; sourceTree = "<group>"; };
 		A2952F7922BBBE9500BDCE65 /* TimePeriodButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimePeriodButton.swift; sourceTree = "<group>"; };
 		A2952F7C22BD0B7600BDCE65 /* NewsArticleResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewsArticleResponse.swift; sourceTree = "<group>"; };
 		A2952F7F22BD1C9500BDCE65 /* NewsViewControllerDDS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsViewControllerDDS.swift; sourceTree = "<group>"; };
@@ -2118,7 +2118,7 @@
 			children = (
 				3BF88B81226F5B0D00B94474 /* TransactionDetail */,
 				A2952F6622BBBAAA00BDCE65 /* LineChartCell.swift */,
-				A2952F6E22BBBAAB00BDCE65 /* CandlestickChartCell.xib */,
+				A2952F6E22BBBAAB00BDCE65 /* LineChartCell.xib */,
 				A2952F6522BBBAA900BDCE65 /* NewsArticleCell.swift */,
 				A2952F6722BBBAAA00BDCE65 /* NewsArticleCell.xib */,
 				A2952F6D22BBBAAA00BDCE65 /* NewsTitleCell.swift */,
@@ -2654,22 +2654,6 @@
 				B584767120E141DC00F5FE60 /* SettingsTableViewSectionHeader.xib */,
 			);
 			path = "Headers and Footers";
-			sourceTree = "<group>";
-		};
-		5BB6ECD2971814341FA2FCF3 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				63C5071D16635A62B644AC73 /* Pods-DropBit.debug.xcconfig */,
-				E47B1B6E9AA0C981B766A8D7 /* Pods-DropBit.release.xcconfig */,
-				ED3F3F2155C088E6B4930C6F /* Pods-DropBit.beta.xcconfig */,
-				817A8AC8022D0C47811AFC08 /* Pods-DropBitTests.debug.xcconfig */,
-				DCB7CA4EA0A2BFA2CB7AE9E0 /* Pods-DropBitTests.release.xcconfig */,
-				1850DB40BC7A42155353D40C /* Pods-DropBitTests.beta.xcconfig */,
-				EDC83215FB3F2D74608884F0 /* Pods-DropBitUITests.debug.xcconfig */,
-				4B1F2B41BA41E088AF60B7ED /* Pods-DropBitUITests.release.xcconfig */,
-				62B2BB44634A9795262B6E2C /* Pods-DropBitUITests.beta.xcconfig */,
-			);
-			path = Pods;
 			sourceTree = "<group>";
 		};
 		6B8251E68FBC4F0C71D3348E /* Mocks */ = {
@@ -3490,7 +3474,7 @@
 				B56C414621F7713B005668E3 /* ConfirmPaymentMemoView.xib in Resources */,
 				4AF433262093BD4100B11BC9 /* DeviceVerificationViewController.storyboard in Resources */,
 				3B9779A7202E416700C9C933 /* Montserrat-Black.ttf in Resources */,
-				A2952F7822BBBAAB00BDCE65 /* CandlestickChartCell.xib in Resources */,
+				A2952F7822BBBAAB00BDCE65 /* LineChartCell.xib in Resources */,
 				3B9779B0202E416700C9C933 /* Montserrat-ExtraBold.ttf in Resources */,
 				3BF88B85226F5C9400B94474 /* TransactionHistoryDetailInvalidCell.xib in Resources */,
 				B5D834082249680600C45ABE /* SettingSwitchWithInfoCell.xib in Resources */,

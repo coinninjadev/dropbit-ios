@@ -26,23 +26,27 @@ public struct NewsArticleResponse: ResponseDecodable {
 
   let id: String
   let title: String
-  let desc: String
   let link: String
-  let thumb: String
-  let pubTime: String
-  let added: String
+  let description: String
+  let thumbnail: String?
   let source: String
-  let hidden: String
-  let newTime: String
-  let num: Int
+  let author: String
+  let pubTime: Date
+  let added: Date
 }
 
 extension NewsArticleResponse {
 
   static var sampleJSON: String { return "" }
-
+  
   static var requiredStringKeys: [KeyPath<NewsArticleResponse, String>] { return [] }
 
   static var optionalStringKeys: [WritableKeyPath<NewsArticleResponse, String?>] { return [] }
-
+  
+  static var decoder: JSONDecoder {
+    let decoder = JSONDecoder()
+    decoder.keyDecodingStrategy = .convertFromSnakeCase
+    decoder.dateDecodingStrategy = .secondsSince1970
+    return decoder
+  }
 }

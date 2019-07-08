@@ -40,14 +40,10 @@ class NewsViewControllerDDS: NSObject, UITableViewDelegate, UITableViewDataSourc
   
   weak var delegate: NewsViewControllerDDSDelegate?
 
-  var newsData: NewsData {
+  var newsData: NewsData = NewsData() {
     didSet {
       delegate?.delegateDidRequestTableView().reloadData()
     }
-  }
-
-  init(newsData: NewsData) {
-    self.newsData = newsData
   }
 
   func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -99,10 +95,10 @@ class NewsViewControllerDDS: NSObject, UITableViewDelegate, UITableViewDataSourc
       if let newsCell = tableView.dequeueReusableCell(withIdentifier: NewsArticleCell.reuseIdentifier, for: indexPath) as? NewsArticleCell,
         let article = newsData.articles[safe: indexPath.row - 2] {
         newsCell.titleLabel.text = article.title
-        newsCell.sourceLabel.text = article.source + " - " + article.newTime
+        newsCell.sourceLabel.text = article.source
 
-        if article.thumb != "" {
-          newsCell.imageURL = article.thumb
+        if article.thumbnail != "" {
+          newsCell.imageURL = article.thumbnail ?? ""
         } else {
           newsCell.source = NewsArticleResponse.Source(rawValue: article.source) ?? .btc
         }

@@ -10,6 +10,7 @@ import Foundation
 import UIKit
 import Charts
 import PromiseKit
+import os.log
 
 protocol NewsViewControllerDelegate: ViewControllerDismissable {
   func viewControllerDidRequestNewsData(count: Int) -> Promise<[NewsArticleResponse]>
@@ -19,6 +20,8 @@ protocol NewsViewControllerDelegate: ViewControllerDismissable {
 class NewsViewController: BaseViewController, StoryboardInitializable {
 
   @IBOutlet var tableView: UITableView!
+  
+  let logger = OSLog(subsystem: "com.coinninja.coinkeeper.newsviewcontroller", category: "news_view_controller")
 
   private lazy var formatter: NumberFormatter = {
     let formatter = NumberFormatter()
@@ -76,6 +79,8 @@ class NewsViewController: BaseViewController, StoryboardInitializable {
     tableView.registerNib(cellType: NewsTitleCell.self)
     tableView.registerNib(cellType: LineChartCell.self)
     tableView.registerNib(cellType: NewsArticleCell.self)
+    
+    newsViewControllerDDS = NewsViewControllerDDS()
 
     newsViewControllerDDS?.delegate = self
     tableView.delegate = newsViewControllerDDS
@@ -113,8 +118,12 @@ class NewsViewController: BaseViewController, StoryboardInitializable {
       let allTimeData = self.configureAllTimeData(data: allTimePrice)
       newsData.allTimePriceData = LineChartDataSet(values: allTimeData.allTime, label: nil)
       newsData.yearlyPriceData = LineChartDataSet(values: allTimeData.year, label: nil)
+    }.catch(on: .main, policy: .allErrors) { error in
+      os_log("News data failed: %@", log: self.logger, type: .error, error.localizedDescription)
+    }.finally(on: .main) {
       self.newsViewControllerDDS?.newsData = newsData
     }
+    
   }
 
   private func configureMonthlyData(data: [PriceSummaryResponse]) -> (week: [ChartDataEntry], month: [ChartDataEntry]) {

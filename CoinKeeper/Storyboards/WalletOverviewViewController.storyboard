@@ -11,7 +11,7 @@
         <!--Wallet Overview View Controller-->
         <scene sceneID="Ys1-F5-Szy">
             <objects>
-                <pageViewController storyboardIdentifier="WalletOverviewViewController" autoresizesArchivedViewToFullSize="NO" transitionStyle="pageCurl" navigationOrientation="horizontal" spineLocation="min" id="qIe-pV-Lx9" customClass="WalletOverviewViewController" customModule="DropBit" customModuleProvider="target" sceneMemberID="viewController"/>
+                <pageViewController storyboardIdentifier="WalletOverviewViewController" autoresizesArchivedViewToFullSize="NO" transitionStyle="scroll" navigationOrientation="horizontal" spineLocation="none" id="qIe-pV-Lx9" customClass="WalletOverviewViewController" customModule="DropBit" customModuleProvider="target" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Xo4-RV-LqL" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-252" y="70"/>

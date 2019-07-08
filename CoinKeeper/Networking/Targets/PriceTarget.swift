@@ -31,7 +31,7 @@ public enum PriceTarget: CoinNinjaTargetType {
 extension PriceTarget {
 
   var basePath: String {
-    return "historic"
+    return "pricing/historic"
   }
 
   var subPath: String? {
