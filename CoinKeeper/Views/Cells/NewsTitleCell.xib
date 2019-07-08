@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="TZV-uq-PXN" customClass="NewsTitleCell" customModule="DropBit" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="TZV-uq-PXN" id="956-c4-boS">
+                <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view alpha="0.40000000000000002" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZCl-tN-rMU">
+                        <rect key="frame" x="15" y="42" width="340" height="1.5"/>
+                        <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="1.5" id="HLG-Vz-EIr"/>
+                        </constraints>
+                    </view>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="News" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="geQ-aN-k0a">
+                        <rect key="frame" x="16" y="11.5" width="43" height="21"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="ZCl-tN-rMU" firstAttribute="leading" secondItem="956-c4-boS" secondAttribute="leading" constant="15" id="gAl-ve-eZA"/>
+                    <constraint firstAttribute="bottom" secondItem="ZCl-tN-rMU" secondAttribute="bottom" id="rK2-fS-5OE"/>
+                    <constraint firstAttribute="trailing" secondItem="ZCl-tN-rMU" secondAttribute="trailing" constant="20" id="tYn-fi-nzz"/>
+                    <constraint firstItem="geQ-aN-k0a" firstAttribute="leading" secondItem="956-c4-boS" secondAttribute="leadingMargin" id="zBH-VG-1JV"/>
+                    <constraint firstItem="geQ-aN-k0a" firstAttribute="centerY" secondItem="956-c4-boS" secondAttribute="centerY" id="zqA-Od-M8i"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="titleLabel" destination="geQ-aN-k0a" id="67W-0u-YEV"/>
+            </connections>
+            <point key="canvasLocation" x="-111.2" y="111.54422788605699"/>
+        </tableViewCell>
+    </objects>
+</document>

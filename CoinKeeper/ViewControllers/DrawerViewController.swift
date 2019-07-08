@@ -15,6 +15,7 @@ protocol DrawerViewControllerDelegate: CurrencyValueDataSourceType & BadgeUpdate
   func spendButtonWasTouched()
   func supportButtonWasTouched()
   func getBitcoinButtonWasTouched()
+  func priceHeaderWasTouched()
   var badgeManager: BadgeManagerType { get }
 }
 
@@ -28,11 +29,12 @@ class DrawerViewController: BaseViewController, StoryboardInitializable {
       self.configureDrawerData()
     }
   }
+  
   var coordinationDelegate: DrawerViewControllerDelegate? {
     return generalCoordinationDelegate as? DrawerViewControllerDelegate
   }
   var drawerTableViewDDS: DrawerTableViewDDS?
-
+  
   var badgeNotificationToken: NotificationToken?
 
   private let versionKey: String = "CFBundleShortVersionString"
@@ -53,10 +55,24 @@ class DrawerViewController: BaseViewController, StoryboardInitializable {
     drawerTableView.registerHeaderFooter(headerFooterType: DrawerTableViewHeader.self)
 
     view.backgroundColor = .darkBlueBackground
-
-    drawerTableViewDDS = DrawerTableViewDDS { [weak self] (kind) in
+    setupDataSource()
+  }
+  
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+    configureDrawerData()
+  }
+  
+  private func setupDataSource() {
+    let headerActionHandler: () -> Void = { [weak self] in
+      self?.coordinationDelegate?.priceHeaderWasTouched()
+    }
+    
+    let settingsActionHandler: (DrawerData.Kind) -> Void = { [weak self] (kind) in
       self?.buttonWasTouched(for: kind)
     }
+    
+    drawerTableViewDDS = DrawerTableViewDDS(headerActionHandler: headerActionHandler, settingsActionHandler: settingsActionHandler)
     drawerTableView.delegate = drawerTableViewDDS
     drawerTableView.dataSource = drawerTableViewDDS
     drawerTableView.backgroundColor = .clear
@@ -64,11 +80,6 @@ class DrawerViewController: BaseViewController, StoryboardInitializable {
     drawerTableView.separatorStyle = .none
     drawerTableView.alwaysBounceVertical = false
     drawerTableView.reloadData()
-  }
-
-  override func viewWillAppear(_ animated: Bool) {
-    super.viewWillAppear(animated)
-    configureDrawerData()
   }
 
   private func configureDrawerData() {

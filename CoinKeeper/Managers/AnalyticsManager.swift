@@ -98,6 +98,7 @@ enum AnalyticsManagerEventType: String {
   case dropBitMeReenabled = "DropBitMeReenabled"
   case sendTweetViaDropBit = "SendTweetViaDropBit"
   case sendTweetManually = "SendTweetManually"
+  case priceButtonPressed = "PriceButtonPressed"
 
   var id: String {
     return self.rawValue
