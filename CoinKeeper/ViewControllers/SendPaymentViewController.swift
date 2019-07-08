@@ -73,7 +73,7 @@ ValidatorAlertDisplayable {
   @IBOutlet var twitterButton: CompactActionButton!
   @IBOutlet var pasteButton: CompactActionButton!
 
-  @IBOutlet var sendButton: PrimaryActionButton!
+  @IBOutlet var nextButton: PrimaryActionButton!
   @IBOutlet var memoContainerView: SendPaymentMemoView!
   @IBOutlet var sendMaxButton: LightBorderedButton!
   @IBOutlet var toggleCurrencyButton: UIButton!
@@ -102,7 +102,7 @@ ValidatorAlertDisplayable {
     coordinationDelegate?.viewControllerDidPressScan(self, btcAmount: amount, primaryCurrency: primaryCurrency)
   }
 
-  @IBAction func performSend() {
+  @IBAction func performNext() {
     let amountString = sanitizedAmountString ?? ""
 
     do {
