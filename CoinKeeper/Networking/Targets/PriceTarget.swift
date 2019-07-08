@@ -46,7 +46,6 @@ extension PriceTarget {
     switch self {
     case .price(let period):
       return .requestParameters(parameters: ["period": period.urlString], encoding: URLEncoding.default)
-    default:  return .requestPlain
     }
   }
 

@@ -17,7 +17,10 @@ public enum NewsTarget: CoinNinjaTargetType {
 extension NewsTarget {
 
   var basePath: String {
-    return "items"
+    switch self {
+    case .news(let count):
+    return "news/feed/items?count=\(count)"
+    }
   }
 
   var subPath: String? {
@@ -29,11 +32,7 @@ extension NewsTarget {
   }
 
   public var task: Task {
-    switch self {
-    case .news(let count):
-      return .requestParameters(parameters: ["count": count], encoding: URLEncoding.default)
-    default:  return .requestPlain
-    }
+    return .requestPlain
   }
 
   public var headers: [String: String]? {

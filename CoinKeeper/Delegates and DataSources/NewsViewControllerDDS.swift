@@ -11,6 +11,10 @@ import UIKit
 import Charts
 import Moya
 
+protocol NewsViewControllerDDSDelegate: class {
+  func delegateDidRequestTableView() -> UITableView
+}
+
 struct NewsData {
   var newsActionHandler: (URL) -> Void = { _ in }
   var articles: [NewsArticleResponse] = []
@@ -33,10 +37,12 @@ class NewsViewControllerDDS: NSObject, UITableViewDelegate, UITableViewDataSourc
     case newsHeader = 3
     case article = 4
   }
+  
+  weak var delegate: NewsViewControllerDDSDelegate?
 
   var newsData: NewsData {
     didSet {
-      //TODO: Reload table view data
+      delegate?.delegateDidRequestTableView().reloadData()
     }
   }
 

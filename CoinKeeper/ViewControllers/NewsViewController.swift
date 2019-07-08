@@ -18,14 +18,7 @@ protocol NewsViewControllerDelegate: ViewControllerDismissable {
 
 class NewsViewController: BaseViewController, StoryboardInitializable {
 
-  @IBOutlet var closeButton: UIButton!
   @IBOutlet var tableView: UITableView!
-  @IBOutlet var priceLabel: UILabel! {
-    didSet {
-      priceLabel.textColor = .darkGrayText
-      priceLabel.font = .regular(15)
-    }
-  }
 
   private lazy var formatter: NumberFormatter = {
     let formatter = NumberFormatter()
@@ -44,16 +37,12 @@ class NewsViewController: BaseViewController, StoryboardInitializable {
   lazy var updateRatesRequest: ExchangeRatesRequest = { [weak self] rates in
     let value = rates[.USD] as NSNumber?
     self?.currentPrice = self?.formatter.string(from: value ?? 0.0)
-    self?.priceLabel.text = self?.currentPrice
+    //self?.priceLabel.text = self?.currentPrice TODO
     self?.tableView.reloadData()
   }
 
   required init?(coder aDecoder: NSCoder) {
     super.init(coder: aDecoder)
-  }
-
-  @IBAction func closeButtonWasTouched() {
-    dismiss(animated: true, completion: nil)
   }
 
   var coordinationDelegate: NewsViewControllerDelegate? {
@@ -88,6 +77,7 @@ class NewsViewController: BaseViewController, StoryboardInitializable {
     tableView.registerNib(cellType: LineChartCell.self)
     tableView.registerNib(cellType: NewsArticleCell.self)
 
+    newsViewControllerDDS?.delegate = self
     tableView.delegate = newsViewControllerDDS
     tableView.dataSource = newsViewControllerDDS
     tableView.isHidden = true
@@ -177,5 +167,12 @@ class NewsViewController: BaseViewController, StoryboardInitializable {
 
   @objc private func refreshDisplayedPrice() {
     currencyValueManager?.latestExchangeRates(responseHandler: updateRatesRequest)
+  }
+}
+
+extension NewsViewController: NewsViewControllerDDSDelegate {
+  
+  func delegateDidRequestTableView() -> UITableView {
+    return tableView
   }
 }

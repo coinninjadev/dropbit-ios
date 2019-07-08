@@ -199,14 +199,17 @@ extension AppCoordinator {
   }
 
   private func makeOverviewController() -> WalletOverviewViewController {
-    let overviewChildViewControllers: [BaseViewController] = [makeTransactionHistory(), RequestPayViewController.makeFromStoryboard(), NewsViewController.makeFromStoryboard()]
+    let transactionHistory = makeTransactionHistory()
+    let overviewChildViewControllers: [BaseViewController] =
+      [RequestPayViewController.makeFromStoryboard(), transactionHistory, NewsViewController.makeFromStoryboard()]
 
     for viewController in overviewChildViewControllers {
       assignCoordinationDelegate(to: viewController)
     }
 
     let overviewViewController = WalletOverviewViewController.makeFromStoryboard()
-    overviewViewController.setViewControllers(overviewChildViewControllers, direction: .forward, animated: false, completion: nil)
+    overviewViewController.baseViewControllers = overviewChildViewControllers
+    overviewViewController.setViewControllers([transactionHistory], direction: .forward, animated: false, completion: nil)
     return overviewViewController
   }
 

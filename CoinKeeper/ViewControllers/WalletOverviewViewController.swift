@@ -10,6 +10,8 @@ import Foundation
 import UIKit
 
 class WalletOverviewViewController: BasePageViewController, StoryboardInitializable {
+  
+  private var pageControl: UIPageControl = UIPageControl()
 
   enum ViewControllerIndex: Int {
     case newsViewController = 0
@@ -17,23 +19,30 @@ class WalletOverviewViewController: BasePageViewController, StoryboardInitializa
     case requestViewController = 2
   }
 
-  var baseViewControllers: [BaseViewController] = [] {
-    didSet {
-
-    }
-  }
+  var baseViewControllers: [BaseViewController] = []
 
   override func viewDidLoad() {
     super.viewDidLoad()
     dataSource = self
+
+    setupPageControl()
+    setupConstraints()
   }
 
-  override func setViewControllers(_ viewControllers: [UIViewController]?, direction: UIPageViewController.NavigationDirection,
-                                   animated: Bool, completion: ((Bool) -> Void)? = nil) {
-    super.setViewControllers(viewControllers, direction: direction, animated: animated, completion: completion)
-    guard let viewControllers = viewControllers, viewControllers.isNotEmpty else { return }
+  private func setupPageControl() {
+    pageControl.currentPage = 1
+    pageControl.pageIndicatorTintColor = .pageIndicator
+    pageControl.currentPageIndicatorTintColor = .black
+    pageControl.numberOfPages = baseViewControllers.count
+    view.addSubview(pageControl)
+    view.bringSubviewToFront(pageControl)
+  }
 
-    baseViewControllers = viewControllers.compactMap { $0 as? BaseViewController }
+  private func setupConstraints() {
+    let heightConstant: CGFloat = UIScreen.main.bounds.height * 0.06 + view.safeAreaInsets.bottom
+    pageControl.translatesAutoresizingMaskIntoConstraints = false
+    pageControl.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -heightConstant).isActive = true
+    pageControl.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
   }
 }
 
@@ -42,6 +51,8 @@ extension WalletOverviewViewController: UIPageViewControllerDataSource {
   func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
     guard let baseViewController = viewController as? BaseViewController,
       let index = baseViewControllers.firstIndex(of: baseViewController), index != ViewControllerIndex.newsViewController.rawValue else { return nil }
+    
+    pageControl.currentPage = index
 
     return baseViewControllers[safe: index + 1] ?? viewController
   }
@@ -50,6 +61,8 @@ extension WalletOverviewViewController: UIPageViewControllerDataSource {
     guard let baseViewController = viewController as? BaseViewController,
       let index = baseViewControllers.firstIndex(of: baseViewController),
       index != ViewControllerIndex.requestViewController.rawValue else { return nil }
+    
+    pageControl.currentPage = index
 
     return baseViewControllers[safe: index - 1] ?? viewController
   }
