@@ -385,6 +385,13 @@ class WalletAddressDataWorker: WalletAddressDataWorkerType {
     expiredRequests.forEach { response in
       CKMInvitation.updateIfExists(withAddressRequestResponse: response, side: .sent, isAcknowledged: true, in: context)
     }
+
+    // If address request was deleted from server and local invitation is still pending, mark it as expired
+    let responseIds = responses.map { $0.id }
+    let pendingSentInvites = CKMInvitation.find(withStatuses: [.requestSent], in: context)
+    for invite in pendingSentInvites where !responseIds.contains(invite.id) {
+      invite.status = .expired
+    }
   }
 
   //checks for invitations that were canceled by reciever or server
