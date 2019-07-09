@@ -9,41 +9,96 @@
 import Foundation
 import UIKit
 
-class WalletOverviewViewController: BasePageViewController, StoryboardInitializable {
+protocol WalletOverviewViewControllerDelegate: BalanceContainerDelegate & BadgeUpdateDelegate {
+  var badgeManager: BadgeManagerType { get }
+  var currencyController: CurrencyController { get }
+}
+
+class WalletOverviewViewController: BaseViewController, StoryboardInitializable {
+
+  @IBOutlet var balanceContainer: BalanceContainer!
+  @IBOutlet var pageViewController: UIPageViewController!
+  @IBOutlet var pageControl: UIPageControl!
   
-  private var pageControl: UIPageControl = UIPageControl()
+  let rateManager = ExchangeRateManager()
+  var badgeNotificationToken: NotificationToken?
+  weak var balanceProvider: ConvertibleBalanceProvider?
+  var balanceNotificationToken: NotificationToken?
 
   enum ViewControllerIndex: Int {
     case newsViewController = 0
     case transactionHistoryViewController = 1
     case requestViewController = 2
   }
+  
+  var coordinationDelegate: WalletOverviewViewControllerDelegate? {
+    return generalCoordinationDelegate as? WalletOverviewViewControllerDelegate
+  }
+  
+  weak var transactionHistoryViewController: TransactionHistoryViewController?
 
-  var baseViewControllers: [BaseViewController] = []
-
+  var baseViewControllers: [BaseViewController] = [] {
+    didSet {
+      transactionHistoryViewController = self.baseViewControllers.compactMap { $0 as? TransactionHistoryViewController }.first
+    }
+  }
+  
   override func viewDidLoad() {
     super.viewDidLoad()
-    dataSource = self
+    pageViewController.dataSource = self
+    
+    subscribeToRateAndBalanceUpdates()
+    updateRatesAndBalances()
 
     setupPageControl()
-    setupConstraints()
+    balanceContainer?.delegate = (generalCoordinationDelegate as? BalanceContainerDelegate)
+    (coordinationDelegate?.badgeManager).map(subscribeToBadgeNotifications)
   }
 
+  func preferredCurrency() -> CurrencyCode {
+    guard let selected = coordinationDelegate?.currencyController.selectedCurrency else { return .USD }
+    switch selected {
+    case .BTC:
+      return .BTC
+    case .fiat:
+      return .USD
+    }
+  }
+  
   private func setupPageControl() {
     pageControl.currentPage = 1
     pageControl.pageIndicatorTintColor = .pageIndicator
-    pageControl.currentPageIndicatorTintColor = .black
+    pageControl.currentPageIndicatorTintColor = .lightBlueTint
     pageControl.numberOfPages = baseViewControllers.count
-    view.addSubview(pageControl)
-    view.bringSubviewToFront(pageControl)
   }
 
-  private func setupConstraints() {
-    let heightConstant: CGFloat = UIScreen.main.bounds.height * 0.06 + view.safeAreaInsets.bottom
-    pageControl.translatesAutoresizingMaskIntoConstraints = false
-    pageControl.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -heightConstant).isActive = true
-    pageControl.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+}
+
+extension WalletOverviewViewController: BadgeDisplayable {
+
+  func didReceiveBadgeUpdate(badgeInfo: BadgeInfo) {
+    self.balanceContainer.leftButton.updateBadge(with: badgeInfo)
   }
+  
+}
+
+extension WalletOverviewViewController: BalanceDisplayable {
+  
+  var balanceLeftButtonType: BalanceContainerLeftButtonType { return .menu }
+  var primaryBalanceCurrency: CurrencyCode {
+    guard let selectedCurrency = coordinationDelegate?.selectedCurrency() else { return .BTC }
+    switch selectedCurrency {
+    case .BTC: return .BTC
+    case .fiat: return .USD
+    }
+  }
+  
+  func didUpdateExchangeRateManager(_ exchangeRateManager: ExchangeRateManager) {
+    rateManager.exchangeRates = exchangeRateManager.exchangeRates
+    coordinationDelegate?.currencyController.exchangeRates = exchangeRateManager.exchangeRates
+    baseViewControllers.compactMap { $0 as? ExchangeRateUpdateable }.forEach { $0.didUpdateExchangeRateManager(exchangeRateManager) }
+  }
+  
 }
 
 extension WalletOverviewViewController: UIPageViewControllerDataSource {
@@ -65,5 +120,13 @@ extension WalletOverviewViewController: UIPageViewControllerDataSource {
     pageControl.currentPage = index
 
     return baseViewControllers[safe: index - 1] ?? viewController
+  }
+}
+
+extension WalletOverviewViewController: SelectedCurrencyUpdatable {
+  func updateSelectedCurrency(to selectedCurrency: SelectedCurrency) {
+    updateViewWithBalance()
+    
+    baseViewControllers.compactMap { $0 as? SelectedCurrencyUpdatable }.forEach { $0.updateSelectedCurrency(to: selectedCurrency) }
   }
 }

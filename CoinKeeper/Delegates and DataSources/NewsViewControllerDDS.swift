@@ -25,7 +25,6 @@ struct NewsData {
   var weeklyPriceData: LineChartDataSet = LineChartDataSet()
   var dailyPriceData: LineChartDataSet = LineChartDataSet()
   var currentPrice: String = ""
-  var priceData: LineChartDataSet = LineChartDataSet() //TODO: Set to current data set
 }
 
 class NewsViewControllerDDS: NSObject, UITableViewDelegate, UITableViewDataSource {
@@ -78,7 +77,7 @@ class NewsViewControllerDDS: NSObject, UITableViewDelegate, UITableViewDataSourc
     case .lineGraph?:
       if let lineGraphCell = tableView.dequeueReusableCell(withIdentifier: LineChartCell.reuseIdentifier, for: indexPath) as? LineChartCell {
         var lineChartData = LineChartData()
-        lineChartData.addDataSet(newsData.priceData)
+        lineChartData.addDataSet(newsData.dayPriceData) //TODO
         lineGraphCell.data = lineChartData
         cell = lineGraphCell
       }
@@ -96,12 +95,6 @@ class NewsViewControllerDDS: NSObject, UITableViewDelegate, UITableViewDataSourc
         let article = newsData.articles[safe: indexPath.row - 2] {
         newsCell.titleLabel.text = article.title
         newsCell.sourceLabel.text = article.source
-
-        if article.thumbnail != "" {
-          newsCell.imageURL = article.thumbnail ?? ""
-        } else {
-          newsCell.source = NewsArticleResponse.Source(rawValue: article.source) ?? .btc
-        }
 
         cell = newsCell
       }

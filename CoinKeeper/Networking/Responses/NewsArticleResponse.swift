@@ -28,7 +28,6 @@ public struct NewsArticleResponse: ResponseDecodable {
   let title: String
   let link: String
   let description: String
-  let thumbnail: String?
   let source: String
   let author: String
   let pubTime: Date

@@ -18,7 +18,6 @@ import DZNEmptyDataSet
 protocol TransactionHistoryViewControllerDelegate: DeviceCountryCodeProvider &
   BalanceContainerDelegate &
   BadgeUpdateDelegate &
-  SelectedCurrencyUpdatable &
   TransactionShareable {
   func viewControllerShouldSeeTransactionDetails(for viewModel: TransactionHistoryDetailCellViewModel)
   func viewControllerDidRequestHistoryUpdate(_ viewController: TransactionHistoryViewController)
@@ -36,8 +35,7 @@ protocol TransactionHistoryViewControllerDelegate: DeviceCountryCodeProvider &
   func viewControllerDidRequestTutorial(_ viewController: UIViewController)
   func viewControllerDidTapGetBitcoin(_ viewController: UIViewController)
   func viewControllerDidTapSpendBitcoin(_ viewController: UIViewController)
-
-  var badgeManager: BadgeManagerType { get }
+  
   var currencyController: CurrencyController { get }
 }
 
@@ -58,11 +56,15 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
       sendReceiveActionView.actionDelegate = self
     }
   }
+  
+  var currencyValueManager: CurrencyValueDataSourceType?
+  var rateManager: ExchangeRateManager = ExchangeRateManager()
 
   private enum CollectionViewType {
     case summary, detail
     static let all: [CollectionViewType] = [.summary, .detail]
   }
+  
 
   private func collectionView(_ type: CollectionViewType) -> UICollectionView {
     switch type {
@@ -74,10 +76,8 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
   override func accessibleViewsAndIdentifiers() -> [AccessibleViewElement] {
     return [
       (self.view, .transactionHistory(.page)),
-      (balanceContainer.leftButton, .transactionHistory(.menu)),
       (sendReceiveActionView.receiveButton, .transactionHistory(.receiveButton)),
       (sendReceiveActionView.sendButton, .transactionHistory(.sendButton)),
-      (balanceContainer.balanceView, .transactionHistory(.balanceView)),
       (transactionHistoryNoBalanceView.learnAboutBitcoinButton, .transactionHistory(.tutorialButton))
     ]
   }
@@ -91,13 +91,8 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
 
   var deviceCountryCode: Int?
 
-  // BalanceDisplayable
-  @IBOutlet var balanceContainer: BalanceContainer!
-  let rateManager = ExchangeRateManager()
 
   weak var urlOpener: URLOpener?
-  weak var balanceProvider: ConvertibleBalanceProvider?
-  weak var balanceDelegate: BalanceContainerDelegate?
 
   override var generalCoordinationDelegate: AnyObject? {
     didSet {
@@ -113,7 +108,6 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
   var coordinationDelegate: TransactionHistoryViewControllerDelegate? {
     return generalCoordinationDelegate as? TransactionHistoryViewControllerDelegate
   }
-  var balanceNotificationToken: NotificationToken?
 
   var context: NSManagedObjectContext!
 
@@ -130,8 +124,6 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
     os_log("ending fetch: %f", log: self.logger, type: .debug, Date().timeIntervalSinceReferenceDate)
     return controller
   }()
-
-  var badgeNotificationToken: NotificationToken?
 
   func preferredCurrency() -> CurrencyCode {
     guard let selected = coordinationDelegate?.currencyController.selectedCurrency else { return .USD }
@@ -154,16 +146,11 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
     view.layoutIfNeeded()
     let percent: CGFloat = 0.2
     sendReceiveActionView.fade(style: .top, percent: percent)
-    detailCollectionViewHeightConstraint.constant = self.view.frame.height - balanceContainer.frame.height
+    detailCollectionViewHeightConstraint.constant = self.view.frame.height
     summaryCollectionViewBottomConstraint.constant = sendReceiveActionView.frame.height * percent * -1
 
-    balanceContainer?.delegate = (generalCoordinationDelegate as? BalanceContainerDelegate)
-    (coordinationDelegate?.badgeManager).map(subscribeToBadgeNotifications)
     coordinationDelegate?.viewControllerDidRequestBadgeUpdate(self)
 
-    self.balanceContainer.delegate = self.balanceDelegate
-    subscribeToRateAndBalanceUpdates()
-    updateRatesAndBalances()
 
     setupCollectionViews()
     self.frc.delegate = self
@@ -262,7 +249,7 @@ extension TransactionHistoryViewController { // Layout
   }
 
   private var detailCollectionViewHeight: CGFloat {
-    return self.view.frame.height - statusBarHeight - balanceContainer.frame.height
+    return self.view.frame.height - statusBarHeight
   }
 
   private func summaryCollectionViewLayout() -> UICollectionViewFlowLayout {
@@ -319,25 +306,6 @@ extension TransactionHistoryViewController: UICollectionViewDelegateFlowLayout {
     height += (transaction.memo?.asNilIfEmpty() != nil) ? 25 : 0
     return CGSize(width: self.view.frame.width, height: height)
   }
-}
-
-extension TransactionHistoryViewController: BalanceDisplayable {
-
-  var balanceLeftButtonType: BalanceContainerLeftButtonType { return .menu }
-  var primaryBalanceCurrency: CurrencyCode {
-    guard let selectedCurrency = coordinationDelegate?.selectedCurrency() else { return .BTC }
-    switch selectedCurrency {
-    case .BTC: return .BTC
-    case .fiat: return .USD
-    }
-  }
-
-  func didUpdateExchangeRateManager(_ exchangeRateManager: ExchangeRateManager) {
-    rateManager.exchangeRates = exchangeRateManager.exchangeRates
-    coordinationDelegate?.currencyController.exchangeRates = exchangeRateManager.exchangeRates
-    collectionViews.forEach { $0.reloadData() }
-  }
-
 }
 
 extension TransactionHistoryViewController: NSFetchedResultsControllerDelegate {
@@ -488,14 +456,6 @@ extension TransactionHistoryViewController: TransactionHistoryDetailCellDelegate
   }
 }
 
-extension TransactionHistoryViewController: BadgeDisplayable {
-
-  func didReceiveBadgeUpdate(badgeInfo: BadgeInfo) {
-    self.balanceContainer.leftButton.updateBadge(with: badgeInfo)
-  }
-
-}
-
 extension TransactionHistoryViewController: SendReceiveActionViewDelegate {
   func actionViewDidSelectReceive(_ view: UIView) {
     guard let coordinator = coordinationDelegate else { return }
@@ -515,13 +475,19 @@ extension TransactionHistoryViewController: SendReceiveActionViewDelegate {
 
 extension TransactionHistoryViewController: SelectedCurrencyUpdatable {
   func updateSelectedCurrency(to selectedCurrency: SelectedCurrency) {
-    coordinationDelegate?.updateSelectedCurrency(to: selectedCurrency)
-    updateViewWithBalance()
-
     let summaryIndexSet = IndexSet(integersIn: (0..<summaryCollectionView.numberOfSections))
     summaryCollectionView.reloadSections(summaryIndexSet)
     detailCollectionView.reloadData()
   }
+}
+
+extension TransactionHistoryViewController: ExchangeRateUpdateable {
+
+  func didUpdateExchangeRateManager(_ exchangeRateManager: ExchangeRateManager) {
+    rateManager.exchangeRates = exchangeRateManager.exchangeRates
+    coordinationDelegate?.currencyController.exchangeRates = exchangeRateManager.exchangeRates
+  }
+  
 }
 
 extension TransactionHistoryViewController: DZNEmptyDataSetDelegate, DZNEmptyDataSetSource {

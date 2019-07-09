@@ -180,8 +180,6 @@ extension AppCoordinator {
     let txHistory = TransactionHistoryViewController.makeFromStoryboard()
     assignCoordinationDelegate(to: txHistory)
     txHistory.context = persistenceManager.mainQueueContext()
-    txHistory.balanceProvider = self
-    txHistory.balanceDelegate = self
     txHistory.urlOpener = self
     return txHistory
   }
@@ -209,7 +207,8 @@ extension AppCoordinator {
 
     let overviewViewController = WalletOverviewViewController.makeFromStoryboard()
     overviewViewController.baseViewControllers = overviewChildViewControllers
-    overviewViewController.setViewControllers([transactionHistory], direction: .forward, animated: false, completion: nil)
+    overviewViewController.balanceProvider = self
+    overviewViewController.balanceDelegate = self
     return overviewViewController
   }
 
