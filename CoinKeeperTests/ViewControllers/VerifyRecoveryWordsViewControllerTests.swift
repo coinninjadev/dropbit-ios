@@ -151,7 +151,7 @@ class VerifyRecoveryWordsViewControllerTests: XCTestCase {
   class MockCoordinator: VerifyRecoveryWordsViewControllerDelegate {
 
     var wordVerificationSucceededWasCalled = false
-    func viewController(_ viewController: UIViewController, didSuccessfullyVerifyWords words: [String]) {
+    func viewControllerDidSuccessfullyVerifyWords(_ viewController: UIViewController) {
       wordVerificationSucceededWasCalled = true
     }
 

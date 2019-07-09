@@ -11,6 +11,7 @@ import PromiseKit
 @testable import DropBit
 
 class MockPersistenceKeychainManager: PersistenceKeychainType {
+
   func backup(recoveryWords words: [String], isBackedUp: Bool) -> Promise<Void> {
     return .value(())
   }
@@ -90,6 +91,11 @@ class MockPersistenceKeychainManager: PersistenceKeychainType {
   func oauthCredentials() -> TwitterOAuthStorage? {
     return nil
   }
+
+  func storeWalletWordsBackedUp(_ isBackedUp: Bool) -> Promise<Void> {
+    return Promise.value(())
+  }
+
 }
 
 class MockKeychainAccessorType: KeychainAccessorType {
