@@ -110,7 +110,7 @@ class CKKeychain: PersistenceKeychainType {
     }
   }
 
-  private func storeWalletWordsBackedUp(_ isBackedUp: Bool) -> Promise<Void> {
+  func storeWalletWordsBackedUp(_ isBackedUp: Bool) -> Promise<Void> {
     return self.storeOnSerialBackgroundQueue(value: NSNumber(value: isBackedUp),
                                              key: CKKeychain.Key.walletWordsBackedUp.rawValue)
   }
