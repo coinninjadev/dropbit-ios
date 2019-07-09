@@ -61,7 +61,6 @@ protocol PersistenceKeychainType: AnyObject {
   func store(deviceID: String) -> Promise<Void>
   func store(recoveryWords words: [String], isBackedUp: Bool) -> Promise<Void>
   func store(userPin pin: String) -> Promise<Void>
-  func backup(recoveryWords words: [String], isBackedUp: Bool) -> Promise<Void>
 
   @discardableResult
   func store(oauthCredentials: TwitterOAuthStorage) -> Bool
