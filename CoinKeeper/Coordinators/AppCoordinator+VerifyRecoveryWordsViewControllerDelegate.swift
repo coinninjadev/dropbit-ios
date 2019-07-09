@@ -22,8 +22,8 @@ extension AppCoordinator: VerifyRecoveryWordsViewControllerDelegate {
     navigationController.topViewController()?.present(alert, animated: true)
   }
 
-  func viewController(_ viewController: UIViewController, didSuccessfullyVerifyWords words: [String]) {
-    saveSuccessfulWords(words: words, didBackUp: true)
+  func viewControllerDidSuccessfullyVerifyWords(_ viewController: UIViewController) {
+    self.persistenceManager.keychainManager.storeWalletWordsBackedUp(true)
       .done(on: .main) {
         self.analyticsManager.track(property: MixpanelProperty(key: .hasWallet, value: true))
         self.analyticsManager.track(property: MixpanelProperty(key: .wordsBackedUp, value: true))

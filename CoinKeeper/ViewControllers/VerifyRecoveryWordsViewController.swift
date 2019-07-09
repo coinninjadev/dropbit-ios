@@ -9,7 +9,7 @@
 import UIKit
 
 protocol VerifyRecoveryWordsViewControllerDelegate: AnyObject {
-  func viewController(_ viewController: UIViewController, didSuccessfullyVerifyWords words: [String])
+  func viewControllerDidSuccessfullyVerifyWords(_ viewController: UIViewController)
   func viewController(_ viewController: UIViewController, didSkipBackingUpWords words: [String])
   func viewControllerFailedWordVerification(_ viewController: UIViewController)
   func viewControllerWordVerificationMaxFailuresAttempted(_ viewController: UIViewController)
@@ -95,7 +95,7 @@ extension VerifyRecoveryWordsViewController: VerifyRecoveryWordsResultDelegate {
   }
 
   func secondMatchFound() {
-    coordinationDelegate?.viewController(self, didSuccessfullyVerifyWords: recoveryWords)
+    coordinationDelegate?.viewControllerDidSuccessfullyVerifyWords(self)
   }
 
   func errorFound() {
