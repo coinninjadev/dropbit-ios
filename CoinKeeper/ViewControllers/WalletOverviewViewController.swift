@@ -23,6 +23,7 @@ class WalletOverviewViewController: BaseViewController, StoryboardInitializable 
   let rateManager = ExchangeRateManager()
   var badgeNotificationToken: NotificationToken?
   weak var balanceProvider: ConvertibleBalanceProvider?
+  weak var balanceDelegate: BalanceContainerDelegate?
   var balanceNotificationToken: NotificationToken?
 
   enum ViewControllerIndex: Int {
