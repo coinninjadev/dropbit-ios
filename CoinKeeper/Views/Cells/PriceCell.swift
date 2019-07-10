@@ -24,7 +24,7 @@ class PriceCell: UITableViewCell {
     }
   }
 
-  private lazy var formatter: NumberFormatter = {
+  private lazy var grossAmountFormatter: NumberFormatter = {
     let formatter = NumberFormatter()
     formatter.maximumFractionDigits = 2
     formatter.minimumFractionDigits = 2
@@ -33,19 +33,27 @@ class PriceCell: UITableViewCell {
     formatter.numberStyle = .currency
     return formatter
   }()
+  
+  private lazy var percentageFormatter: NumberFormatter = {
+    let formatter = NumberFormatter()
+    formatter.maximumFractionDigits = 2
+    formatter.minimumFractionDigits = 2
+    formatter.locale = Locale.current
+    formatter.usesGroupingSeparator = true
+    return formatter
+  }()
 
-  var movement: (usd: Double, percent: Double)? {
+  var movement: (gross: Double, percentage: Double)? {
     didSet {
-      guard let movement = movement, movement.usd != 0, movement.percent != 0 else { return }
-      let displayString: String
-      if movement.percent < 0 {
-        displayString = formatter.string(from: (movement.usd as? NSNumber ?? 0.0)) ?? ""
-        movementLabel.textColor = .mango
-      } else {
-        displayString = "+" + (formatter.string(from: (movement.usd as? NSNumber ?? 0.0)) ?? "")
+      guard let movement = movement, movement.gross != 0, movement.percentage != 0 else { return }
+      var displayString: String = (grossAmountFormatter.string(from: (movement.gross as NSNumber)) ?? "") + " " + "(\(percentageFormatter.string(from: (movement.percentage as NSNumber)) ?? "")%)"
+      
+      if movement.gross > 0 {
         movementLabel.textColor = .successGreen
+      } else {
+        movementLabel.textColor = .mango
       }
-
+      
       movementLabel.text = displayString
     }
   }

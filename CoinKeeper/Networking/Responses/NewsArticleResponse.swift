@@ -27,6 +27,7 @@ public struct NewsArticleResponse: ResponseDecodable {
   let id: String
   let title: String
   let link: String
+  let thumbnail: String?
   let description: String
   let source: String
   let author: String
@@ -37,11 +38,11 @@ public struct NewsArticleResponse: ResponseDecodable {
 extension NewsArticleResponse {
 
   static var sampleJSON: String { return "" }
-  
+
   static var requiredStringKeys: [KeyPath<NewsArticleResponse, String>] { return [] }
 
   static var optionalStringKeys: [WritableKeyPath<NewsArticleResponse, String?>] { return [] }
-  
+
   static var decoder: JSONDecoder {
     let decoder = JSONDecoder()
     decoder.keyDecodingStrategy = .convertFromSnakeCase

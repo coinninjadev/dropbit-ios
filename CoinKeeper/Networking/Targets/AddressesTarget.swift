@@ -46,7 +46,6 @@ extension AddressesTarget {
       return .requestPlain
     }
   }
-  
 
   public var validationType: ValidationType {
     return .customCodes([200, 404])

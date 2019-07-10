@@ -25,15 +25,8 @@
                                     <constraint firstAttribute="height" constant="86" id="WR4-AT-Y4j"/>
                                 </constraints>
                             </view>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="e1j-lc-uTG" userLabel="Top Container" customClass="BalanceContainer" customModule="DropBit" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="20" width="375" height="66"/>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="66" id="eDx-vv-erX"/>
-                                </constraints>
-                            </view>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="GX7-DA-6R2">
-                                <rect key="frame" x="0.0" y="86" width="375" height="477"/>
+                                <rect key="frame" x="0.0" y="20" width="375" height="543"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="h1X-vI-UYr">
                                     <size key="itemSize" width="50" height="50"/>
@@ -66,16 +59,13 @@
                         <constraints>
                             <constraint firstItem="Asa-Mr-foF" firstAttribute="top" secondItem="dvX-tA-FaC" secondAttribute="bottom" id="2fz-yg-YoR"/>
                             <constraint firstItem="JGv-XL-uiR" firstAttribute="trailing" secondItem="Asa-Mr-foF" secondAttribute="trailing" id="6vm-Vl-UGC"/>
-                            <constraint firstItem="GX7-DA-6R2" firstAttribute="top" secondItem="e1j-lc-uTG" secondAttribute="bottom" id="7DN-fy-t7g"/>
-                            <constraint firstItem="e1j-lc-uTG" firstAttribute="top" secondItem="JGv-XL-uiR" secondAttribute="top" id="ExG-BB-kqq"/>
+                            <constraint firstItem="GX7-DA-6R2" firstAttribute="top" secondItem="JGv-XL-uiR" secondAttribute="top" id="7DN-fy-t7g"/>
                             <constraint firstItem="Vc7-dJ-Wpy" firstAttribute="leading" secondItem="JGv-XL-uiR" secondAttribute="leading" id="NAG-gI-65L"/>
-                            <constraint firstItem="e1j-lc-uTG" firstAttribute="leading" secondItem="JGv-XL-uiR" secondAttribute="leading" id="Nzs-VD-ECW"/>
                             <constraint firstItem="Asa-Mr-foF" firstAttribute="leading" secondItem="JGv-XL-uiR" secondAttribute="leading" id="RE9-49-PbQ"/>
                             <constraint firstItem="JGv-XL-uiR" firstAttribute="trailing" secondItem="GX7-DA-6R2" secondAttribute="trailing" id="WgW-MD-OhW"/>
                             <constraint firstItem="Av0-bG-xgJ" firstAttribute="top" secondItem="dvX-tA-FaC" secondAttribute="top" id="XAy-Ne-KPx"/>
                             <constraint firstItem="JGv-XL-uiR" firstAttribute="bottom" secondItem="Vc7-dJ-Wpy" secondAttribute="top" constant="104" id="Y0x-pf-ha3"/>
                             <constraint firstItem="GX7-DA-6R2" firstAttribute="leading" secondItem="JGv-XL-uiR" secondAttribute="leading" id="bLZ-Tk-V3L"/>
-                            <constraint firstItem="JGv-XL-uiR" firstAttribute="trailing" secondItem="e1j-lc-uTG" secondAttribute="trailing" id="dHd-fp-VJv"/>
                             <constraint firstItem="Av0-bG-xgJ" firstAttribute="leading" secondItem="JGv-XL-uiR" secondAttribute="leading" id="dhp-1R-Qqb"/>
                             <constraint firstItem="Av0-bG-xgJ" firstAttribute="trailing" secondItem="JGv-XL-uiR" secondAttribute="trailing" id="fX8-qv-xc2"/>
                             <constraint firstItem="JGv-XL-uiR" firstAttribute="trailing" secondItem="Vc7-dJ-Wpy" secondAttribute="trailing" id="kYG-VA-aQ2"/>
@@ -85,7 +75,6 @@
                         <viewLayoutGuide key="safeArea" id="JGv-XL-uiR"/>
                     </view>
                     <connections>
-                        <outlet property="balanceContainer" destination="e1j-lc-uTG" id="yAO-hI-K8s"/>
                         <outlet property="detailCollectionView" destination="Asa-Mr-foF" id="Kgh-Us-vv8"/>
                         <outlet property="detailCollectionViewHeightConstraint" destination="nxV-L6-VoR" id="2sa-Ok-h7E"/>
                         <outlet property="detailCollectionViewTopConstraint" destination="2fz-yg-YoR" id="jcL-Eg-gOh"/>

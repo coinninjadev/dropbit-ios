@@ -25,15 +25,26 @@
                                     <constraint firstAttribute="height" constant="66" id="vVU-Kj-8GK"/>
                                 </constraints>
                             </view>
-                            <pageControl opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="3" translatesAutoresizingMaskIntoConstraints="NO" id="x4D-Q0-swY">
-                                <rect key="frame" x="188" y="118" width="39" height="37"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <containerView opaque="NO" contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Xpq-nw-rdL">
+                                <rect key="frame" x="0.0" y="118" width="414" height="744"/>
+                                <connections>
+                                    <segue destination="bBW-av-GGC" kind="embed" identifier="PageViewControllerSegue" id="5Om-x1-vjl"/>
+                                </connections>
+                            </containerView>
+                            <pageControl opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="3" translatesAutoresizingMaskIntoConstraints="NO" id="x4D-Q0-swY">
+                                <rect key="frame" x="188" y="90" width="39" height="37"/>
                             </pageControl>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstItem="Xpq-nw-rdL" firstAttribute="trailing" secondItem="Ara-cI-e6Q" secondAttribute="trailing" id="6t4-u9-0cf"/>
+                            <constraint firstItem="Ara-cI-e6Q" firstAttribute="bottom" secondItem="Xpq-nw-rdL" secondAttribute="bottom" id="9pc-we-Clb"/>
+                            <constraint firstItem="x4D-Q0-swY" firstAttribute="top" secondItem="Ara-cI-e6Q" secondAttribute="top" constant="50" id="Dzm-j8-dpw"/>
                             <constraint firstItem="yEy-5P-WRf" firstAttribute="leading" secondItem="Ara-cI-e6Q" secondAttribute="leading" id="RC7-kU-b0b"/>
                             <constraint firstItem="yEy-5P-WRf" firstAttribute="top" secondItem="Ara-cI-e6Q" secondAttribute="top" id="TnL-wg-kMl"/>
+                            <constraint firstItem="Xpq-nw-rdL" firstAttribute="leading" secondItem="Ara-cI-e6Q" secondAttribute="leading" id="WN3-QL-ogq"/>
+                            <constraint firstItem="x4D-Q0-swY" firstAttribute="centerX" secondItem="Wuq-Ar-T2f" secondAttribute="centerX" id="d8G-2t-cQQ"/>
+                            <constraint firstItem="Xpq-nw-rdL" firstAttribute="top" secondItem="yEy-5P-WRf" secondAttribute="bottom" id="jtA-84-eFl"/>
                             <constraint firstItem="Ara-cI-e6Q" firstAttribute="trailing" secondItem="yEy-5P-WRf" secondAttribute="trailing" id="tzJ-zb-Gmx"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="Ara-cI-e6Q"/>
@@ -45,12 +56,12 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xNs-FC-VAi" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-988" y="-27"/>
+            <point key="canvasLocation" x="-988.40579710144937" y="-27.455357142857142"/>
         </scene>
         <!--Page View Controller-->
         <scene sceneID="HKG-Ar-0ZB">
             <objects>
-                <pageViewController autoresizesArchivedViewToFullSize="NO" transitionStyle="pageCurl" navigationOrientation="horizontal" spineLocation="min" id="bBW-av-GGC" sceneMemberID="viewController"/>
+                <pageViewController autoresizesArchivedViewToFullSize="NO" transitionStyle="scroll" navigationOrientation="horizontal" spineLocation="none" id="bBW-av-GGC" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vGF-Lu-IA4" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="35" y="-27"/>

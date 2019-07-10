@@ -16,31 +16,53 @@ protocol TimePeriodCellDelegate: class {
 class TimePeriodCell: UITableViewCell {
   enum Period {
     case daily
+    case week
     case monthly
+    case yearly
     case alltime
   }
 
   @IBOutlet var monthlyButton: TimePeriodButton!
+  @IBOutlet var dayButton: TimePeriodButton!
+  @IBOutlet var weekButton: TimePeriodButton!
+  @IBOutlet var yearButton: TimePeriodButton!
   @IBOutlet var allTimeButton: TimePeriodButton!
+
+  private var buttons: [TimePeriodButton] = []
 
   var delegate: TimePeriodCellDelegate?
 
   override func awakeFromNib() {
     super.awakeFromNib()
-    monthlyButton.selected()
-    allTimeButton.unselected()
+    dayButton.selected()
     backgroundColor = .lightGrayBackground
+    buttons = [monthlyButton, dayButton, weekButton, yearButton, allTimeButton]
   }
 
   @IBAction func timePeriodButtonWasSelected(_ button: UIButton!) {
-    if button == monthlyButton {
-      monthlyButton.selected()
-      allTimeButton.unselected()
+    guard let button = button as? TimePeriodButton else { return }
+    var selectedButton: TimePeriodButton
+
+    switch button {
+    case monthlyButton:
+      selectedButton = monthlyButton
       delegate?.timePeriodWasSelected(.monthly)
-    } else if button == allTimeButton {
-      monthlyButton.unselected()
-      allTimeButton.selected()
+    case weekButton:
+      selectedButton = weekButton
+      delegate?.timePeriodWasSelected(.week)
+    case yearButton:
+      selectedButton = yearButton
+      delegate?.timePeriodWasSelected(.yearly)
+    case allTimeButton:
+      selectedButton = allTimeButton
       delegate?.timePeriodWasSelected(.alltime)
+    default:
+      selectedButton = dayButton
+      delegate?.timePeriodWasSelected(.daily)
+    }
+
+    for button in buttons {
+      button == selectedButton ? button.selected() : button.unselected()
     }
   }
 }

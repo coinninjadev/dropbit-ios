@@ -11,28 +11,28 @@ import UIKit
 import Charts
 
 class LineChartCell: UITableViewCell {
-  @IBOutlet var lineChartCell: CandleStickChartView!
+  @IBOutlet var chart: LineChartView!
 
   var data: ChartData? {
     willSet {
       if newValue != data {
-        lineChartCell.animate(xAxisDuration: 2, easingOption: .easeOutBack)
+        chart.animate(xAxisDuration: 2, easingOption: .easeOutBack)
       }
     }
     didSet {
-      lineChartCell.data = data
+      chart.data = data
     }
   }
 
   override func awakeFromNib() {
     super.awakeFromNib()
-    lineChartCell.backgroundColor = .lightGrayBackground
-    lineChartCell.leftAxis.enabled = false
-    lineChartCell.rightAxis.enabled = false
-    lineChartCell.xAxis.enabled = false
-    lineChartCell.pinchZoomEnabled = false
-    lineChartCell.legend.form = .none
-    lineChartCell.doubleTapToZoomEnabled = false
+    chart.backgroundColor = .lightGrayBackground
+    chart.leftAxis.enabled = false
+    chart.rightAxis.enabled = true
+    chart.xAxis.enabled = false
+    chart.pinchZoomEnabled = false
+    chart.legend.form = .none
+    chart.doubleTapToZoomEnabled = false
 
     isUserInteractionEnabled = false
     selectionStyle = .none

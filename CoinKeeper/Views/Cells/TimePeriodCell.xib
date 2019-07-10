@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -21,15 +21,36 @@
                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="cV5-Mv-0xp">
                         <rect key="frame" x="10" y="0.0" width="355" height="43.5"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pdN-QL-VI0" customClass="TimePeriodButton" customModule="DropBit" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="0.0" width="175" height="43.5"/>
-                                <state key="normal" title="Month-by-month"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ifJ-Wx-mGD" userLabel="Day Button" customClass="TimePeriodButton" customModule="DropBit" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="0.0" width="67" height="43.5"/>
+                                <state key="normal" title="Day"/>
+                                <connections>
+                                    <action selector="timePeriodButtonWasSelected:" destination="8Lh-l5-1r6" eventType="touchUpInside" id="HHV-sf-aLk"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vnJ-QC-kKO" userLabel="Week Button" customClass="TimePeriodButton" customModule="DropBit" customModuleProvider="target">
+                                <rect key="frame" x="72" y="0.0" width="67" height="43.5"/>
+                                <state key="normal" title="Week"/>
+                                <connections>
+                                    <action selector="timePeriodButtonWasSelected:" destination="8Lh-l5-1r6" eventType="touchUpInside" id="4Ya-rv-p0y"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pdN-QL-VI0" userLabel="Month Button" customClass="TimePeriodButton" customModule="DropBit" customModuleProvider="target">
+                                <rect key="frame" x="144" y="0.0" width="67" height="43.5"/>
+                                <state key="normal" title="Month"/>
                                 <connections>
                                     <action selector="timePeriodButtonWasSelected:" destination="8Lh-l5-1r6" eventType="touchUpInside" id="O0f-Xm-K3F"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HOi-RN-V6q" userLabel="Year Button" customClass="TimePeriodButton" customModule="DropBit" customModuleProvider="target">
+                                <rect key="frame" x="216" y="0.0" width="67" height="43.5"/>
+                                <state key="normal" title="Year"/>
+                                <connections>
+                                    <action selector="timePeriodButtonWasSelected:" destination="8Lh-l5-1r6" eventType="touchUpInside" id="hOr-rJ-EE4"/>
+                                </connections>
+                            </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nPG-Sd-tUe" customClass="TimePeriodButton" customModule="DropBit" customModuleProvider="target">
-                                <rect key="frame" x="180" y="0.0" width="175" height="43.5"/>
+                                <rect key="frame" x="288" y="0.0" width="67" height="43.5"/>
                                 <state key="normal" title=" All time"/>
                                 <connections>
                                     <action selector="timePeriodButtonWasSelected:" destination="8Lh-l5-1r6" eventType="touchUpInside" id="Sc3-SS-YbS"/>
@@ -47,9 +68,12 @@
             </tableViewCellContentView>
             <connections>
                 <outlet property="allTimeButton" destination="nPG-Sd-tUe" id="cf9-WE-yiN"/>
+                <outlet property="dayButton" destination="ifJ-Wx-mGD" id="cQh-XB-QjG"/>
                 <outlet property="monthlyButton" destination="pdN-QL-VI0" id="UYS-11-pZi"/>
+                <outlet property="weekButton" destination="vnJ-QC-kKO" id="bPJ-DG-DiS"/>
+                <outlet property="yearButton" destination="HOi-RN-V6q" id="Fg3-TA-qfV"/>
             </connections>
-            <point key="canvasLocation" x="-62" y="47"/>
+            <point key="canvasLocation" x="-231" y="46"/>
         </tableViewCell>
     </objects>
 </document>

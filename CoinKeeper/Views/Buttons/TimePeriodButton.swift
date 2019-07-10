@@ -23,6 +23,7 @@ class TimePeriodButton: UIButton {
   private func initialize() {
     titleLabel?.font = .medium(10)
     backgroundColor = .lightGrayBackground
+    tintColor = .darkBlueBackground
     layer.cornerRadius = 15.0
   }
 

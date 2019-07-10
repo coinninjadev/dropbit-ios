@@ -16,7 +16,6 @@ import PhoneNumberKit
 import DZNEmptyDataSet
 
 protocol TransactionHistoryViewControllerDelegate: DeviceCountryCodeProvider &
-  BalanceContainerDelegate &
   BadgeUpdateDelegate &
   TransactionShareable {
   func viewControllerShouldSeeTransactionDetails(for viewModel: TransactionHistoryDetailCellViewModel)
@@ -35,7 +34,7 @@ protocol TransactionHistoryViewControllerDelegate: DeviceCountryCodeProvider &
   func viewControllerDidRequestTutorial(_ viewController: UIViewController)
   func viewControllerDidTapGetBitcoin(_ viewController: UIViewController)
   func viewControllerDidTapSpendBitcoin(_ viewController: UIViewController)
-  
+
   var currencyController: CurrencyController { get }
 }
 
@@ -56,7 +55,7 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
       sendReceiveActionView.actionDelegate = self
     }
   }
-  
+
   var currencyValueManager: CurrencyValueDataSourceType?
   var rateManager: ExchangeRateManager = ExchangeRateManager()
 
@@ -64,7 +63,6 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
     case summary, detail
     static let all: [CollectionViewType] = [.summary, .detail]
   }
-  
 
   private func collectionView(_ type: CollectionViewType) -> UICollectionView {
     switch type {
@@ -90,7 +88,6 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
   }()
 
   var deviceCountryCode: Int?
-
 
   weak var urlOpener: URLOpener?
 
@@ -150,7 +147,6 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
     summaryCollectionViewBottomConstraint.constant = sendReceiveActionView.frame.height * percent * -1
 
     coordinationDelegate?.viewControllerDidRequestBadgeUpdate(self)
-
 
     setupCollectionViews()
     self.frc.delegate = self
@@ -487,7 +483,7 @@ extension TransactionHistoryViewController: ExchangeRateUpdateable {
     rateManager.exchangeRates = exchangeRateManager.exchangeRates
     coordinationDelegate?.currencyController.exchangeRates = exchangeRateManager.exchangeRates
   }
-  
+
 }
 
 extension TransactionHistoryViewController: DZNEmptyDataSetDelegate, DZNEmptyDataSetSource {
