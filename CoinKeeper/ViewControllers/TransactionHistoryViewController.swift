@@ -41,7 +41,6 @@ protocol TransactionHistoryViewControllerDelegate: DeviceCountryCodeProvider &
 class TransactionHistoryViewController: BaseViewController, StoryboardInitializable {
 
   @IBOutlet var summaryCollectionView: UICollectionView!
-  @IBOutlet var summaryCollectionViewBottomConstraint: NSLayoutConstraint!
   @IBOutlet var detailCollectionView: UICollectionView!
   @IBOutlet var detailCollectionViewTopConstraint: NSLayoutConstraint!
   @IBOutlet var detailCollectionViewHeightConstraint: NSLayoutConstraint!
@@ -144,7 +143,6 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
     let percent: CGFloat = 0.2
     sendReceiveActionView.fade(style: .top, percent: percent)
     detailCollectionViewHeightConstraint.constant = self.view.frame.height
-    summaryCollectionViewBottomConstraint.constant = sendReceiveActionView.frame.height * percent * -1
 
     coordinationDelegate?.viewControllerDidRequestBadgeUpdate(self)
 
