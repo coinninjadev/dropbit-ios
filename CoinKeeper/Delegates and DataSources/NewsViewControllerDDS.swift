@@ -85,12 +85,12 @@ class NewsViewControllerDDS: NSObject {
 
         let chartData = ChartDataEntry(x: Double(index), y: data.average)
 
-        if index <= 168 {
-          weekData.append(chartData)
-          weekResponse.append(data)
+        if index <= 555 {
           monthData.append(chartData)
           monthResponse.append(data)
         } else {
+          weekData.append(chartData)
+          weekResponse.append(data)
           monthData.append(chartData)
           monthResponse.append(data)
         }
@@ -119,16 +119,16 @@ class NewsViewControllerDDS: NSObject {
       var yearData: [ChartDataEntry] = [], allTimeData: [ChartDataEntry] = []
       var yearResponse: [PriceSummaryResponse] = [], allTimeResponse: [PriceSummaryResponse] = []
 
-      for (index, data) in data.enumerated() {
-        let chartData = ChartDataEntry(x: Double(index), y: data.average)
+      for (index, priceData) in data.enumerated() {
+        let chartData = ChartDataEntry(x: Double(index), y: priceData.average)
 
-        if index < 365 {
+        if index <= data.count - 365 {
           allTimeData.append(chartData)
-          allTimeResponse.append(data)
-          yearData.append(chartData)
-          yearResponse.append(data)
+          allTimeResponse.append(priceData)
         } else {
-          allTimeResponse.append(data)
+          yearData.append(chartData)
+          yearResponse.append(priceData)
+          allTimeResponse.append(priceData)
           allTimeData.append(chartData)
         }
       }
