@@ -7,15 +7,12 @@
 //
 
 import Foundation
-import PhoneNumberKit
 import CoreData
-import os.log
 
 protocol SharedPayloadManagerType: AnyObject {
   func persistReceivedSharedPayloads(
     _ payloads: [Data],
     hasher: HashingManager,
-    kit: PhoneNumberKit,
     contactCacheManager: ContactCacheManagerType,
     in context: NSManagedObjectContext)
 }
@@ -24,7 +21,6 @@ class SharedPayloadManager: SharedPayloadManagerType {
 
   struct PayloadPersistenceDependencies {
     let hasher: HashingManager
-    let kit: PhoneNumberKit
     let salt: Data
     let contactCacheManager: ContactCacheManagerType
     let context: NSManagedObjectContext
@@ -33,20 +29,18 @@ class SharedPayloadManager: SharedPayloadManagerType {
   func persistReceivedSharedPayloads(
     _ payloads: [Data],
     hasher: HashingManager,
-    kit: PhoneNumberKit,
     contactCacheManager: ContactCacheManagerType,
     in context: NSManagedObjectContext) {
     let salt: Data
     do {
       salt = try hasher.salt()
     } catch {
-      os_log("Failed to get salt for hashing shared payload phone number: %@", log: logger, type: .error, error.localizedDescription)
+      log.error(error, message: "Failed to get salt for hashing shared payload phone number")
       return
     }
 
     let dependencies = PayloadPersistenceDependencies(
       hasher: hasher,
-      kit: kit,
       salt: salt,
       contactCacheManager: contactCacheManager,
       context: context
@@ -62,7 +56,6 @@ class SharedPayloadManager: SharedPayloadManagerType {
   }
 
   // MARK: private
-  private let logger = OSLog(subsystem: "com.coinninja.coinkeeper.database", category: "shared_payloads")
 
   private func persistReceivedV1SharedPayloads(_ payloads: [SharedPayloadV1], with deps: PayloadPersistenceDependencies) {
 
@@ -71,7 +64,7 @@ class SharedPayloadManager: SharedPayloadManagerType {
 
       let memoWasShared = configureTransaction(tx, withMemoIfAppropriate: payload.info.memo)
       let phoneNumber = payload.profile.globalPhoneNumber()
-      let phoneNumberHash = deps.hasher.hash(phoneNumber: phoneNumber, salt: deps.salt, parsedNumber: nil, kit: deps.kit)
+      let phoneNumberHash = deps.hasher.hash(phoneNumber: phoneNumber, salt: deps.salt, parsedNumber: nil)
 
       if tx.phoneNumber == nil, let inputs = ManagedPhoneNumberInputs(phoneNumber: phoneNumber) {
         tx.phoneNumber = CKMPhoneNumber.findOrCreate(withInputs: inputs,
@@ -133,8 +126,7 @@ class SharedPayloadManager: SharedPayloadManagerType {
 
     let phoneNumberHash = deps.hasher.hash(phoneNumber: phoneNumber,
                                            salt: deps.salt,
-                                           parsedNumber: nil,
-                                           kit: deps.kit)
+                                           parsedNumber: nil)
     tx.phoneNumber = CKMPhoneNumber.findOrCreate(withInputs: inputs,
                                                  phoneNumberHash: phoneNumberHash,
                                                  in: deps.context)

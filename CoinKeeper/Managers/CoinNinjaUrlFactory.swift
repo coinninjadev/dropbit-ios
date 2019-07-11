@@ -28,6 +28,7 @@ struct CoinNinjaUrlFactory {
     case sharedMemosTooltip
     case regularTransactionTooltip
     case dropbitTransactionTooltip
+    case adjustableFeesTooltip
     case dustProtection
     case download
     case spendBitcoinOnline
@@ -69,6 +70,7 @@ struct CoinNinjaUrlFactory {
            .sharedMemosTooltip,
            .dustProtection,
            .download,
+           .adjustableFeesTooltip,
            .regularTransactionTooltip,
            .dropbitTransactionTooltip:
         return "https://dropbit.app/"
@@ -124,6 +126,8 @@ struct CoinNinjaUrlFactory {
         return "\(tooltipBreadcrumb)dropbittransaction"
       case .dustProtection:
         return "\(tooltipBreadcrumb)dustprotection"
+      case .adjustableFeesTooltip:
+        return "\(tooltipBreadcrumb)fees"
       case .spendBitcoinOnline:
         return "news/webview/load-online"
       case .spendBitcoinAroundMe(let coordinate):

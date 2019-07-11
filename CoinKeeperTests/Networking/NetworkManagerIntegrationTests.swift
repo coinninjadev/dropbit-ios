@@ -66,7 +66,7 @@ class NetworkManagerIntegrationTests: XCTestCase {
   func testMaxFeesThrowsError() {
     let sample = CheckInResponse.sampleInstance()!
     let invalidFee = FeesResponse.validFeeCeiling + 1
-    let testFees = FeesResponse(max: 1, avg: 1, min: invalidFee)
+    let testFees = FeesResponse(fast: 1, med: 1, slow: invalidFee)
     let testCheckInResponse = CheckInResponse(blockheight: sample.blockheight, fees: testFees, pricing: sample.pricing)
     cnProvider.appendResponseStub(data: testCheckInResponse.asData())
 
@@ -76,8 +76,8 @@ class NetworkManagerIntegrationTests: XCTestCase {
       .done { _ in
         XCTFail("Should not return valid response")
       }.catch { error in
-        let expectedPath = FeesResponseKey.min.path
-        let expectedValue = String(testCheckInResponse.fees.min)
+        let expectedPath = FeesResponseKey.slow.path
+        let expectedValue = String(testCheckInResponse.fees.good)
 
         guard let networkError = error as? CKNetworkError,
           case let .invalidValue(path, value, _) = networkError else {

@@ -9,7 +9,6 @@
 import CNBitcoinKit
 import CoreData
 import PromiseKit
-import PhoneNumberKit
 import Strongbox
 
 protocol PersistenceManagerType: DeviceCountryCodeProvider {
@@ -37,7 +36,6 @@ protocol PersistenceManagerType: DeviceCountryCodeProvider {
 
   func persistReceivedSharedPayloads(
     _ payloads: [Data],
-    kit: PhoneNumberKit,
     in context: NSManagedObjectContext)
 
   /// Look for any transactions sent to a phone number without a contact name, and provide a name if found, as a convenience when viewing tx history
@@ -62,8 +60,8 @@ protocol PersistenceKeychainType: AnyObject {
   func store(valueToHash value: String?, key: CKKeychain.Key) -> Promise<Void>
   func store(deviceID: String) -> Promise<Void>
   func store(recoveryWords words: [String], isBackedUp: Bool) -> Promise<Void>
+  func storeWalletWordsBackedUp(_ isBackedUp: Bool) -> Promise<Void>
   func store(userPin pin: String) -> Promise<Void>
-  func backup(recoveryWords words: [String], isBackedUp: Bool) -> Promise<Void>
 
   @discardableResult
   func store(oauthCredentials: TwitterOAuthStorage) -> Bool

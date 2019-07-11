@@ -9,7 +9,6 @@
 import Foundation
 import Moya
 import PromiseKit
-import os.log
 
 /// Closure type for signing CoinNinja API requests and adding other standard headers
 /// Data should be the request body
@@ -28,10 +27,6 @@ class CoinNinjaProvider: CoinNinjaProviderType {
 }
 
 extension CoinNinjaProviderType {
-
-  var logger: OSLog {
-    return OSLog(subsystem: "com.coinninja.coinkeeper.coinninjaprovider", category: "provider")
-  }
 
   var provider: MoyaProvider<MultiTarget> {
     var plugins: [PluginType] = []
@@ -55,11 +50,12 @@ extension CoinNinjaProviderType {
             let validatedObject = try T.ResponseType.validateResponse(object)
             seal.fulfill(validatedObject)
           } catch {
-            seal.reject(error)
+            let mappedError = self.mappedDecodingError(for: error, typeDesc: String(describing: T.ResponseType.self))
+            seal.reject(mappedError)
           }
 
         case .failure(let error):
-          os_log("Failure from %@ request: %{private}@", log: self.logger, type: .error, target.path, error.responseDescription)
+          log.error("Failure from \(target.path) request: %@", privateArgs: [error.responseDescription])
           if let networkError = target.networkError(for: error) {
             seal.reject(networkError)
           } else {
@@ -80,11 +76,12 @@ extension CoinNinjaProviderType {
             let validatedObjects = try objects.map { try T.ResponseType.validateResponse($0) }
             seal.fulfill(validatedObjects)
           } catch {
-            seal.reject(error)
+            let mappedError = self.mappedDecodingError(for: error, typeDesc: String(describing: T.ResponseType.self))
+            seal.reject(mappedError)
           }
 
         case .failure(let error):
-          os_log("Failure from %@ request: %{private}@", log: self.logger, type: .error, target.path, error.responseDescription)
+          log.error("Failure from \(target.path) request: %@", privateArgs: [error.responseDescription])
           if let networkError = target.networkError(for: error) {
             seal.reject(networkError)
           } else {
@@ -103,7 +100,7 @@ extension CoinNinjaProviderType {
           seal.fulfill(())
 
         case .failure(let error):
-          os_log("Failure from %@ request: %{private}@", log: self.logger, type: .error, target.path, error.responseDescription)
+          log.error("Failure from \(target.path) request: %@", privateArgs: [error.responseDescription])
           if let networkError = target.networkError(for: error) {
             seal.reject(networkError)
           } else {
@@ -130,7 +127,7 @@ extension CoinNinjaProviderType {
           }
 
         case .failure(let error):
-          os_log("Failure from %@ request: %{private}@", log: self.logger, type: .error, target.path, error.responseDescription)
+          log.error("Failure from \(target.path) request: %@", privateArgs: [error.responseDescription])
           if let networkError = target.networkError(for: error) {
             seal.reject(networkError)
           } else {
@@ -138,6 +135,15 @@ extension CoinNinjaProviderType {
           }
         }
       }
+    }
+  }
+
+  /// Maps MoyaError to CKNetworkError if appropriate
+  private func mappedDecodingError(for error: Error, typeDesc: String) -> Error {
+    if let moyaError = error as? MoyaError, case .objectMapping = moyaError {
+      return CKNetworkError.decodingFailed(type: typeDesc)
+    } else {
+      return error
     }
   }
 

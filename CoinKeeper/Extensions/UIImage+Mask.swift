@@ -9,23 +9,16 @@
 import UIKit
 
 extension UIImage {
-
   public func maskWithColor(color: UIColor) -> UIImage {
+    let renderer = UIGraphicsImageRenderer(size: size)
+    let image = renderer.image { _ in
+      let rect = CGRect(origin: CGPoint.zero, size: size)
 
-    UIGraphicsBeginImageContextWithOptions(self.size, false, self.scale)
-    let context = UIGraphicsGetCurrentContext()!
+      color.setFill()
+      self.draw(in: rect)
 
-    let rect = CGRect(origin: CGPoint.zero, size: size)
-
-    color.setFill()
-    self.draw(in: rect)
-
-    context.setBlendMode(.sourceIn)
-    context.fill(rect)
-
-    let resultImage = UIGraphicsGetImageFromCurrentImageContext()!
-    UIGraphicsEndImageContext()
-    return resultImage
+      UIRectFillUsingBlendMode(rect, .sourceIn)
+    }
+    return image
   }
-
 }

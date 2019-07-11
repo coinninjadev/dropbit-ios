@@ -75,9 +75,9 @@ class ConfirmPaymentViewControllerTests: XCTestCase {
 
     }
 
-    func viewControllerDidConfirmInvite(_ viewController: UIViewController, outgoingInvitationDTO: OutgoingInvitationDTO) {
+    func viewControllerRequestedShowFeeTooExpensiveAlert(_ viewController: UIViewController) { }
 
-    }
+    func viewControllerDidConfirmInvite(_ viewController: UIViewController, outgoingInvitationDTO: OutgoingInvitationDTO) { }
 
     var closeButtonTapped = false
     func viewControllerDidSelectClose(_ viewController: UIViewController) {

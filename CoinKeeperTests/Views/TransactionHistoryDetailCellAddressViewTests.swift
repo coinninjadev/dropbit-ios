@@ -8,7 +8,6 @@
 
 import XCTest
 @testable import DropBit
-import PhoneNumberKit
 
 class TransactionHistoryDetailCellAddressViewTests: XCTestCase {
   var sut: TransactionHistoryDetailCellAddressView!
@@ -206,8 +205,7 @@ class TransactionHistoryDetailCellAddressViewTests: XCTestCase {
       transaction: transaction,
       rates: rates,
       primaryCurrency: .USD,
-      deviceCountryCode: nil,
-      kit: PhoneNumberKit()
+      deviceCountryCode: nil
     )
 
     // when
@@ -247,8 +245,7 @@ class TransactionHistoryDetailCellAddressViewTests: XCTestCase {
       transaction: transaction,
       rates: rates,
       primaryCurrency: .USD,
-      deviceCountryCode: nil,
-      kit: PhoneNumberKit()
+      deviceCountryCode: nil
     )
 
     // .completed
@@ -257,8 +254,7 @@ class TransactionHistoryDetailCellAddressViewTests: XCTestCase {
       transaction: transaction,
       rates: rates,
       primaryCurrency: .USD,
-      deviceCountryCode: nil,
-      kit: PhoneNumberKit()
+      deviceCountryCode: nil
     )
 
     // when
@@ -297,16 +293,14 @@ class TransactionHistoryDetailCellAddressViewTests: XCTestCase {
 
     var viewModel = TransactionHistoryDetailCellViewModel(
       transaction: transaction, rates: rates,
-      primaryCurrency: .USD, deviceCountryCode: nil,
-      kit: PhoneNumberKit()
+      primaryCurrency: .USD, deviceCountryCode: nil
     )
 
     // .notSent
     invitation.status = .notSent
     viewModel = TransactionHistoryDetailCellViewModel(
       transaction: transaction, rates: rates,
-      primaryCurrency: .USD, deviceCountryCode: nil,
-      kit: PhoneNumberKit()
+      primaryCurrency: .USD, deviceCountryCode: nil
     )
 
     // when
@@ -321,8 +315,7 @@ class TransactionHistoryDetailCellAddressViewTests: XCTestCase {
     invitation.status = .requestSent
     viewModel = TransactionHistoryDetailCellViewModel(
       transaction: transaction, rates: rates,
-      primaryCurrency: .USD, deviceCountryCode: nil,
-      kit: PhoneNumberKit()
+      primaryCurrency: .USD, deviceCountryCode: nil
     )
 
     // when
@@ -337,8 +330,7 @@ class TransactionHistoryDetailCellAddressViewTests: XCTestCase {
     invitation.status = .addressSent
     viewModel = TransactionHistoryDetailCellViewModel(
       transaction: transaction, rates: rates,
-      primaryCurrency: .USD, deviceCountryCode: nil,
-      kit: PhoneNumberKit()
+      primaryCurrency: .USD, deviceCountryCode: nil
     )
 
     // when
@@ -353,8 +345,7 @@ class TransactionHistoryDetailCellAddressViewTests: XCTestCase {
     invitation.status = .canceled
     viewModel = TransactionHistoryDetailCellViewModel(
       transaction: transaction, rates: rates,
-      primaryCurrency: .USD, deviceCountryCode: nil,
-      kit: PhoneNumberKit()
+      primaryCurrency: .USD, deviceCountryCode: nil
     )
 
     // when
@@ -369,8 +360,7 @@ class TransactionHistoryDetailCellAddressViewTests: XCTestCase {
     invitation.status = .expired
     viewModel = TransactionHistoryDetailCellViewModel(
       transaction: transaction, rates: rates,
-      primaryCurrency: .USD, deviceCountryCode: nil,
-      kit: PhoneNumberKit()
+      primaryCurrency: .USD, deviceCountryCode: nil
     )
 
     // when

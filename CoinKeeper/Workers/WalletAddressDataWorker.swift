@@ -9,9 +9,7 @@
 import CoreData
 import Moya
 import PromiseKit
-import PhoneNumberKit
 import UIKit
-import os.log
 
 // swiftlint:disable file_length
 protocol WalletAddressDataWorkerType: AnyObject {
@@ -51,28 +49,23 @@ extension WalletAddressDataWorkerType {
 // swiftlint:disable type_body_length
 class WalletAddressDataWorker: WalletAddressDataWorkerType {
 
-  let walletManager: WalletManagerType
-  let persistenceManager: PersistenceManagerType
-  let networkManager: NetworkManagerType
-  let analyticsManager: AnalyticsManagerType
-  let phoneNumberKit: PhoneNumberKit
+  unowned let walletManager: WalletManagerType
+  unowned let persistenceManager: PersistenceManagerType
+  unowned let networkManager: NetworkManagerType
+  unowned let analyticsManager: AnalyticsManagerType
   unowned var invitationDelegate: InvitationWorkerDelegate
-
-  private let logger = OSLog(subsystem: "com.coinninja.transactionDataWorker", category: "wallet_address_data_worker")
 
   init(
     walletManager: WalletManagerType,
     persistenceManager: PersistenceManagerType,
     networkManager: NetworkManagerType,
     analyticsManager: AnalyticsManagerType,
-    phoneNumberKit: PhoneNumberKit,
     invitationWorkerDelegate: InvitationWorkerDelegate
     ) {
     self.walletManager = walletManager
     self.persistenceManager = persistenceManager
     self.networkManager = networkManager
     self.analyticsManager = analyticsManager
-    self.phoneNumberKit = phoneNumberKit
     self.invitationDelegate = invitationWorkerDelegate
   }
 
@@ -104,8 +97,9 @@ class WalletAddressDataWorker: WalletAddressDataWorkerType {
     // Construct/call array of network request promises from address strings
     return when(fulfilled: addAddressBodies.map { self.networkManager.addWalletAddress(body: $0) })
       .then(in: context) { (responses: [WalletAddressResponse]) -> Promise<Void> in
-        os_log("Added wallet addresses to server:", log: self.logger, type: .debug)
-        responses.forEach { os_log("\t%{private}@", log: self.logger, type: .debug, $0.address)}
+        let addresses = responses.map { $0.address }
+        let tokenString = log.multilineTokenString(for: addresses)
+        log.event("Added wallet addresses to server: \(tokenString)", privateArgs: addresses)
 
         return self.persistenceManager.brokers.wallet.persistAddedWalletAddresses(from: responses, metaAddresses: metaAddresses, in: context)
     }
@@ -290,26 +284,26 @@ class WalletAddressDataWorker: WalletAddressDataWorkerType {
 
     do {
       let updatableInvitations = try context.fetch(fetchRequest)
-      os_log("Found %d updatable invitations", log: self.logger, type: .debug, updatableInvitations.count)
+      log.debug("Found \(updatableInvitations.count) updatable invitations")
 
       updatableInvitations.forEach { invitation in
         guard let invitationTxid = invitation.txid else { return }
 
         if let targetTransaction = CKMTransaction.find(byTxid: invitationTxid, in: context) {
-          os_log("Found transaction matching the invitation.txid, will update relationship", log: self.logger, type: .debug)
+          log.debug("Found transaction matching the invitation.txid, will update relationship")
           let placeholderTransaction = invitation.transaction
 
           invitation.transaction = targetTransaction
 
           if let placeholder = placeholderTransaction {
             context.delete(placeholder)
-            os_log("Deleted placeholder transaction", log: self.logger, type: .debug)
+            log.debug("Deleted placeholder transaction")
           }
         }
       }
 
     } catch {
-      os_log("Failed to fetch updatable invitations: %@", log: self.logger, type: .error, error.localizedDescription)
+      log.error(error, message: "Failed to fetch updatable invitations")
     }
   }
 
@@ -355,13 +349,13 @@ class WalletAddressDataWorker: WalletAddressDataWorkerType {
                                  goodResponses: [WalletAddressResponse]) -> Promise<[WalletAddressResponse]> {
 
     let goodAddresses = goodResponses.compactMap { $0.address }
-    os_log("Valid addresses on server (%d): %@", log: self.logger, type: .debug, goodAddresses.count, goodAddresses)
+    log.debug("Valid addresses on server (\(goodAddresses.count)): \(goodAddresses)")
 
     if badResponses.isNotEmpty {
       let responseDescriptions = badResponses.map { $0.jsonDescription }.joined(separator: "; ")
       let eventValue = AnalyticsEventValue(key: .foreignWalletAddressDetected, value: responseDescriptions)
       self.analyticsManager.track(event: .foreignWalletAddressDetected, with: eventValue)
-      os_log("Foreign addresses detected on server (%d): %@", log: self.logger, type: .error, badResponses.count, responseDescriptions)
+      log.error("Foreign addresses detected on server (\(badResponses.count)): \(responseDescriptions)")
     }
 
     return .value(goodResponses)
@@ -390,6 +384,13 @@ class WalletAddressDataWorker: WalletAddressDataWorkerType {
     let expiredRequests = responses.filter { $0.statusCase == .expired }
     expiredRequests.forEach { response in
       CKMInvitation.updateIfExists(withAddressRequestResponse: response, side: .sent, isAcknowledged: true, in: context)
+    }
+
+    // If address request was deleted from server and local invitation is still pending, mark it as expired
+    let responseIds = responses.map { $0.id }
+    let pendingSentInvites = CKMInvitation.find(withStatuses: [.requestSent], in: context)
+    for invite in pendingSentInvites where !responseIds.contains(invite.id) {
+      invite.status = .expired
     }
   }
 
@@ -472,8 +473,8 @@ class WalletAddressDataWorker: WalletAddressDataWorkerType {
         self.persistenceManager.brokers.wallet.updateWalletLastIndexes(in: context)
       }
       .map { deletedAddressIds -> Int in
-        os_log("Deleted addresses from server:", log: self.logger, type: .debug)
-        deletedAddressIds.forEach { os_log("\t%{private}@", log: self.logger, type: .debug, $0) }
+        let tokenString = log.multilineTokenString(for: deletedAddressIds)
+        log.event("Deleted addresses from server: \(tokenString)", privateArgs: deletedAddressIds)
 
         // Use the successful deletionResponses to calculate the number of replacement addresses needed
         let remainingOnServer = totalOnServer - deletedAddressIds.count
@@ -543,7 +544,7 @@ class WalletAddressDataWorker: WalletAddressDataWorkerType {
   /// This will ignore the status of the passed in responses and persist the status as .addressSent
   private func persistReceivedAddressRequests(_ responses: [WalletAddressRequestResponse], in context: NSManagedObjectContext) {
     responses.forEach {
-      let invitation = CKMInvitation.updateOrCreate(withReceivedAddressRequestResponse: $0, kit: self.phoneNumberKit, in: context)
+      let invitation = CKMInvitation.updateOrCreate(withReceivedAddressRequestResponse: $0, in: context)
       invitation.transaction?.isIncoming = true
     }
   }

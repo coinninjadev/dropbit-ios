@@ -9,7 +9,6 @@
 import Foundation
 import UIKit
 import PromiseKit
-import os.log
 
 extension AppCoordinator: VerificationStatusViewControllerDelegate {
   func verifiedPhoneNumber() -> GlobalPhoneNumber? {
@@ -124,14 +123,13 @@ extension AppCoordinator: VerificationStatusViewControllerDelegate {
 
     let verifiedIdentities = persistenceManager.brokers.user.verifiedIdentities(in: persistenceManager.mainQueueContext())
 
-    let logger = OSLog(subsystem: "com.coinninja.coinkeeper.appcoordinator", category: "unverify_phone")
     return AlertActionConfiguration(title: "Remove", style: .cancel, action: {
       self.alertManager.showActivityHUD(withStatus: nil)
       self.unverifyVerifiedIdentity(identityType: identityType, allVerifiedIdentities: verifiedIdentities)
         .done(on: .main) {
           successfulCompletion()
         }.catch { error in
-          os_log("failed to unverify phone: %@", log: logger, type: .error, error.localizedDescription)
+          log.error(error, message: "failed to unverify phone")
           self.alertManager.hideActivityHUD(withDelay: nil, completion: nil)
           let title = "We are currently having trouble removing your phone number. Please try again."
           let alert = self.alertManager.alert(withTitle: title,
@@ -171,7 +169,7 @@ extension AppCoordinator: VerificationStatusViewControllerDelegate {
       guard allVerifiedIdentities.contains(.phone),
         let phoneNumber = persistenceManager.brokers.user.verifiedPhoneNumber(),
         let salt = try? hashingManager.salt() else { return Promise(error: DeviceVerificationError.invalidPhoneNumber) }
-      identityToRemove = hashingManager.hash(phoneNumber: phoneNumber, salt: salt, parsedNumber: nil, kit: self.phoneNumberKit)
+      identityToRemove = hashingManager.hash(phoneNumber: phoneNumber, salt: salt, parsedNumber: nil)
     case .twitter:
       guard allVerifiedIdentities.contains(.twitter),
         let creds = persistenceManager.keychainManager.oauthCredentials()

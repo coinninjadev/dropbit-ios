@@ -10,9 +10,7 @@ import CoreData
 import UIKit
 import CNBitcoinKit
 import Gifu
-import os.log
 import PromiseKit
-import PhoneNumberKit
 import DZNEmptyDataSet
 
 protocol TransactionHistoryViewControllerDelegate: DeviceCountryCodeProvider &
@@ -79,11 +77,8 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
     ]
   }
 
-  private let logger = OSLog(subsystem: "com.coinninja.coinkeeper.transactionhistoryviewcontroller", category: "tx_history_view_controller")
-
-  private let phoneNumberKit = PhoneNumberKit()
   lazy var phoneFormatter: CKPhoneNumberFormatter = {
-    return CKPhoneNumberFormatter(kit: self.phoneNumberKit, format: .national)
+    return CKPhoneNumberFormatter(format: .national)
   }()
 
   var deviceCountryCode: Int?
@@ -105,7 +100,7 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
     return generalCoordinationDelegate as? TransactionHistoryViewControllerDelegate
   }
 
-  var context: NSManagedObjectContext!
+  unowned var context: NSManagedObjectContext!
 
   lazy var frc: NSFetchedResultsController<CKMTransaction> = {
     let fetchRequest: NSFetchRequest<CKMTransaction> = CKMTransaction.fetchRequest()
@@ -115,9 +110,7 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
                                                 managedObjectContext: context,
                                                 sectionNameKeyPath: nil,
                                                 cacheName: nil) // avoid caching unless there is real need as it is often the source of bugs
-    os_log("starting fetch: %f", log: self.logger, type: .debug, Date().timeIntervalSinceReferenceDate)
     try? controller.performFetch()
-    os_log("ending fetch: %f", log: self.logger, type: .debug, Date().timeIntervalSinceReferenceDate)
     return controller
   }()
 
@@ -178,8 +171,7 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
       transaction: transaction,
       rates: rateManager.exchangeRates,
       primaryCurrency: preferredCurrency(),
-      deviceCountryCode: deviceCountryCode,
-      kit: phoneNumberKit
+      deviceCountryCode: deviceCountryCode
     )
   }
 
@@ -188,8 +180,7 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
       transaction: transaction,
       rates: rateManager.exchangeRates,
       primaryCurrency: preferredCurrency(),
-      deviceCountryCode: deviceCountryCode,
-      kit: phoneNumberKit
+      deviceCountryCode: deviceCountryCode
     )
   }
 

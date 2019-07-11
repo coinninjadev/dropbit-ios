@@ -6,7 +6,6 @@
 //  Copyright © 2018 Coin Ninja, LLC. All rights reserved.
 //
 
-import os.log
 import PromiseKit
 import Moya
 import OAuthSwift
@@ -65,8 +64,6 @@ class NetworkManager: NetworkManagerType {
   var lastFeesCheck = Date(timeIntervalSince1970: 0)
   var twitterOAuthManager: OAuth1Swift
 
-  let logger = OSLog(subsystem: "com.coinninja.NetworkManager", category: "network_requests")
-
   init(persistenceManager: PersistenceManagerType,
        analyticsManager: AnalyticsManagerType = AnalyticsManager(),
        coinNinjaProvider: CoinNinjaProviderType = CoinNinjaProvider()) {
@@ -106,7 +103,7 @@ class NetworkManager: NetworkManagerType {
     if let networkError = error as? CKNetworkError {
       switch networkError {
       case .reachabilityFailed(let moyaError):
-        print("error: \(moyaError)")
+        log.error(moyaError, message: nil)
         if let data = moyaError.response?.data,
           let responseError = try? JSONDecoder().decode(CoinNinjaErrorResponse.self, from: data),
           responseError.error == NetworkErrorIdentifier.missingSignatureHeader.rawValue {

@@ -101,6 +101,8 @@ protocol PreferencesBrokerType: AnyObject {
   var selectedCurrency: SelectedCurrency { get set }
   var dontShowShareTransaction: Bool { get set }
   var didOptOutOfInvitationPopup: Bool { get set }
+  var adjustableFeesIsEnabled: Bool { get set }
+  var preferredTransactionFeeType: TransactionFeeType { get set }
 
 }
 
@@ -162,7 +164,6 @@ protocol WalletBrokerType: AnyObject {
   func persistWalletId(from response: WalletResponse, in context: NSManagedObjectContext) throws
   func removeWalletId(in context: NSManagedObjectContext)
   func deleteWallet(in context: NSManagedObjectContext)
-  func backup(recoveryWords words: [String], isBackedUp: Bool) -> Promise<Void>
   func walletWordsBackedUp() -> Bool
 
   /// The responses should correspond 1-to-1 with the metaAddresses, order is irrelevant.

@@ -8,7 +8,6 @@
 
 import Foundation
 import UIKit
-import os.log
 
 protocol OperationQueueType: AnyObject {
   func addOperation(_ op: Operation)
@@ -43,8 +42,6 @@ public class AsynchronousOperation: Operation {
   /// Concurrent queue for synchronizing access to `state`.
   private let stateQueue = DispatchQueue(label: Bundle.main.bundleIdentifier! + ".rw.state", attributes: .concurrent)
 
-  private let logger = OSLog(subsystem: "com.coinninja.coinkeeper.asynchronousoperation", category: "operation")
-
   /// Private backing stored property for `state`.
   private var _state: OperationState = .ready
 
@@ -78,7 +75,7 @@ public class AsynchronousOperation: Operation {
   }
 
   /// The closure to be performed by this operation
-  public var task: ((AsynchronousOperation) -> Void)?
+  public var task: (() -> Void)?
 
   // Start
 
@@ -93,8 +90,8 @@ public class AsynchronousOperation: Operation {
     state = .executing
 
     operationStartedAt = Date()
-    os_log("will begin task for operation of type: %@", log: logger, type: .debug, self.operationType.description)
-    task?(self)
+    log.event("will begin task for operation of type: \(self.operationType.description)")
+    task?()
   }
 
   /// Call this function to finish an operation that is currently executing
@@ -103,7 +100,7 @@ public class AsynchronousOperation: Operation {
       state = .finished
 
       let durationDesc = self.durationDescription() ?? ""
-      os_log("did finish task for operation of type: %@, %@", log: logger, type: .debug, self.operationType.description, durationDesc)
+      log.event("did finish task for operation of type: \(self.operationType.description), \(durationDesc)")
     }
   }
 

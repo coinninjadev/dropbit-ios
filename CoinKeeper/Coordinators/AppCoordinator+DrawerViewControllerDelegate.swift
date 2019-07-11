@@ -39,6 +39,7 @@ extension AppCoordinator: DrawerViewControllerDelegate {
     drawerController?.toggle(.left, animated: true, completion: nil)
     let settingsViewController = SettingsViewController.newInstance(with: self)
     let settingsNavigationController = CNNavigationController(rootViewController: settingsViewController)
+    settingsNavigationController.navigationBar.tintColor = .darkBlueBackground
     navigationController.present(settingsNavigationController, animated: true, completion: nil)
   }
 

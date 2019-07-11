@@ -9,11 +9,9 @@
 import Foundation
 import UIKit
 import CNBitcoinKit
-import PhoneNumberKit
 
 class TransactionHistorySummaryCellViewModel {
 
-  let phoneNumberKit: PhoneNumberKit
   var counterpartyDescription: String
   var receiverAddress: String?
   var confirmations: Int
@@ -33,7 +31,6 @@ class TransactionHistorySummaryCellViewModel {
 
   /// Empty initializer
   init() {
-    self.phoneNumberKit = PhoneNumberKit()
     self.counterpartyDescription = ""
     self.confirmations = 0
     self.isConfirmed = false
@@ -49,14 +46,12 @@ class TransactionHistorySummaryCellViewModel {
     transaction: CKMTransaction,
     rates: ExchangeRates,
     primaryCurrency: CurrencyCode,
-    deviceCountryCode: Int?,
-    kit: PhoneNumberKit
+    deviceCountryCode: Int?
     ) {
-    self.phoneNumberKit = kit
     self.transaction = transaction
     self.broadcastFailed = transaction.broadcastFailed
     let counterpartyAddress = transaction.counterpartyAddressId
-    let counterpartyDesc = transaction.counterpartyDisplayDescription(deviceCountryCode: deviceCountryCode, kit: kit) ?? ""
+    let counterpartyDesc = transaction.counterpartyDisplayDescription(deviceCountryCode: deviceCountryCode) ?? ""
     let sentToMyselfText = "Sent to myself"
 
     self.isIncoming = transaction.isIncoming

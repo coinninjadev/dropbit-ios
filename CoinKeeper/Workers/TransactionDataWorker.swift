@@ -10,8 +10,6 @@ import Foundation
 import PromiseKit
 import CoreData
 import CNBitcoinKit
-import os.log
-import PhoneNumberKit
 
 protocol TransactionDataWorkerType: AnyObject {
 
@@ -44,10 +42,7 @@ class TransactionDataWorker: TransactionDataWorkerType {
   let networkManager: NetworkManagerType
   let analyticsManager: AnalyticsManagerType
 
-  let phoneNumberKit = PhoneNumberKit()
-
   private let gapLimit = 20
-  private let logger = OSLog(subsystem: "com.coinninja.transactionDataWorker", category: "aggregate_tx_responses")
 
   init(
     walletManager: WalletManagerType,
@@ -270,13 +265,13 @@ class TransactionDataWorker: TransactionDataWorkerType {
             /* not really an error, just ensuring no more data returned */
             return Promise.value(aggregateATSResponsesCopy)
           } else {
-            os_log("unrecoverable error, %@", log: self.logger, type: .error, error.localizedDescription)
+            log.error(error, message: "unrecoverable error")
             throw error
           }
         }
         .done { seal.fulfill($0) }
         .catch { error in
-          os_log("error at end of ATS chain: %@", log: self.logger, type: .error, error.localizedDescription)
+          log.error(error, message: nil)
           seal.reject(error)
       }
     }
@@ -338,16 +333,16 @@ class TransactionDataWorker: TransactionDataWorkerType {
       guard addressDataSource.checkAddressExists(for: inputs.address, in: context) != nil else { return nil }
       do {
         let payloadData = try cryptor.decrypt(payloadAsBase64String: inputs.payload, withReceiveAddress: inputs.address, in: context)
-        os_log("Successfully decrypted payload", log: self.logger, type: .debug)
+        log.debug("Successfully decrypted payload")
         return payloadData
       } catch {
-        os_log("Failed to decrypt payload", log: self.logger, type: .error)
+        log.error(error, message: "Failed to decrypt payload")
         return nil
       }
     }
 
     // This should succeed in partially decoding future versions if they are purely additive to the schema
-    self.persistenceManager.persistReceivedSharedPayloads(decryptedPayloads, kit: self.phoneNumberKit, in: context)
+    self.persistenceManager.persistReceivedSharedPayloads(decryptedPayloads, in: context)
   }
 
   func groomFailedTransactions(notIn txids: [String], in context: NSManagedObjectContext) -> Promise<Void> {
@@ -460,7 +455,7 @@ class TransactionDataWorker: TransactionDataWorkerType {
       do {
         unspentVouts = try CKMVout.findAllUnspent(in: context)
       } catch {
-        os_log("SpendableBalanceError.voutFetchFailed in %@. %@.", log: logger, type: .error, #function)
+        log.error(error, message: nil)
         seal.reject(SpendableBalanceError.voutFetchFailed)
       }
 

@@ -302,7 +302,9 @@ extension PinEntryViewController: KeypadEntryViewDelegate {
     resetErrorLabel()
     guard addDigitResult == .complete, let delegate = coordinationDelegate else { return }
     if delegate.checkMatch(for: digitEntryDisplayViewModel.digits) {
-      delegate.viewControllerDidSuccessfullyAuthenticate(self)
+      DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.1) {
+        delegate.viewControllerDidSuccessfullyAuthenticate(self)
+      }
     } else {
       failureCount += 1
       digitEntryDisplayViewModel.removeAllDigits()

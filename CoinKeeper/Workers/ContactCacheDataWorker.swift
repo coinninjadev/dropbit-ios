@@ -7,9 +7,7 @@
 //
 
 import CoreData
-import os.log
 import Contacts
-import PhoneNumberKit
 import PromiseKit
 
 protocol ContactCacheDataWorkerType: AnyObject {
@@ -19,7 +17,6 @@ protocol ContactCacheDataWorkerType: AnyObject {
 }
 
 struct CachedPhoneNumberDependencies {
-  let kit: PhoneNumberKit
   let hasher: HashingManager
   let salt: Data
   let formatter: CNContactFormatter
@@ -36,9 +33,6 @@ class ContactCacheDataWorker: ContactCacheDataWorkerType {
   /// A delegate that provides the current verified country code of the device
   weak var countryCodeProvider: DeviceCountryCodeProvider?
 
-  let logger = OSLog(subsystem: "com.coinninja.coinkeeper.contactcache", category: "data_worker")
-
-  let phoneNumberKit = PhoneNumberKit()
   let hashingManager = HashingManager()
 
   init(contactCacheManager: ContactCacheManagerType,
@@ -78,7 +72,7 @@ class ContactCacheDataWorker: ContactCacheDataWorkerType {
           completion(validatedContact)
         }
         .catch { error in
-          os_log("Failed to check status for phone number: %@", log: self.logger, type: .error, error.localizedDescription)
+          log.error(error, message: "Failed to check status for phone number")
           completion(nil)
       }
     } else {
@@ -97,7 +91,7 @@ class ContactCacheDataWorker: ContactCacheDataWorkerType {
         .then(in: bgContext) { self.updateCache(withAction: $0, in: bgContext) }
         .done(in: bgContext) {
           let changeDesc = bgContext.changesDescription()
-          os_log("Contact cache changes: %@", log: self.logger, type: .debug, changeDesc)
+          log.debug("Contact cache changes: \(changeDesc)")
 
           try bgContext.saveRecursively()
 
@@ -134,13 +128,13 @@ class ContactCacheDataWorker: ContactCacheDataWorkerType {
     }
 
     if force {
-      os_log("Contact cache will force full reload", log: self.logger, type: .debug)
+      log.debug("Contact cache will force full reload")
       return Promise.value(.fullReload)
     }
 
     do {
       let phoneNumberCount = try self.contactCacheManager.phoneNumberCount(in: context)
-      os_log("Contact cache has %d phone numbers", log: self.logger, type: .debug, phoneNumberCount)
+      log.debug("Contact cache has \(phoneNumberCount) phone numbers")
       if phoneNumberCount == 0 {
         return Promise.value(.fullReload)
       } else {
@@ -262,7 +256,6 @@ class ContactCacheDataWorker: ContactCacheDataWorkerType {
     let countryCode = self.countryCodeProvider?.deviceCountryCode() ?? 1
 
     let dependencies = CachedPhoneNumberDependencies(
-      kit: self.phoneNumberKit,
       hasher: self.hashingManager,
       salt: salt,
       formatter: CNContactFormatter(),

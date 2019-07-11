@@ -58,11 +58,6 @@ class CKKeychain: PersistenceKeychainType {
     return storeOnSerialBackgroundQueue(value: deviceID, key: CKKeychain.Key.deviceID.rawValue)
   }
 
-  func backup(recoveryWords words: [String], isBackedUp: Bool) -> Promise<Void> {
-    return storeOnSerialBackgroundQueue(value: words, key: CKKeychain.Key.walletWords.rawValue)
-      .then { self.storeWalletWordsBackedUp(isBackedUp) }
-  }
-
   /// Apple advises to avoid accessing the keychain concurrently, but it is thread-safe
   private func storeOnSerialBackgroundQueue(value: Any?, key: String) -> Promise<Void> {
     return Promise { seal in
@@ -115,7 +110,7 @@ class CKKeychain: PersistenceKeychainType {
     }
   }
 
-  private func storeWalletWordsBackedUp(_ isBackedUp: Bool) -> Promise<Void> {
+  func storeWalletWordsBackedUp(_ isBackedUp: Bool) -> Promise<Void> {
     return self.storeOnSerialBackgroundQueue(value: NSNumber(value: isBackedUp),
                                              key: CKKeychain.Key.walletWordsBackedUp.rawValue)
   }

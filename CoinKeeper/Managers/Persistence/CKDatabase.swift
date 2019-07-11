@@ -7,15 +7,11 @@
 //
 
 import Foundation
-import os.log
 import CoreData
-import PhoneNumberKit
 import PromiseKit
 import CNBitcoinKit
 
 class CKDatabase: PersistenceDatabaseType {
-
-  let logger = OSLog(subsystem: "com.coinninja.coinkeeper.database", category: "database")
 
   private let stackConfig: CoreDataStackConfig
   private let container: NSPersistentContainer
@@ -97,7 +93,7 @@ class CKDatabase: PersistenceDatabaseType {
       do {
         try context.save()
       } catch {
-        os_log("failed to save context in %@. error: %@", log: logger, type: .error, #function, error.localizedDescription)
+        log.contextSaveError(error)
       }
     }
   }
@@ -150,7 +146,7 @@ class CKDatabase: PersistenceDatabaseType {
       do {
         try context.save()
       } catch {
-        os_log("Failed to save context with user ID: %@", log: logger, type: .error, error.localizedDescription)
+        log.contextSaveError(error)
       }
     }
   }
@@ -370,7 +366,7 @@ class CKDatabase: PersistenceDatabaseType {
       do {
         try context.save()
       } catch {
-        os_log("failed to save bg context in %@: %@", log: self.logger, type: .error, #function, error.localizedDescription)
+        log.contextSaveError(error)
       }
     }
   }

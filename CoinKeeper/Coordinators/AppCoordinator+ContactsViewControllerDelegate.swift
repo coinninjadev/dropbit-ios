@@ -10,7 +10,6 @@ import UIKit
 import Moya
 import enum Result.Result
 import PromiseKit
-import os.log
 import CoreData
 import Permission
 

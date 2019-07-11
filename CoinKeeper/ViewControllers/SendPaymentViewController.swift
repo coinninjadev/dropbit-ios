@@ -12,7 +12,6 @@ import enum Result.Result
 import PhoneNumberKit
 import CNBitcoinKit
 import PromiseKit
-import os.log
 
 typealias SendPaymentViewControllerCoordinator = SendPaymentViewControllerDelegate &
   CurrencyValueDataSourceType & BalanceDataSource & PaymentRequestResolver & URLOpener & ViewControllerDismissable
@@ -28,7 +27,6 @@ ValidatorAlertDisplayable {
   var viewModel: SendPaymentViewModelType = SendPaymentViewModel(btcAmount: 0, primaryCurrency: .USD)
   var alertManager: AlertManagerType?
   let rateManager = ExchangeRateManager()
-  let phoneNumberKit = PhoneNumberKit()
   var hashingManager = HashingManager()
 
   /// The presenter of SendPaymentViewController can set this property to provide a recipient.
@@ -60,7 +58,7 @@ ValidatorAlertDisplayable {
   @IBOutlet var closeButton: UIButton!
 
   @IBOutlet var primaryAmountTextField: LimitEditTextField!
-  @IBOutlet var secondaryAmountLabel: UILabel!
+  @IBOutlet var secondaryAmountLabel: TransactionDetailSecondaryAmountLabel!
 
   @IBOutlet var phoneNumberEntryView: PhoneNumberEntryView!
 
@@ -75,7 +73,7 @@ ValidatorAlertDisplayable {
   @IBOutlet var twitterButton: CompactActionButton!
   @IBOutlet var pasteButton: CompactActionButton!
 
-  @IBOutlet var sendButton: PrimaryActionButton!
+  @IBOutlet var nextButton: PrimaryActionButton!
   @IBOutlet var memoContainerView: SendPaymentMemoView!
   @IBOutlet var sendMaxButton: LightBorderedButton!
   @IBOutlet var toggleCurrencyButton: UIButton!
@@ -104,7 +102,7 @@ ValidatorAlertDisplayable {
     coordinationDelegate?.viewControllerDidPressScan(self, btcAmount: amount, primaryCurrency: primaryCurrency)
   }
 
-  @IBAction func performSend() {
+  @IBAction func performNext() {
     let amountString = sanitizedAmountString ?? ""
 
     do {
@@ -119,7 +117,7 @@ ValidatorAlertDisplayable {
   @IBAction func performSendMax() {
     let tempAddress = ""
     self.coordinationDelegate?.latestFees()
-      .compactMap { $0[.good] }
+      .compactMap { $0[.best] }
       .then { feeRate -> Promise<CNBTransactionData> in
         guard let delegate = self.coordinationDelegate else { fatalError("coordinationDelegate is required") }
         return delegate.viewController(self, sendMaxFundsTo: tempAddress, feeRate: feeRate)
@@ -272,6 +270,7 @@ extension SendPaymentViewController {
 
     bitcoinAddressButton.titleLabel?.font = .medium(14)
     bitcoinAddressButton.setTitleColor(.darkGrayText, for: .normal)
+    bitcoinAddressButton.contentEdgeInsets = UIEdgeInsets(top: 0, left: 8, bottom: 0, right: 8)
 
     scanButton.backgroundColor = .mediumGrayBackground
   }
@@ -453,8 +452,7 @@ extension SendPaymentViewController {
           .catch { (error: Error) in
             if let userProviderError = error as? UserProviderError {
               // user query returned no known verification status
-              let logger = OSLog(subsystem: "com.coinninja.coinkeeper.sendpaymentviewcontroller", category: "verification")
-              os_log("no verification status found: %@", log: logger, type: .error, userProviderError.localizedDescription)
+              log.error(userProviderError, message: "no verification status found")
             }
           }
       }
@@ -478,7 +476,7 @@ extension SendPaymentViewController {
     self.phoneNumberEntryView.isHidden = false
 
     let region = phoneNumberEntryView.selectedRegion
-    let country = CKCountry(regionCode: region, kit: self.phoneNumberKit)
+    let country = CKCountry(regionCode: region)
     let number = contact.globalPhoneNumber.nationalNumber
 
     self.phoneNumberEntryView.textField.update(withCountry: country, nationalNumber: number)
@@ -506,8 +504,7 @@ extension SendPaymentViewController: SelectedValidContactDelegate {
         self.updateViewWithModel()
       }
       .catch { error in
-        let logger = OSLog(subsystem: "com.coinninja.coinkeeper.sendpaymentviewcontroller", category: "verification")
-        os_log("failed to fetch verification status for %@. error: %@", log: logger, type: .error, twitterUser.idStr, error.localizedDescription)
+        log.error(error, message: "failed to fetch verification status for \(twitterUser.idStr)")
     }
   }
 }
@@ -577,7 +574,7 @@ extension SendPaymentViewController: UITextFieldDelegate {
   func textFieldDidBeginEditing(_ textField: UITextField) {
     switch textField {
     case phoneNumberEntryView.textField:
-      let defaultCountry = CKCountry(locale: .current, kit: self.phoneNumberKit)
+      let defaultCountry = CKCountry(locale: .current)
       let phoneNumber = GlobalPhoneNumber(countryCode: defaultCountry.countryCode, nationalNumber: "")
       let contact = GenericContact(phoneNumber: phoneNumber, formatted: "")
       let recipient = PaymentRecipient.phoneNumber(contact)
@@ -611,7 +608,7 @@ extension SendPaymentViewController: UITextFieldDelegate {
         switch recipient {
         case .bitcoinURL: updateViewModel(withParsedRecipient: recipient)
         case .phoneNumber(let globalPhoneNumber):
-          let formattedPhoneNumber = try CKPhoneNumberFormatter(kit: self.phoneNumberKit, format: .international)
+          let formattedPhoneNumber = try CKPhoneNumberFormatter(format: .international)
             .string(from: globalPhoneNumber)
           let contact = GenericContact(phoneNumber: globalPhoneNumber, formatted: formattedPhoneNumber)
           let recipient = PaymentRecipient.phoneNumber(contact)

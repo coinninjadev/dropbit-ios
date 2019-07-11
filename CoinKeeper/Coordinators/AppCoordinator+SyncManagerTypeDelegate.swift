@@ -15,7 +15,6 @@ import Permission
 import AVFoundation
 import PromiseKit
 import CoreData
-import os.log
 
 extension AppCoordinator: SerialQueueManagerDelegate {
 
@@ -33,8 +32,8 @@ extension AppCoordinator: SerialQueueManagerDelegate {
     return self.registerAndPersistWallet(in: context).asVoid()
   }
 
-  func syncManagerDidRequestDependencies(in context: NSManagedObjectContext) -> Promise<SyncDependencies> {
-    return predefineSyncDependencies(in: context, inBackground: false)
+  func syncManagerDidRequestDependencies(in context: NSManagedObjectContext, inBackground: Bool) -> Promise<SyncDependencies> {
+    return predefineSyncDependencies(in: context, inBackground: inBackground)
   }
 
   func showAlertsForSyncedChanges(in context: NSManagedObjectContext) -> Promise<Void> {
@@ -49,21 +48,20 @@ extension AppCoordinator: SerialQueueManagerDelegate {
   }
 
   func predefineSyncDependencies(in context: NSManagedObjectContext, inBackground background: Bool) -> Promise<SyncDependencies> {
-    let logger = OSLog(subsystem: "com.coinninja.coinkeeper.appcoordinator", category: "sync_transactions")
 
     guard (launchStateManager.userAuthenticated && self.verificationSatisfied) || background else {
-      os_log("**Sync routine prevented by pending pin entry or verification step", log: logger, type: .debug)
+      log.event("Sync routine prevented by pending pin entry or verification step")
       return Promise(error: SyncRoutineError.notReady)
     }
 
     // Ensure the wallet is using the words from the keychain before sending any requests, especially deverification checks
     guard let keychainWords = self.persistenceManager.brokers.wallet.walletWords() else {
-      os_log("wallet does not yet exist, stopping sync", log: logger, type: .debug)
+      log.event("wallet does not yet exist, stopping sync")
       return Promise(error: SyncRoutineError.missingRecoveryWords)
     }
 
     guard let wmgr = walletManager else {
-      os_log("wallet manager does not exist in sync routine", log: logger, type: .error)
+      log.error("wallet manager does not exist in sync routine")
       return Promise(error: SyncRoutineError.missingWalletManager)
     }
     wmgr.resetWallet(with: keychainWords)  // this is a safety precaution to ensure the current wallet instance contains current words
@@ -74,7 +72,7 @@ extension AppCoordinator: SerialQueueManagerDelegate {
     }
 
     guard let dbWorker = self.workerFactory.createDatabaseMigrationWorker(in: context) else {
-      os_log("database migration worker does not exist in sync routine", log: logger, type: .error)
+      log.error("database migration worker does not exist in sync routine")
       return Promise(error: SyncRoutineError.missingDatabaseMigrationWorker)
     }
 
@@ -94,7 +92,7 @@ extension AppCoordinator: SerialQueueManagerDelegate {
       delegate: self,
       twitterAccessManager: twitterAccessManager
     )
-    os_log("Sync dependencies satisfied, will continue with sync", log: logger, type: .debug)
+    log.debug("Sync dependencies satisfied, will continue with sync")
     return Promise.value(syncHelpers)
   }
 

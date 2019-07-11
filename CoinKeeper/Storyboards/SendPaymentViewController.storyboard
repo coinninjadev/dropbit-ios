@@ -211,9 +211,9 @@
                                 <constraints>
                                     <constraint firstAttribute="height" constant="51" id="NtX-1z-RYj"/>
                                 </constraints>
-                                <state key="normal" title="SEND"/>
+                                <state key="normal" title="NEXT"/>
                                 <connections>
-                                    <action selector="performSend" destination="mA3-RJ-Qjv" eventType="touchUpInside" id="1pc-e5-q3C"/>
+                                    <action selector="performNext" destination="mA3-RJ-Qjv" eventType="touchUpInside" id="1pc-e5-q3C"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -247,6 +247,7 @@
                         <outlet property="closeButton" destination="ZK3-ob-Jzc" id="qZw-Qx-w2e"/>
                         <outlet property="contactsButton" destination="MQN-rV-aED" id="ZOh-5B-laM"/>
                         <outlet property="memoContainerView" destination="BpV-7B-gve" id="4YT-H7-h5H"/>
+                        <outlet property="nextButton" destination="xMy-P4-RBB" id="CYW-nf-22m"/>
                         <outlet property="pasteButton" destination="C8U-pc-1eS" id="Kbc-hU-pPq"/>
                         <outlet property="payTitleLabel" destination="ohK-t2-Ibi" id="rua-Iq-Su7"/>
                         <outlet property="phoneNumberEntryView" destination="C51-D8-1VB" id="mKw-Ka-yUt"/>
@@ -255,7 +256,6 @@
                         <outlet property="recipientDisplayNumberLabel" destination="NUe-iQ-oIx" id="BOh-Rz-BG1"/>
                         <outlet property="scanButton" destination="BiE-1k-9jN" id="roX-2f-XZ8"/>
                         <outlet property="secondaryAmountLabel" destination="MFr-LH-oew" id="9p9-OW-ubX"/>
-                        <outlet property="sendButton" destination="xMy-P4-RBB" id="CYW-nf-22m"/>
                         <outlet property="sendMaxButton" destination="2Q4-Um-Y5Z" id="0aw-nM-XZe"/>
                         <outlet property="toggleCurrencyButton" destination="WKO-3S-ilw" id="LEl-Tc-eMY"/>
                         <outlet property="twitterButton" destination="Zvc-Ce-tCL" id="ByK-hb-s8H"/>

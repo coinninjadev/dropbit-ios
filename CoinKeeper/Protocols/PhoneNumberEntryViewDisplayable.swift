@@ -11,7 +11,6 @@ import UIKit
 
 protocol PhoneNumberEntryViewDisplayable: PhoneNumberEntryViewDelegate, CountryCodeSearchViewDelegate {
 
-  var phoneNumberKit: PhoneNumberKit { get }
   var phoneNumberEntryView: PhoneNumberEntryView! { get }
   var countryCodeSearchView: CountryCodeSearchView? { get set }
   var countryCodeDataSource: CountryCodePickerDataSource { get }
@@ -32,7 +31,7 @@ extension PhoneNumberEntryViewDisplayable where Self: UIViewController, Self: CK
     phoneNumberEntryView.delegate = self
     phoneNumberEntryView.textField.phoneNumberTextFieldDelegate = self
     phoneNumberEntryView.textField.isUserInteractionEnabled = textFieldEnabled
-    phoneNumberEntryView.configure(withCountry: CKCountry(locale: .current, kit: self.phoneNumberKit))
+    phoneNumberEntryView.configure(withCountry: CKCountry(locale: .current))
   }
 
   // MARK: Default implementations for PhoneNumberEntryViewDelegate & CountryCodeSearchViewDelegate

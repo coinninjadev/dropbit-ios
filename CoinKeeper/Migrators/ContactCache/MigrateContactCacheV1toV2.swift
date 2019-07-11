@@ -7,12 +7,10 @@
 //
 
 import CoreData
-import os.log
 
 struct MigrateContactCacheV1toV2: Migratable {
   let persistenceManager: PersistenceManagerType
   let dataWorker: ContactCacheDataWorkerType
-  let logger: OSLog
 
   func isMigrated() -> Bool {
     return persistenceManager.brokers.migration.contactCacheMigrationFlag(for: .v1tov2)
@@ -21,7 +19,7 @@ struct MigrateContactCacheV1toV2: Migratable {
   func migrate() {
     dataWorker.reloadSystemContactsIfNeeded(force: true) { error in
       if let error = error {
-        os_log("Failed to force reload contact cache: %@", log: self.logger, type: .error, error.localizedDescription)
+        log.error(error, message: "Failed to force reload contact cache")
       } else {
         self.persistenceManager.brokers.migration.setContactCacheMigrationFlag(migrated: true, for: .v1tov2)
       }

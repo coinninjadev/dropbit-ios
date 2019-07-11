@@ -34,8 +34,15 @@ class PreferencesBroker: CKPersistenceBroker, PreferencesBrokerType {
   }
 
   var yearlyPriceHighNotificationIsEnabled: Bool {
-    get { return userDefaultsManager.bool(for: .yearlyPriceHighNotificationEnabled) }
-    set { userDefaultsManager.set(newValue, for: .yearlyPriceHighNotificationEnabled) }
+    get {
+      if userDefaultsManager.object(for: .yearlyPriceHighNotificationEnabled) == nil {
+        userDefaultsManager.set(true, for: .yearlyPriceHighNotificationEnabled) // allow notification by default
+      }
+      return userDefaultsManager.bool(for: .yearlyPriceHighNotificationEnabled)
+    }
+    set {
+      userDefaultsManager.set(newValue, for: .yearlyPriceHighNotificationEnabled)
+    }
   }
 
   var selectedCurrency: SelectedCurrency {
@@ -65,6 +72,21 @@ class PreferencesBroker: CKPersistenceBroker, PreferencesBrokerType {
     set {
       let val: CKUserDefaults.Value = newValue ? .optOut : .optIn
       userDefaultsManager.set(val, for: .invitationPopup)
+    }
+  }
+
+  var adjustableFeesIsEnabled: Bool {
+    get { return userDefaultsManager.bool(for: .adjustableFeesEnabled) }
+    set { userDefaultsManager.set(newValue, for: .adjustableFeesEnabled) }
+  }
+
+  var preferredTransactionFeeType: TransactionFeeType {
+    get {
+      let rawValue = userDefaultsManager.integer(for: .preferredTransactionFeeMode)
+      return TransactionFeeType.mode(for: rawValue)
+    }
+    set {
+      userDefaultsManager.set(newValue.rawValue, for: .preferredTransactionFeeMode)
     }
   }
 

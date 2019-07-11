@@ -9,7 +9,6 @@
 import Foundation
 import XCTest
 import Moya
-import PhoneNumberKit
 import PromiseKit
 import CoreData
 @testable import DropBit
@@ -25,8 +24,6 @@ class WalletAddressDataWorkerTests: MockedPersistenceTestCase {
   var mockWalletDelegate: MockWalletDelegate!
   var mockInvitationDelegate: MockInvitationDelegate!
 
-  let phoneNumberKit = PhoneNumberKit()
-
   override func setUp() {
     super.setUp()
 
@@ -40,7 +37,6 @@ class WalletAddressDataWorkerTests: MockedPersistenceTestCase {
                                   persistenceManager: mockPersistenceManager,
                                   networkManager: mockNetworkManager,
                                   analyticsManager: mockAnalyticsManager,
-                                  phoneNumberKit: phoneNumberKit,
                                   invitationWorkerDelegate: mockInvitationDelegate
     )
   }
@@ -132,7 +128,6 @@ class WalletAddressDataWorkerTests: MockedPersistenceTestCase {
 
     let invitation = CKMInvitation(withAddressRequestResponse: sampleResponse,
                                    side: .received,
-                                   kit: self.phoneNumberKit,
                                    insertInto: stack.context)
     placeholderTx.invitation = invitation
 
@@ -170,7 +165,6 @@ class WalletAddressDataWorkerTests: MockedPersistenceTestCase {
 
     let invitation = CKMInvitation(withAddressRequestResponse: sampleResponse,
                                    side: .received,
-                                   kit: self.phoneNumberKit,
                                    insertInto: stack.context)
     placeholderTx.invitation = invitation
 

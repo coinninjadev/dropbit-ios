@@ -8,7 +8,6 @@
 
 import Foundation
 import CoreData
-import os.log
 
 class SQLiteCoreDataStack: BaseCoreDataStack {
 
@@ -17,7 +16,6 @@ class SQLiteCoreDataStack: BaseCoreDataStack {
   }
 
   override func createPersistentContainer() -> NSPersistentContainer {
-    let logger = OSLog(subsystem: "com.coinninja.coinkeeper.sqlitecoredatastack", category: "create_persistent_container")
     let container = NSPersistentContainer(name: stackConfig.stackType.containerName, managedObjectModel: managedObjectModel)
     let directory = NSPersistentContainer.defaultDirectoryURL()
     let storeURL = directory.appendingPathComponent("\(stackConfig.stackType.containerName).sqlite")
@@ -30,7 +28,7 @@ class SQLiteCoreDataStack: BaseCoreDataStack {
 
     container.loadPersistentStores { (_, error) in
       if let err = error {
-        os_log("Failed to load persistence stores: %@", log: logger, type: .error, err.localizedDescription)
+        log.error(err, message: "Failed to load persistence stores")
       }
       self.stackConfig.stackType.postInitHandler(for: container)
     }

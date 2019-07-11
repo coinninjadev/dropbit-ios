@@ -22,7 +22,8 @@ protocol CurrencyValueDataSourceType: AnyObject {
 // This timeout ensures we don't fetch exchange rates or fees more frequently than the specified interval in seconds
 private let sTimeoutIntervalBetweenNetworkRequests: TimeInterval  = 5.0
 
-enum FeeType: String {
+/// Follows names of API
+enum ResponseFeeType: String {
   case good, better, best
 }
 
@@ -34,7 +35,7 @@ typealias ExchangeRates = [CurrencyCode: Double]
 typealias ExchangeRatesRequest = (ExchangeRates) -> Void
 
 /// The fee values represent the current cost of a transaction in satoshis/byte
-typealias Fees = [FeeType: Double]
+typealias Fees = [ResponseFeeType: Double]
 
 /// The closure type to be passed to the AppCoordinator when requesting the latest fees.
 /// This closure should be called on the main queue.
@@ -84,7 +85,7 @@ extension NetworkManager: CurrencyValueDataSourceType {
     }
     let broker = persistenceManager.brokers.checkIn
     guard walletId != nil else {
-      let fees = FeesResponse(max: broker.cachedBestFee, avg: broker.cachedBetterFee, min: broker.cachedGoodFee)
+      let fees = FeesResponse(fast: broker.cachedBestFee, med: broker.cachedBetterFee, slow: broker.cachedGoodFee)
       let pricing = PriceResponse(last: broker.cachedBTCUSDRate)
       let response = CheckInResponse(blockheight: broker.cachedBlockHeight, fees: fees, pricing: pricing)
       return Promise.value(response)

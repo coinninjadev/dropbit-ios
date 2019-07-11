@@ -10,7 +10,6 @@ import UIKit
 import PMAlertController
 import SVProgressHUD
 import SwiftMessages
-import PhoneNumberKit
 
 protocol AlertManagerType: CKBannerViewDelegate {
   func alert(
@@ -83,9 +82,8 @@ class AlertManager: AlertManagerType {
 
   let bannerManager = SwiftMessages()
 
-  private let phoneNumberKit = PhoneNumberKit()
   lazy var phoneNumberFormatter: CKPhoneNumberFormatter = {
-    return CKPhoneNumberFormatter(kit: phoneNumberKit, format: .national)
+    return CKPhoneNumberFormatter(format: .national)
   }()
 
   required init(notificationManager: NotificationManagerType) {

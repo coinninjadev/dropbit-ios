@@ -8,13 +8,11 @@
 
 import Foundation
 import UIKit
-import PhoneNumberKit
 
-protocol VerificationStatusViewControllerDelegate: ViewControllerDismissable, AuthenticationSuspendable {
+protocol VerificationStatusViewControllerDelegate: ViewControllerDismissable, AuthenticationSuspendable, ViewControllerURLDelegate {
   func verifiedPhoneNumber() -> GlobalPhoneNumber?
   func verifiedTwitterHandle() -> String?
   func viewControllerDidRequestAddresses() -> [ServerAddressViewModel]
-  func viewController(_ viewController: UIViewController, didRequestOpenURL url: URL)
   func viewControllerDidSelectVerifyPhone(_ viewController: UIViewController)
   func viewControllerDidSelectVerifyTwitter(_ viewController: UIViewController)
   func viewControllerDidRequestToUnverifyPhone(_ viewController: UIViewController, successfulCompletion: @escaping () -> Void)
@@ -43,7 +41,6 @@ class VerificationStatusViewController: BaseViewController, StoryboardInitializa
   }
 
   let serverAddressUpperPercentageMultiplier: CGFloat = 0.15
-  let phoneNumberKit = PhoneNumberKit()
 
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -64,7 +61,7 @@ class VerificationStatusViewController: BaseViewController, StoryboardInitializa
 
     // phone number start
     if let phoneNumber = coordinationDelegate?.verifiedPhoneNumber() {
-      let formatter = CKPhoneNumberFormatter(kit: self.phoneNumberKit, format: .national)
+      let formatter = CKPhoneNumberFormatter(format: .national)
       phoneVerificationStatusView.isHidden = false
       changeRemovePhoneButton.isHidden = false
       verifyPhoneNumberPrimaryButton.isHidden = true

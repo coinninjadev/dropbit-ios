@@ -7,8 +7,6 @@ import CNBitcoinKit
 import Foundation
 import CoreData
 import PromiseKit
-import PhoneNumberKit
-import os.log
 
 class PersistenceManager: PersistenceManagerType {
 
@@ -57,12 +55,11 @@ class PersistenceManager: PersistenceManagerType {
     return databaseManager.persistentStore(for: context)
   }
 
-  func persistReceivedSharedPayloads(_ payloads: [Data], kit: PhoneNumberKit, in context: NSManagedObjectContext) {
+  func persistReceivedSharedPayloads(_ payloads: [Data], in context: NSManagedObjectContext) {
     let hasher = self.hashingManager
     databaseManager.sharedPayloadManager.persistReceivedSharedPayloads(
       payloads,
       hasher: hasher,
-      kit: kit,
       contactCacheManager: contactCacheManager,
       in: context)
   }

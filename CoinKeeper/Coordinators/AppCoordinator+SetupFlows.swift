@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import os.log
 import PromiseKit
 import UIKit
 import MMDrawerController
@@ -141,15 +140,15 @@ extension AppCoordinator {
   ///
   /// - Parameter words: If no parameter is passed in, the default behavior will search the keychain for stored words. Ensure 12 words are passed in.
   func showWordRecoveryFlow(with words: [String] = []) {
-    let logger = OSLog(subsystem: "com.coinninja.coinkeeper.appcoordinator", category: "show_recovery")
     guard let wmgr = walletManager else {
-      os_log("WalletManager is nil in %@", log: logger, type: .error, #function)
-      return }
+      log.error("WalletManager is nil")
+      return
+    }
 
     let usableWords = words.isEmpty ? wmgr.mnemonicWords() : []
 
     guard usableWords.count == 12 else {
-      os_log("Failed to receive 12 words in %@", log: logger, type: .error, #function)
+      log.error("Failed to receive 12 words")
       return
     }
 
@@ -163,13 +162,12 @@ extension AppCoordinator {
 
   func createPinEntryViewControllerForRecoveryWords(_ words: [String]) -> PinEntryViewController {
     let pinEntryViewController = PinEntryViewController.makeFromStoryboard()
-    pinEntryViewController.mode = .recoveryWords(completion: { _ in
-      let wordsViewController = BackupRecoveryWordsViewController.makeFromStoryboard()
-      wordsViewController.recoveryWords = words
-      wordsViewController.wordsBackedUp = self.wordsBackedUp
+    pinEntryViewController.mode = .recoveryWords(completion: { [unowned self] _ in
       self.analyticsManager.track(event: .viewWords, with: nil)
-      self.assignCoordinationDelegate(to: wordsViewController)
-      self.navigationController.present(CNNavigationController(rootViewController: wordsViewController), animated: false, completion: nil)
+      let controller = BackupRecoveryWordsViewController.newInstance(withDelegate: self,
+                                                                     recoveryWords: words,
+                                                                     wordsBackedUp: self.wordsBackedUp)
+      self.navigationController.present(CNNavigationController(rootViewController: controller), animated: false, completion: nil)
     })
     assignCoordinationDelegate(to: pinEntryViewController)
 

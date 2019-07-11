@@ -14,6 +14,7 @@ enum MerchantPaymentRequestError: UserNotifiableError {
   case incorrectNetwork(String)
   case missingOutput
   case underlying(Error)
+  case invalidURL(URL, String)
 
   /// Useful when the server returns the error message as the response data
   case serverErrorMessage(String)
@@ -46,6 +47,13 @@ enum MerchantPaymentRequestError: UserNotifiableError {
 
     case .underlying(let error):
       return "\(generalErrorPrefix) \(error.localizedDescription)"
+    case .invalidURL(let url, let responseString):
+      let cleanedResponse = responseString.stringByStandardizingWhitespaces()
+      let charLimit = 50
+      let truncatedResponse = cleanedResponse.prefix(charLimit)
+      let trailingChars = cleanedResponse.count > charLimit ? "..." : ""
+
+      return "This URL is invalid for sending payments: \n\n\(url.absoluteString) \n\n\(truncatedResponse)\(trailingChars)"
     }
   }
 }

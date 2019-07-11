@@ -9,7 +9,6 @@
 
 import Foundation
 import CoreData
-import os.log
 
 @objc(CKMAddressTransactionSummary)
 public class CKMAddressTransactionSummary: NSManagedObject {
@@ -79,17 +78,15 @@ public class CKMAddressTransactionSummary: NSManagedObject {
     return addressTransactionSummary
   }
 
-  static func find(by txid: String, in context: NSManagedObjectContext) -> [CKMAddressTransactionSummary] {
+  static func find(byTxid txid: String, in context: NSManagedObjectContext) -> [CKMAddressTransactionSummary] {
     let fetchRequest: NSFetchRequest<CKMAddressTransactionSummary> = CKMAddressTransactionSummary.fetchRequest()
-    let keyPath = #keyPath(CKMAddressTransactionSummary.txid)
-    fetchRequest.predicate = NSPredicate(format: "\(keyPath) = %@", txid)
+    fetchRequest.predicate = CKPredicate.AddressTransactionSummary.matching(txid: txid)
 
     var items: [CKMAddressTransactionSummary] = []
     do {
       items = try context.fetch(fetchRequest)
     } catch {
-      let logger = OSLog(subsystem: "com.coinninja.coinkeeper.ckmaddresstransactionsummary", category: "CKMAddressTransactionSummary")
-      os_log("Could not execute fetch request for AddressTransactionSummary objects: %@", log: logger, type: .error, error.localizedDescription)
+      log.error(error, message: "Could not execute fetch request for AddressTransactionSummary objects")
     }
     return items
   }
@@ -103,29 +100,26 @@ public class CKMAddressTransactionSummary: NSManagedObject {
     do {
       return try context.fetch(fetchRequest).first
     } catch {
-      let logger = OSLog(subsystem: "com.coinninja.coinkeeper.ckmaddresstransactionsummary", category: "CKMAddressTransactionSummary")
-      os_log("Could not execute fetch request for latest AddressTransactionSummary: %@", log: logger, type: .error, error.localizedDescription)
+      log.error(error, message: "Could not execute fetch request for latest AddressTransactionSummary")
       return nil
     }
   }
 
   static func findAllTxids(in context: NSManagedObjectContext) -> [String] {
-    let logger = OSLog(subsystem: "com.coinninja.coinkeeper.ckmaddresstransactionsummary", category: "CKMAddressTransactionSummary")
-
     let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: CKMAddressTransactionSummary.entityName())
     let txidKey = #keyPath(CKMAddressTransactionSummary.txid)
     fetchRequest.propertiesToFetch = [txidKey]
     fetchRequest.resultType = .dictionaryResultType
     do {
       guard let results = try context.fetch(fetchRequest) as? [[String: String]] else {
-        os_log("Could not cast results to [[String: String]] for AddressTransactionSummary.findAllTxids", log: logger, type: .error)
+        log.error("Could not cast results to [[String: String]] for AddressTransactionSummary.findAllTxids")
         return []
       }
 
       return results.compactMap { $0[txidKey] }
 
     } catch {
-      os_log("Could not execute fetch request for AddressTransactionSummary.findAllTxids: %@", log: logger, type: .error, error.localizedDescription)
+      log.error(error, message: "Could not execute fetch request for AddressTransactionSummary.findAllTxids")
       return []
     }
   }

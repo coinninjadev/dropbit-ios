@@ -27,9 +27,9 @@ class CheckInResponseTests: XCTestCase, ResponseStringsTestable {
       return
     }
 
-    XCTAssertEqual(response.fees.best, 347.222, "best should decode properly")
-    XCTAssertEqual(response.fees.better, 12.425, "better should decode properly")
-    XCTAssertEqual(response.fees.good, 0.98785, "good should decode properly")
+    XCTAssertEqual(response.fees.best, 121.723, "best should decode properly")
+    XCTAssertEqual(response.fees.better, 114.63, "better should decode properly")
+    XCTAssertEqual(response.fees.good, 13.477, "good should decode properly")
   }
 
   func testDecodingJSONProducesLastPrice() {
@@ -65,7 +65,7 @@ class CheckInResponseTests: XCTestCase, ResponseStringsTestable {
                          "Zero price should throw error", { error in
                           if let networkError = error as? CKNetworkError {
                             let errorDesc = networkError.errorDescription ?? "-"
-                            print("Identified sample price of 0 as invalid: \(errorDesc)")
+                            log.error("Identified sample price of 0 as invalid: \(errorDesc)")
                           }
     })
   }
@@ -87,7 +87,7 @@ class CheckInResponseTests: XCTestCase, ResponseStringsTestable {
                          "Negative max fee should throw error", { error in
                           if let networkError = error as? CKNetworkError,
                             case let .invalidValue(keyPath, value, _) = networkError {
-                            XCTAssertEqual(keyPath, FeesResponseKey.max.path, "Incorrect key description")
+                            XCTAssertEqual(keyPath, FeesResponseKey.fast.path, "Incorrect key description")
                             XCTAssertEqual(value, "-10.0", "Incorrect value description")
                           } else {
                             XCTFail("Negative fee threw incorrect error type")
@@ -107,7 +107,7 @@ class CheckInResponseTests: XCTestCase, ResponseStringsTestable {
                          "Excessive max fee should throw error", { error in
                           if let networkError = error as? CKNetworkError,
                             case let .invalidValue(keyPath, value, _) = networkError {
-                            XCTAssertEqual(keyPath, FeesResponseKey.max.path, "Incorrect key description")
+                            XCTAssertEqual(keyPath, FeesResponseKey.fast.path, "Incorrect key description")
                             XCTAssertEqual(value, "10000001.0", "Incorrect value description")
                           } else {
                             XCTFail("Excessive fee threw incorrect error type")
@@ -150,7 +150,7 @@ class CheckInResponseTests: XCTestCase, ResponseStringsTestable {
   private func generateFeesResponse(max: Double = 10,
                                     avg: Double = 10,
                                     min: Double = 10) -> FeesResponse {
-    return FeesResponse(max: max, avg: avg, min: min)
+    return FeesResponse(fast: max, med: avg, slow: min)
   }
 
   private func checkIn(withPricing pricing: PriceResponse, sample: CheckInResponse) -> CheckInResponse {
@@ -183,7 +183,7 @@ extension CheckInResponse: EmptyStringCopyable {
 
 extension FeesResponse: EmptyStringCopyable {
   func copyWithEmptyRequiredStrings() -> FeesResponse {
-    return FeesResponse(max: self.max, avg: self.avg, min: self.min)
+    return FeesResponse(fast: best, med: better, slow: good)
   }
 }
 

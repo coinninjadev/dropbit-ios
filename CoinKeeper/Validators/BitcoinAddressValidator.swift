@@ -8,7 +8,6 @@
 
 import Foundation
 import CNBitcoinKit
-import os.log
 
 enum BitcoinAddressValidatorError: ValidatorTypeError {
   case isInvalidBitcoinAddress
@@ -72,8 +71,7 @@ class BitcoinAddressValidator: ValidatorType<String> {
       return flattenedResults[1] //desired string should be at index 1 of the group
 
     } catch {
-      let logger = OSLog(subsystem: "com.coinninja.coinkeeper.appcoordinator", category: "address_sanitizer")
-      os_log("Invalid regex: %@", log: logger, type: .error, error.localizedDescription)
+      log.error(error, message: "Invalid regex")
       return nil
     }
   }

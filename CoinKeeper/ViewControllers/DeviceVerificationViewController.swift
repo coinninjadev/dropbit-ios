@@ -7,10 +7,8 @@
 //
 
 import Foundation
-import PhoneNumberKit
 import SVProgressHUD
 import UIKit
-import os.log
 
 protocol DeviceVerificationViewControllerDelegate: AnyObject {
   func viewController(_ viewController: DeviceVerificationViewController, didEnterPhoneNumber phoneNumber: GlobalPhoneNumber)
@@ -126,7 +124,6 @@ final class DeviceVerificationViewController: BaseViewController {
 
   var countryCodeSearchView: CountryCodeSearchView?
   let countryCodeDataSource = CountryCodePickerDataSource()
-  let phoneNumberKit = PhoneNumberKit()
 
   var coordinationDelegate: DeviceVerificationViewControllerDelegate? {
     return generalCoordinationDelegate as? DeviceVerificationViewControllerDelegate
@@ -273,8 +270,7 @@ final class DeviceVerificationViewController: BaseViewController {
 
   /// Returns String instead of NSLocalizedString because Xcode threw a compiler error: Use of undeclared type NSLocalizedString (??)
   private func normalCodeMessage(with phoneNumber: GlobalPhoneNumber) -> String {
-    let kit = self.phoneNumberKit
-    let formatter = CKPhoneNumberFormatter(kit: kit, format: .national)
+    let formatter = CKPhoneNumberFormatter(format: .national)
 
     let formattedNumber: String = (try? formatter.string(from: phoneNumber)) ?? phoneNumber.asE164()
 
@@ -315,8 +311,8 @@ extension DeviceVerificationViewController: PhoneNumberEntryViewDisplayable {
     switch entryMode {
     case .phoneNumberEntry:
 
-      let formatter = CKPhoneNumberFormatter(kit: self.phoneNumberKit, format: .international)
-      let exampleNumber = self.phoneNumberKit.exampleNumber(forCountry: regionCode, phoneNumberType: .mobile)
+      let formatter = CKPhoneNumberFormatter(format: .international)
+      let exampleNumber = phoneNumberKit.exampleNumber(forCountry: regionCode, phoneNumberType: .mobile)
       let countryCode = self.phoneNumberEntryView.textField.currentGlobalNumber().countryCode
 
       if let nationalNumber = exampleNumber,
@@ -327,7 +323,7 @@ extension DeviceVerificationViewController: PhoneNumberEntryViewDisplayable {
         exampleLabel.text = nil
       }
 
-      let phoneNumberLengths = self.phoneNumberKit.possiblePhoneNumberLengths(forCountry: regionCode, phoneNumberType: .mobile, lengthType: .national)
+      let phoneNumberLengths = phoneNumberKit.possiblePhoneNumberLengths(forCountry: regionCode, phoneNumberType: .mobile, lengthType: .national)
       let regionHasSinglePhoneNumberLength = phoneNumberLengths.count == 1
       submitPhoneNumberButton.isHidden = regionHasSinglePhoneNumberLength
 
@@ -366,8 +362,7 @@ extension DeviceVerificationViewController: KeypadEntryViewDelegate {
       }
 
     case .codeFailureCountExceeded:
-      let logger = OSLog(subsystem: "com.coinninja.coinkeeper.deviceverificationviewcontroller", category: "device_verification_view_controller")
-      os_log("Device verification failed three times", log: logger, type: .error)
+      log.warn("Device verification failed three times")
 
     case .phoneNumberEntry:
       break
