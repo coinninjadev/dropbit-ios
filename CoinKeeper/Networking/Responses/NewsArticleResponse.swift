@@ -8,10 +8,6 @@
 
 import Foundation
 
-public struct NewsArticleContainer: Decodable {
-  var newsArr: [NewsArticleResponse]
-}
-
 public struct NewsArticleResponse: ResponseDecodable {
   enum Source: String, Decodable {
     case reddit
@@ -19,7 +15,7 @@ public struct NewsArticleResponse: ResponseDecodable {
     case ambcrypto
     case coindesk
     case cointelegraph
-    case coinninja
+    case coinninja = "CoinNinja"
     case coinsquare
   }
 
@@ -27,11 +23,23 @@ public struct NewsArticleResponse: ResponseDecodable {
   let title: String
   let link: String
   let thumbnail: String?
-  let description: String
-  let source: String
-  let author: String
-  let pubTime: Date
-  let added: Date
+  let description: String?
+  let source: String?
+  let author: String?
+  let pubTime: Date?
+  let added: Date?
+  
+  func getFullSource() -> String {
+    if let source = source, let added = added {
+      return source + " • " + CKDateFormatter.displayFull.string(from: added)
+    } else if let source = source {
+      return source
+    } else if let added = added {
+      return CKDateFormatter.displayFull.string(from: added)
+    } else {
+      return ""
+    }
+  }
 }
 
 extension NewsArticleResponse {

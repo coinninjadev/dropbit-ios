@@ -430,7 +430,6 @@
 		A22B196020EC1DA80084E8E9 /* AppCoordinator+RestoreWalletViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A22B195F20EC1DA80084E8E9 /* AppCoordinator+RestoreWalletViewControllerDelegate.swift */; };
 		A22C43CE20F3C84000041DF6 /* RestoreWalletViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A22C43CD20F3C84000041DF6 /* RestoreWalletViewControllerTests.swift */; };
 		A230F1C622D664360017BC7A /* NewsData.swift in Sources */ = {isa = PBXBuildFile; fileRef = A230F1C522D664360017BC7A /* NewsData.swift */; };
-		A230F1C822D6852D0017BC7A /* CKNumberFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A230F1C722D6852D0017BC7A /* CKNumberFormatter.swift */; };
 		A24525352100EBC80024D5F8 /* Gifu.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A24525342100EBC80024D5F8 /* Gifu.framework */; };
 		A245C6D020D9537400D99983 /* RequestAddressBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = A245C6CF20D9537400D99983 /* RequestAddressBody.swift */; };
 		A246C82122CA562D00AF1F52 /* NetworkManager+NewsDataRequestable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A246C82022CA562D00AF1F52 /* NetworkManager+NewsDataRequestable.swift */; };
@@ -513,6 +512,7 @@
 		A2E52D6220BD937E00424E6A /* StringDictResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2E52D6120BD937E00424E6A /* StringDictResponse.swift */; };
 		A2E52D8820BE3A3F00424E6A /* Data+HexString.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2E52D8720BE3A3F00424E6A /* Data+HexString.swift */; };
 		A2E89208210A3BC10085631A /* CKPhoneNumberFormatterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2E89207210A3BC10085631A /* CKPhoneNumberFormatterTests.swift */; };
+		A2E9F70022D7C1BA00D4DBFD /* CKNumberFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A230F1C722D6852D0017BC7A /* CKNumberFormatter.swift */; };
 		A2FDC54122D37BFA004B0EDD /* Charts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A2FDC54022D37BFA004B0EDD /* Charts.framework */; };
 		B501022221F2325B00D42A71 /* UIColor+Init.swift in Sources */ = {isa = PBXBuildFile; fileRef = B501022121F2325B00D42A71 /* UIColor+Init.swift */; };
 		B501022321F2333C00D42A71 /* UIColor+Init.swift in Sources */ = {isa = PBXBuildFile; fileRef = B501022121F2325B00D42A71 /* UIColor+Init.swift */; };
@@ -3787,6 +3787,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A2E9F70022D7C1BA00D4DBFD /* CKNumberFormatter.swift in Sources */,
 				3BF5807E20E2ADC500DD7F95 /* Applicable.swift in Sources */,
 				B53D7ECC2119FCA300D1DCBF /* BCITransactionResponse.swift in Sources */,
 				B597AF6F225682F600660B0E /* MessagerDelegate.swift in Sources */,

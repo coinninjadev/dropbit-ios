@@ -179,7 +179,7 @@ extension NewsViewControllerDDS: UITableViewDataSource {
       }
     case .lineGraph?:
       if let lineGraphCell = tableView.dequeueReusableCell(withIdentifier: LineChartCell.reuseIdentifier, for: indexPath) as? LineChartCell {
-        var lineChartData = LineChartData()
+        let lineChartData = LineChartData()
         let dataSet = newsData.getDataSetForTimePeriod(currentTimePeriod)
         dataSet.circleRadius = 0.0
         dataSet.lineWidth = 2.0
@@ -201,12 +201,12 @@ extension NewsViewControllerDDS: UITableViewDataSource {
       if let newsCell = tableView.dequeueReusableCell(withIdentifier: NewsArticleCell.reuseIdentifier, for: indexPath) as? NewsArticleCell,
         let article = newsData.articles[safe: indexPath.row - 2] {
         newsCell.titleLabel.text = article.title
-        newsCell.sourceLabel.text = article.source
+        newsCell.sourceLabel.text = article.getFullSource()
 
         if let thumbnail = article.thumbnail, thumbnail.isNotEmpty {
           newsCell.imageURL = thumbnail
         } else {
-          newsCell.source = NewsArticleResponse.Source(rawValue: article.source)
+          newsCell.source = NewsArticleResponse.Source(rawValue: article.source ?? NewsArticleResponse.Source.coinninja.rawValue)
         }
 
         cell = newsCell

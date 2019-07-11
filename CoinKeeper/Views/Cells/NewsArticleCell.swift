@@ -78,8 +78,8 @@ class NewsArticleCell: UITableViewCell {
 
   @IBOutlet var sourceLabel: UILabel! {
     didSet {
-      sourceLabel.font = .regular(10)
-      sourceLabel.textColor = .lightGrayText
+      sourceLabel.font = .regular(11)
+      sourceLabel.textColor = .darkGrayText
     }
   }
 

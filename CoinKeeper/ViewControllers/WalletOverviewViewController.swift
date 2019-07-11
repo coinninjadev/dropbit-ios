@@ -122,7 +122,7 @@ extension WalletOverviewViewController: UIPageViewControllerDelegate {
                           previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
     if let firstViewController = previousViewControllers.first as? BaseViewController,
       let index = baseViewControllers.firstIndex(of: firstViewController) {
-      pageControl.currentPage = index + 1
+      pageControl.currentPage = index
     }
   }
 }
