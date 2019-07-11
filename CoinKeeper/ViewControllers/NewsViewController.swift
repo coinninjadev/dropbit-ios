@@ -12,7 +12,7 @@ import Charts
 import PromiseKit
 import os.log
 
-protocol NewsViewControllerDelegate: ViewControllerDismissable {
+protocol NewsViewControllerDelegate: ViewControllerDismissable, URLOpener {
   func viewControllerDidRequestNewsData(count: Int) -> Promise<[NewsArticleResponse]>
   func viewControllerDidRequestPriceDataFor(period: PricePeriod) -> Promise<[PriceSummaryResponse]>
 }
@@ -92,5 +92,9 @@ extension NewsViewController: NewsViewControllerDDSDelegate {
 
   func delegateDidRequestTableView() -> UITableView {
     return tableView
+  }
+  
+  func delegateDidRequestUrl(_ url: URL) {
+    coordinationDelegate?.openURL(url, completionHandler: nil)
   }
 }

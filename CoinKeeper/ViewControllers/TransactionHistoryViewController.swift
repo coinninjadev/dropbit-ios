@@ -245,7 +245,7 @@ extension TransactionHistoryViewController { // Layout
   }
 
   private var detailCollectionViewHeight: CGFloat {
-    return self.view.frame.height - statusBarHeight
+    return self.view.frame.height
   }
 
   private func summaryCollectionViewLayout() -> UICollectionViewFlowLayout {

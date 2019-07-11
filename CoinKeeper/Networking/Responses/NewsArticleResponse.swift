@@ -15,13 +15,12 @@ public struct NewsArticleContainer: Decodable {
 public struct NewsArticleResponse: ResponseDecodable {
   enum Source: String, Decodable {
     case reddit
-    case ccn
+    case ccn = "CCN"
     case ambcrypto
     case coindesk
     case cointelegraph
     case coinninja
     case coinsquare
-    case btc
   }
 
   let id: String

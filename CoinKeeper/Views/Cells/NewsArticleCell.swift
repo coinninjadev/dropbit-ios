@@ -56,10 +56,8 @@ class NewsArticleCell: UITableViewCell {
         thumbnailImageView.image = #imageLiteral(resourceName: "coinninjaIcon")
       case .coinsquare?:
         thumbnailImageView.image = #imageLiteral(resourceName: "coinsquareIcon")
-      case .btc?:
-        thumbnailImageView.image = #imageLiteral(resourceName: "bitcoinImage")
       default:
-        thumbnailImageView.image = #imageLiteral(resourceName: "pullBitcoinIcon")
+        thumbnailImageView.image = nil
       }
     }
   }

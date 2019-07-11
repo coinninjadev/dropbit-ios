@@ -12,6 +12,8 @@ import Charts
 
 class LineChartCell: UITableViewCell {
   @IBOutlet var chart: LineChartView!
+  @IBOutlet var highLabel: UILabel!
+  @IBOutlet var lowLabel: UILabel!
 
   var data: ChartData? {
     willSet {
@@ -20,6 +22,8 @@ class LineChartCell: UITableViewCell {
       }
     }
     didSet {
+      highLabel.text = CKNumberFormatter.currencyFormatter.string(from: (data?.yMax ?? 0.0) as NSNumber)
+      lowLabel.text = CKNumberFormatter.currencyFormatter.string(from: (data?.yMin ?? 0.0) as NSNumber)
       chart.data = data
     }
   }
@@ -27,8 +31,11 @@ class LineChartCell: UITableViewCell {
   override func awakeFromNib() {
     super.awakeFromNib()
     chart.backgroundColor = .lightGrayBackground
+    highLabel.backgroundColor = .lightGrayBackground
+    lowLabel.backgroundColor = .lightGrayBackground
+    backgroundColor = .lightGrayBackground
     chart.leftAxis.enabled = false
-    chart.rightAxis.enabled = true
+    chart.rightAxis.enabled = false
     chart.xAxis.enabled = false
     chart.pinchZoomEnabled = false
     chart.legend.form = .none
@@ -36,5 +43,10 @@ class LineChartCell: UITableViewCell {
 
     isUserInteractionEnabled = false
     selectionStyle = .none
+    
+    highLabel.font = .regular(11)
+    highLabel.textColor = .black
+    lowLabel.font = .regular(11)
+    lowLabel.textColor = .black
   }
 }

@@ -15,6 +15,7 @@ import os.log
 
 protocol NewsViewControllerDDSDelegate: class {
   func delegateDidRequestTableView() -> UITableView
+  func delegateDidRequestUrl(_ url: URL)
 }
 
 class NewsViewControllerDDS: NSObject {
@@ -40,7 +41,7 @@ class NewsViewControllerDDS: NSObject {
   
   func setupDataSet(coordinationDelegate: NewsViewControllerDelegate) {
     var newsData = NewsData()
-
+    
     coordinationDelegate.viewControllerDidRequestNewsData(count: 100).then { articles -> Promise<[PriceSummaryResponse]> in
         newsData.articles = articles
         return coordinationDelegate.viewControllerDidRequestPriceDataFor(period: .daily)
@@ -139,7 +140,7 @@ extension NewsViewControllerDDS: UITableViewDelegate {
     guard indexPath.row > 2 else { return }
     
     if let url = URL(string: newsData.articles[indexPath.row - 2].link) {
-      newsData.newsActionHandler(url)
+      delegate?.delegateDidRequestUrl(url)
     }
   }
 }
@@ -152,7 +153,7 @@ extension NewsViewControllerDDS: UITableViewDataSource {
     case .lineGraph?:
       return 250
     case .timePeriod?:
-      return 30
+      return 60
     case .newsHeader?:
       return 50
     default:
@@ -176,7 +177,8 @@ extension NewsViewControllerDDS: UITableViewDataSource {
       }
     case .lineGraph?:
       if let lineGraphCell = tableView.dequeueReusableCell(withIdentifier: LineChartCell.reuseIdentifier, for: indexPath) as? LineChartCell {
-        var lineChartData = LineChartData(), dataSet = newsData.getDataSetForTimePeriod(currentTimePeriod)
+        var lineChartData = LineChartData()
+        let dataSet = newsData.getDataSetForTimePeriod(currentTimePeriod)
         dataSet.circleRadius = 0.0
         dataSet.lineWidth = 2.0
         dataSet.mode = .cubicBezier
@@ -202,7 +204,7 @@ extension NewsViewControllerDDS: UITableViewDataSource {
         if let thumbnail = article.thumbnail, thumbnail.isNotEmpty {
           newsCell.imageURL = thumbnail
         } else {
-          newsCell.source = NewsArticleResponse.Source(rawValue: article.source) ?? .btc
+          newsCell.source = NewsArticleResponse.Source(rawValue: article.source)
         }
         
         cell = newsCell

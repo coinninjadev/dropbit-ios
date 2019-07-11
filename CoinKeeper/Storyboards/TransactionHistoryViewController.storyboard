@@ -26,7 +26,7 @@
                                 </constraints>
                             </view>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="GX7-DA-6R2">
-                                <rect key="frame" x="0.0" y="20" width="375" height="543"/>
+                                <rect key="frame" x="0.0" y="20" width="375" height="647"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="h1X-vI-UYr">
                                     <size key="itemSize" width="50" height="50"/>
@@ -37,7 +37,7 @@
                                 <cells/>
                             </collectionView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Vc7-dJ-Wpy" customClass="SendReceiveActionView" customModule="DropBit" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="563" width="375" height="148"/>
+                                <rect key="frame" x="0.0" y="667" width="375" height="44"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </view>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="Asa-Mr-foF">
@@ -64,7 +64,7 @@
                             <constraint firstItem="Asa-Mr-foF" firstAttribute="leading" secondItem="JGv-XL-uiR" secondAttribute="leading" id="RE9-49-PbQ"/>
                             <constraint firstItem="JGv-XL-uiR" firstAttribute="trailing" secondItem="GX7-DA-6R2" secondAttribute="trailing" id="WgW-MD-OhW"/>
                             <constraint firstItem="Av0-bG-xgJ" firstAttribute="top" secondItem="dvX-tA-FaC" secondAttribute="top" id="XAy-Ne-KPx"/>
-                            <constraint firstItem="JGv-XL-uiR" firstAttribute="bottom" secondItem="Vc7-dJ-Wpy" secondAttribute="top" constant="104" id="Y0x-pf-ha3"/>
+                            <constraint firstItem="JGv-XL-uiR" firstAttribute="bottom" secondItem="Vc7-dJ-Wpy" secondAttribute="top" id="Y0x-pf-ha3"/>
                             <constraint firstItem="GX7-DA-6R2" firstAttribute="leading" secondItem="JGv-XL-uiR" secondAttribute="leading" id="bLZ-Tk-V3L"/>
                             <constraint firstItem="Av0-bG-xgJ" firstAttribute="leading" secondItem="JGv-XL-uiR" secondAttribute="leading" id="dhp-1R-Qqb"/>
                             <constraint firstItem="Av0-bG-xgJ" firstAttribute="trailing" secondItem="JGv-XL-uiR" secondAttribute="trailing" id="fX8-qv-xc2"/>

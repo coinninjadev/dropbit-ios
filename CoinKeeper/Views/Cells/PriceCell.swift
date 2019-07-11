@@ -24,16 +24,6 @@ class PriceCell: UITableViewCell {
     }
   }
 
-  private lazy var grossAmountFormatter: NumberFormatter = {
-    let formatter = NumberFormatter()
-    formatter.maximumFractionDigits = 2
-    formatter.minimumFractionDigits = 2
-    formatter.locale = Locale.current
-    formatter.usesGroupingSeparator = true
-    formatter.numberStyle = .currency
-    return formatter
-  }()
-  
   private lazy var percentageFormatter: NumberFormatter = {
     let formatter = NumberFormatter()
     formatter.maximumFractionDigits = 2
@@ -46,7 +36,8 @@ class PriceCell: UITableViewCell {
   var movement: (gross: Double, percentage: Double)? {
     didSet {
       guard let movement = movement, movement.gross != 0, movement.percentage != 0 else { return }
-      var displayString: String = (grossAmountFormatter.string(from: (movement.gross as NSNumber)) ?? "") + " " + "(\(percentageFormatter.string(from: (movement.percentage as NSNumber)) ?? "")%)"
+      let displayString: String = (CKNumberFormatter.currencyFormatter.string(from: (movement.gross as NSNumber)) ?? "") + " " +
+        "(\(percentageFormatter.string(from: (movement.percentage as NSNumber)) ?? "")%)"
       
       if movement.gross > 0 {
         movementLabel.textColor = .successGreen

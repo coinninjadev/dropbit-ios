@@ -428,6 +428,7 @@
 		A22B196020EC1DA80084E8E9 /* AppCoordinator+RestoreWalletViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A22B195F20EC1DA80084E8E9 /* AppCoordinator+RestoreWalletViewControllerDelegate.swift */; };
 		A22C43CE20F3C84000041DF6 /* RestoreWalletViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A22C43CD20F3C84000041DF6 /* RestoreWalletViewControllerTests.swift */; };
 		A230F1C622D664360017BC7A /* NewsData.swift in Sources */ = {isa = PBXBuildFile; fileRef = A230F1C522D664360017BC7A /* NewsData.swift */; };
+		A230F1C822D6852D0017BC7A /* CKNumberFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A230F1C722D6852D0017BC7A /* CKNumberFormatter.swift */; };
 		A24525352100EBC80024D5F8 /* Gifu.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A24525342100EBC80024D5F8 /* Gifu.framework */; };
 		A245C6D020D9537400D99983 /* RequestAddressBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = A245C6CF20D9537400D99983 /* RequestAddressBody.swift */; };
 		A246C82122CA562D00AF1F52 /* NetworkManager+NewsDataRequestable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A246C82022CA562D00AF1F52 /* NetworkManager+NewsDataRequestable.swift */; };
@@ -1330,6 +1331,7 @@
 		A22B195F20EC1DA80084E8E9 /* AppCoordinator+RestoreWalletViewControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppCoordinator+RestoreWalletViewControllerDelegate.swift"; sourceTree = "<group>"; };
 		A22C43CD20F3C84000041DF6 /* RestoreWalletViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestoreWalletViewControllerTests.swift; sourceTree = "<group>"; };
 		A230F1C522D664360017BC7A /* NewsData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsData.swift; sourceTree = "<group>"; };
+		A230F1C722D6852D0017BC7A /* CKNumberFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CKNumberFormatter.swift; sourceTree = "<group>"; };
 		A24525342100EBC80024D5F8 /* Gifu.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Gifu.framework; path = Carthage/Build/iOS/Gifu.framework; sourceTree = "<group>"; };
 		A245C6CF20D9537400D99983 /* RequestAddressBody.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestAddressBody.swift; sourceTree = "<group>"; };
 		A246C82022CA562D00AF1F52 /* NetworkManager+NewsDataRequestable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NetworkManager+NewsDataRequestable.swift"; sourceTree = "<group>"; };
@@ -2306,6 +2308,7 @@
 				3BB05AC0209CF407000297E1 /* Typealiases.swift */,
 				307DF11E2151676900260369 /* JSONValue.swift */,
 				307DF12021517A8800260369 /* Global.swift */,
+				A230F1C722D6852D0017BC7A /* CKNumberFormatter.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -4196,6 +4199,7 @@
 				3B7E2D572292EC7400891E4A /* SharedPayloadV2.swift in Sources */,
 				B5A3BA542151939B005EE657 /* AddressesTarget.swift in Sources */,
 				B53461722098ABBF00DDC1C4 /* CKMAddressTransactionSummary+CoreDataClass.swift in Sources */,
+				A230F1C822D6852D0017BC7A /* CKNumberFormatter.swift in Sources */,
 				3BEF22A12264B9D8001F6D25 /* AppCoordinator+GetBitcoinViewControllerDelegate.swift in Sources */,
 				30ADA32C2162A76D00E52AF9 /* CreateDeviceBody.swift in Sources */,
 				3B5052BF20473FC9000C739F /* BackupRecoveryWordsCell.swift in Sources */,

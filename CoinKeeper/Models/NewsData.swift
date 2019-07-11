@@ -10,7 +10,6 @@ import Foundation
 import Charts
 
 struct NewsData {
-  var newsActionHandler: (URL) -> Void = { _ in }
   var articles: [NewsArticleResponse] = []
   
   var dayPriceResponse: [PriceSummaryResponse] = []

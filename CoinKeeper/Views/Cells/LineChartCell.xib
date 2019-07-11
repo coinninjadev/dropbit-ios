@@ -18,22 +18,42 @@
                 <rect key="frame" x="0.0" y="0.0" width="375" height="212.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="by3-0C-L3w" customClass="LineChartView" customModule="Charts">
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RHu-XE-afk" customClass="LineChartView" customModule="Charts">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="212.5"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </view>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JvU-1X-s99" userLabel="Top Label">
+                        <rect key="frame" x="0.0" y="0.0" width="355" height="20.5"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="e3f-PV-QNM" userLabel="Bottom Label">
+                        <rect key="frame" x="0.0" y="192" width="355" height="20.5"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="by3-0C-L3w" firstAttribute="top" secondItem="Nzm-BT-pfH" secondAttribute="top" id="C3D-5N-4GU"/>
-                    <constraint firstItem="by3-0C-L3w" firstAttribute="leading" secondItem="Nzm-BT-pfH" secondAttribute="leading" id="Ogs-PS-g9b"/>
-                    <constraint firstAttribute="bottom" secondItem="by3-0C-L3w" secondAttribute="bottom" id="Rpb-nc-vkR"/>
-                    <constraint firstAttribute="trailing" secondItem="by3-0C-L3w" secondAttribute="trailing" id="W0Q-lo-8Zs"/>
+                    <constraint firstItem="e3f-PV-QNM" firstAttribute="leading" secondItem="Nzm-BT-pfH" secondAttribute="leading" id="4od-K5-gRr"/>
+                    <constraint firstAttribute="trailing" secondItem="e3f-PV-QNM" secondAttribute="trailing" constant="20" id="6gE-pj-0NI"/>
+                    <constraint firstItem="RHu-XE-afk" firstAttribute="leading" secondItem="Nzm-BT-pfH" secondAttribute="leading" id="BxF-bL-DMB"/>
+                    <constraint firstAttribute="trailing" secondItem="RHu-XE-afk" secondAttribute="trailing" id="bTu-BX-d8P"/>
+                    <constraint firstAttribute="bottom" secondItem="e3f-PV-QNM" secondAttribute="bottom" id="fnv-QJ-lwP"/>
+                    <constraint firstItem="JvU-1X-s99" firstAttribute="top" secondItem="Nzm-BT-pfH" secondAttribute="top" id="fsB-MM-UCY"/>
+                    <constraint firstAttribute="bottom" secondItem="RHu-XE-afk" secondAttribute="bottom" id="i46-mF-82f"/>
+                    <constraint firstItem="JvU-1X-s99" firstAttribute="leading" secondItem="Nzm-BT-pfH" secondAttribute="leading" id="nJk-KB-YP6"/>
+                    <constraint firstAttribute="trailing" secondItem="JvU-1X-s99" secondAttribute="trailing" constant="20" id="uSb-eN-HOz"/>
+                    <constraint firstItem="RHu-XE-afk" firstAttribute="top" secondItem="Nzm-BT-pfH" secondAttribute="top" id="ys8-cT-chG"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>
-                <outlet property="chart" destination="by3-0C-L3w" id="Haw-Y9-Erg"/>
+                <outlet property="chart" destination="RHu-XE-afk" id="cnM-cq-Iv4"/>
+                <outlet property="highLabel" destination="JvU-1X-s99" id="akc-8Y-8CC"/>
+                <outlet property="lowLabel" destination="e3f-PV-QNM" id="aDx-nu-Cdh"/>
             </connections>
-            <point key="canvasLocation" x="-231" y="74"/>
+            <point key="canvasLocation" x="-231.15942028985509" y="73.995535714285708"/>
         </tableViewCell>
     </objects>
 </document>
