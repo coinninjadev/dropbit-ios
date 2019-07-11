@@ -196,11 +196,33 @@ extension AppCoordinator {
     return drawerController!
   }
 
+  func createRequestPayViewController(converter: CurrencyConverter) -> RequestPayViewController? {
+    guard let wmgr = walletManager else { return nil }
+    let requestViewController = RequestPayViewController.makeFromStoryboard()
+    assignCoordinationDelegate(to: requestViewController)
+
+    var nextAddress: String?
+    let bgContext = persistenceManager.createBackgroundContext()
+    bgContext.performAndWait {
+      guard let receiveAddress = wmgr.createAddressDataSource().nextAvailableReceiveAddress(forServerPool: false,
+                                                                                            indicesToSkip: [],
+                                                                                            in: bgContext)?.address else { return }
+      nextAddress = receiveAddress
+    }
+
+    guard let address = nextAddress else { return nil }
+    let viewModel = RequestPayViewModel(receiveAddress: address, currencyConverter: converter)
+    requestViewController.viewModel = viewModel
+    return requestViewController
+  }
+
   private func makeOverviewController() -> WalletOverviewViewController {
     let transactionHistory = makeTransactionHistory()
-    let requestPayViewController = RequestPayViewController.makeFromStoryboard()
+    let requestPayViewController = createRequestPayViewController(converter: currencyController.currencyConverter)
+      ?? RequestPayViewController.makeFromStoryboard()
+    requestPayViewController.isModal = false
     let overviewChildViewControllers: [BaseViewController] =
-      [RequestPayViewController.makeFromStoryboard(), transactionHistory, NewsViewController.makeFromStoryboard()]
+      [requestPayViewController, transactionHistory, NewsViewController.makeFromStoryboard()]
 
     for viewController in overviewChildViewControllers {
       assignCoordinationDelegate(to: viewController)

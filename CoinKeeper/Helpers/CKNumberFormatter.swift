@@ -9,7 +9,7 @@
 import Foundation
 
 struct CKNumberFormatter {
-  
+
   static let currencyFormatter: NumberFormatter = {
     let formatter = NumberFormatter()
     formatter.maximumFractionDigits = 2

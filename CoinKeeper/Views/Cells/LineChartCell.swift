@@ -17,7 +17,7 @@ class LineChartCell: UITableViewCell {
 
   var data: ChartData? {
     willSet {
-      if newValue != data {
+      if newValue?.yMax != chart.data?.yMax || newValue?.xMax != chart.data?.xMax {
         chart.animate(xAxisDuration: 2, easingOption: .easeOutBack)
       }
     }
@@ -43,7 +43,7 @@ class LineChartCell: UITableViewCell {
 
     isUserInteractionEnabled = false
     selectionStyle = .none
-    
+
     highLabel.font = .regular(11)
     highLabel.textColor = .black
     lowLabel.font = .regular(11)

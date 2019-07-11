@@ -20,24 +20,13 @@ protocol NewsViewControllerDelegate: ViewControllerDismissable, URLOpener {
 class NewsViewController: BaseViewController, StoryboardInitializable {
 
   @IBOutlet var tableView: UITableView!
-
-  private lazy var formatter: NumberFormatter = {
-    let formatter = NumberFormatter()
-    formatter.maximumFractionDigits = 2
-    formatter.minimumFractionDigits = 2
-    formatter.plusSign = "+"
-    formatter.minusSign = "-"
-    formatter.locale = Locale.current
-    formatter.usesGroupingSeparator = true
-    formatter.numberStyle = .currency
-    return formatter
-  }()
+  @IBOutlet var loadingSpinner: UIActivityIndicatorView!
 
   private var newsViewControllerDDS: NewsViewControllerDDS?
 
   lazy var updateRatesRequest: ExchangeRatesRequest = { [weak self] rates in
     let value = rates[.USD] as NSNumber?
-    self?.newsViewControllerDDS?.newsData.currentPrice = self?.formatter.string(from: value ?? 0.0) ?? ""
+    self?.newsViewControllerDDS?.newsData.currentPrice = CKNumberFormatter.currencyFormatter.string(from: value ?? 0.0) ?? ""
     self?.tableView.reloadData()
   }
 
@@ -82,7 +71,7 @@ class NewsViewController: BaseViewController, StoryboardInitializable {
       newsViewControllerDDS?.setupDataSet(coordinationDelegate: delegate)
     }
   }
-  
+
   @objc private func refreshDisplayedPrice() {
     currencyValueManager?.latestExchangeRates(responseHandler: updateRatesRequest)
   }
@@ -93,8 +82,13 @@ extension NewsViewController: NewsViewControllerDDSDelegate {
   func delegateDidRequestTableView() -> UITableView {
     return tableView
   }
-  
+
   func delegateDidRequestUrl(_ url: URL) {
     coordinationDelegate?.openURL(url, completionHandler: nil)
+  }
+
+  func delegateFinishedLoadingData() {
+    loadingSpinner.stopAnimating()
+    tableView.isHidden = false
   }
 }

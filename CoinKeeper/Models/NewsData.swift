@@ -11,24 +11,24 @@ import Charts
 
 struct NewsData {
   var articles: [NewsArticleResponse] = []
-  
+
   var dayPriceResponse: [PriceSummaryResponse] = []
   var dayPriceData: LineChartDataSet = LineChartDataSet()
-  
+
   var allTimePriceResponse: [PriceSummaryResponse] = []
   var allTimePriceData: LineChartDataSet = LineChartDataSet()
-  
+
   var yearlyPriceResponse: [PriceSummaryResponse] = []
   var yearlyPriceData: LineChartDataSet = LineChartDataSet()
-  
+
   var monthlyPriceResponse: [PriceSummaryResponse] = []
   var monthlyPriceData: LineChartDataSet = LineChartDataSet()
-  
+
   var weeklyPriceResponse: [PriceSummaryResponse] = []
   var weeklyPriceData: LineChartDataSet = LineChartDataSet()
-  
+
   var currentPrice: String = ""
-  
+
   func getDataSetForTimePeriod(_ timePeriod: TimePeriodCell.Period) -> LineChartDataSet {
     switch timePeriod {
     case .daily:
@@ -43,10 +43,10 @@ struct NewsData {
       return allTimePriceData
     }
   }
-  
+
   func getPriceMovement(_ timePeriod: TimePeriodCell.Period) -> (gross: Double, percentage: Double) {
     let priceResponse: [PriceSummaryResponse]
-    
+
     switch timePeriod {
     case .week:
       priceResponse = weeklyPriceResponse
@@ -59,7 +59,7 @@ struct NewsData {
     default:
       priceResponse = dayPriceResponse
     }
-    
+
     return (gross: (priceResponse.last?.average ?? 0.0) - (priceResponse.first?.average ?? 0.0),
             percentage: (priceResponse.last?.average ?? 0.0) / (priceResponse.first?.average ?? 0.0))
   }

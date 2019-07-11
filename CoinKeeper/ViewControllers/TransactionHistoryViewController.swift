@@ -273,7 +273,7 @@ extension TransactionHistoryViewController: UIScrollViewDelegate {
   func scrollViewDidScroll(_ scrollView: UIScrollView) {
     guard scrollView.contentOffset.y < 0 else { return }
     let offset = abs(scrollView.contentOffset.y)
-    refreshViewTopConstraint.constant = offset
+    refreshViewTopConstraint.constant = offset - refreshView.frame.size.height
     refreshView.animateLogo(to: scrollView.contentOffset.y)
   }
 

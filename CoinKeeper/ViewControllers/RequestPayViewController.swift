@@ -10,7 +10,6 @@ import UIKit
 
 protocol RequestPayViewControllerDelegate: ViewControllerDismissable, CopyToClipboardMessageDisplayable {
   func viewControllerDidSelectSendRequest(_ viewController: UIViewController, payload: [Any])
-
 }
 
 final class RequestPayViewController: PresentableViewController, StoryboardInitializable {
@@ -23,18 +22,7 @@ final class RequestPayViewController: PresentableViewController, StoryboardIniti
       titleLabel.textColor = .darkBlueText
     }
   }
-  @IBOutlet var primaryCurrencyLabel: UILabel! {
-    didSet {
-      primaryCurrencyLabel.textColor = .lightBlueTint
-      primaryCurrencyLabel.font = .regular(35)
-    }
-  }
-  @IBOutlet var secondaryCurrencyLabel: UILabel! {
-    didSet {
-      secondaryCurrencyLabel.textColor = .darkGrayText
-      secondaryCurrencyLabel.font = .regular(17)
-    }
-  }
+  @IBOutlet var currencyEditSwapView: CurrencyEditSwapView!
   @IBOutlet var qrImageView: UIImageView!
   @IBOutlet var receiveAddressLabel: UILabel! {
     didSet {
@@ -63,6 +51,14 @@ final class RequestPayViewController: PresentableViewController, StoryboardIniti
     }
   }
 
+  @IBOutlet var addAmountButton: UIButton! {
+    didSet {
+      addAmountButton.styleAddButtonWith(title: "Add Receive Amount")
+    }
+  }
+
+  var isModal: Bool = true
+
   // MARK: variables
   var coordinationDelegate: RequestPayViewControllerDelegate? {
     return generalCoordinationDelegate as? RequestPayViewControllerDelegate
@@ -84,13 +80,16 @@ final class RequestPayViewController: PresentableViewController, StoryboardIniti
     receiveAddressLabel.text = viewModel.bitcoinUrl.components.address
     qrImageView.image = viewModel.qrImage(withSize: qrImageView.frame.size)
 
-    [primaryCurrencyLabel, secondaryCurrencyLabel].forEach { $0.isHidden = !viewModel.hasFundsInRequest }
-    primaryCurrencyLabel.text = viewModel.primaryCurrencyValue
-    secondaryCurrencyLabel.attributedText = viewModel.secondaryCurrencyValue
+    closeButton.isHidden = !isModal
   }
 
   @IBAction func closeButtonTapped(_ sender: UIButton) {
     coordinationDelegate?.viewControllerDidSelectClose(self)
+  }
+
+  @IBAction func addRequestAmountButtonTapped(_ sender: UIButton) {
+    currencyEditSwapView.isHidden = false
+    addAmountButton.isHidden = true
   }
 
   @IBAction func sendRequestButtonTapped(_ sender: UIButton) {

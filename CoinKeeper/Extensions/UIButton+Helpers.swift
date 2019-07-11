@@ -54,4 +54,13 @@ extension UIButton {
     self.imageEdgeInsets = UIEdgeInsets(top: vInset, left: hInset, bottom: vInset, right: -hInset)
   }
 
+  func styleAddButtonWith(title: String) {
+    setTitleColor(.darkGrayText, for: .normal)
+    titleLabel?.font = .regular(15)
+    setTitle("  " + title, for: .normal)
+    let plusImage = UIImage(imageLiteralResourceName: "plusIcon").withRenderingMode(.alwaysTemplate)
+    setImage(plusImage, for: .normal)
+    tintColor = .darkGrayText
+  }
+
 }

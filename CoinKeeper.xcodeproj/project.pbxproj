@@ -504,6 +504,8 @@
 		A2A530CA20966D2F00B6F4DE /* String+Count.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2A530C920966D2F00B6F4DE /* String+Count.swift */; };
 		A2A530CE20977A8A00B6F4DE /* ConfirmPaymentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2A530CD20977A8A00B6F4DE /* ConfirmPaymentViewModel.swift */; };
 		A2AA3778210112C000633F83 /* UIImageView+GIF.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2AA3777210112C000633F83 /* UIImageView+GIF.swift */; };
+		A2DBC50222D78DAF008C532B /* CurrencyEditSwapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2DBC50122D78DAF008C532B /* CurrencyEditSwapView.swift */; };
+		A2DBC50422D78DC2008C532B /* CurrencyEditSwapView.xib in Resources */ = {isa = PBXBuildFile; fileRef = A2DBC50322D78DC2008C532B /* CurrencyEditSwapView.xib */; };
 		A2E0300220EABF8E00E160E9 /* RestoreWalletViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2E0300120EABF8E00E160E9 /* RestoreWalletViewController.swift */; };
 		A2E0300420EABFA800E160E9 /* RestoreWalletViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A2E0300320EABFA800E160E9 /* RestoreWalletViewController.storyboard */; };
 		A2E52D6220BD937E00424E6A /* StringDictResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2E52D6120BD937E00424E6A /* StringDictResponse.swift */; };
@@ -1407,6 +1409,8 @@
 		A2A530C920966D2F00B6F4DE /* String+Count.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Count.swift"; sourceTree = "<group>"; };
 		A2A530CD20977A8A00B6F4DE /* ConfirmPaymentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmPaymentViewModel.swift; sourceTree = "<group>"; };
 		A2AA3777210112C000633F83 /* UIImageView+GIF.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+GIF.swift"; sourceTree = "<group>"; };
+		A2DBC50122D78DAF008C532B /* CurrencyEditSwapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyEditSwapView.swift; sourceTree = "<group>"; };
+		A2DBC50322D78DC2008C532B /* CurrencyEditSwapView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CurrencyEditSwapView.xib; sourceTree = "<group>"; };
 		A2E0300120EABF8E00E160E9 /* RestoreWalletViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestoreWalletViewController.swift; sourceTree = "<group>"; };
 		A2E0300320EABFA800E160E9 /* RestoreWalletViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = RestoreWalletViewController.storyboard; sourceTree = "<group>"; };
 		A2E52D6120BD937E00424E6A /* StringDictResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringDictResponse.swift; sourceTree = "<group>"; };
@@ -2294,6 +2298,8 @@
 				3B5A889F228AFC850082BBA4 /* CNContactSearchBar.swift */,
 				3B0C4FDD22A1AC31000FE760 /* VerfiedTwitterUserIndicatorView.swift */,
 				3B0C4FDF22A1ACBD000FE760 /* VerfiedTwitterUserIndicatorView.xib */,
+				A2DBC50122D78DAF008C532B /* CurrencyEditSwapView.swift */,
+				A2DBC50322D78DC2008C532B /* CurrencyEditSwapView.xib */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -3510,6 +3516,7 @@
 				3BD013172272478300C92771 /* TransactionHistoryDetailValidCell.xib in Resources */,
 				3B8ACA15225F96800020B684 /* GetBitcoinViewController.storyboard in Resources */,
 				3B82691A20330B96009B11EC /* KeypadEntryView.xib in Resources */,
+				A2DBC50422D78DC2008C532B /* CurrencyEditSwapView.xib in Resources */,
 				3B9779B5202E416700C9C933 /* Montserrat-BoldItalic.ttf in Resources */,
 				3B3779F0219C6B2800F79683 /* BackupWordsReminderDrawerCell.xib in Resources */,
 				3B9779B3202E416700C9C933 /* Montserrat-LightItalic.ttf in Resources */,
@@ -3950,6 +3957,7 @@
 				30349F872188A99700A32AFA /* ServerAddressViewModel.swift in Sources */,
 				B51AE4AA2093AED4008380CC /* String+Substrings.swift in Sources */,
 				B5EBFD11215C07270008EB4A /* AddressDataSource.swift in Sources */,
+				A2DBC50222D78DAF008C532B /* CurrencyEditSwapView.swift in Sources */,
 				B56512F62153DDA500A5D044 /* WalletCheckInTarget.swift in Sources */,
 				3BCBFCCB229EF71D00F633BA /* SettingsRecoveryWordsCell.swift in Sources */,
 				B5C8F5C9216D39A300E3E85B /* DeviceEndpointResponse.swift in Sources */,

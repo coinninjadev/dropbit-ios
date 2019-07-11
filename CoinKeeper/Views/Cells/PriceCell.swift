@@ -38,13 +38,13 @@ class PriceCell: UITableViewCell {
       guard let movement = movement, movement.gross != 0, movement.percentage != 0 else { return }
       let displayString: String = (CKNumberFormatter.currencyFormatter.string(from: (movement.gross as NSNumber)) ?? "") + " " +
         "(\(percentageFormatter.string(from: (movement.percentage as NSNumber)) ?? "")%)"
-      
+
       if movement.gross > 0 {
         movementLabel.textColor = .successGreen
       } else {
         movementLabel.textColor = .mango
       }
-      
+
       movementLabel.text = displayString
     }
   }

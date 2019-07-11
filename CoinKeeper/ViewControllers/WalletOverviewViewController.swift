@@ -46,6 +46,7 @@ class WalletOverviewViewController: BaseViewController, StoryboardInitializable 
 
     if let pageViewController = children.first as? UIPageViewController {
       self.pageViewController = pageViewController
+      pageViewController.view.layer.masksToBounds = false
     }
 
     pageViewController?.dataSource = self

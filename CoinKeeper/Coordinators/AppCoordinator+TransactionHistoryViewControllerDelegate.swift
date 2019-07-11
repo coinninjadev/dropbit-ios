@@ -130,24 +130,10 @@ extension AppCoordinator: TransactionHistoryViewControllerDelegate {
   }
 
   func viewControllerDidTapReceivePayment(_ viewController: UIViewController, converter: CurrencyConverter) {
-    guard let wmgr = walletManager else { return }
-    analyticsManager.track(event: .requestButtonPressed, with: nil)
-    let requestViewController = RequestPayViewController.makeFromStoryboard()
-    assignCoordinationDelegate(to: requestViewController)
-
-    var nextAddress: String?
-    let bgContext = persistenceManager.createBackgroundContext()
-    bgContext.performAndWait {
-      guard let receiveAddress = wmgr.createAddressDataSource().nextAvailableReceiveAddress(forServerPool: false,
-                                                                                            indicesToSkip: [],
-                                                                                            in: bgContext)?.address else { return }
-      nextAddress = receiveAddress
+    if let requestViewController = createRequestPayViewController(converter: converter) {
+      analyticsManager.track(event: .requestButtonPressed, with: nil)
+      viewController.present(requestViewController, animated: true, completion: nil)
     }
-
-    guard let address = nextAddress else { return }
-    let viewModel = RequestPayViewModel(receiveAddress: address, currencyConverter: converter)
-    requestViewController.viewModel = viewModel
-    viewController.present(requestViewController, animated: true, completion: nil)
   }
 
   func viewControllerDidTapSendPayment(_ viewController: UIViewController, converter: CurrencyConverter) {

@@ -15,6 +15,7 @@ import os.log
 
 protocol NewsViewControllerDDSDelegate: class {
   func delegateDidRequestTableView() -> UITableView
+  func delegateFinishedLoadingData()
   func delegateDidRequestUrl(_ url: URL)
 }
 
@@ -36,12 +37,13 @@ class NewsViewControllerDDS: NSObject {
   var newsData: NewsData = NewsData() {
     didSet {
       delegate?.delegateDidRequestTableView().reloadData()
+      delegate?.delegateFinishedLoadingData()
     }
   }
-  
+
   func setupDataSet(coordinationDelegate: NewsViewControllerDelegate) {
     var newsData = NewsData()
-    
+
     coordinationDelegate.viewControllerDidRequestNewsData(count: 100).then { articles -> Promise<[PriceSummaryResponse]> in
         newsData.articles = articles
         return coordinationDelegate.viewControllerDidRequestPriceDataFor(period: .daily)
@@ -69,20 +71,20 @@ class NewsViewControllerDDS: NSObject {
         newsData.currentPrice = self.newsData.currentPrice
         self.newsData = newsData
     }
-    
+
   }
-  
+
   private func configureMonthlyData(data: [PriceSummaryResponse]) ->
     (weekData: [ChartDataEntry], weekResponse: [PriceSummaryResponse],
     monthData: [ChartDataEntry], monthResponse: [PriceSummaryResponse]) {
       var weekData: [ChartDataEntry] = [], monthData: [ChartDataEntry] = []
       var weekResponse: [PriceSummaryResponse] = [], monthResponse: [PriceSummaryResponse] = []
-      
+
       for (index, data) in data.enumerated() {
         guard index < 720 else { break }
-        
+
         let chartData = ChartDataEntry(x: Double(index), y: data.average)
-        
+
         if index <= 168 {
           weekData.append(chartData)
           weekResponse.append(data)
@@ -93,33 +95,33 @@ class NewsViewControllerDDS: NSObject {
           monthResponse.append(data)
         }
       }
-      
+
       return (weekData: weekData, weekResponse: weekResponse, monthData: monthData, monthResponse: monthResponse)
   }
-  
+
   private func configureDailyData(data: [PriceSummaryResponse]) -> (data: [ChartDataEntry], response: [PriceSummaryResponse]) {
     var dailyData: [ChartDataEntry] = [], responseData: [PriceSummaryResponse] = []
-    
+
     for (index, data) in data.enumerated() {
       guard index < 1440 else { break }
       let chartData = ChartDataEntry(x: Double(index), y: data.average)
-      
+
       dailyData.append(chartData)
       responseData.append(data)
     }
-    
+
     return (data: dailyData, response: responseData)
   }
-  
+
   private func configureAllTimeData(data: [PriceSummaryResponse]) ->
     (year: [ChartDataEntry], yearResponse: [PriceSummaryResponse],
     allTime: [ChartDataEntry], allTimeResponse: [PriceSummaryResponse]) {
       var yearData: [ChartDataEntry] = [], allTimeData: [ChartDataEntry] = []
       var yearResponse: [PriceSummaryResponse] = [], allTimeResponse: [PriceSummaryResponse] = []
-      
+
       for (index, data) in data.enumerated() {
         let chartData = ChartDataEntry(x: Double(index), y: data.average)
-        
+
         if index < 365 {
           allTimeData.append(chartData)
           allTimeResponse.append(data)
@@ -130,7 +132,7 @@ class NewsViewControllerDDS: NSObject {
           allTimeData.append(chartData)
         }
       }
-      
+
       return (year: yearData, yearResponse: yearResponse, allTime: allTimeData, allTimeResponse: allTimeResponse)
   }
 }
@@ -138,7 +140,7 @@ class NewsViewControllerDDS: NSObject {
 extension NewsViewControllerDDS: UITableViewDelegate {
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     guard indexPath.row > 2 else { return }
-    
+
     if let url = URL(string: newsData.articles[indexPath.row - 2].link) {
       delegate?.delegateDidRequestUrl(url)
     }
@@ -160,14 +162,14 @@ extension NewsViewControllerDDS: UITableViewDataSource {
       return 135
     }
   }
-  
+
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     return CellIdentifier.newsHeader.rawValue + newsData.articles.count
   }
-  
+
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     var cell: UITableViewCell = UITableViewCell()
-    
+
     switch CellIdentifier(rawValue: indexPath.row) {
     case .price?:
       if let priceCell = tableView.dequeueReusableCell(withIdentifier: PriceCell.reuseIdentifier, for: indexPath) as? PriceCell {
@@ -200,17 +202,17 @@ extension NewsViewControllerDDS: UITableViewDataSource {
         let article = newsData.articles[safe: indexPath.row - 2] {
         newsCell.titleLabel.text = article.title
         newsCell.sourceLabel.text = article.source
-        
+
         if let thumbnail = article.thumbnail, thumbnail.isNotEmpty {
           newsCell.imageURL = thumbnail
         } else {
           newsCell.source = NewsArticleResponse.Source(rawValue: article.source)
         }
-        
+
         cell = newsCell
       }
     }
-    
+
     return cell
   }
 }
