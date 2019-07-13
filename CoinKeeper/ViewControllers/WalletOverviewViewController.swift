@@ -36,7 +36,13 @@ class WalletOverviewViewController: BaseViewController, StoryboardInitializable 
     return generalCoordinationDelegate as? WalletOverviewViewControllerDelegate
   }
 
-  var baseViewControllers: [BaseViewController] = []
+  var baseViewControllers: [BaseViewController] = [] {
+    willSet {
+      for (index, data) in newValue.enumerated() {
+        data.view.tag = index
+      }
+    }
+  }
 
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -120,9 +126,8 @@ extension WalletOverviewViewController: BalanceDisplayable {
 extension WalletOverviewViewController: UIPageViewControllerDelegate {
   func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool,
                           previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
-    if let firstViewController = previousViewControllers.first as? BaseViewController,
-      let index = baseViewControllers.firstIndex(of: firstViewController) {
-      pageControl.currentPage = index
+    if let viewContorller = pageViewController.viewControllers?.first as? BaseViewController, completed {
+      pageControl.currentPage = baseViewControllers.reversed().firstIndex(of: viewContorller) ?? 0
     }
   }
 }
