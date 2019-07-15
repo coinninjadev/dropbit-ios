@@ -47,9 +47,6 @@ class WalletOverviewViewController: BaseViewController, StoryboardInitializable 
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    subscribeToRateAndBalanceUpdates()
-    updateRatesAndBalances()
-
     if let pageViewController = children.first as? UIPageViewController {
       self.pageViewController = pageViewController
       pageViewController.view.layer.masksToBounds = false
@@ -61,6 +58,9 @@ class WalletOverviewViewController: BaseViewController, StoryboardInitializable 
 
     setupPageControl()
     (coordinationDelegate?.badgeManager).map(subscribeToBadgeNotifications)
+    
+    subscribeToRateAndBalanceUpdates()
+    updateRatesAndBalances()
   }
 
   override func viewWillAppear(_ animated: Bool) {
@@ -105,7 +105,7 @@ extension WalletOverviewViewController: BadgeDisplayable {
 }
 
 extension WalletOverviewViewController: BalanceDisplayable {
-
+  
   var balanceLeftButtonType: BalanceContainerLeftButtonType { return .menu }
   var primaryBalanceCurrency: CurrencyCode {
     guard let selectedCurrency = coordinationDelegate?.selectedCurrency() else { return .BTC }
@@ -153,7 +153,6 @@ extension WalletOverviewViewController: UIPageViewControllerDataSource {
 extension WalletOverviewViewController: SelectedCurrencyUpdatable {
   func updateSelectedCurrency(to selectedCurrency: SelectedCurrency) {
     updateViewWithBalance()
-
     baseViewControllers.compactMap { $0 as? SelectedCurrencyUpdatable }.forEach { $0.updateSelectedCurrency(to: selectedCurrency) }
   }
 }

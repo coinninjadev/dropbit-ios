@@ -16,6 +16,7 @@ import os.log
 protocol NewsViewControllerDDSDelegate: class {
   func delegateDidRequestTableView() -> UITableView
   func delegateFinishedLoadingData()
+  func delegateErrorLoadingData()
   func delegateDidRequestUrl(_ url: URL)
 }
 
@@ -37,7 +38,6 @@ class NewsViewControllerDDS: NSObject {
   var newsData: NewsData = NewsData() {
     didSet {
       delegate?.delegateDidRequestTableView().reloadData()
-      delegate?.delegateFinishedLoadingData()
     }
   }
 
@@ -65,7 +65,9 @@ class NewsViewControllerDDS: NSObject {
         newsData.allTimePriceResponse = allTimeData.allTimeResponse
         newsData.yearlyPriceData = LineChartDataSet(values: allTimeData.year, label: nil)
         newsData.yearlyPriceResponse = allTimeData.yearResponse
+        self.delegate?.delegateFinishedLoadingData()
       }.catch(on: .main, policy: .allErrors) { error in
+        self.delegate?.delegateErrorLoadingData()
         os_log("News data failed: %@", log: self.logger, type: .error, error.localizedDescription)
       }.finally(on: .main) {
         newsData.currentPrice = self.newsData.currentPrice

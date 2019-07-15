@@ -120,8 +120,7 @@ extension BalanceDisplayable where Self: UIViewController {
     // so that rateManager.exchangeRates are set before the below code executes
     updateRatesWithLatest()
 
-    let dataSource = updatedDataSource()
-    balanceContainer.update(with: dataSource)
+    updateViewWithBalance()
     didUpdateExchangeRateManager(self.rateManager)
   }
 
