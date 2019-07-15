@@ -16,7 +16,7 @@ extension MockNetworkManager: NewsDataRequestable {
   func requestNewsData(count: Int) -> Promise<[NewsArticleResponse]> {
     return Promise { _ in }
   }
-  
+
   func requestPriceData(period: PricePeriod) -> Promise<[PriceSummaryResponse]> {
     return Promise { _ in }
   }

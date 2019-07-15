@@ -139,7 +139,8 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
     self.view.backgroundColor = .lightGrayBackground
 
     view.layoutIfNeeded()
-    detailCollectionViewHeightConstraint.constant = self.view.frame.height - 80 //Offset for height of balance container + top constraint of container view in WalletOverviewViewController
+    let offset = CGFloat(80) //Offset for height of balance container + top constraint of container view in WalletOverviewViewController
+    detailCollectionViewHeightConstraint.constant = self.view.frame.height - offset
 
     coordinationDelegate?.viewControllerDidRequestBadgeUpdate(self)
 

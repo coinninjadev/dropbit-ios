@@ -17,7 +17,7 @@ class RequestPayViewModelTests: XCTestCase {
     self.sut = nil
     super.tearDown()
   }
-  
+
   //TODO
 
   // MARK: mock converter
