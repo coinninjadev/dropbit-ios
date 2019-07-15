@@ -77,29 +77,35 @@ class NewsViewControllerDDS: NSObject {
 
   }
 
-  private func configureMonthlyData(data: [PriceSummaryResponse]) ->
-    (weekData: [ChartDataEntry], weekResponse: [PriceSummaryResponse],
-    monthData: [ChartDataEntry], monthResponse: [PriceSummaryResponse]) {
-      var weekData: [ChartDataEntry] = [], monthData: [ChartDataEntry] = []
-      var weekResponse: [PriceSummaryResponse] = [], monthResponse: [PriceSummaryResponse] = []
+  struct WeekMonthChartData {
+    let weekData: [ChartDataEntry]
+    let weekResponse: [PriceSummaryResponse]
+    let monthData: [ChartDataEntry]
+    let monthResponse: [PriceSummaryResponse]
+  }
 
-      for (index, data) in data.enumerated() {
-        guard index < 720 else { break }
+  private func configureMonthlyData(data: [PriceSummaryResponse]) -> WeekMonthChartData {
+    var weekData: [ChartDataEntry] = [], monthData: [ChartDataEntry] = []
+    var weekResponse: [PriceSummaryResponse] = [], monthResponse: [PriceSummaryResponse] = []
 
-        let chartData = ChartDataEntry(x: Double(index), y: data.average)
+    for (index, data) in data.enumerated() {
+      guard index < 720 else { break }
 
-        if index <= 555 {
-          monthData.append(chartData)
-          monthResponse.append(data)
-        } else {
-          weekData.append(chartData)
-          weekResponse.append(data)
-          monthData.append(chartData)
-          monthResponse.append(data)
-        }
+      let chartData = ChartDataEntry(x: Double(index), y: data.average)
+
+      if index <= 555 {
+        monthData.append(chartData)
+        monthResponse.append(data)
+      } else {
+        weekData.append(chartData)
+        weekResponse.append(data)
+        monthData.append(chartData)
+        monthResponse.append(data)
       }
+    }
 
-      return (weekData: weekData, weekResponse: weekResponse, monthData: monthData, monthResponse: monthResponse)
+    let data = WeekMonthChartData(weekData: weekData, weekResponse: weekResponse, monthData: monthData, monthResponse: monthResponse)
+    return data
   }
 
   private func configureDailyData(data: [PriceSummaryResponse]) -> (data: [ChartDataEntry], response: [PriceSummaryResponse]) {
@@ -116,27 +122,33 @@ class NewsViewControllerDDS: NSObject {
     return (data: dailyData, response: responseData)
   }
 
-  private func configureAllTimeData(data: [PriceSummaryResponse]) ->
-    (year: [ChartDataEntry], yearResponse: [PriceSummaryResponse],
-    allTime: [ChartDataEntry], allTimeResponse: [PriceSummaryResponse]) {
-      var yearData: [ChartDataEntry] = [], allTimeData: [ChartDataEntry] = []
-      var yearResponse: [PriceSummaryResponse] = [], allTimeResponse: [PriceSummaryResponse] = []
+  struct AllTimePriceChartData {
+    let year: [ChartDataEntry]
+    let yearResponse: [PriceSummaryResponse]
+    let allTime: [ChartDataEntry]
+    let allTimeResponse: [PriceSummaryResponse]
+  }
 
-      for (index, priceData) in data.enumerated() {
-        let chartData = ChartDataEntry(x: Double(index), y: priceData.average)
+  private func configureAllTimeData(data: [PriceSummaryResponse]) -> AllTimePriceChartData {
+    var yearData: [ChartDataEntry] = [], allTimeData: [ChartDataEntry] = []
+    var yearResponse: [PriceSummaryResponse] = [], allTimeResponse: [PriceSummaryResponse] = []
 
-        if index <= data.count - 365 {
-          allTimeData.append(chartData)
-          allTimeResponse.append(priceData)
-        } else {
-          yearData.append(chartData)
-          yearResponse.append(priceData)
-          allTimeResponse.append(priceData)
-          allTimeData.append(chartData)
-        }
+    for (index, priceData) in data.enumerated() {
+      let chartData = ChartDataEntry(x: Double(index), y: priceData.average)
+
+      if index <= data.count - 365 {
+        allTimeData.append(chartData)
+        allTimeResponse.append(priceData)
+      } else {
+        yearData.append(chartData)
+        yearResponse.append(priceData)
+        allTimeResponse.append(priceData)
+        allTimeData.append(chartData)
       }
+    }
 
-      return (year: yearData, yearResponse: yearResponse, allTime: allTimeData, allTimeResponse: allTimeResponse)
+    let data = AllTimePriceChartData(year: yearData, yearResponse: yearResponse, allTime: allTimeData, allTimeResponse: allTimeResponse)
+    return data
   }
 }
 
