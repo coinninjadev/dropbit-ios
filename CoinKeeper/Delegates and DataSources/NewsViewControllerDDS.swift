@@ -22,6 +22,35 @@ protocol NewsViewControllerDDSDelegate: class {
 
 class NewsViewControllerDDS: NSObject {
 
+  /*
+   Monthly endpoint of price is broken down by hours
+   Average of 30 days times 24 hours = 720
+   720 hours minus a weeks worth of hours (7 x 24 = 168) is 555
+  */
+  var weekDataSourceOffset: Int {
+    return 555
+  }
+
+  /*
+   Monthly endpoint of price is broken down by hours
+   Average of 30 days times 24 hours = 720
+   */
+  var monthlyDataSourceOffset: Int {
+    return 720
+  }
+
+  /*
+   Daily endpoint of price is broken down by minutes
+   60 minutes times 24 hours = 1440
+   */
+  var dailyDataSourceOffset: Int {
+    return 1440
+  }
+
+  var yearDataSourceOffset: Int {
+    return 365
+  }
+
   enum CellIdentifier: Int {
     case price = 0
     case lineGraph = 1
@@ -89,11 +118,11 @@ class NewsViewControllerDDS: NSObject {
     var weekResponse: [PriceSummaryResponse] = [], monthResponse: [PriceSummaryResponse] = []
 
     for (index, data) in data.enumerated() {
-      guard index < 720 else { break }
+      guard index < monthlyDataSourceOffset else { break }
 
       let chartData = ChartDataEntry(x: Double(index), y: data.average)
 
-      if index <= 555 {
+      if index <= weekDataSourceOffset {
         monthData.append(chartData)
         monthResponse.append(data)
       } else {
@@ -112,7 +141,7 @@ class NewsViewControllerDDS: NSObject {
     var dailyData: [ChartDataEntry] = [], responseData: [PriceSummaryResponse] = []
 
     for (index, data) in data.enumerated() {
-      guard index < 1440 else { break }
+      guard index < dailyDataSourceOffset else { break }
       let chartData = ChartDataEntry(x: Double(index), y: data.average)
 
       dailyData.append(chartData)
@@ -136,7 +165,7 @@ class NewsViewControllerDDS: NSObject {
     for (index, priceData) in data.enumerated() {
       let chartData = ChartDataEntry(x: Double(index), y: priceData.average)
 
-      if index <= data.count - 365 {
+      if index <= data.count - yearDataSourceOffset {
         allTimeData.append(chartData)
         allTimeResponse.append(priceData)
       } else {

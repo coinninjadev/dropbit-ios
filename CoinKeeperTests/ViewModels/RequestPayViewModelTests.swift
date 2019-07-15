@@ -18,8 +18,6 @@ class RequestPayViewModelTests: XCTestCase {
     super.tearDown()
   }
   
-  //TODO
-
   // MARK: mock converter
   struct MockCurrencyConverter: CurrencyConverterType {
     var btcValue: NSDecimalNumber {
