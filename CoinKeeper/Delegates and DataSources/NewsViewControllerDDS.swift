@@ -11,7 +11,6 @@ import UIKit
 import Charts
 import Moya
 import PromiseKit
-import os.log
 
 protocol NewsViewControllerDDSDelegate: class {
   func delegateDidRequestTableView() -> UITableView
