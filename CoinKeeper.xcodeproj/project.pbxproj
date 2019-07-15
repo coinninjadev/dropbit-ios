@@ -452,6 +452,7 @@
 		A26C767D21081CB1001EB738 /* TextViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A26C767C21081CB1001EB738 /* TextViewController.swift */; };
 		A26C767F21081D5B001EB738 /* TextViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A26C767E21081D5B001EB738 /* TextViewController.storyboard */; };
 		A26C768F2108BE96001EB738 /* licenses.html in Resources */ = {isa = PBXBuildFile; fileRef = A26C768E2108BE96001EB738 /* licenses.html */; };
+		A27DFDF022DCD0ED00C2824C /* MockNetworkManager+NewsDataRequestable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A27DFDEF22DCD0ED00C2824C /* MockNetworkManager+NewsDataRequestable.swift */; };
 		A2893BBE20FD4C5A00E96B07 /* BasePageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2893BBD20FD4C5A00E96B07 /* BasePageViewController.swift */; };
 		A2893BC020FD4E7700E96B07 /* UIViewController+ToolbarUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2893BBF20FD4E7700E96B07 /* UIViewController+ToolbarUtilities.swift */; };
 		A2893BC220FD515900E96B07 /* AppCoordinator+TutorialViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2893BC120FD515900E96B07 /* AppCoordinator+TutorialViewControllerDelegate.swift */; };
@@ -1369,6 +1370,7 @@
 		A26C767C21081CB1001EB738 /* TextViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextViewController.swift; sourceTree = "<group>"; };
 		A26C767E21081D5B001EB738 /* TextViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = TextViewController.storyboard; sourceTree = "<group>"; };
 		A26C768E2108BE96001EB738 /* licenses.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = licenses.html; sourceTree = "<group>"; };
+		A27DFDEF22DCD0ED00C2824C /* MockNetworkManager+NewsDataRequestable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MockNetworkManager+NewsDataRequestable.swift"; sourceTree = "<group>"; };
 		A2893BBD20FD4C5A00E96B07 /* BasePageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasePageViewController.swift; sourceTree = "<group>"; };
 		A2893BBF20FD4E7700E96B07 /* UIViewController+ToolbarUtilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+ToolbarUtilities.swift"; sourceTree = "<group>"; };
 		A2893BC120FD515900E96B07 /* AppCoordinator+TutorialViewControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppCoordinator+TutorialViewControllerDelegate.swift"; sourceTree = "<group>"; };
@@ -3147,6 +3149,7 @@
 				3BF3B0C6217500330021E45F /* MockNetworkManager+NotificationNetworkInteractable.swift */,
 				3BF3B0C8217500870021E45F /* MockNetworkManager+SubscribeToWalletRequestable.swift */,
 				3BDBE632228399F9009C23CB /* MockNeworkManager+Twitter.swift */,
+				A27DFDEF22DCD0ED00C2824C /* MockNetworkManager+NewsDataRequestable.swift */,
 			);
 			path = NetworkManager;
 			sourceTree = "<group>";
@@ -4481,6 +4484,7 @@
 				B5A5B1B7216B88C100345468 /* MockNetworkManager+BlockchainInfoRequestable.swift in Sources */,
 				B5A5B1B5216B87AD00345468 /* MockNetworkManager+AddressRequestable.swift in Sources */,
 				3B23126520DA6CBA0099A557 /* TransactionHistoryDetailCellAddressViewTests.swift in Sources */,
+				A27DFDF022DCD0ED00C2824C /* MockNetworkManager+NewsDataRequestable.swift in Sources */,
 				3BDB6C532220521000E75DD2 /* SendPaymentMemoViewTests.swift in Sources */,
 				6B825AF411A9684555EA8F14 /* MockPersistenceManager.swift in Sources */,
 				3B5720782232CD1C0048A8CF /* DatabaseTests.swift in Sources */,
