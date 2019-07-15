@@ -67,7 +67,7 @@ class NewsViewControllerDDS: NSObject {
         self.delegate?.delegateFinishedLoadingData()
       }.catch(on: .main, policy: .allErrors) { error in
         self.delegate?.delegateErrorLoadingData()
-        os_log("News data failed: %@", log: self.logger, type: .error, error.localizedDescription)
+        log.error("News data failed: \(error.localizedDescription)")
       }.finally(on: .main) {
         newsData.currentPrice = self.newsData.currentPrice
         self.newsData = newsData
