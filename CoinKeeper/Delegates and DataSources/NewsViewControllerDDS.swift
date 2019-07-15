@@ -77,29 +77,35 @@ class NewsViewControllerDDS: NSObject {
 
   }
 
-  private func configureMonthlyData(data: [PriceSummaryResponse]) ->
-    (weekData: [ChartDataEntry], weekResponse: [PriceSummaryResponse],
-    monthData: [ChartDataEntry], monthResponse: [PriceSummaryResponse]) {
-      var weekData: [ChartDataEntry] = [], monthData: [ChartDataEntry] = []
-      var weekResponse: [PriceSummaryResponse] = [], monthResponse: [PriceSummaryResponse] = []
+  struct WeekMonthChartData {
+    let weekData: [ChartDataEntry]
+    let weekResponse: [PriceSummaryResponse]
+    let monthData: [ChartDataEntry]
+    let monthResponse: [PriceSummaryResponse]
+  }
 
-      for (index, data) in data.enumerated() {
-        guard index < 720 else { break }
+  private func configureMonthlyData(data: [PriceSummaryResponse]) -> WeekMonthChartData {
+    var weekData: [ChartDataEntry] = [], monthData: [ChartDataEntry] = []
+    var weekResponse: [PriceSummaryResponse] = [], monthResponse: [PriceSummaryResponse] = []
 
-        let chartData = ChartDataEntry(x: Double(index), y: data.average)
+    for (index, data) in data.enumerated() {
+      guard index < 720 else { break }
 
-        if index <= 555 {
-          monthData.append(chartData)
-          monthResponse.append(data)
-        } else {
-          weekData.append(chartData)
-          weekResponse.append(data)
-          monthData.append(chartData)
-          monthResponse.append(data)
-        }
+      let chartData = ChartDataEntry(x: Double(index), y: data.average)
+
+      if index <= 555 {
+        monthData.append(chartData)
+        monthResponse.append(data)
+      } else {
+        weekData.append(chartData)
+        weekResponse.append(data)
+        monthData.append(chartData)
+        monthResponse.append(data)
       }
+    }
 
-      return (weekData: weekData, weekResponse: weekResponse, monthData: monthData, monthResponse: monthResponse)
+    let data = WeekMonthChartData(weekData: weekData, weekResponse: weekResponse, monthData: monthData, monthResponse: monthResponse)
+    return data
   }
 
   private func configureDailyData(data: [PriceSummaryResponse]) -> (data: [ChartDataEntry], response: [PriceSummaryResponse]) {
@@ -116,27 +122,33 @@ class NewsViewControllerDDS: NSObject {
     return (data: dailyData, response: responseData)
   }
 
-  private func configureAllTimeData(data: [PriceSummaryResponse]) ->
-    (year: [ChartDataEntry], yearResponse: [PriceSummaryResponse],
-    allTime: [ChartDataEntry], allTimeResponse: [PriceSummaryResponse]) {
-      var yearData: [ChartDataEntry] = [], allTimeData: [ChartDataEntry] = []
-      var yearResponse: [PriceSummaryResponse] = [], allTimeResponse: [PriceSummaryResponse] = []
+  struct AllTimePriceChartData {
+    let year: [ChartDataEntry]
+    let yearResponse: [PriceSummaryResponse]
+    let allTime: [ChartDataEntry]
+    let allTimeResponse: [PriceSummaryResponse]
+  }
 
-      for (index, priceData) in data.enumerated() {
-        let chartData = ChartDataEntry(x: Double(index), y: priceData.average)
+  private func configureAllTimeData(data: [PriceSummaryResponse]) -> AllTimePriceChartData {
+    var yearData: [ChartDataEntry] = [], allTimeData: [ChartDataEntry] = []
+    var yearResponse: [PriceSummaryResponse] = [], allTimeResponse: [PriceSummaryResponse] = []
 
-        if index <= data.count - 365 {
-          allTimeData.append(chartData)
-          allTimeResponse.append(priceData)
-        } else {
-          yearData.append(chartData)
-          yearResponse.append(priceData)
-          allTimeResponse.append(priceData)
-          allTimeData.append(chartData)
-        }
+    for (index, priceData) in data.enumerated() {
+      let chartData = ChartDataEntry(x: Double(index), y: priceData.average)
+
+      if index <= data.count - 365 {
+        allTimeData.append(chartData)
+        allTimeResponse.append(priceData)
+      } else {
+        yearData.append(chartData)
+        yearResponse.append(priceData)
+        allTimeResponse.append(priceData)
+        allTimeData.append(chartData)
       }
+    }
 
-      return (year: yearData, yearResponse: yearResponse, allTime: allTimeData, allTimeResponse: allTimeResponse)
+    let data = AllTimePriceChartData(year: yearData, yearResponse: yearResponse, allTime: allTimeData, allTimeResponse: allTimeResponse)
+    return data
   }
 }
 
@@ -175,34 +187,29 @@ extension NewsViewControllerDDS: UITableViewDataSource {
 
     switch CellIdentifier(rawValue: indexPath.row) {
     case .price?:
-      if let priceCell = tableView.dequeueReusableCell(withIdentifier: PriceCell.reuseIdentifier, for: indexPath) as? PriceCell {
-        priceCell.priceLabel.text = newsData.currentPrice
-        priceCell.movement = newsData.getPriceMovement(currentTimePeriod)
-        cell = priceCell
-      }
+      let priceCell = tableView.dequeue(PriceCell.self, for: indexPath)
+      priceCell.priceLabel.text = newsData.currentPrice
+      priceCell.movement = newsData.getPriceMovement(currentTimePeriod)
+      cell = priceCell
     case .lineGraph?:
-      if let lineGraphCell = tableView.dequeueReusableCell(withIdentifier: LineChartCell.reuseIdentifier, for: indexPath) as? LineChartCell {
-        let lineChartData = LineChartData()
-        let dataSet = newsData.getDataSetForTimePeriod(currentTimePeriod)
-        dataSet.circleRadius = 0.0
-        dataSet.lineWidth = 2.0
-        dataSet.mode = .cubicBezier
-        lineChartData.addDataSet(dataSet)
-        lineGraphCell.data = lineChartData
-        cell = lineGraphCell
-      }
+      let lineGraphCell = tableView.dequeue(LineChartCell.self, for: indexPath)
+      let lineChartData = LineChartData()
+      let dataSet = newsData.getDataSetForTimePeriod(currentTimePeriod)
+      dataSet.circleRadius = 0.0
+      dataSet.lineWidth = 2.0
+      dataSet.mode = .cubicBezier
+      lineChartData.addDataSet(dataSet)
+      lineGraphCell.data = lineChartData
+      cell = lineGraphCell
     case .timePeriod?:
-      if let timePeriodCell = tableView.dequeueReusableCell(withIdentifier: TimePeriodCell.reuseIdentifier, for: indexPath) as? TimePeriodCell {
-        timePeriodCell.delegate = self
-        cell = timePeriodCell
-      }
+      let timePeriodCell = tableView.dequeue(TimePeriodCell.self, for: indexPath)
+      timePeriodCell.delegate = self
+      cell = timePeriodCell
     case .newsHeader?:
-      if let newsHeaderCell = tableView.dequeueReusableCell(withIdentifier: NewsTitleCell.reuseIdentifier, for: indexPath) as? NewsTitleCell {
-        cell = newsHeaderCell
-      }
+      cell = tableView.dequeue(NewsTitleCell.self, for: indexPath)
     default:
-      if let newsCell = tableView.dequeueReusableCell(withIdentifier: NewsArticleCell.reuseIdentifier, for: indexPath) as? NewsArticleCell,
-        let article = newsData.articles[safe: indexPath.row - 2] {
+      let newsCell = tableView.dequeue(NewsArticleCell.self, for: indexPath)
+      if let article = newsData.articles[safe: indexPath.row - 2] {
         newsCell.titleLabel.text = article.title
         newsCell.sourceLabel.text = article.getFullSource()
 
