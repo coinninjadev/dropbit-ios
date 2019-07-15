@@ -9,9 +9,6 @@
 import UIKit
 
 protocol RequestPayViewModelType: AnyObject {
-  var primaryCurrencyValue: String { get }
-  var secondaryCurrencyValue: NSAttributedString? { get }
-  var hasFundsInRequest: Bool { get }
   var bitcoinUrl: BitcoinURL { get }
 
   func qrImage(withSize size: CGSize) -> UIImage?
@@ -27,18 +24,6 @@ class RequestPayViewModel: RequestPayViewModelType {
     self.bitcoinUrl = bitcoinUrl
     self.currencyConverter = currencyConverter
     self.qrCodeGenerator = QRCodeGenerator()
-  }
-
-  var primaryCurrencyValue: String {
-    return currencyConverter.fromDisplayValue
-  }
-
-  var secondaryCurrencyValue: NSAttributedString? {
-    return currencyConverter.attributedStringWithSymbol(forCurrency: currencyConverter.toCurrency)
-  }
-
-  var hasFundsInRequest: Bool {
-    return self.currencyConverter.fromAmount.isNotZero && self.currencyConverter.fromAmount.isNumber
   }
 
   func qrImage(withSize size: CGSize) -> UIImage? {

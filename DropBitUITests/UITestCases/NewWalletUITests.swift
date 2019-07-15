@@ -25,7 +25,7 @@ class NewWalletUITests: UITestCase {
     let toastLabel = bannerToast()
     toastLabel.swipeUp()
 
-    TransactionHistoryPage().tapMenu()
+    WalletOverviewPage().tapMenu()
 
     let backupWalletCell = app.staticTexts["Back Up Wallet"]
     let backupWalletCellExists = backupWalletCell.waitForExistence(timeout: 1.0)
@@ -89,7 +89,7 @@ class NewWalletUITests: UITestCase {
     }
 
     // verify backup wallet is gone
-    TransactionHistoryPage().tapMenu()
+    WalletOverviewPage().tapMenu()
     let backupWalletCell2 = app.staticTexts["Back Up Wallet"]
     let backupWalletCell2Exists = backupWalletCell2.waitForExistence(timeout: 1.0)
     XCTAssertFalse(backupWalletCell2Exists)

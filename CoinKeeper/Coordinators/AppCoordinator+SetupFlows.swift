@@ -28,9 +28,9 @@ extension AppCoordinator {
   }
 
   func enterApp() {
-    let mainViewController = makeTransactionHistory()
+    let overviewViewController = makeOverviewController()
     let settingsViewController = DrawerViewController.makeFromStoryboard()
-    let drawerController = setupDrawerViewController(centerViewController: mainViewController,
+    let drawerController = setupDrawerViewController(centerViewController: overviewViewController,
                                                      leftViewController: settingsViewController)
     assignCoordinationDelegate(to: settingsViewController)
     navigationController.popToRootViewController(animated: false)
@@ -62,7 +62,7 @@ extension AppCoordinator {
         .done(on: .main) { _ in
           self.analyticsManager.track(event: .createWallet, with: nil)
           self.continueSetupFlow()
-      }.cauterize()
+        }.cauterize()
     }
 
     guard !launchStateManager.shouldRequireAuthentication else {
@@ -178,8 +178,6 @@ extension AppCoordinator {
     let txHistory = TransactionHistoryViewController.makeFromStoryboard()
     assignCoordinationDelegate(to: txHistory)
     txHistory.context = persistenceManager.mainQueueContext()
-    txHistory.balanceProvider = self
-    txHistory.balanceDelegate = self
     txHistory.urlOpener = self
     return txHistory
   }
@@ -194,6 +192,42 @@ extension AppCoordinator {
     drawerController?.shouldStretchDrawer = false
     drawerController?.showsShadow = false
     return drawerController!
+  }
+
+  func createRequestPayViewController(converter: CurrencyConverter) -> RequestPayViewController? {
+    guard let wmgr = walletManager else { return nil }
+    let requestViewController = RequestPayViewController.makeFromStoryboard()
+    assignCoordinationDelegate(to: requestViewController)
+
+    var nextAddress: String?
+    let bgContext = persistenceManager.createBackgroundContext()
+    bgContext.performAndWait {
+      guard let receiveAddress = wmgr.createAddressDataSource().nextAvailableReceiveAddress(forServerPool: false,
+                                                                                            indicesToSkip: [],
+                                                                                            in: bgContext)?.address else { return }
+      nextAddress = receiveAddress
+    }
+
+    guard let address = nextAddress else { return nil }
+    let viewModel = RequestPayViewModel(receiveAddress: address, currencyConverter: converter)
+    requestViewController.viewModel = viewModel
+    return requestViewController
+  }
+
+  private func makeOverviewController() -> WalletOverviewViewController {
+    let transactionHistory = makeTransactionHistory()
+    let requestPayViewController = createRequestPayViewController(converter: currencyController.currencyConverter)
+      ?? RequestPayViewController.makeFromStoryboard()
+    requestPayViewController.isModal = false
+    let newsController = NewsViewController.newInstance(with: self)
+    let overviewChildViewControllers: [BaseViewController] =
+      [requestPayViewController, transactionHistory, newsController]
+
+    let overviewViewController = WalletOverviewViewController.newInstance(with: self,
+                                                                          baseViewControllers: overviewChildViewControllers,
+                                                                          balanceProvider: self,
+                                                                          balanceDelegate: self)
+    return overviewViewController
   }
 
 }

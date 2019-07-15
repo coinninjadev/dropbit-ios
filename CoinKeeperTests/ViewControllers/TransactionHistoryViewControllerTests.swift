@@ -30,7 +30,6 @@ class TransactionHistoryViewControllerTests: XCTestCase {
 
   // MARK: outlets are connected
   func testOutletsAreConnected() {
-    XCTAssertNotNil(self.sut.balanceContainer, "balanceContainer should be connected")
     XCTAssertNotNil(self.sut.summaryCollectionView, "summaryCollectionView should be connected")
     XCTAssertNotNil(self.sut.detailCollectionView, "detailCollectionView should be connected")
     XCTAssertNotNil(self.sut.detailCollectionViewTopConstraint, "detailCollectionViewTopConstraint should be connected")

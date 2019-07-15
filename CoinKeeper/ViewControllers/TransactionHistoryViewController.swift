@@ -14,11 +14,8 @@ import PromiseKit
 import DZNEmptyDataSet
 
 protocol TransactionHistoryViewControllerDelegate: DeviceCountryCodeProvider &
-  BalanceContainerDelegate &
   BadgeUpdateDelegate &
-  SelectedCurrencyUpdatable &
-  TransactionShareable &
-  ViewControllerURLDelegate {
+  TransactionShareable {
   func viewControllerShouldSeeTransactionDetails(for viewModel: TransactionHistoryDetailCellViewModel)
   func viewControllerDidRequestHistoryUpdate(_ viewController: TransactionHistoryViewController)
   func viewController(_ viewController: TransactionHistoryViewController, didCancelInvitationWithID invitationID: String, at indexPath: IndexPath)
@@ -36,14 +33,12 @@ protocol TransactionHistoryViewControllerDelegate: DeviceCountryCodeProvider &
   func viewControllerDidTapGetBitcoin(_ viewController: UIViewController)
   func viewControllerDidTapSpendBitcoin(_ viewController: UIViewController)
 
-  var badgeManager: BadgeManagerType { get }
   var currencyController: CurrencyController { get }
 }
 
 class TransactionHistoryViewController: BaseViewController, StoryboardInitializable {
 
   @IBOutlet var summaryCollectionView: UICollectionView!
-  @IBOutlet var summaryCollectionViewBottomConstraint: NSLayoutConstraint!
   @IBOutlet var detailCollectionView: UICollectionView!
   @IBOutlet var detailCollectionViewTopConstraint: NSLayoutConstraint!
   @IBOutlet var detailCollectionViewHeightConstraint: NSLayoutConstraint!
@@ -57,6 +52,15 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
       sendReceiveActionView.actionDelegate = self
     }
   }
+  @IBOutlet var gradientBlurView: UIView! {
+    didSet {
+      gradientBlurView.backgroundColor = .lightGrayBackground
+      gradientBlurView.fade(style: .top, percent: 1.0)
+    }
+  }
+
+  var currencyValueManager: CurrencyValueDataSourceType?
+  var rateManager: ExchangeRateManager = ExchangeRateManager()
 
   private enum CollectionViewType {
     case summary, detail
@@ -73,10 +77,8 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
   override func accessibleViewsAndIdentifiers() -> [AccessibleViewElement] {
     return [
       (self.view, .transactionHistory(.page)),
-      (balanceContainer.leftButton, .transactionHistory(.menu)),
       (sendReceiveActionView.receiveButton, .transactionHistory(.receiveButton)),
       (sendReceiveActionView.sendButton, .transactionHistory(.sendButton)),
-      (balanceContainer.balanceView, .transactionHistory(.balanceView)),
       (transactionHistoryNoBalanceView.learnAboutBitcoinButton, .transactionHistory(.tutorialButton))
     ]
   }
@@ -87,13 +89,7 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
 
   var deviceCountryCode: Int?
 
-  // BalanceDisplayable
-  @IBOutlet var balanceContainer: BalanceContainer!
-  let rateManager = ExchangeRateManager()
-
   weak var urlOpener: URLOpener?
-  weak var balanceProvider: ConvertibleBalanceProvider?
-  weak var balanceDelegate: BalanceContainerDelegate?
 
   override var generalCoordinationDelegate: AnyObject? {
     didSet {
@@ -109,7 +105,6 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
   var coordinationDelegate: TransactionHistoryViewControllerDelegate? {
     return generalCoordinationDelegate as? TransactionHistoryViewControllerDelegate
   }
-  var balanceNotificationToken: NotificationToken?
 
   unowned var context: NSManagedObjectContext!
 
@@ -124,8 +119,6 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
     try? controller.performFetch()
     return controller
   }()
-
-  var badgeNotificationToken: NotificationToken?
 
   func preferredCurrency() -> CurrencyCode {
     guard let selected = coordinationDelegate?.currencyController.selectedCurrency else { return .USD }
@@ -146,17 +139,10 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
     self.view.backgroundColor = .lightGrayBackground
 
     view.layoutIfNeeded()
-    let percent: CGFloat = 0.2
-    sendReceiveActionView.fade(style: .top, percent: percent)
-    detailCollectionViewHeightConstraint.constant = self.view.frame.height - balanceContainer.frame.height
-    summaryCollectionViewBottomConstraint.constant = sendReceiveActionView.frame.height * percent * -1
+    let offset = CGFloat(80) //Offset for height of balance container + top constraint of container view in WalletOverviewViewController
+    detailCollectionViewHeightConstraint.constant = self.view.frame.height - offset
 
-    (coordinationDelegate?.badgeManager).map(subscribeToBadgeNotifications)
     coordinationDelegate?.viewControllerDidRequestBadgeUpdate(self)
-
-    self.balanceContainer.delegate = self.balanceDelegate
-    subscribeToRateAndBalanceUpdates()
-    updateRatesAndBalances()
 
     setupCollectionViews()
     self.frc.delegate = self
@@ -253,7 +239,7 @@ extension TransactionHistoryViewController { // Layout
   }
 
   private var detailCollectionViewHeight: CGFloat {
-    return self.view.frame.height - statusBarHeight - balanceContainer.frame.height
+    return self.view.frame.height
   }
 
   private func summaryCollectionViewLayout() -> UICollectionViewFlowLayout {
@@ -281,7 +267,7 @@ extension TransactionHistoryViewController: UIScrollViewDelegate {
   func scrollViewDidScroll(_ scrollView: UIScrollView) {
     guard scrollView.contentOffset.y < 0 else { return }
     let offset = abs(scrollView.contentOffset.y)
-    refreshViewTopConstraint.constant = offset
+    refreshViewTopConstraint.constant = offset - refreshView.frame.size.height
     refreshView.animateLogo(to: scrollView.contentOffset.y)
   }
 
@@ -310,25 +296,6 @@ extension TransactionHistoryViewController: UICollectionViewDelegateFlowLayout {
     height += (transaction.memo?.asNilIfEmpty() != nil) ? 25 : 0
     return CGSize(width: self.view.frame.width, height: height)
   }
-}
-
-extension TransactionHistoryViewController: BalanceDisplayable {
-
-  var balanceLeftButtonType: BalanceContainerLeftButtonType { return .menu }
-  var primaryBalanceCurrency: CurrencyCode {
-    guard let selectedCurrency = coordinationDelegate?.selectedCurrency() else { return .BTC }
-    switch selectedCurrency {
-    case .BTC: return .BTC
-    case .fiat: return .USD
-    }
-  }
-
-  func didUpdateExchangeRateManager(_ exchangeRateManager: ExchangeRateManager) {
-    rateManager.exchangeRates = exchangeRateManager.exchangeRates
-    coordinationDelegate?.currencyController.exchangeRates = exchangeRateManager.exchangeRates
-    collectionViews.forEach { $0.reloadData() }
-  }
-
 }
 
 extension TransactionHistoryViewController: NSFetchedResultsControllerDelegate {
@@ -479,14 +446,6 @@ extension TransactionHistoryViewController: TransactionHistoryDetailCellDelegate
   }
 }
 
-extension TransactionHistoryViewController: BadgeDisplayable {
-
-  func didReceiveBadgeUpdate(badgeInfo: BadgeInfo) {
-    self.balanceContainer.leftButton.updateBadge(with: badgeInfo)
-  }
-
-}
-
 extension TransactionHistoryViewController: SendReceiveActionViewDelegate {
   func actionViewDidSelectReceive(_ view: UIView) {
     guard let coordinator = coordinationDelegate else { return }
@@ -506,13 +465,20 @@ extension TransactionHistoryViewController: SendReceiveActionViewDelegate {
 
 extension TransactionHistoryViewController: SelectedCurrencyUpdatable {
   func updateSelectedCurrency(to selectedCurrency: SelectedCurrency) {
-    coordinationDelegate?.updateSelectedCurrency(to: selectedCurrency)
-    updateViewWithBalance()
-
     let summaryIndexSet = IndexSet(integersIn: (0..<summaryCollectionView.numberOfSections))
     summaryCollectionView.reloadSections(summaryIndexSet)
     detailCollectionView.reloadData()
   }
+}
+
+extension TransactionHistoryViewController: ExchangeRateUpdateable {
+
+  func didUpdateExchangeRateManager(_ exchangeRateManager: ExchangeRateManager) {
+    rateManager.exchangeRates = exchangeRateManager.exchangeRates
+    coordinationDelegate?.currencyController.exchangeRates = exchangeRateManager.exchangeRates
+    collectionViews.forEach { $0.reloadData() }
+  }
+
 }
 
 extension TransactionHistoryViewController: DZNEmptyDataSetDelegate, DZNEmptyDataSetSource {

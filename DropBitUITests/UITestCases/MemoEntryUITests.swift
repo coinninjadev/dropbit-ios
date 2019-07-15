@@ -26,7 +26,7 @@ class MemoEntryUITests: UITestCase {
     SuccessFailPage().checkWalletRecoverySucceeded().tapGoToWallet()
     DeviceVerificationPage().tapSkip()
     PushInfoPage()?.dismiss()
-    TransactionHistoryPage().tapSend()
+    WalletOverviewPage().tapSend()
     SendPaymentPage().tapMemoButton()
 
     MemoEntryPage()

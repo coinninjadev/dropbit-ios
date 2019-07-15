@@ -124,7 +124,7 @@ class ContactCacheDataWorker: ContactCacheDataWorkerType {
   /// Compare contents of system contacts with local cache to see if the cache should be reloaded
   private func neededCacheAction(force: Bool, in context: NSManagedObjectContext) -> Promise<CacheAction> {
     guard self.permissionManager.permissionStatus(for: .contacts) == .authorized else {
-        return Promise.value(.none)
+      return Promise.value(.none)
     }
 
     if force {

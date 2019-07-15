@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -78,73 +78,66 @@
                                 </connections>
                             </view>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="32" translatesAutoresizingMaskIntoConstraints="NO" id="0hC-We-rW1" userLabel="Amount and QR Stack">
-                                <rect key="frame" x="20" y="153.5" width="335" height="286"/>
+                                <rect key="frame" x="20" y="234.5" width="335" height="205"/>
                                 <subviews>
-                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="T4T-iK-8y5" userLabel="Amount Stack">
-                                        <rect key="frame" x="0.0" y="0.0" width="335" height="49"/>
-                                        <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" verticalCompressionResistancePriority="751" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="D78-zM-lh3">
-                                                <rect key="frame" x="0.0" y="0.0" width="335" height="20.5"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                <nil key="textColor"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="252" verticalCompressionResistancePriority="751" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mNc-m6-fA9">
-                                                <rect key="frame" x="0.0" y="28.5" width="335" height="20.5"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                <nil key="textColor"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                        </subviews>
-                                    </stackView>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="fakeQRCode" translatesAutoresizingMaskIntoConstraints="NO" id="yCG-vq-wcx">
-                                        <rect key="frame" x="65" y="81" width="205" height="205"/>
+                                        <rect key="frame" x="65" y="0.0" width="205" height="205"/>
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="yCG-vq-wcx" secondAttribute="height" multiplier="1:1" id="h2X-c5-T6D"/>
                                         </constraints>
                                     </imageView>
                                 </subviews>
-                                <constraints>
-                                    <constraint firstItem="T4T-iK-8y5" firstAttribute="width" secondItem="yCG-vq-wcx" secondAttribute="width" id="IZh-h2-mSQ"/>
-                                    <constraint firstItem="T4T-iK-8y5" firstAttribute="leading" secondItem="0hC-We-rW1" secondAttribute="leading" id="PTI-id-BEs"/>
-                                    <constraint firstAttribute="trailing" secondItem="T4T-iK-8y5" secondAttribute="trailing" id="l8I-q3-swV"/>
-                                </constraints>
-                                <variation key="default">
-                                    <mask key="constraints">
-                                        <exclude reference="IZh-h2-mSQ"/>
-                                    </mask>
-                                </variation>
                             </stackView>
+                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="N9x-e6-Hoq" customClass="CurrencyEditSwapView" customModule="DropBit" customModuleProvider="target">
+                                <rect key="frame" x="20" y="82" width="335" height="132.5"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </view>
+                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Uvr-Kg-91I">
+                                <rect key="frame" x="0.0" y="132" width="375" height="42.5"/>
+                                <state key="normal" title="Button"/>
+                                <connections>
+                                    <action selector="addRequestAmountButtonTapped:" destination="X1G-66-cWY" eventType="touchUpInside" id="QB9-92-M9c"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstItem="Uvr-Kg-91I" firstAttribute="centerX" secondItem="mDk-3W-oP8" secondAttribute="centerX" id="3fM-tg-gzd"/>
+                            <constraint firstItem="N9x-e6-Hoq" firstAttribute="top" secondItem="z64-0B-kx7" secondAttribute="bottom" constant="10" id="56b-ny-0p1"/>
                             <constraint firstItem="z64-0B-kx7" firstAttribute="top" secondItem="JPR-x5-n03" secondAttribute="top" constant="8" id="58o-DO-djY"/>
                             <constraint firstItem="JPR-x5-n03" firstAttribute="trailing" secondItem="onG-ir-r5H" secondAttribute="trailing" constant="50" id="6Eg-pb-Av7"/>
                             <constraint firstItem="JPR-x5-n03" firstAttribute="trailing" secondItem="z64-0B-kx7" secondAttribute="trailing" constant="8" id="9Yg-0r-fg5"/>
                             <constraint firstItem="raB-18-rJT" firstAttribute="centerX" secondItem="JPR-x5-n03" secondAttribute="centerX" id="ASN-Pp-6h9"/>
+                            <constraint firstItem="Uvr-Kg-91I" firstAttribute="leading" secondItem="JPR-x5-n03" secondAttribute="leading" id="DpJ-is-REc"/>
                             <constraint firstItem="9sV-IT-Xdn" firstAttribute="top" secondItem="0hC-We-rW1" secondAttribute="bottom" constant="35" id="FaQ-hc-Qhq"/>
                             <constraint firstItem="FI6-On-wIa" firstAttribute="top" secondItem="9sV-IT-Xdn" secondAttribute="bottom" constant="8" id="Gol-jg-UyR"/>
                             <constraint firstItem="9sV-IT-Xdn" firstAttribute="leading" secondItem="JPR-x5-n03" secondAttribute="leading" constant="24" id="Jzc-M8-qKo"/>
                             <constraint firstItem="FI6-On-wIa" firstAttribute="centerX" secondItem="mDk-3W-oP8" secondAttribute="centerX" id="RDA-3J-dMo"/>
+                            <constraint firstItem="0hC-We-rW1" firstAttribute="top" secondItem="N9x-e6-Hoq" secondAttribute="bottom" constant="20" id="ReR-uw-DAX"/>
                             <constraint firstItem="0hC-We-rW1" firstAttribute="top" relation="greaterThanOrEqual" secondItem="raB-18-rJT" secondAttribute="bottom" constant="20" id="Xvd-Wm-w0s"/>
                             <constraint firstItem="JPR-x5-n03" firstAttribute="bottom" secondItem="onG-ir-r5H" secondAttribute="bottom" constant="40" id="bpr-Wq-GKr"/>
+                            <constraint firstItem="N9x-e6-Hoq" firstAttribute="leading" secondItem="JPR-x5-n03" secondAttribute="leading" constant="20" id="c6g-S5-Dj3"/>
                             <constraint firstItem="onG-ir-r5H" firstAttribute="leading" secondItem="JPR-x5-n03" secondAttribute="leading" constant="50" id="d2F-bJ-rdn"/>
+                            <constraint firstItem="JPR-x5-n03" firstAttribute="trailing" secondItem="Uvr-Kg-91I" secondAttribute="trailing" id="eIQ-RT-y5t"/>
                             <constraint firstItem="JPR-x5-n03" firstAttribute="trailing" secondItem="0hC-We-rW1" secondAttribute="trailing" constant="20" id="h0N-KF-ukD"/>
                             <constraint firstItem="0hC-We-rW1" firstAttribute="leading" secondItem="JPR-x5-n03" secondAttribute="leading" constant="20" id="hId-pw-ag7"/>
+                            <constraint firstItem="JPR-x5-n03" firstAttribute="trailing" secondItem="N9x-e6-Hoq" secondAttribute="trailing" constant="20" id="jzk-bb-7eH"/>
                             <constraint firstItem="raB-18-rJT" firstAttribute="centerY" secondItem="z64-0B-kx7" secondAttribute="centerY" id="k5i-d7-Gjt"/>
+                            <constraint firstItem="Uvr-Kg-91I" firstAttribute="top" secondItem="z64-0B-kx7" secondAttribute="bottom" constant="60" id="kkk-dZ-I3W"/>
+                            <constraint firstItem="0hC-We-rW1" firstAttribute="top" secondItem="Uvr-Kg-91I" secondAttribute="bottom" constant="60" id="l7a-er-DpC"/>
                             <constraint firstItem="onG-ir-r5H" firstAttribute="top" secondItem="FI6-On-wIa" secondAttribute="bottom" constant="40" id="l8A-ii-6M8"/>
                             <constraint firstItem="JPR-x5-n03" firstAttribute="trailing" secondItem="9sV-IT-Xdn" secondAttribute="trailing" constant="24" id="yzD-qX-M8V"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="JPR-x5-n03"/>
                     </view>
                     <connections>
+                        <outlet property="addAmountButton" destination="Uvr-Kg-91I" id="Smw-5R-8bE"/>
                         <outlet property="closeButton" destination="z64-0B-kx7" id="4XZ-x2-cNW"/>
-                        <outlet property="primaryCurrencyLabel" destination="D78-zM-lh3" id="met-lw-DXi"/>
+                        <outlet property="currencyEditSwapView" destination="N9x-e6-Hoq" id="NXQ-ja-edC"/>
                         <outlet property="qrImageView" destination="yCG-vq-wcx" id="m3B-rW-N68"/>
                         <outlet property="receiveAddressBGView" destination="9sV-IT-Xdn" id="aIR-52-7u3"/>
                         <outlet property="receiveAddressLabel" destination="XNI-Qz-px3" id="asH-nR-lIb"/>
                         <outlet property="receiveAddressTapGesture" destination="nas-IJ-sCD" id="h6w-TY-cK8"/>
-                        <outlet property="secondaryCurrencyLabel" destination="mNc-m6-fA9" id="T2p-oi-Aj0"/>
                         <outlet property="sendRequestButton" destination="onG-ir-r5H" id="KWo-WC-jwA"/>
                         <outlet property="tapInstructionLabel" destination="FI6-On-wIa" id="00O-83-GA3"/>
                         <outlet property="titleLabel" destination="raB-18-rJT" id="4TN-ns-Zkj"/>
@@ -157,7 +150,7 @@
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="292" y="29"/>
+            <point key="canvasLocation" x="-7.2000000000000002" y="-18.440779610194905"/>
         </scene>
     </scenes>
     <resources>

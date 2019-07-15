@@ -20,14 +20,14 @@
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view contentMode="scaleToFill" id="iN0-l3-epB">
-            <rect key="frame" x="0.0" y="0.0" width="474" height="128"/>
+            <rect key="frame" x="0.0" y="0.0" width="474" height="82"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lu5-me-wvi">
-                    <rect key="frame" x="0.0" y="0.0" width="474" height="128"/>
+                    <rect key="frame" x="0.0" y="0.0" width="474" height="82"/>
                     <subviews>
                         <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="FIg-9F-ENh">
-                            <rect key="frame" x="16" y="24" width="442" height="71"/>
+                            <rect key="frame" x="16" y="10" width="442" height="71"/>
                             <subviews>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GIJ-Ei-1Zn" customClass="CalculatorPaymentButton" customModule="DropBit" customModuleProvider="target">
                                     <rect key="frame" x="0.0" y="10" width="183.5" height="51"/>
@@ -68,7 +68,7 @@
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
                         <constraint firstAttribute="trailing" secondItem="FIg-9F-ENh" secondAttribute="trailing" constant="16" id="Rul-rm-mub"/>
-                        <constraint firstItem="FIg-9F-ENh" firstAttribute="top" secondItem="lu5-me-wvi" secondAttribute="top" constant="24" id="aft-jb-IfL"/>
+                        <constraint firstItem="FIg-9F-ENh" firstAttribute="top" secondItem="lu5-me-wvi" secondAttribute="top" constant="10" id="aft-jb-IfL"/>
                         <constraint firstItem="FIg-9F-ENh" firstAttribute="leading" secondItem="lu5-me-wvi" secondAttribute="leading" constant="16" id="e1z-9Z-1Bu"/>
                     </constraints>
                 </view>
@@ -82,7 +82,7 @@
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <viewLayoutGuide key="safeArea" id="PtC-JW-XCu"/>
-            <point key="canvasLocation" x="115.94202898550725" y="-107.8125"/>
+            <point key="canvasLocation" x="115.94202898550725" y="-123.21428571428571"/>
         </view>
     </objects>
     <resources>

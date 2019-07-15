@@ -17,47 +17,7 @@ class RequestPayViewModelTests: XCTestCase {
     self.sut = nil
     super.tearDown()
   }
-
-  // MARK: primary currency value
-  func testWhenAccessingPrimaryCurrencyValueAsksConverterForFromDisplayValue() {
-    let mockCurrencyConverter = MockCurrencyConverter(fromAmount: 50, fromCurrency: .USD, toCurrency: .BTC)
-    self.sut = RequestPayViewModel(receiveAddress: "12A1MyfXbW6RhdRAZEqofac5jCQQjwEPBu", currencyConverter: mockCurrencyConverter)
-
-    _ = self.sut.primaryCurrencyValue
-
-    XCTAssertEqual(self.sut.primaryCurrencyValue, mockCurrencyConverter.fromDisplayValue, "primaryCurrencyValue should equal fromDisplayValue")
-  }
-
-  // MARK: secondary currency value
-  func testWhenAccessingSecondaryCurrencyValueAsksConverterForToDisplayValue() {
-    let mockCurrencyConverter = MockCurrencyConverter(fromAmount: 50, fromCurrency: .USD, toCurrency: .BTC)
-    self.sut = RequestPayViewModel(receiveAddress: "12A1MyfXbW6RhdRAZEqofac5jCQQjwEPBu", currencyConverter: mockCurrencyConverter)
-
-    _ = self.sut.secondaryCurrencyValue
-
-    XCTAssertEqual(self.sut.secondaryCurrencyValue, mockCurrencyConverter.attributedStringWithSymbol(forCurrency: .BTC),
-                   "secondaryCurrencyValue should equal toDisplayValue")
-  }
-
-  // MARK: handling funds
-  func testHasFundsInRequestWithFundsReturnsTrue() {
-    let mockCurrencyConverter = MockCurrencyConverter(fromAmount: 50, fromCurrency: .USD, toCurrency: .BTC)
-    self.sut = RequestPayViewModel(receiveAddress: "12A1MyfXbW6RhdRAZEqofac5jCQQjwEPBu", currencyConverter: mockCurrencyConverter)
-
-    let hasFunds = self.sut.hasFundsInRequest
-
-    XCTAssertTrue(hasFunds, "should have funds")
-  }
-
-  func testHasFundsInRequestWithoutFundsReturnsFalse() {
-    let mockCurrencyConverter = MockCurrencyConverter(fromAmount: 0, fromCurrency: .USD, toCurrency: .BTC)
-    self.sut = RequestPayViewModel(receiveAddress: "12A1MyfXbW6RhdRAZEqofac5jCQQjwEPBu", currencyConverter: mockCurrencyConverter)
-
-    let hasFunds = self.sut.hasFundsInRequest
-
-    XCTAssertFalse(hasFunds, "should not have funds")
-  }
-
+  
   // MARK: mock converter
   struct MockCurrencyConverter: CurrencyConverterType {
     var btcValue: NSDecimalNumber {

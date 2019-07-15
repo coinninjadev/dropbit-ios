@@ -31,8 +31,7 @@ class RequestPayViewControllerTests: XCTestCase {
   func testOutletsAreConnected() {
     XCTAssertNotNil(self.sut.closeButton, "closeButton should be connected")
     XCTAssertNotNil(self.sut.titleLabel, "titleLabel should be connected")
-    XCTAssertNotNil(self.sut.primaryCurrencyLabel, "primaryCurrencyLabel should be connected")
-    XCTAssertNotNil(self.sut.secondaryCurrencyLabel, "secondaryCurrencyLabel should be connected")
+    XCTAssertNotNil(self.sut.currencyEditSwapView, "currencyEditSwapView should be connected")
     XCTAssertNotNil(self.sut.qrImageView, "qrImageView should be connected")
     XCTAssertNotNil(self.sut.receiveAddressLabel, "receiveAddressLabel should be connected")
     XCTAssertNotNil(self.sut.receiveAddressTapGesture, "receiveAddressTapGesture should be connected")

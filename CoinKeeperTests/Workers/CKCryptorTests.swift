@@ -131,8 +131,8 @@ class CKCryptorTests: XCTestCase {
                                        memo: "谢谢 Bob 👋", amountInfo: amountInfo, senderPhoneNumber: alicePhoneNumber)
     guard let payloadData = try? alicePayload.encoded(),
       let stringifiedPayload = String(data: payloadData, encoding: .utf8) else {
-      XCTFail("payloadData is nil")
-      return
+        XCTFail("payloadData is nil")
+        return
     }
 
     let aliceWallet = WalletManager(words: words.reversed(), coin: BTCMainnetCoin(), persistenceManager: mockPersistenceManager)

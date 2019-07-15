@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="OL0-9v-0qc">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="119"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="S2T-ff-jLn">
+                    <rect key="frame" x="13" y="43.5" width="32" height="32"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="32" id="LR6-Ym-ajW"/>
+                        <constraint firstAttribute="height" constant="32" id="h2E-Fe-7jS"/>
+                    </constraints>
+                    <state key="normal" image="toggle"/>
+                </button>
+                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="WTv-II-6UT">
+                    <rect key="frame" x="143" y="23" width="128" height="73.5"/>
+                    <subviews>
+                        <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ArV-J0-8Ul" customClass="LimitEditTextField" customModule="DropBit" customModuleProvider="target">
+                            <rect key="frame" x="60" y="0.0" width="8" height="45"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="45" id="cmS-hG-f5K"/>
+                            </constraints>
+                            <nil key="textColor"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                            <textInputTraits key="textInputTraits"/>
+                        </textField>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" text="Secondary Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GcQ-37-OWH">
+                            <rect key="frame" x="0.0" y="53" width="128" height="20.5"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="20.5" id="CmE-cw-nwd"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                </stackView>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="WTv-II-6UT" firstAttribute="centerY" secondItem="OL0-9v-0qc" secondAttribute="centerY" id="Dbb-oJ-8xd"/>
+                <constraint firstItem="S2T-ff-jLn" firstAttribute="centerY" secondItem="OL0-9v-0qc" secondAttribute="centerY" id="NiW-np-spP"/>
+                <constraint firstItem="WTv-II-6UT" firstAttribute="centerX" secondItem="OL0-9v-0qc" secondAttribute="centerX" id="ann-vf-jip"/>
+                <constraint firstItem="S2T-ff-jLn" firstAttribute="leading" secondItem="TsJ-cA-FOJ" secondAttribute="leading" constant="13" id="dFa-n4-qrr"/>
+            </constraints>
+            <nil key="simulatedTopBarMetrics"/>
+            <nil key="simulatedBottomBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <viewLayoutGuide key="safeArea" id="TsJ-cA-FOJ"/>
+            <point key="canvasLocation" x="208.69565217391306" y="61.941964285714285"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="toggle" width="20" height="15"/>
+    </resources>
+</document>

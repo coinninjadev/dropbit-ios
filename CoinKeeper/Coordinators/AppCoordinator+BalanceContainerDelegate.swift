@@ -39,13 +39,13 @@ extension AppCoordinator: BalanceContainerDelegate {
   }
 
   func containerDidTapBalances(in viewController: UIViewController) {
-    if let txHistory = viewController as? TransactionHistoryViewController {
+    if let controller = viewController as? WalletOverviewViewController {
       // save to user defaults
       currencyController.selectedCurrency.toggle()
       persistenceManager.brokers.preferences.selectedCurrency = currencyController.selectedCurrency
 
       // tell tx history to reload from user defaults
-      txHistory.updateSelectedCurrency(to: currencyController.selectedCurrency)
+      controller.updateSelectedCurrency(to: currencyController.selectedCurrency)
     }
   }
 
