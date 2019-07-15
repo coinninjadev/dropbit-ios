@@ -31,6 +31,12 @@ class NewsViewController: BaseViewController, StoryboardInitializable {
     self?.tableView.reloadData()
   }
 
+  static func newInstance(with delegate: NewsViewControllerDelegate) -> NewsViewController {
+    let controller = NewsViewController.makeFromStoryboard()
+    controller.generalCoordinationDelegate = delegate
+    return controller
+  }
+
   required init?(coder aDecoder: NSCoder) {
     super.init(coder: aDecoder)
   }

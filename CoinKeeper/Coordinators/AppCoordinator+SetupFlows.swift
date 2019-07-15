@@ -219,18 +219,14 @@ extension AppCoordinator {
     let requestPayViewController = createRequestPayViewController(converter: currencyController.currencyConverter)
       ?? RequestPayViewController.makeFromStoryboard()
     requestPayViewController.isModal = false
+    let newsController = NewsViewController.newInstance(with: self)
     let overviewChildViewControllers: [BaseViewController] =
-      [requestPayViewController, transactionHistory, NewsViewController.makeFromStoryboard()]
+      [requestPayViewController, transactionHistory, newsController]
 
-    for viewController in overviewChildViewControllers {
-      assignCoordinationDelegate(to: viewController)
-    }
-
-    let overviewViewController = WalletOverviewViewController.makeFromStoryboard()
-    assignCoordinationDelegate(to: overviewViewController)
-    overviewViewController.baseViewControllers = overviewChildViewControllers
-    overviewViewController.balanceProvider = self
-    overviewViewController.balanceDelegate = self
+    let overviewViewController = WalletOverviewViewController.newInstance(with: self,
+                                                                          baseViewControllers: overviewChildViewControllers,
+                                                                          balanceProvider: self,
+                                                                          balanceDelegate: self)
     return overviewViewController
   }
 

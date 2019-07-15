@@ -58,6 +58,17 @@ class WalletOverviewViewController: BaseViewController, StoryboardInitializable 
     ]
   }
 
+  static func newInstance(with delegate: WalletOverviewViewControllerDelegate,
+                          baseViewControllers: [BaseViewController],
+                          balanceProvider: ConvertibleBalanceProvider,
+                          balanceDelegate: BalanceContainerDelegate) -> WalletOverviewViewController {
+    let controller = WalletOverviewViewController.makeFromStoryboard()
+    controller.generalCoordinationDelegate = delegate
+    controller.baseViewControllers = baseViewControllers
+    controller.balanceProvider = balanceProvider
+    controller.balanceDelegate = balanceDelegate
+    return controller
+  }
   override func viewDidLoad() {
     super.viewDidLoad()
 
