@@ -44,6 +44,20 @@ class WalletOverviewViewController: BaseViewController, StoryboardInitializable 
     }
   }
 
+  override func accessibleViewsAndIdentifiers() -> [AccessibleViewElement] {
+    guard let transactionHistoryViewController = baseViewControllers[1] as? TransactionHistoryViewController,
+      let sendReceiveActionView = transactionHistoryViewController.sendReceiveActionView else { return [] }
+    return [
+      (self.view, .walletOverview(.page)),
+      (self.balanceContainer, .walletOverview(.balanceView)),
+      (self.balanceContainer.leftButton, .walletOverview(.menu)),
+      (transactionHistoryViewController.view, .walletOverview(.transactionHistory)),
+      (sendReceiveActionView.receiveButton, .walletOverview(.receiveButton)),
+      (sendReceiveActionView.sendButton, .walletOverview(.sendButton)),
+      (transactionHistoryViewController.transactionHistoryNoBalanceView.learnAboutBitcoinButton, .walletOverview(.tutorialButton))
+    ]
+  }
+
   override func viewDidLoad() {
     super.viewDidLoad()
 

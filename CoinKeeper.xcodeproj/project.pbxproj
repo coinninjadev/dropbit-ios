@@ -453,6 +453,7 @@
 		A26C767F21081D5B001EB738 /* TextViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A26C767E21081D5B001EB738 /* TextViewController.storyboard */; };
 		A26C768F2108BE96001EB738 /* licenses.html in Resources */ = {isa = PBXBuildFile; fileRef = A26C768E2108BE96001EB738 /* licenses.html */; };
 		A27DFDF022DCD0ED00C2824C /* MockNetworkManager+NewsDataRequestable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A27DFDEF22DCD0ED00C2824C /* MockNetworkManager+NewsDataRequestable.swift */; };
+		A27DFDF222DCDCD200C2824C /* WalletOverviewPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = A27DFDF122DCDCD200C2824C /* WalletOverviewPage.swift */; };
 		A2893BBE20FD4C5A00E96B07 /* BasePageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2893BBD20FD4C5A00E96B07 /* BasePageViewController.swift */; };
 		A2893BC020FD4E7700E96B07 /* UIViewController+ToolbarUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2893BBF20FD4E7700E96B07 /* UIViewController+ToolbarUtilities.swift */; };
 		A2893BC220FD515900E96B07 /* AppCoordinator+TutorialViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2893BC120FD515900E96B07 /* AppCoordinator+TutorialViewControllerDelegate.swift */; };
@@ -1371,6 +1372,7 @@
 		A26C767E21081D5B001EB738 /* TextViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = TextViewController.storyboard; sourceTree = "<group>"; };
 		A26C768E2108BE96001EB738 /* licenses.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = licenses.html; sourceTree = "<group>"; };
 		A27DFDEF22DCD0ED00C2824C /* MockNetworkManager+NewsDataRequestable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MockNetworkManager+NewsDataRequestable.swift"; sourceTree = "<group>"; };
+		A27DFDF122DCDCD200C2824C /* WalletOverviewPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletOverviewPage.swift; sourceTree = "<group>"; };
 		A2893BBD20FD4C5A00E96B07 /* BasePageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasePageViewController.swift; sourceTree = "<group>"; };
 		A2893BBF20FD4E7700E96B07 /* UIViewController+ToolbarUtilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+ToolbarUtilities.swift"; sourceTree = "<group>"; };
 		A2893BC120FD515900E96B07 /* AppCoordinator+TutorialViewControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppCoordinator+TutorialViewControllerDelegate.swift"; sourceTree = "<group>"; };
@@ -3185,6 +3187,7 @@
 				3B3779FD219EE7D900F79683 /* VerifyRecoveryWordsCellPage.swift */,
 				3B1BE86321B5819500CCFE29 /* SendPaymentPage.swift */,
 				304BAED121FA1F9700065D6D /* TransactionHistoryPage.swift */,
+				A27DFDF122DCDCD200C2824C /* WalletOverviewPage.swift */,
 			);
 			path = Pages;
 			sourceTree = "<group>";
@@ -4570,6 +4573,7 @@
 				304BAED021FA131000065D6D /* TutorialUITests.swift in Sources */,
 				B58AFF312194DAF2001BE563 /* UITestPage.swift in Sources */,
 				3B3779FC219E20AD00F79683 /* BackupRecoveryWordsCellPage.swift in Sources */,
+				A27DFDF222DCDCD200C2824C /* WalletOverviewPage.swift in Sources */,
 				B57AC62F227B871500E495C3 /* UIView+CornerRadius.swift in Sources */,
 				B591BB4822A80A3F0069D110 /* UIColor+Theme.swift in Sources */,
 				B51F1ED9219A286900C54B73 /* DeviceVerificationPage.swift in Sources */,
