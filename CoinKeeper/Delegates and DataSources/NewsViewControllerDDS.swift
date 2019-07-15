@@ -187,34 +187,29 @@ extension NewsViewControllerDDS: UITableViewDataSource {
 
     switch CellIdentifier(rawValue: indexPath.row) {
     case .price?:
-      if let priceCell = tableView.dequeueReusableCell(withIdentifier: PriceCell.reuseIdentifier, for: indexPath) as? PriceCell {
-        priceCell.priceLabel.text = newsData.currentPrice
-        priceCell.movement = newsData.getPriceMovement(currentTimePeriod)
-        cell = priceCell
-      }
+      let priceCell = tableView.dequeue(PriceCell.self, for: indexPath)
+      priceCell.priceLabel.text = newsData.currentPrice
+      priceCell.movement = newsData.getPriceMovement(currentTimePeriod)
+      cell = priceCell
     case .lineGraph?:
-      if let lineGraphCell = tableView.dequeueReusableCell(withIdentifier: LineChartCell.reuseIdentifier, for: indexPath) as? LineChartCell {
-        let lineChartData = LineChartData()
-        let dataSet = newsData.getDataSetForTimePeriod(currentTimePeriod)
-        dataSet.circleRadius = 0.0
-        dataSet.lineWidth = 2.0
-        dataSet.mode = .cubicBezier
-        lineChartData.addDataSet(dataSet)
-        lineGraphCell.data = lineChartData
-        cell = lineGraphCell
-      }
+      let lineGraphCell = tableView.dequeue(LineChartCell.self, for: indexPath)
+      let lineChartData = LineChartData()
+      let dataSet = newsData.getDataSetForTimePeriod(currentTimePeriod)
+      dataSet.circleRadius = 0.0
+      dataSet.lineWidth = 2.0
+      dataSet.mode = .cubicBezier
+      lineChartData.addDataSet(dataSet)
+      lineGraphCell.data = lineChartData
+      cell = lineGraphCell
     case .timePeriod?:
-      if let timePeriodCell = tableView.dequeueReusableCell(withIdentifier: TimePeriodCell.reuseIdentifier, for: indexPath) as? TimePeriodCell {
-        timePeriodCell.delegate = self
-        cell = timePeriodCell
-      }
+      let timePeriodCell = tableView.dequeue(TimePeriodCell.self, for: indexPath)
+      timePeriodCell.delegate = self
+      cell = timePeriodCell
     case .newsHeader?:
-      if let newsHeaderCell = tableView.dequeueReusableCell(withIdentifier: NewsTitleCell.reuseIdentifier, for: indexPath) as? NewsTitleCell {
-        cell = newsHeaderCell
-      }
+      cell = tableView.dequeue(NewsTitleCell.self, for: indexPath)
     default:
-      if let newsCell = tableView.dequeueReusableCell(withIdentifier: NewsArticleCell.reuseIdentifier, for: indexPath) as? NewsArticleCell,
-        let article = newsData.articles[safe: indexPath.row - 2] {
+      let newsCell = tableView.dequeue(NewsArticleCell.self, for: indexPath)
+      if let article = newsData.articles[safe: indexPath.row - 2] {
         newsCell.titleLabel.text = article.title
         newsCell.sourceLabel.text = article.getFullSource()
 
