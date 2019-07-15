@@ -40,114 +40,27 @@ enum RecipientDisplayStyle {
   case textField
 }
 
-protocol SendPaymentViewModelType: SendPaymentDataProvider {
+class AmountCurrencySwappableViewModel: PaymentAmountDataProvider, AmountCurrencySwappableViewModelType {
 
-  var recipientParser: RecipientParserType { get }
-
-  var address: String? { get }
-  var btcAmount: NSDecimalNumber? { get set }
-  var primaryCurrency: CurrencyCode { get set }
-  var requiredFeeRate: Double? { get set }
-  var memo: String? { get set }
-  var sharedMemoDesired: Bool { get set }
-  var sharedMemoAllowed: Bool { get set }
-  var sendMaxTransactionData: CNBTransactionData? { get }
-  mutating func sendMax(with data: CNBTransactionData)
-  mutating func togglePrimaryCurrency()
-  mutating func updatePrimaryCurrency(to selectedCurrency: SelectedCurrency)
-
-  var paymentRecipient: PaymentRecipient? { get set }
-
-  func displayStyle(for recipient: PaymentRecipient?) -> RecipientDisplayStyle
-
-  func displayRecipientName() -> String?
-  func displayRecipientIdentity() -> String?
-
-  var standardIgnoredOptions: CurrencyAmountValidationOptions { get }
-  var invitationMaximumIgnoredOptions: CurrencyAmountValidationOptions { get }
-}
-
-extension SendPaymentViewModelType {
-
-  // State-independent values
-  var groupingSeparator: String {
-    return Locale.current.groupingSeparator ?? ","
-  }
-
-  var decimalSeparator: String {
-    return Locale.current.decimalSeparator ?? "."
-  }
-
-  var decimalSeparatorCharacter: Character {
-    return decimalSeparator.first ?? "."
-  }
-
-  var contact: ContactType? {
-    if let recipient = paymentRecipient, case let .contact(contact) = recipient {
-      return contact
-    } else {
-      return nil
-    }
-  }
-
-  var shouldShowSharedMemoBox: Bool {
-    if let recipient = paymentRecipient {
-      switch recipient {
-      case .btcAddress:     return false
-      case .contact:        return true && sharedMemoAllowed
-      case .phoneNumber:    return true && sharedMemoAllowed
-      case .twitterContact: return true && sharedMemoAllowed
-      }
-    } else {
-      return true && sharedMemoAllowed //show it by default
-    }
-  }
-
-  /// Formatted to work with text field editing across locales and currencies
-  func primaryAmountInputText(withRates rates: ExchangeRates) -> String? {
-    let fromAmount = btcAmount ?? .zero
-    let converter = CurrencyConverter(rates: rates, fromAmount: fromAmount, fromCurrency: .BTC, toCurrency: .USD)
-
-    let primaryAmount = converter.amount(forCurrency: primaryCurrency) ?? .zero
-    let amountString = converter.amountStringWithoutSymbol(primaryAmount, primaryCurrency) ?? ""
-
-    return primaryCurrency.symbol + amountString
-  }
-
-  var standardIgnoredOptions: CurrencyAmountValidationOptions {
-    return [.invitationMaximum]
-  }
-
-  var invitationMaximumIgnoredOptions: CurrencyAmountValidationOptions {
-    return [.usableBalance]
-  }
-
-  mutating func togglePrimaryCurrency() {
-    switch primaryCurrency {
-    case .BTC: primaryCurrency = .USD
-    case .USD: primaryCurrency = .BTC
-    }
-  }
-
-  mutating func updatePrimaryCurrency(to selectedCurrency: SelectedCurrency) {
-    switch selectedCurrency {
-    case .BTC: primaryCurrency = .BTC
-    case .fiat: primaryCurrency = .USD
-    }
-  }
-}
-
-struct SendPaymentViewModel: SendPaymentViewModelType {
-
-  var paymentRecipient: PaymentRecipient?
   var btcAmount: NSDecimalNumber?
   var primaryCurrency: CurrencyCode
+
+  init(btcAmount: NSDecimalNumber?, primaryCurrency: CurrencyCode) {
+    self.btcAmount = btcAmount
+    self.primaryCurrency = primaryCurrency
+  }
+
+}
+
+class SendPaymentViewModel: AmountCurrencySwappableViewModel, SendPaymentViewModelType {
+
+  var paymentRecipient: PaymentRecipient?
   var requiredFeeRate: Double?
   var sharedMemoDesired = true // default is true
   var sharedMemoAllowed = true // default is true
   var sendMaxTransactionData: CNBTransactionData?
 
-  mutating func sendMax(with data: CNBTransactionData) {
+  func sendMax(with data: CNBTransactionData) {
     self.sendMaxTransactionData = data
     self.btcAmount = NSDecimalNumber(integerAmount: Int(data.amount), currency: .BTC)
     primaryCurrency = .BTC
@@ -176,23 +89,21 @@ struct SendPaymentViewModel: SendPaymentViewModelType {
   let recipientParser: RecipientParserType = CKRecipientParser()
 
   init(qrCode: QRCode, primaryCurrency: CurrencyCode) {
+    super.init(btcAmount: qrCode.btcAmount, primaryCurrency: primaryCurrency)
     self.paymentRecipient = qrCode.address.flatMap { .btcAddress($0) }
-    self.btcAmount = qrCode.btcAmount
-    self.primaryCurrency = primaryCurrency
     self.requiredFeeRate = nil
     self.memo = nil
   }
 
   init(btcAmount: NSDecimalNumber, primaryCurrency: CurrencyCode,
        address: String? = nil, requiredFeeRate: Double? = nil, memo: String? = nil) {
+    super.init(btcAmount: btcAmount, primaryCurrency: primaryCurrency)
     self.paymentRecipient = address.flatMap { .btcAddress($0) }
-    self.btcAmount = btcAmount
-    self.primaryCurrency = primaryCurrency
     self.requiredFeeRate = requiredFeeRate
     self.memo = memo
   }
 
-  init?(response: MerchantPaymentRequestResponse) {
+  convenience init?(response: MerchantPaymentRequestResponse) {
     guard let output = response.outputs.first else { return nil }
     let amount = NSDecimalNumber(integerAmount: output.amount, currency: .BTC)
     self.init(btcAmount: amount,

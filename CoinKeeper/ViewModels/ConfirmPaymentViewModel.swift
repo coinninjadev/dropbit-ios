@@ -13,19 +13,18 @@ import CNBitcoinKit
 protocol ConfirmPaymentViewModelType: SendPaymentDataProvider {
   var address: String? { get }
   var contact: ContactType? { get }
-  var btcAmount: NSDecimalNumber? { get }
-  var primaryCurrency: CurrencyCode { get }
   var rates: ExchangeRates { get }
   var sharedPayloadDTO: SharedPayloadDTO? { get }
 
   mutating func update(with transactionData: CNBTransactionData)
 }
 
-struct ConfirmPaymentInviteViewModel: ConfirmPaymentViewModelType {
+class ConfirmPaymentInviteViewModel: ConfirmPaymentViewModelType {
+
   var address: String?
   var contact: ContactType?
   var btcAmount: NSDecimalNumber?
-  let primaryCurrency: CurrencyCode
+  var primaryCurrency: CurrencyCode
   let rates: ExchangeRates
   let sharedPayloadDTO: SharedPayloadDTO?
 
@@ -33,10 +32,24 @@ struct ConfirmPaymentInviteViewModel: ConfirmPaymentViewModelType {
     return .invite
   }
 
+  init(address: String?,
+       contact: ContactType?,
+       btcAmount: NSDecimalNumber?,
+       primaryCurrency: CurrencyCode,
+       rates: ExchangeRates,
+       sharedPayloadDTO: SharedPayloadDTO?) {
+    self.address = address
+    self.contact = contact
+    self.btcAmount = btcAmount
+    self.primaryCurrency = primaryCurrency
+    self.rates = rates
+    self.sharedPayloadDTO = sharedPayloadDTO
+  }
+
   mutating func update(with transactionData: CNBTransactionData) { }
 }
 
-struct ConfirmPaymentViewModel: ConfirmPaymentViewModelType {
+class ConfirmPaymentViewModel: ConfirmPaymentViewModelType {
 
   var address: String?
   var contact: ContactType?

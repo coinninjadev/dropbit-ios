@@ -504,7 +504,6 @@
 		A2A530C020936A7700B6F4DE /* ConfirmPaymentButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2A530BF20936A7700B6F4DE /* ConfirmPaymentButton.swift */; };
 		A2A530C220936A7F00B6F4DE /* ConfirmPaymentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2A530C120936A7F00B6F4DE /* ConfirmPaymentViewController.swift */; };
 		A2A530C42093A72000B6F4DE /* AppCoordinator+ConfirmPaymentViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2A530C32093A72000B6F4DE /* AppCoordinator+ConfirmPaymentViewControllerDelegate.swift */; };
-		A2A530C820940B9900B6F4DE /* SendPaymentDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2A530C720940B9900B6F4DE /* SendPaymentDataProvider.swift */; };
 		A2A530CA20966D2F00B6F4DE /* String+Count.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2A530C920966D2F00B6F4DE /* String+Count.swift */; };
 		A2A530CE20977A8A00B6F4DE /* ConfirmPaymentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2A530CD20977A8A00B6F4DE /* ConfirmPaymentViewModel.swift */; };
 		A2AA3778210112C000633F83 /* UIImageView+GIF.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2AA3777210112C000633F83 /* UIImageView+GIF.swift */; };
@@ -753,6 +752,7 @@
 		B586099921B9CBBA004C5AB7 /* MockDeviceUUIDMismatchErrorResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = B586099821B9CBBA004C5AB7 /* MockDeviceUUIDMismatchErrorResponse.swift */; };
 		B586099D21B9DA62004C5AB7 /* TargetTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B586099C21B9DA62004C5AB7 /* TargetTests.swift */; };
 		B586099F21B9EA23004C5AB7 /* MockMoyaError.swift in Sources */ = {isa = PBXBuildFile; fileRef = B586099E21B9EA23004C5AB7 /* MockMoyaError.swift */; };
+		B5866B4722DD143B0064B622 /* SendPaymentViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5866B4622DD143B0064B622 /* SendPaymentViewModelType.swift */; };
 		B586C26821B768E700B99257 /* SendPaymentViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B586C26721B768E700B99257 /* SendPaymentViewModelTests.swift */; };
 		B589C20220C1EB72006A8FDB /* PaymentAmountValidatable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B589C20120C1EB72006A8FDB /* PaymentAmountValidatable.swift */; };
 		B58AFF2E21948891001BE563 /* UITestDefaultsKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = B58AFF2D21948891001BE563 /* UITestDefaultsKey.swift */; };
@@ -1423,7 +1423,6 @@
 		A2A530BF20936A7700B6F4DE /* ConfirmPaymentButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConfirmPaymentButton.swift; sourceTree = "<group>"; };
 		A2A530C120936A7F00B6F4DE /* ConfirmPaymentViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConfirmPaymentViewController.swift; sourceTree = "<group>"; };
 		A2A530C32093A72000B6F4DE /* AppCoordinator+ConfirmPaymentViewControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppCoordinator+ConfirmPaymentViewControllerDelegate.swift"; sourceTree = "<group>"; };
-		A2A530C720940B9900B6F4DE /* SendPaymentDataProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendPaymentDataProvider.swift; sourceTree = "<group>"; };
 		A2A530C920966D2F00B6F4DE /* String+Count.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Count.swift"; sourceTree = "<group>"; };
 		A2A530CD20977A8A00B6F4DE /* ConfirmPaymentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmPaymentViewModel.swift; sourceTree = "<group>"; };
 		A2AA3777210112C000633F83 /* UIImageView+GIF.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+GIF.swift"; sourceTree = "<group>"; };
@@ -1666,6 +1665,7 @@
 		B586099821B9CBBA004C5AB7 /* MockDeviceUUIDMismatchErrorResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockDeviceUUIDMismatchErrorResponse.swift; sourceTree = "<group>"; };
 		B586099C21B9DA62004C5AB7 /* TargetTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TargetTests.swift; sourceTree = "<group>"; };
 		B586099E21B9EA23004C5AB7 /* MockMoyaError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockMoyaError.swift; sourceTree = "<group>"; };
+		B5866B4622DD143B0064B622 /* SendPaymentViewModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendPaymentViewModelType.swift; sourceTree = "<group>"; };
 		B586C26721B768E700B99257 /* SendPaymentViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendPaymentViewModelTests.swift; sourceTree = "<group>"; };
 		B586F5022175084000682D17 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B589C20120C1EB72006A8FDB /* PaymentAmountValidatable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentAmountValidatable.swift; sourceTree = "<group>"; };
@@ -2660,6 +2660,7 @@
 				B5FBE41F20DD76550029D273 /* SettingsViewModel.swift */,
 				3BF41AB7207694EA008B3D0A /* RequestPayViewModel.swift */,
 				5B62D55C2087732700E9D466 /* SendPaymentViewModel.swift */,
+				B5866B4622DD143B0064B622 /* SendPaymentViewModelType.swift */,
 				A2A530CD20977A8A00B6F4DE /* ConfirmPaymentViewModel.swift */,
 				B542147D22C103750048B81A /* AdjustableTransactionFeeViewModel.swift */,
 				A293E34F20F67F390099ED69 /* SuccessFailViewModel.swift */,
@@ -2905,7 +2906,6 @@
 				B589C20120C1EB72006A8FDB /* PaymentAmountValidatable.swift */,
 				B5E5032821B865A4008FBDAB /* PaymentRequestResolver.swift */,
 				B5860549222888C50048979D /* PhoneNumberEntryViewDisplayable.swift */,
-				A2A530C720940B9900B6F4DE /* SendPaymentDataProvider.swift */,
 				3B61B6E120DD282E0021D69E /* SendPaymentViewControllerDelegate.swift */,
 				3B2E78352024D56500DA25AF /* StoryboardInitializable.swift */,
 				B53804F9209A4B020096DA33 /* URLOpener.swift */,
@@ -3895,6 +3895,7 @@
 				B5457126217E6D8900FF3A5A /* ResponseCodable.swift in Sources */,
 				B558B87022B9620D0033AFBD /* ActivityBroker.swift in Sources */,
 				A26C767D21081CB1001EB738 /* TextViewController.swift in Sources */,
+				B5866B4722DD143B0064B622 /* SendPaymentViewModelType.swift in Sources */,
 				3B6FDAE12052CE5C0091916A /* VerifyRecoveryWordsCollectionViewDDS.swift in Sources */,
 				3B82692520331349009B11EC /* KeypadButton.swift in Sources */,
 				B558B86122B92F4A0033AFBD /* PreferencesBroker.swift in Sources */,
@@ -4099,7 +4100,6 @@
 				B534616A2098A9B600DDC1C4 /* CKMWallet+CoreDataClass.swift in Sources */,
 				3B24466E2265097C004AEE35 /* AppCoordinator+SpendBitcoinViewControllerDelegate.swift in Sources */,
 				3BFA7194204060FA00774D59 /* DigitEntryDisplayViewModel.swift in Sources */,
-				A2A530C820940B9900B6F4DE /* SendPaymentDataProvider.swift in Sources */,
 				B52A25C12077CCEF00F636A1 /* TransactionHistoryViewController.swift in Sources */,
 				B50ACBB221662C7B00E877DF /* CoinNinjaTargetType.swift in Sources */,
 				B5C8F5C7216D397900E3E85B /* CreateDeviceEndpointBody.swift in Sources */,
