@@ -33,7 +33,6 @@ class NewsViewControllerDDS: NSObject {
   weak var delegate: NewsViewControllerDDSDelegate?
 
   private var currentTimePeriod: TimePeriodCell.Period = .daily
-  let logger = OSLog(subsystem: "com.coinninja.coinkeeper.newsviewcontroller", category: "news_view_controller")
 
   var newsData: NewsData = NewsData() {
     didSet {
