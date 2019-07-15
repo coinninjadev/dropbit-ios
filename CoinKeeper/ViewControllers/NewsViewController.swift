@@ -10,7 +10,6 @@ import Foundation
 import UIKit
 import Charts
 import PromiseKit
-import os.log
 
 protocol NewsViewControllerDelegate: ViewControllerDismissable, URLOpener {
   func viewControllerDidRequestNewsData(count: Int) -> Promise<[NewsArticleResponse]>
