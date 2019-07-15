@@ -67,7 +67,7 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
     case .detail:	return detailCollectionView
     }
   }
-  
+
   override func accessibleViewsAndIdentifiers() -> [AccessibleViewElement] {
     return [
       (self.view, .transactionHistory(.page)),

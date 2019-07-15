@@ -62,7 +62,7 @@ extension AppCoordinator {
         .done(on: .main) { _ in
           self.analyticsManager.track(event: .createWallet, with: nil)
           self.continueSetupFlow()
-      }.cauterize()
+        }.cauterize()
     }
 
     guard !launchStateManager.shouldRequireAuthentication else {
