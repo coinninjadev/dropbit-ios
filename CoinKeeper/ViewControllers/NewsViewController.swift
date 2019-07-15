@@ -64,7 +64,7 @@ class NewsViewController: BaseViewController, StoryboardInitializable {
     tableView.separatorStyle = .none
     tableView.showsVerticalScrollIndicator = false
     tableView.backgroundColor = .lightGrayBackground
-    
+
     newsErrorLabel.font = .light(13)
     newsErrorLabel.textColor = .darkGrayText
 

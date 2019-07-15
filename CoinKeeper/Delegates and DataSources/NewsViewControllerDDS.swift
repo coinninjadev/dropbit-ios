@@ -44,7 +44,8 @@ class NewsViewControllerDDS: NSObject {
   func setupDataSet(coordinationDelegate: NewsViewControllerDelegate) {
     var newsData = NewsData()
 
-    coordinationDelegate.viewControllerDidRequestNewsData(count: 100).then { articles -> Promise<[PriceSummaryResponse]> in
+    coordinationDelegate.viewControllerDidRequestNewsData(count: 100)
+      .then { articles -> Promise<[PriceSummaryResponse]> in
         newsData.articles = articles
         return coordinationDelegate.viewControllerDidRequestPriceDataFor(period: .daily)
       }.then { dailyPrice -> Promise<[PriceSummaryResponse]> in

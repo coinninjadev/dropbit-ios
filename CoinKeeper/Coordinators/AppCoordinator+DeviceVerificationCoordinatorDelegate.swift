@@ -45,7 +45,7 @@ extension AppCoordinator: DeviceVerificationCoordinatorDelegate {
 
     persistenceManager.keychainManager.storeSynchronously(anyValue: NSNumber(value: true), key: .skippedVerification)
     serialQueueManager.enqueueWalletSyncIfAppropriate(type: .comprehensive, policy: .skipIfSpecificOperationExists,
-                                                           completion: nil, fetchResult: nil)
+                                                      completion: nil, fetchResult: nil)
     childCoordinatorDidComplete(childCoordinator: coordinator)
     continueSetupFlow()
   }

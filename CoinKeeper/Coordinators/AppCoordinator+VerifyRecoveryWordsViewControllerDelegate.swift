@@ -29,7 +29,7 @@ extension AppCoordinator: VerifyRecoveryWordsViewControllerDelegate {
         self.analyticsManager.track(property: MixpanelProperty(key: .wordsBackedUp, value: true))
         self.badgeManager.publishBadgeUpdate()
         viewController.dismiss(animated: true, completion: nil)
-    }.cauterize()
+      }.cauterize()
   }
 
   func viewControllerFailedWordVerification(_ viewController: UIViewController) {

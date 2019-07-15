@@ -246,7 +246,7 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate, CurrencyFormatta
       guard let strongSelf = self,
         let composeVC = strongSelf.createInviteNotificationSMSComposer(for: inviteBody),
         let topVC = strongSelf.navigationController.topViewController() else {
-        return
+          return
       }
       topVC.present(composeVC, animated: true, completion: nil)
     })

@@ -65,5 +65,5 @@ protocol SendPaymentViewControllerDelegate: DeviceCountryCodeProvider {
     _ viewController: UIViewController,
     sendMaxFundsTo address: String,
     feeRate: Double
-  ) -> Promise<CNBTransactionData>
+    ) -> Promise<CNBTransactionData>
 }

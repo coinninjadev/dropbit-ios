@@ -75,6 +75,11 @@ class ExchangeRateManager {
   var exchangeRates: ExchangeRates = [:]
   var notificationToken: NotificationToken?
   var balanceToken: NotificationToken?
+
+  init() {
+    let cachedExchangeRate = CKUserDefaults().standardDefaults.double(forKey: CKUserDefaults.Key.exchangeRateBTCUSD.defaultsString)
+    self.exchangeRates = [.BTC: cachedExchangeRate, .USD: 1]
+  }
 }
 
 /// Conforming object should provide both exchange rates and the current wallet balance

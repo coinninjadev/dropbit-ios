@@ -67,7 +67,7 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
     case .detail:	return detailCollectionView
     }
   }
-  
+
   override func accessibleViewsAndIdentifiers() -> [AccessibleViewElement] {
     return [
       (self.view, .transactionHistory(.page)),
@@ -471,6 +471,7 @@ extension TransactionHistoryViewController: ExchangeRateUpdateable {
   func didUpdateExchangeRateManager(_ exchangeRateManager: ExchangeRateManager) {
     rateManager.exchangeRates = exchangeRateManager.exchangeRates
     coordinationDelegate?.currencyController.exchangeRates = exchangeRateManager.exchangeRates
+    collectionViews.forEach { $0.reloadData() }
   }
 
 }

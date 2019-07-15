@@ -41,7 +41,7 @@ extension CountryCodePickerDataSourceType {
       guard regionCode != worldRegionCode,
         let localizedName = localizedCountryName(for: regionCode),
         let countryCode = phoneNumberKit.countryCode(for: regionCode) else {
-        return nil
+          return nil
       }
       return CKCountry(regionCode: regionCode, countryCode: Int(countryCode), localizedName: localizedName)
     }

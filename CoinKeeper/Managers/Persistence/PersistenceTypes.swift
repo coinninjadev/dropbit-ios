@@ -107,7 +107,7 @@ protocol PersistenceDatabaseType: AnyObject {
     txid: String,
     invitation: CKMInvitation?,
     in context: NSManagedObjectContext
-  ) -> CKMTransaction
+    ) -> CKMTransaction
 
   func deleteTransactions(notIn txids: [String], in context: NSManagedObjectContext)
   func latestTransaction(in context: NSManagedObjectContext) -> CKMTransaction?

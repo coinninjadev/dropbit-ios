@@ -86,9 +86,9 @@ class CKKeychain: PersistenceKeychainType {
 
   func oauthCredentials() -> TwitterOAuthStorage? {
     guard let token = store.unarchive(objectForKey: CKKeychain.Key.twitterOAuthToken.rawValue) as? String,
-          let tokenSecret = store.unarchive(objectForKey: CKKeychain.Key.twitterOAuthTokenSecret.rawValue) as? String,
-          let userId = store.unarchive(objectForKey: CKKeychain.Key.twitterUserId.rawValue) as? String,
-          let screenName = store.unarchive(objectForKey: CKKeychain.Key.twitterScreenName.rawValue) as? String else { return nil }
+      let tokenSecret = store.unarchive(objectForKey: CKKeychain.Key.twitterOAuthTokenSecret.rawValue) as? String,
+      let userId = store.unarchive(objectForKey: CKKeychain.Key.twitterUserId.rawValue) as? String,
+      let screenName = store.unarchive(objectForKey: CKKeychain.Key.twitterScreenName.rawValue) as? String else { return nil }
     return TwitterOAuthStorage(twitterOAuthToken: token, twitterOAuthTokenSecret: tokenSecret, twitterUserId: userId, twitterScreenName: screenName)
   }
 

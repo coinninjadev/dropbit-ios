@@ -37,7 +37,7 @@ extension NSAttributedString {
       y: fontDescender, //(-size.height / (size.height / 3)),
       width: imageSize.width,
       height: imageSize.height
-    ).offsetBy(dx: offset.x, dy: offset.y)
+      ).offsetBy(dx: offset.x, dy: offset.y)
 
     self.init(attachment: textAttribute)
   }
@@ -58,9 +58,9 @@ extension NSAttributedString {
 
     let image = UIImage(imageLiteralResourceName: imageName).maskWithColor(color: sharedColor)
     let attributedImage = NSAttributedString(image: image,
-                                            fontDescender: font.descender,
-                                            imageSize: imageSize,
-                                            offset: imageOffset)
+                                             fontDescender: font.descender,
+                                             imageSize: imageSize,
+                                             offset: imageOffset)
     let space = "  "
     let attributedText = NSAttributedString(string: title, attributes: attributes)
 
