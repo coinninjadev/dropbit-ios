@@ -21,6 +21,7 @@ class NewsViewController: BaseViewController, StoryboardInitializable {
 
   @IBOutlet var tableView: UITableView!
   @IBOutlet var loadingSpinner: UIActivityIndicatorView!
+  @IBOutlet var newsErrorLabel: UILabel!
 
   private var newsViewControllerDDS: NewsViewControllerDDS?
 
@@ -63,6 +64,9 @@ class NewsViewController: BaseViewController, StoryboardInitializable {
     tableView.separatorStyle = .none
     tableView.showsVerticalScrollIndicator = false
     tableView.backgroundColor = .lightGrayBackground
+    
+    newsErrorLabel.font = .light(13)
+    newsErrorLabel.textColor = .darkGrayText
 
     CKNotificationCenter.subscribe(self, [.didUpdateExchangeRates: #selector(refreshDisplayedPrice)])
     currencyValueManager?.latestExchangeRates(responseHandler: updateRatesRequest)
@@ -94,6 +98,6 @@ extension NewsViewController: NewsViewControllerDDSDelegate {
   
   func delegateErrorLoadingData() {
     loadingSpinner.stopAnimating()
-    //TODO
+    newsErrorLabel.isHidden = false
   }
 }
