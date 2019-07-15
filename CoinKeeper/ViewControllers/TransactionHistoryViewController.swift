@@ -471,6 +471,7 @@ extension TransactionHistoryViewController: ExchangeRateUpdateable {
   func didUpdateExchangeRateManager(_ exchangeRateManager: ExchangeRateManager) {
     rateManager.exchangeRates = exchangeRateManager.exchangeRates
     coordinationDelegate?.currencyController.exchangeRates = exchangeRateManager.exchangeRates
+    collectionViews.forEach { $0.reloadData() }
   }
 
 }
