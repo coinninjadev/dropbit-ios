@@ -52,6 +52,12 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
       sendReceiveActionView.actionDelegate = self
     }
   }
+  @IBOutlet var gradientBlurView: UIView! {
+    didSet {
+      gradientBlurView.backgroundColor = .lightGrayBackground
+      gradientBlurView.fade(style: .top, percent: 1.0)
+    }
+  }
 
   var currencyValueManager: CurrencyValueDataSourceType?
   var rateManager: ExchangeRateManager = ExchangeRateManager()
@@ -133,8 +139,6 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
     self.view.backgroundColor = .lightGrayBackground
 
     view.layoutIfNeeded()
-    let percent: CGFloat = 0.2
-    sendReceiveActionView.fade(style: .top, percent: percent)
     detailCollectionViewHeightConstraint.constant = self.view.frame.height - 80 //Offset for height of balance container + top constraint of container view in WalletOverviewViewController
 
     coordinationDelegate?.viewControllerDidRequestBadgeUpdate(self)
