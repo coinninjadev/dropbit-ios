@@ -30,7 +30,7 @@ class TimePeriodCell: UITableViewCell {
 
   private var buttons: [TimePeriodButton] = []
 
-  var delegate: TimePeriodCellDelegate?
+  weak var delegate: TimePeriodCellDelegate?
 
   override func awakeFromNib() {
     super.awakeFromNib()

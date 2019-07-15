@@ -14,7 +14,7 @@ public enum PricePeriod {
   case allTime
 
   var urlString: String {
-    switch(self) {
+    switch self {
     case .daily: return "daily"
     case .monthly: return "monthly"
     case .allTime: return "alltime"

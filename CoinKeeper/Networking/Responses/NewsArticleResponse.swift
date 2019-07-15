@@ -28,8 +28,7 @@ public struct NewsArticleResponse: ResponseDecodable {
   let author: String?
   let pubTime: Date?
   let added: Date?
-  let bullshit: String
-  
+
   func getFullSource() -> String {
     if let source = source, let added = added {
       return source + " • " + CKDateFormatter.displayFull.string(from: added)
