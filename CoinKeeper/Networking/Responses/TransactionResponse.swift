@@ -67,7 +67,7 @@ struct TransactionResponse: ResponseDecodable {
     case vin
   }
 
-  init(from decoder: Decoder) throws { 
+  init(from decoder: Decoder) throws {
     let container = try decoder.container(keyedBy: CodingKeys.self)
     self.txid = try container.decode(String.self, forKey: .txid)
     self.blockHash = try container.decodeIfPresent(String.self, forKey: .blockHash)

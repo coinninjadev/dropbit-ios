@@ -10,7 +10,6 @@ import Foundation
 import UIKit
 import Charts
 import PromiseKit
-import os.log
 
 protocol NewsViewControllerDelegate: ViewControllerDismissable, URLOpener {
   func viewControllerDidRequestNewsData(count: Int) -> Promise<[NewsArticleResponse]>
@@ -29,6 +28,12 @@ class NewsViewController: BaseViewController, StoryboardInitializable {
     let value = rates[.USD] as NSNumber?
     self?.newsViewControllerDDS?.newsData.currentPrice = CKNumberFormatter.currencyFormatter.string(from: value ?? 0.0) ?? ""
     self?.tableView.reloadData()
+  }
+
+  static func newInstance(with delegate: NewsViewControllerDelegate) -> NewsViewController {
+    let controller = NewsViewController.makeFromStoryboard()
+    controller.generalCoordinationDelegate = delegate
+    return controller
   }
 
   required init?(coder aDecoder: NSCoder) {
