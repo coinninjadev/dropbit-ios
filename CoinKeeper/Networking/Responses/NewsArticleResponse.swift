@@ -18,7 +18,7 @@ struct NewsArticleResponse: ResponseDecodable {
     case coinninja = "CoinNinja"
     case coinsquare
   }
-  
+
   enum CodingKeys: String, CodingKey {
     case id
     case title
@@ -40,7 +40,7 @@ struct NewsArticleResponse: ResponseDecodable {
   let author: String?
   let pubTime: Date?
   let added: Date?
-  
+
   init(from decoder: Decoder) throws {
     let container = try decoder.container(keyedBy: CodingKeys.self)
     self.id = try container.decode(String.self, forKey: .id)
