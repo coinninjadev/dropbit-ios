@@ -8,7 +8,7 @@
 
 import Foundation
 
-public struct NewsArticleResponse: ResponseDecodable {
+struct NewsArticleResponse: ResponseDecodable {
   enum Source: String, Decodable {
     case reddit
     case ccn = "CCN"
@@ -17,6 +17,18 @@ public struct NewsArticleResponse: ResponseDecodable {
     case cointelegraph
     case coinninja = "CoinNinja"
     case coinsquare
+  }
+  
+  enum CodingKeys: String, CodingKey {
+    case id
+    case title
+    case link
+    case thumbnail
+    case description
+    case source
+    case author
+    case pubTime
+    case added
   }
 
   let id: String
@@ -28,6 +40,19 @@ public struct NewsArticleResponse: ResponseDecodable {
   let author: String?
   let pubTime: Date?
   let added: Date?
+  
+  init(from decoder: Decoder) throws {
+    let container = try decoder.container(keyedBy: CodingKeys.self)
+    self.id = try container.decode(String.self, forKey: .id)
+    self.title = try container.decode(String.self, forKey: .title)
+    self.link = try container.decode(String.self, forKey: .link)
+    self.thumbnail = try container.decodeIfPresent(String.self, forKey: .thumbnail)
+    self.description = try container.decodeIfPresent(String.self, forKey: .description)
+    self.source = try container.decodeIfPresent(String.self, forKey: .source)
+    self.author = try container.decodeIfPresent(String.self, forKey: .author)
+    self.pubTime = try container.decodeIfPresent(Date.self, forKey: .pubTime)
+    self.added = try container.decodeIfPresent(Date.self, forKey: .added)
+  }
 
   func getFullSource() -> String {
     if let source = source, let added = added {
