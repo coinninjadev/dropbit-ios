@@ -91,7 +91,7 @@ extension NewsViewController: NewsViewControllerDDSDelegate {
     loadingSpinner.stopAnimating()
     tableView.isHidden = false
   }
-  
+
   func delegateErrorLoadingData() {
     loadingSpinner.stopAnimating()
     //TODO

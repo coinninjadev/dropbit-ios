@@ -58,7 +58,7 @@ class WalletOverviewViewController: BaseViewController, StoryboardInitializable 
 
     setupPageControl()
     (coordinationDelegate?.badgeManager).map(subscribeToBadgeNotifications)
-    
+
     subscribeToRateAndBalanceUpdates()
     updateRatesAndBalances()
   }
@@ -105,7 +105,7 @@ extension WalletOverviewViewController: BadgeDisplayable {
 }
 
 extension WalletOverviewViewController: BalanceDisplayable {
-  
+
   var balanceLeftButtonType: BalanceContainerLeftButtonType { return .menu }
   var primaryBalanceCurrency: CurrencyCode {
     guard let selectedCurrency = coordinationDelegate?.selectedCurrency() else { return .BTC }
