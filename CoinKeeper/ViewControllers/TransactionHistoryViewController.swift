@@ -67,7 +67,7 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
     case .detail:	return detailCollectionView
     }
   }
-
+  
   override func accessibleViewsAndIdentifiers() -> [AccessibleViewElement] {
     return [
       (self.view, .transactionHistory(.page)),
@@ -135,7 +135,7 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
     view.layoutIfNeeded()
     let percent: CGFloat = 0.2
     sendReceiveActionView.fade(style: .top, percent: percent)
-    detailCollectionViewHeightConstraint.constant = self.view.frame.height
+    detailCollectionViewHeightConstraint.constant = self.view.frame.height - 80 //Offset for height of balance container + top constraint of container view in WalletOverviewViewController
 
     coordinationDelegate?.viewControllerDidRequestBadgeUpdate(self)
 
