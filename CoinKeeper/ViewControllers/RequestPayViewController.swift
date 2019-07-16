@@ -12,7 +12,7 @@ protocol RequestPayViewControllerDelegate: ViewControllerDismissable, CopyToClip
   func viewControllerDidSelectSendRequest(_ viewController: UIViewController, payload: [Any])
 }
 
-final class RequestPayViewController: PresentableViewController, StoryboardInitializable {
+final class RequestPayViewController: PresentableViewController, StoryboardInitializable, CurrencySwappableAmountEditor {
 
   // MARK: outlets
   @IBOutlet var closeButton: UIButton!
@@ -63,13 +63,27 @@ final class RequestPayViewController: PresentableViewController, StoryboardIniti
   var coordinationDelegate: RequestPayViewControllerDelegate? {
     return generalCoordinationDelegate as? RequestPayViewControllerDelegate
   }
-  var viewModel: RequestPayViewModelType?
+
+  var viewModel: RequestPayViewModel!
+
+  var editAmountViewModel: CurrencySwappableEditAmountViewModel {
+    return viewModel
+  }
 
   override func accessibleViewsAndIdentifiers() -> [AccessibleViewElement] {
     return [
       (self.view, .requestPay(.page)),
       (receiveAddressLabel, .requestPay(.addressLabel))
     ]
+  }
+
+  static func newInstance(delegate: RequestPayViewControllerDelegate,
+                          receiveAddress: String,
+                          currencyConverter: CurrencyConverter) -> RequestPayViewController {
+    let vc = RequestPayViewController.makeFromStoryboard()
+    vc.generalCoordinationDelegate = delegate
+    vc.viewModel = RequestPayViewModel(receiveAddress: receiveAddress, currencyConverter: currencyConverter)
+    return vc
   }
 
   // MARK: view lifecycle

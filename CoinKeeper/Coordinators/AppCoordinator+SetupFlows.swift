@@ -196,8 +196,6 @@ extension AppCoordinator {
 
   func createRequestPayViewController(converter: CurrencyConverter) -> RequestPayViewController? {
     guard let wmgr = walletManager else { return nil }
-    let requestViewController = RequestPayViewController.makeFromStoryboard()
-    assignCoordinationDelegate(to: requestViewController)
 
     var nextAddress: String?
     let bgContext = persistenceManager.createBackgroundContext()
@@ -209,9 +207,8 @@ extension AppCoordinator {
     }
 
     guard let address = nextAddress else { return nil }
-    let viewModel = RequestPayViewModel(receiveAddress: address, currencyConverter: converter)
-    requestViewController.viewModel = viewModel
-    return requestViewController
+
+    return RequestPayViewController.newInstance(delegate: self, receiveAddress: address, currencyConverter: converter)
   }
 
   private func makeOverviewController() -> WalletOverviewViewController {
