@@ -171,13 +171,17 @@ class NewsViewControllerDDS: NSObject {
       let chartData = ChartDataEntry(x: Double(index), y: priceData.average)
 
       if index <= data.count - yearDataSourceOffset {
-        allTimeData.append(chartData)
-        allTimeResponse.append(priceData)
+        if index % 5 == 0 {
+          allTimeData.append(chartData)
+          allTimeResponse.append(priceData)
+        }
       } else {
         yearData.append(chartData)
         yearResponse.append(priceData)
-        allTimeResponse.append(priceData)
-        allTimeData.append(chartData)
+        if index % 5 == 0 {
+          allTimeResponse.append(priceData)
+          allTimeData.append(chartData)
+        }
       }
     }
 
