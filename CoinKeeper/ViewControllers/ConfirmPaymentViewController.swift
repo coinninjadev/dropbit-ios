@@ -158,6 +158,8 @@ class ConfirmPaymentViewController: PresentableViewController, StoryboardInitial
     let amounts = viewModel.amountLabels(withRates: viewModel.rates, withSymbols: true)
     primaryCurrencyLabel.text = amounts.primary
     secondaryCurrencyLabel.attributedText = amounts.secondary
+
+    updateFees(with: self.feeModel, rates: viewModel.rates)
   }
 
   private func updateFees(with feeModel: ConfirmTransactionFeeModel, rates: ExchangeRates) {
