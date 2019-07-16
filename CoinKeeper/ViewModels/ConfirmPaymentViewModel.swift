@@ -11,7 +11,6 @@ import Contacts
 import CNBitcoinKit
 
 protocol ConfirmPaymentViewModelType: SendPaymentDataProvider {
-  var address: String? { get }
   var contact: ContactType? { get }
   var rates: ExchangeRates { get }
   var sharedPayloadDTO: SharedPayloadDTO? { get }

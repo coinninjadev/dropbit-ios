@@ -13,7 +13,7 @@ enum SelectedCurrency: String {
 
   mutating func toggle() {
     switch self {
-    case .BTC: self = .fiat
+    case .BTC:  self = .fiat
     case .fiat: self = .BTC
     }
   }
