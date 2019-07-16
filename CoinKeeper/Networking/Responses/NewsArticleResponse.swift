@@ -34,12 +34,14 @@ struct NewsArticleResponse: ResponseDecodable {
   let id: String
   let title: String
   let link: String
-  let thumbnail: String?
-  let description: String?
-  let source: String?
-  let author: String?
-  let pubTime: Date?
-  let added: Date?
+  var thumbnail: String?
+  var description: String?
+  var source: String?
+  var author: String?
+  var pubTime: Date?
+  var added: Date?
+
+  var imageData: Data?
 
   init(from decoder: Decoder) throws {
     let container = try decoder.container(keyedBy: CodingKeys.self)

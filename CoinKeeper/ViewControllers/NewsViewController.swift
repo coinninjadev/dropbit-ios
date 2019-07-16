@@ -16,7 +16,7 @@ protocol NewsViewControllerDelegate: ViewControllerDismissable, URLOpener {
   func viewControllerDidRequestPriceDataFor(period: PricePeriod) -> Promise<[PriceSummaryResponse]>
 }
 
-class NewsViewController: BaseViewController, StoryboardInitializable {
+final class NewsViewController: BaseViewController, StoryboardInitializable {
 
   @IBOutlet var tableView: UITableView!
   @IBOutlet var loadingSpinner: UIActivityIndicatorView!
@@ -61,9 +61,8 @@ class NewsViewController: BaseViewController, StoryboardInitializable {
     tableView.registerNib(cellType: LineChartCell.self)
     tableView.registerNib(cellType: NewsArticleCell.self)
 
-    newsViewControllerDDS = NewsViewControllerDDS()
+    newsViewControllerDDS = NewsViewControllerDDS(delegate: self)
 
-    newsViewControllerDDS?.delegate = self
     tableView.delegate = newsViewControllerDDS
     tableView.dataSource = newsViewControllerDDS
     tableView.separatorStyle = .none
@@ -88,8 +87,8 @@ class NewsViewController: BaseViewController, StoryboardInitializable {
 
 extension NewsViewController: NewsViewControllerDDSDelegate {
 
-  func delegateDidRequestTableView() -> UITableView {
-    return tableView
+  func delegateRefreshNews() {
+    tableView.reloadData()
   }
 
   func delegateDidRequestUrl(_ url: URL) {
