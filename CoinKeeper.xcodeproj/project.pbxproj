@@ -810,6 +810,7 @@
 		B5BA5247223AA38E001165FC /* CKMTransaction+FetchRequests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5BA5246223AA38E001165FC /* CKMTransaction+FetchRequests.swift */; };
 		B5C0A5F82097A24A00D648DF /* CounterpartyRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5C0A5F72097A24A00D648DF /* CounterpartyRepresentable.swift */; };
 		B5C2E02B20BC721E00F21928 /* WalletAddressResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5C2E02A20BC721E00F21928 /* WalletAddressResponse.swift */; };
+		B5C314D822DE59100069294F /* CurrencySwappableAmountEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5C314D722DE59100069294F /* CurrencySwappableAmountEditor.swift */; };
 		B5C5EDE321FA41FF0032AC94 /* SharedPayloadV1.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5C5EDE221FA41FF0032AC94 /* SharedPayloadV1.swift */; };
 		B5C5EDE721FA490A0032AC94 /* SharedPayloadCodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5C5EDE621FA490A0032AC94 /* SharedPayloadCodable.swift */; };
 		B5C5FEDB22BA834800287FF7 /* PersistenceBrokerTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5C5FEDA22BA834800287FF7 /* PersistenceBrokerTypes.swift */; };
@@ -1720,6 +1721,7 @@
 		B5BA5246223AA38E001165FC /* CKMTransaction+FetchRequests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CKMTransaction+FetchRequests.swift"; sourceTree = "<group>"; };
 		B5C0A5F72097A24A00D648DF /* CounterpartyRepresentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CounterpartyRepresentable.swift; sourceTree = "<group>"; };
 		B5C2E02A20BC721E00F21928 /* WalletAddressResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletAddressResponse.swift; sourceTree = "<group>"; };
+		B5C314D722DE59100069294F /* CurrencySwappableAmountEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencySwappableAmountEditor.swift; sourceTree = "<group>"; };
 		B5C5EDE221FA41FF0032AC94 /* SharedPayloadV1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedPayloadV1.swift; sourceTree = "<group>"; };
 		B5C5EDE621FA490A0032AC94 /* SharedPayloadCodable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedPayloadCodable.swift; sourceTree = "<group>"; };
 		B5C5FEDA22BA834800287FF7 /* PersistenceBrokerTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceBrokerTypes.swift; sourceTree = "<group>"; };
@@ -2899,6 +2901,7 @@
 				B59729B4209B6A2B0012AD14 /* BalanceUpdateable.swift */,
 				B5C0A5F72097A24A00D648DF /* CounterpartyRepresentable.swift */,
 				B54F8FA320C3088300294F50 /* CurrencyFormattable.swift */,
+				B5C314D722DE59100069294F /* CurrencySwappableAmountEditor.swift */,
 				B52D4523208E5ECA00A56A5C /* ExchangeRateUpdateable.swift */,
 				B589C20120C1EB72006A8FDB /* PaymentAmountValidatable.swift */,
 				B5E5032821B865A4008FBDAB /* PaymentRequestResolver.swift */,
@@ -4162,6 +4165,7 @@
 				B54D206220F921A20057A694 /* CKBannerView.swift in Sources */,
 				3B47415B217E5353004DA223 /* ApplicationBuildEnvironment.swift in Sources */,
 				3BC9E5522047440900444A53 /* BackupRecoveryWordCellData.swift in Sources */,
+				B5C314D822DE59100069294F /* CurrencySwappableAmountEditor.swift in Sources */,
 				3B474157217E4E4E004DA223 /* URLRequest+Helpers.swift in Sources */,
 				308F6F05217F97F50094D6CB /* DragIndiciatorView.swift in Sources */,
 				3B8B19312289BB25003BA4D7 /* AuthenticationSuspendable.swift in Sources */,
