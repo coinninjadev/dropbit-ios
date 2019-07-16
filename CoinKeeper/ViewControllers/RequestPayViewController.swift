@@ -22,7 +22,7 @@ final class RequestPayViewController: PresentableViewController, StoryboardIniti
       titleLabel.textColor = .darkBlueText
     }
   }
-  @IBOutlet var currencyEditSwapView: CurrencyEditSwapView!
+  @IBOutlet var editAmountView: CurrencySwappableEditAmountView!
   @IBOutlet var qrImageView: UIImageView!
   @IBOutlet var receiveAddressLabel: UILabel! {
     didSet {
@@ -88,7 +88,7 @@ final class RequestPayViewController: PresentableViewController, StoryboardIniti
   }
 
   @IBAction func addRequestAmountButtonTapped(_ sender: UIButton) {
-    currencyEditSwapView.isHidden = false
+    editAmountView.isHidden = false
     addAmountButton.isHidden = true
   }
 

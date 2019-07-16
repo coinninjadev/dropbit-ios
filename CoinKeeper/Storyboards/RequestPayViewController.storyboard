@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
+        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -11,11 +15,11 @@
             <objects>
                 <viewController storyboardIdentifier="RequestPayViewController" id="X1G-66-cWY" customClass="RequestPayViewController" customModule="DropBit" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="mDk-3W-oP8">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="z64-0B-kx7">
-                                <rect key="frame" x="548" y="28" width="44" height="44"/>
+                                <rect key="frame" x="323" y="28" width="44" height="44"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="z64-0B-kx7" secondAttribute="height" multiplier="1:1" id="Jr6-B9-Ole"/>
                                     <constraint firstAttribute="width" constant="44" id="Vec-H7-4gF"/>
@@ -26,13 +30,13 @@
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="RECEIVE" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="raB-18-rJT">
-                                <rect key="frame" x="266.5" y="40" width="67" height="20.5"/>
+                                <rect key="frame" x="154" y="40" width="67" height="20.5"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="onG-ir-r5H" customClass="PrimaryActionButton" customModule="DropBit" customModuleProvider="target">
-                                <rect key="frame" x="50" y="516" width="500" height="44"/>
+                                <rect key="frame" x="50" y="583" width="275" height="44"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="44" id="EAh-xV-En7"/>
                                 </constraints>
@@ -42,7 +46,7 @@
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tap address to save to clipboard" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FI6-On-wIa">
-                                <rect key="frame" x="176" y="455.5" width="248" height="20.5"/>
+                                <rect key="frame" x="63.5" y="522.5" width="248" height="20.5"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="20.5" id="6m3-NC-8Gj"/>
                                 </constraints>
@@ -51,10 +55,10 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9sV-IT-Xdn">
-                                <rect key="frame" x="24" y="407.5" width="552" height="40"/>
+                                <rect key="frame" x="24" y="474.5" width="327" height="40"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XNI-Qz-px3">
-                                        <rect key="frame" x="4" y="10" width="544" height="20.5"/>
+                                        <rect key="frame" x="4" y="10" width="319" height="20.5"/>
                                         <gestureRecognizers/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>
@@ -74,10 +78,10 @@
                                 </connections>
                             </view>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="32" translatesAutoresizingMaskIntoConstraints="NO" id="0hC-We-rW1" userLabel="Amount and QR Stack">
-                                <rect key="frame" x="20" y="356.5" width="560" height="16"/>
+                                <rect key="frame" x="20" y="234.5" width="335" height="205"/>
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="fakeQRCode" translatesAutoresizingMaskIntoConstraints="NO" id="yCG-vq-wcx">
-                                        <rect key="frame" x="272" y="0.0" width="16" height="16"/>
+                                        <rect key="frame" x="65" y="0.0" width="205" height="205"/>
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="yCG-vq-wcx" secondAttribute="height" multiplier="1:1" id="h2X-c5-T6D"/>
                                         </constraints>
@@ -85,11 +89,11 @@
                                 </subviews>
                             </stackView>
                             <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="N9x-e6-Hoq" customClass="CurrencySwappableEditAmountView" customModule="DropBit" customModuleProvider="target">
-                                <rect key="frame" x="20" y="82" width="560" height="254.5"/>
+                                <rect key="frame" x="20" y="82" width="335" height="132.5"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </view>
                             <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Uvr-Kg-91I">
-                                <rect key="frame" x="0.0" y="132" width="600" height="164.5"/>
+                                <rect key="frame" x="0.0" y="132" width="375" height="42.5"/>
                                 <state key="normal" title="Button"/>
                                 <connections>
                                     <action selector="addRequestAmountButtonTapped:" destination="X1G-66-cWY" eventType="touchUpInside" id="QB9-92-M9c"/>
@@ -129,7 +133,7 @@
                     <connections>
                         <outlet property="addAmountButton" destination="Uvr-Kg-91I" id="Smw-5R-8bE"/>
                         <outlet property="closeButton" destination="z64-0B-kx7" id="4XZ-x2-cNW"/>
-                        <outlet property="currencyEditSwapView" destination="N9x-e6-Hoq" id="NXQ-ja-edC"/>
+                        <outlet property="editAmountView" destination="N9x-e6-Hoq" id="t7T-U1-Wgd"/>
                         <outlet property="qrImageView" destination="yCG-vq-wcx" id="m3B-rW-N68"/>
                         <outlet property="receiveAddressBGView" destination="9sV-IT-Xdn" id="aIR-52-7u3"/>
                         <outlet property="receiveAddressLabel" destination="XNI-Qz-px3" id="asH-nR-lIb"/>
