@@ -24,41 +24,28 @@ class NewsArticleCell: UITableViewCell {
     }
   }
 
-  private lazy var imageCompletion: (Data?, URLResponse?, Error?) -> Void = { [weak self] data, response, error in
-    guard let data = data else { return }
-    DispatchQueue.main.async {
-      self?.thumbnailImageView.image = UIImage(data: data)
-    }
-  }
-
-  var imageURL: String = "" {
-    didSet {
-      guard let url = URL(string: imageURL) else { return }
-      _dataTask = URLSession.shared.dataTask(with: url, completionHandler: imageCompletion)
-    }
-  }
-
-  var source: NewsArticleResponse.Source? {
-    didSet {
-      _dataTask?.suspend()
-      switch source {
-      case .ccn?:
-        thumbnailImageView.image = #imageLiteral(resourceName: "ccnIcon")
-      case .ambcrypto?:
-        thumbnailImageView.image = #imageLiteral(resourceName: "ambcryptoIcon")
-      case .reddit?:
-        thumbnailImageView.image = #imageLiteral(resourceName: "redditIcon")
-      case .coindesk?:
-        thumbnailImageView.image = #imageLiteral(resourceName: "coindeskIcon")
-      case .cointelegraph?:
-        thumbnailImageView.image = #imageLiteral(resourceName: "cointelegraphIcon")
-      case .coinninja?:
-        thumbnailImageView.image = #imageLiteral(resourceName: "coinninjaIcon")
-      case .coinsquare?:
-        thumbnailImageView.image = #imageLiteral(resourceName: "coinsquareIcon")
-      default:
-        thumbnailImageView.image = nil
+  func fetchImage(at urlString: String, completion: @escaping (Data) -> Void) {
+    guard let url = URL(string: urlString) else { return }
+    _dataTask = URLSession.shared.dataTask(with: url) { [weak self] (data, _, _) in
+      guard let data = data, let image = UIImage(data: data) else { return }
+      DispatchQueue.main.async {
+        self?.thumbnailImageView.image = image
+        completion(data)
       }
+    }
+  }
+
+  var source: NewsArticleResponse.Source?
+  var sourceImage: UIImage? {
+    guard let localSource = source else { return nil }
+    switch localSource {
+    case .ccn: return UIImage(imageLiteralResourceName: "ccnIcon")
+    case .ambcrypto: return UIImage(imageLiteralResourceName: "ambcryptoIcon")
+    case .reddit: return UIImage(imageLiteralResourceName: "redditIcon")
+    case .coindesk: return UIImage(imageLiteralResourceName: "coindeskIcon")
+    case .cointelegraph: return UIImage(imageLiteralResourceName: "cointelegraphIcon")
+    case .coinninja: return UIImage(imageLiteralResourceName: "coinninjaIcon")
+    case .coinsquare: return UIImage(imageLiteralResourceName: "coinsquareIcon")
     }
   }
 
@@ -88,5 +75,20 @@ class NewsArticleCell: UITableViewCell {
 
     selectionStyle = .none
     backgroundColor = .lightGrayBackground
+  }
+
+  func load(article: NewsArticleResponse,
+            imageFetcher: @escaping (Data) -> Void) {
+    titleLabel.text = article.title
+    sourceLabel.text = article.getFullSource()
+    self.source = article.source.flatMap { NewsArticleResponse.Source(rawValue: $0) }
+    if let image = sourceImage {
+      thumbnailImageView.image = image
+    } else if let data = article.imageData, let image = UIImage(data: data) {
+      thumbnailImageView.image = image
+    } else {
+      let urlString = article.thumbnail ?? NewsArticleResponse.Source.coinninja.rawValue
+      fetchImage(at: urlString, completion: imageFetcher)
+    }
   }
 }

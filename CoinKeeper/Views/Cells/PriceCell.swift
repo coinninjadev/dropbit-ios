@@ -59,5 +59,7 @@ class PriceCell: UITableViewCell {
   override func awakeFromNib() {
     super.awakeFromNib()
     backgroundColor = .lightGrayBackground
+    isUserInteractionEnabled = false
+    selectionStyle = .none
   }
 }

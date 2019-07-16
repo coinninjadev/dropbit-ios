@@ -20,5 +20,6 @@ class NewsTitleCell: UITableViewCell {
     super.awakeFromNib()
     backgroundColor = .lightGrayBackground
     isUserInteractionEnabled = false
+    selectionStyle = .none
   }
 }

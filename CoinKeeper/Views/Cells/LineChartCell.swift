@@ -15,10 +15,17 @@ class LineChartCell: UITableViewCell {
   @IBOutlet var highLabel: UILabel!
   @IBOutlet var lowLabel: UILabel!
 
+  private var shouldAnimate = false
+
   var data: ChartData? {
     willSet {
       if newValue?.yMax != chart.data?.yMax || newValue?.xMax != chart.data?.xMax {
-        chart.animate(xAxisDuration: 2, easingOption: .easeOutBack)
+        if shouldAnimate {
+          chart.animate(xAxisDuration: 2, easingOption: .easeOutBack)
+        } else {
+          chart.data = data
+          shouldAnimate = true
+        }
       }
     }
     didSet {

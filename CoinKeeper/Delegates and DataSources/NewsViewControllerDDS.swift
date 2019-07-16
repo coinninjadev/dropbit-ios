@@ -13,7 +13,7 @@ import Moya
 import PromiseKit
 
 protocol NewsViewControllerDDSDelegate: class {
-  func delegateDidRequestTableView() -> UITableView
+  func delegateRefreshNews()
   func delegateFinishedLoadingData()
   func delegateErrorLoadingData()
   func delegateDidRequestUrl(_ url: URL)
@@ -46,6 +46,8 @@ class NewsViewControllerDDS: NSObject {
     return 1440
   }
 
+  private let newsCellIndexOffset = 4
+
   var yearDataSourceOffset: Int {
     return 365
   }
@@ -64,8 +66,12 @@ class NewsViewControllerDDS: NSObject {
 
   var newsData: NewsData = NewsData() {
     didSet {
-      delegate?.delegateDidRequestTableView().reloadData()
+      delegate?.delegateRefreshNews()
     }
+  }
+
+  init(delegate: NewsViewControllerDDSDelegate) {
+    self.delegate = delegate
   }
 
   func setupDataSet(coordinationDelegate: NewsViewControllerDelegate) {
@@ -100,6 +106,7 @@ class NewsViewControllerDDS: NSObject {
       }.finally(on: .main) {
         newsData.currentPrice = self.newsData.currentPrice
         self.newsData = newsData
+        self.delegate?.delegateRefreshNews()
     }
 
   }
@@ -164,13 +171,17 @@ class NewsViewControllerDDS: NSObject {
       let chartData = ChartDataEntry(x: Double(index), y: priceData.average)
 
       if index <= data.count - yearDataSourceOffset {
-        allTimeData.append(chartData)
-        allTimeResponse.append(priceData)
+        if index % 5 == 0 {
+          allTimeData.append(chartData)
+          allTimeResponse.append(priceData)
+        }
       } else {
         yearData.append(chartData)
         yearResponse.append(priceData)
-        allTimeResponse.append(priceData)
-        allTimeData.append(chartData)
+        if index % 5 == 0 {
+          allTimeResponse.append(priceData)
+          allTimeData.append(chartData)
+        }
       }
     }
 
@@ -181,9 +192,9 @@ class NewsViewControllerDDS: NSObject {
 
 extension NewsViewControllerDDS: UITableViewDelegate {
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    guard indexPath.row > 2 else { return }
+    guard indexPath.row >= newsCellIndexOffset else { return }
 
-    if let url = URL(string: newsData.articles[indexPath.row - 2].link) {
+    if let url = URL(string: newsData.articles[indexPath.row - newsCellIndexOffset].link) {
       delegate?.delegateDidRequestUrl(url)
     }
   }
@@ -236,16 +247,13 @@ extension NewsViewControllerDDS: UITableViewDataSource {
       cell = tableView.dequeue(NewsTitleCell.self, for: indexPath)
     default:
       let newsCell = tableView.dequeue(NewsArticleCell.self, for: indexPath)
-      if let article = newsData.articles[safe: indexPath.row - 2] {
-        newsCell.titleLabel.text = article.title
-        newsCell.sourceLabel.text = article.getFullSource()
-
-        if let thumbnail = article.thumbnail, thumbnail.isNotEmpty {
-          newsCell.imageURL = thumbnail
-        } else {
-          newsCell.source = NewsArticleResponse.Source(rawValue: article.source ?? NewsArticleResponse.Source.coinninja.rawValue)
+      let index = indexPath.row - newsCellIndexOffset
+      if var article = newsData.articles[safe: index] {
+        newsCell.load(article: article) { [weak newsCell] imageData in
+          article.imageData = imageData
+          self.newsData.articles[index] = article
+          newsCell?.load(article: article) { _ in }
         }
-
         cell = newsCell
       }
     }
@@ -258,7 +266,7 @@ extension NewsViewControllerDDS: TimePeriodCellDelegate {
 
   func timePeriodWasSelected(_ period: TimePeriodCell.Period) {
     currentTimePeriod = period
-    delegate?.delegateDidRequestTableView().reloadData()
+    delegate?.delegateRefreshNews()
   }
 
 }

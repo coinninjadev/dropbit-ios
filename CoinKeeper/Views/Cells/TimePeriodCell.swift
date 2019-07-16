@@ -37,6 +37,7 @@ class TimePeriodCell: UITableViewCell {
     dayButton.selected()
     backgroundColor = .lightGrayBackground
     buttons = [monthlyButton, dayButton, weekButton, yearButton, allTimeButton]
+    selectionStyle = .none
   }
 
   @IBAction func timePeriodButtonWasSelected(_ button: UIButton!) {
