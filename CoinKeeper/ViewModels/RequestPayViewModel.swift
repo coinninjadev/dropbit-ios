@@ -16,11 +16,12 @@ protocol RequestPayViewModelType: AnyObject {
 
 class RequestPayViewModel: RequestPayViewModelType {
   let bitcoinUrl: BitcoinURL
-  let currencyConverter: CurrencyConverterType
+  let currencyConverter: CurrencyConverter
   let qrCodeGenerator: QRCodeGenerator
 
-  init?(receiveAddress: String, currencyConverter: CurrencyConverterType) {
-    guard let bitcoinUrl = BitcoinURL(address: receiveAddress, amount: currencyConverter.btcValue) else { return nil }
+  init?(receiveAddress: String,
+        currencyConverter: CurrencyConverter) {
+    guard let bitcoinUrl = BitcoinURL(address: receiveAddress, amount: currencyConverter.btcAmount) else { return nil }
     self.bitcoinUrl = bitcoinUrl
     self.currencyConverter = currencyConverter
     self.qrCodeGenerator = QRCodeGenerator()

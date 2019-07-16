@@ -8,23 +8,7 @@
 
 import Foundation
 
-protocol CurrencyConverterType: CurrencyFormattable {
-  var rates: ExchangeRates { get }
-  var fromAmount: NSDecimalNumber { get set }
-  var fromCurrency: CurrencyCode { get set }
-  var toCurrency: CurrencyCode { get set }
-  var fiatCode: CurrencyCode { get }
-
-  var fromDisplayValue: String { get }
-  var toDisplayValue: String { get }
-
-  var btcAmount: NSDecimalNumber { get }
-  var fiatAmount: NSDecimalNumber { get }
-
-  func convertedAmount() -> NSDecimalNumber?
-}
-
-struct CurrencyConverter: CurrencyConverterType {
+struct CurrencyConverter: CurrencyFormattable {
 
   static let sampleRates: ExchangeRates = [.BTC: 1, .USD: 7000]
 
@@ -91,10 +75,6 @@ struct CurrencyConverter: CurrencyConverterType {
     }
   }
 
-}
-
-extension CurrencyConverterType {
-
   /*
    The internal functions below are intended to be used by both the computed properties of CurrencyConverter
    as well as other objects where it is more convenient to supply the desired currency,
@@ -125,4 +105,5 @@ extension CurrencyConverterType {
       return withSymbol.map { NSAttributedString(string: $0) }
     }
   }
+
 }
