@@ -122,7 +122,7 @@ extension AppCoordinator: TransactionHistoryViewControllerDelegate {
     permissionManager.requestPermission(for: .camera) { [weak self] status in
       switch status {
       case .authorized:
-        self?.showScanViewController(fallbackBTCAmount: converter.btcValue, primaryCurrency: converter.fromCurrency)
+        self?.showScanViewController(fallbackBTCAmount: converter.btcAmount, primaryCurrency: converter.fromCurrency)
       default:
         break
       }
@@ -141,7 +141,7 @@ extension AppCoordinator: TransactionHistoryViewControllerDelegate {
     let sendPaymentViewController = SendPaymentViewController.makeFromStoryboard()
     assignCoordinationDelegate(to: sendPaymentViewController)
     sendPaymentViewController.alertManager = self.alertManager
-    sendPaymentViewController.viewModel = SendPaymentViewModel(btcAmount: converter.btcValue,
+    sendPaymentViewController.viewModel = SendPaymentViewModel(btcAmount: converter.btcAmount,
                                                                primaryCurrency: converter.fromCurrency)
     sendPaymentViewController.viewModel.updatePrimaryCurrency(to: currencyController.selectedCurrency)
     navigationController.present(sendPaymentViewController, animated: true)

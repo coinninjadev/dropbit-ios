@@ -13,11 +13,13 @@ protocol CurrencyConverterType: CurrencyFormattable {
   var fromAmount: NSDecimalNumber { get set }
   var fromCurrency: CurrencyCode { get set }
   var toCurrency: CurrencyCode { get set }
+  var fiatCode: CurrencyCode { get }
 
   var fromDisplayValue: String { get }
   var toDisplayValue: String { get }
 
-  var btcValue: NSDecimalNumber { get }
+  var btcAmount: NSDecimalNumber { get }
+  var fiatAmount: NSDecimalNumber { get }
 
   func convertedAmount() -> NSDecimalNumber?
 }
@@ -31,11 +33,15 @@ struct CurrencyConverter: CurrencyConverterType {
   var fromCurrency: CurrencyCode
   var toCurrency: CurrencyCode
 
-  init(rates: ExchangeRates, fromAmount: NSDecimalNumber, fromCurrency: CurrencyCode, toCurrency: CurrencyCode) {
+  /// The immutable fiat CurrencyCode used by this converter.
+  let fiatCode: CurrencyCode
+
+  init(rates: ExchangeRates, fromAmount: NSDecimalNumber, fromCurrency: CurrencyCode, toCurrency: CurrencyCode, fiatCode: CurrencyCode = .USD) {
     self.rates = rates
     self.fromAmount = fromAmount
     self.fromCurrency = fromCurrency
     self.toCurrency = toCurrency
+    self.fiatCode = fiatCode
   }
 
   /// Copies the existing values from the supplied converter and replaces the fromAmount with the newAmount.
@@ -44,6 +50,7 @@ struct CurrencyConverter: CurrencyConverterType {
     self.rates = converter.rates
     self.fromCurrency = converter.fromCurrency
     self.toCurrency = converter.toCurrency
+    self.fiatCode = converter.fiatCode
   }
 
   func convertedAmount() -> NSDecimalNumber? {
@@ -68,17 +75,22 @@ struct CurrencyConverter: CurrencyConverterType {
     return amountStringWithSymbol(forCurrency: toCurrency) ?? "–"
   }
 
-  var btcValue: NSDecimalNumber {
+  var btcAmount: NSDecimalNumber {
     return amount(forCurrency: .BTC) ?? .zero
   }
 
-  func otherCurrency(forCurrency currency: CurrencyCode) -> CurrencyCode? {
-    switch currency {
-    case fromCurrency:  return toCurrency
-    case toCurrency:	  return fromCurrency
-    default:			      return nil
+  var fiatAmount: NSDecimalNumber {
+    return amount(forCurrency: fiatCode) ?? .zero
+  }
+
+  func otherCurrency(forCurrency currency: CurrencyCode) -> CurrencyCode {
+    if currency == .BTC {
+      return self.fiatCode
+    } else {
+      return .BTC
     }
   }
+
 }
 
 extension CurrencyConverterType {

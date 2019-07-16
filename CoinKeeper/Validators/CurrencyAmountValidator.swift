@@ -69,7 +69,7 @@ class CurrencyAmountValidator: ValidatorType<CurrencyConverter> {
   }
 
   override func validate(value: CurrencyConverter) throws {
-    let btcValue = value.btcValue
+    let btcValue = value.btcAmount
     let usdValue = value.amount(forCurrency: .USD) ?? .zero
 
     let maxMoney = CurrencyAmountValidator.invitationMax
