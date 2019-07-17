@@ -13,6 +13,7 @@ import PromiseKit
 protocol WalletManagerType: AnyObject {
   static func createMnemonicWords() -> [String]
   static func validateBase58Check(for address: String) -> Bool
+  static func validateBech32Encoding(for address: String) -> Bool
   var coin: CNBBaseCoin { get set }
   var wallet: CNBHDWallet { get }
   var hexEncodedPublicKey: String { get }
@@ -126,6 +127,10 @@ class WalletManager: WalletManagerType {
     return CNBHDWallet.addressIsBase58CheckEncoded(address)
   }
 
+  static func validateBech32Encoding(for address: String) -> Bool {
+    return CNBSegwitAddress.isValidP2WPKHAddress(address) || CNBSegwitAddress.isValidP2WSHAddress(address)
+  }
+
   private(set) var wallet: CNBHDWallet
   private let persistenceManager: PersistenceManagerType
 
@@ -230,6 +235,7 @@ class WalletManager: WalletManagerType {
 
       result = CNBTransactionData(
         address: address,
+        coin: coin,
         fromAllAvailableOutputs: allAvailableOutputs,
         paymentAmount: paymentAmount,
         feeRate: usableFeeRate,
@@ -262,6 +268,7 @@ class WalletManager: WalletManagerType {
 
         let txData = CNBTransactionData(
           address: address,
+          coin: coin,
           fromAllAvailableOutputs: allAvailableOutputs,
           paymentAmount: paymentAmount,
           flatFee: feeAmount,
@@ -300,6 +307,7 @@ class WalletManager: WalletManagerType {
 
       result = CNBTransactionData(
         allUsableOutputs: allAvailableOutputs,
+        coin: coin,
         sendingMaxToAddress: address,
         feeRate: usableFeeRate,
         blockHeight: blockHeight

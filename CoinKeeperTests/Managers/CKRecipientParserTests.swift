@@ -127,10 +127,10 @@ class CKRecipientParserTests: XCTestCase {
     }
   }
 
-  func testParsingFails_Bech32() {
-    let address = TestHelpers.mockValidBech32Address()
+  func testParsingFails_InvalidBech32() {
+    let address = TestHelpers.mockInvalidBech32Address()
     let fullText = "Hey, here's my bitcoin address: \(address)!"
-    let expectedError = BitcoinAddressValidatorError.bech32
+    let expectedError = BitcoinAddressValidatorError.notBech32Valid
     do {
       _ = try self.sut.findSingleRecipient(inText: fullText)
     } catch let error as CKRecipientParserError {
@@ -141,6 +141,17 @@ class CKRecipientParserTests: XCTestCase {
       XCTAssertEqual(validationError.debugMessage, expectedError.debugMessage)
     } catch {
       XCTFail("Error should be .bech32, not \"\(error.localizedDescription)\"")
+    }
+  }
+
+  func testParsingSucceeds_ValidBech32() {
+    let address = TestHelpers.mockValidBech32Address()
+    let fullText = "Hey, here's my bitcoin address: \(address)!"
+    do {
+      _ = try self.sut.findSingleRecipient(inText: fullText)
+      XCTAssert(true)
+    } catch {
+      XCTFail("should succeed parsing valid Bech32 address")
     }
   }
 

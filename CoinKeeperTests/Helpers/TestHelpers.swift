@@ -18,8 +18,12 @@ class TestHelpers {
     return "15PCeM6EN7ihm4QzhVfZCeZis7uggr5RRJ"
   }
 
+  static func mockInvalidBech32Address() -> String {
+    return "BC1QW508D6QEJXTDG4Y5R3ZARVAYR0C5XW7KV8F3T4"
+  }
+
   static func mockValidBech32Address() -> String {
-    return "bc1qar0srrr7xfkvy5l643lydnw9re59gtzzwf5mdq"
+    return "bc1qw508d6qejxtdg4y5r3zarvary0c5xw7kv8f3t4"
   }
 
   static func mockValidBitcoinURL(withAmount: Double) -> BitcoinURL? {

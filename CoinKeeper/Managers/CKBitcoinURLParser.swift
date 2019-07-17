@@ -30,11 +30,6 @@ class CKBitcoinURLParser: CKParser {
       do {
         try bitcoinAddressValidator.validate(value: string)
         return nil
-      } catch let error as BitcoinAddressValidatorError {
-        switch error {
-        case .bech32: throw error
-        default:      return nil
-        }
       } catch {
         throw error
       }
