@@ -40,19 +40,7 @@ enum RecipientDisplayStyle {
   case textField
 }
 
-class AmountCurrencySwappableViewModel: PaymentAmountDataProvider, AmountCurrencySwappableViewModelType {
-
-  var btcAmount: NSDecimalNumber?
-  var primaryCurrency: CurrencyCode
-
-  init(btcAmount: NSDecimalNumber?, primaryCurrency: CurrencyCode) {
-    self.btcAmount = btcAmount
-    self.primaryCurrency = primaryCurrency
-  }
-
-}
-
-class SendPaymentViewModel: AmountCurrencySwappableViewModel, SendPaymentViewModelType {
+class SendPaymentViewModel: CurrencySwappableEditAmountViewModel {
 
   var paymentRecipient: PaymentRecipient?
   var requiredFeeRate: Double?
@@ -62,19 +50,16 @@ class SendPaymentViewModel: AmountCurrencySwappableViewModel, SendPaymentViewMod
 
   func sendMax(with data: CNBTransactionData) {
     self.sendMaxTransactionData = data
-    self.btcAmount = NSDecimalNumber(integerAmount: Int(data.amount), currency: .BTC)
+    self.primaryAmount = NSDecimalNumber(integerAmount: Int(data.amount), currency: .BTC)
     primaryCurrency = .BTC
+    delegate.viewModelDidChangeAmount(self)
   }
 
   private var _memo: String?
   var memo: String? {
-    set { // Allows downstream logic to assume that the optional string is not empty
-      let newMemo = (newValue ?? "").isEmpty ? nil : newValue
-      _memo = newMemo
-    }
-    get {
-      return _memo
-    }
+    // Allows downstream logic to assume that the optional string is not empty
+    set { _memo = (newValue ?? "").isEmpty ? nil : newValue }
+    get { return _memo }
   }
 
   var address: String? {
@@ -88,26 +73,43 @@ class SendPaymentViewModel: AmountCurrencySwappableViewModel, SendPaymentViewMod
 
   let recipientParser: RecipientParserType = CKRecipientParser()
 
-  init(qrCode: QRCode, primaryCurrency: CurrencyCode) {
-    super.init(btcAmount: qrCode.btcAmount, primaryCurrency: primaryCurrency)
+  init(qrCode: QRCode,
+       rateManager: ExchangeRateManager,
+       fiatCurrency: CurrencyCode,
+       delegate: CurrencySwappableEditAmountViewModelDelegate) {
+    let viewModel = CurrencySwappableEditAmountViewModel(rateManager: rateManager,
+                                                         primaryAmount: qrCode.btcAmount ?? .zero,
+                                                         primaryCurrency: .BTC,
+                                                         secondaryCurrency: fiatCurrency,
+                                                         fiatCurrency: fiatCurrency,
+                                                         delegate: delegate)
+    super.init(viewModel: viewModel)
     self.paymentRecipient = qrCode.address.flatMap { .btcAddress($0) }
     self.requiredFeeRate = nil
     self.memo = nil
   }
 
-  init(btcAmount: NSDecimalNumber, primaryCurrency: CurrencyCode,
+  init(editAmountViewModel: CurrencySwappableEditAmountViewModel,
        address: String? = nil, requiredFeeRate: Double? = nil, memo: String? = nil) {
-    super.init(btcAmount: btcAmount, primaryCurrency: primaryCurrency)
+    super.init(viewModel: editAmountViewModel)
     self.paymentRecipient = address.flatMap { .btcAddress($0) }
     self.requiredFeeRate = requiredFeeRate
     self.memo = memo
   }
 
-  convenience init?(response: MerchantPaymentRequestResponse) {
+  convenience init?(response: MerchantPaymentRequestResponse,
+                    rateManager: ExchangeRateManager,
+                    fiatCurrency: CurrencyCode,
+                    delegate: CurrencySwappableEditAmountViewModelDelegate) {
     guard let output = response.outputs.first else { return nil }
-    let amount = NSDecimalNumber(integerAmount: output.amount, currency: .BTC)
-    self.init(btcAmount: amount,
-              primaryCurrency: .BTC,
+    let btcAmount = NSDecimalNumber(integerAmount: output.amount, currency: .BTC)
+    let viewModel = CurrencySwappableEditAmountViewModel(rateManager: rateManager,
+                                                         primaryAmount: btcAmount,
+                                                         primaryCurrency: .BTC,
+                                                         secondaryCurrency: fiatCurrency,
+                                                         fiatCurrency: fiatCurrency,
+                                                         delegate: delegate)
+    self.init(editAmountViewModel: viewModel,
               address: output.address,
               requiredFeeRate: response.requiredFeeRate,
               memo: response.memo)
