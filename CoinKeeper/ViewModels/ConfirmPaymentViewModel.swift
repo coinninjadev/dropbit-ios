@@ -17,6 +17,8 @@ protocol ConfirmPaymentViewModelType: SendPaymentDataProvider {
   var primaryCurrency: CurrencyCode { get }
   var rates: ExchangeRates { get }
   var sharedPayloadDTO: SharedPayloadDTO? { get }
+
+  mutating func update(with transactionData: CNBTransactionData)
 }
 
 struct ConfirmPaymentInviteViewModel: ConfirmPaymentViewModelType {
@@ -30,6 +32,8 @@ struct ConfirmPaymentInviteViewModel: ConfirmPaymentViewModelType {
   var addressPublicKeyState: AddressPublicKeyState {
     return .invite
   }
+
+  mutating func update(with transactionData: CNBTransactionData) { }
 }
 
 struct ConfirmPaymentViewModel: ConfirmPaymentViewModelType {
@@ -61,6 +65,9 @@ struct ConfirmPaymentViewModel: ConfirmPaymentViewModelType {
     self.rates = rates
   }
 
+  mutating func update(with transactionData: CNBTransactionData) {
+    btcAmount = NSDecimalNumber(integerAmount: Int(transactionData.amount), currency: .BTC)
+  }
 }
 
 struct FeeRates {

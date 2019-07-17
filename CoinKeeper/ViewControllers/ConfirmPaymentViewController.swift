@@ -55,6 +55,7 @@ class ConfirmPaymentViewController: PresentableViewController, StoryboardInitial
     UILongPressGestureRecognizer(target: self, action: #selector(confirmButtonDidConfirm))
 
   private var feedbackGenerator: UIImpactFeedbackGenerator = UIImpactFeedbackGenerator(style: .medium)
+  private var viewModel: ConfirmPaymentViewModelType?
 
   @IBOutlet var closeButton: UIButton!
   @IBOutlet var confirmButton: ConfirmPaymentButton!
@@ -141,18 +142,22 @@ class ConfirmPaymentViewController: PresentableViewController, StoryboardInitial
   }
 
   private func updateView(with viewModel: ConfirmPaymentViewModelType) {
+    self.viewModel = viewModel
     updateAmounts(with: viewModel)
     updateRecipient(with: viewModel)
     updateMemoView(with: viewModel)
   }
 
   private func updateAmounts(with viewModel: ConfirmPaymentViewModelType) {
+    self.viewModel = viewModel
+    updateCurrencyLabels(with: viewModel)
+    updateFees(with: self.feeModel, rates: viewModel.rates)
+  }
+
+  private func updateCurrencyLabels(with viewModel: ConfirmPaymentViewModelType) {
     let amounts = viewModel.amountLabels(withRates: viewModel.rates, withSymbols: true)
     primaryCurrencyLabel.text = amounts.primary
     secondaryCurrencyLabel.attributedText = amounts.secondary
-
-    updateFees(with: self.feeModel, rates: viewModel.rates)
-
   }
 
   private func updateFees(with feeModel: ConfirmTransactionFeeModel, rates: ExchangeRates) {
@@ -166,6 +171,9 @@ class ConfirmPaymentViewController: PresentableViewController, StoryboardInitial
       }
 
       adjustableFeesLabel.attributedText = vm.attributedWaitTimeDescription
+
+      self.viewModel?.update(with: feeModel.transactionData)
+      self.viewModel.map { self.updateCurrencyLabels(with: $0) }
 
     case .required, .standard:
       adjustableFeesContainer.isHidden = true
@@ -183,6 +191,8 @@ class ConfirmPaymentViewController: PresentableViewController, StoryboardInitial
   }
 
   private func updateRecipient(with viewModel: ConfirmPaymentViewModelType) {
+    self.viewModel = viewModel
+
     // Hide address labels by default, unhide as needed
     // Contact label is always shown, set text to nil to hide
     primaryAddressLabel.isHidden = true
@@ -247,6 +257,8 @@ class ConfirmPaymentViewController: PresentableViewController, StoryboardInitial
   }
 
   private func updateMemoView(with viewModel: ConfirmPaymentViewModelType) {
+    self.viewModel = viewModel
+
     if let payload = viewModel.sharedPayloadDTO, let memo = payload.memo {
       memoContainerView.isHidden = false
 
