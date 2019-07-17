@@ -18,6 +18,7 @@ protocol WalletManagerType: AnyObject {
   var wallet: CNBHDWallet { get }
   var hexEncodedPublicKey: String { get }
   func signatureSigning(data: Data) -> String
+  func usableFeeRate(from feeRate: Double) -> UInt
   func mnemonicWords() -> [String]
   func resetWallet(with words: [String])
 

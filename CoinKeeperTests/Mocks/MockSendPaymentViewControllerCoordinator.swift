@@ -166,4 +166,7 @@ class MockSendPaymentViewControllerCoordinator: SendPaymentViewControllerCoordin
   func openURL(_ url: URL, completionHandler completion: (() -> Void)?) { }
   func openURLExternally(_ url: URL, completionHandler completion: ((Bool) -> Void)?) { }
 
+  func usableFeeRate(from feeRates: Fees) -> Double? {
+    return nil
+  }
 }

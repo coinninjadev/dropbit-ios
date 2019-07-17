@@ -552,4 +552,19 @@ extension AppCoordinator: SendPaymentViewControllerDelegate {
     let data = wmgr.transactionDataSendingMax(to: address, withFeeRate: feeRate)
     return data
   }
+
+  func usableFeeRate(from feeRates: Fees) -> Double? {
+    if adjustableFeesIsEnabled {
+      switch preferredTransactionFeeMode {
+      case .fast: return feeRates[.best]
+      case .slow: return feeRates[.better]
+      case .cheap:
+        let uintGoodFee = feeRates[.good].flatMap { self.walletManager?.usableFeeRate(from: $0) }
+        let usableGoodFee = uintGoodFee.flatMap { Int($0) }.flatMap { Double($0) }
+        return usableGoodFee
+      }
+    } else {
+      return feeRates[.best]
+    }
+  }
 }
