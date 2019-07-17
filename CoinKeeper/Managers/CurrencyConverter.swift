@@ -8,6 +8,30 @@
 
 import Foundation
 
+protocol CurrencyConverterProvider {
+  var rateManager: ExchangeRateManager { get }
+  var fromAmount: NSDecimalNumber { get set }
+  var fromCurrency: CurrencyCode { get set }
+  var toCurrency: CurrencyCode { get set }
+  var fiatCurrency: CurrencyCode { get }
+}
+
+extension CurrencyConverterProvider {
+  func generateCurrencyConverter() -> CurrencyConverter {
+    return CurrencyConverter(rates: rateManager.exchangeRates,
+                             fromAmount: fromAmount,
+                             fromCurrency: fromCurrency,
+                             toCurrency: toCurrency,
+                             fiatCurrency: fiatCurrency)
+  }
+
+  func generateCurrencyConverter(withBTCAmount btcAmount: NSDecimalNumber) -> CurrencyConverter {
+    let existingConverter = generateCurrencyConverter()
+    return CurrencyConverter(btcFromAmount: btcAmount, converter: existingConverter)
+  }
+
+}
+
 struct CurrencyConverter: CurrencyFormattable {
 
   static let sampleRates: ExchangeRates = [.BTC: 1, .USD: 7000]
@@ -34,6 +58,14 @@ struct CurrencyConverter: CurrencyFormattable {
     self.rates = converter.rates
     self.fromCurrency = converter.fromCurrency
     self.toCurrency = converter.toCurrency
+    self.fiatCurrency = converter.fiatCurrency
+  }
+
+  init(btcFromAmount: NSDecimalNumber, converter: CurrencyConverter) {
+    self.fromAmount = btcFromAmount
+    self.rates = converter.rates
+    self.fromCurrency = .BTC
+    self.toCurrency = converter.fiatCurrency
     self.fiatCurrency = converter.fiatCurrency
   }
 
