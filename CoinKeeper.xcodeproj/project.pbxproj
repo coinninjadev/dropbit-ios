@@ -489,7 +489,6 @@
 		A29CE0FC20A32B2000761B91 /* CurrencyAmountValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A29CE0FB20A32B2000761B91 /* CurrencyAmountValidator.swift */; };
 		A29CE0FF20A34FC200761B91 /* ValidatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = A29CE0FD20A34FC200761B91 /* ValidatorType.swift */; };
 		A29CE10220A3517800761B91 /* CompositeValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A29CE10120A3517800761B91 /* CompositeValidator.swift */; };
-		A29CE10420A3636100761B91 /* CurrencyStringValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A29CE10320A3636100761B91 /* CurrencyStringValidator.swift */; };
 		A29CE10620A367DF00761B91 /* BitcoinAddressValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A29CE10520A367DF00761B91 /* BitcoinAddressValidator.swift */; };
 		A29CE10820A3684700761B91 /* StringEmptyValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A29CE10720A3684700761B91 /* StringEmptyValidator.swift */; };
 		A29CE10D20A37F6900761B91 /* StringEmptyValidatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A29CE10C20A37F6900761B91 /* StringEmptyValidatorTests.swift */; };
@@ -1408,7 +1407,6 @@
 		A29CE0FB20A32B2000761B91 /* CurrencyAmountValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyAmountValidator.swift; sourceTree = "<group>"; };
 		A29CE0FD20A34FC200761B91 /* ValidatorType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ValidatorType.swift; sourceTree = "<group>"; };
 		A29CE10120A3517800761B91 /* CompositeValidator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CompositeValidator.swift; sourceTree = "<group>"; };
-		A29CE10320A3636100761B91 /* CurrencyStringValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyStringValidator.swift; sourceTree = "<group>"; };
 		A29CE10520A367DF00761B91 /* BitcoinAddressValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BitcoinAddressValidator.swift; sourceTree = "<group>"; };
 		A29CE10720A3684700761B91 /* StringEmptyValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringEmptyValidator.swift; sourceTree = "<group>"; };
 		A29CE10C20A37F6900761B91 /* StringEmptyValidatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringEmptyValidatorTests.swift; sourceTree = "<group>"; };
@@ -2780,7 +2778,6 @@
 				A29CE10120A3517800761B91 /* CompositeValidator.swift */,
 				A29CE0FD20A34FC200761B91 /* ValidatorType.swift */,
 				A29CE0FB20A32B2000761B91 /* CurrencyAmountValidator.swift */,
-				A29CE10320A3636100761B91 /* CurrencyStringValidator.swift */,
 				A29CE10520A367DF00761B91 /* BitcoinAddressValidator.swift */,
 				A29CE10720A3684700761B91 /* StringEmptyValidator.swift */,
 			);
@@ -4181,7 +4178,6 @@
 				3093B08221F10E9D00B3EF9C /* SerialQueueManager.swift in Sources */,
 				3B5220F32087B29600376DD8 /* UIScreen+RelativeSize.swift in Sources */,
 				B56E15A12167E6F1003B69D4 /* NetworkManager+CurrencyValueDataSourceType.swift in Sources */,
-				A29CE10420A3636100761B91 /* CurrencyStringValidator.swift in Sources */,
 				B514536422A7207500F7DA41 /* UIColor+Theme.swift in Sources */,
 				3B934D2220EFE53A00979ADC /* TransactionDataWorkerDTO.swift in Sources */,
 				A2A530AE2092A84800B6F4DE /* String+TrimSymbol.swift in Sources */,
