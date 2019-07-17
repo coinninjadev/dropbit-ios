@@ -18,14 +18,14 @@ struct CurrencyConverter: CurrencyFormattable {
   var toCurrency: CurrencyCode
 
   /// The immutable fiat CurrencyCode used by this converter.
-  let fiatCode: CurrencyCode
+  let fiatCurrency: CurrencyCode
 
-  init(rates: ExchangeRates, fromAmount: NSDecimalNumber, fromCurrency: CurrencyCode, toCurrency: CurrencyCode, fiatCode: CurrencyCode = .USD) {
+  init(rates: ExchangeRates, fromAmount: NSDecimalNumber, fromCurrency: CurrencyCode, toCurrency: CurrencyCode, fiatCurrency: CurrencyCode = .USD) {
     self.rates = rates
     self.fromAmount = fromAmount
     self.fromCurrency = fromCurrency
     self.toCurrency = toCurrency
-    self.fiatCode = fiatCode
+    self.fiatCurrency = fiatCurrency
   }
 
   /// Copies the existing values from the supplied converter and replaces the fromAmount with the newAmount.
@@ -34,7 +34,7 @@ struct CurrencyConverter: CurrencyFormattable {
     self.rates = converter.rates
     self.fromCurrency = converter.fromCurrency
     self.toCurrency = converter.toCurrency
-    self.fiatCode = converter.fiatCode
+    self.fiatCurrency = converter.fiatCurrency
   }
 
   func convertedAmount() -> NSDecimalNumber? {
@@ -64,12 +64,12 @@ struct CurrencyConverter: CurrencyFormattable {
   }
 
   var fiatAmount: NSDecimalNumber {
-    return amount(forCurrency: fiatCode) ?? .zero
+    return amount(forCurrency: fiatCurrency) ?? .zero
   }
 
   func otherCurrency(forCurrency currency: CurrencyCode) -> CurrencyCode {
     if currency == .BTC {
-      return self.fiatCode
+      return self.fiatCurrency
     } else {
       return .BTC
     }

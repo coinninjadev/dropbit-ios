@@ -31,7 +31,7 @@ struct SharedPayloadAmountInfo {
   }
 
   init(converter: CurrencyConverter) {
-    let fiatCurrency = converter.fiatCode
+    let fiatCurrency = converter.fiatCurrency
     let fiatFractionalAmount = converter.fiatAmount.asFractionalUnits(of: fiatCurrency)
     self.init(fiatCurrency: fiatCurrency, fiatAmount: fiatFractionalAmount)
   }
