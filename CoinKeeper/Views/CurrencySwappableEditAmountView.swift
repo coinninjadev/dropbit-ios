@@ -39,13 +39,13 @@ class CurrencySwappableEditAmountView: UIView {
 
   func configure(withLabels labels: DualAmountLabels,
                  delegate: CurrencySwappableEditAmountViewDelegate) {
-    self.update(labels)
+    update(with: labels)
     self.delegate = delegate
   }
 
-  func update(_ labels: DualAmountLabels) {
-    primaryAmountTextField.text = labels.primary
-    secondaryAmountLabel.text = labels.secondary
+  func update(with labels: DualAmountLabels) {
+    primaryAmountTextField.attributedText = labels.primary
+    secondaryAmountLabel.attributedText = labels.secondary
   }
 
 }
