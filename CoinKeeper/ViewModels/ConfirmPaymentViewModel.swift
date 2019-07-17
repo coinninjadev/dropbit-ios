@@ -10,7 +10,10 @@ import Foundation
 import Contacts
 import CNBitcoinKit
 
-protocol ConfirmPaymentViewModelType: SendPaymentDataProvider {
+protocol ConfirmPaymentViewModelType {
+  var btcAmount: NSDecimalNumber? { get }
+  var primaryCurrency: CurrencyCode { get }
+  var address: String? { get }
   var contact: ContactType? { get }
   var rates: ExchangeRates { get }
   var sharedPayloadDTO: SharedPayloadDTO? { get }

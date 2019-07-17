@@ -52,7 +52,7 @@ class SendPaymentViewModel: CurrencySwappableEditAmountViewModel {
     self.sendMaxTransactionData = data
     self.primaryAmount = NSDecimalNumber(integerAmount: Int(data.amount), currency: .BTC)
     primaryCurrency = .BTC
-    delegate.viewModelDidChangeAmount(self)
+    delegate?.viewModelDidChangeAmount(self)
   }
 
   private var _memo: String?
@@ -73,15 +73,15 @@ class SendPaymentViewModel: CurrencySwappableEditAmountViewModel {
 
   let recipientParser: RecipientParserType = CKRecipientParser()
 
+  // delegate may be nil at init since the delegate is likely a view controller which requires this view model for its own creation
   init(qrCode: QRCode,
-       rateManager: ExchangeRateManager,
+       exchangeRates: ExchangeRates,
        fiatCurrency: CurrencyCode,
-       delegate: CurrencySwappableEditAmountViewModelDelegate) {
-    let viewModel = CurrencySwappableEditAmountViewModel(rateManager: rateManager,
+       delegate: CurrencySwappableEditAmountViewModelDelegate? = nil) {
+    let currencies = SwappableCurrencies(primary: .BTC, secondary: fiatCurrency, fiat: fiatCurrency)
+    let viewModel = CurrencySwappableEditAmountViewModel(exchangeRates: exchangeRates,
                                                          primaryAmount: qrCode.btcAmount ?? .zero,
-                                                         primaryCurrency: .BTC,
-                                                         secondaryCurrency: fiatCurrency,
-                                                         fiatCurrency: fiatCurrency,
+                                                         swappableCurrencies: currencies,
                                                          delegate: delegate)
     super.init(viewModel: viewModel)
     self.paymentRecipient = qrCode.address.flatMap { .btcAddress($0) }
@@ -98,16 +98,15 @@ class SendPaymentViewModel: CurrencySwappableEditAmountViewModel {
   }
 
   convenience init?(response: MerchantPaymentRequestResponse,
-                    rateManager: ExchangeRateManager,
+                    exchangeRates: ExchangeRates,
                     fiatCurrency: CurrencyCode,
-                    delegate: CurrencySwappableEditAmountViewModelDelegate) {
+                    delegate: CurrencySwappableEditAmountViewModelDelegate? = nil) {
     guard let output = response.outputs.first else { return nil }
     let btcAmount = NSDecimalNumber(integerAmount: output.amount, currency: .BTC)
-    let viewModel = CurrencySwappableEditAmountViewModel(rateManager: rateManager,
+    let currencies = SwappableCurrencies(primary: .BTC, secondary: fiatCurrency, fiat: fiatCurrency)
+    let viewModel = CurrencySwappableEditAmountViewModel(exchangeRates: exchangeRates,
                                                          primaryAmount: btcAmount,
-                                                         primaryCurrency: .BTC,
-                                                         secondaryCurrency: fiatCurrency,
-                                                         fiatCurrency: fiatCurrency,
+                                                         swappableCurrencies: currencies,
                                                          delegate: delegate)
     self.init(editAmountViewModel: viewModel,
               address: output.address,

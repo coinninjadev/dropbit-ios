@@ -79,10 +79,16 @@ final class RequestPayViewController: PresentableViewController, StoryboardIniti
 
   static func newInstance(delegate: RequestPayViewControllerDelegate,
                           receiveAddress: String,
-                          currencyConverter: CurrencyConverter) -> RequestPayViewController {
+                          currencies: SwappableCurrencies,
+                          exchangeRates: ExchangeRates) -> RequestPayViewController {
     let vc = RequestPayViewController.makeFromStoryboard()
     vc.generalCoordinationDelegate = delegate
-    vc.viewModel = RequestPayViewModel(receiveAddress: receiveAddress, currencyConverter: currencyConverter)
+    let editAmountViewModel = CurrencySwappableEditAmountViewModel(exchangeRates: exchangeRates,
+                                                                   primaryAmount: .zero,
+                                                                   swappableCurrencies: currencies,
+                                                                   currencyValueManager: delegate,
+                                                                   delegate: vc)
+    vc.viewModel = RequestPayViewModel(receiveAddress: receiveAddress, viewModel: editAmountViewModel)
     return vc
   }
 

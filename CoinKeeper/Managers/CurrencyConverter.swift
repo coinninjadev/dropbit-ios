@@ -9,7 +9,7 @@
 import Foundation
 
 protocol CurrencyConverterProvider {
-  var rateManager: ExchangeRateManager { get }
+  var exchangeRates: ExchangeRates { get set }
   var fromAmount: NSDecimalNumber { get set }
   var fromCurrency: CurrencyCode { get set }
   var toCurrency: CurrencyCode { get set }
@@ -18,7 +18,7 @@ protocol CurrencyConverterProvider {
 
 extension CurrencyConverterProvider {
   func generateCurrencyConverter() -> CurrencyConverter {
-    return CurrencyConverter(rates: rateManager.exchangeRates,
+    return CurrencyConverter(rates: exchangeRates,
                              fromAmount: fromAmount,
                              fromCurrency: fromCurrency,
                              toCurrency: toCurrency,

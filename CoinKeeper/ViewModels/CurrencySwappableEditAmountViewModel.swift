@@ -50,48 +50,57 @@ extension DualAmountDisplayable {
 }
 
 /// The object that should handle UI updates when the amount view model changes
-protocol CurrencySwappableEditAmountViewModelDelegate: CurrencyValueDataSourceType {
+protocol CurrencySwappableEditAmountViewModelDelegate: AnyObject {
   func viewModelDidBeginEditingAmount(_ viewModel: CurrencySwappableEditAmountViewModel)
   func viewModelDidChangeAmount(_ viewModel: CurrencySwappableEditAmountViewModel)
   func viewModelDidEndEditingAmount(_ viewModel: CurrencySwappableEditAmountViewModel)
   func viewModelDidSwapCurrencies(_ viewModel: CurrencySwappableEditAmountViewModel)
-  func viewModelDidUpdateExchangeRates(_ viewModel: CurrencySwappableEditAmountViewModel)
 }
 
-class CurrencySwappableEditAmountViewModel: NSObject, DualAmountDisplayable, ExchangeRateUpdateable {
+/// Convenient for passing these values and initialization
+struct SwappableCurrencies {
+  let primary: CurrencyCode
+  let secondary: CurrencyCode
+  let fiat: CurrencyCode
 
-  var rateManager: ExchangeRateManager
+  init(primary: CurrencyCode,
+       secondary: CurrencyCode,
+       fiat: CurrencyCode) {
+    self.primary = primary
+    self.secondary = secondary
+    self.fiat = fiat
+  }
+
+  init(btcPrimaryWith currencyController: CurrencyController) {
+    let fiat = currencyController.fiatCurrency
+    self.init(primary: .BTC, secondary: fiat, fiat: fiat)
+  }
+}
+
+class CurrencySwappableEditAmountViewModel: NSObject, DualAmountDisplayable {
+
+  var exchangeRates: ExchangeRates
   var fromAmount: NSDecimalNumber
   var fromCurrency: CurrencyCode
   var toCurrency: CurrencyCode
   let fiatCurrency: CurrencyCode
 
-  weak var delegate: CurrencySwappableEditAmountViewModelDelegate!
+  weak var delegate: CurrencySwappableEditAmountViewModelDelegate?
 
-  var currencyValueManager: CurrencyValueDataSourceType? {
-    return delegate
-  }
-
-  func didUpdateExchangeRateManager(_ exchangeRateManager: ExchangeRateManager) {
-    delegate.viewModelDidUpdateExchangeRates(self)
-  }
-
-  init(rateManager: ExchangeRateManager,
+  init(exchangeRates: ExchangeRates,
        primaryAmount: NSDecimalNumber,
-       primaryCurrency: CurrencyCode,
-       secondaryCurrency: CurrencyCode,
-       fiatCurrency: CurrencyCode,
-       delegate: CurrencySwappableEditAmountViewModelDelegate) {
-    self.rateManager = rateManager
+       swappableCurrencies currencies: SwappableCurrencies,
+       delegate: CurrencySwappableEditAmountViewModelDelegate? = nil) {
+    self.exchangeRates = exchangeRates
     self.fromAmount = primaryAmount
-    self.fromCurrency = primaryCurrency
-    self.toCurrency = secondaryCurrency
-    self.fiatCurrency = fiatCurrency
+    self.fromCurrency = currencies.primary
+    self.toCurrency = currencies.secondary
+    self.fiatCurrency = currencies.fiat
     self.delegate = delegate
   }
 
   init(viewModel vm: CurrencySwappableEditAmountViewModel) {
-    self.rateManager = vm.rateManager
+    self.exchangeRates = vm.exchangeRates
     self.fromAmount = vm.primaryAmount
     self.fromCurrency = vm.primaryCurrency
     self.toCurrency = vm.secondaryCurrency
@@ -119,13 +128,6 @@ class CurrencySwappableEditAmountViewModel: NSObject, DualAmountDisplayable, Exc
     let oldFromCurrency = fromCurrency
     fromCurrency = toCurrency
     toCurrency = oldFromCurrency
-  }
-
-  func updatePrimaryCurrency(to selectedCurrency: SelectedCurrency) {
-    switch selectedCurrency {
-    case .BTC:  primaryCurrency = .BTC
-    case .fiat: primaryCurrency = fiatCurrency
-    }
   }
 
   /// Formatted to work with text field editing across locales and currencies
@@ -157,12 +159,12 @@ extension CurrencySwappableEditAmountViewModel: UITextFieldDelegate {
 
   @objc func primaryAmountTextFieldDidChange(_ textField: UITextField) {
     fromAmount = sanitizedAmount(fromRawText: textField.text)
-    delegate.viewModelDidChangeAmount(self)
+    delegate?.viewModelDidChangeAmount(self)
   }
 
   func textFieldDidBeginEditing(_ textField: UITextField) {
     let amount = sanitizedAmount(fromRawText: textField.text)
-    delegate.viewModelDidBeginEditingAmount(self)
+    delegate?.viewModelDidBeginEditingAmount(self)
     if amount == .zero {
       textField.text = primaryCurrency.symbol
     }
@@ -220,7 +222,7 @@ extension CurrencySwappableEditAmountViewModel: UITextFieldDelegate {
       return
     }
 
-    delegate.viewModelDidEndEditingAmount(self)
+    delegate?.viewModelDidEndEditingAmount(self)
   }
 
 }

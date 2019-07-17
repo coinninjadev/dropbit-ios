@@ -8,23 +8,16 @@
 
 import UIKit
 
-protocol RequestPayViewModelType: AnyObject {
-  var bitcoinUrl: BitcoinURL { get }
+class RequestPayViewModel: CurrencySwappableEditAmountViewModel {
 
-  func qrImage(withSize size: CGSize) -> UIImage?
-}
-
-class RequestPayViewModel: RequestPayViewModelType {
   let bitcoinUrl: BitcoinURL
-  let currencyConverter: CurrencyConverter
   let qrCodeGenerator: QRCodeGenerator
 
-  init?(receiveAddress: String,
-        currencyConverter: CurrencyConverter) {
-    guard let bitcoinUrl = BitcoinURL(address: receiveAddress, amount: currencyConverter.btcAmount) else { return nil }
+  init?(receiveAddress: String, viewModel: CurrencySwappableEditAmountViewModel) {
+    guard let bitcoinUrl = BitcoinURL(address: receiveAddress, amount: viewModel.fromAmount) else { return nil }
     self.bitcoinUrl = bitcoinUrl
-    self.currencyConverter = currencyConverter
     self.qrCodeGenerator = QRCodeGenerator()
+    super.init(viewModel: viewModel)
   }
 
   func qrImage(withSize size: CGSize) -> UIImage? {

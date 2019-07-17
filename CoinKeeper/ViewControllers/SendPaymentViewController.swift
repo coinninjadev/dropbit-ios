@@ -19,15 +19,19 @@ typealias SendPaymentViewControllerCoordinator = SendPaymentViewControllerDelega
 // swiftlint:disable file_length
 class SendPaymentViewController: PresentableViewController,
   StoryboardInitializable,
-  ExchangeRateUpdateable,
   PaymentAmountValidatable,
   PhoneNumberEntryViewDisplayable,
-ValidatorAlertDisplayable {
+  ValidatorAlertDisplayable,
+  CurrencySwappableAmountEditor {
 
-  var viewModel: SendPaymentViewModelType = SendPaymentViewModel(btcAmount: 0, primaryCurrency: .USD)
+  var viewModel: SendPaymentViewModel!
   var alertManager: AlertManagerType?
   let rateManager = ExchangeRateManager()
   var hashingManager = HashingManager()
+
+  var editAmountViewModel: CurrencySwappableEditAmountViewModel {
+    return viewModel
+  }
 
   /// The presenter of SendPaymentViewController can set this property to provide a recipient.
   /// It will be parsed and used to update the viewModel and view when ready.
@@ -162,6 +166,14 @@ ValidatorAlertDisplayable {
       (self.view, .sendPayment(.page)),
       (memoContainerView.memoLabel, .sendPayment(.memoLabel))
     ]
+  }
+
+  static func newInstance(delegate: SendPaymentViewControllerDelegate, viewModel: SendPaymentViewModel) -> SendPaymentViewController {
+    let vc = SendPaymentViewController.makeFromStoryboard()
+    vc.generalCoordinationDelegate = delegate
+    vc.viewModel = viewModel
+    vc.viewModel.delegate = vc
+    return vc
   }
 
   // MARK: - View lifecycle
