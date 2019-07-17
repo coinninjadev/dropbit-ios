@@ -113,7 +113,7 @@ extension TransactionHistoryDetailCellViewModel {
 
   var secondaryAmountLabel: NSAttributedString? {
     let converter = receivedAmountsConverter
-    guard let secondaryCurrency = converter.otherCurrency(forCurrency: primaryCurrency) else { return nil }
+    let secondaryCurrency = converter.otherCurrency(forCurrency: primaryCurrency)
 
     if secondaryCurrency == .BTC {
       if let btcAmount = converter.attributedStringWithSymbol(forCurrency: .BTC, ofSize: 18) {
