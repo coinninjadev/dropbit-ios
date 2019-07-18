@@ -64,9 +64,13 @@ struct CurrencyConverter: CurrencyFormattable {
   init(btcFromAmount: NSDecimalNumber, converter: CurrencyConverter) {
     self.fromAmount = btcFromAmount
     self.rates = converter.rates
-    self.currencyPair = CurrencyPair(primary: .BTC,
-                                     secondary: converter.fiatCurrency,
-                                     fiat: converter.fiatCurrency)
+    self.currencyPair = CurrencyPair(primary: .BTC, fiat: converter.fiatCurrency)
+  }
+
+  init(fromBtcTo fiatCurrency: CurrencyCode, fromAmount: NSDecimalNumber, rates: ExchangeRates) {
+    self.fromAmount = fromAmount
+    self.rates = rates
+    self.currencyPair = CurrencyPair(primary: .BTC, fiat: fiatCurrency)
   }
 
   func convertedAmount() -> NSDecimalNumber? {

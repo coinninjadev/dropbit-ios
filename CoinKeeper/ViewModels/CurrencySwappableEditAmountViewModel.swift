@@ -128,10 +128,25 @@ class CurrencySwappableEditAmountViewModel: NSObject, DualAmountDisplayable {
     set { toCurrency = newValue }
   }
 
+  var currencyPair: CurrencyPair {
+    return CurrencyPair(primary: fromCurrency, secondary: toCurrency, fiat: fiatCurrency)
+  }
+
   func swapPrimaryCurrency() {
     let oldFromCurrency = fromCurrency
     fromCurrency = toCurrency
     toCurrency = oldFromCurrency
+  }
+
+  func setBTCAmountAsPrimary(_ amount: NSDecimalNumber) {
+    self.fromAmount = amount
+    self.primaryCurrency = .BTC
+    self.secondaryCurrency = self.fiatCurrency
+  }
+
+  var btcAmount: NSDecimalNumber {
+    let converter = generateCurrencyConverter()
+    return converter.btcAmount
   }
 
   /// Formatted to work with text field editing across locales and currencies

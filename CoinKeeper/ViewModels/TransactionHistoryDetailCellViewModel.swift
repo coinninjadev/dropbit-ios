@@ -92,12 +92,12 @@ extension TransactionHistoryDetailCellViewModel {
   /// The amounts from this converter are valid for both the sender and receiver
   var receivedAmountAtSentConverter: CurrencyConverter? {
     guard let amount = btcReceived, let rate = transaction?.dayAveragePrice?.doubleValue else { return nil }
-    return newConverter(withRate: rate, currency: .USD, amount: amount)
+    return newConverter(withRate: rate, currency: .USD, btcAmount: amount)
   }
 
   var feeAmountAtCurrentConverter: CurrencyConverter? {
     guard let amount = networkFee, let rate = currentRate(for: .USD) else { return nil }
-    return newConverter(withRate: rate, currency: .USD, amount: amount)
+    return newConverter(withRate: rate, currency: .USD, btcAmount: amount)
   }
 
   // MARK: - Labels

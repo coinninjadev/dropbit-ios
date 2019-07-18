@@ -34,9 +34,9 @@ class ConfirmPaymentViewController: PresentableViewController, StoryboardInitial
     vc.feeModel = feeModel
     switch kind {
     case .invite(let vm):
-      vc.exchangeRates = vm.rates
+      vc.exchangeRates = vm.exchangeRates
     case .payment(let vm):
-      vc.exchangeRates = vm.rates
+      vc.exchangeRates = vm.exchangeRates
     }
 
     return vc
@@ -141,18 +141,18 @@ class ConfirmPaymentViewController: PresentableViewController, StoryboardInitial
       ], for: .selected)
   }
 
-  private func updateView(with viewModel: ConfirmPaymentViewModel) {
+  private func updateView(with viewModel: BaseConfirmPaymentViewModel) {
     updateAmounts(with: viewModel)
     updateRecipient(with: viewModel)
     updateMemoView(with: viewModel)
   }
 
-  private func updateAmounts(with viewModel: ConfirmPaymentViewModel) {
-    let amounts = viewModel.amountLabels(withRates: viewModel.rates, withSymbols: true)
-    primaryCurrencyLabel.text = amounts.primary
+  private func updateAmounts(with viewModel: BaseConfirmPaymentViewModel) {
+    let amounts = viewModel.amountLabels(withSymbols: true)
+    primaryCurrencyLabel.text = amounts.primary?.string
     secondaryCurrencyLabel.attributedText = amounts.secondary
 
-    updateFees(with: self.feeModel, rates: viewModel.rates)
+    updateFees(with: self.feeModel, rates: viewModel.exchangeRates)
   }
 
   private func updateFees(with feeModel: ConfirmTransactionFeeModel, rates: ExchangeRates) {
@@ -175,17 +175,15 @@ class ConfirmPaymentViewController: PresentableViewController, StoryboardInitial
     }
 
     let feeDecimalAmount = NSDecimalNumber(integerAmount: feeModel.feeAmount, currency: .BTC)
-    let feeConverter = CurrencyConverter(rates: rates,
+    let feeConverter = CurrencyConverter(fromBtcTo: .USD,
                                          fromAmount: feeDecimalAmount,
-                                         fromCurrency: .BTC,
-                                         toCurrency: .USD)
-
+                                         rates: rates)
     let btcFee = String(describing: feeConverter.amount(forCurrency: .BTC) ?? 0)
     let fiatFee = feeConverter.amountStringWithSymbol(forCurrency: .USD) ?? ""
     networkFeeLabel.text = "Network Fee \(btcFee) (\(fiatFee))"
   }
 
-  private func updateRecipient(with viewModel: ConfirmPaymentViewModel) {
+  private func updateRecipient(with viewModel: BaseConfirmPaymentViewModel) {
     // Hide address labels by default, unhide as needed
     // Contact label is always shown, set text to nil to hide
     primaryAddressLabel.isHidden = true
@@ -249,12 +247,12 @@ class ConfirmPaymentViewController: PresentableViewController, StoryboardInitial
     }
   }
 
-  private func updateMemoView(with viewModel: ConfirmPaymentViewModel) {
-    if let payload = viewModel.sharedPayloadDTO, let memo = payload.memo {
+  private func updateMemoView(with viewModel: BaseConfirmPaymentViewModel) {
+    if let memo = viewModel.memo {
       memoContainerView.isHidden = false
 
       memoContainerView.configure(memo: memo,
-                                  isShared: payload.shouldShare,
+                                  isShared: viewModel.shouldShareMemo,
                                   isSent: false,
                                   isIncoming: false,
                                   recipientName: viewModel.contact?.displayName)
@@ -307,19 +305,16 @@ class ConfirmPaymentViewController: PresentableViewController, StoryboardInitial
     coordinationDelegate?.viewControllerDidConfirmPayment(
       self,
       transactionData: feeModel.transactionData,
-      rates: viewModel.rates,
+      rates: viewModel.exchangeRates,
       outgoingTransactionData: feeAdjustedOutgoingTxData
     )
   }
 
   private func confirmInvite(with viewModel: ConfirmPaymentInviteViewModel,
                              feeModel: ConfirmTransactionFeeModel) {
-    guard let contact = viewModel.contact, let btcAmount = viewModel.btcAmount else { return }
-
-    let converter = CurrencyConverter(rates: viewModel.rates,
-                                      fromAmount: btcAmount,
-                                      fromCurrency: .BTC,
-                                      toCurrency: .USD)
+    guard let contact = viewModel.contact else { return }
+    let btcAmount = viewModel.btcAmount
+    let converter = CurrencyConverter(fromBtcTo: .USD, fromAmount: btcAmount, rates: viewModel.exchangeRates)
 
     let pair = (btcAmount: btcAmount, usdAmount: converter.amount(forCurrency: .USD) ?? NSDecimalNumber(decimal: 0.0))
     let outgoingInvitationDTO = OutgoingInvitationDTO(contact: contact,

@@ -41,7 +41,14 @@ class BaseConfirmPaymentViewModel: DualAmountDisplayable {
   }
 
   mutating func update(with transactionData: CNBTransactionData) {
-  
+  }
+
+  var memo: String? {
+    return nil
+  }
+
+  var shouldShareMemo: Bool {
+    return false
   }
 
 }
@@ -52,6 +59,14 @@ class ConfirmPaymentInviteViewModel: BaseConfirmPaymentViewModel {
 
   var addressPublicKeyState: AddressPublicKeyState {
     return .invite
+  }
+
+  override var memo: String? {
+    return sharedPayloadDTO.memo
+  }
+
+  override var shouldShareMemo: Bool {
+    return sharedPayloadDTO.shouldShare
   }
 
   init(address: String?,
@@ -77,6 +92,14 @@ class ConfirmPaymentViewModel: BaseConfirmPaymentViewModel {
 
   var sharedPayloadDTO: SharedPayloadDTO? {
     return outgoingTransactionData.sharedPayloadDTO
+  }
+
+  override var memo: String? {
+    return sharedPayloadDTO?.memo
+  }
+
+  override var shouldShareMemo: Bool {
+    return sharedPayloadDTO?.shouldShare ?? false
   }
 
   init(address: String?,

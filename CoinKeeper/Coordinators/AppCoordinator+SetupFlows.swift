@@ -208,10 +208,10 @@ extension AppCoordinator {
 
     guard let address = nextAddress else { return nil }
 
-    let currencies = CurrencyPair(btcPrimaryWith: self.currencyController)
+    let currencyPair = CurrencyPair(btcPrimaryWith: self.currencyController)
     return RequestPayViewController.newInstance(delegate: self,
                                                 receiveAddress: address,
-                                                currencies: currencies,
+                                                currencyPair: currencyPair,
                                                 exchangeRates: self.currencyController.exchangeRates)
   }
 

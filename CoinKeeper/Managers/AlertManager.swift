@@ -194,10 +194,9 @@ class AlertManager: AlertManagerType {
   }
 
   func showIncomingTransactionAlert(for receivedAmount: Int, with rates: ExchangeRates) {
-    let converter = CurrencyConverter(rates: rates,
+    let converter = CurrencyConverter(fromBtcTo: .USD,
                                       fromAmount: NSDecimalNumber(integerAmount: receivedAmount, currency: .BTC),
-                                      fromCurrency: .BTC,
-                                      toCurrency: .USD)
+                                      rates: rates)
     let dollarAmount: String =  converter.amountStringWithSymbol(forCurrency: .USD) ?? ""
     let message = "You have recieved a new transaction of \(dollarAmount) in bitcoin!"
     DispatchQueue.main.async {

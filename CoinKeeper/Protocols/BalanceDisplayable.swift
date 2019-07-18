@@ -143,7 +143,7 @@ extension BalanceDisplayable where Self: UIViewController {
     }
 
     let rates = rateManager.exchangeRates
-    let converter = CurrencyConverter(rates: rates, fromAmount: sanitizedBalance, fromCurrency: .BTC, toCurrency: .USD)
+    let converter = CurrencyConverter(fromBtcTo: .USD, fromAmount: sanitizedBalance, rates: rates)
 
     return BalanceContainerDataSource(
       leftButtonType: balanceLeftButtonType,

@@ -89,7 +89,9 @@ extension AppCoordinator: ScanQRViewControllerDelegate {
   func showScanViewController(fallbackBTCAmount: NSDecimalNumber, primaryCurrency: CurrencyCode) {
     let scanViewController = ScanQRViewController.makeFromStoryboard()
     let currencyPair = CurrencyPair(btcPrimaryWith: self.currencyController)
-    let swappableVM = CurrencySwappableEditAmountViewModel(exchangeRates: self.exchangeRates, primaryAmount: fallbackBTCAmount, currencyPair: currencyPair)
+    let swappableVM = CurrencySwappableEditAmountViewModel(exchangeRates: self.exchangeRates,
+                                                           primaryAmount: fallbackBTCAmount,
+                                                           currencyPair: currencyPair)
     scanViewController.fallbackPaymentViewModel = SendPaymentViewModel(editAmountViewModel: swappableVM)
 
     assignCoordinationDelegate(to: scanViewController)

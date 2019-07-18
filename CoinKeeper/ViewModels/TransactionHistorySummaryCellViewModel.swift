@@ -200,16 +200,13 @@ class TransactionHistorySummaryCellViewModel {
   }
 
   /// `rate` and `currency` parameters refer to non-BTC and `amount` parameter refers to the BTC amount
-  func newConverter(withRate rate: Double, currency: CurrencyCode, amount: NSDecimalNumber) -> CurrencyConverter {
-    return CurrencyConverter(rates: [.BTC: 1, currency: rate],
-                             fromAmount: amount,
-                             fromCurrency: fromCurrency,
-                             toCurrency: toCurrency)
+  func newConverter(withRate rate: Double, currency: CurrencyCode, btcAmount: NSDecimalNumber) -> CurrencyConverter {
+    return CurrencyConverter(fromBtcTo: currency, fromAmount: btcAmount, rates: [.BTC: 1, currency: rate])
   }
 
   var receivedAmountAtCurrentConverter: CurrencyConverter? {
     guard let amount = netWalletAmount, let rate = currentRate(for: .USD) else { return nil }
-    return newConverter(withRate: rate, currency: .USD, amount: amount)
+    return newConverter(withRate: rate, currency: .USD, btcAmount: amount)
   }
 
   func amountLabels(for converter: CurrencyConverter) -> (primary: String, secondary: String) {
