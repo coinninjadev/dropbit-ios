@@ -66,4 +66,6 @@ protocol SendPaymentViewControllerDelegate: DeviceCountryCodeProvider {
     sendMaxFundsTo address: String,
     feeRate: Double
     ) -> Promise<CNBTransactionData>
+
+  func usableFeeRate(from feeRates: Fees) -> Double?
 }

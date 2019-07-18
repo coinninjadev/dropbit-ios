@@ -296,28 +296,6 @@ class AppCoordinatorTests: MockedPersistenceTestCase {
     wait(for: [expectation], timeout: 3.0)
   }
 
-  func testSyncRoutineMissingRecoveryWordsRejectsWithError() {
-    let expectation = XCTestExpectation(description: "testSyncRoutineCallsGetWallet")
-    let mocks = mocksForTestingSyncRoutine()
-    _ = mockPersistenceManager.keychainManager.store(anyValue: nil, key: .walletWords)
-
-    sut = AppCoordinator(persistenceManager: mockPersistenceManager,
-                         launchStateManager: mockLaunchStateManager,
-                         networkManager: mocks.network)
-    sut.walletManager = mocks.wallet
-
-    sut.predefineSyncDependencies(in: sut.persistenceManager.createBackgroundContext(), inBackground: false).catch { error in
-      if let syncRoutineError = error as? SyncRoutineError {
-        XCTAssertEqual(syncRoutineError, SyncRoutineError.missingRecoveryWords)
-      } else {
-        XCTFail("Error should be missingRecoveryWords")
-      }
-      expectation.fulfill()
-    }
-
-    wait(for: [expectation], timeout: 3.0)
-  }
-
   // MARK: delegates
   func testDelegateRelationshipsAreSet() {
     XCTAssertNotNil(sut.notificationManager.delegate, "NotificationManager delegate should not be nil")
