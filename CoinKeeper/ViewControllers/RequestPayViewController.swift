@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol RequestPayViewControllerDelegate: ViewControllerDismissable, CopyToClipboardMessageDisplayable {
+protocol RequestPayViewControllerDelegate: ViewControllerDismissable, CopyToClipboardMessageDisplayable, CurrencyValueDataSourceType {
   func viewControllerDidSelectSendRequest(_ viewController: UIViewController, payload: [Any])
 }
 
@@ -64,6 +64,12 @@ final class RequestPayViewController: PresentableViewController, StoryboardIniti
     return generalCoordinationDelegate as? RequestPayViewControllerDelegate
   }
 
+  let rateManager: ExchangeRateManager = ExchangeRateManager()
+  var currencyValueManager: CurrencyValueDataSourceType?
+
+  func didUpdateExchangeRateManager(_ exchangeRateManager: ExchangeRateManager) {
+
+  }
   var viewModel: RequestPayViewModel!
 
   var editAmountViewModel: CurrencySwappableEditAmountViewModel {
@@ -128,4 +134,20 @@ final class RequestPayViewController: PresentableViewController, StoryboardIniti
     UIPasteboard.general.string = viewModel?.bitcoinUrl.components.address
     coordinationDelegate?.viewControllerSuccessfullyCopiedToClipboard(message: "Address copied to clipboard!", viewController: self)
   }
+}
+
+extension RequestPayViewController: CurrencySwappableEditAmountViewModelDelegate {
+
+  func viewModelDidBeginEditingAmount(_ viewModel: CurrencySwappableEditAmountViewModel) {
+
+  }
+
+  func viewModelDidEndEditingAmount(_ viewModel: CurrencySwappableEditAmountViewModel) {
+
+  }
+
+  func viewModelDidSwapCurrencies(_ viewModel: CurrencySwappableEditAmountViewModel) {
+
+  }
+
 }
