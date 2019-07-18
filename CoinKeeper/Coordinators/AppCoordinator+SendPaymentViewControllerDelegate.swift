@@ -556,15 +556,18 @@ extension AppCoordinator: SendPaymentViewControllerDelegate {
   func usableFeeRate(from feeRates: Fees) -> Double? {
     if adjustableFeesIsEnabled {
       switch preferredTransactionFeeMode {
-      case .fast: return feeRates[.best]
-      case .slow: return feeRates[.better]
-      case .cheap:
-        let uintGoodFee = feeRates[.good].flatMap { self.walletManager?.usableFeeRate(from: $0) }
-        let usableGoodFee = uintGoodFee.flatMap { Int($0) }.flatMap { Double($0) }
-        return usableGoodFee
+      case .fast: return feeAboveMin(from: feeRates[.best])
+      case .slow: return feeAboveMin(from: feeRates[.better])
+      case .cheap: return feeAboveMin(from: feeRates[.good])
       }
     } else {
       return feeRates[.best]
     }
+  }
+
+  private func feeAboveMin(from feeRate: Double?) -> Double? {
+    let uintFee = feeRate.flatMap { self.walletManager?.usableFeeRate(from: $0) }
+    let usableFee = uintFee.flatMap { Int($0) }.flatMap { Double($0) }
+    return usableFee
   }
 }
