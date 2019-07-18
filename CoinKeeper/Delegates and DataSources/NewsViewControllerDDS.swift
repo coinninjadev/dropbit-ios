@@ -144,8 +144,10 @@ class NewsViewControllerDDS: NSObject {
       guard index < dailyDataSourceOffset else { break }
       let chartData = ChartDataEntry(x: Double(index), y: data.average)
 
-      dailyData.append(chartData)
-      responseData.append(data)
+      if index % 5 == 0 {
+        dailyData.append(chartData)
+        responseData.append(data)
+      }
     }
 
     return (data: dailyData, response: responseData)
