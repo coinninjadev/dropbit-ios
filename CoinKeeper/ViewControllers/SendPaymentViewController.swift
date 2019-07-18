@@ -61,8 +61,7 @@ class SendPaymentViewController: PresentableViewController,
   @IBOutlet var payTitleLabel: UILabel!
   @IBOutlet var closeButton: UIButton!
 
-  @IBOutlet var primaryAmountTextField: LimitEditTextField!
-  @IBOutlet var secondaryAmountLabel: TransactionDetailSecondaryAmountLabel!
+  @IBOutlet var editAmountView: CurrencySwappableEditAmountView!
 
   @IBOutlet var phoneNumberEntryView: PhoneNumberEntryView!
 
@@ -80,7 +79,6 @@ class SendPaymentViewController: PresentableViewController,
   @IBOutlet var nextButton: PrimaryActionButton!
   @IBOutlet var memoContainerView: SendPaymentMemoView!
   @IBOutlet var sendMaxButton: LightBorderedButton!
-  @IBOutlet var toggleCurrencyButton: UIButton!
 
   @IBAction func performClose() {
     coordinationDelegate?.viewControllerDidSelectClose(self)
@@ -157,7 +155,7 @@ class SendPaymentViewController: PresentableViewController,
   /// Each button should connect to this IBAction. This prevents automatically
   /// calling textFieldDidBeginEditing() if/when this view reappears.
   @IBAction func dismissKeyboard() {
-    primaryAmountTextField.resignFirstResponder()
+    editAmountView.primaryAmountTextField.resignFirstResponder()
     phoneNumberEntryView.textField.resignFirstResponder()
   }
 
@@ -200,8 +198,6 @@ class SendPaymentViewController: PresentableViewController,
 
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
-
-    primaryAmountTextField.delegate = self
 
     if let recipientDescription = self.recipientDescriptionToLoad {
       self.applyRecipient(inText: recipientDescription)

@@ -42,42 +42,20 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JFL-ap-dYz" userLabel="Amounts and Counterparty Container">
                                 <rect key="frame" x="24" y="74" width="327" height="223.5"/>
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WKO-3S-ilw">
-                                        <rect key="frame" x="0.0" y="34.5" width="32" height="32"/>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ag9-A1-S4X" customClass="CurrencySwappableEditAmountView" customModule="DropBit" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="0.0" width="327" height="100"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
-                                            <constraint firstAttribute="width" constant="32" id="HNs-rJ-UQ0"/>
-                                            <constraint firstAttribute="height" constant="32" id="dN3-gh-tho"/>
+                                            <constraint firstAttribute="height" constant="100" id="FFW-ix-1bp"/>
                                         </constraints>
-                                        <state key="normal" image="toggle"/>
-                                        <connections>
-                                            <action selector="performCurrencyToggle" destination="mA3-RJ-Qjv" eventType="touchUpInside" id="YCj-0s-hdB"/>
-                                        </connections>
-                                    </button>
-                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="gVg-Q3-DyT" customClass="LimitEditTextField" customModule="DropBit" customModuleProvider="target">
-                                        <rect key="frame" x="32" y="28" width="263" height="45"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="45" id="yZw-jG-D8D"/>
-                                        </constraints>
-                                        <nil key="textColor"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <textInputTraits key="textInputTraits"/>
-                                    </textField>
-                                    <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2Q4-Um-Y5Z" customClass="LightBorderedButton" customModule="DropBit" customModuleProvider="target">
+                                    </view>
+                                    <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2Q4-Um-Y5Z" customClass="LightBorderedButton" customModule="DropBit" customModuleProvider="target">
                                         <rect key="frame" x="250" y="35.5" width="77" height="30"/>
                                         <state key="normal" title="SEND MAX"/>
                                         <connections>
                                             <action selector="performSendMax" destination="mA3-RJ-Qjv" eventType="touchUpInside" id="9we-wt-hw1"/>
                                         </connections>
                                     </button>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" text="Secondary Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MFr-LH-oew">
-                                        <rect key="frame" x="0.0" y="81" width="327" height="20.5"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="20.5" id="RxA-3F-WEW"/>
-                                        </constraints>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <nil key="textColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="Zoz-wS-Csm">
                                         <rect key="frame" x="8" y="153.5" width="311" height="41"/>
                                         <subviews>
@@ -144,23 +122,17 @@
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
-                                    <constraint firstItem="MFr-LH-oew" firstAttribute="top" secondItem="gVg-Q3-DyT" secondAttribute="bottom" constant="8" id="1dz-8a-DLZ"/>
-                                    <constraint firstItem="Zoz-wS-Csm" firstAttribute="top" relation="greaterThanOrEqual" secondItem="MFr-LH-oew" secondAttribute="bottom" constant="8" id="4qI-pP-6Vm"/>
                                     <constraint firstAttribute="trailing" secondItem="04W-cu-0yT" secondAttribute="trailing" id="7s1-xz-s1h"/>
-                                    <constraint firstItem="WKO-3S-ilw" firstAttribute="centerY" secondItem="2Q4-Um-Y5Z" secondAttribute="centerY" id="Cux-Ew-eb2"/>
-                                    <constraint firstItem="MFr-LH-oew" firstAttribute="leading" secondItem="JFL-ap-dYz" secondAttribute="leading" id="GUa-ZR-qgg"/>
-                                    <constraint firstItem="gVg-Q3-DyT" firstAttribute="leading" secondItem="JFL-ap-dYz" secondAttribute="leading" constant="32" id="H7A-T6-Kd6"/>
-                                    <constraint firstItem="2Q4-Um-Y5Z" firstAttribute="centerY" secondItem="gVg-Q3-DyT" secondAttribute="centerY" id="IX6-wI-Nuf"/>
                                     <constraint firstItem="Zoz-wS-Csm" firstAttribute="leading" secondItem="JFL-ap-dYz" secondAttribute="leading" constant="8" id="JCY-ca-tal"/>
                                     <constraint firstItem="04W-cu-0yT" firstAttribute="leading" secondItem="JFL-ap-dYz" secondAttribute="leading" id="TbT-hD-FNJ"/>
+                                    <constraint firstItem="ag9-A1-S4X" firstAttribute="top" secondItem="JFL-ap-dYz" secondAttribute="top" id="bAk-Nc-C2a"/>
                                     <constraint firstAttribute="bottom" secondItem="04W-cu-0yT" secondAttribute="bottom" constant="24" id="dgF-9k-cmr"/>
-                                    <constraint firstAttribute="leading" secondItem="WKO-3S-ilw" secondAttribute="leading" id="ezr-Uz-ear"/>
+                                    <constraint firstItem="ag9-A1-S4X" firstAttribute="leading" secondItem="JFL-ap-dYz" secondAttribute="leading" id="dyp-E6-f6b"/>
                                     <constraint firstAttribute="trailing" secondItem="2Q4-Um-Y5Z" secondAttribute="trailing" id="hti-oi-6J9"/>
                                     <constraint firstAttribute="trailing" secondItem="Zoz-wS-Csm" secondAttribute="trailing" constant="8" id="ls1-cP-xc6"/>
-                                    <constraint firstAttribute="trailing" secondItem="gVg-Q3-DyT" secondAttribute="trailing" constant="32" id="pz3-sI-7TW"/>
+                                    <constraint firstItem="Zoz-wS-Csm" firstAttribute="top" relation="greaterThanOrEqual" secondItem="ag9-A1-S4X" secondAttribute="bottom" constant="8" id="nlz-Yj-Kpo"/>
                                     <constraint firstAttribute="bottom" secondItem="Zoz-wS-Csm" secondAttribute="bottom" constant="29" id="s8F-TP-Z7e"/>
-                                    <constraint firstItem="gVg-Q3-DyT" firstAttribute="top" secondItem="JFL-ap-dYz" secondAttribute="top" constant="28" id="wFh-Vx-kGk"/>
-                                    <constraint firstAttribute="trailing" secondItem="MFr-LH-oew" secondAttribute="trailing" id="xXT-Qu-IYf"/>
+                                    <constraint firstAttribute="trailing" secondItem="ag9-A1-S4X" secondAttribute="trailing" id="yIl-YY-q5F"/>
                                 </constraints>
                             </view>
                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="dQ2-Di-Rho">
@@ -246,18 +218,16 @@
                         <outlet property="bitcoinAddressButton" destination="uXj-RN-p47" id="ueR-ts-6sw"/>
                         <outlet property="closeButton" destination="ZK3-ob-Jzc" id="qZw-Qx-w2e"/>
                         <outlet property="contactsButton" destination="MQN-rV-aED" id="ZOh-5B-laM"/>
+                        <outlet property="editAmountView" destination="ag9-A1-S4X" id="ZQm-Th-fq7"/>
                         <outlet property="memoContainerView" destination="BpV-7B-gve" id="4YT-H7-h5H"/>
                         <outlet property="nextButton" destination="xMy-P4-RBB" id="CYW-nf-22m"/>
                         <outlet property="pasteButton" destination="C8U-pc-1eS" id="Kbc-hU-pPq"/>
                         <outlet property="payTitleLabel" destination="ohK-t2-Ibi" id="rua-Iq-Su7"/>
                         <outlet property="phoneNumberEntryView" destination="C51-D8-1VB" id="mKw-Ka-yUt"/>
-                        <outlet property="primaryAmountTextField" destination="gVg-Q3-DyT" id="DrG-x5-mwd"/>
                         <outlet property="recipientDisplayNameLabel" destination="La8-Sv-kGN" id="a19-eD-upO"/>
                         <outlet property="recipientDisplayNumberLabel" destination="NUe-iQ-oIx" id="BOh-Rz-BG1"/>
                         <outlet property="scanButton" destination="BiE-1k-9jN" id="roX-2f-XZ8"/>
-                        <outlet property="secondaryAmountLabel" destination="MFr-LH-oew" id="9p9-OW-ubX"/>
                         <outlet property="sendMaxButton" destination="2Q4-Um-Y5Z" id="0aw-nM-XZe"/>
-                        <outlet property="toggleCurrencyButton" destination="WKO-3S-ilw" id="LEl-Tc-eMY"/>
                         <outlet property="twitterButton" destination="Zvc-Ce-tCL" id="ByK-hb-s8H"/>
                     </connections>
                 </viewController>
@@ -269,6 +239,5 @@
     <resources>
         <image name="close" width="14" height="14"/>
         <image name="qrcodeStatic" width="19" height="18"/>
-        <image name="toggle" width="20" height="15"/>
     </resources>
 </document>
