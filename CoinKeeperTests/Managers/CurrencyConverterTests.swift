@@ -15,26 +15,6 @@ class CurrencyConverterTests: XCTestCase {
 
   let safeRates: ExchangeRates = [.BTC: 1, .USD: 7000]
 
-  // MARK: same currency
-  func testConvertingUSDToUSDExpectsValuesToMatch() {
-    let fromAmount: NSDecimalNumber = 12.33
-    self.sut = CurrencyConverter(rates: self.safeRates, fromAmount: fromAmount, fromCurrency: .USD, toCurrency: .USD)
-
-    let unwrappedResult = self.sut.convertedAmount() ?? NSDecimalNumber.notANumber
-
-    XCTAssertEqual(unwrappedResult, fromAmount, "USD-USD conversion should match initial value")
-  }
-
-  func testConvertingBTCToBTCExpectsValuesToMatch() {
-    let fromAmount: NSDecimalNumber = 12.33
-    self.sut = CurrencyConverter(rates: self.safeRates, fromAmount: fromAmount, fromCurrency: .BTC, toCurrency: .BTC)
-
-    let unwrappedResult = self.sut.convertedAmount() ?? NSDecimalNumber.notANumber
-
-    XCTAssertEqual(unwrappedResult, fromAmount, "BTC-BTC conversion should match initial value")
-  }
-
-  // MARK: different currencies
   // MARK: invalid rates
   func testBTCToUSDWithZeroRatesReturnsNil() {
     let fromAmount: NSDecimalNumber = 15
