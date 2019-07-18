@@ -820,9 +820,7 @@ extension SendPaymentViewController {
   }
 
   private func validateAmountAndBeginAddressNegotiation(for contact: ContactType, kind: ContactKind, sharedPayload: SharedPayloadDTO) throws {
-    guard let amountString = sanitizedAmountString,
-      let decimal = NSDecimalNumber(fromString: amountString)
-      else { return }
+    let btcAmount = viewModel.btcAmount
 
     var newContact = contact
     newContact.kind = kind
@@ -832,9 +830,9 @@ extension SendPaymentViewController {
     case .none: break
     }
 
-    try validateInvitationMaximum(decimal)
+    try validateInvitationMaximum(btcAmount)
     coordinationDelegate?.viewControllerDidBeginAddressNegotiation(self,
-                                                                   btcAmount: getBitcoinValueForPrimaryAmountText(),
+                                                                   btcAmount: btcAmount,
                                                                    primaryCurrency: primaryCurrency,
                                                                    contact: newContact,
                                                                    memo: self.viewModel.memo,

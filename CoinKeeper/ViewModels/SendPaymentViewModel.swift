@@ -114,6 +114,35 @@ class SendPaymentViewModel: CurrencySwappableEditAmountViewModel {
               memo: response.memo)
   }
 
+  var contact: ContactType? {
+    if let recipient = paymentRecipient, case let .contact(contact) = recipient {
+      return contact
+    } else {
+      return nil
+    }
+  }
+
+  var shouldShowSharedMemoBox: Bool {
+    if let recipient = paymentRecipient {
+      switch recipient {
+      case .btcAddress:     return false
+      case .contact:        return true && sharedMemoAllowed
+      case .phoneNumber:    return true && sharedMemoAllowed
+      case .twitterContact: return true && sharedMemoAllowed
+      }
+    } else {
+      return true && sharedMemoAllowed //show it by default
+    }
+  }
+
+  var standardIgnoredOptions: CurrencyAmountValidationOptions {
+    return [.invitationMaximum]
+  }
+
+  var invitationMaximumIgnoredOptions: CurrencyAmountValidationOptions {
+    return [.usableBalance]
+  }
+
   var recipientDisplayStyle: RecipientDisplayStyle? {
     guard let recipient = paymentRecipient else {
       return .textField
