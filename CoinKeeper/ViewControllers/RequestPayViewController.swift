@@ -165,7 +165,7 @@ final class RequestPayViewController: PresentableViewController, StoryboardIniti
   func updateViewWithViewModel() {
     receiveAddressLabel.text = viewModel.bitcoinUrl.components.address
     qrImageView.image = viewModel.qrImage(withSize: qrImageView.frame.size)
-    let labels = viewModel.amountLabels(withSymbols: true)
+    let labels = viewModel.dualAmountLabels(withSymbols: true)
     editAmountView.configure(withLabels: labels, delegate: self)
     showHideEditAmountView()
   }

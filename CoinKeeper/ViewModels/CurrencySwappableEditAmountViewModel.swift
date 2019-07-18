@@ -25,7 +25,7 @@ extension DualAmountDisplayable {
     return decimalSeparator.first ?? "."
   }
 
-  func amountLabels(withSymbols: Bool) -> CurrencySwappableEditAmountLabels {
+  func dualAmountLabels(withSymbols: Bool) -> DualAmountLabels {
     let currencyConverter = generateCurrencyConverter()
     let primaryCurrency = currencyPair.primary
 
@@ -41,9 +41,7 @@ extension DualAmountDisplayable {
       secondaryLabel = NSAttributedString(string: String(describing: secondaryAmount))
     }
 
-    let primaryAsAttributed = primaryLabel.flatMap { NSAttributedString(string: $0) }
-
-    return CurrencySwappableEditAmountLabels(primary: primaryAsAttributed, secondary: secondaryLabel)
+    return DualAmountLabels(primary: primaryLabel, secondary: secondaryLabel)
   }
 
 }
