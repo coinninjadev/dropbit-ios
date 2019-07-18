@@ -50,7 +50,7 @@
                                     </button>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="N9x-e6-Hoq" customClass="CurrencySwappableEditAmountView" customModule="DropBit" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="33" width="343" height="100"/>
-                                        <color key="backgroundColor" red="0.45009386540000001" green="0.98132258650000004" blue="0.4743030667" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="100" id="UV7-sr-Pdf"/>
                                         </constraints>
