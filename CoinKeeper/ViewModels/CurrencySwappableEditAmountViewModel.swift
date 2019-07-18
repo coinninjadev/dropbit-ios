@@ -131,6 +131,8 @@ class CurrencySwappableEditAmountViewModel: NSObject, DualAmountDisplayable {
   }
 
   func swapPrimaryCurrency() {
+    let oldToAmount = generateCurrencyConverter().convertedAmount() ?? .zero
+    self.fromAmount = oldToAmount
     let oldFromCurrency = fromCurrency
     fromCurrency = toCurrency
     toCurrency = oldFromCurrency
