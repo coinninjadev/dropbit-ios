@@ -46,6 +46,8 @@ class CurrencySwappableEditAmountView: UIView {
 
     backgroundColor = .clear
 
+    primaryAmountTextField.textColor = .lightBlueTint
+    primaryAmountTextField.font = .regular(30)
     secondaryAmountLabel.textColor = .darkGrayText
     secondaryAmountLabel.font = .regular(17)
   }

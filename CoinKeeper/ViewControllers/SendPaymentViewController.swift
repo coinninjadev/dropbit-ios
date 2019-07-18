@@ -219,8 +219,6 @@ extension SendPaymentViewController {
     recipientDisplayNumberLabel.font = .regular(20)
     payTitleLabel.font = .regular(15)
     payTitleLabel.textColor = .darkBlueText
-    secondaryAmountLabel.textColor = .darkGrayText
-    secondaryAmountLabel.font = .regular(17)
   }
 
   fileprivate func setupButtons() {

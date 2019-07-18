@@ -33,11 +33,11 @@
                         <action selector="performSwap:" destination="-1" eventType="touchUpInside" id="8yW-sf-8dM"/>
                     </connections>
                 </button>
-                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="WTv-II-6UT">
+                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="WTv-II-6UT">
                     <rect key="frame" x="53" y="23" width="308" height="73.5"/>
                     <subviews>
                         <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Amount" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ArV-J0-8Ul" customClass="LimitEditTextField" customModule="DropBit" customModuleProvider="target">
-                            <rect key="frame" x="126.5" y="0.0" width="55" height="45"/>
+                            <rect key="frame" x="0.0" y="0.0" width="308" height="45"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="45" id="cmS-hG-f5K"/>
                             </constraints>
@@ -45,7 +45,7 @@
                             <textInputTraits key="textInputTraits"/>
                         </textField>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" text="Secondary Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GcQ-37-OWH">
-                            <rect key="frame" x="90" y="53" width="128" height="20.5"/>
+                            <rect key="frame" x="0.0" y="53" width="308" height="20.5"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="20.5" id="CmE-cw-nwd"/>
                             </constraints>
