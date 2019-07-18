@@ -103,12 +103,6 @@ class SendPaymentViewControllerTests: XCTestCase {
     XCTAssertTrue(actions.contains(selector), "sendMaxButton should contain action")
   }
 
-  func testToggleCurrencyButtonContainsAction() {
-    let actions = self.sut.toggleCurrencyButton.actions(forTarget: self.sut, forControlEvent: .touchUpInside) ?? []
-    let selector = #selector(SendPaymentViewController.performCurrencyToggle).description
-    XCTAssertTrue(actions.contains(selector), "toggleCurrencyButton should contain action")
-  }
-
   // MARK: actions produce results
   func testCloseButtonTappedProducesResult() {
     self.sut.closeButton.sendActions(for: .touchUpInside)

@@ -142,11 +142,6 @@ class SendPaymentViewController: PresentableViewController,
     phoneNumberEntryView.textField?.becomeFirstResponder()
   }
 
-  @IBAction func performCurrencyToggle() {
-    viewModel.swapPrimaryCurrency()
-    updateViewWithModel()
-  }
-
   /// Each button should connect to this IBAction. This prevents automatically
   /// calling textFieldDidBeginEditing() if/when this view reappears.
   @IBAction func dismissKeyboard() {
