@@ -148,7 +148,7 @@ class ConfirmPaymentViewController: PresentableViewController, StoryboardInitial
   }
 
   private func updateAmounts(with viewModel: BaseConfirmPaymentViewModel) {
-    let labels = viewModel.dualAmountLabels(withSymbols: true)
+    let labels = viewModel.dualAmountLabels()
     primaryCurrencyLabel.text = labels.primary
     secondaryCurrencyLabel.attributedText = labels.secondary
 

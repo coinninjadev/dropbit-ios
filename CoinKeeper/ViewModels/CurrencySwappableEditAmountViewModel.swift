@@ -25,7 +25,7 @@ extension DualAmountDisplayable {
     return decimalSeparator.first ?? "."
   }
 
-  func dualAmountLabels(withSymbols: Bool) -> DualAmountLabels {
+  func dualAmountLabels(withSymbols: Bool = true) -> DualAmountLabels {
     let currencyConverter = generateCurrencyConverter()
     let primaryCurrency = currencyPair.primary
 

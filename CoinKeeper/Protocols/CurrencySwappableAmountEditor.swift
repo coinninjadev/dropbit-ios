@@ -34,7 +34,7 @@ extension CurrencySwappableAmountEditor {
 
   /// Editor should call this in response to delegate method calls of CurrencySwappableEditAmountViewModelDelegate
   func refreshAmounts() {
-    let labels = editAmountViewModel.dualAmountLabels(withSymbols: true)
+    let labels = editAmountViewModel.dualAmountLabels()
     editAmountView.update(with: labels)
   }
 
