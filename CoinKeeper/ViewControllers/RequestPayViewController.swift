@@ -10,6 +10,7 @@ import UIKit
 
 protocol RequestPayViewControllerDelegate: ViewControllerDismissable, CopyToClipboardMessageDisplayable, CurrencyValueDataSourceType {
   func viewControllerDidSelectSendRequest(_ viewController: UIViewController, payload: [Any])
+  func viewControllerDidRequestNextReceiveAddress(_ viewController: UIViewController) -> String?
 }
 
 final class RequestPayViewController: PresentableViewController, StoryboardInitializable, CurrencySwappableAmountEditor {
@@ -132,14 +133,12 @@ final class RequestPayViewController: PresentableViewController, StoryboardIniti
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    receiveAddressLabel.text = viewModel.bitcoinUrl.components.address
-    qrImageView.image = viewModel.qrImage(withSize: qrImageView.frame.size)
-
     closeButton.isHidden = !isModal
-    showHideEditAmountView()
+  }
 
-    let labels = viewModel.amountLabels(withSymbols: true)
-    editAmountView.configure(withLabels: labels, delegate: self)
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+    updateViewWithViewModel()
   }
 
   override func viewWillDisappear(_ animated: Bool) {
@@ -149,6 +148,25 @@ final class RequestPayViewController: PresentableViewController, StoryboardIniti
 
   func resetViewModel() {
     shouldHideEditAmountView = true
+
+    guard let delegate = coordinationDelegate,
+      let currentVM = self.viewModel,
+      let nextAddress = delegate.viewControllerDidRequestNextReceiveAddress(self)
+      else { return }
+
+    let newSwappableVM = CurrencySwappableEditAmountViewModel(exchangeRates: currentVM.exchangeRates,
+                                                              primaryAmount: .zero,
+                                                              currencyPair: currentVM.currencyPair)
+    let newViewModel = RequestPayViewModel(receiveAddress: nextAddress, viewModel: newSwappableVM)
+    self.viewModel = newViewModel
+    updateViewWithViewModel()
+  }
+
+  func updateViewWithViewModel() {
+    receiveAddressLabel.text = viewModel.bitcoinUrl.components.address
+    qrImageView.image = viewModel.qrImage(withSize: qrImageView.frame.size)
+    let labels = viewModel.amountLabels(withSymbols: true)
+    editAmountView.configure(withLabels: labels, delegate: self)
     showHideEditAmountView()
   }
 

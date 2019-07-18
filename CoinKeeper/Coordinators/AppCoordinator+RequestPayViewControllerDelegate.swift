@@ -40,4 +40,8 @@ extension AppCoordinator: RequestPayViewControllerDelegate {
     alertManager.showSuccess(message: message, forDuration: 2.0)
   }
 
+  func viewControllerDidRequestNextReceiveAddress(_ viewController: UIViewController) -> String? {
+    return nextReceiveAddressForRequestPay()
+  }
+
 }

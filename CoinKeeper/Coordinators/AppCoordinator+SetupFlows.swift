@@ -194,7 +194,7 @@ extension AppCoordinator {
     return drawerController!
   }
 
-  func createRequestPayViewController(converter: CurrencyConverter) -> RequestPayViewController? {
+  func nextReceiveAddressForRequestPay() -> String? {
     guard let wmgr = walletManager else { return nil }
 
     var nextAddress: String?
@@ -205,8 +205,11 @@ extension AppCoordinator {
                                                                                             in: bgContext)?.address else { return }
       nextAddress = receiveAddress
     }
+    return nextAddress
+  }
 
-    guard let address = nextAddress else { return nil }
+  func createRequestPayViewController(converter: CurrencyConverter) -> RequestPayViewController? {
+    guard let address = nextReceiveAddressForRequestPay() else { return nil }
 
     let currencyPair = CurrencyPair(btcPrimaryWith: self.currencyController)
     return RequestPayViewController.newInstance(delegate: self,
