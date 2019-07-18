@@ -28,7 +28,7 @@ struct NewsData {
   var weeklyPriceData: LineChartDataSet = LineChartDataSet()
 
   var currentPrice: NSNumber?
-  
+
   var displayPrice: String {
     return CKNumberFormatter.currencyFormatter.string(from: self.currentPrice ?? 0.0) ?? ""
   }
@@ -63,7 +63,7 @@ struct NewsData {
     default:
       priceResponse = dayPriceResponse
     }
-    
+
     let gross = (priceResponse.last?.average ?? 0.0) - (priceResponse.first?.average ?? 0.0)
 
     return (gross: gross, percentage: gross / (currentPrice as? Double ?? 0.0) * 100)

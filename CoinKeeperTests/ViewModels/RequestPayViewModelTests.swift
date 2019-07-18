@@ -17,7 +17,7 @@ class RequestPayViewModelTests: XCTestCase {
     self.sut = nil
     super.tearDown()
   }
-  
+
   // MARK: mock converter
   struct MockCurrencyConverter: CurrencyConverterType {
     var btcValue: NSDecimalNumber {
