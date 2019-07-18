@@ -26,7 +26,7 @@ final class NewsViewController: BaseViewController, StoryboardInitializable {
 
   lazy var updateRatesRequest: ExchangeRatesRequest = { [weak self] rates in
     let value = rates[.USD] as NSNumber?
-    self?.newsViewControllerDDS?.newsData.currentPrice = CKNumberFormatter.currencyFormatter.string(from: value ?? 0.0) ?? ""
+    self?.newsViewControllerDDS?.newsData.currentPrice = value
     self?.tableView.reloadData()
   }
 

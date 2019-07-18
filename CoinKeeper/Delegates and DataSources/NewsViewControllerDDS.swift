@@ -24,10 +24,10 @@ class NewsViewControllerDDS: NSObject {
   /*
    Monthly endpoint of price is broken down by hours
    Average of 30 days times 24 hours = 720
-   720 hours minus a weeks worth of hours (7 x 24 = 168) is 555
+   720 hours minus a weeks worth of hours (7 x 24 = 168) is 552
   */
   var weekDataSourceOffset: Int {
-    return 555
+    return 552
   }
 
   /*
@@ -226,7 +226,7 @@ extension NewsViewControllerDDS: UITableViewDataSource {
     switch CellIdentifier(rawValue: indexPath.row) {
     case .price?:
       let priceCell = tableView.dequeue(PriceCell.self, for: indexPath)
-      priceCell.priceLabel.text = newsData.currentPrice
+      priceCell.priceLabel.text = newsData.displayPrice
       priceCell.movement = newsData.getPriceMovement(currentTimePeriod)
       cell = priceCell
     case .lineGraph?:

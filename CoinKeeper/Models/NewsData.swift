@@ -27,7 +27,11 @@ struct NewsData {
   var weeklyPriceResponse: [PriceSummaryResponse] = []
   var weeklyPriceData: LineChartDataSet = LineChartDataSet()
 
-  var currentPrice: String = ""
+  var currentPrice: NSNumber?
+  
+  var displayPrice: String {
+    return CKNumberFormatter.currencyFormatter.string(from: self.currentPrice ?? 0.0) ?? ""
+  }
 
   func getDataSetForTimePeriod(_ timePeriod: TimePeriodCell.Period) -> LineChartDataSet {
     switch timePeriod {
@@ -59,8 +63,9 @@ struct NewsData {
     default:
       priceResponse = dayPriceResponse
     }
+    
+    let gross = (priceResponse.last?.average ?? 0.0) - (priceResponse.first?.average ?? 0.0)
 
-    return (gross: (priceResponse.last?.average ?? 0.0) - (priceResponse.first?.average ?? 0.0),
-            percentage: (priceResponse.last?.average ?? 0.0) / (priceResponse.first?.average ?? 0.0))
+    return (gross: gross, percentage: gross / (currentPrice as? Double ?? 0.0) * 100)
   }
 }
