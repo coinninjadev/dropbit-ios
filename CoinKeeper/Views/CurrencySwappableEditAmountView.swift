@@ -13,8 +13,8 @@ protocol CurrencySwappableEditAmountViewDelegate: AnyObject {
   func swapViewDidSwap(_ swapView: CurrencySwappableEditAmountView)
 }
 
-struct DualAmountLabels {
-  let primary: NSAttributedString?
+struct CurrencySwappableEditAmountLabels {
+  let primary: String?
   let secondary: NSAttributedString?
 }
 
@@ -50,14 +50,14 @@ class CurrencySwappableEditAmountView: UIView {
     secondaryAmountLabel.font = .regular(17)
   }
 
-  func configure(withLabels labels: DualAmountLabels,
+  func configure(withLabels labels: CurrencySwappableEditAmountLabels,
                  delegate: CurrencySwappableEditAmountViewDelegate) {
     update(with: labels)
     self.delegate = delegate
   }
 
-  func update(with labels: DualAmountLabels) {
-    primaryAmountTextField.attributedText = labels.primary
+  func update(with labels: CurrencySwappableEditAmountLabels) {
+    primaryAmountTextField.text = labels.primary
     secondaryAmountLabel.attributedText = labels.secondary
   }
 
