@@ -52,10 +52,6 @@ class SendPaymentViewController: PresentableViewController,
     return coordinationDelegate
   }
 
-  var currencyValidityValidator: CompositeValidator = {
-    return CompositeValidator<String>(validators: [CurrencyStringValidator()])
-  }()
-
   // MARK: - Outlets and Actions
 
   @IBOutlet var payTitleLabel: UILabel!
@@ -100,16 +96,15 @@ class SendPaymentViewController: PresentableViewController,
   }
 
   @IBAction func performScan() {
-    let amount = viewModel.btcAmount ?? .zero
-    coordinationDelegate?.viewControllerDidPressScan(self, btcAmount: amount, primaryCurrency: primaryCurrency)
+    let converter = viewModel.generateCurrencyConverter()
+    coordinationDelegate?.viewControllerDidPressScan(self,
+                                                     btcAmount: converter.btcAmount,
+                                                     primaryCurrency: primaryCurrency)
   }
 
   @IBAction func performNext() {
-    let amountString = sanitizedAmountString ?? ""
-
     do {
-      try currencyValidityValidator.validate(value: amountString)
-      try validateAmount(of: amountString)
+      try validateAmount()
       try validateAndSendPayment()
     } catch {
       showValidatorAlert(for: error, title: "Invalid Transaction")
@@ -750,14 +745,11 @@ extension SendPaymentViewController: SendPaymentMemoViewDelegate {
 
 extension SendPaymentViewController {
 
-  func validateAmount(of trimmedAmountString: String) throws {
+  func validateAmount() throws {
     let ignoredOptions = viewModel.standardIgnoredOptions
     let amountValidator = createCurrencyAmountValidator(ignoring: ignoredOptions)
-    guard let decimal = NSDecimalNumber(fromString: trimmedAmountString), decimal.isNumber else {
-      throw CurrencyAmountValidatorError.notANumber(trimmedAmountString)
-    }
 
-    let converter = createCurrencyConverter(for: decimal)
+    let converter = viewModel.generateCurrencyConverter()
     try amountValidator.validate(value: converter)
   }
 
