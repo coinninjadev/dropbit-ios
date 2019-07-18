@@ -10,9 +10,15 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="CurrencySwappableEditAmountView" customModule="DropBit" customModuleProvider="target">
+            <connections>
+                <outlet property="primaryAmountTextField" destination="ArV-J0-8Ul" id="TKp-he-Lve"/>
+                <outlet property="secondaryAmountLabel" destination="GcQ-37-OWH" id="lnI-Zz-Wxb"/>
+                <outlet property="swapButton" destination="S2T-ff-jLn" id="QGG-Cb-s9z"/>
+            </connections>
+        </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <view contentMode="scaleToFill" id="OL0-9v-0qc" customClass="CurrencySwappableEditAmountView" customModule="DropBit" customModuleProvider="target">
+        <view contentMode="scaleToFill" id="OL0-9v-0qc">
             <rect key="frame" x="0.0" y="0.0" width="414" height="119"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
@@ -24,7 +30,7 @@
                     </constraints>
                     <state key="normal" image="toggle"/>
                     <connections>
-                        <action selector="performSwap:" destination="OL0-9v-0qc" eventType="touchUpInside" id="Qf4-7w-Ddu"/>
+                        <action selector="performSwap:" destination="-1" eventType="touchUpInside" id="8yW-sf-8dM"/>
                     </connections>
                 </button>
                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="WTv-II-6UT">
@@ -63,11 +69,6 @@
             <nil key="simulatedBottomBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <viewLayoutGuide key="safeArea" id="TsJ-cA-FOJ"/>
-            <connections>
-                <outlet property="primaryAmountTextField" destination="ArV-J0-8Ul" id="wc4-xi-Uzn"/>
-                <outlet property="secondaryAmountLabel" destination="GcQ-37-OWH" id="Cqx-TB-DGP"/>
-                <outlet property="swapButton" destination="S2T-ff-jLn" id="c3K-y4-JEp"/>
-            </connections>
             <point key="canvasLocation" x="208.69565217391306" y="61.941964285714285"/>
         </view>
     </objects>

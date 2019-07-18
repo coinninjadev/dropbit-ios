@@ -30,8 +30,20 @@ class CurrencySwappableEditAmountView: UIView {
     delegate.swapViewDidSwap(self)
   }
 
+  required init?(coder aDecoder: NSCoder) {
+    super.init(coder: aDecoder)
+    xibSetup()
+  }
+
+  override init(frame: CGRect) {
+    super.init(frame: frame)
+    xibSetup()
+  }
+
   override func awakeFromNib() {
     super.awakeFromNib()
+
+    backgroundColor = .clear
 
     secondaryAmountLabel.textColor = .darkGrayText
     secondaryAmountLabel.font = .regular(17)
