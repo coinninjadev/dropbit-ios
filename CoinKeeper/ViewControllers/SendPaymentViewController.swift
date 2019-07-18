@@ -601,7 +601,7 @@ extension SendPaymentViewController {
     try amountValidator.validate(value: converter)
   }
 
-  private func validateInvitationMaximum(_ maximum: NSDecimalNumber) throws {
+  private func validateInvitationMaximum(against btcAmount: NSDecimalNumber) throws {
     guard let recipient = viewModel.paymentRecipient,
       case let .contact(contact) = recipient,
       contact.kind == .invite
@@ -609,7 +609,7 @@ extension SendPaymentViewController {
 
     let ignoredOptions = viewModel.invitationMaximumIgnoredOptions
     let validator = createCurrencyAmountValidator(ignoring: ignoredOptions)
-    let converter = createCurrencyConverter(for: maximum)
+    let converter = viewModel.generateCurrencyConverter(withBTCAmount: btcAmount)
     try validator.validate(value: converter)
   }
 
@@ -678,7 +678,7 @@ extension SendPaymentViewController {
     case .none: break
     }
 
-    try validateInvitationMaximum(btcAmount)
+    try validateInvitationMaximum(against: btcAmount)
     coordinationDelegate?.viewControllerDidBeginAddressNegotiation(self,
                                                                    btcAmount: btcAmount,
                                                                    primaryCurrency: primaryCurrency,
