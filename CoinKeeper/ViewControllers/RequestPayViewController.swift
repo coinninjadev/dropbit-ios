@@ -57,7 +57,32 @@ final class RequestPayViewController: PresentableViewController, StoryboardIniti
     }
   }
 
-  var isModal: Bool = true
+  @IBAction func closeButtonTapped(_ sender: UIButton) {
+    coordinationDelegate?.viewControllerDidSelectClose(self)
+  }
+
+  @IBAction func addRequestAmountButtonTapped(_ sender: UIButton) {
+    shouldHideEditAmountView = false
+    showHideEditAmountView()
+  }
+
+  @IBAction func sendRequestButtonTapped(_ sender: UIButton) {
+    var payload: [Any] = []
+    qrImageView.image.flatMap { $0.pngData() }.flatMap { payload.append($0) }
+    if let viewModel = viewModel {
+      if let amount = viewModel.bitcoinUrl.components.amount, amount > 0 {
+        payload.append(viewModel.bitcoinUrl.absoluteString) //include amount details
+      } else if let address = viewModel.bitcoinUrl.components.address {
+        payload.append(address)
+      }
+    }
+    coordinationDelegate?.viewControllerDidSelectSendRequest(self, payload: payload)
+  }
+
+  @IBAction func addressTapped(_ sender: UITapGestureRecognizer) {
+    UIPasteboard.general.string = viewModel?.bitcoinUrl.components.address
+    coordinationDelegate?.viewControllerSuccessfullyCopiedToClipboard(message: "Address copied to clipboard!", viewController: self)
+  }
 
   // MARK: variables
   var coordinationDelegate: RequestPayViewControllerDelegate? {
@@ -66,14 +91,20 @@ final class RequestPayViewController: PresentableViewController, StoryboardIniti
 
   let rateManager: ExchangeRateManager = ExchangeRateManager()
   var currencyValueManager: CurrencyValueDataSourceType?
+  var viewModel: RequestPayViewModel!
+  var editAmountViewModel: CurrencySwappableEditAmountViewModel { return viewModel }
+
+  var isModal: Bool = true
+  var shouldHideEditAmountView = true //hide by default
+  var shouldHideAddAmountButton: Bool { return !shouldHideEditAmountView }
+
+  func showHideEditAmountView() {
+    editAmountView.isHidden = shouldHideEditAmountView
+    addAmountButton.isHidden = shouldHideAddAmountButton
+  }
 
   func didUpdateExchangeRateManager(_ exchangeRateManager: ExchangeRateManager) {
 
-  }
-  var viewModel: RequestPayViewModel!
-
-  var editAmountViewModel: CurrencySwappableEditAmountViewModel {
-    return viewModel
   }
 
   override func accessibleViewsAndIdentifiers() -> [AccessibleViewElement] {
@@ -105,37 +136,22 @@ final class RequestPayViewController: PresentableViewController, StoryboardIniti
     qrImageView.image = viewModel.qrImage(withSize: qrImageView.frame.size)
 
     closeButton.isHidden = !isModal
+    showHideEditAmountView()
 
     let labels = viewModel.amountLabels(withSymbols: true)
     editAmountView.configure(withLabels: labels, delegate: self)
   }
 
-  @IBAction func closeButtonTapped(_ sender: UIButton) {
-    coordinationDelegate?.viewControllerDidSelectClose(self)
+  override func viewWillDisappear(_ animated: Bool) {
+    super.viewWillDisappear(animated)
+    resetViewModel()
   }
 
-  @IBAction func addRequestAmountButtonTapped(_ sender: UIButton) {
-    editAmountView.isHidden = false
-    addAmountButton.isHidden = true
+  func resetViewModel() {
+    shouldHideEditAmountView = true
+    showHideEditAmountView()
   }
 
-  @IBAction func sendRequestButtonTapped(_ sender: UIButton) {
-    var payload: [Any] = []
-    qrImageView.image.flatMap { $0.pngData() }.flatMap { payload.append($0) }
-    if let viewModel = viewModel {
-      if let amount = viewModel.bitcoinUrl.components.amount, amount > 0 {
-        payload.append(viewModel.bitcoinUrl.absoluteString) //include amount details
-      } else if let address = viewModel.bitcoinUrl.components.address {
-        payload.append(address)
-      }
-    }
-    coordinationDelegate?.viewControllerDidSelectSendRequest(self, payload: payload)
-  }
-
-  @IBAction func addressTapped(_ sender: UITapGestureRecognizer) {
-    UIPasteboard.general.string = viewModel?.bitcoinUrl.components.address
-    coordinationDelegate?.viewControllerSuccessfullyCopiedToClipboard(message: "Address copied to clipboard!", viewController: self)
-  }
 }
 
 extension RequestPayViewController: CurrencySwappableEditAmountViewModelDelegate {
