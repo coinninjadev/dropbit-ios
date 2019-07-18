@@ -58,11 +58,12 @@ extension AppCoordinator: SendPaymentViewControllerDelegate {
       switch status {
       case .authorized:
         let completion = { [weak self] in
-          guard let strongSelf = self else { return }
+          guard let self = self else { return }
           viewController.dismiss(animated: true, completion: {
-            strongSelf.analyticsManager.track(event: .paymentToPhoneNumber, with: nil)
-            strongSelf.handleInvite(btcAmount: btcAmount, primaryCurrency: primaryCurrency, contact: contact,
-                                    memo: memo, rates: rates, memoIsShared: memoIsShared, sharedPayload: sharedPayload)
+            self.analyticsManager.track(event: .paymentToPhoneNumber, with: nil)
+            let currencyPair = CurrencyPair(primary: primaryCurrency, fiat: self.currencyController.fiatCurrency)
+            self.handleInvite(btcAmount: btcAmount, currencyPair: currencyPair, contact: contact, memo: memo,
+                              rates: rates, memoIsShared: memoIsShared, sharedPayload: sharedPayload)
           })
         }
 
