@@ -143,7 +143,7 @@ class SendPaymentViewController: PresentableViewController,
   }
 
   @IBAction func performCurrencyToggle() {
-    viewModel.togglePrimaryCurrency()
+    viewModel.swapPrimaryCurrency()
     updateViewWithModel()
   }
 
@@ -177,8 +177,10 @@ class SendPaymentViewController: PresentableViewController,
     setupMenuController()
     registerForRateUpdates()
     updateRatesAndView()
-    setupKeyboardDoneButton(for: [primaryAmountTextField, phoneNumberEntryView.textField], action: #selector(doneButtonWasPressed))
-    setupListenerForTextViewChange()
+    setupKeyboardDoneButton(for: [editAmountView.primaryAmountTextField,
+                                  phoneNumberEntryView.textField],
+                            action: #selector(doneButtonWasPressed))
+    setupCurrencySwappableEditAmountView()
     setupLabels()
     setupButtons()
     formatAddressScanView()
@@ -199,26 +201,6 @@ class SendPaymentViewController: PresentableViewController,
       self.recipientDescriptionToLoad = nil
     } else {
       updateViewWithModel()
-    }
-  }
-
-  @objc func primaryAmountTextFieldDidChange(_ textField: UITextField) {
-    guard let amountString = sanitizedAmountString else { return }
-
-    if amountString.isEmpty {
-      secondaryAmountLabel.text = ""
-    } else {
-      let decimal = NSDecimalNumber(fromString: amountString) ?? .zero
-      switch primaryCurrency {
-      case .BTC:
-        secondaryAmountLabel.text = createCurrencyConverter(for: decimal).amountStringWithSymbol(forCurrency: .USD) ?? CurrencyCode.USD.symbol
-      case .USD:
-        if let attributedText = createCurrencyConverter(for: decimal).attributedStringWithSymbol(forCurrency: .BTC) {
-          secondaryAmountLabel.attributedText = attributedText
-        } else {
-          secondaryAmountLabel.text = createCurrencyConverter(for: decimal).amountStringWithSymbol(forCurrency: .BTC) ?? CurrencyCode.BTC.symbol
-        }
-      }
     }
   }
 
@@ -302,10 +284,6 @@ extension SendPaymentViewController {
     controller.update()
   }
 
-  fileprivate func setupListenerForTextViewChange() {
-    primaryAmountTextField.addTarget(self, action: #selector(primaryAmountTextFieldDidChange), for: .editingChanged)
-  }
-
   func updateViewWithModel() {
     loadAmounts()
 
@@ -378,15 +356,10 @@ extension SendPaymentViewController {
       } else {
         setPaymentRecipient(PaymentRecipient(parsedRecipient: parsedRecipient))
         if let amount = bitcoinURL.components.amount {
-          setBTCAmountAsPrimary(amount)
+          self.viewModel.setBTCAmountAsPrimary(amount)
         }
       }
     }
-  }
-
-  func setBTCAmountAsPrimary(_ amount: NSDecimalNumber) {
-    self.viewModel.btcAmount = amount
-    self.viewModel.primaryCurrency = .BTC
   }
 
   private func fetchViewModelAndUpdate(forPaymentRequest url: URL) {
@@ -395,16 +368,17 @@ extension SendPaymentViewController {
       let errorTitle = "Payment Request Error"
       switch result {
       case .success(let response):
-        guard let fetchedModel = SendPaymentViewModel(response: response),
-          let fetchedAddress = fetchedModel.address,
-          let fetchedAmount = fetchedModel.btcAmount else {
+        guard let fetchedModel = SendPaymentViewModel(response: response,
+                                                      exchangeRates: self.viewModel.exchangeRates,
+                                                      fiatCurrency: self.viewModel.fiatCurrency),
+          let fetchedAddress = fetchedModel.address else {
             self.showValidatorAlert(for: MerchantPaymentRequestError.missingOutput, title: errorTitle)
             return
         }
 
         self.viewModel = fetchedModel
         self.setPaymentRecipient(PaymentRecipient.btcAddress(fetchedAddress))
-        self.setBTCAmountAsPrimary(fetchedAmount)
+        self.viewModel.setBTCAmountAsPrimary(fetchedModel.btcAmount)
 
         self.alertManager?.hideActivityHUD(withDelay: nil) {
           self.updateViewWithModel()
@@ -520,54 +494,7 @@ extension SendPaymentViewController {
     return viewModel.primaryCurrency
   }
 
-  func createCurrencyConverter(for decimal: NSDecimalNumber) -> CurrencyConverter {
-    switch primaryCurrency {
-    case .BTC:
-      return CurrencyConverter(rates: rateManager.exchangeRates, fromAmount: decimal, fromCurrency: .BTC, toCurrency: .USD)
-    default:
-      return CurrencyConverter(rates: rateManager.exchangeRates, fromAmount: decimal, fromCurrency: .USD, toCurrency: .BTC)
-    }
-  }
-
   func didUpdateExchangeRateManager(_ exchangeRateManager: ExchangeRateManager) {
-    if (primaryAmountTextField.text ?? "").isNotEmpty {
-      let btcAmount = getBitcoinValueForPrimaryAmountText()
-      viewModel.btcAmount = btcAmount
-    }
-
-    loadAmounts(forPrimary: false, forSecondary: true)
-  }
-
-  /// Removes the currency symbol and thousands separator from the primary text, based on Locale.current
-  var sanitizedAmountString: String? {
-    guard let toSanitize = primaryAmountTextField.text else { return nil }
-    return toSanitize.removing(groupingSeparator: self.viewModel.groupingSeparator,
-                               currencySymbol: primaryCurrency.symbol)
-  }
-
-  func getBitcoinValueForPrimaryAmountText() -> NSDecimalNumber {
-    guard let amountString = sanitizedAmountString,
-      let decimal = NSDecimalNumber(fromString: amountString) else { return .zero }
-    return createCurrencyConverter(for: decimal).amount(forCurrency: .BTC) ?? 0.0
-  }
-
-  fileprivate func loadAmounts(forPrimary: Bool = true, forSecondary: Bool = true) {
-    let labels = viewModel.amountLabels(withRates: rateManager.exchangeRates, withSymbols: true)
-
-    if forPrimary {
-      switch viewModel.primaryCurrency {
-      case .USD:
-        self.primaryAmountTextField.text = viewModel.primaryAmountInputText(withRates: rateManager.exchangeRates)
-      case .BTC:
-        if let primaryLabel = labels.primary {
-          self.primaryAmountTextField.text = primaryLabel
-        }
-      }
-    }
-
-    if let secondaryLabel = labels.secondary, forSecondary {
-      self.secondaryAmountLabel.attributedText = secondaryLabel
-    }
   }
 
 }
@@ -575,59 +502,38 @@ extension SendPaymentViewController {
 extension SendPaymentViewController: UITextFieldDelegate {
 
   func textFieldDidBeginEditing(_ textField: UITextField) {
-    switch textField {
-    case phoneNumberEntryView.textField:
-      let defaultCountry = CKCountry(locale: .current)
-      let phoneNumber = GlobalPhoneNumber(countryCode: defaultCountry.countryCode, nationalNumber: "")
-      let contact = GenericContact(phoneNumber: phoneNumber, formatted: "")
-      let recipient = PaymentRecipient.phoneNumber(contact)
-      setPaymentRecipient(recipient)
-      updateViewWithModel()
-    case primaryAmountTextField:
-      sendMaxButton.isHidden = true
-      guard let text = sanitizedAmountString,
-        let number = NSDecimalNumber(fromString: text) else { return }
-      if number == .zero {
-        textField.text = primaryCurrency.symbol
-      }
-    default:
-      break
-    }
+    guard textField == phoneNumberEntryView.textField else { return }
+    let defaultCountry = CKCountry(locale: .current)
+    let phoneNumber = GlobalPhoneNumber(countryCode: defaultCountry.countryCode, nationalNumber: "")
+    let contact = GenericContact(phoneNumber: phoneNumber, formatted: "")
+    let recipient = PaymentRecipient.phoneNumber(contact)
+    setPaymentRecipient(recipient)
+    updateViewWithModel()
   }
 
   func textFieldDidEndEditing(_ textField: UITextField) {
     // Skip triggering changes/validation if textField is empty
-    guard let text = textField.text, text.isNotEmpty else {
+    guard let text = textField.text, text.isNotEmpty,
+      textField == phoneNumberEntryView.textField else {
       return
     }
 
-    switch textField {
-    case phoneNumberEntryView.textField:
-      let currentNumber = phoneNumberEntryView.textField.currentGlobalNumber()
-      guard currentNumber.nationalNumber.isNotEmpty else { return } //don't attempt parsing if only dismissing keypad or changing country
+    let currentNumber = phoneNumberEntryView.textField.currentGlobalNumber()
+    guard currentNumber.nationalNumber.isNotEmpty else { return } //don't attempt parsing if only dismissing keypad or changing country
 
-      do {
-        let recipient = try viewModel.recipientParser.findSingleRecipient(inText: text, ofTypes: [.phoneNumber])
-        switch recipient {
-        case .bitcoinURL: updateViewModel(withParsedRecipient: recipient)
-        case .phoneNumber(let globalPhoneNumber):
-          let formattedPhoneNumber = try CKPhoneNumberFormatter(format: .international)
-            .string(from: globalPhoneNumber)
-          let contact = GenericContact(phoneNumber: globalPhoneNumber, formatted: formattedPhoneNumber)
-          let recipient = PaymentRecipient.phoneNumber(contact)
-          setPaymentRecipient(recipient)
-        }
-      } catch {
-        self.coordinationDelegate?.showAlertForInvalidContactOrPhoneNumber(contactName: nil, displayNumber: text)
+    do {
+      let recipient = try viewModel.recipientParser.findSingleRecipient(inText: text, ofTypes: [.phoneNumber])
+      switch recipient {
+      case .bitcoinURL: updateViewModel(withParsedRecipient: recipient)
+      case .phoneNumber(let globalPhoneNumber):
+        let formattedPhoneNumber = try CKPhoneNumberFormatter(format: .international)
+          .string(from: globalPhoneNumber)
+        let contact = GenericContact(phoneNumber: globalPhoneNumber, formatted: formattedPhoneNumber)
+        let recipient = PaymentRecipient.phoneNumber(contact)
+        setPaymentRecipient(recipient)
       }
-
-    case primaryAmountTextField:
-      viewModel.btcAmount = getBitcoinValueForPrimaryAmountText()
-      sendMaxButton.isHidden = viewModel.btcAmount != .zero
-      primaryAmountTextField.text = viewModel.primaryAmountInputText(withRates: self.rateManager.exchangeRates)
-      loadAmounts(forPrimary: false, forSecondary: true)
-    default:
-      break
+    } catch {
+      self.coordinationDelegate?.showAlertForInvalidContactOrPhoneNumber(contactName: nil, displayNumber: text)
     }
   }
 
@@ -636,60 +542,12 @@ extension SendPaymentViewController: UITextFieldDelegate {
       applyRecipient(inText: pasteboardText)
     }
 
-    switch textField {
-    case primaryAmountTextField:
-      guard let text = textField.text, let swiftRange = Range(range, in: text), isNotDeletingOrEditingCurrencySymbol(for: text, in: range) else {
-        return false
-      }
-
-      let finalString = text.replacingCharacters(in: swiftRange, with: string)
-      return primaryAmountTextFieldShouldChangeCharacters(inProposedString: finalString)
-
-    case self.phoneNumberEntryView.textField:
-      if string.isNotEmpty {
-        phoneNumberEntryView.textField.selected(digit: string)
-      } else {
-        phoneNumberEntryView.textField.selectedBack()
-      }
-      return false  // manage this manually
-    default:
-      return true
+    if string.isNotEmpty {
+      phoneNumberEntryView.textField.selected(digit: string)
+    } else {
+      phoneNumberEntryView.textField.selectedBack()
     }
-  }
-
-  private func primaryAmountTextFieldShouldChangeCharacters(inProposedString finalString: String) -> Bool {
-    let splitByDecimalArray = finalString.components(separatedBy: viewModel.decimalSeparator).dropFirst()
-
-    if !splitByDecimalArray.isEmpty {
-      guard splitByDecimalArray[1].count <= primaryCurrency.decimalPlaces else {
-        return false
-      }
-    }
-
-    guard finalString.count(of: viewModel.decimalSeparatorCharacter) <= 1 else {
-      return false
-    }
-
-    let requiredSymbolString = primaryCurrency.symbol
-    guard finalString.contains(requiredSymbolString) else {
-      return false
-    }
-
-    let trimmedFinal = finalString.removing(groupingSeparator: self.viewModel.groupingSeparator, currencySymbol: requiredSymbolString)
-    if trimmedFinal.isEmpty {
-      return true // allow deletion of all digits by returning early
-    }
-
-    guard let newAmount = NSDecimalNumber(fromString: trimmedFinal) else { return false }
-
-    guard newAmount.significantFractionalDecimalDigits <= primaryCurrency.decimalPlaces else {
-      return false
-    }
-
-    let btcAmount = createCurrencyConverter(for: newAmount).amount(forCurrency: .BTC) ?? 0.0
-    viewModel.btcAmount = btcAmount
-
-    return true
+    return false  // manage this manually
   }
 
   private func showInvalidPhoneNumberAlert() {
@@ -702,10 +560,6 @@ extension SendPaymentViewController: UITextFieldDelegate {
                                                style: .alert,
                                                actionConfigs: [config]) else { return }
     show(alert, sender: nil)
-  }
-
-  private func isNotDeletingOrEditingCurrencySymbol(for amount: String, in range: NSRange) -> Bool {
-    return (amount != primaryCurrency.symbol || range.length == 0)
   }
 
 }
@@ -923,7 +777,7 @@ extension SendPaymentViewController {
                                            sharedPayload: sharedPayload)
     } else {
       self.coordinationDelegate?.viewControllerDidSendPayment(self,
-                                                              btcAmount: getBitcoinValueForPrimaryAmountText(),
+                                                              btcAmount: viewModel.btcAmount,
                                                               requiredFeeRate: viewModel.requiredFeeRate,
                                                               primaryCurrency: primaryCurrency,
                                                               address: address,
@@ -939,4 +793,20 @@ extension SendPaymentViewController {
   override func canPerformAction(_ action: Selector, withSender sender: Any?) -> Bool {
     return (action == #selector(performPaste))
   }
+}
+
+extension SendPaymentViewController: CurrencySwappableEditAmountViewModelDelegate {
+
+  func viewModelDidBeginEditingAmount(_ viewModel: CurrencySwappableEditAmountViewModel) {
+
+  }
+
+  func viewModelDidEndEditingAmount(_ viewModel: CurrencySwappableEditAmountViewModel) {
+
+  }
+
+  func viewModelDidSwapCurrencies(_ viewModel: CurrencySwappableEditAmountViewModel) {
+
+  }
+
 }
