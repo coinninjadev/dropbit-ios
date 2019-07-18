@@ -101,11 +101,13 @@ final class RequestPayViewController: PresentableViewController, StoryboardIniti
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    guard let viewModel = viewModel else { return }
     receiveAddressLabel.text = viewModel.bitcoinUrl.components.address
     qrImageView.image = viewModel.qrImage(withSize: qrImageView.frame.size)
 
     closeButton.isHidden = !isModal
+
+    let labels = viewModel.amountLabels(withSymbols: true)
+    editAmountView.configure(withLabels: labels, delegate: self)
   }
 
   @IBAction func closeButtonTapped(_ sender: UIButton) {
