@@ -65,6 +65,7 @@ final class RequestPayViewController: PresentableViewController, StoryboardIniti
   @IBAction func addRequestAmountButtonTapped(_ sender: UIButton) {
     shouldHideEditAmountView = false
     showHideEditAmountView()
+    editAmountView.primaryAmountTextField.becomeFirstResponder()
   }
 
   @IBAction func sendRequestButtonTapped(_ sender: UIButton) {
@@ -134,6 +135,13 @@ final class RequestPayViewController: PresentableViewController, StoryboardIniti
     super.viewDidLoad()
 
     closeButton.isHidden = !isModal
+
+    setupKeyboardDoneButton(for: [editAmountView.primaryAmountTextField],
+                            action: #selector(doneButtonWasPressed))
+  }
+
+  @objc func doneButtonWasPressed() {
+    editAmountView.primaryAmountTextField.resignFirstResponder()
   }
 
   override func viewWillAppear(_ animated: Bool) {
