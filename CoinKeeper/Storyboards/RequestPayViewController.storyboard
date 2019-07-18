@@ -36,10 +36,10 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <view contentMode="scaleToFill" verticalHuggingPriority="200" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="HBw-Hi-FEb" userLabel="Amount Centering Container">
-                                <rect key="frame" x="16" y="76.5" width="343" height="166"/>
+                                <rect key="frame" x="32" y="76.5" width="311" height="166"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Uvr-Kg-91I">
-                                        <rect key="frame" x="148.5" y="73" width="46" height="20"/>
+                                        <rect key="frame" x="132.5" y="73" width="46" height="20"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="20" id="QEt-es-jOl"/>
                                         </constraints>
@@ -49,7 +49,7 @@
                                         </connections>
                                     </button>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="N9x-e6-Hoq" customClass="CurrencySwappableEditAmountView" customModule="DropBit" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="33" width="343" height="100"/>
+                                        <rect key="frame" x="0.0" y="23" width="311" height="120"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="120" id="UV7-sr-Pdf"/>
@@ -123,12 +123,12 @@
                             <constraint firstItem="raB-18-rJT" firstAttribute="centerX" secondItem="JPR-x5-n03" secondAttribute="centerX" id="ASN-Pp-6h9"/>
                             <constraint firstItem="FI6-On-wIa" firstAttribute="top" secondItem="9sV-IT-Xdn" secondAttribute="bottom" constant="8" id="Gol-jg-UyR"/>
                             <constraint firstItem="9sV-IT-Xdn" firstAttribute="top" secondItem="yCG-vq-wcx" secondAttribute="bottom" constant="16" id="ISY-mR-MTR"/>
-                            <constraint firstItem="HBw-Hi-FEb" firstAttribute="leading" secondItem="JPR-x5-n03" secondAttribute="leading" constant="16" id="JID-g8-Qd6"/>
+                            <constraint firstItem="HBw-Hi-FEb" firstAttribute="leading" secondItem="JPR-x5-n03" secondAttribute="leading" constant="32" id="JID-g8-Qd6"/>
                             <constraint firstItem="9sV-IT-Xdn" firstAttribute="leading" secondItem="JPR-x5-n03" secondAttribute="leading" constant="24" id="Jzc-M8-qKo"/>
                             <constraint firstItem="HBw-Hi-FEb" firstAttribute="top" secondItem="raB-18-rJT" secondAttribute="bottom" constant="16" id="Kd0-99-q9G"/>
                             <constraint firstItem="FI6-On-wIa" firstAttribute="centerX" secondItem="mDk-3W-oP8" secondAttribute="centerX" id="RDA-3J-dMo"/>
                             <constraint firstItem="yCG-vq-wcx" firstAttribute="centerX" secondItem="JPR-x5-n03" secondAttribute="centerX" id="S6J-gj-6s0"/>
-                            <constraint firstItem="JPR-x5-n03" firstAttribute="trailing" secondItem="HBw-Hi-FEb" secondAttribute="trailing" constant="16" id="TKW-xa-eor"/>
+                            <constraint firstItem="JPR-x5-n03" firstAttribute="trailing" secondItem="HBw-Hi-FEb" secondAttribute="trailing" constant="32" id="TKW-xa-eor"/>
                             <constraint firstItem="yCG-vq-wcx" firstAttribute="top" secondItem="HBw-Hi-FEb" secondAttribute="bottom" constant="16" id="aQ8-ab-UDc"/>
                             <constraint firstItem="JPR-x5-n03" firstAttribute="bottom" secondItem="onG-ir-r5H" secondAttribute="bottom" constant="40" id="bpr-Wq-GKr"/>
                             <constraint firstItem="onG-ir-r5H" firstAttribute="leading" secondItem="JPR-x5-n03" secondAttribute="leading" constant="50" id="d2F-bJ-rdn"/>
