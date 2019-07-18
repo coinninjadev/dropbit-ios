@@ -10,25 +10,45 @@ import Foundation
 import Contacts
 import CNBitcoinKit
 
-protocol ConfirmPaymentViewModelType {
-  var btcAmount: NSDecimalNumber? { get }
-  var primaryCurrency: CurrencyCode { get }
-  var address: String? { get }
-  var contact: ContactType? { get }
-  var rates: ExchangeRates { get }
-  var sharedPayloadDTO: SharedPayloadDTO? { get }
+class BaseConfirmPaymentViewModel: DualAmountDisplayable {
+  let address: String?
+  let contact: ContactType?
+  let btcAmount: NSDecimalNumber
+  let currencyPair: CurrencyPair
+  let exchangeRates: ExchangeRates
 
-  mutating func update(with transactionData: CNBTransactionData)
+  init(address: String?,
+       contact: ContactType?,
+       btcAmount: NSDecimalNumber,
+       currencyPair: CurrencyPair,
+       exchangeRates: ExchangeRates) {
+    self.address = address
+    self.contact = contact
+    self.btcAmount = btcAmount
+    self.currencyPair = currencyPair
+    self.exchangeRates = exchangeRates
+  }
+
+  /// The btcAmount and fromAmount may or may not be the same
+  var fromAmount: NSDecimalNumber {
+    if currencyPair.primary == .BTC {
+      return btcAmount
+    } else {
+      let converter = CurrencyConverter(rates: exchangeRates, fromAmount: btcAmount, currencyPair: currencyPair)
+      let fiatAmount = converter.amount(forCurrency: currencyPair.fiat) ?? .zero
+      return fiatAmount
+    }
+  }
+
+  mutating func update(with transactionData: CNBTransactionData) {
+  
+  }
+
 }
 
-class ConfirmPaymentInviteViewModel: ConfirmPaymentViewModelType {
+class ConfirmPaymentInviteViewModel: BaseConfirmPaymentViewModel {
 
-  var address: String?
-  var contact: ContactType?
-  var btcAmount: NSDecimalNumber?
-  var primaryCurrency: CurrencyCode
-  let rates: ExchangeRates
-  let sharedPayloadDTO: SharedPayloadDTO?
+  let sharedPayloadDTO: SharedPayloadDTO
 
   var addressPublicKeyState: AddressPublicKeyState {
     return .invite
@@ -36,48 +56,41 @@ class ConfirmPaymentInviteViewModel: ConfirmPaymentViewModelType {
 
   init(address: String?,
        contact: ContactType?,
-       btcAmount: NSDecimalNumber?,
-       primaryCurrency: CurrencyCode,
-       rates: ExchangeRates,
-       sharedPayloadDTO: SharedPayloadDTO?) {
-    self.address = address
-    self.contact = contact
-    self.btcAmount = btcAmount
-    self.primaryCurrency = primaryCurrency
-    self.rates = rates
+       btcAmount: NSDecimalNumber,
+       currencyPair: CurrencyPair,
+       exchangeRates: ExchangeRates,
+       sharedPayloadDTO: SharedPayloadDTO) {
     self.sharedPayloadDTO = sharedPayloadDTO
+    super.init(address: address,
+               contact: contact,
+               btcAmount: btcAmount,
+               currencyPair: currencyPair,
+               exchangeRates: exchangeRates)
   }
 
   mutating func update(with transactionData: CNBTransactionData) { }
 }
 
-class ConfirmPaymentViewModel: ConfirmPaymentViewModelType {
+class ConfirmPaymentViewModel: BaseConfirmPaymentViewModel {
 
-  var address: String?
-  var contact: ContactType?
-  var btcAmount: NSDecimalNumber?
-  var primaryCurrency: CurrencyCode
   var outgoingTransactionData: OutgoingTransactionData
-  var rates: ExchangeRates
 
   var sharedPayloadDTO: SharedPayloadDTO? {
     return outgoingTransactionData.sharedPayloadDTO
   }
 
-  init(
-    btcAmount: NSDecimalNumber,
-    primaryCurrency: CurrencyCode,
-    address: String?,
-    contact: ContactType?,
-    outgoingTransactionData: OutgoingTransactionData,
-    rates: ExchangeRates
-    ) {
-    self.btcAmount = btcAmount
-    self.contact = contact
-    self.primaryCurrency = primaryCurrency
-    self.address = address
+  init(address: String?,
+       contact: ContactType?,
+       btcAmount: NSDecimalNumber,
+       currencyPair: CurrencyPair,
+       exchangeRates: ExchangeRates,
+       outgoingTransactionData: OutgoingTransactionData) {
     self.outgoingTransactionData = outgoingTransactionData
-    self.rates = rates
+    super.init(address: address,
+               contact: contact,
+               btcAmount: btcAmount,
+               currencyPair: currencyPair,
+               exchangeRates: exchangeRates)
   }
 
   mutating func update(with transactionData: CNBTransactionData) {
