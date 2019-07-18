@@ -9,20 +9,16 @@
 import Foundation
 
 protocol CurrencyConverterProvider {
-  var exchangeRates: ExchangeRates { get set }
-  var fromAmount: NSDecimalNumber { get set }
-  var fromCurrency: CurrencyCode { get set }
-  var toCurrency: CurrencyCode { get set }
-  var fiatCurrency: CurrencyCode { get }
+  var exchangeRates: ExchangeRates { get }
+  var fromAmount: NSDecimalNumber { get }
+  var currencyPair: CurrencyPair { get }
 }
 
 extension CurrencyConverterProvider {
   func generateCurrencyConverter() -> CurrencyConverter {
     return CurrencyConverter(rates: exchangeRates,
                              fromAmount: fromAmount,
-                             fromCurrency: fromCurrency,
-                             toCurrency: toCurrency,
-                             fiatCurrency: fiatCurrency)
+                             currencyPair: currencyPair)
   }
 
   func generateCurrencyConverter(withBTCAmount btcAmount: NSDecimalNumber) -> CurrencyConverter {
@@ -38,35 +34,39 @@ struct CurrencyConverter: CurrencyFormattable {
 
   let rates: ExchangeRates
   var fromAmount: NSDecimalNumber
-  var fromCurrency: CurrencyCode
-  var toCurrency: CurrencyCode
+  let currencyPair: CurrencyPair
 
-  /// The immutable fiat CurrencyCode used by this converter.
-  let fiatCurrency: CurrencyCode
+  var fromCurrency: CurrencyCode {
+    return currencyPair.primary
+  }
 
-  init(rates: ExchangeRates, fromAmount: NSDecimalNumber, fromCurrency: CurrencyCode, toCurrency: CurrencyCode, fiatCurrency: CurrencyCode = .USD) {
+  var toCurrency: CurrencyCode {
+    return currencyPair.secondary
+  }
+
+  var fiatCurrency: CurrencyCode {
+    return currencyPair.fiat
+  }
+
+  init(rates: ExchangeRates, fromAmount: NSDecimalNumber, currencyPair: CurrencyPair) {
     self.rates = rates
     self.fromAmount = fromAmount
-    self.fromCurrency = fromCurrency
-    self.toCurrency = toCurrency
-    self.fiatCurrency = fiatCurrency
+    self.currencyPair = currencyPair
   }
 
   /// Copies the existing values from the supplied converter and replaces the fromAmount with the newAmount.
   init(newAmount: NSDecimalNumber, converter: CurrencyConverter) {
     self.fromAmount = newAmount
     self.rates = converter.rates
-    self.fromCurrency = converter.fromCurrency
-    self.toCurrency = converter.toCurrency
-    self.fiatCurrency = converter.fiatCurrency
+    self.currencyPair = converter.currencyPair
   }
 
   init(btcFromAmount: NSDecimalNumber, converter: CurrencyConverter) {
     self.fromAmount = btcFromAmount
     self.rates = converter.rates
-    self.fromCurrency = .BTC
-    self.toCurrency = converter.fiatCurrency
-    self.fiatCurrency = converter.fiatCurrency
+    self.currencyPair = CurrencyPair(primary: .BTC,
+                                     secondary: converter.fiatCurrency,
+                                     fiat: converter.fiatCurrency)
   }
 
   func convertedAmount() -> NSDecimalNumber? {

@@ -78,10 +78,10 @@ class SendPaymentViewModel: CurrencySwappableEditAmountViewModel {
        exchangeRates: ExchangeRates,
        fiatCurrency: CurrencyCode,
        delegate: CurrencySwappableEditAmountViewModelDelegate? = nil) {
-    let currencies = SwappableCurrencies(primary: .BTC, secondary: fiatCurrency, fiat: fiatCurrency)
+    let currencyPair = CurrencyPair(primary: .BTC, secondary: fiatCurrency, fiat: fiatCurrency)
     let viewModel = CurrencySwappableEditAmountViewModel(exchangeRates: exchangeRates,
                                                          primaryAmount: qrCode.btcAmount ?? .zero,
-                                                         swappableCurrencies: currencies,
+                                                         currencyPair: currencyPair,
                                                          delegate: delegate)
     super.init(viewModel: viewModel)
     self.paymentRecipient = qrCode.address.flatMap { .btcAddress($0) }
@@ -103,10 +103,10 @@ class SendPaymentViewModel: CurrencySwappableEditAmountViewModel {
                     delegate: CurrencySwappableEditAmountViewModelDelegate? = nil) {
     guard let output = response.outputs.first else { return nil }
     let btcAmount = NSDecimalNumber(integerAmount: output.amount, currency: .BTC)
-    let currencies = SwappableCurrencies(primary: .BTC, secondary: fiatCurrency, fiat: fiatCurrency)
+    let currencyPair = CurrencyPair(primary: .BTC, secondary: fiatCurrency, fiat: fiatCurrency)
     let viewModel = CurrencySwappableEditAmountViewModel(exchangeRates: exchangeRates,
                                                          primaryAmount: btcAmount,
-                                                         swappableCurrencies: currencies,
+                                                         currencyPair: currencyPair,
                                                          delegate: delegate)
     self.init(editAmountViewModel: viewModel,
               address: output.address,

@@ -139,10 +139,10 @@ extension AppCoordinator: TransactionHistoryViewControllerDelegate {
   func viewControllerDidTapSendPayment(_ viewController: UIViewController, converter: CurrencyConverter) {
     analyticsManager.track(event: .payButtonWasPressed, with: nil)
 
-    let currencies = SwappableCurrencies(primary: converter.fromCurrency, secondary: converter.toCurrency, fiat: converter.fiatCurrency)
+    let currencyPair = CurrencyPair(primary: converter.fromCurrency, secondary: converter.toCurrency, fiat: converter.fiatCurrency)
     let swappableVM = CurrencySwappableEditAmountViewModel(exchangeRates: self.currencyController.exchangeRates,
                                                            primaryAmount: converter.fromAmount,
-                                                           swappableCurrencies: currencies)
+                                                           currencyPair: currencyPair)
     let sendPaymentVM = SendPaymentViewModel(editAmountViewModel: swappableVM)
     let sendPaymentViewController = SendPaymentViewController.newInstance(delegate: self, viewModel: sendPaymentVM)
     sendPaymentViewController.alertManager = self.alertManager

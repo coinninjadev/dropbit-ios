@@ -18,10 +18,10 @@ extension AppCoordinator {
       sendPaymentVC.applyRecipient(inText: bitcoinURL.absoluteString)
 
     } else {
-      let currencies = SwappableCurrencies(btcPrimaryWith: self.currencyController)
+      let currencyPair = CurrencyPair(btcPrimaryWith: self.currencyController)
       let vm = CurrencySwappableEditAmountViewModel(exchangeRates: self.currencyController.exchangeRates,
                                                     primaryAmount: .zero,
-                                                    swappableCurrencies: currencies)
+                                                    currencyPair: currencyPair)
       let sendPaymentVM = SendPaymentViewModel(editAmountViewModel: vm)
       let sendPaymentViewController = SendPaymentViewController.newInstance(delegate: self, viewModel: sendPaymentVM)
       sendPaymentViewController.alertManager = alertManager

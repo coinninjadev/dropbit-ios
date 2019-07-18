@@ -33,10 +33,10 @@ extension AppCoordinator: ScanQRViewControllerDelegate {
         case .failure(let paymentRequestError):
           let errorMessage = paymentRequestError.errorDescription ?? self.defaultPaymentErrorMessage
           let errorAlert = self.alertManager.defaultAlert(withTitle: self.paymentErrorTitle, description: errorMessage)
-          let currencies = SwappableCurrencies(btcPrimaryWith: self.currencyController)
+          let currencyPair = CurrencyPair(btcPrimaryWith: self.currencyController)
           let swappableVM = CurrencySwappableEditAmountViewModel(exchangeRates: self.exchangeRates,
                                                                  primaryAmount: .zero,
-                                                                 swappableCurrencies: currencies)
+                                                                 currencyPair: currencyPair)
           let viewModel = SendPaymentViewModel(editAmountViewModel: swappableVM)
 
           self.showSendPaymentViewController(withViewModel: viewModel, dismissing: viewController) { sendPaymentViewController in
@@ -88,8 +88,8 @@ extension AppCoordinator: ScanQRViewControllerDelegate {
 
   func showScanViewController(fallbackBTCAmount: NSDecimalNumber, primaryCurrency: CurrencyCode) {
     let scanViewController = ScanQRViewController.makeFromStoryboard()
-    let currencies = SwappableCurrencies(btcPrimaryWith: self.currencyController)
-    let swappableVM = CurrencySwappableEditAmountViewModel(exchangeRates: self.exchangeRates, primaryAmount: fallbackBTCAmount, swappableCurrencies: currencies)
+    let currencyPair = CurrencyPair(btcPrimaryWith: self.currencyController)
+    let swappableVM = CurrencySwappableEditAmountViewModel(exchangeRates: self.exchangeRates, primaryAmount: fallbackBTCAmount, currencyPair: currencyPair)
     scanViewController.fallbackPaymentViewModel = SendPaymentViewModel(editAmountViewModel: swappableVM)
 
     assignCoordinationDelegate(to: scanViewController)

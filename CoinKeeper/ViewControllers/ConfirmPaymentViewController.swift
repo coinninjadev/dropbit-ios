@@ -141,20 +141,13 @@ class ConfirmPaymentViewController: PresentableViewController, StoryboardInitial
       ], for: .selected)
   }
 
-  private func updateView(with viewModel: ConfirmPaymentViewModelType) {
-    self.viewModel = viewModel
+  private func updateView(with viewModel: ConfirmPaymentViewModel) {
     updateAmounts(with: viewModel)
     updateRecipient(with: viewModel)
     updateMemoView(with: viewModel)
   }
 
-  private func updateAmounts(with viewModel: ConfirmPaymentViewModelType) {
-    self.viewModel = viewModel
-    updateCurrencyLabels(with: viewModel)
-    updateFees(with: self.feeModel, rates: viewModel.rates)
-  }
-
-  private func updateCurrencyLabels(with viewModel: ConfirmPaymentViewModelType) {
+  private func updateAmounts(with viewModel: ConfirmPaymentViewModel) {
     let amounts = viewModel.amountLabels(withRates: viewModel.rates, withSymbols: true)
     primaryCurrencyLabel.text = amounts.primary
     secondaryCurrencyLabel.attributedText = amounts.secondary
@@ -192,9 +185,7 @@ class ConfirmPaymentViewController: PresentableViewController, StoryboardInitial
     networkFeeLabel.text = "Network Fee \(btcFee) (\(fiatFee))"
   }
 
-  private func updateRecipient(with viewModel: ConfirmPaymentViewModelType) {
-    self.viewModel = viewModel
-
+  private func updateRecipient(with viewModel: ConfirmPaymentViewModel) {
     // Hide address labels by default, unhide as needed
     // Contact label is always shown, set text to nil to hide
     primaryAddressLabel.isHidden = true
@@ -258,9 +249,7 @@ class ConfirmPaymentViewController: PresentableViewController, StoryboardInitial
     }
   }
 
-  private func updateMemoView(with viewModel: ConfirmPaymentViewModelType) {
-    self.viewModel = viewModel
-
+  private func updateMemoView(with viewModel: ConfirmPaymentViewModel) {
     if let payload = viewModel.sharedPayloadDTO, let memo = payload.memo {
       memoContainerView.isHidden = false
 

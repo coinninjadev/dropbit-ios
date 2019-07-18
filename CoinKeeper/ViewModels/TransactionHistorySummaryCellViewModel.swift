@@ -37,7 +37,8 @@ class TransactionHistorySummaryCellViewModel {
     self.isIncoming = false
     self.broadcastFailed = false
     let rates: ExchangeRates = [.USD: 7000, .BTC: 1]
-    self.sentAmountAtCurrentConverter = CurrencyConverter(rates: rates, fromAmount: 0, fromCurrency: .USD, toCurrency: .BTC)
+    let currencyPair = CurrencyPair(primary: .USD, secondary: .BTC, fiat: .USD)
+    self.sentAmountAtCurrentConverter = CurrencyConverter(rates: rates, fromAmount: .zero, currencyPair: currencyPair)
     self.primaryCurrency = .USD
     self.memo = ""
   }

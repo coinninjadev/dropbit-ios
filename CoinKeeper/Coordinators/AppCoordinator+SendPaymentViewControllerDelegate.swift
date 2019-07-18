@@ -124,6 +124,7 @@ extension AppCoordinator: SendPaymentViewControllerDelegate {
 
     viewController.dismiss(animated: true)
     let btcAmount = NSDecimalNumber(integerAmount: outgoingTransactionData.amount, currency: .BTC)
+    let currencyPair = CurrencyPair(btcPrimaryWith: self.currencyController)
 
     guard let wmgr = walletManager else { return }
     let config = TransactionFeeConfig(prefs: self.persistenceManager.brokers.preferences)
@@ -140,12 +141,13 @@ extension AppCoordinator: SendPaymentViewControllerDelegate {
 
         }
         .done { (feeModel: ConfirmTransactionFeeModel) in
+
           self.showConfirmPayment(
             with: outgoingTransactionData,
             btcAmount: btcAmount,
             address: address,
             contact: contact,
-            primaryCurrency: .BTC,
+            currencyPair: currencyPair,
             feeModel: feeModel,
             rates: rates
           )
@@ -163,7 +165,7 @@ extension AppCoordinator: SendPaymentViewControllerDelegate {
         btcAmount: btcAmount,
         address: address,
         contact: contact,
-        primaryCurrency: .BTC,
+        currencyPair: currencyPair,
         feeModel: feeModel,
         rates: rates
       )
@@ -194,6 +196,7 @@ extension AppCoordinator: SendPaymentViewControllerDelegate {
       rates: rates,
       sharedPayload: sharedPayload
     )
+    let currencyPair = CurrencyPair(primary: primaryCurrency, fiat: self.currencyController.fiatCurrency)
 
     viewController.dismiss(animated: true)
     networkManager.latestFees().compactMap { FeeRates(fees: $0) }
@@ -231,7 +234,7 @@ extension AppCoordinator: SendPaymentViewControllerDelegate {
           btcAmount: btcAmount,
           address: address,
           contact: contact,
-          primaryCurrency: primaryCurrency,
+          currencyPair: currencyPair,
           feeModel: feeModel,
           rates: rates
         )
@@ -285,15 +288,15 @@ extension AppCoordinator: SendPaymentViewControllerDelegate {
                                   btcAmount: NSDecimalNumber,
                                   address: String?,
                                   contact: ContactType?,
-                                  primaryCurrency: CurrencyCode,
+                                  currencyPair: CurrencyPair,
                                   feeModel: ConfirmTransactionFeeModel,
                                   rates: ExchangeRates) {
-    let viewModel = ConfirmPaymentViewModel(btcAmount: btcAmount,
-                                            primaryCurrency: primaryCurrency,
-                                            address: address,
+    let viewModel = ConfirmPaymentViewModel(address: address,
                                             contact: contact,
-                                            outgoingTransactionData: dto,
-                                            rates: rates)
+                                            btcAmount: btcAmount,
+                                            currencyPair: currencyPair,
+                                            exchangeRates: rates,
+                                            outgoingTransactionData: dto)
 
     let confirmPayVC = ConfirmPaymentViewController.newInstance(kind: .payment(viewModel),
                                                                 feeModel: feeModel,
@@ -330,7 +333,7 @@ extension AppCoordinator: SendPaymentViewControllerDelegate {
   }
 
   private func handleInvite(btcAmount: NSDecimalNumber,
-                            primaryCurrency: CurrencyCode,
+                            currencyPair: CurrencyPair,
                             contact: ContactType,
                             memo: String?,
                             rates: ExchangeRates,
@@ -352,8 +355,8 @@ extension AppCoordinator: SendPaymentViewControllerDelegate {
         let viewModel = ConfirmPaymentInviteViewModel(address: nil,
                                                       contact: contact,
                                                       btcAmount: btcAmount,
-                                                      primaryCurrency: primaryCurrency,
-                                                      rates: rates,
+                                                      currencyPair: currencyPair,
+                                                      exchangeRates: rates,
                                                       sharedPayloadDTO: sharedPayload)
         let confirmPayVC = ConfirmPaymentViewController.newInstance(kind: .invite(viewModel),
                                                                     feeModel: feeModel,

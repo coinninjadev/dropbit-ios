@@ -208,7 +208,11 @@ extension AppCoordinator {
 
     guard let address = nextAddress else { return nil }
 
-    return RequestPayViewController.newInstance(delegate: self, receiveAddress: address, currencyConverter: converter)
+    let currencies = CurrencyPair(btcPrimaryWith: self.currencyController)
+    return RequestPayViewController.newInstance(delegate: self,
+                                                receiveAddress: address,
+                                                currencies: currencies,
+                                                exchangeRates: self.currencyController.exchangeRates)
   }
 
   private func makeOverviewController() -> WalletOverviewViewController {

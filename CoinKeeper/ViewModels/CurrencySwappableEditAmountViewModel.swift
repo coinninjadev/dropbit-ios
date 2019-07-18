@@ -9,9 +9,7 @@
 import Foundation
 import CNBitcoinKit
 
-protocol DualAmountDisplayable: CurrencyConverterProvider {
-  var primaryCurrency: CurrencyCode { get }
-}
+protocol DualAmountDisplayable: CurrencyConverterProvider { }
 
 extension DualAmountDisplayable {
 
@@ -29,6 +27,7 @@ extension DualAmountDisplayable {
 
   func amountLabels(withSymbols: Bool) -> DualAmountLabels {
     let currencyConverter = generateCurrencyConverter()
+    let primaryCurrency = currencyPair.primary
 
     var primaryLabel = currencyConverter.amountStringWithSymbol(forCurrency: primaryCurrency)
 
@@ -57,15 +56,14 @@ protocol CurrencySwappableEditAmountViewModelDelegate: AnyObject {
   func viewModelDidSwapCurrencies(_ viewModel: CurrencySwappableEditAmountViewModel)
 }
 
-/// Convenient for passing these values and initialization
-struct SwappableCurrencies {
+/// Convenient for passing these values and initialization.
+/// Either primary or secondary must be BTC and the other must be fiat.
+struct CurrencyPair {
   let primary: CurrencyCode
   let secondary: CurrencyCode
   let fiat: CurrencyCode
 
-  init(primary: CurrencyCode,
-       secondary: CurrencyCode,
-       fiat: CurrencyCode) {
+  init(primary: CurrencyCode, secondary: CurrencyCode, fiat: CurrencyCode) {
     self.primary = primary
     self.secondary = secondary
     self.fiat = fiat
@@ -74,6 +72,12 @@ struct SwappableCurrencies {
   init(btcPrimaryWith currencyController: CurrencyController) {
     let fiat = currencyController.fiatCurrency
     self.init(primary: .BTC, secondary: fiat, fiat: fiat)
+  }
+
+  init(primary: CurrencyCode, fiat: CurrencyCode) {
+    self.primary = primary
+    self.fiat = fiat
+    self.secondary = (primary == .BTC) ? fiat : .BTC
   }
 }
 
@@ -89,13 +93,13 @@ class CurrencySwappableEditAmountViewModel: NSObject, DualAmountDisplayable {
 
   init(exchangeRates: ExchangeRates,
        primaryAmount: NSDecimalNumber,
-       swappableCurrencies currencies: SwappableCurrencies,
+       currencyPair: CurrencyPair,
        delegate: CurrencySwappableEditAmountViewModelDelegate? = nil) {
     self.exchangeRates = exchangeRates
     self.fromAmount = primaryAmount
-    self.fromCurrency = currencies.primary
-    self.toCurrency = currencies.secondary
-    self.fiatCurrency = currencies.fiat
+    self.fromCurrency = currencyPair.primary
+    self.toCurrency = currencyPair.secondary
+    self.fiatCurrency = currencyPair.fiat
     self.delegate = delegate
   }
 
