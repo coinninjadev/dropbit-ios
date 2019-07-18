@@ -18,6 +18,7 @@ extension UIView: XibViewType {
 
   func xibSetup() {
     guard let view = fromNib() else { return }
+    view.backgroundColor = .clear
     view.frame = bounds
     view.translatesAutoresizingMaskIntoConstraints = false
     view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
