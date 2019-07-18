@@ -121,7 +121,7 @@ class SendPaymentViewController: PresentableViewController,
       }
       .done {txData in
         self.viewModel.sendMax(with: txData)
-        self.loadAmounts()
+        self.refreshAmounts()
         self.sendMaxButton.isHidden = true
       }
       .catch { _ in
@@ -278,7 +278,7 @@ extension SendPaymentViewController {
   }
 
   func updateViewWithModel() {
-    loadAmounts()
+    refreshAmounts()
 
     phoneNumberEntryView.textField.text = ""
 
@@ -488,6 +488,7 @@ extension SendPaymentViewController {
   }
 
   func didUpdateExchangeRateManager(_ exchangeRateManager: ExchangeRateManager) {
+    self.updateEditAmountView(withRates: exchangeRateManager.exchangeRates)
   }
 
 }

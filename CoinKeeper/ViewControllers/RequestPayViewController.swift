@@ -106,7 +106,7 @@ final class RequestPayViewController: PresentableViewController, StoryboardIniti
   }
 
   func didUpdateExchangeRateManager(_ exchangeRateManager: ExchangeRateManager) {
-
+    updateEditAmountView(withRates: exchangeRateManager.exchangeRates)
   }
 
   override func accessibleViewsAndIdentifiers() -> [AccessibleViewElement] {
@@ -136,6 +136,8 @@ final class RequestPayViewController: PresentableViewController, StoryboardIniti
 
     closeButton.isHidden = !isModal
     setupCurrencySwappableEditAmountView()
+    registerForRateUpdates()
+    updateRatesAndView()
     setupKeyboardDoneButton(for: [editAmountView.primaryAmountTextField],
                             action: #selector(doneButtonWasPressed))
   }
