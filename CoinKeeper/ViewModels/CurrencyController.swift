@@ -55,8 +55,12 @@ class CurrencyController: CurrencyControllerProviding {
     self.selectedCurrency = selectedCurrency
   }
 
+  var currencyPair: CurrencyPair {
+    return CurrencyPair(primary: currentCurrencyCode, secondary: convertedCurrencyCode, fiat: fiatCurrency)
+  }
+
   var currencyConverter: CurrencyConverter {
-    return CurrencyConverter(rates: exchangeRates, fromAmount: .zero, fromCurrency: currentCurrencyCode, toCurrency: convertedCurrencyCode)
+    return CurrencyConverter(rates: exchangeRates, fromAmount: .zero, currencyPair: currencyPair)
   }
 
   private var convertedCurrencyCode: CurrencyCode {

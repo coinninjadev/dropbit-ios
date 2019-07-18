@@ -98,11 +98,11 @@ class TransactionHistorySummaryCellViewModel {
 
     let receivedAmt = transaction.receivedAmount
     let inputSatoshis = transaction.invitation?.btcAmount ?? receivedAmt // invitation amount supercedes transaction amount
+    let fromAmount = NSDecimalNumber(integerAmount: inputSatoshis, currency: .BTC)
+    let currencyPair = CurrencyPair(primary: .BTC, fiat: .USD)
     self.sentAmountAtCurrentConverter = CurrencyConverter(rates: rates,
-                                                          fromAmount: NSDecimalNumber(integerAmount: inputSatoshis, currency: .BTC),
-                                                          fromCurrency: .BTC,
-                                                          toCurrency: .USD)
-
+                                                          fromAmount: fromAmount,
+                                                          currencyPair: currencyPair)
     if transaction.netWalletAmount != 0 { //leave btcReceived as nil if zero
       self.btcReceived = NSDecimalNumber(integerAmount: abs(receivedAmt), currency: .BTC)
     }
