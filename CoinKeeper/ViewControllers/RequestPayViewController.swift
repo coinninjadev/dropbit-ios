@@ -135,7 +135,7 @@ final class RequestPayViewController: PresentableViewController, StoryboardIniti
     super.viewDidLoad()
 
     closeButton.isHidden = !isModal
-
+    setupCurrencySwappableEditAmountView()
     setupKeyboardDoneButton(for: [editAmountView.primaryAmountTextField],
                             action: #selector(doneButtonWasPressed))
   }
