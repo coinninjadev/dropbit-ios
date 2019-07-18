@@ -26,25 +26,20 @@ class NewsViewControllerDDS: NSObject {
    Average of 30 days times 24 hours = 720
    720 hours minus a weeks worth of hours (7 x 24 = 168) is 552
   */
-  var weekDataSourceOffset: Int {
-    return 552
-  }
+  lazy var weekDataSourceOffset: Int = {
+    let hoursInWeek = 168
+    return monthlyDataSourceOffset - hoursInWeek
+  }()
 
-  /*
-   Monthly endpoint of price is broken down by hours
-   Average of 30 days times 24 hours = 720
-   */
-  var monthlyDataSourceOffset: Int {
-    return 720
-  }
+  lazy var monthlyDataSourceOffset: Int = {
+    let daysInMonth = 30, hoursInWeek = 24
+    return daysInMonth * hoursInWeek
+  }()
 
-  /*
-   Daily endpoint of price is broken down by minutes
-   60 minutes times 24 hours = 1440
-   */
-  var dailyDataSourceOffset: Int {
-    return 1440
-  }
+  lazy var dailyDataSourceOffset: Int = {
+    let minutesInHour = 60, hoursInDay = 24
+    return minutesInHour * hoursInDay
+  }()
 
   private let newsCellIndexOffset = 4
 

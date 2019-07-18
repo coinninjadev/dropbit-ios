@@ -65,7 +65,8 @@ struct NewsData {
     }
 
     let gross = (priceResponse.last?.average ?? 0.0) - (priceResponse.first?.average ?? 0.0)
+    let percentage = gross / (currentPrice as? Double ?? 0.0) * 100
 
-    return (gross: gross, percentage: gross / (currentPrice as? Double ?? 0.0) * 100)
+    return (gross: gross, percentage: percentage)
   }
 }
