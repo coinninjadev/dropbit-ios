@@ -78,7 +78,7 @@ class ExchangeRateManager {
 
   init() {
     let cachedExchangeRate = CKUserDefaults().standardDefaults.double(forKey: CKUserDefaults.Key.exchangeRateBTCUSD.defaultsString)
-    self.exchangeRates = [.BTC: cachedExchangeRate, .USD: 1]
+    self.exchangeRates = [.BTC: 1, .USD: cachedExchangeRate]
   }
 }
 
