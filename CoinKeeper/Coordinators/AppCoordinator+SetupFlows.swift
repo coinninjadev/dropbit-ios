@@ -200,10 +200,9 @@ extension AppCoordinator {
     var nextAddress: String?
     let bgContext = persistenceManager.createBackgroundContext()
     bgContext.performAndWait {
-      guard let receiveAddress = wmgr.createAddressDataSource().nextAvailableReceiveAddress(forServerPool: false,
-                                                                                            indicesToSkip: [],
-                                                                                            in: bgContext)?.address else { return }
-      nextAddress = receiveAddress
+      nextAddress = wmgr.createAddressDataSource().nextAvailableReceiveAddress(forServerPool: false,
+                                                                               indicesToSkip: [],
+                                                                               in: bgContext)?.address
     }
     return nextAddress
   }
@@ -211,7 +210,9 @@ extension AppCoordinator {
   func createRequestPayViewController(converter: CurrencyConverter) -> RequestPayViewController? {
     guard let address = nextReceiveAddressForRequestPay() else { return nil }
 
-    let currencyPair = CurrencyPair(btcPrimaryWith: self.currencyController)
+    let selectedCurrency = currencyController.selectedCurrency.code
+    let fiat = currencyController.fiatCurrency
+    let currencyPair = CurrencyPair(primary: selectedCurrency, fiat: fiat)
     return RequestPayViewController.newInstance(delegate: self,
                                                 receiveAddress: address,
                                                 currencyPair: currencyPair,
