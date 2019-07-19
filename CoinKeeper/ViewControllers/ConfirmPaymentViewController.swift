@@ -55,7 +55,7 @@ class ConfirmPaymentViewController: PresentableViewController, StoryboardInitial
     UILongPressGestureRecognizer(target: self, action: #selector(confirmButtonDidConfirm))
 
   private var feedbackGenerator: UIImpactFeedbackGenerator = UIImpactFeedbackGenerator(style: .medium)
-  private var viewModel: ConfirmPaymentViewModelType?
+  private var viewModel: BaseConfirmPaymentViewModel?
 
   @IBOutlet var closeButton: UIButton!
   @IBOutlet var confirmButton: ConfirmPaymentButton!
@@ -168,7 +168,7 @@ class ConfirmPaymentViewController: PresentableViewController, StoryboardInitial
       adjustableFeesLabel.attributedText = vm.attributedWaitTimeDescription
 
       self.viewModel?.update(with: feeModel.transactionData)
-      self.viewModel.map { self.updateCurrencyLabels(with: $0) }
+      self.viewModel.flatMap { self.updateView(with: $0) }
 
     case .required, .standard:
       adjustableFeesContainer.isHidden = true

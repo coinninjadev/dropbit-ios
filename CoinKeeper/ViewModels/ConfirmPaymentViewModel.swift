@@ -13,7 +13,7 @@ import CNBitcoinKit
 class BaseConfirmPaymentViewModel: DualAmountDisplayable {
   let address: String?
   let contact: ContactType?
-  let btcAmount: NSDecimalNumber
+  var btcAmount: NSDecimalNumber
   let currencyPair: CurrencyPair
   let exchangeRates: ExchangeRates
 
@@ -49,6 +49,10 @@ class BaseConfirmPaymentViewModel: DualAmountDisplayable {
 
   var shouldShareMemo: Bool {
     return false
+  }
+
+  func update(with transactionData: CNBTransactionData) {
+    self.btcAmount = NSDecimalNumber(integerAmount: Int(transactionData.amount), currency: .BTC)
   }
 
 }
@@ -116,9 +120,6 @@ class ConfirmPaymentViewModel: BaseConfirmPaymentViewModel {
                exchangeRates: exchangeRates)
   }
 
-  mutating func update(with transactionData: CNBTransactionData) {
-    btcAmount = NSDecimalNumber(integerAmount: Int(transactionData.amount), currency: .BTC)
-  }
 }
 
 struct FeeRates {
