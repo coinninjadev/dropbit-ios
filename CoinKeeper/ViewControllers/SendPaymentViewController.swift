@@ -791,10 +791,6 @@ extension SendPaymentViewController {
 
 extension SendPaymentViewController: CurrencySwappableEditAmountViewModelDelegate {
 
-  func viewModelDidBeginEditingAmount(_ viewModel: CurrencySwappableEditAmountViewModel) {
-
-  }
-
   func viewModelDidEndEditingAmount(_ viewModel: CurrencySwappableEditAmountViewModel) {
 
   }

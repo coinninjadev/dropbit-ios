@@ -30,9 +30,9 @@ extension DualAmountDisplayable {
     let primaryCurrency = currencyPair.primary
 
     var primaryLabel = currencyConverter.amountStringWithSymbol(forCurrency: primaryCurrency)
-    if currencyConverter.fromAmount == .zero {
-      primaryLabel = currencyConverter.fromCurrency.symbol
-    }
+//    if currencyConverter.fromAmount == .zero {
+//      primaryLabel = currencyConverter.fromCurrency.symbol
+//    }
 
     let secondaryCurrency = currencyConverter.otherCurrency(forCurrency: primaryCurrency)
     var secondaryLabel = currencyConverter.attributedStringWithSymbol(forCurrency: secondaryCurrency)

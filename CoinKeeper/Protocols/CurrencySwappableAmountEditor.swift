@@ -39,6 +39,12 @@ extension CurrencySwappableAmountEditor {
     editAmountView.update(with: labels)
   }
 
+  func viewModelDidBeginEditingAmount(_ viewModel: CurrencySwappableEditAmountViewModel) {
+    if viewModel.fromAmount == .zero {
+      editAmountView.primaryAmountTextField.text = viewModel.fromCurrency.symbol
+    }
+  }
+
   func viewModelDidChangeAmount(_ viewModel: CurrencySwappableEditAmountViewModel) {
     //Skip updating primary text field
     updateSecondaryAmountLabel()
