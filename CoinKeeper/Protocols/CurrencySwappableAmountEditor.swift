@@ -30,34 +30,28 @@ extension CurrencySwappableAmountEditor {
 
   func swapViewDidSwap(_ swapView: CurrencySwappableEditAmountView) {
     editAmountViewModel.swapPrimaryCurrency()
-    refreshAmounts()
+    refreshBothAmounts()
   }
 
   /// Editor should call this in response to delegate method calls of CurrencySwappableEditAmountViewModelDelegate
-  func refreshAmounts() {
+  func refreshBothAmounts() {
     let labels = editAmountViewModel.dualAmountLabels()
     editAmountView.update(with: labels)
   }
 
-  func viewModelDidBeginEditingAmount(_ viewModel: CurrencySwappableEditAmountViewModel) {
-    if viewModel.fromAmount == .zero {
-      editAmountView.primaryAmountTextField.text = viewModel.fromCurrency.symbol
-    }
+  func refreshSecondaryAmount() {
+    let secondaryLabel = editAmountViewModel.dualAmountLabels().secondary
+    editAmountView.secondaryAmountLabel.attributedText = secondaryLabel
   }
 
   func viewModelDidChangeAmount(_ viewModel: CurrencySwappableEditAmountViewModel) {
     //Skip updating primary text field
-    updateSecondaryAmountLabel()
+    refreshSecondaryAmount()
   }
 
   func updateEditAmountView(withRates rates: ExchangeRates) {
     editAmountViewModel.exchangeRates = rates
-    updateSecondaryAmountLabel()
-  }
-
-  private func updateSecondaryAmountLabel() {
-    let secondaryLabel = editAmountViewModel.dualAmountLabels().secondary
-    editAmountView.secondaryAmountLabel.attributedText = secondaryLabel
+    refreshSecondaryAmount()
   }
 
 }

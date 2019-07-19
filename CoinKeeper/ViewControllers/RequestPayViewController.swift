@@ -183,15 +183,3 @@ final class RequestPayViewController: PresentableViewController, StoryboardIniti
   }
 
 }
-
-extension RequestPayViewController: CurrencySwappableEditAmountViewModelDelegate {
-
-  func viewModelDidEndEditingAmount(_ viewModel: CurrencySwappableEditAmountViewModel) {
-
-  }
-
-  func viewModelDidSwapCurrencies(_ viewModel: CurrencySwappableEditAmountViewModel) {
-
-  }
-
-}

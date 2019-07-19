@@ -58,7 +58,6 @@ class SendPaymentViewController: PresentableViewController,
   @IBOutlet var closeButton: UIButton!
 
   @IBOutlet var editAmountView: CurrencySwappableEditAmountView!
-
   @IBOutlet var phoneNumberEntryView: PhoneNumberEntryView!
 
   @IBOutlet var addressScanButtonContainerView: UIView!
@@ -121,7 +120,7 @@ class SendPaymentViewController: PresentableViewController,
       }
       .done {txData in
         self.viewModel.sendMax(with: txData)
-        self.refreshAmounts()
+        self.refreshBothAmounts()
         self.sendMaxButton.isHidden = true
       }
       .catch { _ in
@@ -186,6 +185,10 @@ class SendPaymentViewController: PresentableViewController,
     viewModel.sharedMemoAllowed = sharedMemoAllowed
     memoContainerView.configure(memo: nil, isShared: sharedMemoAllowed)
     coordinationDelegate?.sendPaymentViewControllerDidLoad(self)
+
+    if viewModel.fromAmount == .zero {
+      editAmountView.primaryAmountTextField.becomeFirstResponder()
+    }
   }
 
   override func viewWillAppear(_ animated: Bool) {
@@ -278,7 +281,15 @@ extension SendPaymentViewController {
   }
 
   func updateViewWithModel() {
-    refreshAmounts()
+    if editAmountView.primaryAmountTextField.isFirstResponder {
+      refreshSecondaryAmount()
+    } else {
+      refreshBothAmounts()
+    }
+
+    if viewModel.btcAmount != .zero {
+      sendMaxButton.isHidden = true
+    }
 
     phoneNumberEntryView.textField.text = ""
 
@@ -303,10 +314,6 @@ extension SendPaymentViewController {
     }
 
     updateMemoContainer()
-
-    if viewModel.btcAmount != .zero {
-      sendMaxButton.isHidden = true
-    }
   }
 
   func updateMemoContainer() {
@@ -787,16 +794,4 @@ extension SendPaymentViewController {
   override func canPerformAction(_ action: Selector, withSender sender: Any?) -> Bool {
     return (action == #selector(performPaste))
   }
-}
-
-extension SendPaymentViewController: CurrencySwappableEditAmountViewModelDelegate {
-
-  func viewModelDidEndEditingAmount(_ viewModel: CurrencySwappableEditAmountViewModel) {
-
-  }
-
-  func viewModelDidSwapCurrencies(_ viewModel: CurrencySwappableEditAmountViewModel) {
-
-  }
-
 }
