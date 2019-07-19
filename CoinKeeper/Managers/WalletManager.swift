@@ -121,7 +121,17 @@ class WalletManager: WalletManagerType {
   }
 
   public static func createMnemonicWords() -> [String] {
-    return CNBHDWallet.createMnemonicWords()
+    let len = 16; // 16 bytes
+    var data = Data(count: len)
+
+    let result = data.withUnsafeMutableBytes { SecRandomCopyBytes(kSecRandomDefault, len, $0.baseAddress!) }
+
+    guard result == errSecSuccess else {
+      return []
+    }
+
+    let words = CNBHDWallet.createMnemonicWords(withEntropy: data)
+    return words
   }
 
   static func validateBase58Check(for address: String) -> Bool {
