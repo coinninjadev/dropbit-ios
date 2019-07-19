@@ -493,7 +493,6 @@
 		A29CE10820A3684700761B91 /* StringEmptyValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A29CE10720A3684700761B91 /* StringEmptyValidator.swift */; };
 		A29CE10D20A37F6900761B91 /* StringEmptyValidatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A29CE10C20A37F6900761B91 /* StringEmptyValidatorTests.swift */; };
 		A29CE10F20A3845C00761B91 /* BitcoinAddressValidatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A29CE10E20A3845C00761B91 /* BitcoinAddressValidatorTests.swift */; };
-		A29CE11120A385FE00761B91 /* CurrencyStringValidatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A29CE11020A385FE00761B91 /* CurrencyStringValidatorTests.swift */; };
 		A29CE11320A3883B00761B91 /* CurrencyAmountValidatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A29CE11220A3883B00761B91 /* CurrencyAmountValidatorTests.swift */; };
 		A29CE11520A389B400761B91 /* CompositeValidatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A29CE11420A389B400761B91 /* CompositeValidatorTests.swift */; };
 		A2A530AE2092A84800B6F4DE /* String+TrimSymbol.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2A530AD2092A84800B6F4DE /* String+TrimSymbol.swift */; };
@@ -1412,7 +1411,6 @@
 		A29CE10720A3684700761B91 /* StringEmptyValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringEmptyValidator.swift; sourceTree = "<group>"; };
 		A29CE10C20A37F6900761B91 /* StringEmptyValidatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringEmptyValidatorTests.swift; sourceTree = "<group>"; };
 		A29CE10E20A3845C00761B91 /* BitcoinAddressValidatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BitcoinAddressValidatorTests.swift; sourceTree = "<group>"; };
-		A29CE11020A385FE00761B91 /* CurrencyStringValidatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyStringValidatorTests.swift; sourceTree = "<group>"; };
 		A29CE11220A3883B00761B91 /* CurrencyAmountValidatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyAmountValidatorTests.swift; sourceTree = "<group>"; };
 		A29CE11420A389B400761B91 /* CompositeValidatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompositeValidatorTests.swift; sourceTree = "<group>"; };
 		A2A530AD2092A84800B6F4DE /* String+TrimSymbol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+TrimSymbol.swift"; sourceTree = "<group>"; };
@@ -2792,7 +2790,6 @@
 			children = (
 				A29CE10C20A37F6900761B91 /* StringEmptyValidatorTests.swift */,
 				A29CE10E20A3845C00761B91 /* BitcoinAddressValidatorTests.swift */,
-				A29CE11020A385FE00761B91 /* CurrencyStringValidatorTests.swift */,
 				A29CE11220A3883B00761B91 /* CurrencyAmountValidatorTests.swift */,
 				A29CE11420A389B400761B91 /* CompositeValidatorTests.swift */,
 			);
@@ -4503,7 +4500,6 @@
 				B55D085021B6F89C007DD9E5 /* CKRecipientParserTests.swift in Sources */,
 				B52EF8CC21A4B0870081CB3B /* MerchantPaymentRequestResponseTests.swift in Sources */,
 				3B2EBF73223176D9003C0D0E /* MockUserDefaultsManager.swift in Sources */,
-				A29CE11120A385FE00761B91 /* CurrencyStringValidatorTests.swift in Sources */,
 				6B82500CB8AD79F2E4EFEEA7 /* KeypadDigitViewTests.swift in Sources */,
 				3B80E27B21BEF04500F6EF17 /* DatabaseMigrationWorkerTests.swift in Sources */,
 				B5C5FEE522BAB2F900287FF7 /* MockUserBroker.swift in Sources */,

@@ -16,7 +16,10 @@ class SendPaymentViewModelTests: XCTestCase {
 
   override func setUp() {
     super.setUp()
-    self.sut = SendPaymentViewModel(btcAmount: .zero, primaryCurrency: .BTC)
+    let safeRates: ExchangeRates = [.BTC: 1, .USD: 7000]
+    let currencyPair = CurrencyPair(primary: .BTC, fiat: .USD)
+    let swappableVM = CurrencySwappableEditAmountViewModel(exchangeRates: safeRates, primaryAmount: .zero, currencyPair: currencyPair)
+    self.sut = SendPaymentViewModel(editAmountViewModel: swappableVM)
   }
 
   override func tearDown() {

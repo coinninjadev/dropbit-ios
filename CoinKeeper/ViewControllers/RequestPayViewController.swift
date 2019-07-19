@@ -82,7 +82,7 @@ final class RequestPayViewController: PresentableViewController, StoryboardIniti
   }
 
   @IBAction func addressTapped(_ sender: UITapGestureRecognizer) {
-    UIPasteboard.general.string = viewModel?.bitcoinUrl.components.address
+    UIPasteboard.general.string = viewModel.bitcoinUrl.components.address
     coordinationDelegate?.viewControllerSuccessfullyCopiedToClipboard(message: "Address copied to clipboard!", viewController: self)
   }
 
@@ -93,7 +93,8 @@ final class RequestPayViewController: PresentableViewController, StoryboardIniti
 
   let rateManager: ExchangeRateManager = ExchangeRateManager()
   var currencyValueManager: CurrencyValueDataSourceType?
-  var viewModel: RequestPayViewModel!
+  var viewModel: RequestPayViewModel! = RequestPayViewModel(receiveAddress: "",
+                                                            viewModel: .emptyInstance())
   var editAmountViewModel: CurrencySwappableEditAmountViewModel { return viewModel }
 
   var isModal: Bool = true

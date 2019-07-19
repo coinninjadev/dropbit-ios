@@ -11,12 +11,11 @@ import UIKit
 class RequestPayViewModel: CurrencySwappableEditAmountViewModel {
 
   let bitcoinUrl: BitcoinURL
-  let qrCodeGenerator: QRCodeGenerator
+  let qrCodeGenerator = QRCodeGenerator()
 
   init?(receiveAddress: String, viewModel: CurrencySwappableEditAmountViewModel) {
     guard let bitcoinUrl = BitcoinURL(address: receiveAddress, amount: viewModel.fromAmount) else { return nil }
     self.bitcoinUrl = bitcoinUrl
-    self.qrCodeGenerator = QRCodeGenerator()
     super.init(viewModel: viewModel)
   }
 

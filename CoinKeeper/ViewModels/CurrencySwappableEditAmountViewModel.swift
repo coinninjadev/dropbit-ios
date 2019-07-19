@@ -133,6 +133,13 @@ class CurrencySwappableEditAmountViewModel: NSObject, DualAmountDisplayable {
     return CurrencyPair(primary: fromCurrency, secondary: toCurrency, fiat: fiatCurrency)
   }
 
+  static func emptyInstance() -> CurrencySwappableEditAmountViewModel {
+    let currencyPair = CurrencyPair(primary: .BTC, fiat: .USD)
+    return CurrencySwappableEditAmountViewModel(exchangeRates: [:],
+                                                primaryAmount: 0,
+                                                currencyPair: currencyPair)
+  }
+
   func swapPrimaryCurrency() {
     let oldToAmount = generateCurrencyConverter().convertedAmount() ?? .zero
     self.fromAmount = oldToAmount
@@ -229,7 +236,6 @@ extension CurrencySwappableEditAmountViewModel: UITextFieldDelegate {
     guard newAmount.significantFractionalDecimalDigits <= primaryCurrency.decimalPlaces else {
       return false
     }
-
 
     return true
   }
