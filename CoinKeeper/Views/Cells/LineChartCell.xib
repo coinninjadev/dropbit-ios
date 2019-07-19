@@ -19,7 +19,7 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RHu-XE-afk" customClass="LineChartView" customModule="Charts">
-                        <rect key="frame" x="-20" y="0.0" width="415" height="212.5"/>
+                        <rect key="frame" x="-10" y="0.0" width="395" height="212.5"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </view>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JvU-1X-s99" userLabel="Top Label">
@@ -38,8 +38,8 @@
                 <constraints>
                     <constraint firstItem="e3f-PV-QNM" firstAttribute="leading" secondItem="Nzm-BT-pfH" secondAttribute="leading" id="4od-K5-gRr"/>
                     <constraint firstAttribute="trailing" secondItem="e3f-PV-QNM" secondAttribute="trailing" constant="20" id="6gE-pj-0NI"/>
-                    <constraint firstItem="RHu-XE-afk" firstAttribute="leading" secondItem="Nzm-BT-pfH" secondAttribute="leading" constant="-20" id="BxF-bL-DMB"/>
-                    <constraint firstAttribute="trailing" secondItem="RHu-XE-afk" secondAttribute="trailing" constant="-20" id="bTu-BX-d8P"/>
+                    <constraint firstItem="RHu-XE-afk" firstAttribute="leading" secondItem="Nzm-BT-pfH" secondAttribute="leading" constant="-10" id="BxF-bL-DMB"/>
+                    <constraint firstAttribute="trailing" secondItem="RHu-XE-afk" secondAttribute="trailing" constant="-10" id="bTu-BX-d8P"/>
                     <constraint firstAttribute="bottom" secondItem="e3f-PV-QNM" secondAttribute="bottom" id="fnv-QJ-lwP"/>
                     <constraint firstItem="JvU-1X-s99" firstAttribute="top" secondItem="Nzm-BT-pfH" secondAttribute="top" id="fsB-MM-UCY"/>
                     <constraint firstAttribute="bottom" secondItem="RHu-XE-afk" secondAttribute="bottom" id="i46-mF-82f"/>
