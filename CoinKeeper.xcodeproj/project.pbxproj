@@ -803,6 +803,7 @@
 		B5B37B23206AFCDF001816F6 /* Money.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5B37B22206AFCDF001816F6 /* Money.swift */; };
 		B5B37B27206AFE22001816F6 /* CurrencyCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5B37B26206AFE22001816F6 /* CurrencyCode.swift */; };
 		B5B3E4C72072AE2400222FF4 /* NSDecimalNumber+SignificantDecimals.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5B3E4C62072AE2400222FF4 /* NSDecimalNumber+SignificantDecimals.swift */; };
+		B5B4582A22E110DD00C033B2 /* MockCurrencySwappableEditAmountViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5B4582822E110D900C033B2 /* MockCurrencySwappableEditAmountViewDelegate.swift */; };
 		B5B53C9C2107CAA5006C7B67 /* TransactionDetailsInfoContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5B53C9B2107CAA5006C7B67 /* TransactionDetailsInfoContainer.swift */; };
 		B5B53C9E2107CD1C006C7B67 /* TransactionDetailMessageLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5B53C9D2107CD1C006C7B67 /* TransactionDetailMessageLabel.swift */; };
 		B5B9132921419F84003A24E9 /* PhoneNumberKit+AreaCodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5B9132821419F84003A24E9 /* PhoneNumberKit+AreaCodes.swift */; };
@@ -1713,6 +1714,7 @@
 		B5B37B22206AFCDF001816F6 /* Money.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Money.swift; sourceTree = "<group>"; };
 		B5B37B26206AFE22001816F6 /* CurrencyCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyCode.swift; sourceTree = "<group>"; };
 		B5B3E4C62072AE2400222FF4 /* NSDecimalNumber+SignificantDecimals.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSDecimalNumber+SignificantDecimals.swift"; sourceTree = "<group>"; };
+		B5B4582822E110D900C033B2 /* MockCurrencySwappableEditAmountViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockCurrencySwappableEditAmountViewDelegate.swift; sourceTree = "<group>"; };
 		B5B53C9B2107CAA5006C7B67 /* TransactionDetailsInfoContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TransactionDetailsInfoContainer.swift; path = CoinKeeper/Views/TransactionDetailsInfoContainer.swift; sourceTree = SOURCE_ROOT; };
 		B5B53C9D2107CD1C006C7B67 /* TransactionDetailMessageLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDetailMessageLabel.swift; sourceTree = "<group>"; };
 		B5B9132821419F84003A24E9 /* PhoneNumberKit+AreaCodes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PhoneNumberKit+AreaCodes.swift"; sourceTree = "<group>"; };
@@ -2713,6 +2715,7 @@
 				3B86F786203B6FB700D15231 /* MockAppCoordinator.swift */,
 				B5EBFD0E215C01E30008EB4A /* MockAddressDataSource.swift */,
 				6B825E8DEB7E0DE12824DE21 /* MockBiometricAuthenticationManager.swift */,
+				B5B4582822E110D900C033B2 /* MockCurrencySwappableEditAmountViewDelegate.swift */,
 				6B8258FE5E688972EBEB03FE /* MockDigitEntryDisplayViewModel.swift */,
 				3B961CD42044946C00B38EBB /* MockLaunchStateManager.swift */,
 				B5D77CC92221FB09002C360E /* MockPhoneNumberFormatter.swift */,
@@ -4415,6 +4418,7 @@
 				B5192F93216E6EFA00DCC39B /* MockCoinNinjaProvider.swift in Sources */,
 				3BE8AA1821F1149100A3F0C4 /* CKCryptorTests.swift in Sources */,
 				B586099921B9CBBA004C5AB7 /* MockDeviceUUIDMismatchErrorResponse.swift in Sources */,
+				B5B4582A22E110DD00C033B2 /* MockCurrencySwappableEditAmountViewDelegate.swift in Sources */,
 				B5C5FEF222BAC1F500287FF7 /* MockPreferencesBroker.swift in Sources */,
 				B524B242216CEB5200F669F4 /* MockNetworkManager+MessageRequestable.swift in Sources */,
 				A22C43CE20F3C84000041DF6 /* RestoreWalletViewControllerTests.swift in Sources */,
