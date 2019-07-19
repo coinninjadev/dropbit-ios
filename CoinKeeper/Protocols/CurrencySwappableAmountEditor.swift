@@ -19,6 +19,7 @@ extension CurrencySwappableAmountEditor {
 
   /// Call this during viewDidLoad
   func setupCurrencySwappableEditAmountView() {
+    editAmountView.delegate = self
     editAmountView.primaryAmountTextField.delegate = editAmountViewModel
 
     let textFieldDidChangeAction = #selector(CurrencySwappableEditAmountViewModel.primaryAmountTextFieldDidChange)

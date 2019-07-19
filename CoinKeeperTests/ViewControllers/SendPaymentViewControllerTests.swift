@@ -16,7 +16,6 @@ class SendPaymentViewControllerTests: XCTestCase {
 
   var sut: SendPaymentViewController!
   var mockCoordinator: MockSendPaymentViewControllerCoordinator!
-  var mockSwapViewDlg: MockCurrencySwappableEditAmountViewDelegate!
 
   override func setUp() {
     super.setUp()
@@ -31,17 +30,12 @@ class SendPaymentViewControllerTests: XCTestCase {
                                          requiredFeeRate: nil,
                                          memo: nil)
     self.sut = SendPaymentViewController.newInstance(delegate: mockCoordinator, viewModel: viewModel)
-
-    mockSwapViewDlg = MockCurrencySwappableEditAmountViewDelegate()
-    self.sut.editAmountView.delegate = mockSwapViewDlg
-
     _ = self.sut.view
   }
 
   override func tearDown() {
     sut = nil
     mockCoordinator = nil
-    mockSwapViewDlg = nil
     UIPasteboard.general.string = ""
     super.tearDown()
   }
@@ -238,7 +232,6 @@ class SendPaymentViewControllerTests: XCTestCase {
 
     XCTAssertNotEqual(existingPrimaryCurrency, updatedPrimaryCurrency)
     XCTAssertEqual(updatedPrimaryCurrency, .BTC)
-    XCTAssertTrue(self.mockSwapViewDlg.swapViewDidSwapValue)
     XCTAssertTrue(sut.editAmountView.primaryAmountTextField.text!.contains(CurrencyCode.BTC.symbol))
   }
 
