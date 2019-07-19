@@ -49,8 +49,8 @@
                                             <constraint firstAttribute="height" constant="100" id="FFW-ix-1bp"/>
                                         </constraints>
                                     </view>
-                                    <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2Q4-Um-Y5Z" customClass="LightBorderedButton" customModule="DropBit" customModuleProvider="target">
-                                        <rect key="frame" x="250" y="35.5" width="77" height="30"/>
+                                    <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2Q4-Um-Y5Z" customClass="LightBorderedButton" customModule="DropBit" customModuleProvider="target">
+                                        <rect key="frame" x="250" y="35" width="77" height="30"/>
                                         <state key="normal" title="SEND MAX"/>
                                         <connections>
                                             <action selector="performSendMax" destination="mA3-RJ-Qjv" eventType="touchUpInside" id="9we-wt-hw1"/>
@@ -131,6 +131,7 @@
                                     <constraint firstAttribute="trailing" secondItem="2Q4-Um-Y5Z" secondAttribute="trailing" id="hti-oi-6J9"/>
                                     <constraint firstAttribute="trailing" secondItem="Zoz-wS-Csm" secondAttribute="trailing" constant="8" id="ls1-cP-xc6"/>
                                     <constraint firstItem="Zoz-wS-Csm" firstAttribute="top" relation="greaterThanOrEqual" secondItem="ag9-A1-S4X" secondAttribute="bottom" constant="8" id="nlz-Yj-Kpo"/>
+                                    <constraint firstItem="2Q4-Um-Y5Z" firstAttribute="centerY" secondItem="ag9-A1-S4X" secondAttribute="centerY" id="rUw-5w-aOe"/>
                                     <constraint firstAttribute="bottom" secondItem="Zoz-wS-Csm" secondAttribute="bottom" constant="29" id="s8F-TP-Z7e"/>
                                     <constraint firstAttribute="trailing" secondItem="ag9-A1-S4X" secondAttribute="trailing" id="yIl-YY-q5F"/>
                                 </constraints>
