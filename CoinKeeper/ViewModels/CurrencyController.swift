@@ -36,8 +36,8 @@ protocol SelectedCurrencyUpdatable: AnyObject {
 }
 
 protocol CurrencyControllerProviding: AnyObject {
-  /// Holds the currency selected by toggling currency
-  var currentCurrencyCode: CurrencyCode { get set }
+  /// Returns the currency selected by toggling currency
+  var selectedCurrencyCode: CurrencyCode { get }
 
   /// The fiat currency preferred by the user
   var fiatCurrency: CurrencyCode { get }
@@ -48,23 +48,28 @@ protocol CurrencyControllerProviding: AnyObject {
 }
 
 class CurrencyController: CurrencyControllerProviding {
-  var currentCurrencyCode: CurrencyCode
+
   var fiatCurrency: CurrencyCode
   var exchangeRates: ExchangeRates
   var selectedCurrency: SelectedCurrency
 
-  init(currentCurrencyCode: CurrencyCode,
-       fiatCurrency: CurrencyCode,
+  init(fiatCurrency: CurrencyCode,
        selectedCurrency: SelectedCurrency = .fiat,
        exchangeRates: ExchangeRates = [:]) {
-    self.currentCurrencyCode = currentCurrencyCode
     self.fiatCurrency = fiatCurrency
-    self.exchangeRates = exchangeRates
     self.selectedCurrency = selectedCurrency
+    self.exchangeRates = exchangeRates
+  }
+
+  var selectedCurrencyCode: CurrencyCode {
+    switch selectedCurrency {
+    case .BTC:  return .BTC
+    case .fiat: return fiatCurrency
+    }
   }
 
   var currencyPair: CurrencyPair {
-    return CurrencyPair(primary: currentCurrencyCode, secondary: convertedCurrencyCode, fiat: fiatCurrency)
+    return CurrencyPair(primary: selectedCurrencyCode, secondary: convertedCurrencyCode, fiat: fiatCurrency)
   }
 
   var currencyConverter: CurrencyConverter {
@@ -72,9 +77,9 @@ class CurrencyController: CurrencyControllerProviding {
   }
 
   private var convertedCurrencyCode: CurrencyCode {
-    switch currentCurrencyCode {
-    case .BTC: return .USD
-    case .USD: return .BTC
+    switch selectedCurrencyCode {
+    case .BTC: return fiatCurrency
+    default: return .BTC
     }
   }
 }

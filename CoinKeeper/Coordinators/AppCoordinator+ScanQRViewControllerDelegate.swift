@@ -65,7 +65,7 @@ extension AppCoordinator: ScanQRViewControllerDelegate {
 
     let viewModel = SendPaymentViewModel(qrCode: qrCodeToUse,
                                          exchangeRates: self.exchangeRates,
-                                         fiatCurrency: self.fiatCurrency,
+                                         currencyPair: self.currencyController.currencyPair,
                                          delegate: nil)
 
     let sendPaymentVC = SendPaymentViewController.newInstance(delegate: self, viewModel: viewModel)

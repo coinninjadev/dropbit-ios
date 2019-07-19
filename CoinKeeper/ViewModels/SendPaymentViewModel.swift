@@ -76,9 +76,9 @@ class SendPaymentViewModel: CurrencySwappableEditAmountViewModel {
   // delegate may be nil at init since the delegate is likely a view controller which requires this view model for its own creation
   init(qrCode: QRCode,
        exchangeRates: ExchangeRates,
-       fiatCurrency: CurrencyCode,
+       currencyPair: CurrencyPair,
        delegate: CurrencySwappableEditAmountViewModelDelegate? = nil) {
-    let currencyPair = CurrencyPair(primary: .BTC, secondary: fiatCurrency, fiat: fiatCurrency)
+    let currencyPair = CurrencyPair(primary: .BTC, fiat: currencyPair.fiat)
     let viewModel = CurrencySwappableEditAmountViewModel(exchangeRates: exchangeRates,
                                                          primaryAmount: qrCode.btcAmount ?? .zero,
                                                          currencyPair: currencyPair,
