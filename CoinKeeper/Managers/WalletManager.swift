@@ -91,7 +91,7 @@ protocol WalletManagerType: AnyObject {
 class WalletManager: WalletManagerType {
 
   func encryptionCipherKeys(forUncompressedPublicKey pubkey: Data) -> CNBEncryptionCipherKeys {
-    return wallet.encryptionCipherKeys(forPublicKey: pubkey)
+    return wallet.encryptionCipherKeys(forPublicKey: pubkey, withEntropy: WalletManager.secureEntropy())
   }
 
   func decryptionCipherKeys(
@@ -120,8 +120,21 @@ class WalletManager: WalletManagerType {
     }
   }
 
+  private static func secureEntropy() -> Data {
+    let len = 16; // 16 bytes
+    var data = Data(count: len)
+
+    let result = data.withUnsafeMutableBytes { SecRandomCopyBytes(kSecRandomDefault, len, $0.baseAddress!) }
+
+    guard result == errSecSuccess else { return Data() }
+
+    return data
+  }
+
   public static func createMnemonicWords() -> [String] {
-    return CNBHDWallet.createMnemonicWords()
+    let entropy = secureEntropy()
+    let words = CNBHDWallet.createMnemonicWords(withEntropy: entropy)
+    return words
   }
 
   static func validateBase58Check(for address: String) -> Bool {
