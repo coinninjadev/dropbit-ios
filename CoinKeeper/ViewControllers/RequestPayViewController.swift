@@ -59,6 +59,7 @@ final class RequestPayViewController: PresentableViewController, StoryboardIniti
   }
 
   @IBAction func closeButtonTapped(_ sender: UIButton) {
+    editAmountView.primaryAmountTextField.resignFirstResponder()
     coordinationDelegate?.viewControllerDidSelectClose(self)
   }
 

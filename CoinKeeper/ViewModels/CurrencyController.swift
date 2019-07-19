@@ -21,6 +21,14 @@ enum SelectedCurrency: String {
   var description: String {
     return self.rawValue
   }
+
+  var code: CurrencyCode {
+    switch self {
+    case .fiat: return .USD
+    case .BTC:  return .BTC
+    }
+  }
+
 }
 
 protocol SelectedCurrencyUpdatable: AnyObject {

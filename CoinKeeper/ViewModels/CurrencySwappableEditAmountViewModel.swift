@@ -187,16 +187,19 @@ class CurrencySwappableEditAmountViewModel: NSObject, DualAmountDisplayable {
 extension CurrencySwappableEditAmountViewModel: UITextFieldDelegate {
 
   @objc func primaryAmountTextFieldDidChange(_ textField: UITextField) {
-    fromAmount = sanitizedAmount(fromRawText: textField.text)
+    updateFromAmount(with: textField)
+    if fromAmount == .zero {
+      textField.text = primaryCurrency.symbol
+    }
     delegate?.viewModelDidChangeAmount(self)
   }
 
   func textFieldDidBeginEditing(_ textField: UITextField) {
-    let amount = sanitizedAmount(fromRawText: textField.text)
     delegate?.viewModelDidBeginEditingAmount(self)
-    if amount == .zero {
-      textField.text = primaryCurrency.symbol
-    }
+  }
+
+  private func updateFromAmount(with textField: UITextField) {
+    fromAmount = sanitizedAmount(fromRawText: textField.text)
   }
 
   func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
@@ -245,11 +248,6 @@ extension CurrencySwappableEditAmountViewModel: UITextFieldDelegate {
   }
 
   func textFieldDidEndEditing(_ textField: UITextField) {
-    // Skip triggering changes/validation if textField is empty
-    guard let text = textField.text, text.isNotEmpty else {
-      return
-    }
-
     delegate?.viewModelDidEndEditingAmount(self)
   }
 
