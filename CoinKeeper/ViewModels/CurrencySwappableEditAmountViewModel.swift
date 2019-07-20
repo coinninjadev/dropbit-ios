@@ -196,9 +196,6 @@ extension CurrencySwappableEditAmountViewModel: UITextFieldDelegate {
 
   @objc func primaryAmountTextFieldDidChange(_ textField: UITextField) {
     fromAmount = sanitizedAmount(fromRawText: textField.text)
-    if fromAmount == .zero {
-      textField.text = primaryCurrency.symbol
-    }
     delegate?.viewModelDidChangeAmount(self)
   }
 
@@ -223,10 +220,6 @@ extension CurrencySwappableEditAmountViewModel: UITextFieldDelegate {
     }
 
     let finalString = text.replacingCharacters(in: swiftRange, with: string)
-    return primaryAmountTextFieldShouldChangeCharacters(inProposedString: finalString)
-  }
-
-  private func primaryAmountTextFieldShouldChangeCharacters(inProposedString finalString: String) -> Bool {
     let splitByDecimalArray = finalString.components(separatedBy: decimalSeparator).dropFirst()
 
     if !splitByDecimalArray.isEmpty {
