@@ -40,9 +40,6 @@ class BaseConfirmPaymentViewModel: DualAmountDisplayable {
     }
   }
 
-  mutating func update(with transactionData: CNBTransactionData) {
-  }
-
   var memo: String? {
     return nil
   }
@@ -87,7 +84,6 @@ class ConfirmPaymentInviteViewModel: BaseConfirmPaymentViewModel {
                exchangeRates: exchangeRates)
   }
 
-  mutating func update(with transactionData: CNBTransactionData) { }
 }
 
 class ConfirmPaymentViewModel: BaseConfirmPaymentViewModel {
