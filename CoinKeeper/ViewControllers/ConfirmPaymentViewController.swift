@@ -142,17 +142,23 @@ class ConfirmPaymentViewController: PresentableViewController, StoryboardInitial
   }
 
   private func updateView(with viewModel: BaseConfirmPaymentViewModel) {
+    self.viewModel = viewModel
     updateAmounts(with: viewModel)
     updateRecipient(with: viewModel)
     updateMemoView(with: viewModel)
   }
 
   private func updateAmounts(with viewModel: BaseConfirmPaymentViewModel) {
+    self.viewModel = viewModel
+    updateCurrencyUI(with: viewModel)
+    updateFees(with: self.feeModel, rates: viewModel.exchangeRates)
+  }
+
+  private func updateCurrencyUI(with viewModel: BaseConfirmPaymentViewModel) {
+    self.viewModel = viewModel
     let labels = viewModel.dualAmountLabels()
     primaryCurrencyLabel.text = labels.primary
     secondaryCurrencyLabel.attributedText = labels.secondary
-
-    updateFees(with: self.feeModel, rates: viewModel.exchangeRates)
   }
 
   private func updateFees(with feeModel: ConfirmTransactionFeeModel, rates: ExchangeRates) {
@@ -168,7 +174,7 @@ class ConfirmPaymentViewController: PresentableViewController, StoryboardInitial
       adjustableFeesLabel.attributedText = vm.attributedWaitTimeDescription
 
       self.viewModel?.update(with: feeModel.transactionData)
-      self.viewModel.flatMap { self.updateView(with: $0) }
+      self.viewModel.flatMap(self.updateCurrencyUI)
 
     case .required, .standard:
       adjustableFeesContainer.isHidden = true
@@ -184,6 +190,7 @@ class ConfirmPaymentViewController: PresentableViewController, StoryboardInitial
   }
 
   private func updateRecipient(with viewModel: BaseConfirmPaymentViewModel) {
+    self.viewModel = viewModel
     // Hide address labels by default, unhide as needed
     // Contact label is always shown, set text to nil to hide
     primaryAddressLabel.isHidden = true
@@ -248,6 +255,7 @@ class ConfirmPaymentViewController: PresentableViewController, StoryboardInitial
   }
 
   private func updateMemoView(with viewModel: BaseConfirmPaymentViewModel) {
+    self.viewModel = viewModel
     if let memo = viewModel.memo {
       memoContainerView.isHidden = false
 
