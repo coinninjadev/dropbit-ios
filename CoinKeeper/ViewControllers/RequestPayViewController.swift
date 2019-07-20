@@ -72,10 +72,10 @@ final class RequestPayViewController: PresentableViewController, StoryboardIniti
   @IBAction func sendRequestButtonTapped(_ sender: UIButton) {
     var payload: [Any] = []
     qrImageView.image.flatMap { $0.pngData() }.flatMap { payload.append($0) }
-    if let viewModel = viewModel {
-      if let amount = viewModel.bitcoinUrl.components.amount, amount > 0 {
-        payload.append(viewModel.bitcoinUrl.absoluteString) //include amount details
-      } else if let address = viewModel.bitcoinUrl.components.address {
+    if let viewModel = viewModel, let btcURL = viewModel.bitcoinURL {
+      if let amount = btcURL.components.amount, amount > 0 {
+        payload.append(btcURL.absoluteString) //include amount details
+      } else if let address = btcURL.components.address {
         payload.append(address)
       }
     }
@@ -83,7 +83,7 @@ final class RequestPayViewController: PresentableViewController, StoryboardIniti
   }
 
   @IBAction func addressTapped(_ sender: UITapGestureRecognizer) {
-    UIPasteboard.general.string = viewModel.bitcoinUrl.components.address
+    UIPasteboard.general.string = viewModel.receiveAddress
     coordinationDelegate?.viewControllerSuccessfullyCopiedToClipboard(message: "Address copied to clipboard!", viewController: self)
   }
 
@@ -175,7 +175,7 @@ final class RequestPayViewController: PresentableViewController, StoryboardIniti
   }
 
   func updateViewWithViewModel() {
-    receiveAddressLabel.text = viewModel.bitcoinUrl.components.address
+    receiveAddressLabel.text = viewModel.receiveAddress
     qrImageView.image = viewModel.qrImage(withSize: qrImageView.frame.size)
     let labels = viewModel.dualAmountLabels()
     editAmountView.configure(withLabels: labels, delegate: self)
