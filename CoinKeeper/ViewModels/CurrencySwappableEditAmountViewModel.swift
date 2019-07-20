@@ -25,11 +25,15 @@ extension DualAmountDisplayable {
     return decimalSeparator.first ?? "."
   }
 
-  func dualAmountLabels(withSymbols: Bool = true) -> DualAmountLabels {
+  /// hidePrimaryZero will return the currency symbol only if primary amount is zero, useful during editing
+  func dualAmountLabels(withSymbols: Bool = true, hidePrimaryZero: Bool = false) -> DualAmountLabels {
     let currencyConverter = generateCurrencyConverter()
     let primaryCurrency = currencyPair.primary
 
     var primaryLabel = currencyConverter.amountStringWithSymbol(forCurrency: primaryCurrency)
+    if hidePrimaryZero && fromAmount == .zero {
+      primaryLabel = primaryCurrency.symbol
+    }
 
     let secondaryCurrency = currencyConverter.otherCurrency(forCurrency: primaryCurrency)
     var secondaryLabel = currencyConverter.attributedStringWithSymbol(forCurrency: secondaryCurrency)
