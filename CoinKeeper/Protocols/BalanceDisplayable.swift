@@ -78,7 +78,7 @@ class ExchangeRateManager {
 
   init() {
     let cachedExchangeRate = CKUserDefaults().standardDefaults.double(forKey: CKUserDefaults.Key.exchangeRateBTCUSD.defaultsString)
-    self.exchangeRates = [.BTC: cachedExchangeRate, .USD: 1]
+    self.exchangeRates = [.BTC: 1, .USD: cachedExchangeRate]
   }
 }
 
@@ -143,7 +143,7 @@ extension BalanceDisplayable where Self: UIViewController {
     }
 
     let rates = rateManager.exchangeRates
-    let converter = CurrencyConverter(rates: rates, fromAmount: sanitizedBalance, fromCurrency: .BTC, toCurrency: .USD)
+    let converter = CurrencyConverter(fromBtcTo: .USD, fromAmount: sanitizedBalance, rates: rates)
 
     return BalanceContainerDataSource(
       leftButtonType: balanceLeftButtonType,

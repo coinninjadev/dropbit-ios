@@ -122,7 +122,7 @@ extension AppCoordinator: TransactionHistoryViewControllerDelegate {
     permissionManager.requestPermission(for: .camera) { [weak self] status in
       switch status {
       case .authorized:
-        self?.showScanViewController(fallbackBTCAmount: converter.btcValue, primaryCurrency: converter.fromCurrency)
+        self?.showScanViewController(fallbackBTCAmount: converter.btcAmount, primaryCurrency: converter.fromCurrency)
       default:
         break
       }
@@ -138,12 +138,13 @@ extension AppCoordinator: TransactionHistoryViewControllerDelegate {
 
   func viewControllerDidTapSendPayment(_ viewController: UIViewController, converter: CurrencyConverter) {
     analyticsManager.track(event: .payButtonWasPressed, with: nil)
-    let sendPaymentViewController = SendPaymentViewController.makeFromStoryboard()
-    assignCoordinationDelegate(to: sendPaymentViewController)
+
+    let swappableVM = CurrencySwappableEditAmountViewModel(exchangeRates: self.currencyController.exchangeRates,
+                                                           primaryAmount: converter.fromAmount,
+                                                           currencyPair: self.currencyController.currencyPair)
+    let sendPaymentVM = SendPaymentViewModel(editAmountViewModel: swappableVM)
+    let sendPaymentViewController = SendPaymentViewController.newInstance(delegate: self, viewModel: sendPaymentVM)
     sendPaymentViewController.alertManager = self.alertManager
-    sendPaymentViewController.viewModel = SendPaymentViewModel(btcAmount: converter.btcValue,
-                                                               primaryCurrency: converter.fromCurrency)
-    sendPaymentViewController.viewModel.updatePrimaryCurrency(to: currencyController.selectedCurrency)
     navigationController.present(sendPaymentViewController, animated: true)
   }
 

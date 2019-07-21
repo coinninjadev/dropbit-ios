@@ -69,8 +69,14 @@ class CurrencyAmountValidator: ValidatorType<CurrencyConverter> {
   }
 
   override func validate(value: CurrencyConverter) throws {
-    let btcValue = value.btcValue
+    let btcValue = value.btcAmount
     let usdValue = value.amount(forCurrency: .USD) ?? .zero
+
+    switch btcValue {
+    case .notANumber: throw CurrencyStringValidatorError.notANumber
+    case .zero:       throw CurrencyStringValidatorError.isZero
+    default:          break
+    }
 
     let maxMoney = CurrencyAmountValidator.invitationMax
 
@@ -86,4 +92,22 @@ class CurrencyAmountValidator: ValidatorType<CurrencyConverter> {
       throw CurrencyAmountValidatorError.usableBalance(spendableMoney)
     }
   }
+
+  enum CurrencyStringValidatorError: ValidatorTypeError {
+    case isZero
+    case notANumber
+
+    var debugMessage: String {
+      switch self {
+      case .isZero: return "Amount cannot be zero."
+      case .notANumber: return "Amount is not a number."
+      }
+    }
+
+    var displayMessage: String? {
+      return debugMessage
+    }
+
+  }
+
 }

@@ -10,64 +10,112 @@ import Foundation
 import Contacts
 import CNBitcoinKit
 
-protocol ConfirmPaymentViewModelType: SendPaymentDataProvider {
-  var address: String? { get }
-  var contact: ContactType? { get }
-  var btcAmount: NSDecimalNumber? { get }
-  var primaryCurrency: CurrencyCode { get }
-  var rates: ExchangeRates { get }
-  var sharedPayloadDTO: SharedPayloadDTO? { get }
+class BaseConfirmPaymentViewModel: DualAmountDisplayable {
+  let address: String?
+  let contact: ContactType?
+  var btcAmount: NSDecimalNumber
+  let currencyPair: CurrencyPair
+  let exchangeRates: ExchangeRates
 
-  mutating func update(with transactionData: CNBTransactionData)
+  init(address: String?,
+       contact: ContactType?,
+       btcAmount: NSDecimalNumber,
+       currencyPair: CurrencyPair,
+       exchangeRates: ExchangeRates) {
+    self.address = address
+    self.contact = contact
+    self.btcAmount = btcAmount
+    self.currencyPair = currencyPair
+    self.exchangeRates = exchangeRates
+  }
+
+  /// The btcAmount and fromAmount may or may not be the same
+  var fromAmount: NSDecimalNumber {
+    if currencyPair.primary == .BTC {
+      return btcAmount
+    } else {
+      let converter = CurrencyConverter(rates: exchangeRates, fromAmount: btcAmount, currencyPair: currencyPair)
+      let fiatAmount = converter.amount(forCurrency: currencyPair.fiat) ?? .zero
+      return fiatAmount
+    }
+  }
+
+  var memo: String? {
+    return nil
+  }
+
+  var shouldShareMemo: Bool {
+    return false
+  }
+
+  func update(with transactionData: CNBTransactionData) {
+    self.btcAmount = NSDecimalNumber(integerAmount: Int(transactionData.amount), currency: .BTC)
+  }
+
 }
 
-struct ConfirmPaymentInviteViewModel: ConfirmPaymentViewModelType {
-  var address: String?
-  var contact: ContactType?
-  var btcAmount: NSDecimalNumber?
-  let primaryCurrency: CurrencyCode
-  let rates: ExchangeRates
-  let sharedPayloadDTO: SharedPayloadDTO?
+class ConfirmPaymentInviteViewModel: BaseConfirmPaymentViewModel {
+
+  let sharedPayloadDTO: SharedPayloadDTO
 
   var addressPublicKeyState: AddressPublicKeyState {
     return .invite
   }
 
-  mutating func update(with transactionData: CNBTransactionData) { }
+  override var memo: String? {
+    return sharedPayloadDTO.memo
+  }
+
+  override var shouldShareMemo: Bool {
+    return sharedPayloadDTO.shouldShare
+  }
+
+  init(address: String?,
+       contact: ContactType?,
+       btcAmount: NSDecimalNumber,
+       currencyPair: CurrencyPair,
+       exchangeRates: ExchangeRates,
+       sharedPayloadDTO: SharedPayloadDTO) {
+    self.sharedPayloadDTO = sharedPayloadDTO
+    super.init(address: address,
+               contact: contact,
+               btcAmount: btcAmount,
+               currencyPair: currencyPair,
+               exchangeRates: exchangeRates)
+  }
+
 }
 
-struct ConfirmPaymentViewModel: ConfirmPaymentViewModelType {
+class ConfirmPaymentViewModel: BaseConfirmPaymentViewModel {
 
-  var address: String?
-  var contact: ContactType?
-  var btcAmount: NSDecimalNumber?
-  var primaryCurrency: CurrencyCode
   var outgoingTransactionData: OutgoingTransactionData
-  var rates: ExchangeRates
 
   var sharedPayloadDTO: SharedPayloadDTO? {
     return outgoingTransactionData.sharedPayloadDTO
   }
 
-  init(
-    btcAmount: NSDecimalNumber,
-    primaryCurrency: CurrencyCode,
-    address: String?,
-    contact: ContactType?,
-    outgoingTransactionData: OutgoingTransactionData,
-    rates: ExchangeRates
-    ) {
-    self.btcAmount = btcAmount
-    self.contact = contact
-    self.primaryCurrency = primaryCurrency
-    self.address = address
-    self.outgoingTransactionData = outgoingTransactionData
-    self.rates = rates
+  override var memo: String? {
+    return sharedPayloadDTO?.memo
   }
 
-  mutating func update(with transactionData: CNBTransactionData) {
-    btcAmount = NSDecimalNumber(integerAmount: Int(transactionData.amount), currency: .BTC)
+  override var shouldShareMemo: Bool {
+    return sharedPayloadDTO?.shouldShare ?? false
   }
+
+  init(address: String?,
+       contact: ContactType?,
+       btcAmount: NSDecimalNumber,
+       currencyPair: CurrencyPair,
+       exchangeRates: ExchangeRates,
+       outgoingTransactionData: OutgoingTransactionData) {
+    self.outgoingTransactionData = outgoingTransactionData
+    super.init(address: address,
+               contact: contact,
+               btcAmount: btcAmount,
+               currencyPair: currencyPair,
+               exchangeRates: exchangeRates)
+  }
+
 }
 
 struct FeeRates {

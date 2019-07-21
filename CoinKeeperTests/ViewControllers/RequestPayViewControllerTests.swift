@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import PromiseKit
 @testable import DropBit
 import XCTest
 
@@ -31,7 +32,7 @@ class RequestPayViewControllerTests: XCTestCase {
   func testOutletsAreConnected() {
     XCTAssertNotNil(self.sut.closeButton, "closeButton should be connected")
     XCTAssertNotNil(self.sut.titleLabel, "titleLabel should be connected")
-    XCTAssertNotNil(self.sut.currencyEditSwapView, "currencyEditSwapView should be connected")
+    XCTAssertNotNil(self.sut.editAmountView, "currencyEditSwapView should be connected")
     XCTAssertNotNil(self.sut.qrImageView, "qrImageView should be connected")
     XCTAssertNotNil(self.sut.receiveAddressLabel, "receiveAddressLabel should be connected")
     XCTAssertNotNil(self.sut.receiveAddressTapGesture, "receiveAddressTapGesture should be connected")
@@ -79,9 +80,14 @@ class RequestPayViewControllerTests: XCTestCase {
   func testTappingLabelCopiesAddress() {
     let sampleRates: ExchangeRates = [.BTC: 1, .USD: 7000]
     let mockCoordinator = setupDelegate()
-    let converter = CurrencyConverter(rates: sampleRates, fromAmount: 50.0, fromCurrency: .BTC, toCurrency: .USD)
     let address = "12A1MyfXbW6RhdRAZEqofac5jCQQjwEPBu"
-    self.sut.viewModel = RequestPayViewModel(receiveAddress: address, currencyConverter: converter)
+    let currencyPair = CurrencyPair(primary: .BTC, fiat: .USD)
+    let swappableViewModel = CurrencySwappableEditAmountViewModel(exchangeRates: sampleRates,
+                                                                  primaryAmount: 50,
+                                                                  currencyPair: currencyPair,
+                                                                  delegate: nil)
+    self.sut.viewModel = RequestPayViewModel(receiveAddress: address, viewModel: swappableViewModel)
+
     let tap = UITapGestureRecognizer()
 
     // initial
@@ -103,6 +109,16 @@ class RequestPayViewControllerTests: XCTestCase {
 
   // MARK: mock coordinator
   class MockCoordinator: RequestPayViewControllerDelegate {
+
+    func latestExchangeRates(responseHandler: (ExchangeRates) -> Void) {}
+    func latestFees() -> Promise<Fees> {
+      return Promise { _ in }
+    }
+
+    func viewControllerDidRequestNextReceiveAddress(_ viewController: UIViewController) -> String? {
+      return nil
+    }
+
     var copiedToClipboardWasCalled = false
     func viewControllerSuccessfullyCopiedToClipboard(message: String, viewController: UIViewController) {
       copiedToClipboardWasCalled = true

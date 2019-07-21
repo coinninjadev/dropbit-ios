@@ -25,37 +25,30 @@ typealias BitcoinUSDPair = (btcAmount: NSDecimalNumber, usdAmount: NSDecimalNumb
 
 class ConfirmPaymentViewController: PresentableViewController, StoryboardInitializable {
 
-  static func newInstance(kind: Kind,
+  static func newInstance(type: TransactionType,
+                          viewModel: BaseConfirmPaymentViewModel,
                           feeModel: ConfirmTransactionFeeModel,
                           delegate: ConfirmPaymentViewControllerDelegate) -> ConfirmPaymentViewController {
     let vc = ConfirmPaymentViewController.makeFromStoryboard()
-    vc.generalCoordinationDelegate = delegate
-    vc.kind = kind
+    vc.transactionType = type
+    vc.viewModel = viewModel
     vc.feeModel = feeModel
-    switch kind {
-    case .invite(let vm):
-      vc.exchangeRates = vm.rates
-    case .payment(let vm):
-      vc.exchangeRates = vm.rates
-    }
-
+    vc.generalCoordinationDelegate = delegate
     return vc
   }
 
-  enum Kind {
-    case invite(ConfirmPaymentInviteViewModel)
-    case payment(ConfirmPaymentViewModel)
+  enum TransactionType {
+    case invite, payment
   }
 
-  var kind: Kind?
-  var feeModel: ConfirmTransactionFeeModel!
-  var exchangeRates: ExchangeRates!
+  private var transactionType: TransactionType = .payment
+  private var viewModel: BaseConfirmPaymentViewModel!
+  private var feeModel: ConfirmTransactionFeeModel!
 
   lazy private var confirmLongPressGestureRecognizer: UILongPressGestureRecognizer =
     UILongPressGestureRecognizer(target: self, action: #selector(confirmButtonDidConfirm))
 
   private var feedbackGenerator: UIImpactFeedbackGenerator = UIImpactFeedbackGenerator(style: .medium)
-  private var viewModel: ConfirmPaymentViewModelType?
 
   @IBOutlet var closeButton: UIButton!
   @IBOutlet var confirmButton: ConfirmPaymentButton!
@@ -86,17 +79,96 @@ class ConfirmPaymentViewController: PresentableViewController, StoryboardInitial
       if selectedModel.isSelectable {
         let newAdjustableModel = adjustableModel.copy(selecting: selectedModel.type)
         self.feeModel = .adjustable(newAdjustableModel)
+        self.viewModel.update(with: self.feeModel.transactionData)
+
       } else {
         coordinationDelegate?.viewControllerRequestedShowFeeTooExpensiveAlert(self)
       }
 
-      self.updateFees(with: self.feeModel, rates: self.exchangeRates)
+      self.updateFeeViews()
+      self.updateAmountViews()
     default:
       break
     }
   }
 
-  private func setupViews() {
+  @IBAction func closeButtonWasTouched() {
+    coordinationDelegate?.viewControllerDidSelectClose(self)
+  }
+
+  @IBAction func confirmButtonWasHeld() {
+    feedbackGenerator.impactOccurred()
+    confirmButton.animate()
+  }
+
+  @IBAction func confirmButtonWasReleased() {
+    confirmButton.reset()
+  }
+
+  override func viewDidLoad() {
+    super.viewDidLoad()
+
+    feedbackGenerator.prepare()
+    confirmLongPressGestureRecognizer.allowableMovement = 1000
+    confirmLongPressGestureRecognizer.minimumPressDuration = confirmButton.secondsToConfirm
+    confirmButton.addGestureRecognizer(confirmLongPressGestureRecognizer)
+    setupViews()
+
+    coordinationDelegate?.confirmPaymentViewControllerDidLoad(self)
+
+    updateViewWithModel()
+  }
+
+  @objc func confirmButtonDidConfirm() {
+    if confirmLongPressGestureRecognizer.state == .began {
+      switch transactionType {
+      case .invite:
+        confirmInvite(with: viewModel, feeModel: self.feeModel)
+      case .payment:
+        confirmPayment(with: viewModel, feeModel: self.feeModel)
+      }
+    }
+
+    confirmButton.reset()
+  }
+
+  private func confirmPayment(with baseViewModel: BaseConfirmPaymentViewModel,
+                              feeModel: ConfirmTransactionFeeModel) {
+    guard let viewModel = baseViewModel as? ConfirmPaymentViewModel else { return }
+    var feeAdjustedOutgoingTxData = viewModel.outgoingTransactionData
+    feeAdjustedOutgoingTxData.amount = Int(feeModel.transactionData.amount)
+    feeAdjustedOutgoingTxData.feeAmount = Int(feeModel.transactionData.feeAmount)
+
+    coordinationDelegate?.viewControllerDidConfirmPayment(
+      self,
+      transactionData: feeModel.transactionData,
+      rates: viewModel.exchangeRates,
+      outgoingTransactionData: feeAdjustedOutgoingTxData
+    )
+  }
+
+  private func confirmInvite(with baseViewModel: BaseConfirmPaymentViewModel,
+                             feeModel: ConfirmTransactionFeeModel) {
+    guard let viewModel = baseViewModel as? ConfirmPaymentInviteViewModel,
+      let contact = viewModel.contact else { return }
+    let btcAmount = viewModel.btcAmount
+    let converter = CurrencyConverter(fromBtcTo: .USD, fromAmount: btcAmount, rates: viewModel.exchangeRates)
+
+    let pair = (btcAmount: btcAmount, usdAmount: converter.amount(forCurrency: .USD) ?? NSDecimalNumber(decimal: 0.0))
+    let outgoingInvitationDTO = OutgoingInvitationDTO(contact: contact,
+                                                      btcPair: pair,
+                                                      fee: feeModel.feeAmount,
+                                                      sharedPayloadDTO: viewModel.sharedPayloadDTO)
+    coordinationDelegate?.viewControllerDidConfirmInvite(self, outgoingInvitationDTO: outgoingInvitationDTO)
+  }
+
+}
+
+// MARK: - View Configuration
+
+extension ConfirmPaymentViewController {
+
+  fileprivate func setupViews() {
     titleLabel.font = .regular(15)
     titleLabel.textColor = .darkBlueText
 
@@ -141,26 +213,23 @@ class ConfirmPaymentViewController: PresentableViewController, StoryboardInitial
       ], for: .selected)
   }
 
-  private func updateView(with viewModel: ConfirmPaymentViewModelType) {
-    self.viewModel = viewModel
-    updateAmounts(with: viewModel)
-    updateRecipient(with: viewModel)
-    updateMemoView(with: viewModel)
+  fileprivate func updateViewWithModel() {
+    guard viewModel != nil else { return }
+    updateAmountViews()
+    updateFeeViews()
+    updateRecipientViews()
+    updateMemoView()
   }
 
-  private func updateAmounts(with viewModel: ConfirmPaymentViewModelType) {
-    self.viewModel = viewModel
-    updateCurrencyLabels(with: viewModel)
-    updateFees(with: self.feeModel, rates: viewModel.rates)
+  fileprivate func updateAmountViews() {
+    let converter = viewModel.generateCurrencyConverter(withBTCAmount: viewModel.btcAmount)
+    let labels = viewModel.dualAmountLabels(withConverter: converter)
+    primaryCurrencyLabel.text = labels.primary
+    secondaryCurrencyLabel.attributedText = labels.secondary
   }
 
-  private func updateCurrencyLabels(with viewModel: ConfirmPaymentViewModelType) {
-    let amounts = viewModel.amountLabels(withRates: viewModel.rates, withSymbols: true)
-    primaryCurrencyLabel.text = amounts.primary
-    secondaryCurrencyLabel.attributedText = amounts.secondary
-  }
-
-  private func updateFees(with feeModel: ConfirmTransactionFeeModel, rates: ExchangeRates) {
+  fileprivate func updateFeeViews() {
+    guard let feeModel = feeModel else { return }
 
     switch feeModel {
     case .adjustable(let vm):
@@ -172,27 +241,20 @@ class ConfirmPaymentViewController: PresentableViewController, StoryboardInitial
 
       adjustableFeesLabel.attributedText = vm.attributedWaitTimeDescription
 
-      self.viewModel?.update(with: feeModel.transactionData)
-      self.viewModel.map { self.updateCurrencyLabels(with: $0) }
-
     case .required, .standard:
       adjustableFeesContainer.isHidden = true
     }
 
     let feeDecimalAmount = NSDecimalNumber(integerAmount: feeModel.feeAmount, currency: .BTC)
-    let feeConverter = CurrencyConverter(rates: rates,
+    let feeConverter = CurrencyConverter(fromBtcTo: .USD,
                                          fromAmount: feeDecimalAmount,
-                                         fromCurrency: .BTC,
-                                         toCurrency: .USD)
-
+                                         rates: self.viewModel.exchangeRates)
     let btcFee = String(describing: feeConverter.amount(forCurrency: .BTC) ?? 0)
     let fiatFee = feeConverter.amountStringWithSymbol(forCurrency: .USD) ?? ""
     networkFeeLabel.text = "Network Fee \(btcFee) (\(fiatFee))"
   }
 
-  private func updateRecipient(with viewModel: ConfirmPaymentViewModelType) {
-    self.viewModel = viewModel
-
+  fileprivate func updateRecipientViews() {
     // Hide address labels by default, unhide as needed
     // Contact label is always shown, set text to nil to hide
     primaryAddressLabel.isHidden = true
@@ -256,14 +318,12 @@ class ConfirmPaymentViewController: PresentableViewController, StoryboardInitial
     }
   }
 
-  private func updateMemoView(with viewModel: ConfirmPaymentViewModelType) {
-    self.viewModel = viewModel
-
-    if let payload = viewModel.sharedPayloadDTO, let memo = payload.memo {
+  fileprivate func updateMemoView() {
+    if let memo = viewModel.memo {
       memoContainerView.isHidden = false
 
       memoContainerView.configure(memo: memo,
-                                  isShared: payload.shouldShare,
+                                  isShared: viewModel.shouldShareMemo,
                                   isSent: false,
                                   isIncoming: false,
                                   recipientName: viewModel.contact?.displayName)
@@ -272,82 +332,4 @@ class ConfirmPaymentViewController: PresentableViewController, StoryboardInitial
     }
   }
 
-  override func viewDidLoad() {
-    super.viewDidLoad()
-
-    feedbackGenerator.prepare()
-    confirmLongPressGestureRecognizer.allowableMovement = 1000
-    confirmLongPressGestureRecognizer.minimumPressDuration = confirmButton.secondsToConfirm
-    confirmButton.addGestureRecognizer(confirmLongPressGestureRecognizer)
-    setupViews()
-
-    coordinationDelegate?.confirmPaymentViewControllerDidLoad(self)
-
-    guard let kind = kind else { return }
-    switch kind {
-    case .invite(let viewModel):
-      updateView(with: viewModel)
-    case .payment(let viewModel):
-      updateView(with: viewModel)
-    }
-  }
-
-  @objc func confirmButtonDidConfirm() {
-    guard let kind = kind else { return }
-
-    if confirmLongPressGestureRecognizer.state == .began {
-      switch kind {
-      case .invite(let viewModel):
-        confirmInvite(with: viewModel, feeModel: self.feeModel)
-      case .payment(let viewModel):
-        confirmPayment(with: viewModel, feeModel: self.feeModel)
-      }
-    }
-
-    confirmButton.reset()
-  }
-
-  private func confirmPayment(with viewModel: ConfirmPaymentViewModel,
-                              feeModel: ConfirmTransactionFeeModel) {
-    var feeAdjustedOutgoingTxData = viewModel.outgoingTransactionData
-    feeAdjustedOutgoingTxData.amount = Int(feeModel.transactionData.amount)
-    feeAdjustedOutgoingTxData.feeAmount = Int(feeModel.transactionData.feeAmount)
-
-    coordinationDelegate?.viewControllerDidConfirmPayment(
-      self,
-      transactionData: feeModel.transactionData,
-      rates: viewModel.rates,
-      outgoingTransactionData: feeAdjustedOutgoingTxData
-    )
-  }
-
-  private func confirmInvite(with viewModel: ConfirmPaymentInviteViewModel,
-                             feeModel: ConfirmTransactionFeeModel) {
-    guard let contact = viewModel.contact, let btcAmount = viewModel.btcAmount else { return }
-
-    let converter = CurrencyConverter(rates: viewModel.rates,
-                                      fromAmount: btcAmount,
-                                      fromCurrency: .BTC,
-                                      toCurrency: .USD)
-
-    let pair = (btcAmount: btcAmount, usdAmount: converter.amount(forCurrency: .USD) ?? NSDecimalNumber(decimal: 0.0))
-    let outgoingInvitationDTO = OutgoingInvitationDTO(contact: contact,
-                                                      btcPair: pair,
-                                                      fee: feeModel.feeAmount,
-                                                      sharedPayloadDTO: viewModel.sharedPayloadDTO)
-    coordinationDelegate?.viewControllerDidConfirmInvite(self, outgoingInvitationDTO: outgoingInvitationDTO)
-  }
-
-  @IBAction func closeButtonWasTouched() {
-    coordinationDelegate?.viewControllerDidSelectClose(self)
-  }
-
-  @IBAction func confirmButtonWasHeld() {
-    feedbackGenerator.impactOccurred()
-    confirmButton.animate()
-  }
-
-  @IBAction func confirmButtonWasReleased() {
-    confirmButton.reset()
-  }
 }

@@ -194,24 +194,29 @@ extension AppCoordinator {
     return drawerController!
   }
 
-  func createRequestPayViewController(converter: CurrencyConverter) -> RequestPayViewController? {
+  func nextReceiveAddressForRequestPay() -> String? {
     guard let wmgr = walletManager else { return nil }
-    let requestViewController = RequestPayViewController.makeFromStoryboard()
-    assignCoordinationDelegate(to: requestViewController)
 
     var nextAddress: String?
     let bgContext = persistenceManager.createBackgroundContext()
     bgContext.performAndWait {
-      guard let receiveAddress = wmgr.createAddressDataSource().nextAvailableReceiveAddress(forServerPool: false,
-                                                                                            indicesToSkip: [],
-                                                                                            in: bgContext)?.address else { return }
-      nextAddress = receiveAddress
+      nextAddress = wmgr.createAddressDataSource().nextAvailableReceiveAddress(forServerPool: false,
+                                                                               indicesToSkip: [],
+                                                                               in: bgContext)?.address
     }
+    return nextAddress
+  }
 
-    guard let address = nextAddress else { return nil }
-    let viewModel = RequestPayViewModel(receiveAddress: address, currencyConverter: converter)
-    requestViewController.viewModel = viewModel
-    return requestViewController
+  func createRequestPayViewController(converter: CurrencyConverter) -> RequestPayViewController? {
+    guard let address = nextReceiveAddressForRequestPay() else { return nil }
+
+    let selectedCurrency = currencyController.selectedCurrency.code
+    let fiat = currencyController.fiatCurrency
+    let currencyPair = CurrencyPair(primary: selectedCurrency, fiat: fiat)
+    return RequestPayViewController.newInstance(delegate: self,
+                                                receiveAddress: address,
+                                                currencyPair: currencyPair,
+                                                exchangeRates: self.currencyController.exchangeRates)
   }
 
   private func makeOverviewController() -> WalletOverviewViewController {

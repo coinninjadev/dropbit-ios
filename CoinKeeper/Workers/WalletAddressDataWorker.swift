@@ -726,9 +726,9 @@ class WalletAddressDataWorker: WalletAddressDataWorkerType {
     invitation: CKMInvitation,
     walletAddressRequestResponse response: WalletAddressRequestResponse) -> SharedPayloadDTO {
     if let ckmPayload = invitation.transaction?.sharedPayload,
-      let fiatCode = CurrencyCode(rawValue: ckmPayload.fiatCurrency),
+      let fiatCurrency = CurrencyCode(rawValue: ckmPayload.fiatCurrency),
       let pubKey = response.addressPubkey {
-      let amountInfo = SharedPayloadAmountInfo(fiatCurrency: fiatCode, fiatAmount: ckmPayload.fiatAmount)
+      let amountInfo = SharedPayloadAmountInfo(fiatCurrency: fiatCurrency, fiatAmount: ckmPayload.fiatAmount)
       return SharedPayloadDTO(addressPubKeyState: .known(pubKey),
                               sharingDesired: ckmPayload.sharingDesired,
                               memo: invitation.transaction?.memo,
