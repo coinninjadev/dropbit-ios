@@ -176,10 +176,14 @@ final class RequestPayViewController: PresentableViewController, StoryboardIniti
 
   func updateViewWithViewModel() {
     receiveAddressLabel.text = viewModel.receiveAddress
-    qrImageView.image = viewModel.qrImage(withSize: qrImageView.frame.size)
+    updateQRImage()
     let labels = viewModel.dualAmountLabels()
     editAmountView.configure(withLabels: labels, delegate: self)
     showHideEditAmountView()
+  }
+
+  func updateQRImage() {
+    qrImageView.image = viewModel.qrImage(withSize: qrImageView.frame.size)
   }
 
 }

@@ -13,6 +13,8 @@ protocol CurrencySwappableAmountEditor: CurrencySwappableEditAmountViewDelegate,
 
   var editAmountViewModel: CurrencySwappableEditAmountViewModel { get }
   var editAmountView: CurrencySwappableEditAmountView! { get }
+
+  func updateQRImage()
 }
 
 extension CurrencySwappableAmountEditor {
@@ -48,7 +50,10 @@ extension CurrencySwappableAmountEditor {
   func viewModelDidChangeAmount(_ viewModel: CurrencySwappableEditAmountViewModel) {
     //Skip updating primary text field
     refreshSecondaryAmount()
+    updateQRImage()
   }
+
+  func updateQRImage() { } // empty default method
 
   func updateEditAmountView(withRates rates: ExchangeRates) {
     editAmountViewModel.exchangeRates = rates
