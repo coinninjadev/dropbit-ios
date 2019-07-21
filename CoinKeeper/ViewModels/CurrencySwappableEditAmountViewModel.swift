@@ -27,7 +27,15 @@ extension DualAmountDisplayable {
 
   /// hidePrimaryZero will return the currency symbol only if primary amount is zero, useful during editing
   func dualAmountLabels(withSymbols: Bool = true, hidePrimaryZero: Bool = false) -> DualAmountLabels {
-    let currencyConverter = generateCurrencyConverter()
+    let converter = generateCurrencyConverter()
+    return dualAmountLabels(withConverter: converter)
+  }
+
+  func dualAmountLabels(
+    withConverter currencyConverter: CurrencyConverter,
+    withSymbols: Bool = true,
+    hidePrimaryZero: Bool = false) -> DualAmountLabels {
+
     let primaryCurrency = currencyPair.primary
 
     var primaryLabel = currencyConverter.amountStringWithSymbol(forCurrency: primaryCurrency)

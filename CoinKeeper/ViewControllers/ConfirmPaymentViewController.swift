@@ -156,7 +156,8 @@ class ConfirmPaymentViewController: PresentableViewController, StoryboardInitial
 
   private func updateCurrencyUI(with viewModel: BaseConfirmPaymentViewModel) {
     self.viewModel = viewModel
-    let labels = viewModel.dualAmountLabels()
+    let converter = viewModel.generateCurrencyConverter(withBTCAmount: viewModel.btcAmount)
+    let labels = viewModel.dualAmountLabels(withConverter: converter)
     primaryCurrencyLabel.text = labels.primary
     secondaryCurrencyLabel.attributedText = labels.secondary
   }
@@ -174,7 +175,7 @@ class ConfirmPaymentViewController: PresentableViewController, StoryboardInitial
       adjustableFeesLabel.attributedText = vm.attributedWaitTimeDescription
 
       self.viewModel?.update(with: feeModel.transactionData)
-      self.viewModel.flatMap(self.updateCurrencyUI)
+      self.viewModel.map(self.updateCurrencyUI)
 
     case .required, .standard:
       adjustableFeesContainer.isHidden = true
@@ -187,6 +188,7 @@ class ConfirmPaymentViewController: PresentableViewController, StoryboardInitial
     let btcFee = String(describing: feeConverter.amount(forCurrency: .BTC) ?? 0)
     let fiatFee = feeConverter.amountStringWithSymbol(forCurrency: .USD) ?? ""
     networkFeeLabel.text = "Network Fee \(btcFee) (\(fiatFee))"
+    viewModel.map(self.updateCurrencyUI)
   }
 
   private func updateRecipient(with viewModel: BaseConfirmPaymentViewModel) {
