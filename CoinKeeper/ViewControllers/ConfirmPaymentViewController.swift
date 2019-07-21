@@ -214,6 +214,7 @@ extension ConfirmPaymentViewController {
   }
 
   fileprivate func updateViewWithModel() {
+    guard viewModel != nil else { return }
     updateAmountViews()
     updateFeeViews()
     updateRecipientViews()
