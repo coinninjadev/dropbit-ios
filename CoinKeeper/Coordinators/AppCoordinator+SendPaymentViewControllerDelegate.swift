@@ -246,19 +246,32 @@ extension AppCoordinator: SendPaymentViewControllerDelegate {
     }
   }
 
+  struct UsableFeeRates {
+    let lowRate: Double
+    let mediumRate: Double
+    let highRate: Double
+
+    init(rates: FeeRates, walletManager: WalletManagerType) {
+      let low = rates.rate(forType: .cheap)
+      let medium = rates.rate(forType: .slow)
+      let high = rates.rate(forType: .fast)
+      self.lowRate = Double(walletManager.usableFeeRate(from: low))
+      self.mediumRate = Double(walletManager.usableFeeRate(from: medium))
+      self.highRate = Double(walletManager.usableFeeRate(from: high))
+    }
+  }
+
   private func adjustableFeeViewModel(config: TransactionFeeConfig,
                                       rates: FeeRates,
                                       wmgr: WalletManagerType,
                                       btcAmount: NSDecimalNumber,
                                       address: String) -> Promise<AdjustableTransactionFeeViewModel> {
-    let lowRate = rates.rate(forType: .cheap)
-    let mediumRate = rates.rate(forType: .slow)
-    let highRate = rates.rate(forType: .fast)
+    let usableRates = UsableFeeRates(rates: rates, walletManager: wmgr)
 
-    return wmgr.transactionData(forPayment: btcAmount, to: address, withFeeRate: lowRate)
+    return wmgr.transactionData(forPayment: btcAmount, to: address, withFeeRate: usableRates.lowRate)
       .map { lowTxData -> AdjustableTransactionFeeViewModel in
-        let maybeMediumTxData = wmgr.failableTransactionData(forPayment: btcAmount, to: address, withFeeRate: mediumRate)
-        let maybeHighTxData = wmgr.failableTransactionData(forPayment: btcAmount, to: address, withFeeRate: highRate)
+        let maybeMediumTxData = wmgr.failableTransactionData(forPayment: btcAmount, to: address, withFeeRate: usableRates.mediumRate)
+        let maybeHighTxData = wmgr.failableTransactionData(forPayment: btcAmount, to: address, withFeeRate: usableRates.highRate)
         return AdjustableTransactionFeeViewModel(preferredFeeType: config.defaultFeeType,
                                                  lowFeeTxData: lowTxData,
                                                  mediumFeeTxData: maybeMediumTxData,
@@ -270,14 +283,12 @@ extension AppCoordinator: SendPaymentViewControllerDelegate {
                                                 rates: FeeRates,
                                                 wmgr: WalletManagerType,
                                                 address: String) -> Promise<AdjustableTransactionFeeViewModel> {
-    let lowRate = rates.rate(forType: .cheap)
-    let mediumRate = rates.rate(forType: .slow)
-    let highRate = rates.rate(forType: .fast)
+    let usableRates = UsableFeeRates(rates: rates, walletManager: wmgr)
 
-    return wmgr.transactionDataSendingMax(to: address, withFeeRate: lowRate)
+    return wmgr.transactionDataSendingMax(to: address, withFeeRate: usableRates.lowRate)
       .map { lowTxData -> AdjustableTransactionFeeViewModel in
-        let maybeMediumTxData = wmgr.failableTransactionDataSendingMax(to: address, withFeeRate: mediumRate)
-        let maybeHighTxData = wmgr.failableTransactionDataSendingMax(to: address, withFeeRate: highRate)
+        let maybeMediumTxData = wmgr.failableTransactionDataSendingMax(to: address, withFeeRate: usableRates.mediumRate)
+        let maybeHighTxData = wmgr.failableTransactionDataSendingMax(to: address, withFeeRate: usableRates.highRate)
         return AdjustableTransactionFeeViewModel(preferredFeeType: config.defaultFeeType,
                                                  lowFeeTxData: lowTxData,
                                                  mediumFeeTxData: maybeMediumTxData,
