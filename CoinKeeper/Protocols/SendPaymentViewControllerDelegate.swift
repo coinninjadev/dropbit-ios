@@ -46,6 +46,7 @@ protocol ViewControllerSendingDelegate: AnyObject {
 
 protocol SendPaymentViewControllerDelegate: ViewControllerSendingDelegate, DeviceCountryCodeProvider {
   func sendPaymentViewControllerDidLoad(_ viewController: UIViewController)
+  func sendPaymentViewControllerWillDismiss(_ viewController: UIViewController)
   func viewControllerDidPressScan(_ viewController: UIViewController, btcAmount: NSDecimalNumber, primaryCurrency: CurrencyCode)
   func viewControllerDidPressContacts(_ viewController: UIViewController & SelectedValidContactDelegate)
   func viewControllerDidPressTwitter(_ viewController: UIViewController & SelectedValidContactDelegate)
