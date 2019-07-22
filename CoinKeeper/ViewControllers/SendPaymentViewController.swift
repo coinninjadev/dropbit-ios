@@ -76,7 +76,7 @@ class SendPaymentViewController: PresentableViewController,
   @IBOutlet var sendMaxButton: LightBorderedButton!
 
   @IBAction func performClose() {
-    coordinationDelegate?.viewControllerDidSelectClose(self)
+    coordinationDelegate?.sendPaymentViewControllerWillDismiss(self)
   }
 
   @IBAction func performPaste() {
