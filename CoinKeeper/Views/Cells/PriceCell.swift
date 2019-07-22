@@ -49,13 +49,6 @@ class PriceCell: UITableViewCell {
     }
   }
 
-  @IBOutlet var candleSelectionLabel: UILabel! {
-    didSet {
-      candleSelectionLabel.font = .regular(14)
-      candleSelectionLabel.textColor = .darkGrayText
-    }
-  }
-
   override func awakeFromNib() {
     super.awakeFromNib()
     backgroundColor = .lightGrayBackground
