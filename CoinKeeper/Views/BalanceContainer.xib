@@ -93,13 +93,16 @@
                         <action selector="didTapDropBitMe:" destination="-1" eventType="touchUpInside" id="3Xt-oY-T02"/>
                     </connections>
                 </button>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Pwo-4y-6AK">
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Pwo-4y-6AK">
                     <rect key="frame" x="469" y="11" width="44" height="44"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="44" id="4xd-eJ-elf"/>
                         <constraint firstAttribute="width" constant="44" id="KPq-8j-Zau"/>
                     </constraints>
-                    <state key="normal" image="chartIcon"/>
+                    <color key="tintColor" red="0.15294117647058825" green="0.1803921568627451" blue="0.23921568627450979" alpha="1" colorSpace="calibratedRGB"/>
+                    <state key="normal" image="chartIcon">
+                        <color key="titleColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </state>
                     <connections>
                         <action selector="didTapChartsButton" destination="-1" eventType="touchUpInside" id="Fj2-fR-kVK"/>
                     </connections>
