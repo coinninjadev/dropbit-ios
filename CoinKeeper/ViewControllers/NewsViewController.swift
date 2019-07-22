@@ -10,6 +10,7 @@ import Foundation
 import UIKit
 import Charts
 import PromiseKit
+import SVProgressHUD
 
 protocol NewsViewControllerDelegate: ViewControllerDismissable, URLOpener {
   func viewControllerDidRequestNewsData(count: Int) -> Promise<[NewsArticleResponse]>
@@ -19,8 +20,8 @@ protocol NewsViewControllerDelegate: ViewControllerDismissable, URLOpener {
 final class NewsViewController: BaseViewController, StoryboardInitializable {
 
   @IBOutlet var tableView: UITableView!
-  @IBOutlet var loadingSpinner: UIActivityIndicatorView!
   @IBOutlet var newsErrorLabel: UILabel!
+  @IBOutlet var closeButton: UIButton!
 
   private var newsViewControllerDDS: NewsViewControllerDDS?
 
@@ -72,12 +73,19 @@ final class NewsViewController: BaseViewController, StoryboardInitializable {
     newsErrorLabel.font = .light(13)
     newsErrorLabel.textColor = .darkGrayText
 
+    SVProgressHUD.show()
+
     CKNotificationCenter.subscribe(self, [.didUpdateExchangeRates: #selector(refreshDisplayedPrice)])
     currencyValueManager?.latestExchangeRates(responseHandler: updateRatesRequest)
 
     if let delegate = coordinationDelegate {
       newsViewControllerDDS?.setupDataSet(coordinationDelegate: delegate)
     }
+  }
+
+  @IBAction func closeButtonWasTouched() {
+    SVProgressHUD.dismiss()
+    coordinationDelegate?.viewControllerDidSelectClose(self)
   }
 
   @objc private func refreshDisplayedPrice() {
@@ -96,12 +104,12 @@ extension NewsViewController: NewsViewControllerDDSDelegate {
   }
 
   func delegateFinishedLoadingData() {
-    loadingSpinner.stopAnimating()
+    SVProgressHUD.dismiss()
     tableView.isHidden = false
   }
 
   func delegateErrorLoadingData() {
-    loadingSpinner.stopAnimating()
+    SVProgressHUD.dismiss()
     newsErrorLabel.isHidden = false
   }
 }
