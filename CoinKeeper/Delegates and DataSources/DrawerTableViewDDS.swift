@@ -36,10 +36,6 @@ struct DrawerData {
 
 class DrawerTableViewDDS: NSObject, UITableViewDelegate, UITableViewDataSource {
 
-  lazy private var headerTapGestureRecognizer: UITapGestureRecognizer = {
-    return UITapGestureRecognizer(target: self, action: #selector(headerWasTapped))
-  }()
-
   /// Set this before calling reloadData. It should be retained for subsequent reloads until the next badge update is received.
   internal var latestBadgeInfo: BadgeInfo = [:]
   private var headerActionHandler: () -> Void
@@ -73,7 +69,6 @@ class DrawerTableViewDDS: NSObject, UITableViewDelegate, UITableViewDataSource {
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     guard let settingData = settingsData[safe: indexPath.row] else {
       return settingsActionHandler(.support)
-
     }
 
     settingsActionHandler(settingData.kind)
@@ -86,7 +81,6 @@ class DrawerTableViewDDS: NSObject, UITableViewDelegate, UITableViewDataSource {
     }
 
     drawerTableViewHeader.currencyValueManager = currencyValueManager
-    drawerTableViewHeader.addGestureRecognizer(headerTapGestureRecognizer)
 
     return drawerTableViewHeader
   }
@@ -104,9 +98,5 @@ class DrawerTableViewDDS: NSObject, UITableViewDelegate, UITableViewDataSource {
       cell.load(with: data, badgeInfo: self.latestBadgeInfo)
       return cell
     }
-  }
-
-  @objc private func headerWasTapped() {
-    headerActionHandler()
   }
 }
