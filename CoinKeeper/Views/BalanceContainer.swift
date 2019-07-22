@@ -132,6 +132,11 @@ enum BalanceContainerLeftButtonType {
     }
   }
 
+  func toggleChartAndBalance() {
+    rightBalanceContainerView.isHidden = chartButton.isHidden
+    chartButton.isHidden = !chartButton.isHidden
+  }
+
   private func selectedCurrency() -> SelectedCurrency {
     return delegate?.selectedCurrency() ?? .fiat
   }

@@ -12,8 +12,15 @@ import enum Result.Result
 import PromiseKit
 import CNBitcoinKit
 import Permission
+import MMDrawerController
 
 extension AppCoordinator: SendPaymentViewControllerDelegate {
+
+  func sendPaymentViewControllerWillDismiss(_ viewController: UIViewController) {
+    viewControllerDidSelectClose(viewController, completion: { [weak self] in
+      ((self?.navigationController.topViewController() as? MMDrawerController)?.centerViewController as? WalletOverviewViewController)?.balanceContainer.toggleChartAndBalance()
+    })
+  }
 
   func viewControllerDidRequestAlert(_ viewController: UIViewController, viewModel: AlertControllerViewModel) {
     let alert: AlertControllerType
