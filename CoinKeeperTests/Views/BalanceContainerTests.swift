@@ -60,7 +60,7 @@ class BalanceContainerTests: XCTestCase {
     let mockDelegate = MockBalanceContainerDelegate()
     self.sut.delegate = mockDelegate
 
-    self.sut.didTapBalances(self.sut.balancesTapGestureRecognizer)
+    self.sut.didTapRightGestureView(self.sut.balancesTapGestureRecognizer)
 
     XCTAssertTrue(mockDelegate.didTapBalanceWasCalled, "should tell delegate that balance was tapped")
   }
@@ -84,7 +84,7 @@ class BalanceContainerTests: XCTestCase {
     func containerDidTapDropBitMe(in viewController: UIViewController) {}
 
     var didTapBalanceWasCalled = false
-    func containerDidTapBalances(in viewController: UIViewController) {
+    func didTapRightGesture(in viewController: UIViewController) {
       didTapBalanceWasCalled = true
     }
 

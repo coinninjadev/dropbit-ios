@@ -17,7 +17,6 @@ protocol WalletOverviewViewControllerDelegate: BalanceContainerDelegate & BadgeU
 class WalletOverviewViewController: BaseViewController, StoryboardInitializable {
 
   @IBOutlet var balanceContainer: BalanceContainer!
-  @IBOutlet var pageControl: UIPageControl!
 
   let rateManager = ExchangeRateManager()
   var badgeNotificationToken: NotificationToken?
@@ -27,9 +26,7 @@ class WalletOverviewViewController: BaseViewController, StoryboardInitializable 
   var pageViewController: UIPageViewController?
 
   enum ViewControllerIndex: Int {
-    case newsViewController = 0
-    case transactionHistoryViewController = 1
-    case requestViewController = 2
+    case transactionHistoryViewController = 0
   }
 
   var coordinationDelegate: WalletOverviewViewControllerDelegate? {
@@ -45,7 +42,7 @@ class WalletOverviewViewController: BaseViewController, StoryboardInitializable 
   }
 
   override func accessibleViewsAndIdentifiers() -> [AccessibleViewElement] {
-    guard let transactionHistoryViewController = baseViewControllers[1] as? TransactionHistoryViewController,
+    guard let transactionHistoryViewController = baseViewControllers[0] as? TransactionHistoryViewController,
       let sendReceiveActionView = transactionHistoryViewController.sendReceiveActionView else { return [] }
     return [
       (self.view, .walletOverview(.page)),
@@ -69,6 +66,7 @@ class WalletOverviewViewController: BaseViewController, StoryboardInitializable 
     controller.balanceDelegate = balanceDelegate
     return controller
   }
+
   override func viewDidLoad() {
     super.viewDidLoad()
 
@@ -77,11 +75,8 @@ class WalletOverviewViewController: BaseViewController, StoryboardInitializable 
       pageViewController.view.layer.masksToBounds = false
     }
 
-    pageViewController?.dataSource = self
-    pageViewController?.delegate = self
     balanceContainer.delegate = balanceDelegate
 
-    setupPageControl()
     (coordinationDelegate?.badgeManager).map(subscribeToBadgeNotifications)
 
     subscribeToRateAndBalanceUpdates()
@@ -91,10 +86,7 @@ class WalletOverviewViewController: BaseViewController, StoryboardInitializable 
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
 
-    if baseViewControllers.count >= 2 {
-      pageViewController?.setViewControllers([baseViewControllers[1]], direction: .forward, animated: true, completion: nil)
-    }
-
+    pageViewController?.setViewControllers([baseViewControllers[0]], direction: .forward, animated: true, completion: nil)
   }
 
   override func viewDidAppear(_ animated: Bool) {
@@ -110,13 +102,6 @@ class WalletOverviewViewController: BaseViewController, StoryboardInitializable 
     case .fiat:
       return .USD
     }
-  }
-
-  private func setupPageControl() {
-    pageControl.currentPage = 1
-    pageControl.pageIndicatorTintColor = .pageIndicator
-    pageControl.currentPageIndicatorTintColor = .lightBlueTint
-    pageControl.numberOfPages = baseViewControllers.count
   }
 
 }
@@ -146,33 +131,6 @@ extension WalletOverviewViewController: BalanceDisplayable {
     baseViewControllers.compactMap { $0 as? ExchangeRateUpdateable }.forEach { $0.didUpdateExchangeRateManager(exchangeRateManager) }
   }
 
-}
-
-extension WalletOverviewViewController: UIPageViewControllerDelegate {
-  func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool,
-                          previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
-    if let viewContorller = pageViewController.viewControllers?.first as? BaseViewController, completed {
-      pageControl.currentPage = baseViewControllers.reversed().firstIndex(of: viewContorller) ?? 0
-    }
-  }
-}
-
-extension WalletOverviewViewController: UIPageViewControllerDataSource {
-
-  func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
-    guard let baseViewController = viewController as? BaseViewController,
-      let index = baseViewControllers.firstIndex(of: baseViewController), index != ViewControllerIndex.newsViewController.rawValue else { return nil }
-
-    return baseViewControllers[safe: index + 1]
-  }
-
-  func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
-    guard let baseViewController = viewController as? BaseViewController,
-      let index = baseViewControllers.firstIndex(of: baseViewController),
-      index != ViewControllerIndex.requestViewController.rawValue else { return nil }
-
-    return baseViewControllers[safe: index - 1]
-  }
 }
 
 extension WalletOverviewViewController: SelectedCurrencyUpdatable {

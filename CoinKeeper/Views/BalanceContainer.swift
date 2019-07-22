@@ -12,8 +12,8 @@ import PromiseKit
 protocol BalanceContainerDelegate: AnyObject {
   func containerDidTapLeftButton(in viewController: UIViewController)
   func containerDidTapDropBitMe(in viewController: UIViewController)
-  func containerDidTapBalances(in viewController: UIViewController)
-  func containerDidLongPressBalances(in viewController: UIViewController)
+  func didTapRightBalanceView(in viewController: UIViewController)
+  func didTapChartsButton()
   func isSyncCurrentlyRunning() -> Bool
   func selectedCurrency() -> SelectedCurrency
   func dropBitMeAvatar() -> Promise<UIImage>
@@ -57,9 +57,9 @@ enum BalanceContainerLeftButtonType {
   @IBOutlet var primaryAmountLabel: BalancePrimaryAmountLabel!
   @IBOutlet var secondaryAmountLabel: BalanceSecondaryAmountLabel!
   @IBOutlet var balanceView: UIView!
-  @IBOutlet var balancesTapGestureRecognizer: UITapGestureRecognizer!
-  @IBOutlet var balancesLongPressRecognizer: UILongPressGestureRecognizer!
   @IBOutlet var syncActivityIndicator: UIImageView!
+  @IBOutlet var rightBalanceContainerView: UIView!
+  @IBOutlet var chartButton: UIButton!
 
   var startSyncNotificationToken: NotificationToken?
   var finishSyncNotificationToken: NotificationToken?
@@ -75,14 +75,14 @@ enum BalanceContainerLeftButtonType {
     delegate.containerDidTapDropBitMe(in: parent)
   }
 
-  @IBAction func didTapBalances(_ sender: UITapGestureRecognizer) {
-    guard let delegate = delegate, let parent = parentViewController else { return }
-    delegate.containerDidTapBalances(in: parent)
+  @IBAction func didTapChartsButton(_ sender: UITapGestureRecognizer) {
+    guard let delegate = delegate else { return }
+    delegate.didTapChartsButton()
   }
 
-  @IBAction func didLongPressBalances(_ sender: UILongPressGestureRecognizer) {
+  @objc func didTapRightBalanceView(_ sender: UITapGestureRecognizer) {
     guard let delegate = delegate, let parent = parentViewController else { return }
-    delegate.containerDidLongPressBalances(in: parent)
+    delegate.didTapRightBalanceView(in: parent)
   }
 
   func accessibleViewsAndIdentifiers() -> [AccessibleViewElement] {
@@ -111,6 +111,7 @@ enum BalanceContainerLeftButtonType {
     syncActivityIndicator.startAnimatingGIF()
     subscribeToNotifications()
     setAccessibilityIdentifiers()
+    rightBalanceContainerView.addGestureRecognizer(UIGestureRecognizer(target: self, action: #selector(didTapRightBalanceView(_:))))
   }
 
   func update(with dataSource: BalanceContainerDataSource) {

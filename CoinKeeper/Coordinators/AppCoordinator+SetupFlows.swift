@@ -226,7 +226,7 @@ extension AppCoordinator {
     requestPayViewController.isModal = false
     let newsController = NewsViewController.newInstance(with: self)
     let overviewChildViewControllers: [BaseViewController] =
-      [requestPayViewController, transactionHistory, newsController]
+      [transactionHistory]
 
     let overviewViewController = WalletOverviewViewController.newInstance(with: self,
                                                                           baseViewControllers: overviewChildViewControllers,
