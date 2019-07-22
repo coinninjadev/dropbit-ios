@@ -151,4 +151,12 @@ extension AppCoordinator: TransactionHistoryViewControllerDelegate {
   func viewControllerShouldAdjustForBottomSafeArea(_ viewController: UIViewController) -> Bool {
     return UIApplication.shared.delegate?.window??.safeAreaInsets.bottom ?? 0 == 0
   }
+
+  func viewControllerWillShowTransactionDetails(_ viewController: UIViewController) {
+    CKNotificationCenter.publish(key: .willShowTransactionHistoryDetails)
+  }
+
+  func viewControllerDidDismissTransactionDetails(_ viewController: UIViewController) {
+    CKNotificationCenter.publish(key: .didDismissTransactionHistoryDetails)
+  }
 }
