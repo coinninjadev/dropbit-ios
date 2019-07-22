@@ -94,6 +94,7 @@
                         <outlet property="refreshView" destination="Av0-bG-xgJ" id="dNg-B0-57u"/>
                         <outlet property="refreshViewTopConstraint" destination="XAy-Ne-KPx" id="Itl-x4-z0W"/>
                         <outlet property="sendReceiveActionView" destination="Vc7-dJ-Wpy" id="xFT-hX-Wp9"/>
+                        <outlet property="sendReceiveActionViewBottomConstraint" destination="n9x-LX-J2U" id="9ed-X3-CKE"/>
                         <outlet property="summaryCollectionView" destination="GX7-DA-6R2" id="WdE-Nn-Ajz"/>
                         <outlet property="transactionHistoryNoBalanceView" destination="Ktw-Zy-1lf" id="TOP-P2-OHv"/>
                         <outlet property="transactionHistoryWithBalanceView" destination="Ew6-Jf-eqb" id="MXo-6q-XxK"/>

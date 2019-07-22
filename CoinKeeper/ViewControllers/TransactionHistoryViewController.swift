@@ -34,6 +34,7 @@ protocol TransactionHistoryViewControllerDelegate: DeviceCountryCodeProvider &
   func viewControllerDidTapSpendBitcoin(_ viewController: UIViewController)
 
   var currencyController: CurrencyController { get }
+  func viewControllerShouldAdjustForBottomSafeArea(_ viewController: UIViewController) -> Bool
 }
 
 class TransactionHistoryViewController: BaseViewController, StoryboardInitializable {
@@ -47,6 +48,7 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
   @IBOutlet var collectionViews: [UICollectionView]!
   @IBOutlet var refreshView: TransactionHistoryRefreshView!
   @IBOutlet var refreshViewTopConstraint: NSLayoutConstraint!
+  @IBOutlet var sendReceiveActionViewBottomConstraint: NSLayoutConstraint!
   @IBOutlet var sendReceiveActionView: SendReceiveActionView! {
     didSet {
       sendReceiveActionView.actionDelegate = self
@@ -137,6 +139,11 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
     transactionHistoryWithBalanceView.delegate = self
 
     self.view.backgroundColor = .lightGrayBackground
+
+    let bottomOffsetIfNeeded: CGFloat = 20
+    if let delegate = coordinationDelegate, delegate.viewControllerShouldAdjustForBottomSafeArea(self) {
+      sendReceiveActionViewBottomConstraint.constant = bottomOffsetIfNeeded
+    }
 
     view.layoutIfNeeded()
     let offset = CGFloat(80) //Offset for height of balance container + top constraint of container view in WalletOverviewViewController

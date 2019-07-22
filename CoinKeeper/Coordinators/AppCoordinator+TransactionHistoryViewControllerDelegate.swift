@@ -148,4 +148,7 @@ extension AppCoordinator: TransactionHistoryViewControllerDelegate {
     navigationController.present(sendPaymentViewController, animated: true)
   }
 
+  func viewControllerShouldAdjustForBottomSafeArea(_ viewController: UIViewController) -> Bool {
+    return UIApplication.shared.delegate?.window??.safeAreaInsets.bottom ?? 0 == 0
+  }
 }
