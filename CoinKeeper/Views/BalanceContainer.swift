@@ -75,12 +75,12 @@ enum BalanceContainerLeftButtonType {
     delegate.containerDidTapDropBitMe(in: parent)
   }
 
-  @IBAction func didTapChartsButton(_ sender: UITapGestureRecognizer) {
+  @IBAction func didTapChartsButton() {
     guard let delegate = delegate else { return }
     delegate.didTapChartsButton()
   }
 
-  @objc func didTapRightBalanceView(_ sender: UITapGestureRecognizer) {
+  @objc func didTapRightBalanceView() {
     guard let delegate = delegate, let parent = parentViewController else { return }
     delegate.didTapRightBalanceView(in: parent)
   }
@@ -111,7 +111,7 @@ enum BalanceContainerLeftButtonType {
     syncActivityIndicator.startAnimatingGIF()
     subscribeToNotifications()
     setAccessibilityIdentifiers()
-    rightBalanceContainerView.addGestureRecognizer(UIGestureRecognizer(target: self, action: #selector(didTapRightBalanceView(_:))))
+    rightBalanceContainerView.addGestureRecognizer(UIGestureRecognizer(target: self, action: #selector(didTapRightBalanceView)))
   }
 
   func update(with dataSource: BalanceContainerDataSource) {
