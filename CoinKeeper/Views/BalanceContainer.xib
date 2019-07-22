@@ -93,11 +93,15 @@
                         <action selector="didTapDropBitMe:" destination="-1" eventType="touchUpInside" id="3Xt-oY-T02"/>
                     </connections>
                 </button>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Pwo-4y-6AK">
-                    <rect key="frame" x="467" y="18" width="46" height="30"/>
-                    <state key="normal" title="Button"/>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Pwo-4y-6AK">
+                    <rect key="frame" x="469" y="11" width="44" height="44"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="44" id="4xd-eJ-elf"/>
+                        <constraint firstAttribute="width" constant="44" id="KPq-8j-Zau"/>
+                    </constraints>
+                    <state key="normal" image="chartIcon"/>
                     <connections>
-                        <action selector="didTapChartsButton:" destination="-1" eventType="touchUpInside" id="lGQ-zf-T8Y"/>
+                        <action selector="didTapChartsButton" destination="-1" eventType="touchUpInside" id="Fj2-fR-kVK"/>
                     </connections>
                 </button>
             </subviews>
@@ -121,6 +125,7 @@
         </view>
     </objects>
     <resources>
+        <image name="chartIcon" width="19" height="14"/>
         <image name="dropBitMeAvatarPlaceholder" width="30" height="30"/>
         <image name="menuButton" width="19" height="15"/>
     </resources>
