@@ -35,6 +35,8 @@ protocol TransactionHistoryViewControllerDelegate: DeviceCountryCodeProvider &
 
   var currencyController: CurrencyController { get }
   func viewControllerShouldAdjustForBottomSafeArea(_ viewController: UIViewController) -> Bool
+  func viewControllerWillShowTransactionDetails(_ viewController: UIViewController)
+  func viewControllerDidDismissTransactionDetails(_ viewController: UIViewController)
 }
 
 class TransactionHistoryViewController: BaseViewController, StoryboardInitializable {
@@ -226,6 +228,12 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
 extension TransactionHistoryViewController { // Layout
 
   func showDetailCollectionView(_ shouldShow: Bool, animated: Bool) {
+    if shouldShow {
+      coordinationDelegate?.viewControllerWillShowTransactionDetails(self)
+    } else {
+      coordinationDelegate?.viewControllerDidDismissTransactionDetails(self)
+    }
+
     let isHiddenOffset = detailCollectionViewHeight
     let multiplier: CGFloat = shouldShow ? -1 : 1
     detailCollectionViewTopConstraint.constant = (isHiddenOffset * multiplier)
