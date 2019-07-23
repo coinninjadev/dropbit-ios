@@ -24,7 +24,6 @@ extension TransactionHistoryViewController: UICollectionViewDelegateFlowLayout {
 
   func collectionView(_ collectionView: UICollectionView,
                       layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-    guard collectionView == summaryCollectionView else { return CGSize(width: collectionView.frame.width - 16, height: collectionView.frame.height) }
     let transaction = frc.object(at: indexPath)
     var height: CGFloat = 66
     height += !transaction.isConfirmed ? 20 : 0
@@ -59,17 +58,7 @@ extension TransactionHistoryViewController: UICollectionViewDataSource {
 extension TransactionHistoryViewController: UICollectionViewDelegate {
 
   func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-    switch collectionView {
-    case is TransactionHistorySummaryCollectionView:
-
-      // Show detail collection view scrolled to the same indexPath as the selected summary cell
-      showDetailCollectionView(true, indexPath: indexPath, animated: true)
-
-    case is TransactionHistoryDetailCollectionView:
-      collectionView.deselectItem(at: indexPath, animated: false)
-    default:
-      break
-    }
+    showDetailCollectionView(true, indexPath: indexPath, animated: true)
   }
 }
 

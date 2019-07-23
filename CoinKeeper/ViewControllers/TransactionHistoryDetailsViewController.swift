@@ -26,24 +26,21 @@ final class TransactionHistoryDetailsViewController: PresentableViewController, 
   @IBOutlet var collectionView: TransactionHistoryDetailCollectionView! {
     didSet {
       collectionView.dataSource = self
-      collectionView.delegate = self.collectionViewDelegate
+      collectionView.delegate = self
     }
   }
   weak var urlOpener: URLOpener?
   weak var frc: NSFetchedResultsController<CKMTransaction>?
-  weak var collectionViewDelegate: UICollectionViewDelegate?
   var selectedIndexPath: IndexPath = IndexPath(item: 0, section: 0)
   var viewModelForIndexPath: ((IndexPath) -> TransactionHistoryDetailCellViewModel)?
 
   static func newInstance(withDelegate delegate: TransactionHistoryDetailsViewControllerDelegate,
-                          collectionViewDelegate: UICollectionViewDelegate,
                           fetchedResultsController frc: NSFetchedResultsController<CKMTransaction>,
                           selectedIndexPath: IndexPath,
                           viewModelForIndexPath: @escaping (IndexPath) -> TransactionHistoryDetailCellViewModel,
                           urlOpener: URLOpener) -> TransactionHistoryDetailsViewController {
     let controller = TransactionHistoryDetailsViewController.makeFromStoryboard()
     controller.generalCoordinationDelegate = delegate
-    controller.collectionViewDelegate = collectionViewDelegate
     controller.frc = frc
     controller.selectedIndexPath = selectedIndexPath
     controller.viewModelForIndexPath = viewModelForIndexPath
@@ -172,6 +169,12 @@ extension TransactionHistoryDetailsViewController: UICollectionViewDataSource {
       cell.load(with: viewModel, delegate: self)
       return cell
     }
+  }
+}
+
+extension TransactionHistoryDetailsViewController: UICollectionViewDelegate {
+  func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    collectionView.deselectItem(at: indexPath, animated: false)
   }
 }
 

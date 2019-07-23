@@ -116,7 +116,6 @@ extension AppCoordinator: TransactionHistoryViewControllerDelegate {
 
   func viewController(_ viewController: TransactionHistoryViewController, didSelectItemAtIndexPath indexPath: IndexPath) {
     let controller = TransactionHistoryDetailsViewController.newInstance(withDelegate: self,
-                                                                         collectionViewDelegate: viewController,
                                                                          fetchedResultsController: viewController.frc,
                                                                          selectedIndexPath: indexPath,
                                                                          viewModelForIndexPath: { path in viewController.detailViewModel(at: path) },
