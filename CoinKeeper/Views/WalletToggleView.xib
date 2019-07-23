@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="WalletToggleView" customModule="DropBit" customModuleProvider="target">
+            <connections>
+                <outlet property="bitcoinWalletButton" destination="d1v-gJ-rXU" id="aLv-IX-olX"/>
+                <outlet property="lightningWalletButton" destination="UEG-QZ-UBH" id="aLr-E5-7s0"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="5BU-fI-XdE">
+            <rect key="frame" x="0.0" y="0.0" width="260" height="35"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="d1v-gJ-rXU">
+                    <rect key="frame" x="0.0" y="0.0" width="130" height="35"/>
+                    <color key="backgroundColor" red="0.85475545009800813" green="0.5477365942676774" blue="0.15908610779313184" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="130" id="QcA-tf-jhG"/>
+                    </constraints>
+                    <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <state key="normal" title=" Bitcoin" image="bitcoinIconFilled">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </state>
+                    <connections>
+                        <action selector="bitcoinWalletWasTouched" destination="-1" eventType="touchUpInside" id="vVy-xY-jHW"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UEG-QZ-UBH">
+                    <rect key="frame" x="130" y="0.0" width="130" height="35"/>
+                    <color key="backgroundColor" red="0.13222069452464599" green="0.40588990212443193" blue="0.71038761348922019" alpha="0.7532185299295775" colorSpace="custom" customColorSpace="displayP3"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="130" id="guO-70-4C1"/>
+                    </constraints>
+                    <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <state key="normal" title=" Lightning" image="flashIcon">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="titleShadowColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </state>
+                    <connections>
+                        <action selector="lightningWalletWasTouched" destination="-1" eventType="touchUpInside" id="qvC-AZ-ZNp"/>
+                    </connections>
+                </button>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="d1v-gJ-rXU" firstAttribute="leading" secondItem="5BU-fI-XdE" secondAttribute="leading" id="RNP-4A-1Jt"/>
+                <constraint firstAttribute="bottom" secondItem="UEG-QZ-UBH" secondAttribute="bottom" id="bO6-gp-Dm8"/>
+                <constraint firstAttribute="trailing" secondItem="UEG-QZ-UBH" secondAttribute="trailing" id="eT7-l3-7gM"/>
+                <constraint firstItem="UEG-QZ-UBH" firstAttribute="top" secondItem="5BU-fI-XdE" secondAttribute="top" id="gei-iX-jwA"/>
+                <constraint firstItem="d1v-gJ-rXU" firstAttribute="top" secondItem="5BU-fI-XdE" secondAttribute="top" id="ipV-vU-SNG"/>
+                <constraint firstAttribute="bottom" secondItem="d1v-gJ-rXU" secondAttribute="bottom" id="o2h-AG-ej9"/>
+            </constraints>
+            <nil key="simulatedTopBarMetrics"/>
+            <nil key="simulatedBottomBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <viewLayoutGuide key="safeArea" id="GYz-xh-dLH"/>
+            <point key="canvasLocation" x="-765.21739130434787" y="9.7098214285714288"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="bitcoinIconFilled" width="26" height="36"/>
+        <image name="flashIcon" width="14" height="19"/>
+    </resources>
+</document>
