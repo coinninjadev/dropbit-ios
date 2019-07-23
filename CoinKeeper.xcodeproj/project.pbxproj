@@ -771,6 +771,8 @@
 		B59C405C20E530FC00F04FE5 /* DeviceVerificationViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59C405B20E530FC00F04FE5 /* DeviceVerificationViewControllerTests.swift */; };
 		B59C405E20E54EC700F04FE5 /* WalletAddressRequestResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59C405D20E54EC700F04FE5 /* WalletAddressRequestResponse.swift */; };
 		B59C406020E553C500F04FE5 /* WalletAddressRequestResponseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59C405F20E553C500F04FE5 /* WalletAddressRequestResponseTests.swift */; };
+		B59E2C8722E789D800A75AFE /* LightningTooltipViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59E2C8622E789D800A75AFE /* LightningTooltipViewController.swift */; };
+		B59E2C8922E78A1200A75AFE /* LightningTooltipViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B59E2C8822E78A1200A75AFE /* LightningTooltipViewController.storyboard */; };
 		B59E2C8B22E7974000A75AFE /* WalletToggleTitleLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59E2C8A22E7974000A75AFE /* WalletToggleTitleLabel.swift */; };
 		B59E2C9122E7A93E00A75AFE /* WalletToggleTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59E2C9022E7A93E00A75AFE /* WalletToggleTitleView.swift */; };
 		B5A3BA4D21516BF2005EE657 /* WalletTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A3BA4C21516BF2005EE657 /* WalletTarget.swift */; };
@@ -1683,6 +1685,8 @@
 		B59C405B20E530FC00F04FE5 /* DeviceVerificationViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceVerificationViewControllerTests.swift; sourceTree = "<group>"; };
 		B59C405D20E54EC700F04FE5 /* WalletAddressRequestResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletAddressRequestResponse.swift; sourceTree = "<group>"; };
 		B59C405F20E553C500F04FE5 /* WalletAddressRequestResponseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletAddressRequestResponseTests.swift; sourceTree = "<group>"; };
+		B59E2C8622E789D800A75AFE /* LightningTooltipViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightningTooltipViewController.swift; sourceTree = "<group>"; };
+		B59E2C8822E78A1200A75AFE /* LightningTooltipViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LightningTooltipViewController.storyboard; sourceTree = "<group>"; };
 		B59E2C8A22E7974000A75AFE /* WalletToggleTitleLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletToggleTitleLabel.swift; sourceTree = "<group>"; };
 		B59E2C9022E7A93E00A75AFE /* WalletToggleTitleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WalletToggleTitleView.swift; sourceTree = "<group>"; };
 		B5A3BA4C21516BF2005EE657 /* WalletTarget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletTarget.swift; sourceTree = "<group>"; };
@@ -2562,6 +2566,7 @@
 				4A75CAF82090FB0D00E8E653 /* DeviceVerificationViewController.swift */,
 				5B91E3972076BEB500DD9A86 /* DrawerViewController.swift */,
 				B5FFFFC1226FB4710029DB62 /* DropBitMeViewController.swift */,
+				B59E2C8622E789D800A75AFE /* LightningTooltipViewController.swift */,
 				A216D78E20B30C25005FBAC2 /* NoConnectionViewController.swift */,
 				3B82692C203372AC009B11EC /* PinCreationViewController.swift */,
 				3B86F78B203C6DCD00D15231 /* PinEntryViewController.swift */,
@@ -2610,6 +2615,7 @@
 				5B91E3992076C02200DD9A86 /* DrawerViewController.storyboard */,
 				B5FFFFBF226FB44E0029DB62 /* DropBitMeViewController.storyboard */,
 				3BC456FE20288D7300CC36B1 /* LaunchScreen.storyboard */,
+				B59E2C8822E78A1200A75AFE /* LightningTooltipViewController.storyboard */,
 				A216D79020B30C51005FBAC2 /* NoConnectionViewController.storyboard */,
 				3B82692A20337282009B11EC /* PinCreationViewController.storyboard */,
 				3B86F789203C6D4E00D15231 /* PinEntryViewController.storyboard */,
@@ -3576,6 +3582,7 @@
 				B5E7F21F22146B9000358A24 /* CountryCodePickerCell.xib in Resources */,
 				3BF8523D2023788D00EBBE44 /* StartViewController.storyboard in Resources */,
 				3B9779AF202E416700C9C933 /* Montserrat-ThinItalic.ttf in Resources */,
+				B59E2C8922E78A1200A75AFE /* LightningTooltipViewController.storyboard in Resources */,
 				A2952F6422BA88EC00BDCE65 /* NewsViewController.storyboard in Resources */,
 				A29CE0DE209B756E00761B91 /* ContactsTableViewHeader.xib in Resources */,
 				3BAB1443204EE5A7001D41A2 /* VerifyRecoveryWordsViewController.storyboard in Resources */,
@@ -3942,6 +3949,7 @@
 				B54A420D207FAB6D005B40A9 /* TransactionDetailStatusLabel.swift in Sources */,
 				B542147E22C103750048B81A /* AdjustableTransactionFeeViewModel.swift in Sources */,
 				B5D834072249680600C45ABE /* SettingSwitchWithInfoCell.swift in Sources */,
+				B59E2C8722E789D800A75AFE /* LightningTooltipViewController.swift in Sources */,
 				B5D8340A224971E400C45ABE /* SettingsViewController+TableView.swift in Sources */,
 				B501022221F2325B00D42A71 /* UIColor+Init.swift in Sources */,
 				B52CC6A7221E401E00B00C9E /* CCMValidatedMetadata+CoreDataProperties.swift in Sources */,
