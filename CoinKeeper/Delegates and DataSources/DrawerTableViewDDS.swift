@@ -38,15 +38,13 @@ class DrawerTableViewDDS: NSObject, UITableViewDelegate, UITableViewDataSource {
 
   /// Set this before calling reloadData. It should be retained for subsequent reloads until the next badge update is received.
   internal var latestBadgeInfo: BadgeInfo = [:]
-  private var headerActionHandler: () -> Void
 
   var settingsData: [DrawerData] = []
   private var settingsActionHandler: (DrawerData.Kind) -> Void
   weak var currencyValueManager: CurrencyValueDataSourceType? // weakly held to guard against potential retain cycles
 
-  init(headerActionHandler: @escaping () -> Void, settingsActionHandler: @escaping (DrawerData.Kind) -> Void) {
+  init(settingsActionHandler: @escaping (DrawerData.Kind) -> Void) {
     self.settingsActionHandler = settingsActionHandler
-    self.headerActionHandler = headerActionHandler
     super.init()
   }
 
