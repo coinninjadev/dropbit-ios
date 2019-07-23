@@ -118,6 +118,7 @@ extension AppCoordinator: TransactionHistoryViewControllerDelegate {
     let controller = TransactionHistoryDetailsViewController.newInstance(withDelegate: self,
                                                                          collectionViewDelegate: viewController,
                                                                          fetchedResultsController: viewController.frc,
+                                                                         selectedIndexPath: indexPath,
                                                                          viewModelForIndexPath: { path in viewController.detailViewModel(at: path) },
                                                                          urlOpener: self)
     navigationController.present(controller, animated: true, completion: nil)

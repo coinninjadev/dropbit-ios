@@ -31,11 +31,13 @@ StoryboardInitializable {
   weak var urlOpener: URLOpener?
   weak var frc: NSFetchedResultsController<CKMTransaction>?
   weak var collectionViewDelegate: UICollectionViewDelegate?
+  var selectedIndexPath: IndexPath = IndexPath(item: 0, section: 0)
   var viewModelForIndexPath: ((IndexPath) -> TransactionHistoryDetailCellViewModel)?
 
   static func newInstance(withDelegate delegate: TransactionHistoryDetailsViewControllerDelegate,
                           collectionViewDelegate: UICollectionViewDelegate,
                           fetchedResultsController frc: NSFetchedResultsController<CKMTransaction>,
+                          selectedIndexPath: IndexPath,
                           viewModelForIndexPath: @escaping (IndexPath) -> TransactionHistoryDetailCellViewModel,
                           urlOpener: URLOpener) -> TransactionHistoryDetailsViewController {
     let controller = TransactionHistoryDetailsViewController.makeFromStoryboard()
@@ -44,6 +46,7 @@ StoryboardInitializable {
     controller.generalCoordinationDelegate = delegate
     controller.collectionViewDelegate = collectionViewDelegate
     controller.frc = frc
+    controller.selectedIndexPath = selectedIndexPath
     controller.viewModelForIndexPath = viewModelForIndexPath
     controller.urlOpener = urlOpener
     return controller
@@ -68,6 +71,7 @@ StoryboardInitializable {
     collectionView.isPagingEnabled = false
     collectionView.collectionViewLayout = detailCollectionViewLayout(withHorizontalPadding: hPadding)
     collectionView.backgroundColor = .clear
+    collectionView.scrollToItem(at: selectedIndexPath, at: .left, animated: false)
   }
 
   private var detailCollectionViewHeight: CGFloat {
