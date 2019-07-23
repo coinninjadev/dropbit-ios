@@ -17,6 +17,7 @@ protocol WalletOverviewViewControllerDelegate: BalanceContainerDelegate & BadgeU
 class WalletOverviewViewController: BaseViewController, StoryboardInitializable {
 
   @IBOutlet var balanceContainer: BalanceContainer!
+  @IBOutlet var walletToggleView: WalletToggleView!
 
   let rateManager = ExchangeRateManager()
   var badgeNotificationToken: NotificationToken?
@@ -26,7 +27,8 @@ class WalletOverviewViewController: BaseViewController, StoryboardInitializable 
   var pageViewController: UIPageViewController?
 
   enum ViewControllerIndex: Int {
-    case transactionHistoryViewController = 0
+    case bitcoinWalletTransactionHistory = 0
+    case lightningWalletTransactionHistory = 1
   }
 
   var coordinationDelegate: WalletOverviewViewControllerDelegate? {
@@ -76,6 +78,8 @@ class WalletOverviewViewController: BaseViewController, StoryboardInitializable 
     }
 
     balanceContainer.delegate = balanceDelegate
+    pageViewController?.dataSource = self
+    walletToggleView.delegate = self
 
     (coordinationDelegate?.badgeManager).map(subscribeToBadgeNotifications)
 
@@ -131,6 +135,34 @@ extension WalletOverviewViewController: BalanceDisplayable {
     baseViewControllers.compactMap { $0 as? ExchangeRateUpdateable }.forEach { $0.didUpdateExchangeRateManager(exchangeRateManager) }
   }
 
+}
+
+extension WalletOverviewViewController: UIPageViewControllerDataSource {
+
+  func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
+    guard let baseViewController = viewController as? BaseViewController,
+      let index = baseViewControllers.firstIndex(of: baseViewController) else { return nil }
+
+    return baseViewControllers[safe: index + 1]
+  }
+
+  func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
+    guard let baseViewController = viewController as? BaseViewController,
+      let index = baseViewControllers.firstIndex(of: baseViewController) else { return nil }
+
+    return baseViewControllers[safe: index - 1]
+  }
+}
+
+extension WalletOverviewViewController: WalletToggleViewDelegate {
+
+  func bitcoinWalletButtonWasTouched() {
+    pageViewController?.setViewControllers([baseViewControllers[0]], direction: .reverse, animated: true, completion: nil)
+  }
+
+  func lightningWalletButtonWasTouched() {
+    pageViewController?.setViewControllers([baseViewControllers[1]], direction: .forward, animated: true, completion: nil)
+  }
 }
 
 extension WalletOverviewViewController: SelectedCurrencyUpdatable {

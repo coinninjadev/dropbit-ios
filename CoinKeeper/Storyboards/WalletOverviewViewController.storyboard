@@ -26,26 +26,37 @@
                                 </constraints>
                             </view>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Xpq-nw-rdL">
-                                <rect key="frame" x="0.0" y="130" width="414" height="766"/>
+                                <rect key="frame" x="0.0" y="155" width="414" height="741"/>
                                 <connections>
                                     <segue destination="bBW-av-GGC" kind="embed" identifier="PageViewControllerSegue" id="5Om-x1-vjl"/>
                                 </connections>
                             </containerView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="08q-AV-opn" customClass="WalletToggleView" customModule="DropBit" customModuleProvider="target">
+                                <rect key="frame" x="77" y="110" width="260" height="35"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="260" id="2Ng-91-lDH"/>
+                                    <constraint firstAttribute="height" constant="35" id="rPm-QO-8Sg"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="Xpq-nw-rdL" firstAttribute="trailing" secondItem="Ara-cI-e6Q" secondAttribute="trailing" id="6t4-u9-0cf"/>
                             <constraint firstAttribute="bottom" secondItem="Xpq-nw-rdL" secondAttribute="bottom" id="9pc-we-Clb"/>
                             <constraint firstItem="yEy-5P-WRf" firstAttribute="leading" secondItem="Ara-cI-e6Q" secondAttribute="leading" id="RC7-kU-b0b"/>
+                            <constraint firstItem="Xpq-nw-rdL" firstAttribute="top" secondItem="08q-AV-opn" secondAttribute="bottom" constant="10" id="TEk-4d-zO6"/>
                             <constraint firstItem="yEy-5P-WRf" firstAttribute="top" secondItem="Ara-cI-e6Q" secondAttribute="top" id="TnL-wg-kMl"/>
                             <constraint firstItem="Xpq-nw-rdL" firstAttribute="leading" secondItem="Ara-cI-e6Q" secondAttribute="leading" id="WN3-QL-ogq"/>
-                            <constraint firstItem="Xpq-nw-rdL" firstAttribute="top" secondItem="yEy-5P-WRf" secondAttribute="bottom" constant="20" id="jtA-84-eFl"/>
+                            <constraint firstItem="08q-AV-opn" firstAttribute="centerX" secondItem="Wuq-Ar-T2f" secondAttribute="centerX" id="pEs-ZG-Z2G"/>
                             <constraint firstItem="Ara-cI-e6Q" firstAttribute="trailing" secondItem="yEy-5P-WRf" secondAttribute="trailing" id="tzJ-zb-Gmx"/>
+                            <constraint firstItem="08q-AV-opn" firstAttribute="top" secondItem="yEy-5P-WRf" secondAttribute="bottom" id="ucl-4c-cUo"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="Ara-cI-e6Q"/>
                     </view>
                     <connections>
                         <outlet property="balanceContainer" destination="yEy-5P-WRf" id="1re-u0-6nf"/>
+                        <outlet property="walletToggleView" destination="08q-AV-opn" id="LTs-bg-MFe"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xNs-FC-VAi" userLabel="First Responder" sceneMemberID="firstResponder"/>
