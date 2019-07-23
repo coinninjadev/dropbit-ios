@@ -224,7 +224,6 @@ extension AppCoordinator {
     let requestPayViewController = createRequestPayViewController(converter: currencyController.currencyConverter)
       ?? RequestPayViewController.makeFromStoryboard()
     requestPayViewController.isModal = false
-    let newsController = NewsViewController.newInstance(with: self)
     let overviewChildViewControllers: [BaseViewController] =
       [transactionHistory]
 
