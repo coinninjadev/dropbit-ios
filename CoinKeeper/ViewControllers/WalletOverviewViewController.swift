@@ -12,12 +12,21 @@ import UIKit
 protocol WalletOverviewViewControllerDelegate: BalanceContainerDelegate & BadgeUpdateDelegate {
   var badgeManager: BadgeManagerType { get }
   var currencyController: CurrencyController { get }
+  
+  func viewControllerDidTapScan(_ viewController: UIViewController, converter: CurrencyConverter)
+  func viewControllerDidTapReceivePayment(_ viewController: UIViewController, converter: CurrencyConverter)
+  func viewControllerDidTapSendPayment(_ viewController: UIViewController, converter: CurrencyConverter)
 }
 
 class WalletOverviewViewController: BaseViewController, StoryboardInitializable {
 
   @IBOutlet var balanceContainer: BalanceContainer!
   @IBOutlet var walletToggleView: WalletToggleView!
+  @IBOutlet var sendReceiveActionView: SendReceiveActionView! {
+    didSet {
+      sendReceiveActionView.actionDelegate = self
+    }
+  }
 
   let rateManager = ExchangeRateManager()
   var badgeNotificationToken: NotificationToken?
@@ -44,8 +53,7 @@ class WalletOverviewViewController: BaseViewController, StoryboardInitializable 
   }
 
   override func accessibleViewsAndIdentifiers() -> [AccessibleViewElement] {
-    guard let transactionHistoryViewController = baseViewControllers[0] as? TransactionHistoryViewController,
-      let sendReceiveActionView = transactionHistoryViewController.sendReceiveActionView else { return [] }
+    guard let transactionHistoryViewController = baseViewControllers[0] as? TransactionHistoryViewController else { return [] }
     return [
       (self.view, .walletOverview(.page)),
       (self.balanceContainer, .walletOverview(.balanceView)),
@@ -169,5 +177,22 @@ extension WalletOverviewViewController: SelectedCurrencyUpdatable {
   func updateSelectedCurrency(to selectedCurrency: SelectedCurrency) {
     updateViewWithBalance()
     baseViewControllers.compactMap { $0 as? SelectedCurrencyUpdatable }.forEach { $0.updateSelectedCurrency(to: selectedCurrency) }
+  }
+}
+
+extension WalletOverviewViewController: SendReceiveActionViewDelegate {
+  func actionViewDidSelectReceive(_ view: UIView) {
+    guard let coordinator = coordinationDelegate else { return }
+    coordinator.viewControllerDidTapReceivePayment(self, converter: coordinator.currencyController.currencyConverter)
+  }
+
+  func actionViewDidSelectScan(_ view: UIView) {
+    guard let coordinator = coordinationDelegate else { return }
+    coordinator.viewControllerDidTapScan(self, converter: coordinator.currencyController.currencyConverter)
+  }
+
+  func actionViewDidSelectSend(_ view: UIView) {
+    guard let coordinator = coordinationDelegate else { return }
+    coordinator.viewControllerDidTapSendPayment(self, converter: coordinator.currencyController.currencyConverter)
   }
 }

@@ -25,9 +25,6 @@ protocol TransactionHistoryViewControllerDelegate: DeviceCountryCodeProvider &
   func viewControllerShouldUpdateTransaction(_ viewController: TransactionHistoryViewController,
                                              transaction: CKMTransaction) -> Promise<Void>
 
-  func viewControllerDidTapScan(_ viewController: UIViewController, converter: CurrencyConverter)
-  func viewControllerDidTapReceivePayment(_ viewController: UIViewController, converter: CurrencyConverter)
-  func viewControllerDidTapSendPayment(_ viewController: UIViewController, converter: CurrencyConverter)
 
   func viewControllerDidRequestTutorial(_ viewController: UIViewController)
   func viewControllerDidTapGetBitcoin(_ viewController: UIViewController)
@@ -47,11 +44,6 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
   @IBOutlet var collectionViews: [UICollectionView]!
   @IBOutlet var refreshView: TransactionHistoryRefreshView!
   @IBOutlet var refreshViewTopConstraint: NSLayoutConstraint!
-  @IBOutlet var sendReceiveActionView: SendReceiveActionView! {
-    didSet {
-      sendReceiveActionView.actionDelegate = self
-    }
-  }
   @IBOutlet var gradientBlurView: UIView! {
     didSet {
       gradientBlurView.backgroundColor = .lightGrayBackground
@@ -77,8 +69,6 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
   override func accessibleViewsAndIdentifiers() -> [AccessibleViewElement] {
     return [
       (self.view, .transactionHistory(.page)),
-      (sendReceiveActionView.receiveButton, .transactionHistory(.receiveButton)),
-      (sendReceiveActionView.sendButton, .transactionHistory(.sendButton)),
       (transactionHistoryNoBalanceView.learnAboutBitcoinButton, .transactionHistory(.tutorialButton))
     ]
   }
@@ -309,23 +299,6 @@ extension TransactionHistoryViewController: TransactionHistoryDetailCellDelegate
       guard let invitationID = frc.object(at: path).invitation?.id else { return }
       coordinationDelegate?.viewController(self, didCancelInvitationWithID: invitationID, at: path)
     }
-  }
-}
-
-extension TransactionHistoryViewController: SendReceiveActionViewDelegate {
-  func actionViewDidSelectReceive(_ view: UIView) {
-    guard let coordinator = coordinationDelegate else { return }
-    coordinator.viewControllerDidTapReceivePayment(self, converter: coordinator.currencyController.currencyConverter)
-  }
-
-  func actionViewDidSelectScan(_ view: UIView) {
-    guard let coordinator = coordinationDelegate else { return }
-    coordinator.viewControllerDidTapScan(self, converter: coordinator.currencyController.currencyConverter)
-  }
-
-  func actionViewDidSelectSend(_ view: UIView) {
-    guard let coordinator = coordinationDelegate else { return }
-    coordinator.viewControllerDidTapSendPayment(self, converter: coordinator.currencyController.currencyConverter)
   }
 }
 

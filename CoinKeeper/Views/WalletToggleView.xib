@@ -21,7 +21,7 @@
             <rect key="frame" x="0.0" y="0.0" width="260" height="35"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="d1v-gJ-rXU">
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="d1v-gJ-rXU" customClass="PrimaryActionButton" customModule="DropBit" customModuleProvider="target">
                     <rect key="frame" x="0.0" y="0.0" width="130" height="35"/>
                     <color key="backgroundColor" red="0.85475545009800813" green="0.5477365942676774" blue="0.15908610779313184" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                     <constraints>
@@ -35,7 +35,7 @@
                         <action selector="bitcoinWalletWasTouched" destination="-1" eventType="touchUpInside" id="vVy-xY-jHW"/>
                     </connections>
                 </button>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UEG-QZ-UBH">
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UEG-QZ-UBH" customClass="PrimaryActionButton" customModule="DropBit" customModuleProvider="target">
                     <rect key="frame" x="130" y="0.0" width="130" height="35"/>
                     <color key="backgroundColor" red="0.13222069452464599" green="0.40588990212443193" blue="0.71038761348922019" alpha="0.7532185299295775" colorSpace="custom" customColorSpace="displayP3"/>
                     <constraints>

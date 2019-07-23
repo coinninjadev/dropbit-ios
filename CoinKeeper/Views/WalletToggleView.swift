@@ -17,8 +17,10 @@ protocol WalletToggleViewDelegate: class {
 @IBDesignable
 class WalletToggleView: UIView {
 
-  @IBOutlet var bitcoinWalletButton: UIButton!
-  @IBOutlet var lightningWalletButton: UIButton!
+  @IBOutlet var bitcoinWalletButton: PrimaryActionButton!
+  @IBOutlet var lightningWalletButton: PrimaryActionButton!
+
+  weak var delegate: WalletToggleViewDelegate?
 
   required init?(coder aDecoder: NSCoder) {
     super.init(coder: aDecoder)
@@ -32,19 +34,38 @@ class WalletToggleView: UIView {
 
   private func commonInit() {
     xibSetup()
-    layer.cornerRadius = 5.0
     layer.borderWidth = 0.5
-    layer.borderColor = UIColor.mediumGrayBackground.cgColor
+    layer.cornerRadius = 5
     clipsToBounds = true
+    layer.borderColor = UIColor.mediumGrayBackground.cgColor
+    selectBitcoinButton()
+    deselectButton(lightningWalletButton)
   }
 
-  weak var delegate: WalletToggleViewDelegate?
+  private func selectBitcoinButton() {
+    bitcoinWalletButton.style = .bitcoin
+  }
+
+  private func selectLightningButton() {
+    lightningWalletButton.style = .lightning
+  }
+
+  private func deselectButton(_ button: UIButton) {
+    button.backgroundColor = .lightGray
+    button.setTitleColor(.mediumGrayBackground, for: .normal)
+    button.tintColor = .mediumGrayBackground
+    button.imageView?.tintColor = .mediumGrayBackground
+  }
 
   @IBAction func bitcoinWalletWasTouched() {
+    selectBitcoinButton()
+    deselectButton(lightningWalletButton)
     delegate?.bitcoinWalletButtonWasTouched()
   }
 
   @IBAction func lightningWalletWasTouched() {
+    selectLightningButton()
+    deselectButton(bitcoinWalletButton)
     delegate?.lightningWalletButtonWasTouched()
   }
 

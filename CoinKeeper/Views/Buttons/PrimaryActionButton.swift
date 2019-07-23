@@ -14,8 +14,10 @@ class PrimaryActionButton: UIButton {
     case standard
     case error
     case darkBlue
+    case lightning
     case green
     case orange
+    case bitcoin
   }
 
   var style: Style = .standard {
@@ -54,6 +56,20 @@ class PrimaryActionButton: UIButton {
       backgroundColor = .mango
       setTitleColor(.lightGrayText, for: .normal)
       setTitleColor(.lightGrayText, for: .highlighted)
+    case .lightning:
+      applyCornerRadius(0)
+      tintColor = .white
+      imageView?.tintColor = .white
+      backgroundColor = .lightningBlue
+      setTitleColor(.white, for: .normal)
+      setTitleColor(.lightGrayText, for: .highlighted)
+    case .bitcoin:
+      applyCornerRadius(0)
+      backgroundColor = .lightningBlue
+      tintColor = .white
+      imageView?.tintColor = .white
+      setTitleColor(.white, for: .normal)
+      setTitleColor(.lightGrayText, for: .highlighted)
     }
   }
 
@@ -69,6 +85,8 @@ class PrimaryActionButton: UIButton {
       case .green: mainColor = .appleGreen
       case .darkBlue: mainColor = .darkBlueBackground
       case .orange: mainColor = .mango
+      case .bitcoin: mainColor = .bitcoinOrange
+      case .lightning: mainColor = .lightningBlue
       }
 
       backgroundColor = isHighlighted ? .mediumGrayBackground : mainColor

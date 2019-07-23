@@ -26,7 +26,7 @@
                                 </constraints>
                             </view>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Xpq-nw-rdL">
-                                <rect key="frame" x="0.0" y="155" width="414" height="741"/>
+                                <rect key="frame" x="0.0" y="155" width="414" height="632"/>
                                 <connections>
                                     <segue destination="bBW-av-GGC" kind="embed" identifier="PageViewControllerSegue" id="5Om-x1-vjl"/>
                                 </connections>
@@ -39,23 +39,34 @@
                                     <constraint firstAttribute="height" constant="35" id="rPm-QO-8Sg"/>
                                 </constraints>
                             </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="46u-yJ-o8t" customClass="SendReceiveActionView" customModule="DropBit" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="787" width="414" height="75"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="75" id="Mkn-WU-B2n"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="Xpq-nw-rdL" firstAttribute="trailing" secondItem="Ara-cI-e6Q" secondAttribute="trailing" id="6t4-u9-0cf"/>
-                            <constraint firstAttribute="bottom" secondItem="Xpq-nw-rdL" secondAttribute="bottom" id="9pc-we-Clb"/>
                             <constraint firstItem="yEy-5P-WRf" firstAttribute="leading" secondItem="Ara-cI-e6Q" secondAttribute="leading" id="RC7-kU-b0b"/>
                             <constraint firstItem="Xpq-nw-rdL" firstAttribute="top" secondItem="08q-AV-opn" secondAttribute="bottom" constant="10" id="TEk-4d-zO6"/>
+                            <constraint firstItem="Ara-cI-e6Q" firstAttribute="bottom" secondItem="46u-yJ-o8t" secondAttribute="bottom" id="TPJ-ec-d8O"/>
                             <constraint firstItem="yEy-5P-WRf" firstAttribute="top" secondItem="Ara-cI-e6Q" secondAttribute="top" id="TnL-wg-kMl"/>
+                            <constraint firstItem="46u-yJ-o8t" firstAttribute="leading" secondItem="Ara-cI-e6Q" secondAttribute="leading" id="Vtc-0A-67l"/>
+                            <constraint firstItem="46u-yJ-o8t" firstAttribute="top" secondItem="Xpq-nw-rdL" secondAttribute="bottom" id="WK7-tA-CFz"/>
                             <constraint firstItem="Xpq-nw-rdL" firstAttribute="leading" secondItem="Ara-cI-e6Q" secondAttribute="leading" id="WN3-QL-ogq"/>
                             <constraint firstItem="08q-AV-opn" firstAttribute="centerX" secondItem="Wuq-Ar-T2f" secondAttribute="centerX" id="pEs-ZG-Z2G"/>
                             <constraint firstItem="Ara-cI-e6Q" firstAttribute="trailing" secondItem="yEy-5P-WRf" secondAttribute="trailing" id="tzJ-zb-Gmx"/>
                             <constraint firstItem="08q-AV-opn" firstAttribute="top" secondItem="yEy-5P-WRf" secondAttribute="bottom" id="ucl-4c-cUo"/>
+                            <constraint firstItem="Ara-cI-e6Q" firstAttribute="trailing" secondItem="46u-yJ-o8t" secondAttribute="trailing" id="zid-wU-DZ3"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="Ara-cI-e6Q"/>
                     </view>
                     <connections>
                         <outlet property="balanceContainer" destination="yEy-5P-WRf" id="1re-u0-6nf"/>
+                        <outlet property="sendReceiveActionView" destination="46u-yJ-o8t" id="Hl8-gG-XM6"/>
                         <outlet property="walletToggleView" destination="08q-AV-opn" id="LTs-bg-MFe"/>
                     </connections>
                 </viewController>
