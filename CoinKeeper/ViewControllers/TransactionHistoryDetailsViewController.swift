@@ -27,6 +27,7 @@ final class TransactionHistoryDetailsViewController: PresentableViewController, 
     didSet {
       collectionView.dataSource = self
       collectionView.delegate = self
+      collectionView.showsHorizontalScrollIndicator = false
     }
   }
   weak var urlOpener: URLOpener?
@@ -179,7 +180,7 @@ extension TransactionHistoryDetailsViewController: UICollectionViewDelegateFlowL
   func collectionView(_ collectionView: UICollectionView,
                       layout collectionViewLayout: UICollectionViewLayout,
                       sizeForItemAt indexPath: IndexPath) -> CGSize {
-    let hPadding: CGFloat = 8
+    let hPadding: CGFloat = 2
     let itemHeight: CGFloat = detailCollectionViewHeight
     let itemWidth: CGFloat = self.view.frame.width - (hPadding * 2)
     return CGSize(width: itemWidth, height: itemHeight)
