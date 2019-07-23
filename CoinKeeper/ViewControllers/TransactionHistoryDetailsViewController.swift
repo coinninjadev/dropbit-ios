@@ -76,7 +76,12 @@ final class TransactionHistoryDetailsViewController: PresentableViewController, 
     collectionView.isPagingEnabled = false
     collectionView.collectionViewLayout = detailCollectionViewLayout(withHorizontalPadding: hPadding)
     collectionView.backgroundColor = .clear
+    collectionView.reloadData()
+  }
 
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+    collectionView.layoutIfNeeded()
     collectionView.scrollToItem(at: selectedIndexPath, at: .centeredHorizontally, animated: false)
   }
 
