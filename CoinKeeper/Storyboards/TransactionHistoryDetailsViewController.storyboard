@@ -19,8 +19,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="fxe-QV-BsI" customClass="TransactionHistoryDetailCollectionView" customModule="DropBit" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="88" width="414" height="808"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <rect key="frame" x="0.0" y="44" width="414" height="852"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="1V7-jl-Mcx">
                                     <size key="itemSize" width="50" height="50"/>
                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
@@ -41,7 +40,7 @@
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="fxe-QV-BsI" firstAttribute="top" secondItem="gno-Zo-ty9" secondAttribute="top" constant="44" id="IMP-VM-Ghm"/>
+                            <constraint firstItem="fxe-QV-BsI" firstAttribute="top" secondItem="gno-Zo-ty9" secondAttribute="top" id="IMP-VM-Ghm"/>
                             <constraint firstItem="gno-Zo-ty9" firstAttribute="trailing" secondItem="fxe-QV-BsI" secondAttribute="trailing" id="dyn-uN-p9T"/>
                             <constraint firstItem="fxe-QV-BsI" firstAttribute="leading" secondItem="gno-Zo-ty9" secondAttribute="leading" id="iJe-jL-dE0"/>
                             <constraint firstAttribute="bottom" secondItem="fxe-QV-BsI" secondAttribute="bottom" id="yXg-yL-6Q6"/>

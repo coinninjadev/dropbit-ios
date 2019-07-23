@@ -13,14 +13,15 @@ import PromiseKit
 protocol TransactionHistoryDetailsViewControllerDelegate: TransactionShareable {
   func viewControllerDidDismissTransactionDetails(_ viewController: UIViewController)
   func viewControllerShouldSeeTransactionDetails(for viewModel: TransactionHistoryDetailCellViewModel)
-  func viewController(_ viewController: TransactionHistoryDetailsViewController, didCancelInvitationWithID invitationID: String, at indexPath: IndexPath)
+  func viewController(_ viewController: TransactionHistoryDetailsViewController,
+                      didCancelInvitationWithID invitationID: String,
+                      at indexPath: IndexPath)
   func viewControllerDidTapAddMemo(_ viewController: UIViewController, with completion: @escaping (String) -> Void)
   func viewControllerShouldUpdateTransaction(_ viewController: TransactionHistoryDetailsViewController,
                                              transaction: CKMTransaction) -> Promise<Void>
 }
 
-final class TransactionHistoryDetailsViewController: BaseViewController,
-StoryboardInitializable {
+final class TransactionHistoryDetailsViewController: PresentableViewController, StoryboardInitializable {
 
   @IBOutlet var collectionView: TransactionHistoryDetailCollectionView! {
     didSet {
@@ -41,8 +42,6 @@ StoryboardInitializable {
                           viewModelForIndexPath: @escaping (IndexPath) -> TransactionHistoryDetailCellViewModel,
                           urlOpener: URLOpener) -> TransactionHistoryDetailsViewController {
     let controller = TransactionHistoryDetailsViewController.makeFromStoryboard()
-    controller.modalTransitionStyle = .coverVertical
-    controller.modalPresentationStyle = .overFullScreen
     controller.generalCoordinationDelegate = delegate
     controller.collectionViewDelegate = collectionViewDelegate
     controller.frc = frc
@@ -56,8 +55,14 @@ StoryboardInitializable {
     return generalCoordinationDelegate as? TransactionHistoryDetailsViewControllerDelegate
   }
 
+  override var cornerRadius: CGFloat {
+    get { return .zero }
+    set { super.cornerRadius = newValue }
+  }
+
   override func viewDidLoad() {
     super.viewDidLoad()
+    view.backgroundColor = .clear
 
     collectionView.registerNib(cellType: TransactionHistoryDetailValidCell.self)
     collectionView.registerNib(cellType: TransactionHistoryDetailInvalidCell.self)
@@ -71,7 +76,8 @@ StoryboardInitializable {
     collectionView.isPagingEnabled = false
     collectionView.collectionViewLayout = detailCollectionViewLayout(withHorizontalPadding: hPadding)
     collectionView.backgroundColor = .clear
-    collectionView.scrollToItem(at: selectedIndexPath, at: .left, animated: false)
+
+    collectionView.scrollToItem(at: selectedIndexPath, at: .centeredHorizontally, animated: false)
   }
 
   private var detailCollectionViewHeight: CGFloat {

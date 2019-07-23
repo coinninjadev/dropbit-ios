@@ -121,7 +121,7 @@ extension AppCoordinator: TransactionHistoryViewControllerDelegate {
                                                                          selectedIndexPath: indexPath,
                                                                          viewModelForIndexPath: { path in viewController.detailViewModel(at: path) },
                                                                          urlOpener: self)
-    navigationController.present(controller, animated: true, completion: nil)
+    viewController.present(controller, animated: true, completion: nil)
   }
 
   func viewControllerDidDismissTransactionDetails(_ viewController: UIViewController) {
