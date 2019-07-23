@@ -308,6 +308,7 @@
 		3BBDF7E022E7372100E35EA0 /* TransactionHistoryDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BBDF7DF22E7372100E35EA0 /* TransactionHistoryDetailsViewController.swift */; };
 		3BBDF7E222E757C400E35EA0 /* TransactionHistoryDetailsViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3BBDF7E122E757C400E35EA0 /* TransactionHistoryDetailsViewController.storyboard */; };
 		3BBDF7E422E7613000E35EA0 /* AppCoordinator+TransactionHistoryDetailsViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BBDF7E322E7613000E35EA0 /* AppCoordinator+TransactionHistoryDetailsViewControllerDelegate.swift */; };
+		3BBDF7E822E780AD00E35EA0 /* TransactionHistoryDetailsViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BBDF7E722E780AD00E35EA0 /* TransactionHistoryDetailsViewControllerTests.swift */; };
 		3BBEE0C1208A5DA500A7DF9F /* CKMDerivativePath+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BBEE0B7208A5DA500A7DF9F /* CKMDerivativePath+CoreDataClass.swift */; };
 		3BBEE0C2208A5DA500A7DF9F /* CKMDerivativePath+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BBEE0B8208A5DA500A7DF9F /* CKMDerivativePath+CoreDataProperties.swift */; };
 		3BC23EF220BDCA5100877BB6 /* TransactionDataError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC23EF120BDCA5100877BB6 /* TransactionDataError.swift */; };
@@ -1227,6 +1228,7 @@
 		3BBDF7DF22E7372100E35EA0 /* TransactionHistoryDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionHistoryDetailsViewController.swift; sourceTree = "<group>"; };
 		3BBDF7E122E757C400E35EA0 /* TransactionHistoryDetailsViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = TransactionHistoryDetailsViewController.storyboard; sourceTree = "<group>"; };
 		3BBDF7E322E7613000E35EA0 /* AppCoordinator+TransactionHistoryDetailsViewControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppCoordinator+TransactionHistoryDetailsViewControllerDelegate.swift"; sourceTree = "<group>"; };
+		3BBDF7E722E780AD00E35EA0 /* TransactionHistoryDetailsViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionHistoryDetailsViewControllerTests.swift; sourceTree = "<group>"; };
 		3BBEE0B7208A5DA500A7DF9F /* CKMDerivativePath+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CKMDerivativePath+CoreDataClass.swift"; sourceTree = "<group>"; };
 		3BBEE0B8208A5DA500A7DF9F /* CKMDerivativePath+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CKMDerivativePath+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		3BC23EF120BDCA5100877BB6 /* TransactionDataError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDataError.swift; sourceTree = "<group>"; };
@@ -2382,6 +2384,7 @@
 				3BEF22962260CD4A001F6D25 /* GetBitcoinViewControllerTests.swift */,
 				3B24466B22650261004AEE35 /* SpendBitcoinViewControllerTests.swift */,
 				3BCBFCBF229EBA6800F633BA /* SupportViewControllerTests.swift */,
+				3BBDF7E722E780AD00E35EA0 /* TransactionHistoryDetailsViewControllerTests.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -4470,6 +4473,7 @@
 				3B6BCBF2227365D000950105 /* TransactionHistoryDetailValidCellTests.swift in Sources */,
 				3B6FDAD9204F71140091916A /* VerifyRecoveryWordCellTests.swift in Sources */,
 				403AAD5F2063513900F7A2BA /* Model.xcdatamodeld in Sources */,
+				3BBDF7E822E780AD00E35EA0 /* TransactionHistoryDetailsViewControllerTests.swift in Sources */,
 				B5C8F5B7216CEE3A00E3E85B /* MockNetworkManager+TransactionRequestable.swift in Sources */,
 				30B08FBC21F7FE230012B4CF /* MockSerialQueueManager.swift in Sources */,
 				3B6FDAEA2052DAD50091916A /* VerifyRecoveryWordsViewModelTests.swift in Sources */,

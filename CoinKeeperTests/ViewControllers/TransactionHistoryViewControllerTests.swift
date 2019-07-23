@@ -16,27 +16,29 @@ class TransactionHistoryViewControllerTests: XCTestCase {
 
   override func setUp() {
     super.setUp()
-    self.stack = InMemoryCoreDataStack()
-    self.sut = TransactionHistoryViewController.makeFromStoryboard()
-    self.sut.context = self.stack.context
-    _ = self.sut.view
+    stack = InMemoryCoreDataStack()
+    sut = TransactionHistoryViewController.makeFromStoryboard()
+    sut.context = self.stack.context
+    _ = sut.view
   }
 
   override func tearDown() {
-    self.sut = nil
-    self.stack = nil
+    sut = nil
+    stack = nil
     super.tearDown()
   }
 
   // MARK: outlets are connected
   func testOutletsAreConnected() {
-    XCTAssertNotNil(self.sut.summaryCollectionView, "summaryCollectionView should be connected")
-    XCTAssertNotNil(self.sut.detailCollectionView, "detailCollectionView should be connected")
-    XCTAssertNotNil(self.sut.detailCollectionViewTopConstraint, "detailCollectionViewTopConstraint should be connected")
-    XCTAssertNotNil(self.sut.transactionHistoryNoBalanceView, "transactionHistoryNoBalanceView should be connected")
-    XCTAssertNotNil(self.sut.transactionHistoryWithBalanceView, "transactionHistoryWithBalanceView should be connected")
-    XCTAssertNotNil(self.sut.collectionViews, "collectionViews outlet collection should be connected")
-    XCTAssertNotNil(self.sut.sendReceiveActionView, "sendReceiveActionView should be connected")
+    XCTAssertNotNil(sut.summaryCollectionView, "summaryCollectionView should be connected")
+    XCTAssertNotNil(sut.transactionHistoryNoBalanceView, "transactionHistoryNoBalanceView should be connected")
+    XCTAssertNotNil(sut.transactionHistoryWithBalanceView, "transactionHistoryWithBalanceView should be connected")
+    XCTAssertNotNil(sut.sendReceiveActionView, "sendReceiveActionView should be connected")
+    XCTAssertNotNil(sut.refreshView, "refreshView should be connected")
+    XCTAssertNotNil(sut.refreshViewTopConstraint, "refreshViewTopConstraint should be connected")
+    XCTAssertNotNil(sut.sendReceiveActionViewBottomConstraint, "sendReceiveActionViewBottomConstraint should be connected")
+    XCTAssertNotNil(sut.sendReceiveActionView, "sendReceiveActionView should be connected")
+    XCTAssertNotNil(sut.gradientBlurView, "gradientBlurView should be connected")
   }
 
   // MARK: no transactions
