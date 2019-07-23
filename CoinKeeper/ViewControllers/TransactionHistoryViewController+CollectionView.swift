@@ -62,6 +62,7 @@ extension TransactionHistoryViewController: UICollectionViewDelegate {
   }
 }
 
+// for handling refreshView animation
 extension TransactionHistoryViewController: UIScrollViewDelegate {
 
   func scrollViewDidScroll(_ scrollView: UIScrollView) {

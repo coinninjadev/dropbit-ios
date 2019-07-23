@@ -70,7 +70,7 @@ final class TransactionHistoryDetailsViewController: PresentableViewController, 
 
     let hPadding: CGFloat = 8 // amount of space between cell edge and screen edge, to allow showing previous/next cell
     collectionView.contentInset = UIEdgeInsets(top: 0, left: hPadding, bottom: 0, right: hPadding) // allow first and last cells to be centered
-    collectionView.isPagingEnabled = false
+    collectionView.isPagingEnabled = true
     collectionView.collectionViewLayout = detailCollectionViewLayout(withHorizontalPadding: hPadding)
     collectionView.backgroundColor = .clear
     collectionView.reloadData()
@@ -83,14 +83,11 @@ final class TransactionHistoryDetailsViewController: PresentableViewController, 
   }
 
   private var detailCollectionViewHeight: CGFloat {
-    return self.view.frame.height
+    return presentationController?.frameOfPresentedViewInContainerView.size.height ?? .zero
   }
 
   private func detailCollectionViewLayout(withHorizontalPadding hPadding: CGFloat) -> UICollectionViewFlowLayout {
     let layout = HorizontallyPaginatedCollectionViewLayout()
-    let itemHeight = detailCollectionViewHeight
-    let itemWidth: CGFloat = self.view.frame.width - (hPadding * 2)
-    layout.itemSize = CGSize(width: itemWidth, height: itemHeight)
     layout.minimumInteritemSpacing = 0
     layout.minimumLineSpacing = 4
     layout.scrollDirection = .horizontal
@@ -175,6 +172,17 @@ extension TransactionHistoryDetailsViewController: UICollectionViewDataSource {
 extension TransactionHistoryDetailsViewController: UICollectionViewDelegate {
   func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
     collectionView.deselectItem(at: indexPath, animated: false)
+  }
+}
+
+extension TransactionHistoryDetailsViewController: UICollectionViewDelegateFlowLayout {
+  func collectionView(_ collectionView: UICollectionView,
+                      layout collectionViewLayout: UICollectionViewLayout,
+                      sizeForItemAt indexPath: IndexPath) -> CGSize {
+    let hPadding: CGFloat = 8
+    let itemHeight: CGFloat = detailCollectionViewHeight
+    let itemWidth: CGFloat = self.view.frame.width - (hPadding * 2)
+    return CGSize(width: itemWidth, height: itemHeight)
   }
 }
 
