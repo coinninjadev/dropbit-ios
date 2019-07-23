@@ -26,6 +26,13 @@ extension AppCoordinator: BalanceContainerDelegate {
     presentDropBitMeViewController(verifiedFirstTime: false)
   }
 
+  func didTapChartsButton() {
+    guard let topVC = self.navigationController.topViewController() else { return }
+    let newsViewController = NewsViewController.makeFromStoryboard()
+    assignCoordinationDelegate(to: newsViewController)
+    topVC.present(newsViewController, animated: true, completion: nil)
+  }
+
   func presentDropBitMeViewController(verifiedFirstTime: Bool) {
     guard let topVC = self.navigationController.topViewController() else { return }
 
@@ -38,7 +45,7 @@ extension AppCoordinator: BalanceContainerDelegate {
     topVC.present(dropBitMeVC, animated: true, completion: nil)
   }
 
-  func containerDidTapBalances(in viewController: UIViewController) {
+  func didTapRightBalanceView(in viewController: UIViewController) {
     if let controller = viewController as? WalletOverviewViewController {
       // save to user defaults
       currencyController.selectedCurrency.toggle()
@@ -47,10 +54,6 @@ extension AppCoordinator: BalanceContainerDelegate {
       // tell tx history to reload from user defaults
       controller.updateSelectedCurrency(to: currencyController.selectedCurrency)
     }
-  }
-
-  func containerDidLongPressBalances(in viewController: UIViewController) {
-    //
   }
 
   func dropBitMeAvatar() -> Promise<UIImage> {

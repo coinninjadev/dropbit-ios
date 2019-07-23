@@ -12,12 +12,11 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="BalanceContainer" customModule="DropBit" customModuleProvider="target">
             <connections>
-                <outlet property="balanceView" destination="RhC-AE-0Io" id="gqE-ac-Q25"/>
-                <outlet property="balancesLongPressRecognizer" destination="amp-Qp-EKe" id="g9i-Oa-KoZ"/>
-                <outlet property="balancesTapGestureRecognizer" destination="Xge-fw-AZP" id="3yT-XI-IJq"/>
+                <outlet property="chartButton" destination="Pwo-4y-6AK" id="lVr-7s-f4p"/>
                 <outlet property="dropBitMeButton" destination="MhN-3t-rHg" id="WCp-WL-61G"/>
                 <outlet property="leftButton" destination="sLU-EL-8bo" id="s3Y-cz-qzN"/>
                 <outlet property="primaryAmountLabel" destination="Lkf-0h-dhB" id="2Aw-j4-807"/>
+                <outlet property="rightBalanceContainerView" destination="kx6-z5-GQm" id="Dsa-Sn-So2"/>
                 <outlet property="secondaryAmountLabel" destination="OHI-XW-waq" id="0vv-Ki-kHM"/>
                 <outlet property="syncActivityIndicator" destination="fXp-RV-Frs" id="y9R-8E-AMN"/>
             </connections>
@@ -37,37 +36,52 @@
                         <action selector="didTapLeftButton:" destination="-1" eventType="touchUpInside" id="zwp-3f-O9P"/>
                     </connections>
                 </button>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" text="Primary Bal." textAlignment="right" lineBreakMode="tailTruncation" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Lkf-0h-dhB" customClass="BalancePrimaryAmountLabel" customModule="DropBit" customModuleProvider="target">
-                    <rect key="frame" x="337" y="13.5" width="180" height="23"/>
-                    <constraints>
-                        <constraint firstAttribute="width" constant="180" id="SPp-5u-dQT"/>
-                    </constraints>
-                    <fontDescription key="fontDescription" type="system" pointSize="19"/>
-                    <nil key="textColor"/>
-                    <nil key="highlightedColor"/>
-                </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" text="Secondary Bal." textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OHI-XW-waq" customClass="BalanceSecondaryAmountLabel" customModule="DropBit" customModuleProvider="target">
-                    <rect key="frame" x="414" y="36.5" width="103" height="18"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                    <nil key="textColor"/>
-                    <nil key="highlightedColor"/>
-                </label>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RhC-AE-0Io" userLabel="Gesture View">
-                    <rect key="frame" x="266.5" y="0.0" width="266.5" height="66"/>
+                <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kx6-z5-GQm" userLabel="Right Balance Container View">
+                    <rect key="frame" x="333" y="5" width="180" height="56"/>
+                    <subviews>
+                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="bottom" translatesAutoresizingMaskIntoConstraints="NO" id="XRO-sW-R8s">
+                            <rect key="frame" x="0.0" y="0.0" width="180" height="56"/>
+                            <subviews>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" text="Primary Bal." textAlignment="right" lineBreakMode="tailTruncation" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Lkf-0h-dhB" customClass="BalancePrimaryAmountLabel" customModule="DropBit" customModuleProvider="target">
+                                    <rect key="frame" x="0.0" y="0.0" width="180" height="36"/>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="180" id="SPp-5u-dQT"/>
+                                    </constraints>
+                                    <fontDescription key="fontDescription" type="system" pointSize="19"/>
+                                    <nil key="textColor"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <stackView opaque="NO" contentMode="scaleToFill" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="O6R-WA-dd2">
+                                    <rect key="frame" x="53" y="36" width="127" height="20"/>
+                                    <subviews>
+                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="fXp-RV-Frs">
+                                            <rect key="frame" x="0.0" y="0.0" width="20" height="20"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="20" id="K91-Mo-DFL"/>
+                                                <constraint firstAttribute="width" constant="20" id="yUr-og-9AM"/>
+                                            </constraints>
+                                        </imageView>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" text="Secondary Bal." textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OHI-XW-waq" customClass="BalanceSecondaryAmountLabel" customModule="DropBit" customModuleProvider="target">
+                                            <rect key="frame" x="24" y="0.0" width="103" height="20"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                </stackView>
+                            </subviews>
+                        </stackView>
+                    </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                    <gestureRecognizers/>
-                    <connections>
-                        <outletCollection property="gestureRecognizers" destination="Xge-fw-AZP" appends="YES" id="Hmq-K3-OIP"/>
-                        <outletCollection property="gestureRecognizers" destination="amp-Qp-EKe" appends="YES" id="bwY-QL-P5D"/>
-                    </connections>
-                </view>
-                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="fXp-RV-Frs">
-                    <rect key="frame" x="394" y="35.5" width="20" height="20"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="20" id="K91-Mo-DFL"/>
-                        <constraint firstAttribute="width" constant="20" id="yUr-og-9AM"/>
+                        <constraint firstAttribute="bottom" secondItem="XRO-sW-R8s" secondAttribute="bottom" id="EZt-Te-ryQ"/>
+                        <constraint firstAttribute="trailing" secondItem="XRO-sW-R8s" secondAttribute="trailing" id="bae-GS-6sz"/>
+                        <constraint firstItem="XRO-sW-R8s" firstAttribute="leading" secondItem="kx6-z5-GQm" secondAttribute="leading" id="fLe-Gk-Q7Z"/>
+                        <constraint firstItem="XRO-sW-R8s" firstAttribute="top" secondItem="kx6-z5-GQm" secondAttribute="top" id="j1L-rN-s8Z"/>
+                        <constraint firstItem="XRO-sW-R8s" firstAttribute="centerY" secondItem="kx6-z5-GQm" secondAttribute="centerY" id="sFX-1w-EDe"/>
                     </constraints>
-                </imageView>
+                </view>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MhN-3t-rHg">
                     <rect key="frame" x="251.5" y="18" width="30" height="30"/>
                     <constraints>
@@ -79,42 +93,42 @@
                         <action selector="didTapDropBitMe:" destination="-1" eventType="touchUpInside" id="3Xt-oY-T02"/>
                     </connections>
                 </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Pwo-4y-6AK">
+                    <rect key="frame" x="469" y="11" width="44" height="44"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="44" id="4xd-eJ-elf"/>
+                        <constraint firstAttribute="width" constant="44" id="KPq-8j-Zau"/>
+                    </constraints>
+                    <color key="tintColor" red="0.15294117647058825" green="0.1803921568627451" blue="0.23921568627450979" alpha="1" colorSpace="calibratedRGB"/>
+                    <state key="normal" image="chartIcon">
+                        <color key="titleColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </state>
+                    <connections>
+                        <action selector="didTapChartsButton" destination="-1" eventType="touchUpInside" id="Fj2-fR-kVK"/>
+                    </connections>
+                </button>
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
-                <constraint firstItem="OHI-XW-waq" firstAttribute="top" secondItem="Lkf-0h-dhB" secondAttribute="bottom" id="3qt-jv-tU0"/>
+                <constraint firstItem="kx6-z5-GQm" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="4HR-LB-1bE"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="sLU-EL-8bo" secondAttribute="bottom" id="5Ie-u5-eJH"/>
-                <constraint firstItem="fXp-RV-Frs" firstAttribute="centerY" secondItem="OHI-XW-waq" secondAttribute="centerY" id="5vc-L3-bVR"/>
                 <constraint firstItem="sLU-EL-8bo" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" id="7mu-ox-1kU"/>
-                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="RhC-AE-0Io" secondAttribute="bottom" id="FdB-Zm-Xxn"/>
-                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="RhC-AE-0Io" secondAttribute="trailing" id="ITR-SA-7al"/>
-                <constraint firstItem="Lkf-0h-dhB" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="sLU-EL-8bo" secondAttribute="trailing" id="NaX-f3-3Zq"/>
+                <constraint firstItem="kx6-z5-GQm" firstAttribute="trailing" secondItem="vUN-kp-3ea" secondAttribute="trailing" constant="-20" id="KNv-Wx-aph"/>
                 <constraint firstItem="MhN-3t-rHg" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="18" id="TPE-up-fdh"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="Pwo-4y-6AK" secondAttribute="trailing" constant="20" id="TbR-vF-K09"/>
                 <constraint firstItem="MhN-3t-rHg" firstAttribute="centerX" secondItem="vUN-kp-3ea" secondAttribute="centerX" id="bYW-gV-64B"/>
-                <constraint firstItem="OHI-XW-waq" firstAttribute="trailing" secondItem="Lkf-0h-dhB" secondAttribute="trailing" id="ks3-rJ-aRo"/>
-                <constraint firstItem="OHI-XW-waq" firstAttribute="leading" secondItem="fXp-RV-Frs" secondAttribute="trailing" id="odG-UJ-ntw"/>
-                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="Lkf-0h-dhB" secondAttribute="trailing" constant="16" id="pwY-bb-zij"/>
-                <constraint firstItem="Lkf-0h-dhB" firstAttribute="centerY" secondItem="vUN-kp-3ea" secondAttribute="centerY" constant="-8" id="uva-J4-Kse"/>
-                <constraint firstItem="RhC-AE-0Io" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="centerX" id="vGl-d2-96L"/>
-                <constraint firstItem="RhC-AE-0Io" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" id="vKo-dC-ZCh"/>
+                <constraint firstAttribute="bottom" secondItem="kx6-z5-GQm" secondAttribute="bottom" constant="5" id="cuR-h7-6gK"/>
+                <constraint firstItem="kx6-z5-GQm" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="5" id="nhX-NQ-HQ6"/>
                 <constraint firstItem="sLU-EL-8bo" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="vfx-8a-Ly6"/>
+                <constraint firstItem="Pwo-4y-6AK" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="zhl-7l-uOQ"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
-            <point key="canvasLocation" x="-56.799999999999997" y="44.977511244377816"/>
+            <point key="canvasLocation" x="-721" y="49"/>
         </view>
-        <tapGestureRecognizer id="Xge-fw-AZP">
-            <connections>
-                <action selector="didTapBalances:" destination="-1" id="zWL-zg-EQF"/>
-            </connections>
-        </tapGestureRecognizer>
-        <pongPressGestureRecognizer allowableMovement="10" minimumPressDuration="0.5" id="amp-Qp-EKe">
-            <connections>
-                <action selector="didLongPressBalances:" destination="-1" id="YXh-km-pid"/>
-            </connections>
-        </pongPressGestureRecognizer>
     </objects>
     <resources>
+        <image name="chartIcon" width="19" height="14"/>
         <image name="dropBitMeAvatarPlaceholder" width="30" height="30"/>
         <image name="menuButton" width="19" height="15"/>
     </resources>

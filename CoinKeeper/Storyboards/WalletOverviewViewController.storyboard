@@ -31,19 +31,14 @@
                                     <segue destination="bBW-av-GGC" kind="embed" identifier="PageViewControllerSegue" id="5Om-x1-vjl"/>
                                 </connections>
                             </containerView>
-                            <pageControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="3" translatesAutoresizingMaskIntoConstraints="NO" id="x4D-Q0-swY">
-                                <rect key="frame" x="187.5" y="104" width="39" height="37"/>
-                            </pageControl>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="Xpq-nw-rdL" firstAttribute="trailing" secondItem="Ara-cI-e6Q" secondAttribute="trailing" id="6t4-u9-0cf"/>
                             <constraint firstAttribute="bottom" secondItem="Xpq-nw-rdL" secondAttribute="bottom" id="9pc-we-Clb"/>
-                            <constraint firstItem="x4D-Q0-swY" firstAttribute="top" secondItem="Ara-cI-e6Q" secondAttribute="top" constant="60" id="Dzm-j8-dpw"/>
                             <constraint firstItem="yEy-5P-WRf" firstAttribute="leading" secondItem="Ara-cI-e6Q" secondAttribute="leading" id="RC7-kU-b0b"/>
                             <constraint firstItem="yEy-5P-WRf" firstAttribute="top" secondItem="Ara-cI-e6Q" secondAttribute="top" id="TnL-wg-kMl"/>
                             <constraint firstItem="Xpq-nw-rdL" firstAttribute="leading" secondItem="Ara-cI-e6Q" secondAttribute="leading" id="WN3-QL-ogq"/>
-                            <constraint firstItem="x4D-Q0-swY" firstAttribute="centerX" secondItem="Wuq-Ar-T2f" secondAttribute="centerX" id="d8G-2t-cQQ"/>
                             <constraint firstItem="Xpq-nw-rdL" firstAttribute="top" secondItem="yEy-5P-WRf" secondAttribute="bottom" constant="20" id="jtA-84-eFl"/>
                             <constraint firstItem="Ara-cI-e6Q" firstAttribute="trailing" secondItem="yEy-5P-WRf" secondAttribute="trailing" id="tzJ-zb-Gmx"/>
                         </constraints>
@@ -51,7 +46,6 @@
                     </view>
                     <connections>
                         <outlet property="balanceContainer" destination="yEy-5P-WRf" id="1re-u0-6nf"/>
-                        <outlet property="pageControl" destination="x4D-Q0-swY" id="hxz-Rn-jC8"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xNs-FC-VAi" userLabel="First Responder" sceneMemberID="firstResponder"/>
