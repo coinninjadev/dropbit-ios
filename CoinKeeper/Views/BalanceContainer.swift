@@ -111,7 +111,7 @@ enum BalanceContainerLeftButtonType {
     syncActivityIndicator.startAnimatingGIF()
     subscribeToNotifications()
     setAccessibilityIdentifiers()
-    rightBalanceContainerView.addGestureRecognizer(UIGestureRecognizer(target: self, action: #selector(didTapRightBalanceView)))
+    rightBalanceContainerView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapRightBalanceView)))
   }
 
   func update(with dataSource: BalanceContainerDataSource) {
