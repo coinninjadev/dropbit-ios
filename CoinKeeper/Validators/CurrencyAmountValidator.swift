@@ -28,7 +28,7 @@ enum CurrencyAmountValidatorError: ValidatorTypeError {
     switch self {
     case .invitationMaximum:
       return """
-      For security reasons we limit invite trasnactions to $100.
+      For security reasons we limit invite transactions to $100.
       Once your contact has the DropBit app there are no transaction limits.
       """
     case .usableBalance(let money):
