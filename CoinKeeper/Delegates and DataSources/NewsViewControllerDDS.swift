@@ -82,14 +82,14 @@ class NewsViewControllerDDS: NSObject {
         newsData.dayPriceResponse = day.response
         return coordinationDelegate.viewControllerDidRequestPriceDataFor(period: .monthly)
       }.then { monthlyPrice -> Promise<[PriceSummaryResponse]> in
-        let monthlyData = self.configureMonthlyData(data: monthlyPrice.reversed())
+        let monthlyData = self.configureWeekAndMonthData(data: monthlyPrice.reversed())
         newsData.weeklyPriceData = LineChartDataSet(values: monthlyData.weekData, label: nil)
         newsData.weeklyPriceResponse = monthlyData.weekResponse
         newsData.monthlyPriceData = LineChartDataSet(values: monthlyData.monthData, label: nil)
         newsData.monthlyPriceResponse = monthlyData.monthResponse
         return coordinationDelegate.viewControllerDidRequestPriceDataFor(period: .allTime)
       }.done { allTimePrice in
-        let allTimeData = self.configureAllTimeData(data: allTimePrice.reversed())
+        let allTimeData = self.configureYearAndAllTimeData(data: allTimePrice.reversed())
         newsData.allTimePriceData = LineChartDataSet(values: allTimeData.allTime, label: nil)
         newsData.allTimePriceResponse = allTimeData.allTimeResponse
         newsData.yearlyPriceData = LineChartDataSet(values: allTimeData.year, label: nil)
@@ -113,44 +113,20 @@ class NewsViewControllerDDS: NSObject {
     let monthResponse: [PriceSummaryResponse]
   }
 
-  private func configureMonthlyData(data: [PriceSummaryResponse]) -> WeekMonthChartData {
-    var weekData: [ChartDataEntry] = [], monthData: [ChartDataEntry] = []
-    var weekResponse: [PriceSummaryResponse] = [], monthResponse: [PriceSummaryResponse] = []
+  private func configureWeekAndMonthData(data: [PriceSummaryResponse]) -> WeekMonthChartData {
+    let monthStartIndex = data.count - monthlyDataSourceOffset, monthResponse = Array(data[monthStartIndex..<data.count])
+    let weekStartIndex = monthResponse.count - weekDataSourceOffset
+    let weekResponse = Array(monthResponse[monthResponse.count - weekStartIndex..<monthResponse.count])
+    let weekData = weekResponse.enumerated().map { index, element in return ChartDataEntry(x: Double(index), y: element.average) }
+    let monthData = monthResponse.enumerated().map { index, element in return ChartDataEntry(x: Double(index), y: element.average) }
 
-    for (index, data) in data.enumerated() {
-      guard index < monthlyDataSourceOffset else { break }
-
-      let chartData = ChartDataEntry(x: Double(index), y: data.average)
-
-      if index <= weekDataSourceOffset {
-        monthData.append(chartData)
-        monthResponse.append(data)
-      } else {
-        weekData.append(chartData)
-        weekResponse.append(data)
-        monthData.append(chartData)
-        monthResponse.append(data)
-      }
-    }
-
-    let data = WeekMonthChartData(weekData: weekData, weekResponse: weekResponse, monthData: monthData, monthResponse: monthResponse)
-    return data
+    return WeekMonthChartData(weekData: weekData, weekResponse: weekResponse, monthData: monthData, monthResponse: monthResponse)
   }
 
   private func configureDailyData(data: [PriceSummaryResponse]) -> (data: [ChartDataEntry], response: [PriceSummaryResponse]) {
-    var dailyData: [ChartDataEntry] = [], responseData: [PriceSummaryResponse] = []
-
     let startIndex = data.count - dailyDataSourceOffset
-    let newData = data[startIndex..<data.count]
-    for (index, data) in newData.enumerated() {
-      guard index < dailyDataSourceOffset else { break }
-      let chartData = ChartDataEntry(x: Double(index), y: data.average)
-
-      if index % 5 == 0 {
-        dailyData.append(chartData)
-        responseData.append(data)
-      }
-    }
+    let responseData = Array(data[startIndex..<data.count]).enumerated().compactMap { $0 % 5 == 0 ? $1 : nil }
+    let dailyData = responseData.enumerated().map { index, element in return ChartDataEntry(x: Double(index), y: element.average) }
 
     return (data: dailyData, response: responseData)
   }
@@ -162,30 +138,13 @@ class NewsViewControllerDDS: NSObject {
     let allTimeResponse: [PriceSummaryResponse]
   }
 
-  private func configureAllTimeData(data: [PriceSummaryResponse]) -> AllTimePriceChartData {
-    var yearData: [ChartDataEntry] = [], allTimeData: [ChartDataEntry] = []
-    var yearResponse: [PriceSummaryResponse] = [], allTimeResponse: [PriceSummaryResponse] = []
+  private func configureYearAndAllTimeData(data: [PriceSummaryResponse]) -> AllTimePriceChartData {
+    let yearStartIndex = data.count - yearDataSourceOffset, yearResponse = Array(data[yearStartIndex..<data.count])
+    let yearData = yearResponse.enumerated().map { index, element in return ChartDataEntry(x: Double(index), y: element.average) }
+    let allTimeResponseData = Array(data[0..<data.count]).enumerated().compactMap { $0 % 5 == 0 ? $1 : nil }
+    let allTimeData = allTimeResponseData.enumerated().map { index, element in return ChartDataEntry(x: Double(index), y: element.average) }
 
-    for (index, priceData) in data.enumerated() {
-      let chartData = ChartDataEntry(x: Double(index), y: priceData.average)
-
-      if index <= data.count - yearDataSourceOffset {
-        if index % 5 == 0 {
-          allTimeData.append(chartData)
-          allTimeResponse.append(priceData)
-        }
-      } else {
-        yearData.append(chartData)
-        yearResponse.append(priceData)
-        if index % 5 == 0 {
-          allTimeResponse.append(priceData)
-          allTimeData.append(chartData)
-        }
-      }
-    }
-
-    let data = AllTimePriceChartData(year: yearData, yearResponse: yearResponse, allTime: allTimeData, allTimeResponse: allTimeResponse)
-    return data
+    return AllTimePriceChartData(year: yearData, yearResponse: yearResponse, allTime: allTimeData, allTimeResponse: allTimeResponseData)
   }
 }
 

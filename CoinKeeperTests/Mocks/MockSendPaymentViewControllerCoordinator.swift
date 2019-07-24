@@ -14,6 +14,10 @@ import CNBitcoinKit
 import enum Result.Result
 
 class MockSendPaymentViewControllerCoordinator: SendPaymentViewControllerCoordinator {
+  func sendPaymentViewControllerWillDismiss(_ viewController: UIViewController) {
+    didTapClose = true
+  }
+
   func deviceCountryCode() -> Int? {
     return nil
   }
@@ -112,6 +116,10 @@ class MockSendPaymentViewControllerCoordinator: SendPaymentViewControllerCoordin
 
   var didTapClose = false
   func viewControllerDidSelectClose(_ viewController: UIViewController) {
+    didTapClose = true
+  }
+
+  func viewControllerDidSelectClose(_ viewController: UIViewController, completion: (() -> Void)? ) {
     didTapClose = true
   }
 
