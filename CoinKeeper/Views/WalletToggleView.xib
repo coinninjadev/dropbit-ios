@@ -21,44 +21,50 @@
             <rect key="frame" x="0.0" y="0.0" width="260" height="35"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="d1v-gJ-rXU" customClass="PrimaryActionButton" customModule="DropBit" customModuleProvider="target">
-                    <rect key="frame" x="0.0" y="0.0" width="130" height="35"/>
-                    <color key="backgroundColor" red="0.85475545009800813" green="0.5477365942676774" blue="0.15908610779313184" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aU7-U2-bqs">
+                    <rect key="frame" x="0.0" y="0.0" width="260" height="1"/>
+                    <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="d1v-gJ-rXU" customClass="PrimaryActionButton" customModule="DropBit" customModuleProvider="target">
+                            <rect key="frame" x="0.0" y="0.0" width="130" height="1"/>
+                            <color key="backgroundColor" red="0.85475545009800813" green="0.5477365942676774" blue="0.15908610779313184" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                            <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <state key="normal">
+                                <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </state>
+                            <connections>
+                                <action selector="bitcoinWalletWasTouched" destination="-1" eventType="touchUpInside" id="vVy-xY-jHW"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UEG-QZ-UBH" customClass="PrimaryActionButton" customModule="DropBit" customModuleProvider="target">
+                            <rect key="frame" x="130" y="0.0" width="130" height="1"/>
+                            <color key="backgroundColor" red="0.13222069452464599" green="0.40588990212443193" blue="0.71038761348922019" alpha="0.7532185299295775" colorSpace="custom" customColorSpace="displayP3"/>
+                            <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <state key="normal">
+                                <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="titleShadowColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </state>
+                            <connections>
+                                <action selector="lightningWalletWasTouched" destination="-1" eventType="touchUpInside" id="qvC-AZ-ZNp"/>
+                            </connections>
+                        </button>
+                    </subviews>
                     <constraints>
-                        <constraint firstAttribute="width" constant="130" id="QcA-tf-jhG"/>
+                        <constraint firstItem="d1v-gJ-rXU" firstAttribute="leading" secondItem="aU7-U2-bqs" secondAttribute="leading" id="1QE-II-4xV"/>
+                        <constraint firstAttribute="bottom" secondItem="d1v-gJ-rXU" secondAttribute="bottom" id="5OO-hd-Kkz"/>
+                        <constraint firstItem="UEG-QZ-UBH" firstAttribute="top" secondItem="aU7-U2-bqs" secondAttribute="top" id="MGp-GM-lqK"/>
+                        <constraint firstAttribute="trailing" secondItem="UEG-QZ-UBH" secondAttribute="trailing" id="cVx-Jp-U0T"/>
+                        <constraint firstItem="d1v-gJ-rXU" firstAttribute="top" secondItem="aU7-U2-bqs" secondAttribute="top" id="ftg-kZ-xue"/>
+                        <constraint firstAttribute="bottom" secondItem="UEG-QZ-UBH" secondAttribute="bottom" id="mRJ-m4-Nn5"/>
+                        <constraint firstItem="UEG-QZ-UBH" firstAttribute="width" secondItem="d1v-gJ-rXU" secondAttribute="width" id="yen-hN-QsX"/>
                     </constraints>
-                    <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                    <state key="normal" title=" Bitcoin" image="bitcoinIconFilled">
-                        <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                    </state>
-                    <connections>
-                        <action selector="bitcoinWalletWasTouched" destination="-1" eventType="touchUpInside" id="vVy-xY-jHW"/>
-                    </connections>
-                </button>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UEG-QZ-UBH" customClass="PrimaryActionButton" customModule="DropBit" customModuleProvider="target">
-                    <rect key="frame" x="130" y="0.0" width="130" height="35"/>
-                    <color key="backgroundColor" red="0.13222069452464599" green="0.40588990212443193" blue="0.71038761348922019" alpha="0.7532185299295775" colorSpace="custom" customColorSpace="displayP3"/>
-                    <constraints>
-                        <constraint firstAttribute="width" constant="130" id="guO-70-4C1"/>
-                    </constraints>
-                    <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                    <state key="normal" title=" Lightning" image="flashIcon">
-                        <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <color key="titleShadowColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                    </state>
-                    <connections>
-                        <action selector="lightningWalletWasTouched" destination="-1" eventType="touchUpInside" id="qvC-AZ-ZNp"/>
-                    </connections>
-                </button>
+                </stackView>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
-                <constraint firstItem="d1v-gJ-rXU" firstAttribute="leading" secondItem="5BU-fI-XdE" secondAttribute="leading" id="RNP-4A-1Jt"/>
-                <constraint firstAttribute="bottom" secondItem="UEG-QZ-UBH" secondAttribute="bottom" id="bO6-gp-Dm8"/>
-                <constraint firstAttribute="trailing" secondItem="UEG-QZ-UBH" secondAttribute="trailing" id="eT7-l3-7gM"/>
-                <constraint firstItem="UEG-QZ-UBH" firstAttribute="top" secondItem="5BU-fI-XdE" secondAttribute="top" id="gei-iX-jwA"/>
-                <constraint firstItem="d1v-gJ-rXU" firstAttribute="top" secondItem="5BU-fI-XdE" secondAttribute="top" id="ipV-vU-SNG"/>
-                <constraint firstAttribute="bottom" secondItem="d1v-gJ-rXU" secondAttribute="bottom" id="o2h-AG-ej9"/>
+                <constraint firstItem="aU7-U2-bqs" firstAttribute="trailing" secondItem="GYz-xh-dLH" secondAttribute="trailing" id="Sn4-Fd-5EB"/>
+                <constraint firstItem="aU7-U2-bqs" firstAttribute="leading" secondItem="GYz-xh-dLH" secondAttribute="leading" id="dfl-gL-q6S"/>
+                <constraint firstItem="aU7-U2-bqs" firstAttribute="top" secondItem="5BU-fI-XdE" secondAttribute="top" id="eeq-dA-F3Z"/>
+                <constraint firstItem="GYz-xh-dLH" firstAttribute="bottom" secondItem="aU7-U2-bqs" secondAttribute="bottom" id="yHC-CF-fs2"/>
             </constraints>
             <nil key="simulatedTopBarMetrics"/>
             <nil key="simulatedBottomBarMetrics"/>
@@ -67,8 +73,4 @@
             <point key="canvasLocation" x="-765.21739130434787" y="9.7098214285714288"/>
         </view>
     </objects>
-    <resources>
-        <image name="bitcoinIconFilled" width="26" height="36"/>
-        <image name="flashIcon" width="14" height="19"/>
-    </resources>
 </document>

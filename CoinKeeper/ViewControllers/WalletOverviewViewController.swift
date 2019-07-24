@@ -101,6 +101,8 @@ class WalletOverviewViewController: BaseViewController, StoryboardInitializable 
     pageViewController?.delegate = self
     walletToggleView.delegate = self
 
+    sendReceiveActionView.tintView(with: .bitcoinOrange)
+
     (coordinationDelegate?.badgeManager).map(subscribeToBadgeNotifications)
 
     subscribeToRateAndBalanceUpdates()
@@ -164,8 +166,10 @@ extension WalletOverviewViewController: UIPageViewControllerDelegate {
       switch ViewControllerIndex(rawValue: baseViewControllers.reversed().firstIndex(of: viewContorller) ?? 0) {
       case .bitcoinWalletTransactionHistory?:
         walletToggleView.selectBitcoinButton()
+        sendReceiveActionView.tintView(with: .bitcoinOrange)
       case .lightningWalletTransactionHistory?:
         walletToggleView.selectLightningButton()
+        sendReceiveActionView.tintView(with: .lightningBlue)
       default:
         walletToggleView.selectBitcoinButton()
       }
@@ -193,10 +197,12 @@ extension WalletOverviewViewController: UIPageViewControllerDataSource {
 extension WalletOverviewViewController: WalletToggleViewDelegate {
 
   func bitcoinWalletButtonWasTouched() {
+    sendReceiveActionView.tintView(with: .bitcoinOrange)
     pageViewController?.setViewControllers([baseViewControllers[1]], direction: .reverse, animated: true, completion: nil)
   }
 
   func lightningWalletButtonWasTouched() {
+    sendReceiveActionView.tintView(with: .lightningBlue)
     pageViewController?.setViewControllers([baseViewControllers[0]], direction: .forward, animated: true, completion: nil)
   }
 }

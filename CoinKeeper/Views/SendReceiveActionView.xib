@@ -34,7 +34,7 @@
                                     <constraints>
                                         <constraint firstAttribute="height" constant="51" id="7MU-gB-kOC"/>
                                     </constraints>
-                                    <state key="normal" title="RECEIVE" backgroundImage="actionButtonRightCurve"/>
+                                    <state key="normal" title="RECEIVE"/>
                                     <connections>
                                         <action selector="receiveTapped:" destination="-1" eventType="touchUpInside" id="DVu-Xk-Rpu"/>
                                     </connections>
@@ -52,7 +52,7 @@
                                 </button>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="U9K-yW-Qh8" customClass="CalculatorPaymentButton" customModule="DropBit" customModuleProvider="target">
                                     <rect key="frame" x="258.5" y="10" width="183.5" height="51"/>
-                                    <state key="normal" title="SEND" backgroundImage="actionButtonLeftCurve"/>
+                                    <state key="normal" title="SEND"/>
                                     <connections>
                                         <action selector="sendTapped:" destination="-1" eventType="touchUpInside" id="Hgd-8i-dd5"/>
                                     </connections>
@@ -86,8 +86,6 @@
         </view>
     </objects>
     <resources>
-        <image name="actionButtonLeftCurve" width="25" height="53"/>
-        <image name="actionButtonRightCurve" width="28.5" height="51"/>
         <image name="scan" width="71" height="71"/>
     </resources>
 </document>

@@ -37,6 +37,7 @@ extension UIColor {
   static var mango: UIColor { return UIColor(r: 247, g: 158, b: 54) }
 
   // MARK: Grays
+  static var darkGrayBackground: UIColor { return darkGrayText }
   static var darkGrayText: UIColor { return UIColor(r: 155, g: 155, b: 155) }
   static var dragIndicator: UIColor { return darkGrayText }
 

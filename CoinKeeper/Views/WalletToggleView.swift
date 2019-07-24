@@ -32,32 +32,58 @@ class WalletToggleView: UIView {
     commonInit()
   }
 
+  private lazy var lightningTitle: NSAttributedString = {
+    NSAttributedString(imageName: "flashIcon", imageSize: CGSize(width: 11, height: 18),
+                       title: "Lightning", sharedColor: .white, font: .medium(14))
+  }()
+
+  private lazy var bitcoinTitle: NSAttributedString = {
+    NSAttributedString(imageName: "bitcoinIconFilled", imageSize: CGSize(width: 11, height: 18),
+                       title: "Bitcoin", sharedColor: .white, font: .medium(14))
+  }()
+
+  private lazy var lightningUnselectedTitle: NSAttributedString = {
+    NSAttributedString(imageName: "flashIcon", imageSize: CGSize(width: 11, height: 18),
+                       title: "Lightning", sharedColor: .darkGrayBackground, font: .medium(14))
+  }()
+
+  private lazy var bitcoinUnselectedTitle: NSAttributedString = {
+    NSAttributedString(imageName: "bitcoinIconFilled", imageSize: CGSize(width: 11, height: 18),
+                       title: "Bitcoin", sharedColor: .darkGrayBackground, font: .medium(14))
+  }()
+
   private func commonInit() {
     xibSetup()
     layer.borderWidth = 0.5
     layer.cornerRadius = 5
     clipsToBounds = true
     layer.borderColor = UIColor.mediumGrayBackground.cgColor
+    bitcoinWalletButton.style = .bitcoin
+    lightningWalletButton.style = .lightning
     selectBitcoinButton()
-    lightningWalletButton.applyCornerRadius(0)
-    deselectButton(lightningWalletButton)
   }
 
   func selectBitcoinButton() {
-    bitcoinWalletButton.style = .bitcoin
+    bitcoinWalletButton.setAttributedTitle(bitcoinTitle, for: .normal)
     deselectButton(lightningWalletButton)
   }
 
   func selectLightningButton() {
-    lightningWalletButton.style = .lightning
+    lightningWalletButton.setAttributedTitle(lightningTitle, for: .normal)
     deselectButton(bitcoinWalletButton)
   }
 
-  private func deselectButton(_ button: UIButton) {
-    button.backgroundColor = .lightGray
-    button.setTitleColor(.mediumGrayBackground, for: .normal)
-    button.tintColor = .mediumGrayBackground
-    button.imageView?.tintColor = .mediumGrayBackground
+  private func deselectButton(_ button: PrimaryActionButton) {
+    button.backgroundColor = .mediumGrayBackground
+
+    switch button {
+    case bitcoinWalletButton:
+      button.setAttributedTitle(bitcoinUnselectedTitle, for: .normal)
+    case lightningWalletButton:
+      button.setAttributedTitle(lightningUnselectedTitle, for: .normal)
+    default:
+      break
+    }
   }
 
   @IBAction func bitcoinWalletWasTouched() {
