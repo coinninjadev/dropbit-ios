@@ -33,11 +33,8 @@ class TransactionHistoryViewControllerTests: XCTestCase {
     XCTAssertNotNil(sut.summaryCollectionView, "summaryCollectionView should be connected")
     XCTAssertNotNil(sut.transactionHistoryNoBalanceView, "transactionHistoryNoBalanceView should be connected")
     XCTAssertNotNil(sut.transactionHistoryWithBalanceView, "transactionHistoryWithBalanceView should be connected")
-    XCTAssertNotNil(sut.sendReceiveActionView, "sendReceiveActionView should be connected")
     XCTAssertNotNil(sut.refreshView, "refreshView should be connected")
     XCTAssertNotNil(sut.refreshViewTopConstraint, "refreshViewTopConstraint should be connected")
-    XCTAssertNotNil(sut.sendReceiveActionViewBottomConstraint, "sendReceiveActionViewBottomConstraint should be connected")
-    XCTAssertNotNil(sut.sendReceiveActionView, "sendReceiveActionView should be connected")
     XCTAssertNotNil(sut.gradientBlurView, "gradientBlurView should be connected")
   }
 

@@ -19,7 +19,6 @@ protocol TransactionHistoryViewControllerDelegate: DeviceCountryCodeProvider &
   func viewControllerDidDisplayTransactions(_ viewController: TransactionHistoryViewController)
   func viewControllerAttemptedToRefreshTransactions(_ viewController: UIViewController)
 
-
   func viewControllerDidRequestTutorial(_ viewController: UIViewController)
   func viewControllerDidTapGetBitcoin(_ viewController: UIViewController)
   func viewControllerDidTapSpendBitcoin(_ viewController: UIViewController)
