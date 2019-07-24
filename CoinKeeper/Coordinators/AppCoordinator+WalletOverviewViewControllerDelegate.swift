@@ -27,6 +27,10 @@ extension AppCoordinator: WalletOverviewViewControllerDelegate {
     }
   }
 
+  func viewControllerShouldAdjustForBottomSafeArea(_ viewController: UIViewController) -> Bool {
+    return UIApplication.shared.delegate?.window??.safeAreaInsets.bottom ?? 0 == 0
+  }
+
   func viewControllerDidTapReceivePayment(_ viewController: UIViewController, converter: CurrencyConverter) {
     if let requestViewController = createRequestPayViewController(converter: converter) {
       analyticsManager.track(event: .requestButtonPressed, with: nil)

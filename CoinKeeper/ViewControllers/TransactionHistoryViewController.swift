@@ -24,7 +24,6 @@ protocol TransactionHistoryViewControllerDelegate: DeviceCountryCodeProvider &
   func viewControllerDidTapSpendBitcoin(_ viewController: UIViewController)
 
   var currencyController: CurrencyController { get }
-  func viewControllerShouldAdjustForBottomSafeArea(_ viewController: UIViewController) -> Bool
   func viewControllerSummariesDidReload(_ viewController: TransactionHistoryViewController, indexPathsIfNotAll paths: [IndexPath]?)
   func viewControllerWillShowTransactionDetails(_ viewController: UIViewController)
   func viewController(_ viewController: TransactionHistoryViewController, didSelectItemAtIndexPath indexPath: IndexPath)
@@ -118,6 +117,7 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
 
     setupCollectionViews()
     self.frc.delegate = self
+
   }
 
   override func viewWillAppear(_ animated: Bool) {

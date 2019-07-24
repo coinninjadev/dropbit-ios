@@ -80,6 +80,7 @@
                     <connections>
                         <outlet property="balanceContainer" destination="yEy-5P-WRf" id="1re-u0-6nf"/>
                         <outlet property="sendReceiveActionView" destination="46u-yJ-o8t" id="Hl8-gG-XM6"/>
+                        <outlet property="sendReceiveActionViewBottomConstraint" destination="TPJ-ec-d8O" id="Nfu-OS-bkq"/>
                         <outlet property="tooltipButton" destination="s5h-9Q-NkJ" id="I3y-Bt-foS"/>
                         <outlet property="walletToggleView" destination="08q-AV-opn" id="LTs-bg-MFe"/>
                     </connections>
