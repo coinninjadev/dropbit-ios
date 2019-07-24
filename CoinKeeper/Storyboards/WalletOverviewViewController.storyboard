@@ -47,10 +47,9 @@
                                 </constraints>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="s5h-9Q-NkJ">
-                                <rect key="frame" x="352" y="105.5" width="44" height="44"/>
+                                <rect key="frame" x="337" y="105.5" width="77" height="44"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="44" id="Adm-8h-8kz"/>
-                                    <constraint firstAttribute="width" constant="44" id="pJM-8h-G8R"/>
                                 </constraints>
                                 <state key="normal" image="questionMarkIcon"/>
                                 <connections>
@@ -71,8 +70,9 @@
                             <constraint firstItem="Xpq-nw-rdL" firstAttribute="leading" secondItem="Ara-cI-e6Q" secondAttribute="leading" id="WN3-QL-ogq"/>
                             <constraint firstItem="08q-AV-opn" firstAttribute="centerX" secondItem="Wuq-Ar-T2f" secondAttribute="centerX" id="pEs-ZG-Z2G"/>
                             <constraint firstItem="Ara-cI-e6Q" firstAttribute="trailing" secondItem="yEy-5P-WRf" secondAttribute="trailing" id="tzJ-zb-Gmx"/>
-                            <constraint firstItem="s5h-9Q-NkJ" firstAttribute="leading" secondItem="08q-AV-opn" secondAttribute="trailing" constant="15" id="ubh-lH-amu"/>
+                            <constraint firstItem="s5h-9Q-NkJ" firstAttribute="leading" secondItem="08q-AV-opn" secondAttribute="trailing" id="ubh-lH-amu"/>
                             <constraint firstItem="08q-AV-opn" firstAttribute="top" secondItem="yEy-5P-WRf" secondAttribute="bottom" id="ucl-4c-cUo"/>
+                            <constraint firstItem="Ara-cI-e6Q" firstAttribute="trailing" secondItem="s5h-9Q-NkJ" secondAttribute="trailing" id="wQj-dv-QRN"/>
                             <constraint firstItem="Ara-cI-e6Q" firstAttribute="trailing" secondItem="46u-yJ-o8t" secondAttribute="trailing" id="zid-wU-DZ3"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="Ara-cI-e6Q"/>
