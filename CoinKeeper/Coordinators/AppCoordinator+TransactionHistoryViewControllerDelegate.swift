@@ -9,6 +9,7 @@
 import Foundation
 import PromiseKit
 import UIKit
+import MMDrawerController
 
 extension AppCoordinator: TransactionHistoryViewControllerDelegate {
 
@@ -137,6 +138,9 @@ extension AppCoordinator: TransactionHistoryViewControllerDelegate {
   }
 
   func viewControllerDidTapSendPayment(_ viewController: UIViewController, converter: CurrencyConverter) {
+    guard let topViewController = (navigationController.topViewController() as? MMDrawerController),
+      let walletOverviewViewController = topViewController.centerViewController as? WalletOverviewViewController else { return }
+    walletOverviewViewController.balanceContainer.toggleChartAndBalance()
     analyticsManager.track(event: .payButtonWasPressed, with: nil)
 
     let swappableVM = CurrencySwappableEditAmountViewModel(exchangeRates: self.currencyController.exchangeRates,

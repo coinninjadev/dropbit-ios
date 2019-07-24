@@ -129,6 +129,10 @@ class RequestPayViewControllerTests: XCTestCase {
       didSelectCloseWasCalled = true
     }
 
+    func viewControllerDidSelectClose(_ viewController: UIViewController, completion: (() -> Void)? ) {
+      didSelectCloseWasCalled = true
+    }
+
     var didSelectSendRequestWasCalled = false
     var payload: [Any] = []
     func viewControllerDidSelectSendRequest(_ viewController: UIViewController, payload: [Any]) {

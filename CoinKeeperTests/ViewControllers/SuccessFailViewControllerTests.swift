@@ -94,6 +94,10 @@ class SuccessFailViewControllerTests: XCTestCase {
       wasAskedToClose = true
     }
 
+    func viewControllerDidSelectClose(_ viewController: UIViewController, completion: (() -> Void)? ) {
+      wasAskedToClose = true
+    }
+
     func openURL(_ url: URL, completionHandler completion: (() -> Void)?) { }
     func openURLExternally(_ url: URL, completionHandler completion: ((Bool) -> Void)?) { }
   }

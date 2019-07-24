@@ -111,7 +111,7 @@ enum BalanceContainerLeftButtonType {
     syncActivityIndicator.startAnimatingGIF()
     subscribeToNotifications()
     setAccessibilityIdentifiers()
-    rightBalanceContainerView.addGestureRecognizer(UIGestureRecognizer(target: self, action: #selector(didTapRightBalanceView)))
+    rightBalanceContainerView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapRightBalanceView)))
   }
 
   func update(with dataSource: BalanceContainerDataSource) {
@@ -130,6 +130,11 @@ enum BalanceContainerLeftButtonType {
     if let syncRunning = delegate?.isSyncCurrentlyRunning(), syncRunning == false {
       setSyncVisibility(hidden: true)
     }
+  }
+
+  func toggleChartAndBalance() {
+    rightBalanceContainerView.isHidden = chartButton.isHidden
+    chartButton.isHidden = !chartButton.isHidden
   }
 
   private func selectedCurrency() -> SelectedCurrency {

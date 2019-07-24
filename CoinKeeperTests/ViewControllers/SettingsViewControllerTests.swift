@@ -105,6 +105,10 @@ class SettingsViewControllerTests: XCTestCase {
       didSelectCloseWasCalled = true
     }
 
+    func viewControllerDidSelectClose(_ viewController: UIViewController, completion: (() -> Void)? ) {
+      didSelectCloseWasCalled = true
+    }
+
     var resyncBlockchainWasCalled = false
     func viewControllerResyncBlockchain(_ viewController: UIViewController) {
       resyncBlockchainWasCalled = true
