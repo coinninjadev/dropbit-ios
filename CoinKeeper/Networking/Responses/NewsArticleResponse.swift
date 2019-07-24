@@ -17,6 +17,7 @@ struct NewsArticleResponse: ResponseDecodable {
     case cointelegraph
     case coinninja = "CoinNinja"
     case coinsquare
+    case theblock
   }
 
   enum CodingKeys: String, CodingKey {
