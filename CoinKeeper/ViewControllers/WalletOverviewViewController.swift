@@ -53,7 +53,7 @@ class WalletOverviewViewController: BaseViewController, StoryboardInitializable 
   }
 
   override func accessibleViewsAndIdentifiers() -> [AccessibleViewElement] {
-    guard let transactionHistoryViewController = baseViewControllers[1] as? TransactionHistoryViewController else { return [] }
+    guard let transactionHistoryViewController = baseViewControllers[safe: 1] as? TransactionHistoryViewController else { return [] }
     return [
       (self.view, .walletOverview(.page)),
       (self.balanceContainer, .walletOverview(.balanceView)),

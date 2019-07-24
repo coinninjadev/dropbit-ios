@@ -427,6 +427,7 @@
 		A20E47F020C0436E00CA8589 /* ContactType.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20E47EF20C0436E00CA8589 /* ContactType.swift */; };
 		A216D78F20B30C25005FBAC2 /* NoConnectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A216D78E20B30C25005FBAC2 /* NoConnectionViewController.swift */; };
 		A216D79120B30C51005FBAC2 /* NoConnectionViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A216D79020B30C51005FBAC2 /* NoConnectionViewController.storyboard */; };
+		A21DEE5722E8D6E900BBE508 /* WalletOverviewViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A21DEE5622E8D6E900BBE508 /* WalletOverviewViewControllerTests.swift */; };
 		A220A97B20B5E0E400C30149 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A220A97A20B5E0E400C30149 /* SettingsViewController.swift */; };
 		A220A97D20B5E10C00C30149 /* SettingsViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A220A97C20B5E10C00C30149 /* SettingsViewController.storyboard */; };
 		A22B196020EC1DA80084E8E9 /* AppCoordinator+RestoreWalletViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A22B195F20EC1DA80084E8E9 /* AppCoordinator+RestoreWalletViewControllerDelegate.swift */; };
@@ -1350,6 +1351,7 @@
 		A20E47EF20C0436E00CA8589 /* ContactType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactType.swift; sourceTree = "<group>"; };
 		A216D78E20B30C25005FBAC2 /* NoConnectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoConnectionViewController.swift; sourceTree = "<group>"; };
 		A216D79020B30C51005FBAC2 /* NoConnectionViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = NoConnectionViewController.storyboard; sourceTree = "<group>"; };
+		A21DEE5622E8D6E900BBE508 /* WalletOverviewViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletOverviewViewControllerTests.swift; sourceTree = "<group>"; };
 		A220A97A20B5E0E400C30149 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		A220A97C20B5E10C00C30149 /* SettingsViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = SettingsViewController.storyboard; sourceTree = "<group>"; };
 		A22B195F20EC1DA80084E8E9 /* AppCoordinator+RestoreWalletViewControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppCoordinator+RestoreWalletViewControllerDelegate.swift"; sourceTree = "<group>"; };
@@ -2391,6 +2393,7 @@
 				3B24466B22650261004AEE35 /* SpendBitcoinViewControllerTests.swift */,
 				3BCBFCBF229EBA6800F633BA /* SupportViewControllerTests.swift */,
 				3BBDF7E722E780AD00E35EA0 /* TransactionHistoryDetailsViewControllerTests.swift */,
+				A21DEE5622E8D6E900BBE508 /* WalletOverviewViewControllerTests.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -4414,6 +4417,7 @@
 				3B5CD00C20DACD7A003FF5AD /* ServerAddressCoreDataTests.swift in Sources */,
 				3B474153217A1582004DA223 /* MessageResponseTests.swift in Sources */,
 				3B1555E620D2B4A200D6A70C /* TransactionCoreDataTests.swift in Sources */,
+				A21DEE5722E8D6E900BBE508 /* WalletOverviewViewControllerTests.swift in Sources */,
 				3B5052BB2046E6AD000C739F /* BackupRecoveryWordsCollectionDDSTests.swift in Sources */,
 				3B5052B52045FB5C000C739F /* BackupRecoveryWordsViewControllerTests.swift in Sources */,
 				A2E89208210A3BC10085631A /* CKPhoneNumberFormatterTests.swift in Sources */,
