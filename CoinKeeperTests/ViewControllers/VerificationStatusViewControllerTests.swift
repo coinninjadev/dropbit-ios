@@ -140,6 +140,10 @@ class VerificationStatusViewControllerTests: XCTestCase {
       didChangeRemovePhone = true
     }
 
+    func viewControllerDidSelectClose(_ viewController: UIViewController, completion: (() -> Void)? ) {
+      didSelectClose = true
+    }
+
     var didChangeRemoveTwitter = false
     func viewControllerDidRequestToUnverifyTwitter(_ viewController: UIViewController, successfulCompletion: @escaping () -> Void) {
       didChangeRemoveTwitter = true

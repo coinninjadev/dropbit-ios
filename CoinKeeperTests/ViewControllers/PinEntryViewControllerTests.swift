@@ -216,6 +216,7 @@ class PinEntryViewControllerTests: XCTestCase {
     }
 
     func viewControllerDidSelectClose(_ viewController: UIViewController) {}
+    func viewControllerDidSelectClose(_ viewController: UIViewController, completion: (() -> Void)? ) {}
 
     var tryBiometricsWasCalled = false
     func viewControllerDidTryBiometrics(_ pinEntryViewController: PinEntryViewController) {

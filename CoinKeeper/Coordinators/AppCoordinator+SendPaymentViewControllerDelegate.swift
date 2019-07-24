@@ -18,7 +18,9 @@ extension AppCoordinator: SendPaymentViewControllerDelegate {
 
   func sendPaymentViewControllerWillDismiss(_ viewController: UIViewController) {
     viewControllerDidSelectClose(viewController, completion: { [weak self] in
-      ((self?.navigationController.topViewController() as? MMDrawerController)?.centerViewController as? WalletOverviewViewController)?.balanceContainer.toggleChartAndBalance()
+      guard let topViewController = (self?.navigationController.topViewController() as? MMDrawerController),
+        let walletViewController = topViewController.centerViewController as? WalletOverviewViewController else { return }
+      walletViewController.balanceContainer.toggleChartAndBalance()
     })
   }
 
