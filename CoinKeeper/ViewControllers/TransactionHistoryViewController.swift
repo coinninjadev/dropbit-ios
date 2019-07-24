@@ -113,11 +113,6 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
 
     self.view.backgroundColor = .lightGrayBackground
 
-    let bottomOffsetIfNeeded: CGFloat = 20
-    if let delegate = coordinationDelegate, delegate.viewControllerShouldAdjustForBottomSafeArea(self) {
-      sendReceiveActionViewBottomConstraint.constant = bottomOffsetIfNeeded
-    }
-
     view.layoutIfNeeded()
 
     coordinationDelegate?.viewControllerDidRequestBadgeUpdate(self)
@@ -223,23 +218,6 @@ extension TransactionHistoryViewController: NoTransactionsViewDelegate {
 
   func noTransactionsViewDidSelectLearnAboutBitcoin(_ view: TransactionHistoryEmptyView) {
     coordinationDelegate?.viewControllerDidRequestTutorial(self)
-  }
-}
-
-extension TransactionHistoryViewController: SendReceiveActionViewDelegate {
-  func actionViewDidSelectReceive(_ view: UIView) {
-    guard let coordinator = coordinationDelegate else { return }
-    coordinator.viewControllerDidTapReceivePayment(self, converter: coordinator.currencyController.currencyConverter)
-  }
-
-  func actionViewDidSelectScan(_ view: UIView) {
-    guard let coordinator = coordinationDelegate else { return }
-    coordinator.viewControllerDidTapScan(self, converter: coordinator.currencyController.currencyConverter)
-  }
-
-  func actionViewDidSelectSend(_ view: UIView) {
-    guard let coordinator = coordinationDelegate else { return }
-    coordinator.viewControllerDidTapSendPayment(self, converter: coordinator.currencyController.currencyConverter)
   }
 }
 

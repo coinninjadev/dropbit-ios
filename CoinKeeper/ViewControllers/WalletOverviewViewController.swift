@@ -90,12 +90,10 @@ class WalletOverviewViewController: BaseViewController, StoryboardInitializable 
 
     self.showTransactionHistoryToken = CKNotificationCenter
       .subscribe(key: .willShowTransactionHistoryDetails, object: nil, queue: .main) { _ in
-      self.pageControl.isHidden = true
     }
 
     self.dismissTransactionHistoryToken = CKNotificationCenter
       .subscribe(key: .didDismissTransactionHistoryDetails, object: nil, queue: .main) { _ in
-      self.pageControl.isHidden = false
     }
 
     balanceContainer.delegate = balanceDelegate
@@ -156,6 +154,13 @@ extension WalletOverviewViewController: BalanceDisplayable {
     baseViewControllers.compactMap { $0 as? ExchangeRateUpdateable }.forEach { $0.didUpdateExchangeRateManager(exchangeRateManager) }
   }
 
+}
+
+extension WalletOverviewViewController: UIPageViewControllerDelegate {
+  func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
+    guard let baseViewController = previousViewControllers.first as? BaseViewController else { return }
+
+  }
 }
 
 extension WalletOverviewViewController: UIPageViewControllerDataSource {
