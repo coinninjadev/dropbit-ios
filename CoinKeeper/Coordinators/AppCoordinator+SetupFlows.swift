@@ -220,12 +220,13 @@ extension AppCoordinator {
   }
 
   private func makeOverviewController() -> WalletOverviewViewController {
-    let transactionHistory = makeTransactionHistory()
+    let bitcoinWalletTransactionHistory = makeTransactionHistory()
+    let lightningWalletTransactionHistory = makeTransactionHistory()
     let requestPayViewController = createRequestPayViewController(converter: currencyController.currencyConverter)
       ?? RequestPayViewController.makeFromStoryboard()
     requestPayViewController.isModal = false
     let overviewChildViewControllers: [BaseViewController] =
-      [transactionHistory]
+      [bitcoinWalletTransactionHistory, lightningWalletTransactionHistory]
 
     let overviewViewController = WalletOverviewViewController.newInstance(with: self,
                                                                           baseViewControllers: overviewChildViewControllers,

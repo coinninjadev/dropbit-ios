@@ -26,7 +26,7 @@
                                 </constraints>
                             </view>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="GX7-DA-6R2">
-                                <rect key="frame" x="0.0" y="20" width="375" height="572"/>
+                                <rect key="frame" x="0.0" y="20" width="375" height="647"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="h1X-vI-UYr">
                                     <size key="itemSize" width="50" height="50"/>
@@ -37,68 +37,35 @@
                                 <cells/>
                             </collectionView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Fsb-uW-qUJ">
-                                <rect key="frame" x="0.0" y="576" width="375" height="16"/>
+                                <rect key="frame" x="0.0" y="651" width="375" height="16"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="16" id="obI-w7-xbW"/>
                                 </constraints>
                             </view>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Vc7-dJ-Wpy" customClass="SendReceiveActionView" customModule="DropBit" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="592" width="375" height="75"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="75" id="YFR-2n-qnl"/>
-                                </constraints>
-                            </view>
-                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="Asa-Mr-foF">
-                                <rect key="frame" x="0.0" y="667" width="375" height="477"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="477" id="nxV-L6-VoR"/>
-                                </constraints>
-                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="DbU-OU-PSl">
-                                    <size key="itemSize" width="50" height="50"/>
-                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
-                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
-                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                </collectionViewFlowLayout>
-                                <cells/>
-                            </collectionView>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="Asa-Mr-foF" firstAttribute="top" secondItem="dvX-tA-FaC" secondAttribute="bottom" id="2fz-yg-YoR"/>
-                            <constraint firstItem="JGv-XL-uiR" firstAttribute="trailing" secondItem="Asa-Mr-foF" secondAttribute="trailing" id="6vm-Vl-UGC"/>
                             <constraint firstItem="GX7-DA-6R2" firstAttribute="top" secondItem="JGv-XL-uiR" secondAttribute="top" id="7DN-fy-t7g"/>
-                            <constraint firstItem="Vc7-dJ-Wpy" firstAttribute="top" secondItem="Fsb-uW-qUJ" secondAttribute="bottom" id="9al-pi-EiF"/>
-                            <constraint firstItem="Vc7-dJ-Wpy" firstAttribute="leading" secondItem="JGv-XL-uiR" secondAttribute="leading" id="NAG-gI-65L"/>
-                            <constraint firstItem="Asa-Mr-foF" firstAttribute="leading" secondItem="JGv-XL-uiR" secondAttribute="leading" id="RE9-49-PbQ"/>
+                            <constraint firstItem="GX7-DA-6R2" firstAttribute="bottom" secondItem="JGv-XL-uiR" secondAttribute="bottom" id="NtT-Zm-fNd"/>
                             <constraint firstItem="JGv-XL-uiR" firstAttribute="trailing" secondItem="GX7-DA-6R2" secondAttribute="trailing" id="WgW-MD-OhW"/>
                             <constraint firstItem="Av0-bG-xgJ" firstAttribute="top" secondItem="dvX-tA-FaC" secondAttribute="top" id="XAy-Ne-KPx"/>
+                            <constraint firstItem="Fsb-uW-qUJ" firstAttribute="bottom" secondItem="JGv-XL-uiR" secondAttribute="bottom" id="YAa-Jd-MiX"/>
                             <constraint firstItem="GX7-DA-6R2" firstAttribute="leading" secondItem="JGv-XL-uiR" secondAttribute="leading" id="bLZ-Tk-V3L"/>
+                            <constraint firstItem="Fsb-uW-qUJ" firstAttribute="leading" secondItem="JGv-XL-uiR" secondAttribute="leading" id="cqJ-0P-1Fb"/>
                             <constraint firstItem="Av0-bG-xgJ" firstAttribute="leading" secondItem="JGv-XL-uiR" secondAttribute="leading" id="dhp-1R-Qqb"/>
                             <constraint firstItem="Av0-bG-xgJ" firstAttribute="trailing" secondItem="JGv-XL-uiR" secondAttribute="trailing" id="fX8-qv-xc2"/>
-                            <constraint firstItem="JGv-XL-uiR" firstAttribute="trailing" secondItem="Vc7-dJ-Wpy" secondAttribute="trailing" id="kYG-VA-aQ2"/>
-                            <constraint firstItem="JGv-XL-uiR" firstAttribute="bottom" secondItem="Vc7-dJ-Wpy" secondAttribute="bottom" id="n9x-LX-J2U"/>
-                            <constraint firstItem="Fsb-uW-qUJ" firstAttribute="centerX" secondItem="Vc7-dJ-Wpy" secondAttribute="centerX" id="uZo-He-nlP"/>
-                            <constraint firstItem="Fsb-uW-qUJ" firstAttribute="width" secondItem="Vc7-dJ-Wpy" secondAttribute="width" id="vI9-hm-7MI"/>
-                            <constraint firstItem="Vc7-dJ-Wpy" firstAttribute="top" secondItem="GX7-DA-6R2" secondAttribute="bottom" id="xnO-b1-Ecq"/>
+                            <constraint firstItem="Fsb-uW-qUJ" firstAttribute="trailing" secondItem="JGv-XL-uiR" secondAttribute="trailing" id="mCa-Xx-JuO"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="JGv-XL-uiR"/>
                     </view>
                     <connections>
-                        <outlet property="detailCollectionView" destination="Asa-Mr-foF" id="Kgh-Us-vv8"/>
-                        <outlet property="detailCollectionViewHeightConstraint" destination="nxV-L6-VoR" id="2sa-Ok-h7E"/>
-                        <outlet property="detailCollectionViewTopConstraint" destination="2fz-yg-YoR" id="jcL-Eg-gOh"/>
                         <outlet property="gradientBlurView" destination="Fsb-uW-qUJ" id="zaQ-fS-lfw"/>
                         <outlet property="refreshView" destination="Av0-bG-xgJ" id="dNg-B0-57u"/>
                         <outlet property="refreshViewTopConstraint" destination="XAy-Ne-KPx" id="Itl-x4-z0W"/>
-                        <outlet property="sendReceiveActionView" destination="Vc7-dJ-Wpy" id="xFT-hX-Wp9"/>
                         <outlet property="summaryCollectionView" destination="GX7-DA-6R2" id="WdE-Nn-Ajz"/>
                         <outlet property="transactionHistoryNoBalanceView" destination="Ktw-Zy-1lf" id="TOP-P2-OHv"/>
                         <outlet property="transactionHistoryWithBalanceView" destination="Ew6-Jf-eqb" id="MXo-6q-XxK"/>
-                        <outletCollection property="collectionViews" destination="GX7-DA-6R2" collectionClass="NSMutableArray" id="E5L-gk-blQ"/>
-                        <outletCollection property="collectionViews" destination="Asa-Mr-foF" collectionClass="NSMutableArray" id="oIv-AY-qsS"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SDm-Er-8Pv" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -219,7 +186,7 @@
                     </connections>
                 </view>
             </objects>
-            <point key="canvasLocation" x="-471.19999999999999" y="-35.532233883058474"/>
+            <point key="canvasLocation" x="-1194" y="8"/>
         </scene>
     </scenes>
 </document>

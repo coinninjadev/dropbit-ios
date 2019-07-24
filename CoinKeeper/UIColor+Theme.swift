@@ -29,6 +29,10 @@ extension UIColor {
 
   static var darkPeach: UIColor { return UIColor(r: 231, g: 108, b: 108) }
 
+  static var lightningBlue: UIColor { return UIColor(r: 50, g: 50, b: 165) }
+
+  static var bitcoinOrange: UIColor { return UIColor(r: 246, g: 151, b: 71) }
+
   static var warning: UIColor { return UIColor(r: 235, g: 153, b: 57) }
 
   static var appleGreen: UIColor { return UIColor(r: 131, g: 207, b: 28) }
@@ -36,6 +40,7 @@ extension UIColor {
   static var mango: UIColor { return UIColor(r: 247, g: 158, b: 54) }
 
   // MARK: Grays
+  static var darkGrayBackground: UIColor { return darkGrayText }
   static var darkGrayText: UIColor { return UIColor(r: 155, g: 155, b: 155) }
   static var dragIndicator: UIColor { return darkGrayText }
 
