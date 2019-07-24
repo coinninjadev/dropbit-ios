@@ -41,24 +41,32 @@ class WalletToggleTitleView: UIView {
 
 class ToggleLightningTitleView: WalletToggleTitleView {
 
-  override func awakeFromNib() {
-    super.awakeFromNib()
+  override init(frame: CGRect) {
+    super.init(frame: frame)
 
     iconView = UIImageView(image: UIImage(named: "walletToggleLightning"))
     titleLabel = WalletToggleTitleLabel(frame: .zero, text: "Lightning")
     setupConstraints(iconSize: CGSize(width: 12, height: 18), horizontalSpacing: 6)
   }
 
+  required init?(coder aDecoder: NSCoder) {
+    super.init(coder: aDecoder)
+  }
+
 }
 
 class ToggleBitcoinTitleView: WalletToggleTitleView {
 
-  override func awakeFromNib() {
-    super.awakeFromNib()
+  override init(frame: CGRect) {
+    super.init(frame: frame)
 
     iconView = UIImageView(image: UIImage(named: "walletToggleBitcoin"))
     titleLabel = WalletToggleTitleLabel(frame: .zero, text: "Bitcoin")
     setupConstraints(iconSize: CGSize(width: 11, height: 18), horizontalSpacing: 10)
+  }
+
+  required init?(coder aDecoder: NSCoder) {
+    super.init(coder: aDecoder)
   }
 
 }
