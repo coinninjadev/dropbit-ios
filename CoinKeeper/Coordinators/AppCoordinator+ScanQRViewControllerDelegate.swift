@@ -10,18 +10,34 @@ import UIKit
 
 extension AppCoordinator: ScanQRViewControllerDelegate {
 
+  private var exchangeRates: ExchangeRates {
+    return self.currencyController.exchangeRates
+  }
+
+  private var fiatCurrency: CurrencyCode {
+    return self.currencyController.fiatCurrency
+  }
+
   func viewControllerDidScan(_ viewController: UIViewController, qrCode: QRCode, fallbackViewModel: SendPaymentViewModel?) {
     if let paymentRequestURL = qrCode.paymentRequestURL {
       self.resolveMerchantPaymentRequest(withURL: paymentRequestURL) { result in
         switch result {
         case .success(let response):
-          guard let fetchedModel = SendPaymentViewModel(response: response) else { return }
+          guard let fetchedModel = SendPaymentViewModel(response: response,
+                                                        exchangeRates: self.exchangeRates,
+                                                        fiatCurrency: self.fiatCurrency,
+                                                        delegate: nil)
+            else { return }
           self.showSendPaymentViewController(withViewModel: fetchedModel, dismissing: viewController, completion: nil)
 
         case .failure(let paymentRequestError):
           let errorMessage = paymentRequestError.errorDescription ?? self.defaultPaymentErrorMessage
           let errorAlert = self.alertManager.defaultAlert(withTitle: self.paymentErrorTitle, description: errorMessage)
-          let viewModel = SendPaymentViewModel(btcAmount: .zero, primaryCurrency: .BTC)
+          let currencyPair = CurrencyPair(btcPrimaryWith: self.currencyController)
+          let swappableVM = CurrencySwappableEditAmountViewModel(exchangeRates: self.exchangeRates,
+                                                                 primaryAmount: .zero,
+                                                                 currencyPair: currencyPair)
+          let viewModel = SendPaymentViewModel(editAmountViewModel: swappableVM)
 
           self.showSendPaymentViewController(withViewModel: viewModel, dismissing: viewController) { sendPaymentViewController in
             sendPaymentViewController.present(errorAlert, animated: true, completion: nil)
@@ -38,35 +54,30 @@ extension AppCoordinator: ScanQRViewControllerDelegate {
   }
 
   private func createSendPaymentViewController(forQRCode qrCode: QRCode, fallbackViewModel: SendPaymentViewModel?) -> SendPaymentViewController {
-    let sendPaymentViewController = SendPaymentViewController.makeFromStoryboard()
-    assignCoordinationDelegate(to: sendPaymentViewController)
-    sendPaymentViewController.alertManager = self.alertManager
-
-    let primaryCurrency = fallbackViewModel?.primaryCurrency ?? .BTC
     let shouldUseFallback = (qrCode.btcAmount ?? .zero) == .zero
-
+    var qrCodeToUse = qrCode
     if shouldUseFallback {
-      let fallbackAmount = fallbackViewModel?.btcAmount ?? .zero
+      let fallbackConverter = fallbackViewModel?.generateCurrencyConverter()
+      let fallbackAmount = fallbackConverter?.btcAmount ?? .zero
       let fallbackQRCode = qrCode.copy(withBTCAmount: fallbackAmount)
-      sendPaymentViewController.viewModel = SendPaymentViewModel(qrCode: fallbackQRCode, primaryCurrency: primaryCurrency)
-    } else {
-      sendPaymentViewController.viewModel = SendPaymentViewModel(qrCode: qrCode, primaryCurrency: .BTC)
+      qrCodeToUse = fallbackQRCode
     }
-    sendPaymentViewController.viewModel.updatePrimaryCurrency(to: currencyController.selectedCurrency)
 
-    return sendPaymentViewController
+    let viewModel = SendPaymentViewModel(qrCode: qrCodeToUse,
+                                         exchangeRates: self.exchangeRates,
+                                         currencyPair: self.currencyController.currencyPair,
+                                         delegate: nil)
+
+    let sendPaymentVC = SendPaymentViewController.newInstance(delegate: self, viewModel: viewModel)
+    sendPaymentVC.alertManager = self.alertManager
+    return sendPaymentVC
   }
 
-  func showSendPaymentViewController(withViewModel viewModel: SendPaymentViewModel?,
+  func showSendPaymentViewController(withViewModel viewModel: SendPaymentViewModel,
                                      dismissing viewController: UIViewController,
                                      completion: ((SendPaymentViewController) -> Void)?) {
-    let sendPaymentViewController = SendPaymentViewController.makeFromStoryboard()
-    self.assignCoordinationDelegate(to: sendPaymentViewController)
+    let sendPaymentViewController = SendPaymentViewController.newInstance(delegate: self, viewModel: viewModel)
     sendPaymentViewController.alertManager = alertManager
-    if let vm = viewModel {
-      sendPaymentViewController.viewModel = vm
-    }
-    sendPaymentViewController.viewModel.updatePrimaryCurrency(to: currencyController.selectedCurrency)
 
     viewController.dismiss(animated: true) { [weak self] in
       self?.navigationController.present(sendPaymentViewController, animated: true) {
@@ -77,7 +88,11 @@ extension AppCoordinator: ScanQRViewControllerDelegate {
 
   func showScanViewController(fallbackBTCAmount: NSDecimalNumber, primaryCurrency: CurrencyCode) {
     let scanViewController = ScanQRViewController.makeFromStoryboard()
-    scanViewController.fallbackPaymentViewModel = SendPaymentViewModel(btcAmount: fallbackBTCAmount, primaryCurrency: primaryCurrency)
+    let currencyPair = CurrencyPair(btcPrimaryWith: self.currencyController)
+    let swappableVM = CurrencySwappableEditAmountViewModel(exchangeRates: self.exchangeRates,
+                                                           primaryAmount: fallbackBTCAmount,
+                                                           currencyPair: currencyPair)
+    scanViewController.fallbackPaymentViewModel = SendPaymentViewModel(editAmountViewModel: swappableVM)
 
     assignCoordinationDelegate(to: scanViewController)
     scanViewController.modalPresentationStyle = .formSheet

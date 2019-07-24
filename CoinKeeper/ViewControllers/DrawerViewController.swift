@@ -28,6 +28,7 @@ class DrawerViewController: BaseViewController, StoryboardInitializable {
       self.configureDrawerData()
     }
   }
+
   var coordinationDelegate: DrawerViewControllerDelegate? {
     return generalCoordinationDelegate as? DrawerViewControllerDelegate
   }
@@ -53,10 +54,20 @@ class DrawerViewController: BaseViewController, StoryboardInitializable {
     drawerTableView.registerHeaderFooter(headerFooterType: DrawerTableViewHeader.self)
 
     view.backgroundColor = .darkBlueBackground
+    setupDataSource()
+  }
 
-    drawerTableViewDDS = DrawerTableViewDDS { [weak self] (kind) in
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+    configureDrawerData()
+  }
+
+  private func setupDataSource() {
+    let settingsActionHandler: (DrawerData.Kind) -> Void = { [weak self] (kind) in
       self?.buttonWasTouched(for: kind)
     }
+
+    drawerTableViewDDS = DrawerTableViewDDS(settingsActionHandler: settingsActionHandler)
     drawerTableView.delegate = drawerTableViewDDS
     drawerTableView.dataSource = drawerTableViewDDS
     drawerTableView.backgroundColor = .clear
@@ -64,11 +75,6 @@ class DrawerViewController: BaseViewController, StoryboardInitializable {
     drawerTableView.separatorStyle = .none
     drawerTableView.alwaysBounceVertical = false
     drawerTableView.reloadData()
-  }
-
-  override func viewWillAppear(_ animated: Bool) {
-    super.viewWillAppear(animated)
-    configureDrawerData()
   }
 
   private func configureDrawerData() {

@@ -10,24 +10,19 @@ import CNBitcoinKit
 import PromiseKit
 import enum Result.Result
 
-protocol SendPaymentViewControllerDelegate: DeviceCountryCodeProvider {
-  func sendPaymentViewControllerDidLoad(_ viewController: UIViewController)
-  func viewControllerDidPressScan(_ viewController: UIViewController, btcAmount: NSDecimalNumber, primaryCurrency: CurrencyCode)
-  func viewControllerDidPressContacts(_ viewController: UIViewController & SelectedValidContactDelegate)
-  func viewControllerDidPressTwitter(_ viewController: UIViewController & SelectedValidContactDelegate)
-  func viewController(_ viewController: UIViewController,
-                      checkingVerificationStatusFor identityHash: String) -> Promise<[WalletAddressesQueryResponse]>
+protocol ViewControllerSendingDelegate: AnyObject {
 
-  /**
-   Dismisses `viewController` and shows phone verification flow if they haven't yet verified, otherwise calls `completion`.
-   */
-  func viewControllerDidRequestVerificationCheck(_ viewController: UIViewController, completion: @escaping (() -> Void))
+  func viewController(_ viewController: UIViewController,
+                      sendMaxFundsTo address: String,
+                      feeRate: Double) -> Promise<CNBTransactionData>
+
   func viewController(_ viewController: UIViewController,
                       sendingMax data: CNBTransactionData,
                       address: String,
                       contact: ContactType?,
                       rates: ExchangeRates,
                       sharedPayload: SharedPayloadDTO)
+
   func viewControllerDidSendPayment(_ viewController: UIViewController,
                                     btcAmount: NSDecimalNumber,
                                     requiredFeeRate: Double?,
@@ -47,6 +42,21 @@ protocol SendPaymentViewControllerDelegate: DeviceCountryCodeProvider {
                                                 memoIsShared: Bool,
                                                 sharedPayload: SharedPayloadDTO)
 
+}
+
+protocol SendPaymentViewControllerDelegate: ViewControllerSendingDelegate, DeviceCountryCodeProvider {
+  func sendPaymentViewControllerDidLoad(_ viewController: UIViewController)
+  func viewControllerDidPressScan(_ viewController: UIViewController, btcAmount: NSDecimalNumber, primaryCurrency: CurrencyCode)
+  func viewControllerDidPressContacts(_ viewController: UIViewController & SelectedValidContactDelegate)
+  func viewControllerDidPressTwitter(_ viewController: UIViewController & SelectedValidContactDelegate)
+  func viewController(_ viewController: UIViewController,
+                      checkingVerificationStatusFor identityHash: String) -> Promise<[WalletAddressesQueryResponse]>
+
+  /**
+   Dismisses `viewController` and shows phone verification flow if they haven't yet verified, otherwise calls `completion`.
+   */
+  func viewControllerDidRequestVerificationCheck(_ viewController: UIViewController, completion: @escaping (() -> Void))
+
   func viewControllerDidAttemptInvalidDestination(_ viewController: UIViewController, error: Error?)
   func viewControllerDidSelectPaste(_ viewController: UIViewController)
   func viewControllerDidSelectMemoButton(_ viewController: UIViewController, memo: String?, completion: @escaping (String) -> Void)
@@ -61,9 +71,5 @@ protocol SendPaymentViewControllerDelegate: DeviceCountryCodeProvider {
   func viewController(_ viewController: UIViewController,
                       checkForVerifiedTwitterContact twitterContact: TwitterContactType) -> Promise<TwitterContactType>
 
-  func viewController(
-    _ viewController: UIViewController,
-    sendMaxFundsTo address: String,
-    feeRate: Double
-  ) -> Promise<CNBTransactionData>
+  func usableFeeRate(from feeRates: Fees) -> Double?
 }

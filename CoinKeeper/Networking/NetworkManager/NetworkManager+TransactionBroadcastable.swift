@@ -107,7 +107,7 @@ extension NetworkManager: TransactionBroadcastable {
       case let .known(addressPubKey) = sharedPayloadDTO.addressPubKeyState,
       let senderIdentityBody = outgoingTxData.sharedPayloadSenderIdentity else {
         //Skip posting payload and just return the txid
-      return Promise.value(outgoingTxData.txid)
+        return Promise.value(outgoingTxData.txid)
     }
 
     switch outgoingTxData.dropBitType {

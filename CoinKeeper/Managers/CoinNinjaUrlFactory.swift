@@ -127,7 +127,7 @@ struct CoinNinjaUrlFactory {
       case .dustProtection:
         return "\(tooltipBreadcrumb)dustprotection"
       case .adjustableFeesTooltip:
-        return "\(tooltipBreadcrumb)adjustablefees"
+        return "\(tooltipBreadcrumb)fees"
       case .spendBitcoinOnline:
         return "news/webview/load-online"
       case .spendBitcoinAroundMe(let coordinate):

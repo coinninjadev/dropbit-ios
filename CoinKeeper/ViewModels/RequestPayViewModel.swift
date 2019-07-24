@@ -8,40 +8,22 @@
 
 import UIKit
 
-protocol RequestPayViewModelType: AnyObject {
-  var primaryCurrencyValue: String { get }
-  var secondaryCurrencyValue: NSAttributedString? { get }
-  var hasFundsInRequest: Bool { get }
-  var bitcoinUrl: BitcoinURL { get }
+class RequestPayViewModel: CurrencySwappableEditAmountViewModel {
 
-  func qrImage(withSize size: CGSize) -> UIImage?
-}
+  let receiveAddress: String
+  let qrCodeGenerator = QRCodeGenerator()
 
-class RequestPayViewModel: RequestPayViewModelType {
-  let bitcoinUrl: BitcoinURL
-  let currencyConverter: CurrencyConverterType
-  let qrCodeGenerator: QRCodeGenerator
-
-  init?(receiveAddress: String, currencyConverter: CurrencyConverterType) {
-    guard let bitcoinUrl = BitcoinURL(address: receiveAddress, amount: currencyConverter.btcValue) else { return nil }
-    self.bitcoinUrl = bitcoinUrl
-    self.currencyConverter = currencyConverter
-    self.qrCodeGenerator = QRCodeGenerator()
+  init(receiveAddress: String, viewModel: CurrencySwappableEditAmountViewModel) {
+    self.receiveAddress = receiveAddress
+    super.init(viewModel: viewModel)
   }
 
-  var primaryCurrencyValue: String {
-    return currencyConverter.fromDisplayValue
-  }
-
-  var secondaryCurrencyValue: NSAttributedString? {
-    return currencyConverter.attributedStringWithSymbol(forCurrency: currencyConverter.toCurrency)
-  }
-
-  var hasFundsInRequest: Bool {
-    return self.currencyConverter.fromAmount.isNotZero && self.currencyConverter.fromAmount.isNumber
+  var bitcoinURL: BitcoinURL? {
+    return BitcoinURL(address: receiveAddress, amount: btcAmount)
   }
 
   func qrImage(withSize size: CGSize) -> UIImage? {
-    return qrCodeGenerator.image(from: bitcoinUrl.absoluteString, size: size)
+    guard let url = bitcoinURL else { return nil }
+    return qrCodeGenerator.image(from: url.absoluteString, size: size)
   }
 }

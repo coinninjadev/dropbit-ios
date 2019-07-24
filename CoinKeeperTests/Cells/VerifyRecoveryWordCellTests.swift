@@ -52,7 +52,7 @@ class VerifyRecoveryWordCellTests: XCTestCase {
     let selectedIndex = 6
     let mockSelectionDelegate = MockVerifyRecoveryWordsSelectionDelegate()
     let possibleWords = ["one", "two", "three", "four", "five"]
-    let expectedWords = possibleWords.map { $0.uppercased() }
+    let expectedWords = possibleWords
     let cellData = VerifyRecoveryWordCellData(
       words: TestHelpers.fakeWords(),
       selectedIndex: selectedIndex,

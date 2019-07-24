@@ -67,7 +67,6 @@ class DrawerTableViewDDS: NSObject, UITableViewDelegate, UITableViewDataSource {
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     guard let settingData = settingsData[safe: indexPath.row] else {
       return settingsActionHandler(.support)
-
     }
 
     settingsActionHandler(settingData.kind)

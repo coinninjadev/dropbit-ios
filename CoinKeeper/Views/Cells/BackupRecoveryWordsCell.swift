@@ -31,7 +31,7 @@ class BackupRecoveryWordsCell: UICollectionViewCell, AccessibleViewSettable {
   }
 
   func load(with data: BackupRecoveryWordCellData) {
-    wordLabel.text = data.word.uppercased()
+    wordLabel.text = data.word
     statusLabel.text = "word \(data.currentIndex) of \(data.total)"
   }
 }

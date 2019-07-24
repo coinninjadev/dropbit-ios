@@ -87,7 +87,9 @@ class SampleTransaction: TransactionHistoryDetailCellViewModel {
     self.networkFee = NSDecimalNumber(integerAmount: 300, currency: .BTC)
     self.counterpartyDescription = phoneNumber?.counterpartyName.description ?? ""
     let sentAmount = btcSent ?? .zero
-    self.sentAmountAtCurrentConverter = CurrencyConverter(rates: sampleRates, fromAmount: sentAmount, fromCurrency: .BTC, toCurrency: .USD)
+    self.sentAmountAtCurrentConverter = CurrencyConverter(fromBtcTo: .USD,
+                                                          fromAmount: sentAmount,
+                                                          rates: sampleRates)
     self.invitationStatus = invitation?.status
     self.receiverAddress = isIncoming ? walletAddress : counterpartyAddress?.addressId
     self.isCancellable = (invitation?.status ?? .completed) != .completed

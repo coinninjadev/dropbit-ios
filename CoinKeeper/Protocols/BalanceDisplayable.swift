@@ -75,6 +75,11 @@ class ExchangeRateManager {
   var exchangeRates: ExchangeRates = [:]
   var notificationToken: NotificationToken?
   var balanceToken: NotificationToken?
+
+  init() {
+    let cachedExchangeRate = CKUserDefaults().standardDefaults.double(forKey: CKUserDefaults.Key.exchangeRateBTCUSD.defaultsString)
+    self.exchangeRates = [.BTC: 1, .USD: cachedExchangeRate]
+  }
 }
 
 /// Conforming object should provide both exchange rates and the current wallet balance
@@ -120,8 +125,7 @@ extension BalanceDisplayable where Self: UIViewController {
     // so that rateManager.exchangeRates are set before the below code executes
     updateRatesWithLatest()
 
-    let dataSource = updatedDataSource()
-    balanceContainer.update(with: dataSource)
+    updateViewWithBalance()
     didUpdateExchangeRateManager(self.rateManager)
   }
 
@@ -139,7 +143,7 @@ extension BalanceDisplayable where Self: UIViewController {
     }
 
     let rates = rateManager.exchangeRates
-    let converter = CurrencyConverter(rates: rates, fromAmount: sanitizedBalance, fromCurrency: .BTC, toCurrency: .USD)
+    let converter = CurrencyConverter(fromBtcTo: .USD, fromAmount: sanitizedBalance, rates: rates)
 
     return BalanceContainerDataSource(
       leftButtonType: balanceLeftButtonType,

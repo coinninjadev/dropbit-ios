@@ -12,14 +12,16 @@ import CNBitcoinKit
 enum BitcoinAddressValidatorError: ValidatorTypeError {
   case isInvalidBitcoinAddress
   case notBase58CheckValid
-  case bech32
+  case notBech32Valid
 
   var debugMessage: String {
     switch self {
     case .isInvalidBitcoinAddress:  return "Invalid bitcoin address."
     case .notBase58CheckValid:      return "Address is not properly Base58Check encoded."
-    case .bech32:                   return """
-      Invalid bitcoin address. \(CKStrings.dropBitWithTrademark) does not support Bech32 addresses just yet.
+    case .notBech32Valid:
+      return """
+      Address is not properly Bech32 encoded.
+      Please check that you have the correct address and try again.
       """.removingMultilineLineBreaks()
     }
   }
@@ -33,16 +35,25 @@ enum BitcoinAddressValidatorError: ValidatorTypeError {
 class BitcoinAddressValidator: ValidatorType<String> {
 
   override func validate(value: String) throws {
-    guard !value.lowercased().starts(with: "bc1") else {
-      throw BitcoinAddressValidatorError.bech32
+    let address = value.lowercased()
+    var error: BitcoinAddressValidatorError?
+    let possibleHRPs = ["bc", "tb"]
+    let addressStartsWithHRP = possibleHRPs.contains(where: { address.starts(with: $0) })
+
+    if addressStartsWithHRP {
+      if !WalletManager.validateBech32Encoding(for: address) {
+        error = .notBech32Valid
+      }
+    } else {
+      if !WalletManager.validateBase58Check(for: value) {
+        error = .notBase58CheckValid
+      } else if sanitizedAddress(in: value) == nil {
+        error = .isInvalidBitcoinAddress
+      }
     }
 
-    guard WalletManager.validateBase58Check(for: value) else {
-      throw BitcoinAddressValidatorError.notBase58CheckValid
-    }
-
-    guard sanitizedAddress(in: value) != nil else {
-      throw BitcoinAddressValidatorError.isInvalidBitcoinAddress
+    if let existingError = error {
+      throw existingError
     }
   }
 

@@ -110,7 +110,7 @@ class AppCoordinator: CoordinatorType {
     serialQueueManager: SerialQueueManagerType = SerialQueueManager(),
     notificationManager: NotificationManagerType? = nil,
     messageManager: MessagesManagerType? = nil,
-    currencyController: CurrencyController = CurrencyController(currentCurrencyCode: .USD),
+    currencyController: CurrencyController = CurrencyController(fiatCurrency: .USD),
     twitterAccessManager: TwitterAccessManagerType? = nil,
     uiTestArguments: [UITestArgument] = []
     ) {

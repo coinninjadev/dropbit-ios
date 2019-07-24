@@ -15,7 +15,15 @@ protocol BackupRecoveryWordsViewControllerDelegate: AnyObject {
 
 final class BackupRecoveryWordsViewController: BaseViewController, StoryboardInitializable {
 
-  var wordsBackedUp: Bool = false
+  static func newInstance(withDelegate delegate: BackupRecoveryWordsViewControllerDelegate,
+                          recoveryWords words: [String],
+                          wordsBackedUp: Bool) -> BackupRecoveryWordsViewController {
+    let controller = BackupRecoveryWordsViewController.makeFromStoryboard()
+    controller.recoveryWords = words
+    controller.wordsBackedUp = wordsBackedUp
+    controller.generalCoordinationDelegate = delegate
+    return controller
+  }
 
   // MARK: outlets
   @IBOutlet var titleLabel: OnboardingTitleLabel!
@@ -45,7 +53,7 @@ final class BackupRecoveryWordsViewController: BaseViewController, StoryboardIni
   @IBOutlet var closeButton: UIButton!
 
   // MARK: variables
-  var recoveryWords: [String] = [] {
+  private var recoveryWords: [String] = [] {
     didSet {
       wordCollectionViewDDS = BackupRecoveryWordsCollectionDDS(words: recoveryWords) { [weak self] (index) in
         self?.collectionViewDidDisplay(at: index)
@@ -62,6 +70,8 @@ final class BackupRecoveryWordsViewController: BaseViewController, StoryboardIni
       (self.view, .createRecoveryWords(.page))
     ]
   }
+
+  private var wordsBackedUp: Bool = false
 
   // MARK: view lifecycle
   override func viewDidLoad() {

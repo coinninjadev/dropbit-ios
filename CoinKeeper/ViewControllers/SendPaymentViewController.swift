@@ -19,15 +19,19 @@ typealias SendPaymentViewControllerCoordinator = SendPaymentViewControllerDelega
 // swiftlint:disable file_length
 class SendPaymentViewController: PresentableViewController,
   StoryboardInitializable,
-  ExchangeRateUpdateable,
   PaymentAmountValidatable,
   PhoneNumberEntryViewDisplayable,
-ValidatorAlertDisplayable {
+  ValidatorAlertDisplayable,
+  CurrencySwappableAmountEditor {
 
-  var viewModel: SendPaymentViewModelType = SendPaymentViewModel(btcAmount: 0, primaryCurrency: .USD)
+  var viewModel: SendPaymentViewModel!
   var alertManager: AlertManagerType?
   let rateManager = ExchangeRateManager()
   var hashingManager = HashingManager()
+
+  var editAmountViewModel: CurrencySwappableEditAmountViewModel {
+    return viewModel
+  }
 
   /// The presenter of SendPaymentViewController can set this property to provide a recipient.
   /// It will be parsed and used to update the viewModel and view when ready.
@@ -48,18 +52,12 @@ ValidatorAlertDisplayable {
     return coordinationDelegate
   }
 
-  var currencyValidityValidator: CompositeValidator = {
-    return CompositeValidator<String>(validators: [CurrencyStringValidator()])
-  }()
-
   // MARK: - Outlets and Actions
 
   @IBOutlet var payTitleLabel: UILabel!
   @IBOutlet var closeButton: UIButton!
 
-  @IBOutlet var primaryAmountTextField: LimitEditTextField!
-  @IBOutlet var secondaryAmountLabel: TransactionDetailSecondaryAmountLabel!
-
+  @IBOutlet var editAmountView: CurrencySwappableEditAmountView!
   @IBOutlet var phoneNumberEntryView: PhoneNumberEntryView!
 
   @IBOutlet var addressScanButtonContainerView: UIView!
@@ -73,10 +71,9 @@ ValidatorAlertDisplayable {
   @IBOutlet var twitterButton: CompactActionButton!
   @IBOutlet var pasteButton: CompactActionButton!
 
-  @IBOutlet var sendButton: PrimaryActionButton!
+  @IBOutlet var nextButton: PrimaryActionButton!
   @IBOutlet var memoContainerView: SendPaymentMemoView!
   @IBOutlet var sendMaxButton: LightBorderedButton!
-  @IBOutlet var toggleCurrencyButton: UIButton!
 
   @IBAction func performClose() {
     coordinationDelegate?.viewControllerDidSelectClose(self)
@@ -98,16 +95,15 @@ ValidatorAlertDisplayable {
   }
 
   @IBAction func performScan() {
-    let amount = viewModel.btcAmount ?? .zero
-    coordinationDelegate?.viewControllerDidPressScan(self, btcAmount: amount, primaryCurrency: primaryCurrency)
+    let converter = viewModel.generateCurrencyConverter()
+    coordinationDelegate?.viewControllerDidPressScan(self,
+                                                     btcAmount: converter.btcAmount,
+                                                     primaryCurrency: primaryCurrency)
   }
 
-  @IBAction func performSend() {
-    let amountString = sanitizedAmountString ?? ""
-
+  @IBAction func performNext() {
     do {
-      try currencyValidityValidator.validate(value: amountString)
-      try validateAmount(of: amountString)
+      try validateAmount()
       try validateAndSendPayment()
     } catch {
       showValidatorAlert(for: error, title: "Invalid Transaction")
@@ -117,14 +113,14 @@ ValidatorAlertDisplayable {
   @IBAction func performSendMax() {
     let tempAddress = ""
     self.coordinationDelegate?.latestFees()
-      .compactMap { $0[.best] }
+      .compactMap { self.coordinationDelegate?.usableFeeRate(from: $0) }
       .then { feeRate -> Promise<CNBTransactionData> in
         guard let delegate = self.coordinationDelegate else { fatalError("coordinationDelegate is required") }
         return delegate.viewController(self, sendMaxFundsTo: tempAddress, feeRate: feeRate)
       }
       .done {txData in
         self.viewModel.sendMax(with: txData)
-        self.loadAmounts()
+        self.refreshBothAmounts()
         self.sendMaxButton.isHidden = true
       }
       .catch { _ in
@@ -145,15 +141,10 @@ ValidatorAlertDisplayable {
     phoneNumberEntryView.textField?.becomeFirstResponder()
   }
 
-  @IBAction func performCurrencyToggle() {
-    viewModel.togglePrimaryCurrency()
-    updateViewWithModel()
-  }
-
   /// Each button should connect to this IBAction. This prevents automatically
   /// calling textFieldDidBeginEditing() if/when this view reappears.
   @IBAction func dismissKeyboard() {
-    primaryAmountTextField.resignFirstResponder()
+    editAmountView.primaryAmountTextField.resignFirstResponder()
     phoneNumberEntryView.textField.resignFirstResponder()
   }
 
@@ -164,6 +155,14 @@ ValidatorAlertDisplayable {
     ]
   }
 
+  static func newInstance(delegate: SendPaymentViewControllerDelegate, viewModel: SendPaymentViewModel) -> SendPaymentViewController {
+    let vc = SendPaymentViewController.makeFromStoryboard()
+    vc.generalCoordinationDelegate = delegate
+    vc.viewModel = viewModel
+    vc.viewModel.delegate = vc
+    return vc
+  }
+
   // MARK: - View lifecycle
 
   override func viewDidLoad() {
@@ -172,8 +171,10 @@ ValidatorAlertDisplayable {
     setupMenuController()
     registerForRateUpdates()
     updateRatesAndView()
-    setupKeyboardDoneButton(for: [primaryAmountTextField, phoneNumberEntryView.textField], action: #selector(doneButtonWasPressed))
-    setupListenerForTextViewChange()
+    setupKeyboardDoneButton(for: [editAmountView.primaryAmountTextField,
+                                  phoneNumberEntryView.textField],
+                            action: #selector(doneButtonWasPressed))
+    setupCurrencySwappableEditAmountView()
     setupLabels()
     setupButtons()
     formatAddressScanView()
@@ -184,38 +185,20 @@ ValidatorAlertDisplayable {
     viewModel.sharedMemoAllowed = sharedMemoAllowed
     memoContainerView.configure(memo: nil, isShared: sharedMemoAllowed)
     coordinationDelegate?.sendPaymentViewControllerDidLoad(self)
+
+    if viewModel.fromAmount == .zero && recipientDescriptionToLoad == nil {
+      editAmountView.primaryAmountTextField.becomeFirstResponder()
+    }
   }
 
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
-
-    primaryAmountTextField.delegate = self
 
     if let recipientDescription = self.recipientDescriptionToLoad {
       self.applyRecipient(inText: recipientDescription)
       self.recipientDescriptionToLoad = nil
     } else {
       updateViewWithModel()
-    }
-  }
-
-  @objc func primaryAmountTextFieldDidChange(_ textField: UITextField) {
-    guard let amountString = sanitizedAmountString else { return }
-
-    if amountString.isEmpty {
-      secondaryAmountLabel.text = ""
-    } else {
-      let decimal = NSDecimalNumber(fromString: amountString) ?? .zero
-      switch primaryCurrency {
-      case .BTC:
-        secondaryAmountLabel.text = createCurrencyConverter(for: decimal).amountStringWithSymbol(forCurrency: .USD) ?? CurrencyCode.USD.symbol
-      case .USD:
-        if let attributedText = createCurrencyConverter(for: decimal).attributedStringWithSymbol(forCurrency: .BTC) {
-          secondaryAmountLabel.attributedText = attributedText
-        } else {
-          secondaryAmountLabel.text = createCurrencyConverter(for: decimal).amountStringWithSymbol(forCurrency: .BTC) ?? CurrencyCode.BTC.symbol
-        }
-      }
     }
   }
 
@@ -234,8 +217,6 @@ extension SendPaymentViewController {
     recipientDisplayNumberLabel.font = .regular(20)
     payTitleLabel.font = .regular(15)
     payTitleLabel.textColor = .darkBlueText
-    secondaryAmountLabel.textColor = .darkGrayText
-    secondaryAmountLabel.font = .regular(17)
   }
 
   fileprivate func setupButtons() {
@@ -299,12 +280,16 @@ extension SendPaymentViewController {
     controller.update()
   }
 
-  fileprivate func setupListenerForTextViewChange() {
-    primaryAmountTextField.addTarget(self, action: #selector(primaryAmountTextFieldDidChange), for: .editingChanged)
-  }
-
   func updateViewWithModel() {
-    loadAmounts()
+    if editAmountView.primaryAmountTextField.isFirstResponder {
+      refreshSecondaryAmount()
+    } else {
+      refreshBothAmounts()
+    }
+
+    if viewModel.btcAmount != .zero {
+      sendMaxButton.isHidden = true
+    }
 
     phoneNumberEntryView.textField.text = ""
 
@@ -329,10 +314,6 @@ extension SendPaymentViewController {
     }
 
     updateMemoContainer()
-
-    if viewModel.btcAmount != .zero {
-      sendMaxButton.isHidden = true
-    }
   }
 
   func updateMemoContainer() {
@@ -353,6 +334,7 @@ extension SendPaymentViewController {
   func applyRecipient(inText text: String) {
     do {
       let recipient = try viewModel.recipientParser.findSingleRecipient(inText: text, ofTypes: [.bitcoinURL, .phoneNumber])
+      editAmountView.primaryAmountTextField.resignFirstResponder()
       updateViewModel(withParsedRecipient: recipient)
 
     } catch {
@@ -375,15 +357,10 @@ extension SendPaymentViewController {
       } else {
         setPaymentRecipient(PaymentRecipient(parsedRecipient: parsedRecipient))
         if let amount = bitcoinURL.components.amount {
-          setBTCAmountAsPrimary(amount)
+          self.viewModel.setBTCAmountAsPrimary(amount)
         }
       }
     }
-  }
-
-  func setBTCAmountAsPrimary(_ amount: NSDecimalNumber) {
-    self.viewModel.btcAmount = amount
-    self.viewModel.primaryCurrency = .BTC
   }
 
   private func fetchViewModelAndUpdate(forPaymentRequest url: URL) {
@@ -392,16 +369,17 @@ extension SendPaymentViewController {
       let errorTitle = "Payment Request Error"
       switch result {
       case .success(let response):
-        guard let fetchedModel = SendPaymentViewModel(response: response),
-          let fetchedAddress = fetchedModel.address,
-          let fetchedAmount = fetchedModel.btcAmount else {
+        guard let fetchedModel = SendPaymentViewModel(response: response,
+                                                      exchangeRates: self.viewModel.exchangeRates,
+                                                      fiatCurrency: self.viewModel.fiatCurrency),
+          let fetchedAddress = fetchedModel.address else {
             self.showValidatorAlert(for: MerchantPaymentRequestError.missingOutput, title: errorTitle)
             return
         }
 
         self.viewModel = fetchedModel
         self.setPaymentRecipient(PaymentRecipient.btcAddress(fetchedAddress))
-        self.setBTCAmountAsPrimary(fetchedAmount)
+        self.viewModel.setBTCAmountAsPrimary(fetchedModel.btcAmount)
 
         self.alertManager?.hideActivityHUD(withDelay: nil) {
           self.updateViewWithModel()
@@ -517,54 +495,8 @@ extension SendPaymentViewController {
     return viewModel.primaryCurrency
   }
 
-  func createCurrencyConverter(for decimal: NSDecimalNumber) -> CurrencyConverter {
-    switch primaryCurrency {
-    case .BTC:
-      return CurrencyConverter(rates: rateManager.exchangeRates, fromAmount: decimal, fromCurrency: .BTC, toCurrency: .USD)
-    default:
-      return CurrencyConverter(rates: rateManager.exchangeRates, fromAmount: decimal, fromCurrency: .USD, toCurrency: .BTC)
-    }
-  }
-
   func didUpdateExchangeRateManager(_ exchangeRateManager: ExchangeRateManager) {
-    if (primaryAmountTextField.text ?? "").isNotEmpty {
-      let btcAmount = getBitcoinValueForPrimaryAmountText()
-      viewModel.btcAmount = btcAmount
-    }
-
-    loadAmounts(forPrimary: false, forSecondary: true)
-  }
-
-  /// Removes the currency symbol and thousands separator from the primary text, based on Locale.current
-  var sanitizedAmountString: String? {
-    guard let toSanitize = primaryAmountTextField.text else { return nil }
-    return toSanitize.removing(groupingSeparator: self.viewModel.groupingSeparator,
-                               currencySymbol: primaryCurrency.symbol)
-  }
-
-  func getBitcoinValueForPrimaryAmountText() -> NSDecimalNumber {
-    guard let amountString = sanitizedAmountString,
-      let decimal = NSDecimalNumber(fromString: amountString) else { return .zero }
-    return createCurrencyConverter(for: decimal).amount(forCurrency: .BTC) ?? 0.0
-  }
-
-  fileprivate func loadAmounts(forPrimary: Bool = true, forSecondary: Bool = true) {
-    let labels = viewModel.amountLabels(withRates: rateManager.exchangeRates, withSymbols: true)
-
-    if forPrimary {
-      switch viewModel.primaryCurrency {
-      case .USD:
-        self.primaryAmountTextField.text = viewModel.primaryAmountInputText(withRates: rateManager.exchangeRates)
-      case .BTC:
-        if let primaryLabel = labels.primary {
-          self.primaryAmountTextField.text = primaryLabel
-        }
-      }
-    }
-
-    if let secondaryLabel = labels.secondary, forSecondary {
-      self.secondaryAmountLabel.attributedText = secondaryLabel
-    }
+    self.updateEditAmountView(withRates: exchangeRateManager.exchangeRates)
   }
 
 }
@@ -572,59 +504,38 @@ extension SendPaymentViewController {
 extension SendPaymentViewController: UITextFieldDelegate {
 
   func textFieldDidBeginEditing(_ textField: UITextField) {
-    switch textField {
-    case phoneNumberEntryView.textField:
-      let defaultCountry = CKCountry(locale: .current)
-      let phoneNumber = GlobalPhoneNumber(countryCode: defaultCountry.countryCode, nationalNumber: "")
-      let contact = GenericContact(phoneNumber: phoneNumber, formatted: "")
-      let recipient = PaymentRecipient.phoneNumber(contact)
-      setPaymentRecipient(recipient)
-      updateViewWithModel()
-    case primaryAmountTextField:
-      sendMaxButton.isHidden = true
-      guard let text = sanitizedAmountString,
-        let number = NSDecimalNumber(fromString: text) else { return }
-      if number == .zero {
-        textField.text = primaryCurrency.symbol
-      }
-    default:
-      break
-    }
+    guard textField == phoneNumberEntryView.textField else { return }
+    let defaultCountry = CKCountry(locale: .current)
+    let phoneNumber = GlobalPhoneNumber(countryCode: defaultCountry.countryCode, nationalNumber: "")
+    let contact = GenericContact(phoneNumber: phoneNumber, formatted: "")
+    let recipient = PaymentRecipient.phoneNumber(contact)
+    setPaymentRecipient(recipient)
+    updateViewWithModel()
   }
 
   func textFieldDidEndEditing(_ textField: UITextField) {
     // Skip triggering changes/validation if textField is empty
-    guard let text = textField.text, text.isNotEmpty else {
+    guard let text = textField.text, text.isNotEmpty,
+      textField == phoneNumberEntryView.textField else {
       return
     }
 
-    switch textField {
-    case phoneNumberEntryView.textField:
-      let currentNumber = phoneNumberEntryView.textField.currentGlobalNumber()
-      guard currentNumber.nationalNumber.isNotEmpty else { return } //don't attempt parsing if only dismissing keypad or changing country
+    let currentNumber = phoneNumberEntryView.textField.currentGlobalNumber()
+    guard currentNumber.nationalNumber.isNotEmpty else { return } //don't attempt parsing if only dismissing keypad or changing country
 
-      do {
-        let recipient = try viewModel.recipientParser.findSingleRecipient(inText: text, ofTypes: [.phoneNumber])
-        switch recipient {
-        case .bitcoinURL: updateViewModel(withParsedRecipient: recipient)
-        case .phoneNumber(let globalPhoneNumber):
-          let formattedPhoneNumber = try CKPhoneNumberFormatter(format: .international)
-            .string(from: globalPhoneNumber)
-          let contact = GenericContact(phoneNumber: globalPhoneNumber, formatted: formattedPhoneNumber)
-          let recipient = PaymentRecipient.phoneNumber(contact)
-          setPaymentRecipient(recipient)
-        }
-      } catch {
-        self.coordinationDelegate?.showAlertForInvalidContactOrPhoneNumber(contactName: nil, displayNumber: text)
+    do {
+      let recipient = try viewModel.recipientParser.findSingleRecipient(inText: text, ofTypes: [.phoneNumber])
+      switch recipient {
+      case .bitcoinURL: updateViewModel(withParsedRecipient: recipient)
+      case .phoneNumber(let globalPhoneNumber):
+        let formattedPhoneNumber = try CKPhoneNumberFormatter(format: .international)
+          .string(from: globalPhoneNumber)
+        let contact = GenericContact(phoneNumber: globalPhoneNumber, formatted: formattedPhoneNumber)
+        let recipient = PaymentRecipient.phoneNumber(contact)
+        setPaymentRecipient(recipient)
       }
-
-    case primaryAmountTextField:
-      viewModel.btcAmount = getBitcoinValueForPrimaryAmountText()
-      sendMaxButton.isHidden = viewModel.btcAmount != .zero
-      primaryAmountTextField.text = viewModel.primaryAmountInputText(withRates: self.rateManager.exchangeRates)
-      loadAmounts(forPrimary: false, forSecondary: true)
-    default:
-      break
+    } catch {
+      self.coordinationDelegate?.showAlertForInvalidContactOrPhoneNumber(contactName: nil, displayNumber: text)
     }
   }
 
@@ -633,60 +544,12 @@ extension SendPaymentViewController: UITextFieldDelegate {
       applyRecipient(inText: pasteboardText)
     }
 
-    switch textField {
-    case primaryAmountTextField:
-      guard let text = textField.text, let swiftRange = Range(range, in: text), isNotDeletingOrEditingCurrencySymbol(for: text, in: range) else {
-        return false
-      }
-
-      let finalString = text.replacingCharacters(in: swiftRange, with: string)
-      return primaryAmountTextFieldShouldChangeCharacters(inProposedString: finalString)
-
-    case self.phoneNumberEntryView.textField:
-      if string.isNotEmpty {
-        phoneNumberEntryView.textField.selected(digit: string)
-      } else {
-        phoneNumberEntryView.textField.selectedBack()
-      }
-      return false  // manage this manually
-    default:
-      return true
+    if string.isNotEmpty {
+      phoneNumberEntryView.textField.selected(digit: string)
+    } else {
+      phoneNumberEntryView.textField.selectedBack()
     }
-  }
-
-  private func primaryAmountTextFieldShouldChangeCharacters(inProposedString finalString: String) -> Bool {
-    let splitByDecimalArray = finalString.components(separatedBy: viewModel.decimalSeparator).dropFirst()
-
-    if !splitByDecimalArray.isEmpty {
-      guard splitByDecimalArray[1].count <= primaryCurrency.decimalPlaces else {
-        return false
-      }
-    }
-
-    guard finalString.count(of: viewModel.decimalSeparatorCharacter) <= 1 else {
-      return false
-    }
-
-    let requiredSymbolString = primaryCurrency.symbol
-    guard finalString.contains(requiredSymbolString) else {
-      return false
-    }
-
-    let trimmedFinal = finalString.removing(groupingSeparator: self.viewModel.groupingSeparator, currencySymbol: requiredSymbolString)
-    if trimmedFinal.isEmpty {
-      return true // allow deletion of all digits by returning early
-    }
-
-    guard let newAmount = NSDecimalNumber(fromString: trimmedFinal) else { return false }
-
-    guard newAmount.significantFractionalDecimalDigits <= primaryCurrency.decimalPlaces else {
-      return false
-    }
-
-    let btcAmount = createCurrencyConverter(for: newAmount).amount(forCurrency: .BTC) ?? 0.0
-    viewModel.btcAmount = btcAmount
-
-    return true
+    return false  // manage this manually
   }
 
   private func showInvalidPhoneNumberAlert() {
@@ -699,10 +562,6 @@ extension SendPaymentViewController: UITextFieldDelegate {
                                                style: .alert,
                                                actionConfigs: [config]) else { return }
     show(alert, sender: nil)
-  }
-
-  private func isNotDeletingOrEditingCurrencySymbol(for amount: String, in range: NSRange) -> Bool {
-    return (amount != primaryCurrency.symbol || range.length == 0)
   }
 
 }
@@ -742,18 +601,15 @@ extension SendPaymentViewController: SendPaymentMemoViewDelegate {
 
 extension SendPaymentViewController {
 
-  func validateAmount(of trimmedAmountString: String) throws {
+  func validateAmount() throws {
     let ignoredOptions = viewModel.standardIgnoredOptions
     let amountValidator = createCurrencyAmountValidator(ignoring: ignoredOptions)
-    guard let decimal = NSDecimalNumber(fromString: trimmedAmountString), decimal.isNumber else {
-      throw CurrencyAmountValidatorError.notANumber(trimmedAmountString)
-    }
 
-    let converter = createCurrencyConverter(for: decimal)
+    let converter = viewModel.generateCurrencyConverter()
     try amountValidator.validate(value: converter)
   }
 
-  private func validateInvitationMaximum(_ maximum: NSDecimalNumber) throws {
+  private func validateInvitationMaximum(against btcAmount: NSDecimalNumber) throws {
     guard let recipient = viewModel.paymentRecipient,
       case let .contact(contact) = recipient,
       contact.kind == .invite
@@ -761,7 +617,7 @@ extension SendPaymentViewController {
 
     let ignoredOptions = viewModel.invitationMaximumIgnoredOptions
     let validator = createCurrencyAmountValidator(ignoring: ignoredOptions)
-    let converter = createCurrencyConverter(for: maximum)
+    let converter = viewModel.generateCurrencyConverter(withBTCAmount: btcAmount)
     try validator.validate(value: converter)
   }
 
@@ -820,9 +676,7 @@ extension SendPaymentViewController {
   }
 
   private func validateAmountAndBeginAddressNegotiation(for contact: ContactType, kind: ContactKind, sharedPayload: SharedPayloadDTO) throws {
-    guard let amountString = sanitizedAmountString,
-      let decimal = NSDecimalNumber(fromString: amountString)
-      else { return }
+    let btcAmount = viewModel.btcAmount
 
     var newContact = contact
     newContact.kind = kind
@@ -832,9 +686,9 @@ extension SendPaymentViewController {
     case .none: break
     }
 
-    try validateInvitationMaximum(decimal)
+    try validateInvitationMaximum(against: btcAmount)
     coordinationDelegate?.viewControllerDidBeginAddressNegotiation(self,
-                                                                   btcAmount: getBitcoinValueForPrimaryAmountText(),
+                                                                   btcAmount: btcAmount,
                                                                    primaryCurrency: primaryCurrency,
                                                                    contact: newContact,
                                                                    memo: self.viewModel.memo,
@@ -925,7 +779,7 @@ extension SendPaymentViewController {
                                            sharedPayload: sharedPayload)
     } else {
       self.coordinationDelegate?.viewControllerDidSendPayment(self,
-                                                              btcAmount: getBitcoinValueForPrimaryAmountText(),
+                                                              btcAmount: viewModel.btcAmount,
                                                               requiredFeeRate: viewModel.requiredFeeRate,
                                                               primaryCurrency: primaryCurrency,
                                                               address: address,

@@ -16,7 +16,10 @@ class SendPaymentViewModelTests: XCTestCase {
 
   override func setUp() {
     super.setUp()
-    self.sut = SendPaymentViewModel(btcAmount: .zero, primaryCurrency: .BTC)
+    let safeRates: ExchangeRates = [.BTC: 1, .USD: 7000]
+    let currencyPair = CurrencyPair(primary: .BTC, fiat: .USD)
+    let swappableVM = CurrencySwappableEditAmountViewModel(exchangeRates: safeRates, primaryAmount: .zero, currencyPair: currencyPair)
+    self.sut = SendPaymentViewModel(editAmountViewModel: swappableVM)
   }
 
   override func tearDown() {
@@ -64,7 +67,7 @@ class SendPaymentViewModelTests: XCTestCase {
     let dummyData = CNBTransactionData()
     sut.sendMaxTransactionData = dummyData
 
-    let expectedOptions: CurrencyAmountValidationOptions = [.transactionMinimum, .invitationMaximum]
+    let expectedOptions: CurrencyAmountValidationOptions = [.invitationMaximum]
 
     // when
     let actualOptions = sut.standardIgnoredOptions
@@ -75,7 +78,7 @@ class SendPaymentViewModelTests: XCTestCase {
 
   func testWhenSendingInvitationMaximumIsIgnored() {
     // given
-    let expectedOptions: CurrencyAmountValidationOptions = [.usableBalance, .transactionMinimum]
+    let expectedOptions: CurrencyAmountValidationOptions = [.usableBalance]
 
     // when
     let actualOptions = sut.invitationMaximumIgnoredOptions

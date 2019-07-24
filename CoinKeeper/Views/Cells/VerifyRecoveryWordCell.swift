@@ -56,14 +56,14 @@ class VerifyRecoveryWordCell: UICollectionViewCell, AccessibleViewSettable {
     self.selectionDelegate = cellData.selectionDelegate
     let humanReadableIndex = cellData.selectedIndex + 1
     wordLabel.text = "Select word \(humanReadableIndex)"
-    let possibleWords = cellData.possibleWords.map { $0.uppercased() }
+    let possibleWords = cellData.possibleWords
     zip(wordButtons, possibleWords).forEach { button, possibleWord in button.setTitle(possibleWord, for: .normal) }
     setAccessibilityIdentifiers()
   }
 
   // MARK: actions
   @IBAction func buttonTapped(_ sender: UIButton) {
-    guard let title = sender.title(for: .normal)?.lowercased(), let cellData = cellData else { return }
+    guard let title = sender.title(for: .normal), let cellData = cellData else { return }
     selectionDelegate?.cell(self, didSelectWord: title, withCellData: cellData)
   }
 }

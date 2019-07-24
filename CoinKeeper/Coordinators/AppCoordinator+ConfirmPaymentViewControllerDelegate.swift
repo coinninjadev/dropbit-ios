@@ -62,10 +62,9 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate, CurrencyFormatta
     biometricsAuthenticationManager.resetPolicy()
     let pinEntryViewController = PinEntryViewController.makeFromStoryboard()
     assignCoordinationDelegate(to: pinEntryViewController)
-    let converter = CurrencyConverter(rates: rates,
+    let converter = CurrencyConverter(fromBtcTo: .USD,
                                       fromAmount: NSDecimalNumber(integerAmount: outgoingTransactionData.amount, currency: .BTC),
-                                      fromCurrency: .BTC,
-                                      toCurrency: .USD)
+                                      rates: rates)
     let amountInfo = SharedPayloadAmountInfo(converter: converter)
     var outgoingTxDataWithAmount = outgoingTransactionData
     outgoingTxDataWithAmount.sharedPayloadDTO?.amountInfo = amountInfo
@@ -246,7 +245,7 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate, CurrencyFormatta
       guard let strongSelf = self,
         let composeVC = strongSelf.createInviteNotificationSMSComposer(for: inviteBody),
         let topVC = strongSelf.navigationController.topViewController() else {
-        return
+          return
       }
       topVC.present(composeVC, animated: true, completion: nil)
     })

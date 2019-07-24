@@ -21,10 +21,8 @@ extension AppCoordinator: BackupRecoveryWordsViewControllerDelegate {
 
   private func showVerifyWordsViewController(in navigationController: UINavigationController,
                                              with words: [String]) {
-    let viewController = VerifyRecoveryWordsViewController.makeFromStoryboard()
-    viewController.recoveryWords = words
-    assignCoordinationDelegate(to: viewController)
-    navigationController.pushViewController(viewController, animated: true)
+    let controller = VerifyRecoveryWordsViewController.newInstance(withDelegate: self, recoveryWords: words)
+    navigationController.pushViewController(controller, animated: true)
   }
 
   func viewController(_ viewController: UIViewController, shouldPromptToSkipWords words: [String]) {

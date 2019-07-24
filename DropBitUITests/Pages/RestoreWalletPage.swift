@@ -25,7 +25,7 @@ class RestoreWalletPage: UITestPage {
       wordProgressLabel.assertExistence(afterWait: .none, elementDesc: wordProgressText)
 
       textField.typeText(word)
-      let resultButton = app.buttons[word]
+      let resultButton = app.buttons[word.lowercased()]
       resultButton.assertExistence(afterWait: .none, elementDesc: "resultButton for \(word), number: \(wordNumber)")
       resultButton.tap()
     }

@@ -8,12 +8,12 @@
 
 import UIKit
 
-protocol RequestPayViewControllerDelegate: ViewControllerDismissable, CopyToClipboardMessageDisplayable {
+protocol RequestPayViewControllerDelegate: ViewControllerDismissable, CopyToClipboardMessageDisplayable, CurrencyValueDataSourceType {
   func viewControllerDidSelectSendRequest(_ viewController: UIViewController, payload: [Any])
-
+  func viewControllerDidRequestNextReceiveAddress(_ viewController: UIViewController) -> String?
 }
 
-final class RequestPayViewController: PresentableViewController, StoryboardInitializable {
+final class RequestPayViewController: PresentableViewController, StoryboardInitializable, CurrencySwappableAmountEditor {
 
   // MARK: outlets
   @IBOutlet var closeButton: UIButton!
@@ -23,18 +23,7 @@ final class RequestPayViewController: PresentableViewController, StoryboardIniti
       titleLabel.textColor = .darkBlueText
     }
   }
-  @IBOutlet var primaryCurrencyLabel: UILabel! {
-    didSet {
-      primaryCurrencyLabel.textColor = .lightBlueTint
-      primaryCurrencyLabel.font = .regular(35)
-    }
-  }
-  @IBOutlet var secondaryCurrencyLabel: UILabel! {
-    didSet {
-      secondaryCurrencyLabel.textColor = .darkGrayText
-      secondaryCurrencyLabel.font = .regular(17)
-    }
-  }
+  @IBOutlet var editAmountView: CurrencySwappableEditAmountView!
   @IBOutlet var qrImageView: UIImageView!
   @IBOutlet var receiveAddressLabel: UILabel! {
     didSet {
@@ -63,11 +52,64 @@ final class RequestPayViewController: PresentableViewController, StoryboardIniti
     }
   }
 
+  @IBOutlet var addAmountButton: UIButton! {
+    didSet {
+      addAmountButton.styleAddButtonWith(title: "Add Receive Amount")
+    }
+  }
+
+  @IBAction func closeButtonTapped(_ sender: UIButton) {
+    editAmountView.primaryAmountTextField.resignFirstResponder()
+    coordinationDelegate?.viewControllerDidSelectClose(self)
+  }
+
+  @IBAction func addRequestAmountButtonTapped(_ sender: UIButton) {
+    shouldHideEditAmountView = false
+    showHideEditAmountView()
+    editAmountView.primaryAmountTextField.becomeFirstResponder()
+  }
+
+  @IBAction func sendRequestButtonTapped(_ sender: UIButton) {
+    var payload: [Any] = []
+    qrImageView.image.flatMap { $0.pngData() }.flatMap { payload.append($0) }
+    if let viewModel = viewModel, let btcURL = viewModel.bitcoinURL {
+      if let amount = btcURL.components.amount, amount > 0 {
+        payload.append(btcURL.absoluteString) //include amount details
+      } else if let address = btcURL.components.address {
+        payload.append(address)
+      }
+    }
+    coordinationDelegate?.viewControllerDidSelectSendRequest(self, payload: payload)
+  }
+
+  @IBAction func addressTapped(_ sender: UITapGestureRecognizer) {
+    UIPasteboard.general.string = viewModel.receiveAddress
+    coordinationDelegate?.viewControllerSuccessfullyCopiedToClipboard(message: "Address copied to clipboard!", viewController: self)
+  }
+
   // MARK: variables
   var coordinationDelegate: RequestPayViewControllerDelegate? {
     return generalCoordinationDelegate as? RequestPayViewControllerDelegate
   }
-  var viewModel: RequestPayViewModelType?
+
+  let rateManager: ExchangeRateManager = ExchangeRateManager()
+  var currencyValueManager: CurrencyValueDataSourceType?
+  var viewModel: RequestPayViewModel! = RequestPayViewModel(receiveAddress: "",
+                                                            viewModel: .emptyInstance())
+  var editAmountViewModel: CurrencySwappableEditAmountViewModel { return viewModel }
+
+  var isModal: Bool = true
+  var shouldHideEditAmountView = true //hide by default
+  var shouldHideAddAmountButton: Bool { return !shouldHideEditAmountView }
+
+  func showHideEditAmountView() {
+    editAmountView.isHidden = shouldHideEditAmountView
+    addAmountButton.isHidden = shouldHideAddAmountButton
+  }
+
+  func didUpdateExchangeRateManager(_ exchangeRateManager: ExchangeRateManager) {
+    updateEditAmountView(withRates: exchangeRateManager.exchangeRates)
+  }
 
   override func accessibleViewsAndIdentifiers() -> [AccessibleViewElement] {
     return [
@@ -76,38 +118,72 @@ final class RequestPayViewController: PresentableViewController, StoryboardIniti
     ]
   }
 
+  static func newInstance(delegate: RequestPayViewControllerDelegate,
+                          receiveAddress: String,
+                          currencyPair: CurrencyPair,
+                          exchangeRates: ExchangeRates) -> RequestPayViewController {
+    let vc = RequestPayViewController.makeFromStoryboard()
+    vc.generalCoordinationDelegate = delegate
+    let editAmountViewModel = CurrencySwappableEditAmountViewModel(exchangeRates: exchangeRates,
+                                                                   primaryAmount: .zero,
+                                                                   currencyPair: currencyPair,
+                                                                   delegate: vc)
+    vc.viewModel = RequestPayViewModel(receiveAddress: receiveAddress, viewModel: editAmountViewModel)
+    return vc
+  }
+
   // MARK: view lifecycle
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    guard let viewModel = viewModel else { return }
-    receiveAddressLabel.text = viewModel.bitcoinUrl.components.address
+    closeButton.isHidden = !isModal
+    setupCurrencySwappableEditAmountView()
+    registerForRateUpdates()
+    updateRatesAndView()
+    setupKeyboardDoneButton(for: [editAmountView.primaryAmountTextField],
+                            action: #selector(doneButtonWasPressed))
+  }
+
+  @objc func doneButtonWasPressed() {
+    editAmountView.primaryAmountTextField.resignFirstResponder()
+  }
+
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+    updateViewWithViewModel()
+  }
+
+  override func viewWillDisappear(_ animated: Bool) {
+    super.viewWillDisappear(animated)
+    resetViewModel()
+  }
+
+  func resetViewModel() {
+    shouldHideEditAmountView = true
+
+    guard let delegate = coordinationDelegate,
+      let currentVM = self.viewModel,
+      let nextAddress = delegate.viewControllerDidRequestNextReceiveAddress(self)
+      else { return }
+
+    let newSwappableVM = CurrencySwappableEditAmountViewModel(exchangeRates: currentVM.exchangeRates,
+                                                              primaryAmount: .zero,
+                                                              currencyPair: currentVM.currencyPair)
+    let newViewModel = RequestPayViewModel(receiveAddress: nextAddress, viewModel: newSwappableVM)
+    self.viewModel = newViewModel
+    updateViewWithViewModel()
+  }
+
+  func updateViewWithViewModel() {
+    receiveAddressLabel.text = viewModel.receiveAddress
+    updateQRImage()
+    let labels = viewModel.dualAmountLabels()
+    editAmountView.configure(withLabels: labels, delegate: self)
+    showHideEditAmountView()
+  }
+
+  func updateQRImage() {
     qrImageView.image = viewModel.qrImage(withSize: qrImageView.frame.size)
-
-    [primaryCurrencyLabel, secondaryCurrencyLabel].forEach { $0.isHidden = !viewModel.hasFundsInRequest }
-    primaryCurrencyLabel.text = viewModel.primaryCurrencyValue
-    secondaryCurrencyLabel.attributedText = viewModel.secondaryCurrencyValue
   }
 
-  @IBAction func closeButtonTapped(_ sender: UIButton) {
-    coordinationDelegate?.viewControllerDidSelectClose(self)
-  }
-
-  @IBAction func sendRequestButtonTapped(_ sender: UIButton) {
-    var payload: [Any] = []
-    qrImageView.image.flatMap { $0.pngData() }.flatMap { payload.append($0) }
-    if let viewModel = viewModel {
-      if let amount = viewModel.bitcoinUrl.components.amount, amount > 0 {
-        payload.append(viewModel.bitcoinUrl.absoluteString) //include amount details
-      } else if let address = viewModel.bitcoinUrl.components.address {
-        payload.append(address)
-      }
-    }
-    coordinationDelegate?.viewControllerDidSelectSendRequest(self, payload: payload)
-  }
-
-  @IBAction func addressTapped(_ sender: UITapGestureRecognizer) {
-    UIPasteboard.general.string = viewModel?.bitcoinUrl.components.address
-    coordinationDelegate?.viewControllerSuccessfullyCopiedToClipboard(message: "Address copied to clipboard!", viewController: self)
-  }
 }

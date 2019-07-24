@@ -9,13 +9,21 @@
 import UIKit
 
 protocol VerifyRecoveryWordsViewControllerDelegate: AnyObject {
-  func viewController(_ viewController: UIViewController, didSuccessfullyVerifyWords words: [String])
+  func viewControllerDidSuccessfullyVerifyWords(_ viewController: UIViewController)
   func viewController(_ viewController: UIViewController, didSkipBackingUpWords words: [String])
   func viewControllerFailedWordVerification(_ viewController: UIViewController)
   func viewControllerWordVerificationMaxFailuresAttempted(_ viewController: UIViewController)
 }
 
 final class VerifyRecoveryWordsViewController: BaseViewController, StoryboardInitializable {
+
+  static func newInstance(withDelegate delegate: VerifyRecoveryWordsViewControllerDelegate,
+                          recoveryWords words: [String]) -> VerifyRecoveryWordsViewController {
+    let controller = VerifyRecoveryWordsViewController.makeFromStoryboard()
+    controller.generalCoordinationDelegate = delegate
+    controller.recoveryWords = words
+    return controller
+  }
 
   // MARK: outlets
   @IBOutlet var titleLabel: OnboardingTitleLabel!
@@ -87,7 +95,7 @@ extension VerifyRecoveryWordsViewController: VerifyRecoveryWordsResultDelegate {
   }
 
   func secondMatchFound() {
-    coordinationDelegate?.viewController(self, didSuccessfullyVerifyWords: recoveryWords)
+    coordinationDelegate?.viewControllerDidSuccessfullyVerifyWords(self)
   }
 
   func errorFound() {

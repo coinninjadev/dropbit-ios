@@ -13,10 +13,12 @@ import PromiseKit
 protocol WalletManagerType: AnyObject {
   static func createMnemonicWords() -> [String]
   static func validateBase58Check(for address: String) -> Bool
+  static func validateBech32Encoding(for address: String) -> Bool
   var coin: CNBBaseCoin { get set }
   var wallet: CNBHDWallet { get }
   var hexEncodedPublicKey: String { get }
   func signatureSigning(data: Data) -> String
+  func usableFeeRate(from feeRate: Double) -> UInt
   func mnemonicWords() -> [String]
   func resetWallet(with words: [String])
 
@@ -89,7 +91,7 @@ protocol WalletManagerType: AnyObject {
 class WalletManager: WalletManagerType {
 
   func encryptionCipherKeys(forUncompressedPublicKey pubkey: Data) -> CNBEncryptionCipherKeys {
-    return wallet.encryptionCipherKeys(forPublicKey: pubkey)
+    return wallet.encryptionCipherKeys(forPublicKey: pubkey, withEntropy: WalletManager.secureEntropy())
   }
 
   func decryptionCipherKeys(
@@ -118,12 +120,29 @@ class WalletManager: WalletManagerType {
     }
   }
 
+  private static func secureEntropy() -> Data {
+    let len = 16; // 16 bytes
+    var data = Data(count: len)
+
+    let result = data.withUnsafeMutableBytes { SecRandomCopyBytes(kSecRandomDefault, len, $0.baseAddress!) }
+
+    guard result == errSecSuccess else { return Data() }
+
+    return data
+  }
+
   public static func createMnemonicWords() -> [String] {
-    return CNBHDWallet.createMnemonicWords()
+    let entropy = secureEntropy()
+    let words = CNBHDWallet.createMnemonicWords(withEntropy: entropy)
+    return words
   }
 
   static func validateBase58Check(for address: String) -> Bool {
     return CNBHDWallet.addressIsBase58CheckEncoded(address)
+  }
+
+  static func validateBech32Encoding(for address: String) -> Bool {
+    return CNBSegwitAddress.isValidP2WPKHAddress(address) || CNBSegwitAddress.isValidP2WSHAddress(address)
   }
 
   private(set) var wallet: CNBHDWallet
@@ -230,6 +249,7 @@ class WalletManager: WalletManagerType {
 
       result = CNBTransactionData(
         address: address,
+        coin: coin,
         fromAllAvailableOutputs: allAvailableOutputs,
         paymentAmount: paymentAmount,
         feeRate: usableFeeRate,
@@ -262,6 +282,7 @@ class WalletManager: WalletManagerType {
 
         let txData = CNBTransactionData(
           address: address,
+          coin: coin,
           fromAllAvailableOutputs: allAvailableOutputs,
           paymentAmount: paymentAmount,
           flatFee: feeAmount,
@@ -300,6 +321,7 @@ class WalletManager: WalletManagerType {
 
       result = CNBTransactionData(
         allUsableOutputs: allAvailableOutputs,
+        coin: coin,
         sendingMaxToAddress: address,
         feeRate: usableFeeRate,
         blockHeight: blockHeight

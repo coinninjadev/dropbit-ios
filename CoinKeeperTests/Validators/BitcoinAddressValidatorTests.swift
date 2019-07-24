@@ -86,4 +86,25 @@ class BitcoinAddressValidatorTests: XCTestCase {
     XCTAssertEqual(sanitizedResult, validAddress, "result should equal valid address")
   }
 
+  func testValidBech32AddressReturnsValid() {
+    let validBech32Address = "bc1qw508d6qejxtdg4y5r3zarvary0c5xw7kv8f3t4"
+    XCTAssertNoThrow(try self.sut.validate(value: validBech32Address))
+  }
+
+  func testInvalidBech32AddressThrowsError() {
+    let invalidBech32Address = "BC1QW508D6QEJXTDG4Y5R3ZARVAYR0C5XW7KV8F3T4"
+    XCTAssertThrowsError(try self.sut.validate(value: invalidBech32Address))
+
+    do {
+      try self.sut.validate(value: invalidBech32Address)
+      XCTFail("should throw")
+    } catch {
+      if let bech32Error = error as? BitcoinAddressValidatorError {
+        XCTAssertEqual(bech32Error, .notBech32Valid)
+      } else {
+        XCTFail("error should be notBech32Valid")
+      }
+    }
+  }
+
 }

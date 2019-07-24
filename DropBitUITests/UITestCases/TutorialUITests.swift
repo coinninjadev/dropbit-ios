@@ -27,7 +27,7 @@ class TutorialUITests: UITestCase {
     SuccessFailPage().checkWalletRecoverySucceeded().tapGoToWallet()
     DeviceVerificationPage().tapSkip()
     PushInfoPage()?.dismiss()
-    TransactionHistoryPage().tapTutorialButton()
+    WalletOverviewPage().tapTutorialButton()
 
     let tutorialView = app.viewController(withId: .tutorial(.page))
     waitForElementToAppear(tutorialView)

@@ -60,8 +60,8 @@ protocol PersistenceKeychainType: AnyObject {
   func store(valueToHash value: String?, key: CKKeychain.Key) -> Promise<Void>
   func store(deviceID: String) -> Promise<Void>
   func store(recoveryWords words: [String], isBackedUp: Bool) -> Promise<Void>
+  func storeWalletWordsBackedUp(_ isBackedUp: Bool) -> Promise<Void>
   func store(userPin pin: String) -> Promise<Void>
-  func backup(recoveryWords words: [String], isBackedUp: Bool) -> Promise<Void>
 
   @discardableResult
   func store(oauthCredentials: TwitterOAuthStorage) -> Bool
@@ -107,7 +107,7 @@ protocol PersistenceDatabaseType: AnyObject {
     txid: String,
     invitation: CKMInvitation?,
     in context: NSManagedObjectContext
-  ) -> CKMTransaction
+    ) -> CKMTransaction
 
   func deleteTransactions(notIn txids: [String], in context: NSManagedObjectContext)
   func latestTransaction(in context: NSManagedObjectContext) -> CKMTransaction?

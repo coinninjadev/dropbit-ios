@@ -104,7 +104,7 @@ class TwitterAccessManager: TwitterAccessManagerType {
           case .verified: twitterContact.kind = .registeredUser
           }
           ckmTwitterContact.configure(with: twitterContact, in: context)
-      }.asVoid()
+        }.asVoid()
     }
     return when(resolved: promises).asVoid()
   }

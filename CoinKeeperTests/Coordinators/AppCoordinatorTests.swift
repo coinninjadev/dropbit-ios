@@ -88,7 +88,7 @@ class AppCoordinatorTests: MockedPersistenceTestCase {
     XCTAssertTrue(mockNavigationController.topViewController is MMDrawerController, "topVC should be an MMDrawerController")
 
     if let drawerVC = mockNavigationController.topViewController as? MMDrawerController,
-      let centerVC = drawerVC.centerViewController as? TransactionHistoryViewController {
+      let centerVC = drawerVC.centerViewController as? WalletOverviewViewController {
       XCTAssertTrue(centerVC.coordinationDelegate === sut, "coordinationDelegate should be sut")
     } else {
       XCTFail("centerViewController should be a TransactionHistoryViewController")
@@ -289,28 +289,6 @@ class AppCoordinatorTests: MockedPersistenceTestCase {
         XCTAssertEqual(syncRoutineError, SyncRoutineError.notReady)
       } else {
         XCTFail("Error should be notReady")
-      }
-      expectation.fulfill()
-    }
-
-    wait(for: [expectation], timeout: 3.0)
-  }
-
-  func testSyncRoutineMissingRecoveryWordsRejectsWithError() {
-    let expectation = XCTestExpectation(description: "testSyncRoutineCallsGetWallet")
-    let mocks = mocksForTestingSyncRoutine()
-    _ = mockPersistenceManager.keychainManager.store(anyValue: nil, key: .walletWords)
-
-    sut = AppCoordinator(persistenceManager: mockPersistenceManager,
-                         launchStateManager: mockLaunchStateManager,
-                         networkManager: mocks.network)
-    sut.walletManager = mocks.wallet
-
-    sut.predefineSyncDependencies(in: sut.persistenceManager.createBackgroundContext(), inBackground: false).catch { error in
-      if let syncRoutineError = error as? SyncRoutineError {
-        XCTAssertEqual(syncRoutineError, SyncRoutineError.missingRecoveryWords)
-      } else {
-        XCTFail("Error should be missingRecoveryWords")
       }
       expectation.fulfill()
     }

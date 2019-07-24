@@ -19,18 +19,23 @@ class SendPaymentViewControllerTests: XCTestCase {
 
   override func setUp() {
     super.setUp()
-    self.sut = SendPaymentViewController.makeFromStoryboard()
-    self.sut.viewModel = SendPaymentViewModel(btcAmount: 0.00567676,
-                                              primaryCurrency: .USD,
-                                              address: "12A1MyfXbW6RhdRAZEqofac5jCQQjwEPBu")
     let mockNetworkManager = MockNetworkManager(persistenceManager: MockPersistenceManager())
     self.mockCoordinator = MockSendPaymentViewControllerCoordinator(networkManager: mockNetworkManager)
-    self.sut.generalCoordinationDelegate = mockCoordinator
+
+    let safeRates: ExchangeRates = [.BTC: 1, .USD: 7000]
+    let currencyPair = CurrencyPair(primary: .USD, fiat: .USD)
+    let swappableVM = CurrencySwappableEditAmountViewModel(exchangeRates: safeRates, primaryAmount: 3500, currencyPair: currencyPair)
+    let viewModel = SendPaymentViewModel(editAmountViewModel: swappableVM,
+                                         address: "12A1MyfXbW6RhdRAZEqofac5jCQQjwEPBu",
+                                         requiredFeeRate: nil,
+                                         memo: nil)
+    self.sut = SendPaymentViewController.newInstance(delegate: mockCoordinator, viewModel: viewModel)
     _ = self.sut.view
   }
 
   override func tearDown() {
     sut = nil
+    mockCoordinator = nil
     UIPasteboard.general.string = ""
     super.tearDown()
   }
@@ -39,8 +44,8 @@ class SendPaymentViewControllerTests: XCTestCase {
   func testOutletsAreConnected() {
     XCTAssertNotNil(self.sut.payTitleLabel, "payTitleLabel should be connected")
     XCTAssertNotNil(self.sut.closeButton, "closeButton should be connected")
-    XCTAssertNotNil(self.sut.primaryAmountTextField, "primaryAmountTextField should be connected")
-    XCTAssertNotNil(self.sut.secondaryAmountLabel, "secondaryAmountLabel should be connected")
+    XCTAssertNotNil(self.sut.editAmountView.primaryAmountTextField, "primaryAmountTextField should be connected")
+    XCTAssertNotNil(self.sut.editAmountView.secondaryAmountLabel, "secondaryAmountLabel should be connected")
     XCTAssertNotNil(self.sut.phoneNumberEntryView, "phoneNumberEntryView should be connected")
     XCTAssertNotNil(self.sut.bitcoinAddressButton, "bitcoinAddressButton should be connected")
     XCTAssertNotNil(self.sut.recipientDisplayNameLabel, "recipientDisplayNameLabel should be connected")
@@ -48,9 +53,9 @@ class SendPaymentViewControllerTests: XCTestCase {
     XCTAssertNotNil(self.sut.pasteButton, "pasteButton should be connected")
     XCTAssertNotNil(self.sut.contactsButton, "contactsButton should be connected")
     XCTAssertNotNil(self.sut.twitterButton, "twitterButton should be connected")
-    XCTAssertNotNil(self.sut.sendButton, "sendButton should be connected")
+    XCTAssertNotNil(self.sut.nextButton, "nextButton should be connected")
     XCTAssertNotNil(self.sut.sendMaxButton, "sendMaxButton should be connected")
-    XCTAssertNotNil(self.sut.toggleCurrencyButton, "toggleCurrencyButton should be connected")
+    XCTAssertNotNil(self.sut.editAmountView.swapButton, "swapButton should be connected")
     XCTAssertNotNil(self.sut.memoContainerView, "memoButton should be connected")
   }
 
@@ -80,8 +85,8 @@ class SendPaymentViewControllerTests: XCTestCase {
   }
 
   func testSendButtonContainsAction() {
-    let actions = self.sut.sendButton.actions(forTarget: self.sut, forControlEvent: .touchUpInside) ?? []
-    let selector = #selector(SendPaymentViewController.performSend).description
+    let actions = self.sut.nextButton.actions(forTarget: self.sut, forControlEvent: .touchUpInside) ?? []
+    let selector = #selector(SendPaymentViewController.performNext).description
     XCTAssertTrue(actions.contains(selector), "sendButton should contain action")
   }
 
@@ -101,12 +106,6 @@ class SendPaymentViewControllerTests: XCTestCase {
     let actions = self.sut.sendMaxButton.actions(forTarget: self.sut, forControlEvent: .touchUpInside) ?? []
     let selector = #selector(SendPaymentViewController.performSendMax).description
     XCTAssertTrue(actions.contains(selector), "sendMaxButton should contain action")
-  }
-
-  func testToggleCurrencyButtonContainsAction() {
-    let actions = self.sut.toggleCurrencyButton.actions(forTarget: self.sut, forControlEvent: .touchUpInside) ?? []
-    let selector = #selector(SendPaymentViewController.performCurrencyToggle).description
-    XCTAssertTrue(actions.contains(selector), "toggleCurrencyButton should contain action")
   }
 
   // MARK: actions produce results
@@ -227,12 +226,13 @@ class SendPaymentViewControllerTests: XCTestCase {
     sut.viewModel.primaryCurrency = existingPrimaryCurrency
     sut.updateViewWithModel()
 
-    sut.toggleCurrencyButton.sendActions(for: .touchUpInside)
+    sut.editAmountView.swapButton.sendActions(for: .touchUpInside)
 
     let updatedPrimaryCurrency = sut.viewModel.primaryCurrency
 
     XCTAssertNotEqual(existingPrimaryCurrency, updatedPrimaryCurrency)
     XCTAssertEqual(updatedPrimaryCurrency, .BTC)
-    XCTAssertTrue(sut.primaryAmountTextField.text!.contains(CurrencyCode.BTC.symbol))
+    XCTAssertTrue(sut.editAmountView.primaryAmountTextField.text!.contains(CurrencyCode.BTC.symbol))
   }
+
 }

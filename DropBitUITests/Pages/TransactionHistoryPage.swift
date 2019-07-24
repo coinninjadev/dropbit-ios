@@ -46,12 +46,4 @@ class TransactionHistoryPage: UITestPage {
     return self
   }
 
-  @discardableResult
-  func tapBalance() -> Self {
-    let balanceView = app.view(withId: .transactionHistory(.balanceView))
-    balanceView.assertExistence(afterWait: .none, elementDesc: "balanceView")
-    balanceView.tap()
-    return self
-  }
-
 }

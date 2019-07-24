@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" rowHeight="139" id="P4F-HU-Ebv" customClass="NewsArticleCell" customModule="DropBit" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="131"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="P4F-HU-Ebv" id="OYL-dE-EF3">
+                <rect key="frame" x="0.0" y="0.0" width="375" height="130.5"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Z4N-Hf-Ljq">
+                        <rect key="frame" x="16" y="15.5" width="100" height="100"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="100" id="Mjo-DV-a1C"/>
+                            <constraint firstAttribute="width" constant="100" id="kO7-yE-o8c"/>
+                        </constraints>
+                    </imageView>
+                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" translatesAutoresizingMaskIntoConstraints="NO" id="dEi-FV-J5r">
+                        <rect key="frame" x="134" y="26" width="225" height="79"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Reddit - 1 Hour ago" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XuM-4C-ZBA" userLabel="Source Label">
+                                <rect key="frame" x="0.0" y="0.0" width="225" height="16"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="749" text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at diam ac nibh rhoncus sodales" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ROl-NH-YPd" userLabel="Title">
+                                <rect key="frame" x="0.0" y="16" width="225" height="63"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                    </stackView>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="dEi-FV-J5r" firstAttribute="top" secondItem="OYL-dE-EF3" secondAttribute="topMargin" constant="15" id="Q5a-D9-OjQ"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="dEi-FV-J5r" secondAttribute="trailing" id="Rxz-GN-80M"/>
+                    <constraint firstAttribute="bottomMargin" secondItem="dEi-FV-J5r" secondAttribute="bottom" constant="15" id="b38-Yq-OuS"/>
+                    <constraint firstItem="dEi-FV-J5r" firstAttribute="leading" secondItem="Z4N-Hf-Ljq" secondAttribute="trailing" constant="18" id="lcc-jD-eng"/>
+                    <constraint firstItem="Z4N-Hf-Ljq" firstAttribute="leading" secondItem="OYL-dE-EF3" secondAttribute="leadingMargin" id="nwg-sa-MVP"/>
+                    <constraint firstItem="Z4N-Hf-Ljq" firstAttribute="centerY" secondItem="OYL-dE-EF3" secondAttribute="centerY" id="sVO-vP-j8D"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="sourceLabel" destination="XuM-4C-ZBA" id="fZx-h4-Cib"/>
+                <outlet property="thumbnailImageView" destination="Z4N-Hf-Ljq" id="75C-Q8-cl3"/>
+                <outlet property="titleLabel" destination="ROl-NH-YPd" id="L73-zl-8Ec"/>
+            </connections>
+            <point key="canvasLocation" x="-110" y="126"/>
+        </tableViewCell>
+    </objects>
+</document>

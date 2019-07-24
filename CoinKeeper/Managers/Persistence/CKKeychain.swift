@@ -58,11 +58,6 @@ class CKKeychain: PersistenceKeychainType {
     return storeOnSerialBackgroundQueue(value: deviceID, key: CKKeychain.Key.deviceID.rawValue)
   }
 
-  func backup(recoveryWords words: [String], isBackedUp: Bool) -> Promise<Void> {
-    return storeOnSerialBackgroundQueue(value: words, key: CKKeychain.Key.walletWords.rawValue)
-      .then { self.storeWalletWordsBackedUp(isBackedUp) }
-  }
-
   /// Apple advises to avoid accessing the keychain concurrently, but it is thread-safe
   private func storeOnSerialBackgroundQueue(value: Any?, key: String) -> Promise<Void> {
     return Promise { seal in
@@ -91,9 +86,9 @@ class CKKeychain: PersistenceKeychainType {
 
   func oauthCredentials() -> TwitterOAuthStorage? {
     guard let token = store.unarchive(objectForKey: CKKeychain.Key.twitterOAuthToken.rawValue) as? String,
-          let tokenSecret = store.unarchive(objectForKey: CKKeychain.Key.twitterOAuthTokenSecret.rawValue) as? String,
-          let userId = store.unarchive(objectForKey: CKKeychain.Key.twitterUserId.rawValue) as? String,
-          let screenName = store.unarchive(objectForKey: CKKeychain.Key.twitterScreenName.rawValue) as? String else { return nil }
+      let tokenSecret = store.unarchive(objectForKey: CKKeychain.Key.twitterOAuthTokenSecret.rawValue) as? String,
+      let userId = store.unarchive(objectForKey: CKKeychain.Key.twitterUserId.rawValue) as? String,
+      let screenName = store.unarchive(objectForKey: CKKeychain.Key.twitterScreenName.rawValue) as? String else { return nil }
     return TwitterOAuthStorage(twitterOAuthToken: token, twitterOAuthTokenSecret: tokenSecret, twitterUserId: userId, twitterScreenName: screenName)
   }
 
@@ -115,7 +110,7 @@ class CKKeychain: PersistenceKeychainType {
     }
   }
 
-  private func storeWalletWordsBackedUp(_ isBackedUp: Bool) -> Promise<Void> {
+  func storeWalletWordsBackedUp(_ isBackedUp: Bool) -> Promise<Void> {
     return self.storeOnSerialBackgroundQueue(value: NSNumber(value: isBackedUp),
                                              key: CKKeychain.Key.walletWordsBackedUp.rawValue)
   }

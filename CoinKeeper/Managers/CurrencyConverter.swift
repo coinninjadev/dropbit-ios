@@ -8,42 +8,69 @@
 
 import Foundation
 
-protocol CurrencyConverterType: CurrencyFormattable {
-  var rates: ExchangeRates { get }
-  var fromAmount: NSDecimalNumber { get set }
-  var fromCurrency: CurrencyCode { get set }
-  var toCurrency: CurrencyCode { get set }
-
-  var fromDisplayValue: String { get }
-  var toDisplayValue: String { get }
-
-  var btcValue: NSDecimalNumber { get }
-
-  func convertedAmount() -> NSDecimalNumber?
+protocol CurrencyConverterProvider {
+  var exchangeRates: ExchangeRates { get }
+  var fromAmount: NSDecimalNumber { get }
+  var currencyPair: CurrencyPair { get }
 }
 
-struct CurrencyConverter: CurrencyConverterType {
+extension CurrencyConverterProvider {
+  func generateCurrencyConverter() -> CurrencyConverter {
+    return CurrencyConverter(rates: exchangeRates,
+                             fromAmount: fromAmount,
+                             currencyPair: currencyPair)
+  }
+
+  func generateCurrencyConverter(withBTCAmount btcAmount: NSDecimalNumber) -> CurrencyConverter {
+    let existingConverter = generateCurrencyConverter()
+    return CurrencyConverter(btcFromAmount: btcAmount, converter: existingConverter)
+  }
+
+}
+
+struct CurrencyConverter: CurrencyFormattable {
 
   static let sampleRates: ExchangeRates = [.BTC: 1, .USD: 7000]
 
   let rates: ExchangeRates
   var fromAmount: NSDecimalNumber
-  var fromCurrency: CurrencyCode
-  var toCurrency: CurrencyCode
+  let currencyPair: CurrencyPair
 
-  init(rates: ExchangeRates, fromAmount: NSDecimalNumber, fromCurrency: CurrencyCode, toCurrency: CurrencyCode) {
+  var fromCurrency: CurrencyCode {
+    return currencyPair.primary
+  }
+
+  var toCurrency: CurrencyCode {
+    return currencyPair.secondary
+  }
+
+  var fiatCurrency: CurrencyCode {
+    return currencyPair.fiat
+  }
+
+  init(rates: ExchangeRates, fromAmount: NSDecimalNumber, currencyPair: CurrencyPair) {
     self.rates = rates
     self.fromAmount = fromAmount
-    self.fromCurrency = fromCurrency
-    self.toCurrency = toCurrency
+    self.currencyPair = currencyPair
   }
 
   /// Copies the existing values from the supplied converter and replaces the fromAmount with the newAmount.
   init(newAmount: NSDecimalNumber, converter: CurrencyConverter) {
     self.fromAmount = newAmount
     self.rates = converter.rates
-    self.fromCurrency = converter.fromCurrency
-    self.toCurrency = converter.toCurrency
+    self.currencyPair = converter.currencyPair
+  }
+
+  init(btcFromAmount: NSDecimalNumber, converter: CurrencyConverter) {
+    self.fromAmount = btcFromAmount
+    self.rates = converter.rates
+    self.currencyPair = CurrencyPair(primary: .BTC, fiat: converter.fiatCurrency)
+  }
+
+  init(fromBtcTo fiatCurrency: CurrencyCode, fromAmount: NSDecimalNumber, rates: ExchangeRates) {
+    self.fromAmount = fromAmount
+    self.rates = rates
+    self.currencyPair = CurrencyPair(primary: .BTC, fiat: fiatCurrency)
   }
 
   func convertedAmount() -> NSDecimalNumber? {
@@ -68,20 +95,21 @@ struct CurrencyConverter: CurrencyConverterType {
     return amountStringWithSymbol(forCurrency: toCurrency) ?? "–"
   }
 
-  var btcValue: NSDecimalNumber {
+  var btcAmount: NSDecimalNumber {
     return amount(forCurrency: .BTC) ?? .zero
   }
 
-  func otherCurrency(forCurrency currency: CurrencyCode) -> CurrencyCode? {
-    switch currency {
-    case fromCurrency:  return toCurrency
-    case toCurrency:	  return fromCurrency
-    default:			      return nil
+  var fiatAmount: NSDecimalNumber {
+    return amount(forCurrency: fiatCurrency) ?? .zero
+  }
+
+  func otherCurrency(forCurrency currency: CurrencyCode) -> CurrencyCode {
+    if currency == .BTC {
+      return self.fiatCurrency
+    } else {
+      return .BTC
     }
   }
-}
-
-extension CurrencyConverterType {
 
   /*
    The internal functions below are intended to be used by both the computed properties of CurrencyConverter
@@ -113,4 +141,5 @@ extension CurrencyConverterType {
       return withSymbol.map { NSAttributedString(string: $0) }
     }
   }
+
 }

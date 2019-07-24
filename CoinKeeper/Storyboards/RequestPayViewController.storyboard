@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -29,31 +29,49 @@
                                     <action selector="closeButtonTapped:" destination="X1G-66-cWY" eventType="touchUpInside" id="t5I-wD-WQE"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="RECEIVE" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="raB-18-rJT">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" text="RECEIVE" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="raB-18-rJT">
                                 <rect key="frame" x="154" y="40" width="67" height="20.5"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="onG-ir-r5H" customClass="PrimaryActionButton" customModule="DropBit" customModuleProvider="target">
-                                <rect key="frame" x="50" y="583" width="275" height="44"/>
+                            <view contentMode="scaleToFill" verticalHuggingPriority="200" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="HBw-Hi-FEb" userLabel="Amount Centering Container">
+                                <rect key="frame" x="32" y="76.5" width="311" height="166"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Uvr-Kg-91I">
+                                        <rect key="frame" x="132.5" y="73" width="46" height="20"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="20" id="QEt-es-jOl"/>
+                                        </constraints>
+                                        <state key="normal" title="Button"/>
+                                        <connections>
+                                            <action selector="addRequestAmountButtonTapped:" destination="X1G-66-cWY" eventType="touchUpInside" id="QB9-92-M9c"/>
+                                        </connections>
+                                    </button>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="N9x-e6-Hoq" customClass="CurrencySwappableEditAmountView" customModule="DropBit" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="23" width="311" height="120"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="120" id="UV7-sr-Pdf"/>
+                                        </constraints>
+                                    </view>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="44" id="EAh-xV-En7"/>
+                                    <constraint firstItem="N9x-e6-Hoq" firstAttribute="centerY" secondItem="HBw-Hi-FEb" secondAttribute="centerY" id="8Yo-St-m4b"/>
+                                    <constraint firstItem="Uvr-Kg-91I" firstAttribute="centerY" secondItem="HBw-Hi-FEb" secondAttribute="centerY" id="Gag-IK-mx6"/>
+                                    <constraint firstItem="Uvr-Kg-91I" firstAttribute="centerX" secondItem="HBw-Hi-FEb" secondAttribute="centerX" id="Nzc-jo-Ldo"/>
+                                    <constraint firstItem="N9x-e6-Hoq" firstAttribute="leading" secondItem="HBw-Hi-FEb" secondAttribute="leading" id="TKi-rb-bD8"/>
+                                    <constraint firstAttribute="trailing" secondItem="N9x-e6-Hoq" secondAttribute="trailing" id="dc9-CY-pox"/>
                                 </constraints>
-                                <state key="normal" title="Button"/>
-                                <connections>
-                                    <action selector="sendRequestButtonTapped:" destination="X1G-66-cWY" eventType="touchUpInside" id="Wjp-Ma-8SL"/>
-                                </connections>
-                            </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tap address to save to clipboard" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FI6-On-wIa">
-                                <rect key="frame" x="63.5" y="522.5" width="248" height="20.5"/>
+                            </view>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="fakeQRCode" translatesAutoresizingMaskIntoConstraints="NO" id="yCG-vq-wcx">
+                                <rect key="frame" x="87.5" y="258.5" width="200" height="200"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="20.5" id="6m3-NC-8Gj"/>
+                                    <constraint firstAttribute="width" secondItem="yCG-vq-wcx" secondAttribute="height" multiplier="1:1" id="h2X-c5-T6D"/>
+                                    <constraint firstAttribute="height" constant="200" id="vxW-qC-b1f"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
+                            </imageView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9sV-IT-Xdn">
                                 <rect key="frame" x="24" y="474.5" width="327" height="40"/>
                                 <subviews>
@@ -77,44 +95,25 @@
                                     <outletCollection property="gestureRecognizers" destination="nas-IJ-sCD" appends="YES" id="J4z-m7-0PD"/>
                                 </connections>
                             </view>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="32" translatesAutoresizingMaskIntoConstraints="NO" id="0hC-We-rW1" userLabel="Amount and QR Stack">
-                                <rect key="frame" x="20" y="153.5" width="335" height="286"/>
-                                <subviews>
-                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="T4T-iK-8y5" userLabel="Amount Stack">
-                                        <rect key="frame" x="0.0" y="0.0" width="335" height="49"/>
-                                        <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" verticalCompressionResistancePriority="751" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="D78-zM-lh3">
-                                                <rect key="frame" x="0.0" y="0.0" width="335" height="20.5"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                <nil key="textColor"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="252" verticalCompressionResistancePriority="751" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mNc-m6-fA9">
-                                                <rect key="frame" x="0.0" y="28.5" width="335" height="20.5"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                <nil key="textColor"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                        </subviews>
-                                    </stackView>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="fakeQRCode" translatesAutoresizingMaskIntoConstraints="NO" id="yCG-vq-wcx">
-                                        <rect key="frame" x="65" y="81" width="205" height="205"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" secondItem="yCG-vq-wcx" secondAttribute="height" multiplier="1:1" id="h2X-c5-T6D"/>
-                                        </constraints>
-                                    </imageView>
-                                </subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tap address to save to clipboard" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FI6-On-wIa">
+                                <rect key="frame" x="63.5" y="522.5" width="248" height="20.5"/>
                                 <constraints>
-                                    <constraint firstItem="T4T-iK-8y5" firstAttribute="width" secondItem="yCG-vq-wcx" secondAttribute="width" id="IZh-h2-mSQ"/>
-                                    <constraint firstItem="T4T-iK-8y5" firstAttribute="leading" secondItem="0hC-We-rW1" secondAttribute="leading" id="PTI-id-BEs"/>
-                                    <constraint firstAttribute="trailing" secondItem="T4T-iK-8y5" secondAttribute="trailing" id="l8I-q3-swV"/>
+                                    <constraint firstAttribute="height" constant="20.5" id="6m3-NC-8Gj"/>
                                 </constraints>
-                                <variation key="default">
-                                    <mask key="constraints">
-                                        <exclude reference="IZh-h2-mSQ"/>
-                                    </mask>
-                                </variation>
-                            </stackView>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="onG-ir-r5H" customClass="PrimaryActionButton" customModule="DropBit" customModuleProvider="target">
+                                <rect key="frame" x="50" y="583" width="275" height="44"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="EAh-xV-En7"/>
+                                </constraints>
+                                <state key="normal" title="Button"/>
+                                <connections>
+                                    <action selector="sendRequestButtonTapped:" destination="X1G-66-cWY" eventType="touchUpInside" id="Wjp-Ma-8SL"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
@@ -122,15 +121,17 @@
                             <constraint firstItem="JPR-x5-n03" firstAttribute="trailing" secondItem="onG-ir-r5H" secondAttribute="trailing" constant="50" id="6Eg-pb-Av7"/>
                             <constraint firstItem="JPR-x5-n03" firstAttribute="trailing" secondItem="z64-0B-kx7" secondAttribute="trailing" constant="8" id="9Yg-0r-fg5"/>
                             <constraint firstItem="raB-18-rJT" firstAttribute="centerX" secondItem="JPR-x5-n03" secondAttribute="centerX" id="ASN-Pp-6h9"/>
-                            <constraint firstItem="9sV-IT-Xdn" firstAttribute="top" secondItem="0hC-We-rW1" secondAttribute="bottom" constant="35" id="FaQ-hc-Qhq"/>
                             <constraint firstItem="FI6-On-wIa" firstAttribute="top" secondItem="9sV-IT-Xdn" secondAttribute="bottom" constant="8" id="Gol-jg-UyR"/>
+                            <constraint firstItem="9sV-IT-Xdn" firstAttribute="top" secondItem="yCG-vq-wcx" secondAttribute="bottom" constant="16" id="ISY-mR-MTR"/>
+                            <constraint firstItem="HBw-Hi-FEb" firstAttribute="leading" secondItem="JPR-x5-n03" secondAttribute="leading" constant="32" id="JID-g8-Qd6"/>
                             <constraint firstItem="9sV-IT-Xdn" firstAttribute="leading" secondItem="JPR-x5-n03" secondAttribute="leading" constant="24" id="Jzc-M8-qKo"/>
+                            <constraint firstItem="HBw-Hi-FEb" firstAttribute="top" secondItem="raB-18-rJT" secondAttribute="bottom" constant="16" id="Kd0-99-q9G"/>
                             <constraint firstItem="FI6-On-wIa" firstAttribute="centerX" secondItem="mDk-3W-oP8" secondAttribute="centerX" id="RDA-3J-dMo"/>
-                            <constraint firstItem="0hC-We-rW1" firstAttribute="top" relation="greaterThanOrEqual" secondItem="raB-18-rJT" secondAttribute="bottom" constant="20" id="Xvd-Wm-w0s"/>
+                            <constraint firstItem="yCG-vq-wcx" firstAttribute="centerX" secondItem="JPR-x5-n03" secondAttribute="centerX" id="S6J-gj-6s0"/>
+                            <constraint firstItem="JPR-x5-n03" firstAttribute="trailing" secondItem="HBw-Hi-FEb" secondAttribute="trailing" constant="32" id="TKW-xa-eor"/>
+                            <constraint firstItem="yCG-vq-wcx" firstAttribute="top" secondItem="HBw-Hi-FEb" secondAttribute="bottom" constant="16" id="aQ8-ab-UDc"/>
                             <constraint firstItem="JPR-x5-n03" firstAttribute="bottom" secondItem="onG-ir-r5H" secondAttribute="bottom" constant="40" id="bpr-Wq-GKr"/>
                             <constraint firstItem="onG-ir-r5H" firstAttribute="leading" secondItem="JPR-x5-n03" secondAttribute="leading" constant="50" id="d2F-bJ-rdn"/>
-                            <constraint firstItem="JPR-x5-n03" firstAttribute="trailing" secondItem="0hC-We-rW1" secondAttribute="trailing" constant="20" id="h0N-KF-ukD"/>
-                            <constraint firstItem="0hC-We-rW1" firstAttribute="leading" secondItem="JPR-x5-n03" secondAttribute="leading" constant="20" id="hId-pw-ag7"/>
                             <constraint firstItem="raB-18-rJT" firstAttribute="centerY" secondItem="z64-0B-kx7" secondAttribute="centerY" id="k5i-d7-Gjt"/>
                             <constraint firstItem="onG-ir-r5H" firstAttribute="top" secondItem="FI6-On-wIa" secondAttribute="bottom" constant="40" id="l8A-ii-6M8"/>
                             <constraint firstItem="JPR-x5-n03" firstAttribute="trailing" secondItem="9sV-IT-Xdn" secondAttribute="trailing" constant="24" id="yzD-qX-M8V"/>
@@ -138,13 +139,13 @@
                         <viewLayoutGuide key="safeArea" id="JPR-x5-n03"/>
                     </view>
                     <connections>
+                        <outlet property="addAmountButton" destination="Uvr-Kg-91I" id="Smw-5R-8bE"/>
                         <outlet property="closeButton" destination="z64-0B-kx7" id="4XZ-x2-cNW"/>
-                        <outlet property="primaryCurrencyLabel" destination="D78-zM-lh3" id="met-lw-DXi"/>
+                        <outlet property="editAmountView" destination="N9x-e6-Hoq" id="PbF-Ek-aiN"/>
                         <outlet property="qrImageView" destination="yCG-vq-wcx" id="m3B-rW-N68"/>
                         <outlet property="receiveAddressBGView" destination="9sV-IT-Xdn" id="aIR-52-7u3"/>
                         <outlet property="receiveAddressLabel" destination="XNI-Qz-px3" id="asH-nR-lIb"/>
                         <outlet property="receiveAddressTapGesture" destination="nas-IJ-sCD" id="h6w-TY-cK8"/>
-                        <outlet property="secondaryCurrencyLabel" destination="mNc-m6-fA9" id="T2p-oi-Aj0"/>
                         <outlet property="sendRequestButton" destination="onG-ir-r5H" id="KWo-WC-jwA"/>
                         <outlet property="tapInstructionLabel" destination="FI6-On-wIa" id="00O-83-GA3"/>
                         <outlet property="titleLabel" destination="raB-18-rJT" id="4TN-ns-Zkj"/>
@@ -157,7 +158,7 @@
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="292" y="29"/>
+            <point key="canvasLocation" x="-170" y="-151"/>
         </scene>
     </scenes>
     <resources>

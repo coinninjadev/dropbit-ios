@@ -28,9 +28,9 @@ extension AppCoordinator {
   }
 
   func enterApp() {
-    let mainViewController = makeTransactionHistory()
+    let overviewViewController = makeOverviewController()
     let settingsViewController = DrawerViewController.makeFromStoryboard()
-    let drawerController = setupDrawerViewController(centerViewController: mainViewController,
+    let drawerController = setupDrawerViewController(centerViewController: overviewViewController,
                                                      leftViewController: settingsViewController)
     assignCoordinationDelegate(to: settingsViewController)
     navigationController.popToRootViewController(animated: false)
@@ -62,7 +62,7 @@ extension AppCoordinator {
         .done(on: .main) { _ in
           self.analyticsManager.track(event: .createWallet, with: nil)
           self.continueSetupFlow()
-      }.cauterize()
+        }.cauterize()
     }
 
     guard !launchStateManager.shouldRequireAuthentication else {
@@ -163,12 +163,11 @@ extension AppCoordinator {
   func createPinEntryViewControllerForRecoveryWords(_ words: [String]) -> PinEntryViewController {
     let pinEntryViewController = PinEntryViewController.makeFromStoryboard()
     pinEntryViewController.mode = .recoveryWords(completion: { [unowned self] _ in
-      let wordsViewController = BackupRecoveryWordsViewController.makeFromStoryboard()
-      wordsViewController.recoveryWords = words
-      wordsViewController.wordsBackedUp = self.wordsBackedUp
       self.analyticsManager.track(event: .viewWords, with: nil)
-      self.assignCoordinationDelegate(to: wordsViewController)
-      self.navigationController.present(CNNavigationController(rootViewController: wordsViewController), animated: false, completion: nil)
+      let controller = BackupRecoveryWordsViewController.newInstance(withDelegate: self,
+                                                                     recoveryWords: words,
+                                                                     wordsBackedUp: self.wordsBackedUp)
+      self.navigationController.present(CNNavigationController(rootViewController: controller), animated: false, completion: nil)
     })
     assignCoordinationDelegate(to: pinEntryViewController)
 
@@ -179,8 +178,6 @@ extension AppCoordinator {
     let txHistory = TransactionHistoryViewController.makeFromStoryboard()
     assignCoordinationDelegate(to: txHistory)
     txHistory.context = persistenceManager.mainQueueContext()
-    txHistory.balanceProvider = self
-    txHistory.balanceDelegate = self
     txHistory.urlOpener = self
     return txHistory
   }
@@ -195,6 +192,47 @@ extension AppCoordinator {
     drawerController?.shouldStretchDrawer = false
     drawerController?.showsShadow = false
     return drawerController!
+  }
+
+  func nextReceiveAddressForRequestPay() -> String? {
+    guard let wmgr = walletManager else { return nil }
+
+    var nextAddress: String?
+    let bgContext = persistenceManager.createBackgroundContext()
+    bgContext.performAndWait {
+      nextAddress = wmgr.createAddressDataSource().nextAvailableReceiveAddress(forServerPool: false,
+                                                                               indicesToSkip: [],
+                                                                               in: bgContext)?.address
+    }
+    return nextAddress
+  }
+
+  func createRequestPayViewController(converter: CurrencyConverter) -> RequestPayViewController? {
+    guard let address = nextReceiveAddressForRequestPay() else { return nil }
+
+    let selectedCurrency = currencyController.selectedCurrency.code
+    let fiat = currencyController.fiatCurrency
+    let currencyPair = CurrencyPair(primary: selectedCurrency, fiat: fiat)
+    return RequestPayViewController.newInstance(delegate: self,
+                                                receiveAddress: address,
+                                                currencyPair: currencyPair,
+                                                exchangeRates: self.currencyController.exchangeRates)
+  }
+
+  private func makeOverviewController() -> WalletOverviewViewController {
+    let transactionHistory = makeTransactionHistory()
+    let requestPayViewController = createRequestPayViewController(converter: currencyController.currencyConverter)
+      ?? RequestPayViewController.makeFromStoryboard()
+    requestPayViewController.isModal = false
+    let newsController = NewsViewController.newInstance(with: self)
+    let overviewChildViewControllers: [BaseViewController] =
+      [requestPayViewController, transactionHistory, newsController]
+
+    let overviewViewController = WalletOverviewViewController.newInstance(with: self,
+                                                                          baseViewControllers: overviewChildViewControllers,
+                                                                          balanceProvider: self,
+                                                                          balanceDelegate: self)
+    return overviewViewController
   }
 
 }

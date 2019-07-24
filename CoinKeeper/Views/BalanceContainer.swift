@@ -87,7 +87,7 @@ enum BalanceContainerLeftButtonType {
 
   func accessibleViewsAndIdentifiers() -> [AccessibleViewElement] {
     return [
-      (self.balanceView, .transactionHistory(.balanceView))
+      (self.balanceView, .walletOverview(.balanceView))
     ]
   }
 
@@ -120,7 +120,7 @@ enum BalanceContainerLeftButtonType {
     updateAvatar()
 
     let primaryCurrency = dataSource.primaryCurrency
-    let secondaryCurrency = dataSource.converter.otherCurrency(forCurrency: primaryCurrency) ?? .USD
+    let secondaryCurrency = dataSource.converter.otherCurrency(forCurrency: primaryCurrency)
     let primaryAmount = dataSource.converter.amount(forCurrency: primaryCurrency)
     let secondaryAmount = dataSource.converter.amount(forCurrency: secondaryCurrency)
     primaryAmountLabel.attributedText = label(for: primaryAmount, currency: primaryCurrency)
