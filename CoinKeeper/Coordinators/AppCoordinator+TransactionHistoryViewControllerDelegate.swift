@@ -22,21 +22,6 @@ extension AppCoordinator: TransactionHistoryViewControllerDelegate {
     viewController.present(memoViewController, animated: true)
   }
 
-  func viewControllerShouldUpdateTransaction(_ viewController: TransactionHistoryViewController, transaction: CKMTransaction) -> Promise<Void> {
-    return Promise { seal in
-      let context = transaction.managedObjectContext
-      context?.performAndWait {
-        do {
-          try context?.save()
-          viewController.collectionViews.forEach { $0.reloadData() }
-          seal.fulfill(())
-        } catch {
-          seal.reject(error)
-        }
-      }
-    }
-  }
-
   func viewControllerDidRequestTutorial(_ viewController: UIViewController) {
     analyticsManager.track(event: .userDidOpenTutorial, with: nil)
     let viewController = TutorialViewController.makeFromStoryboard()
@@ -73,43 +58,6 @@ extension AppCoordinator: TransactionHistoryViewControllerDelegate {
     navigationController.topViewController()?.present(viewController, animated: true, completion: nil)
   }
 
-  func viewController(_ viewController: TransactionHistoryViewController, didCancelInvitationWithID invitationID: String, at indexPath: IndexPath) {
-
-    let neverMindAction = AlertActionConfiguration(title: "Never mind", style: .cancel, action: nil)
-    let cancelInvitationAction = AlertActionConfiguration(title: "Cancel DropBit", style: .default, action: { [weak self] in
-      guard let strongSelf = self,
-        let walletWorker = strongSelf.workerFactory.createWalletAddressDataWorker(delegate: strongSelf)
-        else { return }
-      let context = strongSelf.persistenceManager.createBackgroundContext()
-      context.performAndWait {
-        walletWorker.cancelInvitation(withID: invitationID, in: context)
-          .done(in: context) {
-            context.performAndWait {
-              try? context.save()
-            }
-
-            strongSelf.analyticsManager.track(event: .cancelDropbitPressed, with: nil)
-
-            DispatchQueue.main.async {
-              // Manual reloading is necessary because the frc will not automatically reload
-              // since the status change is made to the related invitation and not the transaction.
-              viewController.reloadTransactions(atIndexPaths: [indexPath])
-            }
-          }
-          .catch { error in
-            strongSelf.alertManager.showError(message: "Failed to cancel invitation.\nError details: \(error.localizedDescription)", forDuration: 5.0)
-        }
-      }
-    })
-
-    let alert = alertManager.alert(withTitle: "Cancel DropBit",
-                                   description: "Are you sure you want to cancel this DropBit invitation?",
-                                   image: nil,
-                                   style: .alert,
-                                   actionConfigs: [neverMindAction, cancelInvitationAction])
-    viewController.present(alert, animated: true, completion: nil)
-  }
-
   func viewControllerDidRequestHistoryUpdate(_ viewController: TransactionHistoryViewController) {
     serialQueueManager.enqueueOptionalIncrementalSync()
   }
@@ -119,4 +67,35 @@ extension AppCoordinator: TransactionHistoryViewControllerDelegate {
   }
 
 
+  func viewControllerShouldAdjustForBottomSafeArea(_ viewController: UIViewController) -> Bool {
+    return UIApplication.shared.delegate?.window??.safeAreaInsets.bottom ?? 0 == 0
+  }
+
+  func viewControllerSummariesDidReload(_ viewController: TransactionHistoryViewController, indexPathsIfNotAll paths: [IndexPath]?) {
+    guard let detailsVC = navigationController
+      .topViewController() as? TransactionHistoryDetailsViewController else { return }
+    if let paths = paths {
+      detailsVC.collectionView.reloadItems(at: paths)
+    } else {
+      detailsVC.collectionView.reloadData()
+    }
+  }
+
+  func viewControllerWillShowTransactionDetails(_ viewController: UIViewController) {
+    CKNotificationCenter.publish(key: .willShowTransactionHistoryDetails)
+  }
+
+  func viewController(_ viewController: TransactionHistoryViewController, didSelectItemAtIndexPath indexPath: IndexPath) {
+    let controller = TransactionHistoryDetailsViewController.newInstance(withDelegate: self,
+                                                                         fetchedResultsController: viewController.frc,
+                                                                         selectedIndexPath: indexPath,
+                                                                         viewModelForIndexPath: { path in viewController.detailViewModel(at: path) },
+                                                                         urlOpener: self)
+    viewController.present(controller, animated: true, completion: nil)
+  }
+
+  func viewControllerDidDismissTransactionDetails(_ viewController: UIViewController) {
+    viewController.dismiss(animated: true, completion: nil)
+    CKNotificationCenter.publish(key: .didDismissTransactionHistoryDetails)
+  }
 }

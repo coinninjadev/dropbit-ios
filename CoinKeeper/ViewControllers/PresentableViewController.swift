@@ -9,9 +9,12 @@
 import UIKit
 
 class PresentableViewController: BaseViewController, UIViewControllerTransitioningDelegate {
+  /// Override this property to customize the corner radius of the presented view controller's view.
+  var cornerRadius: CGFloat = 20
+
   override func viewDidLoad() {
     super.viewDidLoad()
-    view.applyCornerRadius(20)
+    view.applyCornerRadius(self.cornerRadius)
     view.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
   }
 

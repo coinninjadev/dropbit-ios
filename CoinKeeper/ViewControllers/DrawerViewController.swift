@@ -15,7 +15,6 @@ protocol DrawerViewControllerDelegate: CurrencyValueDataSourceType & BadgeUpdate
   func spendButtonWasTouched()
   func supportButtonWasTouched()
   func getBitcoinButtonWasTouched()
-  func priceHeaderWasTouched()
   var badgeManager: BadgeManagerType { get }
 }
 
@@ -64,15 +63,11 @@ class DrawerViewController: BaseViewController, StoryboardInitializable {
   }
 
   private func setupDataSource() {
-    let headerActionHandler: () -> Void = { [weak self] in
-      self?.coordinationDelegate?.priceHeaderWasTouched()
-    }
-
     let settingsActionHandler: (DrawerData.Kind) -> Void = { [weak self] (kind) in
       self?.buttonWasTouched(for: kind)
     }
 
-    drawerTableViewDDS = DrawerTableViewDDS(headerActionHandler: headerActionHandler, settingsActionHandler: settingsActionHandler)
+    drawerTableViewDDS = DrawerTableViewDDS(settingsActionHandler: settingsActionHandler)
     drawerTableView.delegate = drawerTableViewDDS
     drawerTableView.dataSource = drawerTableViewDDS
     drawerTableView.backgroundColor = .clear

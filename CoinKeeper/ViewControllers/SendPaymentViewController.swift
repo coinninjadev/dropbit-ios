@@ -186,7 +186,7 @@ class SendPaymentViewController: PresentableViewController,
     memoContainerView.configure(memo: nil, isShared: sharedMemoAllowed)
     coordinationDelegate?.sendPaymentViewControllerDidLoad(self)
 
-    if viewModel.fromAmount == .zero {
+    if viewModel.fromAmount == .zero && recipientDescriptionToLoad == nil {
       editAmountView.primaryAmountTextField.becomeFirstResponder()
     }
   }
@@ -334,6 +334,7 @@ extension SendPaymentViewController {
   func applyRecipient(inText text: String) {
     do {
       let recipient = try viewModel.recipientParser.findSingleRecipient(inText: text, ofTypes: [.bitcoinURL, .phoneNumber])
+      editAmountView.primaryAmountTextField.resignFirstResponder()
       updateViewModel(withParsedRecipient: recipient)
 
     } catch {
