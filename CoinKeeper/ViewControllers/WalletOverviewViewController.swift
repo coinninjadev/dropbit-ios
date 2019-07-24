@@ -69,12 +69,26 @@ class WalletOverviewViewController: BaseViewController, StoryboardInitializable 
     controller.balanceDelegate = balanceDelegate
     return controller
   }
+
+  private var showTransactionHistoryToken: NotificationToken?
+  private var dismissTransactionHistoryToken: NotificationToken?
+
   override func viewDidLoad() {
     super.viewDidLoad()
 
     if let pageViewController = children.first as? UIPageViewController {
       self.pageViewController = pageViewController
       pageViewController.view.layer.masksToBounds = false
+    }
+
+    self.showTransactionHistoryToken = CKNotificationCenter
+      .subscribe(key: .willShowTransactionHistoryDetails, object: nil, queue: .main) { _ in
+      self.pageControl.isHidden = true
+    }
+
+    self.dismissTransactionHistoryToken = CKNotificationCenter
+      .subscribe(key: .didDismissTransactionHistoryDetails, object: nil, queue: .main) { _ in
+      self.pageControl.isHidden = false
     }
 
     pageViewController?.dataSource = self
