@@ -98,6 +98,7 @@ class WalletOverviewViewController: BaseViewController, StoryboardInitializable 
 
     balanceContainer.delegate = balanceDelegate
     pageViewController?.dataSource = self
+    pageViewController?.delegate = self
     walletToggleView.delegate = self
 
     (coordinationDelegate?.badgeManager).map(subscribeToBadgeNotifications)
@@ -109,7 +110,7 @@ class WalletOverviewViewController: BaseViewController, StoryboardInitializable 
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
 
-    pageViewController?.setViewControllers([baseViewControllers[0]], direction: .forward, animated: true, completion: nil)
+    pageViewController?.setViewControllers([baseViewControllers[1]], direction: .forward, animated: true, completion: nil)
   }
 
   override func viewDidAppear(_ animated: Bool) {
@@ -157,9 +158,9 @@ extension WalletOverviewViewController: BalanceDisplayable {
 }
 
 extension WalletOverviewViewController: UIPageViewControllerDelegate {
-  func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
-    guard let baseViewController = previousViewControllers.first as? BaseViewController else { return }
-
+  func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool,
+                          previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
+    
   }
 }
 
@@ -183,11 +184,11 @@ extension WalletOverviewViewController: UIPageViewControllerDataSource {
 extension WalletOverviewViewController: WalletToggleViewDelegate {
 
   func bitcoinWalletButtonWasTouched() {
-    pageViewController?.setViewControllers([baseViewControllers[0]], direction: .reverse, animated: true, completion: nil)
+    pageViewController?.setViewControllers([baseViewControllers[1]], direction: .reverse, animated: true, completion: nil)
   }
 
   func lightningWalletButtonWasTouched() {
-    pageViewController?.setViewControllers([baseViewControllers[1]], direction: .forward, animated: true, completion: nil)
+    pageViewController?.setViewControllers([baseViewControllers[0]], direction: .forward, animated: true, completion: nil)
   }
 }
 
