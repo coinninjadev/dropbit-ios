@@ -160,7 +160,16 @@ extension WalletOverviewViewController: BalanceDisplayable {
 extension WalletOverviewViewController: UIPageViewControllerDelegate {
   func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool,
                           previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
-    
+    if let viewContorller = pageViewController.viewControllers?.first as? BaseViewController, completed {
+      switch ViewControllerIndex(rawValue: baseViewControllers.reversed().firstIndex(of: viewContorller) ?? 0) {
+      case .bitcoinWalletTransactionHistory?:
+        walletToggleView.selectBitcoinButton()
+      case .lightningWalletTransactionHistory?:
+        walletToggleView.selectLightningButton()
+      default:
+        walletToggleView.selectBitcoinButton()
+      }
+    }
   }
 }
 

@@ -39,15 +39,18 @@ class WalletToggleView: UIView {
     clipsToBounds = true
     layer.borderColor = UIColor.mediumGrayBackground.cgColor
     selectBitcoinButton()
+    lightningWalletButton.applyCornerRadius(0)
     deselectButton(lightningWalletButton)
   }
 
-  private func selectBitcoinButton() {
+  func selectBitcoinButton() {
     bitcoinWalletButton.style = .bitcoin
+    deselectButton(lightningWalletButton)
   }
 
-  private func selectLightningButton() {
+  func selectLightningButton() {
     lightningWalletButton.style = .lightning
+    deselectButton(bitcoinWalletButton)
   }
 
   private func deselectButton(_ button: UIButton) {
@@ -59,13 +62,11 @@ class WalletToggleView: UIView {
 
   @IBAction func bitcoinWalletWasTouched() {
     selectBitcoinButton()
-    deselectButton(lightningWalletButton)
     delegate?.bitcoinWalletButtonWasTouched()
   }
 
   @IBAction func lightningWalletWasTouched() {
     selectLightningButton()
-    deselectButton(bitcoinWalletButton)
     delegate?.lightningWalletButtonWasTouched()
   }
 

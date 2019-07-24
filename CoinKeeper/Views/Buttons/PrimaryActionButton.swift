@@ -65,7 +65,7 @@ class PrimaryActionButton: UIButton {
       setTitleColor(.lightGrayText, for: .highlighted)
     case .bitcoin:
       applyCornerRadius(0)
-      backgroundColor = .lightningBlue
+      backgroundColor = .bitcoinOrange
       tintColor = .white
       imageView?.tintColor = .white
       setTitleColor(.white, for: .normal)
