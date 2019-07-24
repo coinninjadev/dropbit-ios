@@ -64,11 +64,13 @@ class WalletToggleView: UIView {
   }
 
   func selectBitcoinButton() {
+    bitcoinWalletButton.style = .bitcoin
     bitcoinWalletButton.setAttributedTitle(bitcoinTitle, for: .normal)
     deselectButton(lightningWalletButton)
   }
 
   func selectLightningButton() {
+    lightningWalletButton.style = .lightning
     lightningWalletButton.setAttributedTitle(lightningTitle, for: .normal)
     deselectButton(bitcoinWalletButton)
   }
