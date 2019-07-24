@@ -16,12 +16,14 @@ protocol WalletOverviewViewControllerDelegate: BalanceContainerDelegate & BadgeU
   func viewControllerDidTapScan(_ viewController: UIViewController, converter: CurrencyConverter)
   func viewControllerDidTapReceivePayment(_ viewController: UIViewController, converter: CurrencyConverter)
   func viewControllerDidTapSendPayment(_ viewController: UIViewController, converter: CurrencyConverter)
+  func viewControllerDidTapWalletTooltip()
 }
 
 class WalletOverviewViewController: BaseViewController, StoryboardInitializable {
 
   @IBOutlet var balanceContainer: BalanceContainer!
   @IBOutlet var walletToggleView: WalletToggleView!
+  @IBOutlet var tooltipButton: UIButton!
   @IBOutlet var sendReceiveActionView: SendReceiveActionView! {
     didSet {
       sendReceiveActionView.actionDelegate = self
@@ -50,6 +52,10 @@ class WalletOverviewViewController: BaseViewController, StoryboardInitializable 
         data.view.tag = index
       }
     }
+  }
+
+  @IBAction func tooltipButtonWasTouched() {
+    coordinationDelegate?.viewControllerDidTapWalletTooltip()
   }
 
   override func accessibleViewsAndIdentifiers() -> [AccessibleViewElement] {

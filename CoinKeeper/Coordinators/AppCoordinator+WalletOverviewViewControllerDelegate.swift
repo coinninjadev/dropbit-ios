@@ -11,6 +11,10 @@ import UIKit
 import MMDrawerController
 
 extension AppCoordinator: WalletOverviewViewControllerDelegate {
+  func viewControllerDidTapWalletTooltip() {
+    navigationController.present(LightningTooltipViewController.newInstance(), animated: true, completion: nil)
+  }
+
   func viewControllerDidTapScan(_ viewController: UIViewController, converter: CurrencyConverter) {
     analyticsManager.track(event: .scanQRButtonPressed, with: nil)
     permissionManager.requestPermission(for: .camera) { [weak self] status in
