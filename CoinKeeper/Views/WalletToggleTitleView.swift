@@ -13,9 +13,13 @@ class WalletToggleTitleView: UIView {
   var iconView: UIImageView!
   var titleLabel: UILabel!
 
-  override func awakeFromNib() {
-    super.awakeFromNib()
+  override init(frame: CGRect) {
+    super.init(frame: frame)
     self.translatesAutoresizingMaskIntoConstraints = false
+  }
+
+  required init?(coder aDecoder: NSCoder) {
+    super.init(coder: aDecoder)
   }
 
   func setupConstraints(iconSize: CGSize, horizontalSpacing: CGFloat) {

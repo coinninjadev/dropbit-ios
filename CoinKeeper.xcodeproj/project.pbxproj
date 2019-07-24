@@ -775,6 +775,7 @@
 		B59E2C8922E78A1200A75AFE /* LightningTooltipViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B59E2C8822E78A1200A75AFE /* LightningTooltipViewController.storyboard */; };
 		B59E2C8B22E7974000A75AFE /* WalletToggleTitleLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59E2C8A22E7974000A75AFE /* WalletToggleTitleLabel.swift */; };
 		B59E2C9122E7A93E00A75AFE /* WalletToggleTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59E2C9022E7A93E00A75AFE /* WalletToggleTitleView.swift */; };
+		B59E2C9322E8B4B400A75AFE /* LightningTooltipListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59E2C9222E8B4B400A75AFE /* LightningTooltipListItem.swift */; };
 		B5A3BA4D21516BF2005EE657 /* WalletTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A3BA4C21516BF2005EE657 /* WalletTarget.swift */; };
 		B5A3BA5021516E98005EE657 /* PricingTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A3BA4F21516E98005EE657 /* PricingTarget.swift */; };
 		B5A3BA542151939B005EE657 /* AddressesTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A3BA532151939B005EE657 /* AddressesTarget.swift */; };
@@ -1689,6 +1690,7 @@
 		B59E2C8822E78A1200A75AFE /* LightningTooltipViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LightningTooltipViewController.storyboard; sourceTree = "<group>"; };
 		B59E2C8A22E7974000A75AFE /* WalletToggleTitleLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletToggleTitleLabel.swift; sourceTree = "<group>"; };
 		B59E2C9022E7A93E00A75AFE /* WalletToggleTitleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WalletToggleTitleView.swift; sourceTree = "<group>"; };
+		B59E2C9222E8B4B400A75AFE /* LightningTooltipListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightningTooltipListItem.swift; sourceTree = "<group>"; };
 		B5A3BA4C21516BF2005EE657 /* WalletTarget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletTarget.swift; sourceTree = "<group>"; };
 		B5A3BA4F21516E98005EE657 /* PricingTarget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PricingTarget.swift; sourceTree = "<group>"; };
 		B5A3BA532151939B005EE657 /* AddressesTarget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressesTarget.swift; sourceTree = "<group>"; };
@@ -2322,6 +2324,7 @@
 				3B23126620DA6D0E0099A557 /* TransactionHistoryDetailCellAddressView.swift */,
 				A293E35120F798920099ED69 /* TransactionHistoryEmptyView.swift */,
 				B59E2C9022E7A93E00A75AFE /* WalletToggleTitleView.swift */,
+				B59E2C9222E8B4B400A75AFE /* LightningTooltipListItem.swift */,
 				B54DE68222982C7F009D67CE /* ContactsEmptyView.swift */,
 				B54DE68422982C88009D67CE /* ContactsEmptyView.xib */,
 				308F6F00217F91980094D6CB /* ServerAddressView.swift */,
@@ -4193,6 +4196,7 @@
 				3BF41AB8207694EA008B3D0A /* RequestPayViewModel.swift in Sources */,
 				308F6F0B2180B6260094D6CB /* AddressTableViewCell.swift in Sources */,
 				3093B08221F10E9D00B3EF9C /* SerialQueueManager.swift in Sources */,
+				B59E2C9322E8B4B400A75AFE /* LightningTooltipListItem.swift in Sources */,
 				3B5220F32087B29600376DD8 /* UIScreen+RelativeSize.swift in Sources */,
 				B56E15A12167E6F1003B69D4 /* NetworkManager+CurrencyValueDataSourceType.swift in Sources */,
 				B514536422A7207500F7DA41 /* UIColor+Theme.swift in Sources */,
