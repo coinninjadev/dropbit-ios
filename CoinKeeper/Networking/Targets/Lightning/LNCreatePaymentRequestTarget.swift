@@ -9,9 +9,9 @@
 import Moya
 
 public struct LNCreatePaymentRequestBody: Encodable {
-  let memo: String?
   let value: Int
   let expires: Date
+  let memo: String?
 
   private enum CodingKeys: String, CodingKey {
     case memo, value, expires
@@ -20,9 +20,9 @@ public struct LNCreatePaymentRequestBody: Encodable {
   /// Encode Int keys as String
   public func encode(to encoder: Encoder) throws {
     var container = encoder.container(keyedBy: CodingKeys.self)
-    try container.encode(memo, forKey: .memo)
     try container.encode(String(value), forKey: .value)
     try container.encode(expires, forKey: .expires)
+    try container.encode(memo, forKey: .memo)
   }
 
 }
