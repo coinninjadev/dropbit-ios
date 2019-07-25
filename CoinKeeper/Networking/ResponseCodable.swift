@@ -139,3 +139,15 @@ extension Array where Element: ResponseEncodable {
   }
 
 }
+
+extension KeyedDecodingContainer {
+
+  func decodeStringAsInt(forKey key: KeyedDecodingContainer.Key, typeName: String) throws -> Int {
+    let stringValue = try self.decode(String.self, forKey: key)
+    guard let intValue = Int(stringValue) else {
+      throw CKNetworkError.decodingFailed(type: typeName)
+    }
+    return intValue
+  }
+
+}
