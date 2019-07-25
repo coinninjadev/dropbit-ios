@@ -813,6 +813,14 @@
 		B59C405C20E530FC00F04FE5 /* DeviceVerificationViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59C405B20E530FC00F04FE5 /* DeviceVerificationViewControllerTests.swift */; };
 		B59C405E20E54EC700F04FE5 /* WalletAddressRequestResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59C405D20E54EC700F04FE5 /* WalletAddressRequestResponse.swift */; };
 		B59C406020E553C500F04FE5 /* WalletAddressRequestResponseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59C405F20E553C500F04FE5 /* WalletAddressRequestResponseTests.swift */; };
+		B59E2C9A22E8CF4700A75AFE /* LNCreatePaymentRequestResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59E2C9922E8CF4700A75AFE /* LNCreatePaymentRequestResponse.swift */; };
+		B59E2C9C22E8CFBA00A75AFE /* LNAccountTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59E2C9B22E8CFBA00A75AFE /* LNAccountTarget.swift */; };
+		B59E2CA122E8D38900A75AFE /* LNTransactionResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59E2CA022E8D38900A75AFE /* LNTransactionResponse.swift */; };
+		B59E2CA322E8F4C000A75AFE /* LNDecodePaymentRequestResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59E2CA222E8F4C000A75AFE /* LNDecodePaymentRequestResponse.swift */; };
+		B59E2CA722E9EA8400A75AFE /* LNCreatePaymentRequestTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59E2CA622E9EA8400A75AFE /* LNCreatePaymentRequestTarget.swift */; };
+		B59E2CA922E9ED2A00A75AFE /* LNAccountResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59E2CA822E9ED2A00A75AFE /* LNAccountResponse.swift */; };
+		B59E2CAB22E9ED7900A75AFE /* LNDecodePaymentRequestTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59E2CAA22E9ED7900A75AFE /* LNDecodePaymentRequestTarget.swift */; };
+		B59E2CAD22E9ED8300A75AFE /* LNTransactionTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59E2CAC22E9ED8300A75AFE /* LNTransactionTarget.swift */; };
 		B59E2C8722E789D800A75AFE /* LightningTooltipViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59E2C8622E789D800A75AFE /* LightningTooltipViewController.swift */; };
 		B59E2C8922E78A1200A75AFE /* LightningTooltipViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B59E2C8822E78A1200A75AFE /* LightningTooltipViewController.storyboard */; };
 		B59E2C8B22E7974000A75AFE /* WalletToggleTitleLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59E2C8A22E7974000A75AFE /* WalletToggleTitleLabel.swift */; };
@@ -1753,6 +1761,14 @@
 		B59C405B20E530FC00F04FE5 /* DeviceVerificationViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceVerificationViewControllerTests.swift; sourceTree = "<group>"; };
 		B59C405D20E54EC700F04FE5 /* WalletAddressRequestResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletAddressRequestResponse.swift; sourceTree = "<group>"; };
 		B59C405F20E553C500F04FE5 /* WalletAddressRequestResponseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletAddressRequestResponseTests.swift; sourceTree = "<group>"; };
+		B59E2C9922E8CF4700A75AFE /* LNCreatePaymentRequestResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LNCreatePaymentRequestResponse.swift; sourceTree = "<group>"; };
+		B59E2C9B22E8CFBA00A75AFE /* LNAccountTarget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LNAccountTarget.swift; sourceTree = "<group>"; };
+		B59E2CA022E8D38900A75AFE /* LNTransactionResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LNTransactionResponse.swift; sourceTree = "<group>"; };
+		B59E2CA222E8F4C000A75AFE /* LNDecodePaymentRequestResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LNDecodePaymentRequestResponse.swift; sourceTree = "<group>"; };
+		B59E2CA622E9EA8400A75AFE /* LNCreatePaymentRequestTarget.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LNCreatePaymentRequestTarget.swift; sourceTree = "<group>"; };
+		B59E2CA822E9ED2A00A75AFE /* LNAccountResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LNAccountResponse.swift; sourceTree = "<group>"; };
+		B59E2CAA22E9ED7900A75AFE /* LNDecodePaymentRequestTarget.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LNDecodePaymentRequestTarget.swift; sourceTree = "<group>"; };
+		B59E2CAC22E9ED8300A75AFE /* LNTransactionTarget.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LNTransactionTarget.swift; sourceTree = "<group>"; };
 		B59E2C8622E789D800A75AFE /* LightningTooltipViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightningTooltipViewController.swift; sourceTree = "<group>"; };
 		B59E2C8822E78A1200A75AFE /* LightningTooltipViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LightningTooltipViewController.storyboard; sourceTree = "<group>"; };
 		B59E2C8A22E7974000A75AFE /* WalletToggleTitleLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletToggleTitleLabel.swift; sourceTree = "<group>"; };
@@ -2923,6 +2939,7 @@
 		B50C869820D80AE000B4FA6B /* Responses */ = {
 			isa = PBXGroup;
 			children = (
+				B59E2C9D22E8CFFC00A75AFE /* Lightning */,
 				3BEB594520D15AF9005EDA9E /* AddressTransactionSummaryResponse.swift */,
 				B5ED3C3B2217635900A51767 /* CoinNinjaErrorResponse.swift */,
 				B53D7ECB2119FCA300D1DCBF /* BCITransactionResponse.swift */,
@@ -3307,9 +3324,32 @@
 			path = Pages;
 			sourceTree = "<group>";
 		};
+		B59E2C9822E8CF1400A75AFE /* Lightning */ = {
+			isa = PBXGroup;
+			children = (
+				B59E2C9B22E8CFBA00A75AFE /* LNAccountTarget.swift */,
+				B59E2CA622E9EA8400A75AFE /* LNCreatePaymentRequestTarget.swift */,
+				B59E2CAA22E9ED7900A75AFE /* LNDecodePaymentRequestTarget.swift */,
+				B59E2CAC22E9ED8300A75AFE /* LNTransactionTarget.swift */,
+			);
+			path = Lightning;
+			sourceTree = "<group>";
+		};
+		B59E2C9D22E8CFFC00A75AFE /* Lightning */ = {
+			isa = PBXGroup;
+			children = (
+				B59E2CA822E9ED2A00A75AFE /* LNAccountResponse.swift */,
+				B59E2CA022E8D38900A75AFE /* LNTransactionResponse.swift */,
+				B59E2C9922E8CF4700A75AFE /* LNCreatePaymentRequestResponse.swift */,
+				B59E2CA222E8F4C000A75AFE /* LNDecodePaymentRequestResponse.swift */,
+			);
+			path = Lightning;
+			sourceTree = "<group>";
+		};
 		B5A3BA4E21516DF7005EE657 /* Targets */ = {
 			isa = PBXGroup;
 			children = (
+				B59E2C9822E8CF1400A75AFE /* Lightning */,
 				B53D7EC42119DC6B00D1DCBF /* BlockchainInfoTarget.swift */,
 				B50ACBB121662C7B00E877DF /* CoinNinjaTargetType.swift */,
 				B5A3BA532151939B005EE657 /* AddressesTarget.swift */,
@@ -4054,6 +4094,7 @@
 				A260E8D920FD0F28008343F9 /* TutorialScreenViewModel.swift in Sources */,
 				B56E15A72167EAE6003B69D4 /* NetworkManager+DeviceRequestable.swift in Sources */,
 				B50E1839214805D80091EEDA /* AppCoordinator+HeaderDelegate.swift in Sources */,
+				B59E2CA922E9ED2A00A75AFE /* LNAccountResponse.swift in Sources */,
 				A2A530BE20936A6C00B6F4DE /* FloatingPoint+DegreeToRadians.swift in Sources */,
 				B552EDE9211E33D000332BB5 /* BiometricAuthenticationManager.swift in Sources */,
 				B5EABAAF21FB8E8B00E32E08 /* TransactionNotificationTarget.swift in Sources */,
@@ -4228,6 +4269,7 @@
 				B5F9500A20E2D439001495E2 /* UnderlinedTextButton.swift in Sources */,
 				3B474165217FB6A4004DA223 /* NotificationTopicSubscriptionInfoTarget.swift in Sources */,
 				A29CE10820A3684700761B91 /* StringEmptyValidator.swift in Sources */,
+				B59E2CA122E8D38900A75AFE /* LNTransactionResponse.swift in Sources */,
 				B56639CD22B151E400FA0EC3 /* TransactionShareable.swift in Sources */,
 				B541DF5520A3312500C621EB /* AppCoordinator+DeviceVerificationCoordinatorDelegate.swift in Sources */,
 				B54A420F207FF11C005B40A9 /* TransactionDetailCounterpartyLabel.swift in Sources */,
@@ -4235,6 +4277,7 @@
 				3B7B54432201E54100CB89FE /* KeyDerivation.generated.swift in Sources */,
 				B559AF0F2180FE37001D44F2 /* MenuButton.swift in Sources */,
 				B54A4213207FF2E8005B40A9 /* TransactionDetailPrimaryAmountLabel.swift in Sources */,
+				B59E2CA722E9EA8400A75AFE /* LNCreatePaymentRequestTarget.swift in Sources */,
 				308F6F01217F91980094D6CB /* ServerAddressView.swift in Sources */,
 				5B91E3A02076C85700DD9A86 /* DrawerCell.swift in Sources */,
 				3B4A9F2F21BEF55F0009CDF6 /* DatabaseMigratorFactory.swift in Sources */,
@@ -4289,6 +4332,7 @@
 				3BAB1445204EE5D3001D41A2 /* VerifyRecoveryWordsViewController.swift in Sources */,
 				B57837E122A56A9D006538C0 /* SenderIdentityFactory.swift in Sources */,
 				A22B196020EC1DA80084E8E9 /* AppCoordinator+RestoreWalletViewControllerDelegate.swift in Sources */,
+				B59E2CAD22E9ED8300A75AFE /* LNTransactionTarget.swift in Sources */,
 				B5B0DC7F221363910010AB2A /* PhoneNumberEntryView.swift in Sources */,
 				3BA9F5FD208F63D40047C213 /* AppCoordinator+PinEntryViewControllerDelegate.swift in Sources */,
 				B5EABAB421FB900400E32E08 /* TransactionNotificationResponse.swift in Sources */,
@@ -4369,6 +4413,7 @@
 				B521E85F218785B8002DB8C2 /* CoreDataObserver.swift in Sources */,
 				B5D1B2D221934DBE006B2BC7 /* UITestArgument.swift in Sources */,
 				B558B86E22B95ED00033AFBD /* CheckInBroker.swift in Sources */,
+				B59E2C9C22E8CFBA00A75AFE /* LNAccountTarget.swift in Sources */,
 				B54D206220F921A20057A694 /* CKBannerView.swift in Sources */,
 				3B47415B217E5353004DA223 /* ApplicationBuildEnvironment.swift in Sources */,
 				3BC9E5522047440900444A53 /* BackupRecoveryWordCellData.swift in Sources */,
@@ -4414,6 +4459,7 @@
 				A2952F6222BA85F800BDCE65 /* NewsViewController.swift in Sources */,
 				B586054A222888C50048979D /* PhoneNumberEntryViewDisplayable.swift in Sources */,
 				A26C76792106446E001EB738 /* NSDecimalNumber+NilInitializer.swift in Sources */,
+				B59E2C9A22E8CF4700A75AFE /* LNCreatePaymentRequestResponse.swift in Sources */,
 				3B69FBEA21B83ED200C561E2 /* OutgoingInvitationDTO.swift in Sources */,
 				B5B0DC7B221349C70010AB2A /* CountryCodePickerDataSource.swift in Sources */,
 				B5B37B27206AFE22001816F6 /* CurrencyCode.swift in Sources */,
@@ -4430,6 +4476,7 @@
 				3B219B3722C3AAD1007EDFCC /* NotificationTopicSubscriptionTarget.swift in Sources */,
 				B5CFA32A221DF594002B1BDD /* ContactCacheManager.swift in Sources */,
 				30E96A2D2178F83A008079B8 /* VerificationStatusViewController.swift in Sources */,
+				B59E2CA322E8F4C000A75AFE /* LNDecodePaymentRequestResponse.swift in Sources */,
 				B552EDF5211E33D000332BB5 /* QRCodeGenerator.swift in Sources */,
 				3BCBFCC2229EBF2200F633BA /* AppCoordinator+SupportViewControllerDelegate.swift in Sources */,
 				B505A87A2076C5BE00AACB23 /* TransactionHistoryReceiverLabel.swift in Sources */,
@@ -4531,6 +4578,7 @@
 				3BA360842090B0C100732C43 /* CKMTransaction+CoreDataClass.swift in Sources */,
 				307DF11B21500BF100260369 /* ElasticRequest.swift in Sources */,
 				B56788B1227A430300A39534 /* UIView+CornerRadius.swift in Sources */,
+				B59E2CAB22E9ED7900A75AFE /* LNDecodePaymentRequestTarget.swift in Sources */,
 				B530DFBD2108CF8400A0B1A8 /* TransactionDetailWarningLabel.swift in Sources */,
 				A2A530CE20977A8A00B6F4DE /* ConfirmPaymentViewModel.swift in Sources */,
 				B54913A922BC21A500ACC7D7 /* AdjustableFeesViewController.swift in Sources */,
