@@ -28,6 +28,7 @@ extension AppCoordinator: HeaderDelegate {
                                  walletId: nil,
                                  userId: nil,
                                  deviceId: deviceId,
+                                 pubKeyString: self.walletManager?.hexEncodedPublicKey,
                                  buildEnvironment: buildEnvironment)
 
     let context = self.persistenceManager.databaseManager.createBackgroundContext()

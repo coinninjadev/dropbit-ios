@@ -16,5 +16,6 @@ struct DefaultHeaders {
   var walletId: String?
   var userId: String?
   var deviceId: UUID?
+  var pubKeyString: String?
   var buildEnvironment: ApplicationBuildEnvironment
 }
