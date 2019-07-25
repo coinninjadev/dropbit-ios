@@ -8,7 +8,7 @@
 
 import Moya
 
-struct LNLedgerResponse: ResponseDecodable {
+struct LNLedgerResponse: LNResponseDecodable {
 
   let ledger: [LNTransactionResult]
 

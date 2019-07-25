@@ -20,7 +20,7 @@ struct LNHopHint: Decodable {
   let cltvExpiryDelta: Int
 }
 
-struct LNDecodePaymentRequestResponse: ResponseDecodable {
+struct LNDecodePaymentRequestResponse: LNResponseDecodable {
 
   let destination: String
   let paymentHash: String

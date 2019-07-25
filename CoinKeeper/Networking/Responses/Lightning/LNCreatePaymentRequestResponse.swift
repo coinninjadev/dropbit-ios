@@ -9,7 +9,7 @@
 import Foundation
 import Moya
 
-struct LNCreatePaymentRequestResponse: ResponseDecodable {
+struct LNCreatePaymentRequestResponse: LNResponseDecodable {
   let request: String
 
   static var sampleJSON: String {

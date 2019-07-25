@@ -9,9 +9,11 @@
 import Foundation
 import Moya
 
-struct LNAccountResponse: ResponseDecodable {
+struct LNAccountResponse: LNResponseDecodable {
 
   let id: String
+  let createdAt: Date
+  let updatedAt: Date
   let address: String
   let balance: Int
   let pendingIn: Int
@@ -30,13 +32,15 @@ struct LNAccountResponse: ResponseDecodable {
   }
 
   private enum CodingKeys: String, CodingKey {
-    case id, address, balance, pendingIn, pendingOut
+    case id, createdAt, updatedAt, address, balance, pendingIn, pendingOut
   }
 
   /// Decode Int keys from String
   init(from decoder: Decoder) throws {
     let container = try decoder.container(keyedBy: CodingKeys.self)
     id = try container.decode(String.self, forKey: .id)
+    createdAt = try container.decode(Date.self, forKey: .createdAt)
+    updatedAt = try container.decode(Date.self, forKey: .updatedAt)
     address = try container.decode(String.self, forKey: .address)
 
     let typeName = "LNAccountResponse"

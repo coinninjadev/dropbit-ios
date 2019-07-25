@@ -8,10 +8,12 @@
 
 import Moya
 
-struct LNTransactionResult: Decodable {
+struct LNTransactionResult: LNResponseDecodable {
+
   let id: String
   let accountId: String
-  let expiresAt: Date
+  let createdAt: Date
+  let expiresAt: Date?
   let status: String
   let type: String
   let direction: String
@@ -22,9 +24,47 @@ struct LNTransactionResult: Decodable {
   let request: String
   var memo: String?
   var error: String?
+
+  static var sampleJSON: String {
+    return ""
+  }
+
+  static var requiredStringKeys: [KeyPath<LNTransactionResult, String>] {
+    return []
+  }
+
+  static var optionalStringKeys: [WritableKeyPath<LNTransactionResult, String?>] {
+    return []
+  }
+
+  enum CodingKeys: String, CodingKey {
+    case id, accountId, createdAt, expiresAt, status, type, direction, value, networkFee,
+    processingFee, addIndex, request, memo, error
+  }
+
+  init(from decoder: Decoder) throws {
+    let container = try decoder.container(keyedBy: CodingKeys.self)
+    let typeName = "LNAccountResponse"
+
+    id = try container.decode(String.self, forKey: .id)
+    accountId = try container.decode(String.self, forKey: .accountId)
+    createdAt = try container.decode(Date.self, forKey: .createdAt)
+    expiresAt = try container.decode(Date.self, forKey: .expiresAt)
+    status = try container.decode(String.self, forKey: .status)
+    type = try container.decode(String.self, forKey: .type)
+    direction = try container.decode(String.self, forKey: .direction)
+    value = try container.decodeStringAsInt(forKey: .value, typeName: typeName)
+    networkFee = try container.decodeStringAsInt(forKey: .networkFee, typeName: typeName)
+    processingFee = try container.decodeStringAsInt(forKey: .processingFee, typeName: typeName)
+    addIndex = try container.decodeStringAsInt(forKey: .addIndex, typeName: typeName)
+    request = try container.decode(String.self, forKey: .request)
+    memo = try container.decode(String.self, forKey: .memo)
+    error = try container.decode(String.self, forKey: .error)
+  }
+
 }
 
-struct LNTransactionResponse: ResponseDecodable {
+struct LNTransactionResponse: LNResponseDecodable {
 
   var result: LNTransactionResult
 
