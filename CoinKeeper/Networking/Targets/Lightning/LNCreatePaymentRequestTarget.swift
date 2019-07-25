@@ -33,11 +33,11 @@ public enum LNCreatePaymentRequestTarget: CoinNinjaTargetType {
   case create(LNCreatePaymentRequestBody)
 
   var basePath: String {
-    return "create"
+    return "thunderdome"
   }
 
   var subPath: String? {
-    return nil
+    return "create"
   }
 
   func networkError(for moyaError: MoyaError) -> CKNetworkError? {

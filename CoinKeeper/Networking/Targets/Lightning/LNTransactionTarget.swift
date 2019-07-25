@@ -50,14 +50,14 @@ public enum LNTransactionTarget: CoinNinjaTargetType {
   case withdraw(LNWithdrawBody)
 
   var basePath: String {
+    return "thunderdome"
+  }
+
+  var subPath: String? {
     switch self {
     case .pay:      return "pay"
     case .withdraw: return "withdraw"
     }
-  }
-
-  var subPath: String? {
-    return nil
   }
 
   func networkError(for moyaError: MoyaError) -> CKNetworkError? {

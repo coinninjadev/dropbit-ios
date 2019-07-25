@@ -18,11 +18,11 @@ enum LNDecodePaymentRequestTarget: CoinNinjaTargetType {
   case decode(LNDecodePaymentRequestBody)
 
   var basePath: String {
-    return "decode"
+    return "thunderdome"
   }
 
   var subPath: String? {
-    return nil
+    return "decode"
   }
 
   func networkError(for moyaError: MoyaError) -> CKNetworkError? {

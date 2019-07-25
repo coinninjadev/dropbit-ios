@@ -14,11 +14,11 @@ public enum LNAccountTarget: CoinNinjaTargetType {
   case get
 
   var basePath: String {
-    return "account"
+    return "thunderdome"
   }
 
   var subPath: String? {
-    return nil
+    return "account"
   }
 
   func networkError(for moyaError: MoyaError) -> CKNetworkError? {

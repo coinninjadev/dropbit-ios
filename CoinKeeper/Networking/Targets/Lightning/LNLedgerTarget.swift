@@ -32,11 +32,11 @@ public enum LNLedgerTarget: CoinNinjaTargetType {
   case get
 
   var basePath: String {
-    return "ledger"
+    return "thunderdome"
   }
 
   var subPath: String? {
-    return nil
+    return "ledger"
   }
 
   public var method: Method {
