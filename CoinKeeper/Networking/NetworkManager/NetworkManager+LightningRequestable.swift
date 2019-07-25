@@ -11,7 +11,7 @@ import PromiseKit
 
 protocol LightningRequestable: AnyObject {
   func getOrCreateLightningAccount() -> Promise<LNAccountResponse>
-  func createLightningPaymentRequest(sats: Int, expires: Date, memo: String?) -> Promise<LNCreatePaymentRequestResponse>
+  func createLightningPaymentRequest(sats: Int, expires: Int?, memo: String?) -> Promise<LNCreatePaymentRequestResponse>
   func decodeLightningPaymentRequest(_ request: String) -> Promise<LNDecodePaymentRequestResponse>
   func getLightningLedger() -> Promise<LNLedgerResponse>
   func payLightningPaymentRequest(_ request: String, sats: Int) -> Promise<LNTransactionResponse>
@@ -24,7 +24,7 @@ extension NetworkManager: LightningRequestable {
     return cnProvider.request(LNAccountTarget.get)
   }
 
-  func createLightningPaymentRequest(sats: Int, expires: Date, memo: String?) -> Promise<LNCreatePaymentRequestResponse> {
+  func createLightningPaymentRequest(sats: Int, expires: Int?, memo: String?) -> Promise<LNCreatePaymentRequestResponse> {
     let body = LNCreatePaymentRequestBody(value: sats, expires: expires, memo: memo)
     return cnProvider.request(LNCreatePaymentRequestTarget.create(body))
   }

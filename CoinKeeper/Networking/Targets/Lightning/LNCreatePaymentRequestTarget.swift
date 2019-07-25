@@ -10,7 +10,7 @@ import Moya
 
 public struct LNCreatePaymentRequestBody: Encodable {
   let value: Int
-  let expires: Date
+  let expires: Int? //seconds in the future
   let memo: String?
 
   private enum CodingKeys: String, CodingKey {
@@ -21,8 +21,9 @@ public struct LNCreatePaymentRequestBody: Encodable {
   public func encode(to encoder: Encoder) throws {
     var container = encoder.container(keyedBy: CodingKeys.self)
     try container.encode(String(value), forKey: .value)
-    let expiresSeconds = Int(expires.timeIntervalSince1970)
-    try container.encode(String(expiresSeconds), forKey: .expires)
+    if let seconds = expires {
+      try container.encode(String(seconds), forKey: .expires)
+    }
     try container.encode(memo, forKey: .memo)
   }
 

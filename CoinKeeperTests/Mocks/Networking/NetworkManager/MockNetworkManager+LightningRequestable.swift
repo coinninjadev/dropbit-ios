@@ -15,7 +15,7 @@ extension MockNetworkManager: LightningRequestable {
     return Promise { _ in }
   }
 
-  func createLightningPaymentRequest(sats: Int, expires: Date, memo: String?) -> Promise<LNCreatePaymentRequestResponse> {
+  func createLightningPaymentRequest(sats: Int, expires: Int?, memo: String?) -> Promise<LNCreatePaymentRequestResponse> {
     return Promise { _ in }
   }
 
