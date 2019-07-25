@@ -766,6 +766,8 @@
 		B56E15A52167EAAD003B69D4 /* NetworkManager+MessagesRequestable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56E15A42167EAAD003B69D4 /* NetworkManager+MessagesRequestable.swift */; };
 		B56E15A72167EAE6003B69D4 /* NetworkManager+DeviceRequestable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56E15A62167EAE6003B69D4 /* NetworkManager+DeviceRequestable.swift */; };
 		B575B61622E9F68700CECFB7 /* LNLedgerTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = B575B61522E9F68700CECFB7 /* LNLedgerTarget.swift */; };
+		B575B61822E9F84800CECFB7 /* NetworkManager+LightningRequestable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B575B61722E9F84800CECFB7 /* NetworkManager+LightningRequestable.swift */; };
+		B575B61B22E9FCCD00CECFB7 /* MockNetworkManager+LightningRequestable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B575B61922E9FCBE00CECFB7 /* MockNetworkManager+LightningRequestable.swift */; };
 		B5779F6E216D3DCB00E52B27 /* DeviceEndpointTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5779F6D216D3DCB00E52B27 /* DeviceEndpointTarget.swift */; };
 		B5779F76216D4C3000E52B27 /* MockNetworkManager+DeviceEndpointRequestable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5779F75216D4C3000E52B27 /* MockNetworkManager+DeviceEndpointRequestable.swift */; };
 		B57837E122A56A9D006538C0 /* SenderIdentityFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = B57837E022A56A9D006538C0 /* SenderIdentityFactory.swift */; };
@@ -1720,6 +1722,8 @@
 		B56E15A42167EAAD003B69D4 /* NetworkManager+MessagesRequestable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NetworkManager+MessagesRequestable.swift"; sourceTree = "<group>"; };
 		B56E15A62167EAE6003B69D4 /* NetworkManager+DeviceRequestable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NetworkManager+DeviceRequestable.swift"; sourceTree = "<group>"; };
 		B575B61522E9F68700CECFB7 /* LNLedgerTarget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LNLedgerTarget.swift; sourceTree = "<group>"; };
+		B575B61722E9F84800CECFB7 /* NetworkManager+LightningRequestable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NetworkManager+LightningRequestable.swift"; sourceTree = "<group>"; };
+		B575B61922E9FCBE00CECFB7 /* MockNetworkManager+LightningRequestable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MockNetworkManager+LightningRequestable.swift"; sourceTree = "<group>"; };
 		B5779F6D216D3DCB00E52B27 /* DeviceEndpointTarget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceEndpointTarget.swift; sourceTree = "<group>"; };
 		B5779F75216D4C3000E52B27 /* MockNetworkManager+DeviceEndpointRequestable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MockNetworkManager+DeviceEndpointRequestable.swift"; sourceTree = "<group>"; };
 		B57837E022A56A9D006538C0 /* SenderIdentityFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SenderIdentityFactory.swift; sourceTree = "<group>"; };
@@ -3187,6 +3191,7 @@
 				3BF3B0C2217379B60021E45F /* NetworkManager+SubscribeToWalletRequestable.swift */,
 				3B474154217A4B4A004DA223 /* NetworkManager+NotificationNetworkInteractable.swift */,
 				A246C82022CA562D00AF1F52 /* NetworkManager+NewsDataRequestable.swift */,
+				B575B61722E9F84800CECFB7 /* NetworkManager+LightningRequestable.swift */,
 			);
 			path = NetworkManager;
 			sourceTree = "<group>";
@@ -3272,6 +3277,7 @@
 				B5A5B1B8216B89AD00345468 /* MockNetworkManager+CurrencyValueDataSourceType.swift */,
 				B5A5B1BA216B8B4D00345468 /* MockNetworkManager+DeviceRequestable.swift */,
 				B5779F75216D4C3000E52B27 /* MockNetworkManager+DeviceEndpointRequestable.swift */,
+				B575B61922E9FCBE00CECFB7 /* MockNetworkManager+LightningRequestable.swift */,
 				30626FD621C15B9C00E7A2DE /* MockNetworkManager+MerchantPaymentRequestRequestable.swift */,
 				B524B240216CEAAE00F669F4 /* MockNetworkManager+MessageRequestable.swift */,
 				B5C8F5BE216CF10200E3E85B /* MockNetworkManager+PricingRequestable.swift */,
@@ -4464,6 +4470,7 @@
 				B586054A222888C50048979D /* PhoneNumberEntryViewDisplayable.swift in Sources */,
 				A26C76792106446E001EB738 /* NSDecimalNumber+NilInitializer.swift in Sources */,
 				B59E2C9A22E8CF4700A75AFE /* LNCreatePaymentRequestResponse.swift in Sources */,
+				B575B61822E9F84800CECFB7 /* NetworkManager+LightningRequestable.swift in Sources */,
 				3B69FBEA21B83ED200C561E2 /* OutgoingInvitationDTO.swift in Sources */,
 				B5B0DC7B221349C70010AB2A /* CountryCodePickerDataSource.swift in Sources */,
 				B5B37B27206AFE22001816F6 /* CurrencyCode.swift in Sources */,
@@ -4662,6 +4669,7 @@
 				4AF433282094103C00B11BC9 /* MockDeviceVerificationViewControllerDelegate.swift in Sources */,
 				A29CE10F20A3845C00761B91 /* BitcoinAddressValidatorTests.swift in Sources */,
 				3B44962121B0665B00A4E912 /* MemoEntryViewControllerTests.swift in Sources */,
+				B575B61B22E9FCCD00CECFB7 /* MockNetworkManager+LightningRequestable.swift in Sources */,
 				B5C8F5BB216CEFC400E3E85B /* MockNetworkManager+WalletAddressRequestable.swift in Sources */,
 				3B695C2421CAC872007D0741 /* AppCoordinator+SettingsViewControllerDelegateTests.swift in Sources */,
 				3B62397D205FFDAC003120AA /* WalletManagerTests.swift in Sources */,

@@ -29,6 +29,8 @@ struct LNLedgerResponse: ResponseDecodable {
 public enum LNLedgerTarget: CoinNinjaTargetType {
   typealias ResponseType = LNLedgerResponse
 
+  case get
+
   var basePath: String {
     return "ledger"
   }
