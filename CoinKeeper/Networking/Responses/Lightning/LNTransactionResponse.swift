@@ -8,8 +8,7 @@
 
 import Moya
 
-struct LNTransactionResponse: ResponseDecodable {
-
+struct LNTransactionResult: Decodable {
   let id: String
   let accountId: String
   let createdAt: Date
@@ -25,17 +24,22 @@ struct LNTransactionResponse: ResponseDecodable {
   let request: String
   var memo: String?
   var error: String?
+}
+
+struct LNTransactionResponse: ResponseDecodable {
+
+  var result: LNTransactionResult
 
   static var sampleJSON: String {
     return ""
   }
 
   static var requiredStringKeys: [KeyPath<LNTransactionResponse, String>] {
-    return [\.id, \.accountId, \.status, \.type, \.direction, \.request]
+    return [\.result.id, \.result.accountId, \.result.status, \.result.type, \.result.direction, \.result.request]
   }
 
   static var optionalStringKeys: [WritableKeyPath<LNTransactionResponse, String?>] {
-    return [\.memo, \.error]
+    return [\.result.memo, \.result.error]
   }
 
 }
