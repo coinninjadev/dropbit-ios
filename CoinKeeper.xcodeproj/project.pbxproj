@@ -765,6 +765,7 @@
 		B56E15A32167EA26003B69D4 /* NetworkManager+PricingRequestable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56E15A22167EA26003B69D4 /* NetworkManager+PricingRequestable.swift */; };
 		B56E15A52167EAAD003B69D4 /* NetworkManager+MessagesRequestable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56E15A42167EAAD003B69D4 /* NetworkManager+MessagesRequestable.swift */; };
 		B56E15A72167EAE6003B69D4 /* NetworkManager+DeviceRequestable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56E15A62167EAE6003B69D4 /* NetworkManager+DeviceRequestable.swift */; };
+		B575B61622E9F68700CECFB7 /* LNLedgerTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = B575B61522E9F68700CECFB7 /* LNLedgerTarget.swift */; };
 		B5779F6E216D3DCB00E52B27 /* DeviceEndpointTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5779F6D216D3DCB00E52B27 /* DeviceEndpointTarget.swift */; };
 		B5779F76216D4C3000E52B27 /* MockNetworkManager+DeviceEndpointRequestable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5779F75216D4C3000E52B27 /* MockNetworkManager+DeviceEndpointRequestable.swift */; };
 		B57837E122A56A9D006538C0 /* SenderIdentityFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = B57837E022A56A9D006538C0 /* SenderIdentityFactory.swift */; };
@@ -1718,6 +1719,7 @@
 		B56E15A22167EA26003B69D4 /* NetworkManager+PricingRequestable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NetworkManager+PricingRequestable.swift"; sourceTree = "<group>"; };
 		B56E15A42167EAAD003B69D4 /* NetworkManager+MessagesRequestable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NetworkManager+MessagesRequestable.swift"; sourceTree = "<group>"; };
 		B56E15A62167EAE6003B69D4 /* NetworkManager+DeviceRequestable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NetworkManager+DeviceRequestable.swift"; sourceTree = "<group>"; };
+		B575B61522E9F68700CECFB7 /* LNLedgerTarget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LNLedgerTarget.swift; sourceTree = "<group>"; };
 		B5779F6D216D3DCB00E52B27 /* DeviceEndpointTarget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceEndpointTarget.swift; sourceTree = "<group>"; };
 		B5779F75216D4C3000E52B27 /* MockNetworkManager+DeviceEndpointRequestable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MockNetworkManager+DeviceEndpointRequestable.swift"; sourceTree = "<group>"; };
 		B57837E022A56A9D006538C0 /* SenderIdentityFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SenderIdentityFactory.swift; sourceTree = "<group>"; };
@@ -3330,6 +3332,7 @@
 				B59E2C9B22E8CFBA00A75AFE /* LNAccountTarget.swift */,
 				B59E2CA622E9EA8400A75AFE /* LNCreatePaymentRequestTarget.swift */,
 				B59E2CAA22E9ED7900A75AFE /* LNDecodePaymentRequestTarget.swift */,
+				B575B61522E9F68700CECFB7 /* LNLedgerTarget.swift */,
 				B59E2CAC22E9ED8300A75AFE /* LNTransactionTarget.swift */,
 			);
 			path = Lightning;
@@ -4282,6 +4285,7 @@
 				5B91E3A02076C85700DD9A86 /* DrawerCell.swift in Sources */,
 				3B4A9F2F21BEF55F0009CDF6 /* DatabaseMigratorFactory.swift in Sources */,
 				A230F1CA22DCB2F40017BC7A /* AppCoordinator+WalletOverviewViewControllerDelegate.swift in Sources */,
+				B575B61622E9F68700CECFB7 /* LNLedgerTarget.swift in Sources */,
 				B5D3BF0A222470420073A684 /* ManagedPhoneNumberInputs.swift in Sources */,
 				B58E781F217FB6C3000F9796 /* BadgeManager.swift in Sources */,
 				A2E52D6220BD937E00424E6A /* StringDictResponse.swift in Sources */,
