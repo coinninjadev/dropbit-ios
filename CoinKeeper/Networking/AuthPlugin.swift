@@ -33,8 +33,11 @@ struct AuthPlugin: PluginType {
 
     var request = request
 
-    guard let headers: DefaultHeaders = headerDelegate?.createHeaders(for: request.httpBody) else {
-      return request
+    let shouldSignBody = !target.path.starts(with: ThunderdomeBasePath)
+    guard let headers = headerDelegate?.createHeaders(
+      for: request.httpBody,
+      signBodyIfAvailable: shouldSignBody) else {
+        return request
     }
 
     request.addValue(headers.appVersion, forCNHeaderField: .appVersion)

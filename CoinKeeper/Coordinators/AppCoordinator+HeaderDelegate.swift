@@ -11,12 +11,16 @@ import UIKit
 
 extension AppCoordinator: HeaderDelegate {
 
-  func createHeaders(for bodyData: Data?) -> DefaultHeaders? {
+  func createHeaders(for bodyData: Data?, signBodyIfAvailable: Bool) -> DefaultHeaders? {
     let timeStamp = CKDateFormatter.rfc3339.string(from: Date())
     let platform = "ios"
     let version = Global.version.value
 
-    let dataToSign = bodyData ?? timeStamp.data(using: .utf8)
+    var dataToSign = timeStamp.data(using: .utf8)
+    if let bodyData = bodyData, signBodyIfAvailable {
+      dataToSign = bodyData
+    }
+
     let sig = dataToSign.flatMap { self.walletManager?.signatureSigning(data: $0) }
 
     let deviceId = self.persistenceManager.brokers.device.findOrCreateDeviceId()

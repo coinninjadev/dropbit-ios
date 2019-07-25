@@ -18,7 +18,7 @@ enum LNDecodePaymentRequestTarget: CoinNinjaTargetType {
   case decode(LNDecodePaymentRequestBody)
 
   var basePath: String {
-    return "thunderdome"
+    return ThunderdomeBasePath
   }
 
   var subPath: String? {

@@ -14,7 +14,7 @@ public enum LNAccountTarget: CoinNinjaTargetType {
   case get
 
   var basePath: String {
-    return "thunderdome"
+    return ThunderdomeBasePath
   }
 
   var subPath: String? {

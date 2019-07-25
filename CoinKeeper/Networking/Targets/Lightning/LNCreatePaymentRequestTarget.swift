@@ -34,7 +34,7 @@ public enum LNCreatePaymentRequestTarget: CoinNinjaTargetType {
   case create(LNCreatePaymentRequestBody)
 
   var basePath: String {
-    return "thunderdome"
+    return ThunderdomeBasePath
   }
 
   var subPath: String? {
