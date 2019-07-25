@@ -21,7 +21,8 @@ public struct LNCreatePaymentRequestBody: Encodable {
   public func encode(to encoder: Encoder) throws {
     var container = encoder.container(keyedBy: CodingKeys.self)
     try container.encode(String(value), forKey: .value)
-    try container.encode(expires, forKey: .expires)
+    let expiresSeconds = Int(expires.timeIntervalSince1970)
+    try container.encode(String(expiresSeconds), forKey: .expires)
     try container.encode(memo, forKey: .memo)
   }
 
