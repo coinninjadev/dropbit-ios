@@ -11,8 +11,6 @@ import Moya
 struct LNTransactionResult: Decodable {
   let id: String
   let accountId: String
-  let createdAt: Date
-  let updatedAt: Date
   let expiresAt: Date
   let status: String
   let type: String
