@@ -12,12 +12,13 @@ import UIKit
 protocol WalletOverviewViewControllerDelegate: BalanceContainerDelegate & BadgeUpdateDelegate {
   var badgeManager: BadgeManagerType { get }
   var currencyController: CurrencyController { get }
-  
+
   func viewControllerDidTapScan(_ viewController: UIViewController, converter: CurrencyConverter)
   func viewControllerDidTapReceivePayment(_ viewController: UIViewController, converter: CurrencyConverter)
   func viewControllerDidTapSendPayment(_ viewController: UIViewController, converter: CurrencyConverter)
   func viewControllerShouldAdjustForBottomSafeArea(_ viewController: UIViewController) -> Bool
   func viewControllerDidTapWalletTooltip()
+  func isSyncCurrentlyRunning() -> Bool
 }
 
 class WalletOverviewViewController: BaseViewController, StoryboardInitializable {
@@ -26,6 +27,7 @@ class WalletOverviewViewController: BaseViewController, StoryboardInitializable 
   @IBOutlet var walletToggleView: WalletToggleView!
   @IBOutlet var tooltipButton: UIButton!
   @IBOutlet var sendReceiveActionViewBottomConstraint: NSLayoutConstraint!
+  @IBOutlet var currentWalletBalanceView: WalletBalanceView!
   @IBOutlet var sendReceiveActionView: SendReceiveActionView! {
     didSet {
       sendReceiveActionView.actionDelegate = self
@@ -43,6 +45,9 @@ class WalletOverviewViewController: BaseViewController, StoryboardInitializable 
     case bitcoinWalletTransactionHistory = 0
     case lightningWalletTransactionHistory = 1
   }
+
+  var startSyncNotificationToken: NotificationToken?
+  var finishSyncNotificationToken: NotificationToken?
 
   var coordinationDelegate: WalletOverviewViewControllerDelegate? {
     return generalCoordinationDelegate as? WalletOverviewViewControllerDelegate
@@ -108,6 +113,7 @@ class WalletOverviewViewController: BaseViewController, StoryboardInitializable 
     pageViewController?.dataSource = self
     pageViewController?.delegate = self
     walletToggleView.delegate = self
+    walletBalanceView.delegate = self
 
     sendReceiveActionView.tintView(with: .bitcoinOrange)
 
@@ -119,6 +125,7 @@ class WalletOverviewViewController: BaseViewController, StoryboardInitializable 
     }
 
     subscribeToRateAndBalanceUpdates()
+    subscribeToSyncNotifications()
     updateRatesAndBalances()
   }
 
@@ -154,7 +161,7 @@ extension WalletOverviewViewController: BadgeDisplayable {
 }
 
 extension WalletOverviewViewController: BalanceDisplayable {
-
+  var walletBalanceView: WalletBalanceView { return currentWalletBalanceView }
   var balanceLeftButtonType: BalanceContainerLeftButtonType { return .menu }
   var primaryBalanceCurrency: CurrencyCode {
     guard let selectedCurrency = coordinationDelegate?.selectedCurrency() else { return .BTC }
@@ -241,5 +248,24 @@ extension WalletOverviewViewController: SendReceiveActionViewDelegate {
   func actionViewDidSelectSend(_ view: UIView) {
     guard let coordinator = coordinationDelegate else { return }
     coordinator.viewControllerDidTapSendPayment(self, converter: coordinator.currencyController.currencyConverter)
+  }
+}
+
+extension WalletOverviewViewController: SyncSubscribeable {
+
+  func handleStartSync() {
+    walletBalanceView.primarySecondaryBalanceContainer.isSyncing = true
+  }
+
+  func handleFinishSync() {
+    walletBalanceView.primarySecondaryBalanceContainer.isSyncing = false
+  }
+
+}
+
+extension WalletOverviewViewController: WalletBalanceViewDelegate {
+
+  func isSyncCurrentlyRunning() -> Bool {
+    return coordinationDelegate?.isSyncCurrentlyRunning() ?? false
   }
 }

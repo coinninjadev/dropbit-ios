@@ -38,7 +38,6 @@ class SendReceiveActionView: UIView {
 
     backgroundColor = .clear
 
-    maskedView.backgroundColor = .lightGrayBackground
     sendButton.setBackgroundImage(UIImage(imageLiteralResourceName: "actionButtonLeftCurve").withRenderingMode(.alwaysTemplate), for: .normal)
     receiveButton.setBackgroundImage(UIImage(imageLiteralResourceName: "actionButtonRightCurve").withRenderingMode(.alwaysTemplate), for: .normal)
   }

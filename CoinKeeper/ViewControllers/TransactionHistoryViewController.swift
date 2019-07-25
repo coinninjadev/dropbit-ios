@@ -41,7 +41,7 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
   @IBOutlet var refreshViewTopConstraint: NSLayoutConstraint!
   @IBOutlet var gradientBlurView: UIView! {
     didSet {
-      gradientBlurView.backgroundColor = .lightGrayBackground
+      gradientBlurView.backgroundColor = .white
       gradientBlurView.fade(style: .top, percent: 1.0)
     }
   }
@@ -109,7 +109,7 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
     transactionHistoryNoBalanceView.delegate = self
     transactionHistoryWithBalanceView.delegate = self
 
-    self.view.backgroundColor = .lightGrayBackground
+    self.view.backgroundColor = .clear
 
     view.layoutIfNeeded()
 
@@ -123,6 +123,7 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     navigationController?.setNavigationBarHidden(true, animated: true)
+    summaryCollectionView.contentOffset = CGPoint(x: 0, y: 200)
   }
 
   override func viewWillDisappear(_ animated: Bool) {
@@ -157,7 +158,11 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
 
   private func setupCollectionViews() {
     summaryCollectionView.registerNib(cellType: TransactionHistorySummaryCell.self)
+    summaryCollectionView.layer.cornerRadius = 10.0
+    summaryCollectionView.clipsToBounds = true
+    summaryCollectionView.showsVerticalScrollIndicator = false
     summaryCollectionView.alwaysBounceVertical = true
+    summaryCollectionView.contentInset = UIEdgeInsets(top: 130, left: 0, bottom: 0, right: 0)
 
     summaryCollectionView.delegate = self
     summaryCollectionView.dataSource = self

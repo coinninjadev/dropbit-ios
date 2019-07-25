@@ -8,7 +8,7 @@
 
 import UIKit
 
-@IBDesignable class CalculatorPaymentButton: UIButton {
+ class CalculatorPaymentButton: UIButton {
   required init?(coder aDecoder: NSCoder) {
     super.init(coder: aDecoder)
     initialize()

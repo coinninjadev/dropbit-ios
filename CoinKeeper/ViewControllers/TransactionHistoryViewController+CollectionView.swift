@@ -24,6 +24,7 @@ extension TransactionHistoryViewController: UICollectionViewDelegateFlowLayout {
 
   func collectionView(_ collectionView: UICollectionView,
                       layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+
     let transaction = frc.object(at: indexPath)
     var height: CGFloat = 66
     height += !transaction.isConfirmed ? 20 : 0
@@ -35,7 +36,7 @@ extension TransactionHistoryViewController: UICollectionViewDelegateFlowLayout {
 extension TransactionHistoryViewController: UICollectionViewDataSource {
 
   func numberOfSections(in collectionView: UICollectionView) -> Int {
-    return self.frc.sections?.count ?? 1
+  return self.frc.sections?.count ?? 1
   }
 
   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {

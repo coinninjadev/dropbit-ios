@@ -66,7 +66,7 @@ class TransactionHistoryRefreshView: UIView {
     }
 
     bitcoinImageView.image = coinNinjaImage
-    bitcoinImageViewTopConstraint.constant = -bitcoinImageView.frame.size.height
+    bitcoinImageViewTopConstraint.constant = -bitcoinImageView.frame.size.height * 2
 
     UIView.animate(
       withDuration: 0.4,
