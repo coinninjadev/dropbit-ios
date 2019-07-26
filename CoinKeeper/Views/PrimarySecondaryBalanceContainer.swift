@@ -49,6 +49,7 @@ class PrimarySecondaryBalanceContainer: UIView {
     syncActivityIndicator.prepareForAnimation(withGIFData: imageData)
     syncActivityIndicator.startAnimatingGIF()
     backgroundColor = .lightGrayBackground
+    secondaryBalanceLabel.textColor = .bitcoinOrange
   }
 
   func set(primaryAmount amount: NSDecimalNumber?, currency: CurrencyCode) {
@@ -63,10 +64,8 @@ class PrimarySecondaryBalanceContainer: UIView {
     switch style {
     case .medium:
       primaryBalanceLabel.font = .medium(19)
-      secondaryBalanceLabel.textColor = .darkGrayText
     case .large:
       primaryBalanceLabel.font = .regular(38)
-      secondaryBalanceLabel.textColor = .bitcoinOrange
     }
   }
 
