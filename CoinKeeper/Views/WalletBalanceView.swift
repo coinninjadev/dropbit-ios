@@ -39,6 +39,13 @@ class WalletBalanceView: UIView {
     backgroundColor = .lightGrayBackground
     primarySecondaryBalanceContainer.style = .large
     primarySecondaryBalanceContainer.isSyncing = false
+
+    reloadWalletButton.layer.shadowRadius = 1.0
+    reloadWalletButton.layer.shadowOpacity = 0.3
+    reloadWalletButton.layer.shadowColor = UIColor.black.cgColor
+    reloadWalletButton.layer.shadowOffset = CGSize(width: 0.0, height: 1.0)
+    reloadWalletButton.applyCornerRadius(15)
+    reloadWalletButton.layer.masksToBounds = false
   }
 
   func update(with dataSource: WalletBalanceDataSource) {

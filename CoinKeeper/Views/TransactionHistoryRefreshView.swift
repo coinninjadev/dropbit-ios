@@ -17,7 +17,7 @@ class TransactionHistoryRefreshView: UIView {
   private var bitcoinImage: UIImage = UIImage(imageLiteralResourceName: "pullBitcoinIcon")
   private var coinNinjaImage: UIImage = UIImage(imageLiteralResourceName: "pullCoinNinjaIcon")
   private var refreshOffsetThreshhold: CGFloat = 0.0
-  private var defaultTopConstraintConstant: CGFloat = 86.0
+  private var defaultTopConstraintConstant: CGFloat = 250
   var shouldQueueRefresh: Bool = false
   var isAnimating: Bool = false
 

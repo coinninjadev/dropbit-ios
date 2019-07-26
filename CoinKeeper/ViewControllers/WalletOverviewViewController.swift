@@ -127,17 +127,14 @@ class WalletOverviewViewController: BaseViewController, StoryboardInitializable 
     subscribeToRateAndBalanceUpdates()
     subscribeToSyncNotifications()
     updateRatesAndBalances()
+
+    self.baseViewControllers.forEach { ($0 as? TransactionHistoryViewController)?.summaryCollectionView.hitTestDelegate = self }
   }
 
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
 
     pageViewController?.setViewControllers([baseViewControllers[1]], direction: .forward, animated: true, completion: nil)
-  }
-
-  override func viewDidAppear(_ animated: Bool) {
-    super.viewDidAppear(animated)
-    self.baseViewControllers.compactMap { $0 as? RequestPayViewController}.first?.closeButton?.isHidden = true
   }
 
   func preferredCurrency() -> CurrencyCode {
@@ -267,5 +264,24 @@ extension WalletOverviewViewController: WalletBalanceViewDelegate {
 
   func isSyncCurrentlyRunning() -> Bool {
     return coordinationDelegate?.isSyncCurrentlyRunning() ?? false
+  }
+}
+
+extension WalletOverviewViewController: TransactionHistorySummaryCollectionViewDelegate {
+  func collectionViewDidProvideHitTestPoint(_ point: CGPoint, in view: UIView) -> UIView? {
+    let translatedPoint = view.convert(point, to: self.view)
+    if walletToggleView.frame.contains(translatedPoint) {
+      let toggleTranslatedPoint = self.view.convert(translatedPoint, to: walletToggleView)
+      walletToggleView.bitcoinWalletButton.frame.contains(toggleTranslatedPoint) ?
+        walletToggleView.bitcoinWalletWasTouched() : walletToggleView.lightningWalletWasTouched()
+      return walletToggleView
+    } else if walletBalanceView.frame.contains(translatedPoint) {
+      return walletBalanceView
+    } else if tooltipButton.frame.contains(translatedPoint) {
+      tooltipButtonWasTouched()
+      return tooltipButton
+    } else {
+      return nil
+    }
   }
 }

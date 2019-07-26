@@ -30,7 +30,23 @@ protocol TransactionHistoryViewControllerDelegate: DeviceCountryCodeProvider &
   func viewControllerDidDismissTransactionDetails(_ viewController: UIViewController)
 }
 
-class TransactionHistorySummaryCollectionView: UICollectionView {}
+protocol TransactionHistorySummaryCollectionViewDelegate: class {
+  func collectionViewDidProvideHitTestPoint(_ point: CGPoint, in view: UIView) -> UIView?
+}
+
+class TransactionHistorySummaryCollectionView: UICollectionView {
+
+  let topInset: CGFloat = 140
+  let topConstraintConstant: CGFloat = 62
+  weak var hitTestDelegate: TransactionHistorySummaryCollectionViewDelegate?
+
+  override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
+    guard let hitView = super.hitTest(point, with: event) else { return nil }
+
+    return hitView is UICollectionView ? hitTestDelegate?.collectionViewDidProvideHitTestPoint(point, in: hitView) : hitView
+  }
+
+}
 
 class TransactionHistoryViewController: BaseViewController, StoryboardInitializable {
 
@@ -123,7 +139,6 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     navigationController?.setNavigationBarHidden(true, animated: true)
-    summaryCollectionView.contentOffset = CGPoint(x: 0, y: 200)
   }
 
   override func viewWillDisappear(_ animated: Bool) {
@@ -158,11 +173,9 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
 
   private func setupCollectionViews() {
     summaryCollectionView.registerNib(cellType: TransactionHistorySummaryCell.self)
-    summaryCollectionView.layer.cornerRadius = 10.0
-    summaryCollectionView.clipsToBounds = true
     summaryCollectionView.showsVerticalScrollIndicator = false
     summaryCollectionView.alwaysBounceVertical = true
-    summaryCollectionView.contentInset = UIEdgeInsets(top: 130, left: 0, bottom: 0, right: 0)
+    summaryCollectionView.contentInset = UIEdgeInsets(top: summaryCollectionView.topInset, left: 0, bottom: 0, right: 0)
 
     summaryCollectionView.delegate = self
     summaryCollectionView.dataSource = self
