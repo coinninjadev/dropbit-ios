@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import MMDrawerController
 
 protocol WalletOverviewViewControllerDelegate: BalanceContainerDelegate & BadgeUpdateDelegate {
   var badgeManager: BadgeManagerType { get }
@@ -129,12 +130,10 @@ class WalletOverviewViewController: BaseViewController, StoryboardInitializable 
     updateRatesAndBalances()
 
     self.baseViewControllers.forEach { ($0 as? TransactionHistoryViewController)?.summaryCollectionView.historyDelegate = self }
-  }
 
-  override func viewWillAppear(_ animated: Bool) {
-    super.viewWillAppear(animated)
-
-    pageViewController?.setViewControllers([baseViewControllers[1]], direction: .forward, animated: true, completion: nil)
+    if baseViewControllers.count >= 2 {
+      pageViewController?.setViewControllers([baseViewControllers[1]], direction: .forward, animated: true, completion: nil)
+    }
   }
 
   func preferredCurrency() -> CurrencyCode {
@@ -287,7 +286,8 @@ extension WalletOverviewViewController: TransactionHistorySummaryCollectionViewD
   }
 
   func collectionViewDidUncoverWalletBalance() {
-    guard !balanceContainer.primarySecondaryBalanceContainer.isHidden else { return }
+    guard !balanceContainer.primarySecondaryBalanceContainer.isHidden
+      && navigationController?.topViewController() is MMDrawerController else { return }
 
     balanceContainer.toggleChartAndBalance()
     sendReceiveActionView.isHidden = false

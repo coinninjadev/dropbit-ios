@@ -33,8 +33,7 @@ class BalanceContainerTests: XCTestCase {
   // MARK: outlets
   func testOutletsAreConnected() {
     XCTAssertNotNil(self.sut.leftButton, "leftButton should be connected")
-    XCTAssertNotNil(self.sut.primaryAmountLabel, "primaryAmountLabel should be connected")
-    XCTAssertNotNil(self.sut.secondaryAmountLabel, "secondaryAmountLabel should be connected")
+    XCTAssertNotNil(self.sut.primarySecondaryBalanceContainer, "primarySecondaryBalanceContainer should be connected")
     XCTAssertNotNil(self.sut.rightBalanceContainerView, "rightBalanceContainerView should be connected")
   }
 
