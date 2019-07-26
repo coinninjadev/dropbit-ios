@@ -29,5 +29,6 @@ class WalletOverviewViewControllerTests: XCTestCase {
     XCTAssertNotNil(sut.balanceContainer, "balanceContainer should be connected")
     XCTAssertNotNil(sut.walletToggleView, "walletToggleView should be connected")
     XCTAssertNotNil(sut.sendReceiveActionView, "sendReceiveActionView should be connected")
+    XCTAssertNotNil(sut.tooltipButton, "tooltipButton should be connected")
   }
 }

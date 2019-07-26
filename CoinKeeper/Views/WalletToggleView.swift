@@ -14,7 +14,7 @@ protocol WalletToggleViewDelegate: class {
   func lightningWalletButtonWasTouched()
 }
 
-@IBDesignable
+
 class WalletToggleView: UIView {
 
   @IBOutlet var bitcoinWalletButton: PrimaryActionButton!
@@ -64,11 +64,13 @@ class WalletToggleView: UIView {
   }
 
   func selectBitcoinButton() {
+    bitcoinWalletButton.backgroundColor = .bitcoinOrange
     bitcoinWalletButton.setAttributedTitle(bitcoinTitle, for: .normal)
     deselectButton(lightningWalletButton)
   }
 
   func selectLightningButton() {
+    lightningWalletButton.backgroundColor = .lightningBlue
     lightningWalletButton.setAttributedTitle(lightningTitle, for: .normal)
     deselectButton(bitcoinWalletButton)
   }

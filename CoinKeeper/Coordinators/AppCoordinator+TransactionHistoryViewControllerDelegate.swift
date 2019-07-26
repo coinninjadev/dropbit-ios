@@ -66,11 +66,6 @@ extension AppCoordinator: TransactionHistoryViewControllerDelegate {
     badgeManager.setTransactionsDidDisplay()
   }
 
-
-  func viewControllerShouldAdjustForBottomSafeArea(_ viewController: UIViewController) -> Bool {
-    return UIApplication.shared.delegate?.window??.safeAreaInsets.bottom ?? 0 == 0
-  }
-
   func viewControllerSummariesDidReload(_ viewController: TransactionHistoryViewController, indexPathsIfNotAll paths: [IndexPath]?) {
     guard let detailsVC = navigationController
       .topViewController() as? TransactionHistoryDetailsViewController else { return }

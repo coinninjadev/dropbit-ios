@@ -48,16 +48,14 @@ enum BalanceContainerLeftButtonType {
   }
 }
 
-@IBDesignable class BalanceContainer: UIView, AccessibleViewSettable {
+ class BalanceContainer: UIView, AccessibleViewSettable {
 
   weak var delegate: BalanceContainerDelegate?
 
   @IBOutlet var leftButton: BalanceContainerLeftButton!
+  @IBOutlet var primarySecondaryBalanceContainer: PrimarySecondaryBalanceContainer!
   @IBOutlet var dropBitMeButton: UIButton!
-  @IBOutlet var primaryAmountLabel: BalancePrimaryAmountLabel!
-  @IBOutlet var secondaryAmountLabel: BalanceSecondaryAmountLabel!
   @IBOutlet var balanceView: UIView!
-  @IBOutlet var syncActivityIndicator: UIImageView!
   @IBOutlet var rightBalanceContainerView: UIView!
   @IBOutlet var chartButton: UIButton!
 
@@ -106,9 +104,6 @@ enum BalanceContainerLeftButtonType {
     xibSetup()
     dropBitMeButton.setImage(nil, for: .normal)
     leftButton.badgeDisplayCriteria = BalanceContainerLeftButtonType.menu.badgeCriteria
-    guard let imageData = UIImage.data(asset: "syncing") else { return }
-    syncActivityIndicator.prepareForAnimation(withGIFData: imageData)
-    syncActivityIndicator.startAnimatingGIF()
     subscribeToNotifications()
     setAccessibilityIdentifiers()
     rightBalanceContainerView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapRightBalanceView)))
@@ -124,11 +119,11 @@ enum BalanceContainerLeftButtonType {
     let secondaryCurrency = dataSource.converter.otherCurrency(forCurrency: primaryCurrency)
     let primaryAmount = dataSource.converter.amount(forCurrency: primaryCurrency)
     let secondaryAmount = dataSource.converter.amount(forCurrency: secondaryCurrency)
-    primaryAmountLabel.attributedText = label(for: primaryAmount, currency: primaryCurrency)
-    secondaryAmountLabel.attributedText = label(for: secondaryAmount, currency: secondaryCurrency)
+    primarySecondaryBalanceContainer.set(primaryAmount: primaryAmount, currency: primaryCurrency)
+    primarySecondaryBalanceContainer.set(secondaryAmount: secondaryAmount, currency: secondaryCurrency)
 
     if let syncRunning = delegate?.isSyncCurrentlyRunning(), syncRunning == false {
-      setSyncVisibility(hidden: true)
+      primarySecondaryBalanceContainer.isSyncing = false
     }
   }
 
@@ -142,25 +137,11 @@ enum BalanceContainerLeftButtonType {
   }
 
   private func subscribeToNotifications() {
-    startSyncNotificationToken = CKNotificationCenter.subscribe(key: .didStartSync, object: nil, queue: nil) { [weak self] (_) in
-      self?.handleStartSync()
-    }
-
-    finishSyncNotificationToken = CKNotificationCenter.subscribe(key: .didFinishSync, object: nil, queue: nil) { [weak self] (_) in
-      self?.handleFinishSync()
-    }
+    subscribeToSyncNotifications()
 
     updateAvatarNotificationToken = CKNotificationCenter.subscribe(key: .didUpdateAvatar, object: nil, queue: nil) { [weak self] (_) in
       self?.updateAvatar()
     }
-  }
-
-  private func handleStartSync() {
-    setSyncVisibility(hidden: false)
-  }
-
-  private func handleFinishSync() {
-    setSyncVisibility(hidden: true)
   }
 
   private func updateAvatar() {
@@ -173,32 +154,16 @@ enum BalanceContainerLeftButtonType {
       }.cauterize()
   }
 
-  private func setSyncVisibility(hidden: Bool) {
-    syncActivityIndicator.isHidden = hidden
+}
+
+extension BalanceContainer: SyncSubscribeable {
+
+  func handleStartSync() {
+    primarySecondaryBalanceContainer.isSyncing = true
   }
 
-  private func label(for amount: NSDecimalNumber?, currency: CurrencyCode) -> NSAttributedString {
-    guard let amount = amount else { return NSAttributedString(string: "–") }
-
-    let minFractionalDigits: Int = currency.shouldRoundTrailingZeroes ? 0 : currency.decimalPlaces
-    let maxfractionalDigits: Int = currency.decimalPlaces
-
-    let formatter = NumberFormatter()
-    formatter.numberStyle = .decimal
-    formatter.minimumFractionDigits = minFractionalDigits
-    formatter.maximumFractionDigits = maxfractionalDigits
-
-    let amountString = formatter.string(from: amount) ?? "–"
-
-    switch currency {
-    case .BTC:
-      if let symbol = currency.attributedStringSymbol() {
-        return symbol + NSAttributedString(string: amountString)
-      } else {
-        return NSAttributedString(string: amountString)
-      }
-    case .USD:	return NSAttributedString(string: currency.symbol + amountString)
-    }
+  func handleFinishSync() {
+    primarySecondaryBalanceContainer.isSyncing = false
   }
 
 }

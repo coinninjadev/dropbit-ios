@@ -24,14 +24,31 @@ protocol TransactionHistoryViewControllerDelegate: DeviceCountryCodeProvider &
   func viewControllerDidTapSpendBitcoin(_ viewController: UIViewController)
 
   var currencyController: CurrencyController { get }
-  func viewControllerShouldAdjustForBottomSafeArea(_ viewController: UIViewController) -> Bool
   func viewControllerSummariesDidReload(_ viewController: TransactionHistoryViewController, indexPathsIfNotAll paths: [IndexPath]?)
   func viewControllerWillShowTransactionDetails(_ viewController: UIViewController)
   func viewController(_ viewController: TransactionHistoryViewController, didSelectItemAtIndexPath indexPath: IndexPath)
   func viewControllerDidDismissTransactionDetails(_ viewController: UIViewController)
 }
 
-class TransactionHistorySummaryCollectionView: UICollectionView {}
+protocol TransactionHistorySummaryCollectionViewDelegate: class {
+  func collectionViewDidProvideHitTestPoint(_ point: CGPoint, in view: UIView) -> UIView?
+  func collectionViewDidCoverWalletBalance()
+  func collectionViewDidUncoverWalletBalance()
+}
+
+class TransactionHistorySummaryCollectionView: UICollectionView {
+
+  let topInset: CGFloat = 140
+  let topConstraintConstant: CGFloat = 62
+  weak var historyDelegate: TransactionHistorySummaryCollectionViewDelegate?
+
+  override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
+    guard let hitView = super.hitTest(point, with: event) else { return nil }
+
+    return hitView is UICollectionView ? historyDelegate?.collectionViewDidProvideHitTestPoint(point, in: hitView) : hitView
+  }
+
+}
 
 class TransactionHistoryViewController: BaseViewController, StoryboardInitializable {
 
@@ -40,10 +57,18 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
   @IBOutlet var transactionHistoryWithBalanceView: TransactionHistoryWithBalanceView!
   @IBOutlet var refreshView: TransactionHistoryRefreshView!
   @IBOutlet var refreshViewTopConstraint: NSLayoutConstraint!
+  @IBOutlet var footerView: UIView!
   @IBOutlet var gradientBlurView: UIView! {
     didSet {
-      gradientBlurView.backgroundColor = .lightGrayBackground
+      gradientBlurView.backgroundColor = .white
       gradientBlurView.fade(style: .top, percent: 1.0)
+    }
+  }
+
+  var isCollectionViewFullScreen: Bool = false {
+    willSet {
+      footerView.isHidden = !newValue
+      gradientBlurView.isHidden = !newValue
     }
   }
 
@@ -110,7 +135,7 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
     transactionHistoryNoBalanceView.delegate = self
     transactionHistoryWithBalanceView.delegate = self
 
-    self.view.backgroundColor = .lightGrayBackground
+    self.view.backgroundColor = .clear
 
     view.layoutIfNeeded()
 
@@ -123,6 +148,7 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     navigationController?.setNavigationBarHidden(true, animated: true)
+    resetCollectionView()
   }
 
   override func viewWillDisappear(_ animated: Bool) {
@@ -134,6 +160,11 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
   internal func reloadTransactions(atIndexPaths paths: [IndexPath]) {
     summaryCollectionView.reloadItems(at: paths)
     coordinationDelegate?.viewControllerSummariesDidReload(self, indexPathsIfNotAll: paths)
+  }
+
+  private func resetCollectionView() {
+    summaryCollectionView.contentOffset = CGPoint(x: 0, y: -summaryCollectionView.topInset)
+    summaryCollectionView.delegate?.scrollViewDidScroll?(summaryCollectionView)
   }
 
   func detailViewModel(at indexPath: IndexPath) -> TransactionHistoryDetailCellViewModel {
@@ -157,7 +188,9 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
 
   private func setupCollectionViews() {
     summaryCollectionView.registerNib(cellType: TransactionHistorySummaryCell.self)
+    summaryCollectionView.showsVerticalScrollIndicator = false
     summaryCollectionView.alwaysBounceVertical = true
+    summaryCollectionView.contentInset = UIEdgeInsets(top: summaryCollectionView.topInset, left: 0, bottom: 0, right: 0)
 
     summaryCollectionView.delegate = self
     summaryCollectionView.dataSource = self

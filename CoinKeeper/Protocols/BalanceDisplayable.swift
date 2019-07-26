@@ -90,6 +90,7 @@ protocol BalanceDisplayable: ExchangeRateUpdateable, BalanceUpdateable {
   var balanceProvider: ConvertibleBalanceProvider? { get } // implementation should be a weak reference
   var balanceContainer: BalanceContainer! { get } // IBOutlet
   var primaryBalanceCurrency: CurrencyCode { get }
+  var walletBalanceView: WalletBalanceView { get }
   var balanceLeftButtonType: BalanceContainerLeftButtonType { get }
 
 }
@@ -131,11 +132,10 @@ extension BalanceDisplayable where Self: UIViewController {
 
   /// Called in response to .didUpdateBalance notification in BalanceUpdateable
   func updateViewWithBalance() {
-    let dataSource = updatedDataSource()
-    balanceContainer.update(with: dataSource)
+    updatedDataSource()
   }
 
-  private func updatedDataSource() -> BalanceContainerDataSource {
+  private func updatedDataSource() {
     // Prevent ever showing a negative balance
     var sanitizedBalance: NSDecimalNumber = .zero
     if let calculatedBalance = balanceProvider?.balanceNetPending(), calculatedBalance.isPositiveNumber {
@@ -145,10 +145,14 @@ extension BalanceDisplayable where Self: UIViewController {
     let rates = rateManager.exchangeRates
     let converter = CurrencyConverter(fromBtcTo: .USD, fromAmount: sanitizedBalance, rates: rates)
 
-    return BalanceContainerDataSource(
+    balanceContainer.update(with: BalanceContainerDataSource(
       leftButtonType: balanceLeftButtonType,
       converter: converter,
-      primaryCurrency: primaryBalanceCurrency)
+      primaryCurrency: primaryBalanceCurrency))
+
+    walletBalanceView.update(with: WalletBalanceDataSource(
+      converter: converter,
+      primaryCurrency: primaryBalanceCurrency))
   }
 
 }

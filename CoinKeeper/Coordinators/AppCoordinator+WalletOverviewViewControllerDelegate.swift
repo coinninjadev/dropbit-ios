@@ -11,6 +11,10 @@ import UIKit
 import MMDrawerController
 
 extension AppCoordinator: WalletOverviewViewControllerDelegate {
+  func viewControllerDidTapWalletTooltip() {
+    navigationController.present(LightningTooltipViewController.newInstance(), animated: true, completion: nil)
+  }
+
   func viewControllerDidTapScan(_ viewController: UIViewController, converter: CurrencyConverter) {
     analyticsManager.track(event: .scanQRButtonPressed, with: nil)
     permissionManager.requestPermission(for: .camera) { [weak self] status in
@@ -21,6 +25,10 @@ extension AppCoordinator: WalletOverviewViewControllerDelegate {
         break
       }
     }
+  }
+
+  func viewControllerShouldAdjustForBottomSafeArea(_ viewController: UIViewController) -> Bool {
+    return UIApplication.shared.delegate?.window??.safeAreaInsets.bottom ?? 0 == 0
   }
 
   func viewControllerDidTapReceivePayment(_ viewController: UIViewController, converter: CurrencyConverter) {

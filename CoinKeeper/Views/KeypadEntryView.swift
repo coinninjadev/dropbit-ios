@@ -18,7 +18,7 @@ extension KeypadEntryViewDelegate {
   func selectedDecimal() { }
 }
 
-@IBDesignable class KeypadEntryView: UIView {
+ class KeypadEntryView: UIView {
 
   enum KeypadEntryMode {
     case pin, currency

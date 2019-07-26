@@ -450,6 +450,11 @@
 		A260E8D720FD0C67008343F9 /* TutorialScreenViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A260E8D620FD0C67008343F9 /* TutorialScreenViewController.storyboard */; };
 		A260E8D920FD0F28008343F9 /* TutorialScreenViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A260E8D820FD0F28008343F9 /* TutorialScreenViewModel.swift */; };
 		A260E8DB20FD312B008343F9 /* UIView+Enabler.swift in Sources */ = {isa = PBXBuildFile; fileRef = A260E8DA20FD312B008343F9 /* UIView+Enabler.swift */; };
+		A268F13322E9E9F300410040 /* WalletBalanceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A268F13222E9E9F300410040 /* WalletBalanceView.swift */; };
+		A268F13522E9EABD00410040 /* WalletBalanceView.xib in Resources */ = {isa = PBXBuildFile; fileRef = A268F13422E9EABD00410040 /* WalletBalanceView.xib */; };
+		A268F13722E9EFEC00410040 /* PrimarySecondaryBalanceContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A268F13622E9EFEC00410040 /* PrimarySecondaryBalanceContainer.swift */; };
+		A268F13922E9EFFE00410040 /* PrimarySecondaryBalanceContainer.xib in Resources */ = {isa = PBXBuildFile; fileRef = A268F13822E9EFFE00410040 /* PrimarySecondaryBalanceContainer.xib */; };
+		A268F13B22EA067B00410040 /* SyncSubscribeable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A268F13A22EA067B00410040 /* SyncSubscribeable.swift */; };
 		A26C76792106446E001EB738 /* NSDecimalNumber+NilInitializer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A26C76782106446E001EB738 /* NSDecimalNumber+NilInitializer.swift */; };
 		A26C767B2107B233001EB738 /* NSDecimalNumber+Comparable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A26C767A2107B233001EB738 /* NSDecimalNumber+Comparable.swift */; };
 		A26C767D21081CB1001EB738 /* TextViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A26C767C21081CB1001EB738 /* TextViewController.swift */; };
@@ -1380,6 +1385,11 @@
 		A260E8D620FD0C67008343F9 /* TutorialScreenViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = TutorialScreenViewController.storyboard; sourceTree = "<group>"; };
 		A260E8D820FD0F28008343F9 /* TutorialScreenViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialScreenViewModel.swift; sourceTree = "<group>"; };
 		A260E8DA20FD312B008343F9 /* UIView+Enabler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Enabler.swift"; sourceTree = "<group>"; };
+		A268F13222E9E9F300410040 /* WalletBalanceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletBalanceView.swift; sourceTree = "<group>"; };
+		A268F13422E9EABD00410040 /* WalletBalanceView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WalletBalanceView.xib; sourceTree = "<group>"; };
+		A268F13622E9EFEC00410040 /* PrimarySecondaryBalanceContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrimarySecondaryBalanceContainer.swift; sourceTree = "<group>"; };
+		A268F13822E9EFFE00410040 /* PrimarySecondaryBalanceContainer.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PrimarySecondaryBalanceContainer.xib; sourceTree = "<group>"; };
+		A268F13A22EA067B00410040 /* SyncSubscribeable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncSubscribeable.swift; sourceTree = "<group>"; };
 		A26C76782106446E001EB738 /* NSDecimalNumber+NilInitializer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSDecimalNumber+NilInitializer.swift"; sourceTree = "<group>"; };
 		A26C767A2107B233001EB738 /* NSDecimalNumber+Comparable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSDecimalNumber+Comparable.swift"; sourceTree = "<group>"; };
 		A26C767C21081CB1001EB738 /* TextViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextViewController.swift; sourceTree = "<group>"; };
@@ -2359,6 +2369,10 @@
 				A2DBC50322D78DC2008C532B /* CurrencySwappableEditAmountView.xib */,
 				A2BFA54C22E7531500396D33 /* WalletToggleView.swift */,
 				A2BFA54E22E7536A00396D33 /* WalletToggleView.xib */,
+				A268F13222E9E9F300410040 /* WalletBalanceView.swift */,
+				A268F13422E9EABD00410040 /* WalletBalanceView.xib */,
+				A268F13622E9EFEC00410040 /* PrimarySecondaryBalanceContainer.swift */,
+				A268F13822E9EFFE00410040 /* PrimarySecondaryBalanceContainer.xib */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -2946,6 +2960,7 @@
 				30BF4FEF21B728FA0018AE87 /* PopoverViewControllerType.swift */,
 				3B695C1F21CA9F9B007D0741 /* OperationQueueType.swift */,
 				3B8B19302289BB25003BA4D7 /* AuthenticationSuspendable.swift */,
+				A268F13A22EA067B00410040 /* SyncSubscribeable.swift */,
 			);
 			path = Protocols;
 			sourceTree = "<group>";
@@ -3523,6 +3538,7 @@
 				5B91E39A2076C02200DD9A86 /* DrawerViewController.storyboard in Resources */,
 				3B9779AD202E416700C9C933 /* Montserrat-Thin.ttf in Resources */,
 				A26C768F2108BE96001EB738 /* licenses.html in Resources */,
+				A268F13522E9EABD00410040 /* WalletBalanceView.xib in Resources */,
 				3B86F78A203C6D4E00D15231 /* PinEntryViewController.storyboard in Resources */,
 				3BFA718E203F2AB300774D59 /* PinDisplayView.xib in Resources */,
 				5BE594E7207FC62B00862A0A /* ScanQRViewController.storyboard in Resources */,
@@ -3603,6 +3619,7 @@
 				A200574D20B5F70F007074D9 /* SettingCell.xib in Resources */,
 				A260E8D320FCFE96008343F9 /* TutorialViewController.storyboard in Resources */,
 				3B9779B2202E416700C9C933 /* Montserrat-Italic.ttf in Resources */,
+				A268F13922E9EFFE00410040 /* PrimarySecondaryBalanceContainer.xib in Resources */,
 				B5E7F219221466EE00358A24 /* CountryCodeSearchView.xib in Resources */,
 				3B23126320DA6CA30099A557 /* TransactionHistoryDetailCellAddressView.xib in Resources */,
 				B5E7F21F22146B9000358A24 /* CountryCodePickerCell.xib in Resources */,
@@ -4007,6 +4024,7 @@
 				3B57207D2233004E0048A8CF /* BaseCoreDataStack.swift in Sources */,
 				30BF4FED21B6E42A0018AE87 /* AppCoordinator+TransactionPopoverDetailsViewControllerDelegate.swift in Sources */,
 				B518226320BF191A00AA3E36 /* CKMServerAddress+CoreDataProperties.swift in Sources */,
+				A268F13B22EA067B00410040 /* SyncSubscribeable.swift in Sources */,
 				B5DDB0F721DE69C100A25929 /* KeychainMigratorFactory.swift in Sources */,
 				B54D206420F926110057A694 /* UIImage+Mask.swift in Sources */,
 				B54159CE20A60C720048F495 /* WalletResponse.swift in Sources */,
@@ -4190,6 +4208,7 @@
 				A29CE0C72098F84300761B91 /* SuccessFailViewController.swift in Sources */,
 				B567CBEB20C5534400105C2C /* NSManagedObjectContext+Changes.swift in Sources */,
 				A26C767B2107B233001EB738 /* NSDecimalNumber+Comparable.swift in Sources */,
+				A268F13722E9EFEC00410040 /* PrimarySecondaryBalanceContainer.swift in Sources */,
 				A2A530CA20966D2F00B6F4DE /* String+Count.swift in Sources */,
 				A29CE0D8209B724900761B91 /* ContactCell.swift in Sources */,
 				A2BFA54D22E7531500396D33 /* WalletToggleView.swift in Sources */,
@@ -4230,6 +4249,7 @@
 				A2A530AE2092A84800B6F4DE /* String+TrimSymbol.swift in Sources */,
 				3B6749E120AA5CA40032FE02 /* CKMVin+CoreDataClass.swift in Sources */,
 				3093B07C21EE36CF00B3EF9C /* TransactionHistoryRefreshView.swift in Sources */,
+				A268F13322E9E9F300410040 /* WalletBalanceView.swift in Sources */,
 				B5C9472C210E08C3002CBAE4 /* AddressRequestUpdateDisplayable.swift in Sources */,
 				B54090F82270AC7D00E53B80 /* AppCoordinator+DropBitMeViewControllerDelegate.swift in Sources */,
 				B5B27E902088D91800D4DB89 /* NSMutableAttributedString+Constructors.swift in Sources */,

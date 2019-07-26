@@ -22,7 +22,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vN5-8O-Mw3">
-                                        <rect key="frame" x="77" y="136" width="260" height="35"/>
+                                        <rect key="frame" x="77" y="110" width="260" height="35"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FKt-mO-51J">
                                                 <rect key="frame" x="0.0" y="0.0" width="130" height="35"/>
@@ -48,14 +48,14 @@
                                         </constraints>
                                     </view>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="triangle" translatesAutoresizingMaskIntoConstraints="NO" id="zkf-RY-3Ei">
-                                        <rect key="frame" x="201" y="184" width="12" height="8"/>
+                                        <rect key="frame" x="201" y="158" width="12" height="8"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="8" id="nG5-Oa-hKx"/>
                                             <constraint firstAttribute="width" constant="12" id="vEg-aC-S5v"/>
                                         </constraints>
                                     </imageView>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="a8d-mx-ccw">
-                                        <rect key="frame" x="42" y="190" width="330" height="400"/>
+                                        <rect key="frame" x="42" y="164" width="330" height="400"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="HOW SHOULD I SEND?" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lWX-Ap-3l6">
                                                 <rect key="frame" x="75.5" y="20" width="179.5" height="21"/>
@@ -146,7 +146,7 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="LGd-WX-Jhr" firstAttribute="top" secondItem="vN5-8O-Mw3" secondAttribute="top" constant="-92" id="7Qy-Go-Rjj"/>
+                            <constraint firstItem="LGd-WX-Jhr" firstAttribute="top" secondItem="vN5-8O-Mw3" secondAttribute="top" constant="-66" id="7Qy-Go-Rjj"/>
                             <constraint firstAttribute="trailing" secondItem="WMk-67-C57" secondAttribute="trailing" id="BeM-pw-4PH"/>
                             <constraint firstAttribute="bottom" secondItem="WMk-67-C57" secondAttribute="bottom" id="Osn-6b-zrO"/>
                             <constraint firstItem="WMk-67-C57" firstAttribute="leading" secondItem="wK7-18-XKR" secondAttribute="leading" id="diD-g1-qjt"/>

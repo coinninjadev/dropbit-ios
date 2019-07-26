@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="WalletBalanceView" customModule="DropBit" customModuleProvider="target">
+            <connections>
+                <outlet property="primarySecondaryBalanceContainer" destination="g9V-ms-6Ia" id="8rR-YS-f3w"/>
+                <outlet property="reloadWalletButton" destination="tsQ-nd-D2D" id="a5S-XA-2KQ"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="IOX-Zs-iYR">
+            <rect key="frame" x="0.0" y="0.0" width="335" height="100"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <button opaque="NO" contentMode="center" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tsQ-nd-D2D">
+                    <rect key="frame" x="40" y="35" width="90" height="30"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="90" id="LpV-Zr-Cfg"/>
+                        <constraint firstAttribute="height" constant="30" id="TRQ-53-mBP"/>
+                    </constraints>
+                    <color key="tintColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <state key="normal" image="bitcoinLightningSwapIcon">
+                        <color key="titleColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </state>
+                </button>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="g9V-ms-6Ia" customClass="PrimarySecondaryBalanceContainer" customModule="DropBit" customModuleProvider="target">
+                    <rect key="frame" x="160" y="10" width="150" height="70"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="150" id="VsW-p3-PwN"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="g9V-ms-6Ia" firstAttribute="top" secondItem="IOX-Zs-iYR" secondAttribute="top" constant="10" id="GxG-F5-6ib"/>
+                <constraint firstItem="g9V-ms-6Ia" firstAttribute="trailing" secondItem="NjY-zk-tfj" secondAttribute="trailing" constant="-25" id="PaT-Ss-M9V"/>
+                <constraint firstItem="tsQ-nd-D2D" firstAttribute="centerY" secondItem="IOX-Zs-iYR" secondAttribute="centerY" id="rny-lF-uAh"/>
+                <constraint firstItem="tsQ-nd-D2D" firstAttribute="leading" secondItem="NjY-zk-tfj" secondAttribute="leading" constant="40" id="xe5-wd-JIs"/>
+                <constraint firstAttribute="bottom" secondItem="g9V-ms-6Ia" secondAttribute="bottom" constant="20" id="zaK-CF-efo"/>
+            </constraints>
+            <nil key="simulatedTopBarMetrics"/>
+            <nil key="simulatedBottomBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <viewLayoutGuide key="safeArea" id="NjY-zk-tfj"/>
+            <point key="canvasLocation" x="-145.6521739130435" y="-41.517857142857139"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="bitcoinLightningSwapIcon" width="68" height="21"/>
+    </resources>
+</document>

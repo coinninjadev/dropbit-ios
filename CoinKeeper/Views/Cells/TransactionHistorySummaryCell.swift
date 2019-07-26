@@ -21,7 +21,7 @@ class TransactionHistorySummaryCell: UICollectionViewCell {
 
   override func awakeFromNib() {
     super.awakeFromNib()
-    self.backgroundColor = UIColor.clear
+    backgroundColor = .white
   }
 
   // part of auto-sizing
@@ -33,6 +33,9 @@ class TransactionHistorySummaryCell: UICollectionViewCell {
 
   override func prepareForReuse() {
     super.prepareForReuse()
+    contentView.layer.cornerRadius = 10.0
+    contentView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMinXMaxYCorner]
+    contentView.clipsToBounds = true
     incomingImage.layer.borderColor = nil
     incomingImage.layer.borderWidth = 0
     incomingImage.layer.cornerRadius = 0
