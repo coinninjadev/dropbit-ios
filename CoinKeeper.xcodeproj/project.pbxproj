@@ -576,6 +576,7 @@
 		B50E1839214805D80091EEDA /* AppCoordinator+HeaderDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50E1838214805D80091EEDA /* AppCoordinator+HeaderDelegate.swift */; };
 		B50E18462149A1460091EEDA /* UserResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50E18452149A1460091EEDA /* UserResponse.swift */; };
 		B50FD13E215D681B00155BE1 /* AppCoordinator+TransactionAlerts.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50FD13D215D681B00155BE1 /* AppCoordinator+TransactionAlerts.swift */; };
+		B5130E1D22EB99720003374F /* RegTestBroadcastTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5130E1C22EB99720003374F /* RegTestBroadcastTarget.swift */; };
 		B514536422A7207500F7DA41 /* UIColor+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = B514536322A7207500F7DA41 /* UIColor+Theme.swift */; };
 		B518226220BF191A00AA3E36 /* CKMServerAddress+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = B518226020BF191A00AA3E36 /* CKMServerAddress+CoreDataClass.swift */; };
 		B518226320BF191A00AA3E36 /* CKMServerAddress+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = B518226120BF191A00AA3E36 /* CKMServerAddress+CoreDataProperties.swift */; };
@@ -1535,6 +1536,7 @@
 		B50E1838214805D80091EEDA /* AppCoordinator+HeaderDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppCoordinator+HeaderDelegate.swift"; sourceTree = "<group>"; };
 		B50E18452149A1460091EEDA /* UserResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserResponse.swift; sourceTree = "<group>"; };
 		B50FD13D215D681B00155BE1 /* AppCoordinator+TransactionAlerts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppCoordinator+TransactionAlerts.swift"; sourceTree = "<group>"; };
+		B5130E1C22EB99720003374F /* RegTestBroadcastTarget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegTestBroadcastTarget.swift; sourceTree = "<group>"; };
 		B514536322A7207500F7DA41 /* UIColor+Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Theme.swift"; sourceTree = "<group>"; };
 		B518226020BF191A00AA3E36 /* CKMServerAddress+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CKMServerAddress+CoreDataClass.swift"; sourceTree = "<group>"; };
 		B518226120BF191A00AA3E36 /* CKMServerAddress+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CKMServerAddress+CoreDataProperties.swift"; sourceTree = "<group>"; };
@@ -3377,6 +3379,7 @@
 				B5A3BA5F2151940E005EE657 /* WalletAddressRequestsTarget.swift */,
 				B56512F52153DDA500A5D044 /* WalletCheckInTarget.swift */,
 				3B474164217FB6A4004DA223 /* NotificationTopicSubscriptionInfoTarget.swift */,
+				B5130E1C22EB99720003374F /* RegTestBroadcastTarget.swift */,
 				3BDFADFB2267AEFF0077DEF2 /* BlockstreamTarget.swift */,
 				3B8B19342289C44B003BA4D7 /* UserIdentityTarget.swift */,
 				A246C82422CB9AFA00AF1F52 /* NewsTarget.swift */,
@@ -4231,6 +4234,7 @@
 				3B2E78302024AEA100DA25AF /* UIFont+Theme.swift in Sources */,
 				5B40427C208CCC27005624B0 /* QRCode.swift in Sources */,
 				B50384C620B304780091AB37 /* CKNetworkError.swift in Sources */,
+				B5130E1D22EB99720003374F /* RegTestBroadcastTarget.swift in Sources */,
 				3B82692120330FB9009B11EC /* FontStrings.swift in Sources */,
 				B5FBE42020DD76550029D273 /* SettingsViewModel.swift in Sources */,
 				B52A25CD2077FFF600F636A1 /* Date+Extensions.swift in Sources */,
