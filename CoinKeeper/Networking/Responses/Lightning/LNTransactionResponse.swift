@@ -8,21 +8,16 @@
 
 import Moya
 
-enum LNTransactionDirection: String, Codable {
-  case `in` = "IN"
-  case out = "OUT"
-}
-
 enum LNTransactionStatus: String, Codable {
-  case pending = "PENDING"
-  case completed = "COMPLETED"
-  case expired = "EXPIRED"
-  case failed = "FAILED"
+  case pending, completed, expired, failed
 }
 
 enum LNTransactionType: String, Codable {
-  case btc = "BTC"
-  case lightning = "LIGHTNING"
+  case btc, lightning
+}
+
+enum LNTransactionDirection: String, Codable {
+  case `in`, out
 }
 
 struct LNTransactionResult: LNResponseDecodable {
