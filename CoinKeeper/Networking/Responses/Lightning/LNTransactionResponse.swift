@@ -8,15 +8,32 @@
 
 import Moya
 
+enum LNTransactionDirection: String, Codable {
+  case `in` = "IN"
+  case out = "OUT"
+}
+
+enum LNTransactionStatus: String, Codable {
+  case pending = "PENDING"
+  case completed = "COMPLETED"
+  case expired = "EXPIRED"
+  case failed = "FAILED"
+}
+
+enum LNTransactionType: String, Codable {
+  case btc = "BTC"
+  case lightning = "LIGHTNING"
+}
+
 struct LNTransactionResult: LNResponseDecodable {
 
   let id: String
   let accountId: String
   let createdAt: Date
   let expiresAt: Date?
-  let status: String
-  let type: String
-  let direction: String
+  let status: LNTransactionStatus
+  let type: LNTransactionType
+  let direction: LNTransactionDirection
   let value: Int
   let networkFee: Int
   let processingFee: Int
@@ -50,9 +67,9 @@ struct LNTransactionResult: LNResponseDecodable {
     accountId = try container.decode(String.self, forKey: .accountId)
     createdAt = try container.decode(Date.self, forKey: .createdAt)
     expiresAt = try container.decode(Date.self, forKey: .expiresAt)
-    status = try container.decode(String.self, forKey: .status)
-    type = try container.decode(String.self, forKey: .type)
-    direction = try container.decode(String.self, forKey: .direction)
+    status = try container.decode(LNTransactionStatus.self, forKey: .status)
+    type = try container.decode(LNTransactionType.self, forKey: .type)
+    direction = try container.decode(LNTransactionDirection.self, forKey: .direction)
     value = try container.decodeStringAsInt(forKey: .value, typeName: typeName)
     networkFee = try container.decodeStringAsInt(forKey: .networkFee, typeName: typeName)
     processingFee = try container.decodeStringAsInt(forKey: .processingFee, typeName: typeName)
@@ -73,7 +90,7 @@ struct LNTransactionResponse: LNResponseDecodable {
   }
 
   static var requiredStringKeys: [KeyPath<LNTransactionResponse, String>] {
-    return [\.result.id, \.result.accountId, \.result.status, \.result.type, \.result.direction, \.result.request]
+    return [\.result.id, \.result.accountId, \.result.request]
   }
 
   static var optionalStringKeys: [WritableKeyPath<LNTransactionResponse, String?>] {
