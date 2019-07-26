@@ -128,7 +128,7 @@ class WalletOverviewViewController: BaseViewController, StoryboardInitializable 
     subscribeToSyncNotifications()
     updateRatesAndBalances()
 
-    self.baseViewControllers.forEach { ($0 as? TransactionHistoryViewController)?.summaryCollectionView.hitTestDelegate = self }
+    self.baseViewControllers.forEach { ($0 as? TransactionHistoryViewController)?.summaryCollectionView.historyDelegate = self }
   }
 
   override func viewWillAppear(_ animated: Bool) {
@@ -268,6 +268,7 @@ extension WalletOverviewViewController: WalletBalanceViewDelegate {
 }
 
 extension WalletOverviewViewController: TransactionHistorySummaryCollectionViewDelegate {
+
   func collectionViewDidProvideHitTestPoint(_ point: CGPoint, in view: UIView) -> UIView? {
     let translatedPoint = view.convert(point, to: self.view)
     if walletToggleView.frame.contains(translatedPoint) {
@@ -283,5 +284,19 @@ extension WalletOverviewViewController: TransactionHistorySummaryCollectionViewD
     } else {
       return nil
     }
+  }
+
+  func collectionViewDidUncoverWalletBalance() {
+    guard !balanceContainer.primarySecondaryBalanceContainer.isHidden else { return }
+
+    balanceContainer.toggleChartAndBalance()
+    sendReceiveActionView.isHidden = false
+  }
+
+  func collectionViewDidCoverWalletBalance() {
+    guard balanceContainer.primarySecondaryBalanceContainer.isHidden else { return }
+
+    balanceContainer.toggleChartAndBalance()
+    sendReceiveActionView.isHidden = true
   }
 }

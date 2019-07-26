@@ -34,9 +34,12 @@
                         <action selector="didTapLeftButton:" destination="-1" eventType="touchUpInside" id="zwp-3f-O9P"/>
                     </connections>
                 </button>
-                <view hidden="YES" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="kx6-z5-GQm" userLabel="Right Balance Container View" customClass="PrimarySecondaryBalanceContainer" customModule="DropBit" customModuleProvider="target">
-                    <rect key="frame" x="333" y="5" width="180" height="56"/>
+                <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kx6-z5-GQm" userLabel="Right Balance Container View" customClass="PrimarySecondaryBalanceContainer" customModule="DropBit" customModuleProvider="target">
+                    <rect key="frame" x="333" y="5" width="180" height="46"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="180" id="tGU-dV-f6N"/>
+                    </constraints>
                 </view>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MhN-3t-rHg">
                     <rect key="frame" x="251.5" y="18" width="30" height="30"/>
@@ -66,14 +69,13 @@
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
-                <constraint firstItem="kx6-z5-GQm" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="4HR-LB-1bE"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="sLU-EL-8bo" secondAttribute="bottom" id="5Ie-u5-eJH"/>
                 <constraint firstItem="sLU-EL-8bo" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" id="7mu-ox-1kU"/>
                 <constraint firstItem="kx6-z5-GQm" firstAttribute="trailing" secondItem="vUN-kp-3ea" secondAttribute="trailing" constant="-20" id="KNv-Wx-aph"/>
                 <constraint firstItem="MhN-3t-rHg" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="18" id="TPE-up-fdh"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="Pwo-4y-6AK" secondAttribute="trailing" constant="20" id="TbR-vF-K09"/>
                 <constraint firstItem="MhN-3t-rHg" firstAttribute="centerX" secondItem="vUN-kp-3ea" secondAttribute="centerX" id="bYW-gV-64B"/>
-                <constraint firstAttribute="bottom" secondItem="kx6-z5-GQm" secondAttribute="bottom" constant="5" id="cuR-h7-6gK"/>
+                <constraint firstAttribute="bottom" secondItem="kx6-z5-GQm" secondAttribute="bottom" constant="15" id="cuR-h7-6gK"/>
                 <constraint firstItem="kx6-z5-GQm" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="5" id="nhX-NQ-HQ6"/>
                 <constraint firstItem="sLU-EL-8bo" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="vfx-8a-Ly6"/>
                 <constraint firstItem="Pwo-4y-6AK" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="zhl-7l-uOQ"/>

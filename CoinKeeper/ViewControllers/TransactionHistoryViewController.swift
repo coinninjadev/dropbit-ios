@@ -32,18 +32,20 @@ protocol TransactionHistoryViewControllerDelegate: DeviceCountryCodeProvider &
 
 protocol TransactionHistorySummaryCollectionViewDelegate: class {
   func collectionViewDidProvideHitTestPoint(_ point: CGPoint, in view: UIView) -> UIView?
+  func collectionViewDidCoverWalletBalance()
+  func collectionViewDidUncoverWalletBalance()
 }
 
 class TransactionHistorySummaryCollectionView: UICollectionView {
 
   let topInset: CGFloat = 140
   let topConstraintConstant: CGFloat = 62
-  weak var hitTestDelegate: TransactionHistorySummaryCollectionViewDelegate?
+  weak var historyDelegate: TransactionHistorySummaryCollectionViewDelegate?
 
   override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
     guard let hitView = super.hitTest(point, with: event) else { return nil }
 
-    return hitView is UICollectionView ? hitTestDelegate?.collectionViewDidProvideHitTestPoint(point, in: hitView) : hitView
+    return hitView is UICollectionView ? historyDelegate?.collectionViewDidProvideHitTestPoint(point, in: hitView) : hitView
   }
 
 }
@@ -55,10 +57,18 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
   @IBOutlet var transactionHistoryWithBalanceView: TransactionHistoryWithBalanceView!
   @IBOutlet var refreshView: TransactionHistoryRefreshView!
   @IBOutlet var refreshViewTopConstraint: NSLayoutConstraint!
+  @IBOutlet var footerView: UIView!
   @IBOutlet var gradientBlurView: UIView! {
     didSet {
       gradientBlurView.backgroundColor = .white
       gradientBlurView.fade(style: .top, percent: 1.0)
+    }
+  }
+
+  var isCollectionViewFullScreen: Bool = false {
+    willSet {
+      footerView.isHidden = !newValue
+      gradientBlurView.isHidden = !newValue
     }
   }
 
@@ -133,12 +143,12 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
 
     setupCollectionViews()
     self.frc.delegate = self
-
   }
 
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     navigationController?.setNavigationBarHidden(true, animated: true)
+    resetCollectionView()
   }
 
   override func viewWillDisappear(_ animated: Bool) {
@@ -150,6 +160,11 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
   internal func reloadTransactions(atIndexPaths paths: [IndexPath]) {
     summaryCollectionView.reloadItems(at: paths)
     coordinationDelegate?.viewControllerSummariesDidReload(self, indexPathsIfNotAll: paths)
+  }
+
+  private func resetCollectionView() {
+    summaryCollectionView.contentOffset = CGPoint(x: 0, y: -summaryCollectionView.topInset)
+    summaryCollectionView.delegate?.scrollViewDidScroll?(summaryCollectionView)
   }
 
   func detailViewModel(at indexPath: IndexPath) -> TransactionHistoryDetailCellViewModel {
