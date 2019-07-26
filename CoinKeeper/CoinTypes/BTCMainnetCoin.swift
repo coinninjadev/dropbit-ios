@@ -9,7 +9,7 @@
 import CNBitcoinKit
 
 class BTCMainnetCoin: CNBBaseCoin {
-  override init() {
-    super.init(purpose: CoinDerivation.BIP49, coin: CoinType.MainNet, account: 0, networkURL: "tcp://libbitcoin.coinninja.com:9091")
+  init(purpose: CoinDerivation) {
+    super.init(purpose: purpose, coin: CoinType.MainNet, account: 0, networkURL: "tcp://libbitcoin.coinninja.com:9091")
   }
 }

@@ -296,13 +296,13 @@ class TransactionCoreDataTests: XCTestCase {
   }
 
   private func receiveAddress(at index: Int) -> String {
-    let wallet = CNBHDWallet(mnemonic: fakeWords(), coin: BTCMainnetCoin())
+    let wallet = CNBHDWallet(mnemonic: fakeWords(), coin: BTCMainnetCoin(purpose: .BIP49))
     let address = wallet.receiveAddress(for: UInt(index))
     return address.address
   }
 
   private func changeAddress(at index: Int) -> String {
-    let wallet = CNBHDWallet(mnemonic: fakeWords(), coin: BTCMainnetCoin())
+    let wallet = CNBHDWallet(mnemonic: fakeWords(), coin: BTCMainnetCoin(purpose: .BIP49))
     let address = wallet.changeAddress(for: UInt(index))
     return address.address
   }
