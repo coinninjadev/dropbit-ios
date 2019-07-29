@@ -44,6 +44,7 @@ enum AnalyticsManagerEventType: String {
   case deleteWallet = "DeleteWallet"
   case createWallet = "CreateWallet"
   case restoreWallet = "RestoreWallet"
+  case v1Wallet = "v1Wallet"
   case scanQRButtonPressed = "ScanQRBtn"
   case historyButtonPressed = "HistoryBtn"
   case payButtonWasPressed = "PayBtn"

@@ -61,6 +61,7 @@ extension AppCoordinator {
       self.saveSuccessfulWords(words: words, didBackUp: false)
         .done(on: .main) { _ in
           self.analyticsManager.track(event: .createWallet, with: nil)
+          self.analyticsManager.track(event: .v1Wallet, with: nil)
           self.continueSetupFlow()
         }.cauterize()
     }
