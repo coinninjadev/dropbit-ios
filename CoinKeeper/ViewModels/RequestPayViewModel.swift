@@ -10,7 +10,7 @@ import UIKit
 
 class RequestPayViewModel: CurrencySwappableEditAmountViewModel {
 
-  let receiveAddress: String
+  var receiveAddress: String
   let qrCodeGenerator = QRCodeGenerator()
 
   init(receiveAddress: String, viewModel: CurrencySwappableEditAmountViewModel) {

@@ -150,28 +150,17 @@ final class RequestPayViewController: PresentableViewController, StoryboardIniti
 
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
-    updateViewWithViewModel()
-  }
-
-  override func viewWillDisappear(_ animated: Bool) {
-    super.viewWillDisappear(animated)
     resetViewModel()
+    updateViewWithViewModel()
   }
 
   func resetViewModel() {
     shouldHideEditAmountView = true
 
-    guard let delegate = coordinationDelegate,
-      let currentVM = self.viewModel,
-      let nextAddress = delegate.viewControllerDidRequestNextReceiveAddress(self)
-      else { return }
+    guard let nextAddress = coordinationDelegate?.viewControllerDidRequestNextReceiveAddress(self) else { return }
 
-    let newSwappableVM = CurrencySwappableEditAmountViewModel(exchangeRates: currentVM.exchangeRates,
-                                                              primaryAmount: .zero,
-                                                              currencyPair: currentVM.currencyPair)
-    let newViewModel = RequestPayViewModel(receiveAddress: nextAddress, viewModel: newSwappableVM)
-    self.viewModel = newViewModel
-    updateViewWithViewModel()
+    self.viewModel.fromAmount = .zero
+    self.viewModel.receiveAddress = nextAddress
   }
 
   func updateViewWithViewModel() {
