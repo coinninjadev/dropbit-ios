@@ -100,15 +100,10 @@ class WalletOverviewViewController: BaseViewController, StoryboardInitializable 
 
     subscribeToRateAndBalanceUpdates()
     updateRatesAndBalances()
-  }
-
-  override func viewWillAppear(_ animated: Bool) {
-    super.viewWillAppear(animated)
 
     if baseViewControllers.count >= 2 {
       pageViewController?.setViewControllers([baseViewControllers[1]], direction: .forward, animated: true, completion: nil)
     }
-
   }
 
   override func viewDidAppear(_ animated: Bool) {
