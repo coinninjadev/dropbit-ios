@@ -25,6 +25,7 @@ struct LNTransactionResult: LNResponseDecodable {
   let id: String
   let accountId: String
   let createdAt: Date
+  let updatedAt: Date?
   let expiresAt: Date?
   let status: LNTransactionStatus
   let type: LNTransactionType
@@ -32,8 +33,7 @@ struct LNTransactionResult: LNResponseDecodable {
   let value: Int
   let networkFee: Int
   let processingFee: Int
-  let addIndex: Int
-  let request: String
+  var request: String?
   var memo: String?
   var error: String?
 
@@ -42,16 +42,16 @@ struct LNTransactionResult: LNResponseDecodable {
   }
 
   static var requiredStringKeys: [KeyPath<LNTransactionResult, String>] {
-    return []
+    return [] // Nested objects are not directly validated, refer to parent object
   }
 
   static var optionalStringKeys: [WritableKeyPath<LNTransactionResult, String?>] {
-    return []
+    return [] // Nested objects are not directly validated, refer to parent object
   }
 
   enum CodingKeys: String, CodingKey {
-    case id, accountId, createdAt, expiresAt, status, type, direction, value, networkFee,
-    processingFee, addIndex, request, memo, error
+    case id, accountId, createdAt, updatedAt, expiresAt, status, type, direction, value, networkFee,
+    processingFee, request, memo, error
   }
 
   init(from decoder: Decoder) throws {
@@ -61,14 +61,14 @@ struct LNTransactionResult: LNResponseDecodable {
     id = try container.decode(String.self, forKey: .id)
     accountId = try container.decode(String.self, forKey: .accountId)
     createdAt = try container.decode(Date.self, forKey: .createdAt)
-    expiresAt = try container.decode(Date.self, forKey: .expiresAt)
+    updatedAt = try container.decodeIfPresent(Date.self, forKey: .updatedAt)
+    expiresAt = try container.decodeIfPresent(Date.self, forKey: .expiresAt)
     status = try container.decode(LNTransactionStatus.self, forKey: .status)
     type = try container.decode(LNTransactionType.self, forKey: .type)
     direction = try container.decode(LNTransactionDirection.self, forKey: .direction)
     value = try container.decodeStringAsInt(forKey: .value, typeName: typeName)
     networkFee = try container.decodeStringAsInt(forKey: .networkFee, typeName: typeName)
     processingFee = try container.decodeStringAsInt(forKey: .processingFee, typeName: typeName)
-    addIndex = try container.decodeStringAsInt(forKey: .addIndex, typeName: typeName)
     request = try container.decode(String.self, forKey: .request)
     memo = try container.decode(String.self, forKey: .memo)
     error = try container.decode(String.self, forKey: .error)
@@ -85,11 +85,11 @@ struct LNTransactionResponse: LNResponseDecodable {
   }
 
   static var requiredStringKeys: [KeyPath<LNTransactionResponse, String>] {
-    return [\.result.id, \.result.accountId, \.result.request]
+    return [\.result.id, \.result.accountId]
   }
 
   static var optionalStringKeys: [WritableKeyPath<LNTransactionResponse, String?>] {
-    return [\.result.memo, \.result.error]
+    return [\.result.memo, \.result.error, \.result.request]
   }
 
 }
