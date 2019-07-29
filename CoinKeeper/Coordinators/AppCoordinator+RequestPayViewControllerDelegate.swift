@@ -47,4 +47,9 @@ extension AppCoordinator: RequestPayViewControllerDelegate {
     return nextReceiveAddressForRequestPay()
   }
 
+  func selectedCurrencyPair() -> CurrencyPair {
+    return CurrencyPair(primary: self.currencyController.selectedCurrencyCode,
+                        fiat: self.currencyController.fiatCurrency)
+  }
+
 }

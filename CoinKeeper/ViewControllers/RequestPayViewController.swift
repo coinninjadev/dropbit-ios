@@ -11,6 +11,7 @@ import UIKit
 protocol RequestPayViewControllerDelegate: ViewControllerDismissable, CopyToClipboardMessageDisplayable, CurrencyValueDataSourceType {
   func viewControllerDidSelectSendRequest(_ viewController: UIViewController, payload: [Any])
   func viewControllerDidRequestNextReceiveAddress(_ viewController: UIViewController) -> String?
+  func selectedCurrencyPair() -> CurrencyPair
 }
 
 final class RequestPayViewController: PresentableViewController, StoryboardInitializable, CurrencySwappableAmountEditor {
@@ -157,8 +158,11 @@ final class RequestPayViewController: PresentableViewController, StoryboardIniti
   func resetViewModel() {
     shouldHideEditAmountView = true
 
-    guard let nextAddress = coordinationDelegate?.viewControllerDidRequestNextReceiveAddress(self) else { return }
+    guard let delegate = coordinationDelegate,
+      let nextAddress = delegate.viewControllerDidRequestNextReceiveAddress(self)
+      else { return }
 
+    self.viewModel.currencyPair = delegate.selectedCurrencyPair()
     self.viewModel.fromAmount = .zero
     self.viewModel.receiveAddress = nextAddress
   }
