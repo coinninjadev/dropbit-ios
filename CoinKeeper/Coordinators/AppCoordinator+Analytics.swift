@@ -55,12 +55,14 @@ extension AppCoordinator {
       return
     }
 
-    var balanceIsPositive = false
+    var balance = 0
     bgContext.performAndWait {
-      balanceIsPositive = wmgr.spendableBalance(in: bgContext) > 0
+      balance = wmgr.spendableBalance(in: bgContext)
     }
 
+    let balanceIsPositive = balance > 0
     analyticsManager.track(property: MixpanelProperty(key: .hasBTCBalance, value: balanceIsPositive ? true : false))
+    analyticsManager.track(property: MixpanelProperty(key: .relativeWalletRange, value: AnalyticsRelativeWalletRange(satoshis: balance)))
   }
 
 }

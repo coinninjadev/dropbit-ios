@@ -20,6 +20,7 @@ enum AnalyticsManagerPropertiesType: String {
   case hasSentDropBit = "Has Sent DropBit"
   case hasReceivedDropBit = "Has Received DropBit"
   case isDropBitMeEnabled = "DropBitMe Enabled"
+  case relativeWalletRange = "Relative Wallet Range"
 }
 
 enum AnalyticsManagerEventType: String {
@@ -119,6 +120,36 @@ enum AnalyticsManagerEventKey: String {
   case blockstreamInfoMessage = "BlockstreamMsg"
 
   case countryCode = "CountryCode"
+}
+
+enum AnalyticsRelativeWalletRange: String {
+  case underMilliBTC = "UnderMilliBTC"
+  case underCentiBTC = "UnderCentiBTC"
+  case underDeciBTC = "UnderDeciBTC"
+  case overDeciBTC = "OverDeciBTC"
+
+  init(satoshis: Int) {
+    if satoshis < 100_000 {
+      self = .underMilliBTC
+    } else if satoshis < 1_000_000 {
+      self = .underCentiBTC
+    } else if satoshis < 10_000_000 {
+      self = .underDeciBTC
+    } else {
+      self = .overDeciBTC
+    }
+  }
+}
+
+extension AnalyticsRelativeWalletRange: MixpanelType {
+  func isValidNestedType() -> Bool {
+    return true
+  }
+
+  func equals(rhs: MixpanelType) -> Bool {
+    guard let rhsValue = rhs as? AnalyticsRelativeWalletRange else { return false }
+    return self == rhsValue
+  }
 }
 
 struct AnalyticsEventValue {
