@@ -56,7 +56,22 @@ struct LNDecodePaymentRequestResponse: LNResponseDecodable {
   }
 
   static var sampleJSON: String {
-    return ""
+    return """
+    {
+    "num_satoshis" : "2000",
+    "destination" : "0357b3bb3fdedb369d2bdb429b6c397b207169bc8933e6f37e926e18b2f6c560f1",
+    "expiry" : "3600",
+    "fallback_addr" : "",
+    "route_hints" : [
+
+    ],
+    "description_hash" : "",
+    "cltv_expiry" : "40",
+    "description" : "Test request generated at: 2019-07-29 15:03:29 +0000",
+    "timestamp" : "1564412609",
+    "payment_hash" : "59da58f1b9ab6bb1b89659bfb5bd48a0221c40ddd2b5dcea3b25fb5843b58d9c"
+    }
+    """
   }
 
   static var requiredStringKeys: [KeyPath<LNDecodePaymentRequestResponse, String>] {
