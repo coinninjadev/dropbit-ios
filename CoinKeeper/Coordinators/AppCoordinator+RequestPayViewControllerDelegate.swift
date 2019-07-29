@@ -15,6 +15,7 @@ protocol CopyToClipboardMessageDisplayable: AnyObject {
 extension AppCoordinator: RequestPayViewControllerDelegate {
 
   func viewControllerDidSelectSendRequest(_ viewController: UIViewController, payload: [Any]) {
+    guard let requestPayVC = viewController as? RequestPayViewController else { return }
     analyticsManager.track(event: .sendRequestButtonPressed, with: nil)
     let controller = UIActivityViewController(activityItems: payload, applicationActivities: nil)
     controller.excludedActivityTypes = [
@@ -31,9 +32,11 @@ extension AppCoordinator: RequestPayViewControllerDelegate {
       .saveToCameraRoll
     ]
     controller.completionWithItemsHandler = { _, _, _, _ in
-      viewController.dismiss(animated: true, completion: nil)
+      if requestPayVC.isModal {
+        requestPayVC.dismiss(animated: true, completion: nil)
+      }
     }
-    viewController.present(controller, animated: true, completion: nil)
+    requestPayVC.present(controller, animated: true, completion: nil)
   }
 
   func viewControllerSuccessfullyCopiedToClipboard(message: String, viewController: UIViewController) {
