@@ -917,6 +917,7 @@
 		B5D834072249680600C45ABE /* SettingSwitchWithInfoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5D834052249680600C45ABE /* SettingSwitchWithInfoCell.swift */; };
 		B5D834082249680600C45ABE /* SettingSwitchWithInfoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B5D834062249680600C45ABE /* SettingSwitchWithInfoCell.xib */; };
 		B5D8340A224971E400C45ABE /* SettingsViewController+TableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5D83409224971E400C45ABE /* SettingsViewController+TableView.swift */; };
+		B5DC877A22F093D700FDDEED /* LNLedgerResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5DC877922F093D700FDDEED /* LNLedgerResponse.swift */; };
 		B5DDB0F521DE5ED200A25929 /* KeychainMigrationWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5DDB0F421DE5ED200A25929 /* KeychainMigrationWorker.swift */; };
 		B5DDB0F721DE69C100A25929 /* KeychainMigratorFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5DDB0F621DE69C100A25929 /* KeychainMigratorFactory.swift */; };
 		B5DDB0F921DE6A1100A25929 /* MigrateKeychainV1toV2.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5DDB0F821DE6A1100A25929 /* MigrateKeychainV1toV2.swift */; };
@@ -1869,6 +1870,7 @@
 		B5D834052249680600C45ABE /* SettingSwitchWithInfoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingSwitchWithInfoCell.swift; sourceTree = "<group>"; };
 		B5D834062249680600C45ABE /* SettingSwitchWithInfoCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SettingSwitchWithInfoCell.xib; sourceTree = "<group>"; };
 		B5D83409224971E400C45ABE /* SettingsViewController+TableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SettingsViewController+TableView.swift"; sourceTree = "<group>"; };
+		B5DC877922F093D700FDDEED /* LNLedgerResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LNLedgerResponse.swift; sourceTree = "<group>"; };
 		B5DDB0F421DE5ED200A25929 /* KeychainMigrationWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainMigrationWorker.swift; sourceTree = "<group>"; };
 		B5DDB0F621DE69C100A25929 /* KeychainMigratorFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainMigratorFactory.swift; sourceTree = "<group>"; };
 		B5DDB0F821DE6A1100A25929 /* MigrateKeychainV1toV2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MigrateKeychainV1toV2.swift; sourceTree = "<group>"; };
@@ -3350,9 +3352,10 @@
 			isa = PBXGroup;
 			children = (
 				B59E2CA822E9ED2A00A75AFE /* LNAccountResponse.swift */,
-				B59E2CA022E8D38900A75AFE /* LNTransactionResponse.swift */,
 				B59E2C9922E8CF4700A75AFE /* LNCreatePaymentRequestResponse.swift */,
 				B59E2CA222E8F4C000A75AFE /* LNDecodePaymentRequestResponse.swift */,
+				B5DC877922F093D700FDDEED /* LNLedgerResponse.swift */,
+				B59E2CA022E8D38900A75AFE /* LNTransactionResponse.swift */,
 			);
 			path = Lightning;
 			sourceTree = "<group>";
@@ -4462,6 +4465,7 @@
 				307DF11D2150394400260369 /* MessagesManager.swift in Sources */,
 				3B6FDAE82052DACA0091916A /* VerifyRecoveryWordsViewModel.swift in Sources */,
 				A293E35220F798920099ED69 /* TransactionHistoryEmptyView.swift in Sources */,
+				B5DC877A22F093D700FDDEED /* LNLedgerResponse.swift in Sources */,
 				B56C414821F7717C005668E3 /* ConfirmPaymentMemoView.swift in Sources */,
 				B5FAD64C20A4DC1D008EB727 /* PublicKeyDataSource.swift in Sources */,
 				3B13ED112254E24900905226 /* CurrencyController.swift in Sources */,

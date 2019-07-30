@@ -8,24 +8,6 @@
 
 import Moya
 
-struct LNLedgerResponse: LNResponseDecodable {
-
-  let ledger: [LNTransactionResult]
-
-  static var sampleJSON: String {
-    return ""
-  }
-
-  static var requiredStringKeys: [KeyPath<LNLedgerResponse, String>] {
-    return []
-  }
-
-  static var optionalStringKeys: [WritableKeyPath<LNLedgerResponse, String?>] {
-    return []
-  }
-
-}
-
 public enum LNLedgerTarget: CoinNinjaTargetType {
   typealias ResponseType = LNLedgerResponse
 
