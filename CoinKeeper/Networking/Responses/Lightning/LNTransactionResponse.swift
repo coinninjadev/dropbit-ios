@@ -23,7 +23,7 @@ enum LNTransactionDirection: String, Codable {
 struct LNTransactionResult: LNResponseDecodable {
 
   let id: String
-  let accountId: String
+  var accountId: String?
   let createdAt: Date
   let updatedAt: Date?
   let expiresAt: Date?
@@ -56,22 +56,21 @@ struct LNTransactionResult: LNResponseDecodable {
 
   init(from decoder: Decoder) throws {
     let container = try decoder.container(keyedBy: CodingKeys.self)
-    let typeName = "LNAccountResponse"
 
     id = try container.decode(String.self, forKey: .id)
-    accountId = try container.decode(String.self, forKey: .accountId)
+    accountId = try container.decodeIfPresent(String.self, forKey: .accountId)
     createdAt = try container.decode(Date.self, forKey: .createdAt)
     updatedAt = try container.decodeIfPresent(Date.self, forKey: .updatedAt)
     expiresAt = try container.decodeIfPresent(Date.self, forKey: .expiresAt)
     status = try container.decode(LNTransactionStatus.self, forKey: .status)
     type = try container.decode(LNTransactionType.self, forKey: .type)
     direction = try container.decode(LNTransactionDirection.self, forKey: .direction)
-    value = try container.decodeStringAsInt(forKey: .value, typeName: typeName)
-    networkFee = try container.decodeStringAsInt(forKey: .networkFee, typeName: typeName)
-    processingFee = try container.decodeStringAsInt(forKey: .processingFee, typeName: typeName)
-    request = try container.decode(String.self, forKey: .request)
-    memo = try container.decode(String.self, forKey: .memo)
-    error = try container.decode(String.self, forKey: .error)
+    value = try container.decode(Int.self, forKey: .value)
+    networkFee = try container.decode(Int.self, forKey: .value)
+    processingFee = try container.decode(Int.self, forKey: .value)
+    request = try container.decode(String.self, forKey: .request).asNilIfEmpty()
+    memo = try container.decode(String.self, forKey: .memo).asNilIfEmpty()
+    error = try container.decode(String.self, forKey: .error).asNilIfEmpty()
   }
 
 }
@@ -110,11 +109,11 @@ struct LNTransactionResponse: LNResponseDecodable {
   }
 
   static var requiredStringKeys: [KeyPath<LNTransactionResponse, String>] {
-    return [\.result.id, \.result.accountId]
+    return [\.result.id]
   }
 
   static var optionalStringKeys: [WritableKeyPath<LNTransactionResponse, String?>] {
-    return [\.result.memo, \.result.error, \.result.request]
+    return [\.result.memo, \.result.error, \.result.request, \.result.accountId]
   }
 
 }

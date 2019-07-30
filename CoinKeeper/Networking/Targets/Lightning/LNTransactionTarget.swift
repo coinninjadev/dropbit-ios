@@ -11,36 +11,12 @@ import Moya
 public struct LNPayBody: Encodable {
   let request: String
   let value: Int
-
-  private enum CodingKeys: String, CodingKey {
-    case request, value
-  }
-
-  /// Encode Int keys as String
-  public func encode(to encoder: Encoder) throws {
-    var container = encoder.container(keyedBy: CodingKeys.self)
-    try container.encode(request, forKey: .request)
-    try container.encode(String(value), forKey: .value)
-  }
 }
 
 public struct LNWithdrawBody: Encodable {
   let address: String
   let value: Int
   let blocks: Int
-
-  private enum CodingKeys: String, CodingKey {
-    case address, value, blocks
-  }
-
-  /// Encode Int keys as String
-  public func encode(to encoder: Encoder) throws {
-    var container = encoder.container(keyedBy: CodingKeys.self)
-    try container.encode(address, forKey: .address)
-    try container.encode(String(value), forKey: .value)
-    try container.encode(String(blocks), forKey: .blocks)
-  }
-
 }
 
 public enum LNTransactionTarget: CoinNinjaTargetType {
