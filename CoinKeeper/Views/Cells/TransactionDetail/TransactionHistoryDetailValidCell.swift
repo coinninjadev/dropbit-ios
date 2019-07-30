@@ -17,7 +17,7 @@ enum TransactionDetailAction: Int {
   var buttonTitle: String? {
     switch self {
     case .cancelInvitation:  return "CANCEL DROPBIT"
-    case .seeDetails:  return "DETAILS"
+    case .seeDetails:  return "MORE DETAILS"
     }
   }
 }
