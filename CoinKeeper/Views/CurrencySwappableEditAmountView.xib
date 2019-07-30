@@ -23,10 +23,10 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="S2T-ff-jLn">
-                    <rect key="frame" x="13" y="43.5" width="32" height="32"/>
+                    <rect key="frame" x="4" y="34.5" width="50" height="50"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="32" id="LR6-Ym-ajW"/>
-                        <constraint firstAttribute="height" constant="32" id="h2E-Fe-7jS"/>
+                        <constraint firstAttribute="width" constant="50" id="LR6-Ym-ajW"/>
+                        <constraint firstAttribute="height" constant="50" id="h2E-Fe-7jS"/>
                     </constraints>
                     <state key="normal" image="toggle"/>
                     <connections>
@@ -34,10 +34,10 @@
                     </connections>
                 </button>
                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="WTv-II-6UT">
-                    <rect key="frame" x="53" y="23" width="308" height="73.5"/>
+                    <rect key="frame" x="62" y="23" width="290" height="73.5"/>
                     <subviews>
                         <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Amount" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ArV-J0-8Ul" customClass="LimitEditTextField" customModule="DropBit" customModuleProvider="target">
-                            <rect key="frame" x="69" y="0.0" width="170" height="45"/>
+                            <rect key="frame" x="60" y="0.0" width="170" height="45"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="170" id="NZi-oq-le6"/>
                                 <constraint firstAttribute="height" constant="45" id="cmS-hG-f5K"/>
@@ -46,7 +46,7 @@
                             <textInputTraits key="textInputTraits"/>
                         </textField>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" text="Secondary Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GcQ-37-OWH">
-                            <rect key="frame" x="69" y="53" width="170" height="20.5"/>
+                            <rect key="frame" x="60" y="53" width="170" height="20.5"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="20.5" id="CmE-cw-nwd"/>
                                 <constraint firstAttribute="width" constant="170" id="L9d-iZ-U5z"/>
@@ -64,7 +64,7 @@
                 <constraint firstItem="S2T-ff-jLn" firstAttribute="centerY" secondItem="OL0-9v-0qc" secondAttribute="centerY" id="NiW-np-spP"/>
                 <constraint firstItem="WTv-II-6UT" firstAttribute="leading" secondItem="S2T-ff-jLn" secondAttribute="trailing" constant="8" id="S9p-jz-yAh"/>
                 <constraint firstItem="WTv-II-6UT" firstAttribute="centerX" secondItem="OL0-9v-0qc" secondAttribute="centerX" id="ann-vf-jip"/>
-                <constraint firstItem="S2T-ff-jLn" firstAttribute="leading" secondItem="TsJ-cA-FOJ" secondAttribute="leading" constant="13" id="dFa-n4-qrr"/>
+                <constraint firstItem="S2T-ff-jLn" firstAttribute="leading" secondItem="TsJ-cA-FOJ" secondAttribute="leading" constant="4" id="dFa-n4-qrr"/>
             </constraints>
             <nil key="simulatedTopBarMetrics"/>
             <nil key="simulatedBottomBarMetrics"/>
