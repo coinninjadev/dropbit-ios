@@ -22,6 +22,7 @@ protocol TransactionHistoryDetailCellDisplayable {
   var bitcoinAddress: String? { get }
   var amountLabels: DetailCellAmountLabels { get }
   var memoConfig: DetailCellMemoConfig? { get }
+  var canAddMemo: Bool { get }
   var displayDate: String { get }
   var actionButtonConfig: DetailCellActionButtonConfig? { get }
 }

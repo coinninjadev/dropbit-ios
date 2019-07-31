@@ -20,33 +20,13 @@ protocol TransactionHistoryDetailCellViewModelType: TransactionHistoryDetailCell
 
 extension TransactionHistoryDetailCellViewModelType {
 
-  var isValidTransaction: Bool {
-    return true
-  }
-
-  var isLightningTransfer: Bool {
-    return false
-  }
-
-  var statusTextColor: UIColor {
-    return .lightGrayText
-  }
-
-  var shouldShowStatusPill: Bool {
-    return false
-  }
+  var isValidTransaction: Bool { return true }
+  var isLightningTransfer: Bool { return false }
+  var statusTextColor: UIColor { return .lightGrayText }
 
   var canAddMemo: Bool {
     if isLightningTransfer { return false }
     return memoConfig == nil
-  }
-
-  var bitcoinAddressURL: URL? {
-    return nil
-  }
-
-  var warningMessage: String? {
-    return nil
   }
 
 }
