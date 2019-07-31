@@ -9,15 +9,20 @@
 import UIKit
 import JKSteppedProgressBar
 
-/// Raw value is used as tag on bottom button
-enum TransactionDetailAction: Int {
-  case seeDetails = 0 //this matches the default tag value
+enum TransactionDetailAction {
+  case details(URL)
+  case detailsPopover
   case cancelInvitation
+  case removeInvoice
 
-  var buttonTitle: String? {
+  var buttonTitle: String {
     switch self {
-    case .cancelInvitation:  return "CANCEL DROPBIT"
-    case .seeDetails:  return "MORE DETAILS"
+    case .details, .detailsPopover:
+      return "DETAILS"
+    case .cancelInvitation:
+      return "CANCEL DROPBIT"
+    case .removeInvoice:
+      return "REMOVE FROM TRANSACTION LIST"
     }
   }
 }
