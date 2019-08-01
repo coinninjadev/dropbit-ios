@@ -83,8 +83,9 @@ class MockPersistenceDatabaseManager: PersistenceDatabaseType {
 
   func persistUserId(_ id: String, in context: NSManagedObjectContext) { }
 
+  var walletIdToReturn: String?
   func walletId(in context: NSManagedObjectContext) -> String? {
-    return nil
+    return walletIdToReturn
   }
 
   func userId(in context: NSManagedObjectContext) -> String? {

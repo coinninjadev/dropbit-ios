@@ -290,6 +290,11 @@ class AppCoordinator: CoordinatorType {
       }
     }
 
+    if uiTestArguments.contains(.resetForICloudRestore) {
+      persistenceManager.userDefaultsManager.deleteAll()
+      persistenceManager.keychainManager.deleteAll()
+    }
+
     if uiTestArguments.contains(.skipGlobalMessageDisplay) {
       messageManager.setShouldShowGlobalMessaging(false)
     }

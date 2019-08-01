@@ -48,6 +48,7 @@
 		30E96A312179FE2A008079B8 /* AppCoordinator+VerificationStatusViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30E96A302179FE2A008079B8 /* AppCoordinator+VerificationStatusViewControllerDelegate.swift */; };
 		30E96A35217A1207008079B8 /* VerificationStatusViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30E96A34217A1207008079B8 /* VerificationStatusViewControllerTests.swift */; };
 		30F0B64B2139D6C300BF7DBB /* CoinNinjaUrlFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30F0B64A2139D6C300BF7DBB /* CoinNinjaUrlFactory.swift */; };
+		314E6F634E6D3E6B128ED0B0 /* libPods-DropBitUIDatabaseTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D7CC913A206726EBA2533094 /* libPods-DropBitUIDatabaseTests.a */; };
 		3B00C265220B1FEF001FC46B /* MockConnectionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B00C264220B1FEF001FC46B /* MockConnectionManager.swift */; };
 		3B00C269220DC78B001FC46B /* DeviceEndpoint.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B00C268220DC78B001FC46B /* DeviceEndpoint.generated.swift */; };
 		3B00C26B220E07C0001FC46B /* GeneratedTestWords.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B00C26A220E07C0001FC46B /* GeneratedTestWords.generated.swift */; };
@@ -155,6 +156,32 @@
 		3B4A9F2F21BEF55F0009CDF6 /* DatabaseMigratorFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B4A9F2E21BEF55F0009CDF6 /* DatabaseMigratorFactory.swift */; };
 		3B4B39F0203773C5007B7CC8 /* PlaceholderViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3B4B39EF203773C5007B7CC8 /* PlaceholderViewController.storyboard */; };
 		3B4B39F2203773E1007B7CC8 /* PlaceholderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B4B39F1203773E1007B7CC8 /* PlaceholderViewController.swift */; };
+		3B4B928522F353A20018285C /* com.coinninja.CoinKeeper.beta 2019-08-01 11:59.50.313.xcappdata in Resources */ = {isa = PBXBuildFile; fileRef = 3B4B928422F353A20018285C /* com.coinninja.CoinKeeper.beta 2019-08-01 11:59.50.313.xcappdata */; };
+		3B4B928622F353D20018285C /* UITestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51FB0E72175221A005CBAD6 /* UITestCase.swift */; };
+		3B4B928722F354570018285C /* XCUIApplication+UITestArgument.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5D1B2D6219384FB006B2BC7 /* XCUIApplication+UITestArgument.swift */; };
+		3B4B928822F3545A0018285C /* XCUIApplication+WaitAndAssert.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50BB1AD2175126B0038B5DD /* XCUIApplication+WaitAndAssert.swift */; };
+		3B4B928922F3545D0018285C /* AccessibleElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = B58AFF382194E828001BE563 /* AccessibleElement.swift */; };
+		3B4B928A22F354630018285C /* UITestArgument.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5D1B2CF2193469C006B2BC7 /* UITestArgument.swift */; };
+		3B4B928B22F354680018285C /* UITestDefaultsKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = B58AFF2D21948891001BE563 /* UITestDefaultsKey.swift */; };
+		3B4B928C22F3546B0018285C /* Springboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5D1B2D42193700D006B2BC7 /* Springboard.swift */; };
+		3B4B928D22F3546E0018285C /* UITestHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B3779F9219E1E9A00F79683 /* UITestHelpers.swift */; };
+		3B4B928E22F354850018285C /* UITestPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B58AFF302194DAF2001BE563 /* UITestPage.swift */; };
+		3B4B928F22F354850018285C /* MemoEntryPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B1BE85F21B57D0A00CCFE29 /* MemoEntryPage.swift */; };
+		3B4B929022F354850018285C /* DeviceVerificationPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51F1ED8219A286900C54B73 /* DeviceVerificationPage.swift */; };
+		3B4B929122F354850018285C /* PinCreationPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51F1ED02199F7CB00C54B73 /* PinCreationPage.swift */; };
+		3B4B929222F354850018285C /* PushInfoPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51F1ED6219A17AA00C54B73 /* PushInfoPage.swift */; };
+		3B4B929322F354850018285C /* RequestPayPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51F1EDC219A29A700C54B73 /* RequestPayPage.swift */; };
+		3B4B929422F354850018285C /* RestoreWalletPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B58AFF322194DC24001BE563 /* RestoreWalletPage.swift */; };
+		3B4B929522F354850018285C /* StartPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51F1ECE2199F62100C54B73 /* StartPage.swift */; };
+		3B4B929622F354850018285C /* SuccessFailPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B58AFF352194E366001BE563 /* SuccessFailPage.swift */; };
+		3B4B929722F354850018285C /* RecoveryWordsIntroPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B3779F3219C9F4800F79683 /* RecoveryWordsIntroPage.swift */; };
+		3B4B929822F354850018285C /* SwiftMessagesBannerPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B3779F5219CA79100F79683 /* SwiftMessagesBannerPage.swift */; };
+		3B4B929922F354850018285C /* PinEntryPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B3779F7219DB6C800F79683 /* PinEntryPage.swift */; };
+		3B4B929A22F354850018285C /* BackupRecoveryWordsCellPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B3779FB219E20AD00F79683 /* BackupRecoveryWordsCellPage.swift */; };
+		3B4B929B22F354850018285C /* VerifyRecoveryWordsCellPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B3779FD219EE7D900F79683 /* VerifyRecoveryWordsCellPage.swift */; };
+		3B4B929C22F354850018285C /* SendPaymentPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B1BE86321B5819500CCFE29 /* SendPaymentPage.swift */; };
+		3B4B929D22F354850018285C /* TransactionHistoryPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 304BAED121FA1F9700065D6D /* TransactionHistoryPage.swift */; };
+		3B4B929E22F354850018285C /* WalletOverviewPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = A27DFDF122DCDCD200C2824C /* WalletOverviewPage.swift */; };
 		3B5052B12045FAD7000C739F /* BackupRecoveryWordsViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3B5052B02045FAD7000C739F /* BackupRecoveryWordsViewController.storyboard */; };
 		3B5052B32045FAFA000C739F /* BackupRecoveryWordsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5052B22045FAFA000C739F /* BackupRecoveryWordsViewController.swift */; };
 		3B5052B52045FB5C000C739F /* BackupRecoveryWordsViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5052B42045FB5C000C739F /* BackupRecoveryWordsViewControllerTests.swift */; };
@@ -187,6 +214,7 @@
 		3B6749E220AA5CA40032FE02 /* CKMVin+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B6749DE20AA5CA40032FE02 /* CKMVin+CoreDataProperties.swift */; };
 		3B6749E320AA5CA40032FE02 /* CKMVout+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B6749DF20AA5CA40032FE02 /* CKMVout+CoreDataClass.swift */; };
 		3B6749E420AA5CA40032FE02 /* CKMVout+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B6749E020AA5CA40032FE02 /* CKMVout+CoreDataProperties.swift */; };
+		3B6924AC22F33E8B00F4A7AF /* DropBitUIDatabaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B6924AB22F33E8B00F4A7AF /* DropBitUIDatabaseTests.swift */; };
 		3B695C2021CA9F9B007D0741 /* OperationQueueType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B695C1F21CA9F9B007D0741 /* OperationQueueType.swift */; };
 		3B695C2421CAC872007D0741 /* AppCoordinator+SettingsViewControllerDelegateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B695C2321CAC872007D0741 /* AppCoordinator+SettingsViewControllerDelegateTests.swift */; };
 		3B695C2721CAC99C007D0741 /* MockOperationQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B695C2521CAC993007D0741 /* MockOperationQueue.swift */; };
@@ -211,6 +239,8 @@
 		3B731D382253D97A0044B4F8 /* UIView+Fade.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B731D372253D97A0044B4F8 /* UIView+Fade.swift */; };
 		3B73B2752281E33900F4C551 /* TwitterOAuth.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B73B2742281E33900F4C551 /* TwitterOAuth.generated.swift */; };
 		3B73B2782281F78700F4C551 /* NetworkManager+Twitter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B73B2772281F78700F4C551 /* NetworkManager+Twitter.swift */; };
+		3B7A5D7C22F35A42003FFF5C /* Int+Times.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B825633F1FE7A9EA9E7A2AD /* Int+Times.swift */; };
+		3B7A5D7D22F35A62003FFF5C /* GeneratedTestWords.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B00C26A220E07C0001FC46B /* GeneratedTestWords.generated.swift */; };
 		3B7B54432201E54100CB89FE /* KeyDerivation.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B7B54422201E54100CB89FE /* KeyDerivation.generated.swift */; };
 		3B7D1951229F167600C07FBE /* SettingSwitchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B7D194F229F167600C07FBE /* SettingSwitchCell.swift */; };
 		3B7D1952229F167600C07FBE /* SettingSwitchCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3B7D1950229F167600C07FBE /* SettingSwitchCell.xib */; };
@@ -911,6 +941,13 @@
 			remoteGlobalIDString = 3B124E0B2020EB2B00431E2E;
 			remoteInfo = CoinKeeper;
 		};
+		3B6924AE22F33E8B00F4A7AF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 3B124E042020EB2B00431E2E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 3B124E0B2020EB2B00431E2E;
+			remoteInfo = DropBit;
+		};
 		B50BB1A5217512400038B5DD /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 3B124E042020EB2B00431E2E /* Project object */;
@@ -1073,6 +1110,7 @@
 		3B4A9F2E21BEF55F0009CDF6 /* DatabaseMigratorFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseMigratorFactory.swift; sourceTree = "<group>"; };
 		3B4B39EF203773C5007B7CC8 /* PlaceholderViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = PlaceholderViewController.storyboard; sourceTree = "<group>"; };
 		3B4B39F1203773E1007B7CC8 /* PlaceholderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceholderViewController.swift; sourceTree = "<group>"; };
+		3B4B928422F353A20018285C /* com.coinninja.CoinKeeper.beta 2019-08-01 11:59.50.313.xcappdata */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = "com.coinninja.CoinKeeper.beta 2019-08-01 11:59.50.313.xcappdata"; sourceTree = "<group>"; };
 		3B5052B02045FAD7000C739F /* BackupRecoveryWordsViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = BackupRecoveryWordsViewController.storyboard; sourceTree = "<group>"; };
 		3B5052B22045FAFA000C739F /* BackupRecoveryWordsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupRecoveryWordsViewController.swift; sourceTree = "<group>"; };
 		3B5052B42045FB5C000C739F /* BackupRecoveryWordsViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupRecoveryWordsViewControllerTests.swift; sourceTree = "<group>"; };
@@ -1105,6 +1143,9 @@
 		3B6749DE20AA5CA40032FE02 /* CKMVin+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CKMVin+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		3B6749DF20AA5CA40032FE02 /* CKMVout+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CKMVout+CoreDataClass.swift"; sourceTree = "<group>"; };
 		3B6749E020AA5CA40032FE02 /* CKMVout+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CKMVout+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		3B6924A922F33E8B00F4A7AF /* DropBitUIDatabaseTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DropBitUIDatabaseTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		3B6924AB22F33E8B00F4A7AF /* DropBitUIDatabaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropBitUIDatabaseTests.swift; sourceTree = "<group>"; };
+		3B6924AD22F33E8B00F4A7AF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3B695C1F21CA9F9B007D0741 /* OperationQueueType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OperationQueueType.swift; sourceTree = "<group>"; };
 		3B695C2321CAC872007D0741 /* AppCoordinator+SettingsViewControllerDelegateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppCoordinator+SettingsViewControllerDelegateTests.swift"; sourceTree = "<group>"; };
 		3B695C2521CAC993007D0741 /* MockOperationQueue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockOperationQueue.swift; sourceTree = "<group>"; };
@@ -1339,6 +1380,7 @@
 		6B825E5230DBCE1D556CE554 /* TwitterUser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TwitterUser.swift; sourceTree = "<group>"; };
 		6B825E8DEB7E0DE12824DE21 /* MockBiometricAuthenticationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockBiometricAuthenticationManager.swift; sourceTree = "<group>"; };
 		717A5E84F3D41B471A14E2FE /* Pods-DropBitUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DropBitUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-DropBitUITests/Pods-DropBitUITests.release.xcconfig"; sourceTree = "<group>"; };
+		886D626BB14B12C556F37270 /* Pods-DropBitUIDatabaseTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DropBitUIDatabaseTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-DropBitUIDatabaseTests/Pods-DropBitUIDatabaseTests.release.xcconfig"; sourceTree = "<group>"; };
 		9863E74B2C6B87BB84EF2EF4 /* Pods-DropBit.beta.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DropBit.beta.xcconfig"; path = "Pods/Target Support Files/Pods-DropBit/Pods-DropBit.beta.xcconfig"; sourceTree = "<group>"; };
 		99F7EE7CDF08AEB16B9147D2 /* Pods-DropBitTests.beta.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DropBitTests.beta.xcconfig"; path = "Pods/Target Support Files/Pods-DropBitTests/Pods-DropBitTests.beta.xcconfig"; sourceTree = "<group>"; };
 		A200574620B5ED52007074D9 /* SettingCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingCell.swift; sourceTree = "<group>"; };
@@ -1437,6 +1479,7 @@
 		A2E52D8720BE3A3F00424E6A /* Data+HexString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data+HexString.swift"; sourceTree = "<group>"; };
 		A2E89207210A3BC10085631A /* CKPhoneNumberFormatterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CKPhoneNumberFormatterTests.swift; sourceTree = "<group>"; };
 		A2FDC54022D37BFA004B0EDD /* Charts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Charts.framework; path = Carthage/Build/iOS/Charts.framework; sourceTree = "<group>"; };
+		AF53DB128FE9F7956F483AE6 /* Pods-DropBitUIDatabaseTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DropBitUIDatabaseTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-DropBitUIDatabaseTests/Pods-DropBitUIDatabaseTests.debug.xcconfig"; sourceTree = "<group>"; };
 		B501022121F2325B00D42A71 /* UIColor+Init.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Init.swift"; sourceTree = "<group>"; };
 		B50384C520B304780091AB37 /* CKNetworkError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CKNetworkError.swift; sourceTree = "<group>"; };
 		B5054142207D00270059C8F9 /* CKMAddress+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CKMAddress+CoreDataClass.swift"; sourceTree = "<group>"; };
@@ -1818,7 +1861,9 @@
 		B8DDF3250BC9828CFF19A0B4 /* Pods-DropBitTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DropBitTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-DropBitTests/Pods-DropBitTests.release.xcconfig"; sourceTree = "<group>"; };
 		C13118F6331F4715949566BE /* Pods-DropBitUITests.beta.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DropBitUITests.beta.xcconfig"; path = "Pods/Target Support Files/Pods-DropBitUITests/Pods-DropBitUITests.beta.xcconfig"; sourceTree = "<group>"; };
 		C84B0D140F3ED5CBE884E39D /* libPods-DropBitUITests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-DropBitUITests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		CF27EAFF4379AF7E1A25B03B /* Pods-DropBitUIDatabaseTests.beta.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DropBitUIDatabaseTests.beta.xcconfig"; path = "Pods/Target Support Files/Pods-DropBitUIDatabaseTests/Pods-DropBitUIDatabaseTests.beta.xcconfig"; sourceTree = "<group>"; };
 		D516F016B0912443C4032568 /* Pods-DropBitUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DropBitUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-DropBitUITests/Pods-DropBitUITests.debug.xcconfig"; sourceTree = "<group>"; };
+		D7CC913A206726EBA2533094 /* libPods-DropBitUIDatabaseTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-DropBitUIDatabaseTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		DDE0C7232D822E852BFFB187 /* Pods-DropBit.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DropBit.release.xcconfig"; path = "Pods/Target Support Files/Pods-DropBit/Pods-DropBit.release.xcconfig"; sourceTree = "<group>"; };
 		E20946923A0E7F2A5AB722BB /* Pods_DropBitTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DropBitTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E27D7ED4AE8355A37DE07764 /* Pods-DropBitTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DropBitTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-DropBitTests/Pods-DropBitTests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -1848,6 +1893,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		3B6924A622F33E8B00F4A7AF /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				314E6F634E6D3E6B128ED0B0 /* libPods-DropBitUIDatabaseTests.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		B50BB19D217512400038B5DD /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -1865,6 +1918,7 @@
 				3B124E0E2020EB2B00431E2E /* CoinKeeper */,
 				3B124E232020EB2B00431E2E /* CoinKeeperTests */,
 				B586F4FF2175084000682D17 /* DropBitUITests */,
+				3B6924AA22F33E8B00F4A7AF /* DropBitUIDatabaseTests */,
 				3B124E0D2020EB2B00431E2E /* Products */,
 				3B124E2F2020F1E500431E2E /* Frameworks */,
 				C598778409B817E98A66EE95 /* Pods */,
@@ -1877,6 +1931,7 @@
 				3B124E0C2020EB2B00431E2E /* DropBit.app */,
 				3B124E202020EB2B00431E2E /* DropBitTests.xctest */,
 				B50BB1A0217512400038B5DD /* DropBitUITests.xctest */,
+				3B6924A922F33E8B00F4A7AF /* DropBitUIDatabaseTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1956,6 +2011,7 @@
 				1737718592249CB505AF79DB /* Pods_DropBit.framework */,
 				E20946923A0E7F2A5AB722BB /* Pods_DropBitTests.framework */,
 				C84B0D140F3ED5CBE884E39D /* libPods-DropBitUITests.a */,
+				D7CC913A206726EBA2533094 /* libPods-DropBitUIDatabaseTests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -2231,6 +2287,16 @@
 				3BCC3BAE2295CBB100B8FB66 /* SharedPayloadManager.swift */,
 			);
 			path = Persistence;
+			sourceTree = "<group>";
+		};
+		3B6924AA22F33E8B00F4A7AF /* DropBitUIDatabaseTests */ = {
+			isa = PBXGroup;
+			children = (
+				3B4B928422F353A20018285C /* com.coinninja.CoinKeeper.beta 2019-08-01 11:59.50.313.xcappdata */,
+				3B6924AB22F33E8B00F4A7AF /* DropBitUIDatabaseTests.swift */,
+				3B6924AD22F33E8B00F4A7AF /* Info.plist */,
+			);
+			path = DropBitUIDatabaseTests;
 			sourceTree = "<group>";
 		};
 		3B6E4D57206E533D00D9CFFA /* Autogenerated */ = {
@@ -3357,6 +3423,9 @@
 				D516F016B0912443C4032568 /* Pods-DropBitUITests.debug.xcconfig */,
 				717A5E84F3D41B471A14E2FE /* Pods-DropBitUITests.release.xcconfig */,
 				C13118F6331F4715949566BE /* Pods-DropBitUITests.beta.xcconfig */,
+				AF53DB128FE9F7956F483AE6 /* Pods-DropBitUIDatabaseTests.debug.xcconfig */,
+				886D626BB14B12C556F37270 /* Pods-DropBitUIDatabaseTests.release.xcconfig */,
+				CF27EAFF4379AF7E1A25B03B /* Pods-DropBitUIDatabaseTests.beta.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -3405,6 +3474,26 @@
 			productReference = 3B124E202020EB2B00431E2E /* DropBitTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
+		3B6924A822F33E8B00F4A7AF /* DropBitUIDatabaseTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3B6924B322F33E8B00F4A7AF /* Build configuration list for PBXNativeTarget "DropBitUIDatabaseTests" */;
+			buildPhases = (
+				B51AA23D7C5F88B87304C701 /* [CP] Check Pods Manifest.lock */,
+				3B6924A522F33E8B00F4A7AF /* Sources */,
+				3B6924A622F33E8B00F4A7AF /* Frameworks */,
+				3B6924A722F33E8B00F4A7AF /* Resources */,
+				2585159DCE952FBFB127CD36 /* [CP] Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				3B6924AF22F33E8B00F4A7AF /* PBXTargetDependency */,
+			);
+			name = DropBitUIDatabaseTests;
+			productName = DropBitUIDatabaseTests;
+			productReference = 3B6924A922F33E8B00F4A7AF /* DropBitUIDatabaseTests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
 		B50BB19F217512400038B5DD /* DropBitUITests */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = B50BB1A7217512400038B5DD /* Build configuration list for PBXNativeTarget "DropBitUITests" */;
@@ -3431,7 +3520,7 @@
 		3B124E042020EB2B00431E2E /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 1000;
+				LastSwiftUpdateCheck = 1030;
 				LastUpgradeCheck = 1000;
 				ORGANIZATIONNAME = "Coin Ninja, LLC";
 				TargetAttributes = {
@@ -3454,6 +3543,11 @@
 					3B124E1F2020EB2B00431E2E = {
 						CreatedOnToolsVersion = 9.2;
 						LastSwiftMigration = 1020;
+						ProvisioningStyle = Automatic;
+						TestTargetID = 3B124E0B2020EB2B00431E2E;
+					};
+					3B6924A822F33E8B00F4A7AF = {
+						CreatedOnToolsVersion = 10.3;
 						ProvisioningStyle = Automatic;
 						TestTargetID = 3B124E0B2020EB2B00431E2E;
 					};
@@ -3481,6 +3575,7 @@
 				3B124E0B2020EB2B00431E2E /* DropBit */,
 				3B124E1F2020EB2B00431E2E /* DropBitTests */,
 				B50BB19F217512400038B5DD /* DropBitUITests */,
+				3B6924A822F33E8B00F4A7AF /* DropBitUIDatabaseTests */,
 			);
 		};
 /* End PBXProject section */
@@ -3603,6 +3698,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		3B6924A722F33E8B00F4A7AF /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3B4B928522F353A20018285C /* com.coinninja.CoinKeeper.beta 2019-08-01 11:59.50.313.xcappdata in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		B50BB19E217512400038B5DD /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -3675,6 +3778,26 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-DropBit/Pods-DropBit-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		2585159DCE952FBFB127CD36 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-DropBitUIDatabaseTests/Pods-DropBitUIDatabaseTests-resources.sh",
+				"${PODS_ROOT}/PhoneNumberKit/PhoneNumberKit/Resources/PhoneNumberMetadata.json",
+				"${PODS_ROOT}/SVProgressHUD/SVProgressHUD/SVProgressHUD.bundle",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/PhoneNumberMetadata.json",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/SVProgressHUD.bundle",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-DropBitUIDatabaseTests/Pods-DropBitUIDatabaseTests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		320A01682BB6A2F623491CA5 /* [CP] Check Pods Manifest.lock */ = {
@@ -3797,6 +3920,28 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-DropBitUITests/Pods-DropBitUITests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		B51AA23D7C5F88B87304C701 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-DropBitUIDatabaseTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -4558,6 +4703,41 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		3B6924A522F33E8B00F4A7AF /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3B4B929622F354850018285C /* SuccessFailPage.swift in Sources */,
+				3B4B929D22F354850018285C /* TransactionHistoryPage.swift in Sources */,
+				3B4B929322F354850018285C /* RequestPayPage.swift in Sources */,
+				3B4B928E22F354850018285C /* UITestPage.swift in Sources */,
+				3B4B928A22F354630018285C /* UITestArgument.swift in Sources */,
+				3B4B928822F3545A0018285C /* XCUIApplication+WaitAndAssert.swift in Sources */,
+				3B4B929022F354850018285C /* DeviceVerificationPage.swift in Sources */,
+				3B6924AC22F33E8B00F4A7AF /* DropBitUIDatabaseTests.swift in Sources */,
+				3B4B929522F354850018285C /* StartPage.swift in Sources */,
+				3B4B928F22F354850018285C /* MemoEntryPage.swift in Sources */,
+				3B4B929222F354850018285C /* PushInfoPage.swift in Sources */,
+				3B4B929722F354850018285C /* RecoveryWordsIntroPage.swift in Sources */,
+				3B4B929A22F354850018285C /* BackupRecoveryWordsCellPage.swift in Sources */,
+				3B4B928722F354570018285C /* XCUIApplication+UITestArgument.swift in Sources */,
+				3B4B929B22F354850018285C /* VerifyRecoveryWordsCellPage.swift in Sources */,
+				3B4B929822F354850018285C /* SwiftMessagesBannerPage.swift in Sources */,
+				3B7A5D7D22F35A62003FFF5C /* GeneratedTestWords.generated.swift in Sources */,
+				3B4B929122F354850018285C /* PinCreationPage.swift in Sources */,
+				3B4B928622F353D20018285C /* UITestCase.swift in Sources */,
+				3B4B928B22F354680018285C /* UITestDefaultsKey.swift in Sources */,
+				3B4B929422F354850018285C /* RestoreWalletPage.swift in Sources */,
+				3B4B929922F354850018285C /* PinEntryPage.swift in Sources */,
+				3B7A5D7C22F35A42003FFF5C /* Int+Times.swift in Sources */,
+				3B4B928922F3545D0018285C /* AccessibleElement.swift in Sources */,
+				3B4B929E22F354850018285C /* WalletOverviewPage.swift in Sources */,
+				3B4B929C22F354850018285C /* SendPaymentPage.swift in Sources */,
+				3B4B928D22F3546E0018285C /* UITestHelpers.swift in Sources */,
+				3B4B928C22F3546B0018285C /* Springboard.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		B50BB19C217512400038B5DD /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -4612,6 +4792,11 @@
 			isa = PBXTargetDependency;
 			target = 3B124E0B2020EB2B00431E2E /* DropBit */;
 			targetProxy = 3B124E212020EB2B00431E2E /* PBXContainerItemProxy */;
+		};
+		3B6924AF22F33E8B00F4A7AF /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 3B124E0B2020EB2B00431E2E /* DropBit */;
+			targetProxy = 3B6924AE22F33E8B00F4A7AF /* PBXContainerItemProxy */;
 		};
 		B50BB1A6217512400038B5DD /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -4967,6 +5152,67 @@
 			};
 			name = Beta;
 		};
+		3B6924B022F33E8B00F4A7AF /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = AF53DB128FE9F7956F483AE6 /* Pods-DropBitUIDatabaseTests.debug.xcconfig */;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = GV9ZP4A7U6;
+				INFOPLIST_FILE = DropBitUIDatabaseTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.coinninja.DropBitUIDatabaseTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "694ecd33-d17f-4e96-a9db-f8bfc8a03853";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = DropBit;
+			};
+			name = Debug;
+		};
+		3B6924B122F33E8B00F4A7AF /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 886D626BB14B12C556F37270 /* Pods-DropBitUIDatabaseTests.release.xcconfig */;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = GV9ZP4A7U6;
+				INFOPLIST_FILE = DropBitUIDatabaseTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.coinninja.DropBitUIDatabaseTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "694ecd33-d17f-4e96-a9db-f8bfc8a03853";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = DropBit;
+			};
+			name = Release;
+		};
+		3B6924B222F33E8B00F4A7AF /* Beta */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = CF27EAFF4379AF7E1A25B03B /* Pods-DropBitUIDatabaseTests.beta.xcconfig */;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = GV9ZP4A7U6;
+				INFOPLIST_FILE = DropBitUIDatabaseTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.coinninja.DropBitUIDatabaseTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "694ecd33-d17f-4e96-a9db-f8bfc8a03853";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = DropBit;
+			};
+			name = Beta;
+		};
 		B50BB1A8217512400038B5DD /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = D516F016B0912443C4032568 /* Pods-DropBitUITests.debug.xcconfig */;
@@ -5103,6 +5349,16 @@
 				3B124E2D2020EB2B00431E2E /* Debug */,
 				3B124E2E2020EB2B00431E2E /* Release */,
 				3B2A13E7212ADB5200B41D5C /* Beta */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		3B6924B322F33E8B00F4A7AF /* Build configuration list for PBXNativeTarget "DropBitUIDatabaseTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3B6924B022F33E8B00F4A7AF /* Debug */,
+				3B6924B122F33E8B00F4A7AF /* Release */,
+				3B6924B222F33E8B00F4A7AF /* Beta */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
