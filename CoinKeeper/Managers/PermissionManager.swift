@@ -30,13 +30,15 @@ class PermissionManager: PermissionManagerType {
 
   func refreshNotificationPermissionStatus() {
     UNUserNotificationCenter.current().getNotificationSettings { settings in
-      switch settings.authorizationStatus {
+      let authStatus = settings.authorizationStatus
+      switch authStatus {
       case .notDetermined:  self.notificationStatus = .notDetermined
       case .denied:         self.notificationStatus = .denied
       case .authorized:     self.notificationStatus = .authorized
       case .provisional:    self.notificationStatus = .authorized
       @unknown default:     self.notificationStatus = .authorized
       }
+      log.debug("Refreshed notification permission status: \(self.notificationStatus.rawValue), \(authStatus.rawValue)")
     }
   }
 
