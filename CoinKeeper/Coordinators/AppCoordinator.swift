@@ -316,6 +316,7 @@ class AppCoordinator: CoordinatorType {
     analyticsManager.track(event: .appOpen, with: nil)
 
     authenticateOnBecomingActiveIfNeeded()
+    self.permissionManager.refreshNotificationPermissionStatus()
 
     refreshTwitterAvatar()
     refreshContacts()
@@ -327,6 +328,7 @@ class AppCoordinator: CoordinatorType {
     handlePendingBitcoinURL()
     refreshContacts()
 
+    self.permissionManager.refreshNotificationPermissionStatus()
     if self.permissionManager.permissionStatus(for: .location) == .authorized {
       self.locationManager.requestLocation()
     }

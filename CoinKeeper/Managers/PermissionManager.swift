@@ -8,6 +8,7 @@
 
 import Foundation
 import Permission
+import UserNotifications
 
 enum PermissionKind {
   case contacts
@@ -19,21 +20,43 @@ enum PermissionKind {
 protocol PermissionManagerType {
   func permissionStatus(for kind: PermissionKind) -> PermissionStatus
   func requestPermission(for kind: PermissionKind, completion: @escaping (PermissionStatus) -> Void)
+  func refreshNotificationPermissionStatus()
 }
 
 class PermissionManager: PermissionManagerType {
+
+  /// Cached in memory to allow for synchronous checks
+  private var notificationStatus: PermissionStatus = .notDetermined
+
+  func refreshNotificationPermissionStatus() {
+    UNUserNotificationCenter.current().getNotificationSettings { settings in
+      switch settings.authorizationStatus {
+      case .notDetermined:  self.notificationStatus = .notDetermined
+      case .denied:         self.notificationStatus = .denied
+      case .authorized:     self.notificationStatus = .authorized
+      case .provisional:    self.notificationStatus = .authorized
+      @unknown default:     self.notificationStatus = .authorized
+      }
+    }
+  }
+
   func requestPermission(for kind: PermissionKind, completion: @escaping (PermissionStatus) -> Void) {
     var permission: Permission
 
     switch kind {
-    case .contacts:
-      permission = Permission.contacts
-    case .camera:
-      permission = Permission.camera
+    case .contacts: permission = Permission.contacts
+    case .camera:   permission = Permission.camera
+    case .location: permission = Permission.locationWhenInUse
+
     case .notification:
-      permission = Permission.notifications
-    case .location:
-      permission = Permission.locationWhenInUse
+      switch notificationStatus {
+      case .notDetermined:
+        permission = Permission.notifications
+
+      default:
+        completion(notificationStatus)
+        return //Exit early to avoid having Permission perform the request based on a deprecated API
+      }
     }
 
     permission.request { status in
@@ -48,9 +71,10 @@ class PermissionManager: PermissionManagerType {
     case .camera:
       return Permission.camera.status
     case .notification:
-      return Permission.notifications.status
+      return notificationStatus
     case .location:
       return Permission.locationWhenInUse.status
     }
   }
+
 }
