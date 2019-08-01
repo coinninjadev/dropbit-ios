@@ -29,8 +29,8 @@ class LineChartCell: UITableViewCell {
       }
     }
     didSet {
-      highLabel.text = CKNumberFormatter.currencyFormatter.string(from: (data?.yMax ?? 0.0) as NSNumber)
-      lowLabel.text = CKNumberFormatter.currencyFormatter.string(from: (data?.yMin ?? 0.0) as NSNumber)
+      highLabel.text = CKNumberFormatter.usdCurrencyFormatter.string(from: (data?.yMax ?? 0.0) as NSNumber)
+      lowLabel.text = CKNumberFormatter.usdCurrencyFormatter.string(from: (data?.yMin ?? 0.0) as NSNumber)
       chart.data = data
     }
   }
