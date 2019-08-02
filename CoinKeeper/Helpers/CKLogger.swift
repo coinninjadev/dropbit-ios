@@ -145,7 +145,13 @@ class CKLogger: Logger {
 
   private func logMessage(_ message: String, privateArgs: [CVarArg], level: LogLevel, location: String) {
     #if DEBUG
-    let symbolicatedMessage = String(format: message, arguments: privateArgs)
+    let symbolicatedMessage: String
+    if privateArgs.isEmpty { //safety check to handle logging web content that may contain symbols
+      symbolicatedMessage = message
+    } else {
+      symbolicatedMessage = String(format: message, arguments: privateArgs)
+    }
+
     let prefixedMessage = "[\(location)] \(symbolicatedMessage)\n"
     super.logMessage({prefixedMessage}, with: level)
 
