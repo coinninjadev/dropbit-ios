@@ -24,3 +24,15 @@ extension Dictionary: ResponseDecodable where Key == String, Value == String {
   static var optionalStringKeys: [WritableKeyPath<StringDictResponse, String?>] { return [] }
 
 }
+
+typealias StringResponse = String
+extension String: ResponseDecodable {
+
+  static var sampleJSON: String {
+    return "Success"
+  }
+
+  static var requiredStringKeys: [KeyPath<String, String>] { return [] }
+  static var optionalStringKeys: [WritableKeyPath<String, String?>] { return [] }
+
+}
