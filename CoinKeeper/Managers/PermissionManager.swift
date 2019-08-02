@@ -62,6 +62,9 @@ class PermissionManager: PermissionManagerType {
     }
 
     permission.request { status in
+      if kind == .notification {
+        self.refreshNotificationPermissionStatus()
+      }
       completion(status)
     }
   }
