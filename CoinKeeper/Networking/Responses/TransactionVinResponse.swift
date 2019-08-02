@@ -78,7 +78,7 @@ struct TransactionVinResponse: ResponseDecodable {
     self.value = try previousOutputContainer.decode(Int.self, forKey: .value)
 
     let scriptPubKeyContainer = try previousOutputContainer.nestedContainer(keyedBy: ScriptPubKeyCodingKeys.self, forKey: .scriptPubKey)
-    self.addresses = try scriptPubKeyContainer.decode([String].self, forKey: .addresses)
+    self.addresses = try scriptPubKeyContainer.decodeIfPresent([String].self, forKey: .addresses) ?? []
   }
 
   static func validateResponse(_ response: TransactionVinResponse) throws -> TransactionVinResponse {
