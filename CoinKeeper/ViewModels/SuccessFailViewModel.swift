@@ -14,7 +14,14 @@ import UIKit
 class SuccessFailViewModel {
   var mode: SuccessFailView.Mode
   var url: URL?
-  var shouldShowCloseButton: Bool = false
+
+  var shouldShowCloseButton: Bool {
+    switch mode {
+    case .pending:  return false
+    case .success:  return false
+    case .failure:  return true
+    }
+  }
 
   required init(mode: SuccessFailView.Mode) {
     self.mode = mode
