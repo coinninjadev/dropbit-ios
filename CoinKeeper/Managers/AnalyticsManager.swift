@@ -22,6 +22,7 @@ enum AnalyticsManagerPropertiesType: String {
   case isDropBitMeEnabled = "DropBitMe Enabled"
   case relativeWalletRange = "Relative Wallet Range"
   case v1Wallet = "v1Wallet"
+  case platform = "iOS"
 }
 
 enum AnalyticsManagerEventType: String {
@@ -100,6 +101,8 @@ enum AnalyticsManagerEventType: String {
   case sendTweetViaDropBit = "SendTweetViaDropBit"
   case sendTweetManually = "SendTweetManually"
   case priceButtonPressed = "PriceButtonPressed"
+  case chartsOpened = "ChartsOpened"
+  case newsArticleOpened = "NewsArticleOpened"
 
   var id: String {
     return self.rawValue
