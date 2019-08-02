@@ -70,6 +70,8 @@ class WalletSyncOperationFactory {
               dependencies.persistenceManager.brokers.activity.lastSuccessfulSync = Date()
               completion?(caughtError) //Only call completion handler once
 
+              strongSelf.delegate?.syncManagerDidFinishSync()
+
               if let fetchResultHandler = fetchResult {
                 let result: UIBackgroundFetchResult = bgContext.insertedObjects.isNotEmpty ||
                   bgContext.updatedObjects.isNotEmpty ? .newData : .noData
@@ -83,7 +85,6 @@ class WalletSyncOperationFactory {
 
         return Promise.value(operation)
       }
-      .get { _ in self.delegate?.syncManagerDidFinishSync() }
   }
 
   private func performSync(with dependencies: SyncDependencies,
