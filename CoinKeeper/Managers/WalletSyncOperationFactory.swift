@@ -82,7 +82,8 @@ class WalletSyncOperationFactory {
         }
 
         return Promise.value(operation)
-    }
+      }
+      .get { _ in self.delegate?.syncManagerDidFinishSync() }
   }
 
   private func performSync(with dependencies: SyncDependencies,
