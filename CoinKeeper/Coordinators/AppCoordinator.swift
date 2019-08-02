@@ -308,7 +308,7 @@ class AppCoordinator: CoordinatorType {
     childCoordinator.start()
   }
 
-  /// Handle app becoming active
+  /// Called by applicationWillEnterForeground()
   func appEnteredActiveState() {
     resetWalletManagerIfNeeded()
     connectionManager.start()
@@ -316,13 +316,12 @@ class AppCoordinator: CoordinatorType {
     analyticsManager.track(event: .appOpen, with: nil)
 
     authenticateOnBecomingActiveIfNeeded()
-    self.permissionManager.refreshNotificationPermissionStatus()
 
     refreshTwitterAvatar()
     refreshContacts()
   }
 
-  /// Called only on first open, after didFinishLaunchingWithOptions, when appEnteredActiveState is not called
+  /// Called by applicationDidBecomeActive()
   func appBecameActive() {
     resetWalletManagerIfNeeded()
     handlePendingBitcoinURL()
