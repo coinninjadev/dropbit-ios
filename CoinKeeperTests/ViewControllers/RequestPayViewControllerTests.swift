@@ -140,5 +140,9 @@ class RequestPayViewControllerTests: XCTestCase {
       self.payload = payload
     }
 
+    func selectedCurrencyPair() -> CurrencyPair {
+      return CurrencyPair(primary: .BTC, fiat: .USD)
+    }
+
   }
 }

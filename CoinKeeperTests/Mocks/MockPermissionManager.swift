@@ -20,4 +20,7 @@ class MockPermissionManager: PermissionManagerType {
   func requestPermission(for kind: PermissionKind, completion: @escaping (PermissionStatus) -> Void) {
     completion(.disabled)
   }
+
+  func refreshNotificationPermissionStatus() {}
+
 }

@@ -136,6 +136,11 @@ class WalletOverviewViewController: BaseViewController, StoryboardInitializable 
     }
   }
 
+  override func viewDidAppear(_ animated: Bool) {
+    super.viewDidAppear(animated)
+    self.baseViewControllers.compactMap { $0 as? RequestPayViewController}.first?.closeButton?.isHidden = true
+  }
+
   func preferredCurrency() -> CurrencyCode {
     guard let selected = coordinationDelegate?.currencyController.selectedCurrency else { return .USD }
     switch selected {

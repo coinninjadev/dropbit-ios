@@ -56,6 +56,8 @@ class TransactionPopoverDetailsViewController: BaseViewController, StoryboardIni
     containerView.applyCornerRadius(15)
     setupViewWithModel()
     addDismissibleTapToBackground()
+    let title = "VIEW ON BLOCK EXPLORER"
+    seeTransactionDetailsButton.setTitle(title, for: .normal)
   }
 
   private func setupViewWithModel() {

@@ -104,7 +104,7 @@ class CurrencySwappableEditAmountViewModel: NSObject, DualAmountDisplayable {
   var fromAmount: NSDecimalNumber
   var fromCurrency: CurrencyCode
   var toCurrency: CurrencyCode
-  let fiatCurrency: CurrencyCode
+  var fiatCurrency: CurrencyCode
 
   weak var delegate: CurrencySwappableEditAmountViewModelDelegate?
 
@@ -146,7 +146,12 @@ class CurrencySwappableEditAmountViewModel: NSObject, DualAmountDisplayable {
   }
 
   var currencyPair: CurrencyPair {
-    return CurrencyPair(primary: fromCurrency, secondary: toCurrency, fiat: fiatCurrency)
+    get { return CurrencyPair(primary: fromCurrency, secondary: toCurrency, fiat: fiatCurrency) }
+    set {
+      fromCurrency = newValue.primary
+      toCurrency = newValue.secondary
+      fiatCurrency = newValue.fiat
+    }
   }
 
   static func emptyInstance() -> CurrencySwappableEditAmountViewModel {

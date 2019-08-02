@@ -59,6 +59,19 @@
                ReferencedContainer = "container:CoinKeeper.xcodeproj">
             </BuildableReference>
          </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "3B6924A822F33E8B00F4A7AF"
+               BuildableName = "DropBitUIDatabaseTests.xctest"
+               BlueprintName = "DropBitUIDatabaseTests"
+               ReferencedContainer = "container:CoinKeeper.xcodeproj">
+            </BuildableReference>
+            <DeviceAppData
+               resolvedPath = "../DropBitUIDatabaseTests/com.coinninja.CoinKeeper.beta 2019-08-01 11:59.50.313.xcappdata">
+            </DeviceAppData>
+         </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference

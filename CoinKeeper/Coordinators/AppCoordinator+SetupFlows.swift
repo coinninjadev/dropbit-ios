@@ -61,6 +61,7 @@ extension AppCoordinator {
       self.saveSuccessfulWords(words: words, didBackUp: false)
         .done(on: .main) { _ in
           self.analyticsManager.track(event: .createWallet, with: nil)
+          self.analyticsManager.track(property: MixpanelProperty(key: .v1Wallet, value: true))
           self.continueSetupFlow()
         }.cauterize()
     }
@@ -85,7 +86,7 @@ extension AppCoordinator {
   func startFirstTimeAfteriCloudRestore() {
     let title = ""
     let description = "It looks like you have restored from a backup. Please enter your 12 recovery words to restore your wallet."
-    let okAction = AlertActionConfiguration(title: "RESTORE NOW", style: .default) { self.restoreWallet() }
+    let okAction = AlertActionConfiguration(title: "RESTORE NOW", style: .default) { self.restoreWalletAfterICloudRestore() }
     let alertViewModel = AlertControllerViewModel(title: title, description: description, actions: [okAction])
     let alert = alertManager.alert(from: alertViewModel)
     navigationController.topViewController()?.present(alert, animated: true)
