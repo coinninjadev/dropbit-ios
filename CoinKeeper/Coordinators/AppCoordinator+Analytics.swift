@@ -19,8 +19,7 @@ extension AppCoordinator {
   }
 
   func trackGenericPlatform() {
-    let platformKey = AnalyticsManagerPropertiesType.platform
-    analyticsManager.track(property: MixpanelProperty(key: platformKey, value: platformKey.rawValue))
+    analyticsManager.track(property: MixpanelProperty(key: .platform, value: "iOS"))
 
   }
 

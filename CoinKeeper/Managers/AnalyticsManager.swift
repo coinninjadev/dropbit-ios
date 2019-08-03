@@ -22,7 +22,7 @@ enum AnalyticsManagerPropertiesType: String {
   case isDropBitMeEnabled = "DropBitMe Enabled"
   case relativeWalletRange = "Relative Wallet Range"
   case v1Wallet = "v1Wallet"
-  case platform = "iOS"
+  case platform = "platform"
 }
 
 enum AnalyticsManagerEventType: String {
