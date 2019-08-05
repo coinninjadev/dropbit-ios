@@ -90,7 +90,7 @@ class LaunchStateManagerTests: MockedPersistenceTestCase {
     _ = mockPersistenceManager.keychainManager.store(anyValue: nil, key: .walletWords)
     self.sut.unauthenticateUser()
 
-    mockBrokers.mockUser.userVerificationStatusValue = .verified
+    (mockPersistenceManager.databaseManager as? MockPersistenceDatabaseManager)?.walletIdToReturn = "foo"
     XCTAssertTrue(self.sut.isFirstTimeAfteriCloudRestore())
   }
 

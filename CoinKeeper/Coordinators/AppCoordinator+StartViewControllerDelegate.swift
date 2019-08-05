@@ -14,6 +14,11 @@ extension AppCoordinator: StartViewControllerDelegate {
     startSetupFlow(.restoreWallet)
   }
 
+  func restoreWalletAfterICloudRestore() {
+    log.info("Starting Restore after iCloud Restore")
+    startSetupFlow(.restoreWallet, restoreFromICloudBackup: true)
+  }
+
   func claimInvite() {
     startSetupFlow(.claimInvite(method: nil))
   }
@@ -22,12 +27,20 @@ extension AppCoordinator: StartViewControllerDelegate {
     startSetupFlow(.newWallet)
   }
 
-  private func startSetupFlow(_ flow: SetupFlow) {
+  private func startSetupFlow(_ flow: SetupFlow, restoreFromICloudBackup: Bool = false) {
     navigationController.isNavigationBarHidden = false
     launchStateManager.selectedSetupFlow = flow
 
     switch flow {
     case .restoreWallet:
+      if restoreFromICloudBackup {
+        do {
+          try persistenceManager.resetPersistence()
+          log.info("Successfully reset persistence after iCloud Restore")
+        } catch {
+          log.error(error, message: "Failed to reset persistence after iCloud Restore")
+        }
+      }
       persistenceManager.userDefaultsManager.deleteAll()
       continueSetupFlow()
 

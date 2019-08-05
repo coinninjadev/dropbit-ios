@@ -14,6 +14,7 @@ enum UITestArgument: String {
   case resetPersistence
   case skipGlobalMessageDisplay
   case skipTwitterAuthentication
+  case resetForICloudRestore
 
   static let prefix = "ui-test-argument-"
 

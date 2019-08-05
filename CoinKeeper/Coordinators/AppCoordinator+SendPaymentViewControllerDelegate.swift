@@ -23,7 +23,7 @@ extension AppCoordinator: SendPaymentViewControllerDelegate {
       alert = alertManager.alert(from: viewModel)
     }
 
-    navigationController.topViewController()?.show(alert, sender: nil)
+    navigationController.topViewController()?.present(alert, animated: true, completion: nil)
   }
 
   func sendPaymentViewControllerDidLoad(_ viewController: UIViewController) {
