@@ -132,6 +132,10 @@ class WalletOverviewViewController: BaseViewController, StoryboardInitializable 
 
     self.baseViewControllers.forEach { ($0 as? TransactionHistoryViewController)?.summaryCollectionView.historyDelegate = self }
 
+    pageViewController?.view.layer.cornerRadius = 30.0
+    pageViewController?.view.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+    pageViewController?.view.clipsToBounds = true
+
     if baseViewControllers.count >= 2 {
       pageViewController?.setViewControllers([baseViewControllers[1]], direction: .forward, animated: true, completion: nil)
     }
