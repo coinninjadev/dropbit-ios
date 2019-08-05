@@ -69,6 +69,9 @@ extension AppCoordinator: SettingsViewControllerDelegate {
         }
 
       case .denied, .disabled:
+        let alertViewModel = self.notificationSettingsAlertViewModel(for: status)
+        self.viewControllerDidRequestAlert(viewController, viewModel: alertViewModel)
+
         completion()
       }
     }

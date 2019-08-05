@@ -20,4 +20,11 @@ extension AppCoordinator: NewsViewControllerDelegate {
     return networkManager.requestNewsData(count: count)
   }
 
+  func viewControllerBecameVisible(_ viewController: UIViewController) {
+    analyticsManager.track(event: .chartsOpened, with: nil)
+  }
+
+  func viewControllerWillShowNewsArticle(_ viewController: UIViewController) {
+    analyticsManager.track(event: .newsArticleOpened, with: nil)
+  }
 }

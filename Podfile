@@ -37,6 +37,11 @@ target 'DropBitUITests' do
   shared_pods
 end
 
+target 'DropBitUIDatabaseTests' do
+  # inherit! :search_paths
+  shared_pods
+end
+
 post_install do |installer|
   installer.pods_project.targets.each do |target|
     unless target.name.include?('DropBit') then

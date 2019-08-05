@@ -11,10 +11,16 @@ import Foundation
 extension AppCoordinator {
 
   func trackAnalytics() {
+    trackGenericPlatform()
     trackEventForFirstTimeOpeningAppIfApplicable()
     trackIfUserHasWallet()
     trackIfUserHasWordsBackedUp()
     trackIfDropBitMeIsEnabled()
+  }
+
+  func trackGenericPlatform() {
+    analyticsManager.track(property: MixpanelProperty(key: .platform, value: "iOS"))
+
   }
 
   func trackEventForFirstTimeOpeningAppIfApplicable() {

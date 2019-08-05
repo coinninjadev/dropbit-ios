@@ -125,11 +125,11 @@ class SettingsViewController: BaseViewController, StoryboardInitializable {
   }
 
   private func walletSectionViewModel() -> SettingsSectionViewModel {
-    let recoveryWordsType = SettingsCellType.recoveryWords(isWalletBackedUp()) { [weak self] in
+    let recoveryWordsCellType = SettingsCellType.recoveryWords(isWalletBackedUp()) { [weak self] in
       guard let localSelf = self else { return }
       localSelf.coordinationDelegate?.viewControllerDidSelectRecoveryWords(localSelf)
     }
-    let recoveryWordsVM = SettingsCellViewModel(type: recoveryWordsType)
+    let recoveryWordsVM = SettingsCellViewModel(type: recoveryWordsCellType)
 
     let dustProtectionEnabled = self.coordinationDelegate?.dustProtectionIsEnabled() ?? false
     let dustCellType = SettingsCellType.dustProtection(
@@ -146,19 +146,21 @@ class SettingsViewController: BaseViewController, StoryboardInitializable {
     let dustProtectionVM = SettingsCellViewModel(type: dustCellType)
 
     let isYearlyHighPushEnabled = self.coordinationDelegate?.yearlyHighPushNotificationIsSubscribed() ?? false
-    let yearlyHighType = SettingsCellType.yearlyHighPushNotification(enabled: isYearlyHighPushEnabled) { [weak self] (didEnable: Bool) in
+    let yearlyHighCellType = SettingsCellType.yearlyHighPushNotification(enabled: isYearlyHighPushEnabled) { [weak self] (didEnable: Bool) in
       guard let localSelf = self else { return }
       localSelf.coordinationDelegate?.viewController(
         localSelf,
         didEnableYearlyHighNotification: didEnable,
         completion: { [weak self] in
           guard let localSelf = self else { return }
-          localSelf.viewModel = localSelf.createViewModel()
-          localSelf.settingsTableView.reloadData()
+          DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            localSelf.viewModel = localSelf.createViewModel()
+            localSelf.settingsTableView.reloadData()
+          }
         }
       )
     }
-    let yearlyHighVM = SettingsCellViewModel(type: yearlyHighType)
+    let yearlyHighVM = SettingsCellViewModel(type: yearlyHighCellType)
 
     let adjustableFeesAction: BasicAction = { [weak self] in
       guard let localSelf = self else { return }

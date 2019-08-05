@@ -40,6 +40,7 @@ struct LaunchStateProperties: OptionSet {
   static let walletExists = LaunchStateProperties(rawValue: 1 << 1)
   static let wordsBackedUp = LaunchStateProperties(rawValue: 1 << 2)
   static let deviceVerified = LaunchStateProperties(rawValue: 1 << 3)
+  static let databaseWalletExists = LaunchStateProperties(rawValue: 1 << 4)
 }
 
 class LaunchStateManager: LaunchStateManagerType {
@@ -76,6 +77,9 @@ class LaunchStateManager: LaunchStateManagerType {
     context.performAndWait {
       if persistenceManager.brokers.user.userVerificationStatus(in: context) == .verified {
         options.insert(.deviceVerified)
+      }
+      if persistenceManager.databaseManager.walletId(in: context) != nil {
+        options.insert(.databaseWalletExists)
       }
     }
 
@@ -123,7 +127,7 @@ class LaunchStateManager: LaunchStateManagerType {
   }
 
   private func isFirstTimeAfteriCloudRestore(with properties: LaunchStateProperties) -> Bool {
-    return properties == .deviceVerified
+    return properties == .databaseWalletExists
   }
 
   func deviceIsVerified() -> Bool {

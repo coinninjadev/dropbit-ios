@@ -9,6 +9,7 @@
 import CNBitcoinKit
 import Foundation
 import PromiseKit
+import Permission
 import UIKit
 
 extension AppCoordinator: ViewControllerSendingDelegate {
@@ -203,10 +204,33 @@ extension AppCoordinator: ViewControllerSendingDelegate {
                                                completion: completion)
           }
         }
-      default:
-        break
+      case .denied, .disabled:
+        let alertViewModel = self.notificationSettingsAlertViewModel(for: status)
+        self.viewControllerDidRequestAlert(viewController, viewModel: alertViewModel)
+
+      case .notDetermined:
+        log.error("Reached notDetermined status after requesting notification permission")
       }
     }
+  }
+
+  func notificationSettingsAlertViewModel(for status: PermissionStatus) -> AlertControllerViewModel {
+    let title = "Permission for Notifications was \(status.rawValue)"
+    let message = """
+        Push notifications are an important part of the DropBit experience.
+        Without them you will not be notified to complete transactions which will cause them to expire.
+        \nPlease enable notifications for DropBit in iOS Settings.
+        """
+    let alertActions: [AlertActionConfiguration] = [
+      AlertActionConfiguration(title: "Cancel", style: .cancel, action: nil),
+      AlertActionConfiguration(title: "Settings", style: .default, action: {
+        if let settingsURL = URL(string: UIApplication.openSettingsURLString) {
+          UIApplication.shared.open(settingsURL, options: [:], completionHandler: nil)
+        }
+      })
+    ]
+
+    return AlertControllerViewModel(title: title, description: message, image: nil, style: .alert, actions: alertActions)
   }
 
   // MARK: - Helper Methods
