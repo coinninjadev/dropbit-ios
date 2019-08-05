@@ -64,6 +64,7 @@ public enum UserResponseKey: String, KeyPathDescribable {
 }
 
 protocol UserIdentifiable {
+  /// The id of the user record on our server
   var id: String { get }
 }
 

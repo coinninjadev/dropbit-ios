@@ -114,6 +114,8 @@ final class DeviceVerificationViewController: BaseViewController {
   // MARK: variables
 
   var selectedSetupFlow: SetupFlow?
+  var userIdToVerify: String?
+
   var shouldShowTwitterButton: Bool {
     guard let selectedFlow = selectedSetupFlow else { return false }
     switch selectedFlow {
@@ -128,17 +130,33 @@ final class DeviceVerificationViewController: BaseViewController {
   var coordinationDelegate: DeviceVerificationViewControllerDelegate? {
     return generalCoordinationDelegate as? DeviceVerificationViewControllerDelegate
   }
+
   var entryMode: DeviceVerificationViewController.Mode = .phoneNumberEntry {
     didSet {
       updateUI()
     }
   }
+
   var digitEntryViewModel: DigitEntryDisplayViewModelType?
 
   override func accessibleViewsAndIdentifiers() -> [AccessibleViewElement] {
     return [
       (self.view, .deviceVerification(.page)) //skipButton is not available when this is called
     ]
+  }
+
+  static func newInstance(delegate: DeviceVerificationViewControllerDelegate,
+                          entryMode: Mode,
+                          setupFlow: SetupFlow?,
+                          userIdToVerify: String? = nil,
+                          shouldOrphan: Bool = false) -> DeviceVerificationViewController {
+    let vc = DeviceVerificationViewController.makeFromStoryboard()
+    vc.entryMode = entryMode
+    vc.selectedSetupFlow = setupFlow
+    vc.userIdToVerify = userIdToVerify
+    vc.shouldOrphan = shouldOrphan
+    vc.generalCoordinationDelegate = delegate
+    return vc
   }
 
   override func viewDidLoad() {
