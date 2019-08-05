@@ -85,6 +85,7 @@ enum NetworkErrorIdentifier: String {
   case recordNotFound = "record not found"
   case timestampHeaderOffset = "timestamp header is beyond the allowed offset"
   case missingSignatureHeader = "missing signature header"
+  case userIDMismatch = "user_id mismatch"
 }
 
 enum RecordType: String {
