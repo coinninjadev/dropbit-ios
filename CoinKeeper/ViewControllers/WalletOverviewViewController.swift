@@ -271,8 +271,9 @@ extension WalletOverviewViewController: SyncSubscribeable {
 
 extension WalletOverviewViewController: WalletBalanceViewDelegate {
   func swapPrimaryCurrency() {
-    coordinationDelegate?.viewControllerDidRequestPrimaryCurrencySwap()
-    updateViewWithBalance()
+    guard let delegate = coordinationDelegate else { return }
+    delegate.viewControllerDidRequestPrimaryCurrencySwap()
+    updateSelectedCurrency(to: delegate.selectedCurrency())
   }
 
   func isSyncCurrentlyRunning() -> Bool {
