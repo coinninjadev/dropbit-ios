@@ -39,7 +39,7 @@ class TransactionHistorySummaryCell: UICollectionViewCell {
     incomingImage.layer.cornerRadius = 0
   }
 
-  func load(with viewModel: TransactionHistorySummaryCellViewModel, isAtTop: Bool) {
+  func load(with viewModel: TransactionHistorySummaryCellViewModel, isAtTop: Bool = false) {
     if viewModel.isTwitterContact, let avatar = viewModel.counterpartyAvatar {
       incomingImage.image = avatar
       let radius = incomingImage.frame.width / 2.0
