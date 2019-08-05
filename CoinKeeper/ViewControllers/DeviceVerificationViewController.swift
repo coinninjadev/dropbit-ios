@@ -12,7 +12,10 @@ import UIKit
 
 protocol DeviceVerificationViewControllerDelegate: AnyObject {
   func viewController(_ viewController: DeviceVerificationViewController, didEnterPhoneNumber phoneNumber: GlobalPhoneNumber)
-  func viewController(_ codeEntryViewController: DeviceVerificationViewController, didEnterCode code: String, completion: @escaping (Bool) -> Void)
+  func viewController(_ codeEntryViewController: DeviceVerificationViewController,
+                      didEnterCode code: String,
+                      forUserId userId: String,
+                      completion: @escaping (Bool) -> Void)
   func viewControllerDidRequestResendCode(_ viewController: DeviceVerificationViewController)
   func viewControllerDidSkipPhoneVerification(_ viewController: DeviceVerificationViewController)
   func viewControllerShouldShowSkipButton() -> Bool
@@ -372,8 +375,12 @@ extension DeviceVerificationViewController: KeypadEntryViewDelegate {
 
     switch entryMode {
     case .codeVerification, .codeVerificationFailed:
-      let codeString = digitEntryViewModel?.digits
-      coordinationDelegate.viewController(self, didEnterCode: codeString!) { [weak self] (success) in
+      guard let codeString = digitEntryViewModel?.digits, let userId = self.userIdToVerify else {
+        log.error("Verification code or user ID is missing")
+        return
+      }
+
+      coordinationDelegate.viewController(self, didEnterCode: codeString, forUserId: userId) { [weak self] (success) in
         if !success {
           self?.digitEntryViewModel?.removeAllDigits()
         }

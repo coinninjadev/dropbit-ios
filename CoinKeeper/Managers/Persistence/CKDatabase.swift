@@ -141,14 +141,7 @@ class CKDatabase: PersistenceDatabaseType {
   }
 
   func persistUserId(_ id: String, in context: NSManagedObjectContext) {
-    context.performAndWait {
-      _ = CKMUser.updateOrCreate(with: id, in: context)
-      do {
-        try context.save()
-      } catch {
-        log.contextSaveError(error)
-      }
-    }
+    _ = CKMUser.updateOrCreate(with: id, in: context)
   }
 
   func persistVerificationStatus(_ status: String, in context: NSManagedObjectContext) -> Promise<UserVerificationStatus> {

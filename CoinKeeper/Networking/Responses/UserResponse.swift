@@ -68,6 +68,10 @@ protocol UserIdentifiable {
   var id: String { get }
 }
 
+struct UserIdWrapper: UserIdentifiable {
+  let id: String
+}
+
 /// For /resend response: id: "" and timestamps: 0
 public struct UserResponse: UserIdentifiable, ResponseDecodable {
 
