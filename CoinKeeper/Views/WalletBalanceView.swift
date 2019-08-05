@@ -11,6 +11,7 @@ import UIKit
 
 protocol WalletBalanceViewDelegate: class {
   func isSyncCurrentlyRunning() -> Bool
+  func swapPrimaryCurrency()
 }
 
 struct WalletBalanceDataSource {
@@ -46,6 +47,7 @@ class WalletBalanceView: UIView {
     reloadWalletButton.layer.shadowOffset = CGSize(width: 0.0, height: 1.0)
     reloadWalletButton.applyCornerRadius(15)
     reloadWalletButton.layer.masksToBounds = false
+    primarySecondaryBalanceContainer.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(balanceContainerWasTouched)))
   }
 
   func update(with dataSource: WalletBalanceDataSource) {
@@ -59,4 +61,13 @@ class WalletBalanceView: UIView {
       primarySecondaryBalanceContainer.isSyncing = false
     }
   }
+
+  @IBAction func reloadWalletButtonWasTouched() {
+
+  }
+
+  @objc func balanceContainerWasTouched() {
+    delegate?.swapPrimaryCurrency()
+  }
+
 }

@@ -20,6 +20,7 @@ protocol WalletOverviewViewControllerDelegate: BalanceContainerDelegate & BadgeU
   func viewControllerShouldAdjustForBottomSafeArea(_ viewController: UIViewController) -> Bool
   func viewControllerDidTapWalletTooltip()
   func isSyncCurrentlyRunning() -> Bool
+  func viewControllerDidRequestPrimaryCurrencySwap()
 }
 
 class WalletOverviewViewController: BaseViewController, StoryboardInitializable {
@@ -265,6 +266,10 @@ extension WalletOverviewViewController: SyncSubscribeable {
 }
 
 extension WalletOverviewViewController: WalletBalanceViewDelegate {
+  func swapPrimaryCurrency() {
+    coordinationDelegate?.viewControllerDidRequestPrimaryCurrencySwap()
+    updateViewWithBalance()
+  }
 
   func isSyncCurrentlyRunning() -> Bool {
     return coordinationDelegate?.isSyncCurrentlyRunning() ?? false
@@ -281,7 +286,16 @@ extension WalletOverviewViewController: TransactionHistorySummaryCollectionViewD
         walletToggleView.bitcoinWalletWasTouched() : walletToggleView.lightningWalletWasTouched()
       return walletToggleView
     } else if walletBalanceView.frame.contains(translatedPoint) {
-      return walletBalanceView
+      let balanceViewTranslatedPoint = self.view.convert(translatedPoint, to: walletBalanceView)
+      if walletBalanceView.reloadWalletButton.frame.contains(balanceViewTranslatedPoint) {
+        walletBalanceView.reloadWalletButtonWasTouched()
+        return walletBalanceView.reloadWalletButton
+      } else if walletBalanceView.primarySecondaryBalanceContainer.frame.contains(balanceViewTranslatedPoint) {
+        walletBalanceView.balanceContainerWasTouched()
+        return walletBalanceView.primarySecondaryBalanceContainer
+      } else {
+        return walletBalanceView
+      }
     } else if tooltipButton.frame.contains(translatedPoint) {
       tooltipButtonWasTouched()
       return tooltipButton

@@ -25,12 +25,9 @@
                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="bottom" translatesAutoresizingMaskIntoConstraints="NO" id="hOI-Sf-JHP">
                     <rect key="frame" x="0.0" y="0.0" width="335" height="80"/>
                     <subviews>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" text="Primary Bal." textAlignment="right" lineBreakMode="tailTruncation" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Cbv-6p-SeS" customClass="BalancePrimaryAmountLabel" customModule="DropBit" customModuleProvider="target">
-                            <rect key="frame" x="155" y="0.0" width="180" height="60"/>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" text="Primary Bal." textAlignment="right" lineBreakMode="tailTruncation" minimumScaleFactor="0.40000000000000002" translatesAutoresizingMaskIntoConstraints="NO" id="Cbv-6p-SeS" customClass="BalancePrimaryAmountLabel" customModule="DropBit" customModuleProvider="target">
+                            <rect key="frame" x="233" y="0.0" width="102" height="60"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                            <constraints>
-                                <constraint firstAttribute="width" constant="180" id="1S3-Dj-fyE"/>
-                            </constraints>
                             <fontDescription key="fontDescription" type="system" pointSize="19"/>
                             <nil key="textColor"/>
                             <nil key="highlightedColor"/>
