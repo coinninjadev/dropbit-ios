@@ -33,15 +33,13 @@ class TransactionHistorySummaryCell: UICollectionViewCell {
 
   override func prepareForReuse() {
     super.prepareForReuse()
-    contentView.layer.cornerRadius = 10.0
-    contentView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMinXMaxYCorner]
-    contentView.clipsToBounds = true
+    layer.cornerRadius = 30.0
     incomingImage.layer.borderColor = nil
     incomingImage.layer.borderWidth = 0
     incomingImage.layer.cornerRadius = 0
   }
 
-  func load(with viewModel: TransactionHistorySummaryCellViewModel) {
+  func load(with viewModel: TransactionHistorySummaryCellViewModel, isAtTop: Bool = false) {
     if viewModel.isTwitterContact, let avatar = viewModel.counterpartyAvatar {
       incomingImage.image = avatar
       let radius = incomingImage.frame.width / 2.0
@@ -76,6 +74,8 @@ class TransactionHistorySummaryCell: UICollectionViewCell {
 
     memoLabel.text = viewModel.memo
     memoLabel.isHidden = viewModel.memo.isEmpty
+
+    layer.maskedCorners = isAtTop ? [.layerMinXMinYCorner, .layerMaxXMinYCorner] : []
   }
 
 }

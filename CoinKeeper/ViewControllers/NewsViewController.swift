@@ -15,6 +15,8 @@ import SVProgressHUD
 protocol NewsViewControllerDelegate: ViewControllerDismissable, URLOpener {
   func viewControllerDidRequestNewsData(count: Int) -> Promise<[NewsArticleResponse]>
   func viewControllerDidRequestPriceDataFor(period: PricePeriod) -> Promise<[PriceSummaryResponse]>
+  func viewControllerBecameVisible(_ viewController: UIViewController)
+  func viewControllerWillShowNewsArticle(_ viewController: UIViewController)
 }
 
 final class NewsViewController: BaseViewController, StoryboardInitializable {
@@ -88,6 +90,11 @@ final class NewsViewController: BaseViewController, StoryboardInitializable {
     coordinationDelegate?.viewControllerDidSelectClose(self)
   }
 
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+    coordinationDelegate?.viewControllerBecameVisible(self)
+  }
+
   @objc private func refreshDisplayedPrice() {
     currencyValueManager?.latestExchangeRates(responseHandler: updateRatesRequest)
   }
@@ -100,6 +107,7 @@ extension NewsViewController: NewsViewControllerDDSDelegate {
   }
 
   func delegateDidRequestUrl(_ url: URL) {
+    coordinationDelegate?.viewControllerWillShowNewsArticle(self)
     coordinationDelegate?.openURL(url, completionHandler: nil)
   }
 

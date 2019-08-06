@@ -50,7 +50,7 @@ extension TransactionHistoryViewController: UICollectionViewDataSource {
     let cell = collectionView.dequeue(TransactionHistorySummaryCell.self, for: indexPath)
     let transaction = frc.object(at: indexPath)
     let viewModel = summaryViewModel(for: transaction)
-    cell.load(with: viewModel)
+    cell.load(with: viewModel, isAtTop: indexPath.row == 0 && indexPath.section == 0)
     return cell
   }
 
