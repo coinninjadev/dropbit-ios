@@ -57,6 +57,7 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
     case lightning
   }
 
+  @IBOutlet var emptyStateBackgroundView: UIView!
   @IBOutlet var summaryCollectionView: TransactionHistorySummaryCollectionView!
   @IBOutlet var transactionHistoryNoBalanceView: TransactionHistoryNoBalanceView!
   @IBOutlet var transactionHistoryWithBalanceView: TransactionHistoryWithBalanceView!
@@ -155,8 +156,10 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
 
     transactionHistoryNoBalanceView.delegate = self
     transactionHistoryWithBalanceView.delegate = self
+    emptyStateBackgroundView.isHidden = true
 
     view.backgroundColor = .clear
+    emptyStateBackgroundView.applyCornerRadius(30)
     coordinationDelegate?.viewControllerDidRequestBadgeUpdate(self)
 
     setupCollectionViews()
@@ -295,7 +298,9 @@ extension TransactionHistoryViewController: DZNEmptyDataSetDelegate, DZNEmptyDat
   }
 
   func emptyDataSetShouldDisplay(_ scrollView: UIScrollView!) -> Bool {
-    return shouldShowNoBalanceView || shouldShowWithBalanceView || shouldShowLightningEmptyView
+    let shouldDisplay = shouldShowNoBalanceView || shouldShowWithBalanceView || shouldShowLightningEmptyView
+    emptyStateBackgroundView.isHidden = !shouldDisplay
+    return shouldDisplay
   }
 
   func emptyDataSetShouldAllowTouch(_ scrollView: UIScrollView!) -> Bool {
