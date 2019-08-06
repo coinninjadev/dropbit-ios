@@ -156,14 +156,11 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
     transactionHistoryNoBalanceView.delegate = self
     transactionHistoryWithBalanceView.delegate = self
 
-    self.view.backgroundColor = .clear
-
-    view.layoutIfNeeded()
-
+    view.backgroundColor = .clear
     coordinationDelegate?.viewControllerDidRequestBadgeUpdate(self)
 
     setupCollectionViews()
-    self.frc.delegate = self
+    frc.delegate = self
   }
 
   override func viewWillAppear(_ animated: Bool) {
@@ -320,6 +317,14 @@ extension TransactionHistoryViewController: DZNEmptyDataSetDelegate, DZNEmptyDat
     }
 
     return view
+  }
+
+  func verticalOffset(forEmptyDataSet scrollView: UIScrollView!) -> CGFloat {
+    if shouldShowLightningEmptyView {
+      return -70
+    } else {
+      return 0
+    }
   }
 
   private var shouldShowLightningEmptyView: Bool {

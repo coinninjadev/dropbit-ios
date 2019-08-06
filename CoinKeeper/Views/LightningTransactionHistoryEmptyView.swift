@@ -22,13 +22,41 @@ class LightningTransactionHistoryEmptyView: UIView {
     case hundred
   }
 
-  @IBOutlet var fiveButton: UIButton!
-  @IBOutlet var twentyButton: UIButton!
-  @IBOutlet var fiftyButton: UIButton!
-  @IBOutlet var hundredButton: UIButton!
+  @IBOutlet var titleLabel: UILabel!
+  @IBOutlet var detailLabel: UILabel!
+  @IBOutlet var fiveButton: PrimaryActionButton!
+  @IBOutlet var twentyButton: PrimaryActionButton!
+  @IBOutlet var fiftyButton: PrimaryActionButton!
+  @IBOutlet var hundredButton: PrimaryActionButton!
   @IBOutlet var customAmountButton: UIButton!
 
   weak var delegate: LightningTransactionHistoryEmptyViewDelegate?
+
+  override func awakeFromNib() {
+    super.awakeFromNib()
+
+    titleLabel.font = .medium(17)
+    titleLabel.textColor = .darkGrayText
+
+    detailLabel.font = .regular(12)
+    detailLabel.textColor = .lightningBlue
+
+    customAmountButton.titleLabel?.textColor = .darkGrayText
+    customAmountButton.tintColor = .darkGray
+    customAmountButton.titleLabel?.font = .medium(16)
+
+    styleButton(button: fiveButton)
+    styleButton(button: twentyButton)
+    styleButton(button: fiftyButton)
+    styleButton(button: hundredButton)
+  }
+
+  private func styleButton(button: UIButton) {
+    button.backgroundColor = .lightningBlue
+    button.setTitleColor(.white, for: .normal)
+    button.titleLabel?.font = .medium(18)
+    button.applyCornerRadius(5)
+  }
 
   @IBAction func fiveButtonWasTouched() {
     delegate?.emptyViewDidRequestRefill(withAmount: .five)
