@@ -52,6 +52,11 @@ class TransactionHistorySummaryCollectionView: UICollectionView {
 
 class TransactionHistoryViewController: BaseViewController, StoryboardInitializable {
 
+  enum TransactionType {
+    case onChain
+    case lightning
+  }
+
   @IBOutlet var summaryCollectionView: TransactionHistorySummaryCollectionView!
   @IBOutlet var transactionHistoryNoBalanceView: TransactionHistoryNoBalanceView!
   @IBOutlet var transactionHistoryWithBalanceView: TransactionHistoryWithBalanceView!
@@ -65,6 +70,17 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
     }
   }
 
+  static func newInstance(withDelegate delegate: TransactionHistoryViewControllerDelegate, urlOpener opener: URLOpener,
+                          context dbContext: NSManagedObjectContext, type: TransactionType = .onChain) -> TransactionHistoryViewController {
+    let txHistory = TransactionHistoryViewController.makeFromStoryboard()
+    txHistory.generalCoordinationDelegate = delegate
+    txHistory.context = dbContext
+    txHistory.urlOpener = opener
+    txHistory.transactionType = type
+
+    return txHistory
+  }
+
   var isCollectionViewFullScreen: Bool = false {
     willSet {
       footerView.isHidden = !newValue
@@ -74,6 +90,7 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
 
   var currencyValueManager: CurrencyValueDataSourceType?
   var rateManager: ExchangeRateManager = ExchangeRateManager()
+  var transactionType: TransactionType = .onChain
 
   override func accessibleViewsAndIdentifiers() -> [AccessibleViewElement] {
     return [
@@ -106,6 +123,7 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
   }
 
   unowned var context: NSManagedObjectContext!
+  var isLightning: Bool = false
 
   lazy var frc: NSFetchedResultsController<CKMTransaction> = {
     let fetchRequest: NSFetchRequest<CKMTransaction> = CKMTransaction.fetchRequest()
@@ -115,7 +133,9 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
                                                 managedObjectContext: context,
                                                 sectionNameKeyPath: nil,
                                                 cacheName: nil) // avoid caching unless there is real need as it is often the source of bugs
-    try? controller.performFetch()
+    if transactionType != .lightning {
+      try? controller.performFetch()
+    }
     return controller
   }()
 
