@@ -9,7 +9,6 @@
 import Foundation
 import UIKit
 
-
 class PrimarySecondaryBalanceContainer: UIView {
 
   @IBOutlet var primaryBalanceLabel: BalancePrimaryAmountLabel!
@@ -54,6 +53,7 @@ class PrimarySecondaryBalanceContainer: UIView {
 
   func set(primaryAmount amount: NSDecimalNumber?, currency: CurrencyCode) {
     primaryBalanceLabel.attributedText = label(for: amount, currency: currency)
+    setupLabelColors(for: currency)
   }
 
   func set(secondaryAmount amount: NSDecimalNumber?, currency: CurrencyCode) {
@@ -67,6 +67,22 @@ class PrimarySecondaryBalanceContainer: UIView {
     case .large:
       primaryBalanceLabel.font = .regular(38)
     }
+  }
+
+  private func setupLabelColors(for primaryCurrency: CurrencyCode) {
+    var primaryColor: UIColor, secondaryColor: UIColor
+
+    switch primaryCurrency {
+    case .BTC:
+      primaryColor = .bitcoinOrange
+      secondaryColor = .darkGray
+    default:
+      primaryColor = .darkGray
+      secondaryColor = .bitcoinOrange
+    }
+
+    primaryBalanceLabel.textColor = primaryColor
+    secondaryBalanceLabel.textColor = secondaryColor
   }
 
   private func label(for amount: NSDecimalNumber?, currency: CurrencyCode) -> NSAttributedString {

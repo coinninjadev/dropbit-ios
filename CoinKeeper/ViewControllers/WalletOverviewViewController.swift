@@ -20,6 +20,7 @@ protocol WalletOverviewViewControllerDelegate: BalanceContainerDelegate & BadgeU
   func viewControllerShouldAdjustForBottomSafeArea(_ viewController: UIViewController) -> Bool
   func viewControllerDidTapWalletTooltip()
   func isSyncCurrentlyRunning() -> Bool
+  func viewControllerDidRequestPrimaryCurrencySwap()
 }
 
 class WalletOverviewViewController: BaseViewController, StoryboardInitializable {
@@ -130,6 +131,10 @@ class WalletOverviewViewController: BaseViewController, StoryboardInitializable 
     updateRatesAndBalances()
 
     self.baseViewControllers.forEach { ($0 as? TransactionHistoryViewController)?.summaryCollectionView.historyDelegate = self }
+
+    pageViewController?.view.layer.cornerRadius = 30.0
+    pageViewController?.view.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+    pageViewController?.view.clipsToBounds = true
 
     if baseViewControllers.count >= 2 {
       pageViewController?.setViewControllers([baseViewControllers[1]], direction: .forward, animated: true, completion: nil)
@@ -265,6 +270,11 @@ extension WalletOverviewViewController: SyncSubscribeable {
 }
 
 extension WalletOverviewViewController: WalletBalanceViewDelegate {
+  func swapPrimaryCurrency() {
+    guard let delegate = coordinationDelegate else { return }
+    delegate.viewControllerDidRequestPrimaryCurrencySwap()
+    updateSelectedCurrency(to: delegate.selectedCurrency())
+  }
 
   func isSyncCurrentlyRunning() -> Bool {
     return coordinationDelegate?.isSyncCurrentlyRunning() ?? false
@@ -281,7 +291,16 @@ extension WalletOverviewViewController: TransactionHistorySummaryCollectionViewD
         walletToggleView.bitcoinWalletWasTouched() : walletToggleView.lightningWalletWasTouched()
       return walletToggleView
     } else if walletBalanceView.frame.contains(translatedPoint) {
-      return walletBalanceView
+      let balanceViewTranslatedPoint = self.view.convert(translatedPoint, to: walletBalanceView)
+      if walletBalanceView.reloadWalletButton.frame.contains(balanceViewTranslatedPoint) {
+        walletBalanceView.reloadWalletButtonWasTouched()
+        return walletBalanceView.reloadWalletButton
+      } else if walletBalanceView.primarySecondaryBalanceContainer.frame.contains(balanceViewTranslatedPoint) {
+        walletBalanceView.balanceContainerWasTouched()
+        return walletBalanceView.primarySecondaryBalanceContainer
+      } else {
+        return walletBalanceView
+      }
     } else if tooltipButton.frame.contains(translatedPoint) {
       tooltipButtonWasTouched()
       return tooltipButton

@@ -11,6 +11,11 @@ import UIKit
 import MMDrawerController
 
 extension AppCoordinator: WalletOverviewViewControllerDelegate {
+  
+  func viewControllerDidRequestPrimaryCurrencySwap() {
+    currencyController.selectedCurrency.toggle()
+  }
+
   func viewControllerDidTapWalletTooltip() {
     navigationController.present(LightningTooltipViewController.newInstance(), animated: true, completion: nil)
   }
@@ -51,4 +56,6 @@ extension AppCoordinator: WalletOverviewViewControllerDelegate {
     sendPaymentViewController.alertManager = self.alertManager
     navigationController.present(sendPaymentViewController, animated: true)
   }
+
+
 }
