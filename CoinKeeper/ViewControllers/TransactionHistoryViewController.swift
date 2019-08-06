@@ -60,6 +60,7 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
   @IBOutlet var summaryCollectionView: TransactionHistorySummaryCollectionView!
   @IBOutlet var transactionHistoryNoBalanceView: TransactionHistoryNoBalanceView!
   @IBOutlet var transactionHistoryWithBalanceView: TransactionHistoryWithBalanceView!
+  @IBOutlet var lightningTransactionHistoryEmptyBalanceView: LightningTransactionHistoryEmptyView!
   @IBOutlet var refreshView: TransactionHistoryRefreshView!
   @IBOutlet var refreshViewTopConstraint: NSLayoutConstraint!
   @IBOutlet var footerView: UIView!
@@ -293,11 +294,11 @@ extension TransactionHistoryViewController: ExchangeRateUpdateable {
 
 extension TransactionHistoryViewController: DZNEmptyDataSetDelegate, DZNEmptyDataSetSource {
   func emptyDataSetShouldBeForced(toDisplay scrollView: UIScrollView!) -> Bool {
-    return shouldShowNoBalanceView || shouldShowWithBalanceView
+    return shouldShowNoBalanceView || shouldShowWithBalanceView || shouldShowLightningEmptyView
   }
 
   func emptyDataSetShouldDisplay(_ scrollView: UIScrollView!) -> Bool {
-    return shouldShowNoBalanceView || shouldShowWithBalanceView
+    return shouldShowNoBalanceView || shouldShowWithBalanceView || shouldShowLightningEmptyView
   }
 
   func emptyDataSetShouldAllowTouch(_ scrollView: UIScrollView!) -> Bool {
@@ -305,22 +306,31 @@ extension TransactionHistoryViewController: DZNEmptyDataSetDelegate, DZNEmptyDat
   }
 
   func customView(forEmptyDataSet scrollView: UIScrollView!) -> UIView! {
+    var view: UIView?
+
     if shouldShowNoBalanceView {
       transactionHistoryNoBalanceView.isHidden = false
-      return transactionHistoryNoBalanceView
-    }
-    if shouldShowWithBalanceView {
+      view = transactionHistoryNoBalanceView
+    } else if shouldShowWithBalanceView {
       transactionHistoryWithBalanceView.isHidden = false
-      return transactionHistoryWithBalanceView
+      view = transactionHistoryWithBalanceView
+    } else if shouldShowLightningEmptyView {
+      lightningTransactionHistoryEmptyBalanceView.isHidden = false
+      view = lightningTransactionHistoryEmptyBalanceView
     }
-    return nil
+
+    return view
+  }
+
+  private var shouldShowLightningEmptyView: Bool {
+    return (frc.fetchedObjects?.count ?? 0) == 0 && transactionType == .lightning
   }
 
   private var shouldShowNoBalanceView: Bool {
-    return (frc.fetchedObjects?.count ?? 0) == 0
+    return (frc.fetchedObjects?.count ?? 0) == 0 && transactionType == .onChain
   }
 
   private var shouldShowWithBalanceView: Bool {
-    return (frc.fetchedObjects?.count ?? 0) == 1
+    return (frc.fetchedObjects?.count ?? 0) == 1 && transactionType == .onChain
   }
 }

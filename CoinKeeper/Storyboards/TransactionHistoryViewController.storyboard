@@ -72,6 +72,7 @@
                     <connections>
                         <outlet property="footerView" destination="Lt8-y7-dfC" id="6Rh-i8-37p"/>
                         <outlet property="gradientBlurView" destination="Fsb-uW-qUJ" id="zaQ-fS-lfw"/>
+                        <outlet property="lightningTransactionHistoryEmptyBalanceView" destination="2ME-xd-Art" id="QTU-jR-ik7"/>
                         <outlet property="refreshView" destination="Av0-bG-xgJ" id="dNg-B0-57u"/>
                         <outlet property="refreshViewTopConstraint" destination="XAy-Ne-KPx" id="Itl-x4-z0W"/>
                         <outlet property="summaryCollectionView" destination="GX7-DA-6R2" id="WdE-Nn-Ajz"/>
@@ -194,6 +195,97 @@
                         <outlet property="getBitcoinButton" destination="Oj5-Ua-avq" id="BA1-n6-PaT"/>
                         <outlet property="learnAboutBitcoinButton" destination="hiW-0W-H8G" id="0zU-hd-8FC"/>
                         <outlet property="spendBitcoinButton" destination="hB7-Jf-4qE" id="2vX-FQ-PGZ"/>
+                    </connections>
+                </view>
+                <view contentMode="scaleToFill" id="2ME-xd-Art" customClass="LightningTransactionHistoryEmptyView" customModule="DropBit" customModuleProvider="target">
+                    <rect key="frame" x="0.0" y="0.0" width="317" height="221"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <subviews>
+                        <stackView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="3LZ-BY-qly">
+                            <rect key="frame" x="-3" y="113" width="320" height="80"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <subviews>
+                                <stackView opaque="NO" contentMode="scaleToFill" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="fLk-oG-lqR">
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="50"/>
+                                    <subviews>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QCm-fx-OKS">
+                                            <rect key="frame" x="0.0" y="0.0" width="80" height="50"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="50" id="HQm-5N-nH6"/>
+                                                <constraint firstAttribute="width" constant="80" id="ZW6-L6-00Z"/>
+                                            </constraints>
+                                            <state key="normal" title="$5"/>
+                                            <connections>
+                                                <action selector="fiveButtonWasTouched" destination="2ME-xd-Art" eventType="touchUpInside" id="SZ4-gH-zcy"/>
+                                            </connections>
+                                        </button>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IOh-Qi-xIR">
+                                            <rect key="frame" x="80" y="0.0" width="80" height="50"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="80" id="43x-o9-o8s"/>
+                                                <constraint firstAttribute="height" constant="50" id="5YB-7i-2wg"/>
+                                            </constraints>
+                                            <state key="normal" title="$20"/>
+                                            <connections>
+                                                <action selector="twentyButtonWasTouched" destination="2ME-xd-Art" eventType="touchUpInside" id="uzJ-Tc-hzf"/>
+                                            </connections>
+                                        </button>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="URI-ML-Wa5">
+                                            <rect key="frame" x="160" y="0.0" width="80" height="50"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="50" id="ahF-vd-REN"/>
+                                                <constraint firstAttribute="width" constant="80" id="knQ-xv-oG3"/>
+                                            </constraints>
+                                            <state key="normal" title="$50"/>
+                                            <connections>
+                                                <action selector="fiftyButtonWasTouched" destination="2ME-xd-Art" eventType="touchUpInside" id="O1X-hY-fWa"/>
+                                            </connections>
+                                        </button>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6dm-fF-XTb">
+                                            <rect key="frame" x="240" y="0.0" width="80" height="50"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="50" id="0PU-N2-Uhv"/>
+                                                <constraint firstAttribute="width" constant="80" id="mNn-nH-w3u"/>
+                                            </constraints>
+                                            <state key="normal" title="$100"/>
+                                            <connections>
+                                                <action selector="hundredButtonWasTouched" destination="2ME-xd-Art" eventType="touchUpInside" id="ALo-BI-6pP"/>
+                                            </connections>
+                                        </button>
+                                    </subviews>
+                                </stackView>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WNx-bS-Fag">
+                                    <rect key="frame" x="0.0" y="50" width="320" height="30"/>
+                                    <state key="normal" title="CUSTOM AMOUNT"/>
+                                    <connections>
+                                        <action selector="customAmountButtonWasTouched" destination="2ME-xd-Art" eventType="touchUpInside" id="Zib-uN-PXk"/>
+                                    </connections>
+                                </button>
+                            </subviews>
+                        </stackView>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="NOTHING'S HERE YET, LOAD YOUR LIGHTNING WALLET" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hTS-cT-5lo">
+                            <rect key="frame" x="0.0" y="11" width="317" height="53"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="OH, and we’ll cover the fees everytime you load " textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="U6u-c4-KH1">
+                            <rect key="frame" x="0.0" y="61" width="317" height="59"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <viewLayoutGuide key="safeArea" id="JBj-0H-M4c"/>
+                    <connections>
+                        <outlet property="customAmountButton" destination="WNx-bS-Fag" id="g4q-pP-Wt0"/>
+                        <outlet property="fiftyButton" destination="URI-ML-Wa5" id="xWA-El-xHp"/>
+                        <outlet property="fiveButton" destination="QCm-fx-OKS" id="5Ho-GH-UhE"/>
+                        <outlet property="hundredButton" destination="6dm-fF-XTb" id="Gi8-CE-Bqc"/>
+                        <outlet property="twentyButton" destination="IOh-Qi-xIR" id="EmI-AZ-KJU"/>
                     </connections>
                 </view>
             </objects>
