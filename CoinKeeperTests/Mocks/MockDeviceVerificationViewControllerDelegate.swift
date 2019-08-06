@@ -28,7 +28,10 @@ class MockDeviceVerificationViewControllerDelegate: DeviceVerificationViewContro
   }
 
   var codeWasEntered = false
-  func viewController(_ codeEntryViewController: DeviceVerificationViewController, didEnterCode code: String, completion: @escaping (Bool) -> Void) {
+  func viewController(_ codeEntryViewController: DeviceVerificationViewController,
+                      didEnterCode code: String,
+                      forUserId userId: String,
+                      completion: @escaping (Bool) -> Void) {
     codeWasEntered = true
     completion(code == expectedCode)
   }
