@@ -55,6 +55,9 @@
                                                     <constraint firstAttribute="width" constant="240" id="hQa-uD-7Sv"/>
                                                 </constraints>
                                                 <state key="normal" title="$5"/>
+                                                <connections>
+                                                    <action selector="fiveButtonWasTouched" destination="JLu-kU-fkG" eventType="touchUpInside" id="fyL-sq-ole"/>
+                                                </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="g6m-ry-AOy">
                                                 <rect key="frame" x="0.0" y="54" width="240" height="47"/>
@@ -62,6 +65,9 @@
                                                     <constraint firstAttribute="width" constant="240" id="9po-on-4zc"/>
                                                 </constraints>
                                                 <state key="normal" title="$20"/>
+                                                <connections>
+                                                    <action selector="twentyButtonWasTouched" destination="JLu-kU-fkG" eventType="touchUpInside" id="8eM-tV-mSg"/>
+                                                </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="y5V-in-O5v">
                                                 <rect key="frame" x="0.0" y="108" width="240" height="46.5"/>
@@ -69,6 +75,9 @@
                                                     <constraint firstAttribute="width" constant="240" id="Oei-Kv-P9f"/>
                                                 </constraints>
                                                 <state key="normal" title="$100"/>
+                                                <connections>
+                                                    <action selector="hundredButtonWasTouched" destination="JLu-kU-fkG" eventType="touchUpInside" id="tev-W6-S00"/>
+                                                </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MqO-ux-kO3">
                                                 <rect key="frame" x="0.0" y="161.5" width="240" height="47"/>
@@ -76,6 +85,9 @@
                                                     <constraint firstAttribute="width" constant="240" id="jW8-Pq-vg2"/>
                                                 </constraints>
                                                 <state key="normal" title="CUSTOM AMOUNT"/>
+                                                <connections>
+                                                    <action selector="customAmountButtonWasTouched" destination="JLu-kU-fkG" eventType="touchUpInside" id="FE2-xP-rlq"/>
+                                                </connections>
                                             </button>
                                         </subviews>
                                         <constraints>
@@ -110,6 +122,9 @@
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TOg-sC-2NK">
                                 <rect key="frame" x="141.5" y="693" width="131" height="30"/>
                                 <state key="normal" title="REMIND ME LATER"/>
+                                <connections>
+                                    <action selector="remindMeLaterButtonWasTouched" destination="JLu-kU-fkG" eventType="touchUpInside" id="Knr-JZ-WK6"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

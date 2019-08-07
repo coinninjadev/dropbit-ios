@@ -9,6 +9,14 @@
 import Foundation
 import UIKit
 
+protocol LightningRefillViewControllerDelegate: class {
+  func fiveButtonWasTouched()
+  func twentyButtonWasTouched()
+  func hundredButtonWasTouched()
+  func customAmountButtonWasTouched()
+  func remindMeLaterButtonWasTouched()
+}
+
 class LightningRefillViewController: BaseViewController {
 
   @IBOutlet var containerView: UIView!
@@ -21,6 +29,8 @@ class LightningRefillViewController: BaseViewController {
   @IBOutlet var hundredButton: UIButton!
   @IBOutlet var customAmountButton: UIButton!
   @IBOutlet var remindMeLaterButton: UIButton!
+
+  weak var delegate: LightningRefillViewControllerDelegate?
 
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -38,6 +48,8 @@ class LightningRefillViewController: BaseViewController {
     styleButton(twentyButton)
     styleButton(hundredButton)
 
+    containerView.applyCornerRadius(10)
+
     customAmountButton.setTitleColor(.white, for: .normal)
     remindMeLaterButton.setTitleColor(.white, for: .normal)
   }
@@ -47,5 +59,25 @@ class LightningRefillViewController: BaseViewController {
     button.backgroundColor = .white
     button.setTitleColor(.lightningBlue, for: .normal)
     button.titleLabel?.font = .medium(19)
+  }
+
+  @IBAction func fiveButtonWasTouched() {
+    delegate?.fiveButtonWasTouched()
+  }
+
+  @IBAction func twentyButtonWasTouched() {
+    delegate?.twentyButtonWasTouched()
+  }
+
+  @IBAction func hundredButtonWasTouched() {
+    delegate?.hundredButtonWasTouched()
+  }
+
+  @IBAction func customAmountButtonWasTouched() {
+    delegate?.customAmountButtonWasTouched()
+  }
+
+  @IBAction func remindMeLaterButtonWasTouched() {
+    delegate?.remindMeLaterButtonWasTouched()
   }
 }
