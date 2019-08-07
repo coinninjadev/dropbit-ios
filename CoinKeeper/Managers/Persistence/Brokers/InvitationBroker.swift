@@ -19,7 +19,7 @@ class InvitationBroker: CKPersistenceBroker, InvitationBrokerType {
   }
 
   func persistUnacknowledgedInvitation(withDTO outgoingDTO: OutgoingInvitationDTO,
-                                       acknowledgementId: String,
+                                       acknowledgmentId: String,
                                        in context: NSManagedObjectContext) {
     let contact = outgoingDTO.contact
 
