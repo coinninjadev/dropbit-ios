@@ -17,7 +17,7 @@ protocol LightningRefillViewControllerDelegate: class {
   func remindMeLaterButtonWasTouched()
 }
 
-class LightningRefillViewController: BaseViewController {
+class LightningRefillViewController: BaseViewController, StoryboardInitializable {
 
   @IBOutlet var containerView: UIView!
   @IBOutlet var lightningImageView: UIImageView!

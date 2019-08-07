@@ -556,6 +556,8 @@
 		A2E89208210A3BC10085631A /* CKPhoneNumberFormatterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2E89207210A3BC10085631A /* CKPhoneNumberFormatterTests.swift */; };
 		A2E9F70022D7C1BA00D4DBFD /* CKNumberFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A230F1C722D6852D0017BC7A /* CKNumberFormatter.swift */; };
 		A2FDC54122D37BFA004B0EDD /* Charts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A2FDC54022D37BFA004B0EDD /* Charts.framework */; };
+		A2FE198222FB0E5A00C2412D /* TryLightningViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2FE198122FB0E5A00C2412D /* TryLightningViewController.swift */; };
+		A2FE198422FB0F5C00C2412D /* TryLightningViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A2FE198322FB0F5C00C2412D /* TryLightningViewController.storyboard */; };
 		B501022221F2325B00D42A71 /* UIColor+Init.swift in Sources */ = {isa = PBXBuildFile; fileRef = B501022121F2325B00D42A71 /* UIColor+Init.swift */; };
 		B501022321F2333C00D42A71 /* UIColor+Init.swift in Sources */ = {isa = PBXBuildFile; fileRef = B501022121F2325B00D42A71 /* UIColor+Init.swift */; };
 		B50384C620B304780091AB37 /* CKNetworkError.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50384C520B304780091AB37 /* CKNetworkError.swift */; };
@@ -1504,6 +1506,8 @@
 		A2E52D8720BE3A3F00424E6A /* Data+HexString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data+HexString.swift"; sourceTree = "<group>"; };
 		A2E89207210A3BC10085631A /* CKPhoneNumberFormatterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CKPhoneNumberFormatterTests.swift; sourceTree = "<group>"; };
 		A2FDC54022D37BFA004B0EDD /* Charts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Charts.framework; path = Carthage/Build/iOS/Charts.framework; sourceTree = "<group>"; };
+		A2FE198122FB0E5A00C2412D /* TryLightningViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TryLightningViewController.swift; sourceTree = "<group>"; };
+		A2FE198322FB0F5C00C2412D /* TryLightningViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = TryLightningViewController.storyboard; sourceTree = "<group>"; };
 		AF53DB128FE9F7956F483AE6 /* Pods-DropBitUIDatabaseTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DropBitUIDatabaseTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-DropBitUIDatabaseTests/Pods-DropBitUIDatabaseTests.debug.xcconfig"; sourceTree = "<group>"; };
 		B501022121F2325B00D42A71 /* UIColor+Init.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Init.swift"; sourceTree = "<group>"; };
 		B50384C520B304780091AB37 /* CKNetworkError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CKNetworkError.swift; sourceTree = "<group>"; };
@@ -2707,6 +2711,7 @@
 				A246C82822CCF87500AF1F52 /* WalletOverviewViewController.swift */,
 				3BBDF7DF22E7372100E35EA0 /* TransactionHistoryDetailsViewController.swift */,
 				A2B4E6ED22FA476A00E24324 /* LightningRefillViewController.swift */,
+				A2FE198122FB0E5A00C2412D /* TryLightningViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -2755,6 +2760,7 @@
 				A2952F6322BA88EC00BDCE65 /* NewsViewController.storyboard */,
 				A246C82C22CCF8A000AF1F52 /* WalletOverviewViewController.storyboard */,
 				A2B4E6EF22FA488100E24324 /* LightningRefillViewController.storyboard */,
+				A2FE198322FB0F5C00C2412D /* TryLightningViewController.storyboard */,
 			);
 			path = Storyboards;
 			sourceTree = "<group>";
@@ -3668,6 +3674,7 @@
 				403B454B2075594F00DA53E9 /* Settings.bundle in Resources */,
 				3BC456FF20288D7300CC36B1 /* LaunchScreen.storyboard in Resources */,
 				3BCBFCB4229EADF400F633BA /* SupportViewController.storyboard in Resources */,
+				A2FE198422FB0F5C00C2412D /* TryLightningViewController.storyboard in Resources */,
 				3B7D1952229F167600C07FBE /* SettingSwitchCell.xib in Resources */,
 				3BC9E55C204D92AC00444A53 /* BackupRecoveryWordsCell.xib in Resources */,
 				5B91E3A22076C86400DD9A86 /* DrawerCell.xib in Resources */,
@@ -4247,6 +4254,7 @@
 				5B91E3A02076C85700DD9A86 /* DrawerCell.swift in Sources */,
 				3B4A9F2F21BEF55F0009CDF6 /* DatabaseMigratorFactory.swift in Sources */,
 				A230F1CA22DCB2F40017BC7A /* AppCoordinator+WalletOverviewViewControllerDelegate.swift in Sources */,
+				A2FE198222FB0E5A00C2412D /* TryLightningViewController.swift in Sources */,
 				B5D3BF0A222470420073A684 /* ManagedPhoneNumberInputs.swift in Sources */,
 				B58E781F217FB6C3000F9796 /* BadgeManager.swift in Sources */,
 				A2E52D6220BD937E00424E6A /* StringDictResponse.swift in Sources */,

@@ -13,7 +13,7 @@
         <!--Lightning Refill View Controller-->
         <scene sceneID="Rhb-Zd-Oqg">
             <objects>
-                <viewController id="JLu-kU-fkG" customClass="LightningRefillViewController" customModule="DropBit" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="LightningRefillViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="JLu-kU-fkG" customClass="LightningRefillViewController" customModule="DropBit" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" alpha="0.69999999999999996" contentMode="scaleToFill" id="DdE-sj-1F1">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
