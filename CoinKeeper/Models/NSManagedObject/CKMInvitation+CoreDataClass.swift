@@ -13,6 +13,94 @@ import CoreData
 @objc(CKMInvitation)
 public class CKMInvitation: NSManagedObject {
 
+  static let unacknowledgementPrefix = "UnacknowledgementId_"
+
+  convenience public init(withAddressRequestResponse response: WalletAddressRequestResponse,
+                          side: WalletAddressRequestSide,
+                          insertInto context: NSManagedObjectContext) {
+    self.init(insertInto: context)
+
+    self.id = response.id
+    self.btcAmount = response.metadata?.amount?.btc ?? 0
+    self.usdAmountAtTimeOfInvitation = response.metadata?.amount?.usd ?? 0
+    self.counterpartyName = nil
+    self.sentDate = response.createdAt
+    self.side = InvitationSide(requestSide: side)
+    let requestStatus = response.statusCase ?? .new
+    self.status = CKMInvitation.statusToPersist(for: requestStatus, side: side)
+
+    // Associate this invitation with phone number of the opposite side
+    let counterparty: MetadataParticipant?
+    switch side {
+    case .received: counterparty = response.metadata?.sender
+    case .sent:     counterparty = response.metadata?.receiver
+    }
+
+    // Associate this invitation with twitter contact of the opposite side
+    if let unwrappedCounterparty = counterparty, let type = UserIdentityType(rawValue: unwrappedCounterparty.type) {
+
+      switch type {
+      case .phone:
+        self.counterpartyPhoneNumber = counterparty.flatMap {
+          CKMPhoneNumber.findOrCreate(withMetadataParticipant: $0, in: context)
+        }
+      case .twitter:
+        self.counterpartyTwitterContact = counterparty.flatMap({ (participant: MetadataParticipant) -> CKMTwitterContact? in
+          let identity = UserIdentityBody(participant: participant)
+          var twitterContact = TwitterContact(twitterUser: identity.twitterUser())
+          twitterContact.kind = .registeredUser
+          let ckmTwitterContact = CKMTwitterContact.findOrCreate(with: twitterContact, in: context)
+          return ckmTwitterContact
+        })
+      }
+    }
+
+    self.setTxid(to: response.txid)
+  }
+
+  convenience public init(withOutgoingInvitationDTO outgoingDTO: OutgoingInvitationDTO,
+                          acknowledgmentId: String,
+                          insertInto context: NSManagedObjectContext) {
+    self.init(insertInto: context)
+    let contact = outgoingDTO.contact
+    id = CKMInvitation.unacknowledgementPrefix + acknowledgmentId
+    btcAmount = outgoingDTO.btcPair.btcAmount.asFractionalUnits(of: .BTC)
+    usdAmountAtTimeOfInvitation = outgoingDTO.btcPair.usdAmount.asFractionalUnits(of: .USD)
+    side = .sender
+    status = .notSent
+    counterpartyName = contact.displayName
+    setFlatFee(to: outgoingDTO.fee)
+
+    switch contact.identityType {
+    case .phone:
+      guard let phoneContact = contact as? PhoneContactType,
+        let inputs = ManagedPhoneNumberInputs(phoneNumber: phoneContact.globalPhoneNumber)
+        else { return }
+      counterpartyPhoneNumber = CKMPhoneNumber.findOrCreate(withInputs: inputs,
+                                                            phoneNumberHash: phoneContact.phoneNumberHash,
+                                                            in: context)
+    case.twitter:
+      guard let twitterContact = contact as? TwitterContactType else { return }
+      let managedTwitterContact = CKMTwitterContact.findOrCreate(with: twitterContact, in: context)
+      counterpartyTwitterContact = managedTwitterContact
+    }
+  }
+
+  var completed: Bool {
+    return status == .completed
+  }
+
+  var totalPendingAmount: Int {
+    return btcAmount + fees
+  }
+
+  var isFulfillable: Bool {
+    switch status {
+    case .completed, .canceled, .expired: return false
+    default: return true
+    }
+  }
+
   /// Use only for received address requests
   @discardableResult
   static func updateOrCreate(withReceivedAddressRequestResponse response: WalletAddressRequestResponse,
@@ -65,59 +153,6 @@ public class CKMInvitation: NSManagedObject {
     }
 
     return foundInvitation
-  }
-
-  static let unacknowledgementPrefix = "UnacknowledgementId_"
-
-  convenience public init(withAddressRequestResponse response: WalletAddressRequestResponse,
-                          side: WalletAddressRequestSide,
-                          insertInto context: NSManagedObjectContext) {
-    self.init(insertInto: context)
-
-    self.id = response.id
-    self.btcAmount = response.metadata?.amount?.btc ?? 0
-    self.usdAmountAtTimeOfInvitation = response.metadata?.amount?.usd ?? 0
-    self.counterpartyName = nil
-    self.sentDate = response.createdAt
-
-    let requestStatus = response.statusCase ?? .new
-    self.status = CKMInvitation.statusToPersist(for: requestStatus, side: side)
-
-    // Associate this invitation with phone number of the opposite side
-    let counterparty: MetadataParticipant?
-    switch side {
-    case .received: counterparty = response.metadata?.sender
-    case .sent:     counterparty = response.metadata?.receiver
-    }
-
-    // Associate this invitation with twitter contact of the opposite side
-    if let unwrappedCounterparty = counterparty, let type = UserIdentityType(rawValue: unwrappedCounterparty.type) {
-
-      switch type {
-      case .phone:
-        self.counterpartyPhoneNumber = counterparty.flatMap {
-          CKMPhoneNumber.findOrCreate(withMetadataParticipant: $0, in: context)
-        }
-      case .twitter:
-        self.counterpartyTwitterContact = counterparty.flatMap({ (participant: MetadataParticipant) -> CKMTwitterContact? in
-          let identity = UserIdentityBody(participant: participant)
-          var twitterContact = TwitterContact(twitterUser: identity.twitterUser())
-          twitterContact.kind = .registeredUser
-          let ckmTwitterContact = CKMTwitterContact.findOrCreate(with: twitterContact, in: context)
-          return ckmTwitterContact
-        })
-      }
-    }
-
-    self.setTxid(to: response.txid)
-  }
-
-  var completed: Bool {
-    return status == .completed
-  }
-
-  var totalPendingAmount: Int {
-    return btcAmount + fees
   }
 
   static func statusToPersist(for requestStatus: WalletAddressRequestStatus, side: WalletAddressRequestSide) -> InvitationStatus {
@@ -242,13 +277,6 @@ public class CKMInvitation: NSManagedObject {
     return results.compactMap { $0.addressProvidedToSender }
   }
 
-  var isFulfillable: Bool {
-    switch status {
-    case .completed, .canceled, .expired: return false
-    default: return true
-    }
-  }
-
 }
 
 extension CKMInvitation: AddressRequestUpdateDisplayable {
@@ -258,11 +286,6 @@ extension CKMInvitation: AddressRequestUpdateDisplayable {
 
   var addressRequestId: String {
     return self.id
-  }
-
-  var side: InvitationSide {
-    guard let tx = transaction else { return .sender }
-    return tx.isIncoming ? .receiver : .sender
   }
 
   var senderName: String? {
