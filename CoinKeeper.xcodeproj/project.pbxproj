@@ -733,6 +733,7 @@
 		B56512F62153DDA500A5D044 /* WalletCheckInTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56512F52153DDA500A5D044 /* WalletCheckInTarget.swift */; };
 		B56639CD22B151E400FA0EC3 /* TransactionShareable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56639CC22B151E400FA0EC3 /* TransactionShareable.swift */; };
 		B56639CF22B1944200FA0EC3 /* UIButton+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56639CE22B1944200FA0EC3 /* UIButton+Helpers.swift */; };
+		B566CB2222FB5A5A00648589 /* MigrateDatabaseV6toV7.swift in Sources */ = {isa = PBXBuildFile; fileRef = B566CB2122FB5A5A00648589 /* MigrateDatabaseV6toV7.swift */; };
 		B566ED7C219B3840001A65F5 /* AccessibleViewSettable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B566ED7B219B3840001A65F5 /* AccessibleViewSettable.swift */; };
 		B56788AD227A3C2C00A39534 /* GetBitcoinCopiedAddressViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B56788AC227A3C2C00A39534 /* GetBitcoinCopiedAddressViewController.storyboard */; };
 		B56788AF227A3C5600A39534 /* GetBitcoinCopiedAddressViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56788AE227A3C5600A39534 /* GetBitcoinCopiedAddressViewController.swift */; };
@@ -1665,6 +1666,7 @@
 		B56639CC22B151E400FA0EC3 /* TransactionShareable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionShareable.swift; sourceTree = "<group>"; };
 		B56639CE22B1944200FA0EC3 /* UIButton+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+Helpers.swift"; sourceTree = "<group>"; };
 		B566CB2022FB3F4A00648589 /* Model v7.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Model v7.xcdatamodel"; sourceTree = "<group>"; };
+		B566CB2122FB5A5A00648589 /* MigrateDatabaseV6toV7.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MigrateDatabaseV6toV7.swift; sourceTree = "<group>"; };
 		B566ED7B219B3840001A65F5 /* AccessibleViewSettable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessibleViewSettable.swift; sourceTree = "<group>"; };
 		B56788AC227A3C2C00A39534 /* GetBitcoinCopiedAddressViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = GetBitcoinCopiedAddressViewController.storyboard; sourceTree = "<group>"; };
 		B56788AE227A3C5600A39534 /* GetBitcoinCopiedAddressViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetBitcoinCopiedAddressViewController.swift; sourceTree = "<group>"; };
@@ -2023,6 +2025,7 @@
 				3B4A9F2E21BEF55F0009CDF6 /* DatabaseMigratorFactory.swift */,
 				3B80E27721BEEDD300F6EF17 /* MigrateDatabaseV1toV2.swift */,
 				3B23232D2248FEBC00514201 /* MigrateDatabaseV4Grooming.swift */,
+				B566CB2122FB5A5A00648589 /* MigrateDatabaseV6toV7.swift */,
 			);
 			path = Database;
 			sourceTree = "<group>";
@@ -4412,6 +4415,7 @@
 				3B6749E420AA5CA40032FE02 /* CKMVout+CoreDataProperties.swift in Sources */,
 				B5F6EC2522554CF20045633B /* TwilioErrorDelegate.swift in Sources */,
 				3B6E4D59206E533D00D9CFFA /* ApiKeys.generated.swift in Sources */,
+				B566CB2222FB5A5A00648589 /* MigrateDatabaseV6toV7.swift in Sources */,
 				B552EDEF211E33D000332BB5 /* ConnectionManager.swift in Sources */,
 				B56B63782200CDD300CCC153 /* CKMTransactionSharedPayload+CoreDataProperties.swift in Sources */,
 				3B7E2D572292EC7400891E4A /* SharedPayloadV2.swift in Sources */,
