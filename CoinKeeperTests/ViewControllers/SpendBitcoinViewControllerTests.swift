@@ -57,6 +57,7 @@ class SpendBitcoinViewControllerTests: XCTestCase {
   func testSpendOnlineButtonTellsCoordinator() {
     sut.spendOnlineButton.sendActions(for: .touchUpInside)
     XCTAssertTrue(mockCoordinator.wasAskedToSpendBitcoinOnline)
+    XCTAssertTrue(mockCoordinator.wasAskedToSuspendAuthentication)
   }
 
   func testSpendGiftCardsTellsCoordinator() {

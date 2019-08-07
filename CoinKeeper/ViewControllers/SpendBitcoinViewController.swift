@@ -63,6 +63,7 @@ final class SpendBitcoinViewController: BaseViewController, StoryboardInitializa
   }
 
   @IBAction func spendBitcoinOnline(_ sender: Any) {
+    coordinationDelegate?.viewControllerRequestedAuthenticationSuspension(self)
     coordinationDelegate?.viewControllerSpendBitcoinOnline(self)
   }
 }
