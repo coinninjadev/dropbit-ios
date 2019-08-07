@@ -59,7 +59,7 @@ public class CKMTransaction: NSManagedObject {
 
       // vins
       let vinArray = txResponse.vinResponses.map { (vinResponse: TransactionVinResponse) -> CKMVin in
-        let vin = CKMVin.findOrCreate(with: vinResponse, newTxid: txResponse.txid, in: context, fullSync: fullSync)
+        let vin = CKMVin.findOrCreate(with: vinResponse, in: context, fullSync: fullSync)
         vin.transaction = self
         return vin
       }

@@ -130,3 +130,22 @@ struct TransactionVinResponse: ResponseDecodable {
     """
   }
 }
+
+extension TransactionVinResponse {
+
+  static var coinbasePrefix: String {
+    return "Coinbase_"
+  }
+
+  var transactionIsCoinbase: Bool {
+    return txid.filter { $0 != "0" }.isEmpty
+  }
+
+  var uniqueTxid: String {
+    if transactionIsCoinbase {
+      return TransactionVinResponse.coinbasePrefix + (currentTxid ?? "")
+    } else {
+      return txid
+    }
+  }
+}

@@ -13,11 +13,8 @@ import CoreData
 @objc(CKMVin)
 public class CKMVin: NSManagedObject {
 
-  static let coinbasePrefix = "Coinbase_"
-
   static func findOrCreate(
     with response: TransactionVinResponse,
-    newTxid: String,
     in context: NSManagedObjectContext,
     fullSync: Bool) -> CKMVin {
 
@@ -31,28 +28,23 @@ public class CKMVin: NSManagedObject {
         if let foundVin = try context.fetch(fetchRequest).first {
           vin = foundVin
           if fullSync {
-            vin.configure(with: response, newTxid: newTxid, in: context)
+            vin.configure(with: response, in: context)
           }
         } else {
           vin = CKMVin(insertInto: context)
-          vin.configure(with: response, newTxid: newTxid, in: context)
+          vin.configure(with: response, in: context)
         }
       } catch {
         vin = CKMVin(insertInto: context)
-        vin.configure(with: response, newTxid: newTxid, in: context)
+        vin.configure(with: response, in: context)
       }
     }
 
     return vin
   }
 
-  func configure(with vinResponse: TransactionVinResponse, newTxid: String, in context: NSManagedObjectContext) {
-    let transactionIsCoinbase = vinResponse.txid.filter { $0 != "0" }.isEmpty
-    if transactionIsCoinbase {
-      previousTxid = CKMVin.coinbasePrefix + newTxid
-    } else {
-      previousTxid = vinResponse.txid
-    }
+  func configure(with vinResponse: TransactionVinResponse, in context: NSManagedObjectContext) {
+    previousTxid = vinResponse.uniqueTxid
     previousVoutIndex = vinResponse.vout
     amount = vinResponse.value
     addressIDs = vinResponse.addresses
