@@ -15,6 +15,12 @@ protocol Migratable {
   func migrate()
 }
 
+extension Migratable {
+  var description: String {
+    return String(describing: self)
+  }
+}
+
 enum DatabaseMigrationVersion: String {
   case v1tov2
   case v4Grooming
