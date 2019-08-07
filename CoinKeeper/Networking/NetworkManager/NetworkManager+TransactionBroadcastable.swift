@@ -49,7 +49,7 @@ extension NetworkManager: TransactionBroadcastable {
     let txMetadata = transactionBuilder.generateTxMetadata(with: transactionData, wallet: walletCopy)
 
     #if DEBUG
-      return broadcastTestnetTx(with: txMetadata)
+      return broadcastRegtestTx(with: txMetadata)
     #else
       return broadcastMainnetTx(with: txMetadata)
     #endif
@@ -104,8 +104,8 @@ extension NetworkManager: TransactionBroadcastable {
     }
   }
 
-  private func broadcastTestnetTx(with transactionMetadata: CNBTransactionMetadata) -> Promise<String> {
-    return cnProvider.request(BroadcastTarget.sendRawTransaction(transactionMetadata.encodedTx))
+  private func broadcastRegtestTx(with transactionMetadata: CNBTransactionMetadata) -> Promise<String> {
+    return cnProvider.requestVoid(BroadcastTarget.sendRawTransaction(transactionMetadata.encodedTx))
       .map { _ in return transactionMetadata.txid }
   }
 
