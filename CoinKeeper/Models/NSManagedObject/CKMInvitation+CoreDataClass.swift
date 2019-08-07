@@ -63,26 +63,26 @@ public class CKMInvitation: NSManagedObject {
                           insertInto context: NSManagedObjectContext) {
     self.init(insertInto: context)
     let contact = outgoingDTO.contact
-    id = CKMInvitation.unacknowledgementPrefix + acknowledgmentId
-    btcAmount = outgoingDTO.btcPair.btcAmount.asFractionalUnits(of: .BTC)
-    usdAmountAtTimeOfInvitation = outgoingDTO.btcPair.usdAmount.asFractionalUnits(of: .USD)
-    side = .sender
-    status = .notSent
-    counterpartyName = contact.displayName
-    setFlatFee(to: outgoingDTO.fee)
+    self.id = CKMInvitation.unacknowledgementPrefix + acknowledgmentId
+    self.btcAmount = outgoingDTO.btcPair.btcAmount.asFractionalUnits(of: .BTC)
+    self.usdAmountAtTimeOfInvitation = outgoingDTO.btcPair.usdAmount.asFractionalUnits(of: .USD)
+    self.side = .sender
+    self.status = .notSent
+    self.counterpartyName = contact.displayName
+    self.setFlatFee(to: outgoingDTO.fee)
 
     switch contact.identityType {
     case .phone:
       guard let phoneContact = contact as? PhoneContactType,
         let inputs = ManagedPhoneNumberInputs(phoneNumber: phoneContact.globalPhoneNumber)
         else { return }
-      counterpartyPhoneNumber = CKMPhoneNumber.findOrCreate(withInputs: inputs,
+      self.counterpartyPhoneNumber = CKMPhoneNumber.findOrCreate(withInputs: inputs,
                                                             phoneNumberHash: phoneContact.phoneNumberHash,
                                                             in: context)
     case.twitter:
       guard let twitterContact = contact as? TwitterContactType else { return }
       let managedTwitterContact = CKMTwitterContact.findOrCreate(with: twitterContact, in: context)
-      counterpartyTwitterContact = managedTwitterContact
+      self.counterpartyTwitterContact = managedTwitterContact
     }
   }
 
