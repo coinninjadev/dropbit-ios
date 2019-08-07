@@ -62,6 +62,7 @@ class SpendBitcoinViewControllerTests: XCTestCase {
   func testSpendGiftCardsTellsCoordinator() {
     sut.collectionView(sut.cardCollectionView, didSelectItemAt: IndexPath(item: 0, section: 0))
     XCTAssertTrue(mockCoordinator.wasAskedToSpendGiftCards)
+    XCTAssertTrue(mockCoordinator.wasAskedToSuspendAuthentication)
   }
 }
 
@@ -79,5 +80,11 @@ class MockSpendBitcoinViewControllerDelegate: SpendBitcoinViewControllerDelegate
   var wasAskedToSpendBitcoinOnline = false
   func viewControllerSpendBitcoinOnline(_ viewController: SpendBitcoinViewController) {
     wasAskedToSpendBitcoinOnline = true
+  }
+
+  var suspendAuthenticationOnceUntil: Date?
+  var wasAskedToSuspendAuthentication = false
+  func viewControllerRequestedAuthenticationSuspension(_ viewController: UIViewController) {
+    wasAskedToSuspendAuthentication = true
   }
 }

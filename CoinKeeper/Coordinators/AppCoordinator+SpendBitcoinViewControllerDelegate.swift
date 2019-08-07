@@ -36,6 +36,6 @@ extension AppCoordinator: SpendBitcoinViewControllerDelegate {
   func viewControllerSpendGiftCards(_ viewController: SpendBitcoinViewController) {
     analyticsManager.track(event: .spendOnGiftCards, with: nil)
     guard let url = CoinNinjaUrlFactory.buildUrl(for: .spendBitcoinGiftCards) else { return }
-    openURL(url, completionHandler: nil)
+    openURLExternally(url, completionHandler: nil)
   }
 }
