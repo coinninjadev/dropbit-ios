@@ -56,6 +56,9 @@
                                                     <constraint firstAttribute="width" constant="240" id="ypz-HU-7WH"/>
                                                 </constraints>
                                                 <state key="normal" title="YES, USE LIGHTNING"/>
+                                                <connections>
+                                                    <action selector="yesButtonWasTouched" destination="kWQ-ty-vkV" eventType="touchUpInside" id="qjE-sd-aQ4"/>
+                                                </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vDC-wY-i8a">
                                                 <rect key="frame" x="8.5" y="66" width="240" height="30"/>
@@ -63,6 +66,9 @@
                                                     <constraint firstAttribute="width" constant="240" id="xBu-IK-A7r"/>
                                                 </constraints>
                                                 <state key="normal" title="NOT THIS TIME"/>
+                                                <connections>
+                                                    <action selector="noButtonWasTouched" destination="kWQ-ty-vkV" eventType="touchUpInside" id="caL-Lb-6rw"/>
+                                                </connections>
                                             </button>
                                         </subviews>
                                         <constraints>
@@ -82,7 +88,7 @@
                                 </constraints>
                             </view>
                         </subviews>
-                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="a1M-ua-vUH" firstAttribute="centerX" secondItem="2Od-VI-wr8" secondAttribute="centerX" id="ggi-VQ-hbU"/>
                             <constraint firstItem="a1M-ua-vUH" firstAttribute="centerY" secondItem="2Od-VI-wr8" secondAttribute="centerY" id="o5f-0U-KVV"/>

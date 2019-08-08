@@ -269,19 +269,35 @@ extension AppCoordinator: ViewControllerSendingDelegate {
                                   currencyPair: CurrencyPair,
                                   feeModel: ConfirmTransactionFeeModel,
                                   rates: ExchangeRates) {
-    let viewModel = ConfirmPaymentViewModel(address: address,
-                                            contact: contact,
-                                            btcAmount: btcAmount,
-                                            currencyPair: currencyPair,
-                                            exchangeRates: rates,
-                                            outgoingTransactionData: dto)
 
-    let confirmPayVC = ConfirmPaymentViewController.newInstance(type: .payment,
-                                                                viewModel: viewModel,
-                                                                feeModel: feeModel,
-                                                                delegate: self)
+    let isLightningConvertible = true //TODO
 
-    self.navigationController.present(confirmPayVC, animated: true)
+    let displayLightningPaymentViewController: () -> Void = {}
+
+    let displayConfirmPaymentViewController: () -> Void = {
+      let viewModel = ConfirmPaymentViewModel(address: address,
+                                              contact: contact,
+                                              btcAmount: btcAmount,
+                                              currencyPair: currencyPair,
+                                              exchangeRates: rates,
+                                              outgoingTransactionData: dto)
+
+      let confirmPayVC = ConfirmPaymentViewController.newInstance(type: .payment,
+                                                                  viewModel: viewModel,
+                                                                  feeModel: feeModel,
+                                                                  delegate: self)
+
+      self.navigationController.present(confirmPayVC, animated: true)
+    }
+
+    if isLightningConvertible {
+      let tryLightningViewController = TryLightningViewController.newInstance(yesCompletionHandler: displayLightningPaymentViewController,
+                                                                              noCompletionHandler: displayConfirmPaymentViewController)
+      navigationController.present(tryLightningViewController, animated: true)
+    } else {
+      displayConfirmPaymentViewController()
+    }
+
   }
 
   struct UsableFeeRates {
@@ -354,17 +370,31 @@ extension AppCoordinator: ViewControllerSendingDelegate {
           .map { .adjustable($0) }
       }
       .done(on: .main) { (feeModel: ConfirmTransactionFeeModel) -> Void in
-        let viewModel = ConfirmPaymentInviteViewModel(address: nil,
-                                                      contact: contact,
-                                                      btcAmount: btcAmount,
-                                                      currencyPair: currencyPair,
-                                                      exchangeRates: rates,
-                                                      sharedPayloadDTO: sharedPayload)
-        let confirmPayVC = ConfirmPaymentViewController.newInstance(type: .invite,
-                                                                    viewModel: viewModel,
-                                                                    feeModel: feeModel,
-                                                                    delegate: self)
-        self.navigationController.present(confirmPayVC, animated: true)
+        let isLightningConvertible = true //TODO
+
+        let displayLightningPaymentViewController: () -> Void = {}
+
+        let displayConfirmPaymentViewController: () -> Void = {
+          let viewModel = ConfirmPaymentInviteViewModel(address: nil,
+                                                        contact: contact,
+                                                        btcAmount: btcAmount,
+                                                        currencyPair: currencyPair,
+                                                        exchangeRates: rates,
+                                                        sharedPayloadDTO: sharedPayload)
+          let confirmPayVC = ConfirmPaymentViewController.newInstance(type: .invite,
+                                                                      viewModel: viewModel,
+                                                                      feeModel: feeModel,
+                                                                      delegate: self)
+          self.navigationController.present(confirmPayVC, animated: true)
+        }
+
+        if isLightningConvertible {
+          let tryLightningViewController = TryLightningViewController.newInstance(yesCompletionHandler: displayLightningPaymentViewController,
+                                                                                  noCompletionHandler: displayConfirmPaymentViewController)
+          self.navigationController.present(tryLightningViewController, animated: true)
+        } else {
+          displayConfirmPaymentViewController()
+        }
       }
       .catch(on: .main) { [weak self] error in
         guard let strongSelf = self else { return }

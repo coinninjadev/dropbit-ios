@@ -9,11 +9,6 @@
 import Foundation
 import UIKit
 
-protocol TryLightningViewControllerDelegate: class {
-  func yesButtonWasTouched()
-  func noButtonWasTouched()
-}
-
 class TryLightningViewController: BaseViewController, StoryboardInitializable {
 
   @IBOutlet var containerView: UIView!
@@ -23,10 +18,24 @@ class TryLightningViewController: BaseViewController, StoryboardInitializable {
   @IBOutlet var yesButton: UIButton!
   @IBOutlet var noButton: UIButton!
 
-  weak var delegate: TryLightningViewControllerDelegate?
+  static func newInstance(yesCompletionHandler completion: @escaping () -> Void,
+                          noCompletionHandler noCompletion: @escaping () -> Void) -> TryLightningViewController {
+    let tryLightningViewController = TryLightningViewController.makeFromStoryboard()
+    tryLightningViewController.yesCompletion = completion
+    tryLightningViewController.noCompletion = noCompletion
+    tryLightningViewController.modalPresentationStyle = .overFullScreen
+    tryLightningViewController.modalTransitionStyle = .crossDissolve
+    return tryLightningViewController
+  }
+
+  private var yesCompletion: (() -> Void)?
+  private var noCompletion: (() -> Void)?
 
   override func viewDidLoad() {
     super.viewDidLoad()
+
+    view.isOpaque = false
+    view.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.85)
 
     titleLabel.font = .medium(19)
     titleLabel.textColor = .white
@@ -44,12 +53,14 @@ class TryLightningViewController: BaseViewController, StoryboardInitializable {
     noButton.setTitleColor(.white, for: .normal)
   }
 
-  @IBAction func fiveButtonWasTouched() {
-    delegate?.noButtonWasTouched()
+  @IBAction func noButtonWasTouched() {
+    dismiss(animated: true, completion: nil)
+    noCompletion?()
   }
 
   @IBAction func yesButtonWasTouched() {
-    delegate?.yesButtonWasTouched()
+    dismiss(animated: true, completion: nil)
+    yesCompletion?()
   }
 
 }
