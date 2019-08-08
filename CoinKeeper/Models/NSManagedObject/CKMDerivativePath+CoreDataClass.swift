@@ -62,6 +62,15 @@ public class CKMDerivativePath: NSManagedObject {
       in: context)
   }
 
+  static func findAll(in context: NSManagedObjectContext) -> [CKMDerivativePath] {
+    let fetchRequest = CKMDerivativePath.fetchRequest() as NSFetchRequest<CKMDerivativePath>
+    do {
+      return try context.fetch(fetchRequest)
+    } catch {
+      return []
+    }
+  }
+
   static func findOrCreate(withIndex receiveIndex: Int, in context: NSManagedObjectContext) -> CKMDerivativePath {
     return findOrCreate(with: 49, relevantCoin, 0, 0, receiveIndex, in: context)
   }
