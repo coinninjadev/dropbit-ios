@@ -32,16 +32,14 @@
                                             <constraint firstAttribute="height" constant="45" id="d65-G2-0x4"/>
                                         </constraints>
                                     </imageView>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="YOUR LIGHTNING WALLET IS RUNNING LOW ON FUNDS" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8vI-GR-8YL">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="YOUR LIGHTNING WALLET IS RUNNING LOW ON FUNDS" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8vI-GR-8YL">
                                         <rect key="frame" x="27" y="96" width="263" height="41"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="DropBit will pay all the newtwork  fees to reload your wallet!" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="z3w-ju-Erj">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="DropBit will pay all the newtwork  fees to reload your wallet!" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="z3w-ju-Erj">
                                         <rect key="frame" x="32.5" y="155" width="252.5" height="41"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
@@ -81,7 +79,13 @@
                                     <constraint firstItem="uUB-Zu-3zd" firstAttribute="centerX" secondItem="a1M-ua-vUH" secondAttribute="centerX" id="5S0-QY-BR8"/>
                                     <constraint firstItem="Xg6-z5-3nk" firstAttribute="leading" secondItem="a1M-ua-vUH" secondAttribute="leading" constant="30" id="6DG-JX-v6V"/>
                                     <constraint firstItem="uUB-Zu-3zd" firstAttribute="top" secondItem="a1M-ua-vUH" secondAttribute="top" constant="35" id="GhO-ze-YwS"/>
+                                    <constraint firstAttribute="trailing" secondItem="z3w-ju-Erj" secondAttribute="trailing" constant="32" id="Sse-g3-vJ2"/>
+                                    <constraint firstAttribute="trailing" secondItem="8vI-GR-8YL" secondAttribute="trailing" constant="27" id="VXH-pu-9V8"/>
+                                    <constraint firstItem="z3w-ju-Erj" firstAttribute="top" secondItem="8vI-GR-8YL" secondAttribute="bottom" constant="18" id="dPz-XJ-1OP"/>
+                                    <constraint firstItem="z3w-ju-Erj" firstAttribute="leading" secondItem="a1M-ua-vUH" secondAttribute="leading" constant="32.5" id="e56-px-Wcj"/>
                                     <constraint firstAttribute="width" constant="317" id="hvi-HS-gLW"/>
+                                    <constraint firstItem="8vI-GR-8YL" firstAttribute="top" secondItem="uUB-Zu-3zd" secondAttribute="bottom" constant="16" id="lCh-MC-0Nu"/>
+                                    <constraint firstItem="8vI-GR-8YL" firstAttribute="leading" secondItem="a1M-ua-vUH" secondAttribute="leading" constant="27" id="pBf-7K-f3S"/>
                                     <constraint firstAttribute="height" constant="335" id="ui4-sC-P8g"/>
                                     <constraint firstAttribute="trailing" secondItem="Xg6-z5-3nk" secondAttribute="trailing" constant="30" id="vcE-FT-F48"/>
                                     <constraint firstAttribute="bottom" secondItem="Xg6-z5-3nk" secondAttribute="bottom" constant="20" id="wnK-hk-ckj"/>
