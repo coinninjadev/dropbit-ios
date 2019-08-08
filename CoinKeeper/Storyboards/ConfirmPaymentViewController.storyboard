@@ -178,7 +178,7 @@
                                     <constraint firstAttribute="trailing" secondItem="roB-NU-sqW" secondAttribute="trailing" constant="8" id="7Q3-am-WAE"/>
                                     <constraint firstItem="roB-NU-sqW" firstAttribute="centerY" secondItem="Pt1-HH-1gH" secondAttribute="centerY" constant="4" id="V6w-tU-VuY"/>
                                     <constraint firstAttribute="height" priority="900" constant="64" id="ZZp-2O-nMJ"/>
-                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="30" id="fMz-lP-n2f"/>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="24" id="fMz-lP-n2f"/>
                                     <constraint firstItem="roB-NU-sqW" firstAttribute="top" relation="greaterThanOrEqual" secondItem="Pt1-HH-1gH" secondAttribute="top" id="pNm-Rd-ZS4"/>
                                     <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="roB-NU-sqW" secondAttribute="bottom" id="qWy-Jf-qzg"/>
                                 </constraints>
