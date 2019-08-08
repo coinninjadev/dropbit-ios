@@ -21,6 +21,7 @@ class AbstractMigrationWorker {
     for migrator in migrators {
       if !migrator.isMigrated() {
         migrator.migrate()
+        log.event("Did perform migration: \(migrator.description)")
       }
     }
   }

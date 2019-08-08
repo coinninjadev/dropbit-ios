@@ -16,7 +16,8 @@ struct DatabaseMigratorFactory {
   func migrators() -> [Migratable] {
     let v1tov2 = MigrateDatabaseV1toV2(persistenceManager: persistenceManager, addressDataSource: addressDataSource, context: context)
     let v4Grooming = MigrateDatabaseV4Grooming(persistenceManager: persistenceManager, context: context)
+    let v6tov7 = MigrateDatabaseV6toV7(persistenceManager: persistenceManager, context: context)
 
-    return [v1tov2, v4Grooming]
+    return [v1tov2, v4Grooming, v6tov7]
   }
 }

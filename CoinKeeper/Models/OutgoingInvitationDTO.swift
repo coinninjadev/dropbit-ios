@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct OutgoingInvitationDTO {
+public struct OutgoingInvitationDTO {
   let contact: ContactType
   let btcPair: BitcoinUSDPair
   let fee: Int // in satoshis
