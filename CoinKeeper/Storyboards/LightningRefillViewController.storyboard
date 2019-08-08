@@ -21,7 +21,10 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pgb-hO-Hsi">
                                 <rect key="frame" x="48.5" y="218" width="317" height="460"/>
                                 <subviews>
-                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="flashIcon" translatesAutoresizingMaskIntoConstraints="NO" id="vN7-Ze-6sM">
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="blueBackground" translatesAutoresizingMaskIntoConstraints="NO" id="AoJ-IC-Un1">
+                                        <rect key="frame" x="0.0" y="0.0" width="317" height="460"/>
+                                    </imageView>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="blueFlashIcon" translatesAutoresizingMaskIntoConstraints="NO" id="vN7-Ze-6sM">
                                         <rect key="frame" x="136" y="37" width="45" height="45"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="45" id="FjC-jj-Ihy"/>
@@ -105,8 +108,11 @@
                                 <constraints>
                                     <constraint firstItem="vN7-Ze-6sM" firstAttribute="top" secondItem="pgb-hO-Hsi" secondAttribute="top" constant="37" id="2oc-0h-KSK"/>
                                     <constraint firstItem="qNk-65-bJM" firstAttribute="leading" secondItem="pgb-hO-Hsi" secondAttribute="leading" constant="27" id="7dl-wq-IG0"/>
+                                    <constraint firstItem="AoJ-IC-Un1" firstAttribute="leading" secondItem="pgb-hO-Hsi" secondAttribute="leading" id="9Wh-H9-3io"/>
                                     <constraint firstItem="sd1-ew-AES" firstAttribute="centerX" secondItem="pgb-hO-Hsi" secondAttribute="centerX" id="AUW-MO-e54"/>
+                                    <constraint firstAttribute="bottom" secondItem="AoJ-IC-Un1" secondAttribute="bottom" id="D5m-TC-CYb"/>
                                     <constraint firstAttribute="width" constant="317" id="F1F-JW-vtH"/>
+                                    <constraint firstAttribute="trailing" secondItem="AoJ-IC-Un1" secondAttribute="trailing" id="Par-pQ-tui"/>
                                     <constraint firstAttribute="height" constant="460" id="SSc-Ed-TKz"/>
                                     <constraint firstItem="xiz-9K-55K" firstAttribute="centerX" secondItem="pgb-hO-Hsi" secondAttribute="centerX" id="SvK-K9-iIp"/>
                                     <constraint firstItem="qNk-65-bJM" firstAttribute="top" secondItem="vN7-Ze-6sM" secondAttribute="bottom" constant="14" id="Tp7-Bv-SOy"/>
@@ -114,6 +120,7 @@
                                     <constraint firstItem="xiz-9K-55K" firstAttribute="top" secondItem="qNk-65-bJM" secondAttribute="bottom" constant="18" id="bAO-O9-IcZ"/>
                                     <constraint firstItem="hZe-YE-rNt" firstAttribute="centerX" secondItem="pgb-hO-Hsi" secondAttribute="centerX" id="bMC-Qr-wf6"/>
                                     <constraint firstItem="hZe-YE-rNt" firstAttribute="top" secondItem="xiz-9K-55K" secondAttribute="bottom" constant="12" id="eoH-QU-8Fh"/>
+                                    <constraint firstItem="AoJ-IC-Un1" firstAttribute="top" secondItem="pgb-hO-Hsi" secondAttribute="top" id="i8l-4C-Hou"/>
                                     <constraint firstAttribute="trailing" secondItem="qNk-65-bJM" secondAttribute="trailing" constant="27" id="mbd-vF-G27"/>
                                     <constraint firstAttribute="bottom" secondItem="sd1-ew-AES" secondAttribute="bottom" constant="15" id="rCn-Cs-bLw"/>
                                     <constraint firstItem="vN7-Ze-6sM" firstAttribute="centerX" secondItem="pgb-hO-Hsi" secondAttribute="centerX" id="unQ-ni-fVk"/>
@@ -155,6 +162,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="flashIcon" width="14" height="19"/>
+        <image name="blueBackground" width="317" height="521"/>
+        <image name="blueFlashIcon" width="32" height="46"/>
     </resources>
 </document>

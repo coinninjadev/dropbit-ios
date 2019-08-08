@@ -37,7 +37,7 @@ class TryLightningViewController: BaseViewController, StoryboardInitializable {
     yesButton.applyCornerRadius(4)
     yesButton.backgroundColor = .white
     yesButton.setTitleColor(.lightningBlue, for: .normal)
-    yesButton.titleLabel?.font = .medium(19)
+    yesButton.titleLabel?.font = .medium(16)
 
     containerView.applyCornerRadius(10)
 

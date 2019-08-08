@@ -21,7 +21,11 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="a1M-ua-vUH">
                                 <rect key="frame" x="48.5" y="280.5" width="317" height="335"/>
                                 <subviews>
-                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="flashIcon" translatesAutoresizingMaskIntoConstraints="NO" id="uUB-Zu-3zd">
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="blueBackground" translatesAutoresizingMaskIntoConstraints="NO" id="cKg-Qm-ejq">
+                                        <rect key="frame" x="0.0" y="0.0" width="317" height="335"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    </imageView>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="blueFlashIcon" translatesAutoresizingMaskIntoConstraints="NO" id="uUB-Zu-3zd">
                                         <rect key="frame" x="136" y="35" width="45" height="45"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="45" id="Usj-uu-Ehw"/>
@@ -43,26 +47,26 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="Xg6-z5-3nk">
-                                        <rect key="frame" x="30" y="240" width="257" height="75"/>
+                                        <rect key="frame" x="30" y="219" width="257" height="96"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EsU-ZC-DYh">
-                                                <rect key="frame" x="8.5" y="0.0" width="240" height="30"/>
+                                                <rect key="frame" x="8.5" y="0.0" width="240" height="51"/>
                                                 <constraints>
+                                                    <constraint firstAttribute="height" constant="51" id="SQR-Iz-2o4"/>
                                                     <constraint firstAttribute="width" constant="240" id="ypz-HU-7WH"/>
                                                 </constraints>
                                                 <state key="normal" title="YES, USE LIGHTNING"/>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vDC-wY-i8a">
-                                                <rect key="frame" x="8.5" y="45" width="240" height="30"/>
+                                                <rect key="frame" x="8.5" y="66" width="240" height="30"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="240" id="xBu-IK-A7r"/>
                                                 </constraints>
-                                                <state key="normal" title="$20"/>
+                                                <state key="normal" title="NOT THIS TIME"/>
                                             </button>
                                         </subviews>
                                         <constraints>
                                             <constraint firstItem="vDC-wY-i8a" firstAttribute="width" secondItem="EsU-ZC-DYh" secondAttribute="width" id="ZoH-mg-DhB"/>
-                                            <constraint firstItem="vDC-wY-i8a" firstAttribute="height" secondItem="EsU-ZC-DYh" secondAttribute="height" id="yrL-TY-x0I"/>
                                         </constraints>
                                     </stackView>
                                 </subviews>
@@ -96,10 +100,11 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3cq-6T-0kC" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-51" y="150"/>
+            <point key="canvasLocation" x="-52.173913043478265" y="150"/>
         </scene>
     </scenes>
     <resources>
-        <image name="flashIcon" width="14" height="19"/>
+        <image name="blueBackground" width="317" height="521"/>
+        <image name="blueFlashIcon" width="32" height="46"/>
     </resources>
 </document>
