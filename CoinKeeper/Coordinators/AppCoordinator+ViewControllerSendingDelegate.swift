@@ -291,8 +291,10 @@ extension AppCoordinator: ViewControllerSendingDelegate {
     }
 
     if isLightningConvertible {
-      let tryLightningViewController = TryLightningViewController.newInstance(yesCompletionHandler: displayLightningPaymentViewController,
-                                                                              noCompletionHandler: displayConfirmPaymentViewController)
+      //let tryLightningViewController = TryLightningViewController.newInstance(yesCompletionHandler: displayLightningPaymentViewController,
+                                                                              //noCompletionHandler: displayConfirmPaymentViewController)
+
+      let tryLightningViewController = LightningRefillViewController.newInstance()
       navigationController.present(tryLightningViewController, animated: true)
     } else {
       displayConfirmPaymentViewController()

@@ -29,8 +29,16 @@ class LightningRefillViewController: BaseViewController, StoryboardInitializable
   @IBOutlet var hundredButton: UIButton!
   @IBOutlet var customAmountButton: UIButton!
   @IBOutlet var remindMeLaterButton: UIButton!
+  @IBOutlet var dontAskMeAgainButton: UIButton!
 
   weak var delegate: LightningRefillViewControllerDelegate?
+
+  static func newInstance() -> LightningRefillViewController {
+    let viewController = LightningRefillViewController.makeFromStoryboard()
+    viewController.modalPresentationStyle = .overFullScreen
+    viewController.modalTransitionStyle = .crossDissolve
+    return viewController
+  }
 
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -50,18 +58,19 @@ class LightningRefillViewController: BaseViewController, StoryboardInitializable
     styleButton(fiveButton)
     styleButton(twentyButton)
     styleButton(hundredButton)
+    styleButton(customAmountButton)
 
     containerView.applyCornerRadius(10)
 
-    customAmountButton.setTitleColor(.white, for: .normal)
-    remindMeLaterButton.setTitleColor(.white, for: .normal)
+    remindMeLaterButton.setTitleColor(.neonGreen, for: .normal)
+    dontAskMeAgainButton.setTitleColor(.white, for: .normal)
   }
 
   private func styleButton(_ button: UIButton) {
     button.applyCornerRadius(4)
     button.backgroundColor = .white
     button.setTitleColor(.lightningBlue, for: .normal)
-    button.titleLabel?.font = .medium(19)
+    button.titleLabel?.font = .medium(16)
   }
 
   @IBAction func fiveButtonWasTouched() {
