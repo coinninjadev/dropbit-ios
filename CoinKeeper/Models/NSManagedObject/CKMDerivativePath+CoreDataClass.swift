@@ -18,6 +18,14 @@ public class CKMDerivativePath: NSManagedObject {
   static let changeIsReceiveValue = 0
   static let changeIsChangeValue = 1
 
+  static var relevantCoin: Int {
+    #if DEBUG
+    return Int(CoinType.TestNet.rawValue)
+    #else
+    return Int(CoinType.MainNet.rawValue)
+    #endif
+  }
+
   static func fetchRequest(for fullPath: String) -> NSFetchRequest<CKMDerivativePath> {
     let fullPathKeyPath = #keyPath(CKMDerivativePath.fullPath)
     let predicate = NSPredicate(format: "%K = %@", fullPathKeyPath, fullPath)
@@ -55,7 +63,7 @@ public class CKMDerivativePath: NSManagedObject {
   }
 
   static func findOrCreate(withIndex receiveIndex: Int, in context: NSManagedObjectContext) -> CKMDerivativePath {
-    return findOrCreate(with: 49, 0, 0, 0, receiveIndex, in: context)
+    return findOrCreate(with: 49, relevantCoin, 0, 0, receiveIndex, in: context)
   }
 
   static func findOrCreate(
