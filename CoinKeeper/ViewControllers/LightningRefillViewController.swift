@@ -14,7 +14,7 @@ protocol LightningRefillViewControllerDelegate: class {
   func twentyButtonWasTouched()
   func hundredButtonWasTouched()
   func customAmountButtonWasTouched()
-  func remindMeLaterButtonWasTouched()
+  func dontAskMeAgainButtonWasTouched()
 }
 
 class LightningRefillViewController: BaseViewController, StoryboardInitializable {
@@ -74,22 +74,31 @@ class LightningRefillViewController: BaseViewController, StoryboardInitializable
   }
 
   @IBAction func fiveButtonWasTouched() {
+    dismiss(animated: true, completion: nil)
     delegate?.fiveButtonWasTouched()
   }
 
   @IBAction func twentyButtonWasTouched() {
+    dismiss(animated: true, completion: nil)
     delegate?.twentyButtonWasTouched()
   }
 
   @IBAction func hundredButtonWasTouched() {
+    dismiss(animated: true, completion: nil)
     delegate?.hundredButtonWasTouched()
   }
 
   @IBAction func customAmountButtonWasTouched() {
+    dismiss(animated: true, completion: nil)
     delegate?.customAmountButtonWasTouched()
   }
 
   @IBAction func remindMeLaterButtonWasTouched() {
-    delegate?.remindMeLaterButtonWasTouched()
+    dismiss(animated: true, completion: nil)
+  }
+
+  @IBAction func dontRemindMeButtonWasTouched() {
+    dismiss(animated: true, completion: nil)
+    delegate?.dontAskMeAgainButtonWasTouched()
   }
 }

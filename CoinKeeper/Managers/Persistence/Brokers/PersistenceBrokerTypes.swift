@@ -103,6 +103,7 @@ protocol PreferencesBrokerType: AnyObject {
   var didOptOutOfInvitationPopup: Bool { get set }
   var adjustableFeesIsEnabled: Bool { get set }
   var preferredTransactionFeeType: TransactionFeeType { get set }
+  var dontShowLightningRefill: Bool { get set }
 
 }
 

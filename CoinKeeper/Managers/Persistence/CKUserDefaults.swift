@@ -46,6 +46,7 @@ class CKUserDefaults: PersistenceUserDefaultsType {
     case selectedCurrency
     case lastContactCacheReload
     case dontShowShareTransaction
+    case dontShowLightningRefill
     case yearlyPriceHighNotificationEnabled
     case lastTimeEnteredBackground
     case adjustableFeesEnabled

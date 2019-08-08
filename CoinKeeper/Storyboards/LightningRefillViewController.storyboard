@@ -139,6 +139,9 @@
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZPa-Sr-Div">
                                 <rect key="frame" x="116" y="724" width="182" height="30"/>
                                 <state key="normal" title="DON'T SHOW THIS AGAIN"/>
+                                <connections>
+                                    <action selector="dontRemindMeButtonWasTouched" destination="JLu-kU-fkG" eventType="touchUpInside" id="kBe-Sy-w83"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

@@ -291,10 +291,8 @@ extension AppCoordinator: ViewControllerSendingDelegate {
     }
 
     if isLightningConvertible {
-      //let tryLightningViewController = TryLightningViewController.newInstance(yesCompletionHandler: displayLightningPaymentViewController,
-                                                                              //noCompletionHandler: displayConfirmPaymentViewController)
-
-      let tryLightningViewController = LightningRefillViewController.newInstance()
+      let tryLightningViewController = TryLightningViewController.newInstance(yesCompletionHandler: displayLightningPaymentViewController,
+                                                                              noCompletionHandler: displayConfirmPaymentViewController)
       navigationController.present(tryLightningViewController, animated: true)
     } else {
       displayConfirmPaymentViewController()
@@ -372,6 +370,7 @@ extension AppCoordinator: ViewControllerSendingDelegate {
           .map { .adjustable($0) }
       }
       .done(on: .main) { (feeModel: ConfirmTransactionFeeModel) -> Void in
+
         let isLightningConvertible = true //TODO
 
         let displayLightningPaymentViewController: () -> Void = {}
