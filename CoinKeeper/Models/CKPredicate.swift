@@ -228,7 +228,7 @@ struct CKPredicate {
     }
 
     static func matching(response: TransactionVinResponse) -> NSPredicate {
-      return matching(previousTxid: response.txid, previousVoutIndex: response.vout)
+      return matching(previousTxid: response.uniqueTxid, previousVoutIndex: response.vout)
     }
 
     static func matching(previousTxid: String, previousVoutIndex: Int) -> NSPredicate {
