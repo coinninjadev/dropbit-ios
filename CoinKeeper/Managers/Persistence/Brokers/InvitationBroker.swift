@@ -19,31 +19,11 @@ class InvitationBroker: CKPersistenceBroker, InvitationBrokerType {
   }
 
   func persistUnacknowledgedInvitation(withDTO outgoingDTO: OutgoingInvitationDTO,
-                                       acknowledgementId: String,
+                                       acknowledgmentId: String,
                                        in context: NSManagedObjectContext) {
-    let contact = outgoingDTO.contact
-
-    let invitation = CKMInvitation(insertInto: context)
-    invitation.id = CKMInvitation.unacknowledgementPrefix + acknowledgementId
-    invitation.btcAmount = outgoingDTO.btcPair.btcAmount.asFractionalUnits(of: .BTC)
-    invitation.usdAmountAtTimeOfInvitation = outgoingDTO.btcPair.usdAmount.asFractionalUnits(of: .USD)
-    invitation.counterpartyName = contact.displayName
-    invitation.status = .notSent
-    invitation.setFlatFee(to: outgoingDTO.fee)
-    switch contact.identityType {
-    case .phone:
-      guard let phoneContact = contact as? PhoneContactType,
-        let inputs = ManagedPhoneNumberInputs(phoneNumber: phoneContact.globalPhoneNumber) else { return }
-      context.performAndWait {
-        let phoneNumber = CKMPhoneNumber.findOrCreate(withInputs: inputs,
-                                                      phoneNumberHash: phoneContact.phoneNumberHash, in: context)
-        invitation.counterpartyPhoneNumber = phoneNumber
-      }
-    case.twitter:
-      guard let twitterContact = contact as? TwitterContactType else { return }
-      let managedTwitterContact = CKMTwitterContact.findOrCreate(with: twitterContact, in: context)
-      invitation.counterpartyTwitterContact = managedTwitterContact
-    }
+    _ = CKMInvitation(withOutgoingInvitationDTO: outgoingDTO,
+                      acknowledgmentId: acknowledgmentId,
+                      insertInto: context)
   }
 
   func addressesProvidedForReceivedPendingDropBits(in context: NSManagedObjectContext) -> [String] {

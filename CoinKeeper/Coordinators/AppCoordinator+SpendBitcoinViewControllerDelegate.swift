@@ -30,12 +30,12 @@ extension AppCoordinator: SpendBitcoinViewControllerDelegate {
   func viewControllerSpendBitcoinOnline(_ viewController: SpendBitcoinViewController) {
     analyticsManager.track(event: .spendOnOnline, with: nil)
     guard let url = CoinNinjaUrlFactory.buildUrl(for: .spendBitcoinOnline) else { return }
-    openURL(url, completionHandler: nil)
+    openURLExternally(url, completionHandler: nil)
   }
 
   func viewControllerSpendGiftCards(_ viewController: SpendBitcoinViewController) {
     analyticsManager.track(event: .spendOnGiftCards, with: nil)
     guard let url = CoinNinjaUrlFactory.buildUrl(for: .spendBitcoinGiftCards) else { return }
-    openURL(url, completionHandler: nil)
+    openURLExternally(url, completionHandler: nil)
   }
 }

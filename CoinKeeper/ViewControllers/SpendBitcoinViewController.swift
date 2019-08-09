@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol SpendBitcoinViewControllerDelegate: AnyObject {
+protocol SpendBitcoinViewControllerDelegate: AuthenticationSuspendable {
   func viewControllerSpendBitcoinAroundMe(_ viewController: SpendBitcoinViewController)
   func viewControllerSpendBitcoinOnline(_ viewController: SpendBitcoinViewController)
   func viewControllerSpendGiftCards(_ viewController: SpendBitcoinViewController)
@@ -63,6 +63,7 @@ final class SpendBitcoinViewController: BaseViewController, StoryboardInitializa
   }
 
   @IBAction func spendBitcoinOnline(_ sender: Any) {
+    coordinationDelegate?.viewControllerRequestedAuthenticationSuspension(self)
     coordinationDelegate?.viewControllerSpendBitcoinOnline(self)
   }
 }
@@ -90,6 +91,7 @@ extension SpendBitcoinViewController: UICollectionViewDataSource, UICollectionVi
   }
 
   func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    coordinationDelegate?.viewControllerRequestedAuthenticationSuspension(self)
     coordinationDelegate?.viewControllerSpendGiftCards(self)
   }
 }

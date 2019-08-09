@@ -127,7 +127,7 @@ class LaunchStateManager: LaunchStateManagerType {
   }
 
   private func isFirstTimeAfteriCloudRestore(with properties: LaunchStateProperties) -> Bool {
-    return properties == .databaseWalletExists
+    return properties.contains(.databaseWalletExists) && !properties.contains(.walletExists)
   }
 
   func deviceIsVerified() -> Bool {
