@@ -13,7 +13,7 @@ import AVFoundation
 protocol ScanQRViewControllerDelegate: PaymentRequestResolver, ViewControllerDismissable {
 
   /// If the scanned qrCode.btcAmount is zero, use the fallbackViewModel (whose amount should originate from the calculator amount/converter).
-  func viewControllerDidScan(_ viewController: UIViewController, qrCode: QRCode, fallbackViewModel: SendPaymentViewModel?)
+  func viewControllerDidScan(_ viewController: UIViewController, qrCode: QRCode, walletType: WalletType, fallbackViewModel: SendPaymentViewModel?)
 
   func viewControllerDidAttemptInvalidDestination(_ viewController: UIViewController, error: Error?)
 
@@ -120,12 +120,12 @@ extension ScanQRViewController: AVCaptureMetadataOutputObjectsDelegate {
     didCaptureQRCode = true
 
     if qrCode.paymentRequestURL != nil {
-      coordinationDelegate?.viewControllerDidScan(self, qrCode: qrCode, fallbackViewModel: self.fallbackPaymentViewModel)
+      coordinationDelegate?.viewControllerDidScan(self, qrCode: qrCode, walletType: .onChain, fallbackViewModel: self.fallbackPaymentViewModel)
 
     } else if let address = qrCode.address {
       do {
         try bitcoinAddressValidator.validate(value: address)
-        coordinationDelegate?.viewControllerDidScan(self, qrCode: qrCode, fallbackViewModel: self.fallbackPaymentViewModel)
+        coordinationDelegate?.viewControllerDidScan(self, qrCode: qrCode, walletType: .onChain, fallbackViewModel: self.fallbackPaymentViewModel)
       } catch {
         coordinationDelegate?.viewControllerDidAttemptInvalidDestination(self, error: error)
       }

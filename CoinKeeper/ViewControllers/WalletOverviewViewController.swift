@@ -16,7 +16,7 @@ protocol WalletOverviewViewControllerDelegate: BalanceContainerDelegate & BadgeU
 
   func viewControllerDidTapScan(_ viewController: UIViewController, converter: CurrencyConverter)
   func viewControllerDidTapReceivePayment(_ viewController: UIViewController, converter: CurrencyConverter)
-  func viewControllerDidTapSendPayment(_ viewController: UIViewController, converter: CurrencyConverter)
+  func viewControllerDidTapSendPayment(_ viewController: UIViewController, converter: CurrencyConverter, walletType: WalletType)
   func viewControllerShouldAdjustForBottomSafeArea(_ viewController: UIViewController) -> Bool
   func viewControllerDidTapWalletTooltip()
   func isSyncCurrentlyRunning() -> Bool
@@ -47,6 +47,8 @@ class WalletOverviewViewController: BaseViewController, StoryboardInitializable 
     case bitcoinWalletTransactionHistory = 0
     case lightningWalletTransactionHistory = 1
   }
+
+  private var currentWallet: ViewControllerIndex = .bitcoinWalletTransactionHistory
 
   var startSyncNotificationToken: NotificationToken?
   var finishSyncNotificationToken: NotificationToken?
@@ -192,9 +194,11 @@ extension WalletOverviewViewController: UIPageViewControllerDelegate {
       switch ViewControllerIndex(rawValue: baseViewControllers.reversed().firstIndex(of: viewContorller) ?? 0) {
       case .bitcoinWalletTransactionHistory?:
         walletToggleView.selectBitcoinButton()
+        currentWallet = .bitcoinWalletTransactionHistory
         sendReceiveActionView.tintView(with: .bitcoinOrange)
       case .lightningWalletTransactionHistory?:
         walletToggleView.selectLightningButton()
+        currentWallet = .lightningWalletTransactionHistory
         sendReceiveActionView.tintView(with: .lightningBlue)
       default:
         walletToggleView.selectBitcoinButton()
@@ -253,7 +257,8 @@ extension WalletOverviewViewController: SendReceiveActionViewDelegate {
 
   func actionViewDidSelectSend(_ view: UIView) {
     guard let coordinator = coordinationDelegate else { return }
-    coordinator.viewControllerDidTapSendPayment(self, converter: coordinator.currencyController.currencyConverter)
+    let walletType: WalletType = currentWallet == .bitcoinWalletTransactionHistory ? .onChain : .lightning
+    coordinator.viewControllerDidTapSendPayment(self, converter: coordinator.currencyController.currencyConverter, walletType: walletType )
   }
 }
 

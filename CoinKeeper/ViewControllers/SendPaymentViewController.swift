@@ -59,6 +59,7 @@ class SendPaymentViewController: PresentableViewController,
 
   @IBOutlet var editAmountView: CurrencySwappableEditAmountView!
   @IBOutlet var phoneNumberEntryView: PhoneNumberEntryView!
+  @IBOutlet var walletToggleView: WalletToggleView!
 
   @IBOutlet var addressScanButtonContainerView: UIView!
   @IBOutlet var bitcoinAddressButton: UIButton!
@@ -177,6 +178,7 @@ class SendPaymentViewController: PresentableViewController,
     setupCurrencySwappableEditAmountView()
     setupLabels()
     setupButtons()
+    setupStyleWith(type: viewModel.type)
     formatAddressScanView()
     setupPhoneNumberEntryView(textFieldEnabled: true)
     formatPhoneNumberEntryView()
@@ -217,6 +219,23 @@ extension SendPaymentViewController {
     recipientDisplayNumberLabel.font = .regular(20)
     payTitleLabel.font = .regular(15)
     payTitleLabel.textColor = .darkBlueText
+  }
+
+  fileprivate func setupStyleWith(type walletType: WalletType) {
+    switch walletType {
+    case .lightning:
+      contactsButton.backgroundColor = .lightningBlue
+      twitterButton.backgroundColor = .lightningBlue
+      pasteButton.backgroundColor = .lightningBlue
+      nextButton.backgroundColor = .lightningBlue
+      walletToggleView.selectLightningButton()
+    case .onChain:
+      contactsButton.backgroundColor = .bitcoinOrange
+      twitterButton.backgroundColor = .bitcoinOrange
+      pasteButton.backgroundColor = .bitcoinOrange
+      nextButton.backgroundColor = .bitcoinOrange
+      walletToggleView.selectBitcoinButton()
+    }
   }
 
   fileprivate func setupButtons() {
@@ -370,6 +389,7 @@ extension SendPaymentViewController {
       switch result {
       case .success(let response):
         guard let fetchedModel = SendPaymentViewModel(response: response,
+                                                      walletType: self.viewModel.type,
                                                       exchangeRates: self.viewModel.exchangeRates,
                                                       fiatCurrency: self.viewModel.fiatCurrency),
           let fetchedAddress = fetchedModel.address else {

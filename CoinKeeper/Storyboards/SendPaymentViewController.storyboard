@@ -18,8 +18,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="SEND" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ohK-t2-Ibi">
-                                <rect key="frame" x="165.5" y="34" width="44.5" height="32"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="PAY" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ohK-t2-Ibi">
+                                <rect key="frame" x="172.5" y="34" width="30.5" height="32"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="32" id="ryN-hd-88K"/>
                                 </constraints>
@@ -40,7 +40,7 @@
                                 </connections>
                             </button>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JFL-ap-dYz" userLabel="Amounts and Counterparty Container">
-                                <rect key="frame" x="24" y="74" width="327" height="223.5"/>
+                                <rect key="frame" x="24" y="104" width="327" height="223.5"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ag9-A1-S4X" customClass="CurrencySwappableEditAmountView" customModule="DropBit" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="0.0" width="327" height="100"/>
@@ -137,7 +137,7 @@
                                 </constraints>
                             </view>
                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="dQ2-Di-Rho">
-                                <rect key="frame" x="24" y="311.5" width="327" height="44"/>
+                                <rect key="frame" x="24" y="341.5" width="327" height="44"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MQN-rV-aED" customClass="CompactActionButton" customModule="DropBit" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="0.0" width="98.5" height="44"/>
@@ -173,7 +173,7 @@
                                 </constraints>
                             </stackView>
                             <view contentMode="scaleToFill" verticalHuggingPriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="BpV-7B-gve" userLabel="Memo Container" customClass="SendPaymentMemoView" customModule="DropBit" customModuleProvider="target">
-                                <rect key="frame" x="24" y="389.5" width="327" height="120"/>
+                                <rect key="frame" x="24" y="419.5" width="327" height="120"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="120" placeholder="YES" id="GZL-7a-pog"/>
@@ -189,10 +189,18 @@
                                     <action selector="performNext" destination="mA3-RJ-Qjv" eventType="touchUpInside" id="1pc-e5-q3C"/>
                                 </connections>
                             </button>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9xM-4S-5GO" customClass="WalletToggleView" customModule="DropBit" customModuleProvider="target">
+                                <rect key="frame" x="57.5" y="70" width="260" height="35"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="260" id="Hlg-Gr-MVl"/>
+                                    <constraint firstAttribute="height" constant="35" id="r9N-yC-65e"/>
+                                </constraints>
+                            </view>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="dQ2-Di-Rho" firstAttribute="centerY" secondItem="WkR-gn-BgX" secondAttribute="centerY" id="1Sw-s4-VdC"/>
+                            <constraint firstItem="dQ2-Di-Rho" firstAttribute="centerY" secondItem="WkR-gn-BgX" secondAttribute="centerY" constant="30" id="1Sw-s4-VdC"/>
                             <constraint firstItem="xMy-P4-RBB" firstAttribute="top" relation="greaterThanOrEqual" secondItem="BpV-7B-gve" secondAttribute="bottom" constant="8" id="1re-kH-V2g"/>
                             <constraint firstItem="JFL-ap-dYz" firstAttribute="leading" secondItem="eLP-S6-dcJ" secondAttribute="leading" constant="24" id="5S9-sX-yjm"/>
                             <constraint firstItem="BpV-7B-gve" firstAttribute="top" secondItem="dQ2-Di-Rho" secondAttribute="bottom" priority="750" constant="34" id="6PS-Cx-mmX"/>
@@ -206,9 +214,11 @@
                             <constraint firstItem="eLP-S6-dcJ" firstAttribute="bottom" secondItem="xMy-P4-RBB" secondAttribute="bottom" constant="32" id="TRf-Fn-Phe"/>
                             <constraint firstItem="ohK-t2-Ibi" firstAttribute="centerX" secondItem="WkR-gn-BgX" secondAttribute="centerX" id="YJe-Rn-VYo"/>
                             <constraint firstItem="dQ2-Di-Rho" firstAttribute="top" secondItem="JFL-ap-dYz" secondAttribute="bottom" constant="14" id="aa0-5F-dkd"/>
-                            <constraint firstItem="JFL-ap-dYz" firstAttribute="top" secondItem="ohK-t2-Ibi" secondAttribute="bottom" constant="8" id="abf-fV-KYC"/>
+                            <constraint firstItem="JFL-ap-dYz" firstAttribute="top" secondItem="ohK-t2-Ibi" secondAttribute="bottom" constant="38" id="abf-fV-KYC"/>
                             <constraint firstItem="BpV-7B-gve" firstAttribute="leading" secondItem="JFL-ap-dYz" secondAttribute="leading" id="cVP-Xv-1mu"/>
+                            <constraint firstItem="9xM-4S-5GO" firstAttribute="top" secondItem="ohK-t2-Ibi" secondAttribute="bottom" constant="4" id="kt0-Jv-5bv"/>
                             <constraint firstItem="xMy-P4-RBB" firstAttribute="leading" secondItem="JFL-ap-dYz" secondAttribute="leading" id="mZh-gb-qFO"/>
+                            <constraint firstItem="9xM-4S-5GO" firstAttribute="centerX" secondItem="WkR-gn-BgX" secondAttribute="centerX" id="n65-HD-XVj"/>
                             <constraint firstItem="dQ2-Di-Rho" firstAttribute="trailing" secondItem="JFL-ap-dYz" secondAttribute="trailing" id="uXB-Yv-Cba"/>
                             <constraint firstItem="xMy-P4-RBB" firstAttribute="trailing" secondItem="JFL-ap-dYz" secondAttribute="trailing" id="x7D-Db-KFC"/>
                         </constraints>
@@ -230,6 +240,7 @@
                         <outlet property="scanButton" destination="BiE-1k-9jN" id="roX-2f-XZ8"/>
                         <outlet property="sendMaxButton" destination="2Q4-Um-Y5Z" id="0aw-nM-XZe"/>
                         <outlet property="twitterButton" destination="Zvc-Ce-tCL" id="ByK-hb-s8H"/>
+                        <outlet property="walletToggleView" destination="9xM-4S-5GO" id="0Mo-Td-oE0"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="9Ih-ii-wig" userLabel="First Responder" sceneMemberID="firstResponder"/>
