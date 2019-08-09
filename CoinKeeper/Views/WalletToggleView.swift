@@ -31,46 +31,26 @@ class WalletToggleView: UIView {
     commonInit()
   }
 
-  private lazy var lightningTitle: NSAttributedString = {
-    NSAttributedString(imageName: "flashIcon", imageSize: CGSize(width: 11, height: 18),
-                       title: "Lightning", sharedColor: .white, font: .medium(14))
-  }()
-
-  private lazy var bitcoinTitle: NSAttributedString = {
-    NSAttributedString(imageName: "bitcoinIconFilled", imageSize: CGSize(width: 11, height: 18),
-                       title: "Bitcoin", sharedColor: .white, font: .medium(14))
-  }()
-
-  private lazy var lightningUnselectedTitle: NSAttributedString = {
-    NSAttributedString(imageName: "flashIcon", imageSize: CGSize(width: 11, height: 18),
-                       title: "Lightning", sharedColor: .darkGrayBackground, font: .medium(14))
-  }()
-
-  private lazy var bitcoinUnselectedTitle: NSAttributedString = {
-    NSAttributedString(imageName: "bitcoinIconFilled", imageSize: CGSize(width: 11, height: 18),
-                       title: "Bitcoin", sharedColor: .darkGrayBackground, font: .medium(14))
-  }()
-
   private func commonInit() {
     xibSetup()
     layer.borderWidth = 0.5
     layer.cornerRadius = 5
     clipsToBounds = true
     layer.borderColor = UIColor.mediumGrayBackground.cgColor
-    bitcoinWalletButton.style = .bitcoin
-    lightningWalletButton.style = .lightning
+    bitcoinWalletButton.style = .bitcoin(false)
+    lightningWalletButton.style = .lightning(false)
     selectBitcoinButton()
   }
 
   func selectBitcoinButton() {
     bitcoinWalletButton.backgroundColor = .bitcoinOrange
-    bitcoinWalletButton.setAttributedTitle(bitcoinTitle, for: .normal)
+    bitcoinWalletButton.setAttributedTitle(NSAttributedString.bitcoinTitle, for: .normal)
     deselectButton(lightningWalletButton)
   }
 
   func selectLightningButton() {
     lightningWalletButton.backgroundColor = .lightningBlue
-    lightningWalletButton.setAttributedTitle(lightningTitle, for: .normal)
+    lightningWalletButton.setAttributedTitle(NSAttributedString.lightningTitle, for: .normal)
     deselectButton(bitcoinWalletButton)
   }
 
@@ -79,9 +59,9 @@ class WalletToggleView: UIView {
 
     switch button {
     case bitcoinWalletButton:
-      button.setAttributedTitle(bitcoinUnselectedTitle, for: .normal)
+      button.setAttributedTitle(NSAttributedString.bitcoinUnselectedTitle, for: .normal)
     case lightningWalletButton:
-      button.setAttributedTitle(lightningUnselectedTitle, for: .normal)
+      button.setAttributedTitle(NSAttributedString.lightningUnselectedTitle, for: .normal)
     default:
       break
     }

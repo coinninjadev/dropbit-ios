@@ -18,15 +18,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="PAY" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ohK-t2-Ibi">
-                                <rect key="frame" x="172.5" y="34" width="30.5" height="32"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="32" id="ryN-hd-88K"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZK3-ob-Jzc">
                                 <rect key="frame" x="323" y="28" width="44" height="44"/>
                                 <constraints>
@@ -40,7 +31,7 @@
                                 </connections>
                             </button>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JFL-ap-dYz" userLabel="Amounts and Counterparty Container">
-                                <rect key="frame" x="24" y="104" width="327" height="223.5"/>
+                                <rect key="frame" x="24" y="103" width="327" height="224.5"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ag9-A1-S4X" customClass="CurrencySwappableEditAmountView" customModule="DropBit" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="0.0" width="327" height="100"/>
@@ -57,7 +48,7 @@
                                         </connections>
                                     </button>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="Zoz-wS-Csm">
-                                        <rect key="frame" x="8" y="153.5" width="311" height="41"/>
+                                        <rect key="frame" x="8" y="154.5" width="311" height="41"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="La8-Sv-kGN">
                                                 <rect key="frame" x="134.5" y="0.0" width="42" height="20.5"/>
@@ -74,7 +65,7 @@
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="04W-cu-0yT">
-                                        <rect key="frame" x="0.0" y="99.5" width="327" height="100"/>
+                                        <rect key="frame" x="0.0" y="100.5" width="327" height="100"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vbE-29-4pS">
                                                 <rect key="frame" x="0.0" y="0.0" width="327" height="50"/>
@@ -190,7 +181,7 @@
                                 </connections>
                             </button>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9xM-4S-5GO" customClass="WalletToggleView" customModule="DropBit" customModuleProvider="target">
-                                <rect key="frame" x="57.5" y="70" width="260" height="35"/>
+                                <rect key="frame" x="57.5" y="40" width="260" height="35"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="260" id="Hlg-Gr-MVl"/>
@@ -201,22 +192,20 @@
                         <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="dQ2-Di-Rho" firstAttribute="centerY" secondItem="WkR-gn-BgX" secondAttribute="centerY" constant="30" id="1Sw-s4-VdC"/>
+                            <constraint firstItem="9xM-4S-5GO" firstAttribute="top" secondItem="eLP-S6-dcJ" secondAttribute="top" constant="20" id="1n9-yD-hKX"/>
                             <constraint firstItem="xMy-P4-RBB" firstAttribute="top" relation="greaterThanOrEqual" secondItem="BpV-7B-gve" secondAttribute="bottom" constant="8" id="1re-kH-V2g"/>
                             <constraint firstItem="JFL-ap-dYz" firstAttribute="leading" secondItem="eLP-S6-dcJ" secondAttribute="leading" constant="24" id="5S9-sX-yjm"/>
                             <constraint firstItem="BpV-7B-gve" firstAttribute="top" secondItem="dQ2-Di-Rho" secondAttribute="bottom" priority="750" constant="34" id="6PS-Cx-mmX"/>
                             <constraint firstItem="BpV-7B-gve" firstAttribute="top" relation="greaterThanOrEqual" secondItem="dQ2-Di-Rho" secondAttribute="bottom" constant="8" id="Aua-E0-6kk"/>
-                            <constraint firstItem="ohK-t2-Ibi" firstAttribute="centerY" secondItem="ZK3-ob-Jzc" secondAttribute="centerY" id="CI3-MK-Dua"/>
                             <constraint firstItem="eLP-S6-dcJ" firstAttribute="trailing" secondItem="ZK3-ob-Jzc" secondAttribute="trailing" constant="8" id="Ig0-Sd-CaY"/>
+                            <constraint firstItem="JFL-ap-dYz" firstAttribute="top" secondItem="9xM-4S-5GO" secondAttribute="bottom" constant="28" id="KT5-nL-Ycd"/>
                             <constraint firstItem="BpV-7B-gve" firstAttribute="trailing" secondItem="JFL-ap-dYz" secondAttribute="trailing" id="Nj7-RL-0Jb"/>
                             <constraint firstItem="ZK3-ob-Jzc" firstAttribute="top" secondItem="eLP-S6-dcJ" secondAttribute="top" constant="8" id="P6v-a1-hPl"/>
                             <constraint firstItem="dQ2-Di-Rho" firstAttribute="leading" secondItem="JFL-ap-dYz" secondAttribute="leading" id="SYW-R4-rGQ"/>
                             <constraint firstItem="eLP-S6-dcJ" firstAttribute="trailing" secondItem="JFL-ap-dYz" secondAttribute="trailing" constant="24" id="Soc-zi-vL4"/>
                             <constraint firstItem="eLP-S6-dcJ" firstAttribute="bottom" secondItem="xMy-P4-RBB" secondAttribute="bottom" constant="32" id="TRf-Fn-Phe"/>
-                            <constraint firstItem="ohK-t2-Ibi" firstAttribute="centerX" secondItem="WkR-gn-BgX" secondAttribute="centerX" id="YJe-Rn-VYo"/>
                             <constraint firstItem="dQ2-Di-Rho" firstAttribute="top" secondItem="JFL-ap-dYz" secondAttribute="bottom" constant="14" id="aa0-5F-dkd"/>
-                            <constraint firstItem="JFL-ap-dYz" firstAttribute="top" secondItem="ohK-t2-Ibi" secondAttribute="bottom" constant="38" id="abf-fV-KYC"/>
                             <constraint firstItem="BpV-7B-gve" firstAttribute="leading" secondItem="JFL-ap-dYz" secondAttribute="leading" id="cVP-Xv-1mu"/>
-                            <constraint firstItem="9xM-4S-5GO" firstAttribute="top" secondItem="ohK-t2-Ibi" secondAttribute="bottom" constant="4" id="kt0-Jv-5bv"/>
                             <constraint firstItem="xMy-P4-RBB" firstAttribute="leading" secondItem="JFL-ap-dYz" secondAttribute="leading" id="mZh-gb-qFO"/>
                             <constraint firstItem="9xM-4S-5GO" firstAttribute="centerX" secondItem="WkR-gn-BgX" secondAttribute="centerX" id="n65-HD-XVj"/>
                             <constraint firstItem="dQ2-Di-Rho" firstAttribute="trailing" secondItem="JFL-ap-dYz" secondAttribute="trailing" id="uXB-Yv-Cba"/>
@@ -233,7 +222,6 @@
                         <outlet property="memoContainerView" destination="BpV-7B-gve" id="4YT-H7-h5H"/>
                         <outlet property="nextButton" destination="xMy-P4-RBB" id="CYW-nf-22m"/>
                         <outlet property="pasteButton" destination="C8U-pc-1eS" id="Kbc-hU-pPq"/>
-                        <outlet property="payTitleLabel" destination="ohK-t2-Ibi" id="rua-Iq-Su7"/>
                         <outlet property="phoneNumberEntryView" destination="C51-D8-1VB" id="mKw-Ka-yUt"/>
                         <outlet property="recipientDisplayNameLabel" destination="La8-Sv-kGN" id="a19-eD-upO"/>
                         <outlet property="recipientDisplayNumberLabel" destination="NUe-iQ-oIx" id="BOh-Rz-BG1"/>

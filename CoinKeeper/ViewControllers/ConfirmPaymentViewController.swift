@@ -50,9 +50,9 @@ class ConfirmPaymentViewController: PresentableViewController, StoryboardInitial
 
   private var feedbackGenerator: UIImpactFeedbackGenerator = UIImpactFeedbackGenerator(style: .medium)
 
+  @IBOutlet var walletTypeButton: CompactActionButton!
   @IBOutlet var closeButton: UIButton!
   @IBOutlet var confirmButton: ConfirmPaymentButton!
-  @IBOutlet var titleLabel: UILabel!
   @IBOutlet var primaryCurrencyLabel: UILabel!
   @IBOutlet var secondaryCurrencyLabel: UILabel!
   @IBOutlet var networkFeeLabel: UILabel!
@@ -169,9 +169,6 @@ class ConfirmPaymentViewController: PresentableViewController, StoryboardInitial
 extension ConfirmPaymentViewController {
 
   fileprivate func setupViews() {
-    titleLabel.font = .regular(15)
-    titleLabel.textColor = .darkBlueText
-
     primaryCurrencyLabel.textAlignment = .center
     primaryCurrencyLabel.textColor = .lightBlueTint
     primaryCurrencyLabel.font = .regular(35)
@@ -200,6 +197,15 @@ extension ConfirmPaymentViewController {
 
     tapAndHoldLabel.textColor = .darkGrayText
     tapAndHoldLabel.font = .medium(13)
+
+    switch viewModel.walletType {
+    case .lightning:
+      walletTypeButton.style = .lightning(true)
+      walletTypeButton.setAttributedTitle(NSAttributedString.lightningTitle, for: .normal)
+    case .onChain:
+      walletTypeButton.style = .bitcoin(true)
+      walletTypeButton.setAttributedTitle(NSAttributedString.bitcoinTitle, for: .normal)
+    }
 
     adjustableFeesControl.tintColor = .primaryActionButton
     adjustableFeesControl.backgroundColor = .lightGrayBackground

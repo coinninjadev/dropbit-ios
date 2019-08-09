@@ -228,11 +228,13 @@ extension WalletOverviewViewController: WalletToggleViewDelegate {
 
   func bitcoinWalletButtonWasTouched() {
     sendReceiveActionView.tintView(with: .bitcoinOrange)
+    currentWallet = .bitcoinWalletTransactionHistory
     pageViewController?.setViewControllers([baseViewControllers[1]], direction: .reverse, animated: true, completion: nil)
   }
 
   func lightningWalletButtonWasTouched() {
     sendReceiveActionView.tintView(with: .lightningBlue)
+    currentWallet = .lightningWalletTransactionHistory
     pageViewController?.setViewControllers([baseViewControllers[0]], direction: .forward, animated: true, completion: nil)
   }
 }
