@@ -69,7 +69,9 @@ class CKLogger: Logger {
   }
 
   func contextSaveError(_ error: Error, file: String = #file, function: String = #function, line: Int = #line) {
-    self.error(error, message: "failed to save context", file: file, function: function, line: line)
+    let userInfo = (error as NSError).userInfo
+    let message = "failed to save context. User info: \(userInfo)"
+    self.error(error, message: message, file: file, function: function, line: line)
   }
 
   func debug(_ message: String, privateArgs: [CVarArg] = [],
