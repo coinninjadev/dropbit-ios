@@ -26,7 +26,7 @@ protocol PermissionManagerType {
 class PermissionManager: PermissionManagerType {
 
   /// Cached in memory to allow for synchronous checks
-  private var notificationStatus: PermissionStatus = .notDetermined
+  private var notificationStatus: PermissionStatus = .authorized
 
   func refreshNotificationPermissionStatus() {
     UNUserNotificationCenter.current().getNotificationSettings { settings in

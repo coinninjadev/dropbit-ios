@@ -64,7 +64,12 @@ public enum UserResponseKey: String, KeyPathDescribable {
 }
 
 protocol UserIdentifiable {
+  /// The id of the user record on our server
   var id: String { get }
+}
+
+struct UserIdWrapper: UserIdentifiable {
+  let id: String
 }
 
 /// For /resend response: id: "" and timestamps: 0

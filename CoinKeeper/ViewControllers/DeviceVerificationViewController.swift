@@ -12,7 +12,10 @@ import UIKit
 
 protocol DeviceVerificationViewControllerDelegate: AnyObject {
   func viewController(_ viewController: DeviceVerificationViewController, didEnterPhoneNumber phoneNumber: GlobalPhoneNumber)
-  func viewController(_ codeEntryViewController: DeviceVerificationViewController, didEnterCode code: String, completion: @escaping (Bool) -> Void)
+  func viewController(_ codeEntryViewController: DeviceVerificationViewController,
+                      didEnterCode code: String,
+                      forUserId userId: String,
+                      completion: @escaping (Bool) -> Void)
   func viewControllerDidRequestResendCode(_ viewController: DeviceVerificationViewController)
   func viewControllerDidSkipPhoneVerification(_ viewController: DeviceVerificationViewController)
   func viewControllerShouldShowSkipButton() -> Bool
@@ -114,6 +117,8 @@ final class DeviceVerificationViewController: BaseViewController {
   // MARK: variables
 
   var selectedSetupFlow: SetupFlow?
+  var userIdToVerify: String?
+
   var shouldShowTwitterButton: Bool {
     guard let selectedFlow = selectedSetupFlow else { return false }
     switch selectedFlow {
@@ -128,17 +133,33 @@ final class DeviceVerificationViewController: BaseViewController {
   var coordinationDelegate: DeviceVerificationViewControllerDelegate? {
     return generalCoordinationDelegate as? DeviceVerificationViewControllerDelegate
   }
+
   var entryMode: DeviceVerificationViewController.Mode = .phoneNumberEntry {
     didSet {
       updateUI()
     }
   }
+
   var digitEntryViewModel: DigitEntryDisplayViewModelType?
 
   override func accessibleViewsAndIdentifiers() -> [AccessibleViewElement] {
     return [
       (self.view, .deviceVerification(.page)) //skipButton is not available when this is called
     ]
+  }
+
+  static func newInstance(delegate: DeviceVerificationViewControllerDelegate,
+                          entryMode: Mode,
+                          setupFlow: SetupFlow?,
+                          userIdToVerify: String? = nil,
+                          shouldOrphan: Bool = false) -> DeviceVerificationViewController {
+    let vc = DeviceVerificationViewController.makeFromStoryboard()
+    vc.entryMode = entryMode
+    vc.selectedSetupFlow = setupFlow
+    vc.userIdToVerify = userIdToVerify
+    vc.shouldOrphan = shouldOrphan
+    vc.generalCoordinationDelegate = delegate
+    return vc
   }
 
   override func viewDidLoad() {
@@ -354,8 +375,12 @@ extension DeviceVerificationViewController: KeypadEntryViewDelegate {
 
     switch entryMode {
     case .codeVerification, .codeVerificationFailed:
-      let codeString = digitEntryViewModel?.digits
-      coordinationDelegate.viewController(self, didEnterCode: codeString!) { [weak self] (success) in
+      guard let codeString = digitEntryViewModel?.digits, let userId = self.userIdToVerify else {
+        log.error("Verification code or user ID is missing")
+        return
+      }
+
+      coordinationDelegate.viewController(self, didEnterCode: codeString, forUserId: userId) { [weak self] (success) in
         if !success {
           self?.digitEntryViewModel?.removeAllDigits()
         }

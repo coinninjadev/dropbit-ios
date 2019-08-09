@@ -24,7 +24,7 @@ class MockInvitationBroker: CKPersistenceBroker, InvitationBrokerType {
   }
 
   func persistUnacknowledgedInvitation(withDTO outgoingDTO: OutgoingInvitationDTO,
-                                       acknowledgementId: String,
+                                       acknowledgmentId: String,
                                        in context: NSManagedObjectContext) { }
 
   var addressValuesForReceivedPendingDropBits: [String] = []
