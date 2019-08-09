@@ -420,7 +420,8 @@ extension SendPaymentViewController {
   func updateRecipientContainerContentType(forRecipient paymentRecipient: PaymentRecipient?) {
     DispatchQueue.main.async {
       guard let recipient = paymentRecipient else {
-        self.showBitcoinAddressRecipient(with: "To: BTC Address or phone number")
+        self.showBitcoinAddressRecipient(with: self.viewModel?.type == .lightning ?
+          "To: Invoice or phone number" : "To: BTC Address or phone number" )
         return
       }
       switch recipient {
