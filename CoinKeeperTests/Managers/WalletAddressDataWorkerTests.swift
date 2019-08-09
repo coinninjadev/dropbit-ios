@@ -99,7 +99,7 @@ class WalletAddressDataWorkerTests: MockedPersistenceTestCase {
 
     PersistenceManager().brokers.invitation.persistUnacknowledgedInvitation(
       withDTO: outgoingInvitationDTO,
-      acknowledgementId: acknowledgementId,
+      acknowledgmentId: acknowledgementId,
       in: context)
   }
 

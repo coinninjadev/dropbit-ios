@@ -85,6 +85,7 @@
 		3B2658472215CFCC008A8615 /* MailerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B2658462215CFCC008A8615 /* MailerDelegate.swift */; };
 		3B26F1E022566EAA00F3E00F /* AppCoordinator+SelectedCurrencyUpdatable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B26F1DF22566EAA00F3E00F /* AppCoordinator+SelectedCurrencyUpdatable.swift */; };
 		3B27D3FA225E84E900291B82 /* GetBitcoinViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B27D3F9225E84E900291B82 /* GetBitcoinViewController.swift */; };
+		3B2871F822FB245B00CAB027 /* com.coinninja.CoinKeeper.beta 2019-08-07 11:12.53.832.xcappdata in Resources */ = {isa = PBXBuildFile; fileRef = 3B2871F722FB245B00CAB027 /* com.coinninja.CoinKeeper.beta 2019-08-07 11:12.53.832.xcappdata */; };
 		3B287CB42100FB1A00A43E57 /* AppCoordinator+ConnectionManagerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B287CB32100FB1A00A43E57 /* AppCoordinator+ConnectionManagerDelegate.swift */; };
 		3B287CB62100FB5600A43E57 /* AppCoordinator+ChildCoordinatorDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B287CB52100FB5600A43E57 /* AppCoordinator+ChildCoordinatorDelegate.swift */; };
 		3B287CB82101128400A43E57 /* TransactionBroadcastError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B287CB72101128400A43E57 /* TransactionBroadcastError.swift */; };
@@ -156,7 +157,6 @@
 		3B4A9F2F21BEF55F0009CDF6 /* DatabaseMigratorFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B4A9F2E21BEF55F0009CDF6 /* DatabaseMigratorFactory.swift */; };
 		3B4B39F0203773C5007B7CC8 /* PlaceholderViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3B4B39EF203773C5007B7CC8 /* PlaceholderViewController.storyboard */; };
 		3B4B39F2203773E1007B7CC8 /* PlaceholderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B4B39F1203773E1007B7CC8 /* PlaceholderViewController.swift */; };
-		3B4B928522F353A20018285C /* com.coinninja.CoinKeeper.beta 2019-08-01 11:59.50.313.xcappdata in Resources */ = {isa = PBXBuildFile; fileRef = 3B4B928422F353A20018285C /* com.coinninja.CoinKeeper.beta 2019-08-01 11:59.50.313.xcappdata */; };
 		3B4B928622F353D20018285C /* UITestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51FB0E72175221A005CBAD6 /* UITestCase.swift */; };
 		3B4B928722F354570018285C /* XCUIApplication+UITestArgument.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5D1B2D6219384FB006B2BC7 /* XCUIApplication+UITestArgument.swift */; };
 		3B4B928822F3545A0018285C /* XCUIApplication+WaitAndAssert.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50BB1AD2175126B0038B5DD /* XCUIApplication+WaitAndAssert.swift */; };
@@ -743,6 +743,7 @@
 		B56512F62153DDA500A5D044 /* WalletCheckInTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56512F52153DDA500A5D044 /* WalletCheckInTarget.swift */; };
 		B56639CD22B151E400FA0EC3 /* TransactionShareable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56639CC22B151E400FA0EC3 /* TransactionShareable.swift */; };
 		B56639CF22B1944200FA0EC3 /* UIButton+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56639CE22B1944200FA0EC3 /* UIButton+Helpers.swift */; };
+		B566CB2222FB5A5A00648589 /* MigrateDatabaseV6toV7.swift in Sources */ = {isa = PBXBuildFile; fileRef = B566CB2122FB5A5A00648589 /* MigrateDatabaseV6toV7.swift */; };
 		B566ED7C219B3840001A65F5 /* AccessibleViewSettable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B566ED7B219B3840001A65F5 /* AccessibleViewSettable.swift */; };
 		B56788AD227A3C2C00A39534 /* GetBitcoinCopiedAddressViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B56788AC227A3C2C00A39534 /* GetBitcoinCopiedAddressViewController.storyboard */; };
 		B56788AF227A3C5600A39534 /* GetBitcoinCopiedAddressViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56788AE227A3C5600A39534 /* GetBitcoinCopiedAddressViewController.swift */; };
@@ -1067,6 +1068,7 @@
 		3B2658462215CFCC008A8615 /* MailerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailerDelegate.swift; sourceTree = "<group>"; };
 		3B26F1DF22566EAA00F3E00F /* AppCoordinator+SelectedCurrencyUpdatable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppCoordinator+SelectedCurrencyUpdatable.swift"; sourceTree = "<group>"; };
 		3B27D3F9225E84E900291B82 /* GetBitcoinViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetBitcoinViewController.swift; sourceTree = "<group>"; };
+		3B2871F722FB245B00CAB027 /* com.coinninja.CoinKeeper.beta 2019-08-07 11:12.53.832.xcappdata */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = "com.coinninja.CoinKeeper.beta 2019-08-07 11:12.53.832.xcappdata"; sourceTree = "<group>"; };
 		3B287CB32100FB1A00A43E57 /* AppCoordinator+ConnectionManagerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppCoordinator+ConnectionManagerDelegate.swift"; sourceTree = "<group>"; };
 		3B287CB52100FB5600A43E57 /* AppCoordinator+ChildCoordinatorDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppCoordinator+ChildCoordinatorDelegate.swift"; sourceTree = "<group>"; };
 		3B287CB72101128400A43E57 /* TransactionBroadcastError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionBroadcastError.swift; sourceTree = "<group>"; };
@@ -1137,7 +1139,6 @@
 		3B4A9F2E21BEF55F0009CDF6 /* DatabaseMigratorFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseMigratorFactory.swift; sourceTree = "<group>"; };
 		3B4B39EF203773C5007B7CC8 /* PlaceholderViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = PlaceholderViewController.storyboard; sourceTree = "<group>"; };
 		3B4B39F1203773E1007B7CC8 /* PlaceholderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceholderViewController.swift; sourceTree = "<group>"; };
-		3B4B928422F353A20018285C /* com.coinninja.CoinKeeper.beta 2019-08-01 11:59.50.313.xcappdata */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = "com.coinninja.CoinKeeper.beta 2019-08-01 11:59.50.313.xcappdata"; sourceTree = "<group>"; };
 		3B5052B02045FAD7000C739F /* BackupRecoveryWordsViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = BackupRecoveryWordsViewController.storyboard; sourceTree = "<group>"; };
 		3B5052B22045FAFA000C739F /* BackupRecoveryWordsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupRecoveryWordsViewController.swift; sourceTree = "<group>"; };
 		3B5052B42045FB5C000C739F /* BackupRecoveryWordsViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupRecoveryWordsViewControllerTests.swift; sourceTree = "<group>"; };
@@ -1701,6 +1702,8 @@
 		B56512F52153DDA500A5D044 /* WalletCheckInTarget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletCheckInTarget.swift; sourceTree = "<group>"; };
 		B56639CC22B151E400FA0EC3 /* TransactionShareable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionShareable.swift; sourceTree = "<group>"; };
 		B56639CE22B1944200FA0EC3 /* UIButton+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+Helpers.swift"; sourceTree = "<group>"; };
+		B566CB2022FB3F4A00648589 /* Model v7.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Model v7.xcdatamodel"; sourceTree = "<group>"; };
+		B566CB2122FB5A5A00648589 /* MigrateDatabaseV6toV7.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MigrateDatabaseV6toV7.swift; sourceTree = "<group>"; };
 		B566ED7B219B3840001A65F5 /* AccessibleViewSettable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessibleViewSettable.swift; sourceTree = "<group>"; };
 		B56788AC227A3C2C00A39534 /* GetBitcoinCopiedAddressViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = GetBitcoinCopiedAddressViewController.storyboard; sourceTree = "<group>"; };
 		B56788AE227A3C5600A39534 /* GetBitcoinCopiedAddressViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetBitcoinCopiedAddressViewController.swift; sourceTree = "<group>"; };
@@ -2076,6 +2079,7 @@
 				3B4A9F2E21BEF55F0009CDF6 /* DatabaseMigratorFactory.swift */,
 				3B80E27721BEEDD300F6EF17 /* MigrateDatabaseV1toV2.swift */,
 				3B23232D2248FEBC00514201 /* MigrateDatabaseV4Grooming.swift */,
+				B566CB2122FB5A5A00648589 /* MigrateDatabaseV6toV7.swift */,
 			);
 			path = Database;
 			sourceTree = "<group>";
@@ -2346,7 +2350,7 @@
 		3B6924AA22F33E8B00F4A7AF /* DropBitUIDatabaseTests */ = {
 			isa = PBXGroup;
 			children = (
-				3B4B928422F353A20018285C /* com.coinninja.CoinKeeper.beta 2019-08-01 11:59.50.313.xcappdata */,
+				3B2871F722FB245B00CAB027 /* com.coinninja.CoinKeeper.beta 2019-08-07 11:12.53.832.xcappdata */,
 				3B6924AB22F33E8B00F4A7AF /* DropBitUIDatabaseTests.swift */,
 				3B6924AD22F33E8B00F4A7AF /* Info.plist */,
 			);
@@ -3803,7 +3807,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3B4B928522F353A20018285C /* com.coinninja.CoinKeeper.beta 2019-08-01 11:59.50.313.xcappdata in Resources */,
+				3B2871F822FB245B00CAB027 /* com.coinninja.CoinKeeper.beta 2019-08-07 11:12.53.832.xcappdata in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4532,6 +4536,7 @@
 				3B6749E420AA5CA40032FE02 /* CKMVout+CoreDataProperties.swift in Sources */,
 				B5F6EC2522554CF20045633B /* TwilioErrorDelegate.swift in Sources */,
 				3B6E4D59206E533D00D9CFFA /* ApiKeys.generated.swift in Sources */,
+				B566CB2222FB5A5A00648589 /* MigrateDatabaseV6toV7.swift in Sources */,
 				B552EDEF211E33D000332BB5 /* ConnectionManager.swift in Sources */,
 				B56B63782200CDD300CCC153 /* CKMTransactionSharedPayload+CoreDataProperties.swift in Sources */,
 				3B7E2D572292EC7400891E4A /* SharedPayloadV2.swift in Sources */,
@@ -5503,6 +5508,7 @@
 		403AAD5C2063513900F7A2BA /* Model.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				B566CB2022FB3F4A00648589 /* Model v7.xcdatamodel */,
 				3B37B93C228DDD6F002239AF /* Model v6.xcdatamodel */,
 				B520DFE822734EAE004C7D9E /* Model v5.xcdatamodel */,
 				B56B63762200C82D00CCC153 /* Model v4.xcdatamodel */,
@@ -5510,7 +5516,7 @@
 				3BC8011821B995DF008D15E6 /* Model v2.xcdatamodel */,
 				403AAD5D2063513900F7A2BA /* Model.xcdatamodel */,
 			);
-			currentVersion = 3B37B93C228DDD6F002239AF /* Model v6.xcdatamodel */;
+			currentVersion = B566CB2022FB3F4A00648589 /* Model v7.xcdatamodel */;
 			path = Model.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

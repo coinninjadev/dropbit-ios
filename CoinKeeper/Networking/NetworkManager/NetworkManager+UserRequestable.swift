@@ -11,8 +11,7 @@ import PromiseKit
 protocol UserRequestable: AnyObject {
 
   func createUser(walletId: String, body: UserIdentityBody) -> Promise<UserResponse>
-  func verifyUser(body: VerifyUserBody) -> Promise<UserResponse>
-  func verifyUser(body: VerifyUserBody, credentials: TwitterOAuthStorage?) -> Promise<UserResponse>
+  func verifyUser(id: String, body: VerifyUserBody) -> Promise<UserResponse>
   func addIdentity(body: UserIdentityBody) -> Promise<UserIdentityResponse>
   func deleteIdentity(identity: String) -> Promise<Void>
   func getUser() -> Promise<UserResponse>
@@ -67,17 +66,8 @@ extension NetworkManager: UserRequestable {
     }
   }
 
-  func verifyUser(body: VerifyUserBody) -> Promise<UserResponse> {
-    return verifyUser(body: body, credentials: nil)
-  }
-
-  func verifyUser(body: VerifyUserBody, credentials: TwitterOAuthStorage? = nil) -> Promise<UserResponse> {
-    return cnProvider.request(UserTarget.verify(body))
-      .get { _ in
-        if let creds = credentials {
-          self.persistenceManager.keychainManager.store(oauthCredentials: creds)
-        }
-      }
+  func verifyUser(id: String, body: VerifyUserBody) -> Promise<UserResponse> {
+    return cnProvider.request(UserTarget.verify(id, body))
   }
 
   func addIdentity(body: UserIdentityBody) -> Promise<UserIdentityResponse> {

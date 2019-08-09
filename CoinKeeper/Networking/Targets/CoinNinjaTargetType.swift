@@ -113,7 +113,7 @@ extension CoinNinjaTargetType {
   }
 
   var messagesToUnverify: [String] {
-    let errorsToUnverify: [NetworkErrorIdentifier] = [.recordNotFound, .deviceUUIDMismatch]
+    let errorsToUnverify: [NetworkErrorIdentifier] = [.recordNotFound, .deviceUUIDMismatch, .userIDMismatch]
     return errorsToUnverify.map { $0.rawValue }
   }
 
