@@ -37,7 +37,6 @@ class ConfirmPaymentViewControllerTests: XCTestCase {
     XCTAssertNotNil(sut.contactLabel, "contactLabel should be connected")
     XCTAssertNotNil(sut.primaryAddressLabel, "primaryAddressLabel should be connected")
     XCTAssertNotNil(sut.secondaryAddressLabel, "secondaryAddressLabel should be connected")
-    XCTAssertNotNil(sut.titleLabel, "titleLabel should be connected")
     XCTAssertNotNil(sut.primaryCurrencyLabel, "primaryCurrencyLabel should be connected")
     XCTAssertNotNil(sut.secondaryCurrencyLabel, "secondaryCurrencyLabel should be connected")
     XCTAssertNotNil(sut.memoContainerView, "memoContainerView should be connected")

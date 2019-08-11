@@ -198,13 +198,14 @@ extension ConfirmPaymentViewController {
     tapAndHoldLabel.textColor = .darkGrayText
     tapAndHoldLabel.font = .medium(13)
 
-    switch viewModel.walletType {
-    case .lightning:
-      walletTypeButton.style = .lightning(true)
+    if let viewModel = viewModel {
+      switch viewModel.walletType {
+      case .lightning: walletTypeButton.style = .lightning(true)
       walletTypeButton.setAttributedTitle(NSAttributedString.lightningTitle, for: .normal)
-    case .onChain:
-      walletTypeButton.style = .bitcoin(true)
-      walletTypeButton.setAttributedTitle(NSAttributedString.bitcoinTitle, for: .normal)
+      case .onChain:
+        walletTypeButton.style = .bitcoin(true)
+        walletTypeButton.setAttributedTitle(NSAttributedString.bitcoinTitle, for: .normal)
+      }
     }
 
     adjustableFeesControl.tintColor = .primaryActionButton
