@@ -17,6 +17,9 @@ public enum WalletAddressesTarget: CoinNinjaTargetType {
   /// Address to delete
   case delete(String)
 
+  static var autogenerateInvoicesAddressValue: String {
+    return "generate"
+  }
 }
 
 extension WalletAddressesTarget {
