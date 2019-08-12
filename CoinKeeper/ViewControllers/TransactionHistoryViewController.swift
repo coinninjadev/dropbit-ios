@@ -77,7 +77,6 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
     let txHistory = TransactionHistoryViewController.makeFromStoryboard()
     txHistory.generalCoordinationDelegate = delegate
     txHistory.context = dbContext
-    txHistory.urlOpener = delegate
     txHistory.transactionType = type
 
     return txHistory
@@ -106,8 +105,6 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
   }()
 
   var deviceCountryCode: Int?
-
-  weak var urlOpener: URLOpener?
 
   override var generalCoordinationDelegate: AnyObject? {
     didSet {
