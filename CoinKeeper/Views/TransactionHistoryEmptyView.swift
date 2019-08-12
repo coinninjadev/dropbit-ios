@@ -43,7 +43,7 @@ class TransactionHistoryEmptyView: UIView {
   }
 
   private func initalize() {
-    backgroundColor = .lightGrayBackground
+    backgroundColor = .clear
   }
 
   private let buttonFont: UIFont = .primaryButtonTitle

@@ -108,17 +108,15 @@
                                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="j2L-Xa-KD9">
                                                         <rect key="frame" x="142.5" y="0.0" width="50" height="50"/>
                                                         <constraints>
-                                                            <constraint firstAttribute="width" secondItem="j2L-Xa-KD9" secondAttribute="height" multiplier="1:1" id="6SZ-zr-LiM"/>
+                                                            <constraint firstAttribute="width" secondItem="j2L-Xa-KD9" secondAttribute="height" multiplier="1:1" id="TBZ-V8-TXd"/>
                                                         </constraints>
                                                     </imageView>
                                                 </subviews>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
                                                     <constraint firstAttribute="bottom" secondItem="j2L-Xa-KD9" secondAttribute="bottom" id="0Ca-19-u1J"/>
-                                                    <constraint firstAttribute="height" relation="lessThanOrEqual" constant="55" id="3pB-sk-6Pu"/>
                                                     <constraint firstItem="j2L-Xa-KD9" firstAttribute="centerX" secondItem="BP6-4G-pO4" secondAttribute="centerX" id="5Dl-ak-k4a"/>
-                                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="32" id="a57-4P-Xmc"/>
-                                                    <constraint firstAttribute="height" priority="750" constant="55" id="vM8-ZT-6G7"/>
+                                                    <constraint firstAttribute="height" constant="50" id="vM8-ZT-6G7"/>
                                                     <constraint firstItem="j2L-Xa-KD9" firstAttribute="top" secondItem="BP6-4G-pO4" secondAttribute="top" id="xti-2v-Dyq"/>
                                                 </constraints>
                                             </view>

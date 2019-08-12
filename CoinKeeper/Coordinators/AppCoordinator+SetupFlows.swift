@@ -10,6 +10,7 @@ import Foundation
 import PromiseKit
 import UIKit
 import MMDrawerController
+import CoreData
 
 enum SetupFlow {
   case newWallet
@@ -175,12 +176,9 @@ extension AppCoordinator {
     return pinEntryViewController
   }
 
-  private func makeTransactionHistory() -> TransactionHistoryViewController {
-    let txHistory = TransactionHistoryViewController.makeFromStoryboard()
-    assignCoordinationDelegate(to: txHistory)
-    txHistory.context = persistenceManager.mainQueueContext()
-    txHistory.urlOpener = self
-    return txHistory
+  private func makeTransactionHistory(isLightning lightning: Bool = false) -> TransactionHistoryViewController {
+    return TransactionHistoryViewController.newInstance(withDelegate: self, context: persistenceManager.mainQueueContext(),
+                                                        type: lightning ? .lightning : .onChain)
   }
 
   private func setupDrawerViewController(centerViewController: UIViewController, leftViewController: UIViewController) -> MMDrawerController {
@@ -222,12 +220,12 @@ extension AppCoordinator {
 
   private func makeOverviewController() -> WalletOverviewViewController {
     let bitcoinWalletTransactionHistory = makeTransactionHistory()
-    let lightningWalletTransactionHistory = makeTransactionHistory()
+    let lightningWalletTransactionHistory = makeTransactionHistory(isLightning: true)
     let requestPayViewController = createRequestPayViewController(converter: currencyController.currencyConverter)
       ?? RequestPayViewController.makeFromStoryboard()
     requestPayViewController.isModal = false
     let overviewChildViewControllers: [BaseViewController] =
-      [bitcoinWalletTransactionHistory, lightningWalletTransactionHistory]
+      [lightningWalletTransactionHistory, bitcoinWalletTransactionHistory]
 
     let overviewViewController = WalletOverviewViewController.newInstance(with: self,
                                                                           baseViewControllers: overviewChildViewControllers,
