@@ -11,12 +11,12 @@ import UIKit
 
 extension NSAttributedString {
 
-  static var lightningTitle: NSAttributedString {
+  static var lightningSelectedButtonTitle: NSAttributedString {
     return NSAttributedString(imageName: "flashIcon", imageSize: CGSize(width: 11, height: 18),
                        title: "Lightning", sharedColor: .white, font: .medium(14))
   }
 
-  static var bitcoinTitle: NSAttributedString {
+  static var bitcoinSelectedButton: NSAttributedString {
     return NSAttributedString(imageName: "bitcoinIconFilled", imageSize: CGSize(width: 11, height: 18),
                        title: "Bitcoin", sharedColor: .white, font: .medium(14))
   }

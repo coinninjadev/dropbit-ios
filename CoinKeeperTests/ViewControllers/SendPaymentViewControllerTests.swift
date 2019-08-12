@@ -26,7 +26,7 @@ class SendPaymentViewControllerTests: XCTestCase {
     let currencyPair = CurrencyPair(primary: .USD, fiat: .USD)
     let swappableVM = CurrencySwappableEditAmountViewModel(exchangeRates: safeRates, primaryAmount: 3500, currencyPair: currencyPair)
     let viewModel = SendPaymentViewModel(editAmountViewModel: swappableVM,
-                                         walletType: .onChain,
+                                         walletTransactionType: .onChain,
                                          address: "12A1MyfXbW6RhdRAZEqofac5jCQQjwEPBu",
                                          requiredFeeRate: nil,
                                          memo: nil)

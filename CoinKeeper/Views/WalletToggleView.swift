@@ -44,13 +44,13 @@ class WalletToggleView: UIView {
 
   func selectBitcoinButton() {
     bitcoinWalletButton.backgroundColor = .bitcoinOrange
-    bitcoinWalletButton.setAttributedTitle(NSAttributedString.bitcoinTitle, for: .normal)
+    bitcoinWalletButton.setAttributedTitle(NSAttributedString.bitcoinSelectedButton, for: .normal)
     deselectButton(lightningWalletButton)
   }
 
   func selectLightningButton() {
     lightningWalletButton.backgroundColor = .lightningBlue
-    lightningWalletButton.setAttributedTitle(NSAttributedString.lightningTitle, for: .normal)
+    lightningWalletButton.setAttributedTitle(NSAttributedString.lightningSelectedButtonTitle, for: .normal)
     deselectButton(bitcoinWalletButton)
   }
 

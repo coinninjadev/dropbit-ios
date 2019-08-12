@@ -16,7 +16,7 @@ protocol WalletOverviewViewControllerDelegate: BalanceContainerDelegate & BadgeU
 
   func viewControllerDidTapScan(_ viewController: UIViewController, converter: CurrencyConverter)
   func viewControllerDidTapReceivePayment(_ viewController: UIViewController, converter: CurrencyConverter)
-  func viewControllerDidTapSendPayment(_ viewController: UIViewController, converter: CurrencyConverter, walletType: WalletType)
+  func viewControllerDidTapSendPayment(_ viewController: UIViewController, converter: CurrencyConverter, walletTransactionType: WalletTransactionType)
   func viewControllerShouldAdjustForBottomSafeArea(_ viewController: UIViewController) -> Bool
   func viewControllerDidTapWalletTooltip()
   func isSyncCurrentlyRunning() -> Bool
@@ -259,8 +259,8 @@ extension WalletOverviewViewController: SendReceiveActionViewDelegate {
 
   func actionViewDidSelectSend(_ view: UIView) {
     guard let coordinator = coordinationDelegate else { return }
-    let walletType: WalletType = currentWallet == .bitcoinWalletTransactionHistory ? .onChain : .lightning
-    coordinator.viewControllerDidTapSendPayment(self, converter: coordinator.currencyController.currencyConverter, walletType: walletType )
+    let walletTransactionType: WalletTransactionType = currentWallet == .bitcoinWalletTransactionHistory ? .onChain : .lightning
+    coordinator.viewControllerDidTapSendPayment(self, converter: coordinator.currencyController.currencyConverter, walletTransactionType: walletTransactionType )
   }
 }
 

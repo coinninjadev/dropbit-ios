@@ -22,7 +22,7 @@ extension AppCoordinator {
       let vm = CurrencySwappableEditAmountViewModel(exchangeRates: self.currencyController.exchangeRates,
                                                     primaryAmount: .zero,
                                                     currencyPair: currencyPair)
-      let sendPaymentVM = SendPaymentViewModel(editAmountViewModel: vm, walletType: .onChain)
+      let sendPaymentVM = SendPaymentViewModel(editAmountViewModel: vm, walletTransactionType: .onChain)
       let sendPaymentViewController = SendPaymentViewController.newInstance(delegate: self, viewModel: sendPaymentVM)
       sendPaymentViewController.alertManager = alertManager
       sendPaymentViewController.recipientDescriptionToLoad = bitcoinURL.absoluteString

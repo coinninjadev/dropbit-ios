@@ -387,7 +387,7 @@ extension SendPaymentViewController {
       switch result {
       case .success(let response):
         guard let fetchedModel = SendPaymentViewModel(response: response,
-                                                      walletType: self.viewModel.type,
+                                                      walletTransactionType: self.viewModel.type,
                                                       exchangeRates: self.viewModel.exchangeRates,
                                                       fiatCurrency: self.viewModel.fiatCurrency),
           let fetchedAddress = fetchedModel.address else {
@@ -711,7 +711,7 @@ extension SendPaymentViewController {
                                                                    primaryCurrency: primaryCurrency,
                                                                    contact: newContact,
                                                                    memo: self.viewModel.memo,
-                                                                   walletType: self.viewModel.type,
+                                                                   walletTransactionType: self.viewModel.type,
                                                                    rates: self.rateManager.exchangeRates,
                                                                    memoIsShared: self.viewModel.sharedMemoDesired,
                                                                    sharedPayload: sharedPayload)
@@ -794,7 +794,7 @@ extension SendPaymentViewController {
       coordinationDelegate?.viewController(self,
                                            sendingMax: data,
                                            address: address,
-                                           walletType: viewModel.type,
+                                           walletTransactionType: viewModel.type,
                                            contact: contact,
                                            rates: rates,
                                            sharedPayload: sharedPayload)
@@ -804,7 +804,7 @@ extension SendPaymentViewController {
                                                               requiredFeeRate: viewModel.requiredFeeRate,
                                                               primaryCurrency: primaryCurrency,
                                                               address: address,
-                                                              walletType: viewModel.type,
+                                                              walletTransactionType: viewModel.type,
                                                               contact: contact,
                                                               rates: rates,
                                                               sharedPayload: sharedPayload)

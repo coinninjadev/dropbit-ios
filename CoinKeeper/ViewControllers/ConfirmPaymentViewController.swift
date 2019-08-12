@@ -50,7 +50,7 @@ class ConfirmPaymentViewController: PresentableViewController, StoryboardInitial
 
   private var feedbackGenerator: UIImpactFeedbackGenerator = UIImpactFeedbackGenerator(style: .medium)
 
-  @IBOutlet var walletTypeButton: CompactActionButton!
+  @IBOutlet var walletTransactionTypeButton: CompactActionButton!
   @IBOutlet var closeButton: UIButton!
   @IBOutlet var confirmButton: ConfirmPaymentButton!
   @IBOutlet var primaryCurrencyLabel: UILabel!
@@ -199,12 +199,13 @@ extension ConfirmPaymentViewController {
     tapAndHoldLabel.font = .medium(13)
 
     if let viewModel = viewModel {
-      switch viewModel.walletType {
-      case .lightning: walletTypeButton.style = .lightning(true)
-      walletTypeButton.setAttributedTitle(NSAttributedString.lightningTitle, for: .normal)
+      switch viewModel.walletTransactionType {
+      case .lightning:
+        walletTransactionTypeButton.style = .lightning(true)
+        walletTransactionTypeButton.setAttributedTitle(NSAttributedString.lightningSelectedButtonTitle, for: .normal)
       case .onChain:
-        walletTypeButton.style = .bitcoin(true)
-        walletTypeButton.setAttributedTitle(NSAttributedString.bitcoinTitle, for: .normal)
+        walletTransactionTypeButton.style = .bitcoin(true)
+        walletTransactionTypeButton.setAttributedTitle(NSAttributedString.bitcoinSelectedButton, for: .normal)
       }
     }
 

@@ -24,10 +24,10 @@ class LightningRefillViewController: BaseViewController, StoryboardInitializable
   @IBOutlet var titleLabel: UILabel!
   @IBOutlet var detailLabel: UILabel!
   @IBOutlet var minMaxLabel: UILabel!
-  @IBOutlet var fiveButton: UIButton!
-  @IBOutlet var twentyButton: UIButton!
-  @IBOutlet var hundredButton: UIButton!
-  @IBOutlet var customAmountButton: UIButton!
+  @IBOutlet var fiveButton: LightningActionButton!
+  @IBOutlet var twentyButton: LightningActionButton!
+  @IBOutlet var hundredButton: LightningActionButton!
+  @IBOutlet var customAmountButton: LightningActionButton!
   @IBOutlet var remindMeLaterButton: UIButton!
   @IBOutlet var dontAskMeAgainButton: UIButton!
 
@@ -55,22 +55,10 @@ class LightningRefillViewController: BaseViewController, StoryboardInitializable
     minMaxLabel.font = .regular(12)
     minMaxLabel.textColor = .white
 
-    styleButton(fiveButton)
-    styleButton(twentyButton)
-    styleButton(hundredButton)
-    styleButton(customAmountButton)
-
     containerView.applyCornerRadius(10)
 
     remindMeLaterButton.setTitleColor(.neonGreen, for: .normal)
     dontAskMeAgainButton.setTitleColor(.white, for: .normal)
-  }
-
-  private func styleButton(_ button: UIButton) {
-    button.applyCornerRadius(4)
-    button.backgroundColor = .white
-    button.setTitleColor(.lightningBlue, for: .normal)
-    button.titleLabel?.font = .medium(16)
   }
 
   @IBAction func fiveButtonWasTouched() {

@@ -19,7 +19,7 @@ protocol ViewControllerSendingDelegate: AnyObject {
   func viewController(_ viewController: UIViewController,
                       sendingMax data: CNBTransactionData,
                       address: String,
-                      walletType: WalletType,
+                      walletTransactionType: WalletTransactionType,
                       contact: ContactType?,
                       rates: ExchangeRates,
                       sharedPayload: SharedPayloadDTO)
@@ -29,7 +29,7 @@ protocol ViewControllerSendingDelegate: AnyObject {
                                     requiredFeeRate: Double?,
                                     primaryCurrency: CurrencyCode,
                                     address: String,
-                                    walletType: WalletType,
+                                    walletTransactionType: WalletTransactionType,
                                     contact: ContactType?,
                                     rates: ExchangeRates,
                                     sharedPayload: SharedPayloadDTO)
@@ -40,7 +40,7 @@ protocol ViewControllerSendingDelegate: AnyObject {
                                                 primaryCurrency: CurrencyCode,
                                                 contact: ContactType,
                                                 memo: String?,
-                                                walletType: WalletType,
+                                                walletTransactionType: WalletTransactionType,
                                                 rates: ExchangeRates,
                                                 memoIsShared: Bool,
                                                 sharedPayload: SharedPayloadDTO)

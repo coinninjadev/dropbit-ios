@@ -27,7 +27,7 @@ extension AppCoordinator: ViewControllerSendingDelegate {
     _ viewController: UIViewController,
     sendingMax txData: CNBTransactionData,
     address: String,
-    walletType: WalletType,
+    walletTransactionType: WalletTransactionType,
     contact: ContactType?,
     rates: ExchangeRates,
     sharedPayload: SharedPayloadDTO
@@ -72,7 +72,7 @@ extension AppCoordinator: ViewControllerSendingDelegate {
             with: outgoingTransactionData,
             btcAmount: btcAmount,
             address: address,
-            walletType: walletType,
+            walletTransactionType: walletTransactionType,
             contact: contact,
             currencyPair: currencyPair,
             feeModel: feeModel,
@@ -91,7 +91,7 @@ extension AppCoordinator: ViewControllerSendingDelegate {
         with: outgoingTransactionData,
         btcAmount: btcAmount,
         address: address,
-        walletType: walletType,
+        walletTransactionType: walletTransactionType,
         contact: contact,
         currencyPair: currencyPair,
         feeModel: feeModel,
@@ -105,7 +105,7 @@ extension AppCoordinator: ViewControllerSendingDelegate {
                                     requiredFeeRate: Double?,
                                     primaryCurrency: CurrencyCode,
                                     address: String,
-                                    walletType: WalletType,
+                                    walletTransactionType: WalletTransactionType,
                                     contact: ContactType?,
                                     rates: ExchangeRates,
                                     sharedPayload: SharedPayloadDTO) {
@@ -162,7 +162,7 @@ extension AppCoordinator: ViewControllerSendingDelegate {
           with: outgoingTransactionData,
           btcAmount: btcAmount,
           address: address,
-          walletType: walletType,
+          walletTransactionType: walletTransactionType,
           contact: contact,
           currencyPair: currencyPair,
           feeModel: feeModel,
@@ -180,7 +180,7 @@ extension AppCoordinator: ViewControllerSendingDelegate {
                                                 primaryCurrency: CurrencyCode,
                                                 contact: ContactType,
                                                 memo: String?,
-                                                walletType: WalletType,
+                                                walletTransactionType: WalletTransactionType,
                                                 rates: ExchangeRates,
                                                 memoIsShared: Bool,
                                                 sharedPayload: SharedPayloadDTO) {
@@ -194,7 +194,7 @@ extension AppCoordinator: ViewControllerSendingDelegate {
             self.analyticsManager.track(event: .paymentToPhoneNumber, with: nil)
             let currencyPair = CurrencyPair(primary: primaryCurrency, fiat: self.currencyController.fiatCurrency)
             self.handleInvite(btcAmount: btcAmount, currencyPair: currencyPair, contact: contact, memo: memo,
-                              walletType: walletType, rates: rates, memoIsShared: memoIsShared, sharedPayload: sharedPayload)
+                              walletTransactionType: walletTransactionType, rates: rates, memoIsShared: memoIsShared, sharedPayload: sharedPayload)
           })
         }
 
@@ -271,7 +271,7 @@ extension AppCoordinator: ViewControllerSendingDelegate {
   private func showConfirmPayment(with dto: OutgoingTransactionData,
                                   btcAmount: NSDecimalNumber,
                                   address: String?,
-                                  walletType: WalletType,
+                                  walletTransactionType: WalletTransactionType,
                                   contact: ContactType?,
                                   currencyPair: CurrencyPair,
                                   feeModel: ConfirmTransactionFeeModel,
@@ -281,10 +281,11 @@ extension AppCoordinator: ViewControllerSendingDelegate {
 
     let displayLightningPaymentViewController: () -> Void = {}
 
-    let displayConfirmPaymentViewController: () -> Void = {
+    let displayConfirmPaymentViewController: () -> Void = { [weak self] in
+      guard let weakSelf = self else { return }
       let viewModel = ConfirmPaymentViewModel(address: address,
                                               contact: contact,
-                                              walletType: walletType,
+                                              walletTransactionType: walletTransactionType,
                                               btcAmount: btcAmount,
                                               currencyPair: currencyPair,
                                               exchangeRates: rates,
@@ -293,9 +294,9 @@ extension AppCoordinator: ViewControllerSendingDelegate {
       let confirmPayVC = ConfirmPaymentViewController.newInstance(type: .payment,
                                                                   viewModel: viewModel,
                                                                   feeModel: feeModel,
-                                                                  delegate: self)
+                                                                  delegate: weakSelf)
 
-      self.navigationController.present(confirmPayVC, animated: true)
+      weakSelf.navigationController.present(confirmPayVC, animated: true)
     }
 
     if isLightningConvertible {
@@ -362,7 +363,7 @@ extension AppCoordinator: ViewControllerSendingDelegate {
                             currencyPair: CurrencyPair,
                             contact: ContactType,
                             memo: String?,
-                            walletType: WalletType,
+                            walletTransactionType: WalletTransactionType,
                             rates: ExchangeRates,
                             memoIsShared: Bool,
                             sharedPayload: SharedPayloadDTO) {
@@ -387,7 +388,7 @@ extension AppCoordinator: ViewControllerSendingDelegate {
         let displayConfirmPaymentViewController: () -> Void = {
           let viewModel = ConfirmPaymentInviteViewModel(address: nil,
                                                         contact: contact,
-                                                        walletType: walletType,
+                                                        walletTransactionType: walletTransactionType,
                                                         btcAmount: btcAmount,
                                                         currencyPair: currencyPair,
                                                         exchangeRates: rates,

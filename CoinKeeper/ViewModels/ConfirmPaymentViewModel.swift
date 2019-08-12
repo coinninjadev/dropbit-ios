@@ -13,20 +13,20 @@ import CNBitcoinKit
 class BaseConfirmPaymentViewModel: DualAmountDisplayable {
   let address: String?
   let contact: ContactType?
-  let walletType: WalletType
+  let walletTransactionType: WalletTransactionType
   var btcAmount: NSDecimalNumber
   let currencyPair: CurrencyPair
   let exchangeRates: ExchangeRates
 
   init(address: String?,
        contact: ContactType?,
-       walletType: WalletType,
+       walletTransactionType: WalletTransactionType,
        btcAmount: NSDecimalNumber,
        currencyPair: CurrencyPair,
        exchangeRates: ExchangeRates) {
     self.address = address
     self.contact = contact
-    self.walletType = walletType
+    self.walletTransactionType = walletTransactionType
     self.btcAmount = btcAmount
     self.currencyPair = currencyPair
     self.exchangeRates = exchangeRates
@@ -75,7 +75,7 @@ class ConfirmPaymentInviteViewModel: BaseConfirmPaymentViewModel {
 
   init(address: String?,
        contact: ContactType?,
-       walletType: WalletType,
+       walletTransactionType: WalletTransactionType,
        btcAmount: NSDecimalNumber,
        currencyPair: CurrencyPair,
        exchangeRates: ExchangeRates,
@@ -83,7 +83,7 @@ class ConfirmPaymentInviteViewModel: BaseConfirmPaymentViewModel {
     self.sharedPayloadDTO = sharedPayloadDTO
     super.init(address: address,
                contact: contact,
-               walletType: walletType,
+               walletTransactionType: walletTransactionType,
                btcAmount: btcAmount,
                currencyPair: currencyPair,
                exchangeRates: exchangeRates)
@@ -109,7 +109,7 @@ class ConfirmPaymentViewModel: BaseConfirmPaymentViewModel {
 
   init(address: String?,
        contact: ContactType?,
-       walletType: WalletType,
+       walletTransactionType: WalletTransactionType,
        btcAmount: NSDecimalNumber,
        currencyPair: CurrencyPair,
        exchangeRates: ExchangeRates,
@@ -117,7 +117,7 @@ class ConfirmPaymentViewModel: BaseConfirmPaymentViewModel {
     self.outgoingTransactionData = outgoingTransactionData
     super.init(address: address,
                contact: contact,
-               walletType: walletType,
+               walletTransactionType: walletTransactionType,
                btcAmount: btcAmount,
                currencyPair: currencyPair,
                exchangeRates: exchangeRates)
