@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 
 protocol WalletTransferViewControllerDelegate: class {
-  func viewControllerDidConfirmTransaction()
+  func viewControllerDidConfirmTransfer()
 }
 
 class WalletTransferViewController: BaseViewController, StoryboardInitializable {
@@ -19,7 +19,28 @@ class WalletTransferViewController: BaseViewController, StoryboardInitializable 
   @IBOutlet var closeButton: UIButton!
   @IBOutlet var transferImageView: UIImageView!
   @IBOutlet var currencySwapView: CurrencySwappableEditAmountView!
-  @IBOutlet var tapAndHoldLabel: UILabel!
-  @IBOutlet var confirmButton: ConfirmPaymentButton!
+  @IBOutlet var confirmView: ConfirmView!
 
+  static func newInstance(delegate: WalletTransferViewControllerDelegate) -> WalletTransferViewController {
+    let viewController = WalletTransferViewController.makeFromStoryboard()
+    viewController.generalCoordinationDelegate = delegate
+    return viewController
+  }
+
+  var coordinationDelegate: WalletTransferViewControllerDelegate? {
+    return generalCoordinationDelegate as? WalletTransferViewControllerDelegate
+  }
+
+  override func viewDidLoad() {
+    super.viewDidLoad()
+
+    confirmView.delegate = self
+  }
+}
+
+extension WalletTransferViewController: ConfirmViewDelegate {
+
+  func viewDidConfirm() {
+    coordinationDelegate?.viewControllerDidConfirmTransfer()
+  }
 }
