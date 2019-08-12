@@ -46,19 +46,19 @@ class LightningTransactionHistoryEmptyView: UIView {
     customAmountButton.titleLabel?.font = .medium(16)
   }
 
-  @IBAction func fiveButtonWasTouched() {
+  @IBAction func lowAmountButtonWasTouched() {
     delegate?.emptyViewDidRequestRefill(withAmount: .low)
   }
 
-  @IBAction func twentyButtonWasTouched() {
+  @IBAction func mediumAmountButtonWasTouched() {
     delegate?.emptyViewDidRequestRefill(withAmount: .medium)
   }
 
-  @IBAction func fiftyButtonWasTouched() {
+  @IBAction func highAmountButtonWasTouched() {
     delegate?.emptyViewDidRequestRefill(withAmount: .high)
   }
 
-  @IBAction func hundredButtonWasTouched() {
+  @IBAction func maxAmountButtonWasTouched() {
     delegate?.emptyViewDidRequestRefill(withAmount: .max)
   }
 

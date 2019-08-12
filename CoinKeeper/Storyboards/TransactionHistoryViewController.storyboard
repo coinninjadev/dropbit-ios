@@ -223,7 +223,7 @@
                                             </constraints>
                                             <state key="normal" title="$5"/>
                                             <connections>
-                                                <action selector="fiveButtonWasTouched" destination="2ME-xd-Art" eventType="touchUpInside" id="SZ4-gH-zcy"/>
+                                                <action selector="lowAmountButtonWasTouched" destination="2ME-xd-Art" eventType="touchUpInside" id="k4p-DK-evZ"/>
                                             </connections>
                                         </button>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IOh-Qi-xIR" customClass="LightningActionButton" customModule="DropBit" customModuleProvider="target">
@@ -233,7 +233,7 @@
                                             </constraints>
                                             <state key="normal" title="$20"/>
                                             <connections>
-                                                <action selector="twentyButtonWasTouched" destination="2ME-xd-Art" eventType="touchUpInside" id="uzJ-Tc-hzf"/>
+                                                <action selector="mediumAmountButtonWasTouched" destination="2ME-xd-Art" eventType="touchUpInside" id="JHV-6s-B1A"/>
                                             </connections>
                                         </button>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="URI-ML-Wa5" customClass="LightningActionButton" customModule="DropBit" customModuleProvider="target">
@@ -243,7 +243,7 @@
                                             </constraints>
                                             <state key="normal" title="$50"/>
                                             <connections>
-                                                <action selector="fiftyButtonWasTouched" destination="2ME-xd-Art" eventType="touchUpInside" id="O1X-hY-fWa"/>
+                                                <action selector="highAmountButtonWasTouched" destination="2ME-xd-Art" eventType="touchUpInside" id="EPY-CM-9Ar"/>
                                             </connections>
                                         </button>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6dm-fF-XTb" customClass="LightningActionButton" customModule="DropBit" customModuleProvider="target">
@@ -253,7 +253,7 @@
                                             </constraints>
                                             <state key="normal" title="$100"/>
                                             <connections>
-                                                <action selector="hundredButtonWasTouched" destination="2ME-xd-Art" eventType="touchUpInside" id="ALo-BI-6pP"/>
+                                                <action selector="maxAmountButtonWasTouched" destination="2ME-xd-Art" eventType="touchUpInside" id="xeI-kr-0x9"/>
                                             </connections>
                                         </button>
                                     </subviews>
