@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Wallet Transfer View Controller-->
+        <scene sceneID="1Vt-Tf-ZMG">
+            <objects>
+                <viewController storyboardIdentifier="WalletTransferViewController" id="8Bm-nf-e6d" customClass="WalletTransferViewController" customModule="DropBit" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="WCI-6c-6N4">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oeX-y5-uIm">
+                                <rect key="frame" x="350" y="59" width="44" height="44"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="44" id="Yy5-xA-967"/>
+                                    <constraint firstAttribute="height" constant="44" id="one-Zf-joA"/>
+                                </constraints>
+                                <state key="normal" image="close"/>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xkL-B7-v7E">
+                                <rect key="frame" x="186" y="59" width="42" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jSB-ZY-MhK" customClass="CurrencySwappableEditAmountView" customModule="DropBit" customModuleProvider="target">
+                                <rect key="frame" x="87" y="248" width="240" height="128"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </view>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="7F0-Wc-4DJ">
+                                <rect key="frame" x="169.5" y="105" width="75" height="23"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="75" id="SeZ-55-Vw8"/>
+                                    <constraint firstAttribute="height" constant="23" id="WAT-40-x9q"/>
+                                </constraints>
+                            </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ndZ-75-P7n" customClass="ConfirmPaymentButton" customModule="DropBit" customModuleProvider="target">
+                                <rect key="frame" x="173.5" y="759" width="67" height="67"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="67" id="KQn-xB-9bg"/>
+                                    <constraint firstAttribute="width" constant="67" id="mNf-6h-gef"/>
+                                </constraints>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="TAP AND HOLD TO SEND" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="L1f-wC-Sqv">
+                                <rect key="frame" x="108.5" y="715" width="197" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="ndZ-75-P7n" firstAttribute="top" secondItem="L1f-wC-Sqv" secondAttribute="bottom" constant="23" id="60w-8h-sil"/>
+                            <constraint firstItem="oeX-y5-uIm" firstAttribute="top" secondItem="jnq-rQ-wcS" secondAttribute="top" constant="15" id="6Tg-wz-CXO"/>
+                            <constraint firstItem="7F0-Wc-4DJ" firstAttribute="centerX" secondItem="WCI-6c-6N4" secondAttribute="centerX" id="EWP-4t-XXa"/>
+                            <constraint firstItem="xkL-B7-v7E" firstAttribute="centerX" secondItem="WCI-6c-6N4" secondAttribute="centerX" id="G59-t6-NZi"/>
+                            <constraint firstItem="L1f-wC-Sqv" firstAttribute="centerX" secondItem="WCI-6c-6N4" secondAttribute="centerX" id="Z6x-Ci-5dU"/>
+                            <constraint firstItem="ndZ-75-P7n" firstAttribute="centerX" secondItem="WCI-6c-6N4" secondAttribute="centerX" id="gXC-69-j3O"/>
+                            <constraint firstItem="xkL-B7-v7E" firstAttribute="top" secondItem="jnq-rQ-wcS" secondAttribute="top" constant="15" id="jS2-M9-hHY"/>
+                            <constraint firstItem="jnq-rQ-wcS" firstAttribute="trailing" secondItem="oeX-y5-uIm" secondAttribute="trailing" constant="20" id="mGs-ma-Vdo"/>
+                            <constraint firstItem="jnq-rQ-wcS" firstAttribute="bottom" secondItem="ndZ-75-P7n" secondAttribute="bottom" constant="36" id="sBR-mS-lcW"/>
+                            <constraint firstItem="7F0-Wc-4DJ" firstAttribute="top" secondItem="xkL-B7-v7E" secondAttribute="bottom" constant="25" id="zKp-wO-yai"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="jnq-rQ-wcS"/>
+                    </view>
+                    <connections>
+                        <outlet property="closeButton" destination="oeX-y5-uIm" id="moo-ij-DX3"/>
+                        <outlet property="confirmButton" destination="ndZ-75-P7n" id="8eL-jV-ath"/>
+                        <outlet property="currencySwapView" destination="jSB-ZY-MhK" id="ouv-um-dCJ"/>
+                        <outlet property="titleLabel" destination="xkL-B7-v7E" id="w6Q-w7-9vM"/>
+                        <outlet property="transferImageView" destination="7F0-Wc-4DJ" id="HbV-53-IWD"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Fcq-fs-jT8" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="103" y="139"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="close" width="14" height="14"/>
+    </resources>
+</document>
