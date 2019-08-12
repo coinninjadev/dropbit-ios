@@ -24,6 +24,9 @@ protocol CoinNinjaProviderType: AnyObject {
 
 class CoinNinjaProvider: CoinNinjaProviderType {
   weak var headerDelegate: HeaderDelegate?
+
+  public static let thunderdomeBasePath = "thunderdome"
+
 }
 
 extension CoinNinjaProviderType {
