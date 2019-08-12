@@ -44,7 +44,7 @@ class LightningRefillViewController: BaseViewController, StoryboardInitializable
     super.viewDidLoad()
     
     view.isOpaque = false
-    view.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.85)
+    view.backgroundColor = UIColor.black.withAlphaComponent(0.85)
 
     titleLabel.font = .medium(17)
     titleLabel.textColor = .white
