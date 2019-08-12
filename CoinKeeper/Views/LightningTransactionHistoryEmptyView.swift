@@ -16,18 +16,18 @@ protocol LightningTransactionHistoryEmptyViewDelegate: AnyObject {
 
 class LightningTransactionHistoryEmptyView: UIView {
   enum Amount {
-    case five
-    case twenty
-    case fifty
-    case hundred
+    case low
+    case medium
+    case high
+    case max
   }
 
   @IBOutlet var titleLabel: UILabel!
   @IBOutlet var detailLabel: UILabel!
-  @IBOutlet var fiveButton: PrimaryActionButton!
-  @IBOutlet var twentyButton: PrimaryActionButton!
-  @IBOutlet var fiftyButton: PrimaryActionButton!
-  @IBOutlet var hundredButton: PrimaryActionButton!
+  @IBOutlet var lowAmountButton: LightningActionButton!
+  @IBOutlet var mediumAmountButton: LightningActionButton!
+  @IBOutlet var highAmountButton: LightningActionButton!
+  @IBOutlet var maxAmountButton: LightningActionButton!
   @IBOutlet var customAmountButton: UIButton!
 
   weak var delegate: LightningTransactionHistoryEmptyViewDelegate?
@@ -44,34 +44,22 @@ class LightningTransactionHistoryEmptyView: UIView {
     customAmountButton.titleLabel?.textColor = .darkGrayText
     customAmountButton.tintColor = .darkGray
     customAmountButton.titleLabel?.font = .medium(16)
-
-    styleButton(button: fiveButton)
-    styleButton(button: twentyButton)
-    styleButton(button: fiftyButton)
-    styleButton(button: hundredButton)
-  }
-
-  private func styleButton(button: UIButton) {
-    button.backgroundColor = .lightningBlue
-    button.setTitleColor(.white, for: .normal)
-    button.titleLabel?.font = .medium(18)
-    button.applyCornerRadius(5)
   }
 
   @IBAction func fiveButtonWasTouched() {
-    delegate?.emptyViewDidRequestRefill(withAmount: .five)
+    delegate?.emptyViewDidRequestRefill(withAmount: .low)
   }
 
   @IBAction func twentyButtonWasTouched() {
-    delegate?.emptyViewDidRequestRefill(withAmount: .twenty)
+    delegate?.emptyViewDidRequestRefill(withAmount: .medium)
   }
 
   @IBAction func fiftyButtonWasTouched() {
-    delegate?.emptyViewDidRequestRefill(withAmount: .fifty)
+    delegate?.emptyViewDidRequestRefill(withAmount: .high)
   }
 
   @IBAction func hundredButtonWasTouched() {
-    delegate?.emptyViewDidRequestRefill(withAmount: .hundred)
+    delegate?.emptyViewDidRequestRefill(withAmount: .max)
   }
 
   @IBAction func customAmountButtonWasTouched() {
