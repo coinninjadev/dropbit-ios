@@ -31,7 +31,7 @@ class DerivativePathTests: XCTestCase {
   func testMaxReceiveIndexZeroCorrectlyFetches() {
     let fakePath = CKMDerivativePath(insertInto: context)
     fakePath.purpose = 49
-    fakePath.coin = 0
+    fakePath.coin = CKMDerivativePath.relevantCoin
     fakePath.account = 0
     fakePath.change = 0
     fakePath.index = 0
@@ -45,7 +45,7 @@ class DerivativePathTests: XCTestCase {
   func testMaxReceiveIndexTenCorrectlyFetches() {
     let fakePath = CKMDerivativePath(insertInto: context)
     fakePath.purpose = 49
-    fakePath.coin = 0
+    fakePath.coin = CKMDerivativePath.relevantCoin
     fakePath.account = 0
     fakePath.change = 0
     fakePath.index = 10
@@ -59,7 +59,7 @@ class DerivativePathTests: XCTestCase {
   func testMaxReceiveIndexZeroCorrectlyFetches_ignoresServerAddress() {
     let usedPath = CKMDerivativePath(insertInto: context)
     usedPath.purpose = 49
-    usedPath.coin = 0
+    usedPath.coin = CKMDerivativePath.relevantCoin
     usedPath.account = 0
     usedPath.change = 0
     usedPath.index = 0
@@ -67,7 +67,7 @@ class DerivativePathTests: XCTestCase {
 
     let serverAddressPath = CKMDerivativePath(insertInto: context)
     serverAddressPath.purpose = 49
-    serverAddressPath.coin = 0
+    serverAddressPath.coin = CKMDerivativePath.relevantCoin
     serverAddressPath.account = 0
     serverAddressPath.change = 0
     serverAddressPath.index = 1
@@ -82,7 +82,7 @@ class DerivativePathTests: XCTestCase {
   func testMaxChangeIndexZeroCorrectlyFetches() {
     let fakePath = CKMDerivativePath(insertInto: context)
     fakePath.purpose = 49
-    fakePath.coin = 0
+    fakePath.coin = CKMDerivativePath.relevantCoin
     fakePath.account = 0
     fakePath.change = 1
     fakePath.index = 0
@@ -96,7 +96,7 @@ class DerivativePathTests: XCTestCase {
   func testMaxChangeIndexTenCorrectlyFetches() {
     let fakePath = CKMDerivativePath(insertInto: context)
     fakePath.purpose = 49
-    fakePath.coin = 0
+    fakePath.coin = CKMDerivativePath.relevantCoin
     fakePath.account = 0
     fakePath.change = 1
     fakePath.index = 10
