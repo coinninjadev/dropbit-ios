@@ -8,7 +8,6 @@
 
 import UIKit
 
-
 class KeypadDigitView: UIView {
 
   var isSecure = false {
