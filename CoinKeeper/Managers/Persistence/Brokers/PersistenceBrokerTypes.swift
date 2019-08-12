@@ -73,7 +73,7 @@ protocol InvitationBrokerType: AnyObject {
   func getUnacknowledgedInvitations(in context: NSManagedObjectContext) -> [CKMInvitation]
   func getAllInvitations(in context: NSManagedObjectContext) -> [CKMInvitation]
   func persistUnacknowledgedInvitation(withDTO outgoingDTO: OutgoingInvitationDTO,
-                                       acknowledgementId: String,
+                                       acknowledgmentId: String,
                                        in context: NSManagedObjectContext)
   func addressesProvidedForReceivedPendingDropBits(in context: NSManagedObjectContext) -> [String]
   func acknowledgeInvitation(with outgoingTransactionData: OutgoingTransactionData,

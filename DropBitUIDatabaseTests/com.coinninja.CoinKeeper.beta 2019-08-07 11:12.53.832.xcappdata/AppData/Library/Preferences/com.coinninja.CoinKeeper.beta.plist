@@ -1,0 +1,31 @@
+// !!! BINARY PROPERTY LIST WARNING !!!
+//
+// The pretty-printed property list below has been created
+// from a binary version on disk and should not be saved as
+// the ASCII format is a subset of the binary representation!
+//
+{	backupWordsReminderShown = :true;
+	blockheight = 589064;
+	contactCacheMigrationVersions = { "v1tov2" = :true; };
+	exchangeRateBTCUSD = 11719;
+	feeBest = 65;
+	feeBetter = 45;
+	feeGood = 1;
+	firstTimeOpeningApp = :true;
+	keychainMigrationVersions = { "v1tov2" = :true; };
+	lastContactCacheReload = @2019-08-01 11:59:18 -0400;
+	lastSuccessfulSyncCompletedAt = @2019-08-07 11:11:59 -0400;
+	lastTimeEnteredBackground = 1565190601;
+	migrationVersions = {
+		"v1tov2" = :true;
+		"v4Grooming" = :true;
+	};
+	permission.requestedNotifications = :true;
+	receiveAddressIndexGaps = ( );
+	trackedKey = :true;
+	unseenTransactionChangesExist = :false;
+	userID = "c9c8fb9f-c61a-4aa2-8577-8deef5e7d36b";
+	uuid = "D043E1AB-6C94-4AFE-993D-9E1499860111";
+	walletID = "d06ac59a-db4f-4087-a3e9-3836c08b9d5e";
+	yearlyPriceHighNotificationEnabled = :true;
+}

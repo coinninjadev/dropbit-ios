@@ -15,11 +15,7 @@ extension MockNetworkManager: UserRequestable {
     return Promise { _ in }
   }
 
-  func verifyUser(body: VerifyUserBody) -> Promise<UserResponse> {
-    return Promise { _ in }
-  }
-
-  func verifyUser(body: VerifyUserBody, credentials: TwitterOAuthStorage?) -> Promise<UserResponse> {
+  func verifyUser(id: String, body: VerifyUserBody) -> Promise<UserResponse> {
     return Promise { _ in }
   }
 
