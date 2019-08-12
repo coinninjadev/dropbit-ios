@@ -18,7 +18,6 @@ struct DualAmountLabels {
   let secondary: NSAttributedString?
 }
 
-
 class CurrencySwappableEditAmountView: UIView {
 
   weak var delegate: CurrencySwappableEditAmountViewDelegate!

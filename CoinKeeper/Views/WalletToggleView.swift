@@ -14,7 +14,6 @@ protocol WalletToggleViewDelegate: class {
   func lightningWalletButtonWasTouched()
 }
 
-
 class WalletToggleView: UIView {
 
   @IBOutlet var bitcoinWalletButton: PrimaryActionButton!

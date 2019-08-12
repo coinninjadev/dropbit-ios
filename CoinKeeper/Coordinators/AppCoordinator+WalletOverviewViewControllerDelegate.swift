@@ -11,7 +11,7 @@ import UIKit
 import MMDrawerController
 
 extension AppCoordinator: WalletOverviewViewControllerDelegate {
-  
+
   func viewControllerDidRequestPrimaryCurrencySwap() {
     currencyController.selectedCurrency.toggle()
   }
@@ -56,6 +56,5 @@ extension AppCoordinator: WalletOverviewViewControllerDelegate {
     sendPaymentViewController.alertManager = self.alertManager
     navigationController.present(sendPaymentViewController, animated: true)
   }
-
 
 }
