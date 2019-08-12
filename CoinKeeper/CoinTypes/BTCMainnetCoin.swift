@@ -10,6 +10,6 @@ import CNBitcoinKit
 
 class BTCMainnetCoin: CNBBaseCoin {
   init(purpose: CoinDerivation) {
-    super.init(purpose: purpose, coin: CoinType.MainNet, account: 0, networkURL: "tcp://libbitcoin.coinninja.com:9091")
+    super.init(purpose: purpose, coin: CoinType.MainNet, account: 0)
   }
 }

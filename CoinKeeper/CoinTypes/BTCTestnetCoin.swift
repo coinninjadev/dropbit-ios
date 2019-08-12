@@ -10,6 +10,6 @@ import CNBitcoinKit
 
 class BTCTestnetCoin: CNBBaseCoin {
   init(purpose: CoinDerivation) {
-    super.init(purpose: purpose, coin: CoinType.TestNet, account: 0, networkURL: "tcp://testnet3.libbitcoin.net:19091")
+    super.init(purpose: purpose, coin: CoinType.TestNet, account: 0)
   }
 }
