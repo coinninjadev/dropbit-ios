@@ -123,7 +123,7 @@ class SendPaymentViewModel: CurrencySwappableEditAmountViewModel {
               address: output.address,
               requiredFeeRate: response.requiredFeeRate,
               memo: response.memo)
-    
+
     type = walletTransactionType
   }
 

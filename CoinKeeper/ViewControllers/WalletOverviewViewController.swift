@@ -260,7 +260,8 @@ extension WalletOverviewViewController: SendReceiveActionViewDelegate {
   func actionViewDidSelectSend(_ view: UIView) {
     guard let coordinator = coordinationDelegate else { return }
     let walletTransactionType: WalletTransactionType = currentWallet == .bitcoinWalletTransactionHistory ? .onChain : .lightning
-    coordinator.viewControllerDidTapSendPayment(self, converter: coordinator.currencyController.currencyConverter, walletTransactionType: walletTransactionType )
+    coordinator.viewControllerDidTapSendPayment(self, converter: coordinator.currencyController.currencyConverter,
+                                                walletTransactionType: walletTransactionType)
   }
 }
 
