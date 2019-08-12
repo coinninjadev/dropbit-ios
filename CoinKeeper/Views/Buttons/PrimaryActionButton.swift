@@ -14,10 +14,10 @@ class PrimaryActionButton: UIButton {
     case standard
     case error
     case darkBlue
-    case lightning
+    case lightning(Bool)
     case green
     case orange
-    case bitcoin
+    case bitcoin(Bool)
   }
 
   var style: Style = .standard {
@@ -56,15 +56,15 @@ class PrimaryActionButton: UIButton {
       backgroundColor = .mango
       setTitleColor(.lightGrayText, for: .normal)
       setTitleColor(.lightGrayText, for: .highlighted)
-    case .lightning:
-      applyCornerRadius(0)
+    case .lightning(let roundCorners):
+      if !roundCorners { applyCornerRadius(0) }
       tintColor = .white
       imageView?.tintColor = .white
       backgroundColor = .lightningBlue
       setTitleColor(.white, for: .normal)
       setTitleColor(.lightGrayText, for: .highlighted)
-    case .bitcoin:
-      applyCornerRadius(0)
+    case .bitcoin(let roundCorners):
+      if !roundCorners { applyCornerRadius(0) }
       backgroundColor = .bitcoinOrange
       tintColor = .white
       imageView?.tintColor = .white

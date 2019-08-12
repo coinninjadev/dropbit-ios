@@ -44,6 +44,7 @@ class MockSendPaymentViewControllerCoordinator: SendPaymentViewControllerCoordin
     _ viewController: UIViewController,
     sendingMax data: CNBTransactionData,
     address: String,
+    walletTransactionType: WalletTransactionType,
     contact: ContactType?,
     rates: ExchangeRates,
     sharedPayload: SharedPayloadDTO) {
@@ -129,6 +130,7 @@ class MockSendPaymentViewControllerCoordinator: SendPaymentViewControllerCoordin
     requiredFeeRate: Double?,
     primaryCurrency: CurrencyCode,
     address: String,
+    walletTransactionType: WalletTransactionType,
     contact: ContactType?,
     rates: ExchangeRates,
     sharedPayload: SharedPayloadDTO) {
@@ -141,6 +143,7 @@ class MockSendPaymentViewControllerCoordinator: SendPaymentViewControllerCoordin
     primaryCurrency: CurrencyCode,
     contact: ContactType,
     memo: String?,
+    walletTransactionType: WalletTransactionType,
     rates: ExchangeRates,
     memoIsShared: Bool,
     sharedPayload: SharedPayloadDTO) {

@@ -14,7 +14,7 @@ import PromiseKit
 import DZNEmptyDataSet
 
 protocol TransactionHistoryViewControllerDelegate: DeviceCountryCodeProvider &
-  BadgeUpdateDelegate {
+  BadgeUpdateDelegate & URLOpener {
   func viewControllerDidRequestHistoryUpdate(_ viewController: TransactionHistoryViewController)
   func viewControllerDidDisplayTransactions(_ viewController: TransactionHistoryViewController)
   func viewControllerAttemptedToRefreshTransactions(_ viewController: UIViewController)
@@ -52,9 +52,16 @@ class TransactionHistorySummaryCollectionView: UICollectionView {
 
 class TransactionHistoryViewController: BaseViewController, StoryboardInitializable {
 
+  enum WalletTransactionType {
+    case onChain
+    case lightning
+  }
+
+  @IBOutlet var emptyStateBackgroundView: UIView!
   @IBOutlet var summaryCollectionView: TransactionHistorySummaryCollectionView!
   @IBOutlet var transactionHistoryNoBalanceView: TransactionHistoryNoBalanceView!
   @IBOutlet var transactionHistoryWithBalanceView: TransactionHistoryWithBalanceView!
+  @IBOutlet var lightningTransactionHistoryEmptyBalanceView: LightningTransactionHistoryEmptyView!
   @IBOutlet var refreshView: TransactionHistoryRefreshView!
   @IBOutlet var refreshViewTopConstraint: NSLayoutConstraint!
   @IBOutlet var footerView: UIView!
@@ -63,6 +70,16 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
       gradientBlurView.backgroundColor = .white
       gradientBlurView.fade(style: .top, percent: 1.0)
     }
+  }
+
+  static func newInstance(withDelegate delegate: TransactionHistoryViewControllerDelegate, context dbContext: NSManagedObjectContext,
+                          type: WalletTransactionType = .onChain) -> TransactionHistoryViewController {
+    let txHistory = TransactionHistoryViewController.makeFromStoryboard()
+    txHistory.generalCoordinationDelegate = delegate
+    txHistory.context = dbContext
+    txHistory.transactionType = type
+
+    return txHistory
   }
 
   var isCollectionViewFullScreen: Bool = false {
@@ -74,6 +91,7 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
 
   var currencyValueManager: CurrencyValueDataSourceType?
   var rateManager: ExchangeRateManager = ExchangeRateManager()
+  var transactionType: WalletTransactionType = .onChain
 
   override func accessibleViewsAndIdentifiers() -> [AccessibleViewElement] {
     return [
@@ -87,8 +105,6 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
   }()
 
   var deviceCountryCode: Int?
-
-  weak var urlOpener: URLOpener?
 
   override var generalCoordinationDelegate: AnyObject? {
     didSet {
@@ -106,6 +122,7 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
   }
 
   unowned var context: NSManagedObjectContext!
+  var isLightning: Bool = false
 
   lazy var frc: NSFetchedResultsController<CKMTransaction> = {
     let fetchRequest: NSFetchRequest<CKMTransaction> = CKMTransaction.fetchRequest()
@@ -115,7 +132,9 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
                                                 managedObjectContext: context,
                                                 sectionNameKeyPath: nil,
                                                 cacheName: nil) // avoid caching unless there is real need as it is often the source of bugs
-    try? controller.performFetch()
+    if transactionType != .lightning {
+      try? controller.performFetch()
+    }
     return controller
   }()
 
@@ -134,15 +153,14 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
 
     transactionHistoryNoBalanceView.delegate = self
     transactionHistoryWithBalanceView.delegate = self
+    emptyStateBackgroundView.isHidden = true
 
-    self.view.backgroundColor = .clear
-
-    view.layoutIfNeeded()
-
+    view.backgroundColor = .clear
+    emptyStateBackgroundView.applyCornerRadius(30)
     coordinationDelegate?.viewControllerDidRequestBadgeUpdate(self)
 
     setupCollectionViews()
-    self.frc.delegate = self
+    frc.delegate = self
   }
 
   override func viewWillAppear(_ animated: Bool) {
@@ -273,11 +291,13 @@ extension TransactionHistoryViewController: ExchangeRateUpdateable {
 
 extension TransactionHistoryViewController: DZNEmptyDataSetDelegate, DZNEmptyDataSetSource {
   func emptyDataSetShouldBeForced(toDisplay scrollView: UIScrollView!) -> Bool {
-    return shouldShowNoBalanceView || shouldShowWithBalanceView
+    return shouldShowNoBalanceView || shouldShowWithBalanceView || shouldShowLightningEmptyView
   }
 
   func emptyDataSetShouldDisplay(_ scrollView: UIScrollView!) -> Bool {
-    return shouldShowNoBalanceView || shouldShowWithBalanceView
+    let shouldDisplay = shouldShowNoBalanceView || shouldShowWithBalanceView || shouldShowLightningEmptyView
+    emptyStateBackgroundView.isHidden = !shouldDisplay
+    return shouldDisplay
   }
 
   func emptyDataSetShouldAllowTouch(_ scrollView: UIScrollView!) -> Bool {
@@ -285,22 +305,39 @@ extension TransactionHistoryViewController: DZNEmptyDataSetDelegate, DZNEmptyDat
   }
 
   func customView(forEmptyDataSet scrollView: UIScrollView!) -> UIView! {
+    var view: UIView?
+
     if shouldShowNoBalanceView {
       transactionHistoryNoBalanceView.isHidden = false
-      return transactionHistoryNoBalanceView
-    }
-    if shouldShowWithBalanceView {
+      view = transactionHistoryNoBalanceView
+    } else if shouldShowWithBalanceView {
       transactionHistoryWithBalanceView.isHidden = false
-      return transactionHistoryWithBalanceView
+      view = transactionHistoryWithBalanceView
+    } else if shouldShowLightningEmptyView {
+      lightningTransactionHistoryEmptyBalanceView.isHidden = false
+      view = lightningTransactionHistoryEmptyBalanceView
     }
-    return nil
+
+    return view
+  }
+
+  func verticalOffset(forEmptyDataSet scrollView: UIScrollView!) -> CGFloat {
+    if shouldShowLightningEmptyView {
+      return -70
+    } else {
+      return 0
+    }
+  }
+
+  private var shouldShowLightningEmptyView: Bool {
+    return (frc.fetchedObjects?.count ?? 0) == 0 && transactionType == .lightning
   }
 
   private var shouldShowNoBalanceView: Bool {
-    return (frc.fetchedObjects?.count ?? 0) == 0
+    return (frc.fetchedObjects?.count ?? 0) == 0 && transactionType == .onChain
   }
 
   private var shouldShowWithBalanceView: Bool {
-    return (frc.fetchedObjects?.count ?? 0) == 1
+    return (frc.fetchedObjects?.count ?? 0) == 1 && transactionType == .onChain
   }
 }

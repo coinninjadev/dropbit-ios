@@ -54,11 +54,11 @@ class SendPaymentViewController: PresentableViewController,
 
   // MARK: - Outlets and Actions
 
-  @IBOutlet var payTitleLabel: UILabel!
   @IBOutlet var closeButton: UIButton!
 
   @IBOutlet var editAmountView: CurrencySwappableEditAmountView!
   @IBOutlet var phoneNumberEntryView: PhoneNumberEntryView!
+  @IBOutlet var walletToggleView: WalletToggleView!
 
   @IBOutlet var addressScanButtonContainerView: UIView!
   @IBOutlet var bitcoinAddressButton: UIButton!
@@ -177,6 +177,7 @@ class SendPaymentViewController: PresentableViewController,
     setupCurrencySwappableEditAmountView()
     setupLabels()
     setupButtons()
+    setupStyle()
     formatAddressScanView()
     setupPhoneNumberEntryView(textFieldEnabled: true)
     formatPhoneNumberEntryView()
@@ -185,6 +186,7 @@ class SendPaymentViewController: PresentableViewController,
     viewModel.sharedMemoAllowed = sharedMemoAllowed
     memoContainerView.configure(memo: nil, isShared: sharedMemoAllowed)
     coordinationDelegate?.sendPaymentViewControllerDidLoad(self)
+    walletToggleView.delegate = self
 
     if viewModel.fromAmount == .zero && recipientDescriptionToLoad == nil {
       editAmountView.primaryAmountTextField.becomeFirstResponder()
@@ -215,8 +217,23 @@ extension SendPaymentViewController {
   fileprivate func setupLabels() {
     recipientDisplayNameLabel.font = .regular(26)
     recipientDisplayNumberLabel.font = .regular(20)
-    payTitleLabel.font = .regular(15)
-    payTitleLabel.textColor = .darkBlueText
+  }
+
+  fileprivate func setupStyle() {
+    switch viewModel.type {
+    case .lightning:
+      contactsButton.style = .lightning(true)
+      twitterButton.style = .lightning(true)
+      pasteButton.style = .lightning(true)
+      nextButton.style = .lightning(true)
+      walletToggleView.selectLightningButton()
+    case .onChain:
+      contactsButton.style = .bitcoin(true)
+      twitterButton.style = .bitcoin(true)
+      pasteButton.style = .bitcoin(true)
+      nextButton.style = .bitcoin(true)
+      walletToggleView.selectBitcoinButton()
+    }
   }
 
   fileprivate func setupButtons() {
@@ -370,6 +387,7 @@ extension SendPaymentViewController {
       switch result {
       case .success(let response):
         guard let fetchedModel = SendPaymentViewModel(response: response,
+                                                      walletTransactionType: self.viewModel.type,
                                                       exchangeRates: self.viewModel.exchangeRates,
                                                       fiatCurrency: self.viewModel.fiatCurrency),
           let fetchedAddress = fetchedModel.address else {
@@ -402,7 +420,8 @@ extension SendPaymentViewController {
   func updateRecipientContainerContentType(forRecipient paymentRecipient: PaymentRecipient?) {
     DispatchQueue.main.async {
       guard let recipient = paymentRecipient else {
-        self.showBitcoinAddressRecipient(with: "To: BTC Address or phone number")
+        self.showBitcoinAddressRecipient(with: self.viewModel?.type == .lightning ?
+          "To: Invoice or phone number" : "To: BTC Address or phone number" )
         return
       }
       switch recipient {
@@ -692,6 +711,7 @@ extension SendPaymentViewController {
                                                                    primaryCurrency: primaryCurrency,
                                                                    contact: newContact,
                                                                    memo: self.viewModel.memo,
+                                                                   walletTransactionType: self.viewModel.type,
                                                                    rates: self.rateManager.exchangeRates,
                                                                    memoIsShared: self.viewModel.sharedMemoDesired,
                                                                    sharedPayload: sharedPayload)
@@ -774,6 +794,7 @@ extension SendPaymentViewController {
       coordinationDelegate?.viewController(self,
                                            sendingMax: data,
                                            address: address,
+                                           walletTransactionType: viewModel.type,
                                            contact: contact,
                                            rates: rates,
                                            sharedPayload: sharedPayload)
@@ -783,6 +804,7 @@ extension SendPaymentViewController {
                                                               requiredFeeRate: viewModel.requiredFeeRate,
                                                               primaryCurrency: primaryCurrency,
                                                               address: address,
+                                                              walletTransactionType: viewModel.type,
                                                               contact: contact,
                                                               rates: rates,
                                                               sharedPayload: sharedPayload)
@@ -795,4 +817,18 @@ extension SendPaymentViewController {
   override func canPerformAction(_ action: Selector, withSender sender: Any?) -> Bool {
     return (action == #selector(performPaste))
   }
+}
+
+extension SendPaymentViewController: WalletToggleViewDelegate {
+
+  func bitcoinWalletButtonWasTouched() {
+    viewModel.type = .onChain
+    setupStyle()
+  }
+
+  func lightningWalletButtonWasTouched() {
+    viewModel.type = .lightning
+    setupStyle()
+  }
+
 }

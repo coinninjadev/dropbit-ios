@@ -26,6 +26,7 @@ class SendPaymentViewControllerTests: XCTestCase {
     let currencyPair = CurrencyPair(primary: .USD, fiat: .USD)
     let swappableVM = CurrencySwappableEditAmountViewModel(exchangeRates: safeRates, primaryAmount: 3500, currencyPair: currencyPair)
     let viewModel = SendPaymentViewModel(editAmountViewModel: swappableVM,
+                                         walletTransactionType: .onChain,
                                          address: "12A1MyfXbW6RhdRAZEqofac5jCQQjwEPBu",
                                          requiredFeeRate: nil,
                                          memo: nil)
@@ -42,7 +43,7 @@ class SendPaymentViewControllerTests: XCTestCase {
 
   // MARK: outlets
   func testOutletsAreConnected() {
-    XCTAssertNotNil(self.sut.payTitleLabel, "payTitleLabel should be connected")
+    XCTAssertNotNil(self.sut.walletToggleView, "walletToggleView should be connected")
     XCTAssertNotNil(self.sut.closeButton, "closeButton should be connected")
     XCTAssertNotNil(self.sut.editAmountView.primaryAmountTextField, "primaryAmountTextField should be connected")
     XCTAssertNotNil(self.sut.editAmountView.secondaryAmountLabel, "secondaryAmountLabel should be connected")
