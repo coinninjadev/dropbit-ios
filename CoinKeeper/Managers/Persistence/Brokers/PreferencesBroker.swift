@@ -90,4 +90,8 @@ class PreferencesBroker: CKPersistenceBroker, PreferencesBrokerType {
     }
   }
 
+  var dontShowLightningRefill: Bool {
+    get { return userDefaultsManager.bool(for: .dontShowLightningRefill) }
+    set { userDefaultsManager.set(newValue, for: .dontShowLightningRefill) }
+  }
 }

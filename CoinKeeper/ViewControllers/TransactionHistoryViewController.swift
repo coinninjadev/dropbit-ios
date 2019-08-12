@@ -52,7 +52,7 @@ class TransactionHistorySummaryCollectionView: UICollectionView {
 
 class TransactionHistoryViewController: BaseViewController, StoryboardInitializable {
 
-  enum TransactionType {
+  enum WalletTransactionType {
     case onChain
     case lightning
   }
@@ -73,7 +73,7 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
   }
 
   static func newInstance(withDelegate delegate: TransactionHistoryViewControllerDelegate, context dbContext: NSManagedObjectContext,
-                          type: TransactionType = .onChain) -> TransactionHistoryViewController {
+                          type: WalletTransactionType = .onChain) -> TransactionHistoryViewController {
     let txHistory = TransactionHistoryViewController.makeFromStoryboard()
     txHistory.generalCoordinationDelegate = delegate
     txHistory.context = dbContext
@@ -91,7 +91,7 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
 
   var currencyValueManager: CurrencyValueDataSourceType?
   var rateManager: ExchangeRateManager = ExchangeRateManager()
-  var transactionType: TransactionType = .onChain
+  var transactionType: WalletTransactionType = .onChain
 
   override func accessibleViewsAndIdentifiers() -> [AccessibleViewElement] {
     return [

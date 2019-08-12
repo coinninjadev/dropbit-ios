@@ -43,7 +43,7 @@ extension AppCoordinator: WalletOverviewViewControllerDelegate {
     }
   }
 
-  func viewControllerDidTapSendPayment(_ viewController: UIViewController, converter: CurrencyConverter) {
+  func viewControllerDidTapSendPayment(_ viewController: UIViewController, converter: CurrencyConverter, walletTransactionType: WalletTransactionType) {
     guard let walletOverviewViewController = viewController as? WalletOverviewViewController else { return }
     walletOverviewViewController.balanceContainer.toggleChartAndBalance()
     analyticsManager.track(event: .payButtonWasPressed, with: nil)
@@ -51,7 +51,7 @@ extension AppCoordinator: WalletOverviewViewControllerDelegate {
     let swappableVM = CurrencySwappableEditAmountViewModel(exchangeRates: self.currencyController.exchangeRates,
                                                            primaryAmount: converter.fromAmount,
                                                            currencyPair: self.currencyController.currencyPair)
-    let sendPaymentVM = SendPaymentViewModel(editAmountViewModel: swappableVM)
+    let sendPaymentVM = SendPaymentViewModel(editAmountViewModel: swappableVM, walletTransactionType: walletTransactionType)
     let sendPaymentViewController = SendPaymentViewController.newInstance(delegate: self, viewModel: sendPaymentVM)
     sendPaymentViewController.alertManager = self.alertManager
     navigationController.present(sendPaymentViewController, animated: true)
