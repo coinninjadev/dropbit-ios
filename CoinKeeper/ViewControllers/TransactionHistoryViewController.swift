@@ -14,7 +14,7 @@ import PromiseKit
 import DZNEmptyDataSet
 
 protocol TransactionHistoryViewControllerDelegate: DeviceCountryCodeProvider &
-  BadgeUpdateDelegate {
+  BadgeUpdateDelegate & URLOpener {
   func viewControllerDidRequestHistoryUpdate(_ viewController: TransactionHistoryViewController)
   func viewControllerDidDisplayTransactions(_ viewController: TransactionHistoryViewController)
   func viewControllerAttemptedToRefreshTransactions(_ viewController: UIViewController)
@@ -72,12 +72,12 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
     }
   }
 
-  static func newInstance(withDelegate delegate: TransactionHistoryViewControllerDelegate, urlOpener opener: URLOpener,
-                          context dbContext: NSManagedObjectContext, type: TransactionType = .onChain) -> TransactionHistoryViewController {
+  static func newInstance(withDelegate delegate: TransactionHistoryViewControllerDelegate, context dbContext: NSManagedObjectContext,
+                          type: TransactionType = .onChain) -> TransactionHistoryViewController {
     let txHistory = TransactionHistoryViewController.makeFromStoryboard()
     txHistory.generalCoordinationDelegate = delegate
     txHistory.context = dbContext
-    txHistory.urlOpener = opener
+    txHistory.urlOpener = delegate
     txHistory.transactionType = type
 
     return txHistory

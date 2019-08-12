@@ -177,7 +177,7 @@ extension AppCoordinator {
   }
 
   private func makeTransactionHistory(isLightning lightning: Bool = false) -> TransactionHistoryViewController {
-    return TransactionHistoryViewController.newInstance(withDelegate: self, urlOpener: self, context: persistenceManager.mainQueueContext(),
+    return TransactionHistoryViewController.newInstance(withDelegate: self, context: persistenceManager.mainQueueContext(),
                                                         type: lightning ? .lightning : .onChain)
   }
 

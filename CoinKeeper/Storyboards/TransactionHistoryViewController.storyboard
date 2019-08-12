@@ -216,7 +216,7 @@
                                 <stackView opaque="NO" contentMode="scaleToFill" alignment="top" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="fLk-oG-lqR">
                                     <rect key="frame" x="0.0" y="0.0" width="297" height="50"/>
                                     <subviews>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QCm-fx-OKS">
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QCm-fx-OKS" customClass="LightningActionButton" customModule="DropBit" customModuleProvider="target">
                                             <rect key="frame" x="0.0" y="0.0" width="70.5" height="50"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="50" id="HQm-5N-nH6"/>
@@ -226,7 +226,7 @@
                                                 <action selector="fiveButtonWasTouched" destination="2ME-xd-Art" eventType="touchUpInside" id="SZ4-gH-zcy"/>
                                             </connections>
                                         </button>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IOh-Qi-xIR">
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IOh-Qi-xIR" customClass="LightningActionButton" customModule="DropBit" customModuleProvider="target">
                                             <rect key="frame" x="75.5" y="0.0" width="70.5" height="50"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="50" id="5YB-7i-2wg"/>
@@ -236,7 +236,7 @@
                                                 <action selector="twentyButtonWasTouched" destination="2ME-xd-Art" eventType="touchUpInside" id="uzJ-Tc-hzf"/>
                                             </connections>
                                         </button>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="URI-ML-Wa5">
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="URI-ML-Wa5" customClass="LightningActionButton" customModule="DropBit" customModuleProvider="target">
                                             <rect key="frame" x="151" y="0.0" width="70.5" height="50"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="50" id="ahF-vd-REN"/>
@@ -246,7 +246,7 @@
                                                 <action selector="fiftyButtonWasTouched" destination="2ME-xd-Art" eventType="touchUpInside" id="O1X-hY-fWa"/>
                                             </connections>
                                         </button>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6dm-fF-XTb">
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6dm-fF-XTb" customClass="LightningActionButton" customModule="DropBit" customModuleProvider="target">
                                             <rect key="frame" x="226.5" y="0.0" width="70.5" height="50"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="50" id="0PU-N2-Uhv"/>
@@ -304,11 +304,11 @@
                     <connections>
                         <outlet property="customAmountButton" destination="WNx-bS-Fag" id="g4q-pP-Wt0"/>
                         <outlet property="detailLabel" destination="U6u-c4-KH1" id="Fq9-ut-G1C"/>
-                        <outlet property="fiftyButton" destination="URI-ML-Wa5" id="xWA-El-xHp"/>
-                        <outlet property="fiveButton" destination="QCm-fx-OKS" id="5Ho-GH-UhE"/>
-                        <outlet property="hundredButton" destination="6dm-fF-XTb" id="Gi8-CE-Bqc"/>
+                        <outlet property="highAmountButton" destination="URI-ML-Wa5" id="1bi-TK-OB6"/>
+                        <outlet property="lowAmountButton" destination="QCm-fx-OKS" id="XAC-9b-HNF"/>
+                        <outlet property="maxAmountButton" destination="6dm-fF-XTb" id="bjF-5t-UCq"/>
+                        <outlet property="mediumAmountButton" destination="IOh-Qi-xIR" id="QOY-Rr-WhK"/>
                         <outlet property="titleLabel" destination="hTS-cT-5lo" id="HFz-Lt-rYt"/>
-                        <outlet property="twentyButton" destination="IOh-Qi-xIR" id="EmI-AZ-KJU"/>
                     </connections>
                 </view>
             </objects>
