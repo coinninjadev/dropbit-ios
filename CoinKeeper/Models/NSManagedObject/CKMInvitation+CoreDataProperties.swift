@@ -26,6 +26,7 @@ extension CKMInvitation {
   @NSManaged public var usdAmountAtTimeOfInvitation: Int
   @NSManaged private(set) var fees: Int
   @NSManaged public var sentDate: Date?
+  @NSManaged public var side: InvitationSide
   @NSManaged public var status: InvitationStatus
   @NSManaged public var counterpartyName: String?
   @NSManaged public var counterpartyPhoneNumber: CKMPhoneNumber?

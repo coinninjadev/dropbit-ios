@@ -120,7 +120,7 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate, CurrencyFormatta
     bgContext.performAndWait {
       persistenceManager.brokers.invitation.persistUnacknowledgedInvitation(
         withDTO: outgoingInvitationDTO,
-        acknowledgementId: inviteBody.requestId,
+        acknowledgmentId: inviteBody.requestId,
         in: bgContext)
 
       do {

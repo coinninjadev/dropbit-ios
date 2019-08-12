@@ -52,7 +52,6 @@ class ConfirmPaymentViewController: PresentableViewController, StoryboardInitial
 
   @IBOutlet var closeButton: UIButton!
   @IBOutlet var confirmButton: ConfirmPaymentButton!
-  @IBOutlet var titleLabel: UILabel!
   @IBOutlet var primaryCurrencyLabel: UILabel!
   @IBOutlet var secondaryCurrencyLabel: UILabel!
   @IBOutlet var networkFeeLabel: UILabel!
@@ -169,9 +168,6 @@ class ConfirmPaymentViewController: PresentableViewController, StoryboardInitial
 extension ConfirmPaymentViewController {
 
   fileprivate func setupViews() {
-    titleLabel.font = .regular(15)
-    titleLabel.textColor = .darkBlueText
-
     primaryCurrencyLabel.textAlignment = .center
     primaryCurrencyLabel.textColor = .lightBlueTint
     primaryCurrencyLabel.font = .regular(35)
