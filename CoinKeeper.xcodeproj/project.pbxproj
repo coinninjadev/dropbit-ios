@@ -541,12 +541,12 @@
 		A2A530C220936A7F00B6F4DE /* ConfirmPaymentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2A530C120936A7F00B6F4DE /* ConfirmPaymentViewController.swift */; };
 		A2A530C42093A72000B6F4DE /* AppCoordinator+ConfirmPaymentViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2A530C32093A72000B6F4DE /* AppCoordinator+ConfirmPaymentViewControllerDelegate.swift */; };
 		A2A530CA20966D2F00B6F4DE /* String+Count.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2A530C920966D2F00B6F4DE /* String+Count.swift */; };
-		A2A530CE20977A8A00B6F4DE /* ConfirmPaymentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2A530CD20977A8A00B6F4DE /* ConfirmPaymentViewModel.swift */; };
+		A2A530CE20977A8A00B6F4DE /* ConfirmOnChainPaymentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2A530CD20977A8A00B6F4DE /* ConfirmOnChainPaymentViewModel.swift */; };
 		A2AA3778210112C000633F83 /* UIImageView+GIF.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2AA3777210112C000633F83 /* UIImageView+GIF.swift */; };
+		A2B4E6EC22F9BCC200E24324 /* LightningTransactionHistoryEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2B4E6EB22F9BCC200E24324 /* LightningTransactionHistoryEmptyView.swift */; };
 		A2B4E6EE22FA476A00E24324 /* LightningRefillViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2B4E6ED22FA476A00E24324 /* LightningRefillViewController.swift */; };
 		A2B4E6F022FA488100E24324 /* LightningRefillViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A2B4E6EF22FA488100E24324 /* LightningRefillViewController.storyboard */; };
 		A2B4E6F222FC6D7B00E24324 /* AppCoordinator+LightningRefillViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2B4E6F122FC6D7B00E24324 /* AppCoordinator+LightningRefillViewController.swift */; };
-		A2B4E6EC22F9BCC200E24324 /* LightningTransactionHistoryEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2B4E6EB22F9BCC200E24324 /* LightningTransactionHistoryEmptyView.swift */; };
 		A2BFA54D22E7531500396D33 /* WalletToggleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2BFA54C22E7531500396D33 /* WalletToggleView.swift */; };
 		A2BFA54F22E7536A00396D33 /* WalletToggleView.xib in Resources */ = {isa = PBXBuildFile; fileRef = A2BFA54E22E7536A00396D33 /* WalletToggleView.xib */; };
 		A2DBC50222D78DAF008C532B /* CurrencySwappableEditAmountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2DBC50122D78DAF008C532B /* CurrencySwappableEditAmountView.swift */; };
@@ -1517,12 +1517,12 @@
 		A2A530C120936A7F00B6F4DE /* ConfirmPaymentViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConfirmPaymentViewController.swift; sourceTree = "<group>"; };
 		A2A530C32093A72000B6F4DE /* AppCoordinator+ConfirmPaymentViewControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppCoordinator+ConfirmPaymentViewControllerDelegate.swift"; sourceTree = "<group>"; };
 		A2A530C920966D2F00B6F4DE /* String+Count.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Count.swift"; sourceTree = "<group>"; };
-		A2A530CD20977A8A00B6F4DE /* ConfirmPaymentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmPaymentViewModel.swift; sourceTree = "<group>"; };
+		A2A530CD20977A8A00B6F4DE /* ConfirmOnChainPaymentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmOnChainPaymentViewModel.swift; sourceTree = "<group>"; };
 		A2AA3777210112C000633F83 /* UIImageView+GIF.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+GIF.swift"; sourceTree = "<group>"; };
+		A2B4E6EB22F9BCC200E24324 /* LightningTransactionHistoryEmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightningTransactionHistoryEmptyView.swift; sourceTree = "<group>"; };
 		A2B4E6ED22FA476A00E24324 /* LightningRefillViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightningRefillViewController.swift; sourceTree = "<group>"; };
 		A2B4E6EF22FA488100E24324 /* LightningRefillViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LightningRefillViewController.storyboard; sourceTree = "<group>"; };
 		A2B4E6F122FC6D7B00E24324 /* AppCoordinator+LightningRefillViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppCoordinator+LightningRefillViewController.swift"; sourceTree = "<group>"; };
-		A2B4E6EB22F9BCC200E24324 /* LightningTransactionHistoryEmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightningTransactionHistoryEmptyView.swift; sourceTree = "<group>"; };
 		A2BFA54C22E7531500396D33 /* WalletToggleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletToggleView.swift; sourceTree = "<group>"; };
 		A2BFA54E22E7536A00396D33 /* WalletToggleView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WalletToggleView.xib; sourceTree = "<group>"; };
 		A2DBC50122D78DAF008C532B /* CurrencySwappableEditAmountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencySwappableEditAmountView.swift; sourceTree = "<group>"; };
@@ -2844,7 +2844,7 @@
 				3BF41AB7207694EA008B3D0A /* RequestPayViewModel.swift */,
 				5B62D55C2087732700E9D466 /* SendPaymentViewModel.swift */,
 				B5866B4622DD143B0064B622 /* CurrencySwappableEditAmountViewModel.swift */,
-				A2A530CD20977A8A00B6F4DE /* ConfirmPaymentViewModel.swift */,
+				A2A530CD20977A8A00B6F4DE /* ConfirmOnChainPaymentViewModel.swift */,
 				B542147D22C103750048B81A /* AdjustableTransactionFeeViewModel.swift */,
 				A293E34F20F67F390099ED69 /* SuccessFailViewModel.swift */,
 				A260E8D820FD0F28008343F9 /* TutorialScreenViewModel.swift */,
@@ -4665,7 +4665,7 @@
 				B56788B1227A430300A39534 /* UIView+CornerRadius.swift in Sources */,
 				B59E2CAB22E9ED7900A75AFE /* LNDecodePaymentRequestTarget.swift in Sources */,
 				B530DFBD2108CF8400A0B1A8 /* TransactionDetailWarningLabel.swift in Sources */,
-				A2A530CE20977A8A00B6F4DE /* ConfirmPaymentViewModel.swift in Sources */,
+				A2A530CE20977A8A00B6F4DE /* ConfirmOnChainPaymentViewModel.swift in Sources */,
 				B54913A922BC21A500ACC7D7 /* AdjustableFeesViewController.swift in Sources */,
 				B5FE9B67219DD96200801D3C /* MerchantPaymentRequestResponse.swift in Sources */,
 				3BEB594620D15AF9005EDA9E /* AddressTransactionSummaryResponse.swift in Sources */,

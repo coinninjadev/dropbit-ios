@@ -129,7 +129,7 @@ class MockSendPaymentViewControllerCoordinator: SendPaymentViewControllerCoordin
     btcAmount: NSDecimalNumber,
     requiredFeeRate: Double?,
     primaryCurrency: CurrencyCode,
-    address: String,
+    destination: String,
     walletTransactionType: WalletTransactionType,
     contact: ContactType?,
     rates: ExchangeRates,

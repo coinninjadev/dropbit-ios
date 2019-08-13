@@ -803,7 +803,7 @@ extension SendPaymentViewController {
                                                               btcAmount: viewModel.btcAmount,
                                                               requiredFeeRate: viewModel.requiredFeeRate,
                                                               primaryCurrency: primaryCurrency,
-                                                              address: address,
+                                                              destination: address,
                                                               walletTransactionType: viewModel.walletTransactionType,
                                                               contact: contact,
                                                               rates: rates,

@@ -28,7 +28,7 @@ protocol ViewControllerSendingDelegate: AnyObject {
                                     btcAmount: NSDecimalNumber,
                                     requiredFeeRate: Double?,
                                     primaryCurrency: CurrencyCode,
-                                    address: String,
+                                    destination: String, //btc address or encoded lightning invoice
                                     walletTransactionType: WalletTransactionType,
                                     contact: ContactType?,
                                     rates: ExchangeRates,

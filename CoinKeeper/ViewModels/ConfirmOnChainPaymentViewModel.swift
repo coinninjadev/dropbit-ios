@@ -11,20 +11,20 @@ import Contacts
 import CNBitcoinKit
 
 class BaseConfirmPaymentViewModel: DualAmountDisplayable {
-  let address: String?
+  let destination: String? //address or encoded invoice
   let contact: ContactType?
   let walletTransactionType: WalletTransactionType
   var btcAmount: NSDecimalNumber
   let currencyPair: CurrencyPair
   let exchangeRates: ExchangeRates
 
-  init(address: String?,
+  init(destination: String?,
        contact: ContactType?,
        walletTransactionType: WalletTransactionType,
        btcAmount: NSDecimalNumber,
        currencyPair: CurrencyPair,
        exchangeRates: ExchangeRates) {
-    self.address = address
+    self.destination = destination
     self.contact = contact
     self.walletTransactionType = walletTransactionType
     self.btcAmount = btcAmount
@@ -73,15 +73,14 @@ class ConfirmPaymentInviteViewModel: BaseConfirmPaymentViewModel {
     return sharedPayloadDTO.shouldShare
   }
 
-  init(address: String?,
-       contact: ContactType?,
+  init(contact: ContactType?,
        walletTransactionType: WalletTransactionType,
        btcAmount: NSDecimalNumber,
        currencyPair: CurrencyPair,
        exchangeRates: ExchangeRates,
        sharedPayloadDTO: SharedPayloadDTO) {
     self.sharedPayloadDTO = sharedPayloadDTO
-    super.init(address: address,
+    super.init(destination: nil,
                contact: contact,
                walletTransactionType: walletTransactionType,
                btcAmount: btcAmount,
@@ -91,7 +90,7 @@ class ConfirmPaymentInviteViewModel: BaseConfirmPaymentViewModel {
 
 }
 
-class ConfirmPaymentViewModel: BaseConfirmPaymentViewModel {
+class ConfirmOnChainPaymentViewModel: BaseConfirmPaymentViewModel {
 
   var outgoingTransactionData: OutgoingTransactionData
 
@@ -107,17 +106,45 @@ class ConfirmPaymentViewModel: BaseConfirmPaymentViewModel {
     return sharedPayloadDTO?.shouldShare ?? false
   }
 
-  init(address: String?,
+  init(address: String,
        contact: ContactType?,
-       walletTransactionType: WalletTransactionType,
        btcAmount: NSDecimalNumber,
        currencyPair: CurrencyPair,
        exchangeRates: ExchangeRates,
        outgoingTransactionData: OutgoingTransactionData) {
     self.outgoingTransactionData = outgoingTransactionData
-    super.init(address: address,
+    super.init(destination: address,
                contact: contact,
-               walletTransactionType: walletTransactionType,
+               walletTransactionType: .onChain,
+               btcAmount: btcAmount,
+               currencyPair: currencyPair,
+               exchangeRates: exchangeRates)
+  }
+
+}
+
+class ConfirmLightningPaymentViewModel: BaseConfirmPaymentViewModel {
+
+  let sharedPayloadDTO: SharedPayloadDTO?
+
+  override var memo: String? {
+    return sharedPayloadDTO?.memo
+  }
+
+  override var shouldShareMemo: Bool {
+    return sharedPayloadDTO?.shouldShare ?? false
+  }
+
+  init(invoice: String,
+       contact: ContactType?,
+       btcAmount: NSDecimalNumber,
+       sharedPayload: SharedPayloadDTO?,
+       currencyPair: CurrencyPair,
+       exchangeRates: ExchangeRates) {
+    self.sharedPayloadDTO = sharedPayload
+    super.init(destination: invoice,
+               contact: contact,
+               walletTransactionType: .lightning,
                btcAmount: btcAmount,
                currencyPair: currencyPair,
                exchangeRates: exchangeRates)
@@ -159,13 +186,16 @@ enum ConfirmTransactionFeeModel {
   case standard(CNBTransactionData)
   case required(CNBTransactionData)
   case adjustable(AdjustableTransactionFeeViewModel)
+  case lightning
 
-  var transactionData: CNBTransactionData {
+  var transactionData: CNBTransactionData? {
     switch self {
     case .standard(let txData), .required(let txData):
       return txData
     case .adjustable(let vm):
       return vm.applicableTransactionData
+    case .lightning:
+      return nil
     }
   }
 

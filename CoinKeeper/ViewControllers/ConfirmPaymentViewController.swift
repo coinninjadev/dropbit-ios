@@ -134,7 +134,7 @@ class ConfirmPaymentViewController: PresentableViewController, StoryboardInitial
 
   private func confirmPayment(with baseViewModel: BaseConfirmPaymentViewModel,
                               feeModel: ConfirmTransactionFeeModel) {
-    guard let viewModel = baseViewModel as? ConfirmPaymentViewModel else { return }
+    guard let viewModel = baseViewModel as? ConfirmOnChainPaymentViewModel else { return }
     var feeAdjustedOutgoingTxData = viewModel.outgoingTransactionData
     feeAdjustedOutgoingTxData.amount = Int(feeModel.transactionData.amount)
     feeAdjustedOutgoingTxData.feeAmount = Int(feeModel.transactionData.feeAmount)
@@ -270,8 +270,8 @@ extension ConfirmPaymentViewController {
 
     // Set default contact and address label values
     contactLabel.text = viewModel.contact?.displayName
-    primaryAddressLabel.text = viewModel.address
-    secondaryAddressLabel.text = viewModel.address
+    primaryAddressLabel.text = viewModel.destination
+    secondaryAddressLabel.text = viewModel.destination
 
     if let contact = viewModel.contact {
       // May refer to either an actual contact or a manually entered phone number
