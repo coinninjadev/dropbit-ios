@@ -472,6 +472,11 @@
 		A246C82722CBA83F00AF1F52 /* PriceTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = A246C82622CBA83F00AF1F52 /* PriceTarget.swift */; };
 		A246C82922CCF87500AF1F52 /* WalletOverviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A246C82822CCF87500AF1F52 /* WalletOverviewViewController.swift */; };
 		A246C82D22CCF8A000AF1F52 /* WalletOverviewViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A246C82C22CCF8A000AF1F52 /* WalletOverviewViewController.storyboard */; };
+		A257CEB42302E5070063670B /* FeesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A257CEB32302E5070063670B /* FeesView.swift */; };
+		A257CEB62302E60A0063670B /* FeesView.xib in Resources */ = {isa = PBXBuildFile; fileRef = A257CEB52302E6090063670B /* FeesView.xib */; };
+		A257CEB82302F3BA0063670B /* AppCoordinator+WalletTransferViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A257CEB72302F3BA0063670B /* AppCoordinator+WalletTransferViewControllerDelegate.swift */; };
+		A257CEBA230302070063670B /* AppCoordinator+LightningTransactionHistoryEmptyViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A257CEB9230302070063670B /* AppCoordinator+LightningTransactionHistoryEmptyViewDelegate.swift */; };
+		A257CEBC230325580063670B /* WalletTransferViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A257CEBB230325580063670B /* WalletTransferViewModel.swift */; };
 		A25923EC20C981770005B1A0 /* AnalyticsManagerError.swift in Sources */ = {isa = PBXBuildFile; fileRef = A25923EB20C981770005B1A0 /* AnalyticsManagerError.swift */; };
 		A260E8C720FCD482008343F9 /* LimitEditTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = A260E8C620FCD482008343F9 /* LimitEditTextField.swift */; };
 		A260E8CF20FCFE11008343F9 /* TutorialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A260E8CE20FCFE11008343F9 /* TutorialViewController.swift */; };
@@ -546,7 +551,7 @@
 		A2B4E6EC22F9BCC200E24324 /* LightningTransactionHistoryEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2B4E6EB22F9BCC200E24324 /* LightningTransactionHistoryEmptyView.swift */; };
 		A2B4E6EE22FA476A00E24324 /* LightningRefillViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2B4E6ED22FA476A00E24324 /* LightningRefillViewController.swift */; };
 		A2B4E6F022FA488100E24324 /* LightningRefillViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A2B4E6EF22FA488100E24324 /* LightningRefillViewController.storyboard */; };
-		A2B4E6F222FC6D7B00E24324 /* AppCoordinator+LightningRefillViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2B4E6F122FC6D7B00E24324 /* AppCoordinator+LightningRefillViewController.swift */; };
+		A2B4E6F222FC6D7B00E24324 /* AppCoordinator+LightningRefillViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2B4E6F122FC6D7B00E24324 /* AppCoordinator+LightningRefillViewControllerDelegate.swift */; };
 		A2BFA54D22E7531500396D33 /* WalletToggleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2BFA54C22E7531500396D33 /* WalletToggleView.swift */; };
 		A2BFA54F22E7536A00396D33 /* WalletToggleView.xib in Resources */ = {isa = PBXBuildFile; fileRef = A2BFA54E22E7536A00396D33 /* WalletToggleView.xib */; };
 		A2DBC50222D78DAF008C532B /* CurrencySwappableEditAmountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2DBC50122D78DAF008C532B /* CurrencySwappableEditAmountView.swift */; };
@@ -1432,6 +1437,11 @@
 		A246C82622CBA83F00AF1F52 /* PriceTarget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PriceTarget.swift; sourceTree = "<group>"; };
 		A246C82822CCF87500AF1F52 /* WalletOverviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletOverviewViewController.swift; sourceTree = "<group>"; };
 		A246C82C22CCF8A000AF1F52 /* WalletOverviewViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = WalletOverviewViewController.storyboard; sourceTree = "<group>"; };
+		A257CEB32302E5070063670B /* FeesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeesView.swift; sourceTree = "<group>"; };
+		A257CEB52302E6090063670B /* FeesView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FeesView.xib; sourceTree = "<group>"; };
+		A257CEB72302F3BA0063670B /* AppCoordinator+WalletTransferViewControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppCoordinator+WalletTransferViewControllerDelegate.swift"; sourceTree = "<group>"; };
+		A257CEB9230302070063670B /* AppCoordinator+LightningTransactionHistoryEmptyViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppCoordinator+LightningTransactionHistoryEmptyViewDelegate.swift"; sourceTree = "<group>"; };
+		A257CEBB230325580063670B /* WalletTransferViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletTransferViewModel.swift; sourceTree = "<group>"; };
 		A25923EB20C981770005B1A0 /* AnalyticsManagerError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsManagerError.swift; sourceTree = "<group>"; };
 		A260E8C620FCD482008343F9 /* LimitEditTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LimitEditTextField.swift; sourceTree = "<group>"; };
 		A260E8CE20FCFE11008343F9 /* TutorialViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialViewController.swift; sourceTree = "<group>"; };
@@ -1506,7 +1516,7 @@
 		A2B4E6EB22F9BCC200E24324 /* LightningTransactionHistoryEmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightningTransactionHistoryEmptyView.swift; sourceTree = "<group>"; };
 		A2B4E6ED22FA476A00E24324 /* LightningRefillViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightningRefillViewController.swift; sourceTree = "<group>"; };
 		A2B4E6EF22FA488100E24324 /* LightningRefillViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LightningRefillViewController.storyboard; sourceTree = "<group>"; };
-		A2B4E6F122FC6D7B00E24324 /* AppCoordinator+LightningRefillViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppCoordinator+LightningRefillViewController.swift"; sourceTree = "<group>"; };
+		A2B4E6F122FC6D7B00E24324 /* AppCoordinator+LightningRefillViewControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppCoordinator+LightningRefillViewControllerDelegate.swift"; sourceTree = "<group>"; };
 		A2BFA54C22E7531500396D33 /* WalletToggleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletToggleView.swift; sourceTree = "<group>"; };
 		A2BFA54E22E7536A00396D33 /* WalletToggleView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WalletToggleView.xib; sourceTree = "<group>"; };
 		A2DBC50122D78DAF008C532B /* CurrencySwappableEditAmountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencySwappableEditAmountView.swift; sourceTree = "<group>"; };
@@ -2167,7 +2177,9 @@
 				3B24466D2265097B004AEE35 /* AppCoordinator+SpendBitcoinViewControllerDelegate.swift */,
 				A2952F8122BD250100BDCE65 /* AppCoordinator+NewsViewControllerDelegate.swift */,
 				A230F1C922DCB2F30017BC7A /* AppCoordinator+WalletOverviewViewControllerDelegate.swift */,
-				A2B4E6F122FC6D7B00E24324 /* AppCoordinator+LightningRefillViewController.swift */,
+				A2B4E6F122FC6D7B00E24324 /* AppCoordinator+LightningRefillViewControllerDelegate.swift */,
+				A257CEB72302F3BA0063670B /* AppCoordinator+WalletTransferViewControllerDelegate.swift */,
+				A257CEB9230302070063670B /* AppCoordinator+LightningTransactionHistoryEmptyViewDelegate.swift */,
 			);
 			path = Coordinators;
 			sourceTree = "<group>";
@@ -2472,6 +2484,8 @@
 				A2B4E6EB22F9BCC200E24324 /* LightningTransactionHistoryEmptyView.swift */,
 				A2FE198D2301E29700C2412D /* ConfirmView.swift */,
 				A2FE198F2301E81700C2412D /* ConfirmView.xib */,
+				A257CEB32302E5070063670B /* FeesView.swift */,
+				A257CEB52302E6090063670B /* FeesView.xib */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -2821,6 +2835,7 @@
 				A260E8D820FD0F28008343F9 /* TutorialScreenViewModel.swift */,
 				30349F862188A99700A32AFA /* ServerAddressViewModel.swift */,
 				3B13ED102254E24900905226 /* CurrencyController.swift */,
+				A257CEBB230325580063670B /* WalletTransferViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -3761,6 +3776,7 @@
 				3B23126320DA6CA30099A557 /* TransactionHistoryDetailCellAddressView.xib in Resources */,
 				B5E7F21F22146B9000358A24 /* CountryCodePickerCell.xib in Resources */,
 				A2FE198C2301E05E00C2412D /* WalletTransferViewController.storyboard in Resources */,
+				A257CEB62302E60A0063670B /* FeesView.xib in Resources */,
 				3BF8523D2023788D00EBBE44 /* StartViewController.storyboard in Resources */,
 				3B9779AF202E416700C9C933 /* Montserrat-ThinItalic.ttf in Resources */,
 				B59E2C8922E78A1200A75AFE /* LightningTooltipViewController.storyboard in Resources */,
@@ -4255,6 +4271,7 @@
 				3B6749E320AA5CA40032FE02 /* CKMVout+CoreDataClass.swift in Sources */,
 				30349F872188A99700A32AFA /* ServerAddressViewModel.swift in Sources */,
 				B51AE4AA2093AED4008380CC /* String+Substrings.swift in Sources */,
+				A257CEB82302F3BA0063670B /* AppCoordinator+WalletTransferViewControllerDelegate.swift in Sources */,
 				B5EBFD11215C07270008EB4A /* AddressDataSource.swift in Sources */,
 				A2DBC50222D78DAF008C532B /* CurrencySwappableEditAmountView.swift in Sources */,
 				B56512F62153DDA500A5D044 /* WalletCheckInTarget.swift in Sources */,
@@ -4311,7 +4328,7 @@
 				30BF4FE921B6C5C10018AE87 /* TransactionPopoverDetailsViewController.swift in Sources */,
 				B5A7523C2225D90B0017DB35 /* DeviceCountryCodeProvider.swift in Sources */,
 				B5C0A5F82097A24A00D648DF /* CounterpartyRepresentable.swift in Sources */,
-				A2B4E6F222FC6D7B00E24324 /* AppCoordinator+LightningRefillViewController.swift in Sources */,
+				A2B4E6F222FC6D7B00E24324 /* AppCoordinator+LightningRefillViewControllerDelegate.swift in Sources */,
 				A2952F7622BBBAAB00BDCE65 /* TimePeriodCell.swift in Sources */,
 				3B8FA48320C16F5C0074B617 /* CKMTemporarySentTransaction+CoreDataClass.swift in Sources */,
 				B53D7EC52119DC6B00D1DCBF /* BlockchainInfoTarget.swift in Sources */,
@@ -4417,6 +4434,7 @@
 				B5CFA336221E008B002B1BDD /* CCMPhoneNumber+CoreDataProperties.swift in Sources */,
 				3B2EBF782232AB17003C0D0E /* CoreDataStackConfig.swift in Sources */,
 				A2FE198622FDDD3A00C2412D /* NSAttributedString+WalletTypeIdentifiers.swift in Sources */,
+				A257CEBA230302070063670B /* AppCoordinator+LightningTransactionHistoryEmptyViewDelegate.swift in Sources */,
 				B521E85F218785B8002DB8C2 /* CoreDataObserver.swift in Sources */,
 				B5D1B2D221934DBE006B2BC7 /* UITestArgument.swift in Sources */,
 				B558B86E22B95ED00033AFBD /* CheckInBroker.swift in Sources */,
@@ -4565,6 +4583,7 @@
 				B5A5C5A32218AF430088C4D1 /* DeviceVerificationErrorMessageFactory.swift in Sources */,
 				A2893BC220FD515900E96B07 /* AppCoordinator+TutorialViewControllerDelegate.swift in Sources */,
 				A246C82722CBA83F00AF1F52 /* PriceTarget.swift in Sources */,
+				A257CEB42302E5070063670B /* FeesView.swift in Sources */,
 				3BA9F603208F6CEA0047C213 /* AppCoordinator+CreateRecoveryWordsViewControllerDelegate.swift in Sources */,
 				A2FE19882301A09C00C2412D /* LightningActionButton.swift in Sources */,
 				A2952F7E22BD0B7600BDCE65 /* NewsArticleResponse.swift in Sources */,
@@ -4583,6 +4602,7 @@
 				B51F823A207BB00000692F5B /* BalancePrimaryAmountLabel.swift in Sources */,
 				3BA360842090B0C100732C43 /* CKMTransaction+CoreDataClass.swift in Sources */,
 				307DF11B21500BF100260369 /* ElasticRequest.swift in Sources */,
+				A257CEBC230325580063670B /* WalletTransferViewModel.swift in Sources */,
 				B56788B1227A430300A39534 /* UIView+CornerRadius.swift in Sources */,
 				B530DFBD2108CF8400A0B1A8 /* TransactionDetailWarningLabel.swift in Sources */,
 				A2A530CE20977A8A00B6F4DE /* ConfirmPaymentViewModel.swift in Sources */,

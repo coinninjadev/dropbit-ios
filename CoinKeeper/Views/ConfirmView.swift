@@ -43,6 +43,7 @@ class ConfirmView: UIView {
 
   override func awakeFromNib() {
     super.awakeFromNib()
+    backgroundColor = .clear
 
     feedbackGenerator.prepare()
     confirmLongPressGestureRecognizer.allowableMovement = 1000

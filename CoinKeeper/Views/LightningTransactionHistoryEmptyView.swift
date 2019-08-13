@@ -10,17 +10,10 @@ import Foundation
 import UIKit
 
 protocol LightningTransactionHistoryEmptyViewDelegate: AnyObject {
-  func emptyViewDidRequestCustomAmount()
-  func emptyViewDidRequestRefill(withAmount amount: LightningTransactionHistoryEmptyView.Amount)
+  func emptyViewDidRequestRefill(withAmount amount: TransferAmount)
 }
 
 class LightningTransactionHistoryEmptyView: UIView {
-  enum Amount {
-    case low
-    case medium
-    case high
-    case max
-  }
 
   @IBOutlet var titleLabel: UILabel!
   @IBOutlet var detailLabel: UILabel!
@@ -63,7 +56,7 @@ class LightningTransactionHistoryEmptyView: UIView {
   }
 
   @IBAction func customAmountButtonWasTouched() {
-    delegate?.emptyViewDidRequestCustomAmount()
+    delegate?.emptyViewDidRequestRefill(withAmount: .custom)
   }
 
 }

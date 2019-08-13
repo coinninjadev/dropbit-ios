@@ -53,7 +53,7 @@
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="7" translatesAutoresizingMaskIntoConstraints="NO" id="sd1-ew-AES">
                                         <rect key="frame" x="38.5" y="230.5" width="240" height="283"/>
                                         <subviews>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cHp-TF-3dA">
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cHp-TF-3dA" customClass="LightningActionButton" customModule="DropBit" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="0.0" width="240" height="51"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="51" id="N32-E8-fSO"/>
@@ -61,27 +61,27 @@
                                                 </constraints>
                                                 <state key="normal" title="$5"/>
                                                 <connections>
-                                                    <action selector="fiveButtonWasTouched" destination="JLu-kU-fkG" eventType="touchUpInside" id="fyL-sq-ole"/>
+                                                    <action selector="lowAmountButtonWasTouched" destination="JLu-kU-fkG" eventType="touchUpInside" id="A0c-sb-RjA"/>
                                                 </connections>
                                             </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="g6m-ry-AOy">
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="g6m-ry-AOy" customClass="LightningActionButton" customModule="DropBit" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="58" width="240" height="51"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="240" id="9po-on-4zc"/>
                                                 </constraints>
                                                 <state key="normal" title="$20"/>
                                                 <connections>
-                                                    <action selector="twentyButtonWasTouched" destination="JLu-kU-fkG" eventType="touchUpInside" id="8eM-tV-mSg"/>
+                                                    <action selector="mediumAmountButtonWasTouched" destination="JLu-kU-fkG" eventType="touchUpInside" id="w8g-GA-GyS"/>
                                                 </connections>
                                             </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="y5V-in-O5v">
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="y5V-in-O5v" customClass="LightningActionButton" customModule="DropBit" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="116" width="240" height="51"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="240" id="Oei-Kv-P9f"/>
                                                 </constraints>
                                                 <state key="normal" title="$100"/>
                                                 <connections>
-                                                    <action selector="hundredButtonWasTouched" destination="JLu-kU-fkG" eventType="touchUpInside" id="tev-W6-S00"/>
+                                                    <action selector="maxAmountButtonWasTouched" destination="JLu-kU-fkG" eventType="touchUpInside" id="IdO-mr-dcT"/>
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MqO-ux-kO3">
@@ -158,13 +158,13 @@
                         <outlet property="customAmountButton" destination="MqO-ux-kO3" id="x8G-v0-9OT"/>
                         <outlet property="detailLabel" destination="xiz-9K-55K" id="jDL-6q-pt1"/>
                         <outlet property="dontAskMeAgainButton" destination="ZPa-Sr-Div" id="JGx-hG-L13"/>
-                        <outlet property="fiveButton" destination="cHp-TF-3dA" id="4w5-jt-4dY"/>
-                        <outlet property="hundredButton" destination="y5V-in-O5v" id="G8p-fC-PTj"/>
                         <outlet property="lightningImageView" destination="vN7-Ze-6sM" id="L7B-6C-LJd"/>
+                        <outlet property="lowAmountButton" destination="cHp-TF-3dA" id="kyQ-vg-emF"/>
+                        <outlet property="maxAmountButton" destination="y5V-in-O5v" id="ZUN-9b-POB"/>
+                        <outlet property="mediumAmountButton" destination="g6m-ry-AOy" id="tQn-nh-aGH"/>
                         <outlet property="minMaxLabel" destination="hZe-YE-rNt" id="bvb-Y6-zIr"/>
                         <outlet property="remindMeLaterButton" destination="TOg-sC-2NK" id="fo1-tx-Jfl"/>
                         <outlet property="titleLabel" destination="qNk-65-bJM" id="UAw-Me-0EY"/>
-                        <outlet property="twentyButton" destination="g6m-ry-AOy" id="cDU-RW-mw4"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="1ld-lB-X7y" userLabel="First Responder" sceneMemberID="firstResponder"/>

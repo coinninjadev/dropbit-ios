@@ -10,9 +10,9 @@ import Foundation
 import UIKit
 
 protocol LightningRefillViewControllerDelegate: class {
-  func fiveButtonWasTouched()
-  func twentyButtonWasTouched()
-  func hundredButtonWasTouched()
+  func lowAmountButtonWasTouched()
+  func mediumAmountButtonWasTouched()
+  func maxAmountButtonWasTouched()
   func customAmountButtonWasTouched()
   func dontAskMeAgainButtonWasTouched()
 }
@@ -24,9 +24,9 @@ class LightningRefillViewController: BaseViewController, StoryboardInitializable
   @IBOutlet var titleLabel: UILabel!
   @IBOutlet var detailLabel: UILabel!
   @IBOutlet var minMaxLabel: UILabel!
-  @IBOutlet var fiveButton: LightningActionButton!
-  @IBOutlet var twentyButton: LightningActionButton!
-  @IBOutlet var hundredButton: LightningActionButton!
+  @IBOutlet var lowAmountButton: LightningActionButton!
+  @IBOutlet var mediumAmountButton: LightningActionButton!
+  @IBOutlet var maxAmountButton: LightningActionButton!
   @IBOutlet var customAmountButton: LightningActionButton!
   @IBOutlet var remindMeLaterButton: UIButton!
   @IBOutlet var dontAskMeAgainButton: UIButton!
@@ -61,19 +61,19 @@ class LightningRefillViewController: BaseViewController, StoryboardInitializable
     dontAskMeAgainButton.setTitleColor(.white, for: .normal)
   }
 
-  @IBAction func fiveButtonWasTouched() {
+  @IBAction func lowAmountButtonWasTouched() {
     dismiss(animated: true, completion: nil)
-    delegate?.fiveButtonWasTouched()
+    delegate?.lowAmountButtonWasTouched()
   }
 
-  @IBAction func twentyButtonWasTouched() {
+  @IBAction func mediumAmountButtonWasTouched() {
     dismiss(animated: true, completion: nil)
-    delegate?.twentyButtonWasTouched()
+    delegate?.mediumAmountButtonWasTouched()
   }
 
-  @IBAction func hundredButtonWasTouched() {
+  @IBAction func maxAmountButtonWasTouched() {
     dismiss(animated: true, completion: nil)
-    delegate?.hundredButtonWasTouched()
+    delegate?.maxAmountButtonWasTouched()
   }
 
   @IBAction func customAmountButtonWasTouched() {
