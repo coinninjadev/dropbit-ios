@@ -381,7 +381,7 @@ extension AppCoordinator: ViewControllerSendingDelegate {
       }
       .done(on: .main) { (feeModel: ConfirmTransactionFeeModel) -> Void in
 
-        let isLightningConvertible = true //TODO
+        let isLightningConvertible = false //TODO
 
         let displayLightningPaymentViewController: () -> Void = {}
 
