@@ -52,7 +52,7 @@ class SendPaymentViewModel: CurrencySwappableEditAmountViewModel {
   var sharedMemoDesired = true
   var sharedMemoAllowed = true
   var sendMaxTransactionData: CNBTransactionData?
-  var type: WalletTransactionType
+  var walletTransactionType: WalletTransactionType
 
   func sendMax(with data: CNBTransactionData) {
     self.sendMaxTransactionData = data
@@ -90,7 +90,7 @@ class SendPaymentViewModel: CurrencySwappableEditAmountViewModel {
                                                          primaryAmount: qrCode.btcAmount ?? .zero,
                                                          currencyPair: currencyPair,
                                                          delegate: delegate)
-    type = walletTransactionType
+    self.walletTransactionType = walletTransactionType
     super.init(viewModel: viewModel)
     self.paymentRecipient = qrCode.address.flatMap { .btcAddress($0) }
     self.requiredFeeRate = nil
@@ -99,7 +99,7 @@ class SendPaymentViewModel: CurrencySwappableEditAmountViewModel {
 
   init(editAmountViewModel: CurrencySwappableEditAmountViewModel, walletTransactionType: WalletTransactionType,
        address: String? = nil, requiredFeeRate: Double? = nil, memo: String? = nil) {
-    type = walletTransactionType
+    self.walletTransactionType = walletTransactionType
     super.init(viewModel: editAmountViewModel)
     self.paymentRecipient = address.flatMap { .btcAddress($0) }
     self.requiredFeeRate = requiredFeeRate
@@ -124,7 +124,7 @@ class SendPaymentViewModel: CurrencySwappableEditAmountViewModel {
               requiredFeeRate: response.requiredFeeRate,
               memo: response.memo)
 
-    type = walletTransactionType
+    self.walletTransactionType = walletTransactionType
   }
 
   var contact: ContactType? {

@@ -220,7 +220,7 @@ extension SendPaymentViewController {
   }
 
   fileprivate func setupStyle() {
-    switch viewModel.type {
+    switch viewModel.walletTransactionType {
     case .lightning:
       contactsButton.style = .lightning(true)
       twitterButton.style = .lightning(true)
@@ -387,7 +387,7 @@ extension SendPaymentViewController {
       switch result {
       case .success(let response):
         guard let fetchedModel = SendPaymentViewModel(response: response,
-                                                      walletTransactionType: self.viewModel.type,
+                                                      walletTransactionType: self.viewModel.walletTransactionType,
                                                       exchangeRates: self.viewModel.exchangeRates,
                                                       fiatCurrency: self.viewModel.fiatCurrency),
           let fetchedAddress = fetchedModel.address else {
@@ -420,7 +420,7 @@ extension SendPaymentViewController {
   func updateRecipientContainerContentType(forRecipient paymentRecipient: PaymentRecipient?) {
     DispatchQueue.main.async {
       guard let recipient = paymentRecipient else {
-        self.showBitcoinAddressRecipient(with: self.viewModel?.type == .lightning ?
+        self.showBitcoinAddressRecipient(with: self.viewModel?.walletTransactionType == .lightning ?
           "To: Invoice or phone number" : "To: BTC Address or phone number" )
         return
       }
@@ -711,7 +711,7 @@ extension SendPaymentViewController {
                                                                    primaryCurrency: primaryCurrency,
                                                                    contact: newContact,
                                                                    memo: self.viewModel.memo,
-                                                                   walletTransactionType: self.viewModel.type,
+                                                                   walletTransactionType: self.viewModel.walletTransactionType,
                                                                    rates: self.rateManager.exchangeRates,
                                                                    memoIsShared: self.viewModel.sharedMemoDesired,
                                                                    sharedPayload: sharedPayload)
@@ -794,7 +794,7 @@ extension SendPaymentViewController {
       coordinationDelegate?.viewController(self,
                                            sendingMax: data,
                                            address: address,
-                                           walletTransactionType: viewModel.type,
+                                           walletTransactionType: viewModel.walletTransactionType,
                                            contact: contact,
                                            rates: rates,
                                            sharedPayload: sharedPayload)
@@ -804,7 +804,7 @@ extension SendPaymentViewController {
                                                               requiredFeeRate: viewModel.requiredFeeRate,
                                                               primaryCurrency: primaryCurrency,
                                                               address: address,
-                                                              walletTransactionType: viewModel.type,
+                                                              walletTransactionType: viewModel.walletTransactionType,
                                                               contact: contact,
                                                               rates: rates,
                                                               sharedPayload: sharedPayload)
@@ -822,12 +822,12 @@ extension SendPaymentViewController {
 extension SendPaymentViewController: WalletToggleViewDelegate {
 
   func bitcoinWalletButtonWasTouched() {
-    viewModel.type = .onChain
+    viewModel.walletTransactionType = .onChain
     setupStyle()
   }
 
   func lightningWalletButtonWasTouched() {
-    viewModel.type = .lightning
+    viewModel.walletTransactionType = .lightning
     setupStyle()
   }
 
