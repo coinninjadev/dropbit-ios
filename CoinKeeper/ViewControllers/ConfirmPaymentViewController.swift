@@ -97,11 +97,13 @@ class ConfirmPaymentViewController: PresentableViewController, StoryboardInitial
     setupViews()
     confirmView.delegate = self
 
-    switch viewModel.walletTransactionType {
-    case .onChain:
-      confirmView.style = .onChain
-    case .lightning:
-      confirmView.style = .lightning
+    if let viewModel = viewModel {
+      switch viewModel.walletTransactionType {
+      case .onChain:
+        confirmView.style = .onChain
+      case .lightning:
+        confirmView.style = .lightning
+      }
     }
 
     coordinationDelegate?.confirmPaymentViewControllerDidLoad(self)

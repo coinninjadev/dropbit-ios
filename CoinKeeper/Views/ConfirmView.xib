@@ -29,6 +29,7 @@
                     </constraints>
                     <connections>
                         <action selector="confirmButtonWasHeld" destination="-1" eventType="touchDown" id="iYr-oP-W4c"/>
+                        <action selector="confirmButtonWasReleased" destination="-1" eventType="touchUpOutside" id="0er-I2-az5"/>
                         <action selector="confirmButtonWasReleased" destination="-1" eventType="touchUpInside" id="asB-rZ-LLJ"/>
                     </connections>
                 </button>

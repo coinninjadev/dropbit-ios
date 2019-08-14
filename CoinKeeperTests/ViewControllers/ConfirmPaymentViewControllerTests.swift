@@ -30,8 +30,7 @@ class ConfirmPaymentViewControllerTests: XCTestCase {
   // MARK: outlets
   func testOutletsAreConnected() {
     XCTAssertNotNil(sut.closeButton, "closeButton should be connected")
-    XCTAssertNotNil(sut.confirmButton, "confirmButton should be connected")
-    XCTAssertNotNil(sut.tapAndHoldLabel, "tapAndHoldLabel should be connected")
+    XCTAssertNotNil(sut.confirmView, "confirmView should be connected")
     XCTAssertNotNil(sut.networkFeeLabel, "networkFeeLabel should be connected")
     XCTAssertNotNil(sut.networkFeeLabel, "networkFeeLabel should be connected")
     XCTAssertNotNil(sut.contactLabel, "contactLabel should be connected")
@@ -49,19 +48,6 @@ class ConfirmPaymentViewControllerTests: XCTestCase {
     let closeActions = sut.closeButton.actions(forTarget: sut, forControlEvent: .touchUpInside) ?? []
     let closeSelector = #selector(ConfirmPaymentViewController.closeButtonWasTouched).description
     XCTAssertTrue(closeActions.contains(closeSelector), "closeButton should contain action")
-  }
-
-  func testConfirmButtonContainsActions() {
-    let touchUpInsideActions = sut.confirmButton.actions(forTarget: sut, forControlEvent: .touchUpInside) ?? []
-    let touchUpOutsideActions = sut.confirmButton.actions(forTarget: sut, forControlEvent: .touchUpOutside) ?? []
-    let touchDownActions = sut.confirmButton.actions(forTarget: sut, forControlEvent: .touchDown) ?? []
-
-    let heldSelector = #selector(ConfirmPaymentViewController.confirmButtonWasHeld).description
-    let releasedSelector = #selector(ConfirmPaymentViewController.confirmButtonWasReleased).description
-
-    XCTAssertTrue(touchUpInsideActions.contains(releasedSelector), "confirmButton touch up inside should contain released selector")
-    XCTAssertTrue(touchUpOutsideActions.contains(releasedSelector), "confirmButton touch up outside should contain released selector")
-    XCTAssertTrue(touchDownActions.contains(heldSelector), "confirmButton held should contain released selector")
   }
 
   class MockCoordinator: ConfirmPaymentViewControllerDelegate {

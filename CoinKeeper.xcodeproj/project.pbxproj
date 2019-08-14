@@ -477,6 +477,7 @@
 		A257CEB82302F3BA0063670B /* AppCoordinator+WalletTransferViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A257CEB72302F3BA0063670B /* AppCoordinator+WalletTransferViewControllerDelegate.swift */; };
 		A257CEBA230302070063670B /* AppCoordinator+LightningTransactionHistoryEmptyViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A257CEB9230302070063670B /* AppCoordinator+LightningTransactionHistoryEmptyViewDelegate.swift */; };
 		A257CEBC230325580063670B /* WalletTransferViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A257CEBB230325580063670B /* WalletTransferViewModel.swift */; };
+		A257CEC023038F130063670B /* ConfirmViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A257CEBF23038F130063670B /* ConfirmViewTests.swift */; };
 		A25923EC20C981770005B1A0 /* AnalyticsManagerError.swift in Sources */ = {isa = PBXBuildFile; fileRef = A25923EB20C981770005B1A0 /* AnalyticsManagerError.swift */; };
 		A260E8C720FCD482008343F9 /* LimitEditTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = A260E8C620FCD482008343F9 /* LimitEditTextField.swift */; };
 		A260E8CF20FCFE11008343F9 /* TutorialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A260E8CE20FCFE11008343F9 /* TutorialViewController.swift */; };
@@ -1442,6 +1443,7 @@
 		A257CEB72302F3BA0063670B /* AppCoordinator+WalletTransferViewControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppCoordinator+WalletTransferViewControllerDelegate.swift"; sourceTree = "<group>"; };
 		A257CEB9230302070063670B /* AppCoordinator+LightningTransactionHistoryEmptyViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppCoordinator+LightningTransactionHistoryEmptyViewDelegate.swift"; sourceTree = "<group>"; };
 		A257CEBB230325580063670B /* WalletTransferViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletTransferViewModel.swift; sourceTree = "<group>"; };
+		A257CEBF23038F130063670B /* ConfirmViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmViewTests.swift; sourceTree = "<group>"; };
 		A25923EB20C981770005B1A0 /* AnalyticsManagerError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsManagerError.swift; sourceTree = "<group>"; };
 		A260E8C620FCD482008343F9 /* LimitEditTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LimitEditTextField.swift; sourceTree = "<group>"; };
 		A260E8CE20FCFE11008343F9 /* TutorialViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialViewController.swift; sourceTree = "<group>"; };
@@ -2547,6 +2549,7 @@
 				3B23126420DA6CBA0099A557 /* TransactionHistoryDetailCellAddressViewTests.swift */,
 				3BDB6C522220520F00E75DD2 /* SendPaymentMemoViewTests.swift */,
 				3B4703802253BD9F00977784 /* SendReceiveActionViewTests.swift */,
+				A257CEBF23038F130063670B /* ConfirmViewTests.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -4740,6 +4743,7 @@
 				B5C5FEE422BAB2F400287FF7 /* MockActivityBroker.swift in Sources */,
 				3B82692920332AFD009B11EC /* KeypadEntryViewTests.swift in Sources */,
 				3B86F787203B6FB700D15231 /* MockAppCoordinator.swift in Sources */,
+				A257CEC023038F130063670B /* ConfirmViewTests.swift in Sources */,
 				3B6BCBF2227365D000950105 /* TransactionHistoryDetailValidCellTests.swift in Sources */,
 				3B6FDAD9204F71140091916A /* VerifyRecoveryWordCellTests.swift in Sources */,
 				403AAD5F2063513900F7A2BA /* Model.xcdatamodeld in Sources */,
