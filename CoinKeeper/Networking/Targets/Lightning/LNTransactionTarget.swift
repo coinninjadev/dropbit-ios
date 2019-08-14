@@ -26,7 +26,7 @@ public enum LNTransactionTarget: CoinNinjaTargetType {
   case withdraw(LNWithdrawBody)
 
   var basePath: String {
-    return ThunderdomeBasePath
+    return thunderdomeBasePath
   }
 
   var subPath: String? {

@@ -8,8 +8,6 @@
 
 import Moya
 
-let ThunderdomeBasePath = "thunderdome"
-
 protocol CoinNinjaTargetType: TargetType {
 
   associatedtype ResponseType: ResponseDecodable
@@ -47,6 +45,10 @@ extension CoinNinjaTargetType {
     } else {
       return basePath
     }
+  }
+
+  public var thunderdomeBasePath: String {
+    return CoinNinjaProvider.thunderdomeBasePath
   }
 
   public var sampleData: Data {

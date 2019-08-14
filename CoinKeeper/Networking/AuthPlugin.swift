@@ -33,7 +33,7 @@ struct AuthPlugin: PluginType {
 
     var request = request
 
-    let shouldSignBody = !target.path.starts(with: ThunderdomeBasePath)
+    let shouldSignBody = !target.path.starts(with: CoinNinjaProvider.thunderdomeBasePath)
     guard let headers = headerDelegate?.createHeaders(
       for: request.httpBody,
       signBodyIfAvailable: shouldSignBody) else {
