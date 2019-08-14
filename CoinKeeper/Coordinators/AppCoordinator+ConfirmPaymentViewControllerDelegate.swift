@@ -13,18 +13,39 @@ import CoreData
 import MessageUI
 import PromiseKit
 
+struct LightningPaymentInputs {
+  let sats: Int
+  let invoice: String
+  let sharedPayload: SharedPayloadDTO?
+}
+
 extension AppCoordinator: ConfirmPaymentViewControllerDelegate, CurrencyFormattable {
 
   func confirmPaymentViewControllerDidLoad(_ viewController: UIViewController) {
     analyticsManager.track(event: .confirmScreenLoaded, with: nil)
   }
 
-  func viewControllerDidConfirmLightningPayment(_ viewController: UIViewController,
-                                                sats: Int,
-                                                invoice: String,
-                                                sharedPayload: SharedPayloadDTO?) {
-    self.networkManager.payLightningPaymentRequest(invoice, sats: sats)
-    .cauterize()
+  private func presentPinEntryViewController(_ pinEntryVC: PinEntryViewController) {
+    pinEntryVC.modalPresentationStyle = .overFullScreen
+    navigationController.topViewController()?.present(pinEntryVC, animated: true, completion: nil)
+  }
+
+  func viewControllerDidConfirmLightningPayment(_ viewController: UIViewController, inputs: LightningPaymentInputs) {
+    // TODO: add logic to check amount limits
+    let viewModel = PaymentVerificationPinEntryViewModel(amountDisablesBiometrics: false)
+    let successHandler: CompletionHandler = { [unowned self] in
+      self.handleSuccessfulLightningPaymentVerification(with: inputs)
+    }
+
+    let errorHandler: PinEntryErrorHandler = { [unowned self] error in
+      self.handleFailure(error: error)
+    }
+
+    let pinEntryVC = PinEntryViewController.newInstance(delegate: self,
+                                                        viewModel: viewModel,
+                                                        success: successHandler,
+                                                        failure: errorHandler)
+    presentPinEntryViewController(pinEntryVC)
   }
 
   func viewControllerDidConfirmOnChainPayment(
@@ -53,7 +74,7 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate, CurrencyFormatta
 
     let successHandler: CompletionHandler = { [unowned self] in
       self.analyticsManager.track(event: .preBroadcast, with: nil)
-      self.handleSuccessfulPaymentVerification(with: transactionData, outgoingTransactionData: outgoingTxDataWithAmount)
+      self.handleSuccessfulOnChainPaymentVerification(with: transactionData, outgoingTransactionData: outgoingTxDataWithAmount)
     }
 
     let errorHandler: PinEntryErrorHandler = { [unowned self] error in
@@ -65,8 +86,7 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate, CurrencyFormatta
                                                         viewModel: pinEntryViewModel,
                                                         success: successHandler,
                                                         failure: errorHandler)
-    pinEntryVC.modalPresentationStyle = .overFullScreen
-    navigationController.topViewController()?.present(pinEntryVC, animated: true, completion: nil)
+    presentPinEntryViewController(pinEntryVC)
   }
 
   func viewControllerDidConfirmInvite(_ viewController: UIViewController,
@@ -101,13 +121,11 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate, CurrencyFormatta
       self.handleFailure(error: error)
     }
 
-    let pinEntryViewController = PinEntryViewController.newInstance(delegate: self,
-                                                                    viewModel: pinEntryViewModel,
-                                                                    success: successHandler,
-                                                                    failure: failureHandler)
-
-    pinEntryViewController.modalPresentationStyle = .overFullScreen
-    navigationController.topViewController()?.present(pinEntryViewController, animated: true, completion: nil)
+    let pinEntryVC = PinEntryViewController.newInstance(delegate: self,
+                                                        viewModel: pinEntryViewModel,
+                                                        success: successHandler,
+                                                        failure: failureHandler)
+    presentPinEntryViewController(pinEntryVC)
   }
 
   func viewControllerRequestedShowFeeTooExpensiveAlert(_ viewController: UIViewController) {
@@ -322,7 +340,7 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate, CurrencyFormatta
     }
   }
 
-  private func handleSuccessfulPaymentVerification(
+  private func handleSuccessfulOnChainPaymentVerification(
     with transactionData: CNBTransactionData,
     outgoingTransactionData: OutgoingTransactionData
     ) {

@@ -20,9 +20,7 @@ protocol ConfirmPaymentViewControllerDelegate: ViewControllerDismissable {
 
   func viewControllerDidConfirmLightningPayment(
     _ viewController: UIViewController,
-    sats: Int,
-    invoice: String,
-    sharedPayload: SharedPayloadDTO?)
+    inputs: LightningPaymentInputs)
 
   func viewControllerDidConfirmInvite(_ viewController: UIViewController,
                                       outgoingInvitationDTO: OutgoingInvitationDTO,
@@ -174,11 +172,10 @@ class ConfirmPaymentViewController: PresentableViewController, StoryboardInitial
   }
 
   private func confirmLightningPayment(with viewModel: ConfirmLightningPaymentViewModel) {
-    coordinationDelegate?.viewControllerDidConfirmLightningPayment(
-      self,
-      sats: viewModel.btcAmount.asFractionalUnits(of: .BTC),
-      invoice: viewModel.invoice,
-      sharedPayload: viewModel.sharedPayloadDTO)
+    let inputs = LightningPaymentInputs(sats: viewModel.btcAmount.asFractionalUnits(of: .BTC),
+                                        invoice: viewModel.invoice,
+                                        sharedPayload: viewModel.sharedPayloadDTO)
+    coordinationDelegate?.viewControllerDidConfirmLightningPayment(self, inputs: inputs)
   }
 
   private func confirmInvite(with viewModel: ConfirmPaymentInviteViewModel,
