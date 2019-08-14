@@ -63,7 +63,7 @@ final class PinEntryViewController: BaseViewController, StoryboardInitializable 
     return generalCoordinationDelegate as? PinVerificationDelegate
   }
 
-  private var viewModel: PinEntryViewModel!
+  var viewModel: PinEntryViewModel!
   var digitEntryDisplayViewModel: DigitEntryDisplayViewModelType!
   let logoConstraintMultiplier: CGFloat = 3
 

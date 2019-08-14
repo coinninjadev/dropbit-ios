@@ -15,6 +15,7 @@ class PinEntryViewModel {
   let message: String?
 
   var shouldAnimateMessage = false
+  var shouldDismissOnSuccess = true
 
   init(enableBiometrics: Bool,
        showLogo: Bool,
@@ -38,6 +39,7 @@ class OpenAppPinEntryViewModel: PinEntryViewModel {
                showLogo: true,
                showClose: false,
                message: nil)
+    shouldDismissOnSuccess = false
   }
 }
 

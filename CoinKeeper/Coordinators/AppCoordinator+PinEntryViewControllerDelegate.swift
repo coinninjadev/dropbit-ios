@@ -22,7 +22,11 @@ extension AppCoordinator: PinEntryViewControllerDelegate {
 
   func viewControllerDidSuccessfullyAuthenticate(_ pinEntryViewController: PinEntryViewController,
                                                  completion: CompletionHandler?) {
-    pinEntryViewController.dismiss(animated: true, completion: completion)
+    if pinEntryViewController.viewModel.shouldDismissOnSuccess {
+      pinEntryViewController.dismiss(animated: true, completion: completion)
+    } else {
+      completion?()
+    }
   }
 
   func checkMatch(for digits: String) -> Bool {
