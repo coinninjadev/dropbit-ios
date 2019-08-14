@@ -649,6 +649,7 @@
 		B52CC6AB221EC63F00B00C9E /* ContactCacheDataWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52CC6AA221EC63F00B00C9E /* ContactCacheDataWorker.swift */; };
 		B52CC6AD221ED41700B00C9E /* NSManagedObjectContext+PerformRethrow.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52CC6AC221ED41700B00C9E /* NSManagedObjectContext+PerformRethrow.swift */; };
 		B52D4524208E5ECA00A56A5C /* ExchangeRateUpdateable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52D4523208E5ECA00A56A5C /* ExchangeRateUpdateable.swift */; };
+		B52E1DC32304531600AA652D /* PinEntryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52E1DC22304531600AA652D /* PinEntryViewModel.swift */; };
 		B52EF8CC21A4B0870081CB3B /* MerchantPaymentRequestResponseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52EF8CB21A4B0870081CB3B /* MerchantPaymentRequestResponseTests.swift */; };
 		B52F690A22417B0100790E97 /* CKDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52F690922417B0100790E97 /* CKDatabase.swift */; };
 		B52F897822A06DBE00763CC1 /* AppCoordinator+TweetMethodViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52F897722A06DBE00763CC1 /* AppCoordinator+TweetMethodViewControllerDelegate.swift */; };
@@ -1621,6 +1622,7 @@
 		B52CC6AA221EC63F00B00C9E /* ContactCacheDataWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactCacheDataWorker.swift; sourceTree = "<group>"; };
 		B52CC6AC221ED41700B00C9E /* NSManagedObjectContext+PerformRethrow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSManagedObjectContext+PerformRethrow.swift"; sourceTree = "<group>"; };
 		B52D4523208E5ECA00A56A5C /* ExchangeRateUpdateable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExchangeRateUpdateable.swift; sourceTree = "<group>"; };
+		B52E1DC22304531600AA652D /* PinEntryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinEntryViewModel.swift; sourceTree = "<group>"; };
 		B52EF8CB21A4B0870081CB3B /* MerchantPaymentRequestResponseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MerchantPaymentRequestResponseTests.swift; sourceTree = "<group>"; };
 		B52F690922417B0100790E97 /* CKDatabase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CKDatabase.swift; sourceTree = "<group>"; };
 		B52F897722A06DBE00763CC1 /* AppCoordinator+TweetMethodViewControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppCoordinator+TweetMethodViewControllerDelegate.swift"; sourceTree = "<group>"; };
@@ -2736,6 +2738,7 @@
 				A216D78E20B30C25005FBAC2 /* NoConnectionViewController.swift */,
 				3B82692C203372AC009B11EC /* PinCreationViewController.swift */,
 				3B86F78B203C6DCD00D15231 /* PinEntryViewController.swift */,
+				B52E1DC22304531600AA652D /* PinEntryViewModel.swift */,
 				3B4B39F1203773E1007B7CC8 /* PlaceholderViewController.swift */,
 				3B8C40C02078D6F1008283A2 /* PresentableViewController.swift */,
 				3BF41AAF20750692008B3D0A /* RequestPayViewController.swift */,
@@ -4188,6 +4191,7 @@
 				B57AF8042268C7E500E5B0A6 /* AppCoordinator+ViewControllerDontShowable.swift in Sources */,
 				B552EDF0211E33D000332BB5 /* NotificationManager.swift in Sources */,
 				B59E2C9122E7A93E00A75AFE /* WalletToggleTitleView.swift in Sources */,
+				B52E1DC32304531600AA652D /* PinEntryViewModel.swift in Sources */,
 				A216D78F20B30C25005FBAC2 /* NoConnectionViewController.swift in Sources */,
 				B5FAD64A20A4D962008EB727 /* AuthPlugin.swift in Sources */,
 				A260E8CF20FCFE11008343F9 /* TutorialViewController.swift in Sources */,
