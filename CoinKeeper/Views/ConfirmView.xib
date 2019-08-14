@@ -33,7 +33,7 @@
                     </connections>
                 </button>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="TAP AND HOLD TO SEND" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Q48-pI-elV">
-                    <rect key="frame" x="0.0" y="3" width="414" height="21"/>
+                    <rect key="frame" x="0.0" y="-2" width="414" height="21"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
@@ -44,7 +44,7 @@
                 <constraint firstItem="Q48-pI-elV" firstAttribute="leading" secondItem="FyB-bb-Huf" secondAttribute="leading" id="1yY-Fu-qc8"/>
                 <constraint firstItem="9As-JS-XEZ" firstAttribute="bottom" secondItem="FyB-bb-Huf" secondAttribute="bottom" id="Frm-KL-LXi"/>
                 <constraint firstAttribute="trailing" secondItem="Q48-pI-elV" secondAttribute="trailing" id="LLM-xI-KU0"/>
-                <constraint firstItem="9As-JS-XEZ" firstAttribute="top" secondItem="Q48-pI-elV" secondAttribute="bottom" constant="20" id="QjS-QK-unY"/>
+                <constraint firstItem="9As-JS-XEZ" firstAttribute="top" secondItem="Q48-pI-elV" secondAttribute="bottom" constant="25" id="QjS-QK-unY"/>
                 <constraint firstItem="9As-JS-XEZ" firstAttribute="centerX" secondItem="FyB-bb-Huf" secondAttribute="centerX" id="ZZY-eA-sHE"/>
                 <constraint firstItem="Q48-pI-elV" firstAttribute="centerX" secondItem="FyB-bb-Huf" secondAttribute="centerX" id="nKK-5f-bBW"/>
             </constraints>

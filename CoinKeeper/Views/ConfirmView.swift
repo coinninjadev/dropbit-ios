@@ -52,6 +52,7 @@ class ConfirmView: UIView {
 
     tapAndHoldLabel.textColor = .darkGrayText
     tapAndHoldLabel.font = .medium(13)
+    confirmButton.style = style
   }
 
   @IBAction func confirmButtonWasHeld() {

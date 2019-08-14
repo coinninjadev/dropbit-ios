@@ -162,7 +162,7 @@
                                 </constraints>
                                 <state key="normal" title="Button"/>
                             </button>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xkU-mo-iSp">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xkU-mo-iSp" customClass="ConfirmView" customModule="DropBit" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="714.5" width="414" height="111.5"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
@@ -194,6 +194,7 @@
                         <outlet property="avatarBackgroundView" destination="BP6-4G-pO4" id="slV-cZ-Mqx"/>
                         <outlet property="avatarImageView" destination="j2L-Xa-KD9" id="Tt1-us-zay"/>
                         <outlet property="closeButton" destination="noa-jE-Lp3" id="Ujv-zO-vrf"/>
+                        <outlet property="confirmView" destination="xkU-mo-iSp" id="STe-GC-yS9"/>
                         <outlet property="contactLabel" destination="p86-Hi-5LJ" id="X7s-d9-7XX"/>
                         <outlet property="memoContainerView" destination="oYT-eu-zE0" id="xSA-jM-MxG"/>
                         <outlet property="networkFeeLabel" destination="POu-Ze-xbZ" id="Azg-9y-Bri"/>
