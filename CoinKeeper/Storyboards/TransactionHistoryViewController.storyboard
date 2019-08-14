@@ -90,111 +90,6 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SDm-Er-8Pv" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <view contentMode="scaleToFill" id="2ME-xd-Art" customClass="LightningTransactionHistoryEmptyView" customModule="DropBit" customModuleProvider="target">
-                    <rect key="frame" x="0.0" y="0.0" width="317" height="221"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <subviews>
-                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="3LZ-BY-qly">
-                            <rect key="frame" x="10" y="122" width="297" height="95"/>
-                            <subviews>
-                                <stackView opaque="NO" contentMode="scaleToFill" alignment="top" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="fLk-oG-lqR">
-                                    <rect key="frame" x="0.0" y="0.0" width="297" height="50"/>
-                                    <subviews>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QCm-fx-OKS" customClass="LightningActionButton" customModule="DropBit" customModuleProvider="target">
-                                            <rect key="frame" x="0.0" y="0.0" width="70.5" height="50"/>
-                                            <constraints>
-                                                <constraint firstAttribute="height" constant="50" id="HQm-5N-nH6"/>
-                                            </constraints>
-                                            <state key="normal" title="$5"/>
-                                            <connections>
-                                                <action selector="lowAmountButtonWasTouched" destination="2ME-xd-Art" eventType="touchUpInside" id="k4p-DK-evZ"/>
-                                            </connections>
-                                        </button>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IOh-Qi-xIR" customClass="LightningActionButton" customModule="DropBit" customModuleProvider="target">
-                                            <rect key="frame" x="75.5" y="0.0" width="70.5" height="50"/>
-                                            <constraints>
-                                                <constraint firstAttribute="height" constant="50" id="5YB-7i-2wg"/>
-                                            </constraints>
-                                            <state key="normal" title="$20"/>
-                                            <connections>
-                                                <action selector="mediumAmountButtonWasTouched" destination="2ME-xd-Art" eventType="touchUpInside" id="JHV-6s-B1A"/>
-                                            </connections>
-                                        </button>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="URI-ML-Wa5" customClass="LightningActionButton" customModule="DropBit" customModuleProvider="target">
-                                            <rect key="frame" x="151" y="0.0" width="70.5" height="50"/>
-                                            <constraints>
-                                                <constraint firstAttribute="height" constant="50" id="ahF-vd-REN"/>
-                                            </constraints>
-                                            <state key="normal" title="$50"/>
-                                            <connections>
-                                                <action selector="highAmountButtonWasTouched" destination="2ME-xd-Art" eventType="touchUpInside" id="EPY-CM-9Ar"/>
-                                            </connections>
-                                        </button>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6dm-fF-XTb" customClass="LightningActionButton" customModule="DropBit" customModuleProvider="target">
-                                            <rect key="frame" x="226.5" y="0.0" width="70.5" height="50"/>
-                                            <constraints>
-                                                <constraint firstAttribute="height" constant="50" id="0PU-N2-Uhv"/>
-                                            </constraints>
-                                            <state key="normal" title="$100"/>
-                                            <connections>
-                                                <action selector="maxAmountButtonWasTouched" destination="2ME-xd-Art" eventType="touchUpInside" id="xeI-kr-0x9"/>
-                                            </connections>
-                                        </button>
-                                    </subviews>
-                                    <constraints>
-                                        <constraint firstItem="6dm-fF-XTb" firstAttribute="width" secondItem="QCm-fx-OKS" secondAttribute="width" id="NWE-2R-cPa"/>
-                                        <constraint firstItem="URI-ML-Wa5" firstAttribute="width" secondItem="QCm-fx-OKS" secondAttribute="width" id="Qt8-rd-A8h"/>
-                                        <constraint firstItem="IOh-Qi-xIR" firstAttribute="width" secondItem="QCm-fx-OKS" secondAttribute="width" id="daD-CB-dve"/>
-                                    </constraints>
-                                </stackView>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WNx-bS-Fag">
-                                    <rect key="frame" x="0.0" y="65" width="297" height="30"/>
-                                    <state key="normal" title="CUSTOM AMOUNT"/>
-                                    <connections>
-                                        <action selector="customAmountButtonWasTouched" destination="2ME-xd-Art" eventType="touchUpInside" id="Zib-uN-PXk"/>
-                                    </connections>
-                                </button>
-                            </subviews>
-                        </stackView>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="NOTHING'S HERE YET, LOAD YOUR LIGHTNING WALLET" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hTS-cT-5lo">
-                            <rect key="frame" x="10" y="10" width="297" height="41"/>
-                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                            <nil key="textColor"/>
-                            <nil key="highlightedColor"/>
-                        </label>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="OH, and we’ll cover the fees everytime you load " textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="U6u-c4-KH1">
-                            <rect key="frame" x="10" y="61" width="297" height="41"/>
-                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                            <nil key="textColor"/>
-                            <nil key="highlightedColor"/>
-                        </label>
-                    </subviews>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                    <constraints>
-                        <constraint firstItem="U6u-c4-KH1" firstAttribute="leading" secondItem="JBj-0H-M4c" secondAttribute="leading" constant="10" id="KK0-vd-TNz"/>
-                        <constraint firstItem="U6u-c4-KH1" firstAttribute="centerX" secondItem="2ME-xd-Art" secondAttribute="centerX" id="Phj-Th-z9T"/>
-                        <constraint firstItem="hTS-cT-5lo" firstAttribute="leading" secondItem="JBj-0H-M4c" secondAttribute="leading" constant="10" id="Pj4-YV-w2H"/>
-                        <constraint firstItem="U6u-c4-KH1" firstAttribute="trailing" secondItem="JBj-0H-M4c" secondAttribute="trailing" constant="-10" id="TL4-ys-Eon"/>
-                        <constraint firstItem="hTS-cT-5lo" firstAttribute="trailing" secondItem="JBj-0H-M4c" secondAttribute="trailing" constant="-10" id="WYY-pZ-yJY"/>
-                        <constraint firstItem="3LZ-BY-qly" firstAttribute="centerX" secondItem="2ME-xd-Art" secondAttribute="centerX" id="cLZ-TB-fxn"/>
-                        <constraint firstItem="3LZ-BY-qly" firstAttribute="top" secondItem="U6u-c4-KH1" secondAttribute="bottom" constant="20" id="i3u-KX-R2a"/>
-                        <constraint firstItem="hTS-cT-5lo" firstAttribute="top" secondItem="JBj-0H-M4c" secondAttribute="top" constant="10" id="lXS-kg-7xX"/>
-                        <constraint firstItem="3LZ-BY-qly" firstAttribute="leading" secondItem="JBj-0H-M4c" secondAttribute="leading" constant="10" id="lmm-Lg-IIt"/>
-                        <constraint firstItem="hTS-cT-5lo" firstAttribute="centerX" secondItem="2ME-xd-Art" secondAttribute="centerX" id="oVZ-ph-2tk"/>
-                        <constraint firstItem="U6u-c4-KH1" firstAttribute="top" secondItem="hTS-cT-5lo" secondAttribute="bottom" constant="10" id="qGb-kv-3Sr"/>
-                        <constraint firstItem="JBj-0H-M4c" firstAttribute="trailing" secondItem="3LZ-BY-qly" secondAttribute="trailing" constant="10" id="row-GN-W9J"/>
-                    </constraints>
-                    <viewLayoutGuide key="safeArea" id="JBj-0H-M4c"/>
-                    <connections>
-                        <outlet property="customAmountButton" destination="WNx-bS-Fag" id="g4q-pP-Wt0"/>
-                        <outlet property="detailLabel" destination="U6u-c4-KH1" id="Fq9-ut-G1C"/>
-                        <outlet property="highAmountButton" destination="URI-ML-Wa5" id="1bi-TK-OB6"/>
-                        <outlet property="lowAmountButton" destination="QCm-fx-OKS" id="XAC-9b-HNF"/>
-                        <outlet property="maxAmountButton" destination="6dm-fF-XTb" id="bjF-5t-UCq"/>
-                        <outlet property="mediumAmountButton" destination="IOh-Qi-xIR" id="QOY-Rr-WhK"/>
-                        <outlet property="titleLabel" destination="hTS-cT-5lo" id="HFz-Lt-rYt"/>
-                    </connections>
-                </view>
                 <view contentMode="scaleToFill" id="Ktw-Zy-1lf" customClass="TransactionHistoryNoBalanceView" customModule="DropBit" customModuleProvider="target">
                     <rect key="frame" x="0.0" y="0.0" width="240" height="210"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -309,6 +204,111 @@
                         <outlet property="getBitcoinButton" destination="Oj5-Ua-avq" id="BA1-n6-PaT"/>
                         <outlet property="learnAboutBitcoinButton" destination="hiW-0W-H8G" id="0zU-hd-8FC"/>
                         <outlet property="spendBitcoinButton" destination="hB7-Jf-4qE" id="2vX-FQ-PGZ"/>
+                    </connections>
+                </view>
+                <view contentMode="scaleToFill" id="2ME-xd-Art" customClass="LightningTransactionHistoryEmptyView" customModule="DropBit" customModuleProvider="target">
+                    <rect key="frame" x="0.0" y="0.0" width="317" height="221"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <subviews>
+                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="3LZ-BY-qly">
+                            <rect key="frame" x="10" y="122" width="297" height="95"/>
+                            <subviews>
+                                <stackView opaque="NO" contentMode="scaleToFill" alignment="top" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="fLk-oG-lqR">
+                                    <rect key="frame" x="0.0" y="0.0" width="297" height="50"/>
+                                    <subviews>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QCm-fx-OKS" customClass="LightningActionButton" customModule="DropBit" customModuleProvider="target">
+                                            <rect key="frame" x="0.0" y="0.0" width="70.5" height="50"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="50" id="HQm-5N-nH6"/>
+                                            </constraints>
+                                            <state key="normal" title="$5"/>
+                                            <connections>
+                                                <action selector="lowAmountButtonWasTouched" destination="2ME-xd-Art" eventType="touchUpInside" id="k4p-DK-evZ"/>
+                                            </connections>
+                                        </button>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IOh-Qi-xIR" customClass="LightningActionButton" customModule="DropBit" customModuleProvider="target">
+                                            <rect key="frame" x="75.5" y="0.0" width="70.5" height="50"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="50" id="5YB-7i-2wg"/>
+                                            </constraints>
+                                            <state key="normal" title="$20"/>
+                                            <connections>
+                                                <action selector="mediumAmountButtonWasTouched" destination="2ME-xd-Art" eventType="touchUpInside" id="JHV-6s-B1A"/>
+                                            </connections>
+                                        </button>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="URI-ML-Wa5" customClass="LightningActionButton" customModule="DropBit" customModuleProvider="target">
+                                            <rect key="frame" x="151" y="0.0" width="70.5" height="50"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="50" id="ahF-vd-REN"/>
+                                            </constraints>
+                                            <state key="normal" title="$50"/>
+                                            <connections>
+                                                <action selector="highAmountButtonWasTouched" destination="2ME-xd-Art" eventType="touchUpInside" id="EPY-CM-9Ar"/>
+                                            </connections>
+                                        </button>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6dm-fF-XTb" customClass="LightningActionButton" customModule="DropBit" customModuleProvider="target">
+                                            <rect key="frame" x="226.5" y="0.0" width="70.5" height="50"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="50" id="0PU-N2-Uhv"/>
+                                            </constraints>
+                                            <state key="normal" title="$100"/>
+                                            <connections>
+                                                <action selector="maxAmountButtonWasTouched" destination="2ME-xd-Art" eventType="touchUpInside" id="xeI-kr-0x9"/>
+                                            </connections>
+                                        </button>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="6dm-fF-XTb" firstAttribute="width" secondItem="QCm-fx-OKS" secondAttribute="width" id="NWE-2R-cPa"/>
+                                        <constraint firstItem="URI-ML-Wa5" firstAttribute="width" secondItem="QCm-fx-OKS" secondAttribute="width" id="Qt8-rd-A8h"/>
+                                        <constraint firstItem="IOh-Qi-xIR" firstAttribute="width" secondItem="QCm-fx-OKS" secondAttribute="width" id="daD-CB-dve"/>
+                                    </constraints>
+                                </stackView>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WNx-bS-Fag">
+                                    <rect key="frame" x="0.0" y="65" width="297" height="30"/>
+                                    <state key="normal" title="CUSTOM AMOUNT"/>
+                                    <connections>
+                                        <action selector="customAmountButtonWasTouched" destination="2ME-xd-Art" eventType="touchUpInside" id="Zib-uN-PXk"/>
+                                    </connections>
+                                </button>
+                            </subviews>
+                        </stackView>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="NOTHING'S HERE YET, LOAD YOUR LIGHTNING WALLET" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hTS-cT-5lo">
+                            <rect key="frame" x="10" y="10" width="297" height="41"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="OH, and we’ll cover the fees everytime you load " textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="U6u-c4-KH1">
+                            <rect key="frame" x="10" y="61" width="297" height="41"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstItem="U6u-c4-KH1" firstAttribute="leading" secondItem="JBj-0H-M4c" secondAttribute="leading" constant="10" id="KK0-vd-TNz"/>
+                        <constraint firstItem="U6u-c4-KH1" firstAttribute="centerX" secondItem="2ME-xd-Art" secondAttribute="centerX" id="Phj-Th-z9T"/>
+                        <constraint firstItem="hTS-cT-5lo" firstAttribute="leading" secondItem="JBj-0H-M4c" secondAttribute="leading" constant="10" id="Pj4-YV-w2H"/>
+                        <constraint firstItem="U6u-c4-KH1" firstAttribute="trailing" secondItem="JBj-0H-M4c" secondAttribute="trailing" constant="-10" id="TL4-ys-Eon"/>
+                        <constraint firstItem="hTS-cT-5lo" firstAttribute="trailing" secondItem="JBj-0H-M4c" secondAttribute="trailing" constant="-10" id="WYY-pZ-yJY"/>
+                        <constraint firstItem="3LZ-BY-qly" firstAttribute="centerX" secondItem="2ME-xd-Art" secondAttribute="centerX" id="cLZ-TB-fxn"/>
+                        <constraint firstItem="3LZ-BY-qly" firstAttribute="top" secondItem="U6u-c4-KH1" secondAttribute="bottom" constant="20" id="i3u-KX-R2a"/>
+                        <constraint firstItem="hTS-cT-5lo" firstAttribute="top" secondItem="JBj-0H-M4c" secondAttribute="top" constant="10" id="lXS-kg-7xX"/>
+                        <constraint firstItem="3LZ-BY-qly" firstAttribute="leading" secondItem="JBj-0H-M4c" secondAttribute="leading" constant="10" id="lmm-Lg-IIt"/>
+                        <constraint firstItem="hTS-cT-5lo" firstAttribute="centerX" secondItem="2ME-xd-Art" secondAttribute="centerX" id="oVZ-ph-2tk"/>
+                        <constraint firstItem="U6u-c4-KH1" firstAttribute="top" secondItem="hTS-cT-5lo" secondAttribute="bottom" constant="10" id="qGb-kv-3Sr"/>
+                        <constraint firstItem="JBj-0H-M4c" firstAttribute="trailing" secondItem="3LZ-BY-qly" secondAttribute="trailing" constant="10" id="row-GN-W9J"/>
+                    </constraints>
+                    <viewLayoutGuide key="safeArea" id="JBj-0H-M4c"/>
+                    <connections>
+                        <outlet property="customAmountButton" destination="WNx-bS-Fag" id="g4q-pP-Wt0"/>
+                        <outlet property="detailLabel" destination="U6u-c4-KH1" id="Fq9-ut-G1C"/>
+                        <outlet property="highAmountButton" destination="URI-ML-Wa5" id="1bi-TK-OB6"/>
+                        <outlet property="lowAmountButton" destination="QCm-fx-OKS" id="XAC-9b-HNF"/>
+                        <outlet property="maxAmountButton" destination="6dm-fF-XTb" id="bjF-5t-UCq"/>
+                        <outlet property="mediumAmountButton" destination="IOh-Qi-xIR" id="QOY-Rr-WhK"/>
+                        <outlet property="titleLabel" destination="hTS-cT-5lo" id="HFz-Lt-rYt"/>
                     </connections>
                 </view>
             </objects>

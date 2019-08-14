@@ -75,7 +75,10 @@ class WalletTransferViewController: PresentableViewController, StoryboardInitial
 
     confirmView.delegate = self
     feesView.delegate = self
+    let labels = viewModel.dualAmountLabels()
+    editAmountView.configure(withLabels: labels, delegate: self)
     setupUI()
+    setupCurrencySwappableEditAmountView()
   }
 
   func didUpdateExchangeRateManager(_ exchangeRateManager: ExchangeRateManager) {
