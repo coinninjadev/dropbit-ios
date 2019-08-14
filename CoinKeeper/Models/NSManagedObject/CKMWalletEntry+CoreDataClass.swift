@@ -11,5 +11,5 @@ import CoreData
 
 @objc(CKMWalletEntry)
 public class CKMWalletEntry: NSManagedObject {
-  
+
 }

@@ -66,7 +66,6 @@ extension AppCoordinator: StartViewControllerDelegate {
       !(navigationController.topViewController()?.isKind(of: PinEntryViewController.classForCoder()) ?? true)
       else { return }
 
-
     let pinEntryVC = createPinEntryViewControllerForAppOpen(whenAuthenticated: whenAuthenticated)
     pinEntryVC.modalPresentationStyle = .overCurrentContext
     pinEntryVC.modalTransitionStyle = .crossDissolve
