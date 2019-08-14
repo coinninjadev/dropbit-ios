@@ -18,7 +18,9 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate, CurrencyFormatta
     analyticsManager.track(event: .confirmScreenLoaded, with: nil)
   }
 
-  func viewControllerDidConfirmInvite(_ viewController: UIViewController, outgoingInvitationDTO: OutgoingInvitationDTO) {
+  func viewControllerDidConfirmInvite(_ viewController: UIViewController,
+                                      outgoingInvitationDTO: OutgoingInvitationDTO,
+                                      walletTxType: WalletTransactionType) {
     biometricsAuthenticationManager.resetPolicy()
     let pinEntryViewController = PinEntryViewController.makeFromStoryboard()
     assignCoordinationDelegate(to: pinEntryViewController)
@@ -53,7 +55,7 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate, CurrencyFormatta
     navigationController.topViewController()?.present(pinEntryViewController, animated: true, completion: nil)
   }
 
-  func viewControllerDidConfirmPayment(
+  func viewControllerDidConfirmOnChainPayment(
     _ viewController: UIViewController,
     transactionData: CNBTransactionData,
     rates: ExchangeRates,

@@ -51,8 +51,9 @@ class BaseConfirmPaymentViewModel: DualAmountDisplayable {
     return false
   }
 
-  func update(with transactionData: CNBTransactionData) {
-    self.btcAmount = NSDecimalNumber(integerAmount: Int(transactionData.amount), currency: .BTC)
+  func update(with transactionData: CNBTransactionData?) {
+    guard let txData = transactionData else { return }
+    self.btcAmount = NSDecimalNumber(integerAmount: Int(txData.amount), currency: .BTC)
   }
 
 }
@@ -125,6 +126,7 @@ class ConfirmOnChainPaymentViewModel: BaseConfirmPaymentViewModel {
 
 class ConfirmLightningPaymentViewModel: BaseConfirmPaymentViewModel {
 
+  let invoice: String
   let sharedPayloadDTO: SharedPayloadDTO?
 
   override var memo: String? {
@@ -141,6 +143,7 @@ class ConfirmLightningPaymentViewModel: BaseConfirmPaymentViewModel {
        sharedPayload: SharedPayloadDTO?,
        currencyPair: CurrencyPair,
        exchangeRates: ExchangeRates) {
+    self.invoice = invoice
     self.sharedPayloadDTO = sharedPayload
     super.init(destination: invoice,
                contact: contact,
@@ -199,8 +202,9 @@ enum ConfirmTransactionFeeModel {
     }
   }
 
-  var feeAmount: Int {
-    return Int(transactionData.feeAmount)
+  var networkFeeAmount: Int {
+    guard let txData = transactionData else { return 0 }
+    return Int(txData.feeAmount)
   }
 
 }
