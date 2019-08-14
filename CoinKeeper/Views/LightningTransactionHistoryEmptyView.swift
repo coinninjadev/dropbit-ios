@@ -39,6 +39,10 @@ class LightningTransactionHistoryEmptyView: UIView {
     customAmountButton.titleLabel?.font = .medium(16)
   }
 
+  override var intrinsicContentSize: CGSize {
+    return CGSize(width: 404, height: 221)
+  }
+
   @IBAction func lowAmountButtonWasTouched() {
     delegate?.emptyViewDidRequestRefill(withAmount: .low)
   }

@@ -324,11 +324,7 @@ extension TransactionHistoryViewController: DZNEmptyDataSetDelegate, DZNEmptyDat
   }
 
   func verticalOffset(forEmptyDataSet scrollView: UIScrollView!) -> CGFloat {
-    if shouldShowLightningEmptyView {
-      return -70
-    } else {
-      return 0
-    }
+    return 0
   }
 
   private var shouldShowLightningEmptyView: Bool {
