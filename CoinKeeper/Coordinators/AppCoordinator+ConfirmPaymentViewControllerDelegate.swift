@@ -15,57 +15,16 @@ import PromiseKit
 
 extension AppCoordinator: ConfirmPaymentViewControllerDelegate, CurrencyFormattable {
 
+  func confirmPaymentViewControllerDidLoad(_ viewController: UIViewController) {
+    analyticsManager.track(event: .confirmScreenLoaded, with: nil)
+  }
+
   func viewControllerDidConfirmLightningPayment(_ viewController: UIViewController,
                                                 sats: Int,
                                                 invoice: String,
                                                 sharedPayload: SharedPayloadDTO?) {
     self.networkManager.payLightningPaymentRequest(invoice, sats: sats)
     .cauterize()
-  }
-
-  func confirmPaymentViewControllerDidLoad(_ viewController: UIViewController) {
-    analyticsManager.track(event: .confirmScreenLoaded, with: nil)
-  }
-
-  func viewControllerDidConfirmInvite(_ viewController: UIViewController,
-                                      outgoingInvitationDTO: OutgoingInvitationDTO,
-                                      walletTxType: WalletTransactionType) {
-    biometricsAuthenticationManager.resetPolicy()
-    let pinEntryViewModel = InviteVerificationPinEntryViewModel()
-
-    let successHandler: CompletionHandler = { [unowned self] in
-      guard outgoingInvitationDTO.fee > 0 else {
-        log.error("DropBit invitation fee is zero")
-        self.handleFailure(error: TransactionDataError.insufficientFee)
-        return
-      }
-
-      let receiverBody = outgoingInvitationDTO.contact.userIdentityBody
-
-      let senderIdentityFactory = SenderIdentityFactory(persistenceManager: self.persistenceManager)
-      guard let senderBody = senderIdentityFactory.preferredSenderBody(forReceiverType: receiverBody.identityType) else {
-        log.error("Failed to create sender body")
-        return
-      }
-
-      let inviteBody = RequestAddressBody(amount: outgoingInvitationDTO.btcPair,
-                                          receiver: receiverBody,
-                                          sender: senderBody,
-                                          requestId: UUID().uuidString.lowercased())
-      self.handleSuccessfulInviteVerification(with: inviteBody, outgoingInvitationDTO: outgoingInvitationDTO)
-    }
-
-    let failureHandler: PinEntryErrorHandler = { [unowned self] error in
-      self.handleFailure(error: error)
-    }
-
-    let pinEntryViewController = PinEntryViewController.newInstance(delegate: self,
-                                                                    viewModel: pinEntryViewModel,
-                                                                    success: successHandler,
-                                                                    failure: failureHandler)
-
-    pinEntryViewController.modalPresentationStyle = .overFullScreen
-    navigationController.topViewController()?.present(pinEntryViewController, animated: true, completion: nil)
   }
 
   func viewControllerDidConfirmOnChainPayment(
@@ -108,6 +67,47 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate, CurrencyFormatta
                                                         failure: errorHandler)
     pinEntryVC.modalPresentationStyle = .overFullScreen
     navigationController.topViewController()?.present(pinEntryVC, animated: true, completion: nil)
+  }
+
+  func viewControllerDidConfirmInvite(_ viewController: UIViewController,
+                                      outgoingInvitationDTO: OutgoingInvitationDTO,
+                                      walletTxType: WalletTransactionType) {
+    biometricsAuthenticationManager.resetPolicy()
+    let pinEntryViewModel = InviteVerificationPinEntryViewModel()
+
+    let successHandler: CompletionHandler = { [unowned self] in
+      guard outgoingInvitationDTO.fee > 0 else {
+        log.error("DropBit invitation fee is zero")
+        self.handleFailure(error: TransactionDataError.insufficientFee)
+        return
+      }
+
+      let receiverBody = outgoingInvitationDTO.contact.userIdentityBody
+
+      let senderIdentityFactory = SenderIdentityFactory(persistenceManager: self.persistenceManager)
+      guard let senderBody = senderIdentityFactory.preferredSenderBody(forReceiverType: receiverBody.identityType) else {
+        log.error("Failed to create sender body")
+        return
+      }
+
+      let inviteBody = RequestAddressBody(amount: outgoingInvitationDTO.btcPair,
+                                          receiver: receiverBody,
+                                          sender: senderBody,
+                                          requestId: UUID().uuidString.lowercased())
+      self.handleSuccessfulInviteVerification(with: inviteBody, outgoingInvitationDTO: outgoingInvitationDTO)
+    }
+
+    let failureHandler: PinEntryErrorHandler = { [unowned self] error in
+      self.handleFailure(error: error)
+    }
+
+    let pinEntryViewController = PinEntryViewController.newInstance(delegate: self,
+                                                                    viewModel: pinEntryViewModel,
+                                                                    success: successHandler,
+                                                                    failure: failureHandler)
+
+    pinEntryViewController.modalPresentationStyle = .overFullScreen
+    navigationController.topViewController()?.present(pinEntryViewController, animated: true, completion: nil)
   }
 
   func viewControllerRequestedShowFeeTooExpensiveAlert(_ viewController: UIViewController) {
