@@ -90,7 +90,6 @@ class ConfirmPaymentViewController: PresentableViewController, StoryboardInitial
     coordinationDelegate?.viewControllerDidSelectClose(self)
   }
 
-
   override func viewDidLoad() {
     super.viewDidLoad()
 

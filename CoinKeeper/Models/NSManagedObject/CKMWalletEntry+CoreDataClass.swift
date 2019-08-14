@@ -11,5 +11,12 @@ import CoreData
 
 @objc(CKMWalletEntry)
 public class CKMWalletEntry: NSManagedObject {
-  
+
+  public var isCancellable: Bool {
+    return false //TODO
+  }
+
+  public var networkFee: Int {
+    return 0 //TODO
+  }
 }

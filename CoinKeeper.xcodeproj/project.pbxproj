@@ -559,6 +559,10 @@
 		A2DBC50422D78DC2008C532B /* CurrencySwappableEditAmountView.xib in Resources */ = {isa = PBXBuildFile; fileRef = A2DBC50322D78DC2008C532B /* CurrencySwappableEditAmountView.xib */; };
 		A2E0300220EABF8E00E160E9 /* RestoreWalletViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2E0300120EABF8E00E160E9 /* RestoreWalletViewController.swift */; };
 		A2E0300420EABFA800E160E9 /* RestoreWalletViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A2E0300320EABFA800E160E9 /* RestoreWalletViewController.storyboard */; };
+		A2E0689223047E660047090B /* TransactionHistoryDetailsViewControllerLightningDDS.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2E0689123047E660047090B /* TransactionHistoryDetailsViewControllerLightningDDS.swift */; };
+		A2E0689423047EE50047090B /* TransactionHistoryDetailsViewControllerOnChainDDS.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2E0689323047EE50047090B /* TransactionHistoryDetailsViewControllerOnChainDDS.swift */; };
+		A2E0689623047EF60047090B /* TransactionHistoryViewControllerOnChainDDS.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2E0689523047EF60047090B /* TransactionHistoryViewControllerOnChainDDS.swift */; };
+		A2E0689823047F0B0047090B /* TransactionHistoryViewControllerLightningDDS.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2E0689723047F0B0047090B /* TransactionHistoryViewControllerLightningDDS.swift */; };
 		A2E52D6220BD937E00424E6A /* StringDictResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2E52D6120BD937E00424E6A /* StringDictResponse.swift */; };
 		A2E52D8820BE3A3F00424E6A /* Data+HexString.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2E52D8720BE3A3F00424E6A /* Data+HexString.swift */; };
 		A2E89208210A3BC10085631A /* CKPhoneNumberFormatterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2E89207210A3BC10085631A /* CKPhoneNumberFormatterTests.swift */; };
@@ -680,7 +684,6 @@
 		B53804FA209A4B020096DA33 /* URLOpener.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53804F9209A4B020096DA33 /* URLOpener.swift */; };
 		B53804FC209A4C070096DA33 /* AppCoordinator+URLOpener.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53804FB209A4C070096DA33 /* AppCoordinator+URLOpener.swift */; };
 		B53A790422E4ACF000EDCA8B /* AppCoordinator+ViewControllerSendingDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53A790322E4ACF000EDCA8B /* AppCoordinator+ViewControllerSendingDelegate.swift */; };
-		B53A790622E4AFBB00EDCA8B /* TransactionHistoryViewController+CollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53A790522E4AFBB00EDCA8B /* TransactionHistoryViewController+CollectionView.swift */; };
 		B53D7EC52119DC6B00D1DCBF /* BlockchainInfoTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53D7EC42119DC6B00D1DCBF /* BlockchainInfoTarget.swift */; };
 		B53D7ECC2119FCA300D1DCBF /* BCITransactionResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53D7ECB2119FCA300D1DCBF /* BCITransactionResponse.swift */; };
 		B53D7ECE2119FE3900D1DCBF /* BlockchainInfoProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53D7ECD2119FE3900D1DCBF /* BlockchainInfoProvider.swift */; };
@@ -1545,6 +1548,10 @@
 		A2DBC50322D78DC2008C532B /* CurrencySwappableEditAmountView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CurrencySwappableEditAmountView.xib; sourceTree = "<group>"; };
 		A2E0300120EABF8E00E160E9 /* RestoreWalletViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestoreWalletViewController.swift; sourceTree = "<group>"; };
 		A2E0300320EABFA800E160E9 /* RestoreWalletViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = RestoreWalletViewController.storyboard; sourceTree = "<group>"; };
+		A2E0689123047E660047090B /* TransactionHistoryDetailsViewControllerLightningDDS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionHistoryDetailsViewControllerLightningDDS.swift; sourceTree = "<group>"; };
+		A2E0689323047EE50047090B /* TransactionHistoryDetailsViewControllerOnChainDDS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionHistoryDetailsViewControllerOnChainDDS.swift; sourceTree = "<group>"; };
+		A2E0689523047EF60047090B /* TransactionHistoryViewControllerOnChainDDS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionHistoryViewControllerOnChainDDS.swift; sourceTree = "<group>"; };
+		A2E0689723047F0B0047090B /* TransactionHistoryViewControllerLightningDDS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionHistoryViewControllerLightningDDS.swift; sourceTree = "<group>"; };
 		A2E52D6120BD937E00424E6A /* StringDictResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringDictResponse.swift; sourceTree = "<group>"; };
 		A2E52D8720BE3A3F00424E6A /* Data+HexString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data+HexString.swift"; sourceTree = "<group>"; };
 		A2E89207210A3BC10085631A /* CKPhoneNumberFormatterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CKPhoneNumberFormatterTests.swift; sourceTree = "<group>"; };
@@ -1662,7 +1669,6 @@
 		B53804F9209A4B020096DA33 /* URLOpener.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLOpener.swift; sourceTree = "<group>"; };
 		B53804FB209A4C070096DA33 /* AppCoordinator+URLOpener.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppCoordinator+URLOpener.swift"; sourceTree = "<group>"; };
 		B53A790322E4ACF000EDCA8B /* AppCoordinator+ViewControllerSendingDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppCoordinator+ViewControllerSendingDelegate.swift"; sourceTree = "<group>"; };
-		B53A790522E4AFBB00EDCA8B /* TransactionHistoryViewController+CollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TransactionHistoryViewController+CollectionView.swift"; sourceTree = "<group>"; };
 		B53D7EC42119DC6B00D1DCBF /* BlockchainInfoTarget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockchainInfoTarget.swift; sourceTree = "<group>"; };
 		B53D7ECB2119FCA300D1DCBF /* BCITransactionResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BCITransactionResponse.swift; sourceTree = "<group>"; };
 		B53D7ECD2119FE3900D1DCBF /* BlockchainInfoProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockchainInfoProvider.swift; sourceTree = "<group>"; };
@@ -2312,6 +2318,10 @@
 				3B5A8899228AEFE10082BBA4 /* TwitterSearchDataSource.swift */,
 				B56639CC22B151E400FA0EC3 /* TransactionShareable.swift */,
 				A2952F7F22BD1C9500BDCE65 /* NewsViewControllerDDS.swift */,
+				A2E0689123047E660047090B /* TransactionHistoryDetailsViewControllerLightningDDS.swift */,
+				A2E0689323047EE50047090B /* TransactionHistoryDetailsViewControllerOnChainDDS.swift */,
+				A2E0689523047EF60047090B /* TransactionHistoryViewControllerOnChainDDS.swift */,
+				A2E0689723047F0B0047090B /* TransactionHistoryViewControllerLightningDDS.swift */,
 			);
 			path = "Delegates and DataSources";
 			sourceTree = "<group>";
@@ -2774,7 +2784,6 @@
 				3BF852392023785000EBBE44 /* StartViewController.swift */,
 				A29CE0C62098F84300761B91 /* SuccessFailViewController.swift */,
 				B52A25C02077CCEF00F636A1 /* TransactionHistoryViewController.swift */,
-				B53A790522E4AFBB00EDCA8B /* TransactionHistoryViewController+CollectionView.swift */,
 				3BAB1444204EE5D3001D41A2 /* VerifyRecoveryWordsViewController.swift */,
 				A2E0300120EABF8E00E160E9 /* RestoreWalletViewController.swift */,
 				A260E8CE20FCFE11008343F9 /* TutorialViewController.swift */,
@@ -4286,6 +4295,7 @@
 				B54A420D207FAB6D005B40A9 /* TransactionDetailStatusLabel.swift in Sources */,
 				B542147E22C103750048B81A /* AdjustableTransactionFeeViewModel.swift in Sources */,
 				B5D834072249680600C45ABE /* SettingSwitchWithInfoCell.swift in Sources */,
+				A2E0689223047E660047090B /* TransactionHistoryDetailsViewControllerLightningDDS.swift in Sources */,
 				B59E2C8722E789D800A75AFE /* LightningTooltipViewController.swift in Sources */,
 				B5D8340A224971E400C45ABE /* SettingsViewController+TableView.swift in Sources */,
 				B501022221F2325B00D42A71 /* UIColor+Init.swift in Sources */,
@@ -4481,7 +4491,6 @@
 				B54F8FA420C3088300294F50 /* CurrencyFormattable.swift in Sources */,
 				B5192FA4216E7BEA00DCC39B /* BlockchainInfoProviderError.swift in Sources */,
 				B52053E1227B6D3000E5D2ED /* AlertManager+Constants.swift in Sources */,
-				B53A790622E4AFBB00EDCA8B /* TransactionHistoryViewController+CollectionView.swift in Sources */,
 				B52CC6A6221E401E00B00C9E /* CCMValidatedMetadata+CoreDataClass.swift in Sources */,
 				30E96A2921765546008079B8 /* BitcoinURL.swift in Sources */,
 				3BB01BC3220A56F6006B4D25 /* AppCoordinator+NoConnectionViewControllerDelegate.swift in Sources */,
@@ -4490,6 +4499,7 @@
 				3B44962321B06DE200A4E912 /* AppCoordinator+MemoEntryViewControllerDelegate.swift in Sources */,
 				3B8FA48420C16F5C0074B617 /* CKMTemporarySentTransaction+CoreDataProperties.swift in Sources */,
 				3B80E27821BEEDD300F6EF17 /* MigrateDatabaseV1toV2.swift in Sources */,
+				A2E0689623047EF60047090B /* TransactionHistoryViewControllerOnChainDDS.swift in Sources */,
 				3BA9F5F9208F63480047C213 /* AppCoordinator+PinCreationViewControllerDelegate.swift in Sources */,
 				3B474155217A4B4A004DA223 /* NetworkManager+NotificationNetworkInteractable.swift in Sources */,
 				B5192FA6216E7BFF00DCC39B /* UserProviderError.swift in Sources */,
@@ -4583,6 +4593,7 @@
 				B5B37B27206AFE22001816F6 /* CurrencyCode.swift in Sources */,
 				B5B0DC7D22134AE00010AB2A /* CKCountry.swift in Sources */,
 				B5540C5F21ADD8ED00484238 /* CKRecipientParser.swift in Sources */,
+				A2E0689423047EE50047090B /* TransactionHistoryDetailsViewControllerOnChainDDS.swift in Sources */,
 				B5192FA8216E7C2F00DCC39B /* PinValidationError.swift in Sources */,
 				B552EDFE211E33D000332BB5 /* CKNotificationCenter.swift in Sources */,
 				B50ACBB0216627AB00E877DF /* DevicesTarget.swift in Sources */,
@@ -4714,6 +4725,7 @@
 				B5B53C9C2107CAA5006C7B67 /* TransactionDetailsInfoContainer.swift in Sources */,
 				A245C6D020D9537400D99983 /* RequestAddressBody.swift in Sources */,
 				3B5A88A4228B09260082BBA4 /* ContactCellSecondaryLabel.swift in Sources */,
+				A2E0689823047F0B0047090B /* TransactionHistoryViewControllerLightningDDS.swift in Sources */,
 				3BA9F611208F6EDB0047C213 /* AppCoordinator+BalanceContainerDelegate.swift in Sources */,
 				B5A98AEB224176C300DEF96F /* CKUserDefaults.swift in Sources */,
 				B5054149207D00270059C8F9 /* CKMAddress+CoreDataProperties.swift in Sources */,

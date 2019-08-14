@@ -18,6 +18,24 @@ class TransactionHistoryDetailCellViewModel: TransactionHistorySummaryCellViewMo
   var networkFee: NSDecimalNumber?
 
   override init(
+    walletEntry: CKMWalletEntry,
+    rates: ExchangeRates,
+    primaryCurrency: CurrencyCode,
+    deviceCountryCode: Int?
+    ) {
+
+    let fee = walletEntry.networkFee
+    self.isCancellable = walletEntry.isCancellable
+    self.networkFee = NSDecimalNumber(integerAmount: fee, currency: .BTC)
+    self.memoWasShared = false //TODO
+
+    super.init(walletEntry: walletEntry,
+               rates: rates,
+               primaryCurrency: primaryCurrency,
+               deviceCountryCode: deviceCountryCode)
+  }
+
+  override init(
     transaction: CKMTransaction,
     rates: ExchangeRates,
     primaryCurrency: CurrencyCode,
