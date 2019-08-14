@@ -14,6 +14,15 @@ import MessageUI
 import PromiseKit
 
 extension AppCoordinator: ConfirmPaymentViewControllerDelegate, CurrencyFormattable {
+
+  func viewControllerDidConfirmLightningPayment(_ viewController: UIViewController,
+                                                sats: Int,
+                                                invoice: String,
+                                                sharedPayload: SharedPayloadDTO?) {
+    self.networkManager.payLightningPaymentRequest(invoice, sats: sats)
+    .cauterize()
+  }
+
   func confirmPaymentViewControllerDidLoad(_ viewController: UIViewController) {
     analyticsManager.track(event: .confirmScreenLoaded, with: nil)
   }
@@ -22,35 +31,39 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate, CurrencyFormatta
                                       outgoingInvitationDTO: OutgoingInvitationDTO,
                                       walletTxType: WalletTransactionType) {
     biometricsAuthenticationManager.resetPolicy()
-    let pinEntryViewController = PinEntryViewController.makeFromStoryboard()
-    assignCoordinationDelegate(to: pinEntryViewController)
-    pinEntryViewController.mode = .inviteVerification(completion: { [weak self] result in
-      guard let strongSelf = self else { return }
-      switch result {
-      case .success:
-        guard outgoingInvitationDTO.fee > 0 else {
-          log.error("DropBit invitation fee is zero")
-          strongSelf.handleFailure(error: TransactionDataError.insufficientFee)
-          return
-        }
+    let pinEntryViewModel = InviteVerificationPinEntryViewModel()
 
-        let receiverBody = outgoingInvitationDTO.contact.userIdentityBody
-
-        let senderIdentityFactory = SenderIdentityFactory(persistenceManager: strongSelf.persistenceManager)
-        guard let senderBody = senderIdentityFactory.preferredSenderBody(forReceiverType: receiverBody.identityType) else {
-          log.error("Failed to create sender body")
-          return
-        }
-
-        let inviteBody = RequestAddressBody(amount: outgoingInvitationDTO.btcPair,
-                                            receiver: receiverBody,
-                                            sender: senderBody,
-                                            requestId: UUID().uuidString.lowercased())
-        strongSelf.handleSuccessfulInviteVerification(with: inviteBody, outgoingInvitationDTO: outgoingInvitationDTO)
-      case .failure(let error):
-        strongSelf.handleFailure(error: error)
+    let successHandler: CompletionHandler = { [unowned self] in
+      guard outgoingInvitationDTO.fee > 0 else {
+        log.error("DropBit invitation fee is zero")
+        self.handleFailure(error: TransactionDataError.insufficientFee)
+        return
       }
-    })
+
+      let receiverBody = outgoingInvitationDTO.contact.userIdentityBody
+
+      let senderIdentityFactory = SenderIdentityFactory(persistenceManager: self.persistenceManager)
+      guard let senderBody = senderIdentityFactory.preferredSenderBody(forReceiverType: receiverBody.identityType) else {
+        log.error("Failed to create sender body")
+        return
+      }
+
+      let inviteBody = RequestAddressBody(amount: outgoingInvitationDTO.btcPair,
+                                          receiver: receiverBody,
+                                          sender: senderBody,
+                                          requestId: UUID().uuidString.lowercased())
+      self.handleSuccessfulInviteVerification(with: inviteBody, outgoingInvitationDTO: outgoingInvitationDTO)
+    }
+
+    let failureHandler: PinEntryErrorHandler = { [unowned self] error in
+      self.handleFailure(error: error)
+    }
+
+    let pinEntryViewController = PinEntryViewController.newInstance(delegate: self,
+                                                                    viewModel: pinEntryViewModel,
+                                                                    success: successHandler,
+                                                                    failure: failureHandler)
+
     pinEntryViewController.modalPresentationStyle = .overFullScreen
     navigationController.topViewController()?.present(pinEntryViewController, animated: true, completion: nil)
   }
@@ -62,8 +75,7 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate, CurrencyFormatta
     outgoingTransactionData: OutgoingTransactionData
     ) {
     biometricsAuthenticationManager.resetPolicy()
-    let pinEntryViewController = PinEntryViewController.makeFromStoryboard()
-    assignCoordinationDelegate(to: pinEntryViewController)
+
     let converter = CurrencyConverter(fromBtcTo: .USD,
                                       fromAmount: NSDecimalNumber(integerAmount: outgoingTransactionData.amount, currency: .BTC),
                                       rates: rates)
@@ -78,21 +90,24 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate, CurrencyFormatta
     let usdThreshold = 100_00
     let shouldDisableBiometrics = amountInfo.fiatAmount > usdThreshold
 
-    pinEntryViewController.mode = .paymentVerification(amountDisablesBiometrics: shouldDisableBiometrics, completion: { [weak self] result in
-      guard let strongSelf = self else { return }
-      self?.analyticsManager.track(event: .preBroadcast, with: nil)
-      switch result {
-      case .success:
-        strongSelf.handleSuccessfulPaymentVerification(
-          with: transactionData,
-          outgoingTransactionData: outgoingTxDataWithAmount)
+    let pinEntryViewModel = PaymentVerificationPinEntryViewModel(amountDisablesBiometrics: shouldDisableBiometrics)
 
-      case .failure(let error):
-        strongSelf.handleFailure(error: error)
-      }
-    })
-    pinEntryViewController.modalPresentationStyle = .overFullScreen
-    navigationController.topViewController()?.present(pinEntryViewController, animated: true, completion: nil)
+    let successHandler: CompletionHandler = { [unowned self] in
+      self.analyticsManager.track(event: .preBroadcast, with: nil)
+      self.handleSuccessfulPaymentVerification(with: transactionData, outgoingTransactionData: outgoingTxDataWithAmount)
+    }
+
+    let errorHandler: PinEntryErrorHandler = { [unowned self] error in
+      self.analyticsManager.track(event: .preBroadcast, with: nil)
+      self.handleFailure(error: error)
+    }
+
+    let pinEntryVC = PinEntryViewController.newInstance(delegate: self,
+                                                        viewModel: pinEntryViewModel,
+                                                        success: successHandler,
+                                                        failure: errorHandler)
+    pinEntryVC.modalPresentationStyle = .overFullScreen
+    navigationController.topViewController()?.present(pinEntryVC, animated: true, completion: nil)
   }
 
   func viewControllerRequestedShowFeeTooExpensiveAlert(_ viewController: UIViewController) {

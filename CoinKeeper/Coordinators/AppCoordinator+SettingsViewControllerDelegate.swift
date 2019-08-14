@@ -81,27 +81,17 @@ extension AppCoordinator: SettingsViewControllerDelegate {
     openURL(url, completionHandler: nil)
   }
 
-  func viewControllerDidRequestDeleteWallet(_ viewController: UIViewController, completion: @escaping () -> Void) {
+  func viewControllerDidRequestDeleteWallet(_ viewController: UIViewController, completion: @escaping CompletionHandler) {
     let description = """
         Are you sure you want to delete this wallet?
         Make sure you have your recovery words before you delete.\n
     """
     let settingsViewController = navigationController.topViewController()
-    let deleteAction = AlertActionConfiguration(title: "Delete", style: .default) { [weak self] in
-      guard let strongSelf = self else { return }
-      let pinEntryViewController = PinEntryViewController.makeFromStoryboard()
-      strongSelf.resetUserAuthenticatedState()
-      strongSelf.assignCoordinationDelegate(to: pinEntryViewController)
-      pinEntryViewController.mode = .walletDeletion(completion: { result in
-        switch result {
-        case .success:
-          pinEntryViewController.dismiss(animated: true, completion: nil)
-          completion()
-        default:
-          break
-        }
-      })
+    let deleteAction = AlertActionConfiguration(title: "Delete", style: .default) { [unowned self] in
+      self.resetUserAuthenticatedState()
 
+      let viewModel = WalletDeletionPinEntryViewModel()
+      let pinEntryViewController = PinEntryViewController.newInstance(delegate: self, viewModel: viewModel, success: completion, failure: nil)
       settingsViewController?.present(pinEntryViewController, animated: true, completion: nil)
     }
     let cancelAction = AlertActionConfiguration(title: "Cancel", style: .default, action: nil)
@@ -151,7 +141,7 @@ extension AppCoordinator: SettingsViewControllerDelegate {
     alertManager.showActivityHUD(withStatus: "Synchronizing...")
     let successMessage = "Blockchain successfully re-synchronized. Please check your transaction history to verify."
 
-    let completion: CompletionHandler = { error in
+    let completion: ErrorCompletionHandler = { error in
       if let err = error {
         self.alertManager.hideActivityHUD(withDelay: 1.0) {
           self.alertManager.showError(message: "Something went wrong. Please try again.\n\nError: \(err.localizedDescription)", forDuration: 3.0)

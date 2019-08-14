@@ -20,7 +20,7 @@ class MockSerialQueueManager: SerialQueueManagerType {
   var enqueueWalletSyncIfAppropriateWasCalled: Bool = false
   func enqueueWalletSyncIfAppropriate(type: WalletSyncType,
                                       policy: EnqueueingPolicy,
-                                      completion: CompletionHandler?,
+                                      completion: ErrorCompletionHandler?,
                                       fetchResult: ((UIBackgroundFetchResult) -> Void)?) {
     enqueueWalletSyncIfAppropriateWasCalled = true
     completion?(nil)

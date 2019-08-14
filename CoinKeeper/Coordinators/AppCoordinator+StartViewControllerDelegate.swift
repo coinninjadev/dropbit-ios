@@ -66,14 +66,29 @@ extension AppCoordinator: StartViewControllerDelegate {
       !(navigationController.topViewController()?.isKind(of: PinEntryViewController.classForCoder()) ?? true)
       else { return }
 
-    let pinEntryVC = PinEntryViewController.makeFromStoryboard()
-    // This closure is called by its delegate's implementation of viewControllerDidSuccessfullyAuthenticate()
-    pinEntryVC.whenAuthenticated = whenAuthenticated
-    assignCoordinationDelegate(to: pinEntryVC)
 
+    let pinEntryVC = createPinEntryViewControllerForAppOpen(whenAuthenticated: whenAuthenticated)
     pinEntryVC.modalPresentationStyle = .overCurrentContext
     pinEntryVC.modalTransitionStyle = .crossDissolve
+
     navigationController.setViewControllers([pinEntryVC], animated: false)
+  }
+
+  func createPinEntryViewControllerForAppOpen(whenAuthenticated: @escaping () -> Void) -> PinEntryViewController {
+    let viewModel = OpenAppPinEntryViewModel()
+
+    let successHandler: CompletionHandler = { [weak self] in
+      guard let self = self else { return }
+      self.launchStateManager.userWasAuthenticated()
+      self.serialQueueManager.enqueueWalletSyncIfAppropriate(type: .standard, policy: .always,
+                                                             completion: nil, fetchResult: nil)
+      whenAuthenticated()
+    }
+
+    return PinEntryViewController.newInstance(delegate: self,
+                                              viewModel: viewModel,
+                                              success: successHandler,
+                                              failure: nil)
   }
 
 }

@@ -14,7 +14,7 @@ class PinEntryViewModel {
   let shouldShowCloseButton: Bool
   let message: String?
 
-  var shouldAnimatePinText = false
+  var shouldAnimateMessage = false
 
   init(enableBiometrics: Bool,
        showLogo: Bool,
@@ -65,7 +65,7 @@ class WalletDeletionPinEntryViewModel: PinEntryViewModel {
                showLogo: true,
                showClose: true,
                message: "Enter PIN to confirm deletion of your wallet")
-    self.shouldAnimatePinText = true
+    self.shouldAnimateMessage = true
   }
 }
 

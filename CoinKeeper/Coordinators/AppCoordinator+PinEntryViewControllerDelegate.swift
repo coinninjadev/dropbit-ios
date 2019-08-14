@@ -13,28 +13,16 @@ extension AppCoordinator: PinEntryViewControllerDelegate {
   func viewControllerDidTryBiometrics(_ pinEntryViewController: PinEntryViewController) {
     guard biometricsAuthenticationManager.canAuthenticateWithBiometrics else { return }
     biometricsAuthenticationManager.authenticate(
-      completion: { [weak self] in self?.viewControllerDidSuccessfullyAuthenticate(pinEntryViewController) },
+      completion: {
+        pinEntryViewController.authenticationSatisfied()
+      },
       error: nil
     )
   }
 
-  func viewControllerDidSuccessfullyAuthenticate(_ pinEntryViewController: PinEntryViewController) {
-    switch pinEntryViewController.mode {
-    case .standard:
-      launchStateManager.userWasAuthenticated()
-      serialQueueManager.enqueueWalletSyncIfAppropriate(type: .standard, policy: .always,
-                                                        completion: nil, fetchResult: nil)
-
-      let presentedVC = navigationController.topViewController() as? PinEntryViewController
-      guard let pinVC = presentedVC else { return }
-      pinVC.whenAuthenticated?()
-
-    case .paymentVerification(_, let completion), .inviteVerification(let completion),
-         .walletDeletion(let completion), .recoveryWords(let completion):
-      pinEntryViewController.dismiss(animated: false) {
-        completion(.success(true))
-      }
-    }
+  func viewControllerDidSuccessfullyAuthenticate(_ pinEntryViewController: PinEntryViewController,
+                                                 completion: CompletionHandler?) {
+    pinEntryViewController.dismiss(animated: true, completion: completion)
   }
 
   func checkMatch(for digits: String) -> Bool {

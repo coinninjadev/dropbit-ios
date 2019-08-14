@@ -162,20 +162,6 @@ extension AppCoordinator {
                                  completion: nil)
   }
 
-  func createPinEntryViewControllerForRecoveryWords(_ words: [String]) -> PinEntryViewController {
-    let pinEntryViewController = PinEntryViewController.makeFromStoryboard()
-    pinEntryViewController.mode = .recoveryWords(completion: { [unowned self] _ in
-      self.analyticsManager.track(event: .viewWords, with: nil)
-      let controller = BackupRecoveryWordsViewController.newInstance(withDelegate: self,
-                                                                     recoveryWords: words,
-                                                                     wordsBackedUp: self.wordsBackedUp)
-      self.navigationController.present(CNNavigationController(rootViewController: controller), animated: false, completion: nil)
-    })
-    assignCoordinationDelegate(to: pinEntryViewController)
-
-    return pinEntryViewController
-  }
-
   private func makeTransactionHistory(isLightning lightning: Bool = false) -> TransactionHistoryViewController {
     return TransactionHistoryViewController.newInstance(withDelegate: self, context: persistenceManager.mainQueueContext(),
                                                         type: lightning ? .lightning : .onChain)

@@ -12,7 +12,8 @@ import CoreData
 import PromiseKit
 import Moya
 
-typealias CompletionHandler = (Error?) -> Void
+typealias CompletionHandler = () -> Void
+typealias ErrorCompletionHandler = (Error?) -> Void
 
 enum WalletSyncType: String {
   case comprehensive
@@ -95,7 +96,7 @@ protocol SerialQueueManagerType: class {
 
   func enqueueWalletSyncIfAppropriate(type: WalletSyncType,
                                       policy: EnqueueingPolicy,
-                                      completion: CompletionHandler?,
+                                      completion: ErrorCompletionHandler?,
                                       fetchResult: ((UIBackgroundFetchResult) -> Void)?)
 
   func enqueueOperationIfAppropriate(_ operation: AsynchronousOperation, policy: EnqueueingPolicy)
@@ -163,7 +164,7 @@ class SerialQueueManager: SerialQueueManagerType {
 
   func enqueueWalletSyncIfAppropriate(type: WalletSyncType,
                                       policy: EnqueueingPolicy,
-                                      completion: CompletionHandler?,
+                                      completion: ErrorCompletionHandler?,
                                       fetchResult: ((UIBackgroundFetchResult) -> Void)?) {
     guard let queueDelegate = self.delegate,
       let operationFactory = self.walletSyncOperationFactory else {
