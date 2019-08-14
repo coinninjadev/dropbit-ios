@@ -24,14 +24,6 @@ final class PinEntryViewController: BaseViewController, StoryboardInitializable 
   private var successHandler: CompletionHandler?
   private var failureHandler: PinEntryErrorHandler?
 
-  enum Mode {
-    case standard
-    case inviteVerification(completion: (Result<Bool, PinValidationError>) -> Void)
-    case paymentVerification(amountDisablesBiometrics: Bool, completion: (Result<Bool, PinValidationError>) -> Void)
-    case walletDeletion(completion: (Result<Bool, PinValidationError>) -> Void)
-    case recoveryWords(completion: (Result<Bool, PinValidationError>) -> Void)
-  }
-
   static func newInstance(delegate: PinEntryViewControllerDelegate,
                           viewModel: PinEntryViewModel,
                           success: CompletionHandler?,
