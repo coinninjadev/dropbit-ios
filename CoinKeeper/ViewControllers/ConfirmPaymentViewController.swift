@@ -132,10 +132,11 @@ class ConfirmPaymentViewController: PresentableViewController, StoryboardInitial
   @objc func confirmButtonDidConfirm() {
     if confirmLongPressGestureRecognizer.state == .began {
       switch transactionType {
-      case .invite:
-        routeConfirmedInvite(for: viewModel, feeModel: self.feeModel)
       case .payment:
         routeConfirmedPayment(for: viewModel, feeModel: self.feeModel)
+      case .invite:
+        guard let inviteVM = viewModel as? ConfirmPaymentInviteViewModel else { return }
+        self.confirmInvite(with: inviteVM, feeModel: feeModel)
       }
     }
 
@@ -143,17 +144,6 @@ class ConfirmPaymentViewController: PresentableViewController, StoryboardInitial
   }
 
   private func routeConfirmedPayment(for viewModel: BaseConfirmPaymentViewModel, feeModel: ConfirmTransactionFeeModel) {
-    switch viewModel.walletTransactionType {
-    case .onChain:
-      guard let onChainVM = viewModel as? ConfirmOnChainPaymentViewModel else { return }
-      confirmOnChainPayment(with: onChainVM, feeModel: feeModel)
-    case .lightning:
-      guard let lightningVM = viewModel as? ConfirmLightningPaymentViewModel else { return }
-      confirmLightningPayment(with: lightningVM)
-    }
-  }
-
-  private func routeConfirmedInvite(for viewModel: BaseConfirmPaymentViewModel, feeModel: ConfirmTransactionFeeModel) {
     switch viewModel.walletTransactionType {
     case .onChain:
       guard let onChainVM = viewModel as? ConfirmOnChainPaymentViewModel else { return }
