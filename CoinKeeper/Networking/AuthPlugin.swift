@@ -33,14 +33,21 @@ struct AuthPlugin: PluginType {
 
     var request = request
 
-    guard let headers: DefaultHeaders = headerDelegate?.createHeaders(for: request.httpBody) else {
-      return request
+    let shouldSignBody = !target.path.starts(with: CoinNinjaProvider.thunderdomeBasePath)
+    guard let headers = headerDelegate?.createHeaders(
+      for: request.httpBody,
+      signBodyIfAvailable: shouldSignBody) else {
+        return request
     }
 
     request.addValue(headers.appVersion, forCNHeaderField: .appVersion)
     request.addValue(headers.devicePlatform, forCNHeaderField: .devicePlatform)
     request.addValue(headers.timeStamp, forCNHeaderField: .authTimestamp)
     request.addValue(headers.buildEnvironment, forCNHeaderField: .buildEnvironment)
+
+    if let pubKeyString = headers.pubKeyString {
+      request.addValue(pubKeyString, forCNHeaderField: .pubKeyString)
+    }
 
     if let deviceId = headers.deviceId?.uuidString.lowercased() {
       request.addValue(deviceId, forCNHeaderField: .deviceId)

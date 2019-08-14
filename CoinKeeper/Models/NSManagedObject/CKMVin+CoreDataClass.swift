@@ -44,7 +44,7 @@ public class CKMVin: NSManagedObject {
   }
 
   func configure(with vinResponse: TransactionVinResponse, in context: NSManagedObjectContext) {
-    previousTxid = vinResponse.txid
+    previousTxid = vinResponse.uniqueTxid
     previousVoutIndex = vinResponse.vout
     amount = vinResponse.value
     addressIDs = vinResponse.addresses

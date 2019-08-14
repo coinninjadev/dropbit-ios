@@ -150,8 +150,6 @@ class AppCoordinator: CoordinatorType {
     self.notificationManager.delegate = self
     self.locationManager.delegate = self.locationDelegate
 
-    setCurrentCoin()
-
     self.networkManager.headerDelegate = self
     self.networkManager.walletDelegate = self
     self.alertManager.urlOpener = self
@@ -398,12 +396,6 @@ class AppCoordinator: CoordinatorType {
   func resetUserAuthenticatedState() {
     biometricsAuthenticationManager.resetPolicy()
     launchStateManager.unauthenticateUser()
-  }
-
-  func setCurrentCoin() {
-    let isTestnet = UserDefaults.standard.bool(forKey: "ontestnet")
-    let coin: CNBBaseCoin = isTestnet ? BTCTestnetCoin() : BTCMainnetCoin()
-    walletManager?.coin = coin
   }
 
 }

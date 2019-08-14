@@ -29,7 +29,7 @@ extension TransactionHistoryViewController: UICollectionViewDelegateFlowLayout {
     var height: CGFloat = 66
     height += !transaction.isConfirmed ? 20 : 0
     height += (transaction.memo?.asNilIfEmpty() != nil) ? 25 : 0
-    return CGSize(width: self.view.frame.width, height: height)
+    return CGSize(width: collectionView.frame.width, height: height)
   }
 }
 

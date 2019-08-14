@@ -58,7 +58,7 @@ class TransactionHistoryDetailCellAddressViewTests: XCTestCase {
   func testTappingAddressButtonTellsDelegateWithAddress() {
     let mockDelegate = MockTxHistoryDetailAddressViewDelegate()
     self.sut.selectionDelegate = mockDelegate
-    let expectedText = "3Q7pLg7xfxUbMPCxx6VYgArcCDFLHkaHiF"
+    let expectedText = TestHelpers.mockValidBitcoinAddress()
     self.sut.addressTextButton.setTitle(expectedText, for: .normal)
 
     self.sut.addressTextButton.sendActions(for: .touchUpInside)
