@@ -18,10 +18,10 @@ enum TransferAmount {
 
   var value: Int {
     switch self {
-    case .low: return 5
-    case .medium: return 20
-    case .high: return 50
-    case .max: return 100
+    case .low: return 500
+    case .medium: return 2000
+    case .high: return 5000
+    case .max: return 10000
     case .custom: return 0
     }
   }
