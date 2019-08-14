@@ -15,7 +15,19 @@ class TestHelpers {
   }
 
   static func mockValidBitcoinAddress() -> String {
+    #if DEBUG
+    return "2N9yokkV146gEoHT6sgUNtisEd7GH93PQ8Q"
+    #else
     return "15PCeM6EN7ihm4QzhVfZCeZis7uggr5RRJ"
+    #endif
+  }
+
+  static func mockInvalidBitcoinAddress() -> String {
+    #if DEBUG
+    return "15PCeM6EN7ihm4QzhVfZCeZis7uggr5RRJ" //valid mainnet is invalid in debug
+    #else
+    return "2N9yokkV146gEoHT6sgUNtisEd7GH93PQ8Q" //valid testnet is invalid in prod
+    #endif
   }
 
   static func mockInvalidBech32Address() -> String {
@@ -37,11 +49,19 @@ class TestHelpers {
   }
 
   static func validBase58CheckAddresses() -> [String] {
+    #if DEBUG
+    return [
+      "2N8o4Mu5PRAR27TC2eai62CRXarTbQmjyCx",
+      "2NFHgTz4v7waXzVdNyE8LSAuSJox6yDAWmd",
+      "2MvZPjbP9pThD1WBDstq2NYGrw55hUdAjaa"
+    ]
+    #else
     return [
       "12vRFewBpbdiS5HXDDLEfVFtJnpA2x8NV8",
       "3EH9Wj6KWaZBaYXhVCa8ZrwpHJYtk44bGX",
       "3Cd4xEu2VvM352BVgd9cb1Ct5vxz318tVT"
     ]
+    #endif
   }
 
   static func invalidBase58CheckAddresses() -> [String] {

@@ -78,7 +78,7 @@ struct TransactionVinResponse: ResponseDecodable {
     self.value = try previousOutputContainer.decode(Int.self, forKey: .value)
 
     let scriptPubKeyContainer = try previousOutputContainer.nestedContainer(keyedBy: ScriptPubKeyCodingKeys.self, forKey: .scriptPubKey)
-    self.addresses = try scriptPubKeyContainer.decode([String].self, forKey: .addresses)
+    self.addresses = try scriptPubKeyContainer.decodeIfPresent([String].self, forKey: .addresses) ?? []
   }
 
   static func validateResponse(_ response: TransactionVinResponse) throws -> TransactionVinResponse {
@@ -128,5 +128,24 @@ struct TransactionVinResponse: ResponseDecodable {
       }
     }
     """
+  }
+}
+
+extension TransactionVinResponse {
+
+  static var coinbasePrefix: String {
+    return "Coinbase_"
+  }
+
+  var transactionIsCoinbase: Bool {
+    return txid.filter { $0 != "0" }.isEmpty
+  }
+
+  var uniqueTxid: String {
+    if transactionIsCoinbase {
+      return TransactionVinResponse.coinbasePrefix + (currentTxid ?? "")
+    } else {
+      return txid
+    }
   }
 }

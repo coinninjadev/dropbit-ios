@@ -139,3 +139,18 @@ extension Array where Element: ResponseEncodable {
   }
 
 }
+
+protocol LNResponseDecodable: ResponseDecodable {
+
+}
+
+extension LNResponseDecodable {
+
+  static var decoder: JSONDecoder {
+    let decoder = JSONDecoder()
+    decoder.dateDecodingStrategy = .formatted(CKDateFormatter.rfc3339Decoding)
+    decoder.keyDecodingStrategy = .convertFromSnakeCase
+    return decoder
+  }
+
+}

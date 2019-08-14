@@ -119,8 +119,9 @@ struct CKPredicate {
     }
 
     static func forChangeIndex(_ changeIndex: Int) -> NSPredicate {
+      let coin = CKMDerivativePath.relevantCoin
       let purposePredicate = NSPredicate(format: "\(purposeKeyPath) = %d", 49)
-      let coinPredicate = NSPredicate(format: "\(coinKeyPath) = %d", 0)
+      let coinPredicate = NSPredicate(format: "\(coinKeyPath) = %d", coin)
       let accountPredicate = NSPredicate(format: "\(accountKeyPath) = %d", 0)
       let changePredicate = NSPredicate(format: "\(changeKeyPath) = %d", changeIndex)
       return NSCompoundPredicate(andPredicateWithSubpredicates: [
@@ -227,7 +228,7 @@ struct CKPredicate {
     }
 
     static func matching(response: TransactionVinResponse) -> NSPredicate {
-      return matching(previousTxid: response.txid, previousVoutIndex: response.vout)
+      return matching(previousTxid: response.uniqueTxid, previousVoutIndex: response.vout)
     }
 
     static func matching(previousTxid: String, previousVoutIndex: Int) -> NSPredicate {
