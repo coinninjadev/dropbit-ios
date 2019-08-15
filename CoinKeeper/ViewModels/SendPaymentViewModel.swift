@@ -16,8 +16,9 @@ enum WalletTransactionType {
 
 enum PaymentRecipient {
 
-  /// Associated value does not contain "bitcoin:"
-  case btcAddress(String)
+  /// Associated value may be either a BTC address or a lightning invoice.
+  /// BTC address does not contain "bitcoin:".
+  case destination(String)
 
   case contact(ContactType)
 
@@ -30,7 +31,7 @@ enum PaymentRecipient {
     switch parsedRecipient {
     case .bitcoinURL(let url):
       guard let address = url.components.address else { return nil }
-      self = .btcAddress(address)
+      self = .destination(address)
 
     case .phoneNumber(let number):
       self = .phoneNumber(GenericContact(phoneNumber: number, formatted: ""))
@@ -70,7 +71,7 @@ class SendPaymentViewModel: CurrencySwappableEditAmountViewModel {
 
   var address: String? {
     if let recipient = paymentRecipient,
-      case let .btcAddress(addr) = recipient {
+      case let .destination(addr) = recipient {
       return addr
     } else {
       return nil
@@ -92,7 +93,7 @@ class SendPaymentViewModel: CurrencySwappableEditAmountViewModel {
                                                          delegate: delegate)
     self.walletTransactionType = walletTransactionType
     super.init(viewModel: viewModel)
-    self.paymentRecipient = qrCode.address.flatMap { .btcAddress($0) }
+    self.paymentRecipient = qrCode.address.flatMap { .destination($0) }
     self.requiredFeeRate = nil
     self.memo = nil
   }
@@ -101,7 +102,7 @@ class SendPaymentViewModel: CurrencySwappableEditAmountViewModel {
        address: String? = nil, requiredFeeRate: Double? = nil, memo: String? = nil) {
     self.walletTransactionType = walletTransactionType
     super.init(viewModel: editAmountViewModel)
-    self.paymentRecipient = address.flatMap { .btcAddress($0) }
+    self.paymentRecipient = address.flatMap { .destination($0) }
     self.requiredFeeRate = requiredFeeRate
     self.memo = memo
   }
@@ -138,7 +139,7 @@ class SendPaymentViewModel: CurrencySwappableEditAmountViewModel {
   var shouldShowSharedMemoBox: Bool {
     if let recipient = paymentRecipient {
       switch recipient {
-      case .btcAddress:     return false
+      case .destination:    return false
       case .contact:        return true && sharedMemoAllowed
       case .phoneNumber:    return true && sharedMemoAllowed
       case .twitterContact: return true && sharedMemoAllowed
@@ -162,7 +163,7 @@ class SendPaymentViewModel: CurrencySwappableEditAmountViewModel {
     }
 
     switch recipient {
-    case .phoneNumber, .btcAddress:
+    case .phoneNumber, .destination:
       return .textField
     case .contact, .twitterContact:
       return .label
@@ -172,7 +173,7 @@ class SendPaymentViewModel: CurrencySwappableEditAmountViewModel {
   func displayRecipientName() -> String? {
     guard let recipient = self.paymentRecipient else { return nil }
     switch recipient {
-    case .btcAddress: return nil
+    case .destination: return nil
     case .contact(let contact): return contact.displayName
     case .twitterContact(let contact): return contact.displayName
     case .phoneNumber: return nil
@@ -182,7 +183,7 @@ class SendPaymentViewModel: CurrencySwappableEditAmountViewModel {
   func displayRecipientIdentity() -> String? {
     guard let recipient = self.paymentRecipient else { return nil }
     switch recipient {
-    case .btcAddress: return nil
+    case .destination: return nil
     case .contact(let contact):
       guard let phoneContact = contact as? PhoneContactType else { return nil }
       let formatter = CKPhoneNumberFormatter(format: .international)
@@ -196,7 +197,7 @@ class SendPaymentViewModel: CurrencySwappableEditAmountViewModel {
   func displayStyle(for recipient: PaymentRecipient?) -> RecipientDisplayStyle {
     guard let r = recipient else { return .textField }
     switch r {
-    case .btcAddress,
+    case .destination,
          .phoneNumber:    return .textField
     case .contact,
          .twitterContact: return .label

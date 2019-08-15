@@ -48,7 +48,7 @@ class SendPaymentViewControllerTests: XCTestCase {
     XCTAssertNotNil(self.sut.editAmountView.primaryAmountTextField, "primaryAmountTextField should be connected")
     XCTAssertNotNil(self.sut.editAmountView.secondaryAmountLabel, "secondaryAmountLabel should be connected")
     XCTAssertNotNil(self.sut.phoneNumberEntryView, "phoneNumberEntryView should be connected")
-    XCTAssertNotNil(self.sut.bitcoinAddressButton, "bitcoinAddressButton should be connected")
+    XCTAssertNotNil(self.sut.destinationButton, "destinationButton should be connected")
     XCTAssertNotNil(self.sut.recipientDisplayNameLabel, "recipientDisplayNameLabel should be connected")
     XCTAssertNotNil(self.sut.recipientDisplayNumberLabel, "recipientDisplayNumberLabel should be connected")
     XCTAssertNotNil(self.sut.pasteButton, "pasteButton should be connected")
@@ -98,9 +98,9 @@ class SendPaymentViewControllerTests: XCTestCase {
   }
 
   func testBitcoinAddressButtonContainsAction() {
-    let actions = self.sut.bitcoinAddressButton.actions(forTarget: self.sut, forControlEvent: .touchUpInside) ?? []
+    let actions = self.sut.destinationButton.actions(forTarget: self.sut, forControlEvent: .touchUpInside) ?? []
     let selector = #selector(SendPaymentViewController.performStartPhoneEntry).description
-    XCTAssertTrue(actions.contains(selector), "bitcoinAddressButton should contain action")
+    XCTAssertTrue(actions.contains(selector), "destinationButton should contain action")
   }
 
   func testSendMaxButtonContainsAction() {
@@ -147,8 +147,8 @@ class SendPaymentViewControllerTests: XCTestCase {
       XCTAssertEqual(self.sut.viewModel.primaryCurrency, .USD)
 
       XCTAssertTrue(self.sut.phoneNumberEntryView.isHidden)
-      XCTAssertFalse(self.sut.bitcoinAddressButton.isHidden)
-      XCTAssertEqual(self.sut.bitcoinAddressButton.title(for: .normal), address)
+      XCTAssertFalse(self.sut.destinationButton.isHidden)
+      XCTAssertEqual(self.sut.destinationButton.title(for: .normal), address)
       expectation.fulfill()
     }
     wait(for: [expectation], timeout: 1.0)
@@ -167,8 +167,8 @@ class SendPaymentViewControllerTests: XCTestCase {
       XCTAssertEqual(self.sut.viewModel.primaryCurrency, .BTC)
 
       XCTAssertTrue(self.sut.phoneNumberEntryView.isHidden)
-      XCTAssertFalse(self.sut.bitcoinAddressButton.isHidden)
-      XCTAssertEqual(self.sut.bitcoinAddressButton.title(for: .normal), address)
+      XCTAssertFalse(self.sut.destinationButton.isHidden)
+      XCTAssertEqual(self.sut.destinationButton.title(for: .normal), address)
       expectation.fulfill()
     }
     wait(for: [expectation], timeout: 1.0)
@@ -187,8 +187,8 @@ class SendPaymentViewControllerTests: XCTestCase {
       XCTAssertEqual(self.sut.viewModel.primaryCurrency, .BTC)
 
       XCTAssertTrue(self.sut.phoneNumberEntryView.isHidden)
-      XCTAssertFalse(self.sut.bitcoinAddressButton.isHidden)
-      XCTAssertEqual(self.sut.bitcoinAddressButton.title(for: .normal), address)
+      XCTAssertFalse(self.sut.destinationButton.isHidden)
+      XCTAssertEqual(self.sut.destinationButton.title(for: .normal), address)
       expectation.fulfill()
     }
     wait(for: [expectation], timeout: 1.0)
@@ -204,8 +204,8 @@ class SendPaymentViewControllerTests: XCTestCase {
     let expectation = XCTestExpectation(description: "update ui")
     DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
       XCTAssertTrue(self.sut.phoneNumberEntryView.isHidden)
-      XCTAssertFalse(self.sut.bitcoinAddressButton.isHidden)
-      XCTAssertEqual(self.sut.bitcoinAddressButton.title(for: .normal), title)
+      XCTAssertFalse(self.sut.destinationButton.isHidden)
+      XCTAssertEqual(self.sut.destinationButton.title(for: .normal), title)
       expectation.fulfill()
     }
     wait(for: [expectation], timeout: 1.0)

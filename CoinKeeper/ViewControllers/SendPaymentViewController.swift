@@ -61,7 +61,7 @@ class SendPaymentViewController: PresentableViewController,
   @IBOutlet var walletToggleView: WalletToggleView!
 
   @IBOutlet var addressScanButtonContainerView: UIView!
-  @IBOutlet var bitcoinAddressButton: UIButton!
+  @IBOutlet var destinationButton: UIButton!
   @IBOutlet var scanButton: UIButton!
 
   @IBOutlet var recipientDisplayNameLabel: UILabel!
@@ -266,9 +266,9 @@ extension SendPaymentViewController {
     addressScanButtonContainerView.layer.borderColor = UIColor.mediumGrayBorder.cgColor
     addressScanButtonContainerView.layer.borderWidth = 1.0
 
-    bitcoinAddressButton.titleLabel?.font = .medium(14)
-    bitcoinAddressButton.setTitleColor(.darkGrayText, for: .normal)
-    bitcoinAddressButton.contentEdgeInsets = UIEdgeInsets(top: 0, left: 8, bottom: 0, right: 8)
+    destinationButton.titleLabel?.font = .medium(14)
+    destinationButton.setTitleColor(.darkGrayText, for: .normal)
+    destinationButton.contentEdgeInsets = UIEdgeInsets(top: 0, left: 8, bottom: 0, right: 8)
 
     scanButton.backgroundColor = .mediumGrayBackground
   }
@@ -396,7 +396,7 @@ extension SendPaymentViewController {
         }
 
         self.viewModel = fetchedModel
-        self.setPaymentRecipient(PaymentRecipient.btcAddress(fetchedAddress))
+        self.setPaymentRecipient(PaymentRecipient.destination(fetchedAddress))
         self.viewModel.setBTCAmountAsPrimary(fetchedModel.btcAmount)
 
         self.alertManager?.hideActivityHUD(withDelay: nil) {
@@ -420,13 +420,13 @@ extension SendPaymentViewController {
   func updateRecipientContainerContentType(forRecipient paymentRecipient: PaymentRecipient?) {
     DispatchQueue.main.async {
       guard let recipient = paymentRecipient else {
-        self.showBitcoinAddressRecipient(with: self.viewModel?.walletTransactionType == .lightning ?
+        self.showDestinationRecipient(with: self.viewModel?.walletTransactionType == .lightning ?
           "To: Invoice or phone number" : "To: BTC Address or phone number" )
         return
       }
       switch recipient {
-      case .btcAddress(let btcAddress):
-        self.showBitcoinAddressRecipient(with: btcAddress)
+      case .destination(let destination):
+        self.showDestinationRecipient(with: destination)
       case .phoneNumber(let contact):
         self.coordinationDelegate?.viewController(self, checkForContactFromGenericContact: contact) { possibleValidatedContact in
           if let validatedContact = possibleValidatedContact {
@@ -456,10 +456,10 @@ extension SendPaymentViewController {
     }
   }
 
-  private func showBitcoinAddressRecipient(with title: String) {
+  private func showDestinationRecipient(with title: String) {
     self.addressScanButtonContainerView.isHidden = false
     self.phoneNumberEntryView.isHidden = true
-    self.bitcoinAddressButton.setTitle(title, for: .normal)
+    self.destinationButton.setTitle(title, for: .normal)
   }
 
   private func showPhoneEntryView(with title: String) {
@@ -649,8 +649,8 @@ extension SendPaymentViewController {
       try validatePayment(toContact: contact)
     case .phoneNumber(let genericContact):
       try validatePayment(toContact: genericContact)
-    case .btcAddress(let address):
-      try validatePayment(toAddress: address)
+    case .destination(let destination):
+      try validatePayment(toDestination: destination)
     case .twitterContact(let contact):
       try validatePayment(toContact: contact)
     }
@@ -660,8 +660,8 @@ extension SendPaymentViewController {
     return SharedPayloadAmountInfo(fiatCurrency: .USD, fiatAmount: 1)
   }
 
-  private func validatePayment(toAddress address: String) throws {
-    let recipient = try viewModel.recipientParser.findSingleRecipient(inText: address, ofTypes: [.bitcoinURL])
+  private func validatePayment(toDestination destination: String) throws {
+    let recipient = try viewModel.recipientParser.findSingleRecipient(inText: destination, ofTypes: [.bitcoinURL])
     guard case let .bitcoinURL(url) = recipient, let address = url.components.address else {
       throw BitcoinAddressValidatorError.isInvalidBitcoinAddress
     }
