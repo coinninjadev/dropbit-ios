@@ -324,24 +324,29 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate, CurrencyFormatta
     }
   }
 
+  private func handleSuccessfulLightningPaymentVerification(with inputs: LightningPaymentInputs) {
+    let viewModel = PaymentSuccessFailViewModel(mode: .pending)
+    let successFailVC = SuccessFailViewController.newInstance(viewModel: viewModel, delegate: self)
+    let errorHandler: CKErrorCompletion = self.paymentErrorHandler(for: successFailVC)
+
+    successFailVC.action = { [unowned self] in
+      self.executeConfirmedLightningPayment(with: inputs,
+                                            success: { successFailVC.setMode(.success) },
+                                            failure: errorHandler)
+    }
+
+    self.navigationController.topViewController()?.present(successFailVC, animated: false) {
+      successFailVC.action?()
+    }
+  }
+
   private func handleSuccessfulOnChainPaymentVerification(
     with transactionData: CNBTransactionData,
     outgoingTransactionData: OutgoingTransactionData) {
 
     let viewModel = PaymentSuccessFailViewModel(mode: .pending)
     let successFailVC = SuccessFailViewController.newInstance(viewModel: viewModel, delegate: self)
-
-    let errorHandler: CKErrorCompletion = { error in
-      if let networkError = error as? CKNetworkError,
-        case let .reachabilityFailed(moyaError) = networkError {
-        self.handleReachabilityError(moyaError)
-
-      } else {
-        self.handleFailure(error: error, action: {
-          successFailVC.setMode(.failure)
-        })
-      }
-    }
+    let errorHandler: CKErrorCompletion = self.paymentErrorHandler(for: successFailVC)
 
     successFailVC.action = { [unowned self] in
       self.broadcastConfirmedOnChainTransaction(
@@ -387,6 +392,32 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate, CurrencyFormatta
         topVC.present(twitterVC, animated: true, completion: nil)
       }
     }
+  }
+
+  /// Provides a completion handler to be called in the catch block of payment promise chains
+  private func paymentErrorHandler(for successFailVC: SuccessFailViewController) -> CKErrorCompletion {
+    let errorHandler: CKErrorCompletion = { [unowned self] error in
+      if let networkError = error as? CKNetworkError,
+        case let .reachabilityFailed(moyaError) = networkError {
+        self.handleReachabilityError(moyaError)
+
+      } else {
+        self.handleFailure(error: error, action: {
+          successFailVC.setMode(.failure)
+        })
+      }
+    }
+    return errorHandler
+  }
+
+  private func executeConfirmedLightningPayment(with inputs: LightningPaymentInputs,
+                                                success: @escaping CKCompletion,
+                                                failure: @escaping CKErrorCompletion) {
+
+    //TODO: Get updated ledger and persist new entry immediately following payment
+    self.networkManager.payLightningPaymentRequest(inputs.invoice, sats: inputs.sats).asVoid()
+      .done(success)
+      .catch(failure)
   }
 
   private func broadcastConfirmedOnChainTransaction(with transactionData: CNBTransactionData,
