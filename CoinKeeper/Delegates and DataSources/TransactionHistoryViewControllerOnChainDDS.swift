@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 
 class TransactionHistoryViewControllerOnChainDDS: NSObject, UICollectionViewDelegate,
-UICollectionViewDataSource {
+UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
 
   weak var viewController: TransactionHistoryViewController?
 

@@ -138,7 +138,7 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
     return controller
   }()
 
-  lazy var lightningDDS = TransactionHistoryViewControllerOnChainDDS(viewController: self)
+  lazy var lightningDDS = TransactionHistoryViewControllerLightningDDS(viewController: self)
   lazy var lightningFetchResultsController: NSFetchedResultsController<CKMWalletEntry> = {
     let fetchRequest: NSFetchRequest<CKMWalletEntry> = CKMWalletEntry.fetchRequest()
     fetchRequest.sortDescriptors = CKMWalletEntry.transactionHistorySortDescriptors

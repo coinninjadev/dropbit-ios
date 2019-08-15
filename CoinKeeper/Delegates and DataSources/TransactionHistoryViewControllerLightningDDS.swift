@@ -9,7 +9,8 @@
 import Foundation
 import UIKit
 
-class TransactionHistoryViewControllerLightningDDS: NSObject, UICollectionViewDelegate, UICollectionViewDataSource {
+class TransactionHistoryViewControllerLightningDDS: NSObject, UICollectionViewDelegate,
+UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
 
   weak var viewController: TransactionHistoryViewController?
 
