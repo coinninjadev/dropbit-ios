@@ -420,8 +420,9 @@ extension SendPaymentViewController {
   func updateRecipientContainerContentType(forRecipient paymentRecipient: PaymentRecipient?) {
     DispatchQueue.main.async {
       guard let recipient = paymentRecipient else {
-        self.showDestinationRecipient(with: self.viewModel?.walletTransactionType == .lightning ?
-          "To: Invoice or phone number" : "To: BTC Address or phone number" )
+        let isLightning = self.viewModel.walletTransactionType == .lightning
+        let destinationDesc = isLightning ? "Invoice" : "BTC Address"
+        self.showDestinationRecipient(with: "To: \(destinationDesc) or phone number")
         return
       }
       switch recipient {
