@@ -99,7 +99,7 @@ final class TransactionHistoryDetailsViewController: PresentableViewController, 
     collectionView.backgroundColor = .clear
     collectionView.reloadData()
   }
-  
+
   var detailCollectionViewHeight: CGFloat {
     return presentationController?.frameOfPresentedViewInContainerView.size.height ?? .zero
   }

@@ -9,6 +9,7 @@
 import Foundation
 import UIKit
 
+//swiftlint:disable type_name
 class TransactionHistoryDetailsViewControllerOnChainDDS: NSObject, UICollectionViewDelegate, UICollectionViewDataSource {
 
   weak var viewController: TransactionHistoryDetailsViewController?

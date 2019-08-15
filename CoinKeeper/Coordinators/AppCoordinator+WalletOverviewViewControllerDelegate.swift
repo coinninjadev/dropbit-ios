@@ -61,7 +61,8 @@ extension AppCoordinator: WalletOverviewViewControllerDelegate {
     }
   }
 
-  func viewControllerDidTapSendPayment(_ viewController: UIViewController, converter: CurrencyConverter, walletTransactionType: WalletTransactionType) {
+  func viewControllerDidTapSendPayment(_ viewController: UIViewController,
+                                       converter: CurrencyConverter, walletTransactionType: WalletTransactionType) {
     guard let walletOverviewViewController = viewController as? WalletOverviewViewController else { return }
     walletOverviewViewController.balanceContainer.toggleChartAndBalance()
     analyticsManager.track(event: .payButtonWasPressed, with: nil)
