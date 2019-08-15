@@ -13,7 +13,7 @@ import PromiseKit
 /// Closure type for signing CoinNinja API requests and adding other standard headers
 /// Data should be the request body
 protocol HeaderDelegate: AnyObject {
-  func createHeaders(for bodyData: Data?) -> DefaultHeaders?
+  func createHeaders(for bodyData: Data?, signBodyIfAvailable: Bool) -> DefaultHeaders?
 }
 
 /// A protocol to hold logic shared by its descendant providers.
@@ -24,6 +24,9 @@ protocol CoinNinjaProviderType: AnyObject {
 
 class CoinNinjaProvider: CoinNinjaProviderType {
   weak var headerDelegate: HeaderDelegate?
+
+  public static let thunderdomeBasePath = "thunderdome"
+
 }
 
 extension CoinNinjaProviderType {

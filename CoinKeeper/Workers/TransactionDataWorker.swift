@@ -346,7 +346,6 @@ class TransactionDataWorker: TransactionDataWorkerType {
   }
 
   func groomFailedTransactions(notIn txids: [String], in context: NSManagedObjectContext) -> Promise<Void> {
-
     let failureCandidates = CKMTransaction.findAllToFail(notIn: txids, in: context)
 
     // Only mark transactions as failed if they don't appear on blockchain.info as well

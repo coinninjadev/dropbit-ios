@@ -13,20 +13,6 @@ import PromiseKit
 
 class MockWalletManager: WalletManager {
 
-  var coinGetterWasCalled = false
-  var coinSetterWasCalled = false
-  private var privateCoin: CNBBaseCoin = BTCMainnetCoin()
-  override var coin: CNBBaseCoin {
-    get {
-      coinGetterWasCalled = true
-      return privateCoin
-    }
-    set {
-      coinSetterWasCalled = true
-      privateCoin = newValue
-    }
-  }
-
   var createNewWalletWithWordsWasCalled = false
   override func resetWallet(with words: [String]) {
     createNewWalletWithWordsWasCalled = true

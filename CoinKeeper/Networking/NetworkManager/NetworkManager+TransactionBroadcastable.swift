@@ -46,15 +46,18 @@ extension NetworkManager: TransactionBroadcastable {
     guard let wmgr = walletDelegate?.mainWalletManager() else { return Promise(error: CKPersistenceError.noWalletWords) }
     let walletCopy = wmgr.createWalletCopy()
     let transactionBuilder = CNBTransactionBuilder()
-    let metadata = transactionBuilder.generateTxMetadata(with: transactionData, wallet: walletCopy)
-    let blockchainInfoPromise = blockchainInfoProvider.broadcastTransaction(with: metadata)
-    let blockstreamPromise = blockstreamProvider.broadcastTransaction(with: metadata)
-    let promises = [
-      blockchainInfoPromise,
-      blockstreamPromise
-    ]
+    let txMetadata = transactionBuilder.generateTxMetadata(with: transactionData, wallet: walletCopy)
 
-    return when(resolved: promises)
+    #if DEBUG
+      return broadcastRegtestTx(with: txMetadata)
+    #else
+      return broadcastMainnetTx(with: txMetadata)
+    #endif
+  }
+
+  private func broadcastMainnetTx(with txMetadata: CNBTransactionMetadata) -> Promise<String> {
+    return when(resolved: [blockchainInfoProvider.broadcastTransaction(with: txMetadata),
+                           blockstreamProvider.broadcastTransaction(with: txMetadata)])
       .then { [weak self] (results: [PromiseKit.Result<BroadcastInfo>]) -> Promise<String> in
         var success = false
         var txid = ""
@@ -99,6 +102,11 @@ extension NetworkManager: TransactionBroadcastable {
           return Promise(error: returnError)
         }
     }
+  }
+
+  private func broadcastRegtestTx(with transactionMetadata: CNBTransactionMetadata) -> Promise<String> {
+    return cnProvider.requestVoid(BroadcastTarget.sendRawTransaction(transactionMetadata.encodedTx))
+      .map { _ in return transactionMetadata.txid }
   }
 
   func postSharedPayloadIfAppropriate(withOutgoingTxData outgoingTxData: OutgoingTransactionData,

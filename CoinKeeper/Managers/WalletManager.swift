@@ -14,7 +14,7 @@ protocol WalletManagerType: AnyObject {
   static func createMnemonicWords() -> [String]
   static func validateBase58Check(for address: String) -> Bool
   static func validateBech32Encoding(for address: String) -> Bool
-  var coin: CNBBaseCoin { get set }
+  var coin: CNBBaseCoin { get }
   var wallet: CNBHDWallet { get }
   var hexEncodedPublicKey: String { get }
   func signatureSigning(data: Data) -> String
@@ -90,6 +90,26 @@ protocol WalletManagerType: AnyObject {
  */
 class WalletManager: WalletManagerType {
 
+  private(set) var wallet: CNBHDWallet
+  private let persistenceManager: PersistenceManagerType
+
+  let coin: CNBBaseCoin
+
+  init(words: [String],
+       purpose: CoinDerivation = .BIP49,
+       persistenceManager: PersistenceManagerType = PersistenceManager()) {
+    let relevantCoin: CNBBaseCoin
+    #if DEBUG
+    relevantCoin = BTCTestnetCoin(purpose: purpose)
+    #else
+    relevantCoin = BTCMainnetCoin(purpose: purpose)
+    #endif
+
+    self.wallet = CNBHDWallet(mnemonic: words, coin: relevantCoin)
+    self.coin = relevantCoin
+    self.persistenceManager = persistenceManager
+  }
+
   func encryptionCipherKeys(forUncompressedPublicKey pubkey: Data) -> CNBEncryptionCipherKeys {
     return wallet.encryptionCipherKeys(forPublicKey: pubkey, withEntropy: WalletManager.secureEntropy())
   }
@@ -145,9 +165,6 @@ class WalletManager: WalletManagerType {
     return CNBSegwitAddress.isValidP2WPKHAddress(address) || CNBSegwitAddress.isValidP2WSHAddress(address)
   }
 
-  private(set) var wallet: CNBHDWallet
-  private let persistenceManager: PersistenceManagerType
-
   var minimumFeeRate: UInt {
     return 5
   }
@@ -178,19 +195,6 @@ class WalletManager: WalletManagerType {
     let spendableVouts = CKMVout.findAllSpendable(minAmount: minAmount, in: context)
     let spendableTotal = spendableVouts.reduce(0) { $0 + $1.amount }
     return spendableTotal
-  }
-
-  init(words: [String], coin: CNBBaseCoin = BTCMainnetCoin(), persistenceManager: PersistenceManagerType = PersistenceManager()) {
-    self.wallet = CNBHDWallet(mnemonic: words, coin: coin)
-    self.coin = coin
-    self.persistenceManager = persistenceManager
-  }
-
-  /// Setting coin will update wallet object with new coin.
-  var coin: CNBBaseCoin {
-    didSet {
-      wallet.setCoin(coin)
-    }
   }
 
   var hexEncodedPublicKey: String {

@@ -19,9 +19,9 @@ class CKCryptorTests: XCTestCase {
     let stack = InMemoryCoreDataStack()
     let context = stack.context
 
-    let aliceWallet = WalletManager(words: words.reversed(), coin: BTCMainnetCoin(), persistenceManager: mockPersistenceManager)
+    let aliceWallet = WalletManager(words: words.reversed(), persistenceManager: mockPersistenceManager)
 
-    let bobWallet = WalletManager(words: words, coin: BTCMainnetCoin(), persistenceManager: mockPersistenceManager)
+    let bobWallet = WalletManager(words: words, persistenceManager: mockPersistenceManager)
     let bobReceiveAddress = bobWallet.createAddressDataSource().receiveAddress(at: 0)
     let bobECUncompressedPubkeyString = bobReceiveAddress.uncompressedPublicKey ?? ""
     guard let bobECUncompressedPubkeyData = Data(fromHexEncodedString: bobECUncompressedPubkeyString) else {
@@ -70,9 +70,9 @@ class CKCryptorTests: XCTestCase {
       "真曰分友"
     ]
 
-    let aliceWallet = WalletManager(words: words.reversed(), coin: BTCMainnetCoin(), persistenceManager: mockPersistenceManager)
+    let aliceWallet = WalletManager(words: words.reversed(), purpose: .BIP49, persistenceManager: mockPersistenceManager)
 
-    let bobWallet = WalletManager(words: words, coin: BTCMainnetCoin(), persistenceManager: mockPersistenceManager)
+    let bobWallet = WalletManager(words: words, purpose: .BIP49, persistenceManager: mockPersistenceManager)
 
     possibleMemos.forEach { self.assertTextEncryption(clearText: $0, aliceWallet: aliceWallet, bobWallet: bobWallet)}
   }
@@ -135,10 +135,10 @@ class CKCryptorTests: XCTestCase {
         return
     }
 
-    let aliceWallet = WalletManager(words: words.reversed(), coin: BTCMainnetCoin(), persistenceManager: mockPersistenceManager)
+    let aliceWallet = WalletManager(words: words.reversed(), purpose: .BIP49, persistenceManager: mockPersistenceManager)
     let aliceEncryptor = CKCryptor(walletManager: aliceWallet)
 
-    let bobWallet = WalletManager(words: words, coin: BTCMainnetCoin(), persistenceManager: mockPersistenceManager)
+    let bobWallet = WalletManager(words: words, purpose: .BIP49, persistenceManager: mockPersistenceManager)
     let bobDecryptor = CKCryptor(walletManager: bobWallet)
     let bobReceiveAddress = bobWallet.createAddressDataSource().receiveAddress(at: 0)
     let bobECUncompressedPubkeyString = bobReceiveAddress.uncompressedPublicKey ?? ""

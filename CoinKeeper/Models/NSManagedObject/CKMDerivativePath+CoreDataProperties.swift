@@ -26,3 +26,18 @@ extension CKMDerivativePath {
   @NSManaged public var serverAddress: CKMServerAddress?
 
 }
+
+extension CKMDerivativePath {
+  override public var description: String {
+    return """
+    account: \(account)
+    change: \(change)
+    coin: \(coin)
+    index: \(index)
+    purpose: \(purpose)
+    fullPath: \(fullPath)
+    address: \(address?.addressId ?? "nil")
+    serverAddress: \(serverAddress?.address ?? "nil")
+    """
+  }
+}

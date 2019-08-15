@@ -159,7 +159,7 @@ class AlertManager: AlertManagerType {
 
       let padding: CGFloat = 8
       let width: CGFloat = (UIApplication.shared.keyWindow?.frame.width ?? 0) - (padding * 2)
-      bannerView.frame = CGRect(x: padding, y: padding, width: width, height: 76)
+      bannerView.frame = CGRect(x: padding, y: padding, width: width, height: 84)
       let foregroundColor = UIColor.whiteText
 
       let closeImage = UIImage(named: "close")?.withRenderingMode(.alwaysTemplate).maskWithColor(color: foregroundColor)
