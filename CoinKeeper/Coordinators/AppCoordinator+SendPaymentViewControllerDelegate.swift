@@ -106,7 +106,7 @@ extension AppCoordinator: SendPaymentViewControllerDelegate {
     self.navigationController.topViewController()?.present(contactsViewController, animated: true)
   }
 
-  func viewControllerDidRequestVerificationCheck(_ viewController: UIViewController, completion: @escaping (() -> Void)) {
+  func viewControllerDidRequestVerificationCheck(_ viewController: UIViewController, completion: @escaping CKCompletion) {
     guard launchStateManager.deviceIsVerified() else {
       showModalForPhoneVerification(with: viewController)
       return

@@ -8,5 +8,7 @@
 
 import Foundation
 
-typealias JSONObject = [String: Any]
-typealias JSONObjects = [JSONObject]
+public typealias JSONObject = [String: Any]
+public typealias JSONObjects = [JSONObject]
+public typealias CKCompletion = () -> Void
+public typealias CKErrorCompletion = (Error?) -> Void

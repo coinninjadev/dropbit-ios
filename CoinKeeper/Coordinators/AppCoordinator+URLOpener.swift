@@ -10,7 +10,7 @@ import UIKit
 import SafariServices
 
 extension AppCoordinator: URLOpener {
-  func openURL(_ url: URL, completionHandler completion: (() -> Void)?) {
+  func openURL(_ url: URL, completionHandler completion: CKCompletion?) {
     let safariController = SFSafariViewController(url: url)
     safariController.modalPresentationStyle = .overFullScreen
     navigationController.topViewController()?.present(safariController, animated: true, completion: completion)

@@ -360,7 +360,7 @@ class AppCoordinatorTests: MockedPersistenceTestCase {
 }
 
 extension PinEntryViewController {
-  override public func dismiss(animated flag: Bool, completion: (() -> Void)? = nil) {
+  override public func dismiss(animated flag: Bool, completion: CKCompletion? = nil) {
     completion?()
   }
 }

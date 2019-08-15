@@ -20,7 +20,7 @@ extension AppCoordinator: SuccessFailViewControllerDelegate {
     }
   }
 
-  func viewController(_ viewController: SuccessFailViewController, success: Bool, completion: (() -> Void)?) {
+  func viewController(_ viewController: SuccessFailViewController, success: Bool, completion: CKCompletion?) {
     switch viewController.viewModel {
     case is PaymentSuccessFailViewModel:
       CKNotificationCenter.publish(key: .didSendTransactionSuccessfully)

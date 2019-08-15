@@ -59,7 +59,7 @@ protocol SendPaymentViewControllerDelegate: ViewControllerSendingDelegate, Devic
   /**
    Dismisses `viewController` and shows phone verification flow if they haven't yet verified, otherwise calls `completion`.
    */
-  func viewControllerDidRequestVerificationCheck(_ viewController: UIViewController, completion: @escaping (() -> Void))
+  func viewControllerDidRequestVerificationCheck(_ viewController: UIViewController, completion: @escaping CKCompletion)
 
   func viewControllerDidAttemptInvalidDestination(_ viewController: UIViewController, error: Error?)
   func viewControllerDidSelectPaste(_ viewController: UIViewController)

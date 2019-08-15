@@ -130,7 +130,7 @@ extension AppCoordinator {
     persistenceManager.brokers.activity.backupWordsReminderShown = true
   }
 
-  func registerWalletWithServerIfNeeded(completion: @escaping () -> Void) {
+  func registerWalletWithServerIfNeeded(completion: @escaping CKCompletion) {
     if launchStateManager.shouldRegisterWallet() {
       registerWallet(completion: completion)
     } else {

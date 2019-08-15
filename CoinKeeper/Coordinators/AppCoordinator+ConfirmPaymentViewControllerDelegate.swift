@@ -423,7 +423,7 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate, CurrencyFormatta
     }
   }
 
-  private func handleFailure(error: Error?, action: (() -> Void)? = nil) {
+  private func handleFailure(error: Error?, action: CKCompletion? = nil) {
     var localizedDescription = ""
     if let txError = error as? TransactionDataError {
       localizedDescription = txError.messageDescription

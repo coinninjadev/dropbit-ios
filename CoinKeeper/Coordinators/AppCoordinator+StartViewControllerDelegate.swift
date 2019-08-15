@@ -60,7 +60,7 @@ extension AppCoordinator: StartViewControllerDelegate {
     requireAuthenticationIfNeeded(whenAuthenticated: {})
   }
 
-  func requireAuthenticationIfNeeded(whenAuthenticated: @escaping () -> Void) {
+  func requireAuthenticationIfNeeded(whenAuthenticated: @escaping CKCompletion) {
     connectionManager.delegate?.connectionManager(connectionManager, didChangeStatusTo: connectionManager.status)
     guard launchStateManager.shouldRequireAuthentication,
       !(navigationController.topViewController()?.isKind(of: PinEntryViewController.classForCoder()) ?? true)
@@ -73,7 +73,7 @@ extension AppCoordinator: StartViewControllerDelegate {
     navigationController.setViewControllers([pinEntryVC], animated: false)
   }
 
-  func createPinEntryViewControllerForAppOpen(whenAuthenticated: @escaping () -> Void) -> PinEntryViewController {
+  func createPinEntryViewControllerForAppOpen(whenAuthenticated: @escaping CKCompletion) -> PinEntryViewController {
     let viewModel = OpenAppPinEntryViewModel()
 
     let successHandler: CKCompletion = { [weak self] in

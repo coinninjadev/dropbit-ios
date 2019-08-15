@@ -103,7 +103,7 @@ class MockSendPaymentViewControllerCoordinator: SendPaymentViewControllerCoordin
     return Promise { _ in }
   }
 
-  func viewControllerDidRequestVerificationCheck(_ viewController: UIViewController, completion: @escaping (() -> Void)) {
+  func viewControllerDidRequestVerificationCheck(_ viewController: UIViewController, completion: @escaping CKCompletion) {
 
   }
 
@@ -120,7 +120,7 @@ class MockSendPaymentViewControllerCoordinator: SendPaymentViewControllerCoordin
     didTapClose = true
   }
 
-  func viewControllerDidSelectClose(_ viewController: UIViewController, completion: (() -> Void)? ) {
+  func viewControllerDidSelectClose(_ viewController: UIViewController, completion: CKCompletion? ) {
     didTapClose = true
   }
 
@@ -174,7 +174,7 @@ class MockSendPaymentViewControllerCoordinator: SendPaymentViewControllerCoordin
     didTapPaste = true
   }
 
-  func openURL(_ url: URL, completionHandler completion: (() -> Void)?) { }
+  func openURL(_ url: URL, completionHandler completion: CKCompletion?) { }
   func openURLExternally(_ url: URL, completionHandler completion: ((Bool) -> Void)?) { }
 
   func usableFeeRate(from feeRates: Fees) -> Double? {

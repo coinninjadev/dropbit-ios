@@ -10,13 +10,13 @@ import UIKit
 
 protocol SuccessFailViewControllerDelegate: ViewControllerDismissable, URLOpener {
   func viewControllerDidRetry(_ viewController: SuccessFailViewController)
-  func viewController(_ viewController: SuccessFailViewController, success: Bool, completion: (() -> Void)?)
+  func viewController(_ viewController: SuccessFailViewController, success: Bool, completion: CKCompletion?)
 }
 
 class SuccessFailViewController: BaseViewController, StoryboardInitializable {
 
   var viewModel: SuccessFailViewModel = SuccessFailViewModel(mode: .pending)
-  var action: (() -> Void)?
+  var action: CKCompletion?
 
   static func newInstance(viewModel: SuccessFailViewModel,
                           delegate: SuccessFailViewControllerDelegate) -> SuccessFailViewController {

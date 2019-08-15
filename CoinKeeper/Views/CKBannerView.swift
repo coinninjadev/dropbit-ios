@@ -54,7 +54,7 @@ class CKBannerView: MessageView, AccessibleViewSettable {
   }
 
   weak var delegate: CKBannerViewDelegate?
-  var completion: (() -> Void)?
+  var completion: CKCompletion?
   var url: URL?
 
   /// Configure a CKBannerView object for display

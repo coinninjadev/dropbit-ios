@@ -88,7 +88,7 @@ class SettingsViewControllerTests: XCTestCase {
     func viewControllerDidSelectVerifyPhone(_ viewController: UIViewController) {}
 
     var deleteWalletWasRequested = false
-    func viewControllerDidRequestDeleteWallet(_ viewController: UIViewController, completion: @escaping () -> Void) {
+    func viewControllerDidRequestDeleteWallet(_ viewController: UIViewController, completion: @escaping CKCompletion) {
       deleteWalletWasRequested = true
     }
     func viewControllerDidConfirmDeleteWallet(_ viewController: UIViewController) {}
@@ -97,7 +97,7 @@ class SettingsViewControllerTests: XCTestCase {
     func viewControllerSendDebuggingInfo(_ viewController: UIViewController) { }
     func viewControllerDidSelectOpenSourceLicenses(_ viewController: UIViewController) {}
     func viewController(_ viewController: UIViewController, didEnableDustProtection didEnable: Bool) {}
-    func viewController(_ viewController: UIViewController, didEnableYearlyHighNotification didEnable: Bool, completion: () -> Void) {}
+    func viewController(_ viewController: UIViewController, didEnableYearlyHighNotification didEnable: Bool, completion: CKCompletion) {}
     func viewControllerDidSelectAdjustableFees(_ viewController: UIViewController) {}
 
     var didSelectCloseWasCalled = false
@@ -105,7 +105,7 @@ class SettingsViewControllerTests: XCTestCase {
       didSelectCloseWasCalled = true
     }
 
-    func viewControllerDidSelectClose(_ viewController: UIViewController, completion: (() -> Void)? ) {
+    func viewControllerDidSelectClose(_ viewController: UIViewController, completion: CKCompletion? ) {
       didSelectCloseWasCalled = true
     }
 

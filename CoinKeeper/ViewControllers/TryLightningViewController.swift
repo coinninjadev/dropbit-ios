@@ -18,8 +18,8 @@ class TryLightningViewController: BaseViewController, StoryboardInitializable {
   @IBOutlet var yesButton: UIButton!
   @IBOutlet var noButton: UIButton!
 
-  static func newInstance(yesCompletionHandler completion: @escaping () -> Void,
-                          noCompletionHandler noCompletion: @escaping () -> Void) -> TryLightningViewController {
+  static func newInstance(yesCompletionHandler completion: @escaping CKCompletion,
+                          noCompletionHandler noCompletion: @escaping CKCompletion) -> TryLightningViewController {
     let tryLightningViewController = TryLightningViewController.makeFromStoryboard()
     tryLightningViewController.yesCompletion = completion
     tryLightningViewController.noCompletion = noCompletion
@@ -28,8 +28,8 @@ class TryLightningViewController: BaseViewController, StoryboardInitializable {
     return tryLightningViewController
   }
 
-  private var yesCompletion: (() -> Void)?
-  private var noCompletion: (() -> Void)?
+  private var yesCompletion: CKCompletion?
+  private var noCompletion: CKCompletion?
 
   override func viewDidLoad() {
     super.viewDidLoad()

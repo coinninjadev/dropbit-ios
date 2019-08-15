@@ -12,9 +12,6 @@ import CoreData
 import PromiseKit
 import Moya
 
-typealias CKCompletion = () -> Void
-typealias CKErrorCompletion = (Error?) -> Void
-
 enum WalletSyncType: String {
   case comprehensive
   case standard

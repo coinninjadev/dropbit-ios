@@ -300,9 +300,9 @@ extension AppCoordinator: ViewControllerSendingDelegate {
 
     let isLightningConvertible = true //TODO
 
-    let displayLightningPaymentViewController: () -> Void = {}
+    let displayLightningPaymentViewController: CKCompletion = {}
 
-    let displayConfirmPaymentViewController: () -> Void = { [weak self] in
+    let displayConfirmPaymentViewController: CKCompletion = { [weak self] in
       guard let weakSelf = self else { return }
 
       let confirmPayVC = ConfirmPaymentViewController.newInstance(type: .payment,
@@ -405,9 +405,9 @@ extension AppCoordinator: ViewControllerSendingDelegate {
 
         let isLightningConvertible = false //TODO
 
-        let displayLightningPaymentViewController: () -> Void = {}
+        let displayLightningPaymentViewController: CKCompletion = {}
 
-        let displayConfirmPaymentViewController: () -> Void = {
+        let displayConfirmPaymentViewController: CKCompletion = {
           let viewModel = ConfirmPaymentInviteViewModel(contact: contact,
                                                         walletTransactionType: walletTransactionType,
                                                         btcAmount: btcAmount,
@@ -453,7 +453,7 @@ extension AppCoordinator: ViewControllerSendingDelegate {
     }
   }
 
-  private func showModalForInviteExplanation(with viewController: UIViewController, phoneNumber: String, completion: @escaping () -> Void) {
+  private func showModalForInviteExplanation(with viewController: UIViewController, phoneNumber: String, completion: @escaping CKCompletion) {
     let title = """
     \n We will send a DropBit to \n\(phoneNumber).
     Once DropBit is downloaded you will be notified and it will be executed. \n

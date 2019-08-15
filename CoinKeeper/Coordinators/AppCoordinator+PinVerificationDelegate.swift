@@ -24,7 +24,7 @@ extension AppCoordinator: PinVerificationDelegate {
       }.cauterize()
   }
 
-  private func postVerificationAction(forFlow flow: SetupFlow?) -> (() -> Void) {
+  private func postVerificationAction(forFlow flow: SetupFlow?) -> CKCompletion {
     guard let flow = flow else { return { } }
     switch flow {
     case .newWallet, .claimInvite:

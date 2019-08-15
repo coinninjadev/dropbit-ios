@@ -23,7 +23,7 @@ protocol ContactsViewControllerDelegate: ViewControllerDismissable, URLOpener {
   /// The delegate should show a hud and disable interactions, check the API for any changes in the verification
   /// status of all cached numbers, and persist the changes such that the `frc` is updated automatically.
   func viewControllerDidRequestRefreshVerificationStatuses(_ viewController: UIViewController,
-                                                           completion: @escaping ((Error?) -> Void))
+                                                           completion: @escaping CKErrorCompletion)
 
   /// The delegate should evaluate whether the phone number is a valid recipient and if valid,
   /// call update() on the `validSelectionDelegate`.

@@ -233,7 +233,7 @@ class AppCoordinator: CoordinatorType {
     }
   }
 
-  func registerWallet(completion: @escaping () -> Void) {
+  func registerWallet(completion: @escaping CKCompletion) {
     let bgContext = persistenceManager.createBackgroundContext()
     bgContext.perform {
       self.registerAndPersistWallet(in: bgContext)

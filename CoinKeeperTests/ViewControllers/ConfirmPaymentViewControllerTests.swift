@@ -89,7 +89,7 @@ class ConfirmPaymentViewControllerTests: XCTestCase {
       closeButtonTapped = true
     }
 
-    func viewControllerDidSelectClose(_ viewController: UIViewController, completion: (() -> Void)? ) {
+    func viewControllerDidSelectClose(_ viewController: UIViewController, completion: CKCompletion? ) {
       closeButtonTapped = true
     }
 

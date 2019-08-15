@@ -17,7 +17,7 @@ extension NSManagedObjectContext {
     )
   }
 
-  private func _performAndWaitHelper<T>(fn: (() -> Void) -> Void,
+  private func _performAndWaitHelper<T>(fn: (CKCompletion) -> Void,
                                         execute work: () throws -> T,
                                         rescue: ((Error) throws -> (T))) rethrows -> T {
     var result: T?

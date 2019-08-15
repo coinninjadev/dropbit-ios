@@ -47,7 +47,7 @@ extension AppCoordinator: SettingsViewControllerDelegate {
     self.persistenceManager.brokers.preferences.dustProtectionIsEnabled = didEnable
   }
 
-  func viewController(_ viewController: UIViewController, didEnableYearlyHighNotification didEnable: Bool, completion: @escaping () -> Void) {
+  func viewController(_ viewController: UIViewController, didEnableYearlyHighNotification didEnable: Bool, completion: @escaping CKCompletion) {
     permissionManager.requestPermission(for: .notification) { (status: PermissionStatus) in
       switch status {
       case .authorized, .notDetermined:

@@ -12,7 +12,7 @@ protocol ViewControllerDismissable: AnyObject {
 
   /// The delegate should dismiss the viewController
   func viewControllerDidSelectClose(_ viewController: UIViewController)
-  func viewControllerDidSelectClose(_ viewController: UIViewController, completion: (() -> Void)?)
+  func viewControllerDidSelectClose(_ viewController: UIViewController, completion: CKCompletion?)
 
 }
 
@@ -22,7 +22,7 @@ extension AppCoordinator: ViewControllerDismissable {
     viewControllerDidSelectClose(viewController, completion: nil)
   }
 
-  func viewControllerDidSelectClose(_ viewController: UIViewController, completion: (() -> Void)? = nil) {
+  func viewControllerDidSelectClose(_ viewController: UIViewController, completion: CKCompletion? = nil) {
     DispatchQueue.main.async {
       viewController.dismiss(animated: true, completion: completion)
     }
