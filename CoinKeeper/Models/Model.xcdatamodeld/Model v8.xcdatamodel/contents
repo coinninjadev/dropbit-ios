@@ -236,8 +236,6 @@
         <attribute name="isHidden" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="sortDate" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <relationship name="ledgerEntry" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="CKMLNLedgerEntry" inverseName="walletEntry" inverseEntity="CKMLNLedgerEntry" syncable="YES"/>
-        <relationship name="relationship" optional="YES" maxCount="1" deletionRule="Nullify" syncable="YES"/>
-        <relationship name="relationship1" optional="YES" maxCount="1" deletionRule="Nullify" syncable="YES"/>
         <relationship name="wallet" maxCount="1" deletionRule="Nullify" destinationEntity="CKMWallet" inverseName="walletEntries" inverseEntity="CKMWallet" syncable="YES"/>
     </entity>
     <elements>
@@ -247,6 +245,7 @@
         <element name="CKMCounterpartyAddress" positionX="-1935" positionY="351" width="128" height="73"/>
         <element name="CKMDerivativePath" positionX="-972" positionY="315" width="128" height="163"/>
         <element name="CKMInvitation" positionX="-1674" positionY="-36" width="144" height="255"/>
+        <element name="CKMLNBalance" positionX="-1369.73046875" positionY="-52.7265625" width="128" height="103"/>
         <element name="CKMLNInvoice" positionX="-2215.80078125" positionY="195.44140625" width="128" height="195"/>
         <element name="CKMLNLedgerEntry" positionX="-2173.94140625" positionY="494.7109375" width="128" height="285"/>
         <element name="CKMPhoneNumber" positionX="-2009" positionY="99" width="128" height="150"/>
@@ -259,7 +258,6 @@
         <element name="CKMVin" positionX="-1845" positionY="657" width="128" height="133"/>
         <element name="CKMVout" positionX="-1503" positionY="639" width="128" height="165"/>
         <element name="CKMWallet" positionX="-1368" positionY="99" width="128" height="193"/>
-        <element name="CKMWalletEntry" positionX="-1818.1640625" positionY="-44.91796875" width="128" height="133"/>
-        <element name="CKMLNBalance" positionX="-1369.73046875" positionY="-52.7265625" width="128" height="103"/>
+        <element name="CKMWalletEntry" positionX="-1818.1640625" positionY="-44.91796875" width="128" height="103"/>
     </elements>
 </model>
