@@ -330,27 +330,26 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate, CurrencyFormatta
     ) {
     let successFailViewController = SuccessFailViewController.newInstance(viewModel: PaymentSuccessFailViewModel(mode: .pending),
                                                                           delegate: self)
-    successFailViewController.action = { [weak self] in
-      guard let strongSelf = self else { return }
+    successFailViewController.action = { [unowned self] in
 
-      strongSelf.networkManager.updateCachedMetadata()
-        .then { _ in strongSelf.networkManager.broadcastTx(with: transactionData) }
+      self.networkManager.updateCachedMetadata()
+        .then { _ in self.networkManager.broadcastTx(with: transactionData) }
         .then { txid -> Promise<String> in
-          guard let wmgr = strongSelf.walletManager else {
+          guard let wmgr = self.walletManager else {
             return Promise(error: CKPersistenceError.missingValue(key: "wallet"))
           }
           let dataCopyWithTxid = outgoingTransactionData.copy(withTxid: txid)
-          return strongSelf.networkManager.postSharedPayloadIfAppropriate(withOutgoingTxData: dataCopyWithTxid,
+          return self.networkManager.postSharedPayloadIfAppropriate(withOutgoingTxData: dataCopyWithTxid,
                                                                           walletManager: wmgr)
         }
         .then { (txid: String) -> Promise<Void> in
-          let context = strongSelf.persistenceManager.createBackgroundContext()
+          let context = self.persistenceManager.createBackgroundContext()
 
           context.performAndWait {
             let vouts = transactionData.unspentTransactionOutputs.map { CKMVout.find(from: $0, in: context) }.compactMap { $0 }
             let voutDebugDesc = vouts.map { $0.debugDescription }.joined(separator: "\n")
             log.debug("Broadcast succeeded, vouts: \n\(voutDebugDesc)")
-            let persistedTransaction = strongSelf.persistenceManager.brokers.transaction.persistTemporaryTransaction(
+            let persistedTransaction = self.persistenceManager.brokers.transaction.persistTemporaryTransaction(
               from: transactionData,
               with: outgoingTransactionData,
               txid: txid,
@@ -358,7 +357,7 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate, CurrencyFormatta
               in: context
             )
 
-            if let walletCopy = strongSelf.walletManager?.createWalletCopy() {
+            if let walletCopy = self.walletManager?.createWalletCopy() {
               let transactionBuilder = CNBTransactionBuilder()
               let metadata = transactionBuilder.generateTxMetadata(with: transactionData, wallet: walletCopy)
               do {
@@ -381,37 +380,36 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate, CurrencyFormatta
         .done(on: .main) {
           successFailViewController.setMode(.success)
 
-          strongSelf.showShareTransactionIfAppropriate(dropBitType: .none)
+          self.showShareTransactionIfAppropriate(dropBitType: .none)
 
-          self?.analyticsManager.track(property: MixpanelProperty(key: .hasSent, value: true))
+          self.analyticsManager.track(property: MixpanelProperty(key: .hasSent, value: true))
           if case .twitter = outgoingTransactionData.dropBitType {
-            self?.analyticsManager.track(event: .twitterSendComplete, with: nil)
+            self.analyticsManager.track(event: .twitterSendComplete, with: nil)
           }
-          self?.trackIfUserHasABalance()
+          self.trackIfUserHasABalance()
 
-          strongSelf.didBroadcastTransaction()
+          self.didBroadcastTransaction()
         }.catch { error in
           let nsError = error as NSError
           let broadcastError = TransactionBroadcastError(errorCode: nsError.code)
-          if let context = self?.persistenceManager.createBackgroundContext() {
-            context.performAndWait {
-              let vouts = transactionData.unspentTransactionOutputs.map { CKMVout.find(from: $0, in: context) }.compactMap { $0 }
-              let voutDebugDesc = vouts.map { $0.debugDescription }.joined(separator: "\n")
-              let encodedTx = nsError.userInfo["encoded_tx"] as? String ?? ""
-              let txid = nsError.userInfo["txid"] as? String ?? ""
-              let analyticsError = "error code: \(broadcastError.rawValue) :: txid: \(txid) :: encoded_tx: \(encodedTx) :: vouts: \(voutDebugDesc)"
-              log.error("broadcast failed, \(analyticsError)")
-              let eventValue = AnalyticsEventValue(key: .broadcastFailed, value: analyticsError)
-              strongSelf.analyticsManager.track(event: .paymentSentFailed, with: eventValue)
-            }
+          let context = self.persistenceManager.createBackgroundContext()
+          context.performAndWait {
+            let vouts = transactionData.unspentTransactionOutputs.map { CKMVout.find(from: $0, in: context) }.compactMap { $0 }
+            let voutDebugDesc = vouts.map { $0.debugDescription }.joined(separator: "\n")
+            let encodedTx = nsError.userInfo["encoded_tx"] as? String ?? ""
+            let txid = nsError.userInfo["txid"] as? String ?? ""
+            let analyticsError = "error code: \(broadcastError.rawValue) :: txid: \(txid) :: encoded_tx: \(encodedTx) :: vouts: \(voutDebugDesc)"
+            log.error("broadcast failed, \(analyticsError)")
+            let eventValue = AnalyticsEventValue(key: .broadcastFailed, value: analyticsError)
+            self.analyticsManager.track(event: .paymentSentFailed, with: eventValue)
           }
 
           if let networkError = error as? CKNetworkError,
             case let .reachabilityFailed(moyaError) = networkError {
-            self?.handleReachabilityError(moyaError)
+            self.handleReachabilityError(moyaError)
 
           } else {
-            strongSelf.handleFailure(error: error, action: {
+            self.handleFailure(error: error, action: {
               successFailViewController.setMode(.failure)
             })
           }
