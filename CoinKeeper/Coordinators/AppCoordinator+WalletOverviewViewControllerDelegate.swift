@@ -12,6 +12,12 @@ import MMDrawerController
 
 extension AppCoordinator: WalletOverviewViewControllerDelegate {
 
+  func viewControllerDidSelectTransfer(withType type: WalletTransferViewController.TransferType) {
+    let viewModel = WalletTransferViewModel(transferType: type, amount: .custom)
+    let transferViewController = WalletTransferViewController.newInstance(delegate: self, viewModel: viewModel)
+    navigationController.present(transferViewController, animated: true, completion: nil)
+  }
+
   func viewControllerDidRequestPrimaryCurrencySwap() {
     currencyController.selectedCurrency.toggle()
   }
