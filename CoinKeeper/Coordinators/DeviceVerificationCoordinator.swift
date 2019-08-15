@@ -111,6 +111,7 @@ class DeviceVerificationCoordinator: ChildCoordinatorType {
           return self.checkAndPersistVerificationStatus(from: response, crDelegate: delegate, in: context)
         }
         .then(in: context) { _ in delegate.twitterAccessManager.getCurrentTwitterUser(in: context) }
+        .then(in: context) { _ in delegate.networkManager.getOrCreateLightningAccount() }
         .get(in: context) { _ in
           do {
             try context.save()
@@ -339,6 +340,7 @@ extension DeviceVerificationCoordinator: DeviceVerificationViewControllerDelegat
         }
         .then { crDelegate.persistenceManager.keychainManager.store(anyValue: phoneNumber.countryCode, key: .countryCode) }
         .then { crDelegate.persistenceManager.keychainManager.store(anyValue: phoneNumber.nationalNumber, key: .phoneNumber) }
+        .then { crDelegate.networkManager.getOrCreateLightningAccount() }
         .done(on: .main) { _ in
 
           // Tell delegate to continue app flow
