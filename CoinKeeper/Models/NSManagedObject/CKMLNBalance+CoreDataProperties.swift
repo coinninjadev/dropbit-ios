@@ -13,6 +13,6 @@ extension CKMLNBalance {
   @NSManaged public var balance: Int
   @NSManaged public var pendingIn: Int
   @NSManaged public var pendingOut: Int
-  @NSManaged public var wallet: CKMWallet?
+  @NSManaged public var wallet: CKMWallet
 
 }

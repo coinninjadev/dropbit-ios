@@ -45,7 +45,7 @@ protocol ActivityBrokerType: AnyObject {
 
 protocol LightningBrokerType: AnyObject {
 
-  func getLightningBalance(in context: NSManagedObjectContext) -> CKMLNBalance
+  func getBalance(in context: NSManagedObjectContext) -> CKMLNBalance
 }
 
 protocol CheckInBrokerType: AnyObject {

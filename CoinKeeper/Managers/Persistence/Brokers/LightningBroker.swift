@@ -11,8 +11,8 @@ import CoreData
 
 class LightningBroker: CKPersistenceBroker, LightningBrokerType {
 
-  func getLightningBalance(in context: NSManagedObjectContext) -> CKMLNBalance {
-      return CKMLNBalance.findOrCreate(in: context)
+  func getBalance(in context: NSManagedObjectContext) -> CKMLNBalance {
+    return CKMLNBalance.findOrCreate(in: context)
   }
 
 }
