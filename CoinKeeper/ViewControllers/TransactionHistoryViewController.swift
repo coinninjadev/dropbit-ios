@@ -14,7 +14,7 @@ import PromiseKit
 import DZNEmptyDataSet
 
 protocol TransactionHistoryViewControllerDelegate: DeviceCountryCodeProvider &
-  BadgeUpdateDelegate & URLOpener {
+  BadgeUpdateDelegate & URLOpener & LightningTransactionHistoryEmptyViewDelegate {
   func viewControllerDidRequestHistoryUpdate(_ viewController: TransactionHistoryViewController)
   func viewControllerDidDisplayTransactions(_ viewController: TransactionHistoryViewController)
   func viewControllerAttemptedToRefreshTransactions(_ viewController: UIViewController)
@@ -153,6 +153,7 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
 
     transactionHistoryNoBalanceView.delegate = self
     transactionHistoryWithBalanceView.delegate = self
+    lightningTransactionHistoryEmptyBalanceView.delegate = coordinationDelegate
     emptyStateBackgroundView.isHidden = true
 
     view.backgroundColor = .clear
@@ -254,6 +255,7 @@ extension TransactionHistoryViewController: NSFetchedResultsControllerDelegate {
   func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
     transactionHistoryWithBalanceView.isHidden = true
     transactionHistoryNoBalanceView.isHidden = true
+    lightningTransactionHistoryEmptyBalanceView.isHidden = true
   }
 }
 
@@ -322,11 +324,7 @@ extension TransactionHistoryViewController: DZNEmptyDataSetDelegate, DZNEmptyDat
   }
 
   func verticalOffset(forEmptyDataSet scrollView: UIScrollView!) -> CGFloat {
-    if shouldShowLightningEmptyView {
-      return -70
-    } else {
-      return 0
-    }
+    return 0
   }
 
   private var shouldShowLightningEmptyView: Bool {

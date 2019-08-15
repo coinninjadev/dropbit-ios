@@ -10,10 +10,7 @@ import Foundation
 import UIKit
 
 protocol LightningRefillViewControllerDelegate: class {
-  func fiveButtonWasTouched()
-  func twentyButtonWasTouched()
-  func hundredButtonWasTouched()
-  func customAmountButtonWasTouched()
+  func amountButtonWasTouched(amount: TransferAmount)
   func dontAskMeAgainButtonWasTouched()
 }
 
@@ -24,9 +21,9 @@ class LightningRefillViewController: BaseViewController, StoryboardInitializable
   @IBOutlet var titleLabel: UILabel!
   @IBOutlet var detailLabel: UILabel!
   @IBOutlet var minMaxLabel: UILabel!
-  @IBOutlet var fiveButton: LightningActionButton!
-  @IBOutlet var twentyButton: LightningActionButton!
-  @IBOutlet var hundredButton: LightningActionButton!
+  @IBOutlet var lowAmountButton: LightningActionButton!
+  @IBOutlet var mediumAmountButton: LightningActionButton!
+  @IBOutlet var maxAmountButton: LightningActionButton!
   @IBOutlet var customAmountButton: LightningActionButton!
   @IBOutlet var remindMeLaterButton: UIButton!
   @IBOutlet var dontAskMeAgainButton: UIButton!
@@ -61,24 +58,24 @@ class LightningRefillViewController: BaseViewController, StoryboardInitializable
     dontAskMeAgainButton.setTitleColor(.white, for: .normal)
   }
 
-  @IBAction func fiveButtonWasTouched() {
+  @IBAction func lowAmountButtonWasTouched() {
     dismiss(animated: true, completion: nil)
-    delegate?.fiveButtonWasTouched()
+    delegate?.amountButtonWasTouched(amount: .low)
   }
 
-  @IBAction func twentyButtonWasTouched() {
+  @IBAction func mediumAmountButtonWasTouched() {
     dismiss(animated: true, completion: nil)
-    delegate?.twentyButtonWasTouched()
+    delegate?.amountButtonWasTouched(amount: .medium)
   }
 
-  @IBAction func hundredButtonWasTouched() {
+  @IBAction func maxAmountButtonWasTouched() {
     dismiss(animated: true, completion: nil)
-    delegate?.hundredButtonWasTouched()
+    delegate?.amountButtonWasTouched(amount: .max)
   }
 
   @IBAction func customAmountButtonWasTouched() {
     dismiss(animated: true, completion: nil)
-    delegate?.customAmountButtonWasTouched()
+    delegate?.amountButtonWasTouched(amount: .custom)
   }
 
   @IBAction func remindMeLaterButtonWasTouched() {

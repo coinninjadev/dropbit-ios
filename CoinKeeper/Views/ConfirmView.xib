@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ConfirmView" customModule="DropBit" customModuleProvider="target">
+            <connections>
+                <outlet property="confirmButton" destination="9As-JS-XEZ" id="7eb-eE-PC3"/>
+                <outlet property="tapAndHoldLabel" destination="Q48-pI-elV" id="a2y-qx-d9p"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="FyB-bb-Huf">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="111"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9As-JS-XEZ" customClass="ConfirmPaymentButton" customModule="DropBit" customModuleProvider="target">
+                    <rect key="frame" x="173.5" y="44" width="67" height="67"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="67" id="Ces-k7-cmP"/>
+                        <constraint firstAttribute="width" constant="67" id="beq-zC-lzb"/>
+                    </constraints>
+                    <connections>
+                        <action selector="confirmButtonWasHeld" destination="-1" eventType="touchDown" id="iYr-oP-W4c"/>
+                        <action selector="confirmButtonWasReleased" destination="-1" eventType="touchUpOutside" id="0er-I2-az5"/>
+                        <action selector="confirmButtonWasReleased" destination="-1" eventType="touchUpInside" id="asB-rZ-LLJ"/>
+                    </connections>
+                </button>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="TAP AND HOLD TO SEND" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Q48-pI-elV">
+                    <rect key="frame" x="0.0" y="-2" width="414" height="21"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstItem="Q48-pI-elV" firstAttribute="leading" secondItem="FyB-bb-Huf" secondAttribute="leading" id="1yY-Fu-qc8"/>
+                <constraint firstItem="9As-JS-XEZ" firstAttribute="bottom" secondItem="FyB-bb-Huf" secondAttribute="bottom" id="Frm-KL-LXi"/>
+                <constraint firstAttribute="trailing" secondItem="Q48-pI-elV" secondAttribute="trailing" id="LLM-xI-KU0"/>
+                <constraint firstItem="9As-JS-XEZ" firstAttribute="top" secondItem="Q48-pI-elV" secondAttribute="bottom" constant="25" id="QjS-QK-unY"/>
+                <constraint firstItem="9As-JS-XEZ" firstAttribute="centerX" secondItem="FyB-bb-Huf" secondAttribute="centerX" id="ZZY-eA-sHE"/>
+                <constraint firstItem="Q48-pI-elV" firstAttribute="centerX" secondItem="FyB-bb-Huf" secondAttribute="centerX" id="nKK-5f-bBW"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <viewLayoutGuide key="safeArea" id="chC-OE-Pkg"/>
+            <point key="canvasLocation" x="-149.27536231884059" y="-272.20982142857139"/>
+        </view>
+    </objects>
+</document>

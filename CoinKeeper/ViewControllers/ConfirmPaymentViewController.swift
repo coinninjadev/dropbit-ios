@@ -53,14 +53,8 @@ class ConfirmPaymentViewController: PresentableViewController, StoryboardInitial
   private var viewModel: BaseConfirmPaymentViewModel!
   private var feeModel: ConfirmTransactionFeeModel!
 
-  lazy private var confirmLongPressGestureRecognizer: UILongPressGestureRecognizer =
-    UILongPressGestureRecognizer(target: self, action: #selector(confirmButtonDidConfirm))
-
-  private var feedbackGenerator: UIImpactFeedbackGenerator = UIImpactFeedbackGenerator(style: .medium)
-
   @IBOutlet var walletTransactionTypeButton: CompactActionButton!
   @IBOutlet var closeButton: UIButton!
-  @IBOutlet var confirmButton: ConfirmPaymentButton!
   @IBOutlet var primaryCurrencyLabel: UILabel!
   @IBOutlet var secondaryCurrencyLabel: UILabel!
   @IBOutlet var networkFeeLabel: UILabel!
@@ -71,9 +65,9 @@ class ConfirmPaymentViewController: PresentableViewController, StoryboardInitial
   @IBOutlet var primaryAddressLabel: UILabel!
   @IBOutlet var memoContainerView: ConfirmPaymentMemoView!
   @IBOutlet var secondaryAddressLabel: UILabel!
-  @IBOutlet var tapAndHoldLabel: UILabel!
   @IBOutlet var avatarBackgroundView: UIView!
   @IBOutlet var avatarImageView: UIImageView!
+  @IBOutlet var confirmView: ConfirmView!
 
   var coordinationDelegate: ConfirmPaymentViewControllerDelegate? {
     return generalCoordinationDelegate as? ConfirmPaymentViewControllerDelegate
@@ -104,23 +98,21 @@ class ConfirmPaymentViewController: PresentableViewController, StoryboardInitial
     coordinationDelegate?.viewControllerDidSelectClose(self)
   }
 
-  @IBAction func confirmButtonWasHeld() {
-    feedbackGenerator.impactOccurred()
-    confirmButton.animate()
-  }
-
-  @IBAction func confirmButtonWasReleased() {
-    confirmButton.reset()
-  }
 
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    feedbackGenerator.prepare()
-    confirmLongPressGestureRecognizer.allowableMovement = 1000
-    confirmLongPressGestureRecognizer.minimumPressDuration = confirmButton.secondsToConfirm
-    confirmButton.addGestureRecognizer(confirmLongPressGestureRecognizer)
     setupViews()
+    confirmView.delegate = self
+
+    if let viewModel = viewModel {
+      switch viewModel.walletTransactionType {
+      case .onChain:
+        confirmView.style = .onChain
+      case .lightning:
+        confirmView.style = .lightning
+      }
+    }
 
     coordinationDelegate?.confirmPaymentViewControllerDidLoad(self)
 
@@ -137,8 +129,6 @@ class ConfirmPaymentViewController: PresentableViewController, StoryboardInitial
         self.confirmInvite(with: inviteVM, feeModel: feeModel)
       }
     }
-
-    confirmButton.reset()
   }
 
   private func routeConfirmedPayment(for viewModel: BaseConfirmPaymentViewModel, feeModel: ConfirmTransactionFeeModel) {
@@ -226,9 +216,6 @@ extension ConfirmPaymentViewController {
     secondaryAddressLabel.textAlignment = .center
     secondaryAddressLabel.textColor = .darkGrayText
     secondaryAddressLabel.font = .regular(13)
-
-    tapAndHoldLabel.textColor = .darkGrayText
-    tapAndHoldLabel.font = .medium(13)
 
     if let viewModel = viewModel {
       switch viewModel.walletTransactionType {
@@ -372,4 +359,16 @@ extension ConfirmPaymentViewController {
     }
   }
 
+}
+
+extension ConfirmPaymentViewController: ConfirmViewDelegate {
+
+  func viewDidConfirm() {
+    switch transactionType {
+    case .invite:
+      confirmInvite(with: viewModel, feeModel: self.feeModel)
+    case .payment:
+      confirmPayment(with: viewModel, feeModel: self.feeModel)
+    }
+  }
 }

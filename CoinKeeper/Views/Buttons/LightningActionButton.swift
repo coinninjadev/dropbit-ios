@@ -13,9 +13,7 @@ class LightningActionButton: PrimaryActionButton {
 
   override func awakeFromNib() {
     super.awakeFromNib()
-    backgroundColor = .lightningBlue
-    setTitleColor(.white, for: .normal)
+    style = .lightning(true)
     titleLabel?.font = .medium(18)
-    applyCornerRadius(5)
   }
 }
