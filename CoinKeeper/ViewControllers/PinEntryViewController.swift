@@ -12,7 +12,7 @@ import Result
 protocol PinEntryViewControllerDelegate: ViewControllerDismissable {
   func checkMatch(for digits: String) -> Bool
   func viewControllerDidTryBiometrics(_ pinEntryViewController: PinEntryViewController)
-  func viewControllerDidSuccessfullyAuthenticate(_ pinEntryViewController: PinEntryViewController, completion: CompletionHandler?)
+  func viewControllerDidSuccessfullyAuthenticate(_ pinEntryViewController: PinEntryViewController, completion: CKCompletion?)
   func pinExists() -> Bool
   var biometricType: BiometricType { get }
 }
@@ -21,12 +21,12 @@ typealias PinEntryErrorHandler = (PinValidationError) -> Void
 
 final class PinEntryViewController: BaseViewController, StoryboardInitializable {
 
-  private var successHandler: CompletionHandler?
+  private var successHandler: CKCompletion?
   private var failureHandler: PinEntryErrorHandler?
 
   static func newInstance(delegate: PinEntryViewControllerDelegate,
                           viewModel: PinEntryViewModel,
-                          success: CompletionHandler?,
+                          success: CKCompletion?,
                           failure: PinEntryErrorHandler?) -> PinEntryViewController {
     let vc = PinEntryViewController.makeFromStoryboard()
     vc.generalCoordinationDelegate = delegate

@@ -29,7 +29,7 @@ class WalletSyncOperationFactory {
   }
 
   func createSyncOperation(ofType walletSyncType: WalletSyncType,
-                           completion: ErrorCompletionHandler?,
+                           completion: CKErrorCompletion?,
                            fetchResult: ((UIBackgroundFetchResult) -> Void)?,
                            in context: NSManagedObjectContext) -> Promise<AsynchronousOperation> {
     guard let queueDelegate = self.delegate else {

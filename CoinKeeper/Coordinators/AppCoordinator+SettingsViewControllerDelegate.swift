@@ -81,7 +81,7 @@ extension AppCoordinator: SettingsViewControllerDelegate {
     openURL(url, completionHandler: nil)
   }
 
-  func viewControllerDidRequestDeleteWallet(_ viewController: UIViewController, completion: @escaping CompletionHandler) {
+  func viewControllerDidRequestDeleteWallet(_ viewController: UIViewController, completion: @escaping CKCompletion) {
     let description = """
         Are you sure you want to delete this wallet?
         Make sure you have your recovery words before you delete.\n
@@ -141,7 +141,7 @@ extension AppCoordinator: SettingsViewControllerDelegate {
     alertManager.showActivityHUD(withStatus: "Synchronizing...")
     let successMessage = "Blockchain successfully re-synchronized. Please check your transaction history to verify."
 
-    let completion: ErrorCompletionHandler = { error in
+    let completion: CKErrorCompletion = { error in
       if let err = error {
         self.alertManager.hideActivityHUD(withDelay: 1.0) {
           self.alertManager.showError(message: "Something went wrong. Please try again.\n\nError: \(err.localizedDescription)", forDuration: 3.0)

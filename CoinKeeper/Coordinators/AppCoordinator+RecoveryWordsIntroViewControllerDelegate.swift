@@ -14,7 +14,7 @@ extension AppCoordinator: RecoveryWordsIntroViewControllerDelegate {
 
     let viewModel = RecoveryWordsPinEntryViewModel()
 
-    let successHandler: CompletionHandler = { [unowned self] in
+    let successHandler: CKCompletion = { [unowned self] in
       self.analyticsManager.track(event: .viewWords, with: nil)
       let backupWordsVC = BackupRecoveryWordsViewController.newInstance(withDelegate: self,
                                                                         recoveryWords: words,

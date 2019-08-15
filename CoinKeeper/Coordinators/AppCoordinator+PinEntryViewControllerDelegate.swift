@@ -21,7 +21,7 @@ extension AppCoordinator: PinEntryViewControllerDelegate {
   }
 
   func viewControllerDidSuccessfullyAuthenticate(_ pinEntryViewController: PinEntryViewController,
-                                                 completion: CompletionHandler?) {
+                                                 completion: CKCompletion?) {
     if pinEntryViewController.viewModel.shouldDismissOnSuccess {
       pinEntryViewController.dismiss(animated: true, completion: completion)
     } else {

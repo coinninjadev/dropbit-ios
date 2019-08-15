@@ -33,7 +33,7 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate, CurrencyFormatta
   func viewControllerDidConfirmLightningPayment(_ viewController: UIViewController, inputs: LightningPaymentInputs) {
     // TODO: add logic to check amount limits
     let viewModel = PaymentVerificationPinEntryViewModel(amountDisablesBiometrics: false)
-    let successHandler: CompletionHandler = { [unowned self] in
+    let successHandler: CKCompletion = { [unowned self] in
       self.handleSuccessfulLightningPaymentVerification(with: inputs)
     }
 
@@ -72,7 +72,7 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate, CurrencyFormatta
 
     let pinEntryViewModel = PaymentVerificationPinEntryViewModel(amountDisablesBiometrics: shouldDisableBiometrics)
 
-    let successHandler: CompletionHandler = { [unowned self] in
+    let successHandler: CKCompletion = { [unowned self] in
       self.analyticsManager.track(event: .preBroadcast, with: nil)
       self.handleSuccessfulOnChainPaymentVerification(with: transactionData, outgoingTransactionData: outgoingTxDataWithAmount)
     }
@@ -95,7 +95,7 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate, CurrencyFormatta
     biometricsAuthenticationManager.resetPolicy()
     let pinEntryViewModel = InviteVerificationPinEntryViewModel()
 
-    let successHandler: CompletionHandler = { [unowned self] in
+    let successHandler: CKCompletion = { [unowned self] in
       guard outgoingInvitationDTO.fee > 0 else {
         log.error("DropBit invitation fee is zero")
         self.handleFailure(error: TransactionDataError.insufficientFee)

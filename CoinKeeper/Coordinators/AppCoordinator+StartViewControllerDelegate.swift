@@ -76,7 +76,7 @@ extension AppCoordinator: StartViewControllerDelegate {
   func createPinEntryViewControllerForAppOpen(whenAuthenticated: @escaping () -> Void) -> PinEntryViewController {
     let viewModel = OpenAppPinEntryViewModel()
 
-    let successHandler: CompletionHandler = { [weak self] in
+    let successHandler: CKCompletion = { [weak self] in
       guard let self = self else { return }
       self.launchStateManager.userWasAuthenticated()
       self.serialQueueManager.enqueueWalletSyncIfAppropriate(type: .standard, policy: .always,
