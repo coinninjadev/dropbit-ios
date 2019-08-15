@@ -86,8 +86,7 @@ extension AppCoordinator: StartViewControllerDelegate {
 
     return PinEntryViewController.newInstance(delegate: self,
                                               viewModel: viewModel,
-                                              success: successHandler,
-                                              failure: nil)
+                                              success: successHandler)
   }
 
 }

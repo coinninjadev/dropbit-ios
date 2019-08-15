@@ -594,7 +594,6 @@
 		B5192FA2216E7BCA00DCC39B /* WalletAddressError.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5192FA1216E7BCA00DCC39B /* WalletAddressError.swift */; };
 		B5192FA4216E7BEA00DCC39B /* BlockchainInfoProviderError.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5192FA3216E7BEA00DCC39B /* BlockchainInfoProviderError.swift */; };
 		B5192FA6216E7BFF00DCC39B /* UserProviderError.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5192FA5216E7BFF00DCC39B /* UserProviderError.swift */; };
-		B5192FA8216E7C2F00DCC39B /* PinValidationError.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5192FA7216E7C2F00DCC39B /* PinValidationError.swift */; };
 		B5192FAC216E893100DCC39B /* DeviceResponseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5192FAB216E893100DCC39B /* DeviceResponseTests.swift */; };
 		B5192FAE216E8A8600DCC39B /* DeviceEndpointResponseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5192FAD216E8A8600DCC39B /* DeviceEndpointResponseTests.swift */; };
 		B5192FB0216E8D4A00DCC39B /* PriceTransactionResponseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5192FAF216E8D4A00DCC39B /* PriceTransactionResponseTests.swift */; };
@@ -649,13 +648,13 @@
 		B52CC6AB221EC63F00B00C9E /* ContactCacheDataWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52CC6AA221EC63F00B00C9E /* ContactCacheDataWorker.swift */; };
 		B52CC6AD221ED41700B00C9E /* NSManagedObjectContext+PerformRethrow.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52CC6AC221ED41700B00C9E /* NSManagedObjectContext+PerformRethrow.swift */; };
 		B52D4524208E5ECA00A56A5C /* ExchangeRateUpdateable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52D4523208E5ECA00A56A5C /* ExchangeRateUpdateable.swift */; };
-		B52E1DC32304531600AA652D /* PinEntryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52E1DC22304531600AA652D /* PinEntryViewModel.swift */; };
 		B52E1DBC2302F50800AA652D /* CKMLNLedgerEntry+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52E1DB62302F50700AA652D /* CKMLNLedgerEntry+CoreDataClass.swift */; };
 		B52E1DBD2302F50800AA652D /* CKMLNInvoice+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52E1DB72302F50700AA652D /* CKMLNInvoice+CoreDataClass.swift */; };
 		B52E1DBE2302F50800AA652D /* CKMLNInvoice+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52E1DB82302F50700AA652D /* CKMLNInvoice+CoreDataProperties.swift */; };
 		B52E1DBF2302F50800AA652D /* CKMWalletEntry+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52E1DB92302F50700AA652D /* CKMWalletEntry+CoreDataClass.swift */; };
 		B52E1DC02302F50800AA652D /* CKMLNLedgerEntry+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52E1DBA2302F50800AA652D /* CKMLNLedgerEntry+CoreDataProperties.swift */; };
 		B52E1DC12302F50800AA652D /* CKMWalletEntry+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52E1DBB2302F50800AA652D /* CKMWalletEntry+CoreDataProperties.swift */; };
+		B52E1DC32304531600AA652D /* PinEntryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52E1DC22304531600AA652D /* PinEntryViewModel.swift */; };
 		B52EF8CC21A4B0870081CB3B /* MerchantPaymentRequestResponseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52EF8CB21A4B0870081CB3B /* MerchantPaymentRequestResponseTests.swift */; };
 		B52F690A22417B0100790E97 /* CKDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52F690922417B0100790E97 /* CKDatabase.swift */; };
 		B52F897822A06DBE00763CC1 /* AppCoordinator+TweetMethodViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52F897722A06DBE00763CC1 /* AppCoordinator+TweetMethodViewControllerDelegate.swift */; };
@@ -1572,7 +1571,6 @@
 		B5192FA1216E7BCA00DCC39B /* WalletAddressError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletAddressError.swift; sourceTree = "<group>"; };
 		B5192FA3216E7BEA00DCC39B /* BlockchainInfoProviderError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockchainInfoProviderError.swift; sourceTree = "<group>"; };
 		B5192FA5216E7BFF00DCC39B /* UserProviderError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProviderError.swift; sourceTree = "<group>"; };
-		B5192FA7216E7C2F00DCC39B /* PinValidationError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinValidationError.swift; sourceTree = "<group>"; };
 		B5192FAB216E893100DCC39B /* DeviceResponseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceResponseTests.swift; sourceTree = "<group>"; };
 		B5192FAD216E8A8600DCC39B /* DeviceEndpointResponseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceEndpointResponseTests.swift; sourceTree = "<group>"; };
 		B5192FAF216E8D4A00DCC39B /* PriceTransactionResponseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PriceTransactionResponseTests.swift; sourceTree = "<group>"; };
@@ -1622,13 +1620,13 @@
 		B52CC6AA221EC63F00B00C9E /* ContactCacheDataWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactCacheDataWorker.swift; sourceTree = "<group>"; };
 		B52CC6AC221ED41700B00C9E /* NSManagedObjectContext+PerformRethrow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSManagedObjectContext+PerformRethrow.swift"; sourceTree = "<group>"; };
 		B52D4523208E5ECA00A56A5C /* ExchangeRateUpdateable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExchangeRateUpdateable.swift; sourceTree = "<group>"; };
-		B52E1DC22304531600AA652D /* PinEntryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinEntryViewModel.swift; sourceTree = "<group>"; };
 		B52E1DB62302F50700AA652D /* CKMLNLedgerEntry+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CKMLNLedgerEntry+CoreDataClass.swift"; sourceTree = "<group>"; };
 		B52E1DB72302F50700AA652D /* CKMLNInvoice+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CKMLNInvoice+CoreDataClass.swift"; sourceTree = "<group>"; };
 		B52E1DB82302F50700AA652D /* CKMLNInvoice+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CKMLNInvoice+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		B52E1DB92302F50700AA652D /* CKMWalletEntry+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CKMWalletEntry+CoreDataClass.swift"; sourceTree = "<group>"; };
 		B52E1DBA2302F50800AA652D /* CKMLNLedgerEntry+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CKMLNLedgerEntry+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		B52E1DBB2302F50800AA652D /* CKMWalletEntry+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CKMWalletEntry+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		B52E1DC22304531600AA652D /* PinEntryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinEntryViewModel.swift; sourceTree = "<group>"; };
 		B52EF8CB21A4B0870081CB3B /* MerchantPaymentRequestResponseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MerchantPaymentRequestResponseTests.swift; sourceTree = "<group>"; };
 		B52F690922417B0100790E97 /* CKDatabase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CKDatabase.swift; sourceTree = "<group>"; };
 		B52F897722A06DBE00763CC1 /* AppCoordinator+TweetMethodViewControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppCoordinator+TweetMethodViewControllerDelegate.swift"; sourceTree = "<group>"; };
@@ -2679,7 +2677,6 @@
 				B5A5C5A22218AF430088C4D1 /* DeviceVerificationErrorMessageFactory.swift */,
 				A25923EB20C981770005B1A0 /* AnalyticsManagerError.swift */,
 				3B72A288210648CF00E94171 /* PendingInvitationError.swift */,
-				B5192FA7216E7C2F00DCC39B /* PinValidationError.swift */,
 				B5192F9F216E7B9D00DCC39B /* ValidatorTypeError.swift */,
 				B5E7EE7A21B02FFB00E058EF /* ValidatorAlertDisplayable.swift */,
 				B5192FA1216E7BCA00DCC39B /* WalletAddressError.swift */,
@@ -4550,7 +4547,6 @@
 				B5B37B27206AFE22001816F6 /* CurrencyCode.swift in Sources */,
 				B5B0DC7D22134AE00010AB2A /* CKCountry.swift in Sources */,
 				B5540C5F21ADD8ED00484238 /* CKRecipientParser.swift in Sources */,
-				B5192FA8216E7C2F00DCC39B /* PinValidationError.swift in Sources */,
 				B552EDFE211E33D000332BB5 /* CKNotificationCenter.swift in Sources */,
 				B50ACBB0216627AB00E877DF /* DevicesTarget.swift in Sources */,
 				A260E8D520FD0C57008343F9 /* TutorialScreenViewController.swift in Sources */,

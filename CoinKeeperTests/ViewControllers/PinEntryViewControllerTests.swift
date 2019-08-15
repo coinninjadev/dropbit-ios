@@ -20,8 +20,7 @@ class PinEntryViewControllerTests: XCTestCase {
     self.mockCoordinator = MockCoordinator()
     self.sut = PinEntryViewController.newInstance(delegate: mockCoordinator,
                                                   viewModel: OpenAppPinEntryViewModel(),
-                                                  success: nil,
-                                                  failure: nil)
+                                                  success: nil)
     _ = self.sut.view //trigger subviews to load
     self.mockViewModel = MockDigitEntryDisplayViewModel(view: self.sut.securePinDisplayView)
     self.sut.digitEntryDisplayViewModel = self.mockViewModel
@@ -211,7 +210,7 @@ class PinEntryViewControllerTests: XCTestCase {
     }
 
     var successfullyAuthenticatedWasCalled = false
-    func viewControllerDidSuccessfullyAuthenticate(_ pinEntryViewController: PinEntryViewController, completion: CompletionHandler?) {
+    func viewControllerDidSuccessfullyAuthenticate(_ pinEntryViewController: PinEntryViewController, completion: CKCompletion?) {
       successfullyAuthenticatedWasCalled = true
     }
 

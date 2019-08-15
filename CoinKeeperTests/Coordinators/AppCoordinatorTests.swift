@@ -145,7 +145,7 @@ class AppCoordinatorTests: MockedPersistenceTestCase {
 
     sut.appEnteredActiveState() // to call requireAuthentication...
     let viewModel = OpenAppPinEntryViewModel()
-    let vc = PinEntryViewController.newInstance(delegate: sut, viewModel: viewModel, success: nil, failure: nil)
+    let vc = PinEntryViewController.newInstance(delegate: sut, viewModel: viewModel, success: nil)
     vc.authenticationSatisfied()
 
     XCTAssertEqual(mockNavigationController.viewControllers.count, 1, "nav controller should only have 1 vc")
@@ -204,7 +204,7 @@ class AppCoordinatorTests: MockedPersistenceTestCase {
     sut = AppCoordinator(persistenceManager: mockPersistenceManager,
                          launchStateManager: mockLaunchStateManager,
                          networkManager: mocks.network)
-    let completion: ErrorCompletionHandler = { error in
+    let completion: CKErrorCompletion = { error in
       XCTAssertTrue(mocks.network.getUserWasCalled, "syncTransactionDataAndServerAddresses should call getUser")
       expectation.fulfill()
     }
@@ -222,7 +222,7 @@ class AppCoordinatorTests: MockedPersistenceTestCase {
     sut = AppCoordinator(persistenceManager: mockPersistenceManager,
                          launchStateManager: mockLaunchStateManager,
                          networkManager: mocks.network)
-    let completion: ErrorCompletionHandler = { error in
+    let completion: CKErrorCompletion = { error in
       XCTAssertTrue(mocks.network.getWalletWasCalled, "syncTransactionDataAndServerAddresses should call getWallet")
       expectation.fulfill()
     }
@@ -320,7 +320,7 @@ class AppCoordinatorTests: MockedPersistenceTestCase {
                          alertManager: localMocks.alert,
                          networkManager: localMocks.network)
 
-    let completion: ErrorCompletionHandler = { _ in
+    let completion: CKErrorCompletion = { _ in
       XCTAssert(self.mockBrokers.mockUser.unverifyUserWasCalled, "should call unverifyUser")
       XCTAssert(localMocks.alert.showBannerWithMessageDurationAlertKindWasCalled, "should call showBanner")
       expectation.fulfill()
@@ -345,7 +345,7 @@ class AppCoordinatorTests: MockedPersistenceTestCase {
                          alertManager: localMocks.alert,
                          networkManager: localMocks.network)
 
-    let completion: ErrorCompletionHandler = { _ in
+    let completion: CKErrorCompletion = { _ in
       XCTAssert(self.mockBrokers.mockUser.unverifyUserWasCalled, "should call unverifyUser")
       XCTAssert(self.mockBrokers.mockWallet.removeWalletIdWasCalled, "should call removeWalletId")
       XCTAssert(localMocks.alert.showBannerWithMessageDurationAlertKindWasCalled, "should call showBanner")

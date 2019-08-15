@@ -37,14 +37,9 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate, CurrencyFormatta
       self.handleSuccessfulLightningPaymentVerification(with: inputs)
     }
 
-    let errorHandler: PinEntryErrorHandler = { [unowned self] error in
-      self.handleFailure(error: error)
-    }
-
     let pinEntryVC = PinEntryViewController.newInstance(delegate: self,
                                                         viewModel: viewModel,
-                                                        success: successHandler,
-                                                        failure: errorHandler)
+                                                        success: successHandler)
     presentPinEntryViewController(pinEntryVC)
   }
 
@@ -77,15 +72,9 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate, CurrencyFormatta
       self.handleSuccessfulOnChainPaymentVerification(with: transactionData, outgoingTransactionData: outgoingTxDataWithAmount)
     }
 
-    let errorHandler: PinEntryErrorHandler = { [unowned self] error in
-      self.analyticsManager.track(event: .preBroadcast, with: nil)
-      self.handleFailure(error: error)
-    }
-
     let pinEntryVC = PinEntryViewController.newInstance(delegate: self,
                                                         viewModel: pinEntryViewModel,
-                                                        success: successHandler,
-                                                        failure: errorHandler)
+                                                        success: successHandler)
     presentPinEntryViewController(pinEntryVC)
   }
 
@@ -117,14 +106,9 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate, CurrencyFormatta
       self.handleSuccessfulInviteVerification(with: inviteBody, outgoingInvitationDTO: outgoingInvitationDTO)
     }
 
-    let failureHandler: PinEntryErrorHandler = { [unowned self] error in
-      self.handleFailure(error: error)
-    }
-
     let pinEntryVC = PinEntryViewController.newInstance(delegate: self,
                                                         viewModel: pinEntryViewModel,
-                                                        success: successHandler,
-                                                        failure: failureHandler)
+                                                        success: successHandler)
     presentPinEntryViewController(pinEntryVC)
   }
 

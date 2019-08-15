@@ -22,7 +22,7 @@ extension AppCoordinator: RecoveryWordsIntroViewControllerDelegate {
       self.navigationController.present(CNNavigationController(rootViewController: backupWordsVC), animated: false, completion: nil)
     }
 
-    let pinEntryVC = PinEntryViewController.newInstance(delegate: self, viewModel: viewModel, success: successHandler, failure: nil)
+    let pinEntryVC = PinEntryViewController.newInstance(delegate: self, viewModel: viewModel, success: successHandler)
 
     navigationController.present(pinEntryVC, animated: true)
   }

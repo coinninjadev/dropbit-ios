@@ -17,22 +17,17 @@ protocol PinEntryViewControllerDelegate: ViewControllerDismissable {
   var biometricType: BiometricType { get }
 }
 
-typealias PinEntryErrorHandler = (PinValidationError) -> Void
-
 final class PinEntryViewController: BaseViewController, StoryboardInitializable {
 
   private var successHandler: CKCompletion?
-  private var failureHandler: PinEntryErrorHandler?
 
   static func newInstance(delegate: PinEntryViewControllerDelegate,
                           viewModel: PinEntryViewModel,
-                          success: CKCompletion?,
-                          failure: PinEntryErrorHandler?) -> PinEntryViewController {
+                          success: CKCompletion?) -> PinEntryViewController {
     let vc = PinEntryViewController.makeFromStoryboard()
     vc.generalCoordinationDelegate = delegate
     vc.viewModel = viewModel
     vc.successHandler = success
-    vc.failureHandler = failure
     return vc
   }
 

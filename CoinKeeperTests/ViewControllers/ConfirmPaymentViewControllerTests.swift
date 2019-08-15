@@ -75,9 +75,7 @@ class ConfirmPaymentViewControllerTests: XCTestCase {
 
     func viewControllerDidConfirmLightningPayment(
       _ viewController: UIViewController,
-      sats: Int,
-      invoice: String,
-      sharedPayload: SharedPayloadDTO?) { }
+      inputs: LightningPaymentInputs) { }
 
     func viewControllerDidConfirmInvite(
       _ viewController: UIViewController,

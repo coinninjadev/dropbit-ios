@@ -91,7 +91,7 @@ extension AppCoordinator: SettingsViewControllerDelegate {
       self.resetUserAuthenticatedState()
 
       let viewModel = WalletDeletionPinEntryViewModel()
-      let pinEntryViewController = PinEntryViewController.newInstance(delegate: self, viewModel: viewModel, success: completion, failure: nil)
+      let pinEntryViewController = PinEntryViewController.newInstance(delegate: self, viewModel: viewModel, success: completion)
       settingsViewController?.present(pinEntryViewController, animated: true, completion: nil)
     }
     let cancelAction = AlertActionConfiguration(title: "Cancel", style: .default, action: nil)
