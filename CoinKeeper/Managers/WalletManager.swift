@@ -28,11 +28,11 @@ protocol WalletManagerType: AnyObject {
   func createWalletCopy() -> CNBHDWallet
 
   /// Use this when displaying the balance
-  func balanceNetPending(in context: NSManagedObjectContext) -> Int
+  func balanceNetPending(in context: NSManagedObjectContext) -> (onChain: Int, lightning: Int)
 
   /// Spendable UTXOs
   /// number of confirmations affects isSpendable, returns a min of 0
-  func spendableBalance(in context: NSManagedObjectContext) -> Int
+  func spendableBalance(in context: NSManagedObjectContext) -> (onChain: Int, lightning: Int)
 
   func activeTemporarySentTxTotal(in context: NSManagedObjectContext) -> Int
 
@@ -179,7 +179,7 @@ class WalletManager: WalletManagerType {
     return total
   }
 
-  func balanceNetPending(in context: NSManagedObjectContext) -> Int {
+  func balanceNetPending(in context: NSManagedObjectContext) -> (onChain: Int, lightning: Int) {
     var netBalance = 0
     context.performAndWait {
       let atss = CKMAddressTransactionSummary.findAll(in: context)
@@ -187,14 +187,15 @@ class WalletManager: WalletManagerType {
       let tempSentTxTotal = activeTemporarySentTxTotal(in: context)
       netBalance = atsAmount - tempSentTxTotal
     }
-    return netBalance
+    return (onChain: netBalance, lightning: 0)
   }
 
-  func spendableBalance(in context: NSManagedObjectContext) -> Int {
+  func spendableBalance(in context: NSManagedObjectContext) -> (onChain: Int, lightning: Int) {
     let minAmount = self.persistenceManager.brokers.preferences.dustProtectionMinimumAmount
     let spendableVouts = CKMVout.findAllSpendable(minAmount: minAmount, in: context)
     let spendableTotal = spendableVouts.reduce(0) { $0 + $1.amount }
-    return spendableTotal
+
+    return (onChain: spendableTotal, lightning: 0)
   }
 
   var hexEncodedPublicKey: String {

@@ -11,12 +11,14 @@ import UIKit
 
 protocol WalletBalanceViewDelegate: class {
   func isSyncCurrentlyRunning() -> Bool
+  func getCurrentWalletTransactionType() -> WalletTransactionType
   func transferButtonWasTouched()
   func swapPrimaryCurrency()
 }
 
 struct WalletBalanceDataSource {
-  let converter: CurrencyConverter
+  let onChainConverter: CurrencyConverter
+  let lightningConverter: CurrencyConverter
   let primaryCurrency: CurrencyCode
 }
 
@@ -54,9 +56,12 @@ class WalletBalanceView: UIView {
   }
 
   func update(with dataSource: WalletBalanceDataSource) {
-    let primaryCurrency = dataSource.primaryCurrency, primaryAmount = dataSource.converter.amount(forCurrency: primaryCurrency)
-    let secondaryCurrency = dataSource.converter.otherCurrency(forCurrency: primaryCurrency)
-    let secondaryAmount = dataSource.converter.amount(forCurrency: secondaryCurrency)
+    guard let transactionType = delegate?.getCurrentWalletTransactionType() else { return }
+    let converter: CurrencyConverter = transactionType == .lightning ? dataSource.lightningConverter : dataSource.onChainConverter
+
+    let primaryCurrency = dataSource.primaryCurrency, primaryAmount = converter.amount(forCurrency: primaryCurrency)
+    let secondaryCurrency = converter.otherCurrency(forCurrency: primaryCurrency)
+    let secondaryAmount = converter.amount(forCurrency: secondaryCurrency)
     primarySecondaryBalanceContainer.set(primaryAmount: primaryAmount, currency: primaryCurrency)
     primarySecondaryBalanceContainer.set(secondaryAmount: secondaryAmount, currency: secondaryCurrency)
 
@@ -79,3 +84,4 @@ class WalletBalanceView: UIView {
   }
 
 }
+

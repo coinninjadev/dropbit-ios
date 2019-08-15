@@ -12,23 +12,41 @@ import CoreData
 @objc(CKMLNBalance)
 public class CKMLNBalance: NSManagedObject {
 
+  public override func awakeFromInsert() {
+    super.awakeFromInsert()
+    setPrimitiveValue(0, forKey: #keyPath(CKMLNBalance.balance))
+    setPrimitiveValue(0, forKey: #keyPath(CKMLNBalance.pendingIn))
+    setPrimitiveValue(0, forKey: #keyPath(CKMLNBalance.pendingOut))
+  }
+
   @nonobjc public class func fetchRequest() -> NSFetchRequest<CKMLNBalance> {
     return NSFetchRequest<CKMLNBalance>(entityName: "CKMLNBalance")
   }
 
+  @discardableResult
   static func findOrCreate(in context: NSManagedObjectContext) -> CKMLNBalance {
-    let fetchRequest: NSFetchRequest<CKMLNBalance> = CKMLNBalance.fetchRequest()
-    fetchRequest.fetchLinit = 1
+    if let foundBalance = find(in: context) {
+      return foundBalance
+    } else {
+      let balance = CKMLNBalance(insertInto: context)
+      return balance
+    }
+  }
 
-    var result: [CKMAddressTransactionSummary] = []
+  static func find(in context: NSManagedObjectContext) -> CKMLNBalance? {
+    let fetchRequest: NSFetchRequest<CKMLNBalance> = CKMLNBalance.fetchRequest()
+    fetchRequest.fetchLimit = 1
+
+    var balance: CKMLNBalance?
     context.performAndWait {
       do {
-        result = try context.fetch(fetchRequest)
+        let results = try context.fetch(fetchRequest)
+        balance = results.first
       } catch {
-        result = []
+        balance = nil
       }
     }
-    return result
+    return balance
   }
 
 }

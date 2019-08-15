@@ -17,10 +17,12 @@ class BalanceUpdateManager {
 }
 
 protocol BalanceDataSource: CoreDataObserver {
-  func balanceNetPending() -> NSDecimalNumber
-  func spendableBalanceNetPending() -> NSDecimalNumber
+  func balanceNetPending() -> WalletBalances
+  func spendableBalanceNetPending() -> WalletBalances
   var balanceUpdateManager: BalanceUpdateManager { get }
 }
+
+typealias WalletBalances = (onChain: NSDecimalNumber, lightning: NSDecimalNumber)
 
 extension BalanceDataSource {
 
@@ -137,22 +139,33 @@ extension BalanceDisplayable where Self: UIViewController {
 
   private func updatedDataSource() {
     // Prevent ever showing a negative balance
-    var sanitizedBalance: NSDecimalNumber = .zero
-    if let calculatedBalance = balanceProvider?.balanceNetPending(), calculatedBalance.isPositiveNumber {
-      sanitizedBalance = calculatedBalance
+    var onChainSanitizedBalance: NSDecimalNumber = .zero
+    var lightningSanitizedBalance: NSDecimalNumber = .zero
+    if let calculatedBalance = balanceProvider?.balanceNetPending()  {
+      if calculatedBalance.onChain.isPositiveNumber {
+        onChainSanitizedBalance = calculatedBalance.onChain
+      }
+
+      if calculatedBalance.lightning.isPositiveNumber {
+        lightningSanitizedBalance = calculatedBalance.lightning
+      }
     }
 
     let rates = rateManager.exchangeRates
-    let converter = CurrencyConverter(fromBtcTo: .USD, fromAmount: sanitizedBalance, rates: rates)
-
-    balanceContainer.update(with: BalanceContainerDataSource(
+    let onChainConverter = CurrencyConverter(fromBtcTo: .USD, fromAmount: onChainSanitizedBalance, rates: rates)
+    let lightningConverter = CurrencyConverter(fromBtcTo: .USD, fromAmount: lightningSanitizedBalance, rates: rates)
+    let onChainBalanceDataSource = BalanceContainerDataSource(
       leftButtonType: balanceLeftButtonType,
-      converter: converter,
-      primaryCurrency: primaryBalanceCurrency))
+      onChainConverter: onChainConverter,
+      lightningConverter: lightningConverter,
+      primaryCurrency: primaryBalanceCurrency)
+    let onChainWalletDataSource = WalletBalanceDataSource(
+      onChainConverter: onChainConverter,
+      lightningConverter: lightningConverter,
+      primaryCurrency: primaryBalanceCurrency)
 
-    walletBalanceView.update(with: WalletBalanceDataSource(
-      converter: converter,
-      primaryCurrency: primaryBalanceCurrency))
+    balanceContainer.update(with: onChainBalanceDataSource)
+    walletBalanceView.update(with: onChainWalletDataSource)
   }
 
 }

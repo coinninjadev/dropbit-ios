@@ -472,6 +472,7 @@
 		A246C82722CBA83F00AF1F52 /* PriceTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = A246C82622CBA83F00AF1F52 /* PriceTarget.swift */; };
 		A246C82922CCF87500AF1F52 /* WalletOverviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A246C82822CCF87500AF1F52 /* WalletOverviewViewController.swift */; };
 		A246C82D22CCF8A000AF1F52 /* WalletOverviewViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A246C82C22CCF8A000AF1F52 /* WalletOverviewViewController.storyboard */; };
+		A24B9E802305B92400852718 /* LightningBroker.swift in Sources */ = {isa = PBXBuildFile; fileRef = A24B9E7F2305B92400852718 /* LightningBroker.swift */; };
 		A257CEB42302E5070063670B /* FeesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A257CEB32302E5070063670B /* FeesView.swift */; };
 		A257CEB62302E60A0063670B /* FeesView.xib in Resources */ = {isa = PBXBuildFile; fileRef = A257CEB52302E6090063670B /* FeesView.xib */; };
 		A257CEB82302F3BA0063670B /* AppCoordinator+WalletTransferViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A257CEB72302F3BA0063670B /* AppCoordinator+WalletTransferViewControllerDelegate.swift */; };
@@ -1463,6 +1464,7 @@
 		A246C82622CBA83F00AF1F52 /* PriceTarget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PriceTarget.swift; sourceTree = "<group>"; };
 		A246C82822CCF87500AF1F52 /* WalletOverviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletOverviewViewController.swift; sourceTree = "<group>"; };
 		A246C82C22CCF8A000AF1F52 /* WalletOverviewViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = WalletOverviewViewController.storyboard; sourceTree = "<group>"; };
+		A24B9E7F2305B92400852718 /* LightningBroker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightningBroker.swift; sourceTree = "<group>"; };
 		A257CEB32302E5070063670B /* FeesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeesView.swift; sourceTree = "<group>"; };
 		A257CEB52302E6090063670B /* FeesView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FeesView.xib; sourceTree = "<group>"; };
 		A257CEB72302F3BA0063670B /* AppCoordinator+WalletTransferViewControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppCoordinator+WalletTransferViewControllerDelegate.swift"; sourceTree = "<group>"; };
@@ -3262,6 +3264,7 @@
 				B52A6F3122B9845F000801FA /* TransactionBroker.swift */,
 				B5F775F322B81B8500C7A771 /* UserBroker.swift */,
 				B558B86622B94DDE0033AFBD /* WalletBroker.swift */,
+				A24B9E7F2305B92400852718 /* LightningBroker.swift */,
 			);
 			path = Brokers;
 			sourceTree = "<group>";
@@ -4150,6 +4153,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A2E9F70022D7C1BA00D4DBFD /* CKNumberFormatter.swift in Sources */,
+				A24B9E802305B92400852718 /* LightningBroker.swift in Sources */,
 				3BF5807E20E2ADC500DD7F95 /* Applicable.swift in Sources */,
 				B53D7ECC2119FCA300D1DCBF /* BCITransactionResponse.swift in Sources */,
 				A2FE198E2301E29700C2412D /* ConfirmView.swift in Sources */,

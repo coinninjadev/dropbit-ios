@@ -45,6 +45,16 @@ class PreferencesBroker: CKPersistenceBroker, PreferencesBrokerType {
     }
   }
 
+  var selectedWalletTransactionType: WalletTransactionType {
+    get {
+      let stringValue = userDefaultsManager.string(for: .selectedWalletTransactionType)
+      return stringValue.flatMap { WalletTransactionType(rawValue: $0) } ?? .onChain
+    }
+    set {
+      userDefaultsManager.set(newValue.rawValue, for: .selectedWalletTransactionType)
+    }
+  }
+
   var selectedCurrency: SelectedCurrency {
     get {
       let stringValue = userDefaultsManager.string(for: .selectedCurrency)

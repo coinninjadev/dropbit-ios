@@ -59,10 +59,10 @@ class CurrencyAmountValidator: ValidatorType<CurrencyConverter> {
   static let invitationMax = Money(amount: NSDecimalNumber(value: 100), currency: .USD)
 
   // Allows for validating against USD value while showing error message in BTC.
-  let balanceNetPending: NSDecimalNumber?
+  let balanceNetPending: WalletBalances?
   let validationsToSkip: CurrencyAmountValidationOptions
 
-  init(balanceNetPending: NSDecimalNumber?, ignoring: CurrencyAmountValidationOptions = []) {
+  init(balanceNetPending: WalletBalances?, ignoring: CurrencyAmountValidationOptions = []) {
     self.balanceNetPending = balanceNetPending
     self.validationsToSkip = ignoring
     super.init()
@@ -86,7 +86,7 @@ class CurrencyAmountValidator: ValidatorType<CurrencyConverter> {
     }
 
     if !validationsToSkip.contains(.usableBalance),
-      let balance = balanceNetPending,
+      let balance = balanceNetPending?.onChain, //TODO: Add check for lightning funds
       btcValue > balance {
       let spendableMoney = Money(amount: balance, currency: .BTC)
       throw CurrencyAmountValidatorError.usableBalance(spendableMoney)

@@ -64,10 +64,10 @@
         <relationship name="counterpartyTwitterContact" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CKMTwitterContact" inverseName="invitations" inverseEntity="CKMTwitterContact" syncable="YES"/>
         <relationship name="transaction" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CKMTransaction" inverseName="invitation" inverseEntity="CKMTransaction" syncable="YES"/>
     </entity>
-    <entity name="CKMLNBalance" representedClassName="CKMLNBalance" syncable="YES" codeGenerationType="class">
-        <attribute name="balance" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="pendingIn" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="pendingOut" optional="YES" attributeType="String" syncable="YES"/>
+    <entity name="CKMLNBalance" representedClassName="CKMLNBalance" syncable="YES">
+        <attribute name="balance" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="pendingIn" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="pendingOut" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <relationship name="wallet" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CKMWallet" inverseName="lightningBalance" inverseEntity="CKMWallet" syncable="YES"/>
     </entity>
     <entity name="CKMLNInvoice" representedClassName="CKMLNInvoice" syncable="YES">
@@ -245,7 +245,7 @@
         <element name="CKMCounterpartyAddress" positionX="-1935" positionY="351" width="128" height="73"/>
         <element name="CKMDerivativePath" positionX="-972" positionY="315" width="128" height="163"/>
         <element name="CKMInvitation" positionX="-1674" positionY="-36" width="144" height="255"/>
-        <element name="CKMLNBalance" positionX="-1369.73046875" positionY="-52.7265625" width="128" height="103"/>
+        <element name="CKMLNBalance" positionX="-1369.73046875" positionY="-52.7265625" width="128" height="105"/>
         <element name="CKMLNInvoice" positionX="-2215.80078125" positionY="195.44140625" width="128" height="195"/>
         <element name="CKMLNLedgerEntry" positionX="-2173.94140625" positionY="494.7109375" width="128" height="285"/>
         <element name="CKMPhoneNumber" positionX="-2009" positionY="99" width="128" height="150"/>

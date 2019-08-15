@@ -10,9 +10,9 @@ import Foundation
 
 extension CKMLNBalance {
 
-  @NSManaged public var balance: String
-  @NSManaged public var pendingIn: String
-  @NSManaged public var pendingOut: String
+  @NSManaged public var balance: Int
+  @NSManaged public var pendingIn: Int
+  @NSManaged public var pendingOut: Int
   @NSManaged public var wallet: CKMWallet?
 
 }

@@ -15,6 +15,8 @@ protocol WalletOverviewViewControllerDelegate: BalanceContainerDelegate & BadgeU
   var currencyController: CurrencyController { get }
 
   func viewControllerDidTapScan(_ viewController: UIViewController, converter: CurrencyConverter)
+  func setSelectedWalletTransactionType(_ viewController: UIViewController, to selectedType: WalletTransactionType)
+  func selectedWalletTransactionType() -> WalletTransactionType
   func viewControllerDidTapReceivePayment(_ viewController: UIViewController, converter: CurrencyConverter)
   func viewControllerDidTapSendPayment(_ viewController: UIViewController, converter: CurrencyConverter, walletTransactionType: WalletTransactionType)
   func viewControllerShouldAdjustForBottomSafeArea(_ viewController: UIViewController) -> Bool
@@ -279,6 +281,11 @@ extension WalletOverviewViewController: SyncSubscribeable {
 }
 
 extension WalletOverviewViewController: WalletBalanceViewDelegate {
+
+  func getCurrentWalletTransactionType() -> WalletTransactionType {
+    guard let coordinationDelegate = coordinationDelegate else { return .onChain }
+    return coordinationDelegate.selectedWalletTransactionType()
+  }
 
   func transferButtonWasTouched() {
     let transferType: WalletTransferViewController.TransferType = currentWallet == .bitcoinWalletTransactionHistory ?

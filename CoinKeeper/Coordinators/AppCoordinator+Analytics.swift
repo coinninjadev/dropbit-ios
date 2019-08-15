@@ -63,7 +63,7 @@ extension AppCoordinator {
 
     var balance = 0
     bgContext.performAndWait {
-      balance = wmgr.spendableBalance(in: bgContext)
+      balance = wmgr.spendableBalance(in: bgContext).onChain //TODO: Update when we want to check lightning and regular funds
     }
 
     let balanceIsPositive = balance > 0

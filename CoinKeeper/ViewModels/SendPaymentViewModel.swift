@@ -9,9 +9,9 @@
 import Foundation
 import CNBitcoinKit
 
-enum WalletTransactionType {
-  case onChain
-  case lightning
+enum WalletTransactionType: String {
+  case onChain = "onchain"
+  case lightning = "lightning"
 }
 
 enum PaymentRecipient {

@@ -12,6 +12,10 @@ import PromiseKit
 
 extension AppCoordinator: BalanceContainerDelegate {
 
+  func selectedWallet() -> WalletTransactionType {
+    return persistenceManager.brokers.preferences.selectedWalletTransactionType
+  }
+
   func isSyncCurrentlyRunning() -> Bool {
     let syncOperations = serialQueueManager.queue.operations(ofType: .syncWallet(.standard),
                                                              ignoringAssociatedType: true)
