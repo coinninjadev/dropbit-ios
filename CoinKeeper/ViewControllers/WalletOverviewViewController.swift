@@ -51,7 +51,16 @@ class WalletOverviewViewController: BaseViewController, StoryboardInitializable 
     case lightningWalletTransactionHistory = 1
   }
 
-  private var currentWallet: ViewControllerIndex = .bitcoinWalletTransactionHistory
+  private var currentWallet: ViewControllerIndex = .bitcoinWalletTransactionHistory {
+    willSet {
+      coordinationDelegate?.setSelectedWalletTransactionType(self, to:
+        newValue == .bitcoinWalletTransactionHistory ? .onChain : .lightning)
+    }
+    didSet {
+      balanceContainer.update()
+      walletBalanceView.update()
+    }
+  }
 
   var startSyncNotificationToken: NotificationToken?
   var finishSyncNotificationToken: NotificationToken?
@@ -172,6 +181,7 @@ extension WalletOverviewViewController: BadgeDisplayable {
 }
 
 extension WalletOverviewViewController: BalanceDisplayable {
+
   var walletBalanceView: WalletBalanceView { return currentWalletBalanceView }
   var balanceLeftButtonType: BalanceContainerLeftButtonType { return .menu }
   var primaryBalanceCurrency: CurrencyCode {

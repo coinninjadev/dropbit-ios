@@ -65,6 +65,8 @@ enum BalanceContainerLeftButtonType {
   var finishSyncNotificationToken: NotificationToken?
   var updateAvatarNotificationToken: NotificationToken?
 
+  private var currentDataSource: BalanceContainerDataSource?
+
   @IBAction func didTapLeftButton(_ sender: Any) {
     guard let delegate = delegate, let parent = parentViewController else { return }
     delegate.containerDidTapLeftButton(in: parent)
@@ -111,7 +113,13 @@ enum BalanceContainerLeftButtonType {
     rightBalanceContainerView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapRightBalanceView)))
   }
 
+  func update() {
+    guard let dataSource = currentDataSource else { return }
+    update(with: dataSource)
+  }
+
   func update(with dataSource: BalanceContainerDataSource) {
+    currentDataSource = dataSource
     guard let delegate = delegate else { return }
     leftButton.setImage(dataSource.leftButtonType.image, for: .normal)
     leftButton.badgeDisplayCriteria = dataSource.leftButtonType.badgeCriteria

@@ -28,6 +28,8 @@ class WalletBalanceView: UIView {
 
   weak var delegate: WalletBalanceViewDelegate?
 
+  private var currentDataSource: WalletBalanceDataSource?
+
   lazy private var recognizer = UITapGestureRecognizer(target: self, action: #selector(balanceContainerWasTouched))
 
   required init?(coder aDecoder: NSCoder) {
@@ -55,7 +57,13 @@ class WalletBalanceView: UIView {
     primarySecondaryBalanceContainer.addGestureRecognizer(recognizer)
   }
 
+  func update() {
+    guard let dataSource = currentDataSource else { return }
+    update(with: dataSource)
+  }
+
   func update(with dataSource: WalletBalanceDataSource) {
+    currentDataSource = dataSource
     guard let transactionType = delegate?.getCurrentWalletTransactionType() else { return }
     let converter: CurrencyConverter = transactionType == .lightning ? dataSource.lightningConverter : dataSource.onChainConverter
 
@@ -82,6 +90,4 @@ class WalletBalanceView: UIView {
       break
     }
   }
-
 }
-

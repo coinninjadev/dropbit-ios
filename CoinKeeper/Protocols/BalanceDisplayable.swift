@@ -113,6 +113,7 @@ extension BalanceDisplayable where Self: UIViewController {
     rateManager.balanceToken = CKNotificationCenter.subscribe(key: .didUpdateBalance, object: nil, queue: nil) { [weak self] (_) in
       self?.updateRatesAndBalances()
     }
+
   }
 
   /// Call this on viewDidLoad
@@ -141,7 +142,7 @@ extension BalanceDisplayable where Self: UIViewController {
     // Prevent ever showing a negative balance
     var onChainSanitizedBalance: NSDecimalNumber = .zero
     var lightningSanitizedBalance: NSDecimalNumber = .zero
-    if let calculatedBalance = balanceProvider?.balanceNetPending()  {
+    if let calculatedBalance = balanceProvider?.balanceNetPending() {
       if calculatedBalance.onChain.isPositiveNumber {
         onChainSanitizedBalance = calculatedBalance.onChain
       }
@@ -154,18 +155,18 @@ extension BalanceDisplayable where Self: UIViewController {
     let rates = rateManager.exchangeRates
     let onChainConverter = CurrencyConverter(fromBtcTo: .USD, fromAmount: onChainSanitizedBalance, rates: rates)
     let lightningConverter = CurrencyConverter(fromBtcTo: .USD, fromAmount: lightningSanitizedBalance, rates: rates)
-    let onChainBalanceDataSource = BalanceContainerDataSource(
+    let balanceDataSource = BalanceContainerDataSource(
       leftButtonType: balanceLeftButtonType,
       onChainConverter: onChainConverter,
       lightningConverter: lightningConverter,
       primaryCurrency: primaryBalanceCurrency)
-    let onChainWalletDataSource = WalletBalanceDataSource(
+    let walletDataSource = WalletBalanceDataSource(
       onChainConverter: onChainConverter,
       lightningConverter: lightningConverter,
       primaryCurrency: primaryBalanceCurrency)
 
-    balanceContainer.update(with: onChainBalanceDataSource)
-    walletBalanceView.update(with: onChainWalletDataSource)
+    balanceContainer.update(with: balanceDataSource)
+    walletBalanceView.update(with: walletDataSource)
   }
 
 }
