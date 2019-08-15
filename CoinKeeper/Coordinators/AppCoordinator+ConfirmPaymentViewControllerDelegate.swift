@@ -326,98 +326,33 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate, CurrencyFormatta
 
   private func handleSuccessfulOnChainPaymentVerification(
     with transactionData: CNBTransactionData,
-    outgoingTransactionData: OutgoingTransactionData
-    ) {
-    let successFailViewController = SuccessFailViewController.newInstance(viewModel: PaymentSuccessFailViewModel(mode: .pending),
-                                                                          delegate: self)
-    successFailViewController.action = { [unowned self] in
+    outgoingTransactionData: OutgoingTransactionData) {
 
-      self.networkManager.updateCachedMetadata()
-        .then { _ in self.networkManager.broadcastTx(with: transactionData) }
-        .then { txid -> Promise<String> in
-          guard let wmgr = self.walletManager else {
-            return Promise(error: CKPersistenceError.missingValue(key: "wallet"))
-          }
-          let dataCopyWithTxid = outgoingTransactionData.copy(withTxid: txid)
-          return self.networkManager.postSharedPayloadIfAppropriate(withOutgoingTxData: dataCopyWithTxid,
-                                                                          walletManager: wmgr)
-        }
-        .then { (txid: String) -> Promise<Void> in
-          let context = self.persistenceManager.createBackgroundContext()
+    let viewModel = PaymentSuccessFailViewModel(mode: .pending)
+    let successFailVC = SuccessFailViewController.newInstance(viewModel: viewModel, delegate: self)
 
-          context.performAndWait {
-            let vouts = transactionData.unspentTransactionOutputs.map { CKMVout.find(from: $0, in: context) }.compactMap { $0 }
-            let voutDebugDesc = vouts.map { $0.debugDescription }.joined(separator: "\n")
-            log.debug("Broadcast succeeded, vouts: \n\(voutDebugDesc)")
-            let persistedTransaction = self.persistenceManager.brokers.transaction.persistTemporaryTransaction(
-              from: transactionData,
-              with: outgoingTransactionData,
-              txid: txid,
-              invitation: nil,
-              in: context
-            )
+    let errorHandler: CKErrorCompletion = { error in
+      if let networkError = error as? CKNetworkError,
+        case let .reachabilityFailed(moyaError) = networkError {
+        self.handleReachabilityError(moyaError)
 
-            if let walletCopy = self.walletManager?.createWalletCopy() {
-              let transactionBuilder = CNBTransactionBuilder()
-              let metadata = transactionBuilder.generateTxMetadata(with: transactionData, wallet: walletCopy)
-              do {
-                // If sending max such that there is no change address, an error will be thrown and caught below
-                let tempVout = try CKMVout.findOrCreateTemporaryVout(in: context, with: transactionData, metadata: metadata)
-                tempVout.transaction = persistedTransaction
-              } catch {
-                log.error(error, message: "error creating temp vout")
-              }
-            }
-
-            do {
-              try context.save()
-            } catch {
-              log.contextSaveError(error)
-            }
-          }
-          return Promise.value(())
-        }
-        .done(on: .main) {
-          successFailViewController.setMode(.success)
-
-          self.showShareTransactionIfAppropriate(dropBitType: .none)
-
-          self.analyticsManager.track(property: MixpanelProperty(key: .hasSent, value: true))
-          if case .twitter = outgoingTransactionData.dropBitType {
-            self.analyticsManager.track(event: .twitterSendComplete, with: nil)
-          }
-          self.trackIfUserHasABalance()
-
-          self.didBroadcastTransaction()
-        }.catch { error in
-          let nsError = error as NSError
-          let broadcastError = TransactionBroadcastError(errorCode: nsError.code)
-          let context = self.persistenceManager.createBackgroundContext()
-          context.performAndWait {
-            let vouts = transactionData.unspentTransactionOutputs.map { CKMVout.find(from: $0, in: context) }.compactMap { $0 }
-            let voutDebugDesc = vouts.map { $0.debugDescription }.joined(separator: "\n")
-            let encodedTx = nsError.userInfo["encoded_tx"] as? String ?? ""
-            let txid = nsError.userInfo["txid"] as? String ?? ""
-            let analyticsError = "error code: \(broadcastError.rawValue) :: txid: \(txid) :: encoded_tx: \(encodedTx) :: vouts: \(voutDebugDesc)"
-            log.error("broadcast failed, \(analyticsError)")
-            let eventValue = AnalyticsEventValue(key: .broadcastFailed, value: analyticsError)
-            self.analyticsManager.track(event: .paymentSentFailed, with: eventValue)
-          }
-
-          if let networkError = error as? CKNetworkError,
-            case let .reachabilityFailed(moyaError) = networkError {
-            self.handleReachabilityError(moyaError)
-
-          } else {
-            self.handleFailure(error: error, action: {
-              successFailViewController.setMode(.failure)
-            })
-          }
+      } else {
+        self.handleFailure(error: error, action: {
+          successFailVC.setMode(.failure)
+        })
       }
     }
 
-    self.navigationController.topViewController()?.present(successFailViewController, animated: false) {
-      successFailViewController.action?()
+    successFailVC.action = { [unowned self] in
+      self.broadcastConfirmedOnChainTransaction(
+        with: transactionData,
+        outgoingTransactionData: outgoingTransactionData,
+        success: { successFailVC.setMode(.success) },
+        failure: errorHandler)
+    }
+
+    self.navigationController.topViewController()?.present(successFailVC, animated: false) {
+      successFailVC.action?()
     }
   }
 
@@ -453,4 +388,85 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate, CurrencyFormatta
       }
     }
   }
+
+  private func broadcastConfirmedOnChainTransaction(with transactionData: CNBTransactionData,
+                                                    outgoingTransactionData: OutgoingTransactionData,
+                                                    success: @escaping CKCompletion,
+                                                    failure: @escaping CKErrorCompletion) {
+
+    self.networkManager.updateCachedMetadata()
+      .then { _ in self.networkManager.broadcastTx(with: transactionData) }
+      .then { txid -> Promise<String> in
+        guard let wmgr = self.walletManager else {
+          return Promise(error: CKPersistenceError.missingValue(key: "wallet"))
+        }
+        let dataCopyWithTxid = outgoingTransactionData.copy(withTxid: txid)
+        return self.networkManager.postSharedPayloadIfAppropriate(withOutgoingTxData: dataCopyWithTxid,
+                                                                  walletManager: wmgr)
+      }
+      .get { txid in
+        let context = self.persistenceManager.createBackgroundContext()
+
+        context.performAndWait {
+          let vouts = transactionData.unspentTransactionOutputs.map { CKMVout.find(from: $0, in: context) }.compactMap { $0 }
+          let voutDebugDesc = vouts.map { $0.debugDescription }.joined(separator: "\n")
+          log.debug("Broadcast succeeded, vouts: \n\(voutDebugDesc)")
+          let persistedTransaction = self.persistenceManager.brokers.transaction.persistTemporaryTransaction(
+            from: transactionData,
+            with: outgoingTransactionData,
+            txid: txid,
+            invitation: nil,
+            in: context
+          )
+
+          if let walletCopy = self.walletManager?.createWalletCopy() {
+            let transactionBuilder = CNBTransactionBuilder()
+            let metadata = transactionBuilder.generateTxMetadata(with: transactionData, wallet: walletCopy)
+            do {
+              // If sending max such that there is no change address, an error will be thrown and caught below
+              let tempVout = try CKMVout.findOrCreateTemporaryVout(in: context, with: transactionData, metadata: metadata)
+              tempVout.transaction = persistedTransaction
+            } catch {
+              log.error(error, message: "error creating temp vout")
+            }
+          }
+
+          do {
+            try context.save()
+          } catch {
+            log.contextSaveError(error)
+          }
+        }
+      }
+      .done(on: .main) { _ in
+        success()
+
+        self.showShareTransactionIfAppropriate(dropBitType: .none)
+
+        self.analyticsManager.track(property: MixpanelProperty(key: .hasSent, value: true))
+        if case .twitter = outgoingTransactionData.dropBitType {
+          self.analyticsManager.track(event: .twitterSendComplete, with: nil)
+        }
+        self.trackIfUserHasABalance()
+
+        self.didBroadcastTransaction()
+      }.catch { error in
+        let nsError = error as NSError
+        let broadcastError = TransactionBroadcastError(errorCode: nsError.code)
+        let context = self.persistenceManager.createBackgroundContext()
+        context.performAndWait {
+          let vouts = transactionData.unspentTransactionOutputs.map { CKMVout.find(from: $0, in: context) }.compactMap { $0 }
+          let voutDebugDesc = vouts.map { $0.debugDescription }.joined(separator: "\n")
+          let encodedTx = nsError.userInfo["encoded_tx"] as? String ?? ""
+          let txid = nsError.userInfo["txid"] as? String ?? ""
+          let analyticsError = "error code: \(broadcastError.rawValue) :: txid: \(txid) :: encoded_tx: \(encodedTx) :: vouts: \(voutDebugDesc)"
+          log.error("broadcast failed, \(analyticsError)")
+          let eventValue = AnalyticsEventValue(key: .broadcastFailed, value: analyticsError)
+          self.analyticsManager.track(event: .paymentSentFailed, with: eventValue)
+        }
+
+        failure(error)
+    }
+  }
+
 }
