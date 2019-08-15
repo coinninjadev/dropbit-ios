@@ -286,7 +286,6 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate, CurrencyFormatta
 
   private func handleFailureInvite(error: Error) {
     analyticsManager.track(event: .dropbitInitiationFailed, with: nil)
-
     log.error(error, message: "DropBit invite failed")
 
     var errorMessage = ""
@@ -413,7 +412,6 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate, CurrencyFormatta
   private func executeConfirmedLightningPayment(with inputs: LightningPaymentInputs,
                                                 success: @escaping CKCompletion,
                                                 failure: @escaping CKErrorCompletion) {
-
     //TODO: Get updated ledger and persist new entry immediately following payment
     self.networkManager.payLightningPaymentRequest(inputs.invoice, sats: inputs.sats).asVoid()
       .done(success)
@@ -424,7 +422,6 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate, CurrencyFormatta
                                                     outgoingTransactionData: OutgoingTransactionData,
                                                     success: @escaping CKCompletion,
                                                     failure: @escaping CKErrorCompletion) {
-
     self.networkManager.updateCachedMetadata()
       .then { _ in self.networkManager.broadcastTx(with: transactionData) }
       .then { txid -> Promise<String> in
