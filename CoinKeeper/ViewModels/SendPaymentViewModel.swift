@@ -12,6 +12,13 @@ import CNBitcoinKit
 enum WalletTransactionType {
   case onChain
   case lightning
+
+  var addressType: WalletAddressType {
+    switch self {
+    case .onChain:    return .btc
+    case .lightning:  return .lightning
+    }
+  }
 }
 
 enum PaymentRecipient {

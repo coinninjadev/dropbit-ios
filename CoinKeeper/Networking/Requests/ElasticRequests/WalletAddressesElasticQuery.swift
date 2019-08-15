@@ -11,8 +11,10 @@ import Foundation
 class WalletAddressesElasticQuery: ElasticQuery {
 
   let addressPubkey = true
+  let addressType: String
 
-  init(identityHashes: [String]) {
+  init(identityHashes: [String], addressType: WalletAddressType) {
+    self.addressType = addressType.rawValue
     let terms = ElasticTerms.object(withIdentityHashes: identityHashes)
     super.init(range: nil, script: nil, term: nil, terms: terms)
   }

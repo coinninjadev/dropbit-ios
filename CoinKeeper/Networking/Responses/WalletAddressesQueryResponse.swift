@@ -13,6 +13,15 @@ struct WalletAddressesQueryResponse: ResponseCodable {
   let identityHash: String
   let address: String
   var addressPubkey: String?
+  var addressType: String?
+
+  var addressTypeCase: WalletAddressType {
+    guard let typeString = addressType,
+      let typeCase = WalletAddressType(rawValue: typeString) else {
+        return .btc
+    }
+    return typeCase
+  }
 
   static var sampleJSON: String {
     return """
@@ -29,7 +38,7 @@ struct WalletAddressesQueryResponse: ResponseCodable {
   }
 
   static var optionalStringKeys: [WritableKeyPath<WalletAddressesQueryResponse, String?>] {
-    return [\.addressPubkey]
+    return [\.addressPubkey, \.addressType]
   }
 
 }

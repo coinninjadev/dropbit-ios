@@ -495,8 +495,11 @@ extension SendPaymentViewController: SelectedValidContactDelegate {
 
   func update(withSelectedTwitterUser twitterUser: TwitterUser) {
     var contact = TwitterContact(twitterUser: twitterUser)
-    coordinationDelegate?.viewController(self, checkingVerificationStatusFor: twitterUser.idStr)
+
+    let addressType = self.viewModel.walletTransactionType.addressType
+    coordinationDelegate?.viewControllerDidRequestRegisteredAddress(self, ofType: addressType, forIdentity: twitterUser.idStr)
       .done { (responses: [WalletAddressesQueryResponse]) in
+        //TODO: Handle case where recipient is registered but has not yet updated their app and enabled lightning
         contact.kind = (responses.isEmpty) ? .invite : .registeredUser
         self.setPaymentRecipient(.twitterContact(contact))
         self.updateViewWithModel()
@@ -674,7 +677,7 @@ extension SendPaymentViewController {
                                             amountInfo: sharedAmountInfo())
 
     sendTransactionForConfirmation(with: viewModel.sendMaxTransactionData,
-                                   address: address,
+                                   destination: address,
                                    contact: nil,
                                    sharedPayload: sharedPayloadDTO)
   }
@@ -723,13 +726,15 @@ extension SendPaymentViewController {
   }
 
   private func validateRegisteredContact(_ contact: ContactType, sharedPayload: SharedPayloadDTO) {
-    coordinationDelegate?.viewController(self, checkingVerificationStatusFor: contact.identityHash)
+    let addressType = self.viewModel.walletTransactionType.addressType
+    coordinationDelegate?.viewControllerDidRequestRegisteredAddress(self, ofType: addressType, forIdentity: contact.identityHash)
       .done { (responses: [WalletAddressesQueryResponse]) in
+        //TODO: Handle case where recipient is registered but has not yet updated their app and enabled lightning
         if let addressResponse = responses.first(where: { $0.identityHash == contact.identityHash }) {
           var updatedPayload = sharedPayload
           updatedPayload.updatePubKeyState(with: addressResponse)
           self.sendTransactionForConfirmation(with: self.viewModel.sendMaxTransactionData,
-                                              address: addressResponse.address,
+                                              destination: addressResponse.address,
                                               contact: contact,
                                               sharedPayload: updatedPayload)
         } else {
@@ -747,14 +752,17 @@ extension SendPaymentViewController {
   }
 
   private func validateGenericContact(_ contact: ContactType, sharedPayload: SharedPayloadDTO) {
+    let addressType = self.viewModel.walletTransactionType.addressType
+
     // Sending payment to generic contact (manually entered phone number) will first check if they have addresses on server
     coordinationDelegate?.viewControllerDidRequestVerificationCheck(self) { [weak self] in
       guard let localSelf = self,
         let delegate = localSelf.coordinationDelegate
         else { return }
 
-      delegate.viewController(localSelf, checkingVerificationStatusFor: contact.identityHash)
+      delegate.viewControllerDidRequestRegisteredAddress(localSelf, ofType: addressType, forIdentity: contact.identityHash)
         .done { (responses: [WalletAddressesQueryResponse]) in
+          //TODO: Handle case where recipient is registered but has not yet updated their app and enabled lightning
           self?.handleGenericContactAddressCheckCompletion(forContact: contact, sharedPayload: sharedPayload, responses: responses)
         }
         .catch { error in
@@ -774,7 +782,7 @@ extension SendPaymentViewController {
 
       newContact.kind = .registeredUser
       sendTransactionForConfirmation(with: viewModel.sendMaxTransactionData,
-                                     address: addressResponse.address,
+                                     destination: addressResponse.address,
                                      contact: newContact,
                                      sharedPayload: updatedPayload)
     } else {
@@ -787,14 +795,14 @@ extension SendPaymentViewController {
   }
 
   private func sendTransactionForConfirmation(with data: CNBTransactionData?,
-                                              address: String,
+                                              destination: String,
                                               contact: ContactType?,
                                               sharedPayload: SharedPayloadDTO) {
     let rates = rateManager.exchangeRates
     if let data = viewModel.sendMaxTransactionData {
       coordinationDelegate?.viewController(self,
                                            sendingMax: data,
-                                           address: address,
+                                           address: destination,
                                            walletTransactionType: viewModel.walletTransactionType,
                                            contact: contact,
                                            rates: rates,
@@ -804,7 +812,7 @@ extension SendPaymentViewController {
                                                               btcAmount: viewModel.btcAmount,
                                                               requiredFeeRate: viewModel.requiredFeeRate,
                                                               primaryCurrency: primaryCurrency,
-                                                              destination: address,
+                                                              destination: destination,
                                                               walletTransactionType: viewModel.walletTransactionType,
                                                               contact: contact,
                                                               rates: rates,

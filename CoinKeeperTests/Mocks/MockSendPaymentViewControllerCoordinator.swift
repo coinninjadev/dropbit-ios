@@ -11,7 +11,6 @@ import UIKit
 import PromiseKit
 import CNBitcoinKit
 @testable import DropBit
-import enum Result.Result
 
 class MockSendPaymentViewControllerCoordinator: SendPaymentViewControllerCoordinator {
   func sendPaymentViewControllerWillDismiss(_ viewController: UIViewController) {
@@ -91,9 +90,10 @@ class MockSendPaymentViewControllerCoordinator: SendPaymentViewControllerCoordin
     didTapContacts = true
   }
 
-  func viewController(
+  func viewControllerDidRequestRegisteredAddress(
     _ viewController: UIViewController,
-    checkingVerificationStatusFor identityHash: String) -> Promise<[WalletAddressesQueryResponse]> {
+    ofType addressType: WalletAddressType,
+    forIdentity identityHash: String) -> Promise<[WalletAddressesQueryResponse]> {
     return Promise { _ in }
   }
 

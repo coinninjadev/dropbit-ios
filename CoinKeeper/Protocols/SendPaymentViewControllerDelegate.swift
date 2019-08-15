@@ -53,8 +53,9 @@ protocol SendPaymentViewControllerDelegate: ViewControllerSendingDelegate, Devic
   func viewControllerDidPressScan(_ viewController: UIViewController, btcAmount: NSDecimalNumber, primaryCurrency: CurrencyCode)
   func viewControllerDidPressContacts(_ viewController: UIViewController & SelectedValidContactDelegate)
   func viewControllerDidPressTwitter(_ viewController: UIViewController & SelectedValidContactDelegate)
-  func viewController(_ viewController: UIViewController,
-                      checkingVerificationStatusFor identityHash: String) -> Promise<[WalletAddressesQueryResponse]>
+  func viewControllerDidRequestRegisteredAddress(_ viewController: UIViewController,
+                                                 ofType addressType: WalletAddressType,
+                                                 forIdentity identityHash: String) -> Promise<[WalletAddressesQueryResponse]>
 
   /**
    Dismisses `viewController` and shows phone verification flow if they haven't yet verified, otherwise calls `completion`.
