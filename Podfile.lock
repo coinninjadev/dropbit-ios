@@ -1,6 +1,6 @@
 PODS:
   - Alamofire (4.8.2)
-  - DZNEmptyDataSet (1.7.3)
+  - DZNEmptyDataSet (1.8.1)
   - JKSteppedProgressBar (0.5.0)
   - Mixpanel-swift (2.6.3):
     - Mixpanel-swift/Complete (= 2.6.3)
@@ -44,7 +44,7 @@ PODS:
   - Willow (5.2.1)
 
 DEPENDENCIES:
-  - DZNEmptyDataSet (~> 1.7.3)
+  - DZNEmptyDataSet (~> 1.8)
   - JKSteppedProgressBar (from `https://github.com/MitchellMalleo/JKSteppedProgressBar.git`, commit `0519aa3`)
   - Mixpanel-swift (~> 2.6.2)
   - MMDrawerController (~> 0.6.0)
@@ -96,7 +96,7 @@ CHECKOUT OPTIONS:
 
 SPEC CHECKSUMS:
   Alamofire: ae5c501addb7afdbb13687d7f2f722c78734c2d3
-  DZNEmptyDataSet: dd7cca17c1d07dfa78956859b1e70a52505678ef
+  DZNEmptyDataSet: 9525833b9e68ac21c30253e1d3d7076cc828eaa7
   JKSteppedProgressBar: e61561a7faee1a4a216ac4510b4b6d1a3760e318
   Mixpanel-swift: b022ad6cc352f916581b4f223f8a1e76d047fbe3
   MMDrawerController: e3a54a5570388463ad3b36975251575b50c4e1a0
@@ -109,6 +109,6 @@ SPEC CHECKSUMS:
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
   Willow: a6310f9aedcb6f4de8c35b94fd3416a660ae9280
 
-PODFILE CHECKSUM: 5407709372ecb4f7f10f193db4994c5b65542e61
+PODFILE CHECKSUM: cc2ed0291823192094b8019dc7c0990f0bfd4dcf
 
 COCOAPODS: 1.7.4
