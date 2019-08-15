@@ -10,10 +10,7 @@ import Foundation
 import UIKit
 
 protocol LightningRefillViewControllerDelegate: class {
-  func lowAmountButtonWasTouched()
-  func mediumAmountButtonWasTouched()
-  func maxAmountButtonWasTouched()
-  func customAmountButtonWasTouched()
+  func amountButtonWasTouched(amount: TransferAmount)
   func dontAskMeAgainButtonWasTouched()
 }
 
@@ -63,22 +60,22 @@ class LightningRefillViewController: BaseViewController, StoryboardInitializable
 
   @IBAction func lowAmountButtonWasTouched() {
     dismiss(animated: true, completion: nil)
-    delegate?.lowAmountButtonWasTouched()
+    delegate?.amountButtonWasTouched(amount: .low)
   }
 
   @IBAction func mediumAmountButtonWasTouched() {
     dismiss(animated: true, completion: nil)
-    delegate?.mediumAmountButtonWasTouched()
+    delegate?.amountButtonWasTouched(amount: .medium)
   }
 
   @IBAction func maxAmountButtonWasTouched() {
     dismiss(animated: true, completion: nil)
-    delegate?.maxAmountButtonWasTouched()
+    delegate?.amountButtonWasTouched(amount: .max)
   }
 
   @IBAction func customAmountButtonWasTouched() {
     dismiss(animated: true, completion: nil)
-    delegate?.customAmountButtonWasTouched()
+    delegate?.amountButtonWasTouched(amount: .custom)
   }
 
   @IBAction func remindMeLaterButtonWasTouched() {

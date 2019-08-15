@@ -60,11 +60,7 @@ class WalletTransferViewController: PresentableViewController, StoryboardInitial
     return viewModel
   }
 
-  var currencyValueManager: CurrencyValueDataSourceType? {
-    didSet {
-      currencyValueManager = generalCoordinationDelegate as? CurrencyValueDataSourceType
-    }
-  }
+  var currencyValueManager: CurrencyValueDataSourceType?
 
   var coordinationDelegate: WalletTransferViewControllerDelegate? {
     return generalCoordinationDelegate as? WalletTransferViewControllerDelegate
@@ -77,6 +73,7 @@ class WalletTransferViewController: PresentableViewController, StoryboardInitial
     feesView.delegate = self
     let labels = viewModel.dualAmountLabels()
     editAmountView.configure(withLabels: labels, delegate: self)
+    currencyValueManager = generalCoordinationDelegate as? CurrencyValueDataSourceType
     setupUI()
     setupCurrencySwappableEditAmountView()
   }
@@ -94,7 +91,7 @@ class WalletTransferViewController: PresentableViewController, StoryboardInitial
     titleLabel.textColor = .darkBlueText
     switch viewModel.transferType {
     case .toOnChain:
-      titleLabel.text = "WITHDRAWL FROM LIGHTNING"
+      titleLabel.text = "WITHDRAW FROM LIGHTNING"
       transferImageView.image = UIImage(imageLiteralResourceName: "lightningToBitcoinIcon")
     case .toLightning:
       titleLabel.text = "LOAD LIGHTNING"
