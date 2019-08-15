@@ -98,7 +98,6 @@ class ConfirmPaymentViewController: PresentableViewController, StoryboardInitial
     coordinationDelegate?.viewControllerDidSelectClose(self)
   }
 
-
   override func viewDidLoad() {
     super.viewDidLoad()
 
@@ -117,18 +116,6 @@ class ConfirmPaymentViewController: PresentableViewController, StoryboardInitial
     coordinationDelegate?.confirmPaymentViewControllerDidLoad(self)
 
     updateViewWithModel()
-  }
-
-  @objc func confirmButtonDidConfirm() {
-    if confirmLongPressGestureRecognizer.state == .began {
-      switch transactionType {
-      case .payment:
-        routeConfirmedPayment(for: viewModel, feeModel: self.feeModel)
-      case .invite:
-        guard let inviteVM = viewModel as? ConfirmPaymentInviteViewModel else { return }
-        self.confirmInvite(with: inviteVM, feeModel: feeModel)
-      }
-    }
   }
 
   private func routeConfirmedPayment(for viewModel: BaseConfirmPaymentViewModel, feeModel: ConfirmTransactionFeeModel) {
@@ -366,9 +353,11 @@ extension ConfirmPaymentViewController: ConfirmViewDelegate {
   func viewDidConfirm() {
     switch transactionType {
     case .invite:
-      confirmInvite(with: viewModel, feeModel: self.feeModel)
+      guard let inviteVM = viewModel as? ConfirmPaymentInviteViewModel else { return }
+      self.confirmInvite(with: inviteVM, feeModel: feeModel)
     case .payment:
-      confirmPayment(with: viewModel, feeModel: self.feeModel)
+      routeConfirmedPayment(for: viewModel, feeModel: self.feeModel)
     }
   }
+
 }
