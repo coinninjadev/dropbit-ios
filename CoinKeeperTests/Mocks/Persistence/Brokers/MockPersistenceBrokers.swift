@@ -67,6 +67,7 @@ class MockPersistenceBrokers: PersistenceBrokersType {
   let mockTransaction: MockTransactionBroker
   let mockUser: MockUserBroker
   let mockWallet: MockWalletBroker
+  let mockLightning: MockLightningBroker
 
   init(activity: MockActivityBroker,
        checkIn: MockCheckInBroker,
@@ -76,7 +77,8 @@ class MockPersistenceBrokers: PersistenceBrokersType {
        preferences: MockPreferencesBroker,
        transaction: MockTransactionBroker,
        user: MockUserBroker,
-       wallet: MockWalletBroker) {
+       wallet: MockWalletBroker,
+       lightning: MockLightningBroker) {
     self.mockActivity = activity
     self.mockCheckIn = checkIn
     self.mockDevice = device
@@ -86,6 +88,7 @@ class MockPersistenceBrokers: PersistenceBrokersType {
     self.mockTransaction = transaction
     self.mockUser = user
     self.mockWallet = wallet
+    self.mockLightning = lightning
   }
 
   init(inputs: PersistenceBrokerInputsType) {
@@ -101,6 +104,7 @@ class MockPersistenceBrokers: PersistenceBrokersType {
     self.mockTransaction = MockTransactionBroker(keychain, database, defaults)
     self.mockUser = MockUserBroker(keychain, database, defaults)
     self.mockWallet = MockWalletBroker(keychain, database, defaults)
+    self.mockLightning = MockLightningBroker(keychain, database, defaults)
   }
 
   var activity: ActivityBrokerType { return mockActivity }
@@ -112,5 +116,6 @@ class MockPersistenceBrokers: PersistenceBrokersType {
   var transaction: TransactionBrokerType { return mockTransaction }
   var user: UserBrokerType { return mockUser }
   var wallet: WalletBrokerType { return mockWallet }
+  var lightning: LightningBrokerType { return mockLightning }
 
 }

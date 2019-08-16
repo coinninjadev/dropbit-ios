@@ -60,12 +60,12 @@ class MockSendPaymentViewControllerCoordinator: SendPaymentViewControllerCoordin
     self.networkManager = networkManager
   }
 
-  func balanceNetPending() -> NSDecimalNumber {
-    return .zero
+  func balanceNetPending() -> WalletBalances {
+    return (onChain: .zero, lightning: .zero)
   }
 
-  func spendableBalanceNetPending() -> NSDecimalNumber {
-    return .zero
+  func spendableBalanceNetPending() -> WalletBalances {
+    return (onChain: .zero, lightning: .zero)
   }
 
   func latestExchangeRates(responseHandler: (ExchangeRates) -> Void) {

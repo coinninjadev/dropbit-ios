@@ -23,5 +23,6 @@ class MockPreferencesBroker: CKPersistenceBroker, PreferencesBrokerType {
   var didOptOutOfInvitationPopup: Bool = false
   var adjustableFeesIsEnabled: Bool = false
   var preferredTransactionFeeType: TransactionFeeType = .default
+  var selectedWalletTransactionType: WalletTransactionType = .onChain
 
 }

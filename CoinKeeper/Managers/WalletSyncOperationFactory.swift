@@ -118,7 +118,7 @@ class WalletSyncOperationFactory {
 
   func updateLightningBalance(with dependencies: SyncDependencies, in context: NSManagedObjectContext) -> Promise<Void> {
       return dependencies.networkManager.getOrCreateLightningAccount()
-        .get(in: context) {  response in
+        .get(in: context) { response in
           let balance = dependencies.persistenceManager.brokers.lightning.getBalance(in: context)
           balance.balance = response.balance
           balance.pendingIn = response.pendingIn

@@ -80,6 +80,12 @@ class BalanceContainerTests: XCTestCase {
       didTapChartsButtonWasCalled = true
     }
 
+    var selectedWalletTransactionTypeWasCalled = false
+    func selectedWalletTransactionType() -> WalletTransactionType {
+      selectedWalletTransactionTypeWasCalled = true
+      return .onChain
+    }
+
     var didTapLeftWasCalled = false
     func containerDidTapLeftButton(in viewController: UIViewController) {
       didTapLeftWasCalled = true
