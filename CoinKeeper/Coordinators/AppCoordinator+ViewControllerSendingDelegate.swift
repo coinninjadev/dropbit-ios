@@ -298,7 +298,7 @@ extension AppCoordinator: ViewControllerSendingDelegate {
   private func showConfirmOnChainPayment(with viewModel: ConfirmOnChainPaymentViewModel,
                                          feeModel: ConfirmTransactionFeeModel) {
 
-    let isLightningConvertible = true //TODO
+    let isLightningConvertible = false //TODO
 
     let displayLightningPaymentViewController: CKCompletion = {}
 

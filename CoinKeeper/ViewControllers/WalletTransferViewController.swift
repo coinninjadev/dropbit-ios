@@ -28,17 +28,21 @@ enum TransferAmount {
 }
 
 protocol WalletTransferViewControllerDelegate: ViewControllerDismissable {
-  func viewControllerDidConfirmTransfer()
+  func viewControllerDidConfirmTransfer(_ viewController: UIViewController,
+                                        direction: TransferDirection,
+                                        btcAmount: NSDecimalNumber,
+                                        exchangeRates: ExchangeRates)
+}
+
+enum TransferDirection {
+  case toLightning //load
+  case toOnChain //withdraw
 }
 
 class WalletTransferViewController: PresentableViewController, StoryboardInitializable, CurrencySwappableAmountEditor {
 
   var rateManager: ExchangeRateManager = ExchangeRateManager()
 
-  enum TransferType {
-    case toLightning
-    case toOnChain
-  }
 
   @IBOutlet var titleLabel: UILabel!
   @IBOutlet var closeButton: UIButton!
@@ -90,7 +94,7 @@ class WalletTransferViewController: PresentableViewController, StoryboardInitial
   private func setupUI() {
     titleLabel.font = .regular(15)
     titleLabel.textColor = .darkBlueText
-    switch viewModel.transferType {
+    switch viewModel.direction {
     case .toOnChain:
       titleLabel.text = "WITHDRAW FROM LIGHTNING"
       transferImageView.image = UIImage(imageLiteralResourceName: "lightningToBitcoinIcon")
@@ -105,7 +109,12 @@ class WalletTransferViewController: PresentableViewController, StoryboardInitial
 extension WalletTransferViewController: ConfirmViewDelegate {
 
   func viewDidConfirm() {
-    coordinationDelegate?.viewControllerDidConfirmTransfer()
+    coordinationDelegate?.viewControllerDidConfirmTransfer(
+      self,
+      direction: .toLightning,
+      btcAmount: editAmountViewModel.btcAmount,
+      exchangeRates: self.rateManager.exchangeRates
+    )
   }
 }
 

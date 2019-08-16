@@ -20,7 +20,7 @@ protocol WalletOverviewViewControllerDelegate: BalanceContainerDelegate & BadgeU
   func viewControllerDidTapReceivePayment(_ viewController: UIViewController, converter: CurrencyConverter)
   func viewControllerDidTapSendPayment(_ viewController: UIViewController, converter: CurrencyConverter, walletTransactionType: WalletTransactionType)
   func viewControllerShouldAdjustForBottomSafeArea(_ viewController: UIViewController) -> Bool
-  func viewControllerDidSelectTransfer(withType type: WalletTransferViewController.TransferType)
+  func viewControllerDidSelectTransfer(withDirection direction: TransferDirection)
   func viewControllerDidTapWalletTooltip()
   func isSyncCurrentlyRunning() -> Bool
   func viewControllerDidRequestPrimaryCurrencySwap()
@@ -298,9 +298,9 @@ extension WalletOverviewViewController: WalletBalanceViewDelegate {
   }
 
   func transferButtonWasTouched() {
-    let transferType: WalletTransferViewController.TransferType = currentWallet == .bitcoinWalletTransactionHistory ?
-      .toLightning : .toOnChain
-    coordinationDelegate?.viewControllerDidSelectTransfer(withType: transferType)
+    let currentWalletIsOnChain = currentWallet == .bitcoinWalletTransactionHistory
+    let transferDirection: TransferDirection = currentWalletIsOnChain ? .toLightning : .toOnChain
+    coordinationDelegate?.viewControllerDidSelectTransfer(withDirection: transferDirection)
   }
 
   func swapPrimaryCurrency() {

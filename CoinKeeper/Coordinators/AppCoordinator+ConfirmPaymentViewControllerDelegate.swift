@@ -339,7 +339,7 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate, CurrencyFormatta
     }
   }
 
-  private func handleSuccessfulOnChainPaymentVerification(
+  func handleSuccessfulOnChainPaymentVerification(
     with transactionData: CNBTransactionData,
     outgoingTransactionData: OutgoingTransactionData) {
 
