@@ -51,8 +51,8 @@ class WalletOverviewViewController: BaseViewController, StoryboardInitializable 
       coordinationDelegate?.setSelectedWalletTransactionType(self, to: newValue)
     }
     didSet {
-      balanceContainer.update()
-      walletBalanceView.update()
+      balanceContainer.refresh()
+      walletBalanceView.refresh()
     }
   }
 

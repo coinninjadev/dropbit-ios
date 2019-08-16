@@ -474,6 +474,8 @@
 		A246C82D22CCF8A000AF1F52 /* WalletOverviewViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A246C82C22CCF8A000AF1F52 /* WalletOverviewViewController.storyboard */; };
 		A24B9E802305B92400852718 /* LightningBroker.swift in Sources */ = {isa = PBXBuildFile; fileRef = A24B9E7F2305B92400852718 /* LightningBroker.swift */; };
 		A24B9E822306E67A00852718 /* MockLightningBroker.swift in Sources */ = {isa = PBXBuildFile; fileRef = A24B9E812306E67A00852718 /* MockLightningBroker.swift */; };
+		A24B9E8423073B4F00852718 /* TransactionHistoryViewControllerDDS.swift in Sources */ = {isa = PBXBuildFile; fileRef = A24B9E8323073B4F00852718 /* TransactionHistoryViewControllerDDS.swift */; };
+		A24B9E862307401700852718 /* TransactionHistoryDetailsViewControllerDDS.swift in Sources */ = {isa = PBXBuildFile; fileRef = A24B9E852307401700852718 /* TransactionHistoryDetailsViewControllerDDS.swift */; };
 		A257CEB42302E5070063670B /* FeesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A257CEB32302E5070063670B /* FeesView.swift */; };
 		A257CEB62302E60A0063670B /* FeesView.xib in Resources */ = {isa = PBXBuildFile; fileRef = A257CEB52302E6090063670B /* FeesView.xib */; };
 		A257CEB82302F3BA0063670B /* AppCoordinator+WalletTransferViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A257CEB72302F3BA0063670B /* AppCoordinator+WalletTransferViewControllerDelegate.swift */; };
@@ -557,7 +559,6 @@
 		A2B4E6EE22FA476A00E24324 /* LightningRefillViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2B4E6ED22FA476A00E24324 /* LightningRefillViewController.swift */; };
 		A2B4E6F022FA488100E24324 /* LightningRefillViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A2B4E6EF22FA488100E24324 /* LightningRefillViewController.storyboard */; };
 		A2B4E6F222FC6D7B00E24324 /* AppCoordinator+LightningRefillViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2B4E6F122FC6D7B00E24324 /* AppCoordinator+LightningRefillViewControllerDelegate.swift */; };
-		A2B4E6F222FC6D7B00E24324 /* AppCoordinator+LightningRefillViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2B4E6F122FC6D7B00E24324 /* AppCoordinator+LightningRefillViewController.swift */; };
 		A2BFA54D22E7531500396D33 /* WalletToggleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2BFA54C22E7531500396D33 /* WalletToggleView.swift */; };
 		A2BFA54F22E7536A00396D33 /* WalletToggleView.xib in Resources */ = {isa = PBXBuildFile; fileRef = A2BFA54E22E7536A00396D33 /* WalletToggleView.xib */; };
 		A2DBC50222D78DAF008C532B /* CurrencySwappableEditAmountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2DBC50122D78DAF008C532B /* CurrencySwappableEditAmountView.swift */; };
@@ -1468,6 +1469,8 @@
 		A246C82C22CCF8A000AF1F52 /* WalletOverviewViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = WalletOverviewViewController.storyboard; sourceTree = "<group>"; };
 		A24B9E7F2305B92400852718 /* LightningBroker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightningBroker.swift; sourceTree = "<group>"; };
 		A24B9E812306E67A00852718 /* MockLightningBroker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockLightningBroker.swift; sourceTree = "<group>"; };
+		A24B9E8323073B4F00852718 /* TransactionHistoryViewControllerDDS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionHistoryViewControllerDDS.swift; sourceTree = "<group>"; };
+		A24B9E852307401700852718 /* TransactionHistoryDetailsViewControllerDDS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionHistoryDetailsViewControllerDDS.swift; sourceTree = "<group>"; };
 		A257CEB32302E5070063670B /* FeesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeesView.swift; sourceTree = "<group>"; };
 		A257CEB52302E6090063670B /* FeesView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FeesView.xib; sourceTree = "<group>"; };
 		A257CEB72302F3BA0063670B /* AppCoordinator+WalletTransferViewControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppCoordinator+WalletTransferViewControllerDelegate.swift"; sourceTree = "<group>"; };
@@ -1550,7 +1553,6 @@
 		A2B4E6EB22F9BCC200E24324 /* LightningTransactionHistoryEmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightningTransactionHistoryEmptyView.swift; sourceTree = "<group>"; };
 		A2B4E6ED22FA476A00E24324 /* LightningRefillViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightningRefillViewController.swift; sourceTree = "<group>"; };
 		A2B4E6EF22FA488100E24324 /* LightningRefillViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LightningRefillViewController.storyboard; sourceTree = "<group>"; };
-		A2B4E6F122FC6D7B00E24324 /* AppCoordinator+LightningRefillViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppCoordinator+LightningRefillViewController.swift"; sourceTree = "<group>"; };
 		A2B4E6F122FC6D7B00E24324 /* AppCoordinator+LightningRefillViewControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppCoordinator+LightningRefillViewControllerDelegate.swift"; sourceTree = "<group>"; };
 		A2BFA54C22E7531500396D33 /* WalletToggleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletToggleView.swift; sourceTree = "<group>"; };
 		A2BFA54E22E7536A00396D33 /* WalletToggleView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WalletToggleView.xib; sourceTree = "<group>"; };
@@ -2330,8 +2332,10 @@
 				A2952F7F22BD1C9500BDCE65 /* NewsViewControllerDDS.swift */,
 				A2E0689123047E660047090B /* TransactionHistoryDetailsViewControllerLightningDDS.swift */,
 				A2E0689323047EE50047090B /* TransactionHistoryDetailsViewControllerOnChainDDS.swift */,
+				A24B9E852307401700852718 /* TransactionHistoryDetailsViewControllerDDS.swift */,
 				A2E0689523047EF60047090B /* TransactionHistoryViewControllerOnChainDDS.swift */,
 				A2E0689723047F0B0047090B /* TransactionHistoryViewControllerLightningDDS.swift */,
+				A24B9E8323073B4F00852718 /* TransactionHistoryViewControllerDDS.swift */,
 			);
 			path = "Delegates and DataSources";
 			sourceTree = "<group>";
@@ -4351,6 +4355,7 @@
 				B54159CE20A60C720048F495 /* WalletResponse.swift in Sources */,
 				A246C82122CA562D00AF1F52 /* NetworkManager+NewsDataRequestable.swift in Sources */,
 				B57B78DD20B4878F007B71CB /* CKDateFormatter.swift in Sources */,
+				A24B9E8423073B4F00852718 /* TransactionHistoryViewControllerDDS.swift in Sources */,
 				B5A3BA602151940E005EE657 /* WalletAddressRequestsTarget.swift in Sources */,
 				30E96A312179FE2A008079B8 /* AppCoordinator+VerificationStatusViewControllerDelegate.swift in Sources */,
 				B5AC4F8321F8EBD5000ABAE8 /* WalletAddressesElasticQuery.swift in Sources */,
@@ -4499,6 +4504,7 @@
 				30B663202162AFF00011296C /* DeviceResponse.swift in Sources */,
 				B5E7EE7B21B02FFB00E058EF /* ValidatorAlertDisplayable.swift in Sources */,
 				B51AE4A8209398FE008380CC /* CKMPhoneNumber+CoreDataClass.swift in Sources */,
+				A24B9E862307401700852718 /* TransactionHistoryDetailsViewControllerDDS.swift in Sources */,
 				A2952F8022BD1C9500BDCE65 /* NewsViewControllerDDS.swift in Sources */,
 				B54159CB20A5DEBF0048F495 /* CKMUser+CoreDataClass.swift in Sources */,
 				3BA9F60B208F6E870047C213 /* AppCoordinator+BalanceDataSource.swift in Sources */,

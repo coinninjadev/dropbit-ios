@@ -9,19 +9,8 @@
 import Foundation
 import UIKit
 
-class TransactionHistoryViewControllerLightningDDS: NSObject, UICollectionViewDelegate,
+class TransactionHistoryViewControllerLightningDDS: TransactionHistoryViewControllerDDS, 
 UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
-
-  weak var viewController: TransactionHistoryViewController?
-
-  init(viewController: TransactionHistoryViewController) {
-    self.viewController = viewController
-  }
-
-  func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-    guard let viewController = viewController else { return }
-    viewController.showDetailCollectionView(true, indexPath: indexPath, animated: true)
-  }
 
   func numberOfSections(in collectionView: UICollectionView) -> Int {
     guard let viewController = viewController else { return 0 }
@@ -29,8 +18,7 @@ UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
   }
 
   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-    guard let viewController = viewController else { return 0 }
-    guard let sections = viewController.lightningFetchResultsController.sections else { return 0 }
+    guard let viewController = viewController, let sections = viewController.lightningFetchResultsController.sections else { return 0 }
     let numberOfObjects = sections[section].numberOfObjects
     return numberOfObjects
   }
