@@ -52,11 +52,6 @@ class TransactionHistorySummaryCollectionView: UICollectionView {
 
 class TransactionHistoryViewController: BaseViewController, StoryboardInitializable {
 
-  enum WalletTransactionType {
-    case onChain
-    case lightning
-  }
-
   @IBOutlet var emptyStateBackgroundView: UIView!
   @IBOutlet var summaryCollectionView: TransactionHistorySummaryCollectionView!
   @IBOutlet var transactionHistoryNoBalanceView: TransactionHistoryNoBalanceView!
