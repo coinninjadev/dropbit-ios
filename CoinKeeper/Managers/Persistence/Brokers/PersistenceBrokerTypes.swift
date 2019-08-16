@@ -45,7 +45,10 @@ protocol ActivityBrokerType: AnyObject {
 
 protocol LightningBrokerType: AnyObject {
 
-  func getBalance(in context: NSManagedObjectContext) -> CKMLNBalance
+  func getAccount(forWallet wallet: CKMWallet, in context: NSManagedObjectContext) -> CKMLNAccount
+  func persistAccountResponse(_ response: LNAccountResponse,
+                              forWallet wallet: CKMWallet,
+                              in context: NSManagedObjectContext)
 }
 
 protocol CheckInBrokerType: AnyObject {

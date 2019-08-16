@@ -93,7 +93,7 @@ class WalletSyncOperationFactory {
     return dependencies.databaseMigrationWorker.migrateIfPossible()
       .then { _ in dependencies.keychainMigrationWorker.migrateIfPossible() }
       .then(in: context) { self.checkAndRecoverAuthorizationIds(with: dependencies, in: context) }
-      .then(in: context) { self.updateLightningBalance(with: dependencies, in: context) }
+      .then(in: context) { self.updateLightningAccount(with: dependencies, in: context).asVoid() }
       .then(in: context) { dependencies.txDataWorker.performFetchAndStoreAllTransactionalData(in: context, fullSync: fullSync) }
       .get { _ in dependencies.connectionManager.setAPIUnreachable(false) }
       .then(in: context) { dependencies.walletWorker.updateServerPoolAddresses(in: context) }
@@ -116,14 +116,12 @@ class WalletSyncOperationFactory {
     }
   }
 
-  func updateLightningBalance(with dependencies: SyncDependencies, in context: NSManagedObjectContext) -> Promise<Void> {
-      return dependencies.networkManager.getOrCreateLightningAccount()
-        .get(in: context) {  response in
-          let balance = dependencies.persistenceManager.brokers.lightning.getBalance(in: context)
-          balance.balance = response.balance
-          balance.pendingIn = response.pendingIn
-          balance.pendingOut = response.pendingOut
-      }.asVoid()
+  func updateLightningAccount(with dependencies: SyncDependencies, in context: NSManagedObjectContext) -> Promise<LNAccountResponse> {
+    return dependencies.networkManager.getOrCreateLightningAccount()
+      .get(in: context) { lnAccountResponse in
+        let wallet = CKMWallet.findOrCreate(in: context)
+        dependencies.persistenceManager.brokers.lightning.persistAccountResponse(lnAccountResponse, forWallet: wallet, in: context)
+    }
   }
 
   func checkAndRecoverAuthorizationIds(with dependencies: SyncDependencies, in context: NSManagedObjectContext) -> Promise<Void> {

@@ -11,8 +11,15 @@ import CoreData
 
 class LightningBroker: CKPersistenceBroker, LightningBrokerType {
 
-  func getBalance(in context: NSManagedObjectContext) -> CKMLNBalance {
-    return CKMLNBalance.findOrCreate(in: context)
+  func getAccount(forWallet wallet: CKMWallet, in context: NSManagedObjectContext) -> CKMLNAccount {
+    return CKMLNAccount.findOrCreate(forWallet: wallet, in: context)
+  }
+
+  func persistAccountResponse(_ response: LNAccountResponse,
+                              forWallet wallet: CKMWallet,
+                              in context: NSManagedObjectContext) {
+    let account = getAccount(forWallet: wallet, in: context)
+    account.update(with: response)
   }
 
 }
