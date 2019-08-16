@@ -93,6 +93,7 @@ class WalletSyncOperationFactory {
     return dependencies.databaseMigrationWorker.migrateIfPossible()
       .then { _ in dependencies.keychainMigrationWorker.migrateIfPossible() }
       .then(in: context) { self.checkAndRecoverAuthorizationIds(with: dependencies, in: context) }
+      .then(in: context) { self.updateLightningBalance(with: dependencies, in: context) }
       .then(in: context) { dependencies.txDataWorker.performFetchAndStoreAllTransactionalData(in: context, fullSync: fullSync) }
       .get { _ in dependencies.connectionManager.setAPIUnreachable(false) }
       .then(in: context) { dependencies.walletWorker.updateServerPoolAddresses(in: context) }
@@ -113,6 +114,16 @@ class WalletSyncOperationFactory {
     } else {
       return Promise(error: error)
     }
+  }
+
+  func updateLightningBalance(with dependencies: SyncDependencies, in context: NSManagedObjectContext) -> Promise<Void> {
+      return dependencies.networkManager.getOrCreateLightningAccount()
+        .get(in: context) {  response in
+          let balance = dependencies.persistenceManager.brokers.lightning.getBalance(in: context)
+          balance.balance = response.balance
+          balance.pendingIn = response.pendingIn
+          balance.pendingOut = response.pendingOut
+      }.asVoid()
   }
 
   func checkAndRecoverAuthorizationIds(with dependencies: SyncDependencies, in context: NSManagedObjectContext) -> Promise<Void> {

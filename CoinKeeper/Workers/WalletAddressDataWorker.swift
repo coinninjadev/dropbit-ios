@@ -642,7 +642,7 @@ class WalletAddressDataWorker: WalletAddressDataWorkerType {
           // guard against insufficient funds
           let spendableBalance = self.walletManager.spendableBalance(in: context)
           let totalPendingAmount = pendingInvitation.totalPendingAmount
-          guard spendableBalance >= totalPendingAmount else {
+          guard spendableBalance.onChain >= totalPendingAmount else { //TODO: Check for lightning when available
             return Promise(error: PendingInvitationError.insufficientFundsForInvitationWithID(response.id))
           }
 

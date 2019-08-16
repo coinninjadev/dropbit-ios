@@ -12,6 +12,18 @@ import MMDrawerController
 
 extension AppCoordinator: WalletOverviewViewControllerDelegate {
 
+  func setSelectedWalletTransactionType(_ viewController: UIViewController, to selectedType: WalletTransactionType) {
+    persistenceManager.brokers.preferences.selectedWalletTransactionType = selectedType
+  }
+
+  func selectedWalletTransactionType() -> WalletTransactionType {
+    return persistenceManager.brokers.preferences.selectedWalletTransactionType
+  }
+
+  func viewControllerDidChangeSelectedWallet(_ viewController: UIViewController, to selectedType: WalletTransactionType) {
+    persistenceManager.brokers.preferences.selectedWalletTransactionType = selectedType
+  }
+
   func viewControllerDidSelectTransfer(withType type: WalletTransferViewController.TransferType) {
     let viewModel = WalletTransferViewModel(transferType: type, amount: .custom)
     let transferViewController = WalletTransferViewController.newInstance(delegate: self, viewModel: viewModel)

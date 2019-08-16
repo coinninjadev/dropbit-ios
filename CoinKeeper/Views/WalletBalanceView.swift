@@ -11,12 +11,14 @@ import UIKit
 
 protocol WalletBalanceViewDelegate: class {
   func isSyncCurrentlyRunning() -> Bool
+  func getCurrentWalletTransactionType() -> WalletTransactionType
   func transferButtonWasTouched()
   func swapPrimaryCurrency()
 }
 
 struct WalletBalanceDataSource {
-  let converter: CurrencyConverter
+  let onChainConverter: CurrencyConverter
+  let lightningConverter: CurrencyConverter
   let primaryCurrency: CurrencyCode
 }
 
@@ -25,6 +27,8 @@ class WalletBalanceView: UIView {
   @IBOutlet var primarySecondaryBalanceContainer: PrimarySecondaryBalanceContainer!
 
   weak var delegate: WalletBalanceViewDelegate?
+
+  private var currentDataSource: WalletBalanceDataSource?
 
   lazy private var recognizer = UITapGestureRecognizer(target: self, action: #selector(balanceContainerWasTouched))
 
@@ -53,10 +57,19 @@ class WalletBalanceView: UIView {
     primarySecondaryBalanceContainer.addGestureRecognizer(recognizer)
   }
 
+  func update() {
+    guard let dataSource = currentDataSource else { return }
+    update(with: dataSource)
+  }
+
   func update(with dataSource: WalletBalanceDataSource) {
-    let primaryCurrency = dataSource.primaryCurrency, primaryAmount = dataSource.converter.amount(forCurrency: primaryCurrency)
-    let secondaryCurrency = dataSource.converter.otherCurrency(forCurrency: primaryCurrency)
-    let secondaryAmount = dataSource.converter.amount(forCurrency: secondaryCurrency)
+    currentDataSource = dataSource
+    guard let transactionType = delegate?.getCurrentWalletTransactionType() else { return }
+    let converter: CurrencyConverter = transactionType == .lightning ? dataSource.lightningConverter : dataSource.onChainConverter
+
+    let primaryCurrency = dataSource.primaryCurrency, primaryAmount = converter.amount(forCurrency: primaryCurrency)
+    let secondaryCurrency = converter.otherCurrency(forCurrency: primaryCurrency)
+    let secondaryAmount = converter.amount(forCurrency: secondaryCurrency)
     primarySecondaryBalanceContainer.set(primaryAmount: primaryAmount, currency: primaryCurrency)
     primarySecondaryBalanceContainer.set(secondaryAmount: secondaryAmount, currency: secondaryCurrency)
 
@@ -77,5 +90,4 @@ class WalletBalanceView: UIView {
       break
     }
   }
-
 }

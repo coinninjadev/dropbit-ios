@@ -28,9 +28,30 @@ class TransactionHistorySummaryCellViewModel {
   var counterpartyAvatar: UIImage?
 
   private(set) var transaction: CKMTransaction?
+  private(set) var walletEntry: CKMWalletEntry?
 
   /// Empty initializer
   init() {
+    self.counterpartyDescription = ""
+    self.confirmations = 0
+    self.isConfirmed = false
+    self.isIncoming = false
+    self.broadcastFailed = false
+    let rates: ExchangeRates = [.USD: 7000, .BTC: 1]
+    let currencyPair = CurrencyPair(primary: .USD, secondary: .BTC, fiat: .USD)
+    self.sentAmountAtCurrentConverter = CurrencyConverter(rates: rates, fromAmount: .zero, currencyPair: currencyPair)
+    self.primaryCurrency = .USD
+    self.memo = ""
+  }
+
+  init(
+    walletEntry: CKMWalletEntry,
+    rates: ExchangeRates,
+    primaryCurrency: CurrencyCode,
+    deviceCountryCode: Int?
+    ) {
+
+    //TODO
     self.counterpartyDescription = ""
     self.confirmations = 0
     self.isConfirmed = false

@@ -15,6 +15,8 @@ protocol WalletOverviewViewControllerDelegate: BalanceContainerDelegate & BadgeU
   var currencyController: CurrencyController { get }
 
   func viewControllerDidTapScan(_ viewController: UIViewController, converter: CurrencyConverter)
+  func setSelectedWalletTransactionType(_ viewController: UIViewController, to selectedType: WalletTransactionType)
+  func selectedWalletTransactionType() -> WalletTransactionType
   func viewControllerDidTapReceivePayment(_ viewController: UIViewController, converter: CurrencyConverter)
   func viewControllerDidTapSendPayment(_ viewController: UIViewController, converter: CurrencyConverter, walletTransactionType: WalletTransactionType)
   func viewControllerShouldAdjustForBottomSafeArea(_ viewController: UIViewController) -> Bool
@@ -49,7 +51,16 @@ class WalletOverviewViewController: BaseViewController, StoryboardInitializable 
     case lightningWalletTransactionHistory = 1
   }
 
-  private var currentWallet: ViewControllerIndex = .bitcoinWalletTransactionHistory
+  private var currentWallet: ViewControllerIndex = .bitcoinWalletTransactionHistory {
+    willSet {
+      coordinationDelegate?.setSelectedWalletTransactionType(self, to:
+        newValue == .bitcoinWalletTransactionHistory ? .onChain : .lightning)
+    }
+    didSet {
+      balanceContainer.update()
+      walletBalanceView.update()
+    }
+  }
 
   var startSyncNotificationToken: NotificationToken?
   var finishSyncNotificationToken: NotificationToken?
@@ -170,6 +181,7 @@ extension WalletOverviewViewController: BadgeDisplayable {
 }
 
 extension WalletOverviewViewController: BalanceDisplayable {
+
   var walletBalanceView: WalletBalanceView { return currentWalletBalanceView }
   var balanceLeftButtonType: BalanceContainerLeftButtonType { return .menu }
   var primaryBalanceCurrency: CurrencyCode {
@@ -279,6 +291,11 @@ extension WalletOverviewViewController: SyncSubscribeable {
 }
 
 extension WalletOverviewViewController: WalletBalanceViewDelegate {
+
+  func getCurrentWalletTransactionType() -> WalletTransactionType {
+    guard let coordinationDelegate = coordinationDelegate else { return .onChain }
+    return coordinationDelegate.selectedWalletTransactionType()
+  }
 
   func transferButtonWasTouched() {
     let transferType: WalletTransferViewController.TransferType = currentWallet == .bitcoinWalletTransactionHistory ?

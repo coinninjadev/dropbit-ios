@@ -9,7 +9,7 @@
 import Foundation
 import CNBitcoinKit
 
-enum WalletTransactionType {
+enum WalletTransactionType: String {
   case onChain
   case lightning
 

@@ -109,6 +109,10 @@ SPEC CHECKSUMS:
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
   Willow: a6310f9aedcb6f4de8c35b94fd3416a660ae9280
 
+<<<<<<< HEAD
 PODFILE CHECKSUM: 01d35af36d9e934ff40e939ab59b63abf8a47b19
+=======
+PODFILE CHECKSUM: cc2ed0291823192094b8019dc7c0990f0bfd4dcf
+>>>>>>> feature/lightning-history
 
 COCOAPODS: 1.7.4

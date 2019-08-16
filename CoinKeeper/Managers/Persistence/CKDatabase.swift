@@ -309,6 +309,10 @@ class CKDatabase: PersistenceDatabaseType {
     }
   }
 
+  func getLightningBalance(in context: NSManagedObjectContext) -> CKMLNBalance {
+    return CKMLNBalance.findOrCreate(in: context)
+  }
+
   func addressesProvidedForReceivedPendingDropBits(in context: NSManagedObjectContext) -> [String] {
     return CKMInvitation.addressesProvidedForReceivedPendingDropBits(in: context)
   }
