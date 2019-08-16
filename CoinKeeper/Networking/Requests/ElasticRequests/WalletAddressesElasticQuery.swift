@@ -20,13 +20,14 @@ class WalletAddressesElasticQuery: ElasticQuery {
   }
 
   private enum CodingKeys: String, CodingKey {
-    case addressPubkey
+    case addressPubkey, addressType
   }
 
   override func encode(to encoder: Encoder) throws {
     try super.encode(to: encoder)
     var container = encoder.container(keyedBy: CodingKeys.self)
     try container.encode(self.addressPubkey, forKey: .addressPubkey)
+    try container.encode(self.addressType, forKey: .addressType)
   }
 
 }
