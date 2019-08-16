@@ -26,8 +26,8 @@ extension AppCoordinator: WalletOverviewViewControllerDelegate {
 
   func viewControllerDidSelectTransfer(withType type: WalletTransferViewController.TransferType) {
     let viewModel = WalletTransferViewModel(transferType: type, amount: .custom)
-    let transferViewContrller = WalletTransferViewController.newInstance(delegate: self, viewModel: viewModel)
-    navigationController.present(transferViewContrller, animated: true, completion: nil)
+    let transferViewController = WalletTransferViewController.newInstance(delegate: self, viewModel: viewModel)
+    navigationController.present(transferViewController, animated: true, completion: nil)
   }
 
   func viewControllerDidRequestPrimaryCurrencySwap() {

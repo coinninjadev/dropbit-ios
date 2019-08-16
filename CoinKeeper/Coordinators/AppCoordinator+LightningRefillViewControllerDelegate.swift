@@ -10,20 +10,8 @@ import Foundation
 
 extension AppCoordinator: LightningRefillViewControllerDelegate {
 
-  func lowAmountButtonWasTouched() {
-    showTransferViewController(withAmount: .low)
-  }
-
-  func mediumAmountButtonWasTouched() {
-    showTransferViewController(withAmount: .medium)
-  }
-
-  func maxAmountButtonWasTouched() {
-    showTransferViewController(withAmount: .max)
-  }
-
-  func customAmountButtonWasTouched() {
-    showTransferViewController(withAmount: .custom)
+  func amountButtonWasTouched(amount: TransferAmount) {
+    showTransferViewController(withAmount: amount)
   }
 
   func dontAskMeAgainButtonWasTouched() {

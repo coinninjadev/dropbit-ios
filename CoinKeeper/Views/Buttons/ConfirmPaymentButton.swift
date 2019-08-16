@@ -27,7 +27,7 @@ class ConfirmPaymentButton: UIButton {
   private var longPressGestureRecognizer: UILongPressGestureRecognizer = UILongPressGestureRecognizer()
 
   var secondsToConfirm: Double = 3.0
-  var style: Style = .original {
+  var style: Style {
     didSet {
       switch style {
       case .original:
@@ -41,6 +41,7 @@ class ConfirmPaymentButton: UIButton {
   }
 
   required init?(coder aDecoder: NSCoder) {
+    style = .original
     super.init(coder: aDecoder)
     initalize()
   }
