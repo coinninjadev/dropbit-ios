@@ -176,12 +176,16 @@ extension TransactionResponse {
   }
 
   static func validateResponse(_ response: TransactionResponse) throws -> TransactionResponse {
+    #if DEBUG
+    //blockheight can be -1 for mempool transactions in regtest
+    #else
     if let minedBlockheight = response.blockheight {
       guard minedBlockheight > 0 else {
         let path = TransactionResponseKey.blockheight.path
         throw CKNetworkError.invalidValue(keyPath: path, value: String(minedBlockheight), response: response)
       }
     }
+    #endif
 
     let stringValidatedVinResponses = try response.vinResponses.map { try TransactionVinResponse.validateResponse($0) }
     let stringValidatedVoutResponses = try response.voutResponses.map { try TransactionVoutResponse.validateResponse($0) }
