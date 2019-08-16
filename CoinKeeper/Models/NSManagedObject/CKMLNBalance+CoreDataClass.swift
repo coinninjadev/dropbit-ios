@@ -37,16 +37,12 @@ public class CKMLNBalance: NSManagedObject {
     let fetchRequest: NSFetchRequest<CKMLNBalance> = CKMLNBalance.fetchRequest()
     fetchRequest.fetchLimit = 1
 
-    var balance: CKMLNBalance?
-    context.performAndWait {
-      do {
-        let results = try context.fetch(fetchRequest)
-        balance = results.first
-      } catch {
-        balance = nil
-      }
+    do {
+      let results = try context.fetch(fetchRequest)
+      return results.first
+    } catch {
+      return nil
     }
-    return balance
   }
 
 }

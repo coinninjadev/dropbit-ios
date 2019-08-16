@@ -227,7 +227,7 @@
         <attribute name="lastSyncBlockHash" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="lastSyncDate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <relationship name="addressTransactionSummaries" toMany="YES" deletionRule="Cascade" destinationEntity="CKMAddressTransactionSummary" inverseName="wallet" inverseEntity="CKMAddressTransactionSummary" syncable="YES"/>
-        <relationship name="lightningBalance" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CKMLNBalance" inverseName="wallet" inverseEntity="CKMLNBalance" syncable="YES"/>
+        <relationship name="lightningBalance" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="CKMLNBalance" inverseName="wallet" inverseEntity="CKMLNBalance" syncable="YES"/>
         <relationship name="serverAddresses" toMany="YES" deletionRule="Nullify" destinationEntity="CKMServerAddress" inverseName="wallet" inverseEntity="CKMServerAddress" syncable="YES"/>
         <relationship name="user" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CKMUser" inverseName="wallet" inverseEntity="CKMUser" syncable="YES"/>
         <relationship name="walletEntries" toMany="YES" deletionRule="Cascade" destinationEntity="CKMWalletEntry" inverseName="wallet" inverseEntity="CKMWalletEntry" syncable="YES"/>
@@ -257,7 +257,7 @@
         <element name="CKMUser" positionX="-1523" positionY="144" width="128" height="120"/>
         <element name="CKMVin" positionX="-1845" positionY="657" width="128" height="133"/>
         <element name="CKMVout" positionX="-1503" positionY="639" width="128" height="165"/>
-        <element name="CKMWallet" positionX="-1368" positionY="99" width="128" height="193"/>
+        <element name="CKMWallet" positionX="-1368" positionY="99" width="128" height="195"/>
         <element name="CKMWalletEntry" positionX="-1818.1640625" positionY="-44.91796875" width="128" height="103"/>
     </elements>
 </model>

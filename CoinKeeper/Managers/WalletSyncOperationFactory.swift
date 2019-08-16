@@ -118,20 +118,12 @@ class WalletSyncOperationFactory {
 
   func updateLightningBalance(with dependencies: SyncDependencies, in context: NSManagedObjectContext) -> Promise<Void> {
       return dependencies.networkManager.getOrCreateLightningAccount()
-        .done {  response in
-          context.performAndWait {
-            let balance = dependencies.persistenceManager.brokers.lightning.getBalance(in: context)
-            balance.balance = response.balance
-            balance.pendingIn = response.pendingIn
-            balance.pendingOut = response.pendingOut
-
-            do {
-              try context.save()
-            } catch {
-              log.contextSaveError(error)
-            }
-          }
-      }
+        .get(in: context) {  response in
+          let balance = dependencies.persistenceManager.brokers.lightning.getBalance(in: context)
+          balance.balance = response.balance
+          balance.pendingIn = response.pendingIn
+          balance.pendingOut = response.pendingOut
+      }.asVoid()
   }
 
   func checkAndRecoverAuthorizationIds(with dependencies: SyncDependencies, in context: NSManagedObjectContext) -> Promise<Void> {
