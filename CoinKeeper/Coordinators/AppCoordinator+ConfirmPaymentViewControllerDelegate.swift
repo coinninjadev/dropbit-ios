@@ -414,7 +414,10 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate, CurrencyFormatta
                                                 failure: @escaping CKErrorCompletion) {
     //TODO: Get updated ledger and persist new entry immediately following payment
     self.networkManager.payLightningPaymentRequest(inputs.invoice, sats: inputs.sats).asVoid()
-      .done(success)
+      .done { _ in
+        success()
+        self.didBroadcastTransaction()
+      }
       .catch(failure)
   }
 
