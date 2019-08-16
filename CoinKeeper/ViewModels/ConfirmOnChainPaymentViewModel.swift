@@ -122,6 +122,15 @@ class ConfirmOnChainPaymentViewModel: BaseConfirmPaymentViewModel {
                exchangeRates: exchangeRates)
   }
 
+  convenience init(inputs: SendOnChainPaymentInputs) {
+    self.init(address: inputs.address,
+              contact: inputs.contact,
+              btcAmount: inputs.btcAmount,
+              currencyPair: inputs.currencyPair,
+              exchangeRates: inputs.exchangeRates,
+              outgoingTransactionData: inputs.outgoingTxData)
+  }
+
 }
 
 class ConfirmLightningPaymentViewModel: BaseConfirmPaymentViewModel {

@@ -664,6 +664,14 @@ extension SendPaymentViewController {
     return SharedPayloadAmountInfo(fiatCurrency: .USD, fiatAmount: 1)
   }
 
+  func delegateInputs(withPayloadDTO payloadDTO: SharedPayloadDTO, contact: ContactType?) -> SendingDelegateInputs {
+    return SendingDelegateInputs(primaryCurrency: self.viewModel.primaryCurrency,
+                                 walletTxType: self.viewModel.walletTransactionType,
+                                 contact: contact,
+                                 rates: self.viewModel.exchangeRates,
+                                 sharedPayload: payloadDTO)
+  }
+
   private func validatePayment(toDestination destination: String) throws {
     let recipient = try viewModel.recipientParser.findSingleRecipient(inText: destination, ofTypes: [.bitcoinURL])
     guard case let .bitcoinURL(url) = recipient, let address = url.components.address else {
@@ -710,15 +718,13 @@ extension SendPaymentViewController {
     }
 
     try validateInvitationMaximum(against: btcAmount)
+    let inputs = self.delegateInputs(withPayloadDTO: sharedPayload, contact: newContact)
+
     coordinationDelegate?.viewControllerDidBeginAddressNegotiation(self,
                                                                    btcAmount: btcAmount,
-                                                                   primaryCurrency: primaryCurrency,
-                                                                   contact: newContact,
                                                                    memo: self.viewModel.memo,
-                                                                   walletTransactionType: self.viewModel.walletTransactionType,
-                                                                   rates: self.rateManager.exchangeRates,
                                                                    memoIsShared: self.viewModel.sharedMemoDesired,
-                                                                   sharedPayload: sharedPayload)
+                                                                   inputs: inputs)
   }
 
   private func handleContactValidationError(_ error: Error) {
@@ -798,25 +804,16 @@ extension SendPaymentViewController {
                                               destination: String,
                                               contact: ContactType?,
                                               sharedPayload: SharedPayloadDTO) {
-    let rates = rateManager.exchangeRates
+    let inputs = self.delegateInputs(withPayloadDTO: sharedPayload, contact: contact)
+
     if let data = viewModel.sendMaxTransactionData {
-      coordinationDelegate?.viewController(self,
-                                           sendingMax: data,
-                                           address: destination,
-                                           walletTransactionType: viewModel.walletTransactionType,
-                                           contact: contact,
-                                           rates: rates,
-                                           sharedPayload: sharedPayload)
+      coordinationDelegate?.viewController(self, sendingMax: data, to: destination, inputs: inputs)
     } else {
       self.coordinationDelegate?.viewControllerDidSendPayment(self,
                                                               btcAmount: viewModel.btcAmount,
                                                               requiredFeeRate: viewModel.requiredFeeRate,
-                                                              primaryCurrency: primaryCurrency,
                                                               destination: destination,
-                                                              walletTransactionType: viewModel.walletTransactionType,
-                                                              contact: contact,
-                                                              rates: rates,
-                                                              sharedPayload: sharedPayload)
+                                                              inputs: inputs)
     }
 
   }

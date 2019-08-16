@@ -43,7 +43,6 @@ class WalletTransferViewController: PresentableViewController, StoryboardInitial
 
   var rateManager: ExchangeRateManager = ExchangeRateManager()
 
-
   @IBOutlet var titleLabel: UILabel!
   @IBOutlet var closeButton: UIButton!
   @IBOutlet var transferImageView: UIImageView!
@@ -80,6 +79,7 @@ class WalletTransferViewController: PresentableViewController, StoryboardInitial
     currencyValueManager = generalCoordinationDelegate as? CurrencyValueDataSourceType
     setupUI()
     setupCurrencySwappableEditAmountView()
+
   }
 
   func didUpdateExchangeRateManager(_ exchangeRateManager: ExchangeRateManager) {
@@ -103,7 +103,15 @@ class WalletTransferViewController: PresentableViewController, StoryboardInitial
       transferImageView.image = UIImage(imageLiteralResourceName: "bitcoinToLightningIcon")
     }
 
+    setupKeyboardDoneButton(for: [editAmountView.primaryAmountTextField],
+                            action: #selector(doneButtonWasPressed))
+
   }
+
+  @objc func doneButtonWasPressed() {
+    editAmountView.primaryAmountTextField.resignFirstResponder()
+  }
+
 }
 
 extension WalletTransferViewController: ConfirmViewDelegate {
@@ -111,7 +119,7 @@ extension WalletTransferViewController: ConfirmViewDelegate {
   func viewDidConfirm() {
     coordinationDelegate?.viewControllerDidConfirmTransfer(
       self,
-      direction: .toLightning,
+      direction: viewModel.direction,
       btcAmount: editAmountViewModel.btcAmount,
       exchangeRates: self.rateManager.exchangeRates
     )

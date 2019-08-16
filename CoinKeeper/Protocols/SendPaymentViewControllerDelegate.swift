@@ -10,6 +10,25 @@ import CNBitcoinKit
 import PromiseKit
 import enum Result.Result
 
+struct SendingDelegateInputs {
+  let primaryCurrency: CurrencyCode
+  let walletTxType: WalletTransactionType
+  let contact: ContactType?
+  let rates: ExchangeRates
+  let sharedPayload: SharedPayloadDTO
+}
+
+struct SendOnChainPaymentInputs {
+  let networkManager: NetworkManagerType
+  let wmgr: WalletManagerType
+  let outgoingTxData: OutgoingTransactionData
+  let btcAmount: NSDecimalNumber
+  let address: String
+  let contact: ContactType?
+  let currencyPair: CurrencyPair
+  let exchangeRates: ExchangeRates
+}
+
 protocol ViewControllerSendingDelegate: AnyObject {
 
   func viewController(_ viewController: UIViewController,
@@ -18,32 +37,21 @@ protocol ViewControllerSendingDelegate: AnyObject {
 
   func viewController(_ viewController: UIViewController,
                       sendingMax data: CNBTransactionData,
-                      address: String,
-                      walletTransactionType: WalletTransactionType,
-                      contact: ContactType?,
-                      rates: ExchangeRates,
-                      sharedPayload: SharedPayloadDTO)
+                      to address: String,
+                      inputs: SendingDelegateInputs)
 
   func viewControllerDidSendPayment(_ viewController: UIViewController,
                                     btcAmount: NSDecimalNumber,
                                     requiredFeeRate: Double?,
-                                    primaryCurrency: CurrencyCode,
-                                    destination: String, //btc address or encoded lightning invoice
-                                    walletTransactionType: WalletTransactionType,
-                                    contact: ContactType?,
-                                    rates: ExchangeRates,
-                                    sharedPayload: SharedPayloadDTO)
+                                    destination: String,
+                                    inputs: SendingDelegateInputs)
 
   /// An address negotiation applies to both new user invites and registered users without addresses on the server
   func viewControllerDidBeginAddressNegotiation(_ viewController: UIViewController,
                                                 btcAmount: NSDecimalNumber,
-                                                primaryCurrency: CurrencyCode,
-                                                contact: ContactType,
                                                 memo: String?,
-                                                walletTransactionType: WalletTransactionType,
-                                                rates: ExchangeRates,
                                                 memoIsShared: Bool,
-                                                sharedPayload: SharedPayloadDTO)
+                                                inputs: SendingDelegateInputs)
 
 }
 
