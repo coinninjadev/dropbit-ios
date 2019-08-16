@@ -22,7 +22,10 @@ protocol BalanceDataSource: CoreDataObserver {
   var balanceUpdateManager: BalanceUpdateManager { get }
 }
 
-typealias WalletBalances = (onChain: NSDecimalNumber, lightning: NSDecimalNumber)
+struct WalletBalances {
+  var onChain: NSDecimalNumber
+  var lightning: NSDecimalNumber
+}
 
 extension BalanceDataSource {
 
