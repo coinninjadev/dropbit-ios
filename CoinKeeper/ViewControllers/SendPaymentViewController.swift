@@ -103,9 +103,10 @@ class SendPaymentViewController: PresentableViewController,
 
   @IBAction func performNext() {
     do {
-      try validateAmount()
+//      try validateAmount()
       try validateAndSendPayment()
     } catch {
+      //TODO: test all potential amount errors are thrown for lightning
       showValidatorAlert(for: error, title: "Invalid Transaction")
     }
   }
