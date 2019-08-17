@@ -22,6 +22,7 @@ protocol PersistenceBrokersType: AnyObject {
   var transaction: TransactionBrokerType { get }
   var user: UserBrokerType { get }
   var wallet: WalletBrokerType { get }
+  var lightning: LightningBrokerType { get }
 
 }
 
@@ -40,6 +41,11 @@ protocol ActivityBrokerType: AnyObject {
   var lastContactCacheReload: Date? { get set }
   var backupWordsReminderShown: Bool { get set }
 
+}
+
+protocol LightningBrokerType: AnyObject {
+
+  func getBalance(in context: NSManagedObjectContext) -> CKMLNBalance
 }
 
 protocol CheckInBrokerType: AnyObject {
@@ -104,6 +110,7 @@ protocol PreferencesBrokerType: AnyObject {
   var adjustableFeesIsEnabled: Bool { get set }
   var preferredTransactionFeeType: TransactionFeeType { get set }
   var dontShowLightningRefill: Bool { get set }
+  var selectedWalletTransactionType: WalletTransactionType { get set }
 
 }
 

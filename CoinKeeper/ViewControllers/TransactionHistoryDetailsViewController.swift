@@ -25,13 +25,22 @@ final class TransactionHistoryDetailsViewController: PresentableViewController, 
 
   @IBOutlet var collectionView: TransactionHistoryDetailCollectionView! {
     didSet {
-      collectionView.dataSource = self
-      collectionView.delegate = self
+      if onChainFetchResultsController == nil {
+        let delegateAndDataSource = TransactionHistoryDetailsViewControllerOnChainDDS(viewController: self)
+        collectionView.dataSource = delegateAndDataSource
+        collectionView.delegate = delegateAndDataSource
+      } else {
+        let delegateAndDataSource = TransactionHistoryDetailsViewControllerLightningDDS(viewController: self)
+        collectionView.dataSource = delegateAndDataSource
+        collectionView.delegate = delegateAndDataSource
+      }
+
       collectionView.showsHorizontalScrollIndicator = false
     }
   }
   weak var urlOpener: URLOpener?
-  weak var frc: NSFetchedResultsController<CKMTransaction>?
+  weak var onChainFetchResultsController: NSFetchedResultsController<CKMTransaction>?
+  weak var lightningFetchResultsController: NSFetchedResultsController<CKMWalletEntry>?
   var selectedIndexPath: IndexPath = IndexPath(item: 0, section: 0)
   var viewModelForIndexPath: ((IndexPath) -> TransactionHistoryDetailCellViewModel)?
 
@@ -41,8 +50,22 @@ final class TransactionHistoryDetailsViewController: PresentableViewController, 
                           viewModelForIndexPath: @escaping (IndexPath) -> TransactionHistoryDetailCellViewModel,
                           urlOpener: URLOpener) -> TransactionHistoryDetailsViewController {
     let controller = TransactionHistoryDetailsViewController.makeFromStoryboard()
+    controller.onChainFetchResultsController = frc
     controller.generalCoordinationDelegate = delegate
-    controller.frc = frc
+    controller.selectedIndexPath = selectedIndexPath
+    controller.viewModelForIndexPath = viewModelForIndexPath
+    controller.urlOpener = urlOpener
+    return controller
+  }
+
+  static func newInstance(withDelegate delegate: TransactionHistoryDetailsViewControllerDelegate,
+                          fetchedResultsController frc: NSFetchedResultsController<CKMWalletEntry>,
+                          selectedIndexPath: IndexPath,
+                          viewModelForIndexPath: @escaping (IndexPath) -> TransactionHistoryDetailCellViewModel,
+                          urlOpener: URLOpener) -> TransactionHistoryDetailsViewController {
+    let controller = TransactionHistoryDetailsViewController.makeFromStoryboard()
+    controller.lightningFetchResultsController = frc
+    controller.generalCoordinationDelegate = delegate
     controller.selectedIndexPath = selectedIndexPath
     controller.viewModelForIndexPath = viewModelForIndexPath
     controller.urlOpener = urlOpener
@@ -77,23 +100,24 @@ final class TransactionHistoryDetailsViewController: PresentableViewController, 
     collectionView.reloadData()
   }
 
-  override func viewWillAppear(_ animated: Bool) {
-    super.viewWillAppear(animated)
-    collectionView.layoutIfNeeded()
-    collectionView.scrollToItem(at: selectedIndexPath, at: .centeredHorizontally, animated: false)
-  }
-
-  private var detailCollectionViewHeight: CGFloat {
+  var detailCollectionViewHeight: CGFloat {
     return presentationController?.frameOfPresentedViewInContainerView.size.height ?? .zero
   }
 
-  private func detailCollectionViewLayout(withHorizontalPadding hPadding: CGFloat) -> UICollectionViewFlowLayout {
+  func detailCollectionViewLayout(withHorizontalPadding hPadding: CGFloat) -> UICollectionViewFlowLayout {
     let layout = HorizontallyPaginatedCollectionViewLayout()
     layout.minimumInteritemSpacing = 0
     layout.minimumLineSpacing = 4
     layout.scrollDirection = .horizontal
     return layout
   }
+
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+    collectionView.layoutIfNeeded()
+    collectionView.scrollToItem(at: selectedIndexPath, at: .centeredHorizontally, animated: false)
+  }
+
 }
 
 extension TransactionHistoryDetailsViewController: TransactionHistoryDetailCellDelegate {
@@ -137,54 +161,6 @@ extension TransactionHistoryDetailsViewController: TransactionHistoryDetailCellD
     return delegate.viewControllerShouldUpdateTransaction(self, transaction: transaction)
   }
 
-}
-
-extension TransactionHistoryDetailsViewController: UICollectionViewDataSource {
-  func numberOfSections(in collectionView: UICollectionView) -> Int {
-    return 1
-  }
-
-  func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-    return frc?.fetchedObjects?.count ?? 0
-  }
-
-  func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-    guard let viewModel = viewModelForIndexPath?(indexPath) else { return UICollectionViewCell() }
-
-    if let invitation = viewModel.transaction?.invitation {
-      switch invitation.status {
-      case .canceled, .expired:
-        let cell = collectionView.dequeue(TransactionHistoryDetailInvalidCell.self, for: indexPath)
-        cell.load(with: viewModel, delegate: self)
-        return cell
-      default:
-        let cell = collectionView.dequeue(TransactionHistoryDetailValidCell.self, for: indexPath)
-        cell.load(with: viewModel, delegate: self)
-        return cell
-      }
-    } else {
-      let cell = collectionView.dequeue(TransactionHistoryDetailValidCell.self, for: indexPath)
-      cell.load(with: viewModel, delegate: self)
-      return cell
-    }
-  }
-}
-
-extension TransactionHistoryDetailsViewController: UICollectionViewDelegate {
-  func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-    collectionView.deselectItem(at: indexPath, animated: false)
-  }
-}
-
-extension TransactionHistoryDetailsViewController: UICollectionViewDelegateFlowLayout {
-  func collectionView(_ collectionView: UICollectionView,
-                      layout collectionViewLayout: UICollectionViewLayout,
-                      sizeForItemAt indexPath: IndexPath) -> CGSize {
-    let hPadding: CGFloat = 2
-    let itemHeight: CGFloat = detailCollectionViewHeight
-    let itemWidth: CGFloat = self.view.frame.width - (hPadding * 2)
-    return CGSize(width: itemWidth, height: itemHeight)
-  }
 }
 
 class TransactionHistoryDetailCollectionView: UICollectionView {}

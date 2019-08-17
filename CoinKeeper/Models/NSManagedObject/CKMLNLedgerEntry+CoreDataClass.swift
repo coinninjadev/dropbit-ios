@@ -11,5 +11,5 @@ import CoreData
 
 @objc(CKMLNLedgerEntry)
 public class CKMLNLedgerEntry: NSManagedObject {
-  
+
 }

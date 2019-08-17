@@ -52,11 +52,6 @@ class TransactionHistorySummaryCollectionView: UICollectionView {
 
 class TransactionHistoryViewController: BaseViewController, StoryboardInitializable {
 
-  enum WalletTransactionType {
-    case onChain
-    case lightning
-  }
-
   @IBOutlet var emptyStateBackgroundView: UIView!
   @IBOutlet var summaryCollectionView: TransactionHistorySummaryCollectionView!
   @IBOutlet var transactionHistoryNoBalanceView: TransactionHistoryNoBalanceView!
@@ -124,7 +119,8 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
   unowned var context: NSManagedObjectContext!
   var isLightning: Bool = false
 
-  lazy var frc: NSFetchedResultsController<CKMTransaction> = {
+  lazy var onChainDDS = TransactionHistoryViewControllerOnChainDDS(viewController: self)
+  lazy var onChainFetchResultsController: NSFetchedResultsController<CKMTransaction> = {
     let fetchRequest: NSFetchRequest<CKMTransaction> = CKMTransaction.fetchRequest()
     fetchRequest.sortDescriptors = CKMTransaction.transactionHistorySortDescriptors
     fetchRequest.fetchBatchSize = 25
@@ -132,9 +128,22 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
                                                 managedObjectContext: context,
                                                 sectionNameKeyPath: nil,
                                                 cacheName: nil) // avoid caching unless there is real need as it is often the source of bugs
-    if transactionType != .lightning {
-      try? controller.performFetch()
-    }
+    controller.delegate = self
+    try? controller.performFetch()
+    return controller
+  }()
+
+  lazy var lightningDDS = TransactionHistoryViewControllerLightningDDS(viewController: self)
+  lazy var lightningFetchResultsController: NSFetchedResultsController<CKMWalletEntry> = {
+    let fetchRequest: NSFetchRequest<CKMWalletEntry> = CKMWalletEntry.fetchRequest()
+    fetchRequest.sortDescriptors = CKMWalletEntry.transactionHistorySortDescriptors
+    fetchRequest.fetchBatchSize = 25
+    let controller = NSFetchedResultsController(fetchRequest: fetchRequest,
+                                                managedObjectContext: context,
+                                                sectionNameKeyPath: nil,
+                                                cacheName: nil) // avoid caching unless there is real need as it is often the source of bugs
+    controller.delegate = self
+    try? controller.performFetch()
     return controller
   }()
 
@@ -161,7 +170,6 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
     coordinationDelegate?.viewControllerDidRequestBadgeUpdate(self)
 
     setupCollectionViews()
-    frc.delegate = self
   }
 
   override func viewWillAppear(_ animated: Bool) {
@@ -187,8 +195,31 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
   }
 
   func detailViewModel(at indexPath: IndexPath) -> TransactionHistoryDetailCellViewModel {
-    let transaction = frc.object(at: indexPath)
-    return TransactionHistoryDetailCellViewModel(
+    let viewModel: TransactionHistoryDetailCellViewModel
+    switch transactionType {
+    case .onChain:
+      let transaction = onChainFetchResultsController.object(at: indexPath)
+      viewModel = TransactionHistoryDetailCellViewModel(
+        transaction: transaction,
+        rates: rateManager.exchangeRates,
+        primaryCurrency: preferredCurrency(),
+        deviceCountryCode: deviceCountryCode
+      )
+    case .lightning:
+      let walletEntry = lightningFetchResultsController.object(at: indexPath)
+      viewModel = TransactionHistoryDetailCellViewModel(
+        walletEntry: walletEntry,
+        rates: rateManager.exchangeRates,
+        primaryCurrency: preferredCurrency(),
+        deviceCountryCode: deviceCountryCode
+      )
+    }
+
+    return viewModel
+  }
+
+  func summaryViewModel(for transaction: CKMTransaction) -> TransactionHistorySummaryCellViewModel {
+    return TransactionHistorySummaryCellViewModel(
       transaction: transaction,
       rates: rateManager.exchangeRates,
       primaryCurrency: preferredCurrency(),
@@ -196,9 +227,9 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
     )
   }
 
-  func summaryViewModel(for transaction: CKMTransaction) -> TransactionHistorySummaryCellViewModel {
+  func summaryViewModel(for walletEntry: CKMWalletEntry) -> TransactionHistorySummaryCellViewModel {
     return TransactionHistorySummaryCellViewModel(
-      transaction: transaction,
+      walletEntry: walletEntry,
       rates: rateManager.exchangeRates,
       primaryCurrency: preferredCurrency(),
       deviceCountryCode: deviceCountryCode
@@ -211,8 +242,15 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
     summaryCollectionView.alwaysBounceVertical = true
     summaryCollectionView.contentInset = UIEdgeInsets(top: summaryCollectionView.topInset, left: 0, bottom: 0, right: 0)
 
-    summaryCollectionView.delegate = self
-    summaryCollectionView.dataSource = self
+    switch transactionType {
+    case .onChain:
+      summaryCollectionView.delegate = onChainDDS
+      summaryCollectionView.dataSource = onChainDDS
+    case .lightning:
+      summaryCollectionView.delegate = lightningDDS
+      summaryCollectionView.dataSource = lightningDDS
+    }
+
     summaryCollectionView.backgroundColor = .clear
 
     summaryCollectionView.collectionViewLayout = summaryCollectionViewLayout()
@@ -328,14 +366,60 @@ extension TransactionHistoryViewController: DZNEmptyDataSetDelegate, DZNEmptyDat
   }
 
   private var shouldShowLightningEmptyView: Bool {
-    return (frc.fetchedObjects?.count ?? 0) == 0 && transactionType == .lightning
+    return (lightningFetchResultsController.fetchedObjects?.count ?? 0) == 0 && transactionType == .lightning
   }
 
   private var shouldShowNoBalanceView: Bool {
-    return (frc.fetchedObjects?.count ?? 0) == 0 && transactionType == .onChain
+    return (onChainFetchResultsController.fetchedObjects?.count ?? 0) == 0 && transactionType == .onChain
   }
 
   private var shouldShowWithBalanceView: Bool {
-    return (frc.fetchedObjects?.count ?? 0) == 1 && transactionType == .onChain
+    return (onChainFetchResultsController.fetchedObjects?.count ?? 0) == 1 && transactionType == .onChain
+  }
+}
+
+extension TransactionHistoryViewController {
+
+  func summaryCollectionViewLayout() -> UICollectionViewFlowLayout {
+    let layout = UICollectionViewFlowLayout()
+    layout.minimumLineSpacing = 0
+    layout.scrollDirection = .vertical
+    return layout
+  }
+
+}
+
+extension TransactionHistoryViewController: UIScrollViewDelegate {
+
+  func scrollViewDidScroll(_ scrollView: UIScrollView) {
+    let topOfWalletBalanceOffset: CGFloat = -60, middleOfWalletBalanceOffset: CGFloat = -100
+    let collectionViewFullScreenOffset = scrollView.contentOffset.y < middleOfWalletBalanceOffset
+    let collectionViewPartialScreenOffset = scrollView.contentOffset.y > topOfWalletBalanceOffset
+    guard collectionViewFullScreenOffset || collectionViewPartialScreenOffset else { return }
+
+    if collectionViewPartialScreenOffset {
+      summaryCollectionView.historyDelegate?.collectionViewDidCoverWalletBalance()
+      isCollectionViewFullScreen = false
+    } else {
+      summaryCollectionView.historyDelegate?.collectionViewDidUncoverWalletBalance()
+      isCollectionViewFullScreen = true
+    }
+
+    let offset = abs(scrollView.contentOffset.y)
+    refreshViewTopConstraint.constant = offset - refreshView.frame.size.height
+    refreshView.animateLogo(to: scrollView.contentOffset.y)
+  }
+
+  func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+    refreshView.reset()
+    refreshViewTopConstraint.constant = 0
+  }
+
+  func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+    refreshView.fireRefreshAnimationIfNecessary()
+
+    if refreshView.shouldQueueRefresh {
+      coordinationDelegate?.viewControllerAttemptedToRefreshTransactions(self)
+    }
   }
 }

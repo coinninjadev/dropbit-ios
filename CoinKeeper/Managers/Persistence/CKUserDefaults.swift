@@ -51,6 +51,7 @@ class CKUserDefaults: PersistenceUserDefaultsType {
     case lastTimeEnteredBackground
     case adjustableFeesEnabled
     case preferredTransactionFeeMode
+    case selectedWalletTransactionType
 
     var defaultsString: String { return self.rawValue }
   }
@@ -69,7 +70,8 @@ class CKUserDefaults: PersistenceUserDefaultsType {
       .backupWordsReminderShown,
       .unseenTransactionChangesExist,
       .lastSuccessfulSyncCompletedAt,
-      .yearlyPriceHighNotificationEnabled
+      .yearlyPriceHighNotificationEnabled,
+      .selectedWalletTransactionType
       ])
   }
 

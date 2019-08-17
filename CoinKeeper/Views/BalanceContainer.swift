@@ -16,12 +16,14 @@ protocol BalanceContainerDelegate: AnyObject {
   func didTapChartsButton()
   func isSyncCurrentlyRunning() -> Bool
   func selectedCurrency() -> SelectedCurrency
+  func selectedWalletTransactionType() -> WalletTransactionType
   func dropBitMeAvatar() -> Promise<UIImage>
 }
 
 struct BalanceContainerDataSource {
   let leftButtonType: BalanceContainerLeftButtonType
-  let converter: CurrencyConverter
+  let onChainConverter: CurrencyConverter
+  let lightningConverter: CurrencyConverter
   let primaryCurrency: CurrencyCode
 }
 
@@ -62,6 +64,8 @@ enum BalanceContainerLeftButtonType {
   var startSyncNotificationToken: NotificationToken?
   var finishSyncNotificationToken: NotificationToken?
   var updateAvatarNotificationToken: NotificationToken?
+
+  private var currentDataSource: BalanceContainerDataSource?
 
   @IBAction func didTapLeftButton(_ sender: Any) {
     guard let delegate = delegate, let parent = parentViewController else { return }
@@ -109,20 +113,29 @@ enum BalanceContainerLeftButtonType {
     rightBalanceContainerView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapRightBalanceView)))
   }
 
+  func refresh() {
+    guard let dataSource = currentDataSource else { return }
+    update(with: dataSource)
+  }
+
   func update(with dataSource: BalanceContainerDataSource) {
+    currentDataSource = dataSource
+    guard let delegate = delegate else { return }
     leftButton.setImage(dataSource.leftButtonType.image, for: .normal)
     leftButton.badgeDisplayCriteria = dataSource.leftButtonType.badgeCriteria
 
     updateAvatar()
 
+    let converter = delegate.selectedWalletTransactionType() == .lightning ?
+      dataSource.lightningConverter : dataSource.onChainConverter
     let primaryCurrency = dataSource.primaryCurrency
-    let secondaryCurrency = dataSource.converter.otherCurrency(forCurrency: primaryCurrency)
-    let primaryAmount = dataSource.converter.amount(forCurrency: primaryCurrency)
-    let secondaryAmount = dataSource.converter.amount(forCurrency: secondaryCurrency)
+    let secondaryCurrency = converter.otherCurrency(forCurrency: primaryCurrency)
+    let primaryAmount = converter.amount(forCurrency: primaryCurrency)
+    let secondaryAmount = converter.amount(forCurrency: secondaryCurrency)
     primarySecondaryBalanceContainer.set(primaryAmount: primaryAmount, currency: primaryCurrency)
     primarySecondaryBalanceContainer.set(secondaryAmount: secondaryAmount, currency: secondaryCurrency)
 
-    if let syncRunning = delegate?.isSyncCurrentlyRunning(), syncRunning == false {
+    if delegate.isSyncCurrentlyRunning() {
       primarySecondaryBalanceContainer.isSyncing = false
     }
   }

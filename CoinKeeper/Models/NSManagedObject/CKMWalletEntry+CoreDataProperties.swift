@@ -15,6 +15,10 @@ extension CKMWalletEntry {
     return NSFetchRequest<CKMWalletEntry>(entityName: "CKMWalletEntry")
   }
 
+  static let transactionHistorySortDescriptors: [NSSortDescriptor] = [
+    NSSortDescriptor(key: #keyPath(CKMWalletEntry.sortDate), ascending: false)
+  ]
+
   @NSManaged public var sortDate: Date?
   @NSManaged public var isHidden: Bool
   @NSManaged public var ledgerEntry: CKMLNLedgerEntry?

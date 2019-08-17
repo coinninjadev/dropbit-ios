@@ -11,7 +11,7 @@ import CoreData
 
 @objc public enum CKMLNTransactionStatus: Int16 {
   case pending, completed, expired, failed
-  
+
   init(status: LNTransactionStatus) {
     switch status {
     case .pending:    self = .pending

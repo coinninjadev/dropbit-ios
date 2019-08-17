@@ -12,6 +12,6 @@ import UIKit
 extension AppCoordinator: WalletTransferViewControllerDelegate {
 
   func viewControllerDidConfirmTransfer() {
-    
+
   }
 }

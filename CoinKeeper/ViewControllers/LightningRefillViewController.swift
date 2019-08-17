@@ -39,7 +39,7 @@ class LightningRefillViewController: BaseViewController, StoryboardInitializable
 
   override func viewDidLoad() {
     super.viewDidLoad()
-    
+
     view.isOpaque = false
     view.backgroundColor = UIColor.black.withAlphaComponent(0.85)
 

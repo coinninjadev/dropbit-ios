@@ -12,25 +12,27 @@ import UIKit
 extension AppCoordinator: BalanceDataSource {
 
   /// Use this when displaying the balance
-  func balanceNetPending() -> NSDecimalNumber {
-    guard let wmgr = walletManager else { return .zero }
+  func balanceNetPending() -> WalletBalances {
+    guard let wmgr = walletManager else { return WalletBalances(onChain: .zero, lightning: .zero)}
     let context = persistenceManager.createBackgroundContext()
-    var balance = 0
+    var balance = (onChain: 0, lightning: 0)
     context.performAndWait {
       balance = wmgr.balanceNetPending(in: context)
     }
-    return NSDecimalNumber(integerAmount: balance, currency: .BTC)
+    return WalletBalances(onChain: NSDecimalNumber(integerAmount: balance.onChain, currency: .BTC),
+            lightning: NSDecimalNumber(integerAmount: balance.lightning, currency: .BTC))
   }
 
   /// isSpendable relies on having at least 1 confirmation
-  func spendableBalanceNetPending() -> NSDecimalNumber {
-    guard let wmgr = walletManager else { return .zero }
+  func spendableBalanceNetPending() -> WalletBalances {
+    guard let wmgr = walletManager else { return WalletBalances(onChain: .zero, lightning: .zero)}
     let context = persistenceManager.createBackgroundContext()
-    var balance = 0
+    var balance = (onChain: 0, lightning: 0)
     context.performAndWait {
       balance = wmgr.spendableBalance(in: context)
     }
-    return NSDecimalNumber(integerAmount: balance, currency: .BTC)
+    return WalletBalances(onChain: NSDecimalNumber(integerAmount: balance.onChain, currency: .BTC),
+            lightning: NSDecimalNumber(integerAmount: balance.lightning, currency: .BTC))
   }
 
 }

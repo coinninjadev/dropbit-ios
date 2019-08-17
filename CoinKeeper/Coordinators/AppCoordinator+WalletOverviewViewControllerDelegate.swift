@@ -12,6 +12,18 @@ import MMDrawerController
 
 extension AppCoordinator: WalletOverviewViewControllerDelegate {
 
+  func setSelectedWalletTransactionType(_ viewController: UIViewController, to selectedType: WalletTransactionType) {
+    persistenceManager.brokers.preferences.selectedWalletTransactionType = selectedType
+  }
+
+  func selectedWalletTransactionType() -> WalletTransactionType {
+    return persistenceManager.brokers.preferences.selectedWalletTransactionType
+  }
+
+  func viewControllerDidChangeSelectedWallet(_ viewController: UIViewController, to selectedType: WalletTransactionType) {
+    persistenceManager.brokers.preferences.selectedWalletTransactionType = selectedType
+  }
+
   func viewControllerDidSelectTransfer(withType type: WalletTransferViewController.TransferType) {
     let viewModel = WalletTransferViewModel(transferType: type, amount: .custom)
     let transferViewController = WalletTransferViewController.newInstance(delegate: self, viewModel: viewModel)
@@ -49,7 +61,8 @@ extension AppCoordinator: WalletOverviewViewControllerDelegate {
     }
   }
 
-  func viewControllerDidTapSendPayment(_ viewController: UIViewController, converter: CurrencyConverter, walletTransactionType: WalletTransactionType) {
+  func viewControllerDidTapSendPayment(_ viewController: UIViewController,
+                                       converter: CurrencyConverter, walletTransactionType: WalletTransactionType) {
     guard let walletOverviewViewController = viewController as? WalletOverviewViewController else { return }
     walletOverviewViewController.balanceContainer.toggleChartAndBalance()
     analyticsManager.track(event: .payButtonWasPressed, with: nil)

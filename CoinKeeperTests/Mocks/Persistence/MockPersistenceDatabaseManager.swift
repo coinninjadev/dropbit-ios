@@ -49,6 +49,13 @@ class MockPersistenceDatabaseManager: PersistenceDatabaseType {
 
   func removeWalletId(in context: NSManagedObjectContext) { }
 
+  var getLightningBalanceWasCalled = false
+  func getLightningBalance(in context: NSManagedObjectContext) -> CKMLNBalance {
+    let balance = CKMLNBalance(insertInto: context)
+    getLightningBalanceWasCalled = true
+    return balance
+  }
+
   func transactionsWithoutDayAveragePrice(in context: NSManagedObjectContext) -> Promise<[CKMTransaction]> {
     return Promise { _ in }
   }
