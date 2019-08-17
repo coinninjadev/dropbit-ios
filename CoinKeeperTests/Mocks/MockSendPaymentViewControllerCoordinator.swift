@@ -61,11 +61,11 @@ class MockSendPaymentViewControllerCoordinator: SendPaymentViewControllerCoordin
   }
 
   func balanceNetPending() -> WalletBalances {
-    return (onChain: .zero, lightning: .zero)
+    return WalletBalances(onChain: .zero, lightning: .zero)
   }
 
   func spendableBalanceNetPending() -> WalletBalances {
-    return (onChain: .zero, lightning: .zero)
+    return WalletBalances(onChain: .zero, lightning: .zero)
   }
 
   func latestExchangeRates(responseHandler: (ExchangeRates) -> Void) {
