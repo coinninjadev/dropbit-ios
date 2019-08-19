@@ -137,7 +137,19 @@ class MockSendPaymentViewControllerCoordinator: SendPaymentViewControllerCoordin
     completion(nil)
   }
 
+<<<<<<< HEAD
   func sendPaymentViewControllerDidLoad(_ viewController: UIViewController) { }
+=======
+  func viewControllerDidRequestRegisteredAddress(_ viewController: UIViewController,
+                                                 ofType addressType: WalletAddressType,
+                                                 forIdentity identityHash: String) -> Promise<[WalletAddressesQueryResponse]> {
+    return Promise { _ in }
+  }
+
+  func sendPaymentViewControllerDidLoad(_ viewController: UIViewController) {
+
+  }
+>>>>>>> Update coordinator for protocol
 
   func viewControllerDidAttemptInvalidDestination(_ viewController: UIViewController, error: Error?) { }
 
