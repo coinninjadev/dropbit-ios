@@ -143,9 +143,8 @@ extension TransactionHistoryDetailsViewController: TransactionHistoryDetailCellD
 //    coordinationDelegate?.openURL(addressURL, completionHandler: nil)
   }
 
-  func didTapBottomButton(detailCell: TransactionHistoryDetailBaseCell, action: TransactionDetailAction) {
-    switch action {
-      //TODO
+  func didTapBottomButton(detailCell: TransactionHistoryDetailBaseCell) {
+      //TODO get managed object, viewModel, and action
 //    case .seeDetails:
 //      guard let viewModel = detailCell.viewModel else { return }
 //      coordinationDelegate?.viewControllerShouldSeeTransactionDetails(for: viewModel)
@@ -153,9 +152,6 @@ extension TransactionHistoryDetailsViewController: TransactionHistoryDetailCellD
 //      guard let invitationID = detailCell.viewModel?.transaction?.invitation?.id,
 //        let path = collectionView.indexPath(for: detailCell) else { return }
 //      coordinationDelegate?.viewController(self, didCancelInvitationWithID: invitationID, at: path)
-    default:
-      break
-    }
   }
 
   func didTapAddMemo(detailCell: TransactionHistoryDetailBaseCell) {

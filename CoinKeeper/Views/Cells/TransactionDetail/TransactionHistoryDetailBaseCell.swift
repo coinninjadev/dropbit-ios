@@ -14,7 +14,7 @@ protocol TransactionHistoryDetailCellDelegate: class {
   func didTapClose(detailCell: TransactionHistoryDetailBaseCell)
   func didTapTwitterShare(detailCell: TransactionHistoryDetailBaseCell)
   func didTapAddress(detailCell: TransactionHistoryDetailBaseCell)
-  func didTapBottomButton(detailCell: TransactionHistoryDetailBaseCell, action: TransactionDetailAction)
+  func didTapBottomButton(detailCell: TransactionHistoryDetailBaseCell)
   func didTapAddMemo(detailCell: TransactionHistoryDetailBaseCell)
   func shouldSaveMemo(for transaction: CKMTransaction) -> Promise<Void>
 }
@@ -89,7 +89,6 @@ class TransactionHistoryDetailBaseCell: UICollectionViewCell {
   func load(with viewModel: TransactionHistoryDetailCellDisplayable, delegate: TransactionHistoryDetailCellDelegate) {
     self.viewModel = viewModel
     self.delegate = delegate
-
 
   }
 

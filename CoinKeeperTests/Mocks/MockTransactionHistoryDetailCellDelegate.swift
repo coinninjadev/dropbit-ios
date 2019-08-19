@@ -32,10 +32,8 @@ class MockTransactionHistoryDetailCellDelegate: TransactionHistoryDetailCellDele
   }
 
   var tappedBottomButton = false
-  var transactionDetailAction = TransactionDetailAction.seeDetails
-  func didTapBottomButton(detailCell: TransactionHistoryDetailBaseCell, action: TransactionDetailAction) {
+  func didTapBottomButton(detailCell: TransactionHistoryDetailBaseCell) {
     tappedBottomButton = true
-    transactionDetailAction = action
   }
 
   var tappedAddMemo = false

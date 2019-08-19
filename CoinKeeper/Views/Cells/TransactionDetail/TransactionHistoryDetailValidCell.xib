@@ -45,7 +45,7 @@
                                         </constraints>
                                         <state key="normal" image="questionMarkIcon"/>
                                         <connections>
-                                            <action selector="didTapQuestionMarkButton:" destination="gTV-IL-0wX" eventType="touchUpInside" id="X0q-MM-M34"/>
+                                            <action selector="didTapQuestionMark:" destination="gTV-IL-0wX" eventType="touchUpInside" id="AJm-dK-fJO"/>
                                         </connections>
                                     </button>
                                 </subviews>

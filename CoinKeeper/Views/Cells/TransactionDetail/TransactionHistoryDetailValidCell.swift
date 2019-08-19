@@ -61,8 +61,7 @@ class TransactionHistoryDetailValidCell: TransactionHistoryDetailBaseCell {
 
   // MARK: actions
   @IBAction func didTapBottomButton(_ sender: UIButton) {
-//    guard let action = TransactionDetailAction(rawValue: sender.tag) else { return }
-//    delegate?.didTapBottomButton(detailCell: self, action: action)
+    delegate.didTapBottomButton(detailCell: self)
   }
 
   // MARK: private methods
@@ -72,7 +71,6 @@ class TransactionHistoryDetailValidCell: TransactionHistoryDetailBaseCell {
       return
     }
     bottomButton.isHidden = false
-//    bottomButton.tag = action.rawValue
     bottomButton.setTitle(action.buttonTitle, for: .normal)
 
 //    switch action {
