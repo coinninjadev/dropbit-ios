@@ -49,10 +49,16 @@ class MockSendPaymentViewControllerCoordinator: SendPaymentViewControllerCoordin
     }
   }
 
-  func viewController(_ viewController: UIViewController,
-                      sendingMax data: CNBTransactionData,
-                      to address: String,
-                      inputs: SendingDelegateInputs) { }
+  func viewController(
+    _ viewController: UIViewController,
+    sendingMax data: CNBTransactionData,
+    address: String,
+    walletTransactionType: WalletTransactionType,
+    contact: ContactType?,
+    rates: ExchangeRates,
+    sharedPayload: SharedPayloadDTO) {
+
+  }
 
   func balanceNetPending() -> WalletBalances {
     return WalletBalances(onChain: .zero, lightning: .zero)
@@ -125,11 +131,20 @@ class MockSendPaymentViewControllerCoordinator: SendPaymentViewControllerCoordin
                                     paymentTarget: String,
                                     inputs: SendingDelegateInputs) { }
 
-  func viewControllerDidBeginAddressNegotiation(_ viewController: UIViewController,
-                                                btcAmount: NSDecimalNumber,
-                                                memo: String?,
-                                                memoIsShared: Bool,
-                                                inputs: SendingDelegateInputs) { }
+  }
+
+  func viewControllerDidBeginAddressNegotiation(
+    _ viewController: UIViewController,
+    btcAmount: NSDecimalNumber,
+    primaryCurrency: CurrencyCode,
+    contact: ContactType,
+    memo: String?,
+    walletTransactionType: WalletTransactionType,
+    rates: ExchangeRates,
+    memoIsShared: Bool,
+    sharedPayload: SharedPayloadDTO) {
+
+  }
 
   func viewController(_ viewController: UIViewController,
                       checkForContactFromGenericContact genericContact: GenericContact,
@@ -137,19 +152,13 @@ class MockSendPaymentViewControllerCoordinator: SendPaymentViewControllerCoordin
     completion(nil)
   }
 
-<<<<<<< HEAD
-  func sendPaymentViewControllerDidLoad(_ viewController: UIViewController) { }
-=======
   func viewControllerDidRequestRegisteredAddress(_ viewController: UIViewController,
                                                  ofType addressType: WalletAddressType,
                                                  forIdentity identityHash: String) -> Promise<[WalletAddressesQueryResponse]> {
     return Promise { _ in }
   }
 
-  func sendPaymentViewControllerDidLoad(_ viewController: UIViewController) {
-
-  }
->>>>>>> Update coordinator for protocol
+  func sendPaymentViewControllerDidLoad(_ viewController: UIViewController) { }
 
   func viewControllerDidAttemptInvalidDestination(_ viewController: UIViewController, error: Error?) { }
 
