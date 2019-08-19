@@ -36,9 +36,7 @@ extension AppCoordinator: ViewControllerSendingDelegate {
     var outgoingTxData = OutgoingTransactionData.emptyInstance()
     outgoingTxData.feeAmount = Int(txData.feeAmount)
     outgoingTxData.amount = Int(txData.amount)
-    outgoingTxData = configureOutgoingTransactionData(with: outgoingTxData, address: address,
-                                                      contact: inputs.contact, rates: inputs.rates,
-                                                      sharedPayload: inputs.sharedPayload)
+    outgoingTxData = configureOutgoingTransactionData(with: outgoingTxData, address: address, inputs: inputs)
 
     let btcAmount = NSDecimalNumber(integerAmount: outgoingTxData.amount, currency: .BTC)
     let currencyPair = CurrencyPair(btcPrimaryWith: self.currencyController)
@@ -131,8 +129,7 @@ extension AppCoordinator: ViewControllerSendingDelegate {
         var outgoingTxData = OutgoingTransactionData.emptyInstance()
         outgoingTxData.amount = btcAmount.asFractionalUnits(of: .BTC)
         outgoingTxData.requiredFeeRate = requiredFeeRate
-        outgoingTxData = self.configureOutgoingTransactionData(with: outgoingTxData, address: destination, contact: inputs.contact,
-                                                               rates: inputs.rates, sharedPayload: inputs.sharedPayload)
+        outgoingTxData = self.configureOutgoingTransactionData(with: outgoingTxData, address: destination, inputs: inputs)
 
         let paymentInputs = SendOnChainPaymentInputs(networkManager: self.networkManager, wmgr: wmgr,
                                                      outgoingTxData: outgoingTxData, btcAmount: btcAmount,
@@ -239,20 +236,18 @@ extension AppCoordinator: ViewControllerSendingDelegate {
 
   private func configureOutgoingTransactionData(with dto: OutgoingTransactionData,
                                                 address: String?,
-                                                contact: ContactType?,
-                                                rates: ExchangeRates,
-                                                sharedPayload: SharedPayloadDTO
-    ) -> OutgoingTransactionData {
+                                                inputs: SendingDelegateInputs) -> OutgoingTransactionData {
     guard let wmgr = self.walletManager else { return dto }
+
     var copy = dto
-    copy.dropBitType = contact?.dropBitType ?? .none
-    if let innerContact = contact {
+    copy.dropBitType = inputs.contact?.dropBitType ?? .none
+    if let innerContact = inputs.contact {
       copy.displayName = innerContact.displayName ?? ""
       copy.displayIdentity = innerContact.displayIdentity
       copy.identityHash = innerContact.identityHash
     }
     address.map { copy.destinationAddress = $0 }
-    copy.sharedPayloadDTO = sharedPayload
+    copy.sharedPayloadDTO = inputs.sharedPayload
 
     let context = persistenceManager.createBackgroundContext()
     context.performAndWait {
