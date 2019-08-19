@@ -764,7 +764,7 @@
 		B552EDFE211E33D000332BB5 /* CKNotificationCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B552EDE8211E33D000332BB5 /* CKNotificationCenter.swift */; };
 		B5540C5F21ADD8ED00484238 /* CKRecipientParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5540C5E21ADD8ED00484238 /* CKRecipientParser.swift */; };
 		B555DCAC23059A1E006B3462 /* Typealiases.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BB05AC0209CF407000297E1 /* Typealiases.swift */; };
-		B555DCAD23059A1F006B3462 /* Typealiases.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BB05AC0209CF407000297E1 /* Typealiases.swift */; };
+		B555DCAF230B1754006B3462 /* TwitterShareButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B555DCAE230B1754006B3462 /* TwitterShareButton.swift */; };
 		B558B86122B92F4A0033AFBD /* PreferencesBroker.swift in Sources */ = {isa = PBXBuildFile; fileRef = B558B86022B92F4A0033AFBD /* PreferencesBroker.swift */; };
 		B558B86322B931C40033AFBD /* CKPersistenceBroker.swift in Sources */ = {isa = PBXBuildFile; fileRef = B558B86222B931C40033AFBD /* CKPersistenceBroker.swift */; };
 		B558B86522B9365B0033AFBD /* MigrationBroker.swift in Sources */ = {isa = PBXBuildFile; fileRef = B558B86422B9365B0033AFBD /* MigrationBroker.swift */; };
@@ -1765,6 +1765,7 @@
 		B552EDE7211E33D000332BB5 /* AnalyticsManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnalyticsManager.swift; sourceTree = "<group>"; };
 		B552EDE8211E33D000332BB5 /* CKNotificationCenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CKNotificationCenter.swift; sourceTree = "<group>"; };
 		B5540C5E21ADD8ED00484238 /* CKRecipientParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CKRecipientParser.swift; sourceTree = "<group>"; };
+		B555DCAE230B1754006B3462 /* TwitterShareButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwitterShareButton.swift; sourceTree = "<group>"; };
 		B558B86022B92F4A0033AFBD /* PreferencesBroker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesBroker.swift; sourceTree = "<group>"; };
 		B558B86222B931C40033AFBD /* CKPersistenceBroker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CKPersistenceBroker.swift; sourceTree = "<group>"; };
 		B558B86422B9365B0033AFBD /* MigrationBroker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MigrationBroker.swift; sourceTree = "<group>"; };
@@ -3387,6 +3388,7 @@
 				B559AF0E2180FE37001D44F2 /* MenuButton.swift */,
 				3B82692420331349009B11EC /* KeypadButton.swift */,
 				3BC9E5552049B08000444A53 /* PrimaryActionButton.swift */,
+				B555DCAE230B1754006B3462 /* TwitterShareButton.swift */,
 				3B13439521AEDAE6006EC5FC /* LightBorderedButton.swift */,
 				B54A421A2080066E005B40A9 /* TransactionDetailBottomButton.swift */,
 				3B325D522190A37B0094897C /* SecondaryActionButton.swift */,
@@ -4373,6 +4375,7 @@
 				A29CE10620A367DF00761B91 /* BitcoinAddressValidator.swift in Sources */,
 				3B695C2021CA9F9B007D0741 /* OperationQueueType.swift in Sources */,
 				3BF88B87226F5E2500B94474 /* TransactionHistoryDetailBaseCell.swift in Sources */,
+				B555DCAF230B1754006B3462 /* TwitterShareButton.swift in Sources */,
 				B559AF0B2180CA86001D44F2 /* BadgeView.swift in Sources */,
 				3B325D4D219090CD0094897C /* RecoveryWordsIntroViewController.swift in Sources */,
 				B5C8F5C5216D37D300E3E85B /* CoinNinjaProvider.swift in Sources */,

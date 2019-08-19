@@ -31,7 +31,7 @@ class TransactionHistoryDetailBaseCell: UICollectionViewCell {
   }
   @IBOutlet var closeButton: UIButton!
   @IBOutlet var questionMarkButton: UIButton!
-  @IBOutlet var incomingImage: UIImageView!
+  @IBOutlet var directionImageView: UIImageView!
   @IBOutlet var dateLabel: TransactionDetailDateLabel!
   @IBOutlet var primaryAmountLabel: TransactionDetailPrimaryAmountLabel!
   @IBOutlet var secondaryAmountLabel: TransactionDetailSecondaryAmountLabel!
@@ -45,7 +45,7 @@ class TransactionHistoryDetailBaseCell: UICollectionViewCell {
   @IBOutlet var statusLabel: TransactionDetailStatusLabel!
   @IBOutlet var counterpartyLabel: TransactionDetailCounterpartyLabel!
   @IBOutlet var twitterImage: UIImageView!
-  @IBOutlet var twitterShareButton: PrimaryActionButton!
+  @IBOutlet var twitterShareButton: TwitterShareButton!
 
   // MARK: variables
   var viewModel: TransactionHistoryDetailCellViewModel?
