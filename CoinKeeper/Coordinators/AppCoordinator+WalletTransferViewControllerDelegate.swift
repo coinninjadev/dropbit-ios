@@ -34,7 +34,6 @@ extension AppCoordinator: WalletTransferViewControllerDelegate {
       let sats = btcAmount.asFractionalUnits(of: .BTC)
       self.networkManager.withdrawLightningFunds(to: receiveAddress, sats: sats)
         .done { response in
-          print(response)
           viewController.dismiss(animated: true, completion: nil)
         }
         .catch { error in
