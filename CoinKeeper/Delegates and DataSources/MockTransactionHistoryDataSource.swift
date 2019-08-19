@@ -14,50 +14,53 @@ struct MockTransactionHistoryDetailCellViewModel: TransactionHistoryDetailCellVi
 
   let accountType: AccountType
   let direction: TransactionDirection
-  let statusDescription: String
-  let isValidTransaction: Bool
+  let status: TransactionStatus
   let recipientDescription: String?
   let bitcoinAddress: String?
+  let date: Date?
+  let isValidTransaction: Bool
 
-  let amountDetails: AmountDisplayDetails
-  let progressBarDetails: ProgressBarDetails?
-  let twitterDetails: TwitterDisplayDetails?
-  let lightningInvoiceDetails: LightningInvoiceDisplayDetails?
-  let memoDetails: MemoDisplayDetails?
+  let amountDetails: TransactionAmountDetails
+  let progressConfig: ProgressBarConfig?
+  let twitterConfig: DetailCellTwitterConfig?
+  let memoConfig: DetailCellMemoConfig?
   let action: TransactionDetailAction?
+  let lightningInvoiceDetails: LightningInvoiceDisplayDetails?
 
   init(type: AccountType,
        direction: TransactionDirection,
-       status: String,
+       status: TransactionStatus,
        recipient: String?,
        address: String?,
-       amount: AmountDisplayDetails,
-       memo: MemoDisplayDetails?,
+       date: Date?,
+       amount: TransactionAmountDetails,
+       memo: DetailCellMemoConfig?,
        action: TransactionDetailAction?,
-       progress: ProgressBarDetails? = nil,
-       twitter: TwitterDisplayDetails? = nil,
+       progress: ProgressBarConfig? = nil,
+       twitter: DetailCellTwitterConfig? = nil,
        invoice: LightningInvoiceDisplayDetails? = nil,
        isValid: Bool = true) {
 
     self.accountType = type
     self.direction = direction
-    self.statusDescription = status
-    self.isValidTransaction = isValid
+    self.status = status
     self.recipientDescription = recipient
     self.bitcoinAddress = address
+    self.date = date
     self.amountDetails = amount
-    self.progressBarDetails = progress
-    self.twitterDetails = twitter
-    self.lightningInvoiceDetails = invoice
-    self.memoDetails = memo
+    self.memoConfig = memo
     self.action = action
+    self.progressConfig = progress
+    self.twitterConfig = twitter
+    self.lightningInvoiceDetails = invoice
+    self.isValidTransaction = isValid
   }
 }
 
 struct MockTransactionHistoryDataSource {
 
   let transactionViewModels: [TransactionHistoryDetailCellViewModelType] = [
-    
+
   ]
 
 }

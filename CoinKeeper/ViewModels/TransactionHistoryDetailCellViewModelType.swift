@@ -10,8 +10,10 @@ import Foundation
 import UIKit
 
 /// Defines inputs necessary to determine the values displayed in the cell.
+/// Transforms the provided values into formatted strings as needed.
 protocol TransactionHistoryDetailCellViewModelType: TransactionHistoryDetailCellDisplayable {
   var isValidTransaction: Bool { get }
+  var date: Date? { get }
   var accountType: AccountType { get }
   var isLightningTransfer: Bool { get }
   var amountDetails: TransactionAmountDetails { get }
@@ -29,6 +31,26 @@ extension TransactionHistoryDetailCellViewModelType {
     return memoConfig == nil
   }
 
+  var statusText: String {
+    return status.rawValue
+  }
+
+  var displayDate: String? {
+    guard let d = date else { return nil }
+    return CKDateFormatter.displayFull.string(from: d)
+  }
+
+  var amountLabels: DetailCellAmountLabels {
+    return DetailCellAmountLabels(primaryText: "",
+                                  secondaryText: nil,
+                                  secondaryAttributedText: nil,
+                                  historicalPriceAttributedText: nil)
+  }
+
+  var actionButtonConfig: DetailCellActionButtonConfig? {
+    return nil
+  }
+
 }
 
 enum TransactionDirection: String {
@@ -39,7 +61,7 @@ enum AccountType {
   case bitcoin, lightning
 }
 
-enum TransactionStatus {
+enum TransactionStatus: String {
   case pending
   case broadcasting
   case completed
