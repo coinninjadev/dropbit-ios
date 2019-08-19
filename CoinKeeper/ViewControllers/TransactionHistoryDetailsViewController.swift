@@ -10,7 +10,7 @@ import UIKit
 import CoreData
 import PromiseKit
 
-protocol TransactionHistoryDetailsViewControllerDelegate: TransactionShareable {
+protocol TransactionHistoryDetailsViewControllerDelegate: TransactionShareable, URLOpener {
   func viewControllerDidDismissTransactionDetails(_ viewController: UIViewController)
   func viewControllerShouldSeeTransactionDetails(for viewModel: TransactionHistoryDetailCellViewModel)
   func viewController(_ viewController: TransactionHistoryDetailsViewController,
@@ -38,7 +38,7 @@ final class TransactionHistoryDetailsViewController: PresentableViewController, 
       collectionView.showsHorizontalScrollIndicator = false
     }
   }
-  weak var urlOpener: URLOpener?
+
   weak var onChainFetchResultsController: NSFetchedResultsController<CKMTransaction>?
   weak var lightningFetchResultsController: NSFetchedResultsController<CKMWalletEntry>?
   var selectedIndexPath: IndexPath = IndexPath(item: 0, section: 0)
@@ -54,7 +54,6 @@ final class TransactionHistoryDetailsViewController: PresentableViewController, 
     controller.generalCoordinationDelegate = delegate
     controller.selectedIndexPath = selectedIndexPath
     controller.viewModelForIndexPath = viewModelForIndexPath
-    controller.urlOpener = urlOpener
     return controller
   }
 
@@ -68,7 +67,6 @@ final class TransactionHistoryDetailsViewController: PresentableViewController, 
     controller.generalCoordinationDelegate = delegate
     controller.selectedIndexPath = selectedIndexPath
     controller.viewModelForIndexPath = viewModelForIndexPath
-    controller.urlOpener = urlOpener
     return controller
   }
 
@@ -124,7 +122,8 @@ extension TransactionHistoryDetailsViewController: TransactionHistoryDetailCellD
 
   func didTapQuestionMark(detailCell: TransactionHistoryDetailBaseCell) {
     //TODO: get indexPath, viewModel, and url
-//    urlOpener?.openURL(url, completionHandler: nil)
+    let url = URL(string: "https://foo.com")!
+    coordinationDelegate?.openURL(url, completionHandler: nil)
   }
 
   func didTapClose(detailCell: TransactionHistoryDetailBaseCell) {
@@ -141,7 +140,7 @@ extension TransactionHistoryDetailsViewController: TransactionHistoryDetailCellD
     //TODO
 //    guard let address = detailCell.viewModel?.receiverAddress,
 //      let addressURL = CoinNinjaUrlFactory.buildUrl(for: .address(id: address)) else { return }
-//    urlOpener?.openURL(addressURL, completionHandler: nil)
+//    coordinationDelegate?.openURL(addressURL, completionHandler: nil)
   }
 
   func didTapBottomButton(detailCell: TransactionHistoryDetailBaseCell, action: TransactionDetailAction) {

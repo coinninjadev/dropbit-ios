@@ -20,7 +20,6 @@ class TransactionHistoryDetailsViewControllerTests: XCTestCase {
     mockCoordinator = MockCoordinator()
     sut = TransactionHistoryDetailsViewController.makeFromStoryboard()
     sut.generalCoordinationDelegate = mockCoordinator
-    sut.urlOpener = mockCoordinator
     _ = sut.view
   }
 
@@ -40,15 +39,15 @@ class TransactionHistoryDetailsViewControllerTests: XCTestCase {
   }
 
   func testAddingMemoTellsDelegate() {
-    sut.didTapAddMemoButton { (memo) in
-      XCTAssertEqual(memo, "temp memo for testing purposes")
-    }
+    //TODO
+//    sut.didTapAddMemo { (memo) in
+//      XCTAssertEqual(memo, "temp memo for testing purposes")
+//    }
   }
 
   func testTappingQuestionMarkButtonTellsDelegate() {
-    let address = "https://foo.com"
-    sut.didTapQuestionMarkButton(detailCell: TransactionHistoryDetailBaseCell(), with: URL(string: address)!)
-    XCTAssertEqual(mockCoordinator.urlToOpen.absoluteString, address)
+    sut.didTapQuestionMark(detailCell: TransactionHistoryDetailBaseCell())
+    XCTAssertTrue(mockCoordinator.wasAskedToOpenURL)
   }
 
   // MARK: private class
@@ -77,9 +76,9 @@ class TransactionHistoryDetailsViewControllerTests: XCTestCase {
                                                           transaction: CKMTransaction?,
                                                           shouldDismiss: Bool) { }
 
-    var urlToOpen: URL!
+    var wasAskedToOpenURL = false
     func openURL(_ url: URL, completionHandler completion: CKCompletion?) {
-      urlToOpen = url
+      wasAskedToOpenURL = true
     }
 
     func openURLExternally(_ url: URL, completionHandler completion: ((Bool) -> Void)?) { }

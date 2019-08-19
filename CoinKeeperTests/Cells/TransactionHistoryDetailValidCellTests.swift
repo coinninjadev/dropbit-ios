@@ -66,7 +66,7 @@ class TransactionHistoryDetailValidCellTests: XCTestCase {
 
   func testQuestionMarkButtonContainsAction() {
     let actions = sut.questionMarkButton.actions(forTarget: sut, forControlEvent: .touchUpInside) ?? []
-    let expected = #selector(TransactionHistoryDetailInvalidCell.didTapQuestionMarkButton(_:)).description
+    let expected = #selector(TransactionHistoryDetailInvalidCell.didTapQuestionMark(_:)).description
     XCTAssertTrue(actions.contains(expected), "button should contain action")
   }
 
