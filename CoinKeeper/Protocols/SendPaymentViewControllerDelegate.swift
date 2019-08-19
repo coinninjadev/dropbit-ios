@@ -16,6 +16,27 @@ struct SendingDelegateInputs {
   let contact: ContactType?
   let rates: ExchangeRates
   let sharedPayload: SharedPayloadDTO
+
+  init(primaryCurrency: CurrencyCode,
+       walletTxType: WalletTransactionType,
+       contact: ContactType?,
+       rates: ExchangeRates,
+       sharedPayload: SharedPayloadDTO) {
+    self.primaryCurrency = primaryCurrency
+    self.walletTxType = walletTxType
+    self.contact = contact
+    self.rates = rates
+    self.sharedPayload = sharedPayload
+  }
+
+  init(sendPaymentVM vm: SendPaymentViewModel, contact: ContactType?, payloadDTO: SharedPayloadDTO) {
+    self.init(primaryCurrency: vm.primaryCurrency,
+              walletTxType: vm.walletTransactionType,
+              contact: contact,
+              rates: vm.exchangeRates,
+              sharedPayload: payloadDTO)
+  }
+
 }
 
 struct SendOnChainPaymentInputs {
