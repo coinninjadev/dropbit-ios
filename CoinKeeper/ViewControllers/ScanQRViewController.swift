@@ -50,6 +50,10 @@ class ScanQRViewController: BaseViewController, StoryboardInitializable {
 
   override func viewDidLoad() {
     view.backgroundColor = UIColor.black
+    closeButton.setImage(UIImage(imageLiteralResourceName: "close").withRenderingMode(.alwaysTemplate), for: .normal)
+    closeButton.tintColor = .white
+    flashButton.setImage(UIImage(imageLiteralResourceName: "flashIcon").withRenderingMode(.alwaysTemplate), for: .normal)
+    flashButton.tintColor = .white
     if let captureDevice = AVCaptureDevice.default(for: .video) {
       self.captureDevice = captureDevice
       do {
