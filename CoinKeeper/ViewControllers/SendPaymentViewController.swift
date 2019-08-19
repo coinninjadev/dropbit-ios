@@ -103,6 +103,7 @@ class SendPaymentViewController: PresentableViewController,
 
   @IBAction func performNext() {
     do {
+      //TODO: revise validateAmount so that it works correctly for both on chain and lightning transactions
 //      try validateAmount()
       try validateAndSendPayment()
     } catch {
