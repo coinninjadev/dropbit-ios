@@ -809,6 +809,7 @@
 		B56E15A32167EA26003B69D4 /* NetworkManager+PricingRequestable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56E15A22167EA26003B69D4 /* NetworkManager+PricingRequestable.swift */; };
 		B56E15A52167EAAD003B69D4 /* NetworkManager+MessagesRequestable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56E15A42167EAAD003B69D4 /* NetworkManager+MessagesRequestable.swift */; };
 		B56E15A72167EAE6003B69D4 /* NetworkManager+DeviceRequestable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56E15A62167EAE6003B69D4 /* NetworkManager+DeviceRequestable.swift */; };
+		B5705450230B4812006DD57F /* Typealiases.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BB05AC0209CF407000297E1 /* Typealiases.swift */; };
 		B575B61622E9F68700CECFB7 /* LNLedgerTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = B575B61522E9F68700CECFB7 /* LNLedgerTarget.swift */; };
 		B575B61822E9F84800CECFB7 /* NetworkManager+LightningRequestable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B575B61722E9F84800CECFB7 /* NetworkManager+LightningRequestable.swift */; };
 		B575B61B22E9FCCD00CECFB7 /* MockNetworkManager+LightningRequestable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B575B61922E9FCBE00CECFB7 /* MockNetworkManager+LightningRequestable.swift */; };
@@ -5037,7 +5038,7 @@
 				3B4B929E22F354850018285C /* WalletOverviewPage.swift in Sources */,
 				3B4B929C22F354850018285C /* SendPaymentPage.swift in Sources */,
 				3B4B928D22F3546E0018285C /* UITestHelpers.swift in Sources */,
-				B555DCAD23059A1F006B3462 /* Typealiases.swift in Sources */,
+				B5705450230B4812006DD57F /* Typealiases.swift in Sources */,
 				3B4B928C22F3546B0018285C /* Springboard.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

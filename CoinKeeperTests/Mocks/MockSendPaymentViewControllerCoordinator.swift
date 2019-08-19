@@ -49,17 +49,6 @@ class MockSendPaymentViewControllerCoordinator: SendPaymentViewControllerCoordin
     }
   }
 
-  func viewController(
-    _ viewController: UIViewController,
-    sendingMax data: CNBTransactionData,
-    address: String,
-    walletTransactionType: WalletTransactionType,
-    contact: ContactType?,
-    rates: ExchangeRates,
-    sharedPayload: SharedPayloadDTO) {
-
-  }
-
   func balanceNetPending() -> WalletBalances {
     return WalletBalances(onChain: .zero, lightning: .zero)
   }
@@ -88,6 +77,12 @@ class MockSendPaymentViewControllerCoordinator: SendPaymentViewControllerCoordin
   func viewControllerDidPressContacts(_ viewController: UIViewController & SelectedValidContactDelegate) {
     didTapContacts = true
   }
+
+  func viewController(
+    _ viewController: UIViewController,
+    sendingMax data: CNBTransactionData,
+    to address: String,
+    inputs: SendingDelegateInputs) { }
 
   func viewControllerDidRequestRegisteredAddress(
     _ viewController: UIViewController,
@@ -136,26 +131,14 @@ class MockSendPaymentViewControllerCoordinator: SendPaymentViewControllerCoordin
   func viewControllerDidBeginAddressNegotiation(
     _ viewController: UIViewController,
     btcAmount: NSDecimalNumber,
-    primaryCurrency: CurrencyCode,
-    contact: ContactType,
     memo: String?,
-    walletTransactionType: WalletTransactionType,
-    rates: ExchangeRates,
     memoIsShared: Bool,
-    sharedPayload: SharedPayloadDTO) {
-
-  }
+    inputs: SendingDelegateInputs) { }
 
   func viewController(_ viewController: UIViewController,
                       checkForContactFromGenericContact genericContact: GenericContact,
                       completion: @escaping ((ValidatedContact?) -> Void)) {
     completion(nil)
-  }
-
-  func viewControllerDidRequestRegisteredAddress(_ viewController: UIViewController,
-                                                 ofType addressType: WalletAddressType,
-                                                 forIdentity identityHash: String) -> Promise<[WalletAddressesQueryResponse]> {
-    return Promise { _ in }
   }
 
   func sendPaymentViewControllerDidLoad(_ viewController: UIViewController) { }
