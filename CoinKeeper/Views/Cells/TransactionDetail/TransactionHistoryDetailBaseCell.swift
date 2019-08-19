@@ -22,13 +22,7 @@ protocol TransactionHistoryDetailCellDelegate: class {
 class TransactionHistoryDetailBaseCell: UICollectionViewCell {
 
   // MARK: outlets
-  @IBOutlet var underlyingContentView: UIView! {
-    didSet {
-      underlyingContentView.backgroundColor = UIColor.white
-      underlyingContentView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
-      underlyingContentView.applyCornerRadius(13)
-    }
-  }
+  @IBOutlet var underlyingContentView: UIView!
   @IBOutlet var closeButton: UIButton!
   @IBOutlet var questionMarkButton: UIButton!
   @IBOutlet var directionImageView: UIImageView!
@@ -36,11 +30,7 @@ class TransactionHistoryDetailBaseCell: UICollectionViewCell {
   @IBOutlet var primaryAmountLabel: TransactionDetailPrimaryAmountLabel!
   @IBOutlet var secondaryAmountLabel: TransactionDetailSecondaryAmountLabel!
   @IBOutlet var historicalValuesLabel: UILabel! //use attributedText
-  @IBOutlet var addMemoButton: UIButton! {
-    didSet {
-      addMemoButton.styleAddButtonWith(title: "Add Memo")
-    }
-  }
+  @IBOutlet var addMemoButton: UIButton!
   @IBOutlet var memoContainerView: ConfirmPaymentMemoView!
   @IBOutlet var statusLabel: TransactionDetailStatusLabel!
   @IBOutlet var counterpartyLabel: TransactionDetailCounterpartyLabel!
@@ -66,6 +56,11 @@ class TransactionHistoryDetailBaseCell: UICollectionViewCell {
     layer.shadowOffset = CGSize(width: 0, height: 4)
     self.clipsToBounds = false
     layer.masksToBounds = false
+
+    underlyingContentView.backgroundColor = UIColor.white
+    underlyingContentView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+    underlyingContentView.applyCornerRadius(13)
+    addMemoButton.styleAddButtonWith(title: "Add Memo")
   }
 
   override func prepareForReuse() {
@@ -108,7 +103,6 @@ class TransactionHistoryDetailBaseCell: UICollectionViewCell {
     self.delegate = delegate
     self.viewModel = viewModel
 
-    configureTwitterShareButton()
     incomingImage.image = viewModel.imageForTransactionDirection
     dateLabel.text = viewModel.dateDescriptionFull
     statusLabel.text = viewModel.statusDescription
@@ -130,16 +124,6 @@ class TransactionHistoryDetailBaseCell: UICollectionViewCell {
       recipientName: nil)
   }
 
-  private func configureTwitterShareButton() {
-    twitterShareButton?.configure(
-      withTitle: "SHARE",
-      font: .medium(10),
-      foregroundColor: .lightGrayText,
-      imageName: "twitterBird",
-      imageSize: CGSize(width: 10, height: 10),
-      titleEdgeInsets: UIEdgeInsets(top: 0, left: 2, bottom: 0, right: -2),
-      contentEdgeInsets: UIEdgeInsets(top: 4, left: 0, bottom: 4, right: 4)
-    )
   }
 
 }
