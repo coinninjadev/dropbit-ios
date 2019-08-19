@@ -57,6 +57,20 @@ extension AppCoordinator: ScanQRViewControllerDelegate {
     }
   }
 
+  func viewControllerDidScan(_ viewController: UIViewController, lightningInvoice: String) {
+    resolveLightningInvoice(invoice: lightningInvoice) { response in
+      switch response {
+      case .success(let invoice):
+        let currencyPair = CurrencyPair(btcPrimaryWith: self.currencyController)
+        let viewModel = SendPaymentViewModel(lightningInvoice: invoice, exchangeRates: self.exchangeRates, currencyPair: currencyPair)
+        self.showSendPaymentViewController(withViewModel: viewModel, dismissing: viewController, completion: nil)
+      case .failure(let error):
+        let errorAlert = self.alertManager.defaultAlert(withTitle: self.paymentErrorTitle, description: error.localizedDescription)
+        viewController.present(errorAlert, animated: true, completion: nil)
+      }
+    }
+  }
+
   private func createSendPaymentViewController(forQRCode qrCode: QRCode, walletTransactionType: WalletTransactionType,
                                                fallbackViewModel: SendPaymentViewModel?) -> SendPaymentViewController {
     let shouldUseFallback = (qrCode.btcAmount ?? .zero) == .zero

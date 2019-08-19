@@ -18,7 +18,7 @@ enum PaymentRecipient {
 
   /// Associated value does not contain "bitcoin:"
   case btcAddress(String)
-
+  case lightning(String)
   case contact(ContactType)
 
   /// Manually entered, not set from Contacts. Associated value is digits only.
@@ -79,6 +79,22 @@ class SendPaymentViewModel: CurrencySwappableEditAmountViewModel {
 
   let recipientParser: RecipientParserType = CKRecipientParser()
 
+  init(lightningInvoice: LNDecodePaymentRequestResponse,
+       exchangeRates: ExchangeRates,
+       currencyPair: CurrencyPair) {
+    let currencyPair = CurrencyPair(primary: .BTC, fiat: currencyPair.fiat)
+    let amount = NSDecimalNumber(integerAmount: lightningInvoice.numSatoshis ?? 0, currency: .BTC)
+    let viewModel = CurrencySwappableEditAmountViewModel(exchangeRates: exchangeRates,
+                                                         primaryAmount: amount,
+                                                         currencyPair: currencyPair,
+                                                         delegate: nil)
+    type = .lightning
+    super.init(viewModel: viewModel)
+    self.paymentRecipient = .lightning(lightningInvoice.destination)
+    self.requiredFeeRate = nil
+    self.memo = lightningInvoice.description
+  }
+
   // delegate may be nil at init since the delegate is likely a view controller which requires this view model for its own creation
   init(qrCode: QRCode,
        walletTransactionType: WalletTransactionType,
@@ -138,7 +154,7 @@ class SendPaymentViewModel: CurrencySwappableEditAmountViewModel {
   var shouldShowSharedMemoBox: Bool {
     if let recipient = paymentRecipient {
       switch recipient {
-      case .btcAddress:     return false
+      case .btcAddress, .lightning:     return false
       case .contact:        return true && sharedMemoAllowed
       case .phoneNumber:    return true && sharedMemoAllowed
       case .twitterContact: return true && sharedMemoAllowed
@@ -162,7 +178,7 @@ class SendPaymentViewModel: CurrencySwappableEditAmountViewModel {
     }
 
     switch recipient {
-    case .phoneNumber, .btcAddress:
+    case .phoneNumber, .btcAddress, .lightning:
       return .textField
     case .contact, .twitterContact:
       return .label
@@ -176,6 +192,7 @@ class SendPaymentViewModel: CurrencySwappableEditAmountViewModel {
     case .contact(let contact): return contact.displayName
     case .twitterContact(let contact): return contact.displayName
     case .phoneNumber: return nil
+    case .lightning: return nil
     }
   }
 
@@ -189,7 +206,7 @@ class SendPaymentViewModel: CurrencySwappableEditAmountViewModel {
       return (try? formatter.string(from: phoneContact.globalPhoneNumber)) ?? ""
     case .twitterContact(let contact):
       return contact.displayIdentity
-    case .phoneNumber: return nil
+    case .phoneNumber, .lightning: return nil
     }
   }
 
@@ -197,6 +214,7 @@ class SendPaymentViewModel: CurrencySwappableEditAmountViewModel {
     guard let r = recipient else { return .textField }
     switch r {
     case .btcAddress,
+         .lightning,
          .phoneNumber:    return .textField
     case .contact,
          .twitterContact: return .label

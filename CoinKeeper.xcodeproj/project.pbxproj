@@ -476,13 +476,14 @@
 		A24B9E822306E67A00852718 /* MockLightningBroker.swift in Sources */ = {isa = PBXBuildFile; fileRef = A24B9E812306E67A00852718 /* MockLightningBroker.swift */; };
 		A24B9E8423073B4F00852718 /* TransactionHistoryViewControllerDDS.swift in Sources */ = {isa = PBXBuildFile; fileRef = A24B9E8323073B4F00852718 /* TransactionHistoryViewControllerDDS.swift */; };
 		A24B9E862307401700852718 /* TransactionHistoryDetailsViewControllerDDS.swift in Sources */ = {isa = PBXBuildFile; fileRef = A24B9E852307401700852718 /* TransactionHistoryDetailsViewControllerDDS.swift */; };
+		A24B9E8A230AF1D300852718 /* LightningInvoiceResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = A24B9E89230AF1D300852718 /* LightningInvoiceResolver.swift */; };
+		A24B9E8C230B13F200852718 /* LightningURL.swift in Sources */ = {isa = PBXBuildFile; fileRef = A24B9E8B230B13F200852718 /* LightningURL.swift */; };
 		A257CEB42302E5070063670B /* FeesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A257CEB32302E5070063670B /* FeesView.swift */; };
 		A257CEB62302E60A0063670B /* FeesView.xib in Resources */ = {isa = PBXBuildFile; fileRef = A257CEB52302E6090063670B /* FeesView.xib */; };
 		A257CEB82302F3BA0063670B /* AppCoordinator+WalletTransferViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A257CEB72302F3BA0063670B /* AppCoordinator+WalletTransferViewControllerDelegate.swift */; };
 		A257CEBA230302070063670B /* AppCoordinator+LightningTransactionHistoryEmptyViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A257CEB9230302070063670B /* AppCoordinator+LightningTransactionHistoryEmptyViewDelegate.swift */; };
 		A257CEBC230325580063670B /* WalletTransferViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A257CEBB230325580063670B /* WalletTransferViewModel.swift */; };
 		A257CEC023038F130063670B /* ConfirmViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A257CEBF23038F130063670B /* ConfirmViewTests.swift */; };
-		A257CEC2230ACAA90063670B /* LightningInvoice.swift in Sources */ = {isa = PBXBuildFile; fileRef = A257CEC1230ACAA90063670B /* LightningInvoice.swift */; };
 		A25923EC20C981770005B1A0 /* AnalyticsManagerError.swift in Sources */ = {isa = PBXBuildFile; fileRef = A25923EB20C981770005B1A0 /* AnalyticsManagerError.swift */; };
 		A260E8C720FCD482008343F9 /* LimitEditTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = A260E8C620FCD482008343F9 /* LimitEditTextField.swift */; };
 		A260E8CF20FCFE11008343F9 /* TutorialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A260E8CE20FCFE11008343F9 /* TutorialViewController.swift */; };
@@ -1472,13 +1473,14 @@
 		A24B9E812306E67A00852718 /* MockLightningBroker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockLightningBroker.swift; sourceTree = "<group>"; };
 		A24B9E8323073B4F00852718 /* TransactionHistoryViewControllerDDS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionHistoryViewControllerDDS.swift; sourceTree = "<group>"; };
 		A24B9E852307401700852718 /* TransactionHistoryDetailsViewControllerDDS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionHistoryDetailsViewControllerDDS.swift; sourceTree = "<group>"; };
+		A24B9E89230AF1D300852718 /* LightningInvoiceResolver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightningInvoiceResolver.swift; sourceTree = "<group>"; };
+		A24B9E8B230B13F200852718 /* LightningURL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightningURL.swift; sourceTree = "<group>"; };
 		A257CEB32302E5070063670B /* FeesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeesView.swift; sourceTree = "<group>"; };
 		A257CEB52302E6090063670B /* FeesView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FeesView.xib; sourceTree = "<group>"; };
 		A257CEB72302F3BA0063670B /* AppCoordinator+WalletTransferViewControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppCoordinator+WalletTransferViewControllerDelegate.swift"; sourceTree = "<group>"; };
 		A257CEB9230302070063670B /* AppCoordinator+LightningTransactionHistoryEmptyViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppCoordinator+LightningTransactionHistoryEmptyViewDelegate.swift"; sourceTree = "<group>"; };
 		A257CEBB230325580063670B /* WalletTransferViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletTransferViewModel.swift; sourceTree = "<group>"; };
 		A257CEBF23038F130063670B /* ConfirmViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmViewTests.swift; sourceTree = "<group>"; };
-		A257CEC1230ACAA90063670B /* LightningInvoice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightningInvoice.swift; sourceTree = "<group>"; };
 		A25923EB20C981770005B1A0 /* AnalyticsManagerError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsManagerError.swift; sourceTree = "<group>"; };
 		A260E8C620FCD482008343F9 /* LimitEditTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LimitEditTextField.swift; sourceTree = "<group>"; };
 		A260E8CE20FCFE11008343F9 /* TutorialViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialViewController.swift; sourceTree = "<group>"; };
@@ -2712,7 +2714,7 @@
 				B5C5EDE621FA490A0032AC94 /* SharedPayloadCodable.swift */,
 				B541DD3A21EE4A18009F38A0 /* MetaAddress.swift */,
 				A230F1C522D664360017BC7A /* NewsData.swift */,
-				A257CEC1230ACAA90063670B /* LightningInvoice.swift */,
+				A24B9E8B230B13F200852718 /* LightningURL.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -3152,6 +3154,7 @@
 				3B695C1F21CA9F9B007D0741 /* OperationQueueType.swift */,
 				3B8B19302289BB25003BA4D7 /* AuthenticationSuspendable.swift */,
 				A268F13A22EA067B00410040 /* SyncSubscribeable.swift */,
+				A24B9E89230AF1D300852718 /* LightningInvoiceResolver.swift */,
 			);
 			path = Protocols;
 			sourceTree = "<group>";
@@ -4232,6 +4235,7 @@
 				B59E2CA922E9ED2A00A75AFE /* LNAccountResponse.swift in Sources */,
 				A2A530BE20936A6C00B6F4DE /* FloatingPoint+DegreeToRadians.swift in Sources */,
 				B552EDE9211E33D000332BB5 /* BiometricAuthenticationManager.swift in Sources */,
+				A24B9E8C230B13F200852718 /* LightningURL.swift in Sources */,
 				B5EABAAF21FB8E8B00E32E08 /* TransactionNotificationTarget.swift in Sources */,
 				4AF4332220935C8D00B11BC9 /* DeviceVerificationCoordinator.swift in Sources */,
 				3BDFADFE2267B1FB0077DEF2 /* BlockstreamProvider.swift in Sources */,
@@ -4247,7 +4251,6 @@
 				A29CE0ED20A21ED800761B91 /* AppCoordinator+ContactsViewControllerDelegate.swift in Sources */,
 				3B2E78362024D56500DA25AF /* StoryboardInitializable.swift in Sources */,
 				B5E7F21B2214670200358A24 /* CountryCodeSearchView.swift in Sources */,
-				A257CEC2230ACAA90063670B /* LightningInvoice.swift in Sources */,
 				B5A3BA5C215193DA005EE657 /* TransactionsTarget.swift in Sources */,
 				B5860546222702FC0048979D /* HashableContact.swift in Sources */,
 				A2FE198A2301DF8800C2412D /* WalletTransferViewController.swift in Sources */,
@@ -4705,6 +4708,7 @@
 				3B72A289210648CF00E94171 /* PendingInvitationError.swift in Sources */,
 				3BBB3CF72298658C00C417EA /* TwitterAccessManager.swift in Sources */,
 				B552EDEC211E33D000332BB5 /* CoinNinjaUrlFactory.swift in Sources */,
+				A24B9E8A230AF1D300852718 /* LightningInvoiceResolver.swift in Sources */,
 				B51F8236207BAD7500692F5B /* BalanceContainer.swift in Sources */,
 				A246C82922CCF87500AF1F52 /* WalletOverviewViewController.swift in Sources */,
 				3B474167217FB853004DA223 /* NotificationTopicSubscriptionBody.swift in Sources */,

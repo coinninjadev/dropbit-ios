@@ -16,25 +16,20 @@ struct QRCode {
   let paymentRequestURL: URL? // BIP 72
 
   init?(readableObject: AVMetadataMachineReadableCodeObject) {
-    guard let qrCodeString = readableObject.stringValue else { return nil }
+    guard let qrCodeString = readableObject.stringValue,
+      let bitcoinURL = BitcoinURL(string: qrCodeString) else { return nil }
 
-    if let bitcoinURL = BitcoinURL(string: qrCodeString) {
-      // If the `url` contains either of these parameters, we ignore any address or amount that may also be present
-      if let paymentURL = bitcoinURL.components.paymentRequest {
-        self.init(rawCode: readableObject, paymentURL: paymentURL)
+    // If the `url` contains either of these parameters, we ignore any address or amount that may also be present
+    if let paymentURL = bitcoinURL.components.paymentRequest {
+      self.init(rawCode: readableObject, paymentURL: paymentURL)
 
-      } else if let address = bitcoinURL.components.address {
-        self.init(
-          rawCode: readableObject,
-          btcAmount: bitcoinURL.components.amount, // may be nil
-          address: address
-        )
+    } else if let address = bitcoinURL.components.address {
+      self.init(
+        rawCode: readableObject,
+        btcAmount: bitcoinURL.components.amount, // may be nil
+        address: address
+      )
 
-      } else {
-        return nil
-      }
-    } else if let lightningInvoice = LightningInvoice(string: qrCodeString) {
-      self.init(rawCode: readableObject, invoice: lightningInvoice.absoluteString)
     } else {
       return nil
     }

@@ -452,6 +452,8 @@ extension SendPaymentViewController {
               log.error(userProviderError, message: "no verification status found")
             }
           }
+      case .lightning(let invoice):
+        break //TODO
       }
     }
   }
@@ -653,6 +655,8 @@ extension SendPaymentViewController {
       try validatePayment(toAddress: address)
     case .twitterContact(let contact):
       try validatePayment(toContact: contact)
+    case .lightning(let invoice):
+      break //TODO
     }
   }
 
