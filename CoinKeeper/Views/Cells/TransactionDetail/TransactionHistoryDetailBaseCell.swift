@@ -19,6 +19,7 @@ protocol TransactionHistoryDetailCellDelegate: class {
   func shouldSaveMemo(for transaction: CKMTransaction) -> Promise<Void>
 }
 
+//TODO: resolve commented out implementations
 class TransactionHistoryDetailBaseCell: UICollectionViewCell {
 
   // MARK: outlets
@@ -38,8 +39,8 @@ class TransactionHistoryDetailBaseCell: UICollectionViewCell {
   @IBOutlet var twitterShareButton: TwitterShareButton!
 
   // MARK: variables
-  var viewModel: TransactionHistoryDetailCellViewModel?
-  weak var delegate: TransactionHistoryDetailCellDelegate?
+  var viewModel: TransactionHistoryDetailCellDisplayable!
+  weak var delegate: TransactionHistoryDetailCellDelegate!
 
   // MARK: object lifecycle
   override func awakeFromNib() {
@@ -70,25 +71,25 @@ class TransactionHistoryDetailBaseCell: UICollectionViewCell {
 
   // MARK: actions
   @IBAction func didTapAddMemoButton(_ sender: UIButton) {
-    delegate?.didTapAddMemoButton { [weak self] memo in
-      guard let vm = self?.viewModel, let delegate = self?.delegate, let tx = vm.transaction else { return }
-      tx.memo = memo
-
-      delegate.shouldSaveMemo(for: tx)
-        .done {
-          vm.memo = memo
-          self?.load(with: vm, delegate: delegate)
-        }.catch { error in
-          log.error(error, message: "failed to add memo")
-      }
-    }
+//    delegate?.didTapAddMemoButton { [weak self] memo in
+//      guard let vm = self?.viewModel, let delegate = self?.delegate, let tx = vm.transaction else { return }
+//      tx.memo = memo
+//
+//      delegate.shouldSaveMemo(for: tx)
+//        .done {
+//          vm.memo = memo
+//          self?.load(with: vm, delegate: delegate)
+//        }.catch { error in
+//          log.error(error, message: "failed to add memo")
+//      }
+//    }
   }
 
   @IBAction func didTapQuestionMarkButton(_ sender: UIButton) {
-    guard let url: URL = viewModel?.invitationStatus != nil ?
-      CoinNinjaUrlFactory.buildUrl(for: .dropbitTransactionTooltip) : CoinNinjaUrlFactory.buildUrl(for: .regularTransactionTooltip) else { return }
-
-    delegate?.didTapQuestionMarkButton(detailCell: self, with: url)
+//    guard let url: URL = viewModel?.invitationStatus != nil ?
+//      CoinNinjaUrlFactory.buildUrl(for: .dropbitTransactionTooltip) : CoinNinjaUrlFactory.buildUrl(for: .regularTransactionTooltip) else { return }
+//
+//    delegate?.didTapQuestionMarkButton(detailCell: self, with: url)
   }
 
   @IBAction func didTapTwitterShare(_ sender: Any) {
@@ -99,30 +100,9 @@ class TransactionHistoryDetailBaseCell: UICollectionViewCell {
     delegate?.didTapClose(detailCell: self)
   }
 
-  func load(with viewModel: TransactionHistoryDetailCellViewModel, delegate: TransactionHistoryDetailCellDelegate) {
+  func load(with viewModel: TransactionHistoryDetailCellDisplayable, delegate: TransactionHistoryDetailCellDelegate) {
     self.delegate = delegate
     self.viewModel = viewModel
-
-    incomingImage.image = viewModel.imageForTransactionDirection
-    dateLabel.text = viewModel.dateDescriptionFull
-    statusLabel.text = viewModel.statusDescription
-    statusLabel.textColor = viewModel.descriptionColor
-    let isEqualToReceiverAddress = (viewModel.receiverAddress ?? "") == viewModel.counterpartyDescription
-    counterpartyLabel.text = isEqualToReceiverAddress ? nil : viewModel.counterpartyDescription
-    twitterImage.isHidden = !viewModel.isTwitterContact
-    primaryAmountLabel.text = viewModel.primaryAmountLabel
-    secondaryAmountLabel.attributedText = viewModel.secondaryAmountLabel
-    historicalValuesLabel.text = nil
-    historicalValuesLabel.attributedText = viewModel.historicalAmountsAttributedString()
-    addMemoButton.isHidden = !viewModel.memo.isEmpty
-    memoContainerView.isHidden = viewModel.memo.isEmpty
-    memoContainerView.configure(
-      memo: viewModel.memo,
-      isShared: viewModel.memoWasShared,
-      isSent: true,
-      isIncoming: viewModel.isIncoming,
-      recipientName: nil)
-  }
 
   }
 

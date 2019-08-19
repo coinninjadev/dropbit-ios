@@ -30,16 +30,19 @@ class TransactionHistoryDetailsViewControllerDDS: NSObject {
       switch invitation.status {
       case .canceled, .expired:
         let cell = collectionView.dequeue(TransactionHistoryDetailInvalidCell.self, for: indexPath)
-        cell.load(with: viewModel, delegate: viewController)
+        //TODO
+//        cell.load(with: viewModel, delegate: viewController)
         return cell
       default:
         let cell = collectionView.dequeue(TransactionHistoryDetailValidCell.self, for: indexPath)
-        cell.load(with: viewModel, delegate: viewController)
+        //TODO
+//        cell.load(with: viewModel, delegate: viewController)
         return cell
       }
     } else {
       let cell = collectionView.dequeue(TransactionHistoryDetailValidCell.self, for: indexPath )
-      cell.load(with: viewModel, delegate: viewController)
+      //TODO
+//      cell.load(with: viewModel, delegate: viewController)
       return cell
     }
   }

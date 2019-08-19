@@ -130,25 +130,30 @@ extension TransactionHistoryDetailsViewController: TransactionHistoryDetailCellD
   }
 
   func didTapTwitterShare(detailCell: TransactionHistoryDetailBaseCell) {
-    guard let tx = detailCell.viewModel?.transaction else { return }
-    coordinationDelegate?.viewControllerRequestedShareTransactionOnTwitter(self, transaction: tx, shouldDismiss: false)
+    //TODO
+//    guard let tx = detailCell.viewModel?.transaction else { return }
+//    coordinationDelegate?.viewControllerRequestedShareTransactionOnTwitter(self, transaction: tx, shouldDismiss: false)
   }
 
   func didTapAddress(detailCell: TransactionHistoryDetailBaseCell) {
-    guard let address = detailCell.viewModel?.receiverAddress,
-      let addressURL = CoinNinjaUrlFactory.buildUrl(for: .address(id: address)) else { return }
-    urlOpener?.openURL(addressURL, completionHandler: nil)
+    //TODO
+//    guard let address = detailCell.viewModel?.receiverAddress,
+//      let addressURL = CoinNinjaUrlFactory.buildUrl(for: .address(id: address)) else { return }
+//    urlOpener?.openURL(addressURL, completionHandler: nil)
   }
 
   func didTapBottomButton(detailCell: TransactionHistoryDetailBaseCell, action: TransactionDetailAction) {
     switch action {
-    case .seeDetails:
-      guard let viewModel = detailCell.viewModel else { return }
-      coordinationDelegate?.viewControllerShouldSeeTransactionDetails(for: viewModel)
-    case .cancelInvitation:
-      guard let invitationID = detailCell.viewModel?.transaction?.invitation?.id,
-        let path = collectionView.indexPath(for: detailCell) else { return }
-      coordinationDelegate?.viewController(self, didCancelInvitationWithID: invitationID, at: path)
+      //TODO
+//    case .seeDetails:
+//      guard let viewModel = detailCell.viewModel else { return }
+//      coordinationDelegate?.viewControllerShouldSeeTransactionDetails(for: viewModel)
+//    case .cancelInvitation:
+//      guard let invitationID = detailCell.viewModel?.transaction?.invitation?.id,
+//        let path = collectionView.indexPath(for: detailCell) else { return }
+//      coordinationDelegate?.viewController(self, didCancelInvitationWithID: invitationID, at: path)
+    default:
+      break
     }
   }
 
