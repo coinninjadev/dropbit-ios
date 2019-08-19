@@ -25,7 +25,7 @@ public class CKMLNAccount: NSManagedObject {
     return NSFetchRequest<CKMLNAccount>(entityName: "CKMLNAccount")
   }
 
-  public convenience init(forWallet wallet: CKMWallet, insertInto context: NSManagedObjectContext) {
+  private convenience init(forWallet wallet: CKMWallet, insertInto context: NSManagedObjectContext) {
     self.init(insertInto: context)
     self.wallet = wallet
   }
