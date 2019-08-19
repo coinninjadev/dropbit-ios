@@ -57,7 +57,7 @@ class WalletBalanceView: UIView {
     primarySecondaryBalanceContainer.addGestureRecognizer(recognizer)
   }
 
-  func update() {
+  func refresh() {
     guard let dataSource = currentDataSource else { return }
     update(with: dataSource)
   }

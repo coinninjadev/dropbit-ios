@@ -113,7 +113,7 @@ enum BalanceContainerLeftButtonType {
     rightBalanceContainerView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapRightBalanceView)))
   }
 
-  func update() {
+  func refresh() {
     guard let dataSource = currentDataSource else { return }
     update(with: dataSource)
   }

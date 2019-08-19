@@ -46,19 +46,13 @@ class WalletOverviewViewController: BaseViewController, StoryboardInitializable 
   var balanceNotificationToken: NotificationToken?
   var pageViewController: UIPageViewController?
 
-  enum ViewControllerIndex: Int {
-    case bitcoinWalletTransactionHistory = 0
-    case lightningWalletTransactionHistory = 1
-  }
-
-  private var currentWallet: ViewControllerIndex = .bitcoinWalletTransactionHistory {
+  private var currentWallet: WalletTransactionType = .onChain {
     willSet {
-      coordinationDelegate?.setSelectedWalletTransactionType(self, to:
-        newValue == .bitcoinWalletTransactionHistory ? .onChain : .lightning)
+      coordinationDelegate?.setSelectedWalletTransactionType(self, to: newValue)
     }
     didSet {
-      balanceContainer.update()
-      walletBalanceView.update()
+      balanceContainer.refresh()
+      walletBalanceView.refresh()
     }
   }
 
@@ -200,18 +194,23 @@ extension WalletOverviewViewController: BalanceDisplayable {
 
 }
 
+enum ViewControllerIndex: Int {
+  case bitcoinWallet = 0
+  case lightningWallet = 1
+}
+
 extension WalletOverviewViewController: UIPageViewControllerDelegate {
   func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool,
                           previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
     if let viewContorller = pageViewController.viewControllers?.first as? BaseViewController, completed {
       switch ViewControllerIndex(rawValue: baseViewControllers.reversed().firstIndex(of: viewContorller) ?? 0) {
-      case .bitcoinWalletTransactionHistory?:
+      case .bitcoinWallet?:
         walletToggleView.selectBitcoinButton()
-        currentWallet = .bitcoinWalletTransactionHistory
+        currentWallet = .onChain
         sendReceiveActionView.tintView(with: .bitcoinOrange)
-      case .lightningWalletTransactionHistory?:
+      case .lightningWallet?:
         walletToggleView.selectLightningButton()
-        currentWallet = .lightningWalletTransactionHistory
+        currentWallet = .lightning
         sendReceiveActionView.tintView(with: .lightningBlue)
       default:
         walletToggleView.selectBitcoinButton()
@@ -241,13 +240,13 @@ extension WalletOverviewViewController: WalletToggleViewDelegate {
 
   func bitcoinWalletButtonWasTouched() {
     sendReceiveActionView.tintView(with: .bitcoinOrange)
-    currentWallet = .bitcoinWalletTransactionHistory
+    currentWallet = .onChain
     pageViewController?.setViewControllers([baseViewControllers[1]], direction: .reverse, animated: true, completion: nil)
   }
 
   func lightningWalletButtonWasTouched() {
     sendReceiveActionView.tintView(with: .lightningBlue)
-    currentWallet = .lightningWalletTransactionHistory
+    currentWallet = .lightning
     pageViewController?.setViewControllers([baseViewControllers[0]], direction: .forward, animated: true, completion: nil)
   }
 }
@@ -272,9 +271,8 @@ extension WalletOverviewViewController: SendReceiveActionViewDelegate {
 
   func actionViewDidSelectSend(_ view: UIView) {
     guard let coordinator = coordinationDelegate else { return }
-    let walletTransactionType: WalletTransactionType = currentWallet == .bitcoinWalletTransactionHistory ? .onChain : .lightning
     coordinator.viewControllerDidTapSendPayment(self, converter: coordinator.currencyController.currencyConverter,
-                                                walletTransactionType: walletTransactionType)
+                                                walletTransactionType: currentWallet)
   }
 }
 

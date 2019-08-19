@@ -13,25 +13,25 @@ extension AppCoordinator: BalanceDataSource {
 
   /// Use this when displaying the balance
   func balanceNetPending() -> WalletBalances {
-    guard let wmgr = walletManager else { return (onChain: .zero, lightning: .zero)}
+    guard let wmgr = walletManager else { return WalletBalances(onChain: .zero, lightning: .zero)}
     let context = persistenceManager.createBackgroundContext()
     var balance = (onChain: 0, lightning: 0)
     context.performAndWait {
       balance = wmgr.balanceNetPending(in: context)
     }
-    return (onChain: NSDecimalNumber(integerAmount: balance.onChain, currency: .BTC),
+    return WalletBalances(onChain: NSDecimalNumber(integerAmount: balance.onChain, currency: .BTC),
             lightning: NSDecimalNumber(integerAmount: balance.lightning, currency: .BTC))
   }
 
   /// isSpendable relies on having at least 1 confirmation
   func spendableBalanceNetPending() -> WalletBalances {
-    guard let wmgr = walletManager else { return (onChain: .zero, lightning: .zero)}
+    guard let wmgr = walletManager else { return WalletBalances(onChain: .zero, lightning: .zero)}
     let context = persistenceManager.createBackgroundContext()
     var balance = (onChain: 0, lightning: 0)
     context.performAndWait {
       balance = wmgr.spendableBalance(in: context)
     }
-    return (onChain: NSDecimalNumber(integerAmount: balance.onChain, currency: .BTC),
+    return WalletBalances(onChain: NSDecimalNumber(integerAmount: balance.onChain, currency: .BTC),
             lightning: NSDecimalNumber(integerAmount: balance.lightning, currency: .BTC))
   }
 
