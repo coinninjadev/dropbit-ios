@@ -16,23 +16,35 @@ struct QRCode {
   let paymentRequestURL: URL? // BIP 72
 
   init?(readableObject: AVMetadataMachineReadableCodeObject) {
-    guard let qrCodeString = readableObject.stringValue,
-      let bitcoinURL = BitcoinURL(string: qrCodeString) else { return nil }
+    guard let qrCodeString = readableObject.stringValue else { return nil }
 
-    // If the `url` contains either of these parameters, we ignore any address or amount that may also be present
-    if let paymentURL = bitcoinURL.components.paymentRequest {
-      self.init(rawCode: readableObject, paymentURL: paymentURL)
+    if let bitcoinURL = BitcoinURL(string: qrCodeString) {
+      // If the `url` contains either of these parameters, we ignore any address or amount that may also be present
+      if let paymentURL = bitcoinURL.components.paymentRequest {
+        self.init(rawCode: readableObject, paymentURL: paymentURL)
 
-    } else if let address = bitcoinURL.components.address {
-      self.init(
-        rawCode: readableObject,
-        btcAmount: bitcoinURL.components.amount, // may be nil
-        address: address
-      )
+      } else if let address = bitcoinURL.components.address {
+        self.init(
+          rawCode: readableObject,
+          btcAmount: bitcoinURL.components.amount, // may be nil
+          address: address
+        )
 
+      } else {
+        return nil
+      }
+    } else if let lightningInvoice = LightningInvoice(string: qrCodeString) {
+      self.init(rawCode: readableObject, invoice: lightningInvoice.absoluteString)
     } else {
       return nil
     }
+  }
+
+  init(rawCode: AVMetadataMachineReadableCodeObject, invoice: String) {
+    self.rawCode = rawCode
+    btcAmount = nil
+    address = invoice
+    paymentRequestURL = nil
   }
 
   init(rawCode: AVMetadataMachineReadableCodeObject, btcAmount: NSDecimalNumber?, address: String?, paymentURL: URL? = nil) {

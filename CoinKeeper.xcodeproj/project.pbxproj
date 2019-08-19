@@ -482,6 +482,7 @@
 		A257CEBA230302070063670B /* AppCoordinator+LightningTransactionHistoryEmptyViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A257CEB9230302070063670B /* AppCoordinator+LightningTransactionHistoryEmptyViewDelegate.swift */; };
 		A257CEBC230325580063670B /* WalletTransferViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A257CEBB230325580063670B /* WalletTransferViewModel.swift */; };
 		A257CEC023038F130063670B /* ConfirmViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A257CEBF23038F130063670B /* ConfirmViewTests.swift */; };
+		A257CEC2230ACAA90063670B /* LightningInvoice.swift in Sources */ = {isa = PBXBuildFile; fileRef = A257CEC1230ACAA90063670B /* LightningInvoice.swift */; };
 		A25923EC20C981770005B1A0 /* AnalyticsManagerError.swift in Sources */ = {isa = PBXBuildFile; fileRef = A25923EB20C981770005B1A0 /* AnalyticsManagerError.swift */; };
 		A260E8C720FCD482008343F9 /* LimitEditTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = A260E8C620FCD482008343F9 /* LimitEditTextField.swift */; };
 		A260E8CF20FCFE11008343F9 /* TutorialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A260E8CE20FCFE11008343F9 /* TutorialViewController.swift */; };
@@ -1477,6 +1478,7 @@
 		A257CEB9230302070063670B /* AppCoordinator+LightningTransactionHistoryEmptyViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppCoordinator+LightningTransactionHistoryEmptyViewDelegate.swift"; sourceTree = "<group>"; };
 		A257CEBB230325580063670B /* WalletTransferViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletTransferViewModel.swift; sourceTree = "<group>"; };
 		A257CEBF23038F130063670B /* ConfirmViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmViewTests.swift; sourceTree = "<group>"; };
+		A257CEC1230ACAA90063670B /* LightningInvoice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightningInvoice.swift; sourceTree = "<group>"; };
 		A25923EB20C981770005B1A0 /* AnalyticsManagerError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsManagerError.swift; sourceTree = "<group>"; };
 		A260E8C620FCD482008343F9 /* LimitEditTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LimitEditTextField.swift; sourceTree = "<group>"; };
 		A260E8CE20FCFE11008343F9 /* TutorialViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialViewController.swift; sourceTree = "<group>"; };
@@ -2710,6 +2712,7 @@
 				B5C5EDE621FA490A0032AC94 /* SharedPayloadCodable.swift */,
 				B541DD3A21EE4A18009F38A0 /* MetaAddress.swift */,
 				A230F1C522D664360017BC7A /* NewsData.swift */,
+				A257CEC1230ACAA90063670B /* LightningInvoice.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -4244,6 +4247,7 @@
 				A29CE0ED20A21ED800761B91 /* AppCoordinator+ContactsViewControllerDelegate.swift in Sources */,
 				3B2E78362024D56500DA25AF /* StoryboardInitializable.swift in Sources */,
 				B5E7F21B2214670200358A24 /* CountryCodeSearchView.swift in Sources */,
+				A257CEC2230ACAA90063670B /* LightningInvoice.swift in Sources */,
 				B5A3BA5C215193DA005EE657 /* TransactionsTarget.swift in Sources */,
 				B5860546222702FC0048979D /* HashableContact.swift in Sources */,
 				A2FE198A2301DF8800C2412D /* WalletTransferViewController.swift in Sources */,
