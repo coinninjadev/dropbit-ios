@@ -121,8 +121,10 @@ final class TransactionHistoryDetailsViewController: PresentableViewController, 
 }
 
 extension TransactionHistoryDetailsViewController: TransactionHistoryDetailCellDelegate {
-  func didTapQuestionMarkButton(detailCell: TransactionHistoryDetailBaseCell, with url: URL) {
-    urlOpener?.openURL(url, completionHandler: nil)
+
+  func didTapQuestionMark(detailCell: TransactionHistoryDetailBaseCell) {
+    //TODO: get indexPath, viewModel, and url
+//    urlOpener?.openURL(url, completionHandler: nil)
   }
 
   func didTapClose(detailCell: TransactionHistoryDetailBaseCell) {
@@ -157,8 +159,20 @@ extension TransactionHistoryDetailsViewController: TransactionHistoryDetailCellD
     }
   }
 
-  func didTapAddMemoButton(completion: @escaping (String) -> Void) {
-    coordinationDelegate?.viewControllerDidTapAddMemo(self, with: completion)
+  func didTapAddMemo(detailCell: TransactionHistoryDetailBaseCell) {
+    coordinationDelegate?.viewControllerDidTapAddMemo(self) { memo in
+      //TODO
+//      guard let vm = self?.viewModel, let delegate = self?.delegate, let tx = vm.transaction else { return }
+//      tx.memo = memo
+//
+//      delegate.shouldSaveMemo(for: tx)
+//        .done {
+//          vm.memo = memo
+//          self?.load(with: vm, delegate: delegate)
+//        }.catch { error in
+//          log.error(error, message: "failed to add memo")
+//      }
+    }
   }
 
   func shouldSaveMemo(for transaction: CKMTransaction) -> Promise<Void> {

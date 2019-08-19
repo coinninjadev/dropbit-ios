@@ -10,12 +10,12 @@ import UIKit
 import PromiseKit
 
 protocol TransactionHistoryDetailCellDelegate: class {
-  func didTapQuestionMarkButton(detailCell: TransactionHistoryDetailBaseCell, with url: URL)
+  func didTapQuestionMark(detailCell: TransactionHistoryDetailBaseCell)
   func didTapClose(detailCell: TransactionHistoryDetailBaseCell)
   func didTapTwitterShare(detailCell: TransactionHistoryDetailBaseCell)
   func didTapAddress(detailCell: TransactionHistoryDetailBaseCell)
   func didTapBottomButton(detailCell: TransactionHistoryDetailBaseCell, action: TransactionDetailAction)
-  func didTapAddMemoButton(completion: @escaping (String) -> Void)
+  func didTapAddMemo(detailCell: TransactionHistoryDetailBaseCell)
   func shouldSaveMemo(for transaction: CKMTransaction) -> Promise<Void>
 }
 
@@ -71,38 +71,25 @@ class TransactionHistoryDetailBaseCell: UICollectionViewCell {
 
   // MARK: actions
   @IBAction func didTapAddMemoButton(_ sender: UIButton) {
-//    delegate?.didTapAddMemoButton { [weak self] memo in
-//      guard let vm = self?.viewModel, let delegate = self?.delegate, let tx = vm.transaction else { return }
-//      tx.memo = memo
-//
-//      delegate.shouldSaveMemo(for: tx)
-//        .done {
-//          vm.memo = memo
-//          self?.load(with: vm, delegate: delegate)
-//        }.catch { error in
-//          log.error(error, message: "failed to add memo")
-//      }
-//    }
+    delegate.didTapAddMemo(detailCell: self)
   }
 
-  @IBAction func didTapQuestionMarkButton(_ sender: UIButton) {
-//    guard let url: URL = viewModel?.invitationStatus != nil ?
-//      CoinNinjaUrlFactory.buildUrl(for: .dropbitTransactionTooltip) : CoinNinjaUrlFactory.buildUrl(for: .regularTransactionTooltip) else { return }
-//
-//    delegate?.didTapQuestionMarkButton(detailCell: self, with: url)
+  @IBAction func didTapQuestionMark(_ sender: UIButton) {
+    delegate.didTapQuestionMark(detailCell: self)
   }
 
   @IBAction func didTapTwitterShare(_ sender: Any) {
-    delegate?.didTapTwitterShare(detailCell: self)
+    delegate.didTapTwitterShare(detailCell: self)
   }
 
   @IBAction func didTapClose(_ sender: Any) {
-    delegate?.didTapClose(detailCell: self)
+    delegate.didTapClose(detailCell: self)
   }
 
   func load(with viewModel: TransactionHistoryDetailCellDisplayable, delegate: TransactionHistoryDetailCellDelegate) {
-    self.delegate = delegate
     self.viewModel = viewModel
+    self.delegate = delegate
+
 
   }
 
