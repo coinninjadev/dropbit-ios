@@ -110,8 +110,11 @@ class DeviceVerificationCoordinator: ChildCoordinatorType {
           log.debug("user response: \(response.id)")
           return self.checkAndPersistVerificationStatus(from: response, crDelegate: delegate, in: context)
         }
-        .then(in: context) { _ in delegate.twitterAccessManager.getCurrentTwitterUser(in: context) }
-        .get(in: context) { _ in
+        .then(in: context) { delegate.twitterAccessManager.getCurrentTwitterUser(in: context) }
+        .then { _ in delegate.networkManager.getOrCreateLightningAccount() }
+        .get(in: context) { lnAccountResponse in
+          let wallet = CKMWallet.findOrCreate(in: context)
+          delegate.persistenceManager.brokers.lightning.persistAccountResponse(lnAccountResponse, forWallet: wallet, in: context)
           do {
             try context.save()
           } catch {
@@ -330,16 +333,19 @@ extension DeviceVerificationCoordinator: DeviceVerificationViewControllerDelegat
       crDelegate.networkManager.verifyUser(id: userId, body: body)
         .get(in: bgContext) { response in crDelegate.persistenceManager.brokers.user.persistUserId(response.id, in: bgContext) }
         .then(in: bgContext) { self.checkAndPersistVerificationStatus(from: $0, crDelegate: crDelegate, in: bgContext) }
-        .get(in: bgContext) { _ in
+        .then { crDelegate.networkManager.getOrCreateLightningAccount() }
+        .get(in: bgContext) { lnAccountResponse in
+          let wallet = CKMWallet.findOrCreate(in: bgContext)
+          crDelegate.persistenceManager.brokers.lightning.persistAccountResponse(lnAccountResponse, forWallet: wallet, in: bgContext)
           do {
             try bgContext.save()
           } catch {
             log.contextSaveError(error)
           }
         }
-        .then { crDelegate.persistenceManager.keychainManager.store(anyValue: phoneNumber.countryCode, key: .countryCode) }
+        .then { _ in crDelegate.persistenceManager.keychainManager.store(anyValue: phoneNumber.countryCode, key: .countryCode) }
         .then { crDelegate.persistenceManager.keychainManager.store(anyValue: phoneNumber.nationalNumber, key: .phoneNumber) }
-        .done(on: .main) { _ in
+        .done(on: .main) {
 
           // Tell delegate to continue app flow
           self.codeWasVerified(phoneNumber: phoneNumber)

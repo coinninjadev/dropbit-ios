@@ -136,16 +136,16 @@ class VerificationStatusViewControllerTests: XCTestCase {
     }
 
     var didChangeRemovePhone = false
-    func viewControllerDidRequestToUnverifyPhone(_ viewController: UIViewController, successfulCompletion: @escaping () -> Void) {
+    func viewControllerDidRequestToUnverifyPhone(_ viewController: UIViewController, successfulCompletion: @escaping CKCompletion) {
       didChangeRemovePhone = true
     }
 
-    func viewControllerDidSelectClose(_ viewController: UIViewController, completion: (() -> Void)? ) {
+    func viewControllerDidSelectClose(_ viewController: UIViewController, completion: CKCompletion? ) {
       didSelectClose = true
     }
 
     var didChangeRemoveTwitter = false
-    func viewControllerDidRequestToUnverifyTwitter(_ viewController: UIViewController, successfulCompletion: @escaping () -> Void) {
+    func viewControllerDidRequestToUnverifyTwitter(_ viewController: UIViewController, successfulCompletion: @escaping CKCompletion) {
       didChangeRemoveTwitter = true
     }
 

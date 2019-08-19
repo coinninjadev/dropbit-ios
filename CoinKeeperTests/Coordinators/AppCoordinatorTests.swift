@@ -129,7 +129,8 @@ class AppCoordinatorTests: MockedPersistenceTestCase {
     UIApplication.shared.keyWindow?.rootViewController = sut.navigationController
 
     sut.appEnteredActiveState() // to call requireAuthentication...
-    sut.viewControllerDidSuccessfullyAuthenticate(PinEntryViewController.makeFromStoryboard())
+    let vc = sut.createPinEntryViewControllerForAppOpen(whenAuthenticated: {})
+    vc.authenticationSatisfied()
 
     XCTAssertTrue(mockLaunchStateManager.userWasAuthenticatedWasCalled, "should call userWasAuthenticated")
   }
@@ -143,7 +144,9 @@ class AppCoordinatorTests: MockedPersistenceTestCase {
     mockLaunchStateManager.mockShouldRequireAuthentication = false
 
     sut.appEnteredActiveState() // to call requireAuthentication...
-    sut.viewControllerDidSuccessfullyAuthenticate(PinEntryViewController.makeFromStoryboard())
+    let viewModel = OpenAppPinEntryViewModel()
+    let vc = PinEntryViewController.newInstance(delegate: sut, viewModel: viewModel, success: nil)
+    vc.authenticationSatisfied()
 
     XCTAssertEqual(mockNavigationController.viewControllers.count, 1, "nav controller should only have 1 vc")
     XCTAssertTrue(mockNavigationController.viewControllers.first is StartViewController, "nav controller top vc should be StartVC")
@@ -201,7 +204,7 @@ class AppCoordinatorTests: MockedPersistenceTestCase {
     sut = AppCoordinator(persistenceManager: mockPersistenceManager,
                          launchStateManager: mockLaunchStateManager,
                          networkManager: mocks.network)
-    let completion: CompletionHandler = { error in
+    let completion: CKErrorCompletion = { error in
       XCTAssertTrue(mocks.network.getUserWasCalled, "syncTransactionDataAndServerAddresses should call getUser")
       expectation.fulfill()
     }
@@ -219,7 +222,7 @@ class AppCoordinatorTests: MockedPersistenceTestCase {
     sut = AppCoordinator(persistenceManager: mockPersistenceManager,
                          launchStateManager: mockLaunchStateManager,
                          networkManager: mocks.network)
-    let completion: CompletionHandler = { error in
+    let completion: CKErrorCompletion = { error in
       XCTAssertTrue(mocks.network.getWalletWasCalled, "syncTransactionDataAndServerAddresses should call getWallet")
       expectation.fulfill()
     }
@@ -317,7 +320,7 @@ class AppCoordinatorTests: MockedPersistenceTestCase {
                          alertManager: localMocks.alert,
                          networkManager: localMocks.network)
 
-    let completion: CompletionHandler = { _ in
+    let completion: CKErrorCompletion = { _ in
       XCTAssert(self.mockBrokers.mockUser.unverifyUserWasCalled, "should call unverifyUser")
       XCTAssert(localMocks.alert.showBannerWithMessageDurationAlertKindWasCalled, "should call showBanner")
       expectation.fulfill()
@@ -342,7 +345,7 @@ class AppCoordinatorTests: MockedPersistenceTestCase {
                          alertManager: localMocks.alert,
                          networkManager: localMocks.network)
 
-    let completion: CompletionHandler = { _ in
+    let completion: CKErrorCompletion = { _ in
       XCTAssert(self.mockBrokers.mockUser.unverifyUserWasCalled, "should call unverifyUser")
       XCTAssert(self.mockBrokers.mockWallet.removeWalletIdWasCalled, "should call removeWalletId")
       XCTAssert(localMocks.alert.showBannerWithMessageDurationAlertKindWasCalled, "should call showBanner")
@@ -357,7 +360,7 @@ class AppCoordinatorTests: MockedPersistenceTestCase {
 }
 
 extension PinEntryViewController {
-  override public func dismiss(animated flag: Bool, completion: (() -> Void)? = nil) {
+  override public func dismiss(animated flag: Bool, completion: CKCompletion? = nil) {
     completion?()
   }
 }

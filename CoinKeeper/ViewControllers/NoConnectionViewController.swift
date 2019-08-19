@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 
 protocol NoConnectionViewControllerDelegate: AnyObject {
-  func viewControllerDidRequestRetry(_ viewController: UIViewController, completion: @escaping () -> Void)
+  func viewControllerDidRequestRetry(_ viewController: UIViewController, completion: @escaping CKCompletion)
 }
 
 class NoConnectionViewController: BaseViewController, StoryboardInitializable {

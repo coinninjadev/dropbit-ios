@@ -35,7 +35,7 @@ struct AlertControllerViewModel {
 struct AlertActionConfiguration: AlertActionConfigurationType {
   let title: String
   let style: AlertActionStyle
-  let action: (() -> Void)?
+  let action: CKCompletion?
 }
 
 enum AlertDuration {

@@ -13,24 +13,24 @@ import XCTest
 class PinEntryViewControllerTests: XCTestCase {
   var sut: PinEntryViewController!
   var mockCoordinator: MockCoordinator!
+  var mockViewModel: MockDigitEntryDisplayViewModel!
 
   override func setUp() {
     super.setUp()
-    self.sut = PinEntryViewController.makeFromStoryboard()
-    _ = self.sut.view
+    self.mockCoordinator = MockCoordinator()
+    self.sut = PinEntryViewController.newInstance(delegate: mockCoordinator,
+                                                  viewModel: OpenAppPinEntryViewModel(),
+                                                  success: nil)
+    _ = self.sut.view //trigger subviews to load
+    self.mockViewModel = MockDigitEntryDisplayViewModel(view: self.sut.securePinDisplayView)
+    self.sut.digitEntryDisplayViewModel = self.mockViewModel
   }
 
   override func tearDown() {
     self.sut = nil
+    self.mockCoordinator = nil
+    self.mockViewModel = nil
     super.tearDown()
-  }
-
-  private func setupDelegates() -> (MockCoordinator, MockDigitEntryDisplayViewModel) {
-    let mockViewModel = MockDigitEntryDisplayViewModel(view: self.sut.securePinDisplayView)
-    self.sut.digitEntryDisplayViewModel = mockViewModel
-    self.mockCoordinator = MockCoordinator()
-    self.sut.generalCoordinationDelegate = mockCoordinator
-    return (mockCoordinator, mockViewModel)
   }
 
   // MARK: outlets
@@ -87,13 +87,11 @@ class PinEntryViewControllerTests: XCTestCase {
   }
 
   func testBiometricButtonAfterAnimationsAlphaChanges() {
-    _ = setupDelegates()
     self.sut.viewDidAppear(false)
     XCTAssertEqual(self.sut.biometricButton.alpha, 1, "biometricsButton alpha should equal 1")
   }
 
   func testBiometricButtonIsNilIfNoBiometryAvailable() {
-    let (mockCoordinator, _) = setupDelegates()
     mockCoordinator.mockBiometricType = .none
     self.sut.viewDidAppear(false)
     self.sut.setupBiometricButton()
@@ -103,7 +101,6 @@ class PinEntryViewControllerTests: XCTestCase {
   }
 
   func testBiometricButtonIsTouchIDIfTouchIDAvailable() {
-    let (mockCoordinator, _) = setupDelegates()
     mockCoordinator.mockBiometricType = .touchID
     self.sut.viewDidAppear(false)
     self.sut.setupBiometricButton()
@@ -114,7 +111,6 @@ class PinEntryViewControllerTests: XCTestCase {
   }
 
   func testBiometricButtonIsFaceIDIfFaceIDAvailable() {
-    let (mockCoordinator, _) = setupDelegates()
     mockCoordinator.mockBiometricType = .faceID
     self.sut.viewDidAppear(false)
     self.sut.setupBiometricButton()
@@ -133,7 +129,6 @@ class PinEntryViewControllerTests: XCTestCase {
 
   // MARK: actions produce results
   func testSelectingDigitsProducesResults() {
-    let (_, mockViewModel) = setupDelegates()
     self.sut.errorLabel.isHidden = false
 
     self.sut.selected(digit: "4")
@@ -143,7 +138,6 @@ class PinEntryViewControllerTests: XCTestCase {
   }
 
   func testAllDigitsEnteredAsksDelegateToCheckForMatch() {
-    let (mockCoordinator, mockViewModel) = setupDelegates()
     mockViewModel.removeAllDigits()
 
     6.times { self.sut.selected(digit: "4") }
@@ -152,7 +146,6 @@ class PinEntryViewControllerTests: XCTestCase {
   }
 
   func testAllDigitsEnteredAndMatchTellsDelegateToSuccessfullyAuthenticate() {
-    let (mockCoordinator, mockViewModel) = setupDelegates()
     mockViewModel.removeAllDigits()
     mockCoordinator.expectedDigits = Array(repeating: "4", count: 6).joined()
 
@@ -161,14 +154,13 @@ class PinEntryViewControllerTests: XCTestCase {
 
     DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
       expectation.fulfill()
-      XCTAssertTrue(mockCoordinator.successfullyAuthenticatedWasCalled, "should tell delegate of successful match")
+      XCTAssertTrue(self.mockCoordinator.successfullyAuthenticatedWasCalled, "should tell delegate of successful match")
     }
 
     wait(for: [expectation], timeout: 1.0)
   }
 
   func testAllDigitsEnteredAndNotMatchingTellsViewModelToRemoveAllDigits() {
-    let (mockCoordinator, mockViewModel) = setupDelegates()
     mockViewModel.removeAllDigits()
     mockCoordinator.expectedDigits = Array(repeating: "4", count: 6).joined()
 
@@ -179,8 +171,6 @@ class PinEntryViewControllerTests: XCTestCase {
   }
 
   func testRemovingDigitTellsViewModelToRemoveDigit() {
-    let (_, mockViewModel) = setupDelegates()
-
     2.times { self.sut.selected(digit: "2") }
     self.sut.selectedBack()
 
@@ -188,8 +178,6 @@ class PinEntryViewControllerTests: XCTestCase {
   }
 
   func testRemovingAllDigitsTellsViewModelToRemoveAllAndShowError() {
-    let (mockCoordinator, mockViewModel) = setupDelegates()
-
     let expectedDigit = "3", actualDigit = "2"
     mockCoordinator.expectedDigits = Array(repeating: expectedDigit, count: 6).joined()
 
@@ -200,8 +188,6 @@ class PinEntryViewControllerTests: XCTestCase {
   }
 
   func testTappingBiometricsButtonTellsDelegateToTryBiometrics() {
-    let (mockCoordinator, _) = setupDelegates()
-
     self.sut.biometricButton.sendActions(for: .touchUpInside)
 
     XCTAssertTrue(mockCoordinator.tryBiometricsWasCalled, "biometricButton tap should tell delegate to try biometrics")
@@ -216,7 +202,7 @@ class PinEntryViewControllerTests: XCTestCase {
     }
 
     func viewControllerDidSelectClose(_ viewController: UIViewController) {}
-    func viewControllerDidSelectClose(_ viewController: UIViewController, completion: (() -> Void)? ) {}
+    func viewControllerDidSelectClose(_ viewController: UIViewController, completion: CKCompletion? ) {}
 
     var tryBiometricsWasCalled = false
     func viewControllerDidTryBiometrics(_ pinEntryViewController: PinEntryViewController) {
@@ -224,7 +210,7 @@ class PinEntryViewControllerTests: XCTestCase {
     }
 
     var successfullyAuthenticatedWasCalled = false
-    func viewControllerDidSuccessfullyAuthenticate(_ pinEntryViewController: PinEntryViewController) {
+    func viewControllerDidSuccessfullyAuthenticate(_ pinEntryViewController: PinEntryViewController, completion: CKCompletion?) {
       successfullyAuthenticatedWasCalled = true
     }
 

@@ -86,14 +86,14 @@ extension AppCoordinator: TransactionHistoryViewControllerDelegate {
       let controller = TransactionHistoryDetailsViewController.newInstance(withDelegate: self,
                                                                            fetchedResultsController: viewController.lightningFetchResultsController,
                                                                            selectedIndexPath: indexPath,
-                                                                           viewModelForIndexPath: { path in viewController.detailViewModel(at: path) },
+                                                                           viewModelForIndexPath: { viewController.detailViewModel(at: $0) },
                                                                            urlOpener: self)
       viewController.present(controller, animated: true, completion: nil)
     case .onChain:
       let controller = TransactionHistoryDetailsViewController.newInstance(withDelegate: self,
                                                                            fetchedResultsController: viewController.onChainFetchResultsController,
                                                                            selectedIndexPath: indexPath,
-                                                                           viewModelForIndexPath: { path in viewController.detailViewModel(at: path) },
+                                                                           viewModelForIndexPath: { viewController.detailViewModel(at: $0) },
                                                                            urlOpener: self)
       viewController.present(controller, animated: true, completion: nil)
     }

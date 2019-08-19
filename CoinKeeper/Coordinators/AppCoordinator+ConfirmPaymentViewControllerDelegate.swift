@@ -13,55 +13,44 @@ import CoreData
 import MessageUI
 import PromiseKit
 
+struct LightningPaymentInputs {
+  let sats: Int
+  let invoice: String
+  let sharedPayload: SharedPayloadDTO?
+}
+
 extension AppCoordinator: ConfirmPaymentViewControllerDelegate, CurrencyFormattable {
+
   func confirmPaymentViewControllerDidLoad(_ viewController: UIViewController) {
     analyticsManager.track(event: .confirmScreenLoaded, with: nil)
   }
 
-  func viewControllerDidConfirmInvite(_ viewController: UIViewController, outgoingInvitationDTO: OutgoingInvitationDTO) {
-    biometricsAuthenticationManager.resetPolicy()
-    let pinEntryViewController = PinEntryViewController.makeFromStoryboard()
-    assignCoordinationDelegate(to: pinEntryViewController)
-    pinEntryViewController.mode = .inviteVerification(completion: { [weak self] result in
-      guard let strongSelf = self else { return }
-      switch result {
-      case .success:
-        guard outgoingInvitationDTO.fee > 0 else {
-          log.error("DropBit invitation fee is zero")
-          strongSelf.handleFailure(error: TransactionDataError.insufficientFee)
-          return
-        }
-
-        let receiverBody = outgoingInvitationDTO.contact.userIdentityBody
-
-        let senderIdentityFactory = SenderIdentityFactory(persistenceManager: strongSelf.persistenceManager)
-        guard let senderBody = senderIdentityFactory.preferredSenderBody(forReceiverType: receiverBody.identityType) else {
-          log.error("Failed to create sender body")
-          return
-        }
-
-        let inviteBody = RequestAddressBody(amount: outgoingInvitationDTO.btcPair,
-                                            receiver: receiverBody,
-                                            sender: senderBody,
-                                            requestId: UUID().uuidString.lowercased())
-        strongSelf.handleSuccessfulInviteVerification(with: inviteBody, outgoingInvitationDTO: outgoingInvitationDTO)
-      case .failure(let error):
-        strongSelf.handleFailure(error: error)
-      }
-    })
-    pinEntryViewController.modalPresentationStyle = .overFullScreen
-    navigationController.topViewController()?.present(pinEntryViewController, animated: true, completion: nil)
+  private func presentPinEntryViewController(_ pinEntryVC: PinEntryViewController) {
+    pinEntryVC.modalPresentationStyle = .overFullScreen
+    navigationController.topViewController()?.present(pinEntryVC, animated: true, completion: nil)
   }
 
-  func viewControllerDidConfirmPayment(
+  func viewControllerDidConfirmLightningPayment(_ viewController: UIViewController, inputs: LightningPaymentInputs) {
+    // TODO: add logic to check amount limits
+    let viewModel = PaymentVerificationPinEntryViewModel(amountDisablesBiometrics: false)
+    let successHandler: CKCompletion = { [unowned self] in
+      self.handleSuccessfulLightningPaymentVerification(with: inputs)
+    }
+
+    let pinEntryVC = PinEntryViewController.newInstance(delegate: self,
+                                                        viewModel: viewModel,
+                                                        success: successHandler)
+    presentPinEntryViewController(pinEntryVC)
+  }
+
+  func viewControllerDidConfirmOnChainPayment(
     _ viewController: UIViewController,
     transactionData: CNBTransactionData,
     rates: ExchangeRates,
     outgoingTransactionData: OutgoingTransactionData
     ) {
     biometricsAuthenticationManager.resetPolicy()
-    let pinEntryViewController = PinEntryViewController.makeFromStoryboard()
-    assignCoordinationDelegate(to: pinEntryViewController)
+
     let converter = CurrencyConverter(fromBtcTo: .USD,
                                       fromAmount: NSDecimalNumber(integerAmount: outgoingTransactionData.amount, currency: .BTC),
                                       rates: rates)
@@ -76,21 +65,51 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate, CurrencyFormatta
     let usdThreshold = 100_00
     let shouldDisableBiometrics = amountInfo.fiatAmount > usdThreshold
 
-    pinEntryViewController.mode = .paymentVerification(amountDisablesBiometrics: shouldDisableBiometrics, completion: { [weak self] result in
-      guard let strongSelf = self else { return }
-      self?.analyticsManager.track(event: .preBroadcast, with: nil)
-      switch result {
-      case .success:
-        strongSelf.handleSuccessfulPaymentVerification(
-          with: transactionData,
-          outgoingTransactionData: outgoingTxDataWithAmount)
+    let pinEntryViewModel = PaymentVerificationPinEntryViewModel(amountDisablesBiometrics: shouldDisableBiometrics)
 
-      case .failure(let error):
-        strongSelf.handleFailure(error: error)
+    let successHandler: CKCompletion = { [unowned self] in
+      self.analyticsManager.track(event: .preBroadcast, with: nil)
+      self.handleSuccessfulOnChainPaymentVerification(with: transactionData, outgoingTransactionData: outgoingTxDataWithAmount)
+    }
+
+    let pinEntryVC = PinEntryViewController.newInstance(delegate: self,
+                                                        viewModel: pinEntryViewModel,
+                                                        success: successHandler)
+    presentPinEntryViewController(pinEntryVC)
+  }
+
+  func viewControllerDidConfirmInvite(_ viewController: UIViewController,
+                                      outgoingInvitationDTO: OutgoingInvitationDTO,
+                                      walletTxType: WalletTransactionType) {
+    biometricsAuthenticationManager.resetPolicy()
+    let pinEntryViewModel = InviteVerificationPinEntryViewModel()
+
+    let successHandler: CKCompletion = { [unowned self] in
+      guard outgoingInvitationDTO.fee > 0 else {
+        log.error("DropBit invitation fee is zero")
+        self.handleFailure(error: TransactionDataError.insufficientFee)
+        return
       }
-    })
-    pinEntryViewController.modalPresentationStyle = .overFullScreen
-    navigationController.topViewController()?.present(pinEntryViewController, animated: true, completion: nil)
+
+      let receiverBody = outgoingInvitationDTO.contact.userIdentityBody
+
+      let senderIdentityFactory = SenderIdentityFactory(persistenceManager: self.persistenceManager)
+      guard let senderBody = senderIdentityFactory.preferredSenderBody(forReceiverType: receiverBody.identityType) else {
+        log.error("Failed to create sender body")
+        return
+      }
+
+      let inviteBody = RequestAddressBody(amount: outgoingInvitationDTO.btcPair,
+                                          receiver: receiverBody,
+                                          sender: senderBody,
+                                          requestId: UUID().uuidString.lowercased())
+      self.handleSuccessfulInviteVerification(with: inviteBody, outgoingInvitationDTO: outgoingInvitationDTO)
+    }
+
+    let pinEntryVC = PinEntryViewController.newInstance(delegate: self,
+                                                        viewModel: pinEntryViewModel,
+                                                        success: successHandler)
+    presentPinEntryViewController(pinEntryVC)
   }
 
   func viewControllerRequestedShowFeeTooExpensiveAlert(_ viewController: UIViewController) {
@@ -267,7 +286,6 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate, CurrencyFormatta
 
   private func handleFailureInvite(error: Error) {
     analyticsManager.track(event: .dropbitInitiationFailed, with: nil)
-
     log.error(error, message: "DropBit invite failed")
 
     var errorMessage = ""
@@ -305,106 +323,44 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate, CurrencyFormatta
     }
   }
 
-  private func handleSuccessfulPaymentVerification(
-    with transactionData: CNBTransactionData,
-    outgoingTransactionData: OutgoingTransactionData
-    ) {
-    let successFailViewController = SuccessFailViewController.newInstance(viewModel: PaymentSuccessFailViewModel(mode: .pending),
-                                                                          delegate: self)
-    successFailViewController.action = { [weak self] in
-      guard let strongSelf = self else { return }
+  private func handleSuccessfulLightningPaymentVerification(with inputs: LightningPaymentInputs) {
+    let viewModel = PaymentSuccessFailViewModel(mode: .pending)
+    let successFailVC = SuccessFailViewController.newInstance(viewModel: viewModel, delegate: self)
+    let errorHandler: CKErrorCompletion = self.paymentErrorHandler(for: successFailVC)
 
-      strongSelf.networkManager.updateCachedMetadata()
-        .then { _ in strongSelf.networkManager.broadcastTx(with: transactionData) }
-        .then { txid -> Promise<String> in
-          guard let wmgr = strongSelf.walletManager else {
-            return Promise(error: CKPersistenceError.missingValue(key: "wallet"))
-          }
-          let dataCopyWithTxid = outgoingTransactionData.copy(withTxid: txid)
-          return strongSelf.networkManager.postSharedPayloadIfAppropriate(withOutgoingTxData: dataCopyWithTxid,
-                                                                          walletManager: wmgr)
-        }
-        .then { (txid: String) -> Promise<Void> in
-          let context = strongSelf.persistenceManager.createBackgroundContext()
-
-          context.performAndWait {
-            let vouts = transactionData.unspentTransactionOutputs.map { CKMVout.find(from: $0, in: context) }.compactMap { $0 }
-            let voutDebugDesc = vouts.map { $0.debugDescription }.joined(separator: "\n")
-            log.debug("Broadcast succeeded, vouts: \n\(voutDebugDesc)")
-            let persistedTransaction = strongSelf.persistenceManager.brokers.transaction.persistTemporaryTransaction(
-              from: transactionData,
-              with: outgoingTransactionData,
-              txid: txid,
-              invitation: nil,
-              in: context
-            )
-
-            if let walletCopy = strongSelf.walletManager?.createWalletCopy() {
-              let transactionBuilder = CNBTransactionBuilder()
-              let metadata = transactionBuilder.generateTxMetadata(with: transactionData, wallet: walletCopy)
-              do {
-                // If sending max such that there is no change address, an error will be thrown and caught below
-                let tempVout = try CKMVout.findOrCreateTemporaryVout(in: context, with: transactionData, metadata: metadata)
-                tempVout.transaction = persistedTransaction
-              } catch {
-                log.error(error, message: "error creating temp vout")
-              }
-            }
-
-            do {
-              try context.save()
-            } catch {
-              log.contextSaveError(error)
-            }
-          }
-          return Promise.value(())
-        }
-        .done(on: .main) {
-          successFailViewController.setMode(.success)
-
-          strongSelf.showShareTransactionIfAppropriate(dropBitType: .none)
-
-          self?.analyticsManager.track(property: MixpanelProperty(key: .hasSent, value: true))
-          if case .twitter = outgoingTransactionData.dropBitType {
-            self?.analyticsManager.track(event: .twitterSendComplete, with: nil)
-          }
-          self?.trackIfUserHasABalance()
-
-          strongSelf.didBroadcastTransaction()
-        }.catch { error in
-          let nsError = error as NSError
-          let broadcastError = TransactionBroadcastError(errorCode: nsError.code)
-          if let context = self?.persistenceManager.createBackgroundContext() {
-            context.performAndWait {
-              let vouts = transactionData.unspentTransactionOutputs.map { CKMVout.find(from: $0, in: context) }.compactMap { $0 }
-              let voutDebugDesc = vouts.map { $0.debugDescription }.joined(separator: "\n")
-              let encodedTx = nsError.userInfo["encoded_tx"] as? String ?? ""
-              let txid = nsError.userInfo["txid"] as? String ?? ""
-              let analyticsError = "error code: \(broadcastError.rawValue) :: txid: \(txid) :: encoded_tx: \(encodedTx) :: vouts: \(voutDebugDesc)"
-              log.error("broadcast failed, \(analyticsError)")
-              let eventValue = AnalyticsEventValue(key: .broadcastFailed, value: analyticsError)
-              strongSelf.analyticsManager.track(event: .paymentSentFailed, with: eventValue)
-            }
-          }
-
-          if let networkError = error as? CKNetworkError,
-            case let .reachabilityFailed(moyaError) = networkError {
-            self?.handleReachabilityError(moyaError)
-
-          } else {
-            strongSelf.handleFailure(error: error, action: {
-              successFailViewController.setMode(.failure)
-            })
-          }
-      }
+    successFailVC.action = { [unowned self] in
+      self.executeConfirmedLightningPayment(with: inputs,
+                                            success: { successFailVC.setMode(.success) },
+                                            failure: errorHandler)
     }
 
-    self.navigationController.topViewController()?.present(successFailViewController, animated: false) {
-      successFailViewController.action?()
+    self.navigationController.topViewController()?.present(successFailVC, animated: false) {
+      successFailVC.action?()
     }
   }
 
-  private func handleFailure(error: Error?, action: (() -> Void)? = nil) {
+  func handleSuccessfulOnChainPaymentVerification(
+    with transactionData: CNBTransactionData,
+    outgoingTransactionData: OutgoingTransactionData) {
+
+    let viewModel = PaymentSuccessFailViewModel(mode: .pending)
+    let successFailVC = SuccessFailViewController.newInstance(viewModel: viewModel, delegate: self)
+    let errorHandler: CKErrorCompletion = self.paymentErrorHandler(for: successFailVC)
+
+    successFailVC.action = { [unowned self] in
+      self.broadcastConfirmedOnChainTransaction(
+        with: transactionData,
+        outgoingTransactionData: outgoingTransactionData,
+        success: { successFailVC.setMode(.success) },
+        failure: errorHandler)
+    }
+
+    self.navigationController.topViewController()?.present(successFailVC, animated: false) {
+      successFailVC.action?()
+    }
+  }
+
+  private func handleFailure(error: Error?, action: CKCompletion? = nil) {
     var localizedDescription = ""
     if let txError = error as? TransactionDataError {
       localizedDescription = txError.messageDescription
@@ -436,4 +392,112 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate, CurrencyFormatta
       }
     }
   }
+
+  /// Provides a completion handler to be called in the catch block of payment promise chains
+  private func paymentErrorHandler(for successFailVC: SuccessFailViewController) -> CKErrorCompletion {
+    let errorHandler: CKErrorCompletion = { [unowned self] error in
+      if let networkError = error as? CKNetworkError,
+        case let .reachabilityFailed(moyaError) = networkError {
+        self.handleReachabilityError(moyaError)
+
+      } else {
+        self.handleFailure(error: error, action: {
+          successFailVC.setMode(.failure)
+        })
+      }
+    }
+    return errorHandler
+  }
+
+  private func executeConfirmedLightningPayment(with inputs: LightningPaymentInputs,
+                                                success: @escaping CKCompletion,
+                                                failure: @escaping CKErrorCompletion) {
+    //TODO: Get updated ledger and persist new entry immediately following payment
+    self.networkManager.payLightningPaymentRequest(inputs.invoice, sats: inputs.sats).asVoid()
+      .done { _ in
+        success()
+        self.didBroadcastTransaction()
+      }
+      .catch(failure)
+  }
+
+  private func broadcastConfirmedOnChainTransaction(with transactionData: CNBTransactionData,
+                                                    outgoingTransactionData: OutgoingTransactionData,
+                                                    success: @escaping CKCompletion,
+                                                    failure: @escaping CKErrorCompletion) {
+    self.networkManager.updateCachedMetadata()
+      .then { _ in self.networkManager.broadcastTx(with: transactionData) }
+      .then { txid -> Promise<String> in
+        guard let wmgr = self.walletManager else {
+          return Promise(error: CKPersistenceError.missingValue(key: "wallet"))
+        }
+        let dataCopyWithTxid = outgoingTransactionData.copy(withTxid: txid)
+        return self.networkManager.postSharedPayloadIfAppropriate(withOutgoingTxData: dataCopyWithTxid,
+                                                                  walletManager: wmgr)
+      }
+      .get { txid in
+        let context = self.persistenceManager.createBackgroundContext()
+
+        context.performAndWait {
+          let vouts = transactionData.unspentTransactionOutputs.map { CKMVout.find(from: $0, in: context) }.compactMap { $0 }
+          let voutDebugDesc = vouts.map { $0.debugDescription }.joined(separator: "\n")
+          log.debug("Broadcast succeeded, vouts: \n\(voutDebugDesc)")
+          let persistedTransaction = self.persistenceManager.brokers.transaction.persistTemporaryTransaction(
+            from: transactionData,
+            with: outgoingTransactionData,
+            txid: txid,
+            invitation: nil,
+            in: context
+          )
+
+          if let walletCopy = self.walletManager?.createWalletCopy() {
+            let transactionBuilder = CNBTransactionBuilder()
+            let metadata = transactionBuilder.generateTxMetadata(with: transactionData, wallet: walletCopy)
+            do {
+              // If sending max such that there is no change address, an error will be thrown and caught below
+              let tempVout = try CKMVout.findOrCreateTemporaryVout(in: context, with: transactionData, metadata: metadata)
+              tempVout.transaction = persistedTransaction
+            } catch {
+              log.error(error, message: "error creating temp vout")
+            }
+          }
+
+          do {
+            try context.save()
+          } catch {
+            log.contextSaveError(error)
+          }
+        }
+      }
+      .done(on: .main) { _ in
+        success()
+
+        self.showShareTransactionIfAppropriate(dropBitType: .none)
+
+        self.analyticsManager.track(property: MixpanelProperty(key: .hasSent, value: true))
+        if case .twitter = outgoingTransactionData.dropBitType {
+          self.analyticsManager.track(event: .twitterSendComplete, with: nil)
+        }
+        self.trackIfUserHasABalance()
+
+        self.didBroadcastTransaction()
+      }.catch { error in
+        let nsError = error as NSError
+        let broadcastError = TransactionBroadcastError(errorCode: nsError.code)
+        let context = self.persistenceManager.createBackgroundContext()
+        context.performAndWait {
+          let vouts = transactionData.unspentTransactionOutputs.map { CKMVout.find(from: $0, in: context) }.compactMap { $0 }
+          let voutDebugDesc = vouts.map { $0.debugDescription }.joined(separator: "\n")
+          let encodedTx = nsError.userInfo["encoded_tx"] as? String ?? ""
+          let txid = nsError.userInfo["txid"] as? String ?? ""
+          let analyticsError = "error code: \(broadcastError.rawValue) :: txid: \(txid) :: encoded_tx: \(encodedTx) :: vouts: \(voutDebugDesc)"
+          log.error("broadcast failed, \(analyticsError)")
+          let eventValue = AnalyticsEventValue(key: .broadcastFailed, value: analyticsError)
+          self.analyticsManager.track(event: .paymentSentFailed, with: eventValue)
+        }
+
+        failure(error)
+    }
+  }
+
 }

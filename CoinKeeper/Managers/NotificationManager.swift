@@ -232,7 +232,7 @@ extension NotificationManager: UNUserNotificationCenterDelegate {
   func userNotificationCenter(
     _ center: UNUserNotificationCenter,
     didReceive response: UNNotificationResponse,
-    withCompletionHandler completionHandler: @escaping () -> Void
+    withCompletionHandler completionHandler: @escaping CKCompletion
     ) {
     DispatchQueue.main.async {
       guard UIApplication.shared.applicationState == .active else { return }

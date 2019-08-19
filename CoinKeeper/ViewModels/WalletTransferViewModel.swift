@@ -10,11 +10,11 @@ import Foundation
 
 class WalletTransferViewModel: CurrencySwappableEditAmountViewModel {
 
-  var transferType: WalletTransferViewController.TransferType
+  var direction: TransferDirection
   var amount: TransferAmount
 
-  init(transferType: WalletTransferViewController.TransferType, amount: TransferAmount) {
-    self.transferType = transferType
+  init(direction: TransferDirection, amount: TransferAmount) {
+    self.direction = direction
     self.amount = amount
     super.init(exchangeRates: ExchangeRateManager().exchangeRates,
                primaryAmount: NSDecimalNumber(integerAmount: amount.value, currency: .USD),

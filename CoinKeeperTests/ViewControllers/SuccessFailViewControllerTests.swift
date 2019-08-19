@@ -83,7 +83,7 @@ class SuccessFailViewControllerTests: XCTestCase {
     func viewControllerDidRetry(_ viewController: SuccessFailViewController) {}
 
     var wasToldAboutSuccess = false
-    func viewController(_ viewController: SuccessFailViewController, success: Bool, completion: (() -> Void)?) {
+    func viewController(_ viewController: SuccessFailViewController, success: Bool, completion: CKCompletion?) {
       wasToldAboutSuccess = true
     }
 
@@ -94,11 +94,11 @@ class SuccessFailViewControllerTests: XCTestCase {
       wasAskedToClose = true
     }
 
-    func viewControllerDidSelectClose(_ viewController: UIViewController, completion: (() -> Void)? ) {
+    func viewControllerDidSelectClose(_ viewController: UIViewController, completion: CKCompletion? ) {
       wasAskedToClose = true
     }
 
-    func openURL(_ url: URL, completionHandler completion: (() -> Void)?) { }
+    func openURL(_ url: URL, completionHandler completion: CKCompletion?) { }
     func openURLExternally(_ url: URL, completionHandler completion: ((Bool) -> Void)?) { }
   }
 }

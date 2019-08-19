@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 
 protocol URLOpener: AnyObject {
-  func openURL(_ url: URL, completionHandler completion: (() -> Void)?)
+  func openURL(_ url: URL, completionHandler completion: CKCompletion?)
   func openURLExternally(_ url: URL, completionHandler completion: ((Bool) -> Void)?)
 }
 

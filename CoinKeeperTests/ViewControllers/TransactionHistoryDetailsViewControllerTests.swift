@@ -78,7 +78,7 @@ class TransactionHistoryDetailsViewControllerTests: XCTestCase {
                                                           shouldDismiss: Bool) { }
 
     var urlToOpen: URL!
-    func openURL(_ url: URL, completionHandler completion: (() -> Void)?) {
+    func openURL(_ url: URL, completionHandler completion: CKCompletion?) {
       urlToOpen = url
     }
 

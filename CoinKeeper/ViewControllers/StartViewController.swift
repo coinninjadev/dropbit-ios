@@ -13,7 +13,7 @@ protocol StartViewControllerDelegate: AnyObject {
   func restoreWallet()
   func claimInvite()
   func clearPin()
-  func requireAuthenticationIfNeeded(whenAuthenticated: @escaping () -> Void)
+  func requireAuthenticationIfNeeded(whenAuthenticated: @escaping CKCompletion)
   func requireAuthenticationIfNeeded()
 }
 

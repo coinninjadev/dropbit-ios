@@ -12,7 +12,7 @@ import UIKit
 extension AppCoordinator: LightningTransactionHistoryEmptyViewDelegate {
 
   func emptyViewDidRequestRefill(withAmount amount: TransferAmount) {
-    let viewModel = WalletTransferViewModel(transferType: .toLightning, amount: amount)
+    let viewModel = WalletTransferViewModel(direction: .toLightning, amount: amount)
     let walletTransferViewController = WalletTransferViewController.newInstance(delegate: self, viewModel: viewModel)
     navigationController.present(walletTransferViewController, animated: true, completion: nil)
   }

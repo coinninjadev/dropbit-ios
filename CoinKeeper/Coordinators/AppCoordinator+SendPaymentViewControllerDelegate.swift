@@ -54,10 +54,11 @@ extension AppCoordinator: SendPaymentViewControllerDelegate {
     self.presentContacts(mode: .twitter, selectionDelegate: viewController)
   }
 
-  func viewController(_ viewController: UIViewController,
-                      checkingVerificationStatusFor identityHash: String) -> Promise<[WalletAddressesQueryResponse]> {
+  func viewControllerDidRequestRegisteredAddress(_ viewController: UIViewController,
+                                                 ofType addressType: WalletAddressType,
+                                                 forIdentity identityHash: String) -> Promise<[WalletAddressesQueryResponse]> {
 
-    return self.networkManager.queryWalletAddresses(identityHashes: [identityHash])
+    return self.networkManager.queryWalletAddresses(identityHashes: [identityHash], addressType: addressType)
   }
 
   func viewControllerDidPressContacts(_ viewController: UIViewController & SelectedValidContactDelegate) {
@@ -106,7 +107,7 @@ extension AppCoordinator: SendPaymentViewControllerDelegate {
     self.navigationController.topViewController()?.present(contactsViewController, animated: true)
   }
 
-  func viewControllerDidRequestVerificationCheck(_ viewController: UIViewController, completion: @escaping (() -> Void)) {
+  func viewControllerDidRequestVerificationCheck(_ viewController: UIViewController, completion: @escaping CKCompletion) {
     guard launchStateManager.deviceIsVerified() else {
       showModalForPhoneVerification(with: viewController)
       return

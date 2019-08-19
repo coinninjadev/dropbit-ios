@@ -215,9 +215,9 @@
                     </view>
                     <connections>
                         <outlet property="addressScanButtonContainerView" destination="vbE-29-4pS" id="C2T-nD-E2B"/>
-                        <outlet property="bitcoinAddressButton" destination="uXj-RN-p47" id="ueR-ts-6sw"/>
                         <outlet property="closeButton" destination="ZK3-ob-Jzc" id="qZw-Qx-w2e"/>
                         <outlet property="contactsButton" destination="MQN-rV-aED" id="ZOh-5B-laM"/>
+                        <outlet property="destinationButton" destination="uXj-RN-p47" id="ueR-ts-6sw"/>
                         <outlet property="editAmountView" destination="ag9-A1-S4X" id="ZQm-Th-fq7"/>
                         <outlet property="memoContainerView" destination="BpV-7B-gve" id="4YT-H7-h5H"/>
                         <outlet property="nextButton" destination="xMy-P4-RBB" id="CYW-nf-22m"/>
