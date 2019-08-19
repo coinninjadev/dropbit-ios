@@ -96,7 +96,7 @@ class SendPaymentViewModel: CurrencySwappableEditAmountViewModel {
   }
 
   // delegate may be nil at init since the delegate is likely a view controller which requires this view model for its own creation
-  init(qrCode: QRCode,
+  init(qrCode: OnChainQRCode,
        walletTransactionType: WalletTransactionType,
        exchangeRates: ExchangeRates,
        currencyPair: CurrencyPair,

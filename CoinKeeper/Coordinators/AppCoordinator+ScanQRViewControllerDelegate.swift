@@ -18,7 +18,7 @@ extension AppCoordinator: ScanQRViewControllerDelegate {
     return self.currencyController.fiatCurrency
   }
 
-  func viewControllerDidScan(_ viewController: UIViewController, qrCode: QRCode,
+  func viewControllerDidScan(_ viewController: UIViewController, qrCode: OnChainQRCode,
                              walletTransactionType: WalletTransactionType, fallbackViewModel: SendPaymentViewModel?) {
     if let paymentRequestURL = qrCode.paymentRequestURL {
       self.resolveMerchantPaymentRequest(withURL: paymentRequestURL) { result in
@@ -71,7 +71,7 @@ extension AppCoordinator: ScanQRViewControllerDelegate {
     }
   }
 
-  private func createSendPaymentViewController(forQRCode qrCode: QRCode, walletTransactionType: WalletTransactionType,
+  private func createSendPaymentViewController(forQRCode qrCode: OnChainQRCode, walletTransactionType: WalletTransactionType,
                                                fallbackViewModel: SendPaymentViewModel?) -> SendPaymentViewController {
     let shouldUseFallback = (qrCode.btcAmount ?? .zero) == .zero
     var qrCodeToUse = qrCode

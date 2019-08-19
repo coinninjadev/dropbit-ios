@@ -13,7 +13,7 @@ import AVFoundation
 protocol ScanQRViewControllerDelegate: PaymentRequestResolver, LightningInvoiceResolver, ViewControllerDismissable {
 
   /// If the scanned qrCode.btcAmount is zero, use the fallbackViewModel (whose amount should originate from the calculator amount/converter).
-  func viewControllerDidScan(_ viewController: UIViewController, qrCode: QRCode,
+  func viewControllerDidScan(_ viewController: UIViewController, qrCode: OnChainQRCode,
                              walletTransactionType: WalletTransactionType, fallbackViewModel: SendPaymentViewModel?)
   func viewControllerDidScan(_ viewController: UIViewController, lightningInvoice: String)
 
@@ -120,7 +120,7 @@ extension ScanQRViewController: AVCaptureMetadataOutputObjectsDelegate {
     if let lightningQRCode = lightningQRCodes.first {
       handle(lightningQRInvoice: lightningQRCode)
     } else {
-      let bitcoinQRCodes = rawCodes.compactMap { QRCode(readableObject: $0) }
+      let bitcoinQRCodes = rawCodes.compactMap { OnChainQRCode(readableObject: $0) }
       guard let qrCode = bitcoinQRCodes.first else { return }
       handle(bitcoinQRCode: qrCode)
     }
@@ -130,7 +130,7 @@ extension ScanQRViewController: AVCaptureMetadataOutputObjectsDelegate {
     coordinationDelegate?.viewControllerDidScan(self, lightningInvoice: lightningUrl.invoice)
   }
 
-  private func handle(bitcoinQRCode qrCode: QRCode) {
+  private func handle(bitcoinQRCode qrCode: OnChainQRCode) {
     if didCaptureQRCode { return } // prevent multiple network requests for paymentRequestURL
     didCaptureQRCode = true
 
