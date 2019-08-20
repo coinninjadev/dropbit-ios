@@ -12,6 +12,7 @@ import enum Result.Result
 import PhoneNumberKit
 import CNBitcoinKit
 import PromiseKit
+import SVProgressHUD
 
 typealias SendPaymentViewControllerCoordinator = SendPaymentViewControllerDelegate &
   CurrencyValueDataSourceType & BalanceDataSource & PaymentRequestResolver & URLOpener & ViewControllerDismissable
@@ -22,12 +23,14 @@ class SendPaymentViewController: PresentableViewController,
   PaymentAmountValidatable,
   PhoneNumberEntryViewDisplayable,
   ValidatorAlertDisplayable,
-  CurrencySwappableAmountEditor {
+CurrencySwappableAmountEditor {
 
   var viewModel: SendPaymentViewModel!
   var alertManager: AlertManagerType?
   let rateManager = ExchangeRateManager()
   var hashingManager = HashingManager()
+
+  private var currentTypeDisplay: WalletTransactionType?
 
   var editAmountViewModel: CurrencySwappableEditAmountViewModel {
     return viewModel
@@ -104,7 +107,7 @@ class SendPaymentViewController: PresentableViewController,
   @IBAction func performNext() {
     do {
       //TODO: revise validateAmount so that it works correctly for both on chain and lightning transactions
-//      try validateAmount()
+      //      try validateAmount()
       try validateAndSendPayment()
     } catch {
       //TODO: test all potential amount errors are thrown for lightning
@@ -222,6 +225,9 @@ extension SendPaymentViewController {
   }
 
   fileprivate func setupStyle() {
+    guard currentTypeDisplay != viewModel.walletTransactionType else { return }
+    currentTypeDisplay = viewModel.walletTransactionType
+
     switch viewModel.walletTransactionType {
     case .lightning:
       contactsButton.style = .lightning(true)
@@ -333,6 +339,7 @@ extension SendPaymentViewController {
     }
 
     updateMemoContainer()
+    setupStyle()
   }
 
   func updateMemoContainer() {
@@ -352,22 +359,22 @@ extension SendPaymentViewController {
 
   func applyRecipient(inText text: String) {
     do {
-      let recipient = try viewModel.recipientParser.findSingleRecipient(inText: text, ofTypes: [.bitcoinURL, .phoneNumber])
+      let recipient = try viewModel.recipientParser.findSingleRecipient(inText: text, ofTypes: [.lightningURL, .bitcoinURL, .phoneNumber])
       editAmountView.primaryAmountTextField.resignFirstResponder()
       updateViewModel(withParsedRecipient: recipient)
-
     } catch {
       setPaymentRecipient(nil)
       coordinationDelegate?.viewControllerDidAttemptInvalidDestination(self, error: error)
     }
 
     updateViewWithModel()
-
     phoneNumberEntryView.resignFirstResponder()
   }
 
   func updateViewModel(withParsedRecipient parsedRecipient: CKParsedRecipient) {
     switch parsedRecipient {
+    case .lightningURL(let url):
+      handleLightningInvoicePaste(lightningUrl: url)
     case .phoneNumber:
       setPaymentRecipient(PaymentRecipient(parsedRecipient: parsedRecipient))
     case .bitcoinURL(let bitcoinURL):
@@ -379,6 +386,39 @@ extension SendPaymentViewController {
           self.viewModel.setBTCAmountAsPrimary(amount)
         }
       }
+    }
+  }
+
+  private func handleLightningInvoicePaste(lightningUrl: LightningURL) {
+    self.alertManager?.showActivityHUD(withStatus: nil)
+    coordinationDelegate?.viewControllerDidReceiveLightningURLToDecode(lightningUrl)
+      .get { invoice in
+        self.alertManager?.hideActivityHUD(withDelay: nil, completion: {
+          self.viewModel = SendPaymentViewModel(lightningInvoice: invoice,
+                                                exchangeRates: self.viewModel.exchangeRates,
+                                                currencyPair: self.viewModel.currencyPair)
+
+          self.handlePaste(withViewModel: self.viewModel, destinationValue: invoice.destination)
+        })
+      }.catch { error in
+        self.handleError(error: error)
+    }
+  }
+
+  func handlePaste(withViewModel viewModel: SendPaymentViewModel, destinationValue: String) {
+    self.viewModel = viewModel
+    self.setPaymentRecipient(PaymentRecipient.destination(destinationValue))
+    self.viewModel.setBTCAmountAsPrimary(viewModel.btcAmount)
+
+    self.alertManager?.hideActivityHUD(withDelay: nil) {
+      self.updateViewWithModel()
+    }
+  }
+
+  private func handleError(error: Error) {
+    self.alertManager?.hideActivityHUD(withDelay: nil) {
+      let viewModel = AlertControllerViewModel(title: "", description: error.localizedDescription)
+      self.coordinationDelegate?.viewControllerDidRequestAlert(self, viewModel: viewModel)
     }
   }
 
@@ -397,19 +437,10 @@ extension SendPaymentViewController {
             return
         }
 
-        self.viewModel = fetchedModel
-        self.setPaymentRecipient(PaymentRecipient.destination(fetchedAddress))
-        self.viewModel.setBTCAmountAsPrimary(fetchedModel.btcAmount)
-
-        self.alertManager?.hideActivityHUD(withDelay: nil) {
-          self.updateViewWithModel()
-        }
+        self.handlePaste(withViewModel: fetchedModel, destinationValue: fetchedAddress)
 
       case .failure(let error):
-        self.alertManager?.hideActivityHUD(withDelay: nil) {
-          let viewModel = AlertControllerViewModel(title: "", description: error.localizedDescription)
-          self.coordinationDelegate?.viewControllerDidRequestAlert(self, viewModel: viewModel)
-        }
+        self.handleError(error: error)
       }
     }
   }
@@ -454,7 +485,7 @@ extension SendPaymentViewController {
               // user query returned no known verification status
               log.error(userProviderError, message: "no verification status found")
             }
-          }
+        }
       }
     }
   }
@@ -542,7 +573,7 @@ extension SendPaymentViewController: UITextFieldDelegate {
     // Skip triggering changes/validation if textField is empty
     guard let text = textField.text, text.isNotEmpty,
       textField == phoneNumberEntryView.textField else {
-      return
+        return
     }
 
     let currentNumber = phoneNumberEntryView.textField.currentGlobalNumber()
@@ -551,7 +582,7 @@ extension SendPaymentViewController: UITextFieldDelegate {
     do {
       let recipient = try viewModel.recipientParser.findSingleRecipient(inText: text, ofTypes: [.phoneNumber])
       switch recipient {
-      case .bitcoinURL: updateViewModel(withParsedRecipient: recipient)
+      case .bitcoinURL, .lightningURL: updateViewModel(withParsedRecipient: recipient)
       case .phoneNumber(let globalPhoneNumber):
         let formattedPhoneNumber = try CKPhoneNumberFormatter(format: .international)
           .string(from: globalPhoneNumber)
@@ -769,7 +800,7 @@ extension SendPaymentViewController {
         }
         .catch { error in
           self?.handleContactValidationError(error)
-        }
+      }
     }
   }
 
