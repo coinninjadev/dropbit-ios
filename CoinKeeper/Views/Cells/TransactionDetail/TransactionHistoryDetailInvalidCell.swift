@@ -13,7 +13,7 @@ class TransactionHistoryDetailInvalidCell: TransactionHistoryDetailBaseCell {
   // MARK: outlets
   @IBOutlet var warningLabel: TransactionDetailWarningLabel!
 
-  func load(with viewModel: TransactionHistoryInvalidDetailCellDisplayable, delegate: TransactionHistoryDetailCellDelegate) {
+  func load(with viewModel: TransactionInvalidDetailCellDisplayable, delegate: TransactionHistoryDetailCellDelegate) {
     super.load(with: viewModel, delegate: delegate)
     warningLabel.text = viewModel.warningMessage
     layoutIfNeeded()

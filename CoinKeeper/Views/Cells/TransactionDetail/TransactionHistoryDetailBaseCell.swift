@@ -39,7 +39,7 @@ class TransactionHistoryDetailBaseCell: UICollectionViewCell {
   @IBOutlet var twitterShareButton: TwitterShareButton!
 
   // MARK: variables
-  var viewModel: TransactionHistoryDetailCellDisplayable!
+  var viewModel: TransactionDetailCellDisplayable!
   weak var delegate: TransactionHistoryDetailCellDelegate!
 
   // MARK: object lifecycle
@@ -86,7 +86,7 @@ class TransactionHistoryDetailBaseCell: UICollectionViewCell {
     delegate.didTapClose(detailCell: self)
   }
 
-  func load(with viewModel: TransactionHistoryDetailCellDisplayable, delegate: TransactionHistoryDetailCellDelegate) {
+  func load(with viewModel: TransactionDetailCellDisplayable, delegate: TransactionHistoryDetailCellDelegate) {
     self.viewModel = viewModel
     self.delegate = delegate
 
