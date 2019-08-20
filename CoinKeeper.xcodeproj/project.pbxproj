@@ -663,7 +663,6 @@
 		B52A25C32077CD3400F636A1 /* TransactionHistoryViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B52A25C22077CD3400F636A1 /* TransactionHistoryViewController.storyboard */; };
 		B52A25C72077D02100F636A1 /* UITableView+ReusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52A25C62077D02100F636A1 /* UITableView+ReusableView.swift */; };
 		B52A25C92077E42100F636A1 /* GrayCellSeparator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52A25C82077E42100F636A1 /* GrayCellSeparator.swift */; };
-		B52A25CB2077E4F600F636A1 /* SampleTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52A25CA2077E4F600F636A1 /* SampleTransaction.swift */; };
 		B52A25CD2077FFF600F636A1 /* Date+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52A25CC2077FFF600F636A1 /* Date+Extensions.swift */; };
 		B52A6F3222B9845F000801FA /* TransactionBroker.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52A6F3122B9845F000801FA /* TransactionBroker.swift */; };
 		B52A6F3422B98575000801FA /* InvitationBroker.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52A6F3322B98575000801FA /* InvitationBroker.swift */; };
@@ -1666,7 +1665,6 @@
 		B52A25C22077CD3400F636A1 /* TransactionHistoryViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = TransactionHistoryViewController.storyboard; sourceTree = "<group>"; };
 		B52A25C62077D02100F636A1 /* UITableView+ReusableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView+ReusableView.swift"; sourceTree = "<group>"; };
 		B52A25C82077E42100F636A1 /* GrayCellSeparator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GrayCellSeparator.swift; sourceTree = "<group>"; };
-		B52A25CA2077E4F600F636A1 /* SampleTransaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleTransaction.swift; sourceTree = "<group>"; };
 		B52A25CC2077FFF600F636A1 /* Date+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extensions.swift"; sourceTree = "<group>"; };
 		B52A6F3122B9845F000801FA /* TransactionBroker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionBroker.swift; sourceTree = "<group>"; };
 		B52A6F3322B98575000801FA /* InvitationBroker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvitationBroker.swift; sourceTree = "<group>"; };
@@ -2712,7 +2710,6 @@
 				B5B37B22206AFCDF001816F6 /* Money.swift */,
 				5B40427B208CCC27005624B0 /* OnChainQRCode.swift */,
 				B5B37B26206AFE22001816F6 /* CurrencyCode.swift */,
-				B52A25CA2077E4F600F636A1 /* SampleTransaction.swift */,
 				A20E47EF20C0436E00CA8589 /* ContactType.swift */,
 				B5B0DC7C22134AE00010AB2A /* CKCountry.swift */,
 				B5E7F22022148ECA00358A24 /* FlagEmojiFactory.swift */,
@@ -4216,7 +4213,6 @@
 				B589C20220C1EB72006A8FDB /* PaymentAmountValidatable.swift in Sources */,
 				B5E7F21E22146B9000358A24 /* CountryCodePickerCell.swift in Sources */,
 				B56E15992167DB7B003B69D4 /* NetworkManager+TransactionBroadcastable.swift in Sources */,
-				B52A25CB2077E4F600F636A1 /* SampleTransaction.swift in Sources */,
 				B5ED3C3C2217635900A51767 /* CoinNinjaErrorResponse.swift in Sources */,
 				3BBDF7E422E7613000E35EA0 /* AppCoordinator+TransactionHistoryDetailsViewControllerDelegate.swift in Sources */,
 				B5D3BF08222439AF0073A684 /* NSManagedObjectContext+Extensions.swift in Sources */,

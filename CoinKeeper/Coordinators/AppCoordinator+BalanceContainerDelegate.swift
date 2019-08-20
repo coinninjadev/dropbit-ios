@@ -94,23 +94,6 @@ extension AppCoordinator {
     CKMAddress.deleteAll(in: context)
   }
 
-  // Not called currently, but may be useful for testing UI
-  fileprivate func generateSampleData() {
-    let context = persistenceManager.mainQueueContext()
-    guard let wallet = CKMWallet.find(in: context) else { return }
-
-    if wallet.addressTransactionSummaries.isEmpty { //alternate between deletion and creation
-      SampleTransaction.history.forEach({
-        _ = CKMTransaction(sampleTx: $0, wallet: wallet, insertInto: context)
-      })
-
-    } else {
-      deleteAllTransactionsAndRelatedObjects(in: context)
-    }
-
-    try? context.save()
-  }
-
   func selectedCurrency() -> SelectedCurrency {
     return currencyController.selectedCurrency
   }
