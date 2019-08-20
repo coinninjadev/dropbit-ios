@@ -12,12 +12,13 @@ import UIKit
 //MARK: - Summary Cell
 
 /// Provides all variable values directly necessary to configure the TransactionHistorySummaryCell UI.
-/// Fixed values (colors, font sizes, etc.) are contained by the cell itself.
+/// Fixed values (colors, font sizes, etc.) are provided by the cell itself.
 protocol TransactionSummaryCellDisplayable {
   var summaryStatusText: String? { get }
   var statusTextColor: UIColor { get }
   var shouldShowCounterpartyTwitterIcon: Bool { get }
   var counterpartyLabel: String? { get }
+  var selectedCurrency: SelectedCurrency { get }
   var summaryAmountLabels: SummaryCellAmountLabels { get }
   var directionAccentColor: UIColor { get }
   var leadingImage: UIImage { get } // may be avatar or direction icon
@@ -29,7 +30,7 @@ protocol TransactionSummaryCellDisplayable {
 /// Defines the properties that need to be set during initialization of the view model.
 /// The inherited `...Displayable` requirements should be calculated in this
 /// protocol's extension or provided by a mock view model.
-protocol TransactionSummaryCellViewModelType: TransactionSummaryCellDisplayable {
+protocol TransactionSummaryCellViewModelType: TransactionSummaryCellDisplayable, CurrencyPairDisplayable {
   var walletTxType: WalletTransactionType { get }
   var direction: TransactionDirection { get }
   var isValidTransaction: Bool { get }
@@ -86,9 +87,25 @@ extension TransactionSummaryCellViewModelType {
     }
   }
 
-  var amountLabels: DetailCellAmountLabels {
+  var summaryAmountLabels: SummaryCellAmountLabels {
+    let converter = CurrencyConverter(rates: amountDetails.exchangeRates,
+                                      fromAmount: amountDetails.primaryBTCAmount,
+                                      currencyPair: amountDetails.currencyPair)
 
+    let btcAttributedString: NSAttributedString
+    switch walletTxType {
+    case .lightning:
+      let sats = converter.btcAmount.asFractionalUnits(of: .BTC)
+      btcAttributedString = attributedString(forSats: sats, size: 13)
+    case .onChain:
+      btcAttributedString = attributedString(for: converter.btcAmount, currency: .BTC)
+    }
+
+    let fiatAttributedString = attributedString(for: converter.fiatAmount, currency: converter.fiatCurrency)
+
+    return SummaryCellAmountLabels(btcText: btcAttributedString, fiatText: fiatAttributedString.string)
   }
+
   var directionAccentColor: UIColor {
     if isValidTransaction {
       switch direction {
@@ -107,9 +124,9 @@ extension TransactionSummaryCellViewModelType {
     } else {
       //TODO
       if isLightningTransfer {
-
+        return UIImage(named: "")!
       } else {
-
+        return UIImage(named: "")!
       }
     }
   }
@@ -122,15 +139,12 @@ extension TransactionSummaryCellViewModelType {
     }
   }
 
-  var memo: String? { get }
-  var displayDate: String { get }
-
 }
 
 //MARK: - Detail Cell
 
 /// Provides all variable values directly necessary to configure the TransactionHistoryDetailCell UI.
-/// Fixed values (colors, font sizes, etc.) are contained by the cell itself.
+/// Fixed values (colors, font sizes, etc.) are provided by the cell itself.
 protocol TransactionDetailCellDisplayable: TransactionSummaryCellDisplayable {
   var detailStatusText: String? { get }
   var progressConfig: ProgressBarConfig? { get }

@@ -9,7 +9,42 @@
 import Foundation
 import UIKit
 
-class PrimarySecondaryBalanceContainer: UIView {
+protocol CurrencyPairDisplayable { }
+
+extension CurrencyPairDisplayable {
+
+  func attributedString(for amount: NSDecimalNumber?, currency: CurrencyCode) -> NSAttributedString {
+    guard let amount = amount else { return NSAttributedString(string: "–") }
+
+    let minFractionalDigits: Int = currency.shouldRoundTrailingZeroes ? 0 : currency.decimalPlaces
+    let maxfractionalDigits: Int = currency.decimalPlaces
+
+    let formatter = NumberFormatter()
+    formatter.numberStyle = .decimal
+    formatter.minimumFractionDigits = minFractionalDigits
+    formatter.maximumFractionDigits = maxfractionalDigits
+
+    let amountString = formatter.string(from: amount) ?? "–"
+
+    switch currency {
+    case .BTC:
+      if let symbol = currency.attributedStringSymbol() {
+        return symbol + NSAttributedString(string: amountString)
+      } else {
+        return NSAttributedString(string: amountString)
+      }
+    case .USD:  return NSAttributedString(string: currency.symbol + amountString)
+    }
+  }
+
+  func attributedString(forSats sats: Int, size: CGFloat) -> NSAttributedString {
+    let text = CKNumberFormatter.string(forSats: sats)
+    return NSMutableAttributedString.medium(text, size: size, color: .bitcoinOrange)
+  }
+
+}
+
+class PrimarySecondaryBalanceContainer: UIView, CurrencyPairDisplayable {
 
   @IBOutlet var primaryBalanceLabel: BalancePrimaryAmountLabel!
   @IBOutlet var secondaryBalanceLabel: BalanceSecondaryAmountLabel!
@@ -52,12 +87,12 @@ class PrimarySecondaryBalanceContainer: UIView {
   }
 
   func set(primaryAmount amount: NSDecimalNumber?, currency: CurrencyCode) {
-    primaryBalanceLabel.attributedText = label(for: amount, currency: currency)
+    primaryBalanceLabel.attributedText = attributedString(for: amount, currency: currency)
     setupLabelColors(for: currency)
   }
 
   func set(secondaryAmount amount: NSDecimalNumber?, currency: CurrencyCode) {
-    secondaryBalanceLabel.attributedText = label(for: amount, currency: currency)
+    secondaryBalanceLabel.attributedText = attributedString(for: amount, currency: currency)
   }
 
   private func setupStyle() {
@@ -85,27 +120,4 @@ class PrimarySecondaryBalanceContainer: UIView {
     secondaryBalanceLabel.textColor = secondaryColor
   }
 
-  private func label(for amount: NSDecimalNumber?, currency: CurrencyCode) -> NSAttributedString {
-    guard let amount = amount else { return NSAttributedString(string: "–") }
-
-    let minFractionalDigits: Int = currency.shouldRoundTrailingZeroes ? 0 : currency.decimalPlaces
-    let maxfractionalDigits: Int = currency.decimalPlaces
-
-    let formatter = NumberFormatter()
-    formatter.numberStyle = .decimal
-    formatter.minimumFractionDigits = minFractionalDigits
-    formatter.maximumFractionDigits = maxfractionalDigits
-
-    let amountString = formatter.string(from: amount) ?? "–"
-
-    switch currency {
-    case .BTC:
-      if let symbol = currency.attributedStringSymbol() {
-        return symbol + NSAttributedString(string: amountString)
-      } else {
-        return NSAttributedString(string: amountString)
-      }
-    case .USD:  return NSAttributedString(string: currency.symbol + amountString)
-    }
-  }
 }

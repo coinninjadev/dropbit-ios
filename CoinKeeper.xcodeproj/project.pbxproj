@@ -609,8 +609,11 @@
 		B50C86A320D8120600B4FA6B /* WalletAddressResponseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50C86A220D8120600B4FA6B /* WalletAddressResponseTests.swift */; };
 		B50E1839214805D80091EEDA /* AppCoordinator+HeaderDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50E1838214805D80091EEDA /* AppCoordinator+HeaderDelegate.swift */; };
 		B50E18462149A1460091EEDA /* UserResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50E18452149A1460091EEDA /* UserResponse.swift */; };
-		B50E7B7D230C63FE00927C8B /* MockTransactionSummaryCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50E7B7C230C63FE00927C8B /* MockTransactionSummaryCellViewModel.swift */; };
 		B50E7B7F230C6A0400927C8B /* TransactionSummaryCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50E7B7E230C6A0400927C8B /* TransactionSummaryCellViewModel.swift */; };
+		B50E7B82230CA77200927C8B /* MockTransactionSummaryCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50E7B81230CA77100927C8B /* MockTransactionSummaryCellViewModel.swift */; };
+		B50E7B83230CA77200927C8B /* MockTransactionSummaryCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50E7B81230CA77100927C8B /* MockTransactionSummaryCellViewModel.swift */; };
+		B50E7B85230CA79D00927C8B /* MockTransactionHistoryDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50E7B84230CA79D00927C8B /* MockTransactionHistoryDataSource.swift */; };
+		B50E7B86230CA79D00927C8B /* MockTransactionHistoryDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50E7B84230CA79D00927C8B /* MockTransactionHistoryDataSource.swift */; };
 		B50FD13E215D681B00155BE1 /* AppCoordinator+TransactionAlerts.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50FD13D215D681B00155BE1 /* AppCoordinator+TransactionAlerts.swift */; };
 		B5130E1D22EB99720003374F /* RegTestBroadcastTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5130E1C22EB99720003374F /* RegTestBroadcastTarget.swift */; };
 		B514536422A7207500F7DA41 /* UIColor+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = B514536322A7207500F7DA41 /* UIColor+Theme.swift */; };
@@ -910,7 +913,6 @@
 		B5B53C9C2107CAA5006C7B67 /* TransactionDetailsInfoContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5B53C9B2107CAA5006C7B67 /* TransactionDetailsInfoContainer.swift */; };
 		B5B53C9E2107CD1C006C7B67 /* TransactionDetailMessageLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5B53C9D2107CD1C006C7B67 /* TransactionDetailMessageLabel.swift */; };
 		B5B9132921419F84003A24E9 /* PhoneNumberKit+AreaCodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5B9132821419F84003A24E9 /* PhoneNumberKit+AreaCodes.swift */; };
-		B5BA3A7322F20C10001E41A7 /* MockTransactionHistoryDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5BA3A7222F20C10001E41A7 /* MockTransactionHistoryDataSource.swift */; };
 		B5BA3A7722F22B0E001E41A7 /* TransactionCellProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5BA3A7622F22B0E001E41A7 /* TransactionCellProtocols.swift */; };
 		B5BA5247223AA38E001165FC /* CKMTransaction+FetchRequests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5BA5246223AA38E001165FC /* CKMTransaction+FetchRequests.swift */; };
 		B5C0A5F82097A24A00D648DF /* CounterpartyRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5C0A5F72097A24A00D648DF /* CounterpartyRepresentable.swift */; };
@@ -1617,8 +1619,9 @@
 		B50C86A220D8120600B4FA6B /* WalletAddressResponseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletAddressResponseTests.swift; sourceTree = "<group>"; };
 		B50E1838214805D80091EEDA /* AppCoordinator+HeaderDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppCoordinator+HeaderDelegate.swift"; sourceTree = "<group>"; };
 		B50E18452149A1460091EEDA /* UserResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserResponse.swift; sourceTree = "<group>"; };
-		B50E7B7C230C63FE00927C8B /* MockTransactionSummaryCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockTransactionSummaryCellViewModel.swift; sourceTree = "<group>"; };
 		B50E7B7E230C6A0400927C8B /* TransactionSummaryCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransactionSummaryCellViewModel.swift; sourceTree = "<group>"; };
+		B50E7B81230CA77100927C8B /* MockTransactionSummaryCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockTransactionSummaryCellViewModel.swift; sourceTree = "<group>"; };
+		B50E7B84230CA79D00927C8B /* MockTransactionHistoryDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockTransactionHistoryDataSource.swift; sourceTree = "<group>"; };
 		B50FD13D215D681B00155BE1 /* AppCoordinator+TransactionAlerts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppCoordinator+TransactionAlerts.swift"; sourceTree = "<group>"; };
 		B5130E1C22EB99720003374F /* RegTestBroadcastTarget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegTestBroadcastTarget.swift; sourceTree = "<group>"; };
 		B514536322A7207500F7DA41 /* UIColor+Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Theme.swift"; sourceTree = "<group>"; };
@@ -1910,7 +1913,6 @@
 		B5B53C9B2107CAA5006C7B67 /* TransactionDetailsInfoContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TransactionDetailsInfoContainer.swift; path = CoinKeeper/Views/TransactionDetailsInfoContainer.swift; sourceTree = SOURCE_ROOT; };
 		B5B53C9D2107CD1C006C7B67 /* TransactionDetailMessageLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDetailMessageLabel.swift; sourceTree = "<group>"; };
 		B5B9132821419F84003A24E9 /* PhoneNumberKit+AreaCodes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PhoneNumberKit+AreaCodes.swift"; sourceTree = "<group>"; };
-		B5BA3A7222F20C10001E41A7 /* MockTransactionHistoryDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockTransactionHistoryDataSource.swift; sourceTree = "<group>"; };
 		B5BA3A7622F22B0E001E41A7 /* TransactionCellProtocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionCellProtocols.swift; sourceTree = "<group>"; };
 		B5BA5246223AA38E001165FC /* CKMTransaction+FetchRequests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CKMTransaction+FetchRequests.swift"; sourceTree = "<group>"; };
 		B5C0A5F72097A24A00D648DF /* CounterpartyRepresentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CounterpartyRepresentable.swift; sourceTree = "<group>"; };
@@ -2351,7 +2353,6 @@
 				3B6FDAE02052CE5C0091916A /* VerifyRecoveryWordsCollectionViewDDS.swift */,
 				3B5A8899228AEFE10082BBA4 /* TwitterSearchDataSource.swift */,
 				B56639CC22B151E400FA0EC3 /* TransactionShareable.swift */,
-				B5BA3A7222F20C10001E41A7 /* MockTransactionHistoryDataSource.swift */,
 				A2952F7F22BD1C9500BDCE65 /* NewsViewControllerDDS.swift */,
 				A2E0689123047E660047090B /* TransactionHistoryDetailsViewControllerLightningDDS.swift */,
 				A2E0689323047EE50047090B /* TransactionHistoryDetailsViewControllerOnChainDDS.swift */,
@@ -2973,6 +2974,7 @@
 				B50E7B7B230C63AC00927C8B /* Managers */,
 				B50E7B7A230C636500927C8B /* View Models */,
 				B5EBFD0E215C01E30008EB4A /* MockAddressDataSource.swift */,
+				B50E7B84230CA79D00927C8B /* MockTransactionHistoryDataSource.swift */,
 				B5D77CC92221FB09002C360E /* MockPhoneNumberFormatter.swift */,
 				B5D77CCC2222002D002C360E /* MockRecipientParser.swift */,
 				3B695C2521CAC993007D0741 /* MockOperationQueue.swift */,
@@ -3159,7 +3161,7 @@
 			isa = PBXGroup;
 			children = (
 				6B8258FE5E688972EBEB03FE /* MockDigitEntryDisplayViewModel.swift */,
-				B50E7B7C230C63FE00927C8B /* MockTransactionSummaryCellViewModel.swift */,
+				B50E7B81230CA77100927C8B /* MockTransactionSummaryCellViewModel.swift */,
 			);
 			path = "View Models";
 			sourceTree = "<group>";
@@ -4295,7 +4297,6 @@
 				B56E158A2167962D003B69D4 /* GlobalMessage.swift in Sources */,
 				B54913AF22BD287500ACC7D7 /* AdjustableFeesLabel.swift in Sources */,
 				B523DFC220926E88008A789D /* Collection+IsNotEmpty.swift in Sources */,
-				B5BA3A7322F20C10001E41A7 /* MockTransactionHistoryDataSource.swift in Sources */,
 				A260E8C720FCD482008343F9 /* LimitEditTextField.swift in Sources */,
 				4A251738207515FF0030FCA2 /* NetworkManager.swift in Sources */,
 				A29CE0ED20A21ED800761B91 /* AppCoordinator+ContactsViewControllerDelegate.swift in Sources */,
@@ -4639,6 +4640,7 @@
 				3BCC3BAF2295CBB100B8FB66 /* SharedPayloadManager.swift in Sources */,
 				3BF4EAF320F906540017DE00 /* Set+Helpers.swift in Sources */,
 				B558B86B22B95A0C0033AFBD /* DeviceBroker.swift in Sources */,
+				B50E7B82230CA77200927C8B /* MockTransactionSummaryCellViewModel.swift in Sources */,
 				30BF4FF021B728FA0018AE87 /* PopoverViewControllerType.swift in Sources */,
 				3BF41AB8207694EA008B3D0A /* RequestPayViewModel.swift in Sources */,
 				308F6F0B2180B6260094D6CB /* AddressTableViewCell.swift in Sources */,
@@ -4771,6 +4773,7 @@
 				3BA360852090B0C100732C43 /* CKMTransaction+CoreDataProperties.swift in Sources */,
 				3B86F78C203C6DCD00D15231 /* PinEntryViewController.swift in Sources */,
 				B5A3BA5E215193E6005EE657 /* UserTarget.swift in Sources */,
+				B50E7B85230CA79D00927C8B /* MockTransactionHistoryDataSource.swift in Sources */,
 				B53A790422E4ACF000EDCA8B /* AppCoordinator+ViewControllerSendingDelegate.swift in Sources */,
 				3BCBFCBA229EB05000F633BA /* SettingsTitleLabel.swift in Sources */,
 				B5FEBE9220879C4200AA9F6E /* CKMInvitation+CoreDataClass.swift in Sources */,
@@ -4882,8 +4885,9 @@
 				4AF433282094103C00B11BC9 /* MockDeviceVerificationViewControllerDelegate.swift in Sources */,
 				A29CE10F20A3845C00761B91 /* BitcoinAddressValidatorTests.swift in Sources */,
 				3B44962121B0665B00A4E912 /* MemoEntryViewControllerTests.swift in Sources */,
-				B50E7B7D230C63FE00927C8B /* MockTransactionSummaryCellViewModel.swift in Sources */,
+				B50E7B83230CA77200927C8B /* MockTransactionSummaryCellViewModel.swift in Sources */,
 				B575B61B22E9FCCD00CECFB7 /* MockNetworkManager+LightningRequestable.swift in Sources */,
+				B50E7B86230CA79D00927C8B /* MockTransactionHistoryDataSource.swift in Sources */,
 				B5C8F5BB216CEFC400E3E85B /* MockNetworkManager+WalletAddressRequestable.swift in Sources */,
 				3B695C2421CAC872007D0741 /* AppCoordinator+SettingsViewControllerDelegateTests.swift in Sources */,
 				3B62397D205FFDAC003120AA /* WalletManagerTests.swift in Sources */,
