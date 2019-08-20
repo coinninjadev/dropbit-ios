@@ -8,7 +8,7 @@
 
 import AVFoundation
 
-struct QRCode {
+struct OnChainQRCode {
 
   let rawCode: AVMetadataMachineReadableCodeObject
   let btcAmount: NSDecimalNumber?
@@ -35,6 +35,13 @@ struct QRCode {
     }
   }
 
+  init(rawCode: AVMetadataMachineReadableCodeObject, invoice: String) {
+    self.rawCode = rawCode
+    btcAmount = nil
+    address = invoice
+    paymentRequestURL = nil
+  }
+
   init(rawCode: AVMetadataMachineReadableCodeObject, btcAmount: NSDecimalNumber?, address: String?, paymentURL: URL? = nil) {
     self.rawCode = rawCode
     self.btcAmount = btcAmount
@@ -49,8 +56,8 @@ struct QRCode {
     self.paymentRequestURL = paymentURL
   }
 
-  func copy(withBTCAmount amount: NSDecimalNumber) -> QRCode {
-    return QRCode(rawCode: self.rawCode, btcAmount: amount, address: self.address, paymentURL: self.paymentRequestURL)
+  func copy(withBTCAmount amount: NSDecimalNumber) -> OnChainQRCode {
+    return OnChainQRCode(rawCode: self.rawCode, btcAmount: amount, address: self.address, paymentURL: self.paymentRequestURL)
   }
 
 }

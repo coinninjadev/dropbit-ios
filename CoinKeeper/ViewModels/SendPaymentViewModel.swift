@@ -24,7 +24,7 @@ enum WalletTransactionType: String {
 enum PaymentRecipient {
 
   /// Associated value may be either a BTC address or a lightning invoice.
-  /// BTC address does not contain "bitcoin:".
+  /// Neither option contains scheme. i.e. "bitcoin:" "lightning:"
   case destination(String)
 
   case contact(ContactType)
@@ -87,8 +87,24 @@ class SendPaymentViewModel: CurrencySwappableEditAmountViewModel {
 
   let recipientParser: RecipientParserType = CKRecipientParser()
 
+  init(lightningInvoice: LNDecodePaymentRequestResponse,
+       exchangeRates: ExchangeRates,
+       currencyPair: CurrencyPair) {
+    let currencyPair = CurrencyPair(primary: .BTC, fiat: currencyPair.fiat)
+    let amount = NSDecimalNumber(integerAmount: lightningInvoice.numSatoshis ?? 0, currency: .BTC)
+    let viewModel = CurrencySwappableEditAmountViewModel(exchangeRates: exchangeRates,
+                                                         primaryAmount: amount,
+                                                         currencyPair: currencyPair,
+                                                         delegate: nil)
+    self.walletTransactionType = .lightning
+    super.init(viewModel: viewModel)
+    self.paymentRecipient = .destination(lightningInvoice.destination)
+    self.requiredFeeRate = nil
+    self.memo = lightningInvoice.description
+  }
+
   // delegate may be nil at init since the delegate is likely a view controller which requires this view model for its own creation
-  init(qrCode: QRCode,
+  init(qrCode: OnChainQRCode,
        walletTransactionType: WalletTransactionType,
        exchangeRates: ExchangeRates,
        currencyPair: CurrencyPair,
@@ -197,7 +213,7 @@ class SendPaymentViewModel: CurrencySwappableEditAmountViewModel {
       return (try? formatter.string(from: phoneContact.globalPhoneNumber)) ?? ""
     case .twitterContact(let contact):
       return contact.displayIdentity
-    case .phoneNumber: return nil
+    case .phoneNumber:  return nil
     }
   }
 

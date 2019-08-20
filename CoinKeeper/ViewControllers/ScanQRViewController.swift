@@ -10,11 +10,12 @@ import UIKit
 import AVFoundation
 
 //swiftlint:disable class_delegate_protocol
-protocol ScanQRViewControllerDelegate: PaymentRequestResolver, ViewControllerDismissable {
+protocol ScanQRViewControllerDelegate: PaymentRequestResolver, LightningInvoiceResolver, ViewControllerDismissable {
 
   /// If the scanned qrCode.btcAmount is zero, use the fallbackViewModel (whose amount should originate from the calculator amount/converter).
-  func viewControllerDidScan(_ viewController: UIViewController, qrCode: QRCode,
+  func viewControllerDidScan(_ viewController: UIViewController, qrCode: OnChainQRCode,
                              walletTransactionType: WalletTransactionType, fallbackViewModel: SendPaymentViewModel?)
+  func viewControllerDidScan(_ viewController: UIViewController, lightningInvoice: String)
 
   func viewControllerDidAttemptInvalidDestination(_ viewController: UIViewController, error: Error?)
 
@@ -49,6 +50,10 @@ class ScanQRViewController: BaseViewController, StoryboardInitializable {
 
   override func viewDidLoad() {
     view.backgroundColor = UIColor.black
+    closeButton.setImage(UIImage(imageLiteralResourceName: "close").withRenderingMode(.alwaysTemplate), for: .normal)
+    closeButton.tintColor = .white
+    flashButton.setImage(UIImage(imageLiteralResourceName: "flashIcon").withRenderingMode(.alwaysTemplate), for: .normal)
+    flashButton.tintColor = .white
     if let captureDevice = AVCaptureDevice.default(for: .video) {
       self.captureDevice = captureDevice
       do {
@@ -113,10 +118,23 @@ extension ScanQRViewController: AVCaptureMetadataOutputObjectsDelegate {
 
   func metadataOutput(_ output: AVCaptureMetadataOutput, didOutput metadataObjects: [AVMetadataObject], from connection: AVCaptureConnection) {
     guard metadataObjects.isNotEmpty else { return }
+    let rawCodes = metadataObjects.compactMap { $0 as? AVMetadataMachineReadableCodeObject }
+    let lightningQRCodes = rawCodes.compactMap { $0.stringValue }.compactMap { LightningURL(string: $0) }
 
-    let qrCodes = metadataObjects.compactMap { $0 as? AVMetadataMachineReadableCodeObject }.compactMap { QRCode(readableObject: $0) }
-    guard let qrCode = qrCodes.first else { return }
+    if let lightningQRCode = lightningQRCodes.first {
+      handle(lightningQRInvoice: lightningQRCode)
+    } else {
+      let bitcoinQRCodes = rawCodes.compactMap { OnChainQRCode(readableObject: $0) }
+      guard let qrCode = bitcoinQRCodes.first else { return }
+      handle(bitcoinQRCode: qrCode)
+    }
+  }
 
+  private func handle(lightningQRInvoice lightningUrl: LightningURL) {
+    coordinationDelegate?.viewControllerDidScan(self, lightningInvoice: lightningUrl.invoice)
+  }
+
+  private func handle(bitcoinQRCode qrCode: OnChainQRCode) {
     if didCaptureQRCode { return } // prevent multiple network requests for paymentRequestURL
     didCaptureQRCode = true
 
@@ -134,5 +152,4 @@ extension ScanQRViewController: AVCaptureMetadataOutputObjectsDelegate {
       }
     }
   }
-
 }

@@ -18,7 +18,7 @@ extension AppCoordinator: ScanQRViewControllerDelegate {
     return self.currencyController.fiatCurrency
   }
 
-  func viewControllerDidScan(_ viewController: UIViewController, qrCode: QRCode,
+  func viewControllerDidScan(_ viewController: UIViewController, qrCode: OnChainQRCode,
                              walletTransactionType: WalletTransactionType, fallbackViewModel: SendPaymentViewModel?) {
     if let paymentRequestURL = qrCode.paymentRequestURL {
       self.resolveMerchantPaymentRequest(withURL: paymentRequestURL) { result in
@@ -57,7 +57,21 @@ extension AppCoordinator: ScanQRViewControllerDelegate {
     }
   }
 
-  private func createSendPaymentViewController(forQRCode qrCode: QRCode, walletTransactionType: WalletTransactionType,
+  func viewControllerDidScan(_ viewController: UIViewController, lightningInvoice: String) {
+    resolveLightningInvoice(invoice: lightningInvoice) { response in
+      switch response {
+      case .success(let invoice):
+        let currencyPair = CurrencyPair(btcPrimaryWith: self.currencyController)
+        let viewModel = SendPaymentViewModel(lightningInvoice: invoice, exchangeRates: self.exchangeRates, currencyPair: currencyPair)
+        self.showSendPaymentViewController(withViewModel: viewModel, dismissing: viewController, completion: nil)
+      case .failure(let error):
+        let errorAlert = self.alertManager.defaultAlert(withTitle: self.paymentErrorTitle, description: error.localizedDescription)
+        viewController.present(errorAlert, animated: true, completion: nil)
+      }
+    }
+  }
+
+  private func createSendPaymentViewController(forQRCode qrCode: OnChainQRCode, walletTransactionType: WalletTransactionType,
                                                fallbackViewModel: SendPaymentViewModel?) -> SendPaymentViewController {
     let shouldUseFallback = (qrCode.btcAmount ?? .zero) == .zero
     var qrCodeToUse = qrCode

@@ -419,7 +419,7 @@
 		4AF433282094103C00B11BC9 /* MockDeviceVerificationViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AF433272094103C00B11BC9 /* MockDeviceVerificationViewControllerDelegate.swift */; };
 		516F06440CEA58661D1B444C /* Pods_DropBitTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E20946923A0E7F2A5AB722BB /* Pods_DropBitTests.framework */; };
 		5B404278208CCA40005624B0 /* TransactionHistoryDetailCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B404275208CCA40005624B0 /* TransactionHistoryDetailCellViewModel.swift */; };
-		5B40427C208CCC27005624B0 /* QRCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B40427B208CCC27005624B0 /* QRCode.swift */; };
+		5B40427C208CCC27005624B0 /* OnChainQRCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B40427B208CCC27005624B0 /* OnChainQRCode.swift */; };
 		5B40427E208CCD02005624B0 /* SendPaymentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B40427D208CCD02005624B0 /* SendPaymentViewController.swift */; };
 		5B404284208CDD71005624B0 /* SendPaymentViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5B404283208CDD71005624B0 /* SendPaymentViewController.storyboard */; };
 		5B62D55D2087732700E9D466 /* SendPaymentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B62D55C2087732700E9D466 /* SendPaymentViewModel.swift */; };
@@ -476,6 +476,8 @@
 		A24B9E822306E67A00852718 /* MockLightningBroker.swift in Sources */ = {isa = PBXBuildFile; fileRef = A24B9E812306E67A00852718 /* MockLightningBroker.swift */; };
 		A24B9E8423073B4F00852718 /* TransactionHistoryViewControllerDDS.swift in Sources */ = {isa = PBXBuildFile; fileRef = A24B9E8323073B4F00852718 /* TransactionHistoryViewControllerDDS.swift */; };
 		A24B9E862307401700852718 /* TransactionHistoryDetailsViewControllerDDS.swift in Sources */ = {isa = PBXBuildFile; fileRef = A24B9E852307401700852718 /* TransactionHistoryDetailsViewControllerDDS.swift */; };
+		A24B9E8A230AF1D300852718 /* LightningInvoiceResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = A24B9E89230AF1D300852718 /* LightningInvoiceResolver.swift */; };
+		A24B9E8C230B13F200852718 /* LightningURL.swift in Sources */ = {isa = PBXBuildFile; fileRef = A24B9E8B230B13F200852718 /* LightningURL.swift */; };
 		A257CEB42302E5070063670B /* FeesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A257CEB32302E5070063670B /* FeesView.swift */; };
 		A257CEB62302E60A0063670B /* FeesView.xib in Resources */ = {isa = PBXBuildFile; fileRef = A257CEB52302E6090063670B /* FeesView.xib */; };
 		A257CEB82302F3BA0063670B /* AppCoordinator+WalletTransferViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A257CEB72302F3BA0063670B /* AppCoordinator+WalletTransferViewControllerDelegate.swift */; };
@@ -1412,7 +1414,7 @@
 		4AF433252093BA8700B11BC9 /* DeviceVerificationViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = DeviceVerificationViewController.storyboard; sourceTree = "<group>"; };
 		4AF433272094103C00B11BC9 /* MockDeviceVerificationViewControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockDeviceVerificationViewControllerDelegate.swift; sourceTree = "<group>"; };
 		5B404275208CCA40005624B0 /* TransactionHistoryDetailCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransactionHistoryDetailCellViewModel.swift; sourceTree = "<group>"; usesTabs = 0; };
-		5B40427B208CCC27005624B0 /* QRCode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QRCode.swift; sourceTree = "<group>"; };
+		5B40427B208CCC27005624B0 /* OnChainQRCode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OnChainQRCode.swift; sourceTree = "<group>"; };
 		5B40427D208CCD02005624B0 /* SendPaymentViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SendPaymentViewController.swift; sourceTree = "<group>"; };
 		5B404283208CDD71005624B0 /* SendPaymentViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = SendPaymentViewController.storyboard; sourceTree = "<group>"; };
 		5B62D55C2087732700E9D466 /* SendPaymentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendPaymentViewModel.swift; sourceTree = "<group>"; };
@@ -1473,6 +1475,8 @@
 		A24B9E812306E67A00852718 /* MockLightningBroker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockLightningBroker.swift; sourceTree = "<group>"; };
 		A24B9E8323073B4F00852718 /* TransactionHistoryViewControllerDDS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionHistoryViewControllerDDS.swift; sourceTree = "<group>"; };
 		A24B9E852307401700852718 /* TransactionHistoryDetailsViewControllerDDS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionHistoryDetailsViewControllerDDS.swift; sourceTree = "<group>"; };
+		A24B9E89230AF1D300852718 /* LightningInvoiceResolver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightningInvoiceResolver.swift; sourceTree = "<group>"; };
+		A24B9E8B230B13F200852718 /* LightningURL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightningURL.swift; sourceTree = "<group>"; };
 		A257CEB32302E5070063670B /* FeesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeesView.swift; sourceTree = "<group>"; };
 		A257CEB52302E6090063670B /* FeesView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FeesView.xib; sourceTree = "<group>"; };
 		A257CEB72302F3BA0063670B /* AppCoordinator+WalletTransferViewControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppCoordinator+WalletTransferViewControllerDelegate.swift"; sourceTree = "<group>"; };
@@ -2689,7 +2693,7 @@
 				B559AF1021811FDD001D44F2 /* CoreDataObserver.swift */,
 				3B6FDADA2050146E0091916A /* VerifyRecoveryWordCellData.swift */,
 				B5B37B22206AFCDF001816F6 /* Money.swift */,
-				5B40427B208CCC27005624B0 /* QRCode.swift */,
+				5B40427B208CCC27005624B0 /* OnChainQRCode.swift */,
 				B5B37B26206AFE22001816F6 /* CurrencyCode.swift */,
 				B52A25CA2077E4F600F636A1 /* SampleTransaction.swift */,
 				A20E47EF20C0436E00CA8589 /* ContactType.swift */,
@@ -2712,6 +2716,7 @@
 				B5C5EDE621FA490A0032AC94 /* SharedPayloadCodable.swift */,
 				B541DD3A21EE4A18009F38A0 /* MetaAddress.swift */,
 				A230F1C522D664360017BC7A /* NewsData.swift */,
+				A24B9E8B230B13F200852718 /* LightningURL.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -3151,6 +3156,7 @@
 				3B695C1F21CA9F9B007D0741 /* OperationQueueType.swift */,
 				3B8B19302289BB25003BA4D7 /* AuthenticationSuspendable.swift */,
 				A268F13A22EA067B00410040 /* SyncSubscribeable.swift */,
+				A24B9E89230AF1D300852718 /* LightningInvoiceResolver.swift */,
 			);
 			path = Protocols;
 			sourceTree = "<group>";
@@ -4231,6 +4237,7 @@
 				B59E2CA922E9ED2A00A75AFE /* LNAccountResponse.swift in Sources */,
 				A2A530BE20936A6C00B6F4DE /* FloatingPoint+DegreeToRadians.swift in Sources */,
 				B552EDE9211E33D000332BB5 /* BiometricAuthenticationManager.swift in Sources */,
+				A24B9E8C230B13F200852718 /* LightningURL.swift in Sources */,
 				B5EABAAF21FB8E8B00E32E08 /* TransactionNotificationTarget.swift in Sources */,
 				4AF4332220935C8D00B11BC9 /* DeviceVerificationCoordinator.swift in Sources */,
 				3BDFADFE2267B1FB0077DEF2 /* BlockstreamProvider.swift in Sources */,
@@ -4363,7 +4370,7 @@
 				30E96A312179FE2A008079B8 /* AppCoordinator+VerificationStatusViewControllerDelegate.swift in Sources */,
 				B5AC4F8321F8EBD5000ABAE8 /* WalletAddressesElasticQuery.swift in Sources */,
 				3B2E78302024AEA100DA25AF /* UIFont+Theme.swift in Sources */,
-				5B40427C208CCC27005624B0 /* QRCode.swift in Sources */,
+				5B40427C208CCC27005624B0 /* OnChainQRCode.swift in Sources */,
 				B50384C620B304780091AB37 /* CKNetworkError.swift in Sources */,
 				B5130E1D22EB99720003374F /* RegTestBroadcastTarget.swift in Sources */,
 				3B82692120330FB9009B11EC /* FontStrings.swift in Sources */,
@@ -4703,6 +4710,7 @@
 				3B72A289210648CF00E94171 /* PendingInvitationError.swift in Sources */,
 				3BBB3CF72298658C00C417EA /* TwitterAccessManager.swift in Sources */,
 				B552EDEC211E33D000332BB5 /* CoinNinjaUrlFactory.swift in Sources */,
+				A24B9E8A230AF1D300852718 /* LightningInvoiceResolver.swift in Sources */,
 				B51F8236207BAD7500692F5B /* BalanceContainer.swift in Sources */,
 				A246C82922CCF87500AF1F52 /* WalletOverviewViewController.swift in Sources */,
 				3B474167217FB853004DA223 /* NotificationTopicSubscriptionBody.swift in Sources */,
