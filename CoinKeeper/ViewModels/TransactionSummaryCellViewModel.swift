@@ -10,6 +10,8 @@ import Foundation
 import UIKit
 
 struct TransactionSummaryCellViewModel: TransactionSummaryCellViewModelType {
+  var selectedCurrency: SelectedCurrency
+
   var walletTxType: WalletTransactionType
 
   var isValidTransaction: Bool
@@ -34,6 +36,4 @@ struct TransactionSummaryCellViewModel: TransactionSummaryCellViewModelType {
 
   var twitterConfig: TransactionCellTwitterConfig?
 
-
-  
 }
