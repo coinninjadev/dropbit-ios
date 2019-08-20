@@ -16,17 +16,9 @@ class CKLightningURLParser: CKParser {
   }()
 
   func parse(_ string: String) throws -> LightningURL? {
-    if let lightningUrl = LightningURL(string: string) {
-      try lightningInvoiceValidator.validate(value: lightningUrl.invoice)
-      return lightningUrl
-    } else {
-      do {
-        try lightningInvoiceValidator.validate(value: string)
-        return nil
-      } catch {
-        throw error
-      }
-    }
+    guard let lightningUrl = LightningURL(string: string) else { return nil }
+    try lightningInvoiceValidator.validate(value: lightningUrl.invoice)
+    return lightningUrl
   }
 
 }

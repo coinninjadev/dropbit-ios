@@ -109,6 +109,12 @@ class MockSendPaymentViewControllerCoordinator: SendPaymentViewControllerCoordin
     didTapClose = true
   }
 
+  var didTryDecode = false
+  func viewControllerDidReceiveLightningURLToDecode(_ lightningUrl: LightningURL) -> Promise<LNDecodePaymentRequestResponse> {
+    didTryDecode = true
+    return Promise { _ in }
+  }
+
   func viewControllerDidSelectClose(_ viewController: UIViewController, completion: CKCompletion? ) {
     didTapClose = true
   }
