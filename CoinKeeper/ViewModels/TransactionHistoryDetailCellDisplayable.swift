@@ -9,21 +9,26 @@
 import Foundation
 import UIKit
 
-/// Provides all variable values directly necessary to configure the TransactionHistoryDetailCell UI.
+/// Provides all variable values directly necessary to configure the TransactionHistorySummaryCell UI.
 /// Fixed values (colors, font sizes, etc.) are contained by the cell itself.
-protocol TransactionHistoryDetailCellDisplayable {
+protocol TransactionHistorySummaryCellDisplayable {
   var direction: TransactionDirection { get }
-  var status: TransactionStatus { get }
   var statusText: String { get }
   var statusTextColor: UIColor { get }
-  var progressConfig: ProgressBarConfig? { get }
+  var counterpartyDescription: String? { get }
+  var amountLabels: TransactionCellAmountLabels { get }
   var twitterConfig: DetailCellTwitterConfig? { get }
-  var recipientDescription: String? { get }
+  var memo: String? { get }
+  var displayDate: String { get }
+}
+
+/// Provides all variable values directly necessary to configure the TransactionHistoryDetailCell UI.
+/// Fixed values (colors, font sizes, etc.) are contained by the cell itself.
+protocol TransactionHistoryDetailCellDisplayable: TransactionHistorySummaryCellDisplayable {
+  var progressConfig: ProgressBarConfig? { get }
   var bitcoinAddress: String? { get }
-  var amountLabels: DetailCellAmountLabels { get }
   var memoConfig: DetailCellMemoConfig? { get }
   var canAddMemo: Bool { get }
-  var displayDate: String? { get }
   var actionButtonConfig: DetailCellActionButtonConfig? { get }
 }
 
@@ -40,7 +45,9 @@ extension TransactionHistoryDetailCellDisplayable {
   }
 }
 
-protocol TransactionHistoryInvalidDetailCellDisplayable: TransactionHistoryDetailCellDisplayable { }
+protocol TransactionHistoryInvalidDetailCellDisplayable: TransactionHistoryDetailCellDisplayable {
+  var status: TransactionStatus { get }
+}
 
 extension TransactionHistoryInvalidDetailCellDisplayable {
 
@@ -113,7 +120,7 @@ struct DetailCellTwitterConfig {
 }
 
 /// Only one of the secondary strings should be set
-struct DetailCellAmountLabels {
+struct TransactionCellAmountLabels {
   let primaryText: String
   let secondaryText: String?
   let secondaryAttributedText: NSAttributedString?

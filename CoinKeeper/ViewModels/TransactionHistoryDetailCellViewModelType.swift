@@ -40,8 +40,8 @@ extension TransactionHistoryDetailCellViewModelType {
     return CKDateFormatter.displayFull.string(from: d)
   }
 
-  var amountLabels: DetailCellAmountLabels {
-    return DetailCellAmountLabels(primaryText: "",
+  var amountLabels: TransactionCellAmountLabels {
+    return TransactionCellAmountLabels(primaryText: "",
                                   secondaryText: nil,
                                   secondaryAttributedText: nil,
                                   historicalPriceAttributedText: nil)
