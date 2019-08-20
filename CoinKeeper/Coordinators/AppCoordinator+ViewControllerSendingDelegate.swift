@@ -26,148 +26,143 @@ extension AppCoordinator: ViewControllerSendingDelegate {
   func viewController(
     _ viewController: UIViewController,
     sendingMax txData: CNBTransactionData,
-    address: String,
-    walletTransactionType: WalletTransactionType,
-    contact: ContactType?,
-    rates: ExchangeRates,
-    sharedPayload: SharedPayloadDTO
-    ) {
+    to address: String,
+    inputs: SendingDelegateInputs) {
 
-    trackTransactionType(with: contact)
+    trackTransactionType(with: inputs.contact)
 
     txData.paymentAddress = address
 
-    var outgoingTransactionData = OutgoingTransactionData.emptyInstance()
-    outgoingTransactionData.feeAmount = Int(txData.feeAmount)
-    outgoingTransactionData.amount = Int(txData.amount)
-    outgoingTransactionData = configureOutgoingTransactionData(
-      with: outgoingTransactionData,
-      address: address,
-      contact: contact,
-      rates: rates,
-      sharedPayload: sharedPayload
-    )
+    var outgoingTxData = OutgoingTransactionData.emptyInstance()
+    outgoingTxData.feeAmount = Int(txData.feeAmount)
+    outgoingTxData.amount = Int(txData.amount)
+    outgoingTxData = configureOutgoingTransactionData(with: outgoingTxData, address: address, inputs: inputs)
 
-    viewController.dismiss(animated: true)
-    let btcAmount = NSDecimalNumber(integerAmount: outgoingTransactionData.amount, currency: .BTC)
+    let btcAmount = NSDecimalNumber(integerAmount: outgoingTxData.amount, currency: .BTC)
     let currencyPair = CurrencyPair(btcPrimaryWith: self.currencyController)
+    let feeConfig = TransactionFeeConfig(prefs: self.persistenceManager.brokers.preferences)
 
-    guard let wmgr = walletManager else { return }
-    let config = TransactionFeeConfig(prefs: self.persistenceManager.brokers.preferences)
-    if config.adjustableFeesEnabled {
-      networkManager.latestFees().compactMap { FeeRates(fees: $0) }
-        .then { (feeRates: FeeRates) -> Promise<ConfirmTransactionFeeModel> in
-          //Ignore the previously-generated send max transaction data, get it for all three fee types
-          return self.adjustableFeeViewModelSendingMax(
-            config: config,
-            rates: feeRates,
-            wmgr: wmgr,
-            address: address)
-            .map { .adjustable($0) }
+    if feeConfig.adjustableFeesEnabled {
+      let viewModel = ConfirmOnChainPaymentViewModel(address: address,
+                                                     contact: inputs.contact,
+                                                     btcAmount: btcAmount,
+                                                     currencyPair: currencyPair,
+                                                     exchangeRates: inputs.rates,
+                                                     outgoingTransactionData: outgoingTxData)
 
-        }
-        .done { (feeModel: ConfirmTransactionFeeModel) in
-
-          self.showConfirmPayment(
-            with: outgoingTransactionData,
-            btcAmount: btcAmount,
-            address: address,
-            walletTransactionType: walletTransactionType,
-            contact: contact,
-            currencyPair: currencyPair,
-            feeModel: feeModel,
-            rates: rates
-          )
-        }
-        .catch(on: .main) { [weak self] error in
-          guard let strongSelf = self else { return }
-          strongSelf.handleTransactionError(error)
-      }
+      self.handleSendingMaxWithAdjustableFees(viewController: viewController, address: address,
+                                              viewModel: viewModel, feeConfig: feeConfig)
 
     } else {
-      // Use the previously-generated send max transaction data
       let feeModel = ConfirmTransactionFeeModel.standard(txData)
-      showConfirmPayment(
-        with: outgoingTransactionData,
-        btcAmount: btcAmount,
-        address: address,
-        walletTransactionType: walletTransactionType,
-        contact: contact,
-        currencyPair: currencyPair,
-        feeModel: feeModel,
-        rates: rates
-      )
+      let viewModel = ConfirmOnChainPaymentViewModel(address: address,
+                                                     contact: inputs.contact,
+                                                     btcAmount: btcAmount,
+                                                     currencyPair: currencyPair,
+                                                     exchangeRates: inputs.rates,
+                                                     outgoingTransactionData: outgoingTxData)
+      viewController.dismiss(animated: true) {
+        // Use the previously-generated send max transaction data
+
+        self.showConfirmOnChainPayment(with: viewModel, feeModel: feeModel)
+      }
+    }
+  }
+
+  private func handleSendingMaxWithAdjustableFees(viewController: UIViewController,
+                                                  address: String,
+                                                  viewModel: ConfirmOnChainPaymentViewModel,
+                                                  feeConfig: TransactionFeeConfig) {
+    guard let wmgr = walletManager else { return }
+
+    networkManager.latestFees().compactMap { FeeRates(fees: $0) }
+      .then { (feeRates: FeeRates) -> Promise<ConfirmTransactionFeeModel> in
+        //Ignore the previously-generated send max transaction data, get it for all three fee types
+        return self.adjustableFeeViewModelSendingMax(
+          config: feeConfig,
+          rates: feeRates,
+          wmgr: wmgr,
+          address: address)
+          .map { .adjustable($0) }
+
+      }
+      .done { (feeModel: ConfirmTransactionFeeModel) in
+
+        viewController.dismiss(animated: true) {
+          self.showConfirmOnChainPayment(with: viewModel, feeModel: feeModel)
+        }
+      }
+      .catch(on: .main) { [weak self] error in
+        guard let strongSelf = self else { return }
+        strongSelf.handleTransactionError(error)
     }
   }
 
   func viewControllerDidSendPayment(_ viewController: UIViewController,
                                     btcAmount: NSDecimalNumber,
                                     requiredFeeRate: Double?,
-                                    primaryCurrency: CurrencyCode,
-                                    address: String,
-                                    walletTransactionType: WalletTransactionType,
-                                    contact: ContactType?,
-                                    rates: ExchangeRates,
-                                    sharedPayload: SharedPayloadDTO) {
+                                    destination: String,
+                                    inputs: SendingDelegateInputs) {
 
     guard let wmgr = walletManager else { return }
 
-    trackTransactionType(with: contact)
+    trackTransactionType(with: inputs.contact)
 
-    // create outgoingTransactionData DTO to populate and pass along down the send flow
-    var outgoingTransactionData = OutgoingTransactionData.emptyInstance()
-    outgoingTransactionData.amount = btcAmount.asFractionalUnits(of: .BTC)
-    outgoingTransactionData.requiredFeeRate = requiredFeeRate
-    outgoingTransactionData = configureOutgoingTransactionData(
-      with: outgoingTransactionData,
-      address: address,
-      contact: contact,
-      rates: rates,
-      sharedPayload: sharedPayload
-    )
-    let currencyPair = CurrencyPair(primary: primaryCurrency, fiat: self.currencyController.fiatCurrency)
+    let currencyPair = CurrencyPair(primary: inputs.primaryCurrency, fiat: self.currencyController.fiatCurrency)
 
-    viewController.dismiss(animated: true)
-    networkManager.latestFees().compactMap { FeeRates(fees: $0) }
+    switch inputs.walletTxType {
+    case .lightning:
+      viewController.dismiss(animated: true) {
+        let viewModel = ConfirmLightningPaymentViewModel(invoice: destination,
+                                                         contact: inputs.contact,
+                                                         btcAmount: btcAmount,
+                                                         sharedPayload: inputs.sharedPayload,
+                                                         currencyPair: currencyPair,
+                                                         exchangeRates: inputs.rates)
+        self.showConfirmLightningPayment(with: viewModel)
+      }
+
+    case .onChain:
+      viewController.dismiss(animated: true) {
+
+        // create outgoingTransactionData DTO to populate and pass along down the send flow
+        var outgoingTxData = OutgoingTransactionData.emptyInstance()
+        outgoingTxData.amount = btcAmount.asFractionalUnits(of: .BTC)
+        outgoingTxData.requiredFeeRate = requiredFeeRate
+        outgoingTxData = self.configureOutgoingTransactionData(with: outgoingTxData, address: destination, inputs: inputs)
+
+        let paymentInputs = SendOnChainPaymentInputs(networkManager: self.networkManager, wmgr: wmgr,
+                                                     outgoingTxData: outgoingTxData, btcAmount: btcAmount,
+                                                     address: destination, contact: inputs.contact,
+                                                     currencyPair: currencyPair, exchangeRates: inputs.rates)
+        self.sendOnChainPayment(with: paymentInputs)
+      }
+    }
+  }
+
+  private func sendOnChainPayment(with inputs: SendOnChainPaymentInputs) {
+    inputs.networkManager.latestFees().compactMap { FeeRates(fees: $0) }
       .then { (rates: FeeRates) -> Promise<ConfirmTransactionFeeModel> in
         // Take rates, get fee config, and return a fee mode
         let config = TransactionFeeConfig(prefs: self.persistenceManager.brokers.preferences)
 
-        if let requiredFeeRate = outgoingTransactionData.requiredFeeRate {
-          return wmgr.transactionData(
-            forPayment: btcAmount,
-            to: address,
-            withFeeRate: requiredFeeRate)
-            .map { .required($0) }
+        if let requiredFeeRate = inputs.outgoingTxData.requiredFeeRate {
+          return inputs.wmgr.transactionData(forPayment: inputs.btcAmount, to: inputs.address,
+                                             withFeeRate: requiredFeeRate).map { .required($0) }
+
         } else if config.adjustableFeesEnabled {
-          return self.adjustableFeeViewModel(
-            config: config,
-            rates: rates,
-            wmgr: wmgr,
-            btcAmount: btcAmount,
-            address: address)
-            .map { .adjustable($0) }
+          return self.adjustableFeeViewModel(config: config, rates: rates, wmgr: inputs.wmgr, btcAmount: inputs.btcAmount,
+                                             address: inputs.address).map { .adjustable($0) }
 
         } else {
           let defaultFeeRate = rates.rate(forType: config.defaultFeeType)
-          return wmgr.transactionData(
-            forPayment: btcAmount,
-            to: address,
-            withFeeRate: defaultFeeRate)
-            .map { .standard($0) }
+          return inputs.wmgr.transactionData(forPayment: inputs.btcAmount, to: inputs.address,
+                                             withFeeRate: defaultFeeRate).map { .standard($0) }
         }
       }
       .done { (feeModel: ConfirmTransactionFeeModel) in
-        self.showConfirmPayment(
-          with: outgoingTransactionData,
-          btcAmount: btcAmount,
-          address: address,
-          walletTransactionType: walletTransactionType,
-          contact: contact,
-          currencyPair: currencyPair,
-          feeModel: feeModel,
-          rates: rates
-        )
+        let viewModel = ConfirmOnChainPaymentViewModel(inputs: inputs)
+        self.showConfirmOnChainPayment(with: viewModel, feeModel: feeModel)
       }
       .catch(on: .main) { [weak self] error in
         guard let strongSelf = self else { return }
@@ -177,24 +172,22 @@ extension AppCoordinator: ViewControllerSendingDelegate {
 
   func viewControllerDidBeginAddressNegotiation(_ viewController: UIViewController,
                                                 btcAmount: NSDecimalNumber,
-                                                primaryCurrency: CurrencyCode,
-                                                contact: ContactType,
                                                 memo: String?,
-                                                walletTransactionType: WalletTransactionType,
-                                                rates: ExchangeRates,
                                                 memoIsShared: Bool,
-                                                sharedPayload: SharedPayloadDTO) {
+                                                inputs: SendingDelegateInputs) {
+    guard let contact = inputs.contact else { return }
 
     permissionManager.requestPermission(for: .notification) { status in
       switch status {
       case .authorized:
-        let completion = { [weak self] in
-          guard let self = self else { return }
+        let completion = { [unowned self] in
+
           viewController.dismiss(animated: true, completion: {
+
             self.analyticsManager.track(event: .paymentToPhoneNumber, with: nil)
-            let currencyPair = CurrencyPair(primary: primaryCurrency, fiat: self.currencyController.fiatCurrency)
-            self.handleInvite(btcAmount: btcAmount, currencyPair: currencyPair, contact: contact, memo: memo,
-                              walletTransactionType: walletTransactionType, rates: rates, memoIsShared: memoIsShared, sharedPayload: sharedPayload)
+            let currencyPair = CurrencyPair(primary: inputs.primaryCurrency, fiat: self.currencyController.fiatCurrency)
+            self.handleInvite(btcAmount: btcAmount, currencyPair: currencyPair, contact: contact,
+                              memo: memo, memoIsShared: memoIsShared, inputs: inputs)
           })
         }
 
@@ -243,20 +236,18 @@ extension AppCoordinator: ViewControllerSendingDelegate {
 
   private func configureOutgoingTransactionData(with dto: OutgoingTransactionData,
                                                 address: String?,
-                                                contact: ContactType?,
-                                                rates: ExchangeRates,
-                                                sharedPayload: SharedPayloadDTO
-    ) -> OutgoingTransactionData {
+                                                inputs: SendingDelegateInputs) -> OutgoingTransactionData {
     guard let wmgr = self.walletManager else { return dto }
+
     var copy = dto
-    copy.dropBitType = contact?.dropBitType ?? .none
-    if let innerContact = contact {
+    copy.dropBitType = inputs.contact?.dropBitType ?? .none
+    if let innerContact = inputs.contact {
       copy.displayName = innerContact.displayName ?? ""
       copy.displayIdentity = innerContact.displayIdentity
       copy.identityHash = innerContact.identityHash
     }
     address.map { copy.destinationAddress = $0 }
-    copy.sharedPayloadDTO = sharedPayload
+    copy.sharedPayloadDTO = inputs.sharedPayload
 
     let context = persistenceManager.createBackgroundContext()
     context.performAndWait {
@@ -268,28 +259,15 @@ extension AppCoordinator: ViewControllerSendingDelegate {
     return copy
   }
 
-  private func showConfirmPayment(with dto: OutgoingTransactionData,
-                                  btcAmount: NSDecimalNumber,
-                                  address: String?,
-                                  walletTransactionType: WalletTransactionType,
-                                  contact: ContactType?,
-                                  currencyPair: CurrencyPair,
-                                  feeModel: ConfirmTransactionFeeModel,
-                                  rates: ExchangeRates) {
+  private func showConfirmOnChainPayment(with viewModel: ConfirmOnChainPaymentViewModel,
+                                         feeModel: ConfirmTransactionFeeModel) {
 
-    let isLightningConvertible = true //TODO
+    let isLightningConvertible = false //TODO
 
-    let displayLightningPaymentViewController: () -> Void = {}
+    let displayLightningPaymentViewController: CKCompletion = {}
 
-    let displayConfirmPaymentViewController: () -> Void = { [weak self] in
+    let displayConfirmPaymentViewController: CKCompletion = { [weak self] in
       guard let weakSelf = self else { return }
-      let viewModel = ConfirmPaymentViewModel(address: address,
-                                              contact: contact,
-                                              walletTransactionType: walletTransactionType,
-                                              btcAmount: btcAmount,
-                                              currencyPair: currencyPair,
-                                              exchangeRates: rates,
-                                              outgoingTransactionData: dto)
 
       let confirmPayVC = ConfirmPaymentViewController.newInstance(type: .payment,
                                                                   viewModel: viewModel,
@@ -307,6 +285,14 @@ extension AppCoordinator: ViewControllerSendingDelegate {
       displayConfirmPaymentViewController()
     }
 
+  }
+
+  private func showConfirmLightningPayment(with viewModel: ConfirmLightningPaymentViewModel) {
+    let confirmPayVC = ConfirmPaymentViewController.newInstance(type: .payment,
+                                                                viewModel: viewModel,
+                                                                feeModel: .lightning,
+                                                                delegate: self)
+    self.navigationController.present(confirmPayVC, animated: true, completion: nil)
   }
 
   struct UsableFeeRates {
@@ -363,10 +349,8 @@ extension AppCoordinator: ViewControllerSendingDelegate {
                             currencyPair: CurrencyPair,
                             contact: ContactType,
                             memo: String?,
-                            walletTransactionType: WalletTransactionType,
-                            rates: ExchangeRates,
                             memoIsShared: Bool,
-                            sharedPayload: SharedPayloadDTO) {
+                            inputs: SendingDelegateInputs) {
     guard let wmgr = walletManager else { return }
     networkManager.latestFees().compactMap { FeeRates(fees: $0) }
       .then { (feeRates: FeeRates) -> Promise<ConfirmTransactionFeeModel> in
@@ -381,18 +365,17 @@ extension AppCoordinator: ViewControllerSendingDelegate {
       }
       .done(on: .main) { (feeModel: ConfirmTransactionFeeModel) -> Void in
 
-        let isLightningConvertible = true //TODO
+        let isLightningConvertible = false //TODO
 
-        let displayLightningPaymentViewController: () -> Void = {}
+        let displayLightningPaymentViewController: CKCompletion = {}
 
-        let displayConfirmPaymentViewController: () -> Void = {
-          let viewModel = ConfirmPaymentInviteViewModel(address: nil,
-                                                        contact: contact,
-                                                        walletTransactionType: walletTransactionType,
+        let displayConfirmPaymentViewController: CKCompletion = {
+          let viewModel = ConfirmPaymentInviteViewModel(contact: contact,
+                                                        walletTransactionType: inputs.walletTxType,
                                                         btcAmount: btcAmount,
                                                         currencyPair: currencyPair,
-                                                        exchangeRates: rates,
-                                                        sharedPayloadDTO: sharedPayload)
+                                                        exchangeRates: inputs.rates,
+                                                        sharedPayloadDTO: inputs.sharedPayload)
           let confirmPayVC = ConfirmPaymentViewController.newInstance(type: .invite,
                                                                       viewModel: viewModel,
                                                                       feeModel: feeModel,
@@ -432,7 +415,7 @@ extension AppCoordinator: ViewControllerSendingDelegate {
     }
   }
 
-  private func showModalForInviteExplanation(with viewController: UIViewController, phoneNumber: String, completion: @escaping () -> Void) {
+  private func showModalForInviteExplanation(with viewController: UIViewController, phoneNumber: String, completion: @escaping CKCompletion) {
     let title = """
     \n We will send a DropBit to \n\(phoneNumber).
     Once DropBit is downloaded you will be notified and it will be executed. \n

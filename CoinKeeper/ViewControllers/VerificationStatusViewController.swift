@@ -15,8 +15,8 @@ protocol VerificationStatusViewControllerDelegate: ViewControllerDismissable, Au
   func viewControllerDidRequestAddresses() -> [ServerAddressViewModel]
   func viewControllerDidSelectVerifyPhone(_ viewController: UIViewController)
   func viewControllerDidSelectVerifyTwitter(_ viewController: UIViewController)
-  func viewControllerDidRequestToUnverifyPhone(_ viewController: UIViewController, successfulCompletion: @escaping () -> Void)
-  func viewControllerDidRequestToUnverifyTwitter(_ viewController: UIViewController, successfulCompletion: @escaping () -> Void)
+  func viewControllerDidRequestToUnverifyPhone(_ viewController: UIViewController, successfulCompletion: @escaping CKCompletion)
+  func viewControllerDidRequestToUnverifyTwitter(_ viewController: UIViewController, successfulCompletion: @escaping CKCompletion)
 }
 
 class VerificationStatusViewController: BaseViewController, StoryboardInitializable {

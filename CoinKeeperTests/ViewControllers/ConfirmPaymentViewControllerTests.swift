@@ -51,28 +51,33 @@ class ConfirmPaymentViewControllerTests: XCTestCase {
   }
 
   class MockCoordinator: ConfirmPaymentViewControllerDelegate {
-    func viewControllerDidConfirmPayment(
+    func confirmPaymentViewControllerDidLoad(_ viewController: UIViewController) { }
+
+    func viewControllerDidConfirmOnChainPayment(
       _ viewController: UIKit.UIViewController,
       transactionData: CNBitcoinKit.CNBTransactionData,
       rates: ExchangeRates,
-      outgoingTransactionData: OutgoingTransactionData
-      ) {
+      outgoingTransactionData: OutgoingTransactionData) { }
 
-    }
+    func viewControllerDidConfirmLightningPayment(
+      _ viewController: UIViewController,
+      inputs: LightningPaymentInputs) { }
+
+    func viewControllerDidConfirmInvite(
+      _ viewController: UIViewController,
+      outgoingInvitationDTO: OutgoingInvitationDTO,
+      walletTxType: WalletTransactionType) { }
 
     func viewControllerRequestedShowFeeTooExpensiveAlert(_ viewController: UIViewController) { }
-
-    func viewControllerDidConfirmInvite(_ viewController: UIViewController, outgoingInvitationDTO: OutgoingInvitationDTO) { }
 
     var closeButtonTapped = false
     func viewControllerDidSelectClose(_ viewController: UIViewController) {
       closeButtonTapped = true
     }
 
-    func viewControllerDidSelectClose(_ viewController: UIViewController, completion: (() -> Void)? ) {
+    func viewControllerDidSelectClose(_ viewController: UIViewController, completion: CKCompletion? ) {
       closeButtonTapped = true
     }
 
-    func confirmPaymentViewControllerDidLoad(_ viewController: UIViewController) { }
   }
 }

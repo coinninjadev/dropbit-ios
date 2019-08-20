@@ -38,7 +38,7 @@ class UITestCase: XCTestCase {
                               isRequired: Bool = true,
                               file: String = #file,
                               line: Int = #line,
-                              ifExists successHandler: (() -> Void)? = nil) {
+                              ifExists successHandler: CKCompletion? = nil) {
 
     let exists = element.waitForExistence(timeout: timeout)
     if exists {

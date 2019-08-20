@@ -11,13 +11,21 @@ import CNBitcoinKit
 
 protocol ConfirmPaymentViewControllerDelegate: ViewControllerDismissable {
   func confirmPaymentViewControllerDidLoad(_ viewController: UIViewController)
-  func viewControllerDidConfirmPayment(
+  func viewControllerDidConfirmOnChainPayment(
     _ viewController: UIViewController,
     transactionData: CNBTransactionData,
     rates: ExchangeRates,
     outgoingTransactionData: OutgoingTransactionData
   )
-  func viewControllerDidConfirmInvite(_ viewController: UIViewController, outgoingInvitationDTO: OutgoingInvitationDTO)
+
+  func viewControllerDidConfirmLightningPayment(
+    _ viewController: UIViewController,
+    inputs: LightningPaymentInputs)
+
+  func viewControllerDidConfirmInvite(_ viewController: UIViewController,
+                                      outgoingInvitationDTO: OutgoingInvitationDTO,
+                                      walletTxType: WalletTransactionType)
+
   func viewControllerRequestedShowFeeTooExpensiveAlert(_ viewController: UIViewController)
 }
 
@@ -110,34 +118,57 @@ class ConfirmPaymentViewController: PresentableViewController, StoryboardInitial
     updateViewWithModel()
   }
 
-  private func confirmPayment(with baseViewModel: BaseConfirmPaymentViewModel,
-                              feeModel: ConfirmTransactionFeeModel) {
-    guard let viewModel = baseViewModel as? ConfirmPaymentViewModel else { return }
-    var feeAdjustedOutgoingTxData = viewModel.outgoingTransactionData
-    feeAdjustedOutgoingTxData.amount = Int(feeModel.transactionData.amount)
-    feeAdjustedOutgoingTxData.feeAmount = Int(feeModel.transactionData.feeAmount)
+  private func routeConfirmedPayment(for viewModel: BaseConfirmPaymentViewModel, feeModel: ConfirmTransactionFeeModel) {
+    switch viewModel.walletTransactionType {
+    case .onChain:
+      guard let onChainVM = viewModel as? ConfirmOnChainPaymentViewModel else { return }
+      confirmOnChainPayment(with: onChainVM, feeModel: feeModel)
+    case .lightning:
+      guard let lightningVM = viewModel as? ConfirmLightningPaymentViewModel else { return }
+      confirmLightningPayment(with: lightningVM)
+    }
+  }
 
-    coordinationDelegate?.viewControllerDidConfirmPayment(
+  private func confirmOnChainPayment(with viewModel: ConfirmOnChainPaymentViewModel,
+                                     feeModel: ConfirmTransactionFeeModel) {
+    guard let txData = feeModel.transactionData else {
+      log.error("Transaction data is nil for on chain payment confirmation")
+      return
+    }
+
+    var feeAdjustedOutgoingTxData = viewModel.outgoingTransactionData
+    feeAdjustedOutgoingTxData.amount = Int(txData.amount)
+    feeAdjustedOutgoingTxData.feeAmount = Int(txData.feeAmount)
+
+    coordinationDelegate?.viewControllerDidConfirmOnChainPayment(
       self,
-      transactionData: feeModel.transactionData,
+      transactionData: txData,
       rates: viewModel.exchangeRates,
       outgoingTransactionData: feeAdjustedOutgoingTxData
     )
   }
 
-  private func confirmInvite(with baseViewModel: BaseConfirmPaymentViewModel,
+  private func confirmLightningPayment(with viewModel: ConfirmLightningPaymentViewModel) {
+    let inputs = LightningPaymentInputs(sats: viewModel.btcAmount.asFractionalUnits(of: .BTC),
+                                        invoice: viewModel.invoice,
+                                        sharedPayload: viewModel.sharedPayloadDTO)
+    coordinationDelegate?.viewControllerDidConfirmLightningPayment(self, inputs: inputs)
+  }
+
+  private func confirmInvite(with viewModel: ConfirmPaymentInviteViewModel,
                              feeModel: ConfirmTransactionFeeModel) {
-    guard let viewModel = baseViewModel as? ConfirmPaymentInviteViewModel,
-      let contact = viewModel.contact else { return }
+    guard let contact = viewModel.contact else { return }
     let btcAmount = viewModel.btcAmount
     let converter = CurrencyConverter(fromBtcTo: .USD, fromAmount: btcAmount, rates: viewModel.exchangeRates)
 
     let pair = (btcAmount: btcAmount, usdAmount: converter.amount(forCurrency: .USD) ?? NSDecimalNumber(decimal: 0.0))
     let outgoingInvitationDTO = OutgoingInvitationDTO(contact: contact,
                                                       btcPair: pair,
-                                                      fee: feeModel.feeAmount,
+                                                      fee: feeModel.networkFeeAmount,
                                                       sharedPayloadDTO: viewModel.sharedPayloadDTO)
-    coordinationDelegate?.viewControllerDidConfirmInvite(self, outgoingInvitationDTO: outgoingInvitationDTO)
+    coordinationDelegate?.viewControllerDidConfirmInvite(self,
+                                                         outgoingInvitationDTO: outgoingInvitationDTO,
+                                                         walletTxType: viewModel.walletTransactionType)
   }
 
 }
@@ -224,11 +255,11 @@ extension ConfirmPaymentViewController {
 
       adjustableFeesLabel.attributedText = vm.attributedWaitTimeDescription
 
-    case .required, .standard:
+    case .required, .standard, .lightning:
       adjustableFeesContainer.isHidden = true
     }
 
-    let feeDecimalAmount = NSDecimalNumber(integerAmount: feeModel.feeAmount, currency: .BTC)
+    let feeDecimalAmount = NSDecimalNumber(integerAmount: feeModel.networkFeeAmount, currency: .BTC)
     let feeConverter = CurrencyConverter(fromBtcTo: .USD,
                                          fromAmount: feeDecimalAmount,
                                          rates: self.viewModel.exchangeRates)
@@ -245,8 +276,8 @@ extension ConfirmPaymentViewController {
 
     // Set default contact and address label values
     contactLabel.text = viewModel.contact?.displayName
-    primaryAddressLabel.text = viewModel.address
-    secondaryAddressLabel.text = viewModel.address
+    primaryAddressLabel.text = viewModel.destination
+    secondaryAddressLabel.text = viewModel.destination
 
     if let contact = viewModel.contact {
       // May refer to either an actual contact or a manually entered phone number
@@ -322,9 +353,11 @@ extension ConfirmPaymentViewController: ConfirmViewDelegate {
   func viewDidConfirm() {
     switch transactionType {
     case .invite:
-      confirmInvite(with: viewModel, feeModel: self.feeModel)
+      guard let inviteVM = viewModel as? ConfirmPaymentInviteViewModel else { return }
+      self.confirmInvite(with: inviteVM, feeModel: feeModel)
     case .payment:
-      confirmPayment(with: viewModel, feeModel: self.feeModel)
+      routeConfirmedPayment(for: viewModel, feeModel: self.feeModel)
     }
   }
+
 }

@@ -122,7 +122,6 @@ protocol PersistenceDatabaseType: AnyObject {
   func containsDropbitTransaction(in context: NSManagedObjectContext) -> IncomingOutgoingTuple
   func getAllInvitations(in context: NSManagedObjectContext) -> [CKMInvitation]
   func getUnacknowledgedInvitations(in context: NSManagedObjectContext) -> [CKMInvitation]
-  func getLightningBalance(in context: NSManagedObjectContext) -> CKMLNBalance
 
   func walletId(in context: NSManagedObjectContext) -> String?
   func userId(in context: NSManagedObjectContext) -> String?

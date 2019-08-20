@@ -28,7 +28,7 @@ protocol ConnectionManagerType: AnyObject {
   func updateOverlay(
     from viewController: UIViewController,
     forStatus status: ConnectionManagerStatus,
-    completion: (() -> Void)?
+    completion: CKCompletion?
   )
 }
 
@@ -63,7 +63,7 @@ class ConnectionManager: ConnectionManagerType {
   func updateOverlay(
     from viewController: UIViewController,
     forStatus status: ConnectionManagerStatus,
-    completion: (() -> Void)?
+    completion: CKCompletion?
     ) {
     switch status {
     case .connected:
@@ -91,7 +91,7 @@ class ConnectionManager: ConnectionManagerType {
     }
   }
 
-  func presentOfflineOverlay(from viewController: UIViewController, completion: (() -> Void)?) {
+  func presentOfflineOverlay(from viewController: UIViewController, completion: CKCompletion?) {
     guard UIApplication.shared.applicationState != .background else { return }
     guard noConnectionsViewController == nil else { return }
     noConnectionsViewController = NoConnectionViewController.makeFromStoryboard()
@@ -99,7 +99,7 @@ class ConnectionManager: ConnectionManagerType {
     noConnectionsViewController.map { viewController.present($0, animated: true, completion: completion) }
   }
 
-  func hideOfflineOverlay(completion: (() -> Void)?) {
+  func hideOfflineOverlay(completion: CKCompletion?) {
     noConnectionsViewController?.dismiss(animated: true, completion: completion)
     noConnectionsViewController = nil
   }

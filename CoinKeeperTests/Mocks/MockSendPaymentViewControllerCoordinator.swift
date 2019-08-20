@@ -11,9 +11,18 @@ import UIKit
 import PromiseKit
 import CNBitcoinKit
 @testable import DropBit
-import enum Result.Result
 
 class MockSendPaymentViewControllerCoordinator: SendPaymentViewControllerCoordinator {
+
+  var networkManager: NetworkManagerType
+  var balanceUpdateManager: BalanceUpdateManager
+
+  init(balanceUpdateManager: BalanceUpdateManager = BalanceUpdateManager(),
+       networkManager: NetworkManagerType) {
+    self.balanceUpdateManager = balanceUpdateManager
+    self.networkManager = networkManager
+  }
+
   func sendPaymentViewControllerWillDismiss(_ viewController: UIViewController) {
     didTapClose = true
   }
@@ -40,25 +49,10 @@ class MockSendPaymentViewControllerCoordinator: SendPaymentViewControllerCoordin
     }
   }
 
-  func viewController(
-    _ viewController: UIViewController,
-    sendingMax data: CNBTransactionData,
-    address: String,
-    walletTransactionType: WalletTransactionType,
-    contact: ContactType?,
-    rates: ExchangeRates,
-    sharedPayload: SharedPayloadDTO) {
-
-  }
-
-  var networkManager: NetworkManagerType
-  var balanceUpdateManager: BalanceUpdateManager
-
-  init(balanceUpdateManager: BalanceUpdateManager = BalanceUpdateManager(),
-       networkManager: NetworkManagerType) {
-    self.balanceUpdateManager = balanceUpdateManager
-    self.networkManager = networkManager
-  }
+  func viewController(_ viewController: UIViewController,
+                      sendingMax data: CNBTransactionData,
+                      to address: String,
+                      inputs: SendingDelegateInputs) { }
 
   func balanceNetPending() -> WalletBalances {
     return WalletBalances(onChain: .zero, lightning: .zero)
@@ -68,9 +62,7 @@ class MockSendPaymentViewControllerCoordinator: SendPaymentViewControllerCoordin
     return WalletBalances(onChain: .zero, lightning: .zero)
   }
 
-  func latestExchangeRates(responseHandler: (ExchangeRates) -> Void) {
-
-  }
+  func latestExchangeRates(responseHandler: (ExchangeRates) -> Void) { }
 
   func latestFees() -> Promise<Fees> {
     return Promise.value([:])
@@ -91,9 +83,10 @@ class MockSendPaymentViewControllerCoordinator: SendPaymentViewControllerCoordin
     didTapContacts = true
   }
 
-  func viewController(
+  func viewControllerDidRequestRegisteredAddress(
     _ viewController: UIViewController,
-    checkingVerificationStatusFor identityHash: String) -> Promise<[WalletAddressesQueryResponse]> {
+    ofType addressType: WalletAddressType,
+    forIdentity identityHash: String) -> Promise<[WalletAddressesQueryResponse]> {
     return Promise { _ in }
   }
 
@@ -103,13 +96,9 @@ class MockSendPaymentViewControllerCoordinator: SendPaymentViewControllerCoordin
     return Promise { _ in }
   }
 
-  func viewControllerDidRequestVerificationCheck(_ viewController: UIViewController, completion: @escaping (() -> Void)) {
+  func viewControllerDidRequestVerificationCheck(_ viewController: UIViewController, completion: @escaping CKCompletion) { }
 
-  }
-
-  func viewControllerDidRequestAlert(_ viewController: UIViewController, viewModel: AlertControllerViewModel) {
-
-  }
+  func viewControllerDidRequestAlert(_ viewController: UIViewController, viewModel: AlertControllerViewModel) { }
 
   func viewControllerShouldInitiallyAllowMemoSharing(_ viewController: SendPaymentViewController) -> Bool {
     return true
@@ -120,35 +109,21 @@ class MockSendPaymentViewControllerCoordinator: SendPaymentViewControllerCoordin
     didTapClose = true
   }
 
-  func viewControllerDidSelectClose(_ viewController: UIViewController, completion: (() -> Void)? ) {
+  func viewControllerDidSelectClose(_ viewController: UIViewController, completion: CKCompletion? ) {
     didTapClose = true
   }
 
-  func viewControllerDidSendPayment(
-    _ viewController: UIViewController,
-    btcAmount: NSDecimalNumber,
-    requiredFeeRate: Double?,
-    primaryCurrency: CurrencyCode,
-    address: String,
-    walletTransactionType: WalletTransactionType,
-    contact: ContactType?,
-    rates: ExchangeRates,
-    sharedPayload: SharedPayloadDTO) {
+  func viewControllerDidSendPayment(_ viewController: UIViewController,
+                                    btcAmount: NSDecimalNumber,
+                                    requiredFeeRate: Double?,
+                                    destination: String,
+                                    inputs: SendingDelegateInputs) { }
 
-  }
-
-  func viewControllerDidBeginAddressNegotiation(
-    _ viewController: UIViewController,
-    btcAmount: NSDecimalNumber,
-    primaryCurrency: CurrencyCode,
-    contact: ContactType,
-    memo: String?,
-    walletTransactionType: WalletTransactionType,
-    rates: ExchangeRates,
-    memoIsShared: Bool,
-    sharedPayload: SharedPayloadDTO) {
-
-  }
+  func viewControllerDidBeginAddressNegotiation(_ viewController: UIViewController,
+                                                btcAmount: NSDecimalNumber,
+                                                memo: String?,
+                                                memoIsShared: Bool,
+                                                inputs: SendingDelegateInputs) { }
 
   func viewController(_ viewController: UIViewController,
                       checkForContactFromGenericContact genericContact: GenericContact,
@@ -156,13 +131,9 @@ class MockSendPaymentViewControllerCoordinator: SendPaymentViewControllerCoordin
     completion(nil)
   }
 
-  func sendPaymentViewControllerDidLoad(_ viewController: UIViewController) {
+  func sendPaymentViewControllerDidLoad(_ viewController: UIViewController) { }
 
-  }
-
-  func viewControllerDidAttemptInvalidDestination(_ viewController: UIViewController, error: Error?) {
-
-  }
+  func viewControllerDidAttemptInvalidDestination(_ viewController: UIViewController, error: Error?) { }
 
   var didSelectMemoButton = false
   func viewControllerDidSelectMemoButton(_ viewController: UIViewController, memo: String?, completion: @escaping (String) -> Void) {
@@ -174,7 +145,7 @@ class MockSendPaymentViewControllerCoordinator: SendPaymentViewControllerCoordin
     didTapPaste = true
   }
 
-  func openURL(_ url: URL, completionHandler completion: (() -> Void)?) { }
+  func openURL(_ url: URL, completionHandler completion: CKCompletion?) { }
   func openURLExternally(_ url: URL, completionHandler completion: ((Bool) -> Void)?) { }
 
   func usableFeeRate(from feeRates: Fees) -> Double? {

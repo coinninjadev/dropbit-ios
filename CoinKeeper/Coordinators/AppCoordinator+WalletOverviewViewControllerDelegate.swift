@@ -24,8 +24,8 @@ extension AppCoordinator: WalletOverviewViewControllerDelegate {
     persistenceManager.brokers.preferences.selectedWalletTransactionType = selectedType
   }
 
-  func viewControllerDidSelectTransfer(withType type: WalletTransferViewController.TransferType) {
-    let viewModel = WalletTransferViewModel(transferType: type, amount: .custom)
+  func viewControllerDidSelectTransfer(withDirection direction: TransferDirection) {
+    let viewModel = WalletTransferViewModel(direction: direction, amount: .custom)
     let transferViewController = WalletTransferViewController.newInstance(delegate: self, viewModel: viewModel)
     navigationController.present(transferViewController, animated: true, completion: nil)
   }
@@ -62,7 +62,8 @@ extension AppCoordinator: WalletOverviewViewControllerDelegate {
   }
 
   func viewControllerDidTapSendPayment(_ viewController: UIViewController,
-                                       converter: CurrencyConverter, walletTransactionType: WalletTransactionType) {
+                                       converter: CurrencyConverter,
+                                       walletTransactionType: WalletTransactionType) {
     guard let walletOverviewViewController = viewController as? WalletOverviewViewController else { return }
     walletOverviewViewController.balanceContainer.toggleChartAndBalance()
     analyticsManager.track(event: .payButtonWasPressed, with: nil)

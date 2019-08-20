@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14492.1" systemVersion="18F132" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14492.1" systemVersion="18G84" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="CKMAddress" representedClassName="CKMAddress" versionHashModifier="1" syncable="YES">
         <attribute name="addressId" attributeType="String" syncable="YES"/>
         <relationship name="addressTransactionSummaries" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CKMAddressTransactionSummary" inverseName="address" inverseEntity="CKMAddressTransactionSummary" syncable="YES"/>
@@ -64,11 +64,13 @@
         <relationship name="counterpartyTwitterContact" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CKMTwitterContact" inverseName="invitations" inverseEntity="CKMTwitterContact" syncable="YES"/>
         <relationship name="transaction" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CKMTransaction" inverseName="invitation" inverseEntity="CKMTransaction" syncable="YES"/>
     </entity>
-    <entity name="CKMLNBalance" representedClassName="CKMLNBalance" syncable="YES">
+    <entity name="CKMLNAccount" representedClassName="CKMLNAccount" syncable="YES">
+        <attribute name="address" attributeType="String" syncable="YES"/>
         <attribute name="balance" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="id" attributeType="String" syncable="YES"/>
         <attribute name="pendingIn" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="pendingOut" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
-        <relationship name="wallet" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CKMWallet" inverseName="lightningBalance" inverseEntity="CKMWallet" syncable="YES"/>
+        <relationship name="wallet" maxCount="1" deletionRule="Nullify" destinationEntity="CKMWallet" inverseName="lightningAccount" inverseEntity="CKMWallet" syncable="YES"/>
     </entity>
     <entity name="CKMLNInvoice" representedClassName="CKMLNInvoice" syncable="YES">
         <attribute name="cltvExpiry" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
@@ -227,7 +229,7 @@
         <attribute name="lastSyncBlockHash" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="lastSyncDate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <relationship name="addressTransactionSummaries" toMany="YES" deletionRule="Cascade" destinationEntity="CKMAddressTransactionSummary" inverseName="wallet" inverseEntity="CKMAddressTransactionSummary" syncable="YES"/>
-        <relationship name="lightningBalance" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="CKMLNBalance" inverseName="wallet" inverseEntity="CKMLNBalance" syncable="YES"/>
+        <relationship name="lightningAccount" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="CKMLNAccount" inverseName="wallet" inverseEntity="CKMLNAccount" syncable="YES"/>
         <relationship name="serverAddresses" toMany="YES" deletionRule="Nullify" destinationEntity="CKMServerAddress" inverseName="wallet" inverseEntity="CKMServerAddress" syncable="YES"/>
         <relationship name="user" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CKMUser" inverseName="wallet" inverseEntity="CKMUser" syncable="YES"/>
         <relationship name="walletEntries" toMany="YES" deletionRule="Cascade" destinationEntity="CKMWalletEntry" inverseName="wallet" inverseEntity="CKMWalletEntry" syncable="YES"/>
@@ -245,7 +247,7 @@
         <element name="CKMCounterpartyAddress" positionX="-1935" positionY="351" width="128" height="73"/>
         <element name="CKMDerivativePath" positionX="-972" positionY="315" width="128" height="163"/>
         <element name="CKMInvitation" positionX="-1674" positionY="-36" width="144" height="255"/>
-        <element name="CKMLNBalance" positionX="-1369.73046875" positionY="-52.7265625" width="128" height="105"/>
+        <element name="CKMLNAccount" positionX="160" positionY="192" width="128" height="135"/>
         <element name="CKMLNInvoice" positionX="-2215.80078125" positionY="195.44140625" width="128" height="195"/>
         <element name="CKMLNLedgerEntry" positionX="-2173.94140625" positionY="494.7109375" width="128" height="285"/>
         <element name="CKMPhoneNumber" positionX="-2009" positionY="99" width="128" height="150"/>

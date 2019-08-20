@@ -183,23 +183,25 @@ class WalletManager: WalletManagerType {
     var netBalance = 0
     var netLightningBalance = 0
     context.performAndWait {
+      let wallet = CKMWallet.findOrCreate(in: context)
       let atss = CKMAddressTransactionSummary.findAll(in: context)
-      let lightningBalance = persistenceManager.brokers.lightning.getBalance(in: context)
+      let lightningAccount = persistenceManager.brokers.lightning.getAccount(forWallet: wallet, in: context)
       let atsAmount = atss.reduce(0) { $0 + $1.netAmount }
       let tempSentTxTotal = activeTemporarySentTxTotal(in: context)
       netBalance = atsAmount - tempSentTxTotal
-      netLightningBalance = lightningBalance.balance - lightningBalance.pendingOut
+      netLightningBalance = lightningAccount.balance - lightningAccount.pendingOut
     }
     return (onChain: netBalance, lightning: netLightningBalance)
   }
 
   func spendableBalance(in context: NSManagedObjectContext) -> (onChain: Int, lightning: Int) {
+    let wallet = CKMWallet.findOrCreate(in: context)
     let minAmount = self.persistenceManager.brokers.preferences.dustProtectionMinimumAmount
-    let lightningBalance = self.persistenceManager.brokers.lightning.getBalance(in: context)
+    let lightningAccount = self.persistenceManager.brokers.lightning.getAccount(forWallet: wallet, in: context)
     let spendableVouts = CKMVout.findAllSpendable(minAmount: minAmount, in: context)
     let spendableTotal = spendableVouts.reduce(0) { $0 + $1.amount }
 
-    return (onChain: spendableTotal, lightning: lightningBalance.balance)
+    return (onChain: spendableTotal, lightning: lightningAccount.balance)
   }
 
   var hexEncodedPublicKey: String {

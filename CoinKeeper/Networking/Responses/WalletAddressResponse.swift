@@ -8,12 +8,24 @@
 
 import Foundation
 
+public enum WalletAddressType: String {
+  case btc, lightning
+}
+
 public struct AddWalletAddressBody: Encodable {
   let address: String
   let addressPubkey: String
+  let addressType: String
 
   /// Provide this if the addresses are being added in response to a request for addresses
   let walletAddressRequestId: String?
+
+  init(address: String, pubkey: String, type: WalletAddressType, walletAddressRequestId: String?) {
+    self.address = address
+    self.addressPubkey = pubkey
+    self.addressType = type.rawValue
+    self.walletAddressRequestId = walletAddressRequestId
+  }
 
 }
 
@@ -25,6 +37,15 @@ public struct WalletAddressResponse: ResponseCodable {
   let address: String
   let walletId: String
   var addressPubkey: String? // may not exist for older addresses
+  var addressType: String?  // may not exist for older addresses
+
+  var addressTypeCase: WalletAddressType {
+    guard let typeString = addressType,
+      let typeCase = WalletAddressType(rawValue: typeString) else {
+      return .btc
+    }
+    return typeCase
+  }
 
   /// Useful for testing
   init(id: String = UUID().uuidString,
@@ -68,7 +89,7 @@ extension WalletAddressResponse {
   }
 
   static var optionalStringKeys: [WritableKeyPath<WalletAddressResponse, String?>] {
-    return [\.addressPubkey]
+    return [\.addressPubkey, \.addressType]
   }
 
 }

@@ -12,7 +12,7 @@ import PromiseKit
 
 protocol ContactCacheDataWorkerType: AnyObject {
   func refreshStatuses() -> Promise<Void>
-  func reloadSystemContactsIfNeeded(force: Bool, completion: ((Error?) -> Void)?)
+  func reloadSystemContactsIfNeeded(force: Bool, completion: CKErrorCompletion?)
   func refreshStatus(forPhoneNumber phoneNumber: GlobalPhoneNumber, completion: @escaping ((ValidatedContact?) -> Void))
 }
 
@@ -84,7 +84,7 @@ class ContactCacheDataWorker: ContactCacheDataWorkerType {
     case none, fullReload, selectiveUpdate
   }
 
-  func reloadSystemContactsIfNeeded(force: Bool, completion: ((Error?) -> Void)?) {
+  func reloadSystemContactsIfNeeded(force: Bool, completion: CKErrorCompletion?) {
     let bgContext = contactCacheManager.createChildBackgroundContext()
     bgContext.perform {
       self.neededCacheAction(force: force, in: bgContext)

@@ -11,7 +11,7 @@ import UIKit
 @testable import DropBit
 
 class MockConnectionManager: ConnectionManagerType {
-  func updateOverlay(from viewController: UIViewController, forStatus status: ConnectionManagerStatus, completion: (() -> Void)?) { }
+  func updateOverlay(from viewController: UIViewController, forStatus status: ConnectionManagerStatus, completion: CKCompletion?) { }
 
   var noConnectionsViewController: NoConnectionViewController
 

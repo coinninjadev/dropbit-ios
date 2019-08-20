@@ -12,129 +12,43 @@ import Result
 protocol PinEntryViewControllerDelegate: ViewControllerDismissable {
   func checkMatch(for digits: String) -> Bool
   func viewControllerDidTryBiometrics(_ pinEntryViewController: PinEntryViewController)
-  func viewControllerDidSuccessfullyAuthenticate(_ pinEntryViewController: PinEntryViewController)
+  func viewControllerDidSuccessfullyAuthenticate(_ pinEntryViewController: PinEntryViewController, completion: CKCompletion?)
   func pinExists() -> Bool
   var biometricType: BiometricType { get }
 }
 
 final class PinEntryViewController: BaseViewController, StoryboardInitializable {
 
-  /// A closure to be called when authentication succeeds
-  var whenAuthenticated: (() -> Void)?
+  private var successHandler: CKCompletion?
 
-  enum Mode {
-    case standard
-    case inviteVerification(completion: (Result<Bool, PinValidationError>) -> Void)
-    case paymentVerification(amountDisablesBiometrics: Bool, completion: (Result<Bool, PinValidationError>) -> Void)
-    case walletDeletion(completion: (Result<Bool, PinValidationError>) -> Void)
-    case recoveryWords(completion: (Result<Bool, PinValidationError>) -> Void)
+  static func newInstance(delegate: PinEntryViewControllerDelegate,
+                          viewModel: PinEntryViewModel,
+                          success: CKCompletion?) -> PinEntryViewController {
+    let vc = PinEntryViewController.makeFromStoryboard()
+    vc.generalCoordinationDelegate = delegate
+    vc.viewModel = viewModel
+    vc.successHandler = success
+    return vc
   }
 
   private var shouldAttemptToUseBiometrics: Bool {
     guard let delegate = coordinationDelegate, delegate.pinExists() else { return false }
-    switch mode {
-    case .recoveryWords, .walletDeletion:
-      return false
-    case .paymentVerification(let shouldDisableBiometrics, _):
-      if shouldDisableBiometrics {
-        return false
-      } else {
-        return true
-      }
-    default:
-      return true
-    }
+    return viewModel.shouldEnableBiometrics
   }
-
-  var mode: Mode = .standard
 
   // MARK: outlets
-  @IBOutlet var keypadEntryView: KeypadEntryView! {
-    didSet {
-      keypadEntryView.alpha = 0
-      keypadEntryView.delegate = self
-      keypadEntryView.entryMode = .pin
-    }
-  }
-  @IBOutlet var securePinDisplayView: SecurePinDisplayView! {
-    didSet {
-      securePinDisplayView.alpha = 0
-    }
-  }
-  @IBOutlet var logoImage: UIImageView! {
-    didSet {
-      switch mode {
-      case .standard, .walletDeletion, .recoveryWords:
-        logoImage.alpha = 1.0
-      default:
-        logoImage.alpha = 0.0
-      }
-    }
-  }
+  @IBOutlet var keypadEntryView: KeypadEntryView!
+  @IBOutlet var securePinDisplayView: SecurePinDisplayView!
+  @IBOutlet var logoImage: UIImageView!
   @IBOutlet var logoImageCenterYConstraint: NSLayoutConstraint!
   @IBOutlet var logoImageTopConstraint: NSLayoutConstraint!
-  @IBOutlet var stackContainerView: UIView! {
-    didSet {
-      stackContainerView.alpha = 0.0
-    }
-  }
-  @IBOutlet var biometricButton: UIButton! {
-    didSet {
-      biometricButton.setTitle(nil, for: .normal)
-      biometricButton.alpha = 0
-    }
-  }
-
-  @IBOutlet var pinConfirmLabel: UILabel! {
-    didSet {
-      switch mode {
-      case .standard:
-        pinConfirmLabel.alpha = 0.0
-      case .recoveryWords:
-        pinConfirmLabel.text = "Enter pin to unlock recovery words"
-      case .walletDeletion:
-        pinConfirmLabel.alpha = 0.0
-        pinConfirmLabel.text = "Enter pin to confirm deletion of your wallet"
-      default:
-        pinConfirmLabel.alpha = 1.0
-      }
-
-      pinConfirmLabel.textColor = .darkGrayText
-      pinConfirmLabel.font = .regular(15)
-    }
-  }
-
-  @IBOutlet var closeButton: UIButton! {
-    didSet {
-      switch mode {
-      case .standard:
-        closeButton.alpha = 0.0
-      default:
-        closeButton.alpha = 1.0
-      }
-    }
-  }
-
-  @IBOutlet var errorLabel: UILabel! {
-    didSet {
-      errorLabel.textColor = .darkPeach
-      errorLabel.font = .regular(15)
-      self.resetErrorLabel()
-    }
-  }
-  @IBOutlet var lockoutBlurView: UIVisualEffectView! {
-    didSet {
-      lockoutBlurView.alpha = 0
-      lockoutBlurView.isHidden = false
-    }
-  }
-  @IBOutlet var lockoutErrorLabel: UILabel! {
-    didSet {
-      lockoutErrorLabel.font = .regular(15)
-      lockoutErrorLabel.textColor = .whiteText
-      lockoutErrorLabel.text = "Too many incorrect attempts. Please wait 5 minutes and try entering your PIN again."
-    }
-  }
+  @IBOutlet var stackContainerView: UIView!
+  @IBOutlet var biometricButton: UIButton!
+  @IBOutlet var messageLabel: UILabel!
+  @IBOutlet var closeButton: UIButton!
+  @IBOutlet var errorLabel: UILabel!
+  @IBOutlet var lockoutBlurView: UIVisualEffectView!
+  @IBOutlet var lockoutErrorLabel: UILabel!
 
   // MARK: variables
   var coordinationDelegate: PinEntryViewControllerDelegate? {
@@ -143,6 +57,8 @@ final class PinEntryViewController: BaseViewController, StoryboardInitializable 
   var pinVerifyDelegate: PinVerificationDelegate? {
     return generalCoordinationDelegate as? PinVerificationDelegate
   }
+
+  var viewModel: PinEntryViewModel!
   var digitEntryDisplayViewModel: DigitEntryDisplayViewModelType!
   let logoConstraintMultiplier: CGFloat = 3
 
@@ -150,16 +66,23 @@ final class PinEntryViewController: BaseViewController, StoryboardInitializable 
   private let maxFailureCount = 6
   private var timer: Timer?
 
-  // MARK: view lifecycle
-  override func viewDidLoad() {
-    super.viewDidLoad()
-    initialize()
-  }
-
   override func accessibleViewsAndIdentifiers() -> [AccessibleViewElement] {
     return [
       (view, .pinEntry(.page))
     ]
+  }
+
+  // MARK: view lifecycle
+  override func viewDidLoad() {
+    super.viewDidLoad()
+
+    setupView()
+    loadViewModel()
+    setupBiometricButton()
+    digitEntryDisplayViewModel = DigitEntryDisplayViewModel(view: securePinDisplayView)
+    if let delegate = pinVerifyDelegate, !delegate.viewControllerShouldAllowPinEntry() {
+      animateLockoutView(show: true)
+    }
   }
 
   override func viewDidAppear(_ animated: Bool) {
@@ -186,12 +109,40 @@ final class PinEntryViewController: BaseViewController, StoryboardInitializable 
   }
 
   // MARK: methods
-  private func initialize() {
-    setupBiometricButton()
-    digitEntryDisplayViewModel = DigitEntryDisplayViewModel(view: securePinDisplayView)
-    if let delegate = pinVerifyDelegate, !delegate.viewControllerShouldAllowPinEntry() {
-      animateLockoutView(show: true)
-    }
+
+  private func setupView() {
+    keypadEntryView.alpha = 0
+    keypadEntryView.delegate = self
+    keypadEntryView.entryMode = .pin
+
+    securePinDisplayView.alpha = 0
+
+    stackContainerView.alpha = 0.0
+
+    biometricButton.setTitle(nil, for: .normal)
+    biometricButton.alpha = 0
+
+    messageLabel.textColor = .darkGrayText
+    messageLabel.font = .regular(15)
+
+    errorLabel.textColor = .darkPeach
+    errorLabel.font = .regular(15)
+    self.resetErrorLabel()
+
+    lockoutBlurView.alpha = 0
+    lockoutBlurView.isHidden = false
+
+    lockoutErrorLabel.font = .regular(15)
+    lockoutErrorLabel.textColor = .whiteText
+    lockoutErrorLabel.text = "Too many incorrect attempts. Please wait 5 minutes and try entering your PIN again."
+  }
+
+  func loadViewModel() {
+    closeButton.isHidden = !viewModel.shouldShowCloseButton
+    closeButton.isEnabled = viewModel.shouldShowCloseButton
+    logoImage.alpha = viewModel.shouldShowLogo ? 1.0 : 0.0
+    messageLabel.alpha = viewModel.shouldAnimateMessage ? 0.0 : 1.0
+    messageLabel.text = viewModel.message
   }
 
   private func startTimer() {
@@ -255,11 +206,8 @@ final class PinEntryViewController: BaseViewController, StoryboardInitializable 
         strongSelf.securePinDisplayView.alpha = 1
         strongSelf.stackContainerView.alpha = 1
 
-        switch strongSelf.mode {
-        case .walletDeletion:
-          strongSelf.pinConfirmLabel.alpha = 1
-        default:
-          break
+        if strongSelf.viewModel.shouldAnimateMessage {
+          strongSelf.messageLabel.alpha = 1
         }
 
         strongSelf.view.layoutIfNeeded()
@@ -294,6 +242,10 @@ final class PinEntryViewController: BaseViewController, StoryboardInitializable 
       self.view.layoutIfNeeded()
     }
   }
+
+  func authenticationSatisfied() {
+    coordinationDelegate?.viewControllerDidSuccessfullyAuthenticate(self, completion: self.successHandler)
+  }
 }
 
 extension PinEntryViewController: KeypadEntryViewDelegate {
@@ -303,7 +255,7 @@ extension PinEntryViewController: KeypadEntryViewDelegate {
     guard addDigitResult == .complete, let delegate = coordinationDelegate else { return }
     if delegate.checkMatch(for: digitEntryDisplayViewModel.digits) {
       DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.1) {
-        delegate.viewControllerDidSuccessfullyAuthenticate(self)
+        self.authenticationSatisfied()
       }
     } else {
       failureCount += 1

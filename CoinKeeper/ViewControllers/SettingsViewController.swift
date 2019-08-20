@@ -15,14 +15,14 @@ protocol SettingsViewControllerDelegate: ViewControllerDismissable, ViewControll
   func yearlyHighPushNotificationIsSubscribed() -> Bool
 
   func viewControllerDidRequestDeleteWallet(_ viewController: UIViewController,
-                                            completion: @escaping () -> Void)
+                                            completion: @escaping CKCompletion)
   func viewControllerDidConfirmDeleteWallet(_ viewController: UIViewController)
   func viewControllerDidSelectOpenSourceLicenses(_ viewController: UIViewController)
   func viewControllerDidSelectRecoveryWords(_ viewController: UIViewController)
   func viewControllerDidSelectAdjustableFees(_ viewController: UIViewController)
   func viewControllerResyncBlockchain(_ viewController: UIViewController)
   func viewController(_ viewController: UIViewController, didEnableDustProtection didEnable: Bool)
-  func viewController(_ viewController: UIViewController, didEnableYearlyHighNotification didEnable: Bool, completion: @escaping () -> Void)
+  func viewController(_ viewController: UIViewController, didEnableYearlyHighNotification didEnable: Bool, completion: @escaping CKCompletion)
 }
 
 class SettingsViewController: BaseViewController, StoryboardInitializable {

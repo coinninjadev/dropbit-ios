@@ -9,8 +9,9 @@
 import Foundation
 import UIKit
 
-class TransactionHistoryViewControllerLightningDDS: TransactionHistoryViewControllerDDS, 
-UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+class TransactionHistoryViewControllerLightningDDS: TransactionHistoryViewControllerDDS,
+  UICollectionViewDataSource,
+  UICollectionViewDelegateFlowLayout {
 
   func numberOfSections(in collectionView: UICollectionView) -> Int {
     guard let viewController = viewController else { return 0 }

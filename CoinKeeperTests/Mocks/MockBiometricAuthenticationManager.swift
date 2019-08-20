@@ -24,7 +24,7 @@ class MockBiometricAuthenticationManager: BiometricAuthenticationManagerType {
   var authenticateWasCalled = false
   var completionWasCalled = false
   var errorWasCalled = false
-  func authenticate(completion: @escaping () -> Void, error: ((BiometricError) -> Void)?) {
+  func authenticate(completion: @escaping CKCompletion, error: ((BiometricError) -> Void)?) {
     authenticateWasCalled = true
     if canAuthenticateWithBiometrics {
       completionWasCalled = true

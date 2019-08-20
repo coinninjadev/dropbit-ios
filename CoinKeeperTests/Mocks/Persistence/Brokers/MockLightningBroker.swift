@@ -11,11 +11,16 @@ import CoreData
 
 class MockLightningBroker: CKPersistenceBroker, LightningBrokerType {
 
-  var getBalanceCalled = false
-  func getBalance(in context: NSManagedObjectContext) -> CKMLNBalance {
-    let balance = CKMLNBalance(insertInto: context)
-    getBalanceCalled = true
-    return balance
+  var getAccountCalled = false
+  func getAccount(forWallet wallet: CKMWallet, in context: NSManagedObjectContext) -> CKMLNAccount {
+    let account = CKMLNAccount(insertInto: context)
+    getAccountCalled = true
+    return account
+  }
+
+  func persistAccountResponse(_ response: LNAccountResponse,
+                              forWallet wallet: CKMWallet,
+                              in context: NSManagedObjectContext) {
   }
 
 }
