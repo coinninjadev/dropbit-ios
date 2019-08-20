@@ -1,5 +1,5 @@
 //
-//  TransactionHistorySummaryCellViewModel.swift
+//  TransactionSummaryCellViewModel.swift
 //  CoinKeeper
 //
 //  Created by Ben Winters on 5/1/18.
@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 import CNBitcoinKit
 
-class TransactionHistorySummaryCellViewModel {
+class OldTransactionSummaryCellViewModel {
 
   var counterpartyDescription: String
   var receiverAddress: String?

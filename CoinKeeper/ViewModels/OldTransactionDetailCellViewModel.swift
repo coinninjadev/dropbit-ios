@@ -1,5 +1,5 @@
 //
-//  TransactionHistoryDetailCellViewModel.swift
+//  TransactionDetailCellViewModel.swift
 //  CoinKeeper
 //
 //  Created by Ben Winters on 4/16/18.
@@ -12,7 +12,7 @@ import CNBitcoinKit
 /**
  Translates a Transaction object and it's relationships into a cell-displayable object.
  */
-class TransactionHistoryDetailCellViewModel: TransactionHistorySummaryCellViewModel {
+class OldTransactionDetailCellViewModel: OldTransactionSummaryCellViewModel {
   var isCancellable: Bool
   var memoWasShared: Bool
   var networkFee: NSDecimalNumber?
@@ -67,7 +67,7 @@ private struct TextAttributes {
   var color: UIColor
 }
 
-extension TransactionHistoryDetailCellViewModel {
+extension OldTransactionDetailCellViewModel {
 
   var isShareable: Bool {
     return transaction?.txidIsActualTxid ?? false
