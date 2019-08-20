@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-//MARK: - Summary Cell
+// MARK: - Summary Cell
 
 /// Provides all variable values directly necessary to configure the TransactionHistorySummaryCell UI.
 /// Fixed values (colors, font sizes, etc.) are provided by the cell itself.
@@ -141,7 +141,7 @@ extension TransactionSummaryCellViewModelType {
 
 }
 
-//MARK: - Detail Cell
+// MARK: - Detail Cell
 
 /// Provides all variable values directly necessary to configure the TransactionHistoryDetailCell UI.
 /// Fixed values (colors, font sizes, etc.) are provided by the cell itself.
@@ -208,7 +208,6 @@ extension TransactionDetailCellViewModelType {
   var detailStatusText: String? {
     return status.rawValue
   }
-
 
   var amountLabels: DetailCellAmountLabels {
     return DetailCellAmountLabels(primaryText: "",
