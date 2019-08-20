@@ -20,11 +20,11 @@ protocol TransactionSummaryCellDisplayable {
   var counterpartyLabel: String? { get }
   var summaryAmountLabels: SummaryCellAmountLabels { get }
   var directionAccentColor: UIColor { get }
-  var leftImage: UIImage { get } // may be avatar or direction icon
+  var leadingImage: UIImage { get } // may be avatar or direction icon
+  var leadingImageBackgroundColor: UIColor { get } // may be clear if using avatar
   var memo: String? { get }
   var displayDate: String { get }
 }
-
 
 /// Defines the properties that need to be set during initialization of the view model.
 /// The inherited `...Displayable` requirements should be calculated in this
@@ -45,9 +45,10 @@ protocol TransactionSummaryCellViewModelType: TransactionSummaryCellDisplayable 
 extension TransactionSummaryCellViewModelType {
 
   var directionImage: UIImage? {
+    //TODO
     switch direction {
-    case .in:   return UIImage(named: "incomingDetailIcon")
-    case .out:  return UIImage(named: "outgoingDetailIcon")
+    case .in:   return UIImage(named: "")
+    case .out:  return UIImage(named: "")
     }
   }
 
@@ -89,12 +90,38 @@ extension TransactionSummaryCellViewModelType {
 
   }
   var directionAccentColor: UIColor {
-    switch direction {
-    case .in:   return .neonGreen
-    case .out:  
+    if isValidTransaction {
+      switch direction {
+      case .in:   return .neonGreen
+      case .out:  return .outgoingGray
+      }
+    } else {
+      return .invalid
     }
   }
-  var leftImage: UIImage { get } // may be avatar or direction icon
+
+  /// may be avatar or direction icon
+  var leadingImage: UIImage {
+    if let config = twitterConfig {
+      return config.avatar
+    } else {
+      //TODO
+      if isLightningTransfer {
+
+      } else {
+
+      }
+    }
+  }
+
+  var leadingImageBackgroundColor: UIColor {
+    if twitterConfig == nil {
+      return directionAccentColor
+    } else {
+      return .clear
+    }
+  }
+
   var memo: String? { get }
   var displayDate: String { get }
 
