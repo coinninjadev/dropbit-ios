@@ -116,27 +116,26 @@ class TransactionHistoryDetailValidCellTests: XCTestCase {
   }
 
   // MARK: private methods
-  private func sampleData() -> TransactionHistoryDetailCellViewModel {
-    var data: SampleTransaction!
-    let satoshis: Int = 100_000
-    let phoneNumber = SamplePhoneNumber(
-      countryCode: 1,
-      number: 123,
-      phoneNumberHash: "",
-      status: "",
-      counterpartyName: SampleCounterpartyName(name: "John Giannandrea"))
-    data = SampleTransaction(
-      netWalletAmount: nil,
-      id: "7f3a2790d59853fdc620b8cd23c8f68158f8bbdcd337a5f2451620d6f76d4e03",
-      btcReceived: NSDecimalNumber(integerAmount: satoshis, currency: .BTC),
-      isIncoming: false,
-      walletAddress: SampleTransaction.sampleWalletAddress,
-      confirmations: 4,
-      date: Date.new(2018, 3, 3, time: 14, 30),
-      counterpartyAddress: SampleCounterpartyAddress(addressId: "54b224e4eef004e66bdac46f13a80db56687262f0923be02ad0e9469496126ef"),
-      phoneNumber: phoneNumber,
-      invitation: nil
-    )
-    return data
+  private func sampleOnChainTransaction() -> TransactionHistoryDetailCellDisplayable {
+    let rates = CurrencyConverter.sampleRates
+    let currencyPair = CurrencyPair(primary: .BTC, fiat: .USD)
+    let btcAmount = NSDecimalNumber(integerAmount: 123456789, currency: .BTC)
+    let address = TestHelpers.mockValidBitcoinAddress()
+    let date = Date()
+    let action = TransactionDetailAction.seeDetails
+    let amountDetails = TransactionAmountDetails(currencyPair: currencyPair,
+                                                 exchangeRates: rates,
+                                                 primaryBTCAmount: btcAmount,
+                                                 fiatWhenCreated: nil, fiatWhenTransacted: nil)
+    return MockTransactionHistoryDetailCellViewModel(type: .bitcoin,
+                                                     direction: .in,
+                                                     status: .completed,
+                                                     recipient: nil,
+                                                     address: address,
+                                                     date: date,
+                                                     amount: amountDetails,
+                                                     memo: nil,
+                                                     action: action)
   }
+
 }
