@@ -24,7 +24,7 @@ enum WalletTransactionType: String {
 enum PaymentRecipient {
 
   /// Associated value may be either a BTC address or a lightning invoice.
-  /// BTC address does not contain "bitcoin:".
+  /// Neither option contains scheme. i.e. "bitcoin:" "lightning:"
   case destination(String)
 
   case contact(ContactType)
@@ -96,9 +96,9 @@ class SendPaymentViewModel: CurrencySwappableEditAmountViewModel {
                                                          primaryAmount: amount,
                                                          currencyPair: currencyPair,
                                                          delegate: nil)
-    type = .lightning
+    self.walletTransactionType = .lightning
     super.init(viewModel: viewModel)
-    self.paymentRecipient = .lightning(lightningInvoice.destination)
+    self.paymentRecipient = .destination(lightningInvoice.destination)
     self.requiredFeeRate = nil
     self.memo = lightningInvoice.description
   }
@@ -200,7 +200,6 @@ class SendPaymentViewModel: CurrencySwappableEditAmountViewModel {
     case .contact(let contact): return contact.displayName
     case .twitterContact(let contact): return contact.displayName
     case .phoneNumber: return nil
-    case .lightning: return nil
     }
   }
 
@@ -214,7 +213,7 @@ class SendPaymentViewModel: CurrencySwappableEditAmountViewModel {
       return (try? formatter.string(from: phoneContact.globalPhoneNumber)) ?? ""
     case .twitterContact(let contact):
       return contact.displayIdentity
-    case .phoneNumber, .lightning: return nil
+    case .phoneNumber:  return nil
     }
   }
 
