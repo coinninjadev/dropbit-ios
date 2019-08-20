@@ -12,7 +12,7 @@ import PromiseKit
 
 protocol TransactionHistoryDetailsViewControllerDelegate: TransactionShareable, URLOpener {
   func viewControllerDidDismissTransactionDetails(_ viewController: UIViewController)
-  func viewControllerShouldSeeTransactionDetails(for viewModel: TransactionHistoryDetailCellViewModel)
+  func viewControllerShouldSeeTransactionDetails(for viewModel: OldTransactionDetailCellViewModel)
   func viewController(_ viewController: TransactionHistoryDetailsViewController,
                       didCancelInvitationWithID invitationID: String,
                       at indexPath: IndexPath)
@@ -42,12 +42,12 @@ final class TransactionHistoryDetailsViewController: PresentableViewController, 
   weak var onChainFetchResultsController: NSFetchedResultsController<CKMTransaction>?
   weak var lightningFetchResultsController: NSFetchedResultsController<CKMWalletEntry>?
   var selectedIndexPath: IndexPath = IndexPath(item: 0, section: 0)
-  var viewModelForIndexPath: ((IndexPath) -> TransactionHistoryDetailCellViewModel)?
+  var viewModelForIndexPath: ((IndexPath) -> OldTransactionDetailCellViewModel)?
 
   static func newInstance(withDelegate delegate: TransactionHistoryDetailsViewControllerDelegate,
                           fetchedResultsController frc: NSFetchedResultsController<CKMTransaction>,
                           selectedIndexPath: IndexPath,
-                          viewModelForIndexPath: @escaping (IndexPath) -> TransactionHistoryDetailCellViewModel,
+                          viewModelForIndexPath: @escaping (IndexPath) -> OldTransactionDetailCellViewModel,
                           urlOpener: URLOpener) -> TransactionHistoryDetailsViewController {
     let controller = TransactionHistoryDetailsViewController.makeFromStoryboard()
     controller.onChainFetchResultsController = frc
@@ -60,7 +60,7 @@ final class TransactionHistoryDetailsViewController: PresentableViewController, 
   static func newInstance(withDelegate delegate: TransactionHistoryDetailsViewControllerDelegate,
                           fetchedResultsController frc: NSFetchedResultsController<CKMWalletEntry>,
                           selectedIndexPath: IndexPath,
-                          viewModelForIndexPath: @escaping (IndexPath) -> TransactionHistoryDetailCellViewModel,
+                          viewModelForIndexPath: @escaping (IndexPath) -> OldTransactionDetailCellViewModel,
                           urlOpener: URLOpener) -> TransactionHistoryDetailsViewController {
     let controller = TransactionHistoryDetailsViewController.makeFromStoryboard()
     controller.lightningFetchResultsController = frc

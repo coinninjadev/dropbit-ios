@@ -194,12 +194,12 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
     summaryCollectionView.delegate?.scrollViewDidScroll?(summaryCollectionView)
   }
 
-  func detailViewModel(at indexPath: IndexPath) -> TransactionHistoryDetailCellViewModel {
-    let viewModel: TransactionHistoryDetailCellViewModel
+  func detailViewModel(at indexPath: IndexPath) -> OldTransactionDetailCellViewModel {
+    let viewModel: OldTransactionDetailCellViewModel
     switch transactionType {
     case .onChain:
       let transaction = onChainFetchResultsController.object(at: indexPath)
-      viewModel = TransactionHistoryDetailCellViewModel(
+      viewModel = OldTransactionDetailCellViewModel(
         transaction: transaction,
         rates: rateManager.exchangeRates,
         primaryCurrency: preferredCurrency(),
@@ -207,7 +207,7 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
       )
     case .lightning:
       let walletEntry = lightningFetchResultsController.object(at: indexPath)
-      viewModel = TransactionHistoryDetailCellViewModel(
+      viewModel = OldTransactionDetailCellViewModel(
         walletEntry: walletEntry,
         rates: rateManager.exchangeRates,
         primaryCurrency: preferredCurrency(),
@@ -218,8 +218,8 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
     return viewModel
   }
 
-  func summaryViewModel(for transaction: CKMTransaction) -> TransactionHistorySummaryCellViewModel {
-    return TransactionHistorySummaryCellViewModel(
+  func summaryViewModel(for transaction: CKMTransaction) -> OldTransactionSummaryCellViewModel {
+    return OldTransactionSummaryCellViewModel(
       transaction: transaction,
       rates: rateManager.exchangeRates,
       primaryCurrency: preferredCurrency(),
@@ -227,8 +227,8 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
     )
   }
 
-  func summaryViewModel(for walletEntry: CKMWalletEntry) -> TransactionHistorySummaryCellViewModel {
-    return TransactionHistorySummaryCellViewModel(
+  func summaryViewModel(for walletEntry: CKMWalletEntry) -> OldTransactionSummaryCellViewModel {
+    return OldTransactionSummaryCellViewModel(
       walletEntry: walletEntry,
       rates: rateManager.exchangeRates,
       primaryCurrency: preferredCurrency(),

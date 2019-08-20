@@ -49,7 +49,7 @@ extension AppCoordinator: TransactionHistoryViewControllerDelegate {
     serialQueueManager.enqueueOptionalIncrementalSync()
   }
 
-  func viewControllerShouldSeeTransactionDetails(for viewModel: TransactionHistoryDetailCellViewModel) {
+  func viewControllerShouldSeeTransactionDetails(for viewModel: OldTransactionDetailCellViewModel) {
     let viewController = TransactionPopoverDetailsViewController.makeFromStoryboard()
     viewController.viewModel = viewModel
     assignCoordinationDelegate(to: viewController)

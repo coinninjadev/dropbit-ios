@@ -35,7 +35,7 @@ class TransactionPopoverDetailsViewController: BaseViewController, StoryboardIni
 
   private let height: CGFloat = 410
 
-  var viewModel: TransactionHistoryDetailCellViewModel?
+  var viewModel: OldTransactionDetailCellViewModel?
 
   override func viewDidLoad() {
     super.viewDidLoad()

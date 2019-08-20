@@ -37,7 +37,7 @@ class TransactionHistoryDetailCellAddressView: UIView {
 
   // MARK: variables
   weak var selectionDelegate: TransactionHistoryDetailAddressViewDelegate?
-  var viewModel: TransactionHistoryDetailCellViewModel?
+  var viewModel: OldTransactionDetailCellViewModel?
 
   // MARK: initialization and setup
   required init?(coder aDecoder: NSCoder) {
@@ -65,7 +65,7 @@ class TransactionHistoryDetailCellAddressView: UIView {
   }
 
   // MARK: loading
-  func load(with viewModel: TransactionHistoryDetailCellViewModel) {
+  func load(with viewModel: OldTransactionDetailCellViewModel) {
     self.viewModel = viewModel
     if let invitationStatus = viewModel.invitationStatus {
       switch invitationStatus {
