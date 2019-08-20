@@ -57,7 +57,7 @@ extension AppCoordinator: ScanQRViewControllerDelegate {
     }
   }
 
-  func viewControllerDidScan(_ viewController: UIViewController, lightningInvoice: String) {
+  func viewControllerDidScan(_ viewController: UIViewController, lightningInvoice: String, completion: @escaping CKCompletion) {
     resolveLightningInvoice(invoice: lightningInvoice) { response in
       switch response {
       case .success(let invoice):
@@ -67,6 +67,10 @@ extension AppCoordinator: ScanQRViewControllerDelegate {
       case .failure(let error):
         let errorAlert = self.alertManager.defaultAlert(withTitle: self.paymentErrorTitle, description: error.localizedDescription)
         viewController.present(errorAlert, animated: true, completion: nil)
+      }
+
+      DispatchQueue.main.async {
+        completion()
       }
     }
   }

@@ -16,6 +16,10 @@ import MMDrawerController
 
 extension AppCoordinator: SendPaymentViewControllerDelegate {
 
+  func viewControllerDidReceiveLightningURLToDecode(_ lightningUrl: LightningURL) -> Promise<LNDecodePaymentRequestResponse> {
+    return networkManager.decodeLightningPaymentRequest(lightningUrl.invoice)
+  }
+
   func sendPaymentViewControllerWillDismiss(_ viewController: UIViewController) {
     viewControllerDidSelectClose(viewController, completion: { [weak self] in
       guard let topViewController = (self?.navigationController.topViewController() as? MMDrawerController),

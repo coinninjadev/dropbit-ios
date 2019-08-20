@@ -16,11 +16,12 @@ protocol CKParser {
 enum CKParsedRecipient {
   case phoneNumber(GlobalPhoneNumber)
   case bitcoinURL(BitcoinURL)
+  case lightningURL(LightningURL)
 }
 
 /// Matches CKParsedRecipient without requiring an associated value
 enum CKRecipientType: CaseIterable {
-  case phoneNumber, bitcoinURL
+  case phoneNumber, bitcoinURL, lightningURL
 }
 
 enum CKRecipientParserError: LocalizedError {

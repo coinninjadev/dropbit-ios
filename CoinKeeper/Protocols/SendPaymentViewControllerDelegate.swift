@@ -106,4 +106,5 @@ protocol SendPaymentViewControllerDelegate: ViewControllerSendingDelegate, Devic
                       checkForVerifiedTwitterContact twitterContact: TwitterContactType) -> Promise<TwitterContactType>
 
   func usableFeeRate(from feeRates: Fees) -> Double?
+  func viewControllerDidReceiveLightningURLToDecode(_ lightningUrl: LightningURL) -> Promise<LNDecodePaymentRequestResponse>
 }

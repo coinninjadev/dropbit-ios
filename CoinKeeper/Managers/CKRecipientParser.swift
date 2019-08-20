@@ -17,6 +17,7 @@ protocol RecipientParserType: AnyObject {
 class CKRecipientParser: RecipientParserType {
 
   let bitcoinURLParser = CKBitcoinURLParser()
+  let lightningURLParser = CKLightningURLParser()
   let phoneNumberParser = CKPhoneNumberParser()
 
   /// Returns an array of the detected recipients.
@@ -73,6 +74,8 @@ class CKRecipientParser: RecipientParserType {
         results += try candidateAddresses.compactMap { try bitcoinURLParser.parse($0) }.map { .bitcoinURL($0) }
       case .phoneNumber:
         results += try candidatePhoneNumbers.compactMap { try phoneNumberParser.parse($0) }.map { .phoneNumber($0) }
+      case .lightningURL:
+        results += try candidateAddresses.compactMap { try lightningURLParser.parse($0) }.map { .lightningURL($0) }
       }
     }
 

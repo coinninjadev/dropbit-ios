@@ -36,10 +36,11 @@ enum PaymentRecipient {
 
   init?(parsedRecipient: CKParsedRecipient) {
     switch parsedRecipient {
+    case .lightningURL(let url):
+      self = .destination(url.invoice)
     case .bitcoinURL(let url):
       guard let address = url.components.address else { return nil }
       self = .destination(address)
-
     case .phoneNumber(let number):
       self = .phoneNumber(GenericContact(phoneNumber: number, formatted: ""))
     }

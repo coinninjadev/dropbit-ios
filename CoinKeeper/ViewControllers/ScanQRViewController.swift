@@ -8,6 +8,7 @@
 
 import UIKit
 import AVFoundation
+import SVProgressHUD
 
 //swiftlint:disable class_delegate_protocol
 protocol ScanQRViewControllerDelegate: PaymentRequestResolver, LightningInvoiceResolver, ViewControllerDismissable {
@@ -15,7 +16,7 @@ protocol ScanQRViewControllerDelegate: PaymentRequestResolver, LightningInvoiceR
   /// If the scanned qrCode.btcAmount is zero, use the fallbackViewModel (whose amount should originate from the calculator amount/converter).
   func viewControllerDidScan(_ viewController: UIViewController, qrCode: OnChainQRCode,
                              walletTransactionType: WalletTransactionType, fallbackViewModel: SendPaymentViewModel?)
-  func viewControllerDidScan(_ viewController: UIViewController, lightningInvoice: String)
+  func viewControllerDidScan(_ viewController: UIViewController, lightningInvoice: String, completion: @escaping CKCompletion)
 
   func viewControllerDidAttemptInvalidDestination(_ viewController: UIViewController, error: Error?)
 
@@ -131,7 +132,13 @@ extension ScanQRViewController: AVCaptureMetadataOutputObjectsDelegate {
   }
 
   private func handle(lightningQRInvoice lightningUrl: LightningURL) {
-    coordinationDelegate?.viewControllerDidScan(self, lightningInvoice: lightningUrl.invoice)
+    if didCaptureQRCode { return } // prevent multiple network requests for paymentRequestURL
+    didCaptureQRCode = true
+
+    SVProgressHUD.show()
+    coordinationDelegate?.viewControllerDidScan(self, lightningInvoice: lightningUrl.invoice, completion: {
+      SVProgressHUD.dismiss()
+    })
   }
 
   private func handle(bitcoinQRCode qrCode: OnChainQRCode) {

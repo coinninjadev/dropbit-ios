@@ -484,6 +484,8 @@
 		A257CEBA230302070063670B /* AppCoordinator+LightningTransactionHistoryEmptyViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A257CEB9230302070063670B /* AppCoordinator+LightningTransactionHistoryEmptyViewDelegate.swift */; };
 		A257CEBC230325580063670B /* WalletTransferViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A257CEBB230325580063670B /* WalletTransferViewModel.swift */; };
 		A257CEC023038F130063670B /* ConfirmViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A257CEBF23038F130063670B /* ConfirmViewTests.swift */; };
+		A257CEC4230C3EBD0063670B /* CKLightningURLParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = A257CEC3230C3EBD0063670B /* CKLightningURLParser.swift */; };
+		A257CEC6230C3F6D0063670B /* LightningInvoiceValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A257CEC5230C3F6D0063670B /* LightningInvoiceValidator.swift */; };
 		A25923EC20C981770005B1A0 /* AnalyticsManagerError.swift in Sources */ = {isa = PBXBuildFile; fileRef = A25923EB20C981770005B1A0 /* AnalyticsManagerError.swift */; };
 		A260E8C720FCD482008343F9 /* LimitEditTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = A260E8C620FCD482008343F9 /* LimitEditTextField.swift */; };
 		A260E8CF20FCFE11008343F9 /* TutorialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A260E8CE20FCFE11008343F9 /* TutorialViewController.swift */; };
@@ -1483,6 +1485,8 @@
 		A257CEB9230302070063670B /* AppCoordinator+LightningTransactionHistoryEmptyViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppCoordinator+LightningTransactionHistoryEmptyViewDelegate.swift"; sourceTree = "<group>"; };
 		A257CEBB230325580063670B /* WalletTransferViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletTransferViewModel.swift; sourceTree = "<group>"; };
 		A257CEBF23038F130063670B /* ConfirmViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmViewTests.swift; sourceTree = "<group>"; };
+		A257CEC3230C3EBD0063670B /* CKLightningURLParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CKLightningURLParser.swift; sourceTree = "<group>"; };
+		A257CEC5230C3F6D0063670B /* LightningInvoiceValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightningInvoiceValidator.swift; sourceTree = "<group>"; };
 		A25923EB20C981770005B1A0 /* AnalyticsManagerError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsManagerError.swift; sourceTree = "<group>"; };
 		A260E8C620FCD482008343F9 /* LimitEditTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LimitEditTextField.swift; sourceTree = "<group>"; };
 		A260E8CE20FCFE11008343F9 /* TutorialViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialViewController.swift; sourceTree = "<group>"; };
@@ -3025,6 +3029,7 @@
 				A29CE0FB20A32B2000761B91 /* CurrencyAmountValidator.swift */,
 				A29CE10520A367DF00761B91 /* BitcoinAddressValidator.swift */,
 				A29CE10720A3684700761B91 /* StringEmptyValidator.swift */,
+				A257CEC5230C3F6D0063670B /* LightningInvoiceValidator.swift */,
 			);
 			path = Validators;
 			sourceTree = "<group>";
@@ -3250,6 +3255,7 @@
 				B5540C5E21ADD8ED00484238 /* CKRecipientParser.swift */,
 				B55D085521B723FF007DD9E5 /* CKRecipientParserAccessoryTypes.swift */,
 				B55D085321B723BE007DD9E5 /* CKBitcoinURLParser.swift */,
+				A257CEC3230C3EBD0063670B /* CKLightningURLParser.swift */,
 				B5FDA5C4221206AF001682AA /* PhoneNumbers */,
 				B552EDDF211E33D000332BB5 /* QRCodeGenerator.swift */,
 				B552EDE0211E33D000332BB5 /* WalletManager.swift */,
@@ -4524,6 +4530,7 @@
 				3B6749E220AA5CA40032FE02 /* CKMVin+CoreDataProperties.swift in Sources */,
 				B54F8FA420C3088300294F50 /* CurrencyFormattable.swift in Sources */,
 				B5192FA4216E7BEA00DCC39B /* BlockchainInfoProviderError.swift in Sources */,
+				A257CEC6230C3F6D0063670B /* LightningInvoiceValidator.swift in Sources */,
 				B52053E1227B6D3000E5D2ED /* AlertManager+Constants.swift in Sources */,
 				B52CC6A6221E401E00B00C9E /* CCMValidatedMetadata+CoreDataClass.swift in Sources */,
 				30E96A2921765546008079B8 /* BitcoinURL.swift in Sources */,
@@ -4750,6 +4757,7 @@
 				B530DFBD2108CF8400A0B1A8 /* TransactionDetailWarningLabel.swift in Sources */,
 				A2A530CE20977A8A00B6F4DE /* ConfirmOnChainPaymentViewModel.swift in Sources */,
 				B54913A922BC21A500ACC7D7 /* AdjustableFeesViewController.swift in Sources */,
+				A257CEC4230C3EBD0063670B /* CKLightningURLParser.swift in Sources */,
 				B5FE9B67219DD96200801D3C /* MerchantPaymentRequestResponse.swift in Sources */,
 				3BEB594620D15AF9005EDA9E /* AddressTransactionSummaryResponse.swift in Sources */,
 				3B2EBF71223010DC003C0D0E /* ManagedContactComponents.swift in Sources */,
