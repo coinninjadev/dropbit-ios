@@ -10,14 +10,13 @@ import UIKit
 
 class TransactionHistorySummaryCell: UICollectionViewCell {
 
-  @IBOutlet var incomingImage: UIImageView!
+  @IBOutlet var leadingImage: UIImageView!
   @IBOutlet var twitterImage: UIImageView!
   @IBOutlet var receiverLabel: TransactionHistoryReceiverLabel!
   @IBOutlet var statusLabel: TransactionHistoryDetailLabel!
   @IBOutlet var dateLabel: TransactionHistoryDetailLabel!
   @IBOutlet var memoLabel: TransactionHistoryMemoLabel!
-  @IBOutlet var primaryAmountLabel: TransactionHistoryPrimaryAmountLabel!
-  @IBOutlet var secondaryAmountLabel: TransactionHistorySecondaryAmountLabel!
+  @IBOutlet var amountStackView: UIStackView!
 
   override func awakeFromNib() {
     super.awakeFromNib()
@@ -33,10 +32,9 @@ class TransactionHistorySummaryCell: UICollectionViewCell {
 
   override func prepareForReuse() {
     super.prepareForReuse()
-    layer.cornerRadius = 30.0
-    incomingImage.layer.borderColor = nil
-    incomingImage.layer.borderWidth = 0
-    incomingImage.layer.cornerRadius = 0
+    leadingImage.layer.borderColor = nil
+    leadingImage.layer.borderWidth = 0
+    leadingImage.layer.cornerRadius = 0
   }
 
   func load(with viewModel: OldTransactionSummaryCellViewModel, isAtTop: Bool = false) {
