@@ -610,9 +610,7 @@
 		B50E1839214805D80091EEDA /* AppCoordinator+HeaderDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50E1838214805D80091EEDA /* AppCoordinator+HeaderDelegate.swift */; };
 		B50E18462149A1460091EEDA /* UserResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50E18452149A1460091EEDA /* UserResponse.swift */; };
 		B50E7B7F230C6A0400927C8B /* TransactionSummaryCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50E7B7E230C6A0400927C8B /* TransactionSummaryCellViewModel.swift */; };
-		B50E7B82230CA77200927C8B /* MockTransactionSummaryCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50E7B81230CA77100927C8B /* MockTransactionSummaryCellViewModel.swift */; };
 		B50E7B83230CA77200927C8B /* MockTransactionSummaryCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50E7B81230CA77100927C8B /* MockTransactionSummaryCellViewModel.swift */; };
-		B50E7B85230CA79D00927C8B /* MockTransactionHistoryDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50E7B84230CA79D00927C8B /* MockTransactionHistoryDataSource.swift */; };
 		B50E7B86230CA79D00927C8B /* MockTransactionHistoryDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50E7B84230CA79D00927C8B /* MockTransactionHistoryDataSource.swift */; };
 		B50FD13E215D681B00155BE1 /* AppCoordinator+TransactionAlerts.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50FD13D215D681B00155BE1 /* AppCoordinator+TransactionAlerts.swift */; };
 		B5130E1D22EB99720003374F /* RegTestBroadcastTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5130E1C22EB99720003374F /* RegTestBroadcastTarget.swift */; };
@@ -4640,7 +4638,6 @@
 				3BCC3BAF2295CBB100B8FB66 /* SharedPayloadManager.swift in Sources */,
 				3BF4EAF320F906540017DE00 /* Set+Helpers.swift in Sources */,
 				B558B86B22B95A0C0033AFBD /* DeviceBroker.swift in Sources */,
-				B50E7B82230CA77200927C8B /* MockTransactionSummaryCellViewModel.swift in Sources */,
 				30BF4FF021B728FA0018AE87 /* PopoverViewControllerType.swift in Sources */,
 				3BF41AB8207694EA008B3D0A /* RequestPayViewModel.swift in Sources */,
 				308F6F0B2180B6260094D6CB /* AddressTableViewCell.swift in Sources */,
@@ -4773,7 +4770,6 @@
 				3BA360852090B0C100732C43 /* CKMTransaction+CoreDataProperties.swift in Sources */,
 				3B86F78C203C6DCD00D15231 /* PinEntryViewController.swift in Sources */,
 				B5A3BA5E215193E6005EE657 /* UserTarget.swift in Sources */,
-				B50E7B85230CA79D00927C8B /* MockTransactionHistoryDataSource.swift in Sources */,
 				B53A790422E4ACF000EDCA8B /* AppCoordinator+ViewControllerSendingDelegate.swift in Sources */,
 				3BCBFCBA229EB05000F633BA /* SettingsTitleLabel.swift in Sources */,
 				B5FEBE9220879C4200AA9F6E /* CKMInvitation+CoreDataClass.swift in Sources */,

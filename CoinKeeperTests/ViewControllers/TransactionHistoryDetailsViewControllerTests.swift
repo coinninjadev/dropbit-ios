@@ -57,7 +57,7 @@ class TransactionHistoryDetailsViewControllerTests: XCTestCase {
       wasAskedToDismissDetailsController = true
     }
 
-    func viewControllerShouldSeeTransactionDetails(for viewModel: TransactionHistoryDetailCellViewModel) { }
+    func viewControllerShouldSeeTransactionDetails(for viewModel: OldTransactionDetailCellViewModel) { }
 
     func viewController(_ viewController: TransactionHistoryDetailsViewController,
                         didCancelInvitationWithID invitationID: String,

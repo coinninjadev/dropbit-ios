@@ -36,9 +36,10 @@ UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
     guard let viewController = viewController else { return UICollectionViewCell() }
     let cell = collectionView.dequeue(TransactionHistorySummaryCell.self, for: indexPath)
-    let transaction = viewController.onChainFetchResultsController.object(at: indexPath)
-    let viewModel = viewController.summaryViewModel(for: transaction)
-    cell.load(with: viewModel, isAtTop: indexPath.row == 0 && indexPath.section == 0)
+    //TODO: update cell data source
+//    let transaction = viewController.onChainFetchResultsController.object(at: indexPath)
+//    let viewModel = viewController.summaryViewModel(for: transaction)
+//    cell.load(with: viewModel, isAtTop: indexPath.row == 0 && indexPath.section == 0)
     return cell
   }
 

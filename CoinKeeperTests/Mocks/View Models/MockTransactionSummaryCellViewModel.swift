@@ -7,6 +7,7 @@
 //
 
 import Foundation
+@testable import DropBit
 
 class MockTransactionSummaryCellViewModel: TransactionSummaryCellViewModelType {
 
