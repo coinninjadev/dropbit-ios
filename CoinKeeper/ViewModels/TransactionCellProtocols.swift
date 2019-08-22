@@ -25,6 +25,14 @@ protocol TransactionSummaryCellDisplayable {
   var displayDate: String { get }
 }
 
+extension TransactionSummaryCellDisplayable {
+
+  var avatarViewIsHidden: Bool { return leadingImageConfig.avatarConfig == nil }
+  var directionViewIsHidden: Bool { return leadingImageConfig.directionConfig == nil }
+  var memoLabelIsHidden: Bool { return memo == nil || memo == "" }
+
+}
+
 /// Defines the properties that need to be set during initialization of the view model.
 /// The inherited `...Displayable` requirements should be calculated in this
 /// protocol's extension or provided by a mock view model.
@@ -359,8 +367,6 @@ struct SummaryCellLeadingImageConfig {
                                                       image: leadingIcon)
   }
 
-  var avatarViewIsHidden: Bool { return avatarConfig == nil }
-  var directionViewIsHidden: Bool { return directionConfig == nil }
 }
 
 /// Only one of the secondary strings should be set

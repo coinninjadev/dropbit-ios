@@ -57,6 +57,8 @@ class TransactionHistorySummaryCellTests: XCTestCase {
     XCTAssertNotNil(self.sut.secondaryAmountLabel, "secondaryAmountLabel should be connected")
   }
 
+  // MARK: Leading image and background color
+
   func testUnpaidLightningInvoice_loadsImageAndColor() {
     let viewModel = createTestViewModel(walletTxType: .lightning, direction: .in, status: .pending, isLightningTransfer: false)
     sut.configure(with: viewModel)
@@ -150,6 +152,16 @@ class TransactionHistorySummaryCellTests: XCTestCase {
     sut.configure(with: viewModel)
     XCTAssertTrue(sut.twitterAvatarView.isHidden)
     XCTAssertFalse(sut.directionView.isHidden)
+  }
+
+  // MARK: Labels
+
+  func testMemoIsLoadedAndShown() {
+    let expectedMemo = "Concert tickets"
+    let viewModel = createTestViewModel(memo: expectedMemo)
+    sut.configure(with: viewModel)
+    XCTAssertFalse(sut.memoLabel.isHidden)
+    XCTAssertEqual(sut.memoLabel.text, expectedMemo)
   }
 
 }

@@ -39,16 +39,26 @@ class TransactionHistorySummaryCell: UICollectionViewCell {
   }
 
   func configure(with values: TransactionSummaryCellDisplayable, isAtTop: Bool = false) {
+    configureIsHidden(with: values)
     configureLeadingViews(with: values.leadingImageConfig)
+    configureDescriptionLabels(with: values)
+  }
+
+  /// Configures isHidden for all subviews of this cell where that property varies
+  private func configureIsHidden(with values: TransactionSummaryCellDisplayable) {
+    directionView.isHidden = values.directionViewIsHidden
+    twitterAvatarView.isHidden = values.avatarViewIsHidden
+    memoLabel.isHidden = values.memoLabelIsHidden
   }
 
   private func configureLeadingViews(with leadingConfig: SummaryCellLeadingImageConfig) {
-    self.directionView.isHidden = leadingConfig.directionViewIsHidden
-    self.twitterAvatarView.isHidden = leadingConfig.avatarViewIsHidden
-
     if let directionConfig = leadingConfig.directionConfig {
       self.directionView.configure(image: directionConfig.image, bgColor: directionConfig.bgColor)
     }
+  }
+
+  private func configureDescriptionLabels(with values: TransactionSummaryCellDisplayable) {
+    memoLabel.text = values.memo
   }
 
   /*
