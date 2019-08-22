@@ -20,8 +20,24 @@ class TransactionHistorySummaryCellTests: XCTestCase {
     self.sut.awakeFromNib()
   }
 
-  private var testPayloadDTO: SharedPayloadDTO {
-    return SharedPayloadDTO(addressPubKeyState: .none, sharingDesired: false, memo: "test memo", amountInfo: nil)
+  func createTestViewModel(walletTxType: WalletTransactionType = .onChain,
+                           direction: TransactionDirection = .out,
+                           isValid: Bool = true,
+                           status: TransactionStatus = .completed,
+                           date: Date = Date(),
+                           isLightningTransfer: Bool = false,
+                           selectedCurrency: SelectedCurrency = .fiat,
+                           amountDetails: TransactionAmountDetails? = nil,
+                           counterpartyDescription: String? = nil,
+                           twitterConfig: TransactionCellTwitterConfig? = nil,
+                           memo: String? = nil) -> MockTransactionSummaryCellViewModel {
+
+    let amtDetails = amountDetails ?? MockTransactionSummaryCellViewModel.testAmountDetails(sats: 49500)
+    return MockTransactionSummaryCellViewModel(
+      walletTxType: walletTxType, direction: direction, isValid: isValid,
+      status: status, date: date, isLightningTransfer: isLightningTransfer,
+      selectedCurrency: selectedCurrency, amountDetails: amtDetails,
+      counterpartyDescription: counterpartyDescription, twitterConfig: twitterConfig, memo: memo)
   }
 
   // MARK: outlets
@@ -172,13 +188,5 @@ class TransactionHistorySummaryCellTests: XCTestCase {
     let transaction = CKMTransaction.findOrCreate(with: otd, in: stack.context)
     let rates: ExchangeRates = [.BTC: 1, .USD: 7000]
 
-    let viewModel = TransactionHistoryDetailCellViewModel(
-      transaction: transaction,
-      rates: rates,
-      primaryCurrency: .USD,
-      deviceCountryCode: nil
-    )
 
-    return viewModel
-  }
 }
