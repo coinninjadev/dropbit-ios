@@ -11,7 +11,7 @@ import UIKit
 extension UIColor {
 
   // MARK: Colors
-  static var darkBlueText: UIColor { return UIColor(r: 36, g: 37, b: 54) }
+  static var darkBlueText: UIColor { return UIColor(r: 39, g: 46, b: 61) }
   static var darkBlueBackground: UIColor { return darkBlueText }
 
   static var lightBlueTint: UIColor { return UIColor(r: 44, g: 209, b: 255) }
