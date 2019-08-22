@@ -20,8 +20,6 @@ class TransactionHistorySummaryCell: UICollectionViewCell {
 
   override func awakeFromNib() {
     super.awakeFromNib()
-    backgroundColor = .white
-
   }
 
   override func prepareForReuse() {
@@ -39,8 +37,10 @@ class TransactionHistorySummaryCell: UICollectionViewCell {
   }
 
   func configure(with values: TransactionSummaryCellDisplayable, isAtTop: Bool = false) {
+    self.backgroundColor = values.cellBackgroundColor
+
     configureIsHidden(with: values)
-    configureLeadingViews(with: values.leadingImageConfig)
+    configureLeadingViews(with: values.leadingImageConfig, cellBgColor: values.cellBackgroundColor)
     configureDescriptionLabels(with: values)
   }
 
@@ -51,9 +51,13 @@ class TransactionHistorySummaryCell: UICollectionViewCell {
     memoLabel.isHidden = values.memoLabelIsHidden
   }
 
-  private func configureLeadingViews(with leadingConfig: SummaryCellLeadingImageConfig) {
+  private func configureLeadingViews(with leadingConfig: SummaryCellLeadingImageConfig, cellBgColor: UIColor) {
     if let directionConfig = leadingConfig.directionConfig {
       self.directionView.configure(image: directionConfig.image, bgColor: directionConfig.bgColor)
+    }
+
+    if let avatarConfig = leadingConfig.avatarConfig {
+      self.twitterAvatarView.configure(with: avatarConfig.image, logoBackgroundColor: cellBgColor)
     }
   }
 

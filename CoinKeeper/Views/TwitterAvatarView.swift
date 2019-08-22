@@ -10,8 +10,8 @@ import UIKit
 
 class TwitterAvatarView: UIView {
 
-  private var avatarImageView: UIImageView!
-  private var twitterLogoImageView: UIImageView!
+  private(set) var avatarImageView: UIImageView!
+  private(set) var twitterLogoImageView: UIImageView!
 
   override init(frame: CGRect) {
     super.init(frame: frame)
@@ -58,7 +58,7 @@ class TwitterAvatarView: UIView {
   }
 
   /// `logoBackgroundColor` is used for the small circle behind the Twitter bird
-  func setAvatar(image: UIImage, logoBackgroundColor: UIColor) {
+  func configure(with image: UIImage, logoBackgroundColor: UIColor) {
     avatarImageView.image = image
     twitterLogoImageView.backgroundColor = logoBackgroundColor
   }

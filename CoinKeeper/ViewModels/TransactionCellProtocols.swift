@@ -23,10 +23,12 @@ protocol TransactionSummaryCellDisplayable {
   var leadingImageConfig: SummaryCellLeadingImageConfig { get } // may be avatar or direction icon
   var memo: String? { get }
   var displayDate: String { get }
+  var cellBackgroundColor: UIColor { get }
 }
 
 extension TransactionSummaryCellDisplayable {
 
+  var cellBackgroundColor: UIColor { return .white }
   var avatarViewIsHidden: Bool { return leadingImageConfig.avatarConfig == nil }
   var directionViewIsHidden: Bool { return leadingImageConfig.directionConfig == nil }
   var memoLabelIsHidden: Bool { return memo == nil || memo == "" }

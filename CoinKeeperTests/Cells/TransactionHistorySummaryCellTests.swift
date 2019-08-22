@@ -139,6 +139,18 @@ class TransactionHistorySummaryCellTests: XCTestCase {
     XCTAssertEqual(sut.directionView.backgroundColor, expectedColor)
   }
 
+  func testTwitterConfig_loadsAvatar() {
+    let twitterConfig = createTestTwitterConfig()
+    let expectedImage = twitterConfig.avatar
+    let viewModel = createTestViewModel(twitterConfig: twitterConfig)
+    sut.configure(with: viewModel)
+    XCTAssertFalse(sut.twitterAvatarView.isHidden)
+    XCTAssertFalse(sut.twitterAvatarView.avatarImageView.isHidden)
+    XCTAssertFalse(sut.twitterAvatarView.twitterLogoImageView.isHidden)
+    XCTAssertTrue(sut.directionView.isHidden)
+    XCTAssertEqual(sut.twitterAvatarView.avatarImageView.image, expectedImage)
+  }
+
   func testTwitterConfig_showsHidesLeadingViews() {
     let twitterConfig = createTestTwitterConfig()
     let viewModel = createTestViewModel(twitterConfig: twitterConfig)
