@@ -172,4 +172,12 @@ class TransactionHistorySummaryCellTests: XCTestCase {
     XCTAssertEqual(sut.memoLabel.text, expectedMemo)
   }
 
+  func testNilMemoIsLoadedAndHidden() {
+    let expectedMemo: String? = nil
+    let viewModel = createTestViewModel(memo: expectedMemo)
+    sut.configure(with: viewModel)
+    XCTAssertTrue(sut.memoLabel.isHidden)
+    XCTAssertEqual(sut.memoLabel.text, expectedMemo)
+  }
+
 }
