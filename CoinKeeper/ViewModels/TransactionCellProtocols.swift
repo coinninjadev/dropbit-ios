@@ -54,6 +54,10 @@ extension TransactionSummaryCellViewModelType {
 
   /// Transaction type icon, not an avatar
   private var leadingIcon: UIImage {
+    guard isValidTransaction else {
+      return invalidImage
+    }
+
     switch walletTxType {
     case .lightning:
       return isLightningTransfer ? transferImage : lightningImage

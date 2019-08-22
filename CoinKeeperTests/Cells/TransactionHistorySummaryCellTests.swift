@@ -54,17 +54,25 @@ class TransactionHistorySummaryCellTests: XCTestCase {
   func testIncomingLightningLoadsImageAndColor() {
     let viewModel = createTestViewModel(walletTxType: .lightning, direction: .in, isLightningTransfer: false)
     sut.configure(with: viewModel)
-    let expectedImage = viewModel.lightningImage
+    let expectedImage = viewModel.lightningImage, expectedColor = UIColor.lightningBlue
     XCTAssertEqual(sut.leadingDirectionImage.image, expectedImage)
-    XCTAssertEqual(sut.leadingDirectionBackgroundView.backgroundColor, UIColor.lightningBlue)
+    XCTAssertEqual(sut.leadingDirectionBackgroundView.backgroundColor, expectedColor)
   }
 
   func testOutgoingLightningLoadsImageAndColor() {
     let viewModel = createTestViewModel(walletTxType: .lightning, direction: .out, isLightningTransfer: false)
     sut.configure(with: viewModel)
-    let expectedImage = viewModel.lightningImage
+    let expectedImage = viewModel.lightningImage, expectedColor = UIColor.lightningBlue
     XCTAssertEqual(sut.leadingDirectionImage.image, expectedImage)
-    XCTAssertEqual(sut.leadingDirectionBackgroundView.backgroundColor, UIColor.lightningBlue)
+    XCTAssertEqual(sut.leadingDirectionBackgroundView.backgroundColor, expectedColor)
+  }
+
+  func testInvalidTransactionLoadsImageAndColor() {
+    let viewModel = createTestViewModel(walletTxType: .onChain, direction: .out, isValid: false)
+    sut.configure(with: viewModel)
+    let expectedImage = viewModel.invalidImage, expectedColor = UIColor.invalid
+    XCTAssertEqual(sut.leadingDirectionImage.image, expectedImage)
+    XCTAssertEqual(sut.leadingDirectionBackgroundView.backgroundColor, expectedColor)
   }
 
   // MARK: load method
