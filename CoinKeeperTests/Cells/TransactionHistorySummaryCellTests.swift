@@ -57,6 +57,14 @@ class TransactionHistorySummaryCellTests: XCTestCase {
     XCTAssertNotNil(self.sut.secondaryAmountLabel, "secondaryAmountLabel should be connected")
   }
 
+  // MARK: Cell properties
+  func testCellLoadsBackgroundColor() {
+    let viewModel = createTestViewModel()
+    sut.configure(with: viewModel)
+    let expectedColor = viewModel.cellBackgroundColor
+    XCTAssertEqual(sut.backgroundColor, expectedColor)
+  }
+
   // MARK: Leading image and background color
 
   func testUnpaidLightningInvoice_loadsImageAndColor() {
