@@ -1,19 +1,19 @@
 {
   "images" : [
     {
+      "filename" : "summaryCellOutgoing.png",
       "idiom" : "universal",
-      "filename" : "outgoingArrow.png",
       "scale" : "1x"
     },
     {
+      "filename" : "summaryCellOutgoing@2x.png",
       "idiom" : "universal",
-      "filename" : "outgoingArrow@2x.png",
       "scale" : "2x"
     },
     {
-      "scale" : "3x",
-      "filename" : "outgoingArrow@3x.png",
-      "idiom" : "universal"
+      "idiom" : "universal",
+      "filename" : "summaryCellOutgoing@3x.png",
+      "scale" : "3x"
     }
   ],
   "info" : {

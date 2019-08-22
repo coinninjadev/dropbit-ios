@@ -2,18 +2,18 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "shape.png",
+      "filename" : "summaryCellLightning.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "filename" : "shape@2x.png",
+      "filename" : "summaryCellLightning@2x.png",
       "scale" : "2x"
     },
     {
-      "idiom" : "universal",
-      "filename" : "shape@3x.png",
-      "scale" : "3x"
+      "filename" : "summaryCellLightning@3x.png",
+      "scale" : "3x",
+      "idiom" : "universal"
     }
   ],
   "info" : {

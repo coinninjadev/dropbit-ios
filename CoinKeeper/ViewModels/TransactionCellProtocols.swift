@@ -115,6 +115,8 @@ extension TransactionSummaryCellViewModelType {
     } else {
       return .invalid
     }
+  var incomingImage: UIImage! {
+    return UIImage(named: "summaryCellIncoming")!
   }
 
   /// may be avatar or direction icon
@@ -129,6 +131,8 @@ extension TransactionSummaryCellViewModelType {
         return UIImage(named: "")!
       }
     }
+  var outgoingImage: UIImage! {
+    return UIImage(named: "summaryCellOutgoing")!
   }
 
   var leadingImageBackgroundColor: UIColor {
@@ -137,6 +141,16 @@ extension TransactionSummaryCellViewModelType {
     } else {
       return .clear
     }
+  var transferImage: UIImage! {
+    return UIImage(named: "summaryCellTransfer")!
+  }
+
+  var lightningImage: UIImage! {
+    return UIImage(named: "summaryCellLightning")!
+  }
+
+  var invalidImage: UIImage! {
+    return UIImage(named: "summaryCellInvalid")!
   }
 
 }
