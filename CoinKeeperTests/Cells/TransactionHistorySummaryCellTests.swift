@@ -40,6 +40,11 @@ class TransactionHistorySummaryCellTests: XCTestCase {
       counterpartyDescription: counterpartyDescription, twitterConfig: twitterConfig, memo: memo)
   }
 
+  func createTestTwitterConfig() -> TransactionCellTwitterConfig {
+    let avatar = UIImage(named: "testAvatar")!
+    return TransactionCellTwitterConfig(avatar: avatar, displayHandle: "@adam_wolf")
+  }
+
   // MARK: outlets
   func testOutletsAreConnected() {
     XCTAssertNotNil(self.sut.incomingImage, "incomingImage should be connected")
