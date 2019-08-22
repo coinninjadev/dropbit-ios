@@ -114,6 +114,12 @@ class TransactionHistorySummaryCellTests: XCTestCase {
 
     let secondary = "\(CurrencyCode.BTC.symbol)0.00123756"
     XCTAssertEqual(self.sut.secondaryAmountLabel.text, secondary, "secondaryAmountLabel should be populated")
+  func testIncomingLightningLoadsImageAndColor() {
+    let viewModel = createTestViewModel(walletTxType: .lightning, direction: .in, isLightningTransfer: false)
+    sut.configure(with: viewModel)
+    let expectedImage = viewModel.lightningImage
+    XCTAssertEqual(sut.leadingDirectionImage.image, expectedImage)
+    XCTAssertEqual(sut.leadingDirectionBackgroundView.backgroundColor, UIColor.lightningBlue)
   }
 
   func testLoadMethodWithTemporaryPhoneNumberTransactionPopulatesOutlets() {
