@@ -19,7 +19,7 @@ protocol TransactionSummaryCellDisplayable {
   var counterpartyLabel: String? { get }
   var selectedCurrency: SelectedCurrency { get }
   var summaryAmountLabels: SummaryCellAmountLabels { get }
-  var directionColor: UIColor { get }
+  var accentColor: UIColor { get } //amount and leading image background color
   var leadingImageConfig: SummaryCellLeadingImageConfig { get } // may be avatar or direction icon
   var memo: String? { get }
   var displayDate: String { get }
@@ -48,12 +48,12 @@ extension TransactionSummaryCellViewModelType {
       return SummaryCellLeadingImageConfig(twitterConfig: twitter)
 
     } else {
-      return SummaryCellLeadingImageConfig(directionColor: directionColor,
-                                           directionImage: directionImage)
+      return SummaryCellLeadingImageConfig(bgColor: accentColor, leadingIcon: leadingIcon)
     }
   }
 
-  private var directionImage: UIImage {
+  /// Transaction type icon, not an avatar
+  private var leadingIcon: UIImage {
     switch walletTxType {
     case .lightning:
       return isLightningTransfer ? transferImage : lightningImage
@@ -66,16 +66,23 @@ extension TransactionSummaryCellViewModelType {
     }
   }
 
-  var directionColor: UIColor {
-    if isLightningTransfer {
-      return .lightningBlue
-    } else if isValidTransaction {
-      switch direction {
-      case .in:   return .neonGreen
-      case .out:  return .outgoingGray
-      }
-    } else {
+  var accentColor: UIColor {
+    guard isValidTransaction else {
       return .invalid
+    }
+
+    switch walletTxType {
+    case .lightning:
+      return isLightningTransfer ? directionColor : .lightningBlue
+    case .onChain:
+      return directionColor
+    }
+  }
+
+  private var directionColor: UIColor {
+    switch direction {
+    case .in:   return .neonGreen
+    case .out:  return .outgoingGray
     }
   }
 
@@ -338,10 +345,10 @@ struct SummaryCellLeadingImageConfig {
     self.directionConfig = nil
   }
 
-  init(directionColor: UIColor, directionImage: UIImage) {
+  init(bgColor: UIColor, leadingIcon: UIImage) {
     self.avatarConfig = nil
-    self.directionConfig = SummaryCellDirectionConfig(bgColor: directionColor,
-                                                      image: directionImage)
+    self.directionConfig = SummaryCellDirectionConfig(bgColor: bgColor,
+                                                      image: leadingIcon)
   }
 
   var avatarViewIsHidden: Bool { return avatarConfig == nil }
