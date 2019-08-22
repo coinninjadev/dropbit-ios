@@ -594,7 +594,7 @@
 		B5054148207D00270059C8F9 /* CKMAddress+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5054142207D00270059C8F9 /* CKMAddress+CoreDataClass.swift */; };
 		B5054149207D00270059C8F9 /* CKMAddress+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5054143207D00270059C8F9 /* CKMAddress+CoreDataProperties.swift */; };
 		B505414D207D10DD0059C8F9 /* InMemoryCoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = B505414C207D10DD0059C8F9 /* InMemoryCoreDataStack.swift */; };
-		B505A87A2076C5BE00AACB23 /* TransactionHistoryReceiverLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B505A8792076C5BE00AACB23 /* TransactionHistoryReceiverLabel.swift */; };
+		B505A87A2076C5BE00AACB23 /* TransactionHistoryCounterpartyLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B505A8792076C5BE00AACB23 /* TransactionHistoryCounterpartyLabel.swift */; };
 		B505A87C2076C79700AACB23 /* TransactionHistoryDetailLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B505A87B2076C79700AACB23 /* TransactionHistoryDetailLabel.swift */; };
 		B505A87E2076C96100AACB23 /* TransactionHistoryMemoLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B505A87D2076C96100AACB23 /* TransactionHistoryMemoLabel.swift */; };
 		B505D4EA21050F2000C0C8FC /* CKPredicate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B505D4E921050F2000C0C8FC /* CKPredicate.swift */; };
@@ -1602,7 +1602,7 @@
 		B5054142207D00270059C8F9 /* CKMAddress+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CKMAddress+CoreDataClass.swift"; sourceTree = "<group>"; };
 		B5054143207D00270059C8F9 /* CKMAddress+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CKMAddress+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		B505414C207D10DD0059C8F9 /* InMemoryCoreDataStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InMemoryCoreDataStack.swift; sourceTree = "<group>"; };
-		B505A8792076C5BE00AACB23 /* TransactionHistoryReceiverLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionHistoryReceiverLabel.swift; sourceTree = "<group>"; };
+		B505A8792076C5BE00AACB23 /* TransactionHistoryCounterpartyLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionHistoryCounterpartyLabel.swift; sourceTree = "<group>"; };
 		B505A87B2076C79700AACB23 /* TransactionHistoryDetailLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionHistoryDetailLabel.swift; sourceTree = "<group>"; };
 		B505A87D2076C96100AACB23 /* TransactionHistoryMemoLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionHistoryMemoLabel.swift; sourceTree = "<group>"; };
 		B505D4E921050F2000C0C8FC /* CKPredicate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CKPredicate.swift; sourceTree = "<group>"; };
@@ -3388,7 +3388,7 @@
 				B542BE742237093800E01C30 /* ExamplePhoneNumberLabel.swift */,
 				B51A14B62081266600F5DE23 /* TransactionHistoryPrimaryAmountLabel.swift */,
 				B52A25BE2077CA7C00F636A1 /* TransactionHistorySecondaryAmountLabel.swift */,
-				B505A8792076C5BE00AACB23 /* TransactionHistoryReceiverLabel.swift */,
+				B505A8792076C5BE00AACB23 /* TransactionHistoryCounterpartyLabel.swift */,
 				B505A87B2076C79700AACB23 /* TransactionHistoryDetailLabel.swift */,
 				B505A87D2076C96100AACB23 /* TransactionHistoryMemoLabel.swift */,
 				B54A4216207FF365005B40A9 /* TransactionDetailBreakdownLabel.swift */,
@@ -4699,7 +4699,7 @@
 				B59E2CA322E8F4C000A75AFE /* LNDecodePaymentRequestResponse.swift in Sources */,
 				B552EDF5211E33D000332BB5 /* QRCodeGenerator.swift in Sources */,
 				3BCBFCC2229EBF2200F633BA /* AppCoordinator+SupportViewControllerDelegate.swift in Sources */,
-				B505A87A2076C5BE00AACB23 /* TransactionHistoryReceiverLabel.swift in Sources */,
+				B505A87A2076C5BE00AACB23 /* TransactionHistoryCounterpartyLabel.swift in Sources */,
 				3B47037D2253B67200977784 /* SendReceiveActionView.swift in Sources */,
 				B50E18462149A1460091EEDA /* UserResponse.swift in Sources */,
 				3BC9E5562049B08000444A53 /* PrimaryActionButton.swift in Sources */,

@@ -8,7 +8,7 @@
 
 import UIKit
 
-class TransactionHistoryReceiverLabel: UILabel {
+class TransactionHistoryCounterpartyLabel: UILabel {
   override func awakeFromNib() {
     super.awakeFromNib()
     font = .medium(14)
