@@ -25,6 +25,7 @@ extension UIColor {
   static var bannerWarn: UIColor { return UIColor(r: 224, g: 177, b: 0) }
 
   static var neonGreen: UIColor { return UIColor(r: 69, g: 216, b: 136) }
+  static var incomingGreen: UIColor { return neonGreen }
 
   static var darkPeach: UIColor { return UIColor(r: 231, g: 108, b: 108) }
 
