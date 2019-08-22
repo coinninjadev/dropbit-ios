@@ -33,7 +33,7 @@ protocol TransactionSummaryCellViewModelType: TransactionSummaryCellDisplayable,
   var direction: TransactionDirection { get }
   var isValidTransaction: Bool { get }
   var date: Date { get }
-  var isLightningTransfer: Bool { get }
+  var isLightningTransfer: Bool { get } //can be true for either onChain or lightning transactions
   var status: TransactionStatus { get }
   var counterpartyDescription: String? { get } //may be a name, phone number, raw destination, or nil if Twitter config exists
   var twitterConfig: TransactionCellTwitterConfig? { get }
@@ -54,32 +54,35 @@ extension TransactionSummaryCellViewModelType {
 
   /// Transaction type icon, not an avatar
   private var leadingIcon: UIImage {
-    guard isValidTransaction else {
-      return invalidImage
-    }
+    guard isValidTransaction else { return invalidImage }
 
-    switch walletTxType {
-    case .lightning:
-      return isLightningTransfer ? transferImage : lightningImage
-
-    case .onChain:
-      switch direction {
-      case .in:   return incomingImage
-      case .out:  return outgoingImage
+    if isLightningTransfer {
+      return transferImage
+    } else {
+      switch walletTxType {
+      case .lightning:  return lightningImage
+      case .onChain:    return directionImage
       }
     }
   }
 
   var accentColor: UIColor {
-    guard isValidTransaction else {
-      return .invalid
-    }
+    guard isValidTransaction else { return .invalid }
 
-    switch walletTxType {
-    case .lightning:
-      return isLightningTransfer ? directionColor : .lightningBlue
-    case .onChain:
+    if isLightningTransfer {
       return directionColor
+    } else {
+      switch walletTxType {
+      case .lightning:  return .lightningBlue
+      case .onChain:    return directionColor
+      }
+    }
+  }
+
+  private var directionImage: UIImage {
+    switch direction {
+    case .in:   return incomingImage
+    case .out:  return outgoingImage
     }
   }
 
