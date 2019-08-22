@@ -863,6 +863,7 @@
 		B59C405C20E530FC00F04FE5 /* DeviceVerificationViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59C405B20E530FC00F04FE5 /* DeviceVerificationViewControllerTests.swift */; };
 		B59C405E20E54EC700F04FE5 /* WalletAddressRequestResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59C405D20E54EC700F04FE5 /* WalletAddressRequestResponse.swift */; };
 		B59C406020E553C500F04FE5 /* WalletAddressRequestResponseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59C405F20E553C500F04FE5 /* WalletAddressRequestResponseTests.swift */; };
+		B59C9E20230DB86100E4F3C8 /* NSLayoutConstraint+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59C9E1F230DB86100E4F3C8 /* NSLayoutConstraint+Helpers.swift */; };
 		B59C9E22230DEA2900E4F3C8 /* TransactionSummaryCellViewModelTypeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59C9E21230DEA2900E4F3C8 /* TransactionSummaryCellViewModelTypeTests.swift */; };
 		B59E2C8722E789D800A75AFE /* LightningTooltipViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59E2C8622E789D800A75AFE /* LightningTooltipViewController.swift */; };
 		B59E2C8922E78A1200A75AFE /* LightningTooltipViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B59E2C8822E78A1200A75AFE /* LightningTooltipViewController.storyboard */; };
@@ -1864,6 +1865,7 @@
 		B59C405B20E530FC00F04FE5 /* DeviceVerificationViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceVerificationViewControllerTests.swift; sourceTree = "<group>"; };
 		B59C405D20E54EC700F04FE5 /* WalletAddressRequestResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletAddressRequestResponse.swift; sourceTree = "<group>"; };
 		B59C405F20E553C500F04FE5 /* WalletAddressRequestResponseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletAddressRequestResponseTests.swift; sourceTree = "<group>"; };
+		B59C9E1F230DB86100E4F3C8 /* NSLayoutConstraint+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSLayoutConstraint+Helpers.swift"; sourceTree = "<group>"; };
 		B59C9E21230DEA2900E4F3C8 /* TransactionSummaryCellViewModelTypeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionSummaryCellViewModelTypeTests.swift; sourceTree = "<group>"; };
 		B59E2C8622E789D800A75AFE /* LightningTooltipViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightningTooltipViewController.swift; sourceTree = "<group>"; };
 		B59E2C8822E78A1200A75AFE /* LightningTooltipViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LightningTooltipViewController.storyboard; sourceTree = "<group>"; };
@@ -2285,6 +2287,7 @@
 				A26C767A2107B233001EB738 /* NSDecimalNumber+Comparable.swift */,
 				A26C76782106446E001EB738 /* NSDecimalNumber+NilInitializer.swift */,
 				B5B3E4C62072AE2400222FF4 /* NSDecimalNumber+SignificantDecimals.swift */,
+				B59C9E1F230DB86100E4F3C8 /* NSLayoutConstraint+Helpers.swift */,
 				B5D3BF07222439AF0073A684 /* NSManagedObjectContext+Extensions.swift */,
 				B5B27E8F2088D91700D4DB89 /* NSMutableAttributedString+Constructors.swift */,
 				B5B9132821419F84003A24E9 /* PhoneNumberKit+AreaCodes.swift */,
@@ -4359,6 +4362,7 @@
 				30C0974E219C64F80064F19E /* Int+NSDecimalNumber.swift in Sources */,
 				3B219B3922C3B9EE007EDFCC /* Data+PrettyPrinted.swift in Sources */,
 				307DF119214C297E00260369 /* MessageResponse.swift in Sources */,
+				B59C9E20230DB86100E4F3C8 /* NSLayoutConstraint+Helpers.swift in Sources */,
 				B552EDF6211E33D000332BB5 /* WalletManager.swift in Sources */,
 				A2952F7722BBBAAB00BDCE65 /* NewsTitleCell.swift in Sources */,
 				3B44962821B16D1000A4E912 /* UIApplication+Screenshot.swift in Sources */,
