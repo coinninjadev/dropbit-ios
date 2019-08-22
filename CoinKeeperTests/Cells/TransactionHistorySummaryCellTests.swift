@@ -63,6 +63,17 @@ class TransactionHistorySummaryCellTests: XCTestCase {
     XCTAssertEqual(sut.backgroundColor, expectedColor)
   }
 
+  func testTopCellMasksTopCorners() {
+    let viewModel = createTestViewModel()
+    sut.configure(with: viewModel, isAtTop: true)
+    let expectedTopCorners: CACornerMask = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+    XCTAssertEqual(sut.layer.maskedCorners, expectedTopCorners)
+
+    sut.configure(with: viewModel, isAtTop: false)
+    let expectedRemainingCorners: CACornerMask = []
+    XCTAssertEqual(sut.layer.maskedCorners, expectedRemainingCorners)
+  }
+
   // MARK: Leading image and background color
 
   func testUnpaidLightningInvoice_loadsImageAndColor() {

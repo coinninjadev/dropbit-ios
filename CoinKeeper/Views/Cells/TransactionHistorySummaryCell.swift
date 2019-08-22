@@ -18,6 +18,8 @@ class TransactionHistorySummaryCell: UICollectionViewCell {
 
   override func awakeFromNib() {
     super.awakeFromNib()
+
+    layer.cornerRadius = 13.0
   }
 
   override func prepareForReuse() {
@@ -36,6 +38,12 @@ class TransactionHistorySummaryCell: UICollectionViewCell {
 
   func configure(with values: TransactionSummaryCellDisplayable, isAtTop: Bool = false) {
     self.backgroundColor = values.cellBackgroundColor
+
+    if isAtTop {
+      layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+    } else {
+      layer.maskedCorners = []
+    }
 
     configureIsHidden(with: values)
     configureLeadingViews(with: values.leadingImageConfig, cellBgColor: values.cellBackgroundColor)
