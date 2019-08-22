@@ -7,8 +7,10 @@
 //
 
 import Foundation
+import UIKit
 @testable import DropBit
 
+typealias MockSummaryCellVM = MockTransactionSummaryCellViewModel
 class MockTransactionSummaryCellViewModel: TransactionSummaryCellViewModelType {
 
   var walletTxType: WalletTransactionType
@@ -61,6 +63,30 @@ class MockTransactionSummaryCellViewModel: TransactionSummaryCellViewModelType {
                                                status: .completed, date: Date(), isLightningTransfer: false,
                                                selectedCurrency: .fiat, amountDetails: amtDetails,
                                                counterpartyConfig: nil, memo: nil)
+  }
+
+  static func testInstance(walletTxType: WalletTransactionType = .onChain,
+                           direction: TransactionDirection = .out,
+                           isValid: Bool = true,
+                           status: TransactionStatus = .completed,
+                           date: Date = Date(),
+                           isLightningTransfer: Bool = false,
+                           selectedCurrency: SelectedCurrency = .fiat,
+                           amountDetails: TransactionAmountDetails? = nil,
+                           counterpartyConfig: TransactionCellCounterpartyConfig? = nil,
+                           memo: String? = nil) -> MockTransactionSummaryCellViewModel {
+
+    let amtDetails = amountDetails ?? MockTransactionSummaryCellViewModel.testAmountDetails(sats: 49500)
+    return MockTransactionSummaryCellViewModel(
+      walletTxType: walletTxType, direction: direction, isValid: isValid,
+      status: status, date: date, isLightningTransfer: isLightningTransfer,
+      selectedCurrency: selectedCurrency, amountDetails: amtDetails,
+      counterpartyConfig: counterpartyConfig, memo: memo)
+  }
+
+  static func testTwitterConfig() -> TransactionCellTwitterConfig {
+    let avatar = UIImage(named: "testAvatar")!
+    return TransactionCellTwitterConfig(avatar: avatar, displayHandle: "@adam_wolf")
   }
 
 }

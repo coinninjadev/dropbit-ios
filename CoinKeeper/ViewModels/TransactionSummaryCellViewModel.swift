@@ -10,6 +10,7 @@ import Foundation
 import UIKit
 
 struct TransactionSummaryCellViewModel: TransactionSummaryCellViewModelType {
+
   var selectedCurrency: SelectedCurrency
 
   var walletTxType: WalletTransactionType

@@ -20,31 +20,6 @@ class TransactionHistorySummaryCellTests: XCTestCase {
     self.sut.awakeFromNib()
   }
 
-  func createTestViewModel(walletTxType: WalletTransactionType = .onChain,
-                           direction: TransactionDirection = .out,
-                           isValid: Bool = true,
-                           status: TransactionStatus = .completed,
-                           date: Date = Date(),
-                           isLightningTransfer: Bool = false,
-                           selectedCurrency: SelectedCurrency = .fiat,
-                           amountDetails: TransactionAmountDetails? = nil,
-                           counterpartyDescription: String? = nil,
-                           twitterConfig: TransactionCellTwitterConfig? = nil,
-                           memo: String? = nil) -> MockTransactionSummaryCellViewModel {
-
-    let amtDetails = amountDetails ?? MockTransactionSummaryCellViewModel.testAmountDetails(sats: 49500)
-    return MockTransactionSummaryCellViewModel(
-      walletTxType: walletTxType, direction: direction, isValid: isValid,
-      status: status, date: date, isLightningTransfer: isLightningTransfer,
-      selectedCurrency: selectedCurrency, amountDetails: amtDetails,
-      counterpartyDescription: counterpartyDescription, twitterConfig: twitterConfig, memo: memo)
-  }
-
-  func createTestTwitterConfig() -> TransactionCellTwitterConfig {
-    let avatar = UIImage(named: "testAvatar")!
-    return TransactionCellTwitterConfig(avatar: avatar, displayHandle: "@adam_wolf")
-  }
-
   // MARK: outlets
   func testOutletsAreConnected() {
     XCTAssertNotNil(self.sut.directionView, "directionView should be connected")
@@ -57,14 +32,14 @@ class TransactionHistorySummaryCellTests: XCTestCase {
 
   // MARK: Cell properties
   func testCellLoadsBackgroundColor() {
-    let viewModel = createTestViewModel()
+    let viewModel = MockSummaryCellVM.testInstance()
     sut.configure(with: viewModel)
     let expectedColor = viewModel.cellBackgroundColor
     XCTAssertEqual(sut.backgroundColor, expectedColor)
   }
 
   func testTopCellMasksTopCorners() {
-    let viewModel = createTestViewModel()
+    let viewModel = MockSummaryCellVM.testInstance()
     sut.configure(with: viewModel, isAtTop: true)
     let expectedTopCorners: CACornerMask = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
     XCTAssertEqual(sut.layer.maskedCorners, expectedTopCorners)
@@ -77,7 +52,7 @@ class TransactionHistorySummaryCellTests: XCTestCase {
   // MARK: Leading image and background color
 
   func testUnpaidLightningInvoice_loadsImageAndColor() {
-    let viewModel = createTestViewModel(walletTxType: .lightning, direction: .in, status: .pending, isLightningTransfer: false)
+    let viewModel = MockSummaryCellVM.testInstance(walletTxType: .lightning, direction: .in, status: .pending, isLightningTransfer: false)
     sut.configure(with: viewModel)
     let expectedImage = viewModel.lightningImage, expectedColor = UIColor.lightningBlue
     XCTAssertEqual(sut.directionView.image, expectedImage)
@@ -85,7 +60,7 @@ class TransactionHistorySummaryCellTests: XCTestCase {
   }
 
   func testIncomingCompletedLightning_loadsImageAndColor() {
-    let viewModel = createTestViewModel(walletTxType: .lightning, direction: .in, status: .completed, isLightningTransfer: false)
+    let viewModel = MockSummaryCellVM.testInstance(walletTxType: .lightning, direction: .in, status: .completed, isLightningTransfer: false)
     sut.configure(with: viewModel)
     let expectedImage = viewModel.incomingImage, expectedColor = UIColor.incomingGreen
     XCTAssertEqual(sut.directionView.image, expectedImage)
@@ -93,7 +68,7 @@ class TransactionHistorySummaryCellTests: XCTestCase {
   }
 
   func testOutgoingCompletedLightning_loadsImageAndColor() {
-    let viewModel = createTestViewModel(walletTxType: .lightning, direction: .out, status: .completed, isLightningTransfer: false)
+    let viewModel = MockSummaryCellVM.testInstance(walletTxType: .lightning, direction: .out, status: .completed, isLightningTransfer: false)
     sut.configure(with: viewModel)
     let expectedImage = viewModel.outgoingImage, expectedColor = UIColor.outgoingGray
     XCTAssertEqual(sut.directionView.image, expectedImage)
@@ -101,7 +76,7 @@ class TransactionHistorySummaryCellTests: XCTestCase {
   }
 
   func testInvalidTransaction_loadsImageAndColor() {
-    let viewModel = createTestViewModel(walletTxType: .onChain, direction: .out, isValid: false)
+    let viewModel = MockSummaryCellVM.testInstance(walletTxType: .onChain, direction: .out, isValid: false)
     sut.configure(with: viewModel)
     let expectedImage = viewModel.invalidImage, expectedColor = UIColor.invalid
     XCTAssertEqual(sut.directionView.image, expectedImage)
@@ -109,7 +84,7 @@ class TransactionHistorySummaryCellTests: XCTestCase {
   }
 
   func testIncomingOnChain_loadsImageAndColor() {
-    let viewModel = createTestViewModel(walletTxType: .onChain, direction: .in)
+    let viewModel = MockSummaryCellVM.testInstance(walletTxType: .onChain, direction: .in)
     sut.configure(with: viewModel)
     let expectedImage = viewModel.incomingImage, expectedColor = UIColor.incomingGreen
     XCTAssertEqual(sut.directionView.image, expectedImage)
@@ -117,7 +92,7 @@ class TransactionHistorySummaryCellTests: XCTestCase {
   }
 
   func testOutgoingOnChain_loadsImageAndColor() {
-    let viewModel = createTestViewModel(walletTxType: .onChain, direction: .out)
+    let viewModel = MockSummaryCellVM.testInstance(walletTxType: .onChain, direction: .out)
     sut.configure(with: viewModel)
     let expectedImage = viewModel.outgoingImage, expectedColor = UIColor.outgoingGray
     XCTAssertEqual(sut.directionView.image, expectedImage)
@@ -125,7 +100,7 @@ class TransactionHistorySummaryCellTests: XCTestCase {
   }
 
   func testOutgoingOnChain_LightningTransfer_loadsImageAndColor() {
-    let viewModel = createTestViewModel(walletTxType: .onChain, direction: .out, isLightningTransfer: true)
+    let viewModel = MockSummaryCellVM.testInstance(walletTxType: .onChain, direction: .out, isLightningTransfer: true)
     sut.configure(with: viewModel)
     let expectedImage = viewModel.transferImage, expectedColor = UIColor.outgoingGray
     XCTAssertEqual(sut.directionView.image, expectedImage)
@@ -133,7 +108,7 @@ class TransactionHistorySummaryCellTests: XCTestCase {
   }
 
   func testIncomingOnChain_LightningTransfer_loadsImageAndColor() {
-    let viewModel = createTestViewModel(walletTxType: .onChain, direction: .in, isLightningTransfer: true)
+    let viewModel = MockSummaryCellVM.testInstance(walletTxType: .onChain, direction: .in, isLightningTransfer: true)
     sut.configure(with: viewModel)
     let expectedImage = viewModel.transferImage, expectedColor = UIColor.incomingGreen
     XCTAssertEqual(sut.directionView.image, expectedImage)
@@ -141,7 +116,7 @@ class TransactionHistorySummaryCellTests: XCTestCase {
   }
 
   func testOutgoingLightning_LightningTransfer_loadsImageAndColor() {
-    let viewModel = createTestViewModel(walletTxType: .lightning, direction: .out, isLightningTransfer: true)
+    let viewModel = MockSummaryCellVM.testInstance(walletTxType: .lightning, direction: .out, isLightningTransfer: true)
     sut.configure(with: viewModel)
     let expectedImage = viewModel.transferImage, expectedColor = UIColor.outgoingGray
     XCTAssertEqual(sut.directionView.image, expectedImage)
@@ -149,7 +124,7 @@ class TransactionHistorySummaryCellTests: XCTestCase {
   }
 
   func testIncomingLightning_LightningTransfer_loadsImageAndColor() {
-    let viewModel = createTestViewModel(walletTxType: .lightning, direction: .in, isLightningTransfer: true)
+    let viewModel = MockSummaryCellVM.testInstance(walletTxType: .lightning, direction: .in, isLightningTransfer: true)
     sut.configure(with: viewModel)
     let expectedImage = viewModel.transferImage, expectedColor = UIColor.incomingGreen
     XCTAssertEqual(sut.directionView.image, expectedImage)
@@ -157,9 +132,10 @@ class TransactionHistorySummaryCellTests: XCTestCase {
   }
 
   func testTwitterConfig_loadsAvatar() {
-    let twitterConfig = createTestTwitterConfig()
+    let twitterConfig = MockSummaryCellVM.testTwitterConfig()
+    let counterpartyConfig = TransactionCellCounterpartyConfig(twitterConfig: twitterConfig)
     let expectedImage = twitterConfig.avatar
-    let viewModel = createTestViewModel(twitterConfig: twitterConfig)
+    let viewModel = MockSummaryCellVM.testInstance(counterpartyConfig: counterpartyConfig)
     sut.configure(with: viewModel)
     XCTAssertFalse(sut.twitterAvatarView.isHidden)
     XCTAssertFalse(sut.twitterAvatarView.avatarImageView.isHidden)
@@ -169,15 +145,16 @@ class TransactionHistorySummaryCellTests: XCTestCase {
   }
 
   func testTwitterConfig_showsHidesLeadingViews() {
-    let twitterConfig = createTestTwitterConfig()
-    let viewModel = createTestViewModel(twitterConfig: twitterConfig)
+    let twitterConfig = MockSummaryCellVM.testTwitterConfig()
+    let counterpartyConfig = TransactionCellCounterpartyConfig(twitterConfig: twitterConfig)
+    let viewModel = MockSummaryCellVM.testInstance(counterpartyConfig: counterpartyConfig)
     sut.configure(with: viewModel)
     XCTAssertFalse(sut.twitterAvatarView.isHidden)
     XCTAssertTrue(sut.directionView.isHidden)
   }
 
   func testNilTwitterConfig_showsHidesLeadingViews() {
-    let viewModel = createTestViewModel()
+    let viewModel = MockSummaryCellVM.testInstance()
     sut.configure(with: viewModel)
     XCTAssertTrue(sut.twitterAvatarView.isHidden)
     XCTAssertFalse(sut.directionView.isHidden)
@@ -187,7 +164,7 @@ class TransactionHistorySummaryCellTests: XCTestCase {
 
   func testMemoIsLoadedAndShown() {
     let expectedMemo = "Concert tickets"
-    let viewModel = createTestViewModel(memo: expectedMemo)
+    let viewModel = MockSummaryCellVM.testInstance(memo: expectedMemo)
     sut.configure(with: viewModel)
     XCTAssertFalse(sut.memoLabel.isHidden)
     XCTAssertEqual(sut.memoLabel.text, expectedMemo)
@@ -195,7 +172,7 @@ class TransactionHistorySummaryCellTests: XCTestCase {
 
   func testEmptyStringMemoIsLoadedAndHidden() {
     let expectedMemo = ""
-    let viewModel = createTestViewModel(memo: expectedMemo)
+    let viewModel = MockSummaryCellVM.testInstance(memo: expectedMemo)
     sut.configure(with: viewModel)
     XCTAssertTrue(sut.memoLabel.isHidden)
     XCTAssertEqual(sut.memoLabel.text, expectedMemo)
@@ -203,7 +180,7 @@ class TransactionHistorySummaryCellTests: XCTestCase {
 
   func testNilMemoIsLoadedAndHidden() {
     let expectedMemo: String? = nil
-    let viewModel = createTestViewModel(memo: expectedMemo)
+    let viewModel = MockSummaryCellVM.testInstance(memo: expectedMemo)
     sut.configure(with: viewModel)
     XCTAssertTrue(sut.memoLabel.isHidden)
     XCTAssertEqual(sut.memoLabel.text, expectedMemo)

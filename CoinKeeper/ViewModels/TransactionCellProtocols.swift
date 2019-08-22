@@ -149,25 +149,11 @@ extension TransactionSummaryCellViewModelType {
     return SummaryCellAmountLabels(btcText: btcAttributedString, fiatText: fiatAttributedString.string)
   }
 
-  var incomingImage: UIImage! {
-    return UIImage(named: "summaryCellIncoming")!
-  }
-
-  var outgoingImage: UIImage! {
-    return UIImage(named: "summaryCellOutgoing")!
-  }
-
-  var transferImage: UIImage! {
-    return UIImage(named: "summaryCellTransfer")!
-  }
-
-  var lightningImage: UIImage! {
-    return UIImage(named: "summaryCellLightning")!
-  }
-
-  var invalidImage: UIImage! {
-    return UIImage(named: "summaryCellInvalid")!
-  }
+  var incomingImage: UIImage! { return UIImage(named: "summaryCellIncoming")! }
+  var outgoingImage: UIImage! { return UIImage(named: "summaryCellOutgoing")! }
+  var transferImage: UIImage! { return UIImage(named: "summaryCellTransfer")! }
+  var lightningImage: UIImage! { return UIImage(named: "summaryCellLightning")! }
+  var invalidImage: UIImage! { return UIImage(named: "summaryCellInvalid")! }
 
 }
 
@@ -352,7 +338,7 @@ struct TransactionCellTwitterConfig {
 
 struct SummaryCellAmountLabels {
   let btcText: NSAttributedString //may be lightning or on-chain amount
-  let fiatText: String
+  let fiatText: String //may be amount or status description
 }
 
 struct SummaryCellDirectionConfig {
