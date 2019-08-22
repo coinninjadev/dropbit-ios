@@ -22,13 +22,34 @@
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cHd-Mz-FEa" userLabel="Content View">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="110"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="btT-O7-cy0">
-                                <rect key="frame" x="23" y="40" width="30" height="30"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="K85-8d-MIH" userLabel="Leading Image Container">
+                                <rect key="frame" x="16" y="19" width="52" height="72"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ocX-t8-liS" customClass="TransactionDirectionView" customModule="DropBit" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="10" width="52" height="52"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" secondItem="ocX-t8-liS" secondAttribute="height" multiplier="1:1" id="zly-xn-F5E"/>
+                                        </constraints>
+                                    </view>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CCd-Cq-cEl" customClass="TwitterAvatarView" customModule="DropBit" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="0.0" width="52" height="72"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </view>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="30" id="Tna-Fk-4Bb"/>
-                                    <constraint firstAttribute="width" constant="30" id="rbM-n3-1YY"/>
+                                    <constraint firstItem="CCd-Cq-cEl" firstAttribute="top" secondItem="K85-8d-MIH" secondAttribute="top" id="33d-zl-djp"/>
+                                    <constraint firstAttribute="height" constant="72" id="8ly-im-PXp"/>
+                                    <constraint firstItem="ocX-t8-liS" firstAttribute="centerY" secondItem="K85-8d-MIH" secondAttribute="centerY" id="BXm-JK-Kto"/>
+                                    <constraint firstAttribute="trailing" secondItem="CCd-Cq-cEl" secondAttribute="trailing" id="ZL5-au-UIq"/>
+                                    <constraint firstAttribute="trailing" secondItem="ocX-t8-liS" secondAttribute="trailing" id="acl-7d-IM7"/>
+                                    <constraint firstItem="CCd-Cq-cEl" firstAttribute="leading" secondItem="K85-8d-MIH" secondAttribute="leading" id="e0M-lx-o6Y"/>
+                                    <constraint firstAttribute="width" constant="52" id="mAM-Hd-XNq"/>
+                                    <constraint firstItem="ocX-t8-liS" firstAttribute="leading" secondItem="K85-8d-MIH" secondAttribute="leading" id="mqx-na-Iev"/>
+                                    <constraint firstAttribute="bottom" secondItem="CCd-Cq-cEl" secondAttribute="bottom" id="pj4-lc-ENA"/>
                                 </constraints>
-                            </imageView>
+                            </view>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="goZ-BY-pBi">
                                 <rect key="frame" x="69" y="16" width="222" height="78"/>
                                 <subviews>
@@ -87,15 +108,18 @@
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="tIY-uc-wsk" secondAttribute="trailing" constant="30" id="18d-83-pdV"/>
-                            <constraint firstItem="goZ-BY-pBi" firstAttribute="leading" secondItem="btT-O7-cy0" secondAttribute="trailing" constant="16" id="1z4-nh-Y64"/>
+                            <constraint firstItem="K85-8d-MIH" firstAttribute="top" relation="greaterThanOrEqual" secondItem="cHd-Mz-FEa" secondAttribute="top" constant="8" id="3QL-rt-tu8"/>
+                            <constraint firstItem="goZ-BY-pBi" firstAttribute="leading" secondItem="K85-8d-MIH" secondAttribute="trailing" constant="13" id="6gN-mr-Zio"/>
                             <constraint firstAttribute="bottom" secondItem="tIY-uc-wsk" secondAttribute="bottom" id="AMo-F8-FrE"/>
-                            <constraint firstItem="btT-O7-cy0" firstAttribute="leading" secondItem="cHd-Mz-FEa" secondAttribute="leading" constant="23" id="GBl-eR-3oa"/>
+                            <constraint firstItem="K85-8d-MIH" firstAttribute="leading" secondItem="cHd-Mz-FEa" secondAttribute="leading" constant="16" id="Ffr-7m-bRZ"/>
                             <constraint firstAttribute="trailing" secondItem="kDp-oC-28k" secondAttribute="trailing" constant="16" id="JHe-Km-PhZ"/>
                             <constraint firstItem="btT-O7-cy0" firstAttribute="centerY" secondItem="cHd-Mz-FEa" secondAttribute="centerY" id="NT2-bo-MQl"/>
                             <constraint firstItem="goZ-BY-pBi" firstAttribute="top" secondItem="cHd-Mz-FEa" secondAttribute="top" constant="16" id="SDD-wl-a3n"/>
+                            <constraint firstItem="K85-8d-MIH" firstAttribute="centerY" secondItem="cHd-Mz-FEa" secondAttribute="centerY" id="Tgj-18-ZV0"/>
                             <constraint firstItem="kDp-oC-28k" firstAttribute="leading" secondItem="goZ-BY-pBi" secondAttribute="trailing" constant="8" id="U65-ge-RRK"/>
                             <constraint firstAttribute="bottom" secondItem="goZ-BY-pBi" secondAttribute="bottom" constant="16" id="ZI5-u2-kQX"/>
                             <constraint firstItem="kDp-oC-28k" firstAttribute="centerY" secondItem="cHd-Mz-FEa" secondAttribute="centerY" id="dy2-aq-Xqa"/>
+                            <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="K85-8d-MIH" secondAttribute="bottom" constant="8" id="gsV-az-Ai2"/>
                             <constraint firstItem="tIY-uc-wsk" firstAttribute="leading" secondItem="cHd-Mz-FEa" secondAttribute="leading" constant="30" id="xPC-GN-VLL"/>
                         </constraints>
                     </view>
@@ -111,7 +135,7 @@
             <connections>
                 <outlet property="amountStackView" destination="kDp-oC-28k" id="cAD-0d-RHr"/>
                 <outlet property="dateLabel" destination="00m-gT-JHZ" id="Lul-W4-jag"/>
-                <outlet property="leadingImage" destination="btT-O7-cy0" id="qBh-t5-c9B"/>
+                <outlet property="directionView" destination="ocX-t8-liS" id="v3X-t7-QpL"/>
                 <outlet property="memoLabel" destination="5A3-sw-8Pr" id="O8G-HB-TR0"/>
                 <outlet property="receiverLabel" destination="TP3-zp-1a8" id="UmJ-7K-K8k"/>
                 <outlet property="statusLabel" destination="vin-V2-TlZ" id="HIz-wE-gwu"/>

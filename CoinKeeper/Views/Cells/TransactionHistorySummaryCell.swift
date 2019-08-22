@@ -10,9 +10,9 @@ import UIKit
 
 class TransactionHistorySummaryCell: UICollectionViewCell {
 
-  @IBOutlet var leadingImage: UIImageView!
-  @IBOutlet var twitterImage: UIImageView!
-  @IBOutlet var receiverLabel: TransactionHistoryReceiverLabel!
+  @IBOutlet var directionView: TransactionDirectionView!
+  @IBOutlet var twitterAvatarView: TwitterAvatarView!
+  @IBOutlet var counterpartyLabel: TransactionHistoryCounterpartyLabel!
   @IBOutlet var statusLabel: TransactionHistoryDetailLabel!
   @IBOutlet var dateLabel: TransactionHistoryDetailLabel!
   @IBOutlet var memoLabel: TransactionHistoryMemoLabel!
@@ -22,18 +22,13 @@ class TransactionHistorySummaryCell: UICollectionViewCell {
     super.awakeFromNib()
     backgroundColor = .white
 
-    let radius = leadingDirectionBackgroundView.frame.width/2
-    leadingDirectionBackgroundView.applyCornerRadius(radius)
-    leadingDirectionImage.contentMode = .center
-
   }
 
   override func prepareForReuse() {
     super.prepareForReuse()
 
     twitterAvatarView.isHidden = true
-    leadingDirectionBackgroundView.isHidden = true
-    leadingDirectionImage.isHidden = true
+    directionView.isHidden = true
   }
 
   // part of auto-sizing
@@ -49,8 +44,7 @@ class TransactionHistorySummaryCell: UICollectionViewCell {
 
   private func configureLeadingViews(with leadingConfig: SummaryCellLeadingImageConfig) {
     if let directionConfig = leadingConfig.directionConfig {
-      self.leadingDirectionImage.image = directionConfig.image
-      self.leadingDirectionBackgroundView.backgroundColor = directionConfig.bgColor
+      self.directionView.configure(image: directionConfig.image, bgColor: directionConfig.bgColor)
     }
   }
 
