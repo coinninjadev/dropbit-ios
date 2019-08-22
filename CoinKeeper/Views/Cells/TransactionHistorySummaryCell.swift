@@ -43,8 +43,16 @@ class TransactionHistorySummaryCell: UICollectionViewCell {
     return layoutAttributes
   }
 
+  func configure(with values: TransactionSummaryCellDisplayable, isAtTop: Bool = false) {
+    configureLeadingViews(with: values.leadingImageConfig)
   }
 
+  private func configureLeadingViews(with leadingConfig: SummaryCellLeadingImageConfig) {
+    if let directionConfig = leadingConfig.directionConfig {
+      self.leadingDirectionImage.image = directionConfig.image
+      self.leadingDirectionBackgroundView.backgroundColor = directionConfig.bgColor
+    }
+  }
   func load(with viewModel: OldTransactionSummaryCellViewModel, isAtTop: Bool = false) {
     if viewModel.isTwitterContact, let avatar = viewModel.counterpartyAvatar {
       incomingImage.image = avatar
