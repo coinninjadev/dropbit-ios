@@ -47,4 +47,23 @@ class MockTransactionSummaryCellViewModel: TransactionSummaryCellViewModelType {
     self.memo = memo
   }
 
+  static var testRates: ExchangeRates {
+    return [.BTC: 1, .USD: 7000]
+  }
+
+  static func testAmountDetails(sats: Int) -> TransactionAmountDetails {
+    let pair = CurrencyPair(primary: .BTC, fiat: .USD)
+    let btcAmount = NSDecimalNumber(integerAmount: sats, currency: .BTC)
+    return TransactionAmountDetails(currencyPair: pair, exchangeRates: testRates, primaryBTCAmount: btcAmount,
+                                    fiatWhenCreated: nil, fiatWhenTransacted: nil)
+  }
+
+  static func defaultInstance() -> MockTransactionSummaryCellViewModel {
+    let amtDetails = testAmountDetails(sats: 49500)
+    return MockTransactionSummaryCellViewModel(walletTxType: .onChain, direction: .out, isValid: true,
+                                               status: .completed, date: Date(), isLightningTransfer: false,
+                                               selectedCurrency: .fiat, amountDetails: amtDetails,
+                                               counterpartyDescription: nil, twitterConfig: nil, memo: nil)
+  }
+
 }
