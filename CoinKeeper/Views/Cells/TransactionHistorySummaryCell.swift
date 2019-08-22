@@ -53,6 +53,8 @@ class TransactionHistorySummaryCell: UICollectionViewCell {
       self.leadingDirectionBackgroundView.backgroundColor = directionConfig.bgColor
     }
   }
+
+  /*
   func load(with viewModel: OldTransactionSummaryCellViewModel, isAtTop: Bool = false) {
     if viewModel.isTwitterContact, let avatar = viewModel.counterpartyAvatar {
       incomingImage.image = avatar
@@ -91,5 +93,6 @@ class TransactionHistorySummaryCell: UICollectionViewCell {
 
     layer.maskedCorners = isAtTop ? [.layerMinXMinYCorner, .layerMaxXMinYCorner] : []
   }
+  */
 
 }
