@@ -43,6 +43,9 @@ class TransactionHistorySummaryCell: UICollectionViewCell {
   }
 
   private func configureLeadingViews(with leadingConfig: SummaryCellLeadingImageConfig) {
+    self.directionView.isHidden = leadingConfig.directionViewIsHidden
+    self.twitterAvatarView.isHidden = leadingConfig.avatarViewIsHidden
+
     if let directionConfig = leadingConfig.directionConfig {
       self.directionView.configure(image: directionConfig.image, bgColor: directionConfig.bgColor)
     }
