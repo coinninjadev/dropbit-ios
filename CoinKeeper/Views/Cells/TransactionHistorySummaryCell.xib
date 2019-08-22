@@ -53,29 +53,9 @@
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="goZ-BY-pBi">
                                 <rect key="frame" x="69" y="16" width="222" height="78"/>
                                 <subviews>
-                                    <stackView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" horizontalCompressionResistancePriority="751" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="AOr-Oy-5mT">
-                                        <rect key="frame" x="0.0" y="0.0" width="222" height="19.5"/>
-                                        <subviews>
-                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="twitterBirdBlue" translatesAutoresizingMaskIntoConstraints="NO" id="ff9-VD-msK">
-                                                <rect key="frame" x="0.0" y="0.0" width="15" height="19.5"/>
-                                            </imageView>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="248" horizontalCompressionResistancePriority="753" verticalCompressionResistancePriority="751" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TP3-zp-1a8" customClass="TransactionHistoryReceiverLabel" customModule="DropBit" customModuleProvider="target">
-                                                <rect key="frame" x="19" y="0.0" width="203" height="19.5"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                                <nil key="textColor"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                        </subviews>
-                                    </stackView>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vin-V2-TlZ" customClass="TransactionHistoryDetailLabel" customModule="DropBit" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="19.5" width="222" height="18"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                        <nil key="textColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="00m-gT-JHZ" customClass="TransactionHistoryDetailLabel" customModule="DropBit" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="37.5" width="222" height="14.5"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="248" horizontalCompressionResistancePriority="753" verticalCompressionResistancePriority="751" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TP3-zp-1a8" customClass="TransactionHistoryReceiverLabel" customModule="DropBit" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="0.0" width="210" height="52"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
@@ -134,11 +114,10 @@
             <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
             <connections>
                 <outlet property="amountStackView" destination="kDp-oC-28k" id="cAD-0d-RHr"/>
-                <outlet property="dateLabel" destination="00m-gT-JHZ" id="Lul-W4-jag"/>
+                <outlet property="counterpartyLabel" destination="TP3-zp-1a8" id="W6P-kn-msx"/>
                 <outlet property="directionView" destination="ocX-t8-liS" id="v3X-t7-QpL"/>
                 <outlet property="memoLabel" destination="5A3-sw-8Pr" id="Xpw-Fa-KBb"/>
-                <outlet property="statusLabel" destination="vin-V2-TlZ" id="HIz-wE-gwu"/>
-                <outlet property="twitterImage" destination="ff9-VD-msK" id="gNj-30-K70"/>
+                <outlet property="twitterAvatarView" destination="CCd-Cq-cEl" id="UAJ-hq-VBN"/>
             </connections>
             <point key="canvasLocation" x="24.5" y="52"/>
         </collectionViewCell>

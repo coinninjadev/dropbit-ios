@@ -14,15 +14,12 @@ import UIKit
 /// Provides all variable values directly necessary to configure the TransactionHistorySummaryCell UI.
 /// Fixed values (colors, font sizes, etc.) are provided by the cell itself.
 protocol TransactionSummaryCellDisplayable {
-  var summaryStatusText: String? { get }
-  var statusTextColor: UIColor { get }
   var counterpartyLabel: String? { get }
   var selectedCurrency: SelectedCurrency { get }
   var summaryAmountLabels: SummaryCellAmountLabels { get }
   var accentColor: UIColor { get } //amount and leading image background color
   var leadingImageConfig: SummaryCellLeadingImageConfig { get } // may be avatar or direction icon
   var memo: String? { get }
-  var displayDate: String { get }
   var cellBackgroundColor: UIColor { get }
 }
 

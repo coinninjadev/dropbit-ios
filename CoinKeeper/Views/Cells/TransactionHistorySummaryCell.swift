@@ -13,8 +13,6 @@ class TransactionHistorySummaryCell: UICollectionViewCell {
   @IBOutlet var directionView: TransactionDirectionView!
   @IBOutlet var twitterAvatarView: TwitterAvatarView!
   @IBOutlet var counterpartyLabel: TransactionHistoryCounterpartyLabel!
-  @IBOutlet var statusLabel: TransactionHistoryDetailLabel!
-  @IBOutlet var dateLabel: TransactionHistoryDetailLabel!
   @IBOutlet var memoLabel: SummaryCellMemoLabel!
   @IBOutlet var amountStackView: UIStackView!
 
