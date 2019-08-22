@@ -11,17 +11,17 @@ import Foundation
 
 class MockTransactionSummaryCellViewModel: TransactionSummaryCellViewModelType {
 
-  let walletTxType: WalletTransactionType
-  let direction: TransactionDirection
-  let isValidTransaction: Bool
-  let status: TransactionStatus
-  let date: Date
-  let isLightningTransfer: Bool
-  let selectedCurrency: SelectedCurrency
-  let amountDetails: TransactionAmountDetails
-  let counterpartyDescription: String?
-  let twitterConfig: TransactionCellTwitterConfig?
-  let memo: String?
+  var walletTxType: WalletTransactionType
+  var direction: TransactionDirection
+  var isValidTransaction: Bool
+  var status: TransactionStatus
+  var date: Date
+  var isLightningTransfer: Bool
+  var selectedCurrency: SelectedCurrency
+  var amountDetails: TransactionAmountDetails
+  var counterpartyDescription: String?
+  var twitterConfig: TransactionCellTwitterConfig?
+  var memo: String?
 
   init(walletTxType: WalletTransactionType,
        direction: TransactionDirection,
