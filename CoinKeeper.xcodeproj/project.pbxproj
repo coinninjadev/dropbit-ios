@@ -596,7 +596,7 @@
 		B505414D207D10DD0059C8F9 /* InMemoryCoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = B505414C207D10DD0059C8F9 /* InMemoryCoreDataStack.swift */; };
 		B505A87A2076C5BE00AACB23 /* TransactionHistoryCounterpartyLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B505A8792076C5BE00AACB23 /* TransactionHistoryCounterpartyLabel.swift */; };
 		B505A87C2076C79700AACB23 /* TransactionHistoryDetailLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B505A87B2076C79700AACB23 /* TransactionHistoryDetailLabel.swift */; };
-		B505A87E2076C96100AACB23 /* TransactionHistoryMemoLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B505A87D2076C96100AACB23 /* TransactionHistoryMemoLabel.swift */; };
+		B505A87E2076C96100AACB23 /* SummaryCellMemoLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B505A87D2076C96100AACB23 /* SummaryCellMemoLabel.swift */; };
 		B505D4EA21050F2000C0C8FC /* CKPredicate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B505D4E921050F2000C0C8FC /* CKPredicate.swift */; };
 		B505D4EC2106456000C0C8FC /* WalletAddressDataWorkerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B505D4EB2106456000C0C8FC /* WalletAddressDataWorkerTests.swift */; };
 		B5090D902283244700E57423 /* LocationManagerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5090D8F2283244700E57423 /* LocationManagerDelegate.swift */; };
@@ -1606,7 +1606,7 @@
 		B505414C207D10DD0059C8F9 /* InMemoryCoreDataStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InMemoryCoreDataStack.swift; sourceTree = "<group>"; };
 		B505A8792076C5BE00AACB23 /* TransactionHistoryCounterpartyLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionHistoryCounterpartyLabel.swift; sourceTree = "<group>"; };
 		B505A87B2076C79700AACB23 /* TransactionHistoryDetailLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionHistoryDetailLabel.swift; sourceTree = "<group>"; };
-		B505A87D2076C96100AACB23 /* TransactionHistoryMemoLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionHistoryMemoLabel.swift; sourceTree = "<group>"; };
+		B505A87D2076C96100AACB23 /* SummaryCellMemoLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummaryCellMemoLabel.swift; sourceTree = "<group>"; };
 		B505D4E921050F2000C0C8FC /* CKPredicate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CKPredicate.swift; sourceTree = "<group>"; };
 		B505D4EB2106456000C0C8FC /* WalletAddressDataWorkerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletAddressDataWorkerTests.swift; sourceTree = "<group>"; };
 		B5090D8F2283244700E57423 /* LocationManagerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManagerDelegate.swift; sourceTree = "<group>"; };
@@ -3396,7 +3396,7 @@
 				B52A25BE2077CA7C00F636A1 /* TransactionHistorySecondaryAmountLabel.swift */,
 				B505A8792076C5BE00AACB23 /* TransactionHistoryCounterpartyLabel.swift */,
 				B505A87B2076C79700AACB23 /* TransactionHistoryDetailLabel.swift */,
-				B505A87D2076C96100AACB23 /* TransactionHistoryMemoLabel.swift */,
+				B505A87D2076C96100AACB23 /* SummaryCellMemoLabel.swift */,
 				B54A4216207FF365005B40A9 /* TransactionDetailBreakdownLabel.swift */,
 				B54A4218207FF38F005B40A9 /* TransactionDetailDateLabel.swift */,
 				B5B53C9D2107CD1C006C7B67 /* TransactionDetailMessageLabel.swift */,
@@ -4795,7 +4795,7 @@
 				3BA9F603208F6CEA0047C213 /* AppCoordinator+CreateRecoveryWordsViewControllerDelegate.swift in Sources */,
 				A2FE19882301A09C00C2412D /* LightningActionButton.swift in Sources */,
 				A2952F7E22BD0B7600BDCE65 /* NewsArticleResponse.swift in Sources */,
-				B505A87E2076C96100AACB23 /* TransactionHistoryMemoLabel.swift in Sources */,
+				B505A87E2076C96100AACB23 /* SummaryCellMemoLabel.swift in Sources */,
 				B54BDCEB2086447500B71D6B /* TransactionHistorySummaryCell.swift in Sources */,
 				B50C869A20D80B8B00B4FA6B /* CheckInResponse.swift in Sources */,
 				B5697271208A428A00835F01 /* BalanceDisplayable.swift in Sources */,

@@ -15,7 +15,7 @@ class TransactionHistorySummaryCell: UICollectionViewCell {
   @IBOutlet var counterpartyLabel: TransactionHistoryCounterpartyLabel!
   @IBOutlet var statusLabel: TransactionHistoryDetailLabel!
   @IBOutlet var dateLabel: TransactionHistoryDetailLabel!
-  @IBOutlet var memoLabel: TransactionHistoryMemoLabel!
+  @IBOutlet var memoLabel: SummaryCellMemoLabel!
   @IBOutlet var amountStackView: UIStackView!
 
   override func awakeFromNib() {

@@ -1,5 +1,5 @@
 //
-//  TransactionHistoryMemoLabel.swift
+//  SummaryCellMemoLabel.swift
 //  CoinKeeper
 //
 //  Created by Ben Winters on 4/5/18.
@@ -8,10 +8,10 @@
 
 import UIKit
 
-class TransactionHistoryMemoLabel: UILabel {
+class SummaryCellMemoLabel: UILabel {
   override func awakeFromNib() {
     super.awakeFromNib()
-    font = .regular(14)
+    font = .semiBold(16)
     textColor = .darkBlueText
     isHidden = true
     numberOfLines = 1
