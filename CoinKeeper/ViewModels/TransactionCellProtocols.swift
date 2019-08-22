@@ -14,7 +14,7 @@ import UIKit
 /// Provides all variable values directly necessary to configure the TransactionHistorySummaryCell UI.
 /// Fixed values (colors, font sizes, etc.) are provided by the cell itself.
 protocol TransactionSummaryCellDisplayable {
-  var counterpartyLabel: String? { get }
+  var counterpartyText: String { get }
   var selectedCurrency: SelectedCurrency { get }
   var summaryAmountLabels: SummaryCellAmountLabels { get }
   var accentColor: UIColor { get } //amount and leading image background color
@@ -42,8 +42,7 @@ protocol TransactionSummaryCellViewModelType: TransactionSummaryCellDisplayable,
   var date: Date { get }
   var isLightningTransfer: Bool { get } //can be true for either onChain or lightning transactions
   var status: TransactionStatus { get }
-  var counterpartyDescription: String? { get } //may be a name, phone number, raw destination, or nil if Twitter config exists
-  var twitterConfig: TransactionCellTwitterConfig? { get }
+  var counterpartyConfig: TransactionCellCounterpartyConfig? { get } //may be nil for transfers
   var amountDetails: TransactionAmountDetails { get }
   var memo: String? { get }
 }
@@ -51,7 +50,7 @@ protocol TransactionSummaryCellViewModelType: TransactionSummaryCellDisplayable,
 extension TransactionSummaryCellViewModelType {
 
   var leadingImageConfig: SummaryCellLeadingImageConfig {
-    if let twitter = twitterConfig {
+    if let twitter = counterpartyConfig?.twitterConfig {
       return SummaryCellLeadingImageConfig(twitterConfig: twitter)
 
     } else {
@@ -324,6 +323,26 @@ struct DetailCellMemoConfig {
   let isShared: Bool
   let sharingDescription: String?
   let sharingIcon: UIImage?
+}
+
+struct TransactionCellCounterpartyConfig {
+  let displayName: String?
+  let displayPhoneNumber: String?
+  let btcAddress: String?
+  let twitterConfig: TransactionCellTwitterConfig?
+
+  init(displayName: String? = nil, displayPhoneNumber: String? = nil, btcAddress: String? = nil, twitterConfig: TransactionCellTwitterConfig? = nil) {
+    guard (displayName != nil) || (displayPhoneNumber != nil) || (btcAddress != nil) || (twitterConfig != nil) else {
+      let message = "At least one parameter should be non-nil when initializing the counterparty config"
+      log.error(message)
+      fatalError(message)
+    }
+    self.displayName = displayName
+    self.displayPhoneNumber = displayPhoneNumber
+    self.btcAddress = btcAddress
+    self.twitterConfig = twitterConfig
+  }
+
 }
 
 struct TransactionCellTwitterConfig {

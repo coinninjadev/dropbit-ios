@@ -30,7 +30,7 @@ struct TransactionSummaryCellViewModel: TransactionSummaryCellViewModelType {
 
   var statusTextColor: UIColor
 
-  var counterpartyDescription: String?
+  var counterpartyConfig: TransactionCellCounterpartyConfig?
 
   var amountLabels: DetailCellAmountLabels
 

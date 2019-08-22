@@ -19,8 +19,7 @@ class MockTransactionSummaryCellViewModel: TransactionSummaryCellViewModelType {
   var isLightningTransfer: Bool
   var selectedCurrency: SelectedCurrency
   var amountDetails: TransactionAmountDetails
-  var counterpartyDescription: String?
-  var twitterConfig: TransactionCellTwitterConfig?
+  var counterpartyConfig: TransactionCellCounterpartyConfig?
   var memo: String?
 
   init(walletTxType: WalletTransactionType,
@@ -31,8 +30,7 @@ class MockTransactionSummaryCellViewModel: TransactionSummaryCellViewModelType {
        isLightningTransfer: Bool,
        selectedCurrency: SelectedCurrency,
        amountDetails: TransactionAmountDetails,
-       counterpartyDescription: String?,
-       twitterConfig: TransactionCellTwitterConfig?,
+       counterpartyConfig: TransactionCellCounterpartyConfig?,
        memo: String?) {
     self.walletTxType = walletTxType
     self.direction = direction
@@ -42,8 +40,7 @@ class MockTransactionSummaryCellViewModel: TransactionSummaryCellViewModelType {
     self.isLightningTransfer = isLightningTransfer
     self.selectedCurrency = selectedCurrency
     self.amountDetails = amountDetails
-    self.counterpartyDescription = counterpartyDescription
-    self.twitterConfig = twitterConfig
+    self.counterpartyConfig = counterpartyConfig
     self.memo = memo
   }
 
@@ -63,7 +60,7 @@ class MockTransactionSummaryCellViewModel: TransactionSummaryCellViewModelType {
     return MockTransactionSummaryCellViewModel(walletTxType: .onChain, direction: .out, isValid: true,
                                                status: .completed, date: Date(), isLightningTransfer: false,
                                                selectedCurrency: .fiat, amountDetails: amtDetails,
-                                               counterpartyDescription: nil, twitterConfig: nil, memo: nil)
+                                               counterpartyConfig: nil, memo: nil)
   }
 
 }
