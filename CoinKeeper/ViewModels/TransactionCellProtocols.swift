@@ -39,10 +39,11 @@ protocol TransactionSummaryCellViewModelType: TransactionSummaryCellDisplayable,
   var walletTxType: WalletTransactionType { get }
   var direction: TransactionDirection { get }
   var isValidTransaction: Bool { get }
-  var date: Date { get }
   var isLightningTransfer: Bool { get } //can be true for either onChain or lightning transactions
   var status: TransactionStatus { get }
   var counterpartyConfig: TransactionCellCounterpartyConfig? { get } //may be nil for transfers
+  var btcAddress: String? { get }
+  var lightningInvoice: String? { get }
   var amountDetails: TransactionAmountDetails { get }
   var memo: String? { get }
 }
@@ -107,10 +108,6 @@ extension TransactionSummaryCellViewModelType {
     }
   }
 
-  var displayDate: String {
-    return CKDateFormatter.displayFull.string(from: date)
-  }
-
   var statusTextColor: UIColor {
     if isValidTransaction {
       switch status {
@@ -122,11 +119,44 @@ extension TransactionSummaryCellViewModelType {
     }
   }
 
-  var counterpartyLabel: String? {
-    if let config = twitterConfig {
-      return config.displayHandle
+  var counterpartyText: String {
+    if let transferType = lightningTransferType {
+      switch transferType {
+      case .withdraw:   return lightningWithdrawText
+      case .deposit:    return lightningDepositText
+      }
+    } else if let counterparty = counterpartyDescription {
+      return counterparty
+    } else if let address = btcAddress {
+      return address
     } else {
-      return counterpartyDescription
+      return "(unknown)"
+    }
+  }
+
+  var lightningWithdrawText: String { return "Lightning Withdraw" }
+  var lightningDepositText: String { return "Load Lightning" }
+
+  private var lightningTransferType: LightningTransferType? {
+    guard isLightningTransfer else { return nil }
+    switch walletTxType {
+    case .onChain:
+      return (direction == .in) ? .withdraw : .deposit
+    case .lightning:
+      return (direction == .in) ? .deposit : .withdraw
+    }
+  }
+
+  private var counterpartyDescription: String? {
+    guard let config = counterpartyConfig else { return nil }
+    if let name = config.displayName {
+      return name
+    } else if let twitter = config.twitterConfig {
+      return twitter.displayHandle
+    } else if let phoneNumber = config.displayPhoneNumber {
+      return phoneNumber
+    } else {
+      return nil
     }
   }
 
@@ -168,6 +198,7 @@ protocol TransactionDetailCellDisplayable: TransactionSummaryCellDisplayable {
   var memoConfig: DetailCellMemoConfig? { get }
   var canAddMemo: Bool { get }
   var actionButtonConfig: DetailCellActionButtonConfig? { get }
+  var displayDate: String { get }
 }
 
 extension TransactionDetailCellDisplayable {
@@ -209,6 +240,7 @@ extension TransactionInvalidDetailCellDisplayable {
 /// The inherited `...Displayable` requirements should be calculated in this
 /// protocol's extension or provided by a mock view model.
 protocol TransactionDetailCellViewModelType: TransactionSummaryCellViewModelType, TransactionDetailCellDisplayable {
+  var date: Date { get }
   var action: TransactionDetailAction? { get }
 }
 
@@ -230,6 +262,10 @@ extension TransactionDetailCellViewModelType {
                                        secondaryText: nil,
                                        secondaryAttributedText: nil,
                                        historicalPriceAttributedText: nil)
+  }
+
+  var displayDate: String {
+    return CKDateFormatter.displayFull.string(from: date)
   }
 
   var actionButtonConfig: DetailCellActionButtonConfig? {
@@ -261,6 +297,10 @@ enum TransactionStatus: String {
   case completed
   case canceled
   case expired
+}
+
+fileprivate enum LightningTransferType {
+  case deposit, withdraw
 }
 
 struct TransactionAmountDetails {
@@ -314,18 +354,16 @@ struct DetailCellMemoConfig {
 struct TransactionCellCounterpartyConfig {
   let displayName: String?
   let displayPhoneNumber: String?
-  let btcAddress: String?
   let twitterConfig: TransactionCellTwitterConfig?
 
-  init(displayName: String? = nil, displayPhoneNumber: String? = nil, btcAddress: String? = nil, twitterConfig: TransactionCellTwitterConfig? = nil) {
-    guard (displayName != nil) || (displayPhoneNumber != nil) || (btcAddress != nil) || (twitterConfig != nil) else {
+  init(displayName: String? = nil, displayPhoneNumber: String? = nil, twitterConfig: TransactionCellTwitterConfig? = nil) {
+    guard (displayName != nil) || (displayPhoneNumber != nil) || (twitterConfig != nil) else {
       let message = "At least one parameter should be non-nil when initializing the counterparty config"
       log.error(message)
       fatalError(message)
     }
     self.displayName = displayName
     self.displayPhoneNumber = displayPhoneNumber
-    self.btcAddress = btcAddress
     self.twitterConfig = twitterConfig
   }
 

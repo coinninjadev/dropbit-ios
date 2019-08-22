@@ -15,13 +15,15 @@ struct TransactionSummaryCellViewModel: TransactionSummaryCellViewModelType {
 
   var walletTxType: WalletTransactionType
 
-  var isValidTransaction: Bool
+  var status: TransactionStatus
 
-  var date: Date
+  var isValidTransaction: Bool
 
   var isLightningTransfer: Bool
 
-  var status: TransactionStatus
+  var btcAddress: String?
+
+  var lightningInvoice: String?
 
   var memo: String?
 
@@ -32,9 +34,5 @@ struct TransactionSummaryCellViewModel: TransactionSummaryCellViewModelType {
   var statusTextColor: UIColor
 
   var counterpartyConfig: TransactionCellCounterpartyConfig?
-
-  var amountLabels: DetailCellAmountLabels
-
-  var twitterConfig: TransactionCellTwitterConfig?
 
 }

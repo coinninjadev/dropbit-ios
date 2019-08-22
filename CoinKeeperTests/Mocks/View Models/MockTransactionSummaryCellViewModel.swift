@@ -17,8 +17,9 @@ class MockTransactionSummaryCellViewModel: TransactionSummaryCellViewModelType {
   var direction: TransactionDirection
   var isValidTransaction: Bool
   var status: TransactionStatus
-  var date: Date
   var isLightningTransfer: Bool
+  var btcAddress: String?
+  var lightningInvoice: String?
   var selectedCurrency: SelectedCurrency
   var amountDetails: TransactionAmountDetails
   var counterpartyConfig: TransactionCellCounterpartyConfig?
@@ -30,6 +31,8 @@ class MockTransactionSummaryCellViewModel: TransactionSummaryCellViewModelType {
        status: TransactionStatus,
        date: Date,
        isLightningTransfer: Bool,
+       btcAddress: String?,
+       lightningInvoice: String?,
        selectedCurrency: SelectedCurrency,
        amountDetails: TransactionAmountDetails,
        counterpartyConfig: TransactionCellCounterpartyConfig?,
@@ -38,8 +41,9 @@ class MockTransactionSummaryCellViewModel: TransactionSummaryCellViewModelType {
     self.direction = direction
     self.isValidTransaction = isValid
     self.status = status
-    self.date = date
     self.isLightningTransfer = isLightningTransfer
+    self.btcAddress = btcAddress
+    self.lightningInvoice = lightningInvoice
     self.selectedCurrency = selectedCurrency
     self.amountDetails = amountDetails
     self.counterpartyConfig = counterpartyConfig
@@ -59,8 +63,10 @@ class MockTransactionSummaryCellViewModel: TransactionSummaryCellViewModelType {
 
   static func defaultInstance() -> MockTransactionSummaryCellViewModel {
     let amtDetails = testAmountDetails(sats: 49500)
+    let address = TestHelpers.mockValidBitcoinAddress()
     return MockTransactionSummaryCellViewModel(walletTxType: .onChain, direction: .out, isValid: true,
                                                status: .completed, date: Date(), isLightningTransfer: false,
+                                               btcAddress: address, lightningInvoice: nil,
                                                selectedCurrency: .fiat, amountDetails: amtDetails,
                                                counterpartyConfig: nil, memo: nil)
   }
@@ -71,6 +77,8 @@ class MockTransactionSummaryCellViewModel: TransactionSummaryCellViewModelType {
                            status: TransactionStatus = .completed,
                            date: Date = Date(),
                            isLightningTransfer: Bool = false,
+                           btcAddress: String? = nil,
+                           lightningInvoice: String? = nil,
                            selectedCurrency: SelectedCurrency = .fiat,
                            amountDetails: TransactionAmountDetails? = nil,
                            counterpartyConfig: TransactionCellCounterpartyConfig? = nil,
@@ -80,13 +88,14 @@ class MockTransactionSummaryCellViewModel: TransactionSummaryCellViewModelType {
     return MockTransactionSummaryCellViewModel(
       walletTxType: walletTxType, direction: direction, isValid: isValid,
       status: status, date: date, isLightningTransfer: isLightningTransfer,
+      btcAddress: btcAddress, lightningInvoice: lightningInvoice,
       selectedCurrency: selectedCurrency, amountDetails: amtDetails,
       counterpartyConfig: counterpartyConfig, memo: memo)
   }
 
   static func testTwitterConfig() -> TransactionCellTwitterConfig {
     let avatar = UIImage(named: "testAvatar")!
-    return TransactionCellTwitterConfig(avatar: avatar, displayHandle: "@adam_wolf")
+    return TransactionCellTwitterConfig(avatar: avatar, displayHandle: "@satoshi")
   }
 
 }

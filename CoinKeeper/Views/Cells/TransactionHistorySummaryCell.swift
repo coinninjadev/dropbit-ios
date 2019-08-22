@@ -47,7 +47,8 @@ class TransactionHistorySummaryCell: UICollectionViewCell {
 
     configureIsHidden(with: values)
     configureLeadingViews(with: values.leadingImageConfig, cellBgColor: values.cellBackgroundColor)
-    configureDescriptionLabels(with: values)
+    counterpartyLabel.text = values.counterpartyText
+    memoLabel.text = values.memo
   }
 
   /// Configures isHidden for all subviews of this cell where that property varies
@@ -65,10 +66,6 @@ class TransactionHistorySummaryCell: UICollectionViewCell {
     if let avatarConfig = leadingConfig.avatarConfig {
       self.twitterAvatarView.configure(with: avatarConfig.image, logoBackgroundColor: cellBgColor)
     }
-  }
-
-  private func configureDescriptionLabels(with values: TransactionSummaryCellDisplayable) {
-    memoLabel.text = values.memo
   }
 
 }

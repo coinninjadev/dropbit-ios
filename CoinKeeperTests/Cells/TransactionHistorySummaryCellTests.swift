@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import PhoneNumberKit
 @testable import DropBit
 import XCTest
 
@@ -161,7 +160,6 @@ class TransactionHistorySummaryCellTests: XCTestCase {
   }
 
   // MARK: Labels
-
   func testMemoIsLoadedAndShown() {
     let expectedMemo = "Concert tickets"
     let viewModel = MockSummaryCellVM.testInstance(memo: expectedMemo)
