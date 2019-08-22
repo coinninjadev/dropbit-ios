@@ -47,8 +47,9 @@ class TransactionHistorySummaryCellTests: XCTestCase {
 
   // MARK: outlets
   func testOutletsAreConnected() {
-    XCTAssertNotNil(self.sut.incomingImage, "incomingImage should be connected")
-    XCTAssertNotNil(self.sut.receiverLabel, "receiverLabel should be connected")
+    XCTAssertNotNil(self.sut.directionView, "directionView should be connected")
+    XCTAssertNotNil(self.sut.twitterAvatarView, "twitterAvatarView should be connected")
+    XCTAssertNotNil(self.sut.counterpartyLabel, "counterpartyLabel should be connected")
     XCTAssertNotNil(self.sut.statusLabel, "statusLabel should be connected")
     XCTAssertNotNil(self.sut.dateLabel, "dateLabel should be connected")
     XCTAssertNotNil(self.sut.memoLabel, "memoLabel should be connected")
@@ -60,72 +61,72 @@ class TransactionHistorySummaryCellTests: XCTestCase {
     let viewModel = createTestViewModel(walletTxType: .lightning, direction: .in, isLightningTransfer: false)
     sut.configure(with: viewModel)
     let expectedImage = viewModel.lightningImage, expectedColor = UIColor.lightningBlue
-    XCTAssertEqual(sut.leadingDirectionImage.image, expectedImage)
-    XCTAssertEqual(sut.leadingDirectionBackgroundView.backgroundColor, expectedColor)
+    XCTAssertEqual(sut.directionView.image, expectedImage)
+    XCTAssertEqual(sut.directionView.backgroundColor, expectedColor)
   }
 
   func testOutgoingLightning_loadsImageAndColor() {
     let viewModel = createTestViewModel(walletTxType: .lightning, direction: .out, isLightningTransfer: false)
     sut.configure(with: viewModel)
     let expectedImage = viewModel.lightningImage, expectedColor = UIColor.lightningBlue
-    XCTAssertEqual(sut.leadingDirectionImage.image, expectedImage)
-    XCTAssertEqual(sut.leadingDirectionBackgroundView.backgroundColor, expectedColor)
+    XCTAssertEqual(sut.directionView.image, expectedImage)
+    XCTAssertEqual(sut.directionView.backgroundColor, expectedColor)
   }
 
   func testInvalidTransaction_loadsImageAndColor() {
     let viewModel = createTestViewModel(walletTxType: .onChain, direction: .out, isValid: false)
     sut.configure(with: viewModel)
     let expectedImage = viewModel.invalidImage, expectedColor = UIColor.invalid
-    XCTAssertEqual(sut.leadingDirectionImage.image, expectedImage)
-    XCTAssertEqual(sut.leadingDirectionBackgroundView.backgroundColor, expectedColor)
+    XCTAssertEqual(sut.directionView.image, expectedImage)
+    XCTAssertEqual(sut.directionView.backgroundColor, expectedColor)
   }
 
   func testIncomingOnChain_loadsImageAndColor() {
     let viewModel = createTestViewModel(walletTxType: .onChain, direction: .in)
     sut.configure(with: viewModel)
     let expectedImage = viewModel.incomingImage, expectedColor = UIColor.incomingGreen
-    XCTAssertEqual(sut.leadingDirectionImage.image, expectedImage)
-    XCTAssertEqual(sut.leadingDirectionBackgroundView.backgroundColor, expectedColor)
+    XCTAssertEqual(sut.directionView.image, expectedImage)
+    XCTAssertEqual(sut.directionView.backgroundColor, expectedColor)
   }
 
   func testOutgoingOnChain_loadsImageAndColor() {
     let viewModel = createTestViewModel(walletTxType: .onChain, direction: .out)
     sut.configure(with: viewModel)
     let expectedImage = viewModel.outgoingImage, expectedColor = UIColor.outgoingGray
-    XCTAssertEqual(sut.leadingDirectionImage.image, expectedImage)
-    XCTAssertEqual(sut.leadingDirectionBackgroundView.backgroundColor, expectedColor)
+    XCTAssertEqual(sut.directionView.image, expectedImage)
+    XCTAssertEqual(sut.directionView.backgroundColor, expectedColor)
   }
 
   func testOutgoingOnChain_LightningTransfer_loadsImageAndColor() {
     let viewModel = createTestViewModel(walletTxType: .onChain, direction: .out, isLightningTransfer: true)
     sut.configure(with: viewModel)
     let expectedImage = viewModel.transferImage, expectedColor = UIColor.outgoingGray
-    XCTAssertEqual(sut.leadingDirectionImage.image, expectedImage)
-    XCTAssertEqual(sut.leadingDirectionBackgroundView.backgroundColor, expectedColor)
+    XCTAssertEqual(sut.directionView.image, expectedImage)
+    XCTAssertEqual(sut.directionView.backgroundColor, expectedColor)
   }
 
   func testIncomingOnChain_LightningTransfer_loadsImageAndColor() {
     let viewModel = createTestViewModel(walletTxType: .onChain, direction: .in, isLightningTransfer: true)
     sut.configure(with: viewModel)
     let expectedImage = viewModel.transferImage, expectedColor = UIColor.incomingGreen
-    XCTAssertEqual(sut.leadingDirectionImage.image, expectedImage)
-    XCTAssertEqual(sut.leadingDirectionBackgroundView.backgroundColor, expectedColor)
+    XCTAssertEqual(sut.directionView.image, expectedImage)
+    XCTAssertEqual(sut.directionView.backgroundColor, expectedColor)
   }
 
   func testOutgoingLightning_LightningTransfer_loadsImageAndColor() {
     let viewModel = createTestViewModel(walletTxType: .lightning, direction: .out, isLightningTransfer: true)
     sut.configure(with: viewModel)
     let expectedImage = viewModel.transferImage, expectedColor = UIColor.outgoingGray
-    XCTAssertEqual(sut.leadingDirectionImage.image, expectedImage)
-    XCTAssertEqual(sut.leadingDirectionBackgroundView.backgroundColor, expectedColor)
+    XCTAssertEqual(sut.directionView.image, expectedImage)
+    XCTAssertEqual(sut.directionView.backgroundColor, expectedColor)
   }
 
   func testIncomingLightning_LightningTransfer_loadsImageAndColor() {
     let viewModel = createTestViewModel(walletTxType: .lightning, direction: .in, isLightningTransfer: true)
     sut.configure(with: viewModel)
     let expectedImage = viewModel.transferImage, expectedColor = UIColor.incomingGreen
-    XCTAssertEqual(sut.leadingDirectionImage.image, expectedImage)
-    XCTAssertEqual(sut.leadingDirectionBackgroundView.backgroundColor, expectedColor)
+    XCTAssertEqual(sut.directionView.image, expectedImage)
+    XCTAssertEqual(sut.directionView.backgroundColor, expectedColor)
   }
 
   // MARK: load method

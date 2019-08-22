@@ -12,6 +12,10 @@ class TransactionDirectionView: UIView {
 
   private var iconImageView: UIImageView!
 
+  var image: UIImage? {
+    return iconImageView.image
+  }
+
   override init(frame: CGRect) {
     super.init(frame: frame)
     initialize()
