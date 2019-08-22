@@ -51,69 +51,6 @@ class TransactionHistorySummaryCellTests: XCTestCase {
     XCTAssertNotNil(self.sut.secondaryAmountLabel, "secondaryAmountLabel should be connected")
   }
 
-  // MARK: load method
-  func testLoadMethodPopoulatesOutlets() {
-    // given
-    let expectedAddress = "3NNE2SY73JkrupbWKu6iVCsGjrcNKXH4hR"
-    let otd = OutgoingTransactionData(
-      txid: "123txid",
-      dropBitType: .none,
-      destinationAddress: expectedAddress,
-      amount: 123_456,
-      feeAmount: 300,
-      sentToSelf: false,
-      requiredFeeRate: nil,
-      sharedPayloadDTO: testPayloadDTO)
-    let viewModel = sampleData(with: otd)
-
-    // when
-    self.sut.load(with: viewModel)
-
-    // then
-    XCTAssertEqual(self.sut.receiverLabel.text, expectedAddress, "receiverLabel text should be populated")
-    XCTAssertEqual(self.sut.statusLabel.text, "Pending", "statusLabel should be populated")
-    XCTAssertEqual(self.sut.dateLabel.text, viewModel.dateDescriptionFull, "dateLabel should be populated")
-    XCTAssertEqual(self.sut.memoLabel.text, viewModel.memo, "memoLabel should be populated")
-
-    let primary = "$8.66"
-    XCTAssertEqual(self.sut.primaryAmountLabel.text, primary, "primaryAmountLabel should be populated")
-
-    let secondary = "\(CurrencyCode.BTC.symbol)0.00123756"
-    XCTAssertEqual(self.sut.secondaryAmountLabel.text, secondary, "secondaryAmountLabel should be populated")
-  }
-
-  func testLoadMethodWithTemporaryContactTransactionPopulatesOutlets() {
-    // given
-    let expectedAddress = "3NNE2SY73JkrupbWKu6iVCsGjrcNKXH4hR"
-    let expectedName = "Indiana Jones"
-    let number = GlobalPhoneNumber(countryCode: 1, nationalNumber: "3305551212")
-    let phoneContact = ValidatedContact(kind: .invite, displayName: expectedName, displayNumber: number.asE164(), globalPhoneNumber: number)
-    let dropBitType = OutgoingTransactionDropBitType.phone(phoneContact)
-    let otd = OutgoingTransactionData(
-      txid: "123txid",
-      dropBitType: dropBitType,
-      destinationAddress: expectedAddress,
-      amount: 123_456,
-      feeAmount: 300,
-      sentToSelf: false,
-      requiredFeeRate: nil,
-      sharedPayloadDTO: testPayloadDTO)
-    let viewModel = sampleData(with: otd)
-
-    // when
-    self.sut.load(with: viewModel)
-
-    // then
-    XCTAssertEqual(self.sut.receiverLabel.text, expectedName, "receiverLabel text should be populated with expected name")
-    XCTAssertEqual(self.sut.statusLabel.text, "Pending", "statusLabel should be populated")
-    XCTAssertEqual(self.sut.dateLabel.text, viewModel.dateDescriptionFull, "dateLabel should be populated")
-    XCTAssertEqual(self.sut.memoLabel.text, viewModel.memo, "memoLabel should be populated")
-
-    let primary = "$8.66"
-    XCTAssertEqual(self.sut.primaryAmountLabel.text, primary, "primaryAmountLabel should be populated")
-
-    let secondary = "\(CurrencyCode.BTC.symbol)0.00123756"
-    XCTAssertEqual(self.sut.secondaryAmountLabel.text, secondary, "secondaryAmountLabel should be populated")
   func testIncomingLightningLoadsImageAndColor() {
     let viewModel = createTestViewModel(walletTxType: .lightning, direction: .in, isLightningTransfer: false)
     sut.configure(with: viewModel)
@@ -122,77 +59,135 @@ class TransactionHistorySummaryCellTests: XCTestCase {
     XCTAssertEqual(sut.leadingDirectionBackgroundView.backgroundColor, UIColor.lightningBlue)
   }
 
-  func testLoadMethodWithTemporaryPhoneNumberTransactionPopulatesOutlets() {
-    // given
-    let expectedAddress = "3NNE2SY73JkrupbWKu6iVCsGjrcNKXH4hR"
-    let unformattedPhone = "3305551212"
-    let formattedPhone = "+1 330-555-1212"
-    let number = GlobalPhoneNumber(countryCode: 1, nationalNumber: unformattedPhone)
-    let phoneContact = GenericContact(phoneNumber: number, formatted: formattedPhone)
-    let dropBitType = OutgoingTransactionDropBitType.phone(phoneContact)
-    let otd = OutgoingTransactionData(
-      txid: "123txid",
-      dropBitType: dropBitType,
-      destinationAddress: expectedAddress,
-      amount: 123_456,
-      feeAmount: 300,
-      sentToSelf: false,
-      requiredFeeRate: nil,
-      sharedPayloadDTO: testPayloadDTO)
+  // MARK: load method
+//  func testLoadMethodPopoulatesOutlets() {
+//    // given
+//    let expectedAddress = "3NNE2SY73JkrupbWKu6iVCsGjrcNKXH4hR"
+//    let otd = OutgoingTransactionData(
+//      txid: "123txid",
+//      dropBitType: .none,
+//      destinationAddress: expectedAddress,
+//      amount: 123_456,
+//      feeAmount: 300,
+//      sentToSelf: false,
+//      requiredFeeRate: nil,
+//      sharedPayloadDTO: testPayloadDTO)
+//    let viewModel = sampleData(with: otd)
+//
+//    // when
+//    self.sut.load(with: viewModel)
+//
+//    // then
+//    XCTAssertEqual(self.sut.receiverLabel.text, expectedAddress, "receiverLabel text should be populated")
+//    XCTAssertEqual(self.sut.statusLabel.text, "Pending", "statusLabel should be populated")
+//    XCTAssertEqual(self.sut.dateLabel.text, viewModel.dateDescriptionFull, "dateLabel should be populated")
+//    XCTAssertEqual(self.sut.memoLabel.text, viewModel.memo, "memoLabel should be populated")
+//
+//    let primary = "$8.66"
+//    XCTAssertEqual(self.sut.primaryAmountLabel.text, primary, "primaryAmountLabel should be populated")
+//
+//    let secondary = "\(CurrencyCode.BTC.symbol)0.00123756"
+//    XCTAssertEqual(self.sut.secondaryAmountLabel.text, secondary, "secondaryAmountLabel should be populated")
+//  }
 
-    let viewModel = sampleData(with: otd)
+//  func testLoadMethodWithTemporaryContactTransactionPopulatesOutlets() {
+//    // given
+//    let expectedAddress = "3NNE2SY73JkrupbWKu6iVCsGjrcNKXH4hR"
+//    let expectedName = "Indiana Jones"
+//    let number = GlobalPhoneNumber(countryCode: 1, nationalNumber: "3305551212")
+//    let phoneContact = ValidatedContact(kind: .invite, displayName: expectedName, displayNumber: number.asE164(), globalPhoneNumber: number)
+//    let dropBitType = OutgoingTransactionDropBitType.phone(phoneContact)
+//    let otd = OutgoingTransactionData(
+//      txid: "123txid",
+//      dropBitType: dropBitType,
+//      destinationAddress: expectedAddress,
+//      amount: 123_456,
+//      feeAmount: 300,
+//      sentToSelf: false,
+//      requiredFeeRate: nil,
+//      sharedPayloadDTO: testPayloadDTO)
+//    let viewModel = sampleData(with: otd)
+//
+//    // when
+//    self.sut.load(with: viewModel)
+//
+//    // then
+//    XCTAssertEqual(self.sut.receiverLabel.text, expectedName, "receiverLabel text should be populated with expected name")
+//    XCTAssertEqual(self.sut.statusLabel.text, "Pending", "statusLabel should be populated")
+//    XCTAssertEqual(self.sut.dateLabel.text, viewModel.dateDescriptionFull, "dateLabel should be populated")
+//    XCTAssertEqual(self.sut.memoLabel.text, viewModel.memo, "memoLabel should be populated")
+//
+//    let primary = "$8.66"
+//    XCTAssertEqual(self.sut.primaryAmountLabel.text, primary, "primaryAmountLabel should be populated")
+//
+//    let secondary = "\(CurrencyCode.BTC.symbol)0.00123756"
+//    XCTAssertEqual(self.sut.secondaryAmountLabel.text, secondary, "secondaryAmountLabel should be populated")
+//  }
 
-    // when
-    self.sut.load(with: viewModel)
+//  func testLoadMethodWithTemporaryPhoneNumberTransactionPopulatesOutlets() {
+//    // given
+//    let expectedAddress = "3NNE2SY73JkrupbWKu6iVCsGjrcNKXH4hR"
+//    let unformattedPhone = "3305551212"
+//    let formattedPhone = "+1 330-555-1212"
+//    let number = GlobalPhoneNumber(countryCode: 1, nationalNumber: unformattedPhone)
+//    let phoneContact = GenericContact(phoneNumber: number, formatted: formattedPhone)
+//    let dropBitType = OutgoingTransactionDropBitType.phone(phoneContact)
+//    let otd = OutgoingTransactionData(
+//      txid: "123txid",
+//      dropBitType: dropBitType,
+//      destinationAddress: expectedAddress,
+//      amount: 123_456,
+//      feeAmount: 300,
+//      sentToSelf: false,
+//      requiredFeeRate: nil,
+//      sharedPayloadDTO: testPayloadDTO)
+//
+//    let viewModel = sampleData(with: otd)
+//
+//    // when
+//    self.sut.load(with: viewModel)
+//
+//    // then
+//    XCTAssertEqual(self.sut.receiverLabel.text, formattedPhone, "receiverLabel text should be populated with expected phone")
+//    XCTAssertEqual(self.sut.statusLabel.text, "Pending", "statusLabel should be populated")
+//    XCTAssertEqual(self.sut.dateLabel.text, viewModel.dateDescriptionFull, "dateLabel should be populated")
+//    XCTAssertEqual(self.sut.memoLabel.text, viewModel.memo, "memoLabel should be populated")
+//
+//    let primary = "$8.66"
+//    XCTAssertEqual(self.sut.primaryAmountLabel.text, primary, "primaryAmountLabel should be populated")
+//
+//    let secondary = "\(CurrencyCode.BTC.symbol)0.00123756"
+//    XCTAssertEqual(self.sut.secondaryAmountLabel.text, secondary, "secondaryAmountLabel should be populated")
+//  }
 
-    // then
-    XCTAssertEqual(self.sut.receiverLabel.text, formattedPhone, "receiverLabel text should be populated with expected phone")
-    XCTAssertEqual(self.sut.statusLabel.text, "Pending", "statusLabel should be populated")
-    XCTAssertEqual(self.sut.dateLabel.text, viewModel.dateDescriptionFull, "dateLabel should be populated")
-    XCTAssertEqual(self.sut.memoLabel.text, viewModel.memo, "memoLabel should be populated")
-
-    let primary = "$8.66"
-    XCTAssertEqual(self.sut.primaryAmountLabel.text, primary, "primaryAmountLabel should be populated")
-
-    let secondary = "\(CurrencyCode.BTC.symbol)0.00123756"
-    XCTAssertEqual(self.sut.secondaryAmountLabel.text, secondary, "secondaryAmountLabel should be populated")
-  }
-
-  func testLoadMethodWithTemporaryRegularTransactionPopulatesOutlets() {
-    // given
-    let expectedAddress = "3NNE2SY73JkrupbWKu6iVCsGjrcNKXH4hR"
-    let otd = OutgoingTransactionData(
-      txid: "123txid",
-      dropBitType: .none,
-      destinationAddress: expectedAddress,
-      amount: 123_456,
-      feeAmount: 300,
-      sentToSelf: false,
-      requiredFeeRate: nil,
-      sharedPayloadDTO: testPayloadDTO)
-    let viewModel = sampleData(with: otd)
-
-    // when
-    self.sut.load(with: viewModel)
-
-    // then
-    XCTAssertEqual(self.sut.receiverLabel.text, expectedAddress, "receiverLabel text should be populated")
-    XCTAssertEqual(self.sut.statusLabel.text, "Pending", "statusLabel should be populated")
-    XCTAssertEqual(self.sut.dateLabel.text, viewModel.dateDescriptionFull, "dateLabel should be populated")
-    XCTAssertEqual(self.sut.memoLabel.text, viewModel.memo, "memoLabel should be populated")
-
-    let primary = "$8.66"
-    XCTAssertEqual(self.sut.primaryAmountLabel.text, primary, "primaryAmountLabel should be populated")
-
-    let secondary = "\(CurrencyCode.BTC.symbol)0.00123756"
-    XCTAssertEqual(self.sut.secondaryAmountLabel.text, secondary, "secondaryAmountLabel should be populated")
-  }
-
-  // MARK: private methods
-  private func sampleData(with otd: OutgoingTransactionData, phoneFormat: PhoneNumberFormat = .national) -> TransactionHistoryDetailCellViewModel {
-    let stack = InMemoryCoreDataStack()
-    let transaction = CKMTransaction.findOrCreate(with: otd, in: stack.context)
-    let rates: ExchangeRates = [.BTC: 1, .USD: 7000]
-
+//  func testLoadMethodWithTemporaryRegularTransactionPopulatesOutlets() {
+//    // given
+//    let expectedAddress = "3NNE2SY73JkrupbWKu6iVCsGjrcNKXH4hR"
+//    let otd = OutgoingTransactionData(
+//      txid: "123txid",
+//      dropBitType: .none,
+//      destinationAddress: expectedAddress,
+//      amount: 123_456,
+//      feeAmount: 300,
+//      sentToSelf: false,
+//      requiredFeeRate: nil,
+//      sharedPayloadDTO: testPayloadDTO)
+//    let viewModel = sampleData(with: otd)
+//
+//    // when
+//    self.sut.load(with: viewModel)
+//
+//    // then
+//    XCTAssertEqual(self.sut.receiverLabel.text, expectedAddress, "receiverLabel text should be populated")
+//    XCTAssertEqual(self.sut.statusLabel.text, "Pending", "statusLabel should be populated")
+//    XCTAssertEqual(self.sut.dateLabel.text, viewModel.dateDescriptionFull, "dateLabel should be populated")
+//    XCTAssertEqual(self.sut.memoLabel.text, viewModel.memo, "memoLabel should be populated")
+//
+//    let primary = "$8.66"
+//    XCTAssertEqual(self.sut.primaryAmountLabel.text, primary, "primaryAmountLabel should be populated")
+//
+//    let secondary = "\(CurrencyCode.BTC.symbol)0.00123756"
+//    XCTAssertEqual(self.sut.secondaryAmountLabel.text, secondary, "secondaryAmountLabel should be populated")
+//  }
 
 }
