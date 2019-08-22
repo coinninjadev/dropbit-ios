@@ -21,6 +21,19 @@ class TransactionHistorySummaryCell: UICollectionViewCell {
   override func awakeFromNib() {
     super.awakeFromNib()
     backgroundColor = .white
+
+    let radius = leadingDirectionBackgroundView.frame.width/2
+    leadingDirectionBackgroundView.applyCornerRadius(radius)
+    leadingDirectionImage.contentMode = .center
+
+  }
+
+  override func prepareForReuse() {
+    super.prepareForReuse()
+
+    twitterAvatarView.isHidden = true
+    leadingDirectionBackgroundView.isHidden = true
+    leadingDirectionImage.isHidden = true
   }
 
   // part of auto-sizing
@@ -30,11 +43,6 @@ class TransactionHistorySummaryCell: UICollectionViewCell {
     return layoutAttributes
   }
 
-  override func prepareForReuse() {
-    super.prepareForReuse()
-    leadingImage.layer.borderColor = nil
-    leadingImage.layer.borderWidth = 0
-    leadingImage.layer.cornerRadius = 0
   }
 
   func load(with viewModel: OldTransactionSummaryCellViewModel, isAtTop: Bool = false) {
