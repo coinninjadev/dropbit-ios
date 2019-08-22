@@ -59,6 +59,14 @@ class TransactionHistorySummaryCellTests: XCTestCase {
     XCTAssertEqual(sut.leadingDirectionBackgroundView.backgroundColor, UIColor.lightningBlue)
   }
 
+  func testOutgoingLightningLoadsImageAndColor() {
+    let viewModel = createTestViewModel(walletTxType: .lightning, direction: .out, isLightningTransfer: false)
+    sut.configure(with: viewModel)
+    let expectedImage = viewModel.lightningImage
+    XCTAssertEqual(sut.leadingDirectionImage.image, expectedImage)
+    XCTAssertEqual(sut.leadingDirectionBackgroundView.backgroundColor, UIColor.lightningBlue)
+  }
+
   // MARK: load method
 //  func testLoadMethodPopoulatesOutlets() {
 //    // given
