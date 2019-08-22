@@ -57,18 +57,26 @@ class TransactionHistorySummaryCellTests: XCTestCase {
     XCTAssertNotNil(self.sut.secondaryAmountLabel, "secondaryAmountLabel should be connected")
   }
 
-  func testIncomingLightning_loadsImageAndColor() {
-    let viewModel = createTestViewModel(walletTxType: .lightning, direction: .in, isLightningTransfer: false)
+  func testUnpaidLightningInvoice_loadsImageAndColor() {
+    let viewModel = createTestViewModel(walletTxType: .lightning, direction: .in, status: .pending, isLightningTransfer: false)
     sut.configure(with: viewModel)
     let expectedImage = viewModel.lightningImage, expectedColor = UIColor.lightningBlue
     XCTAssertEqual(sut.directionView.image, expectedImage)
     XCTAssertEqual(sut.directionView.backgroundColor, expectedColor)
   }
 
-  func testOutgoingLightning_loadsImageAndColor() {
-    let viewModel = createTestViewModel(walletTxType: .lightning, direction: .out, isLightningTransfer: false)
+  func testIncomingCompletedLightning_loadsImageAndColor() {
+    let viewModel = createTestViewModel(walletTxType: .lightning, direction: .in, status: .completed, isLightningTransfer: false)
     sut.configure(with: viewModel)
-    let expectedImage = viewModel.lightningImage, expectedColor = UIColor.lightningBlue
+    let expectedImage = viewModel.incomingImage, expectedColor = UIColor.incomingGreen
+    XCTAssertEqual(sut.directionView.image, expectedImage)
+    XCTAssertEqual(sut.directionView.backgroundColor, expectedColor)
+  }
+
+  func testOutgoingCompletedLightning_loadsImageAndColor() {
+    let viewModel = createTestViewModel(walletTxType: .lightning, direction: .out, status: .completed, isLightningTransfer: false)
+    sut.configure(with: viewModel)
+    let expectedImage = viewModel.outgoingImage, expectedColor = UIColor.outgoingGray
     XCTAssertEqual(sut.directionView.image, expectedImage)
     XCTAssertEqual(sut.directionView.backgroundColor, expectedColor)
   }

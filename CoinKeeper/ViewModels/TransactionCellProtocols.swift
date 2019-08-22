@@ -60,7 +60,7 @@ extension TransactionSummaryCellViewModelType {
       return transferImage
     } else {
       switch walletTxType {
-      case .lightning:  return lightningImage
+      case .lightning:  return isPendingInvoice ? lightningImage : directionImage
       case .onChain:    return directionImage
       }
     }
@@ -69,14 +69,15 @@ extension TransactionSummaryCellViewModelType {
   var accentColor: UIColor {
     guard isValidTransaction else { return .invalid }
 
-    if isLightningTransfer {
-      return directionColor
+    if isPendingInvoice {
+      return .lightningBlue
     } else {
-      switch walletTxType {
-      case .lightning:  return .lightningBlue
-      case .onChain:    return directionColor
-      }
+      return directionColor
     }
+  }
+
+  private var isPendingInvoice: Bool {
+    return walletTxType == .lightning && status == .pending
   }
 
   private var directionImage: UIImage {
