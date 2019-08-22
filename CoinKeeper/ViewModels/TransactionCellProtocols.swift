@@ -16,13 +16,11 @@ import UIKit
 protocol TransactionSummaryCellDisplayable {
   var summaryStatusText: String? { get }
   var statusTextColor: UIColor { get }
-  var shouldShowCounterpartyTwitterIcon: Bool { get }
   var counterpartyLabel: String? { get }
   var selectedCurrency: SelectedCurrency { get }
   var summaryAmountLabels: SummaryCellAmountLabels { get }
-  var directionAccentColor: UIColor { get }
-  var leadingImage: UIImage { get } // may be avatar or direction icon
-  var leadingImageBackgroundColor: UIColor { get } // may be clear if using avatar
+  var directionColor: UIColor { get }
+  var leadingImageConfig: SummaryCellLeadingImageConfig { get } // may be avatar or direction icon
   var memo: String? { get }
   var displayDate: String { get }
 }
@@ -45,11 +43,39 @@ protocol TransactionSummaryCellViewModelType: TransactionSummaryCellDisplayable,
 
 extension TransactionSummaryCellViewModelType {
 
-  var directionImage: UIImage? {
-    //TODO
-    switch direction {
-    case .in:   return UIImage(named: "")
-    case .out:  return UIImage(named: "")
+  var leadingImageConfig: SummaryCellLeadingImageConfig {
+    if let twitter = twitterConfig {
+      return SummaryCellLeadingImageConfig(twitterConfig: twitter)
+
+    } else {
+      return SummaryCellLeadingImageConfig(directionColor: directionColor,
+                                           directionImage: directionImage)
+    }
+  }
+
+  private var directionImage: UIImage {
+    switch walletTxType {
+    case .lightning:
+      return isLightningTransfer ? transferImage : lightningImage
+
+    case .onChain:
+      switch direction {
+      case .in:   return incomingImage
+      case .out:  return outgoingImage
+      }
+    }
+  }
+
+  var directionColor: UIColor {
+    if isLightningTransfer {
+      return .lightningBlue
+    } else if isValidTransaction {
+      switch direction {
+      case .in:   return .neonGreen
+      case .out:  return .outgoingGray
+      }
+    } else {
+      return .invalid
     }
   }
 
@@ -73,10 +99,6 @@ extension TransactionSummaryCellViewModelType {
     } else {
       return .darkPeach
     }
-  }
-
-  var shouldShowCounterpartyTwitterIcon: Bool {
-    return twitterConfig != nil
   }
 
   var counterpartyLabel: String? {
@@ -106,41 +128,14 @@ extension TransactionSummaryCellViewModelType {
     return SummaryCellAmountLabels(btcText: btcAttributedString, fiatText: fiatAttributedString.string)
   }
 
-  var directionAccentColor: UIColor {
-    if isValidTransaction {
-      switch direction {
-      case .in:   return .neonGreen
-      case .out:  return .outgoingGray
-      }
-    } else {
-      return .invalid
-    }
   var incomingImage: UIImage! {
     return UIImage(named: "summaryCellIncoming")!
   }
 
-  /// may be avatar or direction icon
-  var leadingImage: UIImage {
-    if let config = twitterConfig {
-      return config.avatar
-    } else {
-      //TODO
-      if isLightningTransfer {
-        return UIImage(named: "")!
-      } else {
-        return UIImage(named: "")!
-      }
-    }
   var outgoingImage: UIImage! {
     return UIImage(named: "summaryCellOutgoing")!
   }
 
-  var leadingImageBackgroundColor: UIColor {
-    if twitterConfig == nil {
-      return directionAccentColor
-    } else {
-      return .clear
-    }
   var transferImage: UIImage! {
     return UIImage(named: "summaryCellTransfer")!
   }
@@ -269,7 +264,6 @@ struct TransactionAmountDetails {
   let fiatWhenTransacted: NSDecimalNumber?
 }
 
-
 struct ProgressBarConfig {
   let titles: [String]
   let stepTitles: [String]
@@ -312,13 +306,46 @@ struct DetailCellMemoConfig {
 
 struct TransactionCellTwitterConfig {
   let avatar: UIImage
-  let accessory: UIImage
   let displayHandle: String
 }
 
 struct SummaryCellAmountLabels {
   let btcText: NSAttributedString //may be lightning or on-chain amount
   let fiatText: String
+}
+
+struct SummaryCellDirectionConfig {
+  let bgColor: UIColor
+  let image: UIImage
+}
+
+struct SummaryCellAvatarConfig {
+  let image: UIImage
+}
+
+struct SummaryCellLeadingImageConfig {
+  let avatarConfig: SummaryCellAvatarConfig?
+  let directionConfig: SummaryCellDirectionConfig?
+
+  init(avatarConfig: SummaryCellAvatarConfig?,
+       directionConfig: SummaryCellDirectionConfig?) {
+    self.avatarConfig = avatarConfig
+    self.directionConfig = directionConfig
+  }
+
+  init(twitterConfig: TransactionCellTwitterConfig) {
+    self.avatarConfig = SummaryCellAvatarConfig(image: twitterConfig.avatar)
+    self.directionConfig = nil
+  }
+
+  init(directionColor: UIColor, directionImage: UIImage) {
+    self.avatarConfig = nil
+    self.directionConfig = SummaryCellDirectionConfig(bgColor: directionColor,
+                                                      image: directionImage)
+  }
+
+  var avatarViewIsHidden: Bool { return avatarConfig == nil }
+  var directionViewIsHidden: Bool { return directionConfig == nil }
 }
 
 /// Only one of the secondary strings should be set
