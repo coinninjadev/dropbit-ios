@@ -27,7 +27,7 @@ extension AppCoordinator: WalletTransferViewControllerDelegate {
       let inputs = SendingDelegateInputs(primaryCurrency: .BTC, walletTxType: .onChain, contact: nil,
                                          rates: exchangeRates, sharedPayload: sharedPayload)
       viewControllerDidSendPayment(viewController, btcAmount: btcAmount, requiredFeeRate: nil,
-                                   destination: address, inputs: inputs)
+                                   paymentTarget: address, inputs: inputs)
 
     case .toOnChain:
       guard let receiveAddress = self.nextReceiveAddressForRequestPay() else { return }

@@ -101,7 +101,7 @@ extension AppCoordinator: ViewControllerSendingDelegate {
   func viewControllerDidSendPayment(_ viewController: UIViewController,
                                     btcAmount: NSDecimalNumber,
                                     requiredFeeRate: Double?,
-                                    destination: String,
+                                    paymentTarget: String,
                                     inputs: SendingDelegateInputs) {
 
     guard let wmgr = walletManager else { return }
@@ -113,7 +113,7 @@ extension AppCoordinator: ViewControllerSendingDelegate {
     switch inputs.walletTxType {
     case .lightning:
       viewController.dismiss(animated: true) {
-        let viewModel = ConfirmLightningPaymentViewModel(invoice: destination,
+        let viewModel = ConfirmLightningPaymentViewModel(invoice: paymentTarget,
                                                          contact: inputs.contact,
                                                          btcAmount: btcAmount,
                                                          sharedPayload: inputs.sharedPayload,
@@ -129,11 +129,11 @@ extension AppCoordinator: ViewControllerSendingDelegate {
         var outgoingTxData = OutgoingTransactionData.emptyInstance()
         outgoingTxData.amount = btcAmount.asFractionalUnits(of: .BTC)
         outgoingTxData.requiredFeeRate = requiredFeeRate
-        outgoingTxData = self.configureOutgoingTransactionData(with: outgoingTxData, address: destination, inputs: inputs)
+        outgoingTxData = self.configureOutgoingTransactionData(with: outgoingTxData, address: paymentTarget, inputs: inputs)
 
         let paymentInputs = SendOnChainPaymentInputs(networkManager: self.networkManager, wmgr: wmgr,
                                                      outgoingTxData: outgoingTxData, btcAmount: btcAmount,
-                                                     address: destination, contact: inputs.contact,
+                                                     address: paymentTarget, contact: inputs.contact,
                                                      currencyPair: currencyPair, exchangeRates: inputs.rates)
         self.sendOnChainPayment(with: paymentInputs)
       }
