@@ -36,17 +36,26 @@ enum CKRecipientParserError: LocalizedError {
     case .validation(let validatorError):
       return validatorError.displayMessage ?? validatorError.debugMessage
     case .noResults(let types):
-      var recipientDesc = ""
-      if types.contains(.bitcoinURL) {
-        recipientDesc = "bitcoin addresses "
-      }
-
-      if types.contains(.phoneNumber) {
-        let conj = recipientDesc.isEmpty ? "" : "or "
-        recipientDesc += "\(conj)phone numbers "
-      }
-
+      let recipientDesc = recipientDescription(for: types)
       return "No valid \(recipientDesc)were found in the text."
     }
   }
+
+  private func recipientDescription(for types: [CKRecipientType]) -> String {
+    var recipientDesc = ""
+    if types.contains(.bitcoinURL) {
+      recipientDesc = "Bitcoin addresses "
+    }
+
+    if types.contains(.lightningURL) {
+      recipientDesc = "lightning invoices "
+    }
+
+    if types.contains(.phoneNumber) {
+      let conj = recipientDesc.isEmpty ? "" : "or "
+      recipientDesc += "\(conj)phone numbers "
+    }
+    return recipientDesc
+  }
+
 }

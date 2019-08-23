@@ -181,6 +181,20 @@ class SendPaymentViewModel: CurrencySwappableEditAmountViewModel {
     return [.usableBalance]
   }
 
+  var validDestinationRecipientTypes: [CKRecipientType] {
+    switch walletTransactionType {
+    case .onChain:    return [.bitcoinURL]
+    case .lightning:  return [.lightningURL]
+    }
+  }
+
+  var validParsingRecipientTypes: [CKRecipientType] {
+    switch walletTransactionType {
+    case .onChain:    return [.bitcoinURL, .phoneNumber]
+    case .lightning:  return [.lightningURL, .phoneNumber]
+    }
+  }
+
   var recipientDisplayStyle: RecipientDisplayStyle? {
     guard let recipient = paymentRecipient else {
       return .textField

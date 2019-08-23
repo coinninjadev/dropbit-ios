@@ -359,7 +359,7 @@ extension SendPaymentViewController {
 
   func applyRecipient(inText text: String) {
     do {
-      let recipient = try viewModel.recipientParser.findSingleRecipient(inText: text, ofTypes: [.lightningURL, .bitcoinURL, .phoneNumber])
+      let recipient = try viewModel.recipientParser.findSingleRecipient(inText: text, ofTypes: viewModel.validParsingRecipientTypes)
       editAmountView.primaryAmountTextField.resignFirstResponder()
       updateViewModel(withParsedRecipient: recipient)
     } catch {
@@ -687,7 +687,7 @@ extension SendPaymentViewController {
     case .phoneNumber(let genericContact):
       try validatePayment(toContact: genericContact)
     case .destination(let destination):
-      try validatePayment(toDestination: destination)
+      try validatePayment(toDestination: destination, matches: viewModel.validDestinationRecipientTypes)
     case .twitterContact(let contact):
       try validatePayment(toContact: contact)
     }
@@ -697,8 +697,8 @@ extension SendPaymentViewController {
     return SharedPayloadAmountInfo(fiatCurrency: .USD, fiatAmount: 1)
   }
 
-  private func validatePayment(toDestination destination: String) throws {
-    let recipient = try viewModel.recipientParser.findSingleRecipient(inText: destination, ofTypes: [.bitcoinURL])
+  private func validatePayment(toDestination destination: String, matches types: [CKRecipientType]) throws {
+    let recipient = try viewModel.recipientParser.findSingleRecipient(inText: destination, ofTypes: types)
     guard case let .bitcoinURL(url) = recipient, let address = url.components.address else {
       throw BitcoinAddressValidatorError.isInvalidBitcoinAddress
     }
