@@ -66,6 +66,42 @@ class TransactionSummaryCellCounterpartyTests: XCTestCase {
     XCTAssertEqual(sut.counterpartyLabel.text, expectedWithdrawalDescription)
   }
 
+  func testCounterpartyLoadsUnpaidLightningInvoice() {
+    let lightningVM = MockSummaryCellVM.testInstance(walletTxType: .lightning,
+                                                     direction: .in,
+                                                     status: .pending,
+                                                     isLightningTransfer: false,
+                                                     lightningInvoice: TestHelpers.mockLightningInvoice(),
+                                                     counterpartyConfig: nil)
+    let expectedText = lightningVM.lightningUnpaidInvoiceText
+    sut.configure(with: lightningVM)
+    XCTAssertEqual(sut.counterpartyLabel.text, expectedText)
+  }
+
+  func testCounterpartyLoadsExpiredLightningInvoice() {
+    let lightningVM = MockSummaryCellVM.testInstance(walletTxType: .lightning,
+                                                     direction: .in,
+                                                     status: .expired,
+                                                     isLightningTransfer: false,
+                                                     lightningInvoice: TestHelpers.mockLightningInvoice(),
+                                                     counterpartyConfig: nil)
+    let expectedText = lightningVM.lightningUnpaidInvoiceText
+    sut.configure(with: lightningVM)
+    XCTAssertEqual(sut.counterpartyLabel.text, expectedText)
+  }
+
+  func testCounterpartyLoadsPaidLightningInvoice() {
+    let lightningVM = MockSummaryCellVM.testInstance(walletTxType: .lightning,
+                                                     direction: .out,
+                                                     status: .completed,
+                                                     isLightningTransfer: false,
+                                                     lightningInvoice: TestHelpers.mockLightningInvoice(),
+                                                     counterpartyConfig: nil)
+    let expectedText = lightningVM.lightningPaidInvoiceText
+    sut.configure(with: lightningVM)
+    XCTAssertEqual(sut.counterpartyLabel.text, expectedText)
+  }
+
   func testCounterpartyLoadsDisplayName() {
     let nameVM = MockSummaryCellVM.testInstance(counterpartyConfig: fullCounterparty)
     sut.configure(with: nameVM)

@@ -94,4 +94,10 @@ class TestHelpers {
       "bitcoin:3Cd4xEu2VvM352BVgd9cb1Ct5vxz318tVT"
     ]
   }
+
+  static func mockLightningInvoice() -> String {
+    return  "lnbcrt9876540n1pw4lj7tpp505qh7vwtvh5s48r4x0fjukekepdhkvcdternv8t7eh99t5" +
+            "7emrsqdq5w3jhxapqd9h8vmmfvdjscqzpgxqrrsshudk0hjapln9p3vt9dnuy2nhygrda54whp" +
+            "l7ds2jjvczcmr0p8qjej6utg98qmyncq30txmh4fernv33rq2wr34uclvzzxrgf6e5pyqq2d9m90"
+  }
 }

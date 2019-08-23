@@ -127,15 +127,14 @@ extension TransactionSummaryCellViewModelType {
       }
     } else if let counterparty = counterpartyDescription {
       return counterparty
+    } else if let invoiceText = lightningInvoiceDescription {
+      return invoiceText
     } else if let address = btcAddress {
       return address
     } else {
       return "(unknown)"
     }
   }
-
-  var lightningWithdrawText: String { return "Lightning Withdraw" }
-  var lightningDepositText: String { return "Load Lightning" }
 
   private var lightningTransferType: LightningTransferType? {
     guard isLightningTransfer else { return nil }
@@ -144,6 +143,14 @@ extension TransactionSummaryCellViewModelType {
       return (direction == .in) ? .withdraw : .deposit
     case .lightning:
       return (direction == .in) ? .deposit : .withdraw
+    }
+  }
+
+  private var lightningInvoiceDescription: String? {
+    guard (lightningInvoice ?? "").isNotEmpty else { return nil }
+    switch status {
+    case .completed:  return lightningPaidInvoiceText
+    default:          return lightningUnpaidInvoiceText
     }
   }
 
@@ -178,6 +185,11 @@ extension TransactionSummaryCellViewModelType {
 
     return SummaryCellAmountLabels(btcText: btcAttributedString, fiatText: fiatAttributedString.string)
   }
+
+  var lightningPaidInvoiceText: String { return "Invoice Paid" }
+  var lightningUnpaidInvoiceText: String { return "Lightning Invoice" }
+  var lightningWithdrawText: String { return "Lightning Withdraw" }
+  var lightningDepositText: String { return "Load Lightning" }
 
   var incomingImage: UIImage! { return UIImage(named: "summaryCellIncoming")! }
   var outgoingImage: UIImage! { return UIImage(named: "summaryCellOutgoing")! }
