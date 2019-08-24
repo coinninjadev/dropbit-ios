@@ -20,6 +20,8 @@ class TransactionHistorySummaryCell: UICollectionViewCell {
     super.awakeFromNib()
 
     layer.cornerRadius = 13.0
+    amountStackView.alignment = .trailing
+    amountStackView.distribution = .equalSpacing
   }
 
   override func prepareForReuse() {
