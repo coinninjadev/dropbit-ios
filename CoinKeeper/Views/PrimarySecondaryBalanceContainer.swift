@@ -42,6 +42,11 @@ extension CurrencyPairDisplayable {
     return NSMutableAttributedString.medium(text, size: size, color: .bitcoinOrange)
   }
 
+  func fiatString(for amount: NSDecimalNumber, currency: CurrencyCode) -> String {
+    let formatter = CKNumberFormatter.fiatCurrencyFormatter(for: currency)
+    return formatter.string(from: amount) ?? ""
+  }
+
 }
 
 class PrimarySecondaryBalanceContainer: UIView, CurrencyPairDisplayable {

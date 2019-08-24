@@ -21,8 +21,10 @@ class SummaryCellSatsLabel: UILabel {
   }
 
   private func initialize() {
+    self.backgroundColor = .clear
     self.textColor = .bitcoinOrange
     self.font = .semiBold(13)
+    self.textAlignment = .right
 
     self.translatesAutoresizingMaskIntoConstraints = false
     self.heightAnchor.constraint(equalToConstant: 28).isActive = true

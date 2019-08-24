@@ -15,7 +15,6 @@ class MockTransactionSummaryCellViewModel: TransactionSummaryCellViewModelType {
 
   var walletTxType: WalletTransactionType
   var direction: TransactionDirection
-  var isValidTransaction: Bool
   var status: TransactionStatus
   var isLightningTransfer: Bool
   var btcAddress: String?
@@ -27,9 +26,7 @@ class MockTransactionSummaryCellViewModel: TransactionSummaryCellViewModelType {
 
   init(walletTxType: WalletTransactionType,
        direction: TransactionDirection,
-       isValid: Bool,
        status: TransactionStatus,
-       date: Date,
        isLightningTransfer: Bool,
        btcAddress: String?,
        lightningInvoice: String?,
@@ -39,7 +36,6 @@ class MockTransactionSummaryCellViewModel: TransactionSummaryCellViewModelType {
        memo: String?) {
     self.walletTxType = walletTxType
     self.direction = direction
-    self.isValidTransaction = isValid
     self.status = status
     self.isLightningTransfer = isLightningTransfer
     self.btcAddress = btcAddress
@@ -64,8 +60,8 @@ class MockTransactionSummaryCellViewModel: TransactionSummaryCellViewModelType {
   static func defaultInstance() -> MockTransactionSummaryCellViewModel {
     let amtDetails = testAmountDetails(sats: 49500)
     let address = TestHelpers.mockValidBitcoinAddress()
-    return MockTransactionSummaryCellViewModel(walletTxType: .onChain, direction: .out, isValid: true,
-                                               status: .completed, date: Date(), isLightningTransfer: false,
+    return MockTransactionSummaryCellViewModel(walletTxType: .onChain, direction: .out,
+                                               status: .completed, isLightningTransfer: false,
                                                btcAddress: address, lightningInvoice: nil,
                                                selectedCurrency: .fiat, amountDetails: amtDetails,
                                                counterpartyConfig: nil, memo: nil)
@@ -73,9 +69,7 @@ class MockTransactionSummaryCellViewModel: TransactionSummaryCellViewModelType {
 
   static func testInstance(walletTxType: WalletTransactionType = .onChain,
                            direction: TransactionDirection = .out,
-                           isValid: Bool = true,
                            status: TransactionStatus = .completed,
-                           date: Date = Date(),
                            isLightningTransfer: Bool = false,
                            btcAddress: String? = nil,
                            lightningInvoice: String? = nil,
@@ -86,8 +80,8 @@ class MockTransactionSummaryCellViewModel: TransactionSummaryCellViewModelType {
 
     let amtDetails = amountDetails ?? MockTransactionSummaryCellViewModel.testAmountDetails(sats: 49500)
     return MockTransactionSummaryCellViewModel(
-      walletTxType: walletTxType, direction: direction, isValid: isValid,
-      status: status, date: date, isLightningTransfer: isLightningTransfer,
+      walletTxType: walletTxType, direction: direction,
+      status: status, isLightningTransfer: isLightningTransfer,
       btcAddress: btcAddress, lightningInvoice: lightningInvoice,
       selectedCurrency: selectedCurrency, amountDetails: amtDetails,
       counterpartyConfig: counterpartyConfig, memo: memo)

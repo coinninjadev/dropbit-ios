@@ -38,7 +38,6 @@ extension TransactionSummaryCellDisplayable {
 protocol TransactionSummaryCellViewModelType: TransactionSummaryCellDisplayable, CurrencyPairDisplayable {
   var walletTxType: WalletTransactionType { get }
   var direction: TransactionDirection { get }
-  var isValidTransaction: Bool { get }
   var isLightningTransfer: Bool { get } //can be true for either onChain or lightning transactions
   var status: TransactionStatus { get }
   var counterpartyConfig: TransactionCellCounterpartyConfig? { get } //may be nil for transfers
@@ -49,6 +48,13 @@ protocol TransactionSummaryCellViewModelType: TransactionSummaryCellDisplayable,
 }
 
 extension TransactionSummaryCellViewModelType {
+
+  var isValidTransaction: Bool {
+    switch status {
+    case .canceled, .expired: return false
+    default:                  return true
+    }
+  }
 
   var leadingImageConfig: SummaryCellLeadingImageConfig {
     if let twitter = counterpartyConfig?.twitterConfig {
@@ -172,18 +178,26 @@ extension TransactionSummaryCellViewModelType {
                                       fromAmount: amountDetails.primaryBTCAmount,
                                       currencyPair: amountDetails.currencyPair)
 
-    let btcAttributedString: NSAttributedString
-    switch walletTxType {
-    case .lightning:
-      let sats = converter.btcAmount.asFractionalUnits(of: .BTC)
-      btcAttributedString = attributedString(forSats: sats, size: 13)
-    case .onChain:
+    var btcAttributedString: NSAttributedString?
+    if walletTxType == .onChain {
       btcAttributedString = attributedString(for: converter.btcAmount, currency: .BTC)
     }
 
-    let fiatAttributedString = attributedString(for: converter.fiatAmount, currency: converter.fiatCurrency)
+    let sats = converter.btcAmount.asFractionalUnits(of: .BTC)
+    let satsText = CKNumberFormatter.string(forSats: sats)
+    let fiatText = fiatString(for: converter.fiatAmount, currency: converter.fiatCurrency)
 
-    return SummaryCellAmountLabels(btcText: btcAttributedString, fiatText: fiatAttributedString.string)
+    let pillText: String
+    if isValidTransaction {
+      pillText = fiatText
+    } else {
+      pillText = status.rawValue
+    }
+
+    return SummaryCellAmountLabels(btcAttributedText: btcAttributedString,
+                                   satsText: satsText,
+                                   pillText: pillText,
+                                   pillIsAmount: isValidTransaction)
   }
 
   var lightningPaidInvoiceText: String { return "Invoice Paid" }
@@ -387,8 +401,10 @@ struct TransactionCellTwitterConfig {
 }
 
 struct SummaryCellAmountLabels {
-  let btcText: NSAttributedString //may be lightning or on-chain amount
-  let fiatText: String //may be amount or status description
+  let btcAttributedText: NSAttributedString? //may be lightning or on-chain amount
+  let satsText: String //this is always available, btcAttributedText takes precedence if set
+  let pillText: String //may be amount or status description
+  let pillIsAmount: Bool
 }
 
 struct SummaryCellDirectionConfig {

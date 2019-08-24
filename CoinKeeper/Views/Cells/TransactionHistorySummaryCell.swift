@@ -51,6 +51,7 @@ class TransactionHistorySummaryCell: UICollectionViewCell {
     configureLeadingViews(with: values.leadingImageConfig, cellBgColor: values.cellBackgroundColor)
     counterpartyLabel.text = values.counterpartyText
     memoLabel.text = values.memo
+    configureAmountLabels(with: values.summaryAmountLabels, accentColor: values.accentColor)
   }
 
   /// Configures isHidden for all subviews of this cell where that property varies
@@ -68,6 +69,16 @@ class TransactionHistorySummaryCell: UICollectionViewCell {
     if let avatarConfig = leadingConfig.avatarConfig {
       self.twitterAvatarView.configure(with: avatarConfig.image, logoBackgroundColor: cellBgColor)
     }
+  }
+
+  private func configureAmountLabels(with labels: SummaryCellAmountLabels, accentColor: UIColor) {
+    let pillLabel = SummaryCellPillLabel(frame: .zero)
+    pillLabel.configure(withText: labels.pillText, backgroundColor: accentColor, isAmount: labels.pillIsAmount)
+    amountStackView.addArrangedSubview(pillLabel)
+
+    let satsLabel = SummaryCellSatsLabel(frame: .zero)
+    satsLabel.text = labels.satsText
+    amountStackView.addArrangedSubview(satsLabel)
   }
 
 }

@@ -75,7 +75,7 @@ class TransactionHistorySummaryCellTests: XCTestCase {
   }
 
   func testInvalidTransaction_loadsImageAndColor() {
-    let viewModel = MockSummaryCellVM.testInstance(walletTxType: .onChain, direction: .out, isValid: false)
+    let viewModel = MockSummaryCellVM.testInstance(walletTxType: .onChain, direction: .out, status: .expired)
     sut.configure(with: viewModel)
     let expectedImage = viewModel.invalidImage, expectedColor = UIColor.invalid
     XCTAssertEqual(sut.directionView.image, expectedImage)
@@ -182,6 +182,53 @@ class TransactionHistorySummaryCellTests: XCTestCase {
     sut.configure(with: viewModel)
     XCTAssertTrue(sut.memoLabel.isHidden)
     XCTAssertEqual(sut.memoLabel.text, expectedMemo)
+  }
+
+  func testExpiredLabelIsLoaded() {
+    let expectedText = TransactionStatus.expired.rawValue, expectedColor = UIColor.invalid
+    let viewModel = MockSummaryCellVM.testInstance(status: .expired)
+    sut.configure(with: viewModel)
+    XCTAssertEqual(sut.pillLabels.count, 1)
+    XCTAssertEqual(sut.pillLabel?.text, expectedText)
+    XCTAssertEqual(sut.pillLabel?.backgroundColor, expectedColor)
+  }
+
+  func testCanceledLabelIsLoaded() {
+    let expectedText = TransactionStatus.canceled.rawValue, expectedColor = UIColor.invalid
+    let viewModel = MockSummaryCellVM.testInstance(status: .canceled)
+    sut.configure(with: viewModel)
+    XCTAssertEqual(sut.pillLabels.count, 1)
+    XCTAssertEqual(sut.pillLabel?.text, expectedText)
+    XCTAssertEqual(sut.pillLabel?.backgroundColor, expectedColor)
+  }
+
+  func testSatsLabelIsLoadedForInvalidTransaction() {
+    let amountDetails = MockSummaryCellVM.testAmountDetails(sats: 1234567)
+    let viewModel = MockSummaryCellVM.testInstance(walletTxType: .lightning, status: .canceled, amountDetails: amountDetails)
+    let expectedText = "1,234,567 sats"
+    sut.configure(with: viewModel)
+    XCTAssertEqual(sut.satsLabels.count, 1)
+    XCTAssertEqual(sut.satsLabel?.text, expectedText)
+  }
+
+}
+
+extension TransactionHistorySummaryCell {
+
+  var pillLabel: SummaryCellPillLabel? {
+    return pillLabels.first
+  }
+
+  var pillLabels: [SummaryCellPillLabel] {
+    return self.amountStackView.arrangedSubviews.compactMap { $0 as? SummaryCellPillLabel }
+  }
+
+  var satsLabel: SummaryCellSatsLabel? {
+    return satsLabels.first
+  }
+
+  var satsLabels: [SummaryCellSatsLabel] {
+    return self.amountStackView.arrangedSubviews.compactMap { $0 as? SummaryCellSatsLabel }
   }
 
 }
