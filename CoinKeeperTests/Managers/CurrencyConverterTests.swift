@@ -55,39 +55,6 @@ class CurrencyConverterTests: XCTestCase {
     XCTAssertNil(self.sut.convertedAmount(), "converted amount should be nil with an invalid from amount")
   }
 
-  // MARK: display values
-  func testGettingFromDisplayValueReturnsProperResult() {
-    self.sut = converter(fromUSDAmount: 50, withRates: safeRates)
-    let actualValue = self.sut.fromDisplayValue
-    let expectedValue = "$50.00"
-
-    XCTAssertEqual(actualValue, expectedValue, "should format the currency properly")
-  }
-
-  func testConvertingUSDToBTCSecondaryCurrencyValueReturnsProperBTCValue() {
-    self.sut = converter(fromUSDAmount: 50, withRates: safeRates)
-    let actualValue = self.sut.toDisplayValue
-    let expectedValue = "\(CurrencyCode.BTC.symbol)0.00714286"
-
-    XCTAssertEqual(actualValue, expectedValue, "should format the btc properly")
-  }
-
-  func testConvertingBTCToUSDPrimaryCurrencyValueReturnsProperBTCValue() {
-    self.sut = CurrencyConverter(fromBtcTo: .USD, fromAmount: 1, rates: safeRates)
-    let actualValue = self.sut.fromDisplayValue
-    let expectedValue = "\(CurrencyCode.BTC.symbol)1"
-
-    XCTAssertEqual(actualValue, expectedValue, "should format the btc properly")
-  }
-
-  func testConvertingBTCToUSDSecondaryCurrencyValueReturnsProperBTCValue() {
-    self.sut = CurrencyConverter(fromBtcTo: .USD, fromAmount: 1, rates: safeRates)
-    let actualValue = self.sut.toDisplayValue
-    let expectedValue = "$7,000.00"
-
-    XCTAssertEqual(actualValue, expectedValue, "should format the USD properly")
-  }
-
   // MARK: getting btcValue
   func testBtcValueWhenFromAmountIsBTCEqualsInitialValue() {
     let expectedAmount = NSDecimalNumber(decimal: Decimal(self.safeRates[.USD] ?? 0.0))

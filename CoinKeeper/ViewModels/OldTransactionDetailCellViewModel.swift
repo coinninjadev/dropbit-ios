@@ -126,22 +126,24 @@ extension OldTransactionDetailCellViewModel {
   }
 
   var primaryAmountLabel: String? {
-    return receivedAmountsConverter.amountStringWithSymbol(forCurrency: primaryCurrency)
+    return nil
+//    return receivedAmountsConverter.amountStringWithSymbol(forCurrency: primaryCurrency)
   }
 
   var secondaryAmountLabel: NSAttributedString? {
-    let converter = receivedAmountsConverter
-    let secondaryCurrency = converter.otherCurrency(forCurrency: primaryCurrency)
-
-    if secondaryCurrency == .BTC {
-      if let btcAmount = converter.attributedStringWithSymbol(forCurrency: .BTC, ofSize: 18) {
-        return btcAmount
-      } else {
-        return NSAttributedString(string: "–")
-      }
-    } else {
-      return converter.attributedStringWithSymbol(forCurrency: secondaryCurrency)
-    }
+    return nil
+//    let converter = receivedAmountsConverter
+//    let secondaryCurrency = converter.otherCurrency(forCurrency: primaryCurrency)
+//
+//    if secondaryCurrency == .BTC {
+//      if let btcAmount = converter.attributedStringWithSymbol(forCurrency: .BTC, ofSize: 18) {
+//        return btcAmount
+//      } else {
+//        return NSAttributedString(string: "–")
+//      }
+//    } else {
+//      return converter.attributedStringWithSymbol(forCurrency: secondaryCurrency)
+//    }
   }
 
   var currentSelectedTab: Int {
@@ -250,15 +252,16 @@ extension OldTransactionDetailCellViewModel {
   }
 
   private func breakdownAmountLabel(forBTCConverter converter: CurrencyConverter) -> String {
-    let btcString = converter.amountStringWithSymbol(converter.fromAmount, .BTC)
-
-    var label = btcString
-
-    if let usdString = converter.amountStringWithSymbol(forCurrency: .USD) {
-      label.append(" (\(usdString))")
-    }
-
-    return label
+    return ""
+//    let btcString = converter.amountStringWithSymbol(converter.fromAmount, .BTC)
+//
+//    var label = btcString
+//
+//    if let usdString = converter.amountStringWithSymbol(forCurrency: .USD) {
+//      label.append(" (\(usdString))")
+//    }
+//
+//    return label
   }
 
   var historicalCurrencyFormatter: NumberFormatter {

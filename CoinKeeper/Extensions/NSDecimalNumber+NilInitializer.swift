@@ -33,4 +33,8 @@ extension NSDecimalNumber {
     return (self.isNumber && self > .zero)
   }
 
+  var isNegativeNumber: Bool {
+    return (self.isNumber && self < .zero)
+  }
+
 }

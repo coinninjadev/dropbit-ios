@@ -35,7 +35,7 @@ extension TransactionSummaryCellDisplayable {
 /// Defines the properties that need to be set during initialization of the view model.
 /// The inherited `...Displayable` requirements should be calculated in this
 /// protocol's extension or provided by a mock view model.
-protocol TransactionSummaryCellViewModelType: TransactionSummaryCellDisplayable, CurrencyDisplayable {
+protocol TransactionSummaryCellViewModelType: TransactionSummaryCellDisplayable {
   var walletTxType: WalletTransactionType { get }
   var direction: TransactionDirection { get }
   var isLightningTransfer: Bool { get } //can be true for either onChain or lightning transactions
@@ -180,13 +180,13 @@ extension TransactionSummaryCellViewModelType {
 
     var btcAttributedString: NSAttributedString?
     if walletTxType == .onChain {
-      btcAttributedString = attributedString(for: converter.btcAmount, currency: .BTC)
+      btcAttributedString = BitcoinFormatter(symbolType: .attributed).attributedString(from: converter.btcAmount)
     }
 
-    let sats = converter.btcAmount.asFractionalUnits(of: .BTC)
-    let satsText = CKNumberFormatter.string(forSats: sats)
-    let fiatText = fiatString(for: converter.fiatAmount, currency: converter.fiatCurrency)
-
+    let satsText = SatsFormatter().string(fromDecimal: converter.btcAmount) ?? ""
+    let fiatText = FiatFormatter(currency: converter.fiatCurrency,
+                                 withSymbol: true,
+                                 showNegativeSymbol: true).string(fromDecimal: converter.fiatAmount) ?? ""
     let pillText: String
     if isValidTransaction {
       pillText = fiatText

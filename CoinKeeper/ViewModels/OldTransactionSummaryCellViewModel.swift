@@ -245,13 +245,13 @@ class OldTransactionSummaryCellViewModel {
   private func amountStrings(for converter: CurrencyConverter,
                              primary: CurrencyCode,
                              secondary: CurrencyCode) -> (primary: String?, secondary: String?) {
-    let absPrimary = converter.amount(forCurrency: primary)?.absoluteValue()
-    let absSecondary = converter.amount(forCurrency: secondary)?.absoluteValue()
-
-    let pString = absPrimary.flatMap { converter.amountStringWithSymbol($0, primary) }
-    let sString = absSecondary.flatMap { converter.amountStringWithSymbol($0, secondary) }
-
-    return (pString, sString)
+    return (nil, nil)
+//    let absPrimary = converter.amount(forCurrency: primary)?.absoluteValue()
+//    let absSecondary = converter.amount(forCurrency: secondary)?.absoluteValue()
+//    let pString = absPrimary.flatMap { converter.amountStringWithSymbol($0, primary) }
+//    let sString = absSecondary.flatMap { converter.amountStringWithSymbol($0, secondary) }
+//
+//    return (pString, sString)
   }
 
 }

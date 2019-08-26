@@ -9,13 +9,17 @@
 import Foundation
 
 /// A simple struct to work with monetary amounts without a currency converter.
-struct Money: CurrencyFormattable {
+struct Money {
 
   var amount: NSDecimalNumber
   var currency: CurrencyCode
 
   var displayString: String {
-    return amountStringWithSymbol(amount, currency)
+    if currency.isFiat {
+      return FiatFormatter(currency: currency, withSymbol: true).string(fromDecimal: amount) ?? ""
+    } else {
+      return BitcoinFormatter(symbolType: .string).string(fromDecimal: amount) ?? ""
+    }
   }
 
 }

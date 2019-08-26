@@ -197,7 +197,7 @@ class AlertManager: AlertManagerType {
     let converter = CurrencyConverter(fromBtcTo: .USD,
                                       fromAmount: NSDecimalNumber(integerAmount: receivedAmount, currency: .BTC),
                                       rates: rates)
-    let dollarAmount: String =  converter.amountStringWithSymbol(forCurrency: .USD) ?? ""
+    let dollarAmount: String = FiatFormatter(currency: .USD, withSymbol: true).string(fromDecimal: converter.fiatAmount) ?? ""
     let message = "You have recieved a new transaction of \(dollarAmount) in bitcoin!"
     DispatchQueue.main.async {
       switch UIApplication.shared.applicationState {

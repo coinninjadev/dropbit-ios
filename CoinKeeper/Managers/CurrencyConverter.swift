@@ -28,7 +28,7 @@ extension CurrencyConverterProvider {
 
 }
 
-struct CurrencyConverter: CurrencyFormattable {
+struct CurrencyConverter {
 
   static let sampleRates: ExchangeRates = [.BTC: 1, .USD: 7000]
 
@@ -87,14 +87,6 @@ struct CurrencyConverter: CurrencyFormattable {
     return targetAmount.rounded(forCurrency: toCurrency)
   }
 
-  var fromDisplayValue: String {
-    return amountStringWithSymbol(forCurrency: fromCurrency) ?? "–"
-  }
-
-  var toDisplayValue: String {
-    return amountStringWithSymbol(forCurrency: toCurrency) ?? "–"
-  }
-
   var btcAmount: NSDecimalNumber {
     return amount(forCurrency: .BTC) ?? .zero
   }
@@ -122,23 +114,6 @@ struct CurrencyConverter: CurrencyFormattable {
     case fromCurrency:  return fromAmount
     case toCurrency:    return convertedAmount()
     default:            return nil
-    }
-  }
-
-  func amountStringWithSymbol(forCurrency currency: CurrencyCode) -> String? {
-    guard let amt = amount(forCurrency: currency) else { return nil }
-    return amountStringWithSymbol(amt, currency)
-  }
-
-  func attributedStringWithSymbol(forCurrency currency: CurrencyCode, ofSize size: Int = 20) -> NSAttributedString? {
-    if let symbol = currency.attributedStringSymbol(ofSize: size),
-      let amt = amount(forCurrency: currency),
-      let amtString = amountStringWithoutSymbol(amt, currency) {
-      return symbol + NSAttributedString(string: amtString)
-
-    } else {
-      let withSymbol = amountStringWithSymbol(forCurrency: currency)
-      return withSymbol.map { NSAttributedString(string: $0) }
     }
   }
 
