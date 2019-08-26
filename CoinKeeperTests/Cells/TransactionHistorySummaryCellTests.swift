@@ -211,6 +211,16 @@ class TransactionHistorySummaryCellTests: XCTestCase {
     XCTAssertEqual(sut.satsLabel?.text, expectedText)
   }
 
+  func testBTCLabelIsLoaded() {
+    let amountDetails = MockSummaryCellVM.testAmountDetails(sats: 1234560)
+    let viewModel = MockSummaryCellVM.testInstance(walletTxType: .onChain, status: .canceled, amountDetails: amountDetails)
+    let expectedText = BitcoinFormatter(symbolType: .attributed).attributedString(from: amountDetails.primaryBTCAmount)
+    sut.configure(with: viewModel)
+    XCTAssertEqual(sut.satsLabels.count, 1)
+    XCTAssertEqual(sut.satsLabel?.attributedText?.string, expectedText?.string)
+    XCTAssertTrue(sut.satsLabel?.attributedText?.hasImageAttachment() ?? false)
+  }
+
 }
 
 extension TransactionHistorySummaryCell {
@@ -229,6 +239,29 @@ extension TransactionHistorySummaryCell {
 
   var satsLabels: [SummaryCellSatsLabel] {
     return self.amountStackView.arrangedSubviews.compactMap { $0 as? SummaryCellSatsLabel }
+  }
+
+}
+
+extension NSAttributedString {
+
+  func hasImageAttachment() -> Bool {
+    var hasImage = false
+    let range = NSRange(location: 0, length: self.length)
+    enumerateAttribute(NSAttributedString.Key.attachment, in: range, options: [], using: {(value, range, _) -> Void in
+      if let attachment = value as? NSTextAttachment {
+        var image: UIImage?
+
+        if attachment.image != nil {
+          image = attachment.image
+        } else {
+          image = attachment.image(forBounds: attachment.bounds, textContainer: nil, characterIndex: range.location)
+        }
+
+        hasImage = image != nil
+      }
+    })
+    return hasImage
   }
 
 }

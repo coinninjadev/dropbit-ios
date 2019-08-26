@@ -14,6 +14,7 @@ import UIKit
 /// Provides all variable values directly necessary to configure the TransactionHistorySummaryCell UI.
 /// Fixed values (colors, font sizes, etc.) are provided by the cell itself.
 protocol TransactionSummaryCellDisplayable {
+  var walletTxType: WalletTransactionType { get }
   var counterpartyText: String { get }
   var selectedCurrency: SelectedCurrency { get }
   var summaryAmountLabels: SummaryCellAmountLabels { get }
@@ -36,7 +37,6 @@ extension TransactionSummaryCellDisplayable {
 /// The inherited `...Displayable` requirements should be calculated in this
 /// protocol's extension or provided by a mock view model.
 protocol TransactionSummaryCellViewModelType: TransactionSummaryCellDisplayable {
-  var walletTxType: WalletTransactionType { get }
   var direction: TransactionDirection { get }
   var isLightningTransfer: Bool { get } //can be true for either onChain or lightning transactions
   var status: TransactionStatus { get }

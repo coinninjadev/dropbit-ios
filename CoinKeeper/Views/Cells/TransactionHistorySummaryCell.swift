@@ -51,7 +51,9 @@ class TransactionHistorySummaryCell: UICollectionViewCell {
     configureLeadingViews(with: values.leadingImageConfig, cellBgColor: values.cellBackgroundColor)
     counterpartyLabel.text = values.counterpartyText
     memoLabel.text = values.memo
-    configureAmountLabels(with: values.summaryAmountLabels, accentColor: values.accentColor)
+    configureAmountLabels(with: values.summaryAmountLabels,
+                          accentColor: values.accentColor,
+                          walletTxType: values.walletTxType)
   }
 
   /// Configures isHidden for all subviews of this cell where that property varies
@@ -71,14 +73,23 @@ class TransactionHistorySummaryCell: UICollectionViewCell {
     }
   }
 
-  private func configureAmountLabels(with labels: SummaryCellAmountLabels, accentColor: UIColor) {
+  private func configureAmountLabels(with labels: SummaryCellAmountLabels,
+                                     accentColor: UIColor,
+                                     walletTxType: WalletTransactionType) {
     let pillLabel = SummaryCellPillLabel(frame: .zero)
     pillLabel.configure(withText: labels.pillText, backgroundColor: accentColor, isAmount: labels.pillIsAmount)
     amountStackView.addArrangedSubview(pillLabel)
 
-    let satsLabel = SummaryCellSatsLabel(frame: .zero)
-    satsLabel.text = labels.satsText
-    amountStackView.addArrangedSubview(satsLabel)
+    switch walletTxType {
+    case .onChain:
+      let satsLabel = SummaryCellSatsLabel(frame: .zero)
+      satsLabel.attributedText = labels.btcAttributedText
+      amountStackView.addArrangedSubview(satsLabel)
+    case .lightning:
+      let satsLabel = SummaryCellSatsLabel(frame: .zero)
+      satsLabel.text = labels.satsText
+      amountStackView.addArrangedSubview(satsLabel)
+    }
   }
 
 }
