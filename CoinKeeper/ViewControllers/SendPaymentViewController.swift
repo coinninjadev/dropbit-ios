@@ -718,6 +718,7 @@ extension SendPaymentViewController {
                                      contact: nil,
                                      sharedPayload: sharedPayloadDTO)
     case .lightningURL(let url):
+      try LightningInvoiceValidator().validate(value: url.invoice)
       sendTransactionForConfirmation(with: viewModel.sendMaxTransactionData,
                                      paymentTarget: url.invoice,
                                      contact: nil,
