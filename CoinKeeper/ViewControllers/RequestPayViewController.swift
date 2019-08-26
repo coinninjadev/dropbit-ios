@@ -18,14 +18,10 @@ final class RequestPayViewController: PresentableViewController, StoryboardIniti
 
   // MARK: outlets
   @IBOutlet var closeButton: UIButton!
-  @IBOutlet var titleLabel: UILabel! {
-    didSet {
-      titleLabel.font = .regular(15)
-      titleLabel.textColor = .darkBlueText
-    }
-  }
+  @IBOutlet var walletToggleView: WalletToggleView!
   @IBOutlet var editAmountView: CurrencySwappableEditAmountView!
   @IBOutlet var qrImageView: UIImageView!
+  @IBOutlet var expirationLabel: ExpirationLabel!
   @IBOutlet var receiveAddressLabel: UILabel! {
     didSet {
       receiveAddressLabel.textColor = .darkBlueText
@@ -47,9 +43,9 @@ final class RequestPayViewController: PresentableViewController, StoryboardIniti
       tapInstructionLabel.font = .medium(10)
     }
   }
-  @IBOutlet var sendRequestButton: PrimaryActionButton! {
+  @IBOutlet var bottomActionButton: PrimaryActionButton! {
     didSet {
-      sendRequestButton.setTitle("SEND REQUEST", for: .normal)
+      bottomActionButton.setTitle("SEND REQUEST", for: .normal)
     }
   }
 
@@ -96,12 +92,14 @@ final class RequestPayViewController: PresentableViewController, StoryboardIniti
   let rateManager: ExchangeRateManager = ExchangeRateManager()
   var currencyValueManager: CurrencyValueDataSourceType?
   var viewModel: RequestPayViewModel! = RequestPayViewModel(receiveAddress: "",
-                                                            viewModel: .emptyInstance())
+                                                            viewModel: .emptyInstance(),
+                                                            walletTransactionType: .onChain)
   var editAmountViewModel: CurrencySwappableEditAmountViewModel { return viewModel }
 
   var isModal: Bool = true
   var shouldHideEditAmountView = true //hide by default
   var shouldHideAddAmountButton: Bool { return !shouldHideEditAmountView }
+  var walletTransactionType: WalletTransactionType = .onChain
 
   func showHideEditAmountView() {
     editAmountView.isHidden = shouldHideEditAmountView
@@ -122,6 +120,7 @@ final class RequestPayViewController: PresentableViewController, StoryboardIniti
   static func newInstance(delegate: RequestPayViewControllerDelegate,
                           receiveAddress: String,
                           currencyPair: CurrencyPair,
+                          walletTransactionType: WalletTransactionType,
                           exchangeRates: ExchangeRates) -> RequestPayViewController {
     let vc = RequestPayViewController.makeFromStoryboard()
     vc.generalCoordinationDelegate = delegate
@@ -129,7 +128,8 @@ final class RequestPayViewController: PresentableViewController, StoryboardIniti
                                                                    primaryAmount: .zero,
                                                                    currencyPair: currencyPair,
                                                                    delegate: vc)
-    vc.viewModel = RequestPayViewModel(receiveAddress: receiveAddress, viewModel: editAmountViewModel)
+    vc.viewModel = RequestPayViewModel(receiveAddress: receiveAddress, viewModel: editAmountViewModel,
+                                       walletTransactionType: walletTransactionType)
     return vc
   }
 
@@ -141,6 +141,7 @@ final class RequestPayViewController: PresentableViewController, StoryboardIniti
     setupCurrencySwappableEditAmountView()
     registerForRateUpdates()
     updateRatesAndView()
+    walletToggleView.delegate = self
     setupKeyboardDoneButton(for: [editAmountView.primaryAmountTextField],
                             action: #selector(doneButtonWasPressed))
   }
@@ -152,6 +153,7 @@ final class RequestPayViewController: PresentableViewController, StoryboardIniti
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     resetViewModel()
+    setupStyle()
     updateViewWithViewModel()
   }
 
@@ -167,6 +169,17 @@ final class RequestPayViewController: PresentableViewController, StoryboardIniti
     self.viewModel.receiveAddress = nextAddress
   }
 
+  func setupStyle() {
+    switch walletTransactionType {
+    case .onChain:
+      bottomActionButton.style = .bitcoin(true)
+      bottomActionButton.setTitle("SEND REQUEST", for: .normal)
+    case .lightning:
+      bottomActionButton.setTitle("CREATE INVOICE", for: .normal)
+      bottomActionButton.style = .lightning(true)
+    }
+  }
+
   func updateViewWithViewModel() {
     receiveAddressLabel.text = viewModel.receiveAddress
     updateQRImage()
@@ -177,6 +190,20 @@ final class RequestPayViewController: PresentableViewController, StoryboardIniti
 
   func updateQRImage() {
     qrImageView.image = viewModel.qrImage(withSize: qrImageView.frame.size)
+  }
+
+}
+
+extension RequestPayViewController: WalletToggleViewDelegate {
+
+  func bitcoinWalletButtonWasTouched() {
+    walletTransactionType = .onChain
+    setupStyle()
+  }
+
+  func lightningWalletButtonWasTouched() {
+    walletTransactionType = .lightning
+    setupStyle()
   }
 
 }
