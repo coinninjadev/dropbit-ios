@@ -43,3 +43,4 @@ class TransactionHistoryViewControllerLightningDDS: TransactionHistoryViewContro
   }
 
 }
+
