@@ -388,38 +388,3 @@ extension TransactionHistoryViewController {
   }
 
 }
-
-extension TransactionHistoryViewController: UIScrollViewDelegate {
-
-  func scrollViewDidScroll(_ scrollView: UIScrollView) {
-    let topOfWalletBalanceOffset: CGFloat = -60, middleOfWalletBalanceOffset: CGFloat = -100
-    let collectionViewFullScreenOffset = scrollView.contentOffset.y < middleOfWalletBalanceOffset
-    let collectionViewPartialScreenOffset = scrollView.contentOffset.y > topOfWalletBalanceOffset
-    guard collectionViewFullScreenOffset || collectionViewPartialScreenOffset else { return }
-
-    if collectionViewPartialScreenOffset {
-      summaryCollectionView.historyDelegate?.collectionViewDidCoverWalletBalance()
-      isCollectionViewFullScreen = false
-    } else {
-      summaryCollectionView.historyDelegate?.collectionViewDidUncoverWalletBalance()
-      isCollectionViewFullScreen = true
-    }
-
-    let offset = abs(scrollView.contentOffset.y)
-    refreshViewTopConstraint.constant = offset - refreshView.frame.size.height
-    refreshView.animateLogo(to: scrollView.contentOffset.y)
-  }
-
-  func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-    refreshView.reset()
-    refreshViewTopConstraint.constant = 0
-  }
-
-  func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
-    refreshView.fireRefreshAnimationIfNecessary()
-
-    if refreshView.shouldQueueRefresh {
-      coordinationDelegate?.viewControllerAttemptedToRefreshTransactions(self)
-    }
-  }
-}
