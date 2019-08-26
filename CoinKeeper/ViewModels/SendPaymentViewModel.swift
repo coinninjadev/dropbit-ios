@@ -25,7 +25,7 @@ enum PaymentRecipient {
 
   /// Associated value may be either a BTC address or a lightning invoice.
   /// Neither option contains scheme. i.e. "bitcoin:" "lightning:"
-  case destination(String)
+  case paymentTarget(String)
 
   case contact(ContactType)
 
@@ -37,10 +37,10 @@ enum PaymentRecipient {
   init?(parsedRecipient: CKParsedRecipient) {
     switch parsedRecipient {
     case .lightningURL(let url):
-      self = .destination(url.invoice)
+      self = .paymentTarget(url.invoice)
     case .bitcoinURL(let url):
       guard let address = url.components.address else { return nil }
-      self = .destination(address)
+      self = .paymentTarget(address)
     case .phoneNumber(let number):
       self = .phoneNumber(GenericContact(phoneNumber: number, formatted: ""))
     }
@@ -79,7 +79,7 @@ class SendPaymentViewModel: CurrencySwappableEditAmountViewModel {
 
   var address: String? {
     if let recipient = paymentRecipient,
-      case let .destination(addr) = recipient {
+      case let .paymentTarget(addr) = recipient {
       return addr
     } else {
       return nil
@@ -88,20 +88,21 @@ class SendPaymentViewModel: CurrencySwappableEditAmountViewModel {
 
   let recipientParser: RecipientParserType = CKRecipientParser()
 
-  init(lightningInvoice: LNDecodePaymentRequestResponse,
+  init(encodedInvoice: String,
+       decodedInvoice: LNDecodePaymentRequestResponse,
        exchangeRates: ExchangeRates,
        currencyPair: CurrencyPair) {
     let currencyPair = CurrencyPair(primary: .BTC, fiat: currencyPair.fiat)
-    let amount = NSDecimalNumber(integerAmount: lightningInvoice.numSatoshis ?? 0, currency: .BTC)
+    let amount = NSDecimalNumber(integerAmount: decodedInvoice.numSatoshis ?? 0, currency: .BTC)
     let viewModel = CurrencySwappableEditAmountViewModel(exchangeRates: exchangeRates,
                                                          primaryAmount: amount,
                                                          currencyPair: currencyPair,
                                                          delegate: nil)
     self.walletTransactionType = .lightning
     super.init(viewModel: viewModel)
-    self.paymentRecipient = .destination(lightningInvoice.destination)
+    self.paymentRecipient = .paymentTarget(encodedInvoice)
     self.requiredFeeRate = nil
-    self.memo = lightningInvoice.description
+    self.memo = decodedInvoice.description
   }
 
   // delegate may be nil at init since the delegate is likely a view controller which requires this view model for its own creation
@@ -117,7 +118,7 @@ class SendPaymentViewModel: CurrencySwappableEditAmountViewModel {
                                                          delegate: delegate)
     self.walletTransactionType = walletTransactionType
     super.init(viewModel: viewModel)
-    self.paymentRecipient = qrCode.address.flatMap { .destination($0) }
+    self.paymentRecipient = qrCode.address.flatMap { .paymentTarget($0) }
     self.requiredFeeRate = nil
     self.memo = nil
   }
@@ -126,7 +127,7 @@ class SendPaymentViewModel: CurrencySwappableEditAmountViewModel {
        address: String? = nil, requiredFeeRate: Double? = nil, memo: String? = nil) {
     self.walletTransactionType = walletTransactionType
     super.init(viewModel: editAmountViewModel)
-    self.paymentRecipient = address.flatMap { .destination($0) }
+    self.paymentRecipient = address.flatMap { .paymentTarget($0) }
     self.requiredFeeRate = requiredFeeRate
     self.memo = memo
   }
@@ -163,7 +164,7 @@ class SendPaymentViewModel: CurrencySwappableEditAmountViewModel {
   var shouldShowSharedMemoBox: Bool {
     if let recipient = paymentRecipient {
       switch recipient {
-      case .destination:    return false
+      case .paymentTarget:  return false
       case .contact:        return true && sharedMemoAllowed
       case .phoneNumber:    return true && sharedMemoAllowed
       case .twitterContact: return true && sharedMemoAllowed
@@ -181,13 +182,27 @@ class SendPaymentViewModel: CurrencySwappableEditAmountViewModel {
     return [.usableBalance]
   }
 
+  var validPaymentRecipientType: CKRecipientType {
+    switch walletTransactionType {
+    case .onChain:    return .bitcoinURL
+    case .lightning:  return .lightningURL
+    }
+  }
+
+  var validParsingRecipientTypes: [CKRecipientType] {
+    switch walletTransactionType {
+    case .onChain:    return [.bitcoinURL, .phoneNumber]
+    case .lightning:  return [.lightningURL, .phoneNumber]
+    }
+  }
+
   var recipientDisplayStyle: RecipientDisplayStyle? {
     guard let recipient = paymentRecipient else {
       return .textField
     }
 
     switch recipient {
-    case .phoneNumber, .destination:
+    case .phoneNumber, .paymentTarget:
       return .textField
     case .contact, .twitterContact:
       return .label
@@ -197,7 +212,7 @@ class SendPaymentViewModel: CurrencySwappableEditAmountViewModel {
   func displayRecipientName() -> String? {
     guard let recipient = self.paymentRecipient else { return nil }
     switch recipient {
-    case .destination: return nil
+    case .paymentTarget: return nil
     case .contact(let contact): return contact.displayName
     case .twitterContact(let contact): return contact.displayName
     case .phoneNumber: return nil
@@ -207,7 +222,7 @@ class SendPaymentViewModel: CurrencySwappableEditAmountViewModel {
   func displayRecipientIdentity() -> String? {
     guard let recipient = self.paymentRecipient else { return nil }
     switch recipient {
-    case .destination: return nil
+    case .paymentTarget: return nil
     case .contact(let contact):
       guard let phoneContact = contact as? PhoneContactType else { return nil }
       let formatter = CKPhoneNumberFormatter(format: .international)
@@ -221,7 +236,7 @@ class SendPaymentViewModel: CurrencySwappableEditAmountViewModel {
   func displayStyle(for recipient: PaymentRecipient?) -> RecipientDisplayStyle {
     guard let r = recipient else { return .textField }
     switch r {
-    case .destination,
+    case .paymentTarget,
          .phoneNumber:    return .textField
     case .contact,
          .twitterContact: return .label

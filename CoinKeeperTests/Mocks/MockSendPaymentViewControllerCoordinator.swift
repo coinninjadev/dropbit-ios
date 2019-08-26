@@ -122,7 +122,7 @@ class MockSendPaymentViewControllerCoordinator: SendPaymentViewControllerCoordin
   func viewControllerDidSendPayment(_ viewController: UIViewController,
                                     btcAmount: NSDecimalNumber,
                                     requiredFeeRate: Double?,
-                                    destination: String,
+                                    paymentTarget: String,
                                     inputs: SendingDelegateInputs) { }
 
   func viewControllerDidBeginAddressNegotiation(_ viewController: UIViewController,

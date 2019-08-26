@@ -11,20 +11,20 @@ import Contacts
 import CNBitcoinKit
 
 class BaseConfirmPaymentViewModel: DualAmountDisplayable {
-  let destination: String? //address or encoded invoice
+  let paymentTarget: String? //address or encoded invoice
   let contact: ContactType?
   let walletTransactionType: WalletTransactionType
   var btcAmount: NSDecimalNumber
   let currencyPair: CurrencyPair
   let exchangeRates: ExchangeRates
 
-  init(destination: String?,
+  init(paymentTarget: String?,
        contact: ContactType?,
        walletTransactionType: WalletTransactionType,
        btcAmount: NSDecimalNumber,
        currencyPair: CurrencyPair,
        exchangeRates: ExchangeRates) {
-    self.destination = destination
+    self.paymentTarget = paymentTarget
     self.contact = contact
     self.walletTransactionType = walletTransactionType
     self.btcAmount = btcAmount
@@ -81,7 +81,7 @@ class ConfirmPaymentInviteViewModel: BaseConfirmPaymentViewModel {
        exchangeRates: ExchangeRates,
        sharedPayloadDTO: SharedPayloadDTO) {
     self.sharedPayloadDTO = sharedPayloadDTO
-    super.init(destination: nil,
+    super.init(paymentTarget: nil,
                contact: contact,
                walletTransactionType: walletTransactionType,
                btcAmount: btcAmount,
@@ -114,7 +114,7 @@ class ConfirmOnChainPaymentViewModel: BaseConfirmPaymentViewModel {
        exchangeRates: ExchangeRates,
        outgoingTransactionData: OutgoingTransactionData) {
     self.outgoingTransactionData = outgoingTransactionData
-    super.init(destination: address,
+    super.init(paymentTarget: address,
                contact: contact,
                walletTransactionType: .onChain,
                btcAmount: btcAmount,
@@ -154,7 +154,7 @@ class ConfirmLightningPaymentViewModel: BaseConfirmPaymentViewModel {
        exchangeRates: ExchangeRates) {
     self.invoice = invoice
     self.sharedPayloadDTO = sharedPayload
-    super.init(destination: invoice,
+    super.init(paymentTarget: invoice,
                contact: contact,
                walletTransactionType: .lightning,
                btcAmount: btcAmount,

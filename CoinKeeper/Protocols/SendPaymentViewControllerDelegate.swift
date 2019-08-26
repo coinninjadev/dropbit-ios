@@ -64,7 +64,7 @@ protocol ViewControllerSendingDelegate: AnyObject {
   func viewControllerDidSendPayment(_ viewController: UIViewController,
                                     btcAmount: NSDecimalNumber,
                                     requiredFeeRate: Double?,
-                                    destination: String,
+                                    paymentTarget: String,
                                     inputs: SendingDelegateInputs)
 
   /// An address negotiation applies to both new user invites and registered users without addresses on the server

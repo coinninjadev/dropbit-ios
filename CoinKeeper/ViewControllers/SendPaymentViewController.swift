@@ -359,7 +359,7 @@ extension SendPaymentViewController {
 
   func applyRecipient(inText text: String) {
     do {
-      let recipient = try viewModel.recipientParser.findSingleRecipient(inText: text, ofTypes: [.lightningURL, .bitcoinURL, .phoneNumber])
+      let recipient = try viewModel.recipientParser.findSingleRecipient(inText: text, ofTypes: viewModel.validParsingRecipientTypes)
       editAmountView.primaryAmountTextField.resignFirstResponder()
       updateViewModel(withParsedRecipient: recipient)
     } catch {
@@ -392,22 +392,24 @@ extension SendPaymentViewController {
   private func handleLightningInvoicePaste(lightningUrl: LightningURL) {
     self.alertManager?.showActivityHUD(withStatus: nil)
     coordinationDelegate?.viewControllerDidReceiveLightningURLToDecode(lightningUrl)
-      .get { invoice in
+      .get { decodedInvoice
+        in
         self.alertManager?.hideActivityHUD(withDelay: nil, completion: {
-          self.viewModel = SendPaymentViewModel(lightningInvoice: invoice,
+          self.viewModel = SendPaymentViewModel(encodedInvoice: lightningUrl.invoice,
+                                                decodedInvoice: decodedInvoice,
                                                 exchangeRates: self.viewModel.exchangeRates,
                                                 currencyPair: self.viewModel.currencyPair)
 
-          self.handlePaste(withViewModel: self.viewModel, destinationValue: invoice.destination)
+          self.handlePaste(withViewModel: self.viewModel, paymentTarget: lightningUrl.invoice)
         })
       }.catch { error in
         self.handleError(error: error)
     }
   }
 
-  func handlePaste(withViewModel viewModel: SendPaymentViewModel, destinationValue: String) {
+  func handlePaste(withViewModel viewModel: SendPaymentViewModel, paymentTarget: String) {
     self.viewModel = viewModel
-    self.setPaymentRecipient(PaymentRecipient.destination(destinationValue))
+    self.setPaymentRecipient(.paymentTarget(paymentTarget))
     self.viewModel.setBTCAmountAsPrimary(viewModel.btcAmount)
 
     self.alertManager?.hideActivityHUD(withDelay: nil) {
@@ -437,7 +439,7 @@ extension SendPaymentViewController {
             return
         }
 
-        self.handlePaste(withViewModel: fetchedModel, destinationValue: fetchedAddress)
+        self.handlePaste(withViewModel: fetchedModel, paymentTarget: fetchedAddress)
 
       case .failure(let error):
         self.handleError(error: error)
@@ -454,13 +456,13 @@ extension SendPaymentViewController {
     DispatchQueue.main.async {
       guard let recipient = paymentRecipient else {
         let isLightning = self.viewModel.walletTransactionType == .lightning
-        let destinationDesc = isLightning ? "Invoice" : "BTC Address"
-        self.showDestinationRecipient(with: "To: \(destinationDesc) or phone number")
+        let paymentTargetDesc = isLightning ? "Invoice" : "BTC Address"
+        self.showPaymentTargetRecipient(with: "To: \(paymentTargetDesc) or phone number")
         return
       }
       switch recipient {
-      case .destination(let destination):
-        self.showDestinationRecipient(with: destination)
+      case .paymentTarget(let paymentTarget):
+        self.showPaymentTargetRecipient(with: paymentTarget)
       case .phoneNumber(let contact):
         self.coordinationDelegate?.viewController(self, checkForContactFromGenericContact: contact) { possibleValidatedContact in
           if let validatedContact = possibleValidatedContact {
@@ -490,7 +492,7 @@ extension SendPaymentViewController {
     }
   }
 
-  private func showDestinationRecipient(with title: String) {
+  private func showPaymentTargetRecipient(with title: String) {
     self.addressScanButtonContainerView.isHidden = false
     self.phoneNumberEntryView.isHidden = true
     self.destinationButton.setTitle(title, for: .normal)
@@ -686,8 +688,8 @@ extension SendPaymentViewController {
       try validatePayment(toContact: contact)
     case .phoneNumber(let genericContact):
       try validatePayment(toContact: genericContact)
-    case .destination(let destination):
-      try validatePayment(toDestination: destination)
+    case .paymentTarget(let paymentTarget):
+      try validatePayment(toTarget: paymentTarget, matches: viewModel.validPaymentRecipientType)
     case .twitterContact(let contact):
       try validatePayment(toContact: contact)
     }
@@ -697,11 +699,8 @@ extension SendPaymentViewController {
     return SharedPayloadAmountInfo(fiatCurrency: .USD, fiatAmount: 1)
   }
 
-  private func validatePayment(toDestination destination: String) throws {
-    let recipient = try viewModel.recipientParser.findSingleRecipient(inText: destination, ofTypes: [.bitcoinURL])
-    guard case let .bitcoinURL(url) = recipient, let address = url.components.address else {
-      throw BitcoinAddressValidatorError.isInvalidBitcoinAddress
-    }
+  private func validatePayment(toTarget paymentTarget: String, matches type: CKRecipientType) throws {
+    let recipient = try viewModel.recipientParser.findSingleRecipient(inText: paymentTarget, ofTypes: [type])
 
     // This is still required here to pass along the local memo
     let sharedPayloadDTO = SharedPayloadDTO(addressPubKeyState: .none,
@@ -709,10 +708,23 @@ extension SendPaymentViewController {
                                             memo: self.viewModel.memo,
                                             amountInfo: sharedAmountInfo())
 
-    sendTransactionForConfirmation(with: viewModel.sendMaxTransactionData,
-                                   destination: address,
-                                   contact: nil,
-                                   sharedPayload: sharedPayloadDTO)
+    switch recipient {
+    case .bitcoinURL(let url):
+      guard let address = url.components.address else {
+        throw BitcoinAddressValidatorError.isInvalidBitcoinAddress
+      }
+      sendTransactionForConfirmation(with: viewModel.sendMaxTransactionData,
+                                     paymentTarget: address,
+                                     contact: nil,
+                                     sharedPayload: sharedPayloadDTO)
+    case .lightningURL(let url):
+      sendTransactionForConfirmation(with: viewModel.sendMaxTransactionData,
+                                     paymentTarget: url.invoice,
+                                     contact: nil,
+                                     sharedPayload: sharedPayloadDTO)
+    default:
+      break
+    }
   }
 
   /// This evaluates the contact, some of it asynchronously, before sending
@@ -767,7 +779,7 @@ extension SendPaymentViewController {
           var updatedPayload = sharedPayload
           updatedPayload.updatePubKeyState(with: addressResponse)
           self.sendTransactionForConfirmation(with: self.viewModel.sendMaxTransactionData,
-                                              destination: addressResponse.address,
+                                              paymentTarget: addressResponse.address,
                                               contact: contact,
                                               sharedPayload: updatedPayload)
         } else {
@@ -815,7 +827,7 @@ extension SendPaymentViewController {
 
       newContact.kind = .registeredUser
       sendTransactionForConfirmation(with: viewModel.sendMaxTransactionData,
-                                     destination: addressResponse.address,
+                                     paymentTarget: addressResponse.address,
                                      contact: newContact,
                                      sharedPayload: updatedPayload)
     } else {
@@ -828,7 +840,7 @@ extension SendPaymentViewController {
   }
 
   private func sendTransactionForConfirmation(with data: CNBTransactionData?,
-                                              destination: String,
+                                              paymentTarget: String,
                                               contact: ContactType?,
                                               sharedPayload: SharedPayloadDTO) {
     let inputs = SendingDelegateInputs(sendPaymentVM: self.viewModel,
@@ -836,12 +848,12 @@ extension SendPaymentViewController {
                                        payloadDTO: sharedPayload)
 
     if let data = viewModel.sendMaxTransactionData {
-      coordinationDelegate?.viewController(self, sendingMax: data, to: destination, inputs: inputs)
+      coordinationDelegate?.viewController(self, sendingMax: data, to: paymentTarget, inputs: inputs)
     } else {
       self.coordinationDelegate?.viewControllerDidSendPayment(self,
                                                               btcAmount: viewModel.btcAmount,
                                                               requiredFeeRate: viewModel.requiredFeeRate,
-                                                              destination: destination,
+                                                              paymentTarget: paymentTarget,
                                                               inputs: inputs)
     }
 

@@ -276,8 +276,8 @@ extension ConfirmPaymentViewController {
 
     // Set default contact and address label values
     contactLabel.text = viewModel.contact?.displayName
-    primaryAddressLabel.text = viewModel.destination
-    secondaryAddressLabel.text = viewModel.destination
+    primaryAddressLabel.text = viewModel.paymentTarget
+    secondaryAddressLabel.text = viewModel.paymentTarget
 
     if let contact = viewModel.contact {
       // May refer to either an actual contact or a manually entered phone number
