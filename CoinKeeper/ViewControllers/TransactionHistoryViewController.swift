@@ -388,7 +388,3 @@ extension TransactionHistoryViewController {
   }
 
 }
-
-extension TransactionHistoryViewController: UIScrollViewDelegate {
-
-}
