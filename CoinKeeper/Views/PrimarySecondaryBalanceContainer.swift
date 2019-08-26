@@ -9,9 +9,9 @@
 import Foundation
 import UIKit
 
-protocol CurrencyPairDisplayable { }
+protocol CurrencyDisplayable { }
 
-extension CurrencyPairDisplayable {
+extension CurrencyDisplayable {
 
   func attributedString(for amount: NSDecimalNumber?, currency: CurrencyCode) -> NSAttributedString {
     guard let amount = amount else { return NSAttributedString(string: "–") }
@@ -49,7 +49,7 @@ extension CurrencyPairDisplayable {
 
 }
 
-class PrimarySecondaryBalanceContainer: UIView, CurrencyPairDisplayable {
+class PrimarySecondaryBalanceContainer: UIView, CurrencyDisplayable {
 
   @IBOutlet var primaryBalanceLabel: BalancePrimaryAmountLabel!
   @IBOutlet var secondaryBalanceLabel: BalanceSecondaryAmountLabel!

@@ -35,7 +35,7 @@ extension TransactionSummaryCellDisplayable {
 /// Defines the properties that need to be set during initialization of the view model.
 /// The inherited `...Displayable` requirements should be calculated in this
 /// protocol's extension or provided by a mock view model.
-protocol TransactionSummaryCellViewModelType: TransactionSummaryCellDisplayable, CurrencyPairDisplayable {
+protocol TransactionSummaryCellViewModelType: TransactionSummaryCellDisplayable, CurrencyDisplayable {
   var walletTxType: WalletTransactionType { get }
   var direction: TransactionDirection { get }
   var isLightningTransfer: Bool { get } //can be true for either onChain or lightning transactions
