@@ -159,7 +159,7 @@ protocol UserBrokerType: AnyObject {
 protocol WalletBrokerType: AnyObject {
 
   func walletId(in context: NSManagedObjectContext) -> String?
-  func walletFlags(in context: NSManagedObjectContext) -> Int
+  func walletFlags(in context: NSManagedObjectContext) -> WalletFlagsParser
   func resetWallet() throws
   func walletWords() -> [String]?
   func persistWalletResponse(from response: WalletResponse, in context: NSManagedObjectContext) throws

@@ -22,8 +22,8 @@ class WalletBroker: CKPersistenceBroker, WalletBrokerType {
     }
   }
 
-  func walletFlags(in context: NSManagedObjectContext) -> Int {
-    return databaseManager.walletFlags(in: context)
+  func walletFlags(in context: NSManagedObjectContext) -> WalletFlagsParser {
+    return WalletFlagsParser(flags: databaseManager.walletFlags(in: context))
   }
 
   func resetWallet() throws {

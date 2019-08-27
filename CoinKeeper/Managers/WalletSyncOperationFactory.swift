@@ -93,6 +93,7 @@ class WalletSyncOperationFactory {
     return dependencies.databaseMigrationWorker.migrateIfPossible()
       .then { _ in dependencies.keychainMigrationWorker.migrateIfPossible() }
       .then(in: context) { self.checkAndRecoverAuthorizationIds(with: dependencies, in: context) }
+      .then(in: context) { self.checkAndVerifyWallet(with: dependencies, in: context) }
       .then(in: context) { dependencies.txDataWorker.performFetchAndStoreAllTransactionalData(in: context, fullSync: fullSync) }
       .get { _ in dependencies.connectionManager.setAPIUnreachable(false) }
       .then(in: context) { dependencies.walletWorker.updateServerPoolAddresses(in: context) }
@@ -125,7 +126,7 @@ class WalletSyncOperationFactory {
     }
   }
 
-  private func setAndVerifyWallet(with dependencies: SyncDependencies, in context: NSManagedObjectContext) -> Promise<Void> {
+  private func checkAndVerifyWallet(with dependencies: SyncDependencies, in context: NSManagedObjectContext) -> Promise<Void> {
     let walletId: String? = dependencies.persistenceManager.brokers.wallet.walletId(in: context)
     if walletId != nil {
       return dependencies.networkManager

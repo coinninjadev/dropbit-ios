@@ -88,6 +88,11 @@ class MockPersistenceDatabaseManager: PersistenceDatabaseType {
     return walletIdToReturn
   }
 
+  var walletFlagsToReturn: Int = -1
+  func walletFlags(in context: NSManagedObjectContext) -> Int {
+    return walletFlagsToReturn
+  }
+
   func userId(in context: NSManagedObjectContext) -> String? {
     return nil
   }

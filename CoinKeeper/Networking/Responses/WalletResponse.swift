@@ -46,7 +46,7 @@ extension WalletResponse {
     "public_key_string": "02262233847a69026f8f3ae027af347f2501adf008fe4f6087d31a1d975fd41473",
     "created_at": 1531921356,
     "updated_at": 1531921356,
-    "version": 1,
+    "flags": 1,
     "user_id": "ad983e63-526d-4679-a682-c4ab052b20e1"
     }
     """
