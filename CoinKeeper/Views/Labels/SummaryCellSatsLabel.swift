@@ -8,8 +8,7 @@
 
 import UIKit
 
-class SummaryCellSatsLabel: UILabel {
-
+class SummaryCellBitcoinLabel: UILabel {
   required init?(coder aDecoder: NSCoder) {
     super.init(coder: aDecoder)
     initialize()
@@ -20,7 +19,7 @@ class SummaryCellSatsLabel: UILabel {
     initialize()
   }
 
-  private func initialize() {
+  fileprivate func initialize() {
     self.backgroundColor = .clear
     self.textColor = .bitcoinOrange
     self.font = .semiBold(13)
@@ -29,5 +28,8 @@ class SummaryCellSatsLabel: UILabel {
     self.translatesAutoresizingMaskIntoConstraints = false
     self.heightAnchor.constraint(equalToConstant: 28).isActive = true
   }
+}
+
+class SummaryCellSatsLabel: SummaryCellBitcoinLabel {
 
 }

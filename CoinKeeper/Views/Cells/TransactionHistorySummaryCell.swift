@@ -53,7 +53,8 @@ class TransactionHistorySummaryCell: UICollectionViewCell {
     memoLabel.text = values.memo
     configureAmountLabels(with: values.summaryAmountLabels,
                           accentColor: values.accentColor,
-                          walletTxType: values.walletTxType)
+                          walletTxType: values.walletTxType,
+                          selectedCurrency: values.selectedCurrency)
   }
 
   /// Configures isHidden for all subviews of this cell where that property varies
@@ -75,20 +76,32 @@ class TransactionHistorySummaryCell: UICollectionViewCell {
 
   private func configureAmountLabels(with labels: SummaryCellAmountLabels,
                                      accentColor: UIColor,
-                                     walletTxType: WalletTransactionType) {
+                                     walletTxType: WalletTransactionType,
+                                     selectedCurrency: SelectedCurrency) {
     let pillLabel = SummaryCellPillLabel(frame: .zero)
     pillLabel.configure(withText: labels.pillText, backgroundColor: accentColor, isAmount: labels.pillIsAmount)
-    amountStackView.addArrangedSubview(pillLabel)
+    let textLabel = btcLabel(for: labels, walletTxType: walletTxType)
 
+    switch selectedCurrency {
+    case .fiat:
+      amountStackView.addArrangedSubview(pillLabel)
+      amountStackView.addArrangedSubview(textLabel)
+    case .BTC:
+      amountStackView.addArrangedSubview(textLabel)
+      amountStackView.addArrangedSubview(pillLabel)
+    }
+  }
+
+  private func btcLabel(for labels: SummaryCellAmountLabels, walletTxType: WalletTransactionType) -> UILabel {
     switch walletTxType {
     case .onChain:
-      let satsLabel = SummaryCellSatsLabel(frame: .zero)
-      satsLabel.attributedText = labels.btcAttributedText
-      amountStackView.addArrangedSubview(satsLabel)
+      let bitcoinLabel = SummaryCellBitcoinLabel(frame: .zero)
+      bitcoinLabel.attributedText = labels.btcAttributedText
+      return bitcoinLabel
     case .lightning:
       let satsLabel = SummaryCellSatsLabel(frame: .zero)
       satsLabel.text = labels.satsText
-      amountStackView.addArrangedSubview(satsLabel)
+      return satsLabel
     }
   }
 

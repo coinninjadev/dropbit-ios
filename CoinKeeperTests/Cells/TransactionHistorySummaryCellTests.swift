@@ -216,9 +216,10 @@ class TransactionHistorySummaryCellTests: XCTestCase {
     let viewModel = MockSummaryCellVM.testInstance(walletTxType: .onChain, status: .canceled, amountDetails: amountDetails)
     let expectedText = BitcoinFormatter(symbolType: .attributed).attributedString(from: amountDetails.primaryBTCAmount)
     sut.configure(with: viewModel)
-    XCTAssertEqual(sut.satsLabels.count, 1)
-    XCTAssertEqual(sut.satsLabel?.attributedText?.string, expectedText?.string)
-    XCTAssertTrue(sut.satsLabel?.attributedText?.hasImageAttachment() ?? false)
+    XCTAssertEqual(sut.bitcoinLabels.count, 1)
+    XCTAssertEqual(sut.satsLabels.count, 0)
+    XCTAssertEqual(sut.bitcoinLabel?.attributedText?.string, expectedText?.string)
+    XCTAssertTrue(sut.bitcoinLabel?.attributedText?.hasImageAttachment() ?? false)
   }
 
   func testFiatLabelIsLoaded() {
@@ -229,6 +230,27 @@ class TransactionHistorySummaryCellTests: XCTestCase {
     XCTAssertEqual(sut.pillLabels.count, 1)
     XCTAssertEqual(sut.pillLabel?.text, expectedText)
     XCTAssertEqual(sut.pillLabel?.backgroundColor, expectedColor)
+  }
+
+  func testFiatIsOnTopWhenSelected() {
+    let viewModel = MockSummaryCellVM.testInstance(selectedCurrency: .fiat)
+    sut.configure(with: viewModel)
+    let firstLabelIsFiat = sut.amountStackView.arrangedSubviews.first is SummaryCellPillLabel
+    XCTAssertTrue(firstLabelIsFiat)
+  }
+
+  func testBitcoinIsOnTopWhenSelected() {
+    let viewModel = MockSummaryCellVM.testInstance(walletTxType: .onChain, selectedCurrency: .BTC)
+    sut.configure(with: viewModel)
+    let firstLabelIsBitcoin = sut.amountStackView.arrangedSubviews.first is SummaryCellBitcoinLabel
+    XCTAssertTrue(firstLabelIsBitcoin)
+  }
+
+  func testSatsIsOnTopWhenSelected() {
+    let viewModel = MockSummaryCellVM.testInstance(walletTxType: .lightning, selectedCurrency: .BTC)
+    sut.configure(with: viewModel)
+    let firstLabelIsBitcoin = sut.amountStackView.arrangedSubviews.first is SummaryCellSatsLabel
+    XCTAssertTrue(firstLabelIsBitcoin)
   }
 
 }
@@ -249,6 +271,14 @@ extension TransactionHistorySummaryCell {
 
   var satsLabels: [SummaryCellSatsLabel] {
     return self.amountStackView.arrangedSubviews.compactMap { $0 as? SummaryCellSatsLabel }
+  }
+
+  var bitcoinLabel: SummaryCellBitcoinLabel? {
+    return bitcoinLabels.first
+  }
+
+  var bitcoinLabels: [SummaryCellBitcoinLabel] {
+    return self.amountStackView.arrangedSubviews.compactMap { $0 as? SummaryCellBitcoinLabel }
   }
 
 }
