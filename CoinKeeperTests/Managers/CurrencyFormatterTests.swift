@@ -11,36 +11,26 @@ import XCTest
 
 class CurrencyFormatterTests: XCTestCase {
 
-    func testFiatFormatterWithSymbol() {
-      let formatter = FiatFormatter(currency: .USD, withSymbol: true)
-      let amount = NSDecimalNumber(value: 50)
-      let expectedValue = "$50.00"
+  func testFiatFormatterWithSymbol() {
+    let formatter = FiatFormatter(currency: .USD, withSymbol: true)
+    let amount = NSDecimalNumber(value: 50)
+    let expectedValue = "$50.00"
+    XCTAssertEqual(formatter.string(fromDecimal: amount), expectedValue)
+  }
 
-      XCTAssertEqual(formatter.string(fromDecimal: amount), expectedValue)
-    }
+  func testFiatFormatterWithSymbolAndNegative() {
+    let formatter = FiatFormatter(currency: .USD, withSymbol: true, showNegativeSymbol: true)
+    let amount = NSDecimalNumber(value: -50)
+    let expectedValue = "- $50.00"
+    XCTAssertEqual(formatter.string(fromDecimal: amount), expectedValue)
+  }
 
-    func testBitcoinFormatterWithSymbol() {
-      let formatter = BitcoinFormatter(symbolType: .string)
-      let amount = NSDecimalNumber(integerAmount: 714286, currency: .BTC)
-      let expectedValue = "\(CurrencyCode.BTC.symbol)0.00714286"
+  func testBitcoinFormatterWithSymbol() {
+    let formatter = BitcoinFormatter(symbolType: .string)
+    let amount = NSDecimalNumber(integerAmount: 714286, currency: .BTC)
+    let expectedValue = "\(CurrencyCode.BTC.symbol)0.00714286"
 
-      XCTAssertEqual(formatter.string(fromDecimal: amount), expectedValue)
-    }
-
-  //  func testConvertingBTCToUSDPrimaryCurrencyValueReturnsProperBTCValue() {
-  //    self.sut = CurrencyConverter(fromBtcTo: .USD, fromAmount: 1, rates: safeRates)
-  //    let actualValue = self.sut.fromDisplayValue
-  //    let expectedValue = "\(CurrencyCode.BTC.symbol)1"
-  //
-  //    XCTAssertEqual(actualValue, expectedValue, "should format the btc properly")
-  //  }
-  //
-  //  func testConvertingBTCToUSDSecondaryCurrencyValueReturnsProperBTCValue() {
-  //    self.sut = CurrencyConverter(fromBtcTo: .USD, fromAmount: 1, rates: safeRates)
-  //    let actualValue = self.sut.toDisplayValue
-  //    let expectedValue = "$7,000.00"
-  //
-  //    XCTAssertEqual(actualValue, expectedValue, "should format the USD properly")
-  //  }
+    XCTAssertEqual(formatter.string(fromDecimal: amount), expectedValue)
+  }
 
 }

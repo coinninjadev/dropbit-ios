@@ -74,6 +74,8 @@ class CKCurrencyFormatter {
     }
     formatter.locale = Locale.current //determines grouping/decimal separators
     formatter.usesGroupingSeparator = true
+    formatter.negativePrefix = ""
+    formatter.negativeSuffix = ""
     formatter.numberStyle = .decimal
     return formatter
   }
