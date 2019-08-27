@@ -43,7 +43,7 @@ class WalletFlagsParser {
   }
 
   var walletDeactivated: Bool {
-    return flags & WalletFlagsParser.deactivatedBit == 1
+    return (flags & WalletFlagsParser.deactivatedBit) == WalletFlagsParser.deactivatedBit
   }
 
   func setVersion(_ version: WalletFlagsVersion) -> WalletFlagsParser {
