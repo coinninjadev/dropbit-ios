@@ -248,17 +248,10 @@ extension NSAttributedString {
   func hasImageAttachment() -> Bool {
     var hasImage = false
     let range = NSRange(location: 0, length: self.length)
-    enumerateAttribute(NSAttributedString.Key.attachment, in: range, options: [], using: {(value, range, _) -> Void in
-      if let attachment = value as? NSTextAttachment {
-        var image: UIImage?
-
-        if attachment.image != nil {
-          image = attachment.image
-        } else {
-          image = attachment.image(forBounds: attachment.bounds, textContainer: nil, characterIndex: range.location)
-        }
-
-        hasImage = image != nil
+    enumerateAttribute(NSAttributedString.Key.attachment, in: range, options: [], using: {(value, _, stop) -> Void in
+      if let attachment = value as? NSTextAttachment, attachment.image != nil {
+        hasImage = true
+        stop.pointee = true
       }
     })
     return hasImage
