@@ -221,6 +221,16 @@ class TransactionHistorySummaryCellTests: XCTestCase {
     XCTAssertTrue(sut.satsLabel?.attributedText?.hasImageAttachment() ?? false)
   }
 
+  func testFiatLabelIsLoaded() {
+    let amountDetails = MockSummaryCellVM.testAmountDetails(sats: 1234560)
+    let viewModel = MockSummaryCellVM.testInstance(walletTxType: .onChain, direction: .in, status: .completed, amountDetails: amountDetails)
+    let expectedText = viewModel.summaryAmountLabels.pillText, expectedColor = UIColor.incomingGreen
+    sut.configure(with: viewModel)
+    XCTAssertEqual(sut.pillLabels.count, 1)
+    XCTAssertEqual(sut.pillLabel?.text, expectedText)
+    XCTAssertEqual(sut.pillLabel?.backgroundColor, expectedColor)
+  }
+
 }
 
 extension TransactionHistorySummaryCell {

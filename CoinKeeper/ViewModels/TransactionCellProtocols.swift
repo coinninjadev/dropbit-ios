@@ -102,26 +102,8 @@ extension TransactionSummaryCellViewModelType {
 
   private var directionColor: UIColor {
     switch direction {
-    case .in:   return .neonGreen
+    case .in:   return .incomingGreen
     case .out:  return .outgoingGray
-    }
-  }
-
-  var summaryStatusText: String? {
-    switch status {
-    case .broadcasting: return "Broadcasting"
-    default:            return nil
-    }
-  }
-
-  var statusTextColor: UIColor {
-    if isValidTransaction {
-      switch status {
-      case .broadcasting: return .warning
-      default:            return .darkGrayText
-      }
-    } else {
-      return .darkPeach
     }
   }
 
@@ -285,9 +267,9 @@ extension TransactionDetailCellViewModelType {
 
   var amountLabels: DetailCellAmountLabels {
     return DetailCellAmountLabels(primaryText: "",
-                                       secondaryText: nil,
-                                       secondaryAttributedText: nil,
-                                       historicalPriceAttributedText: nil)
+                                  secondaryText: nil,
+                                  secondaryAttributedText: nil,
+                                  historicalPriceAttributedText: nil)
   }
 
   var displayDate: String {
@@ -325,7 +307,7 @@ enum TransactionStatus: String {
   case expired
 }
 
-fileprivate enum LightningTransferType {
+private enum LightningTransferType {
   case deposit, withdraw
 }
 
