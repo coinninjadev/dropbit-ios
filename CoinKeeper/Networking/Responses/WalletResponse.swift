@@ -10,12 +10,14 @@ import Foundation
 
 public struct CreateWalletBody: Encodable {
   let publicKeyString: String
+  let flags: Int
 }
 
 public struct WalletResponse: ResponseDecodable {
 
   let id: String // wallet ID
   let publicKeyString: String // the value provided in the request body
+  let flags: Int
   let createdAt: Date
   let updatedAt: Date
 
@@ -44,6 +46,7 @@ extension WalletResponse {
     "public_key_string": "02262233847a69026f8f3ae027af347f2501adf008fe4f6087d31a1d975fd41473",
     "created_at": 1531921356,
     "updated_at": 1531921356,
+    "version": 1,
     "user_id": "ad983e63-526d-4679-a682-c4ab052b20e1"
     }
     """

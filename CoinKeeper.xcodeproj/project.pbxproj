@@ -199,6 +199,7 @@
 		3B5720782232CD1C0048A8CF /* DatabaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5720772232CD1C0048A8CF /* DatabaseTests.swift */; };
 		3B57207B223300160048A8CF /* SQLiteCoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B57207A223300160048A8CF /* SQLiteCoreDataStack.swift */; };
 		3B57207D2233004E0048A8CF /* BaseCoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B57207C2233004E0048A8CF /* BaseCoreDataStack.swift */; };
+		3B598FDC2315BF5100FF50CD /* WalletFlagsParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B598FDB2315BF5100FF50CD /* WalletFlagsParser.swift */; };
 		3B5A889A228AEFE10082BBA4 /* TwitterSearchDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5A8899228AEFE10082BBA4 /* TwitterSearchDataSource.swift */; };
 		3B5A889D228AF3D90082BBA4 /* TwitterUserTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5A889B228AF3D90082BBA4 /* TwitterUserTableViewCell.swift */; };
 		3B5A889E228AF3D90082BBA4 /* TwitterUserTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3B5A889C228AF3D90082BBA4 /* TwitterUserTableViewCell.xib */; };
@@ -1129,6 +1130,7 @@
 		3B5720772232CD1C0048A8CF /* DatabaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseTests.swift; sourceTree = "<group>"; };
 		3B57207A223300160048A8CF /* SQLiteCoreDataStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SQLiteCoreDataStack.swift; sourceTree = "<group>"; };
 		3B57207C2233004E0048A8CF /* BaseCoreDataStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseCoreDataStack.swift; sourceTree = "<group>"; };
+		3B598FDB2315BF5100FF50CD /* WalletFlagsParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletFlagsParser.swift; sourceTree = "<group>"; };
 		3B5A8899228AEFE10082BBA4 /* TwitterSearchDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwitterSearchDataSource.swift; sourceTree = "<group>"; };
 		3B5A889B228AF3D90082BBA4 /* TwitterUserTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwitterUserTableViewCell.swift; sourceTree = "<group>"; };
 		3B5A889C228AF3D90082BBA4 /* TwitterUserTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TwitterUserTableViewCell.xib; sourceTree = "<group>"; };
@@ -3089,6 +3091,7 @@
 				30BF4FE621B5BF210018AE87 /* PersistenceCacheDataWorker.swift */,
 				3093B08121F10E9D00B3EF9C /* SerialQueueManager.swift */,
 				B5EEDA9F2209E225009434DC /* WalletSyncOperationFactory.swift */,
+				3B598FDB2315BF5100FF50CD /* WalletFlagsParser.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -4430,6 +4433,7 @@
 				A20E47F020C0436E00CA8589 /* ContactType.swift in Sources */,
 				B552EDF2211E33D000332BB5 /* AlertManager.swift in Sources */,
 				B59C405E20E54EC700F04FE5 /* WalletAddressRequestResponse.swift in Sources */,
+				3B598FDC2315BF5100FF50CD /* WalletFlagsParser.swift in Sources */,
 				3B57207B223300160048A8CF /* SQLiteCoreDataStack.swift in Sources */,
 				B534CB362215E4DC00E6884A /* CKPhoneNumberTextField.swift in Sources */,
 				A260E8DB20FD312B008343F9 /* UIView+Enabler.swift in Sources */,

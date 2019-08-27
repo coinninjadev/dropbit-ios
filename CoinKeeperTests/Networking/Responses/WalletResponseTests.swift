@@ -33,6 +33,7 @@ extension WalletResponse: EmptyStringCopyable {
   func copyWithEmptyRequiredStrings() -> WalletResponse {
     return WalletResponse(id: "",
                           publicKeyString: "",
+                          version: 1,
                           createdAt: self.createdAt,
                           updatedAt: self.updatedAt,
                           userId: self.userId)
