@@ -31,8 +31,6 @@ struct TransactionSummaryCellViewModel: TransactionSummaryCellViewModelType {
 
   var direction: TransactionDirection
 
-  var statusTextColor: UIColor
-
   var counterpartyConfig: TransactionCellCounterpartyConfig?
 
 }

@@ -1,5 +1,5 @@
 //
-//  ExchangeRateUpdateable.swift
+//  ExchangeRateUpdatable.swift
 //  CoinKeeper
 //
 //  Created by Ben Winters on 4/23/18.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-protocol ExchangeRateUpdateable: AnyObject {
+protocol ExchangeRateUpdatable: AnyObject {
 
   var currencyValueManager: CurrencyValueDataSourceType? { get }
 
@@ -26,7 +26,7 @@ protocol ExchangeRateUpdateable: AnyObject {
 
 }
 
-extension ExchangeRateUpdateable {
+extension ExchangeRateUpdatable {
 
   func registerForRateUpdates() {
     // The observer block token is automatically deregistered when the balanceManager is deallocated from the view controller

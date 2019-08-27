@@ -18,7 +18,6 @@ class TransactionHistoryViewControllerTests: XCTestCase {
     super.setUp()
     stack = InMemoryCoreDataStack()
     sut = TransactionHistoryViewController.makeFromStoryboard()
-    sut.context = self.stack.context
     _ = sut.view
   }
 

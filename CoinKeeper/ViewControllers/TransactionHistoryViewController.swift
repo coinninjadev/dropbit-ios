@@ -14,7 +14,7 @@ import PromiseKit
 import DZNEmptyDataSet
 
 protocol TransactionHistoryViewControllerDelegate: DeviceCountryCodeProvider &
-  BadgeUpdateDelegate & URLOpener & LightningTransactionHistoryEmptyViewDelegate {
+  BadgeUpdateDelegate & URLOpener & LightningTransactionHistoryEmptyViewDelegate & CurrencyValueDataSourceType {
   func viewControllerDidRequestHistoryUpdate(_ viewController: TransactionHistoryViewController)
   func viewControllerDidDisplayTransactions(_ viewController: TransactionHistoryViewController)
   func viewControllerAttemptedToRefreshTransactions(_ viewController: UIViewController)
@@ -67,14 +67,21 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
     }
   }
 
-  static func newInstance(withDelegate delegate: TransactionHistoryViewControllerDelegate, context dbContext: NSManagedObjectContext,
-                          type: WalletTransactionType = .onChain) -> TransactionHistoryViewController {
-    let txHistory = TransactionHistoryViewController.makeFromStoryboard()
-    txHistory.generalCoordinationDelegate = delegate
-    txHistory.context = dbContext
-    txHistory.transactionType = type
+  var viewModel: TransactionHistoryViewModel!
 
-    return txHistory
+  static func newInstance(withDelegate delegate: TransactionHistoryViewControllerDelegate,
+                          walletTxType: WalletTransactionType,
+                          dataSource: TransactionHistoryDataSourceType) -> TransactionHistoryViewController {
+    let viewController = TransactionHistoryViewController.makeFromStoryboard()
+    viewController.generalCoordinationDelegate = delegate
+    dataSource.changeDelegate = viewController
+    viewController.viewModel = TransactionHistoryViewModel(delegate: viewController,
+                                                           currencyManager: delegate,
+                                                           deviceCountryCode: delegate.deviceCountryCode(),
+                                                           transactionType: walletTxType,
+                                                           dataSource: dataSource)
+
+    return viewController
   }
 
   var isCollectionViewFullScreen: Bool = false {
@@ -84,10 +91,6 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
     }
   }
 
-  var currencyValueManager: CurrencyValueDataSourceType?
-  var rateManager: ExchangeRateManager = ExchangeRateManager()
-  var transactionType: WalletTransactionType = .onChain
-
   override func accessibleViewsAndIdentifiers() -> [AccessibleViewElement] {
     return [
       (self.view, .transactionHistory(.page)),
@@ -95,66 +98,8 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
     ]
   }
 
-  lazy var phoneFormatter: CKPhoneNumberFormatter = {
-    return CKPhoneNumberFormatter(format: .national)
-  }()
-
-  var deviceCountryCode: Int?
-
-  override var generalCoordinationDelegate: AnyObject? {
-    didSet {
-      if let persistedCountryCode = coordinationDelegate?.deviceCountryCode() {
-        self.deviceCountryCode = persistedCountryCode
-      } else if let regionCode = Locale.current.regionCode,
-        let countryCode = phoneNumberKit.countryCode(for: regionCode) {
-        self.deviceCountryCode = Int(countryCode)
-      }
-    }
-  }
-
-  var coordinationDelegate: TransactionHistoryViewControllerDelegate? {
+  var coordinationDelegate: TransactionHistoryViewControllerDelegate! {
     return generalCoordinationDelegate as? TransactionHistoryViewControllerDelegate
-  }
-
-  unowned var context: NSManagedObjectContext!
-  var isLightning: Bool = false
-
-  lazy var onChainDDS = TransactionHistoryViewControllerOnChainDDS(viewController: self)
-  lazy var onChainFetchResultsController: NSFetchedResultsController<CKMTransaction> = {
-    let fetchRequest: NSFetchRequest<CKMTransaction> = CKMTransaction.fetchRequest()
-    fetchRequest.sortDescriptors = CKMTransaction.transactionHistorySortDescriptors
-    fetchRequest.fetchBatchSize = 25
-    let controller = NSFetchedResultsController(fetchRequest: fetchRequest,
-                                                managedObjectContext: context,
-                                                sectionNameKeyPath: nil,
-                                                cacheName: nil) // avoid caching unless there is real need as it is often the source of bugs
-    controller.delegate = self
-    try? controller.performFetch()
-    return controller
-  }()
-
-  lazy var lightningDDS = TransactionHistoryViewControllerLightningDDS(viewController: self)
-  lazy var lightningFetchResultsController: NSFetchedResultsController<CKMWalletEntry> = {
-    let fetchRequest: NSFetchRequest<CKMWalletEntry> = CKMWalletEntry.fetchRequest()
-    fetchRequest.sortDescriptors = CKMWalletEntry.transactionHistorySortDescriptors
-    fetchRequest.fetchBatchSize = 25
-    let controller = NSFetchedResultsController(fetchRequest: fetchRequest,
-                                                managedObjectContext: context,
-                                                sectionNameKeyPath: nil,
-                                                cacheName: nil) // avoid caching unless there is real need as it is often the source of bugs
-    controller.delegate = self
-    try? controller.performFetch()
-    return controller
-  }()
-
-  func preferredCurrency() -> CurrencyCode {
-    guard let selected = coordinationDelegate?.currencyController.selectedCurrency else { return .USD }
-    switch selected {
-    case .BTC:
-      return .BTC
-    case .fiat:
-      return .USD
-    }
   }
 
   override func viewDidLoad() {
@@ -194,62 +139,14 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
     summaryCollectionView.delegate?.scrollViewDidScroll?(summaryCollectionView)
   }
 
-  func detailViewModel(at indexPath: IndexPath) -> OldTransactionDetailCellViewModel {
-    let viewModel: OldTransactionDetailCellViewModel
-    switch transactionType {
-    case .onChain:
-      let transaction = onChainFetchResultsController.object(at: indexPath)
-      viewModel = OldTransactionDetailCellViewModel(
-        transaction: transaction,
-        rates: rateManager.exchangeRates,
-        primaryCurrency: preferredCurrency(),
-        deviceCountryCode: deviceCountryCode
-      )
-    case .lightning:
-      let walletEntry = lightningFetchResultsController.object(at: indexPath)
-      viewModel = OldTransactionDetailCellViewModel(
-        walletEntry: walletEntry,
-        rates: rateManager.exchangeRates,
-        primaryCurrency: preferredCurrency(),
-        deviceCountryCode: deviceCountryCode
-      )
-    }
-
-    return viewModel
-  }
-
-  func summaryViewModel(for transaction: CKMTransaction) -> OldTransactionSummaryCellViewModel {
-    return OldTransactionSummaryCellViewModel(
-      transaction: transaction,
-      rates: rateManager.exchangeRates,
-      primaryCurrency: preferredCurrency(),
-      deviceCountryCode: deviceCountryCode
-    )
-  }
-
-  func summaryViewModel(for walletEntry: CKMWalletEntry) -> OldTransactionSummaryCellViewModel {
-    return OldTransactionSummaryCellViewModel(
-      walletEntry: walletEntry,
-      rates: rateManager.exchangeRates,
-      primaryCurrency: preferredCurrency(),
-      deviceCountryCode: deviceCountryCode
-    )
-  }
-
   private func setupCollectionViews() {
     summaryCollectionView.registerNib(cellType: TransactionHistorySummaryCell.self)
     summaryCollectionView.showsVerticalScrollIndicator = false
     summaryCollectionView.alwaysBounceVertical = true
     summaryCollectionView.contentInset = UIEdgeInsets(top: summaryCollectionView.topInset, left: 0, bottom: 0, right: 0)
 
-    switch transactionType {
-    case .onChain:
-      summaryCollectionView.delegate = onChainDDS
-      summaryCollectionView.dataSource = onChainDDS
-    case .lightning:
-      summaryCollectionView.delegate = lightningDDS
-      summaryCollectionView.dataSource = lightningDDS
-    }
+    summaryCollectionView.delegate = self
+    summaryCollectionView.dataSource = self.viewModel
 
     summaryCollectionView.backgroundColor = .clear
 
@@ -262,6 +159,7 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
   }
 
   fileprivate func reloadCollectionViews() {
+    guard self.viewIfLoaded != nil else { return }
     summaryCollectionView.reloadData()
     coordinationDelegate?.viewControllerSummariesDidReload(self, indexPathsIfNotAll: nil)
   }
@@ -285,15 +183,15 @@ extension TransactionHistoryViewController { // Layout
 
 }
 
-extension TransactionHistoryViewController: NSFetchedResultsControllerDelegate {
-  func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-    reloadCollectionViews()
-  }
-
-  func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+extension TransactionHistoryViewController: TransactionHistoryDataSourceChangeDelegate {
+  func transactionDataSourceWillChange() {
     transactionHistoryWithBalanceView.isHidden = true
     transactionHistoryNoBalanceView.isHidden = true
     lightningTransactionHistoryEmptyBalanceView.isHidden = true
+  }
+
+  func transactionDataSourceDidChange() {
+    reloadCollectionViews()
   }
 }
 
@@ -319,11 +217,13 @@ extension TransactionHistoryViewController: SelectedCurrencyUpdatable {
   }
 }
 
-extension TransactionHistoryViewController: ExchangeRateUpdateable {
+extension TransactionHistoryViewController: TransactionHistoryViewModelDelegate {
 
-  func didUpdateExchangeRateManager(_ exchangeRateManager: ExchangeRateManager) {
-    rateManager.exchangeRates = exchangeRateManager.exchangeRates
-    coordinationDelegate?.currencyController.exchangeRates = exchangeRateManager.exchangeRates
+  var currencyController: CurrencyController {
+    return coordinationDelegate.currencyController
+  }
+
+  func viewModelDidUpdateExchangeRates() {
     reloadCollectionViews()
   }
 
@@ -366,25 +266,31 @@ extension TransactionHistoryViewController: DZNEmptyDataSetDelegate, DZNEmptyDat
   }
 
   private var shouldShowLightningEmptyView: Bool {
-    return (lightningFetchResultsController.fetchedObjects?.count ?? 0) == 0 && transactionType == .lightning
+    return viewModel.dataSource.numberOfItems(inSection: 0) == 0 && viewModel.walletTransactionType == .lightning
   }
 
   private var shouldShowNoBalanceView: Bool {
-    return (onChainFetchResultsController.fetchedObjects?.count ?? 0) == 0 && transactionType == .onChain
+    return viewModel.dataSource.numberOfItems(inSection: 0) == 0 && viewModel.walletTransactionType == .onChain
   }
 
   private var shouldShowWithBalanceView: Bool {
-    return (onChainFetchResultsController.fetchedObjects?.count ?? 0) == 1 && transactionType == .onChain
+    return viewModel.dataSource.numberOfItems(inSection: 0) == 1 && viewModel.walletTransactionType == .onChain
   }
 }
 
-extension TransactionHistoryViewController {
+extension TransactionHistoryViewController: UICollectionViewDelegateFlowLayout {
 
   func summaryCollectionViewLayout() -> UICollectionViewFlowLayout {
     let layout = UICollectionViewFlowLayout()
     layout.minimumLineSpacing = 0
     layout.scrollDirection = .vertical
     return layout
+  }
+
+  func collectionView(_ collectionView: UICollectionView,
+                      layout collectionViewLayout: UICollectionViewLayout,
+                      sizeForItemAt indexPath: IndexPath) -> CGSize {
+    return CGSize(width: collectionView.frame.width, height: 66)
   }
 
 }

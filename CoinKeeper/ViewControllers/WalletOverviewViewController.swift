@@ -154,16 +154,6 @@ class WalletOverviewViewController: BaseViewController, StoryboardInitializable 
     self.baseViewControllers.compactMap { $0 as? RequestPayViewController}.first?.closeButton?.isHidden = true
   }
 
-  func preferredCurrency() -> CurrencyCode {
-    guard let selected = coordinationDelegate?.currencyController.selectedCurrency else { return .USD }
-    switch selected {
-    case .BTC:
-      return .BTC
-    case .fiat:
-      return .USD
-    }
-  }
-
 }
 
 extension WalletOverviewViewController: BadgeDisplayable {
@@ -189,7 +179,7 @@ extension WalletOverviewViewController: BalanceDisplayable {
   func didUpdateExchangeRateManager(_ exchangeRateManager: ExchangeRateManager) {
     rateManager.exchangeRates = exchangeRateManager.exchangeRates
     coordinationDelegate?.currencyController.exchangeRates = exchangeRateManager.exchangeRates
-    baseViewControllers.compactMap { $0 as? ExchangeRateUpdateable }.forEach { $0.didUpdateExchangeRateManager(exchangeRateManager) }
+    baseViewControllers.compactMap { $0 as? ExchangeRateUpdatable }.forEach { $0.didUpdateExchangeRateManager(exchangeRateManager) }
   }
 
 }

@@ -9,7 +9,27 @@
 import Foundation
 import UIKit
 
-class TransactionHistoryDetailsViewControllerDDS: NSObject {
+//swiftlint:disable type_name
+class TransactionHistoryDetailsViewControllerOnChainDDS: OldTransactionHistoryDetailsViewControllerDDS,
+UICollectionViewDelegate, UICollectionViewDataSource {
+
+  func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    return viewController?.onChainFetchResultsController?.fetchedObjects?.count ?? 0
+  }
+
+}
+
+//swiftlint:disable type_name
+class TransactionHistoryDetailsViewControllerLightningDDS: OldTransactionHistoryDetailsViewControllerDDS,
+UICollectionViewDelegate, UICollectionViewDataSource {
+
+  func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    return viewController?.lightningFetchResultsController?.fetchedObjects?.count ?? 0
+  }
+
+}
+
+class OldTransactionHistoryDetailsViewControllerDDS: NSObject {
 
   weak var viewController: TransactionHistoryDetailsViewController?
 

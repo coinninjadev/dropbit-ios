@@ -162,11 +162,6 @@ extension AppCoordinator {
                                  completion: nil)
   }
 
-  private func makeTransactionHistory(isLightning lightning: Bool = false) -> TransactionHistoryViewController {
-    return TransactionHistoryViewController.newInstance(withDelegate: self, context: persistenceManager.mainQueueContext(),
-                                                        type: lightning ? .lightning : .onChain)
-  }
-
   private func setupDrawerViewController(centerViewController: UIViewController, leftViewController: UIViewController) -> MMDrawerController {
     let drawerWidth: CGFloat = 118.0
     let drawerController = MMDrawerController(center: centerViewController,
@@ -195,26 +190,29 @@ extension AppCoordinator {
   func createRequestPayViewController(converter: CurrencyConverter) -> RequestPayViewController? {
     guard let address = nextReceiveAddressForRequestPay() else { return nil }
 
-    let selectedCurrency = currencyController.selectedCurrency.code
-    let fiat = currencyController.fiatCurrency
-    let currencyPair = CurrencyPair(primary: selectedCurrency, fiat: fiat)
     return RequestPayViewController.newInstance(delegate: self,
                                                 receiveAddress: address,
-                                                currencyPair: currencyPair,
+                                                currencyPair: currencyController.currencyPair,
                                                 exchangeRates: self.currencyController.exchangeRates)
   }
 
-  private func makeOverviewController() -> WalletOverviewViewController {
-    let bitcoinWalletTransactionHistory = makeTransactionHistory()
-    let lightningWalletTransactionHistory = makeTransactionHistory(isLightning: true)
-    let requestPayViewController = createRequestPayViewController(converter: currencyController.currencyConverter)
-      ?? RequestPayViewController.makeFromStoryboard()
-    requestPayViewController.isModal = false
-    let overviewChildViewControllers: [BaseViewController] =
-      [lightningWalletTransactionHistory, bitcoinWalletTransactionHistory]
+  private func makeTransactionHistory(type: WalletTransactionType) -> TransactionHistoryViewController {
+    let context = persistenceManager.mainQueueContext()
+    switch type {
+    case .onChain:
+      let dataSource = TransactionHistoryOnChainDataSource(context: context)
+      return TransactionHistoryViewController.newInstance(withDelegate: self, walletTxType: type, dataSource: dataSource)
+    case .lightning:
+      let dataSource = TransactionHistoryLightningDataSource(context: context)
+      return TransactionHistoryViewController.newInstance(withDelegate: self, walletTxType: type, dataSource: dataSource)
+    }
+  }
 
+  private func makeOverviewController() -> WalletOverviewViewController {
+    let onChainHistory = makeTransactionHistory(type: .onChain)
+    let lightningHistory = makeTransactionHistory(type: .lightning)
     let overviewViewController = WalletOverviewViewController.newInstance(with: self,
-                                                                          baseViewControllers: overviewChildViewControllers,
+                                                                          baseViewControllers: [lightningHistory, onChainHistory],
                                                                           balanceProvider: self,
                                                                           balanceDelegate: self)
     return overviewViewController

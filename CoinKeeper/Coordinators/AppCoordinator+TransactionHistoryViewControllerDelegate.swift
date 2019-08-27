@@ -81,22 +81,23 @@ extension AppCoordinator: TransactionHistoryViewControllerDelegate {
   }
 
   func viewController(_ viewController: TransactionHistoryViewController, didSelectItemAtIndexPath indexPath: IndexPath) {
-    switch viewController.transactionType {
-    case .lightning:
-      let controller = TransactionHistoryDetailsViewController.newInstance(withDelegate: self,
-                                                                           fetchedResultsController: viewController.lightningFetchResultsController,
-                                                                           selectedIndexPath: indexPath,
-                                                                           viewModelForIndexPath: { viewController.detailViewModel(at: $0) },
-                                                                           urlOpener: self)
-      viewController.present(controller, animated: true, completion: nil)
-    case .onChain:
-      let controller = TransactionHistoryDetailsViewController.newInstance(withDelegate: self,
-                                                                           fetchedResultsController: viewController.onChainFetchResultsController,
-                                                                           selectedIndexPath: indexPath,
-                                                                           viewModelForIndexPath: { viewController.detailViewModel(at: $0) },
-                                                                           urlOpener: self)
-      viewController.present(controller, animated: true, completion: nil)
-    }
+    //TODO:
+//    switch viewController.viewModel.walletTransactionType {
+//    case .lightning:
+//      let controller = TransactionHistoryDetailsViewController.newInstance(withDelegate: self,
+//                                                                           fetchedResultsController: viewController.lightningFetchResultsController,
+//                                                                           selectedIndexPath: indexPath,
+//                                                                           viewModelForIndexPath: { viewController.detailViewModel(at: $0) },
+//                                                                           urlOpener: self)
+//      viewController.present(controller, animated: true, completion: nil)
+//    case .onChain:
+//      let controller = TransactionHistoryDetailsViewController.newInstance(withDelegate: self,
+//                                                                           fetchedResultsController: viewController.onChainFetchResultsController,
+//                                                                           selectedIndexPath: indexPath,
+//                                                                           viewModelForIndexPath: { viewController.detailViewModel(at: $0) },
+//                                                                           urlOpener: self)
+//      viewController.present(controller, animated: true, completion: nil)
+//    }
   }
 
   func viewControllerDidDismissTransactionDetails(_ viewController: UIViewController) {
