@@ -165,21 +165,26 @@ extension TransactionSummaryCellViewModelType {
       btcAttributedString = BitcoinFormatter(symbolType: .attributed).attributedString(from: converter.btcAmount)
     }
 
+    let signedFiatAmount = self.signedAmount(for: converter.fiatAmount)
     let satsText = SatsFormatter().string(fromDecimal: converter.btcAmount) ?? ""
     let fiatText = FiatFormatter(currency: converter.fiatCurrency,
                                  withSymbol: true,
-                                 showNegativeSymbol: true).string(fromDecimal: converter.fiatAmount) ?? ""
-    let pillText: String
-    if isValidTransaction {
-      pillText = fiatText
-    } else {
-      pillText = status.rawValue
-    }
+                                 showNegativeSymbol: true).string(fromDecimal: signedFiatAmount) ?? ""
+
+    let pillText: String = isValidTransaction ? fiatText : status.rawValue
 
     return SummaryCellAmountLabels(btcAttributedText: btcAttributedString,
                                    satsText: satsText,
                                    pillText: pillText,
                                    pillIsAmount: isValidTransaction)
+  }
+
+  private func signedAmount(for amount: NSDecimalNumber) -> NSDecimalNumber {
+    guard !amount.isNegativeNumber else { return amount }
+    switch direction {
+    case .in:   return amount
+    case .out:  return amount.multiplying(by: NSDecimalNumber(value: -1))
+    }
   }
 
   var lightningPaidInvoiceText: String { return "Invoice Paid" }
