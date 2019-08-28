@@ -50,4 +50,28 @@ class WalletFlagsParserTests: XCTestCase {
     XCTAssertEqual(parser.walletPurpose, WalletFlagsPurpose.BIP49)
     XCTAssertTrue(parser.walletDeactivated)
   }
+
+  func testSettingVersionV0toV1() {
+    let parser = WalletFlagsParser(flags: 0)
+    parser.setVersion(.v1)
+    XCTAssertEqual(parser.flags, 1)
+  }
+
+  func testSettingVersionV1toV2() {
+    let parser = WalletFlagsParser(flags: 1)
+    parser.setVersion(.v2)
+    XCTAssertEqual(parser.flags, 2)
+  }
+
+  func testSettingPurpose84V1toV2() {
+    let parser = WalletFlagsParser(flags: 0b10001)
+    parser.setVersion(.v2)
+    XCTAssertEqual(parser.flags, 0b10010)
+  }
+
+  func testUpgradingWalletFrom49v1To84v2() {
+    let parser = WalletFlagsParser(flags: 0b1)
+    parser.setPurpose(.BIP84).setVersion(.v2)
+    XCTAssertEqual(parser.flags, 0b10010)
+  }
 }

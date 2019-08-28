@@ -46,14 +46,15 @@ class WalletFlagsParser {
     return (flags & WalletFlagsParser.deactivatedBit) == WalletFlagsParser.deactivatedBit
   }
 
+  @discardableResult
   func setVersion(_ version: WalletFlagsVersion) -> WalletFlagsParser {
-    flags = flags & version.rawValue
+    flags = (flags & ~WalletFlagsParser.versionPattern) | (version.rawValue << WalletFlagsParser.versionPatternShift)
     return self
   }
 
+  @discardableResult
   func setPurpose(_ purpose: WalletFlagsPurpose) -> WalletFlagsParser {
-    flags = flags & (purpose.rawValue << WalletFlagsParser.purposePatternShift)
+    flags = (flags & ~WalletFlagsParser.purposePattern) | (purpose.rawValue << WalletFlagsParser.purposePatternShift)
     return self
   }
-
 }
