@@ -22,6 +22,10 @@ class WalletBroker: CKPersistenceBroker, WalletBrokerType {
     }
   }
 
+  func walletFlags(in context: NSManagedObjectContext) -> WalletFlagsParser {
+    return WalletFlagsParser(flags: databaseManager.walletFlags(in: context))
+  }
+
   func resetWallet() throws {
     let bgContext = self.databaseManager.createBackgroundContext()
     self.deleteWallet(in: bgContext)
@@ -39,9 +43,9 @@ class WalletBroker: CKPersistenceBroker, WalletBrokerType {
     return nil
   }
 
-  func persistWalletId(from response: WalletResponse, in context: NSManagedObjectContext) throws {
+  func persistWalletResponse(from response: WalletResponse, in context: NSManagedObjectContext) throws {
     userDefaultsManager.set(stringValue: response.id, for: .walletID)
-    try databaseManager.persistWalletId(response.id, in: context)
+    try databaseManager.persistWalletResponse(response, in: context)
   }
 
   func removeWalletId(in context: NSManagedObjectContext) {
