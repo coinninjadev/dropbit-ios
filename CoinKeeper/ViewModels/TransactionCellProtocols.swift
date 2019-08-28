@@ -157,7 +157,7 @@ extension TransactionSummaryCellViewModelType {
 
   var summaryAmountLabels: SummaryCellAmountLabels {
     let converter = CurrencyConverter(rates: amountDetails.exchangeRates,
-                                      fromAmount: amountDetails.primaryBTCAmount,
+                                      fromAmount: amountDetails.btcAmount,
                                       currencyPair: amountDetails.currencyPair)
 
     var btcAttributedString: NSAttributedString?
@@ -312,11 +312,38 @@ private enum LightningTransferType {
 }
 
 struct TransactionAmountDetails {
+  let btcAmount: NSDecimalNumber
   let currencyPair: CurrencyPair
   let exchangeRates: ExchangeRates
-  let primaryBTCAmount: NSDecimalNumber
   let fiatWhenCreated: NSDecimalNumber?
   let fiatWhenTransacted: NSDecimalNumber?
+
+  init(btcAmount: NSDecimalNumber,
+       currencyPair: CurrencyPair,
+       exchangeRates: ExchangeRates,
+       fiatWhenCreated: NSDecimalNumber? = nil,
+       fiatWhenTransacted: NSDecimalNumber? = nil) {
+    self.currencyPair = currencyPair
+    self.exchangeRates = exchangeRates
+    self.btcAmount = btcAmount
+    self.fiatWhenCreated = fiatWhenCreated
+    self.fiatWhenTransacted = fiatWhenTransacted
+  }
+
+  init(fiatAmount: NSDecimalNumber,
+       currencyPair: CurrencyPair,
+       exchangeRates: ExchangeRates,
+       fiatWhenCreated: NSDecimalNumber? = nil,
+       fiatWhenTransacted: NSDecimalNumber? = nil) {
+    let converter = CurrencyConverter(rates: exchangeRates,
+                                      fromAmount: fiatAmount,
+                                      currencyPair: currencyPair)
+    self.init(btcAmount: converter.btcAmount,
+              currencyPair: currencyPair,
+              exchangeRates: exchangeRates,
+              fiatWhenCreated: fiatWhenCreated,
+              fiatWhenTransacted: fiatWhenTransacted)
+  }
 }
 
 struct ProgressBarConfig {

@@ -196,21 +196,27 @@ extension AppCoordinator {
                                                 exchangeRates: self.currencyController.exchangeRates)
   }
 
-  private func makeTransactionHistory(type: WalletTransactionType) -> TransactionHistoryViewController {
-    let context = persistenceManager.mainQueueContext()
-    switch type {
-    case .onChain:
-      let dataSource = TransactionHistoryOnChainDataSource(context: context)
-      return TransactionHistoryViewController.newInstance(withDelegate: self, walletTxType: type, dataSource: dataSource)
-    case .lightning:
-      let dataSource = TransactionHistoryLightningDataSource(context: context)
-      return TransactionHistoryViewController.newInstance(withDelegate: self, walletTxType: type, dataSource: dataSource)
+  private func makeTransactionHistory(type: WalletTransactionType, mock: Bool = false) -> TransactionHistoryViewController {
+    let dataSource: TransactionHistoryDataSourceType
+    if mock {
+      switch type {
+      case .onChain:    dataSource = MockTransactionHistoryOnChainDataSource()
+      case .lightning:  dataSource = MockTransactionHistoryOnChainDataSource()
+      }
+    } else {
+      let context = persistenceManager.mainQueueContext()
+      switch type {
+      case .onChain:    dataSource = TransactionHistoryOnChainDataSource(context: context)
+      case .lightning:  dataSource = TransactionHistoryLightningDataSource(context: context)
+      }
     }
+
+    return TransactionHistoryViewController.newInstance(withDelegate: self, walletTxType: type, dataSource: dataSource)
   }
 
   private func makeOverviewController() -> WalletOverviewViewController {
-    let onChainHistory = makeTransactionHistory(type: .onChain)
-    let lightningHistory = makeTransactionHistory(type: .lightning)
+    let onChainHistory = makeTransactionHistory(type: .onChain, mock: true)
+    let lightningHistory = makeTransactionHistory(type: .lightning, mock: true)
     let overviewViewController = WalletOverviewViewController.newInstance(with: self,
                                                                           baseViewControllers: [lightningHistory, onChainHistory],
                                                                           balanceProvider: self,

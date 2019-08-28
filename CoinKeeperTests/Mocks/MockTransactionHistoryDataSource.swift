@@ -9,10 +9,37 @@
 import Foundation
 @testable import DropBit
 
-struct MockTransactionHistoryDataSource {
+class MockTransactionHistoryOnChainDataSource: TransactionHistoryDataSourceType {
 
-  let transactionViewModels: [TransactionDetailCellViewModelType] = [
+  private let items: [TransactionSummaryCellDisplayable]
 
-  ]
+  let walletTransactionType: WalletTransactionType = .onChain
+
+  weak var changeDelegate: TransactionHistoryDataSourceChangeDelegate?
+
+  init() {
+    let gen = MockOnChainDataGenerator()
+    self.items = [
+      gen.mayUtilities,
+      gen.lightningWithdraw,
+      gen.coffee,
+      gen.drinksAndFood,
+      gen.loadLightning,
+      gen.genericIncoming,
+      gen.canceledPhoneInvite
+    ]
+  }
+
+  func summaryCellDisplayableItem(at indexPath: IndexPath, rates: ExchangeRates, currencies: CurrencyPair) -> TransactionSummaryCellDisplayable {
+    return items[indexPath.row]
+  }
+
+  func numberOfSections() -> Int {
+    return 1
+  }
+
+  func numberOfItems(inSection section: Int) -> Int {
+    return items.count
+  }
 
 }

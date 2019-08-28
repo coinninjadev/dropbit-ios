@@ -9,7 +9,6 @@
 import Foundation
 import CoreData
 
-
 protocol TransactionHistoryDataSourceChangeDelegate: AnyObject {
   func transactionDataSourceWillChange()
   func transactionDataSourceDidChange()
@@ -28,13 +27,12 @@ protocol TransactionHistoryDataSourceType: AnyObject {
   var changeDelegate: TransactionHistoryDataSourceChangeDelegate? { get set }
 }
 
-
 class TransactionHistoryOnChainDataSource: NSObject, TransactionHistoryDataSourceType, NSFetchedResultsControllerDelegate {
 
   let frc: NSFetchedResultsController<CKMTransaction>
   let walletTransactionType: WalletTransactionType = .onChain
 
-  var changeDelegate: TransactionHistoryDataSourceChangeDelegate?
+  weak var changeDelegate: TransactionHistoryDataSourceChangeDelegate?
 
   init(context: NSManagedObjectContext) {
     let fetchRequest: NSFetchRequest<CKMTransaction> = CKMTransaction.fetchRequest()
@@ -51,7 +49,7 @@ class TransactionHistoryOnChainDataSource: NSObject, TransactionHistoryDataSourc
   }
 
   func summaryCellDisplayableItem(at indexPath: IndexPath, rates: ExchangeRates, currencies: CurrencyPair) -> TransactionSummaryCellDisplayable {
-    let amountDetails = TransactionAmountDetails(currencyPair: currencies, exchangeRates: rates, primaryBTCAmount: .zero, fiatWhenCreated: nil, fiatWhenTransacted: nil)
+    let amountDetails = TransactionAmountDetails(btcAmount: .zero, currencyPair: currencies, exchangeRates: rates)
     return TransactionSummaryCellViewModel(selectedCurrency: .BTC, walletTxType: walletTransactionType,
                                            status: .completed, isValidTransaction: true, isLightningTransfer: false,
                                            btcAddress: nil, lightningInvoice: nil, memo: nil,
@@ -97,7 +95,7 @@ class TransactionHistoryLightningDataSource: NSObject, TransactionHistoryDataSou
   }
 
   func summaryCellDisplayableItem(at indexPath: IndexPath, rates: ExchangeRates, currencies: CurrencyPair) -> TransactionSummaryCellDisplayable {
-    let amountDetails = TransactionAmountDetails(currencyPair: currencies, exchangeRates: rates, primaryBTCAmount: .zero, fiatWhenCreated: nil, fiatWhenTransacted: nil)
+    let amountDetails = TransactionAmountDetails(btcAmount: .zero, currencyPair: currencies, exchangeRates: rates)
     return TransactionSummaryCellViewModel(selectedCurrency: .BTC, walletTxType: walletTransactionType,
                                            status: .completed, isValidTransaction: true, isLightningTransfer: false,
                                            btcAddress: nil, lightningInvoice: nil, memo: nil,

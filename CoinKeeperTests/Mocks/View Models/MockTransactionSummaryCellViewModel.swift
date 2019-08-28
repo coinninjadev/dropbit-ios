@@ -8,7 +8,6 @@
 
 import Foundation
 import UIKit
-@testable import DropBit
 
 typealias MockSummaryCellVM = MockTransactionSummaryCellViewModel
 class MockTransactionSummaryCellViewModel: TransactionSummaryCellViewModelType {
@@ -53,13 +52,18 @@ class MockTransactionSummaryCellViewModel: TransactionSummaryCellViewModelType {
   static func testAmountDetails(sats: Int) -> TransactionAmountDetails {
     let pair = CurrencyPair(primary: .BTC, fiat: .USD)
     let btcAmount = NSDecimalNumber(integerAmount: sats, currency: .BTC)
-    return TransactionAmountDetails(currencyPair: pair, exchangeRates: testRates, primaryBTCAmount: btcAmount,
-                                    fiatWhenCreated: nil, fiatWhenTransacted: nil)
+    return TransactionAmountDetails(btcAmount: btcAmount, currencyPair: pair, exchangeRates: testRates)
+  }
+
+  static func testAmountDetails(cents: Int) -> TransactionAmountDetails {
+    let pair = CurrencyPair(primary: .USD, fiat: .USD)
+    let usdAmount = NSDecimalNumber(integerAmount: cents, currency: .USD)
+    return TransactionAmountDetails(fiatAmount: usdAmount, currencyPair: pair, exchangeRates: testRates)
   }
 
   static func defaultInstance() -> MockTransactionSummaryCellViewModel {
     let amtDetails = testAmountDetails(sats: 49500)
-    let address = TestHelpers.mockValidBitcoinAddress()
+    let address = mockValidBitcoinAddress()
     return MockTransactionSummaryCellViewModel(walletTxType: .onChain, direction: .out,
                                                status: .completed, isLightningTransfer: false,
                                                btcAddress: address, lightningInvoice: nil,
@@ -87,9 +91,17 @@ class MockTransactionSummaryCellViewModel: TransactionSummaryCellViewModelType {
       counterpartyConfig: counterpartyConfig, memo: memo)
   }
 
-  static func testTwitterConfig() -> TransactionCellTwitterConfig {
+  static func mockTwitterConfig() -> TransactionCellTwitterConfig {
     let avatar = UIImage(named: "testAvatar")!
     return TransactionCellTwitterConfig(avatar: avatar, displayHandle: "@satoshi")
+  }
+
+  static func mockValidBitcoinAddress() -> String {
+    #if DEBUG
+    return "2N9yokkV146gEoHT6sgUNtisEd7GH93PQ8Q"
+    #else
+    return "15PCeM6EN7ihm4QzhVfZCeZis7uggr5RRJ"
+    #endif
   }
 
 }
