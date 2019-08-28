@@ -215,8 +215,9 @@ extension AppCoordinator {
   }
 
   private func makeOverviewController() -> WalletOverviewViewController {
-    let onChainHistory = makeTransactionHistory(type: .onChain, mock: true)
-    let lightningHistory = makeTransactionHistory(type: .lightning, mock: true)
+    let shouldLoadMock = self.uiTestArguments.contains(.loadMockTransactionHistory)
+    let onChainHistory = makeTransactionHistory(type: .onChain, mock: shouldLoadMock)
+    let lightningHistory = makeTransactionHistory(type: .lightning, mock: shouldLoadMock)
     let overviewViewController = WalletOverviewViewController.newInstance(with: self,
                                                                           baseViewControllers: [lightningHistory, onChainHistory],
                                                                           balanceProvider: self,
