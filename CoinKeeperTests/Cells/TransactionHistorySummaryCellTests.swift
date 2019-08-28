@@ -131,7 +131,7 @@ class TransactionHistorySummaryCellTests: XCTestCase {
   }
 
   func testTwitterConfig_loadsAvatar() {
-    let twitterConfig = MockSummaryCellVM.testTwitterConfig()
+    let twitterConfig = MockSummaryCellVM.mockTwitterConfig()
     let counterpartyConfig = TransactionCellCounterpartyConfig(twitterConfig: twitterConfig)
     let expectedImage = twitterConfig.avatar
     let viewModel = MockSummaryCellVM.testInstance(counterpartyConfig: counterpartyConfig)
@@ -144,7 +144,7 @@ class TransactionHistorySummaryCellTests: XCTestCase {
   }
 
   func testTwitterConfig_showsHidesLeadingViews() {
-    let twitterConfig = MockSummaryCellVM.testTwitterConfig()
+    let twitterConfig = MockSummaryCellVM.mockTwitterConfig()
     let counterpartyConfig = TransactionCellCounterpartyConfig(twitterConfig: twitterConfig)
     let viewModel = MockSummaryCellVM.testInstance(counterpartyConfig: counterpartyConfig)
     sut.configure(with: viewModel)

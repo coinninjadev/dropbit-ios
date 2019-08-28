@@ -80,7 +80,6 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
                                                            deviceCountryCode: delegate.deviceCountryCode(),
                                                            transactionType: walletTxType,
                                                            dataSource: dataSource)
-
     return viewController
   }
 
@@ -245,20 +244,18 @@ extension TransactionHistoryViewController: DZNEmptyDataSetDelegate, DZNEmptyDat
   }
 
   func customView(forEmptyDataSet scrollView: UIScrollView!) -> UIView! {
-    var view: UIView?
-
     if shouldShowNoBalanceView {
       transactionHistoryNoBalanceView.isHidden = false
-      view = transactionHistoryNoBalanceView
+      return transactionHistoryNoBalanceView
     } else if shouldShowWithBalanceView {
       transactionHistoryWithBalanceView.isHidden = false
-      view = transactionHistoryWithBalanceView
+      return transactionHistoryWithBalanceView
     } else if shouldShowLightningEmptyView {
       lightningTransactionHistoryEmptyBalanceView.isHidden = false
-      view = lightningTransactionHistoryEmptyBalanceView
+      return lightningTransactionHistoryEmptyBalanceView
+    } else {
+      return nil
     }
-
-    return view
   }
 
   func verticalOffset(forEmptyDataSet scrollView: UIScrollView!) -> CGFloat {

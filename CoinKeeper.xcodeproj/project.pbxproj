@@ -605,8 +605,6 @@
 		B50E1839214805D80091EEDA /* AppCoordinator+HeaderDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50E1838214805D80091EEDA /* AppCoordinator+HeaderDelegate.swift */; };
 		B50E18462149A1460091EEDA /* UserResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50E18452149A1460091EEDA /* UserResponse.swift */; };
 		B50E7B7F230C6A0400927C8B /* TransactionSummaryCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50E7B7E230C6A0400927C8B /* TransactionSummaryCellViewModel.swift */; };
-		B50E7B83230CA77200927C8B /* MockTransactionSummaryCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50E7B81230CA77100927C8B /* MockTransactionSummaryCellViewModel.swift */; };
-		B50E7B86230CA79D00927C8B /* MockTransactionHistoryDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50E7B84230CA79D00927C8B /* MockTransactionHistoryDataSource.swift */; };
 		B50FD13E215D681B00155BE1 /* AppCoordinator+TransactionAlerts.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50FD13D215D681B00155BE1 /* AppCoordinator+TransactionAlerts.swift */; };
 		B5130E1D22EB99720003374F /* RegTestBroadcastTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5130E1C22EB99720003374F /* RegTestBroadcastTarget.swift */; };
 		B514536422A7207500F7DA41 /* UIColor+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = B514536322A7207500F7DA41 /* UIColor+Theme.swift */; };
@@ -714,9 +712,8 @@
 		B5437B522314735E0002B77C /* CurrencyFormatterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5437B512314735E0002B77C /* CurrencyFormatterTests.swift */; };
 		B5437B5423159D140002B77C /* TransactionHistoryDisplayableDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5437B5323159D140002B77C /* TransactionHistoryDisplayableDataSource.swift */; };
 		B5437B562315B4D70002B77C /* TransactionHistoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5437B552315B4D70002B77C /* TransactionHistoryViewModel.swift */; };
-		B5437B582315FF040002B77C /* MockDataGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5437B572315FF040002B77C /* MockDataGenerator.swift */; };
 		B5437B5923160F9D0002B77C /* MockTransactionHistoryDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50E7B84230CA79D00927C8B /* MockTransactionHistoryDataSource.swift */; };
-		B5437B5A23160FE60002B77C /* MockDataGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5437B572315FF040002B77C /* MockDataGenerator.swift */; };
+		B5437B5A23160FE60002B77C /* MockTransactionDataGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5437B572315FF040002B77C /* MockTransactionDataGenerator.swift */; };
 		B5437B5D231610B50002B77C /* MockTransactionSummaryCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50E7B81230CA77100927C8B /* MockTransactionSummaryCellViewModel.swift */; };
 		B5457124217E63F000FF3A5A /* NetworkManagerIntegrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5457123217E63F000FF3A5A /* NetworkManagerIntegrationTests.swift */; };
 		B5457126217E6D8900FF3A5A /* ResponseCodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5457125217E6D8900FF3A5A /* ResponseCodable.swift */; };
@@ -1726,7 +1723,7 @@
 		B5437B512314735E0002B77C /* CurrencyFormatterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyFormatterTests.swift; sourceTree = "<group>"; };
 		B5437B5323159D140002B77C /* TransactionHistoryDisplayableDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionHistoryDisplayableDataSource.swift; sourceTree = "<group>"; };
 		B5437B552315B4D70002B77C /* TransactionHistoryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionHistoryViewModel.swift; sourceTree = "<group>"; };
-		B5437B572315FF040002B77C /* MockDataGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockDataGenerator.swift; sourceTree = "<group>"; };
+		B5437B572315FF040002B77C /* MockTransactionDataGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockTransactionDataGenerator.swift; sourceTree = "<group>"; };
 		B5457123217E63F000FF3A5A /* NetworkManagerIntegrationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManagerIntegrationTests.swift; sourceTree = "<group>"; };
 		B5457125217E6D8900FF3A5A /* ResponseCodable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResponseCodable.swift; sourceTree = "<group>"; };
 		B5457127217E6F1700FF3A5A /* BodyCodable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BodyCodable.swift; sourceTree = "<group>"; };
@@ -2368,6 +2365,9 @@
 				3B5A8899228AEFE10082BBA4 /* TwitterSearchDataSource.swift */,
 				B56639CC22B151E400FA0EC3 /* TransactionShareable.swift */,
 				A2952F7F22BD1C9500BDCE65 /* NewsViewControllerDDS.swift */,
+				B50E7B81230CA77100927C8B /* MockTransactionSummaryCellViewModel.swift */,
+				B50E7B84230CA79D00927C8B /* MockTransactionHistoryDataSource.swift */,
+				B5437B572315FF040002B77C /* MockTransactionDataGenerator.swift */,
 				B5437B552315B4D70002B77C /* TransactionHistoryViewModel.swift */,
 				B5437B5323159D140002B77C /* TransactionHistoryDisplayableDataSource.swift */,
 				A24B9E852307401700852718 /* OldTransactionHistoryDetailsViewControllerDDS.swift */,
@@ -2990,8 +2990,6 @@
 				B50E7B7B230C63AC00927C8B /* Managers */,
 				B50E7B7A230C636500927C8B /* View Models */,
 				B5EBFD0E215C01E30008EB4A /* MockAddressDataSource.swift */,
-				B50E7B84230CA79D00927C8B /* MockTransactionHistoryDataSource.swift */,
-				B5437B572315FF040002B77C /* MockDataGenerator.swift */,
 				B5D77CC92221FB09002C360E /* MockPhoneNumberFormatter.swift */,
 				B5D77CCC2222002D002C360E /* MockRecipientParser.swift */,
 				3B695C2521CAC993007D0741 /* MockOperationQueue.swift */,
@@ -3179,7 +3177,6 @@
 			isa = PBXGroup;
 			children = (
 				6B8258FE5E688972EBEB03FE /* MockDigitEntryDisplayViewModel.swift */,
-				B50E7B81230CA77100927C8B /* MockTransactionSummaryCellViewModel.swift */,
 			);
 			path = "View Models";
 			sourceTree = "<group>";
@@ -4267,7 +4264,7 @@
 				B53804FC209A4C070096DA33 /* AppCoordinator+URLOpener.swift in Sources */,
 				3B287CBB21020CC700A43E57 /* WalletAddressRequest.swift in Sources */,
 				3B30228121C9290D007F137A /* SyncRoutineError.swift in Sources */,
-				B5437B5A23160FE60002B77C /* MockDataGenerator.swift in Sources */,
+				B5437B5A23160FE60002B77C /* MockTransactionDataGenerator.swift in Sources */,
 				307DF11F2151676900260369 /* JSONValue.swift in Sources */,
 				A246C82522CB9AFB00AF1F52 /* NewsTarget.swift in Sources */,
 				3B8C40C12078D6F1008283A2 /* PresentableViewController.swift in Sources */,
@@ -4907,9 +4904,7 @@
 				4AF433282094103C00B11BC9 /* MockDeviceVerificationViewControllerDelegate.swift in Sources */,
 				A29CE10F20A3845C00761B91 /* BitcoinAddressValidatorTests.swift in Sources */,
 				3B44962121B0665B00A4E912 /* MemoEntryViewControllerTests.swift in Sources */,
-				B50E7B83230CA77200927C8B /* MockTransactionSummaryCellViewModel.swift in Sources */,
 				B575B61B22E9FCCD00CECFB7 /* MockNetworkManager+LightningRequestable.swift in Sources */,
-				B50E7B86230CA79D00927C8B /* MockTransactionHistoryDataSource.swift in Sources */,
 				B5C8F5BB216CEFC400E3E85B /* MockNetworkManager+WalletAddressRequestable.swift in Sources */,
 				3B695C2421CAC872007D0741 /* AppCoordinator+SettingsViewControllerDelegateTests.swift in Sources */,
 				3B62397D205FFDAC003120AA /* WalletManagerTests.swift in Sources */,
@@ -5019,7 +5014,6 @@
 				3B2EBF73223176D9003C0D0E /* MockUserDefaultsManager.swift in Sources */,
 				B59C9E26230F548F00E4F3C8 /* TransactionSummaryCellCounterpartyTests.swift in Sources */,
 				6B82500CB8AD79F2E4EFEEA7 /* KeypadDigitViewTests.swift in Sources */,
-				B5437B582315FF040002B77C /* MockDataGenerator.swift in Sources */,
 				3B80E27B21BEF04500F6EF17 /* DatabaseMigrationWorkerTests.swift in Sources */,
 				B5C5FEE522BAB2F900287FF7 /* MockUserBroker.swift in Sources */,
 				6B825F6F378E9BC23ECB7478 /* MockPinVerificationDelegate.swift in Sources */,

@@ -19,7 +19,7 @@ class TransactionSummaryCellCounterpartyTests: XCTestCase {
     self.sut.awakeFromNib()
   }
 
-  let twitterConfig = MockSummaryCellVM.testTwitterConfig()
+  let twitterConfig = MockSummaryCellVM.mockTwitterConfig()
 
   var expectedTwitterHandle: String {
     return twitterConfig.displayHandle
