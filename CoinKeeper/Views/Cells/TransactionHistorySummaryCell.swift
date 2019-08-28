@@ -85,16 +85,18 @@ class TransactionHistorySummaryCell: UICollectionViewCell {
     let pillLabel = SummaryCellPillLabel(frame: CGRect(x: 0, y: 0, width: 0, height: 28))
     pillLabel.configure(withText: labels.pillText, backgroundColor: accentColor, isAmount: labels.pillIsAmount)
     let textLabel = btcLabel(for: labels, walletTxType: walletTxType)
-    let paddedTextView = paddedLabelView(for: textLabel, padding: pillLabel.horizontalInset) //align text for both labels
 
-    setContentPriorities(for: [pillLabel, paddedTextView])
+    // align text to match the pill
+    let paddedLabelView = SummaryCellPaddedLabelView(label: textLabel, padding: pillLabel.horizontalInset)
+
+    setContentPriorities(for: [pillLabel, paddedLabelView])
 
     switch selectedCurrency {
     case .fiat:
       amountStackView.addArrangedSubview(pillLabel)
-      amountStackView.addArrangedSubview(paddedTextView)
+      amountStackView.addArrangedSubview(paddedLabelView)
     case .BTC:
-      amountStackView.addArrangedSubview(paddedTextView)
+      amountStackView.addArrangedSubview(paddedLabelView)
       amountStackView.addArrangedSubview(pillLabel)
     }
   }
@@ -104,15 +106,6 @@ class TransactionHistorySummaryCell: UICollectionViewCell {
       view.setContentHuggingPriority(.required, for: .horizontal)
       view.setContentCompressionResistancePriority(.required, for: .horizontal)
     }
-  }
-
-  private func paddedLabelView(for label: UILabel, padding: CGFloat) -> UIView {
-    let containerView = UIView()
-    containerView.backgroundColor = .clear
-    containerView.translatesAutoresizingMaskIntoConstraints = false
-    containerView.addSubview(label)
-    label.constrain(to: containerView, trailingConstant: -padding)
-    return containerView
   }
 
   private func btcLabel(for labels: SummaryCellAmountLabels, walletTxType: WalletTransactionType) -> UILabel {

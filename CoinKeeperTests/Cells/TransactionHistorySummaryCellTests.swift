@@ -239,18 +239,22 @@ class TransactionHistorySummaryCellTests: XCTestCase {
     XCTAssertTrue(firstLabelIsFiat)
   }
 
-  func testBitcoinIsOnTopWhenSelected() {
+  func testBitcoinIsOnTopWhenBitcoinIsSelected() {
     let viewModel = MockSummaryCellVM.testInstance(walletTxType: .onChain, selectedCurrency: .BTC)
     sut.configure(with: viewModel)
-    let firstLabelIsBitcoin = sut.amountStackView.arrangedSubviews.first is SummaryCellBitcoinLabel
-    XCTAssertTrue(firstLabelIsBitcoin)
+    let firstViewAsPaddedLabel = sut.amountStackView.arrangedSubviews.first.flatMap { $0 as? SummaryCellPaddedLabelView }
+    XCTAssertNotNil(firstViewAsPaddedLabel, "first arrangedSubview should be SummaryCellPaddedLabelView")
+    let subviewAsBitcoinLabel = firstViewAsPaddedLabel?.subviews.first.flatMap { $0 as? SummaryCellBitcoinLabel }
+    XCTAssertNotNil(subviewAsBitcoinLabel, "subview should be SummaryCellBitcoinLabel")
   }
 
-  func testSatsIsOnTopWhenSelected() {
+  func testSatsIsOnTopWhenBitcoinIsSelected() {
     let viewModel = MockSummaryCellVM.testInstance(walletTxType: .lightning, selectedCurrency: .BTC)
     sut.configure(with: viewModel)
-    let firstLabelIsBitcoin = sut.amountStackView.arrangedSubviews.first is SummaryCellSatsLabel
-    XCTAssertTrue(firstLabelIsBitcoin)
+    let firstViewAsPaddedLabel = sut.amountStackView.arrangedSubviews.first.flatMap { $0 as? SummaryCellPaddedLabelView }
+    XCTAssertNotNil(firstViewAsPaddedLabel, "first arrangedSubview should be SummaryCellPaddedLabelView")
+    let subviewAsBitcoinLabel = firstViewAsPaddedLabel?.subviews.first.flatMap { $0 as? SummaryCellSatsLabel }
+    XCTAssertNotNil(subviewAsBitcoinLabel, "subview should be SummaryCellSatsLabel")
   }
 
 }
@@ -270,7 +274,7 @@ extension TransactionHistorySummaryCell {
   }
 
   var satsLabels: [SummaryCellSatsLabel] {
-    return self.amountStackView.arrangedSubviews.compactMap { $0 as? SummaryCellSatsLabel }
+    return unwrappedAmountLabels.compactMap { $0 as? SummaryCellSatsLabel }
   }
 
   var bitcoinLabel: SummaryCellBitcoinLabel? {
@@ -278,7 +282,12 @@ extension TransactionHistorySummaryCell {
   }
 
   var bitcoinLabels: [SummaryCellBitcoinLabel] {
-    return self.amountStackView.arrangedSubviews.compactMap { $0 as? SummaryCellBitcoinLabel }
+    return unwrappedAmountLabels.compactMap { $0 as? SummaryCellBitcoinLabel }
+  }
+
+  /// The non-pill labels are wrapped with a container view to allow for trailing padding
+  var unwrappedAmountLabels: [UILabel] {
+    return self.amountStackView.arrangedSubviews.compactMap { $0.subviews.first }.compactMap { $0 as? UILabel }
   }
 
 }
