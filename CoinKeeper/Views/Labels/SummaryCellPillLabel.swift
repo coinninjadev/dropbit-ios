@@ -20,9 +20,13 @@ class SummaryCellPillLabel: UILabel {
     initialize()
   }
 
-  override func drawText(in rect: CGRect) {
-    let insets = UIEdgeInsets(top: 0, left: 8, bottom: 0, right: 8)
-    super.drawText(in: rect.inset(by: insets))
+  private let horizontalInset: CGFloat = 12
+
+  override var intrinsicContentSize: CGSize {
+    let buffer = CGFloat(horizontalInset)
+    var size = super.intrinsicContentSize
+    size.width += buffer
+    return size
   }
 
   private func initialize() {
@@ -38,7 +42,10 @@ class SummaryCellPillLabel: UILabel {
   func configure(withText text: String, backgroundColor: UIColor, isAmount: Bool) {
     self.text = text
     self.backgroundColor = backgroundColor
-    self.font = isAmount ? .regular(15) : .regular(14)
+    let configuredFont: UIFont = isAmount ? .regular(15) : .regular(14)
+    self.font = configuredFont
+    let textWidth = text.size(withAttributes: [.font: configuredFont]).width + (horizontalInset * 2)
+    self.widthAnchor.constraint(equalToConstant: textWidth).isActive = true
   }
 
 }

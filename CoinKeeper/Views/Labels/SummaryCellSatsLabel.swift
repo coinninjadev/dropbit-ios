@@ -19,6 +19,15 @@ class SummaryCellBitcoinLabel: UILabel {
     initialize()
   }
 
+  private let horizontalInset: CGFloat = 8
+
+  override var intrinsicContentSize: CGSize {
+    let buffer = CGFloat(horizontalInset)
+    var size = super.intrinsicContentSize
+    size.width += buffer
+    return size
+  }
+
   fileprivate func initialize() {
     self.backgroundColor = .clear
     self.textColor = .bitcoinOrange
