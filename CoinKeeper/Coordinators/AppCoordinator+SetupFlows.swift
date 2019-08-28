@@ -201,7 +201,7 @@ extension AppCoordinator {
     if mock {
       switch type {
       case .onChain:    dataSource = MockTransactionHistoryOnChainDataSource()
-      case .lightning:  dataSource = MockTransactionHistoryOnChainDataSource()
+      case .lightning:  dataSource = MockTransactionHistoryLightningDataSource()
       }
     } else {
       let context = persistenceManager.mainQueueContext()

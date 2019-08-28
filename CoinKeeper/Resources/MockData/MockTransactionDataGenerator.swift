@@ -1,5 +1,5 @@
 //
-//  MockDataGenerator.swift
+//  MockTransactionDataGenerator.swift
 //  DropBitTests
 //
 //  Created by Ben Winters on 8/27/19.
@@ -88,6 +88,97 @@ class MockOnChainSummaryVM: MockTransactionSummaryCellViewModel {
                isLightningTransfer: isLightningTransfer,
                btcAddress: btcAddress,
                lightningInvoice: nil,
+               selectedCurrency: .fiat,
+               amountDetails: amtDetails,
+               counterpartyConfig: counterparty,
+               memo: memo)
+  }
+}
+
+struct MockLightningDataGenerator {
+
+  var pendingInvoice: MockSummaryCellVM {
+    let counterparty = TransactionCellCounterpartyConfig(displayName: "Adam Wolf")
+    return MockLightningSummaryVM(direction: .in,
+                                  sats: 120_000,
+                                  counterparty: counterparty,
+                                  memo: "Chipotle 🌯",
+                                  status: .pending)
+  }
+
+  var lightningWithdraw: MockSummaryCellVM {
+    return MockLightningSummaryVM(direction: .out,
+                                  sats: 5_000_000,
+                                  counterparty: nil,
+                                  memo: nil,
+                                  isLightningTransfer: true)
+  }
+
+  var coffee: MockSummaryCellVM {
+    let twitter = MockSummaryCellVM.mockTwitterConfig()
+    let counterparty = TransactionCellCounterpartyConfig(twitterConfig: twitter)
+    return MockLightningSummaryVM(direction: .out,
+                                  sats: 80_000,
+                                  counterparty: counterparty,
+                                  memo: "Coffee ☕️")
+  }
+
+  var expiredInvoice: MockSummaryCellVM {
+    let invoice = MockSummaryCellVM.mockLightningInvoice()
+    return MockLightningSummaryVM(direction: .in,
+                                  sats: 35_000_000,
+                                  counterparty: nil,
+                                  memo: "Drinks and Food",
+                                  status: .expired,
+                                  lightningInvoice: invoice)
+  }
+
+  var loadLightning: MockSummaryCellVM {
+    return MockLightningSummaryVM(direction: .in,
+                                  sats: 5_000_000,
+                                  counterparty: nil,
+                                  memo: nil,
+                                  isLightningTransfer: true)
+  }
+
+  var paidInvoice: MockSummaryCellVM {
+    let invoice = MockSummaryCellVM.mockLightningInvoice()
+    return MockLightningSummaryVM(direction: .out,
+                                  sats: 50_000,
+                                  counterparty: nil,
+                                  memo: "Parking",
+                                  lightningInvoice: invoice)
+  }
+
+  var expiredPhoneInvite: MockSummaryCellVM {
+    let counterparty = TransactionCellCounterpartyConfig(displayPhoneNumber: "(123) 456-7890")
+    return MockLightningSummaryVM(direction: .out,
+                                  sats: 35_000_000,
+                                  counterparty: counterparty,
+                                  memo: "Chipotle 🌯",
+                                  status: .expired)
+  }
+
+}
+
+class MockLightningSummaryVM: MockTransactionSummaryCellViewModel {
+
+  init(direction: TransactionDirection,
+       sats: Int,
+       counterparty: TransactionCellCounterpartyConfig?,
+       memo: String?,
+       status: TransactionStatus = .completed,
+       isLightningTransfer: Bool = false,
+       lightningInvoice: String? = nil) {
+
+    let amtDetails = MockSummaryCellVM.testAmountDetails(sats: sats)
+
+    super.init(walletTxType: .lightning,
+               direction: direction,
+               status: status,
+               isLightningTransfer: isLightningTransfer,
+               btcAddress: nil,
+               lightningInvoice: lightningInvoice,
                selectedCurrency: .fiat,
                amountDetails: amtDetails,
                counterpartyConfig: counterparty,

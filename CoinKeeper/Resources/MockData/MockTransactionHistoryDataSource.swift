@@ -42,3 +42,38 @@ class MockTransactionHistoryOnChainDataSource: TransactionHistoryDataSourceType 
   }
 
 }
+
+class MockTransactionHistoryLightningDataSource: TransactionHistoryDataSourceType {
+
+  private let items: [TransactionSummaryCellDisplayable]
+
+  let walletTransactionType: WalletTransactionType = .lightning
+
+  weak var changeDelegate: TransactionHistoryDataSourceChangeDelegate?
+
+  init() {
+    let gen = MockLightningDataGenerator()
+    self.items = [
+      gen.pendingInvoice,
+      gen.lightningWithdraw,
+      gen.coffee,
+      gen.expiredInvoice,
+      gen.loadLightning,
+      gen.paidInvoice,
+      gen.expiredPhoneInvite
+    ]
+  }
+
+  func summaryCellDisplayableItem(at indexPath: IndexPath, rates: ExchangeRates, currencies: CurrencyPair) -> TransactionSummaryCellDisplayable {
+    return items[indexPath.row]
+  }
+
+  func numberOfSections() -> Int {
+    return 1
+  }
+
+  func numberOfItems(inSection section: Int) -> Int {
+    return items.count
+  }
+
+}
