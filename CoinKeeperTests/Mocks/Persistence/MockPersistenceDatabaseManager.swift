@@ -79,13 +79,18 @@ class MockPersistenceDatabaseManager: PersistenceDatabaseType {
     return .unverified
   }
 
-  func persistWalletId(_ id: String, in context: NSManagedObjectContext) throws { }
+  func persistWalletResponse(_ response: WalletResponse, in context: NSManagedObjectContext) throws { }
 
   func persistUserId(_ id: String, in context: NSManagedObjectContext) { }
 
   var walletIdToReturn: String?
   func walletId(in context: NSManagedObjectContext) -> String? {
     return walletIdToReturn
+  }
+
+  var walletFlagsToReturn: Int = -1
+  func walletFlags(in context: NSManagedObjectContext) -> Int {
+    return walletFlagsToReturn
   }
 
   func userId(in context: NSManagedObjectContext) -> String? {

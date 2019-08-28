@@ -19,13 +19,17 @@ class MockWalletBroker: CKPersistenceBroker, WalletBrokerType {
     return walletIdValue
   }
 
+  func walletFlags(in context: NSManagedObjectContext) -> WalletFlagsParser {
+    return WalletFlagsParser(flags: 0)
+  }
+
   func resetWallet() throws { }
 
   func walletWords() -> [String]? {
     return keychainManager.retrieveValue(for: .walletWords) as? [String]
   }
 
-  func persistWalletId(from response: WalletResponse, in context: NSManagedObjectContext) throws { }
+  func persistWalletResponse(from response: WalletResponse, in context: NSManagedObjectContext) throws { }
 
   var removeWalletIdWasCalled = false
   func removeWalletId(in context: NSManagedObjectContext) {
