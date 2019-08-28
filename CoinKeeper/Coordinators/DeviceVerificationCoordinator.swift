@@ -1,6 +1,6 @@
 //
 //  DeviceVerificationCoordinator.swift
-//  CoinKeeper
+//  DropBit
 //
 //  Created by Bill Feth on 4/27/18.
 //  Copyright © 2018 Coin Ninja, LLC. All rights reserved.

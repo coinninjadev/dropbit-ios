@@ -1,6 +1,6 @@
 //
 //  InMemoryPersistentContainer.swift
-//  CoinKeeper
+//  DropBit
 //
 //  Created by Ben Winters on 4/10/18.
 //  Copyright © 2018 Coin Ninja, LLC. All rights reserved.

@@ -1,6 +1,6 @@
 //
 //  CKMTransaction+CoreDataProperties.swift
-//  CoinKeeper
+//  DropBit
 //
 //  Created by BJ Miller on 7/29/18.
 //  Copyright © 2018 Coin Ninja, LLC. All rights reserved.
