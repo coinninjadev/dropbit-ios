@@ -28,14 +28,16 @@ class TwitterAvatarView: UIView {
 
     //Add subviews
     self.avatarImageView = UIImageView(image: nil)
+    self.avatarImageView.translatesAutoresizingMaskIntoConstraints = false
     self.addSubview(self.avatarImageView)
     self.twitterLogoImageView = UIImageView(image: UIImage(named: "avatarTwitterBird"))
+    self.twitterLogoImageView.translatesAutoresizingMaskIntoConstraints = false
     self.addSubview(twitterLogoImageView)
 
     //Set constraints
     let logoViewDiameter: CGFloat = 20 //larger than the actual logo image
     let logoViewRadius = logoViewDiameter / 2
-    avatarImageView.constrain(to: self, topConstant: logoViewRadius, bottomConstant: logoViewRadius)
+    avatarImageView.constrain(to: self, topConstant: logoViewRadius, bottomConstant: -logoViewRadius)
 
     //equal width and height determined by externally set width constraint on TwitterAvatarView
     let equalWidthHeightConstraint = avatarImageView.heightAnchor.constraint(equalTo: avatarImageView.widthAnchor, multiplier: 1.0)

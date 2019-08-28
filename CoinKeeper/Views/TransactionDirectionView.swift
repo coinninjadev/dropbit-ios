@@ -31,6 +31,7 @@ class TransactionDirectionView: UIView {
 
     iconImageView = UIImageView(image: nil)
     iconImageView.contentMode = .center
+    iconImageView.translatesAutoresizingMaskIntoConstraints = false
     self.addSubview(iconImageView)
     iconImageView.constrain(to: self)
 
