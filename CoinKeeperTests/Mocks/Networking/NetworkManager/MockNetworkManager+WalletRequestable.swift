@@ -20,7 +20,7 @@ extension MockNetworkManager: WalletRequestable {
     return Promise { $0.reject(error) }
   }
 
-  func createWallet(withPublicKey key: String) -> Promise<WalletResponse> {
+  func createWallet(withPublicKey key: String, walletFlags: Int) -> Promise<WalletResponse> {
     return Promise { _ in }
   }
 

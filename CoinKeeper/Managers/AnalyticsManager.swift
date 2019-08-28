@@ -126,13 +126,19 @@ enum AnalyticsManagerEventKey: String {
 }
 
 enum AnalyticsRelativeWalletRange: String {
+  case none = "None"
+  case underDeciMilliBTC = "UnderDeciMilliBTC"
   case underMilliBTC = "UnderMilliBTC"
   case underCentiBTC = "UnderCentiBTC"
   case underDeciBTC = "UnderDeciBTC"
   case overDeciBTC = "OverDeciBTC"
 
   init(satoshis: Int) {
-    if satoshis < 100_000 {
+    if satoshis == 0 {
+      self = .none
+    } else if satoshis < 10_000 {
+      self = .underDeciMilliBTC
+    } else if satoshis < 100_000 {
       self = .underMilliBTC
     } else if satoshis < 1_000_000 {
       self = .underCentiBTC
