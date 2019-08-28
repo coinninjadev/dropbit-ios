@@ -50,33 +50,56 @@
                                     <constraint firstAttribute="bottom" secondItem="CCd-Cq-cEl" secondAttribute="bottom" id="pj4-lc-ENA"/>
                                 </constraints>
                             </view>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="goZ-BY-pBi">
-                                <rect key="frame" x="69" y="16" width="222" height="78"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sKN-h4-4XB" userLabel="Description Stack Container">
+                                <rect key="frame" x="78" y="30" width="143" height="50"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="248" horizontalCompressionResistancePriority="753" verticalCompressionResistancePriority="751" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TP3-zp-1a8" customClass="TransactionHistoryReceiverLabel" customModule="DropBit" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="0.0" width="210" height="52"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                        <nil key="textColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5A3-sw-8Pr" customClass="SummaryCellMemoLabel" customModule="DropBit" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="52" width="210" height="26"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="26" id="Fzr-CY-iOP"/>
-                                        </constraints>
-                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <nil key="textColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalCentering" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="goZ-BY-pBi">
+                                        <rect key="frame" x="0.0" y="0.0" width="143" height="50"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="248" horizontalCompressionResistancePriority="753" verticalCompressionResistancePriority="751" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TP3-zp-1a8" customClass="TransactionHistoryCounterpartyLabel" customModule="DropBit" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="0.0" width="39.5" height="19.5"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5A3-sw-8Pr" customClass="SummaryCellMemoLabel" customModule="DropBit" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="24" width="35.5" height="26"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="26" id="Fzr-CY-iOP"/>
+                                                </constraints>
+                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                        </subviews>
+                                    </stackView>
                                 </subviews>
-                            </stackView>
-                            <stackView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="kDp-oC-28k">
-                                <rect key="frame" x="299" y="25" width="60" height="60"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="60" placeholder="YES" id="Rgz-uy-x1a"/>
-                                    <constraint firstAttribute="height" constant="60" id="ngs-xr-5V4"/>
+                                    <constraint firstAttribute="trailing" secondItem="goZ-BY-pBi" secondAttribute="trailing" id="1Rx-4e-hxa"/>
+                                    <constraint firstAttribute="bottom" secondItem="goZ-BY-pBi" secondAttribute="bottom" id="9fF-r5-ZC8"/>
+                                    <constraint firstAttribute="height" constant="50" id="ayY-tf-y2Q"/>
+                                    <constraint firstItem="goZ-BY-pBi" firstAttribute="top" secondItem="sKN-h4-4XB" secondAttribute="top" id="hjR-Pt-BHL"/>
+                                    <constraint firstItem="goZ-BY-pBi" firstAttribute="leading" secondItem="sKN-h4-4XB" secondAttribute="leading" id="nRC-yi-g3d"/>
                                 </constraints>
-                            </stackView>
+                            </view>
+                            <view contentMode="scaleToFill" horizontalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="chw-ye-uJA" userLabel="Amount Stack Container">
+                                <rect key="frame" x="229" y="22.5" width="130" height="65"/>
+                                <subviews>
+                                    <stackView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" axis="vertical" distribution="equalCentering" alignment="bottom" translatesAutoresizingMaskIntoConstraints="NO" id="kDp-oC-28k">
+                                        <rect key="frame" x="0.0" y="0.0" width="130" height="65"/>
+                                    </stackView>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="kDp-oC-28k" secondAttribute="trailing" id="CIX-HC-x6T"/>
+                                    <constraint firstItem="kDp-oC-28k" firstAttribute="leading" secondItem="chw-ye-uJA" secondAttribute="leading" id="EEf-bg-hP7"/>
+                                    <constraint firstAttribute="bottom" secondItem="kDp-oC-28k" secondAttribute="bottom" id="FJG-CT-GgH"/>
+                                    <constraint firstItem="kDp-oC-28k" firstAttribute="top" secondItem="chw-ye-uJA" secondAttribute="top" id="N3i-Vf-N83"/>
+                                    <constraint firstAttribute="height" constant="65" id="NSi-UZ-znn"/>
+                                    <constraint firstAttribute="width" constant="130" id="pBt-HR-2yS"/>
+                                </constraints>
+                            </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tIY-uc-wsk" customClass="GrayCellSeparator" customModule="DropBit" customModuleProvider="target">
                                 <rect key="frame" x="30" y="108" width="315" height="2"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -89,17 +112,15 @@
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="tIY-uc-wsk" secondAttribute="trailing" constant="30" id="18d-83-pdV"/>
                             <constraint firstItem="K85-8d-MIH" firstAttribute="top" relation="greaterThanOrEqual" secondItem="cHd-Mz-FEa" secondAttribute="top" constant="8" id="3QL-rt-tu8"/>
-                            <constraint firstItem="goZ-BY-pBi" firstAttribute="leading" secondItem="K85-8d-MIH" secondAttribute="trailing" constant="13" id="6gN-mr-Zio"/>
+                            <constraint firstItem="sKN-h4-4XB" firstAttribute="centerY" secondItem="cHd-Mz-FEa" secondAttribute="centerY" id="9LI-vL-hOH"/>
                             <constraint firstAttribute="bottom" secondItem="tIY-uc-wsk" secondAttribute="bottom" id="AMo-F8-FrE"/>
                             <constraint firstItem="K85-8d-MIH" firstAttribute="leading" secondItem="cHd-Mz-FEa" secondAttribute="leading" constant="16" id="Ffr-7m-bRZ"/>
-                            <constraint firstAttribute="trailing" secondItem="kDp-oC-28k" secondAttribute="trailing" constant="16" id="JHe-Km-PhZ"/>
-                            <constraint firstItem="btT-O7-cy0" firstAttribute="centerY" secondItem="cHd-Mz-FEa" secondAttribute="centerY" id="NT2-bo-MQl"/>
-                            <constraint firstItem="goZ-BY-pBi" firstAttribute="top" secondItem="cHd-Mz-FEa" secondAttribute="top" constant="16" id="SDD-wl-a3n"/>
+                            <constraint firstAttribute="trailing" secondItem="chw-ye-uJA" secondAttribute="trailing" constant="16" id="Ib7-hK-Lu5"/>
                             <constraint firstItem="K85-8d-MIH" firstAttribute="centerY" secondItem="cHd-Mz-FEa" secondAttribute="centerY" id="Tgj-18-ZV0"/>
-                            <constraint firstItem="kDp-oC-28k" firstAttribute="leading" secondItem="goZ-BY-pBi" secondAttribute="trailing" constant="8" id="U65-ge-RRK"/>
-                            <constraint firstAttribute="bottom" secondItem="goZ-BY-pBi" secondAttribute="bottom" constant="16" id="ZI5-u2-kQX"/>
-                            <constraint firstItem="kDp-oC-28k" firstAttribute="centerY" secondItem="cHd-Mz-FEa" secondAttribute="centerY" id="dy2-aq-Xqa"/>
+                            <constraint firstItem="sKN-h4-4XB" firstAttribute="leading" secondItem="K85-8d-MIH" secondAttribute="trailing" constant="10" id="USo-Wg-aHm"/>
                             <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="K85-8d-MIH" secondAttribute="bottom" constant="8" id="gsV-az-Ai2"/>
+                            <constraint firstItem="chw-ye-uJA" firstAttribute="centerY" secondItem="cHd-Mz-FEa" secondAttribute="centerY" id="iTL-Y0-XGc"/>
+                            <constraint firstItem="chw-ye-uJA" firstAttribute="leading" secondItem="sKN-h4-4XB" secondAttribute="trailing" constant="8" id="sBq-xS-KC3"/>
                             <constraint firstItem="tIY-uc-wsk" firstAttribute="leading" secondItem="cHd-Mz-FEa" secondAttribute="leading" constant="30" id="xPC-GN-VLL"/>
                         </constraints>
                     </view>
@@ -114,7 +135,7 @@
             <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
             <connections>
                 <outlet property="amountStackView" destination="kDp-oC-28k" id="cAD-0d-RHr"/>
-                <outlet property="counterpartyLabel" destination="TP3-zp-1a8" id="W6P-kn-msx"/>
+                <outlet property="counterpartyLabel" destination="TP3-zp-1a8" id="kCz-YO-X6W"/>
                 <outlet property="directionView" destination="ocX-t8-liS" id="v3X-t7-QpL"/>
                 <outlet property="memoLabel" destination="5A3-sw-8Pr" id="Xpw-Fa-KBb"/>
                 <outlet property="twitterAvatarView" destination="CCd-Cq-cEl" id="UAJ-hq-VBN"/>

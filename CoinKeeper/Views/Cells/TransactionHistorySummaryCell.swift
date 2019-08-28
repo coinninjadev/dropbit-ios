@@ -21,7 +21,7 @@ class TransactionHistorySummaryCell: UICollectionViewCell {
 
     layer.cornerRadius = 13.0
     amountStackView.alignment = .trailing
-    amountStackView.distribution = .equalSpacing
+    amountStackView.distribution = .equalCentering
   }
 
   override func prepareForReuse() {
@@ -29,6 +29,10 @@ class TransactionHistorySummaryCell: UICollectionViewCell {
 
     twitterAvatarView.isHidden = true
     directionView.isHidden = true
+    amountStackView.arrangedSubviews.forEach { subview in
+      amountStackView.removeArrangedSubview(subview)
+      subview.removeFromSuperview()
+    }
   }
 
   // part of auto-sizing
@@ -78,8 +82,10 @@ class TransactionHistorySummaryCell: UICollectionViewCell {
                                      accentColor: UIColor,
                                      walletTxType: WalletTransactionType,
                                      selectedCurrency: SelectedCurrency) {
-    let pillLabel = SummaryCellPillLabel(frame: .zero)
+    let pillLabel = SummaryCellPillLabel(frame: CGRect(x: 0, y: 0, width: 0, height: 28))
     pillLabel.configure(withText: labels.pillText, backgroundColor: accentColor, isAmount: labels.pillIsAmount)
+    pillLabel.setNeedsLayout()
+    pillLabel.setNeedsUpdateConstraints()
     let textLabel = btcLabel(for: labels, walletTxType: walletTxType)
 
     switch selectedCurrency {

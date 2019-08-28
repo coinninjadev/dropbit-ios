@@ -26,10 +26,10 @@ class SummaryCellPillLabel: UILabel {
   }
 
   private func initialize() {
+    self.numberOfLines = 1
     self.translatesAutoresizingMaskIntoConstraints = false
-    applyCornerRadius(frame.height / 2)
-    self.heightAnchor.constraint(equalToConstant: 28).isActive = true
-
+    self.heightAnchor.constraint(equalToConstant: frame.height).isActive = true
+    self.applyCornerRadius(frame.height / 2)
     self.textAlignment = .center
     self.textColor = .lightGrayText
   }
