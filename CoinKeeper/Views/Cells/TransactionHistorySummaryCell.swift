@@ -87,15 +87,25 @@ class TransactionHistorySummaryCell: UICollectionViewCell {
     pillLabel.setNeedsLayout()
     pillLabel.setNeedsUpdateConstraints()
     let textLabel = btcLabel(for: labels, walletTxType: walletTxType)
+    let paddedTextView = paddedLabelView(for: textLabel, padding: pillLabel.horizontalInset) //align text for both labels
 
     switch selectedCurrency {
     case .fiat:
       amountStackView.addArrangedSubview(pillLabel)
-      amountStackView.addArrangedSubview(textLabel)
+      amountStackView.addArrangedSubview(paddedTextView)
     case .BTC:
-      amountStackView.addArrangedSubview(textLabel)
+      amountStackView.addArrangedSubview(paddedTextView)
       amountStackView.addArrangedSubview(pillLabel)
     }
+  }
+
+  private func paddedLabelView(for label: UILabel, padding: CGFloat) -> UIView {
+    let containerView = UIView()
+    containerView.backgroundColor = .clear
+    containerView.translatesAutoresizingMaskIntoConstraints = false
+    containerView.addSubview(label)
+    label.constrain(to: containerView, trailingConstant: -padding)
+    return containerView
   }
 
   private func btcLabel(for labels: SummaryCellAmountLabels, walletTxType: WalletTransactionType) -> UILabel {

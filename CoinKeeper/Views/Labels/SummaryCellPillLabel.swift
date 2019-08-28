@@ -20,7 +20,7 @@ class SummaryCellPillLabel: UILabel {
     initialize()
   }
 
-  private let horizontalInset: CGFloat = 12
+  let horizontalInset: CGFloat = 12
 
   override var intrinsicContentSize: CGSize {
     let buffer = CGFloat(horizontalInset)
