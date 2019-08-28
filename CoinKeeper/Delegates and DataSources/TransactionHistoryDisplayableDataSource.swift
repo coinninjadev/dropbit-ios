@@ -49,7 +49,7 @@ class TransactionHistoryOnChainDataSource: NSObject, TransactionHistoryDataSourc
   }
 
   func summaryCellDisplayableItem(at indexPath: IndexPath, rates: ExchangeRates, currencies: CurrencyPair) -> TransactionSummaryCellDisplayable {
-    let amountDetails = TransactionAmountDetails(btcAmount: .zero, currencyPair: currencies, exchangeRates: rates)
+    let amountDetails = TransactionAmountDetails(btcAmount: .zero, fiatCurrency: .USD, exchangeRates: rates)
     return TransactionSummaryCellViewModel(selectedCurrency: .BTC, walletTxType: walletTransactionType,
                                            status: .completed, isValidTransaction: true, isLightningTransfer: false,
                                            btcAddress: nil, lightningInvoice: nil, memo: nil,
@@ -95,7 +95,7 @@ class TransactionHistoryLightningDataSource: NSObject, TransactionHistoryDataSou
   }
 
   func summaryCellDisplayableItem(at indexPath: IndexPath, rates: ExchangeRates, currencies: CurrencyPair) -> TransactionSummaryCellDisplayable {
-    let amountDetails = TransactionAmountDetails(btcAmount: .zero, currencyPair: currencies, exchangeRates: rates)
+    let amountDetails = TransactionAmountDetails(btcAmount: .zero, fiatCurrency: currencies.fiat, exchangeRates: rates)
     return TransactionSummaryCellViewModel(selectedCurrency: .BTC, walletTxType: walletTransactionType,
                                            status: .completed, isValidTransaction: true, isLightningTransfer: false,
                                            btcAddress: nil, lightningInvoice: nil, memo: nil,

@@ -50,15 +50,13 @@ class MockTransactionSummaryCellViewModel: TransactionSummaryCellViewModelType {
   }
 
   static func testAmountDetails(sats: Int) -> TransactionAmountDetails {
-    let pair = CurrencyPair(primary: .BTC, fiat: .USD)
     let btcAmount = NSDecimalNumber(integerAmount: sats, currency: .BTC)
-    return TransactionAmountDetails(btcAmount: btcAmount, currencyPair: pair, exchangeRates: testRates)
+    return TransactionAmountDetails(btcAmount: btcAmount, fiatCurrency: .USD, exchangeRates: testRates)
   }
 
   static func testAmountDetails(cents: Int) -> TransactionAmountDetails {
-    let pair = CurrencyPair(primary: .USD, fiat: .USD)
     let usdAmount = NSDecimalNumber(integerAmount: cents, currency: .USD)
-    return TransactionAmountDetails(fiatAmount: usdAmount, currencyPair: pair, exchangeRates: testRates)
+    return TransactionAmountDetails(fiatAmount: usdAmount, fiatCurrency: .USD, exchangeRates: testRates)
   }
 
   static func defaultInstance() -> MockTransactionSummaryCellViewModel {

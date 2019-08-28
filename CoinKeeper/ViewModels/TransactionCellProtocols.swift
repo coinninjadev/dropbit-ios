@@ -319,11 +319,11 @@ struct TransactionAmountDetails {
   let fiatWhenTransacted: NSDecimalNumber?
 
   init(btcAmount: NSDecimalNumber,
-       currencyPair: CurrencyPair,
+       fiatCurrency: CurrencyCode,
        exchangeRates: ExchangeRates,
        fiatWhenCreated: NSDecimalNumber? = nil,
        fiatWhenTransacted: NSDecimalNumber? = nil) {
-    self.currencyPair = currencyPair
+    self.currencyPair = CurrencyPair(primary: .BTC, fiat: fiatCurrency)
     self.exchangeRates = exchangeRates
     self.btcAmount = btcAmount
     self.fiatWhenCreated = fiatWhenCreated
@@ -331,15 +331,16 @@ struct TransactionAmountDetails {
   }
 
   init(fiatAmount: NSDecimalNumber,
-       currencyPair: CurrencyPair,
+       fiatCurrency: CurrencyCode,
        exchangeRates: ExchangeRates,
        fiatWhenCreated: NSDecimalNumber? = nil,
        fiatWhenTransacted: NSDecimalNumber? = nil) {
+    let fiatCurrencyPair = CurrencyPair(primary: fiatCurrency, fiat: fiatCurrency)
     let converter = CurrencyConverter(rates: exchangeRates,
                                       fromAmount: fiatAmount,
-                                      currencyPair: currencyPair)
+                                      currencyPair: fiatCurrencyPair)
     self.init(btcAmount: converter.btcAmount,
-              currencyPair: currencyPair,
+              fiatCurrency: fiatCurrency,
               exchangeRates: exchangeRates,
               fiatWhenCreated: fiatWhenCreated,
               fiatWhenTransacted: fiatWhenTransacted)
