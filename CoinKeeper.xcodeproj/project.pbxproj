@@ -2108,7 +2108,6 @@
 				3B5052B62046E654000C739F /* Delegates and DataSources */,
 				3BDA2082203E17BA00CBA6B1 /* Errors */,
 				3B2E78342024D54C00DA25AF /* Extensions */,
-				3B977991202E413D00C9C933 /* Fonts */,
 				3B82691F20330FAE009B11EC /* Helpers */,
 				3BC9E550204743D800444A53 /* Models */,
 				B552EDD2211E33D000332BB5 /* Managers */,
@@ -2122,13 +2121,12 @@
 				3B82691820330B84009B11EC /* Views */,
 				3B316B6B21B9AC1500185EF9 /* Workers */,
 				3B124E0F2020EB2B00431E2E /* AppDelegate.swift */,
+				B5437B602316CA440002B77C /* Resources */,
 				403B454A2075594F00DA53E9 /* Settings.bundle */,
 				3B86F7B5203CA3B000D15231 /* CoinKeeper-Bridging-Header.h */,
 				A26C768E2108BE96001EB738 /* licenses.html */,
 				3B124E162020EB2B00431E2E /* Assets.xcassets */,
 				3B124E1B2020EB2B00431E2E /* Info.plist */,
-				3B2E782F2024AEA100DA25AF /* UIFont+Theme.swift */,
-				B514536322A7207500F7DA41 /* UIColor+Theme.swift */,
 			);
 			path = CoinKeeper;
 			sourceTree = "<group>";
@@ -2313,6 +2311,8 @@
 				3BC9E5532047516A00444A53 /* UICollectionView+ReusableView.swift */,
 				B501022121F2325B00D42A71 /* UIColor+Init.swift */,
 				3B82692220331189009B11EC /* UIFont+FontStrings.swift */,
+				B514536322A7207500F7DA41 /* UIColor+Theme.swift */,
+				3B2E782F2024AEA100DA25AF /* UIFont+Theme.swift */,
 				B54D206320F926110057A694 /* UIImage+Mask.swift */,
 				A2AA3777210112C000633F83 /* UIImageView+GIF.swift */,
 				A29CE0C22098AD1500761B91 /* UINavigationController+TopViewController.swift */,
@@ -2367,10 +2367,6 @@
 				3B5A8899228AEFE10082BBA4 /* TwitterSearchDataSource.swift */,
 				B56639CC22B151E400FA0EC3 /* TransactionShareable.swift */,
 				A2952F7F22BD1C9500BDCE65 /* NewsViewControllerDDS.swift */,
-				B50E7B81230CA77100927C8B /* MockTransactionSummaryCellViewModel.swift */,
-				B50E7B84230CA79D00927C8B /* MockTransactionHistoryDataSource.swift */,
-				B5437B572315FF040002B77C /* MockTransactionDataGenerator.swift */,
-				B5437B552315B4D70002B77C /* TransactionHistoryViewModel.swift */,
 				B5437B5323159D140002B77C /* TransactionHistoryDisplayableDataSource.swift */,
 				A24B9E852307401700852718 /* OldTransactionHistoryDetailsViewControllerDDS.swift */,
 				A24B9E8323073B4F00852718 /* TransactionHistoryViewControllerDDS.swift */,
@@ -2931,6 +2927,7 @@
 			isa = PBXGroup;
 			children = (
 				B5BA3A7622F22B0E001E41A7 /* TransactionCellProtocols.swift */,
+				B5437B552315B4D70002B77C /* TransactionHistoryViewModel.swift */,
 				B50E7B7E230C6A0400927C8B /* TransactionSummaryCellViewModel.swift */,
 				5B404275208CCA40005624B0 /* OldTransactionDetailCellViewModel.swift */,
 				B53461762098C61D00DDC1C4 /* OldTransactionSummaryCellViewModel.swift */,
@@ -3290,6 +3287,25 @@
 				B50C86A420D8121E00B4FA6B /* Responses */,
 			);
 			path = Networking;
+			sourceTree = "<group>";
+		};
+		B5437B602316CA440002B77C /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				3B977991202E413D00C9C933 /* Fonts */,
+				B5437B612316CA510002B77C /* MockData */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		B5437B612316CA510002B77C /* MockData */ = {
+			isa = PBXGroup;
+			children = (
+				B50E7B81230CA77100927C8B /* MockTransactionSummaryCellViewModel.swift */,
+				B50E7B84230CA79D00927C8B /* MockTransactionHistoryDataSource.swift */,
+				B5437B572315FF040002B77C /* MockTransactionDataGenerator.swift */,
+			);
+			path = MockData;
 			sourceTree = "<group>";
 		};
 		B552EDD2211E33D000332BB5 /* Managers */ = {
