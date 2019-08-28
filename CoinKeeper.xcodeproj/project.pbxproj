@@ -715,6 +715,7 @@
 		B5437B5923160F9D0002B77C /* MockTransactionHistoryDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50E7B84230CA79D00927C8B /* MockTransactionHistoryDataSource.swift */; };
 		B5437B5A23160FE60002B77C /* MockTransactionDataGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5437B572315FF040002B77C /* MockTransactionDataGenerator.swift */; };
 		B5437B5D231610B50002B77C /* MockTransactionSummaryCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50E7B81230CA77100927C8B /* MockTransactionSummaryCellViewModel.swift */; };
+		B5437B5F2316C0580002B77C /* TransactionHistoryViewController+CollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5437B5E2316C0580002B77C /* TransactionHistoryViewController+CollectionView.swift */; };
 		B5457124217E63F000FF3A5A /* NetworkManagerIntegrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5457123217E63F000FF3A5A /* NetworkManagerIntegrationTests.swift */; };
 		B5457126217E6D8900FF3A5A /* ResponseCodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5457125217E6D8900FF3A5A /* ResponseCodable.swift */; };
 		B5457128217E6F1700FF3A5A /* BodyCodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5457127217E6F1700FF3A5A /* BodyCodable.swift */; };
@@ -1724,6 +1725,7 @@
 		B5437B5323159D140002B77C /* TransactionHistoryDisplayableDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionHistoryDisplayableDataSource.swift; sourceTree = "<group>"; };
 		B5437B552315B4D70002B77C /* TransactionHistoryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionHistoryViewModel.swift; sourceTree = "<group>"; };
 		B5437B572315FF040002B77C /* MockTransactionDataGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockTransactionDataGenerator.swift; sourceTree = "<group>"; };
+		B5437B5E2316C0580002B77C /* TransactionHistoryViewController+CollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TransactionHistoryViewController+CollectionView.swift"; sourceTree = "<group>"; };
 		B5457123217E63F000FF3A5A /* NetworkManagerIntegrationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManagerIntegrationTests.swift; sourceTree = "<group>"; };
 		B5457125217E6D8900FF3A5A /* ResponseCodable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResponseCodable.swift; sourceTree = "<group>"; };
 		B5457127217E6F1700FF3A5A /* BodyCodable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BodyCodable.swift; sourceTree = "<group>"; };
@@ -2837,6 +2839,7 @@
 				3BF852392023785000EBBE44 /* StartViewController.swift */,
 				A29CE0C62098F84300761B91 /* SuccessFailViewController.swift */,
 				B52A25C02077CCEF00F636A1 /* TransactionHistoryViewController.swift */,
+				B5437B5E2316C0580002B77C /* TransactionHistoryViewController+CollectionView.swift */,
 				3BAB1444204EE5D3001D41A2 /* VerifyRecoveryWordsViewController.swift */,
 				A2E0300120EABF8E00E160E9 /* RestoreWalletViewController.swift */,
 				A260E8CE20FCFE11008343F9 /* TutorialViewController.swift */,
@@ -4538,6 +4541,7 @@
 				3B55538C21961CB700C5A9A8 /* WordsNotBackedUpBadgeTopic.swift in Sources */,
 				3BDA364320B4D50E001E24FB /* SpendableBalanceError.swift in Sources */,
 				B5B37B23206AFCDF001816F6 /* Money.swift in Sources */,
+				B5437B5F2316C0580002B77C /* TransactionHistoryViewController+CollectionView.swift in Sources */,
 				B5F5CC5320EA6B1400717667 /* MoyaResponse+ErrorMessage.swift in Sources */,
 				30BF4FE721B5BF210018AE87 /* PersistenceCacheDataWorker.swift in Sources */,
 				B52E1DBD2302F50800AA652D /* CKMLNInvoice+CoreDataClass.swift in Sources */,
