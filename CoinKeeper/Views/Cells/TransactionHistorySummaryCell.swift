@@ -84,10 +84,10 @@ class TransactionHistorySummaryCell: UICollectionViewCell {
                                      selectedCurrency: SelectedCurrency) {
     let pillLabel = SummaryCellPillLabel(frame: CGRect(x: 0, y: 0, width: 0, height: 28))
     pillLabel.configure(withText: labels.pillText, backgroundColor: accentColor, isAmount: labels.pillIsAmount)
-    pillLabel.setNeedsLayout()
-    pillLabel.setNeedsUpdateConstraints()
     let textLabel = btcLabel(for: labels, walletTxType: walletTxType)
     let paddedTextView = paddedLabelView(for: textLabel, padding: pillLabel.horizontalInset) //align text for both labels
+
+    setContentPriorities(for: [pillLabel, paddedTextView])
 
     switch selectedCurrency {
     case .fiat:
@@ -96,6 +96,13 @@ class TransactionHistorySummaryCell: UICollectionViewCell {
     case .BTC:
       amountStackView.addArrangedSubview(paddedTextView)
       amountStackView.addArrangedSubview(pillLabel)
+    }
+  }
+
+  private func setContentPriorities(for views: [UIView]) {
+    for view in views {
+      view.setContentHuggingPriority(.required, for: .horizontal)
+      view.setContentCompressionResistancePriority(.required, for: .horizontal)
     }
   }
 
@@ -112,7 +119,7 @@ class TransactionHistorySummaryCell: UICollectionViewCell {
     switch walletTxType {
     case .onChain:
       let bitcoinLabel = SummaryCellBitcoinLabel(frame: .zero)
-      bitcoinLabel.attributedText = labels.btcAttributedText
+      bitcoinLabel.configure(withAttributedText: labels.btcAttributedText)
       return bitcoinLabel
     case .lightning:
       let satsLabel = SummaryCellSatsLabel(frame: .zero)

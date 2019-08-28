@@ -20,6 +20,7 @@ class SummaryCellBitcoinLabel: UILabel {
   }
 
   private let horizontalInset: CGFloat = 8
+  private let fontReference: UIFont = .semiBold(13)
 
   override var intrinsicContentSize: CGSize {
     let buffer = CGFloat(horizontalInset)
@@ -31,12 +32,23 @@ class SummaryCellBitcoinLabel: UILabel {
   fileprivate func initialize() {
     self.backgroundColor = .clear
     self.textColor = .bitcoinOrange
-    self.font = .semiBold(13)
+    self.font = fontReference
     self.textAlignment = .right
 
     self.translatesAutoresizingMaskIntoConstraints = false
+    self.numberOfLines = 1
     self.heightAnchor.constraint(equalToConstant: 28).isActive = true
   }
+
+  func configure(withAttributedText attributedText: NSAttributedString?) {
+    self.attributedText = attributedText
+    guard let attr = attributedText else { return }
+    var attributes: [NSAttributedString.Key: Any] = attr.attributes(at: 0, effectiveRange: nil)
+    attributes[.font] = fontReference
+    let textWidth = attr.string.size(withAttributes: attributes).width + horizontalInset
+    self.widthAnchor.constraint(equalToConstant: textWidth).isActive = true
+  }
+
 }
 
 class SummaryCellSatsLabel: SummaryCellBitcoinLabel {
