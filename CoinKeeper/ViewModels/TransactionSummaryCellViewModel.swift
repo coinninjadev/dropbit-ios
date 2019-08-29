@@ -59,8 +59,41 @@ extension CKMTransaction: TransactionSummaryCellViewModelObject {
   var direction: TransactionDirection {
     return self.isIncoming ? .in : .out
   }
+
+  var status: TransactionStatus {
+    if broadcastFailed { return .failed }
+    return statusForInvitation ?? statusForTransaction
+  }
+
   var lightningInvoice: String? {
     return nil
+  }
+
+  private var isTemporaryTransaction: Bool {
+    return temporarySentTransaction != nil
+  }
+
+  private var statusForInvitation: TransactionStatus? {
+    guard let invitation = self.invitation else { return nil }
+    switch invitation.status {
+    case .notSent,
+         .requestSent,
+         .addressSent:  return .pending
+    case .canceled:     return .canceled
+    case .expired:      return .expired
+    case .completed:    return .completed
+    }
+  }
+
+  private var statusForTransaction: TransactionStatus {
+    if isTemporaryTransaction {
+      return .broadcasting
+    } else {
+      switch confirmations {
+      case 0:   return .pending
+      default:  return .completed
+      }
+    }
   }
 
 }
