@@ -22,6 +22,8 @@ final class LightningUpgradeStartViewController: BaseViewController, StoryboardI
   @IBOutlet var infoButton: UIButton!
   @IBOutlet var activityIndicator: UIActivityIndicatorView!
   @IBOutlet var activityIndicatorBottomConstraint: NSLayoutConstraint!
+  @IBOutlet var confirmNewWordsSelectionView: UIView!
+  @IBOutlet var confirmTransferFundsView: UIView!
 
   static func newInstance(withDelegate delegate: LightningUpgradeStartViewControllerDelegate) -> LightningUpgradeStartViewController {
     let controller = LightningUpgradeStartViewController.makeFromStoryboard()
@@ -44,9 +46,10 @@ final class LightningUpgradeStartViewController: BaseViewController, StoryboardI
     // set activity indicator new distance
     let distance = (upgradeButton.frame.height / 2.0)
     activityIndicatorBottomConstraint.constant = -distance
+    let duration: TimeInterval = 0.25
 
     UIView.animate(
-      withDuration: 0.25,
+      withDuration: duration,
       delay: 0.1,
       options: .curveEaseIn,
       animations: { self.view.layoutIfNeeded() },
@@ -54,6 +57,9 @@ final class LightningUpgradeStartViewController: BaseViewController, StoryboardI
         self.activityIndicator.isHidden = true
 
         // show the checkboxes
+        self.confirmNewWordsSelectionView.isHidden = false
+        self.confirmTransferFundsView.isHidden = false
+        UIView.animate(withDuration: duration) { self.view.layoutIfNeeded() }
 
       }
     )
@@ -75,6 +81,13 @@ final class LightningUpgradeStartViewController: BaseViewController, StoryboardI
     detailLabel.font = .regular(14)
 
     upgradeButton.style = .white(enabled: false)
+
+    confirmNewWordsSelectionView.backgroundColor = .deepPurple
+    confirmNewWordsSelectionView.isHidden = true
+    confirmNewWordsSelectionView.applyCornerRadius(8)
+    confirmTransferFundsView.backgroundColor = .deepPurple
+    confirmTransferFundsView.isHidden = true
+    confirmTransferFundsView.applyCornerRadius(8)
   }
 
   @IBAction func showInfo(_ sender: UIButton) {

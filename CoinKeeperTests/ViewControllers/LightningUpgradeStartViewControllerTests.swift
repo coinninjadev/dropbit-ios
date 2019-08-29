@@ -36,6 +36,8 @@ class LightningUpgradeStartViewControllerTests: XCTestCase {
     XCTAssertNotNil(sut.infoButton)
     XCTAssertNotNil(sut.activityIndicator)
     XCTAssertNotNil(sut.activityIndicatorBottomConstraint)
+    XCTAssertNotNil(sut.confirmNewWordsSelectionView)
+    XCTAssertNotNil(sut.confirmTransferFundsView)
   }
 
   // initial state
@@ -47,6 +49,11 @@ class LightningUpgradeStartViewControllerTests: XCTestCase {
     XCTAssertFalse(sut.upgradeButton.isEnabled)
   }
 
+  func testSelectionViewsAreInitiallyHidden() {
+    XCTAssertTrue(sut.confirmTransferFundsView.isHidden)
+    XCTAssertTrue(sut.confirmNewWordsSelectionView.isHidden)
+  }
+
   // updates
   func testUpdatingBalanceUpdatesUI() {
     XCTAssertEqual(sut.activityIndicatorBottomConstraint.constant, 50)
@@ -54,8 +61,7 @@ class LightningUpgradeStartViewControllerTests: XCTestCase {
     sut.updateUI(withBalance: 0)
 
     XCTAssertLessThan(sut.activityIndicatorBottomConstraint.constant, 0)
-//    XCTAssertTrue(sut.activityIndicator.isHidden)
-//    XCTAssertTrue(sut.upgradeButton.isEnabled)
+    XCTAssertTrue(sut.upgradeButton.isEnabled)
   }
 
   // buttons contain actions
