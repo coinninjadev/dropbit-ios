@@ -50,8 +50,17 @@ protocol TransactionSummaryCellViewModelObject {
   var lightningInvoice: String? { get }
 }
 
+extension CKMTransaction: TransactionSummaryCellViewModelObject {
 
-    self.memo = managedTx.memo
+  var walletTxType: WalletTransactionType {
+    return .onChain
+  }
+
+  var direction: TransactionDirection {
+    return self.isIncoming ? .in : .out
+  }
+  var lightningInvoice: String? {
+    return nil
   }
 
 }
