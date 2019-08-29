@@ -10,27 +10,27 @@ import Foundation
 import UIKit
 
 struct TransactionSummaryCellViewModel: TransactionSummaryCellViewModelType {
-
-  var selectedCurrency: SelectedCurrency
-
   var walletTxType: WalletTransactionType
-
-  var status: TransactionStatus
-
-  var isValidTransaction: Bool
-
+  var selectedCurrency: SelectedCurrency
+  var direction: TransactionDirection
   var isLightningTransfer: Bool
-
-  var receiverAddress: String?
-
-  var lightningInvoice: String?
-
+  var status: TransactionStatus
+  var amountDetails: TransactionAmountDetails
   var memo: String?
 
-  var amountDetails: TransactionAmountDetails
-
-  var direction: TransactionDirection
-
   var counterpartyConfig: TransactionCellCounterpartyConfig?
+  var receiverAddress: String?
+  var lightningInvoice: String?
+
+  init(managedTx: CKMTransaction,
+       selectedCurrency: SelectedCurrency,
+       lightningLoadAddress: String?) {
+    self.walletTxType = .onChain
+    self.selectedCurrency = selectedCurrency
+    self.direction = managedTx.isIncoming ? .in : .out
+
+
+    self.memo = managedTx.memo
+  }
 
 }
