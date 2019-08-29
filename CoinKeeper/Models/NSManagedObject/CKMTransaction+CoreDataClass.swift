@@ -27,12 +27,6 @@ public class CKMTransaction: NSManagedObject {
   static let invitationTxidPrefix = "Invitation_"
   static let failedTxidPrefix = "Failed_"
 
-  private func removeTemporaryTransactionIfNeeded(in context: NSManagedObjectContext) {
-    context.performAndWait {
-      temporarySentTransaction.map { context.delete($0) }
-    }
-  }
-
   func configure(
     with txResponse: TransactionResponse,
     in context: NSManagedObjectContext,
@@ -41,8 +35,8 @@ public class CKMTransaction: NSManagedObject {
     ) {
     context.performAndWait {
       // configure the tx here
-      if temporarySentTransaction != nil, txResponse.txid == txid {
-        removeTemporaryTransactionIfNeeded(in: context)
+      if let tempSentTx = temporarySentTransaction, txResponse.txid == txid {
+        context.delete(tempSentTx)
       }
       txid = txResponse.txid
       blockHash = txResponse.blockHash
