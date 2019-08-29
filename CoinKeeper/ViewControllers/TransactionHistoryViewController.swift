@@ -49,7 +49,6 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
 
   var viewModel: TransactionHistoryViewModel!
   var selectedCurrency: SelectedCurrency = .fiat
-  var lightningLoadAddress: String?
 
   static func newInstance(withDelegate delegate: TransactionHistoryViewControllerDelegate,
                           walletTxType: WalletTransactionType,

@@ -13,7 +13,6 @@ protocol TransactionHistoryDataSourceDelegate: AnyObject {
   func transactionDataSourceWillChange()
   func transactionDataSourceDidChange()
   var selectedCurrency: SelectedCurrency { get }
-  var lightningLoadAddress: String? { get }
 }
 
 /// This protocol abstracts the UICollectionViewDataSource so that it can load data based off of Core Data fetch results
@@ -34,7 +33,6 @@ class TransactionHistoryOnChainDataSource: NSObject, TransactionHistoryDataSourc
   let frc: NSFetchedResultsController<CKMTransaction>
   let walletTransactionType: WalletTransactionType = .onChain
   var selectedCurrency: SelectedCurrency = .fiat
-  var lightningLoadAddress: String?
 
   weak var delegate: TransactionHistoryDataSourceDelegate?
 
@@ -55,7 +53,7 @@ class TransactionHistoryOnChainDataSource: NSObject, TransactionHistoryDataSourc
   func summaryCellDisplayableItem(at indexPath: IndexPath, rates: ExchangeRates, currencies: CurrencyPair) -> TransactionSummaryCellDisplayable {
     let transaction = frc.object(at: indexPath)
     let currency = delegate?.selectedCurrency ?? .fiat
-    return TransactionSummaryCellViewModel(managedTx: transaction, selectedCurrency: currency, lightningLoadAddress: delegate?.lightningLoadAddress)
+    return TransactionSummaryCellViewModel(object: transaction, selectedCurrency: currency)
   }
 
   func numberOfSections() -> Int {
@@ -81,7 +79,6 @@ class TransactionHistoryLightningDataSource: NSObject, TransactionHistoryDataSou
   let frc: NSFetchedResultsController<CKMWalletEntry>
   let walletTransactionType: WalletTransactionType = .lightning
   var selectedCurrency: SelectedCurrency = .fiat
-  var lightningLoadAddress: String?
 
   weak var delegate: TransactionHistoryDataSourceDelegate?
 
