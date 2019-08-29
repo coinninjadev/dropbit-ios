@@ -56,7 +56,7 @@ struct MockOnChainDataGenerator {
                                 fiatAmount: 800,
                                 counterparty: nil,
                                 memo: "Testing",
-                                btcAddress: MockSummaryCellVM.mockValidBitcoinAddress())
+                                receiverAddress: MockSummaryCellVM.mockValidBitcoinAddress())
   }
 
   var canceledPhoneInvite: MockSummaryCellVM {
@@ -78,7 +78,7 @@ class MockOnChainSummaryVM: MockTransactionSummaryCellViewModel {
        memo: String?,
        status: TransactionStatus = .completed,
        isLightningTransfer: Bool = false,
-       btcAddress: String? = nil) {
+       receiverAddress: String? = nil) {
 
     let amtDetails = MockSummaryCellVM.testAmountDetails(cents: fiatAmount)
 
@@ -86,7 +86,7 @@ class MockOnChainSummaryVM: MockTransactionSummaryCellViewModel {
                direction: direction,
                status: status,
                isLightningTransfer: isLightningTransfer,
-               btcAddress: btcAddress,
+               receiverAddress: receiverAddress,
                lightningInvoice: nil,
                selectedCurrency: .fiat,
                amountDetails: amtDetails,
@@ -177,7 +177,7 @@ class MockLightningSummaryVM: MockTransactionSummaryCellViewModel {
                direction: direction,
                status: status,
                isLightningTransfer: isLightningTransfer,
-               btcAddress: nil,
+               receiverAddress: nil,
                lightningInvoice: lightningInvoice,
                selectedCurrency: .fiat,
                amountDetails: amtDetails,

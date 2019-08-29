@@ -21,7 +21,7 @@ struct TransactionSummaryCellViewModel: TransactionSummaryCellViewModelType {
 
   var isLightningTransfer: Bool
 
-  var btcAddress: String?
+  var receiverAddress: String?
 
   var lightningInvoice: String?
 

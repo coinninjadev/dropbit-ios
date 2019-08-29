@@ -16,7 +16,7 @@ class MockTransactionSummaryCellViewModel: TransactionSummaryCellViewModelType {
   var direction: TransactionDirection
   var status: TransactionStatus
   var isLightningTransfer: Bool
-  var btcAddress: String?
+  var receiverAddress: String?
   var lightningInvoice: String?
   var selectedCurrency: SelectedCurrency
   var amountDetails: TransactionAmountDetails
@@ -27,7 +27,7 @@ class MockTransactionSummaryCellViewModel: TransactionSummaryCellViewModelType {
        direction: TransactionDirection,
        status: TransactionStatus,
        isLightningTransfer: Bool,
-       btcAddress: String?,
+       receiverAddress: String?,
        lightningInvoice: String?,
        selectedCurrency: SelectedCurrency,
        amountDetails: TransactionAmountDetails,
@@ -37,7 +37,7 @@ class MockTransactionSummaryCellViewModel: TransactionSummaryCellViewModelType {
     self.direction = direction
     self.status = status
     self.isLightningTransfer = isLightningTransfer
-    self.btcAddress = btcAddress
+    self.receiverAddress = receiverAddress
     self.lightningInvoice = lightningInvoice
     self.selectedCurrency = selectedCurrency
     self.amountDetails = amountDetails
@@ -64,7 +64,7 @@ class MockTransactionSummaryCellViewModel: TransactionSummaryCellViewModelType {
     let address = mockValidBitcoinAddress()
     return MockTransactionSummaryCellViewModel(walletTxType: .onChain, direction: .out,
                                                status: .completed, isLightningTransfer: false,
-                                               btcAddress: address, lightningInvoice: nil,
+                                               receiverAddress: address, lightningInvoice: nil,
                                                selectedCurrency: .fiat, amountDetails: amtDetails,
                                                counterpartyConfig: nil, memo: nil)
   }
@@ -73,7 +73,7 @@ class MockTransactionSummaryCellViewModel: TransactionSummaryCellViewModelType {
                            direction: TransactionDirection = .out,
                            status: TransactionStatus = .completed,
                            isLightningTransfer: Bool = false,
-                           btcAddress: String? = nil,
+                           receiverAddress: String? = nil,
                            lightningInvoice: String? = nil,
                            selectedCurrency: SelectedCurrency = .fiat,
                            amountDetails: TransactionAmountDetails? = nil,
@@ -84,7 +84,7 @@ class MockTransactionSummaryCellViewModel: TransactionSummaryCellViewModelType {
     return MockTransactionSummaryCellViewModel(
       walletTxType: walletTxType, direction: direction,
       status: status, isLightningTransfer: isLightningTransfer,
-      btcAddress: btcAddress, lightningInvoice: lightningInvoice,
+      receiverAddress: receiverAddress, lightningInvoice: lightningInvoice,
       selectedCurrency: selectedCurrency, amountDetails: amtDetails,
       counterpartyConfig: counterpartyConfig, memo: memo)
   }
