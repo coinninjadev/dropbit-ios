@@ -36,6 +36,7 @@ extension CKMTransaction {
   @NSManaged public var isIncoming: Bool
   @NSManaged public var memo: String?
   @NSManaged public var sharedPayload: CKMTransactionSharedPayload?
+  @NSManaged public var isLightningTransfer: Bool
 
   /**
    The broadcast was "successful" but the transaction never showed up on the mempool.
