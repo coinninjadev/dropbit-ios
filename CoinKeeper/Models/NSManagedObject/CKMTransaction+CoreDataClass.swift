@@ -209,7 +209,7 @@ public class CKMTransaction: NSManagedObject {
 
 }
 
-extension CKMTransaction { //CounterpartyRepresentable
+//extension CKMTransaction: CounterpartyRepresentable {
 //
 //  var counterpartyName: String? {
 //    if let twitterCounterparty = invitation?.counterpartyTwitterContact {
@@ -242,10 +242,10 @@ extension CKMTransaction { //CounterpartyRepresentable
 //    return nil
 //  }
 //
-  var counterpartyAddressId: String? {
-    return counterpartyReceiverAddressId
-  }
-}
+//  var counterpartyAddressId: String? {
+//    return counterpartyReceiverAddressId
+//  }
+//}
 
 extension CKMTransaction {
   static func == (lhs: CKMTransaction, rhs: CKMTransaction) -> Bool {

@@ -12,29 +12,11 @@ import CNBitcoinKit
 /**
  Translates a Transaction object and it's relationships into a cell-displayable object.
  */
-/*
+
 class OldTransactionDetailCellViewModel: OldTransactionSummaryCellViewModel {
   var isCancellable: Bool
   var memoWasShared: Bool
   var networkFee: NSDecimalNumber?
-
-  override init(
-    walletEntry: CKMWalletEntry,
-    rates: ExchangeRates,
-    primaryCurrency: CurrencyCode,
-    deviceCountryCode: Int?
-    ) {
-
-    let fee = walletEntry.networkFee
-    self.isCancellable = walletEntry.isCancellable
-    self.networkFee = NSDecimalNumber(integerAmount: fee, currency: .BTC)
-    self.memoWasShared = false //TODO
-
-    super.init(walletEntry: walletEntry,
-               rates: rates,
-               primaryCurrency: primaryCurrency,
-               deviceCountryCode: deviceCountryCode)
-  }
 
   override init(
     transaction: CKMTransaction,
@@ -53,13 +35,6 @@ class OldTransactionDetailCellViewModel: OldTransactionSummaryCellViewModel {
       primaryCurrency: primaryCurrency,
       deviceCountryCode: deviceCountryCode
     )
-  }
-
-  /// Empty initializer override
-  override init() {
-    self.isCancellable = false
-    self.memoWasShared = false
-    super.init()
   }
 }
 
@@ -394,4 +369,3 @@ extension OldTransactionDetailCellViewModel {
   }
 
 }
-*/
