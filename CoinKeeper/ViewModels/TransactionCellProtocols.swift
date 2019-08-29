@@ -91,6 +91,7 @@ extension TransactionSummaryCellViewModelType {
   }
 
   private var isPendingInvoice: Bool {
+    guard !isLightningTransfer else { return false }
     return walletTxType == .lightning && status == .pending
   }
 

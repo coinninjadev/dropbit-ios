@@ -129,6 +129,15 @@ class TransactionHistorySummaryCellTests: XCTestCase {
     XCTAssertEqual(sut.directionView.backgroundColor, expectedColor)
   }
 
+  func testIncomingPendingLightning_LightningTransfer_loadsImageAndColor() {
+    let viewModel = MockSummaryCellVM.testInstance(walletTxType: .lightning, direction: .in,
+                                                   status: .pending, isLightningTransfer: true)
+    sut.configure(with: viewModel)
+    let expectedImage = viewModel.transferImage, expectedColor = UIColor.incomingGreen
+    XCTAssertEqual(sut.directionView.image, expectedImage)
+    XCTAssertEqual(sut.directionView.backgroundColor, expectedColor)
+  }
+
   func testTwitterConfig_loadsAvatar() {
     let twitterConfig = MockSummaryCellVM.mockTwitterConfig()
     let counterpartyConfig = TransactionCellCounterpartyConfig(twitterConfig: twitterConfig)
