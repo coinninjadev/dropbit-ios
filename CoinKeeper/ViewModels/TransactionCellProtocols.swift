@@ -53,8 +53,10 @@ extension TransactionSummaryCellViewModelType {
 
   var isValidTransaction: Bool {
     switch status {
-    case .canceled, .expired: return false
-    default:                  return true
+    case .canceled,
+         .expired,
+         .failed:   return false
+    default:        return true
     }
   }
 
@@ -312,6 +314,7 @@ enum TransactionStatus: String {
   case completed
   case canceled
   case expired
+  case failed
 }
 
 private enum LightningTransferType {
