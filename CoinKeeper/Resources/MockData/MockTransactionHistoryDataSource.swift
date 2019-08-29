@@ -14,7 +14,7 @@ class MockTransactionHistoryOnChainDataSource: TransactionHistoryDataSourceType 
 
   let walletTransactionType: WalletTransactionType = .onChain
 
-  weak var changeDelegate: TransactionHistoryDataSourceChangeDelegate?
+  weak var delegate: TransactionHistoryDataSourceDelegate?
 
   init() {
     let gen = MockOnChainDataGenerator()
@@ -49,7 +49,7 @@ class MockTransactionHistoryLightningDataSource: TransactionHistoryDataSourceTyp
 
   let walletTransactionType: WalletTransactionType = .lightning
 
-  weak var changeDelegate: TransactionHistoryDataSourceChangeDelegate?
+  weak var delegate: TransactionHistoryDataSourceDelegate?
 
   init() {
     let gen = MockLightningDataGenerator()

@@ -48,13 +48,15 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
   }
 
   var viewModel: TransactionHistoryViewModel!
+  var selectedCurrency: SelectedCurrency = .fiat
+  var lightningLoadAddress: String?
 
   static func newInstance(withDelegate delegate: TransactionHistoryViewControllerDelegate,
                           walletTxType: WalletTransactionType,
                           dataSource: TransactionHistoryDataSourceType) -> TransactionHistoryViewController {
     let viewController = TransactionHistoryViewController.makeFromStoryboard()
     viewController.generalCoordinationDelegate = delegate
-    dataSource.changeDelegate = viewController
+    dataSource.delegate = viewController
     viewController.viewModel = TransactionHistoryViewModel(delegate: viewController,
                                                            currencyManager: delegate,
                                                            deviceCountryCode: delegate.deviceCountryCode(),
@@ -133,7 +135,7 @@ extension TransactionHistoryViewController { // Layout
 
 }
 
-extension TransactionHistoryViewController: TransactionHistoryDataSourceChangeDelegate {
+extension TransactionHistoryViewController: TransactionHistoryDataSourceDelegate {
   func transactionDataSourceWillChange() {
     transactionHistoryWithBalanceView.isHidden = true
     transactionHistoryNoBalanceView.isHidden = true

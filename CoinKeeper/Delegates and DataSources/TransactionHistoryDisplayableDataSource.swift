@@ -9,9 +9,11 @@
 import Foundation
 import CoreData
 
-protocol TransactionHistoryDataSourceChangeDelegate: AnyObject {
+protocol TransactionHistoryDataSourceDelegate: AnyObject {
   func transactionDataSourceWillChange()
   func transactionDataSourceDidChange()
+  var selectedCurrency: SelectedCurrency { get }
+  var lightningLoadAddress: String? { get }
 }
 
 /// This protocol abstracts the UICollectionViewDataSource so that it can load data based off of Core Data fetch results
@@ -24,15 +26,17 @@ protocol TransactionHistoryDataSourceType: AnyObject {
   func numberOfSections() -> Int
   func numberOfItems(inSection section: Int) -> Int
   var walletTransactionType: WalletTransactionType { get }
-  var changeDelegate: TransactionHistoryDataSourceChangeDelegate? { get set }
+  var delegate: TransactionHistoryDataSourceDelegate? { get set }
 }
 
 class TransactionHistoryOnChainDataSource: NSObject, TransactionHistoryDataSourceType, NSFetchedResultsControllerDelegate {
 
   let frc: NSFetchedResultsController<CKMTransaction>
   let walletTransactionType: WalletTransactionType = .onChain
+  var selectedCurrency: SelectedCurrency = .fiat
+  var lightningLoadAddress: String?
 
-  weak var changeDelegate: TransactionHistoryDataSourceChangeDelegate?
+  weak var delegate: TransactionHistoryDataSourceDelegate?
 
   init(context: NSManagedObjectContext) {
     let fetchRequest: NSFetchRequest<CKMTransaction> = CKMTransaction.fetchRequest()
@@ -49,11 +53,9 @@ class TransactionHistoryOnChainDataSource: NSObject, TransactionHistoryDataSourc
   }
 
   func summaryCellDisplayableItem(at indexPath: IndexPath, rates: ExchangeRates, currencies: CurrencyPair) -> TransactionSummaryCellDisplayable {
-    let amountDetails = TransactionAmountDetails(btcAmount: .zero, fiatCurrency: .USD, exchangeRates: rates)
-    return TransactionSummaryCellViewModel(selectedCurrency: .BTC, walletTxType: walletTransactionType,
-                                           status: .completed, isValidTransaction: true, isLightningTransfer: false,
-                                           btcAddress: nil, lightningInvoice: nil, memo: nil,
-                                           amountDetails: amountDetails, direction: .in, counterpartyConfig: nil)
+    let transaction = frc.object(at: indexPath)
+    let currency = delegate?.selectedCurrency ?? .fiat
+    return TransactionSummaryCellViewModel(managedTx: transaction, selectedCurrency: currency, lightningLoadAddress: delegate?.lightningLoadAddress)
   }
 
   func numberOfSections() -> Int {
@@ -65,11 +67,11 @@ class TransactionHistoryOnChainDataSource: NSObject, TransactionHistoryDataSourc
   }
 
   func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-    changeDelegate?.transactionDataSourceWillChange()
+    delegate?.transactionDataSourceWillChange()
   }
 
   func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-    changeDelegate?.transactionDataSourceDidChange()
+    delegate?.transactionDataSourceDidChange()
   }
 
 }
@@ -78,7 +80,10 @@ class TransactionHistoryLightningDataSource: NSObject, TransactionHistoryDataSou
 
   let frc: NSFetchedResultsController<CKMWalletEntry>
   let walletTransactionType: WalletTransactionType = .lightning
-  weak var changeDelegate: TransactionHistoryDataSourceChangeDelegate?
+  var selectedCurrency: SelectedCurrency = .fiat
+  var lightningLoadAddress: String?
+
+  weak var delegate: TransactionHistoryDataSourceDelegate?
 
   init(context: NSManagedObjectContext) {
     let fetchRequest: NSFetchRequest<CKMWalletEntry> = CKMWalletEntry.fetchRequest()
@@ -114,11 +119,11 @@ class TransactionHistoryLightningDataSource: NSObject, TransactionHistoryDataSou
   }
 
   func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-    changeDelegate?.transactionDataSourceWillChange()
+    delegate?.transactionDataSourceWillChange()
   }
 
   func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-    changeDelegate?.transactionDataSourceDidChange()
+    delegate?.transactionDataSourceDidChange()
   }
 
 }

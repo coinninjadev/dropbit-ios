@@ -41,7 +41,9 @@ protocol TransactionSummaryCellViewModelType: TransactionSummaryCellDisplayable 
   var isLightningTransfer: Bool { get } //can be true for either onChain or lightning transactions
   var status: TransactionStatus { get }
   var counterpartyConfig: TransactionCellCounterpartyConfig? { get } //may be nil for transfers
-  var btcAddress: String? { get }
+
+  /// This address may belong to the wallet or the counterparty depending on the direction
+  var receiverAddress: String? { get }
   var lightningInvoice: String? { get }
   var amountDetails: TransactionAmountDetails { get }
   var memo: String? { get }
@@ -117,7 +119,7 @@ extension TransactionSummaryCellViewModelType {
       return counterparty
     } else if let invoiceText = lightningInvoiceDescription {
       return invoiceText
-    } else if let address = btcAddress {
+    } else if let address = receiverAddress {
       return address
     } else {
       return "(unknown)"
