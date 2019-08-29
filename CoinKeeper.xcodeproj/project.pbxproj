@@ -720,6 +720,7 @@
 		B5457124217E63F000FF3A5A /* NetworkManagerIntegrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5457123217E63F000FF3A5A /* NetworkManagerIntegrationTests.swift */; };
 		B5457126217E6D8900FF3A5A /* ResponseCodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5457125217E6D8900FF3A5A /* ResponseCodable.swift */; };
 		B5457128217E6F1700FF3A5A /* BodyCodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5457127217E6F1700FF3A5A /* BodyCodable.swift */; };
+		B547B95923180CE00030D838 /* CKMTransaction+DisplayProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = B547B95823180CE00030D838 /* CKMTransaction+DisplayProperties.swift */; };
 		B5488F9122F4DC6D00E27B8F /* BroadcastTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5488F9022F4DC6D00E27B8F /* BroadcastTarget.swift */; };
 		B54913A522BBB61200ACC7D7 /* AlertConfigurationTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54913A422BBB61200ACC7D7 /* AlertConfigurationTypes.swift */; };
 		B54913A722BC0B1000ACC7D7 /* AdjustableFeesViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B54913A622BC0B1000ACC7D7 /* AdjustableFeesViewController.storyboard */; };
@@ -1731,6 +1732,7 @@
 		B5457123217E63F000FF3A5A /* NetworkManagerIntegrationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManagerIntegrationTests.swift; sourceTree = "<group>"; };
 		B5457125217E6D8900FF3A5A /* ResponseCodable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResponseCodable.swift; sourceTree = "<group>"; };
 		B5457127217E6F1700FF3A5A /* BodyCodable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BodyCodable.swift; sourceTree = "<group>"; };
+		B547B95823180CE00030D838 /* CKMTransaction+DisplayProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CKMTransaction+DisplayProperties.swift"; sourceTree = "<group>"; };
 		B5488F9022F4DC6D00E27B8F /* BroadcastTarget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BroadcastTarget.swift; sourceTree = "<group>"; };
 		B54913A422BBB61200ACC7D7 /* AlertConfigurationTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertConfigurationTypes.swift; sourceTree = "<group>"; };
 		B54913A622BC0B1000ACC7D7 /* AdjustableFeesViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = AdjustableFeesViewController.storyboard; sourceTree = "<group>"; };
@@ -3256,6 +3258,7 @@
 				3B8FA48120C16F5C0074B617 /* CKMTemporarySentTransaction+CoreDataClass.swift */,
 				3B8FA48220C16F5C0074B617 /* CKMTemporarySentTransaction+CoreDataProperties.swift */,
 				3BA360822090B0C100732C43 /* CKMTransaction+CoreDataClass.swift */,
+				B547B95823180CE00030D838 /* CKMTransaction+DisplayProperties.swift */,
 				B5BA5246223AA38E001165FC /* CKMTransaction+FetchRequests.swift */,
 				3BA360832090B0C100732C43 /* CKMTransaction+CoreDataProperties.swift */,
 				B56B63792200CDF100CCC153 /* CKMTransactionSharedPayload+CoreDataClass.swift */,
@@ -4639,6 +4642,7 @@
 				3B61B6E220DD282E0021D69E /* SendPaymentViewControllerDelegate.swift in Sources */,
 				3B124E102020EB2B00431E2E /* AppDelegate.swift in Sources */,
 				B5090D902283244700E57423 /* LocationManagerDelegate.swift in Sources */,
+				B547B95923180CE00030D838 /* CKMTransaction+DisplayProperties.swift in Sources */,
 				3BD7B73120D66F12005057A7 /* HorizontallyPaginatedCollectionViewLayout.swift in Sources */,
 				3BDFADFC2267AEFF0077DEF2 /* BlockstreamTarget.swift in Sources */,
 				B5221D5322441CC30081C868 /* MigrateContactCacheV1toV2.swift in Sources */,
