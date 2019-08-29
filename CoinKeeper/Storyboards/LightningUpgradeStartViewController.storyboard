@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Lightning Upgrade Start View Controller-->
+        <scene sceneID="vLC-xg-xOJ">
+            <objects>
+                <viewController storyboardIdentifier="LightningUpgradeStartViewController" id="swR-IZ-QJw" customClass="LightningUpgradeStartViewController" customModule="DropBit" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="fzH-WM-Kyv">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gBn-Pm-tAU">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="HNR-i4-NTn">
+                                    <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                </view>
+                                <blurEffect style="dark"/>
+                            </visualEffectView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FWg-3S-Ega">
+                                <rect key="frame" x="15" y="48" width="384" height="799"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="b0x-mv-PcL">
+                                <rect key="frame" x="15" y="48" width="384" height="799"/>
+                                <subviews>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" alignment="center" spacing="27" translatesAutoresizingMaskIntoConstraints="NO" id="Tyt-gf-kOe">
+                                        <rect key="frame" x="20" y="279.5" width="344" height="240"/>
+                                        <subviews>
+                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="blueFlashIconLarge" translatesAutoresizingMaskIntoConstraints="NO" id="jbg-Md-mur">
+                                                <rect key="frame" x="143" y="0.0" width="58" height="84"/>
+                                            </imageView>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="LIGHTNING IS HERE!" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="K9v-xp-7qC">
+                                                <rect key="frame" x="92" y="111" width="160" height="20.5"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fQb-5g-E6R">
+                                                <rect key="frame" x="0.0" y="158.5" width="344" height="81.5"/>
+                                                <string key="text">We are upgrading all DropBit wallets for Lightning support. Your new SegWit wallet will allow you to send Bitcoin faster, cheaper, and with increased security.</string>
+                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                        </subviews>
+                                    </stackView>
+                                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="hxv-YD-kxu">
+                                        <rect key="frame" x="182" y="640" width="20" height="20"/>
+                                    </activityIndicatorView>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Lsa-oz-wsO" customClass="PrimaryActionButton" customModule="DropBit" customModuleProvider="target">
+                                        <rect key="frame" x="18" y="710" width="348" height="49"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="49" id="vBu-hn-rec"/>
+                                        </constraints>
+                                        <state key="normal" title="UPGRADE NOW"/>
+                                        <connections>
+                                            <action selector="upgradeNow:" destination="swR-IZ-QJw" eventType="touchUpInside" id="9Xz-Vn-wb5"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zEG-pk-jfl">
+                                        <rect key="frame" x="344" y="8" width="32" height="32"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" secondItem="zEG-pk-jfl" secondAttribute="height" multiplier="1:1" id="4TH-E4-NoH"/>
+                                            <constraint firstAttribute="height" constant="32" id="dV2-8b-4eQ"/>
+                                        </constraints>
+                                        <state key="normal" image="questionMarkIcon"/>
+                                        <connections>
+                                            <action selector="showInfo:" destination="swR-IZ-QJw" eventType="touchUpInside" id="qcg-Zq-ghB"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="zEG-pk-jfl" secondAttribute="trailing" constant="8" id="Ae5-Ls-hM1"/>
+                                    <constraint firstAttribute="trailing" secondItem="Lsa-oz-wsO" secondAttribute="trailing" constant="18" id="HUz-WL-UuY"/>
+                                    <constraint firstItem="Tyt-gf-kOe" firstAttribute="leading" secondItem="b0x-mv-PcL" secondAttribute="leading" constant="20" id="LAy-sz-Qrj"/>
+                                    <constraint firstItem="Lsa-oz-wsO" firstAttribute="leading" secondItem="b0x-mv-PcL" secondAttribute="leading" constant="18" id="XfN-Ar-vzu"/>
+                                    <constraint firstItem="hxv-YD-kxu" firstAttribute="centerX" secondItem="b0x-mv-PcL" secondAttribute="centerX" id="YtT-iB-tqm"/>
+                                    <constraint firstAttribute="trailing" secondItem="Tyt-gf-kOe" secondAttribute="trailing" constant="20" id="ZPC-Mh-1f8"/>
+                                    <constraint firstItem="zEG-pk-jfl" firstAttribute="top" secondItem="b0x-mv-PcL" secondAttribute="top" constant="8" id="eS3-LD-haj"/>
+                                    <constraint firstAttribute="bottom" secondItem="Lsa-oz-wsO" secondAttribute="bottom" constant="40" id="kmQ-tF-wwx"/>
+                                    <constraint firstItem="Lsa-oz-wsO" firstAttribute="top" secondItem="hxv-YD-kxu" secondAttribute="bottom" constant="50" id="ocP-an-zv8"/>
+                                    <constraint firstItem="Tyt-gf-kOe" firstAttribute="centerY" secondItem="b0x-mv-PcL" secondAttribute="centerY" id="pj5-hg-Xqn"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="MzK-7L-yMR" firstAttribute="bottom" secondItem="FWg-3S-Ega" secondAttribute="bottom" constant="15" id="3BZ-Ph-Nc3"/>
+                            <constraint firstItem="FWg-3S-Ega" firstAttribute="leading" secondItem="MzK-7L-yMR" secondAttribute="leading" constant="15" id="4BK-CZ-d66"/>
+                            <constraint firstItem="b0x-mv-PcL" firstAttribute="bottom" secondItem="FWg-3S-Ega" secondAttribute="bottom" id="Apr-i5-YbC"/>
+                            <constraint firstItem="b0x-mv-PcL" firstAttribute="leading" secondItem="FWg-3S-Ega" secondAttribute="leading" id="BXC-S0-a1Q"/>
+                            <constraint firstItem="FWg-3S-Ega" firstAttribute="top" secondItem="MzK-7L-yMR" secondAttribute="top" constant="4" id="Bb6-aR-YLS"/>
+                            <constraint firstItem="b0x-mv-PcL" firstAttribute="top" secondItem="FWg-3S-Ega" secondAttribute="top" id="L3s-W2-Zy9"/>
+                            <constraint firstAttribute="bottom" secondItem="gBn-Pm-tAU" secondAttribute="bottom" id="YMj-za-NzH"/>
+                            <constraint firstItem="gBn-Pm-tAU" firstAttribute="leading" secondItem="MzK-7L-yMR" secondAttribute="leading" id="eH8-et-AUK"/>
+                            <constraint firstItem="b0x-mv-PcL" firstAttribute="trailing" secondItem="FWg-3S-Ega" secondAttribute="trailing" id="she-O5-CBL"/>
+                            <constraint firstItem="MzK-7L-yMR" firstAttribute="trailing" secondItem="FWg-3S-Ega" secondAttribute="trailing" constant="15" id="wS4-37-xo7"/>
+                            <constraint firstItem="gBn-Pm-tAU" firstAttribute="trailing" secondItem="MzK-7L-yMR" secondAttribute="trailing" id="wXl-bk-vh8"/>
+                            <constraint firstAttribute="top" secondItem="gBn-Pm-tAU" secondAttribute="top" id="xFT-P2-T2C"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="MzK-7L-yMR"/>
+                    </view>
+                    <connections>
+                        <outlet property="activityIndicator" destination="hxv-YD-kxu" id="eTK-7c-FRV"/>
+                        <outlet property="activityIndicatorBottomConstraint" destination="ocP-an-zv8" id="Oxr-90-hkm"/>
+                        <outlet property="detailLabel" destination="fQb-5g-E6R" id="ynX-Ei-Vrl"/>
+                        <outlet property="infoButton" destination="zEG-pk-jfl" id="nb8-fY-5qA"/>
+                        <outlet property="lightningTitleLabel" destination="K9v-xp-7qC" id="pYm-8s-3aK"/>
+                        <outlet property="overlayView" destination="FWg-3S-Ega" id="SvZ-FU-wOr"/>
+                        <outlet property="upgradeButton" destination="Lsa-oz-wsO" id="LcL-Wf-mBT"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="pfI-Gk-TM5" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="590" y="-122"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="blueFlashIconLarge" width="58" height="84"/>
+        <image name="questionMarkIcon" width="22" height="22"/>
+    </resources>
+</document>

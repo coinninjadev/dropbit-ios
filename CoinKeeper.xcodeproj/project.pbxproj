@@ -201,6 +201,10 @@
 		3B57207D2233004E0048A8CF /* BaseCoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B57207C2233004E0048A8CF /* BaseCoreDataStack.swift */; };
 		3B598FDC2315BF5100FF50CD /* WalletFlagsParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B598FDB2315BF5100FF50CD /* WalletFlagsParser.swift */; };
 		3B598FDE2315CB2D00FF50CD /* WalletFlagsParserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B598FDD2315CB2D00FF50CD /* WalletFlagsParserTests.swift */; };
+		3B598FE02318337C00FF50CD /* LightningUpgradeStartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B598FDF2318337C00FF50CD /* LightningUpgradeStartViewController.swift */; };
+		3B598FE4231833C000FF50CD /* LightningUpgradeStartViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3B598FE3231833C000FF50CD /* LightningUpgradeStartViewController.storyboard */; };
+		3B598FE623184DD200FF50CD /* LightningUpgradeStartViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B598FE523184DD200FF50CD /* LightningUpgradeStartViewControllerTests.swift */; };
+		3B598FE82318542500FF50CD /* AppCoordinator+LightningUpgradeStartViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B598FE72318542500FF50CD /* AppCoordinator+LightningUpgradeStartViewControllerDelegate.swift */; };
 		3B5A889A228AEFE10082BBA4 /* TwitterSearchDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5A8899228AEFE10082BBA4 /* TwitterSearchDataSource.swift */; };
 		3B5A889D228AF3D90082BBA4 /* TwitterUserTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5A889B228AF3D90082BBA4 /* TwitterUserTableViewCell.swift */; };
 		3B5A889E228AF3D90082BBA4 /* TwitterUserTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3B5A889C228AF3D90082BBA4 /* TwitterUserTableViewCell.xib */; };
@@ -1199,6 +1203,10 @@
 		3B57207C2233004E0048A8CF /* BaseCoreDataStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseCoreDataStack.swift; sourceTree = "<group>"; };
 		3B598FDB2315BF5100FF50CD /* WalletFlagsParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletFlagsParser.swift; sourceTree = "<group>"; };
 		3B598FDD2315CB2D00FF50CD /* WalletFlagsParserTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletFlagsParserTests.swift; sourceTree = "<group>"; };
+		3B598FDF2318337C00FF50CD /* LightningUpgradeStartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightningUpgradeStartViewController.swift; sourceTree = "<group>"; };
+		3B598FE3231833C000FF50CD /* LightningUpgradeStartViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LightningUpgradeStartViewController.storyboard; sourceTree = "<group>"; };
+		3B598FE523184DD200FF50CD /* LightningUpgradeStartViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightningUpgradeStartViewControllerTests.swift; sourceTree = "<group>"; };
+		3B598FE72318542500FF50CD /* AppCoordinator+LightningUpgradeStartViewControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppCoordinator+LightningUpgradeStartViewControllerDelegate.swift"; sourceTree = "<group>"; };
 		3B5A8899228AEFE10082BBA4 /* TwitterSearchDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwitterSearchDataSource.swift; sourceTree = "<group>"; };
 		3B5A889B228AF3D90082BBA4 /* TwitterUserTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwitterUserTableViewCell.swift; sourceTree = "<group>"; };
 		3B5A889C228AF3D90082BBA4 /* TwitterUserTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TwitterUserTableViewCell.xib; sourceTree = "<group>"; };
@@ -2255,6 +2263,7 @@
 				A2B4E6F122FC6D7B00E24324 /* AppCoordinator+LightningRefillViewControllerDelegate.swift */,
 				A257CEB72302F3BA0063670B /* AppCoordinator+WalletTransferViewControllerDelegate.swift */,
 				A257CEB9230302070063670B /* AppCoordinator+LightningTransactionHistoryEmptyViewDelegate.swift */,
+				3B598FE72318542500FF50CD /* AppCoordinator+LightningUpgradeStartViewControllerDelegate.swift */,
 			);
 			path = Coordinators;
 			sourceTree = "<group>";
@@ -2614,6 +2623,7 @@
 				3BCBFCBF229EBA6800F633BA /* SupportViewControllerTests.swift */,
 				3BBDF7E722E780AD00E35EA0 /* TransactionHistoryDetailsViewControllerTests.swift */,
 				A21DEE5622E8D6E900BBE508 /* WalletOverviewViewControllerTests.swift */,
+				3B598FE523184DD200FF50CD /* LightningUpgradeStartViewControllerTests.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -2834,6 +2844,7 @@
 				A2B4E6ED22FA476A00E24324 /* LightningRefillViewController.swift */,
 				A2FE198122FB0E5A00C2412D /* TryLightningViewController.swift */,
 				A2FE19892301DF8800C2412D /* WalletTransferViewController.swift */,
+				3B598FDF2318337C00FF50CD /* LightningUpgradeStartViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -2884,6 +2895,7 @@
 				A2B4E6EF22FA488100E24324 /* LightningRefillViewController.storyboard */,
 				A2FE198322FB0F5C00C2412D /* TryLightningViewController.storyboard */,
 				A2FE198B2301E05E00C2412D /* WalletTransferViewController.storyboard */,
+				3B598FE3231833C000FF50CD /* LightningUpgradeStartViewController.storyboard */,
 			);
 			path = Storyboards;
 			sourceTree = "<group>";
@@ -3900,6 +3912,7 @@
 				3B9779B2202E416700C9C933 /* Montserrat-Italic.ttf in Resources */,
 				A268F13922E9EFFE00410040 /* PrimarySecondaryBalanceContainer.xib in Resources */,
 				B5E7F219221466EE00358A24 /* CountryCodeSearchView.xib in Resources */,
+				3B598FE4231833C000FF50CD /* LightningUpgradeStartViewController.storyboard in Resources */,
 				3B23126320DA6CA30099A557 /* TransactionHistoryDetailCellAddressView.xib in Resources */,
 				B5E7F21F22146B9000358A24 /* CountryCodePickerCell.xib in Resources */,
 				A2FE198C2301E05E00C2412D /* WalletTransferViewController.storyboard in Resources */,
@@ -4562,6 +4575,7 @@
 				3BDFADFC2267AEFF0077DEF2 /* BlockstreamTarget.swift in Sources */,
 				B5221D5322441CC30081C868 /* MigrateContactCacheV1toV2.swift in Sources */,
 				3B5A88A0228AFC850082BBA4 /* CNContactSearchBar.swift in Sources */,
+				3B598FE02318337C00FF50CD /* LightningUpgradeStartViewController.swift in Sources */,
 				B56E15972167DB26003B69D4 /* NetworkManager+WalletRequestable.swift in Sources */,
 				B5A42A98217A31D800EB32CB /* UserNotifiableError.swift in Sources */,
 				A29CE0C72098F84300761B91 /* SuccessFailViewController.swift in Sources */,
@@ -4680,6 +4694,7 @@
 				A200574F20B5FD68007074D9 /* AppCoordinator+SettingsViewControllerDelegate.swift in Sources */,
 				B541DF5720A332DA00C621EB /* AppCoordinator+PlaceholderViewControllerDelegate.swift in Sources */,
 				3B6FDADB2050146E0091916A /* VerifyRecoveryWordCellData.swift in Sources */,
+				3B598FE82318542500FF50CD /* AppCoordinator+LightningUpgradeStartViewControllerDelegate.swift in Sources */,
 				B582AD5020A084AD007A6459 /* CKMCounterpartyAddress+CoreDataProperties.swift in Sources */,
 				3B6749E420AA5CA40032FE02 /* CKMVout+CoreDataProperties.swift in Sources */,
 				B5F6EC2522554CF20045633B /* TwilioErrorDelegate.swift in Sources */,
@@ -4850,6 +4865,7 @@
 				5BE594DD207ABAC900862A0A /* SettingsViewControllerTests.swift in Sources */,
 				B5C8F5BF216CF10200E3E85B /* MockNetworkManager+PricingRequestable.swift in Sources */,
 				3B4741742182614C004DA223 /* SubscriptionAvailableTopicResponseTests.swift in Sources */,
+				3B598FE623184DD200FF50CD /* LightningUpgradeStartViewControllerTests.swift in Sources */,
 				3BF41AB4207507B3008B3D0A /* RequestPayViewControllerTests.swift in Sources */,
 				B5C5FEF822BAE59500287FF7 /* MockAlertManager.swift in Sources */,
 				B5457124217E63F000FF3A5A /* NetworkManagerIntegrationTests.swift in Sources */,
