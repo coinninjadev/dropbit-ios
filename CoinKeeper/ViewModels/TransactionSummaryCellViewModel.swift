@@ -23,13 +23,16 @@ struct TransactionSummaryCellViewModel: TransactionSummaryCellViewModelType {
 
   /// Initialize with protocol so that the initialization is simple and the logic for transforming stored properties
   /// is contained in isolated functions or computed properties inside the protocol implementation.
-  init(object: TransactionSummaryCellViewModelObject, selectedCurrency: SelectedCurrency) {
+  init(object: TransactionSummaryCellViewModelObject,
+       selectedCurrency: SelectedCurrency,
+       fiatCurrency: CurrencyCode,
+       exchangeRates: ExchangeRates) {
     self.walletTxType = object.walletTxType
     self.selectedCurrency = selectedCurrency
     self.direction = object.direction
     self.isLightningTransfer = object.isLightningTransfer
     self.status = object.status
-    self.amountDetails = object.amountDetails
+    self.amountDetails = object.amountDetails(with: exchangeRates, fiatCurrency: fiatCurrency)
     self.memo = object.memo
     self.counterpartyConfig = object.counterpartyConfig
     self.receiverAddress = object.receiverAddress
@@ -43,11 +46,12 @@ protocol TransactionSummaryCellViewModelObject {
   var direction: TransactionDirection { get }
   var isLightningTransfer: Bool { get }
   var status: TransactionStatus { get }
-  var amountDetails: TransactionAmountDetails { get }
   var memo: String? { get }
   var counterpartyConfig: TransactionCellCounterpartyConfig? { get }
   var receiverAddress: String? { get }
   var lightningInvoice: String? { get }
+
+  func amountDetails(with currentRates: ExchangeRates, fiatCurrency: CurrencyCode) -> TransactionAmountDetails
 }
 
 extension CKMTransaction: TransactionSummaryCellViewModelObject {
@@ -63,6 +67,11 @@ extension CKMTransaction: TransactionSummaryCellViewModelObject {
   var status: TransactionStatus {
     if broadcastFailed { return .failed }
     return statusForInvitation ?? statusForTransaction
+  }
+
+  func amountDetails(with currentRates: ExchangeRates, fiatCurrency: CurrencyCode) -> TransactionAmountDetails {
+    let amount = NSDecimalNumber(integerAmount: self.netWalletAmount, currency: .BTC)
+    return TransactionAmountDetails(btcAmount: amount, fiatCurrency: fiatCurrency, exchangeRates: currentRates)
   }
 
   var lightningInvoice: String? {
