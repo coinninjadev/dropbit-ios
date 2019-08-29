@@ -178,6 +178,20 @@ public class CKMTransaction: NSManagedObject {
                                                      insertInto: context)
   }
 
+  func markAsFailed() {
+    broadcastFailed = true
+
+    // Replace failed txid with a prefix + timestamp + UUID to free up the unique constraint in case an identical transaction is retried by the user
+    // txid may or may not be an actual txid depending on sender/receiver or actual/invitation
+    self.txid = CKMTransaction.failedTxidPrefix + String(Date().timeIntervalSince1970) + UUID().uuidString
+
+    // Free up the temporary transactions
+    temporarySentTransaction?.reservedVouts.forEach { vout in
+      vout.isSpent = false
+      vout.temporarySentTransaction = nil
+    }
+  }
+
   static func prefixedTxid(for invitation: CKMInvitation) -> String {
     return CKMTransaction.invitationTxidPrefix + invitation.id
   }
