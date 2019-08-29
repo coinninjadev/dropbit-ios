@@ -25,7 +25,7 @@ extension AppCoordinator: WalletTransferViewControllerDelegate {
       let sharedPayload = SharedPayloadDTO.emptyInstance()
 
       let inputs = SendingDelegateInputs(primaryCurrency: .BTC, walletTxType: .onChain, contact: nil,
-                                         rates: exchangeRates, sharedPayload: sharedPayload)
+                                         rates: exchangeRates, sharedPayload: sharedPayload, rbfReplaceabilityOption: .MustNotBeRBF)
       viewControllerDidSendPayment(viewController, btcAmount: btcAmount, requiredFeeRate: nil,
                                    paymentTarget: address, inputs: inputs)
 
@@ -33,7 +33,7 @@ extension AppCoordinator: WalletTransferViewControllerDelegate {
       guard let receiveAddress = self.nextReceiveAddressForRequestPay() else { return }
       let sats = btcAmount.asFractionalUnits(of: .BTC)
       self.networkManager.withdrawLightningFunds(to: receiveAddress, sats: sats)
-        .done { response in
+        .done { _ in
           viewController.dismiss(animated: true, completion: nil)
         }
         .catch { error in

@@ -39,13 +39,15 @@ protocol WalletManagerType: AnyObject {
   func transactionData(
     forPayment payment: NSDecimalNumber,
     to address: String,
-    withFeeRate feeRate: Double
+    withFeeRate feeRate: Double,
+    rbfReplaceabilityOption: CNBTransactionReplaceabilityOption
     ) -> Promise<CNBTransactionData>
 
   /// Returns nil instead of an error in the case of insufficient funds
   func failableTransactionData(forPayment payment: NSDecimalNumber,
                                to address: String,
-                               withFeeRate feeRate: Double) -> CNBTransactionData?
+                               withFeeRate feeRate: Double,
+                               rbfReplaceabilityOption: CNBTransactionReplaceabilityOption) -> CNBTransactionData?
 
   /// Transaction data for payment to a recipient with a flat, predetermined fee.
   ///
@@ -232,11 +234,15 @@ class WalletManager: WalletManagerType {
   func transactionData(
     forPayment payment: NSDecimalNumber,
     to address: String,
-    withFeeRate feeRate: Double  // in Satoshis
+    withFeeRate feeRate: Double,  // in Satoshis
+    rbfReplaceabilityOption: CNBTransactionReplaceabilityOption
     ) -> Promise<CNBTransactionData> {
 
     return Promise { seal in
-      let txData = failableTransactionData(forPayment: payment, to: address, withFeeRate: feeRate)
+      let txData = failableTransactionData(forPayment: payment,
+                                           to: address,
+                                           withFeeRate: feeRate,
+                                           rbfReplaceabilityOption: rbfReplaceabilityOption)
       if let data = txData {
         seal.fulfill(data)
       } else {
@@ -248,7 +254,8 @@ class WalletManager: WalletManagerType {
   func failableTransactionData(
     forPayment payment: NSDecimalNumber,
     to address: String,
-    withFeeRate feeRate: Double) -> CNBTransactionData? {
+    withFeeRate feeRate: Double,
+    rbfReplaceabilityOption: CNBTransactionReplaceabilityOption) -> CNBTransactionData? {
     let paymentAmount = UInt(payment.asFractionalUnits(of: .BTC))
     let usableFeeRate = self.usableFeeRate(from: feeRate)
     let blockHeight = UInt(persistenceManager.brokers.checkIn.cachedBlockHeight)
@@ -258,15 +265,14 @@ class WalletManager: WalletManagerType {
       let usableVouts = self.usableVouts(in: bgContext)
       let allAvailableOutputs = self.availableTransactionOutputs(fromUsableUTXOs: usableVouts)
 
-      result = CNBTransactionData(
-        address: address,
-        coin: coin,
-        fromAllAvailableOutputs: allAvailableOutputs,
-        paymentAmount: paymentAmount,
-        feeRate: usableFeeRate,
-        change: self.newChangePath(in: bgContext),
-        blockHeight: blockHeight
-      )
+      result = CNBTransactionData(address: address,
+                                  coin: coin,
+                                  fromAllAvailableOutputs: allAvailableOutputs,
+                                  paymentAmount: paymentAmount,
+                                  feeRate: usableFeeRate,
+                                  change: self.newChangePath(in: bgContext),
+                                  blockHeight: blockHeight,
+                                  rbfReplaceabilityOption: rbfReplaceabilityOption)
     }
     return result
   }

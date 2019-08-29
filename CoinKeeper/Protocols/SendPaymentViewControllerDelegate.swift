@@ -16,25 +16,29 @@ struct SendingDelegateInputs {
   let contact: ContactType?
   let rates: ExchangeRates
   let sharedPayload: SharedPayloadDTO
+  let rbfReplaceabilityOption: CNBTransactionReplaceabilityOption
 
   init(primaryCurrency: CurrencyCode,
        walletTxType: WalletTransactionType,
        contact: ContactType?,
        rates: ExchangeRates,
-       sharedPayload: SharedPayloadDTO) {
+       sharedPayload: SharedPayloadDTO,
+       rbfReplaceabilityOption: CNBTransactionReplaceabilityOption) {
     self.primaryCurrency = primaryCurrency
     self.walletTxType = walletTxType
     self.contact = contact
     self.rates = rates
     self.sharedPayload = sharedPayload
+    self.rbfReplaceabilityOption = rbfReplaceabilityOption
   }
 
-  init(sendPaymentVM vm: SendPaymentViewModel, contact: ContactType?, payloadDTO: SharedPayloadDTO) {
+  init(sendPaymentVM vm: SendPaymentViewModel, contact: ContactType?, payloadDTO: SharedPayloadDTO, rbfReplaceabilityOption: CNBTransactionReplaceabilityOption = .Allowed) {
     self.init(primaryCurrency: vm.primaryCurrency,
               walletTxType: vm.walletTransactionType,
               contact: contact,
               rates: vm.exchangeRates,
-              sharedPayload: payloadDTO)
+              sharedPayload: payloadDTO,
+              rbfReplaceabilityOption: rbfReplaceabilityOption)
   }
 
 }
@@ -48,6 +52,7 @@ struct SendOnChainPaymentInputs {
   let contact: ContactType?
   let currencyPair: CurrencyPair
   let exchangeRates: ExchangeRates
+  let rbfReplaceabilityOption: CNBTransactionReplaceabilityOption
 }
 
 protocol ViewControllerSendingDelegate: AnyObject {
