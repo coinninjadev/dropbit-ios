@@ -22,7 +22,7 @@ protocol TransactionDataWorkerType: AnyObject {
   ///
   /// - Parameter context: a managed object context within which to work.
   /// - Returns: the result of performFetchAndStoreAllTransactionalData(in:force:), where `force` is false.
-  func performFetchAndStoreAllTransactionalData(in context: NSManagedObjectContext) -> Promise<Void>
+  func performFetchAndStoreAllOnChainTransactions(in context: NSManagedObjectContext) -> Promise<Void>
 
   /// Perform sync routine of fetching all transactions related to the default wallet.
   ///
@@ -30,7 +30,9 @@ protocol TransactionDataWorkerType: AnyObject {
   ///   - context: a managed object context within which to work.
   ///   - fullSync: whether the routine should force overwrite local persisted data with what is fetched from API.
   /// - Returns: a Promise<Void>
-  func performFetchAndStoreAllTransactionalData(in context: NSManagedObjectContext, fullSync: Bool) -> Promise<Void>
+  func performFetchAndStoreAllOnChainTransactions(in context: NSManagedObjectContext, fullSync: Bool) -> Promise<Void>
+
+  func performFetchAndStoreAllLightningTransactions(in context: NSManagedObjectContext) -> Promise<Void>
 
 }
 
@@ -56,13 +58,13 @@ class TransactionDataWorker: TransactionDataWorkerType {
     self.analyticsManager = analyticsManager
   }
 
-  func performFetchAndStoreAllTransactionalData(in context: NSManagedObjectContext) -> Promise<Void> {
-    return self.performFetchAndStoreAllTransactionalData(in: context, fullSync: false)
+  func performFetchAndStoreAllOnChainTransactions(in context: NSManagedObjectContext) -> Promise<Void> {
+    return self.performFetchAndStoreAllOnChainTransactions(in: context, fullSync: false)
   }
 
   typealias AddressFetcher = (Int) -> CNBMetaAddress
 
-  func performFetchAndStoreAllTransactionalData(in context: NSManagedObjectContext, fullSync: Bool) -> Promise<Void> {
+  func performFetchAndStoreAllOnChainTransactions(in context: NSManagedObjectContext, fullSync: Bool) -> Promise<Void> {
     CKNotificationCenter.publish(key: .didStartSync, object: nil, userInfo: nil)
 
     let addressDataSource = self.walletManager.createAddressDataSource()
@@ -88,6 +90,15 @@ class TransactionDataWorker: TransactionDataWorkerType {
         .then(in: context) { self.fetchAddressTransactionSummaries(in: context, aggregatingATSResponses: $0, addressFetcher: changeAddressFetcher) }
         .then(in: context) { self.processAddressTransactionSummaries($0, fullSync: fullSync, in: context) }
     }
+  }
+
+  func performFetchAndStoreAllLightningTransactions(in context: NSManagedObjectContext) -> Promise<Void> {
+    guard let wallet = CKMWallet.find(in: context) else {
+      return Promise(error: CKPersistenceError.noManagedWallet)
+    }
+    return self.networkManager.getLightningLedger()
+      .get(in: context) { self.persistenceManager.brokers.lightning.persistLedgerResponse($0, forWallet: wallet, in: context) }
+      .asVoid()
   }
 
   private func performIncrementalFetchAndStore(latestTxDate: Date,
