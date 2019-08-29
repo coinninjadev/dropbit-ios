@@ -53,6 +53,45 @@ extension CKMTransaction {
 
 }
 
+//extension CKMTransaction: CounterpartyRepresentable {
+//
+//  var counterpartyName: String? {
+//    if let twitterCounterparty = invitation?.counterpartyTwitterContact {
+//      return twitterCounterparty.formattedScreenName
+//    } else if let inviteName = invitation?.counterpartyName {
+//      return inviteName
+//    } else {
+//      let relevantNumber = phoneNumber ?? invitation?.counterpartyPhoneNumber
+//      return relevantNumber?.counterparty?.name
+//    }
+//  }
+//
+//  func counterpartyConfig(deviceCountryCode: Int) -> TransactionCellCounterpartyConfig? {
+//    if let counterpartyTwitterContact = self.twitterContact {
+//      return counterpartyTwitterContact.formattedScreenName  // should include @-sign
+//    }
+//
+//    if let relevantPhoneNumber = invitation?.counterpartyPhoneNumber ?? phoneNumber {
+//      let globalPhoneNumber = relevantPhoneNumber.asGlobalPhoneNumber
+//
+//      var format: PhoneNumberFormat = .international
+//      if let code = deviceCountryCode {
+//        format = (code == globalPhoneNumber.countryCode) ? .national : .international
+//      }
+//      let formatter = CKPhoneNumberFormatter(format: format)
+//
+//      return try? formatter.string(from: globalPhoneNumber)
+//    }
+//
+//    return nil
+//  }
+//
+//  var counterpartyAddressId: String? {
+//    return counterpartyReceiverAddressId
+//  }
+//}
+
+
 // MARK: - Computed Amounts
 extension CKMTransaction {
 
