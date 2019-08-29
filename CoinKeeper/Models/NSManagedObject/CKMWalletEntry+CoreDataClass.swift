@@ -19,11 +19,4 @@ public class CKMWalletEntry: NSManagedObject {
     self.sortDate = sortDate
   }
 
-  public var isCancellable: Bool {
-    return false //TODO
-  }
-
-  public var networkFee: Int {
-    return 0 //TODO
-  }
 }
