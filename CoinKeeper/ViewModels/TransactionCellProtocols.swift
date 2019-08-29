@@ -303,6 +303,13 @@ extension TransactionDetailCellViewModelType {
 
 enum TransactionDirection: String {
   case `in`, out
+
+  init(lnDirection: CKMLNTransactionDirection) {
+    switch lnDirection {
+    case .in:   self = .in
+    case .out:  self = .out
+    }
+  }
 }
 
 enum TransactionStatus: String {

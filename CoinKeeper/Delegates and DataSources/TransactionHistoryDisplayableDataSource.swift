@@ -106,14 +106,23 @@ class TransactionHistoryLightningDataSource: NSObject, TransactionHistoryDataSou
                                   rates: ExchangeRates,
                                   currencies: CurrencyPair,
                                   deviceCountryCode: Int) -> TransactionSummaryCellDisplayable {
-    return MockSummaryCellVM.testInstance()
-//    let walletEntry = frc.object(at: indexPath)
 
-//    let amountDetails = TransactionAmountDetails(btcAmount: .zero, fiatCurrency: currencies.fiat, exchangeRates: rates)
-//    return TransactionSummaryCellViewModel(selectedCurrency: .BTC, walletTxType: .light,
-//                                           status: .completed, isValidTransaction: true, isLightningTransfer: false,
-//                                           btcAddress: nil, lightningInvoice: nil, memo: nil,
-//                                           amountDetails: amountDetails, direction: .in, counterpartyConfig: nil)
+    let walletEntry = frc.object(at: indexPath)
+    let vmObject = viewModelObject(for: walletEntry)
+    let selectedCurrency: SelectedCurrency = currencies.primary.isFiat ? .fiat : .BTC
+    return TransactionSummaryCellViewModel(object: vmObject,
+                                           selectedCurrency: selectedCurrency,
+                                           fiatCurrency: currencies.fiat,
+                                           exchangeRates: rates,
+                                           deviceCountryCode: deviceCountryCode)
+  }
+
+  private func viewModelObject(for walletEntry: CKMWalletEntry) -> TransactionSummaryCellViewModelObject {
+    if let lightningObject = LightningViewModelObject(walletEntry: walletEntry) {
+      return lightningObject
+    } else {
+      return FallbackViewModelObject(walletTxType: .lightning)
+    }
   }
 
   func numberOfSections() -> Int {

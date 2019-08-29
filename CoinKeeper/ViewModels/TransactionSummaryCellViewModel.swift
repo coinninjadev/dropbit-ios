@@ -241,3 +241,81 @@ extension CKMTransaction {
   }
 
 }
+
+struct LightningViewModelObject: TransactionSummaryCellViewModelObject {
+  let entry: CKMLNLedgerEntry
+
+  init?(walletEntry: CKMWalletEntry) {
+    guard let ledgerEntry = walletEntry.ledgerEntry else { return nil }
+    self.entry = ledgerEntry
+  }
+
+  var walletTxType: WalletTransactionType {
+    return .lightning
+  }
+
+  var direction: TransactionDirection {
+    return TransactionDirection(lnDirection: entry.direction)
+  }
+
+  var isLightningTransfer: Bool {
+    return entry.type == .btc
+  }
+
+  var status: TransactionStatus {
+    switch entry.status {
+    case .pending:    return .pending
+    case .completed:  return .completed
+    case .expired:    return .expired
+    case .failed:     return .failed
+    }
+  }
+
+  var memo: String? {
+    return entry.memo
+  }
+
+  var receiverAddress: String? {
+    return nil
+  }
+
+  var lightningInvoice: String? {
+    return entry.request
+  }
+
+  func amountDetails(with currentRates: ExchangeRates, fiatCurrency: CurrencyCode) -> TransactionAmountDetails {
+    let amount = NSDecimalNumber(integerAmount: entry.value, currency: .BTC)
+    return TransactionAmountDetails(btcAmount: amount, fiatCurrency: fiatCurrency, exchangeRates: currentRates)
+  }
+
+  func counterpartyConfig(for deviceCountryCode: Int) -> TransactionCellCounterpartyConfig? {
+    return nil
+  }
+
+}
+
+///Only necessary because of the optional relationship between CKMWalletEntry and CKMLNLedgerEntry
+struct FallbackViewModelObject: TransactionSummaryCellViewModelObject {
+
+  let walletTxType: WalletTransactionType
+
+  init(walletTxType: WalletTransactionType) {
+    self.walletTxType = walletTxType
+  }
+
+  let direction: TransactionDirection = .in
+  let isLightningTransfer: Bool = false
+  let status: TransactionStatus = .failed
+  var memo: String?
+  var receiverAddress: String?
+  var lightningInvoice: String?
+
+  func amountDetails(with currentRates: ExchangeRates, fiatCurrency: CurrencyCode) -> TransactionAmountDetails {
+    return TransactionAmountDetails(btcAmount: .zero, fiatCurrency: fiatCurrency, exchangeRates: currentRates)
+  }
+
+  func counterpartyConfig(for deviceCountryCode: Int) -> TransactionCellCounterpartyConfig? {
+    return nil
+  }
+
+}
