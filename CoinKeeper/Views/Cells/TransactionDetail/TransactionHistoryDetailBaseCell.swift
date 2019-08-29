@@ -39,7 +39,6 @@ class TransactionHistoryDetailBaseCell: UICollectionViewCell {
   @IBOutlet var twitterShareButton: TwitterShareButton!
 
   // MARK: variables
-  var viewModel: TransactionDetailCellDisplayable!
   weak var delegate: TransactionHistoryDetailCellDelegate!
 
   // MARK: object lifecycle
@@ -64,11 +63,6 @@ class TransactionHistoryDetailBaseCell: UICollectionViewCell {
     addMemoButton.styleAddButtonWith(title: "Add Memo")
   }
 
-  override func prepareForReuse() {
-    super.prepareForReuse()
-    viewModel = nil
-  }
-
   // MARK: actions
   @IBAction func didTapAddMemoButton(_ sender: UIButton) {
     delegate.didTapAddMemo(detailCell: self)
@@ -86,8 +80,7 @@ class TransactionHistoryDetailBaseCell: UICollectionViewCell {
     delegate.didTapClose(detailCell: self)
   }
 
-  func load(with viewModel: TransactionDetailCellDisplayable, delegate: TransactionHistoryDetailCellDelegate) {
-    self.viewModel = viewModel
+  func load(with values: TransactionDetailCellDisplayable, delegate: TransactionHistoryDetailCellDelegate) {
     self.delegate = delegate
 
   }

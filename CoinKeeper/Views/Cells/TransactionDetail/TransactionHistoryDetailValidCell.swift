@@ -40,8 +40,8 @@ class TransactionHistoryDetailValidCell: TransactionHistoryDetailBaseCell {
   @IBOutlet var bottomBufferView: UIView!
 
   // MARK: lifecycle
-  override func load(with viewModel: TransactionDetailCellDisplayable, delegate: TransactionHistoryDetailCellDelegate) {
-    super.load(with: viewModel, delegate: delegate)
+  override func load(with values: TransactionDetailCellDisplayable, delegate: TransactionHistoryDetailCellDelegate) {
+    super.load(with: values, delegate: delegate)
 //    messageLabel.text = viewModel.messageLabel
 //    messageContainer.isHidden = viewModel.messageLabel == nil
 //    messageLabel.isHidden = viewModel.messageLabel == nil
@@ -65,13 +65,13 @@ class TransactionHistoryDetailValidCell: TransactionHistoryDetailBaseCell {
   }
 
   // MARK: private methods
-  private func configureBottomButton(with vm: OldTransactionDetailCellViewModel) {
-    guard let action = vm.bottomButtonAction else {
-      bottomButton.isHidden = true
-      return
-    }
-    bottomButton.isHidden = false
-    bottomButton.setTitle(action.buttonTitle, for: .normal)
+  private func configureBottomButton(with values: TransactionDetailCellDisplayable) {
+//    guard let action = vm.bottomButtonAction else {
+//      bottomButton.isHidden = true
+//      return
+//    }
+//    bottomButton.isHidden = false
+//    bottomButton.setTitle(action.buttonTitle, for: .normal)
 
 //    switch action {
 //    case .cancelInvitation:
@@ -81,7 +81,7 @@ class TransactionHistoryDetailValidCell: TransactionHistoryDetailBaseCell {
 //    }
   }
 
-  private func setupProgressBar(with viewModel: OldTransactionDetailCellViewModel) {
+  private func setupProgressBar(with values: TransactionDetailCellDisplayable) {
 //    progressView.activeColor = .successGreen
 //    progressView.inactiveColor = .lightGrayText
 //    progressView.inactiveTextColor = progressView.inactiveColor

@@ -12,6 +12,7 @@ import CNBitcoinKit
 /**
  Translates a Transaction object and it's relationships into a cell-displayable object.
  */
+/*
 class OldTransactionDetailCellViewModel: OldTransactionSummaryCellViewModel {
   var isCancellable: Bool
   var memoWasShared: Bool
@@ -393,3 +394,4 @@ extension OldTransactionDetailCellViewModel {
   }
 
 }
+*/

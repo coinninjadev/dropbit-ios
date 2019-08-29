@@ -8,26 +8,26 @@
 
 import Foundation
 
-protocol CounterpartyRepresentable: AnyObject {
-
-  var isIncoming: Bool { get }
-  var counterpartyName: String? { get }
-  var counterpartyAddressId: String? { get }
-
-  func counterpartyDisplayIdentity(deviceCountryCode: Int?) -> String?
-
-}
-
-extension CounterpartyRepresentable {
-
-  func counterpartyDisplayDescription(deviceCountryCode: Int?) -> String? {
-    if let name = counterpartyName {
-      return name
-    } else if let identity = counterpartyDisplayIdentity(deviceCountryCode: deviceCountryCode) {
-      return identity
-    } else {
-      return counterpartyAddressId
-    }
-  }
-
-}
+//protocol CounterpartyRepresentable: AnyObject {
+//
+//  var isIncoming: Bool { get }
+//  var counterpartyName: String? { get }
+//  var counterpartyAddressId: String? { get }
+//
+//  func counterpartyDisplayIdentity(deviceCountryCode: Int?) -> String?
+//
+//}
+//
+//extension CounterpartyRepresentable {
+//
+//  func counterpartyDisplayDescription(deviceCountryCode: Int?) -> String? {
+//    if let name = counterpartyName {
+//      return name
+//    } else if let identity = counterpartyDisplayIdentity(deviceCountryCode: deviceCountryCode) {
+//      return identity
+//    } else {
+//      return counterpartyAddressId
+//    }
+//  }
+//
+//}

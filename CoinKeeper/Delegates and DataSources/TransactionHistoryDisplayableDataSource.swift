@@ -95,11 +95,14 @@ class TransactionHistoryLightningDataSource: NSObject, TransactionHistoryDataSou
   }
 
   func summaryCellDisplayableItem(at indexPath: IndexPath, rates: ExchangeRates, currencies: CurrencyPair) -> TransactionSummaryCellDisplayable {
-    let amountDetails = TransactionAmountDetails(btcAmount: .zero, fiatCurrency: currencies.fiat, exchangeRates: rates)
-    return TransactionSummaryCellViewModel(selectedCurrency: .BTC, walletTxType: walletTransactionType,
-                                           status: .completed, isValidTransaction: true, isLightningTransfer: false,
-                                           btcAddress: nil, lightningInvoice: nil, memo: nil,
-                                           amountDetails: amountDetails, direction: .in, counterpartyConfig: nil)
+    return MockSummaryCellVM.testInstance()
+//    let walletEntry = frc.object(at: indexPath)
+
+//    let amountDetails = TransactionAmountDetails(btcAmount: .zero, fiatCurrency: currencies.fiat, exchangeRates: rates)
+//    return TransactionSummaryCellViewModel(selectedCurrency: .BTC, walletTxType: .light,
+//                                           status: .completed, isValidTransaction: true, isLightningTransfer: false,
+//                                           btcAddress: nil, lightningInvoice: nil, memo: nil,
+//                                           amountDetails: amountDetails, direction: .in, counterpartyConfig: nil)
   }
 
   func numberOfSections() -> Int {

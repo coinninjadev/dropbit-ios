@@ -43,28 +43,28 @@ class OldTransactionHistoryDetailsViewControllerDDS: NSObject {
 
   @objc(collectionView:cellForItemAtIndexPath:) func collectionView(_ collectionView: UICollectionView,
                                                                     cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-    guard let viewController = viewController,
-      let viewModel = viewController.viewModelForIndexPath?(indexPath) else { return UICollectionViewCell() }
+//    guard let viewController = viewController,
+//      let viewModel = viewController.viewModelForIndexPath?(indexPath) else { return UICollectionViewCell() }
 
-    if let invitation = viewModel.transaction?.invitation {
-      switch invitation.status {
-      case .canceled, .expired:
-        let cell = collectionView.dequeue(TransactionHistoryDetailInvalidCell.self, for: indexPath)
+//    if let invitation = viewModel.transaction?.invitation {
+//      switch invitation.status {
+//      case .canceled, .expired:
+//        let cell = collectionView.dequeue(TransactionHistoryDetailInvalidCell.self, for: indexPath)
         //TODO
 //        cell.load(with: viewModel, delegate: viewController)
-        return cell
-      default:
-        let cell = collectionView.dequeue(TransactionHistoryDetailValidCell.self, for: indexPath)
+//        return cell
+//      default:
+//        let cell = collectionView.dequeue(TransactionHistoryDetailValidCell.self, for: indexPath)
         //TODO
 //        cell.load(with: viewModel, delegate: viewController)
-        return cell
-      }
-    } else {
-      let cell = collectionView.dequeue(TransactionHistoryDetailValidCell.self, for: indexPath )
+//        return cell
+//      }
+//    } else {
+//      let cell = collectionView.dequeue(TransactionHistoryDetailValidCell.self, for: indexPath )
       //TODO
 //      cell.load(with: viewModel, delegate: viewController)
-      return cell
-    }
+    let cell = collectionView.dequeue(TransactionHistoryDetailValidCell.self, for: indexPath)
+    return cell
   }
 
   @objc(collectionView:didSelectItemAtIndexPath:) func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {

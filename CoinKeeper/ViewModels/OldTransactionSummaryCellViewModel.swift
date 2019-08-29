@@ -45,26 +45,6 @@ class OldTransactionSummaryCellViewModel {
   }
 
   init(
-    walletEntry: CKMWalletEntry,
-    rates: ExchangeRates,
-    primaryCurrency: CurrencyCode,
-    deviceCountryCode: Int?
-    ) {
-
-    //TODO
-    self.counterpartyDescription = ""
-    self.confirmations = 0
-    self.isConfirmed = false
-    self.isIncoming = false
-    self.broadcastFailed = false
-    let rates: ExchangeRates = [.USD: 7000, .BTC: 1]
-    let currencyPair = CurrencyPair(primary: .USD, secondary: .BTC, fiat: .USD)
-    self.sentAmountAtCurrentConverter = CurrencyConverter(rates: rates, fromAmount: .zero, currencyPair: currencyPair)
-    self.primaryCurrency = .USD
-    self.memo = ""
-  }
-
-  init(
     transaction: CKMTransaction,
     rates: ExchangeRates,
     primaryCurrency: CurrencyCode,
@@ -73,7 +53,7 @@ class OldTransactionSummaryCellViewModel {
     self.transaction = transaction
     self.broadcastFailed = transaction.broadcastFailed
     let counterpartyAddress = transaction.counterpartyAddressId
-    let counterpartyDesc = transaction.counterpartyDisplayDescription(deviceCountryCode: deviceCountryCode) ?? ""
+    let counterpartyDesc = "" //transaction.counterpartyDisplayDescription(deviceCountryCode: deviceCountryCode) ?? ""
     let sentToMyselfText = "Sent to myself"
 
     self.isIncoming = transaction.isIncoming
@@ -180,32 +160,12 @@ class OldTransactionSummaryCellViewModel {
     }
   }
 
-  var hidden: Bool {
-    let count = confirmations
-    return count >= 1
-
-  }
-
-  var descriptionColor: UIColor {
-    guard !transactionIsInvalidated else { return .darkPeach }
-    if isConfirmed {
-      return .darkGrayText
-    } else {
-      return .warning
-    }
-  }
-
   var transactionIsInvalidated: Bool {
     if let status = invitationStatus, [.canceled, .expired].contains(status) {
       return true
     } else {
       return broadcastFailed
     }
-  }
-
-  var dateDescriptionFull: String {
-    guard let date = date else { return "" }
-    return CKDateFormatter.displayFull.string(from: date)
   }
 
   func currentRate(for currency: CurrencyCode) -> Double? {
