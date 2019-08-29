@@ -17,17 +17,38 @@ struct TransactionSummaryCellViewModel: TransactionSummaryCellViewModelType {
   var status: TransactionStatus
   var amountDetails: TransactionAmountDetails
   var memo: String?
-
   var counterpartyConfig: TransactionCellCounterpartyConfig?
   var receiverAddress: String?
   var lightningInvoice: String?
 
-  init(managedTx: CKMTransaction,
-       selectedCurrency: SelectedCurrency,
-       lightningLoadAddress: String?) {
-    self.walletTxType = .onChain
+  /// Initialize with protocol so that the initialization is simple and the logic for transforming stored properties
+  /// is contained in isolated functions or computed properties inside the protocol implementation.
+  init(object: TransactionSummaryCellViewModelObject, selectedCurrency: SelectedCurrency) {
+    self.walletTxType = object.walletTxType
     self.selectedCurrency = selectedCurrency
-    self.direction = managedTx.isIncoming ? .in : .out
+    self.direction = object.direction
+    self.isLightningTransfer = object.isLightningTransfer
+    self.status = object.status
+    self.amountDetails = object.amountDetails
+    self.memo = object.memo
+    self.counterpartyConfig = object.counterpartyConfig
+    self.receiverAddress = object.receiverAddress
+    self.lightningInvoice = object.lightningInvoice
+  }
+
+}
+
+protocol TransactionSummaryCellViewModelObject {
+  var walletTxType: WalletTransactionType { get }
+  var direction: TransactionDirection { get }
+  var isLightningTransfer: Bool { get }
+  var status: TransactionStatus { get }
+  var amountDetails: TransactionAmountDetails { get }
+  var memo: String? { get }
+  var counterpartyConfig: TransactionCellCounterpartyConfig? { get }
+  var receiverAddress: String? { get }
+  var lightningInvoice: String? { get }
+}
 
 
     self.memo = managedTx.memo
