@@ -15,6 +15,10 @@ protocol TransactionPopoverDetailsViewControllerDelegate: ViewControllerDismissa
   func viewControllerDidTapShareTransactionButton()
 }
 
+protocol TransactionPopoverDisplayable: AnyObject {
+
+}
+
 class TransactionPopoverDetailsViewController: BaseViewController, StoryboardInitializable, PopoverViewControllerType {
 
   @IBOutlet var containerView: UIView!
