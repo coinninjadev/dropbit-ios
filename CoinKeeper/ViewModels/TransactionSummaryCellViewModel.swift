@@ -74,6 +74,47 @@ extension CKMTransaction: TransactionSummaryCellViewModelObject {
     return TransactionAmountDetails(btcAmount: amount, fiatCurrency: fiatCurrency, exchangeRates: currentRates)
   }
 
+  var receiverAddress: String? {
+    switch direction {
+    case .in:
+      if let invite = invitation {
+        return invite.addressProvidedToSender
+      } else {
+        return vouts
+          .sorted { $0.index < $1.index }
+          .compactMap { $0.address }
+          .filter { $0.isReceiveAddress }
+          .first?.addressId
+      }
+    case .out:
+      if isTemporaryTransaction {
+        return counterpartyReceiverAddressId
+      } else if isSentToSelf {
+        return vouts.first?.addressIDs.first
+      } else {
+        return counterpartyReceiverAddressId
+      }
+    }
+  }
+
+  /// Returns first outgoing vout address, otherwise tx must be sent to self
+  private var counterpartyReceiverAddressId: String? {
+    if let addressId = counterpartyAddress?.addressId {
+      return addressId
+    } else {
+
+      // ourAddresses are addresses we own by relationship to AddressTransactionSummary objects
+      guard let context = self.managedObjectContext else { return nil }
+      let ourAddressStrings = addressTransactionSummaries.map { $0.addressId }
+      let ourAddresses = CKMAddress.find(withAddresses: ourAddressStrings, in: context)
+      let ourAddressIds = ourAddresses.map { $0.addressId }.asSet()
+
+      // firstOutgoing is first vout addressID where ourAddresses doesn't appear in vout's addressIDs
+      let firstOutgoing = vouts.compactMap { self.firstVoutAddress(from: Set($0.addressIDs), notMatchingAddresses: ourAddressIds) }.first
+      return firstOutgoing
+    }
+  }
+
   var lightningInvoice: String? {
     return nil
   }
@@ -119,29 +160,6 @@ extension CKMTransaction {
     guard let invite = invitation else { return false }
     let cancellableStatuses: [InvitationStatus] = [.notSent, .requestSent, .addressSent]
     return (!isIncoming && cancellableStatuses.contains(invite.status))
-  }
-
-  /// Returns first outgoing vout address, otherwise tx must be sent to self
-  var counterpartyReceiverAddressId: String? {
-    if isIncoming {
-      return invitation?.addressProvidedToSender
-    } else {
-
-      if let addressId = counterpartyAddress?.addressId {
-        return addressId
-      } else {
-
-        // ourAddresses are addresses we own by relationship to AddressTransactionSummary objects
-        guard let context = self.managedObjectContext else { return nil }
-        let ourAddressStrings = addressTransactionSummaries.map { $0.addressId }
-        let ourAddresses = CKMAddress.find(withAddresses: ourAddressStrings, in: context)
-        let ourAddressIds = ourAddresses.map { $0.addressId }.asSet()
-
-        // firstOutgoing is first vout addressID where ourAddresses doesn't appear in vout's addressIDs
-        let firstOutgoing = vouts.compactMap { self.firstVoutAddress(from: Set($0.addressIDs), notMatchingAddresses: ourAddressIds) }.first
-        return firstOutgoing
-      }
-    }
   }
 
   /// Returns nil if any of our addresses are in vout addresses
