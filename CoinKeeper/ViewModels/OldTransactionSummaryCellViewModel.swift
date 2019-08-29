@@ -129,22 +129,22 @@ class OldTransactionSummaryCellViewModel {
     }
   }
 
-  var transactionStatusDescription: String {
-    guard !isTemporaryTransaction else { return "Broadcasting" }
-    let count = confirmations
-    switch count {
-    case 0:    return "Pending"
-    default:  return "Complete"
-    }
-  }
+//  var transactionStatusDescription: String {
+//    guard !isTemporaryTransaction else { return "Broadcasting" }
+//    let count = confirmations
+//    switch count {
+//    case 0:    return "Pending"
+//    default:  return "Complete"
+//    }
+//  }
 
-  var statusDescription: String {
-    if broadcastFailed {
-      return "Failed to Broadcast"
-    } else {
-      return invitationStatusDescription ?? transactionStatusDescription
-    }
-  }
+//  var statusDescription: String {
+//    if broadcastFailed {
+//      return "Failed to Broadcast"
+//    } else {
+//      return invitationStatusDescription ?? transactionStatusDescription
+//    }
+//  }
 
   var transactionIsInvalidated: Bool {
     if let status = invitationStatus, [.canceled, .expired].contains(status) {

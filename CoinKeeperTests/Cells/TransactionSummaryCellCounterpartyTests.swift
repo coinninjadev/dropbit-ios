@@ -48,7 +48,7 @@ class TransactionSummaryCellCounterpartyTests: XCTestCase {
     let lightningDepositVM = MockSummaryCellVM.testInstance(walletTxType: .onChain,
                                                             direction: .out,
                                                             isLightningTransfer: true,
-                                                            btcAddress: expectedAddress,
+                                                            receiverAddress: expectedAddress,
                                                             counterpartyConfig: fullCounterparty)
     let expectedDepositDescription = lightningDepositVM.lightningDepositText
     sut.configure(with: lightningDepositVM)
@@ -59,7 +59,7 @@ class TransactionSummaryCellCounterpartyTests: XCTestCase {
     let lightningWithdrawalVM = MockSummaryCellVM.testInstance(walletTxType: .lightning,
                                                                direction: .out,
                                                                isLightningTransfer: true,
-                                                               btcAddress: expectedAddress,
+                                                               receiverAddress: expectedAddress,
                                                                counterpartyConfig: fullCounterparty)
     let expectedWithdrawalDescription = lightningWithdrawalVM.lightningWithdrawText
     sut.configure(with: lightningWithdrawalVM)
@@ -135,7 +135,7 @@ class TransactionSummaryCellCounterpartyTests: XCTestCase {
     let addressVM = MockSummaryCellVM.testInstance(walletTxType: .onChain,
                                                    direction: .in,
                                                    isLightningTransfer: false,
-                                                   btcAddress: expectedAddress,
+                                                   receiverAddress: expectedAddress,
                                                    counterpartyConfig: nil)
     sut.configure(with: addressVM)
     XCTAssertEqual(sut.counterpartyLabel.text, expectedAddress)
