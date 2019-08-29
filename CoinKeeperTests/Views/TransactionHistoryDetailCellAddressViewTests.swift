@@ -68,122 +68,123 @@ class TransactionHistoryDetailCellAddressViewTests: XCTestCase {
 
   //TODO: revise tests
   // MARK: loading with view model produces desired UI behavior
-//  func testRegularIncomingTransactionShowsAddressButton() {
-//    let sampleCounterpartyAddress = SampleCounterpartyAddress(addressId: "13r1jyivitShUiv9FJvjLH7Nh1ZZptumwE")
-//    let sampleTransaction = SampleTransaction(
-//      netWalletAmount: nil,
-//      id: "",
-//      btcReceived: 1,
-//      isIncoming: true,
-//      walletAddress: SampleTransaction.sampleWalletAddress,
-//      confirmations: 1,
-//      date: Date(),
-//      counterpartyAddress: sampleCounterpartyAddress,
-//      phoneNumber: nil,
-//      invitation: nil
-//    )
-//
-//    self.sut.load(with: sampleTransaction)
-//
-//    XCTAssertTrue(self.sut.addressStatusLabel.isHidden, "addressStatusLabel should be hidden")
-//    XCTAssertFalse(self.sut.addressContainerView.isHidden, "addressContainerView should be visible")
-//    XCTAssertEqual(self.sut.addressTextButton.title(for: .normal), sampleTransaction.walletAddress)
-//  }
+  /*
+  func testRegularIncomingTransactionShowsAddressButton() {
+    let sampleCounterpartyAddress = SampleCounterpartyAddress(addressId: "13r1jyivitShUiv9FJvjLH7Nh1ZZptumwE")
+    let sampleTransaction = SampleTransaction(
+      netWalletAmount: nil,
+      id: "",
+      btcReceived: 1,
+      isIncoming: true,
+      walletAddress: SampleTransaction.sampleWalletAddress,
+      confirmations: 1,
+      date: Date(),
+      counterpartyAddress: sampleCounterpartyAddress,
+      phoneNumber: nil,
+      invitation: nil
+    )
 
-//  func testRegularOutgoingTransactionShowsAddressButton() {
-//    let validAddress = TestHelpers.mockValidBitcoinAddress()
-//    let sampleCounterpartyAddress = SampleCounterpartyAddress(addressId: validAddress)
-//    let sampleTransaction = SampleTransaction(
-//      netWalletAmount: nil,
-//      id: "",
-//      btcReceived: 1,
-//      isIncoming: false,
-//      walletAddress: SampleTransaction.sampleWalletAddress,
-//      confirmations: 1,
-//      date: Date(),
-//      counterpartyAddress: sampleCounterpartyAddress,
-//      phoneNumber: nil,
-//      invitation: nil
-//    )
-//
-//    self.sut.load(with: sampleTransaction)
-//
-//    XCTAssertTrue(self.sut.addressStatusLabel.isHidden, "addressStatusLabel should be hidden")
-//    XCTAssertFalse(self.sut.addressContainerView.isHidden, "addressContainerView should be visible")
-//    XCTAssertEqual(self.sut.addressTextButton.title(for: .normal), sampleCounterpartyAddress.addressId)
-//  }
+    self.sut.load(with: sampleTransaction)
 
-//  func testContactOutgoingTransactionShowsCounterpartyAndAddress() {
-//    let validAddress = TestHelpers.mockValidBitcoinAddress()
-//    let sampleCounterpartyAddress = SampleCounterpartyAddress(addressId: validAddress)
-//    let expectedName = "Indiana Jones"
-//    let sampleCounterpartyName = SampleCounterpartyName(name: expectedName)
-//    let samplePhoneNumber = SamplePhoneNumber(
-//      countryCode: 1,
-//      number: 3305551212,
-//      phoneNumberHash: "",
-//      status: "",
-//      counterpartyName: sampleCounterpartyName
-//    )
-//    let sampleTransaction = SampleTransaction(
-//      netWalletAmount: nil,
-//      id: "",
-//      btcReceived: 1,
-//      isIncoming: false,
-//      walletAddress: SampleTransaction.sampleWalletAddress,
-//      confirmations: 1,
-//      date: Date(),
-//      counterpartyAddress: sampleCounterpartyAddress,
-//      phoneNumber: samplePhoneNumber,
-//      invitation: nil
-//    )
-//
-//    self.sut.load(with: sampleTransaction)
-//
-//    XCTAssertTrue(self.sut.addressStatusLabel.isHidden, "addressStatusLabel should be hidden")
-//    XCTAssertFalse(self.sut.addressContainerView.isHidden, "addressContainerView should be visible")
-//    XCTAssertEqual(self.sut.addressTextButton.title(for: .normal), sampleCounterpartyAddress.addressId)
-//  }
+    XCTAssertTrue(self.sut.addressStatusLabel.isHidden, "addressStatusLabel should be hidden")
+    XCTAssertFalse(self.sut.addressContainerView.isHidden, "addressContainerView should be visible")
+    XCTAssertEqual(self.sut.addressTextButton.title(for: .normal), sampleTransaction.walletAddress)
+  }
 
-//  func testInvitationOutgoingTransactionShowsInvitationStatus() {
-//    let sampleCounterpartyAddress = SampleCounterpartyAddress(addressId: "13r1jyivitShUiv9FJvjLH7Nh1ZZptumwE")
-//    let expectedName = "Indiana Jones"
-//    let sampleCounterpartyName = SampleCounterpartyName(name: expectedName)
-//    let samplePhoneNumber = SamplePhoneNumber(
-//      countryCode: 1,
-//      number: 3305551212,
-//      phoneNumberHash: "",
-//      status: "",
-//      counterpartyName: sampleCounterpartyName
-//    )
-//    let invitation = SampleInvitation(
-//      name: expectedName,
-//      phoneNumber: GlobalPhoneNumber(countryCode: 1, nationalNumber: "3305551212"),
-//      btcAmount: 1,
-//      fees: 30,
-//      sentDate: Date(),
-//      status: InvitationStatus.requestSent
-//    )
-//    let sampleTransaction = SampleTransaction(
-//      netWalletAmount: nil,
-//      id: "",
-//      btcReceived: 1,
-//      isIncoming: false,
-//      walletAddress: SampleTransaction.sampleWalletAddress,
-//      confirmations: 1,
-//      date: Date(),
-//      counterpartyAddress: sampleCounterpartyAddress,
-//      phoneNumber: samplePhoneNumber,
-//      invitation: invitation
-//    )
-//    sampleTransaction.invitationStatus = .requestSent
-//
-//    self.sut.load(with: sampleTransaction)
-//
-//    XCTAssertFalse(self.sut.addressStatusLabel.isHidden, "addressStatusLabel should be visible")
-//    XCTAssertTrue(self.sut.addressContainerView.isHidden, "addressContainerView should be hidden")
-//    XCTAssertEqual(self.sut.addressStatusLabel.text, "Waiting on Bitcoin address")
-//  }
+  func testRegularOutgoingTransactionShowsAddressButton() {
+    let validAddress = TestHelpers.mockValidBitcoinAddress()
+    let sampleCounterpartyAddress = SampleCounterpartyAddress(addressId: validAddress)
+    let sampleTransaction = SampleTransaction(
+      netWalletAmount: nil,
+      id: "",
+      btcReceived: 1,
+      isIncoming: false,
+      walletAddress: SampleTransaction.sampleWalletAddress,
+      confirmations: 1,
+      date: Date(),
+      counterpartyAddress: sampleCounterpartyAddress,
+      phoneNumber: nil,
+      invitation: nil
+    )
+
+    self.sut.load(with: sampleTransaction)
+
+    XCTAssertTrue(self.sut.addressStatusLabel.isHidden, "addressStatusLabel should be hidden")
+    XCTAssertFalse(self.sut.addressContainerView.isHidden, "addressContainerView should be visible")
+    XCTAssertEqual(self.sut.addressTextButton.title(for: .normal), sampleCounterpartyAddress.addressId)
+  }
+
+  func testContactOutgoingTransactionShowsCounterpartyAndAddress() {
+    let validAddress = TestHelpers.mockValidBitcoinAddress()
+    let sampleCounterpartyAddress = SampleCounterpartyAddress(addressId: validAddress)
+    let expectedName = "Indiana Jones"
+    let sampleCounterpartyName = SampleCounterpartyName(name: expectedName)
+    let samplePhoneNumber = SamplePhoneNumber(
+      countryCode: 1,
+      number: 3305551212,
+      phoneNumberHash: "",
+      status: "",
+      counterpartyName: sampleCounterpartyName
+    )
+    let sampleTransaction = SampleTransaction(
+      netWalletAmount: nil,
+      id: "",
+      btcReceived: 1,
+      isIncoming: false,
+      walletAddress: SampleTransaction.sampleWalletAddress,
+      confirmations: 1,
+      date: Date(),
+      counterpartyAddress: sampleCounterpartyAddress,
+      phoneNumber: samplePhoneNumber,
+      invitation: nil
+    )
+
+    self.sut.load(with: sampleTransaction)
+
+    XCTAssertTrue(self.sut.addressStatusLabel.isHidden, "addressStatusLabel should be hidden")
+    XCTAssertFalse(self.sut.addressContainerView.isHidden, "addressContainerView should be visible")
+    XCTAssertEqual(self.sut.addressTextButton.title(for: .normal), sampleCounterpartyAddress.addressId)
+  }
+
+  func testInvitationOutgoingTransactionShowsInvitationStatus() {
+    let sampleCounterpartyAddress = SampleCounterpartyAddress(addressId: "13r1jyivitShUiv9FJvjLH7Nh1ZZptumwE")
+    let expectedName = "Indiana Jones"
+    let sampleCounterpartyName = SampleCounterpartyName(name: expectedName)
+    let samplePhoneNumber = SamplePhoneNumber(
+      countryCode: 1,
+      number: 3305551212,
+      phoneNumberHash: "",
+      status: "",
+      counterpartyName: sampleCounterpartyName
+    )
+    let invitation = SampleInvitation(
+      name: expectedName,
+      phoneNumber: GlobalPhoneNumber(countryCode: 1, nationalNumber: "3305551212"),
+      btcAmount: 1,
+      fees: 30,
+      sentDate: Date(),
+      status: InvitationStatus.requestSent
+    )
+    let sampleTransaction = SampleTransaction(
+      netWalletAmount: nil,
+      id: "",
+      btcReceived: 1,
+      isIncoming: false,
+      walletAddress: SampleTransaction.sampleWalletAddress,
+      confirmations: 1,
+      date: Date(),
+      counterpartyAddress: sampleCounterpartyAddress,
+      phoneNumber: samplePhoneNumber,
+      invitation: invitation
+    )
+    sampleTransaction.invitationStatus = .requestSent
+
+    self.sut.load(with: sampleTransaction)
+
+    XCTAssertFalse(self.sut.addressStatusLabel.isHidden, "addressStatusLabel should be visible")
+    XCTAssertTrue(self.sut.addressContainerView.isHidden, "addressContainerView should be hidden")
+    XCTAssertEqual(self.sut.addressStatusLabel.text, "Waiting on Bitcoin address")
+  }
 
   func testTemporaryOutgoingTransactionShowsAddressButton() {
     // given
@@ -210,7 +211,7 @@ class TransactionHistoryDetailCellAddressViewTests: XCTestCase {
     )
 
     // when
-//    self.sut.load(with: viewModel)
+    self.sut.load(with: viewModel)
 
     // then
     XCTAssertFalse(self.sut.addressContainerView.isHidden, "addressContainerView should be visible")
@@ -259,7 +260,7 @@ class TransactionHistoryDetailCellAddressViewTests: XCTestCase {
     )
 
     // when
-//    self.sut.load(with: viewModel)
+    self.sut.load(with: viewModel)
 
     // then
     XCTAssertFalse(self.sut.addressContainerView.isHidden, "addressContainerView should be visible")
@@ -305,7 +306,7 @@ class TransactionHistoryDetailCellAddressViewTests: XCTestCase {
     )
 
     // when
-//    self.sut.load(with: viewModel)
+    self.sut.load(with: viewModel)
 
     // then
     XCTAssertTrue(self.sut.addressContainerView.isHidden, "addressContainerView should be hidden")
@@ -320,7 +321,7 @@ class TransactionHistoryDetailCellAddressViewTests: XCTestCase {
     )
 
     // when
-//    self.sut.load(with: viewModel)
+    self.sut.load(with: viewModel)
 
     // then
     XCTAssertTrue(self.sut.addressContainerView.isHidden, "addressContainerView should be hidden")
@@ -335,7 +336,7 @@ class TransactionHistoryDetailCellAddressViewTests: XCTestCase {
     )
 
     // when
-//    self.sut.load(with: viewModel)
+    self.sut.load(with: viewModel)
 
     // then
     XCTAssertFalse(self.sut.addressContainerView.isHidden, "addressContainerView should be hidden")
@@ -350,7 +351,7 @@ class TransactionHistoryDetailCellAddressViewTests: XCTestCase {
     )
 
     // when
-//    self.sut.load(with: viewModel)
+    self.sut.load(with: viewModel)
 
     // then
     XCTAssertTrue(self.sut.addressContainerView.isHidden, "addressContainerView should be hidden")
@@ -365,11 +366,12 @@ class TransactionHistoryDetailCellAddressViewTests: XCTestCase {
     )
 
     // when
-//    self.sut.load(with: viewModel)
+    self.sut.load(with: viewModel)
 
     // then
     XCTAssertTrue(self.sut.addressContainerView.isHidden, "addressContainerView should be hidden")
     XCTAssertTrue(self.sut.addressStatusLabel.isHidden, "addressStatusLabel should be hidden")
     XCTAssertEqual(self.sut.addressTextButton.title(for: .normal), expectedAddress, "addressTextButton title should equal destination address")
   }
+*/
 }
