@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import PhoneNumberKit
 import UIKit
 
 struct TransactionSummaryCellViewModel: TransactionSummaryCellViewModelType {
@@ -26,7 +27,8 @@ struct TransactionSummaryCellViewModel: TransactionSummaryCellViewModelType {
   init(object: TransactionSummaryCellViewModelObject,
        selectedCurrency: SelectedCurrency,
        fiatCurrency: CurrencyCode,
-       exchangeRates: ExchangeRates) {
+       exchangeRates: ExchangeRates,
+       deviceCountryCode: Int) {
     self.walletTxType = object.walletTxType
     self.selectedCurrency = selectedCurrency
     self.direction = object.direction
@@ -34,7 +36,7 @@ struct TransactionSummaryCellViewModel: TransactionSummaryCellViewModelType {
     self.status = object.status
     self.amountDetails = object.amountDetails(with: exchangeRates, fiatCurrency: fiatCurrency)
     self.memo = object.memo
-    self.counterpartyConfig = object.counterpartyConfig
+    self.counterpartyConfig = object.counterpartyConfig(for: deviceCountryCode)
     self.receiverAddress = object.receiverAddress
     self.lightningInvoice = object.lightningInvoice
   }
@@ -47,11 +49,12 @@ protocol TransactionSummaryCellViewModelObject {
   var isLightningTransfer: Bool { get }
   var status: TransactionStatus { get }
   var memo: String? { get }
-  var counterpartyConfig: TransactionCellCounterpartyConfig? { get }
   var receiverAddress: String? { get }
   var lightningInvoice: String? { get }
 
   func amountDetails(with currentRates: ExchangeRates, fiatCurrency: CurrencyCode) -> TransactionAmountDetails
+  func counterpartyConfig(for deviceCountryCode: Int) -> TransactionCellCounterpartyConfig?
+
 }
 
 extension CKMTransaction: TransactionSummaryCellViewModelObject {
@@ -72,6 +75,15 @@ extension CKMTransaction: TransactionSummaryCellViewModelObject {
   func amountDetails(with currentRates: ExchangeRates, fiatCurrency: CurrencyCode) -> TransactionAmountDetails {
     let amount = NSDecimalNumber(integerAmount: self.netWalletAmount, currency: .BTC)
     return TransactionAmountDetails(btcAmount: amount, fiatCurrency: fiatCurrency, exchangeRates: currentRates)
+  }
+
+  func counterpartyConfig(for deviceCountryCode: Int) -> TransactionCellCounterpartyConfig? {
+    let maybeTwitter = self.invitation?.counterpartyTwitterContact.flatMap { TransactionCellTwitterConfig(contact: $0) }
+    let maybeName = counterpartyName(with: maybeTwitter)
+    let maybeNumber = displayPhoneNumber(for: deviceCountryCode)
+    return TransactionCellCounterpartyConfig(failableWithName: maybeName,
+                                             displayPhoneNumber: maybeNumber,
+                                             twitterConfig: maybeTwitter)
   }
 
   var receiverAddress: String? {
@@ -97,6 +109,25 @@ extension CKMTransaction: TransactionSummaryCellViewModelObject {
     }
   }
 
+  private func counterpartyName(with twitterConfig: TransactionCellTwitterConfig?) -> String? {
+    if let config = twitterConfig {
+      return config.displayName
+    } else if let inviteName = invitation?.counterpartyName {
+      return inviteName
+    } else {
+      let relevantNumber = phoneNumber ?? invitation?.counterpartyPhoneNumber
+      return relevantNumber?.counterparty?.name
+    }
+  }
+
+  private func displayPhoneNumber(for deviceCountryCode: Int) -> String? {
+    guard let relevantPhoneNumber = invitation?.counterpartyPhoneNumber ?? phoneNumber else { return nil }
+    let globalPhoneNumber = relevantPhoneNumber.asGlobalPhoneNumber
+    let format: PhoneNumberFormat = (deviceCountryCode == globalPhoneNumber.countryCode) ? .national : .international
+    let formatter = CKPhoneNumberFormatter(format: format)
+    return try? formatter.string(from: globalPhoneNumber)
+  }
+
   /// Returns first outgoing vout address, otherwise tx must be sent to self
   private var counterpartyReceiverAddressId: String? {
     if let addressId = counterpartyAddress?.addressId {
@@ -113,6 +144,11 @@ extension CKMTransaction: TransactionSummaryCellViewModelObject {
       let firstOutgoing = vouts.compactMap { self.firstVoutAddress(from: Set($0.addressIDs), notMatchingAddresses: ourAddressIds) }.first
       return firstOutgoing
     }
+  }
+
+  /// Returns nil if any of our addresses are in vout addresses
+  private func firstVoutAddress(from voutAddressIDs: Set<String>, notMatchingAddresses ourAddresses: Set<String>) -> String? {
+    return ourAddresses.isDisjoint(with: voutAddressIDs) ? voutAddressIDs.first : nil
   }
 
   var lightningInvoice: String? {
@@ -144,27 +180,6 @@ extension CKMTransaction: TransactionSummaryCellViewModelObject {
       default:  return .completed
       }
     }
-  }
-
-}
-
-extension CKMTransaction {
-
-  /// txid does not begin with a prefix (e.g. invitations with placeholder Transaction objects)
-  var txidIsActualTxid: Bool {
-    let isInviteOrFailed = txid.starts(with: CKMTransaction.invitationTxidPrefix) || txid.starts(with: CKMTransaction.failedTxidPrefix)
-    return !isInviteOrFailed
-  }
-
-  var isCancellable: Bool {
-    guard let invite = invitation else { return false }
-    let cancellableStatuses: [InvitationStatus] = [.notSent, .requestSent, .addressSent]
-    return (!isIncoming && cancellableStatuses.contains(invite.status))
-  }
-
-  /// Returns nil if any of our addresses are in vout addresses
-  private func firstVoutAddress(from voutAddressIDs: Set<String>, notMatchingAddresses ourAddresses: Set<String>) -> String? {
-    return ourAddresses.isDisjoint(with: voutAddressIDs) ? voutAddressIDs.first : nil
   }
 
 }
@@ -226,41 +241,3 @@ extension CKMTransaction {
   }
 
 }
-
-//extension CKMTransaction: CounterpartyRepresentable {
-//
-//  var counterpartyName: String? {
-//    if let twitterCounterparty = invitation?.counterpartyTwitterContact {
-//      return twitterCounterparty.formattedScreenName
-//    } else if let inviteName = invitation?.counterpartyName {
-//      return inviteName
-//    } else {
-//      let relevantNumber = phoneNumber ?? invitation?.counterpartyPhoneNumber
-//      return relevantNumber?.counterparty?.name
-//    }
-//  }
-//
-//  func counterpartyConfig(deviceCountryCode: Int) -> TransactionCellCounterpartyConfig? {
-//    if let counterpartyTwitterContact = self.twitterContact {
-//      return counterpartyTwitterContact.formattedScreenName  // should include @-sign
-//    }
-//
-//    if let relevantPhoneNumber = invitation?.counterpartyPhoneNumber ?? phoneNumber {
-//      let globalPhoneNumber = relevantPhoneNumber.asGlobalPhoneNumber
-//
-//      var format: PhoneNumberFormat = .international
-//      if let code = deviceCountryCode {
-//        format = (code == globalPhoneNumber.countryCode) ? .national : .international
-//      }
-//      let formatter = CKPhoneNumberFormatter(format: format)
-//
-//      return try? formatter.string(from: globalPhoneNumber)
-//    }
-//
-//    return nil
-//  }
-//
-//  var counterpartyAddressId: String? {
-//    return counterpartyReceiverAddressId
-//  }
-//}

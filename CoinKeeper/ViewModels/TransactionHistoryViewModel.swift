@@ -64,7 +64,10 @@ class TransactionHistoryViewModel: NSObject, UICollectionViewDataSource, Exchang
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
     let cell = collectionView.dequeue(TransactionHistorySummaryCell.self, for: indexPath)
     let isFirstCell = indexPath.row == 0
-    let item = dataSource.summaryCellDisplayableItem(at: indexPath, rates: rateManager.exchangeRates, currencies: selectedCurrencyPair)
+    let item = dataSource.summaryCellDisplayableItem(at: indexPath,
+                                                     rates: rateManager.exchangeRates,
+                                                     currencies: selectedCurrencyPair,
+                                                     deviceCountryCode: self.deviceCountryCode)
     cell.configure(with: item, isAtTop: isFirstCell)
     return cell
   }

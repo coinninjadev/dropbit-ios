@@ -29,7 +29,7 @@ class MockTransactionHistoryOnChainDataSource: TransactionHistoryDataSourceType 
     ]
   }
 
-  func summaryCellDisplayableItem(at indexPath: IndexPath, rates: ExchangeRates, currencies: CurrencyPair) -> TransactionSummaryCellDisplayable {
+  func summaryCellDisplayableItem(at indexPath: IndexPath, rates: ExchangeRates, currencies: CurrencyPair, deviceCountryCode: Int) -> TransactionSummaryCellDisplayable {
     return items[indexPath.row]
   }
 
@@ -64,7 +64,7 @@ class MockTransactionHistoryLightningDataSource: TransactionHistoryDataSourceTyp
     ]
   }
 
-  func summaryCellDisplayableItem(at indexPath: IndexPath, rates: ExchangeRates, currencies: CurrencyPair) -> TransactionSummaryCellDisplayable {
+  func summaryCellDisplayableItem(at indexPath: IndexPath, rates: ExchangeRates, currencies: CurrencyPair, deviceCountryCode: Int) -> TransactionSummaryCellDisplayable {
     return items[indexPath.row]
   }
 

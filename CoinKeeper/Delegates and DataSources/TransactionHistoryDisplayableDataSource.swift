@@ -19,7 +19,8 @@ protocol TransactionHistoryDataSourceDelegate: AnyObject {
 protocol TransactionHistoryDataSourceType: AnyObject {
   func summaryCellDisplayableItem(at indexPath: IndexPath,
                                   rates: ExchangeRates,
-                                  currencies: CurrencyPair) -> TransactionSummaryCellDisplayable
+                                  currencies: CurrencyPair,
+                                  deviceCountryCode: Int) -> TransactionSummaryCellDisplayable
   //TODO: func detailCellDisplayableItem(at indexPath: IndexPath, rates: ExchangeRates, currencies: CurrencyPair) -> TransactionDetailCellDisplayable
   func numberOfSections() -> Int
   func numberOfItems(inSection section: Int) -> Int
@@ -49,13 +50,17 @@ class TransactionHistoryOnChainDataSource: NSObject, TransactionHistoryDataSourc
   }
 
   /// `currencies.primary` should be the SelectedCurrency of the user
-  func summaryCellDisplayableItem(at indexPath: IndexPath, rates: ExchangeRates, currencies: CurrencyPair) -> TransactionSummaryCellDisplayable {
+  func summaryCellDisplayableItem(at indexPath: IndexPath,
+                                  rates: ExchangeRates,
+                                  currencies: CurrencyPair,
+                                  deviceCountryCode: Int) -> TransactionSummaryCellDisplayable {
     let transaction = frc.object(at: indexPath)
     let selectedCurrency: SelectedCurrency = currencies.primary.isFiat ? .fiat : .BTC
     return TransactionSummaryCellViewModel(object: transaction,
                                            selectedCurrency: selectedCurrency,
                                            fiatCurrency: currencies.fiat,
-                                           exchangeRates: rates)
+                                           exchangeRates: rates,
+                                           deviceCountryCode: deviceCountryCode)
   }
 
   func numberOfSections() -> Int {
@@ -97,7 +102,10 @@ class TransactionHistoryLightningDataSource: NSObject, TransactionHistoryDataSou
     try? self.frc.performFetch()
   }
 
-  func summaryCellDisplayableItem(at indexPath: IndexPath, rates: ExchangeRates, currencies: CurrencyPair) -> TransactionSummaryCellDisplayable {
+  func summaryCellDisplayableItem(at indexPath: IndexPath,
+                                  rates: ExchangeRates,
+                                  currencies: CurrencyPair,
+                                  deviceCountryCode: Int) -> TransactionSummaryCellDisplayable {
     return MockSummaryCellVM.testInstance()
 //    let walletEntry = frc.object(at: indexPath)
 

@@ -91,7 +91,7 @@ class MockTransactionSummaryCellViewModel: TransactionSummaryCellViewModelType {
 
   static func mockTwitterConfig() -> TransactionCellTwitterConfig {
     let avatar = UIImage(named: "testAvatar")!
-    return TransactionCellTwitterConfig(avatar: avatar, displayHandle: "@satoshi")
+    return TransactionCellTwitterConfig(avatar: avatar, displayHandle: "@satoshi", displayName: "Satoshi Nakamoto")
   }
 
   static func mockValidBitcoinAddress() -> String {

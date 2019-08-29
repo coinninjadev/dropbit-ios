@@ -61,12 +61,9 @@ extension TransactionSummaryCellViewModelType {
   }
 
   var leadingImageConfig: SummaryCellLeadingImageConfig {
-    if let twitter = counterpartyConfig?.twitterConfig {
-      return SummaryCellLeadingImageConfig(twitterConfig: twitter)
-
-    } else {
-      return SummaryCellLeadingImageConfig(bgColor: accentColor, leadingIcon: leadingIcon)
-    }
+    let directionConfig = SummaryCellDirectionConfig(bgColor: accentColor, image: leadingIcon)
+    return SummaryCellLeadingImageConfig(twitterConfig: counterpartyConfig?.twitterConfig,
+                                         directionConfig: directionConfig)
   }
 
   /// Transaction type icon, not an avatar
@@ -413,11 +410,33 @@ struct TransactionCellCounterpartyConfig {
     self.twitterConfig = twitterConfig
   }
 
+  init?(failableWithName displayName: String?, displayPhoneNumber: String?, twitterConfig: TransactionCellTwitterConfig?) {
+    guard (displayName != nil) || (displayPhoneNumber != nil) || (twitterConfig != nil) else { return nil }
+    self.displayName = displayName
+    self.displayPhoneNumber = displayPhoneNumber
+    self.twitterConfig = twitterConfig
+  }
+
 }
 
 struct TransactionCellTwitterConfig {
-  let avatar: UIImage
+  let avatar: UIImage?
   let displayHandle: String
+  let displayName: String
+
+  init(avatar: UIImage?,
+       displayHandle: String,
+       displayName: String) {
+    self.avatar = avatar
+    self.displayHandle = displayHandle
+    self.displayName = displayName
+  }
+
+  init(contact: CKMTwitterContact) {
+    self.avatar = contact.profileImageData.flatMap { UIImage(data: $0) }
+    self.displayHandle = contact.formattedScreenName
+    self.displayName = contact.displayName
+  }
 }
 
 struct SummaryCellAmountLabels {
@@ -446,15 +465,16 @@ struct SummaryCellLeadingImageConfig {
     self.directionConfig = directionConfig
   }
 
-  init(twitterConfig: TransactionCellTwitterConfig) {
-    self.avatarConfig = SummaryCellAvatarConfig(image: twitterConfig.avatar)
-    self.directionConfig = nil
-  }
-
-  init(bgColor: UIColor, leadingIcon: UIImage) {
-    self.avatarConfig = nil
-    self.directionConfig = SummaryCellDirectionConfig(bgColor: bgColor,
-                                                      image: leadingIcon)
+  /// Falls back to use the directionConfig if twitterConfig is missing image data
+  init(twitterConfig: TransactionCellTwitterConfig?,
+       directionConfig: SummaryCellDirectionConfig) {
+    if let avatarImage = twitterConfig?.avatar {
+      self.avatarConfig = SummaryCellAvatarConfig(image: avatarImage)
+      self.directionConfig = nil
+    } else {
+      self.avatarConfig = nil
+      self.directionConfig = directionConfig
+    }
   }
 
 }

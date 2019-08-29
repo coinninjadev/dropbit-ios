@@ -369,3 +369,19 @@ extension OldTransactionDetailCellViewModel {
   }
 
 }
+
+extension CKMTransaction {
+
+  /// txid does not begin with a prefix (e.g. invitations with placeholder Transaction objects)
+  var txidIsActualTxid: Bool {
+    let isInviteOrFailed = txid.starts(with: CKMTransaction.invitationTxidPrefix) || txid.starts(with: CKMTransaction.failedTxidPrefix)
+    return !isInviteOrFailed
+  }
+
+  var isCancellable: Bool {
+    guard let invite = invitation else { return false }
+    let cancellableStatuses: [InvitationStatus] = [.notSent, .requestSent, .addressSent]
+    return (!isIncoming && cancellableStatuses.contains(invite.status))
+  }
+
+}
