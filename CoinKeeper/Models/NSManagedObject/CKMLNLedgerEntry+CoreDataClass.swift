@@ -15,7 +15,7 @@ public class CKMLNLedgerEntry: NSManagedObject {
   static func updateOrCreate(with result: LNTransactionResult,
                              forWallet wallet: CKMWallet,
                              in context: NSManagedObjectContext) {
-    let entry = findOrCreate(with: result.id, wallet: wallet, createdAt: result.createdAt, in: context)
+    let entry = findOrCreate(with: result.cleanedId, wallet: wallet, createdAt: result.createdAt, in: context)
     entry.accountId = result.accountId
     entry.createdAt = result.createdAt
     entry.updatedAt = result.updatedAt

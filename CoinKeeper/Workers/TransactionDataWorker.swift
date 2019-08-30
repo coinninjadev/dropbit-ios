@@ -97,8 +97,33 @@ class TransactionDataWorker: TransactionDataWorkerType {
       return Promise(error: CKPersistenceError.noManagedWallet)
     }
     return self.networkManager.getLightningLedger()
-      .get(in: context) { self.persistenceManager.brokers.lightning.persistLedgerResponse($0, forWallet: wallet, in: context) }
+      .get(in: context) { response in
+        self.persistenceManager.brokers.lightning.persistLedgerResponse(response, forWallet: wallet, in: context)
+        self.identifyLightningTransfers(withLedger: response.ledger, forWallet: wallet, in: context)
+      }
       .asVoid()
+  }
+
+  private func identifyLightningTransfers(withLedger ledgerResults: [LNTransactionResult],
+                                          forWallet wallet: CKMWallet,
+                                          in context: NSManagedObjectContext) {
+    let lightningTransferTxids = ledgerResults.filter { $0.type == .btc }.map { $0.cleanedId }
+
+    let fetchRequest: NSFetchRequest<CKMTransaction> = CKMTransaction.fetchRequest()
+    let txidPredicate = CKPredicate.Transaction.txidIn(lightningTransferTxids)
+    let transferPredicate = CKPredicate.Transaction.isLightningTransfer(false)
+    fetchRequest.predicate = NSCompoundPredicate(type: .and, subpredicates: [txidPredicate, transferPredicate])
+
+    var transactionsToUpdate: [CKMTransaction] = []
+    do {
+      transactionsToUpdate = try context.fetch(fetchRequest)
+    } catch {
+      log.error(error, message: "failed to fetch transactions to mark for lightning transfers")
+    }
+
+    for tx in transactionsToUpdate {
+      tx.isLightningTransfer = true
+    }
   }
 
   private func performIncrementalFetchAndStore(latestTxDate: Date,

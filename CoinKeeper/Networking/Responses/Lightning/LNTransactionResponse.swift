@@ -37,6 +37,12 @@ struct LNTransactionResult: LNResponseDecodable {
   var memo: String?
   var error: String?
 
+  /// For results where type is .btc, the id is the txid followed by a colon
+  /// and the index of the vout that funded the lighting load address.
+  var cleanedId: String {
+    return id.components(separatedBy: ":").first ?? id
+  }
+
   static var sampleJSON: String {
     return ""
   }
