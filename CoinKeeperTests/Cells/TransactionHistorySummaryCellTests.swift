@@ -192,6 +192,14 @@ class TransactionHistorySummaryCellTests: XCTestCase {
     XCTAssertEqual(sut.memoLabel.text, expectedMemo)
   }
 
+  func testLightningTransferMemoIsHiddenIfPresent() {
+    let viewModel = MockSummaryCellVM.testInstance(walletTxType: .lightning,
+                                                   isLightningTransfer: true,
+                                                   memo: "lightning withdrawal for 10,000 sats")
+    sut.configure(with: viewModel)
+    XCTAssertTrue(sut.memoLabel.isHidden)
+  }
+
   func testExpiredLabelIsLoaded() {
     let expectedText = TransactionStatus.expired.rawValue, expectedColor = UIColor.invalid
     let viewModel = MockSummaryCellVM.testInstance(status: .expired)

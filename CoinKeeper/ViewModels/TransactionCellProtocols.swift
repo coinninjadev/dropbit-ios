@@ -21,15 +21,19 @@ protocol TransactionSummaryCellDisplayable {
   var accentColor: UIColor { get } //amount and leading image background color
   var leadingImageConfig: SummaryCellLeadingImageConfig { get } // may be avatar or direction icon
   var memo: String? { get }
+  var isLightningTransfer: Bool { get } //can be true for either onChain or lightning transactions
   var cellBackgroundColor: UIColor { get }
 }
 
 extension TransactionSummaryCellDisplayable {
 
   var cellBackgroundColor: UIColor { return .white }
-  var avatarViewIsHidden: Bool { return leadingImageConfig.avatarConfig == nil }
-  var directionViewIsHidden: Bool { return leadingImageConfig.directionConfig == nil }
-  var memoLabelIsHidden: Bool { return memo == nil || memo == "" }
+  var shouldHideAvatarView: Bool { return leadingImageConfig.avatarConfig == nil }
+  var shouldHideDirectionView: Bool { return leadingImageConfig.directionConfig == nil }
+  var shouldHideMemoLabel: Bool {
+    let memoIsEmpty = (memo ?? "").isEmpty
+    return isLightningTransfer || memoIsEmpty
+  }
 
 }
 
@@ -38,7 +42,6 @@ extension TransactionSummaryCellDisplayable {
 /// protocol's extension or provided by a mock view model.
 protocol TransactionSummaryCellViewModelType: TransactionSummaryCellDisplayable {
   var direction: TransactionDirection { get }
-  var isLightningTransfer: Bool { get } //can be true for either onChain or lightning transactions
   var status: TransactionStatus { get }
   var counterpartyConfig: TransactionCellCounterpartyConfig? { get } //may be nil for transfers
 
