@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CNBitcoinKit
 
 protocol LightningUpgradeStartViewControllerDelegate: AnyObject {
   func viewControllerRequestedShowLightningUpgradeInfo(_ viewController: LightningUpgradeStartViewController)
@@ -23,7 +24,13 @@ final class LightningUpgradeStartViewController: BaseViewController, StoryboardI
   @IBOutlet var activityIndicator: UIActivityIndicatorView!
   @IBOutlet var activityIndicatorBottomConstraint: NSLayoutConstraint!
   @IBOutlet var confirmNewWordsSelectionView: UIView!
+  @IBOutlet var confirmNewWordsLabel: UILabel!
+  @IBOutlet var confirmNewWordsCheckboxBackgroundView: UIView!
+  @IBOutlet var confirmNewWordsCheckmarkImage: UIImageView!
   @IBOutlet var confirmTransferFundsView: UIView!
+  @IBOutlet var confirmTransferFundsLabel: UILabel!
+  @IBOutlet var confirmTransferFundsCheckboxBackgroundView: UIView!
+  @IBOutlet var confirmTransferFundsCheckmarkImage: UIImageView!
 
   static func newInstance(withDelegate delegate: LightningUpgradeStartViewControllerDelegate) -> LightningUpgradeStartViewController {
     let controller = LightningUpgradeStartViewController.makeFromStoryboard()
@@ -35,14 +42,20 @@ final class LightningUpgradeStartViewController: BaseViewController, StoryboardI
     return generalCoordinationDelegate as? LightningUpgradeStartViewControllerDelegate
   }
 
+  var exchangeRates: ExchangeRates = ExchangeRateManager().exchangeRates
+
+  private var data: CNBTransactionData?
+
   override func viewDidLoad() {
     super.viewDidLoad()
-    styleUI()
+    styleInitialUI()
 
   }
 
   // to be called from owner when balance is provided
-  func updateUI(withBalance balance: Int) {
+  func updateUI(withTransactionData data: CNBTransactionData) {
+    self.data = data
+
     // set activity indicator new distance
     let distance = (upgradeButton.frame.height / 2.0)
     activityIndicatorBottomConstraint.constant = -distance
@@ -53,22 +66,42 @@ final class LightningUpgradeStartViewController: BaseViewController, StoryboardI
       delay: 0.1,
       options: .curveEaseIn,
       animations: { self.view.layoutIfNeeded() },
-      completion: { (_) in
-        self.activityIndicator.isHidden = true
-
-        // show the checkboxes
-        self.confirmNewWordsSelectionView.isHidden = false
-        self.confirmTransferFundsView.isHidden = false
-        UIView.animate(withDuration: duration) { self.view.layoutIfNeeded() }
-
-      }
+      completion: { (_) in self.activityIndicator.isHidden = true }
     )
 
-    // enable the upgrade button
-    self.upgradeButton.style = .white(enabled: true)
+    // show selection view(s)
+    UIView.animate(withDuration: 0.25,
+                   delay: 0.1,
+                   options: .curveEaseInOut,
+                   animations: {
+                    self.confirmNewWordsSelectionView.isHidden = false
+                    self.showAmountViewIfNecessary(with: data)
+                   },
+                   completion: nil)
   }
 
-  private func styleUI() {
+  private func showAmountViewIfNecessary(with data: CNBTransactionData) {
+    if data.amount != 0 {
+      let fontSize: CGFloat = 12
+      let btcAmount = NSDecimalNumber(integerAmount: Int(data.amount), currency: .BTC)
+      let feeAmount = NSDecimalNumber(integerAmount: Int(data.feeAmount), currency: .BTC)
+      let amountConverter = CurrencyConverter(fromBtcTo: .USD, fromAmount: btcAmount, rates: exchangeRates)
+      let feeConverter = CurrencyConverter(fromBtcTo: .USD, fromAmount: feeAmount, rates: exchangeRates)
+      let fundTransferTitle = NSMutableAttributedString()
+      fundTransferTitle.appendRegular("I understand that DropBit will be transferring my ", size: fontSize, color: .white, paragraphStyle: nil)
+      fundTransferTitle.appendBold(
+        "funds of \(amountConverter.toDisplayValue) with a transaction fee of \(feeConverter.toDisplayValue)",
+        size: fontSize,
+        color: .white,
+        paragraphStyle: nil)
+      fundTransferTitle.appendRegular(" to my upgraded wallet.", size: fontSize, color: .white, paragraphStyle: nil)
+      confirmTransferFundsLabel.text = nil
+      confirmTransferFundsLabel.attributedText = fundTransferTitle
+      self.confirmTransferFundsView.isHidden = false
+    }
+  }
+
+  private func styleInitialUI() {
     overlayView.applyCornerRadius(15)
     let gradient = CAGradientLayer()
     gradient.frame = overlayView.bounds
@@ -82,12 +115,69 @@ final class LightningUpgradeStartViewController: BaseViewController, StoryboardI
 
     upgradeButton.style = .white(enabled: false)
 
+    let templateImage = UIImage(imageLiteralResourceName: "checkboxCheck").withRenderingMode(.alwaysTemplate)
+
+    confirmNewWordsCheckboxBackgroundView.backgroundColor = .white
+    confirmNewWordsCheckmarkImage.isHidden = true
+    confirmNewWordsCheckmarkImage.image = templateImage
+    confirmNewWordsCheckmarkImage.tintColor = .deepPurple
     confirmNewWordsSelectionView.backgroundColor = .deepPurple
     confirmNewWordsSelectionView.isHidden = true
     confirmNewWordsSelectionView.applyCornerRadius(8)
+    let fontSize: CGFloat = 12
+    let newWordsTitle = NSMutableAttributedString()
+    newWordsTitle.appendRegular("I understand that with this upgrade I will be getting a ", size: fontSize, color: .white, paragraphStyle: nil)
+    newWordsTitle.appendBold("new set of 12 recovery words", size: fontSize, color: .white, paragraphStyle: nil)
+    newWordsTitle.appendRegular(" to write down on paper and store safely.", size: fontSize, color: .white, paragraphStyle: nil)
+    confirmNewWordsLabel.text = nil
+    confirmNewWordsLabel.attributedText = newWordsTitle
+
+    confirmTransferFundsCheckboxBackgroundView.backgroundColor = .white
+    confirmTransferFundsCheckmarkImage.isHidden = true
+    confirmTransferFundsCheckmarkImage.image = templateImage
+    confirmTransferFundsCheckmarkImage.tintColor = .deepPurple
     confirmTransferFundsView.backgroundColor = .deepPurple
     confirmTransferFundsView.isHidden = true
     confirmTransferFundsView.applyCornerRadius(8)
+    confirmTransferFundsLabel.text = nil
+    confirmTransferFundsLabel.attributedText = nil
+
+    let newWordsGesture = UITapGestureRecognizer(target: self, action: #selector(selectNewWordsOption))
+    confirmNewWordsSelectionView.addGestureRecognizer(newWordsGesture)
+    let transferFundsGesture = UITapGestureRecognizer(target: self, action: #selector(selectTransferFundsOption))
+    confirmTransferFundsView.addGestureRecognizer(transferFundsGesture)
+  }
+
+  @objc
+  private func selectNewWordsOption() {
+    let hidden = confirmNewWordsCheckmarkImage.isHidden
+    confirmNewWordsCheckmarkImage.isHidden = !hidden
+    enableUpgradeIfPossible()
+  }
+
+  @objc
+  private func selectTransferFundsOption() {
+    let hidden = confirmTransferFundsCheckmarkImage.isHidden
+    confirmTransferFundsCheckmarkImage.isHidden = !hidden
+    enableUpgradeIfPossible()
+  }
+
+  private func enableUpgradeIfPossible() {
+    guard let txData = data else {
+      upgradeButton.style = .white(enabled: false)
+      return
+    }
+
+    let newWordsSelected = !confirmNewWordsCheckmarkImage.isHidden
+    let transferSelected = !confirmTransferFundsCheckmarkImage.isHidden
+
+    if txData.amount == 0 && newWordsSelected {
+      upgradeButton.style = .white(enabled: true)
+    } else if newWordsSelected && transferSelected {
+      upgradeButton.style = .white(enabled: true)
+    } else {
+      upgradeButton.style = .white(enabled: false)
+    }
   }
 
   @IBAction func showInfo(_ sender: UIButton) {

@@ -8,6 +8,7 @@
 
 import XCTest
 @testable import DropBit
+import CNBitcoinKit
 
 class LightningUpgradeStartViewControllerTests: XCTestCase {
 
@@ -37,7 +38,13 @@ class LightningUpgradeStartViewControllerTests: XCTestCase {
     XCTAssertNotNil(sut.activityIndicator)
     XCTAssertNotNil(sut.activityIndicatorBottomConstraint)
     XCTAssertNotNil(sut.confirmNewWordsSelectionView)
+    XCTAssertNotNil(sut.confirmNewWordsLabel)
+    XCTAssertNotNil(sut.confirmNewWordsCheckboxBackgroundView)
+    XCTAssertNotNil(sut.confirmNewWordsCheckmarkImage)
     XCTAssertNotNil(sut.confirmTransferFundsView)
+    XCTAssertNotNil(sut.confirmTransferFundsLabel)
+    XCTAssertNotNil(sut.confirmTransferFundsCheckboxBackgroundView)
+    XCTAssertNotNil(sut.confirmTransferFundsCheckmarkImage)
   }
 
   // initial state
@@ -58,10 +65,40 @@ class LightningUpgradeStartViewControllerTests: XCTestCase {
   func testUpdatingBalanceUpdatesUI() {
     XCTAssertEqual(sut.activityIndicatorBottomConstraint.constant, 50)
 
-    sut.updateUI(withBalance: 0)
+    let data = CNBTransactionData(address: "",
+                                  coin: CNBBaseCoin(purpose: .BIP84, coin: .MainNet, account: 0),
+                                  fromAllAvailableOutputs: [],
+                                  paymentAmount: 0,
+                                  feeRate: 0,
+                                  change: nil,
+                                  blockHeight: 0,
+                                  rbfReplaceabilityOption: .Allowed)
+    data.map { self.sut.updateUI(withTransactionData: $0) }
 
     XCTAssertLessThan(sut.activityIndicatorBottomConstraint.constant, 0)
     XCTAssertTrue(sut.upgradeButton.isEnabled)
+  }
+
+  func testUpdatingBalanceWithAmountDisplaysValuesInLabels() {
+    XCTAssertNil(sut.confirmTransferFundsLabel.text)
+    XCTAssertNil(sut.confirmTransferFundsLabel.attributedText)
+
+    sut.exchangeRates = [.USD: 10000, .BTC: 1]
+    let coin = CNBBaseCoin(purpose: .BIP49, coin: .MainNet, account: 0)
+    let path = CNBDerivationPath(purpose: .BIP49, coinType: .MainNet, account: 0, change: 0, index: 0)
+    let utxo = CNBUnspentTransactionOutput(id: "abc123", index: 0, amount: 100_000, derivationPath: path, isConfirmed: true)
+    let data = CNBTransactionData(allUsableOutputs: [utxo],
+                                  coin: coin,
+                                  sendingMaxToAddress: "bc1qw508d6qejxtdg4y5r3zarvary0c5xw7kv8f3t4",
+                                  feeRate: 5,
+                                  blockHeight: 500000)
+    data.map { self.sut.updateUI(withTransactionData: $0) }
+
+    let expectedString = "I understand that DropBit will be transferring my funds of $9.93 with a transaction fee of $0.07 to my upgraded wallet."
+    let actualString = sut.confirmTransferFundsLabel.attributedText?.string ?? ""
+    XCTAssertEqual(actualString, expectedString)
+    XCTAssertFalse(sut.confirmTransferFundsView.isHidden)
+    XCTAssertFalse(sut.confirmNewWordsSelectionView.isHidden)
   }
 
   // buttons contain actions
