@@ -149,10 +149,10 @@ extension TransactionSummaryCellViewModelType {
 
   private var counterpartyDescription: String? {
     guard let config = counterpartyConfig else { return nil }
-    if let name = config.displayName {
-      return name
-    } else if let twitter = config.twitterConfig {
+    if let twitter = config.twitterConfig {
       return twitter.displayHandle
+    } else if let name = config.displayName {
+      return name
     } else if let phoneNumber = config.displayPhoneNumber {
       return phoneNumber
     } else {

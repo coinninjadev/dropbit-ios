@@ -102,21 +102,22 @@ class TransactionSummaryCellCounterpartyTests: XCTestCase {
     XCTAssertEqual(sut.counterpartyLabel.text, expectedText)
   }
 
-  func testCounterpartyLoadsDisplayName() {
-    let nameVM = MockSummaryCellVM.testInstance(counterpartyConfig: fullCounterparty)
-    sut.configure(with: nameVM)
-    XCTAssertEqual(sut.counterpartyLabel.text, expectedName)
-  }
-
   func testCounterpartyLoadsTwitterHandle() {
-    let twitterCounterparty = TransactionCellCounterpartyConfig(displayName: nil,
-                                                                displayPhoneNumber: nil,
-                                                                twitterConfig: twitterConfig)
+    let twitterCounterparty = fullCounterparty
     let twitterVM = MockSummaryCellVM.testInstance(walletTxType: .onChain,
                                                    isLightningTransfer: false,
                                                    counterpartyConfig: twitterCounterparty)
     sut.configure(with: twitterVM)
     XCTAssertEqual(sut.counterpartyLabel.text, expectedTwitterHandle)
+  }
+
+  func testCounterpartyLoadsDisplayName() {
+    let counterparty = TransactionCellCounterpartyConfig(displayName: expectedName,
+                                                         displayPhoneNumber: expectedPhoneNumber,
+                                                         twitterConfig: nil)
+    let nameVM = MockSummaryCellVM.testInstance(counterpartyConfig: counterparty)
+    sut.configure(with: nameVM)
+    XCTAssertEqual(sut.counterpartyLabel.text, expectedName)
   }
 
   func testCounterpartyLoadsPhoneNumber() {
