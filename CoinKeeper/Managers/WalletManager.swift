@@ -189,7 +189,7 @@ class WalletManager: WalletManagerType {
       let atsAmount = atss.reduce(0) { $0 + $1.netAmount }
       let tempSentTxTotal = activeTemporarySentTxTotal(in: context)
       netBalance = atsAmount - tempSentTxTotal
-      netLightningBalance = lightningAccount.balance - lightningAccount.pendingOut
+      netLightningBalance = lightningAccount.balance
     }
     return (onChain: netBalance, lightning: netLightningBalance)
   }
