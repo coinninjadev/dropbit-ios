@@ -50,12 +50,16 @@ class CKCurrencyFormatter {
     return string(fromDecimal: decimalNumber)
   }
 
-  func string(fromDecimal decimalNumber: NSDecimalNumber) -> String? {
-    let decimalString = decimalFormatter(for: currency).string(from: decimalNumber) ?? ""
+  func decimalString(fromDecimal decimalNumber: NSDecimalNumber) -> String? {
+    return decimalFormatter(for: currency).string(from: decimalNumber)
+  }
 
-    var formattedString = decimalString
+  func string(fromDecimal decimalNumber: NSDecimalNumber) -> String? {
+    let amountString = decimalString(fromDecimal: decimalNumber) ?? ""
+
+    var formattedString = amountString
     if symbolType == .string {
-      formattedString = currency.symbol + decimalString
+      formattedString = currency.symbol + amountString
     }
 
     if showNegativeSymbol, decimalNumber.isNegativeNumber {
@@ -106,8 +110,8 @@ class BitcoinFormatter: CKCurrencyFormatter {
                showNegativeSymbol: false)
   }
 
-  func attributedString(from amount: NSNumber, size: Int = defaultSize) -> NSAttributedString? {
-    guard let amountString = string(fromNumber: amount),
+  func attributedString(from amount: NSDecimalNumber, size: Int = defaultSize) -> NSAttributedString? {
+    guard let amountString = decimalString(fromDecimal: amount),
       let symbol = attributedStringSymbol(ofSize: size)
       else { return nil }
 
