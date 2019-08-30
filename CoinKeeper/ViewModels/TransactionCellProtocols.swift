@@ -470,12 +470,6 @@ struct SummaryCellLeadingImageConfig {
   let avatarConfig: SummaryCellAvatarConfig?
   let directionConfig: SummaryCellDirectionConfig?
 
-  init(avatarConfig: SummaryCellAvatarConfig?,
-       directionConfig: SummaryCellDirectionConfig?) {
-    self.avatarConfig = avatarConfig
-    self.directionConfig = directionConfig
-  }
-
   /// Falls back to use the directionConfig if twitterConfig is missing image data
   init(twitterConfig: TransactionCellTwitterConfig?,
        directionConfig: SummaryCellDirectionConfig) {

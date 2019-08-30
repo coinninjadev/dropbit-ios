@@ -54,7 +54,7 @@ class TwitterAvatarView: UIView {
     avatarImageView.contentMode = .scaleAspectFit
     twitterLogoImageView.contentMode = .center
 
-    let avatarRadius = avatarImageView.frame.width / 2
+    let avatarRadius = self.frame.width / 2 //avatarImageView.frame.width is not yet updated with the above constraints
     avatarImageView.applyCornerRadius(avatarRadius)
     twitterLogoImageView.applyCornerRadius(logoViewRadius)
   }
