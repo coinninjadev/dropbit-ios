@@ -1,6 +1,6 @@
 //
 //  CKMWallet+CoreDataProperties.swift
-//  CoinKeeper
+//  DropBit
 //
 //  Created by BJ Miller on 5/8/18.
 //  Copyright © 2018 Coin Ninja, LLC. All rights reserved.
@@ -21,6 +21,7 @@ extension CKMWallet {
   @NSManaged public var lastSyncDate: Date?
   @NSManaged public var lastReceivedIndex: Int //default -1
   @NSManaged public var lastChangeIndex: Int //default -1
+  @NSManaged public var flags: Int // default 0
   @NSManaged public var addressTransactionSummaries: Set<CKMAddressTransactionSummary>
   @NSManaged public var serverAddresses: Set<CKMServerAddress>
   @NSManaged public var user: CKMUser?

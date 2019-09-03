@@ -30,7 +30,7 @@ struct NewsData {
   var currentPrice: NSNumber?
 
   var displayPrice: String {
-    return CKNumberFormatter.usdCurrencyFormatter.string(from: self.currentPrice ?? 0.0) ?? ""
+    return FiatFormatter(currency: .USD, withSymbol: true).string(fromNumber: self.currentPrice ?? 0.0) ?? ""
   }
 
   func getDataSetForTimePeriod(_ timePeriod: TimePeriodCell.Period) -> LineChartDataSet {

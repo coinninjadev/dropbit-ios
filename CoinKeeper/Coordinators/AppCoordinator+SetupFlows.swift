@@ -162,11 +162,6 @@ extension AppCoordinator {
                                  completion: nil)
   }
 
-  private func makeTransactionHistory(isLightning lightning: Bool = false) -> TransactionHistoryViewController {
-    return TransactionHistoryViewController.newInstance(withDelegate: self, context: persistenceManager.mainQueueContext(),
-                                                        type: lightning ? .lightning : .onChain)
-  }
-
   private func setupDrawerViewController(centerViewController: UIViewController, leftViewController: UIViewController) -> MMDrawerController {
     let drawerWidth: CGFloat = 118.0
     let drawerController = MMDrawerController(center: centerViewController,
@@ -195,27 +190,37 @@ extension AppCoordinator {
   func createRequestPayViewController(converter: CurrencyConverter) -> RequestPayViewController? {
     guard let address = nextReceiveAddressForRequestPay() else { return nil }
 
-    let selectedCurrency = currencyController.selectedCurrency.code
-    let fiat = currencyController.fiatCurrency
-    let currencyPair = CurrencyPair(primary: selectedCurrency, fiat: fiat)
     return RequestPayViewController.newInstance(delegate: self,
                                                 receiveAddress: address,
-                                                currencyPair: currencyPair,
+                                                currencyPair: currencyController.currencyPair,
                                                 walletTransactionType: persistenceManager.brokers.preferences.selectedWalletTransactionType,
                                                 exchangeRates: self.currencyController.exchangeRates)
   }
 
-  private func makeOverviewController() -> WalletOverviewViewController {
-    let bitcoinWalletTransactionHistory = makeTransactionHistory()
-    let lightningWalletTransactionHistory = makeTransactionHistory(isLightning: true)
-    let requestPayViewController = createRequestPayViewController(converter: currencyController.currencyConverter)
-      ?? RequestPayViewController.makeFromStoryboard()
-    requestPayViewController.isModal = false
-    let overviewChildViewControllers: [BaseViewController] =
-      [lightningWalletTransactionHistory, bitcoinWalletTransactionHistory]
+  private func makeTransactionHistory(type: WalletTransactionType, mock: Bool = false) -> TransactionHistoryViewController {
+    let dataSource: TransactionHistoryDataSourceType
+    if mock {
+      switch type {
+      case .onChain:    dataSource = MockTransactionHistoryOnChainDataSource()
+      case .lightning:  dataSource = MockTransactionHistoryLightningDataSource()
+      }
+    } else {
+      let context = persistenceManager.mainQueueContext()
+      switch type {
+      case .onChain:    dataSource = TransactionHistoryOnChainDataSource(context: context)
+      case .lightning:  dataSource = TransactionHistoryLightningDataSource(context: context)
+      }
+    }
 
+    return TransactionHistoryViewController.newInstance(withDelegate: self, walletTxType: type, dataSource: dataSource)
+  }
+
+  private func makeOverviewController() -> WalletOverviewViewController {
+    let shouldLoadMock = self.uiTestArguments.contains(.loadMockTransactionHistory)
+    let onChainHistory = makeTransactionHistory(type: .onChain, mock: shouldLoadMock)
+    let lightningHistory = makeTransactionHistory(type: .lightning, mock: shouldLoadMock)
     let overviewViewController = WalletOverviewViewController.newInstance(with: self,
-                                                                          baseViewControllers: overviewChildViewControllers,
+                                                                          baseViewControllers: [lightningHistory, onChainHistory],
                                                                           balanceProvider: self,
                                                                           balanceDelegate: self)
     return overviewViewController

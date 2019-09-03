@@ -1,6 +1,6 @@
 //
 //  SettingsViewController.swift
-//  CoinKeeper
+//  DropBit
 //
 //  Created by Mitchell on 5/23/18.
 //  Copyright © 2018 Coin Ninja, LLC. All rights reserved.

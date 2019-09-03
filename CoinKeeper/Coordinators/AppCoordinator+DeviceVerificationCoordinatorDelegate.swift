@@ -1,6 +1,6 @@
 //
 //  AppCoordinator+DeviceVerificationCoordinatorDelegate.swift
-//  CoinKeeper
+//  DropBit
 //
 //  Created by Ben Winters on 5/9/18.
 //  Copyright © 2018 Coin Ninja, LLC. All rights reserved.
@@ -23,8 +23,13 @@ extension AppCoordinator: DeviceVerificationCoordinatorDelegate {
       return Promise { $0.fulfill(()) }
     }
 
-    return self.networkManager.createWallet(withPublicKey: wmgr.hexEncodedPublicKey)
-      .get(in: context) { try self.persistenceManager.brokers.wallet.persistWalletId(from: $0, in: context) }.asVoid()
+    let flags = 0
+    let handler = WalletFlagsParser(flags: flags)
+      .setPurpose(.BIP49)
+      .setVersion(.v1)
+
+    return self.networkManager.createWallet(withPublicKey: wmgr.hexEncodedPublicKey, walletFlags: handler.flags)
+      .get(in: context) { try self.persistenceManager.brokers.wallet.persistWalletResponse(from: $0, in: context) }.asVoid()
   }
 
   func coordinator(_ coordinator: DeviceVerificationCoordinator, didVerify type: UserIdentityType, isInitialSetupFlow: Bool) {

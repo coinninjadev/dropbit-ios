@@ -1,6 +1,6 @@
 //
 //  AppCoordinator+TransactionHistoryViewControllerDelegate.swift
-//  CoinKeeper
+//  DropBit
 //
 //  Created by BJ Miller on 6/22/18.
 //  Copyright © 2018 Coin Ninja, LLC. All rights reserved.
@@ -49,9 +49,8 @@ extension AppCoordinator: TransactionHistoryViewControllerDelegate {
     serialQueueManager.enqueueOptionalIncrementalSync()
   }
 
-  func viewControllerShouldSeeTransactionDetails(for viewModel: TransactionHistoryDetailCellViewModel) {
+  func viewControllerShouldSeeTransactionDetails(for object: TransactionDetailCellDisplayable) {
     let viewController = TransactionPopoverDetailsViewController.makeFromStoryboard()
-    viewController.viewModel = viewModel
     assignCoordinationDelegate(to: viewController)
     viewController.modalPresentationStyle = .overFullScreen
     viewController.modalTransitionStyle = .crossDissolve
@@ -81,22 +80,23 @@ extension AppCoordinator: TransactionHistoryViewControllerDelegate {
   }
 
   func viewController(_ viewController: TransactionHistoryViewController, didSelectItemAtIndexPath indexPath: IndexPath) {
-    switch viewController.transactionType {
-    case .lightning:
-      let controller = TransactionHistoryDetailsViewController.newInstance(withDelegate: self,
-                                                                           fetchedResultsController: viewController.lightningFetchResultsController,
-                                                                           selectedIndexPath: indexPath,
-                                                                           viewModelForIndexPath: { viewController.detailViewModel(at: $0) },
-                                                                           urlOpener: self)
-      viewController.present(controller, animated: true, completion: nil)
-    case .onChain:
-      let controller = TransactionHistoryDetailsViewController.newInstance(withDelegate: self,
-                                                                           fetchedResultsController: viewController.onChainFetchResultsController,
-                                                                           selectedIndexPath: indexPath,
-                                                                           viewModelForIndexPath: { viewController.detailViewModel(at: $0) },
-                                                                           urlOpener: self)
-      viewController.present(controller, animated: true, completion: nil)
-    }
+    //TODO:
+//    switch viewController.viewModel.walletTransactionType {
+//    case .lightning:
+//      let controller = TransactionHistoryDetailsViewController.newInstance(withDelegate: self,
+//                                                                           fetchedResultsController: viewController.lightningFetchResultsController,
+//                                                                           selectedIndexPath: indexPath,
+//                                                                           viewModelForIndexPath: { viewController.detailViewModel(at: $0) },
+//                                                                           urlOpener: self)
+//      viewController.present(controller, animated: true, completion: nil)
+//    case .onChain:
+//      let controller = TransactionHistoryDetailsViewController.newInstance(withDelegate: self,
+//                                                                           fetchedResultsController: viewController.onChainFetchResultsController,
+//                                                                           selectedIndexPath: indexPath,
+//                                                                           viewModelForIndexPath: { viewController.detailViewModel(at: $0) },
+//                                                                           urlOpener: self)
+//      viewController.present(controller, animated: true, completion: nil)
+//    }
   }
 
   func viewControllerDidDismissTransactionDetails(_ viewController: UIViewController) {

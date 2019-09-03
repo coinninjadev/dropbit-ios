@@ -1,6 +1,6 @@
 //
 //  ConfirmPaymentViewController.swift
-//  CoinKeeper
+//  DropBit
 //
 //  Created by Mitchell on 4/25/18.
 //  Copyright © 2018 Coin Ninja, LLC. All rights reserved.
@@ -264,8 +264,9 @@ extension ConfirmPaymentViewController {
                                          fromAmount: feeDecimalAmount,
                                          rates: self.viewModel.exchangeRates)
     let btcFee = String(describing: feeConverter.amount(forCurrency: .BTC) ?? 0)
-    let fiatFee = feeConverter.amountStringWithSymbol(forCurrency: .USD) ?? ""
-    networkFeeLabel.text = "Network Fee \(btcFee) (\(fiatFee))"
+    let fiatFeeAmount = feeConverter.amount(forCurrency: .USD)
+    let fiatFeeString = FiatFormatter(currency: .USD, withSymbol: true).string(fromDecimal: fiatFeeAmount ?? .zero) ?? ""
+    networkFeeLabel.text = "Network Fee \(btcFee) (\(fiatFeeString))"
   }
 
   fileprivate func updateRecipientViews() {

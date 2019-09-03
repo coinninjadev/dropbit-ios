@@ -1,6 +1,6 @@
 //
 //  CKMTransaction+CoreDataClass.swift
-//  CoinKeeper
+//  DropBit
 //
 //  Created by BJ Miller on 4/25/18.
 //  Copyright © 2018 Coin Ninja, LLC. All rights reserved.
@@ -27,18 +27,6 @@ public class CKMTransaction: NSManagedObject {
   static let invitationTxidPrefix = "Invitation_"
   static let failedTxidPrefix = "Failed_"
 
-  /// txid does not begin with a prefix (e.g. invitations with placeholder Transaction objects)
-  var txidIsActualTxid: Bool {
-    let isInviteOrFailed = txid.starts(with: CKMTransaction.invitationTxidPrefix) || txid.starts(with: CKMTransaction.failedTxidPrefix)
-    return !isInviteOrFailed
-  }
-
-  private func removeTemporaryTransactionIfNeeded(in context: NSManagedObjectContext) {
-    context.performAndWait {
-      temporarySentTransaction.map { context.delete($0) }
-    }
-  }
-
   func configure(
     with txResponse: TransactionResponse,
     in context: NSManagedObjectContext,
@@ -47,8 +35,8 @@ public class CKMTransaction: NSManagedObject {
     ) {
     context.performAndWait {
       // configure the tx here
-      if temporarySentTransaction != nil, txResponse.txid == txid {
-        removeTemporaryTransactionIfNeeded(in: context)
+      if let tempSentTx = temporarySentTransaction, txResponse.txid == txid {
+        context.delete(tempSentTx)
       }
       txid = txResponse.txid
       blockHash = txResponse.blockHash
@@ -190,6 +178,20 @@ public class CKMTransaction: NSManagedObject {
                                                      insertInto: context)
   }
 
+  func markAsFailed() {
+    broadcastFailed = true
+
+    // Replace failed txid with a prefix + timestamp + UUID to free up the unique constraint in case an identical transaction is retried by the user
+    // txid may or may not be an actual txid depending on sender/receiver or actual/invitation
+    self.txid = CKMTransaction.failedTxidPrefix + String(Date().timeIntervalSince1970) + UUID().uuidString
+
+    // Free up the temporary transactions
+    temporarySentTransaction?.reservedVouts.forEach { vout in
+      vout.isSpent = false
+      vout.temporarySentTransaction = nil
+    }
+  }
+
   static func prefixedTxid(for invitation: CKMInvitation) -> String {
     return CKMTransaction.invitationTxidPrefix + invitation.id
   }
@@ -211,12 +213,6 @@ public class CKMTransaction: NSManagedObject {
     }
   }
 
-  var isCancellable: Bool {
-    guard let invite = invitation else { return false }
-    let cancellableStatuses: [InvitationStatus] = [.notSent, .requestSent, .addressSent]
-    return (!isIncoming && cancellableStatuses.contains(invite.status))
-  }
-
   var isInvite: Bool {
     return invitation != nil
   }
@@ -225,130 +221,6 @@ public class CKMTransaction: NSManagedObject {
     return confirmations >= CKMTransaction.confirmationThreshold
   }
 
-  /// Returns sum of `amount` value from all vins
-  var sumVins: Int {
-    return NSArray(array: vins.asArray()).value(forKeyPath: "@sum.amount") as? Int ?? 0
-  }
-
-  /// Returns sum of `amount` value from all vouts
-  var sumVouts: Int {
-    return NSArray(array: vouts.asArray()).value(forKeyPath: "@sum.amount") as? Int ?? 0
-  }
-
-  /// Returns sent amount from vins, relative to addresses owned by user's wallet
-  var myVins: Int {
-    let vinsToUse = vins.filter { $0.belongsToWallet }
-    return NSArray(array: vinsToUse.asArray()).value(forKeyPath: "@sum.amount") as? Int ?? 0
-  }
-
-  /// Returns received amount from vouts, relative to addresses owned by user's wallet
-  var myVouts: Int {
-    let voutsToUse = vouts.filter { $0.address != nil }
-    return NSArray(array: voutsToUse.asArray()).value(forKeyPath: "@sum.amount") as? Int ?? 0
-  }
-
-  /// networkFee is calculated in Satoshis, should be sum(vin) - sum(vout), but only vin/vout pertaining to our addresses
-  var networkFee: Int {
-    if let tempTransaction = temporarySentTransaction {
-      return tempTransaction.feeAmount
-    } else if let invitation = invitation {
-      switch invitation.status {
-      case .requestSent: return invitation.fees
-      default: break
-      }
-    }
-    return sumVins - sumVouts
-  }
-
-  /// Net effect of the transaction on the wallet of current user, returned in Satoshis
-  var netWalletAmount: Int {
-    if let tx = temporarySentTransaction {
-      return (tx.amount + tx.feeAmount) * -1 // negative, to show an outgoing amount with a negative impact on wallet balance
-    }
-
-    if vins.isEmpty && vouts.isEmpty, let invite = invitation { // Incoming invitation without valid transaction
-      return invite.btcAmount
-    }
-
-    return myVouts - myVins
-  }
-
-  /// The amount received after the network fee has been subtracted from the sent amount
-  var receivedAmount: Int {
-    return isIncoming ? netWalletAmount : (abs(netWalletAmount) - networkFee)
-  }
-
-  /// The relevant address belonging to the wallet.
-  var walletReceiverAddressId: String? {
-    guard isIncoming else { return nil }
-    return addressTransactionSummaries.first(where: { $0.isChangeAddress == false })?.addressId
-  }
-
-  /// Returns first outgoing vout address, otherwise tx must be sent to self
-  var counterpartyReceiverAddressId: String? {
-    if isIncoming {
-      return invitation?.addressProvidedToSender
-    }
-
-    if let addressId = counterpartyAddress?.addressId {
-      return addressId
-    }
-
-    // ourAddresses are addresses we own by relationship to AddressTransactionSummary objects
-    guard let context = self.managedObjectContext else { return nil }
-    let ourAddressStrings = addressTransactionSummaries.map { $0.addressId }
-    let ourAddresses = CKMAddress.find(withAddresses: ourAddressStrings, in: context)
-    let ourAddressIds = ourAddresses.map { $0.addressId }.asSet()
-
-    // firstOutgoing is first vout addressID where ourAddresses doesn't appear in vout's addressIDs
-    let firstOutgoing = vouts.compactMap { self.firstVoutAddress(from: Set($0.addressIDs), notMatchingAddresses: ourAddressIds) }.first
-
-    return firstOutgoing
-  }
-
-  /// Returns nil if any of our addresses are in vout addresses
-  private func firstVoutAddress(from voutAddressIDs: Set<String>, notMatchingAddresses ourAddresses: Set<String>) -> String? {
-    return ourAddresses.isDisjoint(with: voutAddressIDs) ? voutAddressIDs.first : nil
-  }
-
-}
-
-extension CKMTransaction: CounterpartyRepresentable {
-
-  var counterpartyName: String? {
-    if let twitterCounterparty = invitation?.counterpartyTwitterContact {
-      return twitterCounterparty.formattedScreenName
-    } else if let inviteName = invitation?.counterpartyName {
-      return inviteName
-    } else {
-      let relevantNumber = phoneNumber ?? invitation?.counterpartyPhoneNumber
-      return relevantNumber?.counterparty?.name
-    }
-  }
-
-  func counterpartyDisplayIdentity(deviceCountryCode: Int?) -> String? {
-    if let counterpartyTwitterContact = self.twitterContact {
-      return counterpartyTwitterContact.formattedScreenName  // should include @-sign
-    }
-
-    if let relevantPhoneNumber = invitation?.counterpartyPhoneNumber ?? phoneNumber {
-      let globalPhoneNumber = relevantPhoneNumber.asGlobalPhoneNumber
-
-      var format: PhoneNumberFormat = .international
-      if let code = deviceCountryCode {
-        format = (code == globalPhoneNumber.countryCode) ? .national : .international
-      }
-      let formatter = CKPhoneNumberFormatter(format: format)
-
-      return try? formatter.string(from: globalPhoneNumber)
-    }
-
-    return nil
-  }
-
-  var counterpartyAddressId: String? {
-    return counterpartyReceiverAddressId
-  }
 }
 
 extension CKMTransaction {

@@ -1,6 +1,6 @@
 //
 //  RestoreWalletViewController.swift
-//  CoinKeeper
+//  DropBit
 //
 //  Created by Mitchell on 7/2/18.
 //  Copyright © 2018 Coin Ninja, LLC. All rights reserved.

@@ -29,8 +29,11 @@ class LineChartCell: UITableViewCell {
       }
     }
     didSet {
-      highLabel.text = CKNumberFormatter.usdCurrencyFormatter.string(from: (data?.yMax ?? 0.0) as NSNumber)
-      lowLabel.text = CKNumberFormatter.usdCurrencyFormatter.string(from: (data?.yMin ?? 0.0) as NSNumber)
+      let maxNumber = NSNumber(value: data?.yMax ?? 0.0)
+      let minNumber = NSNumber(value: data?.yMin ?? 0.0)
+      let formatter = FiatFormatter(currency: .USD, withSymbol: true)
+      highLabel.text = formatter.string(fromNumber: maxNumber)
+      lowLabel.text = formatter.string(fromNumber: minNumber)
       chart.data = data
     }
   }

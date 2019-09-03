@@ -1,6 +1,6 @@
 //
 //  String+Count.swift
-//  CoinKeeper
+//  DropBit
 //
 //  Created by Mitchell on 4/29/18.
 //  Copyright © 2018 Coin Ninja, LLC. All rights reserved.

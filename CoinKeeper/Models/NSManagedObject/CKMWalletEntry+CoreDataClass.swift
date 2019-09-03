@@ -12,11 +12,11 @@ import CoreData
 @objc(CKMWalletEntry)
 public class CKMWalletEntry: NSManagedObject {
 
-  public var isCancellable: Bool {
-    return false //TODO
+  convenience init(wallet: CKMWallet, sortDate: Date, insertInto context: NSManagedObjectContext) {
+    self.init(insertInto: context)
+    self.wallet = wallet
+    self.isHidden = false
+    self.sortDate = sortDate
   }
 
-  public var networkFee: Int {
-    return 0 //TODO
-  }
 }

@@ -1,6 +1,6 @@
 //
 //  TransactionHistorySummaryCell.swift
-//  CoinKeeper
+//  DropBit
 //
 //  Created by Ben Winters on 4/17/18.
 //  Copyright © 2018 Coin Ninja, LLC. All rights reserved.
@@ -10,18 +10,29 @@ import UIKit
 
 class TransactionHistorySummaryCell: UICollectionViewCell {
 
-  @IBOutlet var incomingImage: UIImageView!
-  @IBOutlet var twitterImage: UIImageView!
-  @IBOutlet var receiverLabel: TransactionHistoryReceiverLabel!
-  @IBOutlet var statusLabel: TransactionHistoryDetailLabel!
-  @IBOutlet var dateLabel: TransactionHistoryDetailLabel!
-  @IBOutlet var memoLabel: TransactionHistoryMemoLabel!
-  @IBOutlet var primaryAmountLabel: TransactionHistoryPrimaryAmountLabel!
-  @IBOutlet var secondaryAmountLabel: TransactionHistorySecondaryAmountLabel!
+  @IBOutlet var directionView: TransactionDirectionView!
+  @IBOutlet var twitterAvatarView: TwitterAvatarView!
+  @IBOutlet var counterpartyLabel: TransactionHistoryCounterpartyLabel!
+  @IBOutlet var memoLabel: SummaryCellMemoLabel!
+  @IBOutlet var amountStackView: UIStackView!
 
   override func awakeFromNib() {
     super.awakeFromNib()
-    backgroundColor = .white
+
+    layer.cornerRadius = 13.0
+    amountStackView.alignment = .trailing
+    amountStackView.distribution = .equalCentering
+  }
+
+  override func prepareForReuse() {
+    super.prepareForReuse()
+
+    twitterAvatarView.isHidden = true
+    directionView.isHidden = true
+    amountStackView.arrangedSubviews.forEach { subview in
+      amountStackView.removeArrangedSubview(subview)
+      subview.removeFromSuperview()
+    }
   }
 
   // part of auto-sizing
@@ -31,51 +42,83 @@ class TransactionHistorySummaryCell: UICollectionViewCell {
     return layoutAttributes
   }
 
-  override func prepareForReuse() {
-    super.prepareForReuse()
-    layer.cornerRadius = 30.0
-    incomingImage.layer.borderColor = nil
-    incomingImage.layer.borderWidth = 0
-    incomingImage.layer.cornerRadius = 0
-  }
+  func configure(with values: TransactionSummaryCellDisplayable, isAtTop: Bool = false) {
+    self.backgroundColor = values.cellBackgroundColor
 
-  func load(with viewModel: TransactionHistorySummaryCellViewModel, isAtTop: Bool = false) {
-    if viewModel.isTwitterContact, let avatar = viewModel.counterpartyAvatar {
-      incomingImage.image = avatar
-      let radius = incomingImage.frame.width / 2.0
-      incomingImage.applyCornerRadius(radius)
-      let borderColor: UIColor = viewModel.isIncoming ? .appleGreen : .darkPeach
-      incomingImage.layer.borderColor = borderColor.cgColor
-      incomingImage.layer.borderWidth = 2.0
+    if isAtTop {
+      layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
     } else {
-      if viewModel.transactionIsInvalidated {
-        incomingImage.image = UIImage(named: "invalidated30")
-      } else {
-        incomingImage.image = viewModel.isIncoming ? UIImage(named: "incoming30") : UIImage(named: "outgoing30")
-      }
+      layer.maskedCorners = []
     }
 
-    receiverLabel.text = viewModel.counterpartyDescription.isEmpty ? viewModel.receiverAddress : viewModel.counterpartyDescription
-    twitterImage.isHidden = !viewModel.isTwitterContact
-    statusLabel.text = viewModel.statusDescription
-    statusLabel.isHidden = viewModel.hidden
+    configureIsHidden(with: values)
+    configureLeadingViews(with: values.leadingImageConfig, cellBgColor: values.cellBackgroundColor)
+    counterpartyLabel.text = values.counterpartyText
+    memoLabel.text = values.memo
+    configureAmountLabels(with: values.summaryAmountLabels,
+                          accentColor: values.accentColor,
+                          walletTxType: values.walletTxType,
+                          selectedCurrency: values.selectedCurrency)
+  }
 
-    statusLabel.textColor = viewModel.descriptionColor
+  /// Configures isHidden for all subviews of this cell where that property varies
+  private func configureIsHidden(with values: TransactionSummaryCellDisplayable) {
+    directionView.isHidden = values.shouldHideDirectionView
+    twitterAvatarView.isHidden = values.shouldHideAvatarView
+    memoLabel.isHidden = values.shouldHideMemoLabel
+  }
 
-    dateLabel.text = viewModel.dateDescriptionFull
+  private func configureLeadingViews(with leadingConfig: SummaryCellLeadingImageConfig, cellBgColor: UIColor) {
+    if let directionConfig = leadingConfig.directionConfig {
+      self.directionView.configure(image: directionConfig.image, bgColor: directionConfig.bgColor)
+    }
 
-    // fall back to sent amount if still pending and fees are not known
-    let converter = viewModel.receivedAmountAtCurrentConverter ?? viewModel.sentAmountAtCurrentConverter
-    let labels = viewModel.amountLabels(for: converter)
+    if let avatarConfig = leadingConfig.avatarConfig {
+      self.twitterAvatarView.configure(with: avatarConfig.image, logoBackgroundColor: cellBgColor)
+    }
+  }
 
-    primaryAmountLabel.text = labels.primary
-    secondaryAmountLabel.text = labels.secondary
-    primaryAmountLabel.textColor = viewModel.isIncoming ? .darkBlueText : .darkPeach
+  private func configureAmountLabels(with labels: SummaryCellAmountLabels,
+                                     accentColor: UIColor,
+                                     walletTxType: WalletTransactionType,
+                                     selectedCurrency: SelectedCurrency) {
+    let pillLabel = SummaryCellPillLabel(frame: CGRect(x: 0, y: 0, width: 0, height: 28))
+    pillLabel.configure(withText: labels.pillText, backgroundColor: accentColor, isAmount: labels.pillIsAmount)
+    let textLabel = btcLabel(for: labels, walletTxType: walletTxType)
 
-    memoLabel.text = viewModel.memo
-    memoLabel.isHidden = viewModel.memo.isEmpty
+    // align text to match the pill
+    let paddedLabelView = SummaryCellPaddedLabelView(label: textLabel, padding: pillLabel.horizontalInset)
 
-    layer.maskedCorners = isAtTop ? [.layerMinXMinYCorner, .layerMaxXMinYCorner] : []
+    setContentPriorities(for: [pillLabel, paddedLabelView])
+
+    switch selectedCurrency {
+    case .fiat:
+      amountStackView.addArrangedSubview(pillLabel)
+      amountStackView.addArrangedSubview(paddedLabelView)
+    case .BTC:
+      amountStackView.addArrangedSubview(paddedLabelView)
+      amountStackView.addArrangedSubview(pillLabel)
+    }
+  }
+
+  private func setContentPriorities(for views: [UIView]) {
+    for view in views {
+      view.setContentHuggingPriority(.required, for: .horizontal)
+      view.setContentCompressionResistancePriority(.required, for: .horizontal)
+    }
+  }
+
+  private func btcLabel(for labels: SummaryCellAmountLabels, walletTxType: WalletTransactionType) -> UILabel {
+    switch walletTxType {
+    case .onChain:
+      let bitcoinLabel = SummaryCellBitcoinLabel(frame: .zero)
+      bitcoinLabel.configure(withAttributedText: labels.btcAttributedText)
+      return bitcoinLabel
+    case .lightning:
+      let satsLabel = SummaryCellSatsLabel(frame: .zero)
+      satsLabel.text = labels.satsText
+      return satsLabel
+    }
   }
 
 }

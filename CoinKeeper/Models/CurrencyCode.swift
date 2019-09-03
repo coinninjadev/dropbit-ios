@@ -1,6 +1,6 @@
 //
 //  CurrencyCode.swift
-//  CoinKeeper
+//  DropBit
 //
 //  Created by Ben Winters on 3/27/18.
 //  Copyright © 2018 Coin Ninja, LLC. All rights reserved.
@@ -30,6 +30,13 @@ enum CurrencyCode: String {
     }
   }
 
+  var requiresFullDecimalPlaces: Bool {
+    switch self {
+    case .BTC:  return false
+    case .USD:  return true
+    }
+  }
+
   var symbol: String {
     switch self {
     case .BTC:	return "\u{20BF} "
@@ -37,41 +44,17 @@ enum CurrencyCode: String {
     }
   }
 
-  private var image: UIImage? {
+  var integerSymbol: String? {
     switch self {
-    case .USD: return nil
-    case .BTC: return UIImage(named: "bitcoinLogo")
+    case .BTC:  return "sats"
+    case .USD:  return nil
     }
   }
 
-  private static var defaultSize: Int {
-    return 20
-  }
-
-  func attributedStringSymbol(ofSize size: Int = defaultSize) -> NSAttributedString? {
+  var isFiat: Bool {
     switch self {
-    case .USD: return nil
-    case .BTC:
-      let textAttribute = NSTextAttachment()
-      textAttribute.image = image
-      textAttribute.bounds = CGRect(x: -3, y: (-size / (CurrencyCode.defaultSize / 4)),
-                                    width: size, height: size)
-
-      return NSAttributedString(attachment: textAttribute)
-    }
-  }
-
-  var usesCustomSymbol: Bool {
-    switch self {
-    case .BTC:	return true
-    case .USD:	return false
-    }
-  }
-
-  var shouldRoundTrailingZeroes: Bool {
-    switch self {
-    case .BTC:	return true
-    case .USD:	return false
+    case .BTC:  return false
+    default:    return true
     }
   }
 

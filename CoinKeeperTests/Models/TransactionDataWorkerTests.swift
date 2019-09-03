@@ -44,7 +44,7 @@ class TransactionDataWorkerTests: XCTestCase {
 
   func testPerformingTxFetchAsksNetworkManagerATSResponses() {
     let stack = InMemoryCoreDataStack()
-    _ = sut.performFetchAndStoreAllTransactionalData(in: stack.context)
+    _ = sut.performFetchAndStoreAllOnChainTransactions(in: stack.context)
 
     XCTAssertTrue(mockNetworkManager.wasAskedToFetchTransactionSummariesForAddresses, "should ask network manager for ats data")
   }

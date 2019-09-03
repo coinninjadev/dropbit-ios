@@ -1,6 +1,6 @@
 //
 //  BalanceDisplayable.swift
-//  CoinKeeper
+//  DropBit
 //
 //  Created by Ben Winters on 4/20/18.
 //  Copyright © 2018 Coin Ninja, LLC. All rights reserved.
@@ -90,7 +90,7 @@ class ExchangeRateManager {
 /// Conforming object should provide both exchange rates and the current wallet balance
 typealias ConvertibleBalanceProvider = CurrencyValueDataSourceType & BalanceDataSource
 
-protocol BalanceDisplayable: ExchangeRateUpdateable, BalanceUpdateable {
+protocol BalanceDisplayable: ExchangeRateUpdatable, BalanceUpdateable {
 
   var balanceProvider: ConvertibleBalanceProvider? { get } // implementation should be a weak reference
   var balanceContainer: BalanceContainer! { get } // IBOutlet
@@ -106,7 +106,7 @@ extension BalanceDisplayable where Self: UIViewController {
     return balanceProvider
   }
 
-  // overrides implementation in ExchangeRateUpdateable
+  // overrides implementation in ExchangeRateUpdatable
   private func subscribeToRateUpdates() {
     // The observer block token is automatically deregistered when the rateManager is deallocated from the view controller
     rateManager.notificationToken = CKNotificationCenter.subscribe(key: .didUpdateExchangeRates, object: nil, queue: nil, using: { [weak self] _ in

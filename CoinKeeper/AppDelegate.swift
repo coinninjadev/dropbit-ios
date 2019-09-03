@@ -1,6 +1,6 @@
 //
 //  AppDelegate.swift
-//  CoinKeeper
+//  DropBit
 //
 //  Created by BJ Miller on 1/30/18.
 //  Copyright © 2018 Coin Ninja, LLC. All rights reserved.

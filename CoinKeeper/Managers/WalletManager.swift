@@ -1,6 +1,6 @@
 //
 //  WalletManager.swift
-//  CoinKeeper
+//  DropBit
 //
 //  Created by BJ Miller on 3/5/18.
 //  Copyright © 2018 Coin Ninja, LLC. All rights reserved.
@@ -189,7 +189,7 @@ class WalletManager: WalletManagerType {
       let atsAmount = atss.reduce(0) { $0 + $1.netAmount }
       let tempSentTxTotal = activeTemporarySentTxTotal(in: context)
       netBalance = atsAmount - tempSentTxTotal
-      netLightningBalance = lightningAccount.balance - lightningAccount.pendingOut
+      netLightningBalance = lightningAccount.balance
     }
     return (onChain: netBalance, lightning: netLightningBalance)
   }

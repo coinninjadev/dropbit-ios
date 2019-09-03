@@ -133,6 +133,7 @@
         <attribute name="date" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="dayAveragePrice" optional="YES" attributeType="Decimal" syncable="YES"/>
         <attribute name="isIncoming" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="isLightningTransfer" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="isSentToSelf" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="memo" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="network" optional="YES" attributeType="String" defaultValueString="btc://main" syncable="YES"/>
@@ -223,6 +224,7 @@
         </uniquenessConstraints>
     </entity>
     <entity name="CKMWallet" representedClassName="CKMWallet" versionHashModifier="1" syncable="YES">
+        <attribute name="flags" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="id" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="lastChangeIndex" attributeType="Integer 64" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="lastReceivedIndex" attributeType="Integer 64" usesScalarValueType="YES" syncable="YES"/>
@@ -253,13 +255,13 @@
         <element name="CKMPhoneNumber" positionX="-2009" positionY="99" width="128" height="150"/>
         <element name="CKMServerAddress" positionX="-1143" positionY="108" width="128" height="103"/>
         <element name="CKMTemporarySentTransaction" positionX="-1928" positionY="459" width="128" height="135"/>
-        <element name="CKMTransaction" positionX="-1667" positionY="317" width="128" height="360"/>
+        <element name="CKMTransaction" positionX="-1667" positionY="317" width="128" height="375"/>
         <element name="CKMTransactionSharedPayload" positionX="-1858.9765625" positionY="76.22265625" width="128" height="120"/>
         <element name="CKMTwitterContact" positionX="-2073.94921875" positionY="265.5859375" width="128" height="165"/>
         <element name="CKMUser" positionX="-1523" positionY="144" width="128" height="120"/>
         <element name="CKMVin" positionX="-1845" positionY="657" width="128" height="133"/>
         <element name="CKMVout" positionX="-1503" positionY="639" width="128" height="165"/>
-        <element name="CKMWallet" positionX="-1368" positionY="99" width="128" height="195"/>
+        <element name="CKMWallet" positionX="-1368" positionY="99" width="128" height="210"/>
         <element name="CKMWalletEntry" positionX="-1818.1640625" positionY="-44.91796875" width="128" height="103"/>
     </elements>
 </model>

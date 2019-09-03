@@ -1,6 +1,6 @@
 //
 //  PersistenceTypes.swift
-//  CoinKeeper
+//  DropBit
 //
 //  Created by Ben Winters on 5/27/18.
 //  Copyright © 2018 Coin Ninja, LLC. All rights reserved.
@@ -114,7 +114,7 @@ protocol PersistenceDatabaseType: AnyObject {
 
   func transactionsWithoutDayAveragePrice(in context: NSManagedObjectContext) -> Promise<[CKMTransaction]>
 
-  func persistWalletId(_ id: String, in context: NSManagedObjectContext) throws
+  func persistWalletResponse(_ response: WalletResponse, in context: NSManagedObjectContext) throws
   func persistUserId(_ id: String, in context: NSManagedObjectContext)
   func persistVerificationStatus(_ status: String, in context: NSManagedObjectContext) -> Promise<UserVerificationStatus>
   func persistServerAddress(for metaAddress: CNBMetaAddress, createdAt: Date, wallet: CKMWallet, in context: NSManagedObjectContext) -> Promise<Void>
@@ -124,6 +124,7 @@ protocol PersistenceDatabaseType: AnyObject {
   func getUnacknowledgedInvitations(in context: NSManagedObjectContext) -> [CKMInvitation]
 
   func walletId(in context: NSManagedObjectContext) -> String?
+  func walletFlags(in context: NSManagedObjectContext) -> Int
   func userId(in context: NSManagedObjectContext) -> String?
   func unverifyUser(in context: NSManagedObjectContext)
   func removeWalletId(in context: NSManagedObjectContext)
