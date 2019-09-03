@@ -22,7 +22,6 @@ class SummaryCellPaddedLabelView: UIView {
 
   private func initialize() {
     backgroundColor = .clear
-    translatesAutoresizingMaskIntoConstraints = false
   }
 
   convenience init(label: UILabel, padding: CGFloat) {

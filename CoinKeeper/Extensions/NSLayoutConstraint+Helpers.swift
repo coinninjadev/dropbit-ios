@@ -15,6 +15,7 @@ extension UIView {
                  bottomConstant: CGFloat = 0,
                  leadingConstant: CGFloat = 0,
                  trailingConstant: CGFloat = 0) {
+    targetView.translatesAutoresizingMaskIntoConstraints = false
     NSLayoutConstraint.activate([
       self.topAnchor.constraint(equalTo: targetView.topAnchor, constant: topConstant),
       self.bottomAnchor.constraint(equalTo: targetView.bottomAnchor, constant: bottomConstant),

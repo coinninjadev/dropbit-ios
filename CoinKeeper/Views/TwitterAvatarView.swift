@@ -24,7 +24,6 @@ class TwitterAvatarView: UIView {
   }
 
   private func initialize() {
-    self.translatesAutoresizingMaskIntoConstraints = false
 
     //Add subviews
     self.avatarImageView = UIImageView(image: nil)

@@ -27,8 +27,6 @@ class TransactionDirectionView: UIView {
   }
 
   private func initialize() {
-    self.translatesAutoresizingMaskIntoConstraints = false
-
     iconImageView = UIImageView(image: nil)
     iconImageView.contentMode = .center
     iconImageView.translatesAutoresizingMaskIntoConstraints = false
