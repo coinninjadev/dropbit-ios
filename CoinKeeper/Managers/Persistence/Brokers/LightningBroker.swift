@@ -22,4 +22,10 @@ class LightningBroker: CKPersistenceBroker, LightningBrokerType {
     account.update(with: response)
   }
 
+  func persistLedgerResponse(_ response: LNLedgerResponse,
+                             forWallet wallet: CKMWallet,
+                             in context: NSManagedObjectContext) {
+    response.ledger.forEach { CKMLNLedgerEntry.updateOrCreate(with: $0, forWallet: wallet, in: context) }
+  }
+
 }

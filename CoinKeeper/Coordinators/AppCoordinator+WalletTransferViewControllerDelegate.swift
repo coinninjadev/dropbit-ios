@@ -33,7 +33,7 @@ extension AppCoordinator: WalletTransferViewControllerDelegate {
       guard let receiveAddress = self.nextReceiveAddressForRequestPay() else { return }
       let sats = btcAmount.asFractionalUnits(of: .BTC)
       self.networkManager.withdrawLightningFunds(to: receiveAddress, sats: sats)
-        .done { response in
+        .done { _ in
           viewController.dismiss(animated: true, completion: nil)
         }
         .catch { error in

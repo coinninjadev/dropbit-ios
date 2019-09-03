@@ -1,6 +1,6 @@
 //
 //  AppCoordinator+ConfirmPaymentViewControllerDelegate.swift
-//  CoinKeeper
+//  DropBit
 //
 //  Created by Mitchell on 4/27/18.
 //  Copyright © 2018 Coin Ninja, LLC. All rights reserved.
@@ -19,7 +19,7 @@ struct LightningPaymentInputs {
   let sharedPayload: SharedPayloadDTO?
 }
 
-extension AppCoordinator: ConfirmPaymentViewControllerDelegate, CurrencyFormattable {
+extension AppCoordinator: ConfirmPaymentViewControllerDelegate {
 
   func confirmPaymentViewControllerDidLoad(_ viewController: UIViewController) {
     analyticsManager.track(event: .confirmScreenLoaded, with: nil)
@@ -251,7 +251,7 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate, CurrencyFormatta
     composeVC.recipients = [phoneNumber.asE164()]
     let downloadURL = CoinNinjaUrlFactory.buildUrl(for: .download)?.absoluteString ?? ""
     let amount = NSDecimalNumber(integerAmount: inviteBody.amount.usd, currency: .USD)
-    let amountDesc = amountStringWithSymbol(amount, .USD)
+    let amountDesc = FiatFormatter(currency: .USD, withSymbol: true).string(fromDecimal: amount) ?? ""
     composeVC.body = """
       I just sent you \(amountDesc) in Bitcoin.
       Download the DropBit app to claim it. \(downloadURL)

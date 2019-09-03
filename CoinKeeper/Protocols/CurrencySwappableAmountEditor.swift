@@ -9,7 +9,7 @@
 import Foundation
 
 protocol CurrencySwappableAmountEditor: CurrencySwappableEditAmountViewDelegate, CurrencySwappableEditAmountViewModelDelegate,
-  ExchangeRateUpdateable {
+  ExchangeRateUpdatable {
 
   var editAmountViewModel: CurrencySwappableEditAmountViewModel { get }
   var editAmountView: CurrencySwappableEditAmountView! { get }

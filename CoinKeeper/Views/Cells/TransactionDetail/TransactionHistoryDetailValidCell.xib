@@ -26,7 +26,7 @@
                             <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="MyT-kf-JkQ">
                                 <rect key="frame" x="10" y="5" width="107" height="44"/>
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6Q7-sU-DGF" customClass="PrimaryActionButton" customModule="DropBit" customModuleProvider="target">
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6Q7-sU-DGF" customClass="TwitterShareButton" customModule="DropBit" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="9" width="63" height="26"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="26" id="6Ry-VO-ZnE"/>
@@ -45,7 +45,7 @@
                                         </constraints>
                                         <state key="normal" image="questionMarkIcon"/>
                                         <connections>
-                                            <action selector="didTapQuestionMarkButton:" destination="gTV-IL-0wX" eventType="touchUpInside" id="X0q-MM-M34"/>
+                                            <action selector="didTapQuestionMark:" destination="gTV-IL-0wX" eventType="touchUpInside" id="AJm-dK-fJO"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -312,8 +312,8 @@
                 <outlet property="closeButton" destination="NgB-5f-0UF" id="jKq-ld-MT1"/>
                 <outlet property="counterpartyLabel" destination="fzt-L2-dOw" id="G25-pU-IoZ"/>
                 <outlet property="dateLabel" destination="1bD-K3-Kso" id="2Xp-UM-51d"/>
+                <outlet property="directionImageView" destination="x26-Nq-lHv" id="TuM-si-00w"/>
                 <outlet property="historicalValuesLabel" destination="ca5-B2-QYX" id="fXa-3U-a3H"/>
-                <outlet property="incomingImage" destination="x26-Nq-lHv" id="4Ej-B5-ytR"/>
                 <outlet property="memoContainerView" destination="Dmg-ch-A7F" id="q8l-PW-CWc"/>
                 <outlet property="messageContainer" destination="tqV-1x-bnX" id="iZa-ic-o6a"/>
                 <outlet property="messageContainerHeightConstraint" destination="TM4-dC-cMf" id="Y9t-Jx-AmO"/>
@@ -325,7 +325,7 @@
                 <outlet property="secondaryAmountLabel" destination="7bI-qJ-R1m" id="29e-yM-3o4"/>
                 <outlet property="statusLabel" destination="6eD-f4-eiO" id="kRS-kv-cRS"/>
                 <outlet property="twitterImage" destination="qk5-E8-Xmo" id="6cR-0k-9J4"/>
-                <outlet property="twitterShareButton" destination="6Q7-sU-DGF" id="eiA-kd-ME9"/>
+                <outlet property="twitterShareButton" destination="6Q7-sU-DGF" id="c3e-Td-chh"/>
                 <outlet property="underlyingContentView" destination="K2H-9f-uij" id="gU5-pn-T4u"/>
             </connections>
             <point key="canvasLocation" x="47.826086956521742" y="35.491071428571423"/>

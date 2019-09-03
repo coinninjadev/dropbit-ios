@@ -1,6 +1,6 @@
 //
 //  SendPaymentViewControllerTests.swift
-//  CoinKeeperTests
+// DropBitTests
 //
 //  Created by Mitchell Malleo on 4/16/18.
 //  Copyright © 2018 Coin Ninja, LLC. All rights reserved.

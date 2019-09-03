@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import PhoneNumberKit
 @testable import DropBit
 import XCTest
 
@@ -20,165 +19,307 @@ class TransactionHistorySummaryCellTests: XCTestCase {
     self.sut.awakeFromNib()
   }
 
-  private var testPayloadDTO: SharedPayloadDTO {
-    return SharedPayloadDTO(addressPubKeyState: .none, sharingDesired: false, memo: "test memo", amountInfo: nil)
-  }
-
   // MARK: outlets
   func testOutletsAreConnected() {
-    XCTAssertNotNil(self.sut.incomingImage, "incomingImage should be connected")
-    XCTAssertNotNil(self.sut.receiverLabel, "receiverLabel should be connected")
-    XCTAssertNotNil(self.sut.statusLabel, "statusLabel should be connected")
-    XCTAssertNotNil(self.sut.dateLabel, "dateLabel should be connected")
+    XCTAssertNotNil(self.sut.directionView, "directionView should be connected")
+    XCTAssertNotNil(self.sut.twitterAvatarView, "twitterAvatarView should be connected")
+    XCTAssertNotNil(self.sut.counterpartyLabel, "counterpartyLabel should be connected")
     XCTAssertNotNil(self.sut.memoLabel, "memoLabel should be connected")
-    XCTAssertNotNil(self.sut.primaryAmountLabel, "primaryAmountLabel should be connected")
-    XCTAssertNotNil(self.sut.secondaryAmountLabel, "secondaryAmountLabel should be connected")
+    XCTAssertNotNil(self.sut.amountStackView, "amountStackView should be connected")
   }
 
-  // MARK: load method
-  func testLoadMethodPopoulatesOutlets() {
-    // given
-    let expectedAddress = "3NNE2SY73JkrupbWKu6iVCsGjrcNKXH4hR"
-    let otd = OutgoingTransactionData(
-      txid: "123txid",
-      dropBitType: .none,
-      destinationAddress: expectedAddress,
-      amount: 123_456,
-      feeAmount: 300,
-      sentToSelf: false,
-      requiredFeeRate: nil,
-      sharedPayloadDTO: testPayloadDTO)
-    let viewModel = sampleData(with: otd)
-
-    // when
-    self.sut.load(with: viewModel)
-
-    // then
-    XCTAssertEqual(self.sut.receiverLabel.text, expectedAddress, "receiverLabel text should be populated")
-    XCTAssertEqual(self.sut.statusLabel.text, "Pending", "statusLabel should be populated")
-    XCTAssertEqual(self.sut.dateLabel.text, viewModel.dateDescriptionFull, "dateLabel should be populated")
-    XCTAssertEqual(self.sut.memoLabel.text, viewModel.memo, "memoLabel should be populated")
-
-    let primary = "$8.66"
-    XCTAssertEqual(self.sut.primaryAmountLabel.text, primary, "primaryAmountLabel should be populated")
-
-    let secondary = "\(CurrencyCode.BTC.symbol)0.00123756"
-    XCTAssertEqual(self.sut.secondaryAmountLabel.text, secondary, "secondaryAmountLabel should be populated")
+  // MARK: Cell properties
+  func testCellLoadsBackgroundColor() {
+    let viewModel = MockSummaryCellVM.testInstance()
+    sut.configure(with: viewModel)
+    let expectedColor = viewModel.cellBackgroundColor
+    XCTAssertEqual(sut.backgroundColor, expectedColor)
   }
 
-  func testLoadMethodWithTemporaryContactTransactionPopulatesOutlets() {
-    // given
-    let expectedAddress = "3NNE2SY73JkrupbWKu6iVCsGjrcNKXH4hR"
-    let expectedName = "Indiana Jones"
-    let number = GlobalPhoneNumber(countryCode: 1, nationalNumber: "3305551212")
-    let phoneContact = ValidatedContact(kind: .invite, displayName: expectedName, displayNumber: number.asE164(), globalPhoneNumber: number)
-    let dropBitType = OutgoingTransactionDropBitType.phone(phoneContact)
-    let otd = OutgoingTransactionData(
-      txid: "123txid",
-      dropBitType: dropBitType,
-      destinationAddress: expectedAddress,
-      amount: 123_456,
-      feeAmount: 300,
-      sentToSelf: false,
-      requiredFeeRate: nil,
-      sharedPayloadDTO: testPayloadDTO)
-    let viewModel = sampleData(with: otd)
+  func testTopCellMasksTopCorners() {
+    let viewModel = MockSummaryCellVM.testInstance()
+    sut.configure(with: viewModel, isAtTop: true)
+    let expectedTopCorners: CACornerMask = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+    XCTAssertEqual(sut.layer.maskedCorners, expectedTopCorners)
 
-    // when
-    self.sut.load(with: viewModel)
-
-    // then
-    XCTAssertEqual(self.sut.receiverLabel.text, expectedName, "receiverLabel text should be populated with expected name")
-    XCTAssertEqual(self.sut.statusLabel.text, "Pending", "statusLabel should be populated")
-    XCTAssertEqual(self.sut.dateLabel.text, viewModel.dateDescriptionFull, "dateLabel should be populated")
-    XCTAssertEqual(self.sut.memoLabel.text, viewModel.memo, "memoLabel should be populated")
-
-    let primary = "$8.66"
-    XCTAssertEqual(self.sut.primaryAmountLabel.text, primary, "primaryAmountLabel should be populated")
-
-    let secondary = "\(CurrencyCode.BTC.symbol)0.00123756"
-    XCTAssertEqual(self.sut.secondaryAmountLabel.text, secondary, "secondaryAmountLabel should be populated")
+    sut.configure(with: viewModel, isAtTop: false)
+    let expectedRemainingCorners: CACornerMask = []
+    XCTAssertEqual(sut.layer.maskedCorners, expectedRemainingCorners)
   }
 
-  func testLoadMethodWithTemporaryPhoneNumberTransactionPopulatesOutlets() {
-    // given
-    let expectedAddress = "3NNE2SY73JkrupbWKu6iVCsGjrcNKXH4hR"
-    let unformattedPhone = "3305551212"
-    let formattedPhone = "+1 330-555-1212"
-    let number = GlobalPhoneNumber(countryCode: 1, nationalNumber: unformattedPhone)
-    let phoneContact = GenericContact(phoneNumber: number, formatted: formattedPhone)
-    let dropBitType = OutgoingTransactionDropBitType.phone(phoneContact)
-    let otd = OutgoingTransactionData(
-      txid: "123txid",
-      dropBitType: dropBitType,
-      destinationAddress: expectedAddress,
-      amount: 123_456,
-      feeAmount: 300,
-      sentToSelf: false,
-      requiredFeeRate: nil,
-      sharedPayloadDTO: testPayloadDTO)
+  // MARK: Leading image and background color
 
-    let viewModel = sampleData(with: otd)
-
-    // when
-    self.sut.load(with: viewModel)
-
-    // then
-    XCTAssertEqual(self.sut.receiverLabel.text, formattedPhone, "receiverLabel text should be populated with expected phone")
-    XCTAssertEqual(self.sut.statusLabel.text, "Pending", "statusLabel should be populated")
-    XCTAssertEqual(self.sut.dateLabel.text, viewModel.dateDescriptionFull, "dateLabel should be populated")
-    XCTAssertEqual(self.sut.memoLabel.text, viewModel.memo, "memoLabel should be populated")
-
-    let primary = "$8.66"
-    XCTAssertEqual(self.sut.primaryAmountLabel.text, primary, "primaryAmountLabel should be populated")
-
-    let secondary = "\(CurrencyCode.BTC.symbol)0.00123756"
-    XCTAssertEqual(self.sut.secondaryAmountLabel.text, secondary, "secondaryAmountLabel should be populated")
+  func testUnpaidLightningInvoice_loadsImageAndColor() {
+    let viewModel = MockSummaryCellVM.testInstance(walletTxType: .lightning, direction: .in, status: .pending, isLightningTransfer: false)
+    sut.configure(with: viewModel)
+    let expectedImage = viewModel.lightningImage, expectedColor = UIColor.lightningBlue
+    XCTAssertEqual(sut.directionView.image, expectedImage)
+    XCTAssertEqual(sut.directionView.backgroundColor, expectedColor)
   }
 
-  func testLoadMethodWithTemporaryRegularTransactionPopulatesOutlets() {
-    // given
-    let expectedAddress = "3NNE2SY73JkrupbWKu6iVCsGjrcNKXH4hR"
-    let otd = OutgoingTransactionData(
-      txid: "123txid",
-      dropBitType: .none,
-      destinationAddress: expectedAddress,
-      amount: 123_456,
-      feeAmount: 300,
-      sentToSelf: false,
-      requiredFeeRate: nil,
-      sharedPayloadDTO: testPayloadDTO)
-    let viewModel = sampleData(with: otd)
-
-    // when
-    self.sut.load(with: viewModel)
-
-    // then
-    XCTAssertEqual(self.sut.receiverLabel.text, expectedAddress, "receiverLabel text should be populated")
-    XCTAssertEqual(self.sut.statusLabel.text, "Pending", "statusLabel should be populated")
-    XCTAssertEqual(self.sut.dateLabel.text, viewModel.dateDescriptionFull, "dateLabel should be populated")
-    XCTAssertEqual(self.sut.memoLabel.text, viewModel.memo, "memoLabel should be populated")
-
-    let primary = "$8.66"
-    XCTAssertEqual(self.sut.primaryAmountLabel.text, primary, "primaryAmountLabel should be populated")
-
-    let secondary = "\(CurrencyCode.BTC.symbol)0.00123756"
-    XCTAssertEqual(self.sut.secondaryAmountLabel.text, secondary, "secondaryAmountLabel should be populated")
+  func testIncomingCompletedLightning_loadsImageAndColor() {
+    let viewModel = MockSummaryCellVM.testInstance(walletTxType: .lightning, direction: .in, status: .completed, isLightningTransfer: false)
+    sut.configure(with: viewModel)
+    let expectedImage = viewModel.incomingImage, expectedColor = UIColor.incomingGreen
+    XCTAssertEqual(sut.directionView.image, expectedImage)
+    XCTAssertEqual(sut.directionView.backgroundColor, expectedColor)
   }
 
-  // MARK: private methods
-  private func sampleData(with otd: OutgoingTransactionData, phoneFormat: PhoneNumberFormat = .national) -> TransactionHistoryDetailCellViewModel {
-    let stack = InMemoryCoreDataStack()
-    let transaction = CKMTransaction.findOrCreate(with: otd, in: stack.context)
-    let rates: ExchangeRates = [.BTC: 1, .USD: 7000]
-
-    let viewModel = TransactionHistoryDetailCellViewModel(
-      transaction: transaction,
-      rates: rates,
-      primaryCurrency: .USD,
-      deviceCountryCode: nil
-    )
-
-    return viewModel
+  func testOutgoingCompletedLightning_loadsImageAndColor() {
+    let viewModel = MockSummaryCellVM.testInstance(walletTxType: .lightning, direction: .out, status: .completed, isLightningTransfer: false)
+    sut.configure(with: viewModel)
+    let expectedImage = viewModel.outgoingImage, expectedColor = UIColor.outgoingGray
+    XCTAssertEqual(sut.directionView.image, expectedImage)
+    XCTAssertEqual(sut.directionView.backgroundColor, expectedColor)
   }
+
+  func testInvalidTransaction_loadsImageAndColor() {
+    let viewModel = MockSummaryCellVM.testInstance(walletTxType: .onChain, direction: .out, status: .expired)
+    sut.configure(with: viewModel)
+    let expectedImage = viewModel.invalidImage, expectedColor = UIColor.invalid
+    XCTAssertEqual(sut.directionView.image, expectedImage)
+    XCTAssertEqual(sut.directionView.backgroundColor, expectedColor)
+  }
+
+  func testIncomingOnChain_loadsImageAndColor() {
+    let viewModel = MockSummaryCellVM.testInstance(walletTxType: .onChain, direction: .in)
+    sut.configure(with: viewModel)
+    let expectedImage = viewModel.incomingImage, expectedColor = UIColor.incomingGreen
+    XCTAssertEqual(sut.directionView.image, expectedImage)
+    XCTAssertEqual(sut.directionView.backgroundColor, expectedColor)
+  }
+
+  func testOutgoingOnChain_loadsImageAndColor() {
+    let viewModel = MockSummaryCellVM.testInstance(walletTxType: .onChain, direction: .out)
+    sut.configure(with: viewModel)
+    let expectedImage = viewModel.outgoingImage, expectedColor = UIColor.outgoingGray
+    XCTAssertEqual(sut.directionView.image, expectedImage)
+    XCTAssertEqual(sut.directionView.backgroundColor, expectedColor)
+  }
+
+  func testOutgoingOnChain_LightningTransfer_loadsImageAndColor() {
+    let viewModel = MockSummaryCellVM.testInstance(walletTxType: .onChain, direction: .out, isLightningTransfer: true)
+    sut.configure(with: viewModel)
+    let expectedImage = viewModel.transferImage, expectedColor = UIColor.outgoingGray
+    XCTAssertEqual(sut.directionView.image, expectedImage)
+    XCTAssertEqual(sut.directionView.backgroundColor, expectedColor)
+  }
+
+  func testIncomingOnChain_LightningTransfer_loadsImageAndColor() {
+    let viewModel = MockSummaryCellVM.testInstance(walletTxType: .onChain, direction: .in, isLightningTransfer: true)
+    sut.configure(with: viewModel)
+    let expectedImage = viewModel.transferImage, expectedColor = UIColor.incomingGreen
+    XCTAssertEqual(sut.directionView.image, expectedImage)
+    XCTAssertEqual(sut.directionView.backgroundColor, expectedColor)
+  }
+
+  func testOutgoingLightning_LightningTransfer_loadsImageAndColor() {
+    let viewModel = MockSummaryCellVM.testInstance(walletTxType: .lightning, direction: .out, isLightningTransfer: true)
+    sut.configure(with: viewModel)
+    let expectedImage = viewModel.transferImage, expectedColor = UIColor.outgoingGray
+    XCTAssertEqual(sut.directionView.image, expectedImage)
+    XCTAssertEqual(sut.directionView.backgroundColor, expectedColor)
+  }
+
+  func testIncomingLightning_LightningTransfer_loadsImageAndColor() {
+    let viewModel = MockSummaryCellVM.testInstance(walletTxType: .lightning, direction: .in, isLightningTransfer: true)
+    sut.configure(with: viewModel)
+    let expectedImage = viewModel.transferImage, expectedColor = UIColor.incomingGreen
+    XCTAssertEqual(sut.directionView.image, expectedImage)
+    XCTAssertEqual(sut.directionView.backgroundColor, expectedColor)
+  }
+
+  func testIncomingPendingLightning_LightningTransfer_loadsImageAndColor() {
+    let viewModel = MockSummaryCellVM.testInstance(walletTxType: .lightning, direction: .in,
+                                                   status: .pending, isLightningTransfer: true)
+    sut.configure(with: viewModel)
+    let expectedImage = viewModel.transferImage, expectedColor = UIColor.incomingGreen
+    XCTAssertEqual(sut.directionView.image, expectedImage)
+    XCTAssertEqual(sut.directionView.backgroundColor, expectedColor)
+  }
+
+  func testTwitterConfig_loadsAvatar() {
+    let twitterConfig = MockSummaryCellVM.mockTwitterConfig()
+    let counterpartyConfig = TransactionCellCounterpartyConfig(twitterConfig: twitterConfig)
+    let expectedImage = twitterConfig.avatar
+    let viewModel = MockSummaryCellVM.testInstance(counterpartyConfig: counterpartyConfig)
+    sut.configure(with: viewModel)
+    XCTAssertFalse(sut.twitterAvatarView.isHidden)
+    XCTAssertFalse(sut.twitterAvatarView.avatarImageView.isHidden)
+    XCTAssertFalse(sut.twitterAvatarView.twitterLogoImageView.isHidden)
+    XCTAssertTrue(sut.directionView.isHidden)
+    XCTAssertEqual(sut.twitterAvatarView.avatarImageView.image, expectedImage)
+  }
+
+  func testTwitterConfig_showsHidesLeadingViews() {
+    let twitterConfig = MockSummaryCellVM.mockTwitterConfig()
+    let counterpartyConfig = TransactionCellCounterpartyConfig(twitterConfig: twitterConfig)
+    let viewModel = MockSummaryCellVM.testInstance(counterpartyConfig: counterpartyConfig)
+    sut.configure(with: viewModel)
+    XCTAssertFalse(sut.twitterAvatarView.isHidden)
+    XCTAssertTrue(sut.directionView.isHidden)
+  }
+
+  func testNilTwitterConfig_showsHidesLeadingViews() {
+    let viewModel = MockSummaryCellVM.testInstance()
+    sut.configure(with: viewModel)
+    XCTAssertTrue(sut.twitterAvatarView.isHidden)
+    XCTAssertFalse(sut.directionView.isHidden)
+  }
+
+  // MARK: Labels
+  func testMemoIsLoadedAndShown() {
+    let expectedMemo = "Concert tickets"
+    let viewModel = MockSummaryCellVM.testInstance(memo: expectedMemo)
+    sut.configure(with: viewModel)
+    XCTAssertFalse(sut.memoLabel.isHidden)
+    XCTAssertEqual(sut.memoLabel.text, expectedMemo)
+  }
+
+  func testEmptyStringMemoIsLoadedAndHidden() {
+    let expectedMemo = ""
+    let viewModel = MockSummaryCellVM.testInstance(memo: expectedMemo)
+    sut.configure(with: viewModel)
+    XCTAssertTrue(sut.memoLabel.isHidden)
+    XCTAssertEqual(sut.memoLabel.text, expectedMemo)
+  }
+
+  func testNilMemoIsLoadedAndHidden() {
+    let expectedMemo: String? = nil
+    let viewModel = MockSummaryCellVM.testInstance(memo: expectedMemo)
+    sut.configure(with: viewModel)
+    XCTAssertTrue(sut.memoLabel.isHidden)
+    XCTAssertEqual(sut.memoLabel.text, expectedMemo)
+  }
+
+  func testLightningTransferMemoIsHiddenIfPresent() {
+    let viewModel = MockSummaryCellVM.testInstance(walletTxType: .lightning,
+                                                   isLightningTransfer: true,
+                                                   memo: "lightning withdrawal for 10,000 sats")
+    sut.configure(with: viewModel)
+    XCTAssertTrue(sut.memoLabel.isHidden)
+  }
+
+  func testExpiredLabelIsLoaded() {
+    let expectedText = TransactionStatus.expired.rawValue, expectedColor = UIColor.invalid
+    let viewModel = MockSummaryCellVM.testInstance(status: .expired)
+    sut.configure(with: viewModel)
+    XCTAssertEqual(sut.pillLabels.count, 1)
+    XCTAssertEqual(sut.pillLabel?.text, expectedText)
+    XCTAssertEqual(sut.pillLabel?.backgroundColor, expectedColor)
+  }
+
+  func testCanceledLabelIsLoaded() {
+    let expectedText = TransactionStatus.canceled.rawValue, expectedColor = UIColor.invalid
+    let viewModel = MockSummaryCellVM.testInstance(status: .canceled)
+    sut.configure(with: viewModel)
+    XCTAssertEqual(sut.pillLabels.count, 1)
+    XCTAssertEqual(sut.pillLabel?.text, expectedText)
+    XCTAssertEqual(sut.pillLabel?.backgroundColor, expectedColor)
+  }
+
+  func testSatsLabelIsLoadedForInvalidTransaction() {
+    let amountDetails = MockSummaryCellVM.testAmountDetails(sats: 1234567)
+    let viewModel = MockSummaryCellVM.testInstance(walletTxType: .lightning, status: .canceled, amountDetails: amountDetails)
+    let expectedText = "1,234,567 sats"
+    sut.configure(with: viewModel)
+    XCTAssertEqual(sut.satsLabels.count, 1)
+    XCTAssertEqual(sut.satsLabel?.text, expectedText)
+  }
+
+  func testBTCLabelIsLoaded() {
+    let amountDetails = MockSummaryCellVM.testAmountDetails(sats: 1234560)
+    let viewModel = MockSummaryCellVM.testInstance(walletTxType: .onChain, status: .canceled, amountDetails: amountDetails)
+    let expectedText = BitcoinFormatter(symbolType: .attributed).attributedString(from: amountDetails.btcAmount)
+    sut.configure(with: viewModel)
+    XCTAssertEqual(sut.bitcoinLabels.count, 1)
+    XCTAssertEqual(sut.satsLabels.count, 0)
+    XCTAssertEqual(sut.bitcoinLabel?.attributedText?.string, expectedText?.string)
+    XCTAssertTrue(sut.bitcoinLabel?.attributedText?.hasImageAttachment() ?? false)
+  }
+
+  func testFiatLabelIsLoaded() {
+    let amountDetails = MockSummaryCellVM.testAmountDetails(sats: 1234560)
+    let viewModel = MockSummaryCellVM.testInstance(walletTxType: .onChain, direction: .in, status: .completed, amountDetails: amountDetails)
+    let expectedText = viewModel.summaryAmountLabels.pillText, expectedColor = UIColor.incomingGreen
+    sut.configure(with: viewModel)
+    XCTAssertEqual(sut.pillLabels.count, 1)
+    XCTAssertEqual(sut.pillLabel?.text, expectedText)
+    XCTAssertEqual(sut.pillLabel?.backgroundColor, expectedColor)
+  }
+
+  func testFiatIsOnTopWhenSelected() {
+    let viewModel = MockSummaryCellVM.testInstance(selectedCurrency: .fiat)
+    sut.configure(with: viewModel)
+    let firstLabelIsFiat = sut.amountStackView.arrangedSubviews.first is SummaryCellPillLabel
+    XCTAssertTrue(firstLabelIsFiat)
+  }
+
+  func testBitcoinIsOnTopWhenBitcoinIsSelected() {
+    let viewModel = MockSummaryCellVM.testInstance(walletTxType: .onChain, selectedCurrency: .BTC)
+    sut.configure(with: viewModel)
+    let firstViewAsPaddedLabel = sut.amountStackView.arrangedSubviews.first.flatMap { $0 as? SummaryCellPaddedLabelView }
+    XCTAssertNotNil(firstViewAsPaddedLabel, "first arrangedSubview should be SummaryCellPaddedLabelView")
+    let subviewAsBitcoinLabel = firstViewAsPaddedLabel?.subviews.first.flatMap { $0 as? SummaryCellBitcoinLabel }
+    XCTAssertNotNil(subviewAsBitcoinLabel, "subview should be SummaryCellBitcoinLabel")
+  }
+
+  func testSatsIsOnTopWhenBitcoinIsSelected() {
+    let viewModel = MockSummaryCellVM.testInstance(walletTxType: .lightning, selectedCurrency: .BTC)
+    sut.configure(with: viewModel)
+    let firstViewAsPaddedLabel = sut.amountStackView.arrangedSubviews.first.flatMap { $0 as? SummaryCellPaddedLabelView }
+    XCTAssertNotNil(firstViewAsPaddedLabel, "first arrangedSubview should be SummaryCellPaddedLabelView")
+    let subviewAsBitcoinLabel = firstViewAsPaddedLabel?.subviews.first.flatMap { $0 as? SummaryCellSatsLabel }
+    XCTAssertNotNil(subviewAsBitcoinLabel, "subview should be SummaryCellSatsLabel")
+  }
+
+}
+
+extension TransactionHistorySummaryCell {
+
+  var pillLabel: SummaryCellPillLabel? {
+    return pillLabels.first
+  }
+
+  var pillLabels: [SummaryCellPillLabel] {
+    return self.amountStackView.arrangedSubviews.compactMap { $0 as? SummaryCellPillLabel }
+  }
+
+  var satsLabel: SummaryCellSatsLabel? {
+    return satsLabels.first
+  }
+
+  var satsLabels: [SummaryCellSatsLabel] {
+    return unwrappedAmountLabels.compactMap { $0 as? SummaryCellSatsLabel }
+  }
+
+  var bitcoinLabel: SummaryCellBitcoinLabel? {
+    return bitcoinLabels.first
+  }
+
+  var bitcoinLabels: [SummaryCellBitcoinLabel] {
+    return unwrappedAmountLabels.compactMap { $0 as? SummaryCellBitcoinLabel }
+  }
+
+  /// The non-pill labels are wrapped with a container view to allow for trailing padding
+  var unwrappedAmountLabels: [UILabel] {
+    return self.amountStackView.arrangedSubviews.compactMap { $0.subviews.first }.compactMap { $0 as? UILabel }
+  }
+
+}
+
+extension NSAttributedString {
+
+  func hasImageAttachment() -> Bool {
+    var hasImage = false
+    let range = NSRange(location: 0, length: self.length)
+    enumerateAttribute(NSAttributedString.Key.attachment, in: range, options: [], using: {(value, _, stop) -> Void in
+      if let attachment = value as? NSTextAttachment, attachment.image != nil {
+        hasImage = true
+        stop.pointee = true
+      }
+    })
+    return hasImage
+  }
+
 }

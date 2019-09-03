@@ -15,6 +15,7 @@ enum UITestArgument: String {
   case skipGlobalMessageDisplay
   case skipTwitterAuthentication
   case resetForICloudRestore
+  case loadMockTransactionHistory
 
   static let prefix = "ui-test-argument-"
 

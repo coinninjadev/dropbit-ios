@@ -1,6 +1,6 @@
 //
 //  SendPaymentViewControllerDelegate.swift
-//  CoinKeeper
+//  DropBit
 //
 //  Created by BJ Miller on 6/22/18.
 //  Copyright © 2018 Coin Ninja, LLC. All rights reserved.

@@ -69,8 +69,8 @@ class LightningTooltipViewController: BaseViewController, StoryboardInitializabl
     let bitcoinListTitle = ToggleBitcoinTitleView(frame: .zero)
     addSubviewWithCenteringConstraints(bitcoinListTitle, to: bitcoinListHeaderBackgroundView)
 
-    let lightingToggleTitle = ToggleLightningTitleView(frame: .zero)
-    addSubviewWithCenteringConstraints(lightingToggleTitle, to: fauxToggleLightningBackgroundView)
+    let lightningToggleTitle = ToggleLightningTitleView(frame: .zero)
+    addSubviewWithCenteringConstraints(lightningToggleTitle, to: fauxToggleLightningBackgroundView)
 
     let lightningListTitle = ToggleLightningTitleView(frame: .zero)
     addSubviewWithCenteringConstraints(lightningListTitle, to: lightningListHeaderBackgroundView)
