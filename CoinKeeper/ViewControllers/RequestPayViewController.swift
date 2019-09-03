@@ -7,9 +7,12 @@
 //
 
 import UIKit
+import PromiseKit
+import SVProgressHUD
 
 protocol RequestPayViewControllerDelegate: ViewControllerDismissable, CopyToClipboardMessageDisplayable, CurrencyValueDataSourceType {
   func viewControllerDidSelectSendRequest(_ viewController: UIViewController, payload: [Any])
+  func viewControllerDidSelectCreateInvoice(_ viewController: UIViewController, forAmount amount: Int, withMemo memo: String?) -> Promise<LNDecodePaymentRequestResponse>
   func viewControllerDidRequestNextReceiveAddress(_ viewController: UIViewController) -> String?
   func selectedCurrencyPair() -> CurrencyPair
 }
@@ -21,6 +24,8 @@ final class RequestPayViewController: PresentableViewController, StoryboardIniti
   @IBOutlet var walletToggleView: WalletToggleView!
   @IBOutlet var editAmountView: CurrencySwappableEditAmountView!
   @IBOutlet var qrImageView: UIImageView!
+  @IBOutlet var memoTextField: UITextField!
+  @IBOutlet var memoLabel: UILabel!
   @IBOutlet var expirationLabel: ExpirationLabel!
   @IBOutlet var receiveAddressLabel: UILabel! {
     didSet {
@@ -67,16 +72,28 @@ final class RequestPayViewController: PresentableViewController, StoryboardIniti
   }
 
   @IBAction func sendRequestButtonTapped(_ sender: UIButton) {
-    var payload: [Any] = []
-    qrImageView.image.flatMap { $0.pngData() }.flatMap { payload.append($0) }
-    if let viewModel = viewModel, let btcURL = viewModel.bitcoinURL {
-      if let amount = btcURL.components.amount, amount > 0 {
-        payload.append(btcURL.absoluteString) //include amount details
-      } else if let address = btcURL.components.address {
-        payload.append(address)
+    switch walletTransactionType {
+    case .onChain:
+      var payload: [Any] = []
+      qrImageView.image.flatMap { $0.pngData() }.flatMap { payload.append($0) }
+      if let viewModel = viewModel, let btcURL = viewModel.bitcoinURL {
+        if let amount = btcURL.components.amount, amount > 0 {
+          payload.append(btcURL.absoluteString) //include amount details
+        } else if let address = btcURL.components.address {
+          payload.append(address)
+        }
+      }
+      coordinationDelegate?.viewControllerDidSelectSendRequest(self, payload: payload)
+    case .lightning:
+      if let lightningInvoice = lightningInvoice {
+        var payload: [Any] = []
+        qrImageView.image.flatMap { $0.pngData() }.flatMap { payload.append($0) }
+        payload.append(lightningInvoice.paymentHash)
+        coordinationDelegate?.viewControllerDidSelectSendRequest(self, payload: payload)
+      } else {
+        createLightningInvoice(withAmount: 100, memo: memoTextField.text) //TODO: add amount
       }
     }
-    coordinationDelegate?.viewControllerDidSelectSendRequest(self, payload: payload)
   }
 
   @IBAction func addressTapped(_ sender: UITapGestureRecognizer) {
@@ -97,9 +114,30 @@ final class RequestPayViewController: PresentableViewController, StoryboardIniti
   var editAmountViewModel: CurrencySwappableEditAmountViewModel { return viewModel }
 
   var isModal: Bool = true
-  var shouldHideEditAmountView = true //hide by default
+  var shouldHideEditAmountView = true
   var shouldHideAddAmountButton: Bool { return !shouldHideEditAmountView }
   var walletTransactionType: WalletTransactionType = .onChain
+  var lightningInvoice: LNDecodePaymentRequestResponse?
+  var hasLightningInvoice: Bool {
+    return lightningInvoice != nil
+  }
+
+  var alertManager: AlertManager?
+
+  private func createLightningInvoice(withAmount amount: Int, memo: String?) {
+    SVProgressHUD.show()
+    coordinationDelegate?.viewControllerDidSelectCreateInvoice(self, forAmount: amount, withMemo: memo)
+      .get { response in
+        SVProgressHUD.dismiss()
+        self.lightningInvoice = response
+        self.setupStyle()
+      }.catch { error in
+        SVProgressHUD.dismiss()
+        if let alert = self.alertManager?.defaultAlert(withTitle: "Error", description: "There was an error when creating your invoice, please try again") {
+          self.present(alert, animated: true, completion: nil)
+        }
+      }
+  }
 
   func showHideEditAmountView() {
     editAmountView.isHidden = shouldHideEditAmountView
@@ -121,9 +159,11 @@ final class RequestPayViewController: PresentableViewController, StoryboardIniti
                           receiveAddress: String,
                           currencyPair: CurrencyPair,
                           walletTransactionType: WalletTransactionType,
+                          alertManager: AlertManager,
                           exchangeRates: ExchangeRates) -> RequestPayViewController {
     let vc = RequestPayViewController.makeFromStoryboard()
     vc.generalCoordinationDelegate = delegate
+    vc.alertManager = alertManager
     let editAmountViewModel = CurrencySwappableEditAmountViewModel(exchangeRates: exchangeRates,
                                                                    primaryAmount: .zero,
                                                                    currencyPair: currencyPair,
@@ -175,6 +215,16 @@ final class RequestPayViewController: PresentableViewController, StoryboardIniti
       bottomActionButton.style = .bitcoin(true)
       bottomActionButton.setTitle("SEND REQUEST", for: .normal)
     case .lightning:
+      setupStyleForLightningRequest()
+    }
+  }
+
+  private func setupStyleForLightningRequest() {
+    if let invoice = lightningInvoice {
+      memoTextField.isHidden = true
+      memoLabel.text = invoice.description
+      bottomActionButton.setTitle("SEND REQUEST", for: .normal)
+    } else {
       bottomActionButton.setTitle("CREATE INVOICE", for: .normal)
       bottomActionButton.style = .lightning(true)
     }
