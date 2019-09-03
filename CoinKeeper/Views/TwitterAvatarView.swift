@@ -23,45 +23,54 @@ class TwitterAvatarView: UIView {
     initialize()
   }
 
-  private func initialize() {
+  /// `logoBackgroundColor` is used for the small circle behind the Twitter bird
+  func configure(with image: UIImage, logoBackgroundColor: UIColor) {
+    avatarImageView.image = image
+    twitterLogoImageView.backgroundColor = logoBackgroundColor
+  }
 
-    //Add subviews
+  private func initialize() {
+    let logoDiameter: CGFloat = 20 //larger than the actual logo image
+
+    addImageSubviews()
+    addImageConstraints(logoDiameter: logoDiameter)
+    configureImageViews(logoDiameter: logoDiameter)
+  }
+
+  private func addImageSubviews() {
     self.avatarImageView = UIImageView(image: nil)
     self.avatarImageView.translatesAutoresizingMaskIntoConstraints = false
     self.addSubview(self.avatarImageView)
     self.twitterLogoImageView = UIImageView(image: UIImage(named: "avatarTwitterBird"))
     self.twitterLogoImageView.translatesAutoresizingMaskIntoConstraints = false
     self.addSubview(twitterLogoImageView)
+  }
 
-    //Set constraints
-    let logoViewDiameter: CGFloat = 20 //larger than the actual logo image
-    let logoViewRadius = logoViewDiameter / 2
-    avatarImageView.constrain(to: self, topConstant: logoViewRadius, bottomConstant: -logoViewRadius)
+  private func addImageConstraints(logoDiameter: CGFloat) {
+    let logoRadius = logoDiameter / 2
+    avatarImageView.constrain(to: self, topConstant: logoRadius, bottomConstant: -logoRadius)
 
     //equal width and height determined by externally set width constraint on TwitterAvatarView
     let equalWidthHeightConstraint = avatarImageView.heightAnchor.constraint(equalTo: avatarImageView.widthAnchor, multiplier: 1.0)
 
     NSLayoutConstraint.activate([
       equalWidthHeightConstraint,
-      twitterLogoImageView.widthAnchor.constraint(equalToConstant: logoViewDiameter),
-      twitterLogoImageView.heightAnchor.constraint(equalToConstant: logoViewDiameter),
+      twitterLogoImageView.widthAnchor.constraint(equalToConstant: logoDiameter),
+      twitterLogoImageView.heightAnchor.constraint(equalToConstant: logoDiameter),
       twitterLogoImageView.bottomAnchor.constraint(equalTo: self.bottomAnchor),
       twitterLogoImageView.leadingAnchor.constraint(equalTo: self.leadingAnchor)
       ])
+  }
 
-    //Configure image views
+  private func configureImageViews(logoDiameter: CGFloat) {
     avatarImageView.contentMode = .scaleAspectFit
     twitterLogoImageView.contentMode = .center
 
     let avatarRadius = self.frame.width / 2 //avatarImageView.frame.width is not yet updated with the above constraints
+    let logoRadius = logoDiameter / 2
     avatarImageView.applyCornerRadius(avatarRadius)
-    twitterLogoImageView.applyCornerRadius(logoViewRadius)
+    twitterLogoImageView.applyCornerRadius(logoRadius)
   }
 
-  /// `logoBackgroundColor` is used for the small circle behind the Twitter bird
-  func configure(with image: UIImage, logoBackgroundColor: UIColor) {
-    avatarImageView.image = image
-    twitterLogoImageView.backgroundColor = logoBackgroundColor
-  }
 
 }
