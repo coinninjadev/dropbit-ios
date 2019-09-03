@@ -15,6 +15,7 @@ protocol LaunchStateManagerType: AnyObject {
   var skippedVerification: Bool { get }
   var selectedSetupFlow: SetupFlow? { get set }
   var userAuthenticated: Bool { get }
+  var upgradeInProgress: Bool { get set }
   init(persistenceManager: PersistenceManagerType)
   func currentProperties() -> LaunchStateProperties
   func profileIsActivated() -> Bool
@@ -48,6 +49,7 @@ class LaunchStateManager: LaunchStateManagerType {
   private let persistenceManager: PersistenceManagerType
   var launchType: LaunchType = .userInitiated
   var selectedSetupFlow: SetupFlow?
+  var upgradeInProgress: Bool = false
 
   required init(persistenceManager: PersistenceManagerType) {
     self.persistenceManager = persistenceManager

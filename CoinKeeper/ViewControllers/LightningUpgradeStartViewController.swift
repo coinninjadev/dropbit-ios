@@ -11,7 +11,6 @@ import CNBitcoinKit
 
 protocol LightningUpgradeStartViewControllerDelegate: AnyObject {
   func viewControllerRequestedShowLightningUpgradeInfo(_ viewController: LightningUpgradeStartViewController)
-  func viewControllerRequestedUpgradeToLightning(_ viewController: LightningUpgradeStartViewController)
 }
 
 final class LightningUpgradeStartViewController: BaseViewController, StoryboardInitializable {
@@ -32,9 +31,13 @@ final class LightningUpgradeStartViewController: BaseViewController, StoryboardI
   @IBOutlet var confirmTransferFundsCheckboxBackgroundView: UIView!
   @IBOutlet var confirmTransferFundsCheckmarkImage: UIImageView!
 
-  static func newInstance(withDelegate delegate: LightningUpgradeStartViewControllerDelegate) -> LightningUpgradeStartViewController {
+  static func newInstance(
+    withDelegate delegate: LightningUpgradeStartViewControllerDelegate,
+    nextStep: @escaping CKCompletion
+    ) -> LightningUpgradeStartViewController {
     let controller = LightningUpgradeStartViewController.makeFromStoryboard()
     controller.generalCoordinationDelegate = delegate
+    controller.nextStep = nextStep
     return controller
   }
 
@@ -45,6 +48,7 @@ final class LightningUpgradeStartViewController: BaseViewController, StoryboardI
   var exchangeRates: ExchangeRates = ExchangeRateManager().exchangeRates
 
   private var data: CNBTransactionData?
+  var nextStep: CKCompletion = {}
 
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -53,7 +57,7 @@ final class LightningUpgradeStartViewController: BaseViewController, StoryboardI
   }
 
   // to be called from owner when balance is provided
-  func updateUI(withTransactionData data: CNBTransactionData) {
+  func updateUI(withTransactionData data: CNBTransactionData?) {
     self.data = data
 
     // set activity indicator new distance
@@ -80,25 +84,24 @@ final class LightningUpgradeStartViewController: BaseViewController, StoryboardI
                    completion: nil)
   }
 
-  private func showAmountViewIfNecessary(with data: CNBTransactionData) {
-    if data.amount != 0 {
-      let fontSize: CGFloat = 12
-      let btcAmount = NSDecimalNumber(integerAmount: Int(data.amount), currency: .BTC)
-      let feeAmount = NSDecimalNumber(integerAmount: Int(data.feeAmount), currency: .BTC)
-      let amountConverter = CurrencyConverter(fromBtcTo: .USD, fromAmount: btcAmount, rates: exchangeRates)
-      let feeConverter = CurrencyConverter(fromBtcTo: .USD, fromAmount: feeAmount, rates: exchangeRates)
-      let fundTransferTitle = NSMutableAttributedString()
-      fundTransferTitle.appendRegular("I understand that DropBit will be transferring my ", size: fontSize, color: .white, paragraphStyle: nil)
-      fundTransferTitle.appendBold(
-        "funds of \(amountConverter.toDisplayValue) with a transaction fee of \(feeConverter.toDisplayValue)",
-        size: fontSize,
-        color: .white,
-        paragraphStyle: nil)
-      fundTransferTitle.appendRegular(" to my upgraded wallet.", size: fontSize, color: .white, paragraphStyle: nil)
-      confirmTransferFundsLabel.text = nil
-      confirmTransferFundsLabel.attributedText = fundTransferTitle
-      self.confirmTransferFundsView.isHidden = false
-    }
+  private func showAmountViewIfNecessary(with data: CNBTransactionData?) {
+    guard let data = data, data.amount != 0 else { return }
+    let fontSize: CGFloat = 12
+    let btcAmount = NSDecimalNumber(integerAmount: Int(data.amount), currency: .BTC)
+    let feeAmount = NSDecimalNumber(integerAmount: Int(data.feeAmount), currency: .BTC)
+    let amountConverter = CurrencyConverter(fromBtcTo: .USD, fromAmount: btcAmount, rates: exchangeRates)
+    let feeConverter = CurrencyConverter(fromBtcTo: .USD, fromAmount: feeAmount, rates: exchangeRates)
+    let fundTransferTitle = NSMutableAttributedString()
+    fundTransferTitle.appendRegular("I understand that DropBit will be transferring my ", size: fontSize, color: .white, paragraphStyle: nil)
+    fundTransferTitle.appendBold(
+      "funds of \(amountConverter.toDisplayValue) with a transaction fee of \(feeConverter.toDisplayValue)",
+      size: fontSize,
+      color: .white,
+      paragraphStyle: nil)
+    fundTransferTitle.appendRegular(" to my upgraded wallet.", size: fontSize, color: .white, paragraphStyle: nil)
+    confirmTransferFundsLabel.text = nil
+    confirmTransferFundsLabel.attributedText = fundTransferTitle
+    self.confirmTransferFundsView.isHidden = false
   }
 
   private func styleInitialUI() {
@@ -185,6 +188,6 @@ final class LightningUpgradeStartViewController: BaseViewController, StoryboardI
   }
 
   @IBAction func upgradeNow(_ sender: UIButton) {
-    coordinationDelegate?.viewControllerRequestedUpgradeToLightning(self)
+    nextStep()
   }
 }

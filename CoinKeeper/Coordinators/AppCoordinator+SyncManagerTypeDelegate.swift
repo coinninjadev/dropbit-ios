@@ -49,7 +49,7 @@ extension AppCoordinator: SerialQueueManagerDelegate {
 
   func predefineSyncDependencies(in context: NSManagedObjectContext, inBackground background: Bool) -> Promise<SyncDependencies> {
 
-    guard (launchStateManager.userAuthenticated && self.verificationSatisfied) || background else {
+    guard (launchStateManager.userAuthenticated && self.verificationSatisfied) || background || launchStateManager.upgradeInProgress else {
       log.event("Sync routine prevented by pending pin entry or verification step")
       return Promise(error: SyncRoutineError.notReady)
     }

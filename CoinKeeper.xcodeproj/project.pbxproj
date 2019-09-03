@@ -58,6 +58,8 @@
 		3B071A5620C2EEDD009C2BF6 /* CKMCounterpartyName+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B071A5420C2EEDD009C2BF6 /* CKMCounterpartyName+CoreDataProperties.swift */; };
 		3B0C4FDE22A1AC31000FE760 /* VerfiedTwitterUserIndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B0C4FDD22A1AC31000FE760 /* VerfiedTwitterUserIndicatorView.swift */; };
 		3B0C4FE022A1ACBD000FE760 /* VerfiedTwitterUserIndicatorView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3B0C4FDF22A1ACBD000FE760 /* VerfiedTwitterUserIndicatorView.xib */; };
+		3B0C785623197B0A00D4C216 /* LightningUpgradePageViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3B0C785523197B0A00D4C216 /* LightningUpgradePageViewController.storyboard */; };
+		3B0C7858231E891600D4C216 /* LightningUpgradeCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B0C7857231E891600D4C216 /* LightningUpgradeCoordinator.swift */; };
 		3B0FF8C420C333DC00AADC9E /* CKPersistenceError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B0FF8C320C333DC00AADC9E /* CKPersistenceError.swift */; };
 		3B124E102020EB2B00431E2E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B124E0F2020EB2B00431E2E /* AppDelegate.swift */; };
 		3B124E172020EB2B00431E2E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3B124E162020EB2B00431E2E /* Assets.xcassets */; };
@@ -204,7 +206,11 @@
 		3B598FE02318337C00FF50CD /* LightningUpgradeStartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B598FDF2318337C00FF50CD /* LightningUpgradeStartViewController.swift */; };
 		3B598FE4231833C000FF50CD /* LightningUpgradeStartViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3B598FE3231833C000FF50CD /* LightningUpgradeStartViewController.storyboard */; };
 		3B598FE623184DD200FF50CD /* LightningUpgradeStartViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B598FE523184DD200FF50CD /* LightningUpgradeStartViewControllerTests.swift */; };
-		3B598FE82318542500FF50CD /* AppCoordinator+LightningUpgradeStartViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B598FE72318542500FF50CD /* AppCoordinator+LightningUpgradeStartViewControllerDelegate.swift */; };
+		3B598FE82318542500FF50CD /* LightningUpgradeCoordinator+LightningUpgradeStartViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B598FE72318542500FF50CD /* LightningUpgradeCoordinator+LightningUpgradeStartViewControllerDelegate.swift */; };
+		3B598FEA23196A8000FF50CD /* LightningUpgradeStatusViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B598FE923196A8000FF50CD /* LightningUpgradeStatusViewController.swift */; };
+		3B598FEC23196AAE00FF50CD /* LightningUpgradeStatusViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3B598FEB23196AAE00FF50CD /* LightningUpgradeStatusViewController.storyboard */; };
+		3B598FEE23196BA800FF50CD /* LightningUpgradeCoordinator+LightningUpgradeStatusViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B598FED23196BA800FF50CD /* LightningUpgradeCoordinator+LightningUpgradeStatusViewControllerDelegate.swift */; };
+		3B598FF02319719E00FF50CD /* LightningUpgradePageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B598FEF2319719E00FF50CD /* LightningUpgradePageViewController.swift */; };
 		3B5A889A228AEFE10082BBA4 /* TwitterSearchDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5A8899228AEFE10082BBA4 /* TwitterSearchDataSource.swift */; };
 		3B5A889D228AF3D90082BBA4 /* TwitterUserTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5A889B228AF3D90082BBA4 /* TwitterUserTableViewCell.swift */; };
 		3B5A889E228AF3D90082BBA4 /* TwitterUserTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3B5A889C228AF3D90082BBA4 /* TwitterUserTableViewCell.xib */; };
@@ -1081,6 +1087,8 @@
 		3B071A5420C2EEDD009C2BF6 /* CKMCounterpartyName+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CKMCounterpartyName+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		3B0C4FDD22A1AC31000FE760 /* VerfiedTwitterUserIndicatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerfiedTwitterUserIndicatorView.swift; sourceTree = "<group>"; };
 		3B0C4FDF22A1ACBD000FE760 /* VerfiedTwitterUserIndicatorView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = VerfiedTwitterUserIndicatorView.xib; sourceTree = "<group>"; };
+		3B0C785523197B0A00D4C216 /* LightningUpgradePageViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LightningUpgradePageViewController.storyboard; sourceTree = "<group>"; };
+		3B0C7857231E891600D4C216 /* LightningUpgradeCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightningUpgradeCoordinator.swift; sourceTree = "<group>"; };
 		3B0FF8C320C333DC00AADC9E /* CKPersistenceError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CKPersistenceError.swift; sourceTree = "<group>"; };
 		3B11042C20D2E6D60011E2CF /* CoinKeeper.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = CoinKeeper.entitlements; sourceTree = "<group>"; };
 		3B124E0C2020EB2B00431E2E /* DropBit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DropBit.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1206,7 +1214,11 @@
 		3B598FDF2318337C00FF50CD /* LightningUpgradeStartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightningUpgradeStartViewController.swift; sourceTree = "<group>"; };
 		3B598FE3231833C000FF50CD /* LightningUpgradeStartViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LightningUpgradeStartViewController.storyboard; sourceTree = "<group>"; };
 		3B598FE523184DD200FF50CD /* LightningUpgradeStartViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightningUpgradeStartViewControllerTests.swift; sourceTree = "<group>"; };
-		3B598FE72318542500FF50CD /* AppCoordinator+LightningUpgradeStartViewControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppCoordinator+LightningUpgradeStartViewControllerDelegate.swift"; sourceTree = "<group>"; };
+		3B598FE72318542500FF50CD /* LightningUpgradeCoordinator+LightningUpgradeStartViewControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LightningUpgradeCoordinator+LightningUpgradeStartViewControllerDelegate.swift"; sourceTree = "<group>"; };
+		3B598FE923196A8000FF50CD /* LightningUpgradeStatusViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightningUpgradeStatusViewController.swift; sourceTree = "<group>"; };
+		3B598FEB23196AAE00FF50CD /* LightningUpgradeStatusViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LightningUpgradeStatusViewController.storyboard; sourceTree = "<group>"; };
+		3B598FED23196BA800FF50CD /* LightningUpgradeCoordinator+LightningUpgradeStatusViewControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LightningUpgradeCoordinator+LightningUpgradeStatusViewControllerDelegate.swift"; sourceTree = "<group>"; };
+		3B598FEF2319719E00FF50CD /* LightningUpgradePageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightningUpgradePageViewController.swift; sourceTree = "<group>"; };
 		3B5A8899228AEFE10082BBA4 /* TwitterSearchDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwitterSearchDataSource.swift; sourceTree = "<group>"; };
 		3B5A889B228AF3D90082BBA4 /* TwitterUserTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwitterUserTableViewCell.swift; sourceTree = "<group>"; };
 		3B5A889C228AF3D90082BBA4 /* TwitterUserTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TwitterUserTableViewCell.xib; sourceTree = "<group>"; };
@@ -2263,7 +2275,9 @@
 				A2B4E6F122FC6D7B00E24324 /* AppCoordinator+LightningRefillViewControllerDelegate.swift */,
 				A257CEB72302F3BA0063670B /* AppCoordinator+WalletTransferViewControllerDelegate.swift */,
 				A257CEB9230302070063670B /* AppCoordinator+LightningTransactionHistoryEmptyViewDelegate.swift */,
-				3B598FE72318542500FF50CD /* AppCoordinator+LightningUpgradeStartViewControllerDelegate.swift */,
+				3B598FE72318542500FF50CD /* LightningUpgradeCoordinator+LightningUpgradeStartViewControllerDelegate.swift */,
+				3B598FED23196BA800FF50CD /* LightningUpgradeCoordinator+LightningUpgradeStatusViewControllerDelegate.swift */,
+				3B0C7857231E891600D4C216 /* LightningUpgradeCoordinator.swift */,
 			);
 			path = Coordinators;
 			sourceTree = "<group>";
@@ -2845,6 +2859,8 @@
 				A2FE198122FB0E5A00C2412D /* TryLightningViewController.swift */,
 				A2FE19892301DF8800C2412D /* WalletTransferViewController.swift */,
 				3B598FDF2318337C00FF50CD /* LightningUpgradeStartViewController.swift */,
+				3B598FE923196A8000FF50CD /* LightningUpgradeStatusViewController.swift */,
+				3B598FEF2319719E00FF50CD /* LightningUpgradePageViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -2896,6 +2912,8 @@
 				A2FE198322FB0F5C00C2412D /* TryLightningViewController.storyboard */,
 				A2FE198B2301E05E00C2412D /* WalletTransferViewController.storyboard */,
 				3B598FE3231833C000FF50CD /* LightningUpgradeStartViewController.storyboard */,
+				3B598FEB23196AAE00FF50CD /* LightningUpgradeStatusViewController.storyboard */,
+				3B0C785523197B0A00D4C216 /* LightningUpgradePageViewController.storyboard */,
 			);
 			path = Storyboards;
 			sourceTree = "<group>";
@@ -3820,6 +3838,7 @@
 			files = (
 				A260E8D720FD0C67008343F9 /* TutorialScreenViewController.storyboard in Resources */,
 				A2BFA54F22E7536A00396D33 /* WalletToggleView.xib in Resources */,
+				3B0C785623197B0A00D4C216 /* LightningUpgradePageViewController.storyboard in Resources */,
 				A29CE0D4209B713B00761B91 /* ContactsViewController.storyboard in Resources */,
 				A2E0300420EABFA800E160E9 /* RestoreWalletViewController.storyboard in Resources */,
 				3B9779A9202E416700C9C933 /* Montserrat-Regular.ttf in Resources */,
@@ -3894,6 +3913,7 @@
 				3B9779AE202E416700C9C933 /* Montserrat-SemiBold.ttf in Resources */,
 				3BCBFCCC229EF71D00F633BA /* SettingsRecoveryWordsCell.xib in Resources */,
 				B54DE68722987463009D67CE /* TweetMethodViewController.storyboard in Resources */,
+				3B598FEC23196AAE00FF50CD /* LightningUpgradeStatusViewController.storyboard in Resources */,
 				3B9779A4202E416700C9C933 /* Montserrat-MediumItalic.ttf in Resources */,
 				3BD013172272478300C92771 /* TransactionHistoryDetailValidCell.xib in Resources */,
 				3B8ACA15225F96800020B684 /* GetBitcoinViewController.storyboard in Resources */,
@@ -4332,6 +4352,7 @@
 				B5221D55224427C40081C868 /* ContactCacheMigrationWorker.swift in Sources */,
 				403AAD5E2063513900F7A2BA /* Model.xcdatamodeld in Sources */,
 				30C0974E219C64F80064F19E /* Int+NSDecimalNumber.swift in Sources */,
+				3B598FEE23196BA800FF50CD /* LightningUpgradeCoordinator+LightningUpgradeStatusViewControllerDelegate.swift in Sources */,
 				3B219B3922C3B9EE007EDFCC /* Data+PrettyPrinted.swift in Sources */,
 				307DF119214C297E00260369 /* MessageResponse.swift in Sources */,
 				B552EDF6211E33D000332BB5 /* WalletManager.swift in Sources */,
@@ -4608,6 +4629,7 @@
 				B52E1DBF2302F50800AA652D /* CKMWalletEntry+CoreDataClass.swift in Sources */,
 				308F6F05217F97F50094D6CB /* DragIndiciatorView.swift in Sources */,
 				3B8B19312289BB25003BA4D7 /* AuthenticationSuspendable.swift in Sources */,
+				3B598FEA23196A8000FF50CD /* LightningUpgradeStatusViewController.swift in Sources */,
 				3BF3B0C521737A4D0021E45F /* SubscribeToWalletTarget.swift in Sources */,
 				B5EBFD0F215C01E30008EB4A /* MockAddressDataSource.swift in Sources */,
 				B58AFF2E21948891001BE563 /* UITestDefaultsKey.swift in Sources */,
@@ -4694,7 +4716,7 @@
 				A200574F20B5FD68007074D9 /* AppCoordinator+SettingsViewControllerDelegate.swift in Sources */,
 				B541DF5720A332DA00C621EB /* AppCoordinator+PlaceholderViewControllerDelegate.swift in Sources */,
 				3B6FDADB2050146E0091916A /* VerifyRecoveryWordCellData.swift in Sources */,
-				3B598FE82318542500FF50CD /* AppCoordinator+LightningUpgradeStartViewControllerDelegate.swift in Sources */,
+				3B598FE82318542500FF50CD /* LightningUpgradeCoordinator+LightningUpgradeStartViewControllerDelegate.swift in Sources */,
 				B582AD5020A084AD007A6459 /* CKMCounterpartyAddress+CoreDataProperties.swift in Sources */,
 				3B6749E420AA5CA40032FE02 /* CKMVout+CoreDataProperties.swift in Sources */,
 				B5F6EC2522554CF20045633B /* TwilioErrorDelegate.swift in Sources */,
@@ -4755,6 +4777,7 @@
 				A2893BC220FD515900E96B07 /* AppCoordinator+TutorialViewControllerDelegate.swift in Sources */,
 				A246C82722CBA83F00AF1F52 /* PriceTarget.swift in Sources */,
 				A257CEB42302E5070063670B /* FeesView.swift in Sources */,
+				3B0C7858231E891600D4C216 /* LightningUpgradeCoordinator.swift in Sources */,
 				3BA9F603208F6CEA0047C213 /* AppCoordinator+CreateRecoveryWordsViewControllerDelegate.swift in Sources */,
 				A2FE19882301A09C00C2412D /* LightningActionButton.swift in Sources */,
 				A2952F7E22BD0B7600BDCE65 /* NewsArticleResponse.swift in Sources */,
@@ -4787,6 +4810,7 @@
 				B56E158D2167C176003B69D4 /* NetworkManager+AddressRequestable.swift in Sources */,
 				B54DE6892298747B009D67CE /* TweetMethodViewController.swift in Sources */,
 				B5B53C9C2107CAA5006C7B67 /* TransactionDetailsInfoContainer.swift in Sources */,
+				3B598FF02319719E00FF50CD /* LightningUpgradePageViewController.swift in Sources */,
 				A245C6D020D9537400D99983 /* RequestAddressBody.swift in Sources */,
 				3B5A88A4228B09260082BBA4 /* ContactCellSecondaryLabel.swift in Sources */,
 				A2E0689823047F0B0047090B /* TransactionHistoryViewControllerLightningDDS.swift in Sources */,
