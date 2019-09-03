@@ -15,7 +15,7 @@ protocol LightningUpgradeStartViewControllerDelegate: AnyObject {
 
 final class LightningUpgradeStartViewController: BaseViewController, StoryboardInitializable {
 
-  @IBOutlet var overlayView: UIView!
+  @IBOutlet var overlayView: LightningUpgradeGradientOverlayView!
   @IBOutlet var lightningTitleLabel: UILabel!
   @IBOutlet var detailLabel: UILabel!
   @IBOutlet var upgradeButton: PrimaryActionButton!
@@ -105,12 +105,6 @@ final class LightningUpgradeStartViewController: BaseViewController, StoryboardI
   }
 
   private func styleInitialUI() {
-    overlayView.applyCornerRadius(15)
-    let gradient = CAGradientLayer()
-    gradient.frame = overlayView.bounds
-    gradient.colors = [UIColor.mediumPurple.cgColor, UIColor.darkPurple.cgColor]
-    overlayView.layer.addSublayer(gradient)
-
     lightningTitleLabel.textColor = .white
     lightningTitleLabel.font = .regular(18)
     detailLabel.textColor = .neonGreen

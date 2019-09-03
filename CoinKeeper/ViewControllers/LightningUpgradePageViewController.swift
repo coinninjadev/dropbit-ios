@@ -12,45 +12,46 @@ import CNBitcoinKit
 final class LightningUpgradePageViewController: UIPageViewController, StoryboardInitializable {
 
   weak var generalCoordinationDelegate: AnyObject?
+  weak var activeViewController: UIViewController?
 
   var transactionData: CNBTransactionData? {
     didSet {
       if let data = transactionData {
-        lnViewControllers
-          .first
+        self.activeViewController
           .flatMap { $0 as? LightningUpgradeStartViewController }?
           .updateUI(withTransactionData: data)
       }
     }
   }
   private func performUpgradeNowAction() {
-    self.setViewControllers([lnViewControllers[1]], direction: .forward, animated: true, completion: nil)
-    // this will need to kick off the tx broadcast, but status VC can't dismiss till tx is broadcast, if there is a tx to broadcast
+    activeViewController = lnViewControllers()[1]
+    activeViewController.map { self.setViewControllers([$0], direction: .forward, animated: true, completion: nil) }
   }
 
-  private func showFinalizeUpgradeAction() {
-    self.setViewControllers([lnViewControllers[2]], direction: .forward, animated: true, completion: nil)
+  private func showFinalizeUpgradeAction(error: Error?) {
+//    self.setViewControllers([lnViewControllers[2]], direction: .forward, animated: true, completion: nil)
   }
 
-  private(set) lazy var lnViewControllers: [UIViewController] = {
-    [
+  private func lnViewControllers() -> [UIViewController] {
+    return [
+
       (generalCoordinationDelegate as? LightningUpgradeStartViewControllerDelegate)
         .map {
           LightningUpgradeStartViewController.newInstance(
             withDelegate: $0,
-            nextStep: { [weak self] in self?.performUpgradeNowAction() }
-          )
+            nextStep: { [weak self] in self?.performUpgradeNowAction() })
+        },
+
+      (generalCoordinationDelegate as? LightningUpgradeStatusViewControllerDelegate)
+        .map {
+          LightningUpgradeStatusViewController.newInstance(
+            withDelegate: $0,
+            dataSource: self,
+            nextStep: { [weak self] (error: Error?) in self?.showFinalizeUpgradeAction(error: error) })
         }
-//      (generalCoordinationDelegate as? LightningUpgradeStatusViewControllerDelegate)
-//        .map {
-//          LightningUpgradeStatusViewController.newInstance(
-//            withDelegate: $0,
-//            nextAction: { [weak self] in self?.showFinalizeUpgradeAction() }
-//          )
-//        }
-//      (generalCoordinationDelegate as? LightningUpgradeStartViewControllerDelegate).map { LightningUpgradeStartViewController.newInstance(withDelegate: $0) }
+
       ].compactMap { $0 }
-  }()
+  }
 
   static func newInstance(withGeneralCoordinationDelegate delegate: AnyObject) -> LightningUpgradePageViewController {
     let controller = LightningUpgradePageViewController.makeFromStoryboard()
@@ -64,11 +65,15 @@ final class LightningUpgradePageViewController: UIPageViewController, Storyboard
     modalPresentationStyle = .overFullScreen
     modalTransitionStyle = .coverVertical
 
-    lnViewControllers.first.map { self.setViewControllers([$0], direction: .forward, animated: true, completion: nil) }
+    activeViewController = lnViewControllers().first
+
+    activeViewController.map { self.setViewControllers([$0], direction: .forward, animated: true, completion: nil) }
   }
 
   func updateUI(with data: CNBTransactionData?) {
-    lnViewControllers.first.flatMap { $0 as? LightningUpgradeStartViewController }?.updateUI(withTransactionData: data)
+    self.transactionData = data
   }
 
 }
+
+extension LightningUpgradePageViewController: LightningUpgradeStatusDataSource { }
