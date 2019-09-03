@@ -16,6 +16,7 @@ class CKKeychain: PersistenceKeychainType {
     case userPin
     case deviceID
     case walletWords
+    case walletWordsV2
     case walletWordsBackedUp // Bool as NSNumber
     case skippedVerification // Bool as NSNumber
     case countryCode
@@ -108,6 +109,12 @@ class CKKeychain: PersistenceKeychainType {
       tempWordStorage = words
       return self.storeWalletWordsBackedUp(isBackedUp)
     }
+  }
+
+  @discardableResult
+  func upgrade(recoveryWords words: [String]) -> Promise<Void> {
+    return storeOnSerialBackgroundQueue(value: words, key: CKKeychain.Key.walletWordsV2.rawValue)
+      .then { _ in self.storeWalletWordsBackedUp(false) }
   }
 
   func storeWalletWordsBackedUp(_ isBackedUp: Bool) -> Promise<Void> {

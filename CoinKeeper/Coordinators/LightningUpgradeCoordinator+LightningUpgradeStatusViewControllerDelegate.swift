@@ -16,10 +16,10 @@ extension LightningUpgradeCoordinator: LightningUpgradeStatusViewControllerDeleg
   }
 
   func viewControllerStartUpgradingWallet(_ viewController: LightningUpgradeStatusViewController) -> Promise<Void> {
-    // write new words to keychain
-    // set words not backed up flag
-    // set new WalletManager value on app coordinator
-    return Promise.value(())
+    guard let parent = parent else { return Promise(error: CKPersistenceError.missingValue(key: "parent coordinator")) }
+
+    return parent.persistenceManager.keychainManager.upgrade(recoveryWords: newWords)
+      .done { _ in parent.walletManager = WalletManager(words: self.newWords, purpose: .BIP84, persistenceManager: parent.persistenceManager) }
   }
 
   func viewControllerStartUpgradingToSegwit(_ viewController: LightningUpgradeStatusViewController) -> Promise<Void> {

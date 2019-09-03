@@ -60,6 +60,7 @@ protocol PersistenceKeychainType: AnyObject {
   func store(valueToHash value: String?, key: CKKeychain.Key) -> Promise<Void>
   func store(deviceID: String) -> Promise<Void>
   func store(recoveryWords words: [String], isBackedUp: Bool) -> Promise<Void>
+  func upgrade(recoveryWords wordsd: [String]) -> Promise<Void>
   func storeWalletWordsBackedUp(_ isBackedUp: Bool) -> Promise<Void>
   func store(userPin pin: String) -> Promise<Void>
 

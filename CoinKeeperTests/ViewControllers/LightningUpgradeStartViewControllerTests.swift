@@ -18,7 +18,7 @@ class LightningUpgradeStartViewControllerTests: XCTestCase {
   override func setUp() {
     super.setUp()
     coordinator = MockCoordinator()
-    sut = LightningUpgradeStartViewController.newInstance(withDelegate: coordinator)
+    sut = LightningUpgradeStartViewController.newInstance(withDelegate: coordinator, nextStep: {})
     _ = sut.view
   }
 
