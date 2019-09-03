@@ -98,4 +98,21 @@ extension AppCoordinator: TransactionHistoryViewControllerDelegate {
   func viewControllerDidDismissTransactionDetails(_ viewController: UIViewController) {
     viewController.dismiss(animated: true, completion: nil)
   }
+
+  func summaryHeaderType(for viewController: UIViewController) -> SummaryHeaderType? {
+    if wordsBackedUp {
+      return nil
+    } else {
+      return .backUpWallet
+    }
+  }
+
+  func viewControllerDidSelectSummaryHeader(_ viewController: UIViewController) {
+    guard let headerType = summaryHeaderType(for: viewController) else { return }
+    switch headerType {
+    case .backUpWallet:
+      self.showWordRecoveryFlow()
+    }
+  }
+
 }

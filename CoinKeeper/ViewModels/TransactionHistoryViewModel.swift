@@ -9,10 +9,10 @@
 import Foundation
 import UIKit
 
-protocol TransactionHistoryViewModelDelegate: AnyObject {
+protocol TransactionHistoryViewModelDelegate: TransactionHistorySummaryHeaderDelegate {
   var currencyController: CurrencyController { get }
   func viewModelDidUpdateExchangeRates()
-  func headerWarningMessageToDisplay() -> String?
+  func summaryHeaderType() -> SummaryHeaderType?
 }
 
 class TransactionHistoryViewModel: NSObject, UICollectionViewDataSource, ExchangeRateUpdatable {
@@ -82,8 +82,8 @@ class TransactionHistoryViewModel: NSObject, UICollectionViewDataSource, Exchang
                                                                             withReuseIdentifier: summaryIdentifier,
                                                                             for: indexPath)
     if let summaryHeader = supplementaryView as? TransactionHistorySummaryHeader,
-      let message = delegate.headerWarningMessageToDisplay() {
-      summaryHeader.configure(withMessage: message, bgColor: .warningHeader)
+      let headerType = delegate.summaryHeaderType() {
+      summaryHeader.configure(with: headerType.message, delegate: self.delegate)
       let radius = (warningHeaderHeight - summaryHeader.bottomConstraint.constant) / 2
       summaryHeader.messageButton.applyCornerRadius(radius)
     }

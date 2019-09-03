@@ -8,10 +8,30 @@
 
 import UIKit
 
+enum SummaryHeaderType {
+  case backUpWallet
+
+  var message: String {
+    switch self {
+    case .backUpWallet: return "Back Up Your Wallet"
+    }
+  }
+}
+
+protocol TransactionHistorySummaryHeaderDelegate: AnyObject {
+  func didTapSummaryHeader(_ header: TransactionHistorySummaryHeader)
+}
+
 class TransactionHistorySummaryHeader: UICollectionReusableView {
+
+  private weak var delegate: TransactionHistorySummaryHeaderDelegate!
 
   @IBOutlet var messageButton: UIButton!
   @IBOutlet var bottomConstraint: NSLayoutConstraint!
+
+  @IBAction func performAction(_ sender: Any) {
+    delegate.didTapSummaryHeader(self)
+  }
 
   override func awakeFromNib() {
     super.awakeFromNib()
@@ -19,12 +39,13 @@ class TransactionHistorySummaryHeader: UICollectionReusableView {
     messageButton.titleLabel?.font = .medium(16)
     messageButton.setTitleColor(.whiteText, for: .normal)
     messageButton.setTitleColor(.whiteText, for: .highlighted)
+    messageButton.backgroundColor = .warningHeader
   }
 
-  func configure(withMessage message: String, bgColor: UIColor) {
+  func configure(with message: String, delegate: TransactionHistorySummaryHeaderDelegate) {
     messageButton.setTitle(message, for: .normal)
     messageButton.setTitle(message, for: .highlighted)
-    messageButton.backgroundColor = bgColor
+    self.delegate = delegate
   }
 
 }

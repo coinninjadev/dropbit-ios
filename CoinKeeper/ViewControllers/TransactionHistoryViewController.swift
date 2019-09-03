@@ -27,7 +27,10 @@ protocol TransactionHistoryViewControllerDelegate: DeviceCountryCodeProvider &
   func viewControllerSummariesDidReload(_ viewController: TransactionHistoryViewController, indexPathsIfNotAll paths: [IndexPath]?)
   func viewController(_ viewController: TransactionHistoryViewController, didSelectItemAtIndexPath indexPath: IndexPath)
   func viewControllerDidDismissTransactionDetails(_ viewController: UIViewController)
-  func headerWarningMessageToDisplay(for viewController: UIViewController) -> String?
+
+  /// Return nil to hide header
+  func summaryHeaderType(for viewController: UIViewController) -> SummaryHeaderType?
+  func viewControllerDidSelectSummaryHeader(_ viewController: UIViewController)
 }
 
 class TransactionHistoryViewController: BaseViewController, StoryboardInitializable {
@@ -177,8 +180,12 @@ extension TransactionHistoryViewController: TransactionHistoryViewModelDelegate 
     reloadCollectionViews()
   }
 
-  func headerWarningMessageToDisplay() -> String? {
-    return coordinationDelegate.headerWarningMessageToDisplay(for: self)
+  func summaryHeaderType() -> SummaryHeaderType? {
+    return coordinationDelegate.summaryHeaderType(for: self)
+  }
+
+  func didTapSummaryHeader(_ header: TransactionHistorySummaryHeader) {
+    self.coordinationDelegate.viewControllerDidSelectSummaryHeader(self)
   }
 
 }

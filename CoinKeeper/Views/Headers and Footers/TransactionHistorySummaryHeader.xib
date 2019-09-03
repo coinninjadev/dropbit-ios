@@ -19,6 +19,9 @@
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xYK-dV-tcP">
                     <rect key="frame" x="0.0" y="44" width="414" height="44"/>
                     <state key="normal" title="Button"/>
+                    <connections>
+                        <action selector="performAction:" destination="iN0-l3-epB" eventType="touchUpInside" id="hDU-YK-hch"/>
+                    </connections>
                 </button>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
