@@ -51,7 +51,7 @@ class CKCurrencyFormatter {
   }
 
   func decimalString(fromDecimal decimalNumber: NSDecimalNumber) -> String? {
-    return decimalFormatter(for: currency).string(from: decimalNumber)
+    return numberFormatterWithoutSymbol(for: currency).string(from: decimalNumber)
   }
 
   func string(fromDecimal decimalNumber: NSDecimalNumber) -> String? {
@@ -69,8 +69,7 @@ class CKCurrencyFormatter {
     return formattedString
   }
 
-  /// Formats the number without a currency symbol
-  fileprivate func decimalFormatter(for currency: CurrencyCode, asInteger: Bool = false) -> NumberFormatter {
+  fileprivate func numberFormatterWithoutSymbol(for currency: CurrencyCode, asInteger: Bool = false) -> NumberFormatter {
     let formatter = NumberFormatter()
     formatter.maximumFractionDigits = asInteger ? 0 : currency.decimalPlaces
     if currency.requiresFullDecimalPlaces && !asInteger {
