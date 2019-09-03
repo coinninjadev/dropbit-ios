@@ -920,7 +920,6 @@
 		B5B9132921419F84003A24E9 /* PhoneNumberKit+AreaCodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5B9132821419F84003A24E9 /* PhoneNumberKit+AreaCodes.swift */; };
 		B5BA3A7722F22B0E001E41A7 /* TransactionCellProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5BA3A7622F22B0E001E41A7 /* TransactionCellProtocols.swift */; };
 		B5BA5247223AA38E001165FC /* CKMTransaction+FetchRequests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5BA5246223AA38E001165FC /* CKMTransaction+FetchRequests.swift */; };
-		B5C0A5F82097A24A00D648DF /* CounterpartyRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5C0A5F72097A24A00D648DF /* CounterpartyRepresentable.swift */; };
 		B5C2E02B20BC721E00F21928 /* WalletAddressResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5C2E02A20BC721E00F21928 /* WalletAddressResponse.swift */; };
 		B5C314D822DE59100069294F /* CurrencySwappableAmountEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5C314D722DE59100069294F /* CurrencySwappableAmountEditor.swift */; };
 		B5C5EDE321FA41FF0032AC94 /* SharedPayloadV1.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5C5EDE221FA41FF0032AC94 /* SharedPayloadV1.swift */; };
@@ -1927,7 +1926,6 @@
 		B5B9132821419F84003A24E9 /* PhoneNumberKit+AreaCodes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PhoneNumberKit+AreaCodes.swift"; sourceTree = "<group>"; };
 		B5BA3A7622F22B0E001E41A7 /* TransactionCellProtocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionCellProtocols.swift; sourceTree = "<group>"; };
 		B5BA5246223AA38E001165FC /* CKMTransaction+FetchRequests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CKMTransaction+FetchRequests.swift"; sourceTree = "<group>"; };
-		B5C0A5F72097A24A00D648DF /* CounterpartyRepresentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CounterpartyRepresentable.swift; sourceTree = "<group>"; };
 		B5C2E02A20BC721E00F21928 /* WalletAddressResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletAddressResponse.swift; sourceTree = "<group>"; };
 		B5C314D722DE59100069294F /* CurrencySwappableAmountEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencySwappableAmountEditor.swift; sourceTree = "<group>"; };
 		B5C5EDE221FA41FF0032AC94 /* SharedPayloadV1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedPayloadV1.swift; sourceTree = "<group>"; };
@@ -3202,7 +3200,6 @@
 				3BF5807D20E2ADC500DD7F95 /* Applicable.swift */,
 				B5697270208A428A00835F01 /* BalanceDisplayable.swift */,
 				B59729B4209B6A2B0012AD14 /* BalanceUpdateable.swift */,
-				B5C0A5F72097A24A00D648DF /* CounterpartyRepresentable.swift */,
 				B5C314D722DE59100069294F /* CurrencySwappableAmountEditor.swift */,
 				B52D4523208E5ECA00A56A5C /* ExchangeRateUpdatable.swift */,
 				B589C20120C1EB72006A8FDB /* PaymentAmountValidatable.swift */,
@@ -4545,7 +4542,6 @@
 				B558B86322B931C40033AFBD /* CKPersistenceBroker.swift in Sources */,
 				30BF4FE921B6C5C10018AE87 /* TransactionPopoverDetailsViewController.swift in Sources */,
 				B5A7523C2225D90B0017DB35 /* DeviceCountryCodeProvider.swift in Sources */,
-				B5C0A5F82097A24A00D648DF /* CounterpartyRepresentable.swift in Sources */,
 				A2B4E6F222FC6D7B00E24324 /* AppCoordinator+LightningRefillViewControllerDelegate.swift in Sources */,
 				A2952F7622BBBAAB00BDCE65 /* TimePeriodCell.swift in Sources */,
 				3B8FA48320C16F5C0074B617 /* CKMTemporarySentTransaction+CoreDataClass.swift in Sources */,
