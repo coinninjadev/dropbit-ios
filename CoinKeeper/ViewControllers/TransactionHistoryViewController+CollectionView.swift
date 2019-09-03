@@ -77,3 +77,46 @@ extension TransactionHistoryViewController: UICollectionViewDelegateFlowLayout {
   }
 
 }
+
+extension TransactionHistoryViewController: UICollectionViewDelegate {
+
+  func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    //TODO showDetailCollectionView(true, indexPath: indexPath, animated: true)
+  }
+
+}
+
+extension TransactionHistoryViewController: UIScrollViewDelegate {
+
+  func scrollViewDidScroll(_ scrollView: UIScrollView) {
+    let topOfWalletBalanceOffset: CGFloat = -60, middleOfWalletBalanceOffset: CGFloat = -100
+    let shouldActivateFullOffset = scrollView.contentOffset.y < middleOfWalletBalanceOffset
+    let shouldActivatePartialOffset = scrollView.contentOffset.y > topOfWalletBalanceOffset
+    guard shouldActivateFullOffset || shouldActivatePartialOffset else { return }
+
+    if shouldActivatePartialOffset {
+      summaryCollectionView.historyDelegate?.collectionViewDidCoverWalletBalance()
+      isCollectionViewFullScreen = false
+    } else {
+      summaryCollectionView.historyDelegate?.collectionViewDidUncoverWalletBalance()
+      isCollectionViewFullScreen = true
+    }
+
+    let offset = abs(scrollView.contentOffset.y)
+    refreshViewTopConstraint.constant = offset - refreshView.frame.size.height
+    refreshView.animateLogo(to: scrollView.contentOffset.y)
+  }
+
+  func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+    refreshView.reset()
+    refreshViewTopConstraint.constant = 0
+  }
+
+  func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+    refreshView.fireRefreshAnimationIfNecessary()
+
+    if refreshView.shouldQueueRefresh {
+      coordinationDelegate?.viewControllerAttemptedToRefreshTransactions(self)
+    }
+  }
+}
