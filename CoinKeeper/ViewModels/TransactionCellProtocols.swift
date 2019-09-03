@@ -197,11 +197,11 @@ extension TransactionSummaryCellViewModelType {
   var lightningWithdrawText: String { return "Lightning Withdraw" }
   var lightningDepositText: String { return "Load Lightning" }
 
-  var incomingImage: UIImage! { return UIImage(named: "summaryCellIncoming")! }
-  var outgoingImage: UIImage! { return UIImage(named: "summaryCellOutgoing")! }
-  var transferImage: UIImage! { return UIImage(named: "summaryCellTransfer")! }
-  var lightningImage: UIImage! { return UIImage(named: "summaryCellLightning")! }
-  var invalidImage: UIImage! { return UIImage(named: "summaryCellInvalid")! }
+  var incomingImage: UIImage { return UIImage(imageLiteralResourceName: "summaryCellIncoming") }
+  var outgoingImage: UIImage { return UIImage(imageLiteralResourceName: "summaryCellOutgoing") }
+  var transferImage: UIImage { return UIImage(imageLiteralResourceName: "summaryCellTransfer") }
+  var lightningImage: UIImage { return UIImage(imageLiteralResourceName: "summaryCellLightning") }
+  var invalidImage: UIImage { return UIImage(imageLiteralResourceName: "summaryCellInvalid") }
 
 }
 
