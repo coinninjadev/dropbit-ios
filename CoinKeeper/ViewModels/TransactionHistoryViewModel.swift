@@ -72,6 +72,10 @@ class TransactionHistoryViewModel: NSObject, UICollectionViewDataSource, Exchang
     return cell
   }
 
+  func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+    
+  }
+
   func didUpdateExchangeRateManager(_ exchangeRateManager: ExchangeRateManager) {
     delegate.viewModelDidUpdateExchangeRates()
   }

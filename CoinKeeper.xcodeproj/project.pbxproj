@@ -996,6 +996,7 @@
 		B5EBFD14215C08050008EB4A /* AddressDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5EBFD12215C07D60008EB4A /* AddressDataSourceTests.swift */; };
 		B5EBFD17215C28470008EB4A /* InvitationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5EBFD15215C28270008EB4A /* InvitationTests.swift */; };
 		B5ED3C3C2217635900A51767 /* CoinNinjaErrorResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5ED3C3B2217635900A51767 /* CoinNinjaErrorResponse.swift */; };
+		B5EDFB35231ED12A00B8E739 /* TransactionHistorySummaryHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5EDFB34231ED12A00B8E739 /* TransactionHistorySummaryHeader.swift */; };
 		B5EEDAA02209E225009434DC /* WalletSyncOperationFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5EEDA9F2209E225009434DC /* WalletSyncOperationFactory.swift */; };
 		B5F32BA62124D05E00B1F89F /* CKStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F32BA52124D05E00B1F89F /* CKStrings.swift */; };
 		B5F5CC5320EA6B1400717667 /* MoyaResponse+ErrorMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F5CC5220EA6B1400717667 /* MoyaResponse+ErrorMessage.swift */; };
@@ -2003,6 +2004,7 @@
 		B5EBFD12215C07D60008EB4A /* AddressDataSourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressDataSourceTests.swift; sourceTree = "<group>"; };
 		B5EBFD15215C28270008EB4A /* InvitationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvitationTests.swift; sourceTree = "<group>"; };
 		B5ED3C3B2217635900A51767 /* CoinNinjaErrorResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinNinjaErrorResponse.swift; sourceTree = "<group>"; };
+		B5EDFB34231ED12A00B8E739 /* TransactionHistorySummaryHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionHistorySummaryHeader.swift; sourceTree = "<group>"; };
 		B5EEDA9F2209E225009434DC /* WalletSyncOperationFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletSyncOperationFactory.swift; sourceTree = "<group>"; };
 		B5F32BA52124D05E00B1F89F /* CKStrings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CKStrings.swift; sourceTree = "<group>"; };
 		B5F5CC5220EA6B1400717667 /* MoyaResponse+ErrorMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MoyaResponse+ErrorMessage.swift"; sourceTree = "<group>"; };
@@ -2976,6 +2978,7 @@
 				5B927C232078009F00DCDCAE /* DrawerTableViewHeader.xib */,
 				B584766F20E141BF00F5FE60 /* SettingsTableViewSectionHeader.swift */,
 				B584767120E141DC00F5FE60 /* SettingsTableViewSectionHeader.xib */,
+				B5EDFB34231ED12A00B8E739 /* TransactionHistorySummaryHeader.swift */,
 			);
 			path = "Headers and Footers";
 			sourceTree = "<group>";
@@ -4713,6 +4716,7 @@
 				A26C76792106446E001EB738 /* NSDecimalNumber+NilInitializer.swift in Sources */,
 				B59E2C9A22E8CF4700A75AFE /* LNCreatePaymentRequestResponse.swift in Sources */,
 				B575B61822E9F84800CECFB7 /* NetworkManager+LightningRequestable.swift in Sources */,
+				B5EDFB35231ED12A00B8E739 /* TransactionHistorySummaryHeader.swift in Sources */,
 				3B69FBEA21B83ED200C561E2 /* OutgoingInvitationDTO.swift in Sources */,
 				B5B0DC7B221349C70010AB2A /* CountryCodePickerDataSource.swift in Sources */,
 				B5B37B27206AFE22001816F6 /* CurrencyCode.swift in Sources */,
