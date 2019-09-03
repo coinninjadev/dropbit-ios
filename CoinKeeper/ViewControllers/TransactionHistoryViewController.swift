@@ -27,6 +27,7 @@ protocol TransactionHistoryViewControllerDelegate: DeviceCountryCodeProvider &
   func viewControllerSummariesDidReload(_ viewController: TransactionHistoryViewController, indexPathsIfNotAll paths: [IndexPath]?)
   func viewController(_ viewController: TransactionHistoryViewController, didSelectItemAtIndexPath indexPath: IndexPath)
   func viewControllerDidDismissTransactionDetails(_ viewController: UIViewController)
+  func headerWarningMessageToDisplay(for viewController: UIViewController) -> String?
 }
 
 class TransactionHistoryViewController: BaseViewController, StoryboardInitializable {
@@ -174,6 +175,10 @@ extension TransactionHistoryViewController: TransactionHistoryViewModelDelegate 
 
   func viewModelDidUpdateExchangeRates() {
     reloadCollectionViews()
+  }
+
+  func headerWarningMessageToDisplay() -> String? {
+    return coordinationDelegate.headerWarningMessageToDisplay(for: self)
   }
 
 }

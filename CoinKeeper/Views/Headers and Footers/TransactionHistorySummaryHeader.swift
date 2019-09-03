@@ -10,26 +10,21 @@ import UIKit
 
 class TransactionHistorySummaryHeader: UICollectionReusableView {
 
-  private var messageLabel: UILabel!
+  @IBOutlet var messageButton: UIButton!
+  @IBOutlet var bottomConstraint: NSLayoutConstraint!
 
-  override init(frame: CGRect) {
-    super.init(frame: frame)
-    initialize()
+  override func awakeFromNib() {
+    super.awakeFromNib()
+    self.backgroundColor = .clear
+    messageButton.titleLabel?.font = .medium(16)
+    messageButton.setTitleColor(.whiteText, for: .normal)
+    messageButton.setTitleColor(.whiteText, for: .highlighted)
   }
 
-  required init?(coder aDecoder: NSCoder) {
-    super.init(coder: aDecoder)
-    initialize()
-  }
-
-  private func initialize() {
-    messageLabel.font = .medium(16)
-    messageLabel.textColor = .whiteText
-  }
-
-  private func configure(withMessage message: String, bgColor: UIColor) {
-    messageLabel.text = message
-    self.backgroundColor = bgColor
+  func configure(withMessage message: String, bgColor: UIColor) {
+    messageButton.setTitle(message, for: .normal)
+    messageButton.setTitle(message, for: .highlighted)
+    messageButton.backgroundColor = bgColor
   }
 
 }

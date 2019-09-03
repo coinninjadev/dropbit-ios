@@ -12,6 +12,7 @@ import UIKit
 protocol TransactionHistoryViewModelDelegate: AnyObject {
   var currencyController: CurrencyController { get }
   func viewModelDidUpdateExchangeRates()
+  func headerWarningMessageToDisplay() -> String?
 }
 
 class TransactionHistoryViewModel: NSObject, UICollectionViewDataSource, ExchangeRateUpdatable {
@@ -30,6 +31,7 @@ class TransactionHistoryViewModel: NSObject, UICollectionViewDataSource, Exchang
   }
 
   let phoneFormatter = CKPhoneNumberFormatter(format: .national)
+  let warningHeaderHeight: CGFloat = 65
 
   init(delegate: TransactionHistoryViewModelDelegate,
        currencyManager: CurrencyValueDataSourceType,
@@ -72,8 +74,21 @@ class TransactionHistoryViewModel: NSObject, UICollectionViewDataSource, Exchang
     return cell
   }
 
-  func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-    
+  func collectionView(_ collectionView: UICollectionView,
+                      viewForSupplementaryElementOfKind kind: String,
+                      at indexPath: IndexPath) -> UICollectionReusableView {
+    let summaryIdentifier = TransactionHistorySummaryHeader.reuseIdentifier
+    let supplementaryView = collectionView.dequeueReusableSupplementaryView(ofKind: kind,
+                                                                            withReuseIdentifier: summaryIdentifier,
+                                                                            for: indexPath)
+    if let summaryHeader = supplementaryView as? TransactionHistorySummaryHeader,
+      let message = delegate.headerWarningMessageToDisplay() {
+      summaryHeader.configure(withMessage: message, bgColor: .warningHeader)
+      let radius = (warningHeaderHeight - summaryHeader.bottomConstraint.constant) / 2
+      summaryHeader.messageButton.applyCornerRadius(radius)
+    }
+
+    return supplementaryView
   }
 
   func didUpdateExchangeRateManager(_ exchangeRateManager: ExchangeRateManager) {

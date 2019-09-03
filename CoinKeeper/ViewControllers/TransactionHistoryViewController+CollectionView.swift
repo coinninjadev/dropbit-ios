@@ -37,6 +37,7 @@ extension TransactionHistoryViewController {
 
   func setupCollectionViews() {
     summaryCollectionView.registerNib(cellType: TransactionHistorySummaryCell.self)
+    summaryCollectionView.registerReusableView(reusableViewType: TransactionHistorySummaryHeader.self)
     summaryCollectionView.showsVerticalScrollIndicator = false
     summaryCollectionView.alwaysBounceVertical = true
     summaryCollectionView.contentInset = UIEdgeInsets(top: summaryCollectionView.topInset, left: 0, bottom: 0, right: 0)
@@ -74,6 +75,16 @@ extension TransactionHistoryViewController: UICollectionViewDelegateFlowLayout {
                       layout collectionViewLayout: UICollectionViewLayout,
                       sizeForItemAt indexPath: IndexPath) -> CGSize {
     return CGSize(width: collectionView.frame.width, height: 108)
+  }
+
+  func collectionView(_ collectionView: UICollectionView,
+                      layout collectionViewLayout: UICollectionViewLayout,
+                      referenceSizeForHeaderInSection section: Int) -> CGSize {
+    if coordinationDelegate.headerWarningMessageToDisplay(for: self) == nil {
+      return CGSize.zero
+    } else {
+      return CGSize(width: collectionView.frame.width, height: self.viewModel.warningHeaderHeight)
+    }
   }
 
 }

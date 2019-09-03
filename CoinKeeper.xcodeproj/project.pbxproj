@@ -997,6 +997,7 @@
 		B5EBFD17215C28470008EB4A /* InvitationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5EBFD15215C28270008EB4A /* InvitationTests.swift */; };
 		B5ED3C3C2217635900A51767 /* CoinNinjaErrorResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5ED3C3B2217635900A51767 /* CoinNinjaErrorResponse.swift */; };
 		B5EDFB35231ED12A00B8E739 /* TransactionHistorySummaryHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5EDFB34231ED12A00B8E739 /* TransactionHistorySummaryHeader.swift */; };
+		B5EDFB37231EE00800B8E739 /* TransactionHistorySummaryHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = B5EDFB36231EE00800B8E739 /* TransactionHistorySummaryHeader.xib */; };
 		B5EEDAA02209E225009434DC /* WalletSyncOperationFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5EEDA9F2209E225009434DC /* WalletSyncOperationFactory.swift */; };
 		B5F32BA62124D05E00B1F89F /* CKStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F32BA52124D05E00B1F89F /* CKStrings.swift */; };
 		B5F5CC5320EA6B1400717667 /* MoyaResponse+ErrorMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F5CC5220EA6B1400717667 /* MoyaResponse+ErrorMessage.swift */; };
@@ -2005,6 +2006,7 @@
 		B5EBFD15215C28270008EB4A /* InvitationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvitationTests.swift; sourceTree = "<group>"; };
 		B5ED3C3B2217635900A51767 /* CoinNinjaErrorResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinNinjaErrorResponse.swift; sourceTree = "<group>"; };
 		B5EDFB34231ED12A00B8E739 /* TransactionHistorySummaryHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionHistorySummaryHeader.swift; sourceTree = "<group>"; };
+		B5EDFB36231EE00800B8E739 /* TransactionHistorySummaryHeader.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TransactionHistorySummaryHeader.xib; sourceTree = "<group>"; };
 		B5EEDA9F2209E225009434DC /* WalletSyncOperationFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletSyncOperationFactory.swift; sourceTree = "<group>"; };
 		B5F32BA52124D05E00B1F89F /* CKStrings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CKStrings.swift; sourceTree = "<group>"; };
 		B5F5CC5220EA6B1400717667 /* MoyaResponse+ErrorMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MoyaResponse+ErrorMessage.swift"; sourceTree = "<group>"; };
@@ -2979,6 +2981,7 @@
 				B584766F20E141BF00F5FE60 /* SettingsTableViewSectionHeader.swift */,
 				B584767120E141DC00F5FE60 /* SettingsTableViewSectionHeader.xib */,
 				B5EDFB34231ED12A00B8E739 /* TransactionHistorySummaryHeader.swift */,
+				B5EDFB36231EE00800B8E739 /* TransactionHistorySummaryHeader.xib */,
 			);
 			path = "Headers and Footers";
 			sourceTree = "<group>";
@@ -3909,6 +3912,7 @@
 				308F6F03217F91A50094D6CB /* ServerAddressView.xib in Resources */,
 				A2952F7422BBBAAB00BDCE65 /* TimePeriodCell.xib in Resources */,
 				3B0C4FE022A1ACBD000FE760 /* VerfiedTwitterUserIndicatorView.xib in Resources */,
+				B5EDFB37231EE00800B8E739 /* TransactionHistorySummaryHeader.xib in Resources */,
 				3B4B39F0203773C5007B7CC8 /* PlaceholderViewController.storyboard in Resources */,
 				B52A25C32077CD3400F636A1 /* TransactionHistoryViewController.storyboard in Resources */,
 				A216D79120B30C51005FBAC2 /* NoConnectionViewController.storyboard in Resources */,
