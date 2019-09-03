@@ -184,11 +184,13 @@ extension CKMTransaction: TransactionSummaryCellViewModelObject {
 
 }
 
+typealias Satoshis = Int
+
 // MARK: - Computed Amounts
 extension CKMTransaction {
 
-  /// networkFee is calculated in Satoshis, should be sum(vin) - sum(vout), but only vin/vout pertaining to our addresses
-  var networkFee: Int {
+  /// should be sum(vin) - sum(vout), but only vin/vout pertaining to our addresses
+  var networkFee: Satoshis {
     if let tempTransaction = temporarySentTransaction {
       return tempTransaction.feeAmount
     } else if let invitation = invitation {
@@ -200,8 +202,8 @@ extension CKMTransaction {
     return sumVins - sumVouts
   }
 
-  /// Net effect of the transaction on the wallet of current user, returned in Satoshis
-  var netWalletAmount: Int {
+  /// Net effect of the transaction on the wallet of current user
+  var netWalletAmount: Satoshis {
     if let tx = temporarySentTransaction {
       return (tx.amount + tx.feeAmount) * -1 // negative, to show an outgoing amount with a negative impact on wallet balance
     }
@@ -214,28 +216,28 @@ extension CKMTransaction {
   }
 
   /// The amount received after the network fee has been subtracted from the sent amount
-  var receivedAmount: Int {
+  var receivedAmount: Satoshis {
     return isIncoming ? netWalletAmount : (abs(netWalletAmount) - networkFee)
   }
 
   /// Returns sum of `amount` value from all vins
-  private var sumVins: Int {
+  private var sumVins: Satoshis {
     return NSArray(array: vins.asArray()).value(forKeyPath: "@sum.amount") as? Int ?? 0
   }
 
   /// Returns sum of `amount` value from all vouts
-  private var sumVouts: Int {
+  private var sumVouts: Satoshis {
     return NSArray(array: vouts.asArray()).value(forKeyPath: "@sum.amount") as? Int ?? 0
   }
 
   /// Returns sent amount from vins, relative to addresses owned by user's wallet
-  private var myVins: Int {
+  private var myVins: Satoshis {
     let vinsToUse = vins.filter { $0.belongsToWallet }
     return NSArray(array: vinsToUse.asArray()).value(forKeyPath: "@sum.amount") as? Int ?? 0
   }
 
   /// Returns received amount from vouts, relative to addresses owned by user's wallet
-  private var myVouts: Int {
+  private var myVouts: Satoshis {
     let voutsToUse = vouts.filter { $0.address != nil }
     return NSArray(array: voutsToUse.asArray()).value(forKeyPath: "@sum.amount") as? Int ?? 0
   }

@@ -372,6 +372,7 @@ struct ProgressBarConfig {
   let selectedTabIndex: Int
 }
 
+typealias Hours = Int
 struct LightningInvoiceDisplayDetails {
   let invoiceStatus: InvoiceStatus
   let qrCode: UIImage
@@ -379,7 +380,7 @@ struct LightningInvoiceDisplayDetails {
   let memo: String?
 
   enum InvoiceStatus {
-    case pending(Int) //associated value is hours remaining
+    case pending(Hours)
     case expired
     case paid
   }
