@@ -68,9 +68,6 @@ final class StartViewController: BaseViewController {
   }
 
   private func configureButtons() {
-    restoreWalletButton.frame = CGRect(x: 0, y: 0, width: 100, height: 40)
-    restoreWalletButton.backgroundColor = .clear
-    restoreWalletButton.addTarget(self, action: #selector(restoreWalletButtonTapped), for: .touchUpInside)
     let restoreTitle = NSAttributedString(imageName: "rightArrow",
                                           imageSize: CGSize(width: 8, height: 12),
                                           title: "Restore Wallet",
@@ -78,6 +75,12 @@ final class StartViewController: BaseViewController {
                                           font: .regular(12),
                                           imageOffset: CGPoint(x: 0, y: 1),
                                           trailingImage: true)
+    let size = restoreTitle.size()
+    let buffer = CGFloat(16)
+    let width = size.width + buffer
+    restoreWalletButton.frame = CGRect(x: 0, y: 0, width: width, height: 40)
+    restoreWalletButton.backgroundColor = .clear
+    restoreWalletButton.addTarget(self, action: #selector(restoreWalletButtonTapped), for: .touchUpInside)
     restoreWalletButton.setAttributedTitle(restoreTitle, for: .normal)
     self.navigationItem.titleView = restoreWalletButton
 
