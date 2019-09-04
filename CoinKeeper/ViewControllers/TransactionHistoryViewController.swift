@@ -98,6 +98,8 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
     emptyStateBackgroundView.applyCornerRadius(30)
     coordinationDelegate?.viewControllerDidRequestBadgeUpdate(self)
 
+    CKNotificationCenter.subscribe(self, key: .didUpdateWordsBackedUp, selector: #selector(didUpdateWordsBackedUp))
+
     setupCollectionViews()
   }
 
@@ -147,6 +149,11 @@ extension TransactionHistoryViewController: TransactionHistoryDataSourceDelegate
   func transactionDataSourceDidChange() {
     reloadCollectionViews()
   }
+
+  @objc func didUpdateWordsBackedUp() {
+    transactionDataSourceDidChange()
+  }
+
 }
 
 extension TransactionHistoryViewController: NoTransactionsViewDelegate {

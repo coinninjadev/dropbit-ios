@@ -158,7 +158,7 @@ extension AppCoordinator {
     recoveryWordsIntroViewController.recoveryWords = usableWords
     assignCoordinationDelegate(to: recoveryWordsIntroViewController)
     navigationController.present(CNNavigationController(rootViewController: recoveryWordsIntroViewController),
-                                 animated: false,
+                                 animated: true,
                                  completion: nil)
   }
 
