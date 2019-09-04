@@ -115,6 +115,11 @@ class WalletOverviewViewController: BaseViewController, StoryboardInitializable 
       .subscribe(key: .willShowTransactionHistoryDetails, object: nil, queue: .main) { _ in
     }
 
+    self.showTransactionHistoryToken = CKNotificationCenter
+      .subscribe(key: .didUpdateInvoicesLocally, object: nil, queue: .main) { _ in
+        self.baseViewControllers.forEach { ($0 as? TransactionHistoryViewController)?.summaryCollectionView.reloadData() }
+    }
+
     self.dismissTransactionHistoryToken = CKNotificationCenter
       .subscribe(key: .didDismissTransactionHistoryDetails, object: nil, queue: .main) { _ in
     }

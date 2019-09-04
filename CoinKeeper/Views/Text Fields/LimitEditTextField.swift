@@ -25,7 +25,7 @@ class LimitEditTextField: UITextField {
   override func awakeFromNib() {
     super.awakeFromNib()
     backgroundColor = UIColor.clear
-    textColor = .lightBlueTint
+    textColor = .darkBlueText
     keyboardType = .decimalPad
     font = .regular(30)
     shouldDisableActions = true

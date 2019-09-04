@@ -15,18 +15,21 @@ protocol CopyToClipboardMessageDisplayable: AnyObject {
 
 extension AppCoordinator: RequestPayViewControllerDelegate {
 
+  func viewControllerDidCreateInvoice(_ viewController: UIViewController) {
+    guard let txDataWorker = workerFactory.createTransactionDataWorker() else { return }
+
+    let context = persistenceManager.createBackgroundContext()
+    txDataWorker.performFetchAndStoreAllLightningTransactions(in: context)
+      .done(in: context) {
+        try? context.save()
+        CKNotificationCenter.publish(key: .didUpdateInvoicesLocally)
+    }.cauterize()
+  }
+
   func viewControllerDidSelectCreateInvoice(_ viewController: UIViewController,
                                             forAmount sats: Int,
                                             withMemo memo: String?) -> Promise<LNCreatePaymentRequestResponse> {
-    guard let txDataWorker = workerFactory.createTransactionDataWorker() else {
-        return Promise(error: SyncRoutineError.missingWorkers)
-    }
-
-    let context = persistenceManager.createBackgroundContext()
     return networkManager.createLightningPaymentRequest(sats: sats, expires: TimeInterval.oneDay, memo: memo)
-      .get(in: context) { _ in
-        txDataWorker.performFetchAndStoreAllLightningTransactions(in: context).cauterize()
-      }
   }
 
   func viewControllerDidSelectSendRequest(_ viewController: UIViewController, payload: [Any]) {

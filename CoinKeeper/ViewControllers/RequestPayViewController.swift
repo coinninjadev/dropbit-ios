@@ -11,6 +11,7 @@ import PromiseKit
 import SVProgressHUD
 
 protocol RequestPayViewControllerDelegate: ViewControllerDismissable, CopyToClipboardMessageDisplayable, CurrencyValueDataSourceType {
+  func viewControllerDidCreateInvoice(_ viewController: UIViewController)
   func viewControllerDidSelectSendRequest(_ viewController: UIViewController, payload: [Any])
   func viewControllerDidSelectCreateInvoice(_ viewController: UIViewController,
                                             forAmount sats: Int,
@@ -74,7 +75,7 @@ final class RequestPayViewController: PresentableViewController, StoryboardIniti
   }
 
   @IBAction func sendRequestButtonTapped(_ sender: UIButton) {
-    resignFirstResponder()
+    editAmountView.primaryAmountTextField.resignFirstResponder()
     switch viewModel.walletTransactionType {
     case .onChain:
       var payload: [Any] = []
@@ -136,6 +137,8 @@ final class RequestPayViewController: PresentableViewController, StoryboardIniti
     coordinationDelegate?.viewControllerDidSelectCreateInvoice(self, forAmount: amount, withMemo: memo)
       .get { response in
         SVProgressHUD.dismiss()
+        self.editAmountView.isUserInteractionEnabled = false
+        self.coordinationDelegate?.viewControllerDidCreateInvoice(self)
         self.lightningInvoice = response
         self.setupStyle()
       }.catch { error in
@@ -185,6 +188,9 @@ final class RequestPayViewController: PresentableViewController, StoryboardIniti
     super.viewDidLoad()
 
     closeButton.isHidden = !isModal
+    memoTextField.backgroundColor = .lightGrayBackground
+    memoTextField.font = .medium(14)
+    memoLabel.font = .light(14)
     editAmountView.disableSwap()
     setupCurrencySwappableEditAmountView()
     registerForRateUpdates()
@@ -245,11 +251,11 @@ final class RequestPayViewController: PresentableViewController, StoryboardIniti
       bottomActionButton.style = .bitcoin(true)
       memoTextField.isHidden = true
       walletToggleView.isHidden = true
+      memoLabel.isHidden = false
       memoLabel.text = memoTextField.text
       bottomActionButton.setTitle("SEND REQUEST", for: .normal)
       tapInstructionLabel.text = "TAP INVOICE TO SAVE TO CLIPBOARD"
     } else {
-      editAmountView.isUserInteractionEnabled = false
       qrImageView.isHidden = true
       memoTextField.isHidden = false
       tapInstructionLabel.isHidden = true

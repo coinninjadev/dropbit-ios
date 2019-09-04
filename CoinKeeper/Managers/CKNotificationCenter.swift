@@ -18,6 +18,7 @@ public enum CKNotificationKey: String {
   case didStartSync
   case didFinishSync
   case didUpdateAvatar
+  case didUpdateInvoicesLocally
   case willShowTransactionHistoryDetails
   case didDismissTransactionHistoryDetails
 

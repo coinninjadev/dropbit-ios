@@ -120,24 +120,27 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="HYr-v2-EUu">
-                                <rect key="frame" x="87.5" y="233.5" width="200" height="200"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="HYr-v2-EUu">
+                                <rect key="frame" x="25" y="233.5" width="325" height="200"/>
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="fakeQRCode" translatesAutoresizingMaskIntoConstraints="NO" id="yCG-vq-wcx">
-                                        <rect key="frame" x="0.0" y="0.0" width="200" height="200"/>
+                                        <rect key="frame" x="62.5" y="0.0" width="200" height="200"/>
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="yCG-vq-wcx" secondAttribute="height" multiplier="1:1" id="h2X-c5-T6D"/>
                                             <constraint firstAttribute="height" constant="200" id="vxW-qC-b1f"/>
                                         </constraints>
                                     </imageView>
-                                    <textField hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Add a memo" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="B7w-fz-jjI">
-                                        <rect key="frame" x="0.0" y="0.0" width="200" height="0.0"/>
+                                    <textField hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Add a memo" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="B7w-fz-jjI">
+                                        <rect key="frame" x="0.0" y="0.0" width="325" height="50"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="50" id="wic-9x-7R9"/>
+                                        </constraints>
                                         <nil key="textColor"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits"/>
                                     </textField>
                                     <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="os7-W8-LQE">
-                                        <rect key="frame" x="79" y="0.0" width="42" height="0.0"/>
+                                        <rect key="frame" x="141.5" y="0.0" width="42" height="0.0"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
@@ -159,6 +162,7 @@
                             <constraint firstItem="HBw-Hi-FEb" firstAttribute="leading" secondItem="JPR-x5-n03" secondAttribute="leading" constant="32" id="JID-g8-Qd6"/>
                             <constraint firstItem="9sV-IT-Xdn" firstAttribute="leading" secondItem="JPR-x5-n03" secondAttribute="leading" constant="24" id="Jzc-M8-qKo"/>
                             <constraint firstItem="lLa-Tj-vN7" firstAttribute="top" secondItem="JPR-x5-n03" secondAttribute="top" constant="20" id="LCl-9n-jty"/>
+                            <constraint firstItem="HYr-v2-EUu" firstAttribute="leading" secondItem="JPR-x5-n03" secondAttribute="leading" constant="25" id="OQi-ff-RVX"/>
                             <constraint firstItem="FI6-On-wIa" firstAttribute="centerX" secondItem="mDk-3W-oP8" secondAttribute="centerX" id="RDA-3J-dMo"/>
                             <constraint firstItem="HBw-Hi-FEb" firstAttribute="top" secondItem="JPR-x5-n03" secondAttribute="top" constant="29" id="Rv1-gs-Z25"/>
                             <constraint firstItem="JPR-x5-n03" firstAttribute="trailing" secondItem="HBw-Hi-FEb" secondAttribute="trailing" constant="32" id="TKW-xa-eor"/>
@@ -168,6 +172,7 @@
                             <constraint firstItem="lLa-Tj-vN7" firstAttribute="centerX" secondItem="mDk-3W-oP8" secondAttribute="centerX" id="g60-Cq-S8u"/>
                             <constraint firstItem="HYr-v2-EUu" firstAttribute="centerY" secondItem="mDk-3W-oP8" secondAttribute="centerY" id="i7k-AF-Hqk"/>
                             <constraint firstItem="onG-ir-r5H" firstAttribute="top" secondItem="FI6-On-wIa" secondAttribute="bottom" constant="40" id="l8A-ii-6M8"/>
+                            <constraint firstItem="JPR-x5-n03" firstAttribute="trailing" secondItem="HYr-v2-EUu" secondAttribute="trailing" constant="25" id="mth-8P-gE8"/>
                             <constraint firstItem="Uhe-X0-Ar1" firstAttribute="top" secondItem="JPR-x5-n03" secondAttribute="top" constant="20" id="wm8-lW-jCK"/>
                             <constraint firstItem="JPR-x5-n03" firstAttribute="trailing" secondItem="9sV-IT-Xdn" secondAttribute="trailing" constant="24" id="yzD-qX-M8V"/>
                         </constraints>
