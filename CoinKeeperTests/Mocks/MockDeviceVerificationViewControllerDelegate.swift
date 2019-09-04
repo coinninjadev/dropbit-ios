@@ -12,7 +12,7 @@ import UIKit
 class MockDeviceVerificationViewControllerDelegate: DeviceVerificationViewControllerDelegate {
 
   var didRequestResend = false
-  func viewControllerDidRequestResendCode(_ viewController: DeviceVerificationViewController) {
+  func viewControllerDidRequestResendCode(_ viewController: DeviceVerificationViewController, temporaryUserId: String) {
     didRequestResend = true
   }
 
