@@ -118,15 +118,21 @@ final class LightningUpgradeStatusViewController: BaseViewController, Storyboard
   }
 
   private func finishedCreatingNewWallet() {
-    creatingNewWalletStatusImageView.image = completedImage
+    DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+      self.creatingNewWalletStatusImageView.image = self.completedImage
+    }
   }
 
   private func finishedUpdatingToSegwit() {
-    updatingToSegwitStatusImageView.image = completedImage
+    DispatchQueue.main.asyncAfter(deadline: .now() + 4.0) {
+      self.updatingToSegwitStatusImageView.image = self.completedImage
+    }
   }
 
   private func finishedTransferringFunds() {
-    transferringFundsStatusImageView.image = completedImage
+    DispatchQueue.main.asyncAfter(deadline: .now() + 6.0) {
+      self.transferringFundsStatusImageView.image = self.completedImage
+    }
   }
 
 }
