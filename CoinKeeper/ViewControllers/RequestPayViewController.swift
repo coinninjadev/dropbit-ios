@@ -12,7 +12,9 @@ import SVProgressHUD
 
 protocol RequestPayViewControllerDelegate: ViewControllerDismissable, CopyToClipboardMessageDisplayable, CurrencyValueDataSourceType {
   func viewControllerDidSelectSendRequest(_ viewController: UIViewController, payload: [Any])
-  func viewControllerDidSelectCreateInvoice(_ viewController: UIViewController, forAmount amount: Int, withMemo memo: String?) -> Promise<LNDecodePaymentRequestResponse>
+  func viewControllerDidSelectCreateInvoice(_ viewController: UIViewController,
+                                            forAmount sats: Int,
+                                            withMemo memo: String?) -> Promise<LNCreatePaymentRequestResponse>
   func viewControllerDidRequestNextReceiveAddress(_ viewController: UIViewController) -> String?
   func selectedCurrencyPair() -> CurrencyPair
 }
@@ -72,7 +74,8 @@ final class RequestPayViewController: PresentableViewController, StoryboardIniti
   }
 
   @IBAction func sendRequestButtonTapped(_ sender: UIButton) {
-    switch walletTransactionType {
+    resignFirstResponder()
+    switch viewModel.walletTransactionType {
     case .onChain:
       var payload: [Any] = []
       qrImageView.image.flatMap { $0.pngData() }.flatMap { payload.append($0) }
@@ -88,17 +91,22 @@ final class RequestPayViewController: PresentableViewController, StoryboardIniti
       if let lightningInvoice = lightningInvoice {
         var payload: [Any] = []
         qrImageView.image.flatMap { $0.pngData() }.flatMap { payload.append($0) }
-        payload.append(lightningInvoice.paymentHash)
+        payload.append(lightningInvoice.request)
         coordinationDelegate?.viewControllerDidSelectSendRequest(self, payload: payload)
       } else {
-        createLightningInvoice(withAmount: 100, memo: memoTextField.text) //TODO: add amount
+        createLightningInvoice(withAmount: viewModel.btcAmount.asFractionalUnits(of: .BTC), memo: memoTextField.text)
       }
     }
   }
 
   @IBAction func addressTapped(_ sender: UITapGestureRecognizer) {
     UIPasteboard.general.string = viewModel.receiveAddress
-    coordinationDelegate?.viewControllerSuccessfullyCopiedToClipboard(message: "Address copied to clipboard!", viewController: self)
+    switch viewModel.walletTransactionType {
+    case .onChain:
+      coordinationDelegate?.viewControllerSuccessfullyCopiedToClipboard(message: "Address copied to clipboard!", viewController: self)
+    case .lightning:
+      coordinationDelegate?.viewControllerSuccessfullyCopiedToClipboard(message: "Invoice copied to clipboard!", viewController: self)
+    }
   }
 
   // MARK: variables
@@ -116,13 +124,12 @@ final class RequestPayViewController: PresentableViewController, StoryboardIniti
   var isModal: Bool = true
   var shouldHideEditAmountView = true
   var shouldHideAddAmountButton: Bool { return !shouldHideEditAmountView }
-  var walletTransactionType: WalletTransactionType = .onChain
-  var lightningInvoice: LNDecodePaymentRequestResponse?
+  var lightningInvoice: LNCreatePaymentRequestResponse?
   var hasLightningInvoice: Bool {
     return lightningInvoice != nil
   }
 
-  var alertManager: AlertManager?
+  var alertManager: AlertManagerType?
 
   private func createLightningInvoice(withAmount amount: Int, memo: String?) {
     SVProgressHUD.show()
@@ -133,7 +140,7 @@ final class RequestPayViewController: PresentableViewController, StoryboardIniti
         self.setupStyle()
       }.catch { error in
         SVProgressHUD.dismiss()
-        if let alert = self.alertManager?.defaultAlert(withTitle: "Error", description: "There was an error when creating your invoice, please try again") {
+        if let alert = self.alertManager?.defaultAlert(withTitle: "Error", description: error.localizedDescription) {
           self.present(alert, animated: true, completion: nil)
         }
       }
@@ -159,7 +166,7 @@ final class RequestPayViewController: PresentableViewController, StoryboardIniti
                           receiveAddress: String,
                           currencyPair: CurrencyPair,
                           walletTransactionType: WalletTransactionType,
-                          alertManager: AlertManager,
+                          alertManager: AlertManagerType,
                           exchangeRates: ExchangeRates) -> RequestPayViewController {
     let vc = RequestPayViewController.makeFromStoryboard()
     vc.generalCoordinationDelegate = delegate
@@ -178,6 +185,7 @@ final class RequestPayViewController: PresentableViewController, StoryboardIniti
     super.viewDidLoad()
 
     closeButton.isHidden = !isModal
+    editAmountView.disableSwap()
     setupCurrencySwappableEditAmountView()
     registerForRateUpdates()
     updateRatesAndView()
@@ -210,8 +218,14 @@ final class RequestPayViewController: PresentableViewController, StoryboardIniti
   }
 
   func setupStyle() {
-    switch walletTransactionType {
+    switch viewModel.walletTransactionType {
     case .onChain:
+      receiveAddressBGView.isHidden = false
+      tapInstructionLabel.isHidden = false
+      qrImageView.isHidden = false
+      receiveAddressLabel.isHidden = false
+      memoTextField.isHidden = true
+      walletToggleView.selectBitcoinButton()
       bottomActionButton.style = .bitcoin(true)
       bottomActionButton.setTitle("SEND REQUEST", for: .normal)
     case .lightning:
@@ -221,17 +235,43 @@ final class RequestPayViewController: PresentableViewController, StoryboardIniti
 
   private func setupStyleForLightningRequest() {
     if let invoice = lightningInvoice {
+      qrImageView.isHidden = false
+      addAmountButton.isHidden = true
+      expirationLabel.isHidden = false
+      tapInstructionLabel.isHidden = false
+      receiveAddressLabel.text = invoice.request
+      receiveAddressLabel.isHidden = false
+      receiveAddressBGView.isHidden = false
+      bottomActionButton.style = .bitcoin(true)
       memoTextField.isHidden = true
-      memoLabel.text = invoice.description
+      walletToggleView.isHidden = true
+      memoLabel.text = memoTextField.text
       bottomActionButton.setTitle("SEND REQUEST", for: .normal)
+      tapInstructionLabel.text = "TAP INVOICE TO SAVE TO CLIPBOARD"
     } else {
+      editAmountView.isUserInteractionEnabled = false
+      qrImageView.isHidden = true
+      memoTextField.isHidden = false
+      tapInstructionLabel.isHidden = true
+      receiveAddressLabel.isHidden = true
+      receiveAddressBGView.isHidden = true
       bottomActionButton.setTitle("CREATE INVOICE", for: .normal)
-      bottomActionButton.style = .lightning(true)
     }
+
+    walletToggleView.selectLightningButton()
+    bottomActionButton.style = .lightning(true)
   }
 
   func updateViewWithViewModel() {
-    receiveAddressLabel.text = viewModel.receiveAddress
+    switch viewModel.walletTransactionType {
+    case .lightning:
+      if let invoice = lightningInvoice {
+        receiveAddressLabel.text = invoice.request
+      }
+    case .onChain:
+      receiveAddressLabel.text = viewModel.receiveAddress
+    }
+
     updateQRImage()
     let labels = viewModel.dualAmountLabels()
     editAmountView.configure(withLabels: labels, delegate: self)
@@ -247,12 +287,12 @@ final class RequestPayViewController: PresentableViewController, StoryboardIniti
 extension RequestPayViewController: WalletToggleViewDelegate {
 
   func bitcoinWalletButtonWasTouched() {
-    walletTransactionType = .onChain
+    viewModel.walletTransactionType = .onChain
     setupStyle()
   }
 
   func lightningWalletButtonWasTouched() {
-    walletTransactionType = .lightning
+    viewModel.walletTransactionType = .lightning
     setupStyle()
   }
 

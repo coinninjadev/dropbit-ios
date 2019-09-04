@@ -7,12 +7,27 @@
 //
 
 import UIKit
+import PromiseKit
 
 protocol CopyToClipboardMessageDisplayable: AnyObject {
   func viewControllerSuccessfullyCopiedToClipboard(message: String, viewController: UIViewController)
 }
 
 extension AppCoordinator: RequestPayViewControllerDelegate {
+
+  func viewControllerDidSelectCreateInvoice(_ viewController: UIViewController,
+                                            forAmount sats: Int,
+                                            withMemo memo: String?) -> Promise<LNCreatePaymentRequestResponse> {
+    guard let txDataWorker = workerFactory.createTransactionDataWorker() else {
+        return Promise(error: SyncRoutineError.missingWorkers)
+    }
+
+    let context = persistenceManager.createBackgroundContext()
+    return networkManager.createLightningPaymentRequest(sats: sats, expires: TimeInterval.oneDay, memo: memo)
+      .get(in: context) { _ in
+        txDataWorker.performFetchAndStoreAllLightningTransactions(in: context).cauterize()
+      }
+  }
 
   func viewControllerDidSelectSendRequest(_ viewController: UIViewController, payload: [Any]) {
     guard let requestPayVC = viewController as? RequestPayViewController else { return }

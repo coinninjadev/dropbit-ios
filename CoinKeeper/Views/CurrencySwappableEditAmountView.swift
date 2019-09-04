@@ -52,6 +52,11 @@ class CurrencySwappableEditAmountView: UIView {
     secondaryAmountLabel.font = .regular(17)
   }
 
+  func disableSwap() {
+    swapButton.isUserInteractionEnabled = false
+    swapButton.isHidden = true
+  }
+
   func configure(withLabels labels: DualAmountLabels,
                  delegate: CurrencySwappableEditAmountViewDelegate) {
     update(with: labels)
