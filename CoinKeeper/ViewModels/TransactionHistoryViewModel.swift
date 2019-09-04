@@ -77,22 +77,54 @@ class TransactionHistoryViewModel: NSObject, UICollectionViewDataSource, Exchang
   func collectionView(_ collectionView: UICollectionView,
                       viewForSupplementaryElementOfKind kind: String,
                       at indexPath: IndexPath) -> UICollectionReusableView {
-    let summaryIdentifier = TransactionHistorySummaryHeader.reuseIdentifier
-    let supplementaryView = collectionView.dequeueReusableSupplementaryView(ofKind: kind,
-                                                                            withReuseIdentifier: summaryIdentifier,
-                                                                            for: indexPath)
-    if let summaryHeader = supplementaryView as? TransactionHistorySummaryHeader,
-      let headerType = delegate.summaryHeaderType() {
-      summaryHeader.configure(with: headerType.message, delegate: self.delegate)
-      let radius = (warningHeaderHeight - summaryHeader.bottomConstraint.constant) / 2
-      summaryHeader.messageButton.applyCornerRadius(radius)
-    }
+    if kind == UICollectionView.elementKindSectionHeader {
+      let summaryIdentifier = TransactionHistorySummaryHeader.reuseIdentifier
+      let supplementaryView = collectionView.dequeueReusableSupplementaryView(ofKind: kind,
+                                                                              withReuseIdentifier: summaryIdentifier,
+                                                                              for: indexPath)
+      if let summaryHeader = supplementaryView as? TransactionHistorySummaryHeader,
+        let headerType = delegate.summaryHeaderType() {
+        summaryHeader.configure(with: headerType.message, delegate: self.delegate)
+        let radius = (warningHeaderHeight - summaryHeader.bottomConstraint.constant) / 2
+        summaryHeader.messageButton.applyCornerRadius(radius)
+      }
+      return supplementaryView
 
-    return supplementaryView
+    } else {
+      let summaryIdentifier = TransactionHistorySummaryFooter.reuseIdentifier
+      let supplementaryView = collectionView.dequeueReusableSupplementaryView(ofKind: kind,
+                                                                              withReuseIdentifier: summaryIdentifier,
+                                                                              for: indexPath)
+      supplementaryView.backgroundColor = .whiteBackground
+      return supplementaryView
+    }
+  }
+
+  func footerHeight(for collectionView: UICollectionView, section: Int) -> CGFloat {
+    // Because the collectionView frame ends at the safe area, we rely on the emptyStateBackgroundView
+    // to serve as the background for the very bottom, this footer is only needed to cover distance between
+    // the cells and the top of the emptyStateBackgroundView.
+    return TransactionHistorySummaryCollectionView.cellHeight
   }
 
   func didUpdateExchangeRateManager(_ exchangeRateManager: ExchangeRateManager) {
     delegate.viewModelDidUpdateExchangeRates()
+  }
+
+  var shouldShowLightningEmptyView: Bool {
+    return dataSource.numberOfItems(inSection: 0) == 0 && walletTransactionType == .lightning
+  }
+
+  var shouldShowNoBalanceView: Bool {
+    return dataSource.numberOfItems(inSection: 0) == 0 && walletTransactionType == .onChain
+  }
+
+  var shouldShowWithBalanceView: Bool {
+    return dataSource.numberOfItems(inSection: 0) == 1 && walletTransactionType == .onChain
+  }
+
+  var shouldShowEmptyDataSet: Bool {
+    return shouldShowNoBalanceView || shouldShowWithBalanceView || shouldShowLightningEmptyView
   }
 
 }

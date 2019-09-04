@@ -18,6 +18,7 @@ class TransactionHistorySummaryCollectionView: UICollectionView {
 
   let topInset: CGFloat = 140
   let topConstraintConstant: CGFloat = 62
+  static let cellHeight: CGFloat = 108
   weak var historyDelegate: TransactionHistorySummaryCollectionViewDelegate?
 
   override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
@@ -37,7 +38,8 @@ extension TransactionHistoryViewController {
 
   func setupCollectionViews() {
     summaryCollectionView.registerNib(cellType: TransactionHistorySummaryCell.self)
-    summaryCollectionView.registerReusableView(reusableViewType: TransactionHistorySummaryHeader.self)
+    summaryCollectionView.registerReusableSectionHeader(reusableViewType: TransactionHistorySummaryHeader.self)
+    summaryCollectionView.registerReusableSectionFooter(reusableViewType: TransactionHistorySummaryFooter.self)
     summaryCollectionView.showsVerticalScrollIndicator = false
     enableVerticallyExpandedScrolling()
 
@@ -79,7 +81,8 @@ extension TransactionHistoryViewController: UICollectionViewDelegateFlowLayout {
   func collectionView(_ collectionView: UICollectionView,
                       layout collectionViewLayout: UICollectionViewLayout,
                       sizeForItemAt indexPath: IndexPath) -> CGSize {
-    return CGSize(width: collectionView.frame.width, height: 108)
+    return CGSize(width: collectionView.frame.width,
+                  height: TransactionHistorySummaryCollectionView.cellHeight)
   }
 
   func collectionView(_ collectionView: UICollectionView,
@@ -90,6 +93,13 @@ extension TransactionHistoryViewController: UICollectionViewDelegateFlowLayout {
     } else {
       return CGSize(width: collectionView.frame.width, height: self.viewModel.warningHeaderHeight)
     }
+  }
+
+  func collectionView(_ collectionView: UICollectionView,
+                      layout collectionViewLayout: UICollectionViewLayout,
+                      referenceSizeForFooterInSection section: Int) -> CGSize {
+    let height = viewModel.footerHeight(for: collectionView, section: section)
+    return CGSize(width: collectionView.frame.width, height: height)
   }
 
 }

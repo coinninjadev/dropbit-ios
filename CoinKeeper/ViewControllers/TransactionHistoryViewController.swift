@@ -92,7 +92,8 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
     transactionHistoryNoBalanceView.delegate = self
     transactionHistoryWithBalanceView.delegate = self
     lightningTransactionHistoryEmptyBalanceView.delegate = coordinationDelegate
-    emptyStateBackgroundView.isHidden = true
+    emptyStateBackgroundView.isHidden = false
+    emptyStateBackgroundView.backgroundColor = .whiteBackground
 
     view.backgroundColor = .clear
     emptyStateBackgroundView.applyCornerRadius(30)
@@ -199,16 +200,15 @@ extension TransactionHistoryViewController: TransactionHistoryViewModelDelegate 
 }
 
 extension TransactionHistoryViewController: DZNEmptyDataSetDelegate, DZNEmptyDataSetSource {
+
   func emptyDataSetShouldBeForced(toDisplay scrollView: UIScrollView!) -> Bool {
-    return shouldShowNoBalanceView || shouldShowWithBalanceView || shouldShowLightningEmptyView
+    return viewModel.shouldShowEmptyDataSet
   }
 
   func emptyDataSetShouldDisplay(_ scrollView: UIScrollView!) -> Bool {
-    let shouldDisplay = shouldShowNoBalanceView || shouldShowWithBalanceView || shouldShowLightningEmptyView
-    emptyStateBackgroundView.isHidden = !shouldDisplay
     let offset = verticalOffset(forEmptyDataSet: scrollView)
     emptyStateBackgroundTopConstraint.constant = summaryCollectionView.topInset + offset
-    return shouldDisplay
+    return viewModel.shouldShowEmptyDataSet
   }
 
   func emptyDataSetShouldAllowTouch(_ scrollView: UIScrollView!) -> Bool {
@@ -216,13 +216,13 @@ extension TransactionHistoryViewController: DZNEmptyDataSetDelegate, DZNEmptyDat
   }
 
   func customView(forEmptyDataSet scrollView: UIScrollView!) -> UIView! {
-    if shouldShowNoBalanceView {
+    if viewModel.shouldShowNoBalanceView {
       transactionHistoryNoBalanceView.isHidden = false
       return transactionHistoryNoBalanceView
-    } else if shouldShowWithBalanceView {
+    } else if viewModel.shouldShowWithBalanceView {
       transactionHistoryWithBalanceView.isHidden = false
       return transactionHistoryWithBalanceView
-    } else if shouldShowLightningEmptyView {
+    } else if viewModel.shouldShowLightningEmptyView {
       lightningTransactionHistoryEmptyBalanceView.isHidden = false
       return lightningTransactionHistoryEmptyBalanceView
     } else {
@@ -235,15 +235,4 @@ extension TransactionHistoryViewController: DZNEmptyDataSetDelegate, DZNEmptyDat
     return headerIsShown ? self.viewModel.warningHeaderHeight : 0
   }
 
-  private var shouldShowLightningEmptyView: Bool {
-    return viewModel.dataSource.numberOfItems(inSection: 0) == 0 && viewModel.walletTransactionType == .lightning
-  }
-
-  private var shouldShowNoBalanceView: Bool {
-    return viewModel.dataSource.numberOfItems(inSection: 0) == 0 && viewModel.walletTransactionType == .onChain
-  }
-
-  private var shouldShowWithBalanceView: Bool {
-    return viewModel.dataSource.numberOfItems(inSection: 0) == 1 && viewModel.walletTransactionType == .onChain
-  }
 }
