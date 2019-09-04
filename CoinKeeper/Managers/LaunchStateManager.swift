@@ -28,6 +28,7 @@ protocol LaunchStateManagerType: AnyObject {
   func unauthenticateUser()
   func isFirstTime() -> Bool
   func isFirstTimeAfteriCloudRestore() -> Bool
+  func isUpgradedToSegwit() -> Bool
 }
 
 /**
@@ -42,6 +43,7 @@ struct LaunchStateProperties: OptionSet {
   static let wordsBackedUp = LaunchStateProperties(rawValue: 1 << 2)
   static let deviceVerified = LaunchStateProperties(rawValue: 1 << 3)
   static let databaseWalletExists = LaunchStateProperties(rawValue: 1 << 4)
+  static let upgradedToSegwit = LaunchStateProperties(rawValue: 1 << 5)
 }
 
 class LaunchStateManager: LaunchStateManagerType {
@@ -83,6 +85,10 @@ class LaunchStateManager: LaunchStateManagerType {
       if persistenceManager.databaseManager.walletId(in: context) != nil {
         options.insert(.databaseWalletExists)
       }
+    }
+
+    if let words = persistenceManager.keychainManager.retrieveValue(for: .walletWordsV2) as? [String], words.count == 12 {
+      options.insert(.upgradedToSegwit)
     }
 
     return options
@@ -145,6 +151,10 @@ class LaunchStateManager: LaunchStateManagerType {
     log.debug("Words backed up: \(wordsBackedUp), Device verified: \(deviceVerified)")
 
     return criteria.isSubset(of: properties)
+  }
+
+  func isUpgradedToSegwit() -> Bool {
+    return currentProperties().contains(.upgradedToSegwit)
   }
 
   // MARK: In-Memory Status
