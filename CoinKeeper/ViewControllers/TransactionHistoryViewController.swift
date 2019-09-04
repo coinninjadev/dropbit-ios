@@ -36,6 +36,7 @@ protocol TransactionHistoryViewControllerDelegate: DeviceCountryCodeProvider &
 class TransactionHistoryViewController: BaseViewController, StoryboardInitializable {
 
   @IBOutlet var emptyStateBackgroundView: UIView!
+  @IBOutlet var emptyStateBackgroundTopConstraint: NSLayoutConstraint!
   @IBOutlet var summaryCollectionView: TransactionHistorySummaryCollectionView!
   @IBOutlet var transactionHistoryNoBalanceView: TransactionHistoryNoBalanceView!
   @IBOutlet var transactionHistoryWithBalanceView: TransactionHistoryWithBalanceView!
@@ -198,6 +199,9 @@ extension TransactionHistoryViewController: DZNEmptyDataSetDelegate, DZNEmptyDat
   func emptyDataSetShouldDisplay(_ scrollView: UIScrollView!) -> Bool {
     let shouldDisplay = shouldShowNoBalanceView || shouldShowWithBalanceView || shouldShowLightningEmptyView
     emptyStateBackgroundView.isHidden = !shouldDisplay
+    let defaultTopConstraintConstant: CGFloat = 140
+    let offset = verticalOffset(forEmptyDataSet: scrollView)
+    emptyStateBackgroundTopConstraint.constant = defaultTopConstraintConstant + offset
     return shouldDisplay
   }
 
@@ -221,7 +225,8 @@ extension TransactionHistoryViewController: DZNEmptyDataSetDelegate, DZNEmptyDat
   }
 
   func verticalOffset(forEmptyDataSet scrollView: UIScrollView!) -> CGFloat {
-    return 0
+    let headerIsShown = coordinationDelegate.summaryHeaderType(for: self) != nil
+    return headerIsShown ? self.viewModel.warningHeaderHeight : 0
   }
 
   private var shouldShowLightningEmptyView: Bool {
