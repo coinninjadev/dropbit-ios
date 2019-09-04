@@ -28,7 +28,6 @@ class DropBitUIDatabaseTests: UITestCase {
     let toastExists = toastLabel.waitForExistence(timeout: 2.0)
     XCTAssert(toastExists)
 
-    let app = XCUIApplication()
     app.buttons["RESTORE NOW"].tap()
 
     PinCreationPage().enterSimplePin(digit: 1, times: 6)

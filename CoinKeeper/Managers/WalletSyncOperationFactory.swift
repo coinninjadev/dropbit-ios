@@ -93,6 +93,7 @@ class WalletSyncOperationFactory {
     return dependencies.databaseMigrationWorker.migrateIfPossible()
       .then { _ in dependencies.keychainMigrationWorker.migrateIfPossible() }
       .then(in: context) { self.checkAndRecoverAuthorizationIds(with: dependencies, in: context) }
+      .then(in: context) { self.checkAndVerifyWallet(with: dependencies, in: context) }
       .then(in: context) { dependencies.txDataWorker.performFetchAndStoreAllTransactionalData(in: context, fullSync: fullSync) }
       .get { _ in dependencies.connectionManager.setAPIUnreachable(false) }
       .then(in: context) { dependencies.walletWorker.updateServerPoolAddresses(in: context) }
@@ -115,16 +116,23 @@ class WalletSyncOperationFactory {
     }
   }
 
-  func checkAndRecoverAuthorizationIds(with dependencies: SyncDependencies, in context: NSManagedObjectContext) -> Promise<Void> {
-    let walletId: String? = dependencies.persistenceManager.brokers.wallet.walletId(in: context)
+  private func checkAndRecoverAuthorizationIds(with dependencies: SyncDependencies, in context: NSManagedObjectContext) -> Promise<Void> {
     let userId: String? = dependencies.persistenceManager.brokers.user.userId(in: context)
 
     if userId != nil {
       return dependencies.networkManager.getUser().asVoid()
+    } else {
+      return Promise.value(())
+    }
+  }
 
-    } else if walletId != nil {
-      return dependencies.networkManager.getWallet().asVoid()
-
+  private func checkAndVerifyWallet(with dependencies: SyncDependencies, in context: NSManagedObjectContext) -> Promise<Void> {
+    let walletId: String? = dependencies.persistenceManager.brokers.wallet.walletId(in: context)
+    if walletId != nil {
+      return dependencies.networkManager
+        .getWallet()
+        .get(in: context) { try dependencies.persistenceManager.brokers.wallet.persistWalletResponse(from: $0, in: context) }
+        .asVoid()
     } else { // walletId is nil
       guard let keychainWords = dependencies.persistenceManager.brokers.wallet.walletWords() else {
         return Promise { $0.reject(CKPersistenceError.noWalletWords) }
