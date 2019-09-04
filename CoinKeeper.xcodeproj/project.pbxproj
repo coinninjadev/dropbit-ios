@@ -846,6 +846,8 @@
 		B5866B4722DD143B0064B622 /* CurrencySwappableEditAmountViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5866B4622DD143B0064B622 /* CurrencySwappableEditAmountViewModel.swift */; };
 		B586C26821B768E700B99257 /* SendPaymentViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B586C26721B768E700B99257 /* SendPaymentViewModelTests.swift */; };
 		B589C20220C1EB72006A8FDB /* PaymentAmountValidatable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B589C20120C1EB72006A8FDB /* PaymentAmountValidatable.swift */; };
+		B58A6A00232016D200D50298 /* TransactionHistorySummaryFooter.xib in Resources */ = {isa = PBXBuildFile; fileRef = B58A69FF232016D200D50298 /* TransactionHistorySummaryFooter.xib */; };
+		B58A6A02232016E700D50298 /* TransactionHistorySummaryFooter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B58A6A01232016E700D50298 /* TransactionHistorySummaryFooter.swift */; };
 		B58AFF2E21948891001BE563 /* UITestDefaultsKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = B58AFF2D21948891001BE563 /* UITestDefaultsKey.swift */; };
 		B58AFF2F21948891001BE563 /* UITestDefaultsKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = B58AFF2D21948891001BE563 /* UITestDefaultsKey.swift */; };
 		B58AFF312194DAF2001BE563 /* UITestPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B58AFF302194DAF2001BE563 /* UITestPage.swift */; };
@@ -1858,6 +1860,8 @@
 		B586C26721B768E700B99257 /* SendPaymentViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendPaymentViewModelTests.swift; sourceTree = "<group>"; };
 		B586F5022175084000682D17 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B589C20120C1EB72006A8FDB /* PaymentAmountValidatable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentAmountValidatable.swift; sourceTree = "<group>"; };
+		B58A69FF232016D200D50298 /* TransactionHistorySummaryFooter.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TransactionHistorySummaryFooter.xib; sourceTree = "<group>"; };
+		B58A6A01232016E700D50298 /* TransactionHistorySummaryFooter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionHistorySummaryFooter.swift; sourceTree = "<group>"; };
 		B58AFF2D21948891001BE563 /* UITestDefaultsKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITestDefaultsKey.swift; sourceTree = "<group>"; };
 		B58AFF302194DAF2001BE563 /* UITestPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITestPage.swift; sourceTree = "<group>"; };
 		B58AFF322194DC24001BE563 /* RestoreWalletPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestoreWalletPage.swift; sourceTree = "<group>"; };
@@ -2982,6 +2986,8 @@
 				B584767120E141DC00F5FE60 /* SettingsTableViewSectionHeader.xib */,
 				B5EDFB34231ED12A00B8E739 /* TransactionHistorySummaryHeader.swift */,
 				B5EDFB36231EE00800B8E739 /* TransactionHistorySummaryHeader.xib */,
+				B58A6A01232016E700D50298 /* TransactionHistorySummaryFooter.swift */,
+				B58A69FF232016D200D50298 /* TransactionHistorySummaryFooter.xib */,
 			);
 			path = "Headers and Footers";
 			sourceTree = "<group>";
@@ -3982,6 +3988,7 @@
 				B5E7F219221466EE00358A24 /* CountryCodeSearchView.xib in Resources */,
 				3B23126320DA6CA30099A557 /* TransactionHistoryDetailCellAddressView.xib in Resources */,
 				B5E7F21F22146B9000358A24 /* CountryCodePickerCell.xib in Resources */,
+				B58A6A00232016D200D50298 /* TransactionHistorySummaryFooter.xib in Resources */,
 				A2FE198C2301E05E00C2412D /* WalletTransferViewController.storyboard in Resources */,
 				A257CEB62302E60A0063670B /* FeesView.xib in Resources */,
 				3BF8523D2023788D00EBBE44 /* StartViewController.storyboard in Resources */,
@@ -4454,6 +4461,7 @@
 				A268F13B22EA067B00410040 /* SyncSubscribeable.swift in Sources */,
 				B5DDB0F721DE69C100A25929 /* KeychainMigratorFactory.swift in Sources */,
 				B54D206420F926110057A694 /* UIImage+Mask.swift in Sources */,
+				B58A6A02232016E700D50298 /* TransactionHistorySummaryFooter.swift in Sources */,
 				B54159CE20A60C720048F495 /* WalletResponse.swift in Sources */,
 				A246C82122CA562D00AF1F52 /* NetworkManager+NewsDataRequestable.swift in Sources */,
 				B57B78DD20B4878F007B71CB /* CKDateFormatter.swift in Sources */,
