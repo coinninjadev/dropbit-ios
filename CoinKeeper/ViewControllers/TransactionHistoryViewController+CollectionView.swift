@@ -39,13 +39,10 @@ extension TransactionHistoryViewController {
     summaryCollectionView.registerNib(cellType: TransactionHistorySummaryCell.self)
     summaryCollectionView.registerReusableView(reusableViewType: TransactionHistorySummaryHeader.self)
     summaryCollectionView.showsVerticalScrollIndicator = false
-    summaryCollectionView.alwaysBounceVertical = true
-    summaryCollectionView.contentInset = UIEdgeInsets(top: summaryCollectionView.topInset, left: 0, bottom: 0, right: 0)
+    enableVerticallyExpandedScrolling()
 
     summaryCollectionView.delegate = self
     summaryCollectionView.dataSource = self.viewModel
-
-    summaryCollectionView.backgroundColor = .clear
 
     summaryCollectionView.collectionViewLayout = summaryCollectionViewLayout()
 
@@ -60,6 +57,14 @@ extension TransactionHistoryViewController {
     summaryCollectionView.reloadData()
     coordinationDelegate?.viewControllerSummariesDidReload(self, indexPathsIfNotAll: nil)
   }
+
+  private func enableVerticallyExpandedScrolling() {
+    summaryCollectionView.backgroundColor = .clear
+    summaryCollectionView.alwaysBounceVertical = true
+    summaryCollectionView.contentInset = UIEdgeInsets(top: summaryCollectionView.topInset,
+                                                      left: 0, bottom: 0, right: 0)
+  }
+
 }
 
 extension TransactionHistoryViewController: UICollectionViewDelegateFlowLayout {

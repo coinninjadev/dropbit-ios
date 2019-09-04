@@ -206,9 +206,8 @@ extension TransactionHistoryViewController: DZNEmptyDataSetDelegate, DZNEmptyDat
   func emptyDataSetShouldDisplay(_ scrollView: UIScrollView!) -> Bool {
     let shouldDisplay = shouldShowNoBalanceView || shouldShowWithBalanceView || shouldShowLightningEmptyView
     emptyStateBackgroundView.isHidden = !shouldDisplay
-    let defaultTopConstraintConstant: CGFloat = 140
     let offset = verticalOffset(forEmptyDataSet: scrollView)
-    emptyStateBackgroundTopConstraint.constant = defaultTopConstraintConstant + offset
+    emptyStateBackgroundTopConstraint.constant = summaryCollectionView.topInset + offset
     return shouldDisplay
   }
 
