@@ -14,6 +14,7 @@ protocol TransactionHistorySummaryCollectionViewDelegate: AnyObject {
   func collectionViewDidUncoverWalletBalance()
 }
 
+typealias SummaryCollectionView = TransactionHistorySummaryCollectionView
 class TransactionHistorySummaryCollectionView: UICollectionView {
 
   let topInset: CGFloat = 140
@@ -82,7 +83,7 @@ extension TransactionHistoryViewController: UICollectionViewDelegateFlowLayout {
                       layout collectionViewLayout: UICollectionViewLayout,
                       sizeForItemAt indexPath: IndexPath) -> CGSize {
     return CGSize(width: collectionView.frame.width,
-                  height: TransactionHistorySummaryCollectionView.cellHeight)
+                  height: SummaryCollectionView.cellHeight)
   }
 
   func collectionView(_ collectionView: UICollectionView,

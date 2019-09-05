@@ -96,7 +96,7 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
     emptyStateBackgroundView.backgroundColor = .whiteBackground
 
     view.backgroundColor = .clear
-    emptyStateBackgroundView.applyCornerRadius(30)
+    emptyStateBackgroundView.applyCornerRadius(30, toCorners: .top)
     coordinationDelegate?.viewControllerDidRequestBadgeUpdate(self)
 
     CKNotificationCenter.subscribe(self, key: .didUpdateWordsBackedUp, selector: #selector(didUpdateWordsBackedUp))
@@ -216,13 +216,13 @@ extension TransactionHistoryViewController: DZNEmptyDataSetDelegate, DZNEmptyDat
   }
 
   func customView(forEmptyDataSet scrollView: UIScrollView!) -> UIView! {
-    if viewModel.shouldShowNoBalanceView {
+    if viewModel.shouldShowNoBalanceEmptyDataSetView {
       transactionHistoryNoBalanceView.isHidden = false
       return transactionHistoryNoBalanceView
-    } else if viewModel.shouldShowWithBalanceView {
+    } else if viewModel.shouldShowWithBalanceEmptyDataSetView {
       transactionHistoryWithBalanceView.isHidden = false
       return transactionHistoryWithBalanceView
-    } else if viewModel.shouldShowLightningEmptyView {
+    } else if viewModel.shouldShowLightningEmptyDataSetView {
       lightningTransactionHistoryEmptyBalanceView.isHidden = false
       return lightningTransactionHistoryEmptyBalanceView
     } else {
@@ -232,7 +232,13 @@ extension TransactionHistoryViewController: DZNEmptyDataSetDelegate, DZNEmptyDat
 
   func verticalOffset(forEmptyDataSet scrollView: UIScrollView!) -> CGFloat {
     let headerIsShown = coordinationDelegate.summaryHeaderType(for: self) != nil
-    return headerIsShown ? self.viewModel.warningHeaderHeight : 0
+    let headerHeight = headerIsShown ? self.viewModel.warningHeaderHeight : 0
+    let cellHeight = viewModel.shouldShowWithBalanceEmptyDataSetView ? SummaryCollectionView.cellHeight : 0
+
+    let contentOffset = (headerHeight + cellHeight) / 2
+    let paddedOffset = (contentOffset > 0) ? (contentOffset + 20) : 0
+
+    return paddedOffset
   }
 
 }

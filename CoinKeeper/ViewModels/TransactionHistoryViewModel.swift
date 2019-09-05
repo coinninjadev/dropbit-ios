@@ -31,7 +31,7 @@ class TransactionHistoryViewModel: NSObject, UICollectionViewDataSource, Exchang
   }
 
   let phoneFormatter = CKPhoneNumberFormatter(format: .national)
-  let warningHeaderHeight: CGFloat = 65
+  let warningHeaderHeight: CGFloat = 44
 
   init(delegate: TransactionHistoryViewModelDelegate,
        currencyManager: CurrencyValueDataSourceType,
@@ -104,27 +104,28 @@ class TransactionHistoryViewModel: NSObject, UICollectionViewDataSource, Exchang
     // Because the collectionView frame ends at the safe area, we rely on the emptyStateBackgroundView
     // to serve as the background for the very bottom, this footer is only needed to cover distance between
     // the cells and the top of the emptyStateBackgroundView.
-    return TransactionHistorySummaryCollectionView.cellHeight
+    let shouldHideFooter = shouldShowEmptyDataSet //will show first cell, so hide footer
+    return shouldHideFooter ? 0 : SummaryCollectionView.cellHeight
   }
 
   func didUpdateExchangeRateManager(_ exchangeRateManager: ExchangeRateManager) {
     delegate.viewModelDidUpdateExchangeRates()
   }
 
-  var shouldShowLightningEmptyView: Bool {
+  var shouldShowLightningEmptyDataSetView: Bool {
     return dataSource.numberOfItems(inSection: 0) == 0 && walletTransactionType == .lightning
   }
 
-  var shouldShowNoBalanceView: Bool {
+  var shouldShowNoBalanceEmptyDataSetView: Bool {
     return dataSource.numberOfItems(inSection: 0) == 0 && walletTransactionType == .onChain
   }
 
-  var shouldShowWithBalanceView: Bool {
+  var shouldShowWithBalanceEmptyDataSetView: Bool {
     return dataSource.numberOfItems(inSection: 0) == 1 && walletTransactionType == .onChain
   }
 
   var shouldShowEmptyDataSet: Bool {
-    return shouldShowNoBalanceView || shouldShowWithBalanceView || shouldShowLightningEmptyView
+    return shouldShowNoBalanceEmptyDataSetView || shouldShowWithBalanceEmptyDataSetView || shouldShowLightningEmptyDataSetView
   }
 
 }

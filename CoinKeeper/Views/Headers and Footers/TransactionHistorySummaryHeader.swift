@@ -13,7 +13,7 @@ enum SummaryHeaderType {
 
   var message: String {
     switch self {
-    case .backUpWallet: return "Back Up Your Wallet"
+    case .backUpWallet: return "Don’t forget to backup your wallet"
     }
   }
 }
@@ -26,6 +26,7 @@ class TransactionHistorySummaryHeader: UICollectionReusableView {
 
   private weak var delegate: TransactionHistorySummaryHeaderDelegate!
 
+  @IBOutlet var messageLabel: UILabel! // use messageLabel instead of button.titleLabel so that arrow can be constrained to the text
   @IBOutlet var messageButton: UIButton!
   @IBOutlet var bottomConstraint: NSLayoutConstraint!
 
@@ -36,15 +37,13 @@ class TransactionHistorySummaryHeader: UICollectionReusableView {
   override func awakeFromNib() {
     super.awakeFromNib()
     self.backgroundColor = .clear
-    messageButton.titleLabel?.font = .medium(16)
-    messageButton.setTitleColor(.whiteText, for: .normal)
-    messageButton.setTitleColor(.whiteText, for: .highlighted)
+    messageLabel.font = .regular(14)
+    messageLabel.textColor = .whiteText
     messageButton.backgroundColor = .warningHeader
   }
 
   func configure(with message: String, delegate: TransactionHistorySummaryHeaderDelegate) {
-    messageButton.setTitle(message, for: .normal)
-    messageButton.setTitle(message, for: .highlighted)
+    messageLabel.text = message
     self.delegate = delegate
   }
 
