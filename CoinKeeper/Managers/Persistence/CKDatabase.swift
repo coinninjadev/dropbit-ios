@@ -18,17 +18,6 @@ class CKDatabase: PersistenceDatabaseType {
 
   var sharedPayloadManager: SharedPayloadManagerType = SharedPayloadManager()
 
-  lazy var mainQueueContext: NSManagedObjectContext = {
-    let context = self.container.viewContext
-    context.automaticallyMergesChangesFromParent = true
-    context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
-    context.name = "MainQueueContext"
-    if stackConfig.storeType.shouldSetQueryGeneration {
-      try? context.setQueryGenerationFrom(.current)
-    }
-    return context
-  }()
-
   convenience init() {
     let stackConfig = CoreDataStackConfig(stackType: .main, storeType: .disk)
     self.init(stackConfig: stackConfig)
@@ -39,12 +28,28 @@ class CKDatabase: PersistenceDatabaseType {
     self.container = stackConfig.stack.persistentContainer
   }
 
+  private lazy var rootContext: NSManagedObjectContext = {
+    let context = self.container.newBackgroundContext()
+    context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
+    context.name = "RootContext"
+    return context
+  }()
+
+  lazy var viewContext: NSManagedObjectContext = {
+    let context = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
+    context.parent = rootContext
+    context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
+    context.name = "ViewContext"
+    return context
+  }()
+
+  /// Be sure to call saveRecursively(), parent is viewContext.
   func createBackgroundContext() -> NSManagedObjectContext {
-    let bgContext = container.newBackgroundContext()
-    bgContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
-    bgContext.automaticallyMergesChangesFromParent = true
-    bgContext.name = "BackgroundContext_\(Date().timeIntervalSince1970)"
-    return bgContext
+    let context = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
+    context.parent = viewContext
+    context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
+    context.name = "BackgroundContext_\(Date().timeIntervalSince1970)"
+    return context
   }
 
   func persistentStore(for context: NSManagedObjectContext) -> NSPersistentStore? {

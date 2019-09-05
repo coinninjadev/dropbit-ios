@@ -48,7 +48,7 @@ class ContactCacheDataWorker: ContactCacheDataWorkerType {
   }
 
   func refreshStatuses() -> Promise<Void> {
-    let bgContext = contactCacheManager.createChildBackgroundContext()
+    let bgContext = contactCacheManager.createBackgroundContext()
 
     return self.getMetadata(in: bgContext)
       .then(in: bgContext) { self.fetchAndPersistStatuses(fromMetadata: $0, in: bgContext) }
@@ -61,7 +61,7 @@ class ContactCacheDataWorker: ContactCacheDataWorkerType {
   }
 
   func refreshStatus(forPhoneNumber phoneNumber: GlobalPhoneNumber, completion: @escaping ((ValidatedContact?) -> Void)) {
-    let context = contactCacheManager.mainQueueContext
+    let context = contactCacheManager.viewContext
     if let metadata = contactCacheManager.validatedMetadata(for: phoneNumber, in: context) {
       _ = self.fetchAndPersistStatuses(fromMetadata: [metadata], in: context)
         .done {
@@ -85,7 +85,7 @@ class ContactCacheDataWorker: ContactCacheDataWorkerType {
   }
 
   func reloadSystemContactsIfNeeded(force: Bool, completion: CKErrorCompletion?) {
-    let bgContext = contactCacheManager.createChildBackgroundContext()
+    let bgContext = contactCacheManager.createBackgroundContext()
     bgContext.perform {
       self.neededCacheAction(force: force, in: bgContext)
         .then(in: bgContext) { self.updateCache(withAction: $0, in: bgContext) }

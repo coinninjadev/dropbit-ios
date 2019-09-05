@@ -54,10 +54,10 @@ class TwitterAccessManager: TwitterAccessManagerType {
       })
   }
 
-  /// default context is mainQueueContext
+  /// default context is viewContext
   func getCurrentTwitterUser() -> Promise<TwitterUser> {
     guard isNotUITesting else { return Promise.value(TwitterUser.emptyInstance()) }
-    return getCurrentTwitterUser(in: persistenceManager.mainQueueContext())
+    return getCurrentTwitterUser(in: persistenceManager.viewContext)
   }
 
   func refreshTwitterAvatar(in context: NSManagedObjectContext) -> Promise<Bool> {

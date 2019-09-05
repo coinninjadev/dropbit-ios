@@ -203,7 +203,7 @@ class AppCoordinator: CoordinatorType {
 
   /// Useful to clear out old credentials from the keychain when the app is reinstalled
   private func deleteStaleCredentialsIfNeeded() {
-    let context = persistenceManager.mainQueueContext()
+    let context = persistenceManager.viewContext
     let user = CKMUser.find(in: context)
     guard user == nil else { return }
 

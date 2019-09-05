@@ -27,7 +27,7 @@ class DatabaseTests: XCTestCase {
   }
 
   func testGroomingTransactionsRemovesTransactionsNotBelongingToWallet() {
-    let context = sut.mainQueueContext
+    let context = sut.viewContext
     context.performAndWait {
       let goodTx = CKMTransaction(insertInto: context)
       let goodTxid = "abc123"
@@ -49,7 +49,7 @@ class DatabaseTests: XCTestCase {
   }
 
   func testGroomingTransactionsDoesNotRemoveAnyTransactionsIfAllAreGood() {
-    let context = sut.mainQueueContext
+    let context = sut.viewContext
     context.performAndWait {
       let goodTx = CKMTransaction(insertInto: context)
       let goodTxid = "abc123"

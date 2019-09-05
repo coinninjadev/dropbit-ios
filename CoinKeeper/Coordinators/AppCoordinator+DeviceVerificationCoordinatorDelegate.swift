@@ -93,7 +93,7 @@ extension AppCoordinator: DeviceVerificationCoordinatorDelegate {
     userIdentityType: UserIdentityType,
     isInitialSetupFlow: Bool) {
 
-    let verifiedIdentities = persistenceManager.brokers.user.verifiedIdentities(in: persistenceManager.mainQueueContext())
+    let verifiedIdentities = persistenceManager.brokers.user.verifiedIdentities(in: persistenceManager.viewContext)
     if launchStateManager.profileIsActivated() && verifiedIdentities.count == 1 {
       log.debug("Profile is activated, will register wallet addresses")
       registerInitialWalletAddresses()

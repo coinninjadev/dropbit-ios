@@ -35,8 +35,8 @@ class MockPersistenceManager: PersistenceManagerType {
     return databaseManager.createBackgroundContext()
   }
 
-  func mainQueueContext() -> NSManagedObjectContext {
-    return databaseManager.mainQueueContext
+  var viewContext: NSManagedObjectContext {
+    return databaseManager.viewContext
   }
 
   func persistentStore() -> NSPersistentStore? {
