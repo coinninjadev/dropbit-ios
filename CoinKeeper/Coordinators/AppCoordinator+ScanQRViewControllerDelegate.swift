@@ -63,7 +63,8 @@ extension AppCoordinator: ScanQRViewControllerDelegate {
       switch response {
       case .success(let decodedInvoice):
         let currencyPair = CurrencyPair(btcPrimaryWith: self.currencyController)
-        let viewModel = SendPaymentViewModel(encodedInvoice: lightningInvoice, decodedInvoice: decodedInvoice, exchangeRates: self.exchangeRates, currencyPair: currencyPair)
+        let viewModel = SendPaymentViewModel(encodedInvoice: lightningInvoice, decodedInvoice: decodedInvoice,
+                                             exchangeRates: self.exchangeRates, currencyPair: currencyPair)
         self.showSendPaymentViewController(withViewModel: viewModel, dismissing: viewController, completion: nil)
       case .failure(let error):
         let errorAlert = self.alertManager.defaultAlert(withTitle: self.paymentErrorTitle, description: error.localizedDescription)
