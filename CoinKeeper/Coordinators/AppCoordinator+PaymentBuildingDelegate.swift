@@ -10,18 +10,18 @@ import Foundation
 import PromiseKit
 import CNBitcoinKit
 
+struct PaymentData {
+  var broadcastData: CNBTransactionData
+  var outgoingData: OutgoingTransactionData
+}
+
 protocol PaymentBuildingDelegate {
-  func viewController(
-    _ viewController: UIViewController,
-    sendingMax txData: CNBTransactionData,
-    to address: String,
-    inputs: SendingDelegateInputs)
+  func sendMaxFundsTo(address destinationAddress: String,
+                      feeRate: Double) -> Promise<CNBTransactionData>
 
   func configureOutgoingTransactionData(with dto: OutgoingTransactionData,
                                         address: String?,
                                         inputs: SendingDelegateInputs) -> OutgoingTransactionData
-  
-  func viewControllerRequestedShowFeeTooExpensiveAlert(_ viewController: UIViewController)
 }
 
 extension AppCoordinator: PaymentBuildingDelegate {

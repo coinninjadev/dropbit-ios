@@ -12,7 +12,6 @@ import CNBitcoinKit
 protocol ConfirmPaymentViewControllerDelegate: ViewControllerDismissable, AllPaymentSendingDelegate {
   func confirmPaymentViewControllerDidLoad(_ viewController: UIViewController)
 
-
   func viewControllerDidConfirmInvite(_ viewController: UIViewController,
                                       outgoingInvitationDTO: OutgoingInvitationDTO,
                                       walletTxType: WalletTransactionType)

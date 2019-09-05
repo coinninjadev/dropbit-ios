@@ -61,6 +61,7 @@ extension AppCoordinator: PaymentSendingDelegate {
     presentPinEntryViewController(pinEntryVC)
   }
 
+
   func viewControllerRequestedShowFeeTooExpensiveAlert(_ viewController: UIViewController) {
     let message = """
     In order to use this fee option you must adjust the amount you are sending.
@@ -69,7 +70,6 @@ extension AppCoordinator: PaymentSendingDelegate {
     let alert = alertManager.defaultAlert(withTitle: "Insufficient Funds", description: message)
     viewController.present(alert, animated: true, completion: nil)
   }
-
 
   private func handleSuccessfulLightningPaymentVerification(with inputs: LightningPaymentInputs) {
     let viewModel = PaymentSuccessFailViewModel(mode: .pending)

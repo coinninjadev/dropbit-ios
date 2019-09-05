@@ -25,8 +25,6 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate {
     analyticsManager.track(event: .confirmScreenLoaded, with: nil)
   }
 
-
-
   func viewControllerDidConfirmInvite(_ viewController: UIViewController,
                                       outgoingInvitationDTO: OutgoingInvitationDTO,
                                       walletTxType: WalletTransactionType) {
@@ -60,8 +58,6 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate {
                                                         success: successHandler)
     presentPinEntryViewController(pinEntryVC)
   }
-
-
 
   private func handleSuccessfulInviteVerification(with inviteBody: RequestAddressBody, outgoingInvitationDTO: OutgoingInvitationDTO) {
 

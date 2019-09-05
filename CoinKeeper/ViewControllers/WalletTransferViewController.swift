@@ -8,6 +8,9 @@
 
 import Foundation
 import UIKit
+import SVProgressHUD
+import CNBitcoinKit
+import PromiseKit
 
 enum TransferAmount {
   case low
@@ -27,11 +30,19 @@ enum TransferAmount {
   }
 }
 
-protocol WalletTransferViewControllerDelegate: ViewControllerDismissable, PaymentSendingDelegate, SendPaymentViewControllerRoutingDelegate {
-  func viewControllerDidConfirmTransfer(_ viewController: UIViewController,
-                                        direction: TransferDirection,
-                                        btcAmount: NSDecimalNumber,
-                                        exchangeRates: ExchangeRates)
+protocol WalletTransferViewControllerDelegate:
+  ViewControllerDismissable, PaymentBuildingDelegate, PaymentSendingDelegate {
+
+  func viewControllerNeedsTransactionData(_ viewController: UIViewController,
+                                          direction: TransferDirection,
+                                          btcAmount: NSDecimalNumber,
+                                          exchangeRates: ExchangeRates) -> PaymentData?
+
+  func viewControllerDidConfirmLoad(_ viewController: UIViewController,
+                                        paymentData: PaymentData)
+
+  func viewControllerDidConfirmWithdraw(_ viewController: UIViewController,
+                                        lightningData: LightningPaymentInputs)
 }
 
 enum TransferDirection {
@@ -80,6 +91,10 @@ class WalletTransferViewController: PresentableViewController, StoryboardInitial
     setupUI()
     setupCurrencySwappableEditAmountView()
 
+    if viewModel.direction == .toLightning {
+      SVProgressHUD.show()
+      buildTransaction()
+    }
   }
 
   func didUpdateExchangeRateManager(_ exchangeRateManager: ExchangeRateManager) {
@@ -89,6 +104,10 @@ class WalletTransferViewController: PresentableViewController, StoryboardInitial
   @IBAction func closeButtonWasTouched() {
     editAmountView.primaryAmountTextField.resignFirstResponder()
     coordinationDelegate?.viewControllerDidSelectClose(self)
+  }
+
+  private func buildTransaction() {
+
   }
 
   private func setupUI() {
@@ -117,12 +136,7 @@ class WalletTransferViewController: PresentableViewController, StoryboardInitial
 extension WalletTransferViewController: ConfirmViewDelegate {
 
   func viewDidConfirm() {
-    coordinationDelegate?.viewControllerDidConfirmTransfer(
-      self,
-      direction: viewModel.direction,
-      btcAmount: editAmountViewModel.btcAmount,
-      exchangeRates: self.rateManager.exchangeRates
-    )
+    //TODO: Check what type of transfer it is and call correct function
   }
 }
 
