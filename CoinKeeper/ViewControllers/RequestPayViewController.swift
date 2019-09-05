@@ -118,8 +118,7 @@ final class RequestPayViewController: PresentableViewController, StoryboardIniti
   let rateManager: ExchangeRateManager = ExchangeRateManager()
   var currencyValueManager: CurrencyValueDataSourceType?
   var viewModel: RequestPayViewModel! = RequestPayViewModel(receiveAddress: "",
-                                                            viewModel: .emptyInstance(),
-                                                            walletTransactionType: .onChain)
+                                                            viewModel: .emptyInstance())
   var editAmountViewModel: CurrencySwappableEditAmountViewModel { return viewModel }
 
   var isModal: Bool = true
@@ -179,8 +178,7 @@ final class RequestPayViewController: PresentableViewController, StoryboardIniti
                                                                    walletTransactionType: walletTransactionType,
                                                                    currencyPair: currencyPair,
                                                                    delegate: vc)
-    vc.viewModel = RequestPayViewModel(receiveAddress: receiveAddress, viewModel: editAmountViewModel,
-                                       walletTransactionType: walletTransactionType)
+    vc.viewModel = RequestPayViewModel(receiveAddress: receiveAddress, viewModel: editAmountViewModel)
     return vc
   }
 
@@ -280,7 +278,7 @@ final class RequestPayViewController: PresentableViewController, StoryboardIniti
     }
 
     updateQRImage()
-    let labels = viewModel.dualAmountLabels()
+    let labels = viewModel.dualAmountLabels(walletTransactionType: viewModel.walletTransactionType)
     editAmountView.configure(withLabels: labels, delegate: self)
     showHideEditAmountView()
   }
@@ -296,11 +294,13 @@ extension RequestPayViewController: WalletToggleViewDelegate {
   func bitcoinWalletButtonWasTouched() {
     viewModel.walletTransactionType = .onChain
     setupStyle()
+    updateViewWithViewModel()
   }
 
   func lightningWalletButtonWasTouched() {
     viewModel.walletTransactionType = .lightning
     setupStyle()
+    updateViewWithViewModel()
   }
 
 }

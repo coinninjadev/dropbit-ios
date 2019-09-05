@@ -871,11 +871,13 @@ extension SendPaymentViewController: WalletToggleViewDelegate {
 
   func bitcoinWalletButtonWasTouched() {
     viewModel.walletTransactionType = .onChain
+    editAmountView.update(with: viewModel.dualAmountLabels(walletTransactionType: viewModel.walletTransactionType))
     setupStyle()
   }
 
   func lightningWalletButtonWasTouched() {
     viewModel.walletTransactionType = .lightning
+    editAmountView.update(with: viewModel.dualAmountLabels(walletTransactionType: viewModel.walletTransactionType))
     setupStyle()
   }
 

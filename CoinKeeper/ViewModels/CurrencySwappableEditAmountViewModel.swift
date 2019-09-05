@@ -26,15 +26,15 @@ extension DualAmountDisplayable {
   }
 
   /// hidePrimaryZero will return the currency symbol only if primary amount is zero, useful during editing
-  func dualAmountLabels(hidePrimaryZero: Bool = false) -> DualAmountLabels {
+  func dualAmountLabels(hidePrimaryZero: Bool = false, walletTransactionType: WalletTransactionType) -> DualAmountLabels {
     let converter = generateCurrencyConverter()
-    return dualAmountLabels(withConverter: converter)
+    return dualAmountLabels(withConverter: converter, walletTransactionType: walletTransactionType)
   }
 
   func dualAmountLabels(
     withConverter currencyConverter: CurrencyConverter,
     withSymbols: Bool = true,
-    walletTransactionType: WalletTransactionType = .onChain,
+    walletTransactionType: WalletTransactionType,
     hidePrimaryZero: Bool = false) -> DualAmountLabels {
 
     let primaryCurrency = currencyPair.primary
@@ -232,7 +232,7 @@ extension CurrencySwappableEditAmountViewModel: UITextFieldDelegate {
 
   func textFieldDidEndEditing(_ textField: UITextField) {
     if fromAmount == .zero {
-      textField.text = dualAmountLabels().primary
+      textField.text = dualAmountLabels(walletTransactionType: walletTransactionType).primary
     }
     delegate?.viewModelDidEndEditingAmount(self)
   }

@@ -31,13 +31,15 @@ class RequestPayViewControllerTests: XCTestCase {
   // MARK: outlets
   func testOutletsAreConnected() {
     XCTAssertNotNil(self.sut.closeButton, "closeButton should be connected")
-    XCTAssertNotNil(self.sut.titleLabel, "titleLabel should be connected")
     XCTAssertNotNil(self.sut.editAmountView, "currencyEditSwapView should be connected")
     XCTAssertNotNil(self.sut.qrImageView, "qrImageView should be connected")
     XCTAssertNotNil(self.sut.receiveAddressLabel, "receiveAddressLabel should be connected")
     XCTAssertNotNil(self.sut.receiveAddressTapGesture, "receiveAddressTapGesture should be connected")
     XCTAssertNotNil(self.sut.tapInstructionLabel, "tapInstructionLabel should be connected")
-    XCTAssertNotNil(self.sut.sendRequestButton, "sendRequestButton should be connected")
+    XCTAssertNotNil(self.sut.bottomActionButton, "sendRequestButton should be connected")
+    XCTAssertNotNil(self.sut.walletToggleView, "walletToggleView should be connected")
+    XCTAssertNotNil(self.sut.memoLabel, "memoLabel should be connected")
+    XCTAssertNotNil(self.sut.memoTextField, "memoTextField should be connected")
   }
 
   // MARK: buttons contain actions
@@ -48,7 +50,7 @@ class RequestPayViewControllerTests: XCTestCase {
   }
 
   func testSendRequestButtonContainsAction() {
-    let actions = self.sut.sendRequestButton.actions(forTarget: self.sut, forControlEvent: .touchUpInside) ?? []
+    let actions = self.sut.bottomActionButton.actions(forTarget: self.sut, forControlEvent: .touchUpInside) ?? []
     let sendSelector = #selector(RequestPayViewController.sendRequestButtonTapped(_:)).description
     XCTAssertTrue(actions.contains(sendSelector), "sendRequestButton should contain action")
   }
@@ -71,7 +73,7 @@ class RequestPayViewControllerTests: XCTestCase {
     let mockCoordinator = setupDelegate()
     self.sut.qrImageView.image = UIImage(named: "fakeQRCode")
 
-    self.sut.sendRequestButton.sendActions(for: .touchUpInside)
+    self.sut.bottomActionButton.sendActions(for: .touchUpInside)
 
     XCTAssertTrue(mockCoordinator.didSelectSendRequestWasCalled, "sendRequestButton should tell delegate")
     XCTAssertEqual(mockCoordinator.payload.compactMap { $0 as? Data }.count, 1, "payload should contain image data")
@@ -84,6 +86,7 @@ class RequestPayViewControllerTests: XCTestCase {
     let currencyPair = CurrencyPair(primary: .BTC, fiat: .USD)
     let swappableViewModel = CurrencySwappableEditAmountViewModel(exchangeRates: sampleRates,
                                                                   primaryAmount: 50,
+                                                                  walletTransactionType: .onChain,
                                                                   currencyPair: currencyPair,
                                                                   delegate: nil)
     self.sut.viewModel = RequestPayViewModel(receiveAddress: address, viewModel: swappableViewModel)
@@ -109,6 +112,19 @@ class RequestPayViewControllerTests: XCTestCase {
 
   // MARK: mock coordinator
   class MockCoordinator: RequestPayViewControllerDelegate {
+
+    var didCreateInvoice = false
+    func viewControllerDidCreateInvoice(_ viewController: UIViewController) {
+      didCreateInvoice = true
+    }
+
+    var didSelectCreateInvoice = false
+    func viewControllerDidSelectCreateInvoice(_ viewController: UIViewController,
+                                              forAmount sats: Int,
+                                              withMemo memo: String?) -> Promise<LNCreatePaymentRequestResponse> {
+      didSelectCreateInvoice = true
+      return Promise { _ in }
+    }
 
     func latestExchangeRates(responseHandler: (ExchangeRates) -> Void) {}
     func latestFees() -> Promise<Fees> {
