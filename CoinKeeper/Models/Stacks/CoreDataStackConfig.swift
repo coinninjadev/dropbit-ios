@@ -31,13 +31,6 @@ class CoreDataStackConfig {
       case .inMemory: return NSInMemoryStoreType
       }
     }
-
-    var shouldSetQueryGeneration: Bool {
-      switch self {
-      case .disk: return true
-      case .inMemory: return false
-      }
-    }
   }
 
   enum CoreDataStackType {

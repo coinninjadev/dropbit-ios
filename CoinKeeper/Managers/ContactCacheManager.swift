@@ -41,9 +41,6 @@ class ContactCacheManager: ContactCacheManagerType {
   lazy var viewContext: NSManagedObjectContext = {
     let context = self.container.viewContext
     context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
-    if stackConfig.storeType.shouldSetQueryGeneration {
-      try? context.setQueryGenerationFrom(.current)
-    }
     return context
   }()
 
