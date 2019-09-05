@@ -101,10 +101,10 @@ class TransactionHistoryViewModel: NSObject, UICollectionViewDataSource, Exchang
   }
 
   func footerHeight(for collectionView: UICollectionView, section: Int) -> CGFloat {
-    // Because the collectionView frame ends at the safe area, we rely on the emptyStateBackgroundView
-    // to serve as the background for the very bottom, this footer is only needed to cover distance between
+    // Because the collectionView has a content inset for expanded scrolling, we rely on the emptyStateBackgroundView
+    // to serve as the white background, this footer is only needed to cover distance between
     // the cells and the top of the emptyStateBackgroundView.
-    let shouldHideFooter = shouldShowEmptyDataSet //will show first cell, so hide footer
+    let shouldHideFooter = shouldShowEmptyDataSet
     return shouldHideFooter ? 0 : SummaryCollectionView.cellHeight
   }
 
