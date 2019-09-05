@@ -34,7 +34,7 @@ class BadgeManager: BadgeManagerType {
 
   init(persistenceManager: PersistenceManagerType) {
     self.persistenceManager = persistenceManager
-    observeContextSaveNotifications()
+    observeContextSaveNotifications(forContext: persistenceManager.viewContext)
   }
 
   var wordsBackedUp: Bool {

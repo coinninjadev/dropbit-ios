@@ -261,7 +261,7 @@ class AppCoordinator: CoordinatorType {
     guard UIApplication.shared.applicationState != .background else { return }
 
     setInitialRootViewController()
-    registerForBalanceSaveNotifications()
+    registerForBalanceSaveNotifications(viewContext: self.persistenceManager.viewContext)
     trackAnalytics()
 
     let now = Date()
