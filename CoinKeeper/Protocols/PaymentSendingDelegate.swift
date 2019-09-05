@@ -10,7 +10,14 @@ import Foundation
 import UIKit
 import CNBitcoinKit
 
-protocol OnChainPaymentDelegate: PaymentDelegate {
+protocol PaymentSendingDelegate {
+  var alertManager: AlertManagerType { get }
+  var analyticsManager: AnalyticsManagerType { get }
+  var persistenceManager: PersistenceManagerType { get }
+  var navigationController: UINavigationController { get }
+}
+
+protocol OnChainPaymentSendingDelegate: PaymentSendingDelegate {
   func viewControllerDidConfirmOnChainPayment(
     _ viewController: UIViewController,
     transactionData: CNBTransactionData,
@@ -21,22 +28,15 @@ protocol OnChainPaymentDelegate: PaymentDelegate {
   func viewControllerRequestedShowFeeTooExpensiveAlert(_ viewController: UIViewController)
 }
 
-protocol LightningPaymentDelegate: PaymentDelegate {
+protocol LightningPaymentSendingDelegate: PaymentSendingDelegate {
   func viewControllerDidConfirmLightningPayment(
     _ viewController: UIViewController,
     inputs: LightningPaymentInputs)
 }
 
-protocol PaymentDelegate {
-  var alertManager: AlertManagerType { get }
-  var analyticsManager: AnalyticsManagerType { get }
-  var persistenceManager: PersistenceManagerType { get }
-  var navigationController: UINavigationController { get }
-}
+protocol AllPaymentSendingDelegate: LightningPaymentSendingDelegate, OnChainPaymentSendingDelegate { }
 
-protocol AllPaymentDelegate: LightningPaymentDelegate, OnChainPaymentDelegate { }
-
-extension PaymentDelegate {
+extension PaymentSendingDelegate {
 
   func handleFailure(error: Error?, action: CKCompletion? = nil) {
     var localizedDescription = ""

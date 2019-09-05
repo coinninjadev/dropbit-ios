@@ -27,7 +27,7 @@ enum TransferAmount {
   }
 }
 
-protocol WalletTransferViewControllerDelegate: ViewControllerDismissable {
+protocol WalletTransferViewControllerDelegate: ViewControllerDismissable, PaymentSendingDelegate, SendPaymentViewControllerRoutingDelegate {
   func viewControllerDidConfirmTransfer(_ viewController: UIViewController,
                                         direction: TransferDirection,
                                         btcAmount: NSDecimalNumber,
@@ -129,6 +129,6 @@ extension WalletTransferViewController: ConfirmViewDelegate {
 extension WalletTransferViewController: FeesViewDelegate {
 
   func tooltipButtonWasTouched() {
-
+    // TODO: Implement
   }
 }

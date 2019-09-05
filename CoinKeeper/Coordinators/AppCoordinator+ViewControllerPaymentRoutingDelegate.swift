@@ -1,5 +1,5 @@
 //
-//  AppCoordinator+ViewControllerSendingDelegate.swift
+//  AppCoordinator+ViewControllerPaymentRoutingDelegate.swift
 //  DropBit
 //
 //  Created by Ben Winters on 7/21/19.
@@ -12,15 +12,14 @@ import PromiseKit
 import Permission
 import UIKit
 
-extension AppCoordinator: ViewControllerSendingDelegate {
+extension AppCoordinator: SendPaymentViewControllerRoutingDelegate {
 
   func viewController(
     _ viewController: UIViewController,
     sendMaxFundsTo address: String,
     feeRate: Double) -> Promise<CNBTransactionData> {
-    guard let wmgr = walletManager else { return Promise(error: CKPersistenceError.noManagedWallet) }
-    let data = wmgr.transactionDataSendingMax(to: address, withFeeRate: feeRate)
-    return data
+    guard let _ = walletManager else { return Promise(error: CKPersistenceError.noManagedWallet) }
+    return sendMaxFundsTo(address: address, feeRate: feeRate)
   }
 
   func viewController(
@@ -233,31 +232,6 @@ extension AppCoordinator: ViewControllerSendingDelegate {
   }
 
   // MARK: - Helper Methods
-
-  private func configureOutgoingTransactionData(with dto: OutgoingTransactionData,
-                                                address: String?,
-                                                inputs: SendingDelegateInputs) -> OutgoingTransactionData {
-    guard let wmgr = self.walletManager else { return dto }
-
-    var copy = dto
-    copy.dropBitType = inputs.contact?.dropBitType ?? .none
-    if let innerContact = inputs.contact {
-      copy.displayName = innerContact.displayName ?? ""
-      copy.displayIdentity = innerContact.displayIdentity
-      copy.identityHash = innerContact.identityHash
-    }
-    address.map { copy.destinationAddress = $0 }
-    copy.sharedPayloadDTO = inputs.sharedPayload
-
-    let context = persistenceManager.createBackgroundContext()
-    context.performAndWait {
-      if wmgr.createAddressDataSource().checkAddressExists(for: copy.destinationAddress, in: context) != nil {
-        copy.sentToSelf = true
-      }
-    }
-
-    return copy
-  }
 
   private func showConfirmOnChainPayment(with viewModel: ConfirmOnChainPaymentViewModel,
                                          feeModel: ConfirmTransactionFeeModel) {

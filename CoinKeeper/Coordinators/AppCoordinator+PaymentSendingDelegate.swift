@@ -11,7 +11,7 @@ import CNBitcoinKit
 import UIKit
 import PromiseKit
 
-extension AppCoordinator: PaymentDelegate {
+extension AppCoordinator: PaymentSendingDelegate {
 
   func viewControllerDidConfirmLightningPayment(_ viewController: UIViewController, inputs: LightningPaymentInputs) {
     // TODO: add logic to check amount limits
