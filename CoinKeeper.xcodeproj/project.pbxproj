@@ -288,6 +288,7 @@
 		3B8FF10D20337495003436EE /* PinCreationViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B8FF10C20337495003436EE /* PinCreationViewControllerTests.swift */; };
 		3B8FF11020346730003436EE /* AppCoordinatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B8FF10F20346730003436EE /* AppCoordinatorTests.swift */; };
 		3B934D2220EFE53A00979ADC /* TransactionDataWorkerDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B934D2120EFE53A00979ADC /* TransactionDataWorkerDTO.swift */; };
+		3B936ADB23218F810067CA97 /* CKWalletError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B936ADA23218F810067CA97 /* CKWalletError.swift */; };
 		3B961CD52044946C00B38EBB /* MockLaunchStateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B961CD42044946C00B38EBB /* MockLaunchStateManager.swift */; };
 		3B9779A4202E416700C9C933 /* Montserrat-MediumItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3B977992202E416600C9C933 /* Montserrat-MediumItalic.ttf */; };
 		3B9779A5202E416700C9C933 /* Montserrat-ExtraLightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3B977993202E416600C9C933 /* Montserrat-ExtraLightItalic.ttf */; };
@@ -1299,6 +1300,7 @@
 		3B8FF10C20337495003436EE /* PinCreationViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinCreationViewControllerTests.swift; sourceTree = "<group>"; };
 		3B8FF10F20346730003436EE /* AppCoordinatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCoordinatorTests.swift; sourceTree = "<group>"; };
 		3B934D2120EFE53A00979ADC /* TransactionDataWorkerDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDataWorkerDTO.swift; sourceTree = "<group>"; };
+		3B936ADA23218F810067CA97 /* CKWalletError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CKWalletError.swift; sourceTree = "<group>"; };
 		3B961CD42044946C00B38EBB /* MockLaunchStateManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockLaunchStateManager.swift; sourceTree = "<group>"; };
 		3B977992202E416600C9C933 /* Montserrat-MediumItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-MediumItalic.ttf"; sourceTree = "<group>"; };
 		3B977993202E416600C9C933 /* Montserrat-ExtraLightItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-ExtraLightItalic.ttf"; sourceTree = "<group>"; };
@@ -2779,6 +2781,7 @@
 				B5A42A99217A3E0F00EB32CB /* KeyPathDescribable.swift */,
 				B5192FA5216E7BFF00DCC39B /* UserProviderError.swift */,
 				3B30228021C9290D007F137A /* SyncRoutineError.swift */,
+				3B936ADA23218F810067CA97 /* CKWalletError.swift */,
 			);
 			path = Errors;
 			sourceTree = "<group>";
@@ -4748,6 +4751,7 @@
 				B5EABAB221FB8F4D00E32E08 /* CreateTransactionNotificationBody.swift in Sources */,
 				B552EDFB211E33D000332BB5 /* CKAlamofireSessionManager.swift in Sources */,
 				B52F690A22417B0100790E97 /* CKDatabase.swift in Sources */,
+				3B936ADB23218F810067CA97 /* CKWalletError.swift in Sources */,
 				3B23232E2248FEBC00514201 /* MigrateDatabaseV4Grooming.swift in Sources */,
 				B51AE4A7209398FE008380CC /* CKMPhoneNumber+CoreDataProperties.swift in Sources */,
 				300CD8F121FA668400BFF560 /* NSAttributedString+Helpers.swift in Sources */,
