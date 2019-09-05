@@ -94,7 +94,7 @@ class CKKeychain: PersistenceKeychainType {
   }
 
   func backup(recoveryWords words: [String]) {
-    _ = store.archive(words, key: CKKeychain.Key.walletWords.rawValue)
+    _ = store.archive(words, key: CKKeychain.Key.walletWordsV2.rawValue)
   }
 
   @discardableResult
@@ -102,7 +102,7 @@ class CKKeychain: PersistenceKeychainType {
     if let pin = tempPinHashStorage { // store pin and wallet together
       return storeOnSerialBackgroundQueue(value: pin, key: CKKeychain.Key.userPin.rawValue)
         .get { self.tempPinHashStorage = nil }
-        .then { self.storeOnSerialBackgroundQueue(value: words, key: CKKeychain.Key.walletWords.rawValue) }
+        .then { self.storeOnSerialBackgroundQueue(value: words, key: CKKeychain.Key.walletWordsV2.rawValue) }
         .then { self.storeWalletWordsBackedUp(isBackedUp) }
 
     } else {
@@ -131,7 +131,7 @@ class CKKeychain: PersistenceKeychainType {
     let pinHash = pin.sha256()
 
     if let words = tempWordStorage { // store pin and wallet together
-      return storeOnSerialBackgroundQueue(value: words, key: CKKeychain.Key.walletWords.rawValue)
+      return storeOnSerialBackgroundQueue(value: words, key: CKKeychain.Key.walletWordsV2.rawValue)
         .get { self.tempWordStorage = nil }
         .then { self.storeOnSerialBackgroundQueue(value: pinHash, key: CKKeychain.Key.userPin.rawValue) }
     } else {

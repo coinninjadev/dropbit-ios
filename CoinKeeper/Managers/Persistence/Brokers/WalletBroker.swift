@@ -36,8 +36,11 @@ class WalletBroker: CKPersistenceBroker, WalletBrokerType {
   }
 
   func walletWords() -> [String]? {
-    let maybeWords = keychainManager.retrieveValue(for: .walletWords) as? [String]
-    if let words = maybeWords, words.count == 12 {
+    let segwitWords = keychainManager.retrieveValue(for: .walletWordsV2) as? [String]
+    let maybeLegacyWords = keychainManager.retrieveValue(for: .walletWords) as? [String]
+    if let words = segwitWords, words.count == 12 {
+      return words
+    } else if let words = maybeLegacyWords, words.count == 12 {
       return words
     }
     return nil
@@ -93,8 +96,8 @@ class WalletBroker: CKPersistenceBroker, WalletBrokerType {
   }
 
   func updateWalletLastIndexes(in context: NSManagedObjectContext) {
-    let lastReceiveIndex = CKMDerivativePath.maxUsedReceiveIndex(in: context)
-    let lastChangeIndex = CKMDerivativePath.maxUsedChangeIndex(in: context)
+    let lastReceiveIndex = CKMDerivativePath.maxUsedReceiveIndex(forCoin: usableCoin, in: context)
+    let lastChangeIndex = CKMDerivativePath.maxUsedChangeIndex(forCoin: usableCoin, in: context)
     databaseManager.updateLastReceiveAddressIndex(index: lastReceiveIndex, in: context)
     databaseManager.updateLastChangeAddressIndex(index: lastChangeIndex, in: context)
   }
@@ -118,6 +121,19 @@ class WalletBroker: CKPersistenceBroker, WalletBrokerType {
     set {
       let numbers: [NSNumber] = Array(newValue).map { NSNumber(value: $0) } // map Set<Int> to [NSNumber]
       userDefaultsManager.set(NSArray(array: numbers), for: .receiveAddressIndexGaps)
+    }
+  }
+
+  var usableCoin: CNBBaseCoin {
+    var coinType: CoinType = .MainNet
+    #if DEBUG
+    coinType = .TestNet
+    #endif
+    let possibleSegwitWords = keychainManager.retrieveValue(for: .walletWordsV2) as? [String]
+    if let words = possibleSegwitWords, words.count == 12 {
+      return CNBBaseCoin(purpose: .BIP84, coin: coinType, account: 0)
+    } else {
+      return CNBBaseCoin(purpose: .BIP49, coin: coinType, account: 0)
     }
   }
 

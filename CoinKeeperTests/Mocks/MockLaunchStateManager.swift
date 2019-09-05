@@ -12,7 +12,12 @@ class MockLaunchStateManager: LaunchStateManagerType {
 
   var launchType: LaunchType = .userInitiated
   var selectedSetupFlow: SetupFlow?
+  var upgradeInProgress: Bool = false
 
+  func isUpgradedToSegwit() -> Bool {
+    return false
+  }
+  
   func currentProperties() -> LaunchStateProperties {
     return []
   }

@@ -15,7 +15,7 @@ protocol LightningUpgradeStatusViewControllerDelegate: AnyObject {
 
   func viewControllerStartUpgradingWallet(_ viewController: LightningUpgradeStatusViewController) -> Promise<Void>
   func viewControllerStartUpgradingToSegwit(_ viewController: LightningUpgradeStatusViewController) -> Promise<Void>
-  func viewController(_ viewController: LightningUpgradeStatusViewController, broadcast encodedTx: String) -> Promise<Void>
+  func viewController(_ viewController: LightningUpgradeStatusViewController, broadcast data: CNBTransactionData) -> Promise<String>
 }
 
 protocol LightningUpgradeStatusDataSource: AnyObject {
@@ -72,7 +72,10 @@ final class LightningUpgradeStatusViewController: BaseViewController, Storyboard
 
     // transfer funds
       .done { _ in self.transferFundsIfNeeded() }
-      .cauterize()
+      .catch { (error: Error) in
+        log.error(error, message: "Failed during Segwit upgrade")
+        // show alert
+    }
   }
 
   private func styleInitialUI() {
@@ -95,20 +98,13 @@ final class LightningUpgradeStatusViewController: BaseViewController, Storyboard
   }
 
   private func transferFundsIfNeeded() {
-    guard let coordinator = coordinationDelegate,
-      let wallet = coordinator.viewControllerDidRequestUpgradedWallet(self)
-      else { return }
-
+    guard let coordinator = coordinationDelegate else { return }
     guard let data = dataSource.transactionData, data.amount != 0 else {
       nextStep?(nil)
       return
     }
 
-    let builder = CNBTransactionBuilder()
-
-    let encodedTx = builder.generateTxMetadata(with: data, wallet: wallet).encodedTx
-    self.encodedTx = encodedTx
-    coordinator.viewController(self, broadcast: encodedTx)
+    coordinator.viewController(self, broadcast: data)
       .done { (_) in
         self.finishedTransferringFunds()
         self.nextStep?(nil)

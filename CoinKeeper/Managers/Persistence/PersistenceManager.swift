@@ -16,6 +16,10 @@ class PersistenceManager: PersistenceManagerType {
   let contactCacheManager: ContactCacheManagerType
   let brokers: PersistenceBrokersType
 
+  var usableCoin: CNBBaseCoin {
+    return brokers.wallet.usableCoin
+  }
+
   let hashingManager = HashingManager()
 
   init(
@@ -72,7 +76,7 @@ class PersistenceManager: PersistenceManagerType {
   }
 
   private func updateReceiveAddressGaps(in context: NSManagedObjectContext) {
-    let usedDerivativePaths = CKMDerivativePath.findAllReceivePathsWithAddressTransactionSummaries(in: context)
+    let usedDerivativePaths = CKMDerivativePath.findAllReceivePathsWithAddressTransactionSummaries(forCoin: usableCoin, in: context)
     let usedIndexes = usedDerivativePaths.map { $0.index }
     if let maxUsedIndex = usedIndexes.max() {
       let fullSet = Set(Array(0...maxUsedIndex))

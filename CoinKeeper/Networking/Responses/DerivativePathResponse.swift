@@ -22,7 +22,7 @@ extension DerivativePathResponse {
   static var sampleReceiveJSON: String {
     return """
     {
-    "purpose": 49,
+    "purpose": 84,
     "coin": 0,
     "account": 0,
     "change": 0,
@@ -34,7 +34,7 @@ extension DerivativePathResponse {
   static var sampleChangeJSON: String {
     return """
     {
-    "purpose": 49,
+    "purpose": 84,
     "coin": 0,
     "account": 0,
     "change": 1,

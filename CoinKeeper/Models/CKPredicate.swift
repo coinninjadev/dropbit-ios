@@ -8,6 +8,7 @@
 
 import Foundation
 import CoreData
+import CNBitcoinKit
 
 struct CKPredicate {
 
@@ -118,12 +119,11 @@ struct CKPredicate {
       return NSPredicate(format: "\(addressPath) != nil")
     }
 
-    static func forChangeIndex(_ changeIndex: Int) -> NSPredicate {
-      let coin = CKMDerivativePath.relevantCoin
-      let purposePredicate = NSPredicate(format: "\(purposeKeyPath) = %d", 49)
-      let coinPredicate = NSPredicate(format: "\(coinKeyPath) = %d", coin)
-      let accountPredicate = NSPredicate(format: "\(accountKeyPath) = %d", 0)
-      let changePredicate = NSPredicate(format: "\(changeKeyPath) = %d", changeIndex)
+    static func allPaths(for coin: CNBBaseCoin, changeIndex: Int) -> NSPredicate {
+      let purposePredicate = NSPredicate(format: "%K = %d", purposeKeyPath, coin.purpose.rawValue)
+      let coinPredicate = NSPredicate(format: "%K = %d", coinKeyPath, coin.coin.rawValue)
+      let accountPredicate = NSPredicate(format: "%K = %d", accountKeyPath, coin.account)
+      let changePredicate = NSPredicate(format: "%K = %d", changeKeyPath, changeIndex)
       return NSCompoundPredicate(andPredicateWithSubpredicates: [
         purposePredicate, coinPredicate, accountPredicate, changePredicate
         ])

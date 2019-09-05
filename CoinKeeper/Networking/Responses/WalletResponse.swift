@@ -8,6 +8,10 @@
 
 import Foundation
 
+public struct UpdateWalletBody: Encodable {
+  let flags: Int
+}
+
 public struct CreateWalletBody: Encodable {
   let publicKeyString: String
   let flags: Int

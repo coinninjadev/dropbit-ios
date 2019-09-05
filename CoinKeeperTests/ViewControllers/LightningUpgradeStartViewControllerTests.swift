@@ -76,7 +76,6 @@ class LightningUpgradeStartViewControllerTests: XCTestCase {
     data.map { self.sut.updateUI(withTransactionData: $0) }
 
     XCTAssertLessThan(sut.activityIndicatorBottomConstraint.constant, 0)
-    XCTAssertTrue(sut.upgradeButton.isEnabled)
   }
 
   func testUpdatingBalanceWithAmountDisplaysValuesInLabels() {
@@ -116,8 +115,10 @@ class LightningUpgradeStartViewControllerTests: XCTestCase {
 
   // actions produce results
   func testUpgradeButtonTellsDelegate() {
+    var nextStepWasCalled = false
+    sut.nextStep = { nextStepWasCalled = true }
     sut.upgradeNow(sut.upgradeButton)
-    XCTAssertTrue(coordinator.upgradeNowTapped)
+    XCTAssertTrue(nextStepWasCalled)
   }
 
   func testShowInfoButtonTellsDelegate() {

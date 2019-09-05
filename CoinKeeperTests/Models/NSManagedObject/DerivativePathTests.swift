@@ -31,13 +31,14 @@ class DerivativePathTests: XCTestCase {
   func testMaxReceiveIndexZeroCorrectlyFetches() {
     let fakePath = CKMDerivativePath(insertInto: context)
     fakePath.purpose = 49
-    fakePath.coin = CKMDerivativePath.relevantCoin
+    fakePath.coin = 1
     fakePath.account = 0
     fakePath.change = 0
     fakePath.index = 0
     fakePath.address = CKMAddress(insertInto: context)
 
-    let maxIndex = CKMDerivativePath.maxUsedReceiveIndex(in: context)
+    let coin = BTCTestnetCoin(purpose: .BIP49, coin: .TestNet, account: 0, networkURL: nil)
+    let maxIndex = CKMDerivativePath.maxUsedReceiveIndex(forCoin: coin, in: context)
 
     XCTAssertEqual(maxIndex, 0)
   }
@@ -45,13 +46,14 @@ class DerivativePathTests: XCTestCase {
   func testMaxReceiveIndexTenCorrectlyFetches() {
     let fakePath = CKMDerivativePath(insertInto: context)
     fakePath.purpose = 49
-    fakePath.coin = CKMDerivativePath.relevantCoin
+    fakePath.coin = 1
     fakePath.account = 0
     fakePath.change = 0
     fakePath.index = 10
     fakePath.address = CKMAddress(insertInto: context)
 
-    let maxIndex = CKMDerivativePath.maxUsedReceiveIndex(in: context)
+    let coin = BTCTestnetCoin(purpose: .BIP49, coin: .TestNet, account: 0, networkURL: nil)
+    let maxIndex = CKMDerivativePath.maxUsedReceiveIndex(forCoin: coin, in: context)
 
     XCTAssertEqual(maxIndex, 10)
   }
@@ -59,7 +61,7 @@ class DerivativePathTests: XCTestCase {
   func testMaxReceiveIndexZeroCorrectlyFetches_ignoresServerAddress() {
     let usedPath = CKMDerivativePath(insertInto: context)
     usedPath.purpose = 49
-    usedPath.coin = CKMDerivativePath.relevantCoin
+    usedPath.coin = 1
     usedPath.account = 0
     usedPath.change = 0
     usedPath.index = 0
@@ -67,13 +69,14 @@ class DerivativePathTests: XCTestCase {
 
     let serverAddressPath = CKMDerivativePath(insertInto: context)
     serverAddressPath.purpose = 49
-    serverAddressPath.coin = CKMDerivativePath.relevantCoin
+    serverAddressPath.coin = 1
     serverAddressPath.account = 0
     serverAddressPath.change = 0
     serverAddressPath.index = 1
     serverAddressPath.serverAddress = CKMServerAddress(insertInto: context)
 
-    let maxIndex = CKMDerivativePath.maxUsedReceiveIndex(in: context)
+    let coin = BTCTestnetCoin(purpose: .BIP49, coin: .TestNet, account: 0, networkURL: nil)
+    let maxIndex = CKMDerivativePath.maxUsedReceiveIndex(forCoin: coin, in: context)
 
     XCTAssertEqual(maxIndex, 0)
   }
@@ -82,13 +85,14 @@ class DerivativePathTests: XCTestCase {
   func testMaxChangeIndexZeroCorrectlyFetches() {
     let fakePath = CKMDerivativePath(insertInto: context)
     fakePath.purpose = 49
-    fakePath.coin = CKMDerivativePath.relevantCoin
+    fakePath.coin = 1
     fakePath.account = 0
     fakePath.change = 1
     fakePath.index = 0
     fakePath.address = CKMAddress(insertInto: context)
 
-    let maxIndex = CKMDerivativePath.maxUsedChangeIndex(in: context)
+    let coin = BTCTestnetCoin(purpose: .BIP49, coin: .TestNet, account: 0, networkURL: nil)
+    let maxIndex = CKMDerivativePath.maxUsedChangeIndex(forCoin: coin, in: context)
 
     XCTAssertEqual(maxIndex, 0)
   }
@@ -96,13 +100,14 @@ class DerivativePathTests: XCTestCase {
   func testMaxChangeIndexTenCorrectlyFetches() {
     let fakePath = CKMDerivativePath(insertInto: context)
     fakePath.purpose = 49
-    fakePath.coin = CKMDerivativePath.relevantCoin
+    fakePath.coin = 1
     fakePath.account = 0
     fakePath.change = 1
     fakePath.index = 10
     fakePath.address = CKMAddress(insertInto: context)
 
-    let maxIndex = CKMDerivativePath.maxUsedChangeIndex(in: context)
+    let coin = BTCTestnetCoin(purpose: .BIP49, coin: .TestNet, account: 0, networkURL: nil)
+    let maxIndex = CKMDerivativePath.maxUsedChangeIndex(forCoin: coin, in: context)
 
     XCTAssertEqual(maxIndex, 10)
   }

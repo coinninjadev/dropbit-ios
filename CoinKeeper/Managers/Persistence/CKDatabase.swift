@@ -173,11 +173,11 @@ class CKDatabase: PersistenceDatabaseType {
     in context: NSManagedObjectContext) -> Promise<Void> {
     return Promise { seal in
       let addressString = metaAddress.address
-      let index = metaAddress.derivationPath.index
+      let path = DerivativePathResponse(derivativePath: metaAddress.derivationPath)
 
       context.performAndWait {
         let newAddress = CKMServerAddress(address: addressString, createdAt: createdAt, insertInto: context)
-        newAddress.derivativePath = CKMDerivativePath.findOrCreate(withIndex: Int(index), in: context)
+        newAddress.derivativePath = CKMDerivativePath.findOrCreate(with: path, in: context)
       }
 
       seal.fulfill(()) //no need to return the created object(s), fulfill with Void

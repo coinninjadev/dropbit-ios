@@ -12,7 +12,7 @@ public enum WalletTarget: CoinNinjaTargetType {
   typealias ResponseType = WalletResponse
 
   case create(CreateWalletBody)
-  case update(CreateWalletBody)
+  case update(UpdateWalletBody)
   case get
   case reset
   case subscribe(SubscribeToWalletBody)

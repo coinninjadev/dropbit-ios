@@ -18,6 +18,7 @@ protocol PersistenceManagerType: DeviceCountryCodeProvider {
   var contactCacheManager: ContactCacheManagerType { get }
   var hashingManager: HashingManager { get }
   var brokers: PersistenceBrokersType { get }
+  var usableCoin: CNBBaseCoin { get }
 
   func createBackgroundContext() -> NSManagedObjectContext
   func mainQueueContext() -> NSManagedObjectContext
@@ -40,7 +41,6 @@ protocol PersistenceManagerType: DeviceCountryCodeProvider {
 
   /// Look for any transactions sent to a phone number without a contact name, and provide a name if found, as a convenience when viewing tx history
   func matchContactsIfPossible()
-
 }
 
 extension PersistenceManagerType {

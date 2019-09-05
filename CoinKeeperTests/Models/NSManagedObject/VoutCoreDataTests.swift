@@ -201,11 +201,11 @@ class VoutCoreDataTests: XCTestCase {
   }
 
   private func changeDerivativePath(withIndex i: Int) -> DerivativePathResponse {
-    return DerivativePathResponse(purpose: 49, coin: 0, account: 0, change: 1, index: i)
+    return DerivativePathResponse(purpose: 84, coin: 0, account: 0, change: 1, index: i)
   }
 
   private func receiveDerivativePath(withIndex i: Int) -> DerivativePathResponse {
-    return DerivativePathResponse(purpose: 49, coin: 0, account: 0, change: 0, index: i)
+    return DerivativePathResponse(purpose: 84, coin: 0, account: 0, change: 0, index: i)
   }
 
 }

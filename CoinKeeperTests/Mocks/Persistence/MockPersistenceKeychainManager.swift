@@ -96,6 +96,10 @@ class MockPersistenceKeychainManager: PersistenceKeychainType {
     return Promise.value(())
   }
 
+  func upgrade(recoveryWords wordsd: [String]) -> Promise<Void> {
+    return Promise { _ in }
+  }
+
 }
 
 class MockKeychainAccessorType: KeychainAccessorType {

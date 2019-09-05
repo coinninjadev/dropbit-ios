@@ -188,5 +188,6 @@ protocol WalletBrokerType: AnyObject {
   func lastReceiveAddressIndex(in context: NSManagedObjectContext) -> Int?
   func lastChangeAddressIndex(in context: NSManagedObjectContext) -> Int?
   var receiveAddressIndexGaps: Set<Int> { get set }
+  var usableCoin: CNBBaseCoin { get }
 
 }

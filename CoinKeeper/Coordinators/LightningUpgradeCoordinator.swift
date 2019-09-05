@@ -44,11 +44,12 @@ class LightningUpgradeCoordinator: ChildCoordinatorType {
           let upgradedCoin = CNBBaseCoin(purpose: .BIP84, coin: coinType, account: 0)
           let tempWords = WalletManager.createMnemonicWords()
           localSelf.newWords = tempWords
-          let upgradedWallet = WalletManager(words: localSelf.newWords, purpose: upgradedCoin.purpose, persistenceManager: parent.persistenceManager)
-          localSelf.newWallet = CNBHDWallet(mnemonic: tempWords, coin: upgradedCoin)
-          let firstAddress = upgradedWallet.createAddressDataSource().changeAddress(at: 0).address
-          log.info("")
-          upgradedWallet.transactionDataSendingMax(to: firstAddress, withFeeRate: feeRate)
+          let newWallet = CNBHDWallet(mnemonic: tempWords, coin: upgradedCoin)
+          localSelf.newWallet = newWallet
+          let dataSource = AddressDataSource(wallet: newWallet, persistenceManager: parent.persistenceManager)
+          let firstAddress = dataSource.changeAddress(at: 0).address
+          log.info("Creating send-max transaction to upgraded wallet.")
+          parent.walletManager?.transactionDataSendingMax(to: firstAddress, withFeeRate: feeRate)
             .done { (data: CNBTransactionData) in controller.updateUI(with: data) }
             .catch { (error: Error) in
               log.error(error, message: "Failed to create send max transaction.")

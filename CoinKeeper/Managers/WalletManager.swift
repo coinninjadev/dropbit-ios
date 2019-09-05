@@ -97,16 +97,8 @@ class WalletManager: WalletManagerType {
 
   let coin: CNBBaseCoin
 
-  init(words: [String],
-       purpose: CoinDerivation = .BIP49,
-       persistenceManager: PersistenceManagerType = PersistenceManager()) {
-    let relevantCoin: CNBBaseCoin
-    #if DEBUG
-    relevantCoin = BTCTestnetCoin(purpose: purpose)
-    #else
-    relevantCoin = BTCMainnetCoin(purpose: purpose)
-    #endif
-
+  init(words: [String], persistenceManager: PersistenceManagerType = PersistenceManager()) {
+    let relevantCoin = persistenceManager.usableCoin
     self.wallet = CNBHDWallet(mnemonic: words, coin: relevantCoin)
     self.coin = relevantCoin
     self.persistenceManager = persistenceManager
@@ -168,7 +160,7 @@ class WalletManager: WalletManagerType {
   }
 
   var minimumFeeRate: UInt {
-    return 5
+    return 1
   }
 
   func createAddressDataSource() -> AddressDataSourceType {
@@ -362,7 +354,7 @@ class WalletManager: WalletManagerType {
       let index = UInt(vout.index)
       let amount = UInt(vout.amount)
       let cnbDerivativePath = CNBDerivationPath(
-        purpose: CoinDerivation(rawValue: UInt(derivationPath.purpose)) ?? .BIP49,
+        purpose: CoinDerivation(rawValue: UInt(derivationPath.purpose)) ?? .BIP84,
         coinType: CoinType(rawValue: UInt(derivationPath.coin)) ?? .MainNet,
         account: UInt(derivationPath.account),
         change: UInt(derivationPath.change),
@@ -380,7 +372,7 @@ class WalletManager: WalletManagerType {
   private func newChangePath(in context: NSManagedObjectContext) -> CNBDerivationPath {
     let changeAddress = self.createAddressDataSource().nextChangeAddress(in: context)
     return CNBDerivationPath(
-      purpose: CoinDerivation(rawValue: changeAddress.derivationPath.purpose.rawValue) ?? .BIP49,
+      purpose: CoinDerivation(rawValue: changeAddress.derivationPath.purpose.rawValue) ?? .BIP84,
       coinType: CoinType(rawValue: changeAddress.derivationPath.coinType.rawValue) ?? .MainNet,
       account: changeAddress.derivationPath.account,
       change: changeAddress.derivationPath.change,

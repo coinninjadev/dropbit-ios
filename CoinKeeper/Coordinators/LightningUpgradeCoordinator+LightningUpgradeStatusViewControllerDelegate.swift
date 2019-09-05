@@ -35,7 +35,7 @@ extension LightningUpgradeCoordinator: LightningUpgradeStatusViewControllerDeleg
         return parent.persistenceManager.keychainManager.upgrade(recoveryWords: self.newWords)
       }
       .then { _ -> Promise<WalletResponse> in
-        let newWalletManager = WalletManager(words: self.newWords, purpose: .BIP84, persistenceManager: parent.persistenceManager)
+        let newWalletManager = WalletManager(words: self.newWords, persistenceManager: parent.persistenceManager)
         parent.walletManager = newWalletManager
         return parent.networkManager.createWallet(withPublicKey: newWalletManager.hexEncodedPublicKey, walletFlags: newFlags.flags)
       }
