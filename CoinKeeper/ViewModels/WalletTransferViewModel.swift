@@ -18,6 +18,7 @@ class WalletTransferViewModel: CurrencySwappableEditAmountViewModel {
     self.amount = amount
     super.init(exchangeRates: ExchangeRateManager().exchangeRates,
                primaryAmount: NSDecimalNumber(integerAmount: amount.value, currency: .USD),
+               walletTransactionType: direction == .toLightning ? .onChain : .lightning,
                currencyPair: CurrencyPair(primary: .USD, fiat: .USD))
   }
 }

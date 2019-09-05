@@ -193,6 +193,8 @@ extension AppCoordinator {
     return RequestPayViewController.newInstance(delegate: self,
                                                 receiveAddress: address,
                                                 currencyPair: currencyController.currencyPair,
+                                                walletTransactionType: persistenceManager.brokers.preferences.selectedWalletTransactionType,
+                                                alertManager: alertManager,
                                                 exchangeRates: self.currencyController.exchangeRates)
   }
 

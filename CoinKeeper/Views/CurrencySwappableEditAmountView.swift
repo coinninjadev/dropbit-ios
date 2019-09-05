@@ -45,11 +45,15 @@ class CurrencySwappableEditAmountView: UIView {
 
     backgroundColor = .clear
 
-    primaryAmountTextField.tintColor = .lightBlueTint //cursor
-    primaryAmountTextField.textColor = .lightBlueTint
+    primaryAmountTextField.tintColor = .darkBlueText //cursor
     primaryAmountTextField.font = .regular(30)
-    secondaryAmountLabel.textColor = .darkGrayText
+    secondaryAmountLabel.textColor = .bitcoinOrange
     secondaryAmountLabel.font = .regular(17)
+  }
+
+  func disableSwap() {
+    swapButton.isUserInteractionEnabled = false
+    swapButton.isHidden = true
   }
 
   func configure(withLabels labels: DualAmountLabels,

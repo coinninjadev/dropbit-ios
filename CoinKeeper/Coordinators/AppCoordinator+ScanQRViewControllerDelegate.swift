@@ -38,6 +38,7 @@ extension AppCoordinator: ScanQRViewControllerDelegate {
           let currencyPair = CurrencyPair(btcPrimaryWith: self.currencyController)
           let swappableVM = CurrencySwappableEditAmountViewModel(exchangeRates: self.exchangeRates,
                                                                  primaryAmount: .zero,
+                                                                 walletTransactionType: walletTransactionType,
                                                                  currencyPair: currencyPair)
           let viewModel = SendPaymentViewModel(editAmountViewModel: swappableVM, walletTransactionType: walletTransactionType)
 
@@ -115,6 +116,7 @@ extension AppCoordinator: ScanQRViewControllerDelegate {
     let currencyPair = CurrencyPair(btcPrimaryWith: self.currencyController)
     let swappableVM = CurrencySwappableEditAmountViewModel(exchangeRates: self.exchangeRates,
                                                            primaryAmount: fallbackBTCAmount,
+                                                           walletTransactionType: .onChain,
                                                            currencyPair: currencyPair)
     scanViewController.fallbackPaymentViewModel = SendPaymentViewModel(editAmountViewModel: swappableVM, walletTransactionType: .onChain)
 
