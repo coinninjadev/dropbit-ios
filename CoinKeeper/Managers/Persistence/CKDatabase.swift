@@ -96,7 +96,7 @@ class CKDatabase: PersistenceDatabaseType {
       user.flatMap { context.delete($0) }
 
       do {
-        try context.save()
+        try context.saveRecursively()
       } catch {
         log.contextSaveError(error)
       }
@@ -368,7 +368,7 @@ class CKDatabase: PersistenceDatabaseType {
 
     if context.hasChanges {
       do {
-        try context.save()
+        try context.saveRecursively()
       } catch {
         log.contextSaveError(error)
       }

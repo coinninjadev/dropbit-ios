@@ -22,7 +22,7 @@ extension AppCoordinator: RequestPayViewControllerDelegate {
     let context = persistenceManager.createBackgroundContext()
     txDataWorker.performFetchAndStoreAllLightningTransactions(in: context)
       .done(in: context) {
-        try? context.save()
+        try? context.saveRecursively()
         CKNotificationCenter.publish(key: .didUpdateInvoicesLocally)
     }.cauterize()
   }

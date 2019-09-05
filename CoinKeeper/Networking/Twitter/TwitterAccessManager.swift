@@ -49,7 +49,7 @@ class TwitterAccessManager: TwitterAccessManagerType {
         try context.performThrowingAndWait {
           let user = CKMUser.find(in: context)
           user?.avatar = twitterUser.profileImageData
-          try context.save()
+          try context.saveRecursively()
         }
       })
   }

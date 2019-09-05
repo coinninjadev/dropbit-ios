@@ -185,7 +185,7 @@ class TransactionDataWorkerTests: XCTestCase {
    XCTAssertEqual(failedTxs.count, 1, "1 transaction should be marked as failed after grooming")
 
    do {
-   try stack.context.save()
+   try stack.context.saveRecursively()
    } catch {
    XCTFail("failed to save context: \(error)")
    }

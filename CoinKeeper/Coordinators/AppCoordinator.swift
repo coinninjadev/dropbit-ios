@@ -238,7 +238,7 @@ class AppCoordinator: CoordinatorType {
     bgContext.perform {
       self.registerAndPersistWallet(in: bgContext)
         .done(in: bgContext) {
-          try bgContext.save()
+          try bgContext.saveRecursively()
           DispatchQueue.main.async {
             completion()
           }

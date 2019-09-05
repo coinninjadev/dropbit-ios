@@ -69,7 +69,7 @@ class DatabaseTests: XCTestCase {
       XCTAssertEqual(context.deletedObjects.count, 0, "0 object should be deleted after grooming")
 
       do {
-        try context.save()
+        try context.saveRecursively()
       } catch {
         XCTFail("failed to save context: \(error)")
       }

@@ -116,7 +116,7 @@ class DeviceVerificationCoordinator: ChildCoordinatorType {
           let wallet = CKMWallet.findOrCreate(in: context)
           delegate.persistenceManager.brokers.lightning.persistAccountResponse(lnAccountResponse, forWallet: wallet, in: context)
           do {
-            try context.save()
+            try context.saveRecursively()
           } catch {
             log.contextSaveError(error)
           }
@@ -197,7 +197,7 @@ extension DeviceVerificationCoordinator: DeviceVerificationViewControllerDelegat
         }
         .finally(in: bgContext) {
           do {
-            try bgContext.save()
+            try bgContext.saveRecursively()
           } catch {
             log.error(error, message: "user registration failed")
           }
@@ -338,7 +338,7 @@ extension DeviceVerificationCoordinator: DeviceVerificationViewControllerDelegat
           let wallet = CKMWallet.findOrCreate(in: bgContext)
           crDelegate.persistenceManager.brokers.lightning.persistAccountResponse(lnAccountResponse, forWallet: wallet, in: bgContext)
           do {
-            try bgContext.save()
+            try bgContext.saveRecursively()
           } catch {
             log.contextSaveError(error)
           }
@@ -439,7 +439,7 @@ extension DeviceVerificationCoordinator: DeviceVerificationViewControllerDelegat
     bgContext.perform {
       crDelegate.registerAndPersistWallet(in: bgContext)
         .done(in: bgContext) {
-          try bgContext.save()
+          try bgContext.saveRecursively()
 
           DispatchQueue.main.async {
             crDelegate.alertManager.hideActivityHUD(withDelay: self.minHudDisplayDuration) {

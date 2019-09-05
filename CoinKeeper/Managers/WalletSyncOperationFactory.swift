@@ -58,7 +58,7 @@ class WalletSyncOperationFactory {
             .finally {
               bgContext.performAndWait {
                 do {
-                  try bgContext.save()
+                  try bgContext.saveRecursively()
                 } catch {
                   log.contextSaveError(error)
                 }
