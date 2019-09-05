@@ -75,10 +75,6 @@ extension AppCoordinator: TransactionHistoryViewControllerDelegate {
     }
   }
 
-  func viewControllerWillShowTransactionDetails(_ viewController: UIViewController) {
-    CKNotificationCenter.publish(key: .willShowTransactionHistoryDetails)
-  }
-
   func viewController(_ viewController: TransactionHistoryViewController, didSelectItemAtIndexPath indexPath: IndexPath) {
     //TODO:
 //    switch viewController.viewModel.walletTransactionType {
@@ -101,6 +97,5 @@ extension AppCoordinator: TransactionHistoryViewControllerDelegate {
 
   func viewControllerDidDismissTransactionDetails(_ viewController: UIViewController) {
     viewController.dismiss(animated: true, completion: nil)
-    CKNotificationCenter.publish(key: .didDismissTransactionHistoryDetails)
   }
 }

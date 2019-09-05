@@ -100,8 +100,7 @@ class WalletOverviewViewController: BaseViewController, StoryboardInitializable 
     return controller
   }
 
-  private var showTransactionHistoryToken: NotificationToken?
-  private var dismissTransactionHistoryToken: NotificationToken?
+  private var reloadTransactionsToken: NotificationToken?
 
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -111,17 +110,9 @@ class WalletOverviewViewController: BaseViewController, StoryboardInitializable 
       pageViewController.view.layer.masksToBounds = false
     }
 
-    self.showTransactionHistoryToken = CKNotificationCenter
-      .subscribe(key: .willShowTransactionHistoryDetails, object: nil, queue: .main) { _ in
-    }
-
-    self.showTransactionHistoryToken = CKNotificationCenter
+    self.reloadTransactionsToken = CKNotificationCenter
       .subscribe(key: .didUpdateInvoicesLocally, object: nil, queue: .main) { _ in
         self.baseViewControllers.forEach { ($0 as? TransactionHistoryViewController)?.summaryCollectionView.reloadData() }
-    }
-
-    self.dismissTransactionHistoryToken = CKNotificationCenter
-      .subscribe(key: .didDismissTransactionHistoryDetails, object: nil, queue: .main) { _ in
     }
 
     balanceContainer.delegate = balanceDelegate

@@ -25,7 +25,6 @@ protocol TransactionHistoryViewControllerDelegate: DeviceCountryCodeProvider &
 
   var currencyController: CurrencyController { get }
   func viewControllerSummariesDidReload(_ viewController: TransactionHistoryViewController, indexPathsIfNotAll paths: [IndexPath]?)
-  func viewControllerWillShowTransactionDetails(_ viewController: UIViewController)
   func viewController(_ viewController: TransactionHistoryViewController, didSelectItemAtIndexPath indexPath: IndexPath)
   func viewControllerDidDismissTransactionDetails(_ viewController: UIViewController)
 }
@@ -120,7 +119,6 @@ extension TransactionHistoryViewController { // Layout
 
   func showDetailCollectionView(_ shouldShow: Bool, indexPath: IndexPath, animated: Bool) {
     if shouldShow {
-      coordinationDelegate?.viewControllerWillShowTransactionDetails(self)
       coordinationDelegate?.viewController(self, didSelectItemAtIndexPath: indexPath)
     } else {
       coordinationDelegate?.viewControllerDidDismissTransactionDetails(self)
