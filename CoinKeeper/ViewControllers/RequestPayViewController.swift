@@ -176,6 +176,7 @@ final class RequestPayViewController: PresentableViewController, StoryboardIniti
     vc.alertManager = alertManager
     let editAmountViewModel = CurrencySwappableEditAmountViewModel(exchangeRates: exchangeRates,
                                                                    primaryAmount: .zero,
+                                                                   walletTransactionType: walletTransactionType,
                                                                    currencyPair: currencyPair,
                                                                    delegate: vc)
     vc.viewModel = RequestPayViewModel(receiveAddress: receiveAddress, viewModel: editAmountViewModel,

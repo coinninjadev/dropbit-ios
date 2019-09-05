@@ -97,6 +97,7 @@ protocol BalanceDisplayable: ExchangeRateUpdatable, BalanceUpdateable {
   var primaryBalanceCurrency: CurrencyCode { get }
   var walletBalanceView: WalletBalanceView { get }
   var balanceLeftButtonType: BalanceContainerLeftButtonType { get }
+  var walletTransactionType: WalletTransactionType { get }
 
 }
 
@@ -168,8 +169,8 @@ extension BalanceDisplayable where Self: UIViewController {
       lightningConverter: lightningConverter,
       primaryCurrency: primaryBalanceCurrency)
 
-    balanceContainer.update(with: balanceDataSource)
-    walletBalanceView.update(with: walletDataSource)
+    balanceContainer.update(with: balanceDataSource, walletTransactionType: walletTransactionType)
+    walletBalanceView.update(with: walletDataSource, walletTransactionType: walletTransactionType)
   }
 
 }

@@ -11,11 +11,9 @@ import UIKit
 class RequestPayViewModel: CurrencySwappableEditAmountViewModel {
 
   var receiveAddress: String
-  var walletTransactionType: WalletTransactionType
   let qrCodeGenerator = QRCodeGenerator()
 
   init(receiveAddress: String, viewModel: CurrencySwappableEditAmountViewModel, walletTransactionType: WalletTransactionType) {
-    self.walletTransactionType = walletTransactionType
     self.receiveAddress = receiveAddress
     super.init(viewModel: viewModel)
   }

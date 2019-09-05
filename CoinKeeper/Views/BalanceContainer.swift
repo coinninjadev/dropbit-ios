@@ -114,11 +114,11 @@ enum BalanceContainerLeftButtonType {
   }
 
   func refresh() {
-    guard let dataSource = currentDataSource else { return }
-    update(with: dataSource)
+    guard let dataSource = currentDataSource, let delegate = delegate else { return }
+    update(with: dataSource, walletTransactionType: delegate.selectedWalletTransactionType())
   }
 
-  func update(with dataSource: BalanceContainerDataSource) {
+  func update(with dataSource: BalanceContainerDataSource, walletTransactionType: WalletTransactionType) {
     currentDataSource = dataSource
     guard let delegate = delegate else { return }
     leftButton.setImage(dataSource.leftButtonType.image, for: .normal)
@@ -132,8 +132,8 @@ enum BalanceContainerLeftButtonType {
     let secondaryCurrency = converter.otherCurrency(forCurrency: primaryCurrency)
     let primaryAmount = converter.amount(forCurrency: primaryCurrency)
     let secondaryAmount = converter.amount(forCurrency: secondaryCurrency)
-    primarySecondaryBalanceContainer.set(primaryAmount: primaryAmount, currency: primaryCurrency)
-    primarySecondaryBalanceContainer.set(secondaryAmount: secondaryAmount, currency: secondaryCurrency)
+    primarySecondaryBalanceContainer.set(primaryAmount: primaryAmount, currency: primaryCurrency, walletTransactionType: walletTransactionType)
+    primarySecondaryBalanceContainer.set(secondaryAmount: secondaryAmount, currency: secondaryCurrency, walletTransactionType: walletTransactionType)
 
     if delegate.isSyncCurrentlyRunning() {
       primarySecondaryBalanceContainer.isSyncing = false

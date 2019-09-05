@@ -36,12 +36,17 @@ class CKCurrencyFormatter {
     }
   }
 
-  static func attributedString(for amount: NSDecimalNumber?, currency: CurrencyCode, btcSymbolType: CurrencySymbolType) -> NSAttributedString? {
+  static func attributedString(for amount: NSDecimalNumber?, currency: CurrencyCode, walletTransactionType: WalletTransactionType) -> NSAttributedString? {
     guard let amount = amount else { return nil }
     if currency.isFiat {
       return FiatFormatter(currency: currency, withSymbol: true).attributedString(from: amount)
     } else {
-      return BitcoinFormatter(symbolType: btcSymbolType).attributedString(from: amount)
+      switch walletTransactionType {
+      case .lightning:
+        return NSAttributedString(string: SatsFormatter().string(fromDecimal: amount) ?? "")
+      case .onChain:
+        return BitcoinFormatter(symbolType: .string).attributedString(from: amount)
+      }
     }
   }
 

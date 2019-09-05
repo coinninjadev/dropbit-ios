@@ -58,11 +58,11 @@ class WalletBalanceView: UIView {
   }
 
   func refresh() {
-    guard let dataSource = currentDataSource else { return }
-    update(with: dataSource)
+    guard let dataSource = currentDataSource, let delegate = delegate else { return }
+    update(with: dataSource, walletTransactionType: delegate.getCurrentWalletTransactionType())
   }
 
-  func update(with dataSource: WalletBalanceDataSource) {
+  func update(with dataSource: WalletBalanceDataSource, walletTransactionType: WalletTransactionType) {
     currentDataSource = dataSource
     guard let transactionType = delegate?.getCurrentWalletTransactionType() else { return }
     let converter: CurrencyConverter = transactionType == .lightning ? dataSource.lightningConverter : dataSource.onChainConverter
@@ -70,8 +70,8 @@ class WalletBalanceView: UIView {
     let primaryCurrency = dataSource.primaryCurrency, primaryAmount = converter.amount(forCurrency: primaryCurrency)
     let secondaryCurrency = converter.otherCurrency(forCurrency: primaryCurrency)
     let secondaryAmount = converter.amount(forCurrency: secondaryCurrency)
-    primarySecondaryBalanceContainer.set(primaryAmount: primaryAmount, currency: primaryCurrency)
-    primarySecondaryBalanceContainer.set(secondaryAmount: secondaryAmount, currency: secondaryCurrency)
+    primarySecondaryBalanceContainer.set(primaryAmount: primaryAmount, currency: primaryCurrency, walletTransactionType: walletTransactionType)
+    primarySecondaryBalanceContainer.set(secondaryAmount: secondaryAmount, currency: secondaryCurrency, walletTransactionType: walletTransactionType)
 
     if let syncRunning = delegate?.isSyncCurrentlyRunning(), syncRunning == false {
       primarySecondaryBalanceContainer.isSyncing = false

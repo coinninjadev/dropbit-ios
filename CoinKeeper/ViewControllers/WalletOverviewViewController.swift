@@ -153,12 +153,6 @@ class WalletOverviewViewController: BaseViewController, StoryboardInitializable 
       pageViewController?.setViewControllers([baseViewControllers[1]], direction: .forward, animated: true, completion: nil)
     }
   }
-
-  override func viewDidAppear(_ animated: Bool) {
-    super.viewDidAppear(animated)
-    self.baseViewControllers.compactMap { $0 as? RequestPayViewController}.first?.closeButton?.isHidden = true
-  }
-
 }
 
 extension WalletOverviewViewController: BadgeDisplayable {
@@ -187,6 +181,10 @@ extension WalletOverviewViewController: BalanceDisplayable {
     baseViewControllers.compactMap { $0 as? ExchangeRateUpdatable }.forEach { $0.didUpdateExchangeRateManager(exchangeRateManager) }
   }
 
+  var walletTransactionType: WalletTransactionType {
+    guard let delegate = coordinationDelegate else { return .onChain }
+    return delegate.selectedWalletTransactionType()
+  }
 }
 
 enum ViewControllerIndex: Int {
