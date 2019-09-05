@@ -12,6 +12,7 @@ public enum WalletTarget: CoinNinjaTargetType {
   typealias ResponseType = WalletResponse
 
   case create(CreateWalletBody)
+  case update(CreateWalletBody)
   case get
   case reset
   case subscribe(SubscribeToWalletBody)
@@ -25,17 +26,17 @@ extension WalletTarget {
 
   var subPath: String? {
     switch self {
-    case .reset:            return "reset"
-    case .subscribe:        return "subscribe"
-    case .create, .get:     return nil
+    case .reset:                    return "reset"
+    case .subscribe:                return "subscribe"
+    case .create, .update, .get:    return nil
     }
   }
 
   public var method: Moya.Method {
     switch self {
-    case .create, .subscribe:   return .post
-    case .get:                  return .get
-    case .reset:                return .put
+    case .create, .update, .subscribe:  return .post
+    case .get:                          return .get
+    case .reset:                        return .put
     }
   }
 
@@ -44,6 +45,7 @@ extension WalletTarget {
     case .get,
          .reset:                return .requestPlain
     case .create(let body):     return .requestCustomJSONEncodable(body, encoder: customEncoder)
+    case .update(let body):     return .requestCustomJSONEncodable(body, encoder: customEncoder)
     case .subscribe(let body):  return .requestCustomJSONEncodable(body, encoder: customEncoder)
     }
   }
