@@ -56,7 +56,9 @@ class WalletSyncOperationFactory {
               strongSelf.handleSyncRoutineError(error, in: bgContext)
             }
             .finally {
+              var contextHasInsertionsOrUpdates = false
               bgContext.performAndWait {
+                contextHasInsertionsOrUpdates = (bgContext.insertedObjects.isNotEmpty || bgContext.updatedObjects.isNotEmpty)
                 do {
                   try bgContext.saveRecursively()
                 } catch {
@@ -73,8 +75,7 @@ class WalletSyncOperationFactory {
               strongSelf.delegate?.syncManagerDidFinishSync()
 
               if let fetchResultHandler = fetchResult {
-                let result: UIBackgroundFetchResult = bgContext.insertedObjects.isNotEmpty ||
-                  bgContext.updatedObjects.isNotEmpty ? .newData : .noData
+                let result: UIBackgroundFetchResult = contextHasInsertionsOrUpdates ? .newData : .noData
                 fetchResultHandler(result)
               }
 
