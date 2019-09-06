@@ -39,13 +39,12 @@ protocol WalletTransferViewControllerDelegate: ViewControllerDismissable, Paymen
   func viewControllerDidConfirmLoad(_ viewController: UIViewController,
                                     paymentData: PaymentData)
 
-  func viewControllerDidConfirmWithdraw(_ viewController: UIViewController,
-                                        lightningData: LightningPaymentInputs)
+  func viewControllerDidConfirmWithdraw(_ viewController: UIViewController, btcAmount: NSDecimalNumber)
 }
 
 enum TransferDirection {
   case toLightning(PaymentData?) //load
-  case toOnChain(LightningPaymentInputs?) //withdraw
+  case toOnChain(NSDecimalNumber?) //withdraw
 }
 
 class WalletTransferViewController: PresentableViewController, StoryboardInitializable, CurrencySwappableAmountEditor {
@@ -105,22 +104,18 @@ class WalletTransferViewController: PresentableViewController, StoryboardInitial
     case .toLightning:
       buildTransaction()
     case .toOnChain:
-      break //TODO: Implement
+      viewModel.direction = .toOnChain(viewModel.btcAmount)
     }
   }
 
   private func buildTransaction() {
-    SVProgressHUD.show()
     let paymentData = coordinationDelegate?.viewControllerNeedsTransactionData(self,
                                                                            btcAmount: viewModel.btcAmount,
                                                                            exchangeRates: rateManager.exchangeRates)
     viewModel.direction = .toLightning(paymentData)
-    SVProgressHUD.dismiss()
   }
 
   private func setupTransactionUI() {
-    //TODO: Implement
-
     switch viewModel.direction {
     case .toLightning(let data):
       feesView.isHidden = true
@@ -163,19 +158,17 @@ class WalletTransferViewController: PresentableViewController, StoryboardInitial
     setupTransactionUI()
     buildTransactionIfNecessary()
   }
-
 }
 
 extension WalletTransferViewController: ConfirmViewDelegate {
-
   func viewDidConfirm() {
     switch viewModel.direction {
     case .toLightning(let data):
       guard let delegate = coordinationDelegate, let data = data else { return }
       delegate.viewControllerDidConfirmLoad(self, paymentData: data)
-    case .toOnChain(let inputs):
-      guard let delegate = coordinationDelegate, let inputs = inputs else { return }
-      delegate.viewControllerDidConfirmWithdraw(self, lightningData: inputs)
+    case .toOnChain(let btcAmount):
+      guard let delegate = coordinationDelegate, let btcAmount = btcAmount else { return }
+      delegate.viewControllerDidConfirmWithdraw(self, btcAmount: btcAmount)
     }
   }
 }

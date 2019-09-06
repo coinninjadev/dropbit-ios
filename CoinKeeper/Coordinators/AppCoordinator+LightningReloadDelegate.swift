@@ -16,10 +16,12 @@ extension AppCoordinator: LightningReloadDelegate {
                                       fromAmount: dollars,
                                       currencyPair: CurrencyPair(primary: .USD, secondary: .BTC, fiat: .USD))
     guard let btcAmount = converter.convertedAmount() else { return }
-    let context = self.persistenceManager.mainQueueContext()
+    let context = self.persistenceManager.viewContext
     let wallet = CKMWallet.findOrCreate(in: context)
     let lightningAccount = self.persistenceManager.brokers.lightning.getAccount(forWallet: wallet, in: context)
-    let paymentData = buildTransactionData(btcAmount: btcAmount, address: lightningAccount.address, exchangeRates: ExchangeRateManager().exchangeRates)
+    let paymentData = buildTransactionData(btcAmount: btcAmount,
+                                           address: lightningAccount.address,
+                                           exchangeRates: ExchangeRateManager().exchangeRates)
     let viewModel = WalletTransferViewModel(direction: .toLightning(paymentData), amount: amount)
     let walletTransferViewController = WalletTransferViewController.newInstance(delegate: self, viewModel: viewModel)
     navigationController.present(walletTransferViewController, animated: true, completion: nil)

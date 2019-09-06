@@ -40,7 +40,8 @@ extension AppCoordinator: PaymentBuildingDelegate {
                                        rates: exchangeRates, sharedPayload: sharedPayload)
 
     outgoingTransactionData = configureOutgoingTransactionData(with: outgoingTransactionData, address: address, inputs: inputs)
-    guard let bitcoinKitTransactionData = walletManager?.failableTransactionData(forPayment: btcAmount, to: address, withFeeRate: 0.0) else { return nil }
+    guard let bitcoinKitTransactionData = walletManager?.failableTransactionData(forPayment: btcAmount,
+                                                                                 to: address, withFeeRate: 0.0) else { return nil }
 
     return PaymentData(broadcastData: bitcoinKitTransactionData, outgoingData: outgoingTransactionData)
   }
