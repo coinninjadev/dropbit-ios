@@ -19,6 +19,12 @@ protocol StartViewControllerDelegate: AnyObject {
 
 final class StartViewController: BaseViewController {
 
+  static func newInstance(withDelegate delegate: StartViewControllerDelegate) -> StartViewController {
+    let controller = StartViewController.makeFromStoryboard()
+    controller.generalCoordinationDelegate = delegate
+    return controller
+  }
+  
   var coordinationDelegate: StartViewControllerDelegate? {
     return generalCoordinationDelegate as? StartViewControllerDelegate
   }

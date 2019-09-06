@@ -194,8 +194,7 @@ class AppCoordinator: CoordinatorType {
         // Child coordinator will push DeviceVerificationViewController onto stack in its start() method
         startDeviceVerificationFlow(userIdentityType: .phone, shouldOrphanRoot: true, selectedSetupFlow: .newWallet)
       } else if launchStateManager.isFirstTime() {
-        let startVC = StartViewController.makeFromStoryboard()
-        assignCoordinationDelegate(to: startVC)
+        let startVC = StartViewController.newInstance(withDelegate: self)
         navigationController.viewControllers = [startVC]
       }
     }

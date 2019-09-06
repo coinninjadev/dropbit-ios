@@ -28,7 +28,7 @@ protocol LaunchStateManagerType: AnyObject {
   func unauthenticateUser()
   func isFirstTime() -> Bool
   func isFirstTimeAfteriCloudRestore() -> Bool
-  func isUpgradedToSegwit() -> Bool
+  func needsUpgradedToSegwit() -> Bool
 }
 
 /**
@@ -153,8 +153,8 @@ class LaunchStateManager: LaunchStateManagerType {
     return criteria.isSubset(of: properties)
   }
 
-  func isUpgradedToSegwit() -> Bool {
-    return currentProperties().contains(.upgradedToSegwit)
+  func needsUpgradedToSegwit() -> Bool {
+    return !currentProperties().contains(.upgradedToSegwit)
   }
 
   // MARK: In-Memory Status
