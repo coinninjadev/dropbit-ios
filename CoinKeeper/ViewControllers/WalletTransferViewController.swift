@@ -30,16 +30,14 @@ enum TransferAmount {
   }
 }
 
-protocol WalletTransferViewControllerDelegate:
-  ViewControllerDismissable, PaymentBuildingDelegate, PaymentSendingDelegate {
+protocol WalletTransferViewControllerDelegate: ViewControllerDismissable, PaymentBuildingDelegate, PaymentSendingDelegate {
 
   func viewControllerNeedsTransactionData(_ viewController: UIViewController,
-                                          direction: TransferDirection,
                                           btcAmount: NSDecimalNumber,
                                           exchangeRates: ExchangeRates) -> PaymentData?
 
   func viewControllerDidConfirmLoad(_ viewController: UIViewController,
-                                        paymentData: PaymentData)
+                                    paymentData: PaymentData)
 
   func viewControllerDidConfirmWithdraw(_ viewController: UIViewController,
                                         lightningData: LightningPaymentInputs)
@@ -80,6 +78,12 @@ class WalletTransferViewController: PresentableViewController, StoryboardInitial
     return generalCoordinationDelegate as? WalletTransferViewControllerDelegate
   }
 
+  var paymentData: PaymentData? {
+    didSet {
+      refreshTransactionUI()
+    }
+  }
+
   override func viewDidLoad() {
     super.viewDidLoad()
 
@@ -90,11 +94,7 @@ class WalletTransferViewController: PresentableViewController, StoryboardInitial
     currencyValueManager = generalCoordinationDelegate as? CurrencyValueDataSourceType
     setupUI()
     setupCurrencySwappableEditAmountView()
-
-    if viewModel.direction == .toLightning {
-      SVProgressHUD.show()
-      buildTransaction()
-    }
+    buildTransactionIfNecessary()
   }
 
   func didUpdateExchangeRateManager(_ exchangeRateManager: ExchangeRateManager) {
@@ -106,7 +106,19 @@ class WalletTransferViewController: PresentableViewController, StoryboardInitial
     coordinationDelegate?.viewControllerDidSelectClose(self)
   }
 
+  private func buildTransactionIfNecessary() {
+    if viewModel.direction == .toLightning && viewModel.btcAmount > 0 {
+      buildTransaction()
+    }
+  }
+
   private func buildTransaction() {
+    SVProgressHUD.show()
+    paymentData = coordinationDelegate?.viewControllerNeedsTransactionData(self, btcAmount: viewModel.btcAmount, exchangeRates: rateManager.exchangeRates)
+    SVProgressHUD.dismiss()
+  }
+
+  private func refreshTransactionUI() {
 
   }
 
@@ -129,6 +141,7 @@ class WalletTransferViewController: PresentableViewController, StoryboardInitial
 
   @objc func doneButtonWasPressed() {
     editAmountView.primaryAmountTextField.resignFirstResponder()
+    buildTransactionIfNecessary()
   }
 
 }
@@ -136,6 +149,13 @@ class WalletTransferViewController: PresentableViewController, StoryboardInitial
 extension WalletTransferViewController: ConfirmViewDelegate {
 
   func viewDidConfirm() {
+    switch viewModel.direction {
+    case .toLightning:
+      guard let delegate = coordinationDelegate, let paymentData = paymentData else { return }
+      delegate.viewControllerDidConfirmLoad(self, paymentData: paymentData)
+    case .toOnChain:
+      break
+    }
     //TODO: Check what type of transfer it is and call correct function
   }
 }
