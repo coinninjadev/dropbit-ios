@@ -23,6 +23,7 @@ enum AnalyticsManagerPropertiesType: String {
   case relativeWalletRange = "Relative Wallet Range"
   case v1Wallet = "v1Wallet"
   case platform = "platform"
+  case walletVersion = "WalletVersion"
 }
 
 enum AnalyticsManagerEventType: String {
