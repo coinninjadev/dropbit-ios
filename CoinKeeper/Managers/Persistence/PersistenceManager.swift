@@ -97,6 +97,14 @@ class PersistenceManager: PersistenceManagerType {
     return walletAndUserId(in: context).map { DefaultRequestHeaders(walletId: $0.walletId, userId: $0.userId) }
   }
 
+  func defaultHeaders(temporaryUserId: String, in context: NSManagedObjectContext) -> Promise<DefaultRequestHeaders> {
+    return Promise { seal in
+      guard let walletId = self.databaseManager.walletId(in: context) else { throw CKPersistenceError.missingValue(key: "wallet ID") }
+      let headers = DefaultRequestHeaders(walletId: walletId, userId: temporaryUserId)
+      seal.fulfill(headers)
+    }
+  }
+
   func matchContactsIfPossible() {
     databaseManager.matchContactsIfPossible(with: contactCacheManager)
   }

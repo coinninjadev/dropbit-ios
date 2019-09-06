@@ -202,7 +202,7 @@ extension DeviceVerificationCoordinator: DeviceVerificationViewControllerDelegat
     }
   }
 
-  func viewControllerDidRequestResendCode(_ viewController: DeviceVerificationViewController) {
+  func viewControllerDidRequestResendCode(_ viewController: DeviceVerificationViewController, temporaryUserId: String) {
     guard let crDelegate = self.coordinationDelegate else { return }
     guard let phoneNumber = self.userSuppliedPhoneNumber else {
       assertionFailure("Phone number not set, cannot request resend code")
@@ -212,7 +212,7 @@ extension DeviceVerificationCoordinator: DeviceVerificationViewControllerDelegat
     let bgContext = crDelegate.persistenceManager.createBackgroundContext()
     bgContext.perform {
       let body = UserIdentityBody(phoneNumber: phoneNumber)
-      crDelegate.persistenceManager.defaultHeaders(in: bgContext)
+      crDelegate.persistenceManager.defaultHeaders(temporaryUserId: temporaryUserId, in: bgContext)
         .then { crDelegate.networkManager.resendVerification(headers: $0, body: body) }
         .done { [weak self] _ in
           guard let strongSelf = self, let coordinationDelegate = strongSelf.coordinationDelegate else { return }

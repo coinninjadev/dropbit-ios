@@ -16,7 +16,7 @@ protocol DeviceVerificationViewControllerDelegate: AnyObject {
                       didEnterCode code: String,
                       forUserId userId: String,
                       completion: @escaping (Bool) -> Void)
-  func viewControllerDidRequestResendCode(_ viewController: DeviceVerificationViewController)
+  func viewControllerDidRequestResendCode(_ viewController: DeviceVerificationViewController, temporaryUserId: String)
   func viewControllerDidSkipPhoneVerification(_ viewController: DeviceVerificationViewController)
   func viewControllerShouldShowSkipButton() -> Bool
   func viewControllerDidSelectVerifyTwitter(_ viewController: UIViewController)
@@ -93,7 +93,8 @@ final class DeviceVerificationViewController: BaseViewController {
   }
 
   @IBAction func resendTextMessage(_ sender: Any) {
-    coordinationDelegate?.viewControllerDidRequestResendCode(self)
+    guard let userId = userIdToVerify else { return }
+    coordinationDelegate?.viewControllerDidRequestResendCode(self, temporaryUserId: userId)
   }
 
   @IBAction func submitPhoneNumber(_ sender: Any) {

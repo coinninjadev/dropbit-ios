@@ -29,6 +29,7 @@ protocol PersistenceManagerType: DeviceCountryCodeProvider {
   func resetPersistence() throws
 
   func defaultHeaders(in context: NSManagedObjectContext) -> Promise<DefaultRequestHeaders>
+  func defaultHeaders(temporaryUserId: String, in context: NSManagedObjectContext) -> Promise<DefaultRequestHeaders>
 
   func persistTransactionSummaries(
     from responses: [AddressTransactionSummaryResponse],
