@@ -670,7 +670,7 @@ extension SendPaymentViewController {
   private func validateInvitationMaximum(against btcAmount: NSDecimalNumber) throws {
     guard let recipient = viewModel.paymentRecipient,
       case let .contact(contact) = recipient,
-      contact.kind == .invite
+      contact.kind != .registeredUser
       else { return }
 
     let ignoredOptions = viewModel.invitationMaximumIgnoredOptions

@@ -53,6 +53,10 @@ class MockPersistenceManager: PersistenceManagerType {
     return Promise { _ in }
   }
 
+  func defaultHeaders(temporaryUserId: String, in context: NSManagedObjectContext) -> Promise<DefaultRequestHeaders> {
+    return Promise { _ in }
+  }
+
   func persistTransactionSummaries(
     from responses: [AddressTransactionSummaryResponse],
     in context: NSManagedObjectContext) {}
