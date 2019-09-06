@@ -9,6 +9,11 @@
 import Foundation
 import CNBitcoinKit
 
+protocol LightningUpgradeCoordinatorDelegate: AnyObject {
+  func coordinatorDidCompleteUpgrade(_ coordinator: LightningUpgradeCoordinator)
+  func coordinatorRequestedVerifyUpgradedWords(_ coordinator: LightningUpgradeCoordinator)
+}
+
 class LightningUpgradeCoordinator: ChildCoordinatorType {
   weak var delegate: ChildCoordinatorDelegate?
   weak var parent: AppCoordinator?
@@ -20,6 +25,10 @@ class LightningUpgradeCoordinator: ChildCoordinatorType {
   init(parent: AppCoordinator) {
     self.delegate = parent
     self.parent = parent
+  }
+
+  var coordinationDelegate: LightningUpgradeCoordinatorDelegate? {
+    return parent as? LightningUpgradeCoordinatorDelegate
   }
 
   func start() {

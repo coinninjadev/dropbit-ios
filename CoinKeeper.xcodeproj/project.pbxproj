@@ -292,6 +292,7 @@
 		3B936ADD2322C1250067CA97 /* LightningUpgradeCompleteViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3B936ADC2322C1250067CA97 /* LightningUpgradeCompleteViewController.storyboard */; };
 		3B936ADF2322C2B30067CA97 /* LightningUpgradeCompleteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B936ADE2322C2B30067CA97 /* LightningUpgradeCompleteViewController.swift */; };
 		3B936AE12322CD4E0067CA97 /* LightningUpgradeCoordinator+LightningUpgradeCompleteViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B936AE02322CD4E0067CA97 /* LightningUpgradeCoordinator+LightningUpgradeCompleteViewControllerDelegate.swift */; };
+		3B936AE32322D0B20067CA97 /* AppCoordinator+LightningUpgradeCoordinatorDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B936AE22322D0B20067CA97 /* AppCoordinator+LightningUpgradeCoordinatorDelegate.swift */; };
 		3B961CD52044946C00B38EBB /* MockLaunchStateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B961CD42044946C00B38EBB /* MockLaunchStateManager.swift */; };
 		3B9779A4202E416700C9C933 /* Montserrat-MediumItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3B977992202E416600C9C933 /* Montserrat-MediumItalic.ttf */; };
 		3B9779A5202E416700C9C933 /* Montserrat-ExtraLightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3B977993202E416600C9C933 /* Montserrat-ExtraLightItalic.ttf */; };
@@ -1307,6 +1308,7 @@
 		3B936ADC2322C1250067CA97 /* LightningUpgradeCompleteViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LightningUpgradeCompleteViewController.storyboard; sourceTree = "<group>"; };
 		3B936ADE2322C2B30067CA97 /* LightningUpgradeCompleteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightningUpgradeCompleteViewController.swift; sourceTree = "<group>"; };
 		3B936AE02322CD4E0067CA97 /* LightningUpgradeCoordinator+LightningUpgradeCompleteViewControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LightningUpgradeCoordinator+LightningUpgradeCompleteViewControllerDelegate.swift"; sourceTree = "<group>"; };
+		3B936AE22322D0B20067CA97 /* AppCoordinator+LightningUpgradeCoordinatorDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppCoordinator+LightningUpgradeCoordinatorDelegate.swift"; sourceTree = "<group>"; };
 		3B961CD42044946C00B38EBB /* MockLaunchStateManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockLaunchStateManager.swift; sourceTree = "<group>"; };
 		3B977992202E416600C9C933 /* Montserrat-MediumItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-MediumItalic.ttf"; sourceTree = "<group>"; };
 		3B977993202E416600C9C933 /* Montserrat-ExtraLightItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-ExtraLightItalic.ttf"; sourceTree = "<group>"; };
@@ -2289,6 +2291,7 @@
 				3B598FED23196BA800FF50CD /* LightningUpgradeCoordinator+LightningUpgradeStatusViewControllerDelegate.swift */,
 				3B936AE02322CD4E0067CA97 /* LightningUpgradeCoordinator+LightningUpgradeCompleteViewControllerDelegate.swift */,
 				3B0C7857231E891600D4C216 /* LightningUpgradeCoordinator.swift */,
+				3B936AE22322D0B20067CA97 /* AppCoordinator+LightningUpgradeCoordinatorDelegate.swift */,
 			);
 			path = Coordinators;
 			sourceTree = "<group>";
@@ -4752,6 +4755,7 @@
 				30ADA32C2162A76D00E52AF9 /* CreateDeviceBody.swift in Sources */,
 				3B5052BF20473FC9000C739F /* BackupRecoveryWordsCell.swift in Sources */,
 				B57AF8002268A95E00E5B0A6 /* ShareTransactionViewController.swift in Sources */,
+				3B936AE32322D0B20067CA97 /* AppCoordinator+LightningUpgradeCoordinatorDelegate.swift in Sources */,
 				3B55538A219618A100C5A9A8 /* UnverifiedPhoneBadgeTopic.swift in Sources */,
 				A20E47F020C0436E00CA8589 /* ContactType.swift in Sources */,
 				B552EDF2211E33D000332BB5 /* AlertManager.swift in Sources */,
