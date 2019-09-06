@@ -46,7 +46,7 @@ extension AppCoordinator: GetBitcoinViewControllerDelegate {
 
   private func copyNextAddressAndPresentVC(destinationURL: URL) {
     guard let addressSource = self.walletManager?.createAddressDataSource() else { return }
-    let context = persistenceManager.mainQueueContext()
+    let context = persistenceManager.viewContext
     let nextAddress = addressSource.nextAvailableReceiveAddress(forServerPool: false,
                                                                 indicesToSkip: [],
                                                                 in: context)?.address

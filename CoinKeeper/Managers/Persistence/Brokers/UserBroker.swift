@@ -57,7 +57,7 @@ class UserBroker: CKPersistenceBroker, UserBrokerType {
   func unverifyUser(in context: NSManagedObjectContext) {
     // Perform on both contexts to ensure that willSave/didSave observers receive notification on main queue for badge updates
     databaseManager.unverifyUser(in: context)
-    databaseManager.unverifyUser(in: databaseManager.mainQueueContext)
+    databaseManager.unverifyUser(in: databaseManager.viewContext)
 
     userDefaultsManager.removeValues(forKeys: [.userID])
     keychainManager.unverifyUser(for: .phone)
@@ -95,7 +95,7 @@ class UserBroker: CKPersistenceBroker, UserBrokerType {
 
   /// Should be called when last identity is deverified
   func unverifyAllIdentities() {
-    let context = databaseManager.mainQueueContext
+    let context = databaseManager.viewContext
     databaseManager.unverifyUser(in: context)
     keychainManager.unverifyUser(for: .phone)
     keychainManager.unverifyUser(for: .twitter)

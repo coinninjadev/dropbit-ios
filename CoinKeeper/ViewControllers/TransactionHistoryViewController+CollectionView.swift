@@ -14,10 +14,12 @@ protocol TransactionHistorySummaryCollectionViewDelegate: AnyObject {
   func collectionViewDidUncoverWalletBalance()
 }
 
+typealias SummaryCollectionView = TransactionHistorySummaryCollectionView
 class TransactionHistorySummaryCollectionView: UICollectionView {
 
   let topInset: CGFloat = 140
   let topConstraintConstant: CGFloat = 62
+  static let cellHeight: CGFloat = 108
   weak var historyDelegate: TransactionHistorySummaryCollectionViewDelegate?
 
   override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
@@ -37,14 +39,13 @@ extension TransactionHistoryViewController {
 
   func setupCollectionViews() {
     summaryCollectionView.registerNib(cellType: TransactionHistorySummaryCell.self)
+    summaryCollectionView.registerReusableSectionHeader(reusableViewType: TransactionHistorySummaryHeader.self)
+    summaryCollectionView.registerReusableSectionFooter(reusableViewType: TransactionHistorySummaryFooter.self)
     summaryCollectionView.showsVerticalScrollIndicator = false
-    summaryCollectionView.alwaysBounceVertical = true
-    summaryCollectionView.contentInset = UIEdgeInsets(top: summaryCollectionView.topInset, left: 0, bottom: 0, right: 0)
+    enableVerticallyExpandedScrolling()
 
     summaryCollectionView.delegate = self
     summaryCollectionView.dataSource = self.viewModel
-
-    summaryCollectionView.backgroundColor = .clear
 
     summaryCollectionView.collectionViewLayout = summaryCollectionViewLayout()
 
@@ -59,6 +60,14 @@ extension TransactionHistoryViewController {
     summaryCollectionView.reloadData()
     coordinationDelegate?.viewControllerSummariesDidReload(self, indexPathsIfNotAll: nil)
   }
+
+  private func enableVerticallyExpandedScrolling() {
+    summaryCollectionView.backgroundColor = .clear
+    summaryCollectionView.alwaysBounceVertical = true
+    summaryCollectionView.contentInset = UIEdgeInsets(top: summaryCollectionView.topInset,
+                                                      left: 0, bottom: 0, right: 0)
+  }
+
 }
 
 extension TransactionHistoryViewController: UICollectionViewDelegateFlowLayout {
@@ -73,7 +82,25 @@ extension TransactionHistoryViewController: UICollectionViewDelegateFlowLayout {
   func collectionView(_ collectionView: UICollectionView,
                       layout collectionViewLayout: UICollectionViewLayout,
                       sizeForItemAt indexPath: IndexPath) -> CGSize {
-    return CGSize(width: collectionView.frame.width, height: 108)
+    return CGSize(width: collectionView.frame.width,
+                  height: SummaryCollectionView.cellHeight)
+  }
+
+  func collectionView(_ collectionView: UICollectionView,
+                      layout collectionViewLayout: UICollectionViewLayout,
+                      referenceSizeForHeaderInSection section: Int) -> CGSize {
+    if coordinationDelegate.summaryHeaderType(for: self) == nil {
+      return CGSize.zero
+    } else {
+      return CGSize(width: collectionView.frame.width, height: self.viewModel.warningHeaderHeight)
+    }
+  }
+
+  func collectionView(_ collectionView: UICollectionView,
+                      layout collectionViewLayout: UICollectionViewLayout,
+                      referenceSizeForFooterInSection section: Int) -> CGSize {
+    let height = viewModel.footerHeight(for: collectionView, section: section)
+    return CGSize(width: collectionView.frame.width, height: height)
   }
 
 }

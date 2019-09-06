@@ -15,7 +15,7 @@ class PresentableViewController: BaseViewController, UIViewControllerTransitioni
   override func viewDidLoad() {
     super.viewDidLoad()
     view.applyCornerRadius(self.cornerRadius)
-    view.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+    view.layer.maskedCorners = .top
   }
 
   required init?(coder aDecoder: NSCoder) {

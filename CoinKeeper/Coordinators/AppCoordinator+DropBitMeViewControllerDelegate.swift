@@ -24,7 +24,7 @@ extension AppCoordinator: DropBitMeViewControllerDelegate {
         self.analyticsManager.track(property: MixpanelProperty(key: .isDropBitMeEnabled, value: !isPrivate))
       }
       .done(in: bgContext) { _ in
-        try bgContext.save()
+        try bgContext.saveRecursively()
         if let urlInfo = self.persistenceManager.brokers.user.getUserPublicURLInfo(in: bgContext) {
           let avatarData = CKMUser.find(in: bgContext)?.avatar
           DispatchQueue.main.async {
@@ -57,7 +57,7 @@ extension AppCoordinator: DropBitMeViewControllerDelegate {
   }
 
   func viewControllerDidTapShareOnTwitter(_ viewController: UIViewController) {
-    let context = self.persistenceManager.mainQueueContext()
+    let context = self.persistenceManager.viewContext
     guard let urlInfo = self.persistenceManager.brokers.user.getUserPublicURLInfo(in: context),
       let handle = urlInfo.primaryIdentity?.handle,
       let url = CoinNinjaUrlFactory.buildUrl(for: .dropBitMe(handle: handle))

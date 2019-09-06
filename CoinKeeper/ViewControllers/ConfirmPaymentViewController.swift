@@ -226,7 +226,7 @@ extension ConfirmPaymentViewController {
 
   fileprivate func updateAmountViews() {
     let converter = viewModel.generateCurrencyConverter(withBTCAmount: viewModel.btcAmount)
-    let labels = viewModel.dualAmountLabels(withConverter: converter)
+    let labels = viewModel.dualAmountLabels(withConverter: converter, walletTransactionType: viewModel.walletTransactionType)
     primaryCurrencyLabel.text = labels.primary
     secondaryCurrencyLabel.attributedText = labels.secondary
   }

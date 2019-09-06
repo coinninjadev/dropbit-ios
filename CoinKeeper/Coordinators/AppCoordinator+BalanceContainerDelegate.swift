@@ -40,7 +40,7 @@ extension AppCoordinator: BalanceContainerDelegate {
   func presentDropBitMeViewController(verifiedFirstTime: Bool) {
     guard let topVC = self.navigationController.topViewController() else { return }
 
-    let context = self.persistenceManager.mainQueueContext()
+    let context = self.persistenceManager.viewContext
     let avatarData = CKMUser.find(in: context)?.avatar
     let publicURLInfo: UserPublicURLInfo? = self.persistenceManager.brokers.user.getUserPublicURLInfo(in: context)
     let config = DropBitMeConfig(publicURLInfo: publicURLInfo, verifiedFirstTime: verifiedFirstTime, userAvatarData: avatarData)
@@ -62,7 +62,7 @@ extension AppCoordinator: BalanceContainerDelegate {
 
   func dropBitMeAvatar() -> Promise<UIImage> {
     let defaultImage = UIImage(imageLiteralResourceName: "dropBitMeAvatarPlaceholder")
-    let context = persistenceManager.mainQueueContext()
+    let context = persistenceManager.viewContext
 
     if let user = CKMUser.find(in: context) {
       if let avatar = user.avatar {

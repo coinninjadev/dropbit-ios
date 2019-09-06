@@ -23,7 +23,7 @@ extension AppCoordinator: TransactionHistoryDetailsViewControllerDelegate {
         walletWorker.cancelInvitation(withID: invitationID, in: context)
           .done(in: context) {
             context.performAndWait {
-              try? context.save()
+              try? context.saveRecursively()
             }
 
             strongSelf.analyticsManager.track(event: .cancelDropbitPressed, with: nil)
@@ -54,7 +54,7 @@ extension AppCoordinator: TransactionHistoryDetailsViewControllerDelegate {
       let context = transaction.managedObjectContext
       context?.performAndWait {
         do {
-          try context?.save()
+          try context?.saveRecursively()
           viewController.collectionView.reloadData()
           seal.fulfill(())
         } catch {

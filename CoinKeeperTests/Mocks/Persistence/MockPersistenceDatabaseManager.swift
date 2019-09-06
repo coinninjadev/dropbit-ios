@@ -128,7 +128,7 @@ class MockPersistenceDatabaseManager: PersistenceDatabaseType {
                                      contactCacheManager: ContactCacheManagerType,
                                      in context: NSManagedObjectContext) {}
 
-  var mainQueueContext: NSManagedObjectContext {
+  var viewContext: NSManagedObjectContext {
     return inMemoryCoreDataStack.context
   }
 

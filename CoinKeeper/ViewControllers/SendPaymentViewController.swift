@@ -670,7 +670,7 @@ extension SendPaymentViewController {
   private func validateInvitationMaximum(against btcAmount: NSDecimalNumber) throws {
     guard let recipient = viewModel.paymentRecipient,
       case let .contact(contact) = recipient,
-      contact.kind == .invite
+      contact.kind != .registeredUser
       else { return }
 
     let ignoredOptions = viewModel.invitationMaximumIgnoredOptions
@@ -718,6 +718,7 @@ extension SendPaymentViewController {
                                      contact: nil,
                                      sharedPayload: sharedPayloadDTO)
     case .lightningURL(let url):
+      try LightningInvoiceValidator().validate(value: url.invoice)
       sendTransactionForConfirmation(with: viewModel.sendMaxTransactionData,
                                      paymentTarget: url.invoice,
                                      contact: nil,
@@ -870,11 +871,13 @@ extension SendPaymentViewController: WalletToggleViewDelegate {
 
   func bitcoinWalletButtonWasTouched() {
     viewModel.walletTransactionType = .onChain
+    editAmountView.update(with: viewModel.dualAmountLabels(walletTransactionType: viewModel.walletTransactionType))
     setupStyle()
   }
 
   func lightningWalletButtonWasTouched() {
     viewModel.walletTransactionType = .lightning
+    editAmountView.update(with: viewModel.dualAmountLabels(walletTransactionType: viewModel.walletTransactionType))
     setupStyle()
   }
 

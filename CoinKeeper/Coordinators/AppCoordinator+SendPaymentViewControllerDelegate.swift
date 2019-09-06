@@ -49,7 +49,7 @@ extension AppCoordinator: SendPaymentViewControllerDelegate {
 
   func viewControllerDidPressTwitter(_ viewController: UIViewController & SelectedValidContactDelegate) {
     analyticsManager.track(event: .twitterButtonPressed, with: nil)
-    let context = persistenceManager.mainQueueContext()
+    let context = persistenceManager.viewContext
     guard persistenceManager.brokers.user.userIsVerified(using: .twitter, in: context) else {
       showModalForTwitterVerification(with: viewController)
       return
@@ -67,7 +67,7 @@ extension AppCoordinator: SendPaymentViewControllerDelegate {
 
   func viewControllerDidPressContacts(_ viewController: UIViewController & SelectedValidContactDelegate) {
     analyticsManager.track(event: .contactsButtonPressed, with: nil)
-    let mainContext = persistenceManager.mainQueueContext()
+    let mainContext = persistenceManager.viewContext
     guard persistenceManager.brokers.user.userIsVerified(in: mainContext) else {
       showModalForPhoneVerification(with: viewController)
       return
@@ -182,7 +182,7 @@ extension AppCoordinator: SendPaymentViewControllerDelegate {
   }
 
   func viewControllerShouldInitiallyAllowMemoSharing(_ viewController: SendPaymentViewController) -> Bool {
-    let context = persistenceManager.mainQueueContext()
+    let context = persistenceManager.viewContext
     return persistenceManager.brokers.user.userIsVerified(in: context)
   }
 

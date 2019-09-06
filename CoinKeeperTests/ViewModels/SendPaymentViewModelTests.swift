@@ -18,7 +18,10 @@ class SendPaymentViewModelTests: XCTestCase {
     super.setUp()
     let safeRates: ExchangeRates = [.BTC: 1, .USD: 7000]
     let currencyPair = CurrencyPair(primary: .BTC, fiat: .USD)
-    let swappableVM = CurrencySwappableEditAmountViewModel(exchangeRates: safeRates, primaryAmount: .zero, currencyPair: currencyPair)
+    let swappableVM = CurrencySwappableEditAmountViewModel(exchangeRates: safeRates,
+                                                           primaryAmount: .zero,
+                                                           walletTransactionType: .onChain,
+                                                           currencyPair: currencyPair)
     self.sut = SendPaymentViewModel(editAmountViewModel: swappableVM, walletTransactionType: .onChain)
   }
 

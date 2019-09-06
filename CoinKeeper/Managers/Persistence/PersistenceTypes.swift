@@ -19,8 +19,8 @@ protocol PersistenceManagerType: DeviceCountryCodeProvider {
   var hashingManager: HashingManager { get }
   var brokers: PersistenceBrokersType { get }
 
+  var viewContext: NSManagedObjectContext { get }
   func createBackgroundContext() -> NSManagedObjectContext
-  func mainQueueContext() -> NSManagedObjectContext
 
   /// convenience function for calling `persistentStore(for:)` with default main context
   func persistentStore() -> NSPersistentStore?
@@ -29,6 +29,7 @@ protocol PersistenceManagerType: DeviceCountryCodeProvider {
   func resetPersistence() throws
 
   func defaultHeaders(in context: NSManagedObjectContext) -> Promise<DefaultRequestHeaders>
+  func defaultHeaders(temporaryUserId: String, in context: NSManagedObjectContext) -> Promise<DefaultRequestHeaders>
 
   func persistTransactionSummaries(
     from responses: [AddressTransactionSummaryResponse],
@@ -81,8 +82,9 @@ protocol PersistenceKeychainType: AnyObject {
 
 protocol PersistenceDatabaseType: AnyObject {
 
-  var mainQueueContext: NSManagedObjectContext { get }
   var sharedPayloadManager: SharedPayloadManagerType { get set }
+
+  var viewContext: NSManagedObjectContext { get }
 
   func createBackgroundContext() -> NSManagedObjectContext
 

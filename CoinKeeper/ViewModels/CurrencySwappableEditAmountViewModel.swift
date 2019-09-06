@@ -26,14 +26,15 @@ extension DualAmountDisplayable {
   }
 
   /// hidePrimaryZero will return the currency symbol only if primary amount is zero, useful during editing
-  func dualAmountLabels(hidePrimaryZero: Bool = false) -> DualAmountLabels {
+  func dualAmountLabels(hidePrimaryZero: Bool = false, walletTransactionType: WalletTransactionType) -> DualAmountLabels {
     let converter = generateCurrencyConverter()
-    return dualAmountLabels(withConverter: converter)
+    return dualAmountLabels(withConverter: converter, walletTransactionType: walletTransactionType)
   }
 
   func dualAmountLabels(
     withConverter currencyConverter: CurrencyConverter,
     withSymbols: Bool = true,
+    walletTransactionType: WalletTransactionType,
     hidePrimaryZero: Bool = false) -> DualAmountLabels {
 
     let primaryCurrency = currencyPair.primary
@@ -46,11 +47,11 @@ extension DualAmountDisplayable {
       primaryText = primaryCurrency.symbol
     }
 
-    let secondaryAttributed = CKCurrencyFormatter.attributedString(for: secondaryAmount,
-                                                                   currency: secondaryCurrency,
-                                                                   btcSymbolType: .attributed)
+    let secondary = CKCurrencyFormatter.attributedString(for: secondaryAmount,
+                                                        currency: secondaryCurrency,
+                                                        walletTransactionType: walletTransactionType)
 
-    return DualAmountLabels(primary: primaryText, secondary: secondaryAttributed)
+    return DualAmountLabels(primary: primaryText, secondary: secondary)
   }
 
 }
@@ -102,14 +103,17 @@ class CurrencySwappableEditAmountViewModel: NSObject, DualAmountDisplayable {
   var fromCurrency: CurrencyCode
   var toCurrency: CurrencyCode
   var fiatCurrency: CurrencyCode
+  var walletTransactionType: WalletTransactionType
 
   weak var delegate: CurrencySwappableEditAmountViewModelDelegate?
 
   init(exchangeRates: ExchangeRates,
        primaryAmount: NSDecimalNumber,
+       walletTransactionType: WalletTransactionType,
        currencyPair: CurrencyPair,
        delegate: CurrencySwappableEditAmountViewModelDelegate? = nil) {
     self.exchangeRates = exchangeRates
+    self.walletTransactionType = walletTransactionType
     self.fromAmount = primaryAmount
     self.fromCurrency = currencyPair.primary
     self.toCurrency = currencyPair.secondary
@@ -120,6 +124,7 @@ class CurrencySwappableEditAmountViewModel: NSObject, DualAmountDisplayable {
   init(viewModel vm: CurrencySwappableEditAmountViewModel) {
     self.exchangeRates = vm.exchangeRates
     self.fromAmount = vm.primaryAmount
+    self.walletTransactionType = vm.walletTransactionType
     self.fromCurrency = vm.primaryCurrency
     self.toCurrency = vm.secondaryCurrency
     self.fiatCurrency = vm.fiatCurrency
@@ -155,6 +160,7 @@ class CurrencySwappableEditAmountViewModel: NSObject, DualAmountDisplayable {
     let currencyPair = CurrencyPair(primary: .BTC, fiat: .USD)
     return CurrencySwappableEditAmountViewModel(exchangeRates: [:],
                                                 primaryAmount: 0,
+                                                walletTransactionType: .onChain,
                                                 currencyPair: currencyPair)
   }
 
@@ -226,7 +232,7 @@ extension CurrencySwappableEditAmountViewModel: UITextFieldDelegate {
 
   func textFieldDidEndEditing(_ textField: UITextField) {
     if fromAmount == .zero {
-      textField.text = dualAmountLabels().primary
+      textField.text = dualAmountLabels(walletTransactionType: walletTransactionType).primary
     }
     delegate?.viewModelDidEndEditingAmount(self)
   }

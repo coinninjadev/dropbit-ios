@@ -203,7 +203,7 @@ class AppCoordinator: CoordinatorType {
 
   /// Useful to clear out old credentials from the keychain when the app is reinstalled
   private func deleteStaleCredentialsIfNeeded() {
-    let context = persistenceManager.mainQueueContext()
+    let context = persistenceManager.viewContext
     let user = CKMUser.find(in: context)
     guard user == nil else { return }
 
@@ -238,7 +238,7 @@ class AppCoordinator: CoordinatorType {
     bgContext.perform {
       self.registerAndPersistWallet(in: bgContext)
         .done(in: bgContext) {
-          try bgContext.save()
+          try bgContext.saveRecursively()
           DispatchQueue.main.async {
             completion()
           }
@@ -261,7 +261,7 @@ class AppCoordinator: CoordinatorType {
     guard UIApplication.shared.applicationState != .background else { return }
 
     setInitialRootViewController()
-    registerForBalanceSaveNotifications()
+    registerForBalanceSaveNotifications(viewContext: self.persistenceManager.viewContext)
     trackAnalytics()
 
     let now = Date()

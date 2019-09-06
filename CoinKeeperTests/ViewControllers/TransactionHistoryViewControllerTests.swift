@@ -84,5 +84,10 @@ class TransactionHistoryViewControllerTests: XCTestCase {
     func latestFees() -> Promise<Fees> {
       return Promise { _ in }
     }
+
+    func viewControllerDidSelectSummaryHeader(_ viewController: UIViewController) { }
+    func summaryHeaderType(for viewController: UIViewController) -> SummaryHeaderType? {
+      return nil
+    }
   }
 }

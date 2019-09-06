@@ -58,7 +58,7 @@
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="GX7-DA-6R2" firstAttribute="top" secondItem="JGv-XL-uiR" secondAttribute="top" id="7DN-fy-t7g"/>
-                            <constraint firstItem="JGv-XL-uiR" firstAttribute="bottom" secondItem="D7Z-lW-169" secondAttribute="bottom" id="BOi-jc-N2s"/>
+                            <constraint firstAttribute="bottom" secondItem="D7Z-lW-169" secondAttribute="bottom" id="BOi-jc-N2s"/>
                             <constraint firstItem="Lt8-y7-dfC" firstAttribute="top" secondItem="Fsb-uW-qUJ" secondAttribute="bottom" id="FYV-om-2Sq"/>
                             <constraint firstItem="JGv-XL-uiR" firstAttribute="trailing" secondItem="GX7-DA-6R2" secondAttribute="trailing" constant="5" id="WgW-MD-OhW"/>
                             <constraint firstItem="Lt8-y7-dfC" firstAttribute="bottom" secondItem="dvX-tA-FaC" secondAttribute="bottom" id="WsK-Vt-edy"/>
@@ -78,6 +78,7 @@
                         <viewLayoutGuide key="safeArea" id="JGv-XL-uiR"/>
                     </view>
                     <connections>
+                        <outlet property="emptyStateBackgroundTopConstraint" destination="h92-Ng-INE" id="y5t-xj-K0w"/>
                         <outlet property="emptyStateBackgroundView" destination="D7Z-lW-169" id="meS-Mo-6a4"/>
                         <outlet property="footerView" destination="Lt8-y7-dfC" id="6Rh-i8-37p"/>
                         <outlet property="gradientBlurView" destination="Fsb-uW-qUJ" id="zaQ-fS-lfw"/>

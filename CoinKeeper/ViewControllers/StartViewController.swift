@@ -23,7 +23,7 @@ final class StartViewController: BaseViewController {
     return generalCoordinationDelegate as? StartViewControllerDelegate
   }
 
-  let restoreWalletButton = UIButton(type: .custom)
+  @IBOutlet var restoreWalletButton: UIButton!
   @IBOutlet var claimInviteButton: UIButton!
   @IBOutlet var newWalletButton: UIButton!
 
@@ -47,7 +47,7 @@ final class StartViewController: BaseViewController {
     ]
   }
 
-  @objc func restoreWalletButtonTapped() {
+  @IBAction func restoreWalletButtonTapped() {
     coordinationDelegate?.restoreWallet()
   }
 
@@ -68,18 +68,12 @@ final class StartViewController: BaseViewController {
   }
 
   private func configureButtons() {
-    restoreWalletButton.frame = CGRect(x: 0, y: 0, width: 100, height: 40)
-    restoreWalletButton.backgroundColor = .clear
-    restoreWalletButton.addTarget(self, action: #selector(restoreWalletButtonTapped), for: .touchUpInside)
-    let restoreTitle = NSAttributedString(imageName: "rightArrow",
-                                          imageSize: CGSize(width: 8, height: 12),
-                                          title: "Restore Wallet",
-                                          sharedColor: .darkBlueText,
-                                          font: .regular(12),
-                                          imageOffset: CGPoint(x: 0, y: 1),
-                                          trailingImage: true)
-    restoreWalletButton.setAttributedTitle(restoreTitle, for: .normal)
-    self.navigationItem.titleView = restoreWalletButton
+    let attributes: [NSAttributedString.Key: Any] = [
+      .font: UIFont.regular(12),
+      .foregroundColor: UIColor.darkBlueText
+    ]
+    let attributedTitle = NSAttributedString(string: "Restore Wallet", attributes: attributes)
+    restoreWalletButton.setAttributedTitle(attributedTitle, for: .normal)
 
     claimInviteButton.setTitle("CLAIM BITCOIN FROM INVITE", for: .normal)
     claimInviteButton.backgroundColor = .darkBlueBackground

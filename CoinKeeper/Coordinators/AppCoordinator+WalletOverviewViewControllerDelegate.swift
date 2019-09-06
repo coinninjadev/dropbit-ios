@@ -70,6 +70,7 @@ extension AppCoordinator: WalletOverviewViewControllerDelegate {
 
     let swappableVM = CurrencySwappableEditAmountViewModel(exchangeRates: self.currencyController.exchangeRates,
                                                            primaryAmount: converter.fromAmount,
+                                                           walletTransactionType: walletTransactionType,
                                                            currencyPair: self.currencyController.currencyPair)
     let sendPaymentVM = SendPaymentViewModel(editAmountViewModel: swappableVM, walletTransactionType: walletTransactionType)
     let sendPaymentViewController = SendPaymentViewController.newInstance(delegate: self, viewModel: sendPaymentVM)

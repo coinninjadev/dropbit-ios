@@ -14,4 +14,8 @@ extension TimeInterval {
     return 3600
   }
 
+  static var oneDay: Int {
+    return 86400
+  }
+
 }

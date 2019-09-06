@@ -100,8 +100,7 @@ class WalletOverviewViewController: BaseViewController, StoryboardInitializable 
     return controller
   }
 
-  private var showTransactionHistoryToken: NotificationToken?
-  private var dismissTransactionHistoryToken: NotificationToken?
+  private var reloadTransactionsToken: NotificationToken?
 
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -111,12 +110,9 @@ class WalletOverviewViewController: BaseViewController, StoryboardInitializable 
       pageViewController.view.layer.masksToBounds = false
     }
 
-    self.showTransactionHistoryToken = CKNotificationCenter
-      .subscribe(key: .willShowTransactionHistoryDetails, object: nil, queue: .main) { _ in
-    }
-
-    self.dismissTransactionHistoryToken = CKNotificationCenter
-      .subscribe(key: .didDismissTransactionHistoryDetails, object: nil, queue: .main) { _ in
+    self.reloadTransactionsToken = CKNotificationCenter
+      .subscribe(key: .didUpdateInvoicesLocally, object: nil, queue: .main) { _ in
+        self.baseViewControllers.forEach { ($0 as? TransactionHistoryViewController)?.summaryCollectionView.reloadData() }
     }
 
     balanceContainer.delegate = balanceDelegate
@@ -141,19 +137,13 @@ class WalletOverviewViewController: BaseViewController, StoryboardInitializable 
     self.baseViewControllers.forEach { ($0 as? TransactionHistoryViewController)?.summaryCollectionView.historyDelegate = self }
 
     pageViewController?.view.layer.cornerRadius = 30.0
-    pageViewController?.view.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+    pageViewController?.view.layer.maskedCorners = .top
     pageViewController?.view.clipsToBounds = true
 
     if baseViewControllers.count >= 2 {
       pageViewController?.setViewControllers([baseViewControllers[1]], direction: .forward, animated: true, completion: nil)
     }
   }
-
-  override func viewDidAppear(_ animated: Bool) {
-    super.viewDidAppear(animated)
-    self.baseViewControllers.compactMap { $0 as? RequestPayViewController}.first?.closeButton?.isHidden = true
-  }
-
 }
 
 extension WalletOverviewViewController: BadgeDisplayable {
@@ -182,6 +172,10 @@ extension WalletOverviewViewController: BalanceDisplayable {
     baseViewControllers.compactMap { $0 as? ExchangeRateUpdatable }.forEach { $0.didUpdateExchangeRateManager(exchangeRateManager) }
   }
 
+  var walletTransactionType: WalletTransactionType {
+    guard let delegate = coordinationDelegate else { return .onChain }
+    return delegate.selectedWalletTransactionType()
+  }
 }
 
 enum ViewControllerIndex: Int {

@@ -46,8 +46,7 @@ class TransactionHistoryDetailBaseCell: UICollectionViewCell {
     super.awakeFromNib()
 
     backgroundColor = UIColor.white
-    layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
-    applyCornerRadius(13)
+    applyCornerRadius(13, toCorners: .top)
 
     // Shadow
     layer.shadowColor = UIColor.black.cgColor
@@ -58,8 +57,7 @@ class TransactionHistoryDetailBaseCell: UICollectionViewCell {
     layer.masksToBounds = false
 
     underlyingContentView.backgroundColor = UIColor.white
-    underlyingContentView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
-    underlyingContentView.applyCornerRadius(13)
+    underlyingContentView.applyCornerRadius(13, toCorners: .top)
     addMemoButton.styleAddButtonWith(title: "Add Memo")
   }
 

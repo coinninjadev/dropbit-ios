@@ -83,7 +83,7 @@ class WalletTransferViewController: PresentableViewController, StoryboardInitial
 
     confirmView.delegate = self
     feesView.delegate = self
-    let labels = viewModel.dualAmountLabels()
+    let labels = viewModel.dualAmountLabels(walletTransactionType: viewModel.walletTransactionType)
     editAmountView.configure(withLabels: labels, delegate: self)
     currencyValueManager = generalCoordinationDelegate as? CurrencyValueDataSourceType
     setupUI()

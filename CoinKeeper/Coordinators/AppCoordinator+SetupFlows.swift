@@ -158,7 +158,7 @@ extension AppCoordinator {
     recoveryWordsIntroViewController.recoveryWords = usableWords
     assignCoordinationDelegate(to: recoveryWordsIntroViewController)
     navigationController.present(CNNavigationController(rootViewController: recoveryWordsIntroViewController),
-                                 animated: false,
+                                 animated: true,
                                  completion: nil)
   }
 
@@ -193,6 +193,8 @@ extension AppCoordinator {
     return RequestPayViewController.newInstance(delegate: self,
                                                 receiveAddress: address,
                                                 currencyPair: currencyController.currencyPair,
+                                                walletTransactionType: persistenceManager.brokers.preferences.selectedWalletTransactionType,
+                                                alertManager: alertManager,
                                                 exchangeRates: self.currencyController.exchangeRates)
   }
 
@@ -204,7 +206,7 @@ extension AppCoordinator {
       case .lightning:  dataSource = MockTransactionHistoryLightningDataSource()
       }
     } else {
-      let context = persistenceManager.mainQueueContext()
+      let context = persistenceManager.viewContext
       switch type {
       case .onChain:    dataSource = TransactionHistoryOnChainDataSource(context: context)
       case .lightning:  dataSource = TransactionHistoryLightningDataSource(context: context)

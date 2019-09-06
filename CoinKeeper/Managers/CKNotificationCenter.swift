@@ -18,8 +18,8 @@ public enum CKNotificationKey: String {
   case didStartSync
   case didFinishSync
   case didUpdateAvatar
-  case willShowTransactionHistoryDetails
-  case didDismissTransactionHistoryDetails
+  case didUpdateInvoicesLocally
+  case didUpdateWordsBackedUp
 
   fileprivate func value() -> String {
     return "com.coinninja.CoinKeeper." + self.rawValue

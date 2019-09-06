@@ -75,10 +75,6 @@ extension AppCoordinator: TransactionHistoryViewControllerDelegate {
     }
   }
 
-  func viewControllerWillShowTransactionDetails(_ viewController: UIViewController) {
-    CKNotificationCenter.publish(key: .willShowTransactionHistoryDetails)
-  }
-
   func viewController(_ viewController: TransactionHistoryViewController, didSelectItemAtIndexPath indexPath: IndexPath) {
     //TODO:
 //    switch viewController.viewModel.walletTransactionType {
@@ -101,6 +97,22 @@ extension AppCoordinator: TransactionHistoryViewControllerDelegate {
 
   func viewControllerDidDismissTransactionDetails(_ viewController: UIViewController) {
     viewController.dismiss(animated: true, completion: nil)
-    CKNotificationCenter.publish(key: .didDismissTransactionHistoryDetails)
   }
+
+  func summaryHeaderType(for viewController: UIViewController) -> SummaryHeaderType? {
+    if wordsBackedUp {
+      return nil
+    } else {
+      return .backUpWallet
+    }
+  }
+
+  func viewControllerDidSelectSummaryHeader(_ viewController: UIViewController) {
+    guard let headerType = summaryHeaderType(for: viewController) else { return }
+    switch headerType {
+    case .backUpWallet:
+      self.showWordRecoveryFlow()
+    }
+  }
+
 }
