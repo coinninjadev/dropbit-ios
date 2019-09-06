@@ -28,7 +28,7 @@ class LightningUpgradeCoordinator: ChildCoordinatorType {
   }
 
   var coordinationDelegate: LightningUpgradeCoordinatorDelegate? {
-    return parent as? LightningUpgradeCoordinatorDelegate
+    return parent
   }
 
   func start() {

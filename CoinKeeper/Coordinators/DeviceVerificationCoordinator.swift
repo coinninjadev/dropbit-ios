@@ -20,7 +20,7 @@ protocol DeviceVerificationCoordinatorDelegate: TwilioErrorDelegate {
 
   func coordinator(_ coordinator: DeviceVerificationCoordinator, didVerify type: UserIdentityType, isInitialSetupFlow: Bool)
   func coordinatorSkippedPhoneVerification(_ coordinator: DeviceVerificationCoordinator)
-  func registerAndPersistWallet(in context: NSManagedObjectContext) -> Promise<Void>
+  func registerAndPersistWallet(in context: NSManagedObjectContext) -> Promise<WalletFlagsParser>
 }
 
 class DeviceVerificationCoordinator: ChildCoordinatorType {

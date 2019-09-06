@@ -11,7 +11,7 @@ import Foundation
 extension AppCoordinator: LightningUpgradeCoordinatorDelegate {
   func coordinatorDidCompleteUpgrade(_ coordinator: LightningUpgradeCoordinator) {
     childCoordinatorDidComplete(childCoordinator: coordinator)
-    enterApp()
+    validToStartEnteringApp()
   }
 
   func coordinatorRequestedVerifyUpgradedWords(_ coordinator: LightningUpgradeCoordinator) {

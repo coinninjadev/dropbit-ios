@@ -16,11 +16,12 @@ extension AppCoordinator: DeviceVerificationCoordinatorDelegate {
    then persists the wallet ID returned by the server response.
    Call this after the seed words are backed up or skipped.
    */
-  func registerAndPersistWallet(in context: NSManagedObjectContext) -> Promise<Void> {
+  func registerAndPersistWallet(in context: NSManagedObjectContext) -> Promise<WalletFlagsParser> {
     guard let wmgr = walletManager else { return Promise(error: CKPersistenceError.noWalletManager) }
     // Skip registration if wallet was previously registered and persisted
     guard self.persistenceManager.brokers.wallet.walletId(in: context) == nil else {
-      return Promise { $0.fulfill(()) }
+      let flags = self.persistenceManager.brokers.wallet.walletFlags(in: context)
+      return Promise.value(flags)
     }
 
     let flags = 0
@@ -29,7 +30,8 @@ extension AppCoordinator: DeviceVerificationCoordinatorDelegate {
       .setVersion(.v1)
 
     return self.networkManager.createWallet(withPublicKey: wmgr.hexEncodedPublicKey, walletFlags: handler.flags)
-      .get(in: context) { try self.persistenceManager.brokers.wallet.persistWalletResponse(from: $0, in: context) }.asVoid()
+      .get(in: context) { try self.persistenceManager.brokers.wallet.persistWalletResponse(from: $0, in: context) }
+      .then { return Promise.value(WalletFlagsParser(flags: $0.flags)) }
   }
 
   func coordinator(_ coordinator: DeviceVerificationCoordinator, didVerify type: UserIdentityType, isInitialSetupFlow: Bool) {

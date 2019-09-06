@@ -48,7 +48,11 @@ extension AppCoordinator {
     let pinAndWalletExist = properties.contains([.pinExists, .walletExists])
 
     if pinAndWalletExist && verificationSatisfied {
-      validToStartEnteringApp()
+      if launchStateManager.needsUpgradedToSegwit() {
+        startSegwitUpgrade()
+      } else {
+        validToStartEnteringApp()
+      }
     } else if pinAndWalletExist {
       startDeviceVerificationFlow(userIdentityType: .phone, shouldOrphanRoot: true, selectedSetupFlow: selectedFlow)
     } else {

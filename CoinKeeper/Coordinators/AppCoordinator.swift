@@ -160,11 +160,19 @@ class AppCoordinator: CoordinatorType {
     return navigationController.topViewController.flatMap { $0 as? MMDrawerController }
   }
 
+  func startSegwitUpgrade() {
+    let child = LightningUpgradeCoordinator(parent: self)
+    startChildCoordinator(childCoordinator: child)
+  }
+
   private func setInitialRootViewController() {
+
     deleteStaleCredentialsIfNeeded()
 
     if launchStateManager.isFirstTimeAfteriCloudRestore() {
       startFirstTimeAfteriCloudRestore()
+    } else if launchStateManager.needsUpgradedToSegwit() {
+      startSegwitUpgrade()
     } else if launchStateManager.shouldRequireAuthentication {
       registerWalletWithServerIfNeeded {
         self.requireAuthenticationIfNeeded {
@@ -236,9 +244,19 @@ class AppCoordinator: CoordinatorType {
     let bgContext = persistenceManager.createBackgroundContext()
     bgContext.perform {
       self.registerAndPersistWallet(in: bgContext)
-        .done(in: bgContext) {
-          try bgContext.save()
-          DispatchQueue.main.async {
+        .done { (parser: WalletFlagsParser) in
+          if parser.walletVersion != .v2 {
+            let desc = "It appears you have entered recovery worrds from a legacy DropBit wallet. " +
+            "Pelase upgrade now for enhanced security, smaller transaction size and cost, " +
+            "and Lightning support."
+            let action = AlertActionConfiguration(title: "Upgrade Now", style: .default, action: self.startSegwitUpgrade)
+            let alertViewModel = AlertControllerViewModel(title: "Upgrade Required", description: desc, image: nil, style: .alert, actions: [action])
+            let alert = self.alertManager.alert(from: alertViewModel)
+            self.navigationController.topViewController()?.present(alert, animated: true)
+          } else {
+            try bgContext.performThrowingAndWait {
+              try bgContext.save()
+            }
             completion()
           }
         }

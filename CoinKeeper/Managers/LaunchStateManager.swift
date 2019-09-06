@@ -118,8 +118,8 @@ class LaunchStateManager: LaunchStateManagerType {
   func shouldRegisterWallet() -> Bool {
     let walletExists = currentProperties().contains(.walletExists)
 
-    let bgContext = persistenceManager.createBackgroundContext()
-    let walletIdExists = persistenceManager.brokers.wallet.walletId(in: bgContext) != nil
+    let context = persistenceManager.mainQueueContext()
+    let walletIdExists = persistenceManager.brokers.wallet.walletId(in: context) != nil
 
     log.debug("Wallet exists: \(walletExists), wallet ID exists: \(walletIdExists)")
     return walletExists && !walletIdExists
