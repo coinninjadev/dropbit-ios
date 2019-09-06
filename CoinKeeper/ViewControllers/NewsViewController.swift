@@ -12,7 +12,7 @@ import Charts
 import PromiseKit
 import SVProgressHUD
 
-protocol NewsViewControllerDelegate: ViewControllerDismissable, URLOpener {
+protocol NewsViewControllerDelegate: CurrencyValueDataSourceType, ViewControllerDismissable, URLOpener {
   func viewControllerDidRequestNewsData(count: Int) -> Promise<[NewsArticleResponse]>
   func viewControllerDidRequestPriceDataFor(period: PricePeriod) -> Promise<[PriceSummaryResponse]>
   func viewControllerBecameVisible(_ viewController: UIViewController)
@@ -33,10 +33,11 @@ final class NewsViewController: BaseViewController, StoryboardInitializable {
     self?.tableView.reloadData()
   }
 
-  static func newInstance(with delegate: NewsViewControllerDelegate) -> NewsViewController {
-    let controller = NewsViewController.makeFromStoryboard()
-    controller.delegate = delegate
-    return controller
+  static func newInstance(delegate: NewsViewControllerDelegate) -> NewsViewController {
+    let vc = NewsViewController.makeFromStoryboard()
+    vc.delegate = delegate
+    vc.currencyValueManager = delegate
+    return vc
   }
 
   required init?(coder aDecoder: NSCoder) {
@@ -44,14 +45,7 @@ final class NewsViewController: BaseViewController, StoryboardInitializable {
   }
 
   fileprivate weak var delegate: NewsViewControllerDelegate!
-
-  override var generalCoordinationDelegate: AnyObject? {
-    didSet {
-      currencyValueManager = generalCoordinationDelegate as? CurrencyValueDataSourceType
-    }
-  }
-
-  weak var currencyValueManager: CurrencyValueDataSourceType?
+  fileprivate weak var currencyValueManager: CurrencyValueDataSourceType?
 
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -78,9 +72,7 @@ final class NewsViewController: BaseViewController, StoryboardInitializable {
     CKNotificationCenter.subscribe(self, [.didUpdateExchangeRates: #selector(refreshDisplayedPrice)])
     currencyValueManager?.latestExchangeRates(responseHandler: updateRatesRequest)
 
-    if let delegate = coordinationDelegate {
-      newsViewControllerDDS?.setupDataSet(coordinationDelegate: delegate)
-    }
+    newsViewControllerDDS?.setupDataSet(coordinationDelegate: delegate)
   }
 
   @IBAction func closeButtonWasTouched() {

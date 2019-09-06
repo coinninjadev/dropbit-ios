@@ -46,11 +46,11 @@ CurrencySwappableAmountEditor {
   fileprivate weak var delegate: SendPaymentViewControllerCoordinator!
 
   var currencyValueManager: CurrencyValueDataSourceType? {
-    return coordinationDelegate
+    return delegate
   }
 
   var balanceDataSource: BalanceDataSource? {
-    return coordinationDelegate
+    return delegate
   }
 
   // MARK: - Outlets and Actions
@@ -118,7 +118,7 @@ CurrencySwappableAmountEditor {
     self.delegate.latestFees()
       .compactMap { self.delegate.usableFeeRate(from: $0) }
       .then { feeRate -> Promise<CNBTransactionData> in
-        guard let delegate = self.coordinationDelegate else { fatalError("coordinationDelegate is required") }
+        guard let delegate = self.delegate else { fatalError("delegate is required") }
         return delegate.viewController(self, sendMaxFundsTo: tempAddress, feeRate: feeRate)
       }
       .done {txData in
@@ -158,7 +158,7 @@ CurrencySwappableAmountEditor {
     ]
   }
 
-  static func newInstance(delegate: SendPaymentViewControllerDelegate, viewModel: SendPaymentViewModel) -> SendPaymentViewController {
+  static func newInstance(delegate: SendPaymentViewControllerCoordinator, viewModel: SendPaymentViewModel) -> SendPaymentViewController {
     let vc = SendPaymentViewController.makeFromStoryboard()
     vc.delegate = delegate
     vc.viewModel = viewModel
@@ -185,7 +185,7 @@ CurrencySwappableAmountEditor {
     setupPhoneNumberEntryView(textFieldEnabled: true)
     formatPhoneNumberEntryView()
     memoContainerView.delegate = self
-    let sharedMemoAllowed = delegate.viewControllerShouldInitiallyAllowMemoSharing(self) ?? true
+    let sharedMemoAllowed = delegate.viewControllerShouldInitiallyAllowMemoSharing(self)
     viewModel.sharedMemoAllowed = sharedMemoAllowed
     memoContainerView.configure(memo: nil, isShared: sharedMemoAllowed)
     delegate.sendPaymentViewControllerDidLoad(self)
@@ -800,9 +800,7 @@ extension SendPaymentViewController {
 
     // Sending payment to generic contact (manually entered phone number) will first check if they have addresses on server
     delegate.viewControllerDidRequestVerificationCheck(self) { [weak self] in
-      guard let localSelf = self,
-        let delegate = localSelf.coordinationDelegate
-        else { return }
+      guard let localSelf = self, let delegate = localSelf.delegate else { return }
 
       delegate.viewControllerDidRequestRegisteredAddress(localSelf, ofType: addressType, forIdentity: contact.identityHash)
         .done { (responses: [WalletAddressesQueryResponse]) in

@@ -167,7 +167,7 @@ final class PinEntryViewController: BaseViewController, StoryboardInitializable 
   }
 
   func setupBiometricButton() {
-    guard let biometricType = delegate.biometricType else { return }
+    let biometricType = delegate.biometricType
     var image: UIImage?
     switch biometricType {
     case .faceID: image = UIImage(named: "faceID")
@@ -250,7 +250,7 @@ extension PinEntryViewController: KeypadEntryViewDelegate {
   func selected(digit: String) {
     let addDigitResult = digitEntryDisplayViewModel.add(digit: digit)
     resetErrorLabel()
-    guard addDigitResult == .complete, let delegate = coordinationDelegate else { return }
+    guard addDigitResult == .complete else { return }
     if delegate.checkMatch(for: digitEntryDisplayViewModel.digits) {
       DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.1) {
         self.authenticationSatisfied()

@@ -86,6 +86,7 @@ final class RequestPayViewController: PresentableViewController, StoryboardIniti
 
   // MARK: variables
   fileprivate weak var delegate: RequestPayViewControllerDelegate!
+  fileprivate weak var alertManager: AlertManagerType?
 
   let rateManager: ExchangeRateManager = ExchangeRateManager()
   var currencyValueManager: CurrencyValueDataSourceType?
@@ -100,9 +101,9 @@ final class RequestPayViewController: PresentableViewController, StoryboardIniti
     return lightningInvoice != nil
   }
 
-  var alertManager: AlertManagerType?
-
-  static func newInstance(delegate: RequestPayViewControllerDelegate, viewModel: RequestPayViewModel?, alertManager: AlertManagerType?) -> RequestPayViewController {
+  static func newInstance(delegate: RequestPayViewControllerDelegate,
+                          viewModel: RequestPayViewModel?,
+                          alertManager: AlertManagerType?) -> RequestPayViewController {
     let vc = RequestPayViewController.makeFromStoryboard()
     vc.delegate = delegate
     vc.viewModel = viewModel ?? RequestPayViewModel(receiveAddress: "", amountViewModel: .emptyInstance())

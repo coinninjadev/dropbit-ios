@@ -20,7 +20,7 @@ class NoConnectionViewController: BaseViewController, StoryboardInitializable {
   @IBOutlet var retryButton: PrimaryActionButton!
   @IBOutlet var activitySpinner: UIActivityIndicatorView!
 
-  fileprivate weak var delegate: NoConnectionViewControllerDelegate!
+  weak var delegate: NoConnectionViewControllerDelegate!
 
   override func viewDidLoad() {
     super.viewDidLoad()

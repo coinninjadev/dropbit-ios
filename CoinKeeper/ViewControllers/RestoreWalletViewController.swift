@@ -67,6 +67,12 @@ class RestoreWalletViewController: BaseViewController, StoryboardInitializable {
 
   private var words: [String] = []
 
+  static func newInstance(delegate: RestoreWalletViewControllerDelegate) -> RestoreWalletViewController {
+    let vc = RestoreWalletViewController.makeFromStoryboard()
+    vc.delegate = delegate
+    return vc
+  }
+
   override func accessibleViewsAndIdentifiers() -> [AccessibleViewElement] {
     return [
       (self.view, .restoreWallet(.page)),

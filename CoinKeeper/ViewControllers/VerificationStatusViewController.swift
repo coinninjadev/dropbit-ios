@@ -129,20 +129,14 @@ class VerificationStatusViewController: BaseViewController, StoryboardInitializa
 
   private func setupAddressUI() {
     // Hide address elements if no addresses exist or words aren't backed up
-    if let addresses = delegate.viewControllerDidRequestAddresses(),
-      addresses.isNotEmpty {
+    let addresses = delegate.viewControllerDidRequestAddresses()
+    if addresses.isNotEmpty {
       serverAddressView.addresses = addresses
       addressButton.isHidden = false
       serverAddressView.isHidden = false
     } else {
       addressButton.isHidden = true
       serverAddressView.isHidden = true
-    }
-  }
-
-  private func fetchAddresses() {
-    if let addresses = delegate.viewControllerDidRequestAddresses() {
-      serverAddressView.addresses = addresses
     }
   }
 

@@ -10,8 +10,7 @@ import UIKit
 
 extension AppCoordinator: PlaceholderViewControllerDelegate {
   func viewControllerRequestPayTapped(_ viewController: UIViewController) {
-    let viewController = RequestPayViewController.makeFromStoryboard()
-     assignCoordinationDelegate(to: viewController)
+    let viewController = RequestPayViewController.newInstance(delegate: self, viewModel: nil, alertManager: self.alertManager)
     viewController.modalPresentationStyle = .custom
     viewController.modalTransitionStyle = UIModalTransitionStyle.coverVertical
 

@@ -157,7 +157,7 @@ extension WalletOverviewViewController: BalanceDisplayable {
   var walletBalanceView: WalletBalanceView { return currentWalletBalanceView }
   var balanceLeftButtonType: BalanceContainerLeftButtonType { return .menu }
   var primaryBalanceCurrency: CurrencyCode {
-    guard let selectedCurrency = delegate.selectedCurrency() else { return .BTC }
+    let selectedCurrency = delegate.selectedCurrency()
     switch selectedCurrency {
     case .BTC: return .BTC
     case .fiat: return .USD
@@ -171,7 +171,6 @@ extension WalletOverviewViewController: BalanceDisplayable {
   }
 
   var walletTransactionType: WalletTransactionType {
-    guard let delegate = coordinationDelegate else { return .onChain }
     return delegate.selectedWalletTransactionType()
   }
 }
@@ -242,18 +241,18 @@ extension WalletOverviewViewController: SelectedCurrencyUpdatable {
 
 extension WalletOverviewViewController: SendReceiveActionViewDelegate {
   func actionViewDidSelectReceive(_ view: UIView) {
-    guard let coordinator = coordinationDelegate else { return }
-    coordinator.viewControllerDidTapReceivePayment(self, converter: coordinator.currencyController.currencyConverter)
+    let converter = delegate.currencyController.currencyConverter
+    delegate.viewControllerDidTapReceivePayment(self, converter: converter)
   }
 
   func actionViewDidSelectScan(_ view: UIView) {
-    guard let coordinator = coordinationDelegate else { return }
-    coordinator.viewControllerDidTapScan(self, converter: coordinator.currencyController.currencyConverter)
+    let converter = delegate.currencyController.currencyConverter
+    delegate.viewControllerDidTapScan(self, converter: converter)
   }
 
   func actionViewDidSelectSend(_ view: UIView) {
-    guard let coordinator = coordinationDelegate else { return }
-    coordinator.viewControllerDidTapSendPayment(self, converter: coordinator.currencyController.currencyConverter,
+    let converter = delegate.currencyController.currencyConverter
+    delegate.viewControllerDidTapSendPayment(self, converter: converter,
                                                 walletTransactionType: currentWallet)
   }
 }
@@ -273,8 +272,7 @@ extension WalletOverviewViewController: SyncSubscribeable {
 extension WalletOverviewViewController: WalletBalanceViewDelegate {
 
   func getCurrentWalletTransactionType() -> WalletTransactionType {
-    guard let coordinationDelegate = coordinationDelegate else { return .onChain }
-    return coordinationDelegate.selectedWalletTransactionType()
+    return delegate.selectedWalletTransactionType()
   }
 
   func transferButtonWasTouched() {
@@ -284,13 +282,13 @@ extension WalletOverviewViewController: WalletBalanceViewDelegate {
   }
 
   func swapPrimaryCurrency() {
-    guard let delegate = coordinationDelegate else { return }
     delegate.viewControllerDidRequestPrimaryCurrencySwap()
-    updateSelectedCurrency(to: delegate.selectedCurrency())
+    let newSelectedCurrency = delegate.selectedCurrency()
+    updateSelectedCurrency(to: newSelectedCurrency)
   }
 
   func isSyncCurrentlyRunning() -> Bool {
-    return delegate.isSyncCurrentlyRunning() ?? false
+    return delegate.isSyncCurrentlyRunning()
   }
 
 }
