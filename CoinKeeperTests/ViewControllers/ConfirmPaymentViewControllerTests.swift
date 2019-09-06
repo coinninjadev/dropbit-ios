@@ -51,6 +51,24 @@ class ConfirmPaymentViewControllerTests: XCTestCase {
   }
 
   class MockCoordinator: ConfirmPaymentViewControllerDelegate {
+    var alertManager: AlertManagerType = MockAlertManager(notificationManager:
+      NotificationManager(permissionManager: PermissionManager(),
+                          networkInteractor: NetworkManager(persistenceManager: PersistenceManager(),
+                                                            analyticsManager: AnalyticsManager())))
+    var analyticsManager: AnalyticsManagerType = MockAnalyticsManager()
+    var persistenceManager: PersistenceManagerType = MockPersistenceManager()
+
+    var navigationController: UINavigationController  {
+      return UINavigationController()
+    }
+
+    var didConfirmLightning = false
+    func viewControllerDidConfirmLightningPayment(
+      _ viewController: UIViewController,
+      inputs: LightningPaymentInputs) {
+      didConfirmLightning = true
+    }
+
     func confirmPaymentViewControllerDidLoad(_ viewController: UIViewController) { }
 
     func viewControllerDidConfirmOnChainPayment(
@@ -58,10 +76,6 @@ class ConfirmPaymentViewControllerTests: XCTestCase {
       transactionData: CNBitcoinKit.CNBTransactionData,
       rates: ExchangeRates,
       outgoingTransactionData: OutgoingTransactionData) { }
-
-    func viewControllerDidConfirmLightningPayment(
-      _ viewController: UIViewController,
-      inputs: LightningPaymentInputs) { }
 
     func viewControllerDidConfirmInvite(
       _ viewController: UIViewController,
