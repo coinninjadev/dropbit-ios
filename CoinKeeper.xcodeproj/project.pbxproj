@@ -484,7 +484,6 @@
 		A257CEB42302E5070063670B /* FeesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A257CEB32302E5070063670B /* FeesView.swift */; };
 		A257CEB62302E60A0063670B /* FeesView.xib in Resources */ = {isa = PBXBuildFile; fileRef = A257CEB52302E6090063670B /* FeesView.xib */; };
 		A257CEB82302F3BA0063670B /* AppCoordinator+WalletTransferViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A257CEB72302F3BA0063670B /* AppCoordinator+WalletTransferViewControllerDelegate.swift */; };
-		A257CEBA230302070063670B /* AppCoordinator+LightningTransactionHistoryEmptyViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A257CEB9230302070063670B /* AppCoordinator+LightningTransactionHistoryEmptyViewDelegate.swift */; };
 		A257CEBC230325580063670B /* WalletTransferViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A257CEBB230325580063670B /* WalletTransferViewModel.swift */; };
 		A257CEC023038F130063670B /* ConfirmViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A257CEBF23038F130063670B /* ConfirmViewTests.swift */; };
 		A257CEC4230C3EBD0063670B /* CKLightningURLParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = A257CEC3230C3EBD0063670B /* CKLightningURLParser.swift */; };
@@ -566,6 +565,7 @@
 		A2B4E6EE22FA476A00E24324 /* LightningRefillViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2B4E6ED22FA476A00E24324 /* LightningRefillViewController.swift */; };
 		A2B4E6F022FA488100E24324 /* LightningRefillViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A2B4E6EF22FA488100E24324 /* LightningRefillViewController.storyboard */; };
 		A2B4E6F222FC6D7B00E24324 /* AppCoordinator+LightningRefillViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2B4E6F122FC6D7B00E24324 /* AppCoordinator+LightningRefillViewControllerDelegate.swift */; };
+		A2B4EAFE2322C555005D0A65 /* AppCoordinator+LightningReloadDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2B4EAFD2322C555005D0A65 /* AppCoordinator+LightningReloadDelegate.swift */; };
 		A2BCCFC22321919300EB9C30 /* AppCoordinator+PaymentBuildingDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2BCCFC12321919300EB9C30 /* AppCoordinator+PaymentBuildingDelegate.swift */; };
 		A2BFA54D22E7531500396D33 /* WalletToggleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2BFA54C22E7531500396D33 /* WalletToggleView.swift */; };
 		A2BFA54F22E7536A00396D33 /* WalletToggleView.xib in Resources */ = {isa = PBXBuildFile; fileRef = A2BFA54E22E7536A00396D33 /* WalletToggleView.xib */; };
@@ -693,7 +693,7 @@
 		B536D12D21F1141000C344B6 /* SendPaymentMemoView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B536D12C21F1141000C344B6 /* SendPaymentMemoView.xib */; };
 		B53804FA209A4B020096DA33 /* URLOpener.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53804F9209A4B020096DA33 /* URLOpener.swift */; };
 		B53804FC209A4C070096DA33 /* AppCoordinator+URLOpener.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53804FB209A4C070096DA33 /* AppCoordinator+URLOpener.swift */; };
-		B53A790422E4ACF000EDCA8B /* AppCoordinator+ViewControllerPaymentRoutingDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53A790322E4ACF000EDCA8B /* AppCoordinator+ViewControllerPaymentRoutingDelegate.swift */; };
+		B53A790422E4ACF000EDCA8B /* AppCoordinator+SendPaymentViewControllerRoutingDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53A790322E4ACF000EDCA8B /* AppCoordinator+SendPaymentViewControllerRoutingDelegate.swift */; };
 		B53D7EC52119DC6B00D1DCBF /* BlockchainInfoTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53D7EC42119DC6B00D1DCBF /* BlockchainInfoTarget.swift */; };
 		B53D7ECC2119FCA300D1DCBF /* BCITransactionResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53D7ECB2119FCA300D1DCBF /* BCITransactionResponse.swift */; };
 		B53D7ECE2119FE3900D1DCBF /* BlockchainInfoProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53D7ECD2119FE3900D1DCBF /* BlockchainInfoProvider.swift */; };
@@ -1499,7 +1499,6 @@
 		A257CEB32302E5070063670B /* FeesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeesView.swift; sourceTree = "<group>"; };
 		A257CEB52302E6090063670B /* FeesView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FeesView.xib; sourceTree = "<group>"; };
 		A257CEB72302F3BA0063670B /* AppCoordinator+WalletTransferViewControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppCoordinator+WalletTransferViewControllerDelegate.swift"; sourceTree = "<group>"; };
-		A257CEB9230302070063670B /* AppCoordinator+LightningTransactionHistoryEmptyViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppCoordinator+LightningTransactionHistoryEmptyViewDelegate.swift"; sourceTree = "<group>"; };
 		A257CEBB230325580063670B /* WalletTransferViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletTransferViewModel.swift; sourceTree = "<group>"; };
 		A257CEBF23038F130063670B /* ConfirmViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmViewTests.swift; sourceTree = "<group>"; };
 		A257CEC3230C3EBD0063670B /* CKLightningURLParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CKLightningURLParser.swift; sourceTree = "<group>"; };
@@ -1581,6 +1580,7 @@
 		A2B4E6ED22FA476A00E24324 /* LightningRefillViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightningRefillViewController.swift; sourceTree = "<group>"; };
 		A2B4E6EF22FA488100E24324 /* LightningRefillViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LightningRefillViewController.storyboard; sourceTree = "<group>"; };
 		A2B4E6F122FC6D7B00E24324 /* AppCoordinator+LightningRefillViewControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppCoordinator+LightningRefillViewControllerDelegate.swift"; sourceTree = "<group>"; };
+		A2B4EAFD2322C555005D0A65 /* AppCoordinator+LightningReloadDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppCoordinator+LightningReloadDelegate.swift"; sourceTree = "<group>"; };
 		A2BCCFC12321919300EB9C30 /* AppCoordinator+PaymentBuildingDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppCoordinator+PaymentBuildingDelegate.swift"; sourceTree = "<group>"; };
 		A2BFA54C22E7531500396D33 /* WalletToggleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletToggleView.swift; sourceTree = "<group>"; };
 		A2BFA54E22E7536A00396D33 /* WalletToggleView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WalletToggleView.xib; sourceTree = "<group>"; };
@@ -1707,7 +1707,7 @@
 		B536D12C21F1141000C344B6 /* SendPaymentMemoView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SendPaymentMemoView.xib; sourceTree = "<group>"; };
 		B53804F9209A4B020096DA33 /* URLOpener.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLOpener.swift; sourceTree = "<group>"; };
 		B53804FB209A4C070096DA33 /* AppCoordinator+URLOpener.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppCoordinator+URLOpener.swift"; sourceTree = "<group>"; };
-		B53A790322E4ACF000EDCA8B /* AppCoordinator+ViewControllerPaymentRoutingDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppCoordinator+ViewControllerPaymentRoutingDelegate.swift"; sourceTree = "<group>"; };
+		B53A790322E4ACF000EDCA8B /* AppCoordinator+SendPaymentViewControllerRoutingDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppCoordinator+SendPaymentViewControllerRoutingDelegate.swift"; sourceTree = "<group>"; };
 		B53D7EC42119DC6B00D1DCBF /* BlockchainInfoTarget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockchainInfoTarget.swift; sourceTree = "<group>"; };
 		B53D7ECB2119FCA300D1DCBF /* BCITransactionResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BCITransactionResponse.swift; sourceTree = "<group>"; };
 		B53D7ECD2119FE3900D1DCBF /* BlockchainInfoProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockchainInfoProvider.swift; sourceTree = "<group>"; };
@@ -2277,10 +2277,10 @@
 				A230F1C922DCB2F30017BC7A /* AppCoordinator+WalletOverviewViewControllerDelegate.swift */,
 				A2B4E6F122FC6D7B00E24324 /* AppCoordinator+LightningRefillViewControllerDelegate.swift */,
 				A257CEB72302F3BA0063670B /* AppCoordinator+WalletTransferViewControllerDelegate.swift */,
-				A257CEB9230302070063670B /* AppCoordinator+LightningTransactionHistoryEmptyViewDelegate.swift */,
-				B53A790322E4ACF000EDCA8B /* AppCoordinator+ViewControllerPaymentRoutingDelegate.swift */,
+				B53A790322E4ACF000EDCA8B /* AppCoordinator+SendPaymentViewControllerRoutingDelegate.swift */,
 				A235898A232165A5002C3FC0 /* AppCoordinator+PaymentSendingDelegate.swift */,
 				A2BCCFC12321919300EB9C30 /* AppCoordinator+PaymentBuildingDelegate.swift */,
+				A2B4EAFD2322C555005D0A65 /* AppCoordinator+LightningReloadDelegate.swift */,
 			);
 			path = Coordinators;
 			sourceTree = "<group>";
@@ -4613,6 +4613,7 @@
 				B54159CB20A5DEBF0048F495 /* CKMUser+CoreDataClass.swift in Sources */,
 				3BA9F60B208F6E870047C213 /* AppCoordinator+BalanceDataSource.swift in Sources */,
 				3B80E27521BE9D7A00F6EF17 /* DatabaseMigrationWorker.swift in Sources */,
+				A2B4EAFE2322C555005D0A65 /* AppCoordinator+LightningReloadDelegate.swift in Sources */,
 				B509262922CA57CF00126250 /* CKLogger.swift in Sources */,
 				B552EDF3211E33D000332BB5 /* PersistenceManager.swift in Sources */,
 				3B6749E220AA5CA40032FE02 /* CKMVin+CoreDataProperties.swift in Sources */,
@@ -4664,7 +4665,6 @@
 				B5CFA336221E008B002B1BDD /* CCMPhoneNumber+CoreDataProperties.swift in Sources */,
 				3B2EBF782232AB17003C0D0E /* CoreDataStackConfig.swift in Sources */,
 				A2FE198622FDDD3A00C2412D /* NSAttributedString+WalletTypeIdentifiers.swift in Sources */,
-				A257CEBA230302070063670B /* AppCoordinator+LightningTransactionHistoryEmptyViewDelegate.swift in Sources */,
 				B521E85F218785B8002DB8C2 /* CoreDataObserver.swift in Sources */,
 				B5D1B2D221934DBE006B2BC7 /* UITestArgument.swift in Sources */,
 				B558B86E22B95ED00033AFBD /* CheckInBroker.swift in Sources */,
@@ -4817,7 +4817,7 @@
 				3BA360852090B0C100732C43 /* CKMTransaction+CoreDataProperties.swift in Sources */,
 				3B86F78C203C6DCD00D15231 /* PinEntryViewController.swift in Sources */,
 				B5A3BA5E215193E6005EE657 /* UserTarget.swift in Sources */,
-				B53A790422E4ACF000EDCA8B /* AppCoordinator+ViewControllerPaymentRoutingDelegate.swift in Sources */,
+				B53A790422E4ACF000EDCA8B /* AppCoordinator+SendPaymentViewControllerRoutingDelegate.swift in Sources */,
 				3BCBFCBA229EB05000F633BA /* SettingsTitleLabel.swift in Sources */,
 				B5FEBE9220879C4200AA9F6E /* CKMInvitation+CoreDataClass.swift in Sources */,
 				B52A25C92077E42100F636A1 /* GrayCellSeparator.swift in Sources */,

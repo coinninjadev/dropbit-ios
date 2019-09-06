@@ -10,17 +10,7 @@ import Foundation
 
 extension AppCoordinator: LightningRefillViewControllerDelegate {
 
-  func amountButtonWasTouched(amount: TransferAmount) {
-    showTransferViewController(withAmount: amount)
-  }
-
   func dontAskMeAgainButtonWasTouched() {
     persistenceManager.brokers.preferences.dontShowLightningRefill = true
-  }
-
-  private func showTransferViewController(withAmount amount: TransferAmount) {
-    let viewModel = WalletTransferViewModel(direction: .toLightning, amount: amount)
-    let walletTransferViewController = WalletTransferViewController.newInstance(delegate: self, viewModel: viewModel)
-    navigationController.present(walletTransferViewController, animated: true, completion: nil)
   }
 }

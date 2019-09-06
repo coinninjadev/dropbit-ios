@@ -13,21 +13,11 @@ import CNBitcoinKit
 
 extension AppCoordinator: WalletTransferViewControllerDelegate {
 
-  func viewControllerNeedsTransactionData(_ viewController: UIViewController,
-                                          btcAmount: NSDecimalNumber,
-                                          exchangeRates: ExchangeRates) -> PaymentData? {
+  func viewControllerNeedsTransactionData(_ viewController: UIViewController, btcAmount: NSDecimalNumber, exchangeRates: ExchangeRates) -> PaymentData? {
     let context = self.persistenceManager.mainQueueContext()
     let wallet = CKMWallet.findOrCreate(in: context)
-    var outgoingTransactionData = OutgoingTransactionData.emptyInstance()
     let lightningAccount = self.persistenceManager.brokers.lightning.getAccount(forWallet: wallet, in: context)
-    let sharedPayload = SharedPayloadDTO.emptyInstance()
-    let inputs = SendingDelegateInputs(primaryCurrency: .BTC, walletTxType: .onChain, contact: nil,
-                                       rates: exchangeRates, sharedPayload: sharedPayload)
-
-    outgoingTransactionData = configureOutgoingTransactionData(with: outgoingTransactionData, address: lightningAccount.address, inputs: inputs)
-    guard let bitcoinKitTransactionData = walletManager?.failableTransactionData(forPayment: btcAmount, to: lightningAccount.address, withFeeRate: 0.0) else { return nil }// TODO
-
-    return PaymentData(broadcastData: bitcoinKitTransactionData, outgoingData: outgoingTransactionData)
+    return buildTransactionData(btcAmount: btcAmount, address: lightningAccount.address, exchangeRates: exchangeRates)
   }
 
   func viewControllerDidConfirmLoad(_ viewController: UIViewController, paymentData transactionData: PaymentData) {

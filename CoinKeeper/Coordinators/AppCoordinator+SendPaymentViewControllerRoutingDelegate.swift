@@ -1,5 +1,5 @@
 //
-//  AppCoordinator+ViewControllerPaymentRoutingDelegate.swift
+//  AppCoordinator+SendPaymentViewControllerRoutingDelegate.swift
 //  DropBit
 //
 //  Created by Ben Winters on 7/21/19.
@@ -18,7 +18,7 @@ extension AppCoordinator: SendPaymentViewControllerRoutingDelegate {
     _ viewController: UIViewController,
     sendMaxFundsTo address: String,
     feeRate: Double) -> Promise<CNBTransactionData> {
-    guard let _ = walletManager else { return Promise(error: CKPersistenceError.noManagedWallet) }
+    guard walletManager != nil else { return Promise(error: CKPersistenceError.noManagedWallet) }
     return sendMaxFundsTo(address: address, feeRate: feeRate)
   }
 

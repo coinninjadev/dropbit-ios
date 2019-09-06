@@ -44,8 +44,8 @@ protocol WalletTransferViewControllerDelegate: ViewControllerDismissable, Paymen
 }
 
 enum TransferDirection {
-  case toLightning //load
-  case toOnChain //withdraw
+  case toLightning(PaymentData?) //load
+  case toOnChain(LightningPaymentInputs?) //withdraw
 }
 
 class WalletTransferViewController: PresentableViewController, StoryboardInitializable, CurrencySwappableAmountEditor {
@@ -78,12 +78,6 @@ class WalletTransferViewController: PresentableViewController, StoryboardInitial
     return generalCoordinationDelegate as? WalletTransferViewControllerDelegate
   }
 
-  var paymentData: PaymentData? {
-    didSet {
-      refreshTransactionUI()
-    }
-  }
-
   override func viewDidLoad() {
     super.viewDidLoad()
 
@@ -107,19 +101,43 @@ class WalletTransferViewController: PresentableViewController, StoryboardInitial
   }
 
   private func buildTransactionIfNecessary() {
-    if viewModel.direction == .toLightning && viewModel.btcAmount > 0 {
+    switch viewModel.direction {
+    case .toLightning:
       buildTransaction()
+    case .toOnChain:
+      break //TODO: Implement
     }
   }
 
   private func buildTransaction() {
     SVProgressHUD.show()
-    paymentData = coordinationDelegate?.viewControllerNeedsTransactionData(self, btcAmount: viewModel.btcAmount, exchangeRates: rateManager.exchangeRates)
+    let paymentData = coordinationDelegate?.viewControllerNeedsTransactionData(self,
+                                                                           btcAmount: viewModel.btcAmount,
+                                                                           exchangeRates: rateManager.exchangeRates)
+    viewModel.direction = .toLightning(paymentData)
     SVProgressHUD.dismiss()
   }
 
-  private func refreshTransactionUI() {
+  private func setupTransactionUI() {
+    //TODO: Implement
 
+    switch viewModel.direction {
+    case .toLightning(let data):
+      feesView.isHidden = true
+      data == nil ? disableConfirmButton() : enableConfirmButton()
+    case .toOnChain(let inputs):
+      inputs == nil ? disableConfirmButton() : enableConfirmButton()
+    }
+  }
+
+  private func disableConfirmButton() {
+    confirmView.isUserInteractionEnabled = false
+    confirmView.alpha = 0.2
+  }
+
+  private func enableConfirmButton() {
+    confirmView.isUserInteractionEnabled = true
+    confirmView.alpha = 1.0
   }
 
   private func setupUI() {
@@ -137,10 +155,12 @@ class WalletTransferViewController: PresentableViewController, StoryboardInitial
     setupKeyboardDoneButton(for: [editAmountView.primaryAmountTextField],
                             action: #selector(doneButtonWasPressed))
 
+    setupTransactionUI()
   }
 
   @objc func doneButtonWasPressed() {
     editAmountView.primaryAmountTextField.resignFirstResponder()
+    setupTransactionUI()
     buildTransactionIfNecessary()
   }
 
@@ -150,13 +170,13 @@ extension WalletTransferViewController: ConfirmViewDelegate {
 
   func viewDidConfirm() {
     switch viewModel.direction {
-    case .toLightning:
-      guard let delegate = coordinationDelegate, let paymentData = paymentData else { return }
-      delegate.viewControllerDidConfirmLoad(self, paymentData: paymentData)
-    case .toOnChain:
-      break
+    case .toLightning(let data):
+      guard let delegate = coordinationDelegate, let data = data else { return }
+      delegate.viewControllerDidConfirmLoad(self, paymentData: data)
+    case .toOnChain(let inputs):
+      guard let delegate = coordinationDelegate, let inputs = inputs else { return }
+      delegate.viewControllerDidConfirmWithdraw(self, lightningData: inputs)
     }
-    //TODO: Check what type of transfer it is and call correct function
   }
 }
 
