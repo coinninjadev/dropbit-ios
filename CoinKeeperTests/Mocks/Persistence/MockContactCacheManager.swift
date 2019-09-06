@@ -15,11 +15,11 @@ class MockContactCacheManager: ContactCacheManagerType {
 
   let stack = InMemoryCoreDataStack(stackConfig: CoreDataStackConfig(stackType: .contactCache, storeType: .inMemory))
 
-  var mainQueueContext: NSManagedObjectContext {
+  var viewContext: NSManagedObjectContext {
     return stack.context
   }
 
-  func createChildBackgroundContext() -> NSManagedObjectContext {
+  func createBackgroundContext() -> NSManagedObjectContext {
     return NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
   }
 

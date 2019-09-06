@@ -143,7 +143,7 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate {
         in: bgContext)
 
       do {
-        try bgContext.save()
+        try bgContext.saveRecursively()
       } catch {
         log.contextSaveError(error)
       }
@@ -182,7 +182,7 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate {
     context.performAndWait {
       self.acknowledgeSuccessfulInvite(outgoingInvitationDTO: invitationDTO, response: response, in: context)
       do {
-        try context.save()
+        try context.saveRecursively()
         successFailVC.setMode(.success)
 
         // When TweetMethodViewController requests DropBit send the tweet,
@@ -463,7 +463,7 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate {
           }
 
           do {
-            try context.save()
+            try context.saveRecursively()
           } catch {
             log.contextSaveError(error)
           }

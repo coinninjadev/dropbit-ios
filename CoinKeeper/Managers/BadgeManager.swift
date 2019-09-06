@@ -34,7 +34,7 @@ class BadgeManager: BadgeManagerType {
 
   init(persistenceManager: PersistenceManagerType) {
     self.persistenceManager = persistenceManager
-    observeContextSaveNotifications()
+    observeContextSaveNotifications(forContext: persistenceManager.viewContext)
   }
 
   var wordsBackedUp: Bool {
@@ -74,7 +74,7 @@ class BadgeManager: BadgeManagerType {
 
   /// Only call this function from the main thread
   func badgeInfo(for userInfo: [AnyHashable: Any]) -> BadgeInfo {
-    guard let context = persistenceManager?.mainQueueContext() else { return BadgeInfo() }
+    guard let context = persistenceManager?.viewContext else { return BadgeInfo() }
     // aggregate a dictionary and return it, mutated by the userInfo
     var badgeInfo: BadgeInfo = [:]
     badgeTopics.forEach { topic in

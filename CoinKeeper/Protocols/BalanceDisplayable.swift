@@ -34,8 +34,8 @@ extension BalanceDataSource {
    This ignores changes made in child contexts until they are saved in the root context. (Filtering by context.name may be necessary.)
    The conforming object should call this function as soon as possible.
    */
-  func registerForBalanceSaveNotifications() {
-    observeContextSaveNotifications()
+  func registerForBalanceSaveNotifications(viewContext: NSManagedObjectContext) {
+    observeContextSaveNotifications(forContext: viewContext)
   }
 
   func setContextNotificationTokens(willSaveToken: NotificationToken, didSaveToken: NotificationToken) {

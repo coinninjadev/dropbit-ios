@@ -33,22 +33,22 @@ class PersistenceManager: PersistenceManagerType {
                                                  userDefaultsManager: userDefaultsManager)
   }
 
+  var viewContext: NSManagedObjectContext {
+    return databaseManager.viewContext
+  }
+
   func createBackgroundContext() -> NSManagedObjectContext {
     return databaseManager.createBackgroundContext()
+  }
+
+  func persistentStore() -> NSPersistentStore? {
+    return persistentStore(for: viewContext)
   }
 
   func resetPersistence() throws {
     try self.brokers.wallet.resetWallet()
     self.userDefaultsManager.deleteAll()
     self.keychainManager.deleteAll()
-  }
-
-  func mainQueueContext() -> NSManagedObjectContext {
-    return databaseManager.mainQueueContext
-  }
-
-  func persistentStore() -> NSPersistentStore? {
-    return persistentStore(for: mainQueueContext())
   }
 
   func persistentStore(for context: NSManagedObjectContext) -> NSPersistentStore? {

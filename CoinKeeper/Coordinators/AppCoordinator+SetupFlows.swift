@@ -206,7 +206,7 @@ extension AppCoordinator {
       case .lightning:  dataSource = MockTransactionHistoryLightningDataSource()
       }
     } else {
-      let context = persistenceManager.mainQueueContext()
+      let context = persistenceManager.viewContext
       switch type {
       case .onChain:    dataSource = TransactionHistoryOnChainDataSource(context: context)
       case .lightning:  dataSource = TransactionHistoryLightningDataSource(context: context)
