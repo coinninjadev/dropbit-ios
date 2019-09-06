@@ -44,12 +44,7 @@ class TransactionHistorySummaryCell: UICollectionViewCell {
 
   func configure(with values: TransactionSummaryCellDisplayable, isAtTop: Bool = false) {
     self.backgroundColor = values.cellBackgroundColor
-
-    if isAtTop {
-      layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
-    } else {
-      layer.maskedCorners = []
-    }
+    layer.maskedCorners = isAtTop ? .top : .none
 
     configureIsHidden(with: values)
     configureLeadingViews(with: values.leadingImageConfig, cellBgColor: values.cellBackgroundColor)

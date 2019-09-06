@@ -27,11 +27,16 @@ protocol TransactionHistoryViewControllerDelegate: DeviceCountryCodeProvider &
   func viewControllerSummariesDidReload(_ viewController: TransactionHistoryViewController, indexPathsIfNotAll paths: [IndexPath]?)
   func viewController(_ viewController: TransactionHistoryViewController, didSelectItemAtIndexPath indexPath: IndexPath)
   func viewControllerDidDismissTransactionDetails(_ viewController: UIViewController)
+
+  /// Return nil to hide header
+  func summaryHeaderType(for viewController: UIViewController) -> SummaryHeaderType?
+  func viewControllerDidSelectSummaryHeader(_ viewController: UIViewController)
 }
 
 class TransactionHistoryViewController: BaseViewController, StoryboardInitializable {
 
   @IBOutlet var emptyStateBackgroundView: UIView!
+  @IBOutlet var emptyStateBackgroundTopConstraint: NSLayoutConstraint!
   @IBOutlet var summaryCollectionView: TransactionHistorySummaryCollectionView!
   @IBOutlet var transactionHistoryNoBalanceView: TransactionHistoryNoBalanceView!
   @IBOutlet var transactionHistoryWithBalanceView: TransactionHistoryWithBalanceView!
@@ -87,11 +92,14 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
     transactionHistoryNoBalanceView.delegate = self
     transactionHistoryWithBalanceView.delegate = self
     lightningTransactionHistoryEmptyBalanceView.delegate = coordinationDelegate
-    emptyStateBackgroundView.isHidden = true
+    emptyStateBackgroundView.isHidden = false
+    emptyStateBackgroundView.backgroundColor = .whiteBackground
 
     view.backgroundColor = .clear
-    emptyStateBackgroundView.applyCornerRadius(30)
+    emptyStateBackgroundView.applyCornerRadius(30, toCorners: .top)
     coordinationDelegate?.viewControllerDidRequestBadgeUpdate(self)
+
+    CKNotificationCenter.subscribe(self, key: .didUpdateWordsBackedUp, selector: #selector(didUpdateWordsBackedUp))
 
     setupCollectionViews()
   }
@@ -142,6 +150,11 @@ extension TransactionHistoryViewController: TransactionHistoryDataSourceDelegate
   func transactionDataSourceDidChange() {
     reloadCollectionViews()
   }
+
+  @objc func didUpdateWordsBackedUp() {
+    transactionDataSourceDidChange()
+  }
+
 }
 
 extension TransactionHistoryViewController: NoTransactionsViewDelegate {
@@ -176,17 +189,26 @@ extension TransactionHistoryViewController: TransactionHistoryViewModelDelegate 
     reloadCollectionViews()
   }
 
+  func summaryHeaderType() -> SummaryHeaderType? {
+    return coordinationDelegate.summaryHeaderType(for: self)
+  }
+
+  func didTapSummaryHeader(_ header: TransactionHistorySummaryHeader) {
+    self.coordinationDelegate.viewControllerDidSelectSummaryHeader(self)
+  }
+
 }
 
 extension TransactionHistoryViewController: DZNEmptyDataSetDelegate, DZNEmptyDataSetSource {
+
   func emptyDataSetShouldBeForced(toDisplay scrollView: UIScrollView!) -> Bool {
-    return shouldShowNoBalanceView || shouldShowWithBalanceView || shouldShowLightningEmptyView
+    return viewModel.shouldShowEmptyDataSet
   }
 
   func emptyDataSetShouldDisplay(_ scrollView: UIScrollView!) -> Bool {
-    let shouldDisplay = shouldShowNoBalanceView || shouldShowWithBalanceView || shouldShowLightningEmptyView
-    emptyStateBackgroundView.isHidden = !shouldDisplay
-    return shouldDisplay
+    let offset = verticalOffset(forEmptyDataSet: scrollView)
+    emptyStateBackgroundTopConstraint.constant = summaryCollectionView.topInset + offset
+    return viewModel.shouldShowEmptyDataSet
   }
 
   func emptyDataSetShouldAllowTouch(_ scrollView: UIScrollView!) -> Bool {
@@ -194,13 +216,13 @@ extension TransactionHistoryViewController: DZNEmptyDataSetDelegate, DZNEmptyDat
   }
 
   func customView(forEmptyDataSet scrollView: UIScrollView!) -> UIView! {
-    if shouldShowNoBalanceView {
+    if viewModel.shouldShowNoBalanceEmptyDataSetView {
       transactionHistoryNoBalanceView.isHidden = false
       return transactionHistoryNoBalanceView
-    } else if shouldShowWithBalanceView {
+    } else if viewModel.shouldShowWithBalanceEmptyDataSetView {
       transactionHistoryWithBalanceView.isHidden = false
       return transactionHistoryWithBalanceView
-    } else if shouldShowLightningEmptyView {
+    } else if viewModel.shouldShowLightningEmptyDataSetView {
       lightningTransactionHistoryEmptyBalanceView.isHidden = false
       return lightningTransactionHistoryEmptyBalanceView
     } else {
@@ -209,18 +231,14 @@ extension TransactionHistoryViewController: DZNEmptyDataSetDelegate, DZNEmptyDat
   }
 
   func verticalOffset(forEmptyDataSet scrollView: UIScrollView!) -> CGFloat {
-    return 0
+    let headerIsShown = coordinationDelegate.summaryHeaderType(for: self) != nil
+    let headerHeight = headerIsShown ? self.viewModel.warningHeaderHeight : 0
+    let cellHeight = viewModel.shouldShowWithBalanceEmptyDataSetView ? SummaryCollectionView.cellHeight : 0
+
+    let contentOffset = (headerHeight + cellHeight) / 2
+    let paddedOffset = (contentOffset > 0) ? (contentOffset + 20) : 0
+
+    return paddedOffset
   }
 
-  private var shouldShowLightningEmptyView: Bool {
-    return viewModel.dataSource.numberOfItems(inSection: 0) == 0 && viewModel.walletTransactionType == .lightning
-  }
-
-  private var shouldShowNoBalanceView: Bool {
-    return viewModel.dataSource.numberOfItems(inSection: 0) == 0 && viewModel.walletTransactionType == .onChain
-  }
-
-  private var shouldShowWithBalanceView: Bool {
-    return viewModel.dataSource.numberOfItems(inSection: 0) == 1 && viewModel.walletTransactionType == .onChain
-  }
 }

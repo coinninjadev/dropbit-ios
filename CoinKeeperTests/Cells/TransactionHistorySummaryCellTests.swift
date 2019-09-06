@@ -39,8 +39,8 @@ class TransactionHistorySummaryCellTests: XCTestCase {
   func testTopCellMasksTopCorners() {
     let viewModel = MockSummaryCellVM.testInstance()
     sut.configure(with: viewModel, isAtTop: true)
-    let expectedTopCorners: CACornerMask = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
-    XCTAssertEqual(sut.layer.maskedCorners, expectedTopCorners)
+    let expectedCorners: CACornerMask = .top
+    XCTAssertEqual(sut.layer.maskedCorners, expectedCorners)
 
     sut.configure(with: viewModel, isAtTop: false)
     let expectedRemainingCorners: CACornerMask = []

@@ -30,6 +30,7 @@ extension UIColor {
   static var incomingGreen: UIColor { return neonGreen }
 
   static var darkPeach: UIColor { return UIColor(r: 231, g: 108, b: 108) }
+  static var warningHeader: UIColor { return darkPeach }
 
   static var lightningBlue: UIColor { return UIColor(r: 50, g: 50, b: 165) }
 

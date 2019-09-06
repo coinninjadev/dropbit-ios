@@ -13,9 +13,15 @@ extension UICollectionView {
     self.register(cellType.nib(), forCellWithReuseIdentifier: cellType.reuseIdentifier)
   }
 
-  func registerReusableView<T: UICollectionReusableView>(reusableViewType: T.Type) {
+  func registerReusableSectionHeader<T: UICollectionReusableView>(reusableViewType: T.Type) {
     self.register(reusableViewType.nib(),
                   forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
+                  withReuseIdentifier: reusableViewType.reuseIdentifier)
+  }
+
+  func registerReusableSectionFooter<T: UICollectionReusableView>(reusableViewType: T.Type) {
+    self.register(reusableViewType.nib(),
+                  forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter,
                   withReuseIdentifier: reusableViewType.reuseIdentifier)
   }
 

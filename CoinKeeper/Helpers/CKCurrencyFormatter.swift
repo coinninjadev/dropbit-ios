@@ -36,7 +36,9 @@ class CKCurrencyFormatter {
     }
   }
 
-  static func attributedString(for amount: NSDecimalNumber?, currency: CurrencyCode, walletTransactionType: WalletTransactionType) -> NSAttributedString? {
+  static func attributedString(for amount: NSDecimalNumber?,
+                               currency: CurrencyCode,
+                               walletTransactionType: WalletTransactionType) -> NSAttributedString? {
     guard let amount = amount else { return nil }
     if currency.isFiat {
       return FiatFormatter(currency: currency, withSymbol: true).attributedString(from: amount)

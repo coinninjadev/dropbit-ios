@@ -63,8 +63,7 @@ class ServerAddressView: UIView {
     addressTableView.layer.borderWidth = 0.5
     addressTableView.separatorInset = .zero
 
-    applyCornerRadius(13)
-    layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+    applyCornerRadius(13, toCorners: .top)
   }
 }
 
