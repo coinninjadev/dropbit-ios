@@ -11,11 +11,11 @@ import Foundation
 struct NewsArticleResponse: ResponseDecodable {
   enum Source: String, Decodable {
     case reddit
-    case ccn = "CCN"
+    case ccn
     case ambcrypto
     case coindesk
     case cointelegraph
-    case coinninja = "CoinNinja"
+    case coinninja
     case coinsquare
     case theblock
   }
@@ -51,7 +51,7 @@ struct NewsArticleResponse: ResponseDecodable {
     self.link = try container.decode(String.self, forKey: .link)
     self.thumbnail = try container.decodeIfPresent(String.self, forKey: .thumbnail)
     self.description = try container.decodeIfPresent(String.self, forKey: .description)
-    self.source = try container.decodeIfPresent(String.self, forKey: .source)
+    self.source = try container.decodeIfPresent(String.self, forKey: .source)?.lowercased()
     self.author = try container.decodeIfPresent(String.self, forKey: .author)
     self.pubTime = try container.decodeIfPresent(Date.self, forKey: .pubTime)
     self.added = try container.decodeIfPresent(Date.self, forKey: .added)
