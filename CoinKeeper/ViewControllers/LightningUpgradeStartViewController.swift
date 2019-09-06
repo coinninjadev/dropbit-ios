@@ -11,6 +11,7 @@ import CNBitcoinKit
 
 protocol LightningUpgradeStartViewControllerDelegate: AnyObject {
   func viewControllerRequestedShowLightningUpgradeInfo(_ viewController: LightningUpgradeStartViewController)
+  func viewControllerRequestedUpgradeAuthentication(_ viewController: LightningUpgradeStartViewController, completion: @escaping CKCompletion)
 }
 
 final class LightningUpgradeStartViewController: BaseViewController, StoryboardInitializable {
@@ -53,7 +54,6 @@ final class LightningUpgradeStartViewController: BaseViewController, StoryboardI
   override func viewDidLoad() {
     super.viewDidLoad()
     styleInitialUI()
-
   }
 
   // to be called from owner when balance is provided
@@ -182,6 +182,8 @@ final class LightningUpgradeStartViewController: BaseViewController, StoryboardI
   }
 
   @IBAction func upgradeNow(_ sender: UIButton) {
-    nextStep()
+    coordinationDelegate?.viewControllerRequestedUpgradeAuthentication(self) {
+      self.nextStep()
+    }
   }
 }

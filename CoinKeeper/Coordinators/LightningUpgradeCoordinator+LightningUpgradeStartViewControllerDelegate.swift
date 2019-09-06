@@ -13,4 +13,10 @@ extension LightningUpgradeCoordinator: LightningUpgradeStartViewControllerDelega
     let url = CoinNinjaUrlFactory.buildUrl(for: .contactUs)!
     parent?.openURL(url, completionHandler: nil)
   }
+
+  func viewControllerRequestedUpgradeAuthentication(_ viewController: LightningUpgradeStartViewController, completion: @escaping CKCompletion) {
+    parent?.requireAuthenticationIfNeeded(whenAuthenticated: {
+      completion()
+    })
+  }
 }
