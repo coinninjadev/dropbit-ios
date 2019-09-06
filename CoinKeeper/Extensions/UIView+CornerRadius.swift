@@ -21,11 +21,6 @@ extension CACornerMask {
             .layerMaxXMinYCorner]
   }
 
-  static var 🍑: CACornerMask {
-    return [.layerMinXMaxYCorner,
-            .layerMaxXMaxYCorner]
-  }
-
   static var none: CACornerMask {
     return []
   }
