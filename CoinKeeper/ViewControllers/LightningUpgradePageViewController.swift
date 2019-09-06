@@ -29,7 +29,7 @@ final class LightningUpgradePageViewController: UIPageViewController, Storyboard
   }
 
   private func showFinalizeUpgradeAction(error: Error?) {
-//    self.setViewControllers([lnViewControllers[2]], direction: .forward, animated: true, completion: nil)
+    self.setViewControllers([lnViewControllers()[2]], direction: .forward, animated: true, completion: nil)
   }
 
   private func lnViewControllers() -> [UIViewController] {
@@ -48,7 +48,10 @@ final class LightningUpgradePageViewController: UIPageViewController, Storyboard
             withDelegate: $0,
             dataSource: self,
             nextStep: { [weak self] (error: Error?) in self?.showFinalizeUpgradeAction(error: error) })
-        }
+        },
+
+      (generalCoordinationDelegate as? LightningUpgradeCompleteViewControllerDelegate)
+        .map(LightningUpgradeCompleteViewController.newInstance)
 
       ].compactMap { $0 }
   }
