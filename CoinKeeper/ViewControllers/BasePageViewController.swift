@@ -9,8 +9,7 @@
 import Foundation
 import UIKit
 
-class BasePageViewController: UIPageViewController, Coordination, AccessibleViewSettable {
-  weak var generalCoordinationDelegate: AnyObject?
+class BasePageViewController: UIPageViewController, AccessibleViewSettable {
 
   var statusBarStyle: UIStatusBarStyle = .default {
     didSet {

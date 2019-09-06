@@ -19,9 +19,7 @@ protocol StartViewControllerDelegate: AnyObject {
 
 final class StartViewController: BaseViewController {
 
-  var coordinationDelegate: StartViewControllerDelegate? {
-    return generalCoordinationDelegate as? StartViewControllerDelegate
-  }
+  fileprivate weak var delegate: StartViewControllerDelegate?
 
   @IBOutlet var restoreWalletButton: UIButton!
   @IBOutlet var claimInviteButton: UIButton!
@@ -39,6 +37,12 @@ final class StartViewController: BaseViewController {
   @IBOutlet var welcomeBGViewTopConstraint: NSLayoutConstraint!
   @IBOutlet var animatableViews: [UIView]!
 
+  static func newInstance(delegate: StartViewControllerDelegate?) -> StartViewController {
+    let vc = StartViewController.makeFromStoryboard()
+    vc.delegate = delegate
+    return vc
+  }
+
   override func accessibleViewsAndIdentifiers() -> [AccessibleViewElement] {
     return [
       (self.view, .start(.page)),
@@ -48,15 +52,15 @@ final class StartViewController: BaseViewController {
   }
 
   @IBAction func restoreWalletButtonTapped() {
-    coordinationDelegate?.restoreWallet()
+    delegate?.restoreWallet()
   }
 
   @IBAction func claimBitcoinFromInviteTapped(_ sender: UIButton) {
-    coordinationDelegate?.claimInvite()
+    delegate?.claimInvite()
   }
 
   @IBAction func newWalletButtonTapped(_ sender: UIButton) {
-    coordinationDelegate?.createWallet()
+    delegate?.createWallet()
   }
 
   // MARK: view lifecycle

@@ -48,7 +48,7 @@ class WalletOverviewViewController: BaseViewController, StoryboardInitializable 
 
   private var currentWallet: WalletTransactionType = .onChain {
     willSet {
-      coordinationDelegate?.setSelectedWalletTransactionType(self, to: newValue)
+      delegate.setSelectedWalletTransactionType(self, to: newValue)
     }
     didSet {
       balanceContainer.refresh()
@@ -59,9 +59,7 @@ class WalletOverviewViewController: BaseViewController, StoryboardInitializable 
   var startSyncNotificationToken: NotificationToken?
   var finishSyncNotificationToken: NotificationToken?
 
-  var coordinationDelegate: WalletOverviewViewControllerDelegate? {
-    return generalCoordinationDelegate as? WalletOverviewViewControllerDelegate
-  }
+  fileprivate weak var delegate: WalletOverviewViewControllerDelegate!
 
   var baseViewControllers: [BaseViewController] = [] {
     willSet {
@@ -72,7 +70,7 @@ class WalletOverviewViewController: BaseViewController, StoryboardInitializable 
   }
 
   @IBAction func tooltipButtonWasTouched() {
-    coordinationDelegate?.viewControllerDidTapWalletTooltip()
+    delegate.viewControllerDidTapWalletTooltip()
   }
 
   override func accessibleViewsAndIdentifiers() -> [AccessibleViewElement] {
@@ -93,7 +91,7 @@ class WalletOverviewViewController: BaseViewController, StoryboardInitializable 
                           balanceProvider: ConvertibleBalanceProvider,
                           balanceDelegate: BalanceContainerDelegate) -> WalletOverviewViewController {
     let controller = WalletOverviewViewController.makeFromStoryboard()
-    controller.generalCoordinationDelegate = delegate
+    controller.delegate = delegate
     controller.baseViewControllers = baseViewControllers
     controller.balanceProvider = balanceProvider
     controller.balanceDelegate = balanceDelegate
@@ -123,10 +121,10 @@ class WalletOverviewViewController: BaseViewController, StoryboardInitializable 
 
     sendReceiveActionView.tintView(with: .bitcoinOrange)
 
-    (coordinationDelegate?.badgeManager).map(subscribeToBadgeNotifications)
+    self.subscribeToBadgeNotifications(with: delegate.badgeManager)
 
     let bottomOffsetIfNeeded: CGFloat = 20
-    if let delegate = coordinationDelegate, delegate.viewControllerShouldAdjustForBottomSafeArea(self) {
+    if delegate.viewControllerShouldAdjustForBottomSafeArea(self) {
       sendReceiveActionViewBottomConstraint.constant = bottomOffsetIfNeeded
     }
 
@@ -159,7 +157,7 @@ extension WalletOverviewViewController: BalanceDisplayable {
   var walletBalanceView: WalletBalanceView { return currentWalletBalanceView }
   var balanceLeftButtonType: BalanceContainerLeftButtonType { return .menu }
   var primaryBalanceCurrency: CurrencyCode {
-    guard let selectedCurrency = coordinationDelegate?.selectedCurrency() else { return .BTC }
+    guard let selectedCurrency = delegate.selectedCurrency() else { return .BTC }
     switch selectedCurrency {
     case .BTC: return .BTC
     case .fiat: return .USD
@@ -168,7 +166,7 @@ extension WalletOverviewViewController: BalanceDisplayable {
 
   func didUpdateExchangeRateManager(_ exchangeRateManager: ExchangeRateManager) {
     rateManager.exchangeRates = exchangeRateManager.exchangeRates
-    coordinationDelegate?.currencyController.exchangeRates = exchangeRateManager.exchangeRates
+    delegate.currencyController.exchangeRates = exchangeRateManager.exchangeRates
     baseViewControllers.compactMap { $0 as? ExchangeRateUpdatable }.forEach { $0.didUpdateExchangeRateManager(exchangeRateManager) }
   }
 
@@ -282,7 +280,7 @@ extension WalletOverviewViewController: WalletBalanceViewDelegate {
   func transferButtonWasTouched() {
     let currentWalletIsOnChain = currentWallet == .onChain
     let transferDirection: TransferDirection = currentWalletIsOnChain ? .toLightning : .toOnChain
-    coordinationDelegate?.viewControllerDidSelectTransfer(withDirection: transferDirection)
+    delegate.viewControllerDidSelectTransfer(withDirection: transferDirection)
   }
 
   func swapPrimaryCurrency() {
@@ -292,7 +290,7 @@ extension WalletOverviewViewController: WalletBalanceViewDelegate {
   }
 
   func isSyncCurrentlyRunning() -> Bool {
-    return coordinationDelegate?.isSyncCurrentlyRunning() ?? false
+    return delegate.isSyncCurrentlyRunning() ?? false
   }
 
 }

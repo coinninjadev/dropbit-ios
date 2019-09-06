@@ -21,7 +21,7 @@ final class BackupRecoveryWordsViewController: BaseViewController, StoryboardIni
     let controller = BackupRecoveryWordsViewController.makeFromStoryboard()
     controller.recoveryWords = words
     controller.wordsBackedUp = wordsBackedUp
-    controller.generalCoordinationDelegate = delegate
+    controller.delegate = delegate
     return controller
   }
 
@@ -60,9 +60,9 @@ final class BackupRecoveryWordsViewController: BaseViewController, StoryboardIni
       }
     }
   }
-  var coordinationDelegate: BackupRecoveryWordsViewControllerDelegate? {
-    return generalCoordinationDelegate as? BackupRecoveryWordsViewControllerDelegate
-  }
+
+  fileprivate weak var delegate: BackupRecoveryWordsViewControllerDelegate!
+
   var wordCollectionViewDDS: BackupRecoveryWordsCollectionDDS!
 
   override func accessibleViewsAndIdentifiers() -> [AccessibleViewElement] {
@@ -87,7 +87,7 @@ final class BackupRecoveryWordsViewController: BaseViewController, StoryboardIni
   }
 
   @objc func skipBackupRecoveryWords() {
-    coordinationDelegate?.viewController(self, shouldPromptToSkipWords: recoveryWords)
+    delegate.viewController(self, shouldPromptToSkipWords: recoveryWords)
   }
 
   override func viewWillAppear(_ animated: Bool) {
@@ -99,7 +99,7 @@ final class BackupRecoveryWordsViewController: BaseViewController, StoryboardIni
   // MARK: actions
   @IBAction func nextButtonTapped(_ sender: UIButton) {
     if let currentIndex = currentIndex(), indexIsLast(index: currentIndex) {
-      coordinationDelegate?.viewController(self, didFinishWords: recoveryWords)
+      delegate.viewController(self, didFinishWords: recoveryWords)
     } else {
       showItem(direction: .next)
     }

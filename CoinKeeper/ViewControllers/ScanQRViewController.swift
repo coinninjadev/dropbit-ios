@@ -32,8 +32,12 @@ class ScanQRViewController: BaseViewController, StoryboardInitializable {
     return CompositeValidator<String>(validators: [StringEmptyValidator(), BitcoinAddressValidator()])
   }()
 
-  var coordinationDelegate: ScanQRViewControllerDelegate? {
-    return generalCoordinationDelegate as? ScanQRViewControllerDelegate
+  fileprivate weak var delegate: ScanQRViewControllerDelegate!
+
+  static func newInstance(delegate: ScanQRViewControllerDelegate) -> ScanQRViewController {
+    let vc = ScanQRViewController.makeFromStoryboard()
+    vc.delegate = delegate
+    return vc
   }
 
   /**
@@ -111,7 +115,7 @@ class ScanQRViewController: BaseViewController, StoryboardInitializable {
   }
 
   @IBAction func closeButtonWasTouched() {
-    coordinationDelegate?.viewControllerDidSelectClose(self)
+    delegate.viewControllerDidSelectClose(self)
   }
 }
 
@@ -136,7 +140,7 @@ extension ScanQRViewController: AVCaptureMetadataOutputObjectsDelegate {
     didCaptureQRCode = true
 
     SVProgressHUD.show()
-    coordinationDelegate?.viewControllerDidScan(self, lightningInvoice: lightningUrl.invoice, completion: {
+    delegate.viewControllerDidScan(self, lightningInvoice: lightningUrl.invoice, completion: {
       SVProgressHUD.dismiss()
     })
   }
@@ -146,16 +150,16 @@ extension ScanQRViewController: AVCaptureMetadataOutputObjectsDelegate {
     didCaptureQRCode = true
 
     if qrCode.paymentRequestURL != nil {
-      coordinationDelegate?.viewControllerDidScan(self, qrCode: qrCode,
+      delegate.viewControllerDidScan(self, qrCode: qrCode,
                                                   walletTransactionType: .onChain, fallbackViewModel: self.fallbackPaymentViewModel)
 
     } else if let address = qrCode.address {
       do {
         try bitcoinAddressValidator.validate(value: address)
-        coordinationDelegate?.viewControllerDidScan(self, qrCode: qrCode,
+        delegate.viewControllerDidScan(self, qrCode: qrCode,
                                                     walletTransactionType: .onChain, fallbackViewModel: self.fallbackPaymentViewModel)
       } catch {
-        coordinationDelegate?.viewControllerDidAttemptInvalidDestination(self, error: error)
+        delegate.viewControllerDidAttemptInvalidDestination(self, error: error)
       }
     }
   }

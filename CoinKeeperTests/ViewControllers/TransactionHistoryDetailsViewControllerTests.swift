@@ -19,7 +19,7 @@ class TransactionHistoryDetailsViewControllerTests: XCTestCase {
     super.setUp()
     mockCoordinator = MockCoordinator()
     sut = TransactionHistoryDetailsViewController.makeFromStoryboard()
-    sut.generalCoordinationDelegate = mockCoordinator
+    sut.delegate = mockCoordinator
     _ = sut.view
   }
 

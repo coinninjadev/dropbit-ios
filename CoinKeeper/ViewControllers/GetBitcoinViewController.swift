@@ -21,8 +21,12 @@ final class GetBitcoinViewController: BaseViewController, StoryboardInitializabl
   @IBOutlet var buyWithCreditCardButton: PrimaryActionButton!
   @IBOutlet var buyWithGiftCardButton: PrimaryActionButton!
 
-  var coordinationDelegate: GetBitcoinViewControllerDelegate? {
-    return generalCoordinationDelegate as? GetBitcoinViewControllerDelegate
+  fileprivate weak var delegate: GetBitcoinViewControllerDelegate!
+
+  static func newInstance(delegate: GetBitcoinViewControllerDelegate) -> GetBitcoinViewController {
+    let vc = GetBitcoinViewController.makeFromStoryboard()
+    vc.delegate = delegate
+    return vc
   }
 
   override func viewDidLoad() {
@@ -66,14 +70,14 @@ final class GetBitcoinViewController: BaseViewController, StoryboardInitializabl
   }
 
   @IBAction func findATM() {
-    coordinationDelegate?.viewControllerFindBitcoinATMNearMe(self)
+    delegate.viewControllerFindBitcoinATMNearMe(self)
   }
 
   @IBAction func buyWithCreditCard() {
-    coordinationDelegate?.viewControllerBuyWithCreditCard(self)
+    delegate.viewControllerBuyWithCreditCard(self)
   }
 
   @IBAction func buyWithGiftCard() {
-    coordinationDelegate?.viewControllerBuyWithGiftCard(self)
+    delegate.viewControllerBuyWithGiftCard(self)
   }
 }

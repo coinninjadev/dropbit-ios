@@ -71,7 +71,7 @@ class PinCreationViewControllerTests: XCTestCase {
   var mockCoordinator: MockPinCreationViewControllerDelegate!
   private func setupForSelectedDigitTests() {
     mockCoordinator = MockPinCreationViewControllerDelegate()
-    self.sut.generalCoordinationDelegate = mockCoordinator
+    self.sut.delegate = mockCoordinator
     self.sut.errorLabel.isHidden = false
   }
   func testCallingSelectedDigitFirstTimeHidesErrorLabel() {
@@ -107,7 +107,7 @@ class PinCreationViewControllerTests: XCTestCase {
     let mockVerificationDelegate = MockPinVerificationDelegate()
     let matchingDigit = "2"
     self.sut.verificationDelegate = mockVerificationDelegate
-    self.sut.generalCoordinationDelegate = mockCoordinator
+    self.sut.delegate = mockCoordinator
     let firstDigits = Array(repeating: matchingDigit, count: 6).joined()
     self.sut.entryMode = .pinVerification(digits: firstDigits)
     6.times { self.sut.selected(digit: matchingDigit) }
@@ -122,7 +122,7 @@ class PinCreationViewControllerTests: XCTestCase {
     let matchingDigit = "2"
     let nonMatchingDigit = "4"
     self.sut.verificationDelegate = mockVerificationDelegate
-    self.sut.generalCoordinationDelegate = mockCoordinator
+    self.sut.delegate = mockCoordinator
     let firstDigits = Array(repeating: matchingDigit, count: 6).joined()
     self.sut.entryMode = .pinVerification(digits: firstDigits)
     6.times { self.sut.selected(digit: nonMatchingDigit) }
@@ -139,7 +139,7 @@ class PinCreationViewControllerTests: XCTestCase {
   func testSelectedBackActionCalledRemovesDigit() {
     let matchingDigit = "5"
     mockCoordinator = MockPinCreationViewControllerDelegate()
-    self.sut.generalCoordinationDelegate = mockCoordinator
+    self.sut.delegate = mockCoordinator
     5.times { self.sut.selected(digit: matchingDigit) }
 
     XCTAssertFalse(mockCoordinator.pinWasFullyEntered, "should not tell delegate that pin was entered")

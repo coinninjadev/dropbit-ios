@@ -40,7 +40,7 @@ class AppCoordinatorTests: MockedPersistenceTestCase {
     mockLaunchStateManager.skippedVerificationValue = false
     mockLaunchStateManager.deviceIsVerifiedValue = false
 
-    let nav = CNNavigationController(rootViewController: StartViewController.makeFromStoryboard())
+    let nav = CNNavigationController(rootViewController: StartViewController.newInstance(delegate: nil))
     sut = AppCoordinator(navigationController: nav,
                          persistenceManager: mockPersistenceManager,
                          launchStateManager: mockLaunchStateManager,
@@ -78,7 +78,7 @@ class AppCoordinatorTests: MockedPersistenceTestCase {
     let mockLaunchStateManager = MockLaunchStateManager(persistenceManager: mockPersistenceManager)
     mockLaunchStateManager.deviceIsVerifiedValue = true
     let mockNavigationController = MockNavigationController()
-    mockNavigationController.viewControllers = [StartViewController.makeFromStoryboard()]
+    mockNavigationController.viewControllers = [StartViewController.newInstance(delegate: nil)]
     sut = AppCoordinator(navigationController: mockNavigationController,
                          persistenceManager: mockPersistenceManager,
                          launchStateManager: mockLaunchStateManager)
@@ -139,7 +139,7 @@ class AppCoordinatorTests: MockedPersistenceTestCase {
     let mockPersistenceManager = MockPersistenceManager()
     let mockLaunchStateManager = MockLaunchStateManager(persistenceManager: mockPersistenceManager)
     let mockNavigationController = MockNavigationController()
-    let startVC = StartViewController.makeFromStoryboard()
+    let startVC = StartViewController.newInstance(delegate: nil)
     mockNavigationController.viewControllers = [startVC]
     mockLaunchStateManager.mockShouldRequireAuthentication = false
 

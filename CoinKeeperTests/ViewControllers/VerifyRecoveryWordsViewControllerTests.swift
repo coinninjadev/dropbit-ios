@@ -19,7 +19,7 @@ class VerifyRecoveryWordsViewControllerTests: XCTestCase {
 
     self.sut = VerifyRecoveryWordsViewController.makeFromStoryboard()
     mockCoordinator = MockCoordinator()
-    self.sut.generalCoordinationDelegate = mockCoordinator
+    self.sut.delegate = mockCoordinator
   }
 
   override func tearDown() {

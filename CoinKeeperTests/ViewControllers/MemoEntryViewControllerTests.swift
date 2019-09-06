@@ -18,7 +18,7 @@ class MemoEntryViewControllerTests: XCTestCase {
   override func setUp() {
     mockCoordinator = MockCoordinator()
     sut = MemoEntryViewController.makeFromStoryboard()
-    sut.generalCoordinationDelegate = mockCoordinator
+    sut.delegate = mockCoordinator
     _ = sut.view
   }
 

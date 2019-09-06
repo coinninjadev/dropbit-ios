@@ -20,7 +20,7 @@ final class VerifyRecoveryWordsViewController: BaseViewController, StoryboardIni
   static func newInstance(withDelegate delegate: VerifyRecoveryWordsViewControllerDelegate,
                           recoveryWords words: [String]) -> VerifyRecoveryWordsViewController {
     let controller = VerifyRecoveryWordsViewController.makeFromStoryboard()
-    controller.generalCoordinationDelegate = delegate
+    controller.delegate = delegate
     controller.recoveryWords = words
     return controller
   }
@@ -47,9 +47,7 @@ final class VerifyRecoveryWordsViewController: BaseViewController, StoryboardIni
       self.verificationCollectionViewDDS = dataObjects.flatMap { VerifyRecoveryWordsCollectionViewDDS(dataObjects: $0) }
     }
   }
-  var coordinationDelegate: VerifyRecoveryWordsViewControllerDelegate? {
-    return generalCoordinationDelegate as? VerifyRecoveryWordsViewControllerDelegate
-  }
+  fileprivate weak var delegate: VerifyRecoveryWordsViewControllerDelegate!
 
   // MARK: private variables
   private lazy var itemSize: CGSize = {
@@ -73,7 +71,7 @@ final class VerifyRecoveryWordsViewController: BaseViewController, StoryboardIni
   }
 
   @objc func skipBackupRecoveryWords() {
-    coordinationDelegate?.viewController(self, didSkipBackingUpWords: recoveryWords)
+    delegate.viewController(self, didSkipBackingUpWords: recoveryWords)
   }
 
   @IBAction func closeButtonTapped() {
@@ -95,14 +93,14 @@ extension VerifyRecoveryWordsViewController: VerifyRecoveryWordsResultDelegate {
   }
 
   func secondMatchFound() {
-    coordinationDelegate?.viewControllerDidSuccessfullyVerifyWords(self)
+    delegate.viewControllerDidSuccessfullyVerifyWords(self)
   }
 
   func errorFound() {
-    coordinationDelegate?.viewControllerFailedWordVerification(self)
+    delegate.viewControllerFailedWordVerification(self)
   }
 
   func fatalErrorFound() {
-    coordinationDelegate?.viewControllerWordVerificationMaxFailuresAttempted(self)
+    delegate.viewControllerWordVerificationMaxFailuresAttempted(self)
   }
 }

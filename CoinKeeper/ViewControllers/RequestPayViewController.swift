@@ -65,7 +65,7 @@ final class RequestPayViewController: PresentableViewController, StoryboardIniti
 
   @IBAction func closeButtonTapped(_ sender: UIButton) {
     editAmountView.primaryAmountTextField.resignFirstResponder()
-    coordinationDelegate?.viewControllerDidSelectClose(self)
+    delegate.viewControllerDidSelectClose(self)
   }
 
   @IBAction func addRequestAmountButtonTapped(_ sender: UIButton) {
@@ -87,13 +87,13 @@ final class RequestPayViewController: PresentableViewController, StoryboardIniti
           payload.append(address)
         }
       }
-      coordinationDelegate?.viewControllerDidSelectSendRequest(self, payload: payload)
+      delegate.viewControllerDidSelectSendRequest(self, payload: payload)
     case .lightning:
       if let lightningInvoice = lightningInvoice {
         var payload: [Any] = []
         qrImageView.image.flatMap { $0.pngData() }.flatMap { payload.append($0) }
         payload.append(lightningInvoice.request)
-        coordinationDelegate?.viewControllerDidSelectSendRequest(self, payload: payload)
+        delegate.viewControllerDidSelectSendRequest(self, payload: payload)
       } else {
         createLightningInvoice(withAmount: viewModel.btcAmount.asFractionalUnits(of: .BTC), memo: memoTextField.text)
       }
@@ -104,16 +104,14 @@ final class RequestPayViewController: PresentableViewController, StoryboardIniti
     UIPasteboard.general.string = viewModel.receiveAddress
     switch viewModel.walletTransactionType {
     case .onChain:
-      coordinationDelegate?.viewControllerSuccessfullyCopiedToClipboard(message: "Address copied to clipboard!", viewController: self)
+      delegate.viewControllerSuccessfullyCopiedToClipboard(message: "Address copied to clipboard!", viewController: self)
     case .lightning:
-      coordinationDelegate?.viewControllerSuccessfullyCopiedToClipboard(message: "Invoice copied to clipboard!", viewController: self)
+      delegate.viewControllerSuccessfullyCopiedToClipboard(message: "Invoice copied to clipboard!", viewController: self)
     }
   }
 
   // MARK: variables
-  var coordinationDelegate: RequestPayViewControllerDelegate? {
-    return generalCoordinationDelegate as? RequestPayViewControllerDelegate
-  }
+  fileprivate weak var delegate: RequestPayViewControllerDelegate!
 
   let rateManager: ExchangeRateManager = ExchangeRateManager()
   var currencyValueManager: CurrencyValueDataSourceType?
@@ -133,11 +131,11 @@ final class RequestPayViewController: PresentableViewController, StoryboardIniti
 
   private func createLightningInvoice(withAmount amount: Int, memo: String?) {
     SVProgressHUD.show()
-    coordinationDelegate?.viewControllerDidSelectCreateInvoice(self, forAmount: amount, withMemo: memo)
+    delegate.viewControllerDidSelectCreateInvoice(self, forAmount: amount, withMemo: memo)
       .get { response in
         SVProgressHUD.dismiss()
         self.editAmountView.isUserInteractionEnabled = false
-        self.coordinationDelegate?.viewControllerDidCreateInvoice(self)
+        self.delegate.viewControllerDidCreateInvoice(self)
         self.lightningInvoice = response
         self.setupStyle()
       }.catch { error in
@@ -164,23 +162,30 @@ final class RequestPayViewController: PresentableViewController, StoryboardIniti
     ]
   }
 
-  static func newInstance(delegate: RequestPayViewControllerDelegate,
-                          receiveAddress: String,
-                          currencyPair: CurrencyPair,
-                          walletTransactionType: WalletTransactionType,
-                          alertManager: AlertManagerType,
-                          exchangeRates: ExchangeRates) -> RequestPayViewController {
+  static func newInstance(delegate: RequestPayViewControllerDelegate, viewModel: RequestPayViewModelType?) -> RequestPayViewController {
     let vc = RequestPayViewController.makeFromStoryboard()
-    vc.generalCoordinationDelegate = delegate
-    vc.alertManager = alertManager
-    let editAmountViewModel = CurrencySwappableEditAmountViewModel(exchangeRates: exchangeRates,
-                                                                   primaryAmount: .zero,
-                                                                   walletTransactionType: walletTransactionType,
-                                                                   currencyPair: currencyPair,
-                                                                   delegate: vc)
-    vc.viewModel = RequestPayViewModel(receiveAddress: receiveAddress, viewModel: editAmountViewModel)
+    vc.delegate = delegate
+    vc.viewModel = viewModel
     return vc
   }
+
+//  static func newInstance(delegate: RequestPayViewControllerDelegate,
+//                          receiveAddress: String,
+//                          currencyPair: CurrencyPair,
+//                          walletTransactionType: WalletTransactionType,
+//                          alertManager: AlertManagerType,
+//                          exchangeRates: ExchangeRates) -> RequestPayViewController {
+//    let vc = RequestPayViewController.makeFromStoryboard()
+//    vc.delegate = delegate
+//    vc.alertManager = alertManager
+//    let editAmountViewModel = CurrencySwappableEditAmountViewModel(exchangeRates: exchangeRates,
+//                                                                   primaryAmount: .zero,
+//                                                                   walletTransactionType: walletTransactionType,
+//                                                                   currencyPair: currencyPair,
+//                                                                   delegate: vc)
+//    vc.viewModel = RequestPayViewModel(receiveAddress: receiveAddress, viewModel: editAmountViewModel)
+//    return vc
+//  }
 
   // MARK: view lifecycle
   override func viewDidLoad() {
@@ -213,10 +218,7 @@ final class RequestPayViewController: PresentableViewController, StoryboardIniti
   func resetViewModel() {
     shouldHideEditAmountView = true
 
-    guard let delegate = coordinationDelegate,
-      let nextAddress = delegate.viewControllerDidRequestNextReceiveAddress(self)
-      else { return }
-
+    guard let nextAddress = delegate.viewControllerDidRequestNextReceiveAddress(self) else { return }
     self.viewModel.currencyPair = delegate.selectedCurrencyPair()
     self.viewModel.fromAmount = .zero
     self.viewModel.receiveAddress = nextAddress

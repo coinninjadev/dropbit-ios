@@ -26,11 +26,16 @@ final class RecoveryWordsIntroViewController: BaseViewController, StoryboardInit
   @IBOutlet var skipButton: SecondaryActionButton!
   @IBOutlet var closeButton: UIButton!
 
-  var coordinationDelegate: RecoveryWordsIntroViewControllerDelegate? {
-    return generalCoordinationDelegate as? RecoveryWordsIntroViewControllerDelegate
-  }
+  fileprivate weak var delegate: RecoveryWordsIntroViewControllerDelegate!
 
-  var recoveryWords: [String] = []
+  private var recoveryWords: [String] = []
+
+  static func newInstance(words: [String], delegate: RecoveryWordsIntroViewControllerDelegate) -> RecoveryWordsIntroViewController {
+    let vc = RecoveryWordsIntroViewController.makeFromStoryboard()
+    vc.recoveryWords = words
+    vc.delegate = delegate
+    return vc
+  }
 
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -56,15 +61,12 @@ final class RecoveryWordsIntroViewController: BaseViewController, StoryboardInit
     [titleLabel, subtitle1Label, restoreInfoLabel].forEach { $0?.textColor = .darkGrayText }
     [subtitle2Label, estimatedTimeLabel].forEach { $0?.textColor = .darkBlueText }
 
-    switch coordinationDelegate?.verifyIfWordsAreBackedUp() {
-    case false?:
-      proceedButton.setTitle("WRITE DOWN WORDS + BACK UP", for: .normal)
-      estimatedTimeLabel.isHidden = false
-    case true?:
+    if delegate.verifyIfWordsAreBackedUp() {
       proceedButton.setTitle("VIEW RECOVERY WORDS", for: .normal)
       estimatedTimeLabel.isHidden = true
-    default:
-      break
+    } else {
+      proceedButton.setTitle("WRITE DOWN WORDS + BACK UP", for: .normal)
+      estimatedTimeLabel.isHidden = false
     }
 
     skipButton.setTitle("SKIP AND BACK UP LATER", for: .normal)
@@ -81,10 +83,10 @@ final class RecoveryWordsIntroViewController: BaseViewController, StoryboardInit
   }
 
   @IBAction func proceedButtonTapped(_ sender: UIButton) {
-    coordinationDelegate?.viewController(self, didChooseToBackupWords: recoveryWords)
+    delegate.viewController(self, didChooseToBackupWords: recoveryWords)
   }
 
   @IBAction func skipButtonTapped(_ sender: UIButton) {
-    coordinationDelegate?.viewController(self, didSkipWords: recoveryWords)
+    delegate.viewController(self, didSkipWords: recoveryWords)
   }
 }

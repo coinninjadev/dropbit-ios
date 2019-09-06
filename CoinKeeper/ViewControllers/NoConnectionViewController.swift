@@ -20,9 +20,7 @@ class NoConnectionViewController: BaseViewController, StoryboardInitializable {
   @IBOutlet var retryButton: PrimaryActionButton!
   @IBOutlet var activitySpinner: UIActivityIndicatorView!
 
-  var coordinationDelegate: NoConnectionViewControllerDelegate? {
-    return generalCoordinationDelegate as? NoConnectionViewControllerDelegate
-  }
+  fileprivate weak var delegate: NoConnectionViewControllerDelegate!
 
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -38,7 +36,7 @@ class NoConnectionViewController: BaseViewController, StoryboardInitializable {
 
   @IBAction func retryConnection(_ sender: UIButton) {
     beginUIUpdateForRetry()
-    coordinationDelegate?.viewControllerDidRequestRetry(self) { [weak self] in
+    delegate.viewControllerDidRequestRetry(self) { [weak self] in
       self?.endUIUpdateForRetry()
     }
   }

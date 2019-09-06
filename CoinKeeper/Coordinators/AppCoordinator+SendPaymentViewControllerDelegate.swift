@@ -173,10 +173,9 @@ extension AppCoordinator: SendPaymentViewControllerDelegate {
   }
 
   func viewControllerDidSelectMemoButton(_ viewController: UIViewController, memo: String?, completion: @escaping (String) -> Void) {
-    let memoViewController = MemoEntryViewController.makeFromStoryboard()
-    memoViewController.backgroundImage = UIApplication.shared.screenshot()
-    assignCoordinationDelegate(to: memoViewController)
-    memoViewController.completion = completion
+    let memoViewController = MemoEntryViewController.newInstance(delegate: self,
+                                                                 backgroundImage: UIApplication.shared.screenshot(),
+                                                                 completion: completion)
     memoViewController.memo = memo ?? ""
     viewController.present(memoViewController, animated: true)
   }

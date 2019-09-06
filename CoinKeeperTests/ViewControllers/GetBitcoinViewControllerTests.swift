@@ -18,7 +18,7 @@ class GetBitcoinViewControllerTests: XCTestCase {
     super.setUp()
     sut = GetBitcoinViewController.makeFromStoryboard()
     mockCoordinator = MockGetBitcoinViewControllerDelegate()
-    sut.generalCoordinationDelegate = mockCoordinator
+    sut.delegate = mockCoordinator
     _ = sut.view
   }
 

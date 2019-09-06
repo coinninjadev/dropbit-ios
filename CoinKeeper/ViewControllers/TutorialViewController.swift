@@ -15,15 +15,20 @@ protocol TutorialViewControllerDelegate: ViewControllerDismissable {
 
 class TutorialViewController: BasePageViewController, StoryboardInitializable {
 
-  var coordinationDelegate: TutorialViewControllerDelegate? {
-    return generalCoordinationDelegate as? TutorialViewControllerDelegate
-  }
+  fileprivate weak var tutorialDelegate: TutorialViewControllerDelegate!
 
-  weak var urlOpener: URLOpener?
+  private weak var urlOpener: URLOpener?
   private var pageControl = UIPageControl()
   private var closeButton: UIButton = UIButton()
 
   fileprivate(set) var viewModels: [TutorialScreenViewModel] = []
+
+  static func newInstance(delegate: TutorialViewControllerDelegate, urlOpener: URLOpener) -> TutorialViewController {
+    let vc = TutorialViewController.makeFromStoryboard()
+    vc.tutorialDelegate = delegate
+    vc.urlOpener = urlOpener
+    return vc
+  }
 
   override func accessibleViewsAndIdentifiers() -> [AccessibleViewElement] {
     return [
@@ -149,7 +154,7 @@ class TutorialViewController: BasePageViewController, StoryboardInitializable {
   }
 
   @objc func closeButtonWasTouched() {
-    coordinationDelegate?.viewControllerDidSelectClose(self)
+    tutorialDelegate.viewControllerDidSelectClose(self)
   }
 
   fileprivate func togglePageControl(for index: Int) {
@@ -189,7 +194,7 @@ extension TutorialViewController: UIPageViewControllerDelegate {
 extension TutorialViewController: TutorialScreenViewControllerDelegate {
 
   func viewControllerActionWasPressed(_ viewController: TutorialScreenViewController) {
-    coordinationDelegate?.tutorialViewControllerDidFinish(self)
+    tutorialDelegate.tutorialViewControllerDidFinish(self)
   }
 
   func viewControllerUrlWasPressed(_ viewController: TutorialScreenViewController, url: URL) {

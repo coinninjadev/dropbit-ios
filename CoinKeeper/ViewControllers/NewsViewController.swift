@@ -35,7 +35,7 @@ final class NewsViewController: BaseViewController, StoryboardInitializable {
 
   static func newInstance(with delegate: NewsViewControllerDelegate) -> NewsViewController {
     let controller = NewsViewController.makeFromStoryboard()
-    controller.generalCoordinationDelegate = delegate
+    controller.delegate = delegate
     return controller
   }
 
@@ -43,9 +43,7 @@ final class NewsViewController: BaseViewController, StoryboardInitializable {
     super.init(coder: aDecoder)
   }
 
-  var coordinationDelegate: NewsViewControllerDelegate? {
-    return generalCoordinationDelegate as? NewsViewControllerDelegate
-  }
+  fileprivate weak var delegate: NewsViewControllerDelegate!
 
   override var generalCoordinationDelegate: AnyObject? {
     didSet {
@@ -87,12 +85,12 @@ final class NewsViewController: BaseViewController, StoryboardInitializable {
 
   @IBAction func closeButtonWasTouched() {
     SVProgressHUD.dismiss()
-    coordinationDelegate?.viewControllerDidSelectClose(self)
+    delegate.viewControllerDidSelectClose(self)
   }
 
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
-    coordinationDelegate?.viewControllerBecameVisible(self)
+    delegate.viewControllerBecameVisible(self)
   }
 
   @objc private func refreshDisplayedPrice() {
@@ -107,8 +105,8 @@ extension NewsViewController: NewsViewControllerDDSDelegate {
   }
 
   func delegateDidRequestUrl(_ url: URL) {
-    coordinationDelegate?.viewControllerWillShowNewsArticle(self)
-    coordinationDelegate?.openURL(url, completionHandler: nil)
+    delegate.viewControllerWillShowNewsArticle(self)
+    delegate.openURL(url, completionHandler: nil)
   }
 
   func delegateFinishedLoadingData() {

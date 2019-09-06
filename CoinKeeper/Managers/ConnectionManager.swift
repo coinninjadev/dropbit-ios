@@ -112,7 +112,7 @@ class ConnectionManager: ConnectionManagerType {
   private func configureController(with delegate: ConnectionManagerDelegate?) {
     noConnectionsViewController?.modalPresentationStyle = .overFullScreen
     noConnectionsViewController?.modalTransitionStyle = .crossDissolve
-    noConnectionsViewController?.generalCoordinationDelegate = delegate
+    noConnectionsViewController?.delegate = delegate
   }
 
   @objc private func reachabilityChanged() {

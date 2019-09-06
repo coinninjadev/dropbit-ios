@@ -51,6 +51,8 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
     }
   }
 
+  weak var delegate: TransactionHistoryViewControllerDelegate!
+
   var viewModel: TransactionHistoryViewModel!
   var selectedCurrency: SelectedCurrency = .fiat
 
@@ -58,7 +60,7 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
                           walletTxType: WalletTransactionType,
                           dataSource: TransactionHistoryDataSourceType) -> TransactionHistoryViewController {
     let viewController = TransactionHistoryViewController.makeFromStoryboard()
-    viewController.generalCoordinationDelegate = delegate
+    viewController.delegate = delegate
     dataSource.delegate = viewController
     viewController.viewModel = TransactionHistoryViewModel(delegate: viewController,
                                                            currencyManager: delegate,
@@ -82,22 +84,18 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
     ]
   }
 
-  var coordinationDelegate: TransactionHistoryViewControllerDelegate! {
-    return generalCoordinationDelegate as? TransactionHistoryViewControllerDelegate
-  }
-
   override func viewDidLoad() {
     super.viewDidLoad()
 
     transactionHistoryNoBalanceView.delegate = self
     transactionHistoryWithBalanceView.delegate = self
-    lightningTransactionHistoryEmptyBalanceView.delegate = coordinationDelegate
+    lightningTransactionHistoryEmptyBalanceView.delegate = delegate
     emptyStateBackgroundView.isHidden = false
     emptyStateBackgroundView.backgroundColor = .whiteBackground
 
     view.backgroundColor = .clear
     emptyStateBackgroundView.applyCornerRadius(30, toCorners: .top)
-    coordinationDelegate?.viewControllerDidRequestBadgeUpdate(self)
+    delegate.viewControllerDidRequestBadgeUpdate(self)
 
     CKNotificationCenter.subscribe(self, key: .didUpdateWordsBackedUp, selector: #selector(didUpdateWordsBackedUp))
 
@@ -113,12 +111,12 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
   override func viewWillDisappear(_ animated: Bool) {
     super.viewWillDisappear(animated)
     // In case new transactions came it while this view was open, this will hide the badge
-    coordinationDelegate?.viewControllerDidDisplayTransactions(self)
+    delegate.viewControllerDidDisplayTransactions(self)
   }
 
   internal func reloadTransactions(atIndexPaths paths: [IndexPath]) {
     summaryCollectionView.reloadItems(at: paths)
-    coordinationDelegate?.viewControllerSummariesDidReload(self, indexPathsIfNotAll: paths)
+    delegate.viewControllerSummariesDidReload(self, indexPathsIfNotAll: paths)
   }
 
 }
@@ -127,9 +125,9 @@ extension TransactionHistoryViewController { // Layout
 
   func showDetailCollectionView(_ shouldShow: Bool, indexPath: IndexPath, animated: Bool) {
     if shouldShow {
-      coordinationDelegate?.viewController(self, didSelectItemAtIndexPath: indexPath)
+      delegate.viewController(self, didSelectItemAtIndexPath: indexPath)
     } else {
-      coordinationDelegate?.viewControllerDidDismissTransactionDetails(self)
+      delegate.viewControllerDidDismissTransactionDetails(self)
     }
   }
 
@@ -159,15 +157,15 @@ extension TransactionHistoryViewController: TransactionHistoryDataSourceDelegate
 
 extension TransactionHistoryViewController: NoTransactionsViewDelegate {
   func noTransactionsViewDidSelectGetBitcoin(_ view: TransactionHistoryEmptyView) {
-    coordinationDelegate?.viewControllerDidTapGetBitcoin(self)
+    delegate.viewControllerDidTapGetBitcoin(self)
   }
 
   func noTransactionsViewDidSelectSpendBitcoin(_ view: TransactionHistoryEmptyView) {
-    coordinationDelegate?.viewControllerDidTapSpendBitcoin(self)
+    delegate.viewControllerDidTapSpendBitcoin(self)
   }
 
   func noTransactionsViewDidSelectLearnAboutBitcoin(_ view: TransactionHistoryEmptyView) {
-    coordinationDelegate?.viewControllerDidRequestTutorial(self)
+    delegate.viewControllerDidRequestTutorial(self)
   }
 }
 
@@ -175,14 +173,14 @@ extension TransactionHistoryViewController: SelectedCurrencyUpdatable {
   func updateSelectedCurrency(to selectedCurrency: SelectedCurrency) {
     let summaryIndexSet = IndexSet(integersIn: (0..<summaryCollectionView.numberOfSections))
     summaryCollectionView.reloadSections(summaryIndexSet)
-    coordinationDelegate?.viewControllerSummariesDidReload(self, indexPathsIfNotAll: nil)
+    delegate.viewControllerSummariesDidReload(self, indexPathsIfNotAll: nil)
   }
 }
 
 extension TransactionHistoryViewController: TransactionHistoryViewModelDelegate {
 
   var currencyController: CurrencyController {
-    return coordinationDelegate.currencyController
+    return delegate.currencyController
   }
 
   func viewModelDidUpdateExchangeRates() {
@@ -190,11 +188,11 @@ extension TransactionHistoryViewController: TransactionHistoryViewModelDelegate 
   }
 
   func summaryHeaderType() -> SummaryHeaderType? {
-    return coordinationDelegate.summaryHeaderType(for: self)
+    return delegate.summaryHeaderType(for: self)
   }
 
   func didTapSummaryHeader(_ header: TransactionHistorySummaryHeader) {
-    self.coordinationDelegate.viewControllerDidSelectSummaryHeader(self)
+    self.delegate.viewControllerDidSelectSummaryHeader(self)
   }
 
 }
@@ -231,7 +229,7 @@ extension TransactionHistoryViewController: DZNEmptyDataSetDelegate, DZNEmptyDat
   }
 
   func verticalOffset(forEmptyDataSet scrollView: UIScrollView!) -> CGFloat {
-    let headerIsShown = coordinationDelegate.summaryHeaderType(for: self) != nil
+    let headerIsShown = delegate.summaryHeaderType(for: self) != nil
     let headerHeight = headerIsShown ? self.viewModel.warningHeaderHeight : 0
     let cellHeight = viewModel.shouldShowWithBalanceEmptyDataSetView ? SummaryCollectionView.cellHeight : 0
 

@@ -19,19 +19,9 @@ protocol DrawerViewControllerDelegate: CurrencyValueDataSourceType & BadgeUpdate
 }
 
 class DrawerViewController: BaseViewController, StoryboardInitializable {
-  override var generalCoordinationDelegate: AnyObject? {
-    didSet {
-      drawerTableViewDDS?.currencyValueManager = coordinationDelegate
-      drawerTableView?.reloadData() // rebuild header with price data; Note: drawerTableView may not yet exist
-      coordinationDelegate?.viewControllerDidRequestBadgeUpdate(self)
-      (coordinationDelegate?.badgeManager).map(subscribeToBadgeNotifications)
-      self.configureDrawerData()
-    }
-  }
 
-  var coordinationDelegate: DrawerViewControllerDelegate? {
-    return generalCoordinationDelegate as? DrawerViewControllerDelegate
-  }
+  fileprivate weak var delegate: DrawerViewControllerDelegate!
+
   var drawerTableViewDDS: DrawerTableViewDDS?
 
   var badgeNotificationToken: NotificationToken?
@@ -41,6 +31,13 @@ class DrawerViewController: BaseViewController, StoryboardInitializable {
   // MARK: outlets
   @IBOutlet var drawerTableView: UITableView!
   @IBOutlet var versionLabel: UILabel!
+
+  static func newInstance(delegate: DrawerViewControllerDelegate) -> DrawerViewController {
+    let vc = DrawerViewController.makeFromStoryboard()
+    vc.delegate = delegate
+    vc.drawerTableViewDDS?.currencyValueManager = delegate
+    return vc
+  }
 
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -52,6 +49,10 @@ class DrawerViewController: BaseViewController, StoryboardInitializable {
     drawerTableView.registerNib(cellType: DrawerCell.self)
     drawerTableView.registerNib(cellType: BackupWordsReminderDrawerCell.self)
     drawerTableView.registerHeaderFooter(headerFooterType: DrawerTableViewHeader.self)
+
+    drawerTableView.reloadData() // rebuild header with price data
+    delegate.viewControllerDidRequestBadgeUpdate(self)
+    self.subscribeToBadgeNotifications(with: delegate.badgeManager)
 
     view.backgroundColor = .darkBlueBackground
     setupDataSource()
@@ -81,7 +82,7 @@ class DrawerViewController: BaseViewController, StoryboardInitializable {
     let circularIconOffset = ViewOffset(dx: 7, dy: -2)
 
     let backupWordsDrawerData: () -> DrawerData? = { [weak self] in
-      guard let backedUp = self?.coordinationDelegate?.badgeManager.wordsBackedUp, backedUp == false else { return nil }
+      guard let backedUp = self?.delegate.badgeManager.wordsBackedUp, backedUp == false else { return nil }
       return DrawerData(image: nil, title: "Back Up Wallet", kind: .backupWords)
     }
 
@@ -112,17 +113,17 @@ class DrawerViewController: BaseViewController, StoryboardInitializable {
   private func buttonWasTouched(for kind: DrawerData.Kind) {
     switch kind {
     case .backupWords:
-      coordinationDelegate?.backupWordsWasTouched()
+      delegate.backupWordsWasTouched()
     case .settings:
-      coordinationDelegate?.settingsButtonWasTouched()
+      delegate.settingsButtonWasTouched()
     case .verify:
-      coordinationDelegate?.verifyButtonWasTouched()
+      delegate.verifyButtonWasTouched()
     case .spend:
-      coordinationDelegate?.spendButtonWasTouched()
+      delegate.spendButtonWasTouched()
     case .support:
-      coordinationDelegate?.supportButtonWasTouched()
+      delegate.supportButtonWasTouched()
     case .getBitcoin:
-      coordinationDelegate?.getBitcoinButtonWasTouched()
+      delegate.getBitcoinButtonWasTouched()
     }
   }
 }

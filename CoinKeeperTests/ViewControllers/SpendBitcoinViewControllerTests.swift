@@ -17,7 +17,7 @@ class SpendBitcoinViewControllerTests: XCTestCase {
     super.setUp()
     sut = SpendBitcoinViewController.makeFromStoryboard()
     mockCoordinator = MockSpendBitcoinViewControllerDelegate()
-    sut.generalCoordinationDelegate = mockCoordinator
+    sut.delegate = mockCoordinator
     _ = sut.view
   }
 

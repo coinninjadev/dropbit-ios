@@ -178,9 +178,8 @@ extension AppCoordinator: SettingsViewControllerDelegate {
   }
 
   private func showStartViewController() {
-    let startViewController = StartViewController.makeFromStoryboard()
+    let startViewController = StartViewController.newInstance(delegate: self)
     navigationController.setViewControllers([startViewController], animated: false)
     navigationController.isNavigationBarHidden = false
-    assignCoordinationDelegate(to: startViewController)
   }
 }

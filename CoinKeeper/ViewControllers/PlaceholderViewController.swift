@@ -14,15 +14,13 @@ protocol PlaceholderViewControllerDelegate: AnyObject {
 }
 
 final class PlaceholderViewController: BaseViewController, StoryboardInitializable {
-  var coordinationDelegate: PlaceholderViewControllerDelegate? {
-    return generalCoordinationDelegate as? PlaceholderViewControllerDelegate
-  }
+  fileprivate weak var delegate: PlaceholderViewControllerDelegate!
 
   @IBAction func clearPinTapped(_ sender: UIButton) {
-    coordinationDelegate?.clearPin()
+    delegate.clearPin()
   }
 
   @IBAction func requestPayTapped(_ sender: UIButton) {
-    coordinationDelegate?.viewControllerRequestPayTapped(self)
+    delegate.viewControllerRequestPayTapped(self)
   }
 }

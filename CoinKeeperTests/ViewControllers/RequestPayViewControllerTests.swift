@@ -57,7 +57,7 @@ class RequestPayViewControllerTests: XCTestCase {
 
   private func setupDelegate() -> MockCoordinator {
     let mockCoordinator = MockCoordinator()
-    self.sut.generalCoordinationDelegate = mockCoordinator
+    self.sut.delegate = mockCoordinator
     return mockCoordinator
   }
   // MARK: actions produce results

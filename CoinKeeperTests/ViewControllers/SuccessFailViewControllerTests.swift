@@ -48,7 +48,7 @@ class SuccessFailViewControllerTests: XCTestCase {
   // MARK: actions produce results
   func testCloseButtonTellsDelegateToClose() {
     let mockCoordinator = MockCoordinator()
-    self.sut.generalCoordinationDelegate = mockCoordinator
+    self.sut.delegate = mockCoordinator
 
     self.sut.closeButton.sendActions(for: .touchUpInside)
 
@@ -57,7 +57,7 @@ class SuccessFailViewControllerTests: XCTestCase {
 
   func testActionButtonTellsDelegateUponSuccess() {
     let mockCoordinator = MockCoordinator()
-    self.sut.generalCoordinationDelegate = mockCoordinator
+    self.sut.delegate = mockCoordinator
     self.sut.setMode(.success)
 
     self.sut.actionButton.sendActions(for: .touchUpInside)
@@ -67,7 +67,7 @@ class SuccessFailViewControllerTests: XCTestCase {
 
   func testActionButtonCallsRetryHandlerUponFailure() {
     let mockCoordinator = MockCoordinator()
-    self.sut.generalCoordinationDelegate = mockCoordinator
+    self.sut.delegate = mockCoordinator
     self.sut.setMode(.failure)
     var handlerExecuted = false
     self.sut.action = { handlerExecuted = true }

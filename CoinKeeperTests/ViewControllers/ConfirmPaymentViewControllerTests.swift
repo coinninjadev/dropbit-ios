@@ -18,7 +18,7 @@ class ConfirmPaymentViewControllerTests: XCTestCase {
   override func setUp() {
     mockCoordinator = MockCoordinator()
     sut = ConfirmPaymentViewController.makeFromStoryboard()
-    sut.generalCoordinationDelegate = mockCoordinator
+    sut.delegate = mockCoordinator
     _ = sut.view
   }
 

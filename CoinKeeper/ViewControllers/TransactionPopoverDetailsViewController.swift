@@ -44,8 +44,12 @@ class TransactionPopoverDetailsViewController: BaseViewController, StoryboardIni
     setupUI()
   }
 
-  var coordinationDelegate: TransactionPopoverDetailsViewControllerDelegate? {
-    return generalCoordinationDelegate as? TransactionPopoverDetailsViewControllerDelegate
+  fileprivate weak var delegate: TransactionPopoverDetailsViewControllerDelegate!
+
+  static func newInstance(delegate: TransactionPopoverDetailsViewControllerDelegate) -> TransactionPopoverDetailsViewController {
+    let vc = TransactionPopoverDetailsViewController.makeFromStoryboard()
+    vc.delegate = delegate
+    return vc
   }
 
   private func setupUI() {
@@ -80,17 +84,17 @@ class TransactionPopoverDetailsViewController: BaseViewController, StoryboardIni
       self?.view.layoutIfNeeded()
       }, completion: { [weak self] _ in
         guard let strongSelf = self else { return }
-        strongSelf.coordinationDelegate?.viewControllerDidSelectClose(strongSelf)
+        strongSelf.delegate.viewControllerDidSelectClose(strongSelf)
     })
   }
 
   @IBAction func viewControllerDidTapTransactionDetailsButton() {
 //    guard let txid = viewModel?.transaction?.txid, let url = CoinNinjaUrlFactory.buildUrl(for: .transaction(id: txid)) else { return }
-//    coordinationDelegate?.viewControllerDidTapTransactionDetailsButton(with: url)
+//    delegate.viewControllerDidTapTransactionDetailsButton(with: url)
   }
 
   @IBAction func viewControllerDidTapShareTransactionButton() {
-//    coordinationDelegate?.viewControllerDidTapShareTransactionButton()
+//    delegate.viewControllerDidTapShareTransactionButton()
 //    guard let transaction = viewModel?.transaction, transaction.txidIsActualTxid,
 //      let url = CoinNinjaUrlFactory.buildUrl(for: .transaction(id: transaction.txid)) else { return }
 //
@@ -104,6 +108,6 @@ class TransactionPopoverDetailsViewController: BaseViewController, StoryboardIni
 
   @IBAction func viewControllerDidTapQuestionMarkButton() {
     guard let url = CoinNinjaUrlFactory.buildUrl(for: .detailsTooltip) else { return }
-    coordinationDelegate?.viewControllerDidTapQuestionMarkButton(with: url)
+    delegate.viewControllerDidTapQuestionMarkButton(with: url)
   }
 }

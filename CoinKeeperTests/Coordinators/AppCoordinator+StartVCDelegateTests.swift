@@ -55,7 +55,7 @@ class AppCoordinatorStartVCDelegateTests: XCTestCase {
       persistenceManager: mockPersistenceManager,
       launchStateManager: mockLaunchStateManager
     )
-    let startVC = StartViewController.makeFromStoryboard()
+    let startVC = StartViewController.newInstance(delegate: nil)
     mockNavigationController.viewControllers = [startVC]
 
     self.sut.createWallet()
@@ -79,7 +79,7 @@ class AppCoordinatorStartVCDelegateTests: XCTestCase {
     let mockPersistenceManager = MockPersistenceManager()
     let mockLaunchStateManager = MockLaunchStateManager(persistenceManager: mockPersistenceManager)
     let mockNavigationController = MockNavigationController()
-    mockNavigationController.viewControllers = [StartViewController.makeFromStoryboard()]
+    mockNavigationController.viewControllers = [StartViewController.newInstance(delegate: nil)]
     mockLaunchStateManager.mockShouldRequireAuthentication = false
     mockLaunchStateManager.deviceIsVerifiedValue = true
 

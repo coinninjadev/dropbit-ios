@@ -43,9 +43,7 @@ CurrencySwappableAmountEditor {
   var countryCodeSearchView: CountryCodeSearchView?
   let countryCodeDataSource = CountryCodePickerDataSource()
 
-  var coordinationDelegate: SendPaymentViewControllerCoordinator? {
-    return generalCoordinationDelegate as? SendPaymentViewControllerCoordinator
-  }
+  fileprivate weak var delegate: SendPaymentViewControllerCoordinator!
 
   var currencyValueManager: CurrencyValueDataSourceType? {
     return coordinationDelegate
@@ -79,27 +77,27 @@ CurrencySwappableAmountEditor {
   @IBOutlet var sendMaxButton: LightBorderedButton!
 
   @IBAction func performClose() {
-    coordinationDelegate?.sendPaymentViewControllerWillDismiss(self)
+    delegate.sendPaymentViewControllerWillDismiss(self)
   }
 
   @IBAction func performPaste() {
-    coordinationDelegate?.viewControllerDidSelectPaste(self)
+    delegate.viewControllerDidSelectPaste(self)
     if let text = UIPasteboard.general.string {
       applyRecipient(inText: text)
     }
   }
 
   @IBAction func performContacts() {
-    coordinationDelegate?.viewControllerDidPressContacts(self)
+    delegate.viewControllerDidPressContacts(self)
   }
 
   @IBAction func performTwitter() {
-    coordinationDelegate?.viewControllerDidPressTwitter(self)
+    delegate.viewControllerDidPressTwitter(self)
   }
 
   @IBAction func performScan() {
     let converter = viewModel.generateCurrencyConverter()
-    coordinationDelegate?.viewControllerDidPressScan(self,
+    delegate.viewControllerDidPressScan(self,
                                                      btcAmount: converter.btcAmount,
                                                      primaryCurrency: primaryCurrency)
   }
@@ -117,8 +115,8 @@ CurrencySwappableAmountEditor {
 
   @IBAction func performSendMax() {
     let tempAddress = ""
-    self.coordinationDelegate?.latestFees()
-      .compactMap { self.coordinationDelegate?.usableFeeRate(from: $0) }
+    self.delegate.latestFees()
+      .compactMap { self.delegate.usableFeeRate(from: $0) }
       .then { feeRate -> Promise<CNBTransactionData> in
         guard let delegate = self.coordinationDelegate else { fatalError("coordinationDelegate is required") }
         return delegate.viewController(self, sendMaxFundsTo: tempAddress, feeRate: feeRate)
@@ -137,7 +135,7 @@ CurrencySwappableAmountEditor {
           style: .alert,
           actions: [action]
         )
-        self.coordinationDelegate?.viewControllerDidRequestAlert(self, viewModel: alertViewModel)
+        self.delegate.viewControllerDidRequestAlert(self, viewModel: alertViewModel)
     }
   }
 
@@ -162,7 +160,7 @@ CurrencySwappableAmountEditor {
 
   static func newInstance(delegate: SendPaymentViewControllerDelegate, viewModel: SendPaymentViewModel) -> SendPaymentViewController {
     let vc = SendPaymentViewController.makeFromStoryboard()
-    vc.generalCoordinationDelegate = delegate
+    vc.delegate = delegate
     vc.viewModel = viewModel
     vc.viewModel.delegate = vc
     return vc
@@ -187,10 +185,10 @@ CurrencySwappableAmountEditor {
     setupPhoneNumberEntryView(textFieldEnabled: true)
     formatPhoneNumberEntryView()
     memoContainerView.delegate = self
-    let sharedMemoAllowed = coordinationDelegate?.viewControllerShouldInitiallyAllowMemoSharing(self) ?? true
+    let sharedMemoAllowed = delegate.viewControllerShouldInitiallyAllowMemoSharing(self) ?? true
     viewModel.sharedMemoAllowed = sharedMemoAllowed
     memoContainerView.configure(memo: nil, isShared: sharedMemoAllowed)
-    coordinationDelegate?.sendPaymentViewControllerDidLoad(self)
+    delegate.sendPaymentViewControllerDidLoad(self)
     walletToggleView.delegate = self
 
     if viewModel.fromAmount == .zero && recipientDescriptionToLoad == nil {
@@ -364,7 +362,7 @@ extension SendPaymentViewController {
       updateViewModel(withParsedRecipient: recipient)
     } catch {
       setPaymentRecipient(nil)
-      coordinationDelegate?.viewControllerDidAttemptInvalidDestination(self, error: error)
+      delegate.viewControllerDidAttemptInvalidDestination(self, error: error)
     }
 
     updateViewWithModel()
@@ -391,7 +389,7 @@ extension SendPaymentViewController {
 
   private func handleLightningInvoicePaste(lightningUrl: LightningURL) {
     self.alertManager?.showActivityHUD(withStatus: nil)
-    coordinationDelegate?.viewControllerDidReceiveLightningURLToDecode(lightningUrl)
+    delegate.viewControllerDidReceiveLightningURLToDecode(lightningUrl)
       .get { decodedInvoice
         in
         self.alertManager?.hideActivityHUD(withDelay: nil, completion: {
@@ -420,13 +418,13 @@ extension SendPaymentViewController {
   private func handleError(error: Error) {
     self.alertManager?.hideActivityHUD(withDelay: nil) {
       let viewModel = AlertControllerViewModel(title: "", description: error.localizedDescription)
-      self.coordinationDelegate?.viewControllerDidRequestAlert(self, viewModel: viewModel)
+      self.delegate.viewControllerDidRequestAlert(self, viewModel: viewModel)
     }
   }
 
   private func fetchViewModelAndUpdate(forPaymentRequest url: URL) {
     self.alertManager?.showActivityHUD(withStatus: nil)
-    self.coordinationDelegate?.resolveMerchantPaymentRequest(withURL: url) { result in
+    self.delegate.resolveMerchantPaymentRequest(withURL: url) { result in
       let errorTitle = "Payment Request Error"
       switch result {
       case .success(let response):
@@ -464,7 +462,7 @@ extension SendPaymentViewController {
       case .paymentTarget(let paymentTarget):
         self.showPaymentTargetRecipient(with: paymentTarget)
       case .phoneNumber(let contact):
-        self.coordinationDelegate?.viewController(self, checkForContactFromGenericContact: contact) { possibleValidatedContact in
+        self.delegate.viewController(self, checkForContactFromGenericContact: contact) { possibleValidatedContact in
           if let validatedContact = possibleValidatedContact {
             self.viewModel.paymentRecipient = PaymentRecipient.contact(validatedContact)
             self.updateViewWithModel()
@@ -476,7 +474,7 @@ extension SendPaymentViewController {
       case .contact:
         self.hideRecipientInputViews()
       case .twitterContact(let twitterContact):
-        self.coordinationDelegate?.viewController(self, checkForVerifiedTwitterContact: twitterContact)
+        self.delegate.viewController(self, checkForVerifiedTwitterContact: twitterContact)
           .done { _ in
             self.viewModel.paymentRecipient = paymentRecipient
             self.updateViewWithModel()
@@ -532,7 +530,7 @@ extension SendPaymentViewController: SelectedValidContactDelegate {
     var contact = TwitterContact(twitterUser: twitterUser)
 
     let addressType = self.viewModel.walletTransactionType.addressType
-    coordinationDelegate?.viewControllerDidRequestRegisteredAddress(self, ofType: addressType, forIdentity: twitterUser.idStr)
+    delegate.viewControllerDidRequestRegisteredAddress(self, ofType: addressType, forIdentity: twitterUser.idStr)
       .done { (responses: [WalletAddressesQueryResponse]) in
         //TODO: Handle case where recipient is registered but has not yet updated their app and enabled lightning
         contact.kind = (responses.isEmpty) ? .invite : .registeredUser
@@ -593,7 +591,7 @@ extension SendPaymentViewController: UITextFieldDelegate {
         setPaymentRecipient(recipient)
       }
     } catch {
-      self.coordinationDelegate?.showAlertForInvalidContactOrPhoneNumber(contactName: nil, displayNumber: text)
+      self.delegate.showAlertForInvalidContactOrPhoneNumber(contactName: nil, displayNumber: text)
     }
   }
 
@@ -630,14 +628,14 @@ extension SendPaymentViewController: CKPhoneNumberTextFieldDelegate {
   }
 
   func textFieldReceivedInvalidMobileNumber(_ phoneNumber: GlobalPhoneNumber, textField: CKPhoneNumberTextField) {
-    coordinationDelegate?.showAlertForInvalidContactOrPhoneNumber(contactName: nil, displayNumber: phoneNumber.asE164())
+    delegate.showAlertForInvalidContactOrPhoneNumber(contactName: nil, displayNumber: phoneNumber.asE164())
   }
 }
 
 extension SendPaymentViewController: SendPaymentMemoViewDelegate {
 
   func didTapMemoButton() {
-    coordinationDelegate?.viewControllerDidSelectMemoButton(self, memo: viewModel.memo) { [weak self] memo in
+    delegate.viewControllerDidSelectMemoButton(self, memo: viewModel.memo) { [weak self] memo in
       self?.viewModel.memo = memo
       self?.updateMemoContainer()
     }
@@ -650,7 +648,7 @@ extension SendPaymentViewController: SendPaymentMemoViewDelegate {
 
   func didTapSharedMemoTooltip() {
     guard let url = CoinNinjaUrlFactory.buildUrl(for: .sharedMemosTooltip) else { return }
-    coordinationDelegate?.openURL(url, completionHandler: nil)
+    delegate.openURL(url, completionHandler: nil)
   }
 
 }
@@ -760,7 +758,7 @@ extension SendPaymentViewController {
     try validateInvitationMaximum(against: btcAmount)
     let inputs = SendingDelegateInputs(sendPaymentVM: self.viewModel, contact: newContact, payloadDTO: sharedPayload)
 
-    coordinationDelegate?.viewControllerDidBeginAddressNegotiation(self,
+    delegate.viewControllerDidBeginAddressNegotiation(self,
                                                                    btcAmount: btcAmount,
                                                                    memo: self.viewModel.memo,
                                                                    memoIsShared: self.viewModel.sharedMemoDesired,
@@ -773,7 +771,7 @@ extension SendPaymentViewController {
 
   private func validateRegisteredContact(_ contact: ContactType, sharedPayload: SharedPayloadDTO) {
     let addressType = self.viewModel.walletTransactionType.addressType
-    coordinationDelegate?.viewControllerDidRequestRegisteredAddress(self, ofType: addressType, forIdentity: contact.identityHash)
+    delegate.viewControllerDidRequestRegisteredAddress(self, ofType: addressType, forIdentity: contact.identityHash)
       .done { (responses: [WalletAddressesQueryResponse]) in
         //TODO: Handle case where recipient is registered but has not yet updated their app and enabled lightning
         if let addressResponse = responses.first(where: { $0.identityHash == contact.identityHash }) {
@@ -801,7 +799,7 @@ extension SendPaymentViewController {
     let addressType = self.viewModel.walletTransactionType.addressType
 
     // Sending payment to generic contact (manually entered phone number) will first check if they have addresses on server
-    coordinationDelegate?.viewControllerDidRequestVerificationCheck(self) { [weak self] in
+    delegate.viewControllerDidRequestVerificationCheck(self) { [weak self] in
       guard let localSelf = self,
         let delegate = localSelf.coordinationDelegate
         else { return }
@@ -849,9 +847,9 @@ extension SendPaymentViewController {
                                        payloadDTO: sharedPayload)
 
     if let data = viewModel.sendMaxTransactionData {
-      coordinationDelegate?.viewController(self, sendingMax: data, to: paymentTarget, inputs: inputs)
+      delegate.viewController(self, sendingMax: data, to: paymentTarget, inputs: inputs)
     } else {
-      self.coordinationDelegate?.viewControllerDidSendPayment(self,
+      self.delegate.viewControllerDidSendPayment(self,
                                                               btcAmount: viewModel.btcAmount,
                                                               requiredFeeRate: viewModel.requiredFeeRate,
                                                               paymentTarget: paymentTarget,

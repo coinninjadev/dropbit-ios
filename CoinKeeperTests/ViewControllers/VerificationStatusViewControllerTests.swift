@@ -18,7 +18,7 @@ class VerificationStatusViewControllerTests: XCTestCase {
     super.setUp()
     self.sut = VerificationStatusViewController.makeFromStoryboard()
     mockCoordinator = MockCoordinator()
-    self.sut.generalCoordinationDelegate = mockCoordinator
+    self.sut.delegate = mockCoordinator
     _ = self.sut.view
   }
 

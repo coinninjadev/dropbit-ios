@@ -25,14 +25,14 @@ final class PinEntryViewController: BaseViewController, StoryboardInitializable 
                           viewModel: PinEntryViewModel,
                           success: CKCompletion?) -> PinEntryViewController {
     let vc = PinEntryViewController.makeFromStoryboard()
-    vc.generalCoordinationDelegate = delegate
+    vc.delegate = delegate
     vc.viewModel = viewModel
     vc.successHandler = success
     return vc
   }
 
   private var shouldAttemptToUseBiometrics: Bool {
-    guard let delegate = coordinationDelegate, delegate.pinExists() else { return false }
+    guard delegate.pinExists() else { return false }
     return viewModel.shouldEnableBiometrics
   }
 
@@ -51,11 +51,9 @@ final class PinEntryViewController: BaseViewController, StoryboardInitializable 
   @IBOutlet var lockoutErrorLabel: UILabel!
 
   // MARK: variables
-  var coordinationDelegate: PinEntryViewControllerDelegate? {
-    return generalCoordinationDelegate as? PinEntryViewControllerDelegate
-  }
+  fileprivate weak var delegate: PinEntryViewControllerDelegate!
   var pinVerifyDelegate: PinVerificationDelegate? {
-    return generalCoordinationDelegate as? PinVerificationDelegate
+    return delegate as? PinVerificationDelegate
   }
 
   var viewModel: PinEntryViewModel!
@@ -99,7 +97,7 @@ final class PinEntryViewController: BaseViewController, StoryboardInitializable 
 
   // MARK: IBActions
   @IBAction func closeButtonWasTouched() {
-    coordinationDelegate?.viewControllerDidSelectClose(self)
+    delegate.viewControllerDidSelectClose(self)
   }
 
   @IBAction func biometricButtonTapped(_ sender: UIButton) {
@@ -169,7 +167,7 @@ final class PinEntryViewController: BaseViewController, StoryboardInitializable 
   }
 
   func setupBiometricButton() {
-    guard let biometricType = coordinationDelegate?.biometricType else { return }
+    guard let biometricType = delegate.biometricType else { return }
     var image: UIImage?
     switch biometricType {
     case .faceID: image = UIImage(named: "faceID")
@@ -181,7 +179,7 @@ final class PinEntryViewController: BaseViewController, StoryboardInitializable 
 
   func tryBiometrics() {
     if shouldAttemptToUseBiometrics {
-      coordinationDelegate?.viewControllerDidTryBiometrics(self)
+      delegate.viewControllerDidTryBiometrics(self)
     }
   }
 
@@ -244,7 +242,7 @@ final class PinEntryViewController: BaseViewController, StoryboardInitializable 
   }
 
   func authenticationSatisfied() {
-    coordinationDelegate?.viewControllerDidSuccessfullyAuthenticate(self, completion: self.successHandler)
+    delegate.viewControllerDidSuccessfullyAuthenticate(self, completion: self.successHandler)
   }
 }
 

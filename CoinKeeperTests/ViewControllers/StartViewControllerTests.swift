@@ -13,7 +13,7 @@ class StartViewControllerTests: XCTestCase {
 
   override func setUp() {
     super.setUp()
-    self.sut = StartViewController.makeFromStoryboard()
+    self.sut = StartViewController.newInstance(delegate: nil)
     _ = self.sut.view
   }
 
@@ -131,7 +131,7 @@ class StartViewControllerTests: XCTestCase {
   // MARK: actions produce results
   func testCreateWalletButtonActionTellsCoordinator() {
     let mockCoordinator = MockCoordinator()
-    self.sut.generalCoordinationDelegate = mockCoordinator
+    self.sut.delegate = mockCoordinator
 
     self.sut.newWalletButton.sendActions(for: .touchUpInside)
 
@@ -140,7 +140,7 @@ class StartViewControllerTests: XCTestCase {
 
   func testRestoreWalletButtonActionTellsCoordinator() {
     let mockCoordinator = MockCoordinator()
-    self.sut.generalCoordinationDelegate = mockCoordinator
+    self.sut.delegate = mockCoordinator
 
     self.sut.restoreWalletButton.sendActions(for: .touchUpInside)
 

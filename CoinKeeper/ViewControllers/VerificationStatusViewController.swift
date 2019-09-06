@@ -36,11 +36,15 @@ class VerificationStatusViewController: BaseViewController, StoryboardInitializa
   @IBOutlet var closeButton: UIButton!
   @IBOutlet var addressButton: UIButton!
 
-  var coordinationDelegate: VerificationStatusViewControllerDelegate? {
-    return generalCoordinationDelegate as? VerificationStatusViewControllerDelegate
-  }
+  fileprivate weak var delegate: VerificationStatusViewControllerDelegate!
 
   let serverAddressUpperPercentageMultiplier: CGFloat = 0.15
+
+  static func newInstance(delegate: VerificationStatusViewControllerDelegate) -> VerificationStatusViewController {
+    let vc = VerificationStatusViewController.makeFromStoryboard()
+    vc.delegate = delegate
+    return vc
+  }
 
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -60,7 +64,7 @@ class VerificationStatusViewController: BaseViewController, StoryboardInitializa
     serverAddressViewVerticalConstraint.constant = UIScreen.main.bounds.height
 
     // phone number start
-    if let phoneNumber = coordinationDelegate?.verifiedPhoneNumber() {
+    if let phoneNumber = delegate.verifiedPhoneNumber() {
       let formatter = CKPhoneNumberFormatter(format: .national)
       phoneVerificationStatusView.isHidden = false
       changeRemovePhoneButton.isHidden = false
@@ -87,7 +91,7 @@ class VerificationStatusViewController: BaseViewController, StoryboardInitializa
     // phone number end
 
     // twitter start
-    if let handle = coordinationDelegate?.verifiedTwitterHandle() {
+    if let handle = delegate.verifiedTwitterHandle() {
       twitterVerificationStatusView.isHidden = false
       changeRemoveTwitterButton.isHidden = false
       verifyTwitterPrimaryButton.isHidden = true
@@ -125,7 +129,7 @@ class VerificationStatusViewController: BaseViewController, StoryboardInitializa
 
   private func setupAddressUI() {
     // Hide address elements if no addresses exist or words aren't backed up
-    if let addresses = coordinationDelegate?.viewControllerDidRequestAddresses(),
+    if let addresses = delegate.viewControllerDidRequestAddresses(),
       addresses.isNotEmpty {
       serverAddressView.addresses = addresses
       addressButton.isHidden = false
@@ -137,13 +141,13 @@ class VerificationStatusViewController: BaseViewController, StoryboardInitializa
   }
 
   private func fetchAddresses() {
-    if let addresses = coordinationDelegate?.viewControllerDidRequestAddresses() {
+    if let addresses = delegate.viewControllerDidRequestAddresses() {
       serverAddressView.addresses = addresses
     }
   }
 
   @IBAction func closeButtonWasTouched() {
-    coordinationDelegate?.viewControllerDidSelectClose(self)
+    delegate.viewControllerDidSelectClose(self)
   }
 
   @IBAction func addressButtonWasTouched() {
@@ -156,22 +160,22 @@ class VerificationStatusViewController: BaseViewController, StoryboardInitializa
   }
 
   @IBAction func verifyPhoneNumber() {
-    coordinationDelegate?.viewControllerDidSelectVerifyPhone(self)
+    delegate.viewControllerDidSelectVerifyPhone(self)
   }
 
   @IBAction func verifyTwitter() {
-    coordinationDelegate?.viewControllerRequestedAuthenticationSuspension(self)
-    coordinationDelegate?.viewControllerDidSelectVerifyTwitter(self)
+    delegate.viewControllerRequestedAuthenticationSuspension(self)
+    delegate.viewControllerDidSelectVerifyTwitter(self)
   }
 
   @IBAction func changeRemovePhone() {
-    coordinationDelegate?.viewControllerDidRequestToUnverifyPhone(self, successfulCompletion: { [weak self] in
+    delegate.viewControllerDidRequestToUnverifyPhone(self, successfulCompletion: { [weak self] in
       self?.setupUI()
     })
   }
 
   @IBAction func changeRemoveTwitter() {
-    coordinationDelegate?.viewControllerDidRequestToUnverifyTwitter(self, successfulCompletion: { [weak self] in
+    delegate.viewControllerDidRequestToUnverifyTwitter(self, successfulCompletion: { [weak self] in
       self?.setupUI()
     })
   }
@@ -188,6 +192,6 @@ extension VerificationStatusViewController: ServerAddressViewDelegate {
 
   func didPressQuestionMarkButton() {
     guard let url = CoinNinjaUrlFactory.buildUrl(for: .myAddressesTooltip) else { return }
-    coordinationDelegate?.viewController(self, didRequestOpenURL: url)
+    delegate.viewController(self, didRequestOpenURL: url)
   }
 }

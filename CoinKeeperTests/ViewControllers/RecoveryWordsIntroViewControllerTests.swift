@@ -18,7 +18,7 @@ class RecoveryWordsIntroViewControllerTests: XCTestCase {
   override func setUp() {
     mockDelegate = MockRecoveryWordsIntroViewControllerDelegate()
     self.sut = RecoveryWordsIntroViewController.makeFromStoryboard()
-    self.sut.generalCoordinationDelegate = mockDelegate
+    self.sut.delegate = mockDelegate
     _ = sut.view
   }
 

@@ -58,7 +58,7 @@ extension TransactionHistoryViewController {
   func reloadCollectionViews() {
     guard self.viewIfLoaded != nil else { return }
     summaryCollectionView.reloadData()
-    coordinationDelegate?.viewControllerSummariesDidReload(self, indexPathsIfNotAll: nil)
+    delegate.viewControllerSummariesDidReload(self, indexPathsIfNotAll: nil)
   }
 
   private func enableVerticallyExpandedScrolling() {
@@ -143,7 +143,7 @@ extension TransactionHistoryViewController: UIScrollViewDelegate {
     refreshView.fireRefreshAnimationIfNecessary()
 
     if refreshView.shouldQueueRefresh {
-      coordinationDelegate?.viewControllerAttemptedToRefreshTransactions(self)
+      delegate.viewControllerAttemptedToRefreshTransactions(self)
     }
   }
 }

@@ -30,10 +30,9 @@ extension AppCoordinator {
 
   func enterApp() {
     let overviewViewController = makeOverviewController()
-    let settingsViewController = DrawerViewController.makeFromStoryboard()
+    let settingsViewController = DrawerViewController.newInstance(delegate: self)
     let drawerController = setupDrawerViewController(centerViewController: overviewViewController,
                                                      leftViewController: settingsViewController)
-    assignCoordinationDelegate(to: settingsViewController)
     navigationController.popToRootViewController(animated: false)
     navigationController.viewControllers = [drawerController]
 
@@ -78,9 +77,7 @@ extension AppCoordinator {
   }
 
   private func startPinCreation(flow: SetupFlow?) {
-    let viewController = PinCreationViewController.makeFromStoryboard()
-    viewController.setupFlow = flow
-    assignCoordinationDelegate(to: viewController)
+    let viewController = PinCreationViewController.newInstance(setupFlow: flow, delegate: self)
     navigationController.pushViewController(viewController, animated: true)
   }
 
@@ -93,10 +90,16 @@ extension AppCoordinator {
     navigationController.topViewController()?.present(alert, animated: true)
   }
 
-  func startDeviceVerificationFlow(userIdentityType type: UserIdentityType, shouldOrphanRoot: Bool, selectedSetupFlow: SetupFlow?) {
+  func startDeviceVerificationFlow(userIdentityType type: UserIdentityType,
+                                   shouldOrphanRoot: Bool,
+                                   selectedSetupFlow: SetupFlow?) {
     func startVerificationFlow() {
-      let childCoordinator = DeviceVerificationCoordinator(navigationController, userIdentityType: type, shouldOrphanRoot: shouldOrphanRoot)
-      childCoordinator.selectedSetupFlow = selectedSetupFlow
+      let childCoordinator = DeviceVerificationCoordinator(navigationController,
+                                                           delegate: self,
+                                                           coordinationDelegate: self,
+                                                           userIdentityType: type,
+                                                           setupFlow: selectedSetupFlow,
+                                                           shouldOrphanRoot: shouldOrphanRoot)
       startChildCoordinator(childCoordinator: childCoordinator)
     }
 
@@ -154,12 +157,9 @@ extension AppCoordinator {
       return
     }
 
-    let recoveryWordsIntroViewController = RecoveryWordsIntroViewController.makeFromStoryboard()
-    recoveryWordsIntroViewController.recoveryWords = usableWords
-    assignCoordinationDelegate(to: recoveryWordsIntroViewController)
-    navigationController.present(CNNavigationController(rootViewController: recoveryWordsIntroViewController),
-                                 animated: true,
-                                 completion: nil)
+    let recoveryWordsIntroVC = RecoveryWordsIntroViewController.newInstance(words: usableWords, delegate: self)
+    let navVC = CNNavigationController(rootViewController: recoveryWordsIntroVC)
+    navigationController.present(navVC, animated: true, completion: nil)
   }
 
   private func setupDrawerViewController(centerViewController: UIViewController, leftViewController: UIViewController) -> MMDrawerController {

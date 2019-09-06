@@ -44,13 +44,11 @@ final class SupportViewController: BaseViewController, StoryboardInitializable {
 
   static func newInstance(with delegate: SupportViewControllerDelegate) -> SupportViewController {
     let controller = SupportViewController.makeFromStoryboard()
-    controller.generalCoordinationDelegate = delegate
+    controller.delegate = delegate
     return controller
   }
 
-  var coordinationDelegate: SupportViewControllerDelegate? {
-    return generalCoordinationDelegate as? SupportViewControllerDelegate
-  }
+  fileprivate weak var delegate: SupportViewControllerDelegate!
 
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -64,11 +62,11 @@ final class SupportViewController: BaseViewController, StoryboardInitializable {
   }
 
   @IBAction func close() {
-    coordinationDelegate?.viewControllerDidSelectClose(self)
+    delegate.viewControllerDidSelectClose(self)
   }
 
   @IBAction func sendDebugInfo() {
-    coordinationDelegate?.viewControllerSendDebuggingInfo(self)
+    delegate.viewControllerSendDebuggingInfo(self)
   }
 }
 
@@ -104,6 +102,6 @@ extension SupportViewController: UITableViewDelegate, UITableViewDataSource {
 
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     let type = SupportType.allCases[indexPath.row]
-    coordinationDelegate?.viewController(self, didRequestOpenURL: type.url)
+    delegate.viewController(self, didRequestOpenURL: type.url)
   }
 }

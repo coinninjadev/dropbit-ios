@@ -47,12 +47,18 @@ final class PinCreationViewController: BaseViewController {
   }
   @IBOutlet var securePinDisplayView: SecurePinDisplayView!
 
+  static func newInstance(setupFlow: SetupFlow?, delegate: PinCreationViewControllerDelegate) -> PinCreationViewController {
+    let vc = PinCreationViewController.makeFromStoryboard()
+    vc.setupFlow = setupFlow
+    vc.delegate = delegate
+    return vc
+  }
+
   var setupFlow: SetupFlow?
 
   // MARK: variables
-  var coordinationDelegate: PinCreationViewControllerDelegate? {
-    return generalCoordinationDelegate as? PinCreationViewControllerDelegate
-  }
+  fileprivate weak var delegate: PinCreationViewControllerDelegate!
+
   weak var verificationDelegate: PinVerificationDelegate?
   var entryMode: PinCreationViewController.Mode = .pinEntry {
     didSet {
@@ -121,7 +127,7 @@ extension PinCreationViewController: KeypadEntryViewDelegate {
     let result = digitEntryDisplayViewModel.add(digit: digit)
     guard result == .complete else { return }
     switch entryMode {
-    case .pinEntry: coordinationDelegate?.viewControllerFullyEnteredPin(self, digits: digitEntryDisplayViewModel.digits)
+    case .pinEntry: delegate.viewControllerFullyEnteredPin(self, digits: digitEntryDisplayViewModel.digits)
     case .pinVerification(let previousDigits):
       if digitEntryDisplayViewModel.digits == previousDigits {
         verificationDelegate?.pinWasVerified(digits: previousDigits, for: self.setupFlow)
