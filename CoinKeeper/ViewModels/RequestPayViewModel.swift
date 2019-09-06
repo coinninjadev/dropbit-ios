@@ -13,9 +13,9 @@ class RequestPayViewModel: CurrencySwappableEditAmountViewModel {
   var receiveAddress: String
   let qrCodeGenerator = QRCodeGenerator()
 
-  init(receiveAddress: String, viewModel: CurrencySwappableEditAmountViewModel) {
+  init(receiveAddress: String, amountViewModel: CurrencySwappableEditAmountViewModel) {
     self.receiveAddress = receiveAddress
-    super.init(viewModel: viewModel)
+    super.init(viewModel: amountViewModel)
   }
 
   var bitcoinURL: BitcoinURL? {

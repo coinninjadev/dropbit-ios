@@ -30,38 +30,12 @@ final class RequestPayViewController: PresentableViewController, StoryboardIniti
   @IBOutlet var memoTextField: UITextField!
   @IBOutlet var memoLabel: UILabel!
   @IBOutlet var expirationLabel: ExpirationLabel!
-  @IBOutlet var receiveAddressLabel: UILabel! {
-    didSet {
-      receiveAddressLabel.textColor = .darkBlueText
-      receiveAddressLabel.font = .semiBold(13)
-    }
-  }
+  @IBOutlet var receiveAddressLabel: UILabel!
   @IBOutlet var receiveAddressTapGesture: UITapGestureRecognizer!
-  @IBOutlet var receiveAddressBGView: UIView! {
-    didSet {
-      receiveAddressBGView.applyCornerRadius(4)
-      receiveAddressBGView.layer.borderColor = UIColor.mediumGrayBorder.cgColor
-      receiveAddressBGView.layer.borderWidth = 2.0
-      receiveAddressBGView.backgroundColor = .clear
-    }
-  }
-  @IBOutlet var tapInstructionLabel: UILabel! {
-    didSet {
-      tapInstructionLabel.textColor = .darkGrayText
-      tapInstructionLabel.font = .medium(10)
-    }
-  }
-  @IBOutlet var bottomActionButton: PrimaryActionButton! {
-    didSet {
-      bottomActionButton.setTitle("SEND REQUEST", for: .normal)
-    }
-  }
-
-  @IBOutlet var addAmountButton: UIButton! {
-    didSet {
-      addAmountButton.styleAddButtonWith(title: "Add Receive Amount")
-    }
-  }
+  @IBOutlet var receiveAddressBGView: UIView!
+  @IBOutlet var tapInstructionLabel: UILabel!
+  @IBOutlet var bottomActionButton: PrimaryActionButton!
+  @IBOutlet var addAmountButton: UIButton!
 
   @IBAction func closeButtonTapped(_ sender: UIButton) {
     editAmountView.primaryAmountTextField.resignFirstResponder()
@@ -115,8 +89,7 @@ final class RequestPayViewController: PresentableViewController, StoryboardIniti
 
   let rateManager: ExchangeRateManager = ExchangeRateManager()
   var currencyValueManager: CurrencyValueDataSourceType?
-  var viewModel: RequestPayViewModel! = RequestPayViewModel(receiveAddress: "",
-                                                            viewModel: .emptyInstance())
+  var viewModel: RequestPayViewModel!
   var editAmountViewModel: CurrencySwappableEditAmountViewModel { return viewModel }
 
   var isModal: Bool = true
@@ -129,30 +102,13 @@ final class RequestPayViewController: PresentableViewController, StoryboardIniti
 
   var alertManager: AlertManagerType?
 
-  private func createLightningInvoice(withAmount amount: Int, memo: String?) {
-    SVProgressHUD.show()
-    delegate.viewControllerDidSelectCreateInvoice(self, forAmount: amount, withMemo: memo)
-      .get { response in
-        SVProgressHUD.dismiss()
-        self.editAmountView.isUserInteractionEnabled = false
-        self.delegate.viewControllerDidCreateInvoice(self)
-        self.lightningInvoice = response
-        self.setupStyle()
-      }.catch { error in
-        SVProgressHUD.dismiss()
-        if let alert = self.alertManager?.defaultAlert(withTitle: "Error", description: error.localizedDescription) {
-          self.present(alert, animated: true, completion: nil)
-        }
-      }
-  }
-
-  func showHideEditAmountView() {
-    editAmountView.isHidden = shouldHideEditAmountView
-    addAmountButton.isHidden = shouldHideAddAmountButton
-  }
-
-  func didUpdateExchangeRateManager(_ exchangeRateManager: ExchangeRateManager) {
-    updateEditAmountView(withRates: exchangeRateManager.exchangeRates)
+  static func newInstance(delegate: RequestPayViewControllerDelegate, viewModel: RequestPayViewModel?, alertManager: AlertManagerType?) -> RequestPayViewController {
+    let vc = RequestPayViewController.makeFromStoryboard()
+    vc.delegate = delegate
+    vc.viewModel = viewModel ?? RequestPayViewModel(receiveAddress: "", amountViewModel: .emptyInstance())
+    vc.viewModel.delegate = vc
+    vc.alertManager = alertManager
+    return vc
   }
 
   override func accessibleViewsAndIdentifiers() -> [AccessibleViewElement] {
@@ -162,39 +118,12 @@ final class RequestPayViewController: PresentableViewController, StoryboardIniti
     ]
   }
 
-  static func newInstance(delegate: RequestPayViewControllerDelegate, viewModel: RequestPayViewModelType?) -> RequestPayViewController {
-    let vc = RequestPayViewController.makeFromStoryboard()
-    vc.delegate = delegate
-    vc.viewModel = viewModel
-    return vc
-  }
-
-//  static func newInstance(delegate: RequestPayViewControllerDelegate,
-//                          receiveAddress: String,
-//                          currencyPair: CurrencyPair,
-//                          walletTransactionType: WalletTransactionType,
-//                          alertManager: AlertManagerType,
-//                          exchangeRates: ExchangeRates) -> RequestPayViewController {
-//    let vc = RequestPayViewController.makeFromStoryboard()
-//    vc.delegate = delegate
-//    vc.alertManager = alertManager
-//    let editAmountViewModel = CurrencySwappableEditAmountViewModel(exchangeRates: exchangeRates,
-//                                                                   primaryAmount: .zero,
-//                                                                   walletTransactionType: walletTransactionType,
-//                                                                   currencyPair: currencyPair,
-//                                                                   delegate: vc)
-//    vc.viewModel = RequestPayViewModel(receiveAddress: receiveAddress, viewModel: editAmountViewModel)
-//    return vc
-//  }
-
   // MARK: view lifecycle
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    closeButton.isHidden = !isModal
-    memoTextField.backgroundColor = .lightGrayBackground
-    memoTextField.font = .medium(14)
-    memoLabel.font = .light(14)
+    setupSubviews()
+
     editAmountView.disableSwap()
     setupCurrencySwappableEditAmountView()
     registerForRateUpdates()
@@ -238,6 +167,28 @@ final class RequestPayViewController: PresentableViewController, StoryboardIniti
     case .lightning:
       setupStyleForLightningRequest()
     }
+  }
+
+  private func setupSubviews() {
+    receiveAddressLabel.textColor = .darkBlueText
+    receiveAddressLabel.font = .semiBold(13)
+
+    receiveAddressBGView.applyCornerRadius(4)
+    receiveAddressBGView.layer.borderColor = UIColor.mediumGrayBorder.cgColor
+    receiveAddressBGView.layer.borderWidth = 2.0
+    receiveAddressBGView.backgroundColor = .clear
+
+    tapInstructionLabel.textColor = .darkGrayText
+    tapInstructionLabel.font = .medium(10)
+
+    bottomActionButton.setTitle("SEND REQUEST", for: .normal)
+
+    addAmountButton.styleAddButtonWith(title: "Add Receive Amount")
+
+    closeButton.isHidden = !isModal
+    memoTextField.backgroundColor = .lightGrayBackground
+    memoTextField.font = .medium(14)
+    memoLabel.font = .light(14)
   }
 
   private func setupStyleForLightningRequest() {
@@ -287,6 +238,32 @@ final class RequestPayViewController: PresentableViewController, StoryboardIniti
 
   func updateQRImage() {
     qrImageView.image = viewModel.qrImage(withSize: qrImageView.frame.size)
+  }
+
+  private func createLightningInvoice(withAmount amount: Int, memo: String?) {
+    SVProgressHUD.show()
+    delegate.viewControllerDidSelectCreateInvoice(self, forAmount: amount, withMemo: memo)
+      .get { response in
+        SVProgressHUD.dismiss()
+        self.editAmountView.isUserInteractionEnabled = false
+        self.delegate.viewControllerDidCreateInvoice(self)
+        self.lightningInvoice = response
+        self.setupStyle()
+      }.catch { error in
+        SVProgressHUD.dismiss()
+        if let alert = self.alertManager?.defaultAlert(withTitle: "Error", description: error.localizedDescription) {
+          self.present(alert, animated: true, completion: nil)
+        }
+    }
+  }
+
+  func showHideEditAmountView() {
+    editAmountView.isHidden = shouldHideEditAmountView
+    addAmountButton.isHidden = shouldHideAddAmountButton
+  }
+
+  func didUpdateExchangeRateManager(_ exchangeRateManager: ExchangeRateManager) {
+    updateEditAmountView(withRates: exchangeRateManager.exchangeRates)
   }
 
 }
