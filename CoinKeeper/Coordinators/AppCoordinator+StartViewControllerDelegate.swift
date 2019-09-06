@@ -34,12 +34,11 @@ extension AppCoordinator: StartViewControllerDelegate {
     switch flow {
     case .restoreWallet:
       if restoreFromICloudBackup {
-        do {
-          try persistenceManager.resetPersistence()
-          log.info("Successfully reset persistence after iCloud Restore")
-        } catch {
-          log.error(error, message: "Failed to reset persistence after iCloud Restore")
-        }
+        let context = persistenceManager.mainQueueContext()
+        persistenceManager.brokers.wallet.removeWalletId(in: context)
+        persistenceManager.brokers.user.unverifyUser(in: context)
+        persistenceManager.keychainManager.deleteAll()
+        log.info("Successfully reset persistence after iCloud Restore")
       }
       persistenceManager.userDefaultsManager.deleteAll()
       continueSetupFlow()
