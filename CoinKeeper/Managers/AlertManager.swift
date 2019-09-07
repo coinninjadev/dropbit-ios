@@ -127,11 +127,10 @@ class AlertManager: AlertManagerType {
                      image: UIImage,
                      style: AlertMessageStyle,
                      action: AlertActionConfigurationType) -> AlertControllerType {
-    let alert = ActionableAlertViewController.makeFromStoryboard()
-    alert.setup(with: title, description: description, image: image, style: style, action: action)
+    let alert = ActionableAlertViewController.newInstance(title: title, description: description,
+                                                          image: image, style: style, action: action)
     alert.modalTransitionStyle = .crossDissolve
     alert.modalPresentationStyle = .overCurrentContext
-
     return alert
   }
 

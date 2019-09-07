@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol PinCreationViewControllerDelegate: AnyObject {
+protocol PinCreationEntryDelegate: AnyObject {
   func viewControllerFullyEnteredPin(_ viewController: PinCreationViewController, digits: String)
 }
 
@@ -24,6 +24,7 @@ extension PinVerificationDelegate {
   }
 }
 
+typealias PinCreationViewControllerDelegate = PinCreationEntryDelegate & PinVerificationDelegate
 final class PinCreationViewController: BaseViewController {
 
   enum Mode {
@@ -47,10 +48,13 @@ final class PinCreationViewController: BaseViewController {
   }
   @IBOutlet var securePinDisplayView: SecurePinDisplayView!
 
-  static func newInstance(setupFlow: SetupFlow?, delegate: PinCreationViewControllerDelegate) -> PinCreationViewController {
+  static func newInstance(setupFlow: SetupFlow?,
+                          delegate: PinCreationViewControllerDelegate,
+                          mode: Mode = .pinEntry) -> PinCreationViewController {
     let vc = PinCreationViewController.makeFromStoryboard()
     vc.setupFlow = setupFlow
     vc.delegate = delegate
+    vc.entryMode = mode
     return vc
   }
 
@@ -59,7 +63,10 @@ final class PinCreationViewController: BaseViewController {
   // MARK: variables
   fileprivate weak var delegate: PinCreationViewControllerDelegate!
 
-  weak var verificationDelegate: PinVerificationDelegate?
+  var verificationDelegate: PinVerificationDelegate? {
+    return delegate
+  }
+
   var entryMode: PinCreationViewController.Mode = .pinEntry {
     didSet {
       updateUI()

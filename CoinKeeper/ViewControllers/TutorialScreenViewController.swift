@@ -26,31 +26,23 @@ class TutorialScreenViewController: BaseViewController, StoryboardInitializable 
   @IBOutlet var fullPhoneView: UIView!
   @IBOutlet var halfPhoneGifImageView: UIImageView!
   @IBOutlet var fullPhoneImageView: UIImageView!
-
   @IBOutlet var containerView: UIView!
-
-  @IBOutlet var titleLabel: UILabel! {
-    didSet {
-      titleLabel.adjustsFontSizeToFitWidth = true
-      titleLabel.font = .medium(20)
-    }
-  }
-  @IBOutlet var detailLabel: UILabel! {
-    didSet {
-      detailLabel.font = .regular(13)
-    }
-  }
-  @IBOutlet var disclaimerLabel: UILabel! {
-    didSet {
-      disclaimerLabel.font = .regular(10)
-      disclaimerLabel.textColor = .lightBlueTint
-    }
-  }
+  @IBOutlet var titleLabel: UILabel!
+  @IBOutlet var detailLabel: UILabel!
+  @IBOutlet var disclaimerLabel: UILabel!
   @IBOutlet var actionButton: PrimaryActionButton!
   @IBOutlet var linkButton: UnderlinedTextButton!
 
-  weak var delegate: TutorialScreenViewControllerDelegate?
-  var viewModel: TutorialScreenViewModel?
+  fileprivate weak var delegate: TutorialScreenViewControllerDelegate!
+  private(set) var viewModel: TutorialScreenViewModel!
+
+  static func newInstance(viewModel: TutorialScreenViewModel,
+                          delegate: TutorialScreenViewControllerDelegate) -> TutorialScreenViewController {
+    let vc = TutorialScreenViewController.makeFromStoryboard()
+    vc.viewModel = viewModel
+    vc.delegate = delegate
+    return vc
+  }
 
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -68,7 +60,6 @@ class TutorialScreenViewController: BaseViewController, StoryboardInitializable 
 
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
-    guard let viewModel = viewModel else { return }
 
     switch viewModel.mode {
     case .halfPhone:
@@ -92,8 +83,15 @@ class TutorialScreenViewController: BaseViewController, StoryboardInitializable 
 
   private func setupUI() {
     view.backgroundColor = .darkBlueText
+    titleLabel.adjustsFontSizeToFitWidth = true
+    titleLabel.font = .medium(20)
+    detailLabel.font = .regular(13)
+
     titleLabel.text = viewModel?.title
     detailLabel.attributedText = viewModel?.detail
+
+    disclaimerLabel.font = .regular(10)
+    disclaimerLabel.textColor = .lightBlueTint
 
     if let buttonTitle = viewModel?.buttonTitle {
       actionButton.enable()

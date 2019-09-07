@@ -20,6 +20,12 @@ class TextViewController: BaseViewController, StoryboardInitializable {
     super.init(coder: aDecoder)
   }
 
+  static func newInstance(htmlString: String) -> TextViewController {
+    let vc = TextViewController.makeFromStoryboard()
+    vc.htmlString = htmlString
+    return vc
+  }
+
   override func viewDidLoad() {
     super.viewDidLoad()
     view.backgroundColor = .white

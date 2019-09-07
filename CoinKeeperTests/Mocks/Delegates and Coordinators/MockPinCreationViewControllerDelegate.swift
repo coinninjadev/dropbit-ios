@@ -8,7 +8,7 @@
 
 @testable import DropBit
 
-class MockPinCreationViewControllerDelegate: PinCreationViewControllerDelegate {
+class MockPinCreationViewControllerDelegate: PinCreationEntryDelegate {
   var pinWasFullyEntered = false
   var digits: String = ""
 
