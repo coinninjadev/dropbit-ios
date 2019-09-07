@@ -47,7 +47,7 @@ final class VerifyRecoveryWordsViewController: BaseViewController, StoryboardIni
       self.verificationCollectionViewDDS = dataObjects.flatMap { VerifyRecoveryWordsCollectionViewDDS(dataObjects: $0) }
     }
   }
-  fileprivate weak var delegate: VerifyRecoveryWordsViewControllerDelegate!
+  private(set) weak var delegate: VerifyRecoveryWordsViewControllerDelegate!
 
   // MARK: private variables
   private lazy var itemSize: CGSize = {

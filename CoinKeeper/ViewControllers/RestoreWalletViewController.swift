@@ -46,7 +46,7 @@ class RestoreWalletViewController: BaseViewController, StoryboardInitializable {
   @IBOutlet var containerView: UIView!
   @IBOutlet var containerStackView: UIStackView!
 
-  fileprivate weak var delegate: RestoreWalletViewControllerDelegate!
+  private(set) weak var delegate: RestoreWalletViewControllerDelegate!
 
   lazy private var wordButtons: [PrimaryActionButton] = [wordButtonOne, wordButtonTwo, wordButtonThree, wordButtonFour]
 

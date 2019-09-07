@@ -36,7 +36,7 @@ class VerificationStatusViewController: BaseViewController, StoryboardInitializa
   @IBOutlet var closeButton: UIButton!
   @IBOutlet var addressButton: UIButton!
 
-  fileprivate weak var delegate: VerificationStatusViewControllerDelegate!
+  private(set) weak var delegate: VerificationStatusViewControllerDelegate!
 
   let serverAddressUpperPercentageMultiplier: CGFloat = 0.15
 

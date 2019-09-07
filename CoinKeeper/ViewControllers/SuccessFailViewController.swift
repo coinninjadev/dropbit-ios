@@ -37,7 +37,7 @@ class SuccessFailViewController: BaseViewController, StoryboardInitializable {
     reloadViewWithModel()
   }
 
-  fileprivate weak var delegate: SuccessFailViewControllerDelegate!
+  private(set) weak var delegate: SuccessFailViewControllerDelegate!
 
   @IBOutlet var successFailView: SuccessFailView!
   @IBOutlet var closeButton: UIButton!

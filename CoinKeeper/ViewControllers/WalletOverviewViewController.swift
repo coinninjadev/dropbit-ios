@@ -59,7 +59,7 @@ class WalletOverviewViewController: BaseViewController, StoryboardInitializable 
   var startSyncNotificationToken: NotificationToken?
   var finishSyncNotificationToken: NotificationToken?
 
-  fileprivate weak var delegate: WalletOverviewViewControllerDelegate!
+  private(set) weak var delegate: WalletOverviewViewControllerDelegate!
 
   var baseViewControllers: [BaseViewController] = [] {
     willSet {

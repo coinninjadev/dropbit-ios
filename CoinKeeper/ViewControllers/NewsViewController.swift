@@ -44,8 +44,8 @@ final class NewsViewController: BaseViewController, StoryboardInitializable {
     super.init(coder: aDecoder)
   }
 
-  fileprivate weak var delegate: NewsViewControllerDelegate!
-  fileprivate weak var currencyValueManager: CurrencyValueDataSourceType?
+  private(set) weak var delegate: NewsViewControllerDelegate!
+  private(set) weak var currencyValueManager: CurrencyValueDataSourceType?
 
   override func viewDidLoad() {
     super.viewDidLoad()

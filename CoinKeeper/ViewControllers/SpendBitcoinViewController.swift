@@ -21,7 +21,7 @@ final class SpendBitcoinViewController: BaseViewController, StoryboardInitializa
   @IBOutlet var spendAroundMeButton: PrimaryActionButton!
   @IBOutlet var spendOnlineButton: PrimaryActionButton!
 
-  fileprivate weak var delegate: SpendBitcoinViewControllerDelegate!
+  private(set) weak var delegate: SpendBitcoinViewControllerDelegate!
 
   static func newInstance(delegate: SpendBitcoinViewControllerDelegate) -> SpendBitcoinViewController {
     let vc = SpendBitcoinViewController.makeFromStoryboard()

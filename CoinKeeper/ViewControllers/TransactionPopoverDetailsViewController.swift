@@ -44,7 +44,7 @@ class TransactionPopoverDetailsViewController: BaseViewController, StoryboardIni
     setupUI()
   }
 
-  fileprivate weak var delegate: TransactionPopoverDetailsViewControllerDelegate!
+  private(set) weak var delegate: TransactionPopoverDetailsViewControllerDelegate!
 
   static func newInstance(delegate: TransactionPopoverDetailsViewControllerDelegate) -> TransactionPopoverDetailsViewController {
     let vc = TransactionPopoverDetailsViewController.makeFromStoryboard()

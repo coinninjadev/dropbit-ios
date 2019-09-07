@@ -21,7 +21,7 @@ final class GetBitcoinViewController: BaseViewController, StoryboardInitializabl
   @IBOutlet var buyWithCreditCardButton: PrimaryActionButton!
   @IBOutlet var buyWithGiftCardButton: PrimaryActionButton!
 
-  fileprivate weak var delegate: GetBitcoinViewControllerDelegate!
+  private(set) weak var delegate: GetBitcoinViewControllerDelegate!
 
   static func newInstance(delegate: GetBitcoinViewControllerDelegate) -> GetBitcoinViewController {
     let vc = GetBitcoinViewController.makeFromStoryboard()

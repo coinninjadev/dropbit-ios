@@ -63,7 +63,7 @@ class WalletTransferViewController: PresentableViewController, StoryboardInitial
     return viewModel
   }
 
-  fileprivate weak var delegate: WalletTransferViewControllerDelegate!
+  private(set) weak var delegate: WalletTransferViewControllerDelegate!
   var currencyValueManager: CurrencyValueDataSourceType? {
     return delegate as? CurrencyValueDataSourceType
   }

@@ -29,7 +29,7 @@ class SettingsViewController: BaseViewController, StoryboardInitializable {
 
   var viewModel: SettingsViewModel!
 
-  fileprivate weak var delegate: SettingsViewControllerDelegate!
+  private(set) weak var delegate: SettingsViewControllerDelegate!
 
   @IBOutlet var settingsTableView: UITableView! {
     didSet {

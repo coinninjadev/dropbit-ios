@@ -51,7 +51,7 @@ final class PinEntryViewController: BaseViewController, StoryboardInitializable 
   @IBOutlet var lockoutErrorLabel: UILabel!
 
   // MARK: variables
-  fileprivate weak var delegate: PinEntryViewControllerDelegate!
+  private(set) weak var delegate: PinEntryViewControllerDelegate!
   var pinVerifyDelegate: PinVerificationDelegate? {
     return delegate as? PinVerificationDelegate
   }

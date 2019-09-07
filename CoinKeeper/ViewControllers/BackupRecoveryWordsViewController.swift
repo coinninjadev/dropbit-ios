@@ -61,7 +61,7 @@ final class BackupRecoveryWordsViewController: BaseViewController, StoryboardIni
     }
   }
 
-  fileprivate weak var delegate: BackupRecoveryWordsViewControllerDelegate!
+  private(set) weak var delegate: BackupRecoveryWordsViewControllerDelegate!
 
   var wordCollectionViewDDS: BackupRecoveryWordsCollectionDDS!
 

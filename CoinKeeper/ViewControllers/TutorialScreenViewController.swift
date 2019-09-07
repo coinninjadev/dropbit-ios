@@ -33,7 +33,7 @@ class TutorialScreenViewController: BaseViewController, StoryboardInitializable 
   @IBOutlet var actionButton: PrimaryActionButton!
   @IBOutlet var linkButton: UnderlinedTextButton!
 
-  fileprivate weak var delegate: TutorialScreenViewControllerDelegate!
+  private(set) weak var delegate: TutorialScreenViewControllerDelegate!
   private(set) var viewModel: TutorialScreenViewModel!
 
   static func newInstance(viewModel: TutorialScreenViewModel,

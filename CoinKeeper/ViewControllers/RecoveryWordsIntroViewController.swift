@@ -26,7 +26,7 @@ final class RecoveryWordsIntroViewController: BaseViewController, StoryboardInit
   @IBOutlet var skipButton: SecondaryActionButton!
   @IBOutlet var closeButton: UIButton!
 
-  fileprivate weak var delegate: RecoveryWordsIntroViewControllerDelegate!
+  private(set) weak var delegate: RecoveryWordsIntroViewControllerDelegate!
 
   private var recoveryWords: [String] = []
 

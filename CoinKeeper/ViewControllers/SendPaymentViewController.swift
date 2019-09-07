@@ -43,7 +43,7 @@ CurrencySwappableAmountEditor {
   var countryCodeSearchView: CountryCodeSearchView?
   let countryCodeDataSource = CountryCodePickerDataSource()
 
-  fileprivate weak var delegate: SendPaymentViewControllerCoordinator!
+  private(set) weak var delegate: SendPaymentViewControllerCoordinator!
 
   var currencyValueManager: CurrencyValueDataSourceType? {
     return delegate

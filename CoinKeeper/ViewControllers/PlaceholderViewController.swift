@@ -14,7 +14,7 @@ protocol PlaceholderViewControllerDelegate: AnyObject {
 }
 
 final class PlaceholderViewController: BaseViewController, StoryboardInitializable {
-  fileprivate weak var delegate: PlaceholderViewControllerDelegate!
+  private(set) weak var delegate: PlaceholderViewControllerDelegate?
 
   @IBAction func clearPinTapped(_ sender: UIButton) {
     delegate.clearPin()

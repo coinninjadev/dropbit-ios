@@ -44,7 +44,7 @@ class DeviceVerificationCoordinator: ChildCoordinatorType {
 
   private let errorMessageFactory = DeviceVerificationErrorMessageFactory()
 
-  fileprivate weak var delegate: DeviceVerificationCoordinatorDelegate!
+  private(set) weak var delegate: DeviceVerificationCoordinatorDelegate!
 
   required init(_ navigationController: UINavigationController,
                 delegate: DeviceVerificationCoordinatorDelegate,

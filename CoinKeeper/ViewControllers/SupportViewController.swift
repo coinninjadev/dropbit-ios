@@ -48,7 +48,7 @@ final class SupportViewController: BaseViewController, StoryboardInitializable {
     return controller
   }
 
-  fileprivate weak var delegate: SupportViewControllerDelegate!
+  private(set) weak var delegate: SupportViewControllerDelegate!
 
   override func viewDidLoad() {
     super.viewDidLoad()

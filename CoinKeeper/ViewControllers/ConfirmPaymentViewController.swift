@@ -69,7 +69,7 @@ class ConfirmPaymentViewController: PresentableViewController, StoryboardInitial
   @IBOutlet var avatarImageView: UIImageView!
   @IBOutlet var confirmView: ConfirmView!
 
-  fileprivate weak var delegate: ConfirmPaymentViewControllerDelegate!
+  private(set) weak var delegate: ConfirmPaymentViewControllerDelegate!
 
   @IBAction func changeFeeType(_ sender: UISegmentedControl) {
     guard let model = feeModel else { return }

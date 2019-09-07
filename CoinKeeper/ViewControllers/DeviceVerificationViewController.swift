@@ -131,7 +131,7 @@ final class DeviceVerificationViewController: BaseViewController {
   var countryCodeSearchView: CountryCodeSearchView?
   let countryCodeDataSource = CountryCodePickerDataSource()
 
-  fileprivate weak var delegate: DeviceVerificationViewControllerDelegate!
+  private(set) weak var delegate: DeviceVerificationViewControllerDelegate!
 
   var entryMode: DeviceVerificationViewController.Mode = .phoneNumberEntry {
     didSet {

@@ -32,7 +32,7 @@ class ScanQRViewController: BaseViewController, StoryboardInitializable {
     return CompositeValidator<String>(validators: [StringEmptyValidator(), BitcoinAddressValidator()])
   }()
 
-  fileprivate weak var delegate: ScanQRViewControllerDelegate!
+  private(set) weak var delegate: ScanQRViewControllerDelegate!
 
   static func newInstance(delegate: ScanQRViewControllerDelegate) -> ScanQRViewController {
     let vc = ScanQRViewController.makeFromStoryboard()

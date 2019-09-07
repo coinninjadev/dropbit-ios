@@ -85,8 +85,8 @@ final class RequestPayViewController: PresentableViewController, StoryboardIniti
   }
 
   // MARK: variables
-  fileprivate weak var delegate: RequestPayViewControllerDelegate!
-  fileprivate weak var alertManager: AlertManagerType?
+  private(set) weak var delegate: RequestPayViewControllerDelegate!
+  private(set) weak var alertManager: AlertManagerType?
 
   let rateManager: ExchangeRateManager = ExchangeRateManager()
   var currencyValueManager: CurrencyValueDataSourceType?

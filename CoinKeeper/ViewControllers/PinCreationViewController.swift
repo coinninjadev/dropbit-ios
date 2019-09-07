@@ -61,7 +61,7 @@ final class PinCreationViewController: BaseViewController {
   var setupFlow: SetupFlow?
 
   // MARK: variables
-  fileprivate weak var delegate: PinCreationViewControllerDelegate!
+  private(set) weak var delegate: PinCreationViewControllerDelegate!
 
   var verificationDelegate: PinVerificationDelegate? {
     return delegate

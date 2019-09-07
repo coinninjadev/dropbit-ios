@@ -53,7 +53,7 @@ final class MemoEntryViewController: BaseViewController, StoryboardInitializable
     return vc
   }
 
-  fileprivate weak var delegate: MemoEntryViewControllerDelegate!
+  private(set) weak var delegate: MemoEntryViewControllerDelegate!
 
   required init?(coder aDecoder: NSCoder) {
     super.init(coder: aDecoder)

@@ -121,7 +121,7 @@ class ContactsViewController: PresentableViewController, StoryboardInitializable
     return vc
   }
 
-  fileprivate weak var delegate: ContactsViewControllerDelegate!
+  private(set) weak var delegate: ContactsViewControllerDelegate!
 
   weak var selectionDelegate: SelectedValidContactDelegate?
 

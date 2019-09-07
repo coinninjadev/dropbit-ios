@@ -20,7 +20,7 @@ protocol DrawerViewControllerDelegate: CurrencyValueDataSourceType & BadgeUpdate
 
 class DrawerViewController: BaseViewController, StoryboardInitializable {
 
-  fileprivate weak var delegate: DrawerViewControllerDelegate!
+  private(set) weak var delegate: DrawerViewControllerDelegate!
 
   var drawerTableViewDDS: DrawerTableViewDDS?
 

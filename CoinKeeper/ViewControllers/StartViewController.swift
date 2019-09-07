@@ -19,7 +19,7 @@ protocol StartViewControllerDelegate: AnyObject {
 
 final class StartViewController: BaseViewController {
 
-  fileprivate weak var delegate: StartViewControllerDelegate?
+  private(set) weak var delegate: StartViewControllerDelegate?
 
   @IBOutlet var restoreWalletButton: UIButton!
   @IBOutlet var claimInviteButton: UIButton!

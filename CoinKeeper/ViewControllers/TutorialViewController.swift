@@ -15,7 +15,7 @@ protocol TutorialViewControllerDelegate: ViewControllerDismissable {
 
 class TutorialViewController: BasePageViewController, StoryboardInitializable {
 
-  fileprivate weak var tutorialDelegate: TutorialViewControllerDelegate!
+  private(set) weak var tutorialDelegate: TutorialViewControllerDelegate!
 
   private weak var urlOpener: URLOpener?
   private var pageControl = UIPageControl()
