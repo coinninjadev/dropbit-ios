@@ -17,10 +17,16 @@ final class PlaceholderViewController: BaseViewController, StoryboardInitializab
   private(set) weak var delegate: PlaceholderViewControllerDelegate?
 
   @IBAction func clearPinTapped(_ sender: UIButton) {
-    delegate.clearPin()
+    delegate?.clearPin()
   }
 
   @IBAction func requestPayTapped(_ sender: UIButton) {
-    delegate.viewControllerRequestPayTapped(self)
+    delegate?.viewControllerRequestPayTapped(self)
+  }
+
+  static func newInstance(delegate: PlaceholderViewControllerDelegate?) -> PlaceholderViewController {
+    let vc = PlaceholderViewController.makeFromStoryboard()
+    vc.delegate = delegate
+    return vc
   }
 }

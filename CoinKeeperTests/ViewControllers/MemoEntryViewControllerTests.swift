@@ -17,8 +17,7 @@ class MemoEntryViewControllerTests: XCTestCase {
 
   override func setUp() {
     mockCoordinator = MockCoordinator()
-    sut = MemoEntryViewController.makeFromStoryboard()
-    sut.delegate = mockCoordinator
+    sut = MemoEntryViewController.newInstance(delegate: mockCoordinator, backgroundImage: nil, completion: {_ in })
     _ = sut.view
   }
 
@@ -63,7 +62,7 @@ class MemoEntryViewControllerTests: XCTestCase {
     XCTAssertNil(sut.backgroundContentImageView.image, "image should initially be nil")
 
     let image = UIImage(named: "fakeQRCode")
-    sut.backgroundImage = image
+    sut = MemoEntryViewController.newInstance(delegate: self.mockCoordinator, backgroundImage: image, completion: { _ in })
 
     sut.viewDidLoad()
 

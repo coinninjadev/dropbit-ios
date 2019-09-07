@@ -15,9 +15,8 @@ class SpendBitcoinViewControllerTests: XCTestCase {
 
   override func setUp() {
     super.setUp()
-    sut = SpendBitcoinViewController.makeFromStoryboard()
     mockCoordinator = MockSpendBitcoinViewControllerDelegate()
-    sut.delegate = mockCoordinator
+    sut = SpendBitcoinViewController.newInstance(delegate: mockCoordinator)
     _ = sut.view
   }
 

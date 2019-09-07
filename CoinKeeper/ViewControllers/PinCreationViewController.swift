@@ -51,9 +51,20 @@ final class PinCreationViewController: BaseViewController {
   static func newInstance(setupFlow: SetupFlow?,
                           delegate: PinCreationViewControllerDelegate,
                           mode: Mode = .pinEntry) -> PinCreationViewController {
+    return newInstance(setupFlow: setupFlow,
+                       entryDelegate: delegate,
+                       verificationDelegate: delegate,
+                       mode: mode)
+  }
+
+  static func newInstance(setupFlow: SetupFlow?,
+                          entryDelegate: PinCreationEntryDelegate,
+                          verificationDelegate: PinVerificationDelegate,
+                          mode: Mode) -> PinCreationViewController {
     let vc = PinCreationViewController.makeFromStoryboard()
     vc.setupFlow = setupFlow
-    vc.delegate = delegate
+    vc.entryDelegate = entryDelegate
+    vc.verificationDelegate = verificationDelegate
     vc.entryMode = mode
     return vc
   }
@@ -61,11 +72,8 @@ final class PinCreationViewController: BaseViewController {
   var setupFlow: SetupFlow?
 
   // MARK: variables
-  private(set) weak var delegate: PinCreationViewControllerDelegate!
-
-  var verificationDelegate: PinVerificationDelegate? {
-    return delegate
-  }
+  private(set) weak var entryDelegate: PinCreationEntryDelegate!
+  private(set) weak var verificationDelegate: PinVerificationDelegate!
 
   var entryMode: PinCreationViewController.Mode = .pinEntry {
     didSet {
@@ -134,7 +142,7 @@ extension PinCreationViewController: KeypadEntryViewDelegate {
     let result = digitEntryDisplayViewModel.add(digit: digit)
     guard result == .complete else { return }
     switch entryMode {
-    case .pinEntry: delegate.viewControllerFullyEnteredPin(self, digits: digitEntryDisplayViewModel.digits)
+    case .pinEntry: entryDelegate.viewControllerFullyEnteredPin(self, digits: digitEntryDisplayViewModel.digits)
     case .pinVerification(let previousDigits):
       if digitEntryDisplayViewModel.digits == previousDigits {
         verificationDelegate?.pinWasVerified(digits: previousDigits, for: self.setupFlow)

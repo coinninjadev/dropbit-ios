@@ -148,8 +148,6 @@ class BackupRecoveryWordsViewControllerTests: XCTestCase {
 
   func testTappingNextButtonWhenOnLastWordTellsDelegateToVerifyWords() {
     setupWordsForNavigation()
-    let mockCoordinator = MockCoordinator()
-    sut.delegate = mockCoordinator
     let twelfthIndexPath = IndexPath(item: 11, section: 0)
     sut.wordCollectionView.scrollToItem(at: twelfthIndexPath, at: .centeredHorizontally, animated: false)
     sut.wordCollectionView.layoutIfNeeded() // hack - here too

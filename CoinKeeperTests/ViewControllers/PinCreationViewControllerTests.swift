@@ -10,17 +10,26 @@ import UIKit
 @testable import DropBit
 import XCTest
 
+//swiftlint:disable weak_delegate
 class PinCreationViewControllerTests: XCTestCase {
   var sut: PinCreationViewController!
+  var mockEntryDelegate: MockPinCreationEntryDelegate!
+  var mockVerificationDelegate: MockPinVerificationDelegate!
 
   override func setUp() {
     super.setUp()
-
-    self.sut = PinCreationViewController.makeFromStoryboard()
+    self.mockEntryDelegate = MockPinCreationEntryDelegate()
+    self.mockVerificationDelegate = MockPinVerificationDelegate()
+    self.sut = PinCreationViewController.newInstance(setupFlow: nil,
+                                                     entryDelegate: mockEntryDelegate,
+                                                     verificationDelegate: mockVerificationDelegate,
+                                                     mode: .pinEntry)
     _ = self.sut.view
   }
 
   override func tearDown() {
+    self.mockEntryDelegate = nil
+    self.mockVerificationDelegate = nil
     self.sut = nil
 
     super.tearDown()
@@ -68,19 +77,18 @@ class PinCreationViewControllerTests: XCTestCase {
   }
 
   // MARK: actions produce results
-  var mockCoordinator: MockPinCreationViewControllerDelegate!
+
   private func setupForSelectedDigitTests() {
-    mockCoordinator = MockPinCreationViewControllerDelegate()
-    self.sut.delegate = mockCoordinator
     self.sut.errorLabel.isHidden = false
   }
+
   func testCallingSelectedDigitFirstTimeHidesErrorLabel() {
     setupForSelectedDigitTests()
     let matchingDigit = "5"
     self.sut.selected(digit: matchingDigit)
 
     XCTAssertTrue(self.sut.errorLabel.isHidden, "errorLabel should be hidden")
-    XCTAssertFalse(mockCoordinator.pinWasFullyEntered, "pin should not be fully entered")
+    XCTAssertFalse(mockEntryDelegate.pinWasFullyEntered, "pin should not be fully entered")
   }
 
   func testCallingSelectedDigitsFiveTimesDoesNotYetTellDelegate() {
@@ -88,8 +96,8 @@ class PinCreationViewControllerTests: XCTestCase {
     let matchingDigit = "5"
     5.times { self.sut.selected(digit: matchingDigit) }
 
-    XCTAssertFalse(mockCoordinator.pinWasFullyEntered, "pin should not be fully entered")
-    XCTAssertEqual(mockCoordinator.digits, "", "digits should be empty")
+    XCTAssertFalse(mockEntryDelegate.pinWasFullyEntered, "pin should not be fully entered")
+    XCTAssertEqual(mockEntryDelegate.digits, "", "digits should be empty")
   }
 
   func testCallingSelectedDigitsSixTimesTellsDelegatePinWasEntered() {
@@ -98,31 +106,26 @@ class PinCreationViewControllerTests: XCTestCase {
     let expectedDigits = Array(repeating: matchingDigit, count: 6).joined()
     6.times { self.sut.selected(digit: matchingDigit) }
 
-    XCTAssertTrue(mockCoordinator.pinWasFullyEntered, "pin should be fully entered")
-    XCTAssertEqual(mockCoordinator.digits, expectedDigits)
+    XCTAssertTrue(mockEntryDelegate.pinWasFullyEntered, "pin should be fully entered")
+    XCTAssertEqual(mockEntryDelegate.digits, expectedDigits)
   }
 
   func testCallingSelectedDigitInPinVerificationMode_EqualEntries() {
-    mockCoordinator = MockPinCreationViewControllerDelegate()
-    let mockVerificationDelegate = MockPinVerificationDelegate()
+    mockEntryDelegate = MockPinCreationEntryDelegate()
     let matchingDigit = "2"
-    self.sut.verificationDelegate = mockVerificationDelegate
-    self.sut.delegate = mockCoordinator
     let firstDigits = Array(repeating: matchingDigit, count: 6).joined()
     self.sut.entryMode = .pinVerification(digits: firstDigits)
     6.times { self.sut.selected(digit: matchingDigit) }
 
     XCTAssertTrue(mockVerificationDelegate.pinWasVerified, "pin should be verified")
-    XCTAssertFalse(mockCoordinator.pinWasFullyEntered, "coordinator should not be told about pin verified")
+    XCTAssertFalse(mockEntryDelegate.pinWasFullyEntered, "coordinator should not be told about pin verified")
   }
 
   func testCallingSelectedDigitInPinVerificationMode_NonequalEntries() {
-    mockCoordinator = MockPinCreationViewControllerDelegate()
-    let mockVerificationDelegate = MockPinVerificationDelegate()
+    mockEntryDelegate = MockPinCreationEntryDelegate()
+
     let matchingDigit = "2"
     let nonMatchingDigit = "4"
-    self.sut.verificationDelegate = mockVerificationDelegate
-    self.sut.delegate = mockCoordinator
     let firstDigits = Array(repeating: matchingDigit, count: 6).joined()
     self.sut.entryMode = .pinVerification(digits: firstDigits)
     6.times { self.sut.selected(digit: nonMatchingDigit) }
@@ -138,11 +141,9 @@ class PinCreationViewControllerTests: XCTestCase {
 
   func testSelectedBackActionCalledRemovesDigit() {
     let matchingDigit = "5"
-    mockCoordinator = MockPinCreationViewControllerDelegate()
-    self.sut.delegate = mockCoordinator
     5.times { self.sut.selected(digit: matchingDigit) }
 
-    XCTAssertFalse(mockCoordinator.pinWasFullyEntered, "should not tell delegate that pin was entered")
-    XCTAssertEqual(mockCoordinator.digits, "", "delegate's digits should be empty")
+    XCTAssertFalse(mockEntryDelegate.pinWasFullyEntered, "should not tell delegate that pin was entered")
+    XCTAssertEqual(mockEntryDelegate.digits, "", "delegate's digits should be empty")
   }
 }

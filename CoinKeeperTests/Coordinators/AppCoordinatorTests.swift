@@ -59,7 +59,7 @@ class AppCoordinatorTests: MockedPersistenceTestCase {
     XCTAssertTrue(sut.navigationController.topViewController is StartViewController, "topViewController should be a StartViewController")
 
     if let startVC = sut.navigationController.topViewController as? StartViewController {
-      XCTAssertTrue(startVC.coordinationDelegate === sut, "coordinationDelegate should be sut")
+      XCTAssertTrue(startVC.delegate === sut, "coordinationDelegate should be sut")
     } else {
       XCTFail("topViewController should be a StartViewController")
     }
@@ -89,7 +89,7 @@ class AppCoordinatorTests: MockedPersistenceTestCase {
 
     if let drawerVC = mockNavigationController.topViewController as? MMDrawerController,
       let centerVC = drawerVC.centerViewController as? WalletOverviewViewController {
-      XCTAssertTrue(centerVC.coordinationDelegate === sut, "coordinationDelegate should be sut")
+      XCTAssertTrue(centerVC.delegate === sut, "coordinationDelegate should be sut")
     } else {
       XCTFail("centerViewController should be a TransactionHistoryViewController")
     }

@@ -12,10 +12,12 @@ import UIKit
 
 class DeviceVerificationViewControllerTests: XCTestCase {
   var sut: DeviceVerificationViewController!
+  var mockCoordinator: MockCoordinator!
 
   override func setUp() {
     super.setUp()
-    sut = DeviceVerificationViewController.makeFromStoryboard()
+    self.mockCoordinator = MockCoordinator()
+    sut = DeviceVerificationViewController.newInstance(delegate: mockCoordinator, entryMode: .phoneNumberEntry, setupFlow: nil)
     _ = sut.view
   }
 
@@ -40,4 +42,22 @@ class DeviceVerificationViewControllerTests: XCTestCase {
     XCTAssertTrue(actions.contains(resendSelector.description), "resendCodeButton should contain action")
   }
 
+  class MockCoordinator: DeviceVerificationViewControllerDelegate {
+    func viewController(_ viewController: DeviceVerificationViewController, didEnterPhoneNumber phoneNumber: GlobalPhoneNumber) { }
+    func viewControllerDidRequestResendCode(_ viewController: DeviceVerificationViewController) { }
+    func viewControllerDidSkipPhoneVerification(_ viewController: DeviceVerificationViewController) { }
+    func viewControllerDidSelectVerifyTwitter(_ viewController: UIViewController) { }
+
+    func viewController(_ codeEntryViewController: DeviceVerificationViewController,
+                        didEnterCode code: String,
+                        forUserId userId: String,
+                        completion: @escaping (Bool) -> Void) {
+      completion(true)
+    }
+
+    func viewControllerShouldShowSkipButton() -> Bool {
+      return true
+    }
+
+  }
 }

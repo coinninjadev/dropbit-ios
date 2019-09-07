@@ -16,9 +16,8 @@ class GetBitcoinViewControllerTests: XCTestCase {
 
   override func setUp() {
     super.setUp()
-    sut = GetBitcoinViewController.makeFromStoryboard()
     mockCoordinator = MockGetBitcoinViewControllerDelegate()
-    sut.delegate = mockCoordinator
+    sut = GetBitcoinViewController.newInstance(delegate: mockCoordinator)
     _ = sut.view
   }
 

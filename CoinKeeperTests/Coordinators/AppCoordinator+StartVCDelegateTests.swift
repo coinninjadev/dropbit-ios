@@ -30,7 +30,7 @@ class AppCoordinatorStartVCDelegateTests: XCTestCase {
     _ = mockPersistenceManager.keychainManager.store(valueToHash: "foo", key: .userPin)
     self.sut = AppCoordinator(persistenceManager: mockPersistenceManager, launchStateManager: mockLaunchStateManager)
     TestHelpers.initializeWindow(with: self.sut.navigationController)
-    let fakeVC = PlaceholderViewController.makeFromStoryboard()
+    let fakeVC = PlaceholderViewController.newInstance(delegate: nil)
     self.sut.navigationController.viewControllers = [fakeVC]
     mockLaunchStateManager.mockShouldRequireAuthentication = true
 
@@ -40,7 +40,7 @@ class AppCoordinatorStartVCDelegateTests: XCTestCase {
 
     if let topVC = self.sut.navigationController.viewControllers.first {
       XCTAssertTrue(topVC is PinEntryViewController, "topVC should be PinEntryVC")
-      XCTAssertTrue((topVC as? PinEntryViewController)?.coordinationDelegate === self.sut, "coordinationDelegate should be sut")
+      XCTAssertTrue((topVC as? PinEntryViewController)?.delegate === self.sut, "coordinationDelegate should be sut")
     } else {
       XCTFail("View Controllers should not be empty")
     }
@@ -67,7 +67,8 @@ class AppCoordinatorStartVCDelegateTests: XCTestCase {
                     "pushed view controller should be PinCreationViewController")
 
       let viewController = mockNavigationController.pushedViewController as? PinCreationViewController
-      XCTAssertTrue(viewController?.coordinationDelegate === self.sut, "coordinationDelegate should be sut")
+      XCTAssertTrue(viewController?.entryDelegate === self.sut, "entryDelegate should be sut")
+      XCTAssertTrue(viewController?.verificationDelegate === self.sut, "verificationDelegate should be sut")
 
       expectation.fulfill()
     }

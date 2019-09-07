@@ -13,16 +13,19 @@ import XCTest
 
 class RequestPayViewControllerTests: XCTestCase {
   var sut: RequestPayViewController!
+  var mockCoordinator: MockCoordinator!
 
   override func setUp() {
     super.setUp()
-    self.sut = RequestPayViewController.makeFromStoryboard()
+    mockCoordinator = MockCoordinator()
+    self.sut = RequestPayViewController.newInstance(delegate: mockCoordinator, viewModel: nil, alertManager: nil)
     _ = self.sut.view
 
     UIPasteboard.general.string = ""
   }
 
   override func tearDown() {
+    self.mockCoordinator = nil
     self.sut = nil
     UIPasteboard.general.string = ""
     super.tearDown()
@@ -55,22 +58,13 @@ class RequestPayViewControllerTests: XCTestCase {
     XCTAssertTrue(actions.contains(sendSelector), "sendRequestButton should contain action")
   }
 
-  private func setupDelegate() -> MockCoordinator {
-    let mockCoordinator = MockCoordinator()
-    self.sut.delegate = mockCoordinator
-    return mockCoordinator
-  }
   // MARK: actions produce results
   func testCloseButtonTappedTellsDelegate() {
-    let mockCoorinator = setupDelegate()
-
     self.sut.closeButton.sendActions(for: .touchUpInside)
-
-    XCTAssertTrue(mockCoorinator.didSelectCloseWasCalled, "closeButtonTapped should tell delegate to close")
+    XCTAssertTrue(mockCoordinator.didSelectCloseWasCalled, "closeButtonTapped should tell delegate to close")
   }
 
   func testSendRequestButtonTappedTellsDelegate() {
-    let mockCoordinator = setupDelegate()
     self.sut.qrImageView.image = UIImage(named: "fakeQRCode")
 
     self.sut.bottomActionButton.sendActions(for: .touchUpInside)
@@ -81,7 +75,6 @@ class RequestPayViewControllerTests: XCTestCase {
 
   func testTappingLabelCopiesAddress() {
     let sampleRates: ExchangeRates = [.BTC: 1, .USD: 7000]
-    let mockCoordinator = setupDelegate()
     let address = "12A1MyfXbW6RhdRAZEqofac5jCQQjwEPBu"
     let currencyPair = CurrencyPair(primary: .BTC, fiat: .USD)
     let swappableViewModel = CurrencySwappableEditAmountViewModel(exchangeRates: sampleRates,
@@ -89,7 +82,7 @@ class RequestPayViewControllerTests: XCTestCase {
                                                                   walletTransactionType: .onChain,
                                                                   currencyPair: currencyPair,
                                                                   delegate: nil)
-    self.sut.viewModel = RequestPayViewModel(receiveAddress: address, viewModel: swappableViewModel)
+    self.sut.viewModel = RequestPayViewModel(receiveAddress: address, amountViewModel: swappableViewModel)
 
     let tap = UITapGestureRecognizer()
 

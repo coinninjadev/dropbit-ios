@@ -13,13 +13,18 @@ import CNBitcoinKit
 class ConfirmPaymentViewControllerTests: XCTestCase {
 
   var sut: ConfirmPaymentViewController!
+  var mockCoordinator: MockCoordinator!
 
   override func setUp() {
-    sut = ConfirmPaymentViewController.makeFromStoryboard()
+    mockCoordinator = MockCoordinator()
+    let viewModel = MockConfirmLightningPaymentViewModel()
+    sut = ConfirmPaymentViewController.newInstance(type: .payment, viewModel: viewModel,
+                                                   feeModel: .lightning, delegate: mockCoordinator)
     _ = sut.view
   }
 
   override func tearDown() {
+    mockCoordinator = nil
     sut = nil
   }
 
