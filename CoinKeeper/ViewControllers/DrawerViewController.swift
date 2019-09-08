@@ -35,12 +35,13 @@ class DrawerViewController: BaseViewController, StoryboardInitializable {
   static func newInstance(delegate: DrawerViewControllerDelegate) -> DrawerViewController {
     let vc = DrawerViewController.makeFromStoryboard()
     vc.delegate = delegate
-    vc.drawerTableViewDDS?.currencyValueManager = delegate
     return vc
   }
 
   override func viewDidLoad() {
     super.viewDidLoad()
+
+    view.backgroundColor = .darkBlueBackground
 
     versionLabel.textColor = UIColor.white
     versionLabel.font = .light(10)
@@ -50,12 +51,11 @@ class DrawerViewController: BaseViewController, StoryboardInitializable {
     drawerTableView.registerNib(cellType: BackupWordsReminderDrawerCell.self)
     drawerTableView.registerHeaderFooter(headerFooterType: DrawerTableViewHeader.self)
 
-    drawerTableView.reloadData() // rebuild header with price data
+    configureDrawerData()
+    setupDataSource()
+
     delegate.viewControllerDidRequestBadgeUpdate(self)
     self.subscribeToBadgeNotifications(with: delegate.badgeManager)
-
-    view.backgroundColor = .darkBlueBackground
-    setupDataSource()
   }
 
   override func viewWillAppear(_ animated: Bool) {
@@ -69,6 +69,7 @@ class DrawerViewController: BaseViewController, StoryboardInitializable {
     }
 
     drawerTableViewDDS = DrawerTableViewDDS(settingsActionHandler: settingsActionHandler)
+    drawerTableViewDDS?.currencyValueManager = delegate
     drawerTableView.delegate = drawerTableViewDDS
     drawerTableView.dataSource = drawerTableViewDDS
     drawerTableView.backgroundColor = .clear
