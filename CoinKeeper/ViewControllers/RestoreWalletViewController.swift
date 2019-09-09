@@ -46,9 +46,7 @@ class RestoreWalletViewController: BaseViewController, StoryboardInitializable {
   @IBOutlet var containerView: UIView!
   @IBOutlet var containerStackView: UIStackView!
 
-  var coordinationDelegate: RestoreWalletViewControllerDelegate? {
-    return generalCoordinationDelegate as? RestoreWalletViewControllerDelegate
-  }
+  private(set) weak var delegate: RestoreWalletViewControllerDelegate!
 
   lazy private var wordButtons: [PrimaryActionButton] = [wordButtonOne, wordButtonTwo, wordButtonThree, wordButtonFour]
 
@@ -68,6 +66,12 @@ class RestoreWalletViewController: BaseViewController, StoryboardInitializable {
   }()
 
   private var words: [String] = []
+
+  static func newInstance(delegate: RestoreWalletViewControllerDelegate) -> RestoreWalletViewController {
+    let vc = RestoreWalletViewController.makeFromStoryboard()
+    vc.delegate = delegate
+    return vc
+  }
 
   override func accessibleViewsAndIdentifiers() -> [AccessibleViewElement] {
     return [
@@ -176,7 +180,7 @@ class RestoreWalletViewController: BaseViewController, StoryboardInitializable {
     if words.count == 12 {
       wordTextField.text = ""
       hideAllWordButtons()
-      coordinationDelegate?.viewControllerDidSubmitWords(words: words)
+      delegate.viewControllerDidSubmitWords(words: words)
     } else {
       setupNextWordEntry()
     }

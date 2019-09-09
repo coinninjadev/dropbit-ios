@@ -1,5 +1,5 @@
 //
-//  MockPinCreationViewControllerDelegate.swift
+//  MockPinCreationEntryDelegate.swift
 //  DropBitTests
 //
 //  Created by BJ Miller on 2/15/18.
@@ -8,7 +8,7 @@
 
 @testable import DropBit
 
-class MockPinCreationViewControllerDelegate: PinCreationViewControllerDelegate {
+class MockPinCreationEntryDelegate: PinCreationEntryDelegate {
   var pinWasFullyEntered = false
   var digits: String = ""
 

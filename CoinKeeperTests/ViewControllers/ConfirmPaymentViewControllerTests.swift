@@ -17,14 +17,15 @@ class ConfirmPaymentViewControllerTests: XCTestCase {
 
   override func setUp() {
     mockCoordinator = MockCoordinator()
-    sut = ConfirmPaymentViewController.makeFromStoryboard()
-    sut.generalCoordinationDelegate = mockCoordinator
+    let viewModel = MockConfirmLightningPaymentViewModel()
+    sut = ConfirmPaymentViewController.newInstance(type: .payment, viewModel: viewModel,
+                                                   feeModel: .lightning, delegate: mockCoordinator)
     _ = sut.view
   }
 
   override func tearDown() {
-    sut = nil
     mockCoordinator = nil
+    sut = nil
   }
 
   // MARK: outlets

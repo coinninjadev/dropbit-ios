@@ -72,5 +72,4 @@ class TwitterAvatarView: UIView {
     twitterLogoImageView.applyCornerRadius(logoRadius)
   }
 
-
 }
