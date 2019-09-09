@@ -29,8 +29,7 @@ extension AppCoordinator: DrawerViewControllerDelegate {
   }
 
   func showVerificationStatusViewController() {
-    let verificationStatusViewController = VerificationStatusViewController.makeFromStoryboard()
-    assignCoordinationDelegate(to: verificationStatusViewController)
+    let verificationStatusViewController = VerificationStatusViewController.newInstance(delegate: self)
     navigationController.present(verificationStatusViewController, animated: true, completion: nil)
   }
 
@@ -46,8 +45,7 @@ extension AppCoordinator: DrawerViewControllerDelegate {
   func spendButtonWasTouched() {
     analyticsManager.track(event: .spendButtonPressed, with: nil)
     drawerController?.toggle(.left, animated: true, completion: nil)
-    let controller = SpendBitcoinViewController.makeFromStoryboard()
-    assignCoordinationDelegate(to: controller)
+    let controller = SpendBitcoinViewController.newInstance(delegate: self)
     navigationController.pushViewController(controller, animated: true)
   }
 
@@ -61,8 +59,7 @@ extension AppCoordinator: DrawerViewControllerDelegate {
   func getBitcoinButtonWasTouched() {
     analyticsManager.track(event: .getBitcoinButtonPressed, with: nil)
     drawerController?.toggle(.left, animated: true, completion: nil)
-    let controller = GetBitcoinViewController.makeFromStoryboard()
-    assignCoordinationDelegate(to: controller)
+    let controller = GetBitcoinViewController.newInstance(delegate: self)
     navigationController.pushViewController(controller, animated: true)
   }
 }

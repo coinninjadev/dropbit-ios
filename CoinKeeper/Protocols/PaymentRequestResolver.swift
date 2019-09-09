@@ -36,5 +36,4 @@ extension PaymentRequestResolver {
     }
   }
 
-
 }

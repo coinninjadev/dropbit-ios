@@ -33,10 +33,9 @@ extension AppCoordinator: PinVerificationDelegate {
       }
 
     case .restoreWallet:
-      return { [weak self] in
-        let viewController = RestoreWalletViewController.makeFromStoryboard()
-        self?.assignCoordinationDelegate(to: viewController)
-        self?.navigationController.pushViewController(viewController, animated: true)
+      return { [unowned self] in
+        let viewController = RestoreWalletViewController.newInstance(delegate: self)
+        self.navigationController.pushViewController(viewController, animated: true)
       }
     }
   }

@@ -32,8 +32,7 @@ extension AppCoordinator: BalanceContainerDelegate {
 
   func didTapChartsButton() {
     guard let topVC = self.navigationController.topViewController() else { return }
-    let newsViewController = NewsViewController.makeFromStoryboard()
-    assignCoordinationDelegate(to: newsViewController)
+    let newsViewController = NewsViewController.newInstance(delegate: self)
     topVC.present(newsViewController, animated: true, completion: nil)
   }
 

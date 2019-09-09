@@ -15,15 +15,20 @@ protocol TutorialViewControllerDelegate: ViewControllerDismissable {
 
 class TutorialViewController: BasePageViewController, StoryboardInitializable {
 
-  var coordinationDelegate: TutorialViewControllerDelegate? {
-    return generalCoordinationDelegate as? TutorialViewControllerDelegate
-  }
+  private(set) weak var tutorialDelegate: TutorialViewControllerDelegate!
 
-  weak var urlOpener: URLOpener?
+  private weak var urlOpener: URLOpener?
   private var pageControl = UIPageControl()
   private var closeButton: UIButton = UIButton()
 
   fileprivate(set) var viewModels: [TutorialScreenViewModel] = []
+
+  static func newInstance(delegate: TutorialViewControllerDelegate, urlOpener: URLOpener) -> TutorialViewController {
+    let vc = TutorialViewController.makeFromStoryboard()
+    vc.tutorialDelegate = delegate
+    vc.urlOpener = urlOpener
+    return vc
+  }
 
   override func accessibleViewsAndIdentifiers() -> [AccessibleViewElement] {
     return [
@@ -134,22 +139,17 @@ class TutorialViewController: BasePageViewController, StoryboardInitializable {
   }
 
   private func setRootPageViewController() {
-    let newPageViewController = TutorialScreenViewController.makeFromStoryboard()
-    newPageViewController.viewModel = viewModels[viewModels.startIndex]
-    newPageViewController.delegate = self
+    guard let newPageViewController = createViewController(at: viewModels.startIndex) else { return }
     setViewControllers([newPageViewController], direction: .forward, animated: false, completion: nil)
   }
 
   func createViewController(at index: Int) -> TutorialScreenViewController? {
     guard let viewModel = viewModels[safe: index] else { return nil }
-    let viewController = TutorialScreenViewController.makeFromStoryboard()
-    viewController.delegate = self
-    viewController.viewModel = viewModel
-    return viewController
+    return TutorialScreenViewController.newInstance(viewModel: viewModel, delegate: self)
   }
 
   @objc func closeButtonWasTouched() {
-    coordinationDelegate?.viewControllerDidSelectClose(self)
+    tutorialDelegate.viewControllerDidSelectClose(self)
   }
 
   fileprivate func togglePageControl(for index: Int) {
@@ -189,7 +189,7 @@ extension TutorialViewController: UIPageViewControllerDelegate {
 extension TutorialViewController: TutorialScreenViewControllerDelegate {
 
   func viewControllerActionWasPressed(_ viewController: TutorialScreenViewController) {
-    coordinationDelegate?.tutorialViewControllerDidFinish(self)
+    tutorialDelegate.tutorialViewControllerDidFinish(self)
   }
 
   func viewControllerUrlWasPressed(_ viewController: TutorialScreenViewController, url: URL) {
@@ -203,29 +203,17 @@ extension TutorialViewController: UIPageViewControllerDataSource {
     guard let viewModel = (viewController as? TutorialScreenViewController)?.viewModel else { return nil }
 
     let index = viewModels.firstIndex(of: viewModel) ?? 0
-    var newPageViewController: TutorialScreenViewController?
-
-    if index > viewModels.startIndex {
-      newPageViewController = TutorialScreenViewController.makeFromStoryboard()
-      newPageViewController?.delegate = self
-      newPageViewController?.viewModel = viewModels[index - 1]
-    }
-
-    return newPageViewController
+    let precedingIndex = index - 1
+    guard precedingIndex >= viewModels.startIndex else { return nil }
+    return createViewController(at: precedingIndex)
   }
 
   func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
     guard let viewModel = (viewController as? TutorialScreenViewController)?.viewModel else { return nil }
 
     let index = viewModels.firstIndex(of: viewModel) ?? 0
-    var newPageViewController: TutorialScreenViewController?
-
-    if index < viewModels.endIndex - 1 {
-      newPageViewController = TutorialScreenViewController.makeFromStoryboard()
-      newPageViewController?.delegate = self
-      newPageViewController?.viewModel = viewModels[index + 1]
-    }
-
-    return newPageViewController
+    let nextIndex = index + 1
+    guard nextIndex <= viewModels.endIndex else { return nil }
+    return createViewController(at: nextIndex)
   }
 }

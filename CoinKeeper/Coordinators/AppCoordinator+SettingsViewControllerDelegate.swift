@@ -38,8 +38,7 @@ extension AppCoordinator: SettingsViewControllerDelegate {
     guard let privacyPolicyHtml = Bundle.main.path(forResource: "licenses", ofType: "html"),
       let html = try? String(contentsOfFile: privacyPolicyHtml, encoding: String.Encoding.utf8),
       let navigationController = viewController.navigationController else { return }
-    let textViewController = TextViewController.makeFromStoryboard()
-    textViewController.htmlString = html
+    let textViewController = TextViewController.newInstance(htmlString: html)
     navigationController.pushViewController(textViewController, animated: true)
   }
 
@@ -178,9 +177,8 @@ extension AppCoordinator: SettingsViewControllerDelegate {
   }
 
   private func showStartViewController() {
-    let startViewController = StartViewController.makeFromStoryboard()
+    let startViewController = StartViewController.newInstance(delegate: self)
     navigationController.setViewControllers([startViewController], animated: false)
     navigationController.isNavigationBarHidden = false
-    assignCoordinationDelegate(to: startViewController)
   }
 }

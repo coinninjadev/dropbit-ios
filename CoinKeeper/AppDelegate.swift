@@ -100,7 +100,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   private func setupCoordinator() {
     log.event("Will set up coordinator")
     window = UIWindow()
-    let viewController = StartViewController.makeFromStoryboard()
+    let viewController = StartViewController.newInstance(delegate: nil)
     let navigationController = CNNavigationController(rootViewController: viewController)
     window?.rootViewController = navigationController
     window?.makeKeyAndVisible()

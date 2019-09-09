@@ -15,33 +15,29 @@ extension AppCoordinator: TransactionHistoryViewControllerDelegate {
 
   func viewControllerDidTapAddMemo(_ viewController: UIViewController,
                                    with completion: @escaping (String) -> Void) {
-    let memoViewController = MemoEntryViewController.makeFromStoryboard()
-    memoViewController.backgroundImage = UIApplication.shared.screenshot()
-    assignCoordinationDelegate(to: memoViewController)
-    memoViewController.completion = completion
+    let background = UIApplication.shared.screenshot()
+    let memoViewController = MemoEntryViewController.newInstance(delegate: self,
+                                                                 backgroundImage: background,
+                                                                 completion: completion)
     viewController.present(memoViewController, animated: true)
   }
 
   func viewControllerDidRequestTutorial(_ viewController: UIViewController) {
     analyticsManager.track(event: .userDidOpenTutorial, with: nil)
-    let viewController = TutorialViewController.makeFromStoryboard()
-    assignCoordinationDelegate(to: viewController)
-    viewController.urlOpener = self
+    let viewController = TutorialViewController.newInstance(delegate: self, urlOpener: self)
     viewController.modalPresentationStyle = .formSheet
     navigationController.present(viewController, animated: true, completion: nil)
   }
 
   func viewControllerDidTapGetBitcoin(_ viewController: UIViewController) {
     analyticsManager.track(event: .getBitcoinButtonPressed, with: nil)
-    let controller = GetBitcoinViewController.makeFromStoryboard()
-    assignCoordinationDelegate(to: controller)
+    let controller = GetBitcoinViewController.newInstance(delegate: self)
     navigationController.pushViewController(controller, animated: true)
   }
 
   func viewControllerDidTapSpendBitcoin(_ viewController: UIViewController) {
     analyticsManager.track(event: .spendBitcoinButtonPressed, with: nil)
-    let controller = SpendBitcoinViewController.makeFromStoryboard()
-    assignCoordinationDelegate(to: controller)
+    let controller = SpendBitcoinViewController.newInstance(delegate: self)
     navigationController.pushViewController(controller, animated: true)
   }
 
@@ -50,8 +46,7 @@ extension AppCoordinator: TransactionHistoryViewControllerDelegate {
   }
 
   func viewControllerShouldSeeTransactionDetails(for object: TransactionDetailCellDisplayable) {
-    let viewController = TransactionPopoverDetailsViewController.makeFromStoryboard()
-    assignCoordinationDelegate(to: viewController)
+    let viewController = TransactionPopoverDetailsViewController.newInstance(delegate: self)
     viewController.modalPresentationStyle = .overFullScreen
     viewController.modalTransitionStyle = .crossDissolve
     navigationController.topViewController()?.present(viewController, animated: true, completion: nil)

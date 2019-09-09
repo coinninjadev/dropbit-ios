@@ -23,14 +23,8 @@ protocol CoordinatorType: class {
   func start()
 }
 
-extension CoordinatorType {
-  func assignCoordinationDelegate(to viewController: UIViewController) {
-    (viewController as? Coordination)?.generalCoordinationDelegate = self
-  }
-}
-
 protocol ChildCoordinatorType: CoordinatorType {
-  var delegate: ChildCoordinatorDelegate? { get set }
+  var childCoordinatorDelegate: ChildCoordinatorDelegate! { get set }
 }
 
 protocol ChildCoordinatorDelegate: class {
@@ -182,8 +176,6 @@ class AppCoordinator: CoordinatorType {
 
     } else {
 
-      navigationController.topViewController.flatMap { self.assignCoordinationDelegate(to: $0) }
-
       // Take user directly to phone verification if wallet exists but wallet ID does not
       // This will register the wallet if needed after a reinstall
       let launchProperties = launchStateManager.currentProperties()
@@ -194,8 +186,7 @@ class AppCoordinator: CoordinatorType {
         // Child coordinator will push DeviceVerificationViewController onto stack in its start() method
         startDeviceVerificationFlow(userIdentityType: .phone, shouldOrphanRoot: true, selectedSetupFlow: .newWallet)
       } else if launchStateManager.isFirstTime() {
-        let startVC = StartViewController.makeFromStoryboard()
-        assignCoordinationDelegate(to: startVC)
+        let startVC = StartViewController.newInstance(delegate: self)
         navigationController.viewControllers = [startVC]
       }
     }
@@ -248,7 +239,6 @@ class AppCoordinator: CoordinatorType {
   }
 
   func start() {
-    (navigationController.topViewController as? BaseViewController).map { self.assignCoordinationDelegate(to: $0) }
     applyUITestArguments(uiTestArguments)
     analyticsManager.start()
     analyticsManager.optIn()
@@ -302,7 +292,6 @@ class AppCoordinator: CoordinatorType {
 
   func startChildCoordinator(childCoordinator: ChildCoordinatorType) {
     childCoordinators.append(childCoordinator)
-    childCoordinator.delegate = self
     childCoordinator.start()
   }
 

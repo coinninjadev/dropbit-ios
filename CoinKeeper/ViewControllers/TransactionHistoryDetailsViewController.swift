@@ -51,7 +51,7 @@ final class TransactionHistoryDetailsViewController: PresentableViewController, 
                           urlOpener: URLOpener) -> TransactionHistoryDetailsViewController {
     let controller = TransactionHistoryDetailsViewController.makeFromStoryboard()
     controller.onChainFetchResultsController = frc
-    controller.generalCoordinationDelegate = delegate
+    controller.delegate = delegate
     controller.selectedIndexPath = selectedIndexPath
     controller.viewModelForIndexPath = viewModelForIndexPath
     return controller
@@ -64,15 +64,14 @@ final class TransactionHistoryDetailsViewController: PresentableViewController, 
                           urlOpener: URLOpener) -> TransactionHistoryDetailsViewController {
     let controller = TransactionHistoryDetailsViewController.makeFromStoryboard()
     controller.lightningFetchResultsController = frc
-    controller.generalCoordinationDelegate = delegate
+    controller.delegate = delegate
     controller.selectedIndexPath = selectedIndexPath
     controller.viewModelForIndexPath = viewModelForIndexPath
     return controller
   }
 
-  var coordinationDelegate: TransactionHistoryDetailsViewControllerDelegate? {
-    return generalCoordinationDelegate as? TransactionHistoryDetailsViewControllerDelegate
-  }
+  //TODO: make this private(set)
+  weak var delegate: TransactionHistoryDetailsViewControllerDelegate!
 
   override var cornerRadius: CGFloat {
     get { return .zero }
@@ -123,39 +122,39 @@ extension TransactionHistoryDetailsViewController: TransactionHistoryDetailCellD
   func didTapQuestionMark(detailCell: TransactionHistoryDetailBaseCell) {
     //TODO: get indexPath, viewModel, and url
     let url = URL(string: "https://foo.com")!
-    coordinationDelegate?.openURL(url, completionHandler: nil)
+    delegate.openURL(url, completionHandler: nil)
   }
 
   func didTapClose(detailCell: TransactionHistoryDetailBaseCell) {
-    coordinationDelegate?.viewControllerDidDismissTransactionDetails(self)
+    delegate.viewControllerDidDismissTransactionDetails(self)
   }
 
   func didTapTwitterShare(detailCell: TransactionHistoryDetailBaseCell) {
     //TODO
 //    guard let tx = detailCell.viewModel?.transaction else { return }
-//    coordinationDelegate?.viewControllerRequestedShareTransactionOnTwitter(self, transaction: tx, shouldDismiss: false)
+//    delegate.viewControllerRequestedShareTransactionOnTwitter(self, transaction: tx, shouldDismiss: false)
   }
 
   func didTapAddress(detailCell: TransactionHistoryDetailBaseCell) {
     //TODO
 //    guard let address = detailCell.viewModel?.receiverAddress,
 //      let addressURL = CoinNinjaUrlFactory.buildUrl(for: .address(id: address)) else { return }
-//    coordinationDelegate?.openURL(addressURL, completionHandler: nil)
+//    delegate.openURL(addressURL, completionHandler: nil)
   }
 
   func didTapBottomButton(detailCell: TransactionHistoryDetailBaseCell) {
       //TODO get managed object, viewModel, and action
 //    case .seeDetails:
 //      guard let viewModel = detailCell.viewModel else { return }
-//      coordinationDelegate?.viewControllerShouldSeeTransactionDetails(for: viewModel)
+//      delegate.viewControllerShouldSeeTransactionDetails(for: viewModel)
 //    case .cancelInvitation:
 //      guard let invitationID = detailCell.viewModel?.transaction?.invitation?.id,
 //        let path = collectionView.indexPath(for: detailCell) else { return }
-//      coordinationDelegate?.viewController(self, didCancelInvitationWithID: invitationID, at: path)
+//      delegate.viewController(self, didCancelInvitationWithID: invitationID, at: path)
   }
 
   func didTapAddMemo(detailCell: TransactionHistoryDetailBaseCell) {
-    coordinationDelegate?.viewControllerDidTapAddMemo(self) { memo in
+    delegate.viewControllerDidTapAddMemo(self) { memo in
       //TODO
 //      guard let vm = self?.viewModel, let delegate = self?.delegate, let tx = vm.transaction else { return }
 //      tx.memo = memo
@@ -171,7 +170,6 @@ extension TransactionHistoryDetailsViewController: TransactionHistoryDetailCellD
   }
 
   func shouldSaveMemo(for transaction: CKMTransaction) -> Promise<Void> {
-    guard let delegate = coordinationDelegate else { return Promise(error: CKPersistenceError.unexpectedResult) }
     return delegate.viewControllerShouldUpdateTransaction(self, transaction: transaction)
   }
 

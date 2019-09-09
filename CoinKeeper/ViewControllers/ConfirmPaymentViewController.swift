@@ -30,7 +30,7 @@ class ConfirmPaymentViewController: PresentableViewController, StoryboardInitial
     vc.transactionType = type
     vc.viewModel = viewModel
     vc.feeModel = feeModel
-    vc.generalCoordinationDelegate = delegate
+    vc.delegate = delegate
     return vc
   }
 
@@ -58,9 +58,7 @@ class ConfirmPaymentViewController: PresentableViewController, StoryboardInitial
   @IBOutlet var avatarImageView: UIImageView!
   @IBOutlet var confirmView: ConfirmView!
 
-  var coordinationDelegate: ConfirmPaymentViewControllerDelegate? {
-    return generalCoordinationDelegate as? ConfirmPaymentViewControllerDelegate
-  }
+  private(set) weak var delegate: ConfirmPaymentViewControllerDelegate!
 
   @IBAction func changeFeeType(_ sender: UISegmentedControl) {
     guard let model = feeModel else { return }
@@ -73,7 +71,7 @@ class ConfirmPaymentViewController: PresentableViewController, StoryboardInitial
         self.viewModel.update(with: self.feeModel.transactionData)
 
       } else {
-        coordinationDelegate?.viewControllerRequestedShowFeeTooExpensiveAlert(self)
+        delegate.viewControllerRequestedShowFeeTooExpensiveAlert(self)
       }
 
       self.updateFeeViews()
@@ -84,7 +82,7 @@ class ConfirmPaymentViewController: PresentableViewController, StoryboardInitial
   }
 
   @IBAction func closeButtonWasTouched() {
-    coordinationDelegate?.viewControllerDidSelectClose(self)
+    delegate.viewControllerDidSelectClose(self)
   }
 
   override func viewDidLoad() {
@@ -102,7 +100,7 @@ class ConfirmPaymentViewController: PresentableViewController, StoryboardInitial
       }
     }
 
-    coordinationDelegate?.confirmPaymentViewControllerDidLoad(self)
+    delegate.confirmPaymentViewControllerDidLoad(self)
 
     updateViewWithModel()
   }
@@ -129,7 +127,7 @@ class ConfirmPaymentViewController: PresentableViewController, StoryboardInitial
     feeAdjustedOutgoingTxData.amount = Int(txData.amount)
     feeAdjustedOutgoingTxData.feeAmount = Int(txData.feeAmount)
 
-    coordinationDelegate?.viewControllerDidConfirmOnChainPayment(
+    delegate.viewControllerDidConfirmOnChainPayment(
       self,
       transactionData: txData,
       rates: viewModel.exchangeRates,
@@ -141,7 +139,7 @@ class ConfirmPaymentViewController: PresentableViewController, StoryboardInitial
     let inputs = LightningPaymentInputs(sats: viewModel.btcAmount.asFractionalUnits(of: .BTC),
                                         invoice: viewModel.invoice,
                                         sharedPayload: viewModel.sharedPayloadDTO)
-    coordinationDelegate?.viewControllerDidConfirmLightningPayment(self, inputs: inputs)
+    delegate.viewControllerDidConfirmLightningPayment(self, inputs: inputs)
   }
 
   private func confirmInvite(with viewModel: ConfirmPaymentInviteViewModel,
@@ -155,7 +153,7 @@ class ConfirmPaymentViewController: PresentableViewController, StoryboardInitial
                                                       btcPair: pair,
                                                       fee: feeModel.networkFeeAmount,
                                                       sharedPayloadDTO: viewModel.sharedPayloadDTO)
-    coordinationDelegate?.viewControllerDidConfirmInvite(self,
+    delegate.viewControllerDidConfirmInvite(self,
                                                          outgoingInvitationDTO: outgoingInvitationDTO,
                                                          walletTxType: viewModel.walletTransactionType)
   }

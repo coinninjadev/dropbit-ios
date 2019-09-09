@@ -29,9 +29,7 @@ class SettingsViewController: BaseViewController, StoryboardInitializable {
 
   var viewModel: SettingsViewModel!
 
-  var coordinationDelegate: SettingsViewControllerDelegate? {
-    return generalCoordinationDelegate as? SettingsViewControllerDelegate
-  }
+  private(set) weak var delegate: SettingsViewControllerDelegate!
 
   @IBOutlet var settingsTableView: UITableView! {
     didSet {
@@ -50,23 +48,23 @@ class SettingsViewController: BaseViewController, StoryboardInitializable {
   @IBOutlet var resyncBlockchainButton: PrimaryActionButton!
 
   @IBAction func deleteWallet(_ sender: Any) {
-    coordinationDelegate?.viewControllerDidRequestDeleteWallet(self, completion: {
-      self.coordinationDelegate?.viewControllerDidConfirmDeleteWallet(self)
-      self.coordinationDelegate?.viewControllerDidSelectClose(self)
+    delegate.viewControllerDidRequestDeleteWallet(self, completion: {
+      self.delegate.viewControllerDidConfirmDeleteWallet(self)
+      self.delegate.viewControllerDidSelectClose(self)
     })
   }
 
   @IBAction func resyncBlockchain(_ sender: Any) {
-    coordinationDelegate?.viewControllerResyncBlockchain(self)
+    delegate.viewControllerResyncBlockchain(self)
   }
 
   @objc func close() {
-    coordinationDelegate?.viewControllerDidSelectClose(self)
+    delegate.viewControllerDidSelectClose(self)
   }
 
   static func newInstance(with delegate: SettingsViewControllerDelegate) -> SettingsViewController {
     let controller = SettingsViewController.makeFromStoryboard()
-    controller.generalCoordinationDelegate = delegate
+    controller.delegate = delegate
     controller.modalPresentationStyle = .formSheet
     return controller
   }
@@ -106,7 +104,7 @@ class SettingsViewController: BaseViewController, StoryboardInitializable {
   }
 
   private func isWalletBackedUp() -> Bool {
-    return coordinationDelegate?.verifyIfWordsAreBackedUp() ?? false
+    return delegate.verifyIfWordsAreBackedUp() ?? false
   }
 
   private func createViewModel() -> SettingsViewModel {
@@ -114,7 +112,7 @@ class SettingsViewController: BaseViewController, StoryboardInitializable {
     let walletSection = walletSectionViewModel()
     let licensesType = SettingsCellType.licenses { [weak self] in
       guard let localSelf = self else { return }
-      localSelf.coordinationDelegate?.viewControllerDidSelectOpenSourceLicenses(localSelf)
+      localSelf.delegate.viewControllerDidSelectOpenSourceLicenses(localSelf)
     }
     let licensesSection = SettingsSectionViewModel(
       headerViewModel: SettingsHeaderFooterViewModel(title: "LICENSES"),
@@ -127,28 +125,28 @@ class SettingsViewController: BaseViewController, StoryboardInitializable {
   private func walletSectionViewModel() -> SettingsSectionViewModel {
     let recoveryWordsCellType = SettingsCellType.recoveryWords(isWalletBackedUp()) { [weak self] in
       guard let localSelf = self else { return }
-      localSelf.coordinationDelegate?.viewControllerDidSelectRecoveryWords(localSelf)
+      localSelf.delegate.viewControllerDidSelectRecoveryWords(localSelf)
     }
     let recoveryWordsVM = SettingsCellViewModel(type: recoveryWordsCellType)
 
-    let dustProtectionEnabled = self.coordinationDelegate?.dustProtectionIsEnabled() ?? false
+    let dustProtectionEnabled = self.delegate.dustProtectionIsEnabled() ?? false
     let dustCellType = SettingsCellType.dustProtection(
       enabled: dustProtectionEnabled,
       infoAction: { [weak self] (type: SettingsCellType) in
         guard let localSelf = self, let url = type.url else { return }
-        localSelf.coordinationDelegate?.viewController(localSelf, didRequestOpenURL: url)
+        localSelf.delegate.viewController(localSelf, didRequestOpenURL: url)
       },
       onChange: { [weak self] (didEnable: Bool) in
         guard let localSelf = self else { return }
-        localSelf.coordinationDelegate?.viewController(localSelf, didEnableDustProtection: didEnable)
+        localSelf.delegate.viewController(localSelf, didEnableDustProtection: didEnable)
       }
     )
     let dustProtectionVM = SettingsCellViewModel(type: dustCellType)
 
-    let isYearlyHighPushEnabled = self.coordinationDelegate?.yearlyHighPushNotificationIsSubscribed() ?? false
+    let isYearlyHighPushEnabled = self.delegate.yearlyHighPushNotificationIsSubscribed() ?? false
     let yearlyHighCellType = SettingsCellType.yearlyHighPushNotification(enabled: isYearlyHighPushEnabled) { [weak self] (didEnable: Bool) in
       guard let localSelf = self else { return }
-      localSelf.coordinationDelegate?.viewController(
+      localSelf.delegate.viewController(
         localSelf,
         didEnableYearlyHighNotification: didEnable,
         completion: { [weak self] in
@@ -164,7 +162,7 @@ class SettingsViewController: BaseViewController, StoryboardInitializable {
 
     let adjustableFeesAction: BasicAction = { [weak self] in
       guard let localSelf = self else { return }
-      localSelf.coordinationDelegate?.viewControllerDidSelectAdjustableFees(localSelf)
+      localSelf.delegate.viewControllerDidSelectAdjustableFees(localSelf)
     }
     let adjustableFeesVM = SettingsCellViewModel(type: .adjustableFees(action: adjustableFeesAction))
 
