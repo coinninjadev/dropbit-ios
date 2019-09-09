@@ -43,8 +43,9 @@ class DeviceVerificationViewControllerTests: XCTestCase {
   }
 
   class MockCoordinator: DeviceVerificationViewControllerDelegate {
+
     func viewController(_ viewController: DeviceVerificationViewController, didEnterPhoneNumber phoneNumber: GlobalPhoneNumber) { }
-    func viewControllerDidRequestResendCode(_ viewController: DeviceVerificationViewController) { }
+    func viewControllerDidRequestResendCode(_ viewController: DeviceVerificationViewController, temporaryUserId: String) { }
     func viewControllerDidSkipPhoneVerification(_ viewController: DeviceVerificationViewController) { }
     func viewControllerDidSelectVerifyTwitter(_ viewController: UIViewController) { }
 
