@@ -52,6 +52,7 @@ extension AppCoordinator: StartViewControllerDelegate {
   func clearPin() {
     persistenceManager.keychainManager.storeSynchronously(anyValue: nil, key: .userPin)
     persistenceManager.keychainManager.storeSynchronously(anyValue: nil, key: .walletWords)
+    persistenceManager.keychainManager.storeSynchronously(anyValue: nil, key: .walletWordsV2)
     launchStateManager.unauthenticateUser()
   }
 

@@ -154,7 +154,10 @@ class LaunchStateManager: LaunchStateManagerType {
   }
 
   func needsUpgradedToSegwit() -> Bool {
-    return !currentProperties().contains(.upgradedToSegwit)
+    let properties = currentProperties()
+    let hasUpgradedWallet = properties.contains(.upgradedToSegwit)
+    let hasLegacyWallet = properties.contains(.pinExists) && properties.contains(.walletExists)
+    return hasLegacyWallet && !hasUpgradedWallet
   }
 
   // MARK: In-Memory Status
