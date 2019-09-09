@@ -173,7 +173,12 @@ extension WalletTransferViewController: ConfirmViewDelegate {
       }
     case .toOnChain(let btcAmount):
       guard let btcAmount = btcAmount else { return }
-      delegate.viewControllerDidConfirmWithdraw(self, btcAmount: btcAmount)
+      do {
+        try CurrencyAmountValidator(balanceNetPending: viewModel.walletBalances).validate(value: viewModel.generateCurrencyConverter())
+        delegate.viewControllerDidConfirmWithdraw(self, btcAmount: btcAmount)
+      } catch {
+        delegate.viewControllerHasFundsError(error)
+      }
     }
   }
 }

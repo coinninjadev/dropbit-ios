@@ -15,9 +15,18 @@ enum LightningWalletAmountValidatorError: ValidatorTypeError {
   var debugMessage: String {
     switch self {
     case .walletMaximum:
-      return "DropBit only allows you to load a maximum of $500 to your lightning wallet"
+      return """
+      DropBit only allows you to load a maximum of
+      \(LightningWalletAmountValidator.maxWalletValue.currency.symbol)
+      \(LightningWalletAmountValidator.maxWalletValue.amount)
+      to your lightning wallet
+      """.removingMultilineLineBreaks()
     case .reloadMinimum:
-      return "DropBit requires you to load at least $5.00 to your lightning wallet"
+      return """
+      DropBit requires you to load at least
+      \(LightningWalletAmountValidator.minReloadAmount.currency.symbol)
+      \(LightningWalletAmountValidator.minReloadAmount.amount) to your lightning wallet
+      """.removingMultilineLineBreaks()
     }
   }
 
@@ -33,8 +42,8 @@ enum LightningWalletAmountValidatorError: ValidatorTypeError {
 
 class LightningWalletAmountValidator: ValidatorType<CurrencyConverter> {
 
-  static let lightningReloadThreshholdMax = Money(amount: NSDecimalNumber(value: 500), currency: .USD)
-  static let lightningReloadAmountMinimum = Money(amount: NSDecimalNumber(value: 5), currency: .USD)
+  static let maxWalletValue = Money(amount: NSDecimalNumber(value: 500), currency: .USD)
+  static let minReloadAmount = Money(amount: NSDecimalNumber(value: 5), currency: .USD)
 
   let balanceNetPending: WalletBalances
 
@@ -52,17 +61,17 @@ class LightningWalletAmountValidator: ValidatorType<CurrencyConverter> {
     default:          break
     }
 
-    if btcValue > balanceNetPending.lightning {
-      let spendableMoney = Money(amount: balanceNetPending.lightning, currency: .BTC)
+    if btcValue > balanceNetPending.onChain {
+      let spendableMoney = Money(amount: balanceNetPending.onChain, currency: .BTC)
       throw CurrencyAmountValidatorError.usableBalance(spendableMoney)
     }
 
-    if btcValue < LightningWalletAmountValidator.lightningReloadAmountMinimum.amount {
+    if btcValue < LightningWalletAmountValidator.minReloadAmount.amount {
       throw LightningWalletAmountValidatorError.reloadMinimum
     }
 
-    if btcValue > LightningWalletAmountValidator.lightningReloadThreshholdMax.amount ||
-      btcValue + balanceNetPending.lightning > LightningWalletAmountValidator.lightningReloadThreshholdMax.amount {
+    if btcValue > LightningWalletAmountValidator.maxWalletValue.amount ||
+      btcValue + balanceNetPending.lightning > LightningWalletAmountValidator.maxWalletValue.amount {
       throw LightningWalletAmountValidatorError.walletMaximum
     }
 

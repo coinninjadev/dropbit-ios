@@ -39,6 +39,6 @@ extension AppCoordinator: WalletTransferViewControllerDelegate {
   }
 
   func viewControllerHasFundsError(_ error: Error) {
-    alertManager.showError(message: error.localizedDescription, forDuration: nil)
+    alertManager.showError(message: error.localizedDescription, forDuration: 2.0)
   }
 }
