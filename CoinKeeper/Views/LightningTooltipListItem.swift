@@ -35,7 +35,7 @@ class LightningTooltipListItem: UIView {
     label.numberOfLines = 0
     label.text = text
     label.textColor = .darkBlueText
-    label.font = .semiBold(12)
+    label.font = .bold(12)
     self.addSubview(label)
 
     NSLayoutConstraint.activate([
