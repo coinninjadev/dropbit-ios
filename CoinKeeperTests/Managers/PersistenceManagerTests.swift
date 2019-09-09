@@ -117,7 +117,7 @@ class PersistenceManagerTests: MockedPersistenceTestCase {
       contactCacheManager: mockContactCacheMgr
     )
 
-    let context = sut.mainQueueContext()
+    let context = sut.viewContext
 
     // set up ckm data
     let global1 = GlobalPhoneNumber(countryCode: 1, nationalNumber: "3305551212")
@@ -129,7 +129,7 @@ class PersistenceManagerTests: MockedPersistenceTestCase {
     _ = ckmPhone1.map { counterparty1.phoneNumbers.insert($0) }
 
     // set up ccm data
-    let ccmContext = mockContactCacheMgr.mainQueueContext
+    let ccmContext = mockContactCacheMgr.viewContext
     let ccmPhone1 = CCMPhoneNumber(insertInto: ccmContext)
     let ccmPhone2 = CCMPhoneNumber(insertInto: ccmContext)
     let ccmMetadata1 = CCMValidatedMetadata(phoneNumber: global1, hashedGlobalNumber: "", insertInto: ccmContext)

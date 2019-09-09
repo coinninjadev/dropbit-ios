@@ -1,6 +1,6 @@
 //
 //  CKPredicate.swift
-//  CoinKeeper
+//  DropBit
 //
 //  Created by Ben Winters on 7/22/18.
 //  Copyright © 2018 Coin Ninja, LLC. All rights reserved.
@@ -219,6 +219,11 @@ struct CKPredicate {
       return NSPredicate(format: "\(path) == %@", NSNumber(value: value))
     }
 
+    static func isLightningTransfer(_ value: Bool) -> NSPredicate {
+      let path = #keyPath(CKMTransaction.isLightningTransfer)
+      return NSPredicate(format: "\(path) == %@", NSNumber(value: value))
+    }
+
   }
 
   struct Vin {
@@ -318,6 +323,11 @@ struct CKPredicate {
       let addressKeyPath = #keyPath(CKMAddress.addressId)
       let predicate = NSPredicate(format: "%K IN %@", addressKeyPath, addresses)
       return predicate
+    }
+
+    static func matching(address: String) -> NSPredicate {
+      let keyPath = #keyPath(CKMAddress.addressId)
+      return NSPredicate(format: "\(keyPath) == %@", address)
     }
   }
 }

@@ -1,6 +1,6 @@
 //
 //  AppCoordinator+BalanceContainerDelegate.swift
-//  CoinKeeper
+//  DropBit
 //
 //  Created by BJ Miller on 4/24/18.
 //  Copyright © 2018 Coin Ninja, LLC. All rights reserved.
@@ -32,15 +32,14 @@ extension AppCoordinator: BalanceContainerDelegate {
 
   func didTapChartsButton() {
     guard let topVC = self.navigationController.topViewController() else { return }
-    let newsViewController = NewsViewController.makeFromStoryboard()
-    assignCoordinationDelegate(to: newsViewController)
+    let newsViewController = NewsViewController.newInstance(delegate: self)
     topVC.present(newsViewController, animated: true, completion: nil)
   }
 
   func presentDropBitMeViewController(verifiedFirstTime: Bool) {
     guard let topVC = self.navigationController.topViewController() else { return }
 
-    let context = self.persistenceManager.mainQueueContext()
+    let context = self.persistenceManager.viewContext
     let avatarData = CKMUser.find(in: context)?.avatar
     let publicURLInfo: UserPublicURLInfo? = self.persistenceManager.brokers.user.getUserPublicURLInfo(in: context)
     let config = DropBitMeConfig(publicURLInfo: publicURLInfo, verifiedFirstTime: verifiedFirstTime, userAvatarData: avatarData)
@@ -62,7 +61,7 @@ extension AppCoordinator: BalanceContainerDelegate {
 
   func dropBitMeAvatar() -> Promise<UIImage> {
     let defaultImage = UIImage(imageLiteralResourceName: "dropBitMeAvatarPlaceholder")
-    let context = persistenceManager.mainQueueContext()
+    let context = persistenceManager.viewContext
 
     if let user = CKMUser.find(in: context) {
       if let avatar = user.avatar {
@@ -92,23 +91,6 @@ extension AppCoordinator {
     CKMAddressTransactionSummary.deleteAll(in: context)
     CKMCounterpartyAddress.deleteAll(in: context)
     CKMAddress.deleteAll(in: context)
-  }
-
-  // Not called currently, but may be useful for testing UI
-  fileprivate func generateSampleData() {
-    let context = persistenceManager.mainQueueContext()
-    guard let wallet = CKMWallet.find(in: context) else { return }
-
-    if wallet.addressTransactionSummaries.isEmpty { //alternate between deletion and creation
-      SampleTransaction.history.forEach({
-        _ = CKMTransaction(sampleTx: $0, wallet: wallet, insertInto: context)
-      })
-
-    } else {
-      deleteAllTransactionsAndRelatedObjects(in: context)
-    }
-
-    try? context.save()
   }
 
   func selectedCurrency() -> SelectedCurrency {

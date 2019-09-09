@@ -1,6 +1,6 @@
 //
 //  DeviceVerificationViewController.swift
-//  CoinKeeper
+//  DropBit
 //
 //  Created by Bill Feth on 4/25/18.
 //  Copyright © 2018 Coin Ninja, LLC. All rights reserved.
@@ -16,7 +16,7 @@ protocol DeviceVerificationViewControllerDelegate: AnyObject {
                       didEnterCode code: String,
                       forUserId userId: String,
                       completion: @escaping (Bool) -> Void)
-  func viewControllerDidRequestResendCode(_ viewController: DeviceVerificationViewController)
+  func viewControllerDidRequestResendCode(_ viewController: DeviceVerificationViewController, temporaryUserId: String)
   func viewControllerDidSkipPhoneVerification(_ viewController: DeviceVerificationViewController)
   func viewControllerShouldShowSkipButton() -> Bool
   func viewControllerDidSelectVerifyTwitter(_ viewController: UIViewController)
@@ -89,11 +89,12 @@ final class DeviceVerificationViewController: BaseViewController {
   @IBOutlet var twitterButton: PrimaryActionButton!
 
   @IBAction func verifyTwitter(_ sender: Any) {
-    coordinationDelegate?.viewControllerDidSelectVerifyTwitter(self)
+    delegate.viewControllerDidSelectVerifyTwitter(self)
   }
 
   @IBAction func resendTextMessage(_ sender: Any) {
-    coordinationDelegate?.viewControllerDidRequestResendCode(self)
+    guard let userId = userIdToVerify else { return }
+    delegate.viewControllerDidRequestResendCode(self, temporaryUserId: userId)
   }
 
   @IBAction func submitPhoneNumber(_ sender: Any) {
@@ -111,7 +112,7 @@ final class DeviceVerificationViewController: BaseViewController {
   }
 
   @objc func skipVerification() {
-    coordinationDelegate?.viewControllerDidSkipPhoneVerification(self)
+    delegate.viewControllerDidSkipPhoneVerification(self)
   }
 
   // MARK: variables
@@ -130,9 +131,7 @@ final class DeviceVerificationViewController: BaseViewController {
   var countryCodeSearchView: CountryCodeSearchView?
   let countryCodeDataSource = CountryCodePickerDataSource()
 
-  var coordinationDelegate: DeviceVerificationViewControllerDelegate? {
-    return generalCoordinationDelegate as? DeviceVerificationViewControllerDelegate
-  }
+  private(set) weak var delegate: DeviceVerificationViewControllerDelegate!
 
   var entryMode: DeviceVerificationViewController.Mode = .phoneNumberEntry {
     didSet {
@@ -158,7 +157,7 @@ final class DeviceVerificationViewController: BaseViewController {
     vc.selectedSetupFlow = setupFlow
     vc.userIdToVerify = userIdToVerify
     vc.shouldOrphan = shouldOrphan
-    vc.generalCoordinationDelegate = delegate
+    vc.delegate = delegate
     return vc
   }
 
@@ -270,7 +269,7 @@ final class DeviceVerificationViewController: BaseViewController {
 
   func handleValidPhoneNumber(_ phoneNumber: GlobalPhoneNumber) {
     self.updateErrorLabel(with: nil)
-    self.coordinationDelegate?.viewController(self, didEnterPhoneNumber: phoneNumber)
+    self.delegate.viewController(self, didEnterPhoneNumber: phoneNumber)
   }
 
   func handleInvalidPhoneNumber() {
@@ -299,14 +298,14 @@ final class DeviceVerificationViewController: BaseViewController {
   }
 
   private func configureNavButton() {
-    guard let shouldShowSkipButton = coordinationDelegate?.viewControllerShouldShowSkipButton(), shouldShowSkipButton else {
+    let shouldShowSkipButton = delegate.viewControllerShouldShowSkipButton()
+    if shouldShowSkipButton {
+      let buttonItem = BarButtonFactory.skipButton(withTarget: self, selector: #selector(skipVerification))
+      buttonItem.setAccessibilityId(.deviceVerification(.skipButton))
+      self.navigationItem.rightBarButtonItem = buttonItem
+    } else {
       self.navigationItem.rightBarButtonItem = nil
-      return
     }
-
-    let buttonItem = BarButtonFactory.skipButton(withTarget: self, selector: #selector(skipVerification))
-    buttonItem.setAccessibilityId(.deviceVerification(.skipButton))
-    self.navigationItem.rightBarButtonItem = buttonItem
   }
 
   private func configureResendCodeButton() {
@@ -371,7 +370,6 @@ extension DeviceVerificationViewController: KeypadEntryViewDelegate {
 
     let addDigitResult = digitEntryViewModel?.add(digit: digit)
     guard addDigitResult == .complete else { return }
-    guard let coordinationDelegate = coordinationDelegate else { return }
 
     switch entryMode {
     case .codeVerification, .codeVerificationFailed:
@@ -380,7 +378,7 @@ extension DeviceVerificationViewController: KeypadEntryViewDelegate {
         return
       }
 
-      coordinationDelegate.viewController(self, didEnterCode: codeString, forUserId: userId) { [weak self] (success) in
+      delegate.viewController(self, didEnterCode: codeString, forUserId: userId) { [weak self] (success) in
         if !success {
           self?.digitEntryViewModel?.removeAllDigits()
         }

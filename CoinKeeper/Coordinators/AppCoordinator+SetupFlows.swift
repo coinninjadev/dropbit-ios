@@ -30,10 +30,9 @@ extension AppCoordinator {
 
   func enterApp() {
     let overviewViewController = makeOverviewController()
-    let settingsViewController = DrawerViewController.makeFromStoryboard()
+    let settingsViewController = DrawerViewController.newInstance(delegate: self)
     let drawerController = setupDrawerViewController(centerViewController: overviewViewController,
                                                      leftViewController: settingsViewController)
-    assignCoordinationDelegate(to: settingsViewController)
     navigationController.popToRootViewController(animated: false)
     navigationController.viewControllers = [drawerController]
 
@@ -82,9 +81,7 @@ extension AppCoordinator {
   }
 
   private func startPinCreation(flow: SetupFlow?) {
-    let viewController = PinCreationViewController.makeFromStoryboard()
-    viewController.setupFlow = flow
-    assignCoordinationDelegate(to: viewController)
+    let viewController = PinCreationViewController.newInstance(setupFlow: flow, delegate: self)
     navigationController.pushViewController(viewController, animated: true)
   }
 
@@ -97,10 +94,16 @@ extension AppCoordinator {
     navigationController.topViewController()?.present(alert, animated: true)
   }
 
-  func startDeviceVerificationFlow(userIdentityType type: UserIdentityType, shouldOrphanRoot: Bool, selectedSetupFlow: SetupFlow?) {
+  func startDeviceVerificationFlow(userIdentityType type: UserIdentityType,
+                                   shouldOrphanRoot: Bool,
+                                   selectedSetupFlow: SetupFlow?) {
     func startVerificationFlow() {
-      let childCoordinator = DeviceVerificationCoordinator(navigationController, userIdentityType: type, shouldOrphanRoot: shouldOrphanRoot)
-      childCoordinator.selectedSetupFlow = selectedSetupFlow
+      let childCoordinator = DeviceVerificationCoordinator(navigationController,
+                                                           delegate: self,
+                                                           coordinationDelegate: self,
+                                                           userIdentityType: type,
+                                                           setupFlow: selectedSetupFlow,
+                                                           shouldOrphanRoot: shouldOrphanRoot)
       startChildCoordinator(childCoordinator: childCoordinator)
     }
 
@@ -158,17 +161,9 @@ extension AppCoordinator {
       return
     }
 
-    let recoveryWordsIntroViewController = RecoveryWordsIntroViewController.makeFromStoryboard()
-    recoveryWordsIntroViewController.recoveryWords = usableWords
-    assignCoordinationDelegate(to: recoveryWordsIntroViewController)
-    navigationController.present(CNNavigationController(rootViewController: recoveryWordsIntroViewController),
-                                 animated: false,
-                                 completion: nil)
-  }
-
-  private func makeTransactionHistory(isLightning lightning: Bool = false) -> TransactionHistoryViewController {
-    return TransactionHistoryViewController.newInstance(withDelegate: self, context: persistenceManager.mainQueueContext(),
-                                                        type: lightning ? .lightning : .onChain)
+    let recoveryWordsIntroVC = RecoveryWordsIntroViewController.newInstance(words: usableWords, delegate: self)
+    let navVC = CNNavigationController(rootViewController: recoveryWordsIntroVC)
+    navigationController.present(navVC, animated: true, completion: nil)
   }
 
   private func setupDrawerViewController(centerViewController: UIViewController, leftViewController: UIViewController) -> MMDrawerController {
@@ -199,26 +194,38 @@ extension AppCoordinator {
   func createRequestPayViewController(converter: CurrencyConverter) -> RequestPayViewController? {
     guard let address = nextReceiveAddressForRequestPay() else { return nil }
 
-    let selectedCurrency = currencyController.selectedCurrency.code
-    let fiat = currencyController.fiatCurrency
-    let currencyPair = CurrencyPair(primary: selectedCurrency, fiat: fiat)
-    return RequestPayViewController.newInstance(delegate: self,
-                                                receiveAddress: address,
-                                                currencyPair: currencyPair,
-                                                exchangeRates: self.currencyController.exchangeRates)
+    let amountVM = CurrencySwappableEditAmountViewModel(exchangeRates: self.currencyController.exchangeRates,
+                                                        primaryAmount: .zero,
+                                                        walletTransactionType: persistenceManager.brokers.preferences.selectedWalletTransactionType,
+                                                        currencyPair: self.currencyController.currencyPair)
+    let vm = RequestPayViewModel(receiveAddress: address, amountViewModel: amountVM)
+    return RequestPayViewController.newInstance(delegate: self, viewModel: vm, alertManager: self.alertManager)
+  }
+
+  private func makeTransactionHistory(type: WalletTransactionType, mock: Bool = false) -> TransactionHistoryViewController {
+    let dataSource: TransactionHistoryDataSourceType
+    if mock {
+      switch type {
+      case .onChain:    dataSource = MockTransactionHistoryOnChainDataSource()
+      case .lightning:  dataSource = MockTransactionHistoryLightningDataSource()
+      }
+    } else {
+      let context = persistenceManager.viewContext
+      switch type {
+      case .onChain:    dataSource = TransactionHistoryOnChainDataSource(context: context)
+      case .lightning:  dataSource = TransactionHistoryLightningDataSource(context: context)
+      }
+    }
+
+    return TransactionHistoryViewController.newInstance(withDelegate: self, walletTxType: type, dataSource: dataSource)
   }
 
   private func makeOverviewController() -> WalletOverviewViewController {
-    let bitcoinWalletTransactionHistory = makeTransactionHistory()
-    let lightningWalletTransactionHistory = makeTransactionHistory(isLightning: true)
-    let requestPayViewController = createRequestPayViewController(converter: currencyController.currencyConverter)
-      ?? RequestPayViewController.makeFromStoryboard()
-    requestPayViewController.isModal = false
-    let overviewChildViewControllers: [BaseViewController] =
-      [lightningWalletTransactionHistory, bitcoinWalletTransactionHistory]
-
+    let shouldLoadMock = self.uiTestArguments.contains(.loadMockTransactionHistory)
+    let onChainHistory = makeTransactionHistory(type: .onChain, mock: shouldLoadMock)
+    let lightningHistory = makeTransactionHistory(type: .lightning, mock: shouldLoadMock)
     let overviewViewController = WalletOverviewViewController.newInstance(with: self,
-                                                                          baseViewControllers: overviewChildViewControllers,
+                                                                          baseViewControllers: [lightningHistory, onChainHistory],
                                                                           balanceProvider: self,
                                                                           balanceDelegate: self)
     return overviewViewController

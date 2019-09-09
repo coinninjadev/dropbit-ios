@@ -1,6 +1,6 @@
 //
 //  ConnectionManager.swift
-//  CoinKeeper
+//  DropBit
 //
 //  Created by Mitchell on 5/21/18.
 //  Copyright © 2018 Coin Ninja, LLC. All rights reserved.
@@ -32,11 +32,17 @@ protocol ConnectionManagerType: AnyObject {
   )
 }
 
+typealias NoConnectionViewControllerCoordinator = NoConnectionViewControllerDelegate & ConnectionManagerDelegate
+
 class ConnectionManager: ConnectionManagerType {
 
   private var reachability: Reachability? = Reachability()
 
   weak var delegate: ConnectionManagerDelegate?
+  var coordinationDelegate: NoConnectionViewControllerCoordinator? {
+    return delegate as? NoConnectionViewControllerCoordinator
+  }
+
   private var noConnectionsViewController: NoConnectionViewController?
 
   var status: ConnectionManagerStatus {
@@ -95,7 +101,7 @@ class ConnectionManager: ConnectionManagerType {
     guard UIApplication.shared.applicationState != .background else { return }
     guard noConnectionsViewController == nil else { return }
     noConnectionsViewController = NoConnectionViewController.makeFromStoryboard()
-    configureController(with: delegate)
+    configureController(withCoordinator: coordinationDelegate)
     noConnectionsViewController.map { viewController.present($0, animated: true, completion: completion) }
   }
 
@@ -105,14 +111,14 @@ class ConnectionManager: ConnectionManagerType {
   }
 
   private func initalize() {
-    configureController(with: delegate)
+    configureController(withCoordinator: coordinationDelegate)
     start()
   }
 
-  private func configureController(with delegate: ConnectionManagerDelegate?) {
+  private func configureController(withCoordinator coordinator: NoConnectionViewControllerCoordinator?) {
     noConnectionsViewController?.modalPresentationStyle = .overFullScreen
     noConnectionsViewController?.modalTransitionStyle = .crossDissolve
-    noConnectionsViewController?.generalCoordinationDelegate = delegate
+    noConnectionsViewController?.delegate = coordinator
   }
 
   @objc private func reachabilityChanged() {

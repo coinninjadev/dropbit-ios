@@ -55,7 +55,7 @@ class WalletTransferViewController: PresentableViewController, StoryboardInitial
   static func newInstance(delegate: WalletTransferViewControllerDelegate, viewModel: WalletTransferViewModel) -> WalletTransferViewController {
     let viewController = WalletTransferViewController.makeFromStoryboard()
     viewController.viewModel = viewModel
-    viewController.generalCoordinationDelegate = delegate
+    viewController.delegate = delegate
     return viewController
   }
 
@@ -63,10 +63,9 @@ class WalletTransferViewController: PresentableViewController, StoryboardInitial
     return viewModel
   }
 
-  var currencyValueManager: CurrencyValueDataSourceType?
-
-  var coordinationDelegate: WalletTransferViewControllerDelegate? {
-    return generalCoordinationDelegate as? WalletTransferViewControllerDelegate
+  private(set) weak var delegate: WalletTransferViewControllerDelegate!
+  var currencyValueManager: CurrencyValueDataSourceType? {
+    return delegate as? CurrencyValueDataSourceType
   }
 
   override func viewDidLoad() {
@@ -74,9 +73,8 @@ class WalletTransferViewController: PresentableViewController, StoryboardInitial
 
     confirmView.delegate = self
     feesView.delegate = self
-    let labels = viewModel.dualAmountLabels()
+    let labels = viewModel.dualAmountLabels(walletTransactionType: viewModel.walletTransactionType)
     editAmountView.configure(withLabels: labels, delegate: self)
-    currencyValueManager = generalCoordinationDelegate as? CurrencyValueDataSourceType
     setupUI()
     setupCurrencySwappableEditAmountView()
 
@@ -88,7 +86,7 @@ class WalletTransferViewController: PresentableViewController, StoryboardInitial
 
   @IBAction func closeButtonWasTouched() {
     editAmountView.primaryAmountTextField.resignFirstResponder()
-    coordinationDelegate?.viewControllerDidSelectClose(self)
+    delegate.viewControllerDidSelectClose(self)
   }
 
   private func setupUI() {
@@ -117,7 +115,7 @@ class WalletTransferViewController: PresentableViewController, StoryboardInitial
 extension WalletTransferViewController: ConfirmViewDelegate {
 
   func viewDidConfirm() {
-    coordinationDelegate?.viewControllerDidConfirmTransfer(
+    delegate.viewControllerDidConfirmTransfer(
       self,
       direction: viewModel.direction,
       btcAmount: editAmountViewModel.btcAmount,

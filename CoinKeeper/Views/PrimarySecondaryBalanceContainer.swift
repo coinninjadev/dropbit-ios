@@ -51,13 +51,17 @@ class PrimarySecondaryBalanceContainer: UIView {
     secondaryBalanceLabel.textColor = .bitcoinOrange
   }
 
-  func set(primaryAmount amount: NSDecimalNumber?, currency: CurrencyCode) {
-    primaryBalanceLabel.attributedText = label(for: amount, currency: currency)
+  func set(primaryAmount amount: NSDecimalNumber?, currency: CurrencyCode, walletTransactionType: WalletTransactionType) {
+    primaryBalanceLabel.attributedText = CKCurrencyFormatter.attributedString(for: amount,
+                                                                              currency: currency,
+                                                                              walletTransactionType: walletTransactionType)
     setupLabelColors(for: currency)
   }
 
-  func set(secondaryAmount amount: NSDecimalNumber?, currency: CurrencyCode) {
-    secondaryBalanceLabel.attributedText = label(for: amount, currency: currency)
+  func set(secondaryAmount amount: NSDecimalNumber?, currency: CurrencyCode, walletTransactionType: WalletTransactionType) {
+    secondaryBalanceLabel.attributedText = CKCurrencyFormatter.attributedString(for: amount,
+                                                                                currency: currency,
+                                                                                walletTransactionType: walletTransactionType)
   }
 
   private func setupStyle() {
@@ -85,27 +89,4 @@ class PrimarySecondaryBalanceContainer: UIView {
     secondaryBalanceLabel.textColor = secondaryColor
   }
 
-  private func label(for amount: NSDecimalNumber?, currency: CurrencyCode) -> NSAttributedString {
-    guard let amount = amount else { return NSAttributedString(string: "–") }
-
-    let minFractionalDigits: Int = currency.shouldRoundTrailingZeroes ? 0 : currency.decimalPlaces
-    let maxfractionalDigits: Int = currency.decimalPlaces
-
-    let formatter = NumberFormatter()
-    formatter.numberStyle = .decimal
-    formatter.minimumFractionDigits = minFractionalDigits
-    formatter.maximumFractionDigits = maxfractionalDigits
-
-    let amountString = formatter.string(from: amount) ?? "–"
-
-    switch currency {
-    case .BTC:
-      if let symbol = currency.attributedStringSymbol() {
-        return symbol + NSAttributedString(string: amountString)
-      } else {
-        return NSAttributedString(string: amountString)
-      }
-    case .USD:  return NSAttributedString(string: currency.symbol + amountString)
-    }
-  }
 }

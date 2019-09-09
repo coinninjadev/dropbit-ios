@@ -1,6 +1,6 @@
 //
 //  SendPaymentViewControllerTests.swift
-//  CoinKeeperTests
+// DropBitTests
 //
 //  Created by Mitchell Malleo on 4/16/18.
 //  Copyright © 2018 Coin Ninja, LLC. All rights reserved.
@@ -24,7 +24,10 @@ class SendPaymentViewControllerTests: XCTestCase {
 
     let safeRates: ExchangeRates = [.BTC: 1, .USD: 7000]
     let currencyPair = CurrencyPair(primary: .USD, fiat: .USD)
-    let swappableVM = CurrencySwappableEditAmountViewModel(exchangeRates: safeRates, primaryAmount: 3500, currencyPair: currencyPair)
+    let swappableVM = CurrencySwappableEditAmountViewModel(exchangeRates: safeRates,
+                                                           primaryAmount: 3500,
+                                                           walletTransactionType: .onChain,
+                                                           currencyPair: currencyPair)
     let viewModel = SendPaymentViewModel(editAmountViewModel: swappableVM,
                                          walletTransactionType: .onChain,
                                          address: "12A1MyfXbW6RhdRAZEqofac5jCQQjwEPBu",

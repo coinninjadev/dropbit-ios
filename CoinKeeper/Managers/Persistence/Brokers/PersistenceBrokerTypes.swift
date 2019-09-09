@@ -49,6 +49,9 @@ protocol LightningBrokerType: AnyObject {
   func persistAccountResponse(_ response: LNAccountResponse,
                               forWallet wallet: CKMWallet,
                               in context: NSManagedObjectContext)
+  func persistLedgerResponse(_ response: LNLedgerResponse,
+                             forWallet wallet: CKMWallet,
+                             in context: NSManagedObjectContext)
 }
 
 protocol CheckInBrokerType: AnyObject {

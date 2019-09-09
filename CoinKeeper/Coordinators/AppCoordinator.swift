@@ -1,6 +1,6 @@
 //
 //  AppCoordinator.swift
-//  CoinKeeper
+//  DropBit
 //
 //  Created by BJ Miller on 2/2/18.
 //  Copyright © 2018 Coin Ninja, LLC. All rights reserved.
@@ -23,14 +23,8 @@ protocol CoordinatorType: class {
   func start()
 }
 
-extension CoordinatorType {
-  func assignCoordinationDelegate(to viewController: UIViewController) {
-    (viewController as? Coordination)?.generalCoordinationDelegate = self
-  }
-}
-
 protocol ChildCoordinatorType: CoordinatorType {
-  var delegate: ChildCoordinatorDelegate? { get set }
+  var childCoordinatorDelegate: ChildCoordinatorDelegate! { get set }
 }
 
 protocol ChildCoordinatorDelegate: class {
@@ -190,8 +184,6 @@ class AppCoordinator: CoordinatorType {
 
     } else {
 
-      navigationController.topViewController.flatMap { self.assignCoordinationDelegate(to: $0) }
-
       // Take user directly to phone verification if wallet exists but wallet ID does not
       // This will register the wallet if needed after a reinstall
       let launchProperties = launchStateManager.currentProperties()
@@ -202,7 +194,7 @@ class AppCoordinator: CoordinatorType {
         // Child coordinator will push DeviceVerificationViewController onto stack in its start() method
         startDeviceVerificationFlow(userIdentityType: .phone, shouldOrphanRoot: true, selectedSetupFlow: .newWallet)
       } else if launchStateManager.isFirstTime() {
-        let startVC = StartViewController.newInstance(withDelegate: self)
+        let startVC = StartViewController.newInstance(delegate: self)
         navigationController.viewControllers = [startVC]
       }
     }
@@ -210,7 +202,7 @@ class AppCoordinator: CoordinatorType {
 
   /// Useful to clear out old credentials from the keychain when the app is reinstalled
   private func deleteStaleCredentialsIfNeeded() {
-    let context = persistenceManager.mainQueueContext()
+    let context = persistenceManager.viewContext
     let user = CKMUser.find(in: context)
     guard user == nil else { return }
 
@@ -255,7 +247,7 @@ class AppCoordinator: CoordinatorType {
             self.navigationController.topViewController()?.present(alert, animated: true)
           } else {
             try bgContext.performThrowingAndWait {
-              try bgContext.save()
+              try bgContext.saveRecursively()
             }
             completion()
           }
@@ -265,7 +257,6 @@ class AppCoordinator: CoordinatorType {
   }
 
   func start() {
-    (navigationController.topViewController as? BaseViewController).map { self.assignCoordinationDelegate(to: $0) }
     applyUITestArguments(uiTestArguments)
     analyticsManager.start()
     analyticsManager.optIn()
@@ -278,7 +269,7 @@ class AppCoordinator: CoordinatorType {
     guard UIApplication.shared.applicationState != .background else { return }
 
     setInitialRootViewController()
-    registerForBalanceSaveNotifications()
+    registerForBalanceSaveNotifications(viewContext: self.persistenceManager.viewContext)
     trackAnalytics()
 
     let now = Date()
@@ -319,7 +310,6 @@ class AppCoordinator: CoordinatorType {
 
   func startChildCoordinator(childCoordinator: ChildCoordinatorType) {
     childCoordinators.append(childCoordinator)
-    childCoordinator.delegate = self
     childCoordinator.start()
   }
 

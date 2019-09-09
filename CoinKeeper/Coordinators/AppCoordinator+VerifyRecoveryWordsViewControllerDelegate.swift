@@ -1,6 +1,6 @@
 //
 //  AppCoordinator+VerifyRecoveryWordsViewControllerDelegate.swift
-//  CoinKeeper
+//  DropBit
 //
 //  Created by BJ Miller on 4/24/18.
 //  Copyright © 2018 Coin Ninja, LLC. All rights reserved.
@@ -28,6 +28,7 @@ extension AppCoordinator: VerifyRecoveryWordsViewControllerDelegate {
         self.analyticsManager.track(property: MixpanelProperty(key: .hasWallet, value: true))
         self.analyticsManager.track(property: MixpanelProperty(key: .wordsBackedUp, value: true))
         self.badgeManager.publishBadgeUpdate()
+        CKNotificationCenter.publish(key: .didUpdateWordsBackedUp)
         viewController.dismiss(animated: true, completion: nil)
       }.cauterize()
   }

@@ -15,15 +15,15 @@ protocol LightningUpgradeCoordinatorDelegate: AnyObject {
 }
 
 class LightningUpgradeCoordinator: ChildCoordinatorType {
-  weak var delegate: ChildCoordinatorDelegate?
-  weak var parent: AppCoordinator?
+  weak var childCoordinatorDelegate: ChildCoordinatorDelegate!
+  weak var parent: AppCoordinator!
   var newWords: [String] = []
   var newWallet: CNBHDWallet?
 
   var transactionData: CNBTransactionData?
 
   init(parent: AppCoordinator) {
-    self.delegate = parent
+    self.childCoordinatorDelegate = parent
     self.parent = parent
   }
 
@@ -33,10 +33,10 @@ class LightningUpgradeCoordinator: ChildCoordinatorType {
 
   func start() {
     let controller = LightningUpgradePageViewController.newInstance(withGeneralCoordinationDelegate: self)
-    parent?.navigationController.present(controller, animated: true, completion: nil)
+    parent.navigationController.present(controller, animated: true, completion: nil)
 
-    parent?.launchStateManager.upgradeInProgress = true
-    parent?.serialQueueManager.enqueueWalletSyncIfAppropriate(
+    parent.launchStateManager.upgradeInProgress = true
+    parent.serialQueueManager.enqueueWalletSyncIfAppropriate(
       type: .comprehensive,
       policy: EnqueueingPolicy.always,
       completion: { [weak self] (error: Error?) in

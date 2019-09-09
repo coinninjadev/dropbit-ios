@@ -17,7 +17,7 @@ extension AppCoordinator: WalletTransferViewControllerDelegate {
                                         exchangeRates: ExchangeRates) {
     switch direction {
     case .toLightning:
-      let context = self.persistenceManager.mainQueueContext()
+      let context = self.persistenceManager.viewContext
       let wallet = CKMWallet.findOrCreate(in: context)
       let lightningAccount = self.persistenceManager.brokers.lightning.getAccount(forWallet: wallet, in: context)
       let address = lightningAccount.address

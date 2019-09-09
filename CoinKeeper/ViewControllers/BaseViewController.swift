@@ -1,6 +1,6 @@
 //
 //  BaseViewController.swift
-//  CoinKeeper
+//  DropBit
 //
 //  Created by BJ Miller on 3/6/18.
 //  Copyright © 2018 Coin Ninja, LLC. All rights reserved.
@@ -8,12 +8,7 @@
 
 import UIKit
 
-protocol Coordination: class {
-  var generalCoordinationDelegate: AnyObject? { get set }
-}
-
-class BaseViewController: UIViewController, Coordination, AccessibleViewSettable {
-  weak var generalCoordinationDelegate: AnyObject?
+class BaseViewController: UIViewController, AccessibleViewSettable {
 
   var statusBarStyle: UIStatusBarStyle = .default {
     didSet {

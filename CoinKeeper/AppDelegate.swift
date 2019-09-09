@@ -1,6 +1,6 @@
 //
 //  AppDelegate.swift
-//  CoinKeeper
+//  DropBit
 //
 //  Created by BJ Miller on 1/30/18.
 //  Copyright © 2018 Coin Ninja, LLC. All rights reserved.
@@ -100,14 +100,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   private func setupCoordinator() {
     log.event("Will set up coordinator")
     window = UIWindow()
-    let viewController = StartViewController.makeFromStoryboard()
+    let viewController = StartViewController.newInstance(delegate: nil)
     let navigationController = CNNavigationController(rootViewController: viewController)
     window?.rootViewController = navigationController
     window?.makeKeyAndVisible()
 
     let uiTestArguments = ProcessInfo.processInfo.arguments.compactMap { UITestArgument(string: $0) }
     let coord = AppCoordinator(navigationController: navigationController, uiTestArguments: uiTestArguments)
-    viewController.generalCoordinationDelegate = coord
+    viewController.delegate = coord
     coordinator = coord
     coordinator?.start()
   }

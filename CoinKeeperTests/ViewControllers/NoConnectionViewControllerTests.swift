@@ -18,7 +18,7 @@ class NoConnectionViewControllerTests: XCTestCase {
     super.setUp()
     sut = NoConnectionViewController.makeFromStoryboard()
     coordinator = MockCoordinator()
-    sut.generalCoordinationDelegate = coordinator
+    sut.delegate = coordinator
     _ = sut.view
   }
 

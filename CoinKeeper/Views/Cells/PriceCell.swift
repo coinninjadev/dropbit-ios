@@ -36,8 +36,11 @@ class PriceCell: UITableViewCell {
   var movement: (gross: Double, percentage: Double)? {
     didSet {
       guard let movement = movement, movement.gross != 0, movement.percentage != 0 else { return }
-      let displayString: String = (CKNumberFormatter.usdCurrencyFormatter.string(from: (movement.gross as NSNumber)) ?? "") + " " +
-        "(\(percentageFormatter.string(from: (movement.percentage as NSNumber)) ?? "")%)"
+      let grossNumber = NSDecimalNumber(value: movement.gross)
+      let percentageNumber = NSNumber(value: movement.percentage)
+      let amountString = FiatFormatter(currency: .USD, withSymbol: true).string(fromDecimal: grossNumber) ?? ""
+      let percentageString = "(\(percentageFormatter.string(from: percentageNumber) ?? "")%)"
+      let displayString: String =  amountString + " " + percentageString
 
       if movement.gross > 0 {
         movementLabel.textColor = .successGreen

@@ -33,18 +33,16 @@ final class LightningUpgradeStartViewController: BaseViewController, StoryboardI
   @IBOutlet var confirmTransferFundsCheckmarkImage: UIImageView!
 
   static func newInstance(
-    withDelegate delegate: LightningUpgradeStartViewControllerDelegate,
+    delegate: LightningUpgradeStartViewControllerDelegate,
     nextStep: @escaping CKCompletion
     ) -> LightningUpgradeStartViewController {
     let controller = LightningUpgradeStartViewController.makeFromStoryboard()
-    controller.generalCoordinationDelegate = delegate
+    controller.delegate = delegate
     controller.nextStep = nextStep
     return controller
   }
 
-  var coordinationDelegate: LightningUpgradeStartViewControllerDelegate? {
-    return generalCoordinationDelegate as? LightningUpgradeStartViewControllerDelegate
-  }
+  private(set) weak var delegate: LightningUpgradeStartViewControllerDelegate!
 
   var exchangeRates: ExchangeRates = ExchangeRateManager().exchangeRates
 
@@ -91,10 +89,13 @@ final class LightningUpgradeStartViewController: BaseViewController, StoryboardI
     let feeAmount = NSDecimalNumber(integerAmount: Int(data.feeAmount), currency: .BTC)
     let amountConverter = CurrencyConverter(fromBtcTo: .USD, fromAmount: btcAmount, rates: exchangeRates)
     let feeConverter = CurrencyConverter(fromBtcTo: .USD, fromAmount: feeAmount, rates: exchangeRates)
+    let fiatFormatter = FiatFormatter(currency: .USD, withSymbol: true)
+    guard let amountString = fiatFormatter.string(fromDecimal: amountConverter.fiatAmount),
+      let feeString = fiatFormatter.string(fromDecimal: feeConverter.fiatAmount) else { return }
     let fundTransferTitle = NSMutableAttributedString()
     fundTransferTitle.appendRegular("I understand that DropBit will be transferring my ", size: fontSize, color: .white, paragraphStyle: nil)
     fundTransferTitle.appendBold(
-      "funds of \(amountConverter.toDisplayValue) with a transaction fee of \(feeConverter.toDisplayValue)",
+      "funds of \(amountString) with a transaction fee of \(feeString)",
       size: fontSize,
       color: .white,
       paragraphStyle: nil)
@@ -178,11 +179,11 @@ final class LightningUpgradeStartViewController: BaseViewController, StoryboardI
   }
 
   @IBAction func showInfo(_ sender: UIButton) {
-    coordinationDelegate?.viewControllerRequestedShowLightningUpgradeInfo(self)
+    delegate.viewControllerRequestedShowLightningUpgradeInfo(self)
   }
 
   @IBAction func upgradeNow(_ sender: UIButton) {
-    coordinationDelegate?.viewControllerRequestedUpgradeAuthentication(self) {
+    delegate.viewControllerRequestedUpgradeAuthentication(self) {
       self.nextStep()
     }
   }

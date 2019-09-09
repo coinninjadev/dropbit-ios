@@ -1,6 +1,6 @@
 //
 //  SendPaymentViewModel.swift
-//  CoinKeeper
+//  DropBit
 //
 //  Created by Mitchell Malleo on 4/18/18.
 //  Copyright © 2018 Coin Ninja, LLC. All rights reserved.
@@ -61,7 +61,6 @@ class SendPaymentViewModel: CurrencySwappableEditAmountViewModel {
   var sharedMemoDesired = true
   var sharedMemoAllowed = true
   var sendMaxTransactionData: CNBTransactionData?
-  var walletTransactionType: WalletTransactionType
 
   func sendMax(with data: CNBTransactionData) {
     self.sendMaxTransactionData = data
@@ -96,9 +95,9 @@ class SendPaymentViewModel: CurrencySwappableEditAmountViewModel {
     let amount = NSDecimalNumber(integerAmount: decodedInvoice.numSatoshis ?? 0, currency: .BTC)
     let viewModel = CurrencySwappableEditAmountViewModel(exchangeRates: exchangeRates,
                                                          primaryAmount: amount,
+                                                         walletTransactionType: .lightning,
                                                          currencyPair: currencyPair,
                                                          delegate: nil)
-    self.walletTransactionType = .lightning
     super.init(viewModel: viewModel)
     self.paymentRecipient = .paymentTarget(encodedInvoice)
     self.requiredFeeRate = nil
@@ -114,9 +113,9 @@ class SendPaymentViewModel: CurrencySwappableEditAmountViewModel {
     let currencyPair = CurrencyPair(primary: .BTC, fiat: currencyPair.fiat)
     let viewModel = CurrencySwappableEditAmountViewModel(exchangeRates: exchangeRates,
                                                          primaryAmount: qrCode.btcAmount ?? .zero,
+                                                         walletTransactionType: walletTransactionType,
                                                          currencyPair: currencyPair,
                                                          delegate: delegate)
-    self.walletTransactionType = walletTransactionType
     super.init(viewModel: viewModel)
     self.paymentRecipient = qrCode.address.flatMap { .paymentTarget($0) }
     self.requiredFeeRate = nil
@@ -125,7 +124,6 @@ class SendPaymentViewModel: CurrencySwappableEditAmountViewModel {
 
   init(editAmountViewModel: CurrencySwappableEditAmountViewModel, walletTransactionType: WalletTransactionType,
        address: String? = nil, requiredFeeRate: Double? = nil, memo: String? = nil) {
-    self.walletTransactionType = walletTransactionType
     super.init(viewModel: editAmountViewModel)
     self.paymentRecipient = address.flatMap { .paymentTarget($0) }
     self.requiredFeeRate = requiredFeeRate
@@ -142,6 +140,7 @@ class SendPaymentViewModel: CurrencySwappableEditAmountViewModel {
     let currencyPair = CurrencyPair(primary: .BTC, secondary: fiatCurrency, fiat: fiatCurrency)
     let viewModel = CurrencySwappableEditAmountViewModel(exchangeRates: exchangeRates,
                                                          primaryAmount: btcAmount,
+                                                         walletTransactionType: walletTransactionType,
                                                          currencyPair: currencyPair,
                                                          delegate: delegate)
     self.init(editAmountViewModel: viewModel,
@@ -150,7 +149,6 @@ class SendPaymentViewModel: CurrencySwappableEditAmountViewModel {
               requiredFeeRate: response.requiredFeeRate,
               memo: response.memo)
 
-    self.walletTransactionType = walletTransactionType
   }
 
   var contact: ContactType? {

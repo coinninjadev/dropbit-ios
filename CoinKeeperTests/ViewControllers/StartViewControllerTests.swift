@@ -10,14 +10,17 @@ import UIKit
 class StartViewControllerTests: XCTestCase {
 
   var sut: StartViewController!
+  var mockCoordinator: MockCoordinator!
 
   override func setUp() {
     super.setUp()
-    self.sut = StartViewController.makeFromStoryboard()
+    self.mockCoordinator = MockCoordinator()
+    self.sut = StartViewController.newInstance(delegate: mockCoordinator)
     _ = self.sut.view
   }
 
   override func tearDown() {
+    self.mockCoordinator = nil
     self.sut = nil
     super.tearDown()
   }
@@ -130,20 +133,12 @@ class StartViewControllerTests: XCTestCase {
 
   // MARK: actions produce results
   func testCreateWalletButtonActionTellsCoordinator() {
-    let mockCoordinator = MockCoordinator()
-    self.sut.generalCoordinationDelegate = mockCoordinator
-
     self.sut.newWalletButton.sendActions(for: .touchUpInside)
-
     XCTAssertTrue(mockCoordinator.createWalletWasCalled, "createWallet should be called")
   }
 
   func testRestoreWalletButtonActionTellsCoordinator() {
-    let mockCoordinator = MockCoordinator()
-    self.sut.generalCoordinationDelegate = mockCoordinator
-
     self.sut.restoreWalletButton.sendActions(for: .touchUpInside)
-
     XCTAssertTrue(mockCoordinator.restoreWalletWasCalled, "restoreWallet should be called")
   }
 

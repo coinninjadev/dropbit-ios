@@ -1,6 +1,6 @@
 //
 //  PresentationController.swift
-//  CoinKeeper
+//  DropBit
 //
 //  Created by BJ Miller on 4/6/18.
 //  Copyright © 2018 Coin Ninja, LLC. All rights reserved.
@@ -31,7 +31,7 @@ class PresentationController: UIPresentationController {
     transitionCoordinator.animateAlongsideTransition(in: presentingViewController.view, animation: { _ in
       self.presentingViewController.view.transform = CGAffineTransform(scaleX: 0.9, y: 0.9)
       self.presentingViewController.view.applyCornerRadius(20)
-      self.presentingViewController.view.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+      self.presentingViewController.view.layer.maskedCorners = .top
       if !transitionCoordinator.isInteractive {
         (self.presentingViewController as? BaseViewController)?.statusBarStyle = .lightContent
       }
@@ -59,7 +59,7 @@ class PresentationController: UIPresentationController {
     transitionCoordinator.animateAlongsideTransition(in: presentingViewController.view, animation: { _ in
       self.presentingViewController.view.transform = CGAffineTransform.identity
       self.presentingViewController.view.applyCornerRadius(0)
-      self.presentingViewController.view.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+      self.presentingViewController.view.layer.maskedCorners = .top
       if !transitionCoordinator.isInteractive {
         (self.presentingViewController as? BaseViewController)?.statusBarStyle = .default
       }

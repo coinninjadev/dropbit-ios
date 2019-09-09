@@ -21,13 +21,11 @@ final class LightningUpgradeCompleteViewController: BaseViewController, Storyboa
   @IBOutlet var upgradeCompleteLabel: UILabel!
   @IBOutlet var lightningReadyLabel: UILabel!
 
-  var coordinationDelegate: LightningUpgradeCompleteViewControllerDelegate? {
-    return generalCoordinationDelegate as? LightningUpgradeCompleteViewControllerDelegate
-  }
+  private(set) weak var delegate: LightningUpgradeCompleteViewControllerDelegate!
 
   static func newInstance(withDelegate delegate: LightningUpgradeCompleteViewControllerDelegate) -> LightningUpgradeCompleteViewController {
     let controller = LightningUpgradeCompleteViewController.makeFromStoryboard()
-    controller.generalCoordinationDelegate = delegate
+    controller.delegate = delegate
     return controller
   }
 
@@ -39,7 +37,9 @@ final class LightningUpgradeCompleteViewController: BaseViewController, Storyboa
   private func styleInitialUI() {
     goToWalletButton.style = .white(enabled: true)
     goToWalletButton.setTitleColor(.mediumPurple, for: .normal)
+    goToWalletButton.setTitle("GO TO WALLET", for: .normal)
     getNewRecoveryWordsButton.style = .mediumPurple
+    getNewRecoveryWordsButton.setTitle("GET NEW RECOVERY WORDS", for: .normal)
     upgradeCompleteLabel.textColor = .neonGreen
     upgradeCompleteLabel.font = .regular(17)
     lightningReadyLabel.font = .regular(17)
@@ -48,10 +48,10 @@ final class LightningUpgradeCompleteViewController: BaseViewController, Storyboa
   }
 
   @IBAction func goToWallet(_ sender: Any) {
-    coordinationDelegate?.viewControllerDidSelectGoToWallet(self)
+    delegate.viewControllerDidSelectGoToWallet(self)
   }
 
   @IBAction func getNewRecoveryWords(_ sender: Any) {
-    coordinationDelegate?.viewControllerDidSelectGetRecoveryWords(self)
+    delegate.viewControllerDidSelectGetRecoveryWords(self)
   }
 }

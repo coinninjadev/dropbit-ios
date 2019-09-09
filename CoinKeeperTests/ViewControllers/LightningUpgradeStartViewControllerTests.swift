@@ -18,7 +18,7 @@ class LightningUpgradeStartViewControllerTests: XCTestCase {
   override func setUp() {
     super.setUp()
     coordinator = MockCoordinator()
-    sut = LightningUpgradeStartViewController.newInstance(withDelegate: coordinator, nextStep: {})
+    sut = LightningUpgradeStartViewController.newInstance(delegate: coordinator, nextStep: {})
     _ = sut.view
   }
 
@@ -134,7 +134,7 @@ class LightningUpgradeStartViewControllerTests: XCTestCase {
     }
 
     var upgradeNowTapped = false
-    func viewControllerRequestedUpgradeToLightning(_ viewController: LightningUpgradeStartViewController) {
+    func viewControllerRequestedUpgradeAuthentication(_ viewController: LightningUpgradeStartViewController, completion: @escaping CKCompletion) {
       upgradeNowTapped = true
     }
   }

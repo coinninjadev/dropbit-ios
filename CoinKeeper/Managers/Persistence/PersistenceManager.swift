@@ -37,22 +37,22 @@ class PersistenceManager: PersistenceManagerType {
                                                  userDefaultsManager: userDefaultsManager)
   }
 
+  var viewContext: NSManagedObjectContext {
+    return databaseManager.viewContext
+  }
+
   func createBackgroundContext() -> NSManagedObjectContext {
     return databaseManager.createBackgroundContext()
+  }
+
+  func persistentStore() -> NSPersistentStore? {
+    return persistentStore(for: viewContext)
   }
 
   func resetPersistence() throws {
     try self.brokers.wallet.resetWallet()
     self.userDefaultsManager.deleteAll()
     self.keychainManager.deleteAll()
-  }
-
-  func mainQueueContext() -> NSManagedObjectContext {
-    return databaseManager.mainQueueContext
-  }
-
-  func persistentStore() -> NSPersistentStore? {
-    return persistentStore(for: mainQueueContext())
   }
 
   func persistentStore(for context: NSManagedObjectContext) -> NSPersistentStore? {
@@ -99,6 +99,14 @@ class PersistenceManager: PersistenceManagerType {
 
   func defaultHeaders(in context: NSManagedObjectContext) -> Promise<DefaultRequestHeaders> {
     return walletAndUserId(in: context).map { DefaultRequestHeaders(walletId: $0.walletId, userId: $0.userId) }
+  }
+
+  func defaultHeaders(temporaryUserId: String, in context: NSManagedObjectContext) -> Promise<DefaultRequestHeaders> {
+    return Promise { seal in
+      guard let walletId = self.databaseManager.walletId(in: context) else { throw CKPersistenceError.missingValue(key: "wallet ID") }
+      let headers = DefaultRequestHeaders(walletId: walletId, userId: temporaryUserId)
+      seal.fulfill(headers)
+    }
   }
 
   func matchContactsIfPossible() {

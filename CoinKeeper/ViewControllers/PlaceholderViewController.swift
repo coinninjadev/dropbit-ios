@@ -1,6 +1,6 @@
 //
 //  PlaceholderViewController.swift
-//  CoinKeeper
+//  DropBit
 //
 //  Created by BJ Miller on 2/16/18.
 //  Copyright © 2018 Coin Ninja, LLC. All rights reserved.
@@ -14,15 +14,19 @@ protocol PlaceholderViewControllerDelegate: AnyObject {
 }
 
 final class PlaceholderViewController: BaseViewController, StoryboardInitializable {
-  var coordinationDelegate: PlaceholderViewControllerDelegate? {
-    return generalCoordinationDelegate as? PlaceholderViewControllerDelegate
-  }
+  private(set) weak var delegate: PlaceholderViewControllerDelegate?
 
   @IBAction func clearPinTapped(_ sender: UIButton) {
-    coordinationDelegate?.clearPin()
+    delegate?.clearPin()
   }
 
   @IBAction func requestPayTapped(_ sender: UIButton) {
-    coordinationDelegate?.viewControllerRequestPayTapped(self)
+    delegate?.viewControllerRequestPayTapped(self)
+  }
+
+  static func newInstance(delegate: PlaceholderViewControllerDelegate?) -> PlaceholderViewController {
+    let vc = PlaceholderViewController.makeFromStoryboard()
+    vc.delegate = delegate
+    return vc
   }
 }

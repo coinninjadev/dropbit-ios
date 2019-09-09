@@ -31,13 +31,6 @@ class CoreDataStackConfig {
       case .inMemory: return NSInMemoryStoreType
       }
     }
-
-    var shouldSetQueryGeneration: Bool {
-      switch self {
-      case .disk: return true
-      case .inMemory: return false
-      }
-    }
   }
 
   enum CoreDataStackType {
@@ -64,7 +57,7 @@ class CoreDataStackConfig {
         let context = container.viewContext
         context.performAndWait {
           CKMWallet.findOrCreate(in: context)
-          try? context.save()
+          try? context.saveRecursively()
         }
       case .contactCache: break
       }

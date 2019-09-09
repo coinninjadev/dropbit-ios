@@ -34,9 +34,10 @@ extension WalletTarget {
 
   public var method: Moya.Method {
     switch self {
-    case .create, .update, .subscribe:  return .post
-    case .get:                          return .get
-    case .reset:                        return .put
+    case .create, .subscribe:  return .post
+    case .get:                 return .get
+    case .reset:               return .put
+    case .update:              return .patch
     }
   }
 

@@ -1,6 +1,6 @@
 //
 //  AppCoordinator+StartViewControllerDelegate.swift
-//  CoinKeeper
+//  DropBit
 //
 //  Created by BJ Miller on 4/24/18.
 //  Copyright © 2018 Coin Ninja, LLC. All rights reserved.
@@ -34,7 +34,7 @@ extension AppCoordinator: StartViewControllerDelegate {
     switch flow {
     case .restoreWallet:
       if restoreFromICloudBackup {
-        let context = persistenceManager.mainQueueContext()
+        let context = persistenceManager.viewContext
         persistenceManager.brokers.wallet.removeWalletId(in: context)
         persistenceManager.brokers.user.unverifyUser(in: context)
         persistenceManager.keychainManager.deleteAll()

@@ -1,6 +1,6 @@
 //
 //  AlertManager.swift
-//  CoinKeeper
+//  DropBit
 //
 //  Created by BJ Miller on 3/13/18.
 //  Copyright © 2018 Coin Ninja, LLC. All rights reserved.
@@ -127,11 +127,10 @@ class AlertManager: AlertManagerType {
                      image: UIImage,
                      style: AlertMessageStyle,
                      action: AlertActionConfigurationType) -> AlertControllerType {
-    let alert = ActionableAlertViewController.makeFromStoryboard()
-    alert.setup(with: title, description: description, image: image, style: style, action: action)
+    let alert = ActionableAlertViewController.newInstance(title: title, description: description,
+                                                          image: image, style: style, action: action)
     alert.modalTransitionStyle = .crossDissolve
     alert.modalPresentationStyle = .overCurrentContext
-
     return alert
   }
 
@@ -197,7 +196,7 @@ class AlertManager: AlertManagerType {
     let converter = CurrencyConverter(fromBtcTo: .USD,
                                       fromAmount: NSDecimalNumber(integerAmount: receivedAmount, currency: .BTC),
                                       rates: rates)
-    let dollarAmount: String =  converter.amountStringWithSymbol(forCurrency: .USD) ?? ""
+    let dollarAmount: String = FiatFormatter(currency: .USD, withSymbol: true).string(fromDecimal: converter.fiatAmount) ?? ""
     let message = "You have recieved a new transaction of \(dollarAmount) in bitcoin!"
     DispatchQueue.main.async {
       switch UIApplication.shared.applicationState {

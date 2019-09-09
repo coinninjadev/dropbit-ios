@@ -19,9 +19,15 @@ struct DeviceVerificationErrorMessageFactory {
   func messageForResendCodeFailure(error: Error) -> String {
     if let networkError = CKNetworkError(for: error),
       case .rateLimitExceeded = networkError {
+      log.error(error, message: "Rate limit exceeded when verifying phone number.")
       return "Verification codes can only be requested every 30 seconds"
     } else {
-      return "Oops something went wrong, try again later"
+      log.error(error, message: "Resend verification code failed")
+      return """
+        There was an error re-sending the verification code.
+        This could be due to current network conditions, or the SMS provider failed to send.
+        Please try again later.
+        """.removingMultilineLineBreaks()
     }
   }
 
@@ -34,6 +40,7 @@ struct DeviceVerificationErrorMessageFactory {
       unsupportedNumberDesc = "+\(phoneNumber.countryCode) phone numbers"
     }
 
+    log.error("Failed to send DropBit to unsupported country: \(phoneNumber.countryCode)")
     return """
       DropBit does not currently support \(unsupportedNumberDesc).
       You can still use DropBit as a Bitcoin wallet, but some features will be limited.

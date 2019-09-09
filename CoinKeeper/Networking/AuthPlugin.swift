@@ -1,6 +1,6 @@
 //
 //  AuthPlugin.swift
-//  CoinKeeper
+//  DropBit
 //
 //  Created by Ben Winters on 5/10/18.
 //  Copyright © 2018 Coin Ninja, LLC. All rights reserved.
@@ -72,7 +72,7 @@ struct AuthPlugin: PluginType {
   func willSend(_ request: RequestType, target: TargetType) {
     guard let innerRequest = request.request else { return }
     log.debugPrivate(target.endpointDescription)
-    log.debugPrivate(innerRequest.allHTTPHeaderFields ?? [:])
+    log.verboseNetwork("\(innerRequest.allHTTPHeaderFields ?? [:])")
     if let bodyData = innerRequest.httpBody {
       let bodyString = String(data: bodyData, encoding: .utf8) ?? "-"
       log.info("Body: %@", privateArgs: [bodyString])

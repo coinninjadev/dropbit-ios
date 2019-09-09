@@ -42,7 +42,7 @@ large_tuple: # warn user when using 3 values in tuple, give error if there are 4
 
 line_length:
   warning: 150
-  error: 200
+  error: 150
 
 # naming rules can set warnings/errors for min_length and max_length
 # additionally they can set excluded names

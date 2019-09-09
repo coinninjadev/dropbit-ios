@@ -1,6 +1,6 @@
 //
 //  RequestPayViewModel.swift
-//  CoinKeeper
+//  DropBit
 //
 //  Created by BJ Miller on 4/5/18.
 //  Copyright © 2018 Coin Ninja, LLC. All rights reserved.
@@ -13,9 +13,9 @@ class RequestPayViewModel: CurrencySwappableEditAmountViewModel {
   var receiveAddress: String
   let qrCodeGenerator = QRCodeGenerator()
 
-  init(receiveAddress: String, viewModel: CurrencySwappableEditAmountViewModel) {
+  init(receiveAddress: String, amountViewModel: CurrencySwappableEditAmountViewModel) {
     self.receiveAddress = receiveAddress
-    super.init(viewModel: viewModel)
+    super.init(viewModel: amountViewModel)
   }
 
   var bitcoinURL: BitcoinURL? {

@@ -1,6 +1,6 @@
 //
 //  ConfirmPaymentViewController.swift
-//  CoinKeeper
+//  DropBit
 //
 //  Created by Mitchell on 4/25/18.
 //  Copyright © 2018 Coin Ninja, LLC. All rights reserved.
@@ -41,7 +41,7 @@ class ConfirmPaymentViewController: PresentableViewController, StoryboardInitial
     vc.transactionType = type
     vc.viewModel = viewModel
     vc.feeModel = feeModel
-    vc.generalCoordinationDelegate = delegate
+    vc.delegate = delegate
     return vc
   }
 
@@ -69,9 +69,7 @@ class ConfirmPaymentViewController: PresentableViewController, StoryboardInitial
   @IBOutlet var avatarImageView: UIImageView!
   @IBOutlet var confirmView: ConfirmView!
 
-  var coordinationDelegate: ConfirmPaymentViewControllerDelegate? {
-    return generalCoordinationDelegate as? ConfirmPaymentViewControllerDelegate
-  }
+  private(set) weak var delegate: ConfirmPaymentViewControllerDelegate!
 
   @IBAction func changeFeeType(_ sender: UISegmentedControl) {
     guard let model = feeModel else { return }
@@ -84,7 +82,7 @@ class ConfirmPaymentViewController: PresentableViewController, StoryboardInitial
         self.viewModel.update(with: self.feeModel.transactionData)
 
       } else {
-        coordinationDelegate?.viewControllerRequestedShowFeeTooExpensiveAlert(self)
+        delegate.viewControllerRequestedShowFeeTooExpensiveAlert(self)
       }
 
       self.updateFeeViews()
@@ -95,7 +93,7 @@ class ConfirmPaymentViewController: PresentableViewController, StoryboardInitial
   }
 
   @IBAction func closeButtonWasTouched() {
-    coordinationDelegate?.viewControllerDidSelectClose(self)
+    delegate.viewControllerDidSelectClose(self)
   }
 
   override func viewDidLoad() {
@@ -113,7 +111,7 @@ class ConfirmPaymentViewController: PresentableViewController, StoryboardInitial
       }
     }
 
-    coordinationDelegate?.confirmPaymentViewControllerDidLoad(self)
+    delegate.confirmPaymentViewControllerDidLoad(self)
 
     updateViewWithModel()
   }
@@ -140,7 +138,7 @@ class ConfirmPaymentViewController: PresentableViewController, StoryboardInitial
     feeAdjustedOutgoingTxData.amount = Int(txData.amount)
     feeAdjustedOutgoingTxData.feeAmount = Int(txData.feeAmount)
 
-    coordinationDelegate?.viewControllerDidConfirmOnChainPayment(
+    delegate.viewControllerDidConfirmOnChainPayment(
       self,
       transactionData: txData,
       rates: viewModel.exchangeRates,
@@ -152,7 +150,7 @@ class ConfirmPaymentViewController: PresentableViewController, StoryboardInitial
     let inputs = LightningPaymentInputs(sats: viewModel.btcAmount.asFractionalUnits(of: .BTC),
                                         invoice: viewModel.invoice,
                                         sharedPayload: viewModel.sharedPayloadDTO)
-    coordinationDelegate?.viewControllerDidConfirmLightningPayment(self, inputs: inputs)
+    delegate.viewControllerDidConfirmLightningPayment(self, inputs: inputs)
   }
 
   private func confirmInvite(with viewModel: ConfirmPaymentInviteViewModel,
@@ -166,7 +164,7 @@ class ConfirmPaymentViewController: PresentableViewController, StoryboardInitial
                                                       btcPair: pair,
                                                       fee: feeModel.networkFeeAmount,
                                                       sharedPayloadDTO: viewModel.sharedPayloadDTO)
-    coordinationDelegate?.viewControllerDidConfirmInvite(self,
+    delegate.viewControllerDidConfirmInvite(self,
                                                          outgoingInvitationDTO: outgoingInvitationDTO,
                                                          walletTxType: viewModel.walletTransactionType)
   }
@@ -237,7 +235,7 @@ extension ConfirmPaymentViewController {
 
   fileprivate func updateAmountViews() {
     let converter = viewModel.generateCurrencyConverter(withBTCAmount: viewModel.btcAmount)
-    let labels = viewModel.dualAmountLabels(withConverter: converter)
+    let labels = viewModel.dualAmountLabels(withConverter: converter, walletTransactionType: viewModel.walletTransactionType)
     primaryCurrencyLabel.text = labels.primary
     secondaryCurrencyLabel.attributedText = labels.secondary
   }
@@ -264,8 +262,9 @@ extension ConfirmPaymentViewController {
                                          fromAmount: feeDecimalAmount,
                                          rates: self.viewModel.exchangeRates)
     let btcFee = String(describing: feeConverter.amount(forCurrency: .BTC) ?? 0)
-    let fiatFee = feeConverter.amountStringWithSymbol(forCurrency: .USD) ?? ""
-    networkFeeLabel.text = "Network Fee \(btcFee) (\(fiatFee))"
+    let fiatFeeAmount = feeConverter.amount(forCurrency: .USD)
+    let fiatFeeString = FiatFormatter(currency: .USD, withSymbol: true).string(fromDecimal: fiatFeeAmount ?? .zero) ?? ""
+    networkFeeLabel.text = "Network Fee \(btcFee) (\(fiatFeeString))"
   }
 
   fileprivate func updateRecipientViews() {

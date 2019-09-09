@@ -49,15 +49,15 @@ class TwitterAccessManager: TwitterAccessManagerType {
         try context.performThrowingAndWait {
           let user = CKMUser.find(in: context)
           user?.avatar = twitterUser.profileImageData
-          try context.save()
+          try context.saveRecursively()
         }
       })
   }
 
-  /// default context is mainQueueContext
+  /// default context is viewContext
   func getCurrentTwitterUser() -> Promise<TwitterUser> {
     guard isNotUITesting else { return Promise.value(TwitterUser.emptyInstance()) }
-    return getCurrentTwitterUser(in: persistenceManager.mainQueueContext())
+    return getCurrentTwitterUser(in: persistenceManager.viewContext)
   }
 
   func refreshTwitterAvatar(in context: NSManagedObjectContext) -> Promise<Bool> {

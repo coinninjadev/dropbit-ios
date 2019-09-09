@@ -31,7 +31,7 @@ class WalletBroker: CKPersistenceBroker, WalletBrokerType {
     self.deleteWallet(in: bgContext)
     try bgContext.performThrowingAndWait {
       _ = CKMWallet.findOrCreate(in: bgContext)
-      try bgContext.save()
+      try bgContext.saveRecursively()
     }
   }
 

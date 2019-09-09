@@ -56,9 +56,11 @@ class WalletSyncOperationFactory {
               strongSelf.handleSyncRoutineError(error, in: bgContext)
             }
             .finally {
+              var contextHasInsertionsOrUpdates = false
               bgContext.performAndWait {
+                contextHasInsertionsOrUpdates = (bgContext.insertedObjects.isNotEmpty || bgContext.updatedObjects.isNotEmpty)
                 do {
-                  try bgContext.save()
+                  try bgContext.saveRecursively()
                 } catch {
                   log.contextSaveError(error)
                 }
@@ -73,8 +75,7 @@ class WalletSyncOperationFactory {
               strongSelf.delegate?.syncManagerDidFinishSync()
 
               if let fetchResultHandler = fetchResult {
-                let result: UIBackgroundFetchResult = bgContext.insertedObjects.isNotEmpty ||
-                  bgContext.updatedObjects.isNotEmpty ? .newData : .noData
+                let result: UIBackgroundFetchResult = contextHasInsertionsOrUpdates ? .newData : .noData
                 fetchResultHandler(result)
               }
 
@@ -95,8 +96,9 @@ class WalletSyncOperationFactory {
       .then(in: context) { self.checkAndVerifyUser(with: dependencies, in: context) }
       .then(in: context) { self.checkAndVerifyWallet(with: dependencies, in: context) }
       .then(in: context) { self.updateLightningAccount(with: dependencies, in: context).asVoid() }
-      .then(in: context) { dependencies.txDataWorker.performFetchAndStoreAllTransactionalData(in: context, fullSync: fullSync) }
+      .then(in: context) { dependencies.txDataWorker.performFetchAndStoreAllOnChainTransactions(in: context, fullSync: fullSync) }
       .get { _ in dependencies.connectionManager.setAPIUnreachable(false) }
+      .then(in: context) { dependencies.txDataWorker.performFetchAndStoreAllLightningTransactions(in: context) }
       .then(in: context) { dependencies.walletWorker.updateServerPoolAddresses(in: context) }
       .then(in: context) { dependencies.walletWorker.updateReceivedAddressRequests(in: context) }
       .then(in: context) { _ in dependencies.walletWorker.updateSentAddressRequests(in: context) }

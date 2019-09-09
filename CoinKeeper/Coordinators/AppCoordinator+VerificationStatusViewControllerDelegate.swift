@@ -121,7 +121,7 @@ extension AppCoordinator: VerificationStatusViewControllerDelegate {
     with tryAgainConfiguration: AlertActionConfiguration,
     successfulCompletion: @escaping CKCompletion) -> AlertActionConfiguration {
 
-    let verifiedIdentities = persistenceManager.brokers.user.verifiedIdentities(in: persistenceManager.mainQueueContext())
+    let verifiedIdentities = persistenceManager.brokers.user.verifiedIdentities(in: persistenceManager.viewContext)
 
     return AlertActionConfiguration(title: "Remove", style: .cancel, action: {
       self.alertManager.showActivityHUD(withStatus: nil)
@@ -152,11 +152,11 @@ extension AppCoordinator: VerificationStatusViewControllerDelegate {
     case .twitter:
       self.analyticsManager.track(event: .deregisterTwitter, with: nil)
       self.analyticsManager.track(property: MixpanelProperty(key: .twitterVerified, value: false))
-      let context = persistenceManager.mainQueueContext()
+      let context = persistenceManager.viewContext
       context.perform {
         let user = CKMUser.find(in: context)
         user?.avatar = nil
-        try? context.save()
+        try? context.saveRecursively()
       }
     }
   }

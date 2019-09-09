@@ -11,12 +11,17 @@ import Foundation
 extension LightningUpgradeCoordinator: LightningUpgradeStartViewControllerDelegate {
   func viewControllerRequestedShowLightningUpgradeInfo(_ viewController: LightningUpgradeStartViewController) {
     let url = CoinNinjaUrlFactory.buildUrl(for: .contactUs)!
-    parent?.openURL(url, completionHandler: nil)
+    parent.openURL(url, completionHandler: nil)
   }
 
   func viewControllerRequestedUpgradeAuthentication(_ viewController: LightningUpgradeStartViewController, completion: @escaping CKCompletion) {
-    parent?.requireAuthenticationIfNeeded(whenAuthenticated: {
+    let controller = parent.createPinEntryViewControllerForAppOpen { [weak self] in
+      if let controller = self?.parent.navigationController.topViewController() as? PinEntryViewController {
+        controller.dismiss(animated: true, completion: nil)
+      }
       completion()
-    })
+    }
+
+    parent.navigationController.topViewController()?.show(controller, sender: nil)
   }
 }

@@ -24,9 +24,7 @@ protocol LightningUpgradeStatusDataSource: AnyObject {
 
 final class LightningUpgradeStatusViewController: BaseViewController, StoryboardInitializable {
 
-  var coordinationDelegate: LightningUpgradeStatusViewControllerDelegate? {
-    return generalCoordinationDelegate as? LightningUpgradeStatusViewControllerDelegate
-  }
+  private(set) weak var delegate: LightningUpgradeStatusViewControllerDelegate!
 
   var dataSource: LightningUpgradeStatusDataSource!
 
@@ -51,7 +49,7 @@ final class LightningUpgradeStatusViewController: BaseViewController, Storyboard
     nextStep: @escaping CKErrorCompletion
     ) -> LightningUpgradeStatusViewController {
     let controller = LightningUpgradeStatusViewController.makeFromStoryboard()
-    controller.generalCoordinationDelegate = delegate
+    controller.delegate = delegate
     controller.dataSource = dataSource
     controller.nextStep = nextStep
     return controller
@@ -60,15 +58,18 @@ final class LightningUpgradeStatusViewController: BaseViewController, Storyboard
   override func viewDidLoad() {
     super.viewDidLoad()
     styleInitialUI()
+  }
 
-    guard let coordinator = coordinationDelegate else { return }
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+
     // create new wallet
-    coordinationDelegate?.viewControllerStartUpgradingWallet(self)
-      .get { self.finishedCreatingNewWallet() }
+    delegate.viewControllerStartUpgradingWallet(self)
+      .then { self.finishedCreatingNewWallet() }
 
     // update to segwit
-      .then { _ in coordinator.viewControllerStartUpgradingToSegwit(self) }
-      .get { _ in self.finishedUpdatingToSegwit() }
+      .then { _ in self.delegate.viewControllerStartUpgradingToSegwit(self) }
+      .then { _ in self.finishedUpdatingToSegwit() }
 
     // transfer funds
       .done { _ in self.transferFundsIfNeeded() }
@@ -98,36 +99,43 @@ final class LightningUpgradeStatusViewController: BaseViewController, Storyboard
   }
 
   private func transferFundsIfNeeded() {
-    guard let coordinator = coordinationDelegate else { return }
     guard let data = dataSource.transactionData, data.amount != 0 else {
       nextStep?(nil)
       return
     }
 
-    coordinator.viewController(self, broadcast: data)
-      .done { (_) in
-        self.finishedTransferringFunds()
-        self.nextStep?(nil)
-      }.catch { (error: Error) in
+    delegate.viewController(self, broadcast: data)
+      .then { _ in self.finishedTransferringFunds() }
+      .done { _ in self.nextStep?(nil) }
+      .catch { (error: Error) in
         self.nextStep?(error)
     }
   }
 
-  private func finishedCreatingNewWallet() {
-    DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
-      self.creatingNewWalletStatusImageView.image = self.completedImage
+  private func finishedCreatingNewWallet() -> Promise<Void> {
+    return Promise { seal in
+      DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+        self.creatingNewWalletStatusImageView.image = self.completedImage
+        seal.fulfill(())
+      }
     }
   }
 
-  private func finishedUpdatingToSegwit() {
-    DispatchQueue.main.asyncAfter(deadline: .now() + 4.0) {
-      self.updatingToSegwitStatusImageView.image = self.completedImage
+  private func finishedUpdatingToSegwit() -> Promise<Void> {
+    return Promise { seal in
+      DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+        self.updatingToSegwitStatusImageView.image = self.completedImage
+        seal.fulfill(())
+      }
     }
   }
 
-  private func finishedTransferringFunds() {
-    DispatchQueue.main.asyncAfter(deadline: .now() + 6.0) {
-      self.transferringFundsStatusImageView.image = self.completedImage
+  private func finishedTransferringFunds() -> Promise<Void> {
+    return Promise { seal in
+      DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+        self.transferringFundsStatusImageView.image = self.completedImage
+        seal.fulfill(())
+      }
     }
   }
 

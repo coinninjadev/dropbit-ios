@@ -16,9 +16,7 @@ extension LightningUpgradeCoordinator: LightningUpgradeStatusViewControllerDeleg
   }
 
   func viewControllerStartUpgradingWallet(_ viewController: LightningUpgradeStatusViewController) -> Promise<Void> {
-    guard let parent = parent else { return Promise(error: CKPersistenceError.missingValue(key: "parent coordinator")) }
-
-    let mainQueueContext = parent.persistenceManager.mainQueueContext()
+    let mainQueueContext = parent.persistenceManager.viewContext
     let existingFlags = parent.persistenceManager.brokers.wallet.walletFlags(in: mainQueueContext)
 
     let newFlags = WalletFlagsParser(flags: 0)
@@ -32,20 +30,20 @@ extension LightningUpgradeCoordinator: LightningUpgradeStatusViewControllerDeleg
       .then { (response: WalletResponse) -> Promise<Void> in
         let flagsParser = WalletFlagsParser(flags: response.flags)
         guard flagsParser.walletDeactivated else { throw CKWalletError.failedToDeactivate }
-        return parent.persistenceManager.keychainManager.upgrade(recoveryWords: self.newWords)
+        return self.parent.persistenceManager.keychainManager.upgrade(recoveryWords: self.newWords)
       }
       .then { _ -> Promise<WalletResponse> in
-        let newWalletManager = WalletManager(words: self.newWords, persistenceManager: parent.persistenceManager)
-        parent.walletManager = newWalletManager
-        return parent.networkManager.createWallet(withPublicKey: newWalletManager.hexEncodedPublicKey, walletFlags: newFlags.flags)
+        let newWalletManager = WalletManager(words: self.newWords, persistenceManager: self.parent.persistenceManager)
+        self.parent.walletManager = newWalletManager
+        return self.parent.networkManager.createWallet(withPublicKey: newWalletManager.hexEncodedPublicKey, walletFlags: newFlags.flags)
       }
       .done(in: context) { (response: WalletResponse) in
-        try parent.persistenceManager.brokers.wallet.persistWalletResponse(from: response, in: context)
+        try self.parent.persistenceManager.brokers.wallet.persistWalletResponse(from: response, in: context)
         let wallet = CKMWallet.find(in: context)
         wallet?.lastReceivedIndex = CKMWallet.defaultLastIndex
         wallet?.lastChangeIndex = CKMWallet.defaultLastIndex + 1 // send-max to segwit wallet goes to first change address
-        try context.save()
-        parent.persistenceManager.brokers.wallet.receiveAddressIndexGaps = []
+        try context.saveRecursively()
+        self.parent.persistenceManager.brokers.wallet.receiveAddressIndexGaps = []
       }
       .asVoid()
   }
@@ -55,7 +53,6 @@ extension LightningUpgradeCoordinator: LightningUpgradeStatusViewControllerDeleg
   }
 
   func viewController(_ viewController: LightningUpgradeStatusViewController, broadcast data: CNBTransactionData) -> Promise<String> {
-    guard let parent = parent else { return Promise(error: CKPersistenceError.missingValue(key: "parent coordinator")) }
     return parent.networkManager.broadcastTx(with: data)
   }
 }

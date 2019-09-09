@@ -24,12 +24,18 @@ class ActionableAlertViewController: AlertControllerType, StoryboardInitializabl
   @IBOutlet var imageView: UIImageView!
   @IBOutlet var actionButton: PrimaryActionButton!
 
-  func setup(with title: String?, description: String?, image: UIImage?, style: AlertMessageStyle, action: AlertActionConfigurationType) {
-    self.displayTitle = title
-    self.displayDescription = description
-    self.image = image
-    self.messageStyle = style
-    self.actions = [action]
+  static func newInstance(title: String?,
+                          description: String?,
+                          image: UIImage?,
+                          style: AlertMessageStyle,
+                          action: AlertActionConfigurationType) -> ActionableAlertViewController {
+    let vc = ActionableAlertViewController.makeFromStoryboard()
+    vc.displayTitle = title
+    vc.displayDescription = description
+    vc.image = image
+    vc.messageStyle = style
+    vc.actions = [action]
+    return vc
   }
 
   func accessibleViewsAndIdentifiers() -> [AccessibleViewElement] {

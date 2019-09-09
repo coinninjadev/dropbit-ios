@@ -17,37 +17,33 @@ protocol CoreDataObserver: AnyObject {
 
 extension CoreDataObserver {
 
-  func observeContextSaveNotifications() {
-    let willSaveToken = willSaveNotificationToken()
-    let didSaveToken = didSaveContextNotificationToken()
+  func observeContextSaveNotifications(forContext context: NSManagedObjectContext) {
+    let willSaveToken = willSaveNotificationToken(forContext: context)
+    let didSaveToken = didSaveContextNotificationToken(forContext: context)
     setContextNotificationTokens(willSaveToken: willSaveToken, didSaveToken: didSaveToken)
   }
 
-  private func willSaveNotificationToken() -> NotificationToken {
+  private func willSaveNotificationToken(forContext context: NSManagedObjectContext) -> NotificationToken {
     let willSaveToken = NotificationCenter.default.addObserver(
       forName: .NSManagedObjectContextWillSave,
-      object: nil,
+      object: context,
       queue: nil,
       using: { [weak self] notification in
-        guard let strongSelf = self else { return }
-        guard let context = notification.object as? NSManagedObjectContext, context.parent == nil else { return }
-
-        strongSelf.handleWillSaveContext(context)
+        guard let context = notification.object as? NSManagedObjectContext else { return }
+        self?.handleWillSaveContext(context)
     })
 
     return NotificationToken(notificationCenter: .default, token: willSaveToken)
   }
 
-  private func didSaveContextNotificationToken() -> NotificationToken {
+  private func didSaveContextNotificationToken(forContext context: NSManagedObjectContext) -> NotificationToken {
     let didSaveToken = NotificationCenter.default.addObserver(
       forName: .NSManagedObjectContextDidSave,
-      object: nil,
+      object: context,
       queue: nil,
       using: { [weak self] notification in
-        guard let strongSelf = self else { return }
-        guard let context = notification.object as? NSManagedObjectContext, context.parent == nil else { return }
-
-        strongSelf.handleDidSaveContext(context)
+        guard let context = notification.object as? NSManagedObjectContext else { return }
+        self?.handleDidSaveContext(context)
     })
     return NotificationToken(notificationCenter: .default, token: didSaveToken)
   }

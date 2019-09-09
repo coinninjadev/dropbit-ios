@@ -12,14 +12,18 @@ import XCTest
 
 class SuccessFailViewControllerTests: XCTestCase {
   var sut: SuccessFailViewController!
+  var mockCoordinator: MockCoordinator!
 
   override func setUp() {
     super.setUp()
-    self.sut = SuccessFailViewController.makeFromStoryboard()
+    let viewModel = SuccessFailViewModel(mode: .pending)
+    self.mockCoordinator = MockCoordinator()
+    self.sut = SuccessFailViewController.newInstance(viewModel: viewModel, delegate: mockCoordinator)
     _ = self.sut.view
   }
 
   override func tearDown() {
+    self.mockCoordinator = nil
     self.sut = nil
     super.tearDown()
   }
@@ -47,17 +51,12 @@ class SuccessFailViewControllerTests: XCTestCase {
 
   // MARK: actions produce results
   func testCloseButtonTellsDelegateToClose() {
-    let mockCoordinator = MockCoordinator()
-    self.sut.generalCoordinationDelegate = mockCoordinator
-
     self.sut.closeButton.sendActions(for: .touchUpInside)
 
     XCTAssertTrue(mockCoordinator.wasAskedToClose, "closeButtonTapped should tell delegate to close")
   }
 
   func testActionButtonTellsDelegateUponSuccess() {
-    let mockCoordinator = MockCoordinator()
-    self.sut.generalCoordinationDelegate = mockCoordinator
     self.sut.setMode(.success)
 
     self.sut.actionButton.sendActions(for: .touchUpInside)
@@ -66,8 +65,6 @@ class SuccessFailViewControllerTests: XCTestCase {
   }
 
   func testActionButtonCallsRetryHandlerUponFailure() {
-    let mockCoordinator = MockCoordinator()
-    self.sut.generalCoordinationDelegate = mockCoordinator
     self.sut.setMode(.failure)
     var handlerExecuted = false
     self.sut.action = { handlerExecuted = true }

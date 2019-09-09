@@ -12,7 +12,7 @@ import Charts
 import PromiseKit
 import SVProgressHUD
 
-protocol NewsViewControllerDelegate: ViewControllerDismissable, URLOpener {
+protocol NewsViewControllerDelegate: CurrencyValueDataSourceType, ViewControllerDismissable, URLOpener {
   func viewControllerDidRequestNewsData(count: Int) -> Promise<[NewsArticleResponse]>
   func viewControllerDidRequestPriceDataFor(period: PricePeriod) -> Promise<[PriceSummaryResponse]>
   func viewControllerBecameVisible(_ viewController: UIViewController)
@@ -33,27 +33,19 @@ final class NewsViewController: BaseViewController, StoryboardInitializable {
     self?.tableView.reloadData()
   }
 
-  static func newInstance(with delegate: NewsViewControllerDelegate) -> NewsViewController {
-    let controller = NewsViewController.makeFromStoryboard()
-    controller.generalCoordinationDelegate = delegate
-    return controller
+  static func newInstance(delegate: NewsViewControllerDelegate) -> NewsViewController {
+    let vc = NewsViewController.makeFromStoryboard()
+    vc.delegate = delegate
+    vc.currencyValueManager = delegate
+    return vc
   }
 
   required init?(coder aDecoder: NSCoder) {
     super.init(coder: aDecoder)
   }
 
-  var coordinationDelegate: NewsViewControllerDelegate? {
-    return generalCoordinationDelegate as? NewsViewControllerDelegate
-  }
-
-  override var generalCoordinationDelegate: AnyObject? {
-    didSet {
-      currencyValueManager = generalCoordinationDelegate as? CurrencyValueDataSourceType
-    }
-  }
-
-  weak var currencyValueManager: CurrencyValueDataSourceType?
+  private(set) weak var delegate: NewsViewControllerDelegate!
+  private(set) weak var currencyValueManager: CurrencyValueDataSourceType?
 
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -80,19 +72,17 @@ final class NewsViewController: BaseViewController, StoryboardInitializable {
     CKNotificationCenter.subscribe(self, [.didUpdateExchangeRates: #selector(refreshDisplayedPrice)])
     currencyValueManager?.latestExchangeRates(responseHandler: updateRatesRequest)
 
-    if let delegate = coordinationDelegate {
-      newsViewControllerDDS?.setupDataSet(coordinationDelegate: delegate)
-    }
+    newsViewControllerDDS?.setupDataSet(coordinationDelegate: delegate)
   }
 
   @IBAction func closeButtonWasTouched() {
     SVProgressHUD.dismiss()
-    coordinationDelegate?.viewControllerDidSelectClose(self)
+    delegate.viewControllerDidSelectClose(self)
   }
 
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
-    coordinationDelegate?.viewControllerBecameVisible(self)
+    delegate.viewControllerBecameVisible(self)
   }
 
   @objc private func refreshDisplayedPrice() {
@@ -107,8 +97,8 @@ extension NewsViewController: NewsViewControllerDDSDelegate {
   }
 
   func delegateDidRequestUrl(_ url: URL) {
-    coordinationDelegate?.viewControllerWillShowNewsArticle(self)
-    coordinationDelegate?.openURL(url, completionHandler: nil)
+    delegate.viewControllerWillShowNewsArticle(self)
+    delegate.openURL(url, completionHandler: nil)
   }
 
   func delegateFinishedLoadingData() {
