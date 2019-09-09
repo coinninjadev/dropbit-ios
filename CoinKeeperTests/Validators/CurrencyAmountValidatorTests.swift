@@ -11,14 +11,14 @@ import Foundation
 import XCTest
 
 class CurrencyAmountValidatorTests: XCTestCase {
-  var sut: CurrencyAmountValidator!
+  var sut: OnChainAmountValidator!
 
   let rates: ExchangeRates = [.BTC: 1, .USD: 8000]
   let maxMoney = Money(amount: NSDecimalNumber(decimal: 100.0), currency: .USD)
 
   override func setUp() {
     super.setUp()
-    self.sut = CurrencyAmountValidator(balanceNetPending: nil, ignoring: [.usableBalance])
+    self.sut = OnChainAmountValidator(balanceNetPending: nil, ignoring: [.usableBalance])
   }
 
   override func tearDown() {

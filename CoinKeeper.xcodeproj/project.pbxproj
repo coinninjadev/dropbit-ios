@@ -567,6 +567,8 @@
 		A2B4E6F022FA488100E24324 /* LightningRefillViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A2B4E6EF22FA488100E24324 /* LightningRefillViewController.storyboard */; };
 		A2B4E6F222FC6D7B00E24324 /* AppCoordinator+LightningRefillViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2B4E6F122FC6D7B00E24324 /* AppCoordinator+LightningRefillViewControllerDelegate.swift */; };
 		A2B4EAFE2322C555005D0A65 /* AppCoordinator+LightningReloadDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2B4EAFD2322C555005D0A65 /* AppCoordinator+LightningReloadDelegate.swift */; };
+		A2B4EB002326B9F6005D0A65 /* LightningWalletAmountValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2B4EAFF2326B9F6005D0A65 /* LightningWalletAmountValidator.swift */; };
+		A2B4EB022326D406005D0A65 /* NSDecimalNumber+Arithmetic.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2B4EB012326D406005D0A65 /* NSDecimalNumber+Arithmetic.swift */; };
 		A2BCCFC22321919300EB9C30 /* AppCoordinator+PaymentBuildingDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2BCCFC12321919300EB9C30 /* AppCoordinator+PaymentBuildingDelegate.swift */; };
 		A2BFA54D22E7531500396D33 /* WalletToggleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2BFA54C22E7531500396D33 /* WalletToggleView.swift */; };
 		A2BFA54F22E7536A00396D33 /* WalletToggleView.xib in Resources */ = {isa = PBXBuildFile; fileRef = A2BFA54E22E7536A00396D33 /* WalletToggleView.xib */; };
@@ -1588,6 +1590,8 @@
 		A2B4E6EF22FA488100E24324 /* LightningRefillViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LightningRefillViewController.storyboard; sourceTree = "<group>"; };
 		A2B4E6F122FC6D7B00E24324 /* AppCoordinator+LightningRefillViewControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppCoordinator+LightningRefillViewControllerDelegate.swift"; sourceTree = "<group>"; };
 		A2B4EAFD2322C555005D0A65 /* AppCoordinator+LightningReloadDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppCoordinator+LightningReloadDelegate.swift"; sourceTree = "<group>"; };
+		A2B4EAFF2326B9F6005D0A65 /* LightningWalletAmountValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightningWalletAmountValidator.swift; sourceTree = "<group>"; };
+		A2B4EB012326D406005D0A65 /* NSDecimalNumber+Arithmetic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSDecimalNumber+Arithmetic.swift"; sourceTree = "<group>"; };
 		A2BCCFC12321919300EB9C30 /* AppCoordinator+PaymentBuildingDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppCoordinator+PaymentBuildingDelegate.swift"; sourceTree = "<group>"; };
 		A2BFA54C22E7531500396D33 /* WalletToggleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletToggleView.swift; sourceTree = "<group>"; };
 		A2BFA54E22E7536A00396D33 /* WalletToggleView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WalletToggleView.xib; sourceTree = "<group>"; };
@@ -2350,6 +2354,7 @@
 				B56639CE22B1944200FA0EC3 /* UIButton+Helpers.swift */,
 				3B731D372253D97A0044B4F8 /* UIView+Fade.swift */,
 				A2FE198522FDDD3A00C2412D /* NSAttributedString+WalletTypeIdentifiers.swift */,
+				A2B4EB012326D406005D0A65 /* NSDecimalNumber+Arithmetic.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -3068,6 +3073,7 @@
 				A29CE10520A367DF00761B91 /* BitcoinAddressValidator.swift */,
 				A29CE10720A3684700761B91 /* StringEmptyValidator.swift */,
 				A257CEC5230C3F6D0063670B /* LightningInvoiceValidator.swift */,
+				A2B4EAFF2326B9F6005D0A65 /* LightningWalletAmountValidator.swift */,
 			);
 			path = Validators;
 			sourceTree = "<group>";
@@ -4486,6 +4492,7 @@
 				B5130E1D22EB99720003374F /* RegTestBroadcastTarget.swift in Sources */,
 				3B82692120330FB9009B11EC /* FontStrings.swift in Sources */,
 				B5FBE42020DD76550029D273 /* SettingsViewModel.swift in Sources */,
+				A2B4EB022326D406005D0A65 /* NSDecimalNumber+Arithmetic.swift in Sources */,
 				B52A25CD2077FFF600F636A1 /* Date+Extensions.swift in Sources */,
 				3BDA2081203E17A700CBA6B1 /* BiometricError.swift in Sources */,
 				3B27D3FA225E84E900291B82 /* GetBitcoinViewController.swift in Sources */,
@@ -4886,6 +4893,7 @@
 				A2BCCFC22321919300EB9C30 /* AppCoordinator+PaymentBuildingDelegate.swift in Sources */,
 				A245C6D020D9537400D99983 /* RequestAddressBody.swift in Sources */,
 				3B5A88A4228B09260082BBA4 /* ContactCellSecondaryLabel.swift in Sources */,
+				A2B4EB002326B9F6005D0A65 /* LightningWalletAmountValidator.swift in Sources */,
 				3BA9F611208F6EDB0047C213 /* AppCoordinator+BalanceContainerDelegate.swift in Sources */,
 				B5A98AEB224176C300DEF96F /* CKUserDefaults.swift in Sources */,
 				B5054149207D00270059C8F9 /* CKMAddress+CoreDataProperties.swift in Sources */,

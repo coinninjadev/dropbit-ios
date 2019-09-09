@@ -12,8 +12,10 @@ class WalletTransferViewModel: CurrencySwappableEditAmountViewModel {
 
   var direction: TransferDirection
   var amount: TransferAmount
+  var walletBalances: WalletBalances
 
-  init(direction: TransferDirection, amount: TransferAmount) {
+  init(direction: TransferDirection, amount: TransferAmount, walletBalances: WalletBalances) {
+    self.walletBalances = walletBalances
     self.direction = direction
     self.amount = amount
 

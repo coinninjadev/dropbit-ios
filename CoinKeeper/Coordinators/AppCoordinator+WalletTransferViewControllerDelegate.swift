@@ -37,4 +37,8 @@ extension AppCoordinator: WalletTransferViewControllerDelegate {
         log.error(error, message: "Failed to withdraw from lightning account")
     }
   }
+
+  func viewControllerHasFundsError(_ error: Error) {
+    alertManager.showError(message: error.localizedDescription, forDuration: nil)
+  }
 }

@@ -25,7 +25,8 @@ extension AppCoordinator: WalletOverviewViewControllerDelegate {
   }
 
   func viewControllerDidSelectTransfer(withDirection direction: TransferDirection) {
-    let viewModel = WalletTransferViewModel(direction: direction, amount: .custom)
+    let viewModel = WalletTransferViewModel(direction: direction, amount: .custom,
+                                            walletBalances: spendableBalanceNetPending())
     let transferViewController = WalletTransferViewController.newInstance(delegate: self, viewModel: viewModel)
     navigationController.present(transferViewController, animated: true, completion: nil)
   }

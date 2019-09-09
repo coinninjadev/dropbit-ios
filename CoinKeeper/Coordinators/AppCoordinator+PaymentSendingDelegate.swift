@@ -14,7 +14,6 @@ import PromiseKit
 extension AppCoordinator: PaymentSendingDelegate {
 
   func viewControllerDidConfirmLightningPayment(_ viewController: UIViewController, inputs: LightningPaymentInputs) {
-    // TODO: add logic to check amount limits
     let viewModel = PaymentVerificationPinEntryViewModel(amountDisablesBiometrics: false)
     let successHandler: CKCompletion = { [unowned self] in
       self.handleSuccessfulLightningPaymentVerification(with: inputs)

@@ -40,6 +40,7 @@ protocol WalletTransferViewControllerDelegate: ViewControllerDismissable, Paymen
                                     paymentData: PaymentData)
 
   func viewControllerDidConfirmWithdraw(_ viewController: UIViewController, btcAmount: NSDecimalNumber)
+  func viewControllerHasFundsError(_ error: Error)
 }
 
 enum TransferDirection {
@@ -64,6 +65,7 @@ class WalletTransferViewController: PresentableViewController, StoryboardInitial
     let viewController = WalletTransferViewController.makeFromStoryboard()
     viewController.viewModel = viewModel
     viewController.delegate = delegate
+    viewModel.delegate = viewController
     return viewController
   }
 
@@ -107,9 +109,9 @@ class WalletTransferViewController: PresentableViewController, StoryboardInitial
   }
 
   private func buildTransaction() {
-    let paymentData = coordinationDelegate?.viewControllerNeedsTransactionData(self,
-                                                                           btcAmount: viewModel.btcAmount,
-                                                                           exchangeRates: rateManager.exchangeRates)
+    let paymentData = delegate.viewControllerNeedsTransactionData(self,
+                                                                  btcAmount: viewModel.btcAmount,
+                                                                  exchangeRates: rateManager.exchangeRates)
     viewModel.direction = .toLightning(paymentData)
   }
 
@@ -162,10 +164,15 @@ extension WalletTransferViewController: ConfirmViewDelegate {
   func viewDidConfirm() {
     switch viewModel.direction {
     case .toLightning(let data):
-      guard let delegate = coordinationDelegate, let data = data else { return }
-      delegate.viewControllerDidConfirmLoad(self, paymentData: data)
+      guard let data = data else { return }
+      do {
+        try LightningWalletAmountValidator(balanceNetPending: viewModel.walletBalances).validate(value: viewModel.generateCurrencyConverter())
+        delegate.viewControllerDidConfirmLoad(self, paymentData: data)
+      } catch {
+        delegate.viewControllerHasFundsError(error)
+      }
     case .toOnChain(let btcAmount):
-      guard let delegate = coordinationDelegate, let btcAmount = btcAmount else { return }
+      guard let btcAmount = btcAmount else { return }
       delegate.viewControllerDidConfirmWithdraw(self, btcAmount: btcAmount)
     }
   }
