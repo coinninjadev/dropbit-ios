@@ -38,7 +38,7 @@ class CKCryptor {
     let keys = wmgr.encryptionCipherKeys(forUncompressedPublicKey: pubkey)
     let encryptor = RNCryptor.EncryptorV3(encryptionKey: keys.encryptionKey, hmacKey: keys.hmacKey)
     let encryptedData = encryptor.encrypt(data: message)
-    return (encryptedData + keys.ephemeralPublicKey).base64EncodedString()
+    return (encryptedData + keys.associatedPublicKey).base64EncodedString()
   }
 
   /// Decrypt a message from CoinNinja API in Base64-encoded format.
