@@ -38,9 +38,7 @@ class VinCoreDataTests: XCTestCase {
       return
     }
 
-    self.context.performAndWait {
-      self.sut = CKMVin.findOrCreate(with: vinResponse, in: context, fullSync: false)
-    }
+    self.sut = CKMVin.findOrCreate(with: vinResponse, in: context)
 
     XCTAssertEqual(self.sut.addressIDs, vinResponse.addresses)
     XCTAssertEqual(self.sut.amount, vinResponse.value)
