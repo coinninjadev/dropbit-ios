@@ -15,32 +15,33 @@ public class CKMVin: NSManagedObject {
 
   static func findOrCreate(
     with response: TransactionVinResponse,
-    in context: NSManagedObjectContext,
-    fullSync: Bool) -> CKMVin {
+    in context: NSManagedObjectContext) -> CKMVin {
+    let vin: CKMVin = find(with: response, in: context) ?? CKMVin(insertInto: context)
+    vin.configure(with: response, in: context)
+    return vin
+  }
 
+  static func find(with response: TransactionVinResponse,
+                   in context: NSManagedObjectContext) -> CKMVin? {
     let fetchRequest: NSFetchRequest<CKMVin> = CKMVin.fetchRequest()
     fetchRequest.predicate = CKPredicate.Vin.matching(response: response)
     fetchRequest.fetchLimit = 1
-
-    var vin: CKMVin!
-    context.performAndWait {
-      do {
-        if let foundVin = try context.fetch(fetchRequest).first {
-          vin = foundVin
-          if fullSync {
-            vin.configure(with: response, in: context)
-          }
-        } else {
-          vin = CKMVin(insertInto: context)
-          vin.configure(with: response, in: context)
-        }
-      } catch {
-        vin = CKMVin(insertInto: context)
-        vin.configure(with: response, in: context)
-      }
+    do {
+      return try context.fetch(fetchRequest).first
+    } catch {
+      log.error(error, message: "Failed to fetch CKMVin")
+      return nil
     }
+  }
 
-    return vin
+  static func findAll(in context: NSManagedObjectContext) -> [CKMVin] {
+    let fetchRequest: NSFetchRequest<CKMVin> = CKMVin.fetchRequest()
+    do {
+      return try context.fetch(fetchRequest)
+    } catch {
+      log.error(error, message: "Failed to fetch all CKMVins")
+      return []
+    }
   }
 
   func configure(with vinResponse: TransactionVinResponse, in context: NSManagedObjectContext) {
