@@ -26,8 +26,8 @@ extension AppCoordinator: DeviceVerificationCoordinatorDelegate {
 
     let flags = 0
     let handler = WalletFlagsParser(flags: flags)
-      .setPurpose(.BIP49)
-      .setVersion(.v1)
+      .setPurpose(.BIP84)
+      .setVersion(.v2)
 
     return self.networkManager.createWallet(withPublicKey: wmgr.hexEncodedPublicKey, walletFlags: handler.flags)
       .get(in: context) { try self.persistenceManager.brokers.wallet.persistWalletResponse(from: $0, in: context) }
