@@ -1,6 +1,6 @@
 //
 //  AppCoordinator+PinEntryViewControllerDelegate.swift
-//  CoinKeeper
+//  DropBit
 //
 //  Created by BJ Miller on 4/24/18.
 //  Copyright © 2018 Coin Ninja, LLC. All rights reserved.
@@ -13,27 +13,19 @@ extension AppCoordinator: PinEntryViewControllerDelegate {
   func viewControllerDidTryBiometrics(_ pinEntryViewController: PinEntryViewController) {
     guard biometricsAuthenticationManager.canAuthenticateWithBiometrics else { return }
     biometricsAuthenticationManager.authenticate(
-      completion: { [weak self] in self?.viewControllerDidSuccessfullyAuthenticate(pinEntryViewController) },
+      completion: {
+        pinEntryViewController.authenticationSatisfied()
+      },
       error: nil
     )
   }
 
-  func viewControllerDidSuccessfullyAuthenticate(_ pinEntryViewController: PinEntryViewController) {
-    switch pinEntryViewController.mode {
-    case .standard:
-      launchStateManager.userWasAuthenticated()
-      serialQueueManager.enqueueWalletSyncIfAppropriate(type: .standard, policy: .always,
-                                                        completion: nil, fetchResult: nil)
-
-      let presentedVC = navigationController.topViewController() as? PinEntryViewController
-      guard let pinVC = presentedVC else { return }
-      pinVC.whenAuthenticated?()
-
-    case .paymentVerification(_, let completion), .inviteVerification(let completion),
-         .walletDeletion(let completion), .recoveryWords(let completion):
-      pinEntryViewController.dismiss(animated: false) {
-        completion(.success(true))
-      }
+  func viewControllerDidSuccessfullyAuthenticate(_ pinEntryViewController: PinEntryViewController,
+                                                 completion: CKCompletion?) {
+    if pinEntryViewController.viewModel.shouldDismissOnSuccess {
+      pinEntryViewController.dismiss(animated: true, completion: completion)
+    } else {
+      completion?()
     }
   }
 

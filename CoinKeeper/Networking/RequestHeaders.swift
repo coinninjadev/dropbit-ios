@@ -1,6 +1,6 @@
 //
 //  RequestHeaders.swift
-//  CoinKeeper
+//  DropBit
 //
 //  Created by Ben Winters on 6/18/18.
 //  Copyright © 2018 Coin Ninja, LLC. All rights reserved.
@@ -39,6 +39,7 @@ public enum CNHeaderParameter: String {
   case devicePlatform = "CN-Device-Platform"
   case appVersion = "CN-App-Version"
   case buildEnvironment = "CN-Build-Environment"
+  case pubKeyString = "CN-Auth-PubKeyString"
 
   var fieldName: String {
     return self.rawValue

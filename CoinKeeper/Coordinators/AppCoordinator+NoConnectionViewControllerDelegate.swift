@@ -8,7 +8,7 @@
 
 import UIKit
 extension AppCoordinator: NoConnectionViewControllerDelegate {
-  func viewControllerDidRequestRetry(_ viewController: UIViewController, completion: @escaping () -> Void) {
+  func viewControllerDidRequestRetry(_ viewController: UIViewController, completion: @escaping CKCompletion) {
     UIApplication.shared.isNetworkActivityIndicatorVisible = true
     networkManager.walletCheckIn()
       .done { _ in

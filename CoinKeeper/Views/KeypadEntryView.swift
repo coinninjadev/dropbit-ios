@@ -1,6 +1,6 @@
 //
 //  KeypadEntryView.swift
-//  CoinKeeper
+//  DropBit
 //
 //  Created by BJ Miller on 2/13/18.
 //  Copyright © 2018 Coin Ninja, LLC. All rights reserved.
@@ -18,7 +18,7 @@ extension KeypadEntryViewDelegate {
   func selectedDecimal() { }
 }
 
-@IBDesignable class KeypadEntryView: UIView {
+ class KeypadEntryView: UIView {
 
   enum KeypadEntryMode {
     case pin, currency

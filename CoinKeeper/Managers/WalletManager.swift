@@ -1,6 +1,6 @@
 //
 //  WalletManager.swift
-//  CoinKeeper
+//  DropBit
 //
 //  Created by BJ Miller on 3/5/18.
 //  Copyright © 2018 Coin Ninja, LLC. All rights reserved.
@@ -14,7 +14,7 @@ protocol WalletManagerType: AnyObject {
   static func createMnemonicWords() -> [String]
   static func validateBase58Check(for address: String) -> Bool
   static func validateBech32Encoding(for address: String) -> Bool
-  var coin: CNBBaseCoin { get set }
+  var coin: CNBBaseCoin { get }
   var wallet: CNBHDWallet { get }
   var hexEncodedPublicKey: String { get }
   func signatureSigning(data: Data) -> String
@@ -28,11 +28,11 @@ protocol WalletManagerType: AnyObject {
   func createWalletCopy() -> CNBHDWallet
 
   /// Use this when displaying the balance
-  func balanceNetPending(in context: NSManagedObjectContext) -> Int
+  func balanceNetPending(in context: NSManagedObjectContext) -> (onChain: Int, lightning: Int)
 
   /// Spendable UTXOs
   /// number of confirmations affects isSpendable, returns a min of 0
-  func spendableBalance(in context: NSManagedObjectContext) -> Int
+  func spendableBalance(in context: NSManagedObjectContext) -> (onChain: Int, lightning: Int)
 
   func activeTemporarySentTxTotal(in context: NSManagedObjectContext) -> Int
 
@@ -90,6 +90,26 @@ protocol WalletManagerType: AnyObject {
  */
 class WalletManager: WalletManagerType {
 
+  private(set) var wallet: CNBHDWallet
+  private let persistenceManager: PersistenceManagerType
+
+  let coin: CNBBaseCoin
+
+  init(words: [String],
+       purpose: CoinDerivation = .BIP49,
+       persistenceManager: PersistenceManagerType = PersistenceManager()) {
+    let relevantCoin: CNBBaseCoin
+    #if DEBUG
+    relevantCoin = BTCTestnetCoin(purpose: purpose)
+    #else
+    relevantCoin = BTCMainnetCoin(purpose: purpose)
+    #endif
+
+    self.wallet = CNBHDWallet(mnemonic: words, coin: relevantCoin)
+    self.coin = relevantCoin
+    self.persistenceManager = persistenceManager
+  }
+
   func encryptionCipherKeys(forUncompressedPublicKey pubkey: Data) -> CNBEncryptionCipherKeys {
     return wallet.encryptionCipherKeys(forPublicKey: pubkey, withEntropy: WalletManager.secureEntropy())
   }
@@ -145,9 +165,6 @@ class WalletManager: WalletManagerType {
     return CNBSegwitAddress.isValidP2WPKHAddress(address) || CNBSegwitAddress.isValidP2WSHAddress(address)
   }
 
-  private(set) var wallet: CNBHDWallet
-  private let persistenceManager: PersistenceManagerType
-
   var minimumFeeRate: UInt {
     return 5
   }
@@ -162,35 +179,29 @@ class WalletManager: WalletManagerType {
     return total
   }
 
-  func balanceNetPending(in context: NSManagedObjectContext) -> Int {
+  func balanceNetPending(in context: NSManagedObjectContext) -> (onChain: Int, lightning: Int) {
     var netBalance = 0
+    var netLightningBalance = 0
     context.performAndWait {
+      let wallet = CKMWallet.findOrCreate(in: context)
       let atss = CKMAddressTransactionSummary.findAll(in: context)
+      let lightningAccount = persistenceManager.brokers.lightning.getAccount(forWallet: wallet, in: context)
       let atsAmount = atss.reduce(0) { $0 + $1.netAmount }
       let tempSentTxTotal = activeTemporarySentTxTotal(in: context)
       netBalance = atsAmount - tempSentTxTotal
+      netLightningBalance = lightningAccount.balance
     }
-    return netBalance
+    return (onChain: netBalance, lightning: netLightningBalance)
   }
 
-  func spendableBalance(in context: NSManagedObjectContext) -> Int {
+  func spendableBalance(in context: NSManagedObjectContext) -> (onChain: Int, lightning: Int) {
+    let wallet = CKMWallet.findOrCreate(in: context)
     let minAmount = self.persistenceManager.brokers.preferences.dustProtectionMinimumAmount
+    let lightningAccount = self.persistenceManager.brokers.lightning.getAccount(forWallet: wallet, in: context)
     let spendableVouts = CKMVout.findAllSpendable(minAmount: minAmount, in: context)
     let spendableTotal = spendableVouts.reduce(0) { $0 + $1.amount }
-    return spendableTotal
-  }
 
-  init(words: [String], coin: CNBBaseCoin = BTCMainnetCoin(), persistenceManager: PersistenceManagerType = PersistenceManager()) {
-    self.wallet = CNBHDWallet(mnemonic: words, coin: coin)
-    self.coin = coin
-    self.persistenceManager = persistenceManager
-  }
-
-  /// Setting coin will update wallet object with new coin.
-  var coin: CNBBaseCoin {
-    didSet {
-      wallet.setCoin(coin)
-    }
+    return (onChain: spendableTotal, lightning: lightningAccount.balance)
   }
 
   var hexEncodedPublicKey: String {

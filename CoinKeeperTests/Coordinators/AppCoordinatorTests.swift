@@ -40,7 +40,7 @@ class AppCoordinatorTests: MockedPersistenceTestCase {
     mockLaunchStateManager.skippedVerificationValue = false
     mockLaunchStateManager.deviceIsVerifiedValue = false
 
-    let nav = CNNavigationController(rootViewController: StartViewController.makeFromStoryboard())
+    let nav = CNNavigationController(rootViewController: StartViewController.newInstance(delegate: nil))
     sut = AppCoordinator(navigationController: nav,
                          persistenceManager: mockPersistenceManager,
                          launchStateManager: mockLaunchStateManager,
@@ -59,7 +59,7 @@ class AppCoordinatorTests: MockedPersistenceTestCase {
     XCTAssertTrue(sut.navigationController.topViewController is StartViewController, "topViewController should be a StartViewController")
 
     if let startVC = sut.navigationController.topViewController as? StartViewController {
-      XCTAssertTrue(startVC.coordinationDelegate === sut, "coordinationDelegate should be sut")
+      XCTAssertTrue(startVC.delegate === sut, "coordinationDelegate should be sut")
     } else {
       XCTFail("topViewController should be a StartViewController")
     }
@@ -78,7 +78,7 @@ class AppCoordinatorTests: MockedPersistenceTestCase {
     let mockLaunchStateManager = MockLaunchStateManager(persistenceManager: mockPersistenceManager)
     mockLaunchStateManager.deviceIsVerifiedValue = true
     let mockNavigationController = MockNavigationController()
-    mockNavigationController.viewControllers = [StartViewController.makeFromStoryboard()]
+    mockNavigationController.viewControllers = [StartViewController.newInstance(delegate: nil)]
     sut = AppCoordinator(navigationController: mockNavigationController,
                          persistenceManager: mockPersistenceManager,
                          launchStateManager: mockLaunchStateManager)
@@ -89,7 +89,7 @@ class AppCoordinatorTests: MockedPersistenceTestCase {
 
     if let drawerVC = mockNavigationController.topViewController as? MMDrawerController,
       let centerVC = drawerVC.centerViewController as? WalletOverviewViewController {
-      XCTAssertTrue(centerVC.coordinationDelegate === sut, "coordinationDelegate should be sut")
+      XCTAssertTrue(centerVC.delegate === sut, "coordinationDelegate should be sut")
     } else {
       XCTFail("centerViewController should be a TransactionHistoryViewController")
     }
@@ -129,7 +129,8 @@ class AppCoordinatorTests: MockedPersistenceTestCase {
     UIApplication.shared.keyWindow?.rootViewController = sut.navigationController
 
     sut.appEnteredActiveState() // to call requireAuthentication...
-    sut.viewControllerDidSuccessfullyAuthenticate(PinEntryViewController.makeFromStoryboard())
+    let vc = sut.createPinEntryViewControllerForAppOpen(whenAuthenticated: {})
+    vc.authenticationSatisfied()
 
     XCTAssertTrue(mockLaunchStateManager.userWasAuthenticatedWasCalled, "should call userWasAuthenticated")
   }
@@ -138,12 +139,14 @@ class AppCoordinatorTests: MockedPersistenceTestCase {
     let mockPersistenceManager = MockPersistenceManager()
     let mockLaunchStateManager = MockLaunchStateManager(persistenceManager: mockPersistenceManager)
     let mockNavigationController = MockNavigationController()
-    let startVC = StartViewController.makeFromStoryboard()
+    let startVC = StartViewController.newInstance(delegate: nil)
     mockNavigationController.viewControllers = [startVC]
     mockLaunchStateManager.mockShouldRequireAuthentication = false
 
     sut.appEnteredActiveState() // to call requireAuthentication...
-    sut.viewControllerDidSuccessfullyAuthenticate(PinEntryViewController.makeFromStoryboard())
+    let viewModel = OpenAppPinEntryViewModel()
+    let vc = PinEntryViewController.newInstance(delegate: sut, viewModel: viewModel, success: nil)
+    vc.authenticationSatisfied()
 
     XCTAssertEqual(mockNavigationController.viewControllers.count, 1, "nav controller should only have 1 vc")
     XCTAssertTrue(mockNavigationController.viewControllers.first is StartViewController, "nav controller top vc should be StartVC")
@@ -201,7 +204,7 @@ class AppCoordinatorTests: MockedPersistenceTestCase {
     sut = AppCoordinator(persistenceManager: mockPersistenceManager,
                          launchStateManager: mockLaunchStateManager,
                          networkManager: mocks.network)
-    let completion: CompletionHandler = { error in
+    let completion: CKErrorCompletion = { error in
       XCTAssertTrue(mocks.network.getUserWasCalled, "syncTransactionDataAndServerAddresses should call getUser")
       expectation.fulfill()
     }
@@ -219,7 +222,7 @@ class AppCoordinatorTests: MockedPersistenceTestCase {
     sut = AppCoordinator(persistenceManager: mockPersistenceManager,
                          launchStateManager: mockLaunchStateManager,
                          networkManager: mocks.network)
-    let completion: CompletionHandler = { error in
+    let completion: CKErrorCompletion = { error in
       XCTAssertTrue(mocks.network.getWalletWasCalled, "syncTransactionDataAndServerAddresses should call getWallet")
       expectation.fulfill()
     }
@@ -317,7 +320,7 @@ class AppCoordinatorTests: MockedPersistenceTestCase {
                          alertManager: localMocks.alert,
                          networkManager: localMocks.network)
 
-    let completion: CompletionHandler = { _ in
+    let completion: CKErrorCompletion = { _ in
       XCTAssert(self.mockBrokers.mockUser.unverifyUserWasCalled, "should call unverifyUser")
       XCTAssert(localMocks.alert.showBannerWithMessageDurationAlertKindWasCalled, "should call showBanner")
       expectation.fulfill()
@@ -342,7 +345,7 @@ class AppCoordinatorTests: MockedPersistenceTestCase {
                          alertManager: localMocks.alert,
                          networkManager: localMocks.network)
 
-    let completion: CompletionHandler = { _ in
+    let completion: CKErrorCompletion = { _ in
       XCTAssert(self.mockBrokers.mockUser.unverifyUserWasCalled, "should call unverifyUser")
       XCTAssert(self.mockBrokers.mockWallet.removeWalletIdWasCalled, "should call removeWalletId")
       XCTAssert(localMocks.alert.showBannerWithMessageDurationAlertKindWasCalled, "should call showBanner")
@@ -357,7 +360,7 @@ class AppCoordinatorTests: MockedPersistenceTestCase {
 }
 
 extension PinEntryViewController {
-  override public func dismiss(animated flag: Bool, completion: (() -> Void)? = nil) {
+  override public func dismiss(animated flag: Bool, completion: CKCompletion? = nil) {
     completion?()
   }
 }

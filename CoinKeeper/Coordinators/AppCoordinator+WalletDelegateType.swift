@@ -19,7 +19,6 @@ extension AppCoordinator: WalletDelegateType {
       let words = persistenceManager.brokers.wallet.walletWords() {
       walletManager = WalletManager(words: words, persistenceManager: persistenceManager)
     }
-    setCurrentCoin()
   }
 
 }

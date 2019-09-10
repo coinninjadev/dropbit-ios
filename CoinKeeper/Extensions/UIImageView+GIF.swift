@@ -1,6 +1,6 @@
 //
 //  UIImageView+GIF.swift
-//  CoinKeeper
+//  DropBit
 //
 //  Created by Mitchell on 7/19/18.
 //  Copyright © 2018 Coin Ninja, LLC. All rights reserved.

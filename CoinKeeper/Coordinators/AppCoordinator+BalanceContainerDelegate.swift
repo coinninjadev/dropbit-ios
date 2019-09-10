@@ -1,6 +1,6 @@
 //
 //  AppCoordinator+BalanceContainerDelegate.swift
-//  CoinKeeper
+//  DropBit
 //
 //  Created by BJ Miller on 4/24/18.
 //  Copyright © 2018 Coin Ninja, LLC. All rights reserved.
@@ -11,6 +11,10 @@ import CoreData
 import PromiseKit
 
 extension AppCoordinator: BalanceContainerDelegate {
+
+  func selectedWallet() -> WalletTransactionType {
+    return persistenceManager.brokers.preferences.selectedWalletTransactionType
+  }
 
   func isSyncCurrentlyRunning() -> Bool {
     let syncOperations = serialQueueManager.queue.operations(ofType: .syncWallet(.standard),
@@ -26,10 +30,16 @@ extension AppCoordinator: BalanceContainerDelegate {
     presentDropBitMeViewController(verifiedFirstTime: false)
   }
 
+  func didTapChartsButton() {
+    guard let topVC = self.navigationController.topViewController() else { return }
+    let newsViewController = NewsViewController.newInstance(delegate: self)
+    topVC.present(newsViewController, animated: true, completion: nil)
+  }
+
   func presentDropBitMeViewController(verifiedFirstTime: Bool) {
     guard let topVC = self.navigationController.topViewController() else { return }
 
-    let context = self.persistenceManager.mainQueueContext()
+    let context = self.persistenceManager.viewContext
     let avatarData = CKMUser.find(in: context)?.avatar
     let publicURLInfo: UserPublicURLInfo? = self.persistenceManager.brokers.user.getUserPublicURLInfo(in: context)
     let config = DropBitMeConfig(publicURLInfo: publicURLInfo, verifiedFirstTime: verifiedFirstTime, userAvatarData: avatarData)
@@ -38,7 +48,7 @@ extension AppCoordinator: BalanceContainerDelegate {
     topVC.present(dropBitMeVC, animated: true, completion: nil)
   }
 
-  func containerDidTapBalances(in viewController: UIViewController) {
+  func didTapRightBalanceView(in viewController: UIViewController) {
     if let controller = viewController as? WalletOverviewViewController {
       // save to user defaults
       currencyController.selectedCurrency.toggle()
@@ -49,13 +59,9 @@ extension AppCoordinator: BalanceContainerDelegate {
     }
   }
 
-  func containerDidLongPressBalances(in viewController: UIViewController) {
-    //
-  }
-
   func dropBitMeAvatar() -> Promise<UIImage> {
     let defaultImage = UIImage(imageLiteralResourceName: "dropBitMeAvatarPlaceholder")
-    let context = persistenceManager.mainQueueContext()
+    let context = persistenceManager.viewContext
 
     if let user = CKMUser.find(in: context) {
       if let avatar = user.avatar {
@@ -85,23 +91,6 @@ extension AppCoordinator {
     CKMAddressTransactionSummary.deleteAll(in: context)
     CKMCounterpartyAddress.deleteAll(in: context)
     CKMAddress.deleteAll(in: context)
-  }
-
-  // Not called currently, but may be useful for testing UI
-  fileprivate func generateSampleData() {
-    let context = persistenceManager.mainQueueContext()
-    guard let wallet = CKMWallet.find(in: context) else { return }
-
-    if wallet.addressTransactionSummaries.isEmpty { //alternate between deletion and creation
-      SampleTransaction.history.forEach({
-        _ = CKMTransaction(sampleTx: $0, wallet: wallet, insertInto: context)
-      })
-
-    } else {
-      deleteAllTransactionsAndRelatedObjects(in: context)
-    }
-
-    try? context.save()
   }
 
   func selectedCurrency() -> SelectedCurrency {

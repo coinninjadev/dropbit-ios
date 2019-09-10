@@ -1,6 +1,6 @@
 //
 //  CKBannerView.swift
-//  CoinKeeper
+//  DropBit
 //
 //  Created by Ben Winters on 7/13/18.
 //  Copyright © 2018 Coin Ninja, LLC. All rights reserved.
@@ -54,7 +54,7 @@ class CKBannerView: MessageView, AccessibleViewSettable {
   }
 
   weak var delegate: CKBannerViewDelegate?
-  var completion: (() -> Void)?
+  var completion: CKCompletion?
   var url: URL?
 
   /// Configure a CKBannerView object for display

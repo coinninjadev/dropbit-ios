@@ -43,10 +43,7 @@ extension NSManagedObjectContext {
   /// to avoid interfering with the state of parent contexts.
   func saveRecursively() throws {
     guard self.hasChanges else { return }
-    if parent == nil {
-      let changeDesc = self.changesDescription(withLinebreaks: true)
-      log.debug("Will save changes to persistent store: \n\(changeDesc)")
-    }
+    let preSaveChanges = self.changesDescription(withLinebreaks: true)
 
     try self.save()
 
@@ -54,6 +51,8 @@ extension NSManagedObjectContext {
       try parentContext.performThrowingAndWait {
         try parentContext.saveRecursively()
       }
+    } else {
+      log.debug("Did save changes to persistent store: \n\(preSaveChanges)")
     }
   }
 

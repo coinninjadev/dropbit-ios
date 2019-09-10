@@ -1,6 +1,6 @@
 //
 //  PinCreationViewController.swift
-//  CoinKeeper
+//  DropBit
 //
 //  Created by BJ Miller on 2/13/18.
 //  Copyright © 2018 Coin Ninja, LLC. All rights reserved.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol PinCreationViewControllerDelegate: AnyObject {
+protocol PinCreationEntryDelegate: AnyObject {
   func viewControllerFullyEnteredPin(_ viewController: PinCreationViewController, digits: String)
 }
 
@@ -24,6 +24,7 @@ extension PinVerificationDelegate {
   }
 }
 
+typealias PinCreationViewControllerDelegate = PinCreationEntryDelegate & PinVerificationDelegate
 final class PinCreationViewController: BaseViewController {
 
   enum Mode {
@@ -47,13 +48,33 @@ final class PinCreationViewController: BaseViewController {
   }
   @IBOutlet var securePinDisplayView: SecurePinDisplayView!
 
+  static func newInstance(setupFlow: SetupFlow?,
+                          delegate: PinCreationViewControllerDelegate,
+                          mode: Mode = .pinEntry) -> PinCreationViewController {
+    return newInstance(setupFlow: setupFlow,
+                       entryDelegate: delegate,
+                       verificationDelegate: delegate,
+                       mode: mode)
+  }
+
+  static func newInstance(setupFlow: SetupFlow?,
+                          entryDelegate: PinCreationEntryDelegate,
+                          verificationDelegate: PinVerificationDelegate,
+                          mode: Mode) -> PinCreationViewController {
+    let vc = PinCreationViewController.makeFromStoryboard()
+    vc.setupFlow = setupFlow
+    vc.entryDelegate = entryDelegate
+    vc.verificationDelegate = verificationDelegate
+    vc.entryMode = mode
+    return vc
+  }
+
   var setupFlow: SetupFlow?
 
   // MARK: variables
-  var coordinationDelegate: PinCreationViewControllerDelegate? {
-    return generalCoordinationDelegate as? PinCreationViewControllerDelegate
-  }
-  weak var verificationDelegate: PinVerificationDelegate?
+  private(set) weak var entryDelegate: PinCreationEntryDelegate!
+  private(set) weak var verificationDelegate: PinVerificationDelegate!
+
   var entryMode: PinCreationViewController.Mode = .pinEntry {
     didSet {
       updateUI()
@@ -121,7 +142,7 @@ extension PinCreationViewController: KeypadEntryViewDelegate {
     let result = digitEntryDisplayViewModel.add(digit: digit)
     guard result == .complete else { return }
     switch entryMode {
-    case .pinEntry: coordinationDelegate?.viewControllerFullyEnteredPin(self, digits: digitEntryDisplayViewModel.digits)
+    case .pinEntry: entryDelegate.viewControllerFullyEnteredPin(self, digits: digitEntryDisplayViewModel.digits)
     case .pinVerification(let previousDigits):
       if digitEntryDisplayViewModel.digits == previousDigits {
         verificationDelegate?.pinWasVerified(digits: previousDigits, for: self.setupFlow)

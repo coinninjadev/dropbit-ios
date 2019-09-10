@@ -1,6 +1,6 @@
 //
 //  PresentableViewController.swift
-//  CoinKeeper
+//  DropBit
 //
 //  Created by BJ Miller on 4/7/18.
 //  Copyright © 2018 Coin Ninja, LLC. All rights reserved.
@@ -15,7 +15,7 @@ class PresentableViewController: BaseViewController, UIViewControllerTransitioni
   override func viewDidLoad() {
     super.viewDidLoad()
     view.applyCornerRadius(self.cornerRadius)
-    view.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+    view.layer.maskedCorners = .top
   }
 
   required init?(coder aDecoder: NSCoder) {

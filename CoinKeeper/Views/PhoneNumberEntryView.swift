@@ -63,12 +63,7 @@ class PhoneNumberEntryView: UIView {
 
   /// - parameter squareBottom: if true, only top corners are rounded/masked
   func adjustCorners(squareBottom: Bool) {
-    if squareBottom {
-      self.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
-    } else {
-      self.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner,
-                                  .layerMinXMinYCorner, .layerMaxXMinYCorner]
-    }
+    self.layer.maskedCorners = squareBottom ? .top : .all
   }
 
   func configure(withCountry country: CKCountry) {

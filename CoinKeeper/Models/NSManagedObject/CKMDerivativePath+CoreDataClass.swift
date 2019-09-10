@@ -1,6 +1,6 @@
 //
 //  CKMDerivativePath+CoreDataClass.swift
-//  CoinKeeper
+//  DropBit
 //
 //  Created by BJ Miller on 4/20/18.
 //  Copyright © 2018 Coin Ninja, LLC. All rights reserved.
@@ -17,6 +17,14 @@ public class CKMDerivativePath: NSManagedObject {
   // Constants that describe the `change` property of the derivative path
   static let changeIsReceiveValue = 0
   static let changeIsChangeValue = 1
+
+  static var relevantCoin: Int {
+    #if DEBUG
+    return Int(CoinType.TestNet.rawValue)
+    #else
+    return Int(CoinType.MainNet.rawValue)
+    #endif
+  }
 
   static func fetchRequest(for fullPath: String) -> NSFetchRequest<CKMDerivativePath> {
     let fullPathKeyPath = #keyPath(CKMDerivativePath.fullPath)
@@ -54,8 +62,17 @@ public class CKMDerivativePath: NSManagedObject {
       in: context)
   }
 
+  static func findAll(in context: NSManagedObjectContext) -> [CKMDerivativePath] {
+    let fetchRequest = CKMDerivativePath.fetchRequest() as NSFetchRequest<CKMDerivativePath>
+    do {
+      return try context.fetch(fetchRequest)
+    } catch {
+      return []
+    }
+  }
+
   static func findOrCreate(withIndex receiveIndex: Int, in context: NSManagedObjectContext) -> CKMDerivativePath {
-    return findOrCreate(with: 49, 0, 0, 0, receiveIndex, in: context)
+    return findOrCreate(with: 49, relevantCoin, 0, 0, receiveIndex, in: context)
   }
 
   static func findOrCreate(

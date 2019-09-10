@@ -1,6 +1,6 @@
 //
 //  ScanQRViewController.swift
-//  CoinKeeper
+//  DropBit
 //
 //  Created by Mitchell Malleo on 4/12/18.
 //  Copyright © 2018 Coin Ninja, LLC. All rights reserved.
@@ -8,12 +8,15 @@
 
 import UIKit
 import AVFoundation
+import SVProgressHUD
 
 //swiftlint:disable class_delegate_protocol
-protocol ScanQRViewControllerDelegate: PaymentRequestResolver, ViewControllerDismissable {
+protocol ScanQRViewControllerDelegate: PaymentRequestResolver, LightningInvoiceResolver, ViewControllerDismissable {
 
   /// If the scanned qrCode.btcAmount is zero, use the fallbackViewModel (whose amount should originate from the calculator amount/converter).
-  func viewControllerDidScan(_ viewController: UIViewController, qrCode: QRCode, fallbackViewModel: SendPaymentViewModel?)
+  func viewControllerDidScan(_ viewController: UIViewController, qrCode: OnChainQRCode,
+                             walletTransactionType: WalletTransactionType, fallbackViewModel: SendPaymentViewModel?)
+  func viewControllerDidScan(_ viewController: UIViewController, lightningInvoice: String, completion: @escaping CKCompletion)
 
   func viewControllerDidAttemptInvalidDestination(_ viewController: UIViewController, error: Error?)
 
@@ -29,8 +32,12 @@ class ScanQRViewController: BaseViewController, StoryboardInitializable {
     return CompositeValidator<String>(validators: [StringEmptyValidator(), BitcoinAddressValidator()])
   }()
 
-  var coordinationDelegate: ScanQRViewControllerDelegate? {
-    return generalCoordinationDelegate as? ScanQRViewControllerDelegate
+  private(set) weak var delegate: ScanQRViewControllerDelegate!
+
+  static func newInstance(delegate: ScanQRViewControllerDelegate) -> ScanQRViewController {
+    let vc = ScanQRViewController.makeFromStoryboard()
+    vc.delegate = delegate
+    return vc
   }
 
   /**
@@ -48,6 +55,10 @@ class ScanQRViewController: BaseViewController, StoryboardInitializable {
 
   override func viewDidLoad() {
     view.backgroundColor = UIColor.black
+    closeButton.setImage(UIImage(imageLiteralResourceName: "close").withRenderingMode(.alwaysTemplate), for: .normal)
+    closeButton.tintColor = .white
+    flashButton.setImage(UIImage(imageLiteralResourceName: "flashIcon").withRenderingMode(.alwaysTemplate), for: .normal)
+    flashButton.tintColor = .white
     if let captureDevice = AVCaptureDevice.default(for: .video) {
       self.captureDevice = captureDevice
       do {
@@ -104,7 +115,7 @@ class ScanQRViewController: BaseViewController, StoryboardInitializable {
   }
 
   @IBAction func closeButtonWasTouched() {
-    coordinationDelegate?.viewControllerDidSelectClose(self)
+    delegate.viewControllerDidSelectClose(self)
   }
 }
 
@@ -112,24 +123,44 @@ extension ScanQRViewController: AVCaptureMetadataOutputObjectsDelegate {
 
   func metadataOutput(_ output: AVCaptureMetadataOutput, didOutput metadataObjects: [AVMetadataObject], from connection: AVCaptureConnection) {
     guard metadataObjects.isNotEmpty else { return }
+    let rawCodes = metadataObjects.compactMap { $0 as? AVMetadataMachineReadableCodeObject }
+    let lightningQRCodes = rawCodes.compactMap { $0.stringValue }.compactMap { LightningURL(string: $0) }
 
-    let qrCodes = metadataObjects.compactMap { $0 as? AVMetadataMachineReadableCodeObject }.compactMap { QRCode(readableObject: $0) }
-    guard let qrCode = qrCodes.first else { return }
+    if let lightningQRCode = lightningQRCodes.first {
+      handle(lightningQRInvoice: lightningQRCode)
+    } else {
+      let bitcoinQRCodes = rawCodes.compactMap { OnChainQRCode(readableObject: $0) }
+      guard let qrCode = bitcoinQRCodes.first else { return }
+      handle(bitcoinQRCode: qrCode)
+    }
+  }
 
+  private func handle(lightningQRInvoice lightningUrl: LightningURL) {
+    if didCaptureQRCode { return } // prevent multiple network requests for paymentRequestURL
+    didCaptureQRCode = true
+
+    SVProgressHUD.show()
+    delegate.viewControllerDidScan(self, lightningInvoice: lightningUrl.invoice, completion: {
+      SVProgressHUD.dismiss()
+    })
+  }
+
+  private func handle(bitcoinQRCode qrCode: OnChainQRCode) {
     if didCaptureQRCode { return } // prevent multiple network requests for paymentRequestURL
     didCaptureQRCode = true
 
     if qrCode.paymentRequestURL != nil {
-      coordinationDelegate?.viewControllerDidScan(self, qrCode: qrCode, fallbackViewModel: self.fallbackPaymentViewModel)
+      delegate.viewControllerDidScan(self, qrCode: qrCode,
+                                                  walletTransactionType: .onChain, fallbackViewModel: self.fallbackPaymentViewModel)
 
     } else if let address = qrCode.address {
       do {
         try bitcoinAddressValidator.validate(value: address)
-        coordinationDelegate?.viewControllerDidScan(self, qrCode: qrCode, fallbackViewModel: self.fallbackPaymentViewModel)
+        delegate.viewControllerDidScan(self, qrCode: qrCode,
+                                                    walletTransactionType: .onChain, fallbackViewModel: self.fallbackPaymentViewModel)
       } catch {
-        coordinationDelegate?.viewControllerDidAttemptInvalidDestination(self, error: error)
+        delegate.viewControllerDidAttemptInvalidDestination(self, error: error)
       }
     }
   }
-
 }

@@ -1,6 +1,6 @@
 //
 //  CKPredicate.swift
-//  CoinKeeper
+//  DropBit
 //
 //  Created by Ben Winters on 7/22/18.
 //  Copyright © 2018 Coin Ninja, LLC. All rights reserved.
@@ -119,8 +119,9 @@ struct CKPredicate {
     }
 
     static func forChangeIndex(_ changeIndex: Int) -> NSPredicate {
+      let coin = CKMDerivativePath.relevantCoin
       let purposePredicate = NSPredicate(format: "\(purposeKeyPath) = %d", 49)
-      let coinPredicate = NSPredicate(format: "\(coinKeyPath) = %d", 0)
+      let coinPredicate = NSPredicate(format: "\(coinKeyPath) = %d", coin)
       let accountPredicate = NSPredicate(format: "\(accountKeyPath) = %d", 0)
       let changePredicate = NSPredicate(format: "\(changeKeyPath) = %d", changeIndex)
       return NSCompoundPredicate(andPredicateWithSubpredicates: [
@@ -218,6 +219,11 @@ struct CKPredicate {
       return NSPredicate(format: "\(path) == %@", NSNumber(value: value))
     }
 
+    static func isLightningTransfer(_ value: Bool) -> NSPredicate {
+      let path = #keyPath(CKMTransaction.isLightningTransfer)
+      return NSPredicate(format: "\(path) == %@", NSNumber(value: value))
+    }
+
   }
 
   struct Vin {
@@ -227,7 +233,7 @@ struct CKPredicate {
     }
 
     static func matching(response: TransactionVinResponse) -> NSPredicate {
-      return matching(previousTxid: response.txid, previousVoutIndex: response.vout)
+      return matching(previousTxid: response.uniqueTxid, previousVoutIndex: response.vout)
     }
 
     static func matching(previousTxid: String, previousVoutIndex: Int) -> NSPredicate {
@@ -317,6 +323,11 @@ struct CKPredicate {
       let addressKeyPath = #keyPath(CKMAddress.addressId)
       let predicate = NSPredicate(format: "%K IN %@", addressKeyPath, addresses)
       return predicate
+    }
+
+    static func matching(address: String) -> NSPredicate {
+      let keyPath = #keyPath(CKMAddress.addressId)
+      return NSPredicate(format: "\(keyPath) == %@", address)
     }
   }
 }

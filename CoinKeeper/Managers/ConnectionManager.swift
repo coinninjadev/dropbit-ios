@@ -1,6 +1,6 @@
 //
 //  ConnectionManager.swift
-//  CoinKeeper
+//  DropBit
 //
 //  Created by Mitchell on 5/21/18.
 //  Copyright © 2018 Coin Ninja, LLC. All rights reserved.
@@ -28,15 +28,21 @@ protocol ConnectionManagerType: AnyObject {
   func updateOverlay(
     from viewController: UIViewController,
     forStatus status: ConnectionManagerStatus,
-    completion: (() -> Void)?
+    completion: CKCompletion?
   )
 }
+
+typealias NoConnectionViewControllerCoordinator = NoConnectionViewControllerDelegate & ConnectionManagerDelegate
 
 class ConnectionManager: ConnectionManagerType {
 
   private var reachability: Reachability? = Reachability()
 
   weak var delegate: ConnectionManagerDelegate?
+  var coordinationDelegate: NoConnectionViewControllerCoordinator? {
+    return delegate as? NoConnectionViewControllerCoordinator
+  }
+
   private var noConnectionsViewController: NoConnectionViewController?
 
   var status: ConnectionManagerStatus {
@@ -63,7 +69,7 @@ class ConnectionManager: ConnectionManagerType {
   func updateOverlay(
     from viewController: UIViewController,
     forStatus status: ConnectionManagerStatus,
-    completion: (() -> Void)?
+    completion: CKCompletion?
     ) {
     switch status {
     case .connected:
@@ -91,28 +97,28 @@ class ConnectionManager: ConnectionManagerType {
     }
   }
 
-  func presentOfflineOverlay(from viewController: UIViewController, completion: (() -> Void)?) {
+  func presentOfflineOverlay(from viewController: UIViewController, completion: CKCompletion?) {
     guard UIApplication.shared.applicationState != .background else { return }
     guard noConnectionsViewController == nil else { return }
     noConnectionsViewController = NoConnectionViewController.makeFromStoryboard()
-    configureController(with: delegate)
+    configureController(withCoordinator: coordinationDelegate)
     noConnectionsViewController.map { viewController.present($0, animated: true, completion: completion) }
   }
 
-  func hideOfflineOverlay(completion: (() -> Void)?) {
+  func hideOfflineOverlay(completion: CKCompletion?) {
     noConnectionsViewController?.dismiss(animated: true, completion: completion)
     noConnectionsViewController = nil
   }
 
   private func initalize() {
-    configureController(with: delegate)
+    configureController(withCoordinator: coordinationDelegate)
     start()
   }
 
-  private func configureController(with delegate: ConnectionManagerDelegate?) {
+  private func configureController(withCoordinator coordinator: NoConnectionViewControllerCoordinator?) {
     noConnectionsViewController?.modalPresentationStyle = .overFullScreen
     noConnectionsViewController?.modalTransitionStyle = .crossDissolve
-    noConnectionsViewController?.generalCoordinationDelegate = delegate
+    noConnectionsViewController?.delegate = coordinator
   }
 
   @objc private func reachabilityChanged() {

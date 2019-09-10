@@ -1,6 +1,6 @@
 //
 //  AlertManager.swift
-//  CoinKeeper
+//  DropBit
 //
 //  Created by BJ Miller on 3/13/18.
 //  Copyright © 2018 Coin Ninja, LLC. All rights reserved.
@@ -48,7 +48,7 @@ protocol AlertManagerType: CKBannerViewDelegate {
   func showBanner(with message: String)
   func showBanner(with message: String, duration: AlertDuration?)
   func showBanner(with message: String, duration: AlertDuration?, alertKind kind: CKBannerViewKind)
-  func showBanner(with message: String, duration: AlertDuration?, alertKind kind: CKBannerViewKind, tapAction: (() -> Void)?)
+  func showBanner(with message: String, duration: AlertDuration?, alertKind kind: CKBannerViewKind, tapAction: CKCompletion?)
 
   /// This may be used to show either a banner or a local notification, depending on launchType (background status)
   func showAlert(for update: AddressRequestUpdateDisplayable)
@@ -57,10 +57,10 @@ protocol AlertManagerType: CKBannerViewDelegate {
   func showIncomingTransactionAlert(for receivedAmount: Int, with rates: ExchangeRates)
 
   func showActivityHUD(withStatus status: String?)
-  func hideActivityHUD(withDelay delay: TimeInterval?, completion: (() -> Void)?)
-  func showSuccessHUD(withStatus status: String?, duration: TimeInterval, completion: (() -> Void)?)
+  func hideActivityHUD(withDelay delay: TimeInterval?, completion: CKCompletion?)
+  func showSuccessHUD(withStatus status: String?, duration: TimeInterval, completion: CKCompletion?)
 
-  func showBannerAlert(for response: MessageResponse, completion: (() -> Void)?)
+  func showBannerAlert(for response: MessageResponse, completion: CKCompletion?)
 
   init(notificationManager: NotificationManagerType)
 }
@@ -127,11 +127,10 @@ class AlertManager: AlertManagerType {
                      image: UIImage,
                      style: AlertMessageStyle,
                      action: AlertActionConfigurationType) -> AlertControllerType {
-    let alert = ActionableAlertViewController.makeFromStoryboard()
-    alert.setup(with: title, description: description, image: image, style: style, action: action)
+    let alert = ActionableAlertViewController.newInstance(title: title, description: description,
+                                                          image: image, style: style, action: action)
     alert.modalTransitionStyle = .crossDissolve
     alert.modalPresentationStyle = .overCurrentContext
-
     return alert
   }
 
@@ -143,15 +142,15 @@ class AlertManager: AlertManagerType {
     showBanner(with: message, duration: duration, alertKind: kind, tapAction: nil, completion: nil)
   }
 
-  func showBanner(with message: String, duration: AlertDuration?, alertKind kind: CKBannerViewKind, tapAction: (() -> Void)? = nil) {
+  func showBanner(with message: String, duration: AlertDuration?, alertKind kind: CKBannerViewKind, tapAction: CKCompletion? = nil) {
     showBanner(with: message, duration: duration, alertKind: kind, tapAction: tapAction, completion: nil, url: nil)
   }
 
   private func showBanner(with message: String,
                           duration: AlertDuration?,
                           alertKind kind: CKBannerViewKind = .info,
-                          tapAction: (() -> Void)? = nil,
-                          completion: (() -> Void)?, url: URL? = nil) {
+                          tapAction: CKCompletion? = nil,
+                          completion: CKCompletion?, url: URL? = nil) {
     DispatchQueue.main.async { [weak self] in
       guard let strongSelf = self else { return }
       let bannerView: CKBannerView = .fromNib()
@@ -159,7 +158,7 @@ class AlertManager: AlertManagerType {
 
       let padding: CGFloat = 8
       let width: CGFloat = (UIApplication.shared.keyWindow?.frame.width ?? 0) - (padding * 2)
-      bannerView.frame = CGRect(x: padding, y: padding, width: width, height: 76)
+      bannerView.frame = CGRect(x: padding, y: padding, width: width, height: 84)
       let foregroundColor = UIColor.whiteText
 
       let closeImage = UIImage(named: "close")?.withRenderingMode(.alwaysTemplate).maskWithColor(color: foregroundColor)
@@ -197,7 +196,7 @@ class AlertManager: AlertManagerType {
     let converter = CurrencyConverter(fromBtcTo: .USD,
                                       fromAmount: NSDecimalNumber(integerAmount: receivedAmount, currency: .BTC),
                                       rates: rates)
-    let dollarAmount: String =  converter.amountStringWithSymbol(forCurrency: .USD) ?? ""
+    let dollarAmount: String = FiatFormatter(currency: .USD, withSymbol: true).string(fromDecimal: converter.fiatAmount) ?? ""
     let message = "You have recieved a new transaction of \(dollarAmount) in bitcoin!"
     DispatchQueue.main.async {
       switch UIApplication.shared.applicationState {
@@ -273,7 +272,7 @@ class AlertManager: AlertManagerType {
     }
   }
 
-  func showBannerAlert(for response: MessageResponse, completion: (() -> Void)? = nil) {
+  func showBannerAlert(for response: MessageResponse, completion: CKCompletion? = nil) {
     var title: String = response.body, kind: CKBannerViewKind
 
     switch response.level {
@@ -383,13 +382,13 @@ class AlertManager: AlertManagerType {
   }
 
   /// The delay can be used to ensure a minimum length for showing the indicator
-  func hideActivityHUD(withDelay delay: TimeInterval?, completion: (() -> Void)?) {
+  func hideActivityHUD(withDelay delay: TimeInterval?, completion: CKCompletion?) {
     DispatchQueue.main.async {
       SVProgressHUD.dismiss(withDelay: delay ?? 0, completion: completion)
     }
   }
 
-  func showSuccessHUD(withStatus status: String?, duration: TimeInterval, completion: (() -> Void)?) {
+  func showSuccessHUD(withStatus status: String?, duration: TimeInterval, completion: CKCompletion?) {
     guard let successImage = UIImage(named: "hudCheckmark") else { return }
     DispatchQueue.main.async {
       SVProgressHUD.setImageViewSize(CGSize(width: 35, height: 26))
@@ -457,7 +456,7 @@ extension PMAlertController: AlertControllerProtocol {
 protocol AlertActionConfigurationType {
   var title: String { get }
   var style: AlertActionStyle { get }
-  var action: (() -> Void)? { get }
+  var action: CKCompletion? { get }
 }
 
 enum AlertMessageStyle {

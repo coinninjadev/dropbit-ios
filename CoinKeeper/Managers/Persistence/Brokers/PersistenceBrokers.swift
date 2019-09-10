@@ -19,6 +19,7 @@ class PersistenceBrokers: PersistenceBrokersType {
   let transaction: TransactionBrokerType
   let user: UserBrokerType
   let wallet: WalletBrokerType
+  let lightning: LightningBrokerType
 
   init(keychainManager keychain: PersistenceKeychainType,
        databaseManager database: PersistenceDatabaseType,
@@ -32,6 +33,7 @@ class PersistenceBrokers: PersistenceBrokersType {
     self.transaction = TransactionBroker(keychainManager: keychain, databaseManager: database, userDefaultsManager: defaults)
     self.user = UserBroker(keychainManager: keychain, databaseManager: database, userDefaultsManager: defaults)
     self.wallet = WalletBroker(keychainManager: keychain, databaseManager: database, userDefaultsManager: defaults)
+    self.lightning = LightningBroker(keychainManager: keychain, databaseManager: database, userDefaultsManager: defaults)
   }
 
 }

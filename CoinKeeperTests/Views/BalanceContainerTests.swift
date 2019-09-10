@@ -33,10 +33,8 @@ class BalanceContainerTests: XCTestCase {
   // MARK: outlets
   func testOutletsAreConnected() {
     XCTAssertNotNil(self.sut.leftButton, "leftButton should be connected")
-    XCTAssertNotNil(self.sut.primaryAmountLabel, "primaryAmountLabel should be connected")
-    XCTAssertNotNil(self.sut.secondaryAmountLabel, "secondaryAmountLabel should be connected")
-    XCTAssertNotNil(self.sut.balancesTapGestureRecognizer, "balancesTapGestureRecognizer should be connected")
-    XCTAssertNotNil(self.sut.balancesLongPressRecognizer, "balancesLongPressRecognizer should be connected")
+    XCTAssertNotNil(self.sut.primarySecondaryBalanceContainer, "primarySecondaryBalanceContainer should be connected")
+    XCTAssertNotNil(self.sut.rightBalanceContainerView, "rightBalanceContainerView should be connected")
   }
 
   // MARK: buttons contain actions
@@ -60,22 +58,34 @@ class BalanceContainerTests: XCTestCase {
     let mockDelegate = MockBalanceContainerDelegate()
     self.sut.delegate = mockDelegate
 
-    self.sut.didTapBalances(self.sut.balancesTapGestureRecognizer)
+    self.sut.didTapRightBalanceView()
 
     XCTAssertTrue(mockDelegate.didTapBalanceWasCalled, "should tell delegate that balance was tapped")
   }
 
-  func testLongPressingBalanceTellsDelegate() {
+  func testTappingChartsButton() {
     let mockDelegate = MockBalanceContainerDelegate()
     self.sut.delegate = mockDelegate
 
-    self.sut.didLongPressBalances(self.sut.balancesLongPressRecognizer)
+    self.sut.didTapChartsButton()
 
-    XCTAssertTrue(mockDelegate.didLongPressBalance, "should tell delegate that balance was long pressed")
+    XCTAssertTrue(mockDelegate.didTapChartsButtonWasCalled, "should tell delegate that charts was pressed")
   }
 
   // MARK: mock delegate
   class MockBalanceContainerDelegate: BalanceContainerDelegate {
+
+    var didTapChartsButtonWasCalled = false
+    func didTapChartsButton() {
+      didTapChartsButtonWasCalled = true
+    }
+
+    var selectedWalletTransactionTypeWasCalled = false
+    func selectedWalletTransactionType() -> WalletTransactionType {
+      selectedWalletTransactionTypeWasCalled = true
+      return .onChain
+    }
+
     var didTapLeftWasCalled = false
     func containerDidTapLeftButton(in viewController: UIViewController) {
       didTapLeftWasCalled = true
@@ -84,7 +94,7 @@ class BalanceContainerTests: XCTestCase {
     func containerDidTapDropBitMe(in viewController: UIViewController) {}
 
     var didTapBalanceWasCalled = false
-    func containerDidTapBalances(in viewController: UIViewController) {
+    func didTapRightBalanceView(in viewController: UIViewController) {
       didTapBalanceWasCalled = true
     }
 

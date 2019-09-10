@@ -1,6 +1,6 @@
 //
 //  AppCoordinator.swift
-//  CoinKeeper
+//  DropBit
 //
 //  Created by BJ Miller on 2/2/18.
 //  Copyright © 2018 Coin Ninja, LLC. All rights reserved.
@@ -23,14 +23,8 @@ protocol CoordinatorType: class {
   func start()
 }
 
-extension CoordinatorType {
-  func assignCoordinationDelegate(to viewController: UIViewController) {
-    (viewController as? Coordination)?.generalCoordinationDelegate = self
-  }
-}
-
 protocol ChildCoordinatorType: CoordinatorType {
-  var delegate: ChildCoordinatorDelegate? { get set }
+  var childCoordinatorDelegate: ChildCoordinatorDelegate! { get set }
 }
 
 protocol ChildCoordinatorDelegate: class {
@@ -150,8 +144,6 @@ class AppCoordinator: CoordinatorType {
     self.notificationManager.delegate = self
     self.locationManager.delegate = self.locationDelegate
 
-    setCurrentCoin()
-
     self.networkManager.headerDelegate = self
     self.networkManager.walletDelegate = self
     self.alertManager.urlOpener = self
@@ -184,8 +176,6 @@ class AppCoordinator: CoordinatorType {
 
     } else {
 
-      navigationController.topViewController.flatMap { self.assignCoordinationDelegate(to: $0) }
-
       // Take user directly to phone verification if wallet exists but wallet ID does not
       // This will register the wallet if needed after a reinstall
       let launchProperties = launchStateManager.currentProperties()
@@ -196,8 +186,7 @@ class AppCoordinator: CoordinatorType {
         // Child coordinator will push DeviceVerificationViewController onto stack in its start() method
         startDeviceVerificationFlow(userIdentityType: .phone, shouldOrphanRoot: true, selectedSetupFlow: .newWallet)
       } else if launchStateManager.isFirstTime() {
-        let startVC = StartViewController.makeFromStoryboard()
-        assignCoordinationDelegate(to: startVC)
+        let startVC = StartViewController.newInstance(delegate: self)
         navigationController.viewControllers = [startVC]
       }
     }
@@ -205,7 +194,7 @@ class AppCoordinator: CoordinatorType {
 
   /// Useful to clear out old credentials from the keychain when the app is reinstalled
   private func deleteStaleCredentialsIfNeeded() {
-    let context = persistenceManager.mainQueueContext()
+    let context = persistenceManager.viewContext
     let user = CKMUser.find(in: context)
     guard user == nil else { return }
 
@@ -235,12 +224,12 @@ class AppCoordinator: CoordinatorType {
     }
   }
 
-  func registerWallet(completion: @escaping () -> Void) {
+  func registerWallet(completion: @escaping CKCompletion) {
     let bgContext = persistenceManager.createBackgroundContext()
     bgContext.perform {
       self.registerAndPersistWallet(in: bgContext)
         .done(in: bgContext) {
-          try bgContext.save()
+          try bgContext.saveRecursively()
           DispatchQueue.main.async {
             completion()
           }
@@ -250,7 +239,6 @@ class AppCoordinator: CoordinatorType {
   }
 
   func start() {
-    (navigationController.topViewController as? BaseViewController).map { self.assignCoordinationDelegate(to: $0) }
     applyUITestArguments(uiTestArguments)
     analyticsManager.start()
     analyticsManager.optIn()
@@ -263,7 +251,7 @@ class AppCoordinator: CoordinatorType {
     guard UIApplication.shared.applicationState != .background else { return }
 
     setInitialRootViewController()
-    registerForBalanceSaveNotifications()
+    registerForBalanceSaveNotifications(viewContext: self.persistenceManager.viewContext)
     trackAnalytics()
 
     let now = Date()
@@ -304,7 +292,6 @@ class AppCoordinator: CoordinatorType {
 
   func startChildCoordinator(childCoordinator: ChildCoordinatorType) {
     childCoordinators.append(childCoordinator)
-    childCoordinator.delegate = self
     childCoordinator.start()
   }
 
@@ -398,12 +385,6 @@ class AppCoordinator: CoordinatorType {
   func resetUserAuthenticatedState() {
     biometricsAuthenticationManager.resetPolicy()
     launchStateManager.unauthenticateUser()
-  }
-
-  func setCurrentCoin() {
-    let isTestnet = UserDefaults.standard.bool(forKey: "ontestnet")
-    let coin: CNBBaseCoin = isTestnet ? BTCTestnetCoin() : BTCMainnetCoin()
-    walletManager?.coin = coin
   }
 
 }

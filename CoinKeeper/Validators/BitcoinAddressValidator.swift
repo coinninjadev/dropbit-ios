@@ -1,6 +1,6 @@
 //
 //  BitcoinAddressValidator.swift
-//  CoinKeeper
+//  DropBit
 //
 //  Created by Mitchell on 5/9/18.
 //  Copyright © 2018 Coin Ninja, LLC. All rights reserved.
@@ -63,8 +63,18 @@ class BitcoinAddressValidator: ValidatorType<String> {
     return match(forRegex: validAddressRegex, in: string)
   }
 
+  private var regexAddressPrefix: String {
+    #if DEBUG
+    return "2"
+    #else
+    return "13"
+    #endif
+  }
+
   /// matches Android regex, with escaped backslashes
-  private let validAddressRegex = "((?:bc1|[13])[a-zA-HJ-NP-Z0-9]{25,39}(?![a-zA-HJ-NP-Z0-9]))((?:\\?.*&?)(?:amount=)((?:[0-9]+)(?:\\.[0-9]{1,8})?))?"
+  private var validAddressRegex: String {
+    return "((?:bc1|[\(regexAddressPrefix)])[a-zA-HJ-NP-Z0-9]{25,39}(?![a-zA-HJ-NP-Z0-9]))((?:\\?.*&?)(?:amount=)((?:[0-9]+)(?:\\.[0-9]{1,8})?))?"
+  }
 
   private func match(forRegex regex: String, in text: String) -> String? {
     do {

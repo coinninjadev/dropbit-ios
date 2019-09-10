@@ -1,6 +1,6 @@
 //
 //  BasePageViewController.swift
-//  CoinKeeper
+//  DropBit
 //
 //  Created by Mitchell on 7/16/18.
 //  Copyright © 2018 Coin Ninja, LLC. All rights reserved.
@@ -9,8 +9,7 @@
 import Foundation
 import UIKit
 
-class BasePageViewController: UIPageViewController, Coordination, AccessibleViewSettable {
-  weak var generalCoordinationDelegate: AnyObject?
+class BasePageViewController: UIPageViewController, AccessibleViewSettable {
 
   var statusBarStyle: UIStatusBarStyle = .default {
     didSet {

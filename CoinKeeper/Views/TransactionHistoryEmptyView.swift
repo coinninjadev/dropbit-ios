@@ -1,6 +1,6 @@
 //
 //  TransactionHistoryEmptyView.swift
-//  CoinKeeper
+//  DropBit
 //
 //  Created by Mitchell on 7/12/18.
 //  Copyright © 2018 Coin Ninja, LLC. All rights reserved.
@@ -43,7 +43,7 @@ class TransactionHistoryEmptyView: UIView {
   }
 
   private func initalize() {
-    backgroundColor = .lightGrayBackground
+    backgroundColor = .clear
   }
 
   private let buttonFont: UIFont = .primaryButtonTitle

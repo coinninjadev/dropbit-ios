@@ -7,5 +7,76 @@
 //
 
 import Foundation
+import UIKit
+import MMDrawerController
 
-extension AppCoordinator: WalletOverviewViewControllerDelegate {}
+extension AppCoordinator: WalletOverviewViewControllerDelegate {
+
+  func setSelectedWalletTransactionType(_ viewController: UIViewController, to selectedType: WalletTransactionType) {
+    persistenceManager.brokers.preferences.selectedWalletTransactionType = selectedType
+  }
+
+  func selectedWalletTransactionType() -> WalletTransactionType {
+    return persistenceManager.brokers.preferences.selectedWalletTransactionType
+  }
+
+  func viewControllerDidChangeSelectedWallet(_ viewController: UIViewController, to selectedType: WalletTransactionType) {
+    persistenceManager.brokers.preferences.selectedWalletTransactionType = selectedType
+  }
+
+  func viewControllerDidSelectTransfer(withDirection direction: TransferDirection) {
+    let viewModel = WalletTransferViewModel(direction: direction, amount: .custom,
+                                            walletBalances: spendableBalanceNetPending())
+    let transferViewController = WalletTransferViewController.newInstance(delegate: self, viewModel: viewModel)
+    navigationController.present(transferViewController, animated: true, completion: nil)
+  }
+
+  func viewControllerDidRequestPrimaryCurrencySwap() {
+    currencyController.selectedCurrency.toggle()
+  }
+
+  func viewControllerDidTapWalletTooltip() {
+    navigationController.present(LightningTooltipViewController.newInstance(), animated: true, completion: nil)
+  }
+
+  func viewControllerDidTapScan(_ viewController: UIViewController, converter: CurrencyConverter) {
+    analyticsManager.track(event: .scanQRButtonPressed, with: nil)
+    permissionManager.requestPermission(for: .camera) { [weak self] status in
+      switch status {
+      case .authorized:
+        self?.showScanViewController(fallbackBTCAmount: converter.btcAmount, primaryCurrency: converter.fromCurrency)
+      default:
+        break
+      }
+    }
+  }
+
+  func viewControllerShouldAdjustForBottomSafeArea(_ viewController: UIViewController) -> Bool {
+    return UIApplication.shared.delegate?.window??.safeAreaInsets.bottom ?? 0 == 0
+  }
+
+  func viewControllerDidTapReceivePayment(_ viewController: UIViewController, converter: CurrencyConverter) {
+    if let requestViewController = createRequestPayViewController(converter: converter) {
+      analyticsManager.track(event: .requestButtonPressed, with: nil)
+      viewController.present(requestViewController, animated: true, completion: nil)
+    }
+  }
+
+  func viewControllerDidTapSendPayment(_ viewController: UIViewController,
+                                       converter: CurrencyConverter,
+                                       walletTransactionType: WalletTransactionType) {
+    guard let walletOverviewViewController = viewController as? WalletOverviewViewController else { return }
+    walletOverviewViewController.balanceContainer.toggleChartAndBalance()
+    analyticsManager.track(event: .payButtonWasPressed, with: nil)
+
+    let swappableVM = CurrencySwappableEditAmountViewModel(exchangeRates: self.currencyController.exchangeRates,
+                                                           primaryAmount: converter.fromAmount,
+                                                           walletTransactionType: walletTransactionType,
+                                                           currencyPair: self.currencyController.currencyPair)
+    let sendPaymentVM = SendPaymentViewModel(editAmountViewModel: swappableVM, walletTransactionType: walletTransactionType)
+    let sendPaymentViewController = SendPaymentViewController.newInstance(delegate: self, viewModel: sendPaymentVM)
+    sendPaymentViewController.alertManager = self.alertManager
+    navigationController.present(sendPaymentViewController, animated: true)
+  }
+
+}

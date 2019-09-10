@@ -1,6 +1,6 @@
 //
 //  SendPaymentViewModel.swift
-//  CoinKeeper
+//  DropBit
 //
 //  Created by Mitchell Malleo on 4/18/18.
 //  Copyright © 2018 Coin Ninja, LLC. All rights reserved.
@@ -9,10 +9,23 @@
 import Foundation
 import CNBitcoinKit
 
+enum WalletTransactionType: String {
+  case onChain
+  case lightning
+
+  var addressType: WalletAddressType {
+    switch self {
+    case .onChain:    return .btc
+    case .lightning:  return .lightning
+    }
+  }
+}
+
 enum PaymentRecipient {
 
-  /// Associated value does not contain "bitcoin:"
-  case btcAddress(String)
+  /// Associated value may be either a BTC address or a lightning invoice.
+  /// Neither option contains scheme. i.e. "bitcoin:" "lightning:"
+  case paymentTarget(String)
 
   case contact(ContactType)
 
@@ -23,10 +36,11 @@ enum PaymentRecipient {
 
   init?(parsedRecipient: CKParsedRecipient) {
     switch parsedRecipient {
+    case .lightningURL(let url):
+      self = .paymentTarget(url.invoice)
     case .bitcoinURL(let url):
       guard let address = url.components.address else { return nil }
-      self = .btcAddress(address)
-
+      self = .paymentTarget(address)
     case .phoneNumber(let number):
       self = .phoneNumber(GenericContact(phoneNumber: number, formatted: ""))
     }
@@ -44,8 +58,8 @@ class SendPaymentViewModel: CurrencySwappableEditAmountViewModel {
 
   var paymentRecipient: PaymentRecipient?
   var requiredFeeRate: Double?
-  var sharedMemoDesired = true // default is true
-  var sharedMemoAllowed = true // default is true
+  var sharedMemoDesired = true
+  var sharedMemoAllowed = true
   var sendMaxTransactionData: CNBTransactionData?
 
   func sendMax(with data: CNBTransactionData) {
@@ -64,7 +78,7 @@ class SendPaymentViewModel: CurrencySwappableEditAmountViewModel {
 
   var address: String? {
     if let recipient = paymentRecipient,
-      case let .btcAddress(addr) = recipient {
+      case let .paymentTarget(addr) = recipient {
       return addr
     } else {
       return nil
@@ -73,31 +87,51 @@ class SendPaymentViewModel: CurrencySwappableEditAmountViewModel {
 
   let recipientParser: RecipientParserType = CKRecipientParser()
 
+  init(encodedInvoice: String,
+       decodedInvoice: LNDecodePaymentRequestResponse,
+       exchangeRates: ExchangeRates,
+       currencyPair: CurrencyPair) {
+    let currencyPair = CurrencyPair(primary: .BTC, fiat: currencyPair.fiat)
+    let amount = NSDecimalNumber(integerAmount: decodedInvoice.numSatoshis ?? 0, currency: .BTC)
+    let viewModel = CurrencySwappableEditAmountViewModel(exchangeRates: exchangeRates,
+                                                         primaryAmount: amount,
+                                                         walletTransactionType: .lightning,
+                                                         currencyPair: currencyPair,
+                                                         delegate: nil)
+    super.init(viewModel: viewModel)
+    self.paymentRecipient = .paymentTarget(encodedInvoice)
+    self.requiredFeeRate = nil
+    self.memo = decodedInvoice.description
+  }
+
   // delegate may be nil at init since the delegate is likely a view controller which requires this view model for its own creation
-  init(qrCode: QRCode,
+  init(qrCode: OnChainQRCode,
+       walletTransactionType: WalletTransactionType,
        exchangeRates: ExchangeRates,
        currencyPair: CurrencyPair,
        delegate: CurrencySwappableEditAmountViewModelDelegate? = nil) {
     let currencyPair = CurrencyPair(primary: .BTC, fiat: currencyPair.fiat)
     let viewModel = CurrencySwappableEditAmountViewModel(exchangeRates: exchangeRates,
                                                          primaryAmount: qrCode.btcAmount ?? .zero,
+                                                         walletTransactionType: walletTransactionType,
                                                          currencyPair: currencyPair,
                                                          delegate: delegate)
     super.init(viewModel: viewModel)
-    self.paymentRecipient = qrCode.address.flatMap { .btcAddress($0) }
+    self.paymentRecipient = qrCode.address.flatMap { .paymentTarget($0) }
     self.requiredFeeRate = nil
     self.memo = nil
   }
 
-  init(editAmountViewModel: CurrencySwappableEditAmountViewModel,
+  init(editAmountViewModel: CurrencySwappableEditAmountViewModel, walletTransactionType: WalletTransactionType,
        address: String? = nil, requiredFeeRate: Double? = nil, memo: String? = nil) {
     super.init(viewModel: editAmountViewModel)
-    self.paymentRecipient = address.flatMap { .btcAddress($0) }
+    self.paymentRecipient = address.flatMap { .paymentTarget($0) }
     self.requiredFeeRate = requiredFeeRate
     self.memo = memo
   }
 
   convenience init?(response: MerchantPaymentRequestResponse,
+                    walletTransactionType: WalletTransactionType,
                     exchangeRates: ExchangeRates,
                     fiatCurrency: CurrencyCode,
                     delegate: CurrencySwappableEditAmountViewModelDelegate? = nil) {
@@ -106,12 +140,15 @@ class SendPaymentViewModel: CurrencySwappableEditAmountViewModel {
     let currencyPair = CurrencyPair(primary: .BTC, secondary: fiatCurrency, fiat: fiatCurrency)
     let viewModel = CurrencySwappableEditAmountViewModel(exchangeRates: exchangeRates,
                                                          primaryAmount: btcAmount,
+                                                         walletTransactionType: walletTransactionType,
                                                          currencyPair: currencyPair,
                                                          delegate: delegate)
     self.init(editAmountViewModel: viewModel,
+              walletTransactionType: walletTransactionType,
               address: output.address,
               requiredFeeRate: response.requiredFeeRate,
               memo: response.memo)
+
   }
 
   var contact: ContactType? {
@@ -125,7 +162,7 @@ class SendPaymentViewModel: CurrencySwappableEditAmountViewModel {
   var shouldShowSharedMemoBox: Bool {
     if let recipient = paymentRecipient {
       switch recipient {
-      case .btcAddress:     return false
+      case .paymentTarget:  return false
       case .contact:        return true && sharedMemoAllowed
       case .phoneNumber:    return true && sharedMemoAllowed
       case .twitterContact: return true && sharedMemoAllowed
@@ -143,13 +180,27 @@ class SendPaymentViewModel: CurrencySwappableEditAmountViewModel {
     return [.usableBalance]
   }
 
+  var validPaymentRecipientType: CKRecipientType {
+    switch walletTransactionType {
+    case .onChain:    return .bitcoinURL
+    case .lightning:  return .lightningURL
+    }
+  }
+
+  var validParsingRecipientTypes: [CKRecipientType] {
+    switch walletTransactionType {
+    case .onChain:    return [.bitcoinURL, .phoneNumber]
+    case .lightning:  return [.lightningURL, .phoneNumber]
+    }
+  }
+
   var recipientDisplayStyle: RecipientDisplayStyle? {
     guard let recipient = paymentRecipient else {
       return .textField
     }
 
     switch recipient {
-    case .phoneNumber, .btcAddress:
+    case .phoneNumber, .paymentTarget:
       return .textField
     case .contact, .twitterContact:
       return .label
@@ -159,7 +210,7 @@ class SendPaymentViewModel: CurrencySwappableEditAmountViewModel {
   func displayRecipientName() -> String? {
     guard let recipient = self.paymentRecipient else { return nil }
     switch recipient {
-    case .btcAddress: return nil
+    case .paymentTarget: return nil
     case .contact(let contact): return contact.displayName
     case .twitterContact(let contact): return contact.displayName
     case .phoneNumber: return nil
@@ -169,21 +220,21 @@ class SendPaymentViewModel: CurrencySwappableEditAmountViewModel {
   func displayRecipientIdentity() -> String? {
     guard let recipient = self.paymentRecipient else { return nil }
     switch recipient {
-    case .btcAddress: return nil
+    case .paymentTarget: return nil
     case .contact(let contact):
       guard let phoneContact = contact as? PhoneContactType else { return nil }
       let formatter = CKPhoneNumberFormatter(format: .international)
       return (try? formatter.string(from: phoneContact.globalPhoneNumber)) ?? ""
     case .twitterContact(let contact):
       return contact.displayIdentity
-    case .phoneNumber: return nil
+    case .phoneNumber:  return nil
     }
   }
 
   func displayStyle(for recipient: PaymentRecipient?) -> RecipientDisplayStyle {
     guard let r = recipient else { return .textField }
     switch r {
-    case .btcAddress,
+    case .paymentTarget,
          .phoneNumber:    return .textField
     case .contact,
          .twitterContact: return .label

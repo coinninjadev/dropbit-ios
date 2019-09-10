@@ -10,6 +10,7 @@ import Foundation
 import PromiseKit
 import UIKit
 import MMDrawerController
+import CoreData
 
 enum SetupFlow {
   case newWallet
@@ -29,10 +30,9 @@ extension AppCoordinator {
 
   func enterApp() {
     let overviewViewController = makeOverviewController()
-    let settingsViewController = DrawerViewController.makeFromStoryboard()
+    let settingsViewController = DrawerViewController.newInstance(delegate: self)
     let drawerController = setupDrawerViewController(centerViewController: overviewViewController,
                                                      leftViewController: settingsViewController)
-    assignCoordinationDelegate(to: settingsViewController)
     navigationController.popToRootViewController(animated: false)
     navigationController.viewControllers = [drawerController]
 
@@ -77,9 +77,7 @@ extension AppCoordinator {
   }
 
   private func startPinCreation(flow: SetupFlow?) {
-    let viewController = PinCreationViewController.makeFromStoryboard()
-    viewController.setupFlow = flow
-    assignCoordinationDelegate(to: viewController)
+    let viewController = PinCreationViewController.newInstance(setupFlow: flow, delegate: self)
     navigationController.pushViewController(viewController, animated: true)
   }
 
@@ -92,10 +90,16 @@ extension AppCoordinator {
     navigationController.topViewController()?.present(alert, animated: true)
   }
 
-  func startDeviceVerificationFlow(userIdentityType type: UserIdentityType, shouldOrphanRoot: Bool, selectedSetupFlow: SetupFlow?) {
+  func startDeviceVerificationFlow(userIdentityType type: UserIdentityType,
+                                   shouldOrphanRoot: Bool,
+                                   selectedSetupFlow: SetupFlow?) {
     func startVerificationFlow() {
-      let childCoordinator = DeviceVerificationCoordinator(navigationController, userIdentityType: type, shouldOrphanRoot: shouldOrphanRoot)
-      childCoordinator.selectedSetupFlow = selectedSetupFlow
+      let childCoordinator = DeviceVerificationCoordinator(navigationController,
+                                                           delegate: self,
+                                                           coordinationDelegate: self,
+                                                           userIdentityType: type,
+                                                           setupFlow: selectedSetupFlow,
+                                                           shouldOrphanRoot: shouldOrphanRoot)
       startChildCoordinator(childCoordinator: childCoordinator)
     }
 
@@ -129,7 +133,7 @@ extension AppCoordinator {
     persistenceManager.brokers.activity.backupWordsReminderShown = true
   }
 
-  func registerWalletWithServerIfNeeded(completion: @escaping () -> Void) {
+  func registerWalletWithServerIfNeeded(completion: @escaping CKCompletion) {
     if launchStateManager.shouldRegisterWallet() {
       registerWallet(completion: completion)
     } else {
@@ -153,34 +157,9 @@ extension AppCoordinator {
       return
     }
 
-    let recoveryWordsIntroViewController = RecoveryWordsIntroViewController.makeFromStoryboard()
-    recoveryWordsIntroViewController.recoveryWords = usableWords
-    assignCoordinationDelegate(to: recoveryWordsIntroViewController)
-    navigationController.present(CNNavigationController(rootViewController: recoveryWordsIntroViewController),
-                                 animated: false,
-                                 completion: nil)
-  }
-
-  func createPinEntryViewControllerForRecoveryWords(_ words: [String]) -> PinEntryViewController {
-    let pinEntryViewController = PinEntryViewController.makeFromStoryboard()
-    pinEntryViewController.mode = .recoveryWords(completion: { [unowned self] _ in
-      self.analyticsManager.track(event: .viewWords, with: nil)
-      let controller = BackupRecoveryWordsViewController.newInstance(withDelegate: self,
-                                                                     recoveryWords: words,
-                                                                     wordsBackedUp: self.wordsBackedUp)
-      self.navigationController.present(CNNavigationController(rootViewController: controller), animated: false, completion: nil)
-    })
-    assignCoordinationDelegate(to: pinEntryViewController)
-
-    return pinEntryViewController
-  }
-
-  private func makeTransactionHistory() -> TransactionHistoryViewController {
-    let txHistory = TransactionHistoryViewController.makeFromStoryboard()
-    assignCoordinationDelegate(to: txHistory)
-    txHistory.context = persistenceManager.mainQueueContext()
-    txHistory.urlOpener = self
-    return txHistory
+    let recoveryWordsIntroVC = RecoveryWordsIntroViewController.newInstance(words: usableWords, delegate: self)
+    let navVC = CNNavigationController(rootViewController: recoveryWordsIntroVC)
+    navigationController.present(navVC, animated: true, completion: nil)
   }
 
   private func setupDrawerViewController(centerViewController: UIViewController, leftViewController: UIViewController) -> MMDrawerController {
@@ -211,26 +190,38 @@ extension AppCoordinator {
   func createRequestPayViewController(converter: CurrencyConverter) -> RequestPayViewController? {
     guard let address = nextReceiveAddressForRequestPay() else { return nil }
 
-    let selectedCurrency = currencyController.selectedCurrency.code
-    let fiat = currencyController.fiatCurrency
-    let currencyPair = CurrencyPair(primary: selectedCurrency, fiat: fiat)
-    return RequestPayViewController.newInstance(delegate: self,
-                                                receiveAddress: address,
-                                                currencyPair: currencyPair,
-                                                exchangeRates: self.currencyController.exchangeRates)
+    let amountVM = CurrencySwappableEditAmountViewModel(exchangeRates: self.currencyController.exchangeRates,
+                                                        primaryAmount: .zero,
+                                                        walletTransactionType: persistenceManager.brokers.preferences.selectedWalletTransactionType,
+                                                        currencyPair: self.currencyController.currencyPair)
+    let vm = RequestPayViewModel(receiveAddress: address, amountViewModel: amountVM)
+    return RequestPayViewController.newInstance(delegate: self, viewModel: vm, alertManager: self.alertManager)
+  }
+
+  private func makeTransactionHistory(type: WalletTransactionType, mock: Bool = false) -> TransactionHistoryViewController {
+    let dataSource: TransactionHistoryDataSourceType
+    if mock {
+      switch type {
+      case .onChain:    dataSource = MockTransactionHistoryOnChainDataSource()
+      case .lightning:  dataSource = MockTransactionHistoryLightningDataSource()
+      }
+    } else {
+      let context = persistenceManager.viewContext
+      switch type {
+      case .onChain:    dataSource = TransactionHistoryOnChainDataSource(context: context)
+      case .lightning:  dataSource = TransactionHistoryLightningDataSource(context: context)
+      }
+    }
+
+    return TransactionHistoryViewController.newInstance(withDelegate: self, walletTxType: type, dataSource: dataSource)
   }
 
   private func makeOverviewController() -> WalletOverviewViewController {
-    let transactionHistory = makeTransactionHistory()
-    let requestPayViewController = createRequestPayViewController(converter: currencyController.currencyConverter)
-      ?? RequestPayViewController.makeFromStoryboard()
-    requestPayViewController.isModal = false
-    let newsController = NewsViewController.newInstance(with: self)
-    let overviewChildViewControllers: [BaseViewController] =
-      [requestPayViewController, transactionHistory, newsController]
-
+    let shouldLoadMock = self.uiTestArguments.contains(.loadMockTransactionHistory)
+    let onChainHistory = makeTransactionHistory(type: .onChain, mock: shouldLoadMock)
+    let lightningHistory = makeTransactionHistory(type: .lightning, mock: shouldLoadMock)
     let overviewViewController = WalletOverviewViewController.newInstance(with: self,
-                                                                          baseViewControllers: overviewChildViewControllers,
+                                                                          baseViewControllers: [lightningHistory, onChainHistory],
                                                                           balanceProvider: self,
                                                                           balanceDelegate: self)
     return overviewViewController

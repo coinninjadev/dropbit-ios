@@ -1,6 +1,6 @@
 //
 //  BiometricAuthenticationManager.swift
-//  CoinKeeper
+//  DropBit
 //
 //  Created by BJ Miller on 2/20/18.
 //  Copyright © 2018 Coin Ninja, LLC. All rights reserved.
@@ -13,7 +13,7 @@ protocol BiometricAuthenticationManagerType {
   var canAuthenticateWithBiometrics: Bool { get }
   var biometricType: BiometricType { get }
   var loginReason: String { get }
-  func authenticate(completion: @escaping () -> Void, error: ((BiometricError) -> Void)?)
+  func authenticate(completion: @escaping CKCompletion, error: ((BiometricError) -> Void)?)
   func resetPolicy()
 }
 
@@ -73,7 +73,7 @@ class BiometricAuthenticationManager: BiometricAuthenticationManagerType {
     }
   }
 
-  func authenticate(completion: @escaping () -> Void, error: ((BiometricError) -> Void)?) {
+  func authenticate(completion: @escaping CKCompletion, error: ((BiometricError) -> Void)?) {
     guard canAuthenticateWithBiometrics else {
       error?(.notEnrolled)
       return

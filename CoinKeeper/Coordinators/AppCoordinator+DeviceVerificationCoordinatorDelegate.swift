@@ -1,6 +1,6 @@
 //
 //  AppCoordinator+DeviceVerificationCoordinatorDelegate.swift
-//  CoinKeeper
+//  DropBit
 //
 //  Created by Ben Winters on 5/9/18.
 //  Copyright © 2018 Coin Ninja, LLC. All rights reserved.
@@ -83,7 +83,7 @@ extension AppCoordinator: DeviceVerificationCoordinatorDelegate {
     walletWorker.deleteAllAddressesOnServer()
       .then(in: bgContext) { walletWorker.registerAndPersistServerAddresses(number: addressNumber, in: bgContext) }
       .get(in: bgContext) { _ in
-        try? bgContext.save()
+        try? bgContext.saveRecursively()
       }
       .catch(policy: .allErrors) { log.error($0, message: "failed to register wallet addresses") }
   }
@@ -93,7 +93,7 @@ extension AppCoordinator: DeviceVerificationCoordinatorDelegate {
     userIdentityType: UserIdentityType,
     isInitialSetupFlow: Bool) {
 
-    let verifiedIdentities = persistenceManager.brokers.user.verifiedIdentities(in: persistenceManager.mainQueueContext())
+    let verifiedIdentities = persistenceManager.brokers.user.verifiedIdentities(in: persistenceManager.viewContext)
     if launchStateManager.profileIsActivated() && verifiedIdentities.count == 1 {
       log.debug("Profile is activated, will register wallet addresses")
       registerInitialWalletAddresses()

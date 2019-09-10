@@ -31,7 +31,7 @@ extension AppCoordinator: VerificationStatusViewControllerDelegate {
     return addresses
   }
 
-  func viewControllerDidRequestToUnverifyPhone(_ viewController: UIViewController, successfulCompletion: @escaping () -> Void) {
+  func viewControllerDidRequestToUnverifyPhone(_ viewController: UIViewController, successfulCompletion: @escaping CKCompletion) {
     let okTitle = "Are you sure you want to remove your number? You will be able to add a new number after your current number is removed."
     let okConfiguration = unverifyOKConfiguration(
       title: okTitle,
@@ -46,7 +46,7 @@ extension AppCoordinator: VerificationStatusViewControllerDelegate {
     navigationController.topViewController()?.present(alert, animated: true)
   }
 
-  func viewControllerDidRequestToUnverifyTwitter(_ viewController: UIViewController, successfulCompletion: @escaping () -> Void) {
+  func viewControllerDidRequestToUnverifyTwitter(_ viewController: UIViewController, successfulCompletion: @escaping CKCompletion) {
     let okTitle = "Are you sure you want to remove your Twitter account? You will be able to add a new account after your current account is removed."
     let okConfiguration = unverifyOKConfiguration(
       title: okTitle,
@@ -85,7 +85,7 @@ extension AppCoordinator: VerificationStatusViewControllerDelegate {
     title: String,
     identityType: UserIdentityType,
     viewController: UIViewController,
-    successfulCompletion: @escaping () -> Void) -> AlertActionConfiguration {
+    successfulCompletion: @escaping CKCompletion) -> AlertActionConfiguration {
 
     let okConfiguration = AlertActionConfiguration(title: "OK", style: .default, action: {
       let removeConfiguration = self.createRemoveConfiguration(
@@ -109,7 +109,7 @@ extension AppCoordinator: VerificationStatusViewControllerDelegate {
   }
 
   private func createTryAgainConfiguration(_ viewController: UIViewController,
-                                           with successfulCompletion: @escaping () -> Void) -> AlertActionConfiguration {
+                                           with successfulCompletion: @escaping CKCompletion) -> AlertActionConfiguration {
     return AlertActionConfiguration(title: "Try Again", style: .default, action: {
       self.analyticsManager.track(event: .tryAgainToDeverify, with: nil)
       self.viewControllerDidRequestToUnverifyPhone(viewController, successfulCompletion: successfulCompletion)
@@ -119,9 +119,9 @@ extension AppCoordinator: VerificationStatusViewControllerDelegate {
   private func createRemoveConfiguration(
     for identityType: UserIdentityType,
     with tryAgainConfiguration: AlertActionConfiguration,
-    successfulCompletion: @escaping () -> Void) -> AlertActionConfiguration {
+    successfulCompletion: @escaping CKCompletion) -> AlertActionConfiguration {
 
-    let verifiedIdentities = persistenceManager.brokers.user.verifiedIdentities(in: persistenceManager.mainQueueContext())
+    let verifiedIdentities = persistenceManager.brokers.user.verifiedIdentities(in: persistenceManager.viewContext)
 
     return AlertActionConfiguration(title: "Remove", style: .cancel, action: {
       self.alertManager.showActivityHUD(withStatus: nil)
@@ -152,11 +152,11 @@ extension AppCoordinator: VerificationStatusViewControllerDelegate {
     case .twitter:
       self.analyticsManager.track(event: .deregisterTwitter, with: nil)
       self.analyticsManager.track(property: MixpanelProperty(key: .twitterVerified, value: false))
-      let context = persistenceManager.mainQueueContext()
+      let context = persistenceManager.viewContext
       context.perform {
         let user = CKMUser.find(in: context)
         user?.avatar = nil
-        try? context.save()
+        try? context.saveRecursively()
       }
     }
   }

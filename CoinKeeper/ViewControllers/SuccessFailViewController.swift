@@ -1,6 +1,6 @@
 //
 //  SuccessFailViewController.swift
-//  CoinKeeper
+//  DropBit
 //
 //  Created by Mitchell on 5/1/18.
 //  Copyright © 2018 Coin Ninja, LLC. All rights reserved.
@@ -10,19 +10,19 @@ import UIKit
 
 protocol SuccessFailViewControllerDelegate: ViewControllerDismissable, URLOpener {
   func viewControllerDidRetry(_ viewController: SuccessFailViewController)
-  func viewController(_ viewController: SuccessFailViewController, success: Bool, completion: (() -> Void)?)
+  func viewController(_ viewController: SuccessFailViewController, success: Bool, completion: CKCompletion?)
 }
 
 class SuccessFailViewController: BaseViewController, StoryboardInitializable {
 
   var viewModel: SuccessFailViewModel = SuccessFailViewModel(mode: .pending)
-  var action: (() -> Void)?
+  var action: CKCompletion?
 
   static func newInstance(viewModel: SuccessFailViewModel,
                           delegate: SuccessFailViewControllerDelegate) -> SuccessFailViewController {
     let vc = SuccessFailViewController.makeFromStoryboard()
     vc.viewModel = viewModel
-    vc.generalCoordinationDelegate = delegate
+    vc.delegate = delegate
     vc.modalPresentationStyle = .overFullScreen
     return vc
   }
@@ -37,9 +37,7 @@ class SuccessFailViewController: BaseViewController, StoryboardInitializable {
     reloadViewWithModel()
   }
 
-  var coordinationDelegate: SuccessFailViewControllerDelegate? {
-    return generalCoordinationDelegate as? SuccessFailViewControllerDelegate
-  }
+  private(set) weak var delegate: SuccessFailViewControllerDelegate!
 
   @IBOutlet var successFailView: SuccessFailView!
   @IBOutlet var closeButton: UIButton!
@@ -63,16 +61,16 @@ class SuccessFailViewController: BaseViewController, StoryboardInitializable {
 
   @IBAction func urlButtonWasTouched(_ sender: Any) {
     guard let url = viewModel.url else { return }
-    coordinationDelegate?.openURLExternally(url, completionHandler: nil)
+    delegate.openURLExternally(url, completionHandler: nil)
   }
 
   @IBAction func actionButtonWasTouched() {
     switch viewModel.mode {
     case .success:
-      coordinationDelegate?.viewController(self, success: true, completion: nil)
+      delegate.viewController(self, success: true, completion: nil)
     case .failure:
       if let retryAction = action {
-        coordinationDelegate?.viewControllerDidRetry(self)
+        delegate.viewControllerDidRetry(self)
         self.setMode(.pending)
         retryAction()
       }
@@ -82,7 +80,7 @@ class SuccessFailViewController: BaseViewController, StoryboardInitializable {
   }
 
   @IBAction func closeButtonWasTouched() {
-    coordinationDelegate?.viewControllerDidSelectClose(self)
+    delegate.viewControllerDidSelectClose(self)
   }
 
   override func accessibleViewsAndIdentifiers() -> [AccessibleViewElement] {

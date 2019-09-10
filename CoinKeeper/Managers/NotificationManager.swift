@@ -1,6 +1,6 @@
 //
 //  NotificationManager.swift
-//  CoinKeeper
+//  DropBit
 //
 //  Created by BJ Miller on 7/12/18.
 //  Copyright © 2018 Coin Ninja, LLC. All rights reserved.
@@ -232,7 +232,7 @@ extension NotificationManager: UNUserNotificationCenterDelegate {
   func userNotificationCenter(
     _ center: UNUserNotificationCenter,
     didReceive response: UNNotificationResponse,
-    withCompletionHandler completionHandler: @escaping () -> Void
+    withCompletionHandler completionHandler: @escaping CKCompletion
     ) {
     DispatchQueue.main.async {
       guard UIApplication.shared.applicationState == .active else { return }

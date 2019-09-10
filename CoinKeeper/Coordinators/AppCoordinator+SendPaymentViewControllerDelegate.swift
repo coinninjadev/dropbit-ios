@@ -1,6 +1,6 @@
 //
 //  AppCoordinator+SendPaymentViewControllerDelegate.swift
-//  CoinKeeper
+//  DropBit
 //
 //  Created by BJ Miller on 4/24/18.
 //  Copyright © 2018 Coin Ninja, LLC. All rights reserved.
@@ -12,8 +12,21 @@ import enum Result.Result
 import PromiseKit
 import CNBitcoinKit
 import Permission
+import MMDrawerController
 
 extension AppCoordinator: SendPaymentViewControllerDelegate {
+
+  func viewControllerDidReceiveLightningURLToDecode(_ lightningUrl: LightningURL) -> Promise<LNDecodePaymentRequestResponse> {
+    return networkManager.decodeLightningPaymentRequest(lightningUrl.invoice)
+  }
+
+  func sendPaymentViewControllerWillDismiss(_ viewController: UIViewController) {
+    viewControllerDidSelectClose(viewController, completion: { [weak self] in
+      guard let topViewController = (self?.navigationController.topViewController() as? MMDrawerController),
+        let walletViewController = topViewController.centerViewController as? WalletOverviewViewController else { return }
+      walletViewController.balanceContainer.toggleChartAndBalance()
+    })
+  }
 
   func viewControllerDidRequestAlert(_ viewController: UIViewController, viewModel: AlertControllerViewModel) {
     let alert: AlertControllerType
@@ -36,7 +49,7 @@ extension AppCoordinator: SendPaymentViewControllerDelegate {
 
   func viewControllerDidPressTwitter(_ viewController: UIViewController & SelectedValidContactDelegate) {
     analyticsManager.track(event: .twitterButtonPressed, with: nil)
-    let context = persistenceManager.mainQueueContext()
+    let context = persistenceManager.viewContext
     guard persistenceManager.brokers.user.userIsVerified(using: .twitter, in: context) else {
       showModalForTwitterVerification(with: viewController)
       return
@@ -45,15 +58,16 @@ extension AppCoordinator: SendPaymentViewControllerDelegate {
     self.presentContacts(mode: .twitter, selectionDelegate: viewController)
   }
 
-  func viewController(_ viewController: UIViewController,
-                      checkingVerificationStatusFor identityHash: String) -> Promise<[WalletAddressesQueryResponse]> {
+  func viewControllerDidRequestRegisteredAddress(_ viewController: UIViewController,
+                                                 ofType addressType: WalletAddressType,
+                                                 forIdentity identityHash: String) -> Promise<[WalletAddressesQueryResponse]> {
 
-    return self.networkManager.queryWalletAddresses(identityHashes: [identityHash])
+    return self.networkManager.queryWalletAddresses(identityHashes: [identityHash], addressType: addressType)
   }
 
   func viewControllerDidPressContacts(_ viewController: UIViewController & SelectedValidContactDelegate) {
     analyticsManager.track(event: .contactsButtonPressed, with: nil)
-    let mainContext = persistenceManager.mainQueueContext()
+    let mainContext = persistenceManager.viewContext
     guard persistenceManager.brokers.user.userIsVerified(in: mainContext) else {
       showModalForPhoneVerification(with: viewController)
       return
@@ -97,7 +111,7 @@ extension AppCoordinator: SendPaymentViewControllerDelegate {
     self.navigationController.topViewController()?.present(contactsViewController, animated: true)
   }
 
-  func viewControllerDidRequestVerificationCheck(_ viewController: UIViewController, completion: @escaping (() -> Void)) {
+  func viewControllerDidRequestVerificationCheck(_ viewController: UIViewController, completion: @escaping CKCompletion) {
     guard launchStateManager.deviceIsVerified() else {
       showModalForPhoneVerification(with: viewController)
       return
@@ -159,16 +173,15 @@ extension AppCoordinator: SendPaymentViewControllerDelegate {
   }
 
   func viewControllerDidSelectMemoButton(_ viewController: UIViewController, memo: String?, completion: @escaping (String) -> Void) {
-    let memoViewController = MemoEntryViewController.makeFromStoryboard()
-    memoViewController.backgroundImage = UIApplication.shared.screenshot()
-    assignCoordinationDelegate(to: memoViewController)
-    memoViewController.completion = completion
+    let memoViewController = MemoEntryViewController.newInstance(delegate: self,
+                                                                 backgroundImage: UIApplication.shared.screenshot(),
+                                                                 completion: completion)
     memoViewController.memo = memo ?? ""
     viewController.present(memoViewController, animated: true)
   }
 
   func viewControllerShouldInitiallyAllowMemoSharing(_ viewController: SendPaymentViewController) -> Bool {
-    let context = persistenceManager.mainQueueContext()
+    let context = persistenceManager.viewContext
     return persistenceManager.brokers.user.userIsVerified(in: context)
   }
 

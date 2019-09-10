@@ -1,6 +1,6 @@
 //
 //  KeypadDigitView.swift
-//  CoinKeeper
+//  DropBit
 //
 //  Created by BJ Miller on 2/14/18.
 //  Copyright © 2018 Coin Ninja, LLC. All rights reserved.
@@ -8,7 +8,6 @@
 
 import UIKit
 
-@IBDesignable
 class KeypadDigitView: UIView {
 
   var isSecure = false {

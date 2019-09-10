@@ -1,6 +1,6 @@
 //
 //  PersistenceTypes.swift
-//  CoinKeeper
+//  DropBit
 //
 //  Created by Ben Winters on 5/27/18.
 //  Copyright © 2018 Coin Ninja, LLC. All rights reserved.
@@ -19,8 +19,8 @@ protocol PersistenceManagerType: DeviceCountryCodeProvider {
   var hashingManager: HashingManager { get }
   var brokers: PersistenceBrokersType { get }
 
+  var viewContext: NSManagedObjectContext { get }
   func createBackgroundContext() -> NSManagedObjectContext
-  func mainQueueContext() -> NSManagedObjectContext
 
   /// convenience function for calling `persistentStore(for:)` with default main context
   func persistentStore() -> NSPersistentStore?
@@ -82,8 +82,9 @@ protocol PersistenceKeychainType: AnyObject {
 
 protocol PersistenceDatabaseType: AnyObject {
 
-  var mainQueueContext: NSManagedObjectContext { get }
   var sharedPayloadManager: SharedPayloadManagerType { get set }
+
+  var viewContext: NSManagedObjectContext { get }
 
   func createBackgroundContext() -> NSManagedObjectContext
 

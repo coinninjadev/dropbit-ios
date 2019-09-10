@@ -1,6 +1,6 @@
 //
 //  AppCoordinator+SuccessFailViewControllerDelegate.swift
-//  CoinKeeper
+//  DropBit
 //
 //  Created by Mitchell on 5/2/18.
 //  Copyright © 2018 Coin Ninja, LLC. All rights reserved.
@@ -20,7 +20,7 @@ extension AppCoordinator: SuccessFailViewControllerDelegate {
     }
   }
 
-  func viewController(_ viewController: SuccessFailViewController, success: Bool, completion: (() -> Void)?) {
+  func viewController(_ viewController: SuccessFailViewController, success: Bool, completion: CKCompletion?) {
     switch viewController.viewModel {
     case is PaymentSuccessFailViewModel:
       CKNotificationCenter.publish(key: .didSendTransactionSuccessfully)

@@ -6,7 +6,7 @@
 import Foundation
 
 extension Int {
-  func times(_ function: () -> Void) {
+  func times(_ function: CKCompletion) {
     (0..<self).forEach { _ in
       function()
     }

@@ -33,7 +33,7 @@ extension CoinNinjaTargetType {
 
   public var baseURL: URL {
     #if DEBUG
-    return URL(string: "https://api.test.coinninja.net/api/v1")!
+    return URL(string: "https://api.dev.coinninja.net/api/v1")!
     #else
     return URL(string: "https://api.coinninja.com/api/v1")!
     #endif
@@ -45,6 +45,10 @@ extension CoinNinjaTargetType {
     } else {
       return basePath
     }
+  }
+
+  public var thunderdomeBasePath: String {
+    return CoinNinjaProvider.thunderdomeBasePath
   }
 
   public var sampleData: Data {

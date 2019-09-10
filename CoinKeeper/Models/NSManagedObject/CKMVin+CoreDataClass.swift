@@ -1,6 +1,6 @@
 //
 //  CKMVin+CoreDataClass.swift
-//  CoinKeeper
+//  DropBit
 //
 //  Created by BJ Miller on 5/14/18.
 //  Copyright © 2018 Coin Ninja, LLC. All rights reserved.
@@ -44,7 +44,7 @@ public class CKMVin: NSManagedObject {
   }
 
   func configure(with vinResponse: TransactionVinResponse, in context: NSManagedObjectContext) {
-    previousTxid = vinResponse.txid
+    previousTxid = vinResponse.uniqueTxid
     previousVoutIndex = vinResponse.vout
     amount = vinResponse.value
     addressIDs = vinResponse.addresses

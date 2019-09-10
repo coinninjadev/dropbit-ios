@@ -24,7 +24,7 @@ class MockNavigationController: CNNavigationController {
   }
 
   init() {
-    super.init(rootViewController: StartViewController.makeFromStoryboard())
+    super.init(rootViewController: StartViewController.newInstance(delegate: nil))
   }
 
   required init?(coder aDecoder: NSCoder) {

@@ -75,7 +75,7 @@ public class AsynchronousOperation: Operation {
   }
 
   /// The closure to be performed by this operation
-  public var task: (() -> Void)?
+  public var task: CKCompletion?
 
   // Start
 

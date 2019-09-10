@@ -43,9 +43,17 @@ final class MemoEntryViewController: BaseViewController, StoryboardInitializable
   @IBOutlet var currentCountMaxLabel: UILabel!
   @IBOutlet var countLabels: [UILabel]!
 
-  var coordinationDelegate: MemoEntryViewControllerDelegate? {
-    return generalCoordinationDelegate as? MemoEntryViewControllerDelegate
+  static func newInstance(delegate: MemoEntryViewControllerDelegate,
+                          backgroundImage: UIImage?,
+                          completion: @escaping (String) -> Void) -> MemoEntryViewController {
+    let vc = MemoEntryViewController.makeFromStoryboard()
+    vc.delegate = delegate
+    vc.backgroundImage = backgroundImage
+    vc.completion = completion
+    return vc
   }
+
+  private(set) weak var delegate: MemoEntryViewControllerDelegate!
 
   required init?(coder aDecoder: NSCoder) {
     super.init(coder: aDecoder)
@@ -53,7 +61,7 @@ final class MemoEntryViewController: BaseViewController, StoryboardInitializable
     modalPresentationStyle = .overFullScreen
   }
 
-  var backgroundImage: UIImage?
+  private var backgroundImage: UIImage?
   private let maxCharacterLimit = 130
 
   override func viewDidLoad() {
@@ -108,7 +116,7 @@ final class MemoEntryViewController: BaseViewController, StoryboardInitializable
     UIView.animate(
       withDuration: 0.3,
       animations: { self.view.layoutIfNeeded() },
-      completion: { _ in self.coordinationDelegate?.viewControllerDidDismiss(self) }
+      completion: { _ in self.delegate.viewControllerDidDismiss(self) }
     )
   }
 

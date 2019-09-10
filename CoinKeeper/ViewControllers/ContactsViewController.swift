@@ -1,6 +1,6 @@
 //
 //  ContactsViewController.swift
-//  CoinKeeper
+//  DropBit
 //
 //  Created by Mitchell on 5/3/18.
 //  Copyright © 2018 Coin Ninja, LLC. All rights reserved.
@@ -23,7 +23,7 @@ protocol ContactsViewControllerDelegate: ViewControllerDismissable, URLOpener {
   /// The delegate should show a hud and disable interactions, check the API for any changes in the verification
   /// status of all cached numbers, and persist the changes such that the `frc` is updated automatically.
   func viewControllerDidRequestRefreshVerificationStatuses(_ viewController: UIViewController,
-                                                           completion: @escaping ((Error?) -> Void))
+                                                           completion: @escaping CKErrorCompletion)
 
   /// The delegate should evaluate whether the phone number is a valid recipient and if valid,
   /// call update() on the `validSelectionDelegate`.
@@ -115,15 +115,13 @@ class ContactsViewController: PresentableViewController, StoryboardInitializable
                           selectionDelegate: SelectedValidContactDelegate) -> ContactsViewController {
     let vc = ContactsViewController.makeFromStoryboard()
     vc.mode = mode
-    vc.generalCoordinationDelegate = coordinationDelegate
+    vc.delegate = coordinationDelegate
     vc.selectionDelegate = selectionDelegate
     vc.modalPresentationStyle = .overFullScreen
     return vc
   }
 
-  var coordinationDelegate: ContactsViewControllerDelegate? {
-    return generalCoordinationDelegate as? ContactsViewControllerDelegate
-  }
+  private(set) weak var delegate: ContactsViewControllerDelegate!
 
   weak var selectionDelegate: SelectedValidContactDelegate?
 
@@ -133,7 +131,6 @@ class ContactsViewController: PresentableViewController, StoryboardInitializable
 
   func setupTableView() {
     activityIndiciator.stopAnimating()
-    guard let delegate = coordinationDelegate else { return }
     self.frc = delegate.createFetchedResultsController()
     self.frc.delegate = self
 
@@ -163,10 +160,10 @@ class ContactsViewController: PresentableViewController, StoryboardInitializable
       tableView.dataSource = self.twitterUserDataSource
       if twitterUserDataSource.shouldReloadFriends {
         activityIndiciator.startAnimating()
-        coordinationDelegate?.viewControllerDidRequestDefaultTwitterFriends(self)
+        delegate.viewControllerDidRequestDefaultTwitterFriends(self)
           .done(on: .main) { self.twitterUserDataSource.updateDefaultFriends($0) }
           .catch { error in
-            self.coordinationDelegate?.showAlertForNoTwitterAuthorization()
+            self.delegate.showAlertForNoTwitterAuthorization()
             log.error(error, message: "failed to fetch Twitter friends")
           }
           .finally { self.activityIndiciator.stopAnimating() }
@@ -212,7 +209,6 @@ class ContactsViewController: PresentableViewController, StoryboardInitializable
   }
 
   private func refreshContactVerificationStatuses() {
-    guard let delegate = coordinationDelegate else { return }
     activityIndiciator.startAnimating()
     delegate.viewControllerDidRequestRefreshVerificationStatuses(self) { [weak self] error in
       if let err = error {
@@ -234,7 +230,7 @@ class ContactsViewController: PresentableViewController, StoryboardInitializable
 
   @IBAction func closeButtonWasTouched() {
     searchBar.resignFirstResponder()
-    coordinationDelegate?.viewControllerDidSelectClose(self)
+    delegate.viewControllerDidSelectClose(self)
   }
 }
 
@@ -244,7 +240,7 @@ extension ContactsViewController: UISearchBarDelegate {
     switch mode {
     case .contacts:
       // To limit fetch frequency, call frc.performFetch() a moment after last key press.
-      frc.fetchRequest.predicate = coordinationDelegate?.predicate(forSearch: searchText)
+      frc.fetchRequest.predicate = delegate.predicate(forSearch: searchText)
 
       let fetchSelector = #selector(performFetchForSearch)
       NSObject.cancelPreviousPerformRequests(withTarget: self, selector: fetchSelector, object: nil)
@@ -275,7 +271,7 @@ extension ContactsViewController: UISearchBarDelegate {
       return
     }
     activityIndiciator.startAnimating()
-    _ = coordinationDelegate?.viewController(self, searchForTwitterUsersWith: term)
+    _ = delegate.viewController(self, searchForTwitterUsersWith: term)
       .get(on: .main) { _ in self.activityIndiciator.stopAnimating() }
       .done { self.twitterUserDataSource.update(users: $0) }
   }
@@ -285,7 +281,7 @@ extension ContactsViewController: UISearchBarDelegate {
     switch mode {
     case .contacts: break
     case .twitter:
-      guard let delegate = coordinationDelegate, let term = searchBar.text else { return }
+      guard let term = searchBar.text else { return }
       activityIndiciator.startAnimating()
       _ = delegate.viewController(self, searchForTwitterUsersWith: term)
         .get(on: .main) { _ in self.activityIndiciator.stopAnimating() }
@@ -372,27 +368,29 @@ extension ContactsViewController: NSFetchedResultsControllerDelegate {
 extension ContactsViewController: ContactCellDelegate {
 
   func didSelectContact(at indexPath: IndexPath) {
-    guard let delegate = self.selectionDelegate else { return }
+    guard let selectionDelegate = self.selectionDelegate else { return }
     self.searchBar.searchTextField?.resignFirstResponder()
     switch mode {
     case .contacts:
       let cachedNumber = frc.object(at: indexPath)
       trackEvent(forSelectedNumber: cachedNumber)
-      coordinationDelegate?.viewControllerDidSelectPhoneNumber(self,
-                                                               cachedNumber: cachedNumber,
-                                                               validSelectionDelegate: delegate)
+      self.delegate.viewControllerDidSelectPhoneNumber(self,
+                                                       cachedNumber: cachedNumber,
+                                                       validSelectionDelegate: selectionDelegate)
     case .twitter:
       let twitterUser = twitterUserDataSource.user(at: indexPath)
-      coordinationDelegate?.viewController(self, didSelectTwitterUser: twitterUser, validSelectionDelegate: delegate)
+      self.delegate.viewController(self,
+                                   didSelectTwitterUser: twitterUser,
+                                   validSelectionDelegate: selectionDelegate)
     }
   }
 
   private func trackEvent(forSelectedNumber number: CCMPhoneNumber) {
     switch number.verificationStatus {
     case .notVerified:
-      coordinationDelegate?.analyticsManager.track(event: .dropbitContactPressed, with: nil)
+      delegate.analyticsManager.track(event: .dropbitContactPressed, with: nil)
     case .verified:
-      coordinationDelegate?.analyticsManager.track(event: .coinKeeperContactPressed, with: nil)
+      delegate.analyticsManager.track(event: .coinKeeperContactPressed, with: nil)
     }
   }
 
@@ -411,9 +409,7 @@ extension ContactsViewController: ContactCellDelegate {
 extension ContactsViewController: ContactsTableViewHeaderDelegate {
 
   func whatIsButtonWasTouched() {
-    guard let delegate = coordinationDelegate,
-      let url = CoinNinjaUrlFactory.buildUrl(for: .bitcoinSMS)
-      else { return }
+    guard let url = CoinNinjaUrlFactory.buildUrl(for: .bitcoinSMS) else { return }
     delegate.analyticsManager.track(event: .whatIsDropbitPressed, with: nil)
     delegate.openURL(url, completionHandler: nil)
   }
@@ -425,7 +421,7 @@ extension ContactsViewController: DZNEmptyDataSetDelegate {
   func emptyDataSetShouldDisplay(_ scrollView: UIScrollView!) -> Bool {
     switch self.mode {
     case .contacts:
-      let contactPermissionStatus = coordinationDelegate?.permissionStatus(for: .contacts) ?? .notDetermined
+      let contactPermissionStatus = delegate.permissionStatus(for: .contacts)
       return contactPermissionStatus != .authorized
     case .twitter:
       return false
@@ -446,7 +442,7 @@ extension ContactsViewController: DZNEmptyDataSetSource {
 
 extension ContactsViewController: ContactsEmptyViewDelegate {
   func viewDidSelectPrimaryAction(_ view: UIView) {
-    coordinationDelegate?.viewControllerDidRequestPermission(self, for: .contacts) { status in
+    delegate.viewControllerDidRequestPermission(self, for: .contacts) { status in
       if status == .authorized {
         self.needsVerificationStatusRefresh = true //refresh statuses after frc loads cached contacts
       }
