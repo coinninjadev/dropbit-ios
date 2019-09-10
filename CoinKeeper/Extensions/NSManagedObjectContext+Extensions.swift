@@ -41,18 +41,17 @@ extension NSManagedObjectContext {
   }
 
   private func updatedPropertiesDescription() -> String {
-    var result = ""
     let sortedObjects = self.updatedObjects.sorted(by: { $0.entity.name ?? "" < $1.entity.name ?? "" })
-    for object in sortedObjects {
+    let objectDescriptions = sortedObjects.map { object -> String in
       let objectType = object.entity.name ?? ""
       let keyValueDescriptions: [String] = object.changedValues().keys.map { key in
         return self.propertyDescription(for: object, key: key)
       }
       let joinedPropertyDescriptions = keyValueDescriptions.joined(separator: ", ")
       let objectDesc = "[\(joinedPropertyDescriptions)]"
-      result += "\(objectType) - \(objectDesc) \n\t\t"
+      return "\(objectType) - \(objectDesc)"
     }
-    return result
+    return objectDescriptions.joined(separator: " \n\t\t")
   }
 
   private func propertyDescription(for object: NSManagedObject, key: String) -> String {
