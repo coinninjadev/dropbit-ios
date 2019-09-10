@@ -58,7 +58,7 @@ class LightningUpgradeCoordinator: ChildCoordinatorType {
           let dataSource = AddressDataSource(wallet: newWallet, persistenceManager: parent.persistenceManager)
           let firstAddress = dataSource.changeAddress(at: 0).address
           log.info("Creating send-max transaction to upgraded wallet.")
-          parent.walletManager?.transactionDataSendingMax(to: firstAddress, withFeeRate: feeRate)
+          parent.walletManager?.transactionDataSendingAll(to: firstAddress, withFeeRate: feeRate)
             .done { (data: CNBTransactionData) in controller.updateUI(with: data) }
             .catch { (error: Error) in
               log.error(error, message: "Failed to create send max transaction.")

@@ -73,6 +73,10 @@ protocol WalletManagerType: AnyObject {
   /// Returns nil instead of an error in the case of insufficient funds
   func failableTransactionDataSendingMax(to address: String, withFeeRate feeRate: Double) -> CNBTransactionData?
 
+  /// Returns nil instead of an error in the case of insufficient funds. Takes all unspent outputs, ignoring dust protection and confirmation count.
+  func failableTransactionDataSendingAll(to address: String, withFeeRate feeRate: Double) -> CNBTransactionData?
+  func transactionDataSendingAll(to address: String, withFeeRate feeRate: Double) -> Promise<CNBTransactionData>
+
   func encryptionCipherKeys(forUncompressedPublicKey pubkey: Data) -> CNBEncryptionCipherKeys
   func decryptionCipherKeys(
     forReceiveAddressPath path: CKMDerivativePath,
@@ -335,6 +339,33 @@ class WalletManager: WalletManagerType {
         feeRate: usableFeeRate,
         blockHeight: blockHeight
       )
+    }
+    return result
+  }
+
+  func transactionDataSendingAll(to address: String, withFeeRate feeRate: Double) -> Promise<CNBTransactionData> {
+    return Promise { seal in
+      let maybeTxData = self.failableTransactionDataSendingAll(to: address, withFeeRate: feeRate)
+      if let data = maybeTxData {
+        seal.fulfill(data)
+      } else {
+        seal.reject(TransactionDataError.insufficientFunds)
+      }
+    }
+  }
+
+  func failableTransactionDataSendingAll(to address: String, withFeeRate feeRate: Double) -> CNBTransactionData? {
+    let usableFeeRate = self.usableFeeRate(from: feeRate)
+    let blockHeight = UInt(persistenceManager.brokers.checkIn.cachedBlockHeight)
+    let context = persistenceManager.viewContext
+
+    var result: CNBTransactionData?
+    context.performThrowingAndWait {
+      let vouts = try? CKMVout.findAllUnspent(in: context)
+      let utxos = vouts.map { self.availableTransactionOutputs(fromUsableUTXOs: $0) }
+      result = utxos.flatMap {
+        CNBTransactionData(allUsableOutputs: $0, coin: self.coin, sendingMaxToAddress: address, feeRate: usableFeeRate, blockHeight: blockHeight)
+      }
     }
     return result
   }
