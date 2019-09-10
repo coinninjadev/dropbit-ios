@@ -238,8 +238,8 @@ class AppCoordinator: CoordinatorType {
       self.registerAndPersistWallet(in: bgContext)
         .done { (parser: WalletFlagsParser) in
           if parser.walletVersion != .v2 {
-            let desc = "It appears you have entered recovery worrds from a legacy DropBit wallet. " +
-            "Pelase upgrade now for enhanced security, smaller transaction size and cost, " +
+            let desc = "It appears you have entered recovery words from a legacy DropBit wallet. " +
+            "Please upgrade now for enhanced security, smaller transaction size and cost, " +
             "and Lightning support."
             let action = AlertActionConfiguration(title: "Upgrade Now", style: .default, action: self.startSegwitUpgrade)
             let alertViewModel = AlertControllerViewModel(title: "Upgrade Required", description: desc, image: nil, style: .alert, actions: [action])
