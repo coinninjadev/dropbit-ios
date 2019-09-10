@@ -155,14 +155,20 @@ class SatsFormatter: CKCurrencyFormatter {
   }
 
   override func string(fromDecimal decimalNumber: NSDecimalNumber) -> String? {
-    let sats = decimalNumber.asFractionalUnits(of: .BTC)
-    let integerDecimal = NSDecimalNumber(value: sats)
-    let numberString = super.string(fromDecimal: integerDecimal) ?? ""
+    guard let numberString = stringWithoutSymbol(fromDecimal: decimalNumber) else { return nil }
     if let symbol = currency.integerSymbol {
       return numberString + " \(symbol)"
     } else {
       return numberString
     }
+  }
+
+  func stringWithoutSymbol(fromDecimal decimalNumber: NSDecimalNumber) -> String? {
+    let sats = decimalNumber.asFractionalUnits(of: .BTC)
+    let integerDecimal = NSDecimalNumber(value: sats)
+    let numberString = super.string(fromDecimal: integerDecimal) ?? ""
+
+    return numberString
   }
 
 }

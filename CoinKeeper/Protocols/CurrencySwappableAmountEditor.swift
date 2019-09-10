@@ -46,8 +46,10 @@ extension CurrencySwappableAmountEditor {
   }
 
   private func moveCursorToCorrectLocationIfNecessary() {
+
     guard editAmountViewModel.walletTransactionType == .lightning,
       editAmountViewModel.primaryCurrency == .BTC,
+      let amount = SatsFormatter().stringWithoutSymbol(fromDecimal: editAmountViewModel.primaryAmount),
       let newPosition = editAmountView.primaryAmountTextField.position(from:
         editAmountView.primaryAmountTextField.beginningOfDocument, offset: amount.count) else { return }
       editAmountView.primaryAmountTextField.selectedTextRange = editAmountView.primaryAmountTextField.textRange(from: newPosition, to: newPosition)
