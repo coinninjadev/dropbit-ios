@@ -42,7 +42,9 @@ extension DualAmountDisplayable {
     let primaryAmount = currencyConverter.amount(forCurrency: primaryCurrency) ?? .zero
     let secondaryAmount = currencyConverter.amount(forCurrency: secondaryCurrency) ?? .zero
 
-    var primaryText = CKCurrencyFormatter.string(for: primaryAmount, currency: primaryCurrency)
+    var primaryText = CKCurrencyFormatter.string(for: primaryAmount,
+                                                 currency: primaryCurrency,
+                                                 walletTransactionType: walletTransactionType)
     if hidePrimaryZero && fromAmount == .zero {
       primaryText = primaryCurrency.symbol
     }
@@ -256,7 +258,7 @@ extension CurrencySwappableEditAmountViewModel: UITextFieldDelegate {
     }
 
     let requiredSymbolString = primaryCurrency.symbol
-    guard finalString.contains(requiredSymbolString) else {
+    guard finalString.contains(requiredSymbolString) || finalString.contains(primaryCurrency.integerSymbol ?? "") else {
       return false
     }
 

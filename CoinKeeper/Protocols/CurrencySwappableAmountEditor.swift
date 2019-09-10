@@ -33,6 +33,7 @@ extension CurrencySwappableAmountEditor {
   func swapViewDidSwap(_ swapView: CurrencySwappableEditAmountView) {
     editAmountViewModel.swapPrimaryCurrency()
     refreshBothAmounts()
+    moveCursorToCorrectLocationIfNecessary()
   }
 
   /// Editor should call this in response to delegate method calls of CurrencySwappableEditAmountViewModelDelegate
@@ -41,6 +42,15 @@ extension CurrencySwappableAmountEditor {
     let txType = editAmountViewModel.walletTransactionType
     let labels = editAmountViewModel.dualAmountLabels(hidePrimaryZero: shouldHideZero, walletTransactionType: txType)
     editAmountView.update(with: labels)
+
+  }
+
+  private func moveCursorToCorrectLocationIfNecessary() {
+    guard editAmountViewModel.walletTransactionType == .lightning,
+      editAmountViewModel.primaryCurrency == .BTC,
+      let newPosition = editAmountView.primaryAmountTextField.position(from:
+        editAmountView.primaryAmountTextField.beginningOfDocument, offset: amount.count) else { return }
+      editAmountView.primaryAmountTextField.selectedTextRange = editAmountView.primaryAmountTextField.textRange(from: newPosition, to: newPosition)
   }
 
   func refreshSecondaryAmount() {

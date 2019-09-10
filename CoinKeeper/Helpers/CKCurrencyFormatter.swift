@@ -27,12 +27,19 @@ class CKCurrencyFormatter {
     self.showNegativeSymbol = showNegativeSymbol
   }
 
-  static func string(for amount: NSDecimalNumber?, currency: CurrencyCode) -> String? {
+  static func string(for amount: NSDecimalNumber?,
+                     currency: CurrencyCode,
+                     walletTransactionType: WalletTransactionType) -> String? {
     guard let amount = amount else { return nil }
     if currency.isFiat {
       return FiatFormatter(currency: currency, withSymbol: true).string(fromDecimal: amount)
     } else {
-      return BitcoinFormatter(symbolType: .string).string(fromDecimal: amount)
+      switch walletTransactionType {
+      case .lightning:
+        return SatsFormatter().string(fromDecimal: amount)
+      case .onChain:
+        return BitcoinFormatter(symbolType: .string).string(fromDecimal: amount)
+      }
     }
   }
 

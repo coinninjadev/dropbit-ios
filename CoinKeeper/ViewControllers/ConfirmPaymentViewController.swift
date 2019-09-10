@@ -183,7 +183,13 @@ extension ConfirmPaymentViewController {
 
     primaryAddressLabel.backgroundColor = UIColor.clear
     primaryAddressLabel.font = .medium(14)
-    primaryAddressLabel.adjustsFontSizeToFitWidth = true
+
+    switch viewModel.walletTransactionType {
+    case .onChain:
+      primaryAddressLabel.adjustsFontSizeToFitWidth = true
+    case .lightning:
+      primaryAddressLabel.lineBreakMode = .byTruncatingMiddle
+    }
 
     memoContainerView.isHidden = true
 

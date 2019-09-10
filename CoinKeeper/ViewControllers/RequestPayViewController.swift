@@ -69,6 +69,7 @@ final class RequestPayViewController: PresentableViewController, StoryboardIniti
         payload.append(lightningInvoice.request)
         delegate.viewControllerDidSelectSendRequest(self, payload: payload)
       } else {
+
         createLightningInvoice(withAmount: viewModel.btcAmount.asFractionalUnits(of: .BTC), memo: memoTextField.text)
       }
     }
@@ -130,11 +131,12 @@ final class RequestPayViewController: PresentableViewController, StoryboardIniti
     registerForRateUpdates()
     updateRatesAndView()
     walletToggleView.delegate = self
-    setupKeyboardDoneButton(for: [editAmountView.primaryAmountTextField],
+    setupKeyboardDoneButton(for: [editAmountView.primaryAmountTextField, memoTextField],
                             action: #selector(doneButtonWasPressed))
   }
 
   @objc func doneButtonWasPressed() {
+    memoTextField.resignFirstResponder()
     editAmountView.primaryAmountTextField.resignFirstResponder()
   }
 
@@ -188,6 +190,7 @@ final class RequestPayViewController: PresentableViewController, StoryboardIniti
 
     closeButton.isHidden = !isModal
     memoTextField.backgroundColor = .lightGrayBackground
+    memoTextField.autocorrectionType = .no
     memoTextField.font = .medium(14)
     memoLabel.font = .light(14)
   }
