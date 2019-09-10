@@ -8,6 +8,9 @@
 
 import Foundation
 import UIKit
+import SVProgressHUD
+import CNBitcoinKit
+import PromiseKit
 
 enum TransferAmount {
   case low
@@ -27,16 +30,22 @@ enum TransferAmount {
   }
 }
 
-protocol WalletTransferViewControllerDelegate: ViewControllerDismissable {
-  func viewControllerDidConfirmTransfer(_ viewController: UIViewController,
-                                        direction: TransferDirection,
-                                        btcAmount: NSDecimalNumber,
-                                        exchangeRates: ExchangeRates)
+protocol WalletTransferViewControllerDelegate: ViewControllerDismissable, PaymentBuildingDelegate, PaymentSendingDelegate {
+
+  func viewControllerNeedsTransactionData(_ viewController: UIViewController,
+                                          btcAmount: NSDecimalNumber,
+                                          exchangeRates: ExchangeRates) -> PaymentData?
+
+  func viewControllerDidConfirmLoad(_ viewController: UIViewController,
+                                    paymentData: PaymentData)
+
+  func viewControllerDidConfirmWithdraw(_ viewController: UIViewController, btcAmount: NSDecimalNumber)
+  func viewControllerHasFundsError(_ error: Error)
 }
 
 enum TransferDirection {
-  case toLightning //load
-  case toOnChain //withdraw
+  case toLightning(PaymentData?) //load
+  case toOnChain(NSDecimalNumber?) //withdraw
 }
 
 class WalletTransferViewController: PresentableViewController, StoryboardInitializable, CurrencySwappableAmountEditor {
@@ -56,6 +65,7 @@ class WalletTransferViewController: PresentableViewController, StoryboardInitial
     let viewController = WalletTransferViewController.makeFromStoryboard()
     viewController.viewModel = viewModel
     viewController.delegate = delegate
+    viewModel.delegate = viewController
     return viewController
   }
 
@@ -77,7 +87,7 @@ class WalletTransferViewController: PresentableViewController, StoryboardInitial
     editAmountView.configure(withLabels: labels, delegate: self)
     setupUI()
     setupCurrencySwappableEditAmountView()
-
+    buildTransactionIfNecessary()
   }
 
   func didUpdateExchangeRateManager(_ exchangeRateManager: ExchangeRateManager) {
@@ -87,6 +97,42 @@ class WalletTransferViewController: PresentableViewController, StoryboardInitial
   @IBAction func closeButtonWasTouched() {
     editAmountView.primaryAmountTextField.resignFirstResponder()
     delegate.viewControllerDidSelectClose(self)
+  }
+
+  private func buildTransactionIfNecessary() {
+    switch viewModel.direction {
+    case .toLightning:
+      buildTransaction()
+    case .toOnChain:
+      viewModel.direction = .toOnChain(viewModel.btcAmount)
+    }
+  }
+
+  private func buildTransaction() {
+    let paymentData = delegate.viewControllerNeedsTransactionData(self,
+                                                                  btcAmount: viewModel.btcAmount,
+                                                                  exchangeRates: rateManager.exchangeRates)
+    viewModel.direction = .toLightning(paymentData)
+  }
+
+  private func setupTransactionUI() {
+    switch viewModel.direction {
+    case .toLightning(let data):
+      feesView.isHidden = true
+      data == nil ? disableConfirmButton() : enableConfirmButton()
+    case .toOnChain(let inputs):
+      inputs == nil ? disableConfirmButton() : enableConfirmButton()
+    }
+  }
+
+  private func disableConfirmButton() {
+    confirmView.isUserInteractionEnabled = false
+    confirmView.alpha = 0.2
+  }
+
+  private func enableConfirmButton() {
+    confirmView.isUserInteractionEnabled = true
+    confirmView.alpha = 1.0
   }
 
   private func setupUI() {
@@ -104,29 +150,42 @@ class WalletTransferViewController: PresentableViewController, StoryboardInitial
     setupKeyboardDoneButton(for: [editAmountView.primaryAmountTextField],
                             action: #selector(doneButtonWasPressed))
 
+    setupTransactionUI()
   }
 
   @objc func doneButtonWasPressed() {
     editAmountView.primaryAmountTextField.resignFirstResponder()
+    setupTransactionUI()
+    buildTransactionIfNecessary()
   }
-
 }
 
 extension WalletTransferViewController: ConfirmViewDelegate {
-
   func viewDidConfirm() {
-    delegate.viewControllerDidConfirmTransfer(
-      self,
-      direction: viewModel.direction,
-      btcAmount: editAmountViewModel.btcAmount,
-      exchangeRates: self.rateManager.exchangeRates
-    )
+    switch viewModel.direction {
+    case .toLightning(let data):
+      guard let data = data else { return }
+      do {
+        try LightningWalletAmountValidator(balanceNetPending: viewModel.walletBalances).validate(value: viewModel.generateCurrencyConverter())
+        delegate.viewControllerDidConfirmLoad(self, paymentData: data)
+      } catch {
+        delegate.viewControllerHasFundsError(error)
+      }
+    case .toOnChain(let btcAmount):
+      guard let btcAmount = btcAmount else { return }
+      do {
+        try CurrencyAmountValidator(balanceNetPending: viewModel.walletBalances).validate(value: viewModel.generateCurrencyConverter())
+        delegate.viewControllerDidConfirmWithdraw(self, btcAmount: btcAmount)
+      } catch {
+        delegate.viewControllerHasFundsError(error)
+      }
+    }
   }
 }
 
 extension WalletTransferViewController: FeesViewDelegate {
 
   func tooltipButtonWasTouched() {
-
+    // TODO: Implement
   }
 }

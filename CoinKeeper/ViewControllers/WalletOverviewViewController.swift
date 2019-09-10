@@ -277,7 +277,7 @@ extension WalletOverviewViewController: WalletBalanceViewDelegate {
 
   func transferButtonWasTouched() {
     let currentWalletIsOnChain = currentWallet == .onChain
-    let transferDirection: TransferDirection = currentWalletIsOnChain ? .toLightning : .toOnChain
+    let transferDirection: TransferDirection = currentWalletIsOnChain ? .toLightning(nil) : .toOnChain(nil)
     delegate.viewControllerDidSelectTransfer(withDirection: transferDirection)
   }
 

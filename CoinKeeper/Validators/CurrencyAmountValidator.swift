@@ -8,6 +8,23 @@
 
 import Foundation
 
+enum CurrencyStringValidatorError: ValidatorTypeError {
+  case isZero
+  case notANumber
+
+  var debugMessage: String {
+    switch self {
+    case .isZero: return "Amount cannot be zero."
+    case .notANumber: return "Amount is not a number."
+    }
+  }
+
+  var displayMessage: String? {
+    return debugMessage
+  }
+
+}
+
 enum CurrencyAmountValidatorError: ValidatorTypeError {
   case invitationMaximum(Money)
   case usableBalance(Money) //Should be BTC
@@ -61,9 +78,11 @@ class CurrencyAmountValidator: ValidatorType<CurrencyConverter> {
   // Allows for validating against USD value while showing error message in BTC.
   let balanceNetPending: WalletBalances?
   let validationsToSkip: CurrencyAmountValidationOptions
+  let transactionType: WalletTransactionType
 
-  init(balanceNetPending: WalletBalances?, ignoring: CurrencyAmountValidationOptions = []) {
+  init(balanceNetPending: WalletBalances?, ignoring: CurrencyAmountValidationOptions = [], walletTransactionType: WalletTransactionType = .onChain) {
     self.balanceNetPending = balanceNetPending
+    self.transactionType = walletTransactionType
     self.validationsToSkip = ignoring
     super.init()
   }
@@ -85,29 +104,20 @@ class CurrencyAmountValidator: ValidatorType<CurrencyConverter> {
       throw CurrencyAmountValidatorError.invitationMaximum(maxMoney)
     }
 
+    var balance = balanceNetPending?.onChain
+    switch transactionType {
+    case .lightning:
+      balance = balanceNetPending?.lightning
+    default:
+      balance = balanceNetPending?.onChain
+    }
+
     if !validationsToSkip.contains(.usableBalance),
-      let balance = balanceNetPending?.onChain, //TODO: Add check for lightning funds
-      btcValue > balance {
+      let balance = balance, btcValue > balance {
       let spendableMoney = Money(amount: balance, currency: .BTC)
       throw CurrencyAmountValidatorError.usableBalance(spendableMoney)
     }
   }
 
-  enum CurrencyStringValidatorError: ValidatorTypeError {
-    case isZero
-    case notANumber
-
-    var debugMessage: String {
-      switch self {
-      case .isZero: return "Amount cannot be zero."
-      case .notANumber: return "Amount is not a number."
-      }
-    }
-
-    var displayMessage: String? {
-      return debugMessage
-    }
-
-  }
 
 }

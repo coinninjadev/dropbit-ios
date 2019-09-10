@@ -14,7 +14,7 @@ import PromiseKit
 import DZNEmptyDataSet
 
 protocol TransactionHistoryViewControllerDelegate: DeviceCountryCodeProvider &
-  BadgeUpdateDelegate & URLOpener & LightningTransactionHistoryEmptyViewDelegate & CurrencyValueDataSourceType {
+  BadgeUpdateDelegate & URLOpener & LightningReloadDelegate & CurrencyValueDataSourceType {
   func viewControllerDidRequestHistoryUpdate(_ viewController: TransactionHistoryViewController)
   func viewControllerDidDisplayTransactions(_ viewController: TransactionHistoryViewController)
   func viewControllerAttemptedToRefreshTransactions(_ viewController: UIViewController)

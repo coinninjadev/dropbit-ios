@@ -8,37 +8,37 @@
 
 import Foundation
 import UIKit
+import PromiseKit
+import CNBitcoinKit
 
 extension AppCoordinator: WalletTransferViewControllerDelegate {
 
-  func viewControllerDidConfirmTransfer(_ viewController: UIViewController,
-                                        direction: TransferDirection,
-                                        btcAmount: NSDecimalNumber,
-                                        exchangeRates: ExchangeRates) {
-    switch direction {
-    case .toLightning:
-      let context = self.persistenceManager.viewContext
-      let wallet = CKMWallet.findOrCreate(in: context)
-      let lightningAccount = self.persistenceManager.brokers.lightning.getAccount(forWallet: wallet, in: context)
-      let address = lightningAccount.address
+  func viewControllerNeedsTransactionData(_ viewController: UIViewController,
+                                          btcAmount: NSDecimalNumber,
+                                          exchangeRates: ExchangeRates) -> PaymentData? {
+    let context = self.persistenceManager.viewContext
+    let wallet = CKMWallet.findOrCreate(in: context)
+    let lightningAccount = self.persistenceManager.brokers.lightning.getAccount(forWallet: wallet, in: context)
+    return buildTransactionData(btcAmount: btcAmount, address: lightningAccount.address, exchangeRates: exchangeRates)
+  }
 
-      let sharedPayload = SharedPayloadDTO.emptyInstance()
+  func viewControllerDidConfirmLoad(_ viewController: UIViewController, paymentData transactionData: PaymentData) {
+    handleSuccessfulOnChainPaymentVerification(with: transactionData.broadcastData, outgoingTransactionData: transactionData.outgoingData)
+  }
 
-      let inputs = SendingDelegateInputs(primaryCurrency: .BTC, walletTxType: .onChain, contact: nil,
-                                         rates: exchangeRates, sharedPayload: sharedPayload)
-      viewControllerDidSendPayment(viewController, btcAmount: btcAmount, requiredFeeRate: nil,
-                                   paymentTarget: address, inputs: inputs)
-
-    case .toOnChain:
-      guard let receiveAddress = self.nextReceiveAddressForRequestPay() else { return }
-      let sats = btcAmount.asFractionalUnits(of: .BTC)
-      self.networkManager.withdrawLightningFunds(to: receiveAddress, sats: sats)
-        .done { _ in
-          viewController.dismiss(animated: true, completion: nil)
-        }
-        .catch { error in
-          log.error(error, message: "Failed to withdraw from lightning account")
+  func viewControllerDidConfirmWithdraw(_ viewController: UIViewController, btcAmount: NSDecimalNumber) {
+    guard let receiveAddress = self.nextReceiveAddressForRequestPay() else { return }
+    let sats = btcAmount.asFractionalUnits(of: .BTC)
+    self.networkManager.withdrawLightningFunds(to: receiveAddress, sats: sats)
+      .done { _ in
+        viewController.dismiss(animated: true, completion: nil)
       }
+      .catch { error in
+        log.error(error, message: "Failed to withdraw from lightning account")
     }
+  }
+
+  func viewControllerHasFundsError(_ error: Error) {
+    alertManager.showError(message: error.localizedDescription, forDuration: 2.0)
   }
 }

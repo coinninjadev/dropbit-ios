@@ -9,24 +9,13 @@
 import UIKit
 import CNBitcoinKit
 
-protocol ConfirmPaymentViewControllerDelegate: ViewControllerDismissable {
+protocol ConfirmPaymentViewControllerDelegate: ViewControllerDismissable, AllPaymentSendingDelegate {
   func confirmPaymentViewControllerDidLoad(_ viewController: UIViewController)
-  func viewControllerDidConfirmOnChainPayment(
-    _ viewController: UIViewController,
-    transactionData: CNBTransactionData,
-    rates: ExchangeRates,
-    outgoingTransactionData: OutgoingTransactionData
-  )
-
-  func viewControllerDidConfirmLightningPayment(
-    _ viewController: UIViewController,
-    inputs: LightningPaymentInputs)
 
   func viewControllerDidConfirmInvite(_ viewController: UIViewController,
                                       outgoingInvitationDTO: OutgoingInvitationDTO,
                                       walletTxType: WalletTransactionType)
 
-  func viewControllerRequestedShowFeeTooExpensiveAlert(_ viewController: UIViewController)
 }
 
 typealias BitcoinUSDPair = (btcAmount: NSDecimalNumber, usdAmount: NSDecimalNumber)

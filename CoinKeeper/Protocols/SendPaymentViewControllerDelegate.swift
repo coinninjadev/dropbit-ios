@@ -50,7 +50,7 @@ struct SendOnChainPaymentInputs {
   let exchangeRates: ExchangeRates
 }
 
-protocol ViewControllerSendingDelegate: AnyObject {
+protocol SendPaymentViewControllerRoutingDelegate: AnyObject, PaymentBuildingDelegate {
 
   func viewController(_ viewController: UIViewController,
                       sendMaxFundsTo address: String,
@@ -76,7 +76,7 @@ protocol ViewControllerSendingDelegate: AnyObject {
 
 }
 
-protocol SendPaymentViewControllerDelegate: ViewControllerSendingDelegate, DeviceCountryCodeProvider {
+protocol SendPaymentViewControllerDelegate: SendPaymentViewControllerRoutingDelegate, DeviceCountryCodeProvider {
   func sendPaymentViewControllerDidLoad(_ viewController: UIViewController)
   func sendPaymentViewControllerWillDismiss(_ viewController: UIViewController)
   func viewControllerDidPressScan(_ viewController: UIViewController, btcAmount: NSDecimalNumber, primaryCurrency: CurrencyCode)

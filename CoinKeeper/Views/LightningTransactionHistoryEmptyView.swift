@@ -9,10 +9,6 @@
 import Foundation
 import UIKit
 
-protocol LightningTransactionHistoryEmptyViewDelegate: AnyObject {
-  func emptyViewDidRequestRefill(withAmount amount: TransferAmount)
-}
-
 class LightningTransactionHistoryEmptyView: UIView {
 
   @IBOutlet var titleLabel: UILabel!
@@ -23,7 +19,7 @@ class LightningTransactionHistoryEmptyView: UIView {
   @IBOutlet var maxAmountButton: LightningActionButton!
   @IBOutlet var customAmountButton: UIButton!
 
-  weak var delegate: LightningTransactionHistoryEmptyViewDelegate?
+  weak var delegate: LightningReloadDelegate?
 
   override func awakeFromNib() {
     super.awakeFromNib()
@@ -44,23 +40,23 @@ class LightningTransactionHistoryEmptyView: UIView {
   }
 
   @IBAction func lowAmountButtonWasTouched() {
-    delegate?.emptyViewDidRequestRefill(withAmount: .low)
+    delegate?.didRequestLightningLoad(withAmount: .low)
   }
 
   @IBAction func mediumAmountButtonWasTouched() {
-    delegate?.emptyViewDidRequestRefill(withAmount: .medium)
+    delegate?.didRequestLightningLoad(withAmount: .medium)
   }
 
   @IBAction func highAmountButtonWasTouched() {
-    delegate?.emptyViewDidRequestRefill(withAmount: .high)
+    delegate?.didRequestLightningLoad(withAmount: .high)
   }
 
   @IBAction func maxAmountButtonWasTouched() {
-    delegate?.emptyViewDidRequestRefill(withAmount: .max)
+    delegate?.didRequestLightningLoad(withAmount: .max)
   }
 
   @IBAction func customAmountButtonWasTouched() {
-    delegate?.emptyViewDidRequestRefill(withAmount: .custom)
+    delegate?.didRequestLightningLoad(withAmount: .custom)
   }
 
 }
