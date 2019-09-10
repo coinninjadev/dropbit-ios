@@ -136,6 +136,7 @@ class LightningUpgradeStartViewControllerTests: XCTestCase {
     var upgradeNowTapped = false
     func viewControllerRequestedUpgradeAuthentication(_ viewController: LightningUpgradeStartViewController, completion: @escaping CKCompletion) {
       upgradeNowTapped = true
+      completion()
     }
   }
 }
