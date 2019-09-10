@@ -357,7 +357,10 @@ class WalletAddressDataWorker: WalletAddressDataWorkerType {
       log.debug("Lightning invoice generation already enabled")
       return Promise.value(standardBitcoinAddressResponses)
     } else {
-      let generateInvoicesAddressBody = AddWalletAddressBody(address: generateValue, pubkey: "", type: .lightning, walletAddressRequestId: nil)
+      let generateInvoicesAddressBody = AddWalletAddressBody(address: generateValue,
+                                                             pubkey: self.walletManager.hexEncodedPublicKey,
+                                                             type: .lightning,
+                                                             walletAddressRequestId: nil)
       return networkManager.addWalletAddress(body: generateInvoicesAddressBody)
         .map { _ in return standardBitcoinAddressResponses }
         .tap { _ in log.event("Did enable lightning invoice generation") }
