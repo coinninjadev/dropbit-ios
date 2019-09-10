@@ -106,22 +106,7 @@ public class CKMAddressTransactionSummary: NSManagedObject {
   }
 
   static func findAllTxids(in context: NSManagedObjectContext) -> [String] {
-    let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: CKMAddressTransactionSummary.entityName())
-    let txidKey = #keyPath(CKMAddressTransactionSummary.txid)
-    fetchRequest.propertiesToFetch = [txidKey]
-    fetchRequest.resultType = .dictionaryResultType
-    do {
-      guard let results = try context.fetch(fetchRequest) as? [[String: String]] else {
-        log.error("Could not cast results to [[String: String]] for AddressTransactionSummary.findAllTxids")
-        return []
-      }
-
-      return results.compactMap { $0[txidKey] }
-
-    } catch {
-      log.error(error, message: "Could not execute fetch request for AddressTransactionSummary.findAllTxids")
-      return []
-    }
+    return findAll(in: context).map { $0.txid }
   }
 
   func configure(
