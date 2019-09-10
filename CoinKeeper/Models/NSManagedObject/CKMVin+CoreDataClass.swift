@@ -68,4 +68,17 @@ public class CKMVin: NSManagedObject {
     belongsToWallet = foundAddress.isNotEmpty
   }
 
+  public override var description: String {
+    let amountDesc = "amount: \(amount)"
+    let previousTxidDesc = "previousTxid: \(previousTxid ?? "nil")"
+    let previousVoutIndexDesc = "previousVoutIndex: \(previousVoutIndex)"
+    let txValueDesc = transaction == nil ? "nil" : "Transaction()"
+    let transactionDesc = "transaction: \(txValueDesc)"
+    let belongsDesc = "belongsToWallet: \(belongsToWallet)"
+    let addressIDsDesc = "addressIDs: \(addressIDs)"
+    let descriptions = [amountDesc, previousTxidDesc, previousVoutIndexDesc,
+                        transactionDesc, belongsDesc, addressIDsDesc]
+    return descriptions.joined(separator: "\n\t\t") + "\n\n"
+  }
+
 }
