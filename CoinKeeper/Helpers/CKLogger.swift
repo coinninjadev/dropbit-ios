@@ -10,6 +10,7 @@ import Foundation
 import Willow
 
 let loggingQueue = DispatchQueue(label: "com.coinkeeper.cklogger.serial", qos: .utility)
+let loggingLock = NSRecursiveLock()
 
 let log = CKLogger()
 
@@ -36,7 +37,7 @@ class CKLogger: Logger {
     #if DEBUG
     super.init(logLevels: .standardDebug,
                writers: writers,
-               executionMethod: .asynchronous(queue: loggingQueue))
+               executionMethod: .synchronous(lock: loggingLock))
     #else
     super.init(logLevels: .release,
                writers: writers,
