@@ -23,6 +23,24 @@ class MockSendPaymentViewControllerCoordinator: SendPaymentViewControllerCoordin
     self.networkManager = networkManager
   }
 
+  func sendMaxFundsTo(address destinationAddress: String,
+                      feeRate: Double) -> Promise<CNBTransactionData> {
+    return Promise { _ in }
+  }
+
+  func configureOutgoingTransactionData(with dto: OutgoingTransactionData,
+                                        address: String?,
+                                        inputs: SendingDelegateInputs) -> OutgoingTransactionData {
+    return OutgoingTransactionData.emptyInstance()
+  }
+
+  func buildNonReplaceableTransactionData(
+    btcAmount: NSDecimalNumber,
+    address: String,
+    exchangeRates: ExchangeRates) -> PaymentData? {
+    return nil
+  }
+
   func sendPaymentViewControllerWillDismiss(_ viewController: UIViewController) {
     didTapClose = true
   }

@@ -10,6 +10,7 @@ import Foundation
 import UIKit
 
 class LimitEditTextField: UITextField {
+
   var shouldDisableActions: Bool = true
   var disabledActions: [Selector] = [#selector(UIResponderStandardEditActions.paste(_:)), #selector(UIResponderStandardEditActions.cut(_:)),
                                      #selector(UIResponderStandardEditActions.selectAll(_:)), #selector(UIResponderStandardEditActions.select(_:)),
@@ -30,4 +31,5 @@ class LimitEditTextField: UITextField {
     font = .regular(30)
     shouldDisableActions = true
   }
+
 }

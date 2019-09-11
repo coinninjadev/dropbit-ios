@@ -27,12 +27,19 @@ class CKCurrencyFormatter {
     self.showNegativeSymbol = showNegativeSymbol
   }
 
-  static func string(for amount: NSDecimalNumber?, currency: CurrencyCode) -> String? {
+  static func string(for amount: NSDecimalNumber?,
+                     currency: CurrencyCode,
+                     walletTransactionType: WalletTransactionType) -> String? {
     guard let amount = amount else { return nil }
     if currency.isFiat {
       return FiatFormatter(currency: currency, withSymbol: true).string(fromDecimal: amount)
     } else {
-      return BitcoinFormatter(symbolType: .string).string(fromDecimal: amount)
+      switch walletTransactionType {
+      case .lightning:
+        return SatsFormatter().string(fromDecimal: amount)
+      case .onChain:
+        return BitcoinFormatter(symbolType: .string).string(fromDecimal: amount)
+      }
     }
   }
 
@@ -148,14 +155,20 @@ class SatsFormatter: CKCurrencyFormatter {
   }
 
   override func string(fromDecimal decimalNumber: NSDecimalNumber) -> String? {
-    let sats = decimalNumber.asFractionalUnits(of: .BTC)
-    let integerDecimal = NSDecimalNumber(value: sats)
-    let numberString = super.string(fromDecimal: integerDecimal) ?? ""
+    guard let numberString = stringWithoutSymbol(fromDecimal: decimalNumber) else { return nil }
     if let symbol = currency.integerSymbol {
       return numberString + " \(symbol)"
     } else {
       return numberString
     }
+  }
+
+  func stringWithoutSymbol(fromDecimal decimalNumber: NSDecimalNumber) -> String? {
+    let sats = decimalNumber.asFractionalUnits(of: .BTC)
+    let integerDecimal = NSDecimalNumber(value: sats)
+    let numberString = super.string(fromDecimal: integerDecimal) ?? ""
+
+    return numberString
   }
 
 }

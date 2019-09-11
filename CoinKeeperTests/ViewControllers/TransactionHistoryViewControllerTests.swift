@@ -52,6 +52,11 @@ class TransactionHistoryViewControllerTests: XCTestCase {
 
   class MockCoordinator: TransactionHistoryViewControllerDelegate {
 
+    var didRequestLightningLoad = false
+    func didRequestLightningLoad(withAmount amount: TransferAmount) {
+      didRequestLightningLoad = true
+    }
+
     func viewControllerDidRequestHistoryUpdate(_ viewController: TransactionHistoryViewController) { }
     func viewControllerDidDisplayTransactions(_ viewController: TransactionHistoryViewController) { }
     func viewControllerAttemptedToRefreshTransactions(_ viewController: UIViewController) { }
