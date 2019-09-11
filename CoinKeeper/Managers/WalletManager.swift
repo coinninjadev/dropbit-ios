@@ -265,7 +265,8 @@ class WalletManager: WalletManagerType {
         paymentAmount: paymentAmount,
         feeRate: usableFeeRate,
         change: self.newChangePath(in: bgContext),
-        blockHeight: blockHeight
+        blockHeight: blockHeight,
+        rbfReplaceabilityOption: .Allowed
       )
     }
     return result
