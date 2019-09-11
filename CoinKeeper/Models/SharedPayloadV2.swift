@@ -112,3 +112,32 @@ struct SharedPayloadV2: SharedPayloadCodable {
  }
 
  */
+
+extension SharedPayloadV2: PayloadPersistable {
+  var memo: String {
+    return self.info.memo
+  }
+
+  var amount: Int {
+    return self.info.amount
+  }
+
+  var currency: String {
+    return self.info.currency
+  }
+
+  func payloadCounterparties(with deps: PayloadPersistenceDependencies) -> PayloadCounterparties? {
+    guard let profile = self.profile else { return nil }
+    switch profile.type {
+    case .phone:
+      guard let phoneNumber = profile.globalPhoneNumber() else { return nil }
+      return phoneNumberPayloadCounterparties(forGlobalNumber: phoneNumber, with: deps)
+
+    case .twitter:
+      guard let twitterContact = profile.twitterContact() else { return nil }
+      let twitter = CKMTwitterContact.findOrCreate(with: twitterContact, in: deps.context)
+      return PayloadCounterparties(phoneNumber: nil, twitterContact: twitter)
+    }
+  }
+
+}

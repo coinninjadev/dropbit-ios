@@ -378,7 +378,7 @@ class TransactionDataWorker: TransactionDataWorkerType {
     }
 
     // This should succeed in partially decoding future versions if they are purely additive to the schema
-    self.persistenceManager.persistReceivedSharedPayloads(decryptedPayloads, in: context)
+    self.persistenceManager.persistReceivedSharedPayloads(decryptedPayloads, ofType: walletTxType, in: context)
   }
 
   func groomFailedTransactions(notIn txids: [String], in context: NSManagedObjectContext) -> Promise<Void> {
