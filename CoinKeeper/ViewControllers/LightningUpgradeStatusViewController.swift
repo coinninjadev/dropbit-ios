@@ -15,11 +15,12 @@ protocol LightningUpgradeStatusViewControllerDelegate: AnyObject {
 
   func viewControllerStartUpgradingWallet(_ viewController: LightningUpgradeStatusViewController) -> Promise<Void>
   func viewControllerStartUpgradingToSegwit(_ viewController: LightningUpgradeStatusViewController) -> Promise<Void>
-  func viewController(_ viewController: LightningUpgradeStatusViewController, broadcast data: CNBTransactionData) -> Promise<String>
+  func viewController(_ viewController: LightningUpgradeStatusViewController, broadcast metadata: CNBTransactionMetadata) -> Promise<String>
 }
 
 protocol LightningUpgradeStatusDataSource: AnyObject {
   var transactionData: CNBTransactionData? { get }
+  var transactionMetadata: CNBTransactionMetadata? { get }
 }
 
 final class LightningUpgradeStatusViewController: BaseViewController, StoryboardInitializable {
@@ -37,7 +38,6 @@ final class LightningUpgradeStatusViewController: BaseViewController, Storyboard
   @IBOutlet var transferringFundsStatusLabel: UILabel!
   @IBOutlet var doNotCloseLabel: UILabel!
 
-  var encodedTx: String?
   private var nextStep: CKErrorCompletion?
 
   private let notStartedImage = UIImage(imageLiteralResourceName: "circleCheckPurple")
@@ -99,12 +99,14 @@ final class LightningUpgradeStatusViewController: BaseViewController, Storyboard
   }
 
   private func transferFundsIfNeeded() {
-    guard let data = dataSource.transactionData, data.amount != 0 else {
-      nextStep?(nil)
-      return
+    guard let txMetadata = dataSource.transactionMetadata,
+      let data = dataSource.transactionData,
+      data.amount != 0 else {
+        nextStep?(nil)
+        return
     }
 
-    delegate.viewController(self, broadcast: data)
+    delegate.viewController(self, broadcast: txMetadata)
       .then { _ in self.finishedTransferringFunds() }
       .done { _ in self.nextStep?(nil) }
       .catch { (error: Error) in

@@ -59,8 +59,7 @@ extension LightningUpgradeCoordinator: LightningUpgradeStatusViewControllerDeleg
     return Promise.value(())
   }
 
-  func viewController(_ viewController: LightningUpgradeStatusViewController, broadcast data: CNBTransactionData) -> Promise<String> {
-//    return parent.networkManager.broadcastTx(with: data)
-    return Promise.value("")
+  func viewController(_ viewController: LightningUpgradeStatusViewController, broadcast metadata: CNBTransactionMetadata) -> Promise<String> {
+    return parent.networkManager.broadcastTx(metadata: metadata)
   }
 }

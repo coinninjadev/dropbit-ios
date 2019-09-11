@@ -44,7 +44,9 @@ class LightningUpgradeCoordinator: ChildCoordinatorType {
           // handle error
           log.error(error, message: "Failed to do a full sync of blockchain.")
         } else {
-          guard let localSelf = self, let parent = localSelf.parent else { return }
+          guard let localSelf = self,
+            let parent = localSelf.parent,
+            let wallet = parent.walletManager?.wallet else { return }
           let feeRate = parent.persistenceManager.brokers.checkIn.cachedBetterFee
           var coinType: CoinType = .MainNet
           #if DEBUG
@@ -59,10 +61,14 @@ class LightningUpgradeCoordinator: ChildCoordinatorType {
           let firstAddress = dataSource.changeAddress(at: 0).address
           log.info("Creating send-max transaction to upgraded wallet.")
           parent.walletManager?.transactionDataSendingAll(to: firstAddress, withFeeRate: feeRate)
-            .done { (data: CNBTransactionData) in controller.updateUI(with: data) }
+            .done { (data: CNBTransactionData) in
+              let builder = CNBTransactionBuilder()
+              let metadata = builder.generateTxMetadata(with: data, wallet: wallet)
+              controller.updateUI(with: data, txMetadata: metadata)
+            }
             .catch { (error: Error) in
               log.error(error, message: "Failed to create send max transaction.")
-              controller.updateUI(with: nil)
+              controller.updateUI(with: nil, txMetadata: nil)
             }
             .finally {
               parent.launchStateManager.upgradeInProgress = false

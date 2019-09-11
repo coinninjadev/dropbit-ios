@@ -23,6 +23,8 @@ final class LightningUpgradePageViewController: UIPageViewController, Storyboard
       }
     }
   }
+  var transactionMetadata: CNBTransactionMetadata?
+
   private func performUpgradeNowAction() {
     activeViewController = lnViewControllers()[1]
     activeViewController.map { self.setViewControllers([$0], direction: .forward, animated: true, completion: nil) }
@@ -74,8 +76,9 @@ final class LightningUpgradePageViewController: UIPageViewController, Storyboard
     activeViewController.map { self.setViewControllers([$0], direction: .forward, animated: true, completion: nil) }
   }
 
-  func updateUI(with data: CNBTransactionData?) {
+  func updateUI(with data: CNBTransactionData?, txMetadata: CNBTransactionMetadata?) {
     self.transactionData = data
+    self.transactionMetadata = txMetadata
   }
 
 }
