@@ -13,6 +13,18 @@ import CNBitcoinKit
 
 extension AppCoordinator: WalletTransferViewControllerDelegate {
 
+  func viewControllerDidConfirmWithdraw(_ viewController: UIViewController, btcAmount: NSDecimalNumber) {
+    guard let receiveAddress = self.nextReceiveAddressForRequestPay() else { return }
+    let sats = btcAmount.asFractionalUnits(of: .BTC)
+    self.networkManager.withdrawLightningFunds(to: receiveAddress, sats: sats)
+      .done { _ in
+        viewController.dismiss(animated: true, completion: nil)
+      }
+      .catch { error in
+        log.error(error, message: "Failed to withdraw from lightning account")
+    }
+  }
+
   func viewControllerNeedsTransactionData(_ viewController: UIViewController,
                                           btcAmount: NSDecimalNumber,
                                           exchangeRates: ExchangeRates) -> PaymentData? {
@@ -24,18 +36,6 @@ extension AppCoordinator: WalletTransferViewControllerDelegate {
 
   func viewControllerDidConfirmLoad(_ viewController: UIViewController, paymentData transactionData: PaymentData) {
     handleSuccessfulOnChainPaymentVerification(with: transactionData.broadcastData, outgoingTransactionData: transactionData.outgoingData)
-  }
-
-  func viewControllerDidConfirmWithdraw(_ viewController: UIViewController, btcAmount: NSDecimalNumber) {
-    guard let receiveAddress = self.nextReceiveAddressForRequestPay() else { return }
-    let sats = btcAmount.asFractionalUnits(of: .BTC)
-    self.networkManager.withdrawLightningFunds(to: receiveAddress, sats: sats)
-      .done { _ in
-        viewController.dismiss(animated: true, completion: nil)
-      }
-      .catch { error in
-        log.error(error, message: "Failed to withdraw from lightning account")
-    }
   }
 
   func viewControllerHasFundsError(_ error: Error) {

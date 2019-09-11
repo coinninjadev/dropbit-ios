@@ -11,9 +11,12 @@ import Foundation
 enum LightningWalletAmountValidatorError: ValidatorTypeError {
   case walletMaximum
   case reloadMinimum //Should be BTC
+  case invalidAmount
 
   var debugMessage: String {
     switch self {
+    case .invalidAmount:
+      return "There was an unexpected error, please re-sync your wallet in settings"
     case .walletMaximum:
       return """
       DropBit only allows you to load a maximum of
@@ -32,6 +35,8 @@ enum LightningWalletAmountValidatorError: ValidatorTypeError {
 
   var displayMessage: String? {
     switch self {
+    case .invalidAmount:
+      return "Unable to convert amount to fiat, stopping"
     case .walletMaximum:
       return "Unable to load lightning wallet, above maximum"
     case .reloadMinimum:
@@ -53,6 +58,10 @@ class LightningWalletAmountValidator: ValidatorType<CurrencyConverter> {
   }
 
   override func validate(value: CurrencyConverter) throws {
+    guard let usdAmount = value.amount(forCurrency: .USD) else {
+      throw LightningWalletAmountValidatorError.invalidAmount
+    }
+
     let btcValue = value.btcAmount
 
     switch btcValue {
@@ -66,11 +75,11 @@ class LightningWalletAmountValidator: ValidatorType<CurrencyConverter> {
       throw CurrencyAmountValidatorError.usableBalance(spendableMoney)
     }
 
-    if btcValue < LightningWalletAmountValidator.minReloadAmount.amount {
+    if usdAmount < LightningWalletAmountValidator.minReloadAmount.amount {
       throw LightningWalletAmountValidatorError.reloadMinimum
     }
 
-    if btcValue > LightningWalletAmountValidator.maxWalletValue.amount ||
+    if usdAmount > LightningWalletAmountValidator.maxWalletValue.amount ||
       btcValue + balanceNetPending.lightning > LightningWalletAmountValidator.maxWalletValue.amount {
       throw LightningWalletAmountValidatorError.walletMaximum
     }

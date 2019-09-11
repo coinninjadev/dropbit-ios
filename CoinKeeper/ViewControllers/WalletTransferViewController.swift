@@ -16,6 +16,7 @@ enum TransferAmount {
   case low
   case medium
   case high
+
   case max
   case custom
 
@@ -30,7 +31,7 @@ enum TransferAmount {
   }
 }
 
-protocol WalletTransferViewControllerDelegate: ViewControllerDismissable, PaymentBuildingDelegate, PaymentSendingDelegate {
+protocol WalletTransferViewControllerDelegate: ViewControllerDismissable, PaymentBuildingDelegate, PaymentSendingDelegate, URLOpener {
 
   func viewControllerNeedsTransactionData(_ viewController: UIViewController,
                                           btcAmount: NSDecimalNumber,
@@ -121,6 +122,7 @@ class WalletTransferViewController: PresentableViewController, StoryboardInitial
       feesView.isHidden = true
       data == nil ? disableConfirmButton() : enableConfirmButton()
     case .toOnChain(let inputs):
+      editAmountView.swapButton.isHidden = true
       inputs == nil ? disableConfirmButton() : enableConfirmButton()
     }
   }
@@ -186,6 +188,7 @@ extension WalletTransferViewController: ConfirmViewDelegate {
 extension WalletTransferViewController: FeesViewDelegate {
 
   func tooltipButtonWasTouched() {
-    // TODO: Implement
+    guard let url = CoinNinjaUrlFactory.buildUrl(for: .dropBitAppLightningWithdrawlFees) else { return }
+    delegate.openURL(url, completionHandler: nil)
   }
 }
