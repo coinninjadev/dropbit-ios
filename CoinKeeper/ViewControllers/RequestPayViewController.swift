@@ -76,12 +76,14 @@ final class RequestPayViewController: PresentableViewController, StoryboardIniti
   }
 
   @IBAction func addressTapped(_ sender: UITapGestureRecognizer) {
-    UIPasteboard.general.string = viewModel.receiveAddress
     switch viewModel.walletTransactionType {
     case .onChain:
       delegate.viewControllerSuccessfullyCopiedToClipboard(message: "Address copied to clipboard!", viewController: self)
+      UIPasteboard.general.string = viewModel.receiveAddress
     case .lightning:
+      guard let invoice = viewModel.lightningInvoice?.request else { return }
       delegate.viewControllerSuccessfullyCopiedToClipboard(message: "Invoice copied to clipboard!", viewController: self)
+      UIPasteboard.general.string = invoice
     }
   }
 
