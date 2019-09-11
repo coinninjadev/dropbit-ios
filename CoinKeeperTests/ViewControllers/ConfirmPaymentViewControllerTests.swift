@@ -63,6 +63,11 @@ class ConfirmPaymentViewControllerTests: XCTestCase {
       return UINavigationController()
     }
 
+    var didHandleSuccessfully = false
+    func handleSuccessfulLightningPaymentVerification(with inputs: LightningPaymentInputs) {
+      didHandleSuccessfully = true
+    }
+
     var didConfirmLightning = false
     func viewControllerDidConfirmLightningPayment(
       _ viewController: UIViewController,
