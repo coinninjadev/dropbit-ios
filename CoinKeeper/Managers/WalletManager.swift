@@ -182,7 +182,7 @@ class WalletManager: WalletManagerType {
     var netLightningBalance = 0
     context.performAndWait {
       let wallet = CKMWallet.findOrCreate(in: context)
-      let atss = CKMAddressTransactionSummary.findAll(in: context)
+      let atss = CKMAddressTransactionSummary.findAll(matching: self.coin, in: context)
       let lightningAccount = persistenceManager.brokers.lightning.getAccount(forWallet: wallet, in: context)
       let atsAmount = atss.reduce(0) { $0 + $1.netAmount }
       let tempSentTxTotal = activeTemporarySentTxTotal(in: context)

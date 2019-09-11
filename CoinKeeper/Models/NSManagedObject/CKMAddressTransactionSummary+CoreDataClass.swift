@@ -9,6 +9,7 @@
 
 import Foundation
 import CoreData
+import CNBitcoinKit
 
 @objc(CKMAddressTransactionSummary)
 public class CKMAddressTransactionSummary: NSManagedObject {
@@ -120,6 +121,17 @@ public class CKMAddressTransactionSummary: NSManagedObject {
 
     } catch {
       log.error(error, message: "Could not execute fetch request for AddressTransactionSummary.findAllTxids")
+      return []
+    }
+  }
+
+  static func findAll(matching coin: CNBBaseCoin, in context: NSManagedObjectContext) -> [CKMAddressTransactionSummary] {
+    let fetchRequest: NSFetchRequest<CKMAddressTransactionSummary> = CKMAddressTransactionSummary.fetchRequest()
+    fetchRequest.predicate = CKPredicate.AddressTransactionSummary.matching(coin: coin)
+    do {
+      return try context.fetch(fetchRequest)
+    } catch {
+      log.error(error, message: "Could not execute fetch request for latest AddressTransactionSummary")
       return []
     }
   }

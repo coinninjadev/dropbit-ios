@@ -316,6 +316,14 @@ struct CKPredicate {
       let txidPredicate = NSPredicate(format: "%K = %@", txidKeyPath, txid)
       return txidPredicate
     }
+
+    static func matching(coin: CNBBaseCoin) -> NSPredicate {
+      let purposeKeyPath = #keyPath(CKMAddressTransactionSummary.address.derivativePath.purpose)
+      let purposePredicate = NSPredicate(format: "%K = %d", purposeKeyPath, Int(coin.purpose.rawValue))
+      let coinKeyPath = #keyPath(CKMAddressTransactionSummary.address.derivativePath.coin)
+      let coinPredicate = NSPredicate(format: "%K = %d", coinKeyPath, Int(coin.coin.rawValue))
+      return NSCompoundPredicate(andPredicateWithSubpredicates: [purposePredicate, coinPredicate])
+    }
   }
 
   struct Address {
