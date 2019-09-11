@@ -72,11 +72,9 @@ protocol WalletManagerType: AnyObject {
   func failableTransactionDataSendingMax(to address: String, withFeeRate feeRate: Double) -> CNBTransactionData?
 
   func encryptionCipherKeys(forUncompressedPublicKey pubkey: Data, withEntropy: Bool) -> CNBEncryptionCipherKeys
-  func decryptionCipherKeys(
-    forReceiveAddressPath path: CKMDerivativePath,
-    withPublicKey pubkey: Data,
-    in context: NSManagedObjectContext
-    ) -> CNBCipherKeys
+  func decryptionCipherKeys(forReceiveAddressPath path: CKMDerivativePath,
+                            withPublicKey pubkey: Data) -> CNBCipherKeys
+  func decryptionCipherKeysWithDefaultPrivateKey(forPublicKey pubKey: Data) -> CNBCipherKeys
 
   func encryptPayload<T>(_ payload: T, addressPubKey: String, keyIsEphemeral: Bool) -> Promise<String> where T: SharedPayloadCodable
 }
@@ -118,13 +116,14 @@ class WalletManager: WalletManagerType {
     }
   }
 
-  func decryptionCipherKeys(
-    forReceiveAddressPath path: CKMDerivativePath,
-    withPublicKey pubkey: Data,
-    in context: NSManagedObjectContext
-    ) -> CNBCipherKeys {
+  func decryptionCipherKeys(forReceiveAddressPath path: CKMDerivativePath,
+                            withPublicKey pubkey: Data) -> CNBCipherKeys {
     let cnbPath = path.asCNBDerivationPath()
     return wallet.decryptionCipherKeysForDerivationPath(ofPrivateKey: cnbPath, publicKey: pubkey)
+  }
+
+  func decryptionCipherKeysWithDefaultPrivateKey(forPublicKey pubKey: Data) -> CNBCipherKeys {
+    return wallet.decryptionCipherKeysWithDefaultPrivateKey(forPublicKey: pubKey)
   }
 
   func encryptPayload<T>(_ payload: T, addressPubKey: String, keyIsEphemeral: Bool) -> Promise<String> where T: SharedPayloadCodable {
