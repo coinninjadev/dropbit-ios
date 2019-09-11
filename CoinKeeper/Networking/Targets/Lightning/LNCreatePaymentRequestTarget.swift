@@ -8,6 +8,10 @@
 
 import Moya
 
+enum LNCreatePaymentRequestTargetError: UserNotifiableError {
+  case amountTooHigh
+}
+
 public struct LNCreatePaymentRequestBody: Encodable {
   let value: Int
   let expires: Int? //seconds in the future
@@ -28,7 +32,12 @@ public enum LNCreatePaymentRequestTarget: CoinNinjaTargetType {
   }
 
   func networkError(for moyaError: MoyaError) -> CKNetworkError? {
-    return defaultNetworkError(for: moyaError)
+    switch moyaError.response?.statusCode {
+    case 400:
+      return .invoiceAmountTooHigh
+    default:
+      return defaultNetworkError(for: moyaError)
+    }
   }
 
   public var method: Method {
