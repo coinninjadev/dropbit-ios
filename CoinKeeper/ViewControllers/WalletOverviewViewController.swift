@@ -139,8 +139,29 @@ class WalletOverviewViewController: BaseViewController, StoryboardInitializable 
     pageViewController?.view.clipsToBounds = true
 
     if baseViewControllers.count >= 2 {
-      pageViewController?.setViewControllers([baseViewControllers[1]], direction: .forward, animated: true, completion: nil)
+      switch delegate.selectedWalletTransactionType() {
+      case .lightning:
+        setupStyleForLightningWallet()
+      case .onChain:
+        setupStyleForOnChainWallet()
+      }
     }
+  }
+
+  private func setupStyleForOnChainWallet() {
+    guard baseViewControllers.count >= 2 else { return }
+    walletToggleView.selectBitcoinButton()
+    currentWallet = .onChain
+    sendReceiveActionView.tintView(with: .bitcoinOrange)
+    pageViewController?.setViewControllers([baseViewControllers[1]], direction: .forward, animated: true, completion: nil)
+  }
+
+  private func setupStyleForLightningWallet() {
+    guard baseViewControllers.count >= 1 else { return }
+    walletToggleView.selectLightningButton()
+    currentWallet = .lightning
+    sendReceiveActionView.tintView(with: .lightningBlue)
+    pageViewController?.setViewControllers([baseViewControllers[0]], direction: .forward, animated: true, completion: nil)
   }
 }
 
@@ -186,13 +207,9 @@ extension WalletOverviewViewController: UIPageViewControllerDelegate {
     if let viewContorller = pageViewController.viewControllers?.first as? BaseViewController, completed {
       switch ViewControllerIndex(rawValue: baseViewControllers.reversed().firstIndex(of: viewContorller) ?? 0) {
       case .bitcoinWallet?:
-        walletToggleView.selectBitcoinButton()
-        currentWallet = .onChain
-        sendReceiveActionView.tintView(with: .bitcoinOrange)
+        setupStyleForOnChainWallet()
       case .lightningWallet?:
-        walletToggleView.selectLightningButton()
-        currentWallet = .lightning
-        sendReceiveActionView.tintView(with: .lightningBlue)
+        setupStyleForLightningWallet()
       default:
         walletToggleView.selectBitcoinButton()
       }
