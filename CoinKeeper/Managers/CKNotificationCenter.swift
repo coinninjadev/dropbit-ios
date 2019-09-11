@@ -18,7 +18,7 @@ public enum CKNotificationKey: String {
   case didStartSync
   case didFinishSync
   case didUpdateAvatar
-  case didUpdateInvoicesLocally
+  case didUpdateLocalTransactionRecords
   case didUpdateWordsBackedUp
 
   fileprivate func value() -> String {

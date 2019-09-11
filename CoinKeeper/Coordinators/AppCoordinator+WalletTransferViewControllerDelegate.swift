@@ -16,12 +16,26 @@ extension AppCoordinator: WalletTransferViewControllerDelegate {
   func viewControllerDidConfirmWithdraw(_ viewController: UIViewController, btcAmount: NSDecimalNumber) {
     guard let receiveAddress = self.nextReceiveAddressForRequestPay() else { return }
     let sats = btcAmount.asFractionalUnits(of: .BTC)
-    self.networkManager.withdrawLightningFunds(to: receiveAddress, sats: sats)
-      .done { _ in
-        viewController.dismiss(animated: true, completion: nil)
+
+    let viewModel = PaymentSuccessFailViewModel(mode: .pending)
+    let successFailVC = SuccessFailViewController.newInstance(viewModel: viewModel, delegate: self)
+
+    successFailVC.action = { [unowned self] in
+      self.networkManager.withdrawLightningFunds(to: receiveAddress, sats: sats)
+        .done { _ in
+          CKNotificationCenter.publish(key: .didUpdateLocalTransactionRecords)
+          successFailVC.setMode(.success)
+        }
+        .catch { error in
+          log.error(error, message: "Failed to withdraw from lightning account")
+          successFailVC.setMode(.failure)
       }
-      .catch { error in
-        log.error(error, message: "Failed to withdraw from lightning account")
+    }
+
+    viewController.dismiss(animated: false) {
+      self.navigationController.topViewController()?.present(successFailVC, animated: false) {
+        successFailVC.action?()
+      }
     }
   }
 
@@ -35,7 +49,9 @@ extension AppCoordinator: WalletTransferViewControllerDelegate {
   }
 
   func viewControllerDidConfirmLoad(_ viewController: UIViewController, paymentData transactionData: PaymentData) {
-    handleSuccessfulOnChainPaymentVerification(with: transactionData.broadcastData, outgoingTransactionData: transactionData.outgoingData)
+    handleSuccessfulOnChainPaymentVerification(with: transactionData.broadcastData,
+                                               outgoingTransactionData: transactionData.outgoingData,
+                                               isInternalBroadcast: true)
   }
 
   func viewControllerHasFundsError(_ error: Error) {

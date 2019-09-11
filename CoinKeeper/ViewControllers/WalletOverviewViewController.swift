@@ -109,7 +109,7 @@ class WalletOverviewViewController: BaseViewController, StoryboardInitializable 
     }
 
     self.reloadTransactionsToken = CKNotificationCenter
-      .subscribe(key: .didUpdateInvoicesLocally, object: nil, queue: .main) { _ in
+      .subscribe(key: .didUpdateLocalTransactionRecords, object: nil, queue: .main) { _ in
         self.baseViewControllers.forEach { ($0 as? TransactionHistoryViewController)?.summaryCollectionView.reloadData() }
     }
 
