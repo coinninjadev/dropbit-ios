@@ -110,6 +110,7 @@
         <relationship name="counterparty" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="CKMCounterparty" inverseName="phoneNumbers" inverseEntity="CKMCounterparty" syncable="YES"/>
         <relationship name="invitations" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CKMInvitation" inverseName="counterpartyPhoneNumber" inverseEntity="CKMInvitation" syncable="YES"/>
         <relationship name="transactions" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CKMTransaction" inverseName="phoneNumber" inverseEntity="CKMTransaction" syncable="YES"/>
+        <relationship name="walletEntries" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CKMWalletEntry" inverseName="phoneNumber" inverseEntity="CKMWalletEntry" syncable="YES"/>
     </entity>
     <entity name="CKMServerAddress" representedClassName="CKMServerAddress" versionHashModifier="1" syncable="YES">
         <attribute name="address" attributeType="String" syncable="YES"/>
@@ -163,6 +164,7 @@
         <attribute name="receivedPayload" optional="YES" attributeType="Binary" allowsExternalBinaryDataStorage="YES" syncable="YES"/>
         <attribute name="sharingDesired" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
         <relationship name="transaction" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CKMTransaction" inverseName="sharedPayload" inverseEntity="CKMTransaction" syncable="YES"/>
+        <relationship name="walletEntry" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CKMWalletEntry" inverseName="sharedPayload" inverseEntity="CKMWalletEntry" syncable="YES"/>
     </entity>
     <entity name="CKMTwitterContact" representedClassName="CKMTwitterContact" syncable="YES">
         <attribute name="displayName" attributeType="String" syncable="YES"/>
@@ -173,6 +175,7 @@
         <attribute name="verifiedTwitterUser" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
         <relationship name="invitations" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CKMInvitation" inverseName="counterpartyTwitterContact" inverseEntity="CKMInvitation" syncable="YES"/>
         <relationship name="transactions" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CKMTransaction" inverseName="twitterContact" inverseEntity="CKMTransaction" syncable="YES"/>
+        <relationship name="walletEntries" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CKMWalletEntry" inverseName="twitterContact" inverseEntity="CKMWalletEntry" syncable="YES"/>
         <fetchIndex name="byPropertyIndex">
             <fetchIndexElement property="identityHash" type="Binary" order="ascending"/>
         </fetchIndex>
@@ -238,8 +241,12 @@
     </entity>
     <entity name="CKMWalletEntry" representedClassName="CKMWalletEntry" syncable="YES">
         <attribute name="isHidden" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="memo" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="sortDate" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <relationship name="ledgerEntry" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="CKMLNLedgerEntry" inverseName="walletEntry" inverseEntity="CKMLNLedgerEntry" syncable="YES"/>
+        <relationship name="phoneNumber" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CKMPhoneNumber" inverseName="walletEntries" inverseEntity="CKMPhoneNumber" syncable="YES"/>
+        <relationship name="sharedPayload" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CKMTransactionSharedPayload" inverseName="walletEntry" inverseEntity="CKMTransactionSharedPayload" syncable="YES"/>
+        <relationship name="twitterContact" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CKMTwitterContact" inverseName="walletEntries" inverseEntity="CKMTwitterContact" syncable="YES"/>
         <relationship name="wallet" maxCount="1" deletionRule="Nullify" destinationEntity="CKMWallet" inverseName="walletEntries" inverseEntity="CKMWallet" syncable="YES"/>
     </entity>
     <elements>
@@ -252,16 +259,16 @@
         <element name="CKMLNAccount" positionX="160" positionY="192" width="128" height="135"/>
         <element name="CKMLNInvoice" positionX="-2215.80078125" positionY="195.44140625" width="128" height="195"/>
         <element name="CKMLNLedgerEntry" positionX="-2173.94140625" positionY="494.7109375" width="128" height="285"/>
-        <element name="CKMPhoneNumber" positionX="-2009" positionY="99" width="128" height="150"/>
+        <element name="CKMPhoneNumber" positionX="-2009" positionY="99" width="128" height="165"/>
         <element name="CKMServerAddress" positionX="-1143" positionY="108" width="128" height="103"/>
         <element name="CKMTemporarySentTransaction" positionX="-1928" positionY="459" width="128" height="135"/>
         <element name="CKMTransaction" positionX="-1667" positionY="317" width="128" height="375"/>
-        <element name="CKMTransactionSharedPayload" positionX="-1858.9765625" positionY="76.22265625" width="128" height="120"/>
-        <element name="CKMTwitterContact" positionX="-2073.94921875" positionY="265.5859375" width="128" height="165"/>
+        <element name="CKMTransactionSharedPayload" positionX="-1858.9765625" positionY="76.22265625" width="128" height="135"/>
+        <element name="CKMTwitterContact" positionX="-2073.94921875" positionY="265.5859375" width="128" height="180"/>
         <element name="CKMUser" positionX="-1523" positionY="144" width="128" height="120"/>
         <element name="CKMVin" positionX="-1845" positionY="657" width="128" height="133"/>
         <element name="CKMVout" positionX="-1503" positionY="639" width="128" height="165"/>
         <element name="CKMWallet" positionX="-1368" positionY="99" width="128" height="210"/>
-        <element name="CKMWalletEntry" positionX="-1818.1640625" positionY="-44.91796875" width="128" height="103"/>
+        <element name="CKMWalletEntry" positionX="-1818.1640625" positionY="-44.91796875" width="128" height="165"/>
     </elements>
 </model>

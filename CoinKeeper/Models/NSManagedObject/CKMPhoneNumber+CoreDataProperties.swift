@@ -23,6 +23,7 @@ extension CKMPhoneNumber {
   @NSManaged public var counterparty: CKMCounterparty?
   @NSManaged public var invitations: Set<CKMInvitation>
   @NSManaged public var transactions: Set<CKMTransaction>
+  @NSManaged public var walletEntries: Set<CKMWalletEntry>
 
 }
 
