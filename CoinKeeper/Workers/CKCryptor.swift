@@ -31,14 +31,15 @@ class CKCryptor {
   /// - Parameters:
   ///   - message: message to encrypt
   ///   - pubkey: recipient's uncompressed EC public key
+  ///   - isEphemeral: If `true`, encryptor uses secure entropy to create an ephemeral key pair. If `false`, it uses the m/42 key by default.
   /// - Returns: Base64-encoded hex string representation of data, comprised of encrypted payload + sender's uncompressed EC public key
   /// - Throws: CKCryptorError
-  func encryptAsBase64String(message: Data, withRecipientUncompressedPubkey pubkey: Data) throws -> String {
+  func encryptAsBase64String(message: Data, withRecipientUncompressedPubkey pubkey: Data, isEphemeral: Bool) throws -> String {
     guard let wmgr = walletManager else { throw CKCryptorError.missingWalletManager }
-    let keys = wmgr.encryptionCipherKeys(forUncompressedPublicKey: pubkey)
+    let keys = wmgr.encryptionCipherKeys(forUncompressedPublicKey: pubkey, withEntropy: isEphemeral)
     let encryptor = RNCryptor.EncryptorV3(encryptionKey: keys.encryptionKey, hmacKey: keys.hmacKey)
     let encryptedData = encryptor.encrypt(data: message)
-    return (encryptedData + keys.ephemeralPublicKey).base64EncodedString()
+    return (encryptedData + keys.associatedPublicKey).base64EncodedString()
   }
 
   /// Decrypt a message from CoinNinja API in Base64-encoded format.

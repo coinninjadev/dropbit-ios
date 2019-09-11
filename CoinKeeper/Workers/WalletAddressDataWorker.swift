@@ -748,17 +748,21 @@ class WalletAddressDataWorker: WalletAddressDataWorkerType {
   private func sharedPayload(
     invitation: CKMInvitation,
     walletAddressRequestResponse response: WalletAddressRequestResponse) -> SharedPayloadDTO {
+    let walletTxType = response.addressTypeCase.flatMap { WalletTransactionType(addressType: $0) } ?? .onChain
+
     if let ckmPayload = invitation.transaction?.sharedPayload,
       let fiatCurrency = CurrencyCode(rawValue: ckmPayload.fiatCurrency),
       let pubKey = response.addressPubkey {
       let amountInfo = SharedPayloadAmountInfo(fiatCurrency: fiatCurrency, fiatAmount: ckmPayload.fiatAmount)
       return SharedPayloadDTO(addressPubKeyState: .known(pubKey),
+                              walletTxType: walletTxType,
                               sharingDesired: ckmPayload.sharingDesired,
                               memo: invitation.transaction?.memo,
                               amountInfo: amountInfo)
 
     } else {
-      return SharedPayloadDTO(addressPubKeyState: .none, sharingDesired: false, memo: invitation.transaction?.memo, amountInfo: nil)
+      return SharedPayloadDTO(addressPubKeyState: .none, walletTxType: walletTxType,
+                              sharingDesired: false, memo: invitation.transaction?.memo, amountInfo: nil)
     }
   }
 

@@ -16,7 +16,8 @@ protocol TransactionBroadcastable: AnyObject {
   /// - Returns: A Promise of a String, which is the `txid` in the event of a successful broadcast.
   func broadcastTx(with transactionData: CNBTransactionData) -> Promise<String>
 
-  func postSharedPayloadIfAppropriate(withOutgoingTxData outgoingTxData: OutgoingTransactionData, walletManager: WalletManagerType) -> Promise<String>
+  func postSharedPayloadIfAppropriate(withOutgoingTxData outgoingTxData: OutgoingTransactionData,
+                                      walletManager: WalletManagerType) -> Promise<String>
 
 }
 
@@ -132,7 +133,9 @@ extension NetworkManager: TransactionBroadcastable {
                                   memo: sharingObservantMemo,
                                   amountInfo: amountInfo,
                                   senderIdentity: senderIdentityBody)
-    return walletManager.encryptPayload(payload, addressPubKey: addressPubKey)
+
+    let keyIsEphemeral = sharedPayloadDTO.shouldEncryptWithEphemeralKey
+    return walletManager.encryptPayload(payload, addressPubKey: addressPubKey, keyIsEphemeral: keyIsEphemeral)
       .then { encryptedPayload -> Promise<Void> in
         let body = CreateTransactionNotificationBody(txid: outgoingTxData.txid,
                                                      address: outgoingTxData.destinationAddress,

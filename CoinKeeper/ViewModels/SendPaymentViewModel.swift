@@ -19,6 +19,14 @@ enum WalletTransactionType: String {
     case .lightning:  return .lightning
     }
   }
+
+  init(addressType: WalletAddressType) {
+    switch addressType {
+    case .btc:        self = .onChain
+    case .lightning:  self = .lightning
+    }
+  }
+
 }
 
 enum PaymentRecipient {
