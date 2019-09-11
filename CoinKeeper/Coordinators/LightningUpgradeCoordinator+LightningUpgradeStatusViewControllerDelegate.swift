@@ -34,8 +34,13 @@ extension LightningUpgradeCoordinator: LightningUpgradeStatusViewControllerDeleg
       }
       .then { _ -> Promise<WalletResponse> in
         let newWalletManager = WalletManager(words: self.newWords, persistenceManager: self.parent.persistenceManager)
-        self.parent.walletManager = newWalletManager
-        return self.parent.networkManager.createWallet(withPublicKey: newWalletManager.hexEncodedPublicKey, walletFlags: newFlags.flags)
+        let timestamp = CKDateFormatter.rfc3339.string(from: Date())
+        let signature = newWalletManager.signatureSigning(data: timestamp.data(using: .utf8) ?? Data())
+        let body = ReplaceWalletBody(publicKeyString: newWalletManager.hexEncodedPublicKey,
+                                     flags: newFlags.flags,
+                                     timestamp: timestamp,
+                                     signature: signature)
+        return self.parent.networkManager.replaceWallet(body: body)
       }
       .done(in: context) { (response: WalletResponse) in
         try self.parent.persistenceManager.brokers.wallet.persistWalletResponse(from: response, in: context)
@@ -53,6 +58,7 @@ extension LightningUpgradeCoordinator: LightningUpgradeStatusViewControllerDeleg
   }
 
   func viewController(_ viewController: LightningUpgradeStatusViewController, broadcast data: CNBTransactionData) -> Promise<String> {
-    return parent.networkManager.broadcastTx(with: data)
+//    return parent.networkManager.broadcastTx(with: data)
+    return Promise.value("")
   }
 }

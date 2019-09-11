@@ -17,6 +17,13 @@ public struct CreateWalletBody: Encodable {
   let flags: Int
 }
 
+public struct ReplaceWalletBody: Encodable {
+  let publicKeyString: String
+  let flags: Int
+  let timestamp: String
+  let signature: String
+}
+
 public struct WalletResponse: ResponseDecodable {
 
   let id: String // wallet ID

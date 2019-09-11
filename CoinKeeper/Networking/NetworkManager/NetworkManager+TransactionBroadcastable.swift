@@ -49,7 +49,8 @@ extension NetworkManager: TransactionBroadcastable {
     let txMetadata = transactionBuilder.generateTxMetadata(with: transactionData, wallet: walletCopy)
 
     #if DEBUG
-      return broadcastRegtestTx(with: txMetadata)
+//      return broadcastRegtestTx(with: txMetadata)
+      return broadcastMainnetTx(with: txMetadata)
     #else
       return broadcastMainnetTx(with: txMetadata)
     #endif

@@ -24,4 +24,18 @@ struct LNLedgerResponse: LNResponseDecodable {
     return []
   }
 
+//  enum CodingKeys: String, CodingKey {
+//    case ledger
+//  }
+//
+//  public init(from decoder: Decoder) throws {
+//    let container = try decoder.container(keyedBy: CodingKeys.self)
+//    let maybeLedger = try container.decodeIfPresent([LNTransactionResult].self, forKey: .ledger)
+//    if let ledger = maybeLedger {
+//      self.ledger = ledger
+//    } else {
+//      self.ledger = []
+//    }
+//  }
+
 }

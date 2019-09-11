@@ -13,6 +13,7 @@ public enum WalletTarget: CoinNinjaTargetType {
 
   case create(CreateWalletBody)
   case update(UpdateWalletBody)
+  case replace(ReplaceWalletBody)
   case get
   case reset
   case subscribe(SubscribeToWalletBody)
@@ -26,9 +27,9 @@ extension WalletTarget {
 
   var subPath: String? {
     switch self {
-    case .reset:                    return "reset"
-    case .subscribe:                return "subscribe"
-    case .create, .update, .get:    return nil
+    case .reset:                            return "reset"
+    case .subscribe:                        return "subscribe"
+    case .create, .update, .replace, .get:  return nil
     }
   }
 
@@ -38,6 +39,7 @@ extension WalletTarget {
     case .get:                 return .get
     case .reset:               return .put
     case .update:              return .patch
+    case .replace:             return .put
     }
   }
 
@@ -47,6 +49,7 @@ extension WalletTarget {
          .reset:                return .requestPlain
     case .create(let body):     return .requestCustomJSONEncodable(body, encoder: customEncoder)
     case .update(let body):     return .requestCustomJSONEncodable(body, encoder: customEncoder)
+    case .replace(let body):    return .requestCustomJSONEncodable(body, encoder: customEncoder)
     case .subscribe(let body):  return .requestCustomJSONEncodable(body, encoder: customEncoder)
     }
   }
