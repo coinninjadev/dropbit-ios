@@ -204,9 +204,11 @@ extension TransactionHistoryViewController: DZNEmptyDataSetDelegate, DZNEmptyDat
   }
 
   func emptyDataSetShouldDisplay(_ scrollView: UIScrollView!) -> Bool {
+    let shouldDisplay = viewModel.shouldShowEmptyDataSet
     let offset = verticalOffset(forEmptyDataSet: scrollView)
-    emptyStateBackgroundTopConstraint.constant = summaryCollectionView.topInset + offset
-    return viewModel.shouldShowEmptyDataSet
+    emptyStateBackgroundTopConstraint.constant = SummaryCollectionView.topInset + offset
+    emptyStateBackgroundView.isHidden = !shouldDisplay
+    return shouldDisplay
   }
 
   func emptyDataSetShouldAllowTouch(_ scrollView: UIScrollView!) -> Bool {
@@ -214,16 +216,18 @@ extension TransactionHistoryViewController: DZNEmptyDataSetDelegate, DZNEmptyDat
   }
 
   func customView(forEmptyDataSet scrollView: UIScrollView!) -> UIView! {
-    if viewModel.shouldShowNoBalanceEmptyDataSetView {
+    let dataSetType = viewModel.emptyDataSetToDisplay()
+    switch dataSetType {
+    case .noBalance:
       transactionHistoryNoBalanceView.isHidden = false
       return transactionHistoryNoBalanceView
-    } else if viewModel.shouldShowWithBalanceEmptyDataSetView {
+    case .balance:
       transactionHistoryWithBalanceView.isHidden = false
       return transactionHistoryWithBalanceView
-    } else if viewModel.shouldShowLightningEmptyDataSetView {
+    case .lightning:
       lightningTransactionHistoryEmptyBalanceView.isHidden = false
       return lightningTransactionHistoryEmptyBalanceView
-    } else {
+    case .none:
       return nil
     }
   }
@@ -231,12 +235,16 @@ extension TransactionHistoryViewController: DZNEmptyDataSetDelegate, DZNEmptyDat
   func verticalOffset(forEmptyDataSet scrollView: UIScrollView!) -> CGFloat {
     let headerIsShown = delegate.summaryHeaderType(for: self) != nil
     let headerHeight = headerIsShown ? self.viewModel.warningHeaderHeight : 0
-    let cellHeight = viewModel.shouldShowWithBalanceEmptyDataSetView ? SummaryCollectionView.cellHeight : 0
+    let dataSetType = viewModel.emptyDataSetToDisplay()
+    switch dataSetType {
+    case .balance:
+      let contentOffset = (headerHeight + SummaryCollectionView.cellHeight) / 2
+      let paddedOffset = (contentOffset > 0) ? (contentOffset + 20) : 0
+      return paddedOffset
 
-    let contentOffset = (headerHeight + cellHeight) / 2
-    let paddedOffset = (contentOffset > 0) ? (contentOffset + 20) : 0
-
-    return paddedOffset
+    default:
+      return 0
+    }
   }
 
 }

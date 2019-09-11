@@ -46,12 +46,14 @@ public class CKMTransaction: NSManagedObject {
       network = "btc://main"
 
       // vins
-      let vinArray = txResponse.vinResponses.map { (vinResponse: TransactionVinResponse) -> CKMVin in
-        let vin = CKMVin.findOrCreate(with: vinResponse, in: context, fullSync: fullSync)
-        vin.transaction = self
-        return vin
+      if self.vins.isEmpty || fullSync {
+        let vinArray = txResponse.vinResponses.map { (vinResponse: TransactionVinResponse) -> CKMVin in
+          let vin = CKMVin.findOrCreate(with: vinResponse, in: context)
+          vin.transaction = self
+          return vin
+        }
+        self.vins = Set(vinArray)
       }
-      self.vins = Set(vinArray)
 
       // vouts
       let voutArray = txResponse.voutResponses.compactMap { (voutResponse: TransactionVoutResponse) -> CKMVout? in

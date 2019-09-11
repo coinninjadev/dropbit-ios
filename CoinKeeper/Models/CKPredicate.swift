@@ -240,7 +240,7 @@ struct CKPredicate {
       let txidPath = #keyPath(CKMVin.previousTxid)
       let voutIndexPath = #keyPath(CKMVin.previousVoutIndex)
       let txidPredicate = NSPredicate(format: "\(txidPath) == %@", previousTxid)
-      let indexPredicate = NSPredicate(format: "\(voutIndexPath) == %d", previousVoutIndex)
+      let indexPredicate = NSPredicate(format: "\(voutIndexPath) == %@", NSNumber(value: previousVoutIndex)) //must use NSNumber for predicate to work
       return NSCompoundPredicate(type: .and, subpredicates: [txidPredicate, indexPredicate])
     }
 
