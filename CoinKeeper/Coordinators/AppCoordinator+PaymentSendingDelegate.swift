@@ -145,11 +145,14 @@ extension AppCoordinator: PaymentSendingDelegate {
       .then { _ in self.networkManager.broadcastTx(with: transactionData) }
       .then { txid -> Promise<String> in
         guard let wmgr = self.walletManager else {
-          return Promise(error: CKPersistenceError.missingValue(key: "wallet"))
+          return Promise(error: CKPersistenceError.missingValue(key: "walletManager"))
         }
+
         let dataCopyWithTxid = outgoingTransactionData.copy(withTxid: txid)
-        return self.networkManager.postSharedPayloadIfAppropriate(withOutgoingTxData: dataCopyWithTxid,
-                                                                  walletManager: wmgr)
+        guard let postableObject = PayloadPostableOutgoingTransactionData(data: dataCopyWithTxid) else {
+          return Promise(error: CKPersistenceError.missingValue(key: "postableOutgoingTransactionData") )
+        }
+        return self.networkManager.postSharedPayloadIfAppropriate(withPostableObject: postableObject, walletManager: wmgr)
       }
       .get { txid in
         let context = self.persistenceManager.createBackgroundContext()

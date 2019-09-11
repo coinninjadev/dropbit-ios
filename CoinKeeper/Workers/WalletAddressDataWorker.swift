@@ -704,9 +704,11 @@ class WalletAddressDataWorker: WalletAddressDataWorkerType {
     invitationId: String,
     pendingInvitation: CKMInvitation,
     in context: NSManagedObjectContext) -> Promise<Void> {
+    guard let postableObject = PayloadPostableOutgoingTransactionData(data: outgoingTransactionData) else {
+      return Promise(error: CKPersistenceError.missingValue(key: "postableOutgoingTransactionData"))
+    }
 
-    return self.networkManager.postSharedPayloadIfAppropriate(withOutgoingTxData: outgoingTransactionData.copy(withTxid: txid),
-                                                              walletManager: self.walletManager)
+    return self.networkManager.postSharedPayloadIfAppropriate(withPostableObject: postableObject, walletManager: self.walletManager)
       .get { dto.txid = $0 }
       .get(in: context) { (txid: String) in
         if let transactionData = dto.transactionData {

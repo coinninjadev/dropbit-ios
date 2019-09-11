@@ -16,7 +16,7 @@ protocol TransactionBroadcastable: AnyObject {
   /// - Returns: A Promise of a String, which is the `txid` in the event of a successful broadcast.
   func broadcastTx(with transactionData: CNBTransactionData) -> Promise<String>
 
-  func postSharedPayloadIfAppropriate(withOutgoingTxData outgoingTxData: OutgoingTransactionData,
+  func postSharedPayloadIfAppropriate(withPostableObject object: SharedPayloadPostableObject,
                                       walletManager: WalletManagerType) -> Promise<String>
 
 }
@@ -110,16 +110,16 @@ extension NetworkManager: TransactionBroadcastable {
       .map { _ in return transactionMetadata.txid }
   }
 
-  func postSharedPayloadIfAppropriate(withOutgoingTxData outgoingTxData: OutgoingTransactionData,
+  func postSharedPayloadIfAppropriate(withPostableObject object: SharedPayloadPostableObject,
                                       walletManager: WalletManagerType) -> Promise<String> {
-    guard let sharedPayloadDTO = outgoingTxData.sharedPayloadDTO,
-      case let .known(addressPubKey) = sharedPayloadDTO.addressPubKeyState,
-      let senderIdentityBody = outgoingTxData.sharedPayloadSenderIdentity else {
+    let sharedPayloadDTO = object.sharedPayloadDTO
+
+    guard case let .known(addressPubKey) = sharedPayloadDTO.addressPubKeyState else {
         //Skip posting payload and just return the txid
-        return Promise.value(outgoingTxData.txid)
+        return Promise.value(object.paymentId)
     }
 
-    switch outgoingTxData.dropBitType {
+    switch object.dropBitType {
     case .none: return Promise(error: CKPersistenceError.missingValue(key: "outgoingTxData.dropBitType"))
     default: break
     }
@@ -129,17 +129,17 @@ extension NetworkManager: TransactionBroadcastable {
     }
 
     let sharingObservantMemo = sharedPayloadDTO.shouldShare ? (sharedPayloadDTO.memo ?? "") : ""
-    let payload = SharedPayloadV2(txid: outgoingTxData.txid,
+    let payload = SharedPayloadV2(txid: object.paymentId,
                                   memo: sharingObservantMemo,
                                   amountInfo: amountInfo,
-                                  senderIdentity: senderIdentityBody)
+                                  senderIdentity: object.senderIdentity)
 
     let keyIsEphemeral = sharedPayloadDTO.shouldEncryptWithEphemeralKey
     return walletManager.encryptPayload(payload, addressPubKey: addressPubKey, keyIsEphemeral: keyIsEphemeral)
       .then { encryptedPayload -> Promise<Void> in
-        let body = CreateTransactionNotificationBody(txid: outgoingTxData.txid,
-                                                     address: outgoingTxData.destinationAddress,
-                                                     identityHash: outgoingTxData.identityHash,
+        let body = CreateTransactionNotificationBody(txid: object.paymentId,
+                                                     address: object.paymentTarget,
+                                                     identityHash: object.receiverIdentityHash,
                                                      encryptedPayload: encryptedPayload,
                                                      encryptedFormat: "1")
         return self.addTransactionNotification(body: body)
@@ -150,7 +150,44 @@ extension NetworkManager: TransactionBroadcastable {
         let eventValue = AnalyticsEventValue(key: .sharingEnabled, value: stringValue)
         self.analyticsManager.track(event: .sharedPayloadSent, with: eventValue)
       }
-      .then { Promise.value(outgoingTxData.txid) }
+      .map { return object.paymentId }
   }
 
+}
+
+protocol SharedPayloadPostableObject {
+
+  /// txid or ledgerEntry.id
+  var paymentId: String { get }
+
+  /// address or encoded invoice
+  var paymentTarget: String { get }
+
+  var dropBitType: OutgoingTransactionDropBitType { get }
+  var senderIdentity: UserIdentityBody { get }
+  var receiverIdentityHash: String { get }
+  var sharedPayloadDTO: SharedPayloadDTO { get }
+
+}
+
+struct PayloadPostableOutgoingTransactionData: SharedPayloadPostableObject {
+  let paymentId: String
+  let paymentTarget: String
+  let dropBitType: OutgoingTransactionDropBitType
+  let senderIdentity: UserIdentityBody
+  let receiverIdentityHash: String
+  let sharedPayloadDTO: SharedPayloadDTO
+
+  init?(data: OutgoingTransactionData) {
+    guard let identity = data.sharedPayloadSenderIdentity,
+      let payloadDTO = data.sharedPayloadDTO
+      else { return nil }
+
+    self.paymentId = data.txid
+    self.paymentTarget = data.destinationAddress
+    self.dropBitType = data.dropBitType
+    self.senderIdentity = identity
+    self.receiverIdentityHash = data.identityHash
+    self.sharedPayloadDTO = payloadDTO
+  }
 }
