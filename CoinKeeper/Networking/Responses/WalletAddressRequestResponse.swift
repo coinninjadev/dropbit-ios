@@ -142,6 +142,7 @@ public struct WalletAddressRequestResponse: ResponseDecodable, CustomStringConve
   let updatedAt: Date
   var address: String?
   var addressPubkey: String?
+  var addressType: String?
   var txid: String?
 
   let metadata: WalletAddressRequestMetadata?
@@ -186,12 +187,16 @@ public struct WalletAddressRequestResponse: ResponseDecodable, CustomStringConve
   }
 
   static var optionalStringKeys: [WritableKeyPath<WalletAddressRequestResponse, String?>] {
-    return [\.address, \.addressPubkey, \.txid, \.identityHash, \.status, \.deliveryId, \.walletId]
+    return [\.address, \.addressPubkey, \.addressType, \.txid, \.identityHash, \.status, \.deliveryId, \.walletId]
   }
 
 }
 
 extension WalletAddressRequestResponse {
+
+  var addressTypeCase: WalletAddressType? {
+    return addressType.flatMap { WalletAddressType(rawValue: $0) }
+  }
 
   var statusCase: WalletAddressRequestStatus? {
     return status.flatMap { WalletAddressRequestStatus(rawValue: $0) }
@@ -206,18 +211,9 @@ extension WalletAddressRequestResponse {
   }
 
   func copy(withAddress address: String) -> WalletAddressRequestResponse {
-    return WalletAddressRequestResponse(id: self.id,
-                                        createdAt: self.createdAt,
-                                        updatedAt: self.updatedAt,
-                                        address: address,
-                                        addressPubkey: self.addressPubkey,
-                                        txid: self.txid,
-                                        metadata: self.metadata,
-                                        identityHash: self.identityHash,
-                                        status: self.status,
-                                        deliveryId: self.deliveryId,
-                                        deliveryStatus: self.deliveryStatus,
-                                        walletId: self.walletId)
+    var newResponse = self
+    newResponse.address = address
+    return newResponse
   }
 
   /// For legacy reasons, this does not require the presence of an addressPubkey for the transaction to be sendable
