@@ -63,7 +63,7 @@ final class RequestPayViewController: PresentableViewController, StoryboardIniti
       }
       delegate.viewControllerDidSelectSendRequest(self, payload: payload)
     case .lightning:
-      if let lightningInvoice = lightningInvoice {
+      if let lightningInvoice = viewModel.lightningInvoice {
         var payload: [Any] = []
         qrImageView.image.flatMap { $0.pngData() }.flatMap { payload.append($0) }
         payload.append(lightningInvoice.request)
@@ -97,9 +97,8 @@ final class RequestPayViewController: PresentableViewController, StoryboardIniti
   var isModal: Bool = true
   var shouldHideEditAmountView = true
   var shouldHideAddAmountButton: Bool { return !shouldHideEditAmountView }
-  var lightningInvoice: LNCreatePaymentRequestResponse?
   var hasLightningInvoice: Bool {
-    return lightningInvoice != nil
+    return viewModel.lightningInvoice != nil
   }
 
   static func newInstance(delegate: RequestPayViewControllerDelegate,
@@ -196,7 +195,7 @@ final class RequestPayViewController: PresentableViewController, StoryboardIniti
   }
 
   private func setupStyleForLightningRequest() {
-    if let invoice = lightningInvoice {
+    if let invoice = viewModel.lightningInvoice {
       qrImageView.isHidden = false
       addAmountButton.isHidden = true
       expirationLabel.isHidden = false
@@ -227,7 +226,7 @@ final class RequestPayViewController: PresentableViewController, StoryboardIniti
   func updateViewWithViewModel() {
     switch viewModel.walletTransactionType {
     case .lightning:
-      if let invoice = lightningInvoice {
+      if let invoice = viewModel.lightningInvoice {
         receiveAddressLabel.text = invoice.request
       }
     case .onChain:
@@ -249,10 +248,11 @@ final class RequestPayViewController: PresentableViewController, StoryboardIniti
     delegate.viewControllerDidSelectCreateInvoice(self, forAmount: amount, withMemo: memo)
       .get { response in
         SVProgressHUD.dismiss()
+        self.viewModel.lightningInvoice = response
         self.editAmountView.isUserInteractionEnabled = false
         self.delegate.viewControllerDidCreateInvoice(self)
-        self.lightningInvoice = response
         self.setupStyle()
+        self.updateViewWithViewModel()
       }.catch { error in
         SVProgressHUD.dismiss()
         if let alert = self.alertManager?.defaultAlert(withTitle: "Error", description: error.localizedDescription) {
