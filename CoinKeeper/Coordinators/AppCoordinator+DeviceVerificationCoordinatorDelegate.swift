@@ -79,7 +79,7 @@ extension AppCoordinator: DeviceVerificationCoordinatorDelegate {
 
   /// This may fail with a 500 error if the addresses were already added during a previous installation of the same wallet
   private func registerInitialWalletAddresses() {
-    guard let walletWorker = workerFactory.createWalletAddressDataWorker(delegate: self) else { return }
+    guard let walletWorker = workerFactory().createWalletAddressDataWorker(delegate: self) else { return }
     let bgContext = persistenceManager.createBackgroundContext()
     let addressNumber = walletWorker.targetWalletAddressCount
     walletWorker.deleteAllAddressesOnServer()

@@ -82,12 +82,12 @@ class AppCoordinator: CoordinatorType {
                                   countryCodeProvider: self.persistenceManager)
   }()
 
-  lazy var workerFactory: WorkerFactory = {
+  func workerFactory() -> WorkerFactory {
     return WorkerFactory(persistenceManager: self.persistenceManager,
                          networkManager: self.networkManager,
                          analyticsManager: self.analyticsManager,
                          walletManagerProvider: self)
-  }()
+  }
 
   init(
     navigationController: CNNavigationController = CNNavigationController(),
@@ -391,7 +391,7 @@ class AppCoordinator: CoordinatorType {
   }
 
   func refreshContacts() {
-    let contactCacheMigrationWorker = workerFactory.createContactCacheMigrationWorker(dataWorker: contactCacheDataWorker)
+    let contactCacheMigrationWorker = workerFactory().createContactCacheMigrationWorker(dataWorker: contactCacheDataWorker)
     _ = contactCacheMigrationWorker.migrateIfPossible()
       .done {
         self.contactCacheDataWorker.reloadSystemContactsIfNeeded(force: false) { [weak self] _ in

@@ -24,6 +24,7 @@ extension LightningUpgradeCoordinator: LightningUpgradeStatusViewControllerDeleg
       .setVersion(.v2)
 
     let context = parent.persistenceManager.createBackgroundContext()
+    var newWalletManager: WalletManagerType!
 
     existingFlags.deactivate()
     return parent.networkManager.updateWallet(walletFlags: existingFlags.flags)
@@ -33,7 +34,7 @@ extension LightningUpgradeCoordinator: LightningUpgradeStatusViewControllerDeleg
         return self.parent.persistenceManager.keychainManager.upgrade(recoveryWords: self.newWords)
       }
       .then { _ -> Promise<WalletResponse> in
-        let newWalletManager = WalletManager(words: self.newWords, persistenceManager: self.parent.persistenceManager)
+        newWalletManager = WalletManager(words: self.newWords, persistenceManager: self.parent.persistenceManager)
         let timestamp = CKDateFormatter.rfc3339.string(from: Date())
         let signature = newWalletManager.signatureSigning(data: timestamp.data(using: .utf8) ?? Data())
         let body = ReplaceWalletBody(publicKeyString: newWalletManager.hexEncodedPublicKey,
@@ -43,6 +44,7 @@ extension LightningUpgradeCoordinator: LightningUpgradeStatusViewControllerDeleg
         return self.parent.networkManager.replaceWallet(body: body)
       }
       .done(in: context) { (response: WalletResponse) in
+        self.parent.walletManager = newWalletManager
         try self.parent.persistenceManager.brokers.wallet.persistWalletResponse(from: response, in: context)
         let wallet = CKMWallet.find(in: context)
         wallet?.lastReceivedIndex = CKMWallet.defaultLastIndex
