@@ -18,6 +18,9 @@ extension AppCoordinator: LightningUpgradeCoordinatorDelegate {
   }
 
   func coordinatorRequestedVerifyUpgradedWords(_ coordinator: LightningUpgradeCoordinator) {
+    if let controller = navigationController.topViewController() as? LightningUpgradePageViewController {
+      controller.dismiss(animated: true, completion: nil)
+    }
     childCoordinatorDidComplete(childCoordinator: coordinator)
     showWordRecoveryFlow()
   }
