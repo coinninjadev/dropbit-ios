@@ -113,7 +113,7 @@ struct SharedPayloadV2: SharedPayloadCodable {
 
  */
 
-extension SharedPayloadV2: PayloadPersistable {
+extension SharedPayloadV2: PersistablePayload {
   var memo: String {
     return self.info.memo
   }

@@ -84,7 +84,7 @@ struct SharedPayloadVersionIdentifier: SharedPayloadCodable {
    }
  */
 
-extension SharedPayloadV1: PayloadPersistable {
+extension SharedPayloadV1: PersistablePayload {
 
   var amount: Int {
     return self.info.amount

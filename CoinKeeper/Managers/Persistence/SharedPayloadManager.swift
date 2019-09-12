@@ -76,7 +76,7 @@ class SharedPayloadManager: SharedPayloadManagerType {
     return v2Payloads
   }
 
-  private func persistReceivedSharedPayloads(_ payloads: [PayloadPersistable],
+  private func persistReceivedSharedPayloads(_ payloads: [PersistablePayload],
                                              ofType walletTxType: WalletTransactionType,
                                              with deps: PayloadPersistenceDependencies) {
     for payload in payloads {
@@ -119,7 +119,7 @@ protocol SharedPayloadConfigurable: AnyObject {
 extension CKMTransaction: SharedPayloadConfigurable { }
 extension CKMWalletEntry: SharedPayloadConfigurable { }
 
-protocol PayloadPersistable: SharedPayloadCodable {
+protocol PersistablePayload: SharedPayloadCodable {
   var memo: String { get }
   var txid: String { get }
   var amount: Int { get }
@@ -129,7 +129,7 @@ protocol PayloadPersistable: SharedPayloadCodable {
   func payloadCounterparties(with deps: PayloadPersistenceDependencies) -> PayloadCounterparties?
 }
 
-extension PayloadPersistable {
+extension PersistablePayload {
 
   var includesSharedMemo: Bool {
     return memo.isNotEmpty

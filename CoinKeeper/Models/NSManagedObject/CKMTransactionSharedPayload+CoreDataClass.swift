@@ -31,7 +31,7 @@ public class CKMTransactionSharedPayload: NSManagedObject {
     self.receivedPayload = receivedPayload
   }
 
-  convenience init(payload: PayloadPersistable, insertInto context: NSManagedObjectContext) {
+  convenience init(payload: PersistablePayload, insertInto context: NSManagedObjectContext) {
     let payloadAsData = try? payload.encoded()
     self.init(sharingDesired: payload.includesSharedMemo,
               fiatAmount: payload.amount,
