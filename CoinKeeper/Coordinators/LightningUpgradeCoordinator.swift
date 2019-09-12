@@ -36,45 +36,43 @@ class LightningUpgradeCoordinator: ChildCoordinatorType {
     parent.navigationController.present(controller, animated: true, completion: nil)
 
     parent.launchStateManager.upgradeInProgress = true
-    parent.serialQueueManager.enqueueWalletSyncIfAppropriate(
-      type: .comprehensive,
-      policy: EnqueueingPolicy.always,
-      completion: { [weak self] (error: Error?) in
-        if let error = error {
-          // handle error
-          log.error(error, message: "Failed to do a full sync of blockchain.")
-        } else {
-          guard let localSelf = self,
-            let parent = localSelf.parent,
-            let wallet = parent.walletManager?.wallet else { return }
-          let feeRate = parent.persistenceManager.brokers.checkIn.cachedBetterFee
-          var coinType: CoinType = .MainNet
-          #if DEBUG
-//          coinType = .TestNet
-          #endif
-          let upgradedCoin = CNBBaseCoin(purpose: .BIP84, coin: coinType, account: 0)
-          let tempWords = WalletManager.createMnemonicWords()
-          localSelf.newWords = tempWords
-          let newWallet = CNBHDWallet(mnemonic: tempWords, coin: upgradedCoin)
-          localSelf.newWallet = newWallet
-          let dataSource = AddressDataSource(wallet: newWallet, persistenceManager: parent.persistenceManager)
-          let firstAddress = dataSource.changeAddress(at: 0).address
-          log.info("Creating send-max transaction to upgraded wallet.")
-          parent.walletManager?.transactionDataSendingAll(to: firstAddress, withFeeRate: feeRate)
-            .done { (data: CNBTransactionData) in
-              let builder = CNBTransactionBuilder()
-              let metadata = builder.generateTxMetadata(with: data, wallet: wallet)
-              controller.updateUI(with: data, txMetadata: metadata)
-            }
-            .catch { (error: Error) in
-              log.error(error, message: "Failed to create send max transaction.")
-              controller.updateUI(with: nil, txMetadata: nil)
-            }
-            .finally {
-              parent.launchStateManager.upgradeInProgress = false
-            }
-        }
-      },
-      fetchResult: nil)
+    let context = parent.persistenceManager.createBackgroundContext()
+    parent.serialQueueManager.walletSyncOperationFactory?.createOnChainOnlySync(in: context)
+      .done { self.proceedWithUpgrade(presentedController: controller) }
+      .catch { (error: Error) in
+        log.error(error, message: "Failed to do a full sync of blockchain prior to upgrade.")
+
+    }
+  }
+
+  private func proceedWithUpgrade(presentedController controller: LightningUpgradePageViewController) {
+    guard let wallet = parent.walletManager?.wallet else { return }
+
+    let feeRate = parent.persistenceManager.brokers.checkIn.cachedBetterFee
+    var coinType: CoinType = .MainNet
+    #if DEBUG
+      coinType = .TestNet
+    #endif
+    let upgradedCoin = CNBBaseCoin(purpose: .BIP84, coin: coinType, account: 0)
+    let tempWords = WalletManager.createMnemonicWords()
+    self.newWords = tempWords
+    let newWallet = CNBHDWallet(mnemonic: tempWords, coin: upgradedCoin)
+    self.newWallet = newWallet
+    let dataSource = AddressDataSource(wallet: wallet, persistenceManager: parent.persistenceManager)
+    let destinationAddress = dataSource.changeAddress(at: 0).address
+    log.info("Creating send-max transaction to upgraded wallet.")
+    parent.walletManager?.transactionDataSendingAll(to: destinationAddress, withFeeRate: feeRate)
+      .done { (data: CNBTransactionData) in
+        let builder = CNBTransactionBuilder()
+        let metadata = builder.generateTxMetadata(with: data, wallet: wallet)
+        controller.updateUI(with: data, txMetadata: metadata)
+      }
+      .catch { (error: Error) in
+        log.error(error, message: "Failed to create send max transaction.")
+        controller.updateUI(with: nil, txMetadata: nil)
+      }
+      .finally {
+        self.parent.launchStateManager.upgradeInProgress = false
+      }
   }
 }
