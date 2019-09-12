@@ -92,6 +92,7 @@ class AlertManager: AlertManagerType {
 
   required init(notificationManager: NotificationManagerType) {
     self.notificationManager = notificationManager
+    setupAlertActionStyling()
     SVProgressHUD.setDefaultStyle(.dark)
   }
 
@@ -102,6 +103,16 @@ class AlertManager: AlertManagerType {
       return alert(withTitle: viewModel.title, description: viewModel.description,
                    image: viewModel.image, style: viewModel.style, actionConfigs: viewModel.actions)
     }
+  }
+
+  private func setupAlertActionStyling() {
+    let buttonStyle = ActionSheetButtonCell.appearance()
+    buttonStyle.titleFont = .medium(16)
+    buttonStyle.titleColor = .white
+    buttonStyle.backgroundColor = .lightBlueTint
+
+    let itemStyle = ActionSheetItemCell.appearance()
+    itemStyle.titleFont = .medium(14)
   }
 
   func showActionSheet(in viewController: UIViewController,
@@ -490,5 +501,3 @@ enum AlertManagerButtonLayout {
   case horizontal
   case vertical
 }
-
-

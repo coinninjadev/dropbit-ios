@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import Sheeeeeeeeet
 @testable import DropBit
 
 class MockAlertManager: AlertManagerType {
@@ -42,6 +43,7 @@ class MockAlertManager: AlertManagerType {
   func showBanner(with message: String, alertKind kind: CKBannerViewKind) { }
   func showBanner(with message: String, duration: AlertDuration?, alertKind kind: CKBannerViewKind, tapAction: CKCompletion?) {}
   func showAlert(for update: AddressRequestUpdateDisplayable) { }
+  func showActionSheet(in viewController: UIViewController, with items: [ActionSheetItem], actions: @escaping ActionSheet.SelectAction) {}
 
   func alert(withTitle title: String,
              description: String?,
