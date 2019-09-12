@@ -200,7 +200,7 @@ class TransactionDataWorker: TransactionDataWorkerType {
     var idIterator = ids.makeIterator()
     let promiseIterator = AnyIterator<Promise<[TransactionNotificationResponse]>> {
       guard let id = idIterator.next() else { return nil }
-      return self.networkManager.fetchTransactionNotifications(forTxid: id)
+      return self.networkManager.fetchTransactionNotifications(forId: id)
     }
     return when(fulfilled: promiseIterator, concurrently: 5).flatMapValues { $0 } // flatten to single array of TransactionNotificationResponse
   }
