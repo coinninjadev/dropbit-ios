@@ -91,7 +91,6 @@
         <attribute name="error" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="expiresAt" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="id" attributeType="String" syncable="YES"/>
-        <attribute name="memo" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="networkFee" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="processingFee" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="request" optional="YES" attributeType="String" syncable="YES"/>
@@ -258,7 +257,7 @@
         <element name="CKMInvitation" positionX="-1674" positionY="-36" width="144" height="255"/>
         <element name="CKMLNAccount" positionX="160" positionY="192" width="128" height="135"/>
         <element name="CKMLNInvoice" positionX="-2215.80078125" positionY="195.44140625" width="128" height="195"/>
-        <element name="CKMLNLedgerEntry" positionX="-2173.94140625" positionY="494.7109375" width="128" height="285"/>
+        <element name="CKMLNLedgerEntry" positionX="-2173.94140625" positionY="494.7109375" width="128" height="270"/>
         <element name="CKMPhoneNumber" positionX="-2009" positionY="99" width="128" height="165"/>
         <element name="CKMServerAddress" positionX="-1143" positionY="108" width="128" height="103"/>
         <element name="CKMTemporarySentTransaction" positionX="-1928" positionY="459" width="128" height="135"/>

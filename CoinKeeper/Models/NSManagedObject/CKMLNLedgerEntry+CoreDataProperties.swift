@@ -62,9 +62,14 @@ extension CKMLNLedgerEntry {
   @NSManaged public var networkFee: Int
   @NSManaged public var processingFee: Int
   @NSManaged public var request: String?
-  @NSManaged public var memo: String?
   @NSManaged public var error: String?
   @NSManaged public var walletEntry: CKMWalletEntry?
   @NSManaged public var invoice: CKMLNInvoice?
+
+  /// Be sure to set the walletEntry before setting this memo
+  var memo: String? {
+    get { return walletEntry?.memo }
+    set { walletEntry?.memo = newValue }
+  }
 
 }
