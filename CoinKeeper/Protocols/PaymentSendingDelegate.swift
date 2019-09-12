@@ -31,9 +31,8 @@ protocol OnChainPaymentSendingDelegate: PaymentSendingDelegate {
 protocol LightningPaymentSendingDelegate: PaymentSendingDelegate {
   func viewControllerDidConfirmLightningPayment(
     _ viewController: UIViewController,
-    inputs: LightningPaymentInputs)
-
-  func handleSuccessfulLightningPaymentVerification(with inputs: LightningPaymentInputs)
+    inputs: LightningPaymentInputs,
+    receiver: OutgoingDropBitReceiver?)
 }
 
 protocol AllPaymentSendingDelegate: LightningPaymentSendingDelegate, OnChainPaymentSendingDelegate { }

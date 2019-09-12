@@ -184,3 +184,26 @@ struct PayloadPostableOutgoingTransactionData: SharedPayloadPostableObject {
     self.sharedPayloadDTO = payloadDTO
   }
 }
+
+struct PayloadPostableLightningObject: SharedPayloadPostableObject {
+  var paymentId: String
+  var paymentTarget: String
+  var senderIdentity: UserIdentityBody
+  var receiverIdentityHash: String
+  var sharedPayloadDTO: SharedPayloadDTO
+
+  init?(inputs: LightningPaymentInputs,
+        sender: UserIdentityBody?,
+        receiver: OutgoingDropBitReceiver?) {
+    guard let sharedPayloadDTO = inputs.sharedPayload,
+      let sender = sender,
+      let receiver = receiver
+      else { return nil }
+    self.paymentId = "fake invoice id"
+    self.paymentTarget = inputs.invoice
+    self.senderIdentity = sender
+    self.receiverIdentityHash = receiver.identityHash
+    self.sharedPayloadDTO = sharedPayloadDTO
+  }
+
+}

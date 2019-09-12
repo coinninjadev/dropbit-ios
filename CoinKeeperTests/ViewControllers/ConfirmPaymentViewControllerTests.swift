@@ -71,7 +71,8 @@ class ConfirmPaymentViewControllerTests: XCTestCase {
     var didConfirmLightning = false
     func viewControllerDidConfirmLightningPayment(
       _ viewController: UIViewController,
-      inputs: LightningPaymentInputs) {
+      inputs: LightningPaymentInputs,
+      receiver: OutgoingDropBitReceiver?) {
       didConfirmLightning = true
     }
 
