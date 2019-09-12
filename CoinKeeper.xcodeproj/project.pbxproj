@@ -312,6 +312,8 @@
 		3B9779B3202E416700C9C933 /* Montserrat-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3B9779A1202E416700C9C933 /* Montserrat-LightItalic.ttf */; };
 		3B9779B4202E416700C9C933 /* Montserrat-ExtraLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3B9779A2202E416700C9C933 /* Montserrat-ExtraLight.ttf */; };
 		3B9779B5202E416700C9C933 /* Montserrat-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3B9779A3202E416700C9C933 /* Montserrat-BoldItalic.ttf */; };
+		3B9930DF232ABF0D008EA112 /* LightningUpgradeStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B9930DE232ABF0D008EA112 /* LightningUpgradeStatusView.swift */; };
+		3B9930E1232ABF21008EA112 /* LightningUpgradeStatusView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3B9930E0232ABF21008EA112 /* LightningUpgradeStatusView.xib */; };
 		3B9A8DF52150371800C78C2C /* WalletDelegateType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B9A8DF42150371800C78C2C /* WalletDelegateType.swift */; };
 		3B9A8DF72150388F00C78C2C /* AppCoordinator+WalletDelegateType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B9A8DF62150388F00C78C2C /* AppCoordinator+WalletDelegateType.swift */; };
 		3B9A8DFA2150414300C78C2C /* MockWalletDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B9A8DF821503E6500C78C2C /* MockWalletDelegate.swift */; };
@@ -1349,6 +1351,8 @@
 		3B9779A1202E416700C9C933 /* Montserrat-LightItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-LightItalic.ttf"; sourceTree = "<group>"; };
 		3B9779A2202E416700C9C933 /* Montserrat-ExtraLight.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-ExtraLight.ttf"; sourceTree = "<group>"; };
 		3B9779A3202E416700C9C933 /* Montserrat-BoldItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-BoldItalic.ttf"; sourceTree = "<group>"; };
+		3B9930DE232ABF0D008EA112 /* LightningUpgradeStatusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightningUpgradeStatusView.swift; sourceTree = "<group>"; };
+		3B9930E0232ABF21008EA112 /* LightningUpgradeStatusView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LightningUpgradeStatusView.xib; sourceTree = "<group>"; };
 		3B9A8DF42150371800C78C2C /* WalletDelegateType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletDelegateType.swift; sourceTree = "<group>"; };
 		3B9A8DF62150388F00C78C2C /* AppCoordinator+WalletDelegateType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppCoordinator+WalletDelegateType.swift"; sourceTree = "<group>"; };
 		3B9A8DF821503E6500C78C2C /* MockWalletDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockWalletDelegate.swift; sourceTree = "<group>"; };
@@ -2325,7 +2329,6 @@
 				A230F1C922DCB2F30017BC7A /* AppCoordinator+WalletOverviewViewControllerDelegate.swift */,
 				A2B4E6F122FC6D7B00E24324 /* AppCoordinator+LightningRefillViewControllerDelegate.swift */,
 				A257CEB72302F3BA0063670B /* AppCoordinator+WalletTransferViewControllerDelegate.swift */,
-				A257CEB9230302070063670B /* AppCoordinator+LightningTransactionHistoryEmptyViewDelegate.swift */,
 				3B598FE72318542500FF50CD /* LightningUpgradeCoordinator+LightningUpgradeStartViewControllerDelegate.swift */,
 				3B598FED23196BA800FF50CD /* LightningUpgradeCoordinator+LightningUpgradeStatusViewControllerDelegate.swift */,
 				3B936AE02322CD4E0067CA97 /* LightningUpgradeCoordinator+LightningUpgradeCompleteViewControllerDelegate.swift */,
@@ -2650,6 +2653,8 @@
 				A257CEB32302E5070063670B /* FeesView.swift */,
 				A257CEB52302E6090063670B /* FeesView.xib */,
 				3B0C7859231EDF3600D4C216 /* LightningUpgradeGradientOverlayView.swift */,
+				3B9930DE232ABF0D008EA112 /* LightningUpgradeStatusView.swift */,
+				3B9930E0232ABF21008EA112 /* LightningUpgradeStatusView.xib */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -4052,6 +4057,7 @@
 				B54913A722BC0B1000ACC7D7 /* AdjustableFeesViewController.storyboard in Resources */,
 				A200574D20B5F70F007074D9 /* SettingCell.xib in Resources */,
 				A260E8D320FCFE96008343F9 /* TutorialViewController.storyboard in Resources */,
+				3B9930E1232ABF21008EA112 /* LightningUpgradeStatusView.xib in Resources */,
 				3B9779B2202E416700C9C933 /* Montserrat-Italic.ttf in Resources */,
 				A268F13922E9EFFE00410040 /* PrimarySecondaryBalanceContainer.xib in Resources */,
 				B5E7F219221466EE00358A24 /* CountryCodeSearchView.xib in Resources */,
@@ -4523,6 +4529,7 @@
 				3BF88B87226F5E2500B94474 /* TransactionHistoryDetailBaseCell.swift in Sources */,
 				B555DCAF230B1754006B3462 /* TwitterShareButton.swift in Sources */,
 				B559AF0B2180CA86001D44F2 /* BadgeView.swift in Sources */,
+				3B9930DF232ABF0D008EA112 /* LightningUpgradeStatusView.swift in Sources */,
 				3B325D4D219090CD0094897C /* RecoveryWordsIntroViewController.swift in Sources */,
 				B5C8F5C5216D37D300E3E85B /* CoinNinjaProvider.swift in Sources */,
 				A2A530C020936A7700B6F4DE /* ConfirmPaymentButton.swift in Sources */,

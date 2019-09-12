@@ -37,23 +37,25 @@
                                         <rect key="frame" x="0.0" y="0.0" width="294" height="162"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LBU-1t-uUc">
-                                                <rect key="frame" x="0.0" y="0.0" width="98.5" height="162"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="87" height="162"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             </view>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="N4x-dX-PZt">
-                                                <rect key="frame" x="98.5" y="0.0" width="97" height="162"/>
+                                                <rect key="frame" x="87" y="0.0" width="120" height="162"/>
                                                 <subviews>
                                                     <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="Xtg-9o-OtQ">
-                                                        <rect key="frame" x="0.0" y="0.0" width="97" height="39"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="94" height="36"/>
                                                         <subviews>
-                                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="circleCheckPurple" translatesAutoresizingMaskIntoConstraints="NO" id="kSI-6D-S21">
-                                                                <rect key="frame" x="0.0" y="0.0" width="39" height="39"/>
+                                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Agu-fp-m6D" customClass="LightningUpgradeStatusView" customModule="DropBit" customModuleProvider="target">
+                                                                <rect key="frame" x="0.0" y="0.0" width="36" height="36"/>
+                                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                 <constraints>
-                                                                    <constraint firstAttribute="width" secondItem="kSI-6D-S21" secondAttribute="height" multiplier="1:1" id="KLa-Mw-zm9"/>
+                                                                    <constraint firstAttribute="width" constant="36" id="KK8-4e-Fyp"/>
+                                                                    <constraint firstAttribute="width" secondItem="Agu-fp-m6D" secondAttribute="height" multiplier="1:1" id="fTP-C2-Re9"/>
                                                                 </constraints>
-                                                            </imageView>
+                                                            </view>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2fa-dk-VvT">
-                                                                <rect key="frame" x="55" y="9.5" width="42" height="20.5"/>
+                                                                <rect key="frame" x="52" y="8" width="42" height="20.5"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                 <nil key="textColor"/>
                                                                 <nil key="highlightedColor"/>
@@ -61,16 +63,17 @@
                                                         </subviews>
                                                     </stackView>
                                                     <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="faO-a1-jAn">
-                                                        <rect key="frame" x="0.0" y="61.5" width="97" height="39"/>
+                                                        <rect key="frame" x="0.0" y="63" width="94" height="36"/>
                                                         <subviews>
-                                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="circleCheckPurple" translatesAutoresizingMaskIntoConstraints="NO" id="K32-QP-2LB">
-                                                                <rect key="frame" x="0.0" y="0.0" width="39" height="39"/>
+                                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="f0z-DL-Ydj" customClass="LightningUpgradeStatusView" customModule="DropBit" customModuleProvider="target">
+                                                                <rect key="frame" x="0.0" y="0.0" width="36" height="36"/>
+                                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                 <constraints>
-                                                                    <constraint firstAttribute="width" secondItem="K32-QP-2LB" secondAttribute="height" multiplier="1:1" id="OfB-V8-rmz"/>
+                                                                    <constraint firstAttribute="width" secondItem="f0z-DL-Ydj" secondAttribute="height" multiplier="1:1" id="g2x-KP-iCA"/>
                                                                 </constraints>
-                                                            </imageView>
+                                                            </view>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CjD-fL-Xn4">
-                                                                <rect key="frame" x="55" y="9.5" width="42" height="20.5"/>
+                                                                <rect key="frame" x="52" y="8" width="42" height="20.5"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                 <nil key="textColor"/>
                                                                 <nil key="highlightedColor"/>
@@ -78,16 +81,17 @@
                                                         </subviews>
                                                     </stackView>
                                                     <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="UeV-fB-dAX">
-                                                        <rect key="frame" x="0.0" y="123" width="97" height="39"/>
+                                                        <rect key="frame" x="0.0" y="126" width="94" height="36"/>
                                                         <subviews>
-                                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="circleCheckPurple" translatesAutoresizingMaskIntoConstraints="NO" id="i4U-eR-czL">
-                                                                <rect key="frame" x="0.0" y="0.0" width="39" height="39"/>
+                                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XCt-a5-FCT" customClass="LightningUpgradeStatusView" customModule="DropBit" customModuleProvider="target">
+                                                                <rect key="frame" x="0.0" y="0.0" width="36" height="36"/>
+                                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                 <constraints>
-                                                                    <constraint firstAttribute="width" secondItem="i4U-eR-czL" secondAttribute="height" multiplier="1:1" id="N9X-QE-dOc"/>
+                                                                    <constraint firstAttribute="width" secondItem="XCt-a5-FCT" secondAttribute="height" multiplier="1:1" id="fuh-bf-ffH"/>
                                                                 </constraints>
-                                                            </imageView>
+                                                            </view>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3WE-mF-e0g">
-                                                                <rect key="frame" x="55" y="9.5" width="42" height="20.5"/>
+                                                                <rect key="frame" x="52" y="8" width="42" height="20.5"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                 <nil key="textColor"/>
                                                                 <nil key="highlightedColor"/>
@@ -95,9 +99,13 @@
                                                         </subviews>
                                                     </stackView>
                                                 </subviews>
+                                                <constraints>
+                                                    <constraint firstItem="f0z-DL-Ydj" firstAttribute="width" secondItem="Agu-fp-m6D" secondAttribute="width" id="Y4r-wO-hZp"/>
+                                                    <constraint firstItem="XCt-a5-FCT" firstAttribute="width" secondItem="Agu-fp-m6D" secondAttribute="width" id="ZTn-hx-7xd"/>
+                                                </constraints>
                                             </stackView>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hSN-wt-9au">
-                                                <rect key="frame" x="195.5" y="0.0" width="98.5" height="162"/>
+                                                <rect key="frame" x="207" y="0.0" width="87" height="162"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             </view>
                                         </subviews>
@@ -142,14 +150,14 @@
                         <viewLayoutGuide key="safeArea" id="cot-Zd-pDm"/>
                     </view>
                     <connections>
-                        <outlet property="creatingNewWalletStatusImageView" destination="kSI-6D-S21" id="wSK-yk-Hby"/>
                         <outlet property="creatingNewWalletStatusLabel" destination="2fa-dk-VvT" id="OZm-ko-S26"/>
+                        <outlet property="creatingNewWalletStatusView" destination="Agu-fp-m6D" id="NV9-I2-YDC"/>
                         <outlet property="doNotCloseLabel" destination="njV-OW-d6F" id="pf0-qa-h0K"/>
                         <outlet property="overlayView" destination="Sbt-9C-4jZ" id="wTF-gY-1jV"/>
-                        <outlet property="transferringFundsStatusImageView" destination="i4U-eR-czL" id="SEO-bd-2zK"/>
                         <outlet property="transferringFundsStatusLabel" destination="3WE-mF-e0g" id="kMK-GL-oJf"/>
-                        <outlet property="updatingToSegwitStatusImageView" destination="K32-QP-2LB" id="PY6-Df-EYP"/>
+                        <outlet property="transferringFundsStatusView" destination="XCt-a5-FCT" id="Mjt-1Z-fHD"/>
                         <outlet property="updatingToSegwitStatusLabel" destination="CjD-fL-Xn4" id="uf4-QH-Gns"/>
+                        <outlet property="updatingToSegwitStatusView" destination="f0z-DL-Ydj" id="dHe-Kw-wSd"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5k0-6z-6yi" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -157,7 +165,4 @@
             <point key="canvasLocation" x="644.92753623188412" y="-123.21428571428571"/>
         </scene>
     </scenes>
-    <resources>
-        <image name="circleCheckPurple" width="39" height="38"/>
-    </resources>
 </document>

@@ -30,18 +30,15 @@ final class LightningUpgradeStatusViewController: BaseViewController, Storyboard
   var dataSource: LightningUpgradeStatusDataSource!
 
   @IBOutlet var overlayView: LightningUpgradeGradientOverlayView!
-  @IBOutlet var creatingNewWalletStatusImageView: UIImageView!
+  @IBOutlet var creatingNewWalletStatusView: LightningUpgradeStatusView!
   @IBOutlet var creatingNewWalletStatusLabel: UILabel!
-  @IBOutlet var updatingToSegwitStatusImageView: UIImageView!
+  @IBOutlet var updatingToSegwitStatusView: LightningUpgradeStatusView!
   @IBOutlet var updatingToSegwitStatusLabel: UILabel!
-  @IBOutlet var transferringFundsStatusImageView: UIImageView!
+  @IBOutlet var transferringFundsStatusView: LightningUpgradeStatusView!
   @IBOutlet var transferringFundsStatusLabel: UILabel!
   @IBOutlet var doNotCloseLabel: UILabel!
 
   private var nextStep: CKErrorCompletion?
-
-  private let notStartedImage = UIImage(imageLiteralResourceName: "circleCheckPurple")
-  private let completedImage = UIImage(imageLiteralResourceName: "circleCheckGreen")
 
   static func newInstance(
     withDelegate delegate: LightningUpgradeStatusViewControllerDelegate,
@@ -63,6 +60,8 @@ final class LightningUpgradeStatusViewController: BaseViewController, Storyboard
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
 
+    creatingNewWalletStatusView.mode = .working
+
     // create new wallet
     delegate.viewControllerStartUpgradingWallet(self)
       .then { self.finishedCreatingNewWallet() }
@@ -80,9 +79,9 @@ final class LightningUpgradeStatusViewController: BaseViewController, Storyboard
   }
 
   private func styleInitialUI() {
-    [creatingNewWalletStatusImageView, updatingToSegwitStatusImageView, transferringFundsStatusImageView]
-      .forEach { $0.image = self.notStartedImage }
-
+    [creatingNewWalletStatusView, updatingToSegwitStatusView, transferringFundsStatusView]
+      .forEach { $0?.mode = .notStarted }
+    
     creatingNewWalletStatusLabel.text = "Creating new wallet"
     updatingToSegwitStatusLabel.text = "Updating to SegWit"
     transferringFundsStatusLabel.text = "Transferring funds"
@@ -117,7 +116,8 @@ final class LightningUpgradeStatusViewController: BaseViewController, Storyboard
   private func finishedCreatingNewWallet() -> Promise<Void> {
     return Promise { seal in
       DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
-        self.creatingNewWalletStatusImageView.image = self.completedImage
+        self.creatingNewWalletStatusView.mode = .finished
+        self.updatingToSegwitStatusView.mode = .working
         seal.fulfill(())
       }
     }
@@ -126,7 +126,8 @@ final class LightningUpgradeStatusViewController: BaseViewController, Storyboard
   private func finishedUpdatingToSegwit() -> Promise<Void> {
     return Promise { seal in
       DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
-        self.updatingToSegwitStatusImageView.image = self.completedImage
+        self.updatingToSegwitStatusView.mode = .finished
+        self.transferringFundsStatusView.mode = .working
         seal.fulfill(())
       }
     }
@@ -135,7 +136,7 @@ final class LightningUpgradeStatusViewController: BaseViewController, Storyboard
   private func finishedTransferringFunds() -> Promise<Void> {
     return Promise { seal in
       DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
-        self.transferringFundsStatusImageView.image = self.completedImage
+        self.transferringFundsStatusView.mode = .finished
         seal.fulfill(())
       }
     }
