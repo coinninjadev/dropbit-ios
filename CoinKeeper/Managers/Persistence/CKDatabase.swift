@@ -256,7 +256,9 @@ class CKDatabase: PersistenceDatabaseType {
 
     // Identify relevantTx to link vouts to its tempTx
     let relevantTransaction = updateOrCreateTxForTempTx()
-    relevantTransaction.configureNewSenderSharedPayload(with: outgoingTxDTO.sharedPayloadDTO, in: context)
+    if let sharedPayload = outgoingTxDTO.sharedPayloadDTO {
+      relevantTransaction.configureNewSenderSharedPayload(with: sharedPayload, in: context)
+    }
 
     // Currently, this function is only called after broadcastTx()
     relevantTransaction.broadcastedAt = Date()

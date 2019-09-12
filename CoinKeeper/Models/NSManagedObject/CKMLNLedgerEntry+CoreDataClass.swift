@@ -12,9 +12,10 @@ import CoreData
 @objc(CKMLNLedgerEntry)
 public class CKMLNLedgerEntry: NSManagedObject {
 
+  @discardableResult
   static func updateOrCreate(with result: LNTransactionResult,
                              forWallet wallet: CKMWallet,
-                             in context: NSManagedObjectContext) {
+                             in context: NSManagedObjectContext) -> CKMLNLedgerEntry {
     let entry = findOrCreate(with: result.cleanedId, wallet: wallet, createdAt: result.createdAt, in: context)
     entry.accountId = result.accountId
     entry.createdAt = result.createdAt
@@ -34,6 +35,7 @@ public class CKMLNLedgerEntry: NSManagedObject {
       entry.memo = resultMemo
     }
 
+    return entry
   }
 
   static func findOrCreate(with id: String, wallet: CKMWallet, createdAt: Date, in context: NSManagedObjectContext) -> CKMLNLedgerEntry {

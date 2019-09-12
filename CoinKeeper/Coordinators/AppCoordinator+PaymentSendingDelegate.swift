@@ -130,6 +130,7 @@ extension AppCoordinator: PaymentSendingDelegate {
                                                 failure: @escaping CKErrorCompletion) {
     //TODO: Get updated ledger and persist new entry immediately following payment
     self.networkManager.payLightningPaymentRequest(inputs.invoice, sats: inputs.sats)
+      .get { self.persistLightningPaymentResponse($0, receiver: receiver, inputs: inputs) }
       .then { response -> Promise<String> in
         let maybeSender = self.senderIdentity(forReceiver: receiver)
         let maybePostable = PayloadPostableLightningObject(inputs: inputs, paymentResultId: response.result.cleanedId,
@@ -141,6 +142,25 @@ extension AppCoordinator: PaymentSendingDelegate {
         self.didBroadcastTransaction()
       }
       .catch(failure)
+  }
+
+  private func persistLightningPaymentResponse(_ response: LNTransactionResponse,
+                                               receiver: OutgoingDropBitReceiver?,
+                                               inputs: LightningPaymentInputs) {
+    let context = self.persistenceManager.createBackgroundContext()
+    context.performAndWait {
+      guard let wallet = CKMWallet.find(in: context) else { return }
+      let ledgerEntry = CKMLNLedgerEntry.updateOrCreate(with: response.result, forWallet: wallet, in: context)
+      if let receiver = receiver {
+        ledgerEntry.walletEntry?.configure(withReceiver: receiver, in: context)
+      }
+
+      if let sharedPayload = inputs.sharedPayload {
+        ledgerEntry.walletEntry?.configureNewSenderSharedPayload(with: sharedPayload, in: context)
+      }
+
+      try? context.saveRecursively()
+    }
   }
 
   private func postSharedPayloadIfAppropriate(with object: SharedPayloadPostableObject?) -> Promise<String> {

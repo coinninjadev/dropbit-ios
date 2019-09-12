@@ -87,9 +87,10 @@ class SharedPayloadManager: SharedPayloadManagerType {
         targetObject.sharedPayload = CKMTransactionSharedPayload(payload: payload, insertInto: deps.context)
       }
 
+      let canSetMemo = (targetObject.memo ?? "").isEmpty // || targetObject.memo == "Generated request"
+      if canSetMemo && payload.includesSharedMemo { targetObject.memo = payload.memo }
 
       let counterparties = payload.payloadCounterparties(with: deps)
-      if targetObject.memo == nil && payload.includesSharedMemo { targetObject.memo = payload.memo }
       if targetObject.phoneNumber == nil { targetObject.phoneNumber = counterparties?.phoneNumber }
       if targetObject.twitterContact == nil { targetObject.twitterContact = counterparties?.twitterContact }
     }
