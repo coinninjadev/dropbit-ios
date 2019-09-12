@@ -83,16 +83,12 @@ class SharedPayloadManager: SharedPayloadManagerType {
       guard let targetObject = payloadConfigurableObject(withId: payload.txid,
                                                          walletTxType: walletTxType,
                                                          in: deps.context) else { continue }
+      if targetObject.sharedPayload == nil {
+        targetObject.sharedPayload = CKMTransactionSharedPayload(payload: payload, insertInto: deps.context)
+      }
 
-      let payloadAsData = try? payload.encoded()
+
       let counterparties = payload.payloadCounterparties(with: deps)
-      let ckmSharedPayload = CKMTransactionSharedPayload(sharingDesired: payload.includesSharedMemo,
-                                                         fiatAmount: payload.amount,
-                                                         fiatCurrency: payload.currency,
-                                                         receivedPayload: payloadAsData,
-                                                         insertInto: deps.context)
-
-      targetObject.sharedPayload = ckmSharedPayload
       if targetObject.memo == nil && payload.includesSharedMemo { targetObject.memo = payload.memo }
       if targetObject.phoneNumber == nil { targetObject.phoneNumber = counterparties?.phoneNumber }
       if targetObject.twitterContact == nil { targetObject.twitterContact = counterparties?.twitterContact }
