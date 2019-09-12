@@ -60,7 +60,6 @@ extension AppCoordinator: PaymentSendingDelegate {
     presentPinEntryViewController(pinEntryVC)
   }
 
-
   func viewControllerRequestedShowFeeTooExpensiveAlert(_ viewController: UIViewController) {
     let message = """
     In order to use this fee option you must adjust the amount you are sending.
@@ -70,7 +69,7 @@ extension AppCoordinator: PaymentSendingDelegate {
     viewController.present(alert, animated: true, completion: nil)
   }
 
-  private func handleSuccessfulLightningPaymentVerification(with inputs: LightningPaymentInputs) {
+  func handleSuccessfulLightningPaymentVerification(with inputs: LightningPaymentInputs) {
     let viewModel = PaymentSuccessFailViewModel(mode: .pending)
     let successFailVC = SuccessFailViewController.newInstance(viewModel: viewModel, delegate: self)
     let errorHandler: CKErrorCompletion = self.paymentErrorHandler(for: successFailVC)
@@ -88,7 +87,8 @@ extension AppCoordinator: PaymentSendingDelegate {
 
   func handleSuccessfulOnChainPaymentVerification(
     with transactionData: CNBTransactionData,
-    outgoingTransactionData: OutgoingTransactionData) {
+    outgoingTransactionData: OutgoingTransactionData,
+    isInternalBroadcast: Bool = false) {
 
     let viewModel = PaymentSuccessFailViewModel(mode: .pending)
     let successFailVC = SuccessFailViewController.newInstance(viewModel: viewModel, delegate: self)
@@ -99,7 +99,8 @@ extension AppCoordinator: PaymentSendingDelegate {
         with: transactionData,
         outgoingTransactionData: outgoingTransactionData,
         success: { successFailVC.setMode(.success) },
-        failure: errorHandler)
+        failure: errorHandler,
+        isInternalBroadcast: isInternalBroadcast)
     }
 
     self.navigationController.topViewController()?.present(successFailVC, animated: false) {
@@ -138,7 +139,8 @@ extension AppCoordinator: PaymentSendingDelegate {
   private func broadcastConfirmedOnChainTransaction(with transactionData: CNBTransactionData,
                                                     outgoingTransactionData: OutgoingTransactionData,
                                                     success: @escaping CKCompletion,
-                                                    failure: @escaping CKErrorCompletion) {
+                                                    failure: @escaping CKErrorCompletion,
+                                                    isInternalBroadcast: Bool = false) {
     self.networkManager.updateCachedMetadata()
       .then { _ in self.networkManager.broadcastTx(with: transactionData) }
       .then { txid -> Promise<String> in
@@ -186,7 +188,9 @@ extension AppCoordinator: PaymentSendingDelegate {
       .done(on: .main) { _ in
         success()
 
-        self.showShareTransactionIfAppropriate(dropBitType: .none, delegate: self)
+        if !isInternalBroadcast {
+          self.showShareTransactionIfAppropriate(dropBitType: .none, delegate: self)
+        }
 
         self.analyticsManager.track(property: MixpanelProperty(key: .hasSent, value: true))
         if case .twitter = outgoingTransactionData.dropBitType {

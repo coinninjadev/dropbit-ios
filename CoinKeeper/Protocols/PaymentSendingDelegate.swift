@@ -32,6 +32,8 @@ protocol LightningPaymentSendingDelegate: PaymentSendingDelegate {
   func viewControllerDidConfirmLightningPayment(
     _ viewController: UIViewController,
     inputs: LightningPaymentInputs)
+
+  func handleSuccessfulLightningPaymentVerification(with inputs: LightningPaymentInputs)
 }
 
 protocol AllPaymentSendingDelegate: LightningPaymentSendingDelegate, OnChainPaymentSendingDelegate { }
@@ -62,7 +64,8 @@ extension PaymentSendingDelegate {
     navigationController.topViewController()?.present(pinEntryVC, animated: true, completion: nil)
   }
 
-  func showShareTransactionIfAppropriate(dropBitType: OutgoingTransactionDropBitType, delegate: ShareTransactionViewControllerDelegate) {
+  func showShareTransactionIfAppropriate(dropBitType: OutgoingTransactionDropBitType,
+                                         delegate: ShareTransactionViewControllerDelegate) {
     if case .twitter = dropBitType { return }
     if self.persistenceManager.brokers.preferences.dontShowShareTransaction {
       return
