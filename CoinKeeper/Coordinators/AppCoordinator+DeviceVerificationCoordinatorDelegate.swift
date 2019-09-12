@@ -30,8 +30,10 @@ extension AppCoordinator: DeviceVerificationCoordinatorDelegate {
       .setVersion(.v2)
 
     return self.networkManager.createWallet(withPublicKey: wmgr.hexEncodedPublicKey, walletFlags: handler.flags)
-      .get(in: context) { try self.persistenceManager.brokers.wallet.persistWalletResponse(from: $0, in: context) }
-      .then { return Promise.value(WalletFlagsParser(flags: $0.flags)) }
+      .then(in: context) { response -> Promise<WalletFlagsParser> in
+        try self.persistenceManager.brokers.wallet.persistWalletResponse(from: response, in: context)
+        return Promise.value(WalletFlagsParser(flags: response.flags))
+      }
   }
 
   func coordinator(_ coordinator: DeviceVerificationCoordinator, didVerify type: UserIdentityType, isInitialSetupFlow: Bool) {
