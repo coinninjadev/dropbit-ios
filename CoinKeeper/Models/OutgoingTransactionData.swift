@@ -10,10 +10,6 @@ import Foundation
 
 public struct OutgoingTransactionData {
   var txid: String
-  var displayName: String
-  var displayIdentity: String
-  var identityHash: String
-  var dropBitType: OutgoingTransactionDropBitType
   var destinationAddress: String
   var amount: Int
   var feeAmount: Int
@@ -22,54 +18,46 @@ public struct OutgoingTransactionData {
   var sharedPayloadDTO: SharedPayloadDTO?
 
   /// identity property is structured according to SharedPayload requirements
-  var sharedPayloadSenderIdentity: UserIdentityBody?
+  var sender: UserIdentityBody?
+  var receiver: OutgoingDropBitReceiver?
 
   static func emptyInstance() -> OutgoingTransactionData {
     return OutgoingTransactionData(
       txid: "",
-      dropBitType: .none,
       destinationAddress: "",
       amount: 0,
       feeAmount: 0,
       sentToSelf: false,
       requiredFeeRate: 0,
-      sharedPayloadDTO: SharedPayloadDTO.emptyInstance())
+      sharedPayloadDTO: SharedPayloadDTO.emptyInstance(),
+      sender: nil,
+      receiver: nil)
   }
 
   init(
     txid: String,
-    dropBitType: OutgoingTransactionDropBitType,
     destinationAddress: String,
     amount: Int,
     feeAmount: Int,
     sentToSelf: Bool,
     requiredFeeRate: Double?,
     sharedPayloadDTO: SharedPayloadDTO?,
-    sharedPayloadSenderIdentity: UserIdentityBody? = nil) {
+    sender: UserIdentityBody?,
+    receiver: OutgoingDropBitReceiver?) {
     self.txid = txid
-    self.dropBitType = dropBitType
-    self.displayName = dropBitType.displayName ?? "" //contact.displayName ?? ""
-    self.displayIdentity = dropBitType.displayIdentity //contact.displayIdentity
-    self.identityHash = dropBitType.identityHash //contact.identityHash
-
     self.destinationAddress = destinationAddress
     self.amount = amount
     self.feeAmount = feeAmount
     self.sentToSelf = sentToSelf
     self.requiredFeeRate = requiredFeeRate
     self.sharedPayloadDTO = sharedPayloadDTO
-    self.sharedPayloadSenderIdentity = sharedPayloadSenderIdentity
+    self.sender = sender
+    self.receiver = receiver
   }
 
   func copy(withTxid txid: String) -> OutgoingTransactionData {
     var copy = self
     copy.txid = txid
     return copy
-  }
-}
-
-extension OutgoingTransactionData {
-  var phoneNumberHash: String? {
-    return identityHash
   }
 }

@@ -25,7 +25,6 @@ extension CKMTwitterContact {
   @NSManaged public var transactions: Set<CKMTransaction>
   @NSManaged public var invitations: Set<CKMInvitation>
   @NSManaged public var walletEntries: Set<CKMWalletEntry>
-  
 
 }
 

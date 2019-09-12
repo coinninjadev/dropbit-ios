@@ -119,11 +119,6 @@ extension NetworkManager: TransactionBroadcastable {
         return Promise.value(object.paymentId)
     }
 
-    switch object.dropBitType {
-    case .none: return Promise(error: CKPersistenceError.missingValue(key: "outgoingTxData.dropBitType"))
-    default: break
-    }
-
     guard let amountInfo = sharedPayloadDTO.amountInfo else {
       return Promise(error: CKPersistenceError.missingValue(key: "amountInfo"))
     }
@@ -163,7 +158,6 @@ protocol SharedPayloadPostableObject {
   /// address or encoded invoice
   var paymentTarget: String { get }
 
-  var dropBitType: OutgoingTransactionDropBitType { get }
   var senderIdentity: UserIdentityBody { get }
   var receiverIdentityHash: String { get }
   var sharedPayloadDTO: SharedPayloadDTO { get }
@@ -173,21 +167,20 @@ protocol SharedPayloadPostableObject {
 struct PayloadPostableOutgoingTransactionData: SharedPayloadPostableObject {
   let paymentId: String
   let paymentTarget: String
-  let dropBitType: OutgoingTransactionDropBitType
   let senderIdentity: UserIdentityBody
   let receiverIdentityHash: String
   let sharedPayloadDTO: SharedPayloadDTO
 
   init?(data: OutgoingTransactionData) {
-    guard let identity = data.sharedPayloadSenderIdentity,
+    guard let senderIdentity = data.sender,
+      let receiverIdentityHash = data.receiver?.identityHash,
       let payloadDTO = data.sharedPayloadDTO
       else { return nil }
 
     self.paymentId = data.txid
     self.paymentTarget = data.destinationAddress
-    self.dropBitType = data.dropBitType
-    self.senderIdentity = identity
-    self.receiverIdentityHash = data.identityHash
+    self.senderIdentity = senderIdentity
+    self.receiverIdentityHash = receiverIdentityHash
     self.sharedPayloadDTO = payloadDTO
   }
 }

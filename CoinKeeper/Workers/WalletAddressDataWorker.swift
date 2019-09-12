@@ -203,15 +203,18 @@ class WalletAddressDataWorker: WalletAddressDataWorkerType {
         contact = TwitterContact(twitterUser: twitterUser)
       }
 
+      let maybeReceiver = contact.flatMap { OutgoingDropBitReceiver(contact: $0) }
+
       let outgoingTransactionData = OutgoingTransactionData(
         txid: CKMTransaction.invitationTxidPrefix + response.id,
-        dropBitType: contact?.dropBitType ?? .none,
         destinationAddress: "",
         amount: invitation.btcAmount,
         feeAmount: invitation.fees,
         sentToSelf: false,
         requiredFeeRate: nil,
-        sharedPayloadDTO: nil)
+        sharedPayloadDTO: nil,
+        sender: nil,
+        receiver: maybeReceiver)
 
       self.persistenceManager.brokers.invitation.acknowledgeInvitation(with: outgoingTransactionData, response: response, in: context)
     }
@@ -608,20 +611,20 @@ class WalletAddressDataWorker: WalletAddressDataWorkerType {
     }
 
     let btcAmount = pendingInvitation.btcAmount
-    let dropBitType: OutgoingTransactionDropBitType = contact?.dropBitType ?? .none
+    let maybeReceiver: OutgoingDropBitReceiver? = contact?.asDropBitReceiver
     let identityFactory = SenderIdentityFactory(persistenceManager: self.persistenceManager)
-    let senderIdentity = identityFactory.preferredSharedPayloadSenderIdentity(forDropBitType: dropBitType)
+    let senderIdentity = identityFactory.preferredSharedPayloadSenderIdentity(forReceiver: maybeReceiver)
 
     let outgoingTransactionData = OutgoingTransactionData(
       txid: "",
-      dropBitType: dropBitType,
       destinationAddress: address,
       amount: btcAmount,
       feeAmount: pendingInvitation.fees,
       sentToSelf: false,
       requiredFeeRate: nil,
       sharedPayloadDTO: sharedPayloadDTO,
-      sharedPayloadSenderIdentity: senderIdentity
+      sender: senderIdentity,
+      receiver: maybeReceiver
     )
 
     let dto = WalletAddressRequestResponseDTO()
@@ -732,7 +735,7 @@ class WalletAddressDataWorker: WalletAddressDataWorkerType {
 
         if pendingInvitation.status == .completed {
           self.analyticsManager.track(event: .dropbitCompleted, with: nil)
-          if case .twitter = outgoingTransactionData.dropBitType {
+          if let receiver = outgoingTransactionData.receiver, case .twitter = receiver {
             self.analyticsManager.track(event: .twitterSendComplete, with: nil)
           }
         }

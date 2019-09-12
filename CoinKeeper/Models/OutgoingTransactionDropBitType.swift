@@ -8,18 +8,26 @@
 
 import Foundation
 
-enum OutgoingTransactionDropBitType {
+enum OutgoingDropBitReceiver {
   case phone(PhoneContactType)
   case twitter(TwitterContactType)
-  case none // standard btc transaction, not a DropBit
+
+  init?(contact: ContactType) {
+    if let phoneContact = contact as? PhoneContactType {
+      self = .phone(phoneContact)
+    } else if let twitterContact = contact as? TwitterContactType {
+      self = .twitter(twitterContact)
+    } else {
+      return nil
+    }
+  }
 }
 
-extension OutgoingTransactionDropBitType {
+extension OutgoingDropBitReceiver {
   var displayName: String? {
     switch self {
     case .phone(let contact): return contact.displayName
     case .twitter(let contact): return contact.displayName
-    case .none: return nil
     }
   }
 
@@ -27,7 +35,6 @@ extension OutgoingTransactionDropBitType {
     switch self {
     case .phone(let contact): return contact.displayIdentity
     case .twitter(let contact): return contact.displayIdentity
-    case .none: return ""
     }
   }
 
@@ -35,7 +42,6 @@ extension OutgoingTransactionDropBitType {
     switch self {
     case .phone(let contact): return contact.identityHash
     case .twitter(let contact): return contact.identityHash
-    case .none: return ""
     }
   }
 }

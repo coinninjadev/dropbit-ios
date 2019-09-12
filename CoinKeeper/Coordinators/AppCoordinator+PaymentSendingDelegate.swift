@@ -41,8 +41,8 @@ extension AppCoordinator: PaymentSendingDelegate {
     outgoingTxDataWithAmount.sharedPayloadDTO?.amountInfo = amountInfo
 
     let senderIdentityFactory = SenderIdentityFactory(persistenceManager: persistenceManager)
-    let senderIdentity = senderIdentityFactory.preferredSharedPayloadSenderIdentity(forDropBitType: outgoingTransactionData.dropBitType)
-    outgoingTxDataWithAmount.sharedPayloadSenderIdentity = senderIdentity
+    let senderIdentity = senderIdentityFactory.preferredSharedPayloadSenderIdentity(forReceiver: outgoingTransactionData.receiver)
+    outgoingTxDataWithAmount.sender = senderIdentity
 
     let usdThreshold = 100_00
     let shouldDisableBiometrics = amountInfo.fiatAmount > usdThreshold
@@ -192,11 +192,11 @@ extension AppCoordinator: PaymentSendingDelegate {
         success()
 
         if !isInternalBroadcast {
-          self.showShareTransactionIfAppropriate(dropBitType: .none, delegate: self)
+          self.showShareTransactionIfAppropriate(dropBitReceiver: outgoingTransactionData.receiver, delegate: self)
         }
 
         self.analyticsManager.track(property: MixpanelProperty(key: .hasSent, value: true))
-        if case .twitter = outgoingTransactionData.dropBitType {
+        if let receiver = outgoingTransactionData.receiver, case .twitter = receiver {
           self.analyticsManager.track(event: .twitterSendComplete, with: nil)
         }
         self.trackIfUserHasABalance()

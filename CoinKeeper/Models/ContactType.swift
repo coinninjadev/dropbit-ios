@@ -19,7 +19,7 @@ protocol ContactType {
   var displayName: String? { get }
   var displayIdentity: String { get }
   var userIdentityBody: UserIdentityBody { get }
-  var dropBitType: OutgoingTransactionDropBitType { get }
+  var asDropBitReceiver: OutgoingDropBitReceiver { get }
 }
 
 extension ContactType {
@@ -51,7 +51,7 @@ extension PhoneContactType {
     return displayNumber
   }
 
-  var dropBitType: OutgoingTransactionDropBitType {
+  var asDropBitReceiver: OutgoingDropBitReceiver {
     return .phone(self)
   }
 }
@@ -63,7 +63,7 @@ protocol TwitterContactType: ContactType {
 }
 
 extension TwitterContactType {
-  var dropBitType: OutgoingTransactionDropBitType {
+  var asDropBitReceiver: OutgoingDropBitReceiver {
     return .twitter(self)
   }
 }

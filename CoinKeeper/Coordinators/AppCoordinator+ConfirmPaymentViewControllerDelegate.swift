@@ -93,7 +93,7 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate {
                                                          in: bgContext)
           // Call this separately from handleAddressRequestCreationSuccess so
           // that it doesn't interrupt Twilio error SMS fallback flow
-          strongSelf.showShareTransactionIfAppropriate(dropBitType: outgoingInvitationDTO.contact.dropBitType, delegate: strongSelf)
+          strongSelf.showShareTransactionIfAppropriate(dropBitReceiver: outgoingInvitationDTO.contact.asDropBitReceiver, delegate: strongSelf)
 
         }.catch(on: .main) { error in
           strongSelf.handleAddressRequestCreationError(error,
@@ -128,7 +128,7 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate {
           successFailVC?.setURL(twitterURL)
         }
 
-        if case let .twitter(twitterContact) = invitationDTO.contact.dropBitType {
+        if case let .twitter(twitterContact) = invitationDTO.contact.asDropBitReceiver {
           DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
             if let topVC = self.navigationController.topViewController() {
               let tweetMethodVC = TweetMethodViewController.newInstance(twitterRecipient: twitterContact,
@@ -218,13 +218,14 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate {
     context.performAndWait {
       let outgoingTransactionData = OutgoingTransactionData(
         txid: CKMTransaction.invitationTxidPrefix + response.id,
-        dropBitType: outgoingInvitationDTO.contact.dropBitType,
         destinationAddress: "",
         amount: outgoingInvitationDTO.btcPair.btcAmount.asFractionalUnits(of: .BTC),
         feeAmount: outgoingInvitationDTO.fee,
         sentToSelf: false,
         requiredFeeRate: nil,
-        sharedPayloadDTO: outgoingInvitationDTO.sharedPayloadDTO
+        sharedPayloadDTO: outgoingInvitationDTO.sharedPayloadDTO,
+        sender: nil,
+        receiver: OutgoingDropBitReceiver(contact: outgoingInvitationDTO.contact)
       )
       self.persistenceManager.brokers.invitation.acknowledgeInvitation(with: outgoingTransactionData, response: response, in: context)
     }

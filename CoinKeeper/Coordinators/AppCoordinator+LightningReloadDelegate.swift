@@ -27,5 +27,5 @@ extension AppCoordinator: LightningReloadDelegate {
     let walletTransferViewController = WalletTransferViewController.newInstance(delegate: self, viewModel: viewModel)
     navigationController.present(walletTransferViewController, animated: true, completion: nil)
   }
-  
+
 }

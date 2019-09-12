@@ -104,7 +104,7 @@ class SettingsViewController: BaseViewController, StoryboardInitializable {
   }
 
   private func isWalletBackedUp() -> Bool {
-    return delegate.verifyIfWordsAreBackedUp() ?? false
+    return delegate.verifyIfWordsAreBackedUp()
   }
 
   private func createViewModel() -> SettingsViewModel {
@@ -129,7 +129,7 @@ class SettingsViewController: BaseViewController, StoryboardInitializable {
     }
     let recoveryWordsVM = SettingsCellViewModel(type: recoveryWordsCellType)
 
-    let dustProtectionEnabled = self.delegate.dustProtectionIsEnabled() ?? false
+    let dustProtectionEnabled = self.delegate.dustProtectionIsEnabled()
     let dustCellType = SettingsCellType.dustProtection(
       enabled: dustProtectionEnabled,
       infoAction: { [weak self] (type: SettingsCellType) in
@@ -143,7 +143,7 @@ class SettingsViewController: BaseViewController, StoryboardInitializable {
     )
     let dustProtectionVM = SettingsCellViewModel(type: dustCellType)
 
-    let isYearlyHighPushEnabled = self.delegate.yearlyHighPushNotificationIsSubscribed() ?? false
+    let isYearlyHighPushEnabled = self.delegate.yearlyHighPushNotificationIsSubscribed()
     let yearlyHighCellType = SettingsCellType.yearlyHighPushNotification(enabled: isYearlyHighPushEnabled) { [weak self] (didEnable: Bool) in
       guard let localSelf = self else { return }
       localSelf.delegate.viewController(

@@ -751,10 +751,9 @@ extension SendPaymentViewController {
 
     var newContact = contact
     newContact.kind = kind
-    switch contact.dropBitType {
+    switch contact.asDropBitReceiver {
     case .phone(let contact): self.setPaymentRecipient(.contact(contact))
     case .twitter(let contact): self.setPaymentRecipient(.twitterContact(contact))
-    case .none: break
     }
 
     try validateInvitationMaximum(against: btcAmount)
