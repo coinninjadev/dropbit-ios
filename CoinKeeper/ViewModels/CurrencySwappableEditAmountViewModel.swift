@@ -212,7 +212,13 @@ class CurrencySwappableEditAmountViewModel: NSObject, DualAmountDisplayable {
       let sanitizedText = sanitizedAmountString(textToSanitize)
       else { return .zero }
 
-    return NSDecimalNumber(fromString: sanitizedText) ?? .zero
+    var amount = NSDecimalNumber(fromString: sanitizedText) ?? .zero
+
+    if walletTransactionType == .lightning && primaryCurrency == .BTC {
+      amount = NSDecimalNumber(integerAmount: amount.intValue, currency: .BTC)
+    }
+
+    return amount
   }
 
 }
