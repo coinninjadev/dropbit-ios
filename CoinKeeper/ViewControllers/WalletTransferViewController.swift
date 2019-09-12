@@ -188,7 +188,7 @@ extension WalletTransferViewController: ConfirmViewDelegate {
 extension WalletTransferViewController: FeesViewDelegate {
 
   func tooltipButtonWasTouched() {
-    guard let url = CoinNinjaUrlFactory.buildUrl(for: .dropBitAppLightningWithdrawlFees) else { return }
+    guard let url = CoinNinjaUrlFactory.buildUrl(for: .dropBitAppLightningWithdrawalFees) else { return }
     delegate.openURL(url, completionHandler: nil)
   }
 }
