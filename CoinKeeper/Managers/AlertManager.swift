@@ -10,8 +10,10 @@ import UIKit
 import PMAlertController
 import SVProgressHUD
 import SwiftMessages
+import Sheeeeeeeeet
 
 protocol AlertManagerType: CKBannerViewDelegate {
+
   func alert(
     withTitle title: String,
     description: String?,
@@ -61,6 +63,9 @@ protocol AlertManagerType: CKBannerViewDelegate {
   func showSuccessHUD(withStatus status: String?, duration: TimeInterval, completion: CKCompletion?)
 
   func showBannerAlert(for response: MessageResponse, completion: CKCompletion?)
+  func showActionSheet(in viewController: UIViewController,
+                       with items: [ActionSheetItem],
+                       actions: @escaping ActionSheet.SelectAction)
 
   init(notificationManager: NotificationManagerType)
 }
@@ -75,7 +80,6 @@ extension AlertManagerType {
 }
 
 class AlertManager: AlertManagerType {
-
   private let notificationManager: NotificationManagerType
 
   weak var urlOpener: URLOpener?
@@ -88,6 +92,7 @@ class AlertManager: AlertManagerType {
 
   required init(notificationManager: NotificationManagerType) {
     self.notificationManager = notificationManager
+    setupAlertActionStyling()
     SVProgressHUD.setDefaultStyle(.dark)
   }
 
@@ -98,6 +103,25 @@ class AlertManager: AlertManagerType {
       return alert(withTitle: viewModel.title, description: viewModel.description,
                    image: viewModel.image, style: viewModel.style, actionConfigs: viewModel.actions)
     }
+  }
+
+  private func setupAlertActionStyling() {
+    let buttonStyle = ActionSheetButtonCell.appearance()
+    buttonStyle.titleFont = .medium(16)
+    buttonStyle.titleColor = .white
+    buttonStyle.backgroundColor = .lightBlueTint
+
+    let itemStyle = ActionSheetItemCell.appearance()
+    itemStyle.titleFont = .medium(14)
+  }
+
+  func showActionSheet(in viewController: UIViewController,
+                       with items: [ActionSheetItem],
+                       actions: @escaping ActionSheet.SelectAction) {
+    let button = ActionSheetOkButton(title: "CANCEL")
+    let sheet = ActionSheet(items: items.appending(element: button), action: actions)
+    sheet.presenter.isDismissableWithTapOnBackground = false
+    sheet.present(in: viewController, from: nil)
   }
 
   func alert(withTitle title: String,

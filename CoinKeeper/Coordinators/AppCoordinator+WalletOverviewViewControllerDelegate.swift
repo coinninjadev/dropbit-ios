@@ -9,6 +9,7 @@
 import Foundation
 import UIKit
 import MMDrawerController
+import Sheeeeeeeeet
 
 extension AppCoordinator: WalletOverviewViewControllerDelegate {
 
@@ -24,11 +25,19 @@ extension AppCoordinator: WalletOverviewViewControllerDelegate {
     persistenceManager.brokers.preferences.selectedWalletTransactionType = selectedType
   }
 
-  func viewControllerDidSelectTransfer(withDirection direction: TransferDirection) {
-    let viewModel = WalletTransferViewModel(direction: direction, amount: .custom,
-                                            walletBalances: spendableBalanceNetPending())
-    let transferViewController = WalletTransferViewController.newInstance(delegate: self, viewModel: viewModel)
-    navigationController.present(transferViewController, animated: true, completion: nil)
+  func viewControllerDidSelectTransfer(_ viewController: UIViewController) {
+    let toLightningItem = ActionSheetItem(title: "Load Lightning Wallet")
+    let toOnChainItem = ActionSheetItem(title: "Withdraw From Lightning Wallet")
+    let actions: ActionSheet.SelectAction = { [weak self] sheet, item in
+      guard let strongSelf = self, !item.isOkButton else { return }
+      let direction: TransferDirection = item == toLightningItem ? .toLightning(nil) : .toOnChain(nil)
+      let viewModel = WalletTransferViewModel(direction: direction, amount: .custom,
+                                              walletBalances: strongSelf.spendableBalanceNetPending())
+      let transferViewController = WalletTransferViewController.newInstance(delegate: strongSelf, viewModel: viewModel)
+      strongSelf.navigationController.present(transferViewController, animated: true, completion: nil)
+    }
+
+    alertManager.showActionSheet(in: viewController, with: [toLightningItem, toOnChainItem], actions: actions)
   }
 
   func viewControllerDidRequestPrimaryCurrencySwap() {

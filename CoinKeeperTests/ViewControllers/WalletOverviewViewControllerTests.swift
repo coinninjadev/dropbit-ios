@@ -64,7 +64,7 @@ class WalletOverviewViewControllerTests: XCTestCase {
     func viewControllerShouldAdjustForBottomSafeArea(_ viewController: UIViewController) -> Bool {
       return true
     }
-    func viewControllerDidSelectTransfer(withDirection direction: TransferDirection) { }
+    func viewControllerDidSelectTransfer(_ viewController: UIViewController) { }
     func viewControllerDidTapWalletTooltip() { }
     func isSyncCurrentlyRunning() -> Bool {
       return false
