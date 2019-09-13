@@ -42,11 +42,9 @@ extension CurrencySwappableAmountEditor {
     let txType = editAmountViewModel.walletTransactionType
     let labels = editAmountViewModel.dualAmountLabels(hidePrimaryZero: shouldHideZero, walletTransactionType: txType)
     editAmountView.update(with: labels)
-
   }
 
-  private func moveCursorToCorrectLocationIfNecessary() {
-
+  func moveCursorToCorrectLocationIfNecessary() {
     guard editAmountViewModel.walletTransactionType == .lightning,
       editAmountViewModel.primaryCurrency == .BTC,
       let amount = SatsFormatter().stringWithoutSymbol(fromDecimal: editAmountViewModel.primaryAmount),
