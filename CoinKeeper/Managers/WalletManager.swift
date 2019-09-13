@@ -24,9 +24,6 @@ protocol WalletManagerType: AnyObject {
 
   func createAddressDataSource() -> AddressDataSourceType
 
-  /// Create copy of current CNBHDWallet object for multi-broadcast necessity (avoiding crash)
-  func createWalletCopy() -> CNBHDWallet
-
   /// Use this when displaying the balance
   func balanceNetPending(in context: NSManagedObjectContext) -> (onChain: Int, lightning: Int)
 
@@ -208,10 +205,6 @@ class WalletManager: WalletManagerType {
 
   func resetWallet(with words: [String]) {
     self.wallet = CNBHDWallet(mnemonic: words, coin: coin)
-  }
-
-  func createWalletCopy() -> CNBHDWallet {
-    return CNBHDWallet(mnemonic: mnemonicWords(), coin: coin)
   }
 
   func mnemonicWords() -> [String] {

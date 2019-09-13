@@ -164,9 +164,9 @@ extension AppCoordinator: PaymentSendingDelegate {
             in: context
           )
 
-          if let walletCopy = self.walletManager?.createWalletCopy() {
+          if let wallet = self.walletManager?.wallet {
             let transactionBuilder = CNBTransactionBuilder()
-            let metadata = transactionBuilder.generateTxMetadata(with: transactionData, wallet: walletCopy)
+            let metadata = transactionBuilder.generateTxMetadata(with: transactionData, wallet: wallet)
             do {
               // If sending max such that there is no change address, an error will be thrown and caught below
               let tempVout = try CKMVout.findOrCreateTemporaryVout(in: context, with: transactionData, metadata: metadata)

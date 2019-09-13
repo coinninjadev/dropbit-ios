@@ -50,6 +50,7 @@ protocol TransactionSummaryCellViewModelType: TransactionSummaryCellDisplayable 
   var lightningInvoice: String? { get }
   var amountDetails: TransactionAmountDetails { get }
   var memo: String? { get }
+  var isLightningUpgrade: Bool { get }
 }
 
 extension TransactionSummaryCellViewModelType {
@@ -124,6 +125,8 @@ extension TransactionSummaryCellViewModelType {
       return invoiceText
     } else if let address = receiverAddress {
       return address
+    } else if isLightningUpgrade {
+      return "Lightning Upgrade"
     } else {
       return "(unknown)"
     }

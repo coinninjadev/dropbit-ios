@@ -221,6 +221,10 @@ public class CKMTransaction: NSManagedObject {
     return confirmations >= CKMTransaction.confirmationThreshold
   }
 
+  var isLightningUpgrade: Bool {
+    return vouts.count == 1 && vouts.compactMap { $0.address }.filter { $0.isChangeAddress }.isNotEmpty
+  }
+
 }
 
 extension CKMTransaction {
