@@ -12,7 +12,7 @@ public enum TransactionNotificationTarget: CoinNinjaTargetType {
   typealias ResponseType = TransactionNotificationResponse
 
   case create(CreateTransactionNotificationBody)
-  case get(String) //txid
+  case get(String) //txid or ledgerEntryId
 
 }
 

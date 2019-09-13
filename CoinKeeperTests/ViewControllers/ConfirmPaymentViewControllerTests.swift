@@ -59,7 +59,7 @@ class ConfirmPaymentViewControllerTests: XCTestCase {
     var analyticsManager: AnalyticsManagerType = MockAnalyticsManager()
     var persistenceManager: PersistenceManagerType = MockPersistenceManager()
 
-    var navigationController: UINavigationController  {
+    var navigationController: UINavigationController {
       return UINavigationController()
     }
 
@@ -71,7 +71,8 @@ class ConfirmPaymentViewControllerTests: XCTestCase {
     var didConfirmLightning = false
     func viewControllerDidConfirmLightningPayment(
       _ viewController: UIViewController,
-      inputs: LightningPaymentInputs) {
+      inputs: LightningPaymentInputs,
+      receiver: OutgoingDropBitReceiver?) {
       didConfirmLightning = true
     }
 

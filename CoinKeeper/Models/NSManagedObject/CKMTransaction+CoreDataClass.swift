@@ -142,43 +142,18 @@ public class CKMTransaction: NSManagedObject {
       tempTx.isSentToSelf = outgoingTransactionData.sentToSelf
       tempTx.transaction = self
 
+      guard let receiver = outgoingTransactionData.receiver else { return }
       if let number = phoneNumber {
-        number.configure(with: outgoingTransactionData, in: context)
+        number.configure(withReceiver: receiver, in: context)
         self.phoneNumber = number
       } else {
-        switch outgoingTransactionData.dropBitType {
-        case .phone(let phoneContact):
-          if let inputs = ManagedPhoneNumberInputs(phoneNumber: phoneContact.globalPhoneNumber) {
-            let number = CKMPhoneNumber.findOrCreate(withInputs: inputs, phoneNumberHash: phoneContact.phoneNumberHash, in: context)
-            number.configure(with: outgoingTransactionData, in: context)
-            self.phoneNumber = number
-          }
-        case .twitter(let twitterContact):
-          let managedContact = CKMTwitterContact.findOrCreate(with: twitterContact, in: context)
-          self.twitterContact = managedContact
-        case .none: break
-        }
+        self.configure(withReceiver: receiver, in: context)
       }
     }
   }
 
   /// Returns early if this transaction already has a CKMTransactionSharedPayload attached
-  func configureNewSenderSharedPayload(with sharedPayloadDTO: SharedPayloadDTO?, in context: NSManagedObjectContext) {
-    guard let dto = sharedPayloadDTO else { return }
-
-    self.memo = dto.memo
-
-    guard self.sharedPayload == nil,
-      let amountInfo = dto.amountInfo,
-      dto.shouldShare //don't persist if not shared
-      else { return }
-
-    self.sharedPayload = CKMTransactionSharedPayload(sharingDesired: dto.sharingDesired,
-                                                     fiatAmount: amountInfo.fiatAmount,
-                                                     fiatCurrency: amountInfo.fiatCurrencyCode.rawValue,
-                                                     receivedPayload: nil,
-                                                     insertInto: context)
-  }
+  
 
   func markAsFailed() {
     broadcastFailed = true

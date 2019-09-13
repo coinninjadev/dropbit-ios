@@ -119,5 +119,4 @@ class CurrencyAmountValidator: ValidatorType<CurrencyConverter> {
     }
   }
 
-
 }

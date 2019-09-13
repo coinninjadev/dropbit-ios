@@ -21,7 +21,8 @@ struct SenderIdentityFactory {
     }
   }
 
-  func preferredSharedPayloadSenderIdentity(forDropBitType type: OutgoingTransactionDropBitType) -> UserIdentityBody? {
+  func preferredSharedPayloadSenderIdentity(forReceiver receiver: OutgoingDropBitReceiver?) -> UserIdentityBody? {
+    guard let receiver = receiver else { return nil }
     let phoneBody: UserIdentityBody? = senderPhoneBody()
 
     var twitterBody: UserIdentityBody?
@@ -29,10 +30,9 @@ struct SenderIdentityFactory {
       twitterBody = UserIdentityBody.sharedPayloadBody(twitterCredentials: creds)
     }
 
-    switch type {
+    switch receiver {
     case .phone:    return phoneBody ?? twitterBody
     case .twitter:  return twitterBody ?? phoneBody
-    case .none:     return nil
     }
   }
 

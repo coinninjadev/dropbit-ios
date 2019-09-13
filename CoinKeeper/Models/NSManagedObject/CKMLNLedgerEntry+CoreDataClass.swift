@@ -12,9 +12,10 @@ import CoreData
 @objc(CKMLNLedgerEntry)
 public class CKMLNLedgerEntry: NSManagedObject {
 
+  @discardableResult
   static func updateOrCreate(with result: LNTransactionResult,
                              forWallet wallet: CKMWallet,
-                             in context: NSManagedObjectContext) {
+                             in context: NSManagedObjectContext) -> CKMLNLedgerEntry {
     let entry = findOrCreate(with: result.cleanedId, wallet: wallet, createdAt: result.createdAt, in: context)
     entry.accountId = result.accountId
     entry.createdAt = result.createdAt
@@ -34,6 +35,7 @@ public class CKMLNLedgerEntry: NSManagedObject {
       entry.memo = resultMemo
     }
 
+    return entry
   }
 
   static func findOrCreate(with id: String, wallet: CKMWallet, createdAt: Date, in context: NSManagedObjectContext) -> CKMLNLedgerEntry {
@@ -47,14 +49,20 @@ public class CKMLNLedgerEntry: NSManagedObject {
     }
   }
 
-  static func find(with id: String, wallet: CKMWallet, in context: NSManagedObjectContext) -> CKMLNLedgerEntry? {
+  static func find(with id: String, wallet: CKMWallet?, in context: NSManagedObjectContext) -> CKMLNLedgerEntry? {
     let idPath = #keyPath(CKMLNLedgerEntry.id)
-    let walletPath = #keyPath(CKMLNLedgerEntry.walletEntry.wallet)
     let idPredicate = NSPredicate(format: "\(idPath) == %@", id)
-    let walletPredicate = NSPredicate(format: "\(walletPath) == %@", wallet)
+    var predicates = [idPredicate]
+
+    if let wallet = wallet {
+      let walletPath = #keyPath(CKMLNLedgerEntry.walletEntry.wallet)
+      let walletPredicate = NSPredicate(format: "\(walletPath) == %@", wallet)
+      predicates.append(walletPredicate)
+    }
+
     let fetchRequest = NSFetchRequest<CKMLNLedgerEntry>(entityName: entityName())
     fetchRequest.fetchLimit = 1
-    fetchRequest.predicate = NSCompoundPredicate(type: .and, subpredicates: [walletPredicate, idPredicate])
+    fetchRequest.predicate = NSCompoundPredicate(type: .and, subpredicates: predicates)
 
     do {
       return try context.fetch(fetchRequest).first

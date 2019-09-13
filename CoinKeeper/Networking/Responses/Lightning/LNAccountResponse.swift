@@ -34,7 +34,7 @@ struct LNAccountResponse: LNResponseDecodable {
   }
 
   static var requiredStringKeys: [KeyPath<LNAccountResponse, String>] {
-    return [\.id, \.address]
+    return [\.id]
   }
 
   static var optionalStringKeys: [WritableKeyPath<LNAccountResponse, String?>] {

@@ -203,15 +203,18 @@ class WalletAddressDataWorker: WalletAddressDataWorkerType {
         contact = TwitterContact(twitterUser: twitterUser)
       }
 
+      let maybeReceiver = contact.flatMap { OutgoingDropBitReceiver(contact: $0) }
+
       let outgoingTransactionData = OutgoingTransactionData(
         txid: CKMTransaction.invitationTxidPrefix + response.id,
-        dropBitType: contact?.dropBitType ?? .none,
         destinationAddress: "",
         amount: invitation.btcAmount,
         feeAmount: invitation.fees,
         sentToSelf: false,
         requiredFeeRate: nil,
-        sharedPayloadDTO: nil)
+        sharedPayloadDTO: nil,
+        sender: nil,
+        receiver: maybeReceiver)
 
       self.persistenceManager.brokers.invitation.acknowledgeInvitation(with: outgoingTransactionData, response: response, in: context)
     }
@@ -357,7 +360,10 @@ class WalletAddressDataWorker: WalletAddressDataWorkerType {
       log.debug("Lightning invoice generation already enabled")
       return Promise.value(standardBitcoinAddressResponses)
     } else {
-      let generateInvoicesAddressBody = AddWalletAddressBody(address: generateValue, pubkey: "", type: .lightning, walletAddressRequestId: nil)
+      let generateInvoicesAddressBody = AddWalletAddressBody(address: generateValue,
+                                                             pubkey: self.walletManager.hexEncodedPublicKey,
+                                                             type: .lightning,
+                                                             walletAddressRequestId: nil)
       return networkManager.addWalletAddress(body: generateInvoicesAddressBody)
         .map { _ in return standardBitcoinAddressResponses }
         .tap { _ in log.event("Did enable lightning invoice generation") }
@@ -605,20 +611,20 @@ class WalletAddressDataWorker: WalletAddressDataWorkerType {
     }
 
     let btcAmount = pendingInvitation.btcAmount
-    let dropBitType: OutgoingTransactionDropBitType = contact?.dropBitType ?? .none
+    let maybeReceiver: OutgoingDropBitReceiver? = contact?.asDropBitReceiver
     let identityFactory = SenderIdentityFactory(persistenceManager: self.persistenceManager)
-    let senderIdentity = identityFactory.preferredSharedPayloadSenderIdentity(forDropBitType: dropBitType)
+    let senderIdentity = identityFactory.preferredSharedPayloadSenderIdentity(forReceiver: maybeReceiver)
 
     let outgoingTransactionData = OutgoingTransactionData(
       txid: "",
-      dropBitType: dropBitType,
       destinationAddress: address,
       amount: btcAmount,
       feeAmount: pendingInvitation.fees,
       sentToSelf: false,
       requiredFeeRate: nil,
       sharedPayloadDTO: sharedPayloadDTO,
-      sharedPayloadSenderIdentity: senderIdentity
+      sender: senderIdentity,
+      receiver: maybeReceiver
     )
 
     let dto = WalletAddressRequestResponseDTO()
@@ -701,9 +707,11 @@ class WalletAddressDataWorker: WalletAddressDataWorkerType {
     invitationId: String,
     pendingInvitation: CKMInvitation,
     in context: NSManagedObjectContext) -> Promise<Void> {
+    guard let postableObject = PayloadPostableOutgoingTransactionData(data: outgoingTransactionData) else {
+      return Promise(error: CKPersistenceError.missingValue(key: "postableOutgoingTransactionData"))
+    }
 
-    return self.networkManager.postSharedPayloadIfAppropriate(withOutgoingTxData: outgoingTransactionData.copy(withTxid: txid),
-                                                              walletManager: self.walletManager)
+    return self.networkManager.postSharedPayloadIfAppropriate(withPostableObject: postableObject, walletManager: self.walletManager)
       .get { dto.txid = $0 }
       .get(in: context) { (txid: String) in
         if let transactionData = dto.transactionData {
@@ -727,7 +735,7 @@ class WalletAddressDataWorker: WalletAddressDataWorkerType {
 
         if pendingInvitation.status == .completed {
           self.analyticsManager.track(event: .dropbitCompleted, with: nil)
-          if case .twitter = outgoingTransactionData.dropBitType {
+          if let receiver = outgoingTransactionData.receiver, case .twitter = receiver {
             self.analyticsManager.track(event: .twitterSendComplete, with: nil)
           }
         }
@@ -745,17 +753,21 @@ class WalletAddressDataWorker: WalletAddressDataWorkerType {
   private func sharedPayload(
     invitation: CKMInvitation,
     walletAddressRequestResponse response: WalletAddressRequestResponse) -> SharedPayloadDTO {
+    let walletTxType = response.addressTypeCase.flatMap { WalletTransactionType(addressType: $0) } ?? .onChain
+
     if let ckmPayload = invitation.transaction?.sharedPayload,
       let fiatCurrency = CurrencyCode(rawValue: ckmPayload.fiatCurrency),
       let pubKey = response.addressPubkey {
       let amountInfo = SharedPayloadAmountInfo(fiatCurrency: fiatCurrency, fiatAmount: ckmPayload.fiatAmount)
       return SharedPayloadDTO(addressPubKeyState: .known(pubKey),
+                              walletTxType: walletTxType,
                               sharingDesired: ckmPayload.sharingDesired,
                               memo: invitation.transaction?.memo,
                               amountInfo: amountInfo)
 
     } else {
-      return SharedPayloadDTO(addressPubKeyState: .none, sharingDesired: false, memo: invitation.transaction?.memo, amountInfo: nil)
+      return SharedPayloadDTO(addressPubKeyState: .none, walletTxType: walletTxType,
+                              sharingDesired: false, memo: invitation.transaction?.memo, amountInfo: nil)
     }
   }
 

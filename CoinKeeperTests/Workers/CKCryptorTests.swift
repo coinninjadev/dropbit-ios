@@ -33,7 +33,8 @@ class CKCryptorTests: XCTestCase {
     let clearText = "hello"
     let clearData = clearText.data(using: .utf8)!
     guard let payloadString = try? aliceEncryptor.encryptAsBase64String(message: clearData,
-                                                                        withRecipientUncompressedPubkey: bobECUncompressedPubkeyData) else {
+                                                                        withRecipientUncompressedPubkey: bobECUncompressedPubkeyData,
+                                                                        isEphemeral: true) else {
       XCTFail("failed to encrypt alice's message")
       return
     }
@@ -92,7 +93,8 @@ class CKCryptorTests: XCTestCase {
     let clearData = clearText.data(using: .utf8)!
     guard let payloadString = try? aliceEncryptor.encryptAsBase64String(
       message: clearData,
-      withRecipientUncompressedPubkey: bobECUncompressedPubkeyData
+      withRecipientUncompressedPubkey: bobECUncompressedPubkeyData,
+      isEphemeral: true
       ) else {
         XCTFail("failed to encrypt alice's message")
         return
@@ -149,7 +151,8 @@ class CKCryptorTests: XCTestCase {
 
     guard let encryptedPayloadString = try? aliceEncryptor.encryptAsBase64String(
       message: payloadData,
-      withRecipientUncompressedPubkey: bobECUncompressedPubkeyData
+      withRecipientUncompressedPubkey: bobECUncompressedPubkeyData,
+      isEphemeral: true
       ) else {
         XCTFail("failed to encrypt alice's message")
         return

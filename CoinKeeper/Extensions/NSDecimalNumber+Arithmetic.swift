@@ -8,7 +8,6 @@
 
 import Foundation
 
-
 extension NSDecimalNumber {
   static func + (left: NSDecimalNumber, right: NSDecimalNumber) -> NSDecimalNumber {
     return left.adding(right)

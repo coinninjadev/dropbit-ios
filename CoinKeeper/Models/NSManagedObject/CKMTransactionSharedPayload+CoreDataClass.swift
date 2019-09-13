@@ -31,4 +31,22 @@ public class CKMTransactionSharedPayload: NSManagedObject {
     self.receivedPayload = receivedPayload
   }
 
+  convenience init(payload: PersistablePayload, insertInto context: NSManagedObjectContext) {
+    let payloadAsData = try? payload.encoded()
+    self.init(sharingDesired: payload.includesSharedMemo,
+              fiatAmount: payload.amount,
+              fiatCurrency: payload.currency,
+              receivedPayload: payloadAsData,
+              insertInto: context)
+  }
+
+  convenience init?(sharedPayloadDTO dto: SharedPayloadDTO, insertInto context: NSManagedObjectContext) {
+    guard let amountInfo = dto.amountInfo else { return nil }
+    self.init(sharingDesired: dto.sharingDesired,
+              fiatAmount: amountInfo.fiatAmount,
+              fiatCurrency: amountInfo.fiatCurrencyCode.rawValue,
+              receivedPayload: nil,
+              insertInto: context)
+  }
+
 }

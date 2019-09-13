@@ -101,7 +101,12 @@ class TransactionDataWorker: TransactionDataWorkerType {
         self.persistenceManager.brokers.lightning.persistLedgerResponse(response, forWallet: wallet, in: context)
         self.identifyLightningTransfers(withLedger: response.ledger, forWallet: wallet, in: context)
       }
-      .asVoid()
+      .then(in: context) { response -> Promise<Void> in
+        let lightningEntryIds = response.ledger.filter { $0.type == .lightning }.map { $0.cleanedId }
+        return self.fetchTransactionNotifications(forIds: lightningEntryIds)
+          .get(in: context) { responses in self.decryptAndPersistSharedPayloads(from: responses, ofType: .lightning, in: context) }
+          .asVoid()
+      }
   }
 
   private func identifyLightningTransfers(withLedger ledgerResults: [LNTransactionResult],
@@ -184,17 +189,20 @@ class TransactionDataWorker: TransactionDataWorkerType {
     let fourteenDaysAgo = Calendar.current.date(byAdding: .day, value: -14, to: Date()) ?? Date()
     let relevantTxids = dto.txResponses.filter { ($0.date ?? Date()) > fourteenDaysAgo }.map { $0.txid }
 
-    var txidIterator = relevantTxids.makeIterator()
-    let promiseIterator = AnyIterator<Promise<[TransactionNotificationResponse]>> {
-      guard let txid = txidIterator.next() else { return nil }
-      return self.networkManager.fetchTransactionNotifications(forTxid: txid)
-    }
-
-    return when(fulfilled: promiseIterator, concurrently: 5).flatMapValues { $0 } // flatten to single array of TransactionNotificationResponse
+    return self.fetchTransactionNotifications(forIds: relevantTxids)
       .then { responses -> Promise<TransactionDataWorkerDTO> in
         let combinedDTO = TransactionDataWorkerDTO(txNotificationResponses: responses).merged(with: dto)
         return Promise.value(combinedDTO)
     }
+  }
+
+  private func fetchTransactionNotifications(forIds ids: [String]) -> Promise<[TransactionNotificationResponse]> {
+    var idIterator = ids.makeIterator()
+    let promiseIterator = AnyIterator<Promise<[TransactionNotificationResponse]>> {
+      guard let id = idIterator.next() else { return nil }
+      return self.networkManager.fetchTransactionNotifications(forId: id)
+    }
+    return when(fulfilled: promiseIterator, concurrently: 5).flatMapValues { $0 } // flatten to single array of TransactionNotificationResponse
   }
 
   private func minimumSeekReceiveAddressIndex(in context: NSManagedObjectContext) -> Int? {
@@ -350,13 +358,29 @@ class TransactionDataWorker: TransactionDataWorkerType {
                                                                       in: context,
                                                                       relativeToCurrentHeight: dto.blockHeight,
                                                                       fullSync: fullSync)
-      .get(in: context) { self.decryptAndPersistSharedPayloads(from: uniqueTxNotificationResponses, in: context) }
+      .get(in: context) { self.decryptAndPersistSharedPayloads(from: uniqueTxNotificationResponses, ofType: .onChain, in: context) }
       .get(in: context) { self.persistenceManager.brokers.transaction.deleteTransactions(notIn: expectedTxids, in: context) }
       .then(in: context) { self.groomFailedTransactions(notIn: expectedTxids, in: context) }
       .then { return Promise.value(uniqueTxResponses) }
   }
 
-  private func decryptAndPersistSharedPayloads(from responses: [TransactionNotificationResponse], in context: NSManagedObjectContext) {
+  private func decryptAndPersistSharedPayloads(from responses: [TransactionNotificationResponse],
+                                               ofType walletTxType: WalletTransactionType,
+                                               in context: NSManagedObjectContext) {
+    let decryptedPayloads: [Data]
+    switch walletTxType {
+    case .onChain:
+      decryptedPayloads = decryptedOnChainPayloads(from: responses, in: context)
+    case .lightning:
+      decryptedPayloads = decryptLightningPayloads(from: responses)
+    }
+
+    // This should succeed in partially decoding future versions if they are purely additive to the schema
+    self.persistenceManager.persistReceivedSharedPayloads(decryptedPayloads, ofType: walletTxType, in: context)
+  }
+
+  private func decryptedOnChainPayloads(from responses: [TransactionNotificationResponse],
+                                        in context: NSManagedObjectContext) -> [Data] {
     let cryptor = CKCryptor(walletManager: self.walletManager)
 
     let decryptionInputs = responses.compactMap { res -> (payload: String, address: String)? in
@@ -369,16 +393,30 @@ class TransactionDataWorker: TransactionDataWorkerType {
       guard addressDataSource.checkAddressExists(for: inputs.address, in: context) != nil else { return nil }
       do {
         let payloadData = try cryptor.decrypt(payloadAsBase64String: inputs.payload, withReceiveAddress: inputs.address, in: context)
-        log.debug("Successfully decrypted payload")
+        log.debug("Successfully decrypted onChain payload")
         return payloadData
       } catch {
-        log.error(error, message: "Failed to decrypt payload")
+        log.error(error, message: "Failed to decrypt onChain payload")
         return nil
       }
     }
+    return decryptedPayloads
+  }
 
-    // This should succeed in partially decoding future versions if they are purely additive to the schema
-    self.persistenceManager.persistReceivedSharedPayloads(decryptedPayloads, in: context)
+  private func decryptLightningPayloads(from responses: [TransactionNotificationResponse]) -> [Data] {
+    let cryptor = CKCryptor(walletManager: self.walletManager)
+    let decryptedPayloads: [Data] = responses.compactMap { response in
+      guard let payloadString = response.encryptedPayload else { return nil }
+      do {
+        let payloadData = try cryptor.decryptWithDefaultPrivateKey(payloadAsBase64String: payloadString)
+        log.debug("Successfully decrypted lightning payload")
+        return payloadData
+      } catch {
+        log.error(error, message: "Failed to decrypt lightning payload")
+        return nil
+      }
+    }
+    return decryptedPayloads
   }
 
   func groomFailedTransactions(notIn txids: [String], in context: NSManagedObjectContext) -> Promise<Void> {

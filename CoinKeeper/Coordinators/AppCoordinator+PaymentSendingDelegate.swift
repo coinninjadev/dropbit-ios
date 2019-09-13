@@ -13,10 +13,12 @@ import PromiseKit
 
 extension AppCoordinator: PaymentSendingDelegate {
 
-  func viewControllerDidConfirmLightningPayment(_ viewController: UIViewController, inputs: LightningPaymentInputs) {
+  func viewControllerDidConfirmLightningPayment(_ viewController: UIViewController,
+                                                inputs: LightningPaymentInputs,
+                                                receiver: OutgoingDropBitReceiver?) {
     let viewModel = PaymentVerificationPinEntryViewModel(amountDisablesBiometrics: false)
     let successHandler: CKCompletion = { [unowned self] in
-      self.handleSuccessfulLightningPaymentVerification(with: inputs)
+      self.handleSuccessfulLightningPaymentVerification(with: inputs, receiver: receiver)
     }
 
     let pinEntryVC = PinEntryViewController.newInstance(delegate: self,
@@ -39,10 +41,7 @@ extension AppCoordinator: PaymentSendingDelegate {
     let amountInfo = SharedPayloadAmountInfo(converter: converter)
     var outgoingTxDataWithAmount = outgoingTransactionData
     outgoingTxDataWithAmount.sharedPayloadDTO?.amountInfo = amountInfo
-
-    let senderIdentityFactory = SenderIdentityFactory(persistenceManager: persistenceManager)
-    let senderIdentity = senderIdentityFactory.preferredSharedPayloadSenderIdentity(forDropBitType: outgoingTransactionData.dropBitType)
-    outgoingTxDataWithAmount.sharedPayloadSenderIdentity = senderIdentity
+    outgoingTxDataWithAmount.sender = self.senderIdentity(forReceiver: outgoingTransactionData.receiver)
 
     let usdThreshold = 100_00
     let shouldDisableBiometrics = amountInfo.fiatAmount > usdThreshold
@@ -69,13 +68,14 @@ extension AppCoordinator: PaymentSendingDelegate {
     viewController.present(alert, animated: true, completion: nil)
   }
 
-  func handleSuccessfulLightningPaymentVerification(with inputs: LightningPaymentInputs) {
+  func handleSuccessfulLightningPaymentVerification(with inputs: LightningPaymentInputs, receiver: OutgoingDropBitReceiver?) {
     let viewModel = PaymentSuccessFailViewModel(mode: .pending)
     let successFailVC = SuccessFailViewController.newInstance(viewModel: viewModel, delegate: self)
     let errorHandler: CKErrorCompletion = self.paymentErrorHandler(for: successFailVC)
 
     successFailVC.action = { [unowned self] in
       self.executeConfirmedLightningPayment(with: inputs,
+                                            receiver: receiver,
                                             success: { successFailVC.setMode(.success) },
                                             failure: errorHandler)
     }
@@ -125,15 +125,60 @@ extension AppCoordinator: PaymentSendingDelegate {
   }
 
   private func executeConfirmedLightningPayment(with inputs: LightningPaymentInputs,
+                                                receiver: OutgoingDropBitReceiver?,
                                                 success: @escaping CKCompletion,
                                                 failure: @escaping CKErrorCompletion) {
     //TODO: Get updated ledger and persist new entry immediately following payment
-    self.networkManager.payLightningPaymentRequest(inputs.invoice, sats: inputs.sats).asVoid()
+    self.networkManager.payLightningPaymentRequest(inputs.invoice, sats: inputs.sats)
+      .get { self.persistLightningPaymentResponse($0, receiver: receiver, inputs: inputs) }
+      .then { response -> Promise<String> in
+        let maybeSender = self.senderIdentity(forReceiver: receiver)
+        let maybePostable = PayloadPostableLightningObject(inputs: inputs, paymentResultId: response.result.cleanedId,
+                                                           sender: maybeSender, receiver: receiver)
+        return self.postSharedPayloadIfAppropriate(with: maybePostable)
+      }
       .done { _ in
         success()
         self.didBroadcastTransaction()
       }
       .catch(failure)
+  }
+
+  private func persistLightningPaymentResponse(_ response: LNTransactionResponse,
+                                               receiver: OutgoingDropBitReceiver?,
+                                               inputs: LightningPaymentInputs) {
+    let context = self.persistenceManager.createBackgroundContext()
+    context.performAndWait {
+      guard let wallet = CKMWallet.find(in: context) else { return }
+      let ledgerEntry = CKMLNLedgerEntry.updateOrCreate(with: response.result, forWallet: wallet, in: context)
+      if let receiver = receiver {
+        ledgerEntry.walletEntry?.configure(withReceiver: receiver, in: context)
+      }
+
+      if let sharedPayload = inputs.sharedPayload {
+        ledgerEntry.walletEntry?.configureNewSenderSharedPayload(with: sharedPayload, in: context)
+      }
+
+      try? context.saveRecursively()
+    }
+  }
+
+  private func postSharedPayloadIfAppropriate(with object: SharedPayloadPostableObject?) -> Promise<String> {
+    guard let wmgr = self.walletManager else {
+      return Promise(error: CKPersistenceError.missingValue(key: "walletManager"))
+    }
+
+    guard let postableObject = object else {
+      return Promise(error: CKPersistenceError.missingValue(key: "sharedPayloadPostableObject") )
+    }
+
+    return self.networkManager.postSharedPayloadIfAppropriate(withPostableObject: postableObject, walletManager: wmgr)
+  }
+
+  func senderIdentity(forReceiver receiver: OutgoingDropBitReceiver?) -> UserIdentityBody? {
+    guard let receiver = receiver else { return nil }
+    let senderIdentityFactory = SenderIdentityFactory(persistenceManager: persistenceManager)
+    return senderIdentityFactory.preferredSharedPayloadSenderIdentity(forReceiver: receiver)
   }
 
   private func broadcastConfirmedOnChainTransaction(with transactionData: CNBTransactionData,
@@ -144,12 +189,9 @@ extension AppCoordinator: PaymentSendingDelegate {
     self.networkManager.updateCachedMetadata()
       .then { _ in self.networkManager.broadcastTx(with: transactionData) }
       .then { txid -> Promise<String> in
-        guard let wmgr = self.walletManager else {
-          return Promise(error: CKPersistenceError.missingValue(key: "wallet"))
-        }
         let dataCopyWithTxid = outgoingTransactionData.copy(withTxid: txid)
-        return self.networkManager.postSharedPayloadIfAppropriate(withOutgoingTxData: dataCopyWithTxid,
-                                                                  walletManager: wmgr)
+        let maybePostable = PayloadPostableOutgoingTransactionData(data: dataCopyWithTxid)
+        return self.postSharedPayloadIfAppropriate(with: maybePostable)
       }
       .get { txid in
         let context = self.persistenceManager.createBackgroundContext()
@@ -189,11 +231,11 @@ extension AppCoordinator: PaymentSendingDelegate {
         success()
 
         if !isInternalBroadcast {
-          self.showShareTransactionIfAppropriate(dropBitType: .none, delegate: self)
+          self.showShareTransactionIfAppropriate(dropBitReceiver: outgoingTransactionData.receiver, delegate: self)
         }
 
         self.analyticsManager.track(property: MixpanelProperty(key: .hasSent, value: true))
-        if case .twitter = outgoingTransactionData.dropBitType {
+        if let receiver = outgoingTransactionData.receiver, case .twitter = receiver {
           self.analyticsManager.track(event: .twitterSendComplete, with: nil)
         }
         self.trackIfUserHasABalance()

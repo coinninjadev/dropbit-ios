@@ -36,7 +36,10 @@ class InvitationBroker: CKPersistenceBroker, InvitationBrokerType {
     guard let invitation = CKMInvitation.updateIfExists(withAddressRequestResponse: response,
                                                         side: .sent, isAcknowledged: false, in: context) else { return }
     let transaction = CKMTransaction.findOrCreate(with: outgoingTransactionData, in: context)
-    transaction.configureNewSenderSharedPayload(with: outgoingTransactionData.sharedPayloadDTO, in: context)
+    if let sharedPayload = outgoingTransactionData.sharedPayloadDTO {
+      transaction.configureNewSenderSharedPayload(with: sharedPayload, in: context)
+    }
+
     invitation.transaction = transaction
     invitation.counterpartyTwitterContact = transaction.twitterContact
     invitation.counterpartyPhoneNumber = transaction.phoneNumber
