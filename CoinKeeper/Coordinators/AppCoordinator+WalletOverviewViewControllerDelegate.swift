@@ -34,6 +34,7 @@ extension AppCoordinator: WalletOverviewViewControllerDelegate {
       let viewModel = WalletTransferViewModel(direction: direction, amount: .custom,
                                               walletBalances: strongSelf.spendableBalanceNetPending())
       let transferViewController = WalletTransferViewController.newInstance(delegate: strongSelf, viewModel: viewModel)
+      strongSelf.toggleChartAndBalance()
       strongSelf.navigationController.present(transferViewController, animated: true, completion: nil)
     }
 
@@ -74,8 +75,7 @@ extension AppCoordinator: WalletOverviewViewControllerDelegate {
   func viewControllerDidTapSendPayment(_ viewController: UIViewController,
                                        converter: CurrencyConverter,
                                        walletTransactionType: WalletTransactionType) {
-    guard let walletOverviewViewController = viewController as? WalletOverviewViewController else { return }
-    walletOverviewViewController.balanceContainer.toggleChartAndBalance()
+    toggleChartAndBalance()
     analyticsManager.track(event: .payButtonWasPressed, with: nil)
 
     let swappableVM = CurrencySwappableEditAmountViewModel(exchangeRates: self.currencyController.exchangeRates,

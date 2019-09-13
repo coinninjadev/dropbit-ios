@@ -52,6 +52,8 @@ class ConfirmPaymentViewControllerTests: XCTestCase {
   }
 
   class MockCoordinator: ConfirmPaymentViewControllerDelegate {
+
+    func viewControllerDidSelectCloseWithToggle(_ viewController: UIViewController) { }
     var alertManager: AlertManagerType = MockAlertManager(notificationManager:
       NotificationManager(permissionManager: PermissionManager(),
                           networkInteractor: NetworkManager(persistenceManager: PersistenceManager(),
