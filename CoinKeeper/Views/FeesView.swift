@@ -55,8 +55,25 @@ class FeesView: UIView {
     layer.borderWidth = 1.0
   }
 
-  func setupFees() {
-
+  func setupFees(top topSats: Int, bottom bottomSats: Int) {
+    let satsFormatter = SatsFormatter(), manager = ExchangeRateManager()
+    let fiatFormatter = FiatFormatter(currency: .USD, withSymbol: true)
+    let topFee = NSDecimalNumber(integerAmount: topSats, currency: .BTC)
+    let bottomFee = NSDecimalNumber(integerAmount: bottomSats, currency: .BTC)
+    let currencyConvterterTop = CurrencyConverter(fromBtcTo: .USD,
+                                                  fromAmount: topFee,
+                                                  rates: manager.exchangeRates)
+    let currencyConvterterBottom = CurrencyConverter(fromBtcTo: .USD,
+                                                     fromAmount: bottomFee,
+                                                     rates: manager.exchangeRates)
+    guard let topDecimal = currencyConvterterTop.amount(forCurrency: .USD),
+    let bottomDecimal = currencyConvterterBottom.amount(forCurrency: .USD) else { return }
+    topLabel.text = """
+      \(satsFormatter.string(fromDecimal: topFee) ?? "") (\(fiatFormatter.string(fromDecimal: topDecimal) ?? ""))
+      """.removingMultilineLineBreaks()
+    bottomLabel.text = """
+      \(satsFormatter.string(fromDecimal: bottomFee) ?? "") (\(fiatFormatter.string(fromDecimal: bottomDecimal) ?? ""))
+      """.removingMultilineLineBreaks()
   }
 
   @IBAction func tooltipButtonWasTouched() {

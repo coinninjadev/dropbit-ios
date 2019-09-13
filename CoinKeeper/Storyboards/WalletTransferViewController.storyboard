@@ -49,7 +49,7 @@
                                     <constraint firstAttribute="height" constant="75" id="vhE-cE-Jbc"/>
                                 </constraints>
                             </view>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lSJ-Pb-4hA" customClass="FeesView" customModule="DropBit" customModuleProvider="target">
+                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lSJ-Pb-4hA" customClass="FeesView" customModule="DropBit" customModuleProvider="target">
                                 <rect key="frame" x="38" y="475.5" width="338" height="85"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
