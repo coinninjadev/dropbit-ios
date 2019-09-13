@@ -118,8 +118,11 @@ class TransactionHistoryLightningDataSource: NSObject, TransactionHistoryDataSou
   }
 
   private func viewModelObject(for walletEntry: CKMWalletEntry) -> TransactionSummaryCellViewModelObject {
-    if let lightningObject = LightningViewModelObject(walletEntry: walletEntry) {
-      return lightningObject
+    if let lightningInvitation = walletEntry.invitation,
+      let invitationObject = LightningInvitationViewModelObject(invitation: lightningInvitation) {
+      return invitationObject
+    } else if let transactionObject = LightningTransactionViewModelObject(walletEntry: walletEntry) {
+      return transactionObject
     } else {
       return FallbackViewModelObject(walletTxType: .lightning)
     }

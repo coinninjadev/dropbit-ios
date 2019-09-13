@@ -78,4 +78,15 @@ extension CKMInvitation {
     set { self.walletTransactionType = newValue.rawValue }
   }
 
+  var transactionStatus: TransactionStatus {
+    switch status {
+    case .notSent,
+         .requestSent,
+         .addressSent:  return .pending
+    case .canceled:     return .canceled
+    case .expired:      return .expired
+    case .completed:    return .completed
+    }
+  }
+
 }
