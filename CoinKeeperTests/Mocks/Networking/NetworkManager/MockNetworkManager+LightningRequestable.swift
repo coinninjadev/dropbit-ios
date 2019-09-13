@@ -11,6 +11,10 @@ import PromiseKit
 
 extension MockNetworkManager: LightningRequestable {
 
+  func estimateLightningWithdrawlFees(to address: String, sats: Int) -> Promise<LNTransactionResponse> {
+    return Promise { _ in }
+  }
+
   func getOrCreateLightningAccount() -> Promise<LNAccountResponse> {
     return Promise { _ in }
   }
