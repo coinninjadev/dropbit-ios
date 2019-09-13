@@ -10,7 +10,7 @@ import Foundation
 
 extension LightningUpgradeCoordinator: LightningUpgradeStartViewControllerDelegate {
   func viewControllerRequestedShowLightningUpgradeInfo(_ viewController: LightningUpgradeStartViewController) {
-    let url = CoinNinjaUrlFactory.buildUrl(for: .contactUs)!
+    let url = CoinNinjaUrlFactory.buildUrl(for: .lightningUpgrade)!
     parent.openURL(url, completionHandler: nil)
   }
 
