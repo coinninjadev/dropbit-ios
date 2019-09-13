@@ -753,7 +753,7 @@ class WalletAddressDataWorker: WalletAddressDataWorkerType {
   private func sharedPayload(
     invitation: CKMInvitation,
     walletAddressRequestResponse response: WalletAddressRequestResponse) -> SharedPayloadDTO {
-    let walletTxType = response.addressTypeCase.flatMap { WalletTransactionType(addressType: $0) } ?? .onChain
+    let walletTxType = WalletTransactionType(addressType: response.addressTypeCase)
 
     if let ckmPayload = invitation.transaction?.sharedPayload,
       let fiatCurrency = CurrencyCode(rawValue: ckmPayload.fiatCurrency),

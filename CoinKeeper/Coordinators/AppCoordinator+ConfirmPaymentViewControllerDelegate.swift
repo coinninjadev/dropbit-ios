@@ -47,9 +47,9 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate {
       }
 
       let inviteBody = WalletAddressRequestBody(amount: outgoingInvitationDTO.btcPair,
-                                          receiver: receiverBody,
-                                          sender: senderBody,
-                                          requestId: UUID().uuidString.lowercased())
+                                                receiver: receiverBody,
+                                                sender: senderBody,
+                                                requestId: UUID().uuidString.lowercased())
       self.handleSuccessfulInviteVerification(with: inviteBody, outgoingInvitationDTO: outgoingInvitationDTO)
     }
 

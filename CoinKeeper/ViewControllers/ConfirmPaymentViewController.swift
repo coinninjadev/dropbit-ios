@@ -152,6 +152,7 @@ class ConfirmPaymentViewController: PresentableViewController, StoryboardInitial
     let outgoingInvitationDTO = OutgoingInvitationDTO(contact: contact,
                                                       btcPair: pair,
                                                       fee: feeModel.networkFeeAmount,
+                                                      walletTxType: viewModel.walletTransactionType,
                                                       sharedPayloadDTO: viewModel.sharedPayloadDTO)
     delegate.viewControllerDidConfirmInvite(self,
                                             outgoingInvitationDTO: outgoingInvitationDTO,

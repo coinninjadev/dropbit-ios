@@ -18,10 +18,10 @@ class InvitationBroker: CKPersistenceBroker, InvitationBrokerType {
     return databaseManager.getAllInvitations(in: context)
   }
 
-  func persistUnacknowledgedInvitation(withDTO outgoingDTO: OutgoingInvitationDTO,
+  func persistUnacknowledgedInvitation(withDTO invitationDTO: OutgoingInvitationDTO,
                                        acknowledgmentId: String,
                                        in context: NSManagedObjectContext) {
-    _ = CKMInvitation(withOutgoingInvitationDTO: outgoingDTO,
+    _ = CKMInvitation(withOutgoingInvitationDTO: invitationDTO,
                       acknowledgmentId: acknowledgmentId,
                       insertInto: context)
   }
@@ -34,15 +34,30 @@ class InvitationBroker: CKPersistenceBroker, InvitationBrokerType {
                              response: WalletAddressRequestResponse,
                              in context: NSManagedObjectContext) {
     guard let invitation = CKMInvitation.updateIfExists(withAddressRequestResponse: response,
-                                                        side: .sent, isAcknowledged: false, in: context) else { return }
-    let transaction = CKMTransaction.findOrCreate(with: outgoingTransactionData, in: context)
+                                                        side: .sent, isAcknowledged: false, in: context),
+      let parentObject = invitationAcknowledgableObject(for: outgoingTransactionData,
+                                            walletTxType: invitation.walletTxTypeCase,
+                                            in: context) else { return }
+
     if let sharedPayload = outgoingTransactionData.sharedPayloadDTO {
-      transaction.configureNewSenderSharedPayload(with: sharedPayload, in: context)
+      parentObject.configureNewSenderSharedPayload(with: sharedPayload, in: context)
     }
 
-    invitation.transaction = transaction
-    invitation.counterpartyTwitterContact = transaction.twitterContact
-    invitation.counterpartyPhoneNumber = transaction.phoneNumber
+    parentObject.invitation = invitation
+    invitation.counterpartyTwitterContact = parentObject.twitterContact
+    invitation.counterpartyPhoneNumber = parentObject.phoneNumber
+  }
+
+  func invitationAcknowledgableObject(for outgoingTransactionData: OutgoingTransactionData,
+                                      walletTxType: WalletTransactionType,
+                                      in context: NSManagedObjectContext) -> InvitationAcknowledgable? {
+    switch walletTxType {
+    case .onChain:
+      return CKMTransaction.findOrCreate(with: outgoingTransactionData, in: context)
+    case .lightning:
+      guard let wallet = CKMWallet.find(in: context) else { return nil }
+      return CKMWalletEntry(wallet: wallet, sortDate: Date(), insertInto: context)
+    }
   }
 
 }

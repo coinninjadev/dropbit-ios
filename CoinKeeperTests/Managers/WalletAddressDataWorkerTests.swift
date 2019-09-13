@@ -95,7 +95,8 @@ class WalletAddressDataWorkerTests: MockedPersistenceTestCase {
   private func generateUnacknowledgedInvitation(with contact: ContactType, in context: NSManagedObjectContext) {
     let acknowledgementId = UUID().uuidString
     let pair: BitcoinUSDPair = (btcAmount: 1, usdAmount: 7000)
-    let outgoingInvitationDTO = OutgoingInvitationDTO(contact: contact, btcPair: pair, fee: 19, sharedPayloadDTO: nil)
+    let outgoingInvitationDTO = OutgoingInvitationDTO(contact: contact, btcPair: pair, fee: 19,
+                                                      walletTxType: .onChain, sharedPayloadDTO: nil)
 
     PersistenceManager().brokers.invitation.persistUnacknowledgedInvitation(
       withDTO: outgoingInvitationDTO,

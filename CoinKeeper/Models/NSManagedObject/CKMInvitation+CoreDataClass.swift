@@ -26,6 +26,7 @@ public class CKMInvitation: NSManagedObject {
     self.counterpartyName = nil
     self.sentDate = response.createdAt
     self.side = InvitationSide(requestSide: side)
+    self.walletTxTypeCase = WalletTransactionType(addressType: response.addressTypeCase)
     let requestStatus = response.statusCase ?? .new
     self.status = CKMInvitation.statusToPersist(for: requestStatus, side: side)
 
@@ -58,32 +59,20 @@ public class CKMInvitation: NSManagedObject {
     self.setTxid(to: response.txid)
   }
 
-  convenience public init(withOutgoingInvitationDTO outgoingDTO: OutgoingInvitationDTO,
+  convenience public init(withOutgoingInvitationDTO invitationDTO: OutgoingInvitationDTO,
                           acknowledgmentId: String,
                           insertInto context: NSManagedObjectContext) {
     self.init(insertInto: context)
-    let contact = outgoingDTO.contact
+    let contact = invitationDTO.contact
     self.id = CKMInvitation.unacknowledgementPrefix + acknowledgmentId
-    self.btcAmount = outgoingDTO.btcPair.btcAmount.asFractionalUnits(of: .BTC)
-    self.usdAmountAtTimeOfInvitation = outgoingDTO.btcPair.usdAmount.asFractionalUnits(of: .USD)
+    self.btcAmount = invitationDTO.btcPair.btcAmount.asFractionalUnits(of: .BTC)
+    self.usdAmountAtTimeOfInvitation = invitationDTO.btcPair.usdAmount.asFractionalUnits(of: .USD)
     self.side = .sender
+    self.walletTxTypeCase = invitationDTO.walletTxType
     self.status = .notSent
     self.counterpartyName = contact.displayName
-    self.setFlatFee(to: outgoingDTO.fee)
-
-    switch contact.identityType {
-    case .phone:
-      guard let phoneContact = contact as? PhoneContactType,
-        let inputs = ManagedPhoneNumberInputs(phoneNumber: phoneContact.globalPhoneNumber)
-        else { return }
-      self.counterpartyPhoneNumber = CKMPhoneNumber.findOrCreate(withInputs: inputs,
-                                                            phoneNumberHash: phoneContact.phoneNumberHash,
-                                                            in: context)
-    case.twitter:
-      guard let twitterContact = contact as? TwitterContactType else { return }
-      let managedTwitterContact = CKMTwitterContact.findOrCreate(with: twitterContact, in: context)
-      self.counterpartyTwitterContact = managedTwitterContact
-    }
+    self.setFlatFee(to: invitationDTO.fee)
+    self.configure(withReceiver: contact.asDropBitReceiver, in: context)
   }
 
   var completed: Bool {
@@ -328,6 +317,20 @@ extension CKMInvitation: AddressRequestUpdateDisplayable {
     case .sender:   return counterpartyTwitterContact?.formattedScreenName
     case .receiver: return nil
     }
+  }
+
+}
+
+extension CKMInvitation: DropBitReceiverPersistable {
+
+  var phoneNumber: CKMPhoneNumber? {
+    get { return self.counterpartyPhoneNumber }
+    set { self.counterpartyPhoneNumber = newValue }
+  }
+
+  var twitterContact: CKMTwitterContact? {
+    get { return self.counterpartyTwitterContact }
+    set { self.counterpartyTwitterContact = newValue }
   }
 
 }
