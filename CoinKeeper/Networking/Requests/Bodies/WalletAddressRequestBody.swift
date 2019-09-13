@@ -101,16 +101,21 @@ public struct WalletAddressRequestBody: Encodable {
   let receiver: UserIdentityBody
   let requestId: String
   let suppress: Bool
+  let addressType: String
 
   init(amount: BitcoinUSDPair,
        receiver: UserIdentityBody,
        sender: UserIdentityBody,
-       requestId: String) {
-    self.amount = WalletAddressRequestAmount(usd: amount.usdAmount.asFractionalUnits(of: .USD),
-                                       btc: amount.btcAmount.asFractionalUnits(of: .BTC))
+       requestId: String,
+       addressType: WalletAddressType) {
+    let usdCents = amount.usdAmount.asFractionalUnits(of: .USD)
+    let roundedUpCents = max(usdCents, 1) //server requires a non-zero integer for small amounts, e.g. 1 sat
+    self.amount = WalletAddressRequestAmount(usd: roundedUpCents,
+                                             btc: amount.btcAmount.asFractionalUnits(of: .BTC))
     self.sender = sender
     self.receiver = receiver
     self.requestId = requestId
     self.suppress = receiver.identityType == .twitter
+    self.addressType = addressType.rawValue
   }
 }
