@@ -34,6 +34,18 @@ extension AppCoordinator: SettingsViewControllerDelegate {
     })
   }
 
+  func viewControllerDidSelectReviewLegacyWords(_ viewController: UIViewController) {
+    guard let legacyWords = persistenceManager.keychainManager.retrieveValue(for: .walletWords) as? [String] else { return }
+    viewController.dismiss(animated: true) {
+      self.analyticsManager.track(event: .viewLegacyWords, with: nil)
+      let backupWordsVC = BackupRecoveryWordsViewController.newInstance(withDelegate: self,
+                                                                        recoveryWords: legacyWords,
+                                                                        wordsBackedUp: true,
+                                                                        reviewOnly: true)
+      self.navigationController.present(CNNavigationController(rootViewController: backupWordsVC), animated: false, completion: nil)
+    }
+  }
+
   func viewControllerDidSelectOpenSourceLicenses(_ viewController: UIViewController) {
     guard let privacyPolicyHtml = Bundle.main.path(forResource: "licenses", ofType: "html"),
       let html = try? String(contentsOfFile: privacyPolicyHtml, encoding: String.Encoding.utf8),

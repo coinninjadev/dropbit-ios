@@ -154,7 +154,7 @@ extension AppCoordinator {
       return
     }
 
-    let usableWords = words.isEmpty ? wmgr.mnemonicWords() : []
+    let usableWords = words.isEmpty ? wmgr.mnemonicWords() : words
 
     guard usableWords.count == 12 else {
       log.error("Failed to receive 12 words")

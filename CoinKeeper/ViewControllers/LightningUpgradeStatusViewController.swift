@@ -81,7 +81,7 @@ final class LightningUpgradeStatusViewController: BaseViewController, Storyboard
   private func styleInitialUI() {
     [creatingNewWalletStatusView, updatingToSegwitStatusView, transferringFundsStatusView]
       .forEach { $0?.mode = .notStarted }
-    
+
     creatingNewWalletStatusLabel.text = "Creating new wallet"
     updatingToSegwitStatusLabel.text = "Updating to SegWit"
     transferringFundsStatusLabel.text = "Transferring funds"

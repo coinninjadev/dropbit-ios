@@ -80,6 +80,7 @@ enum AnalyticsManagerEventType: String {
   case tryAgainToDeverify = "TryAgainToDeregister"
   case syncBlockchain = "SyncBlockchainPressed"
   case viewWords = "ViewWords"
+  case viewLegacyWords = "ViewLegacyWords"
   case appOpen = "AppOpen"
   case firstOpen = "FirstOpen"
   case payScreenLoaded = "PayScreenLoaded"
