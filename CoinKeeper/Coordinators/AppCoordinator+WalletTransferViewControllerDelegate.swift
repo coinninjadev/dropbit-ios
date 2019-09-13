@@ -40,6 +40,7 @@ extension AppCoordinator: WalletTransferViewControllerDelegate {
     }
 
     viewController.dismiss(animated: false) {
+      self.toggleChartAndBalance()
       self.navigationController.topViewController()?.present(successFailVC, animated: false) {
         successFailVC.action?()
       }
@@ -56,9 +57,12 @@ extension AppCoordinator: WalletTransferViewControllerDelegate {
   }
 
   func viewControllerDidConfirmLoad(_ viewController: UIViewController, paymentData transactionData: PaymentData) {
-    handleSuccessfulOnChainPaymentVerification(with: transactionData.broadcastData,
+    viewController.dismiss(animated: false) {
+      self.toggleChartAndBalance()
+      self.handleSuccessfulOnChainPaymentVerification(with: transactionData.broadcastData,
                                                outgoingTransactionData: transactionData.outgoingData,
                                                isInternalBroadcast: true)
+    }
   }
 
   func viewControllerNetworkError(_ error: Error) {

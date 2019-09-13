@@ -106,6 +106,8 @@ class RequestPayViewControllerTests: XCTestCase {
   // MARK: mock coordinator
   class MockCoordinator: RequestPayViewControllerDelegate {
 
+    func viewControllerDidSelectCloseWithToggle(_ viewController: UIViewController) { }
+
     var didCreateInvoice = false
     func viewControllerDidCreateInvoice(_ viewController: UIViewController) {
       didCreateInvoice = true

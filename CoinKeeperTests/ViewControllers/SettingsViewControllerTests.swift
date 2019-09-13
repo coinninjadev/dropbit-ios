@@ -73,6 +73,8 @@ class SettingsViewControllerTests: XCTestCase {
   // MARK: mock coordinator
   class MockCoordinator: SettingsViewControllerDelegate {
 
+    func viewControllerDidSelectCloseWithToggle(_ viewController: UIViewController) { }
+
     func verifiedPhoneNumber() -> String? {
       return nil
     }
