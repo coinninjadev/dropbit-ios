@@ -154,8 +154,8 @@ class ConfirmPaymentViewController: PresentableViewController, StoryboardInitial
                                                       fee: feeModel.networkFeeAmount,
                                                       sharedPayloadDTO: viewModel.sharedPayloadDTO)
     delegate.viewControllerDidConfirmInvite(self,
-                                                         outgoingInvitationDTO: outgoingInvitationDTO,
-                                                         walletTxType: viewModel.walletTransactionType)
+                                            outgoingInvitationDTO: outgoingInvitationDTO,
+                                            walletTxType: viewModel.walletTransactionType)
   }
 
 }

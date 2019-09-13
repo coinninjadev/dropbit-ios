@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct RequestAddressAmount: Codable {
+struct WalletAddressRequestAmount: Codable {
   let usd: Int
   let btc: Int
 }
@@ -95,8 +95,8 @@ extension UserIdentityBody {
   }
 }
 
-public struct RequestAddressBody: Encodable {
-  let amount: RequestAddressAmount
+public struct WalletAddressRequestBody: Encodable {
+  let amount: WalletAddressRequestAmount
   let sender: UserIdentityBody
   let receiver: UserIdentityBody
   let requestId: String
@@ -106,7 +106,7 @@ public struct RequestAddressBody: Encodable {
        receiver: UserIdentityBody,
        sender: UserIdentityBody,
        requestId: String) {
-    self.amount = RequestAddressAmount(usd: amount.usdAmount.asFractionalUnits(of: .USD),
+    self.amount = WalletAddressRequestAmount(usd: amount.usdAmount.asFractionalUnits(of: .USD),
                                        btc: amount.btcAmount.asFractionalUnits(of: .BTC))
     self.sender = sender
     self.receiver = receiver

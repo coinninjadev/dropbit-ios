@@ -46,7 +46,7 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate {
         return
       }
 
-      let inviteBody = RequestAddressBody(amount: outgoingInvitationDTO.btcPair,
+      let inviteBody = WalletAddressRequestBody(amount: outgoingInvitationDTO.btcPair,
                                           receiver: receiverBody,
                                           sender: senderBody,
                                           requestId: UUID().uuidString.lowercased())
@@ -59,7 +59,7 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate {
     presentPinEntryViewController(pinEntryVC)
   }
 
-  private func handleSuccessfulInviteVerification(with inviteBody: RequestAddressBody, outgoingInvitationDTO: OutgoingInvitationDTO) {
+  private func handleSuccessfulInviteVerification(with inviteBody: WalletAddressRequestBody, outgoingInvitationDTO: OutgoingInvitationDTO) {
 
     // guard against fee at 0 again, to really ensure that it is not zero before creating the network request
     guard outgoingInvitationDTO.fee > 0 else {
@@ -148,7 +148,7 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate {
     }
   }
 
-  private func createInviteNotificationSMSComposer(for inviteBody: RequestAddressBody) -> MFMessageComposeViewController? {
+  private func createInviteNotificationSMSComposer(for inviteBody: WalletAddressRequestBody) -> MFMessageComposeViewController? {
     guard MFMessageComposeViewController.canSendText(),
       let phoneNumber = inviteBody.receiver.globalNumber()
       else { return nil }
@@ -166,7 +166,7 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate {
     return composeVC
   }
 
-  private func showManualInviteSMSAlert(inviteBody: RequestAddressBody) {
+  private func showManualInviteSMSAlert(inviteBody: WalletAddressRequestBody) {
     let requestConfiguration = AlertActionConfiguration(title: "NOTIFY", style: .default, action: { [weak self] in
       guard let strongSelf = self,
         let composeVC = strongSelf.createInviteNotificationSMSComposer(for: inviteBody),
@@ -233,7 +233,7 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate {
 
   private func handleAddressRequestCreationError(_ error: Error,
                                                  invitationDTO: OutgoingInvitationDTO,
-                                                 inviteBody: RequestAddressBody,
+                                                 inviteBody: WalletAddressRequestBody,
                                                  successFailVC: SuccessFailViewController,
                                                  in context: NSManagedObjectContext) {
     if let networkError = error as? CKNetworkError,
