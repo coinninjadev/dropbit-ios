@@ -58,7 +58,7 @@ class LightningUpgradeCoordinator: ChildCoordinatorType {
     self.newWords = tempWords
     let newWallet = CNBHDWallet(mnemonic: tempWords, coin: upgradedCoin)
     self.newWallet = newWallet
-    let dataSource = AddressDataSource(wallet: wallet, persistenceManager: parent.persistenceManager)
+    let dataSource = AddressDataSource(wallet: newWallet, persistenceManager: parent.persistenceManager)
     let destinationAddress = dataSource.changeAddress(at: 0).address
     log.info("Creating send-max transaction to upgraded wallet.")
     parent.walletManager?.transactionDataSendingAll(to: destinationAddress, withFeeRate: feeRate)

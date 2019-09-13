@@ -62,6 +62,8 @@ protocol CheckInBrokerType: AnyObject {
   var cachedBetterFee: Double { get set }
   var cachedGoodFee: Double { get set }
 
+  func processCheckIn(response: CheckInResponse) -> Promise<Void>
+
 }
 
 protocol DeviceBrokerType: AnyObject {

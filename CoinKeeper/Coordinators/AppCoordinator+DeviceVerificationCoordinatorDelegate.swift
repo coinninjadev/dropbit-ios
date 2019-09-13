@@ -16,12 +16,11 @@ extension AppCoordinator: DeviceVerificationCoordinatorDelegate {
    then persists the wallet ID returned by the server response.
    Call this after the seed words are backed up or skipped.
    */
-  func registerAndPersistWallet(in context: NSManagedObjectContext) -> Promise<WalletFlagsParser> {
+  func registerAndPersistWallet(in context: NSManagedObjectContext) -> Promise<Void> {
     guard let wmgr = walletManager else { return Promise(error: CKPersistenceError.noWalletManager) }
     // Skip registration if wallet was previously registered and persisted
     guard self.persistenceManager.brokers.wallet.walletId(in: context) == nil else {
-      let flags = self.persistenceManager.brokers.wallet.walletFlags(in: context)
-      return Promise.value(flags)
+      return Promise.value(())
     }
 
     let flags = 0
@@ -34,6 +33,28 @@ extension AppCoordinator: DeviceVerificationCoordinatorDelegate {
         try self.persistenceManager.brokers.wallet.persistWalletResponse(from: response, in: context)
         return Promise.value(WalletFlagsParser(flags: response.flags))
       }
+      .done { (parser: WalletFlagsParser) in
+        if parser.walletVersion != .v2 {
+          let desc = "It appears you have entered recovery words from a legacy DropBit wallet. " +
+            "Please upgrade now for enhanced security, smaller transaction size and cost, " +
+          "and Lightning support."
+          let action = AlertActionConfiguration(title: "Upgrade Now", style: .default, action: {
+            let words = self.persistenceManager.brokers.wallet.walletWords()
+            self.persistenceManager.keychainManager.storeSynchronously(anyValue: words, key: .walletWords)
+            self.persistenceManager.keychainManager.storeSynchronously(anyValue: nil, key: .walletWordsV2)
+            self.persistenceManager.keychainManager.storeSynchronously(anyValue: false, key: .walletWordsBackedUp)
+            self.startSegwitUpgrade()
+          })
+          let alertViewModel = AlertControllerViewModel(title: "Upgrade Required", description: desc, image: nil, style: .alert, actions: [action])
+          let alert = self.alertManager.alert(from: alertViewModel)
+          self.navigationController.topViewController()?.present(alert, animated: true)
+        } else {
+          try context.performThrowingAndWait {
+            try context.saveRecursively()
+          }
+        }
+      }
+      .asVoid()
   }
 
   func coordinator(_ coordinator: DeviceVerificationCoordinator, didVerify type: UserIdentityType, isInitialSetupFlow: Bool) {

@@ -87,6 +87,7 @@ final class LightningUpgradeStartViewController: BaseViewController, StoryboardI
     let fontSize: CGFloat = 12
     let btcAmount = NSDecimalNumber(integerAmount: Int(data.amount), currency: .BTC)
     let feeAmount = NSDecimalNumber(integerAmount: Int(data.feeAmount), currency: .BTC)
+    self.exchangeRates = ExchangeRateManager().exchangeRates // update latest rates
     let amountConverter = CurrencyConverter(fromBtcTo: .USD, fromAmount: btcAmount, rates: exchangeRates)
     let feeConverter = CurrencyConverter(fromBtcTo: .USD, fromAmount: feeAmount, rates: exchangeRates)
     let fiatFormatter = FiatFormatter(currency: .USD, withSymbol: true)

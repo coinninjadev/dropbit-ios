@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import PromiseKit
 
 class CheckInBroker: CKPersistenceBroker, CheckInBrokerType {
 
@@ -33,6 +34,15 @@ class CheckInBroker: CKPersistenceBroker, CheckInBrokerType {
   var cachedGoodFee: Double {
     get { return userDefaultsManager.double(for: .feeGood) }
     set { userDefaultsManager.set(newValue, for: .feeGood) }
+  }
+
+  func processCheckIn(response: CheckInResponse) -> Promise<Void> {
+    cachedBTCUSDRate = response.pricing.last
+    cachedBlockHeight = response.blockheight
+    cachedBestFee = response.fees.fast
+    cachedBetterFee = response.fees.med
+    cachedGoodFee = response.fees.slow
+    return Promise.value(())
   }
 
 }

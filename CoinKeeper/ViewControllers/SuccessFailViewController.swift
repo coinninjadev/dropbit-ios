@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import PromiseKit
 
 protocol SuccessFailViewControllerDelegate: ViewControllerDismissable, URLOpener {
   func viewControllerDidRetry(_ viewController: SuccessFailViewController)
@@ -17,12 +18,15 @@ class SuccessFailViewController: BaseViewController, StoryboardInitializable {
 
   var viewModel: SuccessFailViewModel = SuccessFailViewModel(mode: .pending)
   var action: CKCompletion?
+  private(set) var initialAction: Promise<Void>!
 
   static func newInstance(viewModel: SuccessFailViewModel,
-                          delegate: SuccessFailViewControllerDelegate) -> SuccessFailViewController {
+                          delegate: SuccessFailViewControllerDelegate,
+                          initialAction: Promise<Void> = Promise.value(())) -> SuccessFailViewController {
     let vc = SuccessFailViewController.makeFromStoryboard()
     vc.viewModel = viewModel
     vc.delegate = delegate
+    vc.initialAction = initialAction
     vc.modalPresentationStyle = .overFullScreen
     return vc
   }
@@ -97,7 +101,9 @@ class SuccessFailViewController: BaseViewController, StoryboardInitializable {
 
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
-    reloadViewWithModel()
+    initialAction
+      .done { _ in self.reloadViewWithModel() }
+      .cauterize()
   }
 
   private func reloadViewWithModel() {
