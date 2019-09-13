@@ -55,8 +55,7 @@ extension NetworkManager: TransactionBroadcastable {
   func broadcastTx(metadata: CNBTransactionMetadata) -> Promise<String> {
 
     #if DEBUG
-//      return broadcastRegtestTx(with: txMetadata)
-      return broadcastMainnetTx(with: metadata)
+      return broadcastRegtestTx(with: metadata)
     #else
       return broadcastMainnetTx(with: metadata)
     #endif

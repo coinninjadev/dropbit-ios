@@ -85,6 +85,8 @@ class SettingsViewControllerTests: XCTestCase {
       return false
     }
 
+    var persistenceManager: PersistenceManagerType = MockPersistenceManager()
+
     func viewControllerDidSelectVerifyPhone(_ viewController: UIViewController) {}
 
     var deleteWalletWasRequested = false
@@ -94,6 +96,7 @@ class SettingsViewControllerTests: XCTestCase {
     func viewControllerDidConfirmDeleteWallet(_ viewController: UIViewController) {}
     func viewController(_ viewController: UIViewController, didRequestOpenURL url: URL) {}
     func viewControllerDidSelectRecoveryWords(_ viewController: UIViewController) {}
+    func viewControllerDidSelectReviewLegacyWords(_ viewController: UIViewController) {}
     func viewControllerSendDebuggingInfo(_ viewController: UIViewController) { }
     func viewControllerDidSelectOpenSourceLicenses(_ viewController: UIViewController) {}
     func viewController(_ viewController: UIViewController, didEnableDustProtection didEnable: Bool) {}

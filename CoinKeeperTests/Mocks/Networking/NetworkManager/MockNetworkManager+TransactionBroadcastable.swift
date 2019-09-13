@@ -16,6 +16,10 @@ extension MockNetworkManager: TransactionBroadcastable {
     return Promise { _ in }
   }
 
+  func broadcastTx(metadata: CNBTransactionMetadata) -> Promise<String> {
+    return Promise { _ in }
+  }
+
   func postSharedPayloadIfAppropriate(
     withOutgoingTxData outgoingTxData: OutgoingTransactionData,
     walletManager: WalletManagerType) -> Promise<String> {
