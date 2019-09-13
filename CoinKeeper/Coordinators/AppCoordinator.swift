@@ -221,7 +221,6 @@ class AppCoordinator: CoordinatorType {
     launchStateManager.selectedSetupFlow = nil
     enterApp()
     checkForBackendMessages()
-    checkForWordsBackedUp()
     requestPushNotificationDialogueIfNeeded()
     badgeManager.setupTopics()
   }
