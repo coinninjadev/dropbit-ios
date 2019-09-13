@@ -125,6 +125,7 @@ extension AppCoordinator {
       .get { _ in self.setWalletManagerWithPersistedWords() }
   }
 
+  /*
   func checkForWordsBackedUp() {
     let backupWordsReminderShown = persistenceManager.brokers.activity.backupWordsReminderShown
     guard !wordsBackedUp && !backupWordsReminderShown else { return }
@@ -136,6 +137,7 @@ extension AppCoordinator {
     }
     persistenceManager.brokers.activity.backupWordsReminderShown = true
   }
+  */
 
   func registerWalletWithServerIfNeeded(completion: @escaping CKCompletion) {
     if launchStateManager.shouldRegisterWallet() {
