@@ -13,6 +13,13 @@ import CNBitcoinKit
 
 extension AppCoordinator: WalletTransferViewControllerDelegate {
 
+  func viewControllerNeedsFeeEstimates(_ viewController: UIViewController, btcAmount: NSDecimalNumber) -> Promise<LNTransactionResponse> {
+    guard let receiveAddress = self.nextReceiveAddressForRequestPay() else { return Promise { _ in } }
+    let sats = btcAmount.asFractionalUnits(of: .BTC)
+
+    return networkManager.estimateLightningWithdrawlFees(to: receiveAddress, sats: sats)
+  }
+
   func viewControllerDidConfirmWithdraw(_ viewController: UIViewController, btcAmount: NSDecimalNumber) {
     guard let receiveAddress = self.nextReceiveAddressForRequestPay() else { return }
     let sats = btcAmount.asFractionalUnits(of: .BTC)
@@ -54,7 +61,7 @@ extension AppCoordinator: WalletTransferViewControllerDelegate {
                                                isInternalBroadcast: true)
   }
 
-  func viewControllerHasFundsError(_ error: Error) {
+  func viewControllerNetworkError(_ error: Error) {
     alertManager.showError(message: error.localizedDescription, forDuration: 2.0)
   }
 }

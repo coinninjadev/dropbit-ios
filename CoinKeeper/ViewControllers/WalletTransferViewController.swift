@@ -40,8 +40,10 @@ protocol WalletTransferViewControllerDelegate: ViewControllerDismissable, Paymen
   func viewControllerDidConfirmLoad(_ viewController: UIViewController,
                                     paymentData: PaymentData)
 
+  func viewControllerNeedsFeeEstimates(_ viewController: UIViewController, btcAmount: NSDecimalNumber) -> Promise<LNTransactionResponse>
+
   func viewControllerDidConfirmWithdraw(_ viewController: UIViewController, btcAmount: NSDecimalNumber)
-  func viewControllerHasFundsError(_ error: Error)
+  func viewControllerNetworkError(_ error: Error)
 }
 
 enum TransferDirection {
@@ -159,6 +161,34 @@ class WalletTransferViewController: PresentableViewController, StoryboardInitial
     editAmountView.primaryAmountTextField.resignFirstResponder()
     setupTransactionUI()
     buildTransactionIfNecessary()
+    getFeeEstimatesIfNecessary()
+  }
+
+  private func getFeeEstimatesIfNecessary() {
+    switch viewModel.direction {
+    case .toOnChain(let amount):
+      guard let amount = amount, amount > 0 else {
+        feesView.isHidden = true
+        confirmView.disable()
+        return
+      }
+      SVProgressHUD.show()
+      delegate.viewControllerNeedsFeeEstimates(self, btcAmount: amount)
+        .get(on: .main) { response in
+          SVProgressHUD.dismiss()
+          self.setupUIForFees(networkFee: response.result.networkFee, processingFee: response.result.processingFee)
+        }.catch { error in
+          SVProgressHUD.dismiss()
+          self.delegate.viewControllerNetworkError(error)
+      }
+    default:
+      break
+    }
+  }
+
+  private func setupUIForFees(networkFee: Int, processingFee: Int) {
+    feesView.isHidden = false
+    feesView.setupFees(top: networkFee, bottom: processingFee)
   }
 }
 
@@ -171,7 +201,7 @@ extension WalletTransferViewController: ConfirmViewDelegate {
         try LightningWalletAmountValidator(balanceNetPending: viewModel.walletBalances).validate(value: viewModel.generateCurrencyConverter())
         delegate.viewControllerDidConfirmLoad(self, paymentData: data)
       } catch {
-        delegate.viewControllerHasFundsError(error)
+        delegate.viewControllerNetworkError(error)
       }
     case .toOnChain(let btcAmount):
       guard let btcAmount = btcAmount else { return }
@@ -179,7 +209,7 @@ extension WalletTransferViewController: ConfirmViewDelegate {
         try CurrencyAmountValidator(balanceNetPending: viewModel.walletBalances).validate(value: viewModel.generateCurrencyConverter())
         delegate.viewControllerDidConfirmWithdraw(self, btcAmount: btcAmount)
       } catch {
-        delegate.viewControllerHasFundsError(error)
+        delegate.viewControllerNetworkError(error)
       }
     }
   }
