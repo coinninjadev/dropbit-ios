@@ -135,7 +135,11 @@ extension AppCoordinator: PaymentSendingDelegate {
         let maybeSender = self.senderIdentity(forReceiver: receiver)
         let maybePostable = PayloadPostableLightningObject(inputs: inputs, paymentResultId: response.result.cleanedId,
                                                            sender: maybeSender, receiver: receiver)
-        return self.postSharedPayloadIfAppropriate(with: maybePostable)
+        if let postableObject = maybePostable {
+          return self.postSharedPayload(postableObject)
+        } else {
+          return Promise.value(response.result.cleanedId)
+        }
       }
       .done { _ in
         success()
@@ -163,13 +167,9 @@ extension AppCoordinator: PaymentSendingDelegate {
     }
   }
 
-  private func postSharedPayloadIfAppropriate(with object: SharedPayloadPostableObject?) -> Promise<String> {
+  private func postSharedPayload(_ postableObject: SharedPayloadPostableObject) -> Promise<String> {
     guard let wmgr = self.walletManager else {
       return Promise(error: CKPersistenceError.missingValue(key: "walletManager"))
-    }
-
-    guard let postableObject = object else {
-      return Promise(error: CKPersistenceError.missingValue(key: "sharedPayloadPostableObject") )
     }
 
     return self.networkManager.postSharedPayloadIfAppropriate(withPostableObject: postableObject, walletManager: wmgr)
@@ -190,8 +190,11 @@ extension AppCoordinator: PaymentSendingDelegate {
       .then { _ in self.networkManager.broadcastTx(with: transactionData) }
       .then { txid -> Promise<String> in
         let dataCopyWithTxid = outgoingTransactionData.copy(withTxid: txid)
-        let maybePostable = PayloadPostableOutgoingTransactionData(data: dataCopyWithTxid)
-        return self.postSharedPayloadIfAppropriate(with: maybePostable)
+        if let postableObject = PayloadPostableOutgoingTransactionData(data: dataCopyWithTxid) {
+          return self.postSharedPayload(postableObject)
+        } else {
+          return Promise.value(txid)
+        }
       }
       .get { txid in
         let context = self.persistenceManager.createBackgroundContext()
