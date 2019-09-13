@@ -180,17 +180,13 @@ class WalletManager: WalletManagerType {
   }
 
   func balanceNetPending(in context: NSManagedObjectContext) -> (onChain: Int, lightning: Int) {
-    var netBalance = 0
-    var netLightningBalance = 0
-    context.performAndWait {
-      let wallet = CKMWallet.findOrCreate(in: context)
-      let atss = CKMAddressTransactionSummary.findAll(matching: self.coin, in: context)
-      let lightningAccount = persistenceManager.brokers.lightning.getAccount(forWallet: wallet, in: context)
-      let atsAmount = atss.reduce(0) { $0 + $1.netAmount }
-      let tempSentTxTotal = activeTemporarySentTxTotal(in: context)
-      netBalance = atsAmount - tempSentTxTotal
-      netLightningBalance = lightningAccount.balance
-    }
+    let wallet = CKMWallet.findOrCreate(in: context)
+    let atss = CKMAddressTransactionSummary.findAll(matching: self.coin, in: context)
+    let lightningAccount = persistenceManager.brokers.lightning.getAccount(forWallet: wallet, in: context)
+    let atsAmount = atss.reduce(0) { $0 + $1.netAmount }
+    let tempSentTxTotal = activeTemporarySentTxTotal(in: context)
+    let netBalance = atsAmount - tempSentTxTotal
+    let netLightningBalance = lightningAccount.balance
     return (onChain: netBalance, lightning: netLightningBalance)
   }
 
