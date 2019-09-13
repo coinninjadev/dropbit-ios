@@ -120,6 +120,7 @@ class AlertManager: AlertManagerType {
                        actions: @escaping ActionSheet.SelectAction) {
     let button = ActionSheetOkButton(title: "CANCEL")
     let sheet = ActionSheet(items: items.appending(element: button), action: actions)
+    sheet.presenter.isDismissableWithTapOnBackground = false
     sheet.present(in: viewController, from: nil)
   }
 
