@@ -248,7 +248,7 @@ class WalletAddressDataWorkerTests: MockedPersistenceTestCase {
 }
 
 class MockInvitationDelegate: InvitationWorkerDelegate {
-  func fetchAndHandleSentWalletAddressRequests() -> Promise<[WalletAddressRequestResponse]> {
+  func fetchSatisfiedSentWalletAddressRequests() -> Promise<[WalletAddressRequestResponse]> {
     return Promise { _ in }
   }
   func didBroadcastTransaction() { }
