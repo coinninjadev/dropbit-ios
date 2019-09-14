@@ -47,7 +47,6 @@ extension WalletAddressDataWorkerType {
 
 }
 
-// swiftlint:disable type_body_length
 class WalletAddressDataWorker: WalletAddressDataWorkerType {
 
   unowned let walletManager: WalletManagerType

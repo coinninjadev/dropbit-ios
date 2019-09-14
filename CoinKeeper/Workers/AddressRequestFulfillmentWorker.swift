@@ -29,7 +29,7 @@ class AddressRequestFulfillmentWorker {
 
   /// Returns new responses for the now fulfilled address requests
   func mapAndFulfillAddressRequests(for unfulfilledResponses: [WalletAddressRequestResponse],
-                                            in context: NSManagedObjectContext) -> Promise<Void> {
+                                    in context: NSManagedObjectContext) -> Promise<Void> {
 
     let unfulfilledOnChainResponses = unfulfilledResponses.filter { $0.addressTypeCase == .btc }
     let unfulfilledLightningResponses = unfulfilledResponses.filter { $0.addressTypeCase == .lightning }
@@ -37,7 +37,6 @@ class AddressRequestFulfillmentWorker {
     return self.fulfillAndPersistOnChainAddressRequests(for: unfulfilledOnChainResponses, in: context)
       .then(in: context) { self.fulfillAndPersistLightningAddressRequests(for: unfulfilledLightningResponses, in: context) }
   }
-
 
   /// Returns updated responses with the newly supplied addresses, as well as the bodies to be sent to the server
   private func fulfillAndPersistOnChainAddressRequests(for unfulfilledResponses: [WalletAddressRequestResponse],
