@@ -18,6 +18,7 @@ struct LNAccountResponse: LNResponseDecodable {
   let balance: Int
   let pendingIn: Int
   let pendingOut: Int
+  let locked: Bool
 
   static var sampleJSON: String {
     return """
