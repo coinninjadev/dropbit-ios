@@ -61,6 +61,7 @@ enum AccessiblePageElement {
   case memoEntry(MemoEntryElement)
   case sendPayment(SendPaymentElement)
   case lightningUpgradeStart(LightningUpgradeStartElement)
+  case dropBitMe(DropBitMeElement)
 
   var identifier: String {
     switch self {
@@ -83,6 +84,7 @@ enum AccessiblePageElement {
     case .sendPayment(let element):               return element.identifier
     case .transactionHistory(let element):        return element.identifier
     case .lightningUpgradeStart(let element):     return element.identifier
+    case .dropBitMe(let element):                 return element.identifier
     }
   }
 
@@ -190,4 +192,9 @@ enum SendPaymentElement: String, AccessibleElement {
 enum LightningUpgradeStartElement: String, AccessibleElement {
   case page
   case startUpgradeButton
+}
+
+enum DropBitMeElement: String, AccessibleElement {
+  case page
+  case close
 }

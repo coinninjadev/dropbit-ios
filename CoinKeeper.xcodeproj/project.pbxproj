@@ -111,6 +111,7 @@
 		3B325D532190A37B0094897C /* SecondaryActionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B325D522190A37B0094897C /* SecondaryActionButton.swift */; };
 		3B325D542190A46D0094897C /* SecondaryActionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B325D522190A37B0094897C /* SecondaryActionButton.swift */; };
 		3B325D572190B2CE0094897C /* MockRecoveryWordsIntroViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B325D552190B1770094897C /* MockRecoveryWordsIntroViewControllerDelegate.swift */; };
+		3B34B980232DB06A002D8A92 /* DropBitMePage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B34B97F232DB06A002D8A92 /* DropBitMePage.swift */; };
 		3B3779EF219C6B2800F79683 /* BackupWordsReminderDrawerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B3779ED219C6B2800F79683 /* BackupWordsReminderDrawerCell.swift */; };
 		3B3779F0219C6B2800F79683 /* BackupWordsReminderDrawerCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3B3779EE219C6B2800F79683 /* BackupWordsReminderDrawerCell.xib */; };
 		3B3779F2219C9DE100F79683 /* NewWalletUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B3779F1219C9DE100F79683 /* NewWalletUITests.swift */; };
@@ -1175,6 +1176,7 @@
 		3B325D50219091950094897C /* RecoveryWordsIntroViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = RecoveryWordsIntroViewController.storyboard; sourceTree = "<group>"; };
 		3B325D522190A37B0094897C /* SecondaryActionButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondaryActionButton.swift; sourceTree = "<group>"; };
 		3B325D552190B1770094897C /* MockRecoveryWordsIntroViewControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockRecoveryWordsIntroViewControllerDelegate.swift; sourceTree = "<group>"; };
+		3B34B97F232DB06A002D8A92 /* DropBitMePage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropBitMePage.swift; sourceTree = "<group>"; };
 		3B3779ED219C6B2800F79683 /* BackupWordsReminderDrawerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupWordsReminderDrawerCell.swift; sourceTree = "<group>"; };
 		3B3779EE219C6B2800F79683 /* BackupWordsReminderDrawerCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BackupWordsReminderDrawerCell.xib; sourceTree = "<group>"; };
 		3B3779F1219C9DE100F79683 /* NewWalletUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewWalletUITests.swift; sourceTree = "<group>"; };
@@ -3619,6 +3621,7 @@
 				304BAED121FA1F9700065D6D /* TransactionHistoryPage.swift */,
 				A27DFDF122DCDCD200C2824C /* WalletOverviewPage.swift */,
 				3BE1C52C232D2BC100583A83 /* LightningUpgradeStartPage.swift */,
+				3B34B97F232DB06A002D8A92 /* DropBitMePage.swift */,
 			);
 			path = Pages;
 			sourceTree = "<group>";
@@ -5276,6 +5279,7 @@
 				B51F1ED9219A286900C54B73 /* DeviceVerificationPage.swift in Sources */,
 				B51FB0E021751BED005CBAD6 /* UIFont+Theme.swift in Sources */,
 				B51F1ED12199F7CB00C54B73 /* PinCreationPage.swift in Sources */,
+				3B34B980232DB06A002D8A92 /* DropBitMePage.swift in Sources */,
 				304BAED221FA1F9700065D6D /* TransactionHistoryPage.swift in Sources */,
 				3B325D542190A46D0094897C /* SecondaryActionButton.swift in Sources */,
 				3B3779FF219EEA9F00F79683 /* Int+Times.swift in Sources */,

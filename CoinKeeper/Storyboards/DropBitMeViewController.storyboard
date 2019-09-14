@@ -177,6 +177,7 @@
                         <outlet property="avatarButtonTopConstraint" destination="fM7-Og-o80" id="mcf-tr-OMi"/>
                         <outlet property="avatarImageView" destination="70A-al-cyx" id="82o-aB-Jnp"/>
                         <outlet property="avatarURLContainer" destination="IAM-nX-IpG" id="oIn-WP-9ZF"/>
+                        <outlet property="closeButton" destination="bzU-un-NnK" id="zAd-vH-GDm"/>
                         <outlet property="dropBitMeLogo" destination="0wc-d6-BAK" id="nzJ-Rf-vPu"/>
                         <outlet property="dropBitMeURLButton" destination="cfQ-3f-nkG" id="zJS-NT-vQ0"/>
                         <outlet property="headerSpacer" destination="TBG-7k-hSV" id="AGr-8L-z0X"/>
