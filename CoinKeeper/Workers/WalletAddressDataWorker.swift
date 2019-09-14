@@ -232,23 +232,14 @@ class WalletAddressDataWorker: WalletAddressDataWorkerType {
         // Identify any "new" requests that should be marked completed because they already have a txid locally
         let detailsToPatchAsCompleted: [AddressRequestPatch] = self.detailsToMarkCompleted(for: newRequests, in: context)
 
-        /// commented out automatic cancelation temporarily 2018AUG16 (BJM)
-        //        let patchAsCompletedRequestIds: [String] = detailsToPatchAsCompleted.map { $0.requestId }
-        //        let cancellableNewRequests: [WalletAddressRequestResponse] = newRequests.filter { !patchAsCompletedRequestIds.contains($0.id) }
-
-        // Only pass in the responses which will not be marked as completed
-        //        let requestIdsToPatchAsCanceled: [String] = self.idsToCancelIfNegativeBalance(requests: cancellableNewRequests, in: context)
-
         // Create a promise for each patch and return when they have all fulfilled.
         // Use asVoid to so that we can create the `when` array with different promise value types.
         let patchCompletedPromises = detailsToPatchAsCompleted.map { patch in
           self.networkManager.updateWalletAddressRequest(withPatch: patch).asVoid()
         }
-        //        let patchCanceledPromises = requestIdsToPatchAsCanceled.map { self.cancelInvitation(withID: $0, in: context).asVoid() }
-        let allPatchPromises = patchCompletedPromises // + patchCanceledPromises
 
         // Ignore promise rejection in case of network failure by using `resolved`. Then return a promise of Void.
-        return when(resolved: allPatchPromises).then { _ in Promise.value(()) }
+        return when(resolved: patchCompletedPromises).then { _ in Promise.value(()) }
     }
   }
 
@@ -264,17 +255,6 @@ class WalletAddressDataWorker: WalletAddressDataWorkerType {
       }
     }
   }
-
-  /// commented out on 2018AUG16 due to temporarily halting automatic cancelation of DropBits (BJM)
-  //  private func idsToCancelIfNegativeBalance(requests: [WalletAddressRequestResponse],
-  //                                            in context: NSManagedObjectContext) -> [String] {
-  //    if walletManager.balance(in: context) >= 0 {
-  //      return []
-  //    } else {
-  //      // Balance is negative, so we need to cancel all outstanding requests
-  //      return requests.map { $0.id }
-  //    }
-  //  }
 
   /// Invitation objects with a txid that does not match its transaction?.txid will search for a Transaction that does match.
   func linkFulfilledAddressRequestsWithTransaction(in context: NSManagedObjectContext) {
