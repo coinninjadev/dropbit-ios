@@ -240,6 +240,8 @@ extension SendPaymentViewController {
       nextButton.style = .bitcoin(true)
       walletToggleView.selectBitcoinButton()
     }
+
+    moveCursorToCorrectLocationIfNecessary()
   }
 
   fileprivate func setupButtons() {
@@ -878,4 +880,11 @@ extension SendPaymentViewController: WalletToggleViewDelegate {
     setupStyle()
   }
 
+}
+
+extension SendPaymentViewController: CurrencySwappableEditAmountViewModelDelegate {
+
+  func viewModelDidBeginEditingAmount(_ viewModel: CurrencySwappableEditAmountViewModel) {
+    moveCursorToCorrectLocationIfNecessary()
+  }
 }

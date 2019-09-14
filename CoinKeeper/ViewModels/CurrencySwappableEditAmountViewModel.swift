@@ -232,7 +232,11 @@ extension CurrencySwappableEditAmountViewModel: UITextFieldDelegate {
 
   func textFieldDidBeginEditing(_ textField: UITextField) {
     if fromAmount == .zero {
-      textField.text = fromCurrency.symbol
+      if walletTransactionType == .lightning && primaryCurrency == .BTC {
+        textField.text = fromCurrency.integerSymbol
+      } else {
+        textField.text = fromCurrency.symbol
+      }
     }
 
     delegate?.viewModelDidBeginEditingAmount(self)
