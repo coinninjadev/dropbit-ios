@@ -50,7 +50,14 @@ extension CurrencySwappableAmountEditor {
       let amount = SatsFormatter().stringWithoutSymbol(fromDecimal: editAmountViewModel.primaryAmount),
       let newPosition = editAmountView.primaryAmountTextField.position(from:
         editAmountView.primaryAmountTextField.beginningOfDocument, offset: amount.count) else { return }
+
+    if editAmountViewModel.primaryAmount == .zero {
+      editAmountView.primaryAmountTextField.selectedTextRange = editAmountView.primaryAmountTextField.textRange(
+        from: editAmountView.primaryAmountTextField.beginningOfDocument,
+        to: editAmountView.primaryAmountTextField.beginningOfDocument)
+    } else {
       editAmountView.primaryAmountTextField.selectedTextRange = editAmountView.primaryAmountTextField.textRange(from: newPosition, to: newPosition)
+    }
   }
 
   func refreshSecondaryAmount() {
