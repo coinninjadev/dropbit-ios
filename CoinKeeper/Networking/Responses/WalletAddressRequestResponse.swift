@@ -222,6 +222,10 @@ extension WalletAddressRequestResponse {
     return statusCase == .new && address.isNotEmpty
   }
 
+  var isUnfulfilled: Bool {
+    return (address ?? "").isEmpty && statusCase == .new
+  }
+
   static var sampleJSON: String {
     return """
     {

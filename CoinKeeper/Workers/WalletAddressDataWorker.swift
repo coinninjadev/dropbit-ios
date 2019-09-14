@@ -109,10 +109,13 @@ class WalletAddressDataWorker: WalletAddressDataWorkerType {
 
   func fetchAndFulfillReceivedAddressRequests(in context: NSManagedObjectContext) -> Promise<Void> {
     return self.networkManager.getWalletAddressRequests(forSide: .received)
-      // We don't filter status cases here because mapAndFulfillAddressRequests will
-      // only handle .new without address, and we want to persist all invitations regardless of their status.
-      .then(in: context) { self.mapAndFulfillAddressRequests(with: $0, in: context) }
-      .get(in: context) { self.persistReceivedAddressRequests($0, in: context) }.asVoid()
+      .then(in: context) { responses -> Promise<Void> in
+        let alreadyFulfilledResponses: [WalletAddressRequestResponse] = responses.filter { !$0.isUnfulfilled }
+        self.persistReceivedAddressRequests(alreadyFulfilledResponses, in: context) //no patch needed for these
+
+        let unfulfilledResponses: [WalletAddressRequestResponse] = responses.filter { $0.isUnfulfilled }
+        return self.mapAndFulfillAddressRequests(for: unfulfilledResponses, in: context)
+    }
   }
 
   func updateReceivedAddressRequests(in context: NSManagedObjectContext) -> Promise<Void> {
@@ -489,65 +492,78 @@ class WalletAddressDataWorker: WalletAddressDataWorkerType {
     }
   }
 
-  /**
-   This fulfills the necessary requests then returns an array matching the
-   initial responses parameter that has been updated with the posted addresses.
-   */
-  private func mapAndFulfillAddressRequests(with responses: [WalletAddressRequestResponse],
-                                            in context: NSManagedObjectContext) -> Promise<[WalletAddressRequestResponse]> {
+  /// Returns new responses for the now fulfilled address requests
+  private func mapAndFulfillAddressRequests(for unfulfilledResponses: [WalletAddressRequestResponse],
+                                            in context: NSManagedObjectContext) -> Promise<Void> {
 
-    // Split the responses into two groups so that they can be recombined for persistence later
-    var unfulfilledRequestResponses: [WalletAddressRequestResponse] = []
-    var otherResponses: [WalletAddressRequestResponse] = []
-    for res in responses {
-      if (res.address ?? "").isEmpty && res.statusCase == .new {
-        unfulfilledRequestResponses.append(res)
-      } else {
-        otherResponses.append(res)
-      }
-    }
+    let unfulfilledOnChainResponses = unfulfilledResponses.filter { $0.addressTypeCase == .btc }
+    let unfulfilledLightningResponses = unfulfilledResponses.filter { $0.addressTypeCase == .lightning }
 
-    // Get the next addresses and update the responses with them so that those responses
-    // can be used to update the server and update persistence with the address
+    return fulfillAndPersistOnChainAddressRequests(for: unfulfilledOnChainResponses, in: context)
+      .then(in: context) { self.fulfillAndPersistLightningAddressRequests(for: unfulfilledLightningResponses, in: context) }
+  }
+
+  /// Returns updated responses with the newly supplied addresses, as well as the bodies to be sent to the server
+  private func fulfillAndPersistOnChainAddressRequests(for unfulfilledResponses: [WalletAddressRequestResponse],
+                                                       in context: NSManagedObjectContext) -> Promise<Void> {
 
     let dataSource = walletManager.createAddressDataSource()
-    let nextMetaAddresses = dataSource.nextAvailableReceiveAddresses(number: unfulfilledRequestResponses.count,
+    let nextMetaAddresses = dataSource.nextAvailableReceiveAddresses(number: unfulfilledResponses.count,
                                                                      forServerPool: false,
                                                                      indicesToSkip: [],
                                                                      in: context)
     let nextAddressesWithPubKeys: [MetaAddress] = nextMetaAddresses.compactMap { MetaAddress(cnbMetaAddress: $0) }
-    guard unfulfilledRequestResponses.count == nextAddressesWithPubKeys.count else {
-      return Promise { $0.reject(CKPersistenceError.missingValue(key: "CNBMetaAddress.uncompressedPublicKey")) }
+    guard unfulfilledResponses.count == nextAddressesWithPubKeys.count else {
+      return Promise(error: CKPersistenceError.missingValue(key: "CNBMetaAddress.uncompressedPublicKey"))
     }
 
-    var responsesWithAddresses: [WalletAddressRequestResponse] = []
-    var requestBodies: [AddWalletAddressBody] = []
-    for (i, response) in unfulfilledRequestResponses.enumerated() {
-      let item = nextAddressesWithPubKeys[i]
+    // Modify the WalletAddressRequestResponses with the addresses so that those responses can be used to
+    // update persistence with the address. The server patch request returns a different response type, WalletAddressResponse.
+    var addressRequestResponsesWithAddresses: [WalletAddressRequestResponse] = []
+    var addWalletAddressBodies: [AddWalletAddressBody] = []
 
-      let modifiedRequest = response.copy(withAddress: item.address) // need to include addressPubKey here when added to WalletAddressRequestResponse
-      responsesWithAddresses.append(modifiedRequest)
+    for (i, response) in unfulfilledResponses.enumerated() {
+      let metaAddress = nextAddressesWithPubKeys[i]
 
-      let body = AddWalletAddressBody(address: item.address, pubkey: item.addressPubKey, type: .btc, walletAddressRequestId: response.id)
-      requestBodies.append(body)
+      let modifiedResponse = response.copy(withAddress: metaAddress.address)
+      addressRequestResponsesWithAddresses.append(modifiedResponse)
+
+      let body = AddWalletAddressBody(address: metaAddress.address, pubkey: metaAddress.addressPubKey, type: .btc, walletAddressRequestId: response.id)
+      addWalletAddressBodies.append(body)
     }
 
-    // Need to add the addresses to the server and return an array of responses with the newly added addresses
-    let updatedResponses = responsesWithAddresses + otherResponses
+    return self.fulfillOnChainAddressRequests(with: addWalletAddressBodies, in: context).asVoid()
+      .get(in: context) { _ in self.persistReceivedAddressRequests(addressRequestResponsesWithAddresses, in: context) }
+  }
 
-    return self.fulfillAddressRequests(with: requestBodies, in: context)
-      .then { _ in Promise { $0.fulfill(updatedResponses) }}
+  private func fulfillAndPersistLightningAddressRequests(for unfulfilledResponses: [WalletAddressRequestResponse],
+                                                         in context: NSManagedObjectContext) -> Promise<Void> {
+
+    let lightningPubKey = self.walletManager.hexEncodedPublicKey
+    let promises = unfulfilledResponses.map { self.fulfillLightningAddressRequest(forResponse: $0, withPubKey: lightningPubKey, in: context)}
+    return when(fulfilled: promises)
+      .get(in: context) { self.persistReceivedAddressRequests($0, in: context) }
+      .asVoid()
+  }
+
+  private func fulfillLightningAddressRequest(forResponse unfulfilledResponse: WalletAddressRequestResponse,
+                                              withPubKey pubKey: String,
+                                              in context: NSManagedObjectContext) -> Promise<WalletAddressRequestResponse> {
+    let address = WalletAddressesTarget.autogenerateInvoicesAddressValue
+    let addressBody = AddWalletAddressBody(address: address, pubkey: pubKey, type: .lightning, walletAddressRequestId: unfulfilledResponse.id)
+    let modifiedResponse = unfulfilledResponse.copy(withAddress: address)
+    return self.networkManager.addWalletAddress(body: addressBody)
+      .then { _ in return Promise.value(modifiedResponse) }
   }
 
   /// Because this uses when(fulfilled:), all addWalletAddress calls must succeed for the next promise to execute
-  private func fulfillAddressRequests(with bodies: [AddWalletAddressBody], in context: NSManagedObjectContext) -> Promise<[WalletAddressResponse]> {
+  private func fulfillOnChainAddressRequests(with bodies: [AddWalletAddressBody], in context: NSManagedObjectContext) -> Promise<[WalletAddressResponse]> {
     return when(fulfilled: bodies.map { body in
       self.networkManager.addWalletAddress(body: body)
         .get { _ in self.analyticsManager.track(event: .dropbitAddressProvided, with: nil) }
     })
   }
 
-  /// This will ignore the status of the passed in responses and persist the status as .addressSent
   private func persistReceivedAddressRequests(_ responses: [WalletAddressRequestResponse], in context: NSManagedObjectContext) {
     responses.forEach {
       let invitation = CKMInvitation.updateOrCreate(withReceivedAddressRequestResponse: $0, in: context)
