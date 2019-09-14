@@ -54,6 +54,13 @@ final class LightningUpgradeStartViewController: BaseViewController, StoryboardI
     styleInitialUI()
   }
 
+  override func accessibleViewsAndIdentifiers() -> [AccessibleViewElement] {
+    return [
+      (self.view, .lightningUpgradeStart(.page)),
+      (upgradeButton, .lightningUpgradeStart(.startUpgradeButton))
+    ]
+  }
+
   // to be called from owner when balance is provided
   func updateUI(withTransactionData data: CNBTransactionData?) {
     self.data = data

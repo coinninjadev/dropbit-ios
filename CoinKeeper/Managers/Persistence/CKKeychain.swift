@@ -104,7 +104,6 @@ class CKKeychain: PersistenceKeychainType {
         .get { self.tempPinHashStorage = nil }
         .then { self.storeOnSerialBackgroundQueue(value: words, key: CKKeychain.Key.walletWordsV2.rawValue) }
         .then { self.storeWalletWordsBackedUp(isBackedUp) }
-
     } else {
       tempWordStorage = words
       return self.storeWalletWordsBackedUp(isBackedUp)

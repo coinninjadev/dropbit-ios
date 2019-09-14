@@ -34,20 +34,32 @@ extension AppCoordinator: DeviceVerificationCoordinatorDelegate {
         return Promise.value(WalletFlagsParser(flags: response.flags))
       }
       .done { (parser: WalletFlagsParser) in
-        if parser.walletVersion != .v2 {
-          let desc = "It appears you have entered recovery words from a legacy DropBit wallet. " +
-            "Please upgrade now for enhanced security, smaller transaction size and cost, " +
-          "and Lightning support."
-          let action = AlertActionConfiguration(title: "Upgrade Now", style: .default, action: {
-            let words = self.persistenceManager.brokers.wallet.walletWords()
-            self.persistenceManager.keychainManager.storeSynchronously(anyValue: words, key: .walletWords)
+        if parser.walletVersion != .v2 && parser.walletDeactivated {
+          let desc = """
+          You have entered recovery words from a legacy DropBit wallet. We are upgrading all wallets to a new version
+          of DropBit for enhanced security, lower transaction fees, and Lightning support. Please enter the new
+          recovery words you were given upon upgrading, or create a new wallet.
+          """.removingMultilineLineBreaks()
+          let startOverAction = AlertActionConfiguration(title: "Start Over", style: .cancel, action: {
+            self.persistenceManager.keychainManager.storeSynchronously(anyValue: nil, key: .walletWords)
             self.persistenceManager.keychainManager.storeSynchronously(anyValue: nil, key: .walletWordsV2)
             self.persistenceManager.keychainManager.storeSynchronously(anyValue: false, key: .walletWordsBackedUp)
-            self.startSegwitUpgrade()
+            let controller = StartViewController.newInstance(delegate: self)
+            self.navigationController.setViewControllers([controller], animated: true)
           })
-          let alertViewModel = AlertControllerViewModel(title: "Upgrade Required", description: desc, image: nil, style: .alert, actions: [action])
+          let alertViewModel = AlertControllerViewModel(title: "New Seed Words Required",
+                                                        description: desc,
+                                                        image: nil,
+                                                        style: .alert,
+                                                        actions: [startOverAction])
           let alert = self.alertManager.alert(from: alertViewModel)
           self.navigationController.topViewController()?.present(alert, animated: true)
+        } else if parser.walletVersion != .v2 {
+          let words = self.persistenceManager.brokers.wallet.walletWords()
+          self.persistenceManager.keychainManager.storeSynchronously(anyValue: words, key: .walletWords)
+          self.persistenceManager.keychainManager.storeSynchronously(anyValue: nil, key: .walletWordsV2)
+          self.persistenceManager.keychainManager.storeSynchronously(anyValue: false, key: .walletWordsBackedUp)
+          self.startSegwitUpgrade()
         } else {
           try context.performThrowingAndWait {
             try context.saveRecursively()

@@ -82,7 +82,7 @@ class LightningUpgradeStartViewControllerTests: XCTestCase {
     XCTAssertNil(sut.confirmTransferFundsLabel.text)
     XCTAssertNil(sut.confirmTransferFundsLabel.attributedText)
 
-    sut.exchangeRates = [.USD: 10000, .BTC: 1]
+    CKUserDefaults().standardDefaults.set(10000, forKey: CKUserDefaults.Key.exchangeRateBTCUSD.defaultsString)
     let coin = CNBBaseCoin(purpose: .BIP49, coin: .MainNet, account: 0)
     let path = CNBDerivationPath(purpose: .BIP49, coinType: .MainNet, account: 0, change: 0, index: 0)
     let utxo = CNBUnspentTransactionOutput(id: "abc123", index: 0, amount: 100_000, derivationPath: path, isConfirmed: true)

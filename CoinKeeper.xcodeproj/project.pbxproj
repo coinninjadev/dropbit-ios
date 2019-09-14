@@ -388,6 +388,7 @@
 		3BDBE63422839A6B009C23CB /* MockNeworkManager+Twitter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BDBE632228399F9009C23CB /* MockNeworkManager+Twitter.swift */; };
 		3BDFADFC2267AEFF0077DEF2 /* BlockstreamTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BDFADFB2267AEFF0077DEF2 /* BlockstreamTarget.swift */; };
 		3BDFADFE2267B1FB0077DEF2 /* BlockstreamProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BDFADFD2267B1FB0077DEF2 /* BlockstreamProvider.swift */; };
+		3BE1C52D232D2BC100583A83 /* LightningUpgradeStartPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BE1C52C232D2BC100583A83 /* LightningUpgradeStartPage.swift */; };
 		3BE8AA1621F10D4200A3F0C4 /* CKCryptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BE8AA1521F10D4200A3F0C4 /* CKCryptor.swift */; };
 		3BE8AA1821F1149100A3F0C4 /* CKCryptorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BE8AA1721F1149100A3F0C4 /* CKCryptorTests.swift */; };
 		3BE8D85E20D16FAE00E99D24 /* DerivativePathResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BE8D85D20D16FAE00E99D24 /* DerivativePathResponse.swift */; };
@@ -1428,6 +1429,7 @@
 		3BDBE632228399F9009C23CB /* MockNeworkManager+Twitter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MockNeworkManager+Twitter.swift"; sourceTree = "<group>"; };
 		3BDFADFB2267AEFF0077DEF2 /* BlockstreamTarget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockstreamTarget.swift; sourceTree = "<group>"; };
 		3BDFADFD2267B1FB0077DEF2 /* BlockstreamProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockstreamProvider.swift; sourceTree = "<group>"; };
+		3BE1C52C232D2BC100583A83 /* LightningUpgradeStartPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightningUpgradeStartPage.swift; sourceTree = "<group>"; };
 		3BE8AA1521F10D4200A3F0C4 /* CKCryptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CKCryptor.swift; sourceTree = "<group>"; };
 		3BE8AA1721F1149100A3F0C4 /* CKCryptorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CKCryptorTests.swift; sourceTree = "<group>"; };
 		3BE8D85D20D16FAE00E99D24 /* DerivativePathResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DerivativePathResponse.swift; sourceTree = "<group>"; };
@@ -3614,6 +3616,7 @@
 				3B1BE86321B5819500CCFE29 /* SendPaymentPage.swift */,
 				304BAED121FA1F9700065D6D /* TransactionHistoryPage.swift */,
 				A27DFDF122DCDCD200C2824C /* WalletOverviewPage.swift */,
+				3BE1C52C232D2BC100583A83 /* LightningUpgradeStartPage.swift */,
 			);
 			path = Pages;
 			sourceTree = "<group>";
@@ -5228,6 +5231,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B51FB0E521751D15005CBAD6 /* UIFont+FontStrings.swift in Sources */,
+				3BE1C52D232D2BC100583A83 /* LightningUpgradeStartPage.swift in Sources */,
 				3B3779F2219C9DE100F79683 /* NewWalletUITests.swift in Sources */,
 				3B3779F8219DB6C800F79683 /* PinEntryPage.swift in Sources */,
 				B5D1B2CC219337C6006B2BC7 /* ImportWalletUITests.swift in Sources */,

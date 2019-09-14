@@ -236,23 +236,7 @@ class AppCoordinator: CoordinatorType {
     let bgContext = persistenceManager.createBackgroundContext()
     bgContext.perform {
       self.registerAndPersistWallet(in: bgContext)
-        .done {// (parser: WalletFlagsParser) in
-//          if parser.walletVersion != .v2 {
-//            let desc = "It appears you have entered recovery words from a legacy DropBit wallet. " +
-//            "Please upgrade now for enhanced security, smaller transaction size and cost, " +
-//            "and Lightning support."
-//            let action = AlertActionConfiguration(title: "Upgrade Now", style: .default, action: self.startSegwitUpgrade)
-//            let alertVM = AlertControllerViewModel(title: "Upgrade Required", description: desc, image: nil, style: .alert, actions: [action])
-//            let alert = self.alertManager.alert(from: alertVM)
-//            self.navigationController.topViewController()?.present(alert, animated: true)
-//          } else {
-//            try bgContext.performThrowingAndWait {
-//              try bgContext.saveRecursively()
-//            }
-//            completion()
-//          }
-          completion()
-        }
+        .done { completion() }
         .catch { log.error($0, message: "failed to register and persist wallet") }
     }
   }
