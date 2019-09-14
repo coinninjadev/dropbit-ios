@@ -17,7 +17,7 @@ protocol TransactionHistorySummaryCollectionViewDelegate: AnyObject {
 typealias SummaryCollectionView = TransactionHistorySummaryCollectionView
 class TransactionHistorySummaryCollectionView: UICollectionView {
 
-  let topInset: CGFloat = 140
+  static let topInset: CGFloat = 140
   let topConstraintConstant: CGFloat = 62
   static let cellHeight: CGFloat = 108
   weak var historyDelegate: TransactionHistorySummaryCollectionViewDelegate?
@@ -33,7 +33,7 @@ class TransactionHistorySummaryCollectionView: UICollectionView {
 extension TransactionHistoryViewController {
 
   func resetCollectionView() {
-    summaryCollectionView.contentOffset = CGPoint(x: 0, y: -summaryCollectionView.topInset)
+    summaryCollectionView.contentOffset = CGPoint(x: 0, y: -SummaryCollectionView.topInset)
     summaryCollectionView.delegate?.scrollViewDidScroll?(summaryCollectionView)
   }
 
@@ -64,7 +64,7 @@ extension TransactionHistoryViewController {
   private func enableVerticallyExpandedScrolling() {
     summaryCollectionView.backgroundColor = .clear
     summaryCollectionView.alwaysBounceVertical = true
-    summaryCollectionView.contentInset = UIEdgeInsets(top: summaryCollectionView.topInset,
+    summaryCollectionView.contentInset = UIEdgeInsets(top: SummaryCollectionView.topInset,
                                                       left: 0, bottom: 0, right: 0)
   }
 
@@ -116,6 +116,10 @@ extension TransactionHistoryViewController: UICollectionViewDelegate {
 extension TransactionHistoryViewController: UIScrollViewDelegate {
 
   func scrollViewDidScroll(_ scrollView: UIScrollView) {
+    ///Show background view when scrolled up to cover bottom safe area, hide it to show coin animation
+    let bottomOfWalletBalanceOffset = -SummaryCollectionView.topInset
+    emptyStateBackgroundView.isHidden = scrollView.contentOffset.y < bottomOfWalletBalanceOffset
+
     let topOfWalletBalanceOffset: CGFloat = -60, middleOfWalletBalanceOffset: CGFloat = -100
     let shouldActivateFullOffset = scrollView.contentOffset.y < middleOfWalletBalanceOffset
     let shouldActivatePartialOffset = scrollView.contentOffset.y > topOfWalletBalanceOffset

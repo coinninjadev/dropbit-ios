@@ -62,17 +62,12 @@ extension AppCoordinator: PaymentBuildingDelegate {
   }
 
   func configureOutgoingTransactionData(with dto: OutgoingTransactionData,
-                                                address: String?,
-                                                inputs: SendingDelegateInputs) -> OutgoingTransactionData {
+                                        address: String?,
+                                        inputs: SendingDelegateInputs) -> OutgoingTransactionData {
     guard let wmgr = self.walletManager else { return dto }
 
     var copy = dto
-    copy.dropBitType = inputs.contact?.dropBitType ?? .none
-    if let innerContact = inputs.contact {
-      copy.displayName = innerContact.displayName ?? ""
-      copy.displayIdentity = innerContact.displayIdentity
-      copy.identityHash = innerContact.identityHash
-    }
+    copy.receiver = inputs.contact?.asDropBitReceiver
     address.map { copy.destinationAddress = $0 }
     copy.sharedPayloadDTO = inputs.sharedPayload
 

@@ -26,4 +26,9 @@ extension MockNetworkManager: TransactionBroadcastable {
     return Promise { _ in }
   }
 
+  func postSharedPayloadIfAppropriate(withPostableObject object: SharedPayloadPostableObject,
+                                      walletManager: WalletManagerType) -> Promise<String> {
+    return Promise { _ in }
+  }
+
 }

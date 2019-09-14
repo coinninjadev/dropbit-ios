@@ -195,6 +195,9 @@ class PinEntryViewControllerTests: XCTestCase {
 
   // MARK: mock coordinator class
   class MockCoordinator: PinEntryViewControllerDelegate, PinVerificationDelegate {
+    
+    func viewControllerDidSelectCloseWithToggle(_ viewController: UIViewController) { }
+
     func pinWasVerified(digits: String, for flow: SetupFlow?) {
     }
 

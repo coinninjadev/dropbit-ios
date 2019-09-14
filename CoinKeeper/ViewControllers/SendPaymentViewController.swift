@@ -240,6 +240,8 @@ extension SendPaymentViewController {
       nextButton.style = .bitcoin(true)
       walletToggleView.selectBitcoinButton()
     }
+
+    moveCursorToCorrectLocationIfNecessary()
   }
 
   fileprivate func setupButtons() {
@@ -702,6 +704,7 @@ extension SendPaymentViewController {
 
     // This is still required here to pass along the local memo
     let sharedPayloadDTO = SharedPayloadDTO(addressPubKeyState: .none,
+                                            walletTxType: self.viewModel.walletTransactionType,
                                             sharingDesired: self.viewModel.sharedMemoDesired,
                                             memo: self.viewModel.memo,
                                             amountInfo: sharedAmountInfo())
@@ -729,6 +732,7 @@ extension SendPaymentViewController {
   /// This evaluates the contact, some of it asynchronously, before sending
   private func validatePayment(toContact contact: ContactType) throws {
     let sharedPayload = SharedPayloadDTO(addressPubKeyState: .invite,
+                                         walletTxType: self.viewModel.walletTransactionType,
                                          sharingDesired: self.viewModel.sharedMemoDesired,
                                          memo: self.viewModel.memo,
                                          amountInfo: sharedAmountInfo())
@@ -749,10 +753,9 @@ extension SendPaymentViewController {
 
     var newContact = contact
     newContact.kind = kind
-    switch contact.dropBitType {
+    switch contact.asDropBitReceiver {
     case .phone(let contact): self.setPaymentRecipient(.contact(contact))
     case .twitter(let contact): self.setPaymentRecipient(.twitterContact(contact))
-    case .none: break
     }
 
     try validateInvitationMaximum(against: btcAmount)
@@ -877,4 +880,11 @@ extension SendPaymentViewController: WalletToggleViewDelegate {
     setupStyle()
   }
 
+}
+
+extension SendPaymentViewController: CurrencySwappableEditAmountViewModelDelegate {
+
+  func viewModelDidBeginEditingAmount(_ viewModel: CurrencySwappableEditAmountViewModel) {
+    moveCursorToCorrectLocationIfNecessary()
+  }
 }

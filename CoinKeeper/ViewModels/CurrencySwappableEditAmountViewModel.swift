@@ -212,7 +212,13 @@ class CurrencySwappableEditAmountViewModel: NSObject, DualAmountDisplayable {
       let sanitizedText = sanitizedAmountString(textToSanitize)
       else { return .zero }
 
-    return NSDecimalNumber(fromString: sanitizedText) ?? .zero
+    var amount = NSDecimalNumber(fromString: sanitizedText) ?? .zero
+
+    if walletTransactionType == .lightning && primaryCurrency == .BTC {
+      amount = NSDecimalNumber(integerAmount: amount.intValue, currency: .BTC)
+    }
+
+    return amount
   }
 
 }
@@ -226,7 +232,11 @@ extension CurrencySwappableEditAmountViewModel: UITextFieldDelegate {
 
   func textFieldDidBeginEditing(_ textField: UITextField) {
     if fromAmount == .zero {
-      textField.text = fromCurrency.symbol
+      if walletTransactionType == .lightning && primaryCurrency == .BTC {
+        textField.text = fromCurrency.integerSymbol
+      } else {
+        textField.text = fromCurrency.symbol
+      }
     }
 
     delegate?.viewModelDidBeginEditingAmount(self)

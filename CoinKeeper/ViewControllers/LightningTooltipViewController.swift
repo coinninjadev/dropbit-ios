@@ -88,13 +88,15 @@ class LightningTooltipViewController: BaseViewController, StoryboardInitializabl
 
   private func setupListItems() {
     let bitcoinItems: [LightningTooltipListItem] = [
-      LightningTooltipListItem(imageName: "lightningTooltipBitcoinAmount", text: "SENDING OVER $200"),
+      LightningTooltipListItem(imageName: "lightningTooltipBitcoinAmount",
+                               text: "SENDING OVER $\(CurrencyAmountValidator.lightningInvoiceMax.amount)"),
       LightningTooltipListItem(imageName: "lightningTooltipBitcoinSpeed", text: "SLOWER"),
       LightningTooltipListItem(imageName: "lightningTooltipBitcoinFees", text: "HIGHER FEES")
     ]
 
     let lightningItems: [LightningTooltipListItem] = [
-      LightningTooltipListItem(imageName: "lightningTooltipLightningAmount", text: "SENDING UNDER $200"),
+      LightningTooltipListItem(imageName: "lightningTooltipLightningAmount",
+                               text: "SENDING UNDER $\(CurrencyAmountValidator.lightningInvoiceMax.amount)"),
       LightningTooltipListItem(imageName: "lightningTooltipLightningSpeed", text: "FAST"),
       LightningTooltipListItem(imageName: "lightningTooltipLightningFees", text: "LOW FEES")
     ]

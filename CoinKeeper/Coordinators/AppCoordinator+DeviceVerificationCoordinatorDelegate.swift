@@ -40,10 +40,10 @@ extension AppCoordinator: DeviceVerificationCoordinatorDelegate {
           of DropBit for enhanced security, lower transaction fees, and Lightning support. Please enter the new
           recovery words you were given upon upgrading, or create a new wallet.
           """.removingMultilineLineBreaks()
+          self.persistenceManager.keychainManager.storeSynchronously(anyValue: nil, key: .walletWords)
+          self.persistenceManager.keychainManager.storeSynchronously(anyValue: nil, key: .walletWordsV2)
+          self.persistenceManager.keychainManager.storeSynchronously(anyValue: false, key: .walletWordsBackedUp)
           let startOverAction = AlertActionConfiguration(title: "Start Over", style: .cancel, action: {
-            self.persistenceManager.keychainManager.storeSynchronously(anyValue: nil, key: .walletWords)
-            self.persistenceManager.keychainManager.storeSynchronously(anyValue: nil, key: .walletWordsV2)
-            self.persistenceManager.keychainManager.storeSynchronously(anyValue: false, key: .walletWordsBackedUp)
             let controller = StartViewController.newInstance(delegate: self)
             self.navigationController.setViewControllers([controller], animated: true)
           })

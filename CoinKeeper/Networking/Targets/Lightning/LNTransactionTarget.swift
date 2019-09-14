@@ -17,6 +17,7 @@ public struct LNWithdrawBody: Encodable {
   let address: String
   let value: Int
   let blocks: Int
+  var estimate: Bool
 }
 
 public enum LNTransactionTarget: CoinNinjaTargetType {

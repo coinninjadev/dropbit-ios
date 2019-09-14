@@ -390,4 +390,10 @@ class AppCoordinator: CoordinatorType {
     launchStateManager.unauthenticateUser()
   }
 
+  func toggleChartAndBalance() {
+    guard let topViewController = (navigationController.topViewController() as? MMDrawerController),
+      let walletViewController = topViewController.centerViewController as? WalletOverviewViewController else { return }
+    walletViewController.balanceContainer.toggleChartAndBalance()
+  }
+
 }

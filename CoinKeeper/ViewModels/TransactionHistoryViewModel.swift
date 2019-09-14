@@ -101,31 +101,49 @@ class TransactionHistoryViewModel: NSObject, UICollectionViewDataSource, Exchang
   }
 
   func footerHeight(for collectionView: UICollectionView, section: Int) -> CGFloat {
-    // Because the collectionView has a content inset for expanded scrolling, we rely on the emptyStateBackgroundView
-    // to serve as the white background, this footer is only needed to cover distance between
-    // the cells and the top of the emptyStateBackgroundView.
-    let shouldHideFooter = shouldShowEmptyDataSet
-    return shouldHideFooter ? 0 : SummaryCollectionView.cellHeight
+    let dataSetType = emptyDataSetToDisplay()
+    switch dataSetType {
+    case .none(let itemCount):
+      let totalHeight = collectionView.frame.height
+      let displayedCellHeight = CGFloat(integerLiteral: itemCount) * SummaryCollectionView.cellHeight
+      let neededHeight = totalHeight - displayedCellHeight
+      let bottomSafeArea = collectionView.safeAreaInsets.bottom
+      return neededHeight - bottomSafeArea
+    default:
+      return 0
+    }
   }
 
   func didUpdateExchangeRateManager(_ exchangeRateManager: ExchangeRateManager) {
     delegate.viewModelDidUpdateExchangeRates()
   }
 
-  var shouldShowLightningEmptyDataSetView: Bool {
-    return dataSource.numberOfItems(inSection: 0) == 0 && walletTransactionType == .lightning
+  enum EmptyDataSetType {
+    case noBalance
+    case balance
+    case lightning
+    case none(items: Int)
   }
 
-  var shouldShowNoBalanceEmptyDataSetView: Bool {
-    return dataSource.numberOfItems(inSection: 0) == 0 && walletTransactionType == .onChain
-  }
-
-  var shouldShowWithBalanceEmptyDataSetView: Bool {
-    return dataSource.numberOfItems(inSection: 0) == 1 && walletTransactionType == .onChain
+  func emptyDataSetToDisplay() -> EmptyDataSetType {
+    let itemCount = dataSource.numberOfItems(inSection: 0)
+    switch walletTransactionType {
+    case .onChain:
+      switch itemCount {
+      case 0:   return .noBalance
+      case 1:   return .balance
+      default:  return .none(items: itemCount)
+      }
+    case .lightning:
+      return itemCount == 0 ? .lightning : .none(items: itemCount)
+    }
   }
 
   var shouldShowEmptyDataSet: Bool {
-    return shouldShowNoBalanceEmptyDataSetView || shouldShowWithBalanceEmptyDataSetView || shouldShowLightningEmptyDataSetView
+    switch emptyDataSetToDisplay() {
+    case .none: return false
+    default:    return true
+    }
   }
 
 }

@@ -4157,6 +4157,7 @@
 				"${BUILT_PRODUCTS_DIR}/ReachabilitySwift-framework/Reachability.framework",
 				"${BUILT_PRODUCTS_DIR}/Result-framework/Result.framework",
 				"${BUILT_PRODUCTS_DIR}/SVProgressHUD-framework/SVProgressHUD.framework",
+				"${BUILT_PRODUCTS_DIR}/Sheeeeeeeeet-framework/Sheeeeeeeeet.framework",
 				"${BUILT_PRODUCTS_DIR}/Willow-framework/Willow.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
@@ -4173,6 +4174,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Reachability.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Result.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SVProgressHUD.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Sheeeeeeeeet.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Willow.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -4189,11 +4191,15 @@
 				"${PODS_ROOT}/Target Support Files/Pods-DropBitUIDatabaseTests/Pods-DropBitUIDatabaseTests-resources.sh",
 				"${PODS_ROOT}/PhoneNumberKit/PhoneNumberKit/Resources/PhoneNumberMetadata.json",
 				"${PODS_ROOT}/SVProgressHUD/SVProgressHUD/SVProgressHUD.bundle",
+				"${PODS_ROOT}/Sheeeeeeeeet/Sheeeeeeeeet/ActionSheet/ActionSheet.xib",
+				"${PODS_ROOT}/Sheeeeeeeeet/Sheeeeeeeeet/Items/Items/ActionSheetCollectionItemCell.xib",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/PhoneNumberMetadata.json",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/SVProgressHUD.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ActionSheet.nib",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ActionSheetCollectionItemCell.nib",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -4311,11 +4317,15 @@
 				"${PODS_ROOT}/Target Support Files/Pods-DropBitUITests/Pods-DropBitUITests-resources.sh",
 				"${PODS_ROOT}/PhoneNumberKit/PhoneNumberKit/Resources/PhoneNumberMetadata.json",
 				"${PODS_ROOT}/SVProgressHUD/SVProgressHUD/SVProgressHUD.bundle",
+				"${PODS_ROOT}/Sheeeeeeeeet/Sheeeeeeeeet/ActionSheet/ActionSheet.xib",
+				"${PODS_ROOT}/Sheeeeeeeeet/Sheeeeeeeeet/Items/Items/ActionSheetCollectionItemCell.xib",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/PhoneNumberMetadata.json",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/SVProgressHUD.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ActionSheet.nib",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ActionSheetCollectionItemCell.nib",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;

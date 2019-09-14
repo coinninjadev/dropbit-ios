@@ -21,7 +21,12 @@ extension CKMWalletEntry {
 
   @NSManaged public var sortDate: Date
   @NSManaged public var isHidden: Bool
-  @NSManaged public var ledgerEntry: CKMLNLedgerEntry?
+  @NSManaged public var memo: String?
+
   @NSManaged public var wallet: CKMWallet?
+  @NSManaged public var ledgerEntry: CKMLNLedgerEntry?
+  @NSManaged public var twitterContact: CKMTwitterContact?
+  @NSManaged public var phoneNumber: CKMPhoneNumber?
+  @NSManaged public var sharedPayload: CKMTransactionSharedPayload?
 
 }

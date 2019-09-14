@@ -16,6 +16,7 @@ enum TransferAmount {
   case low
   case medium
   case high
+
   case max
   case custom
 
@@ -30,7 +31,7 @@ enum TransferAmount {
   }
 }
 
-protocol WalletTransferViewControllerDelegate: ViewControllerDismissable, PaymentBuildingDelegate, PaymentSendingDelegate {
+protocol WalletTransferViewControllerDelegate: ViewControllerDismissable, PaymentBuildingDelegate, PaymentSendingDelegate, URLOpener {
 
   func viewControllerNeedsTransactionData(_ viewController: UIViewController,
                                           btcAmount: NSDecimalNumber,
@@ -39,8 +40,10 @@ protocol WalletTransferViewControllerDelegate: ViewControllerDismissable, Paymen
   func viewControllerDidConfirmLoad(_ viewController: UIViewController,
                                     paymentData: PaymentData)
 
+  func viewControllerNeedsFeeEstimates(_ viewController: UIViewController, btcAmount: NSDecimalNumber) -> Promise<LNTransactionResponse>
+
   func viewControllerDidConfirmWithdraw(_ viewController: UIViewController, btcAmount: NSDecimalNumber)
-  func viewControllerHasFundsError(_ error: Error)
+  func viewControllerNetworkError(_ error: Error)
 }
 
 enum TransferDirection {
@@ -96,7 +99,7 @@ class WalletTransferViewController: PresentableViewController, StoryboardInitial
 
   @IBAction func closeButtonWasTouched() {
     editAmountView.primaryAmountTextField.resignFirstResponder()
-    delegate.viewControllerDidSelectClose(self)
+    delegate.viewControllerDidSelectCloseWithToggle(self)
   }
 
   private func buildTransactionIfNecessary() {
@@ -121,6 +124,7 @@ class WalletTransferViewController: PresentableViewController, StoryboardInitial
       feesView.isHidden = true
       data == nil ? disableConfirmButton() : enableConfirmButton()
     case .toOnChain(let inputs):
+      editAmountView.swapButton.isHidden = true
       inputs == nil ? disableConfirmButton() : enableConfirmButton()
     }
   }
@@ -157,6 +161,34 @@ class WalletTransferViewController: PresentableViewController, StoryboardInitial
     editAmountView.primaryAmountTextField.resignFirstResponder()
     setupTransactionUI()
     buildTransactionIfNecessary()
+    getFeeEstimatesIfNecessary()
+  }
+
+  private func getFeeEstimatesIfNecessary() {
+    switch viewModel.direction {
+    case .toOnChain(let amount):
+      guard let amount = amount, amount > 0 else {
+        feesView.isHidden = true
+        confirmView.disable()
+        return
+      }
+      SVProgressHUD.show()
+      delegate.viewControllerNeedsFeeEstimates(self, btcAmount: amount)
+        .get(on: .main) { response in
+          SVProgressHUD.dismiss()
+          self.setupUIForFees(networkFee: response.result.networkFee, processingFee: response.result.processingFee)
+        }.catch { error in
+          SVProgressHUD.dismiss()
+          self.delegate.viewControllerNetworkError(error)
+      }
+    default:
+      break
+    }
+  }
+
+  private func setupUIForFees(networkFee: Int, processingFee: Int) {
+    feesView.isHidden = false
+    feesView.setupFees(top: networkFee, bottom: processingFee)
   }
 }
 
@@ -169,7 +201,7 @@ extension WalletTransferViewController: ConfirmViewDelegate {
         try LightningWalletAmountValidator(balanceNetPending: viewModel.walletBalances).validate(value: viewModel.generateCurrencyConverter())
         delegate.viewControllerDidConfirmLoad(self, paymentData: data)
       } catch {
-        delegate.viewControllerHasFundsError(error)
+        delegate.viewControllerNetworkError(error)
       }
     case .toOnChain(let btcAmount):
       guard let btcAmount = btcAmount else { return }
@@ -177,7 +209,7 @@ extension WalletTransferViewController: ConfirmViewDelegate {
         try CurrencyAmountValidator(balanceNetPending: viewModel.walletBalances).validate(value: viewModel.generateCurrencyConverter())
         delegate.viewControllerDidConfirmWithdraw(self, btcAmount: btcAmount)
       } catch {
-        delegate.viewControllerHasFundsError(error)
+        delegate.viewControllerNetworkError(error)
       }
     }
   }
@@ -186,6 +218,7 @@ extension WalletTransferViewController: ConfirmViewDelegate {
 extension WalletTransferViewController: FeesViewDelegate {
 
   func tooltipButtonWasTouched() {
-    // TODO: Implement
+    guard let url = CoinNinjaUrlFactory.buildUrl(for: .dropBitAppLightningWithdrawalFees) else { return }
+    delegate.openURL(url, completionHandler: nil)
   }
 }

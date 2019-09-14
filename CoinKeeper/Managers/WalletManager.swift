@@ -74,14 +74,12 @@ protocol WalletManagerType: AnyObject {
   func failableTransactionDataSendingAll(to address: String, withFeeRate feeRate: Double) -> CNBTransactionData?
   func transactionDataSendingAll(to address: String, withFeeRate feeRate: Double) -> Promise<CNBTransactionData>
 
-  func encryptionCipherKeys(forUncompressedPublicKey pubkey: Data) -> CNBEncryptionCipherKeys
-  func decryptionCipherKeys(
-    forReceiveAddressPath path: CKMDerivativePath,
-    withPublicKey pubkey: Data,
-    in context: NSManagedObjectContext
-    ) -> CNBCipherKeys
+  func encryptionCipherKeys(forUncompressedPublicKey pubkey: Data, withEntropy: Bool) -> CNBEncryptionCipherKeys
+  func decryptionCipherKeys(forReceiveAddressPath path: CKMDerivativePath,
+                            withPublicKey pubkey: Data) -> CNBCipherKeys
+  func decryptionCipherKeysWithDefaultPrivateKey(forPublicKey pubKey: Data) -> CNBCipherKeys
 
-  func encryptPayload<T>(_ payload: T, addressPubKey: String) -> Promise<String> where T: SharedPayloadCodable
+  func encryptPayload<T>(_ payload: T, addressPubKey: String, keyIsEphemeral: Bool) -> Promise<String> where T: SharedPayloadCodable
 }
 
 /**
@@ -105,20 +103,25 @@ class WalletManager: WalletManagerType {
     self.persistenceManager = persistenceManager
   }
 
-  func encryptionCipherKeys(forUncompressedPublicKey pubkey: Data) -> CNBEncryptionCipherKeys {
-    return wallet.encryptionCipherKeys(forPublicKey: pubkey, withEntropy: WalletManager.secureEntropy())
+  func encryptionCipherKeys(forUncompressedPublicKey pubkey: Data, withEntropy: Bool) -> CNBEncryptionCipherKeys {
+    if withEntropy {
+      return wallet.encryptionCipherKeys(forPublicKey: pubkey, withEntropy: WalletManager.secureEntropy())
+    } else {
+      return wallet.encryptionCipherKeys(forPublicKey: pubkey)
+    }
   }
 
-  func decryptionCipherKeys(
-    forReceiveAddressPath path: CKMDerivativePath,
-    withPublicKey pubkey: Data,
-    in context: NSManagedObjectContext
-    ) -> CNBCipherKeys {
+  func decryptionCipherKeys(forReceiveAddressPath path: CKMDerivativePath,
+                            withPublicKey pubkey: Data) -> CNBCipherKeys {
     let cnbPath = path.asCNBDerivationPath()
     return wallet.decryptionCipherKeysForDerivationPath(ofPrivateKey: cnbPath, publicKey: pubkey)
   }
 
-  func encryptPayload<T>(_ payload: T, addressPubKey: String) -> Promise<String> where T: SharedPayloadCodable {
+  func decryptionCipherKeysWithDefaultPrivateKey(forPublicKey pubKey: Data) -> CNBCipherKeys {
+    return wallet.decryptionCipherKeysWithDefaultPrivateKey(forPublicKey: pubKey)
+  }
+
+  func encryptPayload<T>(_ payload: T, addressPubKey: String, keyIsEphemeral: Bool) -> Promise<String> where T: SharedPayloadCodable {
     guard let addressPubKeyData = Data(fromHexEncodedString: addressPubKey) else {
       return Promise(error: CKPersistenceError.missingValue(key: "addressPubKeyData"))
     }
@@ -127,7 +130,9 @@ class WalletManager: WalletManagerType {
       do {
         let encodedPayload = try payload.encoded()
         let cryptor = CKCryptor(walletManager: self)
-        let encryptedPayloadString = try cryptor.encryptAsBase64String(message: encodedPayload, withRecipientUncompressedPubkey: addressPubKeyData)
+        let encryptedPayloadString = try cryptor.encryptAsBase64String(message: encodedPayload,
+                                                                       withRecipientUncompressedPubkey: addressPubKeyData,
+                                                                       isEphemeral: keyIsEphemeral)
         seal.fulfill(encryptedPayloadString)
       } catch {
         seal.reject(error)

@@ -52,6 +52,8 @@ class ConfirmPaymentViewControllerTests: XCTestCase {
   }
 
   class MockCoordinator: ConfirmPaymentViewControllerDelegate {
+
+    func viewControllerDidSelectCloseWithToggle(_ viewController: UIViewController) { }
     var alertManager: AlertManagerType = MockAlertManager(notificationManager:
       NotificationManager(permissionManager: PermissionManager(),
                           networkInteractor: NetworkManager(persistenceManager: PersistenceManager(),
@@ -59,14 +61,20 @@ class ConfirmPaymentViewControllerTests: XCTestCase {
     var analyticsManager: AnalyticsManagerType = MockAnalyticsManager()
     var persistenceManager: PersistenceManagerType = MockPersistenceManager()
 
-    var navigationController: UINavigationController  {
+    var navigationController: UINavigationController {
       return UINavigationController()
+    }
+
+    var didHandleSuccessfully = false
+    func handleSuccessfulLightningPaymentVerification(with inputs: LightningPaymentInputs) {
+      didHandleSuccessfully = true
     }
 
     var didConfirmLightning = false
     func viewControllerDidConfirmLightningPayment(
       _ viewController: UIViewController,
-      inputs: LightningPaymentInputs) {
+      inputs: LightningPaymentInputs,
+      receiver: OutgoingDropBitReceiver?) {
       didConfirmLightning = true
     }
 

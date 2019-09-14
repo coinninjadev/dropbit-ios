@@ -31,11 +31,12 @@ class CKCryptor {
   /// - Parameters:
   ///   - message: message to encrypt
   ///   - pubkey: recipient's uncompressed EC public key
+  ///   - isEphemeral: If `true`, encryptor uses secure entropy to create an ephemeral key pair. If `false`, it uses the m/42 key by default.
   /// - Returns: Base64-encoded hex string representation of data, comprised of encrypted payload + sender's uncompressed EC public key
   /// - Throws: CKCryptorError
-  func encryptAsBase64String(message: Data, withRecipientUncompressedPubkey pubkey: Data) throws -> String {
+  func encryptAsBase64String(message: Data, withRecipientUncompressedPubkey pubkey: Data, isEphemeral: Bool) throws -> String {
     guard let wmgr = walletManager else { throw CKCryptorError.missingWalletManager }
-    let keys = wmgr.encryptionCipherKeys(forUncompressedPublicKey: pubkey)
+    let keys = wmgr.encryptionCipherKeys(forUncompressedPublicKey: pubkey, withEntropy: isEphemeral)
     let encryptor = RNCryptor.EncryptorV3(encryptionKey: keys.encryptionKey, hmacKey: keys.hmacKey)
     let encryptedData = encryptor.encrypt(data: message)
     return (encryptedData + keys.associatedPublicKey).base64EncodedString()
@@ -50,21 +51,42 @@ class CKCryptor {
   /// - Returns: a data object containing the decrypted bytes. If known to be a string, use `String(bytes: decryptedData, encoding: .utf8)`
   /// - Throws: CKCryptorError
   func decrypt(payloadAsBase64String base64String: String, withReceiveAddress address: String, in context: NSManagedObjectContext) throws -> Data {
-    guard let payload = Data(base64Encoded: base64String) else { throw CKCryptorError.payloadNotBase64Encoded }
     guard let wmgr = walletManager else { throw CKCryptorError.missingWalletManager }
+    guard let path: CKMDerivativePath = CKMAddress.find(withAddress: address, in: context)?.derivativePath else {
+      throw CKPersistenceError.missingValue(key: "address")
+    }
+
+    let dataOutputs = try self.splitData(from: base64String)
+    let keys = wmgr.decryptionCipherKeys(forReceiveAddressPath: path, withPublicKey: dataOutputs.uncompressedPubkeyData)
+    return try decrypt(encryptedData: dataOutputs.encryptedData, with: keys)
+  }
+
+  func decryptWithDefaultPrivateKey(payloadAsBase64String base64String: String) throws -> Data {
+    guard let wmgr = walletManager else { throw CKCryptorError.missingWalletManager }
+    let dataOutputs = try self.splitData(from: base64String)
+    let keys = wmgr.decryptionCipherKeysWithDefaultPrivateKey(forPublicKey: dataOutputs.uncompressedPubkeyData)
+    return try decrypt(encryptedData: dataOutputs.encryptedData, with: keys)
+  }
+
+  private func decrypt(encryptedData: Data, with keys: CNBCipherKeys) throws -> Data {
+    let decryptor = RNCryptor.DecryptorV3(encryptionKey: keys.encryptionKey, hmacKey: keys.hmacKey)
+    return try decryptor.decrypt(data: encryptedData)
+  }
+
+  private func splitData(from base64String: String) throws -> EncryptedDataOutputs {
+    guard let payload = Data(base64Encoded: base64String) else { throw CKCryptorError.payloadNotBase64Encoded }
 
     // separate pubkey and encrypted data
     let pubkeyLength = 65
     let pubkeyStart = payload.count - pubkeyLength
     let uncompressedPubkeyData = payload.suffix(from: pubkeyStart)
     let encryptedData = payload.prefix(upTo: pubkeyStart)
-
-    guard let path: CKMDerivativePath = CKMAddress.find(withAddress: address, in: context)?.derivativePath else {
-      throw CKPersistenceError.missingValue(key: "address")
-    }
-
-    let keys = wmgr.decryptionCipherKeys(forReceiveAddressPath: path, withPublicKey: uncompressedPubkeyData, in: context)
-    let decryptor = RNCryptor.DecryptorV3(encryptionKey: keys.encryptionKey, hmacKey: keys.hmacKey)
-    return try decryptor.decrypt(data: encryptedData)
+    return EncryptedDataOutputs(uncompressedPubkeyData: uncompressedPubkeyData, encryptedData: encryptedData)
   }
+
+  struct EncryptedDataOutputs {
+    let uncompressedPubkeyData: Data
+    let encryptedData: Data
+  }
+
 }

@@ -23,6 +23,8 @@ class MockSendPaymentViewControllerCoordinator: SendPaymentViewControllerCoordin
     self.networkManager = networkManager
   }
 
+  func viewControllerDidSelectCloseWithToggle(_ viewController: UIViewController) { }
+
   func sendMaxFundsTo(address destinationAddress: String,
                       feeRate: Double) -> Promise<CNBTransactionData> {
     return Promise { _ in }

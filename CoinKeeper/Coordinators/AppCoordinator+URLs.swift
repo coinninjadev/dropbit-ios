@@ -25,6 +25,7 @@ extension AppCoordinator {
                                                     currencyPair: currencyPair)
       let sendPaymentVM = SendPaymentViewModel(editAmountViewModel: vm, walletTransactionType: .onChain)
       let sendPaymentViewController = SendPaymentViewController.newInstance(delegate: self, viewModel: sendPaymentVM)
+      sendPaymentVM.delegate = sendPaymentViewController
       sendPaymentViewController.alertManager = alertManager
       sendPaymentViewController.recipientDescriptionToLoad = bitcoinURL.absoluteString
       navigationController.present(sendPaymentViewController, animated: true)

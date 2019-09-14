@@ -116,11 +116,9 @@ extension CKMTransaction {
 
   static func findAllTxidsFullyConfirmed(in context: NSManagedObjectContext) -> [String] {
     let confirmationKeyPath = #keyPath(CKMTransaction.confirmations)
-    let txidKeyPath = #keyPath(CKMTransaction.txid)
     let predicate = NSPredicate(format: "\(confirmationKeyPath) > %d", fullyConfirmedThreshold)
     let fetchRequest: NSFetchRequest<CKMTransaction> = CKMTransaction.fetchRequest()
     fetchRequest.predicate = predicate
-    fetchRequest.propertiesToFetch = [txidKeyPath]
     return transactions(with: fetchRequest, in: context).map { $0.txid }
   }
 

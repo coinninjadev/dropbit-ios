@@ -60,6 +60,31 @@ protocol TransactionSummaryCellViewModelObject {
 
 }
 
+extension TransactionSummaryCellViewModelObject {
+
+  func priorityCounterpartyName(with twitterConfig: TransactionCellTwitterConfig?,
+                                invitation: CKMInvitation?,
+                                phoneNumber: CKMPhoneNumber?) -> String? {
+    if let config = twitterConfig {
+      return config.displayName
+    } else if let inviteName = invitation?.counterpartyName {
+      return inviteName
+    } else {
+      let relevantNumber = phoneNumber ?? invitation?.counterpartyPhoneNumber
+      return relevantNumber?.counterparty?.name
+    }
+  }
+
+  func priorityPhoneNumber(for deviceCountryCode: Int, invitation: CKMInvitation?, phoneNumber: CKMPhoneNumber?) -> String? {
+    guard let relevantPhoneNumber = invitation?.counterpartyPhoneNumber ?? phoneNumber else { return nil }
+    let globalPhoneNumber = relevantPhoneNumber.asGlobalPhoneNumber
+    let format: PhoneNumberFormat = (deviceCountryCode == globalPhoneNumber.countryCode) ? .national : .international
+    let formatter = CKPhoneNumberFormatter(format: format)
+    return try? formatter.string(from: globalPhoneNumber)
+  }
+
+}
+
 extension CKMTransaction: TransactionSummaryCellViewModelObject {
 
   var walletTxType: WalletTransactionType {
@@ -82,8 +107,8 @@ extension CKMTransaction: TransactionSummaryCellViewModelObject {
 
   func counterpartyConfig(for deviceCountryCode: Int) -> TransactionCellCounterpartyConfig? {
     let maybeTwitter = self.invitation?.counterpartyTwitterContact.flatMap { TransactionCellTwitterConfig(contact: $0) }
-    let maybeName = counterpartyName(with: maybeTwitter)
-    let maybeNumber = displayPhoneNumber(for: deviceCountryCode)
+    let maybeName = priorityCounterpartyName(with: maybeTwitter, invitation: invitation, phoneNumber: phoneNumber)
+    let maybeNumber = priorityPhoneNumber(for: deviceCountryCode, invitation: invitation, phoneNumber: phoneNumber)
     return TransactionCellCounterpartyConfig(failableWithName: maybeName,
                                              displayPhoneNumber: maybeNumber,
                                              twitterConfig: maybeTwitter)
@@ -110,25 +135,6 @@ extension CKMTransaction: TransactionSummaryCellViewModelObject {
         return counterpartyReceiverAddressId
       }
     }
-  }
-
-  private func counterpartyName(with twitterConfig: TransactionCellTwitterConfig?) -> String? {
-    if let config = twitterConfig {
-      return config.displayName
-    } else if let inviteName = invitation?.counterpartyName {
-      return inviteName
-    } else {
-      let relevantNumber = phoneNumber ?? invitation?.counterpartyPhoneNumber
-      return relevantNumber?.counterparty?.name
-    }
-  }
-
-  private func displayPhoneNumber(for deviceCountryCode: Int) -> String? {
-    guard let relevantPhoneNumber = invitation?.counterpartyPhoneNumber ?? phoneNumber else { return nil }
-    let globalPhoneNumber = relevantPhoneNumber.asGlobalPhoneNumber
-    let format: PhoneNumberFormat = (deviceCountryCode == globalPhoneNumber.countryCode) ? .national : .international
-    let formatter = CKPhoneNumberFormatter(format: format)
-    return try? formatter.string(from: globalPhoneNumber)
   }
 
   /// Returns first outgoing vout address, otherwise tx must be sent to self
@@ -298,7 +304,13 @@ struct LightningViewModelObject: TransactionSummaryCellViewModelObject {
   }
 
   func counterpartyConfig(for deviceCountryCode: Int) -> TransactionCellCounterpartyConfig? {
-    return nil
+    let maybeTwitter = entry.walletEntry?.twitterContact.flatMap { TransactionCellTwitterConfig(contact: $0) }
+    let maybeName = priorityCounterpartyName(with: maybeTwitter, invitation: nil, phoneNumber: entry.walletEntry?.phoneNumber)
+    let maybeNumber = priorityPhoneNumber(for: deviceCountryCode, invitation: nil, phoneNumber: entry.walletEntry?.phoneNumber)
+    return TransactionCellCounterpartyConfig(failableWithName: maybeName,
+                                             displayPhoneNumber: maybeNumber,
+                                             twitterConfig: maybeTwitter)
+
   }
 
 }

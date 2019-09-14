@@ -40,6 +40,7 @@ struct CoinNinjaUrlFactory {
     case dropBitMe(handle: String)
     case dropBitMeLearnMore
     case lightningUpgrade
+    case dropBitAppLightningWithdrawalFees
 
     var domain: String {
       switch self {
@@ -72,6 +73,7 @@ struct CoinNinjaUrlFactory {
            .dustProtection,
            .download,
            .adjustableFeesTooltip,
+           .dropBitAppLightningWithdrawalFees,
            .regularTransactionTooltip,
            .dropbitTransactionTooltip,
            .lightningUpgrade:
@@ -144,6 +146,8 @@ struct CoinNinjaUrlFactory {
         return "news/webview/load-map?lat=\(coordinate.latitude)&long=\(coordinate.longitude)&type=atms"
       case .dropBitMe(let handle):
         return handle
+      case .dropBitAppLightningWithdrawalFees:
+        return "\(tooltipBreadcrumb)lightningwithdrawalfees"
       case .dropBitMeLearnMore:
         return ""
       case .lightningUpgrade:

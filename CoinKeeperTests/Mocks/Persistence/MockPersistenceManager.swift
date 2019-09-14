@@ -64,7 +64,9 @@ class MockPersistenceManager: PersistenceManagerType {
     from responses: [AddressTransactionSummaryResponse],
     in context: NSManagedObjectContext) {}
 
-  func persistReceivedSharedPayloads(_ payloads: [Data], in context: NSManagedObjectContext) { }
+  func persistReceivedSharedPayloads(_ payloads: [Data],
+                                     ofType walletTxType: WalletTransactionType,
+                                     in context: NSManagedObjectContext) { }
 
   func matchContactsIfPossible() {
     databaseManager.matchContactsIfPossible(with: self.contactCacheManager)

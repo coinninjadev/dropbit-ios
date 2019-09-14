@@ -26,7 +26,7 @@ class TransactionHistoryDetailCellAddressViewTests: XCTestCase {
   }
 
   private var testPayloadDTO: SharedPayloadDTO {
-    return SharedPayloadDTO(addressPubKeyState: .none, sharingDesired: false, memo: "test memo", amountInfo: nil)
+    return SharedPayloadDTO(addressPubKeyState: .none, walletTxType: .onChain, sharingDesired: false, memo: "test memo", amountInfo: nil)
   }
 
   // MARK: outlets

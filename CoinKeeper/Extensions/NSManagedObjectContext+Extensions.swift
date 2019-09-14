@@ -16,6 +16,7 @@ extension NSManagedObjectContext {
     let insertCountByEntity: [String: Int] = countByEntityDictionary(for: self.insertedObjects)
     let updateCountByEntity: [String: Int] = countByEntityDictionary(for: self.updatedObjects)
     let deleteCountByEntity: [String: Int] = countByEntityDictionary(for: self.deletedObjects)
+    let updatedProperties = self.updatedPropertiesDescription()
 
     if withLinebreaks {
       return """
@@ -23,6 +24,7 @@ extension NSManagedObjectContext {
       \t\t\(insertCountByEntity)
       \tUpdated:
       \t\t\(updateCountByEntity)
+      \t\t\(updatedProperties)
       \tDeleted:
       \t\t\(deleteCountByEntity)
       """
@@ -36,6 +38,34 @@ extension NSManagedObjectContext {
       guard let entity = object.entity.name else { return }
       counts[entity, default: 0] += 1
     }
+  }
+
+  private func updatedPropertiesDescription() -> String {
+    let sortedObjects = self.updatedObjects.sorted(by: { $0.entity.name ?? "" < $1.entity.name ?? "" })
+    let objectDescriptions = sortedObjects.map { object -> String in
+      let objectType = object.entity.name ?? ""
+      let keyValueDescriptions: [String] = object.changedValues().keys.map { key in
+        return self.propertyDescription(for: object, key: key)
+      }
+      let joinedPropertyDescriptions = keyValueDescriptions.joined(separator: ", ")
+      let objectDesc = "[\(joinedPropertyDescriptions)]"
+      return "\(objectType) - \(objectDesc)"
+    }
+    return objectDescriptions.joined(separator: " \n\t\t")
+  }
+
+  private func propertyDescription(for object: NSManagedObject, key: String) -> String {
+    var valueDesc = ""
+    if let relationship = object.entity.relationshipsByName[key],
+      let destinationType = relationship.destinationEntity?.name {
+      let destinationDesc = relationship.isToMany ? "Set<\(destinationType)>" : destinationType
+      let relationshipDesc = (object.value(forKey: key) == nil) ? "nil (\(destinationDesc))" : "\(destinationDesc)"
+      valueDesc = relationshipDesc
+    } else {
+      valueDesc = object.value(forKey: key).flatMap { String(describing: $0) } ?? "nil"
+    }
+
+    return "\(key): \(valueDesc)"
   }
 
   /// Saves the current context and each parent until changes are saved to the persistent store.
