@@ -169,15 +169,10 @@ final class LightningUpgradeStartViewController: BaseViewController, StoryboardI
   }
 
   private func enableUpgradeIfPossible() {
-    guard let txData = data else {
-      upgradeButton.style = .white(enabled: false)
-      return
-    }
-
     let newWordsSelected = !confirmNewWordsCheckmarkImage.isHidden
     let transferSelected = !confirmTransferFundsCheckmarkImage.isHidden
 
-    if txData.amount == 0 && newWordsSelected {
+    if (data?.amount ?? 0) == 0 && newWordsSelected {
       upgradeButton.style = .white(enabled: true)
     } else if newWordsSelected && transferSelected {
       upgradeButton.style = .white(enabled: true)

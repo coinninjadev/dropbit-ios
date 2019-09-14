@@ -174,6 +174,16 @@ public class CKMVout: NSManagedObject {
     return unspentVouts
   }
 
+  static func unspentBalance(in context: NSManagedObjectContext) -> Int {
+    do {
+      let unspent = try findAllUnspent(in: context)
+      let total = unspent.reduce(0) { $0 + $1.amount }
+      return total
+    } catch {
+      return 0
+    }
+  }
+
   public override var debugDescription: String {
     struct EncodableCKMVout: Encodable {
       let amount: Int

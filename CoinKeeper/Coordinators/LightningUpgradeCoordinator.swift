@@ -42,6 +42,9 @@ class LightningUpgradeCoordinator: ChildCoordinatorType {
       .catch { (error: Error) in
         log.error(error, message: "Failed to do a full sync of blockchain prior to upgrade.")
 
+        let alertVM = AlertControllerViewModel(title: "We were unable to perform a sync. Please try again later.")
+        let alert = self.parent.alertManager.alert(from: alertVM)
+        self.parent.navigationController.topViewController()?.present(alert, animated: true, completion: nil)
     }
   }
 
@@ -69,7 +72,23 @@ class LightningUpgradeCoordinator: ChildCoordinatorType {
       }
       .catch { (error: Error) in
         log.error(error, message: "Failed to create send max transaction.")
-        controller.updateUI(with: nil, txMetadata: nil)
+        if let txError = error as? TransactionDataError {
+          switch txError {
+          case .noSpendableFunds:
+            controller.updateUI(with: nil, txMetadata: nil)
+          default:
+            let tryAgain = AlertActionConfiguration(title: "Try Again", style: .default, action: { [weak self] in
+              self?.proceedWithUpgrade(presentedController: controller)
+            })
+            let alertVM = AlertControllerViewModel(title: txError.localizedDescription,
+                                                   description: txError.messageDescription,
+                                                   image: nil,
+                                                   style: .alert,
+                                                   actions: [tryAgain])
+            let alert = self.parent.alertManager.alert(from: alertVM)
+            self.parent.navigationController.topViewController()?.present(alert, animated: true, completion: nil)
+          }
+        }
       }
       .finally {
         self.parent.launchStateManager.upgradeInProgress = false

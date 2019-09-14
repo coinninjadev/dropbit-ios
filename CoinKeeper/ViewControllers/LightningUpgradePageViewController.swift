@@ -16,11 +16,9 @@ final class LightningUpgradePageViewController: UIPageViewController, Storyboard
 
   var transactionData: CNBTransactionData? {
     didSet {
-      if let data = transactionData {
-        self.activeViewController
-          .flatMap { $0 as? LightningUpgradeStartViewController }?
-          .updateUI(withTransactionData: data)
-      }
+      self.activeViewController
+        .flatMap { $0 as? LightningUpgradeStartViewController }?
+        .updateUI(withTransactionData: transactionData)
     }
   }
   var transactionMetadata: CNBTransactionMetadata?

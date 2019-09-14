@@ -343,6 +343,13 @@ class WalletManager: WalletManagerType {
 
   func transactionDataSendingAll(to address: String, withFeeRate feeRate: Double) -> Promise<CNBTransactionData> {
     return Promise { seal in
+      let context = persistenceManager.viewContext
+      let unspent = CKMVout.unspentBalance(in: context)
+      guard unspent > 0 else {
+        seal.reject(TransactionDataError.noSpendableFunds)
+        return
+      }
+
       let maybeTxData = self.failableTransactionDataSendingAll(to: address, withFeeRate: feeRate)
       if let data = maybeTxData {
         seal.fulfill(data)

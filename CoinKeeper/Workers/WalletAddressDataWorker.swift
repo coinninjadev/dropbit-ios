@@ -679,7 +679,7 @@ class WalletAddressDataWorker: WalletAddressDataWorkerType {
 
     if let txDataError = error as? TransactionDataError {
       switch txDataError {
-      case .insufficientFunds:
+      case .insufficientFunds, .noSpendableFunds:
         return Promise(error: PendingInvitationError.insufficientFundsForInvitationWithID(response.id))
       case .insufficientFee:
         return Promise(error: PendingInvitationError.insufficientFeeForInvitationWithID(response.id))
