@@ -33,6 +33,9 @@ extension CoinNinjaTargetType {
 
   public var baseURL: URL {
     #if DEBUG
+    #if UITEST
+    return URL(string: "https://api.test.coinninja.net/api/v1")!
+    #endif
     return URL(string: "https://api.dev.coinninja.net/api/v1")!
     #else
     return URL(string: "https://api.coinninja.com/api/v1")!
