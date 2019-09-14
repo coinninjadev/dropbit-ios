@@ -167,10 +167,6 @@ public class CKMTransaction: NSManagedObject {
     }
   }
 
-  static func prefixedTxid(for invitation: CKMInvitation) -> String {
-    return CKMTransaction.invitationTxidPrefix + invitation.id
-  }
-
   static let transactionHistorySortDescriptors: [NSSortDescriptor] = [
     NSSortDescriptor(key: #keyPath(CKMTransaction.sortDate), ascending: false)
   ]

@@ -102,22 +102,40 @@ public class CKMInvitation: NSManagedObject {
 
       let newInvitation = CKMInvitation(withAddressRequestResponse: response, side: .received, insertInto: context)
 
-      let maybeTxid = response.txid?.asNilIfEmpty()
-      let tx = maybeTxid.flatMap { CKMTransaction.find(byTxid: $0, in: context) } ?? CKMTransaction(insertInto: context)
-
-      tx.txid = maybeTxid ?? CKMTransaction.prefixedTxid(for: newInvitation)
-
-      tx.sortDate = response.createdAt
-      // not setting newTx.date here since it isn't yet a transaction, so that the display date will fallback to the invitation.sentDate
-
-      tx.invitation = newInvitation
-      tx.isIncoming = tx.calculateIsIncoming(in: context)
-
       if newInvitation.status == .addressSent, let address = response.address {
         newInvitation.addressProvidedToSender = address
       }
 
+      switch response.addressTypeCase {
+      case .btc:
+        let tx = transaction(for: response, invitationId: newInvitation.id, in: context)
+        tx.sortDate = response.createdAt
+        // not setting tx.date here since it isn't yet a transaction, so that the display date will fallback to the invitation.sentDate
+
+        tx.invitation = newInvitation
+        tx.isIncoming = tx.calculateIsIncoming(in: context)
+
+      case .lightning:
+        guard let wallet = CKMWallet.find(in: context) else { break }
+        let newWalletEntry = CKMWalletEntry(wallet: wallet, sortDate: response.createdAt, insertInto: context)
+        newWalletEntry.invitation = newInvitation
+      }
+
       return newInvitation
+    }
+  }
+
+  private static func transaction(for response: WalletAddressRequestResponse,
+                                  invitationId: String,
+                                  in context: NSManagedObjectContext) -> CKMTransaction {
+    let maybeTxid: String? = response.txid?.asNilIfEmpty()
+    if let txid = maybeTxid, let foundTransaction = CKMTransaction.find(byTxid: txid, in: context) {
+      return foundTransaction
+    } else {
+      let newTransaction = CKMTransaction(insertInto: context)
+      let prefixedInvitationId = CKMTransaction.invitationTxidPrefix + invitationId
+      newTransaction.txid = maybeTxid ?? prefixedInvitationId
+      return newTransaction
     }
   }
 
