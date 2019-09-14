@@ -272,6 +272,14 @@ final class RequestPayViewController: PresentableViewController, StoryboardIniti
     updateEditAmountView(withRates: exchangeRateManager.exchangeRates)
   }
 
+  override func unlock() {
+    walletToggleView.isHidden = false
+  }
+
+  override func lock() {
+    walletToggleView.isHidden = true
+  }
+
 }
 
 extension RequestPayViewController: WalletToggleViewDelegate {

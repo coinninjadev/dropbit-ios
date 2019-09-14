@@ -225,6 +225,12 @@ extension TransactionHistoryViewController: DZNEmptyDataSetDelegate, DZNEmptyDat
       transactionHistoryWithBalanceView.isHidden = false
       return transactionHistoryWithBalanceView
     case .lightning:
+      guard BaseViewController.lockStatus != .locked else {
+        let lockedView = LockedLightningView()
+        lockedView.delegate = self
+        return lockedView
+      }
+
       lightningTransactionHistoryEmptyBalanceView.isHidden = false
       return lightningTransactionHistoryEmptyBalanceView
     case .none:
@@ -245,6 +251,13 @@ extension TransactionHistoryViewController: DZNEmptyDataSetDelegate, DZNEmptyDat
     default:
       return 0
     }
+  }
+}
+
+extension TransactionHistoryViewController: LockedLightningViewDelegate {
+
+  func viewDidAskToUnlockLightning() {
+    //delegate.openTwitterURL(withMessage: "Hey @dropbitapp, you should unlock my new lighting because...")
   }
 
 }

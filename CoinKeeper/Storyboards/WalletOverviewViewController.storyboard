@@ -51,7 +51,7 @@
                                 </constraints>
                             </view>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Xpq-nw-rdL">
-                                <rect key="frame" x="0.0" y="106" width="414" height="791"/>
+                                <rect key="frame" x="0.0" y="106" width="414" height="790"/>
                                 <connections>
                                     <segue destination="bBW-av-GGC" kind="embed" identifier="PageViewControllerSegue" id="5Om-x1-vjl"/>
                                 </connections>
@@ -63,10 +63,20 @@
                                     <constraint firstAttribute="height" constant="75" id="Mkn-WU-B2n"/>
                                 </constraints>
                             </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Fo5-E7-v9q" customClass="BetaTagView" customModule="DropBit" customModuleProvider="target">
+                                <rect key="frame" x="322" y="120" width="35" height="14"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="35" id="2Am-X9-3oY"/>
+                                    <constraint firstAttribute="height" constant="14" id="EiH-Mq-1no"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstItem="s5h-9Q-NkJ" firstAttribute="leading" secondItem="Fo5-E7-v9q" secondAttribute="trailing" constant="-20" id="2Lt-jv-A9U"/>
                             <constraint firstItem="Xpq-nw-rdL" firstAttribute="trailing" secondItem="Ara-cI-e6Q" secondAttribute="trailing" id="6t4-u9-0cf"/>
+                            <constraint firstItem="J68-pT-VfQ" firstAttribute="top" secondItem="Fo5-E7-v9q" secondAttribute="bottom" constant="15.5" id="9Gm-t0-UBK"/>
                             <constraint firstAttribute="bottom" secondItem="Xpq-nw-rdL" secondAttribute="bottom" id="9qq-Dm-EsO"/>
                             <constraint firstItem="yEy-5P-WRf" firstAttribute="leading" secondItem="Ara-cI-e6Q" secondAttribute="leading" id="RC7-kU-b0b"/>
                             <constraint firstItem="J68-pT-VfQ" firstAttribute="top" secondItem="s5h-9Q-NkJ" secondAttribute="bottom" id="RXV-FC-6Jn"/>
@@ -78,6 +88,7 @@
                             <constraint firstItem="Xpq-nw-rdL" firstAttribute="leading" secondItem="Ara-cI-e6Q" secondAttribute="leading" id="WN3-QL-ogq"/>
                             <constraint firstItem="J68-pT-VfQ" firstAttribute="trailing" secondItem="Ara-cI-e6Q" secondAttribute="trailing" id="ocA-sH-6oD"/>
                             <constraint firstItem="08q-AV-opn" firstAttribute="centerX" secondItem="Wuq-Ar-T2f" secondAttribute="centerX" id="pEs-ZG-Z2G"/>
+                            <constraint firstItem="Fo5-E7-v9q" firstAttribute="top" secondItem="yEy-5P-WRf" secondAttribute="bottom" constant="10" id="siC-5p-k85"/>
                             <constraint firstItem="Ara-cI-e6Q" firstAttribute="trailing" secondItem="yEy-5P-WRf" secondAttribute="trailing" id="tzJ-zb-Gmx"/>
                             <constraint firstItem="s5h-9Q-NkJ" firstAttribute="leading" secondItem="08q-AV-opn" secondAttribute="trailing" id="ubh-lH-amu"/>
                             <constraint firstItem="08q-AV-opn" firstAttribute="top" secondItem="yEy-5P-WRf" secondAttribute="bottom" id="ucl-4c-cUo"/>

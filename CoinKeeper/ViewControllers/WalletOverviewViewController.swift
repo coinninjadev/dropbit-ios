@@ -48,6 +48,12 @@ class WalletOverviewViewController: BaseViewController, StoryboardInitializable 
 
   private var currentWallet: WalletTransactionType = .onChain {
     willSet {
+      if BaseViewController.lockStatus == .locked && currentWallet == .lightning {
+        sendReceiveActionView.isHidden = false
+      } else {
+        sendReceiveActionView.isHidden = true
+      }
+
       delegate.setSelectedWalletTransactionType(self, to: newValue)
     }
     didSet {
@@ -146,6 +152,14 @@ class WalletOverviewViewController: BaseViewController, StoryboardInitializable 
         setupStyleForOnChainWallet()
       }
     }
+  }
+
+  override func lock() {
+    walletBalanceView.reloadWalletButton.isHidden = true
+  }
+
+  override func unlock() {
+    walletBalanceView.reloadWalletButton.isHidden = false
   }
 
   private func setupStyleForOnChainWallet() {
