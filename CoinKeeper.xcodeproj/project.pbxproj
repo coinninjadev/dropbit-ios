@@ -389,6 +389,7 @@
 		3BDFADFC2267AEFF0077DEF2 /* BlockstreamTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BDFADFB2267AEFF0077DEF2 /* BlockstreamTarget.swift */; };
 		3BDFADFE2267B1FB0077DEF2 /* BlockstreamProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BDFADFD2267B1FB0077DEF2 /* BlockstreamProvider.swift */; };
 		3BE1C52D232D2BC100583A83 /* LightningUpgradeStartPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BE1C52C232D2BC100583A83 /* LightningUpgradeStartPage.swift */; };
+		3BE1C52F232D390700583A83 /* UITestRecoverWordBackupAutomatable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BE1C52E232D390700583A83 /* UITestRecoverWordBackupAutomatable.swift */; };
 		3BE8AA1621F10D4200A3F0C4 /* CKCryptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BE8AA1521F10D4200A3F0C4 /* CKCryptor.swift */; };
 		3BE8AA1821F1149100A3F0C4 /* CKCryptorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BE8AA1721F1149100A3F0C4 /* CKCryptorTests.swift */; };
 		3BE8D85E20D16FAE00E99D24 /* DerivativePathResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BE8D85D20D16FAE00E99D24 /* DerivativePathResponse.swift */; };
@@ -1430,6 +1431,7 @@
 		3BDFADFB2267AEFF0077DEF2 /* BlockstreamTarget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockstreamTarget.swift; sourceTree = "<group>"; };
 		3BDFADFD2267B1FB0077DEF2 /* BlockstreamProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockstreamProvider.swift; sourceTree = "<group>"; };
 		3BE1C52C232D2BC100583A83 /* LightningUpgradeStartPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightningUpgradeStartPage.swift; sourceTree = "<group>"; };
+		3BE1C52E232D390700583A83 /* UITestRecoverWordBackupAutomatable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITestRecoverWordBackupAutomatable.swift; sourceTree = "<group>"; };
 		3BE8AA1521F10D4200A3F0C4 /* CKCryptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CKCryptor.swift; sourceTree = "<group>"; };
 		3BE8AA1721F1149100A3F0C4 /* CKCryptorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CKCryptorTests.swift; sourceTree = "<group>"; };
 		3BE8D85D20D16FAE00E99D24 /* DerivativePathResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DerivativePathResponse.swift; sourceTree = "<group>"; };
@@ -3739,6 +3741,7 @@
 				B58AFF2D21948891001BE563 /* UITestDefaultsKey.swift */,
 				B5D1B2D42193700D006B2BC7 /* Springboard.swift */,
 				3B3779F9219E1E9A00F79683 /* UITestHelpers.swift */,
+				3BE1C52E232D390700583A83 /* UITestRecoverWordBackupAutomatable.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -5244,6 +5247,7 @@
 				3B3779F6219CA79100F79683 /* SwiftMessagesBannerPage.swift in Sources */,
 				B51F1EDD219A29A700C54B73 /* RequestPayPage.swift in Sources */,
 				B51FB0E321751CD0005CBAD6 /* StoryboardInitializable.swift in Sources */,
+				3BE1C52F232D390700583A83 /* UITestRecoverWordBackupAutomatable.swift in Sources */,
 				B555DCAC23059A1E006B3462 /* Typealiases.swift in Sources */,
 				B51FB0E82175221A005CBAD6 /* UITestCase.swift in Sources */,
 				3B3779FA219E1E9A00F79683 /* UITestHelpers.swift in Sources */,
