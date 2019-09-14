@@ -11,13 +11,13 @@ import CoreData
 import PromiseKit
 
 protocol InvitationWorkerDelegate: AnyObject {
-  func fetchAndHandleSentWalletAddressRequests() -> Promise<[WalletAddressRequestResponse]>
+  func fetchSatisfiedSentWalletAddressRequests() -> Promise<[WalletAddressRequestResponse]>
   func didBroadcastTransaction()
 }
 
 extension AppCoordinator: InvitationWorkerDelegate {
 
-  func fetchAndHandleSentWalletAddressRequests() -> Promise<[WalletAddressRequestResponse]> {
+  func fetchSatisfiedSentWalletAddressRequests() -> Promise<[WalletAddressRequestResponse]> {
     return self.networkManager.getSatisfiedSentWalletAddressRequests()
   }
 

@@ -148,21 +148,13 @@ extension AppCoordinator: PaymentSendingDelegate {
       .catch(failure)
   }
 
-  private func persistLightningPaymentResponse(_ response: LNTransactionResponse,
-                                               receiver: OutgoingDropBitReceiver?,
-                                               inputs: LightningPaymentInputs) {
+  func persistLightningPaymentResponse(_ response: LNTransactionResponse,
+                                       receiver: OutgoingDropBitReceiver?,
+                                       inputs: LightningPaymentInputs) {
     let context = self.persistenceManager.createBackgroundContext()
     context.performAndWait {
-      guard let wallet = CKMWallet.find(in: context) else { return }
-      let ledgerEntry = CKMLNLedgerEntry.updateOrCreate(with: response.result, forWallet: wallet, in: context)
-      if let receiver = receiver {
-        ledgerEntry.walletEntry?.configure(withReceiver: receiver, in: context)
-      }
-
-      if let sharedPayload = inputs.sharedPayload {
-        ledgerEntry.walletEntry?.configureNewSenderSharedPayload(with: sharedPayload, in: context)
-      }
-
+      self.persistenceManager.brokers.lightning.persistPaymentResponse(response, receiver: receiver,
+                                                                       inputs: inputs, in: context)
       try? context.saveRecursively()
     }
   }

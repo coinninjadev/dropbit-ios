@@ -26,4 +26,7 @@ class MockLightningBroker: CKPersistenceBroker, LightningBrokerType {
                              forWallet wallet: CKMWallet,
                              in context: NSManagedObjectContext) { }
 
+  func persistPaymentResponse(_ response: LNTransactionResponse,
+                              receiver: OutgoingDropBitReceiver?,
+                              inputs: LightningPaymentInputs, in context: NSManagedObjectContext) { }
 }

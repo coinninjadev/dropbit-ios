@@ -25,7 +25,7 @@ extension AppCoordinator: BalanceDataSource {
   func spendableBalanceNetPending() -> WalletBalances {
     guard let wmgr = walletManager else { return WalletBalances(onChain: .zero, lightning: .zero)}
     let context = persistenceManager.viewContext
-    var balance = wmgr.spendableBalance(in: context)
+    let balance = wmgr.spendableBalance(in: context)
 
     return WalletBalances(onChain: NSDecimalNumber(integerAmount: balance.onChain, currency: .BTC),
                           lightning: NSDecimalNumber(integerAmount: balance.lightning, currency: .BTC))

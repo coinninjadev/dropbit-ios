@@ -52,6 +52,10 @@ protocol LightningBrokerType: AnyObject {
   func persistLedgerResponse(_ response: LNLedgerResponse,
                              forWallet wallet: CKMWallet,
                              in context: NSManagedObjectContext)
+  func persistPaymentResponse(_ response: LNTransactionResponse,
+                              receiver: OutgoingDropBitReceiver?,
+                              inputs: LightningPaymentInputs,
+                              in context: NSManagedObjectContext)
 }
 
 protocol CheckInBrokerType: AnyObject {
