@@ -35,7 +35,7 @@ protocol WalletTransferViewControllerDelegate: ViewControllerDismissable, Paymen
 
   func viewControllerNeedsTransactionData(_ viewController: UIViewController,
                                           btcAmount: NSDecimalNumber,
-                                          exchangeRates: ExchangeRates) -> PaymentData?
+                                          exchangeRates: ExchangeRates) -> Promise<PaymentData>
 
   func viewControllerDidConfirmLoad(_ viewController: UIViewController,
                                     paymentData: PaymentData)
@@ -112,10 +112,10 @@ class WalletTransferViewController: PresentableViewController, StoryboardInitial
   }
 
   private func buildTransaction() {
-    let paymentData = delegate.viewControllerNeedsTransactionData(self,
-                                                                  btcAmount: viewModel.btcAmount,
-                                                                  exchangeRates: rateManager.exchangeRates)
-    viewModel.direction = .toLightning(paymentData)
+    delegate.viewControllerNeedsTransactionData(self, btcAmount: viewModel.btcAmount, exchangeRates: rateManager.exchangeRates)
+      .done { paymentData in
+        self.viewModel.direction = .toLightning(paymentData)
+    }.cauterize()
   }
 
   private func setupTransactionUI() {

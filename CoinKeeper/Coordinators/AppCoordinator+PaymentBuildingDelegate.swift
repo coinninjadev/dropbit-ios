@@ -6,6 +6,7 @@
 //  Copyright © 2019 Coin Ninja, LLC. All rights reserved.
 //
 
+import CoreData
 import Foundation
 import PromiseKit
 import CNBitcoinKit
@@ -22,18 +23,40 @@ protocol PaymentBuildingDelegate {
   func configureOutgoingTransactionData(with dto: OutgoingTransactionData,
                                         address: String?,
                                         inputs: SendingDelegateInputs) -> OutgoingTransactionData
-  func buildNonReplaceableTransactionData(
-    btcAmount: NSDecimalNumber,
-    address: String,
-    exchangeRates: ExchangeRates) -> PaymentData?
+
+  func buildLoadLightningPaymentData(btcAmount: NSDecimalNumber,
+                                     exchangeRates: ExchangeRates,
+                                     in context: NSManagedObjectContext) -> Promise<PaymentData>
+
 }
 
 extension AppCoordinator: PaymentBuildingDelegate {
 
-  func buildNonReplaceableTransactionData(
+  func buildLoadLightningPaymentData(btcAmount: NSDecimalNumber,
+                                     exchangeRates: ExchangeRates,
+                                     in context: NSManagedObjectContext) -> Promise<PaymentData> {
+    let wallet = CKMWallet.findOrCreate(in: context)
+    let lightningAccount = self.persistenceManager.brokers.lightning.getAccount(forWallet: wallet, in: context)
+    return networkManager.latestFees().compactMap { FeeRates(fees: $0) }
+      .then { (feeRates: FeeRates) -> Promise<PaymentData> in
+        let feeRate: Double = feeRates.low
+        let maybePaymentData = self.buildNonReplaceableTransactionData(btcAmount: btcAmount,
+                                                                       address: lightningAccount.address,
+                                                                       exchangeRates: exchangeRates,
+                                                                       feeRate: feeRate)
+        if let paymentData = maybePaymentData {
+          return Promise.value(paymentData)
+        } else {
+          return Promise(error: CKPersistenceError.missingValue(key: "paymentData"))
+        }
+    }
+  }
+
+  private func buildNonReplaceableTransactionData(
     btcAmount: NSDecimalNumber,
     address: String,
-    exchangeRates: ExchangeRates) -> PaymentData? {
+    exchangeRates: ExchangeRates,
+    feeRate: Double) -> PaymentData? {
     var outgoingTransactionData = OutgoingTransactionData.emptyInstance()
     let sharedPayload = SharedPayloadDTO.emptyInstance()
     let inputs = SendingDelegateInputs(
@@ -48,7 +71,7 @@ extension AppCoordinator: PaymentBuildingDelegate {
     guard let bitcoinKitTransactionData = walletManager?.failableTransactionData(
       forPayment: btcAmount,
       to: address,
-      withFeeRate: 0.0,
+      withFeeRate: feeRate,
       rbfReplaceabilityOption: .MustNotBeRBF) else { return nil }
 
     return PaymentData(broadcastData: bitcoinKitTransactionData, outgoingData: outgoingTransactionData)
