@@ -21,4 +21,4 @@ public class CKMWalletEntry: NSManagedObject {
 
 }
 
-extension CKMWalletEntry: InvitationAcknowledgable { }
+extension CKMWalletEntry: InvitationParent { }

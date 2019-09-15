@@ -90,6 +90,6 @@ extension SenderSharedPayloadPersistable {
   }
 }
 
-protocol InvitationAcknowledgable: DropBitReceiverPersistable, SenderSharedPayloadPersistable {
+protocol InvitationParent: DropBitReceiverPersistable, SenderSharedPayloadPersistable {
   var invitation: CKMInvitation? { get set }
 }

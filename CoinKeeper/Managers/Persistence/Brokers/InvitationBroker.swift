@@ -35,9 +35,9 @@ class InvitationBroker: CKPersistenceBroker, InvitationBrokerType {
                              in context: NSManagedObjectContext) {
     guard let pendingInvitation = CKMInvitation.updateIfExists(withAddressRequestResponse: response,
                                                                side: .sent, isAcknowledged: false, in: context),
-      let parentObject = invitationAcknowledgableObject(for: outgoingTransactionData,
-                                                        walletTxType: pendingInvitation.walletTxTypeCase,
-                                                        in: context) else { return }
+      let parentObject = invitationParentObject(for: outgoingTransactionData,
+                                                walletTxType: pendingInvitation.walletTxTypeCase,
+                                                in: context) else { return }
 
     if let sharedPayload = outgoingTransactionData.sharedPayloadDTO {
       parentObject.configureNewSenderSharedPayload(with: sharedPayload, in: context)
@@ -48,9 +48,9 @@ class InvitationBroker: CKPersistenceBroker, InvitationBrokerType {
     parentObject.phoneNumber = pendingInvitation.counterpartyPhoneNumber
   }
 
-  func invitationAcknowledgableObject(for outgoingTransactionData: OutgoingTransactionData,
-                                      walletTxType: WalletTransactionType,
-                                      in context: NSManagedObjectContext) -> InvitationAcknowledgable? {
+  func invitationParentObject(for outgoingTransactionData: OutgoingTransactionData,
+                              walletTxType: WalletTransactionType,
+                              in context: NSManagedObjectContext) -> InvitationParent? {
     switch walletTxType {
     case .onChain:
       return CKMTransaction.findOrCreate(with: outgoingTransactionData, in: context)

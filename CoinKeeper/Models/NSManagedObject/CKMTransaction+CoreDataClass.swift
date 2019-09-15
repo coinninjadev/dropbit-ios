@@ -204,4 +204,4 @@ extension CKMTransaction {
   }
 }
 
-extension CKMTransaction: InvitationAcknowledgable { }
+extension CKMTransaction: InvitationParent { }

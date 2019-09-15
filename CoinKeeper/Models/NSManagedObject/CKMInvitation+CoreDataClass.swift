@@ -106,22 +106,31 @@ public class CKMInvitation: NSManagedObject {
         newInvitation.addressProvidedToSender = address
       }
 
-      switch response.addressTypeCase {
-      case .btc:
-        let tx = transaction(for: response, invitationId: newInvitation.id, in: context)
-        tx.sortDate = response.createdAt
-        // not setting tx.date here since it isn't yet a transaction, so that the display date will fallback to the invitation.sentDate
-
-        tx.invitation = newInvitation
-        tx.isIncoming = tx.calculateIsIncoming(in: context)
-
-      case .lightning:
-        guard let wallet = CKMWallet.find(in: context) else { break }
-        let newWalletEntry = CKMWalletEntry(wallet: wallet, sortDate: response.createdAt, insertInto: context)
-        newWalletEntry.invitation = newInvitation
-      }
+      let parentObject = invitationParentObject(for: response, invitationId: newInvitation.id, in: context)
+      parentObject?.invitation = newInvitation
+      parentObject?.phoneNumber = newInvitation.phoneNumber
+      parentObject?.twitterContact = newInvitation.twitterContact
 
       return newInvitation
+    }
+  }
+
+  static private func invitationParentObject(for response: WalletAddressRequestResponse,
+                                             invitationId: String,
+                                             in context: NSManagedObjectContext) -> InvitationParent? {
+    switch response.addressTypeCase {
+    case .btc:
+      let tx = transaction(for: response, invitationId: invitationId, in: context)
+      tx.sortDate = response.createdAt
+      // not setting tx.date here since it isn't yet a transaction, so that the display date will fallback to the invitation.sentDate
+
+      tx.isIncoming = tx.calculateIsIncoming(in: context)
+      return tx
+
+    case .lightning:
+      guard let wallet = CKMWallet.find(in: context) else { return nil }
+      let newWalletEntry = CKMWalletEntry(wallet: wallet, sortDate: response.createdAt, insertInto: context)
+      return newWalletEntry
     }
   }
 
