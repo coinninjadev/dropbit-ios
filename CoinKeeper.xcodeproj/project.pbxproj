@@ -1006,6 +1006,7 @@
 		B5D834072249680600C45ABE /* SettingSwitchWithInfoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5D834052249680600C45ABE /* SettingSwitchWithInfoCell.swift */; };
 		B5D834082249680600C45ABE /* SettingSwitchWithInfoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B5D834062249680600C45ABE /* SettingSwitchWithInfoCell.xib */; };
 		B5D8340A224971E400C45ABE /* SettingsViewController+TableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5D83409224971E400C45ABE /* SettingsViewController+TableView.swift */; };
+		B5DB5342232E8C1C0088C8A1 /* TransactionCellViewModelTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5DB5341232E8C1C0088C8A1 /* TransactionCellViewModelTypes.swift */; };
 		B5DC877A22F093D700FDDEED /* LNLedgerResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5DC877922F093D700FDDEED /* LNLedgerResponse.swift */; };
 		B5DDB0F521DE5ED200A25929 /* KeychainMigrationWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5DDB0F421DE5ED200A25929 /* KeychainMigrationWorker.swift */; };
 		B5DDB0F721DE69C100A25929 /* KeychainMigratorFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5DDB0F621DE69C100A25929 /* KeychainMigratorFactory.swift */; };
@@ -2050,6 +2051,7 @@
 		B5D834052249680600C45ABE /* SettingSwitchWithInfoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingSwitchWithInfoCell.swift; sourceTree = "<group>"; };
 		B5D834062249680600C45ABE /* SettingSwitchWithInfoCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SettingSwitchWithInfoCell.xib; sourceTree = "<group>"; };
 		B5D83409224971E400C45ABE /* SettingsViewController+TableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SettingsViewController+TableView.swift"; sourceTree = "<group>"; };
+		B5DB5341232E8C1C0088C8A1 /* TransactionCellViewModelTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionCellViewModelTypes.swift; sourceTree = "<group>"; };
 		B5DC877922F093D700FDDEED /* LNLedgerResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LNLedgerResponse.swift; sourceTree = "<group>"; };
 		B5DDB0F421DE5ED200A25929 /* KeychainMigrationWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainMigrationWorker.swift; sourceTree = "<group>"; };
 		B5DDB0F621DE69C100A25929 /* KeychainMigratorFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainMigratorFactory.swift; sourceTree = "<group>"; };
@@ -3026,6 +3028,7 @@
 			isa = PBXGroup;
 			children = (
 				B5BA3A7622F22B0E001E41A7 /* TransactionCellProtocols.swift */,
+				B5DB5341232E8C1C0088C8A1 /* TransactionCellViewModelTypes.swift */,
 				B5437B552315B4D70002B77C /* TransactionHistoryViewModel.swift */,
 				B50E7B7E230C6A0400927C8B /* TransactionSummaryCellViewModel.swift */,
 				5B404275208CCA40005624B0 /* OldTransactionDetailCellViewModel.swift */,
@@ -4829,6 +4832,7 @@
 				B56E15A12167E6F1003B69D4 /* NetworkManager+CurrencyValueDataSourceType.swift in Sources */,
 				B514536422A7207500F7DA41 /* UIColor+Theme.swift in Sources */,
 				3B934D2220EFE53A00979ADC /* TransactionDataWorkerDTO.swift in Sources */,
+				B5DB5342232E8C1C0088C8A1 /* TransactionCellViewModelTypes.swift in Sources */,
 				A2A530AE2092A84800B6F4DE /* String+TrimSymbol.swift in Sources */,
 				3B6749E120AA5CA40032FE02 /* CKMVin+CoreDataClass.swift in Sources */,
 				3093B07C21EE36CF00B3EF9C /* TransactionHistoryRefreshView.swift in Sources */,
