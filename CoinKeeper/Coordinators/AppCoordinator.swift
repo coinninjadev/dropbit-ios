@@ -236,7 +236,7 @@ class AppCoordinator: CoordinatorType {
     let bgContext = persistenceManager.createBackgroundContext()
     bgContext.perform {
       self.registerAndPersistWallet(in: bgContext)
-        .done { completion() }
+        .done(on: .main) { completion() }
         .catch { log.error($0, message: "failed to register and persist wallet") }
     }
   }
