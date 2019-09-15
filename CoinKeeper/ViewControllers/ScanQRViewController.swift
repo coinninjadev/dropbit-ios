@@ -126,7 +126,7 @@ extension ScanQRViewController: AVCaptureMetadataOutputObjectsDelegate {
     let rawCodes = metadataObjects.compactMap { $0 as? AVMetadataMachineReadableCodeObject }
     let lightningQRCodes = rawCodes.compactMap { $0.stringValue }.compactMap { LightningURL(string: $0) }
 
-    if let lightningQRCode = lightningQRCodes.first {
+    if let lightningQRCode = lightningQRCodes.first, BaseViewController.lockStatus != .locked {
       handle(lightningQRInvoice: lightningQRCode)
     } else {
       let bitcoinQRCodes = rawCodes.compactMap { OnChainQRCode(readableObject: $0) }
@@ -136,7 +136,7 @@ extension ScanQRViewController: AVCaptureMetadataOutputObjectsDelegate {
   }
 
   private func handle(lightningQRInvoice lightningUrl: LightningURL) {
-    if didCaptureQRCode { return } // prevent multiple network requests for paymentRequestURL
+    if didCaptureQRCode { return }
     didCaptureQRCode = true
 
     SVProgressHUD.show()
@@ -146,7 +146,7 @@ extension ScanQRViewController: AVCaptureMetadataOutputObjectsDelegate {
   }
 
   private func handle(bitcoinQRCode qrCode: OnChainQRCode) {
-    if didCaptureQRCode { return } // prevent multiple network requests for paymentRequestURL
+    if didCaptureQRCode { return }
     didCaptureQRCode = true
 
     if qrCode.paymentRequestURL != nil {

@@ -206,7 +206,6 @@
 		3B598FDC2315BF5100FF50CD /* WalletFlagsParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B598FDB2315BF5100FF50CD /* WalletFlagsParser.swift */; };
 		3B598FDE2315CB2D00FF50CD /* WalletFlagsParserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B598FDD2315CB2D00FF50CD /* WalletFlagsParserTests.swift */; };
 		3B598FE02318337C00FF50CD /* LightningUpgradeStartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B598FDF2318337C00FF50CD /* LightningUpgradeStartViewController.swift */; };
-		3B598FE4231833C000FF50CD /* LightningUpgradeStartViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3B598FE3231833C000FF50CD /* LightningUpgradeStartViewController.storyboard */; };
 		3B598FE623184DD200FF50CD /* LightningUpgradeStartViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B598FE523184DD200FF50CD /* LightningUpgradeStartViewControllerTests.swift */; };
 		3B598FE82318542500FF50CD /* LightningUpgradeCoordinator+LightningUpgradeStartViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B598FE72318542500FF50CD /* LightningUpgradeCoordinator+LightningUpgradeStartViewControllerDelegate.swift */; };
 		3B598FEA23196A8000FF50CD /* LightningUpgradeStatusViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B598FE923196A8000FF50CD /* LightningUpgradeStatusViewController.swift */; };
@@ -479,6 +478,7 @@
 		A200575520B6F2D0007074D9 /* Command.swift in Sources */ = {isa = PBXBuildFile; fileRef = A200575420B6F2D0007074D9 /* Command.swift */; };
 		A2085150232EA185007843DE /* AppCoordinator+TwitterTweetingDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A208514F232EA185007843DE /* AppCoordinator+TwitterTweetingDelegate.swift */; };
 		A2085152232EA210007843DE /* TwitterTweetingDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2085151232EA210007843DE /* TwitterTweetingDelegate.swift */; };
+		A2085154232ED95B007843DE /* LightningUpgradeStartViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A2085153232ED95B007843DE /* LightningUpgradeStartViewController.storyboard */; };
 		A20E47F020C0436E00CA8589 /* ContactType.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20E47EF20C0436E00CA8589 /* ContactType.swift */; };
 		A216D78F20B30C25005FBAC2 /* NoConnectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A216D78E20B30C25005FBAC2 /* NoConnectionViewController.swift */; };
 		A216D79120B30C51005FBAC2 /* NoConnectionViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A216D79020B30C51005FBAC2 /* NoConnectionViewController.storyboard */; };
@@ -1252,7 +1252,6 @@
 		3B598FDB2315BF5100FF50CD /* WalletFlagsParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletFlagsParser.swift; sourceTree = "<group>"; };
 		3B598FDD2315CB2D00FF50CD /* WalletFlagsParserTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletFlagsParserTests.swift; sourceTree = "<group>"; };
 		3B598FDF2318337C00FF50CD /* LightningUpgradeStartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightningUpgradeStartViewController.swift; sourceTree = "<group>"; };
-		3B598FE3231833C000FF50CD /* LightningUpgradeStartViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LightningUpgradeStartViewController.storyboard; sourceTree = "<group>"; };
 		3B598FE523184DD200FF50CD /* LightningUpgradeStartViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightningUpgradeStartViewControllerTests.swift; sourceTree = "<group>"; };
 		3B598FE72318542500FF50CD /* LightningUpgradeCoordinator+LightningUpgradeStartViewControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LightningUpgradeCoordinator+LightningUpgradeStartViewControllerDelegate.swift"; sourceTree = "<group>"; };
 		3B598FE923196A8000FF50CD /* LightningUpgradeStatusViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightningUpgradeStatusViewController.swift; sourceTree = "<group>"; };
@@ -1529,6 +1528,7 @@
 		A200575420B6F2D0007074D9 /* Command.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Command.swift; sourceTree = "<group>"; };
 		A208514F232EA185007843DE /* AppCoordinator+TwitterTweetingDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppCoordinator+TwitterTweetingDelegate.swift"; sourceTree = "<group>"; };
 		A2085151232EA210007843DE /* TwitterTweetingDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwitterTweetingDelegate.swift; sourceTree = "<group>"; };
+		A2085153232ED95B007843DE /* LightningUpgradeStartViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LightningUpgradeStartViewController.storyboard; sourceTree = "<group>"; };
 		A20E47EF20C0436E00CA8589 /* ContactType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactType.swift; sourceTree = "<group>"; };
 		A216D78E20B30C25005FBAC2 /* NoConnectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoConnectionViewController.swift; sourceTree = "<group>"; };
 		A216D79020B30C51005FBAC2 /* NoConnectionViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = NoConnectionViewController.storyboard; sourceTree = "<group>"; };
@@ -3002,8 +3002,8 @@
 				A2B4E6EF22FA488100E24324 /* LightningRefillViewController.storyboard */,
 				A2FE198322FB0F5C00C2412D /* TryLightningViewController.storyboard */,
 				A2FE198B2301E05E00C2412D /* WalletTransferViewController.storyboard */,
-				3B598FE3231833C000FF50CD /* LightningUpgradeStartViewController.storyboard */,
 				3B598FEB23196AAE00FF50CD /* LightningUpgradeStatusViewController.storyboard */,
+				A2085153232ED95B007843DE /* LightningUpgradeStartViewController.storyboard */,
 				3B936ADC2322C1250067CA97 /* LightningUpgradeCompleteViewController.storyboard */,
 				3B0C785523197B0A00D4C216 /* LightningUpgradePageViewController.storyboard */,
 			);
@@ -4028,6 +4028,7 @@
 				B5FFFFC0226FB44E0029DB62 /* DropBitMeViewController.storyboard in Resources */,
 				B5B0DC81221364140010AB2A /* PhoneNumberEntryView.xib in Resources */,
 				B54DE68522982C88009D67CE /* ContactsEmptyView.xib in Resources */,
+				A2085154232ED95B007843DE /* LightningUpgradeStartViewController.storyboard in Resources */,
 				3B6FDAD7204F4BA50091916A /* VerifyRecoveryWordCell.xib in Resources */,
 				403B454B2075594F00DA53E9 /* Settings.bundle in Resources */,
 				3BC456FF20288D7300CC36B1 /* LaunchScreen.storyboard in Resources */,

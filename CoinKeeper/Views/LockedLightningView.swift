@@ -19,7 +19,8 @@ class LockedLightningView: UIView {
   @IBOutlet var dropbitDescriptionLabel: UILabel!
   @IBOutlet var twitterDescriptionLabel: UILabel!
   @IBOutlet var twitterButton: PrimaryActionButton!
-
+  @IBOutlet var backgroundView: LightningUpgradeGradientOverlayView!
+  
   weak var delegate: LockedLightningViewDelegate?
 
   override init(frame: CGRect) {

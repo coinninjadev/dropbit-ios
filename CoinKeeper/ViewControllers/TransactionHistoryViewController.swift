@@ -41,6 +41,7 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
   @IBOutlet var summaryCollectionView: TransactionHistorySummaryCollectionView!
   @IBOutlet var transactionHistoryNoBalanceView: TransactionHistoryNoBalanceView!
   @IBOutlet var transactionHistoryWithBalanceView: TransactionHistoryWithBalanceView!
+  @IBOutlet var lockedLightningView: LockedLightningView!
   @IBOutlet var lightningTransactionHistoryEmptyBalanceView: LightningTransactionHistoryEmptyView!
   @IBOutlet var refreshView: TransactionHistoryRefreshView!
   @IBOutlet var refreshViewTopConstraint: NSLayoutConstraint!
@@ -93,6 +94,7 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
     lightningTransactionHistoryEmptyBalanceView.delegate = delegate
     emptyStateBackgroundView.isHidden = false
     emptyStateBackgroundView.backgroundColor = .whiteBackground
+    if viewModel.walletTransactionType == .onChain { lockedLightningView.isHidden = true }
 
     view.backgroundColor = .clear
     emptyStateBackgroundView.applyCornerRadius(30, toCorners: .top)
@@ -226,12 +228,6 @@ extension TransactionHistoryViewController: DZNEmptyDataSetDelegate, DZNEmptyDat
       transactionHistoryWithBalanceView.isHidden = false
       return transactionHistoryWithBalanceView
     case .lightning:
-      guard BaseViewController.lockStatus != .locked else {
-        let lockedView = LockedLightningView()
-        lockedView.delegate = self
-        return lockedView
-      }
-
       lightningTransactionHistoryEmptyBalanceView.isHidden = false
       return lightningTransactionHistoryEmptyBalanceView
     case .none:

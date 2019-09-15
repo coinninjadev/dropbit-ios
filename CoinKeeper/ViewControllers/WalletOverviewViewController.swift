@@ -48,7 +48,7 @@ class WalletOverviewViewController: BaseViewController, StoryboardInitializable 
 
   private var currentWallet: WalletTransactionType = .onChain {
     willSet {
-      if BaseViewController.lockStatus == .locked && currentWallet == .lightning {
+      if BaseViewController.lockStatus == .locked && currentWallet == .lightning && newValue == .onChain {
         sendReceiveActionView.isHidden = false
       } else {
         sendReceiveActionView.isHidden = true

@@ -12,6 +12,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="LockedLightningView" customModule="DropBit" customModuleProvider="target">
             <connections>
+                <outlet property="backgroundView" destination="CbC-hw-If6" id="5NX-2v-CGY"/>
                 <outlet property="dropbitDescriptionLabel" destination="I45-ma-C6h" id="BEL-dv-tzj"/>
                 <outlet property="titleLabel" destination="gvi-KI-8xN" id="o4B-nV-cvj"/>
                 <outlet property="twitterButton" destination="fky-Td-Tq1" id="7Z6-EJ-Fej"/>
@@ -23,100 +24,124 @@
             <rect key="frame" x="0.0" y="0.0" width="414" height="618"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CbC-hw-If6" customClass="LightningUpgradeGradientOverlayView" customModule="DropBit" customModuleProvider="target">
+                    <rect key="frame" x="0.0" y="0.0" width="414" height="618"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                </view>
                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="30" translatesAutoresizingMaskIntoConstraints="NO" id="gHz-Ja-hbb">
-                    <rect key="frame" x="41" y="0.0" width="332" height="618"/>
+                    <rect key="frame" x="41" y="226" width="332" height="166"/>
+                    <subviews>
+                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="30" translatesAutoresizingMaskIntoConstraints="NO" id="4cy-8w-jZD">
+                            <rect key="frame" x="0.0" y="0.0" width="332" height="166"/>
+                            <subviews>
+                                <stackView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" alignment="center" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="AVD-Ei-876">
+                                    <rect key="frame" x="0.0" y="0.0" width="332" height="45"/>
+                                    <subviews>
+                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="whiteBlueDropbit" translatesAutoresizingMaskIntoConstraints="NO" id="6W6-KL-jPJ">
+                                            <rect key="frame" x="0.0" y="14.5" width="19" height="16"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="19" id="gKO-LA-TPt"/>
+                                            </constraints>
+                                        </imageView>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Find a current DropBit lightning user to send you a few sats" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="I45-ma-C6h">
+                                            <rect key="frame" x="29" y="2" width="303" height="41"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="45" id="gYF-g8-an2"/>
+                                    </constraints>
+                                </stackView>
+                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="orImage" translatesAutoresizingMaskIntoConstraints="NO" id="dZs-7l-1ud">
+                                    <rect key="frame" x="67.5" y="75" width="197" height="16"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="197" id="b6M-5X-TmP"/>
+                                    </constraints>
+                                </imageView>
+                                <stackView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" alignment="center" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="XcI-ty-Vxo">
+                                    <rect key="frame" x="0.0" y="121" width="332" height="45"/>
+                                    <subviews>
+                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="twitterBird" translatesAutoresizingMaskIntoConstraints="NO" id="3YM-w5-AOL">
+                                            <rect key="frame" x="0.0" y="14.5" width="21" height="16"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="21" id="pQ8-V8-WGO"/>
+                                            </constraints>
+                                        </imageView>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tweet at us @dropbitapp and tell us why we should unlock your wallet " textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Hpl-41-MQj">
+                                            <rect key="frame" x="31" y="0.0" width="301" height="45"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="Hpl-41-MQj" firstAttribute="top" secondItem="XcI-ty-Vxo" secondAttribute="top" id="9rv-En-cRj"/>
+                                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="45" id="Nhr-CD-gL7"/>
+                                    </constraints>
+                                </stackView>
+                            </subviews>
+                            <constraints>
+                                <constraint firstAttribute="trailing" secondItem="AVD-Ei-876" secondAttribute="trailing" id="HR8-ep-8JI"/>
+                                <constraint firstAttribute="trailing" secondItem="XcI-ty-Vxo" secondAttribute="trailing" id="TvP-4G-sY9"/>
+                                <constraint firstItem="XcI-ty-Vxo" firstAttribute="leading" secondItem="4cy-8w-jZD" secondAttribute="leading" id="bmj-iq-NJU"/>
+                                <constraint firstItem="AVD-Ei-876" firstAttribute="leading" secondItem="4cy-8w-jZD" secondAttribute="leading" id="pRH-tY-EtG"/>
+                            </constraints>
+                        </stackView>
+                    </subviews>
+                    <color key="backgroundColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstItem="4cy-8w-jZD" firstAttribute="leading" secondItem="gHz-Ja-hbb" secondAttribute="leading" id="XiI-Y9-NwL"/>
+                        <constraint firstAttribute="trailing" secondItem="4cy-8w-jZD" secondAttribute="trailing" id="nKn-CQ-1la"/>
+                    </constraints>
+                </stackView>
+                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="30" translatesAutoresizingMaskIntoConstraints="NO" id="dkn-gl-e0T">
+                    <rect key="frame" x="100" y="24.5" width="214" height="109.5"/>
                     <subviews>
                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="lightningLock" translatesAutoresizingMaskIntoConstraints="NO" id="tNn-sl-rYg">
-                            <rect key="frame" x="145.5" y="0.0" width="41" height="59"/>
+                            <rect key="frame" x="86.5" y="0.0" width="41" height="59"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="41" id="gk6-ak-pTC"/>
                                 <constraint firstAttribute="height" constant="59" id="ihu-gz-DHA"/>
                             </constraints>
                         </imageView>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Want to unlock your wallet? " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gvi-KI-8xN">
-                            <rect key="frame" x="59" y="89" width="214" height="20.5"/>
+                            <rect key="frame" x="0.0" y="89" width="214" height="20.5"/>
                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                             <nil key="textColor"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="AVD-Ei-876">
-                            <rect key="frame" x="0.0" y="139.5" width="332" height="286.5"/>
-                            <subviews>
-                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="whiteBlueDropbit" translatesAutoresizingMaskIntoConstraints="NO" id="6W6-KL-jPJ">
-                                    <rect key="frame" x="0.0" y="127.5" width="19" height="32"/>
-                                    <constraints>
-                                        <constraint firstAttribute="height" constant="32" id="CAu-4w-frd"/>
-                                        <constraint firstAttribute="width" constant="19" id="gKO-LA-TPt"/>
-                                    </constraints>
-                                </imageView>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="I45-ma-C6h">
-                                    <rect key="frame" x="29" y="123" width="303" height="41"/>
-                                    <string key="text">Find a current DropBit lightning user to send you a few sats
-</string>
-                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                    <nil key="textColor"/>
-                                    <nil key="highlightedColor"/>
-                                </label>
-                            </subviews>
-                        </stackView>
-                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="orImage" translatesAutoresizingMaskIntoConstraints="NO" id="dZs-7l-1ud">
-                            <rect key="frame" x="67" y="456" width="198" height="12"/>
-                            <constraints>
-                                <constraint firstAttribute="height" constant="12" id="MG3-px-GCc"/>
-                                <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="197" id="b6M-5X-TmP"/>
-                            </constraints>
-                        </imageView>
-                        <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="XcI-ty-Vxo">
-                            <rect key="frame" x="0.0" y="498" width="332" height="41"/>
-                            <subviews>
-                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="twitterBird" translatesAutoresizingMaskIntoConstraints="NO" id="3YM-w5-AOL">
-                                    <rect key="frame" x="0.0" y="12" width="21" height="17"/>
-                                    <constraints>
-                                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="17" id="gS0-mi-nwj"/>
-                                        <constraint firstAttribute="width" constant="21" id="pQ8-V8-WGO"/>
-                                    </constraints>
-                                </imageView>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tweet at us @dropbitapp and tell us  why we should unlock your wallet " textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Hpl-41-MQj">
-                                    <rect key="frame" x="31" y="0.0" width="301" height="41"/>
-                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                    <nil key="textColor"/>
-                                    <nil key="highlightedColor"/>
-                                </label>
-                            </subviews>
-                            <constraints>
-                                <constraint firstItem="Hpl-41-MQj" firstAttribute="top" secondItem="XcI-ty-Vxo" secondAttribute="top" id="9rv-En-cRj"/>
-                            </constraints>
-                        </stackView>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fky-Td-Tq1" customClass="PrimaryActionButton" customModule="DropBit" customModuleProvider="target">
-                            <rect key="frame" x="0.0" y="569" width="332" height="49"/>
-                            <constraints>
-                                <constraint firstAttribute="height" constant="49" id="Xyu-rR-JZh"/>
-                            </constraints>
-                            <inset key="imageEdgeInsets" minX="-25" minY="0.0" maxX="0.0" maxY="0.0"/>
-                            <state key="normal" title="TWEET AT US" image="twitterBird"/>
-                            <connections>
-                                <action selector="twitterButtonWasTouched" destination="-1" eventType="touchUpInside" id="9CK-Hi-YhH"/>
-                            </connections>
-                        </button>
                     </subviews>
-                    <color key="backgroundColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                    <constraints>
-                        <constraint firstAttribute="trailing" secondItem="dZs-7l-1ud" secondAttribute="trailing" constant="67.000000000000057" id="AhI-vt-ezo"/>
-                        <constraint firstAttribute="trailing" secondItem="fky-Td-Tq1" secondAttribute="trailing" id="GZD-qh-Usb"/>
-                        <constraint firstItem="AVD-Ei-876" firstAttribute="leading" secondItem="gHz-Ja-hbb" secondAttribute="leading" id="TFc-Y7-OvW"/>
-                        <constraint firstAttribute="trailing" secondItem="AVD-Ei-876" secondAttribute="trailing" id="XH1-oh-gJE"/>
-                        <constraint firstAttribute="trailing" secondItem="XcI-ty-Vxo" secondAttribute="trailing" id="htq-tY-xhe"/>
-                        <constraint firstItem="XcI-ty-Vxo" firstAttribute="leading" secondItem="gHz-Ja-hbb" secondAttribute="leading" id="mhz-Gy-ARA"/>
-                        <constraint firstItem="fky-Td-Tq1" firstAttribute="leading" secondItem="gHz-Ja-hbb" secondAttribute="leading" id="wvY-6t-iHC"/>
-                    </constraints>
                 </stackView>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fky-Td-Tq1" customClass="PrimaryActionButton" customModule="DropBit" customModuleProvider="target">
+                    <rect key="frame" x="41" y="515" width="332" height="49"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="49" id="Xyu-rR-JZh"/>
+                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="49" id="tGV-Dm-srG"/>
+                    </constraints>
+                    <inset key="imageEdgeInsets" minX="-25" minY="0.0" maxX="0.0" maxY="0.0"/>
+                    <state key="normal" title="TWEET AT US" image="twitterBird"/>
+                    <connections>
+                        <action selector="twitterButtonWasTouched" destination="-1" eventType="touchUpInside" id="9CK-Hi-YhH"/>
+                    </connections>
+                </button>
             </subviews>
             <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
-                <constraint firstItem="gHz-Ja-hbb" firstAttribute="leading" secondItem="5Sg-iB-7hg" secondAttribute="leading" constant="41" id="AS7-pi-gNJ"/>
-                <constraint firstItem="5Sg-iB-7hg" firstAttribute="trailing" secondItem="gHz-Ja-hbb" secondAttribute="trailing" constant="41" id="Lah-1T-Yrx"/>
-                <constraint firstItem="gHz-Ja-hbb" firstAttribute="top" secondItem="1dv-EJ-eFd" secondAttribute="top" id="OnP-vM-QIi"/>
-                <constraint firstAttribute="bottom" secondItem="gHz-Ja-hbb" secondAttribute="bottom" id="eTi-dK-Oc8"/>
+                <constraint firstItem="dkn-gl-e0T" firstAttribute="centerX" secondItem="1dv-EJ-eFd" secondAttribute="centerX" id="2Tb-Ha-tMK"/>
+                <constraint firstItem="fky-Td-Tq1" firstAttribute="bottom" secondItem="5Sg-iB-7hg" secondAttribute="bottom" constant="-20" id="2V4-tL-rPp"/>
+                <constraint firstItem="fky-Td-Tq1" firstAttribute="leading" secondItem="5Sg-iB-7hg" secondAttribute="leading" constant="41" id="HYN-Zf-jDy"/>
+                <constraint firstItem="dkn-gl-e0T" firstAttribute="top" secondItem="1dv-EJ-eFd" secondAttribute="top" constant="24.5" id="Ntv-oH-Ce3"/>
+                <constraint firstItem="5Sg-iB-7hg" firstAttribute="trailing" secondItem="fky-Td-Tq1" secondAttribute="trailing" constant="41" id="abT-xx-3OH"/>
+                <constraint firstItem="CbC-hw-If6" firstAttribute="leading" secondItem="5Sg-iB-7hg" secondAttribute="leading" id="d3m-c6-uwJ"/>
+                <constraint firstItem="gHz-Ja-hbb" firstAttribute="centerY" secondItem="1dv-EJ-eFd" secondAttribute="centerY" id="mlx-Tq-Yj9"/>
+                <constraint firstItem="gHz-Ja-hbb" firstAttribute="leading" secondItem="5Sg-iB-7hg" secondAttribute="leading" constant="41" id="s2l-Db-1d2"/>
+                <constraint firstItem="gHz-Ja-hbb" firstAttribute="centerX" secondItem="1dv-EJ-eFd" secondAttribute="centerX" id="s64-rR-cfP"/>
+                <constraint firstItem="CbC-hw-If6" firstAttribute="top" secondItem="1dv-EJ-eFd" secondAttribute="top" id="wQx-7E-kqm"/>
+                <constraint firstItem="5Sg-iB-7hg" firstAttribute="trailing" secondItem="CbC-hw-If6" secondAttribute="trailing" id="ykC-Kq-DOt"/>
+                <constraint firstItem="5Sg-iB-7hg" firstAttribute="trailing" secondItem="gHz-Ja-hbb" secondAttribute="trailing" constant="41" id="zaP-WY-9Dl"/>
+                <constraint firstAttribute="bottom" secondItem="CbC-hw-If6" secondAttribute="bottom" id="zfx-7T-UrE"/>
             </constraints>
             <nil key="simulatedTopBarMetrics"/>
             <nil key="simulatedBottomBarMetrics"/>
