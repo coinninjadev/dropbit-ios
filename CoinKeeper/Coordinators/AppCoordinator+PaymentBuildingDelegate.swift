@@ -72,7 +72,7 @@ extension AppCoordinator: PaymentBuildingDelegate {
       forPayment: btcAmount,
       to: address,
       withFeeRate: feeRate,
-      rbfReplaceabilityOption: .MustNotBeRBF) else { return nil }
+      rbfOption: .MustNotBeRBF) else { return nil }
 
     return PaymentData(broadcastData: bitcoinKitTransactionData, outgoingData: outgoingTransactionData)
   }

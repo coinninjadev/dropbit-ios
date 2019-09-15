@@ -40,11 +40,16 @@ protocol WalletManagerType: AnyObject {
     rbfReplaceabilityOption: CNBTransactionReplaceabilityOption
     ) -> Promise<CNBTransactionData>
 
-  /// Returns nil instead of an error in the case of insufficient funds
+  /// Returns nil instead of an error in the case of insufficient funds, uses default `rbfOption: .Allowed`
   func failableTransactionData(forPayment payment: NSDecimalNumber,
                                to address: String,
                                withFeeRate feeRate: Double,
                                rbfReplaceabilityOption: CNBTransactionReplaceabilityOption) -> CNBTransactionData?
+
+  func failableTransactionData(forPayment payment: NSDecimalNumber,
+                               to address: String,
+                               withFeeRate feeRate: Double,
+                               rbfOption: CNBTransactionReplaceabilityOption) -> CNBTransactionData?
 
   /// Transaction data for payment to a recipient with a flat, predetermined fee.
   ///
@@ -241,11 +246,15 @@ class WalletManager: WalletManagerType {
     }
   }
 
+  func failableTransactionData(forPayment payment: NSDecimalNumber, to address: String, withFeeRate feeRate: Double) -> CNBTransactionData? {
+    return failableTransactionData(forPayment: payment, to: address, withFeeRate: feeRate, rbfOption: .Allowed)
+  }
+
   func failableTransactionData(
     forPayment payment: NSDecimalNumber,
     to address: String,
     withFeeRate feeRate: Double,
-    rbfReplaceabilityOption: CNBTransactionReplaceabilityOption) -> CNBTransactionData? {
+    rbfOption: CNBTransactionReplaceabilityOption) -> CNBTransactionData? {
     let paymentAmount = UInt(payment.asFractionalUnits(of: .BTC))
     let usableFeeRate = self.usableFeeRate(from: feeRate)
     let blockHeight = UInt(persistenceManager.brokers.checkIn.cachedBlockHeight)
@@ -255,14 +264,16 @@ class WalletManager: WalletManagerType {
       let usableVouts = self.usableVouts(in: bgContext)
       let allAvailableOutputs = self.availableTransactionOutputs(fromUsableUTXOs: usableVouts)
 
-      result = CNBTransactionData(address: address,
-                                  coin: coin,
-                                  fromAllAvailableOutputs: allAvailableOutputs,
-                                  paymentAmount: paymentAmount,
-                                  feeRate: usableFeeRate,
-                                  change: self.newChangePath(in: bgContext),
-                                  blockHeight: blockHeight,
-                                  rbfReplaceabilityOption: rbfReplaceabilityOption)
+      result = CNBTransactionData(
+        address: address,
+        coin: coin,
+        fromAllAvailableOutputs: allAvailableOutputs,
+        paymentAmount: paymentAmount,
+        feeRate: usableFeeRate,
+        change: self.newChangePath(in: bgContext),
+        blockHeight: blockHeight,
+        rbfReplaceabilityOption: rbfOption
+      )
     }
     return result
   }
