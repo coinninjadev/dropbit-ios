@@ -128,7 +128,6 @@ extension AppCoordinator: PaymentSendingDelegate {
                                                 receiver: OutgoingDropBitReceiver?,
                                                 success: @escaping CKCompletion,
                                                 failure: @escaping CKErrorCompletion) {
-    //TODO: Get updated ledger and persist new entry immediately following payment
     self.networkManager.payLightningPaymentRequest(inputs.invoice, sats: inputs.sats)
       .get { self.persistLightningPaymentResponse($0, receiver: receiver, inputs: inputs) }
       .then { response -> Promise<String> in

@@ -14,7 +14,10 @@ class WalletTransferViewModel: CurrencySwappableEditAmountViewModel {
   var amount: TransferAmount
   var walletBalances: WalletBalances
 
-  init(direction: TransferDirection, amount: TransferAmount, walletBalances: WalletBalances) {
+  init(direction: TransferDirection,
+       amount: TransferAmount,
+       walletBalances: WalletBalances,
+       exchangeRates: ExchangeRates) {
     self.walletBalances = walletBalances
     self.direction = direction
     self.amount = amount
@@ -28,7 +31,7 @@ class WalletTransferViewModel: CurrencySwappableEditAmountViewModel {
       break
     }
 
-    super.init(exchangeRates: ExchangeRateManager().exchangeRates,
+    super.init(exchangeRates: exchangeRates,
                primaryAmount: NSDecimalNumber(integerAmount: amount.value, currency: .USD),
                walletTransactionType: walletTransactionType,
                currencyPair: CurrencyPair(primary: .USD, fiat: .USD))

@@ -17,10 +17,11 @@ extension AppCoordinator: LightningReloadDelegate {
     let converter = CurrencyConverter(rates: exchangeRates, fromAmount: dollars, currencyPair: currencyPair)
     guard let btcAmount = converter.convertedAmount() else { return }
     let context = self.persistenceManager.viewContext
-    self.buildLoadLightningPaymentData(btcAmount: btcAmount, exchangeRates: self.currencyController.exchangeRates, in: context)
+    self.buildLoadLightningPaymentData(btcAmount: btcAmount, exchangeRates: exchangeRates, in: context)
       .done { paymentData in
         let balances = self.spendableBalanceNetPending()
-        let viewModel = WalletTransferViewModel(direction: .toLightning(paymentData), amount: amount, walletBalances: balances)
+        let viewModel = WalletTransferViewModel(direction: .toLightning(paymentData), amount: amount,
+                                                walletBalances: balances, exchangeRates: exchangeRates)
         let walletTransferViewController = WalletTransferViewController.newInstance(delegate: self, viewModel: viewModel)
         self.navigationController.present(walletTransferViewController, animated: true, completion: nil)
     }.cauterize()
