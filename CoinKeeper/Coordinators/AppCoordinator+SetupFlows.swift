@@ -125,20 +125,6 @@ extension AppCoordinator {
       .get { _ in self.setWalletManagerWithPersistedWords() }
   }
 
-  /*
-  func checkForWordsBackedUp() {
-    let backupWordsReminderShown = persistenceManager.brokers.activity.backupWordsReminderShown
-    guard !wordsBackedUp && !backupWordsReminderShown else { return }
-    let title = "Remember to backup your wallet to ensure your Bitcoin is secure in case your phone" +
-    " is ever lost or stolen. Tap here to backup now."
-    alertManager.showBanner(with: title, duration: nil, alertKind: .error) { [weak self] in
-      self?.analyticsManager.track(event: .backupWordsButtonPressed, with: nil)
-      self?.showWordRecoveryFlow()
-    }
-    persistenceManager.brokers.activity.backupWordsReminderShown = true
-  }
-  */
-
   func registerWalletWithServerIfNeeded(completion: @escaping CKCompletion) {
     if launchStateManager.shouldRegisterWallet() {
       registerWallet(completion: completion)
