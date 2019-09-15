@@ -64,6 +64,17 @@ class TransactionHistoryViewModel: NSObject, UICollectionViewDataSource, Exchang
   }
 
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    switch collectionView {
+    case is TransactionHistorySummaryCollectionView:
+      return summaryCell(forItemAt: indexPath, in: collectionView)
+    case is TransactionHistoryDetailCollectionView:
+      return detailCell(forItemAt: indexPath, in: collectionView)
+    default:
+      return UICollectionViewCell()
+    }
+  }
+
+  private func summaryCell(forItemAt indexPath: IndexPath, in collectionView: UICollectionView) -> TransactionHistorySummaryCell {
     let cell = collectionView.dequeue(TransactionHistorySummaryCell.self, for: indexPath)
     let isFirstCell = indexPath.row == 0
     let item = dataSource.summaryCellDisplayableItem(at: indexPath,
@@ -71,6 +82,28 @@ class TransactionHistoryViewModel: NSObject, UICollectionViewDataSource, Exchang
                                                      currencies: selectedCurrencyPair,
                                                      deviceCountryCode: self.deviceCountryCode)
     cell.configure(with: item, isAtTop: isFirstCell)
+    return cell
+  }
+
+  private func detailCell(forItemAt indexPath: IndexPath, in collectionView: UICollectionView) -> TransactionHistoryDetailBaseCell {
+    //    guard let viewController = viewController,
+    //      let viewModel = viewController.viewModelForIndexPath?(indexPath) else { return UICollectionViewCell() }
+
+    //    if let invitation = viewModel.transaction?.invitation {
+    //      switch invitation.status {
+    //      case .canceled, .expired:
+    //        let cell = collectionView.dequeue(TransactionHistoryDetailInvalidCell.self, for: indexPath)
+    //        cell.load(with: viewModel, delegate: viewController)
+    //        return cell
+    //      default:
+    //        let cell = collectionView.dequeue(TransactionHistoryDetailValidCell.self, for: indexPath)
+    //        cell.load(with: viewModel, delegate: viewController)
+    //        return cell
+    //      }
+    //    } else {
+    //      let cell = collectionView.dequeue(TransactionHistoryDetailValidCell.self, for: indexPath )
+    //      cell.load(with: viewModel, delegate: viewController)
+    let cell = collectionView.dequeue(TransactionHistoryDetailValidCell.self, for: indexPath)
     return cell
   }
 

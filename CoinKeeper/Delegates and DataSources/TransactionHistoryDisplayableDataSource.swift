@@ -21,7 +21,10 @@ protocol TransactionHistoryDataSourceType: AnyObject {
                                   rates: ExchangeRates,
                                   currencies: CurrencyPair,
                                   deviceCountryCode: Int) -> TransactionSummaryCellDisplayable
-  //TODO: func detailCellDisplayableItem(at indexPath: IndexPath, rates: ExchangeRates, currencies: CurrencyPair) -> TransactionDetailCellDisplayable
+ //  func detailCellDisplayableItem(at indexPath: IndexPath,
+//                                 rates: ExchangeRates,
+//                                 currencies: CurrencyPair,
+//                                 deviceCountryCode: Int) -> TransactionDetailCellDisplayable
   func numberOfSections() -> Int
   func numberOfItems(inSection section: Int) -> Int
   var walletTransactionType: WalletTransactionType { get }

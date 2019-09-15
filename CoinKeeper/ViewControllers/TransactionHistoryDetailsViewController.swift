@@ -10,7 +10,10 @@ import UIKit
 import CoreData
 import PromiseKit
 
-protocol TransactionHistoryDetailsViewControllerDelegate: TransactionShareable, URLOpener {
+protocol TransactionHistoryDetailsViewControllerDelegate: TransactionShareable &
+URLOpener & DeviceCountryCodeProvider & CurrencyValueDataSourceType {
+
+  var currencyController: CurrencyController { get }
   func viewControllerDidDismissTransactionDetails(_ viewController: UIViewController)
   func viewControllerShouldSeeTransactionDetails(for object: TransactionDetailCellDisplayable)
   func viewController(_ viewController: TransactionHistoryDetailsViewController,
@@ -23,55 +26,30 @@ protocol TransactionHistoryDetailsViewControllerDelegate: TransactionShareable, 
 
 final class TransactionHistoryDetailsViewController: PresentableViewController, StoryboardInitializable {
 
-  @IBOutlet var collectionView: TransactionHistoryDetailCollectionView! {
-    didSet {
-      if onChainFetchResultsController == nil {
-        let delegateAndDataSource = TransactionHistoryDetailsViewControllerOnChainDDS(viewController: self)
-        collectionView.dataSource = delegateAndDataSource
-        collectionView.delegate = delegateAndDataSource
-      } else {
-        let delegateAndDataSource = TransactionHistoryDetailsViewControllerLightningDDS(viewController: self)
-        collectionView.dataSource = delegateAndDataSource
-        collectionView.delegate = delegateAndDataSource
-      }
+  @IBOutlet var collectionView: TransactionHistoryDetailCollectionView!
 
-      collectionView.showsHorizontalScrollIndicator = false
-    }
-  }
+  var viewModel: TransactionHistoryViewModel!
 
-  weak var onChainFetchResultsController: NSFetchedResultsController<CKMTransaction>?
-  weak var lightningFetchResultsController: NSFetchedResultsController<CKMWalletEntry>?
   var selectedIndexPath: IndexPath = IndexPath(item: 0, section: 0)
   var viewModelForIndexPath: ((IndexPath) -> TransactionDetailCellDisplayable)?
 
   static func newInstance(withDelegate delegate: TransactionHistoryDetailsViewControllerDelegate,
-                          fetchedResultsController frc: NSFetchedResultsController<CKMTransaction>,
+                          walletTxType: WalletTransactionType,
                           selectedIndexPath: IndexPath,
-                          viewModelForIndexPath: @escaping (IndexPath) -> TransactionDetailCellDisplayable,
-                          urlOpener: URLOpener) -> TransactionHistoryDetailsViewController {
-    let controller = TransactionHistoryDetailsViewController.makeFromStoryboard()
-    controller.onChainFetchResultsController = frc
-    controller.delegate = delegate
-    controller.selectedIndexPath = selectedIndexPath
-    controller.viewModelForIndexPath = viewModelForIndexPath
-    return controller
+                          dataSource: TransactionHistoryDataSourceType) -> TransactionHistoryDetailsViewController {
+    let vc = TransactionHistoryDetailsViewController.makeFromStoryboard()
+    vc.delegate = delegate
+    vc.selectedIndexPath = selectedIndexPath
+    dataSource.delegate = vc
+    vc.viewModel = TransactionHistoryViewModel(delegate: vc,
+                                               currencyManager: delegate,
+                                               deviceCountryCode: delegate.deviceCountryCode(),
+                                               transactionType: walletTxType,
+                                               dataSource: dataSource)
+    return vc
   }
 
-  static func newInstance(withDelegate delegate: TransactionHistoryDetailsViewControllerDelegate,
-                          fetchedResultsController frc: NSFetchedResultsController<CKMWalletEntry>,
-                          selectedIndexPath: IndexPath,
-                          viewModelForIndexPath: @escaping (IndexPath) -> TransactionDetailCellDisplayable,
-                          urlOpener: URLOpener) -> TransactionHistoryDetailsViewController {
-    let controller = TransactionHistoryDetailsViewController.makeFromStoryboard()
-    controller.lightningFetchResultsController = frc
-    controller.delegate = delegate
-    controller.selectedIndexPath = selectedIndexPath
-    controller.viewModelForIndexPath = viewModelForIndexPath
-    return controller
-  }
-
-  //TODO: make private(set)
-  weak var delegate: TransactionHistoryDetailsViewControllerDelegate!
+  private(set) weak var delegate: TransactionHistoryDetailsViewControllerDelegate!
 
   override var cornerRadius: CGFloat {
     get { return .zero }
@@ -93,6 +71,7 @@ final class TransactionHistoryDetailsViewController: PresentableViewController, 
     collectionView.contentInset = UIEdgeInsets(top: 0, left: hPadding, bottom: 0, right: hPadding) // allow first and last cells to be centered
     collectionView.isPagingEnabled = true
     collectionView.collectionViewLayout = detailCollectionViewLayout(withHorizontalPadding: hPadding)
+    collectionView.showsHorizontalScrollIndicator = false
     collectionView.backgroundColor = .clear
     collectionView.reloadData()
   }
@@ -176,3 +155,26 @@ extension TransactionHistoryDetailsViewController: TransactionHistoryDetailCellD
 }
 
 class TransactionHistoryDetailCollectionView: UICollectionView {}
+
+extension TransactionHistoryDetailsViewController: TransactionHistoryDataSourceDelegate {
+  func transactionDataSourceWillChange() { }
+  func transactionDataSourceDidChange() { }
+}
+
+extension TransactionHistoryDetailsViewController: TransactionHistoryViewModelDelegate {
+  var currencyController: CurrencyController {
+    return delegate.currencyController
+  }
+
+  func viewModelDidUpdateExchangeRates() {
+
+  }
+
+  func summaryHeaderType() -> SummaryHeaderType? {
+    return nil
+  }
+
+  func didTapSummaryHeader(_ header: TransactionHistorySummaryHeader) { }
+
+
+}
