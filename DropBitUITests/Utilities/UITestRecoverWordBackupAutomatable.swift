@@ -15,16 +15,6 @@ protocol UITestRecoverWordBackupAutomatable: AnyObject {
 
 extension UITestRecoverWordBackupAutomatable {
 
-  func bannerToast() -> XCUIElement {
-    let title = "Remember to backup your wallet to ensure your Bitcoin is secure in case your phone is ever lost or stolen. Tap here to backup now."
-    let predicate = NSPredicate(format: "label == %@", title)
-
-    let toastLabel = app.staticTexts.containing(predicate).firstMatch
-    let toastExists = toastLabel.waitForExistence(timeout: 2.0)
-    XCTAssert(toastExists)
-    return toastLabel
-  }
-
   func performBackup() {
     RecoveryWordsIntroPage().tapBackup()
 

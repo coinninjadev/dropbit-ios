@@ -83,9 +83,6 @@ class ImportWalletUITests: UITestCase, UITestRecoverWordBackupAutomatable {
     DeviceVerificationPage().tapSkip()
     PushInfoPage()?.dismiss()
 
-    let toastLabel = bannerToast()
-    toastLabel.tap()
-
     DropBitMePage().tapClose()
 
     performBackup()
