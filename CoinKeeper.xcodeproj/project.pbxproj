@@ -477,6 +477,8 @@
 		A200574D20B5F70F007074D9 /* SettingCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A200574C20B5F70F007074D9 /* SettingCell.xib */; };
 		A200574F20B5FD68007074D9 /* AppCoordinator+SettingsViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A200574E20B5FD68007074D9 /* AppCoordinator+SettingsViewControllerDelegate.swift */; };
 		A200575520B6F2D0007074D9 /* Command.swift in Sources */ = {isa = PBXBuildFile; fileRef = A200575420B6F2D0007074D9 /* Command.swift */; };
+		A2085150232EA185007843DE /* AppCoordinator+TwitterTweetingDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A208514F232EA185007843DE /* AppCoordinator+TwitterTweetingDelegate.swift */; };
+		A2085152232EA210007843DE /* TwitterTweetingDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2085151232EA210007843DE /* TwitterTweetingDelegate.swift */; };
 		A20E47F020C0436E00CA8589 /* ContactType.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20E47EF20C0436E00CA8589 /* ContactType.swift */; };
 		A216D78F20B30C25005FBAC2 /* NoConnectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A216D78E20B30C25005FBAC2 /* NoConnectionViewController.swift */; };
 		A216D79120B30C51005FBAC2 /* NoConnectionViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A216D79020B30C51005FBAC2 /* NoConnectionViewController.storyboard */; };
@@ -1525,6 +1527,8 @@
 		A200574C20B5F70F007074D9 /* SettingCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SettingCell.xib; sourceTree = "<group>"; };
 		A200574E20B5FD68007074D9 /* AppCoordinator+SettingsViewControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppCoordinator+SettingsViewControllerDelegate.swift"; sourceTree = "<group>"; };
 		A200575420B6F2D0007074D9 /* Command.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Command.swift; sourceTree = "<group>"; };
+		A208514F232EA185007843DE /* AppCoordinator+TwitterTweetingDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppCoordinator+TwitterTweetingDelegate.swift"; sourceTree = "<group>"; };
+		A2085151232EA210007843DE /* TwitterTweetingDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwitterTweetingDelegate.swift; sourceTree = "<group>"; };
 		A20E47EF20C0436E00CA8589 /* ContactType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactType.swift; sourceTree = "<group>"; };
 		A216D78E20B30C25005FBAC2 /* NoConnectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoConnectionViewController.swift; sourceTree = "<group>"; };
 		A216D79020B30C51005FBAC2 /* NoConnectionViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = NoConnectionViewController.storyboard; sourceTree = "<group>"; };
@@ -2352,6 +2356,7 @@
 				A235898A232165A5002C3FC0 /* AppCoordinator+PaymentSendingDelegate.swift */,
 				A2BCCFC12321919300EB9C30 /* AppCoordinator+PaymentBuildingDelegate.swift */,
 				A2B4EAFD2322C555005D0A65 /* AppCoordinator+LightningReloadDelegate.swift */,
+				A208514F232EA185007843DE /* AppCoordinator+TwitterTweetingDelegate.swift */,
 			);
 			path = Coordinators;
 			sourceTree = "<group>";
@@ -3318,6 +3323,7 @@
 				A268F13A22EA067B00410040 /* SyncSubscribeable.swift */,
 				A24B9E89230AF1D300852718 /* LightningInvoiceResolver.swift */,
 				A235898C2321661A002C3FC0 /* PaymentSendingDelegate.swift */,
+				A2085151232EA210007843DE /* TwitterTweetingDelegate.swift */,
 			);
 			path = Protocols;
 			sourceTree = "<group>";
@@ -4526,6 +4532,7 @@
 				A220A97B20B5E0E400C30149 /* SettingsViewController.swift in Sources */,
 				B5F32BA62124D05E00B1F89F /* CKStrings.swift in Sources */,
 				B5EABAB621FB932E00E32E08 /* NetworkManager+TransactionNotificationRequestable.swift in Sources */,
+				A2085150232EA185007843DE /* AppCoordinator+TwitterTweetingDelegate.swift in Sources */,
 				3BA9F5FF208F642F0047C213 /* AppCoordinator+ScanQRViewControllerDelegate.swift in Sources */,
 				3B42ACFA229023AD00C2E30D /* OutgoingTransactionDropBitType.swift in Sources */,
 				B5F775F422B81B8500C7A771 /* UserBroker.swift in Sources */,
@@ -4895,6 +4902,7 @@
 				3B6FDADB2050146E0091916A /* VerifyRecoveryWordCellData.swift in Sources */,
 				3B598FE82318542500FF50CD /* LightningUpgradeCoordinator+LightningUpgradeStartViewControllerDelegate.swift in Sources */,
 				B582AD5020A084AD007A6459 /* CKMCounterpartyAddress+CoreDataProperties.swift in Sources */,
+				A2085152232EA210007843DE /* TwitterTweetingDelegate.swift in Sources */,
 				3B6749E420AA5CA40032FE02 /* CKMVout+CoreDataProperties.swift in Sources */,
 				B5F6EC2522554CF20045633B /* TwilioErrorDelegate.swift in Sources */,
 				3B6E4D59206E533D00D9CFFA /* ApiKeys.generated.swift in Sources */,

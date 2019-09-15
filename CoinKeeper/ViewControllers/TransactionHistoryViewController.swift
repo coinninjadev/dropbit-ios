@@ -14,7 +14,8 @@ import PromiseKit
 import DZNEmptyDataSet
 
 protocol TransactionHistoryViewControllerDelegate: DeviceCountryCodeProvider &
-  BadgeUpdateDelegate & URLOpener & LightningReloadDelegate & CurrencyValueDataSourceType {
+  BadgeUpdateDelegate & URLOpener & LightningReloadDelegate & CurrencyValueDataSourceType &
+  TwitterTweetingDelegate {
   func viewControllerDidRequestHistoryUpdate(_ viewController: TransactionHistoryViewController)
   func viewControllerDidDisplayTransactions(_ viewController: TransactionHistoryViewController)
   func viewControllerAttemptedToRefreshTransactions(_ viewController: UIViewController)
@@ -257,7 +258,7 @@ extension TransactionHistoryViewController: DZNEmptyDataSetDelegate, DZNEmptyDat
 extension TransactionHistoryViewController: LockedLightningViewDelegate {
 
   func viewDidAskToUnlockLightning() {
-    //delegate.openTwitterURL(withMessage: "Hey @dropbitapp, you should unlock my new lighting because...")
+    delegate.openTwitterURL(withMessage: "Hey @dropbitapp, you should unlock my new lighting because...")
   }
 
 }
