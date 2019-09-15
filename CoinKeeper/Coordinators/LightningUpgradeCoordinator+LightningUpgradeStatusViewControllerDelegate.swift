@@ -59,6 +59,13 @@ extension LightningUpgradeCoordinator: LightningUpgradeStatusViewControllerDeleg
     return parent.networkManager.broadcastTx(metadata: metadata)
   }
 
+  func viewController(_ viewController: LightningUpgradeStatusViewController, failedToUpgradeWithError error: Error) {
+    let alert = parent.alertManager.defaultAlert(
+      withTitle: "Something went wrong",
+      description: "There was a problem upgrading your wallet. Please contact support with this error information: \n\(error.localizedDescription)")
+    viewController.present(alert, animated: true, completion: nil)
+  }
+
   private func proceedReplacingWallet(
     walletManager: WalletManagerType,
     flagsParser: WalletFlagsParser,

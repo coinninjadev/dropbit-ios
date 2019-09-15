@@ -16,6 +16,7 @@ protocol LightningUpgradeStatusViewControllerDelegate: AnyObject {
   func viewControllerStartUpgradingWallet(_ viewController: LightningUpgradeStatusViewController) -> Promise<Void>
   func viewControllerStartUpgradingToSegwit(_ viewController: LightningUpgradeStatusViewController) -> Promise<Void>
   func viewController(_ viewController: LightningUpgradeStatusViewController, broadcast metadata: CNBTransactionMetadata) -> Promise<String>
+  func viewController(_ viewController: LightningUpgradeStatusViewController, failedToUpgradeWithError error: Error)
 }
 
 protocol LightningUpgradeStatusDataSource: AnyObject {
@@ -62,19 +63,17 @@ final class LightningUpgradeStatusViewController: BaseViewController, Storyboard
 
     creatingNewWalletStatusView.mode = .working
 
-    // create new wallet
     delegate.viewControllerStartUpgradingWallet(self)
       .then { self.finishedCreatingNewWallet() }
 
-    // update to segwit
       .then { _ in self.delegate.viewControllerStartUpgradingToSegwit(self) }
       .then { _ in self.finishedUpdatingToSegwit() }
 
-    // transfer funds
       .done { _ in self.transferFundsIfNeeded() }
       .catch { (error: Error) in
         log.error(error, message: "Failed during Segwit upgrade")
         // show alert
+        self.delegate.viewController(self, failedToUpgradeWithError: error)
     }
   }
 

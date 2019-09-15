@@ -29,6 +29,15 @@ final class LightningUpgradePageViewController: UIPageViewController, Storyboard
   }
 
   private func showFinalizeUpgradeAction(error: Error?) {
+    if let err = error {
+      log.error(err, message: "Error during transfer funds stage.")
+      let coordinator = generalCoordinationDelegate as? AppCoordinator
+      let alert = coordinator?.alertManager.defaultAlert(
+        withTitle: "Something went wrong",
+        description: "There was a problem upgrading your wallet. Please contact support with this error information: \n\(err.localizedDescription)")
+      alert.map { self.present($0, animated: true, completion: nil) }
+    }
+
     activeViewController = lnViewControllers()[2]
     activeViewController.map { self.setViewControllers([$0], direction: .forward, animated: true, completion: nil) }
   }
