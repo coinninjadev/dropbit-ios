@@ -16,6 +16,7 @@ class CKKeychain: PersistenceKeychainType {
     case userPin
     case deviceID
     case walletWords
+    case walletWordsV2
     case walletWordsBackedUp // Bool as NSNumber
     case skippedVerification // Bool as NSNumber
     case countryCode
@@ -93,7 +94,7 @@ class CKKeychain: PersistenceKeychainType {
   }
 
   func backup(recoveryWords words: [String]) {
-    _ = store.archive(words, key: CKKeychain.Key.walletWords.rawValue)
+    _ = store.archive(words, key: CKKeychain.Key.walletWordsV2.rawValue)
   }
 
   @discardableResult
@@ -101,13 +102,18 @@ class CKKeychain: PersistenceKeychainType {
     if let pin = tempPinHashStorage { // store pin and wallet together
       return storeOnSerialBackgroundQueue(value: pin, key: CKKeychain.Key.userPin.rawValue)
         .get { self.tempPinHashStorage = nil }
-        .then { self.storeOnSerialBackgroundQueue(value: words, key: CKKeychain.Key.walletWords.rawValue) }
+        .then { self.storeOnSerialBackgroundQueue(value: words, key: CKKeychain.Key.walletWordsV2.rawValue) }
         .then { self.storeWalletWordsBackedUp(isBackedUp) }
-
     } else {
       tempWordStorage = words
       return self.storeWalletWordsBackedUp(isBackedUp)
     }
+  }
+
+  @discardableResult
+  func upgrade(recoveryWords words: [String]) -> Promise<Void> {
+    return storeOnSerialBackgroundQueue(value: words, key: CKKeychain.Key.walletWordsV2.rawValue)
+      .then { _ in self.storeWalletWordsBackedUp(false) }
   }
 
   func storeWalletWordsBackedUp(_ isBackedUp: Bool) -> Promise<Void> {
@@ -124,7 +130,7 @@ class CKKeychain: PersistenceKeychainType {
     let pinHash = pin.sha256()
 
     if let words = tempWordStorage { // store pin and wallet together
-      return storeOnSerialBackgroundQueue(value: words, key: CKKeychain.Key.walletWords.rawValue)
+      return storeOnSerialBackgroundQueue(value: words, key: CKKeychain.Key.walletWordsV2.rawValue)
         .get { self.tempWordStorage = nil }
         .then { self.storeOnSerialBackgroundQueue(value: pinHash, key: CKKeychain.Key.userPin.rawValue) }
     } else {

@@ -36,7 +36,7 @@ class MockSendPaymentViewControllerCoordinator: SendPaymentViewControllerCoordin
     return OutgoingTransactionData.emptyInstance()
   }
 
-  func buildTransactionData(
+  func buildNonReplaceableTransactionData(
     btcAmount: NSDecimalNumber,
     address: String,
     exchangeRates: ExchangeRates) -> PaymentData? {

@@ -47,7 +47,11 @@ extension AppCoordinator {
     let pinAndWalletExist = properties.contains([.pinExists, .walletExists])
 
     if pinAndWalletExist && verificationSatisfied {
-      validToStartEnteringApp()
+      if launchStateManager.needsUpgradedToSegwit() {
+        startSegwitUpgrade()
+      } else {
+        validToStartEnteringApp()
+      }
     } else if pinAndWalletExist {
       startDeviceVerificationFlow(userIdentityType: .phone, shouldOrphanRoot: true, selectedSetupFlow: selectedFlow)
     } else {
@@ -61,7 +65,7 @@ extension AppCoordinator {
       self.saveSuccessfulWords(words: words, didBackUp: false)
         .done(on: .main) { _ in
           self.analyticsManager.track(event: .createWallet, with: nil)
-          self.analyticsManager.track(property: MixpanelProperty(key: .v1Wallet, value: true))
+          self.analyticsManager.track(property: MixpanelProperty(key: .walletVersion, value: WalletFlagsVersion.v2.rawValue))
           self.continueSetupFlow()
         }.cauterize()
     }
@@ -150,7 +154,7 @@ extension AppCoordinator {
       return
     }
 
-    let usableWords = words.isEmpty ? wmgr.mnemonicWords() : []
+    let usableWords = words.isEmpty ? wmgr.mnemonicWords() : words
 
     guard usableWords.count == 12 else {
       log.error("Failed to receive 12 words")

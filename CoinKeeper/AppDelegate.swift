@@ -106,7 +106,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     window?.makeKeyAndVisible()
 
     let uiTestArguments = ProcessInfo.processInfo.arguments.compactMap { UITestArgument(string: $0) }
-    coordinator = AppCoordinator(navigationController: navigationController, uiTestArguments: uiTestArguments)
+    let coord = AppCoordinator(navigationController: navigationController, uiTestArguments: uiTestArguments)
+    viewController.delegate = coord
+    coordinator = coord
     coordinator?.start()
   }
 }

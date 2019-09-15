@@ -24,4 +24,7 @@ class MockCheckInBroker: CKPersistenceBroker, CheckInBrokerType {
 
   var cachedGoodFee: Double = 0
 
+  func processCheckIn(response: CheckInResponse) -> Promise<Void> {
+    return Promise.value(())
+  }
 }

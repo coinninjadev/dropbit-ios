@@ -90,6 +90,7 @@ protocol SerialQueueManagerType: class {
   var queue: OperationQueueType { get }
   var timer: Timer { get }
   var delegate: SerialQueueManagerDelegate? { get set }
+  var walletSyncOperationFactory: WalletSyncOperationFactory? { get }
 
   func enqueueWalletSyncIfAppropriate(type: WalletSyncType,
                                       policy: EnqueueingPolicy,

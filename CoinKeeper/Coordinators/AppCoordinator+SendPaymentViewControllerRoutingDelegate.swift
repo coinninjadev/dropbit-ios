@@ -133,7 +133,8 @@ extension AppCoordinator: SendPaymentViewControllerRoutingDelegate {
         let paymentInputs = SendOnChainPaymentInputs(networkManager: self.networkManager, wmgr: wmgr,
                                                      outgoingTxData: outgoingTxData, btcAmount: btcAmount,
                                                      address: paymentTarget, contact: inputs.contact,
-                                                     currencyPair: currencyPair, exchangeRates: inputs.rates)
+                                                     currencyPair: currencyPair, exchangeRates: inputs.rates,
+                                                     rbfReplaceabilityOption: inputs.rbfReplaceabilityOption)
         self.sendOnChainPayment(with: paymentInputs)
       }
     }
@@ -147,7 +148,8 @@ extension AppCoordinator: SendPaymentViewControllerRoutingDelegate {
 
         if let requiredFeeRate = inputs.outgoingTxData.requiredFeeRate {
           return inputs.wmgr.transactionData(forPayment: inputs.btcAmount, to: inputs.address,
-                                             withFeeRate: requiredFeeRate).map { .required($0) }
+                                             withFeeRate: requiredFeeRate,
+                                             rbfReplaceabilityOption: .Allowed).map { .required($0) }
 
         } else if config.adjustableFeesEnabled {
           return self.adjustableFeeViewModel(config: config, rates: rates, wmgr: inputs.wmgr, btcAmount: inputs.btcAmount,
@@ -156,7 +158,8 @@ extension AppCoordinator: SendPaymentViewControllerRoutingDelegate {
         } else {
           let defaultFeeRate = rates.rate(forType: config.defaultFeeType)
           return inputs.wmgr.transactionData(forPayment: inputs.btcAmount, to: inputs.address,
-                                             withFeeRate: defaultFeeRate).map { .standard($0) }
+                                             withFeeRate: defaultFeeRate,
+                                             rbfReplaceabilityOption: .Allowed).map { .standard($0) }
         }
       }
       .done { (feeModel: ConfirmTransactionFeeModel) in
@@ -291,10 +294,14 @@ extension AppCoordinator: SendPaymentViewControllerRoutingDelegate {
                                       address: String) -> Promise<AdjustableTransactionFeeViewModel> {
     let usableRates = UsableFeeRates(rates: rates, walletManager: wmgr)
 
-    return wmgr.transactionData(forPayment: btcAmount, to: address, withFeeRate: usableRates.lowRate)
+    return wmgr.transactionData(forPayment: btcAmount, to: address, withFeeRate: usableRates.lowRate, rbfReplaceabilityOption: .Allowed)
       .map { lowTxData -> AdjustableTransactionFeeViewModel in
-        let maybeMediumTxData = wmgr.failableTransactionData(forPayment: btcAmount, to: address, withFeeRate: usableRates.mediumRate)
-        let maybeHighTxData = wmgr.failableTransactionData(forPayment: btcAmount, to: address, withFeeRate: usableRates.highRate)
+        let maybeMediumTxData = wmgr.failableTransactionData(
+          forPayment: btcAmount, to: address, withFeeRate: usableRates.mediumRate, rbfReplaceabilityOption: .Allowed
+        )
+        let maybeHighTxData = wmgr.failableTransactionData(
+          forPayment: btcAmount, to: address, withFeeRate: usableRates.highRate, rbfReplaceabilityOption: .Allowed
+        )
         return AdjustableTransactionFeeViewModel(preferredFeeType: config.defaultFeeType,
                                                  lowFeeTxData: lowTxData,
                                                  mediumFeeTxData: maybeMediumTxData,

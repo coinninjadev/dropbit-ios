@@ -16,7 +16,7 @@ extension AppCoordinator: TransactionHistoryDetailsViewControllerDelegate {
     let neverMindAction = AlertActionConfiguration(title: "Never mind", style: .cancel, action: nil)
     let cancelInvitationAction = AlertActionConfiguration(title: "Cancel DropBit", style: .default, action: { [weak self] in
       guard let strongSelf = self,
-        let walletWorker = strongSelf.workerFactory.createWalletAddressDataWorker(delegate: strongSelf)
+        let walletWorker = strongSelf.workerFactory().createWalletAddressDataWorker(delegate: strongSelf)
         else { return }
       let context = strongSelf.persistenceManager.createBackgroundContext()
       context.performAndWait {

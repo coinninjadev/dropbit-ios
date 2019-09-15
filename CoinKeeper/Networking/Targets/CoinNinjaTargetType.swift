@@ -32,8 +32,12 @@ extension CoinNinjaTargetType {
   // MARK: - Default implementations for TargetType
 
   public var baseURL: URL {
+    let type = CKUserDefaults().useRegtest ? "dev" : "test"
     #if DEBUG
-    return URL(string: "https://api.dev.coinninja.net/api/v1")!
+    #if UITEST
+    return URL(string: "https://api.test.coinninja.net/api/v1")!
+    #endif
+    return URL(string: "https://api.\(type).coinninja.net/api/v1")!
     #else
     return URL(string: "https://api.coinninja.com/api/v1")!
     #endif

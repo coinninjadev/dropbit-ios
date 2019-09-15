@@ -10,6 +10,7 @@ import UIKit
 
 protocol SettingsViewControllerDelegate: ViewControllerDismissable, ViewControllerURLDelegate {
 
+  var persistenceManager: PersistenceManagerType { get }
   func verifyIfWordsAreBackedUp() -> Bool
   func dustProtectionIsEnabled() -> Bool
   func yearlyHighPushNotificationIsSubscribed() -> Bool
@@ -19,6 +20,7 @@ protocol SettingsViewControllerDelegate: ViewControllerDismissable, ViewControll
   func viewControllerDidConfirmDeleteWallet(_ viewController: UIViewController)
   func viewControllerDidSelectOpenSourceLicenses(_ viewController: UIViewController)
   func viewControllerDidSelectRecoveryWords(_ viewController: UIViewController)
+  func viewControllerDidSelectReviewLegacyWords(_ viewController: UIViewController)
   func viewControllerDidSelectAdjustableFees(_ viewController: UIViewController)
   func viewControllerResyncBlockchain(_ viewController: UIViewController)
   func viewController(_ viewController: UIViewController, didEnableDustProtection didEnable: Bool)
@@ -123,13 +125,26 @@ class SettingsViewController: BaseViewController, StoryboardInitializable {
   }
 
   private func walletSectionViewModel() -> SettingsSectionViewModel {
+    // legacy words, if exists
+    let legacyWords = delegate.persistenceManager.keychainManager.retrieveValue(for: .walletWords)
+    var legacyWordsVM: SettingsCellViewModel?
+    if legacyWords != nil {
+      let legacyWordsCellType = SettingsCellType.legacyWords(action: { [weak self] in
+        guard let localSelf = self else { return }
+        localSelf.delegate.viewControllerDidSelectReviewLegacyWords(localSelf)
+      })
+      legacyWordsVM = SettingsCellViewModel(type: legacyWordsCellType)
+    }
+
+    // recovery words
     let recoveryWordsCellType = SettingsCellType.recoveryWords(isWalletBackedUp()) { [weak self] in
       guard let localSelf = self else { return }
       localSelf.delegate.viewControllerDidSelectRecoveryWords(localSelf)
     }
     let recoveryWordsVM = SettingsCellViewModel(type: recoveryWordsCellType)
 
-    let dustProtectionEnabled = self.delegate.dustProtectionIsEnabled()
+    // dust protection
+    let dustProtectionEnabled = delegate.dustProtectionIsEnabled()
     let dustCellType = SettingsCellType.dustProtection(
       enabled: dustProtectionEnabled,
       infoAction: { [weak self] (type: SettingsCellType) in
@@ -143,7 +158,8 @@ class SettingsViewController: BaseViewController, StoryboardInitializable {
     )
     let dustProtectionVM = SettingsCellViewModel(type: dustCellType)
 
-    let isYearlyHighPushEnabled = self.delegate.yearlyHighPushNotificationIsSubscribed()
+    // yearly high push notification
+    let isYearlyHighPushEnabled = delegate.yearlyHighPushNotificationIsSubscribed()
     let yearlyHighCellType = SettingsCellType.yearlyHighPushNotification(enabled: isYearlyHighPushEnabled) { [weak self] (didEnable: Bool) in
       guard let localSelf = self else { return }
       localSelf.delegate.viewController(
@@ -160,15 +176,43 @@ class SettingsViewController: BaseViewController, StoryboardInitializable {
     }
     let yearlyHighVM = SettingsCellViewModel(type: yearlyHighCellType)
 
+    // adjustable fees
     let adjustableFeesAction: BasicAction = { [weak self] in
       guard let localSelf = self else { return }
       localSelf.delegate.viewControllerDidSelectAdjustableFees(localSelf)
     }
     let adjustableFeesVM = SettingsCellViewModel(type: .adjustableFees(action: adjustableFeesAction))
 
+    // regtest vs mainnet
+    var regtestVM: SettingsCellViewModel?
+    #if DEBUG
+    let useRegtest = CKUserDefaults().useRegtest
+    let regtestCellType = SettingsCellType.regtest(enabled: useRegtest) { [weak self] (didEnable: Bool) in
+      guard let localSelf = self else { return }
+      CKUserDefaults().useRegtest = didEnable
+      DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+        localSelf.viewModel = localSelf.createViewModel()
+        localSelf.settingsTableView.reloadData()
+      }
+    }
+    regtestVM = SettingsCellViewModel(type: regtestCellType)
+    #endif
+
+    // form array of cell view models
+    let viewModels = [
+      legacyWordsVM,
+      recoveryWordsVM,
+      dustProtectionVM,
+      yearlyHighVM,
+      adjustableFeesVM,
+      regtestVM
+      ]
+      .compactMap { $0 }
+
+    // return section view model
     return SettingsSectionViewModel(
       headerViewModel: SettingsHeaderFooterViewModel(title: "WALLET"),
-      cellViewModels: [recoveryWordsVM, dustProtectionVM, yearlyHighVM, adjustableFeesVM])
+      cellViewModels: viewModels)
   }
 
 }

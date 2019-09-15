@@ -14,6 +14,7 @@ class MockSerialQueueManager: SerialQueueManagerType {
   var queue: OperationQueueType = OperationQueue()
 
   var timer: Timer = Timer()
+  var walletSyncOperationFactory: WalletSyncOperationFactory?
 
   weak var delegate: SerialQueueManagerDelegate?
 

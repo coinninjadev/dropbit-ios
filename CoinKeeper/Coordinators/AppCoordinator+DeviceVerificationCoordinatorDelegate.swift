@@ -20,16 +20,53 @@ extension AppCoordinator: DeviceVerificationCoordinatorDelegate {
     guard let wmgr = walletManager else { return Promise(error: CKPersistenceError.noWalletManager) }
     // Skip registration if wallet was previously registered and persisted
     guard self.persistenceManager.brokers.wallet.walletId(in: context) == nil else {
-      return Promise { $0.fulfill(()) }
+      return Promise.value(())
     }
 
     let flags = 0
     let handler = WalletFlagsParser(flags: flags)
-      .setPurpose(.BIP49)
-      .setVersion(.v1)
+      .setPurpose(.BIP84)
+      .setVersion(.v2)
 
     return self.networkManager.createWallet(withPublicKey: wmgr.hexEncodedPublicKey, walletFlags: handler.flags)
-      .get(in: context) { try self.persistenceManager.brokers.wallet.persistWalletResponse(from: $0, in: context) }.asVoid()
+      .then(in: context) { response -> Promise<WalletFlagsParser> in
+        try self.persistenceManager.brokers.wallet.persistWalletResponse(from: response, in: context)
+        return Promise.value(WalletFlagsParser(flags: response.flags))
+      }
+      .done { (parser: WalletFlagsParser) in
+        if parser.walletVersion != .v2 && parser.walletDeactivated {
+          let desc = """
+          You have entered recovery words from a legacy DropBit wallet. We are upgrading all wallets to a new version
+          of DropBit for enhanced security, lower transaction fees, and Lightning support. Please enter the new
+          recovery words you were given upon upgrading, or create a new wallet.
+          """.removingMultilineLineBreaks()
+          self.persistenceManager.keychainManager.storeSynchronously(anyValue: nil, key: .walletWords)
+          self.persistenceManager.keychainManager.storeSynchronously(anyValue: nil, key: .walletWordsV2)
+          self.persistenceManager.keychainManager.storeSynchronously(anyValue: false, key: .walletWordsBackedUp)
+          let startOverAction = AlertActionConfiguration(title: "Start Over", style: .cancel, action: {
+            let controller = StartViewController.newInstance(delegate: self)
+            self.navigationController.setViewControllers([controller], animated: true)
+          })
+          let alertViewModel = AlertControllerViewModel(title: "New Seed Words Required",
+                                                        description: desc,
+                                                        image: nil,
+                                                        style: .alert,
+                                                        actions: [startOverAction])
+          let alert = self.alertManager.alert(from: alertViewModel)
+          self.navigationController.topViewController()?.present(alert, animated: true)
+        } else if parser.walletVersion != .v2 {
+          let words = self.persistenceManager.brokers.wallet.walletWords()
+          self.persistenceManager.keychainManager.storeSynchronously(anyValue: words, key: .walletWords)
+          self.persistenceManager.keychainManager.storeSynchronously(anyValue: nil, key: .walletWordsV2)
+          self.persistenceManager.keychainManager.storeSynchronously(anyValue: false, key: .walletWordsBackedUp)
+          self.startSegwitUpgrade()
+        } else {
+          try context.performThrowingAndWait {
+            try context.saveRecursively()
+          }
+        }
+      }
+      .asVoid()
   }
 
   func coordinator(_ coordinator: DeviceVerificationCoordinator, didVerify type: UserIdentityType, isInitialSetupFlow: Bool) {
@@ -77,7 +114,7 @@ extension AppCoordinator: DeviceVerificationCoordinatorDelegate {
 
   /// This may fail with a 500 error if the addresses were already added during a previous installation of the same wallet
   private func registerInitialWalletAddresses() {
-    guard let walletWorker = workerFactory.createWalletAddressDataWorker(delegate: self) else { return }
+    guard let walletWorker = workerFactory().createWalletAddressDataWorker(delegate: self) else { return }
     let bgContext = persistenceManager.createBackgroundContext()
     let addressNumber = walletWorker.targetWalletAddressCount
     walletWorker.deleteAllAddressesOnServer()

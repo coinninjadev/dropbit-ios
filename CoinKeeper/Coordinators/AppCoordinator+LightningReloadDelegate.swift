@@ -19,7 +19,7 @@ extension AppCoordinator: LightningReloadDelegate {
     let context = self.persistenceManager.viewContext
     let wallet = CKMWallet.findOrCreate(in: context)
     let lightningAccount = self.persistenceManager.brokers.lightning.getAccount(forWallet: wallet, in: context)
-    let paymentData = buildTransactionData(btcAmount: btcAmount,
+    let paymentData = buildNonReplaceableTransactionData(btcAmount: btcAmount,
                                            address: lightningAccount.address,
                                            exchangeRates: ExchangeRateManager().exchangeRates)
     let viewModel = WalletTransferViewModel(direction: .toLightning(paymentData), amount: amount,

@@ -53,7 +53,7 @@ extension AppCoordinator: WalletTransferViewControllerDelegate {
     let context = self.persistenceManager.viewContext
     let wallet = CKMWallet.findOrCreate(in: context)
     let lightningAccount = self.persistenceManager.brokers.lightning.getAccount(forWallet: wallet, in: context)
-    return buildTransactionData(btcAmount: btcAmount, address: lightningAccount.address, exchangeRates: exchangeRates)
+    return buildNonReplaceableTransactionData(btcAmount: btcAmount, address: lightningAccount.address, exchangeRates: exchangeRates)
   }
 
   func viewControllerDidConfirmLoad(_ viewController: UIViewController, paymentData transactionData: PaymentData) {

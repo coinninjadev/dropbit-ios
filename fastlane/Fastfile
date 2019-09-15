@@ -9,7 +9,7 @@
 # Uncomment the line if you want fastlane to automatically update itself
 # update_fastlane
 
-fastlane_version '2.127.1'
+fastlane_version '2.131.0'
 
 default_platform(:ios)
 
@@ -75,6 +75,8 @@ platform :ios do
       "fakeWords=#{ENV['GENERATED_FAKE_WORDS']}",
       "recoverOnlyWords=#{ENV['GENERATED_RECOVER_ONLY_WORDS']}",
       "recoverOnlyFirstTestnetAddress=#{ENV['GENERATED_RECOVER_FIRST_TESTNET_ADDRESS']}",
+      "recoverOnlyLegacyWords=#{ENV['GENERATED_RECOVER_ONLY_LEGACY_WORDS']}",
+      "recoverOnlyLegacyDeactivatedWords=#{ENV['GENERATED_RECOVER_ONLY_LEGACY_DEACTIVATED_WORDS']}",
       "twitterConsumerKey=#{ENV['TWITTER_CONSUMER_KEY']}",
       "twitterConsumerSecret=#{ENV['TWITTER_CONSUMER_SECRET']}",
       "twitterRequestTokenURL=#{ENV['TWITTER_REQUEST_TOKEN_URL']}",

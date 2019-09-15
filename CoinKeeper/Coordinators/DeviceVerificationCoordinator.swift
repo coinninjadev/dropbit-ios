@@ -245,7 +245,7 @@ extension DeviceVerificationCoordinator: DeviceVerificationViewControllerDelegat
   fileprivate func registerAndPersistWalletIfNecessary(delegate: DeviceVerificationCoordinatorDelegate,
                                                        in context: NSManagedObjectContext) -> Promise<Void> {
     if delegate.persistenceManager.brokers.wallet.walletId(in: context) == nil {
-      return delegate.registerAndPersistWallet(in: context)
+      return delegate.registerAndPersistWallet(in: context).asVoid()
     } else {
       return .value(()) //registration not needed
     }
@@ -441,7 +441,7 @@ extension DeviceVerificationCoordinator: DeviceVerificationViewControllerDelegat
     let bgContext = delegate.persistenceManager.createBackgroundContext()
     bgContext.perform {
       delegate.registerAndPersistWallet(in: bgContext)
-        .done(in: bgContext) {
+        .done(in: bgContext) { _ in // ignore param, not needed for new wallets
           try bgContext.saveRecursively()
 
           DispatchQueue.main.async {

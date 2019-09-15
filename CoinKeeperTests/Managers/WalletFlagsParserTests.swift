@@ -74,4 +74,10 @@ class WalletFlagsParserTests: XCTestCase {
     parser.setPurpose(.BIP84).setVersion(.v2)
     XCTAssertEqual(parser.flags, 0b10010)
   }
+
+  func testDeactivatingWallet() {
+    let parser = WalletFlagsParser(flags: 0b1)
+    parser.deactivate()
+    XCTAssertEqual(parser.flags, 0b1_0000_0001)
+  }
 }

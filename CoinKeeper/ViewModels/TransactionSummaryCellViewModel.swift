@@ -15,6 +15,7 @@ struct TransactionSummaryCellViewModel: TransactionSummaryCellViewModelType {
   var selectedCurrency: SelectedCurrency
   var direction: TransactionDirection
   var isLightningTransfer: Bool
+  var isLightningUpgrade: Bool
   var status: TransactionStatus
   var amountDetails: TransactionAmountDetails
   var memo: String?
@@ -33,6 +34,7 @@ struct TransactionSummaryCellViewModel: TransactionSummaryCellViewModelType {
     self.selectedCurrency = selectedCurrency
     self.direction = object.direction
     self.isLightningTransfer = object.isLightningTransfer
+    self.isLightningUpgrade = object.isLightningUpgrade
     self.status = object.status
     self.amountDetails = object.amountDetails(with: exchangeRates, fiatCurrency: fiatCurrency)
     self.memo = object.memo
@@ -51,6 +53,7 @@ protocol TransactionSummaryCellViewModelObject {
   var memo: String? { get }
   var receiverAddress: String? { get }
   var lightningInvoice: String? { get }
+  var isLightningUpgrade: Bool { get }
 
   func amountDetails(with currentRates: ExchangeRates, fiatCurrency: CurrencyCode) -> TransactionAmountDetails
   func counterpartyConfig(for deviceCountryCode: Int) -> TransactionCellCounterpartyConfig?
@@ -291,6 +294,10 @@ struct LightningViewModelObject: TransactionSummaryCellViewModelObject {
     return entry.request
   }
 
+  var isLightningUpgrade: Bool {
+    return false
+  }
+
   func amountDetails(with currentRates: ExchangeRates, fiatCurrency: CurrencyCode) -> TransactionAmountDetails {
     let amount = NSDecimalNumber(integerAmount: entry.value, currency: .BTC)
     return TransactionAmountDetails(btcAmount: amount, fiatCurrency: fiatCurrency, exchangeRates: currentRates)
@@ -319,6 +326,7 @@ struct FallbackViewModelObject: TransactionSummaryCellViewModelObject {
 
   let direction: TransactionDirection = .in
   let isLightningTransfer: Bool = false
+  let isLightningUpgrade: Bool = false
   let status: TransactionStatus = .failed
   var memo: String?
   var receiverAddress: String?

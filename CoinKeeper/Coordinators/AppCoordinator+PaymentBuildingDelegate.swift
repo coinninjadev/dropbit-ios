@@ -22,7 +22,7 @@ protocol PaymentBuildingDelegate {
   func configureOutgoingTransactionData(with dto: OutgoingTransactionData,
                                         address: String?,
                                         inputs: SendingDelegateInputs) -> OutgoingTransactionData
-  func buildTransactionData(
+  func buildNonReplaceableTransactionData(
     btcAmount: NSDecimalNumber,
     address: String,
     exchangeRates: ExchangeRates) -> PaymentData?
@@ -30,18 +30,26 @@ protocol PaymentBuildingDelegate {
 
 extension AppCoordinator: PaymentBuildingDelegate {
 
-  func buildTransactionData(
+  func buildNonReplaceableTransactionData(
     btcAmount: NSDecimalNumber,
     address: String,
     exchangeRates: ExchangeRates) -> PaymentData? {
     var outgoingTransactionData = OutgoingTransactionData.emptyInstance()
     let sharedPayload = SharedPayloadDTO.emptyInstance()
-    let inputs = SendingDelegateInputs(primaryCurrency: .BTC, walletTxType: .onChain, contact: nil,
-                                       rates: exchangeRates, sharedPayload: sharedPayload)
+    let inputs = SendingDelegateInputs(
+      primaryCurrency: .BTC,
+      walletTxType: .onChain,
+      contact: nil,
+      rates: exchangeRates,
+      sharedPayload: sharedPayload,
+      rbfReplaceabilityOption: .MustNotBeRBF)
 
     outgoingTransactionData = configureOutgoingTransactionData(with: outgoingTransactionData, address: address, inputs: inputs)
-    guard let bitcoinKitTransactionData = walletManager?.failableTransactionData(forPayment: btcAmount,
-                                                                                 to: address, withFeeRate: 0.0) else { return nil }
+    guard let bitcoinKitTransactionData = walletManager?.failableTransactionData(
+      forPayment: btcAmount,
+      to: address,
+      withFeeRate: 0.0,
+      rbfReplaceabilityOption: .MustNotBeRBF) else { return nil }
 
     return PaymentData(broadcastData: bitcoinKitTransactionData, outgoingData: outgoingTransactionData)
   }

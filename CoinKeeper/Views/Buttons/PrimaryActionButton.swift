@@ -18,6 +18,8 @@ class PrimaryActionButton: UIButton {
     case green
     case orange
     case bitcoin(Bool)
+    case white(enabled: Bool)
+    case mediumPurple
   }
 
   var style: Style = .standard {
@@ -70,6 +72,16 @@ class PrimaryActionButton: UIButton {
       imageView?.tintColor = .white
       setTitleColor(.white, for: .normal)
       setTitleColor(.lightGrayText, for: .highlighted)
+    case .white(enabled: let enabled):
+      backgroundColor = enabled ? .white : UIColor.white.withAlphaComponent(0.4)
+      isEnabled = enabled
+      setTitleColor(.darkPurple, for: .normal)
+      setTitleColor(.lightGrayText, for: .highlighted)
+    case .mediumPurple:
+      backgroundColor = .mediumPurple
+      tintColor = .white
+      setTitleColor(.white, for: .normal)
+      setTitleColor(.lightGrayText, for: .highlighted)
     }
   }
 
@@ -87,6 +99,8 @@ class PrimaryActionButton: UIButton {
       case .orange: mainColor = .mango
       case .bitcoin: mainColor = .bitcoinOrange
       case .lightning: mainColor = .lightningBlue
+      case .white: mainColor = .white
+      case .mediumPurple: mainColor = .mediumPurple
       }
 
       backgroundColor = isHighlighted ? .mediumGrayBackground : mainColor

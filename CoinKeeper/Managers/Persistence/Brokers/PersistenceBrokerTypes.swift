@@ -62,6 +62,8 @@ protocol CheckInBrokerType: AnyObject {
   var cachedBetterFee: Double { get set }
   var cachedGoodFee: Double { get set }
 
+  func processCheckIn(response: CheckInResponse) -> Promise<Void>
+
 }
 
 protocol DeviceBrokerType: AnyObject {
@@ -191,5 +193,6 @@ protocol WalletBrokerType: AnyObject {
   func lastReceiveAddressIndex(in context: NSManagedObjectContext) -> Int?
   func lastChangeAddressIndex(in context: NSManagedObjectContext) -> Int?
   var receiveAddressIndexGaps: Set<Int> { get set }
+  var usableCoin: CNBBaseCoin { get }
 
 }

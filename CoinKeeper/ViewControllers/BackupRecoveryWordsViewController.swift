@@ -17,10 +17,12 @@ final class BackupRecoveryWordsViewController: BaseViewController, StoryboardIni
 
   static func newInstance(withDelegate delegate: BackupRecoveryWordsViewControllerDelegate,
                           recoveryWords words: [String],
-                          wordsBackedUp: Bool) -> BackupRecoveryWordsViewController {
+                          wordsBackedUp: Bool,
+                          reviewOnly: Bool = false) -> BackupRecoveryWordsViewController {
     let controller = BackupRecoveryWordsViewController.makeFromStoryboard()
     controller.recoveryWords = words
     controller.wordsBackedUp = wordsBackedUp
+    controller.reviewOnly = reviewOnly
     controller.delegate = delegate
     return controller
   }
@@ -61,6 +63,7 @@ final class BackupRecoveryWordsViewController: BaseViewController, StoryboardIni
     }
   }
 
+  private var reviewOnly: Bool = false
   private(set) weak var delegate: BackupRecoveryWordsViewControllerDelegate!
 
   var wordCollectionViewDDS: BackupRecoveryWordsCollectionDDS!
@@ -99,7 +102,11 @@ final class BackupRecoveryWordsViewController: BaseViewController, StoryboardIni
   // MARK: actions
   @IBAction func nextButtonTapped(_ sender: UIButton) {
     if let currentIndex = currentIndex(), indexIsLast(index: currentIndex) {
-      delegate.viewController(self, didFinishWords: recoveryWords)
+      if reviewOnly {
+        dismiss(animated: true, completion: nil)
+      } else {
+        delegate.viewController(self, didFinishWords: recoveryWords)
+      }
     } else {
       showItem(direction: .next)
     }

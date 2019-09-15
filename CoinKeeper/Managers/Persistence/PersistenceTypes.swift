@@ -18,6 +18,7 @@ protocol PersistenceManagerType: DeviceCountryCodeProvider {
   var contactCacheManager: ContactCacheManagerType { get }
   var hashingManager: HashingManager { get }
   var brokers: PersistenceBrokersType { get }
+  var usableCoin: CNBBaseCoin { get }
 
   var viewContext: NSManagedObjectContext { get }
   func createBackgroundContext() -> NSManagedObjectContext
@@ -42,7 +43,6 @@ protocol PersistenceManagerType: DeviceCountryCodeProvider {
 
   /// Look for any transactions sent to a phone number without a contact name, and provide a name if found, as a convenience when viewing tx history
   func matchContactsIfPossible()
-
 }
 
 extension PersistenceManagerType {
@@ -62,6 +62,7 @@ protocol PersistenceKeychainType: AnyObject {
   func store(valueToHash value: String?, key: CKKeychain.Key) -> Promise<Void>
   func store(deviceID: String) -> Promise<Void>
   func store(recoveryWords words: [String], isBackedUp: Bool) -> Promise<Void>
+  func upgrade(recoveryWords wordsd: [String]) -> Promise<Void>
   func storeWalletWordsBackedUp(_ isBackedUp: Bool) -> Promise<Void>
   func store(userPin pin: String) -> Promise<Void>
 
@@ -151,6 +152,8 @@ protocol PersistenceUserDefaultsType: AnyObject {
   /// Avoid using the methods of UserDefaults directly,
   /// use the extension functions with CKUserDefaults.Key instead.
   var standardDefaults: UserDefaults { get }
+
+  var useRegtest: Bool { get set }
 
   func deleteAll()
   func deleteWallet()

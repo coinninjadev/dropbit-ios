@@ -17,6 +17,9 @@ class MockPersistenceManager: PersistenceManagerType {
   var hashingManager: HashingManager = HashingManager()
   let brokers: PersistenceBrokersType
 
+  var fakeCoinToUse: CNBBaseCoin = CNBBaseCoin(purpose: .BIP49, coin: .TestNet, account: 0)
+  var usableCoin: CNBBaseCoin { return fakeCoinToUse }
+
   init(keychainManager: PersistenceKeychainType = MockPersistenceKeychainManager(store: MockKeychainAccessorType()),
        databaseManager: PersistenceDatabaseType = MockPersistenceDatabaseManager(),
        userDefaultsManager: PersistenceUserDefaultsType = MockUserDefaultsManager(),

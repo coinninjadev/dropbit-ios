@@ -36,7 +36,7 @@ extension SettingsViewController: UITableViewDataSource {
       cell = tableView.dequeue(SettingSwitchWithInfoCell.self, for: indexPath)
     case .recoveryWords:
       cell = tableView.dequeue(SettingsRecoveryWordsCell.self, for: indexPath)
-    case .yearlyHighPushNotification:
+    case .yearlyHighPushNotification, .regtest:
       cell = tableView.dequeue(SettingSwitchCell.self, for: indexPath)
     default:
       cell = tableView.dequeue(SettingCell.self, for: indexPath)

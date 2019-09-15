@@ -23,6 +23,7 @@ enum AnalyticsManagerPropertiesType: String {
   case relativeWalletRange = "Relative Wallet Range"
   case v1Wallet = "v1Wallet"
   case platform = "platform"
+  case walletVersion = "WalletVersion"
 }
 
 enum AnalyticsManagerEventType: String {
@@ -79,6 +80,7 @@ enum AnalyticsManagerEventType: String {
   case tryAgainToDeverify = "TryAgainToDeregister"
   case syncBlockchain = "SyncBlockchainPressed"
   case viewWords = "ViewWords"
+  case viewLegacyWords = "ViewLegacyWords"
   case appOpen = "AppOpen"
   case firstOpen = "FirstOpen"
   case payScreenLoaded = "PayScreenLoaded"

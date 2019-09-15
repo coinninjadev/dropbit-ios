@@ -44,6 +44,10 @@ extension UIColor {
 
   static var mango: UIColor { return UIColor(r: 247, g: 158, b: 54) }
 
+  static var deepPurple: UIColor { return UIColor(r: 6, g: 6, b: 81) }
+  static var darkPurple: UIColor { return UIColor(r: 15, g: 18, b: 64) }
+  static var mediumPurple: UIColor { return UIColor(r: 57, g: 47, b: 152) }
+
   // MARK: Grays
   static var outgoingGray: UIColor { return UIColor(gray: 74) }
 

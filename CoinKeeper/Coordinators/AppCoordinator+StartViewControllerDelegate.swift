@@ -34,12 +34,11 @@ extension AppCoordinator: StartViewControllerDelegate {
     switch flow {
     case .restoreWallet:
       if restoreFromICloudBackup {
-        do {
-          try persistenceManager.resetPersistence()
-          log.info("Successfully reset persistence after iCloud Restore")
-        } catch {
-          log.error(error, message: "Failed to reset persistence after iCloud Restore")
-        }
+        let context = persistenceManager.viewContext
+        persistenceManager.brokers.wallet.removeWalletId(in: context)
+        persistenceManager.brokers.user.unverifyUser(in: context)
+        persistenceManager.keychainManager.deleteAll()
+        log.info("Successfully reset persistence after iCloud Restore")
       }
       persistenceManager.userDefaultsManager.deleteAll()
       continueSetupFlow()
@@ -53,6 +52,7 @@ extension AppCoordinator: StartViewControllerDelegate {
   func clearPin() {
     persistenceManager.keychainManager.storeSynchronously(anyValue: nil, key: .userPin)
     persistenceManager.keychainManager.storeSynchronously(anyValue: nil, key: .walletWords)
+    persistenceManager.keychainManager.storeSynchronously(anyValue: nil, key: .walletWordsV2)
     launchStateManager.unauthenticateUser()
   }
 

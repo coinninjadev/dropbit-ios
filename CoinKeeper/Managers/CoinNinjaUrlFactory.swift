@@ -39,6 +39,7 @@ struct CoinNinjaUrlFactory {
     case buyAtATM(CLLocationCoordinate2D)
     case dropBitMe(handle: String)
     case dropBitMeLearnMore
+    case lightningUpgrade
     case dropBitAppLightningWithdrawalFees
 
     var domain: String {
@@ -74,7 +75,8 @@ struct CoinNinjaUrlFactory {
            .adjustableFeesTooltip,
            .dropBitAppLightningWithdrawalFees,
            .regularTransactionTooltip,
-           .dropbitTransactionTooltip:
+           .dropbitTransactionTooltip,
+           .lightningUpgrade:
         return "https://dropbit.app/"
       case .dropBitMe,
            .dropBitMeLearnMore:
@@ -148,6 +150,8 @@ struct CoinNinjaUrlFactory {
         return "\(tooltipBreadcrumb)lightningwithdrawalfees"
       case .dropBitMeLearnMore:
         return ""
+      case .lightningUpgrade:
+        return "upgrade"
       }
     }
   }

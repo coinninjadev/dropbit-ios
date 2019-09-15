@@ -16,6 +16,7 @@ class MockTransactionSummaryCellViewModel: TransactionSummaryCellViewModelType {
   var direction: TransactionDirection
   var status: TransactionStatus
   var isLightningTransfer: Bool
+  var isLightningUpgrade: Bool = false
   var receiverAddress: String?
   var lightningInvoice: String?
   var selectedCurrency: SelectedCurrency

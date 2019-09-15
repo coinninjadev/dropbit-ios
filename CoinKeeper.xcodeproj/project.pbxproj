@@ -58,6 +58,9 @@
 		3B071A5620C2EEDD009C2BF6 /* CKMCounterpartyName+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B071A5420C2EEDD009C2BF6 /* CKMCounterpartyName+CoreDataProperties.swift */; };
 		3B0C4FDE22A1AC31000FE760 /* VerfiedTwitterUserIndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B0C4FDD22A1AC31000FE760 /* VerfiedTwitterUserIndicatorView.swift */; };
 		3B0C4FE022A1ACBD000FE760 /* VerfiedTwitterUserIndicatorView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3B0C4FDF22A1ACBD000FE760 /* VerfiedTwitterUserIndicatorView.xib */; };
+		3B0C785623197B0A00D4C216 /* LightningUpgradePageViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3B0C785523197B0A00D4C216 /* LightningUpgradePageViewController.storyboard */; };
+		3B0C7858231E891600D4C216 /* LightningUpgradeCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B0C7857231E891600D4C216 /* LightningUpgradeCoordinator.swift */; };
+		3B0C785A231EDF3600D4C216 /* LightningUpgradeGradientOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B0C7859231EDF3600D4C216 /* LightningUpgradeGradientOverlayView.swift */; };
 		3B0FF8C420C333DC00AADC9E /* CKPersistenceError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B0FF8C320C333DC00AADC9E /* CKPersistenceError.swift */; };
 		3B124E102020EB2B00431E2E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B124E0F2020EB2B00431E2E /* AppDelegate.swift */; };
 		3B124E172020EB2B00431E2E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3B124E162020EB2B00431E2E /* Assets.xcassets */; };
@@ -108,6 +111,7 @@
 		3B325D532190A37B0094897C /* SecondaryActionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B325D522190A37B0094897C /* SecondaryActionButton.swift */; };
 		3B325D542190A46D0094897C /* SecondaryActionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B325D522190A37B0094897C /* SecondaryActionButton.swift */; };
 		3B325D572190B2CE0094897C /* MockRecoveryWordsIntroViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B325D552190B1770094897C /* MockRecoveryWordsIntroViewControllerDelegate.swift */; };
+		3B34B980232DB06A002D8A92 /* DropBitMePage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B34B97F232DB06A002D8A92 /* DropBitMePage.swift */; };
 		3B3779EF219C6B2800F79683 /* BackupWordsReminderDrawerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B3779ED219C6B2800F79683 /* BackupWordsReminderDrawerCell.swift */; };
 		3B3779F0219C6B2800F79683 /* BackupWordsReminderDrawerCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3B3779EE219C6B2800F79683 /* BackupWordsReminderDrawerCell.xib */; };
 		3B3779F2219C9DE100F79683 /* NewWalletUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B3779F1219C9DE100F79683 /* NewWalletUITests.swift */; };
@@ -201,6 +205,14 @@
 		3B57207D2233004E0048A8CF /* BaseCoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B57207C2233004E0048A8CF /* BaseCoreDataStack.swift */; };
 		3B598FDC2315BF5100FF50CD /* WalletFlagsParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B598FDB2315BF5100FF50CD /* WalletFlagsParser.swift */; };
 		3B598FDE2315CB2D00FF50CD /* WalletFlagsParserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B598FDD2315CB2D00FF50CD /* WalletFlagsParserTests.swift */; };
+		3B598FE02318337C00FF50CD /* LightningUpgradeStartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B598FDF2318337C00FF50CD /* LightningUpgradeStartViewController.swift */; };
+		3B598FE4231833C000FF50CD /* LightningUpgradeStartViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3B598FE3231833C000FF50CD /* LightningUpgradeStartViewController.storyboard */; };
+		3B598FE623184DD200FF50CD /* LightningUpgradeStartViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B598FE523184DD200FF50CD /* LightningUpgradeStartViewControllerTests.swift */; };
+		3B598FE82318542500FF50CD /* LightningUpgradeCoordinator+LightningUpgradeStartViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B598FE72318542500FF50CD /* LightningUpgradeCoordinator+LightningUpgradeStartViewControllerDelegate.swift */; };
+		3B598FEA23196A8000FF50CD /* LightningUpgradeStatusViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B598FE923196A8000FF50CD /* LightningUpgradeStatusViewController.swift */; };
+		3B598FEC23196AAE00FF50CD /* LightningUpgradeStatusViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3B598FEB23196AAE00FF50CD /* LightningUpgradeStatusViewController.storyboard */; };
+		3B598FEE23196BA800FF50CD /* LightningUpgradeCoordinator+LightningUpgradeStatusViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B598FED23196BA800FF50CD /* LightningUpgradeCoordinator+LightningUpgradeStatusViewControllerDelegate.swift */; };
+		3B598FF02319719E00FF50CD /* LightningUpgradePageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B598FEF2319719E00FF50CD /* LightningUpgradePageViewController.swift */; };
 		3B5A889A228AEFE10082BBA4 /* TwitterSearchDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5A8899228AEFE10082BBA4 /* TwitterSearchDataSource.swift */; };
 		3B5A889D228AF3D90082BBA4 /* TwitterUserTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5A889B228AF3D90082BBA4 /* TwitterUserTableViewCell.swift */; };
 		3B5A889E228AF3D90082BBA4 /* TwitterUserTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3B5A889C228AF3D90082BBA4 /* TwitterUserTableViewCell.xib */; };
@@ -277,6 +289,11 @@
 		3B8FF10D20337495003436EE /* PinCreationViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B8FF10C20337495003436EE /* PinCreationViewControllerTests.swift */; };
 		3B8FF11020346730003436EE /* AppCoordinatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B8FF10F20346730003436EE /* AppCoordinatorTests.swift */; };
 		3B934D2220EFE53A00979ADC /* TransactionDataWorkerDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B934D2120EFE53A00979ADC /* TransactionDataWorkerDTO.swift */; };
+		3B936ADB23218F810067CA97 /* CKWalletError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B936ADA23218F810067CA97 /* CKWalletError.swift */; };
+		3B936ADD2322C1250067CA97 /* LightningUpgradeCompleteViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3B936ADC2322C1250067CA97 /* LightningUpgradeCompleteViewController.storyboard */; };
+		3B936ADF2322C2B30067CA97 /* LightningUpgradeCompleteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B936ADE2322C2B30067CA97 /* LightningUpgradeCompleteViewController.swift */; };
+		3B936AE12322CD4E0067CA97 /* LightningUpgradeCoordinator+LightningUpgradeCompleteViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B936AE02322CD4E0067CA97 /* LightningUpgradeCoordinator+LightningUpgradeCompleteViewControllerDelegate.swift */; };
+		3B936AE32322D0B20067CA97 /* AppCoordinator+LightningUpgradeCoordinatorDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B936AE22322D0B20067CA97 /* AppCoordinator+LightningUpgradeCoordinatorDelegate.swift */; };
 		3B961CD52044946C00B38EBB /* MockLaunchStateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B961CD42044946C00B38EBB /* MockLaunchStateManager.swift */; };
 		3B9779A4202E416700C9C933 /* Montserrat-MediumItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3B977992202E416600C9C933 /* Montserrat-MediumItalic.ttf */; };
 		3B9779A5202E416700C9C933 /* Montserrat-ExtraLightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3B977993202E416600C9C933 /* Montserrat-ExtraLightItalic.ttf */; };
@@ -296,6 +313,8 @@
 		3B9779B3202E416700C9C933 /* Montserrat-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3B9779A1202E416700C9C933 /* Montserrat-LightItalic.ttf */; };
 		3B9779B4202E416700C9C933 /* Montserrat-ExtraLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3B9779A2202E416700C9C933 /* Montserrat-ExtraLight.ttf */; };
 		3B9779B5202E416700C9C933 /* Montserrat-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3B9779A3202E416700C9C933 /* Montserrat-BoldItalic.ttf */; };
+		3B9930DF232ABF0D008EA112 /* LightningUpgradeStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B9930DE232ABF0D008EA112 /* LightningUpgradeStatusView.swift */; };
+		3B9930E1232ABF21008EA112 /* LightningUpgradeStatusView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3B9930E0232ABF21008EA112 /* LightningUpgradeStatusView.xib */; };
 		3B9A8DF52150371800C78C2C /* WalletDelegateType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B9A8DF42150371800C78C2C /* WalletDelegateType.swift */; };
 		3B9A8DF72150388F00C78C2C /* AppCoordinator+WalletDelegateType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B9A8DF62150388F00C78C2C /* AppCoordinator+WalletDelegateType.swift */; };
 		3B9A8DFA2150414300C78C2C /* MockWalletDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B9A8DF821503E6500C78C2C /* MockWalletDelegate.swift */; };
@@ -370,6 +389,8 @@
 		3BDBE63422839A6B009C23CB /* MockNeworkManager+Twitter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BDBE632228399F9009C23CB /* MockNeworkManager+Twitter.swift */; };
 		3BDFADFC2267AEFF0077DEF2 /* BlockstreamTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BDFADFB2267AEFF0077DEF2 /* BlockstreamTarget.swift */; };
 		3BDFADFE2267B1FB0077DEF2 /* BlockstreamProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BDFADFD2267B1FB0077DEF2 /* BlockstreamProvider.swift */; };
+		3BE1C52D232D2BC100583A83 /* LightningUpgradeStartPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BE1C52C232D2BC100583A83 /* LightningUpgradeStartPage.swift */; };
+		3BE1C52F232D390700583A83 /* UITestRecoverWordBackupAutomatable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BE1C52E232D390700583A83 /* UITestRecoverWordBackupAutomatable.swift */; };
 		3BE8AA1621F10D4200A3F0C4 /* CKCryptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BE8AA1521F10D4200A3F0C4 /* CKCryptor.swift */; };
 		3BE8AA1821F1149100A3F0C4 /* CKCryptorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BE8AA1721F1149100A3F0C4 /* CKCryptorTests.swift */; };
 		3BE8D85E20D16FAE00E99D24 /* DerivativePathResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BE8D85D20D16FAE00E99D24 /* DerivativePathResponse.swift */; };
@@ -1098,6 +1119,9 @@
 		3B071A5420C2EEDD009C2BF6 /* CKMCounterpartyName+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CKMCounterpartyName+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		3B0C4FDD22A1AC31000FE760 /* VerfiedTwitterUserIndicatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerfiedTwitterUserIndicatorView.swift; sourceTree = "<group>"; };
 		3B0C4FDF22A1ACBD000FE760 /* VerfiedTwitterUserIndicatorView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = VerfiedTwitterUserIndicatorView.xib; sourceTree = "<group>"; };
+		3B0C785523197B0A00D4C216 /* LightningUpgradePageViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LightningUpgradePageViewController.storyboard; sourceTree = "<group>"; };
+		3B0C7857231E891600D4C216 /* LightningUpgradeCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightningUpgradeCoordinator.swift; sourceTree = "<group>"; };
+		3B0C7859231EDF3600D4C216 /* LightningUpgradeGradientOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightningUpgradeGradientOverlayView.swift; sourceTree = "<group>"; };
 		3B0FF8C320C333DC00AADC9E /* CKPersistenceError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CKPersistenceError.swift; sourceTree = "<group>"; };
 		3B11042C20D2E6D60011E2CF /* CoinKeeper.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = CoinKeeper.entitlements; sourceTree = "<group>"; };
 		3B124E0C2020EB2B00431E2E /* DropBit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DropBit.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1152,6 +1176,7 @@
 		3B325D50219091950094897C /* RecoveryWordsIntroViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = RecoveryWordsIntroViewController.storyboard; sourceTree = "<group>"; };
 		3B325D522190A37B0094897C /* SecondaryActionButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondaryActionButton.swift; sourceTree = "<group>"; };
 		3B325D552190B1770094897C /* MockRecoveryWordsIntroViewControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockRecoveryWordsIntroViewControllerDelegate.swift; sourceTree = "<group>"; };
+		3B34B97F232DB06A002D8A92 /* DropBitMePage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropBitMePage.swift; sourceTree = "<group>"; };
 		3B3779ED219C6B2800F79683 /* BackupWordsReminderDrawerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupWordsReminderDrawerCell.swift; sourceTree = "<group>"; };
 		3B3779EE219C6B2800F79683 /* BackupWordsReminderDrawerCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BackupWordsReminderDrawerCell.xib; sourceTree = "<group>"; };
 		3B3779F1219C9DE100F79683 /* NewWalletUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewWalletUITests.swift; sourceTree = "<group>"; };
@@ -1220,6 +1245,14 @@
 		3B57207C2233004E0048A8CF /* BaseCoreDataStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseCoreDataStack.swift; sourceTree = "<group>"; };
 		3B598FDB2315BF5100FF50CD /* WalletFlagsParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletFlagsParser.swift; sourceTree = "<group>"; };
 		3B598FDD2315CB2D00FF50CD /* WalletFlagsParserTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletFlagsParserTests.swift; sourceTree = "<group>"; };
+		3B598FDF2318337C00FF50CD /* LightningUpgradeStartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightningUpgradeStartViewController.swift; sourceTree = "<group>"; };
+		3B598FE3231833C000FF50CD /* LightningUpgradeStartViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LightningUpgradeStartViewController.storyboard; sourceTree = "<group>"; };
+		3B598FE523184DD200FF50CD /* LightningUpgradeStartViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightningUpgradeStartViewControllerTests.swift; sourceTree = "<group>"; };
+		3B598FE72318542500FF50CD /* LightningUpgradeCoordinator+LightningUpgradeStartViewControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LightningUpgradeCoordinator+LightningUpgradeStartViewControllerDelegate.swift"; sourceTree = "<group>"; };
+		3B598FE923196A8000FF50CD /* LightningUpgradeStatusViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightningUpgradeStatusViewController.swift; sourceTree = "<group>"; };
+		3B598FEB23196AAE00FF50CD /* LightningUpgradeStatusViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LightningUpgradeStatusViewController.storyboard; sourceTree = "<group>"; };
+		3B598FED23196BA800FF50CD /* LightningUpgradeCoordinator+LightningUpgradeStatusViewControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LightningUpgradeCoordinator+LightningUpgradeStatusViewControllerDelegate.swift"; sourceTree = "<group>"; };
+		3B598FEF2319719E00FF50CD /* LightningUpgradePageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightningUpgradePageViewController.swift; sourceTree = "<group>"; };
 		3B5A8899228AEFE10082BBA4 /* TwitterSearchDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwitterSearchDataSource.swift; sourceTree = "<group>"; };
 		3B5A889B228AF3D90082BBA4 /* TwitterUserTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwitterUserTableViewCell.swift; sourceTree = "<group>"; };
 		3B5A889C228AF3D90082BBA4 /* TwitterUserTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TwitterUserTableViewCell.xib; sourceTree = "<group>"; };
@@ -1298,6 +1331,11 @@
 		3B8FF10C20337495003436EE /* PinCreationViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinCreationViewControllerTests.swift; sourceTree = "<group>"; };
 		3B8FF10F20346730003436EE /* AppCoordinatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCoordinatorTests.swift; sourceTree = "<group>"; };
 		3B934D2120EFE53A00979ADC /* TransactionDataWorkerDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDataWorkerDTO.swift; sourceTree = "<group>"; };
+		3B936ADA23218F810067CA97 /* CKWalletError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CKWalletError.swift; sourceTree = "<group>"; };
+		3B936ADC2322C1250067CA97 /* LightningUpgradeCompleteViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LightningUpgradeCompleteViewController.storyboard; sourceTree = "<group>"; };
+		3B936ADE2322C2B30067CA97 /* LightningUpgradeCompleteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightningUpgradeCompleteViewController.swift; sourceTree = "<group>"; };
+		3B936AE02322CD4E0067CA97 /* LightningUpgradeCoordinator+LightningUpgradeCompleteViewControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LightningUpgradeCoordinator+LightningUpgradeCompleteViewControllerDelegate.swift"; sourceTree = "<group>"; };
+		3B936AE22322D0B20067CA97 /* AppCoordinator+LightningUpgradeCoordinatorDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppCoordinator+LightningUpgradeCoordinatorDelegate.swift"; sourceTree = "<group>"; };
 		3B961CD42044946C00B38EBB /* MockLaunchStateManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockLaunchStateManager.swift; sourceTree = "<group>"; };
 		3B977992202E416600C9C933 /* Montserrat-MediumItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-MediumItalic.ttf"; sourceTree = "<group>"; };
 		3B977993202E416600C9C933 /* Montserrat-ExtraLightItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-ExtraLightItalic.ttf"; sourceTree = "<group>"; };
@@ -1317,6 +1355,8 @@
 		3B9779A1202E416700C9C933 /* Montserrat-LightItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-LightItalic.ttf"; sourceTree = "<group>"; };
 		3B9779A2202E416700C9C933 /* Montserrat-ExtraLight.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-ExtraLight.ttf"; sourceTree = "<group>"; };
 		3B9779A3202E416700C9C933 /* Montserrat-BoldItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-BoldItalic.ttf"; sourceTree = "<group>"; };
+		3B9930DE232ABF0D008EA112 /* LightningUpgradeStatusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightningUpgradeStatusView.swift; sourceTree = "<group>"; };
+		3B9930E0232ABF21008EA112 /* LightningUpgradeStatusView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LightningUpgradeStatusView.xib; sourceTree = "<group>"; };
 		3B9A8DF42150371800C78C2C /* WalletDelegateType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletDelegateType.swift; sourceTree = "<group>"; };
 		3B9A8DF62150388F00C78C2C /* AppCoordinator+WalletDelegateType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppCoordinator+WalletDelegateType.swift"; sourceTree = "<group>"; };
 		3B9A8DF821503E6500C78C2C /* MockWalletDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockWalletDelegate.swift; sourceTree = "<group>"; };
@@ -1392,6 +1432,8 @@
 		3BDBE632228399F9009C23CB /* MockNeworkManager+Twitter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MockNeworkManager+Twitter.swift"; sourceTree = "<group>"; };
 		3BDFADFB2267AEFF0077DEF2 /* BlockstreamTarget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockstreamTarget.swift; sourceTree = "<group>"; };
 		3BDFADFD2267B1FB0077DEF2 /* BlockstreamProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockstreamProvider.swift; sourceTree = "<group>"; };
+		3BE1C52C232D2BC100583A83 /* LightningUpgradeStartPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightningUpgradeStartPage.swift; sourceTree = "<group>"; };
+		3BE1C52E232D390700583A83 /* UITestRecoverWordBackupAutomatable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITestRecoverWordBackupAutomatable.swift; sourceTree = "<group>"; };
 		3BE8AA1521F10D4200A3F0C4 /* CKCryptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CKCryptor.swift; sourceTree = "<group>"; };
 		3BE8AA1721F1149100A3F0C4 /* CKCryptorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CKCryptorTests.swift; sourceTree = "<group>"; };
 		3BE8D85D20D16FAE00E99D24 /* DerivativePathResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DerivativePathResponse.swift; sourceTree = "<group>"; };
@@ -2293,6 +2335,11 @@
 				A230F1C922DCB2F30017BC7A /* AppCoordinator+WalletOverviewViewControllerDelegate.swift */,
 				A2B4E6F122FC6D7B00E24324 /* AppCoordinator+LightningRefillViewControllerDelegate.swift */,
 				A257CEB72302F3BA0063670B /* AppCoordinator+WalletTransferViewControllerDelegate.swift */,
+				3B598FE72318542500FF50CD /* LightningUpgradeCoordinator+LightningUpgradeStartViewControllerDelegate.swift */,
+				3B598FED23196BA800FF50CD /* LightningUpgradeCoordinator+LightningUpgradeStatusViewControllerDelegate.swift */,
+				3B936AE02322CD4E0067CA97 /* LightningUpgradeCoordinator+LightningUpgradeCompleteViewControllerDelegate.swift */,
+				3B0C7857231E891600D4C216 /* LightningUpgradeCoordinator.swift */,
+				3B936AE22322D0B20067CA97 /* AppCoordinator+LightningUpgradeCoordinatorDelegate.swift */,
 				B53A790322E4ACF000EDCA8B /* AppCoordinator+SendPaymentViewControllerRoutingDelegate.swift */,
 				A235898A232165A5002C3FC0 /* AppCoordinator+PaymentSendingDelegate.swift */,
 				A2BCCFC12321919300EB9C30 /* AppCoordinator+PaymentBuildingDelegate.swift */,
@@ -2611,6 +2658,9 @@
 				A2FE198F2301E81700C2412D /* ConfirmView.xib */,
 				A257CEB32302E5070063670B /* FeesView.swift */,
 				A257CEB52302E6090063670B /* FeesView.xib */,
+				3B0C7859231EDF3600D4C216 /* LightningUpgradeGradientOverlayView.swift */,
+				3B9930DE232ABF0D008EA112 /* LightningUpgradeStatusView.swift */,
+				3B9930E0232ABF21008EA112 /* LightningUpgradeStatusView.xib */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -2658,6 +2708,7 @@
 				3BCBFCBF229EBA6800F633BA /* SupportViewControllerTests.swift */,
 				3BBDF7E722E780AD00E35EA0 /* TransactionHistoryDetailsViewControllerTests.swift */,
 				A21DEE5622E8D6E900BBE508 /* WalletOverviewViewControllerTests.swift */,
+				3B598FE523184DD200FF50CD /* LightningUpgradeStartViewControllerTests.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -2796,6 +2847,7 @@
 				B5A42A99217A3E0F00EB32CB /* KeyPathDescribable.swift */,
 				B5192FA5216E7BFF00DCC39B /* UserProviderError.swift */,
 				3B30228021C9290D007F137A /* SyncRoutineError.swift */,
+				3B936ADA23218F810067CA97 /* CKWalletError.swift */,
 			);
 			path = Errors;
 			sourceTree = "<group>";
@@ -2879,6 +2931,10 @@
 				A2B4E6ED22FA476A00E24324 /* LightningRefillViewController.swift */,
 				A2FE198122FB0E5A00C2412D /* TryLightningViewController.swift */,
 				A2FE19892301DF8800C2412D /* WalletTransferViewController.swift */,
+				3B598FDF2318337C00FF50CD /* LightningUpgradeStartViewController.swift */,
+				3B598FE923196A8000FF50CD /* LightningUpgradeStatusViewController.swift */,
+				3B598FEF2319719E00FF50CD /* LightningUpgradePageViewController.swift */,
+				3B936ADE2322C2B30067CA97 /* LightningUpgradeCompleteViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -2929,6 +2985,10 @@
 				A2B4E6EF22FA488100E24324 /* LightningRefillViewController.storyboard */,
 				A2FE198322FB0F5C00C2412D /* TryLightningViewController.storyboard */,
 				A2FE198B2301E05E00C2412D /* WalletTransferViewController.storyboard */,
+				3B598FE3231833C000FF50CD /* LightningUpgradeStartViewController.storyboard */,
+				3B598FEB23196AAE00FF50CD /* LightningUpgradeStatusViewController.storyboard */,
+				3B936ADC2322C1250067CA97 /* LightningUpgradeCompleteViewController.storyboard */,
+				3B0C785523197B0A00D4C216 /* LightningUpgradePageViewController.storyboard */,
 			);
 			path = Storyboards;
 			sourceTree = "<group>";
@@ -3560,6 +3620,8 @@
 				3B1BE86321B5819500CCFE29 /* SendPaymentPage.swift */,
 				304BAED121FA1F9700065D6D /* TransactionHistoryPage.swift */,
 				A27DFDF122DCDCD200C2824C /* WalletOverviewPage.swift */,
+				3BE1C52C232D2BC100583A83 /* LightningUpgradeStartPage.swift */,
+				3B34B97F232DB06A002D8A92 /* DropBitMePage.swift */,
 			);
 			path = Pages;
 			sourceTree = "<group>";
@@ -3682,6 +3744,7 @@
 				B58AFF2D21948891001BE563 /* UITestDefaultsKey.swift */,
 				B5D1B2D42193700D006B2BC7 /* Springboard.swift */,
 				3B3779F9219E1E9A00F79683 /* UITestHelpers.swift */,
+				3BE1C52E232D390700583A83 /* UITestRecoverWordBackupAutomatable.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -3911,6 +3974,7 @@
 			files = (
 				A260E8D720FD0C67008343F9 /* TutorialScreenViewController.storyboard in Resources */,
 				A2BFA54F22E7536A00396D33 /* WalletToggleView.xib in Resources */,
+				3B0C785623197B0A00D4C216 /* LightningUpgradePageViewController.storyboard in Resources */,
 				A29CE0D4209B713B00761B91 /* ContactsViewController.storyboard in Resources */,
 				A2E0300420EABFA800E160E9 /* RestoreWalletViewController.storyboard in Resources */,
 				3B9779A9202E416700C9C933 /* Montserrat-Regular.ttf in Resources */,
@@ -3986,6 +4050,7 @@
 				3B9779AE202E416700C9C933 /* Montserrat-SemiBold.ttf in Resources */,
 				3BCBFCCC229EF71D00F633BA /* SettingsRecoveryWordsCell.xib in Resources */,
 				B54DE68722987463009D67CE /* TweetMethodViewController.storyboard in Resources */,
+				3B598FEC23196AAE00FF50CD /* LightningUpgradeStatusViewController.storyboard in Resources */,
 				3B9779A4202E416700C9C933 /* Montserrat-MediumItalic.ttf in Resources */,
 				3BD013172272478300C92771 /* TransactionHistoryDetailValidCell.xib in Resources */,
 				3B8ACA15225F96800020B684 /* GetBitcoinViewController.storyboard in Resources */,
@@ -4001,9 +4066,11 @@
 				B54913A722BC0B1000ACC7D7 /* AdjustableFeesViewController.storyboard in Resources */,
 				A200574D20B5F70F007074D9 /* SettingCell.xib in Resources */,
 				A260E8D320FCFE96008343F9 /* TutorialViewController.storyboard in Resources */,
+				3B9930E1232ABF21008EA112 /* LightningUpgradeStatusView.xib in Resources */,
 				3B9779B2202E416700C9C933 /* Montserrat-Italic.ttf in Resources */,
 				A268F13922E9EFFE00410040 /* PrimarySecondaryBalanceContainer.xib in Resources */,
 				B5E7F219221466EE00358A24 /* CountryCodeSearchView.xib in Resources */,
+				3B598FE4231833C000FF50CD /* LightningUpgradeStartViewController.storyboard in Resources */,
 				3B23126320DA6CA30099A557 /* TransactionHistoryDetailCellAddressView.xib in Resources */,
 				B5E7F21F22146B9000358A24 /* CountryCodePickerCell.xib in Resources */,
 				B58A6A00232016D200D50298 /* TransactionHistorySummaryFooter.xib in Resources */,
@@ -4020,6 +4087,7 @@
 				B56788AD227A3C2C00A39534 /* GetBitcoinCopiedAddressViewController.storyboard in Resources */,
 				3B44961F21B0661300A4E912 /* MemoEntryViewController.storyboard in Resources */,
 				A2B4E6F022FA488100E24324 /* LightningRefillViewController.storyboard in Resources */,
+				3B936ADD2322C1250067CA97 /* LightningUpgradeCompleteViewController.storyboard in Resources */,
 				B51F8238207BAD8500692F5B /* BalanceContainer.xib in Resources */,
 				A29CE0CD2099ED5600761B91 /* SuccessFailViewController.storyboard in Resources */,
 			);
@@ -4433,6 +4501,7 @@
 				B5221D55224427C40081C868 /* ContactCacheMigrationWorker.swift in Sources */,
 				403AAD5E2063513900F7A2BA /* Model.xcdatamodeld in Sources */,
 				30C0974E219C64F80064F19E /* Int+NSDecimalNumber.swift in Sources */,
+				3B598FEE23196BA800FF50CD /* LightningUpgradeCoordinator+LightningUpgradeStatusViewControllerDelegate.swift in Sources */,
 				3B219B3922C3B9EE007EDFCC /* Data+PrettyPrinted.swift in Sources */,
 				307DF119214C297E00260369 /* MessageResponse.swift in Sources */,
 				B59C9E20230DB86100E4F3C8 /* NSLayoutConstraint+Helpers.swift in Sources */,
@@ -4479,6 +4548,7 @@
 				3BF88B87226F5E2500B94474 /* TransactionHistoryDetailBaseCell.swift in Sources */,
 				B555DCAF230B1754006B3462 /* TwitterShareButton.swift in Sources */,
 				B559AF0B2180CA86001D44F2 /* BadgeView.swift in Sources */,
+				3B9930DF232ABF0D008EA112 /* LightningUpgradeStatusView.swift in Sources */,
 				3B325D4D219090CD0094897C /* RecoveryWordsIntroViewController.swift in Sources */,
 				B5C8F5C5216D37D300E3E85B /* CoinNinjaProvider.swift in Sources */,
 				A2A530C020936A7700B6F4DE /* ConfirmPaymentButton.swift in Sources */,
@@ -4517,6 +4587,7 @@
 				B5E5032921B865A4008FBDAB /* PaymentRequestResolver.swift in Sources */,
 				3BEC1AF42229CC8D00824A35 /* Locale+Constants.swift in Sources */,
 				3B287CB42100FB1A00A43E57 /* AppCoordinator+ConnectionManagerDelegate.swift in Sources */,
+				3B936AE12322CD4E0067CA97 /* LightningUpgradeCoordinator+LightningUpgradeCompleteViewControllerDelegate.swift in Sources */,
 				3B00C269220DC78B001FC46B /* DeviceEndpoint.generated.swift in Sources */,
 				B5BA3A7722F22B0E001E41A7 /* TransactionCellProtocols.swift in Sources */,
 				B5C5FEDB22BA834800287FF7 /* PersistenceBrokerTypes.swift in Sources */,
@@ -4549,6 +4620,7 @@
 				B5192FA2216E7BCA00DCC39B /* WalletAddressError.swift in Sources */,
 				3BAB1447204EE6BB001D41A2 /* BaseViewController.swift in Sources */,
 				B5F9500A20E2D439001495E2 /* UnderlinedTextButton.swift in Sources */,
+				3B0C785A231EDF3600D4C216 /* LightningUpgradeGradientOverlayView.swift in Sources */,
 				3B474165217FB6A4004DA223 /* NotificationTopicSubscriptionInfoTarget.swift in Sources */,
 				A29CE10820A3684700761B91 /* StringEmptyValidator.swift in Sources */,
 				B59E2CA122E8D38900A75AFE /* LNTransactionResponse.swift in Sources */,
@@ -4560,6 +4632,7 @@
 				B559AF0F2180FE37001D44F2 /* MenuButton.swift in Sources */,
 				B54A4213207FF2E8005B40A9 /* TransactionDetailPrimaryAmountLabel.swift in Sources */,
 				B59E2CA722E9EA8400A75AFE /* LNCreatePaymentRequestTarget.swift in Sources */,
+				3B936ADF2322C2B30067CA97 /* LightningUpgradeCompleteViewController.swift in Sources */,
 				308F6F01217F91980094D6CB /* ServerAddressView.swift in Sources */,
 				5B91E3A02076C85700DD9A86 /* DrawerCell.swift in Sources */,
 				3B4A9F2F21BEF55F0009CDF6 /* DatabaseMigratorFactory.swift in Sources */,
@@ -4684,6 +4757,7 @@
 				3BDFADFC2267AEFF0077DEF2 /* BlockstreamTarget.swift in Sources */,
 				B5221D5322441CC30081C868 /* MigrateContactCacheV1toV2.swift in Sources */,
 				3B5A88A0228AFC850082BBA4 /* CNContactSearchBar.swift in Sources */,
+				3B598FE02318337C00FF50CD /* LightningUpgradeStartViewController.swift in Sources */,
 				B56E15972167DB26003B69D4 /* NetworkManager+WalletRequestable.swift in Sources */,
 				B5A42A98217A31D800EB32CB /* UserNotifiableError.swift in Sources */,
 				A29CE0C72098F84300761B91 /* SuccessFailViewController.swift in Sources */,
@@ -4716,6 +4790,7 @@
 				B52E1DBF2302F50800AA652D /* CKMWalletEntry+CoreDataClass.swift in Sources */,
 				308F6F05217F97F50094D6CB /* DragIndiciatorView.swift in Sources */,
 				3B8B19312289BB25003BA4D7 /* AuthenticationSuspendable.swift in Sources */,
+				3B598FEA23196A8000FF50CD /* LightningUpgradeStatusViewController.swift in Sources */,
 				3BF3B0C521737A4D0021E45F /* SubscribeToWalletTarget.swift in Sources */,
 				B5EBFD0F215C01E30008EB4A /* MockAddressDataSource.swift in Sources */,
 				B58AFF2E21948891001BE563 /* UITestDefaultsKey.swift in Sources */,
@@ -4803,6 +4878,7 @@
 				A200574F20B5FD68007074D9 /* AppCoordinator+SettingsViewControllerDelegate.swift in Sources */,
 				B541DF5720A332DA00C621EB /* AppCoordinator+PlaceholderViewControllerDelegate.swift in Sources */,
 				3B6FDADB2050146E0091916A /* VerifyRecoveryWordCellData.swift in Sources */,
+				3B598FE82318542500FF50CD /* LightningUpgradeCoordinator+LightningUpgradeStartViewControllerDelegate.swift in Sources */,
 				B582AD5020A084AD007A6459 /* CKMCounterpartyAddress+CoreDataProperties.swift in Sources */,
 				3B6749E420AA5CA40032FE02 /* CKMVout+CoreDataProperties.swift in Sources */,
 				B5F6EC2522554CF20045633B /* TwilioErrorDelegate.swift in Sources */,
@@ -4819,6 +4895,7 @@
 				30ADA32C2162A76D00E52AF9 /* CreateDeviceBody.swift in Sources */,
 				3B5052BF20473FC9000C739F /* BackupRecoveryWordsCell.swift in Sources */,
 				B57AF8002268A95E00E5B0A6 /* ShareTransactionViewController.swift in Sources */,
+				3B936AE32322D0B20067CA97 /* AppCoordinator+LightningUpgradeCoordinatorDelegate.swift in Sources */,
 				3B55538A219618A100C5A9A8 /* UnverifiedPhoneBadgeTopic.swift in Sources */,
 				A20E47F020C0436E00CA8589 /* ContactType.swift in Sources */,
 				B552EDF2211E33D000332BB5 /* AlertManager.swift in Sources */,
@@ -4830,6 +4907,7 @@
 				B5EABAB221FB8F4D00E32E08 /* CreateTransactionNotificationBody.swift in Sources */,
 				B552EDFB211E33D000332BB5 /* CKAlamofireSessionManager.swift in Sources */,
 				B52F690A22417B0100790E97 /* CKDatabase.swift in Sources */,
+				3B936ADB23218F810067CA97 /* CKWalletError.swift in Sources */,
 				3B23232E2248FEBC00514201 /* MigrateDatabaseV4Grooming.swift in Sources */,
 				B51AE4A7209398FE008380CC /* CKMPhoneNumber+CoreDataProperties.swift in Sources */,
 				300CD8F121FA668400BFF560 /* NSAttributedString+Helpers.swift in Sources */,
@@ -4866,6 +4944,7 @@
 				B5437B5D231610B50002B77C /* MockTransactionSummaryCellViewModel.swift in Sources */,
 				A246C82722CBA83F00AF1F52 /* PriceTarget.swift in Sources */,
 				A257CEB42302E5070063670B /* FeesView.swift in Sources */,
+				3B0C7858231E891600D4C216 /* LightningUpgradeCoordinator.swift in Sources */,
 				3BA9F603208F6CEA0047C213 /* AppCoordinator+CreateRecoveryWordsViewControllerDelegate.swift in Sources */,
 				A2FE19882301A09C00C2412D /* LightningActionButton.swift in Sources */,
 				A2952F7E22BD0B7600BDCE65 /* NewsArticleResponse.swift in Sources */,
@@ -4900,6 +4979,7 @@
 				B54DE6892298747B009D67CE /* TweetMethodViewController.swift in Sources */,
 				B59C9E1E230DB37700E4F3C8 /* TwitterAvatarView.swift in Sources */,
 				B5B53C9C2107CAA5006C7B67 /* TransactionDetailsInfoContainer.swift in Sources */,
+				3B598FF02319719E00FF50CD /* LightningUpgradePageViewController.swift in Sources */,
 				A2BCCFC22321919300EB9C30 /* AppCoordinator+PaymentBuildingDelegate.swift in Sources */,
 				A245C6D020D9537400D99983 /* RequestAddressBody.swift in Sources */,
 				3B5A88A4228B09260082BBA4 /* ContactCellSecondaryLabel.swift in Sources */,
@@ -4980,6 +5060,7 @@
 				5BE594DD207ABAC900862A0A /* SettingsViewControllerTests.swift in Sources */,
 				B5C8F5BF216CF10200E3E85B /* MockNetworkManager+PricingRequestable.swift in Sources */,
 				3B4741742182614C004DA223 /* SubscriptionAvailableTopicResponseTests.swift in Sources */,
+				3B598FE623184DD200FF50CD /* LightningUpgradeStartViewControllerTests.swift in Sources */,
 				3BF41AB4207507B3008B3D0A /* RequestPayViewControllerTests.swift in Sources */,
 				B5C5FEF822BAE59500287FF7 /* MockAlertManager.swift in Sources */,
 				B5457124217E63F000FF3A5A /* NetworkManagerIntegrationTests.swift in Sources */,
@@ -5166,6 +5247,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B51FB0E521751D15005CBAD6 /* UIFont+FontStrings.swift in Sources */,
+				3BE1C52D232D2BC100583A83 /* LightningUpgradeStartPage.swift in Sources */,
 				3B3779F2219C9DE100F79683 /* NewWalletUITests.swift in Sources */,
 				3B3779F8219DB6C800F79683 /* PinEntryPage.swift in Sources */,
 				B5D1B2CC219337C6006B2BC7 /* ImportWalletUITests.swift in Sources */,
@@ -5178,6 +5260,7 @@
 				3B3779F6219CA79100F79683 /* SwiftMessagesBannerPage.swift in Sources */,
 				B51F1EDD219A29A700C54B73 /* RequestPayPage.swift in Sources */,
 				B51FB0E321751CD0005CBAD6 /* StoryboardInitializable.swift in Sources */,
+				3BE1C52F232D390700583A83 /* UITestRecoverWordBackupAutomatable.swift in Sources */,
 				B555DCAC23059A1E006B3462 /* Typealiases.swift in Sources */,
 				B51FB0E82175221A005CBAD6 /* UITestCase.swift in Sources */,
 				3B3779FA219E1E9A00F79683 /* UITestHelpers.swift in Sources */,
@@ -5196,6 +5279,7 @@
 				B51F1ED9219A286900C54B73 /* DeviceVerificationPage.swift in Sources */,
 				B51FB0E021751BED005CBAD6 /* UIFont+Theme.swift in Sources */,
 				B51F1ED12199F7CB00C54B73 /* PinCreationPage.swift in Sources */,
+				3B34B980232DB06A002D8A92 /* DropBitMePage.swift in Sources */,
 				304BAED221FA1F9700065D6D /* TransactionHistoryPage.swift in Sources */,
 				3B325D542190A46D0094897C /* SecondaryActionButton.swift in Sources */,
 				3B3779FF219EEA9F00F79683 /* Int+Times.swift in Sources */,
@@ -5588,6 +5672,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
+				OTHER_SWIFT_FLAGS = "$(inherited) -D COCOAPODS -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/Alamofire-library/Alamofire.modulemap\" -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/JKSteppedProgressBar-library/JKSteppedProgressBar.modulemap\" -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/Moya-library/Moya.modulemap\" -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/Permission-library/Permission.modulemap\" -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/PhoneNumberKit-library/PhoneNumberKit.modulemap\" -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/RNCryptor-library/RNCryptor.modulemap\" -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/ReachabilitySwift-library/Reachability.modulemap\" -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/Result-library/Result.modulemap\" -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/Sheeeeeeeeet-library/Sheeeeeeeeet.modulemap\" -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/Willow-library/Willow.modulemap\" -DUITEST";
 				PRODUCT_BUNDLE_IDENTIFIER = com.coinninja.DropBitUIDatabaseTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "694ecd33-d17f-4e96-a9db-f8bfc8a03853";
@@ -5608,6 +5693,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_FAST_MATH = YES;
+				OTHER_SWIFT_FLAGS = "$(inherited) -D COCOAPODS -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/Alamofire-library/Alamofire.modulemap\" -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/JKSteppedProgressBar-library/JKSteppedProgressBar.modulemap\" -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/Moya-library/Moya.modulemap\" -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/Permission-library/Permission.modulemap\" -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/PhoneNumberKit-library/PhoneNumberKit.modulemap\" -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/RNCryptor-library/RNCryptor.modulemap\" -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/ReachabilitySwift-library/Reachability.modulemap\" -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/Result-library/Result.modulemap\" -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/Sheeeeeeeeet-library/Sheeeeeeeeet.modulemap\" -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/Willow-library/Willow.modulemap\" -DUITEST";
 				PRODUCT_BUNDLE_IDENTIFIER = com.coinninja.DropBitUIDatabaseTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "694ecd33-d17f-4e96-a9db-f8bfc8a03853";
@@ -5628,6 +5714,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_FAST_MATH = YES;
+				OTHER_SWIFT_FLAGS = "$(inherited) -D COCOAPODS -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/Alamofire-library/Alamofire.modulemap\" -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/JKSteppedProgressBar-library/JKSteppedProgressBar.modulemap\" -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/Moya-library/Moya.modulemap\" -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/Permission-library/Permission.modulemap\" -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/PhoneNumberKit-library/PhoneNumberKit.modulemap\" -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/RNCryptor-library/RNCryptor.modulemap\" -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/ReachabilitySwift-library/Reachability.modulemap\" -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/Result-library/Result.modulemap\" -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/Sheeeeeeeeet-library/Sheeeeeeeeet.modulemap\" -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/Willow-library/Willow.modulemap\" -DUITEST";
 				PRODUCT_BUNDLE_IDENTIFIER = com.coinninja.DropBitUIDatabaseTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "694ecd33-d17f-4e96-a9db-f8bfc8a03853";
@@ -5663,6 +5750,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
+				OTHER_SWIFT_FLAGS = "$(inherited) -D COCOAPODS -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/Alamofire-library/Alamofire.modulemap\" -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/JKSteppedProgressBar-library/JKSteppedProgressBar.modulemap\" -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/Moya-library/Moya.modulemap\" -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/Permission-library/Permission.modulemap\" -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/PhoneNumberKit-library/PhoneNumberKit.modulemap\" -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/RNCryptor-library/RNCryptor.modulemap\" -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/ReachabilitySwift-library/Reachability.modulemap\" -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/Result-library/Result.modulemap\" -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/Sheeeeeeeeet-library/Sheeeeeeeeet.modulemap\" -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/Willow-library/Willow.modulemap\" -DUITEST";
 				PRODUCT_BUNDLE_IDENTIFIER = com.coinninja.DropBitUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "694ecd33-d17f-4e96-a9db-f8bfc8a03853";
@@ -5699,6 +5787,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_FAST_MATH = YES;
+				OTHER_SWIFT_FLAGS = "$(inherited) -D COCOAPODS -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/Alamofire-library/Alamofire.modulemap\" -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/JKSteppedProgressBar-library/JKSteppedProgressBar.modulemap\" -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/Moya-library/Moya.modulemap\" -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/Permission-library/Permission.modulemap\" -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/PhoneNumberKit-library/PhoneNumberKit.modulemap\" -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/RNCryptor-library/RNCryptor.modulemap\" -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/ReachabilitySwift-library/Reachability.modulemap\" -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/Result-library/Result.modulemap\" -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/Sheeeeeeeeet-library/Sheeeeeeeeet.modulemap\" -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/Willow-library/Willow.modulemap\" -DUITEST";
 				PRODUCT_BUNDLE_IDENTIFIER = com.coinninja.DropBitUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "694ecd33-d17f-4e96-a9db-f8bfc8a03853";
@@ -5734,6 +5823,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_FAST_MATH = YES;
+				OTHER_SWIFT_FLAGS = "$(inherited) -D COCOAPODS -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/Alamofire-library/Alamofire.modulemap\" -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/JKSteppedProgressBar-library/JKSteppedProgressBar.modulemap\" -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/Moya-library/Moya.modulemap\" -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/Permission-library/Permission.modulemap\" -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/PhoneNumberKit-library/PhoneNumberKit.modulemap\" -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/RNCryptor-library/RNCryptor.modulemap\" -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/ReachabilitySwift-library/Reachability.modulemap\" -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/Result-library/Result.modulemap\" -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/Sheeeeeeeeet-library/Sheeeeeeeeet.modulemap\" -Xcc -fmodule-map-file=\"${PODS_CONFIGURATION_BUILD_DIR}/Willow-library/Willow.modulemap\" -DUITEST";
 				PRODUCT_BUNDLE_IDENTIFIER = com.coinninja.DropBitUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "694ecd33-d17f-4e96-a9db-f8bfc8a03853";

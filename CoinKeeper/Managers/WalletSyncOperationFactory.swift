@@ -28,6 +28,15 @@ class WalletSyncOperationFactory {
     self.delegate = delegate
   }
 
+  func createOnChainOnlySync(in context: NSManagedObjectContext) -> Promise<Void> {
+    guard let queueDelegate = self.delegate else {
+      return Promise(error: SyncRoutineError.missingQueueDelegate)
+    }
+
+    return queueDelegate.syncManagerDidRequestDependencies(in: context, inBackground: false)
+      .then { self.onChainOnlySync(with: $0, in: context) }
+  }
+
   func createSyncOperation(ofType walletSyncType: WalletSyncType,
                            completion: CKErrorCompletion?,
                            fetchResult: ((UIBackgroundFetchResult) -> Void)?,
@@ -106,6 +115,17 @@ class WalletSyncOperationFactory {
       .then(in: context) { _ in self.fetchAndFulfillReceivedAddressRequests(with: dependencies, in: context) }
       .then(in: context) { _ in dependencies.delegate.showAlertsForSyncedChanges(in: context) }
       .then(in: context) { _ in dependencies.twitterAccessManager.inflateTwitterUsersIfNeeded(in: context) }
+  }
+
+  private func onChainOnlySync(with dependencies: SyncDependencies, in context: NSManagedObjectContext) -> Promise<Void> {
+    return dependencies.databaseMigrationWorker.migrateIfPossible()
+      .then { _ in dependencies.keychainMigrationWorker.migrateIfPossible() }
+      .then(in: context) { self.checkAndVerifyUser(with: dependencies, in: context) }
+      .then(in: context) { self.checkAndVerifyWallet(with: dependencies, in: context) }
+      .then { dependencies.networkManager.walletCheckIn() }
+      .then { dependencies.persistenceManager.brokers.checkIn.processCheckIn(response: $0) }
+      .then(in: context) { dependencies.txDataWorker.performFetchAndStoreAllOnChainTransactions(in: context, fullSync: true) }
+      .get { _ in dependencies.connectionManager.setAPIUnreachable(false) }
   }
 
   private func recoverSyncError(_ error: Error) -> Promise<Void> {

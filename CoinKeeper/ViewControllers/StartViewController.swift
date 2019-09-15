@@ -19,7 +19,13 @@ protocol StartViewControllerDelegate: AnyObject {
 
 final class StartViewController: BaseViewController {
 
-  private(set) weak var delegate: StartViewControllerDelegate?
+  static func newInstance(delegate: StartViewControllerDelegate) -> StartViewController {
+    let controller = StartViewController.makeFromStoryboard()
+    controller.delegate = delegate
+    return controller
+  }
+  
+  weak var delegate: StartViewControllerDelegate?
 
   @IBOutlet var restoreWalletButton: UIButton!
   @IBOutlet var claimInviteButton: UIButton!

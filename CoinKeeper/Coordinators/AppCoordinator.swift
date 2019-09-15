@@ -82,12 +82,12 @@ class AppCoordinator: CoordinatorType {
                                   countryCodeProvider: self.persistenceManager)
   }()
 
-  lazy var workerFactory: WorkerFactory = {
+  func workerFactory() -> WorkerFactory {
     return WorkerFactory(persistenceManager: self.persistenceManager,
                          networkManager: self.networkManager,
                          analyticsManager: self.analyticsManager,
                          walletManagerProvider: self)
-  }()
+  }
 
   init(
     navigationController: CNNavigationController = CNNavigationController(),
@@ -154,11 +154,19 @@ class AppCoordinator: CoordinatorType {
     return navigationController.topViewController.flatMap { $0 as? MMDrawerController }
   }
 
+  func startSegwitUpgrade() {
+    let child = LightningUpgradeCoordinator(parent: self)
+    startChildCoordinator(childCoordinator: child)
+  }
+
   private func setInitialRootViewController() {
+
     deleteStaleCredentialsIfNeeded()
 
     if launchStateManager.isFirstTimeAfteriCloudRestore() {
       startFirstTimeAfteriCloudRestore()
+    } else if launchStateManager.needsUpgradedToSegwit() {
+      startSegwitUpgrade()
     } else if launchStateManager.shouldRequireAuthentication {
       registerWalletWithServerIfNeeded {
         self.requireAuthenticationIfNeeded {
@@ -228,12 +236,7 @@ class AppCoordinator: CoordinatorType {
     let bgContext = persistenceManager.createBackgroundContext()
     bgContext.perform {
       self.registerAndPersistWallet(in: bgContext)
-        .done(in: bgContext) {
-          try bgContext.saveRecursively()
-          DispatchQueue.main.async {
-            completion()
-          }
-        }
+        .done(on: .main) { completion() }
         .catch { log.error($0, message: "failed to register and persist wallet") }
     }
   }
@@ -373,7 +376,7 @@ class AppCoordinator: CoordinatorType {
   }
 
   func refreshContacts() {
-    let contactCacheMigrationWorker = workerFactory.createContactCacheMigrationWorker(dataWorker: contactCacheDataWorker)
+    let contactCacheMigrationWorker = workerFactory().createContactCacheMigrationWorker(dataWorker: contactCacheDataWorker)
     _ = contactCacheMigrationWorker.migrateIfPossible()
       .done {
         self.contactCacheDataWorker.reloadSystemContactsIfNeeded(force: false) { [weak self] _ in
