@@ -52,6 +52,7 @@ class CKUserDefaults: PersistenceUserDefaultsType {
     case adjustableFeesEnabled
     case preferredTransactionFeeMode
     case selectedWalletTransactionType
+    case regtest
 
     var defaultsString: String { return self.rawValue }
   }
@@ -81,6 +82,11 @@ class CKUserDefaults: PersistenceUserDefaultsType {
 
   func unverifyUser() {
     removeValues(forKeys: [.userID])
+  }
+
+  var useRegtest: Bool {
+    get { return bool(for: .regtest) }
+    set { set(useRegtest, for: .regtest) }
   }
 
 }

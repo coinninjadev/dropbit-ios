@@ -153,6 +153,8 @@ protocol PersistenceUserDefaultsType: AnyObject {
   /// use the extension functions with CKUserDefaults.Key instead.
   var standardDefaults: UserDefaults { get }
 
+  var useRegtest: Bool { get set }
+
   func deleteAll()
   func deleteWallet()
   func unverifyUser()
