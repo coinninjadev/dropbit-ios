@@ -29,7 +29,7 @@ enum TransactionStatus: String {
   case failed
 }
 
-private enum LightningTransferType {
+enum LightningTransferType {
   case deposit, withdraw
 }
 
