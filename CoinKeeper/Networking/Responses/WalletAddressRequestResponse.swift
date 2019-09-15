@@ -197,7 +197,7 @@ public struct WalletAddressRequestResponse: ResponseDecodable, CustomStringConve
 extension WalletAddressRequestResponse {
 
   var addressTypeCase: WalletAddressType {
-    return metadata?.addressType.flatMap { WalletAddressType(rawValue: $0) } ?? .btc
+    return addressType.flatMap { WalletAddressType(rawValue: $0) } ?? .btc
   }
 
   var statusCase: WalletAddressRequestStatus? {
