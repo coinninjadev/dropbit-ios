@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-extension AppCoordinator: TwitterTweetingDelegate {
+extension AppCoordinator: TweetDelegate {
 
   func openTwitterURL(withMessage message: String) {
     var comps = URLComponents()

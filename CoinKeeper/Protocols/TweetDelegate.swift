@@ -8,6 +8,6 @@
 
 import Foundation
 
-protocol TwitterTweetingDelegate: class {
+protocol TweetDelegate: class {
   func openTwitterURL(withMessage message: String)
 }
