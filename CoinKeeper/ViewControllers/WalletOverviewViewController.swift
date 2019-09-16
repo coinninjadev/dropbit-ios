@@ -48,12 +48,7 @@ class WalletOverviewViewController: BaseViewController, StoryboardInitializable 
 
   private var currentWallet: WalletTransactionType = .onChain {
     willSet {
-      if BaseViewController.lockStatus == .locked && currentWallet == .lightning && newValue == .onChain {
-        sendReceiveActionView.isHidden = false
-      } else {
-        sendReceiveActionView.isHidden = true
-      }
-
+      guard currentWallet != newValue else { return }
       delegate.setSelectedWalletTransactionType(self, to: newValue)
     }
     didSet {
@@ -147,9 +142,9 @@ class WalletOverviewViewController: BaseViewController, StoryboardInitializable 
     if baseViewControllers.count >= 2 {
       switch delegate.selectedWalletTransactionType() {
       case .lightning:
-        setupStyleForLightningWallet()
+        setupUI(for: .lightningWallet)
       case .onChain:
-        setupStyleForOnChainWallet()
+        setupUI(for: .bitcoinWallet)
       }
     }
   }
@@ -167,7 +162,6 @@ class WalletOverviewViewController: BaseViewController, StoryboardInitializable 
     walletToggleView.selectBitcoinButton()
     currentWallet = .onChain
     sendReceiveActionView.tintView(with: .bitcoinOrange)
-    pageViewController?.setViewControllers([baseViewControllers[1]], direction: .forward, animated: true, completion: nil)
   }
 
   private func setupStyleForLightningWallet() {
@@ -175,7 +169,21 @@ class WalletOverviewViewController: BaseViewController, StoryboardInitializable 
     walletToggleView.selectLightningButton()
     currentWallet = .lightning
     sendReceiveActionView.tintView(with: .lightningBlue)
-    pageViewController?.setViewControllers([baseViewControllers[0]], direction: .forward, animated: true, completion: nil)
+  }
+
+  private func setupUI(for wallet: ViewControllerIndex?) {
+    switch wallet {
+    case .bitcoinWallet?:
+      setupStyleForOnChainWallet()
+      sendReceiveActionView.isHidden = false
+      pageViewController?.setViewControllers([baseViewControllers[1]], direction: .reverse, animated: true, completion: nil)
+    case .lightningWallet?:
+      setupStyleForLightningWallet()
+      sendReceiveActionView.isHidden = BaseViewController.lockStatus == .locked ? true : false
+      pageViewController?.setViewControllers([baseViewControllers[0]], direction: .forward, animated: true, completion: nil)
+    default:
+      walletToggleView.selectBitcoinButton()
+    }
   }
 }
 
@@ -216,17 +224,17 @@ enum ViewControllerIndex: Int {
 }
 
 extension WalletOverviewViewController: UIPageViewControllerDelegate {
+
+  func pageViewController(_ pageViewController: UIPageViewController, willTransitionTo pendingViewControllers: [UIViewController]) {
+    if BaseViewController.lockStatus == .locked {
+      sendReceiveActionView.isHidden = true
+    }
+  }
+
   func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool,
                           previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
-    if let viewContorller = pageViewController.viewControllers?.first as? BaseViewController, completed {
-      switch ViewControllerIndex(rawValue: baseViewControllers.reversed().firstIndex(of: viewContorller) ?? 0) {
-      case .bitcoinWallet?:
-        setupStyleForOnChainWallet()
-      case .lightningWallet?:
-        setupStyleForLightningWallet()
-      default:
-        walletToggleView.selectBitcoinButton()
-      }
+    if let viewController = pageViewController.viewControllers?.first as? BaseViewController {
+      setupUI(for: ViewControllerIndex(rawValue: baseViewControllers.reversed().firstIndex(of: viewController) ?? 0))
     }
   }
 }
@@ -251,15 +259,11 @@ extension WalletOverviewViewController: UIPageViewControllerDataSource {
 extension WalletOverviewViewController: WalletToggleViewDelegate {
 
   func bitcoinWalletButtonWasTouched() {
-    sendReceiveActionView.tintView(with: .bitcoinOrange)
-    currentWallet = .onChain
-    pageViewController?.setViewControllers([baseViewControllers[1]], direction: .reverse, animated: true, completion: nil)
+    setupUI(for: .bitcoinWallet)
   }
 
   func lightningWalletButtonWasTouched() {
-    sendReceiveActionView.tintView(with: .lightningBlue)
-    currentWallet = .lightning
-    pageViewController?.setViewControllers([baseViewControllers[0]], direction: .forward, animated: true, completion: nil)
+    setupUI(for: .lightningWallet)
   }
 }
 

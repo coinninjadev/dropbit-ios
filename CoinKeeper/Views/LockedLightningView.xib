@@ -25,7 +25,7 @@
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CbC-hw-If6" customClass="LightningUpgradeGradientOverlayView" customModule="DropBit" customModuleProvider="target">
-                    <rect key="frame" x="0.0" y="0.0" width="414" height="618"/>
+                    <rect key="frame" x="0.0" y="0.0" width="414" height="658"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 </view>
                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="30" translatesAutoresizingMaskIntoConstraints="NO" id="gHz-Ja-hbb">
@@ -141,7 +141,7 @@
                 <constraint firstItem="CbC-hw-If6" firstAttribute="top" secondItem="1dv-EJ-eFd" secondAttribute="top" id="wQx-7E-kqm"/>
                 <constraint firstItem="5Sg-iB-7hg" firstAttribute="trailing" secondItem="CbC-hw-If6" secondAttribute="trailing" id="ykC-Kq-DOt"/>
                 <constraint firstItem="5Sg-iB-7hg" firstAttribute="trailing" secondItem="gHz-Ja-hbb" secondAttribute="trailing" constant="41" id="zaP-WY-9Dl"/>
-                <constraint firstAttribute="bottom" secondItem="CbC-hw-If6" secondAttribute="bottom" id="zfx-7T-UrE"/>
+                <constraint firstAttribute="bottom" secondItem="CbC-hw-If6" secondAttribute="bottom" constant="-40" id="zfx-7T-UrE"/>
             </constraints>
             <nil key="simulatedTopBarMetrics"/>
             <nil key="simulatedBottomBarMetrics"/>
