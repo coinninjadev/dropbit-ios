@@ -126,11 +126,11 @@ final class RequestPayViewController: PresentableViewController, StoryboardIniti
     super.viewDidLoad()
 
     setupSubviews()
-
     editAmountView.disableSwap()
     setupCurrencySwappableEditAmountView()
     registerForRateUpdates()
     updateRatesAndView()
+    setupStyle()
     walletToggleView.delegate = self
     setupKeyboardDoneButton(for: [editAmountView.primaryAmountTextField, memoTextField],
                             action: #selector(doneButtonWasPressed))
@@ -144,7 +144,6 @@ final class RequestPayViewController: PresentableViewController, StoryboardIniti
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     resetViewModel()
-    setupStyle()
     updateViewWithViewModel()
   }
 
@@ -255,7 +254,6 @@ final class RequestPayViewController: PresentableViewController, StoryboardIniti
         self.setupStyle()
         self.updateViewWithViewModel()
         self.editAmountView.isUserInteractionEnabled = false
-        self.editAmountView.isHidden = true
         self.addAmountButton.isHidden = true
       }.catch { error in
         SVProgressHUD.dismiss()
