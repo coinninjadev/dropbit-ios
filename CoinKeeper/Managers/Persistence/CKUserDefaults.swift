@@ -22,6 +22,7 @@ class CKUserDefaults: PersistenceUserDefaultsType {
   enum Key: String, CaseIterable {
     case invitationPopup
     case firstTimeOpeningApp
+    case firstOpenDate
     case exchangeRateBTCUSD
     case feeBest
     case feeBetter

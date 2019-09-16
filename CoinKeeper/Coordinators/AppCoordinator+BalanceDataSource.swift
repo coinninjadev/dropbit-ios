@@ -12,7 +12,7 @@ import UIKit
 extension AppCoordinator: BalanceDataSource {
 
   /// Use this when displaying the balance
-  func balanceNetPending() -> WalletBalances {
+  func balancesNetPending() -> WalletBalances {
     guard let wmgr = walletManager else { return WalletBalances(onChain: .zero, lightning: .zero)}
     let context = persistenceManager.createBackgroundContext()
     var balance = (onChain: 0, lightning: 0)
@@ -24,7 +24,7 @@ extension AppCoordinator: BalanceDataSource {
   }
 
   /// isSpendable relies on having at least 1 confirmation
-  func spendableBalanceNetPending() -> WalletBalances {
+  func spendableBalancesNetPending() -> WalletBalances {
     guard let wmgr = walletManager else { return WalletBalances(onChain: .zero, lightning: .zero)}
     let context = persistenceManager.createBackgroundContext()
     var balance = (onChain: 0, lightning: 0)

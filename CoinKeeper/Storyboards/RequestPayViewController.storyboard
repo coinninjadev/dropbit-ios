@@ -19,10 +19,10 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="z64-0B-kx7">
-                                <rect key="frame" x="323" y="28" width="44" height="44"/>
+                                <rect key="frame" x="317" y="28" width="50" height="50"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="z64-0B-kx7" secondAttribute="height" multiplier="1:1" id="Jr6-B9-Ole"/>
-                                    <constraint firstAttribute="width" constant="44" id="Vec-H7-4gF"/>
+                                    <constraint firstAttribute="width" constant="50" id="Vec-H7-4gF"/>
                                 </constraints>
                                 <state key="normal" image="close"/>
                                 <connections>

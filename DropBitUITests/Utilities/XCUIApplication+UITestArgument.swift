@@ -11,7 +11,12 @@ import XCTest
 extension XCUIApplication {
 
   func appendTestArguments(_ arguments: [UITestArgument]) {
-    arguments.forEach { self.launchArguments.append($0.fullArgument) }
+    arguments.forEach { self.appendTestArgument($0) }
+  }
+
+  /// This value should match the UITestArgument enum case in the target app.
+  func appendTestArgument(_ argument: UITestArgument) {
+    self.launchArguments.append(argument.fullArgument)
   }
 
 }

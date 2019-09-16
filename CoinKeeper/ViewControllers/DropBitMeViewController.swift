@@ -130,6 +130,7 @@ class DropBitMeViewController: BaseViewController, StoryboardInitializable {
   override func viewDidLoad() {
     super.viewDidLoad()
 
+    self.view.backgroundColor = .clear
     avatarButton.alpha = 0.0
     semiOpaqueBackgroundView.backgroundColor = UIColor.black.withAlphaComponent(0.6)
     popoverBackgroundView.layer.masksToBounds = true

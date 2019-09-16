@@ -98,8 +98,8 @@ CurrencySwappableAmountEditor {
   @IBAction func performScan() {
     let converter = viewModel.generateCurrencyConverter()
     delegate.viewControllerDidPressScan(self,
-                                                     btcAmount: converter.btcAmount,
-                                                     primaryCurrency: primaryCurrency)
+                                        btcAmount: converter.btcAmount,
+                                        primaryCurrency: primaryCurrency)
   }
 
   @IBAction func performNext() {
@@ -669,7 +669,7 @@ extension SendPaymentViewController {
 
   func validateAmount() throws {
     let ignoredOptions = viewModel.standardIgnoredOptions
-    let amountValidator = createCurrencyAmountValidator(ignoring: ignoredOptions)
+    let amountValidator = createCurrencyAmountValidator(ignoring: ignoredOptions, balanceToCheck: viewModel.walletTransactionType)
 
     let converter = viewModel.generateCurrencyConverter()
     try amountValidator.validate(value: converter)
@@ -682,7 +682,7 @@ extension SendPaymentViewController {
       else { return }
 
     let ignoredOptions = viewModel.invitationMaximumIgnoredOptions
-    let validator = createCurrencyAmountValidator(ignoring: ignoredOptions)
+    let validator = createCurrencyAmountValidator(ignoring: ignoredOptions, balanceToCheck: viewModel.walletTransactionType)
     let converter = viewModel.generateCurrencyConverter(withBTCAmount: btcAmount)
     try validator.validate(value: converter)
   }
@@ -770,10 +770,10 @@ extension SendPaymentViewController {
     let inputs = SendingDelegateInputs(sendPaymentVM: self.viewModel, contact: newContact, payloadDTO: sharedPayload)
 
     delegate.viewControllerDidBeginAddressNegotiation(self,
-                                                                   btcAmount: btcAmount,
-                                                                   memo: self.viewModel.memo,
-                                                                   memoIsShared: self.viewModel.sharedMemoDesired,
-                                                                   inputs: inputs)
+                                                      btcAmount: btcAmount,
+                                                      memo: self.viewModel.memo,
+                                                      memoIsShared: self.viewModel.sharedMemoDesired,
+                                                      inputs: inputs)
   }
 
   private func handleContactValidationError(_ error: Error) {
@@ -859,10 +859,10 @@ extension SendPaymentViewController {
       delegate.viewController(self, sendingMax: data, to: paymentTarget, inputs: inputs)
     } else {
       self.delegate.viewControllerDidSendPayment(self,
-                                                              btcAmount: viewModel.btcAmount,
-                                                              requiredFeeRate: viewModel.requiredFeeRate,
-                                                              paymentTarget: paymentTarget,
-                                                              inputs: inputs)
+                                                 btcAmount: viewModel.btcAmount,
+                                                 requiredFeeRate: viewModel.requiredFeeRate,
+                                                 paymentTarget: paymentTarget,
+                                                 inputs: inputs)
     }
 
   }
