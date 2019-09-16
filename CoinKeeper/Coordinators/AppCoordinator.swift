@@ -247,6 +247,8 @@ class AppCoordinator: CoordinatorType {
     networkManager.start()
     connectionManager.delegate = self
 
+    persistenceManager.brokers.activity.setFirstOpenDateIfNil(date: Date())
+
     // fetch transaction information for receive and change addresses, update server addresses
     UIApplication.shared.setMinimumBackgroundFetchInterval(.oneHour)
 

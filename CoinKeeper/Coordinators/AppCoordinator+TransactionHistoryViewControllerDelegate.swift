@@ -95,11 +95,17 @@ extension AppCoordinator: TransactionHistoryViewControllerDelegate {
   }
 
   func summaryHeaderType(for viewController: UIViewController) -> SummaryHeaderType? {
-    if wordsBackedUp {
+    if wordsBackedUp || backupWarningDelayInEffect {
       return nil
     } else {
       return .backUpWallet
     }
+  }
+
+  private var backupWarningDelayInEffect: Bool {
+    guard let firstOpen = self.persistenceManager.brokers.activity.firstOpenDate else { return true }
+    let delayEndDate = firstOpen.addingTimeInterval(.oneDay)
+    return delayEndDate > Date()
   }
 
   func viewControllerDidSelectSummaryHeader(_ viewController: UIViewController) {
