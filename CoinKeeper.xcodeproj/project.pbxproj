@@ -206,7 +206,6 @@
 		3B598FDC2315BF5100FF50CD /* WalletFlagsParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B598FDB2315BF5100FF50CD /* WalletFlagsParser.swift */; };
 		3B598FDE2315CB2D00FF50CD /* WalletFlagsParserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B598FDD2315CB2D00FF50CD /* WalletFlagsParserTests.swift */; };
 		3B598FE02318337C00FF50CD /* LightningUpgradeStartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B598FDF2318337C00FF50CD /* LightningUpgradeStartViewController.swift */; };
-		3B598FE4231833C000FF50CD /* LightningUpgradeStartViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3B598FE3231833C000FF50CD /* LightningUpgradeStartViewController.storyboard */; };
 		3B598FE623184DD200FF50CD /* LightningUpgradeStartViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B598FE523184DD200FF50CD /* LightningUpgradeStartViewControllerTests.swift */; };
 		3B598FE82318542500FF50CD /* LightningUpgradeCoordinator+LightningUpgradeStartViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B598FE72318542500FF50CD /* LightningUpgradeCoordinator+LightningUpgradeStartViewControllerDelegate.swift */; };
 		3B598FEA23196A8000FF50CD /* LightningUpgradeStatusViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B598FE923196A8000FF50CD /* LightningUpgradeStatusViewController.swift */; };
@@ -477,6 +476,9 @@
 		A200574D20B5F70F007074D9 /* SettingCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A200574C20B5F70F007074D9 /* SettingCell.xib */; };
 		A200574F20B5FD68007074D9 /* AppCoordinator+SettingsViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A200574E20B5FD68007074D9 /* AppCoordinator+SettingsViewControllerDelegate.swift */; };
 		A200575520B6F2D0007074D9 /* Command.swift in Sources */ = {isa = PBXBuildFile; fileRef = A200575420B6F2D0007074D9 /* Command.swift */; };
+		A2085150232EA185007843DE /* AppCoordinator+TwitterTweetingDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A208514F232EA185007843DE /* AppCoordinator+TwitterTweetingDelegate.swift */; };
+		A2085152232EA210007843DE /* TweetDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2085151232EA210007843DE /* TweetDelegate.swift */; };
+		A2085154232ED95B007843DE /* LightningUpgradeStartViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A2085153232ED95B007843DE /* LightningUpgradeStartViewController.storyboard */; };
 		A20E47F020C0436E00CA8589 /* ContactType.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20E47EF20C0436E00CA8589 /* ContactType.swift */; };
 		A216D78F20B30C25005FBAC2 /* NoConnectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A216D78E20B30C25005FBAC2 /* NoConnectionViewController.swift */; };
 		A216D79120B30C51005FBAC2 /* NoConnectionViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A216D79020B30C51005FBAC2 /* NoConnectionViewController.storyboard */; };
@@ -593,6 +595,10 @@
 		A2BCCFC22321919300EB9C30 /* AppCoordinator+PaymentBuildingDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2BCCFC12321919300EB9C30 /* AppCoordinator+PaymentBuildingDelegate.swift */; };
 		A2BFA54D22E7531500396D33 /* WalletToggleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2BFA54C22E7531500396D33 /* WalletToggleView.swift */; };
 		A2BFA54F22E7536A00396D33 /* WalletToggleView.xib in Resources */ = {isa = PBXBuildFile; fileRef = A2BFA54E22E7536A00396D33 /* WalletToggleView.xib */; };
+		A2D1ACFF232D268500EF1001 /* BetaTagView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2D1ACFE232D268500EF1001 /* BetaTagView.swift */; };
+		A2D1AD01232D270B00EF1001 /* BetaTagView.xib in Resources */ = {isa = PBXBuildFile; fileRef = A2D1AD00232D270B00EF1001 /* BetaTagView.xib */; };
+		A2D1AD03232D368A00EF1001 /* LockedLightningView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2D1AD02232D368A00EF1001 /* LockedLightningView.swift */; };
+		A2D1AD07232D436D00EF1001 /* LockedLightningView.xib in Resources */ = {isa = PBXBuildFile; fileRef = A2D1AD06232D436D00EF1001 /* LockedLightningView.xib */; };
 		A2DBC50222D78DAF008C532B /* CurrencySwappableEditAmountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2DBC50122D78DAF008C532B /* CurrencySwappableEditAmountView.swift */; };
 		A2DBC50422D78DC2008C532B /* CurrencySwappableEditAmountView.xib in Resources */ = {isa = PBXBuildFile; fileRef = A2DBC50322D78DC2008C532B /* CurrencySwappableEditAmountView.xib */; };
 		A2E0300220EABF8E00E160E9 /* RestoreWalletViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2E0300120EABF8E00E160E9 /* RestoreWalletViewController.swift */; };
@@ -1246,7 +1252,6 @@
 		3B598FDB2315BF5100FF50CD /* WalletFlagsParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletFlagsParser.swift; sourceTree = "<group>"; };
 		3B598FDD2315CB2D00FF50CD /* WalletFlagsParserTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletFlagsParserTests.swift; sourceTree = "<group>"; };
 		3B598FDF2318337C00FF50CD /* LightningUpgradeStartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightningUpgradeStartViewController.swift; sourceTree = "<group>"; };
-		3B598FE3231833C000FF50CD /* LightningUpgradeStartViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LightningUpgradeStartViewController.storyboard; sourceTree = "<group>"; };
 		3B598FE523184DD200FF50CD /* LightningUpgradeStartViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightningUpgradeStartViewControllerTests.swift; sourceTree = "<group>"; };
 		3B598FE72318542500FF50CD /* LightningUpgradeCoordinator+LightningUpgradeStartViewControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LightningUpgradeCoordinator+LightningUpgradeStartViewControllerDelegate.swift"; sourceTree = "<group>"; };
 		3B598FE923196A8000FF50CD /* LightningUpgradeStatusViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightningUpgradeStatusViewController.swift; sourceTree = "<group>"; };
@@ -1521,6 +1526,9 @@
 		A200574C20B5F70F007074D9 /* SettingCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SettingCell.xib; sourceTree = "<group>"; };
 		A200574E20B5FD68007074D9 /* AppCoordinator+SettingsViewControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppCoordinator+SettingsViewControllerDelegate.swift"; sourceTree = "<group>"; };
 		A200575420B6F2D0007074D9 /* Command.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Command.swift; sourceTree = "<group>"; };
+		A208514F232EA185007843DE /* AppCoordinator+TwitterTweetingDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppCoordinator+TwitterTweetingDelegate.swift"; sourceTree = "<group>"; };
+		A2085151232EA210007843DE /* TweetDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TweetDelegate.swift; sourceTree = "<group>"; };
+		A2085153232ED95B007843DE /* LightningUpgradeStartViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LightningUpgradeStartViewController.storyboard; sourceTree = "<group>"; };
 		A20E47EF20C0436E00CA8589 /* ContactType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactType.swift; sourceTree = "<group>"; };
 		A216D78E20B30C25005FBAC2 /* NoConnectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoConnectionViewController.swift; sourceTree = "<group>"; };
 		A216D79020B30C51005FBAC2 /* NoConnectionViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = NoConnectionViewController.storyboard; sourceTree = "<group>"; };
@@ -1637,6 +1645,10 @@
 		A2BCCFC12321919300EB9C30 /* AppCoordinator+PaymentBuildingDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppCoordinator+PaymentBuildingDelegate.swift"; sourceTree = "<group>"; };
 		A2BFA54C22E7531500396D33 /* WalletToggleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletToggleView.swift; sourceTree = "<group>"; };
 		A2BFA54E22E7536A00396D33 /* WalletToggleView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WalletToggleView.xib; sourceTree = "<group>"; };
+		A2D1ACFE232D268500EF1001 /* BetaTagView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BetaTagView.swift; sourceTree = "<group>"; };
+		A2D1AD00232D270B00EF1001 /* BetaTagView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BetaTagView.xib; sourceTree = "<group>"; };
+		A2D1AD02232D368A00EF1001 /* LockedLightningView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockedLightningView.swift; sourceTree = "<group>"; };
+		A2D1AD06232D436D00EF1001 /* LockedLightningView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LockedLightningView.xib; sourceTree = "<group>"; };
 		A2DBC50122D78DAF008C532B /* CurrencySwappableEditAmountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencySwappableEditAmountView.swift; sourceTree = "<group>"; };
 		A2DBC50322D78DC2008C532B /* CurrencySwappableEditAmountView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CurrencySwappableEditAmountView.xib; sourceTree = "<group>"; };
 		A2E0300120EABF8E00E160E9 /* RestoreWalletViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestoreWalletViewController.swift; sourceTree = "<group>"; };
@@ -2344,6 +2356,7 @@
 				A235898A232165A5002C3FC0 /* AppCoordinator+PaymentSendingDelegate.swift */,
 				A2BCCFC12321919300EB9C30 /* AppCoordinator+PaymentBuildingDelegate.swift */,
 				A2B4EAFD2322C555005D0A65 /* AppCoordinator+LightningReloadDelegate.swift */,
+				A208514F232EA185007843DE /* AppCoordinator+TwitterTweetingDelegate.swift */,
 			);
 			path = Coordinators;
 			sourceTree = "<group>";
@@ -2598,6 +2611,8 @@
 				B584766B20E1406B00F5FE60 /* Buttons */,
 				5B927C1E2077A10300DCDCAE /* Headers and Footers */,
 				B584766A20E1400300F5FE60 /* Labels */,
+				A2D1AD02232D368A00EF1001 /* LockedLightningView.swift */,
+				A2D1AD06232D436D00EF1001 /* LockedLightningView.xib */,
 				B559AF082180C9AA001D44F2 /* BadgeDisplayable.swift */,
 				B559AF0A2180CA86001D44F2 /* BadgeView.swift */,
 				B559AF0C2180E919001D44F2 /* Badgeable.swift */,
@@ -2661,6 +2676,8 @@
 				3B0C7859231EDF3600D4C216 /* LightningUpgradeGradientOverlayView.swift */,
 				3B9930DE232ABF0D008EA112 /* LightningUpgradeStatusView.swift */,
 				3B9930E0232ABF21008EA112 /* LightningUpgradeStatusView.xib */,
+				A2D1ACFE232D268500EF1001 /* BetaTagView.swift */,
+				A2D1AD00232D270B00EF1001 /* BetaTagView.xib */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -2985,8 +3002,8 @@
 				A2B4E6EF22FA488100E24324 /* LightningRefillViewController.storyboard */,
 				A2FE198322FB0F5C00C2412D /* TryLightningViewController.storyboard */,
 				A2FE198B2301E05E00C2412D /* WalletTransferViewController.storyboard */,
-				3B598FE3231833C000FF50CD /* LightningUpgradeStartViewController.storyboard */,
 				3B598FEB23196AAE00FF50CD /* LightningUpgradeStatusViewController.storyboard */,
+				A2085153232ED95B007843DE /* LightningUpgradeStartViewController.storyboard */,
 				3B936ADC2322C1250067CA97 /* LightningUpgradeCompleteViewController.storyboard */,
 				3B0C785523197B0A00D4C216 /* LightningUpgradePageViewController.storyboard */,
 			);
@@ -3306,6 +3323,7 @@
 				A268F13A22EA067B00410040 /* SyncSubscribeable.swift */,
 				A24B9E89230AF1D300852718 /* LightningInvoiceResolver.swift */,
 				A235898C2321661A002C3FC0 /* PaymentSendingDelegate.swift */,
+				A2085151232EA210007843DE /* TweetDelegate.swift */,
 			);
 			path = Protocols;
 			sourceTree = "<group>";
@@ -3998,6 +4016,7 @@
 				3B5A889E228AF3D90082BBA4 /* TwitterUserTableViewCell.xib in Resources */,
 				3B547A702280A6FD007B0366 /* VerifiedStatusView.xib in Resources */,
 				308F6F03217F91A50094D6CB /* ServerAddressView.xib in Resources */,
+				A2D1AD01232D270B00EF1001 /* BetaTagView.xib in Resources */,
 				A2952F7422BBBAAB00BDCE65 /* TimePeriodCell.xib in Resources */,
 				3B0C4FE022A1ACBD000FE760 /* VerfiedTwitterUserIndicatorView.xib in Resources */,
 				B5EDFB37231EE00800B8E739 /* TransactionHistorySummaryHeader.xib in Resources */,
@@ -4009,6 +4028,7 @@
 				B5FFFFC0226FB44E0029DB62 /* DropBitMeViewController.storyboard in Resources */,
 				B5B0DC81221364140010AB2A /* PhoneNumberEntryView.xib in Resources */,
 				B54DE68522982C88009D67CE /* ContactsEmptyView.xib in Resources */,
+				A2085154232ED95B007843DE /* LightningUpgradeStartViewController.storyboard in Resources */,
 				3B6FDAD7204F4BA50091916A /* VerifyRecoveryWordCell.xib in Resources */,
 				403B454B2075594F00DA53E9 /* Settings.bundle in Resources */,
 				3BC456FF20288D7300CC36B1 /* LaunchScreen.storyboard in Resources */,
@@ -4070,7 +4090,7 @@
 				3B9779B2202E416700C9C933 /* Montserrat-Italic.ttf in Resources */,
 				A268F13922E9EFFE00410040 /* PrimarySecondaryBalanceContainer.xib in Resources */,
 				B5E7F219221466EE00358A24 /* CountryCodeSearchView.xib in Resources */,
-				3B598FE4231833C000FF50CD /* LightningUpgradeStartViewController.storyboard in Resources */,
+				A2D1AD07232D436D00EF1001 /* LockedLightningView.xib in Resources */,
 				3B23126320DA6CA30099A557 /* TransactionHistoryDetailCellAddressView.xib in Resources */,
 				B5E7F21F22146B9000358A24 /* CountryCodePickerCell.xib in Resources */,
 				B58A6A00232016D200D50298 /* TransactionHistorySummaryFooter.xib in Resources */,
@@ -4448,6 +4468,7 @@
 				3B2E78362024D56500DA25AF /* StoryboardInitializable.swift in Sources */,
 				B5E7F21B2214670200358A24 /* CountryCodeSearchView.swift in Sources */,
 				B5A3BA5C215193DA005EE657 /* TransactionsTarget.swift in Sources */,
+				A2D1ACFF232D268500EF1001 /* BetaTagView.swift in Sources */,
 				B5860546222702FC0048979D /* HashableContact.swift in Sources */,
 				A2FE198A2301DF8800C2412D /* WalletTransferViewController.swift in Sources */,
 				3B4741692180AC64004DA223 /* DeviceEndpointIds.swift in Sources */,
@@ -4512,6 +4533,7 @@
 				A220A97B20B5E0E400C30149 /* SettingsViewController.swift in Sources */,
 				B5F32BA62124D05E00B1F89F /* CKStrings.swift in Sources */,
 				B5EABAB621FB932E00E32E08 /* NetworkManager+TransactionNotificationRequestable.swift in Sources */,
+				A2085150232EA185007843DE /* AppCoordinator+TwitterTweetingDelegate.swift in Sources */,
 				3BA9F5FF208F642F0047C213 /* AppCoordinator+ScanQRViewControllerDelegate.swift in Sources */,
 				3B42ACFA229023AD00C2E30D /* OutgoingTransactionDropBitType.swift in Sources */,
 				B5F775F422B81B8500C7A771 /* UserBroker.swift in Sources */,
@@ -4651,6 +4673,7 @@
 				B52A6F3222B9845F000801FA /* TransactionBroker.swift in Sources */,
 				3BEF229E2260DC78001F6D25 /* BuySpendCardCollectionViewCell.swift in Sources */,
 				3B3A1339204F3DB700E01908 /* OnboardingSubtitleLabel.swift in Sources */,
+				A2D1AD03232D368A00EF1001 /* LockedLightningView.swift in Sources */,
 				3B61B6E620DD4D360021D69E /* AppCoordinator+TransactionHistoryViewControllerDelegate.swift in Sources */,
 				A2952F7022BBBAAB00BDCE65 /* LineChartCell.swift in Sources */,
 				3BE8D86420D1A85200E99D24 /* TransactionResponse.swift in Sources */,
@@ -4880,6 +4903,7 @@
 				3B6FDADB2050146E0091916A /* VerifyRecoveryWordCellData.swift in Sources */,
 				3B598FE82318542500FF50CD /* LightningUpgradeCoordinator+LightningUpgradeStartViewControllerDelegate.swift in Sources */,
 				B582AD5020A084AD007A6459 /* CKMCounterpartyAddress+CoreDataProperties.swift in Sources */,
+				A2085152232EA210007843DE /* TweetDelegate.swift in Sources */,
 				3B6749E420AA5CA40032FE02 /* CKMVout+CoreDataProperties.swift in Sources */,
 				B5F6EC2522554CF20045633B /* TwilioErrorDelegate.swift in Sources */,
 				3B6E4D59206E533D00D9CFFA /* ApiKeys.generated.swift in Sources */,

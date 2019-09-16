@@ -65,6 +65,16 @@ class PreferencesBroker: CKPersistenceBroker, PreferencesBrokerType {
     }
   }
 
+  var lightningWalletLockedStatus: LockStatus {
+    get {
+      let stringValue = userDefaultsManager.string(for: .lightningWalletLockedStatus)
+      return stringValue.flatMap { LockStatus(rawValue: $0) } ?? .locked
+    }
+    set {
+      userDefaultsManager.set(newValue.rawValue, for: .lightningWalletLockedStatus)
+    }
+  }
+
   var dontShowShareTransaction: Bool {
     get { return userDefaultsManager.bool(for: .dontShowShareTransaction) }
     set { userDefaultsManager.set(newValue, for: .dontShowShareTransaction) }

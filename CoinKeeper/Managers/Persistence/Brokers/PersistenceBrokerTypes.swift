@@ -119,6 +119,7 @@ protocol PreferencesBrokerType: AnyObject {
   var preferredTransactionFeeType: TransactionFeeType { get set }
   var dontShowLightningRefill: Bool { get set }
   var selectedWalletTransactionType: WalletTransactionType { get set }
+  var lightningWalletLockedStatus: LockStatus { get set }
 
 }
 

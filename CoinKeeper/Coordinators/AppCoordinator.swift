@@ -395,4 +395,17 @@ class AppCoordinator: CoordinatorType {
     walletViewController.balanceContainer.toggleChartAndBalance()
   }
 
+  func showLightningLockAlertIfNecessary() -> Bool {
+    let shouldShowError = persistenceManager.brokers.preferences.selectedWalletTransactionType == .lightning &&
+    BaseViewController.lockStatus == .locked
+
+    if shouldShowError {
+      navigationController.present(alertManager.defaultAlert(withTitle: "Error",
+                                                             description: "Your lightning wallet is currently locked."),
+                                   animated: true, completion: nil)
+    }
+
+    return !shouldShowError
+  }
+
 }
