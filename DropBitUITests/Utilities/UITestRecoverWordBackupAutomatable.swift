@@ -62,4 +62,14 @@ extension UITestRecoverWordBackupAutomatable {
     XCTAssertFalse(backupWalletCell2Exists)
   }
 
+  func backupWalletWarningHeader() -> XCUIElement {
+    let title = "Don't forget to backup your wallet"
+    let predicate = NSPredicate(format: "label == %@", title)
+
+    let header = app.staticTexts.containing(predicate).firstMatch
+    let headerExists = header.waitForExistence(timeout: 2.0)
+    XCTAssert(headerExists)
+    return header
+  }
+
 }
