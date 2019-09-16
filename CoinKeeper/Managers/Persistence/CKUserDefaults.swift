@@ -86,7 +86,7 @@ class CKUserDefaults: PersistenceUserDefaultsType {
 
   var useRegtest: Bool {
     get { return bool(for: .regtest) }
-    set { set(useRegtest, for: .regtest) }
+    set { set(newValue, for: .regtest) }
   }
 
 }

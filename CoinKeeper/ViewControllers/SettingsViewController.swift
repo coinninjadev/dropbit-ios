@@ -187,13 +187,8 @@ class SettingsViewController: BaseViewController, StoryboardInitializable {
     var regtestVM: SettingsCellViewModel?
     #if DEBUG
     let useRegtest = CKUserDefaults().useRegtest
-    let regtestCellType = SettingsCellType.regtest(enabled: useRegtest) { [weak self] (didEnable: Bool) in
-      guard let localSelf = self else { return }
+    let regtestCellType = SettingsCellType.regtest(enabled: useRegtest) { (didEnable: Bool) in
       CKUserDefaults().useRegtest = didEnable
-      DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-        localSelf.viewModel = localSelf.createViewModel()
-        localSelf.settingsTableView.reloadData()
-      }
     }
     regtestVM = SettingsCellViewModel(type: regtestCellType)
     #endif
