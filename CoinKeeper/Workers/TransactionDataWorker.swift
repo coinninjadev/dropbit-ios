@@ -227,12 +227,7 @@ class TransactionDataWorker: TransactionDataWorkerType {
         let ownedVoutAddresses = allVoutAddresses
           .filter { searchableAddresses.contains($0) }
 
-        let vinAddresses = response.vinResponses.flatMap { $0.addresses }
-        let numberOfVinsBelongingToWallet = vinAddresses
-          .filter { searchableAddresses.contains($0) }
-          .count
-
-        let isSentToSelf = (allVoutAddresses.count == ownedVoutAddresses.count) && (numberOfVinsBelongingToWallet == vinAddresses.count)
+        let isSentToSelf = (allVoutAddresses.count == ownedVoutAddresses.count)
 
         copy.isSentToSelf = isSentToSelf
         return copy

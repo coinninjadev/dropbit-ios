@@ -84,14 +84,13 @@ public class CKMTransaction: NSManagedObject {
       return temp.isSentToSelf
     } else {
       // regular transaction
-      let allVoutAddresses = vouts.flatMap { $0.addressIDs }
+      let allVoutAddresses = vouts.flatMap { $0.addressIDs }.asSet()
       let ownedVoutAddresses = allVoutAddresses
         .compactMap { CKMAddress.find(withAddress: $0, in: context) }
+        .map { $0.addressId }
+        .asSet()
 
-      let numberOfVinsBelongingToWallet = vins.filter { $0.belongsToWallet }.count
-
-      let sentToSelf = (numberOfVinsBelongingToWallet == vins.count) && (allVoutAddresses.count == ownedVoutAddresses.count)
-      return sentToSelf
+      return allVoutAddresses.subtracting(ownedVoutAddresses).isEmpty
     }
   }
 
@@ -99,9 +98,8 @@ public class CKMTransaction: NSManagedObject {
     if let invitation = self.invitation {
       return invitation.side == .receiver
     }
-    let txReceivedFunds = vouts.compactMap { $0.address }.filter { $0.isReceiveAddress }.isNotEmpty
-    let txSentFunds = vins.filter { $0.belongsToWallet }.asArray().isNotEmpty
-    return txReceivedFunds && !txSentFunds
+    let incoming = vins.filter { $0.belongsToWallet }.isEmpty
+    return incoming
   }
 
   /// Configures a newly created Transaction object with an instance of OutgoingTransactionData DTO.
