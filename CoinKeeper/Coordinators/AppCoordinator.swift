@@ -294,6 +294,10 @@ class AppCoordinator: CoordinatorType {
     twitterAccessManager.uiTestArguments = uiTestArguments
   }
 
+  var uiTestIsInProgress: Bool {
+    return uiTestArguments.contains(.uiTestInProgress)
+  }
+
   func startChildCoordinator(childCoordinator: ChildCoordinatorType) {
     childCoordinators.append(childCoordinator)
     childCoordinator.start()

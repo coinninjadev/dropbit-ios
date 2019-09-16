@@ -103,6 +103,7 @@ extension AppCoordinator: TransactionHistoryViewControllerDelegate {
   }
 
   private var backupWarningDelayInEffect: Bool {
+    if uiTestIsInProgress { return false }
     guard let firstOpen = self.persistenceManager.brokers.activity.firstOpenDate else { return true }
     let delayEndDate = firstOpen.addingTimeInterval(.oneDay)
     return delayEndDate > Date()
