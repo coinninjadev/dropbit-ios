@@ -41,8 +41,8 @@ class BaseViewController: UIViewController, AccessibleViewSettable {
 }
 
 enum LockStatus: String {
-  case locked = "locked"
-  case unlocked = "unlocked"
+  case locked
+  case unlocked
 }
 
 extension BaseViewController {

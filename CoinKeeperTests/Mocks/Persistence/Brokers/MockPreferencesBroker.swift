@@ -24,5 +24,6 @@ class MockPreferencesBroker: CKPersistenceBroker, PreferencesBrokerType {
   var adjustableFeesIsEnabled: Bool = false
   var preferredTransactionFeeType: TransactionFeeType = .default
   var selectedWalletTransactionType: WalletTransactionType = .onChain
+  var lightningWalletLockedStatus: LockStatus = .locked 
 
 }
