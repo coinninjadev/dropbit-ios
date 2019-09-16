@@ -31,6 +31,7 @@ extension AppCoordinator {
   }
 
   func showPushNotificationActionableAlert() {
+    guard uiTestArguments.isEmpty else { return }
     let requestConfiguration = AlertActionConfiguration(title: "GOT IT", style: .default, action: { [weak self] in
       self?.permissionManager.requestPermission(for: .notification) { status in
         switch status {

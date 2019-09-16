@@ -83,6 +83,8 @@ class ImportWalletUITests: UITestCase, UITestRecoverWordBackupAutomatable {
     DeviceVerificationPage().tapSkip()
     PushInfoPage()?.dismiss()
 
+    DropBitMePage()?.tapClose()
+
     let backupHeader = backupWalletWarningHeader()
     backupHeader.tap()
 
