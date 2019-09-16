@@ -77,15 +77,26 @@ class CurrencyAmountValidator: ValidatorType<CurrencyConverter> {
   static let lightningInvoiceMax = Money(amount: NSDecimalNumber(value: 50), currency: .USD)
 
   // Allows for validating against USD value while showing error message in BTC.
-  let balanceNetPending: WalletBalances?
+  let balancesNetPending: WalletBalances
   let validationsToSkip: CurrencyAmountValidationOptions
-  let transactionType: WalletTransactionType
+  let balanceType: WalletTransactionType
 
-  init(balanceNetPending: WalletBalances?, ignoring: CurrencyAmountValidationOptions = [], walletTransactionType: WalletTransactionType = .onChain) {
-    self.balanceNetPending = balanceNetPending
-    self.transactionType = walletTransactionType
+  init(balancesNetPending: WalletBalances,
+       balanceToCheck: WalletTransactionType,
+       ignoring: CurrencyAmountValidationOptions = []) {
+    self.balancesNetPending = balancesNetPending
+    self.balanceType = balanceToCheck
     self.validationsToSkip = ignoring
     super.init()
+  }
+
+  private var relevantBalance: NSDecimalNumber {
+    switch balanceType {
+    case .onChain:
+      return balancesNetPending.onChain
+    case .lightning:
+      return balancesNetPending.lightning
+    }
   }
 
   override func validate(value: CurrencyConverter) throws {
@@ -105,16 +116,9 @@ class CurrencyAmountValidator: ValidatorType<CurrencyConverter> {
       throw CurrencyAmountValidatorError.invitationMaximum(maxMoney)
     }
 
-    var balance = balanceNetPending?.onChain
-    switch transactionType {
-    case .lightning:
-      balance = balanceNetPending?.lightning
-    default:
-      balance = balanceNetPending?.onChain
-    }
+    let balance = relevantBalance
 
-    if !validationsToSkip.contains(.usableBalance),
-      let balance = balance, btcValue > balance {
+    if !validationsToSkip.contains(.usableBalance), btcValue > balance {
       let spendableMoney = Money(amount: balance, currency: .BTC)
       throw CurrencyAmountValidatorError.usableBalance(spendableMoney)
     }

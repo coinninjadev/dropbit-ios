@@ -31,8 +31,7 @@ extension AppCoordinator: WalletOverviewViewControllerDelegate {
     let actions: ActionSheet.SelectAction = { [weak self] sheet, item in
       guard let strongSelf = self, !item.isOkButton else { return }
       let direction: TransferDirection = item == toLightningItem ? .toLightning(nil) : .toOnChain(nil)
-      let viewModel = WalletTransferViewModel(direction: direction, amount: .custom,
-                                              walletBalances: strongSelf.spendableBalanceNetPending())
+      let viewModel = WalletTransferViewModel(direction: direction, amount: .custom)
       let transferViewController = WalletTransferViewController.newInstance(delegate: strongSelf, viewModel: viewModel)
       strongSelf.toggleChartAndBalance()
       strongSelf.navigationController.present(transferViewController, animated: true, completion: nil)

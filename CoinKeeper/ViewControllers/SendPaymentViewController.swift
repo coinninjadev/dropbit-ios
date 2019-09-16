@@ -661,7 +661,7 @@ extension SendPaymentViewController {
 
   func validateAmount() throws {
     let ignoredOptions = viewModel.standardIgnoredOptions
-    let amountValidator = createCurrencyAmountValidator(ignoring: ignoredOptions)
+    let amountValidator = createCurrencyAmountValidator(ignoring: ignoredOptions, balanceToCheck: viewModel.walletTransactionType)
 
     let converter = viewModel.generateCurrencyConverter()
     try amountValidator.validate(value: converter)
@@ -674,7 +674,7 @@ extension SendPaymentViewController {
       else { return }
 
     let ignoredOptions = viewModel.invitationMaximumIgnoredOptions
-    let validator = createCurrencyAmountValidator(ignoring: ignoredOptions)
+    let validator = createCurrencyAmountValidator(ignoring: ignoredOptions, balanceToCheck: viewModel.walletTransactionType)
     let converter = viewModel.generateCurrencyConverter(withBTCAmount: btcAmount)
     try validator.validate(value: converter)
   }

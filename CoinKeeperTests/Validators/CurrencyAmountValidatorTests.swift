@@ -18,7 +18,7 @@ class CurrencyAmountValidatorTests: XCTestCase {
 
   override func setUp() {
     super.setUp()
-    self.sut = CurrencyAmountValidator(balanceNetPending: nil, ignoring: [.usableBalance])
+    self.sut = CurrencyAmountValidator(balancesNetPending: .empty, balanceToCheck: .onChain, ignoring: [.usableBalance])
   }
 
   override func tearDown() {

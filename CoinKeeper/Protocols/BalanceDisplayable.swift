@@ -25,6 +25,10 @@ protocol BalanceDataSource: CoreDataObserver {
 struct WalletBalances {
   var onChain: NSDecimalNumber
   var lightning: NSDecimalNumber
+
+  static var empty: WalletBalances {
+    return WalletBalances(onChain: .zero, lightning: .zero)
+  }
 }
 
 extension BalanceDataSource {
