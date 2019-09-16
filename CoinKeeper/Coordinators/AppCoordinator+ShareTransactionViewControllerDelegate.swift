@@ -40,19 +40,6 @@ extension AppCoordinator: ShareTransactionViewControllerDelegate {
     self.openTwitterURL(withMessage: defaultTweetText)
   }
 
-  /// Create and open `twitter:` URL to begin a post in the Twitter app with the provided message
-  func openTwitterURL(withMessage message: String) {
-    var comps = URLComponents()
-    comps.scheme = "twitter"
-    comps.host = "post"
-    comps.queryItems = [URLQueryItem(name: "message", value: message)]
-    if let url = comps.url {
-      UIApplication.shared.open(url, options: [:], completionHandler: nil)
-    } else {
-      log.error("Failed to create Twitter URL from components")
-    }
-  }
-
   func viewControllerRequestedShareNextTime(_ viewController: UIViewController) {
     self.analyticsManager.track(event: .sharePromptNextTime, with: nil)
     viewController.dismiss(animated: true, completion: nil)

@@ -207,6 +207,14 @@ CurrencySwappableAmountEditor {
     }
   }
 
+  override func unlock() {
+    walletToggleView.isHidden = false
+  }
+
+  override func lock() {
+    walletToggleView.isHidden = true
+  }
+
   @objc func doneButtonWasPressed() {
     dismissKeyboard()
   }

@@ -143,6 +143,21 @@ class WalletSyncOperationFactory {
     return dependencies.networkManager.getOrCreateLightningAccount()
       .get(in: context) { lnAccountResponse in
         let wallet = CKMWallet.findOrCreate(in: context)
+
+        #if DEBUG //TODO: unlock wallet for debug builds only, remove later
+        if lnAccountResponse.locked {
+          CKNotificationCenter.publish(key: .didLockLightning)
+          dependencies.persistenceManager.brokers.preferences.lightningWalletLockedStatus = .locked
+        } else {
+          CKNotificationCenter.publish(key: .didUnlockLightning)
+          dependencies.persistenceManager.brokers.preferences.lightningWalletLockedStatus = .unlocked
+        }
+        #else
+        BaseViewController.lockStatus = .locked
+        dependencies.persistenceManager.brokers.preferences.lightningWalletLockedStatus = .locked
+        CKNotificationCenter.publish(key: .didLockLightning)
+        #endif
+
         dependencies.persistenceManager.brokers.lightning.persistAccountResponse(lnAccountResponse, forWallet: wallet, in: context)
     }
   }
