@@ -251,10 +251,12 @@ final class RequestPayViewController: PresentableViewController, StoryboardIniti
       .get { response in
         SVProgressHUD.dismiss()
         self.viewModel.lightningInvoice = response
-        self.editAmountView.isUserInteractionEnabled = false
         self.delegate.viewControllerDidCreateInvoice(self)
         self.setupStyle()
         self.updateViewWithViewModel()
+        self.editAmountView.isUserInteractionEnabled = false
+        self.editAmountView.isHidden = true
+        self.addAmountButton.isHidden = true
       }.catch { error in
         SVProgressHUD.dismiss()
         if let alert = self.alertManager?.defaultAlert(withTitle: "Error", description: error.localizedDescription) {
