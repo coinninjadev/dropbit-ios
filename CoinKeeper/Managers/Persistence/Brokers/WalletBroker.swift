@@ -127,7 +127,7 @@ class WalletBroker: CKPersistenceBroker, WalletBrokerType {
   var usableCoin: CNBBaseCoin {
     var coinType: CoinType = .MainNet
     #if DEBUG
-    coinType = .TestNet
+    coinType = CKUserDefaults().useRegtest ? .TestNet : .MainNet
     #endif
     let possibleSegwitWords = keychainManager.retrieveValue(for: .walletWordsV2) as? [String]
     if let words = possibleSegwitWords, words.count == 12 {
