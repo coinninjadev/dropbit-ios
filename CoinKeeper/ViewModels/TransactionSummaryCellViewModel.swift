@@ -307,6 +307,7 @@ struct LightningTransactionViewModelObject: TransactionSummaryCellViewModelObjec
 }
 
 struct LightningInvitationViewModelObject: TransactionSummaryCellViewModelObject {
+
   let walletEntry: CKMWalletEntry
   let invitation: CKMInvitation
 
@@ -328,6 +329,10 @@ struct LightningInvitationViewModelObject: TransactionSummaryCellViewModelObject
   }
 
   var isLightningTransfer: Bool {
+    return false
+  }
+
+  var isLightningUpgrade: Bool {
     return false
   }
 

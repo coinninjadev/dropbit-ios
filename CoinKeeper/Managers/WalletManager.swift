@@ -33,18 +33,15 @@ protocol WalletManagerType: AnyObject {
 
   func activeTemporarySentTxTotal(in context: NSManagedObjectContext) -> Int
 
-  func transactionData(
-    forPayment payment: NSDecimalNumber,
-    to address: String,
-    withFeeRate feeRate: Double,
-    rbfReplaceabilityOption: CNBTransactionReplaceabilityOption
-    ) -> Promise<CNBTransactionData>
+  func transactionData(forPayment payment: NSDecimalNumber,
+                       to address: String,
+                       withFeeRate feeRate: Double,
+                       rbfOption: CNBTransactionReplaceabilityOption) -> Promise<CNBTransactionData>
 
   /// Returns nil instead of an error in the case of insufficient funds, uses default `rbfOption: .Allowed`
   func failableTransactionData(forPayment payment: NSDecimalNumber,
                                to address: String,
-                               withFeeRate feeRate: Double,
-                               rbfReplaceabilityOption: CNBTransactionReplaceabilityOption) -> CNBTransactionData?
+                               withFeeRate feeRate: Double) -> CNBTransactionData?
 
   func failableTransactionData(forPayment payment: NSDecimalNumber,
                                to address: String,
@@ -230,14 +227,14 @@ class WalletManager: WalletManagerType {
     forPayment payment: NSDecimalNumber,
     to address: String,
     withFeeRate feeRate: Double,  // in Satoshis
-    rbfReplaceabilityOption: CNBTransactionReplaceabilityOption
+    rbfOption: CNBTransactionReplaceabilityOption
     ) -> Promise<CNBTransactionData> {
 
     return Promise { seal in
       let txData = failableTransactionData(forPayment: payment,
                                            to: address,
                                            withFeeRate: feeRate,
-                                           rbfReplaceabilityOption: rbfReplaceabilityOption)
+                                           rbfOption: rbfOption)
       if let data = txData {
         seal.fulfill(data)
       } else {

@@ -427,6 +427,36 @@ class WalletAddressDataWorker: WalletAddressDataWorkerType {
     }
   }
 
+  func payInvitationRequest(for response: WalletAddressRequestResponse, in context: NSManagedObjectContext) -> Promise<Void> {
+    guard let pendingInvitation = CKMInvitation.find(withId: response.id, in: context),
+      pendingInvitation.isFulfillable else {
+        return Promise(error: PendingInvitationError.noSentInvitationExistsForID)
+    }
+
+    guard let paymentTarget = response.address else {
+      return Promise(error: PendingInvitationError.noAddressProvided)
+    }
+
+    if response.addressTypeCase == .lightning {
+      guard paymentTarget != WalletAddressesTarget.autogenerateInvoicesAddressValue else {
+        return Promise(error: PendingInvitationError.noInvoiceProvided)
+      }
+    }
+
+    switch response.addressTypeCase {
+    case .btc:
+      let paymentWorker = OnChainAddressRequestPaymentWorker(walletAddressDataWorker: self)
+      let outgoingTxData = paymentWorker.outgoingTransactionData(for: response, paymentTarget: paymentTarget, invitation: pendingInvitation)
+      return paymentWorker.payOnChainInvitationRequest(with: outgoingTxData, pendingInvitation: pendingInvitation,
+                                                       responseId: response.id, in: context)
+    case .lightning:
+      let paymentWorker = LightningAddressRequestPaymentWorker(walletAddressDataWorker: self)
+      let outgoingTxData = paymentWorker.outgoingTransactionData(for: response, paymentTarget: paymentTarget, invitation: pendingInvitation)
+      return paymentWorker.payLightningInvitationRequest(with: outgoingTxData, pendingInvitation: pendingInvitation,
+                                                         invoice: paymentTarget, responseId: response.id, in: context)
+    }
+  }
+
   private func ensureLocalServerAddressParity(
     with responses: [WalletAddressResponse],
     in context: NSManagedObjectContext) -> Promise<[CKMServerAddress]> {
@@ -482,150 +512,6 @@ class WalletAddressDataWorker: WalletAddressDataWorkerType {
         let remainingOnServer = totalOnServer - deletedAddressIds.count
         let replacementsNeeded = max(0, (totalDesired - remainingOnServer))
         return replacementsNeeded
-    }
-  }
-
-  private func payInvitationRequest(for response: WalletAddressRequestResponse, in context: NSManagedObjectContext) -> Promise<Void> {
-    guard let pendingInvitation = CKMInvitation.find(withId: response.id, in: context),
-      pendingInvitation.isFulfillable else {
-        return Promise(error: PendingInvitationError.noSentInvitationExistsForID)
-    }
-
-    let sharedPayloadDTO = self.sharedPayload(invitation: pendingInvitation, walletAddressRequestResponse: response)
-
-    var contact: ContactType?
-    // create outgoing dto object
-    if let twitterContact = pendingInvitation.counterpartyTwitterContact {
-      let twitterUser = twitterContact.asTwitterUser()
-      contact = TwitterContact(twitterUser: twitterUser)
-    } else if let phoneContact = pendingInvitation.counterpartyPhoneNumber {
-      let global = phoneContact.asGlobalPhoneNumber
-      let genericContact = GenericContact(phoneNumber: global, formatted: global.asE164())
-      contact = genericContact
-    }
-
-    let btcAmount = pendingInvitation.btcAmount
-    let maybeReceiver: OutgoingDropBitReceiver? = contact?.asDropBitReceiver
-    let identityFactory = SenderIdentityFactory(persistenceManager: self.persistenceManager)
-    let senderIdentity = identityFactory.preferredSharedPayloadSenderIdentity(forReceiver: maybeReceiver)
-
-    let outgoingTransactionData = OutgoingTransactionData(
-      txid: "",
-      destinationAddress: address,
-      amount: btcAmount,
-      feeAmount: pendingInvitation.fees,
-      sentToSelf: false,
-      requiredFeeRate: nil,
-      sharedPayloadDTO: sharedPayloadDTO,
-      sender: senderIdentity,
-      receiver: maybeReceiver
-    )
-
-    let dto = WalletAddressRequestResponseDTO()
-
-    return self.networkManager.fetchTransactionSummaries(for: address)
-      .then(in: context) { (summaryResponses: [AddressTransactionSummaryResponse]) -> Promise<Void> in
-        // guard against already funded
-        let maybeFound = summaryResponses.first { $0.vout == btcAmount }
-        if let found = maybeFound {
-          let txid = found.txid
-          return self.completeWalletAddressRequestFulfillmentLocally(
-            with: dto,
-            outgoingTransactionData: outgoingTransactionData,
-            txid: txid,
-            invitationId: response.id,
-            pendingInvitation: pendingInvitation,
-            in: context
-          )
-        } else {
-
-          // guard against insufficient funds
-          let spendableBalance = self.walletManager.spendableBalance(in: context)
-          let totalPendingAmount = pendingInvitation.totalPendingAmount
-          guard spendableBalance.onChain >= totalPendingAmount else { //TODO: Check for lightning when available
-            return Promise(error: PendingInvitationError.insufficientFundsForInvitationWithID(response.id))
-          }
-
-          return self.walletManager.transactionData(
-            forPayment: btcAmount,
-            to: address, withFlatFee: pendingInvitation.fees)
-            .get { dto.transactionData = $0 }
-            .then { self.networkManager.broadcastTx(with: $0) }
-            .then(in: context) { (txid: String) -> Promise<Void> in
-              self.completeWalletAddressRequestFulfillmentLocally(
-                with: dto,
-                outgoingTransactionData: outgoingTransactionData,
-                txid: txid,
-                invitationId: response.id,
-                pendingInvitation: pendingInvitation,
-                in: context
-              )
-            }
-            .recover { self.mapTransactionBroadcastError($0, forResponse: response) }
-        }
-    }
-  }
-
-  private func mapTransactionBroadcastError(_ error: Error, forResponse response: WalletAddressRequestResponse) -> Promise<Void> {
-    if error is MoyaError {
-      return Promise(error: error)
-    }
-
-    if let txDataError = error as? TransactionDataError {
-      switch txDataError {
-      case .insufficientFunds, .noSpendableFunds:
-        return Promise(error: PendingInvitationError.insufficientFundsForInvitationWithID(response.id))
-      case .insufficientFee:
-        return Promise(error: PendingInvitationError.insufficientFeeForInvitationWithID(response.id))
-      }
-    }
-
-    let nsError = error as NSError
-    let errorCode = TransactionBroadcastError(errorCode: nsError.code)
-    switch errorCode {
-    case .broadcastTimedOut:
-      return Promise(error: TransactionBroadcastError.broadcastTimedOut)
-    case .networkUnreachable:
-      return Promise(error: TransactionBroadcastError.networkUnreachable)
-    case .unknown:
-      return Promise(error: TransactionBroadcastError.unknown)
-    case .insufficientFee:
-      return Promise(error: PendingInvitationError.insufficientFeeForInvitationWithID(response.id))
-    }
-  }
-
-  private func completeWalletAddressRequestFulfillmentLocally(
-    with dto: WalletAddressRequestResponseDTO,
-    outgoingTransactionData: OutgoingTransactionData,
-    txid: String,
-    invitationId: String,
-    pendingInvitation: CKMInvitation,
-    in context: NSManagedObjectContext) -> Promise<Void> {
-    guard let postableObject = PayloadPostableOutgoingTransactionData(data: outgoingTransactionData) else {
-      return Promise(error: CKPersistenceError.missingValue(key: "postableOutgoingTransactionData"))
-    }
-
-    guard let paymentTarget = response.address else {
-      return Promise(error: PendingInvitationError.noAddressProvided)
-    }
-
-    if response.addressTypeCase == .lightning {
-      guard paymentTarget != WalletAddressesTarget.autogenerateInvoicesAddressValue else {
-        return Promise(error: PendingInvitationError.noInvoiceProvided)
-      }
-    }
-
-    switch response.addressTypeCase {
-    case .btc:
-      let paymentWorker = OnChainAddressRequestPaymentWorker(walletAddressDataWorker: self)
-      let outgoingTxData = paymentWorker.outgoingTransactionData(for: response, paymentTarget: paymentTarget, invitation: pendingInvitation)
-      return paymentWorker.payOnChainInvitationRequest(with: outgoingTxData, pendingInvitation: pendingInvitation,
-                                                           responseId: response.id, in: context)
-    case .lightning:
-      let paymentWorker = LightningAddressRequestPaymentWorker(walletAddressDataWorker: self)
-      let outgoingTxData = paymentWorker.outgoingTransactionData(for: response, paymentTarget: paymentTarget, invitation: pendingInvitation)
-      return paymentWorker.payLightningInvitationRequest(with: outgoingTxData, pendingInvitation: pendingInvitation,
-                                                             invoice: paymentTarget, responseId: response.id, in: context)
     }
   }
 
