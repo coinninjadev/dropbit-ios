@@ -153,7 +153,6 @@ public class CKMTransaction: NSManagedObject {
   }
 
   /// Returns early if this transaction already has a CKMTransactionSharedPayload attached
-  
 
   func markAsFailed() {
     broadcastFailed = true
