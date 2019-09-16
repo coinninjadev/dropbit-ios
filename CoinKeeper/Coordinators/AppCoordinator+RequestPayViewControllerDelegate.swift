@@ -30,7 +30,7 @@ extension AppCoordinator: RequestPayViewControllerDelegate {
   func viewControllerDidSelectCreateInvoice(_ viewController: UIViewController,
                                             forAmount sats: Int,
                                             withMemo memo: String?) -> Promise<LNCreatePaymentRequestResponse> {
-    return networkManager.createLightningPaymentRequest(sats: sats, expires: TimeInterval.oneDay, memo: memo)
+    return networkManager.createLightningPaymentRequest(sats: sats, expires: Int(TimeInterval.oneDay), memo: memo)
   }
 
   func viewControllerDidSelectSendRequest(_ viewController: UIViewController, payload: [Any]) {

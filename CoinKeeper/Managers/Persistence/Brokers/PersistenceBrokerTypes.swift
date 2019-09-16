@@ -31,6 +31,9 @@ protocol ActivityBrokerType: AnyObject {
   /// Initial value will return false, so getter and setter reverse value
   var isFirstTimeOpeningApp: Bool { get set }
 
+  var firstOpenDate: Date? { get }
+  func setFirstOpenDateIfNil(date: Date)
+
   func setLastLoginTime()
 
   var lastLoginTime: TimeInterval? { get }

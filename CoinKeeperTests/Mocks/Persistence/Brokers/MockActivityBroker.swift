@@ -30,6 +30,9 @@ class MockActivityBroker: CKPersistenceBroker, ActivityBrokerType {
     lastTimeEnteredBackground = Date().timeIntervalSince1970
   }
 
+  var firstOpenDate: Date?
+  func setFirstOpenDateIfNil(date: Date) { }
+
   var lastSuccessfulSync: Date?
 
   var lastPublishedMessageTime: TimeInterval?

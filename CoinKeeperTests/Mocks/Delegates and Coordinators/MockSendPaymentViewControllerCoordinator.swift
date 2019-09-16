@@ -69,11 +69,11 @@ class MockSendPaymentViewControllerCoordinator: SendPaymentViewControllerCoordin
     }
   }
 
-  func balanceNetPending() -> WalletBalances {
+  func balancesNetPending() -> WalletBalances {
     return WalletBalances(onChain: .zero, lightning: .zero)
   }
 
-  func spendableBalanceNetPending() -> WalletBalances {
+  func spendableBalancesNetPending() -> WalletBalances {
     return WalletBalances(onChain: .zero, lightning: .zero)
   }
 
