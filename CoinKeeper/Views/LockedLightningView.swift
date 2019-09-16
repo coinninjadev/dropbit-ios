@@ -26,15 +26,17 @@ class LockedLightningView: UIView {
   override init(frame: CGRect) {
     super.init(frame: frame)
     xibSetup()
+    initialize()
   }
 
   required init?(coder aDecoder: NSCoder) {
     super.init(coder: aDecoder)
     xibSetup()
+    initialize()
   }
 
-  override func layoutSubviews() {
-    super.layoutSubviews()
+  private func initialize() {
+    applyCornerRadius(15, toCorners: .top)
 
     titleLabel.font = .medium(17)
     titleLabel.textColor = .white

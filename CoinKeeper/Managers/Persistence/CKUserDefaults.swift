@@ -52,6 +52,7 @@ class CKUserDefaults: PersistenceUserDefaultsType {
     case adjustableFeesEnabled
     case preferredTransactionFeeMode
     case selectedWalletTransactionType
+    case lightningWalletLockedStatus
     case regtest
 
     var defaultsString: String { return self.rawValue }
@@ -72,6 +73,7 @@ class CKUserDefaults: PersistenceUserDefaultsType {
       .unseenTransactionChangesExist,
       .lastSuccessfulSyncCompletedAt,
       .yearlyPriceHighNotificationEnabled,
+      .lightningWalletLockedStatus,
       .selectedWalletTransactionType
       ])
   }

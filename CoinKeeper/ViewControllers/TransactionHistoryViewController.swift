@@ -117,6 +117,14 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
     delegate.viewControllerDidDisplayTransactions(self)
   }
 
+  override func lock() {
+    lockedLightningView.isHidden = false
+  }
+
+  override func unlock() {
+    lockedLightningView.isHidden = true
+  }
+
   internal func reloadTransactions(atIndexPaths paths: [IndexPath]) {
     summaryCollectionView.reloadItems(at: paths)
     delegate.viewControllerSummariesDidReload(self, indexPathsIfNotAll: paths)

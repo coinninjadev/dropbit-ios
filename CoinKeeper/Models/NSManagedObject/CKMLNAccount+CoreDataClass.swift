@@ -59,7 +59,7 @@ public class CKMLNAccount: NSManagedObject {
     self.balance = response.balance
     self.pendingIn = response.pendingIn
     self.pendingOut = response.pendingOut
-    self.address = response.address
+    self.address = response.address ?? ""
   }
 
 }

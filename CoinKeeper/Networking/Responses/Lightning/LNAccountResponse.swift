@@ -14,7 +14,7 @@ struct LNAccountResponse: LNResponseDecodable {
   let id: String
   let createdAt: Date
   let updatedAt: Date?
-  let address: String
+  var address: String?
   let balance: Int
   let pendingIn: Int
   let pendingOut: Int
@@ -29,7 +29,8 @@ struct LNAccountResponse: LNResponseDecodable {
     "updated_at" : "2019-07-25T18:26:52.833391Z",
     "pending_out" : "0",
     "balance" : "215000000000",
-    "pending_in" : "4000"
+    "pending_in" : "4000",
+    "locked" : true
     }
     """
   }
@@ -39,7 +40,7 @@ struct LNAccountResponse: LNResponseDecodable {
   }
 
   static var optionalStringKeys: [WritableKeyPath<LNAccountResponse, String?>] {
-    return []
+    return [\.address]
   }
 
 }

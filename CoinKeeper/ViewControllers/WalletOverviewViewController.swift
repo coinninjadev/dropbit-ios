@@ -150,10 +150,12 @@ class WalletOverviewViewController: BaseViewController, StoryboardInitializable 
   }
 
   override func lock() {
+    sendReceiveActionView.isHidden = true
     walletBalanceView.reloadWalletButton.isHidden = true
   }
 
   override func unlock() {
+    sendReceiveActionView.isHidden = false
     walletBalanceView.reloadWalletButton.isHidden = false
   }
 

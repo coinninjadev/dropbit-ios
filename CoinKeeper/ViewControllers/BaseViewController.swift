@@ -10,6 +10,9 @@ import UIKit
 
 class BaseViewController: UIViewController, AccessibleViewSettable {
 
+  var lockStatusNotification: NotificationToken?
+  var unlockStatusNotification: NotificationToken?
+
   override var preferredStatusBarStyle: UIStatusBarStyle {
     return statusBarStyle
   }
@@ -37,22 +40,23 @@ class BaseViewController: UIViewController, AccessibleViewSettable {
   func lock() {}
 }
 
+enum LockStatus: String {
+  case locked = "locked"
+  case unlocked = "unlocked"
+}
+
 extension BaseViewController {
 
-  enum LockStatus {
-    case locked
-    case unlocked
-  }
-
-  static var lockStatus: LockStatus = .locked
+  static var lockStatus: LockStatus = LockStatus(rawValue: CKUserDefaults().string(for:
+    .lightningWalletLockedStatus) ?? LockStatus.locked.rawValue) ?? .locked
 
   fileprivate func registerForLockStatusNotification() {
-    CKNotificationCenter.subscribe(key: .didLockLightning, object: nil, queue: .main, using: { [weak self] _ in
+    lockStatusNotification = CKNotificationCenter.subscribe(key: .didLockLightning, object: nil, queue: .main, using: { [weak self] _ in
       BaseViewController.lockStatus = .locked
       self?.lock()
     })
 
-    CKNotificationCenter.subscribe(key: .didUnlockLightning, object: nil, queue: .main, using: { [weak self] _ in
+    unlockStatusNotification = CKNotificationCenter.subscribe(key: .didUnlockLightning, object: nil, queue: .main, using: { [weak self] _ in
       BaseViewController.lockStatus = .unlocked
       self?.unlock()
     })
