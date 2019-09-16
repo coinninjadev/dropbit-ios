@@ -22,6 +22,7 @@ extension AppCoordinator: LightningUpgradeCoordinatorDelegate {
       controller.dismiss(animated: true, completion: nil)
     }
     childCoordinatorDidComplete(childCoordinator: coordinator)
+    enterApp()
     showWordRecoveryFlow()
   }
 }
