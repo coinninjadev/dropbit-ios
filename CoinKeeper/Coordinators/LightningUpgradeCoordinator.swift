@@ -54,7 +54,7 @@ class LightningUpgradeCoordinator: ChildCoordinatorType {
     let feeRate = parent.persistenceManager.brokers.checkIn.cachedBetterFee
     var coinType: CoinType = .MainNet
     #if DEBUG
-      coinType = .TestNet
+    coinType = CKUserDefaults().useRegtest ? .TestNet : .MainNet
     #endif
     let upgradedCoin = CNBBaseCoin(purpose: .BIP84, coin: coinType, account: 0)
     let tempWords = WalletManager.createMnemonicWords()

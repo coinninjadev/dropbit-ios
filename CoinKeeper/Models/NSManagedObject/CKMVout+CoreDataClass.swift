@@ -162,7 +162,7 @@ public class CKMVout: NSManagedObject {
 
   static func findAllUnspent(in context: NSManagedObjectContext) throws -> [CKMVout] {
     let fetchRequest: NSFetchRequest<CKMVout> = CKMVout.fetchRequest()
-    fetchRequest.predicate = CKPredicate.Vout.isSpent(value: false)
+    fetchRequest.predicate = CKPredicate.Vout.isSpendable(minAmount: 0, minReceiveConfirmations: 0)
 
     var unspentVouts: [CKMVout] = []
     do {

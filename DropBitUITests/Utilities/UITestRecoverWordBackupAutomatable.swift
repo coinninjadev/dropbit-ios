@@ -15,16 +15,6 @@ protocol UITestRecoverWordBackupAutomatable: AnyObject {
 
 extension UITestRecoverWordBackupAutomatable {
 
-  func bannerToast() -> XCUIElement {
-    let title = "Remember to backup your wallet to ensure your Bitcoin is secure in case your phone is ever lost or stolen. Tap here to backup now."
-    let predicate = NSPredicate(format: "label == %@", title)
-
-    let toastLabel = app.staticTexts.containing(predicate).firstMatch
-    let toastExists = toastLabel.waitForExistence(timeout: 2.0)
-    XCTAssert(toastExists)
-    return toastLabel
-  }
-
   func performBackup() {
     RecoveryWordsIntroPage().tapBackup()
 
@@ -33,7 +23,7 @@ extension UITestRecoverWordBackupAutomatable {
     // discover recovery words
     var words: [String] = []
     for index in (0..<12) {
-      let word = app.staticTexts(.backupRecoveryWordsCell(.wordLabel), assertionWait: .custom(1.0)).label
+      let word = app.staticTexts(.backupRecoveryWordsCell(.wordLabel), assertionWait: .custom(0.5)).label
       words.append(word)
       let buttonTitle = index == 11 ? "VERIFY" : "NEXT"
       app.buttons[buttonTitle].tap()
@@ -42,7 +32,7 @@ extension UITestRecoverWordBackupAutomatable {
     // verify words
     2.times {
       // get the label
-      let currentIndexText = app.staticTexts(.verifyRecoveryWordsCell(.currentIndexLabel), assertionWait: .custom(1.0))
+      let currentIndexText = app.staticTexts(.verifyRecoveryWordsCell(.currentIndexLabel), assertionWait: .custom(0.5))
         .label
         .split(separator: " ")
         .last
@@ -70,6 +60,16 @@ extension UITestRecoverWordBackupAutomatable {
     let backupWalletCell2 = app.staticTexts["Back Up Wallet"]
     let backupWalletCell2Exists = backupWalletCell2.waitForExistence(timeout: 1.0)
     XCTAssertFalse(backupWalletCell2Exists)
+  }
+
+  func backupWalletWarningHeader() -> XCUIElement {
+    let title = "Don't forget to backup your wallet"
+    let predicate = NSPredicate(format: "label == %@", title)
+
+    let header = app.staticTexts.containing(predicate).firstMatch
+    let headerExists = header.waitForExistence(timeout: 2.0)
+    XCTAssert(headerExists)
+    return header
   }
 
 }
