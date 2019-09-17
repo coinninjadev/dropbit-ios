@@ -43,6 +43,10 @@ extension AppCoordinator: DeviceVerificationCoordinatorDelegate {
           self.persistenceManager.keychainManager.storeSynchronously(anyValue: nil, key: .walletWords)
           self.persistenceManager.keychainManager.storeSynchronously(anyValue: nil, key: .walletWordsV2)
           self.persistenceManager.keychainManager.storeSynchronously(anyValue: false, key: .walletWordsBackedUp)
+          try context.performThrowingAndWait {
+            self.persistenceManager.brokers.wallet.removeWalletId(in: context)
+            try context.saveRecursively()
+          }
           let startOverAction = AlertActionConfiguration(title: "Start Over", style: .cancel, action: {
             let controller = StartViewController.newInstance(delegate: self)
             self.navigationController.setViewControllers([controller], animated: true)
