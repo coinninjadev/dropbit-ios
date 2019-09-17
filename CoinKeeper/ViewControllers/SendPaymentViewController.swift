@@ -330,6 +330,12 @@ extension SendPaymentViewController {
       sendMaxButton.isHidden = true
     }
 
+    if viewModel.walletTransactionType == .lightning && viewModel.btcAmount > 0 {
+      editAmountView.isUserInteractionEnabled = false
+    } else {
+      editAmountView.isUserInteractionEnabled = true
+    }
+
     phoneNumberEntryView.textField.text = ""
 
     self.recipientDisplayNameLabel.text = viewModel.contact?.displayName
