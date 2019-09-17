@@ -9,6 +9,7 @@
 import UIKit
 
 protocol LightningUpgradeCompleteViewControllerDelegate: AnyObject {
+  func viewControllerWillCompleteLightningUpgrade(_ viewController: LightningUpgradeCompleteViewController)
   func viewControllerDidSelectGoToWallet(_ viewController: LightningUpgradeCompleteViewController)
   func viewControllerDidSelectGetRecoveryWords(_ viewController: LightningUpgradeCompleteViewController)
 }
@@ -31,6 +32,7 @@ final class LightningUpgradeCompleteViewController: BaseViewController, Storyboa
 
   override func viewDidLoad() {
     super.viewDidLoad()
+    delegate.viewControllerWillCompleteLightningUpgrade(self)
     styleInitialUI()
   }
 

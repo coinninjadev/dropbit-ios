@@ -23,7 +23,11 @@ enum AnalyticsManagerPropertiesType: String {
   case relativeWalletRange = "Relative Wallet Range"
   case v1Wallet = "v1Wallet"
   case platform = "platform"
-  case walletVersion = "WalletVersion"
+  case walletVersion = "Wallet Version"
+  case upgradeStarted = "Upgrade Started"
+  case upgradeCompleted = "Upgrade Completed"
+  case upgradedFromRestore = "Upgrade From Restore"
+  case upgradedFunds = "Upgraded Funds"
 }
 
 enum AnalyticsManagerEventType: String {
@@ -105,6 +109,7 @@ enum AnalyticsManagerEventType: String {
   case priceButtonPressed = "PriceButtonPressed"
   case chartsOpened = "ChartsOpened"
   case newsArticleOpened = "NewsArticleOpened"
+  case enteredDeactivatedWords = "EnteredDeactivatedWords"
 
   var id: String {
     return self.rawValue

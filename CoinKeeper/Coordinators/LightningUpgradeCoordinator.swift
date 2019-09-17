@@ -10,6 +10,7 @@ import Foundation
 import CNBitcoinKit
 
 protocol LightningUpgradeCoordinatorDelegate: AnyObject {
+  func coordinatorWillCompleteUpgrade(_ coordinator: LightningUpgradeCoordinator)
   func coordinatorDidCompleteUpgrade(_ coordinator: LightningUpgradeCoordinator)
   func coordinatorRequestedVerifyUpgradedWords(_ coordinator: LightningUpgradeCoordinator)
 }
@@ -32,6 +33,7 @@ class LightningUpgradeCoordinator: ChildCoordinatorType {
   }
 
   func start() {
+    parent.analyticsManager.track(property: MixpanelProperty(key: .upgradeStarted, value: true))
     let controller = LightningUpgradePageViewController.newInstance(withGeneralCoordinationDelegate: self)
     parent.navigationController.present(controller, animated: true, completion: nil)
 
