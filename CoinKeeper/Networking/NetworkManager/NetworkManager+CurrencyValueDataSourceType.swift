@@ -78,7 +78,7 @@ extension NetworkManager: CurrencyValueDataSourceType {
   /// Unconditionally update metadata from check-in api (fees, price, and blockheight)
   @discardableResult
   func updateCachedMetadata() -> Promise<CheckInResponse> {
-    let context = persistenceManager.createBackgroundContext()
+    let context = persistenceManager.viewContext
     var walletId: String?
     context.performAndWait {
       walletId = self.persistenceManager.brokers.wallet.walletId(in: context)

@@ -17,7 +17,7 @@ extension AppCoordinator: LightningReloadDelegate {
                                       currencyPair: CurrencyPair(primary: .USD, secondary: .BTC, fiat: .USD))
     guard let btcAmount = converter.convertedAmount() else { return }
     let context = self.persistenceManager.viewContext
-    let wallet = CKMWallet.findOrCreate(in: context)
+    guard let wallet = CKMWallet.find(in: context) else { return }
     let lightningAccount = self.persistenceManager.brokers.lightning.getAccount(forWallet: wallet, in: context)
     let paymentData = buildNonReplaceableTransactionData(btcAmount: btcAmount,
                                            address: lightningAccount.address,
