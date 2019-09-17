@@ -46,7 +46,7 @@ enum CurrencyCode: String {
 
   var integerSymbol: String? {
     switch self {
-    case .BTC:  return "sats"
+    case .BTC:  return " sats"
     case .USD:  return nil
     }
   }
