@@ -43,6 +43,7 @@ class LightningUpgradeCoordinator: ChildCoordinatorType {
           try context.saveRecursively()
         } catch {
           log.contextSaveError(error)
+          throw error
         }
       }
       .done { self.proceedWithUpgrade(presentedController: controller) }
