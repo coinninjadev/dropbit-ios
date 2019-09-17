@@ -38,8 +38,8 @@ class OldTransactionSummaryCellViewModel {
     ) {
     self.transaction = transaction
     self.broadcastFailed = transaction.broadcastFailed
-    let counterpartyAddress = "" //transaction.counterpartyAddressId
-    let counterpartyDesc = "" //transaction.counterpartyDisplayDescription(deviceCountryCode: deviceCountryCode) ?? ""
+    let counterpartyAddress = transaction.counterpartyAddressId
+    let counterpartyDesc = transaction.counterpartyDisplayDescription(deviceCountryCode: deviceCountryCode) ?? ""
     let sentToMyselfText = "Sent to myself"
 
     self.isIncoming = transaction.isIncoming
