@@ -119,14 +119,14 @@ extension TransactionSummaryCellViewModelType {
       case .withdraw:   return lightningWithdrawText
       case .deposit:    return lightningDepositText
       }
+    } else if isLightningUpgrade {
+      return "Lightning Upgrade"
     } else if let counterparty = counterpartyDescription {
       return counterparty
     } else if let invoiceText = lightningInvoiceDescription {
       return invoiceText
     } else if let address = receiverAddress {
       return address
-    } else if isLightningUpgrade {
-      return "Lightning Upgrade"
     } else {
       return "(unknown)"
     }
