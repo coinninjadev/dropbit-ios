@@ -150,7 +150,10 @@ class WalletOverviewViewController: BaseViewController, StoryboardInitializable 
   }
 
   override func lock() {
-    sendReceiveActionView.isHidden = true
+    if delegate.selectedWalletTransactionType() == .lightning {
+      sendReceiveActionView.isHidden = true
+    }
+
     walletBalanceView.reloadWalletButton.isHidden = true
   }
 

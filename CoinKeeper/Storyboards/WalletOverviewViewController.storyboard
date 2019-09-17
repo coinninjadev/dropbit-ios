@@ -50,6 +50,14 @@
                                     <constraint firstAttribute="height" constant="100" id="V9l-if-Csm"/>
                                 </constraints>
                             </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Fo5-E7-v9q" customClass="BetaTagView" customModule="DropBit" customModuleProvider="target">
+                                <rect key="frame" x="322" y="120" width="35" height="14"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="35" id="2Am-X9-3oY"/>
+                                    <constraint firstAttribute="height" constant="14" id="EiH-Mq-1no"/>
+                                </constraints>
+                            </view>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Xpq-nw-rdL">
                                 <rect key="frame" x="0.0" y="106" width="414" height="790"/>
                                 <connections>
@@ -61,14 +69,6 @@
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="75" id="Mkn-WU-B2n"/>
-                                </constraints>
-                            </view>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Fo5-E7-v9q" customClass="BetaTagView" customModule="DropBit" customModuleProvider="target">
-                                <rect key="frame" x="322" y="120" width="35" height="14"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="35" id="2Am-X9-3oY"/>
-                                    <constraint firstAttribute="height" constant="14" id="EiH-Mq-1no"/>
                                 </constraints>
                             </view>
                         </subviews>
