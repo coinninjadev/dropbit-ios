@@ -118,7 +118,9 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
   }
 
   override func lock() {
-    lockedLightningView.isHidden = false
+    if viewModel.walletTransactionType == .lightning {
+      lockedLightningView.isHidden = false
+    }
   }
 
   override func unlock() {
