@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-protocol TransactionHistoryViewModelDelegate: TransactionHistorySummaryHeaderDelegate, TransactionHistoryDetailCellDelegate {
+protocol TransactionHistoryViewModelDelegate: TransactionHistorySummaryHeaderDelegate {
   var currencyController: CurrencyController { get }
   func viewModelDidUpdateExchangeRates()
   func summaryHeaderType() -> SummaryHeaderType?
@@ -18,6 +18,7 @@ protocol TransactionHistoryViewModelDelegate: TransactionHistorySummaryHeaderDel
 class TransactionHistoryViewModel: NSObject, UICollectionViewDataSource, ExchangeRateUpdatable {
 
   weak var delegate: TransactionHistoryViewModelDelegate!
+  weak var detailsDelegate: TransactionHistoryDetailCellDelegate?
   var currencyValueManager: CurrencyValueDataSourceType?
   var rateManager: ExchangeRateManager = ExchangeRateManager()
 
@@ -34,11 +35,13 @@ class TransactionHistoryViewModel: NSObject, UICollectionViewDataSource, Exchang
   let warningHeaderHeight: CGFloat = 44
 
   init(delegate: TransactionHistoryViewModelDelegate,
+       detailsDelegate: TransactionHistoryDetailCellDelegate?,
        currencyManager: CurrencyValueDataSourceType,
        deviceCountryCode: Int?,
        transactionType: WalletTransactionType,
        dataSource: TransactionHistoryDataSourceType) {
     self.delegate = delegate
+    self.detailsDelegate = detailsDelegate
     self.currencyValueManager = currencyManager
     self.walletTransactionType = transactionType
     self.dataSource = dataSource
@@ -86,25 +89,29 @@ class TransactionHistoryViewModel: NSObject, UICollectionViewDataSource, Exchang
   }
 
   private func detailCell(forItemAt indexPath: IndexPath, in collectionView: UICollectionView) -> TransactionHistoryDetailBaseCell {
-    //    guard let viewController = viewController,
-    //      let viewModel = viewController.viewModelForIndexPath?(indexPath) else { return UICollectionViewCell() }
+    guard let cellDelegate = detailsDelegate,
+      let viewModel = dataSource.detailCellViewModel(at: indexPath,
+                                                     rates: rateManager.exchangeRates,
+                                                     currencies: selectedCurrencyPair,
+                                                     deviceCountryCode: self.deviceCountryCode)
+      else { return TransactionHistoryDetailBaseCell() }
 
-    //    if let invitation = viewModel.transaction?.invitation {
-    //      switch invitation.status {
-    //      case .canceled, .expired:
-    //        let cell = collectionView.dequeue(TransactionHistoryDetailInvalidCell.self, for: indexPath)
-    //        cell.load(with: viewModel, delegate: viewController)
-    //        return cell
-    //      default:
-    //        let cell = collectionView.dequeue(TransactionHistoryDetailValidCell.self, for: indexPath)
-    //        cell.load(with: viewModel, delegate: viewController)
-    //        return cell
-    //      }
-    //    } else {
-    //      let cell = collectionView.dequeue(TransactionHistoryDetailValidCell.self, for: indexPath )
-    //      cell.load(with: viewModel, delegate: viewController)
-    let cell = collectionView.dequeue(TransactionHistoryDetailValidCell.self, for: indexPath)
-    return cell
+    if let invitation = viewModel.transaction?.invitation {
+      switch invitation.status {
+      case .canceled, .expired:
+        let cell = collectionView.dequeue(TransactionHistoryDetailInvalidCell.self, for: indexPath)
+        cell.configure(with: viewModel, delegate: cellDelegate)
+        return cell
+      default:
+        let cell = collectionView.dequeue(TransactionHistoryDetailValidCell.self, for: indexPath)
+        cell.configure(with: viewModel, delegate: cellDelegate)
+        return cell
+      }
+    } else {
+      let cell = collectionView.dequeue(TransactionHistoryDetailValidCell.self, for: indexPath )
+      cell.configure(with: viewModel, delegate: cellDelegate)
+      return cell
+    }
   }
 
   func collectionView(_ collectionView: UICollectionView,

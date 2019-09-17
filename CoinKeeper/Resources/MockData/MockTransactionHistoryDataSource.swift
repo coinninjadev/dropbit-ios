@@ -36,6 +36,13 @@ class MockTransactionHistoryOnChainDataSource: TransactionHistoryDataSourceType 
     return items[indexPath.row]
   }
 
+  func detailCellViewModel(at indexPath: IndexPath,
+                           rates: ExchangeRates,
+                           currencies: CurrencyPair,
+                           deviceCountryCode: Int) -> OldTransactionDetailCellViewModel? {
+    return nil
+  }
+
   func numberOfSections() -> Int {
     return 1
   }
@@ -72,6 +79,13 @@ class MockTransactionHistoryLightningDataSource: TransactionHistoryDataSourceTyp
                                   currencies: CurrencyPair,
                                   deviceCountryCode: Int) -> TransactionSummaryCellDisplayable {
     return items[indexPath.row]
+  }
+
+  func detailCellViewModel(at indexPath: IndexPath,
+                           rates: ExchangeRates,
+                           currencies: CurrencyPair,
+                           deviceCountryCode: Int) -> OldTransactionDetailCellViewModel? {
+    return nil
   }
 
   func numberOfSections() -> Int {

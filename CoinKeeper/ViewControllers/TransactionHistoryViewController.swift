@@ -65,6 +65,7 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
     viewController.delegate = delegate
     dataSource.delegate = viewController
     viewController.viewModel = TransactionHistoryViewModel(delegate: viewController,
+                                                           detailsDelegate: nil,
                                                            currencyManager: delegate,
                                                            deviceCountryCode: delegate.deviceCountryCode(),
                                                            transactionType: walletTxType,

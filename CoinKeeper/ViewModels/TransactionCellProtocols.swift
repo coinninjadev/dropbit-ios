@@ -294,8 +294,6 @@ extension TransactionDetailCellViewModelType {
     switch a {
     case .cancelInvitation:
       return DetailCellActionButtonConfig(title: "CANCEL", backgroundColor: .warning)
-    case .removeInvoice:
-      return DetailCellActionButtonConfig(title: "REMOVE FROM TRANSACTION LIST", backgroundColor: .warning)
     case .seeDetails:
       let buttonColor: UIColor
       switch walletTxType {

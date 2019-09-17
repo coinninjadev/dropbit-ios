@@ -129,23 +129,6 @@ class OldTransactionSummaryCellViewModel {
     }
   }
 
-//  var transactionStatusDescription: String {
-//    guard !isTemporaryTransaction else { return "Broadcasting" }
-//    let count = confirmations
-//    switch count {
-//    case 0:    return "Pending"
-//    default:  return "Complete"
-//    }
-//  }
-
-//  var statusDescription: String {
-//    if broadcastFailed {
-//      return "Failed to Broadcast"
-//    } else {
-//      return invitationStatusDescription ?? transactionStatusDescription
-//    }
-//  }
-
   var transactionIsInvalidated: Bool {
     if let status = invitationStatus, [.canceled, .expired].contains(status) {
       return true
@@ -174,30 +157,6 @@ class OldTransactionSummaryCellViewModel {
   var receivedAmountAtCurrentConverter: CurrencyConverter? {
     guard let amount = netWalletAmount, let rate = currentRate(for: .USD) else { return nil }
     return newConverter(withRate: rate, currency: .USD, btcAmount: amount)
-  }
-
-  func amountLabels(for converter: CurrencyConverter) -> (primary: String, secondary: String) {
-    let secondaryCurrency: CurrencyCode = (primaryCurrency == .BTC) ? .USD : .BTC
-    let amounts = amountStrings(for: converter, primary: primaryCurrency, secondary: secondaryCurrency)
-    let secondaryAmountString = amounts.secondary ?? "–"
-
-    if let primaryAmountString = amounts.primary {
-      return (primaryAmountString, secondaryAmountString)
-    } else {
-      return ("–", secondaryAmountString)
-    }
-  }
-
-  private func amountStrings(for converter: CurrencyConverter,
-                             primary: CurrencyCode,
-                             secondary: CurrencyCode) -> (primary: String?, secondary: String?) {
-    return (nil, nil)
-//    let absPrimary = converter.amount(forCurrency: primary)?.absoluteValue()
-//    let absSecondary = converter.amount(forCurrency: secondary)?.absoluteValue()
-//    let pString = absPrimary.flatMap { converter.amountStringWithSymbol($0, primary) }
-//    let sString = absSecondary.flatMap { converter.amountStringWithSymbol($0, secondary) }
-//
-//    return (pString, sString)
   }
 
 }

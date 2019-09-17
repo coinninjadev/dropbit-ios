@@ -15,7 +15,7 @@ URLOpener & DeviceCountryCodeProvider & CurrencyValueDataSourceType {
 
   var currencyController: CurrencyController { get }
   func viewControllerDidDismissTransactionDetails(_ viewController: UIViewController)
-  func viewControllerShouldSeeTransactionDetails(for object: TransactionDetailCellDisplayable)
+  func viewControllerShouldSeeTransactionDetails(for viewModel: OldTransactionDetailCellViewModel)
   func viewController(_ viewController: TransactionHistoryDetailsViewController,
                       didCancelInvitationWithID invitationID: String,
                       at indexPath: IndexPath)
@@ -41,6 +41,7 @@ final class TransactionHistoryDetailsViewController: PresentableViewController, 
     vc.selectedIndexPath = selectedIndexPath
     dataSource.delegate = vc
     vc.viewModel = TransactionHistoryViewModel(delegate: vc,
+                                               detailsDelegate: vc,
                                                currencyManager: delegate,
                                                deviceCountryCode: delegate.deviceCountryCode(),
                                                transactionType: walletTxType,
@@ -99,9 +100,7 @@ final class TransactionHistoryDetailsViewController: PresentableViewController, 
 
 extension TransactionHistoryDetailsViewController: TransactionHistoryDetailCellDelegate {
 
-  func didTapQuestionMark(detailCell: TransactionHistoryDetailBaseCell) {
-    //TODO: get indexPath, viewModel, and url
-    let url = URL(string: "https://foo.com")!
+  func didTapQuestionMarkButton(detailCell: TransactionHistoryDetailBaseCell, with url: URL) {
     delegate.openURL(url, completionHandler: nil)
   }
 
@@ -110,43 +109,30 @@ extension TransactionHistoryDetailsViewController: TransactionHistoryDetailCellD
   }
 
   func didTapTwitterShare(detailCell: TransactionHistoryDetailBaseCell) {
-    //TODO
-//    guard let tx = detailCell.viewModel?.transaction else { return }
-//    delegate.viewControllerRequestedShareTransactionOnTwitter(self, transaction: tx, shouldDismiss: false)
+    guard let tx = detailCell.viewModel?.transaction else { return }
+    delegate.viewControllerRequestedShareTransactionOnTwitter(self, transaction: tx, shouldDismiss: false)
   }
 
   func didTapAddress(detailCell: TransactionHistoryDetailBaseCell) {
-    //TODO
-//    guard let address = detailCell.viewModel?.receiverAddress,
-//      let addressURL = CoinNinjaUrlFactory.buildUrl(for: .address(id: address)) else { return }
-//    delegate.openURL(addressURL, completionHandler: nil)
+    guard let address = detailCell.viewModel?.receiverAddress,
+      let addressURL = CoinNinjaUrlFactory.buildUrl(for: .address(id: address)) else { return }
+    delegate.openURL(addressURL, completionHandler: nil)
   }
 
-  func didTapBottomButton(detailCell: TransactionHistoryDetailBaseCell) {
-      //TODO get managed object, viewModel, and action
-//    case .seeDetails:
-//      guard let viewModel = detailCell.viewModel else { return }
-//      delegate.viewControllerShouldSeeTransactionDetails(for: viewModel)
-//    case .cancelInvitation:
-//      guard let invitationID = detailCell.viewModel?.transaction?.invitation?.id,
-//        let path = collectionView.indexPath(for: detailCell) else { return }
-//      delegate.viewController(self, didCancelInvitationWithID: invitationID, at: path)
-  }
-
-  func didTapAddMemo(detailCell: TransactionHistoryDetailBaseCell) {
-    delegate.viewControllerDidTapAddMemo(self) { memo in
-      //TODO
-//      guard let vm = self?.viewModel, let delegate = self?.delegate, let tx = vm.transaction else { return }
-//      tx.memo = memo
-//
-//      delegate.shouldSaveMemo(for: tx)
-//        .done {
-//          vm.memo = memo
-//          self?.load(with: vm, delegate: delegate)
-//        }.catch { error in
-//          log.error(error, message: "failed to add memo")
-//      }
+  func didTapBottomButton(detailCell: TransactionHistoryDetailBaseCell, action: TransactionDetailAction) {
+    switch action {
+    case .seeDetails:
+      guard let viewModel = detailCell.viewModel else { return }
+      delegate.viewControllerShouldSeeTransactionDetails(for: viewModel)
+    case .cancelInvitation:
+      guard let invitationID = detailCell.viewModel?.transaction?.invitation?.id,
+        let path = collectionView.indexPath(for: detailCell) else { return }
+      delegate.viewController(self, didCancelInvitationWithID: invitationID, at: path)
     }
+  }
+
+  func didTapAddMemoButton(completion: @escaping (String) -> Void) {
+    delegate.viewControllerDidTapAddMemo(self, with: completion)
   }
 
   func shouldSaveMemo(for transaction: CKMTransaction) -> Promise<Void> {
