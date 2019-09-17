@@ -60,7 +60,7 @@ extension AppCoordinator: DeviceVerificationCoordinatorDelegate {
           let alert = self.alertManager.alert(from: alertViewModel)
           self.navigationController.topViewController()?.present(alert, animated: true)
         } else if parser.walletVersion != .v2 {
-          self.analyticsManager.track(property: MixpanelProperty(key: .upgradedFromRestore, value: true))
+          self.analyticsManager.track(property: MixpanelProperty(key: .lightningUpgradedFromRestore, value: true))
           let words = self.persistenceManager.brokers.wallet.walletWords()
           self.persistenceManager.keychainManager.storeSynchronously(anyValue: words, key: .walletWords)
           self.persistenceManager.keychainManager.storeSynchronously(anyValue: nil, key: .walletWordsV2)

@@ -33,7 +33,7 @@ class LightningUpgradeCoordinator: ChildCoordinatorType {
   }
 
   func start() {
-    parent.analyticsManager.track(property: MixpanelProperty(key: .upgradeStarted, value: true))
+    trackUpgradeLaunch()
     let controller = LightningUpgradePageViewController.newInstance(withGeneralCoordinationDelegate: self)
     parent.navigationController.present(controller, animated: true, completion: nil)
 
@@ -56,6 +56,16 @@ class LightningUpgradeCoordinator: ChildCoordinatorType {
         let alert = self.parent.alertManager.alert(from: alertVM)
         self.parent.navigationController.topViewController()?.present(alert, animated: true, completion: nil)
     }
+  }
+
+  private func trackUpgradeLaunch() {
+    let properties = [
+      MixpanelProperty(key: .lightningUpgradeStarted, value: true),
+      MixpanelProperty(key: .lightningUpgradeCompleted, value: false),
+      MixpanelProperty(key: .lightningUpgradedFunds, value: false),
+      MixpanelProperty(key: .lightningUpgradedFromRestore, value: false)
+    ]
+    properties.forEach { self.parent.analyticsManager.track(property: $0) }
   }
 
   private func proceedWithUpgrade(presentedController controller: LightningUpgradePageViewController) {
