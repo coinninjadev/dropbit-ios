@@ -196,7 +196,13 @@ public class CKMTransaction: NSManagedObject {
   }
 
   var isLightningUpgrade: Bool { // TODO
-    return vouts.count == 1 && vouts.compactMap { $0.address }.filter { $0.isChangeAddress }.isNotEmpty
+    guard vouts.count == 1 else { return false }
+    let addresses = vouts.compactMap { $0.address }
+    guard let firstAddress = addresses.first else { return false }
+    guard let path = firstAddress.derivativePath else { return false }
+    let isLightningPath = (path.change == 1) && (path.index == 0)
+    let onlyUTXO = (firstAddress.vouts.count == 1)
+    return isLightningPath && onlyUTXO
   }
 
 }
