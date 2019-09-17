@@ -311,6 +311,14 @@ extension SendPaymentViewController {
     controller.update()
   }
 
+  func resetViewModelWithUI() {
+    setPaymentRecipient(nil)
+    viewModel.sendMaxTransactionData = nil
+    viewModel.fromAmount = 0
+    setupStyle()
+    updateViewWithModel()
+  }
+
   func updateViewWithModel() {
     if editAmountView.primaryAmountTextField.isFirstResponder {
       refreshSecondaryAmount()
@@ -343,6 +351,8 @@ extension SendPaymentViewController {
       recipientDisplayNameLabel.text = viewModel.displayRecipientName()
       recipientDisplayNumberLabel.text = viewModel.displayRecipientIdentity()
     }
+
+    editAmountView.update(with: viewModel.dualAmountLabels(walletTransactionType: viewModel.walletTransactionType))
 
     updateMemoContainer()
     setupStyle()
@@ -880,16 +890,12 @@ extension SendPaymentViewController: WalletToggleViewDelegate {
 
   func bitcoinWalletButtonWasTouched() {
     viewModel.walletTransactionType = .onChain
-    editAmountView.update(with: viewModel.dualAmountLabels(walletTransactionType: viewModel.walletTransactionType))
-    setPaymentRecipient(nil)
-    setupStyle()
+    resetViewModelWithUI()
   }
 
   func lightningWalletButtonWasTouched() {
     viewModel.walletTransactionType = .lightning
-    editAmountView.update(with: viewModel.dualAmountLabels(walletTransactionType: viewModel.walletTransactionType))
-    setPaymentRecipient(nil)
-    setupStyle()
+    resetViewModelWithUI()
   }
 
 }
