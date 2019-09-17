@@ -43,4 +43,8 @@ struct LNAccountResponse: LNResponseDecodable {
     return [\.address]
   }
 
+  static var emptyInstance: LNAccountResponse {
+    return LNAccountResponse(id: "", createdAt: Date(), updatedAt: nil,
+                             address: nil, balance: 0, pendingIn: 0, pendingOut: 0, locked: true)
+  }
 }

@@ -24,4 +24,8 @@ struct LNLedgerResponse: LNResponseDecodable {
     return []
   }
 
+  static var emptyInstance: LNLedgerResponse {
+    return LNLedgerResponse(ledger: [])
+  }
+
 }
