@@ -358,7 +358,8 @@ extension SendPaymentViewController {
       recipientDisplayNumberLabel.text = viewModel.displayRecipientIdentity()
     }
 
-    editAmountView.update(with: viewModel.dualAmountLabels(walletTransactionType: viewModel.walletTransactionType))
+    editAmountView.update(with: viewModel.dualAmountLabels(hidePrimaryZero: viewModel.btcAmount == 0,
+                                                           walletTransactionType: viewModel.walletTransactionType))
 
     updateMemoContainer()
     setupStyle()
@@ -897,11 +898,13 @@ extension SendPaymentViewController: WalletToggleViewDelegate {
   func bitcoinWalletButtonWasTouched() {
     viewModel.walletTransactionType = .onChain
     resetViewModelWithUI()
+    moveCursorToCorrectLocationIfNecessary()
   }
 
   func lightningWalletButtonWasTouched() {
     viewModel.walletTransactionType = .lightning
     resetViewModelWithUI()
+    moveCursorToCorrectLocationIfNecessary()
   }
 
 }
