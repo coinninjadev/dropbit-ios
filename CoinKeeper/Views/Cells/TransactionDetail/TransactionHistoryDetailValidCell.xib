@@ -45,7 +45,7 @@
                                         </constraints>
                                         <state key="normal" image="questionMarkIcon"/>
                                         <connections>
-                                            <action selector="didTapQuestionMark:" destination="gTV-IL-0wX" eventType="touchUpInside" id="AJm-dK-fJO"/>
+                                            <action selector="didTapQuestionMarkButton:" destination="gTV-IL-0wX" eventType="touchUpInside" id="3Tq-Jq-eBN"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -101,13 +101,13 @@
                                         <rect key="frame" x="33" y="74.5" width="286" height="49.5"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="QF1-Re-mNP">
-                                                <rect key="frame" x="112.5" y="0.0" width="61" height="20.5"/>
+                                                <rect key="frame" x="112" y="0.0" width="62" height="20.5"/>
                                                 <subviews>
                                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="750" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" image="twitterBirdBlue" translatesAutoresizingMaskIntoConstraints="NO" id="qk5-E8-Xmo">
-                                                        <rect key="frame" x="0.0" y="0.0" width="15" height="20.5"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="16" height="20.5"/>
                                                     </imageView>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fzt-L2-dOw" customClass="TransactionDetailCounterpartyLabel" customModule="DropBit" customModuleProvider="target">
-                                                        <rect key="frame" x="19" y="0.0" width="42" height="20.5"/>
+                                                        <rect key="frame" x="20" y="0.0" width="42" height="20.5"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="24" id="JSs-Y8-PBi"/>
                                                         </constraints>
@@ -312,8 +312,8 @@
                 <outlet property="closeButton" destination="NgB-5f-0UF" id="jKq-ld-MT1"/>
                 <outlet property="counterpartyLabel" destination="fzt-L2-dOw" id="G25-pU-IoZ"/>
                 <outlet property="dateLabel" destination="1bD-K3-Kso" id="2Xp-UM-51d"/>
-                <outlet property="directionImageView" destination="x26-Nq-lHv" id="TuM-si-00w"/>
                 <outlet property="historicalValuesLabel" destination="ca5-B2-QYX" id="fXa-3U-a3H"/>
+                <outlet property="incomingImage" destination="x26-Nq-lHv" id="Pfg-T4-zjq"/>
                 <outlet property="memoContainerView" destination="Dmg-ch-A7F" id="q8l-PW-CWc"/>
                 <outlet property="messageContainer" destination="tqV-1x-bnX" id="iZa-ic-o6a"/>
                 <outlet property="messageContainerHeightConstraint" destination="TM4-dC-cMf" id="Y9t-Jx-AmO"/>

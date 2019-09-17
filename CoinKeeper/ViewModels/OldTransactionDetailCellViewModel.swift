@@ -77,6 +77,37 @@ extension OldTransactionDetailCellViewModel {
     }
   }
 
+  var transactionStatusDescription: String {
+    guard !isTemporaryTransaction else { return "Broadcasting" }
+    let count = confirmations
+    switch count {
+    case 0:    return "Pending"
+    default:  return "Complete"
+    }
+  }
+
+  var statusDescription: String {
+    if broadcastFailed {
+      return "Failed to Broadcast"
+    } else {
+      return invitationStatusDescription ?? transactionStatusDescription
+    }
+  }
+
+  var dateDescriptionFull: String {
+    guard let date = date else { return "" }
+    return CKDateFormatter.displayFull.string(from: date)
+  }
+
+  var descriptionColor: UIColor {
+    guard !transactionIsInvalidated else { return .darkPeach }
+    if isConfirmed {
+      return .darkGrayText
+    } else {
+      return .warning
+    }
+  }
+
   // MARK: Currency Converters
   /**
    Converters with rates for sent, received, and current dates.
@@ -102,24 +133,25 @@ extension OldTransactionDetailCellViewModel {
   }
 
   var primaryAmountLabel: String? {
-    return nil
-//    return receivedAmountsConverter.amountStringWithSymbol(forCurrency: primaryCurrency)
+    return stringWithSymbol(converter: receivedAmountsConverter, currency: primaryCurrency)
   }
 
   var secondaryAmountLabel: NSAttributedString? {
-    return nil
-//    let converter = receivedAmountsConverter
-//    let secondaryCurrency = converter.otherCurrency(forCurrency: primaryCurrency)
-//
-//    if secondaryCurrency == .BTC {
-//      if let btcAmount = converter.attributedStringWithSymbol(forCurrency: .BTC, ofSize: 18) {
-//        return btcAmount
-//      } else {
-//        return NSAttributedString(string: "–")
-//      }
-//    } else {
-//      return converter.attributedStringWithSymbol(forCurrency: secondaryCurrency)
-//    }
+    let converter = receivedAmountsConverter
+    let currency = converter.otherCurrency(forCurrency: primaryCurrency)
+    guard let amount = converter.amount(forCurrency: currency) else { return nil }
+
+    if currency.isFiat {
+      let formatter = FiatFormatter(currency: currency, withSymbol: true)
+      return formatter.attributedString(from: amount)
+    } else {
+      if let btcAmount = converter.amount(forCurrency: .BTC),
+        let formattedAmount = BitcoinFormatter(symbolType: .attributed).attributedString(from: btcAmount) {
+        return formattedAmount
+      } else {
+        return NSAttributedString(string: "–")
+      }
+    }
   }
 
   var currentSelectedTab: Int {
@@ -228,16 +260,20 @@ extension OldTransactionDetailCellViewModel {
   }
 
   private func breakdownAmountLabel(forBTCConverter converter: CurrencyConverter) -> String {
-    return ""
-//    let btcString = converter.amountStringWithSymbol(converter.fromAmount, .BTC)
-//
-//    var label = btcString
-//
-//    if let usdString = converter.amountStringWithSymbol(forCurrency: .USD) {
-//      label.append(" (\(usdString))")
-//    }
-//
-//    return label
+    let btcString = stringWithSymbol(converter: converter, currency: .BTC)
+    var label = btcString ?? ""
+
+    if let usdString = stringWithSymbol(converter: converter, currency: .USD) {
+      label.append(" \(usdString)")
+    }
+
+    return label
+  }
+
+  private func stringWithSymbol(converter: CurrencyConverter, currency: CurrencyCode) -> String? {
+    guard let amount = converter.amount(forCurrency: currency) else { return nil }
+    let formatter = TransactionAmountFormatter(currency: currency)
+    return formatter.stringWithSymbol(for: amount)
   }
 
   var historicalCurrencyFormatter: NumberFormatter {
@@ -382,6 +418,23 @@ extension CKMTransaction {
     guard let invite = invitation else { return false }
     let cancellableStatuses: [InvitationStatus] = [.notSent, .requestSent, .addressSent]
     return (!isIncoming && cancellableStatuses.contains(invite.status))
+  }
+
+}
+
+struct TransactionAmountFormatter {
+
+  let currency: CurrencyCode
+
+  func stringWithSymbol(for amount: NSDecimalNumber) -> String? {
+    switch currency {
+    case .USD:
+      let formatter = FiatFormatter(currency: currency, withSymbol: true, showNegativeSymbol: false)
+      return formatter.string(fromDecimal: amount)
+    case .BTC:
+      let formatter = BitcoinFormatter(symbolType: .string)
+      return formatter.string(fromDecimal: amount)
+    }
   }
 
 }

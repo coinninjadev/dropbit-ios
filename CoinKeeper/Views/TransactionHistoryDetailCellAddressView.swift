@@ -19,7 +19,7 @@ class TransactionHistoryDetailCellAddressView: UIView {
       if isHidden {
         allViews?.forEach { $0.isHidden = true }
       } else {
-//        viewModel.map { load(with: $0) }
+        viewModel.map { load(with: $0) }
       }
     }
   }
@@ -37,6 +37,7 @@ class TransactionHistoryDetailCellAddressView: UIView {
 
   // MARK: variables
   weak var selectionDelegate: TransactionHistoryDetailAddressViewDelegate?
+  var viewModel: OldTransactionDetailCellViewModel?
 
   // MARK: initialization and setup
   required init?(coder aDecoder: NSCoder) {
@@ -64,36 +65,36 @@ class TransactionHistoryDetailCellAddressView: UIView {
   }
 
   // MARK: loading
-  func load(with object: TransactionDetailCellDisplayable) {
-//    self.viewModel = viewModel
-//    if let invitationStatus = viewModel.invitationStatus {
-//      switch invitationStatus {
-//      case .completed, .addressSent:
-//        addressContainerView.isHidden = false
-//        addressStatusLabel.isHidden = true
-//      case .canceled, .expired:
-//        addressContainerView.isHidden = true
-//        addressStatusLabel.isHidden = true
-//      default:
-//        addressContainerView.isHidden = true
-//        addressStatusLabel.isHidden = false
-//      }
-//    } else {
-//      let shouldHideAddressButton = !(viewModel.addressButtonIsActive)
-//      addressContainerView.isHidden = shouldHideAddressButton
-//      addressStatusLabel.isHidden = !shouldHideAddressButton
-//    }
-//
-//    addressStatusLabel.text = viewModel.addressStatusLabelString
-//
-//    // this should be populated with the address also, just previously hidden, now visible
-//    addressTextButton.setTitle(viewModel.receiverAddress, for: .normal)
-//    addressTextButton.setTitleColor(.lightBlueTint, for: .normal)
-//    addressTextButton.setTitleColor(.darkGrayText, for: .disabled)
-//
-//    addressTextButton.isEnabled = !viewModel.broadcastFailed
-//    addressImageButton.isHidden = (viewModel.broadcastFailed || !viewModel.addressButtonIsActive)
-//    layoutIfNeeded()
+  func load(with viewModel: OldTransactionDetailCellViewModel) {
+    self.viewModel = viewModel
+    if let invitationStatus = viewModel.invitationStatus {
+      switch invitationStatus {
+      case .completed, .addressSent:
+        addressContainerView.isHidden = false
+        addressStatusLabel.isHidden = true
+      case .canceled, .expired:
+        addressContainerView.isHidden = true
+        addressStatusLabel.isHidden = true
+      default:
+        addressContainerView.isHidden = true
+        addressStatusLabel.isHidden = false
+      }
+    } else {
+      let shouldHideAddressButton = !(viewModel.addressButtonIsActive)
+      addressContainerView.isHidden = shouldHideAddressButton
+      addressStatusLabel.isHidden = !shouldHideAddressButton
+    }
+
+    addressStatusLabel.text = viewModel.addressStatusLabelString
+
+    // this should be populated with the address also, just previously hidden, now visible
+    addressTextButton.setTitle(viewModel.receiverAddress, for: .normal)
+    addressTextButton.setTitleColor(.lightBlueTint, for: .normal)
+    addressTextButton.setTitleColor(.darkGrayText, for: .disabled)
+
+    addressTextButton.isEnabled = !viewModel.broadcastFailed
+    addressImageButton.isHidden = (viewModel.broadcastFailed || !viewModel.addressButtonIsActive)
+    layoutIfNeeded()
   }
 
 }

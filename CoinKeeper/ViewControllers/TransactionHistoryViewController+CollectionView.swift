@@ -108,7 +108,7 @@ extension TransactionHistoryViewController: UICollectionViewDelegateFlowLayout {
 extension TransactionHistoryViewController: UICollectionViewDelegate {
 
   func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-    //TODO showDetailCollectionView(true, indexPath: indexPath, animated: true)
+    showDetailCollectionView(true, indexPath: indexPath, animated: true)
   }
 
 }

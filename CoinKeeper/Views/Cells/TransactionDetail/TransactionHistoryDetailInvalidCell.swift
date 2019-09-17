@@ -13,9 +13,9 @@ class TransactionHistoryDetailInvalidCell: TransactionHistoryDetailBaseCell {
   // MARK: outlets
   @IBOutlet var warningLabel: TransactionDetailWarningLabel!
 
-  func load(with viewModel: TransactionInvalidDetailCellDisplayable, delegate: TransactionHistoryDetailCellDelegate) {
-    super.load(with: viewModel, delegate: delegate)
-    warningLabel.text = viewModel.warningMessage
+  override func configure(with viewModel: OldTransactionDetailCellViewModel, delegate: TransactionHistoryDetailCellDelegate) {
+    super.configure(with: viewModel, delegate: delegate)
+    warningLabel.text = viewModel.warningMessageLabel
     layoutIfNeeded()
   }
 }
