@@ -9,6 +9,10 @@
 import Foundation
 
 extension LightningUpgradeCoordinator: LightningUpgradeCompleteViewControllerDelegate {
+  func viewControllerWillCompleteLightningUpgrade(_ viewController: LightningUpgradeCompleteViewController) {
+    coordinationDelegate?.coordinatorWillCompleteUpgrade(self)
+  }
+
   func viewControllerDidSelectGoToWallet(_ viewController: LightningUpgradeCompleteViewController) {
     coordinationDelegate?.coordinatorDidCompleteUpgrade(self)
   }

@@ -40,6 +40,7 @@ extension AppCoordinator: DeviceVerificationCoordinatorDelegate {
           of DropBit for enhanced security, lower transaction fees, and Lightning support. Please enter the new
           recovery words you were given upon upgrading, or create a new wallet.
           """.removingMultilineLineBreaks()
+          self.analyticsManager.track(event: .enteredDeactivatedWords, with: nil)
           self.persistenceManager.keychainManager.storeSynchronously(anyValue: nil, key: .walletWords)
           self.persistenceManager.keychainManager.storeSynchronously(anyValue: nil, key: .walletWordsV2)
           self.persistenceManager.keychainManager.storeSynchronously(anyValue: false, key: .walletWordsBackedUp)
@@ -59,6 +60,7 @@ extension AppCoordinator: DeviceVerificationCoordinatorDelegate {
           let alert = self.alertManager.alert(from: alertViewModel)
           self.navigationController.topViewController()?.present(alert, animated: true)
         } else if parser.walletVersion != .v2 {
+          self.analyticsManager.track(property: MixpanelProperty(key: .upgradedFromRestore, value: true))
           let words = self.persistenceManager.brokers.wallet.walletWords()
           self.persistenceManager.keychainManager.storeSynchronously(anyValue: words, key: .walletWords)
           self.persistenceManager.keychainManager.storeSynchronously(anyValue: nil, key: .walletWordsV2)

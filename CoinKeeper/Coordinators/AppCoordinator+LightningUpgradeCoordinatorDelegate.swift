@@ -9,8 +9,13 @@
 import Foundation
 
 extension AppCoordinator: LightningUpgradeCoordinatorDelegate {
-  func coordinatorDidCompleteUpgrade(_ coordinator: LightningUpgradeCoordinator) {
+  func coordinatorWillCompleteUpgrade(_ coordinator: LightningUpgradeCoordinator) {
     launchStateManager.upgradeInProgress = false
+    analyticsManager.track(property: MixpanelProperty(key: .upgradeCompleted, value: true))
+    analyticsManager.track(property: MixpanelProperty(key: .walletVersion, value: WalletFlagsVersion.v2.rawValue))
+  }
+
+  func coordinatorDidCompleteUpgrade(_ coordinator: LightningUpgradeCoordinator) {
     if let controller = navigationController.topViewController() as? LightningUpgradePageViewController {
       controller.dismiss(animated: true, completion: nil)
     }
@@ -19,7 +24,6 @@ extension AppCoordinator: LightningUpgradeCoordinatorDelegate {
   }
 
   func coordinatorRequestedVerifyUpgradedWords(_ coordinator: LightningUpgradeCoordinator) {
-    launchStateManager.upgradeInProgress = false
     if let controller = navigationController.topViewController() as? LightningUpgradePageViewController {
       controller.dismiss(animated: true, completion: nil)
     }
