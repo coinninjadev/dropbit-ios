@@ -38,6 +38,13 @@ class LightningUpgradeCoordinator: ChildCoordinatorType {
     parent.launchStateManager.upgradeInProgress = true
     let context = parent.persistenceManager.createBackgroundContext()
     parent.serialQueueManager.walletSyncOperationFactory?.createOnChainOnlySync(in: context)
+      .get(in: context) { _ in
+        do {
+          try context.saveRecursively()
+        } catch {
+          log.contextSaveError(error)
+        }
+      }
       .done { self.proceedWithUpgrade(presentedController: controller) }
       .catch { (error: Error) in
         log.error(error, message: "Failed to do a full sync of blockchain prior to upgrade.")
@@ -89,9 +96,6 @@ class LightningUpgradeCoordinator: ChildCoordinatorType {
             self.parent.navigationController.topViewController()?.present(alert, animated: true, completion: nil)
           }
         }
-      }
-      .finally {
-        self.parent.launchStateManager.upgradeInProgress = false
       }
   }
 }
