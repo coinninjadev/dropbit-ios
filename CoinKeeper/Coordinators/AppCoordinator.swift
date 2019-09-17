@@ -407,7 +407,7 @@ class AppCoordinator: CoordinatorType {
 
     if shouldShowError {
       navigationController.present(alertManager.defaultAlert(withTitle: "Error",
-                                                             description: "Your lightning wallet is currently locked."),
+                                                             description: "Your Lightning wallet is currently locked."),
                                    animated: true, completion: nil)
     }
 

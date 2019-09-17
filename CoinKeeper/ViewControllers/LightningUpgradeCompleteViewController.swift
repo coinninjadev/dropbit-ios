@@ -46,7 +46,7 @@ final class LightningUpgradeCompleteViewController: BaseViewController, Storyboa
     upgradeCompleteLabel.font = .regular(17)
     lightningReadyLabel.font = .regular(17)
     lightningReadyLabel.textColor = .white
-    lightningReadyLabel.text = "Your upgraded wallet\nis lightning ready!"
+    lightningReadyLabel.text = "Your upgraded wallet\nis Lightning ready!"
   }
 
   @IBAction func goToWallet(_ sender: Any) {

@@ -48,7 +48,7 @@ enum CKRecipientParserError: LocalizedError {
     }
 
     if types.contains(.lightningURL) {
-      recipientDesc = "lightning invoices "
+      recipientDesc = "Lightning invoices "
     }
 
     if types.contains(.phoneNumber) {
