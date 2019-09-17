@@ -46,7 +46,7 @@ extension AppCoordinator: TransactionHistoryViewControllerDelegate {
   }
 
   func viewControllerShouldSeeTransactionDetails(for viewModel: OldTransactionDetailCellViewModel) {
-    let viewController = TransactionPopoverDetailsViewController.newInstance(delegate: self)
+    let viewController = TransactionPopoverDetailsViewController.newInstance(delegate: self, viewModel: viewModel)
     viewController.modalPresentationStyle = .overFullScreen
     viewController.modalTransitionStyle = .crossDissolve
     navigationController.topViewController()?.present(viewController, animated: true, completion: nil)
