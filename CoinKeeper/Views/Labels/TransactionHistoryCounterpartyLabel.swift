@@ -11,7 +11,7 @@ import UIKit
 class TransactionHistoryCounterpartyLabel: UILabel {
   override func awakeFromNib() {
     super.awakeFromNib()
-    font = .regular(17)
+    font = .regular(15)
     textColor = .darkBlueText
     isHidden = false
     numberOfLines = 1
