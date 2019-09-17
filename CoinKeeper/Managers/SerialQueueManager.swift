@@ -84,7 +84,9 @@ protocol NetworkErrorDelegate: AnyObject {
   func handleReachabilityError(_ underlyingError: MoyaError)
 }
 
-protocol SerialQueueManagerDelegate: WalletSyncDelegate & NetworkErrorDelegate { }
+protocol SerialQueueManagerDelegate: WalletSyncDelegate & NetworkErrorDelegate {
+  var launchStateManager: LaunchStateManagerType { get }
+}
 
 protocol SerialQueueManagerType: class {
   var queue: OperationQueueType { get }
@@ -172,6 +174,12 @@ class SerialQueueManager: SerialQueueManagerType {
     }
 
     guard self.shouldEnqueueOperation(ofType: .syncWallet(type), policy: policy) else {
+      completion?(nil)
+      fetchResult?(.noData)
+      return
+    }
+
+    guard !queueDelegate.launchStateManager.upgradeInProgress else {
       completion?(nil)
       fetchResult?(.noData)
       return

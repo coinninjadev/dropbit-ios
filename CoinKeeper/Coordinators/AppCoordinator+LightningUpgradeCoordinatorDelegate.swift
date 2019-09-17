@@ -10,6 +10,7 @@ import Foundation
 
 extension AppCoordinator: LightningUpgradeCoordinatorDelegate {
   func coordinatorDidCompleteUpgrade(_ coordinator: LightningUpgradeCoordinator) {
+    launchStateManager.upgradeInProgress = false
     if let controller = navigationController.topViewController() as? LightningUpgradePageViewController {
       controller.dismiss(animated: true, completion: nil)
     }
@@ -18,6 +19,7 @@ extension AppCoordinator: LightningUpgradeCoordinatorDelegate {
   }
 
   func coordinatorRequestedVerifyUpgradedWords(_ coordinator: LightningUpgradeCoordinator) {
+    launchStateManager.upgradeInProgress = false
     if let controller = navigationController.topViewController() as? LightningUpgradePageViewController {
       controller.dismiss(animated: true, completion: nil)
     }
