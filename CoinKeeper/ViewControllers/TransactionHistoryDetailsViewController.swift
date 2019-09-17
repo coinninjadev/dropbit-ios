@@ -31,7 +31,6 @@ final class TransactionHistoryDetailsViewController: PresentableViewController, 
   var viewModel: TransactionHistoryViewModel!
 
   var selectedIndexPath: IndexPath = IndexPath(item: 0, section: 0)
-  var viewModelForIndexPath: ((IndexPath) -> TransactionDetailCellDisplayable)?
 
   static func newInstance(withDelegate delegate: TransactionHistoryDetailsViewControllerDelegate,
                           walletTxType: WalletTransactionType,
@@ -62,6 +61,8 @@ final class TransactionHistoryDetailsViewController: PresentableViewController, 
 
     collectionView.registerNib(cellType: TransactionHistoryDetailValidCell.self)
     collectionView.registerNib(cellType: TransactionHistoryDetailInvalidCell.self)
+    collectionView.delegate = self
+    collectionView.dataSource = self.viewModel
 
     if #available(iOS 11.0, *) {
       self.collectionView.contentInsetAdjustmentBehavior = .never
@@ -175,6 +176,5 @@ extension TransactionHistoryDetailsViewController: TransactionHistoryViewModelDe
   }
 
   func didTapSummaryHeader(_ header: TransactionHistorySummaryHeader) { }
-
 
 }

@@ -78,7 +78,7 @@ class TransactionHistoryDetailBaseCell: UICollectionViewCell {
     delegate.didTapClose(detailCell: self)
   }
 
-  func load(with values: TransactionDetailCellDisplayable, delegate: TransactionHistoryDetailCellDelegate) {
+  func configure(with item: TransactionDetailCellDisplayable, delegate: TransactionHistoryDetailCellDelegate) {
     self.delegate = delegate
 
   }

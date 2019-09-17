@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-protocol TransactionHistoryViewModelDelegate: TransactionHistorySummaryHeaderDelegate {
+protocol TransactionHistoryViewModelDelegate: TransactionHistorySummaryHeaderDelegate, TransactionHistoryDetailCellDelegate {
   var currencyController: CurrencyController { get }
   func viewModelDidUpdateExchangeRates()
   func summaryHeaderType() -> SummaryHeaderType?

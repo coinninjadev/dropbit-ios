@@ -40,8 +40,8 @@ class TransactionHistoryDetailValidCell: TransactionHistoryDetailBaseCell {
   @IBOutlet var bottomBufferView: UIView!
 
   // MARK: lifecycle
-  override func load(with values: TransactionDetailCellDisplayable, delegate: TransactionHistoryDetailCellDelegate) {
-    super.load(with: values, delegate: delegate)
+  override func configure(with item: TransactionDetailCellDisplayable, delegate: TransactionHistoryDetailCellDelegate) {
+    super.configure(with: item, delegate: delegate)
 //    messageLabel.text = viewModel.messageLabel
 //    messageContainer.isHidden = viewModel.messageLabel == nil
 //    messageLabel.isHidden = viewModel.messageLabel == nil
@@ -65,7 +65,7 @@ class TransactionHistoryDetailValidCell: TransactionHistoryDetailBaseCell {
   }
 
   // MARK: private methods
-  private func configureBottomButton(with values: TransactionDetailCellDisplayable) {
+  private func configureBottomButton(with item: TransactionDetailCellDisplayable) {
 //    guard let action = vm.bottomButtonAction else {
 //      bottomButton.isHidden = true
 //      return
@@ -81,7 +81,7 @@ class TransactionHistoryDetailValidCell: TransactionHistoryDetailBaseCell {
 //    }
   }
 
-  private func setupProgressBar(with values: TransactionDetailCellDisplayable) {
+  private func setupProgressBar(with item: TransactionDetailCellDisplayable) {
 //    progressView.activeColor = .successGreen
 //    progressView.inactiveColor = .lightGrayText
 //    progressView.inactiveTextColor = progressView.inactiveColor
