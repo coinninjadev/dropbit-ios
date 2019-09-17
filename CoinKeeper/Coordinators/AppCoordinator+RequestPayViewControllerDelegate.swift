@@ -18,7 +18,6 @@ extension AppCoordinator: RequestPayViewControllerDelegate {
   func viewControllerDidCreateInvoice(_ viewController: UIViewController) {
     guard let txDataWorker = workerFactory().createTransactionDataWorker() else { return }
 
-    // TODO: Restructure this context so that saves in background contexts are directly fed into the view context
     let context = persistenceManager.createBackgroundContext()
     txDataWorker.performFetchAndStoreAllLightningTransactions(in: context)
       .done(in: context) {

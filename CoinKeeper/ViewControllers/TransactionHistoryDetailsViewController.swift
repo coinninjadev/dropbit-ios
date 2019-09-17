@@ -70,7 +70,7 @@ final class TransactionHistoryDetailsViewController: PresentableViewController, 
     return controller
   }
 
-  //TODO: make this private(set)
+  //TODO: make private(set)
   weak var delegate: TransactionHistoryDetailsViewControllerDelegate!
 
   override var cornerRadius: CGFloat {
