@@ -183,7 +183,7 @@ class WalletManager: WalletManagerType {
     var netBalance = 0
     var netLightningBalance = 0
     context.performAndWait {
-      let wallet = CKMWallet.findOrCreate(in: context)
+      guard let wallet = CKMWallet.find(in: context) else { return }
       let atss = CKMAddressTransactionSummary.findAll(matching: self.coin, in: context)
       let lightningAccount = persistenceManager.brokers.lightning.getAccount(forWallet: wallet, in: context)
       let atsAmount = atss.reduce(0) { $0 + $1.netAmount }
@@ -195,7 +195,7 @@ class WalletManager: WalletManagerType {
   }
 
   func spendableBalance(in context: NSManagedObjectContext) -> (onChain: Int, lightning: Int) {
-    let wallet = CKMWallet.findOrCreate(in: context)
+    guard let wallet = CKMWallet.find(in: context) else { return (0, 0) }
     let minAmount = self.persistenceManager.brokers.preferences.dustProtectionMinimumAmount
     let lightningAccount = self.persistenceManager.brokers.lightning.getAccount(forWallet: wallet, in: context)
     let spendableVouts = CKMVout.findAllSpendable(minAmount: minAmount, in: context)

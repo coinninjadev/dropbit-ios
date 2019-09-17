@@ -51,7 +51,7 @@ extension AppCoordinator: WalletTransferViewControllerDelegate {
                                           btcAmount: NSDecimalNumber,
                                           exchangeRates: ExchangeRates) -> PaymentData? {
     let context = self.persistenceManager.viewContext
-    let wallet = CKMWallet.findOrCreate(in: context)
+    guard let wallet = CKMWallet.find(in: context) else { return nil }
     let lightningAccount = self.persistenceManager.brokers.lightning.getAccount(forWallet: wallet, in: context)
     return buildNonReplaceableTransactionData(btcAmount: btcAmount, address: lightningAccount.address, exchangeRates: exchangeRates)
   }

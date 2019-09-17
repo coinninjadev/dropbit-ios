@@ -112,12 +112,7 @@ class CKDatabase: PersistenceDatabaseType {
   }
 
   func walletId(in context: NSManagedObjectContext) -> String? {
-    var id: String?
-
-    context.performAndWait {
-      id = CKMWallet.find(in: context)?.id
-    }
-
+    let id = CKMWallet.find(in: context)?.id
     return id
   }
 

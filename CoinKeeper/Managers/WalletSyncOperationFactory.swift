@@ -142,7 +142,7 @@ class WalletSyncOperationFactory {
   func updateLightningAccount(with dependencies: SyncDependencies, in context: NSManagedObjectContext) -> Promise<LNAccountResponse> {
     return dependencies.networkManager.getOrCreateLightningAccount()
       .get(in: context) { lnAccountResponse in
-        let wallet = CKMWallet.findOrCreate(in: context)
+        guard let wallet = CKMWallet.find(in: context) else { return }
 
         #if DEBUG //TODO: unlock wallet for debug builds only, remove later
         if lnAccountResponse.locked {
