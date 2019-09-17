@@ -104,8 +104,6 @@ CurrencySwappableAmountEditor {
 
   @IBAction func performNext() {
     do {
-      //TODO: revise validateAmount so that it works correctly for both on chain and lightning transactions
-      //      try validateAmount()
       try validateAndSendPayment()
     } catch {
       //TODO: test all potential amount errors are thrown for lightning
@@ -712,10 +710,14 @@ extension SendPaymentViewController {
 
     // This is still required here to pass along the local memo
     let sharedPayloadDTO = SharedPayloadDTO(addressPubKeyState: .none,
-                                            walletTxType: self.viewModel.walletTransactionType,
-                                            sharingDesired: self.viewModel.sharedMemoDesired,
-                                            memo: self.viewModel.memo,
+                                            walletTxType: viewModel.walletTransactionType,
+                                            sharingDesired: viewModel.sharedMemoDesired,
+                                            memo: viewModel.memo,
                                             amountInfo: sharedAmountInfo())
+
+    try CurrencyAmountValidator(balancesNetPending: delegate.balancesNetPending(),
+                                                    balanceToCheck: viewModel.walletTransactionType).validate(value:
+                                                      viewModel.generateCurrencyConverter())
 
     switch recipient {
     case .bitcoinURL(let url):
@@ -879,12 +881,14 @@ extension SendPaymentViewController: WalletToggleViewDelegate {
   func bitcoinWalletButtonWasTouched() {
     viewModel.walletTransactionType = .onChain
     editAmountView.update(with: viewModel.dualAmountLabels(walletTransactionType: viewModel.walletTransactionType))
+    setPaymentRecipient(nil)
     setupStyle()
   }
 
   func lightningWalletButtonWasTouched() {
     viewModel.walletTransactionType = .lightning
     editAmountView.update(with: viewModel.dualAmountLabels(walletTransactionType: viewModel.walletTransactionType))
+    setPaymentRecipient(nil)
     setupStyle()
   }
 
