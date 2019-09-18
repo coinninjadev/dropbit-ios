@@ -41,7 +41,7 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate {
       let dropBitReceiver = outgoingInvitationDTO.contact.asDropBitReceiver
       let receiverBody = outgoingInvitationDTO.contact.userIdentityBody
 
-      guard let senderBody = self.senderIdentity(forReceiver: dropBitReceiver) else {
+      guard let senderBody = self.addressRequestSenderIdentity(forReceiver: dropBitReceiver) else {
         log.error("Failed to create sender body")
         return
       }
