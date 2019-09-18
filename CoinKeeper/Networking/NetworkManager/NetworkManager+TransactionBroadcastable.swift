@@ -32,6 +32,15 @@ struct BroadcastInfo: Error {
   enum Destination {
     case bci(Encoded)
     case blockstream(Encoded)
+
+    var description: String {
+      switch self {
+      case .bci(let encoded):
+        return "BCI: \(encoded.statusCode), \(encoded.statusMessage)"
+      case .blockstream(let encoded):
+        return "Blockstream: \(encoded.statusCode), \(encoded.statusMessage)"
+      }
+    }
   }
 
   init(destination: Destination) {
@@ -40,6 +49,14 @@ struct BroadcastInfo: Error {
 
   var txid: String?
   var destination: Destination
+
+  var localizedDescription: String {
+    return """
+    BroadcastInfo:
+      txid: \(txid ?? "-")
+      destination: \(destination.description)
+    """
+  }
 }
 
 extension NetworkManager: TransactionBroadcastable {
@@ -93,6 +110,7 @@ extension NetworkManager: TransactionBroadcastable {
             returnError = error
 
             if let error = error as? BroadcastInfo {
+              log.error(error.localizedDescription)
               switch error.destination {
               case .bci(let encoded):
                 analyticEvents.append(AnalyticsEventValue(key: .blockChainInfoCode, value: String(describing: encoded.statusCode)))
