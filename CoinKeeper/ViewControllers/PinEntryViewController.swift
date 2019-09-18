@@ -109,6 +109,7 @@ final class PinEntryViewController: BaseViewController, StoryboardInitializable 
   // MARK: methods
 
   private func setupView() {
+    closeButton.alpha = 0
     keypadEntryView.alpha = 0
     keypadEntryView.delegate = self
     keypadEntryView.entryMode = .pin
@@ -136,7 +137,7 @@ final class PinEntryViewController: BaseViewController, StoryboardInitializable 
   }
 
   func loadViewModel() {
-    closeButton.isHidden = !viewModel.shouldShowCloseButton
+    closeButton.alpha = viewModel.shouldShowCloseButton ? 1.0 : 0.0
     closeButton.isEnabled = viewModel.shouldShowCloseButton
     logoImage.alpha = viewModel.shouldShowLogo ? 1.0 : 0.0
     messageLabel.alpha = viewModel.shouldAnimateMessage ? 0.0 : 1.0
