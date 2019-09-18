@@ -182,10 +182,9 @@ struct PayloadPostableOutgoingTransactionData: SharedPayloadPostableObject {
   let sharedPayloadDTO: SharedPayloadDTO
 
   init?(data: OutgoingTransactionData) {
-    guard let senderIdentity = data.sender,
-      let receiverIdentityHash = data.receiver?.identityHash,
-      let payloadDTO = data.sharedPayloadDTO
-      else { return nil }
+    guard let senderIdentity = data.sender else { log.error("Postable data missing sender"); return nil }
+    guard let receiverIdentityHash = data.receiver?.identityHash else { log.error("Postable data missing receiver"); return nil }
+    guard let payloadDTO = data.sharedPayloadDTO else { log.error("Postable data missing payloadDTO"); return nil }
 
     self.paymentId = data.txid
     self.paymentTarget = data.destinationAddress
