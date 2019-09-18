@@ -63,13 +63,13 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
                           dataSource: TransactionHistoryDataSourceType) -> TransactionHistoryViewController {
     let viewController = TransactionHistoryViewController.makeFromStoryboard()
     viewController.delegate = delegate
-    dataSource.delegate = viewController
     viewController.viewModel = TransactionHistoryViewModel(delegate: viewController,
                                                            detailsDelegate: nil,
                                                            currencyManager: delegate,
                                                            deviceCountryCode: delegate.deviceCountryCode(),
                                                            transactionType: walletTxType,
                                                            dataSource: dataSource)
+    viewController.viewModel.dataSource.delegate = viewController
     return viewController
   }
 
