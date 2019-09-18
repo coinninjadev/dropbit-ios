@@ -69,10 +69,7 @@ extension NSManagedObjectContext {
   }
 
   /// Saves the current context and each parent until changes are saved to the persistent store.
-  /// Recursive saves will proceed only if the current context has changes
-  /// to avoid interfering with the state of parent contexts.
   func saveRecursively() throws {
-    guard self.hasChanges else { return }
     let preSaveChanges = self.changesDescription(withLinebreaks: true)
 
     try self.save()
