@@ -11,7 +11,7 @@ import Foundation
 extension AppCoordinator: LightningUpgradeCoordinatorDelegate {
   func coordinatorWillCompleteUpgrade(_ coordinator: LightningUpgradeCoordinator) {
     launchStateManager.upgradeInProgress = false
-    analyticsManager.track(property: MixpanelProperty(key: .upgradeCompleted, value: true))
+    analyticsManager.track(property: MixpanelProperty(key: .lightningUpgradeCompleted, value: true))
     analyticsManager.track(property: MixpanelProperty(key: .walletVersion, value: WalletFlagsVersion.v2.rawValue))
   }
 
