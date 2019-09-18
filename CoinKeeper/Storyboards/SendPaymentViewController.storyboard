@@ -77,9 +77,9 @@
                                                             <action selector="performStartPhoneEntry" destination="mA3-RJ-Qjv" eventType="touchUpInside" id="7WJ-L8-JcH"/>
                                                         </connections>
                                                     </button>
-                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BiE-1k-9jN">
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BiE-1k-9jN" customClass="PrimaryActionButton" customModule="DropBit" customModuleProvider="target">
                                                         <rect key="frame" x="283" y="0.0" width="44" height="50"/>
-                                                        <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <constraints>
                                                             <constraint firstAttribute="width" constant="44" id="65L-SO-r8J"/>
                                                         </constraints>
@@ -225,7 +225,7 @@
                         <outlet property="phoneNumberEntryView" destination="C51-D8-1VB" id="mKw-Ka-yUt"/>
                         <outlet property="recipientDisplayNameLabel" destination="La8-Sv-kGN" id="a19-eD-upO"/>
                         <outlet property="recipientDisplayNumberLabel" destination="NUe-iQ-oIx" id="BOh-Rz-BG1"/>
-                        <outlet property="scanButton" destination="BiE-1k-9jN" id="roX-2f-XZ8"/>
+                        <outlet property="scanButton" destination="BiE-1k-9jN" id="qeV-U2-vbF"/>
                         <outlet property="sendMaxButton" destination="2Q4-Um-Y5Z" id="0aw-nM-XZe"/>
                         <outlet property="twitterButton" destination="Zvc-Ce-tCL" id="ByK-hb-s8H"/>
                         <outlet property="walletToggleView" destination="9xM-4S-5GO" id="0Mo-Td-oE0"/>

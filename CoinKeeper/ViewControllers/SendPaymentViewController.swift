@@ -63,7 +63,7 @@ CurrencySwappableAmountEditor {
 
   @IBOutlet var addressScanButtonContainerView: UIView!
   @IBOutlet var destinationButton: UIButton!
-  @IBOutlet var scanButton: UIButton!
+  @IBOutlet var scanButton: PrimaryActionButton!
 
   @IBOutlet var recipientDisplayNameLabel: UILabel!
   @IBOutlet var recipientDisplayNumberLabel: UILabel!
@@ -234,12 +234,14 @@ extension SendPaymentViewController {
 
     switch viewModel.walletTransactionType {
     case .lightning:
+      scanButton.style = .lightning(true)
       contactsButton.style = .lightning(true)
       twitterButton.style = .lightning(true)
       pasteButton.style = .lightning(true)
       nextButton.style = .lightning(true)
       walletToggleView.selectLightningButton()
     case .onChain:
+      scanButton.style = .bitcoin(true)
       contactsButton.style = .bitcoin(true)
       twitterButton.style = .bitcoin(true)
       pasteButton.style = .bitcoin(true)
@@ -276,6 +278,7 @@ extension SendPaymentViewController {
   }
 
   fileprivate func formatAddressScanView() {
+    scanButton.applyCornerRadius(4, toCorners: [.layerMaxXMinYCorner, .layerMaxXMaxYCorner])
     addressScanButtonContainerView.applyCornerRadius(4)
     addressScanButtonContainerView.layer.borderColor = UIColor.mediumGrayBorder.cgColor
     addressScanButtonContainerView.layer.borderWidth = 1.0
@@ -283,8 +286,6 @@ extension SendPaymentViewController {
     destinationButton.titleLabel?.font = .medium(14)
     destinationButton.setTitleColor(.darkGrayText, for: .normal)
     destinationButton.contentEdgeInsets = UIEdgeInsets(top: 0, left: 8, bottom: 0, right: 8)
-
-    scanButton.backgroundColor = .mediumGrayBackground
   }
 
   fileprivate func formatPhoneNumberEntryView() {
