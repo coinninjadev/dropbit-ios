@@ -94,6 +94,7 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
     transactionHistoryWithBalanceView.delegate = self
     lightningTransactionHistoryEmptyBalanceView.delegate = delegate
     emptyStateBackgroundView.isHidden = false
+    lockedLightningView.delegate = self
     emptyStateBackgroundView.backgroundColor = .whiteBackground
     if viewModel.walletTransactionType == .onChain { lockedLightningView.isHidden = true }
 
