@@ -41,7 +41,7 @@ extension AppCoordinator: PaymentSendingDelegate {
     let amountInfo = SharedPayloadAmountInfo(converter: converter)
     var outgoingTxDataWithAmount = outgoingTransactionData
     outgoingTxDataWithAmount.sharedPayloadDTO?.amountInfo = amountInfo
-    outgoingTxDataWithAmount.sender = self.senderIdentity(forReceiver: outgoingTransactionData.receiver)
+    outgoingTxDataWithAmount.sender = self.sharedPayloadSenderIdentity(forReceiver: outgoingTransactionData.receiver)
 
     let usdThreshold = 100_00
     let shouldDisableBiometrics = amountInfo.fiatAmount > usdThreshold
@@ -132,7 +132,7 @@ extension AppCoordinator: PaymentSendingDelegate {
     self.networkManager.payLightningPaymentRequest(inputs.invoice, sats: inputs.sats)
       .get { self.persistLightningPaymentResponse($0, receiver: receiver, inputs: inputs) }
       .then { response -> Promise<String> in
-        let maybeSender = self.senderIdentity(forReceiver: receiver)
+        let maybeSender = self.sharedPayloadSenderIdentity(forReceiver: receiver)
         let maybePostable = PayloadPostableLightningObject(inputs: inputs, paymentResultId: response.result.cleanedId,
                                                            sender: maybeSender, receiver: receiver)
         if let postableObject = maybePostable {
@@ -175,7 +175,13 @@ extension AppCoordinator: PaymentSendingDelegate {
     return self.networkManager.postSharedPayloadIfAppropriate(withPostableObject: postableObject, walletManager: wmgr)
   }
 
-  func senderIdentity(forReceiver receiver: OutgoingDropBitReceiver?) -> UserIdentityBody? {
+  func addressRequestSenderIdentity(forReceiver receiver: OutgoingDropBitReceiver?) -> UserIdentityBody? {
+    guard let receiver = receiver else { return nil }
+    let senderIdentityFactory = SenderIdentityFactory(persistenceManager: persistenceManager)
+    return senderIdentityFactory.preferredAddressRequestSenderIdentity(forReceiverType: receiver.userIdentityType)
+  }
+
+  func sharedPayloadSenderIdentity(forReceiver receiver: OutgoingDropBitReceiver?) -> UserIdentityBody? {
     guard let receiver = receiver else { return nil }
     let senderIdentityFactory = SenderIdentityFactory(persistenceManager: persistenceManager)
     return senderIdentityFactory.preferredSharedPayloadSenderIdentity(forReceiver: receiver)
