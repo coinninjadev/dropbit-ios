@@ -21,6 +21,8 @@ extension AppCoordinator: LightningUpgradeCoordinatorDelegate {
     }
     childCoordinatorDidComplete(childCoordinator: coordinator)
     validToStartEnteringApp()
+    serialQueueManager.enqueueWalletSyncIfAppropriate(type: .comprehensive, policy: .always,
+                                                      completion: nil, fetchResult: nil)
   }
 
   func coordinatorRequestedVerifyUpgradedWords(_ coordinator: LightningUpgradeCoordinator) {
