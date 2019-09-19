@@ -9,19 +9,14 @@
 import Foundation
 import UIKit
 
-protocol LockedLightningViewDelegate: class {
-  func viewDidAskToUnlockLightning()
-}
-
 class LockedLightningView: UIView {
 
   @IBOutlet var titleLabel: UILabel!
-  @IBOutlet var dropbitDescriptionLabel: UILabel!
-  @IBOutlet var twitterDescriptionLabel: UILabel!
-  @IBOutlet var twitterButton: PrimaryActionButton!
+  @IBOutlet var containerView: UIView!
+  @IBOutlet var detailLabel: UILabel!
+  @IBOutlet var descriptionTitle: UILabel!
+  @IBOutlet var descriptionLabel: UILabel!
   @IBOutlet var backgroundView: LightningUpgradeGradientOverlayView!
-  
-  weak var delegate: LockedLightningViewDelegate?
 
   override init(frame: CGRect) {
     super.init(frame: frame)
@@ -37,19 +32,19 @@ class LockedLightningView: UIView {
 
   private func initialize() {
     applyCornerRadius(15, toCorners: .top)
+    containerView.applyCornerRadius(5)
 
-    titleLabel.font = .medium(17)
+    descriptionTitle.font = .semiBold(19)
+    descriptionTitle.textColor = .neonGreen
+
+    titleLabel.font = .semiBold(19)
     titleLabel.textColor = .white
 
-    dropbitDescriptionLabel.font = .medium(14)
-    dropbitDescriptionLabel.textColor = .white
+    detailLabel.font = .regular(14)
+    detailLabel.textColor = .white
 
-    twitterDescriptionLabel.font = .medium(14)
-    twitterDescriptionLabel.textColor = .white
-  }
-
-  @IBAction func twitterButtonWasTouched() {
-    delegate?.viewDidAskToUnlockLightning()
+    descriptionLabel.font = .medium(14)
+    descriptionLabel.textColor = .white
   }
 
 }
