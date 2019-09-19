@@ -81,8 +81,6 @@ final class StartViewController: BaseViewController {
     claimInviteButton.setTitle("CLAIM BITCOIN FROM INVITE", for: .normal)
     restoreWalletButton.setTitle("Restore Wallet", for: .normal)
 
-    restoreWalletButton.imageView?.image = UIImage(named: "chevronRight")?.withRenderingMode(.alwaysTemplate)
-
     newWalletButton.setTitle("NEW WALLET", for: .normal)
     newWalletButton.setTitleColor(.lightBlueTint, for: .normal)
     newWalletButton.titleLabel?.font = .primaryButtonTitle
