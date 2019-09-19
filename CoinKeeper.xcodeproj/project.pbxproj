@@ -595,8 +595,6 @@
 		A2BCCFC22321919300EB9C30 /* AppCoordinator+PaymentBuildingDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2BCCFC12321919300EB9C30 /* AppCoordinator+PaymentBuildingDelegate.swift */; };
 		A2BFA54D22E7531500396D33 /* WalletToggleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2BFA54C22E7531500396D33 /* WalletToggleView.swift */; };
 		A2BFA54F22E7536A00396D33 /* WalletToggleView.xib in Resources */ = {isa = PBXBuildFile; fileRef = A2BFA54E22E7536A00396D33 /* WalletToggleView.xib */; };
-		A2D1ACFF232D268500EF1001 /* BetaTagView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2D1ACFE232D268500EF1001 /* BetaTagView.swift */; };
-		A2D1AD01232D270B00EF1001 /* BetaTagView.xib in Resources */ = {isa = PBXBuildFile; fileRef = A2D1AD00232D270B00EF1001 /* BetaTagView.xib */; };
 		A2D1AD03232D368A00EF1001 /* LockedLightningView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2D1AD02232D368A00EF1001 /* LockedLightningView.swift */; };
 		A2D1AD07232D436D00EF1001 /* LockedLightningView.xib in Resources */ = {isa = PBXBuildFile; fileRef = A2D1AD06232D436D00EF1001 /* LockedLightningView.xib */; };
 		A2DBC50222D78DAF008C532B /* CurrencySwappableEditAmountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2DBC50122D78DAF008C532B /* CurrencySwappableEditAmountView.swift */; };
@@ -1647,8 +1645,6 @@
 		A2BCCFC12321919300EB9C30 /* AppCoordinator+PaymentBuildingDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppCoordinator+PaymentBuildingDelegate.swift"; sourceTree = "<group>"; };
 		A2BFA54C22E7531500396D33 /* WalletToggleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletToggleView.swift; sourceTree = "<group>"; };
 		A2BFA54E22E7536A00396D33 /* WalletToggleView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WalletToggleView.xib; sourceTree = "<group>"; };
-		A2D1ACFE232D268500EF1001 /* BetaTagView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BetaTagView.swift; sourceTree = "<group>"; };
-		A2D1AD00232D270B00EF1001 /* BetaTagView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BetaTagView.xib; sourceTree = "<group>"; };
 		A2D1AD02232D368A00EF1001 /* LockedLightningView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockedLightningView.swift; sourceTree = "<group>"; };
 		A2D1AD06232D436D00EF1001 /* LockedLightningView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LockedLightningView.xib; sourceTree = "<group>"; };
 		A2DBC50122D78DAF008C532B /* CurrencySwappableEditAmountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencySwappableEditAmountView.swift; sourceTree = "<group>"; };
@@ -2679,8 +2675,6 @@
 				3B0C7859231EDF3600D4C216 /* LightningUpgradeGradientOverlayView.swift */,
 				3B9930DE232ABF0D008EA112 /* LightningUpgradeStatusView.swift */,
 				3B9930E0232ABF21008EA112 /* LightningUpgradeStatusView.xib */,
-				A2D1ACFE232D268500EF1001 /* BetaTagView.swift */,
-				A2D1AD00232D270B00EF1001 /* BetaTagView.xib */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -4022,7 +4016,6 @@
 				3B5A889E228AF3D90082BBA4 /* TwitterUserTableViewCell.xib in Resources */,
 				3B547A702280A6FD007B0366 /* VerifiedStatusView.xib in Resources */,
 				308F6F03217F91A50094D6CB /* ServerAddressView.xib in Resources */,
-				A2D1AD01232D270B00EF1001 /* BetaTagView.xib in Resources */,
 				A2952F7422BBBAAB00BDCE65 /* TimePeriodCell.xib in Resources */,
 				3B0C4FE022A1ACBD000FE760 /* VerfiedTwitterUserIndicatorView.xib in Resources */,
 				B5EDFB37231EE00800B8E739 /* TransactionHistorySummaryHeader.xib in Resources */,
@@ -4474,7 +4467,6 @@
 				3B2E78362024D56500DA25AF /* StoryboardInitializable.swift in Sources */,
 				B5E7F21B2214670200358A24 /* CountryCodeSearchView.swift in Sources */,
 				B5A3BA5C215193DA005EE657 /* TransactionsTarget.swift in Sources */,
-				A2D1ACFF232D268500EF1001 /* BetaTagView.swift in Sources */,
 				B5860546222702FC0048979D /* HashableContact.swift in Sources */,
 				A2FE198A2301DF8800C2412D /* WalletTransferViewController.swift in Sources */,
 				3B4741692180AC64004DA223 /* DeviceEndpointIds.swift in Sources */,
