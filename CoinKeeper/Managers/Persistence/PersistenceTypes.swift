@@ -92,7 +92,7 @@ protocol PersistenceDatabaseType: AnyObject {
 
   func persistentStore(for context: NSManagedObjectContext) -> NSPersistentStore?
 
-  func deleteAll(in context: NSManagedObjectContext)
+  func deleteAll(in context: NSManagedObjectContext) throws
 
   func persistTransactions(
     from transactionResponses: [TransactionResponse],
