@@ -18,6 +18,7 @@ enum CKPersistenceError: Error, LocalizedError {
   case unexpectedResult
   case failedToFetch(String)
   case keychainWriteFailed(key: String)
+  case failedToBatchDeleteWallet([NSError])
 
   var errorDescription: String? {
     switch self {
@@ -30,6 +31,12 @@ enum CKPersistenceError: Error, LocalizedError {
     case .unexpectedResult:       return "Fetch request returned unexpected result"
     case .failedToFetch(let key): return "Failed to fetch results: \(key)"
     case .keychainWriteFailed(let key): return "Failed to store value in keychain for key: \(key)"
+    case .failedToBatchDeleteWallet(let nsErrors):
+      var message = "Failed to batch delete wallet. Errors:"
+      for nsError in nsErrors {
+        message.append("\n\n\t\(nsError.localizedDescription): \(nsError.userInfo)")
+      }
+      return message
     }
   }
 }

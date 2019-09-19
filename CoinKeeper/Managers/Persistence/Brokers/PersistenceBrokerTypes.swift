@@ -184,7 +184,7 @@ protocol WalletBrokerType: AnyObject {
   func walletWords() -> [String]?
   func persistWalletResponse(from response: WalletResponse, in context: NSManagedObjectContext) throws
   func removeWalletId(in context: NSManagedObjectContext)
-  func deleteWallet(in context: NSManagedObjectContext)
+  func deleteWallet(in context: NSManagedObjectContext) throws
   func walletWordsBackedUp() -> Bool
 
   /// The responses should correspond 1-to-1 with the metaAddresses, order is irrelevant.

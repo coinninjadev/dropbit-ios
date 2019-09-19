@@ -56,27 +56,45 @@ class CKDatabase: PersistenceDatabaseType {
     return context.persistentStoreCoordinator?.persistentStores.first
   }
 
-  private func executeBatchDeleteFor(entity name: String, in context: NSManagedObjectContext) {
-    let fetch = NSFetchRequest<NSFetchRequestResult>(entityName: name)
+  /// Returns array of managed object IDs to merge into context after all batch deletions have been processed
+  private func executeBatchDelete(forEntity entityName: String, in context: NSManagedObjectContext) throws {
+    let fetch = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
     let request = NSBatchDeleteRequest(fetchRequest: fetch)
     request.resultType = .resultTypeObjectIDs
 
-    context.performAndWait {
+    try context.performThrowingAndWait {
       do {
         if let result = try context.execute(request) as? NSBatchDeleteResult, let objectIDs = result.result as? [NSManagedObjectID] {
           NSManagedObjectContext.mergeChanges(fromRemoteContextSave: [NSDeletedObjectsKey: objectIDs], into: [context])
         }
+        log.info("Successfully batch deleted \(entityName)")
+
       } catch {
-        fatalError("Failed to execute request: \(error)")
+        let userInfo = (error as NSError).userInfo
+        let message = "Failed to execute batch delete of \(entityName). User info: \(userInfo)"
+        log.error(message)
+        throw error
       }
     }
   }
 
-  func deleteAll(in context: NSManagedObjectContext) {
-    context.performAndWait {
-      self.stackConfig.model?.entities
-        .compactMap { $0.name }
-        .forEach { executeBatchDeleteFor(entity: $0, in: context) }
+  func deleteAll(in context: NSManagedObjectContext) throws {
+    try context.performThrowingAndWait {
+      let entityNames = self.stackConfig.model?.entities.compactMap { $0.name } ?? []
+
+      var errors: [Error] = [] //gather all failures before throwing
+      for entityName in entityNames {
+        do {
+          try executeBatchDelete(forEntity: entityName, in: context)
+        } catch {
+          errors.append(error)
+        }
+      }
+
+      if errors.isNotEmpty {
+        let nsErrors = errors.map { $0 as NSError }
+        throw CKPersistenceError.failedToBatchDeleteWallet(nsErrors)
+      }
     }
   }
 

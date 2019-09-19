@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14492.1" systemVersion="18G84" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14492.1" systemVersion="18G95" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="CKMAddress" representedClassName="CKMAddress" versionHashModifier="1" syncable="YES">
         <attribute name="addressId" attributeType="String" syncable="YES"/>
         <relationship name="addressTransactionSummaries" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CKMAddressTransactionSummary" inverseName="address" inverseEntity="CKMAddressTransactionSummary" syncable="YES"/>
@@ -70,7 +70,7 @@
         <attribute name="id" attributeType="String" syncable="YES"/>
         <attribute name="pendingIn" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="pendingOut" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
-        <relationship name="wallet" maxCount="1" deletionRule="Nullify" destinationEntity="CKMWallet" inverseName="lightningAccount" inverseEntity="CKMWallet" syncable="YES"/>
+        <relationship name="wallet" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CKMWallet" inverseName="lightningAccount" inverseEntity="CKMWallet" syncable="YES"/>
     </entity>
     <entity name="CKMLNInvoice" representedClassName="CKMLNInvoice" syncable="YES">
         <attribute name="cltvExpiry" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
@@ -99,7 +99,7 @@
         <attribute name="updatedAt" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="value" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <relationship name="invoice" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="CKMLNInvoice" inverseName="ledgerEntry" inverseEntity="CKMLNInvoice" syncable="YES"/>
-        <relationship name="walletEntry" maxCount="1" deletionRule="Nullify" destinationEntity="CKMWalletEntry" inverseName="ledgerEntry" inverseEntity="CKMWalletEntry" syncable="YES"/>
+        <relationship name="walletEntry" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CKMWalletEntry" inverseName="ledgerEntry" inverseEntity="CKMWalletEntry" syncable="YES"/>
     </entity>
     <entity name="CKMPhoneNumber" representedClassName="CKMPhoneNumber" versionHashModifier="1" syncable="YES">
         <attribute name="countryCode" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
@@ -236,7 +236,7 @@
         <relationship name="lightningAccount" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="CKMLNAccount" inverseName="wallet" inverseEntity="CKMLNAccount" syncable="YES"/>
         <relationship name="serverAddresses" toMany="YES" deletionRule="Nullify" destinationEntity="CKMServerAddress" inverseName="wallet" inverseEntity="CKMServerAddress" syncable="YES"/>
         <relationship name="user" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CKMUser" inverseName="wallet" inverseEntity="CKMUser" syncable="YES"/>
-        <relationship name="walletEntries" toMany="YES" deletionRule="Cascade" destinationEntity="CKMWalletEntry" inverseName="wallet" inverseEntity="CKMWalletEntry" syncable="YES"/>
+        <relationship name="walletEntries" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="CKMWalletEntry" inverseName="wallet" inverseEntity="CKMWalletEntry" syncable="YES"/>
     </entity>
     <entity name="CKMWalletEntry" representedClassName="CKMWalletEntry" syncable="YES">
         <attribute name="isHidden" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
@@ -246,7 +246,7 @@
         <relationship name="phoneNumber" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CKMPhoneNumber" inverseName="walletEntries" inverseEntity="CKMPhoneNumber" syncable="YES"/>
         <relationship name="sharedPayload" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CKMTransactionSharedPayload" inverseName="walletEntry" inverseEntity="CKMTransactionSharedPayload" syncable="YES"/>
         <relationship name="twitterContact" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CKMTwitterContact" inverseName="walletEntries" inverseEntity="CKMTwitterContact" syncable="YES"/>
-        <relationship name="wallet" maxCount="1" deletionRule="Nullify" destinationEntity="CKMWallet" inverseName="walletEntries" inverseEntity="CKMWallet" syncable="YES"/>
+        <relationship name="wallet" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CKMWallet" inverseName="walletEntries" inverseEntity="CKMWallet" syncable="YES"/>
     </entity>
     <elements>
         <element name="CKMAddress" positionX="-1170" positionY="315" width="128" height="103"/>
