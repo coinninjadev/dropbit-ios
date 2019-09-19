@@ -529,6 +529,7 @@
 		A26C767D21081CB1001EB738 /* TextViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A26C767C21081CB1001EB738 /* TextViewController.swift */; };
 		A26C767F21081D5B001EB738 /* TextViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A26C767E21081D5B001EB738 /* TextViewController.storyboard */; };
 		A26C768F2108BE96001EB738 /* licenses.html in Resources */ = {isa = PBXBuildFile; fileRef = A26C768E2108BE96001EB738 /* licenses.html */; };
+		A278BB522332C3490036C7D5 /* DarkActionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = A278BB512332C3490036C7D5 /* DarkActionButton.swift */; };
 		A27DFDF022DCD0ED00C2824C /* MockNetworkManager+NewsDataRequestable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A27DFDEF22DCD0ED00C2824C /* MockNetworkManager+NewsDataRequestable.swift */; };
 		A27DFDF222DCDCD200C2824C /* WalletOverviewPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = A27DFDF122DCDCD200C2824C /* WalletOverviewPage.swift */; };
 		A2893BBE20FD4C5A00E96B07 /* BasePageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2893BBD20FD4C5A00E96B07 /* BasePageViewController.swift */; };
@@ -1580,6 +1581,7 @@
 		A26C767C21081CB1001EB738 /* TextViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextViewController.swift; sourceTree = "<group>"; };
 		A26C767E21081D5B001EB738 /* TextViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = TextViewController.storyboard; sourceTree = "<group>"; };
 		A26C768E2108BE96001EB738 /* licenses.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = licenses.html; sourceTree = "<group>"; };
+		A278BB512332C3490036C7D5 /* DarkActionButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DarkActionButton.swift; sourceTree = "<group>"; };
 		A27DFDEF22DCD0ED00C2824C /* MockNetworkManager+NewsDataRequestable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MockNetworkManager+NewsDataRequestable.swift"; sourceTree = "<group>"; };
 		A27DFDF122DCDCD200C2824C /* WalletOverviewPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletOverviewPage.swift; sourceTree = "<group>"; };
 		A2893BBD20FD4C5A00E96B07 /* BasePageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasePageViewController.swift; sourceTree = "<group>"; };
@@ -3567,6 +3569,7 @@
 				3B325D522190A37B0094897C /* SecondaryActionButton.swift */,
 				3B547A712280AEE5007B0366 /* ChangeRemoveVerificationButton.swift */,
 				A2FE19872301A09C00C2412D /* LightningActionButton.swift */,
+				A278BB512332C3490036C7D5 /* DarkActionButton.swift */,
 			);
 			path = Buttons;
 			sourceTree = "<group>";
@@ -4900,6 +4903,7 @@
 				B5437B5923160F9D0002B77C /* MockTransactionHistoryDataSource.swift in Sources */,
 				3B9A8DF52150371800C78C2C /* WalletDelegateType.swift in Sources */,
 				B56E15A32167EA26003B69D4 /* NetworkManager+PricingRequestable.swift in Sources */,
+				A278BB522332C3490036C7D5 /* DarkActionButton.swift in Sources */,
 				5B62D55D2087732700E9D466 /* SendPaymentViewModel.swift in Sources */,
 				B584767020E141BF00F5FE60 /* SettingsTableViewSectionHeader.swift in Sources */,
 				A200574F20B5FD68007074D9 /* AppCoordinator+SettingsViewControllerDelegate.swift in Sources */,
