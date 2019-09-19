@@ -183,6 +183,14 @@ extension DeviceVerificationCoordinator: DeviceVerificationViewControllerDelegat
           let body = UserIdentityBody(phoneNumber: phoneNumber)
           return self.registerUser(with: body, delegate: delegate, in: bgContext)
         }
+        .get(in: bgContext) { _ in
+          do {
+            try bgContext.saveRecursively()
+          } catch {
+            log.contextSaveError(error)
+            throw error
+          }
+        }
         .done(on: .main) { userIdentifiable in
 
           delegate.alertManager.hideActivityHUD(withDelay: self.minHudDisplayDuration) {
@@ -200,13 +208,6 @@ extension DeviceVerificationCoordinator: DeviceVerificationViewControllerDelegat
           log.error(error, message: "user registration failed")
           self.handleUserRegistrationFailure(withError: error, phoneNumber: phoneNumber, delegate: delegate)
         }
-        .finally(in: bgContext) {
-          do {
-            try bgContext.saveRecursively()
-          } catch {
-            log.error(error, message: "user registration failed")
-          }
-      }
     }
   }
 
