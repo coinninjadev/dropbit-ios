@@ -105,18 +105,6 @@ extension Thenable {
   }
 }
 
-extension PMKFinalizer {
-  public func finally(
-    on: DispatchQueue? = conf.Q.map,
-    in context: NSManagedObjectContext,
-    flags: DispatchWorkItemFlags? = nil,
-    _ body: @escaping () -> Swift.Void) {
-
-    context.performAndWait {
-      body()
-    }
-  }
-}
 extension CatchMixin {
 
   public func `catch`(
