@@ -368,7 +368,7 @@ extension ContactsViewController: NSFetchedResultsControllerDelegate {
 extension ContactsViewController: ContactCellDelegate {
 
   func didSelectContact(at indexPath: IndexPath) {
-    guard let selectionDelegate = self.selectionDelegate else { return }
+    guard let delegate = self.selectionDelegate else { return }
     self.searchBar.searchTextField?.resignFirstResponder()
     switch mode {
     case .contacts:
@@ -376,12 +376,12 @@ extension ContactsViewController: ContactCellDelegate {
       trackEvent(forSelectedNumber: cachedNumber)
       self.delegate.viewControllerDidSelectPhoneNumber(self,
                                                        cachedNumber: cachedNumber,
-                                                       validSelectionDelegate: selectionDelegate)
+                                                       validSelectionDelegate: delegate)
     case .twitter:
       let twitterUser = twitterUserDataSource.user(at: indexPath)
       self.delegate.viewController(self,
                                    didSelectTwitterUser: twitterUser,
-                                   validSelectionDelegate: selectionDelegate)
+                                   validSelectionDelegate: delegate)
     }
   }
 

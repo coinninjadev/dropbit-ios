@@ -20,7 +20,7 @@ extension AppCoordinator: LightningUpgradeCoordinatorDelegate {
       controller.dismiss(animated: true, completion: nil)
     }
     childCoordinatorDidComplete(childCoordinator: coordinator)
-    validToStartEnteringApp()
+    continueSetupFlow()
     serialQueueManager.enqueueWalletSyncIfAppropriate(type: .comprehensive, policy: .always,
                                                       completion: nil, fetchResult: nil)
   }
