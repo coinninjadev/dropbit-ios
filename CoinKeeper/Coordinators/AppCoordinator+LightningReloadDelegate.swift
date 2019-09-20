@@ -19,9 +19,7 @@ extension AppCoordinator: LightningReloadDelegate {
     let context = self.persistenceManager.viewContext
     self.buildLoadLightningPaymentData(btcAmount: btcAmount, exchangeRates: exchangeRates, in: context)
       .done { paymentData in
-        let balances = self.spendableBalanceNetPending()
-        let viewModel = WalletTransferViewModel(direction: .toLightning(paymentData), amount: amount,
-                                                walletBalances: balances, exchangeRates: exchangeRates)
+        let viewModel = WalletTransferViewModel(direction: .toLightning(paymentData), amount: amount, exchangeRates: exchangeRates)
         let walletTransferViewController = WalletTransferViewController.newInstance(delegate: self, viewModel: viewModel)
         self.navigationController.present(walletTransferViewController, animated: true, completion: nil)
     }.cauterize()
