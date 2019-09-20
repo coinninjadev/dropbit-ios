@@ -52,7 +52,7 @@ extension BalanceDataSource {
     var relevantInserts = 0, relevantUpdates = 0, relevantDeletions = 0
     context.performAndWait {
       relevantInserts = context.insertedObjects.filter { self.objectIsBalanceRelevant($0) }.count
-      relevantUpdates = context.updatedObjects.filter { self.objectIsBalanceRelevant($0) }.count
+      relevantUpdates = context.persistentUpdatedObjects.filter { self.objectIsBalanceRelevant($0) }.count
       relevantDeletions = context.deletedObjects.filter { self.objectIsBalanceRelevant($0) }.count
     }
 
