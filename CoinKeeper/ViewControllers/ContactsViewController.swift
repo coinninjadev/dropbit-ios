@@ -141,7 +141,7 @@ class ContactsViewController: PresentableViewController, StoryboardInitializable
     tableView.registerNib(cellType: TwitterUserTableViewCell.self)
     tableView.registerHeaderFooter(headerFooterType: ContactsTableViewHeader.self)
     tableView.tableFooterView = UIView()
-    searchBar.searchTextField?.text = nil
+    searchBar.defaultTextField?.text = nil
 
     tableView.delegate = self
     tableView.emptyDataSetSource = self
@@ -220,7 +220,7 @@ class ContactsViewController: PresentableViewController, StoryboardInitializable
   }
 
   private func setupSearchBar() {
-    guard let textField = searchBar.searchTextField else { return }
+    guard let textField = searchBar.defaultTextField else { return }
     setupKeyboardDoneButton(for: [textField], action: #selector(doneButtonWasPressed))
   }
 
@@ -368,20 +368,20 @@ extension ContactsViewController: NSFetchedResultsControllerDelegate {
 extension ContactsViewController: ContactCellDelegate {
 
   func didSelectContact(at indexPath: IndexPath) {
-    guard let selectionDelegate = self.selectionDelegate else { return }
-    self.searchBar.searchTextField?.resignFirstResponder()
+    guard let delegate = self.selectionDelegate else { return }
+    self.searchBar.defaultTextField?.resignFirstResponder()
     switch mode {
     case .contacts:
       let cachedNumber = frc.object(at: indexPath)
       trackEvent(forSelectedNumber: cachedNumber)
       self.delegate.viewControllerDidSelectPhoneNumber(self,
                                                        cachedNumber: cachedNumber,
-                                                       validSelectionDelegate: selectionDelegate)
+                                                       validSelectionDelegate: delegate)
     case .twitter:
       let twitterUser = twitterUserDataSource.user(at: indexPath)
       self.delegate.viewController(self,
                                    didSelectTwitterUser: twitterUser,
-                                   validSelectionDelegate: selectionDelegate)
+                                   validSelectionDelegate: delegate)
     }
   }
 

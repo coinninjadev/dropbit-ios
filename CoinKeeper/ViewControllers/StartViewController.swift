@@ -27,8 +27,8 @@ final class StartViewController: BaseViewController {
   
   weak var delegate: StartViewControllerDelegate?
 
-  @IBOutlet var restoreWalletButton: UIButton!
-  @IBOutlet var claimInviteButton: UIButton!
+  @IBOutlet var restoreWalletButton: DarkActionButton!
+  @IBOutlet var claimInviteButton: DarkActionButton!
   @IBOutlet var newWalletButton: UIButton!
 
   @IBOutlet var blockchainImage: UIImageView!
@@ -78,18 +78,8 @@ final class StartViewController: BaseViewController {
   }
 
   private func configureButtons() {
-    let attributes: [NSAttributedString.Key: Any] = [
-      .font: UIFont.regular(12),
-      .foregroundColor: UIColor.darkBlueText
-    ]
-    let attributedTitle = NSAttributedString(string: "Restore Wallet", attributes: attributes)
-    restoreWalletButton.setAttributedTitle(attributedTitle, for: .normal)
-
     claimInviteButton.setTitle("CLAIM BITCOIN FROM INVITE", for: .normal)
-    claimInviteButton.backgroundColor = .darkBlueBackground
-    claimInviteButton.applyCornerRadius(4)
-    claimInviteButton.setTitleColor(.whiteText, for: .normal)
-    claimInviteButton.titleLabel?.font = .primaryButtonTitle
+    restoreWalletButton.setTitle("Restore Wallet", for: .normal)
 
     newWalletButton.setTitle("NEW WALLET", for: .normal)
     newWalletButton.setTitleColor(.lightBlueTint, for: .normal)

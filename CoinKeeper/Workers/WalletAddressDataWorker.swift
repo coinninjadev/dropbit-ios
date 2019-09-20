@@ -707,7 +707,8 @@ class WalletAddressDataWorker: WalletAddressDataWorkerType {
     invitationId: String,
     pendingInvitation: CKMInvitation,
     in context: NSManagedObjectContext) -> Promise<Void> {
-    guard let postableObject = PayloadPostableOutgoingTransactionData(data: outgoingTransactionData) else {
+    let dataCopyWithTxid = outgoingTransactionData.copy(withTxid: txid)
+    guard let postableObject = PayloadPostableOutgoingTransactionData(data: dataCopyWithTxid) else {
       return Promise(error: CKPersistenceError.missingValue(key: "postableOutgoingTransactionData"))
     }
 

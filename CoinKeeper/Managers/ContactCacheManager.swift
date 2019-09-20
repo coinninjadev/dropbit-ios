@@ -57,6 +57,7 @@ class ContactCacheManager: ContactCacheManagerType {
   func createBackgroundContext() -> NSManagedObjectContext {
     let bgContext = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
     bgContext.parent = viewContext
+    bgContext.name = "ContactCache_BackgroundContext"
     bgContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
     return bgContext
   }

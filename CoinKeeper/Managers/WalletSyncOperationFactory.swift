@@ -67,7 +67,7 @@ class WalletSyncOperationFactory {
             .finally {
               var contextHasInsertionsOrUpdates = false
               bgContext.performAndWait {
-                contextHasInsertionsOrUpdates = (bgContext.insertedObjects.isNotEmpty || bgContext.updatedObjects.isNotEmpty)
+                contextHasInsertionsOrUpdates = (bgContext.insertedObjects.isNotEmpty || bgContext.persistentUpdatedObjects.isNotEmpty)
                 do {
                   try bgContext.saveRecursively()
                 } catch {

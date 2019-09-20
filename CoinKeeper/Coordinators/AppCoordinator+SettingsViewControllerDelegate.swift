@@ -137,8 +137,21 @@ extension AppCoordinator: SettingsViewControllerDelegate {
           localSelf.analyticsManager.track(property: MixpanelProperty(key: .wordsBackedUp, value: false))
           localSelf.analyticsManager.track(property: MixpanelProperty(key: .hasBTCBalance, value: false))
           localSelf.analyticsManager.track(property: MixpanelProperty(key: .isDropBitMeEnabled, value: false))
-        }.catch { error in
-          log.error(error, message: nil)
+        }.catch(on: .main) { error in
+          var errorDetails = error.localizedDescription
+          if let persistenceError = error as? CKPersistenceError, case .failedToBatchDeleteWallet = persistenceError {
+            errorDetails = persistenceError.errorDescription ?? "-"
+          }
+
+          UIPasteboard.general.string = "Delete wallet error: " + errorDetails
+
+          let intro = "The full error message has been copied to your phone's clipboard. Please send it to us for assistance.\n\n"
+          let fullMessage = intro + errorDetails
+          log.error(error, message: fullMessage)
+
+          let alert = localSelf.alertManager.defaultAlert(withTitle: "Delete Wallet Error", description: fullMessage)
+          viewController.present(alert, animated: true, completion: nil)
+
         }.finally {
           localOperation.finish()
       }

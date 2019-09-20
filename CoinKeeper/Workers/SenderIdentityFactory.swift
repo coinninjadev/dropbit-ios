@@ -11,7 +11,8 @@ import Foundation
 struct SenderIdentityFactory {
   let persistenceManager: PersistenceManagerType
 
-  func preferredSenderBody(forReceiverType receiverIdentityType: UserIdentityType) -> UserIdentityBody? {
+  /// Returns a UserIdentityBody appropriate for including in a wallet address request
+  func preferredAddressRequestSenderIdentity(forReceiverType receiverIdentityType: UserIdentityType) -> UserIdentityBody? {
     let twitterBody: UserIdentityBody? = senderTwitterBody()
     let phoneBody: UserIdentityBody? = senderPhoneBody()
 
@@ -21,6 +22,7 @@ struct SenderIdentityFactory {
     }
   }
 
+  /// Returns a UserIdentityBody appropriate for including in a wallet address request, the twitterBody includes a colon-separated identity
   func preferredSharedPayloadSenderIdentity(forReceiver receiver: OutgoingDropBitReceiver?) -> UserIdentityBody? {
     guard let receiver = receiver else { return nil }
     let phoneBody: UserIdentityBody? = senderPhoneBody()

@@ -63,13 +63,13 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
                           dataSource: TransactionHistoryDataSourceType) -> TransactionHistoryViewController {
     let viewController = TransactionHistoryViewController.makeFromStoryboard()
     viewController.delegate = delegate
-    dataSource.delegate = viewController
     viewController.viewModel = TransactionHistoryViewModel(delegate: viewController,
                                                            detailsDelegate: nil,
                                                            currencyManager: delegate,
                                                            deviceCountryCode: delegate.deviceCountryCode(),
                                                            transactionType: walletTxType,
                                                            dataSource: dataSource)
+    viewController.viewModel.dataSource.delegate = viewController
     return viewController
   }
 
@@ -94,7 +94,6 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
     transactionHistoryWithBalanceView.delegate = self
     lightningTransactionHistoryEmptyBalanceView.delegate = delegate
     emptyStateBackgroundView.isHidden = false
-    lockedLightningView.delegate = self
     emptyStateBackgroundView.backgroundColor = .whiteBackground
     if viewModel.walletTransactionType == .onChain { lockedLightningView.isHidden = true }
 
@@ -261,12 +260,4 @@ extension TransactionHistoryViewController: DZNEmptyDataSetDelegate, DZNEmptyDat
       return 0
     }
   }
-}
-
-extension TransactionHistoryViewController: LockedLightningViewDelegate {
-
-  func viewDidAskToUnlockLightning() {
-    delegate.openTwitterURL(withMessage: "Hey @dropbitapp, you should unlock my new lighting because...")
-  }
-
 }

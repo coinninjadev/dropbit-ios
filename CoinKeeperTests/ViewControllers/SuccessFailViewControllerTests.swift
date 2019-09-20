@@ -58,21 +58,20 @@ class SuccessFailViewControllerTests: XCTestCase {
 
   func testActionButtonTellsDelegateUponSuccess() {
     self.sut.setMode(.success)
-
     self.sut.actionButton.sendActions(for: .touchUpInside)
-
     XCTAssertTrue(mockCoordinator.wasToldAboutSuccess, "success case should tell delegate")
   }
 
   func testActionButtonCallsRetryHandlerUponFailure() {
+    let expectation = XCTestExpectation(description: "testRetryHandleFailure")
     self.sut.setMode(.failure)
-    var handlerExecuted = false
-    self.sut.action = { handlerExecuted = true }
+    self.sut.action = {
+      XCTAssertEqual(self.sut.viewModel.mode, .pending, "mode should change to pending upon failure")
+      expectation.fulfill()
+    }
 
     self.sut.actionButton.sendActions(for: .touchUpInside)
-
-    XCTAssertTrue(handlerExecuted, "retryRequestCompletion should execute upon failure")
-    XCTAssertEqual(self.sut.viewModel.mode, .pending, "mode should change to pending upon failure")
+    wait(for: [expectation], timeout: 10.0)
   }
 
   // MARK: mock coordinator
