@@ -28,7 +28,7 @@ class WalletSyncOperationFactory {
     self.delegate = delegate
   }
 
-  func createOnChainOnlySync(in context: NSManagedObjectContext) -> Promise<Void> {
+  func performOnChainOnlySync(in context: NSManagedObjectContext) -> Promise<Void> {
     guard let queueDelegate = self.delegate else {
       return Promise(error: SyncRoutineError.missingQueueDelegate)
     }
