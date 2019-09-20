@@ -31,7 +31,8 @@ enum TransferAmount {
   }
 }
 
-protocol WalletTransferViewControllerDelegate: ViewControllerDismissable, PaymentBuildingDelegate, PaymentSendingDelegate, URLOpener {
+protocol WalletTransferViewControllerDelegate: ViewControllerDismissable
+& PaymentBuildingDelegate & PaymentSendingDelegate & URLOpener & BalanceDataSource {
 
   func viewControllerNeedsTransactionData(_ viewController: UIViewController,
                                           btcAmount: NSDecimalNumber,
@@ -51,7 +52,7 @@ enum TransferDirection {
   case toOnChain(NSDecimalNumber?) //withdraw
 }
 
-class WalletTransferViewController: PresentableViewController, StoryboardInitializable, CurrencySwappableAmountEditor {
+class WalletTransferViewController: PresentableViewController, StoryboardInitializable, CurrencySwappableAmountEditor, PaymentAmountValidatable {
 
   var rateManager: ExchangeRateManager = ExchangeRateManager()
 
@@ -79,6 +80,10 @@ class WalletTransferViewController: PresentableViewController, StoryboardInitial
   private(set) weak var delegate: WalletTransferViewControllerDelegate!
   var currencyValueManager: CurrencyValueDataSourceType? {
     return delegate as? CurrencyValueDataSourceType
+  }
+
+  var balanceDataSource: BalanceDataSource? {
+    return delegate
   }
 
   override func viewDidLoad() {
@@ -196,11 +201,12 @@ class WalletTransferViewController: PresentableViewController, StoryboardInitial
 
 extension WalletTransferViewController: ConfirmViewDelegate {
   func viewDidConfirm() {
+    let walletBalances = balanceDataSource?.balancesNetPending() ?? .empty
     switch viewModel.direction {
     case .toLightning(let data):
       guard let data = data else { return }
       do {
-        try LightningWalletAmountValidator(balanceNetPending: viewModel.walletBalances).validate(value: viewModel.generateCurrencyConverter())
+        try LightningWalletAmountValidator(balancesNetPending: walletBalances).validate(value: viewModel.generateCurrencyConverter())
         delegate.viewControllerDidConfirmLoad(self, paymentData: data)
       } catch {
         delegate.viewControllerNetworkError(error)
@@ -208,7 +214,8 @@ extension WalletTransferViewController: ConfirmViewDelegate {
     case .toOnChain(let btcAmount):
       guard let btcAmount = btcAmount else { return }
       do {
-        try CurrencyAmountValidator(balanceNetPending: viewModel.walletBalances).validate(value: viewModel.generateCurrencyConverter())
+        let lightningBalanceValidator = CurrencyAmountValidator(balancesNetPending: walletBalances, balanceToCheck: .lightning)
+        try lightningBalanceValidator.validate(value: viewModel.generateCurrencyConverter())
         delegate.viewControllerDidConfirmWithdraw(self, btcAmount: btcAmount)
       } catch {
         delegate.viewControllerNetworkError(error)

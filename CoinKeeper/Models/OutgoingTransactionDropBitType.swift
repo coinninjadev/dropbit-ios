@@ -22,6 +22,14 @@ enum OutgoingDropBitReceiver {
       return nil
     }
   }
+
+  var userIdentityType: UserIdentityType {
+    switch self {
+    case .phone:    return .phone
+    case .twitter:  return .twitter
+    }
+  }
+
 }
 
 extension OutgoingDropBitReceiver {

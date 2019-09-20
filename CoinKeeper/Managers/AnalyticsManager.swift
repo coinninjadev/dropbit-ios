@@ -21,9 +21,12 @@ enum AnalyticsManagerPropertiesType: String {
   case hasReceivedDropBit = "Has Received DropBit"
   case isDropBitMeEnabled = "DropBitMe Enabled"
   case relativeWalletRange = "Relative Wallet Range"
-  case v1Wallet = "v1Wallet"
   case platform = "platform"
-  case walletVersion = "WalletVersion"
+  case walletVersion = "Wallet Version"
+  case lightningUpgradeStarted = "Lightning Upgrade Started"
+  case lightningUpgradeCompleted = "Lightning Upgrade Completed"
+  case lightningUpgradedFromRestore = "Lightning Upgrade From Restore"
+  case lightningUpgradedFunds = "Lightning Upgraded Funds"
 }
 
 enum AnalyticsManagerEventType: String {
@@ -105,6 +108,7 @@ enum AnalyticsManagerEventType: String {
   case priceButtonPressed = "PriceButtonPressed"
   case chartsOpened = "ChartsOpened"
   case newsArticleOpened = "NewsArticleOpened"
+  case enteredDeactivatedWords = "EnteredDeactivatedWords"
 
   var id: String {
     return self.rawValue

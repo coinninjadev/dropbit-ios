@@ -18,8 +18,11 @@ class TransactionHistoryDetailsViewControllerTests: XCTestCase {
   override func setUp() {
     super.setUp()
     mockCoordinator = MockCoordinator()
-    sut = TransactionHistoryDetailsViewController.makeFromStoryboard()
-    sut.delegate = mockCoordinator
+    let dataSource = MockTransactionHistoryOnChainDataSource()
+    sut = TransactionHistoryDetailsViewController.newInstance(withDelegate: mockCoordinator,
+                                                              walletTxType: .onChain,
+                                                              selectedIndexPath: IndexPath(item: 0, section: 0),
+                                                              dataSource: dataSource)
     _ = sut.view
   }
 
@@ -46,12 +49,30 @@ class TransactionHistoryDetailsViewControllerTests: XCTestCase {
   }
 
   func testTappingQuestionMarkButtonTellsDelegate() {
-    sut.didTapQuestionMark(detailCell: TransactionHistoryDetailBaseCell())
+    let url = CoinNinjaUrlFactory.buildUrl(for: .detailsTooltip)!
+    sut.didTapQuestionMarkButton(detailCell: TransactionHistoryDetailBaseCell(), with: url)
     XCTAssertTrue(mockCoordinator.wasAskedToOpenURL)
   }
 
   // MARK: private class
   class MockCoordinator: TransactionHistoryDetailsViewControllerDelegate, URLOpener {
+
+    let currencyController: CurrencyController = CurrencyController(fiatCurrency: .USD)
+
+    func viewControllerShouldSeeTransactionDetails(for viewModel: OldTransactionDetailCellViewModel) { }
+
+    func latestExchangeRates(responseHandler: (ExchangeRates) -> Void) {
+      responseHandler(CurrencyConverter.sampleRates)
+    }
+
+    func latestFees() -> Promise<Fees> {
+      return Promise { _ in }
+    }
+
+    func deviceCountryCode() -> Int? {
+      return 1
+    }
+
     var wasAskedToDismissDetailsController = false
     func viewControllerDidDismissTransactionDetails(_ viewController: UIViewController) {
       wasAskedToDismissDetailsController = true

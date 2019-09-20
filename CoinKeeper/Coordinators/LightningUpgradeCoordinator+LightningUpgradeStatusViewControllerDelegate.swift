@@ -57,6 +57,7 @@ extension LightningUpgradeCoordinator: LightningUpgradeStatusViewControllerDeleg
 
   func viewController(_ viewController: LightningUpgradeStatusViewController, broadcast metadata: CNBTransactionMetadata) -> Promise<String> {
     return parent.networkManager.broadcastTx(metadata: metadata)
+      .get { _ in self.parent.analyticsManager.track(property: MixpanelProperty(key: .lightningUpgradedFunds, value: true)) }
   }
 
   func viewController(_ viewController: LightningUpgradeStatusViewController, failedToUpgradeWithError error: Error) {

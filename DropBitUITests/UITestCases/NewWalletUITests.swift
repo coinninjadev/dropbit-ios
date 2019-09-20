@@ -22,9 +22,6 @@ class NewWalletUITests: UITestCase, UITestRecoverWordBackupAutomatable {
     DeviceVerificationPage().tapSkip()
     PushInfoPage()?.dismiss()
 
-    let toastLabel = bannerToast()
-    toastLabel.swipeUp()
-
     WalletOverviewPage().tapMenu()
 
     let backupWalletCell = app.staticTexts["Back Up Wallet"]
@@ -32,18 +29,6 @@ class NewWalletUITests: UITestCase, UITestRecoverWordBackupAutomatable {
     XCTAssert(backupWalletCellExists)
 
     backupWalletCell.tap()
-
-    performBackup()
-  }
-
-  func testSkippingRecoveryWordsBannerIsActionable() {
-    StartPage().tapNewWallet()
-    PinCreationPage().enterSimplePin(digit: 1, times: 6)
-    DeviceVerificationPage().tapSkip()
-    PushInfoPage()?.dismiss()
-
-    let toastLabel = bannerToast()
-    toastLabel.tap()
 
     performBackup()
   }

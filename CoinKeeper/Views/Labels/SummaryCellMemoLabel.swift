@@ -11,7 +11,7 @@ import UIKit
 class SummaryCellMemoLabel: UILabel {
   override func awakeFromNib() {
     super.awakeFromNib()
-    font = .semiBold(16)
+    font = .semiBold(14)
     textColor = .darkBlueText
     isHidden = true
     numberOfLines = 1

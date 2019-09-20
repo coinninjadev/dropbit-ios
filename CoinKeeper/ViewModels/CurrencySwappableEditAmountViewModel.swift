@@ -28,7 +28,7 @@ extension DualAmountDisplayable {
   /// hidePrimaryZero will return the currency symbol only if primary amount is zero, useful during editing
   func dualAmountLabels(hidePrimaryZero: Bool = false, walletTransactionType: WalletTransactionType) -> DualAmountLabels {
     let converter = generateCurrencyConverter()
-    return dualAmountLabels(withConverter: converter, walletTransactionType: walletTransactionType)
+    return dualAmountLabels(withConverter: converter, walletTransactionType: walletTransactionType, hidePrimaryZero: hidePrimaryZero)
   }
 
   func dualAmountLabels(
@@ -45,8 +45,18 @@ extension DualAmountDisplayable {
     var primaryText = CKCurrencyFormatter.string(for: primaryAmount,
                                                  currency: primaryCurrency,
                                                  walletTransactionType: walletTransactionType)
+
     if hidePrimaryZero && fromAmount == .zero {
-      primaryText = primaryCurrency.symbol
+      switch walletTransactionType {
+      case .lightning:
+        if primaryCurrency == .USD {
+          primaryText = primaryCurrency.symbol
+        } else {
+          primaryText = primaryCurrency.integerSymbol
+        }
+      case .onChain:
+        primaryText = primaryCurrency.symbol
+      }
     }
 
     let secondary = CKCurrencyFormatter.attributedString(for: secondaryAmount,
@@ -287,7 +297,7 @@ extension CurrencySwappableEditAmountViewModel: UITextFieldDelegate {
   }
 
   private func isNotDeletingOrEditingCurrencySymbol(for amount: String, in range: NSRange) -> Bool {
-    return (amount != primaryCurrency.symbol || range.length == 0)
+    return (amount != primaryCurrency.symbol || range.length == 0 || amount != primaryCurrency.integerSymbol)
   }
 
 }

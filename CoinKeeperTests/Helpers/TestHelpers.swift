@@ -23,11 +23,7 @@ class TestHelpers {
   }
 
   static func mockInvalidBitcoinAddress() -> String {
-    #if DEBUG
-    return "15PCeM6EN7ihm4QzhVfZCeZis7uggr5RRJ" //valid mainnet is invalid in debug
-    #else
-    return "2N9yokkV146gEoHT6sgUNtisEd7GH93PQ8Q" //valid testnet is invalid in prod
-    #endif
+    return "45PCeM6EN7ihm4QzhVfZCeZis7uggr5RRJ"
   }
 
   static func mockInvalidBech32Address() -> String {

@@ -15,10 +15,6 @@ protocol TransactionPopoverDetailsViewControllerDelegate: ViewControllerDismissa
   func viewControllerDidTapShareTransactionButton()
 }
 
-protocol TransactionPopoverDisplayable: AnyObject {
-
-}
-
 class TransactionPopoverDetailsViewController: BaseViewController, StoryboardInitializable, PopoverViewControllerType {
 
   @IBOutlet var containerView: UIView!
@@ -39,6 +35,7 @@ class TransactionPopoverDetailsViewController: BaseViewController, StoryboardIni
 
   private let height: CGFloat = 410
 
+  var viewModel: OldTransactionDetailCellViewModel?
   override func viewDidLoad() {
     super.viewDidLoad()
     setupUI()
@@ -46,8 +43,10 @@ class TransactionPopoverDetailsViewController: BaseViewController, StoryboardIni
 
   private(set) weak var delegate: TransactionPopoverDetailsViewControllerDelegate!
 
-  static func newInstance(delegate: TransactionPopoverDetailsViewControllerDelegate) -> TransactionPopoverDetailsViewController {
+  static func newInstance(delegate: TransactionPopoverDetailsViewControllerDelegate,
+                          viewModel: OldTransactionDetailCellViewModel) -> TransactionPopoverDetailsViewController {
     let vc = TransactionPopoverDetailsViewController.makeFromStoryboard()
+    vc.viewModel = viewModel
     vc.delegate = delegate
     return vc
   }
@@ -60,20 +59,22 @@ class TransactionPopoverDetailsViewController: BaseViewController, StoryboardIni
     shareTransactionButton.setTitleColor(.lightBlueTint, for: .normal)
     shareTransactionButton.titleLabel?.font = .semiBold(14)
     containerView.applyCornerRadius(15)
+    setupViewWithModel()
     addDismissibleTapToBackground()
     let title = "VIEW ON BLOCK EXPLORER"
     seeTransactionDetailsButton.setTitle(title, for: .normal)
   }
 
-  func configure(with values: TransactionPopoverDisplayable) {
+  private func setupViewWithModel() {
+    guard let viewModel = viewModel else { return }
 
-//    whenSentAmountLabel.text = viewModel.breakdownSentAmountLabel
-//    networkFeeAmountLabel.text = viewModel.breakdownFeeAmountLabel
-//    confirmationsAmountLabel.text = viewModel.confirmations >= 6 ? "6+" :
-//      String(describing: viewModel.confirmations)
-//    statusLabel.text = viewModel.statusDescription
-//    txidLabel.text = viewModel.transaction?.txid
-//    transactionDirectionImageView.image = viewModel.imageForTransactionDirection
+    whenSentAmountLabel.text = viewModel.breakdownSentAmountLabel
+    networkFeeAmountLabel.text = viewModel.breakdownFeeAmountLabel
+    confirmationsAmountLabel.text = viewModel.confirmations >= 6 ? "6+" :
+      String(describing: viewModel.confirmations)
+    statusLabel.text = viewModel.statusDescription
+    txidLabel.text = viewModel.transaction?.txid
+    transactionDirectionImageView.image = viewModel.imageForTransactionDirection
   }
 
   func dismissPopoverViewController() {
@@ -89,17 +90,19 @@ class TransactionPopoverDetailsViewController: BaseViewController, StoryboardIni
   }
 
   @IBAction func viewControllerDidTapTransactionDetailsButton() {
-//    guard let txid = viewModel?.transaction?.txid, let url = CoinNinjaUrlFactory.buildUrl(for: .transaction(id: txid)) else { return }
-//    delegate.viewControllerDidTapTransactionDetailsButton(with: url)
+    guard let txid = viewModel?.transaction?.txid,
+      let url = CoinNinjaUrlFactory.buildUrl(for: .transaction(id: txid)) else { return }
+    delegate.viewControllerDidTapTransactionDetailsButton(with: url)
   }
 
   @IBAction func viewControllerDidTapShareTransactionButton() {
-//    delegate.viewControllerDidTapShareTransactionButton()
-//    guard let transaction = viewModel?.transaction, transaction.txidIsActualTxid,
-//      let url = CoinNinjaUrlFactory.buildUrl(for: .transaction(id: transaction.txid)) else { return }
-//
-//    let activityViewController = UIActivityViewController(activityItems: [url.absoluteString], applicationActivities: nil)
-//    present(activityViewController, animated: true, completion: nil)
+    delegate.viewControllerDidTapShareTransactionButton()
+    guard let transaction = viewModel?.transaction, transaction.txidIsActualTxid,
+      let url = CoinNinjaUrlFactory.buildUrl(for: .transaction(id: transaction.txid)) else { return }
+
+    let activityViewController = UIActivityViewController(activityItems: [url.absoluteString],
+                                                          applicationActivities: nil)
+    present(activityViewController, animated: true, completion: nil)
   }
 
   @IBAction func closeButtonTapped() {

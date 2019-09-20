@@ -45,8 +45,8 @@ extension AppCoordinator: TransactionHistoryViewControllerDelegate {
     serialQueueManager.enqueueOptionalIncrementalSync()
   }
 
-  func viewControllerShouldSeeTransactionDetails(for object: TransactionDetailCellDisplayable) {
-    let viewController = TransactionPopoverDetailsViewController.newInstance(delegate: self)
+  func viewControllerShouldSeeTransactionDetails(for viewModel: OldTransactionDetailCellViewModel) {
+    let viewController = TransactionPopoverDetailsViewController.newInstance(delegate: self, viewModel: viewModel)
     viewController.modalPresentationStyle = .overFullScreen
     viewController.modalTransitionStyle = .crossDissolve
     navigationController.topViewController()?.present(viewController, animated: true, completion: nil)
@@ -71,23 +71,11 @@ extension AppCoordinator: TransactionHistoryViewControllerDelegate {
   }
 
   func viewController(_ viewController: TransactionHistoryViewController, didSelectItemAtIndexPath indexPath: IndexPath) {
-    //TODO:
-//    switch viewController.viewModel.walletTransactionType {
-//    case .lightning:
-//      let controller = TransactionHistoryDetailsViewController.newInstance(withDelegate: self,
-//                                                                           fetchedResultsController: viewController.lightningFetchResultsController,
-//                                                                           selectedIndexPath: indexPath,
-//                                                                           viewModelForIndexPath: { viewController.detailViewModel(at: $0) },
-//                                                                           urlOpener: self)
-//      viewController.present(controller, animated: true, completion: nil)
-//    case .onChain:
-//      let controller = TransactionHistoryDetailsViewController.newInstance(withDelegate: self,
-//                                                                           fetchedResultsController: viewController.onChainFetchResultsController,
-//                                                                           selectedIndexPath: indexPath,
-//                                                                           viewModelForIndexPath: { viewController.detailViewModel(at: $0) },
-//                                                                           urlOpener: self)
-//      viewController.present(controller, animated: true, completion: nil)
-//    }
+    let controller = TransactionHistoryDetailsViewController.newInstance(withDelegate: self,
+                                                                         walletTxType: viewController.viewModel.walletTransactionType,
+                                                                         selectedIndexPath: indexPath,
+                                                                         dataSource: viewController.viewModel.dataSource)
+    viewController.present(controller, animated: true, completion: nil)
   }
 
   func viewControllerDidDismissTransactionDetails(_ viewController: UIViewController) {
@@ -95,11 +83,18 @@ extension AppCoordinator: TransactionHistoryViewControllerDelegate {
   }
 
   func summaryHeaderType(for viewController: UIViewController) -> SummaryHeaderType? {
-    if wordsBackedUp {
+    if wordsBackedUp || backupWarningDelayInEffect {
       return nil
     } else {
       return .backUpWallet
     }
+  }
+
+  private var backupWarningDelayInEffect: Bool {
+    if uiTestIsInProgress { return false }
+    guard let firstOpen = self.persistenceManager.brokers.activity.firstOpenDate else { return true }
+    let delayEndDate = firstOpen.addingTimeInterval(.oneDay)
+    return delayEndDate > Date()
   }
 
   func viewControllerDidSelectSummaryHeader(_ viewController: UIViewController) {

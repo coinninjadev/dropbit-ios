@@ -135,6 +135,7 @@
                                 <constraints>
                                     <constraint firstItem="a8d-mx-ccw" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="WMk-67-C57" secondAttribute="leading" constant="8" id="Gu7-0B-hvs"/>
                                     <constraint firstItem="zkf-RY-3Ei" firstAttribute="centerX" secondItem="vN5-8O-Mw3" secondAttribute="centerX" id="MYg-po-i2s"/>
+                                    <constraint firstItem="a8d-mx-ccw" firstAttribute="top" secondItem="vN5-8O-Mw3" secondAttribute="bottom" constant="19" id="ajd-lx-08W"/>
                                     <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="a8d-mx-ccw" secondAttribute="bottom" constant="8" id="bAw-AS-7GL"/>
                                     <constraint firstItem="a8d-mx-ccw" firstAttribute="centerX" secondItem="zkf-RY-3Ei" secondAttribute="centerX" id="eQ4-F6-Qy5"/>
                                     <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="a8d-mx-ccw" secondAttribute="trailing" constant="8" id="nuf-KQ-0iG"/>

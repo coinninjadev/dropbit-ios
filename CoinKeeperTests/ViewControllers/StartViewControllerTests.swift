@@ -55,11 +55,9 @@ class StartViewControllerTests: XCTestCase {
 
   func testRestoreWalletButtonInitialState() {
     let expectedText = "Restore Wallet"
-    let expectedColor = UIColor.darkBlueText
 
-    let buttonTitleText = self.sut.restoreWalletButton.attributedTitle(for: .normal)?.string ?? ""
+    let buttonTitleText = self.sut.restoreWalletButton.titleLabel?.text ?? ""
     XCTAssertTrue(buttonTitleText.contains(expectedText), "restoreWalletButton text should match")
-    XCTAssertEqual(self.sut.restoreWalletButton.titleLabel?.textColor, expectedColor, "restoreWalletButton color should match")
     XCTAssertTrue(self.sut.restoreWalletButton.isHidden, "restoreWalletButton should be hidden")
     XCTAssertEqual(self.sut.restoreWalletButton.alpha, 0, "restoreWalletButton alpha should be 0")
 

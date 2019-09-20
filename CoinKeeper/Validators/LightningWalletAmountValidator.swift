@@ -38,7 +38,7 @@ enum LightningWalletAmountValidatorError: ValidatorTypeError {
     case .invalidAmount:
       return "Unable to convert amount to fiat, stopping"
     case .walletMaximum:
-      return "Unable to load lightning wallet, above maximum"
+      return "Unable to load Lightning wallet, above maximum"
     case .reloadMinimum:
       return "Funds amount too low for reload"
     }
@@ -50,10 +50,10 @@ class LightningWalletAmountValidator: ValidatorType<CurrencyConverter> {
   static let maxWalletValue = Money(amount: NSDecimalNumber(value: 500), currency: .USD)
   static let minReloadAmount = Money(amount: NSDecimalNumber(value: 5), currency: .USD)
 
-  let balanceNetPending: WalletBalances
+  let balancesNetPending: WalletBalances
 
-  init(balanceNetPending: WalletBalances) {
-    self.balanceNetPending = balanceNetPending
+  init(balancesNetPending: WalletBalances) {
+    self.balancesNetPending = balancesNetPending
     super.init()
   }
 
@@ -70,8 +70,8 @@ class LightningWalletAmountValidator: ValidatorType<CurrencyConverter> {
     default:          break
     }
 
-    if btcValue > balanceNetPending.onChain {
-      let spendableMoney = Money(amount: balanceNetPending.onChain, currency: .BTC)
+    if btcValue > balancesNetPending.onChain {
+      let spendableMoney = Money(amount: balancesNetPending.onChain, currency: .BTC)
       throw CurrencyAmountValidatorError.usableBalance(spendableMoney)
     }
 
@@ -80,7 +80,7 @@ class LightningWalletAmountValidator: ValidatorType<CurrencyConverter> {
     }
 
     if usdAmount > LightningWalletAmountValidator.maxWalletValue.amount ||
-      btcValue + balanceNetPending.lightning > LightningWalletAmountValidator.maxWalletValue.amount {
+      btcValue + balancesNetPending.lightning > LightningWalletAmountValidator.maxWalletValue.amount {
       throw LightningWalletAmountValidatorError.walletMaximum
     }
 

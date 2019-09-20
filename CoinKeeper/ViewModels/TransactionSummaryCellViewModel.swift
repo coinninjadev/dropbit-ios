@@ -115,7 +115,8 @@ extension CKMTransaction: TransactionSummaryCellViewModelObject {
   }
 
   func counterpartyConfig(for deviceCountryCode: Int) -> TransactionCellCounterpartyConfig? {
-    let maybeTwitter = self.invitation?.counterpartyTwitterContact.flatMap { TransactionCellTwitterConfig(contact: $0) }
+    let relevantTwitterContact = self.invitation?.counterpartyTwitterContact ?? self.twitterContact
+    let maybeTwitter = relevantTwitterContact.flatMap { TransactionCellTwitterConfig(contact: $0) }
     let maybeName = priorityCounterpartyName(with: maybeTwitter, invitation: invitation, phoneNumber: phoneNumber)
     let maybeNumber = priorityPhoneNumber(for: deviceCountryCode, invitation: invitation, phoneNumber: phoneNumber)
     return TransactionCellCounterpartyConfig(failableWithName: maybeName,
@@ -147,21 +148,25 @@ extension CKMTransaction: TransactionSummaryCellViewModelObject {
   }
 
   /// Returns first outgoing vout address, otherwise tx must be sent to self
-  private var counterpartyReceiverAddressId: String? {
+  var counterpartyReceiverAddressId: String? {
+    if isIncoming {
+      return invitation?.addressProvidedToSender
+    }
+
     if let addressId = counterpartyAddress?.addressId {
       return addressId
-    } else {
-
-      // ourAddresses are addresses we own by relationship to AddressTransactionSummary objects
-      guard let context = self.managedObjectContext else { return nil }
-      let ourAddressStrings = addressTransactionSummaries.map { $0.addressId }
-      let ourAddresses = CKMAddress.find(withAddresses: ourAddressStrings, in: context)
-      let ourAddressIds = ourAddresses.map { $0.addressId }.asSet()
-
-      // firstOutgoing is first vout addressID where ourAddresses doesn't appear in vout's addressIDs
-      let firstOutgoing = vouts.compactMap { self.firstVoutAddress(from: Set($0.addressIDs), notMatchingAddresses: ourAddressIds) }.first
-      return firstOutgoing
     }
+
+    // ourAddresses are addresses we own by relationship to AddressTransactionSummary objects
+    guard let context = self.managedObjectContext else { return nil }
+    let ourAddressStrings = addressTransactionSummaries.map { $0.addressId }
+    let ourAddresses = CKMAddress.find(withAddresses: ourAddressStrings, in: context)
+    let ourAddressIds = ourAddresses.map { $0.addressId }.asSet()
+
+    // firstOutgoing is first vout addressID where ourAddresses doesn't appear in vout's addressIDs
+    let firstOutgoing = vouts.compactMap { self.firstVoutAddress(from: Set($0.addressIDs), notMatchingAddresses: ourAddressIds) }.first
+
+    return firstOutgoing
   }
 
   /// Returns nil if any of our addresses are in vout addresses
@@ -188,6 +193,69 @@ extension CKMTransaction: TransactionSummaryCellViewModelObject {
     }
   }
 
+}
+
+//TODO: remove/merge this protocol with new view model protocols
+protocol CounterpartyRepresentable: AnyObject {
+
+  var isIncoming: Bool { get }
+  var counterpartyName: String? { get }
+  var counterpartyAddressId: String? { get }
+
+  func counterpartyDisplayIdentity(deviceCountryCode: Int?) -> String?
+
+}
+
+extension CounterpartyRepresentable {
+
+  func counterpartyDisplayDescription(deviceCountryCode: Int?) -> String? {
+    if let name = counterpartyName {
+      return name
+    } else if let identity = counterpartyDisplayIdentity(deviceCountryCode: deviceCountryCode) {
+      return identity
+    } else {
+      return counterpartyAddressId
+    }
+  }
+
+}
+
+extension CKMTransaction: CounterpartyRepresentable {
+
+  var counterpartyName: String? {
+    if let twitterCounterparty = invitation?.counterpartyTwitterContact {
+      return twitterCounterparty.formattedScreenName
+    } else if let inviteName = invitation?.counterpartyName {
+      return inviteName
+    } else {
+      let relevantNumber = phoneNumber ?? invitation?.counterpartyPhoneNumber
+      return relevantNumber?.counterparty?.name
+    }
+  }
+
+  func counterpartyDisplayIdentity(deviceCountryCode: Int?) -> String? {
+    if let counterpartyTwitterContact = self.twitterContact {
+      return counterpartyTwitterContact.formattedScreenName  // should include @-sign
+    }
+
+    if let relevantPhoneNumber = invitation?.counterpartyPhoneNumber ?? phoneNumber {
+      let globalPhoneNumber = relevantPhoneNumber.asGlobalPhoneNumber
+
+      var format: PhoneNumberFormat = .international
+      if let code = deviceCountryCode {
+        format = (code == globalPhoneNumber.countryCode) ? .national : .international
+      }
+      let formatter = CKPhoneNumberFormatter(format: format)
+
+      return try? formatter.string(from: globalPhoneNumber)
+    }
+
+    return nil
+  }
+
+  var counterpartyAddressId: String? {
+    return counterpartyReceiverAddressId
+  }
 }
 
 typealias Satoshis = Int

@@ -21,7 +21,12 @@ protocol TransactionHistoryDataSourceType: AnyObject {
                                   rates: ExchangeRates,
                                   currencies: CurrencyPair,
                                   deviceCountryCode: Int) -> TransactionSummaryCellDisplayable
-  //TODO: func detailCellDisplayableItem(at indexPath: IndexPath, rates: ExchangeRates, currencies: CurrencyPair) -> TransactionDetailCellDisplayable
+
+  func detailCellViewModel(at indexPath: IndexPath,
+                           rates: ExchangeRates,
+                           currencies: CurrencyPair,
+                           deviceCountryCode: Int) -> OldTransactionDetailCellViewModel?
+
   func numberOfSections() -> Int
   func numberOfItems(inSection section: Int) -> Int
   var walletTransactionType: WalletTransactionType { get }
@@ -61,6 +66,19 @@ class TransactionHistoryOnChainDataSource: NSObject, TransactionHistoryDataSourc
                                            fiatCurrency: currencies.fiat,
                                            exchangeRates: rates,
                                            deviceCountryCode: deviceCountryCode)
+  }
+
+  func detailCellViewModel(at indexPath: IndexPath,
+                           rates: ExchangeRates,
+                           currencies: CurrencyPair,
+                           deviceCountryCode: Int) -> OldTransactionDetailCellViewModel? {
+    let transaction = frc.object(at: indexPath)
+    return OldTransactionDetailCellViewModel(
+      transaction: transaction,
+      rates: rates,
+      primaryCurrency: currencies.primary,
+      deviceCountryCode: deviceCountryCode
+    )
   }
 
   func numberOfSections() -> Int {
@@ -115,6 +133,13 @@ class TransactionHistoryLightningDataSource: NSObject, TransactionHistoryDataSou
                                            fiatCurrency: currencies.fiat,
                                            exchangeRates: rates,
                                            deviceCountryCode: deviceCountryCode)
+  }
+
+  func detailCellViewModel(at indexPath: IndexPath,
+                           rates: ExchangeRates,
+                           currencies: CurrencyPair,
+                           deviceCountryCode: Int) -> OldTransactionDetailCellViewModel? {
+    return nil
   }
 
   private func viewModelObject(for walletEntry: CKMWalletEntry) -> TransactionSummaryCellViewModelObject {

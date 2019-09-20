@@ -16,6 +16,15 @@ class ActivityBroker: CKPersistenceBroker, ActivityBrokerType {
     set { userDefaultsManager.set(!newValue, for: .firstTimeOpeningApp) }
   }
 
+  var firstOpenDate: Date? {
+    return userDefaultsManager.date(for: .firstOpenDate)
+  }
+
+  func setFirstOpenDateIfNil(date: Date) {
+    guard firstOpenDate == nil else { return }
+    userDefaultsManager.set(date, for: .firstOpenDate)
+  }
+
   func setLastLoginTime() {
     userDefaultsManager.set(Date().timeIntervalSince1970, for: .lastTimeEnteredBackground)
   }

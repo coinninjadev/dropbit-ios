@@ -247,6 +247,8 @@ class AppCoordinator: CoordinatorType {
     networkManager.start()
     connectionManager.delegate = self
 
+    persistenceManager.brokers.activity.setFirstOpenDateIfNil(date: Date())
+
     // fetch transaction information for receive and change addresses, update server addresses
     UIApplication.shared.setMinimumBackgroundFetchInterval(.oneHour)
 
@@ -290,6 +292,10 @@ class AppCoordinator: CoordinatorType {
     }
 
     twitterAccessManager.uiTestArguments = uiTestArguments
+  }
+
+  var uiTestIsInProgress: Bool {
+    return uiTestArguments.contains(.uiTestInProgress)
   }
 
   func startChildCoordinator(childCoordinator: ChildCoordinatorType) {
@@ -393,6 +399,19 @@ class AppCoordinator: CoordinatorType {
     guard let topViewController = (navigationController.topViewController() as? MMDrawerController),
       let walletViewController = topViewController.centerViewController as? WalletOverviewViewController else { return }
     walletViewController.balanceContainer.toggleChartAndBalance()
+  }
+
+  func showLightningLockAlertIfNecessary() -> Bool {
+    let shouldShowError = persistenceManager.brokers.preferences.selectedWalletTransactionType == .lightning &&
+    BaseViewController.lockStatus == .locked
+
+    if shouldShowError {
+      navigationController.present(alertManager.defaultAlert(withTitle: "Error",
+                                                             description: "Your Lightning wallet is currently locked."),
+                                   animated: true, completion: nil)
+    }
+
+    return !shouldShowError
   }
 
 }

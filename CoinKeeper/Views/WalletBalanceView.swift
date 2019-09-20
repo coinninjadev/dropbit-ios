@@ -79,6 +79,7 @@ class WalletBalanceView: UIView {
   }
 
   @IBAction func transferButtonWasTouched() {
+    guard BaseViewController.lockStatus != .locked else { return }
     delegate?.transferButtonWasTouched()
   }
 

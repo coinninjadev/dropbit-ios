@@ -40,9 +40,14 @@ extension AppCoordinator: DeviceVerificationCoordinatorDelegate {
           of DropBit for enhanced security, lower transaction fees, and Lightning support. Please enter the new
           recovery words you were given upon upgrading, or create a new wallet.
           """.removingMultilineLineBreaks()
+          self.analyticsManager.track(event: .enteredDeactivatedWords, with: nil)
           self.persistenceManager.keychainManager.storeSynchronously(anyValue: nil, key: .walletWords)
           self.persistenceManager.keychainManager.storeSynchronously(anyValue: nil, key: .walletWordsV2)
           self.persistenceManager.keychainManager.storeSynchronously(anyValue: false, key: .walletWordsBackedUp)
+          try context.performThrowingAndWait {
+            self.persistenceManager.brokers.wallet.removeWalletId(in: context)
+            try context.saveRecursively()
+          }
           let startOverAction = AlertActionConfiguration(title: "Start Over", style: .cancel, action: {
             let controller = StartViewController.newInstance(delegate: self)
             self.navigationController.setViewControllers([controller], animated: true)
@@ -55,6 +60,7 @@ extension AppCoordinator: DeviceVerificationCoordinatorDelegate {
           let alert = self.alertManager.alert(from: alertViewModel)
           self.navigationController.topViewController()?.present(alert, animated: true)
         } else if parser.walletVersion != .v2 {
+          self.analyticsManager.track(property: MixpanelProperty(key: .lightningUpgradedFromRestore, value: true))
           let words = self.persistenceManager.brokers.wallet.walletWords()
           self.persistenceManager.keychainManager.storeSynchronously(anyValue: words, key: .walletWords)
           self.persistenceManager.keychainManager.storeSynchronously(anyValue: nil, key: .walletWordsV2)

@@ -52,6 +52,11 @@ class TransactionHistoryViewControllerTests: XCTestCase {
 
   class MockCoordinator: TransactionHistoryViewControllerDelegate {
 
+    var didSendTweet = false
+    func openTwitterURL(withMessage message: String) {
+      didSendTweet = true
+    }
+
     var didRequestLightningLoad = false
     func didRequestLightningLoad(withAmount amount: TransferAmount) {
       didRequestLightningLoad = true

@@ -63,17 +63,9 @@ class BitcoinAddressValidator: ValidatorType<String> {
     return match(forRegex: validAddressRegex, in: string)
   }
 
-  private var regexAddressPrefix: String {
-    #if DEBUG
-    return "tb1|[2]"
-    #else
-    return "bc1|[13]"
-    #endif
-  }
-
   /// matches Android regex, with escaped backslashes
   private var validAddressRegex: String {
-    return "((?:\(regexAddressPrefix))[a-zA-HJ-NP-Z0-9]{25,39}(?![a-zA-HJ-NP-Z0-9]))((?:\\?.*&?)(?:amount=)((?:[0-9]+)(?:\\.[0-9]{1,8})?))?"
+    return "((?:bc1|tb1|[123])[a-zA-HJ-NP-Z0-9]{25,39}(?![a-zA-HJ-NP-Z0-9]))((?:\\?.*&?)(?:amount=)((?:[0-9]+)(?:\\.[0-9]{1,8})?))?"
   }
 
   private func match(forRegex regex: String, in text: String) -> String? {

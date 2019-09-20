@@ -14,7 +14,8 @@ import PromiseKit
 import DZNEmptyDataSet
 
 protocol TransactionHistoryViewControllerDelegate: DeviceCountryCodeProvider &
-  BadgeUpdateDelegate & URLOpener & LightningReloadDelegate & CurrencyValueDataSourceType {
+  BadgeUpdateDelegate & URLOpener & LightningReloadDelegate & CurrencyValueDataSourceType &
+  TweetDelegate {
   func viewControllerDidRequestHistoryUpdate(_ viewController: TransactionHistoryViewController)
   func viewControllerDidDisplayTransactions(_ viewController: TransactionHistoryViewController)
   func viewControllerAttemptedToRefreshTransactions(_ viewController: UIViewController)
@@ -40,6 +41,7 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
   @IBOutlet var summaryCollectionView: TransactionHistorySummaryCollectionView!
   @IBOutlet var transactionHistoryNoBalanceView: TransactionHistoryNoBalanceView!
   @IBOutlet var transactionHistoryWithBalanceView: TransactionHistoryWithBalanceView!
+  @IBOutlet var lockedLightningView: LockedLightningView!
   @IBOutlet var lightningTransactionHistoryEmptyBalanceView: LightningTransactionHistoryEmptyView!
   @IBOutlet var refreshView: TransactionHistoryRefreshView!
   @IBOutlet var refreshViewTopConstraint: NSLayoutConstraint!
@@ -61,12 +63,13 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
                           dataSource: TransactionHistoryDataSourceType) -> TransactionHistoryViewController {
     let viewController = TransactionHistoryViewController.makeFromStoryboard()
     viewController.delegate = delegate
-    dataSource.delegate = viewController
     viewController.viewModel = TransactionHistoryViewModel(delegate: viewController,
+                                                           detailsDelegate: nil,
                                                            currencyManager: delegate,
                                                            deviceCountryCode: delegate.deviceCountryCode(),
                                                            transactionType: walletTxType,
                                                            dataSource: dataSource)
+    viewController.viewModel.dataSource.delegate = viewController
     return viewController
   }
 
@@ -92,6 +95,7 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
     lightningTransactionHistoryEmptyBalanceView.delegate = delegate
     emptyStateBackgroundView.isHidden = false
     emptyStateBackgroundView.backgroundColor = .whiteBackground
+    if viewModel.walletTransactionType == .onChain { lockedLightningView.isHidden = true }
 
     view.backgroundColor = .clear
     emptyStateBackgroundView.applyCornerRadius(30, toCorners: .top)
@@ -112,6 +116,16 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
     super.viewWillDisappear(animated)
     // In case new transactions came it while this view was open, this will hide the badge
     delegate.viewControllerDidDisplayTransactions(self)
+  }
+
+  override func lock() {
+    if viewModel.walletTransactionType == .lightning {
+      lockedLightningView.isHidden = false
+    }
+  }
+
+  override func unlock() {
+    lockedLightningView.isHidden = true
   }
 
   internal func reloadTransactions(atIndexPaths paths: [IndexPath]) {
@@ -246,5 +260,4 @@ extension TransactionHistoryViewController: DZNEmptyDataSetDelegate, DZNEmptyDat
       return 0
     }
   }
-
 }

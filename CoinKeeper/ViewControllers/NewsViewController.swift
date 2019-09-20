@@ -64,6 +64,9 @@ final class NewsViewController: BaseViewController, StoryboardInitializable {
     tableView.showsVerticalScrollIndicator = false
     tableView.backgroundColor = .lightGrayBackground
 
+    closeButton.backgroundColor = UIColor(gray: 255, alpha: 0.7)
+    closeButton.applyCornerRadius(closeButton.frame.width / 2)
+
     newsErrorLabel.font = .light(13)
     newsErrorLabel.textColor = .darkGrayText
 

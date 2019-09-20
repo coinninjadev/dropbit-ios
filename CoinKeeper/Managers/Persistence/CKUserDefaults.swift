@@ -22,6 +22,7 @@ class CKUserDefaults: PersistenceUserDefaultsType {
   enum Key: String, CaseIterable {
     case invitationPopup
     case firstTimeOpeningApp
+    case firstOpenDate
     case exchangeRateBTCUSD
     case feeBest
     case feeBetter
@@ -52,6 +53,7 @@ class CKUserDefaults: PersistenceUserDefaultsType {
     case adjustableFeesEnabled
     case preferredTransactionFeeMode
     case selectedWalletTransactionType
+    case lightningWalletLockedStatus
     case regtest
 
     var defaultsString: String { return self.rawValue }
@@ -72,6 +74,7 @@ class CKUserDefaults: PersistenceUserDefaultsType {
       .unseenTransactionChangesExist,
       .lastSuccessfulSyncCompletedAt,
       .yearlyPriceHighNotificationEnabled,
+      .lightningWalletLockedStatus,
       .selectedWalletTransactionType
       ])
   }
@@ -86,7 +89,7 @@ class CKUserDefaults: PersistenceUserDefaultsType {
 
   var useRegtest: Bool {
     get { return bool(for: .regtest) }
-    set { set(useRegtest, for: .regtest) }
+    set { set(newValue, for: .regtest) }
   }
 
 }

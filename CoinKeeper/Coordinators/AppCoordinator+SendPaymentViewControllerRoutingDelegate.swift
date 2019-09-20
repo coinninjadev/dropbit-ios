@@ -238,9 +238,6 @@ extension AppCoordinator: SendPaymentViewControllerRoutingDelegate {
 
   private func showConfirmOnChainPayment(with viewModel: ConfirmOnChainPaymentViewModel,
                                          feeModel: ConfirmTransactionFeeModel) {
-
-    let isLightningConvertible = false //TODO
-
     let displayLightningPaymentViewController: CKCompletion = {}
 
     let displayConfirmPaymentViewController: CKCompletion = { [weak self] in
@@ -254,14 +251,7 @@ extension AppCoordinator: SendPaymentViewControllerRoutingDelegate {
       weakSelf.navigationController.present(confirmPayVC, animated: true)
     }
 
-    if isLightningConvertible {
-      let tryLightningViewController = TryLightningViewController.newInstance(yesCompletionHandler: displayLightningPaymentViewController,
-                                                                              noCompletionHandler: displayConfirmPaymentViewController)
-      navigationController.present(tryLightningViewController, animated: true)
-    } else {
-      displayConfirmPaymentViewController()
-    }
-
+    displayConfirmPaymentViewController()
   }
 
   private func showConfirmLightningPayment(with viewModel: ConfirmLightningPaymentViewModel) {
@@ -345,9 +335,6 @@ extension AppCoordinator: SendPaymentViewControllerRoutingDelegate {
           .map { .adjustable($0) }
       }
       .done(on: .main) { (feeModel: ConfirmTransactionFeeModel) -> Void in
-
-        let isLightningConvertible = false //TODO
-
         let displayLightningPaymentViewController: CKCompletion = {}
 
         let displayConfirmPaymentViewController: CKCompletion = {
@@ -364,13 +351,7 @@ extension AppCoordinator: SendPaymentViewControllerRoutingDelegate {
           self.navigationController.present(confirmPayVC, animated: true)
         }
 
-        if isLightningConvertible {
-          let tryLightningViewController = TryLightningViewController.newInstance(yesCompletionHandler: displayLightningPaymentViewController,
-                                                                                  noCompletionHandler: displayConfirmPaymentViewController)
-          self.navigationController.present(tryLightningViewController, animated: true)
-        } else {
-          displayConfirmPaymentViewController()
-        }
+        displayConfirmPaymentViewController()
       }
       .catch(on: .main) { [weak self] error in
         guard let strongSelf = self else { return }

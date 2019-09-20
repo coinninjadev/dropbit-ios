@@ -54,12 +54,19 @@
                                     <constraint firstAttribute="height" constant="100" id="bqy-qJ-Xdn"/>
                                 </constraints>
                             </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2ov-av-mIi" customClass="LockedLightningView" customModule="DropBit" customModuleProvider="target">
+                                <rect key="frame" x="5" y="140" width="365" height="527"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="GX7-DA-6R2" firstAttribute="top" secondItem="JGv-XL-uiR" secondAttribute="top" id="7DN-fy-t7g"/>
                             <constraint firstAttribute="bottom" secondItem="D7Z-lW-169" secondAttribute="bottom" id="BOi-jc-N2s"/>
+                            <constraint firstItem="JGv-XL-uiR" firstAttribute="trailing" secondItem="2ov-av-mIi" secondAttribute="trailing" constant="5" id="Ddq-ff-4nX"/>
                             <constraint firstItem="Lt8-y7-dfC" firstAttribute="top" secondItem="Fsb-uW-qUJ" secondAttribute="bottom" id="FYV-om-2Sq"/>
+                            <constraint firstItem="2ov-av-mIi" firstAttribute="top" secondItem="dvX-tA-FaC" secondAttribute="top" constant="140" id="QjO-zd-D7w"/>
+                            <constraint firstItem="2ov-av-mIi" firstAttribute="leading" secondItem="JGv-XL-uiR" secondAttribute="leading" constant="5" id="TMR-wZ-Zez"/>
                             <constraint firstItem="JGv-XL-uiR" firstAttribute="trailing" secondItem="GX7-DA-6R2" secondAttribute="trailing" constant="5" id="WgW-MD-OhW"/>
                             <constraint firstItem="Lt8-y7-dfC" firstAttribute="bottom" secondItem="dvX-tA-FaC" secondAttribute="bottom" id="WsK-Vt-edy"/>
                             <constraint firstItem="Av0-bG-xgJ" firstAttribute="top" secondItem="dvX-tA-FaC" secondAttribute="top" id="XAy-Ne-KPx"/>
@@ -68,6 +75,7 @@
                             <constraint firstAttribute="bottom" secondItem="GX7-DA-6R2" secondAttribute="bottom" id="bbA-lC-U1f"/>
                             <constraint firstItem="Fsb-uW-qUJ" firstAttribute="leading" secondItem="JGv-XL-uiR" secondAttribute="leading" constant="5" id="cqJ-0P-1Fb"/>
                             <constraint firstItem="Av0-bG-xgJ" firstAttribute="leading" secondItem="JGv-XL-uiR" secondAttribute="leading" id="dhp-1R-Qqb"/>
+                            <constraint firstAttribute="bottom" secondItem="2ov-av-mIi" secondAttribute="bottom" id="fVf-qJ-dvb"/>
                             <constraint firstItem="Av0-bG-xgJ" firstAttribute="trailing" secondItem="JGv-XL-uiR" secondAttribute="trailing" id="fX8-qv-xc2"/>
                             <constraint firstItem="D7Z-lW-169" firstAttribute="leading" secondItem="JGv-XL-uiR" secondAttribute="leading" constant="5" id="gQh-mr-Ffx"/>
                             <constraint firstItem="D7Z-lW-169" firstAttribute="top" secondItem="dvX-tA-FaC" secondAttribute="top" constant="140" id="h92-Ng-INE"/>
@@ -83,6 +91,7 @@
                         <outlet property="footerView" destination="Lt8-y7-dfC" id="6Rh-i8-37p"/>
                         <outlet property="gradientBlurView" destination="Fsb-uW-qUJ" id="zaQ-fS-lfw"/>
                         <outlet property="lightningTransactionHistoryEmptyBalanceView" destination="2ME-xd-Art" id="QTU-jR-ik7"/>
+                        <outlet property="lockedLightningView" destination="2ov-av-mIi" id="tbt-gH-rDb"/>
                         <outlet property="refreshView" destination="Av0-bG-xgJ" id="dNg-B0-57u"/>
                         <outlet property="refreshViewTopConstraint" destination="XAy-Ne-KPx" id="Itl-x4-z0W"/>
                         <outlet property="summaryCollectionView" destination="GX7-DA-6R2" id="WdE-Nn-Ajz"/>
@@ -313,7 +322,7 @@
                     </connections>
                 </view>
             </objects>
-            <point key="canvasLocation" x="-1335" y="-180"/>
+            <point key="canvasLocation" x="-1335.2" y="-180.35982008995504"/>
         </scene>
     </scenes>
 </document>

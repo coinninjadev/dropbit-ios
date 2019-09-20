@@ -39,8 +39,10 @@ extension NSManagedObject {
         results.forEach({ context.delete($0) })
 
       } catch {
-        log.error(error, message: "Failed to perform batch transaction delete")
-        assertionFailure("Failed to perform batch transaction delete: \(error)")
+        let userInfo = (error as NSError).userInfo
+        let message = "Failed to perform pseudo-batch delete of \(entityName). User info: \(userInfo)"
+        log.error(error, message: message)
+        assertionFailure(message)
       }
     }
   }

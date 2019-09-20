@@ -28,7 +28,7 @@ class WalletBroker: CKPersistenceBroker, WalletBrokerType {
 
   func resetWallet() throws {
     let bgContext = self.databaseManager.createBackgroundContext()
-    self.deleteWallet(in: bgContext)
+    try self.deleteWallet(in: bgContext)
     try bgContext.performThrowingAndWait {
       _ = CKMWallet.findOrCreate(in: bgContext)
       try bgContext.saveRecursively()
@@ -56,8 +56,8 @@ class WalletBroker: CKPersistenceBroker, WalletBrokerType {
     userDefaultsManager.removeValue(for: .walletID)
   }
 
-  func deleteWallet(in context: NSManagedObjectContext) {
-    databaseManager.deleteAll(in: context)
+  func deleteWallet(in context: NSManagedObjectContext) throws {
+    try databaseManager.deleteAll(in: context)
     userDefaultsManager.deleteWallet()
     keychainManager.deleteAll()
   }
@@ -127,7 +127,7 @@ class WalletBroker: CKPersistenceBroker, WalletBrokerType {
   var usableCoin: CNBBaseCoin {
     var coinType: CoinType = .MainNet
     #if DEBUG
-    coinType = .TestNet
+    coinType = CKUserDefaults().useRegtest ? .TestNet : .MainNet
     #endif
     let possibleSegwitWords = keychainManager.retrieveValue(for: .walletWordsV2) as? [String]
     if let words = possibleSegwitWords, words.count == 12 {

@@ -13,7 +13,7 @@ enum SummaryHeaderType {
 
   var message: String {
     switch self {
-    case .backUpWallet: return "Don’t forget to backup your wallet"
+    case .backUpWallet: return "Don't forget to backup your wallet"
     }
   }
 }

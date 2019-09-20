@@ -31,6 +31,9 @@ protocol ActivityBrokerType: AnyObject {
   /// Initial value will return false, so getter and setter reverse value
   var isFirstTimeOpeningApp: Bool { get set }
 
+  var firstOpenDate: Date? { get }
+  func setFirstOpenDateIfNil(date: Date)
+
   func setLastLoginTime()
 
   var lastLoginTime: TimeInterval? { get }
@@ -123,6 +126,7 @@ protocol PreferencesBrokerType: AnyObject {
   var preferredTransactionFeeType: TransactionFeeType { get set }
   var dontShowLightningRefill: Bool { get set }
   var selectedWalletTransactionType: WalletTransactionType { get set }
+  var lightningWalletLockedStatus: LockStatus { get set }
 
 }
 
@@ -184,7 +188,7 @@ protocol WalletBrokerType: AnyObject {
   func walletWords() -> [String]?
   func persistWalletResponse(from response: WalletResponse, in context: NSManagedObjectContext) throws
   func removeWalletId(in context: NSManagedObjectContext)
-  func deleteWallet(in context: NSManagedObjectContext)
+  func deleteWallet(in context: NSManagedObjectContext) throws
   func walletWordsBackedUp() -> Bool
 
   /// The responses should correspond 1-to-1 with the metaAddresses, order is irrelevant.

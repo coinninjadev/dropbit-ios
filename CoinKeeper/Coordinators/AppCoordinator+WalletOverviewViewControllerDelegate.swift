@@ -52,6 +52,7 @@ extension AppCoordinator: WalletOverviewViewControllerDelegate {
   }
 
   func viewControllerDidTapScan(_ viewController: UIViewController, converter: CurrencyConverter) {
+    guard showLightningLockAlertIfNecessary() else { return }
     analyticsManager.track(event: .scanQRButtonPressed, with: nil)
     permissionManager.requestPermission(for: .camera) { [weak self] status in
       switch status {
@@ -68,6 +69,7 @@ extension AppCoordinator: WalletOverviewViewControllerDelegate {
   }
 
   func viewControllerDidTapReceivePayment(_ viewController: UIViewController, converter: CurrencyConverter) {
+    guard showLightningLockAlertIfNecessary() else { return }
     if let requestViewController = createRequestPayViewController(converter: converter) {
       analyticsManager.track(event: .requestButtonPressed, with: nil)
       viewController.present(requestViewController, animated: true, completion: nil)
@@ -77,6 +79,7 @@ extension AppCoordinator: WalletOverviewViewControllerDelegate {
   func viewControllerDidTapSendPayment(_ viewController: UIViewController,
                                        converter: CurrencyConverter,
                                        walletTransactionType: WalletTransactionType) {
+    guard showLightningLockAlertIfNecessary() else { return }
     toggleChartAndBalance()
     analyticsManager.track(event: .payButtonWasPressed, with: nil)
 

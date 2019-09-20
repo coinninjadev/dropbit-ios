@@ -118,7 +118,7 @@ class DeviceVerificationCoordinator: ChildCoordinatorType {
         .then(in: context) { delegate.twitterAccessManager.getCurrentTwitterUser(in: context) }
         .then { _ in delegate.networkManager.getOrCreateLightningAccount() }
         .get(in: context) { lnAccountResponse in
-          let wallet = CKMWallet.findOrCreate(in: context)
+          guard let wallet = CKMWallet.find(in: context) else { return }
           delegate.persistenceManager.brokers.lightning.persistAccountResponse(lnAccountResponse, forWallet: wallet, in: context)
           do {
             try context.saveRecursively()
@@ -183,6 +183,14 @@ extension DeviceVerificationCoordinator: DeviceVerificationViewControllerDelegat
           let body = UserIdentityBody(phoneNumber: phoneNumber)
           return self.registerUser(with: body, delegate: delegate, in: bgContext)
         }
+        .get(in: bgContext) { _ in
+          do {
+            try bgContext.saveRecursively()
+          } catch {
+            log.contextSaveError(error)
+            throw error
+          }
+        }
         .done(on: .main) { userIdentifiable in
 
           delegate.alertManager.hideActivityHUD(withDelay: self.minHudDisplayDuration) {
@@ -200,13 +208,6 @@ extension DeviceVerificationCoordinator: DeviceVerificationViewControllerDelegat
           log.error(error, message: "user registration failed")
           self.handleUserRegistrationFailure(withError: error, phoneNumber: phoneNumber, delegate: delegate)
         }
-        .finally(in: bgContext) {
-          do {
-            try bgContext.saveRecursively()
-          } catch {
-            log.error(error, message: "user registration failed")
-          }
-      }
     }
   }
 
@@ -338,7 +339,7 @@ extension DeviceVerificationCoordinator: DeviceVerificationViewControllerDelegat
         .then(in: bgContext) { self.checkAndPersistVerificationStatus(from: $0, crDelegate: delegate, in: bgContext) }
         .then { delegate.networkManager.getOrCreateLightningAccount() }
         .get(in: bgContext) { lnAccountResponse in
-          let wallet = CKMWallet.findOrCreate(in: bgContext)
+          guard let wallet = CKMWallet.find(in: bgContext) else { return }
           delegate.persistenceManager.brokers.lightning.persistAccountResponse(lnAccountResponse, forWallet: wallet, in: bgContext)
           do {
             try bgContext.saveRecursively()

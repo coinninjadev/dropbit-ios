@@ -9,6 +9,7 @@
 import UIKit
 
 protocol LightningUpgradeCompleteViewControllerDelegate: AnyObject {
+  func viewControllerWillCompleteLightningUpgrade(_ viewController: LightningUpgradeCompleteViewController)
   func viewControllerDidSelectGoToWallet(_ viewController: LightningUpgradeCompleteViewController)
   func viewControllerDidSelectGetRecoveryWords(_ viewController: LightningUpgradeCompleteViewController)
 }
@@ -31,6 +32,7 @@ final class LightningUpgradeCompleteViewController: BaseViewController, Storyboa
 
   override func viewDidLoad() {
     super.viewDidLoad()
+    delegate.viewControllerWillCompleteLightningUpgrade(self)
     styleInitialUI()
   }
 
@@ -44,7 +46,7 @@ final class LightningUpgradeCompleteViewController: BaseViewController, Storyboa
     upgradeCompleteLabel.font = .regular(17)
     lightningReadyLabel.font = .regular(17)
     lightningReadyLabel.textColor = .white
-    lightningReadyLabel.text = "Your upgraded wallet\nis lightning ready!"
+    lightningReadyLabel.text = "Your upgraded wallet\nis Lightning ready!"
   }
 
   @IBAction func goToWallet(_ sender: Any) {

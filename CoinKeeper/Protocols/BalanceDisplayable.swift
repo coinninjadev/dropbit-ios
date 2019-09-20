@@ -17,14 +17,18 @@ class BalanceUpdateManager {
 }
 
 protocol BalanceDataSource: CoreDataObserver {
-  func balanceNetPending() -> WalletBalances
-  func spendableBalanceNetPending() -> WalletBalances
+  func balancesNetPending() -> WalletBalances
+  func spendableBalancesNetPending() -> WalletBalances
   var balanceUpdateManager: BalanceUpdateManager { get }
 }
 
 struct WalletBalances {
   var onChain: NSDecimalNumber
   var lightning: NSDecimalNumber
+
+  static var empty: WalletBalances {
+    return WalletBalances(onChain: .zero, lightning: .zero)
+  }
 }
 
 extension BalanceDataSource {
@@ -146,7 +150,7 @@ extension BalanceDisplayable where Self: UIViewController {
     // Prevent ever showing a negative balance
     var onChainSanitizedBalance: NSDecimalNumber = .zero
     var lightningSanitizedBalance: NSDecimalNumber = .zero
-    if let calculatedBalance = balanceProvider?.balanceNetPending() {
+    if let calculatedBalance = balanceProvider?.balancesNetPending() {
       if calculatedBalance.onChain.isPositiveNumber {
         onChainSanitizedBalance = calculatedBalance.onChain
       }
