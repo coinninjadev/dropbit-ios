@@ -160,3 +160,23 @@ extension AppCoordinator: DeviceVerificationCoordinatorDelegate {
     }
   }
 }
+
+enum WalletRestoreType {
+  case previouslyUpgradedLegacyWallet
+  case unseenLegacyWallet
+  case v2Wallet
+}
+
+extension WalletFlagsParser {
+
+  var restoreType: WalletRestoreType {
+    if walletVersion != .v2 && walletDeactivated {
+      return .previouslyUpgradedLegacyWallet
+    } else if walletVersion != .v2 {
+      return .unseenLegacyWallet
+    } else {
+      return .v2Wallet
+    }
+  }
+
+}
