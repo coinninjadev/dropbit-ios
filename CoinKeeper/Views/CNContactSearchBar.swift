@@ -10,13 +10,13 @@ import UIKit
 
 class CNContactSearchBar: UISearchBar {
 
-  var searchTextField: UITextField? {
+  var defaultTextField: UITextField? {
     return value(forKey: "_searchField") as? UITextField
   }
 
   override func awakeFromNib() {
     super.awakeFromNib()
-    guard let textField = searchTextField else {
+    guard let textField = defaultTextField else {
       return
     }
 

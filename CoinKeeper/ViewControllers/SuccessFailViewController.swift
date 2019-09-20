@@ -33,12 +33,16 @@ class SuccessFailViewController: BaseViewController, StoryboardInitializable {
 
   func setMode(_ mode: SuccessFailView.Mode) {
     self.viewModel.mode = mode
-    reloadViewWithModel()
+    DispatchQueue.main.async {
+      self.reloadViewWithModel()
+    }
   }
 
   func setURL(_ url: URL?) {
     self.viewModel.url = url
-    reloadViewWithModel()
+    DispatchQueue.main.async {
+      self.reloadViewWithModel()
+    }
   }
 
   private(set) weak var delegate: SuccessFailViewControllerDelegate!
@@ -97,6 +101,7 @@ class SuccessFailViewController: BaseViewController, StoryboardInitializable {
 
   override func viewDidLoad() {
     super.viewDidLoad()
+    reloadViewWithModel()
   }
 
   override func viewWillAppear(_ animated: Bool) {
@@ -108,10 +113,7 @@ class SuccessFailViewController: BaseViewController, StoryboardInitializable {
 
   private func reloadViewWithModel() {
     guard viewIfLoaded != nil else { return }
-
-    DispatchQueue.main.async {
-      self.configureView(with: self.viewModel)
-    }
+    self.configureView(with: self.viewModel)
   }
 
   private func configureView(with vm: SuccessFailViewModel) {
