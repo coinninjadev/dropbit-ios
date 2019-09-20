@@ -45,6 +45,7 @@ extension AppCoordinator: DeviceVerificationCoordinatorDelegate {
 
         case .unseenLegacyWallet:
           self.persistUnseenLegacyWallet()
+          self.launchStateManager.upgradeInProgress = true
           return syncFactory.performOnChainOnlySync(in: context).map { _ in parser }
 
         case .v2Wallet:
