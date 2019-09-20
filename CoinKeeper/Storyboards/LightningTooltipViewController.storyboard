@@ -130,21 +130,11 @@
                                             <constraint firstItem="Gdd-BS-yhv" firstAttribute="width" secondItem="9rH-tA-o6g" secondAttribute="width" id="uLZ-jg-5Ai"/>
                                         </constraints>
                                     </view>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Zyk-Eh-BSa" customClass="BetaTagView" customModule="DropBit" customModuleProvider="target">
-                                        <rect key="frame" x="322" y="120" width="35" height="14"/>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="35" id="2UI-MY-Dvi"/>
-                                            <constraint firstAttribute="height" constant="14" id="ZIj-am-jiu"/>
-                                        </constraints>
-                                    </view>
                                 </subviews>
                                 <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
-                                    <constraint firstItem="Zyk-Eh-BSa" firstAttribute="top" secondItem="vN5-8O-Mw3" secondAttribute="top" constant="10" id="EOI-dO-Mv5"/>
                                     <constraint firstItem="a8d-mx-ccw" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="WMk-67-C57" secondAttribute="leading" constant="8" id="Gu7-0B-hvs"/>
                                     <constraint firstItem="zkf-RY-3Ei" firstAttribute="centerX" secondItem="vN5-8O-Mw3" secondAttribute="centerX" id="MYg-po-i2s"/>
-                                    <constraint firstItem="vN5-8O-Mw3" firstAttribute="trailing" secondItem="Zyk-Eh-BSa" secondAttribute="trailing" constant="-20" id="YLf-4c-e3C"/>
                                     <constraint firstItem="a8d-mx-ccw" firstAttribute="top" secondItem="vN5-8O-Mw3" secondAttribute="bottom" constant="19" id="ajd-lx-08W"/>
                                     <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="a8d-mx-ccw" secondAttribute="bottom" constant="8" id="bAw-AS-7GL"/>
                                     <constraint firstItem="a8d-mx-ccw" firstAttribute="centerX" secondItem="zkf-RY-3Ei" secondAttribute="centerX" id="eQ4-F6-Qy5"/>
