@@ -32,16 +32,15 @@ class SuccessFailViewController: BaseViewController, StoryboardInitializable {
   }
 
   func setMode(_ mode: SuccessFailView.Mode) {
+    self.viewModel.mode = mode
     DispatchQueue.main.async {
-      self.viewModel.mode = mode
       self.reloadViewWithModel()
     }
-
   }
 
   func setURL(_ url: URL?) {
+    self.viewModel.url = url
     DispatchQueue.main.async {
-      self.viewModel.url = url
       self.reloadViewWithModel()
     }
   }
