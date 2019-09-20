@@ -37,7 +37,7 @@ class UnverifiedPhoneBadgeTopic: BadgeTopic {
       case .insert:
         relevantInserts = context.insertedObjects.filter { self.objectMatchesAnyEntity($0, entityNames: relevantEntityNames) }.count
       case .update:
-        relevantUpdates = context.updatedObjects.filter { self.objectMatchesAnyEntity($0, entityNames: relevantEntityNames) }.count
+        relevantUpdates = context.persistentUpdatedObjects.filter { self.objectMatchesAnyEntity($0, entityNames: relevantEntityNames) }.count
       case .delete:
         relevantDeletions = context.deletedObjects.filter { self.objectMatchesAnyEntity($0, entityNames: relevantEntityNames) }.count
       }

@@ -196,7 +196,7 @@ class TransactionDataWorkerTests: XCTestCase {
 
    let failedTransactions = CKMTransaction.findAllFailed(in: stack.context)
    XCTAssertEqual(failedTransactions.count, 0, "0 transactions should be marked as failed after grooming with new txids")
-   XCTAssertEqual(stack.context.updatedObjects.count, 1, "1 object should eventually be updated")
+   XCTAssertEqual(stack.context.persistentUpdatedObjects.count, 1, "1 object should eventually be updated")
    }
    }
    */
