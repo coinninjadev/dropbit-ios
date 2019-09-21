@@ -25,7 +25,6 @@ extension LightningUpgradeCoordinator: LightningUpgradeStatusViewControllerDeleg
       .setVersion(.v2)
 
     let context = parent.persistenceManager.createBackgroundContext()
-    var newWalletManager: WalletManagerType!
 
     existingFlags.deactivate()
     return parent.networkManager.updateWallet(walletFlags: existingFlags.flags)
@@ -34,13 +33,10 @@ extension LightningUpgradeCoordinator: LightningUpgradeStatusViewControllerDeleg
         guard flagsParser.walletDeactivated else { throw CKWalletError.failedToDeactivate }
         return self.parent.persistenceManager.keychainManager.upgrade(recoveryWords: self.newWords)
       }
-      .then { _ -> Promise<Void> in
-        newWalletManager = WalletManager(words: self.newWords, persistenceManager: self.parent.persistenceManager)
+      .then(in: context) { _ -> Promise<Void> in
+        let newWalletManager = WalletManager(words: self.newWords, persistenceManager: self.parent.persistenceManager)
 
-        var userIsVerified = false
-        context.performAndWait {
-          userIsVerified = self.parent.persistenceManager.brokers.user.userIsVerified(in: context)
-        }
+        let userIsVerified = self.parent.persistenceManager.brokers.user.userIsVerified(in: context)
 
         if userIsVerified {
           return self.proceedReplacingWallet(walletManager: newWalletManager, flagsParser: newFlags, in: context)
