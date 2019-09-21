@@ -47,6 +47,7 @@ extension LightningUpgradeCoordinator: LightningUpgradeStatusViewControllerDeleg
       .asVoid()
   }
 
+  // TODO: is this needed?
   func viewControllerStartUpgradingToSegwit(_ viewController: LightningUpgradeStatusViewController) -> Promise<Void> {
     return Promise.value(())
   }
