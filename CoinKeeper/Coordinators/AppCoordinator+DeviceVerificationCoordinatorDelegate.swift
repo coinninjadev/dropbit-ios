@@ -82,6 +82,11 @@ extension AppCoordinator: DeviceVerificationCoordinatorDelegate {
     self.persistenceManager.keychainManager.storeSynchronously(anyValue: words, key: .walletWords)
     self.persistenceManager.keychainManager.storeSynchronously(anyValue: nil, key: .walletWordsV2)
     self.persistenceManager.keychainManager.storeSynchronously(anyValue: false, key: .walletWordsBackedUp)
+
+    // When words are first restored and persisted, they are assumed to be walletWordsV2 with purpose 84.
+    // In order for the pre-migration sync to check addresses with the legacy path, we need to recreate
+    // the wallet manager so that the coin/purpose respects the keychain values set above.
+    self.setWalletManagerWithPersistedWords()
   }
 
   private func continueFlowForPreviouslyUpgradedLegacyWallet() {
