@@ -186,4 +186,142 @@ class TransactionHistoryDetailValidCellTests: XCTestCase {
     XCTAssertEqual(sut.directionView.backgroundColor, expectedColor)
   }
 
+  //TODO: migrate or delete these tests from the summary cell
+  /*
+  func testTwitterConfig_loadsAvatar() {
+    let twitterConfig = MockSummaryCellVM.mockTwitterConfig()
+    let counterpartyConfig = TransactionCellCounterpartyConfig(twitterConfig: twitterConfig)
+    let expectedImage = twitterConfig.avatar
+    let viewModel = MockSummaryCellVM.testInstance(counterpartyConfig: counterpartyConfig)
+    sut.configure(with: viewModel)
+    XCTAssertFalse(sut.twitterAvatarView.isHidden)
+    XCTAssertFalse(sut.twitterAvatarView.avatarImageView.isHidden)
+    XCTAssertFalse(sut.twitterAvatarView.twitterLogoImageView.isHidden)
+    XCTAssertTrue(sut.directionView.isHidden)
+    XCTAssertEqual(sut.twitterAvatarView.avatarImageView.image, expectedImage)
+  }
+
+  func testTwitterConfig_showsHidesLeadingViews() {
+    let twitterConfig = MockSummaryCellVM.mockTwitterConfig()
+    let counterpartyConfig = TransactionCellCounterpartyConfig(twitterConfig: twitterConfig)
+    let viewModel = MockSummaryCellVM.testInstance(counterpartyConfig: counterpartyConfig)
+    sut.configure(with: viewModel)
+    XCTAssertFalse(sut.twitterAvatarView.isHidden)
+    XCTAssertTrue(sut.directionView.isHidden)
+  }
+
+  func testNilTwitterConfig_showsHidesLeadingViews() {
+    let viewModel = MockSummaryCellVM.testInstance()
+    sut.configure(with: viewModel)
+    XCTAssertTrue(sut.twitterAvatarView.isHidden)
+    XCTAssertFalse(sut.directionView.isHidden)
+  }
+
+  // MARK: Labels
+  func testMemoIsLoadedAndShown() {
+    let expectedMemo = "Concert tickets"
+    let viewModel = MockSummaryCellVM.testInstance(memo: expectedMemo)
+    sut.configure(with: viewModel)
+    XCTAssertFalse(sut.memoLabel.isHidden)
+    XCTAssertEqual(sut.memoLabel.text, expectedMemo)
+  }
+
+  func testEmptyStringMemoIsLoadedAndHidden() {
+    let expectedMemo = ""
+    let viewModel = MockSummaryCellVM.testInstance(memo: expectedMemo)
+    sut.configure(with: viewModel)
+    XCTAssertTrue(sut.memoLabel.isHidden)
+    XCTAssertEqual(sut.memoLabel.text, expectedMemo)
+  }
+
+  func testNilMemoIsLoadedAndHidden() {
+    let expectedMemo: String? = nil
+    let viewModel = MockSummaryCellVM.testInstance(memo: expectedMemo)
+    sut.configure(with: viewModel)
+    XCTAssertTrue(sut.memoLabel.isHidden)
+    XCTAssertEqual(sut.memoLabel.text, expectedMemo)
+  }
+
+  func testLightningTransferMemoIsHiddenIfPresent() {
+    let viewModel = MockSummaryCellVM.testInstance(walletTxType: .lightning,
+                                                   isLightningTransfer: true,
+                                                   memo: "lightning withdrawal for 10,000 sats")
+    sut.configure(with: viewModel)
+    XCTAssertTrue(sut.memoLabel.isHidden)
+  }
+
+  func testExpiredLabelIsLoaded() {
+    let expectedText = TransactionStatus.expired.rawValue, expectedColor = UIColor.invalid
+    let viewModel = MockSummaryCellVM.testInstance(status: .expired)
+    sut.configure(with: viewModel)
+    XCTAssertEqual(sut.pillLabels.count, 1)
+    XCTAssertEqual(sut.pillLabel?.text, expectedText)
+    XCTAssertEqual(sut.pillLabel?.backgroundColor, expectedColor)
+  }
+
+  func testCanceledLabelIsLoaded() {
+    let expectedText = TransactionStatus.canceled.rawValue, expectedColor = UIColor.invalid
+    let viewModel = MockSummaryCellVM.testInstance(status: .canceled)
+    sut.configure(with: viewModel)
+    XCTAssertEqual(sut.pillLabels.count, 1)
+    XCTAssertEqual(sut.pillLabel?.text, expectedText)
+    XCTAssertEqual(sut.pillLabel?.backgroundColor, expectedColor)
+  }
+
+  func testSatsLabelIsLoadedForInvalidTransaction() {
+    let amountDetails = MockSummaryCellVM.testAmountDetails(sats: 1234567)
+    let viewModel = MockSummaryCellVM.testInstance(walletTxType: .lightning, status: .canceled, amountDetails: amountDetails)
+    let expectedText = "1,234,567 sats"
+    sut.configure(with: viewModel)
+    XCTAssertEqual(sut.satsLabels.count, 1)
+    XCTAssertEqual(sut.satsLabel?.text, expectedText)
+  }
+
+  func testBTCLabelIsLoaded() {
+    let amountDetails = MockSummaryCellVM.testAmountDetails(sats: 1234560)
+    let viewModel = MockSummaryCellVM.testInstance(walletTxType: .onChain, status: .canceled, amountDetails: amountDetails)
+    let expectedText = BitcoinFormatter(symbolType: .attributed).attributedString(from: amountDetails.btcAmount)
+    sut.configure(with: viewModel)
+    XCTAssertEqual(sut.bitcoinLabels.count, 1)
+    XCTAssertEqual(sut.satsLabels.count, 0)
+    XCTAssertEqual(sut.bitcoinLabel?.attributedText?.string, expectedText?.string)
+    XCTAssertTrue(sut.bitcoinLabel?.attributedText?.hasImageAttachment() ?? false)
+  }
+
+  func testFiatLabelIsLoaded() {
+    let amountDetails = MockSummaryCellVM.testAmountDetails(sats: 1234560)
+    let viewModel = MockSummaryCellVM.testInstance(walletTxType: .onChain, direction: .in, status: .completed, amountDetails: amountDetails)
+    let expectedText = viewModel.summaryAmountLabels.pillText, expectedColor = UIColor.incomingGreen
+    sut.configure(with: viewModel)
+    XCTAssertEqual(sut.pillLabels.count, 1)
+    XCTAssertEqual(sut.pillLabel?.text, expectedText)
+    XCTAssertEqual(sut.pillLabel?.backgroundColor, expectedColor)
+  }
+
+  func testFiatIsOnTopWhenSelected() {
+    let viewModel = MockSummaryCellVM.testInstance(selectedCurrency: .fiat)
+    sut.configure(with: viewModel)
+    let firstLabelIsFiat = sut.amountStackView.arrangedSubviews.first is SummaryCellPillLabel
+    XCTAssertTrue(firstLabelIsFiat)
+  }
+
+  func testBitcoinIsOnTopWhenBitcoinIsSelected() {
+    let viewModel = MockSummaryCellVM.testInstance(walletTxType: .onChain, selectedCurrency: .BTC)
+    sut.configure(with: viewModel)
+    let firstViewAsPaddedLabel = sut.amountStackView.arrangedSubviews.first.flatMap { $0 as? SummaryCellPaddedLabelView }
+    XCTAssertNotNil(firstViewAsPaddedLabel, "first arrangedSubview should be SummaryCellPaddedLabelView")
+    let subviewAsBitcoinLabel = firstViewAsPaddedLabel?.subviews.first.flatMap { $0 as? SummaryCellBitcoinLabel }
+    XCTAssertNotNil(subviewAsBitcoinLabel, "subview should be SummaryCellBitcoinLabel")
+  }
+
+  func testSatsIsOnTopWhenBitcoinIsSelected() {
+    let viewModel = MockSummaryCellVM.testInstance(walletTxType: .lightning, selectedCurrency: .BTC)
+    sut.configure(with: viewModel)
+    let firstViewAsPaddedLabel = sut.amountStackView.arrangedSubviews.first.flatMap { $0 as? SummaryCellPaddedLabelView }
+    XCTAssertNotNil(firstViewAsPaddedLabel, "first arrangedSubview should be SummaryCellPaddedLabelView")
+    let subviewAsBitcoinLabel = firstViewAsPaddedLabel?.subviews.first.flatMap { $0 as? SummaryCellSatsLabel }
+    XCTAssertNotNil(subviewAsBitcoinLabel, "subview should be SummaryCellSatsLabel")
+  }
+ */
+
 }
