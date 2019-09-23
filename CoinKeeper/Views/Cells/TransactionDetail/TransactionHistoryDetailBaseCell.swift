@@ -93,8 +93,10 @@ class TransactionHistoryDetailBaseCell: UICollectionViewCell {
     delegate?.didTapClose(detailCell: self)
   }
 
-  func configure(with values: TransactionSummaryCellDisplayable, delegate: TransactionHistoryDetailCellDelegate) {
+  func configure(with values: TransactionDetailCellDisplayable, delegate: TransactionHistoryDetailCellDelegate) {
     self.delegate = delegate
+
+    self.directionView.configure(image: values.directionConfig.image, bgColor: values.accentColor)
 
   }
 //  func configure(with viewModel: OldTransactionDetailCellViewModel, delegate: TransactionHistoryDetailCellDelegate) {

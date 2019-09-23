@@ -34,7 +34,7 @@ class TransactionHistoryDetailValidCell: TransactionHistoryDetailBaseCell {
   @IBOutlet var bottomBufferView: UIView!
 
   // MARK: lifecycle
-  override func configure(with values: TransactionSummaryCellDisplayable, delegate: TransactionHistoryDetailCellDelegate) {
+  override func configure(with values: TransactionDetailCellDisplayable, delegate: TransactionHistoryDetailCellDelegate) {
     super.configure(with: values, delegate: delegate)
 //    messageLabel.text = viewModel.messageLabel
 //    messageContainer.isHidden = viewModel.messageLabel == nil
