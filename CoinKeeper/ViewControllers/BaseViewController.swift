@@ -59,7 +59,7 @@ extension BaseViewController {
     })
 
     unlockStatusNotification = CKNotificationCenter.subscribe(key: .didUnlockLightning, object: nil, queue: .main, using: { [weak self] _ in
-      guard BaseViewController.lockStatus != .locked else { return }
+      guard BaseViewController.lockStatus != .unlocked else { return }
 
       BaseViewController.lockStatus = .unlocked
       self?.unlock()
