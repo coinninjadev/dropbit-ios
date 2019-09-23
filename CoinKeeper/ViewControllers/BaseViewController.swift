@@ -52,11 +52,25 @@ extension BaseViewController {
 
   fileprivate func registerForLockStatusNotification() {
     lockStatusNotification = CKNotificationCenter.subscribe(key: .didLockLightning, object: nil, queue: .main, using: { [weak self] _ in
+      switch BaseViewController.lockStatus {
+      case .locked:
+        return
+      default:
+        break
+      }
+
       BaseViewController.lockStatus = .locked
       self?.lock()
     })
 
     unlockStatusNotification = CKNotificationCenter.subscribe(key: .didUnlockLightning, object: nil, queue: .main, using: { [weak self] _ in
+      switch BaseViewController.lockStatus {
+      case .unlocked:
+        return
+      default:
+        break
+      }
+
       BaseViewController.lockStatus = .unlocked
       self?.unlock()
     })
