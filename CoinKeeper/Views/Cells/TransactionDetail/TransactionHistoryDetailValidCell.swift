@@ -9,9 +9,8 @@
 import UIKit
 import JKSteppedProgressBar
 
-/// Raw value is used as tag on bottom button
-enum TransactionDetailAction: Int {
-  case seeDetails = 0 //this matches the default tag value
+enum TransactionDetailAction {
+  case seeDetails
   case cancelInvitation
 
   var buttonTitle: String? {
@@ -66,7 +65,6 @@ class TransactionHistoryDetailValidCell: TransactionHistoryDetailBaseCell {
       return
     }
     bottomButton.isHidden = false
-    bottomButton.tag = action.rawValue
     bottomButton.setTitle(action.buttonTitle, for: .normal)
 
     switch action {

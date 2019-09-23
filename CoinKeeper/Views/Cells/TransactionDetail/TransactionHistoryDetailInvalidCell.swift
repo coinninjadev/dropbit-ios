@@ -13,7 +13,7 @@ class TransactionHistoryDetailInvalidCell: TransactionHistoryDetailBaseCell {
   // MARK: outlets
   @IBOutlet var warningLabel: TransactionDetailWarningLabel!
 
-  override func configure(with values: TransactionSummaryCellDisplayable, delegate: TransactionHistoryDetailCellDelegate) {
+  override func configure(with values: TransactionDetailCellDisplayable, delegate: TransactionHistoryDetailCellDelegate) {
     super.configure(with: values, delegate: delegate)
 //    warningLabel.text = values.warningMessageLabel
     layoutIfNeeded()

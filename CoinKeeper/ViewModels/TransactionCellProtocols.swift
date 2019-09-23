@@ -263,49 +263,51 @@ extension TransactionInvalidDetailCellDisplayable {
 /// protocol's extension or provided by a mock view model.
 protocol TransactionDetailCellViewModelType: TransactionSummaryCellViewModelType, TransactionDetailCellDisplayable {
   var date: Date { get }
-  var action: TransactionDetailAction? { get }
+//  var action: TransactionDetailAction? { get }
 }
 
 extension TransactionDetailCellViewModelType {
 
-  var statusTextColor: UIColor { return .lightGrayText }
+//  var statusTextColor: UIColor { return .lightGrayText }
 
-  var canAddMemo: Bool {
-    return false
+//  var canAddMemo: Bool {
+//    return false
 //    if isLightningTransfer { return false }
 //    return memoConfig == nil
-  }
+//  }
 
-  var detailStatusText: String? {
-    return status.rawValue
-  }
+//  var detailStatusText: String? {
+//    return status.rawValue
+//  }
 
-  var amountLabels: DetailCellAmountLabels {
-    return DetailCellAmountLabels(primaryText: "",
-                                  secondaryText: nil,
-                                  secondaryAttributedText: nil,
-                                  historicalPriceAttributedText: nil)
-  }
+//  var amountLabels: DetailCellAmountLabels {
+//    return DetailCellAmountLabels(primaryText: "",
+//                                  secondaryText: nil,
+//                                  secondaryAttributedText: nil,
+//                                  historicalPriceAttributedText: nil)
+//  }
 
-  var displayDate: String {
-    return CKDateFormatter.displayFull.string(from: date)
-  }
+//  var displayDate: String {
+//    return CKDateFormatter.displayFull.string(from: date)
+//  }
 
-  var actionButtonConfig: DetailCellActionButtonConfig? {
-    guard let a = action else { return nil }
-    switch a {
-    case .cancelInvitation:
-      return DetailCellActionButtonConfig(title: "CANCEL", backgroundColor: .warning)
-    case .seeDetails:
-      let buttonColor: UIColor
-      switch walletTxType {
-      case .lightning:  buttonColor = .lightningBlue
-      case .onChain:    buttonColor = .bitcoinOrange
-      }
-      return DetailCellActionButtonConfig(title: "DETAILS", backgroundColor: buttonColor)
-    }
   var directionConfig: TransactionCellDirectionConfig {
     return TransactionCellDirectionConfig(bgColor: accentColor, image: directionIcon)
   }
+
+//  var actionButtonConfig: DetailCellActionButtonConfig? {
+//    guard let a = action else { return nil }
+//    switch a {
+//    case .cancelInvitation:
+//      return DetailCellActionButtonConfig(title: "CANCEL", backgroundColor: .warning)
+//    case .seeDetails:
+//      let buttonColor: UIColor
+//      switch walletTxType {
+//      case .lightning:  buttonColor = .lightningBlue
+//      case .onChain:    buttonColor = .bitcoinOrange
+//      }
+//      return DetailCellActionButtonConfig(title: "DETAILS", backgroundColor: buttonColor)
+//    }
+//  }
 
 }
