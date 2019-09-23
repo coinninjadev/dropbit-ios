@@ -183,6 +183,7 @@ CurrencySwappableAmountEditor {
     setupPhoneNumberEntryView(textFieldEnabled: true)
     formatPhoneNumberEntryView()
     memoContainerView.delegate = self
+    editAmountView.delegate = self
     let sharedMemoAllowed = delegate.viewControllerShouldInitiallyAllowMemoSharing(self)
     viewModel.sharedMemoAllowed = sharedMemoAllowed
     memoContainerView.configure(memo: nil, isShared: sharedMemoAllowed)

@@ -22,8 +22,7 @@ protocol LightningRequestable: AnyObject {
 extension NetworkManager: LightningRequestable {
 
   func getOrCreateLightningAccount() -> Promise<LNAccountResponse> {
-    return Promise.value(LNAccountResponse.emptyInstance)
-    //TODO:  return cnProvider.request(LNAccountTarget.get)
+    return cnProvider.request(LNAccountTarget.get)
   }
 
   func createLightningPaymentRequest(sats: Int, expires: Int?, memo: String?) -> Promise<LNCreatePaymentRequestResponse> {
@@ -37,8 +36,7 @@ extension NetworkManager: LightningRequestable {
   }
 
   func getLightningLedger() -> Promise<LNLedgerResponse> {
-    return Promise.value(LNLedgerResponse.emptyInstance)
-    //TODO:  return cnProvider.request(LNLedgerTarget.get)
+    return cnProvider.request(LNLedgerTarget.get)
   }
 
   func payLightningPaymentRequest(_ request: String, sats: Int) -> Promise<LNTransactionResponse> {
