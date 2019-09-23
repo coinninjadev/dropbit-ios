@@ -20,6 +20,29 @@ struct LNAccountResponse: LNResponseDecodable {
   let pendingOut: Int
   let locked: Bool
 
+  enum CodingKeys: String, CodingKey {
+    case id
+    case createdAt = "created_at"
+    case updatedAt = "updated_at"
+    case address
+    case balance
+    case pendingIn = "pending_in"
+    case pendingOut = "pending_out"
+    case locked
+  }
+
+  init(from decoder: Decoder) throws {
+    let container = try decoder.container(keyedBy: CodingKeys.self)
+    self.id = try container.decode(String.self, forKey: .id)
+    self.createdAt = try container.decode(Date.self, forKey: .createdAt)
+    self.updatedAt = try container.decode(Date.self, forKey: .updatedAt)
+    self.address = try container.decodeIfPresent(String.self, forKey: .address)
+    self.balance = try container.decode(Int.self, forKey: .balance)
+    self.pendingIn = try container.decode(Int.self, forKey: .pendingIn)
+    self.pendingOut = try container.decode(Int.self, forKey: .pendingOut)
+    self.locked = try container.decodeIfPresent(Bool.self, forKey: .locked) ?? false
+  }
+
   static var sampleJSON: String {
     return """
     {
@@ -41,10 +64,5 @@ struct LNAccountResponse: LNResponseDecodable {
 
   static var optionalStringKeys: [WritableKeyPath<LNAccountResponse, String?>] {
     return [\.address]
-  }
-
-  static var emptyInstance: LNAccountResponse {
-    return LNAccountResponse(id: "", createdAt: Date(), updatedAt: nil,
-                             address: nil, balance: 0, pendingIn: 0, pendingOut: 0, locked: true)
   }
 }
