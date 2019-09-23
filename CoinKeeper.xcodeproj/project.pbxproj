@@ -2794,8 +2794,8 @@
 				3BAB1440204EBE0B001D41A2 /* BackupRecoveryWordsCellTests.swift */,
 				B5823FD7207E83A600B12A35 /* TransactionHistorySummaryCellTests.swift */,
 				B59C9E25230F548F00E4F3C8 /* TransactionSummaryCellCounterpartyTests.swift */,
-				3B6BCBEF22735A4E00950105 /* TransactionHistoryDetailInvalidCellTests.swift */,
 				3B6BCBF1227365D000950105 /* TransactionHistoryDetailValidCellTests.swift */,
+				3B6BCBEF22735A4E00950105 /* TransactionHistoryDetailInvalidCellTests.swift */,
 				3B6FDAD8204F71140091916A /* VerifyRecoveryWordCellTests.swift */,
 			);
 			path = Cells;
