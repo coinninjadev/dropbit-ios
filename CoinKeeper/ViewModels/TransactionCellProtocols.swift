@@ -65,13 +65,13 @@ extension TransactionSummaryCellViewModelType {
   }
 
   var leadingImageConfig: SummaryCellLeadingImageConfig {
-    let directionConfig = TransactionCellDirectionConfig(bgColor: accentColor, image: leadingIcon)
+    let directionConfig = TransactionCellDirectionConfig(bgColor: accentColor, image: directionIcon)
     return SummaryCellLeadingImageConfig(twitterConfig: counterpartyConfig?.twitterConfig,
                                          directionConfig: directionConfig)
   }
 
   /// Transaction type icon, not an avatar
-  private var leadingIcon: UIImage {
+  var directionIcon: UIImage {
     guard isValidTransaction else { return invalidImage }
 
     if isLightningTransfer {
@@ -304,6 +304,8 @@ extension TransactionDetailCellViewModelType {
       }
       return DetailCellActionButtonConfig(title: "DETAILS", backgroundColor: buttonColor)
     }
+  var directionConfig: TransactionCellDirectionConfig {
+    return TransactionCellDirectionConfig(bgColor: accentColor, image: directionIcon)
   }
 
 }
