@@ -424,7 +424,7 @@ extension SendPaymentViewController {
                                                 decodedInvoice: decodedInvoice,
                                                 exchangeRates: self.viewModel.exchangeRates,
                                                 currencyPair: self.viewModel.currencyPair)
-
+          self.setupCurrencySwappableEditAmountView()
           self.handlePaste(withViewModel: self.viewModel, paymentTarget: lightningUrl.invoice)
         })
       }.catch { error in
