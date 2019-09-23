@@ -98,14 +98,15 @@ class SendPaymentViewModel: CurrencySwappableEditAmountViewModel {
   init(encodedInvoice: String,
        decodedInvoice: LNDecodePaymentRequestResponse,
        exchangeRates: ExchangeRates,
-       currencyPair: CurrencyPair) {
+       currencyPair: CurrencyPair,
+       delegate: CurrencySwappableEditAmountViewModelDelegate? = nil) {
     let currencyPair = CurrencyPair(primary: .BTC, fiat: currencyPair.fiat)
     let amount = NSDecimalNumber(integerAmount: decodedInvoice.numSatoshis ?? 0, currency: .BTC)
     let viewModel = CurrencySwappableEditAmountViewModel(exchangeRates: exchangeRates,
                                                          primaryAmount: amount,
                                                          walletTransactionType: .lightning,
                                                          currencyPair: currencyPair,
-                                                         delegate: nil)
+                                                         delegate: delegate)
     super.init(viewModel: viewModel)
     self.paymentRecipient = .paymentTarget(encodedInvoice)
     self.requiredFeeRate = nil

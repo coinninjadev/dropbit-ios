@@ -423,7 +423,8 @@ extension SendPaymentViewController {
           self.viewModel = SendPaymentViewModel(encodedInvoice: lightningUrl.invoice,
                                                 decodedInvoice: decodedInvoice,
                                                 exchangeRates: self.viewModel.exchangeRates,
-                                                currencyPair: self.viewModel.currencyPair)
+                                                currencyPair: self.viewModel.currencyPair,
+                                                delegate: self)
           self.setupCurrencySwappableEditAmountView()
           self.handlePaste(withViewModel: self.viewModel, paymentTarget: lightningUrl.invoice)
         })
