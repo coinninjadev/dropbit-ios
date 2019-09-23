@@ -145,11 +145,11 @@ class WalletSyncOperationFactory {
         guard let wallet = CKMWallet.find(in: context) else { return }
 
         if lnAccountResponse.locked {
-          CKNotificationCenter.publish(key: .didLockLightning)
           dependencies.persistenceManager.brokers.preferences.lightningWalletLockedStatus = .locked
+          CKNotificationCenter.publish(key: .didLockLightning)
         } else {
-          CKNotificationCenter.publish(key: .didUnlockLightning)
           dependencies.persistenceManager.brokers.preferences.lightningWalletLockedStatus = .unlocked
+          CKNotificationCenter.publish(key: .didUnlockLightning)
         }
 
         dependencies.persistenceManager.brokers.lightning.persistAccountResponse(lnAccountResponse, forWallet: wallet, in: context)
