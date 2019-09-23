@@ -33,4 +33,25 @@ class MockTransactionDetailCellViewModel: MockTransactionSummaryCellViewModel, T
                amountDetails: amountDetails, counterpartyConfig: counterpartyConfig, memo: memo)
   }
 
+  static func testDetailInstance(walletTxType: WalletTransactionType = .onChain,
+                                 direction: TransactionDirection = .out,
+                                 status: TransactionStatus = .completed,
+                                 isLightningTransfer: Bool = false,
+                                 receiverAddress: String? = nil,
+                                 lightningInvoice: String? = nil,
+                                 selectedCurrency: SelectedCurrency = .fiat,
+                                 amountDetails: TransactionAmountDetails? = nil,
+                                 counterpartyConfig: TransactionCellCounterpartyConfig? = nil,
+                                 memo: String? = nil,
+                                 date: Date = Date()) -> MockTransactionDetailCellViewModel {
+
+    let amtDetails = amountDetails ?? MockTransactionSummaryCellViewModel.testAmountDetails(sats: 49500)
+    return MockTransactionDetailCellViewModel(
+      walletTxType: walletTxType, direction: direction,
+      status: status, isLightningTransfer: isLightningTransfer,
+      receiverAddress: receiverAddress, lightningInvoice: lightningInvoice,
+      selectedCurrency: selectedCurrency, amountDetails: amtDetails,
+      counterpartyConfig: counterpartyConfig, memo: memo, date: date)
+  }
+
 }
