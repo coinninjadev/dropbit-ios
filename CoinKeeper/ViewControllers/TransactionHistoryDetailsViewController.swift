@@ -119,24 +119,20 @@ extension TransactionHistoryDetailsViewController: TransactionHistoryDetailCellD
     delegate.openURL(addressURL, completionHandler: nil)
   }
 
-  func didTapBottomButton(detailCell: TransactionHistoryDetailBaseCell, action: TransactionDetailAction) {
-    switch action {
-    case .seeDetails:
-      guard let viewModel = detailCell.viewModel else { return }
-      delegate.viewControllerShouldSeeTransactionDetails(for: viewModel)
-    case .cancelInvitation:
-      guard let invitationID = detailCell.viewModel?.transaction?.invitation?.id,
-        let path = collectionView.indexPath(for: detailCell) else { return }
-      delegate.viewController(self, didCancelInvitationWithID: invitationID, at: path)
-    }
+  func didTapBottomButton(detailCell: TransactionHistoryDetailBaseCell) {
+//    switch action {
+//    case .seeDetails:
+//      guard let viewModel = detailCell.viewModel else { return }
+//      delegate.viewControllerShouldSeeTransactionDetails(for: viewModel)
+//    case .cancelInvitation:
+//      guard let invitationID = detailCell.viewModel?.transaction?.invitation?.id,
+//        let path = collectionView.indexPath(for: detailCell) else { return }
+//      delegate.viewController(self, didCancelInvitationWithID: invitationID, at: path)
+//    }
   }
 
-  func didTapAddMemoButton(completion: @escaping (String) -> Void) {
-    delegate.viewControllerDidTapAddMemo(self, with: completion)
-  }
-
-  func shouldSaveMemo(for transaction: CKMTransaction) -> Promise<Void> {
-    return delegate.viewControllerShouldUpdateTransaction(self, transaction: transaction)
+  func didTapAddMemoButton(detailCell: TransactionHistoryDetailBaseCell) {
+//    delegate.viewControllerDidTapAddMemo(self, with: completion)
   }
 
 }

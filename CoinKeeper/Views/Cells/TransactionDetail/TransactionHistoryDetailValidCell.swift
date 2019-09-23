@@ -35,29 +35,28 @@ class TransactionHistoryDetailValidCell: TransactionHistoryDetailBaseCell {
   @IBOutlet var bottomBufferView: UIView!
 
   // MARK: lifecycle
-  override func configure(with viewModel: OldTransactionDetailCellViewModel, delegate: TransactionHistoryDetailCellDelegate) {
-    super.configure(with: viewModel, delegate: delegate)
-    messageLabel.text = viewModel.messageLabel
-    messageContainer.isHidden = viewModel.messageLabel == nil
-    messageLabel.isHidden = viewModel.messageLabel == nil
-    layoutIfNeeded()
-    messageContainerHeightConstraint.constant = messageLabel.intrinsicContentSize.height + 20
-    setupProgressBar(with: viewModel)
-
-    addressView.selectionDelegate = self
-    addressView.load(with: viewModel)
-
-    configureBottomButton(with: viewModel)
-
-    bottomBufferView.isHidden = (UIScreen.main.relativeSize == .short)
-
-    layoutIfNeeded()
+  override func configure(with values: TransactionSummaryCellDisplayable, delegate: TransactionHistoryDetailCellDelegate) {
+    super.configure(with: values, delegate: delegate)
+//    messageLabel.text = viewModel.messageLabel
+//    messageContainer.isHidden = viewModel.messageLabel == nil
+//    messageLabel.isHidden = viewModel.messageLabel == nil
+//    layoutIfNeeded()
+//    messageContainerHeightConstraint.constant = messageLabel.intrinsicContentSize.height + 20
+//    setupProgressBar(with: viewModel)
+//
+//    addressView.selectionDelegate = self
+//    addressView.load(with: viewModel)
+//
+//    configureBottomButton(with: viewModel)
+//
+//    bottomBufferView.isHidden = (UIScreen.main.relativeSize == .short)
+//
+//    layoutIfNeeded()
   }
 
   // MARK: actions
   @IBAction func didTapBottomButton(_ sender: UIButton) {
-    guard let action = TransactionDetailAction(rawValue: sender.tag) else { return }
-    delegate?.didTapBottomButton(detailCell: self, action: action)
+    delegate?.didTapBottomButton(detailCell: self)
   }
 
   // MARK: private methods
