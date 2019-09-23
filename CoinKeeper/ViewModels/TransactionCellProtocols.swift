@@ -65,7 +65,7 @@ extension TransactionSummaryCellViewModelType {
   }
 
   var leadingImageConfig: SummaryCellLeadingImageConfig {
-    let directionConfig = SummaryCellDirectionConfig(bgColor: accentColor, image: leadingIcon)
+    let directionConfig = TransactionCellDirectionConfig(bgColor: accentColor, image: leadingIcon)
     return SummaryCellLeadingImageConfig(twitterConfig: counterpartyConfig?.twitterConfig,
                                          directionConfig: directionConfig)
   }
@@ -213,13 +213,14 @@ extension TransactionSummaryCellViewModelType {
 /// Provides all variable values directly necessary to configure the TransactionHistoryDetailCell UI.
 /// Fixed values (colors, font sizes, etc.) are provided by the cell itself.
 protocol TransactionDetailCellDisplayable: TransactionSummaryCellDisplayable {
-  var detailStatusText: String? { get }
-  var progressConfig: ProgressBarConfig? { get }
-  var bitcoinAddress: String? { get }
-  var memoConfig: DetailCellMemoConfig? { get }
-  var canAddMemo: Bool { get }
-  var actionButtonConfig: DetailCellActionButtonConfig? { get }
-  var displayDate: String { get }
+  var directionConfig: TransactionCellDirectionConfig { get }
+//  var detailStatusText: String? { get }
+//  var progressConfig: ProgressBarConfig? { get }
+//  var bitcoinAddress: String? { get }
+//  var memoConfig: DetailCellMemoConfig? { get }
+//  var canAddMemo: Bool { get }
+//  var actionButtonConfig: DetailCellActionButtonConfig? { get }
+//  var displayDate: String { get }
 }
 
 extension TransactionDetailCellDisplayable {
@@ -270,8 +271,9 @@ extension TransactionDetailCellViewModelType {
   var statusTextColor: UIColor { return .lightGrayText }
 
   var canAddMemo: Bool {
-    if isLightningTransfer { return false }
-    return memoConfig == nil
+    return false
+//    if isLightningTransfer { return false }
+//    return memoConfig == nil
   }
 
   var detailStatusText: String? {

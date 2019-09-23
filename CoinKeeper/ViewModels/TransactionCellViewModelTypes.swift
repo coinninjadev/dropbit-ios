@@ -162,24 +162,24 @@ struct SummaryCellAmountLabels {
   let pillIsAmount: Bool
 }
 
-struct SummaryCellDirectionConfig {
+struct TransactionCellDirectionConfig {
   let bgColor: UIColor
   let image: UIImage
 }
 
-struct SummaryCellAvatarConfig {
+struct TransactionCellAvatarConfig {
   let image: UIImage
 }
 
 struct SummaryCellLeadingImageConfig {
-  let avatarConfig: SummaryCellAvatarConfig?
-  let directionConfig: SummaryCellDirectionConfig?
+  let avatarConfig: TransactionCellAvatarConfig?
+  let directionConfig: TransactionCellDirectionConfig?
 
   /// Falls back to use the directionConfig if twitterConfig is missing image data
   init(twitterConfig: TransactionCellTwitterConfig?,
-       directionConfig: SummaryCellDirectionConfig) {
+       directionConfig: TransactionCellDirectionConfig) {
     if let avatarImage = twitterConfig?.avatar {
-      self.avatarConfig = SummaryCellAvatarConfig(image: avatarImage)
+      self.avatarConfig = TransactionCellAvatarConfig(image: avatarImage)
       self.directionConfig = nil
     } else {
       self.avatarConfig = nil
