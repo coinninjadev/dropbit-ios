@@ -144,7 +144,7 @@ class WalletSyncOperationFactory {
       .get(in: context) { lnAccountResponse in
         guard let wallet = CKMWallet.find(in: context) else { return }
 
-        if lnAccountResponse.locked{
+        if lnAccountResponse.locked {
           CKNotificationCenter.publish(key: .didLockLightning)
           dependencies.persistenceManager.brokers.preferences.lightningWalletLockedStatus = .locked
         } else {

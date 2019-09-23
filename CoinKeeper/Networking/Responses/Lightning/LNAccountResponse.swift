@@ -9,7 +9,7 @@
 import Foundation
 import Moya
 
-struct LNAccountResponse: LNResponseDecodable {
+struct LNAccountResponse: ResponseDecodable {
 
   let id: String
   let createdAt: Date
@@ -32,15 +32,35 @@ struct LNAccountResponse: LNResponseDecodable {
   }
 
   init(from decoder: Decoder) throws {
+    let formatter = CKDateFormatter.rfc3339Decoding
     let container = try decoder.container(keyedBy: CodingKeys.self)
     self.id = try container.decode(String.self, forKey: .id)
-    self.createdAt = try container.decode(Date.self, forKey: .createdAt)
-    self.updatedAt = try container.decode(Date.self, forKey: .updatedAt)
+
+    let createdAt = try container.decode(String.self, forKey: .createdAt)
+    if let date = formatter.date(from: createdAt) {
+      self.createdAt = date
+    } else {
+      throw DecodingError.keyNotFound(CodingKeys.createdAt,
+                                      DecodingError.Context(codingPath: [CodingKeys.createdAt],
+                                                            debugDescription: "Date does not conform to rfc3339Decoding spec"))
+    }
+
+    if let updatedAt = try container.decodeIfPresent(String.self, forKey: .updatedAt),
+      let date = formatter.date(from: updatedAt) {
+      self.updatedAt = date
+    } else {
+      self.updatedAt = nil
+    }
+
     self.address = try container.decodeIfPresent(String.self, forKey: .address)
     self.balance = try container.decode(Int.self, forKey: .balance)
     self.pendingIn = try container.decode(Int.self, forKey: .pendingIn)
     self.pendingOut = try container.decode(Int.self, forKey: .pendingOut)
     self.locked = try container.decodeIfPresent(Bool.self, forKey: .locked) ?? false
+  }
+
+  static var decoder: JSONDecoder {
+    return JSONDecoder()
   }
 
   static var sampleJSON: String {
