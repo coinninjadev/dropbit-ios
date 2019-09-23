@@ -314,6 +314,9 @@ extension SendPaymentViewController {
   }
 
   func resetViewModelWithUI() {
+    let sharedMemoAllowed = delegate.viewControllerShouldInitiallyAllowMemoSharing(self)
+    viewModel.sharedMemoAllowed = sharedMemoAllowed
+
     setPaymentRecipient(nil)
     viewModel.sendMaxTransactionData = nil
     viewModel.fromAmount = 0
