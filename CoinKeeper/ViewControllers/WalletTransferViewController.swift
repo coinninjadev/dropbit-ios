@@ -199,6 +199,14 @@ class WalletTransferViewController: PresentableViewController, StoryboardInitial
 
 extension WalletTransferViewController: ConfirmViewDelegate {
   func viewDidConfirm() {
+    do {
+      try CurrencyAmountValidator(balancesNetPending: delegate.balancesNetPending(),
+                                  balanceToCheck: viewModel.walletTransactionType).validate(value:
+                                    viewModel.generateCurrencyConverter())
+    } catch {
+      delegate.viewControllerNetworkError(error)
+    }
+
     let walletBalances = balanceDataSource?.balancesNetPending() ?? .empty
     switch viewModel.direction {
     case .toLightning(let data):
