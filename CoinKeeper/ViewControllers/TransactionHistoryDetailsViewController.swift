@@ -100,8 +100,8 @@ final class TransactionHistoryDetailsViewController: PresentableViewController, 
 
 extension TransactionHistoryDetailsViewController: TransactionHistoryDetailCellDelegate {
 
-  func didTapQuestionMarkButton(detailCell: TransactionHistoryDetailBaseCell, with url: URL) {
-    delegate.openURL(url, completionHandler: nil)
+  func didTapQuestionMarkButton(detailCell: TransactionHistoryDetailBaseCell) {
+//    delegate.openURL(url, completionHandler: nil)
   }
 
   func didTapClose(detailCell: TransactionHistoryDetailBaseCell) {

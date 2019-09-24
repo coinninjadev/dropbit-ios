@@ -10,7 +10,7 @@ import UIKit
 import PromiseKit
 
 protocol TransactionHistoryDetailCellDelegate: class {
-  func didTapQuestionMarkButton(detailCell: TransactionHistoryDetailBaseCell, with url: URL)
+  func didTapQuestionMarkButton(detailCell: TransactionHistoryDetailBaseCell)
   func didTapClose(detailCell: TransactionHistoryDetailBaseCell)
   func didTapTwitterShare(detailCell: TransactionHistoryDetailBaseCell)
   func didTapAddress(detailCell: TransactionHistoryDetailBaseCell)
@@ -71,7 +71,7 @@ class TransactionHistoryDetailBaseCell: UICollectionViewCell {
 //    guard let url: URL = viewModel?.invitationStatus != nil ?
 //      CoinNinjaUrlFactory.buildUrl(for: .dropbitTransactionTooltip) : CoinNinjaUrlFactory.buildUrl(for: .regularTransactionTooltip) else { return }
 
-//    delegate?.didTapQuestionMarkButton(detailCell: self, with: url)
+    delegate?.didTapQuestionMarkButton(detailCell: self)
   }
 
   @IBAction func didTapTwitterShare(_ sender: Any) {
