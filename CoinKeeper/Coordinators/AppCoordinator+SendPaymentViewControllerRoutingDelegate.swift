@@ -41,28 +41,20 @@ extension AppCoordinator: SendPaymentViewControllerRoutingDelegate {
     let currencyPair = CurrencyPair(btcPrimaryWith: self.currencyController)
     let feeConfig = TransactionFeeConfig(prefs: self.persistenceManager.brokers.preferences)
 
-    if feeConfig.adjustableFeesEnabled {
-      let viewModel = ConfirmOnChainPaymentViewModel(address: address,
-                                                     contact: inputs.contact,
-                                                     btcAmount: btcAmount,
-                                                     currencyPair: currencyPair,
-                                                     exchangeRates: inputs.rates,
-                                                     outgoingTransactionData: outgoingTxData)
+    let viewModel = ConfirmOnChainPaymentViewModel(address: address,
+                                                   contact: inputs.contact,
+                                                   btcAmount: btcAmount,
+                                                   currencyPair: currencyPair,
+                                                   exchangeRates: inputs.rates,
+                                                   outgoingTransactionData: outgoingTxData)
 
+    if feeConfig.adjustableFeesEnabled {
       self.handleSendingMaxWithAdjustableFees(viewController: viewController, address: address,
                                               viewModel: viewModel, feeConfig: feeConfig)
-
     } else {
       let feeModel = ConfirmTransactionFeeModel.standard(txData)
-      let viewModel = ConfirmOnChainPaymentViewModel(address: address,
-                                                     contact: inputs.contact,
-                                                     btcAmount: btcAmount,
-                                                     currencyPair: currencyPair,
-                                                     exchangeRates: inputs.rates,
-                                                     outgoingTransactionData: outgoingTxData)
       viewController.dismiss(animated: true) {
         // Use the previously-generated send max transaction data
-
         self.showConfirmOnChainPayment(with: viewModel, feeModel: feeModel)
       }
     }
@@ -325,17 +317,23 @@ extension AppCoordinator: SendPaymentViewControllerRoutingDelegate {
     guard let wmgr = walletManager else { return }
     networkManager.latestFees().compactMap { FeeRates(fees: $0) }
       .then { (feeRates: FeeRates) -> Promise<ConfirmTransactionFeeModel> in
-        let config = TransactionFeeConfig(prefs: self.persistenceManager.brokers.preferences)
-        return self.adjustableFeeViewModel(
-          config: config,
-          rates: feeRates,
-          wmgr: wmgr,
-          btcAmount: btcAmount,
-          address: "")
-          .map { .adjustable($0) }
+        switch inputs.walletTxType {
+        case .onChain:
+          let config = TransactionFeeConfig(prefs: self.persistenceManager.brokers.preferences)
+          return self.adjustableFeeViewModel(
+            config: config,
+            rates: feeRates,
+            wmgr: wmgr,
+            btcAmount: btcAmount,
+            address: "")
+            .map { .adjustable($0) }
+        case .lightning:
+          return Promise { seal in
+            seal.fulfill(ConfirmTransactionFeeModel.lightning)
+          }
+        }
       }
       .done(on: .main) { (feeModel: ConfirmTransactionFeeModel) -> Void in
-        let displayLightningPaymentViewController: CKCompletion = {}
 
         let displayConfirmPaymentViewController: CKCompletion = {
           let viewModel = ConfirmPaymentInviteViewModel(contact: contact,
