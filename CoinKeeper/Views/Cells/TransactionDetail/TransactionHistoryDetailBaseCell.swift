@@ -37,8 +37,6 @@ class TransactionHistoryDetailBaseCell: UICollectionViewCell {
   @IBOutlet var memoContainerView: ConfirmPaymentMemoView!
   @IBOutlet var dateLabel: TransactionDetailDateLabel!
 
-  // MARK: variables
-  var viewModel: OldTransactionDetailCellViewModel?
   weak var delegate: TransactionHistoryDetailCellDelegate?
 
   // MARK: object lifecycle
@@ -64,21 +62,16 @@ class TransactionHistoryDetailBaseCell: UICollectionViewCell {
     configureTwitterShareButton()
   }
 
-  override func prepareForReuse() {
-    super.prepareForReuse()
-    viewModel = nil
-  }
-
   // MARK: actions
   @IBAction func didTapAddMemoButton(_ sender: UIButton) {
     delegate?.didTapAddMemoButton(detailCell: self)
   }
 
   @IBAction func didTapQuestionMarkButton(_ sender: UIButton) {
-    guard let url: URL = viewModel?.invitationStatus != nil ?
-      CoinNinjaUrlFactory.buildUrl(for: .dropbitTransactionTooltip) : CoinNinjaUrlFactory.buildUrl(for: .regularTransactionTooltip) else { return }
+//    guard let url: URL = viewModel?.invitationStatus != nil ?
+//      CoinNinjaUrlFactory.buildUrl(for: .dropbitTransactionTooltip) : CoinNinjaUrlFactory.buildUrl(for: .regularTransactionTooltip) else { return }
 
-    delegate?.didTapQuestionMarkButton(detailCell: self, with: url)
+//    delegate?.didTapQuestionMarkButton(detailCell: self, with: url)
   }
 
   @IBAction func didTapTwitterShare(_ sender: Any) {

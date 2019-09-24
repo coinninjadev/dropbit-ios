@@ -109,14 +109,14 @@ extension TransactionHistoryDetailsViewController: TransactionHistoryDetailCellD
   }
 
   func didTapTwitterShare(detailCell: TransactionHistoryDetailBaseCell) {
-    guard let tx = detailCell.viewModel?.transaction else { return }
-    delegate.viewControllerRequestedShareTransactionOnTwitter(self, transaction: tx, shouldDismiss: false)
+//    guard let tx = detailCell.viewModel?.transaction else { return }
+//    delegate.viewControllerRequestedShareTransactionOnTwitter(self, transaction: tx, shouldDismiss: false)
   }
 
   func didTapAddress(detailCell: TransactionHistoryDetailBaseCell) {
-    guard let address = detailCell.viewModel?.receiverAddress,
-      let addressURL = CoinNinjaUrlFactory.buildUrl(for: .address(id: address)) else { return }
-    delegate.openURL(addressURL, completionHandler: nil)
+//    guard let address = detailCell.viewModel?.receiverAddress,
+//      let addressURL = CoinNinjaUrlFactory.buildUrl(for: .address(id: address)) else { return }
+//    delegate.openURL(addressURL, completionHandler: nil)
   }
 
   func didTapBottomButton(detailCell: TransactionHistoryDetailBaseCell) {
