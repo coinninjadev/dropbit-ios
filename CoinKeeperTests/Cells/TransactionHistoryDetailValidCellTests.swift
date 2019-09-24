@@ -9,21 +9,23 @@
 import XCTest
 @testable import DropBit
 
+//swiftlint:disable weak_delegate
+
 /// Includes tests for properties and functions defined in both the ValidCell and BaseCell.
 class TransactionHistoryDetailValidCellTests: XCTestCase {
   var sut: TransactionHistoryDetailValidCell!
-  var mockCoordinator: MockTransactionHistoryDetailCellDelegate!
+  var mockDelegate: MockTransactionHistoryDetailCellDelegate!
 
   override func setUp() {
     super.setUp()
     self.sut = TransactionHistoryDetailValidCell.nib().instantiate(withOwner: self, options: nil).first as? TransactionHistoryDetailValidCell
     self.sut.awakeFromNib()
-    mockCoordinator = MockTransactionHistoryDetailCellDelegate()
-    self.sut.delegate = mockCoordinator
+    mockDelegate = MockTransactionHistoryDetailCellDelegate()
+    self.sut.delegate = mockDelegate
   }
 
   override func tearDown() {
-    mockCoordinator = nil
+    mockDelegate = nil
     sut = nil
     super.tearDown()
   }
@@ -85,29 +87,29 @@ class TransactionHistoryDetailValidCellTests: XCTestCase {
   // MARK: Delegate methods
   func testCloseButtonTellsDelegate() {
     sut.closeButton.sendActions(for: .touchUpInside)
-    XCTAssertTrue(mockCoordinator.tappedClose)
+    XCTAssertTrue(mockDelegate.tappedClose)
   }
 
   func testQuestionMarkButtonTellsDelegate() {
     sut.questionMarkButton.sendActions(for: .touchUpInside)
-    XCTAssertTrue(mockCoordinator.tappedQuestionMark)
+    XCTAssertTrue(mockDelegate.tappedQuestionMark)
   }
 
   func testAddMemoButtonTellsDelegate() {
     sut.addMemoButton.sendActions(for: .touchUpInside)
-    XCTAssertTrue(mockCoordinator.tappedAddMemo)
+    XCTAssertTrue(mockDelegate.tappedAddMemo)
   }
 
   func testBottomButtonTellsDelegate() {
     sut.didTapBottomButton(sut.bottomButton)
-    XCTAssertTrue(mockCoordinator.tappedBottomButton)
+    XCTAssertTrue(mockDelegate.tappedBottomButton)
   }
 
   // MARK: - Direction view
 
   func testUnpaidLightningInvoice_loadsImageAndColor() {
     let viewModel = MockDetailCellVM.testDetailInstance(walletTxType: .lightning, direction: .in, status: .pending, isLightningTransfer: false)
-    sut.configure(with: viewModel, delegate: mockCoordinator)
+    sut.configure(with: viewModel, delegate: mockDelegate)
     let expectedImage = viewModel.lightningImage, expectedColor = UIColor.lightningBlue
     XCTAssertEqual(sut.directionView.image, expectedImage)
     XCTAssertEqual(sut.directionView.backgroundColor, expectedColor)
@@ -115,7 +117,7 @@ class TransactionHistoryDetailValidCellTests: XCTestCase {
 
   func testIncomingCompletedLightning_loadsImageAndColor() {
     let viewModel = MockDetailCellVM.testDetailInstance(walletTxType: .lightning, direction: .in, status: .completed, isLightningTransfer: false)
-    sut.configure(with: viewModel, delegate: mockCoordinator)
+    sut.configure(with: viewModel, delegate: mockDelegate)
     let expectedImage = viewModel.incomingImage, expectedColor = UIColor.incomingGreen
     XCTAssertEqual(sut.directionView.image, expectedImage)
     XCTAssertEqual(sut.directionView.backgroundColor, expectedColor)
@@ -123,7 +125,7 @@ class TransactionHistoryDetailValidCellTests: XCTestCase {
 
   func testOutgoingCompletedLightning_loadsImageAndColor() {
     let viewModel = MockDetailCellVM.testDetailInstance(walletTxType: .lightning, direction: .out, status: .completed, isLightningTransfer: false)
-    sut.configure(with: viewModel, delegate: mockCoordinator)
+    sut.configure(with: viewModel, delegate: mockDelegate)
     let expectedImage = viewModel.outgoingImage, expectedColor = UIColor.outgoingGray
     XCTAssertEqual(sut.directionView.image, expectedImage)
     XCTAssertEqual(sut.directionView.backgroundColor, expectedColor)
@@ -131,7 +133,7 @@ class TransactionHistoryDetailValidCellTests: XCTestCase {
 
   func testInvalidTransaction_loadsImageAndColor() {
     let viewModel = MockDetailCellVM.testDetailInstance(walletTxType: .onChain, direction: .out, status: .expired)
-    sut.configure(with: viewModel, delegate: mockCoordinator)
+    sut.configure(with: viewModel, delegate: mockDelegate)
     let expectedImage = viewModel.invalidImage, expectedColor = UIColor.invalid
     XCTAssertEqual(sut.directionView.image, expectedImage)
     XCTAssertEqual(sut.directionView.backgroundColor, expectedColor)
@@ -139,7 +141,7 @@ class TransactionHistoryDetailValidCellTests: XCTestCase {
 
   func testIncomingOnChain_loadsImageAndColor() {
     let viewModel = MockDetailCellVM.testDetailInstance(walletTxType: .onChain, direction: .in)
-    sut.configure(with: viewModel, delegate: mockCoordinator)
+    sut.configure(with: viewModel, delegate: mockDelegate)
     let expectedImage = viewModel.incomingImage, expectedColor = UIColor.incomingGreen
     XCTAssertEqual(sut.directionView.image, expectedImage)
     XCTAssertEqual(sut.directionView.backgroundColor, expectedColor)
@@ -147,7 +149,7 @@ class TransactionHistoryDetailValidCellTests: XCTestCase {
 
   func testOutgoingOnChain_loadsImageAndColor() {
     let viewModel = MockDetailCellVM.testDetailInstance(walletTxType: .onChain, direction: .out)
-    sut.configure(with: viewModel, delegate: mockCoordinator)
+    sut.configure(with: viewModel, delegate: mockDelegate)
     let expectedImage = viewModel.outgoingImage, expectedColor = UIColor.outgoingGray
     XCTAssertEqual(sut.directionView.image, expectedImage)
     XCTAssertEqual(sut.directionView.backgroundColor, expectedColor)
@@ -155,7 +157,7 @@ class TransactionHistoryDetailValidCellTests: XCTestCase {
 
   func testOutgoingOnChain_LightningTransfer_loadsImageAndColor() {
     let viewModel = MockDetailCellVM.testDetailInstance(walletTxType: .onChain, direction: .out, isLightningTransfer: true)
-    sut.configure(with: viewModel, delegate: mockCoordinator)
+    sut.configure(with: viewModel, delegate: mockDelegate)
     let expectedImage = viewModel.transferImage, expectedColor = UIColor.outgoingGray
     XCTAssertEqual(sut.directionView.image, expectedImage)
     XCTAssertEqual(sut.directionView.backgroundColor, expectedColor)
@@ -163,7 +165,7 @@ class TransactionHistoryDetailValidCellTests: XCTestCase {
 
   func testIncomingOnChain_LightningTransfer_loadsImageAndColor() {
     let viewModel = MockDetailCellVM.testDetailInstance(walletTxType: .onChain, direction: .in, isLightningTransfer: true)
-    sut.configure(with: viewModel, delegate: mockCoordinator)
+    sut.configure(with: viewModel, delegate: mockDelegate)
     let expectedImage = viewModel.transferImage, expectedColor = UIColor.incomingGreen
     XCTAssertEqual(sut.directionView.image, expectedImage)
     XCTAssertEqual(sut.directionView.backgroundColor, expectedColor)
@@ -171,7 +173,7 @@ class TransactionHistoryDetailValidCellTests: XCTestCase {
 
   func testOutgoingLightning_LightningTransfer_loadsImageAndColor() {
     let viewModel = MockDetailCellVM.testDetailInstance(walletTxType: .lightning, direction: .out, isLightningTransfer: true)
-    sut.configure(with: viewModel, delegate: mockCoordinator)
+    sut.configure(with: viewModel, delegate: mockDelegate)
     let expectedImage = viewModel.transferImage, expectedColor = UIColor.outgoingGray
     XCTAssertEqual(sut.directionView.image, expectedImage)
     XCTAssertEqual(sut.directionView.backgroundColor, expectedColor)
@@ -179,7 +181,7 @@ class TransactionHistoryDetailValidCellTests: XCTestCase {
 
   func testIncomingLightning_LightningTransfer_loadsImageAndColor() {
     let viewModel = MockDetailCellVM.testDetailInstance(walletTxType: .lightning, direction: .in, isLightningTransfer: true)
-    sut.configure(with: viewModel, delegate: mockCoordinator)
+    sut.configure(with: viewModel, delegate: mockDelegate)
     let expectedImage = viewModel.transferImage, expectedColor = UIColor.incomingGreen
     XCTAssertEqual(sut.directionView.image, expectedImage)
     XCTAssertEqual(sut.directionView.backgroundColor, expectedColor)
@@ -188,7 +190,7 @@ class TransactionHistoryDetailValidCellTests: XCTestCase {
   func testIncomingPendingLightning_LightningTransfer_loadsImageAndColor() {
     let viewModel = MockDetailCellVM.testDetailInstance(walletTxType: .lightning, direction: .in,
                                                         status: .pending, isLightningTransfer: true)
-    sut.configure(with: viewModel, delegate: mockCoordinator)
+    sut.configure(with: viewModel, delegate: mockDelegate)
     let expectedImage = viewModel.transferImage, expectedColor = UIColor.incomingGreen
     XCTAssertEqual(sut.directionView.image, expectedImage)
     XCTAssertEqual(sut.directionView.backgroundColor, expectedColor)
