@@ -196,6 +196,106 @@ class TransactionHistoryDetailValidCellTests: XCTestCase {
     XCTAssertEqual(sut.directionView.backgroundColor, expectedColor)
   }
 
+  // MARK: - Status label
+
+  func testStatusLabel_broadcasting() {
+    let viewModel = MockDetailCellVM.testDetailInstance(status: .broadcasting)
+    sut.configure(with: viewModel, delegate: mockDelegate)
+    XCTAssertEqual(sut.statusLabel.text, viewModel.string(for: .broadcasting))
+    XCTAssertEqual(sut.statusLabel.textColor, UIColor.darkGrayText)
+  }
+
+  func testStatusLabel_pending() {
+    let viewModel = MockDetailCellVM.testDetailInstance(status: .pending)
+    sut.configure(with: viewModel, delegate: mockDelegate)
+    XCTAssertEqual(sut.statusLabel.text, viewModel.string(for: .pending))
+    XCTAssertEqual(sut.statusLabel.textColor, UIColor.darkGrayText)
+  }
+
+  func testStatusLabel_complete() {
+    let viewModel = MockDetailCellVM.testDetailInstance(status: .completed)
+    sut.configure(with: viewModel, delegate: mockDelegate)
+    XCTAssertEqual(sut.statusLabel.text, viewModel.string(for: .complete))
+    XCTAssertEqual(sut.statusLabel.textColor, UIColor.darkGrayText)
+  }
+
+  func testStatusLabel_onChainDropBitSent() {
+    let counterparty = TransactionCellCounterpartyConfig(displayName: nil,
+                                                         displayPhoneNumber: nil,
+                                                         twitterConfig: MockDetailCellVM.mockTwitterConfig())
+    let viewModel = MockDetailCellVM.testDetailInstance(walletTxType: .onChain, direction: .out,
+                                                        status: .pending, counterpartyConfig: counterparty)
+    sut.configure(with: viewModel, delegate: mockDelegate)
+    XCTAssertEqual(sut.statusLabel.text, viewModel.string(for: .dropBitSent))
+    XCTAssertEqual(sut.statusLabel.textColor, UIColor.darkGrayText)
+  }
+
+  func testStatusLabel_lightningDropBitSent() {
+    let counterparty = TransactionCellCounterpartyConfig(displayName: nil,
+                                                         displayPhoneNumber: nil,
+                                                         twitterConfig: MockDetailCellVM.mockTwitterConfig())
+    let viewModel = MockDetailCellVM.testDetailInstance(walletTxType: .lightning, direction: .out,
+                                                        status: .pending, counterpartyConfig: counterparty)
+    sut.configure(with: viewModel, delegate: mockDelegate)
+    XCTAssertEqual(sut.statusLabel.text, viewModel.string(for: .dropBitSentInvitePending))
+    XCTAssertEqual(sut.statusLabel.textColor, UIColor.darkGrayText)
+  }
+
+  func testStatusLabel_pendingOnChainDropBitReceived() {
+    let counterparty = TransactionCellCounterpartyConfig(displayName: nil,
+                                                         displayPhoneNumber: nil,
+                                                         twitterConfig: MockDetailCellVM.mockTwitterConfig())
+    let viewModel = MockDetailCellVM.testDetailInstance(walletTxType: .onChain, direction: .in,
+                                                        status: .pending, counterpartyConfig: counterparty)
+    sut.configure(with: viewModel, delegate: mockDelegate)
+    XCTAssertEqual(sut.statusLabel.text, viewModel.string(for: .pending))
+    XCTAssertEqual(sut.statusLabel.textColor, UIColor.darkGrayText)
+  }
+
+  func testStatusLabel_dropBitCanceled() {
+    let viewModel = MockDetailCellVM.testDetailInstance(status: .canceled)
+    sut.configure(with: viewModel, delegate: mockDelegate)
+    XCTAssertEqual(sut.statusLabel.text, viewModel.string(for: .dropBitCanceled))
+    XCTAssertEqual(sut.statusLabel.textColor, UIColor.warningText)
+  }
+
+  func testStatusLabel_transactionExpired() {
+    let viewModel = MockDetailCellVM.testDetailInstance(status: .expired)
+    sut.configure(with: viewModel, delegate: mockDelegate)
+    XCTAssertEqual(sut.statusLabel.text, viewModel.string(for: .transactionExpired))
+    XCTAssertEqual(sut.statusLabel.textColor, UIColor.warningText)
+  }
+
+  func testStatusLabel_broadcastFailed() {
+    let viewModel = MockDetailCellVM.testDetailInstance(status: .failed)
+    sut.configure(with: viewModel, delegate: mockDelegate)
+    XCTAssertEqual(sut.statusLabel.text, viewModel.string(for: .broadcastFailed))
+    XCTAssertEqual(sut.statusLabel.textColor, UIColor.warningText)
+  }
+
+  func testStatusLabel_invoicePaid() {
+    let viewModel = MockDetailCellVM.testDetailInstance(walletTxType: .lightning, status: .completed)
+    sut.configure(with: viewModel, delegate: mockDelegate)
+    XCTAssertEqual(sut.statusLabel.text, viewModel.string(for: .invoicePaid))
+    XCTAssertEqual(sut.statusLabel.textColor, UIColor.darkGrayText)
+  }
+
+  func testStatusLabel_withdrawFromLightning() {
+    let viewModel = MockDetailCellVM.testDetailInstance(walletTxType: .lightning, direction: .out,
+                                                        status: .completed, isLightningTransfer: true)
+    sut.configure(with: viewModel, delegate: mockDelegate)
+    XCTAssertEqual(sut.statusLabel.text, viewModel.string(for: .withdrawFromLightning))
+    XCTAssertEqual(sut.statusLabel.textColor, UIColor.darkGrayText)
+  }
+
+  func testStatusLabel_loadLightning() {
+    let viewModel = MockDetailCellVM.testDetailInstance(walletTxType: .lightning, direction: .in,
+                                                        status: .completed, isLightningTransfer: true)
+    sut.configure(with: viewModel, delegate: mockDelegate)
+    XCTAssertEqual(sut.statusLabel.text, viewModel.string(for: .loadLightning))
+    XCTAssertEqual(sut.statusLabel.textColor, UIColor.darkGrayText)
+  }
+
   //TODO: migrate or delete these tests from the summary cell
   /*
   func testTwitterConfig_loadsAvatar() {

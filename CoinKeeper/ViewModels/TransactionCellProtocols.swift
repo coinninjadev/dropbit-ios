@@ -132,7 +132,7 @@ extension TransactionSummaryCellViewModelType {
     }
   }
 
-  private var lightningTransferType: LightningTransferType? {
+  var lightningTransferType: LightningTransferType? {
     guard isLightningTransfer else { return nil }
     switch walletTxType {
     case .onChain:
@@ -214,7 +214,9 @@ extension TransactionSummaryCellViewModelType {
 /// Fixed values (colors, font sizes, etc.) are provided by the cell itself.
 protocol TransactionDetailCellDisplayable: TransactionSummaryCellDisplayable {
   var directionConfig: TransactionCellDirectionConfig { get }
-//  var detailStatusText: String? { get }
+  var detailStatusText: String { get }
+  var detailStatusColor: UIColor { get }
+
 //  var progressConfig: ProgressBarConfig? { get }
 //  var bitcoinAddress: String? { get }
 //  var memoConfig: DetailCellMemoConfig? { get }
@@ -225,9 +227,23 @@ protocol TransactionDetailCellDisplayable: TransactionSummaryCellDisplayable {
 
 extension TransactionDetailCellDisplayable {
 
-  var statusTextColor: UIColor {
-    return .lightGrayText
-  }
+//  var transactionStatusDescription: String {
+//    guard !isTemporaryTransaction else { return "Broadcasting" }
+//    let count = confirmations
+//    switch count {
+//    case 0:    return "Pending"
+//    default:  return "Complete"
+//    }
+//  }
+
+//  var statusDescription: String {
+//    if broadcastFailed {
+//      return "Failed to Broadcast"
+//    } else {
+//      return invitationStatusDescription ?? transactionStatusDescription
+//    }
+//  }
+
 }
 
 protocol TransactionInvalidDetailCellDisplayable: TransactionDetailCellDisplayable {
@@ -237,7 +253,7 @@ protocol TransactionInvalidDetailCellDisplayable: TransactionDetailCellDisplayab
 extension TransactionInvalidDetailCellDisplayable {
 
   var statusTextColor: UIColor {
-    return .warning
+    return .warningText
   }
 
   var directionImage: UIImage? {
@@ -268,7 +284,54 @@ protocol TransactionDetailCellViewModelType: TransactionSummaryCellViewModelType
 
 extension TransactionDetailCellViewModelType {
 
-//  var statusTextColor: UIColor { return .lightGrayText }
+  var detailStatusText: String {
+    switch status {
+    case .pending:      return pendingStatusText
+    case .completed:    return completedStatusText
+    case .broadcasting: return string(for: .broadcasting)
+    case .canceled:     return string(for: .dropBitCanceled)
+    case .expired:      return string(for: .transactionExpired)
+    case .failed:       return string(for: .broadcastFailed)
+    }
+  }
+
+  private var pendingStatusText: String {
+    if isDropBit {
+      switch direction {
+      case .out:
+        switch walletTxType {
+        case .onChain:    return string(for: .dropBitSent)
+        case .lightning:  return string(for: .dropBitSentInvitePending)
+        }
+      case .in:
+        return string(for: .pending)
+      }
+    } else {
+      return string(for: .pending)
+    }
+  }
+
+  private var completedStatusText: String {
+    if let transferType = lightningTransferType {
+      switch transferType {
+      case .deposit:    return string(for: .loadLightning)
+      case .withdraw:   return string(for: .withdrawFromLightning)
+      }
+    } else {
+      switch walletTxType {
+      case .onChain:    return string(for: .complete)
+      case .lightning:  return string(for: .invoicePaid)
+      }
+    }
+  }
+
+  var detailStatusColor: UIColor {
+    return isValidTransaction ? .darkGrayText : .warningText
+  }
+
+  private var isDropBit: Bool {
+    return counterpartyConfig != nil
+  }
 
 //  var canAddMemo: Bool {
 //    return false
@@ -310,4 +373,22 @@ extension TransactionDetailCellViewModelType {
 //    }
 //  }
 
+  func string(for stringId: DetailCellString) -> String {
+    return stringId.rawValue
+  }
+
+}
+
+enum DetailCellString: String {
+  case broadcasting = "Broadcasting"
+  case broadcastFailed = "Failed to Broadcast"
+  case pending = "Pending"
+  case complete = "Complete"
+  case dropBitSent = "DropBit Sent"
+  case dropBitSentInvitePending = "DropBit Sent - Invite Pending"
+  case dropBitCanceled = "DropBit Canceled"
+  case transactionExpired = "Transaction Expired"
+  case invoicePaid = "Invoice Paid"
+  case loadLightning = "Load Lightning"
+  case withdrawFromLightning = "Withdraw from Lightning"
 }

@@ -93,6 +93,8 @@ class TransactionHistoryDetailBaseCell: UICollectionViewCell {
     self.delegate = delegate
 
     self.directionView.configure(image: values.directionConfig.image, bgColor: values.accentColor)
+    self.statusLabel.text = values.detailStatusText
+    self.statusLabel.textColor = values.detailStatusColor
 
   }
 //  func configure(with viewModel: OldTransactionDetailCellViewModel, delegate: TransactionHistoryDetailCellDelegate) {
