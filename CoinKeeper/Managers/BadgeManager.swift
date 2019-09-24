@@ -34,7 +34,7 @@ class BadgeManager: BadgeManagerType {
 
   init(persistenceManager: PersistenceManagerType) {
     self.persistenceManager = persistenceManager
-    observeContextSaveNotifications(forContext: persistenceManager.viewContext)
+    observeContextSaveNotifications()
   }
 
   var wordsBackedUp: Bool {
@@ -64,7 +64,9 @@ class BadgeManager: BadgeManagerType {
   }
 
   func publishBadgeUpdate() {
-    CKNotificationCenter.publish(key: .didUpdateBadgeInfo, object: self, userInfo: userInfo(from: badgeTopics))
+    DispatchQueue.main.async {
+      CKNotificationCenter.publish(key: .didUpdateBadgeInfo, object: self, userInfo: self.userInfo(from: self.badgeTopics))
+    }
   }
 
   func setTransactionsDidDisplay() {

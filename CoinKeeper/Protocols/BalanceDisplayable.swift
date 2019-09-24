@@ -38,8 +38,8 @@ extension BalanceDataSource {
    This ignores changes made in child contexts until they are saved in the root context. (Filtering by context.name may be necessary.)
    The conforming object should call this function as soon as possible.
    */
-  func registerForBalanceSaveNotifications(viewContext: NSManagedObjectContext) {
-    observeContextSaveNotifications(forContext: viewContext)
+  func registerForBalanceSaveNotifications() {
+    observeContextSaveNotifications()
   }
 
   func setContextNotificationTokens(willSaveToken: NotificationToken, didSaveToken: NotificationToken) {
@@ -63,14 +63,18 @@ extension BalanceDataSource {
 
   func handleDidSaveContext(_ context: NSManagedObjectContext) {
     if self.balanceUpdateManager.balanceChangesObserved {
-      CKNotificationCenter.publish(key: .didUpdateBalance)
-      self.balanceUpdateManager.balanceChangesObserved = false
+      DispatchQueue.main.async {
+        CKNotificationCenter.publish(key: .didUpdateBalance)
+        self.balanceUpdateManager.balanceChangesObserved = false
+      }
     }
   }
 
   private func objectIsBalanceRelevant(_ object: NSManagedObject) -> Bool {
     guard let objectEntityName = object.entity.managedObjectClassName else { return false }
-    let relevantEntityNames: [String] = [CKMAddressTransactionSummary.entity(), CKMInvitation.entity()].compactMap { $0.managedObjectClassName }
+    let relevantEntityNames: [String] = [CKMAddressTransactionSummary.entity(),
+                                         CKMInvitation.entity(),
+                                         CKMLNAccount.entity()].compactMap { $0.managedObjectClassName }
     return relevantEntityNames.contains(objectEntityName)
   }
 
