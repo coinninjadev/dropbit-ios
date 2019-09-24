@@ -13,6 +13,7 @@ typealias MockDetailCellVM = MockTransactionDetailCellViewModel
 class MockTransactionDetailCellViewModel: MockTransactionSummaryCellViewModel, TransactionDetailCellViewModelType {
 
   var date: Date
+  var memoIsShared: Bool
 
   init(walletTxType: WalletTransactionType,
        direction: TransactionDirection,
@@ -24,8 +25,10 @@ class MockTransactionDetailCellViewModel: MockTransactionSummaryCellViewModel, T
        amountDetails: TransactionAmountDetails,
        counterpartyConfig: TransactionCellCounterpartyConfig?,
        memo: String?,
+       memoIsShared: Bool,
        date: Date) {
     self.date = date
+    self.memoIsShared = memoIsShared
 
     super.init(walletTxType: walletTxType, direction: direction, status: status,
                isLightningTransfer: isLightningTransfer, receiverAddress: receiverAddress,
@@ -43,6 +46,7 @@ class MockTransactionDetailCellViewModel: MockTransactionSummaryCellViewModel, T
                                  amountDetails: TransactionAmountDetails? = nil,
                                  counterpartyConfig: TransactionCellCounterpartyConfig? = nil,
                                  memo: String? = nil,
+                                 memoIsShared: Bool = false,
                                  date: Date = Date()) -> MockTransactionDetailCellViewModel {
 
     let amtDetails = amountDetails ?? MockTransactionSummaryCellViewModel.testAmountDetails(sats: 49500)
@@ -51,7 +55,7 @@ class MockTransactionDetailCellViewModel: MockTransactionSummaryCellViewModel, T
       status: status, isLightningTransfer: isLightningTransfer,
       receiverAddress: receiverAddress, lightningInvoice: lightningInvoice,
       selectedCurrency: selectedCurrency, amountDetails: amtDetails,
-      counterpartyConfig: counterpartyConfig, memo: memo, date: date)
+      counterpartyConfig: counterpartyConfig, memo: memo, memoIsShared: memoIsShared, date: date)
   }
 
 }

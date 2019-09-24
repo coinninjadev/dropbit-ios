@@ -96,6 +96,11 @@ class TransactionHistoryDetailBaseCell: UICollectionViewCell {
     self.counterpartyLabel.isHidden = values.shouldHideCounterpartyLabel
     self.counterpartyLabel.text = values.counterpartyText
 
+    self.memoContainerView.isHidden = values.shouldHideMemoView
+    if let config = values.memoConfig {
+      self.memoContainerView.configure(with: config)
+    }
+
   }
 //  func configure(with viewModel: OldTransactionDetailCellViewModel, delegate: TransactionHistoryDetailCellDelegate) {
 //    self.delegate = delegate

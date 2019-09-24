@@ -103,13 +103,6 @@ struct DetailCellActionButtonConfig {
   let backgroundColor: UIColor
 }
 
-struct DetailCellMemoConfig {
-  let memo: String
-  let isShared: Bool
-  let sharingDescription: String?
-  let sharingIcon: UIImage?
-}
-
 struct TransactionCellCounterpartyConfig {
   let displayName: String?
   let displayPhoneNumber: String?

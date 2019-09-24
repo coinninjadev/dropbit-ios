@@ -218,10 +218,10 @@ protocol TransactionDetailCellDisplayable: TransactionSummaryCellDisplayable {
   var detailStatusColor: UIColor { get }
   var twitterConfig: TransactionCellTwitterConfig? { get }
   var counterpartyText: String? { get }
+  var memoConfig: DetailCellMemoConfig? { get }
 
 //  var progressConfig: ProgressBarConfig? { get }
 //  var bitcoinAddress: String? { get }
-//  var memoConfig: DetailCellMemoConfig? { get }
 //  var canAddMemo: Bool { get }
 //  var actionButtonConfig: DetailCellActionButtonConfig? { get }
 //  var displayDate: String { get }
@@ -230,6 +230,7 @@ protocol TransactionDetailCellDisplayable: TransactionSummaryCellDisplayable {
 extension TransactionDetailCellDisplayable {
 
   var shouldHideCounterpartyLabel: Bool { return counterpartyText == nil }
+  var shouldHideMemoView: Bool { return shouldHideMemoLabel }
 
 //  var transactionStatusDescription: String {
 //    guard !isTemporaryTransaction else { return "Broadcasting" }
@@ -283,10 +284,15 @@ extension TransactionInvalidDetailCellDisplayable {
 /// protocol's extension or provided by a mock view model.
 protocol TransactionDetailCellViewModelType: TransactionSummaryCellViewModelType, TransactionDetailCellDisplayable {
   var date: Date { get }
+  var memoIsShared: Bool { get }
 //  var action: TransactionDetailAction? { get }
 }
 
 extension TransactionDetailCellViewModelType {
+
+  var directionConfig: TransactionCellDirectionConfig {
+    return TransactionCellDirectionConfig(bgColor: accentColor, image: directionIcon)
+  }
 
   var detailStatusText: String {
     switch status {
@@ -374,6 +380,14 @@ extension TransactionDetailCellViewModelType {
 //                                   pillIsAmount: isValidTransaction)
   }
 
+  var memoConfig: DetailCellMemoConfig? {
+    guard let memoText = memo else { return nil }
+    let isSent = self.status == .completed
+    let isIncoming = direction == .in
+    return DetailCellMemoConfig(memo: memoText, isShared: memoIsShared, isSent: isSent,
+                                isIncoming: isIncoming, recipientName: counterpartyText)
+  }
+
 //  var canAddMemo: Bool {
 //    return false
 //    if isLightningTransfer { return false }
@@ -383,10 +397,6 @@ extension TransactionDetailCellViewModelType {
 //  var displayDate: String {
 //    return CKDateFormatter.displayFull.string(from: date)
 //  }
-
-  var directionConfig: TransactionCellDirectionConfig {
-    return TransactionCellDirectionConfig(bgColor: accentColor, image: directionIcon)
-  }
 
 //  var actionButtonConfig: DetailCellActionButtonConfig? {
 //    guard let a = action else { return nil }

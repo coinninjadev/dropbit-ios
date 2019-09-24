@@ -341,42 +341,41 @@ class TransactionHistoryDetailValidCellTests: XCTestCase {
     XCTAssertEqual(sut.counterpartyLabel.text, counterparty.displayName)
   }
 
+  // MARK: Memo view
+  func testMemoView_nilMemoHidesView() {
+    let viewModel = MockDetailCellVM.testDetailInstance(memo: nil)
+    sut.configure(with: viewModel, delegate: mockDelegate)
+    XCTAssertTrue(sut.memoContainerView.isHidden)
+  }
+
+  func testMemoView_emptyMemoPopulatesAndHidesView() {
+    let expectedMemo = ""
+    let viewModel = MockDetailCellVM.testDetailInstance(memo: expectedMemo)
+    sut.configure(with: viewModel, delegate: mockDelegate)
+    XCTAssertEqual(sut.memoContainerView.memoLabel.text, expectedMemo)
+    XCTAssertTrue(sut.memoContainerView.isHidden)
+  }
+
+  func testMemoView_memoPopulatesMemoView() {
+    let viewModel = MockDetailCellVM.testDetailInstance(memo: "My memo")
+    sut.configure(with: viewModel, delegate: mockDelegate)
+    XCTAssertFalse(sut.memoContainerView.isHidden)
+    XCTAssertEqual(sut.memoContainerView.memoLabel.text, viewModel.memo)
+  }
+
+  func testMemoView_lightningTransferMemoIsHiddenIfPresent() {
+    let viewModel = MockDetailCellVM.testDetailInstance(walletTxType: .lightning,
+                                                        isLightningTransfer: true,
+                                                        memo: "lightning withdrawal for 10,000 sats")
+    sut.configure(with: viewModel, delegate: mockDelegate)
+    XCTAssertTrue(sut.memoContainerView.isHidden)
+  }
+
   // MARK: - Valid Cell Configuration
 
   /*
 
   // MARK: Labels
-  func testMemoIsLoadedAndShown() {
-    let expectedMemo = "Concert tickets"
-    let viewModel = MockSummaryCellVM.testInstance(memo: expectedMemo)
-    sut.configure(with: viewModel)
-    XCTAssertFalse(sut.memoLabel.isHidden)
-    XCTAssertEqual(sut.memoLabel.text, expectedMemo)
-  }
-
-  func testEmptyStringMemoIsLoadedAndHidden() {
-    let expectedMemo = ""
-    let viewModel = MockSummaryCellVM.testInstance(memo: expectedMemo)
-    sut.configure(with: viewModel)
-    XCTAssertTrue(sut.memoLabel.isHidden)
-    XCTAssertEqual(sut.memoLabel.text, expectedMemo)
-  }
-
-  func testNilMemoIsLoadedAndHidden() {
-    let expectedMemo: String? = nil
-    let viewModel = MockSummaryCellVM.testInstance(memo: expectedMemo)
-    sut.configure(with: viewModel)
-    XCTAssertTrue(sut.memoLabel.isHidden)
-    XCTAssertEqual(sut.memoLabel.text, expectedMemo)
-  }
-
-  func testLightningTransferMemoIsHiddenIfPresent() {
-    let viewModel = MockSummaryCellVM.testInstance(walletTxType: .lightning,
-                                                   isLightningTransfer: true,
-                                                   memo: "lightning withdrawal for 10,000 sats")
-    sut.configure(with: viewModel)
-    XCTAssertTrue(sut.memoLabel.isHidden)
-  }
 
   func testSatsLabelIsLoadedForInvalidTransaction() {
     let amountDetails = MockSummaryCellVM.testAmountDetails(sats: 1234567)
