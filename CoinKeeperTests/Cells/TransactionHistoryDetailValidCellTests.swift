@@ -378,24 +378,6 @@ class TransactionHistoryDetailValidCellTests: XCTestCase {
     XCTAssertTrue(sut.memoLabel.isHidden)
   }
 
-  func testExpiredLabelIsLoaded() {
-    let expectedText = TransactionStatus.expired.rawValue, expectedColor = UIColor.invalid
-    let viewModel = MockSummaryCellVM.testInstance(status: .expired)
-    sut.configure(with: viewModel)
-    XCTAssertEqual(sut.pillLabels.count, 1)
-    XCTAssertEqual(sut.pillLabel?.text, expectedText)
-    XCTAssertEqual(sut.pillLabel?.backgroundColor, expectedColor)
-  }
-
-  func testCanceledLabelIsLoaded() {
-    let expectedText = TransactionStatus.canceled.rawValue, expectedColor = UIColor.invalid
-    let viewModel = MockSummaryCellVM.testInstance(status: .canceled)
-    sut.configure(with: viewModel)
-    XCTAssertEqual(sut.pillLabels.count, 1)
-    XCTAssertEqual(sut.pillLabel?.text, expectedText)
-    XCTAssertEqual(sut.pillLabel?.backgroundColor, expectedColor)
-  }
-
   func testSatsLabelIsLoadedForInvalidTransaction() {
     let amountDetails = MockSummaryCellVM.testAmountDetails(sats: 1234567)
     let viewModel = MockSummaryCellVM.testInstance(walletTxType: .lightning, status: .canceled, amountDetails: amountDetails)
@@ -442,14 +424,6 @@ class TransactionHistoryDetailValidCellTests: XCTestCase {
     XCTAssertNotNil(subviewAsBitcoinLabel, "subview should be SummaryCellBitcoinLabel")
   }
 
-  func testSatsIsOnTopWhenBitcoinIsSelected() {
-    let viewModel = MockSummaryCellVM.testInstance(walletTxType: .lightning, selectedCurrency: .BTC)
-    sut.configure(with: viewModel)
-    let firstViewAsPaddedLabel = sut.amountStackView.arrangedSubviews.first.flatMap { $0 as? SummaryCellPaddedLabelView }
-    XCTAssertNotNil(firstViewAsPaddedLabel, "first arrangedSubview should be SummaryCellPaddedLabelView")
-    let subviewAsBitcoinLabel = firstViewAsPaddedLabel?.subviews.first.flatMap { $0 as? SummaryCellSatsLabel }
-    XCTAssertNotNil(subviewAsBitcoinLabel, "subview should be SummaryCellSatsLabel")
-  }
  */
 
 }
