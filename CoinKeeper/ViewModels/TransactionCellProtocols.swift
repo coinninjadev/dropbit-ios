@@ -345,21 +345,39 @@ extension TransactionDetailCellViewModelType {
     return counterpartyDescription
   }
 
+  var detailAmountLabels: DetailCellAmountLabels {
+    return DetailCellAmountLabels(primaryText: "",
+                                  secondaryText: nil,
+                                  secondaryAttributedText: nil,
+                                  historicalPriceAttributedText: nil)
+
+//    let converter = CurrencyConverter(rates: amountDetails.exchangeRates,
+//                                      fromAmount: amountDetails.btcAmount,
+//                                      currencyPair: amountDetails.currencyPair)
+
+//    var btcAttributedString: NSAttributedString?
+//    if walletTxType == .onChain {
+//      btcAttributedString = BitcoinFormatter(symbolType: .attributed).attributedString(from: converter.btcAmount)
+//    }
+//
+//    let signedFiatAmount = self.signedAmount(for: converter.fiatAmount)
+//    let satsText = SatsFormatter().string(fromDecimal: converter.btcAmount) ?? ""
+//    let fiatText = FiatFormatter(currency: converter.fiatCurrency,
+//                                 withSymbol: true,
+//                                 showNegativeSymbol: true).string(fromDecimal: signedFiatAmount) ?? ""
+//
+//    let pillText: String = isValidTransaction ? fiatText : status.rawValue
+//
+//    return SummaryCellAmountLabels(btcAttributedText: btcAttributedString,
+//                                   satsText: satsText,
+//                                   pillText: pillText,
+//                                   pillIsAmount: isValidTransaction)
+  }
+
 //  var canAddMemo: Bool {
 //    return false
 //    if isLightningTransfer { return false }
 //    return memoConfig == nil
-//  }
-
-//  var detailStatusText: String? {
-//    return status.rawValue
-//  }
-
-//  var amountLabels: DetailCellAmountLabels {
-//    return DetailCellAmountLabels(primaryText: "",
-//                                  secondaryText: nil,
-//                                  secondaryAttributedText: nil,
-//                                  historicalPriceAttributedText: nil)
 //  }
 
 //  var displayDate: String {
