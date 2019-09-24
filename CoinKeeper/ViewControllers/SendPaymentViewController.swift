@@ -792,6 +792,9 @@ extension SendPaymentViewController {
     }
 
     try validateInvitationMaximum(against: btcAmount)
+    try CurrencyAmountValidator(balancesNetPending: delegate.balancesNetPending(),
+                                balanceToCheck: viewModel.walletTransactionType).validate(value:
+                                  viewModel.generateCurrencyConverter())
     let inputs = SendingDelegateInputs(sendPaymentVM: self.viewModel, contact: newContact, payloadDTO: sharedPayload)
 
     delegate.viewControllerDidBeginAddressNegotiation(self,
