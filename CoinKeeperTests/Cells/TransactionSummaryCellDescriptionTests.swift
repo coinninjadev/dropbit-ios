@@ -1,5 +1,5 @@
 //
-//  TransactionSummaryCellCounterpartyTests.swift
+//  TransactionSummaryCellDescriptionTests.swift
 //  DropBitTests
 //
 //  Created by Ben Winters on 8/22/19.
@@ -10,7 +10,7 @@ import XCTest
 @testable import DropBit
 
 /// Primarily tests the prioritization of strings when multiple counterparty descriptors are available
-class TransactionSummaryCellCounterpartyTests: XCTestCase {
+class TransactionSummaryCellDescriptionTests: XCTestCase {
   var sut: TransactionHistorySummaryCell!
 
   override func setUp() {
@@ -36,15 +36,15 @@ class TransactionSummaryCellCounterpartyTests: XCTestCase {
                                              twitterConfig: twitterConfig)
   }
 
-  func testCounterpartyLoadsName() {
+  func testDescriptionLoadsName() {
     let expectedName = "Satoshi"
     let counterparty = TransactionCellCounterpartyConfig(displayName: expectedName)
     let viewModel = MockSummaryCellVM.testInstance(counterpartyConfig: counterparty)
     sut.configure(with: viewModel)
-    XCTAssertEqual(sut.counterpartyLabel.text, expectedName)
+    XCTAssertEqual(sut.descriptionLabel.text, expectedName)
   }
 
-  func testCounterpartyLoadsLightningDeposit() {
+  func testDescriptionLoadsLightningDeposit() {
     let lightningDepositVM = MockSummaryCellVM.testInstance(walletTxType: .onChain,
                                                             direction: .out,
                                                             isLightningTransfer: true,
@@ -52,10 +52,10 @@ class TransactionSummaryCellCounterpartyTests: XCTestCase {
                                                             counterpartyConfig: fullCounterparty)
     let expectedDepositDescription = lightningDepositVM.lightningDepositText
     sut.configure(with: lightningDepositVM)
-    XCTAssertEqual(sut.counterpartyLabel.text, expectedDepositDescription)
+    XCTAssertEqual(sut.descriptionLabel.text, expectedDepositDescription)
   }
 
-  func testCounterpartyLoadsLightningWithdrawal() {
+  func testDescriptionLoadsLightningWithdrawal() {
     let lightningWithdrawalVM = MockSummaryCellVM.testInstance(walletTxType: .lightning,
                                                                direction: .out,
                                                                isLightningTransfer: true,
@@ -63,10 +63,10 @@ class TransactionSummaryCellCounterpartyTests: XCTestCase {
                                                                counterpartyConfig: fullCounterparty)
     let expectedWithdrawalDescription = lightningWithdrawalVM.lightningWithdrawText
     sut.configure(with: lightningWithdrawalVM)
-    XCTAssertEqual(sut.counterpartyLabel.text, expectedWithdrawalDescription)
+    XCTAssertEqual(sut.descriptionLabel.text, expectedWithdrawalDescription)
   }
 
-  func testCounterpartyLoadsUnpaidLightningInvoice() {
+  func testDescriptionLoadsUnpaidLightningInvoice() {
     let lightningVM = MockSummaryCellVM.testInstance(walletTxType: .lightning,
                                                      direction: .in,
                                                      status: .pending,
@@ -75,10 +75,10 @@ class TransactionSummaryCellCounterpartyTests: XCTestCase {
                                                      counterpartyConfig: nil)
     let expectedText = lightningVM.lightningUnpaidInvoiceText
     sut.configure(with: lightningVM)
-    XCTAssertEqual(sut.counterpartyLabel.text, expectedText)
+    XCTAssertEqual(sut.descriptionLabel.text, expectedText)
   }
 
-  func testCounterpartyLoadsExpiredLightningInvoice() {
+  func testDescriptionLoadsExpiredLightningInvoice() {
     let lightningVM = MockSummaryCellVM.testInstance(walletTxType: .lightning,
                                                      direction: .in,
                                                      status: .expired,
@@ -87,10 +87,10 @@ class TransactionSummaryCellCounterpartyTests: XCTestCase {
                                                      counterpartyConfig: nil)
     let expectedText = lightningVM.lightningUnpaidInvoiceText
     sut.configure(with: lightningVM)
-    XCTAssertEqual(sut.counterpartyLabel.text, expectedText)
+    XCTAssertEqual(sut.descriptionLabel.text, expectedText)
   }
 
-  func testCounterpartyLoadsPaidLightningInvoice() {
+  func testDescriptionLoadsPaidLightningInvoice() {
     let lightningVM = MockSummaryCellVM.testInstance(walletTxType: .lightning,
                                                      direction: .out,
                                                      status: .completed,
@@ -99,28 +99,28 @@ class TransactionSummaryCellCounterpartyTests: XCTestCase {
                                                      counterpartyConfig: nil)
     let expectedText = lightningVM.lightningPaidInvoiceText
     sut.configure(with: lightningVM)
-    XCTAssertEqual(sut.counterpartyLabel.text, expectedText)
+    XCTAssertEqual(sut.descriptionLabel.text, expectedText)
   }
 
-  func testCounterpartyLoadsTwitterHandle() {
+  func testDescriptionLoadsTwitterHandle() {
     let twitterCounterparty = fullCounterparty
     let twitterVM = MockSummaryCellVM.testInstance(walletTxType: .onChain,
                                                    isLightningTransfer: false,
                                                    counterpartyConfig: twitterCounterparty)
     sut.configure(with: twitterVM)
-    XCTAssertEqual(sut.counterpartyLabel.text, expectedTwitterHandle)
+    XCTAssertEqual(sut.descriptionLabel.text, expectedTwitterHandle)
   }
 
-  func testCounterpartyLoadsDisplayName() {
+  func testDescriptionLoadsDisplayName() {
     let counterparty = TransactionCellCounterpartyConfig(displayName: expectedName,
                                                          displayPhoneNumber: expectedPhoneNumber,
                                                          twitterConfig: nil)
     let nameVM = MockSummaryCellVM.testInstance(counterpartyConfig: counterparty)
     sut.configure(with: nameVM)
-    XCTAssertEqual(sut.counterpartyLabel.text, expectedName)
+    XCTAssertEqual(sut.descriptionLabel.text, expectedName)
   }
 
-  func testCounterpartyLoadsPhoneNumber() {
+  func testDescriptionLoadsPhoneNumber() {
     let phoneCounterparty = TransactionCellCounterpartyConfig(displayName: nil,
                                                               displayPhoneNumber: expectedPhoneNumber,
                                                               twitterConfig: nil)
@@ -129,17 +129,17 @@ class TransactionSummaryCellCounterpartyTests: XCTestCase {
                                                  isLightningTransfer: false,
                                                  counterpartyConfig: phoneCounterparty)
     sut.configure(with: phoneVM)
-    XCTAssertEqual(sut.counterpartyLabel.text, expectedPhoneNumber)
+    XCTAssertEqual(sut.descriptionLabel.text, expectedPhoneNumber)
   }
 
-  func testCounterpartyLoadsBitcoinAddress() {
+  func testDescriptionLoadsBitcoinAddress() {
     let addressVM = MockSummaryCellVM.testInstance(walletTxType: .onChain,
                                                    direction: .in,
                                                    isLightningTransfer: false,
                                                    receiverAddress: expectedAddress,
                                                    counterpartyConfig: nil)
     sut.configure(with: addressVM)
-    XCTAssertEqual(sut.counterpartyLabel.text, expectedAddress)
+    XCTAssertEqual(sut.descriptionLabel.text, expectedAddress)
   }
 
 }

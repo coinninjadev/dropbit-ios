@@ -15,7 +15,7 @@ import UIKit
 /// Fixed values (colors, font sizes, etc.) are provided by the cell itself.
 protocol TransactionSummaryCellDisplayable {
   var walletTxType: WalletTransactionType { get }
-  var counterpartyText: String { get }
+  var summaryTransactionDescription: String { get }
   var selectedCurrency: SelectedCurrency { get }
   var summaryAmountLabels: SummaryCellAmountLabels { get }
   var accentColor: UIColor { get } //amount and leading image background color
@@ -113,7 +113,7 @@ extension TransactionSummaryCellViewModelType {
     }
   }
 
-  var counterpartyText: String {
+  var summaryTransactionDescription: String {
     if let transferType = lightningTransferType {
       switch transferType {
       case .withdraw:   return lightningWithdrawText

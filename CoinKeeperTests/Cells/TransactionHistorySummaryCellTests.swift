@@ -23,7 +23,7 @@ class TransactionHistorySummaryCellTests: XCTestCase {
   func testOutletsAreConnected() {
     XCTAssertNotNil(self.sut.directionView, "directionView should be connected")
     XCTAssertNotNil(self.sut.twitterAvatarView, "twitterAvatarView should be connected")
-    XCTAssertNotNil(self.sut.counterpartyLabel, "counterpartyLabel should be connected")
+    XCTAssertNotNil(self.sut.descriptionLabel, "descriptionLabel should be connected")
     XCTAssertNotNil(self.sut.memoLabel, "memoLabel should be connected")
     XCTAssertNotNil(self.sut.amountStackView, "amountStackView should be connected")
   }

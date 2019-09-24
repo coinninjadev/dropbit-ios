@@ -42,7 +42,7 @@ class TransactionHistoryDetailInvalidCellTests: XCTestCase {
     XCTAssertNotNil(sut.addMemoButton, "addMemoButton should be connected")
     XCTAssertNotNil(sut.memoContainerView, "memoContainerView should be connected")
     XCTAssertNotNil(sut.statusLabel, "statusLabel should be connected")
-    XCTAssertNotNil(sut.counterpartyLabel, "counterpartyLabel should be connected")
+    XCTAssertNotNil(sut.descriptionLabel, "counterpartyLabel should be connected")
     XCTAssertNotNil(sut.underlyingContentView, "underlyingContentView should be connected")
   }
 
