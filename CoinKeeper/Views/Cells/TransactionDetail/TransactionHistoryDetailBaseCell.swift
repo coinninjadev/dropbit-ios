@@ -61,6 +61,7 @@ class TransactionHistoryDetailBaseCell: UICollectionViewCell {
     underlyingContentView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
     underlyingContentView.applyCornerRadius(13)
     addMemoButton.styleAddButtonWith(title: "Add Memo")
+    configureTwitterShareButton()
   }
 
   override func prepareForReuse() {
@@ -98,7 +99,6 @@ class TransactionHistoryDetailBaseCell: UICollectionViewCell {
 //    self.delegate = delegate
 //    self.viewModel = viewModel
 //
-//    configureTwitterShareButton()
 //    incomingImage.image = viewModel.imageForTransactionDirection
 //    dateLabel.text = viewModel.dateDescriptionFull
 //    statusLabel.text = viewModel.statusDescription
