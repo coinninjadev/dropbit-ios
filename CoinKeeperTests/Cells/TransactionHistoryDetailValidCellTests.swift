@@ -326,6 +326,25 @@ class TransactionHistoryDetailValidCellTests: XCTestCase {
     XCTAssertTrue(sut.twitterAvatarView.isHidden)
   }
 
+  // MARK: Counterparty label
+  func testNilCounterpartyText_hidesCounterparyLabel() {
+    let viewModel = MockDetailCellVM.testDetailInstance(counterpartyConfig: nil)
+    sut.configure(with: viewModel, delegate: mockDelegate)
+    XCTAssertTrue(sut.counterpartyLabel.isHidden)
+  }
+
+  func testCounterpartyText_ShowsCounterpartyLabel() {
+    let counterparty = TransactionCellCounterpartyConfig(displayName: "Satoshi", displayPhoneNumber: nil, twitterConfig: nil)
+    let viewModel = MockDetailCellVM.testDetailInstance(counterpartyConfig: counterparty)
+    sut.configure(with: viewModel, delegate: mockDelegate)
+    XCTAssertFalse(sut.counterpartyLabel.isHidden)
+    XCTAssertEqual(sut.counterpartyLabel.text, counterparty.displayName)
+  }
+
+  // MARK: - Valid Cell Configuration
+
+  /*
+
   // MARK: Labels
   func testMemoIsLoadedAndShown() {
     let expectedMemo = "Concert tickets"

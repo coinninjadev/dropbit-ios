@@ -93,6 +93,8 @@ class TransactionHistoryDetailBaseCell: UICollectionViewCell {
       self.twitterAvatarView.configure(with: avatar, logoBackgroundColor: values.cellBackgroundColor)
     }
 
+    self.counterpartyLabel.isHidden = values.shouldHideCounterpartyLabel
+    self.counterpartyLabel.text = values.counterpartyText
 
   }
 //  func configure(with viewModel: OldTransactionDetailCellViewModel, delegate: TransactionHistoryDetailCellDelegate) {

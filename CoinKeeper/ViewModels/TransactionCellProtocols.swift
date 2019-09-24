@@ -150,7 +150,7 @@ extension TransactionSummaryCellViewModelType {
     }
   }
 
-  private var counterpartyDescription: String? {
+  var counterpartyDescription: String? {
     guard let config = counterpartyConfig else { return nil }
     if let twitter = config.twitterConfig {
       return twitter.displayHandle
@@ -217,6 +217,7 @@ protocol TransactionDetailCellDisplayable: TransactionSummaryCellDisplayable {
   var detailStatusText: String { get }
   var detailStatusColor: UIColor { get }
   var twitterConfig: TransactionCellTwitterConfig? { get }
+  var counterpartyText: String? { get }
 
 //  var progressConfig: ProgressBarConfig? { get }
 //  var bitcoinAddress: String? { get }
@@ -227,6 +228,8 @@ protocol TransactionDetailCellDisplayable: TransactionSummaryCellDisplayable {
 }
 
 extension TransactionDetailCellDisplayable {
+
+  var shouldHideCounterpartyLabel: Bool { return counterpartyText == nil }
 
 //  var transactionStatusDescription: String {
 //    guard !isTemporaryTransaction else { return "Broadcasting" }
@@ -336,6 +339,10 @@ extension TransactionDetailCellViewModelType {
 
   var twitterConfig: TransactionCellTwitterConfig? {
     return self.counterpartyConfig?.twitterConfig
+  }
+
+  var counterpartyText: String? {
+    return counterpartyDescription
   }
 
 //  var canAddMemo: Bool {
