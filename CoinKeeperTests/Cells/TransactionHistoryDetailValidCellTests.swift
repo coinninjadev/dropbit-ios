@@ -30,6 +30,9 @@ class TransactionHistoryDetailValidCellTests: XCTestCase {
     super.tearDown()
   }
 
+  // MARK: - Outlets & Actions
+
+  // MARK: Outlets connected
   func testBaseCellOutletsAreConnected() {
     XCTAssertNotNil(sut.underlyingContentView, "underlyingContentView should be connected")
     XCTAssertNotNil(sut.twitterShareButton, "twitterShareButton should be connected")
@@ -37,7 +40,7 @@ class TransactionHistoryDetailValidCellTests: XCTestCase {
     XCTAssertNotNil(sut.closeButton, "closeButton should be connected")
     XCTAssertNotNil(sut.directionView, "directionView should be connected")
     XCTAssertNotNil(sut.statusLabel, "statusLabel should be connected")
-    XCTAssertNotNil(sut.twitterImage, "twitterImage should be connected")
+    XCTAssertNotNil(sut.twitterAvatarView, "twitterAvatarView should be connected")
     XCTAssertNotNil(sut.counterpartyLabel, "counterpartyLabel should be connected")
     XCTAssertNotNil(sut.primaryAmountLabel, "primaryAmountLabel should be connected")
     XCTAssertNotNil(sut.secondaryAmountLabel, "secondaryAmountLabel should be connected")
@@ -47,7 +50,6 @@ class TransactionHistoryDetailValidCellTests: XCTestCase {
     XCTAssertNotNil(sut.dateLabel, "dateLabel should be connected")
   }
 
-  // MARK: outlets
   func testValidCellOutletsAreConnected() {
     XCTAssertNotNil(sut.progressBarWidthConstraint, "progressBarWidthConstraint should be connected")
     XCTAssertNotNil(sut.progressView, "progressView should be connected")
@@ -59,7 +61,7 @@ class TransactionHistoryDetailValidCellTests: XCTestCase {
     XCTAssertNotNil(sut.bottomBufferView, "bottomBufferView should be connected")
   }
 
-  // MARK: buttons contain actions
+  // MARK: Buttons contain actions
   func testAddMemoButtonContainsAction() {
     let actions = sut.addMemoButton.actions(forTarget: sut, forControlEvent: .touchUpInside) ?? []
     let expected = #selector(TransactionHistoryDetailInvalidCell.didTapAddMemoButton(_:)).description
@@ -105,8 +107,9 @@ class TransactionHistoryDetailValidCellTests: XCTestCase {
     XCTAssertTrue(mockDelegate.tappedBottomButton)
   }
 
-  // MARK: - Direction view
+  // MARK: - Base Cell Configuration
 
+  // MARK: Direction view
   func testUnpaidLightningInvoice_loadsImageAndColor() {
     let viewModel = MockDetailCellVM.testDetailInstance(walletTxType: .lightning, direction: .in, status: .pending, isLightningTransfer: false)
     sut.configure(with: viewModel, delegate: mockDelegate)
@@ -196,7 +199,7 @@ class TransactionHistoryDetailValidCellTests: XCTestCase {
     XCTAssertEqual(sut.directionView.backgroundColor, expectedColor)
   }
 
-  // MARK: - Status label
+  // MARK: Status label
 
   func testStatusLabel_broadcasting() {
     let viewModel = MockDetailCellVM.testDetailInstance(status: .broadcasting)
@@ -296,35 +299,31 @@ class TransactionHistoryDetailValidCellTests: XCTestCase {
     XCTAssertEqual(sut.statusLabel.textColor, UIColor.darkGrayText)
   }
 
-  //TODO: migrate or delete these tests from the summary cell
-  /*
+  // MARK: Twitter image
   func testTwitterConfig_loadsAvatar() {
-    let twitterConfig = MockSummaryCellVM.mockTwitterConfig()
+    let twitterConfig = MockDetailCellVM.mockTwitterConfig()
     let counterpartyConfig = TransactionCellCounterpartyConfig(twitterConfig: twitterConfig)
     let expectedImage = twitterConfig.avatar
-    let viewModel = MockSummaryCellVM.testInstance(counterpartyConfig: counterpartyConfig)
-    sut.configure(with: viewModel)
+    let viewModel = MockDetailCellVM.testDetailInstance(counterpartyConfig: counterpartyConfig)
+    sut.configure(with: viewModel, delegate: mockDelegate)
     XCTAssertFalse(sut.twitterAvatarView.isHidden)
     XCTAssertFalse(sut.twitterAvatarView.avatarImageView.isHidden)
     XCTAssertFalse(sut.twitterAvatarView.twitterLogoImageView.isHidden)
-    XCTAssertTrue(sut.directionView.isHidden)
     XCTAssertEqual(sut.twitterAvatarView.avatarImageView.image, expectedImage)
   }
 
-  func testTwitterConfig_showsHidesLeadingViews() {
-    let twitterConfig = MockSummaryCellVM.mockTwitterConfig()
-    let counterpartyConfig = TransactionCellCounterpartyConfig(twitterConfig: twitterConfig)
-    let viewModel = MockSummaryCellVM.testInstance(counterpartyConfig: counterpartyConfig)
-    sut.configure(with: viewModel)
-    XCTAssertFalse(sut.twitterAvatarView.isHidden)
-    XCTAssertTrue(sut.directionView.isHidden)
-  }
-
-  func testNilTwitterConfig_showsHidesLeadingViews() {
-    let viewModel = MockSummaryCellVM.testInstance()
-    sut.configure(with: viewModel)
+  func testPhoneConfig_hidesAvatarView() {
+    let counterpartyConfig = TransactionCellCounterpartyConfig(displayPhoneNumber: "(555) 123-4567")
+    let viewModel = MockDetailCellVM.testDetailInstance(counterpartyConfig: counterpartyConfig)
+    sut.configure(with: viewModel, delegate: mockDelegate)
     XCTAssertTrue(sut.twitterAvatarView.isHidden)
     XCTAssertFalse(sut.directionView.isHidden)
+  }
+
+  func testNilCounterpartyConfig_hidesAvatarView() {
+    let viewModel = MockDetailCellVM.testDetailInstance()
+    sut.configure(with: viewModel, delegate: mockDelegate)
+    XCTAssertTrue(sut.twitterAvatarView.isHidden)
   }
 
   // MARK: Labels

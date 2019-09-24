@@ -28,7 +28,7 @@ class TransactionHistoryDetailBaseCell: UICollectionViewCell {
   @IBOutlet var closeButton: UIButton!
   @IBOutlet var directionView: TransactionDirectionView!
   @IBOutlet var statusLabel: TransactionDetailStatusLabel!
-  @IBOutlet var twitterImage: UIImageView!
+  @IBOutlet var twitterAvatarView: TwitterAvatarView!
   @IBOutlet var counterpartyLabel: TransactionDetailCounterpartyLabel!
   @IBOutlet var primaryAmountLabel: TransactionDetailPrimaryAmountLabel!
   @IBOutlet var secondaryAmountLabel: TransactionDetailSecondaryAmountLabel!
@@ -88,6 +88,11 @@ class TransactionHistoryDetailBaseCell: UICollectionViewCell {
     self.directionView.configure(image: values.directionConfig.image, bgColor: values.accentColor)
     self.statusLabel.text = values.detailStatusText
     self.statusLabel.textColor = values.detailStatusColor
+    self.twitterAvatarView.isHidden = values.shouldHideAvatarView
+    if let avatar = values.twitterConfig?.avatar {
+      self.twitterAvatarView.configure(with: avatar, logoBackgroundColor: values.cellBackgroundColor)
+    }
+
 
   }
 //  func configure(with viewModel: OldTransactionDetailCellViewModel, delegate: TransactionHistoryDetailCellDelegate) {

@@ -216,6 +216,7 @@ protocol TransactionDetailCellDisplayable: TransactionSummaryCellDisplayable {
   var directionConfig: TransactionCellDirectionConfig { get }
   var detailStatusText: String { get }
   var detailStatusColor: UIColor { get }
+  var twitterConfig: TransactionCellTwitterConfig? { get }
 
 //  var progressConfig: ProgressBarConfig? { get }
 //  var bitcoinAddress: String? { get }
@@ -331,6 +332,10 @@ extension TransactionDetailCellViewModelType {
 
   private var isDropBit: Bool {
     return counterpartyConfig != nil
+  }
+
+  var twitterConfig: TransactionCellTwitterConfig? {
+    return self.counterpartyConfig?.twitterConfig
   }
 
 //  var canAddMemo: Bool {
