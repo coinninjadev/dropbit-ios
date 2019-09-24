@@ -17,16 +17,16 @@ protocol CoreDataObserver: AnyObject {
 
 extension CoreDataObserver {
 
-  func observeContextSaveNotifications(forContext context: NSManagedObjectContext) {
-    let willSaveToken = willSaveNotificationToken(forContext: context)
-    let didSaveToken = didSaveContextNotificationToken(forContext: context)
+  func observeContextSaveNotifications() {
+    let willSaveToken = willSaveNotificationToken()
+    let didSaveToken = didSaveContextNotificationToken()
     setContextNotificationTokens(willSaveToken: willSaveToken, didSaveToken: didSaveToken)
   }
 
-  private func willSaveNotificationToken(forContext context: NSManagedObjectContext) -> NotificationToken {
+  private func willSaveNotificationToken() -> NotificationToken {
     let willSaveToken = NotificationCenter.default.addObserver(
       forName: .NSManagedObjectContextWillSave,
-      object: context,
+      object: nil,
       queue: nil,
       using: { [weak self] notification in
         guard let context = notification.object as? NSManagedObjectContext else { return }
@@ -36,10 +36,10 @@ extension CoreDataObserver {
     return NotificationToken(notificationCenter: .default, token: willSaveToken)
   }
 
-  private func didSaveContextNotificationToken(forContext context: NSManagedObjectContext) -> NotificationToken {
+  private func didSaveContextNotificationToken() -> NotificationToken {
     let didSaveToken = NotificationCenter.default.addObserver(
       forName: .NSManagedObjectContextDidSave,
-      object: context,
+      object: nil,
       queue: nil,
       using: { [weak self] notification in
         guard let context = notification.object as? NSManagedObjectContext else { return }
