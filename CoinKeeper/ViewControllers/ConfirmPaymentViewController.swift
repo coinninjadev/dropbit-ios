@@ -184,13 +184,6 @@ extension ConfirmPaymentViewController {
     primaryAddressLabel.backgroundColor = UIColor.clear
     primaryAddressLabel.font = .medium(14)
 
-    switch viewModel.walletTransactionType {
-    case .onChain:
-      primaryAddressLabel.adjustsFontSizeToFitWidth = true
-    case .lightning:
-      primaryAddressLabel.lineBreakMode = .byTruncatingMiddle
-    }
-
     memoContainerView.isHidden = true
 
     secondaryAddressLabel.textAlignment = .center
@@ -200,9 +193,12 @@ extension ConfirmPaymentViewController {
     if let viewModel = viewModel {
       switch viewModel.walletTransactionType {
       case .lightning:
+        networkFeeLabel.isHidden = true
+        primaryAddressLabel.lineBreakMode = .byTruncatingMiddle
         walletTransactionTypeButton.style = .lightning(true)
         walletTransactionTypeButton.setAttributedTitle(NSAttributedString.lightningSelectedButtonTitle, for: .normal)
       case .onChain:
+        primaryAddressLabel.adjustsFontSizeToFitWidth = true
         walletTransactionTypeButton.style = .bitcoin(true)
         walletTransactionTypeButton.setAttributedTitle(NSAttributedString.bitcoinSelectedButton, for: .normal)
       }
