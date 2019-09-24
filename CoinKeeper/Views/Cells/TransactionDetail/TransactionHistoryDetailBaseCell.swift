@@ -23,19 +23,19 @@ class TransactionHistoryDetailBaseCell: UICollectionViewCell {
 
   // MARK: outlets
   @IBOutlet var underlyingContentView: UIView!
-  @IBOutlet var closeButton: UIButton!
+  @IBOutlet var twitterShareButton: PrimaryActionButton!
   @IBOutlet var questionMarkButton: UIButton!
+  @IBOutlet var closeButton: UIButton!
   @IBOutlet var directionView: TransactionDirectionView!
-  @IBOutlet var dateLabel: TransactionDetailDateLabel!
+  @IBOutlet var statusLabel: TransactionDetailStatusLabel!
+  @IBOutlet var twitterImage: UIImageView!
+  @IBOutlet var counterpartyLabel: TransactionDetailCounterpartyLabel!
   @IBOutlet var primaryAmountLabel: TransactionDetailPrimaryAmountLabel!
   @IBOutlet var secondaryAmountLabel: TransactionDetailSecondaryAmountLabel!
   @IBOutlet var historicalValuesLabel: UILabel! //use attributedText
   @IBOutlet var addMemoButton: UIButton!
   @IBOutlet var memoContainerView: ConfirmPaymentMemoView!
-  @IBOutlet var statusLabel: TransactionDetailStatusLabel!
-  @IBOutlet var counterpartyLabel: TransactionDetailCounterpartyLabel!
-  @IBOutlet var twitterImage: UIImageView!
-  @IBOutlet var twitterShareButton: PrimaryActionButton!
+  @IBOutlet var dateLabel: TransactionDetailDateLabel!
 
   // MARK: variables
   var viewModel: OldTransactionDetailCellViewModel?

@@ -9,6 +9,7 @@
 import XCTest
 @testable import DropBit
 
+/// Includes tests for properties and functions defined in both the ValidCell and BaseCell.
 class TransactionHistoryDetailValidCellTests: XCTestCase {
   var sut: TransactionHistoryDetailValidCell!
   var mockCoordinator: MockTransactionHistoryDetailCellDelegate!
@@ -27,8 +28,25 @@ class TransactionHistoryDetailValidCellTests: XCTestCase {
     super.tearDown()
   }
 
+  func testBaseCellOutletsAreConnected() {
+    XCTAssertNotNil(sut.underlyingContentView, "underlyingContentView should be connected")
+    XCTAssertNotNil(sut.twitterShareButton, "twitterShareButton should be connected")
+    XCTAssertNotNil(sut.questionMarkButton, "questionMarkButton should be connected")
+    XCTAssertNotNil(sut.closeButton, "closeButton should be connected")
+    XCTAssertNotNil(sut.directionView, "directionView should be connected")
+    XCTAssertNotNil(sut.statusLabel, "statusLabel should be connected")
+    XCTAssertNotNil(sut.twitterImage, "twitterImage should be connected")
+    XCTAssertNotNil(sut.counterpartyLabel, "counterpartyLabel should be connected")
+    XCTAssertNotNil(sut.primaryAmountLabel, "primaryAmountLabel should be connected")
+    XCTAssertNotNil(sut.secondaryAmountLabel, "secondaryAmountLabel should be connected")
+    XCTAssertNotNil(sut.historicalValuesLabel, "historicalValuesLabel should be connected")
+    XCTAssertNotNil(sut.addMemoButton, "addMemoButton should be connected")
+    XCTAssertNotNil(sut.memoContainerView, "memoContainerView should be connected")
+    XCTAssertNotNil(sut.dateLabel, "dateLabel should be connected")
+  }
+
   // MARK: outlets
-  func testOutletsAreConnected() {
+  func testValidCellOutletsAreConnected() {
     XCTAssertNotNil(sut.progressBarWidthConstraint, "progressBarWidthConstraint should be connected")
     XCTAssertNotNil(sut.progressView, "progressView should be connected")
     XCTAssertNotNil(sut.addressView, "addressView should be connected")
@@ -37,18 +55,6 @@ class TransactionHistoryDetailValidCellTests: XCTestCase {
     XCTAssertNotNil(sut.messageLabel, "messageLabel should be connected")
     XCTAssertNotNil(sut.messageContainerHeightConstraint, "messageContainerHeightConstraint should be connected")
     XCTAssertNotNil(sut.bottomBufferView, "bottomBufferView should be connected")
-    XCTAssertNotNil(sut.closeButton, "closeButton should be connected")
-    XCTAssertNotNil(sut.questionMarkButton, "questionMarkButton should be connected")
-    XCTAssertNotNil(sut.directionView, "directionView should be connected")
-    XCTAssertNotNil(sut.dateLabel, "dateLabel should be connected")
-    XCTAssertNotNil(sut.primaryAmountLabel, "primaryAmountLabel should be connected")
-    XCTAssertNotNil(sut.secondaryAmountLabel, "secondaryAmountLabel should be connected")
-    XCTAssertNotNil(sut.historicalValuesLabel, "historicalValuesLabel should be connected")
-    XCTAssertNotNil(sut.addMemoButton, "addMemoButton should be connected")
-    XCTAssertNotNil(sut.memoContainerView, "memoContainerView should be connected")
-    XCTAssertNotNil(sut.statusLabel, "statusLabel should be connected")
-    XCTAssertNotNil(sut.counterpartyLabel, "counterpartyLabel should be connected")
-    XCTAssertNotNil(sut.underlyingContentView, "underlyingContentView should be connected")
   }
 
   // MARK: buttons contain actions
@@ -76,7 +82,7 @@ class TransactionHistoryDetailValidCellTests: XCTestCase {
     XCTAssertTrue(actions.contains(expected), "button should contain action")
   }
 
-  // MARK: actions produce results
+  // MARK: Delegate methods
   func testCloseButtonTellsDelegate() {
     sut.closeButton.sendActions(for: .touchUpInside)
     XCTAssertTrue(mockCoordinator.tappedClose)
@@ -96,6 +102,8 @@ class TransactionHistoryDetailValidCellTests: XCTestCase {
     sut.didTapBottomButton(sut.bottomButton)
     XCTAssertTrue(mockCoordinator.tappedBottomButton)
   }
+
+  // MARK: - Direction view
 
   func testUnpaidLightningInvoice_loadsImageAndColor() {
     let viewModel = MockDetailCellVM.testDetailInstance(walletTxType: .lightning, direction: .in, status: .pending, isLightningTransfer: false)
