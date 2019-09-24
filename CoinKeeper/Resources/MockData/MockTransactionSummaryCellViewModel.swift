@@ -70,16 +70,16 @@ class MockTransactionSummaryCellViewModel: TransactionSummaryCellViewModelType {
                                                counterpartyConfig: nil, memo: nil)
   }
 
-  static func testInstance(walletTxType: WalletTransactionType = .onChain,
-                           direction: TransactionDirection = .out,
-                           status: TransactionStatus = .completed,
-                           isLightningTransfer: Bool = false,
-                           receiverAddress: String? = nil,
-                           lightningInvoice: String? = nil,
-                           selectedCurrency: SelectedCurrency = .fiat,
-                           amountDetails: TransactionAmountDetails? = nil,
-                           counterpartyConfig: TransactionCellCounterpartyConfig? = nil,
-                           memo: String? = nil) -> MockTransactionSummaryCellViewModel {
+  static func testSummaryInstance(walletTxType: WalletTransactionType = .onChain,
+                                  direction: TransactionDirection = .out,
+                                  status: TransactionStatus = .completed,
+                                  isLightningTransfer: Bool = false,
+                                  receiverAddress: String? = nil,
+                                  lightningInvoice: String? = nil,
+                                  selectedCurrency: SelectedCurrency = .fiat,
+                                  amountDetails: TransactionAmountDetails? = nil,
+                                  counterpartyConfig: TransactionCellCounterpartyConfig? = nil,
+                                  memo: String? = nil) -> MockTransactionSummaryCellViewModel {
 
     let amtDetails = amountDetails ?? MockTransactionSummaryCellViewModel.testAmountDetails(sats: 49500)
     return MockTransactionSummaryCellViewModel(
