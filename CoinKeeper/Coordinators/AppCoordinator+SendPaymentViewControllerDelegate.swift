@@ -81,7 +81,6 @@ extension AppCoordinator: SendPaymentViewControllerDelegate {
       case .authorized:
         if shouldReloadContactCache {
           strongSelf.alertManager.showActivityHUD(withStatus: "Loading Contacts")
-
           strongSelf.contactCacheDataWorker.reloadSystemContactsIfNeeded(force: false) { [weak self] error in
             if let err = error {
               log.error(err, message: "Error reloading contacts cache")
@@ -91,7 +90,6 @@ extension AppCoordinator: SendPaymentViewControllerDelegate {
               self?.presentContacts(mode: .contacts, selectionDelegate: viewController)
             }
           }
-
         } else {
           strongSelf.presentContacts(mode: .contacts, selectionDelegate: viewController)
         }

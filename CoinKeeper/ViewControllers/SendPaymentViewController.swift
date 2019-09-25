@@ -140,6 +140,7 @@ CurrencySwappableAmountEditor {
   @IBAction func performStartPhoneEntry() {
     showPhoneEntryView(with: "")
     phoneNumberEntryView.textField?.becomeFirstResponder()
+    editAmountView.isUserInteractionEnabled = true
   }
 
   /// Each button should connect to this IBAction. This prevents automatically
@@ -552,9 +553,11 @@ extension SendPaymentViewController {
 }
 
 extension SendPaymentViewController: SelectedValidContactDelegate {
+
   func update(withSelectedContact contact: ContactType) {
     setPaymentRecipient(.contact(contact))
     updateViewWithModel()
+    editAmountView.isUserInteractionEnabled = true
   }
 
   func update(withSelectedTwitterUser twitterUser: TwitterUser) {
@@ -792,6 +795,9 @@ extension SendPaymentViewController {
     }
 
     try validateInvitationMaximum(against: btcAmount)
+    try CurrencyAmountValidator(balancesNetPending: delegate.balancesNetPending(),
+                                balanceToCheck: viewModel.walletTransactionType).validate(value:
+                                  viewModel.generateCurrencyConverter())
     let inputs = SendingDelegateInputs(sendPaymentVM: self.viewModel, contact: newContact, payloadDTO: sharedPayload)
 
     delegate.viewControllerDidBeginAddressNegotiation(self,
