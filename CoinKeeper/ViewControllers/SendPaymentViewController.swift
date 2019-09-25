@@ -319,10 +319,14 @@ extension SendPaymentViewController {
     viewModel.sharedMemoAllowed = sharedMemoAllowed
 
     setPaymentRecipient(nil)
+    setupStyle()
+    resetPaymentAmount()
+    updateViewWithModel()
+  }
+
+  func resetPaymentAmount() {
     viewModel.sendMaxTransactionData = nil
     viewModel.fromAmount = 0
-    setupStyle()
-    updateViewWithModel()
   }
 
   func updateViewWithModel() {
@@ -555,13 +559,15 @@ extension SendPaymentViewController {
 extension SendPaymentViewController: SelectedValidContactDelegate {
 
   func update(withSelectedContact contact: ContactType) {
+    resetPaymentAmount()
     setPaymentRecipient(.contact(contact))
     updateViewWithModel()
-    editAmountView.isUserInteractionEnabled = true
   }
 
   func update(withSelectedTwitterUser twitterUser: TwitterUser) {
+    resetPaymentAmount()
     var contact = TwitterContact(twitterUser: twitterUser)
+    updateViewWithModel()
 
     let addressType = self.viewModel.walletTransactionType.addressType
     delegate.viewControllerDidRequestRegisteredAddress(self, ofType: addressType, forIdentity: twitterUser.idStr)
