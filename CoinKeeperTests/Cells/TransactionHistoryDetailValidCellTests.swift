@@ -473,7 +473,6 @@ class TransactionHistoryDetailValidCellTests: XCTestCase {
 
   /*
 
-  // MARK: Labels
 
   func testSatsLabelIsLoadedForInvalidTransaction() {
     let amountDetails = MockSummaryCellVM.testAmountDetails(sats: 1234567)

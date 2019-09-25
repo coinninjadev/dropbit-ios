@@ -24,7 +24,6 @@ class TransactionHistoryDetailCellAddressView: UIView {
     }
   }
 
-  // MARK: outlets
   @IBOutlet var addressContainerView: UIView!
   @IBOutlet var addressTextButton: UIButton! {
     didSet {
@@ -35,11 +34,9 @@ class TransactionHistoryDetailCellAddressView: UIView {
   @IBOutlet var addressStatusLabel: TransactionDetailStatusLabel!
   @IBOutlet var allViews: [UIView]!
 
-  // MARK: variables
   weak var selectionDelegate: TransactionHistoryDetailAddressViewDelegate?
   var viewModel: OldTransactionDetailCellViewModel?
 
-  // MARK: initialization and setup
   required init?(coder aDecoder: NSCoder) {
     super.init(coder: aDecoder)
     xibSetup()
@@ -56,7 +53,6 @@ class TransactionHistoryDetailCellAddressView: UIView {
     addressStatusLabel.isHidden = true
   }
 
-  // MARK: actions
   @IBAction func addressButtonTapped(_ sender: UIButton) {
     guard let address = addressTextButton.title(for: .normal),
       address.isValidBitcoinAddress()
@@ -64,7 +60,6 @@ class TransactionHistoryDetailCellAddressView: UIView {
     selectionDelegate?.addressViewDidSelectAddress(self)
   }
 
-  // MARK: loading
   func load(with viewModel: OldTransactionDetailCellViewModel) {
     self.viewModel = viewModel
     if let invitationStatus = viewModel.invitationStatus {

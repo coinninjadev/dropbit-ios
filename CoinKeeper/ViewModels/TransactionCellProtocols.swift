@@ -236,23 +236,6 @@ extension TransactionDetailCellDisplayable {
   var shouldHideMessageLabel: Bool { return messageText == nil }
   var shouldHideProgressView: Bool { return progressConfig == nil }
 
-//  var transactionStatusDescription: String {
-//    guard !isTemporaryTransaction else { return "Broadcasting" }
-//    let count = confirmations
-//    switch count {
-//    case 0:    return "Pending"
-//    default:  return "Complete"
-//    }
-//  }
-
-//  var statusDescription: String {
-//    if broadcastFailed {
-//      return "Failed to Broadcast"
-//    } else {
-//      return invitationStatusDescription ?? transactionStatusDescription
-//    }
-//  }
-
 }
 
 protocol TransactionInvalidDetailCellDisplayable: TransactionDetailCellDisplayable {

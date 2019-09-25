@@ -94,11 +94,6 @@ extension OldTransactionDetailCellViewModel {
     }
   }
 
-  var dateDescriptionFull: String {
-    guard let date = date else { return "" }
-    return CKDateFormatter.displayFull.string(from: date)
-  }
-
   var descriptionColor: UIColor {
     guard !transactionIsInvalidated else { return .darkPeach }
     if isConfirmed {
