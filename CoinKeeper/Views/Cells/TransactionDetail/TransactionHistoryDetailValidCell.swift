@@ -47,9 +47,9 @@ class TransactionHistoryDetailValidCell: TransactionHistoryDetailBaseCell {
 //    addressView.load(with: viewModel)
 //
 //    configureBottomButton(with: viewModel)
-//
-//    bottomBufferView.isHidden = (UIScreen.main.relativeSize == .short)
-//
+
+    bottomBufferView.isHidden = (UIScreen.main.relativeSize == .short)
+
 //    layoutIfNeeded()
   }
 
