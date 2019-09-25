@@ -739,8 +739,7 @@ extension SendPaymentViewController {
 
   private func validatePayment(toTarget paymentTarget: String, matches type: CKRecipientType) throws {
     let recipient = try viewModel.recipientParser.findSingleRecipient(inText: paymentTarget, ofTypes: [type])
-    let ignoredValidation: CurrencyAmountValidationOptions = type != .phoneNumber ? [.invitationMaximum] : []
-
+    let ignoredValidation: CurrencyAmountValidationOptions = type != .phoneNumber ? viewModel.standardIgnoredOptions : []
 
     // This is still required here to pass along the local memo
     let sharedPayloadDTO = SharedPayloadDTO(addressPubKeyState: .none,
