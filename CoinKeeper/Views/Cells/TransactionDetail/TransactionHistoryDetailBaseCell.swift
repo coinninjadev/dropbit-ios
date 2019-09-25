@@ -102,6 +102,8 @@ class TransactionHistoryDetailBaseCell: UICollectionViewCell {
     }
 
     self.addMemoButton.isHidden = values.shouldHideAddMemoButton
+
+    self.dateLabel.text = values.displayDate
   }
 
 //  func configure(with viewModel: OldTransactionDetailCellViewModel, delegate: TransactionHistoryDetailCellDelegate) {

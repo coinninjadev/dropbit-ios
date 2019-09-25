@@ -220,11 +220,11 @@ protocol TransactionDetailCellDisplayable: TransactionSummaryCellDisplayable {
   var counterpartyText: String? { get }
   var memoConfig: DetailCellMemoConfig? { get }
   var canAddMemo: Bool { get }
+  var displayDate: String { get }
 
 //  var progressConfig: ProgressBarConfig? { get }
 //  var bitcoinAddress: String? { get }
 //  var actionButtonConfig: DetailCellActionButtonConfig? { get }
-//  var displayDate: String { get }
 }
 
 extension TransactionDetailCellDisplayable {
@@ -394,9 +394,9 @@ extension TransactionDetailCellViewModelType {
     return memoConfig == nil
   }
 
-//  var displayDate: String {
-//    return CKDateFormatter.displayFull.string(from: date)
-//  }
+  var displayDate: String {
+    return CKDateFormatter.displayFull.string(from: date)
+  }
 
 //  var actionButtonConfig: DetailCellActionButtonConfig? {
 //    guard let a = action else { return nil }

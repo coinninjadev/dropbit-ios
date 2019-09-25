@@ -389,6 +389,14 @@ class TransactionHistoryDetailValidCellTests: XCTestCase {
     XCTAssertTrue(sut.addMemoButton.isHidden)
   }
 
+  func testDateLabelShowsDate() {
+    let now = Date()
+    let expectedDisplayDate = CKDateFormatter.displayFull.string(from: now)
+    let viewModel = MockDetailCellVM.testDetailInstance(date: now)
+    sut.configure(with: viewModel, delegate: mockDelegate)
+    XCTAssertEqual(sut.dateLabel.text, expectedDisplayDate)
+  }
+
   // MARK: - Valid Cell Configuration
 
   /*
