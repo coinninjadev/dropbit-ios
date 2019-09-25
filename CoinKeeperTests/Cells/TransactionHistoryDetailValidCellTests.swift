@@ -371,6 +371,24 @@ class TransactionHistoryDetailValidCellTests: XCTestCase {
     XCTAssertTrue(sut.memoContainerView.isHidden)
   }
 
+  func testAddMemoButton_isShownIfMemoIsNil() {
+    let viewModel = MockDetailCellVM.testDetailInstance(memo: nil)
+    sut.configure(with: viewModel, delegate: mockDelegate)
+    XCTAssertFalse(sut.addMemoButton.isHidden)
+  }
+
+  func testAddMemoButton_isHiddenIfMemoExists() {
+    let viewModel = MockDetailCellVM.testDetailInstance(memo: "My memo")
+    sut.configure(with: viewModel, delegate: mockDelegate)
+    XCTAssertTrue(sut.addMemoButton.isHidden)
+  }
+
+  func testAddMemoButton_isHiddenIfLightningTransfer() {
+    let viewModel = MockDetailCellVM.testDetailInstance(isLightningTransfer: true)
+    sut.configure(with: viewModel, delegate: mockDelegate)
+    XCTAssertTrue(sut.addMemoButton.isHidden)
+  }
+
   // MARK: - Valid Cell Configuration
 
   /*

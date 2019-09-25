@@ -219,10 +219,10 @@ protocol TransactionDetailCellDisplayable: TransactionSummaryCellDisplayable {
   var twitterConfig: TransactionCellTwitterConfig? { get }
   var counterpartyText: String? { get }
   var memoConfig: DetailCellMemoConfig? { get }
+  var canAddMemo: Bool { get }
 
 //  var progressConfig: ProgressBarConfig? { get }
 //  var bitcoinAddress: String? { get }
-//  var canAddMemo: Bool { get }
 //  var actionButtonConfig: DetailCellActionButtonConfig? { get }
 //  var displayDate: String { get }
 }
@@ -231,6 +231,7 @@ extension TransactionDetailCellDisplayable {
 
   var shouldHideCounterpartyLabel: Bool { return counterpartyText == nil }
   var shouldHideMemoView: Bool { return shouldHideMemoLabel }
+  var shouldHideAddMemoButton: Bool { return !canAddMemo }
 
 //  var transactionStatusDescription: String {
 //    guard !isTemporaryTransaction else { return "Broadcasting" }
@@ -388,11 +389,10 @@ extension TransactionDetailCellViewModelType {
                                 isIncoming: isIncoming, recipientName: counterpartyText)
   }
 
-//  var canAddMemo: Bool {
-//    return false
-//    if isLightningTransfer { return false }
-//    return memoConfig == nil
-//  }
+  var canAddMemo: Bool {
+    if isLightningTransfer { return false }
+    return memoConfig == nil
+  }
 
 //  var displayDate: String {
 //    return CKDateFormatter.displayFull.string(from: date)

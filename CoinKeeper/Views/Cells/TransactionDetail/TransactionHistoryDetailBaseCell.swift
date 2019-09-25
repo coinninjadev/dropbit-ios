@@ -101,30 +101,18 @@ class TransactionHistoryDetailBaseCell: UICollectionViewCell {
       self.memoContainerView.configure(with: config)
     }
 
+    self.addMemoButton.isHidden = values.shouldHideAddMemoButton
   }
+
 //  func configure(with viewModel: OldTransactionDetailCellViewModel, delegate: TransactionHistoryDetailCellDelegate) {
-//    self.delegate = delegate
-//    self.viewModel = viewModel
 //
-//    incomingImage.image = viewModel.imageForTransactionDirection
 //    dateLabel.text = viewModel.dateDescriptionFull
-//    statusLabel.text = viewModel.statusDescription
-//    statusLabel.textColor = viewModel.descriptionColor
 //    let isEqualToReceiverAddress = (viewModel.receiverAddress ?? "") == viewModel.counterpartyDescription
 //    counterpartyLabel.text = isEqualToReceiverAddress ? nil : viewModel.counterpartyDescription
-//    twitterImage.isHidden = !viewModel.isTwitterContact
 //    primaryAmountLabel.text = viewModel.primaryAmountLabel
 //    secondaryAmountLabel.attributedText = viewModel.secondaryAmountLabel
 //    historicalValuesLabel.text = nil
 //    historicalValuesLabel.attributedText = viewModel.historicalAmountsAttributedString()
-//    addMemoButton.isHidden = !viewModel.memo.isEmpty
-//    memoContainerView.isHidden = viewModel.memo.isEmpty
-//    memoContainerView.configure(
-//      memo: viewModel.memo,
-//      isShared: viewModel.memoWasShared,
-//      isSent: true,
-//      isIncoming: viewModel.isIncoming,
-//      recipientName: nil)
 //  }
 
   private func configureTwitterShareButton() {
