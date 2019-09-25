@@ -60,9 +60,9 @@ class TransactionHistoryDetailValidCell: TransactionHistoryDetailBaseCell {
       progressBarWidthConstraint.constant = config.width
     }
 
-//    addressView.selectionDelegate = self
-//    addressView.load(with: viewModel)
-//
+    addressView.selectionDelegate = self
+    addressView.configure(with: values.addressViewConfig)
+
 //    configureBottomButton(with: viewModel)
 
     bottomBufferView.isHidden = (UIScreen.main.relativeSize == .short)

@@ -16,6 +16,7 @@ class MockTransactionDetailCellViewModel: MockTransactionSummaryCellViewModel, T
   var memoIsShared: Bool
   var invitationStatus: InvitationStatus?
   var onChainConfirmations: Int?
+  var addressProvidedToSender: String?
 
   init(walletTxType: WalletTransactionType,
        direction: TransactionDirection,
@@ -23,6 +24,7 @@ class MockTransactionDetailCellViewModel: MockTransactionSummaryCellViewModel, T
        onChainConfirmations: Int?,
        isLightningTransfer: Bool,
        receiverAddress: String?,
+       addressProvidedToSender: String?,
        lightningInvoice: String?,
        selectedCurrency: SelectedCurrency,
        amountDetails: TransactionAmountDetails,
@@ -35,6 +37,7 @@ class MockTransactionDetailCellViewModel: MockTransactionSummaryCellViewModel, T
     self.memoIsShared = memoIsShared
     self.invitationStatus = invitationStatus
     self.onChainConfirmations = onChainConfirmations
+    self.addressProvidedToSender = addressProvidedToSender
 
     super.init(walletTxType: walletTxType, direction: direction, status: status,
                isLightningTransfer: isLightningTransfer, receiverAddress: receiverAddress,
@@ -48,6 +51,7 @@ class MockTransactionDetailCellViewModel: MockTransactionSummaryCellViewModel, T
                                  onChainConfirmations: Int? = nil,
                                  isLightningTransfer: Bool = false,
                                  receiverAddress: String? = nil,
+                                 addressProvidedToSender: String? = nil,
                                  lightningInvoice: String? = nil,
                                  selectedCurrency: SelectedCurrency = .fiat,
                                  amountDetails: TransactionAmountDetails? = nil,
@@ -61,7 +65,7 @@ class MockTransactionDetailCellViewModel: MockTransactionSummaryCellViewModel, T
     return MockTransactionDetailCellViewModel(
       walletTxType: walletTxType, direction: direction,
       status: status, onChainConfirmations: onChainConfirmations, isLightningTransfer: isLightningTransfer,
-      receiverAddress: receiverAddress, lightningInvoice: lightningInvoice,
+      receiverAddress: receiverAddress, addressProvidedToSender: addressProvidedToSender, lightningInvoice: lightningInvoice,
       selectedCurrency: selectedCurrency, amountDetails: amtDetails,
       counterpartyConfig: counterpartyConfig, invitationStatus: invitationStatus,
       memo: memo, memoIsShared: memoIsShared, date: date)

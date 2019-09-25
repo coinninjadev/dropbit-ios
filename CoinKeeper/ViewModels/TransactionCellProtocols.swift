@@ -223,6 +223,7 @@ protocol TransactionDetailCellDisplayable: TransactionSummaryCellDisplayable {
   var displayDate: String { get }
   var messageText: String? { get }
   var progressConfig: ProgressBarConfig? { get }
+  var addressViewConfig: AddressViewConfig { get }
 
 //  var bitcoinAddress: String? { get }
 //  var actionButtonConfig: DetailCellActionButtonConfig? { get }

@@ -401,6 +401,7 @@ class TransactionHistoryDetailValidCellTests: XCTestCase {
 
   // MARK: - Valid Cell Configuration
 
+  // MARK: Message label
   func testMessageLabel_nilMessageHidesLabel() {
     let viewModel = MockDetailCellVM.testDetailInstance()
     sut.configure(with: viewModel, delegate: mockDelegate)
@@ -416,6 +417,7 @@ class TransactionHistoryDetailValidCellTests: XCTestCase {
     XCTAssertFalse(sut.messageContainer.isHidden)
   }
 
+  // MARK: Progress view
   func testProgressView_hideIfLightning() {
     let viewModel = MockDetailCellVM.testDetailInstance(walletTxType: .lightning)
     sut.configure(with: viewModel, delegate: mockDelegate)
@@ -471,8 +473,20 @@ class TransactionHistoryDetailValidCellTests: XCTestCase {
     XCTAssertEqual(sut.progressBarWidthConstraint.constant, 130)
   }
 
-  /*
+  // MARK: Address view
+  func testAddressViewDelegateIsSet() {
+    let viewModel = MockDetailCellVM.testDetailInstance()
+    sut.configure(with: viewModel, delegate: mockDelegate)
+    XCTAssertNotNil(sut.addressView.selectionDelegate)
+  }
 
+  func testAddressViewIsConfigured() {
+    let viewModel = MockDetailCellVM.testDetailInstance()
+    sut.configure(with: viewModel, delegate: mockDelegate)
+    XCTAssertNotNil(sut.addressView.config)
+  }
+
+  /*
 
   func testSatsLabelIsLoadedForInvalidTransaction() {
     let amountDetails = MockSummaryCellVM.testAmountDetails(sats: 1234567)
