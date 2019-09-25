@@ -14,6 +14,7 @@ class MockTransactionDetailCellViewModel: MockTransactionSummaryCellViewModel, T
 
   var date: Date
   var memoIsShared: Bool
+  var invitationStatus: InvitationStatus?
 
   init(walletTxType: WalletTransactionType,
        direction: TransactionDirection,
@@ -24,11 +25,13 @@ class MockTransactionDetailCellViewModel: MockTransactionSummaryCellViewModel, T
        selectedCurrency: SelectedCurrency,
        amountDetails: TransactionAmountDetails,
        counterpartyConfig: TransactionCellCounterpartyConfig?,
+       invitationStatus: InvitationStatus?,
        memo: String?,
        memoIsShared: Bool,
        date: Date) {
     self.date = date
     self.memoIsShared = memoIsShared
+    self.invitationStatus = invitationStatus
 
     super.init(walletTxType: walletTxType, direction: direction, status: status,
                isLightningTransfer: isLightningTransfer, receiverAddress: receiverAddress,
@@ -45,6 +48,7 @@ class MockTransactionDetailCellViewModel: MockTransactionSummaryCellViewModel, T
                                  selectedCurrency: SelectedCurrency = .fiat,
                                  amountDetails: TransactionAmountDetails? = nil,
                                  counterpartyConfig: TransactionCellCounterpartyConfig? = nil,
+                                 invitationStatus: InvitationStatus? = nil,
                                  memo: String? = nil,
                                  memoIsShared: Bool = false,
                                  date: Date = Date()) -> MockTransactionDetailCellViewModel {
@@ -55,7 +59,8 @@ class MockTransactionDetailCellViewModel: MockTransactionSummaryCellViewModel, T
       status: status, isLightningTransfer: isLightningTransfer,
       receiverAddress: receiverAddress, lightningInvoice: lightningInvoice,
       selectedCurrency: selectedCurrency, amountDetails: amtDetails,
-      counterpartyConfig: counterpartyConfig, memo: memo, memoIsShared: memoIsShared, date: date)
+      counterpartyConfig: counterpartyConfig, invitationStatus: invitationStatus,
+      memo: memo, memoIsShared: memoIsShared, date: date)
   }
 
 }

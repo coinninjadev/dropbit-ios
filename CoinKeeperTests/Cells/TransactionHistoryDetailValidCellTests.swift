@@ -399,6 +399,21 @@ class TransactionHistoryDetailValidCellTests: XCTestCase {
 
   // MARK: - Valid Cell Configuration
 
+  func testMessageLabel_nilMessageHidesLabel() {
+    let viewModel = MockDetailCellVM.testDetailInstance()
+    sut.configure(with: viewModel, delegate: mockDelegate)
+    XCTAssertTrue(sut.messageLabel.isHidden)
+    XCTAssertTrue(sut.messageContainer.isHidden)
+  }
+
+  func testMessageLabel_addressSentShowsLabel() {
+    let counterparty = TransactionCellCounterpartyConfig(displayName: "Satoshi")
+    let viewModel = MockDetailCellVM.testDetailInstance(counterpartyConfig: counterparty, invitationStatus: .addressSent)
+    sut.configure(with: viewModel, delegate: mockDelegate)
+    XCTAssertFalse(sut.messageLabel.isHidden)
+    XCTAssertFalse(sut.messageContainer.isHidden)
+  }
+
   /*
 
   // MARK: Labels

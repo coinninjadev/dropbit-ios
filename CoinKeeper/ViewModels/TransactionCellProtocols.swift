@@ -221,6 +221,7 @@ protocol TransactionDetailCellDisplayable: TransactionSummaryCellDisplayable {
   var memoConfig: DetailCellMemoConfig? { get }
   var canAddMemo: Bool { get }
   var displayDate: String { get }
+  var messageText: String? { get }
 
 //  var progressConfig: ProgressBarConfig? { get }
 //  var bitcoinAddress: String? { get }
@@ -232,6 +233,7 @@ extension TransactionDetailCellDisplayable {
   var shouldHideCounterpartyLabel: Bool { return counterpartyText == nil }
   var shouldHideMemoView: Bool { return shouldHideMemoLabel }
   var shouldHideAddMemoButton: Bool { return !canAddMemo }
+  var shouldHideMessageLabel: Bool { return messageText == nil }
 
 //  var transactionStatusDescription: String {
 //    guard !isTemporaryTransaction else { return "Broadcasting" }
@@ -286,6 +288,8 @@ extension TransactionInvalidDetailCellDisplayable {
 protocol TransactionDetailCellViewModelType: TransactionSummaryCellViewModelType, TransactionDetailCellDisplayable {
   var date: Date { get }
   var memoIsShared: Bool { get }
+  var invitationStatus: InvitationStatus? { get }
+
 //  var action: TransactionDetailAction? { get }
 }
 
@@ -392,6 +396,34 @@ extension TransactionDetailCellViewModelType {
   var canAddMemo: Bool {
     if isLightningTransfer { return false }
     return memoConfig == nil
+  }
+
+  /**
+   If not nil, this string will appear in the gray rounded container instead of the breakdown amounts.
+   */
+  var messageText: String? {
+    if let status = invitationStatus, status == .addressSent, let counterpartyDesc = counterpartyDescription {
+      let messageWithLineBreaks = """
+      Your Bitcoin address has been sent to
+      \(counterpartyDesc).
+      Once approved, this transaction will be completed.
+      """
+
+      return sizeSensitiveMessage(from: messageWithLineBreaks)
+
+    } else {
+      return nil
+    }
+  }
+
+  /// Strips static linebreaks from the string on small devices
+  private func sizeSensitiveMessage(from message: String) -> String {
+    let shouldUseStaticLineBreaks = (UIScreen.main.relativeSize == .tall)
+    if shouldUseStaticLineBreaks {
+      return message
+    } else {
+      return message.removingMultilineLineBreaks()
+    }
   }
 
   var displayDate: String {

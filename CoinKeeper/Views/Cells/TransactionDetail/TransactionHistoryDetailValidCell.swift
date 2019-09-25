@@ -36,11 +36,13 @@ class TransactionHistoryDetailValidCell: TransactionHistoryDetailBaseCell {
   // MARK: lifecycle
   override func configure(with values: TransactionDetailCellDisplayable, delegate: TransactionHistoryDetailCellDelegate) {
     super.configure(with: values, delegate: delegate)
-//    messageLabel.text = viewModel.messageLabel
-//    messageContainer.isHidden = viewModel.messageLabel == nil
-//    messageLabel.isHidden = viewModel.messageLabel == nil
-//    layoutIfNeeded()
-//    messageContainerHeightConstraint.constant = messageLabel.intrinsicContentSize.height + 20
+    messageLabel.text = values.messageText
+    messageContainer.isHidden = values.shouldHideMessageLabel
+    messageLabel.isHidden = values.shouldHideMessageLabel
+
+    layoutIfNeeded()
+    messageContainerHeightConstraint.constant = messageLabel.intrinsicContentSize.height + 20
+
 //    setupProgressBar(with: viewModel)
 //
 //    addressView.selectionDelegate = self
@@ -49,8 +51,7 @@ class TransactionHistoryDetailValidCell: TransactionHistoryDetailBaseCell {
 //    configureBottomButton(with: viewModel)
 
     bottomBufferView.isHidden = (UIScreen.main.relativeSize == .short)
-
-//    layoutIfNeeded()
+    layoutIfNeeded()
   }
 
   // MARK: actions
