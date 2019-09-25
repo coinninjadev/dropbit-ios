@@ -701,6 +701,8 @@
 		B52CC6AB221EC63F00B00C9E /* ContactCacheDataWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52CC6AA221EC63F00B00C9E /* ContactCacheDataWorker.swift */; };
 		B52CC6AD221ED41700B00C9E /* NSManagedObjectContext+PerformRethrow.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52CC6AC221ED41700B00C9E /* NSManagedObjectContext+PerformRethrow.swift */; };
 		B52D4524208E5ECA00A56A5C /* ExchangeRateUpdatable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52D4523208E5ECA00A56A5C /* ExchangeRateUpdatable.swift */; };
+		B52E0BD2233BBE7300BA1B0C /* TransactionHistoryDetailCellAddressViewConfigurable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52E0BD1233BBE7300BA1B0C /* TransactionHistoryDetailCellAddressViewConfigurable.swift */; };
+		B52E0BD4233BD07300BA1B0C /* MockAddressViewConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52E0BD3233BD07300BA1B0C /* MockAddressViewConfig.swift */; };
 		B52E1DBC2302F50800AA652D /* CKMLNLedgerEntry+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52E1DB62302F50700AA652D /* CKMLNLedgerEntry+CoreDataClass.swift */; };
 		B52E1DBD2302F50800AA652D /* CKMLNInvoice+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52E1DB72302F50700AA652D /* CKMLNInvoice+CoreDataClass.swift */; };
 		B52E1DBE2302F50800AA652D /* CKMLNInvoice+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52E1DB82302F50700AA652D /* CKMLNInvoice+CoreDataProperties.swift */; };
@@ -1752,6 +1754,8 @@
 		B52CC6AA221EC63F00B00C9E /* ContactCacheDataWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactCacheDataWorker.swift; sourceTree = "<group>"; };
 		B52CC6AC221ED41700B00C9E /* NSManagedObjectContext+PerformRethrow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSManagedObjectContext+PerformRethrow.swift"; sourceTree = "<group>"; };
 		B52D4523208E5ECA00A56A5C /* ExchangeRateUpdatable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExchangeRateUpdatable.swift; sourceTree = "<group>"; };
+		B52E0BD1233BBE7300BA1B0C /* TransactionHistoryDetailCellAddressViewConfigurable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionHistoryDetailCellAddressViewConfigurable.swift; sourceTree = "<group>"; };
+		B52E0BD3233BD07300BA1B0C /* MockAddressViewConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockAddressViewConfig.swift; sourceTree = "<group>"; };
 		B52E1DB62302F50700AA652D /* CKMLNLedgerEntry+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CKMLNLedgerEntry+CoreDataClass.swift"; sourceTree = "<group>"; };
 		B52E1DB72302F50700AA652D /* CKMLNInvoice+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CKMLNInvoice+CoreDataClass.swift"; sourceTree = "<group>"; };
 		B52E1DB82302F50700AA652D /* CKMLNInvoice+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CKMLNInvoice+CoreDataProperties.swift"; sourceTree = "<group>"; };
@@ -2643,6 +2647,7 @@
 				3BD7B73020D66F12005057A7 /* HorizontallyPaginatedCollectionViewLayout.swift */,
 				3B23126220DA6CA30099A557 /* TransactionHistoryDetailCellAddressView.xib */,
 				3B23126620DA6D0E0099A557 /* TransactionHistoryDetailCellAddressView.swift */,
+				B52E0BD1233BBE7300BA1B0C /* TransactionHistoryDetailCellAddressViewConfigurable.swift */,
 				A293E35120F798920099ED69 /* TransactionHistoryEmptyView.swift */,
 				B59C9E1D230DB37700E4F3C8 /* TwitterAvatarView.swift */,
 				B59C9E23230EC86C00E4F3C8 /* TransactionDirectionView.swift */,
@@ -3098,6 +3103,7 @@
 				B50E7B7A230C636500927C8B /* View Models */,
 				B5EBFD0E215C01E30008EB4A /* MockAddressDataSource.swift */,
 				B5D77CC92221FB09002C360E /* MockPhoneNumberFormatter.swift */,
+				B52E0BD3233BD07300BA1B0C /* MockAddressViewConfig.swift */,
 				B5D77CCC2222002D002C360E /* MockRecipientParser.swift */,
 				3B695C2521CAC993007D0741 /* MockOperationQueue.swift */,
 				3B9EE87D2058674B00C0CC8C /* MockNavigationController.swift */,
@@ -4826,6 +4832,7 @@
 				3BF4EAF320F906540017DE00 /* Set+Helpers.swift in Sources */,
 				B558B86B22B95A0C0033AFBD /* DeviceBroker.swift in Sources */,
 				30BF4FF021B728FA0018AE87 /* PopoverViewControllerType.swift in Sources */,
+				B52E0BD4233BD07300BA1B0C /* MockAddressViewConfig.swift in Sources */,
 				3BF41AB8207694EA008B3D0A /* RequestPayViewModel.swift in Sources */,
 				308F6F0B2180B6260094D6CB /* AddressTableViewCell.swift in Sources */,
 				3093B08221F10E9D00B3EF9C /* SerialQueueManager.swift in Sources */,
@@ -4970,6 +4977,7 @@
 				3BCBFCBA229EB05000F633BA /* SettingsTitleLabel.swift in Sources */,
 				B5FEBE9220879C4200AA9F6E /* CKMInvitation+CoreDataClass.swift in Sources */,
 				B52A25C92077E42100F636A1 /* GrayCellSeparator.swift in Sources */,
+				B52E0BD2233BBE7300BA1B0C /* TransactionHistoryDetailCellAddressViewConfigurable.swift in Sources */,
 				B5A5C5A32218AF430088C4D1 /* DeviceVerificationErrorMessageFactory.swift in Sources */,
 				A2893BC220FD515900E96B07 /* AppCoordinator+TutorialViewControllerDelegate.swift in Sources */,
 				B5437B5D231610B50002B77C /* MockTransactionSummaryCellViewModel.swift in Sources */,

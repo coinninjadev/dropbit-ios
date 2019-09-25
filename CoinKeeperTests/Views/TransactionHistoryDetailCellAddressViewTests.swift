@@ -66,312 +66,105 @@ class TransactionHistoryDetailCellAddressViewTests: XCTestCase {
     XCTAssertTrue(mockDelegate.addressViewDidSelectAddressWasCalled, "should tell delegate that button was tapped")
   }
 
-  //TODO: revise tests
-  // MARK: loading with view model produces desired UI behavior
-  /*
-  func testRegularIncomingTransactionShowsAddressButton() {
-    let sampleCounterpartyAddress = SampleCounterpartyAddress(addressId: "13r1jyivitShUiv9FJvjLH7Nh1ZZptumwE")
-    let sampleTransaction = SampleTransaction(
-      netWalletAmount: nil,
-      id: "",
-      btcReceived: 1,
-      isIncoming: true,
-      walletAddress: SampleTransaction.sampleWalletAddress,
-      confirmations: 1,
-      date: Date(),
-      counterpartyAddress: sampleCounterpartyAddress,
-      phoneNumber: nil,
-      invitation: nil
-    )
+  // MARK: Show/hide address views
 
-    self.sut.load(with: sampleTransaction)
-
-    XCTAssertTrue(self.sut.addressStatusLabel.isHidden, "addressStatusLabel should be hidden")
-    XCTAssertFalse(self.sut.addressContainerView.isHidden, "addressContainerView should be visible")
-    XCTAssertEqual(self.sut.addressTextButton.title(for: .normal), sampleTransaction.walletAddress)
+  private var mockAddress: String {
+    return TestHelpers.mockValidBech32Address()
   }
 
-  func testRegularOutgoingTransactionShowsAddressButton() {
-    let validAddress = TestHelpers.mockValidBitcoinAddress()
-    let sampleCounterpartyAddress = SampleCounterpartyAddress(addressId: validAddress)
-    let sampleTransaction = SampleTransaction(
-      netWalletAmount: nil,
-      id: "",
-      btcReceived: 1,
-      isIncoming: false,
-      walletAddress: SampleTransaction.sampleWalletAddress,
-      confirmations: 1,
-      date: Date(),
-      counterpartyAddress: sampleCounterpartyAddress,
-      phoneNumber: nil,
-      invitation: nil
-    )
+  func testReceiverAddressShowsAddressButton() {
+    let config = MockAddressViewConfig(receiverAddress: TestHelpers.mockValidBech32Address(),
+                                       addressProvidedToSender: nil,
+                                       broadcastFailed: false,
+                                       invitationStatus: nil)
 
-    self.sut.load(with: sampleTransaction)
-
+    sut.configure(with: config)
     XCTAssertTrue(self.sut.addressStatusLabel.isHidden, "addressStatusLabel should be hidden")
     XCTAssertFalse(self.sut.addressContainerView.isHidden, "addressContainerView should be visible")
-    XCTAssertEqual(self.sut.addressTextButton.title(for: .normal), sampleCounterpartyAddress.addressId)
-  }
-
-  func testContactOutgoingTransactionShowsCounterpartyAndAddress() {
-    let validAddress = TestHelpers.mockValidBitcoinAddress()
-    let sampleCounterpartyAddress = SampleCounterpartyAddress(addressId: validAddress)
-    let expectedName = "Indiana Jones"
-    let sampleCounterpartyName = SampleCounterpartyName(name: expectedName)
-    let samplePhoneNumber = SamplePhoneNumber(
-      countryCode: 1,
-      number: 3305551212,
-      phoneNumberHash: "",
-      status: "",
-      counterpartyName: sampleCounterpartyName
-    )
-    let sampleTransaction = SampleTransaction(
-      netWalletAmount: nil,
-      id: "",
-      btcReceived: 1,
-      isIncoming: false,
-      walletAddress: SampleTransaction.sampleWalletAddress,
-      confirmations: 1,
-      date: Date(),
-      counterpartyAddress: sampleCounterpartyAddress,
-      phoneNumber: samplePhoneNumber,
-      invitation: nil
-    )
-
-    self.sut.load(with: sampleTransaction)
-
-    XCTAssertTrue(self.sut.addressStatusLabel.isHidden, "addressStatusLabel should be hidden")
-    XCTAssertFalse(self.sut.addressContainerView.isHidden, "addressContainerView should be visible")
-    XCTAssertEqual(self.sut.addressTextButton.title(for: .normal), sampleCounterpartyAddress.addressId)
+    XCTAssertEqual(self.sut.addressTextButton.title(for: .normal), config.receiverAddress)
   }
 
   func testInvitationOutgoingTransactionShowsInvitationStatus() {
-    let sampleCounterpartyAddress = SampleCounterpartyAddress(addressId: "13r1jyivitShUiv9FJvjLH7Nh1ZZptumwE")
-    let expectedName = "Indiana Jones"
-    let sampleCounterpartyName = SampleCounterpartyName(name: expectedName)
-    let samplePhoneNumber = SamplePhoneNumber(
-      countryCode: 1,
-      number: 3305551212,
-      phoneNumberHash: "",
-      status: "",
-      counterpartyName: sampleCounterpartyName
-    )
-    let invitation = SampleInvitation(
-      name: expectedName,
-      phoneNumber: GlobalPhoneNumber(countryCode: 1, nationalNumber: "3305551212"),
-      btcAmount: 1,
-      fees: 30,
-      sentDate: Date(),
-      status: InvitationStatus.requestSent
-    )
-    let sampleTransaction = SampleTransaction(
-      netWalletAmount: nil,
-      id: "",
-      btcReceived: 1,
-      isIncoming: false,
-      walletAddress: SampleTransaction.sampleWalletAddress,
-      confirmations: 1,
-      date: Date(),
-      counterpartyAddress: sampleCounterpartyAddress,
-      phoneNumber: samplePhoneNumber,
-      invitation: invitation
-    )
-    sampleTransaction.invitationStatus = .requestSent
+    let config = MockAddressViewConfig(receiverAddress: nil,
+                                       addressProvidedToSender: nil,
+                                       broadcastFailed: false,
+                                       invitationStatus: .requestSent)
 
-    self.sut.load(with: sampleTransaction)
-
+    sut.configure(with: config)
     XCTAssertFalse(self.sut.addressStatusLabel.isHidden, "addressStatusLabel should be visible")
     XCTAssertTrue(self.sut.addressContainerView.isHidden, "addressContainerView should be hidden")
     XCTAssertEqual(self.sut.addressStatusLabel.text, "Waiting on Bitcoin address")
   }
 
   func testTemporaryOutgoingTransactionShowsAddressButton() {
-    // given
-    let expectedAddress = "3NNE2SY73JkrupbWKu6iVCsGjrcNKXH4hR"
-    let stack = InMemoryCoreDataStack()
-    let indianaJones = GenericContact(phoneNumber: GlobalPhoneNumber(countryCode: 1, nationalNumber: "3305551212"), formatted: "")
-    let otd = OutgoingTransactionData(
-      txid: "123txid",
-      dropBitType: .phone(indianaJones),
-      destinationAddress: expectedAddress,
-      amount: 1,
-      feeAmount: 1,
-      sentToSelf: false,
-      requiredFeeRate: nil,
-      sharedPayloadDTO: testPayloadDTO)
-    let transaction = CKMTransaction.findOrCreate(with: otd, in: stack.context)
-    let rates: ExchangeRates = [.BTC: 1, .USD: 7000]
-
-    let viewModel = OldTransactionDetailCellViewModel(
-      transaction: transaction,
-      rates: rates,
-      primaryCurrency: .USD,
-      deviceCountryCode: nil
-    )
-
-    // when
-    self.sut.load(with: viewModel)
-
-    // then
-    XCTAssertFalse(self.sut.addressContainerView.isHidden, "addressContainerView should be visible")
+    let config = MockAddressViewConfig(receiverAddress: mockAddress,
+                                       addressProvidedToSender: nil,
+                                       broadcastFailed: false,
+                                       invitationStatus: nil)
+    sut.configure(with: config)
     XCTAssertTrue(self.sut.addressStatusLabel.isHidden, "addressStatusLabel should be hidden")
-    XCTAssertEqual(self.sut.addressTextButton.title(for: .normal), expectedAddress, "addressTextButton title should equal destination address")
+    XCTAssertFalse(self.sut.addressContainerView.isHidden, "addressContainerView should be visible")
+    XCTAssertEqual(self.sut.addressTextButton.title(for: .normal), mockAddress, "addressTextButton title should equal destination address")
   }
 
   func testCompletedDropBitShowsAddressContainerView() {
-    // given
-    let expectedAddress = "3NNE2SY73JkrupbWKu6iVCsGjrcNKXH4hR"
-    let stack = InMemoryCoreDataStack()
-    let globalNumber = GlobalPhoneNumber(countryCode: 1, nationalNumber: "3305551212")
-    let indianaJones = ValidatedContact(
-      kind: .registeredUser,
-      displayName: "Indiana Jones",
-      displayNumber: "+1 (330) 555-1212",
-      globalPhoneNumber: globalNumber)
-    let otd = OutgoingTransactionData(
-      txid: "123txid",
-      dropBitType: .phone(indianaJones),
-      destinationAddress: expectedAddress,
-      amount: 1,
-      feeAmount: 1,
-      sentToSelf: false,
-      requiredFeeRate: nil,
-      sharedPayloadDTO: testPayloadDTO)
-    let transaction = CKMTransaction.findOrCreate(with: otd, in: stack.context)
-    let invitation = CKMInvitation(insertInto: stack.context)
-    transaction.invitation = invitation
-    let rates: ExchangeRates = [.BTC: 1, .USD: 7000]
-
-    var viewModel = OldTransactionDetailCellViewModel(
-      transaction: transaction,
-      rates: rates,
-      primaryCurrency: .USD,
-      deviceCountryCode: nil
-    )
-
-    // .completed
-    invitation.status = .completed
-    viewModel = OldTransactionDetailCellViewModel(
-      transaction: transaction,
-      rates: rates,
-      primaryCurrency: .USD,
-      deviceCountryCode: nil
-    )
-
-    // when
-    self.sut.load(with: viewModel)
-
-    // then
-    XCTAssertFalse(self.sut.addressContainerView.isHidden, "addressContainerView should be visible")
+    let config = MockAddressViewConfig(receiverAddress: mockAddress,
+                                       addressProvidedToSender: nil,
+                                       broadcastFailed: false,
+                                       invitationStatus: .completed)
+    sut.configure(with: config)
     XCTAssertTrue(self.sut.addressStatusLabel.isHidden, "addressStatusLabel should be hidden")
-    XCTAssertEqual(self.sut.addressTextButton.title(for: .normal), expectedAddress, "addressTextButton title should equal destination address")
+    XCTAssertFalse(self.sut.addressContainerView.isHidden, "addressContainerView should be visible")
+    XCTAssertEqual(self.sut.addressTextButton.title(for: .normal), mockAddress, "addressTextButton title should equal destination address")
+  }
+
+  private func dropBitAddressViewConfig(status: InvitationStatus,
+                                        receiverAddress: String?,
+                                        addressForSender: String? = nil) -> MockAddressViewConfig {
+    return MockAddressViewConfig(receiverAddress: receiverAddress,
+                                 addressProvidedToSender: addressForSender,
+                                 broadcastFailed: false,
+                                 invitationStatus: status)
   }
 
   func testUnfulfilledDropBitHidesAddressContainerView() {
-    // given
-    let expectedAddress = "3NNE2SY73JkrupbWKu6iVCsGjrcNKXH4hR"
-    let stack = InMemoryCoreDataStack()
-    let globalNumber = GlobalPhoneNumber(countryCode: 1, nationalNumber: "3305551212")
-    let indianaJones = ValidatedContact(
-      kind: .registeredUser,
-      displayName: "Indiana Jones",
-      displayNumber: "+1 (330) 555-1212",
-      globalPhoneNumber: globalNumber)
-    let otd = OutgoingTransactionData(
-      txid: "123txid",
-      dropBitType: .phone(indianaJones),
-      destinationAddress: expectedAddress,
-      amount: 1,
-      feeAmount: 1,
-      sentToSelf: false,
-      requiredFeeRate: nil,
-      sharedPayloadDTO: testPayloadDTO)
 
-    let transaction = CKMTransaction.findOrCreate(with: otd, in: stack.context)
-    let invitation = CKMInvitation(insertInto: stack.context)
-    transaction.invitation = invitation
-    let rates: ExchangeRates = [.BTC: 1, .USD: 7000]
+    let notSentConfig = dropBitAddressViewConfig(status: .notSent, receiverAddress: nil)
+    sut.configure(with: notSentConfig)
 
-    var viewModel = OldTransactionDetailCellViewModel(
-      transaction: transaction, rates: rates,
-      primaryCurrency: .USD, deviceCountryCode: nil
-    )
-
-    // .notSent
-    invitation.status = .notSent
-    viewModel = OldTransactionDetailCellViewModel(
-      transaction: transaction, rates: rates,
-      primaryCurrency: .USD, deviceCountryCode: nil
-    )
-
-    // when
-    self.sut.load(with: viewModel)
-
-    // then
     XCTAssertTrue(self.sut.addressContainerView.isHidden, "addressContainerView should be hidden")
     XCTAssertFalse(self.sut.addressStatusLabel.isHidden, "addressStatusLabel should be visible")
-    XCTAssertEqual(self.sut.addressTextButton.title(for: .normal), expectedAddress, "addressTextButton title should equal destination address")
+    XCTAssertEqual(self.sut.addressTextButton.title(for: .normal), nil, "addressTextButton title should be nil")
 
-    // .requestSent
-    invitation.status = .requestSent
-    viewModel = OldTransactionDetailCellViewModel(
-      transaction: transaction, rates: rates,
-      primaryCurrency: .USD, deviceCountryCode: nil
-    )
+    let requestSentConfig = dropBitAddressViewConfig(status: .requestSent, receiverAddress: nil)
+    sut.configure(with: requestSentConfig)
 
-    // when
-    self.sut.load(with: viewModel)
-
-    // then
     XCTAssertTrue(self.sut.addressContainerView.isHidden, "addressContainerView should be hidden")
     XCTAssertFalse(self.sut.addressStatusLabel.isHidden, "addressStatusLabel should be visible")
-    XCTAssertEqual(self.sut.addressTextButton.title(for: .normal), expectedAddress, "addressTextButton title should equal destination address")
+    XCTAssertEqual(self.sut.addressTextButton.title(for: .normal), nil, "addressTextButton title should be nil")
 
-    // .addressSent
-    invitation.status = .addressSent
-    viewModel = OldTransactionDetailCellViewModel(
-      transaction: transaction, rates: rates,
-      primaryCurrency: .USD, deviceCountryCode: nil
-    )
+    let addressSentConfig = dropBitAddressViewConfig(status: .addressSent,
+                                                     receiverAddress: mockAddress,
+                                                     addressForSender: mockAddress)
+    sut.configure(with: addressSentConfig)
 
-    // when
-    self.sut.load(with: viewModel)
-
-    // then
     XCTAssertFalse(self.sut.addressContainerView.isHidden, "addressContainerView should be hidden")
     XCTAssertTrue(self.sut.addressStatusLabel.isHidden, "addressStatusLabel should be visible")
-    XCTAssertEqual(self.sut.addressTextButton.title(for: .normal), expectedAddress, "addressTextButton title should equal destination address")
+    XCTAssertEqual(self.sut.addressTextButton.title(for: .normal), mockAddress, "addressTextButton title should equal destination address")
 
-    // .canceled
-    invitation.status = .canceled
-    viewModel = OldTransactionDetailCellViewModel(
-      transaction: transaction, rates: rates,
-      primaryCurrency: .USD, deviceCountryCode: nil
-    )
+    let canceledConfig = dropBitAddressViewConfig(status: .canceled, receiverAddress: nil)
+    sut.configure(with: canceledConfig)
 
-    // when
-    self.sut.load(with: viewModel)
-
-    // then
     XCTAssertTrue(self.sut.addressContainerView.isHidden, "addressContainerView should be hidden")
     XCTAssertTrue(self.sut.addressStatusLabel.isHidden, "addressStatusLabel should be hidden")
-    XCTAssertEqual(self.sut.addressTextButton.title(for: .normal), expectedAddress, "addressTextButton title should equal destination address")
+    XCTAssertEqual(self.sut.addressTextButton.title(for: .normal), nil, "addressTextButton title should be nil")
 
-    // .expired
-    invitation.status = .expired
-    viewModel = OldTransactionDetailCellViewModel(
-      transaction: transaction, rates: rates,
-      primaryCurrency: .USD, deviceCountryCode: nil
-    )
+    let expiredConfig = dropBitAddressViewConfig(status: .expired, receiverAddress: nil)
+    sut.configure(with: expiredConfig)
 
-    // when
-    self.sut.load(with: viewModel)
-
-    // then
     XCTAssertTrue(self.sut.addressContainerView.isHidden, "addressContainerView should be hidden")
     XCTAssertTrue(self.sut.addressStatusLabel.isHidden, "addressStatusLabel should be hidden")
-    XCTAssertEqual(self.sut.addressTextButton.title(for: .normal), expectedAddress, "addressTextButton title should equal destination address")
+    XCTAssertEqual(self.sut.addressTextButton.title(for: .normal), nil, "addressTextButton title should be nil")
   }
-*/
+
 }

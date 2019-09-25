@@ -49,14 +49,6 @@ extension OldTransactionDetailCellViewModel {
     return transaction?.txidIsActualTxid ?? false
   }
 
-  var addressButtonIsActive: Bool {
-    if addressStatusLabelString == nil, let receiverAddress = receiverAddress, receiverAddress.isValidBitcoinAddress() {
-      return true
-    }
-
-    return false
-  }
-
   var imageForTransactionDirection: UIImage? {
     if transactionIsInvalidated {
       return UIImage(named: "invalidated40")
@@ -146,16 +138,6 @@ extension OldTransactionDetailCellViewModel {
       } else {
         return NSAttributedString(string: "–")
       }
-    }
-  }
-
-  /// Label not visible if address exists
-  var addressStatusLabelString: String? {
-    guard let status = invitationStatus else { return nil }
-    switch status {
-    case .requestSent:  return "Waiting on Bitcoin address"
-    case .addressSent:  return transaction?.invitation?.addressProvidedToSender ?? "Waiting for sender approval"
-    default:            return nil
     }
   }
 

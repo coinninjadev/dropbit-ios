@@ -19,23 +19,19 @@ class TransactionHistoryDetailCellAddressView: UIView {
       if isHidden {
         allViews?.forEach { $0.isHidden = true }
       } else {
-        viewModel.map { load(with: $0) }
+        config.map { configure(with: $0) }
       }
     }
   }
 
   @IBOutlet var addressContainerView: UIView!
-  @IBOutlet var addressTextButton: UIButton! {
-    didSet {
-      addressTextButton.titleLabel?.font = .medium(13)
-    }
-  }
+  @IBOutlet var addressTextButton: UIButton!
   @IBOutlet var addressImageButton: UIButton!
   @IBOutlet var addressStatusLabel: TransactionDetailStatusLabel!
   @IBOutlet var allViews: [UIView]!
 
   weak var selectionDelegate: TransactionHistoryDetailAddressViewDelegate?
-  var viewModel: OldTransactionDetailCellViewModel?
+  var config: AddressViewConfigurable!
 
   required init?(coder aDecoder: NSCoder) {
     super.init(coder: aDecoder)
@@ -51,6 +47,9 @@ class TransactionHistoryDetailCellAddressView: UIView {
     super.awakeFromNib()
     backgroundColor = .clear
     addressStatusLabel.isHidden = true
+    addressTextButton.titleLabel?.font = .medium(13)
+    addressTextButton.setTitleColor(.lightBlueTint, for: .normal)
+    addressTextButton.setTitleColor(.darkGrayText, for: .disabled)
   }
 
   @IBAction func addressButtonTapped(_ sender: UIButton) {
@@ -60,35 +59,19 @@ class TransactionHistoryDetailCellAddressView: UIView {
     selectionDelegate?.addressViewDidSelectAddress(self)
   }
 
-  func load(with viewModel: OldTransactionDetailCellViewModel) {
-    self.viewModel = viewModel
-    if let invitationStatus = viewModel.invitationStatus {
-      switch invitationStatus {
-      case .completed, .addressSent:
-        addressContainerView.isHidden = false
-        addressStatusLabel.isHidden = true
-      case .canceled, .expired:
-        addressContainerView.isHidden = true
-        addressStatusLabel.isHidden = true
-      default:
-        addressContainerView.isHidden = true
-        addressStatusLabel.isHidden = false
-      }
-    } else {
-      let shouldHideAddressButton = !(viewModel.addressButtonIsActive)
-      addressContainerView.isHidden = shouldHideAddressButton
-      addressStatusLabel.isHidden = !shouldHideAddressButton
-    }
+  func configure(with config: AddressViewConfigurable) {
+    self.config = config
 
-    addressStatusLabel.text = viewModel.addressStatusLabelString
+    addressStatusLabel.text = config.addressStatusLabelString
 
-    // this should be populated with the address also, just previously hidden, now visible
-    addressTextButton.setTitle(viewModel.receiverAddress, for: .normal)
-    addressTextButton.setTitleColor(.lightBlueTint, for: .normal)
-    addressTextButton.setTitleColor(.darkGrayText, for: .disabled)
+    addressTextButton.setTitle(config.receiverAddress, for: .normal)
 
-    addressTextButton.isEnabled = !viewModel.broadcastFailed
-    addressImageButton.isHidden = (viewModel.broadcastFailed || !viewModel.addressButtonIsActive)
+    let hideViews = config.shouldHideAddressViews
+    addressStatusLabel.isHidden = hideViews.statusLabel
+    addressContainerView.isHidden = hideViews.containerView
+
+    addressTextButton.isEnabled = config.shouldEnableAddressTextButton
+    addressImageButton.isHidden = config.shouldHideAddressImageButton
     layoutIfNeeded()
   }
 
