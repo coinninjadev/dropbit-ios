@@ -703,6 +703,7 @@
 		B52D4524208E5ECA00A56A5C /* ExchangeRateUpdatable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52D4523208E5ECA00A56A5C /* ExchangeRateUpdatable.swift */; };
 		B52E0BD2233BBE7300BA1B0C /* TransactionHistoryDetailCellAddressViewConfigurable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52E0BD1233BBE7300BA1B0C /* TransactionHistoryDetailCellAddressViewConfigurable.swift */; };
 		B52E0BD4233BD07300BA1B0C /* MockAddressViewConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52E0BD3233BD07300BA1B0C /* MockAddressViewConfig.swift */; };
+		B52E0BD6233BEE6500BA1B0C /* TransactionDetailCellDisplayable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52E0BD5233BEE6500BA1B0C /* TransactionDetailCellDisplayable.swift */; };
 		B52E1DBC2302F50800AA652D /* CKMLNLedgerEntry+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52E1DB62302F50700AA652D /* CKMLNLedgerEntry+CoreDataClass.swift */; };
 		B52E1DBD2302F50800AA652D /* CKMLNInvoice+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52E1DB72302F50700AA652D /* CKMLNInvoice+CoreDataClass.swift */; };
 		B52E1DBE2302F50800AA652D /* CKMLNInvoice+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52E1DB82302F50700AA652D /* CKMLNInvoice+CoreDataProperties.swift */; };
@@ -955,7 +956,7 @@
 		B5B53C9C2107CAA5006C7B67 /* TransactionDetailsInfoContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5B53C9B2107CAA5006C7B67 /* TransactionDetailsInfoContainer.swift */; };
 		B5B53C9E2107CD1C006C7B67 /* TransactionDetailMessageLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5B53C9D2107CD1C006C7B67 /* TransactionDetailMessageLabel.swift */; };
 		B5B9132921419F84003A24E9 /* PhoneNumberKit+AreaCodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5B9132821419F84003A24E9 /* PhoneNumberKit+AreaCodes.swift */; };
-		B5BA3A7722F22B0E001E41A7 /* TransactionCellProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5BA3A7622F22B0E001E41A7 /* TransactionCellProtocols.swift */; };
+		B5BA3A7722F22B0E001E41A7 /* TransactionSummaryCellDisplayable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5BA3A7622F22B0E001E41A7 /* TransactionSummaryCellDisplayable.swift */; };
 		B5BA5247223AA38E001165FC /* CKMTransaction+FetchRequests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5BA5246223AA38E001165FC /* CKMTransaction+FetchRequests.swift */; };
 		B5BA825B232EF940007064DB /* TransactionHistoryDetailsViewController+CollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5BA825A232EF940007064DB /* TransactionHistoryDetailsViewController+CollectionView.swift */; };
 		B5C2E02B20BC721E00F21928 /* WalletAddressResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5C2E02A20BC721E00F21928 /* WalletAddressResponse.swift */; };
@@ -1756,6 +1757,7 @@
 		B52D4523208E5ECA00A56A5C /* ExchangeRateUpdatable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExchangeRateUpdatable.swift; sourceTree = "<group>"; };
 		B52E0BD1233BBE7300BA1B0C /* TransactionHistoryDetailCellAddressViewConfigurable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionHistoryDetailCellAddressViewConfigurable.swift; sourceTree = "<group>"; };
 		B52E0BD3233BD07300BA1B0C /* MockAddressViewConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockAddressViewConfig.swift; sourceTree = "<group>"; };
+		B52E0BD5233BEE6500BA1B0C /* TransactionDetailCellDisplayable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDetailCellDisplayable.swift; sourceTree = "<group>"; };
 		B52E1DB62302F50700AA652D /* CKMLNLedgerEntry+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CKMLNLedgerEntry+CoreDataClass.swift"; sourceTree = "<group>"; };
 		B52E1DB72302F50700AA652D /* CKMLNInvoice+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CKMLNInvoice+CoreDataClass.swift"; sourceTree = "<group>"; };
 		B52E1DB82302F50700AA652D /* CKMLNInvoice+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CKMLNInvoice+CoreDataProperties.swift"; sourceTree = "<group>"; };
@@ -2003,7 +2005,7 @@
 		B5B53C9B2107CAA5006C7B67 /* TransactionDetailsInfoContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TransactionDetailsInfoContainer.swift; path = CoinKeeper/Views/TransactionDetailsInfoContainer.swift; sourceTree = SOURCE_ROOT; };
 		B5B53C9D2107CD1C006C7B67 /* TransactionDetailMessageLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDetailMessageLabel.swift; sourceTree = "<group>"; };
 		B5B9132821419F84003A24E9 /* PhoneNumberKit+AreaCodes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PhoneNumberKit+AreaCodes.swift"; sourceTree = "<group>"; };
-		B5BA3A7622F22B0E001E41A7 /* TransactionCellProtocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionCellProtocols.swift; sourceTree = "<group>"; };
+		B5BA3A7622F22B0E001E41A7 /* TransactionSummaryCellDisplayable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionSummaryCellDisplayable.swift; sourceTree = "<group>"; };
 		B5BA5246223AA38E001165FC /* CKMTransaction+FetchRequests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CKMTransaction+FetchRequests.swift"; sourceTree = "<group>"; };
 		B5BA825A232EF940007064DB /* TransactionHistoryDetailsViewController+CollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TransactionHistoryDetailsViewController+CollectionView.swift"; sourceTree = "<group>"; };
 		B5C2E02A20BC721E00F21928 /* WalletAddressResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletAddressResponse.swift; sourceTree = "<group>"; };
@@ -3033,7 +3035,8 @@
 		3BFA71952040610200774D59 /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
-				B5BA3A7622F22B0E001E41A7 /* TransactionCellProtocols.swift */,
+				B5BA3A7622F22B0E001E41A7 /* TransactionSummaryCellDisplayable.swift */,
+				B52E0BD5233BEE6500BA1B0C /* TransactionDetailCellDisplayable.swift */,
 				B5DB5341232E8C1C0088C8A1 /* TransactionCellViewModelTypes.swift */,
 				B5437B552315B4D70002B77C /* TransactionHistoryViewModel.swift */,
 				B50E7B7E230C6A0400927C8B /* TransactionSummaryCellViewModel.swift */,
@@ -4448,6 +4451,7 @@
 				3B82692D203372AC009B11EC /* PinCreationViewController.swift in Sources */,
 				B59E2C8B22E7974000A75AFE /* WalletToggleTitleLabel.swift in Sources */,
 				B59729B5209B6A2B0012AD14 /* BalanceUpdateable.swift in Sources */,
+				B52E0BD6233BEE6500BA1B0C /* TransactionDetailCellDisplayable.swift in Sources */,
 				A29CE0C32098AD1500761B91 /* UINavigationController+TopViewController.swift in Sources */,
 				B5054148207D00270059C8F9 /* CKMAddress+CoreDataClass.swift in Sources */,
 				B56E15952167DAD0003B69D4 /* NetworkManager+TransactionRequestable.swift in Sources */,
@@ -4622,7 +4626,7 @@
 				3B287CB42100FB1A00A43E57 /* AppCoordinator+ConnectionManagerDelegate.swift in Sources */,
 				3B936AE12322CD4E0067CA97 /* LightningUpgradeCoordinator+LightningUpgradeCompleteViewControllerDelegate.swift in Sources */,
 				3B00C269220DC78B001FC46B /* DeviceEndpoint.generated.swift in Sources */,
-				B5BA3A7722F22B0E001E41A7 /* TransactionCellProtocols.swift in Sources */,
+				B5BA3A7722F22B0E001E41A7 /* TransactionSummaryCellDisplayable.swift in Sources */,
 				B5C5FEDB22BA834800287FF7 /* PersistenceBrokerTypes.swift in Sources */,
 				B5A98AE72241741F00DEF96F /* CKKeychain.swift in Sources */,
 				A2952F8222BD250100BDCE65 /* AppCoordinator+NewsViewControllerDelegate.swift in Sources */,
