@@ -95,8 +95,15 @@ class TransactionHistoryDetailValidCellTests: XCTestCase {
   }
 
   func testQuestionMarkButtonTellsDelegate() {
+    let twitter = MockDetailCellVM.mockTwitterConfig()
+    let counterparty = TransactionCellCounterpartyConfig(twitterConfig: twitter)
+    let viewModel = MockDetailCellVM.testDetailInstance(walletTxType: .onChain, direction: .out, counterpartyConfig: counterparty)
+    sut.configure(with: viewModel, delegate: mockDelegate)
+    let expectedTooltip = DetailCellTooltip.dropBit
+
     sut.questionMarkButton.sendActions(for: .touchUpInside)
     XCTAssertTrue(mockDelegate.tappedQuestionMark)
+    XCTAssertEqual(mockDelegate.receivedTooltip, expectedTooltip)
   }
 
   func testAddMemoButtonTellsDelegate() {
@@ -520,6 +527,18 @@ class TransactionHistoryDetailValidCellTests: XCTestCase {
     let buttonTag = sut.bottomButton.tag
     let actualAction = TransactionDetailAction(rawValue: buttonTag)
     XCTAssertEqual(actualAction, expectedAction)
+  }
+
+  // MARK: Tooltip
+  func testTooltipTypeSetsButtonTag() {
+    let twitter = MockDetailCellVM.mockTwitterConfig()
+    let counterparty = TransactionCellCounterpartyConfig(twitterConfig: twitter)
+    let viewModel = MockDetailCellVM.testDetailInstance(walletTxType: .onChain, direction: .out, counterpartyConfig: counterparty)
+    sut.configure(with: viewModel, delegate: mockDelegate)
+    let expectedTooltip = DetailCellTooltip.dropBit
+    let buttonTag = sut.questionMarkButton.tag
+    let actualTooltip = DetailCellTooltip(rawValue: buttonTag)
+    XCTAssertEqual(actualTooltip, expectedTooltip)
   }
 
   /*

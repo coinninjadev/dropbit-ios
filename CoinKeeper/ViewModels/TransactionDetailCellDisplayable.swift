@@ -23,6 +23,7 @@ protocol TransactionDetailCellDisplayable: TransactionSummaryCellDisplayable {
   var progressConfig: ProgressBarConfig? { get }
   var addressViewConfig: AddressViewConfig { get }
   var actionButtonConfig: DetailCellActionButtonConfig? { get }
+  var tooltipType: DetailCellTooltip { get }
 
 }
 
@@ -285,6 +286,10 @@ extension TransactionDetailCellViewModelType {
 
   var displayDate: String {
     return CKDateFormatter.displayFull.string(from: date)
+  }
+
+  var tooltipType: DetailCellTooltip {
+    return isDropBit ? .dropBit : .regularOnChain
   }
 
   var actionButtonConfig: DetailCellActionButtonConfig? {

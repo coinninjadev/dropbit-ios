@@ -12,8 +12,10 @@ import PromiseKit
 
 class MockTransactionHistoryDetailCellDelegate: TransactionHistoryDetailCellDelegate {
   var tappedQuestionMark = false
-  func didTapQuestionMarkButton(detailCell: TransactionHistoryDetailBaseCell) {
+  var receivedTooltip: DetailCellTooltip?
+  func didTapQuestionMarkButton(detailCell: TransactionHistoryDetailBaseCell, tooltip: DetailCellTooltip) {
     tappedQuestionMark = true
+    receivedTooltip = tooltip
   }
 
   var tappedClose = false

@@ -11,7 +11,6 @@ import JKSteppedProgressBar
 
 class TransactionHistoryDetailValidCell: TransactionHistoryDetailBaseCell {
 
-  // MARK: outlets
   @IBOutlet var progressBarWidthConstraint: NSLayoutConstraint!
   @IBOutlet var progressView: SteppedProgressBar!
   @IBOutlet var addressView: TransactionHistoryDetailCellAddressView!
@@ -30,9 +29,10 @@ class TransactionHistoryDetailValidCell: TransactionHistoryDetailBaseCell {
     progressView.stepFont = .semiBold(11)
   }
 
-  // MARK: lifecycle
   override func configure(with values: TransactionDetailCellDisplayable, delegate: TransactionHistoryDetailCellDelegate) {
     super.configure(with: values, delegate: delegate)
+    questionMarkButton.tag = values.tooltipType.buttonTag
+
     messageLabel.text = values.messageText
     messageContainer.isHidden = values.shouldHideMessageLabel
     messageLabel.isHidden = values.shouldHideMessageLabel

@@ -100,7 +100,9 @@ final class TransactionHistoryDetailsViewController: PresentableViewController, 
 
 extension TransactionHistoryDetailsViewController: TransactionHistoryDetailCellDelegate {
 
-  func didTapQuestionMarkButton(detailCell: TransactionHistoryDetailBaseCell) {
+  func didTapQuestionMarkButton(detailCell: TransactionHistoryDetailBaseCell, tooltip: DetailCellTooltip) {
+//    CoinNinjaUrlFactory.buildUrl(for: .dropbitTransactionTooltip)
+//    CoinNinjaUrlFactory.buildUrl(for: .regularTransactionTooltip)
 //    delegate.openURL(url, completionHandler: nil)
   }
 
