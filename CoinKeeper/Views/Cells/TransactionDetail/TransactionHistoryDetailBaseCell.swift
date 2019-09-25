@@ -14,7 +14,7 @@ protocol TransactionHistoryDetailCellDelegate: class {
   func didTapClose(detailCell: TransactionHistoryDetailBaseCell)
   func didTapTwitterShare(detailCell: TransactionHistoryDetailBaseCell)
   func didTapAddress(detailCell: TransactionHistoryDetailBaseCell)
-  func didTapBottomButton(detailCell: TransactionHistoryDetailBaseCell)
+  func didTapBottomButton(detailCell: TransactionHistoryDetailBaseCell, action: TransactionDetailAction)
   func didTapAddMemoButton(detailCell: TransactionHistoryDetailBaseCell)
 //  func shouldSaveMemo(for transaction: CKMTransaction) -> Promise<Void>
 }

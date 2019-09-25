@@ -25,7 +25,7 @@ class OldTransactionDetailCellViewModel: OldTransactionSummaryCellViewModel {
     deviceCountryCode: Int?
     ) {
     let fee = transaction.networkFee
-    self.isCancellable = transaction.isCancellable
+    self.isCancellable = false //transaction.isCancellable
     self.networkFee = NSDecimalNumber(integerAmount: fee, currency: .BTC)
     self.memoWasShared = transaction.sharedPayload?.sharingDesired ?? false
 
@@ -45,27 +45,11 @@ private struct TextAttributes {
 
 extension OldTransactionDetailCellViewModel {
 
-  var isShareable: Bool {
-    return transaction?.txidIsActualTxid ?? false
-  }
-
   var imageForTransactionDirection: UIImage? {
     if transactionIsInvalidated {
       return UIImage(named: "invalidated40")
     } else {
       return isIncoming ? UIImage(named: "incoming40") : UIImage(named: "outgoing40")
-    }
-  }
-
-  var bottomButtonAction: TransactionDetailAction? {
-    guard !broadcastFailed else { return nil }
-
-    if isCancellable {
-      return .cancelInvitation
-    } else if isShareable {
-      return .seeDetails
-    } else {
-      return nil
     }
   }
 
@@ -357,12 +341,6 @@ extension CKMTransaction {
   var txidIsActualTxid: Bool {
     let isInviteOrFailed = txid.starts(with: CKMTransaction.invitationTxidPrefix) || txid.starts(with: CKMTransaction.failedTxidPrefix)
     return !isInviteOrFailed
-  }
-
-  var isCancellable: Bool {
-    guard let invite = invitation else { return false }
-    let cancellableStatuses: [InvitationStatus] = [.notSent, .requestSent, .addressSent]
-    return (!isIncoming && cancellableStatuses.contains(invite.status))
   }
 
 }

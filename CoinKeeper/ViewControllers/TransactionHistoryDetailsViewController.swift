@@ -119,7 +119,7 @@ extension TransactionHistoryDetailsViewController: TransactionHistoryDetailCellD
 //    delegate.openURL(addressURL, completionHandler: nil)
   }
 
-  func didTapBottomButton(detailCell: TransactionHistoryDetailBaseCell) {
+  func didTapBottomButton(detailCell: TransactionHistoryDetailBaseCell, action: TransactionDetailAction) {
 //    switch action {
 //    case .seeDetails:
 //      guard let viewModel = detailCell.viewModel else { return }

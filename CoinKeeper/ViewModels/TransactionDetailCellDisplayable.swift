@@ -289,17 +289,7 @@ extension TransactionDetailCellViewModelType {
 
   var actionButtonConfig: DetailCellActionButtonConfig? {
     guard let action = bottomButtonAction else { return nil }
-    switch action {
-    case .cancelInvitation:
-      return DetailCellActionButtonConfig(title: "CANCEL", backgroundColor: .darkPeach, action: action)
-    case .seeDetails:
-      let buttonColor: UIColor
-      switch walletTxType {
-      case .lightning:  buttonColor = .lightningBlue
-      case .onChain:    buttonColor = .bitcoinOrange
-      }
-      return DetailCellActionButtonConfig(title: "DETAILS", backgroundColor: buttonColor, action: action)
-    }
+    return DetailCellActionButtonConfig(walletTxType: walletTxType, action: action)
   }
 
   private var bottomButtonAction: TransactionDetailAction? {

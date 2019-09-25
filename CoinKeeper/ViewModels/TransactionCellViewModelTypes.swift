@@ -98,9 +98,41 @@ struct LightningInvoiceDisplayDetails {
   }
 }
 
+enum TransactionDetailAction: Int {
+  case seeDetails = 1 //UIButton.tag defaults to 0
+  case cancelInvitation
+
+  var buttonTitle: String {
+    switch self {
+    case .cancelInvitation:  return "CANCEL DROPBIT"
+    case .seeDetails:  return "DETAILS"
+    }
+  }
+}
+
 struct DetailCellActionButtonConfig {
-  let title: String
-  let backgroundColor: UIColor
+  let walletTxType: WalletTransactionType
+  let action: TransactionDetailAction
+
+  var title: String {
+    return action.buttonTitle
+  }
+
+  var backgroundColor: UIColor {
+    switch action {
+    case .cancelInvitation:
+      return .darkPeach
+    case .seeDetails:
+      switch walletTxType {
+      case .lightning:  return .lightningBlue
+      case .onChain:    return .bitcoinOrange
+      }
+    }
+  }
+
+  var buttonTag: Int {
+    return action.rawValue
+  }
 }
 
 struct TransactionCellCounterpartyConfig {

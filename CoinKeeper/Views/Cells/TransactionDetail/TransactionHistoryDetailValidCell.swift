@@ -9,18 +9,6 @@
 import UIKit
 import JKSteppedProgressBar
 
-enum TransactionDetailAction {
-  case seeDetails
-  case cancelInvitation
-
-  var buttonTitle: String? {
-    switch self {
-    case .cancelInvitation:  return "CANCEL DROPBIT"
-    case .seeDetails:  return "MORE DETAILS"
-    }
-  }
-}
-
 class TransactionHistoryDetailValidCell: TransactionHistoryDetailBaseCell {
 
   // MARK: outlets
@@ -63,32 +51,21 @@ class TransactionHistoryDetailValidCell: TransactionHistoryDetailBaseCell {
     addressView.selectionDelegate = self
     addressView.configure(with: values.addressViewConfig)
 
-//    configureBottomButton(with: viewModel)
+    bottomButton.isHidden = values.shouldHideBottomButton
+    if let config = values.actionButtonConfig {
+      bottomButton.setAttributedTitle(nil, for: .normal)
+      bottomButton.setTitle(config.title, for: .normal)
+      bottomButton.backgroundColor = config.backgroundColor
+      bottomButton.tag = config.buttonTag
+    }
 
     bottomBufferView.isHidden = (UIScreen.main.relativeSize == .short)
     layoutIfNeeded()
   }
 
-  // MARK: actions
   @IBAction func didTapBottomButton(_ sender: UIButton) {
-    delegate?.didTapBottomButton(detailCell: self)
-  }
-
-  // MARK: private methods
-  private func configureBottomButton(with vm: OldTransactionDetailCellViewModel) {
-    guard let action = vm.bottomButtonAction else {
-      bottomButton.isHidden = true
-      return
-    }
-    bottomButton.isHidden = false
-    bottomButton.setTitle(action.buttonTitle, for: .normal)
-
-    switch action {
-    case .cancelInvitation:
-      bottomButton.backgroundColor = .darkPeach
-    case .seeDetails:
-      bottomButton.backgroundColor = .darkBlueBackground
-    }
+    guard let action = TransactionDetailAction(rawValue: sender.tag) else { return }
+    delegate?.didTapBottomButton(detailCell: self, action: action)
   }
 
 }

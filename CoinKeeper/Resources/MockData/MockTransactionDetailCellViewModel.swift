@@ -17,6 +17,7 @@ class MockTransactionDetailCellViewModel: MockTransactionSummaryCellViewModel, T
   var invitationStatus: InvitationStatus?
   var onChainConfirmations: Int?
   var addressProvidedToSender: String?
+  var paymentIdIsValid: Bool
 
   init(walletTxType: WalletTransactionType,
        direction: TransactionDirection,
@@ -26,6 +27,7 @@ class MockTransactionDetailCellViewModel: MockTransactionSummaryCellViewModel, T
        receiverAddress: String?,
        addressProvidedToSender: String?,
        lightningInvoice: String?,
+       paymentIdIsValid: Bool,
        selectedCurrency: SelectedCurrency,
        amountDetails: TransactionAmountDetails,
        counterpartyConfig: TransactionCellCounterpartyConfig?,
@@ -38,6 +40,7 @@ class MockTransactionDetailCellViewModel: MockTransactionSummaryCellViewModel, T
     self.invitationStatus = invitationStatus
     self.onChainConfirmations = onChainConfirmations
     self.addressProvidedToSender = addressProvidedToSender
+    self.paymentIdIsValid = paymentIdIsValid
 
     super.init(walletTxType: walletTxType, direction: direction, status: status,
                isLightningTransfer: isLightningTransfer, receiverAddress: receiverAddress,
@@ -61,14 +64,25 @@ class MockTransactionDetailCellViewModel: MockTransactionSummaryCellViewModel, T
                                  memoIsShared: Bool = false,
                                  date: Date = Date()) -> MockTransactionDetailCellViewModel {
 
+    let idIsValid = paymentIdIsValid(basedOn: invitationStatus)
     let amtDetails = amountDetails ?? MockTransactionSummaryCellViewModel.testAmountDetails(sats: 49500)
     return MockTransactionDetailCellViewModel(
       walletTxType: walletTxType, direction: direction,
       status: status, onChainConfirmations: onChainConfirmations, isLightningTransfer: isLightningTransfer,
-      receiverAddress: receiverAddress, addressProvidedToSender: addressProvidedToSender, lightningInvoice: lightningInvoice,
+      receiverAddress: receiverAddress, addressProvidedToSender: addressProvidedToSender,
+      lightningInvoice: lightningInvoice, paymentIdIsValid: idIsValid,
       selectedCurrency: selectedCurrency, amountDetails: amtDetails,
       counterpartyConfig: counterpartyConfig, invitationStatus: invitationStatus,
       memo: memo, memoIsShared: memoIsShared, date: date)
+  }
+
+  /// Use this proxy function to prevent test from entering conflicting information for invitationStatus and paymentIdIsValid
+  static func paymentIdIsValid(basedOn status: InvitationStatus?) -> Bool {
+    guard let status = status else { return true }
+    switch status {
+    case .completed:  return true
+    default:          return false
+    }
   }
 
 }

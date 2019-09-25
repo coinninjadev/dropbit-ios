@@ -105,8 +105,12 @@ class TransactionHistoryDetailValidCellTests: XCTestCase {
   }
 
   func testBottomButtonTellsDelegate() {
+    let viewModel = MockDetailCellVM.testDetailInstance(direction: .out, invitationStatus: .requestSent)
+    sut.configure(with: viewModel, delegate: mockDelegate)
+    let expectedAction = TransactionDetailAction.cancelInvitation
     sut.didTapBottomButton(sut.bottomButton)
     XCTAssertTrue(mockDelegate.tappedBottomButton)
+    XCTAssertEqual(mockDelegate.receivedAction, expectedAction)
   }
 
   // MARK: - Base Cell Configuration
@@ -484,6 +488,38 @@ class TransactionHistoryDetailValidCellTests: XCTestCase {
     let viewModel = MockDetailCellVM.testDetailInstance()
     sut.configure(with: viewModel, delegate: mockDelegate)
     XCTAssertNotNil(sut.addressView.config)
+  }
+
+  // MARK: Bottom button
+  func testButtonTitleIsSet() {
+    let viewModel = MockDetailCellVM.testDetailInstance(direction: .out, invitationStatus: .requestSent)
+    sut.configure(with: viewModel, delegate: mockDelegate)
+    let expectedTitle = TransactionDetailAction.cancelInvitation.buttonTitle
+    XCTAssertEqual(sut.bottomButton.titleLabel?.text, expectedTitle)
+    XCTAssertFalse(sut.bottomButton.isHidden)
+  }
+
+  func testButtonColorIsSet() {
+    let viewModel = MockDetailCellVM.testDetailInstance(direction: .out, invitationStatus: .requestSent)
+    sut.configure(with: viewModel, delegate: mockDelegate)
+    let expectedColor = UIColor.darkPeach
+    XCTAssertEqual(sut.bottomButton.backgroundColor, expectedColor)
+  }
+
+  func testCanceledDropBitHidesButton() {
+    let viewModel = MockDetailCellVM.testDetailInstance(direction: .out,
+                                                        invitationStatus: .canceled)
+    sut.configure(with: viewModel, delegate: mockDelegate)
+    XCTAssertTrue(sut.bottomButton.isHidden)
+  }
+
+  func testCancelActionSetsButtonTag() {
+    let viewModel = MockDetailCellVM.testDetailInstance(direction: .out, invitationStatus: .requestSent)
+    sut.configure(with: viewModel, delegate: mockDelegate)
+    let expectedAction = TransactionDetailAction.cancelInvitation
+    let buttonTag = sut.bottomButton.tag
+    let actualAction = TransactionDetailAction(rawValue: buttonTag)
+    XCTAssertEqual(actualAction, expectedAction)
   }
 
   /*
