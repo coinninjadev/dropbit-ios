@@ -154,38 +154,6 @@ extension OldTransactionDetailCellViewModel {
     }
   }
 
-  var currentSelectedTab: Int {
-    var index: Int = 0
-    if let invitationStatus = invitationStatus {
-      if confirmations >= 1 {
-        index = 5
-      } else {
-        switch invitationStatus {
-        case .completed:
-          if isTemporaryTransaction {
-            index = 3
-          } else {
-            index = 4
-          }
-        case .addressSent:
-          index = 2
-        default:
-          index = 1
-        }
-      }
-    } else {
-      if confirmations >= 1 {
-        index = 3
-      } else if isTemporaryTransaction {
-        index = 1
-      } else {
-        index = 2
-      }
-    }
-
-    return index
-  }
-
   /// Label not visible if address exists
   var addressStatusLabelString: String? {
     guard let status = invitationStatus else { return nil }

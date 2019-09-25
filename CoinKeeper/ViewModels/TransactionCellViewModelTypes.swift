@@ -73,7 +73,7 @@ struct ProgressBarConfig {
   let titles: [String]
   let stepTitles: [String]
   let width: CGFloat
-  let selectedTabIndex: Int
+  let selectedTab: Int
 }
 
 typealias Hours = Int

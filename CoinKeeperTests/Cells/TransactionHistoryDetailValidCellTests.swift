@@ -10,6 +10,8 @@ import XCTest
 @testable import DropBit
 
 //swiftlint:disable weak_delegate
+//swiftlint:disable file_length
+//swiftlint:disable type_body_length
 
 /// Includes tests for properties and functions defined in both the ValidCell and BaseCell.
 class TransactionHistoryDetailValidCellTests: XCTestCase {
@@ -412,6 +414,61 @@ class TransactionHistoryDetailValidCellTests: XCTestCase {
     sut.configure(with: viewModel, delegate: mockDelegate)
     XCTAssertFalse(sut.messageLabel.isHidden)
     XCTAssertFalse(sut.messageContainer.isHidden)
+  }
+
+  func testProgressView_hideIfLightning() {
+    let viewModel = MockDetailCellVM.testDetailInstance(walletTxType: .lightning)
+    sut.configure(with: viewModel, delegate: mockDelegate)
+    XCTAssertTrue(sut.progressView.isHidden)
+  }
+
+  func testProgressView_hideIfCompleted() {
+    let viewModel = MockDetailCellVM.testDetailInstance(walletTxType: .onChain, status: .completed)
+    sut.configure(with: viewModel, delegate: mockDelegate)
+    XCTAssertTrue(sut.progressView.isHidden)
+  }
+
+  func testProgressView_hideIfFailed() {
+    let viewModel = MockDetailCellVM.testDetailInstance(walletTxType: .onChain, status: .failed)
+    sut.configure(with: viewModel, delegate: mockDelegate)
+    XCTAssertTrue(sut.progressView.isHidden)
+  }
+
+  func testProgressView_hideIfExpired() {
+    let viewModel = MockDetailCellVM.testDetailInstance(walletTxType: .onChain, status: .expired)
+    sut.configure(with: viewModel, delegate: mockDelegate)
+    XCTAssertTrue(sut.progressView.isHidden)
+  }
+
+  func testProgressView_hideIfCanceled() {
+    let viewModel = MockDetailCellVM.testDetailInstance(walletTxType: .onChain, status: .canceled)
+    sut.configure(with: viewModel, delegate: mockDelegate)
+    XCTAssertTrue(sut.progressView.isHidden)
+  }
+
+  func testProgressView_pendingInvitationShows5Steps() {
+    let viewModel = MockDetailCellVM.testDetailInstance(walletTxType: .onChain, status: .pending, invitationStatus: .requestSent)
+    sut.configure(with: viewModel, delegate: mockDelegate)
+    XCTAssertFalse(sut.progressView.isHidden)
+    XCTAssertEqual(sut.progressView.stepTitles.count, 5)
+    XCTAssertEqual(sut.progressBarWidthConstraint.constant, 250)
+  }
+
+  func testProgressView_pendingOnChainSendShows3Steps() {
+    let viewModel = MockDetailCellVM.testDetailInstance(walletTxType: .onChain, status: .pending)
+    sut.configure(with: viewModel, delegate: mockDelegate)
+    XCTAssertFalse(sut.progressView.isHidden)
+    XCTAssertEqual(sut.progressView.stepTitles.count, 3)
+    XCTAssertEqual(sut.progressBarWidthConstraint.constant, 130)
+  }
+
+  func testProgressView_pendingTransactionSelectsSecondStep() {
+    let viewModel = MockDetailCellVM.testDetailInstance(walletTxType: .onChain, status: .pending, onChainConfirmations: 0)
+    sut.configure(with: viewModel, delegate: mockDelegate)
+    XCTAssertFalse(sut.progressView.isHidden)
+    XCTAssertEqual(sut.progressView.stepTitles.count, 3)
+    XCTAssertEqual(sut.progressView.currentTab, 2)
+    XCTAssertEqual(sut.progressBarWidthConstraint.constant, 130)
   }
 
   /*

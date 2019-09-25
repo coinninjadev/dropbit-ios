@@ -222,8 +222,8 @@ protocol TransactionDetailCellDisplayable: TransactionSummaryCellDisplayable {
   var canAddMemo: Bool { get }
   var displayDate: String { get }
   var messageText: String? { get }
+  var progressConfig: ProgressBarConfig? { get }
 
-//  var progressConfig: ProgressBarConfig? { get }
 //  var bitcoinAddress: String? { get }
 //  var actionButtonConfig: DetailCellActionButtonConfig? { get }
 }
@@ -234,6 +234,7 @@ extension TransactionDetailCellDisplayable {
   var shouldHideMemoView: Bool { return shouldHideMemoLabel }
   var shouldHideAddMemoButton: Bool { return !canAddMemo }
   var shouldHideMessageLabel: Bool { return messageText == nil }
+  var shouldHideProgressView: Bool { return progressConfig == nil }
 
 //  var transactionStatusDescription: String {
 //    guard !isTemporaryTransaction else { return "Broadcasting" }
@@ -289,6 +290,7 @@ protocol TransactionDetailCellViewModelType: TransactionSummaryCellViewModelType
   var date: Date { get }
   var memoIsShared: Bool { get }
   var invitationStatus: InvitationStatus? { get }
+  var onChainConfirmations: Int? { get }
 
 //  var action: TransactionDetailAction? { get }
 }
@@ -344,8 +346,73 @@ extension TransactionDetailCellViewModelType {
     return isValidTransaction ? .darkGrayText : .warningText
   }
 
+  var progressConfig: ProgressBarConfig? {
+    if walletTxType == .lightning { return nil }
+    if statusShouldHideProgressConfig { return nil }
+
+    if isInvitation {
+      return ProgressBarConfig(titles: ["", "", "", "", ""],
+                               stepTitles: ["1", "2", "3", "4", "✓"],
+                               width: 250,
+                               selectedTab: invitationProgressStep)
+    }
+    return ProgressBarConfig(titles: ["", "", ""],
+                             stepTitles: ["1", "2", "✓"],
+                             width: 130,
+                             selectedTab: genericTransactionProgressStep)
+  }
+
+  private var isConfirmed: Bool {
+    guard let confirmations = onChainConfirmations else { return false }
+    return confirmations >= 1
+  }
+
+  private var invitationProgressStep: Int {
+    guard let invitationStatus = invitationStatus else { return 0 }
+    if isConfirmed {
+      return 5
+    } else {
+      switch invitationStatus {
+      case .completed:
+        if status == .broadcasting {
+          return 3
+        } else {
+          return 4
+        }
+      case .addressSent:
+        return 2
+      default:
+        return 1
+      }
+    }
+  }
+
+  private var genericTransactionProgressStep: Int {
+    if isConfirmed {
+      return 3
+    } else if status == .broadcasting {
+      return 1
+    } else {
+      return 2
+    }
+  }
+
+  private var statusShouldHideProgressConfig: Bool {
+    switch status {
+    case .completed, .expired, .canceled, .failed:
+      return true
+    default:
+      return false
+    }
+  }
+
+  /// May be an invitation or a transaction between registered users
   private var isDropBit: Bool {
     return counterpartyConfig != nil
+  }
+
+  private var isInvitation: Bool {
+    return invitationStatus != nil
   }
 
   var twitterConfig: TransactionCellTwitterConfig? {

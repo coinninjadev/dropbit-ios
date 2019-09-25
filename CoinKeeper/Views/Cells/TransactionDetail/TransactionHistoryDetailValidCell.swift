@@ -33,6 +33,15 @@ class TransactionHistoryDetailValidCell: TransactionHistoryDetailBaseCell {
   @IBOutlet var messageContainerHeightConstraint: NSLayoutConstraint!
   @IBOutlet var bottomBufferView: UIView!
 
+  override func awakeFromNib() {
+    super.awakeFromNib()
+
+    progressView.activeColor = .successGreen
+    progressView.inactiveColor = .lightGrayText
+    progressView.inactiveTextColor = progressView.inactiveColor
+    progressView.stepFont = .semiBold(11)
+  }
+
   // MARK: lifecycle
   override func configure(with values: TransactionDetailCellDisplayable, delegate: TransactionHistoryDetailCellDelegate) {
     super.configure(with: values, delegate: delegate)
@@ -43,8 +52,14 @@ class TransactionHistoryDetailValidCell: TransactionHistoryDetailBaseCell {
     layoutIfNeeded()
     messageContainerHeightConstraint.constant = messageLabel.intrinsicContentSize.height + 20
 
-//    setupProgressBar(with: viewModel)
-//
+    progressView.isHidden = values.shouldHideProgressView
+    if let config = values.progressConfig {
+      progressView.titles = config.titles
+      progressView.stepTitles = config.stepTitles
+      progressView.currentTab = config.selectedTab
+      progressBarWidthConstraint.constant = config.width
+    }
+
 //    addressView.selectionDelegate = self
 //    addressView.load(with: viewModel)
 //
@@ -76,27 +91,6 @@ class TransactionHistoryDetailValidCell: TransactionHistoryDetailBaseCell {
     }
   }
 
-  private func setupProgressBar(with viewModel: OldTransactionDetailCellViewModel) {
-    progressView.activeColor = .successGreen
-    progressView.inactiveColor = .lightGrayText
-    progressView.inactiveTextColor = progressView.inactiveColor
-    progressView.stepFont = .semiBold(11)
-
-    let shouldHide: Bool
-    if viewModel.invitationStatus != nil {
-      progressView.titles = ["", "", "", "", ""]
-      progressView.stepTitles = ["1", "2", "3", "4", "✓"]
-      progressBarWidthConstraint.constant = 250
-    } else {
-      progressView.titles = ["", "", ""]
-      progressView.stepTitles = ["1", "2", "✓"]
-      progressBarWidthConstraint.constant = 130
-    }
-
-    shouldHide = viewModel.broadcastFailed
-    progressView.currentTab = viewModel.currentSelectedTab
-    progressView.isHidden = shouldHide
-  }
 }
 
 extension TransactionHistoryDetailValidCell: TransactionHistoryDetailAddressViewDelegate {

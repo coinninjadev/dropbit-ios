@@ -15,10 +15,12 @@ class MockTransactionDetailCellViewModel: MockTransactionSummaryCellViewModel, T
   var date: Date
   var memoIsShared: Bool
   var invitationStatus: InvitationStatus?
+  var onChainConfirmations: Int?
 
   init(walletTxType: WalletTransactionType,
        direction: TransactionDirection,
        status: TransactionStatus,
+       onChainConfirmations: Int?,
        isLightningTransfer: Bool,
        receiverAddress: String?,
        lightningInvoice: String?,
@@ -32,6 +34,7 @@ class MockTransactionDetailCellViewModel: MockTransactionSummaryCellViewModel, T
     self.date = date
     self.memoIsShared = memoIsShared
     self.invitationStatus = invitationStatus
+    self.onChainConfirmations = onChainConfirmations
 
     super.init(walletTxType: walletTxType, direction: direction, status: status,
                isLightningTransfer: isLightningTransfer, receiverAddress: receiverAddress,
@@ -42,6 +45,7 @@ class MockTransactionDetailCellViewModel: MockTransactionSummaryCellViewModel, T
   static func testDetailInstance(walletTxType: WalletTransactionType = .onChain,
                                  direction: TransactionDirection = .out,
                                  status: TransactionStatus = .completed,
+                                 onChainConfirmations: Int? = nil,
                                  isLightningTransfer: Bool = false,
                                  receiverAddress: String? = nil,
                                  lightningInvoice: String? = nil,
@@ -56,7 +60,7 @@ class MockTransactionDetailCellViewModel: MockTransactionSummaryCellViewModel, T
     let amtDetails = amountDetails ?? MockTransactionSummaryCellViewModel.testAmountDetails(sats: 49500)
     return MockTransactionDetailCellViewModel(
       walletTxType: walletTxType, direction: direction,
-      status: status, isLightningTransfer: isLightningTransfer,
+      status: status, onChainConfirmations: onChainConfirmations, isLightningTransfer: isLightningTransfer,
       receiverAddress: receiverAddress, lightningInvoice: lightningInvoice,
       selectedCurrency: selectedCurrency, amountDetails: amtDetails,
       counterpartyConfig: counterpartyConfig, invitationStatus: invitationStatus,
