@@ -47,6 +47,7 @@ class NewsArticleCell: UITableViewCell {
     case .coinninja: return UIImage(imageLiteralResourceName: "coinninjaIcon")
     case .coinsquare: return UIImage(imageLiteralResourceName: "coinsquareIcon")
     case .theblock: return UIImage(imageLiteralResourceName: "theBlockIcon")
+    case .bitcoinmagazine: return UIImage(imageLiteralResourceName: "bitcoinMagazineIcon")
     }
   }
 
