@@ -319,10 +319,14 @@ extension SendPaymentViewController {
     viewModel.sharedMemoAllowed = sharedMemoAllowed
 
     setPaymentRecipient(nil)
+    setupStyle()
+    resetPaymentAmount()
+    updateViewWithModel()
+  }
+
+  func resetPaymentAmount() {
     viewModel.sendMaxTransactionData = nil
     viewModel.fromAmount = 0
-    setupStyle()
-    updateViewWithModel()
   }
 
   func updateViewWithModel() {
@@ -555,13 +559,15 @@ extension SendPaymentViewController {
 extension SendPaymentViewController: SelectedValidContactDelegate {
 
   func update(withSelectedContact contact: ContactType) {
+    resetPaymentAmount()
     setPaymentRecipient(.contact(contact))
     updateViewWithModel()
-    editAmountView.isUserInteractionEnabled = true
   }
 
   func update(withSelectedTwitterUser twitterUser: TwitterUser) {
+    resetPaymentAmount()
     var contact = TwitterContact(twitterUser: twitterUser)
+    updateViewWithModel()
 
     let addressType = self.viewModel.walletTransactionType.addressType
     delegate.viewControllerDidRequestRegisteredAddress(self, ofType: addressType, forIdentity: twitterUser.idStr)
@@ -733,6 +739,7 @@ extension SendPaymentViewController {
 
   private func validatePayment(toTarget paymentTarget: String, matches type: CKRecipientType) throws {
     let recipient = try viewModel.recipientParser.findSingleRecipient(inText: paymentTarget, ofTypes: [type])
+    let ignoredValidation: CurrencyAmountValidationOptions = type != .phoneNumber ? viewModel.standardIgnoredOptions : []
 
     // This is still required here to pass along the local memo
     let sharedPayloadDTO = SharedPayloadDTO(addressPubKeyState: .none,
@@ -742,7 +749,8 @@ extension SendPaymentViewController {
                                             amountInfo: sharedAmountInfo())
 
     try CurrencyAmountValidator(balancesNetPending: delegate.balancesNetPending(),
-                                                    balanceToCheck: viewModel.walletTransactionType).validate(value:
+                                                    balanceToCheck: viewModel.walletTransactionType,
+                                                    ignoring: ignoredValidation).validate(value:
                                                       viewModel.generateCurrencyConverter())
 
     switch recipient {
