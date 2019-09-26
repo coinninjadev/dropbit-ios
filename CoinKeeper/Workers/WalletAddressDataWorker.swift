@@ -127,7 +127,7 @@ class WalletAddressDataWorker: WalletAddressDataWorkerType {
     return self.networkManager.getWalletAddressRequests(forSide: .received)
       .get(in: context) { self.persistenceManager.persistReceivedAddressRequests($0, in: context) }
       .get(in: context) { _ in self.linkFulfilledAddressRequestsWithTransaction(in: context)
-      }.asVoid()
+    }.asVoid()
   }
 
   func updateSentAddressRequests(in context: NSManagedObjectContext) -> Promise<Void> {
@@ -278,19 +278,32 @@ class WalletAddressDataWorker: WalletAddressDataWorkerType {
       updatableInvitations.forEach { invitation in
         guard let invitationTxid = invitation.txid else { return }
 
-        if let targetTransaction = CKMTransaction.find(byTxid: invitationTxid, in: context) {
-          log.debug("Found transaction matching the invitation.txid, will update relationship")
-          let placeholderTransaction = invitation.transaction
+        switch invitation.walletTxTypeCase {
+        case .onChain:
+          if let targetTransaction = CKMTransaction.find(byTxid: invitationTxid, in: context) {
+            log.debug("Found transaction matching the invitation.txid, will update relationship")
+            let placeholderTransaction = invitation.transaction
 
-          invitation.transaction = targetTransaction
+            invitation.transaction = targetTransaction
 
-          if let placeholder = placeholderTransaction {
-            context.delete(placeholder)
-            log.debug("Deleted placeholder transaction")
+            if let placeholder = placeholderTransaction {
+              context.delete(placeholder)
+              log.debug("Deleted placeholder transaction")
+            }
+          }
+        case .lightning:
+          if let targetWalletEntry = CKMLNLedgerEntry.find(with: invitationTxid, wallet: nil, in: context)?.walletEntry {
+            log.debug("Found ledger entry matching the invitation.txid, will update relationship")
+            let placeholderWalletEntry = invitation.walletEntry
+            invitation.walletEntry = targetWalletEntry
+
+            if let placeholder = placeholderWalletEntry {
+              context.delete(placeholder)
+              log.debug("Deleted placeholder transaction")
+            }
           }
         }
       }
-
     } catch {
       log.error(error, message: "Failed to fetch updatable invitations")
     }

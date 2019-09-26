@@ -23,6 +23,7 @@ struct AddressRequestUpdateTestObject: AddressRequestUpdateDisplayable {
   var fiatAmount: Int = 0
   var side: InvitationSide = .sender
   var status: InvitationStatus = .completed
+  var addressType: WalletAddressType = .btc
 }
 
 class AddressRequestUpdateDisplayableTests: XCTestCase {

@@ -156,10 +156,8 @@ class LightningAddressRequestPaymentWorker: AddressRequestPaymentWorker {
                                                                          in: context) }
       .then(in: context) { _ -> Promise<Void> in
         return self.completeWalletAddressRequestFulfillmentLocally(outgoingTransactionData: outgoingTxData, invitationId: responseId,
-                                                                   pendingInvitation: pendingInvitation, txData: nil, in: context)
-    }
+                                                                   pendingInvitation: pendingInvitation, txData: nil, in: context) }
   }
-
 }
 
 class OnChainAddressRequestPaymentWorker: AddressRequestPaymentWorker {

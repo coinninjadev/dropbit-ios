@@ -142,6 +142,40 @@ class WalletAddressDataWorkerTests: MockedPersistenceTestCase {
     XCTAssertTrue(actualTx.invitation == invitation, "the invitation should be linked to the actual transaction")
   }
 
+  func testLinkFulfilledAddressRequestsWithTransaction_lightningInvoice() {
+    let stack = InMemoryCoreDataStack(), placeholderWalletEntry = CKMWalletEntry(insertInto: stack.context)
+    let invoice = "ln45gwu435nbsiurbsieu5ngkjsdfhgskjerhggi3u4hgrgergsthsrths46"
+
+    let sampleResponse = WalletAddressRequestResponse(id: UUID().uuidString,
+                                                      createdAt: Date(),
+                                                      updatedAt: Date(),
+                                                      address: UUID().uuidString,
+                                                      addressPubkey: nil,
+                                                      addressType: "lightning",
+                                                      txid: invoice,
+                                                      metadata: nil,
+                                                      identityHash: nil,
+                                                      status: WalletAddressRequestStatus.completed.rawValue,
+                                                      deliveryId: nil,
+                                                      deliveryStatus: nil,
+                                                      walletId: nil)
+
+    let invitation = CKMInvitation(withAddressRequestResponse: sampleResponse,
+                                   side: .received,
+                                   insertInto: stack.context)
+    placeholderWalletEntry.invitation = invitation
+
+    let targetWalletEntry = CKMWalletEntry(insertInto: stack.context)
+    let ledgerEntry = CKMLNLedgerEntry(insertInto: stack.context)
+    ledgerEntry.id = invoice
+    targetWalletEntry.ledgerEntry = ledgerEntry
+
+    self.sut.linkFulfilledAddressRequestsWithTransaction(in: stack.context)
+
+    XCTAssertTrue(placeholderWalletEntry.isDeleted, "placeholder wallet entry should be deleted")
+    XCTAssertTrue(targetWalletEntry.invitation == invitation, "the invitation should be linked to the actual transaction")
+  }
+
   func testLinkFulfilledAddressRequestsWithTransaction_IgnoresUnmatchedInvitations() {
     let stack = InMemoryCoreDataStack()
 

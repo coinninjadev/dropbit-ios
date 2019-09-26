@@ -346,6 +346,10 @@ extension CKMInvitation: AddressRequestUpdateDisplayable {
     }
   }
 
+  var addressType: WalletAddressType {
+    return walletTxTypeCase == .onChain ? .btc : .lightning
+  }
+
 }
 
 extension CKMInvitation: DropBitReceiverPersistable {
