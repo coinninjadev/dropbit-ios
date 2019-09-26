@@ -150,10 +150,21 @@ class LightningAddressRequestPaymentWorker: AddressRequestPaymentWorker {
     let lightningInputs = LightningPaymentInputs(sats: satsToPay, invoice: invoice, sharedPayload: outgoingTxData.sharedPayloadDTO)
     return self.networkManager.payLightningPaymentRequest(invoice, sats: pendingInvitation.btcAmount)
       .get(in: context) { paymentResponse in
-        self.persistenceManager.brokers.lightning.persistPaymentResponse(paymentResponse,
+        return self.persistenceManager.brokers.lightning.persistPaymentResponse(paymentResponse,
                                                                          receiver: outgoingTxData.receiver,
                                                                          inputs: lightningInputs,
                                                                          in: context) }
+      .then(in: context) { response -> Promise<String> in
+        let identityFactory = SenderIdentityFactory(persistenceManager: self.persistenceManager)
+        let maybePostable = PayloadPostableLightningObject(inputs: lightningInputs, paymentResultId: response.result.cleanedId,
+                                                           sender: identityFactory., receiver: receiver)
+
+        if let postableObject = maybePostable {
+          return self.networkManager.postSharedPayloadIfAppropriate(withPostableObject: postableObject, walletManager: walletManager)
+        } else {
+          return Promise.value(response.result.cleanedId)
+        }
+    }
       .then(in: context) { _ -> Promise<Void> in
         return self.completeWalletAddressRequestFulfillmentLocally(outgoingTransactionData: outgoingTxData, invitationId: responseId,
                                                                    pendingInvitation: pendingInvitation, txData: nil, in: context) }
