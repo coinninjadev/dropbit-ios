@@ -174,7 +174,8 @@ extension TransactionSummaryCellViewModelType {
     let satsText = SatsFormatter().string(fromDecimal: converter.btcAmount) ?? ""
     let fiatText = FiatFormatter(currency: converter.fiatCurrency,
                                  withSymbol: true,
-                                 showNegativeSymbol: true).string(fromDecimal: signedFiatAmount) ?? ""
+                                 showNegativeSymbol: true,
+                                 negativeHasSpace: true).string(fromDecimal: signedFiatAmount) ?? ""
 
     let pillText: String = isValidTransaction ? fiatText : status.rawValue
 
@@ -184,7 +185,7 @@ extension TransactionSummaryCellViewModelType {
                                    pillIsAmount: isValidTransaction)
   }
 
-  private func signedAmount(for amount: NSDecimalNumber) -> NSDecimalNumber {
+  func signedAmount(for amount: NSDecimalNumber) -> NSDecimalNumber {
     guard !amount.isNegativeNumber else { return amount }
     switch direction {
     case .in:   return amount

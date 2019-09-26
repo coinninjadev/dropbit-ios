@@ -18,6 +18,7 @@ class MockTransactionDetailCellViewModel: MockTransactionSummaryCellViewModel, T
   var onChainConfirmations: Int?
   var addressProvidedToSender: String?
   var paymentIdIsValid: Bool
+  var exchangeRateWhenReceived: Double?
 
   init(walletTxType: WalletTransactionType,
        direction: TransactionDirection,
@@ -77,12 +78,16 @@ class MockTransactionDetailCellViewModel: MockTransactionSummaryCellViewModel, T
   }
 
   /// Use this proxy function to prevent test from entering conflicting information for invitationStatus and paymentIdIsValid
-  static func paymentIdIsValid(basedOn status: InvitationStatus?) -> Bool {
+  private static func paymentIdIsValid(basedOn status: InvitationStatus?) -> Bool {
     guard let status = status else { return true }
     switch status {
     case .completed:  return true
     default:          return false
     }
+  }
+
+  func exchangeRateWhenReceived(forCurrency currency: CurrencyCode) -> Double? {
+    return exchangeRateWhenReceived
   }
 
 }

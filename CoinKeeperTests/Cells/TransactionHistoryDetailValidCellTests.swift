@@ -354,6 +354,65 @@ class TransactionHistoryDetailValidCellTests: XCTestCase {
     XCTAssertEqual(sut.counterpartyLabel.text, counterparty.displayName)
   }
 
+  // MARK: Amount labels
+  func testPrimaryAmountShowsFiat() {
+    let amountDetails = MockDetailCellVM.testAmountDetails(cents: 1500)
+    let viewModel = MockDetailCellVM.testDetailInstance(walletTxType: .onChain, direction: .in, amountDetails: amountDetails)
+    let expectedText = "$15.00"
+    sut.configure(with: viewModel, delegate: mockDelegate)
+    XCTAssertEqual(sut.primaryAmountLabel.text, expectedText)
+  }
+
+  func testPrimaryAmountShowsNegativeWhenOutgoing() {
+    let amountDetails = MockDetailCellVM.testAmountDetails(cents: 1500)
+    let viewModel = MockDetailCellVM.testDetailInstance(walletTxType: .onChain, direction: .out, amountDetails: amountDetails)
+    let expectedText = "-$15.00"
+    sut.configure(with: viewModel, delegate: mockDelegate)
+    XCTAssertEqual(sut.primaryAmountLabel.text, expectedText)
+  }
+
+  func testSecondaryAmountShowsBitcoinOnChain() {
+    let amountDetails = MockDetailCellVM.testAmountDetails(sats: 875_000)
+    let viewModel = MockDetailCellVM.testDetailInstance(walletTxType: .onChain, direction: .out,
+                                                        amountDetails: amountDetails)
+    sut.configure(with: viewModel, delegate: mockDelegate)
+    XCTAssertTrue(viewModel.detailAmountLabels.secondaryAttributedText.hasImageAttachment())
+    XCTAssertTrue(sut.secondaryAmountLabel.attributedText?.hasImageAttachment() ?? false)
+  }
+
+  func testSecondaryAmountShowsSatsForLightning() {
+    let amountDetails = MockDetailCellVM.testAmountDetails(sats: 875_000)
+    let viewModel = MockDetailCellVM.testDetailInstance(walletTxType: .lightning, direction: .out,
+                                                        amountDetails: amountDetails)
+    sut.configure(with: viewModel, delegate: mockDelegate)
+    let expectedText = "875,000 sats"
+    let actualText = sut.secondaryAmountLabel.attributedText?.string
+    XCTAssertFalse(viewModel.detailAmountLabels.secondaryAttributedText.hasImageAttachment())
+    XCTAssertFalse(sut.secondaryAmountLabel.attributedText?.hasImageAttachment() ?? false)
+    XCTAssertEqual(actualText, expectedText)
+  }
+
+  func testHistoricalIsHiddenWhenAmountIsNil() {
+    let amountDetails = TransactionAmountDetails(btcAmount: .zero, fiatCurrency: .USD, exchangeRates: MockDetailCellVM.testRates,
+                                                 fiatWhenInvited: nil, fiatWhenTransacted: nil)
+    let viewModel = MockDetailCellVM.testDetailInstance(amountDetails: amountDetails)
+    sut.configure(with: viewModel, delegate: mockDelegate)
+    XCTAssertTrue(sut.historicalValuesLabel.isHidden)
+  }
+
+  func testHistoricalIsShownAndSet() {
+    let amountDetails = TransactionAmountDetails(btcAmount: .one, fiatCurrency: .USD, exchangeRates: MockDetailCellVM.testRates,
+                                                 fiatWhenInvited: .one, fiatWhenTransacted: .one)
+    let viewModel = MockDetailCellVM.testDetailInstance(direction: .out,
+                                                        amountDetails: amountDetails,
+                                                        invitationStatus: .completed)
+    sut.configure(with: viewModel, delegate: mockDelegate)
+    XCTAssertFalse(sut.historicalValuesLabel.isHidden)
+    let expectedText = "$1.00 when sent $1.00 when received"
+    let actualText = sut.historicalValuesLabel.attributedText?.string
+    XCTAssertEqual(actualText, expectedText)
+  }
+
   // MARK: Memo view
   func testMemoView_nilMemoHidesView() {
     let viewModel = MockDetailCellVM.testDetailInstance(memo: nil)
@@ -540,55 +599,5 @@ class TransactionHistoryDetailValidCellTests: XCTestCase {
     let actualTooltip = DetailCellTooltip(rawValue: buttonTag)
     XCTAssertEqual(actualTooltip, expectedTooltip)
   }
-
-  /*
-
-  func testSatsLabelIsLoadedForInvalidTransaction() {
-    let amountDetails = MockSummaryCellVM.testAmountDetails(sats: 1234567)
-    let viewModel = MockSummaryCellVM.testInstance(walletTxType: .lightning, status: .canceled, amountDetails: amountDetails)
-    let expectedText = "1,234,567 sats"
-    sut.configure(with: viewModel)
-    XCTAssertEqual(sut.satsLabels.count, 1)
-    XCTAssertEqual(sut.satsLabel?.text, expectedText)
-  }
-
-  func testBTCLabelIsLoaded() {
-    let amountDetails = MockSummaryCellVM.testAmountDetails(sats: 1234560)
-    let viewModel = MockSummaryCellVM.testInstance(walletTxType: .onChain, status: .canceled, amountDetails: amountDetails)
-    let expectedText = BitcoinFormatter(symbolType: .attributed).attributedString(from: amountDetails.btcAmount)
-    sut.configure(with: viewModel)
-    XCTAssertEqual(sut.bitcoinLabels.count, 1)
-    XCTAssertEqual(sut.satsLabels.count, 0)
-    XCTAssertEqual(sut.bitcoinLabel?.attributedText?.string, expectedText?.string)
-    XCTAssertTrue(sut.bitcoinLabel?.attributedText?.hasImageAttachment() ?? false)
-  }
-
-  func testFiatLabelIsLoaded() {
-    let amountDetails = MockSummaryCellVM.testAmountDetails(sats: 1234560)
-    let viewModel = MockSummaryCellVM.testInstance(walletTxType: .onChain, direction: .in, status: .completed, amountDetails: amountDetails)
-    let expectedText = viewModel.summaryAmountLabels.pillText, expectedColor = UIColor.incomingGreen
-    sut.configure(with: viewModel)
-    XCTAssertEqual(sut.pillLabels.count, 1)
-    XCTAssertEqual(sut.pillLabel?.text, expectedText)
-    XCTAssertEqual(sut.pillLabel?.backgroundColor, expectedColor)
-  }
-
-  func testFiatIsOnTopWhenSelected() {
-    let viewModel = MockSummaryCellVM.testInstance(selectedCurrency: .fiat)
-    sut.configure(with: viewModel)
-    let firstLabelIsFiat = sut.amountStackView.arrangedSubviews.first is SummaryCellPillLabel
-    XCTAssertTrue(firstLabelIsFiat)
-  }
-
-  func testBitcoinIsOnTopWhenBitcoinIsSelected() {
-    let viewModel = MockSummaryCellVM.testInstance(walletTxType: .onChain, selectedCurrency: .BTC)
-    sut.configure(with: viewModel)
-    let firstViewAsPaddedLabel = sut.amountStackView.arrangedSubviews.first.flatMap { $0 as? SummaryCellPaddedLabelView }
-    XCTAssertNotNil(firstViewAsPaddedLabel, "first arrangedSubview should be SummaryCellPaddedLabelView")
-    let subviewAsBitcoinLabel = firstViewAsPaddedLabel?.subviews.first.flatMap { $0 as? SummaryCellBitcoinLabel }
-    XCTAssertNotNil(subviewAsBitcoinLabel, "subview should be SummaryCellBitcoinLabel")
-  }
-
- */
 
 }

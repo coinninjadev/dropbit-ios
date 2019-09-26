@@ -16,6 +16,7 @@ protocol TransactionDetailCellDisplayable: TransactionSummaryCellDisplayable {
   var detailStatusColor: UIColor { get }
   var twitterConfig: TransactionCellTwitterConfig? { get }
   var counterpartyText: String? { get }
+  var detailAmountLabels: DetailCellAmountLabels { get }
   var memoConfig: DetailCellMemoConfig? { get }
   var canAddMemo: Bool { get }
   var displayDate: String { get }
@@ -35,6 +36,7 @@ extension TransactionDetailCellDisplayable {
   var shouldHideMessageLabel: Bool { return messageText == nil }
   var shouldHideProgressView: Bool { return progressConfig == nil }
   var shouldHideBottomButton: Bool { return actionButtonConfig == nil }
+  var shouldHideHistoricalValuesLabel: Bool { return detailAmountLabels.historicalPriceAttributedText == nil }
 
 }
 
@@ -76,9 +78,15 @@ protocol TransactionDetailCellViewModelType: TransactionSummaryCellViewModelType
   var onChainConfirmations: Int? { get }
   var addressProvidedToSender: String? { get }
   var paymentIdIsValid: Bool { get } //for CKMTransaction: transaction?.txidIsActualTxid ?? false
+
+  func exchangeRateWhenReceived(forCurrency currency: CurrencyCode) -> Double? //let rate = transaction?.dayAveragePrice?.doubleValue
 }
 
 extension TransactionDetailCellViewModelType {
+
+  var isIncoming: Bool {
+    return direction == .in
+  }
 
   var directionConfig: TransactionCellDirectionConfig {
     return TransactionCellDirectionConfig(bgColor: accentColor, image: directionIcon)
@@ -215,38 +223,37 @@ extension TransactionDetailCellViewModelType {
   }
 
   var detailAmountLabels: DetailCellAmountLabels {
-    return DetailCellAmountLabels(primaryText: "",
-                                  secondaryText: nil,
-                                  secondaryAttributedText: nil,
-                                  historicalPriceAttributedText: nil)
+    let converter = CurrencyConverter(rates: amountDetails.exchangeRates,
+                                      fromAmount: amountDetails.btcAmount,
+                                      currencyPair: amountDetails.currencyPair)
 
-    //    let converter = CurrencyConverter(rates: amountDetails.exchangeRates,
-    //                                      fromAmount: amountDetails.btcAmount,
-    //                                      currencyPair: amountDetails.currencyPair)
+    let btcAttributedString: NSAttributedString?
+    switch walletTxType {
+    case .onChain:
+      btcAttributedString = BitcoinFormatter(symbolType: .attributed).attributedString(from: converter.btcAmount)
+    case .lightning:
+      let satsText = SatsFormatter().string(fromDecimal: converter.btcAmount) ?? ""
+      btcAttributedString = NSMutableAttributedString.medium(satsText, size: 14, color: .bitcoinOrange)
+    }
 
-    //    var btcAttributedString: NSAttributedString?
-    //    if walletTxType == .onChain {
-    //      btcAttributedString = BitcoinFormatter(symbolType: .attributed).attributedString(from: converter.btcAmount)
-    //    }
-    //
-    //    let signedFiatAmount = self.signedAmount(for: converter.fiatAmount)
-    //    let satsText = SatsFormatter().string(fromDecimal: converter.btcAmount) ?? ""
-    //    let fiatText = FiatFormatter(currency: converter.fiatCurrency,
-    //                                 withSymbol: true,
-    //                                 showNegativeSymbol: true).string(fromDecimal: signedFiatAmount) ?? ""
-    //
-    //    let pillText: String = isValidTransaction ? fiatText : status.rawValue
-    //
-    //    return SummaryCellAmountLabels(btcAttributedText: btcAttributedString,
-    //                                   satsText: satsText,
-    //                                   pillText: pillText,
-    //                                   pillIsAmount: isValidTransaction)
+    let signedFiatAmount = self.signedAmount(for: converter.fiatAmount)
+    let fiatText = FiatFormatter(currency: converter.fiatCurrency,
+                                 withSymbol: true,
+                                 showNegativeSymbol: true,
+                                 negativeHasSpace: false).string(fromDecimal: signedFiatAmount) ?? ""
+
+    let secondary = btcAttributedString ?? NSAttributedString(string: "-")
+
+    let historicalText = historicalAmountsAttributedString()
+
+    return DetailCellAmountLabels(primaryText: fiatText,
+                                  secondaryAttributedText: secondary,
+                                  historicalPriceAttributedText: historicalText)
   }
 
   var memoConfig: DetailCellMemoConfig? {
     guard let memoText = memo else { return nil }
     let isSent = self.status == .completed
-    let isIncoming = direction == .in
     return DetailCellMemoConfig(memo: memoText, isShared: memoIsShared, isSent: isSent,
                                 isIncoming: isIncoming, recipientName: counterpartyText)
   }
@@ -323,6 +330,133 @@ extension TransactionDetailCellViewModelType {
     return stringId.rawValue
   }
 
+  var historicalCurrencyFormatter: NumberFormatter {
+    let formatter = NumberFormatter()
+    formatter.numberStyle = .currency
+    formatter.currencySymbol = CurrencyCode.USD.symbol
+    formatter.maximumFractionDigits = CurrencyCode.USD.decimalPlaces
+    return formatter
+  }
+
+  func historicalAmountsAttributedString() -> NSAttributedString? {
+    // Using bold and regular strings
+    let fontSize: CGFloat = 14.0
+    let color = UIColor.darkBlueText
+    let attributes = TextAttributes(size: fontSize, color: color)
+    let attributedString = NSMutableAttributedString.medium("", size: fontSize, color: color)
+
+    let inviteAmount: String? = usdAtInvitedLabel
+    let receivedAmount: String? = usdAtReceivedLabel
+    guard inviteAmount != nil || receivedAmount != nil else { return nil }
+
+    // Amount descriptions are flipped depending on isIncoming
+    switch invitationTransactionPresence {
+    case .transactionOnly:
+      appendReceivedAmount(receivedAmount, to: attributedString, with: attributes) { attrString in
+        let description = self.isIncoming ? " when received" : " when sent"
+        attrString.appendLight(description, size: fontSize, color: color)
+      }
+
+    case .invitationOnly:
+      appendInviteAmount(inviteAmount, to: attributedString, with: attributes) { attrString in
+        let description = " when sent"
+        attrString.appendLight(description, size: fontSize, color: color)
+      }
+
+    case .both:
+
+      if isIncoming { // Order is flipped based on isIncoming
+        // Actual
+        appendReceivedAmount(receivedAmount, to: attributedString, with: attributes) { attrString in
+          attrString.appendLight(" when received", size: fontSize, color: color)
+        }
+
+        // Invite
+        appendInviteAmount(inviteAmount, to: attributedString, with: attributes) { attrString in
+          attrString.appendLight(" at send", size: fontSize, color: color)
+        }
+
+      } else {
+        // Invite
+        appendInviteAmount(inviteAmount, to: attributedString, with: attributes) { attrString in
+          attrString.appendLight(" when sent", size: fontSize, color: color)
+        }
+
+        // Actual
+        appendReceivedAmount(receivedAmount, to: attributedString, with: attributes) { attrString in
+          attrString.appendLight(" when received", size: fontSize, color: color)
+        }
+      }
+
+    case .neither:
+      return nil
+    }
+
+    return attributedString
+  }
+
+  /// `rate` and `currency` parameters refer to non-BTC and `amount` parameter refers to the BTC amount
+//  func newConverter(withRate rate: Double, currency: CurrencyCode, btcAmount: NSDecimalNumber) -> CurrencyConverter {
+//    return CurrencyConverter(fromBtcTo: currency, fromAmount: btcAmount, rates: [.BTC: 1, currency: rate])
+//  }
+
+//  var receivedAmountAtSentConverter: CurrencyConverter? {
+//    guard let rate = exchangeRateWhenReceived(forCurrency: .USD) else { return nil }
+//    return newConverter(withRate: rate, currency: .USD, btcAmount: amountDetails.btcAmount)
+//  }
+
+  private var usdAtReceivedLabel: String? {
+    guard let usdAtSent = amountDetails.fiatWhenTransacted else { return nil }
+    return historicalCurrencyFormatter.string(from: usdAtSent)
+  }
+
+  private var usdAtInvitedLabel: String? {
+    guard let fiatAmount = amountDetails.fiatWhenInvited else { return nil }
+    return historicalCurrencyFormatter.string(from: fiatAmount)
+  }
+
+  private var invitationTransactionPresence: InvitationTransactionPresence {
+    let actualTxExists = paymentIdIsValid
+    let inviteExists = (invitationStatus != nil)
+
+    switch (actualTxExists, inviteExists) {
+    case (true, false):   return .transactionOnly
+    case (false, true):   return .invitationOnly
+    case (true, true):    return .both
+    case (false, false):  return .neither
+    }
+  }
+
+  /// describer closure is not called if amount string is nil
+  private func appendInviteAmount(_ inviteAmount: String?,
+                                  to attrString: NSMutableAttributedString,
+                                  with attributes: TextAttributes,
+                                  describer: @escaping (NSMutableAttributedString) -> Void) {
+    guard let amount = inviteAmount else { return }
+    if attrString.string.isNotEmpty {
+      attrString.appendMedium(" ", size: attributes.size, color: attributes.color)
+    }
+
+    attrString.appendMedium(amount, size: attributes.size, color: attributes.color)
+
+    describer(attrString)
+  }
+
+  /// describer closure is not called if amount string is nil
+  private func appendReceivedAmount(_ receivedAmount: String?,
+                                    to attrString: NSMutableAttributedString,
+                                    with attributes: TextAttributes,
+                                    describer: @escaping (NSMutableAttributedString) -> Void) {
+    guard let amount = receivedAmount else { return }
+    if attrString.string.isNotEmpty {
+      attrString.appendMedium(" ", size: attributes.size, color: attributes.color)
+    }
+
+    attrString.appendMedium(amount, size: attributes.size, color: attributes.color)
+
+    describer(attrString)
+  }
+
 }
 
 enum DetailCellString: String {
@@ -337,4 +471,16 @@ enum DetailCellString: String {
   case invoicePaid = "Invoice Paid"
   case loadLightning = "Load Lightning"
   case withdrawFromLightning = "Withdraw from Lightning"
+}
+
+enum InvitationTransactionPresence {
+  case invitationOnly
+  case transactionOnly
+  case both
+  case neither
+}
+
+struct TextAttributes {
+  var size: CGFloat
+  var color: UIColor
 }

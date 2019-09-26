@@ -37,25 +37,25 @@ struct TransactionAmountDetails {
   let btcAmount: NSDecimalNumber
   let currencyPair: CurrencyPair
   let exchangeRates: ExchangeRates
-  let fiatWhenCreated: NSDecimalNumber?
+  let fiatWhenInvited: NSDecimalNumber?
   let fiatWhenTransacted: NSDecimalNumber?
 
   init(btcAmount: NSDecimalNumber,
        fiatCurrency: CurrencyCode,
        exchangeRates: ExchangeRates,
-       fiatWhenCreated: NSDecimalNumber? = nil,
+       fiatWhenInvited: NSDecimalNumber? = nil,
        fiatWhenTransacted: NSDecimalNumber? = nil) {
     self.currencyPair = CurrencyPair(primary: .BTC, fiat: fiatCurrency)
     self.exchangeRates = exchangeRates
     self.btcAmount = btcAmount
-    self.fiatWhenCreated = fiatWhenCreated
+    self.fiatWhenInvited = fiatWhenInvited
     self.fiatWhenTransacted = fiatWhenTransacted
   }
 
   init(fiatAmount: NSDecimalNumber,
        fiatCurrency: CurrencyCode,
        exchangeRates: ExchangeRates,
-       fiatWhenCreated: NSDecimalNumber? = nil,
+       fiatWhenInvited: NSDecimalNumber? = nil,
        fiatWhenTransacted: NSDecimalNumber? = nil) {
     let fiatCurrencyPair = CurrencyPair(primary: fiatCurrency, fiat: fiatCurrency)
     let converter = CurrencyConverter(rates: exchangeRates,
@@ -64,7 +64,7 @@ struct TransactionAmountDetails {
     self.init(btcAmount: converter.btcAmount,
               fiatCurrency: fiatCurrency,
               exchangeRates: exchangeRates,
-              fiatWhenCreated: fiatWhenCreated,
+              fiatWhenInvited: fiatWhenInvited,
               fiatWhenTransacted: fiatWhenTransacted)
   }
 }
@@ -217,7 +217,6 @@ struct SummaryCellLeadingImageConfig {
 /// Only one of the secondary strings should be set
 struct DetailCellAmountLabels {
   let primaryText: String
-  let secondaryText: String?
-  let secondaryAttributedText: NSAttributedString?
+  let secondaryAttributedText: NSAttributedString
   let historicalPriceAttributedText: NSAttributedString?
 }

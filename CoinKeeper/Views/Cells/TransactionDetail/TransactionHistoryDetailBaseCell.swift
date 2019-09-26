@@ -103,6 +103,12 @@ class TransactionHistoryDetailBaseCell: UICollectionViewCell {
     self.counterpartyLabel.isHidden = values.shouldHideCounterpartyLabel
     self.counterpartyLabel.text = values.counterpartyText
 
+    self.primaryAmountLabel.text = values.detailAmountLabels.primaryText
+    self.secondaryAmountLabel.attributedText = values.detailAmountLabels.secondaryAttributedText
+    self.historicalValuesLabel.isHidden = values.shouldHideHistoricalValuesLabel
+    self.historicalValuesLabel.text = nil
+    self.historicalValuesLabel.attributedText = values.detailAmountLabels.historicalPriceAttributedText
+
     self.memoContainerView.isHidden = values.shouldHideMemoView
     if let config = values.memoConfig {
       self.memoContainerView.configure(with: config)
@@ -112,17 +118,6 @@ class TransactionHistoryDetailBaseCell: UICollectionViewCell {
 
     self.dateLabel.text = values.displayDate
   }
-
-//  func configure(with viewModel: OldTransactionDetailCellViewModel, delegate: TransactionHistoryDetailCellDelegate) {
-//
-//    dateLabel.text = viewModel.dateDescriptionFull
-//    let isEqualToReceiverAddress = (viewModel.receiverAddress ?? "") == viewModel.counterpartyDescription
-//    counterpartyLabel.text = isEqualToReceiverAddress ? nil : viewModel.counterpartyDescription
-//    primaryAmountLabel.text = viewModel.primaryAmountLabel
-//    secondaryAmountLabel.attributedText = viewModel.secondaryAmountLabel
-//    historicalValuesLabel.text = nil
-//    historicalValuesLabel.attributedText = viewModel.historicalAmountsAttributedString()
-//  }
 
   private func configureTwitterShareButton() {
     twitterShareButton?.configure(
