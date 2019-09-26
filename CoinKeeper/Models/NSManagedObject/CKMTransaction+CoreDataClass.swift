@@ -151,7 +151,6 @@ public class CKMTransaction: NSManagedObject {
   }
 
   /// Returns early if this transaction already has a CKMTransactionSharedPayload attached
-
   func markAsFailed() {
     broadcastFailed = true
 
@@ -164,10 +163,6 @@ public class CKMTransaction: NSManagedObject {
       vout.isSpent = false
       vout.temporarySentTransaction = nil
     }
-  }
-
-  static func prefixedTxid(for invitation: CKMInvitation) -> String {
-    return CKMTransaction.invitationTxidPrefix + invitation.id
   }
 
   static let transactionHistorySortDescriptors: [NSSortDescriptor] = [
@@ -212,3 +207,5 @@ extension CKMTransaction {
     return lhs.txid == rhs.txid
   }
 }
+
+extension CKMTransaction: InvitationParent { }

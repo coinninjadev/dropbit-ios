@@ -12,5 +12,6 @@ public struct OutgoingInvitationDTO {
   let contact: ContactType
   let btcPair: BitcoinUSDPair
   let fee: Int // in satoshis
+  let walletTxType: WalletTransactionType
   let sharedPayloadDTO: SharedPayloadDTO?
 }

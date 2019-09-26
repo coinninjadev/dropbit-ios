@@ -98,5 +98,6 @@ extension SenderSharedPayloadPersistable {
   }
 }
 
-extension CKMWalletEntry: DropBitReceiverPersistable, SenderSharedPayloadPersistable { }
-extension CKMTransaction: DropBitReceiverPersistable, SenderSharedPayloadPersistable { }
+protocol InvitationParent: DropBitReceiverPersistable, SenderSharedPayloadPersistable {
+  var invitation: CKMInvitation? { get set }
+}
