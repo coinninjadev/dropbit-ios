@@ -346,6 +346,15 @@ class TransactionHistoryDetailValidCellTests: XCTestCase {
     XCTAssertTrue(sut.counterpartyLabel.isHidden)
   }
 
+  func testAddressCounterpartyText_hidesCounterpartyLabel() {
+    let expectedAddress = TestHelpers.mockValidBech32Address()
+    let viewModel = MockDetailCellVM.testDetailInstance(receiverAddress: expectedAddress)
+    sut.configure(with: viewModel, delegate: mockDelegate)
+    XCTAssertTrue(sut.counterpartyLabel.isHidden)
+    XCTAssertNotNil(sut.addressView.config)
+    XCTAssertEqual(sut.addressView.addressTextButton.titleLabel?.text, expectedAddress)
+  }
+
   func testCounterpartyText_ShowsCounterpartyLabel() {
     let counterparty = TransactionCellCounterpartyConfig(displayName: "Satoshi", displayPhoneNumber: nil, twitterConfig: nil)
     let viewModel = MockDetailCellVM.testDetailInstance(counterpartyConfig: counterparty)
