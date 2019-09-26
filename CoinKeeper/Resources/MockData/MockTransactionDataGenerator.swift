@@ -1,3 +1,4 @@
+
 //
 //  MockTransactionDataGenerator.swift
 //  DropBitTests
@@ -8,180 +9,143 @@
 
 import Foundation
 
-struct MockOnChainDataGenerator {
+struct MockDetailDataGenerator {
 
-  var mayUtilities: MockSummaryCellVM {
-    let counterparty = TransactionCellCounterpartyConfig(displayName: "Adam Wolf")
-    return MockOnChainSummaryVM(direction: .out,
-                                fiatAmount: 500,
-                                counterparty: counterparty,
-                                memo: "May utilities ⚡️💧⛽️")
+  let walletTxType: WalletTransactionType
+
+  class MockDropBitVM: MockTransactionDetailCellViewModel {
+
+    init(walletTxType: WalletTransactionType,
+         direction: TransactionDirection,
+         counterparty: TransactionCellCounterpartyConfig?,
+         invitationStatus: InvitationStatus?,
+         transactionStatus: TransactionStatus,
+         amountDetails: TransactionAmountDetails? = nil,
+         isLightningTransfer: Bool = false,
+         lightningInvoice: String? = nil) {
+
+      let memo = "Coffee ☕️"
+      let sats = 50_000
+      let amtDetails = amountDetails ?? MockDropBitVM.amountDetails(for: sats,
+                                                                    invitationStatus: invitationStatus,
+                                                                    transactionStatus: transactionStatus)
+
+      super.init(walletTxType: walletTxType,
+                 direction: direction,
+                 status: transactionStatus,
+                 onChainConfirmations: nil,
+                 isLightningTransfer: isLightningTransfer,
+                 receiverAddress: nil,
+                 addressProvidedToSender: nil,
+                 lightningInvoice: lightningInvoice,
+                 paymentIdIsValid: true,
+                 selectedCurrency: .fiat,
+                 amountDetails: amtDetails,
+                 counterpartyConfig: counterparty,
+                 invitationStatus: invitationStatus,
+                 memo: memo,
+                 memoIsShared: true,
+                 date: Date())
+    }
+
+    convenience init(walletTxType: WalletTransactionType,
+                     direction: TransactionDirection,
+                     identity: UserIdentityType,
+                     invitationStatus: InvitationStatus?,
+                     transactionStatus: TransactionStatus) {
+      self.init(walletTxType: walletTxType, direction: direction, counterparty: identity.testCounterparty,
+                invitationStatus: invitationStatus, transactionStatus: transactionStatus)
+    }
+
+    static func amountDetails(for sats: Int, invitationStatus: InvitationStatus?, transactionStatus: TransactionStatus) -> TransactionAmountDetails {
+      let cents = 350
+      let fiatWhenInvited = NSDecimalNumber(integerAmount: cents, currency: .USD)
+      let fiatWhenTransacted = NSDecimalNumber(integerAmount: cents + 5, currency: .USD)
+
+      var amtDetails = MockDetailCellVM.testAmountDetails(sats: sats)
+      if let inviteStatus = invitationStatus {
+        switch inviteStatus {
+        case .notSent:
+          break
+        case .requestSent, .addressSent, .canceled, .expired:
+          amtDetails = MockDetailCellVM.testAmountDetails(sats: sats, fiatWhenInvited: fiatWhenInvited, fiatWhenTransacted: nil)
+        case .completed:
+          amtDetails = MockDetailCellVM.testAmountDetails(sats: sats, fiatWhenInvited: fiatWhenInvited, fiatWhenTransacted: fiatWhenTransacted)
+        }
+      }
+
+      return amtDetails
+    }
   }
 
-  var lightningWithdraw: MockSummaryCellVM {
-    return MockOnChainSummaryVM(direction: .in,
-                                fiatAmount: 5000,
-                                counterparty: nil,
-                                memo: nil,
-                                isLightningTransfer: true)
+  func generatePhoneAndTwitterDropBitItems() -> [MockTransactionDetailCellViewModel] {
+    let identities: [UserIdentityType] = [.phone, .twitter]
+    return identities.flatMap { identity -> [MockTransactionDetailCellViewModel] in
+      return [
+        self.invitePendingSender(identity),
+        self.invitePendingReceiver(identity),
+        self.transferCompleteSender(identity),
+        self.transferCompleteReceiver(identity),
+        self.inviteCompleteSender(identity),
+        self.inviteCompleteReceiver(identity),
+        self.inviteExpiredSender(identity),
+        self.inviteExpiredReceiver(identity),
+        self.inviteCanceledSender(identity),
+        self.inviteCanceledReceiver(identity)
+      ]
+    }
   }
 
-  var coffee: MockSummaryCellVM {
-    let twitter = MockSummaryCellVM.mockTwitterConfig()
-    let counterparty = TransactionCellCounterpartyConfig(twitterConfig: twitter)
-    return MockOnChainSummaryVM(direction: .out,
-                                fiatAmount: 800,
-                                counterparty: counterparty,
-                                memo: "Coffee ☕️")
+  private func invitePendingSender(_ identity: UserIdentityType) -> MockTransactionDetailCellViewModel {
+    return MockDropBitVM(walletTxType: walletTxType, direction: .out, identity: identity, invitationStatus: .requestSent, transactionStatus: .pending)
   }
 
-  var drinksAndFood: MockSummaryCellVM {
-    let counterparty = TransactionCellCounterpartyConfig(displayName: "Adam Wolf")
-    return MockOnChainSummaryVM(direction: .out,
-                                fiatAmount: 3500,
-                                counterparty: counterparty,
-                                memo: "Drinks and Food")
+  private func invitePendingReceiver(_ identity: UserIdentityType) -> MockTransactionDetailCellViewModel {
+    return MockDropBitVM(walletTxType: walletTxType, direction: .in, identity: identity, invitationStatus: .addressSent, transactionStatus: .pending)
   }
 
-  var loadLightning: MockSummaryCellVM {
-    return MockOnChainSummaryVM(direction: .out,
-                                fiatAmount: 5000,
-                                counterparty: nil,
-                                memo: nil,
-                                isLightningTransfer: true)
+  private func transferCompleteSender(_ identity: UserIdentityType) -> MockTransactionDetailCellViewModel {
+    return MockDropBitVM(walletTxType: walletTxType, direction: .out, identity: identity, invitationStatus: nil, transactionStatus: .completed)
   }
 
-  var genericIncoming: MockSummaryCellVM {
-    return MockOnChainSummaryVM(direction: .in,
-                                fiatAmount: 800,
-                                counterparty: nil,
-                                memo: "Testing",
-                                receiverAddress: MockSummaryCellVM.mockValidBitcoinAddress())
+  private func transferCompleteReceiver(_ identity: UserIdentityType) -> MockTransactionDetailCellViewModel {
+    return MockDropBitVM(walletTxType: walletTxType, direction: .in, identity: identity, invitationStatus: nil, transactionStatus: .completed)
   }
 
-  var canceledPhoneInvite: MockSummaryCellVM {
-    let counterparty = TransactionCellCounterpartyConfig(displayPhoneNumber: "(123) 456-7890")
-    return MockOnChainSummaryVM(direction: .out,
-                                fiatAmount: 800,
-                                counterparty: counterparty,
-                                memo: "Chipotle 🌯",
-                                status: .canceled)
+  private func inviteCompleteSender(_ identity: UserIdentityType) -> MockTransactionDetailCellViewModel {
+    return MockDropBitVM(walletTxType: walletTxType, direction: .out, identity: identity, invitationStatus: .completed, transactionStatus: .completed)
   }
 
-}
-
-class MockOnChainSummaryVM: MockTransactionSummaryCellViewModel {
-
-  init(direction: TransactionDirection,
-       fiatAmount: Int,
-       counterparty: TransactionCellCounterpartyConfig?,
-       memo: String?,
-       status: TransactionStatus = .completed,
-       isLightningTransfer: Bool = false,
-       receiverAddress: String? = nil) {
-
-    let amtDetails = MockSummaryCellVM.testAmountDetails(cents: fiatAmount)
-
-    super.init(walletTxType: .onChain,
-               direction: direction,
-               status: status,
-               isLightningTransfer: isLightningTransfer,
-               receiverAddress: receiverAddress,
-               lightningInvoice: nil,
-               selectedCurrency: .fiat,
-               amountDetails: amtDetails,
-               counterpartyConfig: counterparty,
-               memo: memo)
-  }
-}
-
-struct MockLightningDataGenerator {
-
-  var pendingInvoice: MockSummaryCellVM {
-    let counterparty = TransactionCellCounterpartyConfig(displayName: "Adam Wolf")
-    return MockLightningSummaryVM(direction: .in,
-                                  sats: 120_000,
-                                  counterparty: counterparty,
-                                  memo: "Chipotle 🌯",
-                                  status: .pending)
+  private func inviteCompleteReceiver(_ identity: UserIdentityType) -> MockTransactionDetailCellViewModel {
+    return MockDropBitVM(walletTxType: walletTxType, direction: .in, identity: identity, invitationStatus: .completed, transactionStatus: .completed)
   }
 
-  var lightningWithdraw: MockSummaryCellVM {
-    return MockLightningSummaryVM(direction: .out,
-                                  sats: 5_000_000,
-                                  counterparty: nil,
-                                  memo: nil,
-                                  isLightningTransfer: true)
+  private func inviteExpiredSender(_ identity: UserIdentityType) -> MockTransactionDetailCellViewModel {
+    return MockDropBitVM(walletTxType: walletTxType, direction: .out, identity: identity, invitationStatus: .expired, transactionStatus: .expired)
   }
 
-  var coffee: MockSummaryCellVM {
-    let twitter = MockSummaryCellVM.mockTwitterConfig()
-    let counterparty = TransactionCellCounterpartyConfig(twitterConfig: twitter)
-    return MockLightningSummaryVM(direction: .out,
-                                  sats: 80_000,
-                                  counterparty: counterparty,
-                                  memo: "Coffee ☕️")
+  private func inviteExpiredReceiver(_ identity: UserIdentityType) -> MockTransactionDetailCellViewModel {
+    return MockDropBitVM(walletTxType: walletTxType, direction: .in, identity: identity, invitationStatus: .expired, transactionStatus: .expired)
   }
 
-  var expiredInvoice: MockSummaryCellVM {
-    let invoice = MockSummaryCellVM.mockLightningInvoice()
-    return MockLightningSummaryVM(direction: .in,
-                                  sats: 35_000_000,
-                                  counterparty: nil,
-                                  memo: "Drinks and Food",
-                                  status: .expired,
-                                  lightningInvoice: invoice)
+  private func inviteCanceledSender(_ identity: UserIdentityType) -> MockTransactionDetailCellViewModel {
+    return MockDropBitVM(walletTxType: walletTxType, direction: .out, identity: identity, invitationStatus: .canceled, transactionStatus: .canceled)
   }
 
-  var loadLightning: MockSummaryCellVM {
-    return MockLightningSummaryVM(direction: .in,
-                                  sats: 5_000_000,
-                                  counterparty: nil,
-                                  memo: nil,
-                                  isLightningTransfer: true)
-  }
-
-  var paidInvoice: MockSummaryCellVM {
-    let invoice = MockSummaryCellVM.mockLightningInvoice()
-    return MockLightningSummaryVM(direction: .out,
-                                  sats: 50_000,
-                                  counterparty: nil,
-                                  memo: "Parking",
-                                  lightningInvoice: invoice)
-  }
-
-  var expiredPhoneInvite: MockSummaryCellVM {
-    let counterparty = TransactionCellCounterpartyConfig(displayPhoneNumber: "(123) 456-7890")
-    return MockLightningSummaryVM(direction: .out,
-                                  sats: 35_000_000,
-                                  counterparty: counterparty,
-                                  memo: "Chipotle 🌯",
-                                  status: .expired)
+  private func inviteCanceledReceiver(_ identity: UserIdentityType) -> MockTransactionDetailCellViewModel {
+    return MockDropBitVM(walletTxType: walletTxType, direction: .in, identity: identity, invitationStatus: .canceled, transactionStatus: .canceled)
   }
 
 }
 
-class MockLightningSummaryVM: MockTransactionSummaryCellViewModel {
-
-  init(direction: TransactionDirection,
-       sats: Int,
-       counterparty: TransactionCellCounterpartyConfig?,
-       memo: String?,
-       status: TransactionStatus = .completed,
-       isLightningTransfer: Bool = false,
-       lightningInvoice: String? = nil) {
-
-    let amtDetails = MockSummaryCellVM.testAmountDetails(sats: sats)
-
-    super.init(walletTxType: .lightning,
-               direction: direction,
-               status: status,
-               isLightningTransfer: isLightningTransfer,
-               receiverAddress: nil,
-               lightningInvoice: lightningInvoice,
-               selectedCurrency: .fiat,
-               amountDetails: amtDetails,
-               counterpartyConfig: counterparty,
-               memo: memo)
+extension UserIdentityType {
+  var testCounterparty: TransactionCellCounterpartyConfig {
+    switch self {
+    case .phone:
+      return TransactionCellCounterpartyConfig(displayPhoneNumber: "(123) 456-7890")
+    case .twitter:
+      let twitterConfig = MockDetailCellVM.mockTwitterConfig()
+      return TransactionCellCounterpartyConfig(twitterConfig: twitterConfig)
+    }
   }
 }

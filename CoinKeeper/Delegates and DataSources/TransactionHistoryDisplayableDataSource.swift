@@ -22,10 +22,10 @@ protocol TransactionHistoryDataSourceType: AnyObject {
                                   currencies: CurrencyPair,
                                   deviceCountryCode: Int) -> TransactionSummaryCellDisplayable
 
-  func detailCellViewModel(at indexPath: IndexPath,
-                           rates: ExchangeRates,
-                           currencies: CurrencyPair,
-                           deviceCountryCode: Int) -> OldTransactionDetailCellViewModel?
+  func detailCellDisplayableItem(at indexPath: IndexPath,
+                                 rates: ExchangeRates,
+                                 currencies: CurrencyPair,
+                                 deviceCountryCode: Int) -> TransactionDetailCellDisplayable?
 
   func numberOfSections() -> Int
   func numberOfItems(inSection section: Int) -> Int
@@ -68,17 +68,11 @@ class TransactionHistoryOnChainDataSource: NSObject, TransactionHistoryDataSourc
                                            deviceCountryCode: deviceCountryCode)
   }
 
-  func detailCellViewModel(at indexPath: IndexPath,
-                           rates: ExchangeRates,
-                           currencies: CurrencyPair,
-                           deviceCountryCode: Int) -> OldTransactionDetailCellViewModel? {
-    let transaction = frc.object(at: indexPath)
-    return OldTransactionDetailCellViewModel(
-      transaction: transaction,
-      rates: rates,
-      primaryCurrency: currencies.primary,
-      deviceCountryCode: deviceCountryCode
-    )
+  func detailCellDisplayableItem(at indexPath: IndexPath,
+                                 rates: ExchangeRates,
+                                 currencies: CurrencyPair,
+                                 deviceCountryCode: Int) -> TransactionDetailCellDisplayable? {
+    return nil
   }
 
   func numberOfSections() -> Int {
@@ -135,10 +129,10 @@ class TransactionHistoryLightningDataSource: NSObject, TransactionHistoryDataSou
                                            deviceCountryCode: deviceCountryCode)
   }
 
-  func detailCellViewModel(at indexPath: IndexPath,
-                           rates: ExchangeRates,
-                           currencies: CurrencyPair,
-                           deviceCountryCode: Int) -> OldTransactionDetailCellViewModel? {
+  func detailCellDisplayableItem(at indexPath: IndexPath,
+                                 rates: ExchangeRates,
+                                 currencies: CurrencyPair,
+                                 deviceCountryCode: Int) -> TransactionDetailCellDisplayable? {
     return nil
   }
 

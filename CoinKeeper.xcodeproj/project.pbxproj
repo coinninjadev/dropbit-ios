@@ -754,6 +754,7 @@
 		B5457124217E63F000FF3A5A /* NetworkManagerIntegrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5457123217E63F000FF3A5A /* NetworkManagerIntegrationTests.swift */; };
 		B5457126217E6D8900FF3A5A /* ResponseCodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5457125217E6D8900FF3A5A /* ResponseCodable.swift */; };
 		B5457128217E6F1700FF3A5A /* BodyCodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5457127217E6F1700FF3A5A /* BodyCodable.swift */; };
+		B5473279233D584D008AE08B /* MockSummaryDataGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5473278233D584D008AE08B /* MockSummaryDataGenerator.swift */; };
 		B5488F9122F4DC6D00E27B8F /* BroadcastTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5488F9022F4DC6D00E27B8F /* BroadcastTarget.swift */; };
 		B54913A522BBB61200ACC7D7 /* AlertConfigurationTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54913A422BBB61200ACC7D7 /* AlertConfigurationTypes.swift */; };
 		B54913A722BC0B1000ACC7D7 /* AdjustableFeesViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B54913A622BC0B1000ACC7D7 /* AdjustableFeesViewController.storyboard */; };
@@ -1806,6 +1807,7 @@
 		B5457123217E63F000FF3A5A /* NetworkManagerIntegrationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManagerIntegrationTests.swift; sourceTree = "<group>"; };
 		B5457125217E6D8900FF3A5A /* ResponseCodable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResponseCodable.swift; sourceTree = "<group>"; };
 		B5457127217E6F1700FF3A5A /* BodyCodable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BodyCodable.swift; sourceTree = "<group>"; };
+		B5473278233D584D008AE08B /* MockSummaryDataGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockSummaryDataGenerator.swift; sourceTree = "<group>"; };
 		B5488F9022F4DC6D00E27B8F /* BroadcastTarget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BroadcastTarget.swift; sourceTree = "<group>"; };
 		B54913A422BBB61200ACC7D7 /* AlertConfigurationTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertConfigurationTypes.swift; sourceTree = "<group>"; };
 		B54913A622BC0B1000ACC7D7 /* AdjustableFeesViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = AdjustableFeesViewController.storyboard; sourceTree = "<group>"; };
@@ -3424,6 +3426,7 @@
 				B5FFC20023391E8B00FEF7D2 /* MockTransactionDetailCellViewModel.swift */,
 				B50E7B84230CA79D00927C8B /* MockTransactionHistoryDataSource.swift */,
 				B5437B572315FF040002B77C /* MockTransactionDataGenerator.swift */,
+				B5473278233D584D008AE08B /* MockSummaryDataGenerator.swift */,
 			);
 			path = MockData;
 			sourceTree = "<group>";
@@ -4527,6 +4530,7 @@
 				B55D085221B72397007DD9E5 /* CKPhoneNumberParser.swift in Sources */,
 				B582409420920E3F005D2F90 /* CompactActionButton.swift in Sources */,
 				B5401C5D228C89D1004C77BC /* WorkerFactory.swift in Sources */,
+				B5473279233D584D008AE08B /* MockSummaryDataGenerator.swift in Sources */,
 				3B23126720DA6D0E0099A557 /* TransactionHistoryDetailCellAddressView.swift in Sources */,
 				B542BE752237093800E01C30 /* ExamplePhoneNumberLabel.swift in Sources */,
 				B5FFC20123391E8B00FEF7D2 /* MockTransactionDetailCellViewModel.swift in Sources */,
