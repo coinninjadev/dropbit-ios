@@ -17,9 +17,9 @@ class MockTransactionHistoryDataSource: TransactionHistoryDataSourceType {
 
   init(walletTxType: WalletTransactionType) {
     self.walletTransactionType = walletTxType
-    let onChainGenerator = MockDetailDataGenerator(walletTxType: walletTxType)
-    let onChainDropBits = onChainGenerator.generatePhoneAndTwitterDropBitItems()
-    self.items = onChainDropBits
+    let generator = MockDetailDataGenerator(walletTxType: walletTxType)
+    let dropBitItems = generator.generatePhoneAndTwitterDropBitItems(categories: [.valid])
+    self.items = dropBitItems
   }
 
   func summaryCellDisplayableItem(at indexPath: IndexPath,

@@ -1,4 +1,3 @@
-
 //
 //  MockTransactionDataGenerator.swift
 //  DropBitTests
@@ -8,6 +7,10 @@
 //
 
 import Foundation
+
+enum MockDataDropBitCategory {
+  case valid, invalid
+}
 
 struct MockDetailDataGenerator {
 
@@ -78,22 +81,36 @@ struct MockDetailDataGenerator {
     }
   }
 
-  func generatePhoneAndTwitterDropBitItems() -> [MockTransactionDetailCellViewModel] {
+  func generatePhoneAndTwitterDropBitItems(categories: [MockDataDropBitCategory]) -> [MockTransactionDetailCellViewModel] {
     let identities: [UserIdentityType] = [.phone, .twitter]
     return identities.flatMap { identity -> [MockTransactionDetailCellViewModel] in
-      return [
-        self.invitePendingSender(identity),
-        self.invitePendingReceiver(identity),
-        self.transferCompleteSender(identity),
-        self.transferCompleteReceiver(identity),
-        self.inviteCompleteSender(identity),
-        self.inviteCompleteReceiver(identity),
-        self.inviteExpiredSender(identity),
-        self.inviteExpiredReceiver(identity),
-        self.inviteCanceledSender(identity),
-        self.inviteCanceledReceiver(identity)
-      ]
+      return categories.flatMap { category -> [MockTransactionDetailCellViewModel] in
+        switch category {
+        case .valid:  return self.generateValidItems(identity)
+        case .invalid:  return self.generateInvalidItems(identity)
+        }
+      }
     }
+  }
+
+  private func generateValidItems(_ identity: UserIdentityType) -> [MockTransactionDetailCellViewModel] {
+    return [
+      self.invitePendingSender(identity),
+      self.invitePendingReceiver(identity),
+      self.transferCompleteSender(identity),
+      self.transferCompleteReceiver(identity),
+      self.inviteCompleteSender(identity),
+      self.inviteCompleteReceiver(identity)
+    ]
+  }
+
+  private func generateInvalidItems(_ identity: UserIdentityType) -> [MockTransactionDetailCellViewModel] {
+    return [
+      self.inviteExpiredSender(identity),
+      self.inviteExpiredReceiver(identity),
+      self.inviteCanceledSender(identity),
+      self.inviteCanceledReceiver(identity)
+    ]
   }
 
   private func invitePendingSender(_ identity: UserIdentityType) -> MockTransactionDetailCellViewModel {
