@@ -25,7 +25,7 @@ protocol TransactionHistoryDataSourceType: AnyObject {
   func detailCellDisplayableItem(at indexPath: IndexPath,
                                  rates: ExchangeRates,
                                  currencies: CurrencyPair,
-                                 deviceCountryCode: Int) -> TransactionDetailCellDisplayable?
+                                 deviceCountryCode: Int) -> TransactionDetailCellDisplayable
 
   func numberOfSections() -> Int
   func numberOfItems(inSection section: Int) -> Int
@@ -71,8 +71,9 @@ class TransactionHistoryOnChainDataSource: NSObject, TransactionHistoryDataSourc
   func detailCellDisplayableItem(at indexPath: IndexPath,
                                  rates: ExchangeRates,
                                  currencies: CurrencyPair,
-                                 deviceCountryCode: Int) -> TransactionDetailCellDisplayable? {
-    return nil
+                                 deviceCountryCode: Int) -> TransactionDetailCellDisplayable {
+    //TODO:
+    return MockDetailCellVM.testDetailInstance()
   }
 
   func numberOfSections() -> Int {
@@ -132,8 +133,9 @@ class TransactionHistoryLightningDataSource: NSObject, TransactionHistoryDataSou
   func detailCellDisplayableItem(at indexPath: IndexPath,
                                  rates: ExchangeRates,
                                  currencies: CurrencyPair,
-                                 deviceCountryCode: Int) -> TransactionDetailCellDisplayable? {
-    return nil
+                                 deviceCountryCode: Int) -> TransactionDetailCellDisplayable {
+    //TODO:
+    return MockDetailCellVM.testDetailInstance()
   }
 
   private func viewModelObject(for walletEntry: CKMWalletEntry) -> TransactionSummaryCellViewModelObject {

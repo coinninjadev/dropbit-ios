@@ -33,7 +33,7 @@ class MockTransactionHistoryDataSource: TransactionHistoryDataSourceType {
   func detailCellDisplayableItem(at indexPath: IndexPath,
                                  rates: ExchangeRates,
                                  currencies: CurrencyPair,
-                                 deviceCountryCode: Int) -> TransactionDetailCellDisplayable? {
+                                 deviceCountryCode: Int) -> TransactionDetailCellDisplayable {
     return items[indexPath.row]
   }
 

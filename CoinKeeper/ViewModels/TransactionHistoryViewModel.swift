@@ -89,31 +89,16 @@ class TransactionHistoryViewModel: NSObject, UICollectionViewDataSource, Exchang
   }
 
   private func detailCell(forItemAt indexPath: IndexPath, in collectionView: UICollectionView) -> TransactionHistoryDetailBaseCell {
-    return TransactionHistoryDetailBaseCell()
+    guard let cellDelegate = detailsDelegate else { return TransactionHistoryDetailBaseCell() }
 
-//    guard let cellDelegate = detailsDelegate else { return TransactionHistoryDetailBaseCell() }
-
-//    let displayableItem = dataSource.detailCellDisplayableItem(at: indexPath,
-//                                                               rates: rateManager.exchangeRates,
-//                                                               currencies: selectedCurrencyPair,
-//                                                               deviceCountryCode: self.deviceCountryCode)
-
-//    if let invitation = displayableItem.transaction?.invitation {
-//      switch invitation.status {
-//      case .canceled, .expired:
-//        let cell = collectionView.dequeue(TransactionHistoryDetailInvalidCell.self, for: indexPath)
-//        cell.configure(with: displayableItem, delegate: cellDelegate)
-//        return cell
-//      default:
-//        let cell = collectionView.dequeue(TransactionHistoryDetailValidCell.self, for: indexPath)
-//        cell.configure(with: displayableItem, delegate: cellDelegate)
-//        return cell
-//      }
-//    } else {
-//      let cell = collectionView.dequeue(TransactionHistoryDetailValidCell.self, for: indexPath )
-//      cell.configure(with: displayableItem, delegate: cellDelegate)
-//      return cell
-//    }
+    let displayableItem = dataSource.detailCellDisplayableItem(at: indexPath,
+                                                               rates: rateManager.exchangeRates,
+                                                               currencies: selectedCurrencyPair,
+                                                               deviceCountryCode: self.deviceCountryCode)
+    let cell = collectionView.dequeue(TransactionHistoryDetailValidCell.self, for: indexPath)
+    cell.configure(with: displayableItem, delegate: cellDelegate)
+    return cell
+    // TODO: return invalid cell according to status
   }
 
   func collectionView(_ collectionView: UICollectionView,
