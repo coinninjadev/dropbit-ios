@@ -9,6 +9,7 @@
 import XCTest
 @testable import DropBit
 import CNBitcoinKit
+import PromiseKit
 
 class ConfirmPaymentViewControllerTests: XCTestCase {
 
@@ -52,6 +53,10 @@ class ConfirmPaymentViewControllerTests: XCTestCase {
   }
 
   class MockCoordinator: ConfirmPaymentViewControllerDelegate {
+
+    func payLightningRequest(withInputs inputs: LightningPaymentInputs, to receiver: OutgoingDropBitReceiver?) -> Promise<LNTransactionResponse> {
+      return Promise { _ in }
+    }
 
     func viewControllerDidSelectCloseWithToggle(_ viewController: UIViewController) { }
     var alertManager: AlertManagerType = MockAlertManager(notificationManager:

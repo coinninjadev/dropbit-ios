@@ -19,6 +19,7 @@ class WalletAddressDataWorkerTests: MockedPersistenceTestCase {
   var mockNetworkManager: MockNetworkManager!
   var mockWalletManager: MockWalletManager!
   var mockAnalyticsManager: MockAnalyticsManager!
+  var mockAppCoordinator: MockAppCoordinator!
 
   // swiftlint:disable weak_delegate
   var mockWalletDelegate: MockWalletDelegate!
@@ -32,11 +33,13 @@ class WalletAddressDataWorkerTests: MockedPersistenceTestCase {
     mockWalletManager = MockWalletManager(words: [])
     mockInvitationDelegate = MockInvitationDelegate()
     mockAnalyticsManager = MockAnalyticsManager()
+    mockAppCoordinator = MockAppCoordinator()
 
     sut = WalletAddressDataWorker(walletManager: mockWalletManager,
                                   persistenceManager: mockPersistenceManager,
                                   networkManager: mockNetworkManager,
                                   analyticsManager: mockAnalyticsManager,
+                                  paymentSendingDelegate: mockAppCoordinator,
                                   invitationWorkerDelegate: mockInvitationDelegate
     )
   }
