@@ -90,6 +90,8 @@ struct MockDetailDataGenerator {
         case .completed:
           amtDetails = MockDetailCellVM.testAmountDetails(sats: sats, fiatWhenInvited: fiatWhenInvited, fiatWhenTransacted: fiatWhenTransacted)
         }
+      } else if transactionStatus == .completed {
+        amtDetails = MockDetailCellVM.testAmountDetails(sats: sats, fiatWhenInvited: nil, fiatWhenTransacted: fiatWhenTransacted)
       }
 
       return amtDetails
