@@ -167,7 +167,7 @@
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </view>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="13" translatesAutoresizingMaskIntoConstraints="NO" id="G4d-NH-1u9" userLabel="Memo Stack View">
-                                        <rect key="frame" x="0.0" y="89" width="275" height="119"/>
+                                        <rect key="frame" x="0.0" y="86.5" width="275" height="119"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" verticalCompressionResistancePriority="749" translatesAutoresizingMaskIntoConstraints="NO" id="7cs-Up-bPJ" userLabel="top buffer view">
                                                 <rect key="frame" x="17.5" y="0.0" width="240" height="0.0"/>
@@ -200,17 +200,17 @@
                                         </constraints>
                                     </stackView>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="js4-IL-nyY">
-                                        <rect key="frame" x="0.0" y="247" width="275" height="50"/>
+                                        <rect key="frame" x="0.0" y="241.5" width="275" height="50"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="10" id="XkB-q5-rsC"/>
                                         </constraints>
                                     </view>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="13" translatesAutoresizingMaskIntoConstraints="NO" id="8AX-cC-BVu" userLabel="Bottom Stack View">
-                                        <rect key="frame" x="0.0" y="336" width="275" height="158.5"/>
+                                        <rect key="frame" x="0.0" y="328" width="275" height="166.5"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="bR9-tN-fDA" userLabel="Message Stack View">
-                                                <rect key="frame" x="0.0" y="0.0" width="275" height="100"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="275" height="108"/>
                                                 <subviews>
                                                     <view contentMode="scaleToFill" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="tqV-1x-bnX" customClass="TransactionDetailsInfoContainer" customModule="DropBit" customModuleProvider="target">
                                                         <rect key="frame" x="0.0" y="0.0" width="275" height="50"/>
@@ -232,7 +232,7 @@
                                                         </constraints>
                                                     </view>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xxv-sM-Z5W" customClass="TransactionDetailBottomButton" customModule="DropBit" customModuleProvider="target">
-                                                        <rect key="frame" x="0.0" y="50" width="275" height="50"/>
+                                                        <rect key="frame" x="0.0" y="58" width="275" height="50"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="50" id="Utd-FB-9Aa"/>
                                                         </constraints>
@@ -244,14 +244,14 @@
                                                 </subviews>
                                             </stackView>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="d8V-VH-nZh" userLabel="buffer view">
-                                                <rect key="frame" x="0.0" y="113" width="275" height="12"/>
+                                                <rect key="frame" x="0.0" y="121" width="275" height="12"/>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="12" id="jaJ-QN-VPc"/>
                                                 </constraints>
                                             </view>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" verticalCompressionResistancePriority="752" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1bD-K3-Kso" customClass="TransactionDetailDateLabel" customModule="DropBit" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="138" width="275" height="20.5"/>
+                                                <rect key="frame" x="0.0" y="146" width="275" height="20.5"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
@@ -300,7 +300,7 @@
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
                 <constraint firstItem="K2H-9f-uij" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="Uwx-bi-63K"/>
-                <constraint firstItem="ZTg-uK-7eu" firstAttribute="bottom" secondItem="K2H-9f-uij" secondAttribute="bottom" constant="32" id="aqh-XT-7Yt"/>
+                <constraint firstItem="ZTg-uK-7eu" firstAttribute="bottom" secondItem="K2H-9f-uij" secondAttribute="bottom" constant="16" id="aqh-XT-7Yt"/>
                 <constraint firstItem="K2H-9f-uij" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="dZW-ca-egy"/>
                 <constraint firstAttribute="trailing" secondItem="K2H-9f-uij" secondAttribute="trailing" id="ggD-o4-nox"/>
             </constraints>
