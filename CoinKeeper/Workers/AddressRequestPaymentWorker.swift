@@ -19,12 +19,14 @@ class AddressRequestPaymentWorker {
   let walletManager: WalletManagerType
   let persistenceManager: PersistenceManagerType
   let analyticsManager: AnalyticsManagerType
+  weak var paymentSendingDelegate: AllPaymentSendingDelegate?
 
-  init(walletAddressDataWorker worker: WalletAddressDataWorker) {
+  init(walletAddressDataWorker worker: WalletAddressDataWorker, paymentDelegate: AllPaymentSendingDelegate) {
     self.networkManager = worker.networkManager
     self.walletManager = worker.walletManager
     self.persistenceManager = worker.persistenceManager
     self.analyticsManager = worker.analyticsManager
+    self.paymentSendingDelegate = paymentDelegate
   }
 
   func completeWalletAddressRequestFulfillmentLocally(outgoingTransactionData: OutgoingTransactionData,
@@ -140,35 +142,27 @@ class LightningAddressRequestPaymentWorker: AddressRequestPaymentWorker {
                                      responseId: String,
                                      in context: NSManagedObjectContext) -> Promise<Void> {
 
-    // guard against insufficient funds
     let satsToPay = pendingInvitation.totalPendingAmount
     let spendableBalance = self.walletManager.spendableBalance(in: context)
     guard spendableBalance.lightning >= satsToPay else {
       return Promise(error: PendingInvitationError.insufficientFundsForInvitationWithID(responseId))
     }
 
+    guard let paymentDelegate = paymentSendingDelegate else {
+      return Promise(error: PendingInvitationError.noPaymentDelegate)
+    }
+
     let lightningInputs = LightningPaymentInputs(sats: satsToPay, invoice: invoice, sharedPayload: outgoingTxData.sharedPayloadDTO)
-    return self.networkManager.payLightningPaymentRequest(invoice, sats: pendingInvitation.btcAmount)
+    return paymentDelegate.payLightningRequest(withInputs: lightningInputs, to: outgoingTxData.receiver)
       .get(in: context) { paymentResponse in
         return self.persistenceManager.brokers.lightning.persistPaymentResponse(paymentResponse,
                                                                          receiver: outgoingTxData.receiver,
                                                                          inputs: lightningInputs,
                                                                          in: context) }
-      .then(in: context) { response -> Promise<String> in
-        let identityFactory = SenderIdentityFactory(persistenceManager: self.persistenceManager)
-        let maybePostable = PayloadPostableLightningObject(inputs: lightningInputs, paymentResultId: response.result.cleanedId,
-                                                           sender: identityFactory., receiver: receiver)
-
-        if let postableObject = maybePostable {
-          return self.networkManager.postSharedPayloadIfAppropriate(withPostableObject: postableObject, walletManager: walletManager)
-        } else {
-          return Promise.value(response.result.cleanedId)
-        }
-    }
       .then(in: context) { _ -> Promise<Void> in
         return self.completeWalletAddressRequestFulfillmentLocally(outgoingTransactionData: outgoingTxData, invitationId: responseId,
-                                                                   pendingInvitation: pendingInvitation, txData: nil, in: context) }
-  }
+      pendingInvitation: pendingInvitation, txData: nil, in: context) }.asVoid()
+    }
 }
 
 class OnChainAddressRequestPaymentWorker: AddressRequestPaymentWorker {

@@ -54,18 +54,21 @@ class WalletAddressDataWorker: WalletAddressDataWorkerType {
   unowned let networkManager: NetworkManagerType
   unowned let analyticsManager: AnalyticsManagerType
   unowned var invitationDelegate: InvitationWorkerDelegate
+  weak var paymentSendingDelegate: AllPaymentSendingDelegate?
 
   init(
     walletManager: WalletManagerType,
     persistenceManager: PersistenceManagerType,
     networkManager: NetworkManagerType,
     analyticsManager: AnalyticsManagerType,
+    paymentSendingDelegate: AllPaymentSendingDelegate,
     invitationWorkerDelegate: InvitationWorkerDelegate
     ) {
     self.walletManager = walletManager
     self.persistenceManager = persistenceManager
     self.networkManager = networkManager
     self.analyticsManager = analyticsManager
+    self.paymentSendingDelegate = paymentSendingDelegate
     self.invitationDelegate = invitationWorkerDelegate
   }
 
@@ -450,6 +453,10 @@ class WalletAddressDataWorker: WalletAddressDataWorkerType {
       return Promise(error: PendingInvitationError.noAddressProvided)
     }
 
+    guard let delegate = paymentSendingDelegate else {
+      return Promise(error: PendingInvitationError.noPaymentDelegate)
+    }
+
     if response.addressTypeCase == .lightning {
       guard paymentTarget != WalletAddressesTarget.autogenerateInvoicesAddressValue else {
         return Promise(error: PendingInvitationError.noInvoiceProvided)
@@ -458,12 +465,12 @@ class WalletAddressDataWorker: WalletAddressDataWorkerType {
 
     switch response.addressTypeCase {
     case .btc:
-      let paymentWorker = OnChainAddressRequestPaymentWorker(walletAddressDataWorker: self)
+      let paymentWorker = OnChainAddressRequestPaymentWorker(walletAddressDataWorker: self, paymentDelegate: delegate)
       let outgoingTxData = paymentWorker.outgoingTransactionData(for: response, paymentTarget: paymentTarget, invitation: pendingInvitation)
       return paymentWorker.payOnChainInvitationRequest(with: outgoingTxData, pendingInvitation: pendingInvitation,
                                                        responseId: response.id, in: context)
     case .lightning:
-      let paymentWorker = LightningAddressRequestPaymentWorker(walletAddressDataWorker: self)
+      let paymentWorker = LightningAddressRequestPaymentWorker(walletAddressDataWorker: self, paymentDelegate: delegate)
       let outgoingTxData = paymentWorker.outgoingTransactionData(for: response, paymentTarget: paymentTarget, invitation: pendingInvitation)
       return paymentWorker.payLightningInvitationRequest(with: outgoingTxData, pendingInvitation: pendingInvitation,
                                                          invoice: paymentTarget, responseId: response.id, in: context)

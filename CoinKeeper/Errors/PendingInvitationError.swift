@@ -11,6 +11,7 @@ enum PendingInvitationError: Error {
   case noSentInvitationExistsForID
   case noAddressProvided
   case noInvoiceProvided
+  case noPaymentDelegate
   case insufficientFundsForInvitationWithID(String)
   case insufficientFeeForInvitationWithID(String)
 }

@@ -128,28 +128,34 @@ extension AppCoordinator: PaymentSendingDelegate {
                                                 receiver: OutgoingDropBitReceiver?,
                                                 success: @escaping CKCompletion,
                                                 failure: @escaping CKErrorCompletion) {
-    self.networkManager.payLightningPaymentRequest(inputs.invoice, sats: inputs.sats)
-      .get { self.persistLightningPaymentResponse($0, receiver: receiver, inputs: inputs) }
-      .then { response -> Promise<String> in
-        let maybeSender = self.sharedPayloadSenderIdentity(forReceiver: receiver)
-        let maybePostable = PayloadPostableLightningObject(inputs: inputs, paymentResultId: response.result.cleanedId,
-                                                           sender: maybeSender, receiver: receiver)
-        if let postableObject = maybePostable {
-          return self.postSharedPayload(postableObject)
-        } else {
-          return Promise.value(response.result.cleanedId)
-        }
-      }
-      .done { _ in
+      //TODO: Get updated ledger and persist new entry immediately following payment
+      payLightningRequest(withInputs: inputs, to: receiver)
+        .done { _ in
         success()
         self.didBroadcastTransaction()
       }
       .catch(failure)
   }
 
-  func persistLightningPaymentResponse(_ response: LNTransactionResponse,
-                                       receiver: OutgoingDropBitReceiver?,
-                                       inputs: LightningPaymentInputs) {
+  func payLightningRequest(withInputs inputs: LightningPaymentInputs,
+                           to receiver: OutgoingDropBitReceiver?) -> Promise<LNTransactionResponse> {
+    return self.networkManager.payLightningPaymentRequest(inputs.invoice, sats: inputs.sats)
+    .get { self.persistLightningPaymentResponse($0, receiver: receiver, inputs: inputs) }
+    .then { response -> Promise<LNTransactionResponse> in
+      let maybeSender = self.sharedPayloadSenderIdentity(forReceiver: receiver)
+      let maybePostable = PayloadPostableLightningObject(inputs: inputs, paymentResultId: response.result.cleanedId,
+                                                         sender: maybeSender, receiver: receiver)
+      if let postableObject = maybePostable {
+        self.postSharedPayload(postableObject).cauterize()
+      }
+
+      return Promise.value(response)
+    }
+  }
+
+  private func persistLightningPaymentResponse(_ response: LNTransactionResponse,
+                                               receiver: OutgoingDropBitReceiver?,
+                                               inputs: LightningPaymentInputs) {
     let context = self.persistenceManager.createBackgroundContext()
     context.performAndWait {
       self.persistenceManager.brokers.lightning.persistPaymentResponse(response, receiver: receiver,
