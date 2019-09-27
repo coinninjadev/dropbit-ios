@@ -47,6 +47,7 @@ class TransactionHistoryDetailCellAddressView: UIView {
   override func awakeFromNib() {
     super.awakeFromNib()
     backgroundColor = .clear
+    addressStatusLabel.isHidden = true
     addressTextButton.titleLabel?.font = .medium(13)
     addressTextButton.setTitleColor(.lightBlueTint, for: .normal)
     addressTextButton.setTitleColor(.darkGrayText, for: .disabled)
@@ -64,7 +65,8 @@ class TransactionHistoryDetailCellAddressView: UIView {
 
     addressStatusLabel.text = config.addressStatusLabelString
 
-    addressTextButton.setTitle(config.receiverAddress, for: .normal)
+    let maybeAddress = config.receiverAddress ?? config.addressProvidedToSender
+    addressTextButton.setTitle(maybeAddress, for: .normal)
 
     let hideViews = config.shouldHideAddressViews
     addressStatusLabel.isHidden = hideViews.statusLabel

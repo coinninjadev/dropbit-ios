@@ -35,7 +35,9 @@ extension TransactionHistoryDetailCellAddressViewConfigurable {
   }
 
   var addressButtonIsActive: Bool {
-    if addressStatusLabelString == nil, let receiverAddress = receiverAddress, receiverAddress.isValidBitcoinAddress() {
+    guard !broadcastFailed else { return false }
+    let maybeAddress = receiverAddress ?? addressProvidedToSender
+    if addressStatusLabelString == nil, let address = maybeAddress, address.isValidBitcoinAddress() {
       return true
     } else {
       return false
@@ -43,11 +45,11 @@ extension TransactionHistoryDetailCellAddressViewConfigurable {
   }
 
   var shouldEnableAddressTextButton: Bool {
-    return !broadcastFailed
+    return addressButtonIsActive
   }
 
   var shouldHideAddressImageButton: Bool {
-    return (broadcastFailed || !addressButtonIsActive)
+    return !addressButtonIsActive
   }
 
   /// Label not visible if address exists

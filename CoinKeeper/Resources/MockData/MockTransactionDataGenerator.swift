@@ -25,6 +25,8 @@ struct MockDetailDataGenerator {
          transactionStatus: TransactionStatus,
          memo: String?,
          amountDetails: TransactionAmountDetails? = nil,
+         receiverAddress: String? = nil,
+         addressProvidedToSender: String? = nil,
          isLightningTransfer: Bool = false,
          lightningInvoice: String? = nil) {
 
@@ -38,8 +40,8 @@ struct MockDetailDataGenerator {
                  status: transactionStatus,
                  onChainConfirmations: nil,
                  isLightningTransfer: isLightningTransfer,
-                 receiverAddress: nil,
-                 addressProvidedToSender: nil,
+                 receiverAddress: receiverAddress,
+                 addressProvidedToSender: addressProvidedToSender,
                  lightningInvoice: lightningInvoice,
                  paymentIdIsValid: true,
                  selectedCurrency: .fiat,
@@ -55,15 +57,22 @@ struct MockDetailDataGenerator {
                      direction: TransactionDirection,
                      identity: UserIdentityType,
                      invitationStatus: InvitationStatus?,
-                     transactionStatus: TransactionStatus) {
+                     transactionStatus: TransactionStatus,
+                     addressProvidedToSender: String? = nil) {
 
       var maybeMemo: String? = "Coffee ☕️"
       if let inviteStatus = invitationStatus, inviteStatus != .completed, direction == .in {
         maybeMemo = nil
       }
 
+      var maybeReceiverAddress: String?
+      if (transactionStatus == .completed) && walletTxType == .onChain {
+        maybeReceiverAddress = MockDropBitVM.mockValidBitcoinAddress()
+      }
+
       self.init(walletTxType: walletTxType, direction: direction, counterparty: identity.testCounterparty,
-                invitationStatus: invitationStatus, transactionStatus: transactionStatus, memo: maybeMemo)
+                invitationStatus: invitationStatus, transactionStatus: transactionStatus, memo: maybeMemo,
+                receiverAddress: maybeReceiverAddress, addressProvidedToSender: addressProvidedToSender)
     }
 
     static func amountDetails(for sats: Int, invitationStatus: InvitationStatus?, transactionStatus: TransactionStatus) -> TransactionAmountDetails {
@@ -146,7 +155,13 @@ struct MockDetailDataGenerator {
   }
 
   private func invitePendingReceiver(_ identity: UserIdentityType) -> MockTransactionDetailCellViewModel {
-    return MockDropBitVM(walletTxType: walletTxType, direction: .in, identity: identity, invitationStatus: .addressSent, transactionStatus: .pending)
+    var providedAddress: String?
+    if walletTxType == .onChain {
+      providedAddress = MockDropBitVM.mockValidBitcoinAddress()
+    }
+
+    return MockDropBitVM(walletTxType: walletTxType, direction: .in, identity: identity, invitationStatus: .addressSent,
+                         transactionStatus: .pending, addressProvidedToSender: providedAddress)
   }
 
   private func transferCompleteSender(_ identity: UserIdentityType) -> MockTransactionDetailCellViewModel {

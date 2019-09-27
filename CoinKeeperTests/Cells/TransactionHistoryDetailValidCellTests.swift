@@ -586,6 +586,31 @@ class TransactionHistoryDetailValidCellTests: XCTestCase {
     XCTAssertTrue(sut.addressView.isHidden)
   }
 
+  func testIncomingPendingOnChainDropBitShowsProvidedAddress() {
+    let expectedAddress = MockDetailCellVM.mockValidBitcoinAddress()
+    let counterparty = MockDetailCellVM.mockTwitterCounterparty()
+    let viewModel = MockDetailCellVM.testDetailInstance(walletTxType: .onChain, direction: .in, status: .pending,
+                                                        addressProvidedToSender: expectedAddress,
+                                                        counterpartyConfig: counterparty, invitationStatus: .addressSent)
+    sut.configure(with: viewModel, delegate: mockDelegate)
+    XCTAssertFalse(sut.addressView.isHidden)
+    XCTAssertEqual(sut.addressView.addressTextButton.titleLabel?.text, expectedAddress)
+    XCTAssertFalse(sut.addressView.addressTextButton.isEnabled)
+  }
+
+  func testOutgoingCompletedOnChainDropBitShowsReceiverAddress() {
+    let expectedAddress = MockDetailCellVM.mockValidBitcoinAddress()
+    let counterparty = MockDetailCellVM.mockTwitterCounterparty()
+    let viewModel = MockDetailCellVM.testDetailInstance(walletTxType: .onChain, direction: .out, status: .completed,
+                                                        receiverAddress: expectedAddress,
+                                                        counterpartyConfig: counterparty, invitationStatus: .completed)
+    sut.configure(with: viewModel, delegate: mockDelegate)
+    XCTAssertFalse(sut.addressView.isHidden)
+    XCTAssertFalse(sut.addressView.addressTextButton.isHidden)
+    XCTAssertEqual(sut.addressView.addressTextButton.titleLabel?.text, expectedAddress)
+    XCTAssertTrue(sut.addressView.addressTextButton.isEnabled)
+  }
+
   // MARK: Bottom button
   func testButtonTitleIsSet() {
     let viewModel = MockDetailCellVM.testDetailInstance(direction: .out, invitationStatus: .requestSent)
