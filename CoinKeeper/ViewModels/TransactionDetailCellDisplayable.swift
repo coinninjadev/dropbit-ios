@@ -130,7 +130,7 @@ extension TransactionDetailCellViewModelType {
     } else {
       switch walletTxType {
       case .onChain:    return string(for: .complete)
-      case .lightning:  return string(for: .invoicePaid)
+      case .lightning:  return isDropBit ? string(for: .complete) : string(for: .invoicePaid)
       }
     }
   }

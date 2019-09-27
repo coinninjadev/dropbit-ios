@@ -261,6 +261,15 @@ class TransactionHistoryDetailValidCellTests: XCTestCase {
     XCTAssertEqual(sut.statusLabel.textColor, UIColor.darkGrayText)
   }
 
+  func testStatusLabel_lightningDropBitComplete() {
+    let counterparty = MockDetailCellVM.mockTwitterCounterparty()
+    let viewModel = MockDetailCellVM.testDetailInstance(walletTxType: .lightning, status: .completed,
+                                                        counterpartyConfig: counterparty, invitationStatus: .completed)
+    sut.configure(with: viewModel, delegate: mockDelegate)
+    XCTAssertEqual(sut.statusLabel.text, viewModel.string(for: .complete))
+    XCTAssertEqual(sut.statusLabel.textColor, UIColor.darkGrayText)
+  }
+
   func testStatusLabel_dropBitCanceled() {
     let viewModel = MockDetailCellVM.testDetailInstance(status: .canceled)
     sut.configure(with: viewModel, delegate: mockDelegate)
