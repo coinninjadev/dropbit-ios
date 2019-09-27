@@ -62,21 +62,21 @@ extension TransactionSummaryCellViewModelType {
   }
 
   var leadingImageConfig: SummaryCellLeadingImageConfig {
-    let directionConfig = TransactionCellDirectionConfig(bgColor: accentColor, image: directionIcon)
+    let directionConfig = TransactionCellDirectionConfig(bgColor: accentColor, image: relevantDirectionImage)
     return SummaryCellLeadingImageConfig(twitterConfig: counterpartyConfig?.twitterConfig,
                                          directionConfig: directionConfig)
   }
 
   /// Transaction type icon, not an avatar
-  var directionIcon: UIImage {
+  var relevantDirectionImage: UIImage {
     guard isValidTransaction else { return invalidImage }
 
     if isLightningTransfer {
       return transferImage
     } else {
       switch walletTxType {
-      case .lightning:  return isPendingInvoice ? lightningImage : directionImage
-      case .onChain:    return directionImage
+      case .lightning:  return isPendingInvoice ? lightningImage : basicDirectionImage
+      case .onChain:    return basicDirectionImage
       }
     }
   }
@@ -96,7 +96,7 @@ extension TransactionSummaryCellViewModelType {
     return walletTxType == .lightning && status == .pending
   }
 
-  private var directionImage: UIImage {
+  var basicDirectionImage: UIImage {
     switch direction {
     case .in:   return incomingImage
     case .out:  return outgoingImage
