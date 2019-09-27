@@ -19,6 +19,7 @@ class TransactionHistoryDetailCellAddressView: UIView {
       if isHidden {
         allViews?.forEach { $0.isHidden = true }
       } else {
+        allViews?.forEach { $0.isHidden = false }
         config.map { configure(with: $0) }
       }
     }
@@ -46,7 +47,6 @@ class TransactionHistoryDetailCellAddressView: UIView {
   override func awakeFromNib() {
     super.awakeFromNib()
     backgroundColor = .clear
-    addressStatusLabel.isHidden = true
     addressTextButton.titleLabel?.font = .medium(13)
     addressTextButton.setTitleColor(.lightBlueTint, for: .normal)
     addressTextButton.setTitleColor(.darkGrayText, for: .disabled)
