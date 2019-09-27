@@ -93,6 +93,11 @@ class MockTransactionSummaryCellViewModel: TransactionSummaryCellViewModelType {
       counterpartyConfig: counterpartyConfig, memo: memo)
   }
 
+  static func mockTwitterCounterparty() -> TransactionCellCounterpartyConfig {
+    let twitter = MockDetailCellVM.mockTwitterConfig()
+    return TransactionCellCounterpartyConfig(twitterConfig: twitter)
+  }
+
   static func mockTwitterConfig() -> TransactionCellTwitterConfig {
     let avatar = UIImage(named: "testAvatar")!
     return TransactionCellTwitterConfig(avatar: avatar, displayHandle: "@satoshi", displayName: "Satoshi Nakamoto")

@@ -95,8 +95,7 @@ class TransactionHistoryDetailValidCellTests: XCTestCase {
   }
 
   func testQuestionMarkButtonTellsDelegate() {
-    let twitter = MockDetailCellVM.mockTwitterConfig()
-    let counterparty = TransactionCellCounterpartyConfig(twitterConfig: twitter)
+    let counterparty = MockDetailCellVM.mockTwitterCounterparty()
     let viewModel = MockDetailCellVM.testDetailInstance(walletTxType: .onChain, direction: .out, counterpartyConfig: counterparty)
     sut.configure(with: viewModel, delegate: mockDelegate)
     let expectedTooltip = DetailCellTooltip.dropBit
@@ -236,9 +235,7 @@ class TransactionHistoryDetailValidCellTests: XCTestCase {
   }
 
   func testStatusLabel_onChainDropBitSent() {
-    let counterparty = TransactionCellCounterpartyConfig(displayName: nil,
-                                                         displayPhoneNumber: nil,
-                                                         twitterConfig: MockDetailCellVM.mockTwitterConfig())
+    let counterparty = MockDetailCellVM.mockTwitterCounterparty()
     let viewModel = MockDetailCellVM.testDetailInstance(walletTxType: .onChain, direction: .out,
                                                         status: .pending, counterpartyConfig: counterparty)
     sut.configure(with: viewModel, delegate: mockDelegate)
@@ -247,9 +244,7 @@ class TransactionHistoryDetailValidCellTests: XCTestCase {
   }
 
   func testStatusLabel_lightningDropBitSent() {
-    let counterparty = TransactionCellCounterpartyConfig(displayName: nil,
-                                                         displayPhoneNumber: nil,
-                                                         twitterConfig: MockDetailCellVM.mockTwitterConfig())
+    let counterparty = MockDetailCellVM.mockTwitterCounterparty()
     let viewModel = MockDetailCellVM.testDetailInstance(walletTxType: .lightning, direction: .out,
                                                         status: .pending, counterpartyConfig: counterparty)
     sut.configure(with: viewModel, delegate: mockDelegate)
@@ -258,9 +253,7 @@ class TransactionHistoryDetailValidCellTests: XCTestCase {
   }
 
   func testStatusLabel_pendingOnChainDropBitReceived() {
-    let counterparty = TransactionCellCounterpartyConfig(displayName: nil,
-                                                         displayPhoneNumber: nil,
-                                                         twitterConfig: MockDetailCellVM.mockTwitterConfig())
+    let counterparty = MockDetailCellVM.mockTwitterCounterparty()
     let viewModel = MockDetailCellVM.testDetailInstance(walletTxType: .onChain, direction: .in,
                                                         status: .pending, counterpartyConfig: counterparty)
     sut.configure(with: viewModel, delegate: mockDelegate)
@@ -314,9 +307,8 @@ class TransactionHistoryDetailValidCellTests: XCTestCase {
 
   // MARK: Twitter image
   func testTwitterConfig_loadsAvatar() {
-    let twitterConfig = MockDetailCellVM.mockTwitterConfig()
-    let counterpartyConfig = TransactionCellCounterpartyConfig(twitterConfig: twitterConfig)
-    let expectedImage = twitterConfig.avatar
+    let counterpartyConfig = MockDetailCellVM.mockTwitterCounterparty()
+    let expectedImage = counterpartyConfig.twitterConfig?.avatar
     let viewModel = MockDetailCellVM.testDetailInstance(counterpartyConfig: counterpartyConfig)
     sut.configure(with: viewModel, delegate: mockDelegate)
     XCTAssertFalse(sut.twitterAvatarView.isHidden)
@@ -617,8 +609,7 @@ class TransactionHistoryDetailValidCellTests: XCTestCase {
 
   // MARK: Tooltip
   func testTooltipTypeSetsButtonTag() {
-    let twitter = MockDetailCellVM.mockTwitterConfig()
-    let counterparty = TransactionCellCounterpartyConfig(twitterConfig: twitter)
+    let counterparty = MockDetailCellVM.mockTwitterCounterparty()
     let viewModel = MockDetailCellVM.testDetailInstance(walletTxType: .onChain, direction: .out, counterpartyConfig: counterparty)
     sut.configure(with: viewModel, delegate: mockDelegate)
     let expectedTooltip = DetailCellTooltip.dropBit
