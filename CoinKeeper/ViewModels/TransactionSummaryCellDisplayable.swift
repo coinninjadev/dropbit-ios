@@ -87,7 +87,7 @@ extension TransactionSummaryCellViewModelType {
     if isPendingInvoice {
       return .lightningBlue
     } else {
-      return directionColor
+      return basicDirectionColor
     }
   }
 
@@ -103,7 +103,7 @@ extension TransactionSummaryCellViewModelType {
     }
   }
 
-  private var directionColor: UIColor {
+  var basicDirectionColor: UIColor {
     switch direction {
     case .in:   return .incomingGreen
     case .out:  return .outgoingGray

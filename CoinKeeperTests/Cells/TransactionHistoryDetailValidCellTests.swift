@@ -122,10 +122,12 @@ class TransactionHistoryDetailValidCellTests: XCTestCase {
   // MARK: - Base Cell Configuration
 
   // MARK: Direction view
-  func testUnpaidLightningInvoice_loadsImageAndColor() {
-    let viewModel = MockDetailCellVM.testDetailInstance(walletTxType: .lightning, direction: .in, status: .pending, isLightningTransfer: false)
+  func testPendingLightningDropBit_loadsImageAndColor() {
+    let counterparty = MockDetailCellVM.mockTwitterCounterparty()
+    let viewModel = MockDetailCellVM.testDetailInstance(walletTxType: .lightning, direction: .out, status: .pending,
+                                                        isLightningTransfer: false, counterpartyConfig: counterparty, invitationStatus: .requestSent)
     sut.configure(with: viewModel, delegate: mockDelegate)
-    let expectedImage = viewModel.lightningImage, expectedColor = UIColor.lightningBlue
+    let expectedImage = viewModel.basicDirectionImage, expectedColor = UIColor.outgoingGray
     XCTAssertEqual(sut.directionView.image, expectedImage)
     XCTAssertEqual(sut.directionView.backgroundColor, expectedColor)
   }

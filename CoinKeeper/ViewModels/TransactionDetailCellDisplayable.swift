@@ -90,8 +90,15 @@ extension TransactionDetailCellViewModelType {
   }
 
   var directionConfig: TransactionCellDirectionConfig {
-    let image = isLightningTransfer ? basicDirectionImage : relevantDirectionImage
-    return TransactionCellDirectionConfig(bgColor: accentColor, image: image)
+    let isValidDropBit = isDropBit && isValidTransaction
+
+    let useBasicDirection = isLightningTransfer || isValidDropBit
+    if useBasicDirection {
+      return TransactionCellDirectionConfig(bgColor: basicDirectionColor, image: basicDirectionImage)
+    } else {
+      return TransactionCellDirectionConfig(bgColor: accentColor, image: relevantDirectionImage)
+    }
+
   }
 
   var detailStatusText: String {
