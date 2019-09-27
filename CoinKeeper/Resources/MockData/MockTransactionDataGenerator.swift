@@ -181,7 +181,7 @@ extension UserIdentityType {
   var testCounterparty: TransactionCellCounterpartyConfig {
     switch self {
     case .phone:
-      return TransactionCellCounterpartyConfig(displayPhoneNumber: "(123) 456-7890")
+      return TransactionCellCounterpartyConfig(displayPhoneNumber: "(330) 456-7890")
     case .twitter:
       let twitterConfig = MockDetailCellVM.mockTwitterConfig()
       return TransactionCellCounterpartyConfig(twitterConfig: twitterConfig)
