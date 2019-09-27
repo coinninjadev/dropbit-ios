@@ -94,6 +94,23 @@ class TransactionHistoryDetailValidCellTests: XCTestCase {
     XCTAssertTrue(mockDelegate.tappedClose)
   }
 
+  func testTwitterShareButtonTellsDelegate() {
+    sut.twitterShareButton.sendActions(for: .touchUpInside)
+    XCTAssertTrue(mockDelegate.tappedTwitterShare)
+  }
+
+  func testAddressButtonTellsDelegate() {
+    let expectedAddress = MockDetailCellVM.mockValidBitcoinAddress()
+    let counterparty = MockDetailCellVM.mockTwitterCounterparty()
+    let viewModel = MockDetailCellVM.testDetailInstance(walletTxType: .onChain, direction: .out, status: .completed,
+                                                        receiverAddress: expectedAddress,
+                                                        counterpartyConfig: counterparty, invitationStatus: .completed)
+
+    sut.configure(with: viewModel, delegate: mockDelegate)
+    sut.addressView.addressTextButton.sendActions(for: .touchUpInside)
+    XCTAssertTrue(mockDelegate.tappedAddress)
+  }
+
   func testQuestionMarkButtonTellsDelegate() {
     let counterparty = MockDetailCellVM.mockTwitterCounterparty()
     let viewModel = MockDetailCellVM.testDetailInstance(walletTxType: .onChain, direction: .out, counterpartyConfig: counterparty)

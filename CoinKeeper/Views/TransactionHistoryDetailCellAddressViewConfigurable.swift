@@ -36,12 +36,16 @@ extension TransactionHistoryDetailCellAddressViewConfigurable {
 
   var addressButtonIsActive: Bool {
     guard !broadcastFailed else { return false }
-    let maybeAddress = receiverAddress ?? addressProvidedToSender
-    if addressStatusLabelString == nil, let address = maybeAddress, address.isValidBitcoinAddress() {
+    if addressStatusLabelString == nil, let address = relevantAddress, address.isValidBitcoinAddress() {
       return true
     } else {
       return false
     }
+  }
+
+  /// The address string to display and look up on block explorer if tapped
+  var relevantAddress: String? {
+    return receiverAddress ?? addressProvidedToSender
   }
 
   var shouldEnableAddressTextButton: Bool {
