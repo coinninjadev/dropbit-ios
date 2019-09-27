@@ -14,10 +14,11 @@ class MockTransactionHistoryDataSource: TransactionHistoryDataSourceType {
   weak var delegate: TransactionHistoryDataSourceDelegate?
 
   fileprivate var items: [TransactionDetailCellDisplayable]
+  fileprivate let generator: MockDetailDataGenerator
 
   init(walletTxType: WalletTransactionType) {
     self.walletTransactionType = walletTxType
-    let generator = MockDetailDataGenerator(walletTxType: walletTxType)
+    generator = MockDetailDataGenerator(walletTxType: walletTxType)
     let dropBitItems = generator.generatePhoneAndTwitterDropBitItems(categories: [.valid])
     self.items = dropBitItems
   }
@@ -50,7 +51,10 @@ class MockTransactionHistoryOnChainDataSource: MockTransactionHistoryDataSource 
 
   init() {
     super.init(walletTxType: .onChain)
-    // will append onChain-specific items
+    items += [
+      generator.lightningTransfer(walletTxType: walletTransactionType, direction: .out), //load
+      generator.lightningTransfer(walletTxType: walletTransactionType, direction: .in) //withdraw
+    ]
   }
 
 }
@@ -59,7 +63,10 @@ class MockTransactionHistoryLightningDataSource: MockTransactionHistoryDataSourc
 
   init() {
     super.init(walletTxType: .lightning)
-    // will append lightning-specific items
+    items += [
+      generator.lightningTransfer(walletTxType: walletTransactionType, direction: .in), //load
+      generator.lightningTransfer(walletTxType: walletTransactionType, direction: .out) //withdraw
+    ]
   }
 
 }

@@ -47,7 +47,7 @@ class MockTransactionSummaryCellViewModel: TransactionSummaryCellViewModelType {
   }
 
   static var testRates: ExchangeRates {
-    return [.BTC: 1, .USD: 7000]
+    return [.BTC: 1, .USD: 8500]
   }
 
   static func testAmountDetails(sats: Int,

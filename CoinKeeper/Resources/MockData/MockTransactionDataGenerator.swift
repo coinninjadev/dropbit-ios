@@ -8,7 +8,7 @@
 
 import Foundation
 
-enum MockDataDropBitCategory {
+enum MockDataDropBitCategory: CaseIterable {
   case valid, invalid
 }
 
@@ -91,6 +91,15 @@ struct MockDetailDataGenerator {
         }
       }
     }
+  }
+
+  func lightningTransfer(walletTxType: WalletTransactionType, direction: TransactionDirection) -> MockTransactionDetailCellViewModel {
+    let amountDetails = MockDetailCellVM.testAmountDetails(sats: 1_000_000)
+    return MockTransactionDetailCellViewModel(walletTxType: walletTxType, direction: direction, status: .completed, onChainConfirmations: 1,
+                                              isLightningTransfer: true, receiverAddress: MockDetailCellVM.mockValidBitcoinAddress(),
+                                              addressProvidedToSender: nil, lightningInvoice: nil, paymentIdIsValid: true, selectedCurrency: .fiat,
+                                              amountDetails: amountDetails, counterpartyConfig: nil, invitationStatus: nil,
+                                              memo: nil, memoIsShared: false, date: Date())
   }
 
   private func generateValidItems(_ identity: UserIdentityType) -> [MockTransactionDetailCellViewModel] {
