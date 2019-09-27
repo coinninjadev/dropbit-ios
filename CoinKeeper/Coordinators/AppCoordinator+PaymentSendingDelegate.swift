@@ -138,18 +138,20 @@ extension AppCoordinator: PaymentSendingDelegate {
   }
 
   func payLightningRequest(withInputs inputs: LightningPaymentInputs,
-                           to receiver: OutgoingDropBitReceiver?) -> Promise<LNTransactionResponse> {
+                           to receiver: OutgoingDropBitReceiver?) -> Promise<Void> {
     return self.networkManager.payLightningPaymentRequest(inputs.invoice, sats: inputs.sats)
     .get { self.persistLightningPaymentResponse($0, receiver: receiver, inputs: inputs) }
-    .then { response -> Promise<LNTransactionResponse> in
+    .then { response -> Promise<Void> in
       let maybeSender = self.sharedPayloadSenderIdentity(forReceiver: receiver)
       let maybePostable = PayloadPostableLightningObject(inputs: inputs, paymentResultId: response.result.cleanedId,
                                                          sender: maybeSender, receiver: receiver)
       if let postableObject = maybePostable {
-        self.postSharedPayload(postableObject).cauterize()
+        return self.postSharedPayload(postableObject).asVoid().recover { error in
+          log.error("Shared payload error: \(error.localizedDescription)")
+        }
+      } else {
+        return Promise.value(())
       }
-
-      return Promise.value(response)
     }
   }
 

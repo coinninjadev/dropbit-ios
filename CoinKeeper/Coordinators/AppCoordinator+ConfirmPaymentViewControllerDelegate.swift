@@ -32,10 +32,12 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate {
     let pinEntryViewModel = InviteVerificationPinEntryViewModel()
 
     let successHandler: CKCompletion = { [unowned self] in
-      guard outgoingInvitationDTO.fee > 0 else {
-        log.error("DropBit invitation fee is zero")
-        self.handleFailure(error: TransactionDataError.insufficientFee)
-        return
+      if outgoingInvitationDTO.walletTxType == .onChain {
+        guard outgoingInvitationDTO.fee > 0 else {
+          log.error("DropBit invitation fee is zero")
+          self.handleFailure(error: TransactionDataError.insufficientFee)
+          return
+        }
       }
 
       let dropBitReceiver = outgoingInvitationDTO.contact.asDropBitReceiver
@@ -63,11 +65,14 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate {
   private func handleSuccessfulInviteVerification(with inviteBody: WalletAddressRequestBody, outgoingInvitationDTO: OutgoingInvitationDTO) {
 
     // guard against fee at 0 again, to really ensure that it is not zero before creating the network request
-    guard outgoingInvitationDTO.fee > 0 else {
-      log.error("DropBit invitation fee is zero")
-      handleFailure(error: TransactionDataError.insufficientFee)
-      return
+    if outgoingInvitationDTO.walletTxType == .onChain {
+      guard outgoingInvitationDTO.fee > 0 else {
+        log.error("DropBit invitation fee is zero")
+        handleFailure(error: TransactionDataError.insufficientFee)
+        return
+      }
     }
+
     let bgContext = persistenceManager.createBackgroundContext()
     let successFailViewController = SuccessFailViewController.newInstance(viewModel: PaymentSuccessFailViewModel(mode: .pending),
                                                                           delegate: self)

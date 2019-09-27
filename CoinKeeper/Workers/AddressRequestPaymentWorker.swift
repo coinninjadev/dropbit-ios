@@ -154,11 +154,6 @@ class LightningAddressRequestPaymentWorker: AddressRequestPaymentWorker {
 
     let lightningInputs = LightningPaymentInputs(sats: satsToPay, invoice: invoice, sharedPayload: outgoingTxData.sharedPayloadDTO)
     return paymentDelegate.payLightningRequest(withInputs: lightningInputs, to: outgoingTxData.receiver)
-      .get(in: context) { paymentResponse in
-        return self.persistenceManager.brokers.lightning.persistPaymentResponse(paymentResponse,
-                                                                         receiver: outgoingTxData.receiver,
-                                                                         inputs: lightningInputs,
-                                                                         in: context) }
       .then(in: context) { _ -> Promise<Void> in
         return self.completeWalletAddressRequestFulfillmentLocally(outgoingTransactionData: outgoingTxData, invitationId: responseId,
       pendingInvitation: pendingInvitation, txData: nil, in: context) }.asVoid()
