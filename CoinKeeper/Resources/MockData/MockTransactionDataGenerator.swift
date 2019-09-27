@@ -23,11 +23,11 @@ struct MockDetailDataGenerator {
          counterparty: TransactionCellCounterpartyConfig?,
          invitationStatus: InvitationStatus?,
          transactionStatus: TransactionStatus,
+         memo: String?,
          amountDetails: TransactionAmountDetails? = nil,
          isLightningTransfer: Bool = false,
          lightningInvoice: String? = nil) {
 
-      let memo = "Coffee ☕️"
       let sats = 50_000
       let amtDetails = amountDetails ?? MockDropBitVM.amountDetails(for: sats,
                                                                     invitationStatus: invitationStatus,
@@ -56,8 +56,14 @@ struct MockDetailDataGenerator {
                      identity: UserIdentityType,
                      invitationStatus: InvitationStatus?,
                      transactionStatus: TransactionStatus) {
+
+      var maybeMemo: String? = "Coffee ☕️"
+      if let inviteStatus = invitationStatus, inviteStatus != .completed, direction == .in {
+        maybeMemo = nil
+      }
+
       self.init(walletTxType: walletTxType, direction: direction, counterparty: identity.testCounterparty,
-                invitationStatus: invitationStatus, transactionStatus: transactionStatus)
+                invitationStatus: invitationStatus, transactionStatus: transactionStatus, memo: maybeMemo)
     }
 
     static func amountDetails(for sats: Int, invitationStatus: InvitationStatus?, transactionStatus: TransactionStatus) -> TransactionAmountDetails {
