@@ -48,6 +48,7 @@ class TransactionHistoryDetailValidCell: TransactionHistoryDetailBaseCell {
       progressBarWidthConstraint.constant = config.width
     }
 
+    addressView.isHidden = values.shouldHideAddressView
     addressView.selectionDelegate = self
     addressView.configure(with: values.addressViewConfig)
 

@@ -30,6 +30,7 @@ protocol TransactionDetailCellDisplayable: TransactionSummaryCellDisplayable {
 
 extension TransactionDetailCellDisplayable {
 
+  var shouldHideAddressView: Bool { return isLightningTransfer }
   var shouldHideCounterpartyLabel: Bool { return counterpartyText == nil }
   var shouldHideMemoView: Bool { return shouldHideMemoLabel }
   var shouldHideAddMemoButton: Bool { return !canAddMemo }

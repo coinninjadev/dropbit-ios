@@ -565,6 +565,12 @@ class TransactionHistoryDetailValidCellTests: XCTestCase {
     XCTAssertNotNil(sut.addressView.config)
   }
 
+  func testLightningTransferHidesAddressView() {
+    let viewModel = MockDetailCellVM.testDetailInstance(isLightningTransfer: true)
+    sut.configure(with: viewModel, delegate: mockDelegate)
+    XCTAssertTrue(sut.addressView.isHidden)
+  }
+
   // MARK: Bottom button
   func testButtonTitleIsSet() {
     let viewModel = MockDetailCellVM.testDetailInstance(direction: .out, invitationStatus: .requestSent)
