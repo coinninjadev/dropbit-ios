@@ -262,6 +262,7 @@ extension TransactionDetailCellViewModelType {
 
   var canAddMemo: Bool {
     if isLightningTransfer { return false }
+    if isIncoming && status != .completed { return false }
     return memoConfig == nil
   }
 

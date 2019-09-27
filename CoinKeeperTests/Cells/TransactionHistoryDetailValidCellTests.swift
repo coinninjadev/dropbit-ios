@@ -470,6 +470,18 @@ class TransactionHistoryDetailValidCellTests: XCTestCase {
     XCTAssertTrue(sut.addMemoButton.isHidden)
   }
 
+  func testAddMemoButton_isHiddenIfIncomingNotCompleted() {
+    let viewModel = MockDetailCellVM.testDetailInstance(walletTxType: .onChain, direction: .in, status: .pending, memo: nil)
+    sut.configure(with: viewModel, delegate: mockDelegate)
+    XCTAssertTrue(sut.addMemoButton.isHidden)
+  }
+
+  func testAddMemoButton_isShownIfOutgoingNotCompleted() {
+    let viewModel = MockDetailCellVM.testDetailInstance(walletTxType: .onChain, direction: .out, status: .pending, memo: nil)
+    sut.configure(with: viewModel, delegate: mockDelegate)
+    XCTAssertFalse(sut.addMemoButton.isHidden)
+  }
+
   func testDateLabelShowsDate() {
     let now = Date()
     let expectedDisplayDate = CKDateFormatter.displayFull.string(from: now)
