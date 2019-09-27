@@ -209,7 +209,7 @@
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="13" translatesAutoresizingMaskIntoConstraints="NO" id="8AX-cC-BVu" userLabel="Bottom Stack View">
                                         <rect key="frame" x="0.0" y="336" width="275" height="158.5"/>
                                         <subviews>
-                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="bR9-tN-fDA" userLabel="Message Stack View">
+                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="bR9-tN-fDA" userLabel="Message Stack View">
                                                 <rect key="frame" x="0.0" y="0.0" width="275" height="100"/>
                                                 <subviews>
                                                     <view contentMode="scaleToFill" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="tqV-1x-bnX" customClass="TransactionDetailsInfoContainer" customModule="DropBit" customModuleProvider="target">
