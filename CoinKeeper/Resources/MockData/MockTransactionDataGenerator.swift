@@ -102,6 +102,19 @@ struct MockDetailDataGenerator {
                                               memo: nil, memoIsShared: false, date: Date())
   }
 
+  func genericOnChainTransactionWithPrivateMemo(direction: TransactionDirection) -> MockTransactionDetailCellViewModel {
+    let memo: String? = (direction == .out) ? "Car" : nil
+    let memoIsShared = false
+
+    let fiatReceived = NSDecimalNumber(integerAmount: 7_500_00, currency: .USD)
+    let amountDetails = MockDetailCellVM.testAmountDetails(sats: 88_235_000, fiatWhenInvited: nil, fiatWhenTransacted: fiatReceived)
+    return MockTransactionDetailCellViewModel(walletTxType: .onChain, direction: direction, status: .completed, onChainConfirmations: 1,
+                                              isLightningTransfer: false, receiverAddress: MockDetailCellVM.mockValidBitcoinAddress(),
+                                              addressProvidedToSender: nil, lightningInvoice: nil, paymentIdIsValid: true, selectedCurrency: .fiat,
+                                              amountDetails: amountDetails, counterpartyConfig: nil, invitationStatus: nil,
+                                              memo: memo, memoIsShared: memoIsShared, date: Date())
+  }
+
   private func generateValidItems(_ identity: UserIdentityType) -> [MockTransactionDetailCellViewModel] {
     return [
       self.invitePendingSender(identity),

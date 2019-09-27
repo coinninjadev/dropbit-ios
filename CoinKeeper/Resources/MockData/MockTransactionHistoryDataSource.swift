@@ -53,7 +53,9 @@ class MockTransactionHistoryOnChainDataSource: MockTransactionHistoryDataSource 
     super.init(walletTxType: .onChain)
     items += [
       generator.lightningTransfer(walletTxType: walletTransactionType, direction: .out), //load
-      generator.lightningTransfer(walletTxType: walletTransactionType, direction: .in) //withdraw
+      generator.lightningTransfer(walletTxType: walletTransactionType, direction: .in), //withdraw
+      generator.genericOnChainTransactionWithPrivateMemo(direction: .out),
+      generator.genericOnChainTransactionWithPrivateMemo(direction: .in)
     ]
   }
 
