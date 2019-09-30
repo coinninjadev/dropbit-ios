@@ -73,7 +73,7 @@ class TransactionHistoryOnChainDataSource: NSObject, TransactionHistoryDataSourc
                                  currencies: CurrencyPair,
                                  deviceCountryCode: Int) -> TransactionDetailCellDisplayable {
     //TODO:
-    return MockDetailCellVM.testDetailInstance()
+    return MockDetailCellVM()
   }
 
   func numberOfSections() -> Int {
@@ -135,7 +135,7 @@ class TransactionHistoryLightningDataSource: NSObject, TransactionHistoryDataSou
                                  currencies: CurrencyPair,
                                  deviceCountryCode: Int) -> TransactionDetailCellDisplayable {
     //TODO:
-    return MockDetailCellVM.testDetailInstance()
+    return MockDetailCellVM()
   }
 
   private func viewModelObject(for walletEntry: CKMWalletEntry) -> TransactionSummaryCellViewModelObject {

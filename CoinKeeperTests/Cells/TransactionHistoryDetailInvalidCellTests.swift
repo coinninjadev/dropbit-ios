@@ -73,7 +73,7 @@ class TransactionHistoryDetailInvalidCellTests: XCTestCase {
   }
 
   func testQuestionMarkButtonTellsDelegate() {
-    let viewModel = MockDetailInvalidCellVM.testDetailInstance()
+    let viewModel = MockDetailInvalidCellVM(status: .expired)
     sut.configure(with: viewModel, delegate: mockCoordinator)
     sut.questionMarkButton.sendActions(for: .touchUpInside)
     XCTAssertTrue(mockCoordinator.tappedQuestionMark)

@@ -102,7 +102,7 @@ class TransactionHistoryDetailValidCellTests: XCTestCase {
   func testAddressButtonTellsDelegate() {
     let expectedAddress = MockDetailCellVM.mockValidBitcoinAddress()
     let counterparty = MockDetailCellVM.mockTwitterCounterparty()
-    let viewModel = MockDetailCellVM.testDetailInstance(walletTxType: .onChain, direction: .out, status: .completed,
+    let viewModel = MockDetailCellVM(walletTxType: .onChain, direction: .out, status: .completed,
                                                         receiverAddress: expectedAddress,
                                                         counterpartyConfig: counterparty, invitationStatus: .completed)
 
@@ -113,7 +113,7 @@ class TransactionHistoryDetailValidCellTests: XCTestCase {
 
   func testQuestionMarkButtonTellsDelegate() {
     let counterparty = MockDetailCellVM.mockTwitterCounterparty()
-    let viewModel = MockDetailCellVM.testDetailInstance(walletTxType: .onChain, direction: .out, counterpartyConfig: counterparty)
+    let viewModel = MockDetailCellVM(walletTxType: .onChain, direction: .out, counterpartyConfig: counterparty)
     sut.configure(with: viewModel, delegate: mockDelegate)
     let expectedTooltip = DetailCellTooltip.dropBit
 
@@ -128,7 +128,7 @@ class TransactionHistoryDetailValidCellTests: XCTestCase {
   }
 
   func testBottomButtonTellsDelegate() {
-    let viewModel = MockDetailCellVM.testDetailInstance(direction: .out, invitationStatus: .requestSent)
+    let viewModel = MockDetailCellVM(direction: .out, invitationStatus: .requestSent)
     sut.configure(with: viewModel, delegate: mockDelegate)
     let expectedAction = TransactionDetailAction.cancelInvitation
     sut.didTapBottomButton(sut.bottomButton)
@@ -141,7 +141,7 @@ class TransactionHistoryDetailValidCellTests: XCTestCase {
   // MARK: Direction view
   func testPendingLightningDropBit_loadsImageAndColor() {
     let counterparty = MockDetailCellVM.mockTwitterCounterparty()
-    let viewModel = MockDetailCellVM.testDetailInstance(walletTxType: .lightning, direction: .out, status: .pending,
+    let viewModel = MockDetailCellVM(walletTxType: .lightning, direction: .out, status: .pending,
                                                         isLightningTransfer: false, counterpartyConfig: counterparty, invitationStatus: .requestSent)
     sut.configure(with: viewModel, delegate: mockDelegate)
     let expectedImage = viewModel.basicDirectionImage, expectedColor = UIColor.outgoingGray
@@ -150,7 +150,7 @@ class TransactionHistoryDetailValidCellTests: XCTestCase {
   }
 
   func testIncomingCompletedLightning_loadsImageAndColor() {
-    let viewModel = MockDetailCellVM.testDetailInstance(walletTxType: .lightning, direction: .in, status: .completed, isLightningTransfer: false)
+    let viewModel = MockDetailCellVM(walletTxType: .lightning, direction: .in, status: .completed, isLightningTransfer: false)
     sut.configure(with: viewModel, delegate: mockDelegate)
     let expectedImage = viewModel.incomingImage, expectedColor = UIColor.incomingGreen
     XCTAssertEqual(sut.directionView.image, expectedImage)
@@ -158,7 +158,7 @@ class TransactionHistoryDetailValidCellTests: XCTestCase {
   }
 
   func testOutgoingCompletedLightning_loadsImageAndColor() {
-    let viewModel = MockDetailCellVM.testDetailInstance(walletTxType: .lightning, direction: .out, status: .completed, isLightningTransfer: false)
+    let viewModel = MockDetailCellVM(walletTxType: .lightning, direction: .out, status: .completed, isLightningTransfer: false)
     sut.configure(with: viewModel, delegate: mockDelegate)
     let expectedImage = viewModel.outgoingImage, expectedColor = UIColor.outgoingGray
     XCTAssertEqual(sut.directionView.image, expectedImage)
@@ -166,7 +166,7 @@ class TransactionHistoryDetailValidCellTests: XCTestCase {
   }
 
   func testInvalidTransaction_loadsImageAndColor() {
-    let viewModel = MockDetailCellVM.testDetailInstance(walletTxType: .onChain, direction: .out, status: .expired)
+    let viewModel = MockDetailCellVM(walletTxType: .onChain, direction: .out, status: .expired)
     sut.configure(with: viewModel, delegate: mockDelegate)
     let expectedImage = viewModel.invalidImage, expectedColor = UIColor.invalid
     XCTAssertEqual(sut.directionView.image, expectedImage)
@@ -174,7 +174,7 @@ class TransactionHistoryDetailValidCellTests: XCTestCase {
   }
 
   func testIncomingOnChain_loadsImageAndColor() {
-    let viewModel = MockDetailCellVM.testDetailInstance(walletTxType: .onChain, direction: .in)
+    let viewModel = MockDetailCellVM(walletTxType: .onChain, direction: .in)
     sut.configure(with: viewModel, delegate: mockDelegate)
     let expectedImage = viewModel.incomingImage, expectedColor = UIColor.incomingGreen
     XCTAssertEqual(sut.directionView.image, expectedImage)
@@ -182,7 +182,7 @@ class TransactionHistoryDetailValidCellTests: XCTestCase {
   }
 
   func testOutgoingOnChain_loadsImageAndColor() {
-    let viewModel = MockDetailCellVM.testDetailInstance(walletTxType: .onChain, direction: .out)
+    let viewModel = MockDetailCellVM(walletTxType: .onChain, direction: .out)
     sut.configure(with: viewModel, delegate: mockDelegate)
     let expectedImage = viewModel.outgoingImage, expectedColor = UIColor.outgoingGray
     XCTAssertEqual(sut.directionView.image, expectedImage)
@@ -190,7 +190,7 @@ class TransactionHistoryDetailValidCellTests: XCTestCase {
   }
 
   func testOutgoingOnChain_LightningTransfer_loadsOutgoingImageAndColor() {
-    let viewModel = MockDetailCellVM.testDetailInstance(walletTxType: .onChain, direction: .out, isLightningTransfer: true)
+    let viewModel = MockDetailCellVM(walletTxType: .onChain, direction: .out, isLightningTransfer: true)
     sut.configure(with: viewModel, delegate: mockDelegate)
     let expectedImage = viewModel.outgoingImage, expectedColor = UIColor.outgoingGray
     XCTAssertEqual(sut.directionView.image, expectedImage)
@@ -198,7 +198,7 @@ class TransactionHistoryDetailValidCellTests: XCTestCase {
   }
 
   func testIncomingOnChain_LightningTransfer_loadsIncomingImageAndColor() {
-    let viewModel = MockDetailCellVM.testDetailInstance(walletTxType: .onChain, direction: .in, isLightningTransfer: true)
+    let viewModel = MockDetailCellVM(walletTxType: .onChain, direction: .in, isLightningTransfer: true)
     sut.configure(with: viewModel, delegate: mockDelegate)
     let expectedImage = viewModel.incomingImage, expectedColor = UIColor.incomingGreen
     XCTAssertEqual(sut.directionView.image, expectedImage)
@@ -206,7 +206,7 @@ class TransactionHistoryDetailValidCellTests: XCTestCase {
   }
 
   func testOutgoingLightning_LightningTransfer_loadsImageAndColor() {
-    let viewModel = MockDetailCellVM.testDetailInstance(walletTxType: .lightning, direction: .out, isLightningTransfer: true)
+    let viewModel = MockDetailCellVM(walletTxType: .lightning, direction: .out, isLightningTransfer: true)
     sut.configure(with: viewModel, delegate: mockDelegate)
     let expectedImage = viewModel.outgoingImage, expectedColor = UIColor.outgoingGray
     XCTAssertEqual(sut.directionView.image, expectedImage)
@@ -214,7 +214,7 @@ class TransactionHistoryDetailValidCellTests: XCTestCase {
   }
 
   func testIncomingLightning_LightningTransfer_loadsImageAndColor() {
-    let viewModel = MockDetailCellVM.testDetailInstance(walletTxType: .lightning, direction: .in, isLightningTransfer: true)
+    let viewModel = MockDetailCellVM(walletTxType: .lightning, direction: .in, isLightningTransfer: true)
     sut.configure(with: viewModel, delegate: mockDelegate)
     let expectedImage = viewModel.incomingImage, expectedColor = UIColor.incomingGreen
     XCTAssertEqual(sut.directionView.image, expectedImage)
@@ -222,7 +222,7 @@ class TransactionHistoryDetailValidCellTests: XCTestCase {
   }
 
   func testIncomingPendingLightning_LightningTransfer_loadsImageAndColor() {
-    let viewModel = MockDetailCellVM.testDetailInstance(walletTxType: .lightning, direction: .in,
+    let viewModel = MockDetailCellVM(walletTxType: .lightning, direction: .in,
                                                         status: .pending, isLightningTransfer: true)
     sut.configure(with: viewModel, delegate: mockDelegate)
     let expectedImage = viewModel.incomingImage, expectedColor = UIColor.incomingGreen
@@ -233,21 +233,21 @@ class TransactionHistoryDetailValidCellTests: XCTestCase {
   // MARK: Status label
 
   func testStatusLabel_broadcasting() {
-    let viewModel = MockDetailCellVM.testDetailInstance(status: .broadcasting)
+    let viewModel = MockDetailCellVM(status: .broadcasting)
     sut.configure(with: viewModel, delegate: mockDelegate)
     XCTAssertEqual(sut.statusLabel.text, viewModel.string(for: .broadcasting))
     XCTAssertEqual(sut.statusLabel.textColor, UIColor.darkGrayText)
   }
 
   func testStatusLabel_pending() {
-    let viewModel = MockDetailCellVM.testDetailInstance(status: .pending)
+    let viewModel = MockDetailCellVM(status: .pending)
     sut.configure(with: viewModel, delegate: mockDelegate)
     XCTAssertEqual(sut.statusLabel.text, viewModel.string(for: .pending))
     XCTAssertEqual(sut.statusLabel.textColor, UIColor.darkGrayText)
   }
 
   func testStatusLabel_complete() {
-    let viewModel = MockDetailCellVM.testDetailInstance(status: .completed)
+    let viewModel = MockDetailCellVM(status: .completed)
     sut.configure(with: viewModel, delegate: mockDelegate)
     XCTAssertEqual(sut.statusLabel.text, viewModel.string(for: .complete))
     XCTAssertEqual(sut.statusLabel.textColor, UIColor.darkGrayText)
@@ -255,7 +255,7 @@ class TransactionHistoryDetailValidCellTests: XCTestCase {
 
   func testStatusLabel_onChainDropBitSent() {
     let counterparty = MockDetailCellVM.mockTwitterCounterparty()
-    let viewModel = MockDetailCellVM.testDetailInstance(walletTxType: .onChain, direction: .out,
+    let viewModel = MockDetailCellVM(walletTxType: .onChain, direction: .out,
                                                         status: .pending, counterpartyConfig: counterparty)
     sut.configure(with: viewModel, delegate: mockDelegate)
     XCTAssertEqual(sut.statusLabel.text, viewModel.string(for: .dropBitSent))
@@ -264,7 +264,7 @@ class TransactionHistoryDetailValidCellTests: XCTestCase {
 
   func testStatusLabel_lightningDropBitSent() {
     let counterparty = MockDetailCellVM.mockTwitterCounterparty()
-    let viewModel = MockDetailCellVM.testDetailInstance(walletTxType: .lightning, direction: .out,
+    let viewModel = MockDetailCellVM(walletTxType: .lightning, direction: .out,
                                                         status: .pending, counterpartyConfig: counterparty)
     sut.configure(with: viewModel, delegate: mockDelegate)
     XCTAssertEqual(sut.statusLabel.text, viewModel.string(for: .dropBitSentInvitePending))
@@ -273,7 +273,7 @@ class TransactionHistoryDetailValidCellTests: XCTestCase {
 
   func testStatusLabel_pendingOnChainDropBitReceived() {
     let counterparty = MockDetailCellVM.mockTwitterCounterparty()
-    let viewModel = MockDetailCellVM.testDetailInstance(walletTxType: .onChain, direction: .in,
+    let viewModel = MockDetailCellVM(walletTxType: .onChain, direction: .in,
                                                         status: .pending, counterpartyConfig: counterparty)
     sut.configure(with: viewModel, delegate: mockDelegate)
     XCTAssertEqual(sut.statusLabel.text, viewModel.string(for: .pending))
@@ -282,7 +282,7 @@ class TransactionHistoryDetailValidCellTests: XCTestCase {
 
   func testStatusLabel_lightningDropBitComplete() {
     let counterparty = MockDetailCellVM.mockTwitterCounterparty()
-    let viewModel = MockDetailCellVM.testDetailInstance(walletTxType: .lightning, status: .completed,
+    let viewModel = MockDetailCellVM(walletTxType: .lightning, status: .completed,
                                                         counterpartyConfig: counterparty, invitationStatus: .completed)
     sut.configure(with: viewModel, delegate: mockDelegate)
     XCTAssertEqual(sut.statusLabel.text, viewModel.string(for: .complete))
@@ -290,35 +290,35 @@ class TransactionHistoryDetailValidCellTests: XCTestCase {
   }
 
   func testStatusLabel_dropBitCanceled() {
-    let viewModel = MockDetailCellVM.testDetailInstance(status: .canceled)
+    let viewModel = MockDetailCellVM(status: .canceled)
     sut.configure(with: viewModel, delegate: mockDelegate)
     XCTAssertEqual(sut.statusLabel.text, viewModel.string(for: .dropBitCanceled))
     XCTAssertEqual(sut.statusLabel.textColor, UIColor.warning)
   }
 
   func testStatusLabel_transactionExpired() {
-    let viewModel = MockDetailCellVM.testDetailInstance(status: .expired)
+    let viewModel = MockDetailCellVM(status: .expired)
     sut.configure(with: viewModel, delegate: mockDelegate)
     XCTAssertEqual(sut.statusLabel.text, viewModel.string(for: .transactionExpired))
     XCTAssertEqual(sut.statusLabel.textColor, UIColor.warning)
   }
 
   func testStatusLabel_broadcastFailed() {
-    let viewModel = MockDetailCellVM.testDetailInstance(status: .failed)
+    let viewModel = MockDetailCellVM(status: .failed)
     sut.configure(with: viewModel, delegate: mockDelegate)
     XCTAssertEqual(sut.statusLabel.text, viewModel.string(for: .broadcastFailed))
     XCTAssertEqual(sut.statusLabel.textColor, UIColor.warning)
   }
 
   func testStatusLabel_invoicePaid() {
-    let viewModel = MockDetailCellVM.testDetailInstance(walletTxType: .lightning, status: .completed)
+    let viewModel = MockDetailCellVM(walletTxType: .lightning, status: .completed)
     sut.configure(with: viewModel, delegate: mockDelegate)
     XCTAssertEqual(sut.statusLabel.text, viewModel.string(for: .invoicePaid))
     XCTAssertEqual(sut.statusLabel.textColor, UIColor.darkGrayText)
   }
 
   func testStatusLabel_withdrawFromLightning() {
-    let viewModel = MockDetailCellVM.testDetailInstance(walletTxType: .lightning, direction: .out,
+    let viewModel = MockDetailCellVM(walletTxType: .lightning, direction: .out,
                                                         status: .completed, isLightningTransfer: true)
     sut.configure(with: viewModel, delegate: mockDelegate)
     XCTAssertEqual(sut.statusLabel.text, viewModel.string(for: .withdrawFromLightning))
@@ -326,7 +326,7 @@ class TransactionHistoryDetailValidCellTests: XCTestCase {
   }
 
   func testStatusLabel_loadLightning() {
-    let viewModel = MockDetailCellVM.testDetailInstance(walletTxType: .lightning, direction: .in,
+    let viewModel = MockDetailCellVM(walletTxType: .lightning, direction: .in,
                                                         status: .completed, isLightningTransfer: true)
     sut.configure(with: viewModel, delegate: mockDelegate)
     XCTAssertEqual(sut.statusLabel.text, viewModel.string(for: .loadLightning))
@@ -337,7 +337,7 @@ class TransactionHistoryDetailValidCellTests: XCTestCase {
   func testTwitterConfig_loadsAvatar() {
     let counterpartyConfig = MockDetailCellVM.mockTwitterCounterparty()
     let expectedImage = counterpartyConfig.twitterConfig?.avatar
-    let viewModel = MockDetailCellVM.testDetailInstance(counterpartyConfig: counterpartyConfig)
+    let viewModel = MockDetailCellVM(counterpartyConfig: counterpartyConfig)
     sut.configure(with: viewModel, delegate: mockDelegate)
     XCTAssertFalse(sut.twitterAvatarView.isHidden)
     XCTAssertFalse(sut.twitterAvatarView.avatarImageView.isHidden)
@@ -347,28 +347,28 @@ class TransactionHistoryDetailValidCellTests: XCTestCase {
 
   func testPhoneConfig_hidesAvatarView() {
     let counterpartyConfig = TransactionCellCounterpartyConfig(displayPhoneNumber: "(555) 123-4567")
-    let viewModel = MockDetailCellVM.testDetailInstance(counterpartyConfig: counterpartyConfig)
+    let viewModel = MockDetailCellVM(counterpartyConfig: counterpartyConfig)
     sut.configure(with: viewModel, delegate: mockDelegate)
     XCTAssertTrue(sut.twitterAvatarView.isHidden)
     XCTAssertFalse(sut.directionView.isHidden)
   }
 
   func testNilCounterpartyConfig_hidesAvatarView() {
-    let viewModel = MockDetailCellVM.testDetailInstance()
+    let viewModel = MockDetailCellVM()
     sut.configure(with: viewModel, delegate: mockDelegate)
     XCTAssertTrue(sut.twitterAvatarView.isHidden)
   }
 
   // MARK: Counterparty label
   func testNilCounterpartyText_hidesCounterparyLabel() {
-    let viewModel = MockDetailCellVM.testDetailInstance(counterpartyConfig: nil)
+    let viewModel = MockDetailCellVM(counterpartyConfig: nil)
     sut.configure(with: viewModel, delegate: mockDelegate)
     XCTAssertTrue(sut.counterpartyLabel.isHidden)
   }
 
   func testAddressCounterpartyText_hidesCounterpartyLabel() {
     let expectedAddress = TestHelpers.mockValidBech32Address()
-    let viewModel = MockDetailCellVM.testDetailInstance(receiverAddress: expectedAddress)
+    let viewModel = MockDetailCellVM(receiverAddress: expectedAddress)
     sut.configure(with: viewModel, delegate: mockDelegate)
     XCTAssertTrue(sut.counterpartyLabel.isHidden)
     XCTAssertNotNil(sut.addressView.config)
@@ -377,7 +377,7 @@ class TransactionHistoryDetailValidCellTests: XCTestCase {
 
   func testCounterpartyText_ShowsCounterpartyLabel() {
     let counterparty = TransactionCellCounterpartyConfig(displayName: "Satoshi", displayPhoneNumber: nil, twitterConfig: nil)
-    let viewModel = MockDetailCellVM.testDetailInstance(counterpartyConfig: counterparty)
+    let viewModel = MockDetailCellVM(counterpartyConfig: counterparty)
     sut.configure(with: viewModel, delegate: mockDelegate)
     XCTAssertFalse(sut.counterpartyLabel.isHidden)
     XCTAssertEqual(sut.counterpartyLabel.text, counterparty.displayName)
@@ -386,7 +386,7 @@ class TransactionHistoryDetailValidCellTests: XCTestCase {
   // MARK: Amount labels
   func testPrimaryAmountShowsFiat() {
     let amountDetails = MockDetailCellVM.testAmountDetails(cents: 1500)
-    let viewModel = MockDetailCellVM.testDetailInstance(walletTxType: .onChain, direction: .in, amountDetails: amountDetails)
+    let viewModel = MockDetailCellVM(walletTxType: .onChain, direction: .in, amountDetails: amountDetails)
     let expectedText = "$15.00"
     sut.configure(with: viewModel, delegate: mockDelegate)
     XCTAssertEqual(sut.primaryAmountLabel.text, expectedText)
@@ -394,7 +394,7 @@ class TransactionHistoryDetailValidCellTests: XCTestCase {
 
   func testPrimaryAmountShowsNegativeWhenOutgoing() {
     let amountDetails = MockDetailCellVM.testAmountDetails(cents: 1500)
-    let viewModel = MockDetailCellVM.testDetailInstance(walletTxType: .onChain, direction: .out, amountDetails: amountDetails)
+    let viewModel = MockDetailCellVM(walletTxType: .onChain, direction: .out, amountDetails: amountDetails)
     let expectedText = "-$15.00"
     sut.configure(with: viewModel, delegate: mockDelegate)
     XCTAssertEqual(sut.primaryAmountLabel.text, expectedText)
@@ -402,7 +402,7 @@ class TransactionHistoryDetailValidCellTests: XCTestCase {
 
   func testSecondaryAmountShowsBitcoinOnChain() {
     let amountDetails = MockDetailCellVM.testAmountDetails(sats: 875_000)
-    let viewModel = MockDetailCellVM.testDetailInstance(walletTxType: .onChain, direction: .out,
+    let viewModel = MockDetailCellVM(walletTxType: .onChain, direction: .out,
                                                         amountDetails: amountDetails)
     sut.configure(with: viewModel, delegate: mockDelegate)
     XCTAssertTrue(viewModel.detailAmountLabels.secondaryAttributedText.hasImageAttachment())
@@ -411,7 +411,7 @@ class TransactionHistoryDetailValidCellTests: XCTestCase {
 
   func testSecondaryAmountShowsSatsForLightning() {
     let amountDetails = MockDetailCellVM.testAmountDetails(sats: 875_000)
-    let viewModel = MockDetailCellVM.testDetailInstance(walletTxType: .lightning, direction: .out,
+    let viewModel = MockDetailCellVM(walletTxType: .lightning, direction: .out,
                                                         amountDetails: amountDetails)
     sut.configure(with: viewModel, delegate: mockDelegate)
     let expectedText = "875,000 sats"
@@ -424,7 +424,7 @@ class TransactionHistoryDetailValidCellTests: XCTestCase {
   func testHistoricalIsHiddenWhenAmountIsNil() {
     let amountDetails = TransactionAmountDetails(btcAmount: .zero, fiatCurrency: .USD, exchangeRates: MockDetailCellVM.testRates,
                                                  fiatWhenInvited: nil, fiatWhenTransacted: nil)
-    let viewModel = MockDetailCellVM.testDetailInstance(amountDetails: amountDetails)
+    let viewModel = MockDetailCellVM(amountDetails: amountDetails)
     sut.configure(with: viewModel, delegate: mockDelegate)
     XCTAssertTrue(sut.historicalValuesLabel.isHidden)
   }
@@ -432,7 +432,7 @@ class TransactionHistoryDetailValidCellTests: XCTestCase {
   func testHistoricalIsShownAndSet() {
     let amountDetails = TransactionAmountDetails(btcAmount: .one, fiatCurrency: .USD, exchangeRates: MockDetailCellVM.testRates,
                                                  fiatWhenInvited: .one, fiatWhenTransacted: .one)
-    let viewModel = MockDetailCellVM.testDetailInstance(direction: .out,
+    let viewModel = MockDetailCellVM(direction: .out,
                                                         amountDetails: amountDetails,
                                                         invitationStatus: .completed)
     sut.configure(with: viewModel, delegate: mockDelegate)
@@ -444,28 +444,28 @@ class TransactionHistoryDetailValidCellTests: XCTestCase {
 
   // MARK: Memo view
   func testMemoView_nilMemoHidesView() {
-    let viewModel = MockDetailCellVM.testDetailInstance(memo: nil)
+    let viewModel = MockDetailCellVM(memo: nil)
     sut.configure(with: viewModel, delegate: mockDelegate)
     XCTAssertTrue(sut.memoContainerView.isHidden)
   }
 
   func testMemoView_emptyMemoPopulatesAndHidesView() {
     let expectedMemo = ""
-    let viewModel = MockDetailCellVM.testDetailInstance(memo: expectedMemo)
+    let viewModel = MockDetailCellVM(memo: expectedMemo)
     sut.configure(with: viewModel, delegate: mockDelegate)
     XCTAssertEqual(sut.memoContainerView.memoLabel.text, expectedMemo)
     XCTAssertTrue(sut.memoContainerView.isHidden)
   }
 
   func testMemoView_memoPopulatesMemoView() {
-    let viewModel = MockDetailCellVM.testDetailInstance(memo: "My memo")
+    let viewModel = MockDetailCellVM(memo: "My memo")
     sut.configure(with: viewModel, delegate: mockDelegate)
     XCTAssertFalse(sut.memoContainerView.isHidden)
     XCTAssertEqual(sut.memoContainerView.memoLabel.text, viewModel.memo)
   }
 
   func testMemoView_lightningTransferMemoIsHiddenIfPresent() {
-    let viewModel = MockDetailCellVM.testDetailInstance(walletTxType: .lightning,
+    let viewModel = MockDetailCellVM(walletTxType: .lightning,
                                                         isLightningTransfer: true,
                                                         memo: "lightning withdrawal for 10,000 sats")
     sut.configure(with: viewModel, delegate: mockDelegate)
@@ -473,31 +473,31 @@ class TransactionHistoryDetailValidCellTests: XCTestCase {
   }
 
   func testAddMemoButton_isShownIfMemoIsNil() {
-    let viewModel = MockDetailCellVM.testDetailInstance(memo: nil)
+    let viewModel = MockDetailCellVM(memo: nil)
     sut.configure(with: viewModel, delegate: mockDelegate)
     XCTAssertFalse(sut.addMemoButton.isHidden)
   }
 
   func testAddMemoButton_isHiddenIfMemoExists() {
-    let viewModel = MockDetailCellVM.testDetailInstance(memo: "My memo")
+    let viewModel = MockDetailCellVM(memo: "My memo")
     sut.configure(with: viewModel, delegate: mockDelegate)
     XCTAssertTrue(sut.addMemoButton.isHidden)
   }
 
   func testAddMemoButton_isHiddenIfLightningTransfer() {
-    let viewModel = MockDetailCellVM.testDetailInstance(isLightningTransfer: true)
+    let viewModel = MockDetailCellVM(isLightningTransfer: true)
     sut.configure(with: viewModel, delegate: mockDelegate)
     XCTAssertTrue(sut.addMemoButton.isHidden)
   }
 
   func testAddMemoButton_isHiddenIfIncomingNotCompleted() {
-    let viewModel = MockDetailCellVM.testDetailInstance(walletTxType: .onChain, direction: .in, status: .pending, memo: nil)
+    let viewModel = MockDetailCellVM(walletTxType: .onChain, direction: .in, status: .pending, memo: nil)
     sut.configure(with: viewModel, delegate: mockDelegate)
     XCTAssertTrue(sut.addMemoButton.isHidden)
   }
 
   func testAddMemoButton_isShownIfOutgoingNotCompleted() {
-    let viewModel = MockDetailCellVM.testDetailInstance(walletTxType: .onChain, direction: .out, status: .pending, memo: nil)
+    let viewModel = MockDetailCellVM(walletTxType: .onChain, direction: .out, status: .pending, memo: nil)
     sut.configure(with: viewModel, delegate: mockDelegate)
     XCTAssertFalse(sut.addMemoButton.isHidden)
   }
@@ -505,7 +505,7 @@ class TransactionHistoryDetailValidCellTests: XCTestCase {
   func testDateLabelShowsDate() {
     let now = Date()
     let expectedDisplayDate = CKDateFormatter.displayFull.string(from: now)
-    let viewModel = MockDetailCellVM.testDetailInstance(date: now)
+    let viewModel = MockDetailCellVM(date: now)
     sut.configure(with: viewModel, delegate: mockDelegate)
     XCTAssertEqual(sut.dateLabel.text, expectedDisplayDate)
   }
@@ -514,7 +514,7 @@ class TransactionHistoryDetailValidCellTests: XCTestCase {
 
   // MARK: Message label
   func testMessageLabel_nilMessageHidesLabel() {
-    let viewModel = MockDetailCellVM.testDetailInstance()
+    let viewModel = MockDetailCellVM()
     sut.configure(with: viewModel, delegate: mockDelegate)
     XCTAssertTrue(sut.messageLabel.isHidden)
     XCTAssertTrue(sut.messageContainer.isHidden)
@@ -522,7 +522,7 @@ class TransactionHistoryDetailValidCellTests: XCTestCase {
 
   func testMessageLabel_addressSentShowsLabel() {
     let counterparty = TransactionCellCounterpartyConfig(displayName: "Satoshi")
-    let viewModel = MockDetailCellVM.testDetailInstance(counterpartyConfig: counterparty, invitationStatus: .addressSent)
+    let viewModel = MockDetailCellVM(counterpartyConfig: counterparty, invitationStatus: .addressSent)
     sut.configure(with: viewModel, delegate: mockDelegate)
     XCTAssertFalse(sut.messageLabel.isHidden)
     XCTAssertFalse(sut.messageContainer.isHidden)
@@ -530,37 +530,37 @@ class TransactionHistoryDetailValidCellTests: XCTestCase {
 
   // MARK: Progress view
   func testProgressView_hideIfLightning() {
-    let viewModel = MockDetailCellVM.testDetailInstance(walletTxType: .lightning)
+    let viewModel = MockDetailCellVM(walletTxType: .lightning)
     sut.configure(with: viewModel, delegate: mockDelegate)
     XCTAssertTrue(sut.progressView.isHidden)
   }
 
   func testProgressView_hideIfCompleted() {
-    let viewModel = MockDetailCellVM.testDetailInstance(walletTxType: .onChain, status: .completed)
+    let viewModel = MockDetailCellVM(walletTxType: .onChain, status: .completed)
     sut.configure(with: viewModel, delegate: mockDelegate)
     XCTAssertTrue(sut.progressView.isHidden)
   }
 
   func testProgressView_hideIfFailed() {
-    let viewModel = MockDetailCellVM.testDetailInstance(walletTxType: .onChain, status: .failed)
+    let viewModel = MockDetailCellVM(walletTxType: .onChain, status: .failed)
     sut.configure(with: viewModel, delegate: mockDelegate)
     XCTAssertTrue(sut.progressView.isHidden)
   }
 
   func testProgressView_hideIfExpired() {
-    let viewModel = MockDetailCellVM.testDetailInstance(walletTxType: .onChain, status: .expired)
+    let viewModel = MockDetailCellVM(walletTxType: .onChain, status: .expired)
     sut.configure(with: viewModel, delegate: mockDelegate)
     XCTAssertTrue(sut.progressView.isHidden)
   }
 
   func testProgressView_hideIfCanceled() {
-    let viewModel = MockDetailCellVM.testDetailInstance(walletTxType: .onChain, status: .canceled)
+    let viewModel = MockDetailCellVM(walletTxType: .onChain, status: .canceled)
     sut.configure(with: viewModel, delegate: mockDelegate)
     XCTAssertTrue(sut.progressView.isHidden)
   }
 
   func testProgressView_pendingInvitationShows5Steps() {
-    let viewModel = MockDetailCellVM.testDetailInstance(walletTxType: .onChain, status: .pending, invitationStatus: .requestSent)
+    let viewModel = MockDetailCellVM(walletTxType: .onChain, status: .pending, invitationStatus: .requestSent)
     sut.configure(with: viewModel, delegate: mockDelegate)
     XCTAssertFalse(sut.progressView.isHidden)
     XCTAssertEqual(sut.progressView.stepTitles.count, 5)
@@ -568,7 +568,7 @@ class TransactionHistoryDetailValidCellTests: XCTestCase {
   }
 
   func testProgressView_pendingOnChainSendShows3Steps() {
-    let viewModel = MockDetailCellVM.testDetailInstance(walletTxType: .onChain, status: .pending)
+    let viewModel = MockDetailCellVM(walletTxType: .onChain, status: .pending)
     sut.configure(with: viewModel, delegate: mockDelegate)
     XCTAssertFalse(sut.progressView.isHidden)
     XCTAssertEqual(sut.progressView.stepTitles.count, 3)
@@ -576,7 +576,7 @@ class TransactionHistoryDetailValidCellTests: XCTestCase {
   }
 
   func testProgressView_pendingTransactionSelectsSecondStep() {
-    let viewModel = MockDetailCellVM.testDetailInstance(walletTxType: .onChain, status: .pending, onChainConfirmations: 0)
+    let viewModel = MockDetailCellVM(walletTxType: .onChain, status: .pending, onChainConfirmations: 0)
     sut.configure(with: viewModel, delegate: mockDelegate)
     XCTAssertFalse(sut.progressView.isHidden)
     XCTAssertEqual(sut.progressView.stepTitles.count, 3)
@@ -586,19 +586,19 @@ class TransactionHistoryDetailValidCellTests: XCTestCase {
 
   // MARK: Address view
   func testAddressViewDelegateIsSet() {
-    let viewModel = MockDetailCellVM.testDetailInstance()
+    let viewModel = MockDetailCellVM()
     sut.configure(with: viewModel, delegate: mockDelegate)
     XCTAssertNotNil(sut.addressView.selectionDelegate)
   }
 
   func testAddressViewIsConfigured() {
-    let viewModel = MockDetailCellVM.testDetailInstance()
+    let viewModel = MockDetailCellVM()
     sut.configure(with: viewModel, delegate: mockDelegate)
     XCTAssertNotNil(sut.addressView.config)
   }
 
   func testLightningTransferHidesAddressView() {
-    let viewModel = MockDetailCellVM.testDetailInstance(isLightningTransfer: true)
+    let viewModel = MockDetailCellVM(isLightningTransfer: true)
     sut.configure(with: viewModel, delegate: mockDelegate)
     XCTAssertTrue(sut.addressView.isHidden)
   }
@@ -606,7 +606,7 @@ class TransactionHistoryDetailValidCellTests: XCTestCase {
   func testIncomingPendingOnChainDropBitShowsProvidedAddress() {
     let expectedAddress = MockDetailCellVM.mockValidBitcoinAddress()
     let counterparty = MockDetailCellVM.mockTwitterCounterparty()
-    let viewModel = MockDetailCellVM.testDetailInstance(walletTxType: .onChain, direction: .in, status: .pending,
+    let viewModel = MockDetailCellVM(walletTxType: .onChain, direction: .in, status: .pending,
                                                         addressProvidedToSender: expectedAddress,
                                                         counterpartyConfig: counterparty, invitationStatus: .addressSent)
     sut.configure(with: viewModel, delegate: mockDelegate)
@@ -618,7 +618,7 @@ class TransactionHistoryDetailValidCellTests: XCTestCase {
   func testOutgoingCompletedOnChainDropBitShowsReceiverAddress() {
     let expectedAddress = MockDetailCellVM.mockValidBitcoinAddress()
     let counterparty = MockDetailCellVM.mockTwitterCounterparty()
-    let viewModel = MockDetailCellVM.testDetailInstance(walletTxType: .onChain, direction: .out, status: .completed,
+    let viewModel = MockDetailCellVM(walletTxType: .onChain, direction: .out, status: .completed,
                                                         receiverAddress: expectedAddress,
                                                         counterpartyConfig: counterparty, invitationStatus: .completed)
     sut.configure(with: viewModel, delegate: mockDelegate)
@@ -630,7 +630,7 @@ class TransactionHistoryDetailValidCellTests: XCTestCase {
 
   // MARK: Bottom button
   func testButtonTitleIsSet() {
-    let viewModel = MockDetailCellVM.testDetailInstance(direction: .out, invitationStatus: .requestSent)
+    let viewModel = MockDetailCellVM(direction: .out, invitationStatus: .requestSent)
     sut.configure(with: viewModel, delegate: mockDelegate)
     let expectedTitle = TransactionDetailAction.cancelInvitation.buttonTitle
     XCTAssertEqual(sut.bottomButton.titleLabel?.text, expectedTitle)
@@ -638,21 +638,21 @@ class TransactionHistoryDetailValidCellTests: XCTestCase {
   }
 
   func testButtonColorIsSet() {
-    let viewModel = MockDetailCellVM.testDetailInstance(direction: .out, invitationStatus: .requestSent)
+    let viewModel = MockDetailCellVM(direction: .out, invitationStatus: .requestSent)
     sut.configure(with: viewModel, delegate: mockDelegate)
     let expectedColor = UIColor.darkPeach
     XCTAssertEqual(sut.bottomButton.backgroundColor, expectedColor)
   }
 
   func testCanceledDropBitHidesButton() {
-    let viewModel = MockDetailCellVM.testDetailInstance(direction: .out,
+    let viewModel = MockDetailCellVM(direction: .out,
                                                         invitationStatus: .canceled)
     sut.configure(with: viewModel, delegate: mockDelegate)
     XCTAssertTrue(sut.bottomButton.isHidden)
   }
 
   func testCancelActionSetsButtonTag() {
-    let viewModel = MockDetailCellVM.testDetailInstance(direction: .out, invitationStatus: .requestSent)
+    let viewModel = MockDetailCellVM(direction: .out, invitationStatus: .requestSent)
     sut.configure(with: viewModel, delegate: mockDelegate)
     let expectedAction = TransactionDetailAction.cancelInvitation
     let buttonTag = sut.bottomButton.tag
@@ -663,7 +663,7 @@ class TransactionHistoryDetailValidCellTests: XCTestCase {
   // MARK: Tooltip
   func testTooltipTypeSetsButtonTag() {
     let counterparty = MockDetailCellVM.mockTwitterCounterparty()
-    let viewModel = MockDetailCellVM.testDetailInstance(walletTxType: .onChain, direction: .out, counterpartyConfig: counterparty)
+    let viewModel = MockDetailCellVM(walletTxType: .onChain, direction: .out, counterpartyConfig: counterparty)
     sut.configure(with: viewModel, delegate: mockDelegate)
     let expectedTooltip = DetailCellTooltip.dropBit
     let buttonTag = sut.questionMarkButton.tag

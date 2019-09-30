@@ -43,7 +43,6 @@ struct MockDetailDataGenerator {
                  receiverAddress: receiverAddress,
                  addressProvidedToSender: addressProvidedToSender,
                  lightningInvoice: lightningInvoice,
-                 paymentIdIsValid: true,
                  selectedCurrency: .fiat,
                  amountDetails: amtDetails,
                  counterpartyConfig: counterparty,
@@ -114,7 +113,7 @@ struct MockDetailDataGenerator {
     let amountDetails = MockDetailCellVM.testAmountDetails(sats: 1_000_000)
     return MockTransactionDetailCellViewModel(walletTxType: walletTxType, direction: direction, status: .completed, onChainConfirmations: 1,
                                               isLightningTransfer: true, receiverAddress: MockDetailCellVM.mockValidBitcoinAddress(),
-                                              addressProvidedToSender: nil, lightningInvoice: nil, paymentIdIsValid: true, selectedCurrency: .fiat,
+                                              addressProvidedToSender: nil, lightningInvoice: nil, selectedCurrency: .fiat,
                                               amountDetails: amountDetails, counterpartyConfig: nil, invitationStatus: nil,
                                               memo: nil, memoIsShared: false, date: Date())
   }
@@ -127,7 +126,7 @@ struct MockDetailDataGenerator {
     let amountDetails = MockDetailCellVM.testAmountDetails(sats: 88_235_000, fiatWhenInvited: nil, fiatWhenTransacted: fiatReceived)
     return MockTransactionDetailCellViewModel(walletTxType: .onChain, direction: direction, status: .completed, onChainConfirmations: 1,
                                               isLightningTransfer: false, receiverAddress: MockDetailCellVM.mockValidBitcoinAddress(),
-                                              addressProvidedToSender: nil, lightningInvoice: nil, paymentIdIsValid: true, selectedCurrency: .fiat,
+                                              addressProvidedToSender: nil, lightningInvoice: nil, selectedCurrency: .fiat,
                                               amountDetails: amountDetails, counterpartyConfig: nil, invitationStatus: nil,
                                               memo: memo, memoIsShared: memoIsShared, date: Date())
   }
