@@ -92,6 +92,8 @@ class TransactionHistoryDetailBaseCell: UICollectionViewCell {
   func configure(with values: TransactionDetailCellDisplayable, delegate: TransactionHistoryDetailCellDelegate) {
     self.delegate = delegate
 
+    self.questionMarkButton.tag = values.tooltipType.rawValue
+
     self.directionView.configure(image: values.directionConfig.image, bgColor: values.directionConfig.bgColor)
     self.statusLabel.text = values.detailStatusText
     self.statusLabel.textColor = values.detailStatusColor

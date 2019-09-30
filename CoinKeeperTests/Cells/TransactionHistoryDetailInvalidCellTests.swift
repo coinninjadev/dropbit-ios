@@ -62,7 +62,7 @@ class TransactionHistoryDetailInvalidCellTests: XCTestCase {
 
   func testQuestionMarkButtonContainsAction() {
     let actions = sut.questionMarkButton.actions(forTarget: sut, forControlEvent: .touchUpInside) ?? []
-    let expected = #selector(TransactionHistoryDetailInvalidCell.didTapQuestionMark(_:)).description
+    let expected = #selector(TransactionHistoryDetailInvalidCell.didTapQuestionMarkButton(_:)).description
     XCTAssertTrue(actions.contains(expected), "button should contain action")
   }
 
@@ -73,6 +73,8 @@ class TransactionHistoryDetailInvalidCellTests: XCTestCase {
   }
 
   func testQuestionMarkButtonTellsDelegate() {
+    let viewModel = MockDetailInvalidCellVM.testDetailInstance()
+    sut.configure(with: viewModel, delegate: mockCoordinator)
     sut.questionMarkButton.sendActions(for: .touchUpInside)
     XCTAssertTrue(mockCoordinator.tappedQuestionMark)
   }

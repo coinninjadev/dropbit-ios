@@ -28,7 +28,7 @@
                                 </constraints>
                                 <state key="normal" image="questionMarkIcon"/>
                                 <connections>
-                                    <action selector="didTapQuestionMarkButton:" destination="gTV-IL-0wX" eventType="touchUpInside" id="f5Z-sj-LiH"/>
+                                    <action selector="didTapQuestionMarkButton:" destination="gTV-IL-0wX" eventType="touchUpInside" id="8LJ-yH-keX"/>
                                 </connections>
                             </button>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="n09-mQ-9Mc" customClass="TransactionDirectionView" customModule="DropBit" customModuleProvider="target">
@@ -46,6 +46,9 @@
                                     <constraint firstAttribute="width" constant="44" id="hyf-6A-DnA"/>
                                 </constraints>
                                 <state key="normal" image="close"/>
+                                <connections>
+                                    <action selector="didTapClose:" destination="gTV-IL-0wX" eventType="touchUpInside" id="cTj-tb-JiY"/>
+                                </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="Nfg-iz-TlG" customClass="TransactionDetailStatusLabel" customModule="DropBit" customModuleProvider="target">
                                 <rect key="frame" x="159" y="72" width="42" height="20.5"/>
