@@ -1015,6 +1015,7 @@
 		B5DDB0F521DE5ED200A25929 /* KeychainMigrationWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5DDB0F421DE5ED200A25929 /* KeychainMigrationWorker.swift */; };
 		B5DDB0F721DE69C100A25929 /* KeychainMigratorFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5DDB0F621DE69C100A25929 /* KeychainMigratorFactory.swift */; };
 		B5DDB0F921DE6A1100A25929 /* MigrateKeychainV1toV2.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5DDB0F821DE6A1100A25929 /* MigrateKeychainV1toV2.swift */; };
+		B5E0931A2342508B000AE5CB /* TransactionDetailInvalidCellDisplayable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5E093192342508B000AE5CB /* TransactionDetailInvalidCellDisplayable.swift */; };
 		B5E5032921B865A4008FBDAB /* PaymentRequestResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5E5032821B865A4008FBDAB /* PaymentRequestResolver.swift */; };
 		B5E7EE7B21B02FFB00E058EF /* ValidatorAlertDisplayable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5E7EE7A21B02FFB00E058EF /* ValidatorAlertDisplayable.swift */; };
 		B5E7EE7D21B04C1100E058EF /* TestError.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5E7EE7C21B04C1100E058EF /* TestError.swift */; };
@@ -2065,6 +2066,7 @@
 		B5DDB0F421DE5ED200A25929 /* KeychainMigrationWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainMigrationWorker.swift; sourceTree = "<group>"; };
 		B5DDB0F621DE69C100A25929 /* KeychainMigratorFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainMigratorFactory.swift; sourceTree = "<group>"; };
 		B5DDB0F821DE6A1100A25929 /* MigrateKeychainV1toV2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MigrateKeychainV1toV2.swift; sourceTree = "<group>"; };
+		B5E093192342508B000AE5CB /* TransactionDetailInvalidCellDisplayable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDetailInvalidCellDisplayable.swift; sourceTree = "<group>"; };
 		B5E5032821B865A4008FBDAB /* PaymentRequestResolver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PaymentRequestResolver.swift; sourceTree = "<group>"; };
 		B5E7EE7A21B02FFB00E058EF /* ValidatorAlertDisplayable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidatorAlertDisplayable.swift; sourceTree = "<group>"; };
 		B5E7EE7C21B04C1100E058EF /* TestError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestError.swift; sourceTree = "<group>"; };
@@ -3039,6 +3041,7 @@
 			children = (
 				B5BA3A7622F22B0E001E41A7 /* TransactionSummaryCellDisplayable.swift */,
 				B52E0BD5233BEE6500BA1B0C /* TransactionDetailCellDisplayable.swift */,
+				B5E093192342508B000AE5CB /* TransactionDetailInvalidCellDisplayable.swift */,
 				B5DB5341232E8C1C0088C8A1 /* TransactionCellViewModelTypes.swift */,
 				B5437B552315B4D70002B77C /* TransactionHistoryViewModel.swift */,
 				B50E7B7E230C6A0400927C8B /* TransactionSummaryCellViewModel.swift */,
@@ -4442,6 +4445,7 @@
 				B552EDF9211E33D000332BB5 /* PermissionManager.swift in Sources */,
 				3B26F1E022566EAA00F3E00F /* AppCoordinator+SelectedCurrencyUpdatable.swift in Sources */,
 				B5401C59228C7890004C77BC /* AppCoordinator+SetupFlows.swift in Sources */,
+				B5E0931A2342508B000AE5CB /* TransactionDetailInvalidCellDisplayable.swift in Sources */,
 				A29CE0CF2099FD6800761B91 /* AppCoordinator+SuccessFailViewControllerDelegate.swift in Sources */,
 				B552EDEE211E33D000332BB5 /* CurrencyConverter.swift in Sources */,
 				B566ED7C219B3840001A65F5 /* AccessibleViewSettable.swift in Sources */,

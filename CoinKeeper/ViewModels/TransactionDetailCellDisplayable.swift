@@ -25,6 +25,7 @@ protocol TransactionDetailCellDisplayable: TransactionSummaryCellDisplayable {
   var addressViewConfig: AddressViewConfig { get }
   var actionButtonConfig: DetailCellActionButtonConfig? { get }
   var tooltipType: DetailCellTooltip { get }
+  var detailCellType: TransactionDetailCellType { get }
 
 }
 
@@ -69,6 +70,10 @@ extension TransactionInvalidDetailCellDisplayable {
   }
 }
 
+enum TransactionDetailCellType {
+  case valid, invalid, invoice
+}
+
 /// Defines the properties that need to be set during initialization of the view model.
 /// The inherited `...Displayable` requirements should be calculated in this
 /// protocol's extension or provided by a mock view model.
@@ -78,12 +83,21 @@ protocol TransactionDetailCellViewModelType: TransactionSummaryCellViewModelType
   var invitationStatus: InvitationStatus? { get }
   var onChainConfirmations: Int? { get }
   var addressProvidedToSender: String? { get }
+  var encodedInvoice: String? { get }
   var paymentIdIsValid: Bool { get } //for CKMTransaction: transaction?.txidIsActualTxid ?? false
 
   func exchangeRateWhenReceived(forCurrency currency: CurrencyCode) -> Double? //let rate = transaction?.dayAveragePrice?.doubleValue
 }
 
 extension TransactionDetailCellViewModelType {
+
+  var detailCellType: TransactionDetailCellType {
+    if encodedInvoice != nil {
+      return .invoice
+    } else {
+      return isValidTransaction ? .valid : .invalid
+    }
+  }
 
   var isIncoming: Bool {
     return direction == .in

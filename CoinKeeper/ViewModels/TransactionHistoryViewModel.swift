@@ -95,10 +95,19 @@ class TransactionHistoryViewModel: NSObject, UICollectionViewDataSource, Exchang
                                                                rates: rateManager.exchangeRates,
                                                                currencies: selectedCurrencyPair,
                                                                deviceCountryCode: self.deviceCountryCode)
-    let cell = collectionView.dequeue(TransactionHistoryDetailValidCell.self, for: indexPath)
-    cell.configure(with: displayableItem, delegate: cellDelegate)
-    return cell
-    // TODO: return invalid cell according to status
+
+    switch displayableItem.detailCellType {
+    case .valid:
+      let cell = collectionView.dequeue(TransactionHistoryDetailValidCell.self, for: indexPath)
+      cell.configure(with: displayableItem, delegate: cellDelegate)
+      return cell
+    case .invalid:
+      let cell = collectionView.dequeue(TransactionHistoryDetailInvalidCell.self, for: indexPath)
+      cell.configure(with: displayableItem, delegate: cellDelegate)
+      return cell
+    case .invoice:
+      return TransactionHistoryDetailBaseCell()
+    }
   }
 
   func collectionView(_ collectionView: UICollectionView,

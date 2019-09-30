@@ -17,6 +17,7 @@ class MockTransactionDetailCellViewModel: MockTransactionSummaryCellViewModel, T
   var invitationStatus: InvitationStatus?
   var onChainConfirmations: Int?
   var addressProvidedToSender: String?
+  var encodedInvoice: String?
   var paymentIdIsValid: Bool
   var exchangeRateWhenReceived: Double?
 

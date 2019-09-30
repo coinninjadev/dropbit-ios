@@ -19,7 +19,7 @@ class MockTransactionHistoryDataSource: TransactionHistoryDataSourceType {
   init(walletTxType: WalletTransactionType) {
     self.walletTransactionType = walletTxType
     generator = MockDetailDataGenerator(walletTxType: walletTxType)
-    let dropBitItems = generator.generatePhoneAndTwitterDropBitItems(categories: [.valid])
+    let dropBitItems = generator.generatePhoneAndTwitterDropBitItems(categories: [.valid, .invalid])
     self.items = dropBitItems
   }
 
