@@ -85,28 +85,25 @@ class TransactionHistoryDetailInvalidCellTests: XCTestCase {
   }
 
   // MARK: configure cell
-  func testLoadMethodPopulatesOutlets() {
-    let mockDelegate = MockTransactionHistoryDetailCellDelegate()
-    let data = self.sampleData()
-    //TODO:
-//    self.sut.load(with: data, delegate: mockDelegate)
-//    XCTAssertTrue(data === sut.viewModel)
-    XCTAssertTrue(mockDelegate === sut.delegate)
-    XCTAssertEqual(self.sut.counterpartyLabel.text, data.counterpartyDescription, "counterpartyLabel should contain description")
-    XCTAssertEqual(self.sut.primaryAmountLabel.text, data.primaryAmountLabel, "primaryAmountLabel should be populated")
-    XCTAssertEqual(self.sut.secondaryAmountLabel.attributedText?.string, data.secondaryAmountLabel?.string,
-                   "secondaryAmountLabel should be populated")
-    XCTAssertFalse(sut.addMemoButton.isHidden)
-    XCTAssertEqual(self.sut.dateLabel.text, data.dateDescriptionFull, "dateLabel should be populated")
+  func testDelegateIsSet() {
+    let viewModel = MockDetailInvalidCellVM(status: .expired)
+    sut.configure(with: viewModel, delegate: mockCoordinator)
+    XCTAssertTrue(mockCoordinator === sut.delegate)
   }
 
-//    XCTAssertTrue(mockDelegate === sut.delegate)
-//    XCTAssertEqual(self.sut.counterpartyLabel.text, data.counterpartyDescription, "counterpartyLabel should contain description")
-//    XCTAssertEqual(self.sut.primaryAmountLabel.text, data.primaryAmountLabel, "primaryAmountLabel should be populated")
-//    XCTAssertEqual(self.sut.secondaryAmountLabel.attributedText?.string, data.secondaryAmountLabel?.string,
-//                   "secondaryAmountLabel should be populated")
-//    XCTAssertFalse(sut.addMemoButton.isHidden)
-//    XCTAssertEqual(self.sut.dateLabel.text, data.dateDescriptionFull, "dateLabel should be populated")
+  func testWarningMessageIsShown() {
+    let viewModel = MockDetailInvalidCellVM(status: .expired)
+    sut.configure(with: viewModel, delegate: mockCoordinator)
+    let expectedText = viewModel.expiredMessage
+    XCTAssertFalse(sut.warningLabel.isHidden)
+    XCTAssertEqual(sut.warningLabel.text, expectedText)
+  }
+
+  func testWarningMessageIsHidden() {
+    let viewModel = MockDetailInvalidCellVM(status: .failed)
+    sut.configure(with: viewModel, delegate: mockCoordinator)
+    XCTAssertTrue(sut.warningLabel.isHidden)
+    XCTAssertNil(sut.warningLabel.text)
   }
 
 }

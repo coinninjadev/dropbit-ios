@@ -70,4 +70,7 @@ class MockTransactionDetailCellViewModel: MockTransactionSummaryCellViewModel, T
 typealias MockDetailInvalidCellVM = MockTransactionDetailInvalidCellViewModel
 class MockTransactionDetailInvalidCellViewModel: MockTransactionDetailCellViewModel, TransactionDetailInvalidCellViewModelType {
 
+  init(status: TransactionStatus) {
+    super.init(status: status)
+  }
 }

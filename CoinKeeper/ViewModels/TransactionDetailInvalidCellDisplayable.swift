@@ -33,15 +33,17 @@ extension TransactionDetailInvalidCellViewModelType {
 
   var warningMessage: String? {
     switch status {
-    case .expired:
-      return """
-      For security reasons we can only allow
-      48 hours to accept a transaction.
-      This transaction has expired.
-      """
-    default:
-      return nil
+    case .expired:  return expiredMessage
+    default:        return nil
     }
+  }
+
+  var expiredMessage: String {
+    return """
+    For security reasons we can only allow
+    48 hours to accept a transaction.
+    This transaction has expired.
+    """
   }
 
 }

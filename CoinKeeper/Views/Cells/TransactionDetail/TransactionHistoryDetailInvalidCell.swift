@@ -15,7 +15,8 @@ class TransactionHistoryDetailInvalidCell: TransactionHistoryDetailBaseCell {
 
   func configure(with values: TransactionDetailInvalidCellDisplayable, delegate: TransactionHistoryDetailCellDelegate) {
     super.configure(with: values, delegate: delegate)
-//    warningLabel.text = values.warningMessageLabel
+    warningLabel.text = values.warningMessage
+    warningLabel.isHidden = values.shouldHideWarningMessage
     layoutIfNeeded()
   }
 }
