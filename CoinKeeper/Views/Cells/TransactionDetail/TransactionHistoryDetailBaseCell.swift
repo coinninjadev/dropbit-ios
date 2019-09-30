@@ -81,11 +81,11 @@ class TransactionHistoryDetailBaseCell: UICollectionViewCell {
     delegate?.didTapQuestionMarkButton(detailCell: self, tooltip: tooltipType)
   }
 
-  @IBAction func didTapTwitterShare(_ sender: Any) {
+  @IBAction func didTapTwitterShare(_ sender: UIButton) {
     delegate?.didTapTwitterShare(detailCell: self)
   }
 
-  @IBAction func didTapClose(_ sender: Any) {
+  @IBAction func didTapClose(_ sender: UIButton) {
     delegate?.didTapClose(detailCell: self)
   }
 

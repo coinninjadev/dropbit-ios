@@ -66,19 +66,19 @@ class TransactionHistoryDetailValidCellTests: XCTestCase {
   // MARK: Buttons contain actions
   func testAddMemoButtonContainsAction() {
     let actions = sut.addMemoButton.actions(forTarget: sut, forControlEvent: .touchUpInside) ?? []
-    let expected = #selector(TransactionHistoryDetailInvalidCell.didTapAddMemoButton(_:)).description
+    let expected = #selector(TransactionHistoryDetailValidCell.didTapAddMemoButton(_:)).description
     XCTAssertTrue(actions.contains(expected), "button should contain action")
   }
 
   func testCloseButtonContainsAction() {
     let actions = sut.closeButton.actions(forTarget: sut, forControlEvent: .touchUpInside) ?? []
-    let expected = #selector(TransactionHistoryDetailInvalidCell.didTapClose(_:)).description
+    let expected = #selector(TransactionHistoryDetailValidCell.didTapClose(_:)).description
     XCTAssertTrue(actions.contains(expected), "button should contain action")
   }
 
   func testQuestionMarkButtonContainsAction() {
     let actions = sut.questionMarkButton.actions(forTarget: sut, forControlEvent: .touchUpInside) ?? []
-    let expected = #selector(TransactionHistoryDetailInvalidCell.didTapQuestionMarkButton(_:)).description
+    let expected = #selector(TransactionHistoryDetailValidCell.didTapQuestionMarkButton(_:)).description
     XCTAssertTrue(actions.contains(expected), "button should contain action")
   }
 
@@ -90,12 +90,12 @@ class TransactionHistoryDetailValidCellTests: XCTestCase {
 
   // MARK: Delegate methods
   func testCloseButtonTellsDelegate() {
-    sut.closeButton.sendActions(for: .touchUpInside)
+    sut.didTapClose(sut.closeButton)
     XCTAssertTrue(mockDelegate.tappedClose)
   }
 
   func testTwitterShareButtonTellsDelegate() {
-    sut.twitterShareButton.sendActions(for: .touchUpInside)
+    sut.didTapTwitterShare(sut.twitterShareButton)
     XCTAssertTrue(mockDelegate.tappedTwitterShare)
   }
 
