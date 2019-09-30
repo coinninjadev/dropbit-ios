@@ -51,6 +51,7 @@ class AddressRequestPaymentWorker {
           // update and match them manually, partially matching code in `persistTemporaryTransaction`
           pendingInvitation.setTxid(to: paymentId)
           pendingInvitation.status = .completed
+          //TODO: Link pendingInvitation to LNTransactionResult
           if let existingTransaction = CKMTransaction.find(byTxid: paymentId, in: context), pendingInvitation.transaction !== existingTransaction {
             let txToRemove = pendingInvitation.transaction
             pendingInvitation.transaction = existingTransaction
@@ -154,9 +155,11 @@ class LightningAddressRequestPaymentWorker: AddressRequestPaymentWorker {
 
     let lightningInputs = LightningPaymentInputs(sats: satsToPay, invoice: invoice, sharedPayload: outgoingTxData.sharedPayloadDTO)
     return paymentDelegate.payLightningRequest(withInputs: lightningInputs, to: outgoingTxData.receiver)
-      .then(in: context) { _ -> Promise<Void> in
-        return self.completeWalletAddressRequestFulfillmentLocally(outgoingTransactionData: outgoingTxData, invitationId: responseId,
-      pendingInvitation: pendingInvitation, txData: nil, in: context) }.asVoid()
+      .then(in: context) { response -> Promise<Void> in
+        var outgoingCopy = outgoingTxData
+        outgoingCopy.txid = response.result.cleanedId
+        return self.completeWalletAddressRequestFulfillmentLocally(outgoingTransactionData: outgoingCopy, invitationId: responseId,
+      pendingInvitation: pendingInvitation, txData: nil, in: context) }
     }
 }
 

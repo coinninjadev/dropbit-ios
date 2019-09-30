@@ -107,7 +107,7 @@ class WalletAddressDataWorkerTests: MockedPersistenceTestCase {
       in: context)
   }
 
-  func testLinkFulfilledAddressRequestsWithTransaction() {
+  func testlinkFulfilledOnChainAddressRequestsWithTransaction() {
     let stack = InMemoryCoreDataStack()
 
     // Seed the context with an invitation, placeholder tx, and actual tx
@@ -139,13 +139,13 @@ class WalletAddressDataWorkerTests: MockedPersistenceTestCase {
     let actualTx = CKMTransaction(insertInto: stack.context)
     actualTx.txid = broadcastTxid
 
-    self.sut.linkFulfilledAddressRequestsWithTransaction(in: stack.context)
+    self.sut.linkFulfilledOnChainAddressRequestsWithTransaction(in: stack.context)
 
     XCTAssertTrue(placeholderTx.isDeleted, "placeholderTx should be deleted")
     XCTAssertTrue(actualTx.invitation == invitation, "the invitation should be linked to the actual transaction")
   }
 
-  func testLinkFulfilledAddressRequestsWithTransaction_lightningInvoice() {
+  func testlinkFulfilledOnChainAddressRequestsWithTransaction_lightningInvoice() {
     let stack = InMemoryCoreDataStack(), placeholderWalletEntry = CKMWalletEntry(insertInto: stack.context)
     let invoice = "ln45gwu435nbsiurbsieu5ngkjsdfhgskjerhggi3u4hgrgergsthsrths46"
 
@@ -173,13 +173,13 @@ class WalletAddressDataWorkerTests: MockedPersistenceTestCase {
     ledgerEntry.id = invoice
     targetWalletEntry.ledgerEntry = ledgerEntry
 
-    self.sut.linkFulfilledAddressRequestsWithTransaction(in: stack.context)
+    self.sut.linkFulfilledOnChainAddressRequestsWithTransaction(in: stack.context)
 
     XCTAssertTrue(placeholderWalletEntry.isDeleted, "placeholder wallet entry should be deleted")
     XCTAssertTrue(targetWalletEntry.invitation == invitation, "the invitation should be linked to the actual transaction")
   }
 
-  func testLinkFulfilledAddressRequestsWithTransaction_IgnoresUnmatchedInvitations() {
+  func testlinkFulfilledOnChainAddressRequestsWithTransaction_IgnoresUnmatchedInvitations() {
     let stack = InMemoryCoreDataStack()
 
     // Seed the context with an invitation, placeholder tx, and actual tx
@@ -211,7 +211,7 @@ class WalletAddressDataWorkerTests: MockedPersistenceTestCase {
     let actualTx = CKMTransaction(insertInto: stack.context)
     actualTx.txid = broadcastTxid
 
-    self.sut.linkFulfilledAddressRequestsWithTransaction(in: stack.context)
+    self.sut.linkFulfilledOnChainAddressRequestsWithTransaction(in: stack.context)
 
     XCTAssertFalse(placeholderTx.isDeleted, "placeholderTx should not be deleted")
     XCTAssertNil(actualTx.invitation, "the actual transaction should not have a linked invitation")
