@@ -12,11 +12,12 @@ code_coverage true
 xcpretty_args '--test'
 disable_concurrent_testing true
 
-single_device = "iPhone X (12.2)"
+single_device = "iPhone X (13.0)"
 all_devices = [
   "iPhone X (11.1)",
   "iPhone X (11.4)",
-  "iPhone X (12.2)"
+  "iPhone X (12.2)",
+  "iPhone X (13.0)"
 ]
 
 for_lane :local_test do

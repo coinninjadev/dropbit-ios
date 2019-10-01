@@ -77,6 +77,9 @@ final class LightningUpgradePageViewController: UIPageViewController, Storyboard
 
     modalPresentationStyle = .overFullScreen
     modalTransitionStyle = .coverVertical
+    if #available(iOS 13.0, *) {
+      isModalInPresentation = true
+    }
 
     activeViewController = lnViewControllers().first
 
