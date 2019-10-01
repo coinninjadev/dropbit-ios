@@ -92,7 +92,7 @@ protocol TransactionDetailCellViewModelType: TransactionSummaryCellViewModelType
 extension TransactionDetailCellViewModelType {
 
   var detailCellType: TransactionDetailCellType {
-    if encodedInvoice != nil {
+    if (encodedInvoice != nil) && (status != .completed) {
       return .invoice
     } else {
       return isValidTransaction ? .valid : .invalid
