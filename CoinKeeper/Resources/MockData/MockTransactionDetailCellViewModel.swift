@@ -9,8 +9,8 @@
 import Foundation
 import UIKit
 
-typealias MockDetailCellVM = MockTransactionDetailCellViewModel
-class MockTransactionDetailCellViewModel: MockTransactionSummaryCellViewModel, TransactionDetailCellViewModelType {
+typealias MockDetailCellVM = MockTransactionDetailValidCellViewModel
+class MockTransactionDetailValidCellViewModel: MockTransactionSummaryCellViewModel, TransactionDetailCellViewModelType {
 
   var date: Date
   var memoIsShared: Bool
@@ -68,9 +68,21 @@ class MockTransactionDetailCellViewModel: MockTransactionSummaryCellViewModel, T
 }
 
 typealias MockDetailInvalidCellVM = MockTransactionDetailInvalidCellViewModel
-class MockTransactionDetailInvalidCellViewModel: MockTransactionDetailCellViewModel, TransactionDetailInvalidCellViewModelType {
+class MockTransactionDetailInvalidCellViewModel: MockTransactionDetailValidCellViewModel, TransactionDetailInvalidCellViewModelType {
 
   init(status: TransactionStatus) {
     super.init(status: status)
+  }
+
+  init(dropBitWith walletTxType: WalletTransactionType,
+       direction: TransactionDirection,
+       identity: UserIdentityType,
+       invitationStatus: InvitationStatus,
+       transactionStatus: TransactionStatus) {
+    super.init(walletTxType: walletTxType,
+               direction: direction,
+               status: transactionStatus,
+               counterpartyConfig: identity.testCounterparty,
+               invitationStatus: invitationStatus)
   }
 }
