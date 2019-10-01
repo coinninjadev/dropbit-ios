@@ -322,11 +322,13 @@ extension CKMTransaction {
 }
 
 struct LightningViewModelObject: TransactionSummaryCellViewModelObject {
-  let entry: CKMLNLedgerEntry
+  let walletEntry: CKMWalletEntry
+  let ledgerEntry: CKMLNLedgerEntry
 
   init?(walletEntry: CKMWalletEntry) {
     guard let ledgerEntry = walletEntry.ledgerEntry else { return nil }
-    self.entry = ledgerEntry
+    self.walletEntry = walletEntry
+    self.ledgerEntry = ledgerEntry
   }
 
   var walletTxType: WalletTransactionType {
@@ -334,15 +336,15 @@ struct LightningViewModelObject: TransactionSummaryCellViewModelObject {
   }
 
   var direction: TransactionDirection {
-    return TransactionDirection(lnDirection: entry.direction)
+    return TransactionDirection(lnDirection: ledgerEntry.direction)
   }
 
   var isLightningTransfer: Bool {
-    return entry.type == .btc
+    return ledgerEntry.type == .btc
   }
 
   var status: TransactionStatus {
-    switch entry.status {
+    switch ledgerEntry.status {
     case .pending:    return .pending
     case .completed:  return .completed
     case .expired:    return .expired
@@ -351,7 +353,7 @@ struct LightningViewModelObject: TransactionSummaryCellViewModelObject {
   }
 
   var memo: String? {
-    return entry.memo
+    return ledgerEntry.memo
   }
 
   var receiverAddress: String? {
@@ -359,7 +361,7 @@ struct LightningViewModelObject: TransactionSummaryCellViewModelObject {
   }
 
   var lightningInvoice: String? {
-    return entry.request
+    return ledgerEntry.request
   }
 
   var isLightningUpgrade: Bool {
@@ -367,22 +369,18 @@ struct LightningViewModelObject: TransactionSummaryCellViewModelObject {
   }
 
   func amountDetails(with currentRates: ExchangeRates, fiatCurrency: CurrencyCode) -> TransactionAmountDetails {
-    let amount = NSDecimalNumber(integerAmount: entry.value, currency: .BTC)
+    let amount = NSDecimalNumber(integerAmount: ledgerEntry.value, currency: .BTC)
     return TransactionAmountDetails(btcAmount: amount, fiatCurrency: fiatCurrency, exchangeRates: currentRates)
   }
 
   func counterpartyConfig(for deviceCountryCode: Int) -> TransactionCellCounterpartyConfig? {
-    let maybeTwitter = entry.walletEntry?.twitterContact.flatMap { TransactionCellTwitterConfig(contact: $0) }
-    let maybeName = priorityCounterpartyName(with: maybeTwitter, invitation: nil, phoneNumber: entry.walletEntry?.phoneNumber)
-    let maybeNumber = priorityPhoneNumber(for: deviceCountryCode, invitation: nil, phoneNumber: entry.walletEntry?.phoneNumber)
+    let maybeTwitter = ledgerEntry.walletEntry?.twitterContact.flatMap { TransactionCellTwitterConfig(contact: $0) }
+    let maybeName = priorityCounterpartyName(with: maybeTwitter, invitation: nil, phoneNumber: ledgerEntry.walletEntry?.phoneNumber)
+    let maybeNumber = priorityPhoneNumber(for: deviceCountryCode, invitation: nil, phoneNumber: ledgerEntry.walletEntry?.phoneNumber)
     return TransactionCellCounterpartyConfig(failableWithName: maybeName,
                                              displayPhoneNumber: maybeNumber,
                                              twitterConfig: maybeTwitter)
   }
-
-}
-
-extension LightningViewModelObject: TransactionDetailCellViewModelObject {
 
 }
 
