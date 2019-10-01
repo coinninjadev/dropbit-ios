@@ -85,9 +85,9 @@ protocol TransactionDetailCellViewModelType: TransactionSummaryCellViewModelType
   var onChainConfirmations: Int? { get }
   var addressProvidedToSender: String? { get }
   var encodedInvoice: String? { get }
-  var paymentIdIsValid: Bool { get } //for CKMTransaction: transaction?.txidIsActualTxid ?? false
+  var paymentIdIsValid: Bool { get }
 
-  func exchangeRateWhenReceived(forCurrency currency: CurrencyCode) -> Double? //let rate = transaction?.dayAveragePrice?.doubleValue
+  func exchangeRateWhenReceived(forCurrency currency: CurrencyCode) -> Double?
 }
 
 extension TransactionDetailCellViewModelType {

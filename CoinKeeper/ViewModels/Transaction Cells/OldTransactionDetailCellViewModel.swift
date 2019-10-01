@@ -152,6 +152,7 @@ extension OldTransactionDetailCellViewModel {
     }
   }
 
+  //TODO: move this to new view model protocol extension
   var warningMessageLabel: String? {
     if broadcastFailed {
       return "Bitcoin network failed to broadcast this transaction. Please try sending again."

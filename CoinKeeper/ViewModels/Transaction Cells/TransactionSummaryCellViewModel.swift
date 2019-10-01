@@ -10,7 +10,7 @@ import Foundation
 import PhoneNumberKit
 import UIKit
 
-struct TransactionSummaryCellViewModel: TransactionSummaryCellViewModelType {
+class TransactionSummaryCellViewModel: TransactionSummaryCellViewModelType {
   var walletTxType: WalletTransactionType
   var selectedCurrency: SelectedCurrency
   var direction: TransactionDirection
@@ -379,6 +379,10 @@ struct LightningViewModelObject: TransactionSummaryCellViewModelObject {
                                              displayPhoneNumber: maybeNumber,
                                              twitterConfig: maybeTwitter)
   }
+
+}
+
+extension LightningViewModelObject: TransactionDetailCellViewModelObject {
 
 }
 

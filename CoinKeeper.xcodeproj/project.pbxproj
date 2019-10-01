@@ -677,6 +677,7 @@
 		B51FB0E621751F75005CBAD6 /* CNNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BA389A82035E62F00B599A0 /* CNNavigationController.swift */; };
 		B51FB0E82175221A005CBAD6 /* UITestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51FB0E72175221A005CBAD6 /* UITestCase.swift */; };
 		B52053E1227B6D3000E5D2ED /* AlertManager+Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52053E0227B6D3000E5D2ED /* AlertManager+Constants.swift */; };
+		B5219C812343C7A300EA5B05 /* TransactionDetailCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5219C802343C7A300EA5B05 /* TransactionDetailCellViewModel.swift */; };
 		B521E85F218785B8002DB8C2 /* CoreDataObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = B559AF1021811FDD001D44F2 /* CoreDataObserver.swift */; };
 		B5221D5122441CAA0081C868 /* ContactCacheMigratorFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5221D5022441CAA0081C868 /* ContactCacheMigratorFactory.swift */; };
 		B5221D5322441CC30081C868 /* MigrateContactCacheV1toV2.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5221D5222441CC30081C868 /* MigrateContactCacheV1toV2.swift */; };
@@ -1733,6 +1734,7 @@
 		B51FB0E72175221A005CBAD6 /* UITestCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITestCase.swift; sourceTree = "<group>"; };
 		B52053E0227B6D3000E5D2ED /* AlertManager+Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AlertManager+Constants.swift"; sourceTree = "<group>"; };
 		B520DFE822734EAE004C7D9E /* Model v5.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Model v5.xcdatamodel"; sourceTree = "<group>"; };
+		B5219C802343C7A300EA5B05 /* TransactionDetailCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDetailCellViewModel.swift; sourceTree = "<group>"; };
 		B5221D4F2243FFB70081C868 /* ContactCache v2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "ContactCache v2.xcdatamodel"; sourceTree = "<group>"; };
 		B5221D5022441CAA0081C868 /* ContactCacheMigratorFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactCacheMigratorFactory.swift; sourceTree = "<group>"; };
 		B5221D5222441CC30081C868 /* MigrateContactCacheV1toV2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MigrateContactCacheV1toV2.swift; sourceTree = "<group>"; };
@@ -2974,14 +2976,7 @@
 		3BFA71952040610200774D59 /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
-				B5BA3A7622F22B0E001E41A7 /* TransactionSummaryCellDisplayable.swift */,
-				B52E0BD5233BEE6500BA1B0C /* TransactionDetailCellDisplayable.swift */,
-				B5E093192342508B000AE5CB /* TransactionDetailInvalidCellDisplayable.swift */,
-				B5DB5341232E8C1C0088C8A1 /* TransactionCellViewModelTypes.swift */,
-				B5437B552315B4D70002B77C /* TransactionHistoryViewModel.swift */,
-				B50E7B7E230C6A0400927C8B /* TransactionSummaryCellViewModel.swift */,
-				5B404275208CCA40005624B0 /* OldTransactionDetailCellViewModel.swift */,
-				B53461762098C61D00DDC1C4 /* OldTransactionSummaryCellViewModel.swift */,
+				B5219C822343D49F00EA5B05 /* Transaction Cells */,
 				3BFA7193204060FA00774D59 /* DigitEntryDisplayViewModel.swift */,
 				3B6FDAE72052DACA0091916A /* VerifyRecoveryWordsViewModel.swift */,
 				B5FBE41F20DD76550029D273 /* SettingsViewModel.swift */,
@@ -3406,6 +3401,22 @@
 				3B9930E0232ABF21008EA112 /* LightningUpgradeStatusView.xib */,
 			);
 			path = Subviews;
+			sourceTree = "<group>";
+		};
+		B5219C822343D49F00EA5B05 /* Transaction Cells */ = {
+			isa = PBXGroup;
+			children = (
+				B5BA3A7622F22B0E001E41A7 /* TransactionSummaryCellDisplayable.swift */,
+				B52E0BD5233BEE6500BA1B0C /* TransactionDetailCellDisplayable.swift */,
+				B5E093192342508B000AE5CB /* TransactionDetailInvalidCellDisplayable.swift */,
+				B5DB5341232E8C1C0088C8A1 /* TransactionCellViewModelTypes.swift */,
+				B5437B552315B4D70002B77C /* TransactionHistoryViewModel.swift */,
+				B50E7B7E230C6A0400927C8B /* TransactionSummaryCellViewModel.swift */,
+				B5219C802343C7A300EA5B05 /* TransactionDetailCellViewModel.swift */,
+				5B404275208CCA40005624B0 /* OldTransactionDetailCellViewModel.swift */,
+				B53461762098C61D00DDC1C4 /* OldTransactionSummaryCellViewModel.swift */,
+			);
+			path = "Transaction Cells";
 			sourceTree = "<group>";
 		};
 		B53D7ED2211A448700D1DCBF /* Networking */ = {
@@ -4874,6 +4885,7 @@
 				307DF11D2150394400260369 /* MessagesManager.swift in Sources */,
 				3B6FDAE82052DACA0091916A /* VerifyRecoveryWordsViewModel.swift in Sources */,
 				A293E35220F798920099ED69 /* TransactionHistoryEmptyView.swift in Sources */,
+				B5219C812343C7A300EA5B05 /* TransactionDetailCellViewModel.swift in Sources */,
 				B5DC877A22F093D700FDDEED /* LNLedgerResponse.swift in Sources */,
 				B56C414821F7717C005668E3 /* ConfirmPaymentMemoView.swift in Sources */,
 				B5FAD64C20A4DC1D008EB727 /* PublicKeyDataSource.swift in Sources */,
