@@ -336,8 +336,10 @@ extension SendPaymentViewController {
       refreshBothAmounts()
     }
 
-    if viewModel.btcAmount != .zero {
+    if viewModel.btcAmount != .zero || viewModel.walletTransactionType == .lightning {
       sendMaxButton.isHidden = true
+    } else {
+      sendMaxButton.isHidden = false
     }
 
     if viewModel.walletTransactionType == .lightning && viewModel.btcAmount > 0 {
