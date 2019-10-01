@@ -124,25 +124,21 @@ platform :ios do
   desc "Local testing, without resetting simulators or cleaning."
   lane :local_test do
     scan
-    xcov_for_testing
   end
 
   desc "Local testing (unit tests only), without resetting simulators or cleaning."
   lane :unit_tests do
     scan
-    xcov_for_testing
   end
 
   desc "Local testing (UI tests only), without resetting simulators or cleaning."
   lane :local_ui_tests do
     scan
-    xcov_for_testing
   end
 
   desc "Local testing, without the before_all lane"
   lane :quick_test do
     scan
-    xcov_for_testing
   end
 
   desc "Runs full test suite with clean simulator installations."
@@ -150,7 +146,6 @@ platform :ios do
     reset_sims
     bootstrap_carthage
     scan
-    xcov_for_testing
   end
 
   desc "Runs UI tests"
@@ -158,16 +153,6 @@ platform :ios do
     reset_sims
     bootstrap_carthage
     scan
-    xcov_for_testing
-  end
-
-  lane :xcov_for_testing do
-    xcov(
-      workspace: "CoinKeeper.xcworkspace",
-      scheme: "CoinKeeper",
-      only_project_targets: true,
-      output_directory: "xcov_output"
-    )
   end
 
   # building

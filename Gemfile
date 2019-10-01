@@ -7,7 +7,7 @@ git_source(:github) { |repo_name| "https://github.com/#{repo_name}" }
 
 gem 'fastlane'
 gem 'xcpretty'
-gem 'xcov', '~>1.5.0'
+# gem 'xcov', '~>1.5.0'
 gem 'ejson'
 gem 'dotenv'
 gem 'unf_ext', '~>0.0.7.5'
