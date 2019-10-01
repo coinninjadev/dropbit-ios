@@ -2225,7 +2225,6 @@
 			isa = PBXGroup;
 			children = (
 				B5C5FEF522BAE1A900287FF7 /* MockedPersistenceTestCase.swift */,
-				3BAB143F204EBDF9001D41A2 /* Cells */,
 				3B8FF10E203466D2003436EE /* Coordinators */,
 				3B5052B92046E698000C739F /* Delegates and DataSources */,
 				3BDA2083203E17CE00CBA6B1 /* Errors */,
@@ -2682,6 +2681,7 @@
 		3B82692720332AEE009B11EC /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				3BAB143F204EBDF9001D41A2 /* Cells */,
 				3B82692820332AFD009B11EC /* KeypadEntryViewTests.swift */,
 				B5697272208A8E0A00835F01 /* BalanceContainerTests.swift */,
 				6B825B5BBD3CF394D91012EC /* KeypadDigitViewTests.swift */,
