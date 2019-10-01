@@ -97,3 +97,45 @@ extension CKMTransaction: TransactionDetailCellViewModelObject {
   }
 
 }
+
+extension LightningViewModelObject: TransactionDetailCellViewModelObject {
+
+  var memoIsShared: Bool {
+    return walletEntry.sharedPayload?.sharingDesired ?? false
+  }
+
+  var primaryDate: Date {
+    //TODO
+    return Date()
+    //return walletEntry.invitation?.date ?? walletEntry.sortDate
+  }
+
+  var onChainConfirmations: Int? {
+    return nil
+  }
+
+  var addressProvidedToSender: String? {
+    return nil
+  }
+
+  var encodedInvoice: String? {
+    return ledgerEntry.request
+  }
+
+  var paymentIdIsValid: Bool {
+    //TODO
+    return true
+  }
+
+  var invitationStatus: InvitationStatus? {
+    //TODO
+    return nil
+//    return walletEntry.invitation?.status
+  }
+
+  var usdExchangeRateWhenReceived: Double? {
+    //TODO
+    return nil
+  }
+
+}
