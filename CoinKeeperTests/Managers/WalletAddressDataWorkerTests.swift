@@ -173,7 +173,7 @@ class WalletAddressDataWorkerTests: MockedPersistenceTestCase {
     ledgerEntry.id = invoice
     targetWalletEntry.ledgerEntry = ledgerEntry
 
-    self.sut.linkFulfilledOnChainAddressRequestsWithTransaction(in: stack.context)
+    self.sut.linkFulfilledLightningAddressRequestsWithTransaction(in: stack.context)
 
     XCTAssertTrue(placeholderWalletEntry.isDeleted, "placeholder wallet entry should be deleted")
     XCTAssertTrue(targetWalletEntry.invitation == invitation, "the invitation should be linked to the actual transaction")
