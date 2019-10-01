@@ -47,12 +47,15 @@ class MockTransactionSummaryCellViewModel: TransactionSummaryCellViewModelType {
   }
 
   static var testRates: ExchangeRates {
-    return [.BTC: 1, .USD: 7000]
+    return [.BTC: 1, .USD: 8500]
   }
 
-  static func testAmountDetails(sats: Int) -> TransactionAmountDetails {
+  static func testAmountDetails(sats: Int,
+                                fiatWhenInvited: NSDecimalNumber? = nil,
+                                fiatWhenTransacted: NSDecimalNumber? = nil) -> TransactionAmountDetails {
     let btcAmount = NSDecimalNumber(integerAmount: sats, currency: .BTC)
-    return TransactionAmountDetails(btcAmount: btcAmount, fiatCurrency: .USD, exchangeRates: testRates)
+    return TransactionAmountDetails(btcAmount: btcAmount, fiatCurrency: .USD, exchangeRates: testRates,
+                                    fiatWhenInvited: fiatWhenInvited, fiatWhenTransacted: fiatWhenTransacted)
   }
 
   static func testAmountDetails(cents: Int) -> TransactionAmountDetails {
@@ -70,16 +73,16 @@ class MockTransactionSummaryCellViewModel: TransactionSummaryCellViewModelType {
                                                counterpartyConfig: nil, memo: nil)
   }
 
-  static func testInstance(walletTxType: WalletTransactionType = .onChain,
-                           direction: TransactionDirection = .out,
-                           status: TransactionStatus = .completed,
-                           isLightningTransfer: Bool = false,
-                           receiverAddress: String? = nil,
-                           lightningInvoice: String? = nil,
-                           selectedCurrency: SelectedCurrency = .fiat,
-                           amountDetails: TransactionAmountDetails? = nil,
-                           counterpartyConfig: TransactionCellCounterpartyConfig? = nil,
-                           memo: String? = nil) -> MockTransactionSummaryCellViewModel {
+  static func testSummaryInstance(walletTxType: WalletTransactionType = .onChain,
+                                  direction: TransactionDirection = .out,
+                                  status: TransactionStatus = .completed,
+                                  isLightningTransfer: Bool = false,
+                                  receiverAddress: String? = nil,
+                                  lightningInvoice: String? = nil,
+                                  selectedCurrency: SelectedCurrency = .fiat,
+                                  amountDetails: TransactionAmountDetails? = nil,
+                                  counterpartyConfig: TransactionCellCounterpartyConfig? = nil,
+                                  memo: String? = nil) -> MockTransactionSummaryCellViewModel {
 
     let amtDetails = amountDetails ?? MockTransactionSummaryCellViewModel.testAmountDetails(sats: 49500)
     return MockTransactionSummaryCellViewModel(
@@ -88,6 +91,11 @@ class MockTransactionSummaryCellViewModel: TransactionSummaryCellViewModelType {
       receiverAddress: receiverAddress, lightningInvoice: lightningInvoice,
       selectedCurrency: selectedCurrency, amountDetails: amtDetails,
       counterpartyConfig: counterpartyConfig, memo: memo)
+  }
+
+  static func mockTwitterCounterparty() -> TransactionCellCounterpartyConfig {
+    let twitter = MockDetailCellVM.mockTwitterConfig()
+    return TransactionCellCounterpartyConfig(twitterConfig: twitter)
   }
 
   static func mockTwitterConfig() -> TransactionCellTwitterConfig {

@@ -18,10 +18,17 @@ class CurrencyFormatterTests: XCTestCase {
     XCTAssertEqual(formatter.string(fromDecimal: amount), expectedValue)
   }
 
-  func testFiatFormatterWithSymbolAndNegative() {
-    let formatter = FiatFormatter(currency: .USD, withSymbol: true, showNegativeSymbol: true)
+  func testFiatFormatterWithSymbolAndNegativeWithSpace() {
+    let formatter = FiatFormatter(currency: .USD, withSymbol: true, showNegativeSymbol: true, negativeHasSpace: true)
     let amount = NSDecimalNumber(value: -50)
     let expectedValue = "- $50.00"
+    XCTAssertEqual(formatter.string(fromDecimal: amount), expectedValue)
+  }
+
+  func testFiatFormatterWithSymbolAndNegativeWithoutSpace() {
+    let formatter = FiatFormatter(currency: .USD, withSymbol: true, showNegativeSymbol: true, negativeHasSpace: false)
+    let amount = NSDecimalNumber(value: -50)
+    let expectedValue = "-$50.00"
     XCTAssertEqual(formatter.string(fromDecimal: amount), expectedValue)
   }
 

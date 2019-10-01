@@ -39,28 +39,28 @@
                                     <rect key="frame" x="4" y="0.0" width="357" height="59.5"/>
                                     <subviews>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bRK-Lg-pEG" userLabel="Left Spacer View">
-                                            <rect key="frame" x="0.0" y="0.0" width="21" height="59.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="137.5" height="59.5"/>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         </view>
-                                        <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1Aa-TI-aPw">
-                                            <rect key="frame" x="23" y="0.0" width="298" height="59.5"/>
+                                        <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1Aa-TI-aPw">
+                                            <rect key="frame" x="139.5" y="0.0" width="65" height="59.5"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="20" id="Kdt-er-dzX"/>
                                             </constraints>
-                                            <state key="normal" title="3Q7pLg7xfxUbMPCxx6VYgArcCDFLHkaHiF"/>
+                                            <state key="normal" title="address"/>
                                             <connections>
                                                 <action selector="addressButtonTapped:" destination="-1" eventType="touchUpInside" id="icU-9t-79G"/>
                                             </connections>
                                         </button>
                                         <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" horizontalCompressionResistancePriority="752" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AiA-FY-PA3">
-                                            <rect key="frame" x="323" y="0.0" width="11" height="59.5"/>
+                                            <rect key="frame" x="206.5" y="0.0" width="11" height="59.5"/>
                                             <state key="normal" image="linkOut"/>
                                             <connections>
                                                 <action selector="addressButtonTapped:" destination="-1" eventType="touchUpInside" id="yrP-5r-LnK"/>
                                             </connections>
                                         </button>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="c4H-zt-FXu" userLabel="Right Spacer View">
-                                            <rect key="frame" x="336" y="0.0" width="21" height="59.5"/>
+                                            <rect key="frame" x="219.5" y="0.0" width="137.5" height="59.5"/>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         </view>
                                     </subviews>

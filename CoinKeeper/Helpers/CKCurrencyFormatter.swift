@@ -13,6 +13,7 @@ class CKCurrencyFormatter {
   let currency: CurrencyCode
   var symbolType: CurrencySymbolType
   let showNegativeSymbol: Bool
+  let negativeHasSpace: Bool
 
   enum CurrencySymbolType {
     case string, attributed, none
@@ -21,10 +22,12 @@ class CKCurrencyFormatter {
   ///Use a custom subclass instead of this formatter directly
   fileprivate init(currency: CurrencyCode,
                    symbolType: CurrencySymbolType,
-                   showNegativeSymbol: Bool) {
+                   showNegativeSymbol: Bool,
+                   negativeHasSpace: Bool) {
     self.currency = currency
     self.symbolType = symbolType
     self.showNegativeSymbol = showNegativeSymbol
+    self.negativeHasSpace = negativeHasSpace
   }
 
   static func string(for amount: NSDecimalNumber?,
@@ -77,7 +80,8 @@ class CKCurrencyFormatter {
     }
 
     if showNegativeSymbol, decimalNumber.isNegativeNumber {
-      formattedString = "- " + formattedString
+      let negativePrefix = negativeHasSpace ? "- " : "-"
+      formattedString = negativePrefix + formattedString
     }
 
     return formattedString
@@ -102,10 +106,12 @@ class CKCurrencyFormatter {
 class FiatFormatter: CKCurrencyFormatter {
   init(currency: CurrencyCode,
        withSymbol: Bool,
-       showNegativeSymbol: Bool = false) {
+       showNegativeSymbol: Bool = false,
+       negativeHasSpace: Bool = false) {
     super.init(currency: currency,
                symbolType: withSymbol ? .string : .none,
-               showNegativeSymbol: showNegativeSymbol)
+               showNegativeSymbol: showNegativeSymbol,
+               negativeHasSpace: negativeHasSpace)
   }
 
   func attributedString(from amount: NSDecimalNumber) -> NSAttributedString? {
@@ -120,7 +126,8 @@ class BitcoinFormatter: CKCurrencyFormatter {
   init(symbolType: CurrencySymbolType) {
     super.init(currency: .BTC,
                symbolType: symbolType,
-               showNegativeSymbol: false)
+               showNegativeSymbol: false,
+               negativeHasSpace: false)
   }
 
   func attributedString(from amount: NSDecimalNumber, size: Int = defaultSize) -> NSAttributedString? {
@@ -151,7 +158,8 @@ class SatsFormatter: CKCurrencyFormatter {
   init() {
     super.init(currency: .BTC,
                symbolType: .none,
-               showNegativeSymbol: false)
+               showNegativeSymbol: false,
+               negativeHasSpace: false)
   }
 
   override func string(fromDecimal decimalNumber: NSDecimalNumber) -> String? {

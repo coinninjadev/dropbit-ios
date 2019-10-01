@@ -12,8 +12,10 @@ import PromiseKit
 
 class MockTransactionHistoryDetailCellDelegate: TransactionHistoryDetailCellDelegate {
   var tappedQuestionMark = false
-  func didTapQuestionMarkButton(detailCell: TransactionHistoryDetailBaseCell, with url: URL) {
+  var receivedTooltip: DetailCellTooltip?
+  func didTapQuestionMarkButton(detailCell: TransactionHistoryDetailBaseCell, tooltip: DetailCellTooltip) {
     tappedQuestionMark = true
+    receivedTooltip = tooltip
   }
 
   var tappedClose = false
@@ -32,12 +34,14 @@ class MockTransactionHistoryDetailCellDelegate: TransactionHistoryDetailCellDele
   }
 
   var tappedBottomButton = false
+  var receivedAction: TransactionDetailAction?
   func didTapBottomButton(detailCell: TransactionHistoryDetailBaseCell, action: TransactionDetailAction) {
     tappedBottomButton = true
+    receivedAction = action
   }
 
   var tappedAddMemo = false
-  func didTapAddMemoButton(completion: @escaping (String) -> Void) {
+  func didTapAddMemoButton(detailCell: TransactionHistoryDetailBaseCell) {
     tappedAddMemo = true
   }
 

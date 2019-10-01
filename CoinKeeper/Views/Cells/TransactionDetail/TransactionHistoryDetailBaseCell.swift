@@ -9,46 +9,43 @@
 import UIKit
 import PromiseKit
 
+enum DetailCellTooltip: Int {
+  case dropBit = 1
+  case regularOnChain
+
+  var buttonTag: Int {
+    return rawValue
+  }
+}
+
 protocol TransactionHistoryDetailCellDelegate: class {
-  func didTapQuestionMarkButton(detailCell: TransactionHistoryDetailBaseCell, with url: URL)
+  func didTapQuestionMarkButton(detailCell: TransactionHistoryDetailBaseCell, tooltip: DetailCellTooltip)
   func didTapClose(detailCell: TransactionHistoryDetailBaseCell)
   func didTapTwitterShare(detailCell: TransactionHistoryDetailBaseCell)
   func didTapAddress(detailCell: TransactionHistoryDetailBaseCell)
   func didTapBottomButton(detailCell: TransactionHistoryDetailBaseCell, action: TransactionDetailAction)
-  func didTapAddMemoButton(completion: @escaping (String) -> Void)
-  func shouldSaveMemo(for transaction: CKMTransaction) -> Promise<Void>
+  func didTapAddMemoButton(detailCell: TransactionHistoryDetailBaseCell)
+//  func shouldSaveMemo(for transaction: CKMTransaction) -> Promise<Void>
 }
 
 class TransactionHistoryDetailBaseCell: UICollectionViewCell {
 
   // MARK: outlets
-  @IBOutlet var underlyingContentView: UIView! {
-    didSet {
-      underlyingContentView.backgroundColor = UIColor.white
-      underlyingContentView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
-      underlyingContentView.applyCornerRadius(13)
-    }
-  }
-  @IBOutlet var closeButton: UIButton!
+  @IBOutlet var underlyingContentView: UIView!
+  @IBOutlet var twitterShareButton: PrimaryActionButton!
   @IBOutlet var questionMarkButton: UIButton!
-  @IBOutlet var incomingImage: UIImageView!
-  @IBOutlet var dateLabel: TransactionDetailDateLabel!
+  @IBOutlet var closeButton: UIButton!
+  @IBOutlet var directionView: TransactionDirectionView!
+  @IBOutlet var statusLabel: TransactionDetailStatusLabel!
+  @IBOutlet var twitterAvatarView: TwitterAvatarView!
+  @IBOutlet var counterpartyLabel: TransactionDetailCounterpartyLabel!
   @IBOutlet var primaryAmountLabel: TransactionDetailPrimaryAmountLabel!
   @IBOutlet var secondaryAmountLabel: TransactionDetailSecondaryAmountLabel!
   @IBOutlet var historicalValuesLabel: UILabel! //use attributedText
-  @IBOutlet var addMemoButton: UIButton! {
-    didSet {
-      addMemoButton.styleAddButtonWith(title: "Add Memo")
-    }
-  }
+  @IBOutlet var addMemoButton: UIButton!
   @IBOutlet var memoContainerView: ConfirmPaymentMemoView!
-  @IBOutlet var statusLabel: TransactionDetailStatusLabel!
-  @IBOutlet var counterpartyLabel: TransactionDetailCounterpartyLabel!
-  @IBOutlet var twitterImage: UIImageView!
-  @IBOutlet var twitterShareButton: PrimaryActionButton!
+  @IBOutlet var dateLabel: TransactionDetailDateLabel!
 
-  // MARK: variables
-  var viewModel: OldTransactionDetailCellViewModel?
   weak var delegate: TransactionHistoryDetailCellDelegate?
 
   // MARK: object lifecycle
@@ -66,34 +63,22 @@ class TransactionHistoryDetailBaseCell: UICollectionViewCell {
     layer.shadowOffset = CGSize(width: 0, height: 4)
     self.clipsToBounds = false
     layer.masksToBounds = false
-  }
 
-  override func prepareForReuse() {
-    super.prepareForReuse()
-    viewModel = nil
+    underlyingContentView.backgroundColor = UIColor.white
+    underlyingContentView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+    underlyingContentView.applyCornerRadius(13)
+    addMemoButton.styleAddButtonWith(title: "Add Memo")
+    configureTwitterShareButton()
   }
 
   // MARK: actions
   @IBAction func didTapAddMemoButton(_ sender: UIButton) {
-    delegate?.didTapAddMemoButton { [weak self] memo in
-      guard let vm = self?.viewModel, let delegate = self?.delegate, let tx = vm.transaction else { return }
-      tx.memo = memo
-
-      delegate.shouldSaveMemo(for: tx)
-        .done {
-          vm.memo = memo
-          self?.configure(with: vm, delegate: delegate)
-        }.catch { error in
-          log.error(error, message: "failed to add memo")
-      }
-    }
+    delegate?.didTapAddMemoButton(detailCell: self)
   }
 
   @IBAction func didTapQuestionMarkButton(_ sender: UIButton) {
-    guard let url: URL = viewModel?.invitationStatus != nil ?
-      CoinNinjaUrlFactory.buildUrl(for: .dropbitTransactionTooltip) : CoinNinjaUrlFactory.buildUrl(for: .regularTransactionTooltip) else { return }
-
-    delegate?.didTapQuestionMarkButton(detailCell: self, with: url)
+    guard let tooltipType = DetailCellTooltip(rawValue: sender.tag) else { return }
+    delegate?.didTapQuestionMarkButton(detailCell: self, tooltip: tooltipType)
   }
 
   @IBAction func didTapTwitterShare(_ sender: Any) {
@@ -104,30 +89,34 @@ class TransactionHistoryDetailBaseCell: UICollectionViewCell {
     delegate?.didTapClose(detailCell: self)
   }
 
-  func configure(with viewModel: OldTransactionDetailCellViewModel, delegate: TransactionHistoryDetailCellDelegate) {
+  func configure(with values: TransactionDetailCellDisplayable, delegate: TransactionHistoryDetailCellDelegate) {
     self.delegate = delegate
-    self.viewModel = viewModel
 
-    configureTwitterShareButton()
-    incomingImage.image = viewModel.imageForTransactionDirection
-    dateLabel.text = viewModel.dateDescriptionFull
-    statusLabel.text = viewModel.statusDescription
-    statusLabel.textColor = viewModel.descriptionColor
-    let isEqualToReceiverAddress = (viewModel.receiverAddress ?? "") == viewModel.counterpartyDescription
-    counterpartyLabel.text = isEqualToReceiverAddress ? nil : viewModel.counterpartyDescription
-    twitterImage.isHidden = !viewModel.isTwitterContact
-    primaryAmountLabel.text = viewModel.primaryAmountLabel
-    secondaryAmountLabel.attributedText = viewModel.secondaryAmountLabel
-    historicalValuesLabel.text = nil
-    historicalValuesLabel.attributedText = viewModel.historicalAmountsAttributedString()
-    addMemoButton.isHidden = !viewModel.memo.isEmpty
-    memoContainerView.isHidden = viewModel.memo.isEmpty
-    memoContainerView.configure(
-      memo: viewModel.memo,
-      isShared: viewModel.memoWasShared,
-      isSent: true,
-      isIncoming: viewModel.isIncoming,
-      recipientName: nil)
+    self.directionView.configure(image: values.directionConfig.image, bgColor: values.directionConfig.bgColor)
+    self.statusLabel.text = values.detailStatusText
+    self.statusLabel.textColor = values.detailStatusColor
+    self.twitterAvatarView.isHidden = values.shouldHideAvatarView
+    if let avatar = values.twitterConfig?.avatar {
+      self.twitterAvatarView.configure(with: avatar, logoBackgroundColor: values.cellBackgroundColor)
+    }
+
+    self.counterpartyLabel.isHidden = values.shouldHideCounterpartyLabel
+    self.counterpartyLabel.text = values.counterpartyText
+
+    self.primaryAmountLabel.text = values.detailAmountLabels.primaryText
+    self.secondaryAmountLabel.attributedText = values.detailAmountLabels.secondaryAttributedText
+    self.historicalValuesLabel.isHidden = values.shouldHideHistoricalValuesLabel
+    self.historicalValuesLabel.text = nil
+    self.historicalValuesLabel.attributedText = values.detailAmountLabels.historicalPriceAttributedText
+
+    self.memoContainerView.isHidden = values.shouldHideMemoView
+    if let config = values.memoConfig {
+      self.memoContainerView.configure(with: config)
+    }
+
+    self.addMemoButton.isHidden = values.shouldHideAddMemoButton
+
+    self.dateLabel.text = values.displayDate
   }
 
   private func configureTwitterShareButton() {
