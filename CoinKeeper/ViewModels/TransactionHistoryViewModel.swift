@@ -89,7 +89,8 @@ class TransactionHistoryViewModel: NSObject, UICollectionViewDataSource, Exchang
   }
 
   private func detailCell(forItemAt indexPath: IndexPath, in collectionView: UICollectionView) -> TransactionHistoryDetailBaseCell {
-    guard let cellDelegate = detailsDelegate else { return TransactionHistoryDetailBaseCell() }
+    let defaultCell = TransactionHistoryDetailBaseCell()
+    guard let cellDelegate = detailsDelegate else { return defaultCell }
 
     let displayableItem = dataSource.detailCellDisplayableItem(at: indexPath,
                                                                rates: rateManager.exchangeRates,
@@ -102,11 +103,12 @@ class TransactionHistoryViewModel: NSObject, UICollectionViewDataSource, Exchang
       cell.configure(with: displayableItem, delegate: cellDelegate)
       return cell
     case .invalid:
+      guard let invalidDisplayableItem = displayableItem as? TransactionDetailInvalidCellDisplayable else { return defaultCell }
       let cell = collectionView.dequeue(TransactionHistoryDetailInvalidCell.self, for: indexPath)
-      cell.configure(with: displayableItem, delegate: cellDelegate)
+      cell.configure(with: invalidDisplayableItem, delegate: cellDelegate)
       return cell
     case .invoice:
-      return TransactionHistoryDetailBaseCell()
+      return defaultCell
     }
   }
 
