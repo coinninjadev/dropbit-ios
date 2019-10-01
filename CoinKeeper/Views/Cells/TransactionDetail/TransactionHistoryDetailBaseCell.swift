@@ -32,7 +32,7 @@ class TransactionHistoryDetailBaseCell: UICollectionViewCell {
 
   // MARK: outlets
   @IBOutlet var underlyingContentView: UIView!
-  @IBOutlet var twitterShareButton: PrimaryActionButton!
+  @IBOutlet var twitterShareButton: PrimaryActionButton? //may be nil for some xibs
   @IBOutlet var questionMarkButton: UIButton!
   @IBOutlet var closeButton: UIButton!
   @IBOutlet var directionView: TransactionDirectionView!
@@ -93,6 +93,7 @@ class TransactionHistoryDetailBaseCell: UICollectionViewCell {
     self.delegate = delegate
 
     self.questionMarkButton.tag = values.tooltipType.rawValue
+    self.twitterShareButton?.isHidden = values.shouldHideTwitterShareButton
 
     self.directionView.configure(image: values.directionConfig.image, bgColor: values.directionConfig.bgColor)
     self.statusLabel.text = values.detailStatusText

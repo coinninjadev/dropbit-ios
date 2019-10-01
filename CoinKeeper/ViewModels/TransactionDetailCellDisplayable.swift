@@ -39,6 +39,7 @@ extension TransactionDetailCellDisplayable {
   var shouldHideProgressView: Bool { return progressConfig == nil }
   var shouldHideBottomButton: Bool { return actionButtonConfig == nil }
   var shouldHideHistoricalValuesLabel: Bool { return detailAmountLabels.historicalPriceAttributedText == nil }
+  var shouldHideTwitterShareButton: Bool { return isLightningTransfer }
 
 }
 

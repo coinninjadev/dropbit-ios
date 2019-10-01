@@ -95,7 +95,7 @@ class TransactionHistoryDetailValidCellTests: XCTestCase {
   }
 
   func testTwitterShareButtonTellsDelegate() {
-    sut.didTapTwitterShare(sut.twitterShareButton)
+    sut.twitterShareButton.flatMap { sut.didTapTwitterShare($0) }
     XCTAssertTrue(mockDelegate.tappedTwitterShare)
   }
 
@@ -137,6 +137,21 @@ class TransactionHistoryDetailValidCellTests: XCTestCase {
   }
 
   // MARK: - Base Cell Configuration
+
+  // MARK: Twitter share button
+  func testTwitterButton_isLightningTransfer_Shown() {
+    let viewModel = MockDetailCellVM(isLightningTransfer: false)
+    sut.configure(with: viewModel, delegate: mockDelegate)
+    XCTAssertNotNil(sut.twitterShareButton)
+    XCTAssertFalse(sut.twitterShareButton!.isHidden)
+  }
+
+  func testTwitterButton_isLightningTransfer_Hidden() {
+    let viewModel = MockDetailCellVM(isLightningTransfer: true)
+    sut.configure(with: viewModel, delegate: mockDelegate)
+    XCTAssertNotNil(sut.twitterShareButton)
+    XCTAssertTrue(sut.twitterShareButton!.isHidden)
+  }
 
   // MARK: Direction view
   func testPendingLightningDropBit_loadsImageAndColor() {
