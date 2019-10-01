@@ -70,7 +70,7 @@ extension OldTransactionDetailCellViewModel {
     if isConfirmed {
       return .darkGrayText
     } else {
-      return .warningText
+      return .warning
     }
   }
 

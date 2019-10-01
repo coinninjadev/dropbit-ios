@@ -48,7 +48,7 @@ protocol TransactionInvalidDetailCellDisplayable: TransactionDetailCellDisplayab
 extension TransactionInvalidDetailCellDisplayable {
 
   var statusTextColor: UIColor {
-    return .warningText
+    return .warning
   }
 
   var directionImage: UIImage? {
@@ -143,7 +143,7 @@ extension TransactionDetailCellViewModelType {
   }
 
   var detailStatusColor: UIColor {
-    return isValidTransaction ? .darkGrayText : .warningText
+    return isValidTransaction ? .darkGrayText : .warning
   }
 
   var progressConfig: ProgressBarConfig? {

@@ -293,21 +293,21 @@ class TransactionHistoryDetailValidCellTests: XCTestCase {
     let viewModel = MockDetailCellVM.testDetailInstance(status: .canceled)
     sut.configure(with: viewModel, delegate: mockDelegate)
     XCTAssertEqual(sut.statusLabel.text, viewModel.string(for: .dropBitCanceled))
-    XCTAssertEqual(sut.statusLabel.textColor, UIColor.warningText)
+    XCTAssertEqual(sut.statusLabel.textColor, UIColor.warning)
   }
 
   func testStatusLabel_transactionExpired() {
     let viewModel = MockDetailCellVM.testDetailInstance(status: .expired)
     sut.configure(with: viewModel, delegate: mockDelegate)
     XCTAssertEqual(sut.statusLabel.text, viewModel.string(for: .transactionExpired))
-    XCTAssertEqual(sut.statusLabel.textColor, UIColor.warningText)
+    XCTAssertEqual(sut.statusLabel.textColor, UIColor.warning)
   }
 
   func testStatusLabel_broadcastFailed() {
     let viewModel = MockDetailCellVM.testDetailInstance(status: .failed)
     sut.configure(with: viewModel, delegate: mockDelegate)
     XCTAssertEqual(sut.statusLabel.text, viewModel.string(for: .broadcastFailed))
-    XCTAssertEqual(sut.statusLabel.textColor, UIColor.warningText)
+    XCTAssertEqual(sut.statusLabel.textColor, UIColor.warning)
   }
 
   func testStatusLabel_invoicePaid() {
