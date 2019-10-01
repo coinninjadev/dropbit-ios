@@ -20,7 +20,7 @@ struct LightningPaymentInputs {
 }
 
 extension AppCoordinator: ConfirmPaymentViewControllerDelegate {
-
+  
   func confirmPaymentViewControllerDidLoad(_ viewController: UIViewController) {
     analyticsManager.track(event: .confirmScreenLoaded, with: nil)
   }

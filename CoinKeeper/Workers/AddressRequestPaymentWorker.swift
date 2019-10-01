@@ -154,7 +154,7 @@ class LightningAddressRequestPaymentWorker: AddressRequestPaymentWorker {
     }
 
     let lightningInputs = LightningPaymentInputs(sats: satsToPay, invoice: invoice, sharedPayload: outgoingTxData.sharedPayloadDTO)
-    return paymentDelegate.payLightningRequest(withInputs: lightningInputs, to: outgoingTxData.receiver)
+    return paymentDelegate.payLightningRequest(withInputs: lightningInputs, invitation: pendingInvitation, to: outgoingTxData.receiver)
       .then(in: context) { response -> Promise<Void> in
         var outgoingCopy = outgoingTxData
         outgoingCopy.txid = response.result.cleanedId

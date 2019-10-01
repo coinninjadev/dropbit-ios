@@ -57,6 +57,7 @@ protocol LightningBrokerType: AnyObject {
                              in context: NSManagedObjectContext)
   func persistPaymentResponse(_ response: LNTransactionResponse,
                               receiver: OutgoingDropBitReceiver?,
+                              invitation: CKMInvitation?,
                               inputs: LightningPaymentInputs,
                               in context: NSManagedObjectContext)
 }

@@ -68,7 +68,8 @@ extension AppCoordinator: PaymentSendingDelegate {
     viewController.present(alert, animated: true, completion: nil)
   }
 
-  func handleSuccessfulLightningPaymentVerification(with inputs: LightningPaymentInputs, receiver: OutgoingDropBitReceiver?) {
+  func handleSuccessfulLightningPaymentVerification(with inputs: LightningPaymentInputs,
+                                                    receiver: OutgoingDropBitReceiver?) {
     let viewModel = PaymentSuccessFailViewModel(mode: .pending)
     let successFailVC = SuccessFailViewController.newInstance(viewModel: viewModel, delegate: self)
     let errorHandler: CKErrorCompletion = self.paymentErrorHandler(for: successFailVC)
@@ -129,7 +130,7 @@ extension AppCoordinator: PaymentSendingDelegate {
                                                 success: @escaping CKCompletion,
                                                 failure: @escaping CKErrorCompletion) {
       //TODO: Get updated ledger and persist new entry immediately following payment
-      payLightningRequest(withInputs: inputs, to: receiver)
+      payLightningRequest(withInputs: inputs, invitation: nil, to: receiver)
         .done { _ in
         success()
         self.didBroadcastTransaction()
@@ -138,9 +139,10 @@ extension AppCoordinator: PaymentSendingDelegate {
   }
 
   func payLightningRequest(withInputs inputs: LightningPaymentInputs,
+                           invitation: CKMInvitation?,
                            to receiver: OutgoingDropBitReceiver?) -> Promise<LNTransactionResponse> {
     return self.networkManager.payLightningPaymentRequest(inputs.invoice, sats: inputs.sats)
-    .get { self.persistLightningPaymentResponse($0, receiver: receiver, inputs: inputs) }
+    .get { self.persistLightningPaymentResponse($0, receiver: receiver, invitation: invitation, inputs: inputs) }
     .then { response -> Promise<LNTransactionResponse> in
       let maybeSender = self.sharedPayloadSenderIdentity(forReceiver: receiver)
       let maybePostable = PayloadPostableLightningObject(inputs: inputs, paymentResultId: response.result.cleanedId,
@@ -156,10 +158,12 @@ extension AppCoordinator: PaymentSendingDelegate {
 
   private func persistLightningPaymentResponse(_ response: LNTransactionResponse,
                                                receiver: OutgoingDropBitReceiver?,
+                                               invitation: CKMInvitation?,
                                                inputs: LightningPaymentInputs) {
-    let context = self.persistenceManager.createBackgroundContext()
+    let context = invitation?.managedObjectContext ?? self.persistenceManager.createBackgroundContext()
     context.performAndWait {
       self.persistenceManager.brokers.lightning.persistPaymentResponse(response, receiver: receiver,
+                                                                       invitation: invitation,
                                                                        inputs: inputs, in: context)
       try? context.saveRecursively()
     }
