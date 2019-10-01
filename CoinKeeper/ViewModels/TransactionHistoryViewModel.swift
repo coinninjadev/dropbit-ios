@@ -98,7 +98,7 @@ class TransactionHistoryViewModel: NSObject, UICollectionViewDataSource, Exchang
                                                                deviceCountryCode: self.deviceCountryCode)
 
     switch displayableItem.detailCellType {
-    case .valid:
+    case .valid, .invoice:
       let cell = collectionView.dequeue(TransactionHistoryDetailValidCell.self, for: indexPath)
       cell.configure(with: displayableItem, delegate: cellDelegate)
       return cell
@@ -107,8 +107,6 @@ class TransactionHistoryViewModel: NSObject, UICollectionViewDataSource, Exchang
       let cell = collectionView.dequeue(TransactionHistoryDetailInvalidCell.self, for: indexPath)
       cell.configure(with: invalidDisplayableItem, delegate: cellDelegate)
       return cell
-    case .invoice:
-      return defaultCell
     }
   }
 
