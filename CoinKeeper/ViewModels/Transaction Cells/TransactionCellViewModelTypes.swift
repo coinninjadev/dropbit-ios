@@ -101,11 +101,13 @@ struct LightningInvoiceDisplayDetails {
 enum TransactionDetailAction: Int {
   case seeDetails = 1 //UIButton.tag defaults to 0
   case cancelInvitation
+  case removeEntry
 
   var buttonTitle: String {
     switch self {
-    case .cancelInvitation:  return "CANCEL DROPBIT"
-    case .seeDetails:  return "DETAILS"
+    case .cancelInvitation:   return "CANCEL DROPBIT"
+    case .seeDetails:         return "DETAILS"
+    case .removeEntry:        return "REMOVE FROM TRANSACTION LIST"
     }
   }
 }

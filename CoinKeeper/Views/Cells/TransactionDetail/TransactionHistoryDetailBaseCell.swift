@@ -20,10 +20,11 @@ enum DetailCellTooltip: Int {
 
 protocol TransactionHistoryDetailCellDelegate: class {
   func didTapQuestionMarkButton(detailCell: TransactionHistoryDetailBaseCell, tooltip: DetailCellTooltip)
-  func didTapClose(detailCell: TransactionHistoryDetailBaseCell)
+  func didTapClose(detailCell: UICollectionViewCell)
   func didTapTwitterShare(detailCell: TransactionHistoryDetailBaseCell)
   func didTapAddress(detailCell: TransactionHistoryDetailBaseCell)
-  func didTapBottomButton(detailCell: TransactionHistoryDetailBaseCell, action: TransactionDetailAction)
+  func didTapInvoice(detailCell: TransactionHistoryDetailInvoiceCell)
+  func didTapBottomButton(detailCell: UICollectionViewCell, action: TransactionDetailAction)
   func didTapAddMemoButton(detailCell: TransactionHistoryDetailBaseCell)
 //  func shouldSaveMemo(for transaction: CKMTransaction) -> Promise<Void>
 }
