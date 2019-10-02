@@ -122,7 +122,7 @@ struct DetailCellActionButtonConfig {
 
   var backgroundColor: UIColor {
     switch action {
-    case .cancelInvitation:
+    case .cancelInvitation, .removeEntry:
       return .darkPeach
     case .seeDetails:
       switch walletTxType {

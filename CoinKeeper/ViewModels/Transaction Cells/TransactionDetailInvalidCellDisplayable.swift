@@ -24,7 +24,7 @@ protocol TransactionDetailInvalidCellViewModelType: TransactionDetailInvalidCell
 extension TransactionDetailInvalidCellViewModelType {
 
   var statusTextColor: UIColor {
-    return .warningText
+    return .warning
   }
 
   var directionImage: UIImage? {

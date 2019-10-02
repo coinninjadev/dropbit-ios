@@ -84,16 +84,14 @@ protocol TransactionDetailCellViewModelType: TransactionSummaryCellViewModelType
   var invitationStatus: InvitationStatus? { get }
   var onChainConfirmations: Int? { get }
   var addressProvidedToSender: String? { get }
-  var encodedInvoice: String? { get }
   var paymentIdIsValid: Bool { get }
-
   func exchangeRateWhenReceived(forCurrency currency: CurrencyCode) -> Double?
 }
 
 extension TransactionDetailCellViewModelType {
 
   var detailCellType: TransactionDetailCellType {
-    if (encodedInvoice != nil) && (status != .completed) {
+    if (lightningInvoice != nil) && (status != .completed) {
       return .invoice
     } else {
       return isValidTransaction ? .valid : .invalid

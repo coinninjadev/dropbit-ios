@@ -13,17 +13,31 @@ protocol TransactionDetailInvoiceCellDisplayable: TransactionSummaryCellDisplaya
   /// Return nil if expired
   var hoursUntilExpiration: Int? { get }
   var detailAmountLabels: DetailCellAmountLabels { get }
-  var qrCodeImage: UIImage { get }
-  var encodedInvoice: String { get }
+  var lightningInvoice: String? { get }
   var displayDate: String { get }
   var tooltipType: DetailCellTooltip { get }
-  var actionButtonConfig: DetailCellActionButtonConfig { get }
+  var actionButtonConfig: DetailCellActionButtonConfig? { get }
 
+  func qrImage(withSize size: CGSize) -> UIImage?
 }
 
 extension TransactionDetailInvoiceCellDisplayable {
 
   var invoiceIsExpired: Bool { return hoursUntilExpiration == nil }
   var shouldHideQRHistoricalContainer: Bool { return invoiceIsExpired }
+
+}
+
+protocol TransactionDetailInvoiceCellViewModelType: TransactionDetailCellViewModelType, TransactionDetailInvoiceCellDisplayable {
+
+  var qrCodeGenerator: QRCodeGenerator { get }
+}
+
+extension TransactionDetailInvoiceCellViewModelType {
+
+  func qrImage(withSize size: CGSize) -> UIImage? {
+    guard let invoice = lightningInvoice else { return nil }
+    return qrCodeGenerator.image(from: invoice, size: size)
+  }
 
 }
