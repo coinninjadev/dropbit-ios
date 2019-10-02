@@ -424,7 +424,7 @@ struct LightningInvitationViewModelObject: TransactionSummaryCellViewModelObject
     let btcAmount = NSDecimalNumber(integerAmount: invitation.btcAmount, currency: .BTC)
     let fiatAmount = NSDecimalNumber(integerAmount: invitation.fiatAmount, currency: .USD)
     return TransactionAmountDetails(btcAmount: btcAmount, fiatCurrency: fiatCurrency, exchangeRates: currentRates,
-                                    fiatWhenCreated: fiatAmount, fiatWhenTransacted: nil)
+                                    fiatWhenInvited: fiatAmount, fiatWhenTransacted: nil)
   }
 
   func counterpartyConfig(for deviceCountryCode: Int) -> TransactionCellCounterpartyConfig? {
