@@ -785,7 +785,7 @@ extension SendPaymentViewController {
     case .invite:
       try validateAmountAndBeginAddressNegotiation(for: contact, kind: .invite, sharedPayload: sharedPayload)
     case .registeredUser:
-      validateRegisteredContact(contact, sharedPayload: sharedPayload)
+      try validateRegisteredContact(contact, sharedPayload: sharedPayload)
     case .generic:
       validateGenericContact(contact, sharedPayload: sharedPayload)
     }
@@ -820,7 +820,8 @@ extension SendPaymentViewController {
     self.showValidatorAlert(for: error, title: "")
   }
 
-  private func validateRegisteredContact(_ contact: ContactType, sharedPayload: SharedPayloadDTO) {
+  private func validateRegisteredContact(_ contact: ContactType, sharedPayload: SharedPayloadDTO) throws {
+    try validateAmount()
     let addressType = self.viewModel.walletTransactionType.addressType
     delegate.viewControllerDidRequestRegisteredAddress(self, ofType: addressType, forIdentity: contact.identityHash)
       .done { (responses: [WalletAddressesQueryResponse]) in
