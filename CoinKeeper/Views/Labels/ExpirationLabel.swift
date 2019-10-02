@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-class ExpirationLabel: UILabel {
+class ExpirationLabel: PaddedLabel {
 
   override func awakeFromNib() {
     super.awakeFromNib()
