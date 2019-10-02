@@ -91,7 +91,7 @@ protocol TransactionDetailCellViewModelType: TransactionSummaryCellViewModelType
 extension TransactionDetailCellViewModelType {
 
   var detailCellType: TransactionDetailCellType {
-    if (lightningInvoice != nil) && (status != .completed) {
+    if (lightningInvoice != nil) && (status != .completed) && !isInvitation {
       return .invoice
     } else {
       return isValidTransaction ? .valid : .invalid

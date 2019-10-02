@@ -321,7 +321,7 @@ extension CKMTransaction {
 
 }
 
-struct LightningViewModelObject: TransactionSummaryCellViewModelObject {
+class LightningViewModelObject: TransactionSummaryCellViewModelObject {
   let walletEntry: CKMWalletEntry
   let ledgerEntry: CKMLNLedgerEntry
 
@@ -380,6 +380,19 @@ struct LightningViewModelObject: TransactionSummaryCellViewModelObject {
     return TransactionCellCounterpartyConfig(failableWithName: maybeName,
                                              displayPhoneNumber: maybeNumber,
                                              twitterConfig: maybeTwitter)
+  }
+
+}
+
+class LightningInvoiceViewModelObject: LightningViewModelObject, TransactionDetailInvoiceCellViewModelType {
+
+  override init?(walletEntry: CKMWalletEntry) {
+    guard let ledgerEntry = walletEntry.ledgerEntry,
+      ledgerEntry.request != nil, ledgerEntry.type == .lightning, ledgerEntry.status != .completed
+      //TODO: check that walletEntry.invitation is nil
+      else { return nil }
+    self.walletEntry = walletEntry
+    self.ledgerEntry = ledgerEntry
   }
 
 }
