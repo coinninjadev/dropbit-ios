@@ -617,6 +617,7 @@
 		B501022221F2325B00D42A71 /* UIColor+Init.swift in Sources */ = {isa = PBXBuildFile; fileRef = B501022121F2325B00D42A71 /* UIColor+Init.swift */; };
 		B501022321F2333C00D42A71 /* UIColor+Init.swift in Sources */ = {isa = PBXBuildFile; fileRef = B501022121F2325B00D42A71 /* UIColor+Init.swift */; };
 		B50384C620B304780091AB37 /* CKNetworkError.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50384C520B304780091AB37 /* CKNetworkError.swift */; };
+		B5047CEE2345186100F45DB8 /* PaddedLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5047CED2345186100F45DB8 /* PaddedLabel.swift */; };
 		B5054148207D00270059C8F9 /* CKMAddress+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5054142207D00270059C8F9 /* CKMAddress+CoreDataClass.swift */; };
 		B5054149207D00270059C8F9 /* CKMAddress+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5054143207D00270059C8F9 /* CKMAddress+CoreDataProperties.swift */; };
 		B505414D207D10DD0059C8F9 /* InMemoryCoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = B505414C207D10DD0059C8F9 /* InMemoryCoreDataStack.swift */; };
@@ -1679,6 +1680,7 @@
 		B500C390232429B7009F7C2D /* MockConfirmLightningPaymentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockConfirmLightningPaymentViewModel.swift; sourceTree = "<group>"; };
 		B501022121F2325B00D42A71 /* UIColor+Init.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Init.swift"; sourceTree = "<group>"; };
 		B50384C520B304780091AB37 /* CKNetworkError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CKNetworkError.swift; sourceTree = "<group>"; };
+		B5047CED2345186100F45DB8 /* PaddedLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaddedLabel.swift; sourceTree = "<group>"; };
 		B5054142207D00270059C8F9 /* CKMAddress+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CKMAddress+CoreDataClass.swift"; sourceTree = "<group>"; };
 		B5054143207D00270059C8F9 /* CKMAddress+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CKMAddress+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		B505414C207D10DD0059C8F9 /* InMemoryCoreDataStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InMemoryCoreDataStack.swift; sourceTree = "<group>"; };
@@ -3594,6 +3596,7 @@
 				3BCBFCC5229EE91E00F633BA /* SettingsCellTitleLabel.swift */,
 				B59E2C8A22E7974000A75AFE /* WalletToggleTitleLabel.swift */,
 				A257CEC72314662C0063670B /* ExpirationLabel.swift */,
+				B5047CED2345186100F45DB8 /* PaddedLabel.swift */,
 			);
 			path = Labels;
 			sourceTree = "<group>";
@@ -5057,6 +5060,7 @@
 				B54913A922BC21A500ACC7D7 /* AdjustableFeesViewController.swift in Sources */,
 				A257CEC4230C3EBD0063670B /* CKLightningURLParser.swift in Sources */,
 				B5FE9B67219DD96200801D3C /* MerchantPaymentRequestResponse.swift in Sources */,
+				B5047CEE2345186100F45DB8 /* PaddedLabel.swift in Sources */,
 				3BEB594620D15AF9005EDA9E /* AddressTransactionSummaryResponse.swift in Sources */,
 				3B2EBF71223010DC003C0D0E /* ManagedContactComponents.swift in Sources */,
 				3B5A88A2228B08FE0082BBA4 /* ContactCellPrimaryLabel.swift in Sources */,
