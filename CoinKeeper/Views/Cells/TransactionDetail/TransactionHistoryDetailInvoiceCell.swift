@@ -16,12 +16,15 @@ class TransactionHistoryDetailInvoiceCell: CollectionViewCardCell {
   @IBOutlet var titleLabel: UILabel!
   @IBOutlet var expirationLabel: ExpirationLabel!
 
+  @IBOutlet var centerStackView: UIStackView!
+
   @IBOutlet var invoiceAmountContainer: UIView!
   @IBOutlet var primaryAmountLabel: UILabel!
   @IBOutlet var secondaryAmountLabel: UILabel!
 
   @IBOutlet var qrHistoricalContainer: UIView!
   @IBOutlet var qrCodeImageView: UIImageView!
+  @IBOutlet var qrCodeImageWidthConstraint: NSLayoutConstraint!
   @IBOutlet var historicalValuesLabel: UILabel!
 
   @IBOutlet var memoLabel: UILabel!
@@ -52,7 +55,7 @@ class TransactionHistoryDetailInvoiceCell: CollectionViewCardCell {
     titleLabel.font = .regular(14)
 
     primaryAmountLabel.textColor = .darkBlueText
-    primaryAmountLabel.font = smallPrimaryAmountFont
+    primaryAmountLabel.font = .regular(50)
     secondaryAmountLabel.textColor = .bitcoinOrange
     secondaryAmountLabel.font = .medium(14)
 
@@ -71,34 +74,54 @@ class TransactionHistoryDetailInvoiceCell: CollectionViewCardCell {
   func configure(with values: TransactionDetailInvoiceCellDisplayable, delegate: TransactionHistoryDetailCellDelegate) {
     self.delegate = delegate
 
+    let layoutConfig = sizeRelativeLayoutConfig(qrIsShown: !values.shouldHideQRHistoricalContainer)
+    centerStackView.spacing = layoutConfig.stackSpacing
+
     questionMarkButton.tag = values.tooltipType.buttonTag
     expirationLabel.configure(hoursRemaining: values.hoursUntilExpiration)
 
     primaryAmountLabel.text = values.detailAmountLabels.primaryText
     secondaryAmountLabel.attributedText = values.detailAmountLabels.secondaryAttributedText
+    primaryAmountLabel.font = .regular(layoutConfig.primaryAmountFontSize)
 
     historicalValuesLabel.attributedText = values.detailAmountLabels.historicalPriceAttributedText
-    qrCodeImageView.image = values.qrCodeImage
+    historicalValuesLabel.isHidden = true //TODO: populate and show this when historical exchange rates are available for invoices
+
+    qrCodeImageWidthConstraint.constant = layoutConfig.qrCodeWidth
+    qrCodeImageView.image = values.qrImage(withSize: layoutConfig.qrCodeSize)
     qrHistoricalContainer.isHidden = values.shouldHideQRHistoricalContainer
 
     memoLabel.text = values.memo
     memoLabel.isHidden = values.shouldHideMemoLabel
 
-    copyInvoiceLabel.text = values.encodedInvoice
+    copyInvoiceLabel.text = values.lightningInvoice
 
-    bottomButton.backgroundColor = values.actionButtonConfig.backgroundColor
-    bottomButton.tag = values.actionButtonConfig.buttonTag
-    bottomButton.setTitle(values.actionButtonConfig.title, for: .normal)
+    if let config = values.actionButtonConfig {
+      bottomButton.backgroundColor = config.backgroundColor
+      bottomButton.tag = config.buttonTag
+      bottomButton.setTitle(config.title, for: .normal)
+    }
 
     dateLabel.text = values.displayDate
   }
 
-  private var smallPrimaryAmountFont: UIFont {
-    return .regular(30)
+  private func sizeRelativeLayoutConfig(qrIsShown: Bool) -> InvoiceCellLayoutConfig {
+    let qrSensitiveFontSize: CGFloat = qrIsShown ? 30 : 50
+    switch UIScreen.main.relativeSize {
+    case .short:  return InvoiceCellLayoutConfig(stackSpacing: 8, primaryAmountFontSize: 30, qrCodeWidth: 140)
+    case .medium: return InvoiceCellLayoutConfig(stackSpacing: 16, primaryAmountFontSize: qrSensitiveFontSize, qrCodeWidth: 160)
+    case .tall:   return InvoiceCellLayoutConfig(stackSpacing: 32, primaryAmountFontSize: 50, qrCodeWidth: 200)
+    }
   }
 
-  private var largePrimaryAmountFont: UIFont {
-    return .regular(50)
-  }
+}
 
+struct InvoiceCellLayoutConfig {
+  let stackSpacing: CGFloat
+  let primaryAmountFontSize: CGFloat
+  let qrCodeWidth: CGFloat
+
+  var qrCodeSize: CGSize {
+    return CGSize(width: qrCodeWidth, height: qrCodeWidth)
+  }
 }
