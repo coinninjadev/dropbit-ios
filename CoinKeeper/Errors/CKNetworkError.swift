@@ -119,7 +119,7 @@ extension MoyaError {
         return errorString
       }
     } else {
-      return self.errorDescription ?? "MoyaError.response has no description"
+      return self.errorDescription ?? "An unknown error occurred"
     }
   }
 
