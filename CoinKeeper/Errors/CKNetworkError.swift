@@ -64,7 +64,7 @@ enum CKNetworkError: UserNotifiableError {
     case .countryCodeDisabled:            return "Country code not enabled"
     case .twilioError:                    return "Twilio responded with error."
     case .invoiceAmountTooHigh:           return "Invoice amount too high."
-    case .underlying(let error):          return error.responseDescription
+    case .underlying(let error):          return error.humanReadableDescription
 
     case .invalidValue(let keypath, let value, _):
       let valueDesc = value ?? "nil"
@@ -102,6 +102,15 @@ extension MoyaError {
 
   /// CoinKeeper API returns a description of the error in the body
   var responseDescription: String {
+    if let data = self.response?.data,
+      let errorString = String(data: data, encoding: .utf8) {
+      return errorString
+    } else {
+      return self.errorDescription ?? "MoyaError.response has no description"
+    }
+  }
+
+  var humanReadableDescription: String {
     if let data = self.response?.data,
       let errorString = String(data: data, encoding: .utf8) {
       if let responseError = try? JSONDecoder().decode(CoinNinjaErrorResponse.self, from: data) {
