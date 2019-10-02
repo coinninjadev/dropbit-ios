@@ -131,6 +131,10 @@ struct MockDetailDataGenerator {
                                               memo: memo, memoIsShared: memoIsShared, date: Date())
   }
 
+  func lightningInvoice(hours: Int?) -> MockTransactionDetailInvoiceCellViewModel {
+    return MockTransactionDetailInvoiceCellViewModel(hoursUntilExpiration: hours)
+  }
+
   private func generateValidItems(_ identity: UserIdentityType) -> [MockTransactionDetailValidCellViewModel] {
     return [
       self.invitePendingSender(identity),

@@ -12,14 +12,13 @@ import UIKit
 typealias MockDetailCellVM = MockTransactionDetailValidCellViewModel
 class MockTransactionDetailValidCellViewModel: MockTransactionSummaryCellViewModel, TransactionDetailCellViewModelType {
 
-  var date: Date
-  var memoIsShared: Bool
-  var invitationStatus: InvitationStatus?
-  var onChainConfirmations: Int?
-  var addressProvidedToSender: String?
-  var encodedInvoice: String?
-  var paymentIdIsValid: Bool
-  var exchangeRateWhenReceived: Double?
+  let date: Date
+  let memoIsShared: Bool
+  let invitationStatus: InvitationStatus?
+  let onChainConfirmations: Int?
+  let addressProvidedToSender: String?
+  let paymentIdIsValid: Bool
+  let exchangeRateWhenReceived: Double?
 
   init(walletTxType: WalletTransactionType = .onChain,
        direction: TransactionDirection = .out,
@@ -45,6 +44,7 @@ class MockTransactionDetailValidCellViewModel: MockTransactionSummaryCellViewMod
     self.onChainConfirmations = onChainConfirmations
     self.addressProvidedToSender = addressProvidedToSender
     self.paymentIdIsValid = MockDetailCellVM.paymentIdIsValid(basedOn: invitationStatus)
+    self.exchangeRateWhenReceived = MockDetailCellVM.testRates[.USD].flatMap { $0 - 50 }
 
     super.init(walletTxType: walletTxType, direction: direction, status: status,
                isLightningTransfer: isLightningTransfer, receiverAddress: receiverAddress,
@@ -85,4 +85,20 @@ class MockTransactionDetailInvalidCellViewModel: MockTransactionDetailValidCellV
                counterpartyConfig: identity.testCounterparty,
                invitationStatus: invitationStatus)
   }
+}
+
+class MockTransactionDetailInvoiceCellViewModel: MockTransactionDetailValidCellViewModel, TransactionDetailInvoiceCellViewModelType {
+
+  let qrCodeGenerator: QRCodeGenerator
+  let hoursUntilExpiration: Int?
+
+  init(hoursUntilExpiration: Int?) {
+    self.qrCodeGenerator = QRCodeGenerator()
+    self.hoursUntilExpiration = hoursUntilExpiration
+    super.init(walletTxType: .lightning, direction: .in, status: .pending,
+               lightningInvoice: MockDetailCellVM.mockLightningInvoice(),
+               selectedCurrency: .fiat, memo: "Coffee ☕️", memoIsShared: true, date: Date())
+  }
+
+
 }
