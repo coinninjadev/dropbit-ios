@@ -72,4 +72,13 @@ extension CKMLNLedgerEntry {
     set { walletEntry?.memo = newValue }
   }
 
+  var transactionStatus: TransactionStatus {
+    switch status {
+    case .pending:    return .pending
+    case .completed:  return .completed
+    case .expired:    return .expired
+    case .failed:     return .failed
+    }
+  }
+
 }

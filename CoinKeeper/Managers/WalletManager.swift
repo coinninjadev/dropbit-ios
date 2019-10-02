@@ -33,18 +33,20 @@ protocol WalletManagerType: AnyObject {
 
   func activeTemporarySentTxTotal(in context: NSManagedObjectContext) -> Int
 
-  func transactionData(
-    forPayment payment: NSDecimalNumber,
-    to address: String,
-    withFeeRate feeRate: Double,
-    rbfReplaceabilityOption: CNBTransactionReplaceabilityOption
-    ) -> Promise<CNBTransactionData>
+  func transactionData(forPayment payment: NSDecimalNumber,
+                       to address: String,
+                       withFeeRate feeRate: Double,
+                       rbfOption: CNBTransactionReplaceabilityOption) -> Promise<CNBTransactionData>
 
-  /// Returns nil instead of an error in the case of insufficient funds
+  /// Returns nil instead of an error in the case of insufficient funds, uses default `rbfOption: .Allowed`
+  func failableTransactionData(forPayment payment: NSDecimalNumber,
+                               to address: String,
+                               withFeeRate feeRate: Double) -> CNBTransactionData?
+
   func failableTransactionData(forPayment payment: NSDecimalNumber,
                                to address: String,
                                withFeeRate feeRate: Double,
-                               rbfReplaceabilityOption: CNBTransactionReplaceabilityOption) -> CNBTransactionData?
+                               rbfOption: CNBTransactionReplaceabilityOption) -> CNBTransactionData?
 
   /// Transaction data for payment to a recipient with a flat, predetermined fee.
   ///
@@ -180,17 +182,13 @@ class WalletManager: WalletManagerType {
   }
 
   func balanceNetPending(in context: NSManagedObjectContext) -> (onChain: Int, lightning: Int) {
-    var netBalance = 0
-    var netLightningBalance = 0
-    context.performAndWait {
-      guard let wallet = CKMWallet.find(in: context) else { return }
-      let atss = CKMAddressTransactionSummary.findAll(matching: self.coin, in: context)
-      let lightningAccount = persistenceManager.brokers.lightning.getAccount(forWallet: wallet, in: context)
-      let atsAmount = atss.reduce(0) { $0 + $1.netAmount }
-      let tempSentTxTotal = activeTemporarySentTxTotal(in: context)
-      netBalance = atsAmount - tempSentTxTotal
-      netLightningBalance = lightningAccount.balance
-    }
+    let wallet = CKMWallet.findOrCreate(in: context)
+    let atss = CKMAddressTransactionSummary.findAll(matching: self.coin, in: context)
+    let lightningAccount = persistenceManager.brokers.lightning.getAccount(forWallet: wallet, in: context)
+    let atsAmount = atss.reduce(0) { $0 + $1.netAmount }
+    let tempSentTxTotal = activeTemporarySentTxTotal(in: context)
+    let netBalance = atsAmount - tempSentTxTotal
+    let netLightningBalance = lightningAccount.balance
     return (onChain: netBalance, lightning: netLightningBalance)
   }
 
@@ -229,14 +227,14 @@ class WalletManager: WalletManagerType {
     forPayment payment: NSDecimalNumber,
     to address: String,
     withFeeRate feeRate: Double,  // in Satoshis
-    rbfReplaceabilityOption: CNBTransactionReplaceabilityOption
+    rbfOption: CNBTransactionReplaceabilityOption
     ) -> Promise<CNBTransactionData> {
 
     return Promise { seal in
       let txData = failableTransactionData(forPayment: payment,
                                            to: address,
                                            withFeeRate: feeRate,
-                                           rbfReplaceabilityOption: rbfReplaceabilityOption)
+                                           rbfOption: rbfOption)
       if let data = txData {
         seal.fulfill(data)
       } else {
@@ -245,11 +243,15 @@ class WalletManager: WalletManagerType {
     }
   }
 
+  func failableTransactionData(forPayment payment: NSDecimalNumber, to address: String, withFeeRate feeRate: Double) -> CNBTransactionData? {
+    return failableTransactionData(forPayment: payment, to: address, withFeeRate: feeRate, rbfOption: .Allowed)
+  }
+
   func failableTransactionData(
     forPayment payment: NSDecimalNumber,
     to address: String,
     withFeeRate feeRate: Double,
-    rbfReplaceabilityOption: CNBTransactionReplaceabilityOption) -> CNBTransactionData? {
+    rbfOption: CNBTransactionReplaceabilityOption) -> CNBTransactionData? {
     let paymentAmount = UInt(payment.asFractionalUnits(of: .BTC))
     let usableFeeRate = self.usableFeeRate(from: feeRate)
     let blockHeight = UInt(persistenceManager.brokers.checkIn.cachedBlockHeight)
@@ -259,14 +261,16 @@ class WalletManager: WalletManagerType {
       let usableVouts = self.usableVouts(in: bgContext)
       let allAvailableOutputs = self.availableTransactionOutputs(fromUsableUTXOs: usableVouts)
 
-      result = CNBTransactionData(address: address,
-                                  coin: coin,
-                                  fromAllAvailableOutputs: allAvailableOutputs,
-                                  paymentAmount: paymentAmount,
-                                  feeRate: usableFeeRate,
-                                  change: self.newChangePath(in: bgContext),
-                                  blockHeight: blockHeight,
-                                  rbfReplaceabilityOption: rbfReplaceabilityOption)
+      result = CNBTransactionData(
+        address: address,
+        coin: coin,
+        fromAllAvailableOutputs: allAvailableOutputs,
+        paymentAmount: paymentAmount,
+        feeRate: usableFeeRate,
+        change: self.newChangePath(in: bgContext),
+        blockHeight: blockHeight,
+        rbfReplaceabilityOption: rbfOption
+      )
     }
     return result
   }

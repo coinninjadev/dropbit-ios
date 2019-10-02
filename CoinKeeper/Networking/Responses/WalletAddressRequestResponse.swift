@@ -75,6 +75,7 @@ public struct WalletAddressRequestMetadata: ResponseDecodable, CustomStringConve
   let receiver: MetadataParticipant?
   var requestId: String?
   let suppress: Bool?
+  let addressType: String?
 
   public var description: String {
     var responseDesc = ""
@@ -82,7 +83,8 @@ public struct WalletAddressRequestMetadata: ResponseDecodable, CustomStringConve
       "amount: \(amount?.description ?? "-")",
       "sender: \(sender?.description ?? "-")",
       "receiver: \(receiver?.description ?? "-")",
-      "request_id: \(requestId ?? "-")"
+      "requestId: \(requestId ?? "-")",
+      "addressType: \(addressType ?? "-")"
     ]
     propertyKeyValues.forEach { desc in
       responseDesc.append("\n\t\(desc)")
@@ -194,8 +196,8 @@ public struct WalletAddressRequestResponse: ResponseDecodable, CustomStringConve
 
 extension WalletAddressRequestResponse {
 
-  var addressTypeCase: WalletAddressType? {
-    return addressType.flatMap { WalletAddressType(rawValue: $0) }
+  var addressTypeCase: WalletAddressType {
+    return addressType.flatMap { WalletAddressType(rawValue: $0) } ?? .btc
   }
 
   var statusCase: WalletAddressRequestStatus? {
@@ -220,6 +222,10 @@ extension WalletAddressRequestResponse {
   var isSatisfiedForSending: Bool {
     guard let statusCase = statusCase, let address = address else { return false }
     return statusCase == .new && address.isNotEmpty
+  }
+
+  var isUnfulfilled: Bool {
+    return (address ?? "").isEmpty && statusCase == .new
   }
 
   static var sampleJSON: String {

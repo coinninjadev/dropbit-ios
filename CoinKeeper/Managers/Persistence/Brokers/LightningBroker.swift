@@ -28,4 +28,30 @@ class LightningBroker: CKPersistenceBroker, LightningBrokerType {
     response.ledger.forEach { CKMLNLedgerEntry.updateOrCreate(with: $0, forWallet: wallet, in: context) }
   }
 
+  func persistPaymentResponse(_ response: LNTransactionResponse,
+                              receiver: OutgoingDropBitReceiver?,
+                              invitation: CKMInvitation?,
+                              inputs: LightningPaymentInputs,
+                              in context: NSManagedObjectContext) {
+    guard let wallet = CKMWallet.find(in: context) else { return }
+
+    let ledgerEntry: CKMLNLedgerEntry
+
+    if let invitation = invitation, let walletEntry = invitation.walletEntry {
+      ledgerEntry = CKMLNLedgerEntry.create(with: response.result, in: context)
+      walletEntry.ledgerEntry = ledgerEntry
+    } else {
+      ledgerEntry = CKMLNLedgerEntry.updateOrCreate(with: response.result, forWallet: wallet, in: context)
+      invitation?.walletEntry?.ledgerEntry = ledgerEntry
+    }
+
+    if let receiver = receiver {
+      ledgerEntry.walletEntry?.configure(withReceiver: receiver, in: context)
+    }
+
+    if let sharedPayload = inputs.sharedPayload {
+      ledgerEntry.walletEntry?.configureNewSenderSharedPayload(with: sharedPayload, in: context)
+    }
+  }
+
 }

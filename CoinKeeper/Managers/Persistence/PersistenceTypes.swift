@@ -41,6 +41,8 @@ protocol PersistenceManagerType: DeviceCountryCodeProvider {
     ofType walletTxType: WalletTransactionType,
     in context: NSManagedObjectContext)
 
+  func persistReceivedAddressRequests(_ responses: [WalletAddressRequestResponse], in context: NSManagedObjectContext)
+
   /// Look for any transactions sent to a phone number without a contact name, and provide a name if found, as a convenience when viewing tx history
   func matchContactsIfPossible()
 }

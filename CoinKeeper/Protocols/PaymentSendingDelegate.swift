@@ -9,8 +9,9 @@
 import Foundation
 import UIKit
 import CNBitcoinKit
+import PromiseKit
 
-protocol PaymentSendingDelegate {
+protocol PaymentSendingDelegate: class {
   var alertManager: AlertManagerType { get }
   var analyticsManager: AnalyticsManagerType { get }
   var persistenceManager: PersistenceManagerType { get }
@@ -33,6 +34,10 @@ protocol LightningPaymentSendingDelegate: PaymentSendingDelegate {
     _ viewController: UIViewController,
     inputs: LightningPaymentInputs,
     receiver: OutgoingDropBitReceiver?)
+
+  func payLightningRequest(withInputs inputs: LightningPaymentInputs,
+                           invitation: CKMInvitation?,
+                           to receiver: OutgoingDropBitReceiver?) -> Promise<LNTransactionResponse>
 }
 
 protocol AllPaymentSendingDelegate: LightningPaymentSendingDelegate, OnChainPaymentSendingDelegate { }

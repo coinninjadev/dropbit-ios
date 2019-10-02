@@ -23,7 +23,7 @@ class MockInvitationBroker: CKPersistenceBroker, InvitationBrokerType {
     return []
   }
 
-  func persistUnacknowledgedInvitation(withDTO outgoingDTO: OutgoingInvitationDTO,
+  func persistUnacknowledgedInvitation(withDTO invitationDTO: OutgoingInvitationDTO,
                                        acknowledgmentId: String,
                                        in context: NSManagedObjectContext) { }
 

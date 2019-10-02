@@ -17,18 +17,7 @@ public class CKMLNLedgerEntry: NSManagedObject {
                              forWallet wallet: CKMWallet,
                              in context: NSManagedObjectContext) -> CKMLNLedgerEntry {
     let entry = findOrCreate(with: result.cleanedId, wallet: wallet, createdAt: result.createdAt, in: context)
-    entry.accountId = result.accountId
-    entry.createdAt = result.createdAt
-    entry.updatedAt = result.updatedAt
-    entry.expiresAt = result.expiresAt
-    entry.status = CKMLNTransactionStatus(status: result.status)
-    entry.type = CKMLNTransactionType(type: result.type)
-    entry.direction = CKMLNTransactionDirection(direction: result.direction)
-    entry.value = result.value
-    entry.networkFee = result.networkFee
-    entry.processingFee = result.processingFee
-    entry.request = result.request
-    entry.error = result.error
+    configure(new: entry, with: result)
 
     // User may have added local memo
     if let resultMemo = result.memo, entry.memo == nil {
@@ -47,6 +36,29 @@ public class CKMLNLedgerEntry: NSManagedObject {
       newEntry.walletEntry = CKMWalletEntry(wallet: wallet, sortDate: createdAt, insertInto: context)
       return newEntry
     }
+  }
+
+  static func create(with response: LNTransactionResult, in context: NSManagedObjectContext) -> CKMLNLedgerEntry {
+    let newEntry = CKMLNLedgerEntry(insertInto: context)
+    configure(new: newEntry, with: response)
+
+    return newEntry
+  }
+
+  private static func configure(new entry: CKMLNLedgerEntry, with result: LNTransactionResult) {
+    entry.id = result.cleanedId
+    entry.accountId = result.accountId
+    entry.createdAt = result.createdAt
+    entry.updatedAt = result.updatedAt
+    entry.expiresAt = result.expiresAt
+    entry.status = CKMLNTransactionStatus(status: result.status)
+    entry.type = CKMLNTransactionType(type: result.type)
+    entry.direction = CKMLNTransactionDirection(direction: result.direction)
+    entry.value = result.value
+    entry.networkFee = result.networkFee
+    entry.processingFee = result.processingFee
+    entry.request = result.request
+    entry.error = result.error
   }
 
   static func find(with id: String, wallet: CKMWallet?, in context: NSManagedObjectContext) -> CKMLNLedgerEntry? {

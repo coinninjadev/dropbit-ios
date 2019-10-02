@@ -97,20 +97,12 @@ class WalletAddressRequestResponseTests: XCTestCase, ResponseStringsTestable {
     }
 
     let nilBTCAmount = MetadataAmount(btc: nil, usd: 100)
-    let btcResponse = sample.copy(withMetadata: WalletAddressRequestMetadata(amount: nilBTCAmount,
-                                                                             sender: nil,
-                                                                             receiver: nil,
-                                                                             requestId: nil,
-                                                                             suppress: nil))
+    let btcResponse = sample.copy(withMetadata: WalletAddressRequestMetadata(amount: nilBTCAmount))
     XCTAssertThrowsError(try WalletAddressRequestResponse.validateResponse(btcResponse),
                          "WalletAddressRequestResponse with nil btcAmount should throw error", { _ in })
 
     let nilUSDAmount = MetadataAmount(btc: 100, usd: nil)
-    let usdResponse = sample.copy(withMetadata: WalletAddressRequestMetadata(amount: nilUSDAmount,
-                                                                             sender: nil,
-                                                                             receiver: nil,
-                                                                             requestId: nil,
-                                                                             suppress: nil))
+    let usdResponse = sample.copy(withMetadata: WalletAddressRequestMetadata(amount: nilUSDAmount))
     XCTAssertThrowsError(try WalletAddressRequestResponse.validateResponse(usdResponse),
                          "WalletAddressRequestResponse with nil usdAmount should throw error", { _ in })
   }
@@ -122,20 +114,12 @@ class WalletAddressRequestResponseTests: XCTestCase, ResponseStringsTestable {
     }
 
     let zeroBTCAmount = MetadataAmount(btc: 0, usd: 100)
-    let btcResponse = sample.copy(withMetadata: WalletAddressRequestMetadata(amount: zeroBTCAmount,
-                                                                             sender: nil,
-                                                                             receiver: nil,
-                                                                             requestId: nil,
-                                                                             suppress: nil))
+    let btcResponse = sample.copy(withMetadata: WalletAddressRequestMetadata(amount: zeroBTCAmount))
     XCTAssertThrowsError(try WalletAddressRequestResponse.validateResponse(btcResponse),
                          "WalletAddressRequestResponse with btcAmount == 0 should throw error", { _ in })
 
     let zeroUSDAmount = MetadataAmount(btc: 100, usd: 0)
-    let usdResponse = sample.copy(withMetadata: WalletAddressRequestMetadata(amount: zeroUSDAmount,
-                                                                             sender: nil,
-                                                                             receiver: nil,
-                                                                             requestId: nil,
-                                                                             suppress: nil))
+    let usdResponse = sample.copy(withMetadata: WalletAddressRequestMetadata(amount: zeroUSDAmount))
     XCTAssertThrowsError(try WalletAddressRequestResponse.validateResponse(usdResponse),
                          "WalletAddressRequestResponse with usdAmount == 0 should throw error", { _ in })
   }
@@ -147,20 +131,12 @@ class WalletAddressRequestResponseTests: XCTestCase, ResponseStringsTestable {
     }
 
     let negativeBTCAmount = MetadataAmount(btc: -1, usd: 100)
-    let btcResponse = sample.copy(withMetadata: WalletAddressRequestMetadata(amount: negativeBTCAmount,
-                                                                             sender: nil,
-                                                                             receiver: nil,
-                                                                             requestId: nil,
-                                                                             suppress: nil))
+    let btcResponse = sample.copy(withMetadata: WalletAddressRequestMetadata(amount: negativeBTCAmount))
     XCTAssertThrowsError(try WalletAddressRequestResponse.validateResponse(btcResponse),
                          "WalletAddressRequestResponse with negative btcAmount should throw error", { _ in })
 
     let negativeUSDAmount = MetadataAmount(btc: 100, usd: -1)
-    let usdResponse = sample.copy(withMetadata: WalletAddressRequestMetadata(amount: negativeUSDAmount,
-                                                                             sender: nil,
-                                                                             receiver: nil,
-                                                                             requestId: nil,
-                                                                             suppress: nil))
+    let usdResponse = sample.copy(withMetadata: WalletAddressRequestMetadata(amount: negativeUSDAmount))
     XCTAssertThrowsError(try WalletAddressRequestResponse.validateResponse(usdResponse),
                          "WalletAddressRequestResponse with negative usdAmount should throw error", { _ in })
   }
@@ -172,11 +148,7 @@ class WalletAddressRequestResponseTests: XCTestCase, ResponseStringsTestable {
     }
 
     let zeroBTCAmount = MetadataAmount(btc: 10_000, usd: 100)
-    let response = sample.copy(withMetadata: WalletAddressRequestMetadata(amount: zeroBTCAmount,
-                                                                          sender: nil,
-                                                                          receiver: nil,
-                                                                          requestId: nil,
-                                                                          suppress: nil))
+    let response = sample.copy(withMetadata: WalletAddressRequestMetadata(amount: zeroBTCAmount))
     XCTAssertNoThrow(try WalletAddressRequestResponse.validateResponse(response),
                      "WalletAddressRequestResponse with positive btcAmount and usdAmount should not throw error")
   }
@@ -188,11 +160,7 @@ class WalletAddressRequestResponseTests: XCTestCase, ResponseStringsTestable {
     }
 
     let maxBTCAmount = MetadataAmount(btc: MAX_SATOSHI, usd: 100)
-    let response = sample.copy(withMetadata: WalletAddressRequestMetadata(amount: maxBTCAmount,
-                                                                          sender: nil,
-                                                                          receiver: nil,
-                                                                          requestId: nil,
-                                                                          suppress: nil))
+    let response = sample.copy(withMetadata: WalletAddressRequestMetadata(amount: maxBTCAmount))
     XCTAssertThrowsError(try WalletAddressRequestResponse.validateResponse(response),
                          "WalletAddressRequestResponse with max satoshi amount should throw error", { _ in })
   }
@@ -280,5 +248,13 @@ extension WalletAddressRequestResponse: EmptyStringCopyable {
                                         deliveryId: self.deliveryId,
                                         deliveryStatus: nil,
                                         walletId: self.walletId)
+  }
+}
+
+extension WalletAddressRequestMetadata {
+
+  init(amount: MetadataAmount) {
+    self.init(amount: amount, sender: nil, receiver: nil,
+              requestId: nil, suppress: nil, addressType: nil)
   }
 }

@@ -141,7 +141,7 @@ extension AppCoordinator: SendPaymentViewControllerRoutingDelegate {
         if let requiredFeeRate = inputs.outgoingTxData.requiredFeeRate {
           return inputs.wmgr.transactionData(forPayment: inputs.btcAmount, to: inputs.address,
                                              withFeeRate: requiredFeeRate,
-                                             rbfReplaceabilityOption: .Allowed).map { .required($0) }
+                                             rbfOption: .Allowed).map { .required($0) }
 
         } else if config.adjustableFeesEnabled {
           return self.adjustableFeeViewModel(config: config, rates: rates, wmgr: inputs.wmgr, btcAmount: inputs.btcAmount,
@@ -151,7 +151,7 @@ extension AppCoordinator: SendPaymentViewControllerRoutingDelegate {
           let defaultFeeRate = rates.rate(forType: config.defaultFeeType)
           return inputs.wmgr.transactionData(forPayment: inputs.btcAmount, to: inputs.address,
                                              withFeeRate: defaultFeeRate,
-                                             rbfReplaceabilityOption: .Allowed).map { .standard($0) }
+                                             rbfOption: .Allowed).map { .standard($0) }
         }
       }
       .done { (feeModel: ConfirmTransactionFeeModel) in
@@ -276,13 +276,13 @@ extension AppCoordinator: SendPaymentViewControllerRoutingDelegate {
                                       address: String) -> Promise<AdjustableTransactionFeeViewModel> {
     let usableRates = UsableFeeRates(rates: rates, walletManager: wmgr)
 
-    return wmgr.transactionData(forPayment: btcAmount, to: address, withFeeRate: usableRates.lowRate, rbfReplaceabilityOption: .Allowed)
+    return wmgr.transactionData(forPayment: btcAmount, to: address, withFeeRate: usableRates.lowRate, rbfOption: .Allowed)
       .map { lowTxData -> AdjustableTransactionFeeViewModel in
         let maybeMediumTxData = wmgr.failableTransactionData(
-          forPayment: btcAmount, to: address, withFeeRate: usableRates.mediumRate, rbfReplaceabilityOption: .Allowed
+          forPayment: btcAmount, to: address, withFeeRate: usableRates.mediumRate, rbfOption: .Allowed
         )
         let maybeHighTxData = wmgr.failableTransactionData(
-          forPayment: btcAmount, to: address, withFeeRate: usableRates.highRate, rbfReplaceabilityOption: .Allowed
+          forPayment: btcAmount, to: address, withFeeRate: usableRates.highRate, rbfOption: .Allowed
         )
         return AdjustableTransactionFeeViewModel(preferredFeeType: config.defaultFeeType,
                                                  lowFeeTxData: lowTxData,

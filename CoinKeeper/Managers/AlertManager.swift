@@ -275,9 +275,10 @@ class AlertManager: AlertManagerType {
 
   private func showReceiverAlert(for update: AddressRequestUpdateDisplayable) {
     let senderDesc = update.senderDescription(phoneFormatter: self.phoneNumberFormatter)
+    let dropbitTypeDescription = update.addressType == .btc ? "Bitcoin address" : "Lightning invoice"
     switch update.status {
     case .addressSent:
-      let message = "We have sent a Bitcoin address to \(senderDesc) for \(update.fiatDescription) to be sent."
+      let message = "We have sent a \(dropbitTypeDescription) to \(senderDesc) for \(update.fiatDescription) to be sent."
       self.showBanner(with: message, duration: .custom(8.0), alertKind: .info)
     case .completed:
       let message = "The \(CKStrings.dropBitWithTrademark) for \(update.fiatDescription) from \(senderDesc) has been completed."

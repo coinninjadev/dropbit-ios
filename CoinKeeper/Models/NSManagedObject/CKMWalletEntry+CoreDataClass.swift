@@ -20,3 +20,5 @@ public class CKMWalletEntry: NSManagedObject {
   }
 
 }
+
+extension CKMWalletEntry: InvitationParent { }
