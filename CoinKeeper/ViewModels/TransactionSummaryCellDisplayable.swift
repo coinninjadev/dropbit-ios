@@ -142,7 +142,11 @@ extension TransactionSummaryCellViewModelType {
   private var lightningInvoiceDescription: String? {
     guard (lightningInvoice ?? "").isNotEmpty else { return nil }
     switch status {
-    case .completed:  return lightningPaidInvoiceText
+    case .completed:
+      switch direction {
+      case .in: return lightningReceivedPaidInvoiceText
+      case .out: return lightningPaidInvoiceText
+      }
     default:          return lightningUnpaidInvoiceText
     }
   }
@@ -194,6 +198,7 @@ extension TransactionSummaryCellViewModelType {
   }
 
   var lightningPaidInvoiceText: String { return "Invoice Paid" }
+  var lightningReceivedPaidInvoiceText: String { return "Received" }
   var lightningUnpaidInvoiceText: String { return "Lightning Invoice" }
   var lightningWithdrawText: String { return "Lightning Withdraw" }
   var lightningDepositText: String { return "Load Lightning" }
