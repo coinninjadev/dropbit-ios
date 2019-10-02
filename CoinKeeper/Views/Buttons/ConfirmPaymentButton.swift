@@ -26,17 +26,22 @@ class ConfirmPaymentButton: UIButton {
   private var circleAnimation: CABasicAnimation = CABasicAnimation()
   private var longPressGestureRecognizer: UILongPressGestureRecognizer = UILongPressGestureRecognizer()
 
-  var secondsToConfirm: Double = 3.0
+  private let defaultSecondsToConfirm: Double = 3.0
+  var secondsToConfirm = 3.0
   var style: Style {
     didSet {
       switch style {
       case .original:
         foregroundShapeLayer.strokeColor = UIColor.lightBlueTint.cgColor
+        secondsToConfirm = defaultSecondsToConfirm
       case .onChain:
         foregroundShapeLayer.strokeColor = UIColor.bitcoinOrange.cgColor
+        secondsToConfirm = defaultSecondsToConfirm
       case .lightning:
         foregroundShapeLayer.strokeColor = UIColor.lightningBlue.cgColor
+        secondsToConfirm = defaultSecondsToConfirm / 2.0
       }
+      circleAnimation.duration = secondsToConfirm
     }
   }
 
