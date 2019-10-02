@@ -11,8 +11,16 @@ import Foundation
 extension String {
 
   func removing(groupingSeparator: String, currencySymbol: String) -> String {
+    return removing(groupingSeparator: groupingSeparator, currencySymbols: [currencySymbol])
+  }
+
+  func removing(groupingSeparator: String, currencySymbols: [String]) -> String {
     let withoutSeparator = self.components(separatedBy: groupingSeparator).joined(separator: "")
-    let withoutSymbol = withoutSeparator.replacingOccurrences(of: currencySymbol, with: "")
+    var withoutSymbol = withoutSeparator
+    for symbol in currencySymbols {
+     withoutSymbol = withoutSymbol.replacingOccurrences(of: symbol, with: "")
+    }
+
     return withoutSymbol
   }
 
