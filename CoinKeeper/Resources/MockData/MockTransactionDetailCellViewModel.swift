@@ -95,10 +95,14 @@ class MockTransactionDetailInvoiceCellViewModel: MockTransactionDetailValidCellV
   init(hoursUntilExpiration: Int?) {
     self.qrCodeGenerator = QRCodeGenerator()
     self.hoursUntilExpiration = hoursUntilExpiration
+
+    let amountDetails = MockDetailCellVM.testAmountDetails(cents: 520,
+                                                           fiatWhenInvited: NSDecimalNumber(integerAmount: 475, currency: .USD),
+                                                           fiatWhenTransacted: nil)
     super.init(walletTxType: .lightning, direction: .in, status: .pending,
                lightningInvoice: MockDetailCellVM.mockLightningInvoice(),
-               selectedCurrency: .fiat, memo: "Coffee ☕️", memoIsShared: true, date: Date())
+               selectedCurrency: .fiat, amountDetails: amountDetails,
+               memo: "Coffee ☕️", memoIsShared: true, date: Date())
   }
-
 
 }

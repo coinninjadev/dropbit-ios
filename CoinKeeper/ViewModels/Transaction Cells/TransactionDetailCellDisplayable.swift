@@ -441,6 +441,9 @@ extension TransactionDetailCellViewModelType {
   private var invitationTransactionPresence: InvitationTransactionPresence {
     let actualTxExists = paymentIdIsValid
     let inviteExists = (invitationStatus != nil)
+    //TODO: adjust this logic to create a new case so that historical values are shown when an invoice exists without an invitation
+//    let invoiceExists = (lightningInvoice != nil)
+//    let inviteOrInvoiceExists = (inviteExists || invoiceExists)
 
     switch (actualTxExists, inviteExists) {
     case (true, false):   return .transactionOnly

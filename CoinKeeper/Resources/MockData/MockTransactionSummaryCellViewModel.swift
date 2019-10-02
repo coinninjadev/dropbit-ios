@@ -58,9 +58,12 @@ class MockTransactionSummaryCellViewModel: TransactionSummaryCellViewModelType {
                                     fiatWhenInvited: fiatWhenInvited, fiatWhenTransacted: fiatWhenTransacted)
   }
 
-  static func testAmountDetails(cents: Int) -> TransactionAmountDetails {
+  static func testAmountDetails(cents: Int,
+                                fiatWhenInvited: NSDecimalNumber? = nil,
+                                fiatWhenTransacted: NSDecimalNumber? = nil) -> TransactionAmountDetails {
     let usdAmount = NSDecimalNumber(integerAmount: cents, currency: .USD)
-    return TransactionAmountDetails(fiatAmount: usdAmount, fiatCurrency: .USD, exchangeRates: testRates)
+    return TransactionAmountDetails(fiatAmount: usdAmount, fiatCurrency: .USD, exchangeRates: testRates,
+                                    fiatWhenInvited: fiatWhenInvited, fiatWhenTransacted: fiatWhenTransacted)
   }
 
   static func defaultInstance() -> MockTransactionSummaryCellViewModel {
