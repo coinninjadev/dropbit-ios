@@ -130,6 +130,7 @@ extension CoinNinjaProviderType {
           }
 
         case .failure(let error):
+          error.response?.request?.httpBody
           log.error("Failure from \(target.path) request: %@", privateArgs: [error.responseDescription])
           if let networkError = target.networkError(for: error) {
             seal.reject(networkError)

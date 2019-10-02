@@ -10,7 +10,7 @@ import Foundation
 
 /// All errors returned by the Coin Ninja API use this response format
 struct CoinNinjaErrorResponse: Codable {
-  let status: Int
+  let status: Int?
   let error: String
   let message: String
 }

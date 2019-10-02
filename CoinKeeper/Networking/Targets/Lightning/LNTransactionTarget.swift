@@ -38,7 +38,7 @@ public enum LNTransactionTarget: CoinNinjaTargetType {
   }
 
   func networkError(for moyaError: MoyaError) -> CKNetworkError? {
-    return defaultNetworkError(for: moyaError)
+    return .underlying(moyaError)
   }
 
   public var method: Method {
