@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
-    <device id="retina4_7" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
     <dependencies>
-        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -13,10 +9,10 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ConfirmPaymentMemoView" customModule="DropBit" customModuleProvider="target">
             <connections>
                 <outlet property="bottomBackgroundView" destination="xUA-7T-pI2" id="nHB-TU-nor"/>
-                <outlet property="isSharedDescriptionLabel" destination="pRa-mP-jNo" id="2L7-LW-0FT"/>
                 <outlet property="memoLabel" destination="Kxz-wI-fep" id="RHQ-uy-UKH"/>
                 <outlet property="separatorView" destination="mCU-Df-Nby" id="91G-Bw-1aO"/>
                 <outlet property="sharedStatusImage" destination="NRq-vi-wWY" id="nQc-AD-4H8"/>
+                <outlet property="sharedStatusLabel" destination="pRa-mP-jNo" id="2L7-LW-0FT"/>
                 <outlet property="topBackgroundView" destination="lo6-Bv-Ubu" id="7RZ-uw-Vx1"/>
             </connections>
         </placeholder>
@@ -55,13 +51,13 @@
                             </constraints>
                         </view>
                         <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="LKB-Gi-710">
-                            <rect key="frame" x="125" y="11" width="51.5" height="13.5"/>
+                            <rect key="frame" x="124.5" y="9.5" width="52.5" height="16"/>
                             <subviews>
                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="sharedMemoPeople" translatesAutoresizingMaskIntoConstraints="NO" id="NRq-vi-wWY">
-                                    <rect key="frame" x="0.0" y="1.5" width="15" height="10"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="16" height="16"/>
                                 </imageView>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pRa-mP-jNo">
-                                    <rect key="frame" x="23" y="0.0" width="28.5" height="13.5"/>
+                                    <rect key="frame" x="24" y="1.5" width="28.5" height="13.5"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="11"/>
                                     <nil key="textColor"/>
                                     <nil key="highlightedColor"/>

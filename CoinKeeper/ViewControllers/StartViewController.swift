@@ -24,7 +24,7 @@ final class StartViewController: BaseViewController {
     controller.delegate = delegate
     return controller
   }
-  
+
   weak var delegate: StartViewControllerDelegate?
 
   @IBOutlet var restoreWalletButton: DarkActionButton!

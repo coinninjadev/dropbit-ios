@@ -18,6 +18,10 @@ extension AppCoordinator: DeviceVerificationCoordinatorDelegate {
    */
   func registerAndPersistWallet(in context: NSManagedObjectContext) -> Promise<Void> {
     guard let wmgr = walletManager else { return Promise(error: CKPersistenceError.noWalletManager) }
+    guard let syncFactory = self.serialQueueManager.walletSyncOperationFactory else {
+      return Promise(error: CKPersistenceError.missingValue(key: "walletSyncOperationFactory"))
+    }
+
     // Skip registration if wallet was previously registered and persisted
     guard self.persistenceManager.brokers.wallet.walletId(in: context) == nil else {
       return Promise.value(())
@@ -33,46 +37,77 @@ extension AppCoordinator: DeviceVerificationCoordinatorDelegate {
         try self.persistenceManager.brokers.wallet.persistWalletResponse(from: response, in: context)
         return Promise.value(WalletFlagsParser(flags: response.flags))
       }
-      .done { (parser: WalletFlagsParser) in
-        if parser.walletVersion != .v2 && parser.walletDeactivated {
-          let desc = """
-          You have entered recovery words from a legacy DropBit wallet. We are upgrading all wallets to a new version
-          of DropBit for enhanced security, lower transaction fees, and Lightning support. Please enter the new
-          recovery words you were given upon upgrading, or create a new wallet.
-          """.removingMultilineLineBreaks()
-          self.analyticsManager.track(event: .enteredDeactivatedWords, with: nil)
-          self.persistenceManager.keychainManager.storeSynchronously(anyValue: nil, key: .walletWords)
-          self.persistenceManager.keychainManager.storeSynchronously(anyValue: nil, key: .walletWordsV2)
-          self.persistenceManager.keychainManager.storeSynchronously(anyValue: false, key: .walletWordsBackedUp)
-          try context.performThrowingAndWait {
-            self.persistenceManager.brokers.wallet.removeWalletId(in: context)
-            try context.saveRecursively()
-          }
-          let startOverAction = AlertActionConfiguration(title: "Start Over", style: .cancel, action: {
-            let controller = StartViewController.newInstance(delegate: self)
-            self.navigationController.setViewControllers([controller], animated: true)
-          })
-          let alertViewModel = AlertControllerViewModel(title: "New Seed Words Required",
-                                                        description: desc,
-                                                        image: nil,
-                                                        style: .alert,
-                                                        actions: [startOverAction])
-          let alert = self.alertManager.alert(from: alertViewModel)
-          self.navigationController.topViewController()?.present(alert, animated: true)
-        } else if parser.walletVersion != .v2 {
-          self.analyticsManager.track(property: MixpanelProperty(key: .lightningUpgradedFromRestore, value: true))
-          let words = self.persistenceManager.brokers.wallet.walletWords()
-          self.persistenceManager.keychainManager.storeSynchronously(anyValue: words, key: .walletWords)
-          self.persistenceManager.keychainManager.storeSynchronously(anyValue: nil, key: .walletWordsV2)
-          self.persistenceManager.keychainManager.storeSynchronously(anyValue: false, key: .walletWordsBackedUp)
+      .then(in: context) { (parser: WalletFlagsParser) -> Promise<WalletFlagsParser> in
+        switch parser.restoreType {
+        case .previouslyUpgradedLegacyWallet:
+          try self.persistPreviouslyUpgradedLegacyWallet(in: context)
+          return Promise.value(parser)
+
+        case .unseenLegacyWallet:
+          self.persistUnseenLegacyWallet()
+          self.launchStateManager.upgradeInProgress = true
+          return syncFactory.performOnChainOnlySync(in: context).map { _ in parser }
+
+        case .v2Wallet:
+          return Promise.value(parser)
+        }
+      }
+      .get(in: context) { _ in
+        try context.saveRecursively()
+      }
+      .done(on: .main) { (parser: WalletFlagsParser) in
+        switch parser.restoreType {
+        case .previouslyUpgradedLegacyWallet:
+          self.continueFlowForPreviouslyUpgradedLegacyWallet()
+        case .unseenLegacyWallet:
           self.startSegwitUpgrade()
-        } else {
-          try context.performThrowingAndWait {
-            try context.saveRecursively()
-          }
+        case .v2Wallet:
+          break
         }
       }
       .asVoid()
+  }
+
+  private func persistPreviouslyUpgradedLegacyWallet(in context: NSManagedObjectContext) throws {
+    self.analyticsManager.track(event: .enteredDeactivatedWords, with: nil)
+    self.persistenceManager.keychainManager.storeSynchronously(anyValue: nil, key: .walletWords)
+    self.persistenceManager.keychainManager.storeSynchronously(anyValue: nil, key: .walletWordsV2)
+    self.persistenceManager.keychainManager.storeSynchronously(anyValue: false, key: .walletWordsBackedUp)
+    self.persistenceManager.brokers.wallet.removeWalletId(in: context)
+  }
+
+  private func persistUnseenLegacyWallet() {
+    self.analyticsManager.track(property: MixpanelProperty(key: .lightningUpgradedFromRestore, value: true))
+    let words = self.persistenceManager.brokers.wallet.walletWords()
+    self.persistenceManager.keychainManager.storeSynchronously(anyValue: words, key: .walletWords)
+    self.persistenceManager.keychainManager.storeSynchronously(anyValue: nil, key: .walletWordsV2)
+    self.persistenceManager.keychainManager.storeSynchronously(anyValue: false, key: .walletWordsBackedUp)
+
+    // When words are first restored and persisted, they are assumed to be walletWordsV2 with purpose 84.
+    // In order for the pre-migration sync to check addresses with the legacy path, we need to recreate
+    // the wallet manager so that the coin/purpose respects the keychain values set above.
+    self.setWalletManagerWithPersistedWords()
+  }
+
+  private func continueFlowForPreviouslyUpgradedLegacyWallet() {
+    let startOverAction = AlertActionConfiguration(title: "Start Over", style: .cancel, action: {
+      let controller = StartViewController.newInstance(delegate: self)
+      self.navigationController.setViewControllers([controller], animated: true)
+    })
+
+    let desc = """
+      You have entered recovery words from a legacy DropBit wallet. We are upgrading all wallets to a new version
+      of DropBit for enhanced security, lower transaction fees, and Lightning support. Please enter the new
+      recovery words you were given upon upgrading, or create a new wallet.
+      """.removingMultilineLineBreaks()
+
+    let alertViewModel = AlertControllerViewModel(title: "New Seed Words Required",
+                                                  description: desc,
+                                                  image: nil,
+                                                  style: .alert,
+                                                  actions: [startOverAction])
+    let alert = self.alertManager.alert(from: alertViewModel)
+    self.navigationController.topViewController()?.present(alert, animated: true)
   }
 
   func coordinator(_ coordinator: DeviceVerificationCoordinator, didVerify type: UserIdentityType, isInitialSetupFlow: Bool) {
@@ -159,4 +194,24 @@ extension AppCoordinator: DeviceVerificationCoordinatorDelegate {
       }
     }
   }
+}
+
+enum WalletRestoreType {
+  case previouslyUpgradedLegacyWallet
+  case unseenLegacyWallet
+  case v2Wallet
+}
+
+extension WalletFlagsParser {
+
+  var restoreType: WalletRestoreType {
+    if walletVersion != .v2 && walletDeactivated {
+      return .previouslyUpgradedLegacyWallet
+    } else if walletVersion != .v2 {
+      return .unseenLegacyWallet
+    } else {
+      return .v2Wallet
+    }
+  }
+
 }

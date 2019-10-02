@@ -39,7 +39,7 @@ class TransactionHistorySummaryHeader: UICollectionReusableView {
     self.backgroundColor = .clear
     messageLabel.font = .regular(14)
     messageLabel.textColor = .whiteText
-    messageButton.backgroundColor = .warningHeader
+    messageButton.backgroundColor = .warning
   }
 
   func configure(with message: String, delegate: TransactionHistorySummaryHeaderDelegate) {

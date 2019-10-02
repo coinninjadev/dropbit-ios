@@ -25,7 +25,7 @@ class OldTransactionDetailCellViewModel: OldTransactionSummaryCellViewModel {
     deviceCountryCode: Int?
     ) {
     let fee = transaction.networkFee
-    self.isCancellable = transaction.isCancellable
+    self.isCancellable = false //transaction.isCancellable
     self.networkFee = NSDecimalNumber(integerAmount: fee, currency: .BTC)
     self.memoWasShared = transaction.sharedPayload?.sharingDesired ?? false
 
@@ -38,42 +38,13 @@ class OldTransactionDetailCellViewModel: OldTransactionSummaryCellViewModel {
   }
 }
 
-private struct TextAttributes {
-  var size: CGFloat
-  var color: UIColor
-}
-
 extension OldTransactionDetailCellViewModel {
-
-  var isShareable: Bool {
-    return transaction?.txidIsActualTxid ?? false
-  }
-
-  var addressButtonIsActive: Bool {
-    if addressStatusLabelString == nil, let receiverAddress = receiverAddress, receiverAddress.isValidBitcoinAddress() {
-      return true
-    }
-
-    return false
-  }
 
   var imageForTransactionDirection: UIImage? {
     if transactionIsInvalidated {
       return UIImage(named: "invalidated40")
     } else {
       return isIncoming ? UIImage(named: "incoming40") : UIImage(named: "outgoing40")
-    }
-  }
-
-  var bottomButtonAction: TransactionDetailAction? {
-    guard !broadcastFailed else { return nil }
-
-    if isCancellable {
-      return .cancelInvitation
-    } else if isShareable {
-      return .seeDetails
-    } else {
-      return nil
     }
   }
 
@@ -92,11 +63,6 @@ extension OldTransactionDetailCellViewModel {
     } else {
       return invitationStatusDescription ?? transactionStatusDescription
     }
-  }
-
-  var dateDescriptionFull: String {
-    guard let date = date else { return "" }
-    return CKDateFormatter.displayFull.string(from: date)
   }
 
   var descriptionColor: UIColor {
@@ -151,48 +117,6 @@ extension OldTransactionDetailCellViewModel {
       } else {
         return NSAttributedString(string: "–")
       }
-    }
-  }
-
-  var currentSelectedTab: Int {
-    var index: Int = 0
-    if let invitationStatus = invitationStatus {
-      if confirmations >= 1 {
-        index = 5
-      } else {
-        switch invitationStatus {
-        case .completed:
-          if isTemporaryTransaction {
-            index = 3
-          } else {
-            index = 4
-          }
-        case .addressSent:
-          index = 2
-        default:
-          index = 1
-        }
-      }
-    } else {
-      if confirmations >= 1 {
-        index = 3
-      } else if isTemporaryTransaction {
-        index = 1
-      } else {
-        index = 2
-      }
-    }
-
-    return index
-  }
-
-  /// Label not visible if address exists
-  var addressStatusLabelString: String? {
-    guard let status = invitationStatus else { return nil }
-    switch status {
-    case .requestSent:  return "Waiting on Bitcoin address"
-    case .addressSent:  return transaction?.invitation?.addressProvidedToSender ?? "Waiting for sender approval"
-    default:            return nil
     }
   }
 
@@ -276,134 +200,6 @@ extension OldTransactionDetailCellViewModel {
     return formatter.stringWithSymbol(for: amount)
   }
 
-  var historicalCurrencyFormatter: NumberFormatter {
-    let formatter = NumberFormatter()
-    formatter.numberStyle = .currency
-    formatter.currencySymbol = CurrencyCode.USD.symbol
-    formatter.maximumFractionDigits = CurrencyCode.USD.decimalPlaces
-    return formatter
-  }
-
-  func historicalAmountsAttributedString() -> NSAttributedString {
-    // Using bold and regular strings
-    let fontSize: CGFloat = 14.0
-    let color = UIColor.darkBlueText
-    let attributes = TextAttributes(size: fontSize, color: color)
-    let attributedString = NSMutableAttributedString.medium("", size: fontSize, color: color)
-
-    let inviteAmount: String? = usdAtInvitedLabel
-    let receivedAmount: String? = usdAtReceivedLabel
-
-    // Amount descriptions are flipped depending on isIncoming
-    switch invitationTransactionPresence {
-    case .transactionOnly:
-      appendReceivedAmount(receivedAmount, to: attributedString, with: attributes) { attrString in
-        let description = self.isIncoming ? " when received" : " when sent"
-        attrString.appendLight(description, size: fontSize, color: color)
-      }
-
-    case .invitationOnly:
-      appendInviteAmount(inviteAmount, to: attributedString, with: attributes) { attrString in
-        let description = " when sent"
-        attrString.appendLight(description, size: fontSize, color: color)
-      }
-
-    case .both:
-
-      if isIncoming { // Order is flipped based on isIncoming
-        // Actual
-        appendReceivedAmount(receivedAmount, to: attributedString, with: attributes) { attrString in
-          attrString.appendLight(" when received", size: fontSize, color: color)
-        }
-
-        // Invite
-        appendInviteAmount(inviteAmount, to: attributedString, with: attributes) { attrString in
-          attrString.appendLight(" at send", size: fontSize, color: color)
-        }
-
-      } else {
-        // Invite
-        appendInviteAmount(inviteAmount, to: attributedString, with: attributes) { attrString in
-          attrString.appendLight(" when sent", size: fontSize, color: color)
-        }
-
-        // Actual
-        appendReceivedAmount(receivedAmount, to: attributedString, with: attributes) { attrString in
-          attrString.appendLight(" when received", size: fontSize, color: color)
-        }
-      }
-
-    case .neither:
-      break
-    }
-
-    return attributedString
-  }
-
-  private var usdAtReceivedLabel: String? {
-    guard let usdAtSent = receivedAmountAtSentConverter?.amount(forCurrency: .USD) else { return nil }
-    return historicalCurrencyFormatter.string(from: usdAtSent)
-  }
-
-  private var usdAtInvitedLabel: String? {
-    guard let inviteCents = transaction?.invitation?.usdAmountAtTimeOfInvitation else { return nil }
-    let usdAmount = NSDecimalNumber(integerAmount: inviteCents, currency: .USD)
-    return historicalCurrencyFormatter.string(from: usdAmount)
-  }
-
-  private enum InvitationTransactionPresence {
-    case invitationOnly
-    case transactionOnly
-    case both
-    case neither
-  }
-
-  private var invitationTransactionPresence: InvitationTransactionPresence {
-    let actualTxExists = (transaction.flatMap { $0.txidIsActualTxid } ?? false)
-    let inviteExists = (transaction?.invitation != nil)
-
-    switch (actualTxExists, inviteExists) {
-    case (true, false):   return .transactionOnly
-    case (false, true):   return .invitationOnly
-    case (true, true):    return .both
-    case (false, false):  return .neither
-    }
-  }
-
-  /// describer closure is not called if amount string is nil
-  private func appendInviteAmount(
-    _ inviteAmount: String?,
-    to attrString: NSMutableAttributedString,
-    with attributes: TextAttributes,
-    describer: @escaping (NSMutableAttributedString) -> Void
-    ) {
-    guard let amount = inviteAmount else { return }
-    if attrString.string.isNotEmpty {
-      attrString.appendMedium(" ", size: attributes.size, color: attributes.color)
-    }
-
-    attrString.appendMedium(amount, size: attributes.size, color: attributes.color)
-
-    describer(attrString)
-  }
-
-  /// describer closure is not called if amount string is nil
-  private func appendReceivedAmount(
-    _ receivedAmount: String?,
-    to attrString: NSMutableAttributedString,
-    with attributes: TextAttributes,
-    describer: @escaping (NSMutableAttributedString) -> Void
-    ) {
-    guard let amount = receivedAmount else { return }
-    if attrString.string.isNotEmpty {
-      attrString.appendMedium(" ", size: attributes.size, color: attributes.color)
-    }
-
-    attrString.appendMedium(amount, size: attributes.size, color: attributes.color)
-
-    describer(attrString)
-  }
-
 }
 
 extension CKMTransaction {
@@ -412,12 +208,6 @@ extension CKMTransaction {
   var txidIsActualTxid: Bool {
     let isInviteOrFailed = txid.starts(with: CKMTransaction.invitationTxidPrefix) || txid.starts(with: CKMTransaction.failedTxidPrefix)
     return !isInviteOrFailed
-  }
-
-  var isCancellable: Bool {
-    guard let invite = invitation else { return false }
-    let cancellableStatuses: [InvitationStatus] = [.notSent, .requestSent, .addressSent]
-    return (!isIncoming && cancellableStatuses.contains(invite.status))
   }
 
 }

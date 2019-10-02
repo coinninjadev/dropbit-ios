@@ -110,7 +110,7 @@ class VerificationStatusViewControllerTests: XCTestCase {
   class MockCoordinator: VerificationStatusViewControllerDelegate {
 
     func viewControllerDidSelectCloseWithToggle(_ viewController: UIViewController) { }
-    
+
     func verifiedPhoneNumber() -> GlobalPhoneNumber? {
       return nil
     }

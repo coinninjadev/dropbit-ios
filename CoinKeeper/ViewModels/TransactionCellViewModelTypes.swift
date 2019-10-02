@@ -37,25 +37,25 @@ struct TransactionAmountDetails {
   let btcAmount: NSDecimalNumber
   let currencyPair: CurrencyPair
   let exchangeRates: ExchangeRates
-  let fiatWhenCreated: NSDecimalNumber?
+  let fiatWhenInvited: NSDecimalNumber?
   let fiatWhenTransacted: NSDecimalNumber?
 
   init(btcAmount: NSDecimalNumber,
        fiatCurrency: CurrencyCode,
        exchangeRates: ExchangeRates,
-       fiatWhenCreated: NSDecimalNumber? = nil,
+       fiatWhenInvited: NSDecimalNumber? = nil,
        fiatWhenTransacted: NSDecimalNumber? = nil) {
     self.currencyPair = CurrencyPair(primary: .BTC, fiat: fiatCurrency)
     self.exchangeRates = exchangeRates
     self.btcAmount = btcAmount
-    self.fiatWhenCreated = fiatWhenCreated
+    self.fiatWhenInvited = fiatWhenInvited
     self.fiatWhenTransacted = fiatWhenTransacted
   }
 
   init(fiatAmount: NSDecimalNumber,
        fiatCurrency: CurrencyCode,
        exchangeRates: ExchangeRates,
-       fiatWhenCreated: NSDecimalNumber? = nil,
+       fiatWhenInvited: NSDecimalNumber? = nil,
        fiatWhenTransacted: NSDecimalNumber? = nil) {
     let fiatCurrencyPair = CurrencyPair(primary: fiatCurrency, fiat: fiatCurrency)
     let converter = CurrencyConverter(rates: exchangeRates,
@@ -64,7 +64,7 @@ struct TransactionAmountDetails {
     self.init(btcAmount: converter.btcAmount,
               fiatCurrency: fiatCurrency,
               exchangeRates: exchangeRates,
-              fiatWhenCreated: fiatWhenCreated,
+              fiatWhenInvited: fiatWhenInvited,
               fiatWhenTransacted: fiatWhenTransacted)
   }
 }
@@ -73,7 +73,7 @@ struct ProgressBarConfig {
   let titles: [String]
   let stepTitles: [String]
   let width: CGFloat
-  let selectedTabIndex: Int
+  let selectedTab: Int
 }
 
 typealias Hours = Int
@@ -98,16 +98,41 @@ struct LightningInvoiceDisplayDetails {
   }
 }
 
-struct DetailCellActionButtonConfig {
-  let title: String
-  let backgroundColor: UIColor
+enum TransactionDetailAction: Int {
+  case seeDetails = 1 //UIButton.tag defaults to 0
+  case cancelInvitation
+
+  var buttonTitle: String {
+    switch self {
+    case .cancelInvitation:  return "CANCEL DROPBIT"
+    case .seeDetails:  return "DETAILS"
+    }
+  }
 }
 
-struct DetailCellMemoConfig {
-  let memo: String
-  let isShared: Bool
-  let sharingDescription: String?
-  let sharingIcon: UIImage?
+struct DetailCellActionButtonConfig {
+  let walletTxType: WalletTransactionType
+  let action: TransactionDetailAction
+
+  var title: String {
+    return action.buttonTitle
+  }
+
+  var backgroundColor: UIColor {
+    switch action {
+    case .cancelInvitation:
+      return .darkPeach
+    case .seeDetails:
+      switch walletTxType {
+      case .lightning:  return .lightningBlue
+      case .onChain:    return .bitcoinOrange
+      }
+    }
+  }
+
+  var buttonTag: Int {
+    return action.rawValue
+  }
 }
 
 struct TransactionCellCounterpartyConfig {
@@ -162,24 +187,24 @@ struct SummaryCellAmountLabels {
   let pillIsAmount: Bool
 }
 
-struct SummaryCellDirectionConfig {
+struct TransactionCellDirectionConfig {
   let bgColor: UIColor
   let image: UIImage
 }
 
-struct SummaryCellAvatarConfig {
+struct TransactionCellAvatarConfig {
   let image: UIImage
 }
 
 struct SummaryCellLeadingImageConfig {
-  let avatarConfig: SummaryCellAvatarConfig?
-  let directionConfig: SummaryCellDirectionConfig?
+  let avatarConfig: TransactionCellAvatarConfig?
+  let directionConfig: TransactionCellDirectionConfig?
 
   /// Falls back to use the directionConfig if twitterConfig is missing image data
   init(twitterConfig: TransactionCellTwitterConfig?,
-       directionConfig: SummaryCellDirectionConfig) {
+       directionConfig: TransactionCellDirectionConfig) {
     if let avatarImage = twitterConfig?.avatar {
-      self.avatarConfig = SummaryCellAvatarConfig(image: avatarImage)
+      self.avatarConfig = TransactionCellAvatarConfig(image: avatarImage)
       self.directionConfig = nil
     } else {
       self.avatarConfig = nil
@@ -192,7 +217,6 @@ struct SummaryCellLeadingImageConfig {
 /// Only one of the secondary strings should be set
 struct DetailCellAmountLabels {
   let primaryText: String
-  let secondaryText: String?
-  let secondaryAttributedText: NSAttributedString?
+  let secondaryAttributedText: NSAttributedString
   let historicalPriceAttributedText: NSAttributedString?
 }

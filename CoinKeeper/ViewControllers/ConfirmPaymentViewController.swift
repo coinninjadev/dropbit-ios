@@ -326,11 +326,11 @@ extension ConfirmPaymentViewController {
   fileprivate func updateMemoView() {
     if let memo = viewModel.memo {
       memoContainerView.isHidden = false
-      memoContainerView.configure(memo: memo,
-                                  isShared: viewModel.shouldShareMemo,
-                                  isSent: false,
-                                  isIncoming: false,
-                                  recipientName: viewModel.contact?.displayName)
+
+      let config = ConfirmPaymentMemoViewConfig(memo: memo, isShared: viewModel.shouldShareMemo,
+                                                isSent: false, isIncoming: false,
+                                                recipientName: viewModel.contact?.displayName)
+      memoContainerView.configure(with: config)
     } else {
       memoContainerView.isHidden = true
     }

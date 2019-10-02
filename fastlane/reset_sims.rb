@@ -9,7 +9,8 @@ compatible_devices = [
 available_oss = [
   'iOS 11.1',
   'iOS 11.4',
-  'iOS 12.2'
+  'iOS 12.2',
+  'iOS 13.0'
 ]
 
 device_types = JSON.parse(`xcrun simctl list -j devicetypes`)['devicetypes'].select { |i| compatible_devices.include?(i['name']) }
@@ -26,7 +27,7 @@ devices['devices'].each do |runtime, runtime_devices|
 end
 
 device_types.each do |device_type|
-  runtimes.select{|runtime| runtime['availability'] == '(available)'}.each do |runtime|
+  runtimes.select{|runtime| runtime['isAvailable'] == true}.each do |runtime|
     puts "Creating #{device_type['name']} with #{runtime['name']}"
     command = "xcrun simctl create '#{device_type['name']}' #{device_type['identifier']} #{runtime['identifier']}"
     _ = `#{command}`

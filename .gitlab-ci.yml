@@ -21,7 +21,6 @@ run_tests:
   script: bundle exec fastlane test
   tags:
     - ios
-  coverage: '/CoinKeeper.*\.app | \d+(?:\.\d+)?%/'
 
 run_ui_tests:
   stage: ui_tests

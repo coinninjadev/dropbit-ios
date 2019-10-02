@@ -8,25 +8,19 @@
 
 import Foundation
 
-class MockTransactionHistoryOnChainDataSource: TransactionHistoryDataSourceType {
+class MockTransactionHistoryDataSource: TransactionHistoryDataSourceType {
 
-  private let items: [TransactionSummaryCellDisplayable]
-
-  let walletTransactionType: WalletTransactionType = .onChain
-
+  let walletTransactionType: WalletTransactionType
   weak var delegate: TransactionHistoryDataSourceDelegate?
 
-  init() {
-    let gen = MockOnChainDataGenerator()
-    self.items = [
-      gen.mayUtilities,
-      gen.lightningWithdraw,
-      gen.coffee,
-      gen.drinksAndFood,
-      gen.loadLightning,
-      gen.genericIncoming,
-      gen.canceledPhoneInvite
-    ]
+  fileprivate var items: [TransactionDetailCellDisplayable]
+  fileprivate let generator: MockDetailDataGenerator
+
+  init(walletTxType: WalletTransactionType) {
+    self.walletTransactionType = walletTxType
+    generator = MockDetailDataGenerator(walletTxType: walletTxType)
+    let dropBitItems = generator.generatePhoneAndTwitterDropBitItems(categories: [.valid])
+    self.items = dropBitItems
   }
 
   func summaryCellDisplayableItem(at indexPath: IndexPath,
@@ -36,11 +30,11 @@ class MockTransactionHistoryOnChainDataSource: TransactionHistoryDataSourceType 
     return items[indexPath.row]
   }
 
-  func detailCellViewModel(at indexPath: IndexPath,
-                           rates: ExchangeRates,
-                           currencies: CurrencyPair,
-                           deviceCountryCode: Int) -> OldTransactionDetailCellViewModel? {
-    return nil
+  func detailCellDisplayableItem(at indexPath: IndexPath,
+                                 rates: ExchangeRates,
+                                 currencies: CurrencyPair,
+                                 deviceCountryCode: Int) -> TransactionDetailCellDisplayable {
+    return items[indexPath.row]
   }
 
   func numberOfSections() -> Int {
@@ -53,47 +47,28 @@ class MockTransactionHistoryOnChainDataSource: TransactionHistoryDataSourceType 
 
 }
 
-class MockTransactionHistoryLightningDataSource: TransactionHistoryDataSourceType {
-
-  private let items: [TransactionSummaryCellDisplayable]
-
-  let walletTransactionType: WalletTransactionType = .lightning
-
-  weak var delegate: TransactionHistoryDataSourceDelegate?
+class MockTransactionHistoryOnChainDataSource: MockTransactionHistoryDataSource {
 
   init() {
-    let gen = MockLightningDataGenerator()
-    self.items = [
-      gen.pendingInvoice,
-      gen.lightningWithdraw,
-      gen.coffee,
-      gen.expiredInvoice,
-      gen.loadLightning,
-      gen.paidInvoice,
-      gen.expiredPhoneInvite
+    super.init(walletTxType: .onChain)
+    items += [
+      generator.lightningTransfer(walletTxType: walletTransactionType, direction: .out), //load
+      generator.lightningTransfer(walletTxType: walletTransactionType, direction: .in), //withdraw
+      generator.genericOnChainTransactionWithPrivateMemo(direction: .out),
+      generator.genericOnChainTransactionWithPrivateMemo(direction: .in)
     ]
   }
 
-  func summaryCellDisplayableItem(at indexPath: IndexPath,
-                                  rates: ExchangeRates,
-                                  currencies: CurrencyPair,
-                                  deviceCountryCode: Int) -> TransactionSummaryCellDisplayable {
-    return items[indexPath.row]
-  }
+}
 
-  func detailCellViewModel(at indexPath: IndexPath,
-                           rates: ExchangeRates,
-                           currencies: CurrencyPair,
-                           deviceCountryCode: Int) -> OldTransactionDetailCellViewModel? {
-    return nil
-  }
+class MockTransactionHistoryLightningDataSource: MockTransactionHistoryDataSource {
 
-  func numberOfSections() -> Int {
-    return 1
-  }
-
-  func numberOfItems(inSection section: Int) -> Int {
-    return items.count
+  init() {
+    super.init(walletTxType: .lightning)
+    items += [
+      generator.lightningTransfer(walletTxType: walletTransactionType, direction: .in), //load
+      generator.lightningTransfer(walletTxType: walletTransactionType, direction: .out) //withdraw
+    ]
   }
 
 }

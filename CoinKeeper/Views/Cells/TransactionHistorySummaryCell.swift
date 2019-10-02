@@ -12,7 +12,7 @@ class TransactionHistorySummaryCell: UICollectionViewCell {
 
   @IBOutlet var directionView: TransactionDirectionView!
   @IBOutlet var twitterAvatarView: TwitterAvatarView!
-  @IBOutlet var counterpartyLabel: TransactionHistoryCounterpartyLabel!
+  @IBOutlet var descriptionLabel: TransactionHistoryCounterpartyLabel!
   @IBOutlet var memoLabel: SummaryCellMemoLabel!
   @IBOutlet var amountStackView: UIStackView!
 
@@ -48,7 +48,7 @@ class TransactionHistorySummaryCell: UICollectionViewCell {
 
     configureIsHidden(with: values)
     configureLeadingViews(with: values.leadingImageConfig, cellBgColor: values.cellBackgroundColor)
-    counterpartyLabel.text = values.counterpartyText
+    descriptionLabel.text = values.summaryTransactionDescription
     memoLabel.text = values.memo
     configureAmountLabels(with: values.summaryAmountLabels,
                           accentColor: values.accentColor,
