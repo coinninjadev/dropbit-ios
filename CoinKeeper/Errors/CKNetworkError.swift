@@ -31,6 +31,7 @@ enum CKNetworkError: UserNotifiableError {
   case countryCodeDisabled
   case twilioError(Response) //server returns a successful response with 501 if Twilio responds with error
   case invoiceAmountTooHigh //400
+  case underlying(MoyaError)
 
   /// The associated response can be used as the default value if recovering from this error
   case invalidValue(keyPath: String, value: String?, response: Decodable)
@@ -63,6 +64,7 @@ enum CKNetworkError: UserNotifiableError {
     case .countryCodeDisabled:            return "Country code not enabled"
     case .twilioError:                    return "Twilio responded with error."
     case .invoiceAmountTooHigh:           return "Invoice amount too high."
+    case .underlying(let error):          return error.responseDescription
 
     case .invalidValue(let keypath, let value, _):
       let valueDesc = value ?? "nil"
@@ -102,7 +104,11 @@ extension MoyaError {
   var responseDescription: String {
     if let data = self.response?.data,
       let errorString = String(data: data, encoding: .utf8) {
-      return errorString
+      if let responseError = try? JSONDecoder().decode(CoinNinjaErrorResponse.self, from: data) {
+        return responseError.message
+      } else {
+        return errorString
+      }
     } else {
       return self.errorDescription ?? "MoyaError.response has no description"
     }
