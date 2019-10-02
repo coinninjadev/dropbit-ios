@@ -191,9 +191,8 @@ CurrencySwappableAmountEditor {
     delegate.sendPaymentViewControllerDidLoad(self)
     walletToggleView.delegate = self
 
-    if viewModel.fromAmount == .zero && recipientDescriptionToLoad == nil {
-      editAmountView.primaryAmountTextField.becomeFirstResponder()
-    }
+    let labels = viewModel.dualAmountLabels(hidePrimaryZero: false, walletTransactionType: viewModel.walletTransactionType)
+    editAmountView.update(with: labels)
   }
 
   override func viewWillAppear(_ animated: Bool) {
@@ -368,7 +367,7 @@ extension SendPaymentViewController {
       recipientDisplayNumberLabel.text = viewModel.displayRecipientIdentity()
     }
 
-    editAmountView.update(with: viewModel.dualAmountLabels(hidePrimaryZero: viewModel.btcAmount == 0,
+    editAmountView.update(with: viewModel.dualAmountLabels(hidePrimaryZero: false,
                                                            walletTransactionType: viewModel.walletTransactionType))
 
     updateMemoContainer()
