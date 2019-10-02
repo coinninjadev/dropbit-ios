@@ -16,7 +16,7 @@ protocol TransactionDetailInvoiceCellDisplayable: TransactionSummaryCellDisplaya
   var lightningInvoice: String? { get }
   var displayDate: String { get }
   var tooltipType: DetailCellTooltip { get }
-  var actionButtonConfig: DetailCellActionButtonConfig? { get }
+  var invoiceActionConfig: DetailCellActionButtonConfig { get }
 
   func qrImage(withSize size: CGSize) -> UIImage?
 }
@@ -38,6 +38,18 @@ extension TransactionDetailInvoiceCellViewModelType {
   func qrImage(withSize size: CGSize) -> UIImage? {
     guard let invoice = lightningInvoice else { return nil }
     return qrCodeGenerator.image(from: invoice, size: size)
+  }
+
+  var invoiceActionConfig: DetailCellActionButtonConfig {
+    return DetailCellActionButtonConfig(walletTxType: .lightning, action: invoiceAction)
+  }
+
+  private var invoiceAction: TransactionDetailAction {
+    if invoiceIsExpired {
+      return .removeEntry
+    } else {
+      return .seeDetails
+    }
   }
 
 }

@@ -123,7 +123,7 @@ extension TransactionHistoryDetailsViewController: TransactionHistoryDetailCellD
   }
 
   func didTapInvoice(detailCell: TransactionHistoryDetailInvoiceCell) {
-    
+
   }
 
   func didTapBottomButton(detailCell: UICollectionViewCell, action: TransactionDetailAction) {

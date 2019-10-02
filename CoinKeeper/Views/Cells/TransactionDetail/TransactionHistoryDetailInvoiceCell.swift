@@ -96,11 +96,10 @@ class TransactionHistoryDetailInvoiceCell: CollectionViewCardCell {
 
     copyInvoiceLabel.text = values.lightningInvoice
 
-    if let config = values.actionButtonConfig {
-      bottomButton.backgroundColor = config.backgroundColor
-      bottomButton.tag = config.buttonTag
-      bottomButton.setTitle(config.title, for: .normal)
-    }
+    let actionConfig = values.invoiceActionConfig
+    bottomButton.backgroundColor = actionConfig.backgroundColor
+    bottomButton.tag = actionConfig.buttonTag
+    bottomButton.setTitle(actionConfig.title, for: .normal)
 
     dateLabel.text = values.displayDate
   }
