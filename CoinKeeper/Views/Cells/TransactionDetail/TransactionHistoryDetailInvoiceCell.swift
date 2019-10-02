@@ -8,11 +8,9 @@
 
 import UIKit
 
-class TransactionHistoryDetailInvoiceCell: UICollectionViewCell {
+class TransactionHistoryDetailInvoiceCell: CollectionViewCardCell {
 
   weak var delegate: TransactionHistoryDetailCellDelegate!
-
-  @IBOutlet var underlyingContentView: UIView!
 
   @IBOutlet var questionMarkButton: UIButton!
   @IBOutlet var titleLabel: UILabel!

@@ -18,6 +18,30 @@ enum DetailCellTooltip: Int {
   }
 }
 
+class CollectionViewCardCell: UICollectionViewCell {
+
+  @IBOutlet var underlyingContentView: UIView!
+
+  override func awakeFromNib() {
+    super.awakeFromNib()
+    backgroundColor = UIColor.white
+    layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+    applyCornerRadius(13)
+
+    // Shadow
+    layer.shadowColor = UIColor.black.cgColor
+    layer.shadowOpacity = 0.5
+    layer.shadowRadius = 2
+    layer.shadowOffset = CGSize(width: 0, height: 4)
+    self.clipsToBounds = false
+    layer.masksToBounds = false
+
+    underlyingContentView.backgroundColor = UIColor.white
+    underlyingContentView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+    underlyingContentView.applyCornerRadius(13)
+  }
+}
+
 protocol TransactionHistoryDetailCellDelegate: class {
   func didTapQuestionMarkButton(detailCell: TransactionHistoryDetailBaseCell, tooltip: DetailCellTooltip)
   func didTapClose(detailCell: UICollectionViewCell)
@@ -29,10 +53,9 @@ protocol TransactionHistoryDetailCellDelegate: class {
 //  func shouldSaveMemo(for transaction: CKMTransaction) -> Promise<Void>
 }
 
-class TransactionHistoryDetailBaseCell: UICollectionViewCell {
+class TransactionHistoryDetailBaseCell: CollectionViewCardCell {
 
   // MARK: outlets
-  @IBOutlet var underlyingContentView: UIView!
   @IBOutlet var twitterShareButton: PrimaryActionButton? //may be nil for some xibs
   @IBOutlet var questionMarkButton: UIButton!
   @IBOutlet var closeButton: UIButton!
@@ -53,21 +76,6 @@ class TransactionHistoryDetailBaseCell: UICollectionViewCell {
   override func awakeFromNib() {
     super.awakeFromNib()
 
-    backgroundColor = UIColor.white
-    layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
-    applyCornerRadius(13)
-
-    // Shadow
-    layer.shadowColor = UIColor.black.cgColor
-    layer.shadowOpacity = 0.5
-    layer.shadowRadius = 2
-    layer.shadowOffset = CGSize(width: 0, height: 4)
-    self.clipsToBounds = false
-    layer.masksToBounds = false
-
-    underlyingContentView.backgroundColor = UIColor.white
-    underlyingContentView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
-    underlyingContentView.applyCornerRadius(13)
     addMemoButton.styleAddButtonWith(title: "Add Memo")
     configureTwitterShareButton()
   }
