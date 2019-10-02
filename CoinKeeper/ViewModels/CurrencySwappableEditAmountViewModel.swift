@@ -282,7 +282,12 @@ extension CurrencySwappableEditAmountViewModel: UITextFieldDelegate {
       return false
     }
 
-    let trimmedFinal = finalString.removing(groupingSeparator: self.groupingSeparator, currencySymbol: requiredSymbolString)
+    var symbolsToRemove = [requiredSymbolString]
+    if let integerSymbol = primaryCurrency.integerSymbol {
+      symbolsToRemove.append(integerSymbol)
+    }
+
+    let trimmedFinal = finalString.removing(groupingSeparator: self.groupingSeparator, currencySymbols: symbolsToRemove)
     if trimmedFinal.isEmpty {
       return true // allow deletion of all digits by returning early
     }
