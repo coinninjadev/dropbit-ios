@@ -11,7 +11,7 @@ import PromiseKit
 typealias AddressRequestPatch = (requestId: String, patch: WalletAddressRequest)
 
 protocol WalletAddressRequestRequestable: AnyObject {
-  func createAddressRequest(body: RequestAddressBody) -> Promise<WalletAddressRequestResponse>
+  func createAddressRequest(body: WalletAddressRequestBody) -> Promise<WalletAddressRequestResponse>
   func getSatisfiedSentWalletAddressRequests() -> Promise<[WalletAddressRequestResponse]>
   func getWalletAddressRequests(forSide side: WalletAddressRequestSide) -> Promise<[WalletAddressRequestResponse]>
   func updateWalletAddressRequest(for id: String, with request: WalletAddressRequest) -> Promise<WalletAddressRequestResponse>
@@ -29,7 +29,7 @@ extension NetworkManager: WalletAddressRequestRequestable {
     return cnProvider.request(WalletAddressRequestsTarget.update(id, request))
   }
 
-  func createAddressRequest(body: RequestAddressBody) -> Promise<WalletAddressRequestResponse> {
+  func createAddressRequest(body: WalletAddressRequestBody) -> Promise<WalletAddressRequestResponse> {
     return cnProvider.request(WalletAddressRequestsTarget.create(body))
   }
 

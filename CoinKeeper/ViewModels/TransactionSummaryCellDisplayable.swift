@@ -6,16 +6,13 @@
 //  Copyright © 2019 Coin Ninja, LLC. All rights reserved.
 //
 
-import Foundation
 import UIKit
-
-// MARK: - Summary Cell
 
 /// Provides all variable values directly necessary to configure the TransactionHistorySummaryCell UI.
 /// Fixed values (colors, font sizes, etc.) are provided by the cell itself.
 protocol TransactionSummaryCellDisplayable {
   var walletTxType: WalletTransactionType { get }
-  var counterpartyText: String { get }
+  var summaryTransactionDescription: String { get }
   var selectedCurrency: SelectedCurrency { get }
   var summaryAmountLabels: SummaryCellAmountLabels { get }
   var accentColor: UIColor { get } //amount and leading image background color
@@ -65,21 +62,21 @@ extension TransactionSummaryCellViewModelType {
   }
 
   var leadingImageConfig: SummaryCellLeadingImageConfig {
-    let directionConfig = SummaryCellDirectionConfig(bgColor: accentColor, image: leadingIcon)
+    let directionConfig = TransactionCellDirectionConfig(bgColor: accentColor, image: relevantDirectionImage)
     return SummaryCellLeadingImageConfig(twitterConfig: counterpartyConfig?.twitterConfig,
                                          directionConfig: directionConfig)
   }
 
   /// Transaction type icon, not an avatar
-  private var leadingIcon: UIImage {
+  var relevantDirectionImage: UIImage {
     guard isValidTransaction else { return invalidImage }
 
     if isLightningTransfer {
       return transferImage
     } else {
       switch walletTxType {
-      case .lightning:  return isPendingInvoice ? lightningImage : directionImage
-      case .onChain:    return directionImage
+      case .lightning:  return isPendingInvoice ? lightningImage : basicDirectionImage
+      case .onChain:    return basicDirectionImage
       }
     }
   }
@@ -90,7 +87,7 @@ extension TransactionSummaryCellViewModelType {
     if isPendingInvoice {
       return .lightningBlue
     } else {
-      return directionColor
+      return basicDirectionColor
     }
   }
 
@@ -99,21 +96,21 @@ extension TransactionSummaryCellViewModelType {
     return walletTxType == .lightning && status == .pending
   }
 
-  private var directionImage: UIImage {
+  var basicDirectionImage: UIImage {
     switch direction {
     case .in:   return incomingImage
     case .out:  return outgoingImage
     }
   }
 
-  private var directionColor: UIColor {
+  var basicDirectionColor: UIColor {
     switch direction {
     case .in:   return .incomingGreen
     case .out:  return .outgoingGray
     }
   }
 
-  var counterpartyText: String {
+  var summaryTransactionDescription: String {
     if let transferType = lightningTransferType {
       switch transferType {
       case .withdraw:   return lightningWithdrawText
@@ -132,7 +129,7 @@ extension TransactionSummaryCellViewModelType {
     }
   }
 
-  private var lightningTransferType: LightningTransferType? {
+  var lightningTransferType: LightningTransferType? {
     guard isLightningTransfer else { return nil }
     switch walletTxType {
     case .onChain:
@@ -145,12 +142,16 @@ extension TransactionSummaryCellViewModelType {
   private var lightningInvoiceDescription: String? {
     guard (lightningInvoice ?? "").isNotEmpty else { return nil }
     switch status {
-    case .completed:  return lightningPaidInvoiceText
+    case .completed:
+      switch direction {
+      case .in: return lightningReceivedPaidInvoiceText
+      case .out: return lightningPaidInvoiceText
+      }
     default:          return lightningUnpaidInvoiceText
     }
   }
 
-  private var counterpartyDescription: String? {
+  var counterpartyDescription: String? {
     guard let config = counterpartyConfig else { return nil }
     if let twitter = config.twitterConfig {
       return twitter.displayHandle
@@ -177,7 +178,8 @@ extension TransactionSummaryCellViewModelType {
     let satsText = SatsFormatter().string(fromDecimal: converter.btcAmount) ?? ""
     let fiatText = FiatFormatter(currency: converter.fiatCurrency,
                                  withSymbol: true,
-                                 showNegativeSymbol: true).string(fromDecimal: signedFiatAmount) ?? ""
+                                 showNegativeSymbol: true,
+                                 negativeHasSpace: true).string(fromDecimal: signedFiatAmount) ?? ""
 
     let pillText: String = isValidTransaction ? fiatText : status.rawValue
 
@@ -187,7 +189,7 @@ extension TransactionSummaryCellViewModelType {
                                    pillIsAmount: isValidTransaction)
   }
 
-  private func signedAmount(for amount: NSDecimalNumber) -> NSDecimalNumber {
+  func signedAmount(for amount: NSDecimalNumber) -> NSDecimalNumber {
     guard !amount.isNegativeNumber else { return amount }
     switch direction {
     case .in:   return amount
@@ -196,6 +198,7 @@ extension TransactionSummaryCellViewModelType {
   }
 
   var lightningPaidInvoiceText: String { return "Invoice Paid" }
+  var lightningReceivedPaidInvoiceText: String { return "Received" }
   var lightningUnpaidInvoiceText: String { return "Lightning Invoice" }
   var lightningWithdrawText: String { return "Lightning Withdraw" }
   var lightningDepositText: String { return "Load Lightning" }
@@ -205,103 +208,5 @@ extension TransactionSummaryCellViewModelType {
   var transferImage: UIImage { return UIImage(imageLiteralResourceName: "summaryCellTransfer") }
   var lightningImage: UIImage { return UIImage(imageLiteralResourceName: "summaryCellLightning") }
   var invalidImage: UIImage { return UIImage(imageLiteralResourceName: "summaryCellInvalid") }
-
-}
-
-// MARK: - Detail Cell
-
-/// Provides all variable values directly necessary to configure the TransactionHistoryDetailCell UI.
-/// Fixed values (colors, font sizes, etc.) are provided by the cell itself.
-protocol TransactionDetailCellDisplayable: TransactionSummaryCellDisplayable {
-  var detailStatusText: String? { get }
-  var progressConfig: ProgressBarConfig? { get }
-  var bitcoinAddress: String? { get }
-  var memoConfig: DetailCellMemoConfig? { get }
-  var canAddMemo: Bool { get }
-  var actionButtonConfig: DetailCellActionButtonConfig? { get }
-  var displayDate: String { get }
-}
-
-extension TransactionDetailCellDisplayable {
-
-  var statusTextColor: UIColor {
-    return .lightGrayText
-  }
-}
-
-protocol TransactionInvalidDetailCellDisplayable: TransactionDetailCellDisplayable {
-  var status: TransactionStatus { get }
-}
-
-extension TransactionInvalidDetailCellDisplayable {
-
-  var statusTextColor: UIColor {
-    return .warning
-  }
-
-  var directionImage: UIImage? {
-    return UIImage(named: "invalidDetailIcon")
-  }
-
-  var warningMessage: String? {
-    switch status {
-    case .expired:
-      return """
-      For security reasons we can only allow
-      48 hours to accept a transaction.
-      This transaction has expired.
-      """
-    default:
-      return nil
-    }
-  }
-}
-
-/// Defines the properties that need to be set during initialization of the view model.
-/// The inherited `...Displayable` requirements should be calculated in this
-/// protocol's extension or provided by a mock view model.
-protocol TransactionDetailCellViewModelType: TransactionSummaryCellViewModelType, TransactionDetailCellDisplayable {
-  var date: Date { get }
-  var action: TransactionDetailAction? { get }
-}
-
-extension TransactionDetailCellViewModelType {
-
-  var statusTextColor: UIColor { return .lightGrayText }
-
-  var canAddMemo: Bool {
-    if isLightningTransfer { return false }
-    return memoConfig == nil
-  }
-
-  var detailStatusText: String? {
-    return status.rawValue
-  }
-
-  var amountLabels: DetailCellAmountLabels {
-    return DetailCellAmountLabels(primaryText: "",
-                                  secondaryText: nil,
-                                  secondaryAttributedText: nil,
-                                  historicalPriceAttributedText: nil)
-  }
-
-  var displayDate: String {
-    return CKDateFormatter.displayFull.string(from: date)
-  }
-
-  var actionButtonConfig: DetailCellActionButtonConfig? {
-    guard let a = action else { return nil }
-    switch a {
-    case .cancelInvitation:
-      return DetailCellActionButtonConfig(title: "CANCEL", backgroundColor: .warning)
-    case .seeDetails:
-      let buttonColor: UIColor
-      switch walletTxType {
-      case .lightning:  buttonColor = .lightningBlue
-      case .onChain:    buttonColor = .bitcoinOrange
-      }
-      return DetailCellActionButtonConfig(title: "DETAILS", backgroundColor: buttonColor)
-    }
-  }
 
 }

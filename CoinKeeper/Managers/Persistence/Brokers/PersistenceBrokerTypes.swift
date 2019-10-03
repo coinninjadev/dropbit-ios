@@ -55,6 +55,11 @@ protocol LightningBrokerType: AnyObject {
   func persistLedgerResponse(_ response: LNLedgerResponse,
                              forWallet wallet: CKMWallet,
                              in context: NSManagedObjectContext)
+  func persistPaymentResponse(_ response: LNTransactionResponse,
+                              receiver: OutgoingDropBitReceiver?,
+                              invitation: CKMInvitation?,
+                              inputs: LightningPaymentInputs,
+                              in context: NSManagedObjectContext)
 }
 
 protocol CheckInBrokerType: AnyObject {
@@ -89,7 +94,7 @@ protocol InvitationBrokerType: AnyObject {
 
   func getUnacknowledgedInvitations(in context: NSManagedObjectContext) -> [CKMInvitation]
   func getAllInvitations(in context: NSManagedObjectContext) -> [CKMInvitation]
-  func persistUnacknowledgedInvitation(withDTO outgoingDTO: OutgoingInvitationDTO,
+  func persistUnacknowledgedInvitation(withDTO invitationDTO: OutgoingInvitationDTO,
                                        acknowledgmentId: String,
                                        in context: NSManagedObjectContext)
   func addressesProvidedForReceivedPendingDropBits(in context: NSManagedObjectContext) -> [String]

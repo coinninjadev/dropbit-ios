@@ -39,7 +39,7 @@ class LightningUpgradeCoordinator: ChildCoordinatorType {
 
     parent.launchStateManager.upgradeInProgress = true
     let context = parent.persistenceManager.createBackgroundContext()
-    parent.serialQueueManager.walletSyncOperationFactory?.createOnChainOnlySync(in: context)
+    parent.serialQueueManager.walletSyncOperationFactory?.performOnChainOnlySync(in: context)
       .get(in: context) { _ in
         do {
           try context.saveRecursively()

@@ -100,8 +100,10 @@ final class TransactionHistoryDetailsViewController: PresentableViewController, 
 
 extension TransactionHistoryDetailsViewController: TransactionHistoryDetailCellDelegate {
 
-  func didTapQuestionMarkButton(detailCell: TransactionHistoryDetailBaseCell, with url: URL) {
-    delegate.openURL(url, completionHandler: nil)
+  func didTapQuestionMarkButton(detailCell: TransactionHistoryDetailBaseCell, tooltip: DetailCellTooltip) {
+//    CoinNinjaUrlFactory.buildUrl(for: .dropbitTransactionTooltip)
+//    CoinNinjaUrlFactory.buildUrl(for: .regularTransactionTooltip)
+//    delegate.openURL(url, completionHandler: nil)
   }
 
   func didTapClose(detailCell: TransactionHistoryDetailBaseCell) {
@@ -109,34 +111,30 @@ extension TransactionHistoryDetailsViewController: TransactionHistoryDetailCellD
   }
 
   func didTapTwitterShare(detailCell: TransactionHistoryDetailBaseCell) {
-    guard let tx = detailCell.viewModel?.transaction else { return }
-    delegate.viewControllerRequestedShareTransactionOnTwitter(self, transaction: tx, shouldDismiss: false)
+//    guard let tx = detailCell.viewModel?.transaction else { return }
+//    delegate.viewControllerRequestedShareTransactionOnTwitter(self, transaction: tx, shouldDismiss: false)
   }
 
   func didTapAddress(detailCell: TransactionHistoryDetailBaseCell) {
-    guard let address = detailCell.viewModel?.receiverAddress,
-      let addressURL = CoinNinjaUrlFactory.buildUrl(for: .address(id: address)) else { return }
-    delegate.openURL(addressURL, completionHandler: nil)
+//    guard let address = detailCell.viewModel?.receiverAddress,
+//      let addressURL = CoinNinjaUrlFactory.buildUrl(for: .address(id: address)) else { return }
+//    delegate.openURL(addressURL, completionHandler: nil)
   }
 
   func didTapBottomButton(detailCell: TransactionHistoryDetailBaseCell, action: TransactionDetailAction) {
-    switch action {
-    case .seeDetails:
-      guard let viewModel = detailCell.viewModel else { return }
-      delegate.viewControllerShouldSeeTransactionDetails(for: viewModel)
-    case .cancelInvitation:
-      guard let invitationID = detailCell.viewModel?.transaction?.invitation?.id,
-        let path = collectionView.indexPath(for: detailCell) else { return }
-      delegate.viewController(self, didCancelInvitationWithID: invitationID, at: path)
-    }
+//    switch action {
+//    case .seeDetails:
+//      guard let viewModel = detailCell.viewModel else { return }
+//      delegate.viewControllerShouldSeeTransactionDetails(for: viewModel)
+//    case .cancelInvitation:
+//      guard let invitationID = detailCell.viewModel?.transaction?.invitation?.id,
+//        let path = collectionView.indexPath(for: detailCell) else { return }
+//      delegate.viewController(self, didCancelInvitationWithID: invitationID, at: path)
+//    }
   }
 
-  func didTapAddMemoButton(completion: @escaping (String) -> Void) {
-    delegate.viewControllerDidTapAddMemo(self, with: completion)
-  }
-
-  func shouldSaveMemo(for transaction: CKMTransaction) -> Promise<Void> {
-    return delegate.viewControllerShouldUpdateTransaction(self, transaction: transaction)
+  func didTapAddMemoButton(detailCell: TransactionHistoryDetailBaseCell) {
+//    delegate.viewControllerDidTapAddMemo(self, with: completion)
   }
 
 }

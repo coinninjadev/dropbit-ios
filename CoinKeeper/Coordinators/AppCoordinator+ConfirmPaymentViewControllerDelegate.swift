@@ -20,7 +20,7 @@ struct LightningPaymentInputs {
 }
 
 extension AppCoordinator: ConfirmPaymentViewControllerDelegate {
-
+  
   func confirmPaymentViewControllerDidLoad(_ viewController: UIViewController) {
     analyticsManager.track(event: .confirmScreenLoaded, with: nil)
   }
@@ -32,10 +32,12 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate {
     let pinEntryViewModel = InviteVerificationPinEntryViewModel()
 
     let successHandler: CKCompletion = { [unowned self] in
-      guard outgoingInvitationDTO.fee > 0 else {
-        log.error("DropBit invitation fee is zero")
-        self.handleFailure(error: TransactionDataError.insufficientFee)
-        return
+      if outgoingInvitationDTO.walletTxType == .onChain {
+        guard outgoingInvitationDTO.fee > 0 else {
+          log.error("DropBit invitation fee is zero")
+          self.handleFailure(error: TransactionDataError.insufficientFee)
+          return
+        }
       }
 
       let dropBitReceiver = outgoingInvitationDTO.contact.asDropBitReceiver
@@ -46,10 +48,11 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate {
         return
       }
 
-      let inviteBody = RequestAddressBody(amount: outgoingInvitationDTO.btcPair,
-                                          receiver: receiverBody,
-                                          sender: senderBody,
-                                          requestId: UUID().uuidString.lowercased())
+      let inviteBody = WalletAddressRequestBody(amount: outgoingInvitationDTO.btcPair,
+                                                receiver: receiverBody,
+                                                sender: senderBody,
+                                                requestId: UUID().uuidString.lowercased(),
+                                                addressType: walletTxType.addressType)
       self.handleSuccessfulInviteVerification(with: inviteBody, outgoingInvitationDTO: outgoingInvitationDTO)
     }
 
@@ -59,14 +62,17 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate {
     presentPinEntryViewController(pinEntryVC)
   }
 
-  private func handleSuccessfulInviteVerification(with inviteBody: RequestAddressBody, outgoingInvitationDTO: OutgoingInvitationDTO) {
+  private func handleSuccessfulInviteVerification(with inviteBody: WalletAddressRequestBody, outgoingInvitationDTO: OutgoingInvitationDTO) {
 
     // guard against fee at 0 again, to really ensure that it is not zero before creating the network request
-    guard outgoingInvitationDTO.fee > 0 else {
-      log.error("DropBit invitation fee is zero")
-      handleFailure(error: TransactionDataError.insufficientFee)
-      return
+    if outgoingInvitationDTO.walletTxType == .onChain {
+      guard outgoingInvitationDTO.fee > 0 else {
+        log.error("DropBit invitation fee is zero")
+        handleFailure(error: TransactionDataError.insufficientFee)
+        return
+      }
     }
+
     let bgContext = persistenceManager.createBackgroundContext()
     let successFailViewController = SuccessFailViewController.newInstance(viewModel: PaymentSuccessFailViewModel(mode: .pending),
                                                                           delegate: self)
@@ -148,7 +154,7 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate {
     }
   }
 
-  private func createInviteNotificationSMSComposer(for inviteBody: RequestAddressBody) -> MFMessageComposeViewController? {
+  private func createInviteNotificationSMSComposer(for inviteBody: WalletAddressRequestBody) -> MFMessageComposeViewController? {
     guard MFMessageComposeViewController.canSendText(),
       let phoneNumber = inviteBody.receiver.globalNumber()
       else { return nil }
@@ -166,7 +172,7 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate {
     return composeVC
   }
 
-  private func showManualInviteSMSAlert(inviteBody: RequestAddressBody) {
+  private func showManualInviteSMSAlert(inviteBody: WalletAddressRequestBody) {
     let requestConfiguration = AlertActionConfiguration(title: "NOTIFY", style: .default, action: { [weak self] in
       guard let strongSelf = self,
         let composeVC = strongSelf.createInviteNotificationSMSComposer(for: inviteBody),
@@ -233,7 +239,7 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate {
 
   private func handleAddressRequestCreationError(_ error: Error,
                                                  invitationDTO: OutgoingInvitationDTO,
-                                                 inviteBody: RequestAddressBody,
+                                                 inviteBody: WalletAddressRequestBody,
                                                  successFailVC: SuccessFailViewController,
                                                  in context: NSManagedObjectContext) {
     if let networkError = error as? CKNetworkError,

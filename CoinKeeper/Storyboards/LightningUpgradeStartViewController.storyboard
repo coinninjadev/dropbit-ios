@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
-    <device id="retina6_1" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14868" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14824"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -27,11 +25,11 @@
                                 <blurEffect style="dark"/>
                             </visualEffectView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FWg-3S-Ega" customClass="LightningUpgradeGradientOverlayView" customModule="DropBit" customModuleProvider="target">
-                                <rect key="frame" x="15" y="48" width="384" height="799"/>
+                                <rect key="frame" x="15" y="64" width="384" height="783"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="b0x-mv-PcL">
-                                <rect key="frame" x="15" y="48" width="384" height="799"/>
+                                <rect key="frame" x="15" y="64" width="384" height="783"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zEG-pk-jfl">
                                         <rect key="frame" x="344" y="8" width="32" height="32"/>
@@ -45,19 +43,19 @@
                                         </connections>
                                     </button>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" alignment="center" spacing="27" translatesAutoresizingMaskIntoConstraints="NO" id="Tyt-gf-kOe">
-                                        <rect key="frame" x="20" y="284" width="344" height="172"/>
+                                        <rect key="frame" x="20" y="200" width="344" height="240"/>
                                         <subviews>
                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="blueFlashIconLarge" translatesAutoresizingMaskIntoConstraints="NO" id="jbg-Md-mur">
-                                                <rect key="frame" x="164" y="0.0" width="16" height="16"/>
+                                                <rect key="frame" x="143" y="0.0" width="58" height="84"/>
                                             </imageView>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="LIGHTNING IS HERE!" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="K9v-xp-7qC">
-                                                <rect key="frame" x="92" y="43" width="160" height="20.5"/>
+                                                <rect key="frame" x="92" y="111" width="160" height="20.5"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fQb-5g-E6R">
-                                                <rect key="frame" x="0.0" y="90.5" width="344" height="81.5"/>
+                                                <rect key="frame" x="0.0" y="158.5" width="344" height="81.5"/>
                                                 <string key="text">We are upgrading all DropBit wallets for Lightning support. Your new SegWit wallet will allow you to send Bitcoin faster, cheaper, and with increased security.</string>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <nil key="textColor"/>
@@ -66,10 +64,10 @@
                                         </subviews>
                                     </stackView>
                                     <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="hxv-YD-kxu">
-                                        <rect key="frame" x="182" y="640" width="20" height="20"/>
+                                        <rect key="frame" x="182" y="624" width="20" height="20"/>
                                     </activityIndicatorView>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="XGX-bo-GNc">
-                                        <rect key="frame" x="18" y="516" width="348" height="174"/>
+                                        <rect key="frame" x="18" y="500" width="348" height="174"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="N8M-Z1-EjK">
                                                 <rect key="frame" x="0.0" y="0.0" width="348" height="83"/>
@@ -147,7 +145,7 @@
                                         </constraints>
                                     </stackView>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Lsa-oz-wsO" customClass="PrimaryActionButton" customModule="DropBit" customModuleProvider="target">
-                                        <rect key="frame" x="18" y="710" width="348" height="49"/>
+                                        <rect key="frame" x="18" y="694" width="348" height="49"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="49" id="vBu-hn-rec"/>
                                         </constraints>
@@ -182,7 +180,7 @@
                             <constraint firstItem="FWg-3S-Ega" firstAttribute="leading" secondItem="MzK-7L-yMR" secondAttribute="leading" constant="15" id="4BK-CZ-d66"/>
                             <constraint firstItem="b0x-mv-PcL" firstAttribute="bottom" secondItem="FWg-3S-Ega" secondAttribute="bottom" id="Apr-i5-YbC"/>
                             <constraint firstItem="b0x-mv-PcL" firstAttribute="leading" secondItem="FWg-3S-Ega" secondAttribute="leading" id="BXC-S0-a1Q"/>
-                            <constraint firstItem="FWg-3S-Ega" firstAttribute="top" secondItem="MzK-7L-yMR" secondAttribute="top" constant="4" id="Bb6-aR-YLS"/>
+                            <constraint firstItem="FWg-3S-Ega" firstAttribute="top" secondItem="MzK-7L-yMR" secondAttribute="top" constant="20" id="Bb6-aR-YLS"/>
                             <constraint firstItem="b0x-mv-PcL" firstAttribute="top" secondItem="FWg-3S-Ega" secondAttribute="top" id="L3s-W2-Zy9"/>
                             <constraint firstAttribute="bottom" secondItem="gBn-Pm-tAU" secondAttribute="bottom" id="YMj-za-NzH"/>
                             <constraint firstItem="gBn-Pm-tAU" firstAttribute="leading" secondItem="MzK-7L-yMR" secondAttribute="leading" id="eH8-et-AUK"/>

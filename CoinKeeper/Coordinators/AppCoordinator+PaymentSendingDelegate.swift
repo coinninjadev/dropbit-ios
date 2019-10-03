@@ -68,7 +68,8 @@ extension AppCoordinator: PaymentSendingDelegate {
     viewController.present(alert, animated: true, completion: nil)
   }
 
-  func handleSuccessfulLightningPaymentVerification(with inputs: LightningPaymentInputs, receiver: OutgoingDropBitReceiver?) {
+  func handleSuccessfulLightningPaymentVerification(with inputs: LightningPaymentInputs,
+                                                    receiver: OutgoingDropBitReceiver?) {
     let viewModel = PaymentSuccessFailViewModel(mode: .pending)
     let successFailVC = SuccessFailViewController.newInstance(viewModel: viewModel, delegate: self)
     let errorHandler: CKErrorCompletion = self.paymentErrorHandler(for: successFailVC)
@@ -128,41 +129,42 @@ extension AppCoordinator: PaymentSendingDelegate {
                                                 receiver: OutgoingDropBitReceiver?,
                                                 success: @escaping CKCompletion,
                                                 failure: @escaping CKErrorCompletion) {
-    //TODO: Get updated ledger and persist new entry immediately following payment
-    self.networkManager.payLightningPaymentRequest(inputs.invoice, sats: inputs.sats)
-      .get { self.persistLightningPaymentResponse($0, receiver: receiver, inputs: inputs) }
-      .then { response -> Promise<String> in
-        let maybeSender = self.sharedPayloadSenderIdentity(forReceiver: receiver)
-        let maybePostable = PayloadPostableLightningObject(inputs: inputs, paymentResultId: response.result.cleanedId,
-                                                           sender: maybeSender, receiver: receiver)
-        if let postableObject = maybePostable {
-          return self.postSharedPayload(postableObject)
-        } else {
-          return Promise.value(response.result.cleanedId)
-        }
-      }
-      .done { _ in
+      //TODO: Get updated ledger and persist new entry immediately following payment
+      payLightningRequest(withInputs: inputs, invitation: nil, to: receiver)
+        .done { _ in
         success()
         self.didBroadcastTransaction()
       }
       .catch(failure)
   }
 
+  func payLightningRequest(withInputs inputs: LightningPaymentInputs,
+                           invitation: CKMInvitation?,
+                           to receiver: OutgoingDropBitReceiver?) -> Promise<LNTransactionResponse> {
+    return self.networkManager.payLightningPaymentRequest(inputs.invoice, sats: inputs.sats)
+    .get { self.persistLightningPaymentResponse($0, receiver: receiver, invitation: invitation, inputs: inputs) }
+    .then { response -> Promise<LNTransactionResponse> in
+      let maybeSender = self.sharedPayloadSenderIdentity(forReceiver: receiver)
+      let maybePostable = PayloadPostableLightningObject(inputs: inputs, paymentResultId: response.result.cleanedId,
+                                                         sender: maybeSender, receiver: receiver)
+      if let postableObject = maybePostable {
+        return self.postSharedPayload(postableObject)
+          .map { _ in response }
+      } else {
+        return Promise.value(response)
+      }
+    }
+  }
+
   private func persistLightningPaymentResponse(_ response: LNTransactionResponse,
                                                receiver: OutgoingDropBitReceiver?,
+                                               invitation: CKMInvitation?,
                                                inputs: LightningPaymentInputs) {
-    let context = self.persistenceManager.createBackgroundContext()
+    let context = invitation?.managedObjectContext ?? self.persistenceManager.createBackgroundContext()
     context.performAndWait {
-      guard let wallet = CKMWallet.find(in: context) else { return }
-      let ledgerEntry = CKMLNLedgerEntry.updateOrCreate(with: response.result, forWallet: wallet, in: context)
-      if let receiver = receiver {
-        ledgerEntry.walletEntry?.configure(withReceiver: receiver, in: context)
-      }
-
-      if let sharedPayload = inputs.sharedPayload {
-        ledgerEntry.walletEntry?.configureNewSenderSharedPayload(with: sharedPayload, in: context)
-      }
-
+      self.persistenceManager.brokers.lightning.persistPaymentResponse(response, receiver: receiver,
+                                                                       invitation: invitation,
+                                                                       inputs: inputs, in: context)
       try? context.saveRecursively()
     }
   }

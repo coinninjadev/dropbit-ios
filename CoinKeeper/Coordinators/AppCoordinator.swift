@@ -86,7 +86,8 @@ class AppCoordinator: CoordinatorType {
     return WorkerFactory(persistenceManager: self.persistenceManager,
                          networkManager: self.networkManager,
                          analyticsManager: self.analyticsManager,
-                         walletManagerProvider: self)
+                         walletManagerProvider: self,
+                         paymentSendingDelegate: self)
   }
 
   init(

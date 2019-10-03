@@ -10,6 +10,9 @@ import Foundation
 import CoreData
 
 class MockLightningBroker: CKPersistenceBroker, LightningBrokerType {
+  func persistPaymentResponse(_ response: LNTransactionResponse, receiver: OutgoingDropBitReceiver?,
+                              invitation: CKMInvitation?, inputs: LightningPaymentInputs,
+                              in context: NSManagedObjectContext) {}
 
   var getAccountCalled = false
   func getAccount(forWallet wallet: CKMWallet, in context: NSManagedObjectContext) -> CKMLNAccount {
@@ -25,5 +28,4 @@ class MockLightningBroker: CKPersistenceBroker, LightningBrokerType {
   func persistLedgerResponse(_ response: LNLedgerResponse,
                              forWallet wallet: CKMWallet,
                              in context: NSManagedObjectContext) { }
-
 }

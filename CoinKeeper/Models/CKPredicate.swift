@@ -36,6 +36,11 @@ struct CKPredicate {
       return NSCompoundPredicate(type: .and, subpredicates: [notNil, notEmpty])
     }
 
+    static func with(transactionType: WalletTransactionType) -> NSPredicate {
+      let path = #keyPath(CKMInvitation.walletTransactionType)
+      return NSPredicate(format: "\(path) == %@", transactionType.rawValue)
+    }
+
     static func withoutTxid() -> NSPredicate {
       let path = #keyPath(CKMInvitation.txid)
       let isNil = NSPredicate(format: "\(path) == nil")

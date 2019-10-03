@@ -8,6 +8,15 @@
 
 import UIKit
 
+typealias DetailCellMemoConfig = ConfirmPaymentMemoViewConfig
+struct ConfirmPaymentMemoViewConfig {
+  let memo: String
+  let isShared: Bool
+  let isSent: Bool
+  let isIncoming: Bool
+  let recipientName: String?
+}
+
 class ConfirmPaymentMemoView: UIView {
 
   @IBOutlet var topBackgroundView: UIView!
@@ -15,7 +24,7 @@ class ConfirmPaymentMemoView: UIView {
   @IBOutlet var memoLabel: UILabel!
   @IBOutlet var separatorView: UIView!
   @IBOutlet var sharedStatusImage: UIImageView!
-  @IBOutlet var isSharedDescriptionLabel: UILabel!
+  @IBOutlet var sharedStatusLabel: UILabel!
 
   required init?(coder aDecoder: NSCoder) {
     super.init(coder: aDecoder)
@@ -42,29 +51,34 @@ class ConfirmPaymentMemoView: UIView {
     memoLabel.textColor = .darkBlueText
     memoLabel.font = .regular(14)
 
-    isSharedDescriptionLabel.textColor = .darkGrayText
-    isSharedDescriptionLabel.font = .regular(10)
+    sharedStatusLabel.textColor = .darkGrayText
+    sharedStatusLabel.font = .regular(10)
   }
 
   /// This view as a whole should be hidden if no memo. `isSent` determines past/future tense.
-  func configure(memo: String, isShared: Bool, isSent: Bool, isIncoming: Bool, recipientName: String?) {
-    memoLabel.text = memo
+  func configure(with config: ConfirmPaymentMemoViewConfig) {
+    memoLabel.text = config.memo
+    sharedStatusImage.image = config.isShared ? isSharedImage : isNotSharedImage
 
-    if isShared {
-      sharedStatusImage.image = UIImage(named: "sharedMemoPeople")
-
-      if isIncoming {
-        isSharedDescriptionLabel.text = "Memo from sender"
-      } else {
-        let prefix = isSent ? "Shared with" : "Will be seen by"
-        let recipient = recipientName ?? "the recipient"
-        isSharedDescriptionLabel.text = "\(prefix) \(recipient)"
-      }
+    if config.isShared {
+      sharedStatusLabel.text = isSharedDescription(for: config)
     } else {
-      let prefix = isSent ? "Seen" : "Will be seen"
-      isSharedDescriptionLabel.text = "\(prefix) by only you"
-      sharedStatusImage.image = UIImage(named: "sharedMemoPerson")
+      let prefix = config.isSent ? "Seen" : "Will be seen"
+      sharedStatusLabel.text = "\(prefix) by only you"
     }
   }
+
+  private func isSharedDescription(for config: ConfirmPaymentMemoViewConfig) -> String {
+    if config.isIncoming {
+       return "Memo from sender"
+    } else {
+      let prefix = config.isSent ? "Shared with" : "Will be seen by"
+      let recipient = config.recipientName ?? "the recipient"
+      return "\(prefix) \(recipient)"
+    }
+  }
+
+  var isSharedImage: UIImage? { return UIImage(named: "sharedMemoPeople") }
+  var isNotSharedImage: UIImage? { return UIImage(named: "sharedMemoPerson") }
 
 }

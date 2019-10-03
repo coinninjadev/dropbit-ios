@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
-    <device id="retina6_1" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14868" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14824"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -27,11 +25,11 @@
                                 <blurEffect style="dark"/>
                             </visualEffectView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZjJ-0a-eLY" customClass="LightningUpgradeGradientOverlayView" customModule="DropBit" customModuleProvider="target">
-                                <rect key="frame" x="15" y="48" width="384" height="799"/>
+                                <rect key="frame" x="15" y="64" width="384" height="783"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </view>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" translatesAutoresizingMaskIntoConstraints="NO" id="PB6-82-DKO">
-                                <rect key="frame" x="30" y="162" width="354" height="629"/>
+                                <rect key="frame" x="30" y="178" width="354" height="613"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="Upgrade Complete!" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fWM-Ce-gnk">
                                         <rect key="frame" x="0.0" y="0.0" width="354" height="20.5"/>
@@ -40,7 +38,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="18" translatesAutoresizingMaskIntoConstraints="NO" id="NaX-nS-fkt" userLabel="Lightning Info Stack View">
-                                        <rect key="frame" x="0.0" y="189.5" width="354" height="158.5"/>
+                                        <rect key="frame" x="0.0" y="181.5" width="354" height="158.5"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eUh-WN-DGE">
                                                 <rect key="frame" x="0.0" y="0.0" width="354" height="120"/>
@@ -78,7 +76,7 @@
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="14" translatesAutoresizingMaskIntoConstraints="NO" id="Fp1-N7-vBB" userLabel="Button Stack View">
-                                        <rect key="frame" x="0.0" y="517" width="354" height="112"/>
+                                        <rect key="frame" x="0.0" y="501" width="354" height="112"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pFB-qO-GtA" customClass="PrimaryActionButton" customModule="DropBit" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="0.0" width="354" height="49"/>
@@ -118,7 +116,7 @@
                             <constraint firstItem="ZjJ-0a-eLY" firstAttribute="leading" secondItem="RHg-79-SxM" secondAttribute="leading" constant="15" id="KQC-LQ-s52"/>
                             <constraint firstItem="ZjJ-0a-eLY" firstAttribute="bottom" secondItem="PB6-82-DKO" secondAttribute="bottom" constant="56" id="XL0-vW-iaB"/>
                             <constraint firstItem="PB6-82-DKO" firstAttribute="top" secondItem="ZjJ-0a-eLY" secondAttribute="top" constant="114" id="i4p-X4-jFw"/>
-                            <constraint firstItem="ZjJ-0a-eLY" firstAttribute="top" secondItem="RHg-79-SxM" secondAttribute="top" constant="4" id="thB-U9-UiF"/>
+                            <constraint firstItem="ZjJ-0a-eLY" firstAttribute="top" secondItem="RHg-79-SxM" secondAttribute="top" constant="20" id="thB-U9-UiF"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="RHg-79-SxM"/>
                     </view>

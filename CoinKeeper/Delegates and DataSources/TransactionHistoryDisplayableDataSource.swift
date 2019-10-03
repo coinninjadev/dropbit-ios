@@ -22,10 +22,10 @@ protocol TransactionHistoryDataSourceType: AnyObject {
                                   currencies: CurrencyPair,
                                   deviceCountryCode: Int) -> TransactionSummaryCellDisplayable
 
-  func detailCellViewModel(at indexPath: IndexPath,
-                           rates: ExchangeRates,
-                           currencies: CurrencyPair,
-                           deviceCountryCode: Int) -> OldTransactionDetailCellViewModel?
+  func detailCellDisplayableItem(at indexPath: IndexPath,
+                                 rates: ExchangeRates,
+                                 currencies: CurrencyPair,
+                                 deviceCountryCode: Int) -> TransactionDetailCellDisplayable
 
   func numberOfSections() -> Int
   func numberOfItems(inSection section: Int) -> Int
@@ -68,17 +68,12 @@ class TransactionHistoryOnChainDataSource: NSObject, TransactionHistoryDataSourc
                                            deviceCountryCode: deviceCountryCode)
   }
 
-  func detailCellViewModel(at indexPath: IndexPath,
-                           rates: ExchangeRates,
-                           currencies: CurrencyPair,
-                           deviceCountryCode: Int) -> OldTransactionDetailCellViewModel? {
-    let transaction = frc.object(at: indexPath)
-    return OldTransactionDetailCellViewModel(
-      transaction: transaction,
-      rates: rates,
-      primaryCurrency: currencies.primary,
-      deviceCountryCode: deviceCountryCode
-    )
+  func detailCellDisplayableItem(at indexPath: IndexPath,
+                                 rates: ExchangeRates,
+                                 currencies: CurrencyPair,
+                                 deviceCountryCode: Int) -> TransactionDetailCellDisplayable {
+    //TODO:
+    return MockDetailCellVM.testDetailInstance()
   }
 
   func numberOfSections() -> Int {
@@ -135,16 +130,20 @@ class TransactionHistoryLightningDataSource: NSObject, TransactionHistoryDataSou
                                            deviceCountryCode: deviceCountryCode)
   }
 
-  func detailCellViewModel(at indexPath: IndexPath,
-                           rates: ExchangeRates,
-                           currencies: CurrencyPair,
-                           deviceCountryCode: Int) -> OldTransactionDetailCellViewModel? {
-    return nil
+  func detailCellDisplayableItem(at indexPath: IndexPath,
+                                 rates: ExchangeRates,
+                                 currencies: CurrencyPair,
+                                 deviceCountryCode: Int) -> TransactionDetailCellDisplayable {
+    //TODO:
+    return MockDetailCellVM.testDetailInstance()
   }
 
   private func viewModelObject(for walletEntry: CKMWalletEntry) -> TransactionSummaryCellViewModelObject {
-    if let lightningObject = LightningViewModelObject(walletEntry: walletEntry) {
-      return lightningObject
+    if let lightningInvitation = walletEntry.invitation,
+      let invitationObject = LightningInvitationViewModelObject(invitation: lightningInvitation) {
+      return invitationObject
+    } else if let transactionObject = LightningTransactionViewModelObject(walletEntry: walletEntry) {
+      return transactionObject
     } else {
       return FallbackViewModelObject(walletTxType: .lightning)
     }
