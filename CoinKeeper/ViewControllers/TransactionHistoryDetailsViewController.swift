@@ -62,6 +62,7 @@ final class TransactionHistoryDetailsViewController: PresentableViewController, 
 
     collectionView.registerNib(cellType: TransactionHistoryDetailValidCell.self)
     collectionView.registerNib(cellType: TransactionHistoryDetailInvalidCell.self)
+    collectionView.registerNib(cellType: TransactionHistoryDetailInvoiceCell.self)
     collectionView.delegate = self
     collectionView.dataSource = self.viewModel
 
@@ -106,7 +107,7 @@ extension TransactionHistoryDetailsViewController: TransactionHistoryDetailCellD
 //    delegate.openURL(url, completionHandler: nil)
   }
 
-  func didTapClose(detailCell: TransactionHistoryDetailBaseCell) {
+  func didTapClose(detailCell: UICollectionViewCell) {
     delegate.viewControllerDidDismissTransactionDetails(self)
   }
 
@@ -121,7 +122,11 @@ extension TransactionHistoryDetailsViewController: TransactionHistoryDetailCellD
 //    delegate.openURL(addressURL, completionHandler: nil)
   }
 
-  func didTapBottomButton(detailCell: TransactionHistoryDetailBaseCell, action: TransactionDetailAction) {
+  func didTapInvoice(detailCell: TransactionHistoryDetailInvoiceCell) {
+
+  }
+
+  func didTapBottomButton(detailCell: UICollectionViewCell, action: TransactionDetailAction) {
 //    switch action {
 //    case .seeDetails:
 //      guard let viewModel = detailCell.viewModel else { return }

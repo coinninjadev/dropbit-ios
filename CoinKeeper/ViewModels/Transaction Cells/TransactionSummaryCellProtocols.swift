@@ -1,5 +1,5 @@
 //
-//  TransactionCellProtocols.swift
+//  TransactionSummaryCellProtocols.swift
 //  DropBit
 //
 //  Created by Ben Winters on 7/31/19.

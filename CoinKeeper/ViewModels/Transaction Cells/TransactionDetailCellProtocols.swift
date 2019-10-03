@@ -1,5 +1,5 @@
 //
-//  TransactionDetailCellDisplayable.swift
+//  TransactionDetailCellProtocols.swift
 //  DropBit
 //
 //  Created by Ben Winters on 9/25/19.
@@ -25,6 +25,7 @@ protocol TransactionDetailCellDisplayable: TransactionSummaryCellDisplayable {
   var addressViewConfig: AddressViewConfig { get }
   var actionButtonConfig: DetailCellActionButtonConfig? { get }
   var tooltipType: DetailCellTooltip { get }
+  var detailCellType: TransactionDetailCellType { get }
 
 }
 
@@ -38,6 +39,7 @@ extension TransactionDetailCellDisplayable {
   var shouldHideProgressView: Bool { return progressConfig == nil }
   var shouldHideBottomButton: Bool { return actionButtonConfig == nil }
   var shouldHideHistoricalValuesLabel: Bool { return detailAmountLabels.historicalPriceAttributedText == nil }
+  var shouldHideTwitterShareButton: Bool { return isLightningTransfer }
 
 }
 
@@ -69,6 +71,10 @@ extension TransactionInvalidDetailCellDisplayable {
   }
 }
 
+enum TransactionDetailCellType {
+  case valid, invalid, invoice
+}
+
 /// Defines the properties that need to be set during initialization of the view model.
 /// The inherited `...Displayable` requirements should be calculated in this
 /// protocol's extension or provided by a mock view model.
@@ -78,12 +84,19 @@ protocol TransactionDetailCellViewModelType: TransactionSummaryCellViewModelType
   var invitationStatus: InvitationStatus? { get }
   var onChainConfirmations: Int? { get }
   var addressProvidedToSender: String? { get }
-  var paymentIdIsValid: Bool { get } //for CKMTransaction: transaction?.txidIsActualTxid ?? false
-
-  func exchangeRateWhenReceived(forCurrency currency: CurrencyCode) -> Double? //let rate = transaction?.dayAveragePrice?.doubleValue
+  var paymentIdIsValid: Bool { get }
+  func exchangeRateWhenReceived(forCurrency currency: CurrencyCode) -> Double?
 }
 
 extension TransactionDetailCellViewModelType {
+
+  var detailCellType: TransactionDetailCellType {
+    if (lightningInvoice != nil) && (status != .completed) && !isInvitation {
+      return .invoice
+    } else {
+      return isValidTransaction ? .valid : .invalid
+    }
+  }
 
   var isIncoming: Bool {
     return direction == .in
@@ -428,6 +441,9 @@ extension TransactionDetailCellViewModelType {
   private var invitationTransactionPresence: InvitationTransactionPresence {
     let actualTxExists = paymentIdIsValid
     let inviteExists = (invitationStatus != nil)
+    //TODO: adjust this logic to create a new case so that historical values are shown when an invoice exists without an invitation
+//    let invoiceExists = (lightningInvoice != nil)
+//    let inviteOrInvoiceExists = (inviteExists || invoiceExists)
 
     switch (actualTxExists, inviteExists) {
     case (true, false):   return .transactionOnly

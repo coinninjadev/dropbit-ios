@@ -8,9 +8,11 @@
 
 import Foundation
 import PromiseKit
+import UIKit
 @testable import DropBit
 
 class MockTransactionHistoryDetailCellDelegate: TransactionHistoryDetailCellDelegate {
+
   var tappedQuestionMark = false
   var receivedTooltip: DetailCellTooltip?
   func didTapQuestionMarkButton(detailCell: TransactionHistoryDetailBaseCell, tooltip: DetailCellTooltip) {
@@ -19,7 +21,7 @@ class MockTransactionHistoryDetailCellDelegate: TransactionHistoryDetailCellDele
   }
 
   var tappedClose = false
-  func didTapClose(detailCell: TransactionHistoryDetailBaseCell) {
+  func didTapClose(detailCell: UICollectionViewCell) {
     tappedClose = true
   }
 
@@ -33,9 +35,14 @@ class MockTransactionHistoryDetailCellDelegate: TransactionHistoryDetailCellDele
     tappedAddress = true
   }
 
+  var tappedInvoice = false
+  func didTapInvoice(detailCell: TransactionHistoryDetailInvoiceCell) {
+    tappedInvoice = true
+  }
+
   var tappedBottomButton = false
   var receivedAction: TransactionDetailAction?
-  func didTapBottomButton(detailCell: TransactionHistoryDetailBaseCell, action: TransactionDetailAction) {
+  func didTapBottomButton(detailCell: UICollectionViewCell, action: TransactionDetailAction) {
     tappedBottomButton = true
     receivedAction = action
   }

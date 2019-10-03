@@ -158,6 +158,7 @@ final class RequestPayViewController: PresentableViewController, StoryboardIniti
   func setupStyle() {
     switch viewModel.walletTransactionType {
     case .onChain:
+      expirationLabel.isHidden = true
       receiveAddressBGView.isHidden = false
       tapInstructionLabel.isHidden = false
       qrImageView.isHidden = false
@@ -199,6 +200,8 @@ final class RequestPayViewController: PresentableViewController, StoryboardIniti
       qrImageView.isHidden = false
       addAmountButton.isHidden = true
       expirationLabel.isHidden = false
+      expirationLabel.configure(hoursRemaining: 48)
+
       tapInstructionLabel.isHidden = false
       receiveAddressLabel.text = invoice.request
       receiveAddressLabel.isHidden = false
@@ -210,7 +213,9 @@ final class RequestPayViewController: PresentableViewController, StoryboardIniti
       memoLabel.text = memoTextField.text
       bottomActionButton.setTitle("SEND REQUEST", for: .normal)
       tapInstructionLabel.text = "TAP INVOICE TO SAVE TO CLIPBOARD"
+
     } else {
+      expirationLabel.isHidden = true
       qrImageView.isHidden = true
       memoTextField.isHidden = false
       tapInstructionLabel.isHidden = true

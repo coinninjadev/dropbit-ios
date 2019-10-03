@@ -1,5 +1,5 @@
 //
-//  TransactionCellViewModelTypes.swift
+//  TransactionCellStructsAndEnums.swift
 //  DropBit
 //
 //  Created by Ben Winters on 9/15/19.
@@ -101,11 +101,13 @@ struct LightningInvoiceDisplayDetails {
 enum TransactionDetailAction: Int {
   case seeDetails = 1 //UIButton.tag defaults to 0
   case cancelInvitation
+  case removeEntry
 
   var buttonTitle: String {
     switch self {
-    case .cancelInvitation:  return "CANCEL DROPBIT"
-    case .seeDetails:  return "DETAILS"
+    case .cancelInvitation:   return "CANCEL DROPBIT"
+    case .seeDetails:         return "DETAILS"
+    case .removeEntry:        return "REMOVE FROM TRANSACTION LIST"
     }
   }
 }
@@ -120,7 +122,7 @@ struct DetailCellActionButtonConfig {
 
   var backgroundColor: UIColor {
     switch action {
-    case .cancelInvitation:
+    case .cancelInvitation, .removeEntry:
       return .darkPeach
     case .seeDetails:
       switch walletTxType {
@@ -214,7 +216,6 @@ struct SummaryCellLeadingImageConfig {
 
 }
 
-/// Only one of the secondary strings should be set
 struct DetailCellAmountLabels {
   let primaryText: String
   let secondaryAttributedText: NSAttributedString

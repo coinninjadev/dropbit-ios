@@ -77,7 +77,7 @@ class TransactionHistoryViewModel: NSObject, UICollectionViewDataSource, Exchang
     }
   }
 
-  private func summaryCell(forItemAt indexPath: IndexPath, in collectionView: UICollectionView) -> TransactionHistorySummaryCell {
+  private func summaryCell(forItemAt indexPath: IndexPath, in collectionView: UICollectionView) -> UICollectionViewCell {
     let cell = collectionView.dequeue(TransactionHistorySummaryCell.self, for: indexPath)
     let isFirstCell = indexPath.row == 0
     let item = dataSource.summaryCellDisplayableItem(at: indexPath,
@@ -88,17 +88,31 @@ class TransactionHistoryViewModel: NSObject, UICollectionViewDataSource, Exchang
     return cell
   }
 
-  private func detailCell(forItemAt indexPath: IndexPath, in collectionView: UICollectionView) -> TransactionHistoryDetailBaseCell {
-    guard let cellDelegate = detailsDelegate else { return TransactionHistoryDetailBaseCell() }
+  private func detailCell(forItemAt indexPath: IndexPath, in collectionView: UICollectionView) -> UICollectionViewCell {
+    let defaultCell = UICollectionViewCell()
+    guard let cellDelegate = detailsDelegate else { return defaultCell }
 
     let displayableItem = dataSource.detailCellDisplayableItem(at: indexPath,
                                                                rates: rateManager.exchangeRates,
                                                                currencies: selectedCurrencyPair,
                                                                deviceCountryCode: self.deviceCountryCode)
-    let cell = collectionView.dequeue(TransactionHistoryDetailValidCell.self, for: indexPath)
-    cell.configure(with: displayableItem, delegate: cellDelegate)
-    return cell
-    // TODO: return invalid cell according to status
+
+    switch displayableItem.detailCellType {
+    case .valid:
+      let cell = collectionView.dequeue(TransactionHistoryDetailValidCell.self, for: indexPath)
+      cell.configure(with: displayableItem, delegate: cellDelegate)
+      return cell
+    case .invalid:
+      guard let invalidDisplayableItem = displayableItem as? TransactionDetailInvalidCellDisplayable else { return defaultCell }
+      let cell = collectionView.dequeue(TransactionHistoryDetailInvalidCell.self, for: indexPath)
+      cell.configure(with: invalidDisplayableItem, delegate: cellDelegate)
+      return cell
+    case .invoice:
+      guard let invoiceDisplayableItem = displayableItem as? TransactionDetailInvoiceCellDisplayable else { return defaultCell }
+      let cell = collectionView.dequeue(TransactionHistoryDetailInvoiceCell.self, for: indexPath)
+      cell.configure(with: invoiceDisplayableItem, delegate: cellDelegate)
+      return cell
+    }
   }
 
   func collectionView(_ collectionView: UICollectionView,

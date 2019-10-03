@@ -9,15 +9,22 @@
 import Foundation
 import UIKit
 
-class ExpirationLabel: UILabel {
+class ExpirationLabel: PaddedLabel {
 
   override func awakeFromNib() {
     super.awakeFromNib()
     backgroundColor = .darkRed
     textColor = .white
     font = .regular(13)
-    text = "expires in 24 hours"
-    layer.cornerRadius = 14
-    clipsToBounds = true
+    applyCornerRadius(14)
   }
+
+  func configure(hoursRemaining: Int?) {
+    if let hours = hoursRemaining {
+      text = "expires in \(hours) hours"
+    } else {
+      text = "expired"
+    }
+  }
+
 }

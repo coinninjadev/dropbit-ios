@@ -18,21 +18,45 @@ enum DetailCellTooltip: Int {
   }
 }
 
+class CollectionViewCardCell: UICollectionViewCell {
+
+  @IBOutlet var underlyingContentView: UIView!
+
+  override func awakeFromNib() {
+    super.awakeFromNib()
+    backgroundColor = UIColor.white
+    layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+    applyCornerRadius(13)
+
+    // Shadow
+    layer.shadowColor = UIColor.black.cgColor
+    layer.shadowOpacity = 0.5
+    layer.shadowRadius = 2
+    layer.shadowOffset = CGSize(width: 0, height: 4)
+    self.clipsToBounds = false
+    layer.masksToBounds = false
+
+    underlyingContentView.backgroundColor = UIColor.white
+    underlyingContentView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+    underlyingContentView.applyCornerRadius(13)
+  }
+}
+
 protocol TransactionHistoryDetailCellDelegate: class {
   func didTapQuestionMarkButton(detailCell: TransactionHistoryDetailBaseCell, tooltip: DetailCellTooltip)
-  func didTapClose(detailCell: TransactionHistoryDetailBaseCell)
+  func didTapClose(detailCell: UICollectionViewCell)
   func didTapTwitterShare(detailCell: TransactionHistoryDetailBaseCell)
   func didTapAddress(detailCell: TransactionHistoryDetailBaseCell)
-  func didTapBottomButton(detailCell: TransactionHistoryDetailBaseCell, action: TransactionDetailAction)
+  func didTapInvoice(detailCell: TransactionHistoryDetailInvoiceCell)
+  func didTapBottomButton(detailCell: UICollectionViewCell, action: TransactionDetailAction)
   func didTapAddMemoButton(detailCell: TransactionHistoryDetailBaseCell)
 //  func shouldSaveMemo(for transaction: CKMTransaction) -> Promise<Void>
 }
 
-class TransactionHistoryDetailBaseCell: UICollectionViewCell {
+class TransactionHistoryDetailBaseCell: CollectionViewCardCell {
 
   // MARK: outlets
-  @IBOutlet var underlyingContentView: UIView!
-  @IBOutlet var twitterShareButton: PrimaryActionButton!
+  @IBOutlet var twitterShareButton: PrimaryActionButton? //may be nil for some xibs
   @IBOutlet var questionMarkButton: UIButton!
   @IBOutlet var closeButton: UIButton!
   @IBOutlet var directionView: TransactionDirectionView!
@@ -52,21 +76,6 @@ class TransactionHistoryDetailBaseCell: UICollectionViewCell {
   override func awakeFromNib() {
     super.awakeFromNib()
 
-    backgroundColor = UIColor.white
-    layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
-    applyCornerRadius(13)
-
-    // Shadow
-    layer.shadowColor = UIColor.black.cgColor
-    layer.shadowOpacity = 0.5
-    layer.shadowRadius = 2
-    layer.shadowOffset = CGSize(width: 0, height: 4)
-    self.clipsToBounds = false
-    layer.masksToBounds = false
-
-    underlyingContentView.backgroundColor = UIColor.white
-    underlyingContentView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
-    underlyingContentView.applyCornerRadius(13)
     addMemoButton.styleAddButtonWith(title: "Add Memo")
     configureTwitterShareButton()
   }
@@ -81,16 +90,19 @@ class TransactionHistoryDetailBaseCell: UICollectionViewCell {
     delegate?.didTapQuestionMarkButton(detailCell: self, tooltip: tooltipType)
   }
 
-  @IBAction func didTapTwitterShare(_ sender: Any) {
+  @IBAction func didTapTwitterShare(_ sender: UIButton) {
     delegate?.didTapTwitterShare(detailCell: self)
   }
 
-  @IBAction func didTapClose(_ sender: Any) {
+  @IBAction func didTapClose(_ sender: UIButton) {
     delegate?.didTapClose(detailCell: self)
   }
 
   func configure(with values: TransactionDetailCellDisplayable, delegate: TransactionHistoryDetailCellDelegate) {
     self.delegate = delegate
+
+    self.questionMarkButton.tag = values.tooltipType.rawValue
+    self.twitterShareButton?.isHidden = values.shouldHideTwitterShareButton
 
     self.directionView.configure(image: values.directionConfig.image, bgColor: values.directionConfig.bgColor)
     self.statusLabel.text = values.detailStatusText
