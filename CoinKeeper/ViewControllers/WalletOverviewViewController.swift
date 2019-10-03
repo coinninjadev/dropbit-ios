@@ -157,6 +157,10 @@ class WalletOverviewViewController: BaseViewController, StoryboardInitializable 
     walletBalanceView.reloadWalletButton.isHidden = true
   }
 
+  override func makeUnavailable() {
+    lock()
+  }
+
   override func unlock() {
     sendReceiveActionView.isHidden = false
     walletBalanceView.reloadWalletButton.isHidden = false
@@ -189,6 +193,8 @@ class WalletOverviewViewController: BaseViewController, StoryboardInitializable 
     default:
       walletToggleView.selectBitcoinButton()
     }
+
+    refreshLockStatus()
   }
 }
 
