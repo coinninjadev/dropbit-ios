@@ -2023,7 +2023,7 @@
 		B5B37B22206AFCDF001816F6 /* Money.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Money.swift; sourceTree = "<group>"; };
 		B5B37B26206AFE22001816F6 /* CurrencyCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyCode.swift; sourceTree = "<group>"; };
 		B5B3E4C62072AE2400222FF4 /* NSDecimalNumber+SignificantDecimals.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSDecimalNumber+SignificantDecimals.swift"; sourceTree = "<group>"; };
-		B5B53C9B2107CAA5006C7B67 /* TransactionDetailsInfoContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TransactionDetailsInfoContainer.swift; path = CoinKeeper/Views/TransactionDetailsInfoContainer.swift; sourceTree = SOURCE_ROOT; };
+		B5B53C9B2107CAA5006C7B67 /* TransactionDetailsInfoContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TransactionDetailsInfoContainer.swift; path = CoinKeeper/Views/Subviews/TransactionDetailsInfoContainer.swift; sourceTree = SOURCE_ROOT; };
 		B5B53C9D2107CD1C006C7B67 /* TransactionDetailMessageLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDetailMessageLabel.swift; sourceTree = "<group>"; };
 		B5B9132821419F84003A24E9 /* PhoneNumberKit+AreaCodes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PhoneNumberKit+AreaCodes.swift"; sourceTree = "<group>"; };
 		B5BA3A7622F22B0E001E41A7 /* TransactionSummaryCellProtocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionSummaryCellProtocols.swift; sourceTree = "<group>"; };
@@ -2502,7 +2502,7 @@
 		3B5052BC20473D73000C739F /* Cells */ = {
 			isa = PBXGroup;
 			children = (
-				3BF88B81226F5B0D00B94474 /* TransactionDetail */,
+				3BF88B81226F5B0D00B94474 /* TransactionHistory */,
 				A2952F6622BBBAAA00BDCE65 /* LineChartCell.swift */,
 				A2952F6E22BBBAAB00BDCE65 /* LineChartCell.xib */,
 				A2952F6522BBBAA900BDCE65 /* NewsArticleCell.swift */,
@@ -2521,9 +2521,6 @@
 				3BC9E55A204D92AC00444A53 /* BackupRecoveryWordsCell.xib */,
 				B5E7F21C22146B9000358A24 /* CountryCodePickerCell.swift */,
 				B5E7F21D22146B9000358A24 /* CountryCodePickerCell.xib */,
-				B54BDCE92086447500B71D6B /* TransactionHistorySummaryCell.swift */,
-				B54BDCEA2086447500B71D6B /* TransactionHistorySummaryCell.xib */,
-				B5B53C9B2107CAA5006C7B67 /* TransactionDetailsInfoContainer.swift */,
 				3B6FDAD4204F4BA50091916A /* VerifyRecoveryWordCell.swift */,
 				3B6FDAD5204F4BA50091916A /* VerifyRecoveryWordCell.xib */,
 				5B91E39F2076C85700DD9A86 /* DrawerCell.swift */,
@@ -2982,9 +2979,11 @@
 			path = Storyboards;
 			sourceTree = "<group>";
 		};
-		3BF88B81226F5B0D00B94474 /* TransactionDetail */ = {
+		3BF88B81226F5B0D00B94474 /* TransactionHistory */ = {
 			isa = PBXGroup;
 			children = (
+				B54BDCE92086447500B71D6B /* TransactionHistorySummaryCell.swift */,
+				B54BDCEA2086447500B71D6B /* TransactionHistorySummaryCell.xib */,
 				3BF88B82226F5C9400B94474 /* TransactionHistoryDetailInvalidCell.swift */,
 				3BF88B83226F5C9400B94474 /* TransactionHistoryDetailInvalidCell.xib */,
 				B597B7B723441BAF0020E20F /* TransactionHistoryDetailInvoiceCell.swift */,
@@ -2993,7 +2992,7 @@
 				3BEF348C22708E88002E4DB5 /* TransactionHistoryDetailValidCell.swift */,
 				3BD013162272478300C92771 /* TransactionHistoryDetailValidCell.xib */,
 			);
-			path = TransactionDetail;
+			path = TransactionHistory;
 			sourceTree = "<group>";
 		};
 		3BFA71952040610200774D59 /* ViewModels */ = {
@@ -3383,6 +3382,7 @@
 				3093B07B21EE36CF00B3EF9C /* TransactionHistoryRefreshView.swift */,
 				3093B07D21EE36E400B3EF9C /* TransactionHistoryRefreshView.xib */,
 				3BD7B73020D66F12005057A7 /* HorizontallyPaginatedCollectionViewLayout.swift */,
+				B5B53C9B2107CAA5006C7B67 /* TransactionDetailsInfoContainer.swift */,
 				3B23126220DA6CA30099A557 /* TransactionHistoryDetailCellAddressView.xib */,
 				3B23126620DA6D0E0099A557 /* TransactionHistoryDetailCellAddressView.swift */,
 				B52E0BD1233BBE7300BA1B0C /* TransactionHistoryDetailCellAddressViewConfigurable.swift */,

@@ -216,7 +216,6 @@ struct SummaryCellLeadingImageConfig {
 
 }
 
-/// Only one of the secondary strings should be set
 struct DetailCellAmountLabels {
   let primaryText: String
   let secondaryAttributedText: NSAttributedString
