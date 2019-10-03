@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import PhoneNumberKit
 import CNBitcoinKit
 
 class OldTransactionSummaryCellViewModel {
@@ -159,4 +160,66 @@ class OldTransactionSummaryCellViewModel {
     return newConverter(withRate: rate, currency: .USD, btcAmount: amount)
   }
 
+}
+
+protocol CounterpartyRepresentable: AnyObject {
+
+  var isIncoming: Bool { get }
+  var counterpartyName: String? { get }
+  var counterpartyAddressId: String? { get }
+
+  func counterpartyDisplayIdentity(deviceCountryCode: Int?) -> String?
+
+}
+
+extension CounterpartyRepresentable {
+
+  func counterpartyDisplayDescription(deviceCountryCode: Int?) -> String? {
+    if let name = counterpartyName {
+      return name
+    } else if let identity = counterpartyDisplayIdentity(deviceCountryCode: deviceCountryCode) {
+      return identity
+    } else {
+      return counterpartyAddressId
+    }
+  }
+
+}
+
+extension CKMTransaction: CounterpartyRepresentable {
+
+  var counterpartyName: String? {
+    if let twitterCounterparty = invitation?.counterpartyTwitterContact {
+      return twitterCounterparty.formattedScreenName
+    } else if let inviteName = invitation?.counterpartyName {
+      return inviteName
+    } else {
+      let relevantNumber = phoneNumber ?? invitation?.counterpartyPhoneNumber
+      return relevantNumber?.counterparty?.name
+    }
+  }
+
+  func counterpartyDisplayIdentity(deviceCountryCode: Int?) -> String? {
+    if let counterpartyTwitterContact = self.twitterContact {
+      return counterpartyTwitterContact.formattedScreenName  // should include @-sign
+    }
+
+    if let relevantPhoneNumber = invitation?.counterpartyPhoneNumber ?? phoneNumber {
+      let globalPhoneNumber = relevantPhoneNumber.asGlobalPhoneNumber
+
+      var format: PhoneNumberFormat = .international
+      if let code = deviceCountryCode {
+        format = (code == globalPhoneNumber.countryCode) ? .national : .international
+      }
+      let formatter = CKPhoneNumberFormatter(format: format)
+
+      return try? formatter.string(from: globalPhoneNumber)
+    }
+
+    return nil
+  }
+
+  var counterpartyAddressId: String? {
+    return counterpartyReceiverAddressId
+  }
 }

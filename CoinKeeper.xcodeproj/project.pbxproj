@@ -658,6 +658,8 @@
 		B51AE4A8209398FE008380CC /* CKMPhoneNumber+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51AE4A6209398FE008380CC /* CKMPhoneNumber+CoreDataClass.swift */; };
 		B51AE4AA2093AED4008380CC /* String+Substrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51AE4A92093AED4008380CC /* String+Substrings.swift */; };
 		B51AE4AD2093B5F3008380CC /* CKMInvitation+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5FEBE9120879C4200AA9F6E /* CKMInvitation+CoreDataProperties.swift */; };
+		B51D55DF23462FE700AEAA60 /* TransactionViewModelObject+CKMTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51D55DE23462FE700AEAA60 /* TransactionViewModelObject+CKMTransaction.swift */; };
+		B51D55E12346300000AEAA60 /* TransactionViewModelObject+CKMWalletEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51D55E02346300000AEAA60 /* TransactionViewModelObject+CKMWalletEntry.swift */; };
 		B51F1ECF2199F62100C54B73 /* StartPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51F1ECE2199F62100C54B73 /* StartPage.swift */; };
 		B51F1ED12199F7CB00C54B73 /* PinCreationPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51F1ED02199F7CB00C54B73 /* PinCreationPage.swift */; };
 		B51F1ED7219A17AA00C54B73 /* PushInfoPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51F1ED6219A17AA00C54B73 /* PushInfoPage.swift */; };
@@ -1727,6 +1729,8 @@
 		B51AE4A5209398FD008380CC /* CKMPhoneNumber+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CKMPhoneNumber+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		B51AE4A6209398FE008380CC /* CKMPhoneNumber+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CKMPhoneNumber+CoreDataClass.swift"; sourceTree = "<group>"; };
 		B51AE4A92093AED4008380CC /* String+Substrings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Substrings.swift"; sourceTree = "<group>"; };
+		B51D55DE23462FE700AEAA60 /* TransactionViewModelObject+CKMTransaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TransactionViewModelObject+CKMTransaction.swift"; sourceTree = "<group>"; };
+		B51D55E02346300000AEAA60 /* TransactionViewModelObject+CKMWalletEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TransactionViewModelObject+CKMWalletEntry.swift"; sourceTree = "<group>"; };
 		B51F1ECE2199F62100C54B73 /* StartPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartPage.swift; sourceTree = "<group>"; };
 		B51F1ED02199F7CB00C54B73 /* PinCreationPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinCreationPage.swift; sourceTree = "<group>"; };
 		B51F1ED6219A17AA00C54B73 /* PushInfoPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushInfoPage.swift; sourceTree = "<group>"; };
@@ -3432,6 +3436,8 @@
 				B5DB5341232E8C1C0088C8A1 /* TransactionCellStructsAndEnums.swift */,
 				B50E7B7E230C6A0400927C8B /* TransactionSummaryCellViewModel.swift */,
 				B5219C802343C7A300EA5B05 /* TransactionDetailCellViewModel.swift */,
+				B51D55DE23462FE700AEAA60 /* TransactionViewModelObject+CKMTransaction.swift */,
+				B51D55E02346300000AEAA60 /* TransactionViewModelObject+CKMWalletEntry.swift */,
 				B59D0F292345701500E828BF /* TransactionDetailInvoiceCellViewModel.swift */,
 				5B404275208CCA40005624B0 /* OldTransactionDetailCellViewModel.swift */,
 				B53461762098C61D00DDC1C4 /* OldTransactionSummaryCellViewModel.swift */,
@@ -4669,6 +4675,7 @@
 				5B91E3982076BEB500DD9A86 /* DrawerViewController.swift in Sources */,
 				3BC23EF220BDCA5100877BB6 /* TransactionDataError.swift in Sources */,
 				3BA9F60D208F6EA20047C213 /* AppCoordinator+CurrencyValueManager.swift in Sources */,
+				B51D55E12346300000AEAA60 /* TransactionViewModelObject+CKMWalletEntry.swift in Sources */,
 				307DF12121517A8800260369 /* Global.swift in Sources */,
 				B559AF0D2180E919001D44F2 /* Badgeable.swift in Sources */,
 				B5976AD321552AFC00774073 /* UserQueryTarget.swift in Sources */,
@@ -4860,6 +4867,7 @@
 				A29CE0D8209B724900761B91 /* ContactCell.swift in Sources */,
 				A2BFA54D22E7531500396D33 /* WalletToggleView.swift in Sources */,
 				3B55538421936C7D00C5A9A8 /* BarButtonFactory.swift in Sources */,
+				B51D55DF23462FE700AEAA60 /* TransactionViewModelObject+CKMTransaction.swift in Sources */,
 				3BBEE0C2208A5DA500A7DF9F /* CKMDerivativePath+CoreDataProperties.swift in Sources */,
 				B559AF092180C9AA001D44F2 /* BadgeDisplayable.swift in Sources */,
 				B5C5EDE721FA490A0032AC94 /* SharedPayloadCodable.swift in Sources */,
