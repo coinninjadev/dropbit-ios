@@ -188,7 +188,7 @@ class WalletOverviewViewController: BaseViewController, StoryboardInitializable 
       pageViewController?.setViewControllers([baseViewControllers[1]], direction: .reverse, animated: true, completion: nil)
     case .lightningWallet?:
       setupStyleForLightningWallet()
-      sendReceiveActionView.isHidden = currentLockStatus == .locked ? true : false
+      sendReceiveActionView.isHidden = currentLockStatus == .locked
       pageViewController?.setViewControllers([baseViewControllers[0]], direction: .forward, animated: true, completion: nil)
     default:
       walletToggleView.selectBitcoinButton()
