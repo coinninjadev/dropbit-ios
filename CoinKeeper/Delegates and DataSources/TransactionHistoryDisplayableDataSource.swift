@@ -72,8 +72,10 @@ class TransactionHistoryOnChainDataSource: NSObject, TransactionHistoryDataSourc
                                  rates: ExchangeRates,
                                  currencies: CurrencyPair,
                                  deviceCountryCode: Int) -> TransactionDetailCellDisplayable {
-    //TODO:
-    return MockDetailCellVM.testDetailInstance()
+    let transaction = frc.object(at: indexPath)
+    let selectedCurrency: SelectedCurrency = currencies.primary.isFiat ? .fiat : .BTC
+    return TransactionDetailCellViewModel(object: transaction, selectedCurrency: selectedCurrency, fiatCurrency: currencies.fiat,
+                                          exchangeRates: rates, deviceCountryCode: deviceCountryCode)
   }
 
   func numberOfSections() -> Int {
@@ -134,14 +136,29 @@ class TransactionHistoryLightningDataSource: NSObject, TransactionHistoryDataSou
                                  rates: ExchangeRates,
                                  currencies: CurrencyPair,
                                  deviceCountryCode: Int) -> TransactionDetailCellDisplayable {
-    //TODO:
-    return MockDetailCellVM.testDetailInstance()
+    let walletEntry = frc.object(at: indexPath)
+    let selectedCurrency: SelectedCurrency = currencies.primary.isFiat ? .fiat : .BTC
+
+    if let invoiceViewModelObject = LightningInvoiceViewModelObject(walletEntry: walletEntry) {
+      return TransactionDetailInvoiceCellViewModel(object: invoiceViewModelObject,
+                                                   selectedCurrency: selectedCurrency,
+                                                   fiatCurrency: currencies.fiat,
+                                                   exchangeRates: rates,
+                                                   deviceCountryCode: deviceCountryCode)
+    } else {
+      let vmObject = viewModelObject(for: walletEntry)
+
+      return TransactionDetailCellViewModel(object: vmObject, selectedCurrency: selectedCurrency, fiatCurrency: currencies.fiat,
+                                            exchangeRates: rates, deviceCountryCode: deviceCountryCode)
+    }
   }
 
-  private func viewModelObject(for walletEntry: CKMWalletEntry) -> TransactionSummaryCellViewModelObject {
+  private func viewModelObject(for walletEntry: CKMWalletEntry) -> TransactionDetailCellViewModelObject {
     if let lightningInvitation = walletEntry.invitation,
       let invitationObject = LightningInvitationViewModelObject(invitation: lightningInvitation) {
       return invitationObject
+    } else if let lightningInvoiceObject = LightningInvoiceViewModelObject(walletEntry: walletEntry) {
+      return lightningInvoiceObject
     } else if let transactionObject = LightningTransactionViewModelObject(walletEntry: walletEntry) {
       return transactionObject
     } else {

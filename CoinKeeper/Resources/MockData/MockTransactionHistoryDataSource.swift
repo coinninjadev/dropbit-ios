@@ -19,7 +19,7 @@ class MockTransactionHistoryDataSource: TransactionHistoryDataSourceType {
   init(walletTxType: WalletTransactionType) {
     self.walletTransactionType = walletTxType
     generator = MockDetailDataGenerator(walletTxType: walletTxType)
-    let dropBitItems = generator.generatePhoneAndTwitterDropBitItems(categories: [.valid])
+    let dropBitItems = generator.generatePhoneAndTwitterDropBitItems(categories: MockDataDropBitCategory.allCases)
     self.items = dropBitItems
   }
 
@@ -67,7 +67,9 @@ class MockTransactionHistoryLightningDataSource: MockTransactionHistoryDataSourc
     super.init(walletTxType: .lightning)
     items += [
       generator.lightningTransfer(walletTxType: walletTransactionType, direction: .in), //load
-      generator.lightningTransfer(walletTxType: walletTransactionType, direction: .out) //withdraw
+      generator.lightningTransfer(walletTxType: walletTransactionType, direction: .out), //withdraw
+      generator.lightningInvoice(hours: 42),
+      generator.lightningInvoice(hours: nil) //expired
     ]
   }
 

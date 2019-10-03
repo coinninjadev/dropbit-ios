@@ -12,6 +12,7 @@ class BaseViewController: UIViewController, AccessibleViewSettable {
 
   var lockStatusNotification: NotificationToken?
   var unlockStatusNotification: NotificationToken?
+  var unavailableStatusNotification: NotificationToken?
 
   var currentLockStatus: LockStatus = LockStatus(rawValue: CKUserDefaults().string(for:
   .lightningWalletLockedStatus) ?? LockStatus.locked.rawValue) ?? .locked
@@ -20,12 +21,21 @@ class BaseViewController: UIViewController, AccessibleViewSettable {
     return statusBarStyle
   }
 
+  func refreshLockStatus() {
+    switch BaseViewController.lockStatus {
+    case .locked: lock()
+    case .unlocked: unlock()
+    case .unavailable: makeUnavailable()
+    }
+  }
+
   override func viewDidLoad() {
     super.viewDidLoad()
     view.backgroundColor = .lightGrayBackground
     setAccessibilityIdentifiers()
     registerForLockStatusNotification()
-    currentLockStatus == .locked ? lock() : unlock()
+
+    refreshLockStatus()
   }
 
   /// Subclasses with identifiers should override this method and return the appropriate array
@@ -41,14 +51,7 @@ class BaseViewController: UIViewController, AccessibleViewSettable {
 
   func unlock() {}
   func lock() {}
-}
-
-enum LockStatus: String {
-  case locked
-  case unlocked
-}
-
-extension BaseViewController {
+  func makeUnavailable() {}
 
   fileprivate func registerForLockStatusNotification() {
     lockStatusNotification = CKNotificationCenter.subscribe(key: .didLockLightning, object: nil, queue: .main, using: { [weak self] _ in
@@ -68,6 +71,17 @@ extension BaseViewController {
         self?.unlock()
       }
     })
+
+    unavailableStatusNotification = CKNotificationCenter.subscribe(key: .lightningUnavailable, object: nil, queue: .main, using: { [weak self] _ in
+      BaseViewController.lockStatus = .unavailable
+      self?.makeUnavailable()
+    })
   }
 
+}
+
+enum LockStatus: String {
+  case locked
+  case unlocked
+  case unavailable
 }

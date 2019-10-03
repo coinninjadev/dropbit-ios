@@ -32,6 +32,7 @@ enum CKNetworkError: UserNotifiableError {
   case twilioError(Response) //server returns a successful response with 501 if Twilio responds with error
   case invoiceAmountTooHigh //400
   case underlying(MoyaError)
+  case thunderdomeUnavailable // 503
 
   /// The associated response can be used as the default value if recovering from this error
   case invalidValue(keyPath: String, value: String?, response: Decodable)
@@ -78,6 +79,11 @@ enum CKNetworkError: UserNotifiableError {
 
     case .shouldUnverify(let moyaError, let type):
       return "Error represents a state that requires deverifying the device, type: \(type.rawValue). \(moyaError.errorMessage ?? "unknown")"
+
+    case .thunderdomeUnavailable:
+      let description = "We are currently updating our servers. Don't worry, your funds are safe. " +
+      "Please check back again shortly."
+      return description
     }
   }
 

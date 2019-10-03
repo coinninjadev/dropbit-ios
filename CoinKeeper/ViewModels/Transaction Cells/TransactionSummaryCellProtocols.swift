@@ -1,5 +1,5 @@
 //
-//  TransactionCellProtocols.swift
+//  TransactionSummaryCellProtocols.swift
 //  DropBit
 //
 //  Created by Ben Winters on 7/31/19.
@@ -197,11 +197,11 @@ extension TransactionSummaryCellViewModelType {
     }
   }
 
-  var lightningPaidInvoiceText: String { return "Invoice Paid" }
+  var lightningPaidInvoiceText: String { return "Paid Invoice" }
   var lightningReceivedPaidInvoiceText: String { return "Received" }
   var lightningUnpaidInvoiceText: String { return "Lightning Invoice" }
-  var lightningWithdrawText: String { return "Lightning Withdraw" }
-  var lightningDepositText: String { return "Load Lightning" }
+  var lightningWithdrawText: String { return "Lightning Withdrawal" }
+  var lightningDepositText: String { return "Lightning Load" }
 
   var incomingImage: UIImage { return UIImage(imageLiteralResourceName: "summaryCellIncoming") }
   var outgoingImage: UIImage { return UIImage(imageLiteralResourceName: "summaryCellOutgoing") }

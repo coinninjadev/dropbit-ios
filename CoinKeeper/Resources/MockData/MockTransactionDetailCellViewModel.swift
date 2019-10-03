@@ -9,72 +9,47 @@
 import Foundation
 import UIKit
 
-typealias MockDetailCellVM = MockTransactionDetailCellViewModel
-class MockTransactionDetailCellViewModel: MockTransactionSummaryCellViewModel, TransactionDetailCellViewModelType {
+typealias MockDetailCellVM = MockTransactionDetailValidCellViewModel
+class MockTransactionDetailValidCellViewModel: MockTransactionSummaryCellViewModel, TransactionDetailCellViewModelType {
 
-  var date: Date
-  var memoIsShared: Bool
-  var invitationStatus: InvitationStatus?
-  var onChainConfirmations: Int?
-  var addressProvidedToSender: String?
-  var paymentIdIsValid: Bool
-  var exchangeRateWhenReceived: Double?
+  let date: Date
+  let memoIsShared: Bool
+  let invitationStatus: InvitationStatus?
+  let onChainConfirmations: Int?
+  let addressProvidedToSender: String?
+  let paymentIdIsValid: Bool
+  let exchangeRateWhenReceived: Double?
 
-  init(walletTxType: WalletTransactionType,
-       direction: TransactionDirection,
-       status: TransactionStatus,
-       onChainConfirmations: Int?,
-       isLightningTransfer: Bool,
-       receiverAddress: String?,
-       addressProvidedToSender: String?,
-       lightningInvoice: String?,
-       paymentIdIsValid: Bool,
-       selectedCurrency: SelectedCurrency,
-       amountDetails: TransactionAmountDetails,
-       counterpartyConfig: TransactionCellCounterpartyConfig?,
-       invitationStatus: InvitationStatus?,
-       memo: String?,
-       memoIsShared: Bool,
-       date: Date) {
+  init(walletTxType: WalletTransactionType = .onChain,
+       direction: TransactionDirection = .out,
+       status: TransactionStatus = .completed,
+       onChainConfirmations: Int? = nil,
+       isLightningTransfer: Bool = false,
+       receiverAddress: String? = nil,
+       addressProvidedToSender: String? = nil,
+       lightningInvoice: String? = nil,
+       selectedCurrency: SelectedCurrency = .fiat,
+       amountDetails: TransactionAmountDetails? = nil,
+       counterpartyConfig: TransactionCellCounterpartyConfig? = nil,
+       invitationStatus: InvitationStatus? = nil,
+       memo: String? = nil,
+       memoIsShared: Bool = false,
+       date: Date = Date()) {
+
+    let amtDetails = amountDetails ?? MockTransactionSummaryCellViewModel.testAmountDetails(sats: 49500)
+
     self.date = date
     self.memoIsShared = memoIsShared
     self.invitationStatus = invitationStatus
     self.onChainConfirmations = onChainConfirmations
     self.addressProvidedToSender = addressProvidedToSender
-    self.paymentIdIsValid = paymentIdIsValid
+    self.paymentIdIsValid = MockDetailCellVM.paymentIdIsValid(basedOn: invitationStatus)
+    self.exchangeRateWhenReceived = MockDetailCellVM.testRates[.USD].flatMap { $0 - 50 }
 
     super.init(walletTxType: walletTxType, direction: direction, status: status,
                isLightningTransfer: isLightningTransfer, receiverAddress: receiverAddress,
                lightningInvoice: lightningInvoice, selectedCurrency: selectedCurrency,
-               amountDetails: amountDetails, counterpartyConfig: counterpartyConfig, memo: memo)
-  }
-
-  static func testDetailInstance(walletTxType: WalletTransactionType = .onChain,
-                                 direction: TransactionDirection = .out,
-                                 status: TransactionStatus = .completed,
-                                 onChainConfirmations: Int? = nil,
-                                 isLightningTransfer: Bool = false,
-                                 receiverAddress: String? = nil,
-                                 addressProvidedToSender: String? = nil,
-                                 lightningInvoice: String? = nil,
-                                 selectedCurrency: SelectedCurrency = .fiat,
-                                 amountDetails: TransactionAmountDetails? = nil,
-                                 counterpartyConfig: TransactionCellCounterpartyConfig? = nil,
-                                 invitationStatus: InvitationStatus? = nil,
-                                 memo: String? = nil,
-                                 memoIsShared: Bool = false,
-                                 date: Date = Date()) -> MockTransactionDetailCellViewModel {
-
-    let idIsValid = paymentIdIsValid(basedOn: invitationStatus)
-    let amtDetails = amountDetails ?? MockTransactionSummaryCellViewModel.testAmountDetails(sats: 49500)
-    return MockTransactionDetailCellViewModel(
-      walletTxType: walletTxType, direction: direction,
-      status: status, onChainConfirmations: onChainConfirmations, isLightningTransfer: isLightningTransfer,
-      receiverAddress: receiverAddress, addressProvidedToSender: addressProvidedToSender,
-      lightningInvoice: lightningInvoice, paymentIdIsValid: idIsValid,
-      selectedCurrency: selectedCurrency, amountDetails: amtDetails,
-      counterpartyConfig: counterpartyConfig, invitationStatus: invitationStatus,
-      memo: memo, memoIsShared: memoIsShared, date: date)
+               amountDetails: amtDetails, counterpartyConfig: counterpartyConfig, memo: memo)
   }
 
   /// Use this proxy function to prevent test from entering conflicting information for invitationStatus and paymentIdIsValid
@@ -88,6 +63,46 @@ class MockTransactionDetailCellViewModel: MockTransactionSummaryCellViewModel, T
 
   func exchangeRateWhenReceived(forCurrency currency: CurrencyCode) -> Double? {
     return exchangeRateWhenReceived
+  }
+
+}
+
+typealias MockDetailInvalidCellVM = MockTransactionDetailInvalidCellViewModel
+class MockTransactionDetailInvalidCellViewModel: MockTransactionDetailValidCellViewModel, TransactionDetailInvalidCellViewModelType {
+
+  init(status: TransactionStatus) {
+    super.init(status: status)
+  }
+
+  init(dropBitWith walletTxType: WalletTransactionType,
+       direction: TransactionDirection,
+       identity: UserIdentityType,
+       invitationStatus: InvitationStatus,
+       transactionStatus: TransactionStatus) {
+    super.init(walletTxType: walletTxType,
+               direction: direction,
+               status: transactionStatus,
+               counterpartyConfig: identity.testCounterparty,
+               invitationStatus: invitationStatus)
+  }
+}
+
+class MockTransactionDetailInvoiceCellViewModel: MockTransactionDetailValidCellViewModel, TransactionDetailInvoiceCellViewModelType {
+
+  let qrCodeGenerator: QRCodeGenerator
+  let hoursUntilExpiration: Int?
+
+  init(hoursUntilExpiration: Int?) {
+    self.qrCodeGenerator = QRCodeGenerator()
+    self.hoursUntilExpiration = hoursUntilExpiration
+
+    let amountDetails = MockDetailCellVM.testAmountDetails(cents: 520,
+                                                           fiatWhenInvited: NSDecimalNumber(integerAmount: 475, currency: .USD),
+                                                           fiatWhenTransacted: nil)
+    super.init(walletTxType: .lightning, direction: .in, status: .pending,
+               lightningInvoice: MockDetailCellVM.mockLightningInvoice(),
+               selectedCurrency: .fiat, amountDetails: amountDetails,
+               memo: "Coffee ☕️", memoIsShared: true, date: Date())
   }
 
 }
