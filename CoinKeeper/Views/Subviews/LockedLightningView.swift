@@ -9,29 +9,17 @@
 import Foundation
 import UIKit
 
-class LockedLightningView: UIView {
+final class LockedLightningView: LightningInformationStatusAbstractView {
 
   @IBOutlet var titleLabel: UILabel!
   @IBOutlet var containerView: UIView!
   @IBOutlet var detailLabel: UILabel!
   @IBOutlet var descriptionTitle: UILabel!
   @IBOutlet var descriptionLabel: UILabel!
-  @IBOutlet var backgroundView: LightningUpgradeGradientOverlayView!
 
-  override init(frame: CGRect) {
-    super.init(frame: frame)
-    xibSetup()
-    initialize()
-  }
+  override func initialize() {
+    super.initialize()
 
-  required init?(coder aDecoder: NSCoder) {
-    super.init(coder: aDecoder)
-    xibSetup()
-    initialize()
-  }
-
-  private func initialize() {
-    applyCornerRadius(15, toCorners: .top)
     containerView.applyCornerRadius(5)
 
     descriptionTitle.font = .semiBold(19)
@@ -47,4 +35,42 @@ class LockedLightningView: UIView {
     descriptionLabel.textColor = .white
   }
 
+}
+
+class LightningInformationStatusAbstractView: UIView {
+
+  @IBOutlet var backgroundView: LightningUpgradeGradientOverlayView!
+
+  override init(frame: CGRect) {
+    super.init(frame: frame)
+    xibSetup()
+    initialize()
+  }
+
+  required init?(coder aDecoder: NSCoder) {
+    super.init(coder: aDecoder)
+    xibSetup()
+    initialize()
+  }
+
+  func initialize() {
+    applyCornerRadius(15, toCorners: .top)
+  }
+}
+
+final class LightningUnavailableView: LightningInformationStatusAbstractView {
+  @IBOutlet var informationLabel: UILabel!
+
+  override func initialize() {
+    super.initialize()
+
+    informationLabel.font = .semiBold(14)
+    informationLabel.textColor = .white
+    informationLabel.numberOfLines = 0
+    informationLabel.textAlignment = .center
+    informationLabel.text = "We are currently updating our servers. Don't worry, your funds are safe. " +
+    "Please check back again shortly."
+
+    alpha = 0.95
+  }
 }
