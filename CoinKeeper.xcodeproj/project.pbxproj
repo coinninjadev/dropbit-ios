@@ -915,6 +915,7 @@
 		B59C9E26230F548F00E4F3C8 /* TransactionSummaryCellDescriptionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59C9E25230F548F00E4F3C8 /* TransactionSummaryCellDescriptionTests.swift */; };
 		B59C9E282311834500E4F3C8 /* SummaryCellPillLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59C9E272311834500E4F3C8 /* SummaryCellPillLabel.swift */; };
 		B59C9E2A23118DF400E4F3C8 /* SummaryCellSatsLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59C9E2923118DF400E4F3C8 /* SummaryCellSatsLabel.swift */; };
+		B59D0F2A2345701600E828BF /* TransactionDetailInvoiceCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59D0F292345701500E828BF /* TransactionDetailInvoiceCellViewModel.swift */; };
 		B59E2C8722E789D800A75AFE /* LightningTooltipViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59E2C8622E789D800A75AFE /* LightningTooltipViewController.swift */; };
 		B59E2C8922E78A1200A75AFE /* LightningTooltipViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B59E2C8822E78A1200A75AFE /* LightningTooltipViewController.storyboard */; };
 		B59E2C8B22E7974000A75AFE /* WalletToggleTitleLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59E2C8A22E7974000A75AFE /* WalletToggleTitleLabel.swift */; };
@@ -1972,6 +1973,7 @@
 		B59C9E25230F548F00E4F3C8 /* TransactionSummaryCellDescriptionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionSummaryCellDescriptionTests.swift; sourceTree = "<group>"; };
 		B59C9E272311834500E4F3C8 /* SummaryCellPillLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummaryCellPillLabel.swift; sourceTree = "<group>"; };
 		B59C9E2923118DF400E4F3C8 /* SummaryCellSatsLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummaryCellSatsLabel.swift; sourceTree = "<group>"; };
+		B59D0F292345701500E828BF /* TransactionDetailInvoiceCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDetailInvoiceCellViewModel.swift; sourceTree = "<group>"; };
 		B59E2C8622E789D800A75AFE /* LightningTooltipViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightningTooltipViewController.swift; sourceTree = "<group>"; };
 		B59E2C8822E78A1200A75AFE /* LightningTooltipViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LightningTooltipViewController.storyboard; sourceTree = "<group>"; };
 		B59E2C8A22E7974000A75AFE /* WalletToggleTitleLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletToggleTitleLabel.swift; sourceTree = "<group>"; };
@@ -3427,6 +3429,7 @@
 				B5437B552315B4D70002B77C /* TransactionHistoryViewModel.swift */,
 				B50E7B7E230C6A0400927C8B /* TransactionSummaryCellViewModel.swift */,
 				B5219C802343C7A300EA5B05 /* TransactionDetailCellViewModel.swift */,
+				B59D0F292345701500E828BF /* TransactionDetailInvoiceCellViewModel.swift */,
 				5B404275208CCA40005624B0 /* OldTransactionDetailCellViewModel.swift */,
 				B53461762098C61D00DDC1C4 /* OldTransactionSummaryCellViewModel.swift */,
 			);
@@ -5053,6 +5056,7 @@
 				3BA360842090B0C100732C43 /* CKMTransaction+CoreDataClass.swift in Sources */,
 				307DF11B21500BF100260369 /* ElasticRequest.swift in Sources */,
 				A257CEBC230325580063670B /* WalletTransferViewModel.swift in Sources */,
+				B59D0F2A2345701600E828BF /* TransactionDetailInvoiceCellViewModel.swift in Sources */,
 				B56788B1227A430300A39534 /* UIView+CornerRadius.swift in Sources */,
 				B59E2CAB22E9ED7900A75AFE /* LNDecodePaymentRequestTarget.swift in Sources */,
 				B530DFBD2108CF8400A0B1A8 /* TransactionDetailWarningLabel.swift in Sources */,

@@ -384,28 +384,37 @@ class LightningViewModelObject: TransactionSummaryCellViewModelObject {
 
 }
 
-class LightningInvoiceViewModelObject: LightningViewModelObject, TransactionDetailInvoiceCellViewModelType {
+class LightningInvoiceViewModelObject: LightningViewModelObject {
+
+  let hoursUntilExpiration: Int?
 
   override init?(walletEntry: CKMWalletEntry) {
     guard let ledgerEntry = walletEntry.ledgerEntry,
       ledgerEntry.request != nil, ledgerEntry.type == .lightning, ledgerEntry.status != .completed
       //TODO: check that walletEntry.invitation is nil
       else { return nil }
-    self.walletEntry = walletEntry
-    self.ledgerEntry = ledgerEntry
+
+    if let expirationDate = ledgerEntry.expiresAt {
+      let seconds = expirationDate.timeIntervalSinceNow
+      if seconds > 0 {
+        let fullHours = Int(seconds/TimeInterval.oneHour)
+        hoursUntilExpiration = fullHours //this may set it to 0 hours if less than one hour remains
+      } else {
+        hoursUntilExpiration = nil
+      }
+    } else {
+      hoursUntilExpiration = nil
+    }
+
+    super.init(walletEntry: walletEntry)
   }
 
 }
 
 ///Only necessary because of the optional relationship between CKMWalletEntry and CKMLNLedgerEntry
-struct FallbackViewModelObject: TransactionSummaryCellViewModelObject {
+struct FallbackViewModelObject: TransactionDetailCellViewModelObject {
 
   let walletTxType: WalletTransactionType
-
-  init(walletTxType: WalletTransactionType) {
-    self.walletTxType = walletTxType
-  }
-
   let direction: TransactionDirection = .in
   let isLightningTransfer: Bool = false
   let isLightningUpgrade: Bool = false
@@ -413,6 +422,22 @@ struct FallbackViewModelObject: TransactionSummaryCellViewModelObject {
   var memo: String?
   var receiverAddress: String?
   var lightningInvoice: String?
+  var memoIsShared: Bool
+  var primaryDate: Date
+  var onChainConfirmations: Int?
+  var addressProvidedToSender: String?
+  var encodedInvoice: String?
+  var paymentIdIsValid: Bool
+  var invitationStatus: InvitationStatus?
+  var usdExchangeRateWhenReceived: Double?
+
+  init(walletTxType: WalletTransactionType) {
+    self.walletTxType = walletTxType
+    self.memoIsShared = false
+    self.primaryDate = Date()
+    self.paymentIdIsValid = true
+  }
+
 
   func amountDetails(with currentRates: ExchangeRates, fiatCurrency: CurrencyCode) -> TransactionAmountDetails {
     return TransactionAmountDetails(btcAmount: .zero, fiatCurrency: fiatCurrency, exchangeRates: currentRates)

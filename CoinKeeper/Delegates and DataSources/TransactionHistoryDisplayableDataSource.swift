@@ -137,12 +137,23 @@ class TransactionHistoryLightningDataSource: NSObject, TransactionHistoryDataSou
                                  currencies: CurrencyPair,
                                  deviceCountryCode: Int) -> TransactionDetailCellDisplayable {
     let walletEntry = frc.object(at: indexPath)
-    let vmObject = viewModelObject(for: walletEntry)
     let selectedCurrency: SelectedCurrency = currencies.primary.isFiat ? .fiat : .BTC
-    return MockDetailCellVM()
+
+    if let invoiceViewModelObject = LightningInvoiceViewModelObject(walletEntry: walletEntry) {
+      return TransactionDetailInvoiceCellViewModel(object: invoiceViewModelObject,
+                                                   selectedCurrency: selectedCurrency,
+                                                   fiatCurrency: currencies.fiat,
+                                                   exchangeRates: rates,
+                                                   deviceCountryCode: deviceCountryCode)
+    } else {
+      let vmObject = viewModelObject(for: walletEntry)
+
+      return TransactionDetailCellViewModel(object: vmObject, selectedCurrency: selectedCurrency, fiatCurrency: currencies.fiat,
+                                            exchangeRates: rates, deviceCountryCode: deviceCountryCode)
+    }
   }
 
-  private func viewModelObject(for walletEntry: CKMWalletEntry) -> TransactionSummaryCellViewModelObject {
+  private func viewModelObject(for walletEntry: CKMWalletEntry) -> TransactionDetailCellViewModelObject {
     if let lightningInvoiceObject = LightningInvoiceViewModelObject(walletEntry: walletEntry) {
       return lightningInvoiceObject
     } else if let lightningObject = LightningViewModelObject(walletEntry: walletEntry) {
