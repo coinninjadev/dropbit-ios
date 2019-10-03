@@ -13,6 +13,9 @@ class BaseViewController: UIViewController, AccessibleViewSettable {
   var lockStatusNotification: NotificationToken?
   var unlockStatusNotification: NotificationToken?
 
+  var currentLockStatus: LockStatus = LockStatus(rawValue: CKUserDefaults().string(for:
+  .lightningWalletLockedStatus) ?? LockStatus.locked.rawValue) ?? .locked
+
   override var preferredStatusBarStyle: UIStatusBarStyle {
     return statusBarStyle
   }
@@ -22,7 +25,7 @@ class BaseViewController: UIViewController, AccessibleViewSettable {
     view.backgroundColor = .lightGrayBackground
     setAccessibilityIdentifiers()
     registerForLockStatusNotification()
-    BaseViewController.lockStatus == .locked ? lock() : unlock()
+    currentLockStatus == .locked ? lock() : unlock()
   }
 
   /// Subclasses with identifiers should override this method and return the appropriate array
@@ -47,24 +50,21 @@ enum LockStatus: String {
 
 extension BaseViewController {
 
-  static var lockStatus: LockStatus = LockStatus(rawValue: CKUserDefaults().string(for:
-    .lightningWalletLockedStatus) ?? LockStatus.locked.rawValue) ?? .locked
-
   fileprivate func registerForLockStatusNotification() {
     lockStatusNotification = CKNotificationCenter.subscribe(key: .didLockLightning, object: nil, queue: .main, using: { [weak self] _ in
-      guard BaseViewController.lockStatus != .locked else { return }
+      CKUserDefaults().set(LockStatus.locked.rawValue, for: .lightningWalletLockedStatus)
 
-      BaseViewController.lockStatus = .locked
-      DispatchQueue.main.async {
+      if self?.currentLockStatus != .locked {
+        self?.currentLockStatus = .locked
         self?.lock()
       }
     })
 
     unlockStatusNotification = CKNotificationCenter.subscribe(key: .didUnlockLightning, object: nil, queue: .main, using: { [weak self] _ in
-      guard BaseViewController.lockStatus != .unlocked else { return }
+      CKUserDefaults().set(LockStatus.unlocked.rawValue, for: .lightningWalletLockedStatus)
 
-      BaseViewController.lockStatus = .unlocked
-      DispatchQueue.main.async {
+      if self?.currentLockStatus != .unlocked {
+        self?.currentLockStatus = .unlocked
         self?.unlock()
       }
     })

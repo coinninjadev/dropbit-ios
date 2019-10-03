@@ -126,7 +126,7 @@ extension ScanQRViewController: AVCaptureMetadataOutputObjectsDelegate {
     let rawCodes = metadataObjects.compactMap { $0 as? AVMetadataMachineReadableCodeObject }
     let lightningQRCodes = rawCodes.compactMap { $0.stringValue }.compactMap { LightningURL(string: $0) }
 
-    if let lightningQRCode = lightningQRCodes.first, BaseViewController.lockStatus != .locked {
+    if let lightningQRCode = lightningQRCodes.first, currentLockStatus != .locked {
       handle(lightningQRInvoice: lightningQRCode)
     } else {
       let bitcoinQRCodes = rawCodes.compactMap { OnChainQRCode(readableObject: $0) }

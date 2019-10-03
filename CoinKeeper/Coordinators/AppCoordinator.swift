@@ -404,7 +404,7 @@ class AppCoordinator: CoordinatorType {
 
   func showLightningLockAlertIfNecessary() -> Bool {
     let shouldShowError = persistenceManager.brokers.preferences.selectedWalletTransactionType == .lightning &&
-    BaseViewController.lockStatus == .locked
+      persistenceManager.brokers.preferences.lightningWalletLockedStatus == .locked
 
     if shouldShowError {
       navigationController.present(alertManager.defaultAlert(withTitle: "Error",

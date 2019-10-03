@@ -184,7 +184,7 @@ class WalletOverviewViewController: BaseViewController, StoryboardInitializable 
       pageViewController?.setViewControllers([baseViewControllers[1]], direction: .reverse, animated: true, completion: nil)
     case .lightningWallet?:
       setupStyleForLightningWallet()
-      sendReceiveActionView.isHidden = BaseViewController.lockStatus == .locked ? true : false
+      sendReceiveActionView.isHidden = currentLockStatus == .locked ? true : false
       pageViewController?.setViewControllers([baseViewControllers[0]], direction: .forward, animated: true, completion: nil)
     default:
       walletToggleView.selectBitcoinButton()
@@ -231,7 +231,7 @@ enum ViewControllerIndex: Int {
 extension WalletOverviewViewController: UIPageViewControllerDelegate {
 
   func pageViewController(_ pageViewController: UIPageViewController, willTransitionTo pendingViewControllers: [UIViewController]) {
-    if BaseViewController.lockStatus == .locked {
+    if currentLockStatus == .locked {
       sendReceiveActionView.isHidden = true
     }
   }
@@ -310,6 +310,10 @@ extension WalletOverviewViewController: SyncSubscribeable {
 }
 
 extension WalletOverviewViewController: WalletBalanceViewDelegate {
+  
+  func getCurrentLockStatus() -> LockStatus {
+    return currentLockStatus
+  }
 
   func getCurrentWalletTransactionType() -> WalletTransactionType {
     return delegate.selectedWalletTransactionType()
