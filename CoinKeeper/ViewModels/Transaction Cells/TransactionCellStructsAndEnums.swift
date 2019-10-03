@@ -1,5 +1,5 @@
 //
-//  TransactionCellViewModelTypes.swift
+//  TransactionCellStructsAndEnums.swift
 //  DropBit
 //
 //  Created by Ben Winters on 9/15/19.

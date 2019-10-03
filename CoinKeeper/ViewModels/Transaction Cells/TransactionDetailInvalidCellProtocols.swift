@@ -1,5 +1,5 @@
 //
-//  TransactionDetailInvalidCellDisplayable.swift
+//  TransactionDetailInvalidCellProtocols.swift
 //  DropBit
 //
 //  Created by Ben Winters on 9/30/19.

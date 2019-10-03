@@ -1,5 +1,5 @@
 //
-//  TransactionDetailInvoiceCellDisplayable.swift
+//  TransactionDetailInvoiceCellProtocols.swift
 //  DropBit
 //
 //  Created by Ben Winters on 10/1/19.
