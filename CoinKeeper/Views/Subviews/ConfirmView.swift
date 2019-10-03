@@ -33,6 +33,7 @@ class ConfirmView: UIView {
   var style: ConfirmPaymentButton.Style = .original {
     didSet {
       confirmButton.style = style
+      confirmLongPressGestureRecognizer.minimumPressDuration = confirmButton.secondsToConfirm
     }
   }
 
