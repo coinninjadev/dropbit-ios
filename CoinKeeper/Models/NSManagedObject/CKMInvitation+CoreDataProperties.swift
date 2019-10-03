@@ -26,12 +26,14 @@ extension CKMInvitation {
   @NSManaged public var usdAmountAtTimeOfInvitation: Int
   @NSManaged private(set) var fees: Int
   @NSManaged public var sentDate: Date?
+  @NSManaged private(set) var walletTransactionType: String
   @NSManaged public var side: InvitationSide
   @NSManaged public var status: InvitationStatus
   @NSManaged public var counterpartyName: String?
   @NSManaged public var counterpartyPhoneNumber: CKMPhoneNumber?
   @NSManaged public var counterpartyTwitterContact: CKMTwitterContact?
   @NSManaged public var transaction: CKMTransaction?
+  @NSManaged public var walletEntry: CKMWalletEntry?
   @NSManaged public var addressProvidedToSender: String?
 
   /**
@@ -68,6 +70,22 @@ extension CKMInvitation {
   func setStatusIfDifferent(to newStatus: InvitationStatus) {
     if status != newStatus {
       status = newStatus
+    }
+  }
+
+  var walletTxTypeCase: WalletTransactionType {
+    get { return WalletTransactionType(rawValue: walletTransactionType) ?? .onChain }
+    set { self.walletTransactionType = newValue.rawValue }
+  }
+
+  var transactionStatus: TransactionStatus {
+    switch status {
+    case .notSent,
+         .requestSent,
+         .addressSent:  return .pending
+    case .canceled:     return .canceled
+    case .expired:      return .expired
+    case .completed:    return .completed
     }
   }
 

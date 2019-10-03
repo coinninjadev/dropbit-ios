@@ -126,7 +126,6 @@ final class RequestPayViewController: PresentableViewController, StoryboardIniti
     super.viewDidLoad()
 
     setupSubviews()
-    editAmountView.disableSwap()
     setupCurrencySwappableEditAmountView()
     registerForRateUpdates()
     updateRatesAndView()

@@ -28,5 +28,6 @@ extension CKMWalletEntry {
   @NSManaged public var twitterContact: CKMTwitterContact?
   @NSManaged public var phoneNumber: CKMPhoneNumber?
   @NSManaged public var sharedPayload: CKMTransactionSharedPayload?
+  @NSManaged public var invitation: CKMInvitation?
 
 }

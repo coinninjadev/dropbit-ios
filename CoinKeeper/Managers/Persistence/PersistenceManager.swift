@@ -69,6 +69,13 @@ class PersistenceManager: PersistenceManagerType {
       in: context)
   }
 
+  func persistReceivedAddressRequests(_ responses: [WalletAddressRequestResponse], in context: NSManagedObjectContext) {
+    responses.forEach {
+      let invitation = CKMInvitation.updateOrCreate(withReceivedAddressRequestResponse: $0, in: context)
+      invitation.transaction?.isIncoming = true
+    }
+  }
+
   func persistTransactionSummaries(
     from responses: [AddressTransactionSummaryResponse],
     in context: NSManagedObjectContext) {

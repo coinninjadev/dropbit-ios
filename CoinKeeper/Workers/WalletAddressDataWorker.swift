@@ -6,6 +6,7 @@
 //  Copyright © 2018 Coin Ninja, LLC. All rights reserved.
 //
 
+import CNBitcoinKit
 import CoreData
 import Moya
 import PromiseKit
@@ -46,7 +47,6 @@ extension WalletAddressDataWorkerType {
 
 }
 
-// swiftlint:disable type_body_length
 class WalletAddressDataWorker: WalletAddressDataWorkerType {
 
   unowned let walletManager: WalletManagerType
@@ -54,18 +54,21 @@ class WalletAddressDataWorker: WalletAddressDataWorkerType {
   unowned let networkManager: NetworkManagerType
   unowned let analyticsManager: AnalyticsManagerType
   unowned var invitationDelegate: InvitationWorkerDelegate
+  weak var paymentSendingDelegate: AllPaymentSendingDelegate?
 
   init(
     walletManager: WalletManagerType,
     persistenceManager: PersistenceManagerType,
     networkManager: NetworkManagerType,
     analyticsManager: AnalyticsManagerType,
+    paymentSendingDelegate: AllPaymentSendingDelegate,
     invitationWorkerDelegate: InvitationWorkerDelegate
     ) {
     self.walletManager = walletManager
     self.persistenceManager = persistenceManager
     self.networkManager = networkManager
     self.analyticsManager = analyticsManager
+    self.paymentSendingDelegate = paymentSendingDelegate
     self.invitationDelegate = invitationWorkerDelegate
   }
 
@@ -109,10 +112,14 @@ class WalletAddressDataWorker: WalletAddressDataWorkerType {
 
   func fetchAndFulfillReceivedAddressRequests(in context: NSManagedObjectContext) -> Promise<Void> {
     return self.networkManager.getWalletAddressRequests(forSide: .received)
-      // We don't filter status cases here because mapAndFulfillAddressRequests will
-      // only handle .new without address, and we want to persist all invitations regardless of their status.
-      .then(in: context) { self.mapAndFulfillAddressRequests(with: $0, in: context) }
-      .get(in: context) { self.persistReceivedAddressRequests($0, in: context) }.asVoid()
+      .then(in: context) { responses -> Promise<Void> in
+        let alreadyFulfilledResponses: [WalletAddressRequestResponse] = responses.filter { !$0.isUnfulfilled }
+        self.persistenceManager.persistReceivedAddressRequests(alreadyFulfilledResponses, in: context) //no patch needed for these
+
+        let fulfillmentWorker = AddressRequestFulfillmentWorker(walletAddressDataWorker: self)
+        let unfulfilledResponses: [WalletAddressRequestResponse] = responses.filter { $0.isUnfulfilled }
+        return fulfillmentWorker.mapAndFulfillAddressRequests(for: unfulfilledResponses, in: context)
+    }
   }
 
   func updateReceivedAddressRequests(in context: NSManagedObjectContext) -> Promise<Void> {
@@ -121,9 +128,9 @@ class WalletAddressDataWorker: WalletAddressDataWorkerType {
     }
 
     return self.networkManager.getWalletAddressRequests(forSide: .received)
-      .get(in: context) { self.persistReceivedAddressRequests($0, in: context) }
-      .get(in: context) { _ in self.linkFulfilledAddressRequestsWithTransaction(in: context)
-      }.asVoid()
+      .get(in: context) { self.persistenceManager.persistReceivedAddressRequests($0, in: context) }
+      .get(in: context) { _ in self.linkFulfilledOnChainAddressRequestsWithTransaction(in: context) }
+      .get(in: context) { _ in self.linkFulfilledLightningAddressRequestsWithTransaction(in: context) }.asVoid()
   }
 
   func updateSentAddressRequests(in context: NSManagedObjectContext) -> Promise<Void> {
@@ -232,23 +239,14 @@ class WalletAddressDataWorker: WalletAddressDataWorkerType {
         // Identify any "new" requests that should be marked completed because they already have a txid locally
         let detailsToPatchAsCompleted: [AddressRequestPatch] = self.detailsToMarkCompleted(for: newRequests, in: context)
 
-        /// commented out automatic cancelation temporarily 2018AUG16 (BJM)
-        //        let patchAsCompletedRequestIds: [String] = detailsToPatchAsCompleted.map { $0.requestId }
-        //        let cancellableNewRequests: [WalletAddressRequestResponse] = newRequests.filter { !patchAsCompletedRequestIds.contains($0.id) }
-
-        // Only pass in the responses which will not be marked as completed
-        //        let requestIdsToPatchAsCanceled: [String] = self.idsToCancelIfNegativeBalance(requests: cancellableNewRequests, in: context)
-
         // Create a promise for each patch and return when they have all fulfilled.
         // Use asVoid to so that we can create the `when` array with different promise value types.
         let patchCompletedPromises = detailsToPatchAsCompleted.map { patch in
           self.networkManager.updateWalletAddressRequest(withPatch: patch).asVoid()
         }
-        //        let patchCanceledPromises = requestIdsToPatchAsCanceled.map { self.cancelInvitation(withID: $0, in: context).asVoid() }
-        let allPatchPromises = patchCompletedPromises // + patchCanceledPromises
 
         // Ignore promise rejection in case of network failure by using `resolved`. Then return a promise of Void.
-        return when(resolved: allPatchPromises).then { _ in Promise.value(()) }
+        return when(resolved: patchCompletedPromises).then { _ in Promise.value(()) }
     }
   }
 
@@ -265,27 +263,48 @@ class WalletAddressDataWorker: WalletAddressDataWorkerType {
     }
   }
 
-  /// commented out on 2018AUG16 due to temporarily halting automatic cancelation of DropBits (BJM)
-  //  private func idsToCancelIfNegativeBalance(requests: [WalletAddressRequestResponse],
-  //                                            in context: NSManagedObjectContext) -> [String] {
-  //    if walletManager.balance(in: context) >= 0 {
-  //      return []
-  //    } else {
-  //      // Balance is negative, so we need to cancel all outstanding requests
-  //      return requests.map { $0.id }
-  //    }
-  //  }
+  func linkFulfilledLightningAddressRequestsWithTransaction(in context: NSManagedObjectContext) {
+    let statusPredicate = CKPredicate.Invitation.withStatuses([.completed])
+    let lightningInvite = CKPredicate.Invitation.with(transactionType: .lightning)
+
+    let fetchRequest: NSFetchRequest<CKMInvitation> = CKMInvitation.fetchRequest()
+    fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [statusPredicate, lightningInvite])
+
+    do {
+      let updatableInvitations = try context.fetch(fetchRequest)
+      log.debug("Found \(updatableInvitations.count) updatable invitations")
+
+      updatableInvitations.forEach { invitation in
+        guard let invitationTxid = invitation.txid else { return }
+
+        if let targetWalletEntry = CKMLNLedgerEntry.find(with: invitationTxid, wallet: nil, in: context)?.walletEntry {
+          log.debug("Found ledger entry matching the invitation.txid, will update relationship")
+          let placeholderWalletEntry = invitation.walletEntry
+          invitation.walletEntry = targetWalletEntry
+
+          if let placeholder = placeholderWalletEntry {
+            context.delete(placeholder)
+            log.debug("Deleted placeholder transaction")
+          }
+        }
+      }
+    } catch {
+      log.error(error, message: "Failed to fetch updatable invitations")
+    }
+  }
 
   /// Invitation objects with a txid that does not match its transaction?.txid will search for a Transaction that does match.
-  func linkFulfilledAddressRequestsWithTransaction(in context: NSManagedObjectContext) {
+  func linkFulfilledOnChainAddressRequestsWithTransaction(in context: NSManagedObjectContext) {
     let statusPredicate = CKPredicate.Invitation.withStatuses([.completed])
     let hasTxidPredicate = CKPredicate.Invitation.hasTxid()
+    let onChainInvite = CKPredicate.Invitation.with(transactionType: .onChain)
 
     // Ignore invitations whose transaction already matches the txid
     let notMatchingTxidPredicate = CKPredicate.Invitation.transactionTxidDoesNotMatch()
 
     let fetchRequest: NSFetchRequest<CKMInvitation> = CKMInvitation.fetchRequest()
-    fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [statusPredicate, hasTxidPredicate, notMatchingTxidPredicate])
+    fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [statusPredicate, hasTxidPredicate,
+                                                                                 notMatchingTxidPredicate, onChainInvite])
 
     do {
       let updatableInvitations = try context.fetch(fetchRequest)
@@ -306,7 +325,6 @@ class WalletAddressDataWorker: WalletAddressDataWorkerType {
           }
         }
       }
-
     } catch {
       log.error(error, message: "Failed to fetch updatable invitations")
     }
@@ -432,23 +450,49 @@ class WalletAddressDataWorker: WalletAddressDataWorkerType {
   }
 
   private func checkAndExecuteSentInvitations(in context: NSManagedObjectContext) -> Promise<Void> {
-    return invitationDelegate.fetchAndHandleSentWalletAddressRequests()
-      .then(in: context) { self.handleFulfilledInvitations(responses: $0, in: context) }
+    return invitationDelegate.fetchSatisfiedSentWalletAddressRequests()
+      .then(in: context) { (satisfiedResponses: [WalletAddressRequestResponse]) -> Promise<Void> in
+        guard let firstRequestToPay = satisfiedResponses.sorted().first else {
+          return Promise.value(())
+        }
+
+        return self.payInvitationRequest(for: firstRequestToPay, in: context)
+          .get { self.invitationDelegate.didBroadcastTransaction() }
+    }
   }
 
-  private func handleFulfilledInvitations(
-    responses: [WalletAddressRequestResponse],
-    in context: NSManagedObjectContext
-    ) -> Promise<Void> {
-
-    let sortedResponses = responses.sorted()
-
-    guard let firstResponse = sortedResponses.first else {
-      return Promise.value(())
+  func payInvitationRequest(for response: WalletAddressRequestResponse, in context: NSManagedObjectContext) -> Promise<Void> {
+    guard let pendingInvitation = CKMInvitation.find(withId: response.id, in: context),
+      pendingInvitation.isFulfillable else {
+        return Promise(error: PendingInvitationError.noSentInvitationExistsForID)
     }
 
-    return self.fulfillInvitationRequest(with: firstResponse, in: context)
-      .get { self.invitationDelegate.didBroadcastTransaction() }
+    guard let paymentTarget = response.address else {
+      return Promise(error: PendingInvitationError.noAddressProvided)
+    }
+
+    guard let delegate = paymentSendingDelegate else {
+      return Promise(error: PendingInvitationError.noPaymentDelegate)
+    }
+
+    if response.addressTypeCase == .lightning {
+      guard paymentTarget != WalletAddressesTarget.autogenerateInvoicesAddressValue else {
+        return Promise(error: PendingInvitationError.noInvoiceProvided)
+      }
+    }
+
+    switch response.addressTypeCase {
+    case .btc:
+      let paymentWorker = OnChainAddressRequestPaymentWorker(walletAddressDataWorker: self, paymentDelegate: delegate)
+      let outgoingTxData = paymentWorker.outgoingTransactionData(for: response, paymentTarget: paymentTarget, invitation: pendingInvitation)
+      return paymentWorker.payOnChainInvitationRequest(with: outgoingTxData, pendingInvitation: pendingInvitation,
+                                                       responseId: response.id, in: context)
+    case .lightning:
+      let paymentWorker = LightningAddressRequestPaymentWorker(walletAddressDataWorker: self, paymentDelegate: delegate)
+      let outgoingTxData = paymentWorker.outgoingTransactionData(for: response, paymentTarget: paymentTarget, invitation: pendingInvitation)
+      return paymentWorker.payLightningInvitationRequest(with: outgoingTxData, pendingInvitation: pendingInvitation,
+                                                         invoice: paymentTarget, responseId: response.id, in: context)
+    }
   }
 
   private func ensureLocalServerAddressParity(
@@ -506,269 +550,6 @@ class WalletAddressDataWorker: WalletAddressDataWorkerType {
         let remainingOnServer = totalOnServer - deletedAddressIds.count
         let replacementsNeeded = max(0, (totalDesired - remainingOnServer))
         return replacementsNeeded
-    }
-  }
-
-  /**
-   This fulfills the necessary requests then returns an array matching the
-   initial responses parameter that has been updated with the posted addresses.
-   */
-  private func mapAndFulfillAddressRequests(with responses: [WalletAddressRequestResponse],
-                                            in context: NSManagedObjectContext) -> Promise<[WalletAddressRequestResponse]> {
-
-    // Split the responses into two groups so that they can be recombined for persistence later
-    var unfulfilledRequestResponses: [WalletAddressRequestResponse] = []
-    var otherResponses: [WalletAddressRequestResponse] = []
-    for res in responses {
-      if (res.address ?? "").isEmpty && res.statusCase == .new {
-        unfulfilledRequestResponses.append(res)
-      } else {
-        otherResponses.append(res)
-      }
-    }
-
-    // Get the next addresses and update the responses with them so that those responses
-    // can be used to update the server and update persistence with the address
-
-    let dataSource = walletManager.createAddressDataSource()
-    let nextMetaAddresses = dataSource.nextAvailableReceiveAddresses(number: unfulfilledRequestResponses.count,
-                                                                     forServerPool: false,
-                                                                     indicesToSkip: [],
-                                                                     in: context)
-    let nextAddressesWithPubKeys: [MetaAddress] = nextMetaAddresses.compactMap { MetaAddress(cnbMetaAddress: $0) }
-    guard unfulfilledRequestResponses.count == nextAddressesWithPubKeys.count else {
-      return Promise { $0.reject(CKPersistenceError.missingValue(key: "CNBMetaAddress.uncompressedPublicKey")) }
-    }
-
-    var responsesWithAddresses: [WalletAddressRequestResponse] = []
-    var requestBodies: [AddWalletAddressBody] = []
-    for (i, response) in unfulfilledRequestResponses.enumerated() {
-      let item = nextAddressesWithPubKeys[i]
-
-      let modifiedRequest = response.copy(withAddress: item.address) // need to include addressPubKey here when added to WalletAddressRequestResponse
-      responsesWithAddresses.append(modifiedRequest)
-
-      let body = AddWalletAddressBody(address: item.address, pubkey: item.addressPubKey, type: .btc, walletAddressRequestId: response.id)
-      requestBodies.append(body)
-    }
-
-    // Need to add the addresses to the server and return an array of responses with the newly added addresses
-    let updatedResponses = responsesWithAddresses + otherResponses
-
-    return self.fulfillAddressRequests(with: requestBodies, in: context)
-      .then { _ in Promise { $0.fulfill(updatedResponses) }}
-  }
-
-  /// Because this uses when(fulfilled:), all addWalletAddress calls must succeed for the next promise to execute
-  private func fulfillAddressRequests(with bodies: [AddWalletAddressBody], in context: NSManagedObjectContext) -> Promise<[WalletAddressResponse]> {
-    return when(fulfilled: bodies.map { body in
-      self.networkManager.addWalletAddress(body: body)
-        .get { _ in self.analyticsManager.track(event: .dropbitAddressProvided, with: nil) }
-    })
-  }
-
-  /// This will ignore the status of the passed in responses and persist the status as .addressSent
-  private func persistReceivedAddressRequests(_ responses: [WalletAddressRequestResponse], in context: NSManagedObjectContext) {
-    responses.forEach {
-      let invitation = CKMInvitation.updateOrCreate(withReceivedAddressRequestResponse: $0, in: context)
-      invitation.transaction?.isIncoming = true
-    }
-  }
-
-  /// Promise to fulfill an invitation request. This will broadcast the transaction with provided amount and fee,
-  ///   tell the network manager to update the invitation (aka wallet address request) with completed status and txid,
-  ///   persist a temporary transaction if needed, and clear the pending invitation data from UserDefaults.
-  ///
-  /// - Parameters:
-  ///   - response: An object representing a wallet address request.
-  ///   - context: NSManagedObjectContext within which any managed objects will be used. This should be called using `perform` by the caller
-  /// - Returns: A Promise containing void upon successfully processing.
-  private func fulfillInvitationRequest(
-    with response: WalletAddressRequestResponse,
-    in context: NSManagedObjectContext
-    ) -> Promise<Void> {
-
-    guard let address = response.address else {
-      return Promise(error: PendingInvitationError.noAddressProvided)
-    }
-
-    guard let pendingInvitation = CKMInvitation.find(withId: response.id, in: context),
-      pendingInvitation.isFulfillable else {
-        return Promise(error: PendingInvitationError.noSentInvitationExistsForID)
-    }
-
-    let sharedPayloadDTO = self.sharedPayload(invitation: pendingInvitation, walletAddressRequestResponse: response)
-
-    var contact: ContactType?
-    // create outgoing dto object
-    if let twitterContact = pendingInvitation.counterpartyTwitterContact {
-      let twitterUser = twitterContact.asTwitterUser()
-      contact = TwitterContact(twitterUser: twitterUser)
-    } else if let phoneContact = pendingInvitation.counterpartyPhoneNumber {
-      let global = phoneContact.asGlobalPhoneNumber
-      let genericContact = GenericContact(phoneNumber: global, formatted: global.asE164())
-      contact = genericContact
-    }
-
-    let btcAmount = pendingInvitation.btcAmount
-    let maybeReceiver: OutgoingDropBitReceiver? = contact?.asDropBitReceiver
-    let identityFactory = SenderIdentityFactory(persistenceManager: self.persistenceManager)
-    let senderIdentity = identityFactory.preferredSharedPayloadSenderIdentity(forReceiver: maybeReceiver)
-
-    let outgoingTransactionData = OutgoingTransactionData(
-      txid: "",
-      destinationAddress: address,
-      amount: btcAmount,
-      feeAmount: pendingInvitation.fees,
-      sentToSelf: false,
-      requiredFeeRate: nil,
-      sharedPayloadDTO: sharedPayloadDTO,
-      sender: senderIdentity,
-      receiver: maybeReceiver
-    )
-
-    let dto = WalletAddressRequestResponseDTO()
-
-    return self.networkManager.fetchTransactionSummaries(for: address)
-      .then(in: context) { (summaryResponses: [AddressTransactionSummaryResponse]) -> Promise<Void> in
-        // guard against already funded
-        let maybeFound = summaryResponses.first { $0.vout == btcAmount }
-        if let found = maybeFound {
-          let txid = found.txid
-          return self.completeWalletAddressRequestFulfillmentLocally(
-            with: dto,
-            outgoingTransactionData: outgoingTransactionData,
-            txid: txid,
-            invitationId: response.id,
-            pendingInvitation: pendingInvitation,
-            in: context
-          )
-        } else {
-
-          // guard against insufficient funds
-          let spendableBalance = self.walletManager.spendableBalance(in: context)
-          let totalPendingAmount = pendingInvitation.totalPendingAmount
-          guard spendableBalance.onChain >= totalPendingAmount else { //TODO: Check for lightning when available
-            return Promise(error: PendingInvitationError.insufficientFundsForInvitationWithID(response.id))
-          }
-
-          return self.walletManager.transactionData(
-            forPayment: btcAmount,
-            to: address, withFlatFee: pendingInvitation.fees)
-            .get { dto.transactionData = $0 }
-            .then { self.networkManager.broadcastTx(with: $0) }
-            .then(in: context) { (txid: String) -> Promise<Void> in
-              self.completeWalletAddressRequestFulfillmentLocally(
-                with: dto,
-                outgoingTransactionData: outgoingTransactionData,
-                txid: txid,
-                invitationId: response.id,
-                pendingInvitation: pendingInvitation,
-                in: context
-              )
-            }
-            .recover { self.mapTransactionBroadcastError($0, forResponse: response) }
-        }
-    }
-  }
-
-  private func mapTransactionBroadcastError(_ error: Error, forResponse response: WalletAddressRequestResponse) -> Promise<Void> {
-    if error is MoyaError {
-      return Promise(error: error)
-    }
-
-    if let txDataError = error as? TransactionDataError {
-      switch txDataError {
-      case .insufficientFunds, .noSpendableFunds:
-        return Promise(error: PendingInvitationError.insufficientFundsForInvitationWithID(response.id))
-      case .insufficientFee:
-        return Promise(error: PendingInvitationError.insufficientFeeForInvitationWithID(response.id))
-      }
-    }
-
-    let nsError = error as NSError
-    let errorCode = TransactionBroadcastError(errorCode: nsError.code)
-    switch errorCode {
-    case .broadcastTimedOut:
-      return Promise(error: TransactionBroadcastError.broadcastTimedOut)
-    case .networkUnreachable:
-      return Promise(error: TransactionBroadcastError.networkUnreachable)
-    case .unknown:
-      return Promise(error: TransactionBroadcastError.unknown)
-    case .insufficientFee:
-      return Promise(error: PendingInvitationError.insufficientFeeForInvitationWithID(response.id))
-    }
-  }
-
-  private func completeWalletAddressRequestFulfillmentLocally(
-    with dto: WalletAddressRequestResponseDTO,
-    outgoingTransactionData: OutgoingTransactionData,
-    txid: String,
-    invitationId: String,
-    pendingInvitation: CKMInvitation,
-    in context: NSManagedObjectContext) -> Promise<Void> {
-    let dataCopyWithTxid = outgoingTransactionData.copy(withTxid: txid)
-    guard let postableObject = PayloadPostableOutgoingTransactionData(data: dataCopyWithTxid) else {
-      return Promise(error: CKPersistenceError.missingValue(key: "postableOutgoingTransactionData"))
-    }
-
-    return self.networkManager.postSharedPayloadIfAppropriate(withPostableObject: postableObject, walletManager: self.walletManager)
-      .get { dto.txid = $0 }
-      .get(in: context) { (txid: String) in
-        if let transactionData = dto.transactionData {
-          self.persistenceManager.brokers.transaction.persistTemporaryTransaction(
-            from: transactionData,
-            with: outgoingTransactionData,
-            txid: txid,
-            invitation: pendingInvitation,
-            in: context)
-        } else {
-          // update and match them manually, partially matching code in `persistTemporaryTransaction`
-          pendingInvitation.setTxid(to: txid)
-          pendingInvitation.status = .completed
-          if let existingTransaction = CKMTransaction.find(byTxid: txid, in: context), pendingInvitation.transaction !== existingTransaction {
-            let txToRemove = pendingInvitation.transaction
-            pendingInvitation.transaction = existingTransaction
-            txToRemove.map { context.delete($0) }
-            existingTransaction.phoneNumber = pendingInvitation.counterpartyPhoneNumber
-          }
-        }
-
-        if pendingInvitation.status == .completed {
-          self.analyticsManager.track(event: .dropbitCompleted, with: nil)
-          if let receiver = outgoingTransactionData.receiver, case .twitter = receiver {
-            self.analyticsManager.track(event: .twitterSendComplete, with: nil)
-          }
-        }
-
-      }
-      .then { (txid: String) -> Promise<WalletAddressRequestResponse> in
-        let request = WalletAddressRequest(walletAddressRequestStatus: .completed, txid: txid)
-        return self.networkManager.updateWalletAddressRequest(for: invitationId, with: request)
-      }
-      .then { _ in
-        return Promise.value(())
-    }
-  }
-
-  private func sharedPayload(
-    invitation: CKMInvitation,
-    walletAddressRequestResponse response: WalletAddressRequestResponse) -> SharedPayloadDTO {
-    let walletTxType = response.addressTypeCase.flatMap { WalletTransactionType(addressType: $0) } ?? .onChain
-
-    if let ckmPayload = invitation.transaction?.sharedPayload,
-      let fiatCurrency = CurrencyCode(rawValue: ckmPayload.fiatCurrency),
-      let pubKey = response.addressPubkey {
-      let amountInfo = SharedPayloadAmountInfo(fiatCurrency: fiatCurrency, fiatAmount: ckmPayload.fiatAmount)
-      return SharedPayloadDTO(addressPubKeyState: .known(pubKey),
-                              walletTxType: walletTxType,
-                              sharingDesired: ckmPayload.sharingDesired,
-                              memo: invitation.transaction?.memo,
-                              amountInfo: amountInfo)
-
-    } else {
-      return SharedPayloadDTO(addressPubKeyState: .none, walletTxType: walletTxType,
-                              sharingDesired: false, memo: invitation.transaction?.memo, amountInfo: nil)
     }
   }
 

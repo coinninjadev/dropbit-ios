@@ -191,9 +191,8 @@ CurrencySwappableAmountEditor {
     delegate.sendPaymentViewControllerDidLoad(self)
     walletToggleView.delegate = self
 
-    if viewModel.fromAmount == .zero && recipientDescriptionToLoad == nil {
-      editAmountView.primaryAmountTextField.becomeFirstResponder()
-    }
+    let labels = viewModel.dualAmountLabels(hidePrimaryZero: false, walletTransactionType: viewModel.walletTransactionType)
+    editAmountView.update(with: labels)
   }
 
   override func viewWillAppear(_ animated: Bool) {
@@ -318,15 +317,8 @@ extension SendPaymentViewController {
     let sharedMemoAllowed = delegate.viewControllerShouldInitiallyAllowMemoSharing(self)
     viewModel.sharedMemoAllowed = sharedMemoAllowed
 
-    setPaymentRecipient(nil)
     setupStyle()
-    resetPaymentAmount()
     updateViewWithModel()
-  }
-
-  func resetPaymentAmount() {
-    viewModel.sendMaxTransactionData = nil
-    viewModel.fromAmount = 0
   }
 
   func updateViewWithModel() {
@@ -336,8 +328,10 @@ extension SendPaymentViewController {
       refreshBothAmounts()
     }
 
-    if viewModel.btcAmount != .zero {
+    if viewModel.btcAmount != .zero || viewModel.walletTransactionType == .lightning {
       sendMaxButton.isHidden = true
+    } else {
+      sendMaxButton.isHidden = false
     }
 
     if viewModel.walletTransactionType == .lightning && viewModel.btcAmount > 0 {
@@ -368,7 +362,7 @@ extension SendPaymentViewController {
       recipientDisplayNumberLabel.text = viewModel.displayRecipientIdentity()
     }
 
-    editAmountView.update(with: viewModel.dualAmountLabels(hidePrimaryZero: viewModel.btcAmount == 0,
+    editAmountView.update(with: viewModel.dualAmountLabels(hidePrimaryZero: false,
                                                            walletTransactionType: viewModel.walletTransactionType))
 
     updateMemoContainer()
@@ -559,13 +553,11 @@ extension SendPaymentViewController {
 extension SendPaymentViewController: SelectedValidContactDelegate {
 
   func update(withSelectedContact contact: ContactType) {
-    resetPaymentAmount()
     setPaymentRecipient(.contact(contact))
     updateViewWithModel()
   }
 
   func update(withSelectedTwitterUser twitterUser: TwitterUser) {
-    resetPaymentAmount()
     var contact = TwitterContact(twitterUser: twitterUser)
     updateViewWithModel()
 
@@ -784,7 +776,7 @@ extension SendPaymentViewController {
     case .invite:
       try validateAmountAndBeginAddressNegotiation(for: contact, kind: .invite, sharedPayload: sharedPayload)
     case .registeredUser:
-      validateRegisteredContact(contact, sharedPayload: sharedPayload)
+      try validateRegisteredContact(contact, sharedPayload: sharedPayload)
     case .generic:
       validateGenericContact(contact, sharedPayload: sharedPayload)
     }
@@ -819,7 +811,8 @@ extension SendPaymentViewController {
     self.showValidatorAlert(for: error, title: "")
   }
 
-  private func validateRegisteredContact(_ contact: ContactType, sharedPayload: SharedPayloadDTO) {
+  private func validateRegisteredContact(_ contact: ContactType, sharedPayload: SharedPayloadDTO) throws {
+    try validateAmount()
     let addressType = self.viewModel.walletTransactionType.addressType
     delegate.viewControllerDidRequestRegisteredAddress(self, ofType: addressType, forIdentity: contact.identityHash)
       .done { (responses: [WalletAddressesQueryResponse]) in

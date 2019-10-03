@@ -83,6 +83,15 @@ extension TransactionSummaryCellViewModelObject {
     return try? formatter.string(from: globalPhoneNumber)
   }
 
+  func counterpartyConfig(for walletEntry: CKMWalletEntry, deviceCountryCode: Int) -> TransactionCellCounterpartyConfig? {
+    let maybeTwitter = walletEntry.twitterContact.flatMap { TransactionCellTwitterConfig(contact: $0) }
+    let maybeName = priorityCounterpartyName(with: maybeTwitter, invitation: nil, phoneNumber: walletEntry.phoneNumber)
+    let maybeNumber = priorityPhoneNumber(for: deviceCountryCode, invitation: nil, phoneNumber: walletEntry.phoneNumber)
+    return TransactionCellCounterpartyConfig(failableWithName: maybeName,
+                                             displayPhoneNumber: maybeNumber,
+                                             twitterConfig: maybeTwitter)
+  }
+
 }
 
 extension CKMTransaction: TransactionSummaryCellViewModelObject {
@@ -97,7 +106,7 @@ extension CKMTransaction: TransactionSummaryCellViewModelObject {
 
   var status: TransactionStatus {
     if broadcastFailed { return .failed }
-    return statusForInvitation ?? statusForTransaction
+    return invitation?.transactionStatus ?? statusForTransaction
   }
 
   func amountDetails(with currentRates: ExchangeRates, fiatCurrency: CurrencyCode) -> TransactionAmountDetails {
@@ -171,18 +180,6 @@ extension CKMTransaction: TransactionSummaryCellViewModelObject {
 
   private var isTemporaryTransaction: Bool {
     return temporarySentTransaction != nil
-  }
-
-  private var statusForInvitation: TransactionStatus? {
-    guard let invitation = self.invitation else { return nil }
-    switch invitation.status {
-    case .notSent,
-         .requestSent,
-         .addressSent:  return .pending
-    case .canceled:     return .canceled
-    case .expired:      return .expired
-    case .completed:    return .completed
-    }
   }
 
   private var statusForTransaction: TransactionStatus {
@@ -321,7 +318,7 @@ extension CKMTransaction {
 
 }
 
-class LightningViewModelObject: TransactionSummaryCellViewModelObject {
+struct LightningTransactionViewModelObject: TransactionSummaryCellViewModelObject {
   let walletEntry: CKMWalletEntry
   let ledgerEntry: CKMLNLedgerEntry
 
@@ -344,11 +341,10 @@ class LightningViewModelObject: TransactionSummaryCellViewModelObject {
   }
 
   var status: TransactionStatus {
-    switch ledgerEntry.status {
-    case .pending:    return .pending
-    case .completed:  return .completed
-    case .expired:    return .expired
-    case .failed:     return .failed
+    if let invitation = entry.walletEntry?.invitation {
+      return invitation.transactionStatus
+    } else {
+      return ledgerEntry.transactionStatus
     }
   }
 
@@ -380,6 +376,65 @@ class LightningViewModelObject: TransactionSummaryCellViewModelObject {
     return TransactionCellCounterpartyConfig(failableWithName: maybeName,
                                              displayPhoneNumber: maybeNumber,
                                              twitterConfig: maybeTwitter)
+  }
+
+}
+
+struct LightningInvitationViewModelObject: TransactionSummaryCellViewModelObject {
+
+  let walletEntry: CKMWalletEntry
+  let invitation: CKMInvitation
+
+  init?(invitation: CKMInvitation) {
+    guard let walletEntry = invitation.walletEntry else { return nil }
+    self.walletEntry = walletEntry
+    self.invitation = invitation
+  }
+
+  var walletTxType: WalletTransactionType {
+    return invitation.walletTxTypeCase
+  }
+
+  var direction: TransactionDirection {
+    switch invitation.side {
+    case .sender:   return .out
+    case .receiver: return .in
+    }
+  }
+
+  var isLightningTransfer: Bool {
+    return false
+  }
+
+  var isLightningUpgrade: Bool {
+    return false
+  }
+
+  var status: TransactionStatus {
+    return invitation.transactionStatus
+  }
+
+  var memo: String? {
+    return walletEntry.memo
+  }
+
+  var receiverAddress: String? {
+    return nil
+  }
+
+  var lightningInvoice: String? {
+    return nil
+  }
+
+  func amountDetails(with currentRates: ExchangeRates, fiatCurrency: CurrencyCode) -> TransactionAmountDetails {
+    let btcAmount = NSDecimalNumber(integerAmount: invitation.btcAmount, currency: .BTC)
+    let fiatAmount = NSDecimalNumber(integerAmount: invitation.fiatAmount, currency: .USD)
+    return TransactionAmountDetails(btcAmount: btcAmount, fiatCurrency: fiatCurrency, exchangeRates: currentRates,
+                                    fiatWhenInvited: fiatAmount, fiatWhenTransacted: nil)
+  }
+
+  func counterpartyConfig(for deviceCountryCode: Int) -> TransactionCellCounterpartyConfig? {
+    return counterpartyConfig(for: walletEntry, deviceCountryCode: deviceCountryCode)
   }
 
 }

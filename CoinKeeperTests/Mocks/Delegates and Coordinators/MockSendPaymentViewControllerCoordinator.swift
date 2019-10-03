@@ -6,6 +6,7 @@
 //  Copyright © 2018 Coin Ninja, LLC. All rights reserved.
 //
 
+import CoreData
 import Foundation
 import UIKit
 import PromiseKit
@@ -41,6 +42,12 @@ class MockSendPaymentViewControllerCoordinator: SendPaymentViewControllerCoordin
     address: String,
     exchangeRates: ExchangeRates) -> PaymentData? {
     return nil
+  }
+
+  func buildLoadLightningPaymentData(btcAmount: NSDecimalNumber,
+                                     exchangeRates: ExchangeRates,
+                                     in context: NSManagedObjectContext) -> Promise<PaymentData> {
+    return Promise { _ in }
   }
 
   func sendPaymentViewControllerWillDismiss(_ viewController: UIViewController) {
