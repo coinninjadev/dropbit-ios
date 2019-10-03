@@ -22,7 +22,7 @@ class BaseViewController: UIViewController, AccessibleViewSettable {
   }
 
   func refreshLockStatus() {
-    switch BaseViewController.lockStatus {
+    switch currentLockStatus {
     case .locked: lock()
     case .unlocked: unlock()
     case .unavailable: makeUnavailable()
@@ -73,8 +73,12 @@ class BaseViewController: UIViewController, AccessibleViewSettable {
     })
 
     unavailableStatusNotification = CKNotificationCenter.subscribe(key: .lightningUnavailable, object: nil, queue: .main, using: { [weak self] _ in
-      BaseViewController.lockStatus = .unavailable
-      self?.makeUnavailable()
+      CKUserDefaults().set(LockStatus.unavailable.rawValue, for: .lightningWalletLockedStatus)
+
+      if self?.currentLockStatus != .unavailable {
+        self?.currentLockStatus = .unavailable
+        self?.makeUnavailable()
+      }
     })
   }
 
