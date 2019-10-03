@@ -14,7 +14,6 @@ class TransactionDetailCellViewModel: TransactionSummaryCellViewModel, Transacti
   var date: Date
   var onChainConfirmations: Int?
   var addressProvidedToSender: String?
-  var encodedInvoice: String?
   var paymentIdIsValid: Bool
   var invitationStatus: InvitationStatus?
 
@@ -29,7 +28,6 @@ class TransactionDetailCellViewModel: TransactionSummaryCellViewModel, Transacti
     self.date = object.primaryDate
     self.onChainConfirmations = object.onChainConfirmations
     self.addressProvidedToSender = object.addressProvidedToSender
-    self.encodedInvoice = object.encodedInvoice
     self.paymentIdIsValid = object.paymentIdIsValid
     self.invitationStatus = object.invitationStatus
 
@@ -56,7 +54,6 @@ protocol TransactionDetailCellViewModelObject: TransactionSummaryCellViewModelOb
   var primaryDate: Date { get }
   var onChainConfirmations: Int? { get }
   var addressProvidedToSender: String? { get }
-  var encodedInvoice: String? { get }
   var paymentIdIsValid: Bool { get }
   var invitationStatus: InvitationStatus? { get }
   var usdExchangeRateWhenReceived: Double? { get }
@@ -80,10 +77,6 @@ extension CKMTransaction: TransactionDetailCellViewModelObject {
     return invitation?.addressProvidedToSender
   }
 
-  var encodedInvoice: String? {
-    return nil
-  }
-
   var paymentIdIsValid: Bool {
     return txidIsActualTxid
   }
@@ -94,48 +87,6 @@ extension CKMTransaction: TransactionDetailCellViewModelObject {
 
   var usdExchangeRateWhenReceived: Double? {
     return dayAveragePrice?.doubleValue
-  }
-
-}
-
-extension LightningViewModelObject: TransactionDetailCellViewModelObject {
-
-  var memoIsShared: Bool {
-    return walletEntry.sharedPayload?.sharingDesired ?? false
-  }
-
-  var primaryDate: Date {
-    //TODO
-    return Date()
-    //return walletEntry.invitation?.date ?? walletEntry.sortDate
-  }
-
-  var onChainConfirmations: Int? {
-    return nil
-  }
-
-  var addressProvidedToSender: String? {
-    return nil
-  }
-
-  var encodedInvoice: String? {
-    return ledgerEntry.request
-  }
-
-  var paymentIdIsValid: Bool {
-    //TODO
-    return true
-  }
-
-  var invitationStatus: InvitationStatus? {
-    //TODO
-    return nil
-//    return walletEntry.invitation?.status
-  }
-
-  var usdExchangeRateWhenReceived: Double? {
-    //TODO
-    return nil
   }
 
 }

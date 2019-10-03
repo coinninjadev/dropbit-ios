@@ -318,7 +318,7 @@ extension CKMTransaction {
 
 }
 
-struct LightningTransactionViewModelObject: TransactionSummaryCellViewModelObject {
+class LightningTransactionViewModelObject: TransactionDetailCellViewModelObject {
   let walletEntry: CKMWalletEntry
   let ledgerEntry: CKMLNLedgerEntry
 
@@ -341,7 +341,7 @@ struct LightningTransactionViewModelObject: TransactionSummaryCellViewModelObjec
   }
 
   var status: TransactionStatus {
-    if let invitation = entry.walletEntry?.invitation {
+    if let invitation = ledgerEntry.walletEntry?.invitation {
       return invitation.transactionStatus
     } else {
       return ledgerEntry.transactionStatus
@@ -364,6 +364,39 @@ struct LightningTransactionViewModelObject: TransactionSummaryCellViewModelObjec
     return false
   }
 
+  var memoIsShared: Bool {
+    return walletEntry.sharedPayload?.sharingDesired ?? false
+  }
+
+  var primaryDate: Date {
+    return walletEntry.sortDate
+  }
+
+  var onChainConfirmations: Int? {
+    return nil
+  }
+
+  var addressProvidedToSender: String? {
+    return nil
+  }
+
+  var paymentIdIsValid: Bool {
+    //TODO
+    return true
+  }
+
+  var invitationStatus: InvitationStatus? {
+    //TODO
+    return nil
+    //    return walletEntry.invitation?.status
+  }
+
+  var usdExchangeRateWhenReceived: Double? {
+    //TODO
+    return nil
+  }
+
+
   func amountDetails(with currentRates: ExchangeRates, fiatCurrency: CurrencyCode) -> TransactionAmountDetails {
     let amount = NSDecimalNumber(integerAmount: ledgerEntry.value, currency: .BTC)
     return TransactionAmountDetails(btcAmount: amount, fiatCurrency: fiatCurrency, exchangeRates: currentRates)
@@ -380,7 +413,7 @@ struct LightningTransactionViewModelObject: TransactionSummaryCellViewModelObjec
 
 }
 
-struct LightningInvitationViewModelObject: TransactionSummaryCellViewModelObject {
+struct LightningInvitationViewModelObject: TransactionDetailCellViewModelObject {
 
   let walletEntry: CKMWalletEntry
   let invitation: CKMInvitation
@@ -437,9 +470,30 @@ struct LightningInvitationViewModelObject: TransactionSummaryCellViewModelObject
     return counterpartyConfig(for: walletEntry, deviceCountryCode: deviceCountryCode)
   }
 
+  var memoIsShared: Bool {
+    return walletEntry.sharedPayload?.sharingDesired ?? false
+  }
+
+  var primaryDate: Date {
+    return invitation.completedAt ?? invitation.sentDate ?? walletEntry.sortDate
+  }
+
+  var paymentIdIsValid: Bool {
+    return status == .completed
+  }
+
+  var invitationStatus: InvitationStatus? {
+    return invitation.status
+  }
+
+  var onChainConfirmations: Int? { return nil }
+  var addressProvidedToSender: String? { return nil }
+  var encodedInvoice: String? { return nil }
+  var usdExchangeRateWhenReceived: Double? { return nil }
+
 }
 
-class LightningInvoiceViewModelObject: LightningViewModelObject {
+class LightningInvoiceViewModelObject: LightningTransactionViewModelObject {
 
   let hoursUntilExpiration: Int?
 
