@@ -10,6 +10,7 @@ import Foundation
 import PromiseKit
 import CoreData
 import UIKit
+import Moya
 
 protocol WalletSyncDelegate: AnyObject {
   func syncManagerDidRequestDependencies(in context: NSManagedObjectContext, inBackground: Bool) -> Promise<SyncDependencies>
@@ -104,10 +105,12 @@ class WalletSyncOperationFactory {
       .then { _ in dependencies.keychainMigrationWorker.migrateIfPossible() }
       .then(in: context) { self.checkAndVerifyUser(with: dependencies, in: context) }
       .then(in: context) { self.checkAndVerifyWallet(with: dependencies, in: context) }
-      .then(in: context) { self.updateLightningAccount(with: dependencies, in: context).asVoid() }
       .then(in: context) { dependencies.txDataWorker.performFetchAndStoreAllOnChainTransactions(in: context, fullSync: fullSync) }
       .get { _ in dependencies.connectionManager.setAPIUnreachable(false) }
+      .then(in: context) { self.updateLightningAccount(with: dependencies, in: context).asVoid() }
       .then(in: context) { dependencies.txDataWorker.performFetchAndStoreAllLightningTransactions(in: context) }
+      .get { self.lightningCheckinSucceeded(dependencies) }
+      .recover { self.handleThunderdomeSyncError(with: $0, dependencies: dependencies) }
       .then(in: context) { dependencies.walletWorker.updateServerPoolAddresses(in: context) }
       .then(in: context) { dependencies.walletWorker.updateReceivedAddressRequests(in: context) }
       .then(in: context) { _ in dependencies.walletWorker.updateSentAddressRequests(in: context) }
@@ -115,6 +118,22 @@ class WalletSyncOperationFactory {
       .then(in: context) { _ in self.fetchAndFulfillReceivedAddressRequests(with: dependencies, in: context) }
       .then(in: context) { _ in dependencies.delegate.showAlertsForSyncedChanges(in: context) }
       .then(in: context) { _ in dependencies.twitterAccessManager.inflateTwitterUsersIfNeeded(in: context) }
+  }
+
+  private func lightningCheckinSucceeded(_ dependencies: SyncDependencies) {
+    dependencies.persistenceManager.brokers.preferences.lightningWalletLockedStatus = .unlocked
+    CKNotificationCenter.publish(key: .didUnlockLightning)
+  }
+
+  private func handleThunderdomeSyncError(with error: Error, dependencies: SyncDependencies) -> Promise<Void> {
+    log.error(error, message: "received error from thunderdome")
+
+    guard let statusCode = (error as? MoyaError)?.response?.statusCode, statusCode == 503 else {
+      return Promise(error: error)
+    }
+    dependencies.persistenceManager.brokers.preferences.lightningWalletLockedStatus = .unavailable
+    CKNotificationCenter.publish(key: .lightningUnavailable)
+    return Promise.value(())
   }
 
   private func onChainOnlySync(with dependencies: SyncDependencies, in context: NSManagedObjectContext) -> Promise<Void> {

@@ -284,6 +284,9 @@ final class RequestPayViewController: PresentableViewController, StoryboardIniti
     walletToggleView.isHidden = true
   }
 
+  override func makeUnavailable() {
+    lock()
+  }
 }
 
 extension RequestPayViewController: WalletToggleViewDelegate {

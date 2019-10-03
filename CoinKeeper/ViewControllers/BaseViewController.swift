@@ -10,11 +10,23 @@ import UIKit
 
 class BaseViewController: UIViewController, AccessibleViewSettable {
 
+  static var lockStatus: LockStatus = LockStatus(rawValue: CKUserDefaults().string(for:
+    .lightningWalletLockedStatus) ?? LockStatus.locked.rawValue) ?? .locked
+
   var lockStatusNotification: NotificationToken?
   var unlockStatusNotification: NotificationToken?
+  var unavailableStatusNotification: NotificationToken?
 
   override var preferredStatusBarStyle: UIStatusBarStyle {
     return statusBarStyle
+  }
+
+  func refreshLockStatus() {
+    switch BaseViewController.lockStatus {
+    case .locked: lock()
+    case .unlocked: unlock()
+    case .unavailable: makeUnavailable()
+    }
   }
 
   override func viewDidLoad() {
@@ -22,7 +34,8 @@ class BaseViewController: UIViewController, AccessibleViewSettable {
     view.backgroundColor = .lightGrayBackground
     setAccessibilityIdentifiers()
     registerForLockStatusNotification()
-    BaseViewController.lockStatus == .locked ? lock() : unlock()
+
+    refreshLockStatus()
   }
 
   /// Subclasses with identifiers should override this method and return the appropriate array
@@ -38,32 +51,29 @@ class BaseViewController: UIViewController, AccessibleViewSettable {
 
   func unlock() {}
   func lock() {}
-}
-
-enum LockStatus: String {
-  case locked
-  case unlocked
-}
-
-extension BaseViewController {
-
-  static var lockStatus: LockStatus = LockStatus(rawValue: CKUserDefaults().string(for:
-    .lightningWalletLockedStatus) ?? LockStatus.locked.rawValue) ?? .locked
+  func makeUnavailable() {}
 
   fileprivate func registerForLockStatusNotification() {
     lockStatusNotification = CKNotificationCenter.subscribe(key: .didLockLightning, object: nil, queue: .main, using: { [weak self] _ in
-      guard BaseViewController.lockStatus != .locked else { return }
-
       BaseViewController.lockStatus = .locked
       self?.lock()
     })
 
     unlockStatusNotification = CKNotificationCenter.subscribe(key: .didUnlockLightning, object: nil, queue: .main, using: { [weak self] _ in
-      guard BaseViewController.lockStatus != .unlocked else { return }
-
       BaseViewController.lockStatus = .unlocked
       self?.unlock()
     })
+
+    unavailableStatusNotification = CKNotificationCenter.subscribe(key: .lightningUnavailable, object: nil, queue: .main, using: { [weak self] _ in
+      BaseViewController.lockStatus = .unavailable
+      self?.makeUnavailable()
+    })
   }
 
+}
+
+enum LockStatus: String {
+  case locked
+  case unlocked
+  case unavailable
 }

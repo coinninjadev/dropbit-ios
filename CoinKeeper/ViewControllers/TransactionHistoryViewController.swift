@@ -42,6 +42,7 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
   @IBOutlet var transactionHistoryNoBalanceView: TransactionHistoryNoBalanceView!
   @IBOutlet var transactionHistoryWithBalanceView: TransactionHistoryWithBalanceView!
   @IBOutlet var lockedLightningView: LockedLightningView!
+  @IBOutlet var lightningUnavailableView: LightningUnavailableView!
   @IBOutlet var lightningTransactionHistoryEmptyBalanceView: LightningTransactionHistoryEmptyView!
   @IBOutlet var refreshView: TransactionHistoryRefreshView!
   @IBOutlet var refreshViewTopConstraint: NSLayoutConstraint!
@@ -95,7 +96,10 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
     lightningTransactionHistoryEmptyBalanceView.delegate = delegate
     emptyStateBackgroundView.isHidden = false
     emptyStateBackgroundView.backgroundColor = .whiteBackground
-    if viewModel.walletTransactionType == .onChain { lockedLightningView.isHidden = true }
+    if viewModel.walletTransactionType == .onChain {
+      lockedLightningView.isHidden = true
+      lightningUnavailableView.isHidden = true
+    }
 
     view.backgroundColor = .clear
     emptyStateBackgroundView.applyCornerRadius(30, toCorners: .top)
@@ -121,11 +125,20 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
   override func lock() {
     if viewModel.walletTransactionType == .lightning {
       lockedLightningView.isHidden = false
+      lightningUnavailableView.isHidden = true
+    }
+  }
+
+  override func makeUnavailable() {
+    if viewModel.walletTransactionType == .lightning {
+      lockedLightningView.isHidden = true
+      lightningUnavailableView.isHidden = false
     }
   }
 
   override func unlock() {
     lockedLightningView.isHidden = true
+    lightningUnavailableView.isHidden = true
   }
 
   internal func reloadTransactions(atIndexPaths paths: [IndexPath]) {
