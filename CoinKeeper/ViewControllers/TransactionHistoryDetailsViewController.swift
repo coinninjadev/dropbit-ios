@@ -103,7 +103,7 @@ extension TransactionHistoryDetailsViewController: TransactionHistoryDetailCellD
 
   func didTapQuestionMarkButton(detailCell: TransactionHistoryDetailBaseCell, tooltip: DetailCellTooltip) {
     guard let tooltipURL = url(for: tooltip) else { return }
-    delegate.openURL(url, completionHandler: nil)
+    delegate.openURL(tooltipURL, completionHandler: nil)
   }
 
   private func url(for tooltip: DetailCellTooltip) -> URL? {
@@ -118,8 +118,12 @@ extension TransactionHistoryDetailsViewController: TransactionHistoryDetailCellD
   }
 
   func didTapTwitterShare(detailCell: TransactionHistoryDetailBaseCell) {
-//    guard let tx = detailCell.viewModel?.transaction else { return }
-//    delegate.viewControllerRequestedShareTransactionOnTwitter(self, transaction: tx, shouldDismiss: false)
+    guard let indexPath = self.collectionView.indexPath(for: detailCell),
+      let item = viewModel.dataSource.detailCellActionableItem(at: indexPath)
+      else { return }
+
+    delegate.viewControllerRequestedShareTransactionOnTwitter(self, walletTxType: self.viewModel.walletTransactionType,
+                                                              transaction: item, shouldDismiss: false)
   }
 
   func didTapAddress(detailCell: TransactionHistoryDetailBaseCell) {

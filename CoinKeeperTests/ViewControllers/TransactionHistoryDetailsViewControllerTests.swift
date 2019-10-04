@@ -95,7 +95,8 @@ class TransactionHistoryDetailsViewControllerTests: XCTestCase {
     }
 
     func viewControllerRequestedShareTransactionOnTwitter(_ viewController: UIViewController,
-                                                          transaction: CKMTransaction?,
+                                                          walletTxType: WalletTransactionType,
+                                                          transaction: TransactionDetailCellActionable?,
                                                           shouldDismiss: Bool) { }
 
     var wasAskedToOpenURL = false

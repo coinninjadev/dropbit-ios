@@ -8,9 +8,11 @@
 
 import Foundation
 
+/// An object that can be shared or mutated based on actions taken by the user in the transaction detail cell
 protocol TransactionDetailCellActionable {
 
   var bitcoinAddress: String? { get }
   var lightningInvoice: String? { get }
+  var memo: String? { get }
 
 }

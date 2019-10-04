@@ -140,3 +140,10 @@ extension CKMTransaction: TransactionDetailCellViewModelObject {
 
 }
 
+extension CKMTransaction: TransactionDetailCellActionable {
+
+  var bitcoinAddress: String? {
+    return receiverAddress
+  }
+
+}

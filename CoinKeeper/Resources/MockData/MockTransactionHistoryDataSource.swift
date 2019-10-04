@@ -37,6 +37,10 @@ class MockTransactionHistoryDataSource: TransactionHistoryDataSourceType {
     return items[indexPath.row]
   }
 
+  func detailCellActionableItem(at indexPath: IndexPath) -> TransactionDetailCellActionable? {
+    return nil
+  }
+
   func numberOfSections() -> Int {
     return 1
   }

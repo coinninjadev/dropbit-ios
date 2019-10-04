@@ -27,10 +27,7 @@ protocol TransactionHistoryDataSourceType: AnyObject {
                                  currencies: CurrencyPair,
                                  deviceCountryCode: Int) -> TransactionDetailCellDisplayable
 
-  func detailCellActionableItem(at indexPath: IndexPath,
-                                rates: ExchangeRates,
-                                currencies: CurrencyPair,
-                                deviceCountryCode: Int) -> TransactionDetailCellActionable
+  func detailCellActionableItem(at indexPath: IndexPath) -> TransactionDetailCellActionable?
 
   func numberOfSections() -> Int
   func numberOfItems(inSection section: Int) -> Int
@@ -81,6 +78,10 @@ class TransactionHistoryOnChainDataSource: NSObject, TransactionHistoryDataSourc
     let selectedCurrency: SelectedCurrency = currencies.primary.isFiat ? .fiat : .BTC
     return TransactionDetailCellViewModel(object: transaction, selectedCurrency: selectedCurrency, fiatCurrency: currencies.fiat,
                                           exchangeRates: rates, deviceCountryCode: deviceCountryCode)
+  }
+
+  func detailCellActionableItem(at indexPath: IndexPath) -> TransactionDetailCellActionable? {
+    return frc.object(at: indexPath)
   }
 
   func numberOfSections() -> Int {
@@ -156,6 +157,10 @@ class TransactionHistoryLightningDataSource: NSObject, TransactionHistoryDataSou
       return TransactionDetailCellViewModel(object: vmObject, selectedCurrency: selectedCurrency, fiatCurrency: currencies.fiat,
                                             exchangeRates: rates, deviceCountryCode: deviceCountryCode)
     }
+  }
+
+  func detailCellActionableItem(at indexPath: IndexPath) -> TransactionDetailCellActionable? {
+    return nil
   }
 
   private func viewModelObject(for walletEntry: CKMWalletEntry) -> TransactionDetailCellViewModelObject {
