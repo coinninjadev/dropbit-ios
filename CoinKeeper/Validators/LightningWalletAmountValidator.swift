@@ -47,7 +47,7 @@ enum LightningWalletAmountValidatorError: ValidatorTypeError {
 
 class LightningWalletAmountValidator: ValidatorType<CurrencyConverter> {
 
-  static let maxWalletValue = Money(amount: NSDecimalNumber(value: 500), currency: .USD)
+  static let maxWalletValue = Money(amount: NSDecimalNumber(value: 200), currency: .USD)
   static let minReloadAmount = Money(amount: NSDecimalNumber(value: 5), currency: .USD)
 
   let balancesNetPending: WalletBalances
