@@ -15,7 +15,7 @@ URLOpener & DeviceCountryCodeProvider & CurrencyValueDataSourceType {
 
   var currencyController: CurrencyController { get }
   func viewControllerDidDismissTransactionDetails(_ viewController: UIViewController)
-  func viewControllerShouldSeeTransactionDetails(for viewModel: OldTransactionDetailCellViewModel)
+  func viewControllerShouldSeeTransactionDetails(for viewModel: TransactionDetailPopoverDisplayable)
   func viewController(_ viewController: TransactionHistoryDetailsViewController,
                       didCancelInvitationWithID invitationID: String,
                       at indexPath: IndexPath)

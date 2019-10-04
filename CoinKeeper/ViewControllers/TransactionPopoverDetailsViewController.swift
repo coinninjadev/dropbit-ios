@@ -35,20 +35,31 @@ class TransactionPopoverDetailsViewController: BaseViewController, StoryboardIni
 
   private let height: CGFloat = 410
 
-  var viewModel: OldTransactionDetailCellViewModel?
+  private(set) weak var delegate: TransactionPopoverDetailsViewControllerDelegate!
+  private var txidURL: URL?
+
+  static func newInstance(delegate: TransactionPopoverDetailsViewControllerDelegate,
+                          viewModel: TransactionDetailPopoverDisplayable) -> TransactionPopoverDetailsViewController {
+    let vc = TransactionPopoverDetailsViewController.makeFromStoryboard()
+    vc.delegate = delegate
+    vc.configure(with: viewModel)
+    return vc
+  }
+
   override func viewDidLoad() {
     super.viewDidLoad()
     setupUI()
   }
 
-  private(set) weak var delegate: TransactionPopoverDetailsViewControllerDelegate!
+  private func configure(with viewModel: TransactionDetailPopoverDisplayable) {
+    self.txidURL = viewModel.txidURL
 
-  static func newInstance(delegate: TransactionPopoverDetailsViewControllerDelegate,
-                          viewModel: OldTransactionDetailCellViewModel) -> TransactionPopoverDetailsViewController {
-    let vc = TransactionPopoverDetailsViewController.makeFromStoryboard()
-    vc.viewModel = viewModel
-    vc.delegate = delegate
-    return vc
+    whenSentAmountLabel.text = viewModel.breakdownSentAmountText
+    networkFeeAmountLabel.text = viewModel.breakdownFeeAmountText
+    confirmationsAmountLabel.text = viewModel.confirmationsText
+    statusLabel.text = viewModel.detailStatusText
+    txidLabel.text = viewModel.txid
+    transactionDirectionImageView.image = nil // need to change view to use new one
   }
 
   private func setupUI() {
@@ -59,22 +70,9 @@ class TransactionPopoverDetailsViewController: BaseViewController, StoryboardIni
     shareTransactionButton.setTitleColor(.lightBlueTint, for: .normal)
     shareTransactionButton.titleLabel?.font = .semiBold(14)
     containerView.applyCornerRadius(15)
-    setupViewWithModel()
     addDismissibleTapToBackground()
     let title = "VIEW ON BLOCK EXPLORER"
     seeTransactionDetailsButton.setTitle(title, for: .normal)
-  }
-
-  private func setupViewWithModel() {
-    guard let viewModel = viewModel else { return }
-
-    whenSentAmountLabel.text = viewModel.breakdownSentAmountLabel
-    networkFeeAmountLabel.text = viewModel.breakdownFeeAmountLabel
-    confirmationsAmountLabel.text = viewModel.confirmations >= 6 ? "6+" :
-      String(describing: viewModel.confirmations)
-    statusLabel.text = viewModel.statusDescription
-    txidLabel.text = viewModel.transaction?.txid
-    transactionDirectionImageView.image = viewModel.imageForTransactionDirection
   }
 
   func dismissPopoverViewController() {
@@ -90,15 +88,13 @@ class TransactionPopoverDetailsViewController: BaseViewController, StoryboardIni
   }
 
   @IBAction func viewControllerDidTapTransactionDetailsButton() {
-    guard let txid = viewModel?.transaction?.txid,
-      let url = CoinNinjaUrlFactory.buildUrl(for: .transaction(id: txid)) else { return }
+    guard let url = txidURL else { return }
     delegate.viewControllerDidTapTransactionDetailsButton(with: url)
   }
 
   @IBAction func viewControllerDidTapShareTransactionButton() {
     delegate.viewControllerDidTapShareTransactionButton()
-    guard let transaction = viewModel?.transaction, transaction.txidIsActualTxid,
-      let url = CoinNinjaUrlFactory.buildUrl(for: .transaction(id: transaction.txid)) else { return }
+    guard let url = txidURL else { return }
 
     let activityViewController = UIActivityViewController(activityItems: [url.absoluteString],
                                                           applicationActivities: nil)

@@ -60,7 +60,7 @@ class TransactionHistoryDetailsViewControllerTests: XCTestCase {
 
     let currencyController: CurrencyController = CurrencyController(fiatCurrency: .USD)
 
-    func viewControllerShouldSeeTransactionDetails(for viewModel: OldTransactionDetailCellViewModel) { }
+    func viewControllerShouldSeeTransactionDetails(for viewModel: TransactionDetailPopoverDisplayable) { }
 
     func latestExchangeRates(responseHandler: (ExchangeRates) -> Void) {
       responseHandler(CurrencyConverter.sampleRates)
@@ -79,7 +79,7 @@ class TransactionHistoryDetailsViewControllerTests: XCTestCase {
       wasAskedToDismissDetailsController = true
     }
 
-    func viewControllerShouldSeeTransactionDetails(for object: TransactionDetailCellDisplayable) { }
+    func viewControllerShouldSeeTransactionDetails(for object: TransactionDetailPopoverDisplayable) { }
 
     func viewController(_ viewController: TransactionHistoryDetailsViewController,
                         didCancelInvitationWithID invitationID: String,
