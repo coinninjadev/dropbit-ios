@@ -10,7 +10,7 @@ import UIKit
 
 /// Provides all variable values directly necessary to configure the TransactionHistoryDetailCell UI.
 /// Fixed values (colors, font sizes, etc.) are provided by the cell itself.
-protocol TransactionDetailCellDisplayable: TransactionSummaryCellDisplayable {
+protocol TransactionDetailCellDisplayable {
   var directionConfig: TransactionCellDirectionConfig { get }
   var detailStatusText: String { get }
   var detailStatusColor: UIColor { get }
@@ -26,6 +26,10 @@ protocol TransactionDetailCellDisplayable: TransactionSummaryCellDisplayable {
   var actionButtonConfig: DetailCellActionButtonConfig? { get }
   var tooltipType: DetailCellTooltip { get }
   var detailCellType: TransactionDetailCellType { get }
+  var cellBackgroundColor: UIColor { get }
+  var isLightningTransfer: Bool { get }
+  var shouldHideMemoLabel: Bool { get }
+  var shouldHideAvatarView: Bool { get }
 
 }
 

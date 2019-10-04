@@ -8,12 +8,13 @@
 
 import Foundation
 
+typealias TransactionCellDisplayable = TransactionSummaryCellDisplayable & TransactionDetailCellDisplayable
 class MockTransactionHistoryDataSource: TransactionHistoryDataSourceType {
 
   let walletTransactionType: WalletTransactionType
   weak var delegate: TransactionHistoryDataSourceDelegate?
 
-  fileprivate var items: [TransactionDetailCellDisplayable]
+  fileprivate var items: [TransactionCellDisplayable]
   fileprivate let generator: MockDetailDataGenerator
 
   init(walletTxType: WalletTransactionType) {

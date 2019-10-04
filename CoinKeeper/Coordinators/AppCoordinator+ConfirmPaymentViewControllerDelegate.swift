@@ -20,7 +20,7 @@ struct LightningPaymentInputs {
 }
 
 extension AppCoordinator: ConfirmPaymentViewControllerDelegate {
-  
+
   func confirmPaymentViewControllerDidLoad(_ viewController: UIViewController) {
     analyticsManager.track(event: .confirmScreenLoaded, with: nil)
   }
@@ -100,7 +100,7 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate {
           // Call this separately from handleAddressRequestCreationSuccess so
           // that it doesn't interrupt Twilio error SMS fallback flow
           strongSelf.showShareTransactionIfAppropriate(dropBitReceiver: outgoingInvitationDTO.contact.asDropBitReceiver,
-                                                       walletTxType:outgoingInvitationDTO.walletTxType, delegate: strongSelf)
+                                                       walletTxType: outgoingInvitationDTO.walletTxType, delegate: strongSelf)
 
         }.catch(on: .main) { error in
           strongSelf.handleAddressRequestCreationError(error,
