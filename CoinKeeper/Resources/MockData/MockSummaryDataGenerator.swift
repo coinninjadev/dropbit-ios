@@ -89,7 +89,7 @@ class MockOnChainSummaryVM: MockTransactionSummaryCellViewModel {
                receiverAddress: receiverAddress,
                lightningInvoice: nil,
                selectedCurrency: .fiat,
-               amountProvider: amtFactory,
+               amountFactory: amtFactory,
                counterpartyConfig: counterparty,
                memo: memo)
   }
@@ -180,7 +180,7 @@ class MockLightningSummaryVM: MockTransactionSummaryCellViewModel {
                receiverAddress: nil,
                lightningInvoice: lightningInvoice,
                selectedCurrency: .fiat,
-               amountProvider: amtFactory,
+               amountFactory: amtFactory,
                counterpartyConfig: counterparty,
                memo: memo)
   }

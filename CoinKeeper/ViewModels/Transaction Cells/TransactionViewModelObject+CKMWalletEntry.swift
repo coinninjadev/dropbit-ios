@@ -78,7 +78,7 @@ class LightningTransactionViewModelObject: TransactionDetailCellViewModelObject 
     return nil
   }
 
-  func amountProvider(with currentRates: ExchangeRates, fiatCurrency: CurrencyCode) -> TransactionAmountsProvider {
+  func amountFactory(with currentRates: ExchangeRates, fiatCurrency: CurrencyCode) -> TransactionAmountsFactoryType {
     return TransactionAmountsFactory(walletEntry: walletEntry, fiatCurrency: fiatCurrency, currentRates: currentRates)
   }
 
@@ -139,7 +139,7 @@ struct LightningInvitationViewModelObject: TransactionDetailCellViewModelObject 
     return nil
   }
 
-  func amountProvider(with currentRates: ExchangeRates, fiatCurrency: CurrencyCode) -> TransactionAmountsProvider {
+  func amountFactory(with currentRates: ExchangeRates, fiatCurrency: CurrencyCode) -> TransactionAmountsFactoryType {
     return TransactionAmountsFactory(walletEntry: walletEntry, fiatCurrency: fiatCurrency, currentRates: currentRates)
   }
 
@@ -222,7 +222,7 @@ struct FallbackViewModelObject: TransactionDetailCellViewModelObject {
     self.paymentIdIsValid = true
   }
 
-  func amountProvider(with currentRates: ExchangeRates, fiatCurrency: CurrencyCode) -> TransactionAmountsProvider {
+  func amountFactory(with currentRates: ExchangeRates, fiatCurrency: CurrencyCode) -> TransactionAmountsFactoryType {
     return MockAmountsFactory(btcAmount: .one, fiatCurrency: fiatCurrency, exchangeRates: currentRates)
   }
 

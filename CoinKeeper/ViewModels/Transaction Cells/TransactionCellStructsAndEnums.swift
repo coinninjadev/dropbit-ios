@@ -33,7 +33,7 @@ enum LightningTransferType {
   case deposit, withdraw
 }
 
-struct MockAmountsFactory: TransactionAmountsProvider {
+struct MockAmountsFactory: TransactionAmountsFactoryType {
   let btcAmount: NSDecimalNumber
   let currencyPair: CurrencyPair
   let exchangeRates: ExchangeRates

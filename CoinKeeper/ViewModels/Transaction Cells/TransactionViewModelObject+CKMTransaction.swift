@@ -24,7 +24,7 @@ extension CKMTransaction: TransactionSummaryCellViewModelObject {
     return invitation?.transactionStatus ?? statusForTransaction
   }
 
-  func amountProvider(with currentRates: ExchangeRates, fiatCurrency: CurrencyCode) -> TransactionAmountsProvider {
+  func amountFactory(with currentRates: ExchangeRates, fiatCurrency: CurrencyCode) -> TransactionAmountsFactoryType {
     return TransactionAmountsFactory(transaction: self, fiatCurrency: fiatCurrency, currentRates: currentRates)
   }
 

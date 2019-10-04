@@ -49,7 +49,7 @@ class MockTransactionDetailValidCellViewModel: MockTransactionSummaryCellViewMod
     super.init(walletTxType: walletTxType, direction: direction, status: status,
                isLightningTransfer: isLightningTransfer, receiverAddress: receiverAddress,
                lightningInvoice: lightningInvoice, selectedCurrency: selectedCurrency,
-               amountProvider: amtFactory, counterpartyConfig: counterpartyConfig, memo: memo)
+               amountFactory: amtFactory, counterpartyConfig: counterpartyConfig, memo: memo)
   }
 
   /// Use this proxy function to prevent test from entering conflicting information for invitationStatus and paymentIdIsValid

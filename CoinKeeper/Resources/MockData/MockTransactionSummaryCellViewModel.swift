@@ -20,7 +20,7 @@ class MockTransactionSummaryCellViewModel: TransactionSummaryCellViewModelType {
   var receiverAddress: String?
   var lightningInvoice: String?
   var selectedCurrency: SelectedCurrency
-  var amountProvider: TransactionAmountsProvider
+  var amounts: TransactionAmounts
   var counterpartyConfig: TransactionCellCounterpartyConfig?
   var memo: String?
 
@@ -31,7 +31,7 @@ class MockTransactionSummaryCellViewModel: TransactionSummaryCellViewModelType {
        receiverAddress: String?,
        lightningInvoice: String?,
        selectedCurrency: SelectedCurrency,
-       amountProvider: TransactionAmountsProvider,
+       amountFactory: TransactionAmountsFactoryType,
        counterpartyConfig: TransactionCellCounterpartyConfig?,
        memo: String?) {
     self.walletTxType = walletTxType
@@ -41,7 +41,7 @@ class MockTransactionSummaryCellViewModel: TransactionSummaryCellViewModelType {
     self.receiverAddress = receiverAddress
     self.lightningInvoice = lightningInvoice
     self.selectedCurrency = selectedCurrency
-    self.amountProvider = amountProvider
+    self.amounts = TransactionAmounts(factory: amountFactory)
     self.counterpartyConfig = counterpartyConfig
     self.memo = memo
   }
@@ -61,12 +61,12 @@ class MockTransactionSummaryCellViewModel: TransactionSummaryCellViewModelType {
   }
 
   static func defaultInstance() -> MockTransactionSummaryCellViewModel {
-    let amtDetails = testAmountFactory(sats: 49500)
+    let amtFactory = testAmountFactory(sats: 49500)
     let address = mockValidBitcoinAddress()
     return MockTransactionSummaryCellViewModel(walletTxType: .onChain, direction: .out,
                                                status: .completed, isLightningTransfer: false,
                                                receiverAddress: address, lightningInvoice: nil,
-                                               selectedCurrency: .fiat, amountProvider: amtDetails,
+                                               selectedCurrency: .fiat, amountFactory: amtFactory,
                                                counterpartyConfig: nil, memo: nil)
   }
 
@@ -86,7 +86,7 @@ class MockTransactionSummaryCellViewModel: TransactionSummaryCellViewModelType {
       walletTxType: walletTxType, direction: direction,
       status: status, isLightningTransfer: isLightningTransfer,
       receiverAddress: receiverAddress, lightningInvoice: lightningInvoice,
-      selectedCurrency: selectedCurrency, amountProvider: amtFactory,
+      selectedCurrency: selectedCurrency, amountFactory: amtFactory,
       counterpartyConfig: counterpartyConfig, memo: memo)
   }
 

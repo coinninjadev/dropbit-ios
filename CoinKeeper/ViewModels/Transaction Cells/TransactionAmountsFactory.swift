@@ -10,7 +10,7 @@ import Foundation
 
 /// The net amounts may include fees if on the sender side and they are known.
 /// The net amount is intended to be displayed to the user without further adjustments for fees.
-protocol TransactionAmountsProvider {
+protocol TransactionAmountsFactoryType {
 
   var netAtCurrentAmounts: ConvertedAmounts { get }
 
@@ -26,7 +26,28 @@ protocol TransactionAmountsProvider {
 
 }
 
-struct TransactionAmountsFactory: TransactionAmountsProvider {
+/// A container to hold the output of the factory to prevent unnecessary recalculation
+struct TransactionAmounts {
+
+  let netAtCurrent: ConvertedAmounts
+  let netWhenInitiated: ConvertedAmounts?
+  let netWhenTransacted: ConvertedAmounts?
+  let bitcoinNetworkFee: ConvertedAmounts?
+  let lightningNetworkFee: ConvertedAmounts?
+  let dropBitFee: ConvertedAmounts?
+
+  init(factory: TransactionAmountsFactoryType) {
+    self.netAtCurrent = factory.netAtCurrentAmounts
+    self.netWhenInitiated = factory.netWhenInitiatedAmounts
+    self.netWhenTransacted = factory.netWhenTransactedAmounts
+    self.bitcoinNetworkFee = factory.bitcoinNetworkFeeAmounts
+    self.lightningNetworkFee = factory.lightningNetworkFeeAmounts
+    self.dropBitFee = factory.dropBitFeeAmounts
+  }
+
+}
+
+struct TransactionAmountsFactory: TransactionAmountsFactoryType {
 
   private let fiatCurrency: CurrencyCode
   private let currentRate: Double

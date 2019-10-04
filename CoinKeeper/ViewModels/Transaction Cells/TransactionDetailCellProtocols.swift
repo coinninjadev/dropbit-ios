@@ -244,8 +244,7 @@ extension TransactionDetailCellViewModelType {
   }
 
   var detailAmountLabels: DetailCellAmountLabels {
-    let amounts = self.amountProvider
-    let netAtCurrent = amounts.netAtCurrentAmounts
+    let netAtCurrent = amounts.netAtCurrent
 
     let btcAttributedString: NSAttributedString?
     switch walletTxType {
@@ -264,8 +263,8 @@ extension TransactionDetailCellViewModelType {
 
     let secondary = btcAttributedString ?? NSAttributedString(string: "-")
 
-    let historicalText = historicalAmountsAttributedString(fiatWhenTransacted: amounts.netWhenTransactedAmounts?.fiat,
-                                                           fiatWhenInvited: amounts.netWhenInitiatedAmounts?.fiat)
+    let historicalText = historicalAmountsAttributedString(fiatWhenTransacted: amounts.netWhenTransacted?.fiat,
+                                                           fiatWhenInvited: amounts.netWhenInitiated?.fiat)
 
     return DetailCellAmountLabels(primaryText: fiatText,
                                   secondaryAttributedText: secondary,
