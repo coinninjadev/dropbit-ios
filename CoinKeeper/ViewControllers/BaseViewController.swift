@@ -55,30 +55,21 @@ class BaseViewController: UIViewController, AccessibleViewSettable {
 
   fileprivate func registerForLockStatusNotification() {
     lockStatusNotification = CKNotificationCenter.subscribe(key: .didLockLightning, object: nil, queue: .main, using: { [weak self] _ in
-      CKUserDefaults().set(LockStatus.locked.rawValue, for: .lightningWalletLockedStatus)
-
-      if self?.currentLockStatus != .locked {
-        self?.currentLockStatus = .locked
-        self?.lock()
-      }
+      guard self?.currentLockStatus != .locked else { return }
+      self?.currentLockStatus = .locked
+      self?.lock()
     })
 
     unlockStatusNotification = CKNotificationCenter.subscribe(key: .didUnlockLightning, object: nil, queue: .main, using: { [weak self] _ in
-      CKUserDefaults().set(LockStatus.unlocked.rawValue, for: .lightningWalletLockedStatus)
-
-      if self?.currentLockStatus != .unlocked {
-        self?.currentLockStatus = .unlocked
-        self?.unlock()
-      }
+      guard self?.currentLockStatus != .unlocked else { return }
+      self?.currentLockStatus = .unlocked
+      self?.unlock()
     })
 
     unavailableStatusNotification = CKNotificationCenter.subscribe(key: .lightningUnavailable, object: nil, queue: .main, using: { [weak self] _ in
-      CKUserDefaults().set(LockStatus.unavailable.rawValue, for: .lightningWalletLockedStatus)
-
-      if self?.currentLockStatus != .unavailable {
-        self?.currentLockStatus = .unavailable
-        self?.makeUnavailable()
-      }
+      guard self?.currentLockStatus != .unavailable else { return }
+      self?.currentLockStatus = .unavailable
+      self?.makeUnavailable()
     })
   }
 

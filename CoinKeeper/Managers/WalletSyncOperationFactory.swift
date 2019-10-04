@@ -107,11 +107,11 @@ class WalletSyncOperationFactory {
       .then(in: context) { self.checkAndVerifyWallet(with: dependencies, in: context) }
       .then(in: context) { dependencies.txDataWorker.performFetchAndStoreAllOnChainTransactions(in: context, fullSync: fullSync) }
       .get { _ in dependencies.connectionManager.setAPIUnreachable(false) }
-      .then(in: context) { self.updateLightningAccount(with: dependencies, in: context).asVoid() }
-      .then(in: context) { dependencies.txDataWorker.performFetchAndStoreAllLightningTransactions(in: context) }
-      .get { self.lightningCheckinSucceeded(dependencies) }
+      .then(in: context) { self.updateLightningAccount(with: dependencies, in: context) }
+      .get { account in self.updateLightningAccountStatusAfterSuccessfulResponse(dependencies, account: account) }
+      .then(in: context) { _ in dependencies.txDataWorker.performFetchAndStoreAllLightningTransactions(in: context) }
       .recover { self.handleThunderdomeSyncError(with: $0, dependencies: dependencies) }
-      .then(in: context) { dependencies.walletWorker.updateServerPoolAddresses(in: context) }
+      .then(in: context) { _ in dependencies.walletWorker.updateServerPoolAddresses(in: context) }
       .then(in: context) { dependencies.walletWorker.updateReceivedAddressRequests(in: context) }
       .then(in: context) { _ in dependencies.walletWorker.updateSentAddressRequests(in: context) }
       .recover(self.recoverSyncError)
@@ -120,9 +120,14 @@ class WalletSyncOperationFactory {
       .then(in: context) { _ in dependencies.twitterAccessManager.inflateTwitterUsersIfNeeded(in: context) }
   }
 
-  private func lightningCheckinSucceeded(_ dependencies: SyncDependencies) {
-    dependencies.persistenceManager.brokers.preferences.lightningWalletLockedStatus = .unlocked
-    CKNotificationCenter.publish(key: .didUnlockLightning)
+  private func updateLightningAccountStatusAfterSuccessfulResponse(_ dependencies: SyncDependencies, account: LNAccountResponse) {
+    if account.locked {
+      dependencies.persistenceManager.brokers.preferences.lightningWalletLockedStatus = .locked
+      CKNotificationCenter.publish(key: .didLockLightning)
+    } else {
+      dependencies.persistenceManager.brokers.preferences.lightningWalletLockedStatus = .unlocked
+      CKNotificationCenter.publish(key: .didUnlockLightning)
+    }
   }
 
   private func handleThunderdomeSyncError(with error: Error, dependencies: SyncDependencies) -> Promise<Void> {
@@ -162,14 +167,6 @@ class WalletSyncOperationFactory {
     return dependencies.networkManager.getOrCreateLightningAccount()
       .get(in: context) { lnAccountResponse in
         guard let wallet = CKMWallet.find(in: context) else { return }
-
-        if lnAccountResponse.locked {
-          dependencies.persistenceManager.brokers.preferences.lightningWalletLockedStatus = .locked
-          CKNotificationCenter.publish(key: .didLockLightning)
-        } else {
-          dependencies.persistenceManager.brokers.preferences.lightningWalletLockedStatus = .unlocked
-          CKNotificationCenter.publish(key: .didUnlockLightning)
-        }
 
         dependencies.persistenceManager.brokers.lightning.persistAccountResponse(lnAccountResponse, forWallet: wallet, in: context)
     }
