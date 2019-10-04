@@ -22,6 +22,7 @@ class MockTransactionSummaryCellViewModel: TransactionSummaryCellViewModelType {
   var selectedCurrency: SelectedCurrency
   var amounts: TransactionAmounts
   var counterpartyConfig: TransactionCellCounterpartyConfig?
+  var isPendingTransferToLightning: Bool = false
   var memo: String?
 
   init(walletTxType: WalletTransactionType,

@@ -143,7 +143,12 @@ extension TransactionDetailCellViewModelType {
   private var completedStatusText: String {
     if let transferType = lightningTransferType {
       switch transferType {
-      case .deposit:    return string(for: .loadLightning)
+      case .deposit:
+        if isPendingTransferToLightning {
+          return string(for: .loadLightningPending)
+        } else {
+          return string(for: .loadLightning)
+        }
       case .withdraw:   return string(for: .withdrawFromLightning)
       }
     } else {
@@ -474,6 +479,7 @@ enum DetailCellString: String {
   case transactionExpired = "Transaction Expired"
   case invoicePaid = "Invoice Paid"
   case loadLightning = "Load Lightning"
+  case loadLightningPending = "Load Lightning - Pending"
   case withdrawFromLightning = "Withdraw from Lightning"
 }
 

@@ -49,7 +49,9 @@ class TransactionHistorySummaryCell: UICollectionViewCell {
     configureIsHidden(with: values)
     configureLeadingViews(with: values.leadingImageConfig, cellBgColor: values.cellBackgroundColor)
     descriptionLabel.text = values.summaryTransactionDescription
-    memoLabel.text = values.memo
+    memoLabel.font = values.subtitleFont
+    memoLabel.text = values.isPendingTransferToLightning ? "PENDING" : values.memo
+    memoLabel.textColor = values.subtitleColor
     configureAmountLabels(with: values.summaryAmountLabels,
                           accentColor: values.accentColor,
                           walletTxType: values.walletTxType,
@@ -60,7 +62,11 @@ class TransactionHistorySummaryCell: UICollectionViewCell {
   private func configureIsHidden(with values: TransactionSummaryCellDisplayable) {
     directionView.isHidden = values.shouldHideDirectionView
     twitterAvatarView.isHidden = values.shouldHideAvatarView
-    memoLabel.isHidden = values.shouldHideMemoLabel
+    if values.isPendingTransferToLightning {
+      memoLabel.isHidden = false
+    } else {
+      memoLabel.isHidden = values.shouldHideMemoLabel
+    }
   }
 
   private func configureLeadingViews(with leadingConfig: SummaryCellLeadingImageConfig, cellBgColor: UIColor) {

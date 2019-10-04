@@ -18,6 +18,7 @@ protocol TransactionSummaryCellDisplayable {
   var accentColor: UIColor { get } //amount and leading image background color
   var leadingImageConfig: SummaryCellLeadingImageConfig { get } // may be avatar or direction icon
   var memo: String? { get }
+  var isPendingTransferToLightning: Bool { get }
   var isLightningTransfer: Bool { get } //can be true for either onChain or lightning transactions
   var cellBackgroundColor: UIColor { get }
 }
@@ -27,6 +28,8 @@ extension TransactionSummaryCellDisplayable {
   var cellBackgroundColor: UIColor { return .white }
   var shouldHideAvatarView: Bool { return leadingImageConfig.avatarConfig == nil }
   var shouldHideDirectionView: Bool { return leadingImageConfig.directionConfig == nil }
+  var subtitleFont: UIFont { return isPendingTransferToLightning ? .semiBold(14) : .medium(14) }
+  var subtitleColor: UIColor { return isPendingTransferToLightning ? .bitcoinOrange : .darkBlueText }
   var shouldHideMemoLabel: Bool {
     let memoIsEmpty = (memo ?? "").isEmpty
     return isLightningTransfer || memoIsEmpty
