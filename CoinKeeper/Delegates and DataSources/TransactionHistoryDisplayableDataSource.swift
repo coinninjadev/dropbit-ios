@@ -160,7 +160,7 @@ class TransactionHistoryLightningDataSource: NSObject, TransactionHistoryDataSou
   }
 
   func detailCellActionableItem(at indexPath: IndexPath) -> TransactionDetailCellActionable? {
-    return nil
+    return frc.object(at: indexPath)
   }
 
   private func viewModelObject(for walletEntry: CKMWalletEntry) -> TransactionDetailCellViewModelObject {
@@ -192,4 +192,16 @@ class TransactionHistoryLightningDataSource: NSObject, TransactionHistoryDataSou
     delegate?.transactionDataSourceDidChange()
   }
 
+}
+
+extension CKMWalletEntry: TransactionDetailCellActionable {
+
+  var bitcoinAddress: String? { return nil }
+  var lightningInvoice: String? {
+    return ledgerEntry?.request
+  }
+
+  func removeFromTransactionHistory() {
+    self.isHidden = true
+  }
 }

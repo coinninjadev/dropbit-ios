@@ -11,7 +11,7 @@ import CoreData
 import PromiseKit
 
 protocol TransactionHistoryDetailsViewControllerDelegate: TransactionShareable &
-URLOpener & DeviceCountryCodeProvider & CurrencyValueDataSourceType {
+URLOpener & DeviceCountryCodeProvider & CurrencyValueDataSourceType & CopyToClipboardMessageDisplayable {
 
   var currencyController: CurrencyController { get }
   func viewControllerDidDismissTransactionDetails(_ viewController: UIViewController)
@@ -101,6 +101,11 @@ final class TransactionHistoryDetailsViewController: PresentableViewController, 
 
 extension TransactionHistoryDetailsViewController: TransactionHistoryDetailCellDelegate {
 
+  private func actionableItem(for detailCell: UICollectionViewCell) -> TransactionDetailCellActionable? {
+    guard let indexPath = self.collectionView.indexPath(for: detailCell) else { return nil }
+    return viewModel.dataSource.detailCellActionableItem(at: indexPath)
+  }
+
   func didTapQuestionMarkButton(detailCell: TransactionHistoryDetailBaseCell, tooltip: DetailCellTooltip) {
     guard let tooltipURL = url(for: tooltip) else { return }
     delegate.openURL(tooltipURL, completionHandler: nil)
@@ -118,34 +123,45 @@ extension TransactionHistoryDetailsViewController: TransactionHistoryDetailCellD
   }
 
   func didTapTwitterShare(detailCell: TransactionHistoryDetailBaseCell) {
-    guard let indexPath = self.collectionView.indexPath(for: detailCell),
-      let item = viewModel.dataSource.detailCellActionableItem(at: indexPath)
-      else { return }
-
+    guard let item = actionableItem(for: detailCell) else { return }
     delegate.viewControllerRequestedShareTransactionOnTwitter(self, walletTxType: self.viewModel.walletTransactionType,
                                                               transaction: item, shouldDismiss: false)
   }
 
-  func didTapAddress(detailCell: TransactionHistoryDetailBaseCell) {
-//    guard let address = detailCell.viewModel?.receiverAddress,
-//      let addressURL = CoinNinjaUrlFactory.buildUrl(for: .address(id: address)) else { return }
-//    delegate.openURL(addressURL, completionHandler: nil)
+  func didTapAddressLinkButton(detailCell: TransactionHistoryDetailBaseCell) {
+    guard let item = actionableItem(for: detailCell),
+      let address = item.bitcoinAddress,
+      let addressURL = CoinNinjaUrlFactory.buildUrl(for: .address(id: address))
+      else { return }
+    delegate.openURL(addressURL, completionHandler: nil)
   }
 
-  func didTapInvoice(detailCell: TransactionHistoryDetailInvoiceCell) {
-
+  func didTapCopyInvoiceButton(detailCell: TransactionHistoryDetailInvoiceCell) {
+    guard let item = actionableItem(for: detailCell), let invoice = item.lightningInvoice else { return }
+    UIPasteboard.general.string = invoice
+    delegate.viewControllerSuccessfullyCopiedToClipboard(message: "Lightning invoice copied!", viewController: self)
   }
 
   func didTapBottomButton(detailCell: UICollectionViewCell, action: TransactionDetailAction) {
-//    switch action {
-//    case .seeDetails:
-//      guard let viewModel = detailCell.viewModel else { return }
-//      delegate.viewControllerShouldSeeTransactionDetails(for: viewModel)
-//    case .cancelInvitation:
-//      guard let invitationID = detailCell.viewModel?.transaction?.invitation?.id,
-//        let path = collectionView.indexPath(for: detailCell) else { return }
-//      delegate.viewController(self, didCancelInvitationWithID: invitationID, at: path)
-//    }
+    guard let indexPath = self.collectionView.indexPath(for: detailCell),
+      let item = viewModel.dataSource.detailCellActionableItem(at: indexPath) else { return }
+    switch action {
+    case .seeDetails:
+//      delegate.viewControllerShouldSeeTransactionDetails(for: item)
+      break
+    case .cancelInvitation:
+      guard let invitationID = item.invitation?.id else { return }
+      delegate.viewController(self, didCancelInvitationWithID: invitationID, at: indexPath)
+    case .removeEntry:
+      item.removeFromTransactionHistory()
+      if let context = item.managedObjectContext {
+        do {
+          try context.saveRecursively()
+        } catch {
+          log.contextSaveError(error)
+        }
+      }
+    }
   }
 
   func didTapAddMemoButton(detailCell: TransactionHistoryDetailBaseCell) {

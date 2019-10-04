@@ -146,4 +146,8 @@ extension CKMTransaction: TransactionDetailCellActionable {
     return receiverAddress
   }
 
+  func removeFromTransactionHistory() {
+    // CKMTransactions cannot be hidden
+  }
+
 }
