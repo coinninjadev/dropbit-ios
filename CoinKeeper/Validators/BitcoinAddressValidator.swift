@@ -35,6 +35,8 @@ enum BitcoinAddressValidatorError: ValidatorTypeError {
 class BitcoinAddressValidator: ValidatorType<String> {
 
   override func validate(value: String) throws {
+    guard value.isNotEmpty else { throw BitcoinAddressValidatorError.isInvalidBitcoinAddress }
+    guard value != "1111111111111111111114oLvT2" else { throw BitcoinAddressValidatorError.isInvalidBitcoinAddress }
     let address = value.lowercased()
     var error: BitcoinAddressValidatorError?
     let possibleHRPs = ["bc", "tb"]

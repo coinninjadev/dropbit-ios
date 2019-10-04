@@ -45,6 +45,7 @@ protocol WalletTransferViewControllerDelegate: ViewControllerDismissable
 
   func viewControllerDidConfirmWithdraw(_ viewController: UIViewController, btcAmount: NSDecimalNumber)
   func viewControllerNetworkError(_ error: Error)
+  func handleLightningLoadError(_ error: Error)
 }
 
 enum TransferDirection {
@@ -120,10 +121,11 @@ class WalletTransferViewController: PresentableViewController, StoryboardInitial
 
   private func buildTransaction() {
     delegate.viewControllerNeedsTransactionData(self, btcAmount: viewModel.btcAmount, exchangeRates: viewModel.exchangeRates)
-      .done { paymentData in
-        
-        self.viewModel.direction = .toLightning(paymentData)
-    }.cauterize()
+      .done { paymentData in self.viewModel.direction = .toLightning(paymentData) }
+      .catch {
+        self.delegate.handleLightningLoadError($0)
+        self.disableConfirmButton()
+      }
   }
 
   private func setupTransactionUI() {
