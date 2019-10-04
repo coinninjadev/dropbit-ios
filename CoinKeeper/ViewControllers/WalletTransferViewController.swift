@@ -121,6 +121,7 @@ class WalletTransferViewController: PresentableViewController, StoryboardInitial
   private func buildTransaction() {
     delegate.viewControllerNeedsTransactionData(self, btcAmount: viewModel.btcAmount, exchangeRates: viewModel.exchangeRates)
       .done { paymentData in
+        
         self.viewModel.direction = .toLightning(paymentData)
     }.cauterize()
   }

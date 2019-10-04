@@ -10,19 +10,19 @@ import UIKit
 
 class BaseViewController: UIViewController, AccessibleViewSettable {
 
-  static var lockStatus: LockStatus = LockStatus(rawValue: CKUserDefaults().string(for:
-    .lightningWalletLockedStatus) ?? LockStatus.locked.rawValue) ?? .locked
-
   var lockStatusNotification: NotificationToken?
   var unlockStatusNotification: NotificationToken?
   var unavailableStatusNotification: NotificationToken?
+
+  var currentLockStatus: LockStatus = LockStatus(rawValue: CKUserDefaults().string(for:
+  .lightningWalletLockedStatus) ?? LockStatus.locked.rawValue) ?? .locked
 
   override var preferredStatusBarStyle: UIStatusBarStyle {
     return statusBarStyle
   }
 
   func refreshLockStatus() {
-    switch BaseViewController.lockStatus {
+    switch currentLockStatus {
     case .locked: lock()
     case .unlocked: unlock()
     case .unavailable: makeUnavailable()
@@ -55,18 +55,30 @@ class BaseViewController: UIViewController, AccessibleViewSettable {
 
   fileprivate func registerForLockStatusNotification() {
     lockStatusNotification = CKNotificationCenter.subscribe(key: .didLockLightning, object: nil, queue: .main, using: { [weak self] _ in
-      BaseViewController.lockStatus = .locked
-      self?.lock()
+      CKUserDefaults().set(LockStatus.locked.rawValue, for: .lightningWalletLockedStatus)
+
+      if self?.currentLockStatus != .locked {
+        self?.currentLockStatus = .locked
+        self?.lock()
+      }
     })
 
     unlockStatusNotification = CKNotificationCenter.subscribe(key: .didUnlockLightning, object: nil, queue: .main, using: { [weak self] _ in
-      BaseViewController.lockStatus = .unlocked
-      self?.unlock()
+      CKUserDefaults().set(LockStatus.unlocked.rawValue, for: .lightningWalletLockedStatus)
+
+      if self?.currentLockStatus != .unlocked {
+        self?.currentLockStatus = .unlocked
+        self?.unlock()
+      }
     })
 
     unavailableStatusNotification = CKNotificationCenter.subscribe(key: .lightningUnavailable, object: nil, queue: .main, using: { [weak self] _ in
-      BaseViewController.lockStatus = .unavailable
-      self?.makeUnavailable()
+      CKUserDefaults().set(LockStatus.unavailable.rawValue, for: .lightningWalletLockedStatus)
+
+      if self?.currentLockStatus != .unavailable {
+        self?.currentLockStatus = .unavailable
+        self?.makeUnavailable()
+      }
     })
   }
 

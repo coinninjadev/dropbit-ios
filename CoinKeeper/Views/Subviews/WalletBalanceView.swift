@@ -11,6 +11,7 @@ import UIKit
 
 protocol WalletBalanceViewDelegate: class {
   func isSyncCurrentlyRunning() -> Bool
+  func getCurrentLockStatus() -> LockStatus
   func getCurrentWalletTransactionType() -> WalletTransactionType
   func transferButtonWasTouched()
   func swapPrimaryCurrency()
@@ -79,8 +80,8 @@ class WalletBalanceView: UIView {
   }
 
   @IBAction func transferButtonWasTouched() {
-    guard BaseViewController.lockStatus != .locked else { return }
-    delegate?.transferButtonWasTouched()
+    guard let delegate = delegate, delegate.getCurrentLockStatus() != .locked else { return }
+    delegate.transferButtonWasTouched()
   }
 
   @objc func balanceContainerWasTouched() {
