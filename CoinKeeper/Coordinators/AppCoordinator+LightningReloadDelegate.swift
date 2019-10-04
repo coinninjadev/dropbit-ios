@@ -22,7 +22,17 @@ extension AppCoordinator: LightningReloadDelegate {
         let viewModel = WalletTransferViewModel(direction: .toLightning(paymentData), amount: amount, exchangeRates: exchangeRates)
         let walletTransferViewController = WalletTransferViewController.newInstance(delegate: self, viewModel: viewModel)
         self.navigationController.present(walletTransferViewController, animated: true, completion: nil)
-    }.cauterize()
+      }
+      .catch { self.handleLightningLoadError($0) }
+  }
+
+  func handleLightningLoadError(_ error: Error) {
+    if let validationError = error as? BitcoinAddressValidatorError {
+      let message = validationError.debugMessage + "\n\nThere was a problem obtaining a valid payment address.\n\nPlease try again later."
+      alertManager.showError(message: message, forDuration: 4.0)
+    } else {
+      alertManager.showError(message: error.localizedDescription, forDuration: 4.0)
+    }
   }
 
 }

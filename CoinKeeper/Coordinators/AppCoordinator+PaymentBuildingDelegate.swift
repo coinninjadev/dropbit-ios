@@ -39,13 +39,23 @@ extension AppCoordinator: PaymentBuildingDelegate {
     let lightningAccount = self.persistenceManager.brokers.lightning.getAccount(forWallet: wallet, in: context)
     return networkManager.latestFees().compactMap { FeeRates(fees: $0) }
       .then { (feeRates: FeeRates) -> Promise<PaymentData> in
+        do {
+          try BitcoinAddressValidator().validate(value: lightningAccount.address)
+        } catch {
+          return Promise(error: error)
+        }
         let feeRate: Double = feeRates.low
         let maybePaymentData = self.buildNonReplaceableTransactionData(btcAmount: btcAmount,
                                                                        address: lightningAccount.address,
                                                                        exchangeRates: exchangeRates,
                                                                        feeRate: feeRate)
         if let paymentData = maybePaymentData {
-          return Promise.value(paymentData)
+          do {
+            try BitcoinAddressValidator().validate(value: paymentData.broadcastData.paymentAddress)
+            return Promise.value(paymentData)
+          } catch {
+            return Promise(error: error)
+          }
         } else {
           return Promise(error: CKPersistenceError.missingValue(key: "paymentData"))
         }
