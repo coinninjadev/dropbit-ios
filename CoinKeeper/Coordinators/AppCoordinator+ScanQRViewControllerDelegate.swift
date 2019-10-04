@@ -94,20 +94,20 @@ extension AppCoordinator: ScanQRViewControllerDelegate {
                                          currencyPair: self.currencyController.currencyPair,
                                          delegate: nil)
 
-    let sendPaymentVC = SendPaymentViewController.newInstance(delegate: self, viewModel: viewModel)
-    sendPaymentVC.alertManager = self.alertManager
+    let sendPaymentVC = SendPaymentViewController.newInstance(delegate: self, viewModel: viewModel, alertManager: alertManager)
     return sendPaymentVC
   }
 
   func showSendPaymentViewController(withViewModel viewModel: SendPaymentViewModel,
                                      dismissing viewController: UIViewController,
                                      completion: ((SendPaymentViewController) -> Void)?) {
-    let sendPaymentViewController = SendPaymentViewController.newInstance(delegate: self, viewModel: viewModel)
-    sendPaymentViewController.alertManager = alertManager
+    DispatchQueue.main.async {
+      let sendPaymentViewController = SendPaymentViewController.newInstance(delegate: self, viewModel: viewModel, alertManager: self.alertManager)
 
-    viewController.dismiss(animated: true) { [weak self] in
-      self?.navigationController.present(sendPaymentViewController, animated: true) {
-        completion?(sendPaymentViewController)
+      viewController.dismiss(animated: true) { [weak self] in
+        self?.navigationController.present(sendPaymentViewController, animated: true) {
+          completion?(sendPaymentViewController)
+        }
       }
     }
   }
