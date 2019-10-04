@@ -54,6 +54,10 @@ class LightningTransactionViewModelObject: TransactionDetailCellViewModelObject 
     return false
   }
 
+  var isPendingTransferToLightning: Bool {
+    return status == .pending && direction == .in && isLightningTransfer
+  }
+
   var memoIsShared: Bool {
     return walletEntry.sharedPayload?.sharingDesired ?? false
   }
@@ -120,6 +124,10 @@ struct LightningInvitationViewModelObject: TransactionDetailCellViewModelObject 
   }
 
   var isLightningUpgrade: Bool {
+    return false
+  }
+
+  var isPendingTransferToLightning: Bool {
     return false
   }
 
@@ -202,6 +210,7 @@ struct FallbackViewModelObject: TransactionDetailCellViewModelObject {
   let walletTxType: WalletTransactionType
   let direction: TransactionDirection = .in
   let isLightningTransfer: Bool = false
+  let isPendingTransferToLightning: Bool = false
   let isLightningUpgrade: Bool = false
   let status: TransactionStatus = .failed
   var memo: String?

@@ -38,6 +38,10 @@ extension CKMTransaction: TransactionSummaryCellViewModelObject {
                                              twitterConfig: maybeTwitter)
   }
 
+  var isPendingTransferToLightning: Bool {
+    return false
+  }
+
   var receiverAddress: String? {
     switch direction {
     case .in:

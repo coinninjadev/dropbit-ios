@@ -22,6 +22,7 @@ class TransactionSummaryCellViewModel: TransactionSummaryCellViewModelType {
   var counterpartyConfig: TransactionCellCounterpartyConfig?
   var receiverAddress: String?
   var lightningInvoice: String?
+  var isPendingTransferToLightning: Bool
 
   /// Initialize with protocol so that the initialization is simple and the logic for transforming stored properties
   /// is contained in isolated functions or computed properties inside the protocol implementation.
@@ -41,6 +42,7 @@ class TransactionSummaryCellViewModel: TransactionSummaryCellViewModelType {
     self.counterpartyConfig = object.counterpartyConfig(for: deviceCountryCode)
     self.receiverAddress = object.receiverAddress
     self.lightningInvoice = object.lightningInvoice
+    self.isPendingTransferToLightning = object.isPendingTransferToLightning
   }
 
 }
@@ -54,6 +56,7 @@ protocol TransactionSummaryCellViewModelObject {
   var receiverAddress: String? { get }
   var lightningInvoice: String? { get }
   var isLightningUpgrade: Bool { get }
+  var isPendingTransferToLightning: Bool { get }
 
   func amountFactory(with currentRates: ExchangeRates, fiatCurrency: CurrencyCode) -> TransactionAmountsFactoryType
   func counterpartyConfig(for deviceCountryCode: Int) -> TransactionCellCounterpartyConfig?
