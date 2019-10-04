@@ -29,14 +29,14 @@ class MockTransactionDetailValidCellViewModel: MockTransactionSummaryCellViewMod
        addressProvidedToSender: String? = nil,
        lightningInvoice: String? = nil,
        selectedCurrency: SelectedCurrency = .fiat,
-       amountDetails: TransactionAmountDetails? = nil,
+       amountFactory: MockAmountsFactory? = nil,
        counterpartyConfig: TransactionCellCounterpartyConfig? = nil,
        invitationStatus: InvitationStatus? = nil,
        memo: String? = nil,
        memoIsShared: Bool = false,
        date: Date = Date()) {
 
-    let amtDetails = amountDetails ?? MockTransactionSummaryCellViewModel.testAmountDetails(sats: 49500)
+    let amtFactory = amountFactory ?? MockTransactionSummaryCellViewModel.testAmountFactory(sats: 49500)
 
     self.date = date
     self.memoIsShared = memoIsShared
@@ -49,7 +49,7 @@ class MockTransactionDetailValidCellViewModel: MockTransactionSummaryCellViewMod
     super.init(walletTxType: walletTxType, direction: direction, status: status,
                isLightningTransfer: isLightningTransfer, receiverAddress: receiverAddress,
                lightningInvoice: lightningInvoice, selectedCurrency: selectedCurrency,
-               amountDetails: amtDetails, counterpartyConfig: counterpartyConfig, memo: memo)
+               amountProvider: amtFactory, counterpartyConfig: counterpartyConfig, memo: memo)
   }
 
   /// Use this proxy function to prevent test from entering conflicting information for invitationStatus and paymentIdIsValid
@@ -96,12 +96,10 @@ class MockTransactionDetailInvoiceCellViewModel: MockTransactionDetailValidCellV
     self.qrCodeGenerator = QRCodeGenerator()
     self.hoursUntilExpiration = hoursUntilExpiration
 
-    let amountDetails = MockDetailCellVM.testAmountDetails(cents: 520,
-                                                           fiatWhenInvited: NSDecimalNumber(integerAmount: 475, currency: .USD),
-                                                           fiatWhenTransacted: nil)
+    let amountFactory = MockDetailCellVM.testAmountFactory(cents: 520)
     super.init(walletTxType: .lightning, direction: .in, status: .pending,
                lightningInvoice: MockDetailCellVM.mockLightningInvoice(),
-               selectedCurrency: .fiat, amountDetails: amountDetails,
+               selectedCurrency: .fiat, amountFactory: amountFactory,
                memo: "Coffee ☕️", memoIsShared: true, date: Date())
   }
 

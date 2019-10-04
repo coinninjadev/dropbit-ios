@@ -20,7 +20,7 @@ class MockTransactionSummaryCellViewModel: TransactionSummaryCellViewModelType {
   var receiverAddress: String?
   var lightningInvoice: String?
   var selectedCurrency: SelectedCurrency
-  var amountDetails: TransactionAmountDetails
+  var amountProvider: TransactionAmountsProvider
   var counterpartyConfig: TransactionCellCounterpartyConfig?
   var memo: String?
 
@@ -31,7 +31,7 @@ class MockTransactionSummaryCellViewModel: TransactionSummaryCellViewModelType {
        receiverAddress: String?,
        lightningInvoice: String?,
        selectedCurrency: SelectedCurrency,
-       amountDetails: TransactionAmountDetails,
+       amountProvider: TransactionAmountsProvider,
        counterpartyConfig: TransactionCellCounterpartyConfig?,
        memo: String?) {
     self.walletTxType = walletTxType
@@ -41,7 +41,7 @@ class MockTransactionSummaryCellViewModel: TransactionSummaryCellViewModelType {
     self.receiverAddress = receiverAddress
     self.lightningInvoice = lightningInvoice
     self.selectedCurrency = selectedCurrency
-    self.amountDetails = amountDetails
+    self.amountProvider = amountProvider
     self.counterpartyConfig = counterpartyConfig
     self.memo = memo
   }
@@ -50,29 +50,23 @@ class MockTransactionSummaryCellViewModel: TransactionSummaryCellViewModelType {
     return [.BTC: 1, .USD: 8500]
   }
 
-  static func testAmountDetails(sats: Int,
-                                fiatWhenInvited: NSDecimalNumber? = nil,
-                                fiatWhenTransacted: NSDecimalNumber? = nil) -> TransactionAmountDetails {
+  static func testAmountFactory(sats: Int) -> MockAmountsFactory {
     let btcAmount = NSDecimalNumber(integerAmount: sats, currency: .BTC)
-    return TransactionAmountDetails(btcAmount: btcAmount, fiatCurrency: .USD, exchangeRates: testRates,
-                                    fiatWhenInvited: fiatWhenInvited, fiatWhenTransacted: fiatWhenTransacted)
+    return MockAmountsFactory(btcAmount: btcAmount, fiatCurrency: .USD, exchangeRates: testRates)
   }
 
-  static func testAmountDetails(cents: Int,
-                                fiatWhenInvited: NSDecimalNumber? = nil,
-                                fiatWhenTransacted: NSDecimalNumber? = nil) -> TransactionAmountDetails {
+  static func testAmountFactory(cents: Int) -> MockAmountsFactory {
     let usdAmount = NSDecimalNumber(integerAmount: cents, currency: .USD)
-    return TransactionAmountDetails(fiatAmount: usdAmount, fiatCurrency: .USD, exchangeRates: testRates,
-                                    fiatWhenInvited: fiatWhenInvited, fiatWhenTransacted: fiatWhenTransacted)
+    return MockAmountsFactory(fiatAmount: usdAmount, fiatCurrency: .USD, exchangeRates: testRates)
   }
 
   static func defaultInstance() -> MockTransactionSummaryCellViewModel {
-    let amtDetails = testAmountDetails(sats: 49500)
+    let amtDetails = testAmountFactory(sats: 49500)
     let address = mockValidBitcoinAddress()
     return MockTransactionSummaryCellViewModel(walletTxType: .onChain, direction: .out,
                                                status: .completed, isLightningTransfer: false,
                                                receiverAddress: address, lightningInvoice: nil,
-                                               selectedCurrency: .fiat, amountDetails: amtDetails,
+                                               selectedCurrency: .fiat, amountProvider: amtDetails,
                                                counterpartyConfig: nil, memo: nil)
   }
 
@@ -83,16 +77,16 @@ class MockTransactionSummaryCellViewModel: TransactionSummaryCellViewModelType {
                                   receiverAddress: String? = nil,
                                   lightningInvoice: String? = nil,
                                   selectedCurrency: SelectedCurrency = .fiat,
-                                  amountDetails: TransactionAmountDetails? = nil,
+                                  amountFactory: MockAmountsFactory? = nil,
                                   counterpartyConfig: TransactionCellCounterpartyConfig? = nil,
                                   memo: String? = nil) -> MockTransactionSummaryCellViewModel {
 
-    let amtDetails = amountDetails ?? MockTransactionSummaryCellViewModel.testAmountDetails(sats: 49500)
+    let amtFactory = amountFactory ?? MockTransactionSummaryCellViewModel.testAmountFactory(sats: 49500)
     return MockTransactionSummaryCellViewModel(
       walletTxType: walletTxType, direction: direction,
       status: status, isLightningTransfer: isLightningTransfer,
       receiverAddress: receiverAddress, lightningInvoice: lightningInvoice,
-      selectedCurrency: selectedCurrency, amountDetails: amtDetails,
+      selectedCurrency: selectedCurrency, amountProvider: amtFactory,
       counterpartyConfig: counterpartyConfig, memo: memo)
   }
 

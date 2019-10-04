@@ -17,7 +17,7 @@ class TransactionSummaryCellViewModel: TransactionSummaryCellViewModelType {
   var isLightningTransfer: Bool
   var isLightningUpgrade: Bool
   var status: TransactionStatus
-  var amountDetails: TransactionAmountDetails
+  var amountProvider: TransactionAmountsProvider
   var memo: String?
   var counterpartyConfig: TransactionCellCounterpartyConfig?
   var receiverAddress: String?
@@ -36,7 +36,7 @@ class TransactionSummaryCellViewModel: TransactionSummaryCellViewModelType {
     self.isLightningTransfer = object.isLightningTransfer
     self.isLightningUpgrade = object.isLightningUpgrade
     self.status = object.status
-    self.amountDetails = object.amountDetails(with: exchangeRates, fiatCurrency: fiatCurrency)
+    self.amountProvider = object.amountProvider(with: exchangeRates, fiatCurrency: fiatCurrency)
     self.memo = object.memo
     self.counterpartyConfig = object.counterpartyConfig(for: deviceCountryCode)
     self.receiverAddress = object.receiverAddress
@@ -55,7 +55,7 @@ protocol TransactionSummaryCellViewModelObject {
   var lightningInvoice: String? { get }
   var isLightningUpgrade: Bool { get }
 
-  func amountDetails(with currentRates: ExchangeRates, fiatCurrency: CurrencyCode) -> TransactionAmountDetails
+  func amountProvider(with currentRates: ExchangeRates, fiatCurrency: CurrencyCode) -> TransactionAmountsProvider
   func counterpartyConfig(for deviceCountryCode: Int) -> TransactionCellCounterpartyConfig?
 
 }

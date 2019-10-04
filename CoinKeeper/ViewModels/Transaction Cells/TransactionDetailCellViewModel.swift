@@ -17,8 +17,6 @@ class TransactionDetailCellViewModel: TransactionSummaryCellViewModel, Transacti
   var paymentIdIsValid: Bool
   var invitationStatus: InvitationStatus?
 
-  var exchangeRatesWhenReceived: ExchangeRates = [.BTC: 1]
-
   init(object: TransactionDetailCellViewModelObject,
        selectedCurrency: SelectedCurrency,
        fiatCurrency: CurrencyCode,
@@ -31,19 +29,11 @@ class TransactionDetailCellViewModel: TransactionSummaryCellViewModel, Transacti
     self.paymentIdIsValid = object.paymentIdIsValid
     self.invitationStatus = object.invitationStatus
 
-    if let usdRate = object.usdExchangeRateWhenReceived {
-      self.exchangeRatesWhenReceived[.USD] = usdRate
-    }
-
     super.init(object: object,
                selectedCurrency: selectedCurrency,
                fiatCurrency: fiatCurrency,
                exchangeRates: exchangeRates,
                deviceCountryCode: deviceCountryCode)
-  }
-
-  func exchangeRateWhenReceived(forCurrency currency: CurrencyCode) -> Double? {
-    return exchangeRatesWhenReceived[currency]
   }
 
 }
@@ -56,37 +46,5 @@ protocol TransactionDetailCellViewModelObject: TransactionSummaryCellViewModelOb
   var addressProvidedToSender: String? { get }
   var paymentIdIsValid: Bool { get }
   var invitationStatus: InvitationStatus? { get }
-  var usdExchangeRateWhenReceived: Double? { get }
-
-}
-
-extension CKMTransaction: TransactionDetailCellViewModelObject {
-  var memoIsShared: Bool {
-    return sharedPayload?.sharingDesired ?? false
-  }
-
-  var primaryDate: Date {
-    return date ?? invitation?.sentDate ?? Date()
-  }
-
-  var onChainConfirmations: Int? {
-    return confirmations
-  }
-
-  var addressProvidedToSender: String? {
-    return invitation?.addressProvidedToSender
-  }
-
-  var paymentIdIsValid: Bool {
-    return txidIsActualTxid
-  }
-
-  var invitationStatus: InvitationStatus? {
-    return invitation?.status
-  }
-
-  var usdExchangeRateWhenReceived: Double? {
-    return dayAveragePrice?.doubleValue
-  }
 
 }

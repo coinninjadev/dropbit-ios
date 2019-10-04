@@ -85,7 +85,6 @@ protocol TransactionDetailCellViewModelType: TransactionSummaryCellViewModelType
   var onChainConfirmations: Int? { get }
   var addressProvidedToSender: String? { get }
   var paymentIdIsValid: Bool { get }
-  func exchangeRateWhenReceived(forCurrency currency: CurrencyCode) -> Double?
 }
 
 extension TransactionDetailCellViewModelType {
@@ -245,28 +244,28 @@ extension TransactionDetailCellViewModelType {
   }
 
   var detailAmountLabels: DetailCellAmountLabels {
-    let converter = CurrencyConverter(rates: amountDetails.exchangeRates,
-                                      fromAmount: amountDetails.btcAmount,
-                                      currencyPair: amountDetails.currencyPair)
+    let amounts = self.amountProvider
+    let netAtCurrent = amounts.netAtCurrentAmounts
 
     let btcAttributedString: NSAttributedString?
     switch walletTxType {
     case .onChain:
-      btcAttributedString = BitcoinFormatter(symbolType: .attributed).attributedString(from: converter.btcAmount)
+      btcAttributedString = BitcoinFormatter(symbolType: .attributed).attributedString(from: netAtCurrent.btc)
     case .lightning:
-      let satsText = SatsFormatter().string(fromDecimal: converter.btcAmount) ?? ""
+      let satsText = SatsFormatter().string(fromDecimal: netAtCurrent.btc) ?? ""
       btcAttributedString = NSMutableAttributedString.medium(satsText, size: 14, color: .bitcoinOrange)
     }
 
-    let signedFiatAmount = self.signedAmount(for: converter.fiatAmount)
-    let fiatText = FiatFormatter(currency: converter.fiatCurrency,
+    let signedFiatAmount = self.signedAmount(for: netAtCurrent.fiat)
+    let fiatText = FiatFormatter(currency: netAtCurrent.fiatCurrency,
                                  withSymbol: true,
                                  showNegativeSymbol: true,
                                  negativeHasSpace: false).string(fromDecimal: signedFiatAmount) ?? ""
 
     let secondary = btcAttributedString ?? NSAttributedString(string: "-")
 
-    let historicalText = historicalAmountsAttributedString()
+    let historicalText = historicalAmountsAttributedString(fiatWhenTransacted: amounts.netWhenTransactedAmounts?.fiat,
+                                                           fiatWhenInvited: amounts.netWhenInitiatedAmounts?.fiat)
 
     return DetailCellAmountLabels(primaryText: fiatText,
                                   secondaryAttributedText: secondary,
@@ -361,15 +360,15 @@ extension TransactionDetailCellViewModelType {
     return formatter
   }
 
-  func historicalAmountsAttributedString() -> NSAttributedString? {
+  private func historicalAmountsAttributedString(fiatWhenTransacted: NSDecimalNumber?, fiatWhenInvited: NSDecimalNumber?) -> NSAttributedString? {
     // Using bold and regular strings
     let fontSize: CGFloat = 14.0
     let color = UIColor.darkBlueText
     let attributes = TextAttributes(size: fontSize, color: color)
     let attributedString = NSMutableAttributedString.medium("", size: fontSize, color: color)
 
-    let inviteAmount: String? = usdAtInvitedLabel
-    let receivedAmount: String? = usdAtReceivedLabel
+    let inviteAmount: String? = fiatWhenInvited.flatMap { historicalCurrencyFormatter.string(from: $0) }
+    let receivedAmount: String? = fiatWhenTransacted.flatMap { historicalCurrencyFormatter.string(from: $0) }
     guard inviteAmount != nil || receivedAmount != nil else { return nil }
 
     // Amount descriptions are flipped depending on isIncoming
@@ -416,26 +415,6 @@ extension TransactionDetailCellViewModelType {
     }
 
     return attributedString
-  }
-
-  /// `rate` and `currency` parameters refer to non-BTC and `amount` parameter refers to the BTC amount
-//  func newConverter(withRate rate: Double, currency: CurrencyCode, btcAmount: NSDecimalNumber) -> CurrencyConverter {
-//    return CurrencyConverter(fromBtcTo: currency, fromAmount: btcAmount, rates: [.BTC: 1, currency: rate])
-//  }
-
-//  var receivedAmountAtSentConverter: CurrencyConverter? {
-//    guard let rate = exchangeRateWhenReceived(forCurrency: .USD) else { return nil }
-//    return newConverter(withRate: rate, currency: .USD, btcAmount: amountDetails.btcAmount)
-//  }
-
-  private var usdAtReceivedLabel: String? {
-    guard let usdAtSent = amountDetails.fiatWhenTransacted else { return nil }
-    return historicalCurrencyFormatter.string(from: usdAtSent)
-  }
-
-  private var usdAtInvitedLabel: String? {
-    guard let fiatAmount = amountDetails.fiatWhenInvited else { return nil }
-    return historicalCurrencyFormatter.string(from: fiatAmount)
   }
 
   private var invitationTransactionPresence: InvitationTransactionPresence {

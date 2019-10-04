@@ -80,7 +80,7 @@ class MockOnChainSummaryVM: MockTransactionSummaryCellViewModel {
        isLightningTransfer: Bool = false,
        receiverAddress: String? = nil) {
 
-    let amtDetails = MockSummaryCellVM.testAmountDetails(cents: fiatAmount)
+    let amtFactory = MockSummaryCellVM.testAmountFactory(cents: fiatAmount)
 
     super.init(walletTxType: .onChain,
                direction: direction,
@@ -89,7 +89,7 @@ class MockOnChainSummaryVM: MockTransactionSummaryCellViewModel {
                receiverAddress: receiverAddress,
                lightningInvoice: nil,
                selectedCurrency: .fiat,
-               amountDetails: amtDetails,
+               amountProvider: amtFactory,
                counterpartyConfig: counterparty,
                memo: memo)
   }
@@ -171,7 +171,7 @@ class MockLightningSummaryVM: MockTransactionSummaryCellViewModel {
        isLightningTransfer: Bool = false,
        lightningInvoice: String? = nil) {
 
-    let amtDetails = MockSummaryCellVM.testAmountDetails(sats: sats)
+    let amtFactory = MockSummaryCellVM.testAmountFactory(sats: sats)
 
     super.init(walletTxType: .lightning,
                direction: direction,
@@ -180,7 +180,7 @@ class MockLightningSummaryVM: MockTransactionSummaryCellViewModel {
                receiverAddress: nil,
                lightningInvoice: lightningInvoice,
                selectedCurrency: .fiat,
-               amountDetails: amtDetails,
+               amountProvider: amtFactory,
                counterpartyConfig: counterparty,
                memo: memo)
   }
