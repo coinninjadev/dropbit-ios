@@ -626,6 +626,7 @@
 		B505A87E2076C96100AACB23 /* SummaryCellMemoLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B505A87D2076C96100AACB23 /* SummaryCellMemoLabel.swift */; };
 		B505D4EA21050F2000C0C8FC /* CKPredicate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B505D4E921050F2000C0C8FC /* CKPredicate.swift */; };
 		B505D4EC2106456000C0C8FC /* WalletAddressDataWorkerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B505D4EB2106456000C0C8FC /* WalletAddressDataWorkerTests.swift */; };
+		B5076A8423466E21007D8FCC /* TransactionAmountsFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5076A8323466E21007D8FCC /* TransactionAmountsFactory.swift */; };
 		B5090D902283244700E57423 /* LocationManagerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5090D8F2283244700E57423 /* LocationManagerDelegate.swift */; };
 		B509262922CA57CF00126250 /* CKLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = B509262822CA57CF00126250 /* CKLogger.swift */; };
 		B50ACBB0216627AB00E877DF /* DevicesTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50ACBAF216627AB00E877DF /* DevicesTarget.swift */; };
@@ -1694,6 +1695,7 @@
 		B505A87D2076C96100AACB23 /* SummaryCellMemoLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummaryCellMemoLabel.swift; sourceTree = "<group>"; };
 		B505D4E921050F2000C0C8FC /* CKPredicate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CKPredicate.swift; sourceTree = "<group>"; };
 		B505D4EB2106456000C0C8FC /* WalletAddressDataWorkerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletAddressDataWorkerTests.swift; sourceTree = "<group>"; };
+		B5076A8323466E21007D8FCC /* TransactionAmountsFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionAmountsFactory.swift; sourceTree = "<group>"; };
 		B5090D8F2283244700E57423 /* LocationManagerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManagerDelegate.swift; sourceTree = "<group>"; };
 		B509262822CA57CF00126250 /* CKLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CKLogger.swift; sourceTree = "<group>"; };
 		B50ACBAF216627AB00E877DF /* DevicesTarget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DevicesTarget.swift; sourceTree = "<group>"; };
@@ -3440,6 +3442,7 @@
 				B50E7B7E230C6A0400927C8B /* TransactionSummaryCellViewModel.swift */,
 				B5219C802343C7A300EA5B05 /* TransactionDetailCellViewModel.swift */,
 				B51D55DE23462FE700AEAA60 /* TransactionViewModelObject+CKMTransaction.swift */,
+				B5076A8323466E21007D8FCC /* TransactionAmountsFactory.swift */,
 				B51D55E02346300000AEAA60 /* TransactionViewModelObject+CKMWalletEntry.swift */,
 				B59D0F292345701500E828BF /* TransactionDetailInvoiceCellViewModel.swift */,
 				5B404275208CCA40005624B0 /* OldTransactionDetailCellViewModel.swift */,
@@ -4707,6 +4710,7 @@
 				3BCBFCCB229EF71D00F633BA /* SettingsRecoveryWordsCell.swift in Sources */,
 				B5C8F5C9216D39A300E3E85B /* DeviceEndpointResponse.swift in Sources */,
 				B54A421B2080066E005B40A9 /* TransactionDetailBottomButton.swift in Sources */,
+				B5076A8423466E21007D8FCC /* TransactionAmountsFactory.swift in Sources */,
 				B56639CF22B1944200FA0EC3 /* UIButton+Helpers.swift in Sources */,
 				B54A4219207FF38F005B40A9 /* TransactionDetailDateLabel.swift in Sources */,
 				B56E158F2167D89E003B69D4 /* NetworkManager+WalletAddressRequestRequestable.swift in Sources */,

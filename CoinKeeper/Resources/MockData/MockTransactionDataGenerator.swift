@@ -24,14 +24,14 @@ struct MockDetailDataGenerator {
          invitationStatus: InvitationStatus?,
          transactionStatus: TransactionStatus,
          memo: String?,
-         amountDetails: TransactionAmountDetails? = nil,
+         amountFactory: MockAmountsFactory? = nil,
          receiverAddress: String? = nil,
          addressProvidedToSender: String? = nil,
          isLightningTransfer: Bool = false,
          lightningInvoice: String? = nil) {
 
       let sats = 50_000
-      let amtDetails = amountDetails ?? MockDropBitVM.amountDetails(for: sats,
+      let amtFactory = amountFactory ?? MockDropBitVM.amountFactory(for: sats,
                                                                     invitationStatus: invitationStatus,
                                                                     transactionStatus: transactionStatus)
 
@@ -44,7 +44,7 @@ struct MockDetailDataGenerator {
                  addressProvidedToSender: addressProvidedToSender,
                  lightningInvoice: lightningInvoice,
                  selectedCurrency: .fiat,
-                 amountDetails: amtDetails,
+                 amountFactory: amtFactory,
                  counterpartyConfig: counterparty,
                  invitationStatus: invitationStatus,
                  memo: memo,
@@ -74,26 +74,26 @@ struct MockDetailDataGenerator {
                 receiverAddress: maybeReceiverAddress, addressProvidedToSender: addressProvidedToSender)
     }
 
-    static func amountDetails(for sats: Int, invitationStatus: InvitationStatus?, transactionStatus: TransactionStatus) -> TransactionAmountDetails {
-      let cents = 350
-      let fiatWhenInvited = NSDecimalNumber(integerAmount: cents, currency: .USD)
-      let fiatWhenTransacted = NSDecimalNumber(integerAmount: cents + 5, currency: .USD)
+    static func amountFactory(for sats: Int, invitationStatus: InvitationStatus?, transactionStatus: TransactionStatus) -> MockAmountsFactory {
+//      let cents = 350
+//      let fiatWhenInvited = NSDecimalNumber(integerAmount: cents, currency: .USD)
+//      let fiatWhenTransacted = NSDecimalNumber(integerAmount: cents + 5, currency: .USD)
 
-      var amtDetails = MockDetailCellVM.testAmountDetails(sats: sats)
+      var amtFactory = MockDetailCellVM.testAmountFactory(sats: sats)
       if let inviteStatus = invitationStatus {
         switch inviteStatus {
         case .notSent:
           break
         case .requestSent, .addressSent, .canceled, .expired:
-          amtDetails = MockDetailCellVM.testAmountDetails(sats: sats, fiatWhenInvited: fiatWhenInvited, fiatWhenTransacted: nil)
+          amtFactory = MockDetailCellVM.testAmountFactory(sats: sats)
         case .completed:
-          amtDetails = MockDetailCellVM.testAmountDetails(sats: sats, fiatWhenInvited: fiatWhenInvited, fiatWhenTransacted: fiatWhenTransacted)
+          amtFactory = MockDetailCellVM.testAmountFactory(sats: sats)
         }
       } else if transactionStatus == .completed {
-        amtDetails = MockDetailCellVM.testAmountDetails(sats: sats, fiatWhenInvited: nil, fiatWhenTransacted: fiatWhenTransacted)
+        amtFactory = MockDetailCellVM.testAmountFactory(sats: sats)
       }
 
-      return amtDetails
+      return amtFactory
     }
   }
 
@@ -110,11 +110,11 @@ struct MockDetailDataGenerator {
   }
 
   func lightningTransfer(walletTxType: WalletTransactionType, direction: TransactionDirection) -> MockTransactionDetailValidCellViewModel {
-    let amountDetails = MockDetailCellVM.testAmountDetails(sats: 1_000_000)
+    let amountFactory = MockDetailCellVM.testAmountFactory(sats: 1_000_000)
     return MockTransactionDetailValidCellViewModel(walletTxType: walletTxType, direction: direction, status: .completed, onChainConfirmations: 1,
                                               isLightningTransfer: true, receiverAddress: MockDetailCellVM.mockValidBitcoinAddress(),
                                               addressProvidedToSender: nil, lightningInvoice: nil, selectedCurrency: .fiat,
-                                              amountDetails: amountDetails, counterpartyConfig: nil, invitationStatus: nil,
+                                              amountFactory: amountFactory, counterpartyConfig: nil, invitationStatus: nil,
                                               memo: nil, memoIsShared: false, date: Date())
   }
 
@@ -122,12 +122,11 @@ struct MockDetailDataGenerator {
     let memo: String? = (direction == .out) ? "Car" : nil
     let memoIsShared = false
 
-    let fiatReceived = NSDecimalNumber(integerAmount: 7_500_00, currency: .USD)
-    let amountDetails = MockDetailCellVM.testAmountDetails(sats: 88_235_000, fiatWhenInvited: nil, fiatWhenTransacted: fiatReceived)
+    let amountFactory = MockDetailCellVM.testAmountFactory(sats: 88_235_000)
     return MockTransactionDetailValidCellViewModel(walletTxType: .onChain, direction: direction, status: .completed, onChainConfirmations: 1,
                                               isLightningTransfer: false, receiverAddress: MockDetailCellVM.mockValidBitcoinAddress(),
                                               addressProvidedToSender: nil, lightningInvoice: nil, selectedCurrency: .fiat,
-                                              amountDetails: amountDetails, counterpartyConfig: nil, invitationStatus: nil,
+                                              amountFactory: amountFactory, counterpartyConfig: nil, invitationStatus: nil,
                                               memo: memo, memoIsShared: memoIsShared, date: Date())
   }
 

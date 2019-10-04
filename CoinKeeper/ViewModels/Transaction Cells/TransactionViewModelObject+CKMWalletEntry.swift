@@ -71,25 +71,15 @@ class LightningTransactionViewModelObject: TransactionDetailCellViewModelObject 
   }
 
   var paymentIdIsValid: Bool {
-    //TODO
     return true
   }
 
   var invitationStatus: InvitationStatus? {
-    //TODO
-    return nil
-    //    return walletEntry.invitation?.status
-  }
-
-  var usdExchangeRateWhenReceived: Double? {
-    //TODO
     return nil
   }
 
-
-  func amountDetails(with currentRates: ExchangeRates, fiatCurrency: CurrencyCode) -> TransactionAmountDetails {
-    let amount = NSDecimalNumber(integerAmount: ledgerEntry.value, currency: .BTC)
-    return TransactionAmountDetails(btcAmount: amount, fiatCurrency: fiatCurrency, exchangeRates: currentRates)
+  func amountFactory(with currentRates: ExchangeRates, fiatCurrency: CurrencyCode) -> TransactionAmountsFactoryType {
+    return TransactionAmountsFactory(walletEntry: walletEntry, fiatCurrency: fiatCurrency, currentRates: currentRates)
   }
 
   func counterpartyConfig(for deviceCountryCode: Int) -> TransactionCellCounterpartyConfig? {
@@ -149,11 +139,8 @@ struct LightningInvitationViewModelObject: TransactionDetailCellViewModelObject 
     return nil
   }
 
-  func amountDetails(with currentRates: ExchangeRates, fiatCurrency: CurrencyCode) -> TransactionAmountDetails {
-    let btcAmount = NSDecimalNumber(integerAmount: invitation.btcAmount, currency: .BTC)
-    let fiatAmount = NSDecimalNumber(integerAmount: invitation.fiatAmount, currency: .USD)
-    return TransactionAmountDetails(btcAmount: btcAmount, fiatCurrency: fiatCurrency, exchangeRates: currentRates,
-                                    fiatWhenInvited: fiatAmount, fiatWhenTransacted: nil)
+  func amountFactory(with currentRates: ExchangeRates, fiatCurrency: CurrencyCode) -> TransactionAmountsFactoryType {
+    return TransactionAmountsFactory(walletEntry: walletEntry, fiatCurrency: fiatCurrency, currentRates: currentRates)
   }
 
   func counterpartyConfig(for deviceCountryCode: Int) -> TransactionCellCounterpartyConfig? {
@@ -179,7 +166,6 @@ struct LightningInvitationViewModelObject: TransactionDetailCellViewModelObject 
   var onChainConfirmations: Int? { return nil }
   var addressProvidedToSender: String? { return nil }
   var encodedInvoice: String? { return nil }
-  var usdExchangeRateWhenReceived: Double? { return nil }
 
 }
 
@@ -228,7 +214,6 @@ struct FallbackViewModelObject: TransactionDetailCellViewModelObject {
   var encodedInvoice: String?
   var paymentIdIsValid: Bool
   var invitationStatus: InvitationStatus?
-  var usdExchangeRateWhenReceived: Double?
 
   init(walletTxType: WalletTransactionType) {
     self.walletTxType = walletTxType
@@ -237,9 +222,8 @@ struct FallbackViewModelObject: TransactionDetailCellViewModelObject {
     self.paymentIdIsValid = true
   }
 
-
-  func amountDetails(with currentRates: ExchangeRates, fiatCurrency: CurrencyCode) -> TransactionAmountDetails {
-    return TransactionAmountDetails(btcAmount: .zero, fiatCurrency: fiatCurrency, exchangeRates: currentRates)
+  func amountFactory(with currentRates: ExchangeRates, fiatCurrency: CurrencyCode) -> TransactionAmountsFactoryType {
+    return MockAmountsFactory(btcAmount: .one, fiatCurrency: fiatCurrency, exchangeRates: currentRates)
   }
 
   func counterpartyConfig(for deviceCountryCode: Int) -> TransactionCellCounterpartyConfig? {

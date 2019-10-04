@@ -219,8 +219,8 @@ class TransactionHistorySummaryCellTests: XCTestCase {
   }
 
   func testSatsLabelIsLoadedForInvalidTransaction() {
-    let amountDetails = MockSummaryCellVM.testAmountDetails(sats: 1234567)
-    let viewModel = MockSummaryCellVM.testSummaryInstance(walletTxType: .lightning, status: .canceled, amountDetails: amountDetails)
+    let amountFactory = MockSummaryCellVM.testAmountFactory(sats: 1234567)
+    let viewModel = MockSummaryCellVM.testSummaryInstance(walletTxType: .lightning, status: .canceled, amountFactory: amountFactory)
     let expectedText = "1,234,567 sats"
     sut.configure(with: viewModel)
     XCTAssertEqual(sut.satsLabels.count, 1)
@@ -228,9 +228,9 @@ class TransactionHistorySummaryCellTests: XCTestCase {
   }
 
   func testBTCLabelIsLoaded() {
-    let amountDetails = MockSummaryCellVM.testAmountDetails(sats: 1234560)
-    let viewModel = MockSummaryCellVM.testSummaryInstance(walletTxType: .onChain, status: .canceled, amountDetails: amountDetails)
-    let expectedText = BitcoinFormatter(symbolType: .attributed).attributedString(from: amountDetails.btcAmount)
+    let amountFactory = MockSummaryCellVM.testAmountFactory(sats: 1234560)
+    let viewModel = MockSummaryCellVM.testSummaryInstance(walletTxType: .onChain, status: .canceled, amountFactory: amountFactory)
+    let expectedText = BitcoinFormatter(symbolType: .attributed).attributedString(from: amountFactory.netAtCurrentAmounts.btc)
     sut.configure(with: viewModel)
     XCTAssertEqual(sut.bitcoinLabels.count, 1)
     XCTAssertEqual(sut.satsLabels.count, 0)
@@ -239,8 +239,8 @@ class TransactionHistorySummaryCellTests: XCTestCase {
   }
 
   func testFiatLabelIsLoaded() {
-    let amountDetails = MockSummaryCellVM.testAmountDetails(sats: 1234560)
-    let viewModel = MockSummaryCellVM.testSummaryInstance(walletTxType: .onChain, direction: .in, status: .completed, amountDetails: amountDetails)
+    let amountFactory = MockSummaryCellVM.testAmountFactory(sats: 1234560)
+    let viewModel = MockSummaryCellVM.testSummaryInstance(walletTxType: .onChain, direction: .in, status: .completed, amountFactory: amountFactory)
     let expectedText = viewModel.summaryAmountLabels.pillText, expectedColor = UIColor.incomingGreen
     sut.configure(with: viewModel)
     XCTAssertEqual(sut.pillLabels.count, 1)

@@ -24,9 +24,8 @@ extension CKMTransaction: TransactionSummaryCellViewModelObject {
     return invitation?.transactionStatus ?? statusForTransaction
   }
 
-  func amountDetails(with currentRates: ExchangeRates, fiatCurrency: CurrencyCode) -> TransactionAmountDetails {
-    let amount = NSDecimalNumber(integerAmount: self.netWalletAmount, currency: .BTC)
-    return TransactionAmountDetails(btcAmount: amount, fiatCurrency: fiatCurrency, exchangeRates: currentRates)
+  func amountFactory(with currentRates: ExchangeRates, fiatCurrency: CurrencyCode) -> TransactionAmountsFactoryType {
+    return TransactionAmountsFactory(transaction: self, fiatCurrency: fiatCurrency, currentRates: currentRates)
   }
 
   func counterpartyConfig(for deviceCountryCode: Int) -> TransactionCellCounterpartyConfig? {
@@ -110,62 +109,30 @@ extension CKMTransaction: TransactionSummaryCellViewModelObject {
 
 }
 
-typealias Satoshis = Int
-
-// MARK: - Computed Amounts
-extension CKMTransaction {
-
-  /// should be sum(vin) - sum(vout), but only vin/vout pertaining to our addresses
-  var networkFee: Satoshis {
-    if let tempTransaction = temporarySentTransaction {
-      return tempTransaction.feeAmount
-    } else if let invitation = invitation {
-      switch invitation.status {
-      case .requestSent: return invitation.fees
-      default: break
-      }
-    }
-    return sumVins - sumVouts
+extension CKMTransaction: TransactionDetailCellViewModelObject {
+  var memoIsShared: Bool {
+    return sharedPayload?.sharingDesired ?? false
   }
 
-  /// Net effect of the transaction on the wallet of current user
-  var netWalletAmount: Satoshis {
-    if let tx = temporarySentTransaction {
-      return (tx.amount + tx.feeAmount) * -1 // negative, to show an outgoing amount with a negative impact on wallet balance
-    }
-
-    if vins.isEmpty && vouts.isEmpty, let invite = invitation { // Incoming invitation without valid transaction
-      return invite.btcAmount
-    }
-
-    return myVouts - myVins
+  var primaryDate: Date {
+    return date ?? invitation?.sentDate ?? Date()
   }
 
-  /// The amount received after the network fee has been subtracted from the sent amount
-  var receivedAmount: Satoshis {
-    return isIncoming ? netWalletAmount : (abs(netWalletAmount) - networkFee)
+  var onChainConfirmations: Int? {
+    return confirmations
   }
 
-  /// Returns sum of `amount` value from all vins
-  private var sumVins: Satoshis {
-    return NSArray(array: vins.asArray()).value(forKeyPath: "@sum.amount") as? Int ?? 0
+  var addressProvidedToSender: String? {
+    return invitation?.addressProvidedToSender
   }
 
-  /// Returns sum of `amount` value from all vouts
-  private var sumVouts: Satoshis {
-    return NSArray(array: vouts.asArray()).value(forKeyPath: "@sum.amount") as? Int ?? 0
+  var paymentIdIsValid: Bool {
+    return txidIsActualTxid
   }
 
-  /// Returns sent amount from vins, relative to addresses owned by user's wallet
-  private var myVins: Satoshis {
-    let vinsToUse = vins.filter { $0.belongsToWallet }
-    return NSArray(array: vinsToUse.asArray()).value(forKeyPath: "@sum.amount") as? Int ?? 0
-  }
-
-  /// Returns received amount from vouts, relative to addresses owned by user's wallet
-  private var myVouts: Satoshis {
-    let voutsToUse = vouts.filter { $0.address != nil }
-    return NSArray(array: voutsToUse.asArray()).value(forKeyPath: "@sum.amount") as? Int ?? 0
+  var invitationStatus: InvitationStatus? {
+    return invitation?.status
   }
 
 }
+

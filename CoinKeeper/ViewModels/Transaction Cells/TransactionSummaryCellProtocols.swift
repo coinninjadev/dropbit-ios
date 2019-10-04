@@ -45,7 +45,7 @@ protocol TransactionSummaryCellViewModelType: TransactionSummaryCellDisplayable 
   /// This address may belong to the wallet or the counterparty depending on the direction
   var receiverAddress: String? { get }
   var lightningInvoice: String? { get }
-  var amountDetails: TransactionAmountDetails { get }
+  var amounts: TransactionAmounts { get }
   var memo: String? { get }
   var isLightningUpgrade: Bool { get }
 }
@@ -165,18 +165,15 @@ extension TransactionSummaryCellViewModelType {
   }
 
   var summaryAmountLabels: SummaryCellAmountLabels {
-    let converter = CurrencyConverter(rates: amountDetails.exchangeRates,
-                                      fromAmount: amountDetails.btcAmount,
-                                      currencyPair: amountDetails.currencyPair)
-
+    let currentAmounts = amounts.netAtCurrent
     var btcAttributedString: NSAttributedString?
     if walletTxType == .onChain {
-      btcAttributedString = BitcoinFormatter(symbolType: .attributed).attributedString(from: converter.btcAmount)
+      btcAttributedString = BitcoinFormatter(symbolType: .attributed).attributedString(from: currentAmounts.btc)
     }
 
-    let signedFiatAmount = self.signedAmount(for: converter.fiatAmount)
-    let satsText = SatsFormatter().string(fromDecimal: converter.btcAmount) ?? ""
-    let fiatText = FiatFormatter(currency: converter.fiatCurrency,
+    let signedFiatAmount = self.signedAmount(for: currentAmounts.fiat)
+    let satsText = SatsFormatter().string(fromDecimal: currentAmounts.btc) ?? ""
+    let fiatText = FiatFormatter(currency: currentAmounts.fiatCurrency,
                                  withSymbol: true,
                                  showNegativeSymbol: true,
                                  negativeHasSpace: true).string(fromDecimal: signedFiatAmount) ?? ""

@@ -33,7 +33,7 @@ enum LightningTransferType {
   case deposit, withdraw
 }
 
-struct TransactionAmountDetails {
+struct MockAmountsFactory: TransactionAmountsFactoryType {
   let btcAmount: NSDecimalNumber
   let currencyPair: CurrencyPair
   let exchangeRates: ExchangeRates
@@ -67,6 +67,26 @@ struct TransactionAmountDetails {
               fiatWhenInvited: fiatWhenInvited,
               fiatWhenTransacted: fiatWhenTransacted)
   }
+
+  var netAtCurrentAmounts: ConvertedAmounts {
+    let converter = CurrencyConverter(fromBtcTo: currencyPair.fiat, fromAmount: btcAmount, rates: exchangeRates)
+    return ConvertedAmounts(converter: converter)
+  }
+
+  var netWhenInitiatedAmounts: ConvertedAmounts? {
+    guard let fiat = fiatWhenInvited else { return nil }
+    return ConvertedAmounts(btc: btcAmount, fiat: fiat, fiatCurrency: currencyPair.fiat)
+  }
+
+  var netWhenTransactedAmounts: ConvertedAmounts? {
+    guard let fiat = fiatWhenTransacted else { return nil }
+    return ConvertedAmounts(btc: btcAmount, fiat: fiat, fiatCurrency: currencyPair.fiat)
+  }
+
+  var bitcoinNetworkFeeAmounts: ConvertedAmounts? { return nil }
+  var lightningNetworkFeeAmounts: ConvertedAmounts? { return nil }
+  var dropBitFeeAmounts: ConvertedAmounts? { return nil }
+
 }
 
 struct ProgressBarConfig {
@@ -220,4 +240,22 @@ struct DetailCellAmountLabels {
   let primaryText: String
   let secondaryAttributedText: NSAttributedString
   let historicalPriceAttributedText: NSAttributedString?
+}
+
+struct ConvertedAmounts {
+  let btc: NSDecimalNumber
+  let fiat: NSDecimalNumber
+  let fiatCurrency: CurrencyCode //included for easy formatting
+
+  init(btc: NSDecimalNumber, fiat: NSDecimalNumber, fiatCurrency: CurrencyCode) {
+    self.btc = btc
+    self.fiat = fiat
+    self.fiatCurrency = fiatCurrency
+  }
+
+  init(converter: CurrencyConverter) {
+    self.init(btc: converter.btcAmount,
+              fiat: converter.fiatAmount,
+              fiatCurrency: converter.fiatCurrency)
+  }
 }
