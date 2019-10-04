@@ -246,7 +246,8 @@ extension TransactionDetailCellViewModelType {
 
   /// This struct provides a subset of the values so that the address view doesn't hold a reference to the full object
   var addressViewConfig: AddressViewConfig {
-    return AddressViewConfig(receiverAddress: receiverAddress,
+    return AddressViewConfig(walletTxType: walletTxType,
+                             receiverAddress: receiverAddress,
                              addressProvidedToSender: addressProvidedToSender,
                              broadcastFailed: (status == .failed && walletTxType == .onChain),
                              invitationStatus: invitationStatus)
