@@ -1,5 +1,5 @@
 //
-//  TransactionDetailCellActionableObject.swift
+//  TransactionDetailCellActionable.swift
 //  DropBit
 //
 //  Created by Ben Winters on 10/4/19.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-protocol TransactionDetailCellActionableObject {
+protocol TransactionDetailCellActionable {
 
   var bitcoinAddress: String? { get }
   var lightningInvoice: String? { get }
