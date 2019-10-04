@@ -131,7 +131,6 @@ class WalletTransferViewController: PresentableViewController, StoryboardInitial
       feesView.isHidden = true
       data == nil ? disableConfirmButton() : enableConfirmButton()
     case .toOnChain(let inputs):
-      editAmountView.swapButton.isHidden = true
       inputs == nil ? disableConfirmButton() : enableConfirmButton()
     }
   }
