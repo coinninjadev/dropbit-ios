@@ -86,8 +86,7 @@ extension AppCoordinator: WalletOverviewViewControllerDelegate {
                                                            walletTransactionType: walletTransactionType,
                                                            currencyPair: self.currencyController.currencyPair)
     let sendPaymentVM = SendPaymentViewModel(editAmountViewModel: swappableVM, walletTransactionType: walletTransactionType)
-    let sendPaymentViewController = SendPaymentViewController.newInstance(delegate: self, viewModel: sendPaymentVM)
-    sendPaymentViewController.alertManager = self.alertManager
+    let sendPaymentViewController = SendPaymentViewController.newInstance(delegate: self, viewModel: sendPaymentVM, alertManager: alertManager)
     navigationController.present(sendPaymentViewController, animated: true)
   }
 

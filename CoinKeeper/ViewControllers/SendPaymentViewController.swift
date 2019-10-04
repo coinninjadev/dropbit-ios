@@ -157,11 +157,15 @@ CurrencySwappableAmountEditor {
     ]
   }
 
-  static func newInstance(delegate: SendPaymentViewControllerCoordinator, viewModel: SendPaymentViewModel) -> SendPaymentViewController {
+  static func newInstance(
+    delegate: SendPaymentViewControllerCoordinator,
+    viewModel: SendPaymentViewModel,
+    alertManager: AlertManagerType? = nil) -> SendPaymentViewController {
     let vc = SendPaymentViewController.makeFromStoryboard()
     vc.delegate = delegate
     vc.viewModel = viewModel
     vc.viewModel.delegate = vc
+    vc.alertManager = alertManager
     return vc
   }
 
