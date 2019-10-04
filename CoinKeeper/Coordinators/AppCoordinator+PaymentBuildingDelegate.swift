@@ -41,7 +41,9 @@ extension AppCoordinator: PaymentBuildingDelegate {
       .then { (feeRates: FeeRates) -> Promise<PaymentData> in
         do {
           try BitcoinAddressValidator().validate(value: lightningAccount.address)
+            log.info("Lightning load address successfully validated.")
         } catch {
+          log.error(error, message: "Lightning load address failed validation. Address: \(lightningAccount.address)")
           return Promise(error: error)
         }
         let feeRate: Double = feeRates.low
@@ -52,8 +54,10 @@ extension AppCoordinator: PaymentBuildingDelegate {
         if let paymentData = maybePaymentData {
           do {
             try BitcoinAddressValidator().validate(value: paymentData.broadcastData.paymentAddress)
+            log.info("Lightning load address successfully validated after creating transaction data.")
             return Promise.value(paymentData)
           } catch {
+            log.error(error, message: "Lightning load address failed validation. Address: \(lightningAccount.address)")
             return Promise(error: error)
           }
         } else {
