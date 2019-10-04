@@ -206,6 +206,9 @@ extension ConfirmPaymentViewController {
     }
 
     adjustableFeesControl.tintColor = .primaryActionButton
+    if #available(iOS 13, *) {
+      adjustableFeesControl.selectedSegmentTintColor = .primaryActionButton
+    }
     adjustableFeesControl.backgroundColor = .lightGrayBackground
     adjustableFeesControl.setTitleTextAttributes([
       .font: UIFont.medium(10),
