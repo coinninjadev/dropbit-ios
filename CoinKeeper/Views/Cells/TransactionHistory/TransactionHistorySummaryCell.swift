@@ -13,7 +13,7 @@ class TransactionHistorySummaryCell: UICollectionViewCell {
   @IBOutlet var directionView: TransactionDirectionView!
   @IBOutlet var twitterAvatarView: TwitterAvatarView!
   @IBOutlet var descriptionLabel: TransactionHistoryCounterpartyLabel!
-  @IBOutlet var memoLabel: SummaryCellMemoLabel!
+  @IBOutlet var subtitleLabel: SummaryCellSubtitleLabel!
   @IBOutlet var amountStackView: UIStackView!
 
   override func awakeFromNib() {
@@ -49,9 +49,9 @@ class TransactionHistorySummaryCell: UICollectionViewCell {
     configureIsHidden(with: values)
     configureLeadingViews(with: values.leadingImageConfig, cellBgColor: values.cellBackgroundColor)
     descriptionLabel.text = values.summaryTransactionDescription
-    memoLabel.font = values.subtitleFont
-    memoLabel.text = values.isPendingTransferToLightning ? "PENDING" : values.memo
-    memoLabel.textColor = values.subtitleColor
+    subtitleLabel.font = values.subtitleFont
+    subtitleLabel.text = values.subtitleText
+    subtitleLabel.textColor = values.subtitleColor
     configureAmountLabels(with: values.summaryAmountLabels,
                           accentColor: values.accentColor,
                           walletTxType: values.walletTxType,
@@ -62,11 +62,7 @@ class TransactionHistorySummaryCell: UICollectionViewCell {
   private func configureIsHidden(with values: TransactionSummaryCellDisplayable) {
     directionView.isHidden = values.shouldHideDirectionView
     twitterAvatarView.isHidden = values.shouldHideAvatarView
-    if values.isPendingTransferToLightning {
-      memoLabel.isHidden = false
-    } else {
-      memoLabel.isHidden = values.shouldHideMemoLabel
-    }
+    subtitleLabel.isHidden = values.shouldHideSubtitleLabel
   }
 
   private func configureLeadingViews(with leadingConfig: SummaryCellLeadingImageConfig, cellBgColor: UIColor) {

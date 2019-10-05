@@ -28,7 +28,6 @@ protocol TransactionDetailCellDisplayable {
   var detailCellType: TransactionDetailCellType { get }
   var cellBackgroundColor: UIColor { get }
   var isLightningTransfer: Bool { get }
-  var shouldHideMemoLabel: Bool { get }
   var shouldHideAvatarView: Bool { get }
 
 }
@@ -37,7 +36,7 @@ extension TransactionDetailCellDisplayable {
 
   var shouldHideAddressView: Bool { return isLightningTransfer }
   var shouldHideCounterpartyLabel: Bool { return counterpartyText == nil }
-  var shouldHideMemoView: Bool { return shouldHideMemoLabel }
+  var shouldHideMemoView: Bool { return memoConfig == nil }
   var shouldHideAddMemoButton: Bool { return !canAddMemo }
   var shouldHideMessageLabel: Bool { return messageText == nil }
   var shouldHideProgressView: Bool { return progressConfig == nil }

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14868" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14824"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -58,7 +58,7 @@
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5A3-sw-8Pr" customClass="SummaryCellMemoLabel" customModule="DropBit" customModuleProvider="target">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5A3-sw-8Pr" customClass="SummaryCellSubtitleLabel" customModule="DropBit" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="24" width="35.5" height="26"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="26" id="Fzr-CY-iOP"/>
@@ -132,7 +132,7 @@
                 <outlet property="amountStackView" destination="kDp-oC-28k" id="cAD-0d-RHr"/>
                 <outlet property="descriptionLabel" destination="TP3-zp-1a8" id="kCz-YO-X6W"/>
                 <outlet property="directionView" destination="ocX-t8-liS" id="v3X-t7-QpL"/>
-                <outlet property="memoLabel" destination="5A3-sw-8Pr" id="Xpw-Fa-KBb"/>
+                <outlet property="subtitleLabel" destination="5A3-sw-8Pr" id="Xpw-Fa-KBb"/>
                 <outlet property="twitterAvatarView" destination="CCd-Cq-cEl" id="UAJ-hq-VBN"/>
             </connections>
             <point key="canvasLocation" x="24.5" y="52"/>

@@ -17,6 +17,7 @@ protocol TransactionDetailInvoiceCellDisplayable: TransactionSummaryCellDisplaya
   var displayDate: String { get }
   var tooltipType: DetailCellTooltip { get }
   var invoiceActionConfig: DetailCellActionButtonConfig { get }
+  var memo: String? { get }
 
   func qrImage(withSize size: CGSize) -> UIImage?
 }
@@ -25,6 +26,7 @@ extension TransactionDetailInvoiceCellDisplayable {
 
   var invoiceIsExpired: Bool { return hoursUntilExpiration == nil }
   var shouldHideQRHistoricalContainer: Bool { return invoiceIsExpired }
+  var shouldHideMemoLabel: Bool { return (memo ?? "").isEmpty }
 
 }
 

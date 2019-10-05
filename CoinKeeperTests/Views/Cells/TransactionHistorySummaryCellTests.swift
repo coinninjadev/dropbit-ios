@@ -24,7 +24,7 @@ class TransactionHistorySummaryCellTests: XCTestCase {
     XCTAssertNotNil(self.sut.directionView, "directionView should be connected")
     XCTAssertNotNil(self.sut.twitterAvatarView, "twitterAvatarView should be connected")
     XCTAssertNotNil(self.sut.descriptionLabel, "descriptionLabel should be connected")
-    XCTAssertNotNil(self.sut.memoLabel, "memoLabel should be connected")
+    XCTAssertNotNil(self.sut.memoLabel, "subtitleLabel should be connected")
     XCTAssertNotNil(self.sut.amountStackView, "amountStackView should be connected")
   }
 
