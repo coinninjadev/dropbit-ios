@@ -9,6 +9,20 @@
 import Foundation
 import UIKit
 
+struct TransactionViewModelInputs {
+  let currencies: CurrencyPair
+  let exchangeRates: ExchangeRates
+  let deviceCountryCode: Int
+
+  var fiatCurrency: CurrencyCode {
+    return currencies.fiat
+  }
+
+  var selectedCurrency: SelectedCurrency {
+    return currencies.primary.isFiat ? .fiat : .BTC
+  }
+}
+
 enum TransactionDirection: String {
   case `in`, out
 

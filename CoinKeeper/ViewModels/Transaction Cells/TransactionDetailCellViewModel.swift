@@ -18,10 +18,7 @@ class TransactionDetailCellViewModel: TransactionSummaryCellViewModel, Transacti
   var invitationStatus: InvitationStatus?
 
   init(object: TransactionDetailCellViewModelObject,
-       selectedCurrency: SelectedCurrency,
-       fiatCurrency: CurrencyCode,
-       exchangeRates: ExchangeRates,
-       deviceCountryCode: Int) {
+       inputs: TransactionViewModelInputs) {
     self.memoIsShared = object.memoIsShared
     self.date = object.primaryDate
     self.onChainConfirmations = object.onChainConfirmations
@@ -29,11 +26,7 @@ class TransactionDetailCellViewModel: TransactionSummaryCellViewModel, Transacti
     self.paymentIdIsValid = object.paymentIdIsValid
     self.invitationStatus = object.invitationStatus
 
-    super.init(object: object,
-               selectedCurrency: selectedCurrency,
-               fiatCurrency: fiatCurrency,
-               exchangeRates: exchangeRates,
-               deviceCountryCode: deviceCountryCode)
+    super.init(object: object, inputs: inputs)
   }
 
 }
