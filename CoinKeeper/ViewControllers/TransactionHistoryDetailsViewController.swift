@@ -20,8 +20,6 @@ URLOpener & DeviceCountryCodeProvider & CurrencyValueDataSourceType & CopyToClip
                       didCancelInvitationWithID invitationID: String,
                       at indexPath: IndexPath)
   func viewControllerDidTapAddMemo(_ viewController: UIViewController, with completion: @escaping (String) -> Void)
-  func viewControllerShouldUpdateTransaction(_ viewController: TransactionHistoryDetailsViewController,
-                                             transaction: CKMTransaction) -> Promise<Void>
 }
 
 final class TransactionHistoryDetailsViewController: PresentableViewController, StoryboardInitializable {
@@ -155,18 +153,23 @@ extension TransactionHistoryDetailsViewController: TransactionHistoryDetailCellD
       delegate.viewController(self, didCancelInvitationWithID: invitationID, at: indexPath)
     case .removeEntry:
       item.removeFromTransactionHistory()
-      if let context = item.managedObjectContext {
-        do {
-          try context.saveRecursively()
-        } catch {
-          log.contextSaveError(error)
-        }
-      }
+      updateItem(item)
+      delegate.viewControllerDidDismissTransactionDetails(self)
     }
   }
 
   func didTapAddMemoButton(detailCell: TransactionHistoryDetailBaseCell) {
 //    delegate.viewControllerDidTapAddMemo(self, with: completion)
+  }
+
+  private func updateItem(_ item: TransactionDetailCellActionable) {
+    guard let context = item.managedObjectContext else { return }
+
+    do {
+      try context.saveRecursively()
+    } catch {
+      log.contextSaveError(error)
+    }
   }
 
 }

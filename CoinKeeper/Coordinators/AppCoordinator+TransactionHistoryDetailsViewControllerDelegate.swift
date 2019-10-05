@@ -48,19 +48,4 @@ extension AppCoordinator: TransactionHistoryDetailsViewControllerDelegate {
     viewController.present(alert, animated: true, completion: nil)
   }
 
-  func viewControllerShouldUpdateTransaction(_ viewController: TransactionHistoryDetailsViewController,
-                                             transaction: CKMTransaction) -> Promise<Void> {
-    return Promise { seal in
-      let context = transaction.managedObjectContext
-      context?.performAndWait {
-        do {
-          try context?.saveRecursively()
-          viewController.collectionView.reloadData()
-          seal.fulfill(())
-        } catch {
-          seal.reject(error)
-        }
-      }
-    }
-  }
 }

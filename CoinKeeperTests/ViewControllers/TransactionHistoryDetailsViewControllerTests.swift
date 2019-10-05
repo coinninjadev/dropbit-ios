@@ -85,11 +85,6 @@ class TransactionHistoryDetailsViewControllerTests: XCTestCase {
       completion("temp memo for testing purposes")
     }
 
-    func viewControllerShouldUpdateTransaction(_ viewController: TransactionHistoryDetailsViewController,
-                                               transaction: CKMTransaction) -> Promise<Void> {
-      return Promise.value(())
-    }
-
     func viewControllerRequestedShareTransactionOnTwitter(_ viewController: UIViewController,
                                                           walletTxType: WalletTransactionType,
                                                           transaction: TransactionDetailCellActionable?,
