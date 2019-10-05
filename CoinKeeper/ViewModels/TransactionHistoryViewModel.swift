@@ -115,6 +115,13 @@ class TransactionHistoryViewModel: NSObject, UICollectionViewDataSource, Exchang
     }
   }
 
+  func popoverDisplayableItem(at indexPath: IndexPath) -> TransactionDetailPopoverDisplayable? {
+    return dataSource.detailPopoverDisplayableItem(at: indexPath,
+                                                   rates: rateManager.exchangeRates,
+                                                   currencies: selectedCurrencyPair,
+                                                   deviceCountryCode: self.deviceCountryCode)
+  }
+
   func collectionView(_ collectionView: UICollectionView,
                       viewForSupplementaryElementOfKind kind: String,
                       at indexPath: IndexPath) -> UICollectionReusableView {

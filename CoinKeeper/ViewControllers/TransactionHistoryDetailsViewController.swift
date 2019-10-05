@@ -147,8 +147,9 @@ extension TransactionHistoryDetailsViewController: TransactionHistoryDetailCellD
       let item = viewModel.dataSource.detailCellActionableItem(at: indexPath) else { return }
     switch action {
     case .seeDetails:
-//      delegate.viewControllerShouldSeeTransactionDetails(for: item)
-      break
+      guard let popoverItem = viewModel.popoverDisplayableItem(at: indexPath) else { return }
+      delegate.viewControllerShouldSeeTransactionDetails(for: popoverItem)
+
     case .cancelInvitation:
       guard let invitationID = item.invitation?.id else { return }
       delegate.viewController(self, didCancelInvitationWithID: invitationID, at: indexPath)
