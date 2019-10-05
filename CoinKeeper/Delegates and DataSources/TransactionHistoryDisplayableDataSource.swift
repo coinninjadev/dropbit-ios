@@ -120,6 +120,7 @@ class TransactionHistoryLightningDataSource: NSObject, TransactionHistoryDataSou
 
   init(context: NSManagedObjectContext) {
     let fetchRequest: NSFetchRequest<CKMWalletEntry> = CKMWalletEntry.fetchRequest()
+    fetchRequest.predicate = CKPredicate.WalletEntry.notHidden()
     fetchRequest.sortDescriptors = CKMWalletEntry.transactionHistorySortDescriptors
     fetchRequest.fetchBatchSize = 25
     let controller = NSFetchedResultsController(fetchRequest: fetchRequest,
