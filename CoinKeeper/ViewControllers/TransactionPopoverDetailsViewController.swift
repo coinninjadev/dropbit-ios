@@ -18,7 +18,7 @@ protocol TransactionPopoverDetailsViewControllerDelegate: ViewControllerDismissa
 class TransactionPopoverDetailsViewController: BaseViewController, StoryboardInitializable, PopoverViewControllerType {
 
   @IBOutlet var containerView: UIView!
-  @IBOutlet var transactionDirectionImageView: UIImageView!
+  @IBOutlet var directionView: TransactionDirectionView!
   @IBOutlet var statusLabel: TransactionDetailBreakdownLabel!
   @IBOutlet var whenSentTitleLabel: TransactionDetailBreakdownLabel!
   @IBOutlet var whenSentAmountLabel: TransactionDetailBreakdownLabel!
@@ -60,7 +60,7 @@ class TransactionPopoverDetailsViewController: BaseViewController, StoryboardIni
     confirmationsAmountLabel.text = viewModel.confirmationsText
     statusLabel.text = viewModel.detailStatusText
     txidLabel.text = viewModel.txid
-    transactionDirectionImageView.image = nil // need to change view to use new one
+    directionView.configure(image: viewModel.directionConfig.image, bgColor: viewModel.directionConfig.bgColor)
   }
 
   private func setupUI() {
@@ -72,8 +72,7 @@ class TransactionPopoverDetailsViewController: BaseViewController, StoryboardIni
     shareTransactionButton.titleLabel?.font = .semiBold(14)
     containerView.applyCornerRadius(15)
     addDismissibleTapToBackground()
-    let title = "VIEW ON BLOCK EXPLORER"
-    seeTransactionDetailsButton.setTitle(title, for: .normal)
+    seeTransactionDetailsButton.setTitle("VIEW ON BLOCK EXPLORER", for: .normal)
   }
 
   func dismissPopoverViewController() {

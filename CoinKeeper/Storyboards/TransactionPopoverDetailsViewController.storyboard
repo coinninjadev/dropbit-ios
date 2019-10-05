@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
-    <device id="retina6_1" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14868" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14824"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -27,13 +25,14 @@
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="kqQ-EX-41e">
                                                 <rect key="frame" x="0.0" y="0.0" width="334" height="68.5"/>
                                                 <subviews>
-                                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="incoming30" translatesAutoresizingMaskIntoConstraints="NO" id="Yny-sy-SZq">
+                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uFP-QA-zWE" customClass="TransactionDirectionView" customModule="DropBit" customModuleProvider="target">
                                                         <rect key="frame" x="147" y="0.0" width="40" height="40"/>
+                                                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                                         <constraints>
-                                                            <constraint firstAttribute="width" secondItem="Yny-sy-SZq" secondAttribute="height" multiplier="1:1" id="6F7-Fe-N9r"/>
-                                                            <constraint firstAttribute="height" constant="40" id="FlT-fM-yaf"/>
+                                                            <constraint firstAttribute="height" constant="40" id="JIT-pA-qWd"/>
+                                                            <constraint firstAttribute="width" secondItem="uFP-QA-zWE" secondAttribute="height" multiplier="1:1" id="dL7-T4-k1c"/>
                                                         </constraints>
-                                                    </imageView>
+                                                    </view>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="c5N-sf-8oc" customClass="TransactionDetailBreakdownLabel" customModule="DropBit" customModuleProvider="target">
                                                         <rect key="frame" x="146" y="48" width="42" height="20.5"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -187,13 +186,13 @@
                         <outlet property="confirmationsTitleLabel" destination="SUe-Os-k1a" id="7qB-TI-WH8"/>
                         <outlet property="containerView" destination="K8O-2f-xNP" id="7nR-xh-wve"/>
                         <outlet property="containerViewCenterYConstraint" destination="tQK-4w-njb" id="wbV-Vo-OIY"/>
+                        <outlet property="directionView" destination="uFP-QA-zWE" id="Z2G-F8-SUw"/>
                         <outlet property="networkFeeAmountLabel" destination="f4P-aI-iCE" id="tsk-66-QZl"/>
                         <outlet property="networkFeeTitleLabel" destination="JJM-Mn-uCp" id="bbc-5B-zLd"/>
                         <outlet property="questionMarkButton" destination="oK9-hO-IeN" id="TIO-OV-ABQ"/>
                         <outlet property="seeTransactionDetailsButton" destination="NLv-tT-MJa" id="QL3-pl-zUw"/>
                         <outlet property="shareTransactionButton" destination="rL2-RU-h5L" id="qRX-3U-6Co"/>
                         <outlet property="statusLabel" destination="c5N-sf-8oc" id="IC5-Lr-ISh"/>
-                        <outlet property="transactionDirectionImageView" destination="Yny-sy-SZq" id="a4x-KI-Uq4"/>
                         <outlet property="txidLabel" destination="cds-32-VLb" id="EVS-hV-8A9"/>
                         <outlet property="whenSentAmountLabel" destination="DY5-bS-due" id="pbV-vB-N9h"/>
                         <outlet property="whenSentTitleLabel" destination="azJ-pd-sHC" id="xhQ-Bw-9do"/>
@@ -206,7 +205,6 @@
     </scenes>
     <resources>
         <image name="close" width="14" height="14"/>
-        <image name="incoming30" width="30" height="30"/>
         <image name="questionMarkIcon" width="22" height="22"/>
     </resources>
 </document>
