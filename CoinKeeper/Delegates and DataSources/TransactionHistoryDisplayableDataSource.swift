@@ -27,6 +27,13 @@ protocol TransactionHistoryDataSourceType: AnyObject {
                                  currencies: CurrencyPair,
                                  deviceCountryCode: Int) -> TransactionDetailCellDisplayable
 
+  func detailPopoverDisplayableItem(at indexPath: IndexPath,
+                                    rates: ExchangeRates,
+                                    currencies: CurrencyPair,
+                                    deviceCountryCode: Int) -> TransactionDetailPopoverDisplayable?
+
+  func detailCellActionableItem(at indexPath: IndexPath) -> TransactionDetailCellActionable?
+
   func numberOfSections() -> Int
   func numberOfItems(inSection section: Int) -> Int
   var walletTransactionType: WalletTransactionType { get }
@@ -60,12 +67,8 @@ class TransactionHistoryOnChainDataSource: NSObject, TransactionHistoryDataSourc
                                   currencies: CurrencyPair,
                                   deviceCountryCode: Int) -> TransactionSummaryCellDisplayable {
     let transaction = frc.object(at: indexPath)
-    let selectedCurrency: SelectedCurrency = currencies.primary.isFiat ? .fiat : .BTC
-    return TransactionSummaryCellViewModel(object: transaction,
-                                           selectedCurrency: selectedCurrency,
-                                           fiatCurrency: currencies.fiat,
-                                           exchangeRates: rates,
-                                           deviceCountryCode: deviceCountryCode)
+    let inputs = TransactionViewModelInputs(currencies: currencies, exchangeRates: rates, deviceCountryCode: deviceCountryCode)
+    return TransactionSummaryCellViewModel(object: transaction, inputs: inputs)
   }
 
   func detailCellDisplayableItem(at indexPath: IndexPath,
@@ -73,9 +76,21 @@ class TransactionHistoryOnChainDataSource: NSObject, TransactionHistoryDataSourc
                                  currencies: CurrencyPair,
                                  deviceCountryCode: Int) -> TransactionDetailCellDisplayable {
     let transaction = frc.object(at: indexPath)
-    let selectedCurrency: SelectedCurrency = currencies.primary.isFiat ? .fiat : .BTC
-    return TransactionDetailCellViewModel(object: transaction, selectedCurrency: selectedCurrency, fiatCurrency: currencies.fiat,
-                                          exchangeRates: rates, deviceCountryCode: deviceCountryCode)
+    let inputs = TransactionViewModelInputs(currencies: currencies, exchangeRates: rates, deviceCountryCode: deviceCountryCode)
+    return TransactionDetailCellViewModel(object: transaction, inputs: inputs)
+  }
+
+  func detailPopoverDisplayableItem(at indexPath: IndexPath,
+                                    rates: ExchangeRates,
+                                    currencies: CurrencyPair,
+                                    deviceCountryCode: Int) -> TransactionDetailPopoverDisplayable? {
+    let transaction = frc.object(at: indexPath)
+    let inputs = TransactionViewModelInputs(currencies: currencies, exchangeRates: rates, deviceCountryCode: deviceCountryCode)
+    return TransactionDetailPopoverViewModel(object: transaction, inputs: inputs)
+  }
+
+  func detailCellActionableItem(at indexPath: IndexPath) -> TransactionDetailCellActionable? {
+    return frc.object(at: indexPath)
   }
 
   func numberOfSections() -> Int {
@@ -105,6 +120,7 @@ class TransactionHistoryLightningDataSource: NSObject, TransactionHistoryDataSou
 
   init(context: NSManagedObjectContext) {
     let fetchRequest: NSFetchRequest<CKMWalletEntry> = CKMWalletEntry.fetchRequest()
+    fetchRequest.predicate = CKPredicate.WalletEntry.notHidden()
     fetchRequest.sortDescriptors = CKMWalletEntry.transactionHistorySortDescriptors
     fetchRequest.fetchBatchSize = 25
     let controller = NSFetchedResultsController(fetchRequest: fetchRequest,
@@ -121,15 +137,10 @@ class TransactionHistoryLightningDataSource: NSObject, TransactionHistoryDataSou
                                   rates: ExchangeRates,
                                   currencies: CurrencyPair,
                                   deviceCountryCode: Int) -> TransactionSummaryCellDisplayable {
-
     let walletEntry = frc.object(at: indexPath)
     let vmObject = viewModelObject(for: walletEntry)
-    let selectedCurrency: SelectedCurrency = currencies.primary.isFiat ? .fiat : .BTC
-    return TransactionSummaryCellViewModel(object: vmObject,
-                                           selectedCurrency: selectedCurrency,
-                                           fiatCurrency: currencies.fiat,
-                                           exchangeRates: rates,
-                                           deviceCountryCode: deviceCountryCode)
+    let inputs = TransactionViewModelInputs(currencies: currencies, exchangeRates: rates, deviceCountryCode: deviceCountryCode)
+    return TransactionSummaryCellViewModel(object: vmObject, inputs: inputs)
   }
 
   func detailCellDisplayableItem(at indexPath: IndexPath,
@@ -137,20 +148,25 @@ class TransactionHistoryLightningDataSource: NSObject, TransactionHistoryDataSou
                                  currencies: CurrencyPair,
                                  deviceCountryCode: Int) -> TransactionDetailCellDisplayable {
     let walletEntry = frc.object(at: indexPath)
-    let selectedCurrency: SelectedCurrency = currencies.primary.isFiat ? .fiat : .BTC
+    let inputs = TransactionViewModelInputs(currencies: currencies, exchangeRates: rates, deviceCountryCode: deviceCountryCode)
 
     if let invoiceViewModelObject = LightningInvoiceViewModelObject(walletEntry: walletEntry) {
-      return TransactionDetailInvoiceCellViewModel(object: invoiceViewModelObject,
-                                                   selectedCurrency: selectedCurrency,
-                                                   fiatCurrency: currencies.fiat,
-                                                   exchangeRates: rates,
-                                                   deviceCountryCode: deviceCountryCode)
+      return TransactionDetailInvoiceCellViewModel(object: invoiceViewModelObject, inputs: inputs)
     } else {
       let vmObject = viewModelObject(for: walletEntry)
-
-      return TransactionDetailCellViewModel(object: vmObject, selectedCurrency: selectedCurrency, fiatCurrency: currencies.fiat,
-                                            exchangeRates: rates, deviceCountryCode: deviceCountryCode)
+      return TransactionDetailCellViewModel(object: vmObject, inputs: inputs)
     }
+  }
+
+  func detailPopoverDisplayableItem(at indexPath: IndexPath,
+                                    rates: ExchangeRates,
+                                    currencies: CurrencyPair,
+                                    deviceCountryCode: Int) -> TransactionDetailPopoverDisplayable? {
+    return nil
+  }
+
+  func detailCellActionableItem(at indexPath: IndexPath) -> TransactionDetailCellActionable? {
+    return frc.object(at: indexPath)
   }
 
   private func viewModelObject(for walletEntry: CKMWalletEntry) -> TransactionDetailCellViewModelObject {

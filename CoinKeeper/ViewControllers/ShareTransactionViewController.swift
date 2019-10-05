@@ -26,7 +26,7 @@ class ShareTransactionViewController: UIViewController, StoryboardInitializable 
   @IBOutlet var dontAskAgainFadedBackground: UIView!
 
   @IBAction func performTwitter(_ sender: Any) {
-    delegate?.viewControllerRequestedShareTransactionOnTwitter(self, transaction: nil, shouldDismiss: true)
+    delegate?.viewControllerRequestedShareTransactionOnTwitter(self, walletTxType: .onChain, transaction: nil, shouldDismiss: true)
   }
 
   @IBAction func performNextTime(_ sender: Any) {
@@ -38,10 +38,13 @@ class ShareTransactionViewController: UIViewController, StoryboardInitializable 
   }
 
   weak var delegate: ShareTransactionViewControllerDelegate?
+  var walletTxType: WalletTransactionType = .onChain
 
-  static func newInstance(delegate: ShareTransactionViewControllerDelegate) -> ShareTransactionViewController {
+  static func newInstance(delegate: ShareTransactionViewControllerDelegate,
+                          walletTxType: WalletTransactionType) -> ShareTransactionViewController {
     let vc = ShareTransactionViewController.makeFromStoryboard()
     vc.delegate = delegate
+    vc.walletTxType = walletTxType
     return vc
   }
 

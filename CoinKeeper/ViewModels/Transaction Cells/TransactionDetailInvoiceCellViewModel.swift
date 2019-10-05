@@ -14,17 +14,10 @@ class TransactionDetailInvoiceCellViewModel: TransactionDetailCellViewModel, Tra
   let hoursUntilExpiration: Int?
 
   init(object: LightningInvoiceViewModelObject,
-       selectedCurrency: SelectedCurrency,
-       fiatCurrency: CurrencyCode,
-       exchangeRates: ExchangeRates,
-       deviceCountryCode: Int) {
+       inputs: TransactionViewModelInputs) {
     self.qrCodeGenerator = QRCodeGenerator()
     self.hoursUntilExpiration = object.hoursUntilExpiration
-    super.init(object: object,
-               selectedCurrency: selectedCurrency,
-               fiatCurrency: fiatCurrency,
-               exchangeRates: exchangeRates,
-               deviceCountryCode: deviceCountryCode)
+    super.init(object: object, inputs: inputs)
   }
 
 }

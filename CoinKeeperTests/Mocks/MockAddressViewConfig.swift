@@ -9,10 +9,9 @@
 import Foundation
 
 struct MockAddressViewConfig: AddressViewConfigurable {
-
+  let walletTxType: WalletTransactionType = .onChain
   var receiverAddress: String?
   var addressProvidedToSender: String?
   var broadcastFailed: Bool
   var invitationStatus: InvitationStatus?
-
 }

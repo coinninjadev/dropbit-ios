@@ -31,12 +31,12 @@ class MockTransactionHistoryDetailCellDelegate: TransactionHistoryDetailCellDele
   }
 
   var tappedAddress = false
-  func didTapAddress(detailCell: TransactionHistoryDetailBaseCell) {
+  func didTapAddressLinkButton(detailCell: TransactionHistoryDetailBaseCell) {
     tappedAddress = true
   }
 
   var tappedInvoice = false
-  func didTapInvoice(detailCell: TransactionHistoryDetailInvoiceCell) {
+  func didTapCopyInvoiceButton(detailCell: TransactionHistoryDetailInvoiceCell) {
     tappedInvoice = true
   }
 

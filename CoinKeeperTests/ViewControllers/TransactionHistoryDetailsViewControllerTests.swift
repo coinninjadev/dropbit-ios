@@ -60,8 +60,6 @@ class TransactionHistoryDetailsViewControllerTests: XCTestCase {
 
     let currencyController: CurrencyController = CurrencyController(fiatCurrency: .USD)
 
-    func viewControllerShouldSeeTransactionDetails(for viewModel: OldTransactionDetailCellViewModel) { }
-
     func latestExchangeRates(responseHandler: (ExchangeRates) -> Void) {
       responseHandler(CurrencyConverter.sampleRates)
     }
@@ -79,8 +77,6 @@ class TransactionHistoryDetailsViewControllerTests: XCTestCase {
       wasAskedToDismissDetailsController = true
     }
 
-    func viewControllerShouldSeeTransactionDetails(for object: TransactionDetailCellDisplayable) { }
-
     func viewController(_ viewController: TransactionHistoryDetailsViewController,
                         didCancelInvitationWithID invitationID: String,
                         at indexPath: IndexPath) { }
@@ -89,13 +85,9 @@ class TransactionHistoryDetailsViewControllerTests: XCTestCase {
       completion("temp memo for testing purposes")
     }
 
-    func viewControllerShouldUpdateTransaction(_ viewController: TransactionHistoryDetailsViewController,
-                                               transaction: CKMTransaction) -> Promise<Void> {
-      return Promise.value(())
-    }
-
     func viewControllerRequestedShareTransactionOnTwitter(_ viewController: UIViewController,
-                                                          transaction: CKMTransaction?,
+                                                          walletTxType: WalletTransactionType,
+                                                          transaction: TransactionDetailCellActionable?,
                                                           shouldDismiss: Bool) { }
 
     var wasAskedToOpenURL = false
@@ -104,5 +96,7 @@ class TransactionHistoryDetailsViewControllerTests: XCTestCase {
     }
 
     func openURLExternally(_ url: URL, completionHandler completion: ((Bool) -> Void)?) { }
+    func viewControllerShouldSeeTransactionDetails(for viewModel: TransactionDetailPopoverDisplayable) { }
+    func viewControllerSuccessfullyCopiedToClipboard(message: String, viewController: UIViewController) { }
   }
 }

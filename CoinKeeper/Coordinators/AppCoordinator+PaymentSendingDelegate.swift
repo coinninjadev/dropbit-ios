@@ -242,7 +242,8 @@ extension AppCoordinator: PaymentSendingDelegate {
         success()
 
         if !isInternalBroadcast {
-          self.showShareTransactionIfAppropriate(dropBitReceiver: outgoingTransactionData.receiver, delegate: self)
+          self.showShareTransactionIfAppropriate(dropBitReceiver: outgoingTransactionData.receiver,
+                                                 walletTxType: .onChain, delegate: self)
         }
 
         self.analyticsManager.track(property: MixpanelProperty(key: .hasSent, value: true))

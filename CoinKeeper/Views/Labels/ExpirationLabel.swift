@@ -21,7 +21,14 @@ class ExpirationLabel: PaddedLabel {
 
   func configure(hoursRemaining: Int?) {
     if let hours = hoursRemaining {
-      text = "expires in \(hours) hours"
+      switch hours {
+      case 0:
+        text = "expires in < 1 hour"
+      case 1:
+        text = "expires in 1 hour"
+      default:
+        text = "expires in \(hours) hours"
+      }
     } else {
       text = "expired"
     }

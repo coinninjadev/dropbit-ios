@@ -623,7 +623,7 @@
 		B505414D207D10DD0059C8F9 /* InMemoryCoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = B505414C207D10DD0059C8F9 /* InMemoryCoreDataStack.swift */; };
 		B505A87A2076C5BE00AACB23 /* TransactionHistoryCounterpartyLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B505A8792076C5BE00AACB23 /* TransactionHistoryCounterpartyLabel.swift */; };
 		B505A87C2076C79700AACB23 /* TransactionHistoryDetailLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B505A87B2076C79700AACB23 /* TransactionHistoryDetailLabel.swift */; };
-		B505A87E2076C96100AACB23 /* SummaryCellMemoLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B505A87D2076C96100AACB23 /* SummaryCellMemoLabel.swift */; };
+		B505A87E2076C96100AACB23 /* SummaryCellSubtitleLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B505A87D2076C96100AACB23 /* SummaryCellSubtitleLabel.swift */; };
 		B505D4EA21050F2000C0C8FC /* CKPredicate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B505D4E921050F2000C0C8FC /* CKPredicate.swift */; };
 		B505D4EC2106456000C0C8FC /* WalletAddressDataWorkerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B505D4EB2106456000C0C8FC /* WalletAddressDataWorkerTests.swift */; };
 		B5076A8423466E21007D8FCC /* TransactionAmountsFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5076A8323466E21007D8FCC /* TransactionAmountsFactory.swift */; };
@@ -1029,6 +1029,8 @@
 		B5DDB0F921DE6A1100A25929 /* MigrateKeychainV1toV2.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5DDB0F821DE6A1100A25929 /* MigrateKeychainV1toV2.swift */; };
 		B5E0931A2342508B000AE5CB /* TransactionDetailInvalidCellProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5E093192342508B000AE5CB /* TransactionDetailInvalidCellProtocols.swift */; };
 		B5E5032921B865A4008FBDAB /* PaymentRequestResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5E5032821B865A4008FBDAB /* PaymentRequestResolver.swift */; };
+		B5E7A0B52347959F00A50D58 /* TransactionDetailCellActionable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5E7A0B42347959F00A50D58 /* TransactionDetailCellActionable.swift */; };
+		B5E7A0B72347D49800A50D58 /* TransactionDetailPopoverDisplayable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5E7A0B62347D49800A50D58 /* TransactionDetailPopoverDisplayable.swift */; };
 		B5E7EE7B21B02FFB00E058EF /* ValidatorAlertDisplayable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5E7EE7A21B02FFB00E058EF /* ValidatorAlertDisplayable.swift */; };
 		B5E7EE7D21B04C1100E058EF /* TestError.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5E7EE7C21B04C1100E058EF /* TestError.swift */; };
 		B5E7EE7F21B088F200E058EF /* MockSendPaymentViewControllerCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5E7EE7E21B088F200E058EF /* MockSendPaymentViewControllerCoordinator.swift */; };
@@ -1057,6 +1059,7 @@
 		B5F6EC2522554CF20045633B /* TwilioErrorDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F6EC2422554CF20045633B /* TwilioErrorDelegate.swift */; };
 		B5F775F422B81B8500C7A771 /* UserBroker.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F775F322B81B8500C7A771 /* UserBroker.swift */; };
 		B5F9500A20E2D439001495E2 /* UnderlinedTextButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F9500920E2D439001495E2 /* UnderlinedTextButton.swift */; };
+		B5F9D9B52347FBF500905859 /* TransactionDetailPopoverViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F9D9B42347FBF500905859 /* TransactionDetailPopoverViewModel.swift */; };
 		B5FAD64A20A4D962008EB727 /* AuthPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5FAD64920A4D962008EB727 /* AuthPlugin.swift */; };
 		B5FAD64C20A4DC1D008EB727 /* PublicKeyDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5FAD64B20A4DC1D008EB727 /* PublicKeyDataSource.swift */; };
 		B5FBE42020DD76550029D273 /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5FBE41F20DD76550029D273 /* SettingsViewModel.swift */; };
@@ -1692,7 +1695,7 @@
 		B505414C207D10DD0059C8F9 /* InMemoryCoreDataStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InMemoryCoreDataStack.swift; sourceTree = "<group>"; };
 		B505A8792076C5BE00AACB23 /* TransactionHistoryCounterpartyLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionHistoryCounterpartyLabel.swift; sourceTree = "<group>"; };
 		B505A87B2076C79700AACB23 /* TransactionHistoryDetailLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionHistoryDetailLabel.swift; sourceTree = "<group>"; };
-		B505A87D2076C96100AACB23 /* SummaryCellMemoLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummaryCellMemoLabel.swift; sourceTree = "<group>"; };
+		B505A87D2076C96100AACB23 /* SummaryCellSubtitleLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummaryCellSubtitleLabel.swift; sourceTree = "<group>"; };
 		B505D4E921050F2000C0C8FC /* CKPredicate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CKPredicate.swift; sourceTree = "<group>"; };
 		B505D4EB2106456000C0C8FC /* WalletAddressDataWorkerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletAddressDataWorkerTests.swift; sourceTree = "<group>"; };
 		B5076A8323466E21007D8FCC /* TransactionAmountsFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionAmountsFactory.swift; sourceTree = "<group>"; };
@@ -2092,6 +2095,8 @@
 		B5DDB0F821DE6A1100A25929 /* MigrateKeychainV1toV2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MigrateKeychainV1toV2.swift; sourceTree = "<group>"; };
 		B5E093192342508B000AE5CB /* TransactionDetailInvalidCellProtocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDetailInvalidCellProtocols.swift; sourceTree = "<group>"; };
 		B5E5032821B865A4008FBDAB /* PaymentRequestResolver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PaymentRequestResolver.swift; sourceTree = "<group>"; };
+		B5E7A0B42347959F00A50D58 /* TransactionDetailCellActionable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDetailCellActionable.swift; sourceTree = "<group>"; };
+		B5E7A0B62347D49800A50D58 /* TransactionDetailPopoverDisplayable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDetailPopoverDisplayable.swift; sourceTree = "<group>"; };
 		B5E7EE7A21B02FFB00E058EF /* ValidatorAlertDisplayable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidatorAlertDisplayable.swift; sourceTree = "<group>"; };
 		B5E7EE7C21B04C1100E058EF /* TestError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestError.swift; sourceTree = "<group>"; };
 		B5E7EE7E21B088F200E058EF /* MockSendPaymentViewControllerCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockSendPaymentViewControllerCoordinator.swift; sourceTree = "<group>"; };
@@ -2120,6 +2125,7 @@
 		B5F6EC2422554CF20045633B /* TwilioErrorDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwilioErrorDelegate.swift; sourceTree = "<group>"; };
 		B5F775F322B81B8500C7A771 /* UserBroker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserBroker.swift; sourceTree = "<group>"; };
 		B5F9500920E2D439001495E2 /* UnderlinedTextButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnderlinedTextButton.swift; sourceTree = "<group>"; };
+		B5F9D9B42347FBF500905859 /* TransactionDetailPopoverViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDetailPopoverViewModel.swift; sourceTree = "<group>"; };
 		B5FAD64920A4D962008EB727 /* AuthPlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthPlugin.swift; sourceTree = "<group>"; };
 		B5FAD64B20A4DC1D008EB727 /* PublicKeyDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublicKeyDataSource.swift; sourceTree = "<group>"; };
 		B5FBE41F20DD76550029D273 /* SettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
@@ -3436,11 +3442,14 @@
 			children = (
 				B5BA3A7622F22B0E001E41A7 /* TransactionSummaryCellProtocols.swift */,
 				B52E0BD5233BEE6500BA1B0C /* TransactionDetailCellProtocols.swift */,
+				B5E7A0B42347959F00A50D58 /* TransactionDetailCellActionable.swift */,
+				B5E7A0B62347D49800A50D58 /* TransactionDetailPopoverDisplayable.swift */,
 				B5E093192342508B000AE5CB /* TransactionDetailInvalidCellProtocols.swift */,
 				B597B7BD23443C720020E20F /* TransactionDetailInvoiceCellProtocols.swift */,
 				B5DB5341232E8C1C0088C8A1 /* TransactionCellStructsAndEnums.swift */,
 				B50E7B7E230C6A0400927C8B /* TransactionSummaryCellViewModel.swift */,
 				B5219C802343C7A300EA5B05 /* TransactionDetailCellViewModel.swift */,
+				B5F9D9B42347FBF500905859 /* TransactionDetailPopoverViewModel.swift */,
 				B51D55DE23462FE700AEAA60 /* TransactionViewModelObject+CKMTransaction.swift */,
 				B5076A8323466E21007D8FCC /* TransactionAmountsFactory.swift */,
 				B51D55E02346300000AEAA60 /* TransactionViewModelObject+CKMWalletEntry.swift */,
@@ -3596,7 +3605,7 @@
 				B52A25BE2077CA7C00F636A1 /* TransactionHistorySecondaryAmountLabel.swift */,
 				B505A8792076C5BE00AACB23 /* TransactionHistoryCounterpartyLabel.swift */,
 				B505A87B2076C79700AACB23 /* TransactionHistoryDetailLabel.swift */,
-				B505A87D2076C96100AACB23 /* SummaryCellMemoLabel.swift */,
+				B505A87D2076C96100AACB23 /* SummaryCellSubtitleLabel.swift */,
 				B59C9E272311834500E4F3C8 /* SummaryCellPillLabel.swift */,
 				B512D67123171F37004D9E0F /* SummaryCellPaddedLabelView.swift */,
 				B59C9E2923118DF400E4F3C8 /* SummaryCellSatsLabel.swift */,
@@ -4576,6 +4585,7 @@
 				A2B4E6EC22F9BCC200E24324 /* LightningTransactionHistoryEmptyView.swift in Sources */,
 				3B6FDAE12052CE5C0091916A /* VerifyRecoveryWordsCollectionViewDDS.swift in Sources */,
 				3B82692520331349009B11EC /* KeypadButton.swift in Sources */,
+				B5E7A0B72347D49800A50D58 /* TransactionDetailPopoverDisplayable.swift in Sources */,
 				B558B86122B92F4A0033AFBD /* PreferencesBroker.swift in Sources */,
 				3B474159217E5251004DA223 /* DefaultHeaders.swift in Sources */,
 				5BE594E5207FBE2D00862A0A /* ScanQRViewController.swift in Sources */,
@@ -4636,6 +4646,7 @@
 				3060489F218A670B009C6E86 /* UIView+Shadow.swift in Sources */,
 				B5AC4F8021F8C33A000ABAE8 /* WalletAddressesQueryResponse.swift in Sources */,
 				B5E7EE7D21B04C1100E058EF /* TestError.swift in Sources */,
+				B5F9D9B52347FBF500905859 /* TransactionDetailPopoverViewModel.swift in Sources */,
 				B5779F6E216D3DCB00E52B27 /* DeviceEndpointTarget.swift in Sources */,
 				3B82691E20330CAC009B11EC /* KeypadEntryView.swift in Sources */,
 				B5AC4F8521F9119A000ABAE8 /* SharedPayloadDTO.swift in Sources */,
@@ -4875,6 +4886,7 @@
 				A29CE0D8209B724900761B91 /* ContactCell.swift in Sources */,
 				A2BFA54D22E7531500396D33 /* WalletToggleView.swift in Sources */,
 				3B55538421936C7D00C5A9A8 /* BarButtonFactory.swift in Sources */,
+				B5E7A0B52347959F00A50D58 /* TransactionDetailCellActionable.swift in Sources */,
 				B51D55DF23462FE700AEAA60 /* TransactionViewModelObject+CKMTransaction.swift in Sources */,
 				3BBEE0C2208A5DA500A7DF9F /* CKMDerivativePath+CoreDataProperties.swift in Sources */,
 				B559AF092180C9AA001D44F2 /* BadgeDisplayable.swift in Sources */,
@@ -5060,7 +5072,7 @@
 				3BA9F603208F6CEA0047C213 /* AppCoordinator+CreateRecoveryWordsViewControllerDelegate.swift in Sources */,
 				A2FE19882301A09C00C2412D /* LightningActionButton.swift in Sources */,
 				A2952F7E22BD0B7600BDCE65 /* NewsArticleResponse.swift in Sources */,
-				B505A87E2076C96100AACB23 /* SummaryCellMemoLabel.swift in Sources */,
+				B505A87E2076C96100AACB23 /* SummaryCellSubtitleLabel.swift in Sources */,
 				B54BDCEB2086447500B71D6B /* TransactionHistorySummaryCell.swift in Sources */,
 				B50C869A20D80B8B00B4FA6B /* CheckInResponse.swift in Sources */,
 				B5697271208A428A00835F01 /* BalanceDisplayable.swift in Sources */,

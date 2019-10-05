@@ -27,19 +27,16 @@ class TransactionSummaryCellViewModel: TransactionSummaryCellViewModelType {
   /// Initialize with protocol so that the initialization is simple and the logic for transforming stored properties
   /// is contained in isolated functions or computed properties inside the protocol implementation.
   init(object: TransactionSummaryCellViewModelObject,
-       selectedCurrency: SelectedCurrency,
-       fiatCurrency: CurrencyCode,
-       exchangeRates: ExchangeRates,
-       deviceCountryCode: Int) {
+       inputs: TransactionViewModelInputs) {
     self.walletTxType = object.walletTxType
-    self.selectedCurrency = selectedCurrency
+    self.selectedCurrency = inputs.selectedCurrency
     self.direction = object.direction
     self.isLightningTransfer = object.isLightningTransfer
     self.isLightningUpgrade = object.isLightningUpgrade
     self.status = object.status
-    self.amounts = TransactionAmounts(factory: object.amountFactory(with: exchangeRates, fiatCurrency: fiatCurrency))
+    self.amounts = TransactionAmounts(factory: object.amountFactory(with: inputs.exchangeRates, fiatCurrency: inputs.fiatCurrency))
     self.memo = object.memo
-    self.counterpartyConfig = object.counterpartyConfig(for: deviceCountryCode)
+    self.counterpartyConfig = object.counterpartyConfig(for: inputs.deviceCountryCode)
     self.receiverAddress = object.receiverAddress
     self.lightningInvoice = object.lightningInvoice
     self.isPendingTransferToLightning = object.isPendingTransferToLightning

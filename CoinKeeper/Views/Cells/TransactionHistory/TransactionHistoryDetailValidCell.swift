@@ -73,6 +73,6 @@ class TransactionHistoryDetailValidCell: TransactionHistoryDetailBaseCell {
 
 extension TransactionHistoryDetailValidCell: TransactionHistoryDetailAddressViewDelegate {
   func addressViewDidSelectAddress(_ addressView: TransactionHistoryDetailCellAddressView) {
-    self.delegate?.didTapAddress(detailCell: self)
+    self.delegate?.didTapAddressLinkButton(detailCell: self)
   }
 }

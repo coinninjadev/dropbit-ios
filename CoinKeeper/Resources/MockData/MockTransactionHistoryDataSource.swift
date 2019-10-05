@@ -8,12 +8,13 @@
 
 import Foundation
 
+typealias TransactionCellDisplayable = TransactionSummaryCellDisplayable & TransactionDetailCellDisplayable
 class MockTransactionHistoryDataSource: TransactionHistoryDataSourceType {
 
   let walletTransactionType: WalletTransactionType
   weak var delegate: TransactionHistoryDataSourceDelegate?
 
-  fileprivate var items: [TransactionDetailCellDisplayable]
+  fileprivate var items: [TransactionCellDisplayable]
   fileprivate let generator: MockDetailDataGenerator
 
   init(walletTxType: WalletTransactionType) {
@@ -35,6 +36,17 @@ class MockTransactionHistoryDataSource: TransactionHistoryDataSourceType {
                                  currencies: CurrencyPair,
                                  deviceCountryCode: Int) -> TransactionDetailCellDisplayable {
     return items[indexPath.row]
+  }
+
+  func detailPopoverDisplayableItem(at indexPath: IndexPath,
+                                    rates: ExchangeRates,
+                                    currencies: CurrencyPair,
+                                    deviceCountryCode: Int) -> TransactionDetailPopoverDisplayable? {
+    return nil
+  }
+
+  func detailCellActionableItem(at indexPath: IndexPath) -> TransactionDetailCellActionable? {
+    return nil
   }
 
   func numberOfSections() -> Int {

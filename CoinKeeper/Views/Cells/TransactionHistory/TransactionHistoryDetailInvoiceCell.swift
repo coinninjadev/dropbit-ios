@@ -36,7 +36,7 @@ class TransactionHistoryDetailInvoiceCell: CollectionViewCardCell {
   @IBOutlet var dateLabel: TransactionDetailDateLabel!
 
   @IBAction func copyInvoice(_ sender: UIButton) {
-    delegate.didTapInvoice(detailCell: self)
+    delegate.didTapCopyInvoiceButton(detailCell: self)
   }
 
   @IBAction func didTapClose(_ sender: UIButton) {

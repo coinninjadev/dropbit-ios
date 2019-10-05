@@ -343,4 +343,11 @@ struct CKPredicate {
       return NSPredicate(format: "\(keyPath) == %@", address)
     }
   }
+
+  struct WalletEntry {
+    static func notHidden() -> NSPredicate {
+      let path = #keyPath(CKMWalletEntry.isHidden)
+      return NSPredicate(format: "\(path) == %@", NSNumber(value: false))
+    }
+  }
 }

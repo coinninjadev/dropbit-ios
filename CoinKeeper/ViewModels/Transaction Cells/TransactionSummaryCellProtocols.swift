@@ -17,9 +17,9 @@ protocol TransactionSummaryCellDisplayable {
   var summaryAmountLabels: SummaryCellAmountLabels { get }
   var accentColor: UIColor { get } //amount and leading image background color
   var leadingImageConfig: SummaryCellLeadingImageConfig { get } // may be avatar or direction icon
-  var memo: String? { get }
-  var isPendingTransferToLightning: Bool { get }
-  var isLightningTransfer: Bool { get } //can be true for either onChain or lightning transactions
+  var subtitleText: String? { get }
+  var subtitleFont: UIFont { get }
+  var subtitleColor: UIColor { get }
   var cellBackgroundColor: UIColor { get }
 }
 
@@ -28,12 +28,7 @@ extension TransactionSummaryCellDisplayable {
   var cellBackgroundColor: UIColor { return .white }
   var shouldHideAvatarView: Bool { return leadingImageConfig.avatarConfig == nil }
   var shouldHideDirectionView: Bool { return leadingImageConfig.directionConfig == nil }
-  var subtitleFont: UIFont { return isPendingTransferToLightning ? .semiBold(14) : .medium(14) }
-  var subtitleColor: UIColor { return isPendingTransferToLightning ? .bitcoinOrange : .darkBlueText }
-  var shouldHideMemoLabel: Bool {
-    let memoIsEmpty = (memo ?? "").isEmpty
-    return isLightningTransfer || memoIsEmpty
-  }
+  var shouldHideSubtitleLabel: Bool { return (subtitleText ?? "").isEmpty }
 
 }
 
@@ -51,6 +46,8 @@ protocol TransactionSummaryCellViewModelType: TransactionSummaryCellDisplayable 
   var amounts: TransactionAmounts { get }
   var memo: String? { get }
   var isLightningUpgrade: Bool { get }
+  var isLightningTransfer: Bool { get }
+  var isPendingTransferToLightning: Bool { get }
 }
 
 extension TransactionSummaryCellViewModelType {
@@ -147,12 +144,25 @@ extension TransactionSummaryCellViewModelType {
     switch status {
     case .completed:
       switch direction {
-      case .in: return lightningReceivedPaidInvoiceText
-      case .out: return lightningPaidInvoiceText
+      case .in:   return lightningReceivedPaidInvoiceText
+      case .out:  return lightningPaidInvoiceText
       }
-    default:          return lightningUnpaidInvoiceText
+    default:      return lightningUnpaidInvoiceText
     }
   }
+
+  var subtitleText: String? {
+    if isPendingTransferToLightning {
+      return "PENDING"
+    } else if isLightningTransfer {
+      return nil
+    } else {
+      return memo
+    }
+  }
+
+  var subtitleFont: UIFont { return isPendingTransferToLightning ? .semiBold(14) : .medium(14) }
+  var subtitleColor: UIColor { return isPendingTransferToLightning ? .bitcoinOrange : .darkBlueText }
 
   var counterpartyDescription: String? {
     guard let config = counterpartyConfig else { return nil }

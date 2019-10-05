@@ -68,7 +68,9 @@ extension PaymentSendingDelegate {
     navigationController.topViewController()?.present(pinEntryVC, animated: true, completion: nil)
   }
 
-  func showShareTransactionIfAppropriate(dropBitReceiver: OutgoingDropBitReceiver?, delegate: ShareTransactionViewControllerDelegate) {
+  func showShareTransactionIfAppropriate(dropBitReceiver: OutgoingDropBitReceiver?,
+                                         walletTxType: WalletTransactionType,
+                                         delegate: ShareTransactionViewControllerDelegate) {
     guard self.shouldShowShareTransaction(forReceiver: dropBitReceiver) else { return }
     if self.persistenceManager.brokers.preferences.dontShowShareTransaction {
       return
@@ -76,7 +78,7 @@ extension PaymentSendingDelegate {
 
     if let topVC = self.navigationController.topViewController() {
       DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-        let twitterVC = ShareTransactionViewController.newInstance(delegate: delegate)
+        let twitterVC = ShareTransactionViewController.newInstance(delegate: delegate, walletTxType: walletTxType)
         topVC.present(twitterVC, animated: true, completion: nil)
       }
     }

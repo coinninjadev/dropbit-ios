@@ -1,5 +1,5 @@
 //
-//  SummaryCellMemoLabel.swift
+//  SummaryCellSubtitleLabel.swift
 //  DropBit
 //
 //  Created by Ben Winters on 4/5/18.
@@ -8,11 +8,10 @@
 
 import UIKit
 
-class SummaryCellMemoLabel: UILabel {
+class SummaryCellSubtitleLabel: UILabel {
   override func awakeFromNib() {
     super.awakeFromNib()
     textColor = .darkBlueText
-    isHidden = true
     numberOfLines = 1
     textAlignment = .left
   }

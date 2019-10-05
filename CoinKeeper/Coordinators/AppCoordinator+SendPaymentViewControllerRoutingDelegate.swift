@@ -230,8 +230,6 @@ extension AppCoordinator: SendPaymentViewControllerRoutingDelegate {
 
   private func showConfirmOnChainPayment(with viewModel: ConfirmOnChainPaymentViewModel,
                                          feeModel: ConfirmTransactionFeeModel) {
-    let displayLightningPaymentViewController: CKCompletion = {}
-
     let displayConfirmPaymentViewController: CKCompletion = { [weak self] in
       guard let weakSelf = self else { return }
 

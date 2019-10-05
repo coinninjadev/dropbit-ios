@@ -316,7 +316,7 @@ extension WalletOverviewViewController: SyncSubscribeable {
 }
 
 extension WalletOverviewViewController: WalletBalanceViewDelegate {
-  
+
   func getCurrentLockStatus() -> LockStatus {
     return currentLockStatus
   }

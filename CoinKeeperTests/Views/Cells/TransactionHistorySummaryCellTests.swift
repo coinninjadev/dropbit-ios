@@ -24,7 +24,7 @@ class TransactionHistorySummaryCellTests: XCTestCase {
     XCTAssertNotNil(self.sut.directionView, "directionView should be connected")
     XCTAssertNotNil(self.sut.twitterAvatarView, "twitterAvatarView should be connected")
     XCTAssertNotNil(self.sut.descriptionLabel, "descriptionLabel should be connected")
-    XCTAssertNotNil(self.sut.memoLabel, "memoLabel should be connected")
+    XCTAssertNotNil(self.sut.subtitleLabel, "subtitleLabel should be connected")
     XCTAssertNotNil(self.sut.amountStackView, "amountStackView should be connected")
   }
 
@@ -172,24 +172,24 @@ class TransactionHistorySummaryCellTests: XCTestCase {
     let expectedMemo = "Concert tickets"
     let viewModel = MockSummaryCellVM.testSummaryInstance(memo: expectedMemo)
     sut.configure(with: viewModel)
-    XCTAssertFalse(sut.memoLabel.isHidden)
-    XCTAssertEqual(sut.memoLabel.text, expectedMemo)
+    XCTAssertFalse(sut.subtitleLabel.isHidden)
+    XCTAssertEqual(sut.subtitleLabel.text, expectedMemo)
   }
 
   func testEmptyStringMemoIsLoadedAndHidden() {
     let expectedMemo = ""
     let viewModel = MockSummaryCellVM.testSummaryInstance(memo: expectedMemo)
     sut.configure(with: viewModel)
-    XCTAssertTrue(sut.memoLabel.isHidden)
-    XCTAssertEqual(sut.memoLabel.text, expectedMemo)
+    XCTAssertTrue(sut.subtitleLabel.isHidden)
+    XCTAssertEqual(sut.subtitleLabel.text, expectedMemo)
   }
 
   func testNilMemoIsLoadedAndHidden() {
     let expectedMemo: String? = nil
     let viewModel = MockSummaryCellVM.testSummaryInstance(memo: expectedMemo)
     sut.configure(with: viewModel)
-    XCTAssertTrue(sut.memoLabel.isHidden)
-    XCTAssertEqual(sut.memoLabel.text, expectedMemo)
+    XCTAssertTrue(sut.subtitleLabel.isHidden)
+    XCTAssertEqual(sut.subtitleLabel.text, expectedMemo)
   }
 
   func testLightningTransferMemoIsHiddenIfPresent() {
@@ -197,7 +197,7 @@ class TransactionHistorySummaryCellTests: XCTestCase {
                                                           isLightningTransfer: true,
                                                           memo: "lightning withdrawal for 10,000 sats")
     sut.configure(with: viewModel)
-    XCTAssertTrue(sut.memoLabel.isHidden)
+    XCTAssertTrue(sut.subtitleLabel.isHidden)
   }
 
   func testExpiredLabelIsLoaded() {

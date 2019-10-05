@@ -140,3 +140,16 @@ extension CKMTransaction: TransactionDetailCellViewModelObject {
 
 }
 
+extension CKMTransaction: TransactionDetailCellActionable {
+
+  var bitcoinAddress: String? {
+    return receiverAddress
+  }
+
+  func removeFromTransactionHistory() {
+    // CKMTransactions cannot be hidden
+  }
+
+}
+
+extension CKMTransaction: TransactionDetailPopoverViewModelObject { }

@@ -10,7 +10,7 @@ import UIKit
 
 /// Provides all variable values directly necessary to configure the TransactionHistoryDetailCell UI.
 /// Fixed values (colors, font sizes, etc.) are provided by the cell itself.
-protocol TransactionDetailCellDisplayable: TransactionSummaryCellDisplayable {
+protocol TransactionDetailCellDisplayable {
   var directionConfig: TransactionCellDirectionConfig { get }
   var detailStatusText: String { get }
   var detailStatusColor: UIColor { get }
@@ -26,6 +26,10 @@ protocol TransactionDetailCellDisplayable: TransactionSummaryCellDisplayable {
   var actionButtonConfig: DetailCellActionButtonConfig? { get }
   var tooltipType: DetailCellTooltip { get }
   var detailCellType: TransactionDetailCellType { get }
+  var cellBackgroundColor: UIColor { get }
+  var isLightningTransfer: Bool { get }
+  var shouldHideAvatarView: Bool { get }
+  var shouldHideMemoView: Bool { get }
 
 }
 
@@ -33,7 +37,6 @@ extension TransactionDetailCellDisplayable {
 
   var shouldHideAddressView: Bool { return isLightningTransfer }
   var shouldHideCounterpartyLabel: Bool { return counterpartyText == nil }
-  var shouldHideMemoView: Bool { return shouldHideMemoLabel }
   var shouldHideAddMemoButton: Bool { return !canAddMemo }
   var shouldHideMessageLabel: Bool { return messageText == nil }
   var shouldHideProgressView: Bool { return progressConfig == nil }
@@ -111,6 +114,14 @@ extension TransactionDetailCellViewModelType {
       return TransactionCellDirectionConfig(bgColor: accentColor, image: relevantDirectionImage)
     }
 
+  }
+
+  var shouldHideMemoView: Bool {
+    if isLightningTransfer {
+      return true
+    } else {
+      return memoConfig == nil
+    }
   }
 
   var detailStatusText: String {
@@ -242,7 +253,8 @@ extension TransactionDetailCellViewModelType {
 
   /// This struct provides a subset of the values so that the address view doesn't hold a reference to the full object
   var addressViewConfig: AddressViewConfig {
-    return AddressViewConfig(receiverAddress: receiverAddress,
+    return AddressViewConfig(walletTxType: walletTxType,
+                             receiverAddress: receiverAddress,
                              addressProvidedToSender: addressProvidedToSender,
                              broadcastFailed: (status == .failed && walletTxType == .onChain),
                              invitationStatus: invitationStatus)
@@ -277,7 +289,7 @@ extension TransactionDetailCellViewModelType {
   }
 
   var memoConfig: DetailCellMemoConfig? {
-    guard let memoText = memo else { return nil }
+    guard let memoText = memo, memoText.isNotEmpty else { return nil }
     let isSent = self.status == .completed
     return DetailCellMemoConfig(memo: memoText, isShared: memoIsShared, isSent: isSent,
                                 isIncoming: isIncoming, recipientName: counterpartyText)

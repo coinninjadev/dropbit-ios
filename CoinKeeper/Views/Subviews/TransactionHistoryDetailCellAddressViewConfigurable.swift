@@ -10,10 +10,24 @@ import Foundation
 
 typealias AddressViewConfigurable = TransactionHistoryDetailCellAddressViewConfigurable
 protocol TransactionHistoryDetailCellAddressViewConfigurable {
+  var walletTxType: WalletTransactionType { get }
   var receiverAddress: String? { get }
   var addressProvidedToSender: String? { get }
   var broadcastFailed: Bool { get }
   var invitationStatus: InvitationStatus? { get }
+}
+
+struct ShouldHideAddressViews {
+  let containerView: Bool
+  let statusLabel: Bool
+}
+
+struct AddressViewConfig: AddressViewConfigurable {
+  var walletTxType: WalletTransactionType
+  var receiverAddress: String?
+  var addressProvidedToSender: String?
+  var broadcastFailed: Bool
+  var invitationStatus: InvitationStatus?
 }
 
 extension TransactionHistoryDetailCellAddressViewConfigurable {
@@ -60,22 +74,15 @@ extension TransactionHistoryDetailCellAddressViewConfigurable {
   var addressStatusLabelString: String? {
     guard let status = invitationStatus else { return nil }
     switch status {
-    case .requestSent:  return "Waiting on Bitcoin address"
+    case .requestSent:
+    switch walletTxType {
+    case .onChain:      return "Waiting on Bitcoin address"
+    case .lightning:    return "Waiting on Lightning invoice"
+    }
+
     case .addressSent:  return addressProvidedToSender ?? "Waiting for sender approval"
     default:            return nil
     }
   }
 
-}
-
-struct ShouldHideAddressViews {
-  let containerView: Bool
-  let statusLabel: Bool
-}
-
-struct AddressViewConfig: AddressViewConfigurable {
-  var receiverAddress: String?
-  var addressProvidedToSender: String?
-  var broadcastFailed: Bool
-  var invitationStatus: InvitationStatus?
 }

@@ -12,28 +12,36 @@ import UIKit
 extension AppCoordinator: ShareTransactionViewControllerDelegate {
 
   func viewControllerRequestedShareTransactionOnTwitter(_ viewController: UIViewController,
-                                                        transaction: CKMTransaction?,
+                                                        walletTxType: WalletTransactionType,
+                                                        transaction: TransactionDetailCellActionable?,
                                                         shouldDismiss: Bool) {
     self.analyticsManager.track(event: .sharePromptTwitter, with: nil)
 
     if shouldDismiss {
       viewController.dismiss(animated: true) {
-        self.shareTransactionOnTwitter(transaction)
+        self.shareTransactionOnTwitter(transaction, walletTxType: walletTxType)
       }
     } else {
-      shareTransactionOnTwitter(transaction)
+      shareTransactionOnTwitter(transaction, walletTxType: walletTxType)
     }
   }
 
-  private func shareTransactionOnTwitter(_ transaction: CKMTransaction?) {
+  private func shareTransactionOnTwitter(_ transaction: TransactionDetailCellActionable?,
+                                         walletTxType: WalletTransactionType) {
     var defaultTweetText = ""
     if let tx = transaction {
       defaultTweetText = self.tweetText(withMemo: tx.memo)
     } else {
-      let bgContext = self.persistenceManager.createBackgroundContext()
-      bgContext.performAndWait {
-        let latestTx = self.persistenceManager.databaseManager.latestTransaction(in: bgContext)
-        defaultTweetText = self.tweetText(withMemo: latestTx?.memo)
+      switch walletTxType {
+      case .onChain:
+        let bgContext = self.persistenceManager.createBackgroundContext()
+        bgContext.performAndWait {
+          let latestTx = self.persistenceManager.databaseManager.latestTransaction(in: bgContext)
+          defaultTweetText = self.tweetText(withMemo: latestTx?.memo)
+        }
+      case .lightning:
+        //skip fetching latest lightning wallet entry for now
+        defaultTweetText = self.tweetText(withMemo: nil)
       }
     }
 
