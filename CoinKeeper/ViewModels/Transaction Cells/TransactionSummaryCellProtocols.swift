@@ -202,7 +202,7 @@ extension TransactionSummaryCellViewModelType {
   func signedAmount(for amount: NSDecimalNumber) -> NSDecimalNumber {
     guard !amount.isNegativeNumber else { return amount }
     switch direction {
-    case .in:   return amount
+    case .in: return amount
     case .out:  return amount.multiplying(by: NSDecimalNumber(value: -1))
     }
   }
