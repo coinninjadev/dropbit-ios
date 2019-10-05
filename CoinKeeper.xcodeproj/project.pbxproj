@@ -1059,6 +1059,7 @@
 		B5F6EC2522554CF20045633B /* TwilioErrorDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F6EC2422554CF20045633B /* TwilioErrorDelegate.swift */; };
 		B5F775F422B81B8500C7A771 /* UserBroker.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F775F322B81B8500C7A771 /* UserBroker.swift */; };
 		B5F9500A20E2D439001495E2 /* UnderlinedTextButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F9500920E2D439001495E2 /* UnderlinedTextButton.swift */; };
+		B5F9D9B52347FBF500905859 /* TransactionDetailPopoverViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F9D9B42347FBF500905859 /* TransactionDetailPopoverViewModel.swift */; };
 		B5FAD64A20A4D962008EB727 /* AuthPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5FAD64920A4D962008EB727 /* AuthPlugin.swift */; };
 		B5FAD64C20A4DC1D008EB727 /* PublicKeyDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5FAD64B20A4DC1D008EB727 /* PublicKeyDataSource.swift */; };
 		B5FBE42020DD76550029D273 /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5FBE41F20DD76550029D273 /* SettingsViewModel.swift */; };
@@ -2124,6 +2125,7 @@
 		B5F6EC2422554CF20045633B /* TwilioErrorDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwilioErrorDelegate.swift; sourceTree = "<group>"; };
 		B5F775F322B81B8500C7A771 /* UserBroker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserBroker.swift; sourceTree = "<group>"; };
 		B5F9500920E2D439001495E2 /* UnderlinedTextButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnderlinedTextButton.swift; sourceTree = "<group>"; };
+		B5F9D9B42347FBF500905859 /* TransactionDetailPopoverViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDetailPopoverViewModel.swift; sourceTree = "<group>"; };
 		B5FAD64920A4D962008EB727 /* AuthPlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthPlugin.swift; sourceTree = "<group>"; };
 		B5FAD64B20A4DC1D008EB727 /* PublicKeyDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublicKeyDataSource.swift; sourceTree = "<group>"; };
 		B5FBE41F20DD76550029D273 /* SettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
@@ -3447,6 +3449,7 @@
 				B5DB5341232E8C1C0088C8A1 /* TransactionCellStructsAndEnums.swift */,
 				B50E7B7E230C6A0400927C8B /* TransactionSummaryCellViewModel.swift */,
 				B5219C802343C7A300EA5B05 /* TransactionDetailCellViewModel.swift */,
+				B5F9D9B42347FBF500905859 /* TransactionDetailPopoverViewModel.swift */,
 				B51D55DE23462FE700AEAA60 /* TransactionViewModelObject+CKMTransaction.swift */,
 				B5076A8323466E21007D8FCC /* TransactionAmountsFactory.swift */,
 				B51D55E02346300000AEAA60 /* TransactionViewModelObject+CKMWalletEntry.swift */,
@@ -4643,6 +4646,7 @@
 				3060489F218A670B009C6E86 /* UIView+Shadow.swift in Sources */,
 				B5AC4F8021F8C33A000ABAE8 /* WalletAddressesQueryResponse.swift in Sources */,
 				B5E7EE7D21B04C1100E058EF /* TestError.swift in Sources */,
+				B5F9D9B52347FBF500905859 /* TransactionDetailPopoverViewModel.swift in Sources */,
 				B5779F6E216D3DCB00E52B27 /* DeviceEndpointTarget.swift in Sources */,
 				3B82691E20330CAC009B11EC /* KeypadEntryView.swift in Sources */,
 				B5AC4F8521F9119A000ABAE8 /* SharedPayloadDTO.swift in Sources */,
