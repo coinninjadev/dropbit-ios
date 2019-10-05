@@ -29,6 +29,7 @@ protocol TransactionDetailCellDisplayable {
   var cellBackgroundColor: UIColor { get }
   var isLightningTransfer: Bool { get }
   var shouldHideAvatarView: Bool { get }
+  var shouldHideMemoView: Bool { get }
 
 }
 
@@ -36,7 +37,6 @@ extension TransactionDetailCellDisplayable {
 
   var shouldHideAddressView: Bool { return isLightningTransfer }
   var shouldHideCounterpartyLabel: Bool { return counterpartyText == nil }
-  var shouldHideMemoView: Bool { return memoConfig == nil }
   var shouldHideAddMemoButton: Bool { return !canAddMemo }
   var shouldHideMessageLabel: Bool { return messageText == nil }
   var shouldHideProgressView: Bool { return progressConfig == nil }
@@ -114,6 +114,14 @@ extension TransactionDetailCellViewModelType {
       return TransactionCellDirectionConfig(bgColor: accentColor, image: relevantDirectionImage)
     }
 
+  }
+
+  var shouldHideMemoView: Bool {
+    if isLightningTransfer {
+      return true
+    } else {
+      return memoConfig == nil
+    }
   }
 
   var detailStatusText: String {

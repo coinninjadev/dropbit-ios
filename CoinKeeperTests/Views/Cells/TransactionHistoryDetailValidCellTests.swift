@@ -463,11 +463,10 @@ class TransactionHistoryDetailValidCellTests: XCTestCase {
     XCTAssertTrue(sut.memoContainerView.isHidden)
   }
 
-  func testMemoView_emptyMemoPopulatesAndHidesView() {
+  func testMemoView_emptyMemoHidesView() {
     let expectedMemo = ""
     let viewModel = MockDetailCellVM(memo: expectedMemo)
     sut.configure(with: viewModel, delegate: mockDelegate)
-    XCTAssertEqual(sut.memoContainerView.memoLabel.text, expectedMemo)
     XCTAssertTrue(sut.memoContainerView.isHidden)
   }
 
