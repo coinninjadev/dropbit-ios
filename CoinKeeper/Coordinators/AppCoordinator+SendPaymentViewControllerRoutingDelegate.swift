@@ -166,8 +166,6 @@ extension AppCoordinator: SendPaymentViewControllerRoutingDelegate {
 
   func viewControllerDidBeginAddressNegotiation(_ viewController: UIViewController,
                                                 btcAmount: NSDecimalNumber,
-                                                memo: String?,
-                                                memoIsShared: Bool,
                                                 inputs: SendingDelegateInputs) {
     guard let contact = inputs.contact else { return }
 
@@ -180,8 +178,10 @@ extension AppCoordinator: SendPaymentViewControllerRoutingDelegate {
 
             self.analyticsManager.track(event: .paymentToPhoneNumber, with: nil)
             let currencyPair = CurrencyPair(primary: inputs.primaryCurrency, fiat: self.currencyController.fiatCurrency)
-            self.handleInvite(btcAmount: btcAmount, currencyPair: currencyPair, contact: contact,
-                              memo: memo, memoIsShared: memoIsShared, inputs: inputs)
+            self.handleInvite(btcAmount: btcAmount,
+                              currencyPair: currencyPair,
+                              contact: contact,
+                              inputs: inputs)
           })
         }
 
@@ -311,8 +311,6 @@ extension AppCoordinator: SendPaymentViewControllerRoutingDelegate {
   private func handleInvite(btcAmount: NSDecimalNumber,
                             currencyPair: CurrencyPair,
                             contact: ContactType,
-                            memo: String?,
-                            memoIsShared: Bool,
                             inputs: SendingDelegateInputs) {
     guard let wmgr = walletManager else { return }
     networkManager.latestFees().compactMap { FeeRates(fees: $0) }
