@@ -281,7 +281,7 @@ extension TransactionDetailCellViewModelType {
   }
 
   var memoConfig: DetailCellMemoConfig? {
-    guard let memoText = memo else { return nil }
+    guard let memoText = memo, memoText.isNotEmpty else { return nil }
     let isSent = self.status == .completed
     return DetailCellMemoConfig(memo: memoText, isShared: memoIsShared, isSent: isSent,
                                 isIncoming: isIncoming, recipientName: counterpartyText)
