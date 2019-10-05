@@ -183,8 +183,8 @@ class LightningInvoiceViewModelObject: LightningTransactionViewModelObject {
 
   override init?(walletEntry: CKMWalletEntry) {
     guard let ledgerEntry = walletEntry.ledgerEntry,
-      ledgerEntry.request != nil, ledgerEntry.type == .lightning, ledgerEntry.status != .completed
-      //TODO: check that walletEntry.invitation is nil
+      ledgerEntry.request != nil, ledgerEntry.type == .lightning, ledgerEntry.status != .completed,
+      walletEntry.invitation == nil
       else { return nil }
 
     if let expirationDate = ledgerEntry.expiresAt {
