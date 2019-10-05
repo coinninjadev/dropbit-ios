@@ -78,8 +78,6 @@ protocol SendPaymentViewControllerRoutingDelegate: AnyObject, PaymentBuildingDel
   /// An address negotiation applies to both new user invites and registered users without addresses on the server
   func viewControllerDidBeginAddressNegotiation(_ viewController: UIViewController,
                                                 btcAmount: NSDecimalNumber,
-                                                memo: String?,
-                                                memoIsShared: Bool,
                                                 inputs: SendingDelegateInputs)
 
 }

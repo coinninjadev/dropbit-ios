@@ -572,7 +572,6 @@ extension SendPaymentViewController: SelectedValidContactDelegate {
     let addressType = self.viewModel.walletTransactionType.addressType
     delegate.viewControllerDidRequestRegisteredAddress(self, ofType: addressType, forIdentity: twitterUser.idStr)
       .done { (responses: [WalletAddressesQueryResponse]) in
-        //TODO: Handle case where recipient is registered but has not yet updated their app and enabled lightning
         contact.kind = (responses.isEmpty) ? .invite : .registeredUser
         self.setPaymentRecipient(.twitterContact(contact))
         self.updateViewWithModel()
@@ -810,8 +809,6 @@ extension SendPaymentViewController {
 
     delegate.viewControllerDidBeginAddressNegotiation(self,
                                                       btcAmount: btcAmount,
-                                                      memo: self.viewModel.memo,
-                                                      memoIsShared: self.viewModel.sharedMemoDesired,
                                                       inputs: inputs)
   }
 
@@ -824,8 +821,13 @@ extension SendPaymentViewController {
     let addressType = self.viewModel.walletTransactionType.addressType
     delegate.viewControllerDidRequestRegisteredAddress(self, ofType: addressType, forIdentity: contact.identityHash)
       .done { (responses: [WalletAddressesQueryResponse]) in
-        //TODO: Handle case where recipient is registered but has not yet updated their app and enabled lightning
-        if let addressResponse = responses.first(where: { $0.identityHash == contact.identityHash }) {
+        if responses.isEmpty && addressType == .lightning {
+          do {
+            try self.validateAmountAndBeginAddressNegotiation(for: contact, kind: .invite, sharedPayload: sharedPayload)
+          } catch {
+            self.handleContactValidationError(error)
+          }
+        } else if let addressResponse = responses.first(where: { $0.identityHash == contact.identityHash }) {
           var updatedPayload = sharedPayload
           updatedPayload.updatePubKeyState(with: addressResponse)
           self.sendTransactionForConfirmation(with: self.viewModel.sendMaxTransactionData,
@@ -855,7 +857,6 @@ extension SendPaymentViewController {
 
       delegate.viewControllerDidRequestRegisteredAddress(localSelf, ofType: addressType, forIdentity: contact.identityHash)
         .done { (responses: [WalletAddressesQueryResponse]) in
-          //TODO: Handle case where recipient is registered but has not yet updated their app and enabled lightning
           self?.handleGenericContactAddressCheckCompletion(forContact: contact, sharedPayload: sharedPayload, responses: responses)
         }
         .catch { error in
@@ -869,7 +870,14 @@ extension SendPaymentViewController {
                                                           responses: [WalletAddressesQueryResponse]) {
     var newContact = contact
 
-    if let addressResponse = responses.first(where: { $0.identityHash == contact.identityHash }) {
+    let addressType = sharedPayload.walletTxType.addressType
+    if responses.isEmpty && addressType == .lightning {
+      do {
+        try self.validateAmountAndBeginAddressNegotiation(for: contact, kind: .invite, sharedPayload: sharedPayload)
+      } catch {
+        self.handleContactValidationError(error)
+      }
+    } else if let addressResponse = responses.first(where: { $0.identityHash == contact.identityHash }) {
       var updatedPayload = sharedPayload
       updatedPayload.updatePubKeyState(with: addressResponse)
 
