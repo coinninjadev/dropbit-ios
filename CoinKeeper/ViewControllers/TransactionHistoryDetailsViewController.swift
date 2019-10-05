@@ -37,7 +37,8 @@ final class TransactionHistoryDetailsViewController: PresentableViewController, 
     let vc = TransactionHistoryDetailsViewController.makeFromStoryboard()
     vc.delegate = delegate
     vc.selectedIndexPath = selectedIndexPath
-    dataSource.delegate = vc
+    //dataSource.delegate should not be changed, it should stay connected to TransactionHistoryViewController
+    //detail cell actions should reload that individual detail cell manually
     vc.viewModel = TransactionHistoryViewModel(delegate: vc,
                                                detailsDelegate: vc,
                                                currencyManager: delegate,
@@ -143,6 +144,7 @@ extension TransactionHistoryDetailsViewController: TransactionHistoryDetailCellD
   func didTapBottomButton(detailCell: UICollectionViewCell, action: TransactionDetailAction) {
     guard let indexPath = self.collectionView.indexPath(for: detailCell),
       let item = viewModel.dataSource.detailCellActionableItem(at: indexPath) else { return }
+
     switch action {
     case .seeDetails:
       guard let popoverItem = viewModel.popoverDisplayableItem(at: indexPath) else { return }
@@ -151,6 +153,7 @@ extension TransactionHistoryDetailsViewController: TransactionHistoryDetailCellD
     case .cancelInvitation:
       guard let invitationID = item.invitation?.id else { return }
       delegate.viewController(self, didCancelInvitationWithID: invitationID, at: indexPath)
+
     case .removeEntry:
       item.removeFromTransactionHistory()
       updateItem(item)
@@ -175,11 +178,6 @@ extension TransactionHistoryDetailsViewController: TransactionHistoryDetailCellD
 }
 
 class TransactionHistoryDetailCollectionView: UICollectionView {}
-
-extension TransactionHistoryDetailsViewController: TransactionHistoryDataSourceDelegate {
-  func transactionDataSourceWillChange() { }
-  func transactionDataSourceDidChange() { }
-}
 
 extension TransactionHistoryDetailsViewController: TransactionHistoryViewModelDelegate {
   var currencyController: CurrencyController {
