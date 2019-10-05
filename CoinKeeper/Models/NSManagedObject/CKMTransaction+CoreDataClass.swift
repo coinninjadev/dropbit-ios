@@ -190,14 +190,17 @@ public class CKMTransaction: NSManagedObject {
     return confirmations >= CKMTransaction.confirmationThreshold
   }
 
-  var isLightningUpgrade: Bool { // TODO
-    guard vouts.count == 1 else { return false }
+  var isLightningUpgrade: Bool {
+    guard vouts.count == 1, let vout = vouts.first else { return false }
     let addresses = vouts.compactMap { $0.address }
     guard let firstAddress = addresses.first else { return false }
     guard let path = firstAddress.derivativePath else { return false }
     let isLightningPath = (path.change == 1) && (path.index == 0)
-    let onlyUTXO = (firstAddress.vouts.count == 1)
-    return isLightningPath && onlyUTXO
+    let relatedTransactions = vouts.compactMap { $0.transaction }.sorted { (tx1, tx2) -> Bool in
+      (tx1.sortDate ?? Date()) < (tx2.sortDate ?? Date())
+    }
+    let isFirstUTXO = vout.transaction == relatedTransactions.first
+    return isLightningPath && isFirstUTXO
   }
 
 }
