@@ -38,6 +38,13 @@ class MockTransactionHistoryDataSource: TransactionHistoryDataSourceType {
     return items[indexPath.row]
   }
 
+  func detailPopoverDisplayableItem(at indexPath: IndexPath,
+                                    rates: ExchangeRates,
+                                    currencies: CurrencyPair,
+                                    deviceCountryCode: Int) -> TransactionDetailPopoverDisplayable? {
+    return nil
+  }
+
   func detailCellActionableItem(at indexPath: IndexPath) -> TransactionDetailCellActionable? {
     return nil
   }

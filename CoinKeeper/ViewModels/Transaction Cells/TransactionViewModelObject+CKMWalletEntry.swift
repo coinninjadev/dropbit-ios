@@ -240,3 +240,15 @@ struct FallbackViewModelObject: TransactionDetailCellViewModelObject {
   }
 
 }
+
+extension CKMWalletEntry: TransactionDetailCellActionable {
+
+  var bitcoinAddress: String? { return nil }
+  var lightningInvoice: String? {
+    return ledgerEntry?.request
+  }
+
+  func removeFromTransactionHistory() {
+    self.isHidden = true
+  }
+}

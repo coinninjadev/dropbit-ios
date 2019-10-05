@@ -151,3 +151,5 @@ extension CKMTransaction: TransactionDetailCellActionable {
   }
 
 }
+
+extension CKMTransaction: TransactionDetailPopoverViewModelObject { }

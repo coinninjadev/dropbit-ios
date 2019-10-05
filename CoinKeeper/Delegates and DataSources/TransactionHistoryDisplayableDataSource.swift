@@ -27,6 +27,11 @@ protocol TransactionHistoryDataSourceType: AnyObject {
                                  currencies: CurrencyPair,
                                  deviceCountryCode: Int) -> TransactionDetailCellDisplayable
 
+  func detailPopoverDisplayableItem(at indexPath: IndexPath,
+                                    rates: ExchangeRates,
+                                    currencies: CurrencyPair,
+                                    deviceCountryCode: Int) -> TransactionDetailPopoverDisplayable?
+
   func detailCellActionableItem(at indexPath: IndexPath) -> TransactionDetailCellActionable?
 
   func numberOfSections() -> Int
@@ -192,16 +197,4 @@ class TransactionHistoryLightningDataSource: NSObject, TransactionHistoryDataSou
     delegate?.transactionDataSourceDidChange()
   }
 
-}
-
-extension CKMWalletEntry: TransactionDetailCellActionable {
-
-  var bitcoinAddress: String? { return nil }
-  var lightningInvoice: String? {
-    return ledgerEntry?.request
-  }
-
-  func removeFromTransactionHistory() {
-    self.isHidden = true
-  }
 }
