@@ -41,13 +41,6 @@ class TransactionHistoryDetailsViewControllerTests: XCTestCase {
     XCTAssertTrue(mockCoordinator.wasAskedToDismissDetailsController)
   }
 
-  func testAddingMemoTellsDelegate() {
-    //TODO
-//    sut.didTapAddMemo { (memo) in
-//      XCTAssertEqual(memo, "temp memo for testing purposes")
-//    }
-  }
-
   func testTappingQuestionMarkButtonTellsDelegate() {
     //TODO
 //    let url = CoinNinjaUrlFactory.buildUrl(for: .detailsTooltip)!
@@ -81,9 +74,8 @@ class TransactionHistoryDetailsViewControllerTests: XCTestCase {
                         didCancelInvitationWithID invitationID: String,
                         at indexPath: IndexPath) { }
 
-    func viewControllerDidTapAddMemo(_ viewController: UIViewController, with completion: @escaping (String) -> Void) {
-      completion("temp memo for testing purposes")
-    }
+    func viewControllerDidTapAddMemo(_ viewController: UIViewController,
+                                     with completion: @escaping (String) -> Void) { }
 
     func viewControllerRequestedShareTransactionOnTwitter(_ viewController: UIViewController,
                                                           walletTxType: WalletTransactionType,

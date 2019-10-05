@@ -50,7 +50,6 @@ protocol TransactionHistoryDetailCellDelegate: class {
   func didTapCopyInvoiceButton(detailCell: TransactionHistoryDetailInvoiceCell)
   func didTapBottomButton(detailCell: UICollectionViewCell, action: TransactionDetailAction)
   func didTapAddMemoButton(detailCell: TransactionHistoryDetailBaseCell)
-//  func shouldSaveMemo(for transaction: CKMTransaction) -> Promise<Void>
 }
 
 class TransactionHistoryDetailBaseCell: CollectionViewCardCell {

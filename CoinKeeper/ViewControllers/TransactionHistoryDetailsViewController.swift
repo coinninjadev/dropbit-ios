@@ -162,7 +162,14 @@ extension TransactionHistoryDetailsViewController: TransactionHistoryDetailCellD
   }
 
   func didTapAddMemoButton(detailCell: TransactionHistoryDetailBaseCell) {
-//    delegate.viewControllerDidTapAddMemo(self, with: completion)
+    guard let indexPath = self.collectionView.indexPath(for: detailCell),
+      let item = viewModel.dataSource.detailCellActionableItem(at: indexPath)
+      else { return }
+    delegate.viewControllerDidTapAddMemo(self) { [weak self] newMemo in
+      item.memo = newMemo
+      self?.updateItem(item)
+      self?.collectionView.reloadItems(at: [indexPath])
+    }
   }
 
   private func updateItem(_ item: TransactionDetailCellActionable) {

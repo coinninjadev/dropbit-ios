@@ -66,7 +66,7 @@ extension CKMLNLedgerEntry {
   @NSManaged public var walletEntry: CKMWalletEntry?
   @NSManaged public var invoice: CKMLNInvoice?
 
-  /// Be sure to set the walletEntry before setting this memo
+  /// Be sure to set the walletEntry relationship before setting this memo
   var memo: String? {
     get { return walletEntry?.memo }
     set { walletEntry?.memo = newValue }
