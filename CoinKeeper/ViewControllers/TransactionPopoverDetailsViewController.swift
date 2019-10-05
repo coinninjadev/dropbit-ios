@@ -36,23 +36,24 @@ class TransactionPopoverDetailsViewController: BaseViewController, StoryboardIni
   private let height: CGFloat = 410
 
   private(set) weak var delegate: TransactionPopoverDetailsViewControllerDelegate!
-  private var txidURL: URL?
+  private var viewModel: TransactionDetailPopoverDisplayable?
 
   static func newInstance(delegate: TransactionPopoverDetailsViewControllerDelegate,
                           viewModel: TransactionDetailPopoverDisplayable) -> TransactionPopoverDetailsViewController {
     let vc = TransactionPopoverDetailsViewController.makeFromStoryboard()
     vc.delegate = delegate
-    vc.configure(with: viewModel)
+    vc.viewModel = viewModel
     return vc
   }
 
   override func viewDidLoad() {
     super.viewDidLoad()
     setupUI()
+    configureWithViewModel()
   }
 
-  private func configure(with viewModel: TransactionDetailPopoverDisplayable) {
-    self.txidURL = viewModel.txidURL
+  private func configureWithViewModel() {
+    guard let viewModel = viewModel else { return }
 
     whenSentAmountLabel.text = viewModel.breakdownSentAmountText
     networkFeeAmountLabel.text = viewModel.breakdownFeeAmountText
@@ -88,13 +89,13 @@ class TransactionPopoverDetailsViewController: BaseViewController, StoryboardIni
   }
 
   @IBAction func viewControllerDidTapTransactionDetailsButton() {
-    guard let url = txidURL else { return }
+    guard let url = viewModel?.txidURL else { return }
     delegate.viewControllerDidTapTransactionDetailsButton(with: url)
   }
 
   @IBAction func viewControllerDidTapShareTransactionButton() {
     delegate.viewControllerDidTapShareTransactionButton()
-    guard let url = txidURL else { return }
+    guard let url = viewModel?.txidURL else { return }
 
     let activityViewController = UIActivityViewController(activityItems: [url.absoluteString],
                                                           applicationActivities: nil)
