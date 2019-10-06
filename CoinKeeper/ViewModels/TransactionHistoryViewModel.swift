@@ -89,7 +89,7 @@ class TransactionHistoryViewModel: NSObject, UICollectionViewDataSource, Exchang
   }
 
   private func detailCell(forItemAt indexPath: IndexPath, in collectionView: UICollectionView) -> UICollectionViewCell {
-    func defaultValidCell() -> TransactionHistoryDetailValidCell {// only dequeue if necessary
+    func defaultValidCell() -> TransactionHistoryDetailValidCell { // only dequeue if necessary
       return collectionView.dequeue(TransactionHistoryDetailValidCell.self, for: indexPath)
     }
 

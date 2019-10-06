@@ -71,6 +71,7 @@ struct TransactionAmountsFactory: TransactionAmountsFactoryType {
     self.fiatCurrency = fiatCurrency
     self.currentRate = currentRates[fiatCurrency] ?? 1
     self.netWalletAmount = NSDecimalNumber(integerAmount: transaction.netWalletAmount, currency: .BTC)
+    self.bitcoinNetworkFee = NSDecimalNumber(integerAmount: transaction.networkFee, currency: .BTC)
     self.rateWhenTransacted = transaction.dayAveragePrice?.doubleValue
     if let invite = transaction.invitation {
       primaryFiatAmountWhenInitiated = NSDecimalNumber(integerAmount: invite.fiatAmount, currency: .USD)
