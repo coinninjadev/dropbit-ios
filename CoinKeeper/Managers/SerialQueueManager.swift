@@ -108,7 +108,7 @@ class SerialQueueManager: SerialQueueManagerType {
   var queue: OperationQueueType
   var timer: Timer = Timer()
   weak var delegate: SerialQueueManagerDelegate?
-  private let syncTimerIntervalInSeconds: Int = 60
+  private let syncTimerIntervalInSeconds: Int = 30
 
   required init() {
     let queue = OperationQueue()
