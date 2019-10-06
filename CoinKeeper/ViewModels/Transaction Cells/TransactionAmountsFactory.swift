@@ -110,6 +110,10 @@ struct TransactionAmountsFactory: TransactionAmountsFactoryType {
     return convertedAmounts(withRate: rate, btcAmount: netWalletAmount)
   }
 
+  var netWithdrawalAmounts: ConvertedAmounts? {
+    return nil
+  }
+
   var bitcoinNetworkFeeAmounts: ConvertedAmounts? {
     guard let fee = bitcoinNetworkFee else { return nil }
     return convertedAmounts(withRate: currentRate, btcAmount: fee)
