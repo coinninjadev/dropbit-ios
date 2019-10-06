@@ -14,6 +14,19 @@ struct TitleDetailViewStyleConfig {
   let titleColor: UIColor
   let detailFont: UIFont
   let detailColor: UIColor
+
+  init(titleFont: UIFont, titleColor: UIColor,
+       detailFont: UIFont, detailColor: UIColor) {
+    self.titleFont = titleFont
+    self.titleColor = titleColor
+    self.detailFont = detailFont
+    self.detailColor = detailColor
+  }
+
+  init(font: UIFont, color: UIColor) {
+    self.init(titleFont: font, titleColor: color, detailFont: font, detailColor: color)
+  }
+
 }
 
 class TitleDetailView: UIView {
@@ -31,9 +44,11 @@ class TitleDetailView: UIView {
     titleLabel.text = title
     detailLabel.text = detail
     titleLabel.font = style.titleFont
-    titleLabel.textColor = style.titleColor
     detailLabel.font = style.detailFont
+    titleLabel.textColor = style.titleColor
     detailLabel.textColor = style.detailColor
+    titleLabel.textAlignment = .left
+    detailLabel.textAlignment = .right
   }
 
   required init?(coder aDecoder: NSCoder) {

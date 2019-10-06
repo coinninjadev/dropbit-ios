@@ -41,7 +41,7 @@
                                                     </label>
                                                 </subviews>
                                             </stackView>
-                                            <view contentMode="scaleToFill" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="9Jd-Ph-m8f" userLabel="Amount Stack Container">
+                                            <view contentMode="scaleToFill" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="9Jd-Ph-m8f" userLabel="Breakdown Stack Container">
                                                 <rect key="frame" x="0.0" y="85" width="334" height="120"/>
                                                 <subviews>
                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="BnP-Tc-tdx">
@@ -136,6 +136,7 @@
                         <viewLayoutGuide key="safeArea" id="ciM-il-CRl"/>
                     </view>
                     <connections>
+                        <outlet property="breakdownStackView" destination="BnP-Tc-tdx" id="vcb-qX-nE0"/>
                         <outlet property="closeButton" destination="YTD-36-jQ8" id="fYO-wH-aEs"/>
                         <outlet property="containerView" destination="K8O-2f-xNP" id="7nR-xh-wve"/>
                         <outlet property="containerViewCenterYConstraint" destination="tQK-4w-njb" id="wbV-Vo-OIY"/>
