@@ -271,7 +271,9 @@ class WalletAddressDataWorker: WalletAddressDataWorkerType {
     fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [statusPredicate, lightningInvite])
 
     do {
-      let updatableInvitations = try context.fetch(fetchRequest)
+      let updatableInvitations = try context.fetch(fetchRequest).filter { $0.walletEntry?.ledgerEntry == nil ||
+        $0.walletEntry?.invitation?.side == .receiver
+      }
       log.debug("Found \(updatableInvitations.count) updatable invitations")
 
       updatableInvitations.forEach { invitation in
