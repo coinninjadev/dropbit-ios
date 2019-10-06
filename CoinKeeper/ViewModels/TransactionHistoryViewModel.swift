@@ -90,7 +90,10 @@ class TransactionHistoryViewModel: NSObject, UICollectionViewDataSource, Exchang
 
   private func detailCell(forItemAt indexPath: IndexPath, in collectionView: UICollectionView) -> UICollectionViewCell {
     let defaultCell = UICollectionViewCell()
-    guard let cellDelegate = detailsDelegate else { return defaultCell }
+    guard let cellDelegate = detailsDelegate else {
+      log.error("Detail cell delegate is not set")
+      return defaultCell
+    }
 
     let displayableItem = dataSource.detailCellDisplayableItem(at: indexPath,
                                                                rates: rateManager.exchangeRates,
@@ -103,12 +106,18 @@ class TransactionHistoryViewModel: NSObject, UICollectionViewDataSource, Exchang
       cell.configure(with: displayableItem, delegate: cellDelegate)
       return cell
     case .invalid:
-      guard let invalidDisplayableItem = displayableItem as? TransactionDetailInvalidCellDisplayable else { return defaultCell }
+      guard let invalidDisplayableItem = displayableItem as? TransactionDetailInvalidCellDisplayable else {
+        log.error("Failed to cast item as TransactionDetailInvalidCellDisplayable")
+        return defaultCell
+      }
       let cell = collectionView.dequeue(TransactionHistoryDetailInvalidCell.self, for: indexPath)
       cell.configure(with: invalidDisplayableItem, delegate: cellDelegate)
       return cell
     case .invoice:
-      guard let invoiceDisplayableItem = displayableItem as? TransactionDetailInvoiceCellDisplayable else { return defaultCell }
+      guard let invoiceDisplayableItem = displayableItem as? TransactionDetailInvoiceCellDisplayable else {
+        log.error("Failed to cast item as TransactionDetailInvoiceCellDisplayable")
+        return defaultCell
+      }
       let cell = collectionView.dequeue(TransactionHistoryDetailInvoiceCell.self, for: indexPath)
       cell.configure(with: invoiceDisplayableItem, delegate: cellDelegate)
       return cell
