@@ -320,7 +320,7 @@ extension TransactionDetailCellViewModelType {
   }
 
   /// Strips static linebreaks from the string on small devices
-  private func sizeSensitiveMessage(from message: String) -> String {
+  func sizeSensitiveMessage(from message: String) -> String {
     let shouldUseStaticLineBreaks = (UIScreen.main.relativeSize == .tall)
     if shouldUseStaticLineBreaks {
       return message

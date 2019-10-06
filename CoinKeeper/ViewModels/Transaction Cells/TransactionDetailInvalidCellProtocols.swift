@@ -32,18 +32,36 @@ extension TransactionDetailInvalidCellViewModelType {
   }
 
   var warningMessage: String? {
-    switch status {
-    case .expired:  return expiredMessage
-    default:        return nil
+    if status == .failed {
+      return broadcastFailedMessage
+
+    } else if let inviteStatus = invitationStatus {
+      switch inviteStatus {
+      case .expired:  return expiredMessage
+      case .canceled: return canceledMessage
+      default:        return nil
+      }
+    } else {
+      return nil
     }
   }
 
-  var expiredMessage: String {
-    return """
-    For security reasons we can only allow
-    48 hours to accept a transaction.
-    This transaction has expired.
+  private var broadcastFailedMessage: String {
+    return "Bitcoin network failed to broadcast this transaction. Please try sending again."
+  }
+
+  private var expiredMessage: String {
+    let messageWithLineBreaks = """
+    For security reasons we can only allow 48
+    hours to accept a \(CKStrings.dropBitWithTrademark). This
+    DropBit has expired.
     """
+
+    return sizeSensitiveMessage(from: messageWithLineBreaks)
+  }
+
+  private var canceledMessage: String? {
+    isIncoming ? "The sender has canceled this \(CKStrings.dropBitWithTrademark)." : nil // Only shows on receiver side
   }
 
 }
