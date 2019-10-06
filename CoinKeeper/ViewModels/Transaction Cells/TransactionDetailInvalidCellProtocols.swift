@@ -38,7 +38,7 @@ extension TransactionDetailInvalidCellViewModelType {
     } else if let inviteStatus = invitationStatus {
       switch inviteStatus {
       case .expired:  return expiredMessage
-      case .canceled: return canceledMessage
+      case .canceled: return isIncoming ? canceledMessage : nil // Only shows on receiver side
       default:        return nil
       }
     } else {
@@ -46,11 +46,11 @@ extension TransactionDetailInvalidCellViewModelType {
     }
   }
 
-  private var broadcastFailedMessage: String {
+  var broadcastFailedMessage: String {
     return "Bitcoin network failed to broadcast this transaction. Please try sending again."
   }
 
-  private var expiredMessage: String {
+  var expiredMessage: String {
     let messageWithLineBreaks = """
     For security reasons we can only allow 48
     hours to accept a \(CKStrings.dropBitWithTrademark). This
@@ -60,8 +60,8 @@ extension TransactionDetailInvalidCellViewModelType {
     return sizeSensitiveMessage(from: messageWithLineBreaks)
   }
 
-  private var canceledMessage: String? {
-    isIncoming ? "The sender has canceled this \(CKStrings.dropBitWithTrademark)." : nil // Only shows on receiver side
+  var canceledMessage: String {
+    return "The sender has canceled this \(CKStrings.dropBitWithTrademark)."
   }
 
 }
