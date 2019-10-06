@@ -43,6 +43,11 @@ class TransactionHistoryDetailInvoiceCell: CollectionViewCardCell {
     delegate.didTapClose(detailCell: self)
   }
 
+  @IBAction func didTapQuestionMarkButton(_ sender: UIButton) {
+    guard let tooltip = DetailCellTooltip(rawValue: sender.tag) else { return }
+    delegate.didTapQuestionMarkButton(detailCell: self, tooltip: tooltip)
+  }
+
   @IBAction func didTapBottomButton(_ sender: UIButton) {
     guard let action = TransactionDetailAction(rawValue: sender.tag) else { return }
     delegate.didTapBottomButton(detailCell: self, action: action)

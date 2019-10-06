@@ -15,7 +15,7 @@ class MockTransactionHistoryDetailCellDelegate: TransactionHistoryDetailCellDele
 
   var tappedQuestionMark = false
   var receivedTooltip: DetailCellTooltip?
-  func didTapQuestionMarkButton(detailCell: TransactionHistoryDetailBaseCell, tooltip: DetailCellTooltip) {
+  func didTapQuestionMarkButton(detailCell: UICollectionViewCell, tooltip: DetailCellTooltip) {
     tappedQuestionMark = true
     receivedTooltip = tooltip
   }

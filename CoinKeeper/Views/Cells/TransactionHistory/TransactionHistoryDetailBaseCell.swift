@@ -12,6 +12,9 @@ import PromiseKit
 enum DetailCellTooltip: Int {
   case dropBit = 1
   case regularOnChain
+  case lightningWithdrawal
+  case lightningInvoice
+  case lightningDropBit
 
   var buttonTag: Int {
     return rawValue
@@ -43,7 +46,7 @@ class CollectionViewCardCell: UICollectionViewCell {
 }
 
 protocol TransactionHistoryDetailCellDelegate: class {
-  func didTapQuestionMarkButton(detailCell: TransactionHistoryDetailBaseCell, tooltip: DetailCellTooltip)
+  func didTapQuestionMarkButton(detailCell: UICollectionViewCell, tooltip: DetailCellTooltip)
   func didTapClose(detailCell: UICollectionViewCell)
   func didTapTwitterShare(detailCell: TransactionHistoryDetailBaseCell)
   func didTapAddressLinkButton(detailCell: TransactionHistoryDetailBaseCell)

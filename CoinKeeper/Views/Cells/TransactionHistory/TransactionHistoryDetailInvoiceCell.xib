@@ -27,6 +27,9 @@
                                     <constraint firstAttribute="width" secondItem="c4A-PF-Lo3" secondAttribute="height" multiplier="1:1" id="QMr-k6-Cdb"/>
                                 </constraints>
                                 <state key="normal" image="questionMarkIcon"/>
+                                <connections>
+                                    <action selector="didTapQuestionMarkButton:" destination="gTV-IL-0wX" eventType="touchUpInside" id="VRu-jW-t6Z"/>
+                                </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" text="LIGHTNING INVOICE" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ni5-w8-7LE">
                                 <rect key="frame" x="83" y="16" width="134" height="17"/>

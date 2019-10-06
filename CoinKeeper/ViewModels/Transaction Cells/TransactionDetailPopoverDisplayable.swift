@@ -89,16 +89,6 @@ extension TransactionDetailPopoverViewModelType {
     return amounts.dropBitFee.flatMap { BreakdownAmount(type: .dropbitFees, amounts: $0, walletTxType: walletTxType) }
   }
 
-  private var isLightningWithdrawal: Bool {
-    guard let type = lightningTransferType else { return false }
-    return type == .withdraw
-  }
-
-  private var isLightningDeposit: Bool {
-    guard let type = lightningTransferType else { return false }
-    return type == .deposit
-  }
-
   private var dropBitPaidNetworkFees: Bool {
     return isLightningDeposit
   }
