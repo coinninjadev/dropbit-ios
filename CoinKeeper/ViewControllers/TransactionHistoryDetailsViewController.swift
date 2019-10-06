@@ -105,15 +105,18 @@ extension TransactionHistoryDetailsViewController: TransactionHistoryDetailCellD
     return viewModel.dataSource.detailCellActionableItem(at: indexPath)
   }
 
-  func didTapQuestionMarkButton(detailCell: TransactionHistoryDetailBaseCell, tooltip: DetailCellTooltip) {
+  func didTapQuestionMarkButton(detailCell: UICollectionViewCell, tooltip: DetailCellTooltip) {
     guard let tooltipURL = url(for: tooltip) else { return }
     delegate.openURL(tooltipURL, completionHandler: nil)
   }
 
   private func url(for tooltip: DetailCellTooltip) -> URL? {
     switch tooltip {
-    case .dropBit:          return CoinNinjaUrlFactory.buildUrl(for: .dropbitTransactionTooltip)
-    case .regularOnChain:   return CoinNinjaUrlFactory.buildUrl(for: .regularTransactionTooltip)
+    case .dropBit:              return CoinNinjaUrlFactory.buildUrl(for: .dropbitTransactionTooltip)
+    case .regularOnChain:       return CoinNinjaUrlFactory.buildUrl(for: .regularTransactionTooltip)
+    case .lightningWithdrawal:  return CoinNinjaUrlFactory.buildUrl(for: .lightningWithdrawalTooltip)
+    case .lightningInvoice:     return CoinNinjaUrlFactory.buildUrl(for: .lightningInvoiceTooltip)
+    case .lightningDropBit:     return CoinNinjaUrlFactory.buildUrl(for: .lightningDropBitTooltip)
     }
   }
 

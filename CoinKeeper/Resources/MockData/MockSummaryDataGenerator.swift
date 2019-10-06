@@ -77,6 +77,7 @@ class MockOnChainSummaryVM: MockTransactionSummaryCellViewModel {
        counterparty: TransactionCellCounterpartyConfig?,
        memo: String?,
        status: TransactionStatus = .completed,
+       isSentToSelf: Bool = false,
        isLightningTransfer: Bool = false,
        receiverAddress: String? = nil) {
 
@@ -85,6 +86,7 @@ class MockOnChainSummaryVM: MockTransactionSummaryCellViewModel {
     super.init(walletTxType: .onChain,
                direction: direction,
                status: status,
+               isSentToSelf: isSentToSelf,
                isLightningTransfer: isLightningTransfer,
                receiverAddress: receiverAddress,
                lightningInvoice: nil,
@@ -176,6 +178,7 @@ class MockLightningSummaryVM: MockTransactionSummaryCellViewModel {
     super.init(walletTxType: .lightning,
                direction: direction,
                status: status,
+               isSentToSelf: false,
                isLightningTransfer: isLightningTransfer,
                receiverAddress: nil,
                lightningInvoice: lightningInvoice,

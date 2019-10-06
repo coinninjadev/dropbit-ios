@@ -50,6 +50,10 @@ class LightningTransactionViewModelObject: TransactionDetailCellViewModelObject 
     return ledgerEntry.request
   }
 
+  var isSentToSelf: Bool {
+    return false //not yet evaluating this for lightning
+  }
+
   var isLightningUpgrade: Bool {
     return false
   }
@@ -117,6 +121,10 @@ struct LightningInvitationViewModelObject: TransactionDetailCellViewModelObject 
     case .sender:   return .out
     case .receiver: return .in
     }
+  }
+
+  var isSentToSelf: Bool {
+    return false //not yet evaluating this for lightning
   }
 
   var isLightningTransfer: Bool {
@@ -226,6 +234,7 @@ struct FallbackViewModelObject: TransactionDetailCellViewModelObject {
   let isLightningTransfer: Bool = false
   let isPendingTransferToLightning: Bool = false
   let isLightningUpgrade: Bool = false
+  let isSentToSelf: Bool = false
   let status: TransactionStatus = .failed
   var memo: String?
   var receiverAddress: String?

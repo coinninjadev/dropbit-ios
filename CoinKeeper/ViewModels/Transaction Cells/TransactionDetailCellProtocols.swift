@@ -334,7 +334,14 @@ extension TransactionDetailCellViewModelType {
   }
 
   var tooltipType: DetailCellTooltip {
-    return isDropBit ? .dropBit : .regularOnChain
+    if isLightningWithdrawal { return .lightningWithdrawal }
+
+    switch walletTxType {
+    case .onChain:
+      return isDropBit ? .dropBit : .regularOnChain
+    case .lightning:
+      return isDropBit ? .lightningDropBit : .lightningInvoice
+    }
   }
 
   var actionButtonConfig: DetailCellActionButtonConfig? {
@@ -362,6 +369,16 @@ extension TransactionDetailCellViewModelType {
 
   private var isShareable: Bool {
     return paymentIdIsValid
+  }
+
+  var isLightningWithdrawal: Bool {
+    guard let type = lightningTransferType else { return false }
+    return type == .withdraw
+  }
+
+  var isLightningDeposit: Bool {
+    guard let type = lightningTransferType else { return false }
+    return type == .deposit
   }
 
   func string(for stringId: DetailCellString) -> String {

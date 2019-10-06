@@ -89,10 +89,13 @@ class TransactionHistoryViewModel: NSObject, UICollectionViewDataSource, Exchang
   }
 
   private func detailCell(forItemAt indexPath: IndexPath, in collectionView: UICollectionView) -> UICollectionViewCell {
-    let defaultValidCell = collectionView.dequeue(TransactionHistoryDetailValidCell.self, for: indexPath)
+    func defaultValidCell() -> TransactionHistoryDetailValidCell { // only dequeue if necessary
+      return collectionView.dequeue(TransactionHistoryDetailValidCell.self, for: indexPath)
+    }
+
     guard let cellDelegate = detailsDelegate else {
       log.error("Detail cell delegate is not set")
-      return defaultValidCell
+      return defaultValidCell()
     }
 
     let displayableItem = dataSource.detailCellDisplayableItem(at: indexPath,
@@ -102,14 +105,14 @@ class TransactionHistoryViewModel: NSObject, UICollectionViewDataSource, Exchang
 
     switch displayableItem.detailCellType {
     case .valid:
-      let cell = defaultValidCell
+      let cell = defaultValidCell()
       cell.configure(with: displayableItem, delegate: cellDelegate)
       return cell
 
     case .invalid:
       guard let invalidDisplayableItem = displayableItem as? TransactionDetailInvalidCellDisplayable else {
         log.error("Failed to cast item as TransactionDetailInvalidCellDisplayable")
-        return defaultValidCell
+        return defaultValidCell()
       }
       let cell = collectionView.dequeue(TransactionHistoryDetailInvalidCell.self, for: indexPath)
       cell.configure(with: invalidDisplayableItem, delegate: cellDelegate)
@@ -118,7 +121,7 @@ class TransactionHistoryViewModel: NSObject, UICollectionViewDataSource, Exchang
     case .invoice:
       guard let invoiceDisplayableItem = displayableItem as? TransactionDetailInvoiceCellDisplayable else {
         log.error("Failed to cast item as TransactionDetailInvoiceCellDisplayable")
-        return defaultValidCell
+        return defaultValidCell()
       }
       let cell = collectionView.dequeue(TransactionHistoryDetailInvoiceCell.self, for: indexPath)
       cell.configure(with: invoiceDisplayableItem, delegate: cellDelegate)

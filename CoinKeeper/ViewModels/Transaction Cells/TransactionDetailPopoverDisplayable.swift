@@ -32,22 +32,65 @@ extension TransactionDetailPopoverViewModelType {
   }
 
   var breakdownAmounts: [BreakdownAmount] {
-    //TODO: compose this based on the transaction type and the available TransactionAmounts in SummaryCellViewModelType
-    //    whenSentAmountLabel.text = viewModel.breakdownSentAmountText
-    //    networkFeeAmountLabel.text = viewModel.breakdownFeeAmountText
-    //    confirmationsAmountLabel.text = viewModel.confirmationsText
-
-    return []
+    if let transferType = lightningTransferType {
+      switch transferType {
+      case .deposit:
+        return [totalSentBreakdown, onChainNetworkFeesBreakdown].compactMap { $0 }
+      case .withdraw:
+        return [totalWithdrawalBreakdown, onChainNetworkFeesBreakdown,
+                dropBitFeesBreakdown, netWithdrawalBreakdown].compactMap { $0 }
+      }
+    } else {
+      return [whenSentBreakdown, onChainNetworkFeesBreakdown].compactMap { $0 }
+    }
   }
 
   var breakdownItems: [TransactionPopoverBreakdownItem] {
     var results = breakdownAmounts.map { TransactionPopoverBreakdownItem(amount: $0) }
 
-    //TODO: include confirmations conditionally
-    if let count = onChainConfirmations {
+    if let count = onChainConfirmations, !isLightningWithdrawal {
       results.append(TransactionPopoverBreakdownItem(confirmations: count) )
     }
+
     return results
+  }
+
+  // MARK: Breakdown amounts
+  private var totalSentAmounts: ConvertedAmounts? {
+    return amounts.netWhenTransacted
+  }
+
+  private var whenSentAmounts: ConvertedAmounts? {
+    return amounts.netWhenInitiated ?? amounts.netWhenTransacted
+  }
+
+  private var totalSentBreakdown: BreakdownAmount? {
+    return totalSentAmounts.flatMap { BreakdownAmount(type: .totalSent, amounts: $0, walletTxType: walletTxType) }
+  }
+
+  private var totalWithdrawalBreakdown: BreakdownAmount? {
+    return BreakdownAmount(type: .totalWithdrawal, amounts: amounts.netAtCurrent, walletTxType: walletTxType)
+  }
+
+  private var netWithdrawalBreakdown: BreakdownAmount? {
+    return amounts.netWithdrawalAmounts.flatMap { BreakdownAmount(type: .netWithdrawal, amounts: $0, walletTxType: walletTxType) }
+  }
+
+  private var whenSentBreakdown: BreakdownAmount? {
+    return whenSentAmounts.flatMap { BreakdownAmount(type: .whenSent, amounts: $0, walletTxType: walletTxType) }
+  }
+
+  private var onChainNetworkFeesBreakdown: BreakdownAmount? {
+    return amounts.bitcoinNetworkFee.flatMap { BreakdownAmount(type: .networkFees(paidByDropBit: dropBitPaidNetworkFees),
+                                                               amounts: $0, walletTxType: walletTxType) }
+  }
+
+  private var dropBitFeesBreakdown: BreakdownAmount? {
+    return amounts.dropBitFee.flatMap { BreakdownAmount(type: .dropbitFees, amounts: $0, walletTxType: walletTxType) }
+  }
+
+  private var dropBitPaidNetworkFees: Bool {
+    return isLightningDeposit
   }
 
 }
@@ -55,6 +98,33 @@ extension TransactionDetailPopoverViewModelType {
 struct BreakdownAmount {
   let type: BreakdownItemType
   let amounts: ConvertedAmounts
+  let walletTxType: WalletTransactionType
+
+  var title: String {
+    return type.title
+  }
+
+  var detail: String {
+    let btcString = btcFormatter.string(fromDecimal: amounts.btc) ?? ""
+    let fiatString = fiatFormatter.string(fromDecimal: amounts.fiat) ?? ""
+    if case .networkFees(let paidByDropBit) = type, paidByDropBit {
+      return "Paid by DropBit (\(fiatString))"
+    } else {
+      return "\(btcString) (\(fiatString))"
+    }
+  }
+
+  private var btcFormatter: CKCurrencyFormatter {
+    switch walletTxType {
+    case .onChain:    return BitcoinFormatter(symbolType: .string)
+    case .lightning:  return SatsFormatter()
+    }
+  }
+
+  private var fiatFormatter: FiatFormatter {
+    return FiatFormatter(currency: amounts.fiatCurrency, withSymbol: true, showNegativeSymbol: false)
+  }
+
 }
 
 struct TransactionPopoverBreakdownItem {
@@ -62,8 +132,8 @@ struct TransactionPopoverBreakdownItem {
   let detail: String
 
   init(amount: BreakdownAmount) {
-    self.title = amount.type.title
-    self.detail = "" //TODO: format the amounts
+    self.title = amount.title
+    self.detail = amount.detail
   }
 
   init(confirmations: Int) {
@@ -73,21 +143,21 @@ struct TransactionPopoverBreakdownItem {
 }
 
 enum BreakdownItemType {
-  case amount
+  case totalWithdrawal
+  case netWithdrawal
   case totalSent
-  case networkFees
+  case networkFees(paidByDropBit: Bool)
   case dropbitFees
-  case transferred
   case whenSent
 
   var title: String {
     switch self {
-    case .amount:           return "Amount"
+    case .totalWithdrawal:  return "Amount"
+    case .netWithdrawal:    return "Transferred"
     case .totalSent:        return "Total Sent"
     case .whenSent:         return "When Sent"
-    case .networkFees:      return "Network Fees"
-    case .dropbitFees:      return "DropBit Fees"
-    case .transferred:      return "Transferred"
+    case .networkFees:      return "Network Fee"
+    case .dropbitFees:      return "DropBit Fee"
     }
   }
 }

@@ -29,6 +29,9 @@ struct CoinNinjaUrlFactory {
     case sharedMemosTooltip
     case regularTransactionTooltip
     case dropbitTransactionTooltip
+    case lightningWithdrawalTooltip
+    case lightningInvoiceTooltip
+    case lightningDropBitTooltip
     case adjustableFeesTooltip
     case dustProtection
     case download
@@ -78,6 +81,9 @@ struct CoinNinjaUrlFactory {
            .dropBitAppLightningWithdrawalFees,
            .regularTransactionTooltip,
            .dropbitTransactionTooltip,
+           .lightningWithdrawalTooltip,
+           .lightningInvoiceTooltip,
+           .lightningDropBitTooltip,
            .lightningUpgrade:
         return "https://dropbit.app/"
       case .dropBitMe,
@@ -132,6 +138,12 @@ struct CoinNinjaUrlFactory {
         return "\(tooltipBreadcrumb)regulartransaction"
       case .dropbitTransactionTooltip:
         return "\(tooltipBreadcrumb)dropbittransaction"
+      case .lightningWithdrawalTooltip:
+        return "\(tooltipBreadcrumb)lightningwithdrawal"
+      case .lightningInvoiceTooltip:
+        return "\(tooltipBreadcrumb)lightninginvoice"
+      case .lightningDropBitTooltip:
+        return "\(tooltipBreadcrumb)lightningdropbit"
       case .dustProtection:
         return "\(tooltipBreadcrumb)dustprotection"
       case .adjustableFeesTooltip:
