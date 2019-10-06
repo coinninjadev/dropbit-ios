@@ -45,6 +45,7 @@ protocol TransactionSummaryCellViewModelType: TransactionSummaryCellDisplayable 
   var lightningInvoice: String? { get }
   var amounts: TransactionAmounts { get }
   var memo: String? { get }
+  var isSentToSelf: Bool { get }
   var isLightningUpgrade: Bool { get }
   var isLightningTransfer: Bool { get }
   var isPendingTransferToLightning: Bool { get }
@@ -111,6 +112,8 @@ extension TransactionSummaryCellViewModelType {
       case .withdraw:   return lightningWithdrawText
       case .deposit:    return lightningDepositText
       }
+    } else if isSentToSelf {
+      return sentToSelfText
     } else if let counterparty = counterpartyDescription {
       return counterparty
     } else if let invoiceText = lightningInvoiceDescription {
@@ -202,6 +205,7 @@ extension TransactionSummaryCellViewModelType {
     }
   }
 
+  var sentToSelfText: String { return "Sent to Myself" }
   var lightningPaidInvoiceText: String { return "Paid Invoice" }
   var lightningReceivedPaidInvoiceText: String { return "Received" }
   var lightningUnpaidInvoiceText: String { return "Lightning Invoice" }

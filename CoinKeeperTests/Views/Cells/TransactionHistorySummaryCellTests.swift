@@ -48,6 +48,23 @@ class TransactionHistorySummaryCellTests: XCTestCase {
   }
 
   // MARK: Leading image and background color
+  func testDescriptionLabelLoadsDescription() {
+    let counterparty = MockSummaryCellVM.mockTwitterCounterparty()
+    let viewModel = MockSummaryCellVM.testSummaryInstance(counterpartyConfig: counterparty)
+    sut.configure(with: viewModel)
+    let expectedText = counterparty.twitterConfig?.displayHandle
+    XCTAssertEqual(sut.descriptionLabel.text, expectedText)
+    XCTAssertFalse(sut.descriptionLabel.isHidden)
+  }
+
+  func testDescriptionLabelLoadsSentToSelf() {
+    let counterparty = MockSummaryCellVM.mockTwitterCounterparty()
+    let viewModel = MockSummaryCellVM.testSummaryInstance(isSentToSelf: true, counterpartyConfig: counterparty)
+    sut.configure(with: viewModel)
+    let expectedText = viewModel.sentToSelfText
+    XCTAssertEqual(sut.descriptionLabel.text, expectedText)
+    XCTAssertFalse(sut.descriptionLabel.isHidden)
+  }
 
   func testUnpaidLightningInvoice_loadsImageAndColor() {
     let viewModel = MockSummaryCellVM.testSummaryInstance(walletTxType: .lightning, direction: .in, status: .pending, isLightningTransfer: false)

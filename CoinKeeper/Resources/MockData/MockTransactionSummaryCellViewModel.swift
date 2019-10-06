@@ -15,19 +15,22 @@ class MockTransactionSummaryCellViewModel: TransactionSummaryCellViewModelType {
   var walletTxType: WalletTransactionType
   var direction: TransactionDirection
   var status: TransactionStatus
-  var isLightningTransfer: Bool
-  var isLightningUpgrade: Bool = false
   var receiverAddress: String?
   var lightningInvoice: String?
   var selectedCurrency: SelectedCurrency
   var amounts: TransactionAmounts
   var counterpartyConfig: TransactionCellCounterpartyConfig?
-  var isPendingTransferToLightning: Bool = false
   var memo: String?
+  var isSentToSelf: Bool
+  var isLightningTransfer: Bool
+  var isPendingTransferToLightning: Bool = false
+  var isLightningUpgrade: Bool = false
+
 
   init(walletTxType: WalletTransactionType,
        direction: TransactionDirection,
        status: TransactionStatus,
+       isSentToSelf: Bool,
        isLightningTransfer: Bool,
        receiverAddress: String?,
        lightningInvoice: String?,
@@ -38,6 +41,7 @@ class MockTransactionSummaryCellViewModel: TransactionSummaryCellViewModelType {
     self.walletTxType = walletTxType
     self.direction = direction
     self.status = status
+    self.isSentToSelf = isSentToSelf
     self.isLightningTransfer = isLightningTransfer
     self.receiverAddress = receiverAddress
     self.lightningInvoice = lightningInvoice
@@ -65,7 +69,7 @@ class MockTransactionSummaryCellViewModel: TransactionSummaryCellViewModelType {
     let amtFactory = testAmountFactory(sats: 49500)
     let address = mockValidBitcoinAddress()
     return MockTransactionSummaryCellViewModel(walletTxType: .onChain, direction: .out,
-                                               status: .completed, isLightningTransfer: false,
+                                               status: .completed, isSentToSelf: false, isLightningTransfer: false,
                                                receiverAddress: address, lightningInvoice: nil,
                                                selectedCurrency: .fiat, amountFactory: amtFactory,
                                                counterpartyConfig: nil, memo: nil)
@@ -74,6 +78,7 @@ class MockTransactionSummaryCellViewModel: TransactionSummaryCellViewModelType {
   static func testSummaryInstance(walletTxType: WalletTransactionType = .onChain,
                                   direction: TransactionDirection = .out,
                                   status: TransactionStatus = .completed,
+                                  isSentToSelf: Bool = false,
                                   isLightningTransfer: Bool = false,
                                   receiverAddress: String? = nil,
                                   lightningInvoice: String? = nil,
@@ -84,8 +89,8 @@ class MockTransactionSummaryCellViewModel: TransactionSummaryCellViewModelType {
 
     let amtFactory = amountFactory ?? MockTransactionSummaryCellViewModel.testAmountFactory(sats: 49500)
     return MockTransactionSummaryCellViewModel(
-      walletTxType: walletTxType, direction: direction,
-      status: status, isLightningTransfer: isLightningTransfer,
+      walletTxType: walletTxType, direction: direction, status: status,
+      isSentToSelf: isSentToSelf, isLightningTransfer: isLightningTransfer,
       receiverAddress: receiverAddress, lightningInvoice: lightningInvoice,
       selectedCurrency: selectedCurrency, amountFactory: amtFactory,
       counterpartyConfig: counterpartyConfig, memo: memo)
