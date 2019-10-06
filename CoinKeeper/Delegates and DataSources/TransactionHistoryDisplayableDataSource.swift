@@ -166,6 +166,7 @@ class TransactionHistoryLightningDataSource: NSObject, TransactionHistoryDataSou
                                     rates: ExchangeRates,
                                     currencies: CurrencyPair,
                                     deviceCountryCode: Int) -> TransactionDetailPopoverDisplayable? {
+    //TODO: return valid item for .btc ledger entries
     return nil
   }
 

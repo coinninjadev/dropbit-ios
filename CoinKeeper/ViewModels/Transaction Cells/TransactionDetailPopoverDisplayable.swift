@@ -32,6 +32,11 @@ extension TransactionDetailPopoverViewModelType {
   }
 
   var breakdownAmounts: [BreakdownAmount] {
+    //TODO: compose this based on the transaction type and the available TransactionAmounts in SummaryCellViewModelType
+    //    whenSentAmountLabel.text = viewModel.breakdownSentAmountText
+    //    networkFeeAmountLabel.text = viewModel.breakdownFeeAmountText
+    //    confirmationsAmountLabel.text = viewModel.confirmationsText
+
     return []
   }
 
