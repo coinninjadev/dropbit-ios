@@ -112,8 +112,6 @@ extension TransactionSummaryCellViewModelType {
       case .withdraw:   return lightningWithdrawText
       case .deposit:    return lightningDepositText
       }
-    } else if isSentToSelf {
-      return sentToSelfText
     } else if let counterparty = counterpartyDescription {
       return counterparty
     } else if let invoiceText = lightningInvoiceDescription {
@@ -163,6 +161,7 @@ extension TransactionSummaryCellViewModelType {
   var subtitleColor: UIColor { return isPendingTransferToLightning ? .bitcoinOrange : .darkBlueText }
 
   var counterpartyDescription: String? {
+    if isSentToSelf { return sentToSelfText }
     guard let config = counterpartyConfig else { return nil }
     if let twitter = config.twitterConfig {
       return twitter.displayHandle
