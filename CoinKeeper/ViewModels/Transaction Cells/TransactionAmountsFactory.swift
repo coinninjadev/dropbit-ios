@@ -8,7 +8,8 @@
 
 import Foundation
 
-/// The net amounts may include fees if on the sender side and they are known.
+/// The net amounts represent the net impact to the user's balance.
+/// As such, they include fees if on the sender side and they are known.
 /// The net amount is intended to be displayed to the user without further adjustments for fees.
 protocol TransactionAmountsFactoryType {
 
@@ -19,6 +20,9 @@ protocol TransactionAmountsFactoryType {
 
   /// The amounts when the transaction was executed.
   var netWhenTransactedAmounts: ConvertedAmounts? { get }
+
+  /// The amount received by the on-chain wallet, after deducting all fees
+  var netWithdrawalAmounts: ConvertedAmounts? { get }
 
   var bitcoinNetworkFeeAmounts: ConvertedAmounts? { get }
   var lightningNetworkFeeAmounts: ConvertedAmounts? { get }
@@ -32,6 +36,7 @@ struct TransactionAmounts {
   let netAtCurrent: ConvertedAmounts
   let netWhenInitiated: ConvertedAmounts?
   let netWhenTransacted: ConvertedAmounts?
+  let netWithdrawalAmounts: ConvertedAmounts?
   let bitcoinNetworkFee: ConvertedAmounts?
   let lightningNetworkFee: ConvertedAmounts?
   let dropBitFee: ConvertedAmounts?
@@ -40,6 +45,7 @@ struct TransactionAmounts {
     self.netAtCurrent = factory.netAtCurrentAmounts
     self.netWhenInitiated = factory.netWhenInitiatedAmounts
     self.netWhenTransacted = factory.netWhenTransactedAmounts
+    self.netWithdrawalAmounts = factory.netWithdrawalAmounts
     self.bitcoinNetworkFee = factory.bitcoinNetworkFeeAmounts
     self.lightningNetworkFee = factory.lightningNetworkFeeAmounts
     self.dropBitFee = factory.dropBitFeeAmounts
