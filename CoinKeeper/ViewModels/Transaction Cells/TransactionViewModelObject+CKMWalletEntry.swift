@@ -248,7 +248,16 @@ extension CKMWalletEntry: TransactionDetailCellActionable {
     return ledgerEntry?.request
   }
 
+  var moreDetailsPath: TransactionMoreDetailsPath {
+    let transactionType = ledgerEntry?.type ?? .lightning
+    switch transactionType {
+    case .btc:        return .bitcoinPopover
+    case .lightning:  return .invoiceDecoder
+    }
+  }
+
   func removeFromTransactionHistory() {
     self.isHidden = true
   }
+
 }

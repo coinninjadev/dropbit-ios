@@ -19,6 +19,7 @@ struct CoinNinjaUrlFactory {
     case dropBit
     case transaction(id: String)
     case address(id: String)
+    case invoice(invoice: String)
     case faqs
     case contactUs
     case termsOfUse
@@ -49,7 +50,8 @@ struct CoinNinjaUrlFactory {
            .spendBitcoinGiftCards,
            .buyGiftCards,
            .buyWithCreditCard,
-           .buyAtATM:
+           .buyAtATM,
+           .invoice:
         #if DEBUG
         return "https://test.coinninja.net/"
         #else
@@ -110,6 +112,8 @@ struct CoinNinjaUrlFactory {
         return "tx/\(id)"
       case .address(let id):
         return "address/\(id)"
+      case .invoice(let invoice):
+        return "invoices/\(invoice)"
       case .faqs:
         return "faq"
       case .contactUs:

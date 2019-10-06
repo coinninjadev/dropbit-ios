@@ -146,6 +146,10 @@ extension CKMTransaction: TransactionDetailCellActionable {
     return receiverAddress
   }
 
+  var moreDetailsPath: TransactionMoreDetailsPath {
+    return .bitcoinPopover
+  }
+
   func removeFromTransactionHistory() {
     // CKMTransactions cannot be hidden
   }
