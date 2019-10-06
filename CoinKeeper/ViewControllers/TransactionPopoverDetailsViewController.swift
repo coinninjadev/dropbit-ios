@@ -20,12 +20,7 @@ class TransactionPopoverDetailsViewController: BaseViewController, StoryboardIni
   @IBOutlet var containerView: UIView!
   @IBOutlet var directionView: TransactionDirectionView!
   @IBOutlet var statusLabel: TransactionDetailBreakdownLabel!
-  @IBOutlet var whenSentTitleLabel: TransactionDetailBreakdownLabel!
-  @IBOutlet var whenSentAmountLabel: TransactionDetailBreakdownLabel!
-  @IBOutlet var networkFeeTitleLabel: TransactionDetailBreakdownLabel!
-  @IBOutlet var networkFeeAmountLabel: TransactionDetailBreakdownLabel!
-  @IBOutlet var confirmationsTitleLabel: TransactionDetailBreakdownLabel!
-  @IBOutlet var confirmationsAmountLabel: TransactionDetailBreakdownLabel!
+  
   @IBOutlet var txidLabel: UILabel!
   @IBOutlet var seeTransactionDetailsButton: TransactionDetailBottomButton!
   @IBOutlet var shareTransactionButton: UIButton!
