@@ -40,31 +40,6 @@ class OldTransactionDetailCellViewModel: OldTransactionSummaryCellViewModel {
 
 extension OldTransactionDetailCellViewModel {
 
-  var imageForTransactionDirection: UIImage? {
-    if transactionIsInvalidated {
-      return UIImage(named: "invalidated40")
-    } else {
-      return isIncoming ? UIImage(named: "incoming40") : UIImage(named: "outgoing40")
-    }
-  }
-
-  var transactionStatusDescription: String {
-    guard !isTemporaryTransaction else { return "Broadcasting" }
-    let count = confirmations
-    switch count {
-    case 0:    return "Pending"
-    default:  return "Complete"
-    }
-  }
-
-  var statusDescription: String {
-    if broadcastFailed {
-      return "Failed to Broadcast"
-    } else {
-      return invitationStatusDescription ?? transactionStatusDescription
-    }
-  }
-
   var descriptionColor: UIColor {
     guard !transactionIsInvalidated else { return .darkPeach }
     if isConfirmed {
@@ -152,30 +127,6 @@ extension OldTransactionDetailCellViewModel {
     }
   }
 
-  //TODO: move this to new view model protocol extension
-  var warningMessageLabel: String? {
-    if broadcastFailed {
-      return "Bitcoin network failed to broadcast this transaction. Please try sending again."
-
-    } else if let status = invitationStatus {
-      switch status {
-      case .canceled: return isIncoming ? "The sender has canceled this \(CKStrings.dropBitWithTrademark)." : nil // Only shows on receiver side
-      case .expired:
-        let messageWithLineBreaks = """
-        For security reasons we can only allow 24
-        hours to accept a \(CKStrings.dropBitWithTrademark). This
-        DropBit has expired.
-        """
-
-        return sizeSensitiveMessage(from: messageWithLineBreaks)
-
-      default: return nil
-      }
-    } else {
-      return nil
-    }
-  }
-
   var breakdownSentAmountLabel: String {
     return breakdownAmountLabel(forBTCConverter: sentAmountAtCurrentConverter)
   }
@@ -199,16 +150,6 @@ extension OldTransactionDetailCellViewModel {
     guard let amount = converter.amount(forCurrency: currency) else { return nil }
     let formatter = TransactionAmountFormatter(currency: currency)
     return formatter.stringWithSymbol(for: amount)
-  }
-
-}
-
-extension CKMTransaction {
-
-  /// txid does not begin with a prefix (e.g. invitations with placeholder Transaction objects)
-  var txidIsActualTxid: Bool {
-    let isInviteOrFailed = txid.starts(with: CKMTransaction.invitationTxidPrefix) || txid.starts(with: CKMTransaction.failedTxidPrefix)
-    return !isInviteOrFailed
   }
 
 }

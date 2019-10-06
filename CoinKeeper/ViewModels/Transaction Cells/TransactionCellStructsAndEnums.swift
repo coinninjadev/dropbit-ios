@@ -41,6 +41,15 @@ enum TransactionStatus: String {
   case canceled
   case expired
   case failed
+
+  var isValid: Bool {
+    switch self {
+    case .pending, .broadcasting, .completed:
+      return true
+    case .canceled, .expired, .failed:
+      return false
+    }
+  }
 }
 
 enum LightningTransferType {

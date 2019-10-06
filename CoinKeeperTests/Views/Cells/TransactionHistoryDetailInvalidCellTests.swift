@@ -91,19 +91,38 @@ class TransactionHistoryDetailInvalidCellTests: XCTestCase {
     XCTAssertTrue(mockCoordinator === sut.delegate)
   }
 
-  func testWarningMessageIsShown() {
-    let viewModel = MockDetailInvalidCellVM(status: .expired)
+  func testWarningMessageIsShown_expired() {
+    let viewModel = MockDetailInvalidCellVM(dropBitWith: .onChain, direction: .in, identity: .phone,
+                                            invitationStatus: .expired, transactionStatus: .pending)
     sut.configure(with: viewModel, delegate: mockCoordinator)
     let expectedText = viewModel.expiredMessage
     XCTAssertFalse(sut.warningLabel.isHidden)
     XCTAssertEqual(sut.warningLabel.text, expectedText)
   }
 
-  func testWarningMessageIsHidden() {
-    let viewModel = MockDetailInvalidCellVM(status: .failed)
+  func testWarningMessageIsShown_canceled_incoming() {
+    let viewModel = MockDetailInvalidCellVM(dropBitWith: .onChain, direction: .in, identity: .phone,
+                                            invitationStatus: .canceled, transactionStatus: .pending)
+    sut.configure(with: viewModel, delegate: mockCoordinator)
+    let expectedText = viewModel.canceledMessage
+    XCTAssertFalse(sut.warningLabel.isHidden)
+    XCTAssertEqual(sut.warningLabel.text, expectedText)
+  }
+
+  func testWarningMessageIsHidden_canceled_outgoing() {
+    let viewModel = MockDetailInvalidCellVM(dropBitWith: .onChain, direction: .out, identity: .phone,
+                                            invitationStatus: .canceled, transactionStatus: .pending)
     sut.configure(with: viewModel, delegate: mockCoordinator)
     XCTAssertTrue(sut.warningLabel.isHidden)
     XCTAssertNil(sut.warningLabel.text)
+  }
+
+  func testWarningMessageIsShown_failed() {
+    let viewModel = MockDetailInvalidCellVM(status: .failed)
+    sut.configure(with: viewModel, delegate: mockCoordinator)
+    let expectedText = viewModel.broadcastFailedMessage
+    XCTAssertFalse(sut.warningLabel.isHidden)
+    XCTAssertEqual(sut.warningLabel.text, expectedText)
   }
 
 }

@@ -53,12 +53,7 @@ protocol TransactionSummaryCellViewModelType: TransactionSummaryCellDisplayable 
 extension TransactionSummaryCellViewModelType {
 
   var isValidTransaction: Bool {
-    switch status {
-    case .canceled,
-         .expired,
-         .failed:   return false
-    default:        return true
-    }
+    return status.isValid
   }
 
   var leadingImageConfig: SummaryCellLeadingImageConfig {

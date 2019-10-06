@@ -26,7 +26,7 @@ class CKLogger: Logger {
 
   init() {
     var writers: [LogWriter] = []
-    writers.append(ConsoleWriter(method: .nslog, modifiers: [CKLogLevelModifier()]))
+    writers.append(ConsoleWriter(method: .print, modifiers: [CKLogLevelModifier()]))
     do {
       let fileWriter = try CKLogFileWriter()
       writers.append(fileWriter)

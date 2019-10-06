@@ -52,7 +52,7 @@ class TransactionHistoryDetailInvoiceCell: CollectionViewCardCell {
     super.awakeFromNib()
 
     titleLabel.textColor = .darkBlueText
-    titleLabel.font = .regular(14)
+    titleLabel.font = .regular(16)
 
     primaryAmountLabel.textColor = .darkBlueText
     primaryAmountLabel.font = .regular(50)

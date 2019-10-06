@@ -41,69 +41,24 @@
                                                     </label>
                                                 </subviews>
                                             </stackView>
-                                            <stackView opaque="NO" contentMode="scaleToFill" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="Yrq-Mh-tII">
-                                                <rect key="frame" x="0.0" y="98" width="334" height="81.5"/>
+                                            <view contentMode="scaleToFill" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="9Jd-Ph-m8f" userLabel="Breakdown Stack Container">
+                                                <rect key="frame" x="0.0" y="85" width="334" height="120"/>
                                                 <subviews>
                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="BnP-Tc-tdx">
-                                                        <rect key="frame" x="0.0" y="0.0" width="334" height="81.5"/>
-                                                        <subviews>
-                                                            <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="J5u-DR-6bX">
-                                                                <rect key="frame" x="0.0" y="0.0" width="334" height="20.5"/>
-                                                                <subviews>
-                                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="When Sent" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="azJ-pd-sHC" customClass="TransactionDetailBreakdownLabel" customModule="DropBit" customModuleProvider="target">
-                                                                        <rect key="frame" x="0.0" y="0.0" width="84.5" height="20.5"/>
-                                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                                        <nil key="textColor"/>
-                                                                        <nil key="highlightedColor"/>
-                                                                    </label>
-                                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DY5-bS-due" customClass="TransactionDetailBreakdownLabel" customModule="DropBit" customModuleProvider="target">
-                                                                        <rect key="frame" x="84.5" y="0.0" width="249.5" height="20.5"/>
-                                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                                        <nil key="textColor"/>
-                                                                        <nil key="highlightedColor"/>
-                                                                    </label>
-                                                                </subviews>
-                                                            </stackView>
-                                                            <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4h3-ll-8e5">
-                                                                <rect key="frame" x="0.0" y="30.5" width="334" height="20.5"/>
-                                                                <subviews>
-                                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Network Fee" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JJM-Mn-uCp" customClass="TransactionDetailBreakdownLabel" customModule="DropBit" customModuleProvider="target">
-                                                                        <rect key="frame" x="0.0" y="0.0" width="97" height="20.5"/>
-                                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                                        <nil key="textColor"/>
-                                                                        <nil key="highlightedColor"/>
-                                                                    </label>
-                                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="f4P-aI-iCE" customClass="TransactionDetailBreakdownLabel" customModule="DropBit" customModuleProvider="target">
-                                                                        <rect key="frame" x="97" y="0.0" width="237" height="20.5"/>
-                                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                                        <nil key="textColor"/>
-                                                                        <nil key="highlightedColor"/>
-                                                                    </label>
-                                                                </subviews>
-                                                            </stackView>
-                                                            <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4Vz-cC-Paq">
-                                                                <rect key="frame" x="0.0" y="61" width="334" height="20.5"/>
-                                                                <subviews>
-                                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Confirmations" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SUe-Os-k1a" customClass="TransactionDetailBreakdownLabel" customModule="DropBit" customModuleProvider="target">
-                                                                        <rect key="frame" x="0.0" y="0.0" width="107.5" height="20.5"/>
-                                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                                        <nil key="textColor"/>
-                                                                        <nil key="highlightedColor"/>
-                                                                    </label>
-                                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LXp-Zd-4cN" customClass="TransactionDetailBreakdownLabel" customModule="DropBit" customModuleProvider="target">
-                                                                        <rect key="frame" x="107.5" y="0.0" width="226.5" height="20.5"/>
-                                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                                        <nil key="textColor"/>
-                                                                        <nil key="highlightedColor"/>
-                                                                    </label>
-                                                                </subviews>
-                                                            </stackView>
-                                                        </subviews>
+                                                        <rect key="frame" x="0.0" y="0.0" width="334" height="120"/>
                                                     </stackView>
                                                 </subviews>
-                                            </stackView>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="bottom" secondItem="BnP-Tc-tdx" secondAttribute="bottom" id="1uY-Ef-Bgs"/>
+                                                    <constraint firstItem="BnP-Tc-tdx" firstAttribute="leading" secondItem="9Jd-Ph-m8f" secondAttribute="leading" id="6qp-wu-pRF"/>
+                                                    <constraint firstAttribute="trailing" secondItem="BnP-Tc-tdx" secondAttribute="trailing" id="CqJ-In-tBF"/>
+                                                    <constraint firstItem="BnP-Tc-tdx" firstAttribute="top" secondItem="9Jd-Ph-m8f" secondAttribute="top" id="YX2-gc-P8d"/>
+                                                    <constraint firstAttribute="height" constant="120" id="uZX-zg-0Lg"/>
+                                                </constraints>
+                                            </view>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cds-32-VLb">
-                                                <rect key="frame" x="0.0" y="209" width="334" height="20.5"/>
+                                                <rect key="frame" x="0.0" y="222" width="334" height="20.5"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
@@ -181,21 +136,16 @@
                         <viewLayoutGuide key="safeArea" id="ciM-il-CRl"/>
                     </view>
                     <connections>
+                        <outlet property="breakdownStackView" destination="BnP-Tc-tdx" id="vcb-qX-nE0"/>
                         <outlet property="closeButton" destination="YTD-36-jQ8" id="fYO-wH-aEs"/>
-                        <outlet property="confirmationsAmountLabel" destination="LXp-Zd-4cN" id="cgS-00-UL2"/>
-                        <outlet property="confirmationsTitleLabel" destination="SUe-Os-k1a" id="7qB-TI-WH8"/>
                         <outlet property="containerView" destination="K8O-2f-xNP" id="7nR-xh-wve"/>
                         <outlet property="containerViewCenterYConstraint" destination="tQK-4w-njb" id="wbV-Vo-OIY"/>
                         <outlet property="directionView" destination="uFP-QA-zWE" id="Z2G-F8-SUw"/>
-                        <outlet property="networkFeeAmountLabel" destination="f4P-aI-iCE" id="tsk-66-QZl"/>
-                        <outlet property="networkFeeTitleLabel" destination="JJM-Mn-uCp" id="bbc-5B-zLd"/>
                         <outlet property="questionMarkButton" destination="oK9-hO-IeN" id="TIO-OV-ABQ"/>
                         <outlet property="seeTransactionDetailsButton" destination="NLv-tT-MJa" id="QL3-pl-zUw"/>
                         <outlet property="shareTransactionButton" destination="rL2-RU-h5L" id="qRX-3U-6Co"/>
                         <outlet property="statusLabel" destination="c5N-sf-8oc" id="IC5-Lr-ISh"/>
                         <outlet property="txidLabel" destination="cds-32-VLb" id="EVS-hV-8A9"/>
-                        <outlet property="whenSentAmountLabel" destination="DY5-bS-due" id="pbV-vB-N9h"/>
-                        <outlet property="whenSentTitleLabel" destination="azJ-pd-sHC" id="xhQ-Bw-9do"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="oaJ-qv-Loj" userLabel="First Responder" sceneMemberID="firstResponder"/>

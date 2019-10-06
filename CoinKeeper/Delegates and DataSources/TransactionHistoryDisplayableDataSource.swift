@@ -154,7 +154,11 @@ class TransactionHistoryLightningDataSource: NSObject, TransactionHistoryDataSou
       return TransactionDetailInvoiceCellViewModel(object: invoiceViewModelObject, inputs: inputs)
     } else {
       let vmObject = viewModelObject(for: walletEntry)
-      return TransactionDetailCellViewModel(object: vmObject, inputs: inputs)
+      if let invalidViewModelObject = TransactionDetailInvalidCellViewModel(maybeInvalidObject: vmObject, inputs: inputs) {
+        return invalidViewModelObject
+      } else {
+        return TransactionDetailCellViewModel(object: vmObject, inputs: inputs)
+      }
     }
   }
 
@@ -162,6 +166,7 @@ class TransactionHistoryLightningDataSource: NSObject, TransactionHistoryDataSou
                                     rates: ExchangeRates,
                                     currencies: CurrencyPair,
                                     deviceCountryCode: Int) -> TransactionDetailPopoverDisplayable? {
+    //TODO: return valid item for .btc ledger entries
     return nil
   }
 

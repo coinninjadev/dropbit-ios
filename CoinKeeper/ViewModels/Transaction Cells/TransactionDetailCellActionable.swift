@@ -16,6 +16,12 @@ protocol TransactionDetailCellActionable: NSManagedObject {
   var lightningInvoice: String? { get }
   var memo: String? { get set }
   var invitation: CKMInvitation? { get }
+  var moreDetailsPath: TransactionMoreDetailsPath { get }
 
   func removeFromTransactionHistory()
+}
+
+enum TransactionMoreDetailsPath {
+  case bitcoinPopover
+  case invoiceDecoder
 }

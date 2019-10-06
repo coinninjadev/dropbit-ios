@@ -204,6 +204,20 @@ class LightningInvoiceViewModelObject: LightningTransactionViewModelObject {
 
 }
 
+class LightningPopoverViewModelObject: LightningTransactionViewModelObject, TransactionDetailPopoverViewModelObject {
+
+  let txid: String
+
+  override init?(walletEntry: CKMWalletEntry) {
+    guard let ledgerEntry = walletEntry.ledgerEntry, ledgerEntry.type == .btc,
+      let txid = ledgerEntry.id
+      else { return nil }
+
+    self.txid = txid
+    super.init(walletEntry: walletEntry)
+  }
+}
+
 ///Only necessary because of the optional relationship between CKMWalletEntry and CKMLNLedgerEntry
 struct FallbackViewModelObject: TransactionDetailCellViewModelObject {
 
@@ -248,7 +262,16 @@ extension CKMWalletEntry: TransactionDetailCellActionable {
     return ledgerEntry?.request
   }
 
+  var moreDetailsPath: TransactionMoreDetailsPath {
+    let transactionType = ledgerEntry?.type ?? .lightning
+    switch transactionType {
+    case .btc:        return .bitcoinPopover
+    case .lightning:  return .invoiceDecoder
+    }
+  }
+
   func removeFromTransactionHistory() {
     self.isHidden = true
   }
+
 }

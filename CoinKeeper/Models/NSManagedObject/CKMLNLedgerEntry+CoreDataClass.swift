@@ -57,8 +57,11 @@ public class CKMLNLedgerEntry: NSManagedObject {
     entry.value = result.value
     entry.networkFee = result.networkFee
     entry.processingFee = result.processingFee
-    entry.request = result.request
     entry.error = result.error
+
+    if entry.type == .lightning, let validRequest = result.request?.asNilIfEmpty() {
+      entry.request = validRequest //result.request may be a non-invoice string when type is .btc
+    }
   }
 
   static func find(with id: String, wallet: CKMWallet?, in context: NSManagedObjectContext) -> CKMLNLedgerEntry? {

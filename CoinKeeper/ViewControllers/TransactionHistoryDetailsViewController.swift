@@ -147,8 +147,16 @@ extension TransactionHistoryDetailsViewController: TransactionHistoryDetailCellD
 
     switch action {
     case .seeDetails:
-      guard let popoverItem = viewModel.popoverDisplayableItem(at: indexPath) else { return }
-      delegate.viewControllerShouldSeeTransactionDetails(for: popoverItem)
+      switch item.moreDetailsPath {
+      case .bitcoinPopover:
+        guard let popoverItem = viewModel.popoverDisplayableItem(at: indexPath) else { return }
+        delegate.viewControllerShouldSeeTransactionDetails(for: popoverItem)
+
+      case .invoiceDecoder:
+        guard let invoice = item.lightningInvoice,
+          let invoiceURL = CoinNinjaUrlFactory.buildUrl(for: .invoice(invoice: invoice)) else { return }
+        delegate.openURL(invoiceURL, completionHandler: nil)
+      }
 
     case .cancelInvitation:
       guard let invitationID = item.invitation?.id else { return }

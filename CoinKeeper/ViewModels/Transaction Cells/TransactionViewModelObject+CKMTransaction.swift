@@ -131,7 +131,9 @@ extension CKMTransaction: TransactionDetailCellViewModelObject {
   }
 
   var paymentIdIsValid: Bool {
-    return txidIsActualTxid
+    /// txid does not begin with a prefix (e.g. invitations with placeholder Transaction objects)
+    let isInviteOrFailed = txid.starts(with: CKMTransaction.invitationTxidPrefix) || txid.starts(with: CKMTransaction.failedTxidPrefix)
+    return !isInviteOrFailed
   }
 
   var invitationStatus: InvitationStatus? {
@@ -144,6 +146,10 @@ extension CKMTransaction: TransactionDetailCellActionable {
 
   var bitcoinAddress: String? {
     return receiverAddress
+  }
+
+  var moreDetailsPath: TransactionMoreDetailsPath {
+    return .bitcoinPopover
   }
 
   func removeFromTransactionHistory() {
