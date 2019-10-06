@@ -1000,6 +1000,7 @@
 		B5C8F5CB216D3A8800E3E85B /* NetworkManager+DeviceEndpointRequestable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5C8F5CA216D3A8800E3E85B /* NetworkManager+DeviceEndpointRequestable.swift */; };
 		B5C9472C210E08C3002CBAE4 /* AddressRequestUpdateDisplayable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5C9472B210E08C3002CBAE4 /* AddressRequestUpdateDisplayable.swift */; };
 		B5C9472E210E57D7002CBAE4 /* AddressRequestUpdateDisplayableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5C9472D210E57D7002CBAE4 /* AddressRequestUpdateDisplayableTests.swift */; };
+		B5CD0C13234982DF0035E6F3 /* TitleDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5CD0C12234982DF0035E6F3 /* TitleDetailView.swift */; };
 		B5CFA32A221DF594002B1BDD /* ContactCacheManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5CFA329221DF594002B1BDD /* ContactCacheManager.swift */; };
 		B5CFA32D221DF9AF002B1BDD /* ContactCache.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = B5CFA32B221DF9AF002B1BDD /* ContactCache.xcdatamodeld */; };
 		B5CFA333221E008B002B1BDD /* CCMContact+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5CFA32F221E008B002B1BDD /* CCMContact+CoreDataClass.swift */; };
@@ -2066,6 +2067,7 @@
 		B5C8F5CA216D3A8800E3E85B /* NetworkManager+DeviceEndpointRequestable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NetworkManager+DeviceEndpointRequestable.swift"; sourceTree = "<group>"; };
 		B5C9472B210E08C3002CBAE4 /* AddressRequestUpdateDisplayable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressRequestUpdateDisplayable.swift; sourceTree = "<group>"; };
 		B5C9472D210E57D7002CBAE4 /* AddressRequestUpdateDisplayableTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressRequestUpdateDisplayableTests.swift; sourceTree = "<group>"; };
+		B5CD0C12234982DF0035E6F3 /* TitleDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleDetailView.swift; sourceTree = "<group>"; };
 		B5CFA329221DF594002B1BDD /* ContactCacheManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactCacheManager.swift; sourceTree = "<group>"; };
 		B5CFA32C221DF9AF002B1BDD /* ContactCache.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = ContactCache.xcdatamodel; sourceTree = "<group>"; };
 		B5CFA32F221E008B002B1BDD /* CCMContact+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CCMContact+CoreDataClass.swift"; sourceTree = "<group>"; };
@@ -3400,6 +3402,7 @@
 				A293E35120F798920099ED69 /* TransactionHistoryEmptyView.swift */,
 				B59C9E1D230DB37700E4F3C8 /* TwitterAvatarView.swift */,
 				B59C9E23230EC86C00E4F3C8 /* TransactionDirectionView.swift */,
+				B5CD0C12234982DF0035E6F3 /* TitleDetailView.swift */,
 				B59E2C9022E7A93E00A75AFE /* WalletToggleTitleView.swift */,
 				B59E2C9222E8B4B400A75AFE /* LightningTooltipListItem.swift */,
 				B54DE68222982C7F009D67CE /* ContactsEmptyView.swift */,
@@ -4833,6 +4836,7 @@
 				A25923EC20C981770005B1A0 /* AnalyticsManagerError.swift in Sources */,
 				3B325D532190A37B0094897C /* SecondaryActionButton.swift in Sources */,
 				3B547A722280AEE5007B0366 /* ChangeRemoveVerificationButton.swift in Sources */,
+				B5CD0C13234982DF0035E6F3 /* TitleDetailView.swift in Sources */,
 				B5E7F22122148ECA00358A24 /* FlagEmojiFactory.swift in Sources */,
 				30B663202162AFF00011296C /* DeviceResponse.swift in Sources */,
 				B5E7EE7B21B02FFB00E058EF /* ValidatorAlertDisplayable.swift in Sources */,
