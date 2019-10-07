@@ -88,8 +88,8 @@ extension TransactionSummaryCellViewModelObject {
 
   func counterpartyConfig(for walletEntry: CKMWalletEntry, deviceCountryCode: Int) -> TransactionCellCounterpartyConfig? {
     let maybeTwitter = walletEntry.twitterContact.flatMap { TransactionCellTwitterConfig(contact: $0) }
-    let maybeName = priorityCounterpartyName(with: maybeTwitter, invitation: nil, phoneNumber: walletEntry.phoneNumber)
-    let maybeNumber = priorityPhoneNumber(for: deviceCountryCode, invitation: nil, phoneNumber: walletEntry.phoneNumber)
+    let maybeName = priorityCounterpartyName(with: maybeTwitter, invitation: walletEntry.invitation, phoneNumber: walletEntry.phoneNumber)
+    let maybeNumber = priorityPhoneNumber(for: deviceCountryCode, invitation: walletEntry.invitation, phoneNumber: walletEntry.phoneNumber)
     return TransactionCellCounterpartyConfig(failableWithName: maybeName,
                                              displayPhoneNumber: maybeNumber,
                                              twitterConfig: maybeTwitter)

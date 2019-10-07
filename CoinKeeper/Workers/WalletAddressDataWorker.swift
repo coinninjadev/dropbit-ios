@@ -130,7 +130,10 @@ class WalletAddressDataWorker: WalletAddressDataWorkerType {
     return self.networkManager.getWalletAddressRequests(forSide: .received)
       .get(in: context) { self.persistenceManager.persistReceivedAddressRequests($0, in: context) }
       .get(in: context) { _ in self.linkFulfilledOnChainAddressRequestsWithTransaction(in: context) }
-      .get(in: context) { _ in self.linkFulfilledLightningAddressRequestsWithTransaction(in: context) }.asVoid()
+      .get(in: context) { (responses: [WalletAddressRequestResponse]) in
+        self.linkFulfilledLightningAddressRequestsWithTransaction(forResponses: responses, in: context)
+      }
+      .asVoid()
   }
 
   func updateSentAddressRequests(in context: NSManagedObjectContext) -> Promise<Void> {
@@ -266,35 +269,21 @@ class WalletAddressDataWorker: WalletAddressDataWorkerType {
     }
   }
 
-  func linkFulfilledLightningAddressRequestsWithTransaction(in context: NSManagedObjectContext) {
-    let statusPredicate = CKPredicate.Invitation.withStatuses([.completed])
-    let lightningInvite = CKPredicate.Invitation.with(transactionType: .lightning)
+  func linkFulfilledLightningAddressRequestsWithTransaction(
+    forResponses responses: [WalletAddressRequestResponse],
+    in context: NSManagedObjectContext) {
 
-    let fetchRequest: NSFetchRequest<CKMInvitation> = CKMInvitation.fetchRequest()
-    fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [statusPredicate, lightningInvite])
-
-    do {
-      let updatableInvitations = try context.fetch(fetchRequest).filter { $0.walletEntry?.ledgerEntry == nil ||
-        $0.walletEntry?.invitation?.side == .receiver
+    for response in responses {
+      guard let txid = response.txid else { continue }
+      let maybeInvitation = CKMInvitation.find(withTxid: txid, in: context)
+      let maybeLedgerEntry = CKMLNLedgerEntry.find(withId: txid, wallet: nil, in: context)
+      guard let invitation = maybeInvitation, let ledgerEntry = maybeLedgerEntry else { continue }
+      if invitation.walletEntry != ledgerEntry.walletEntry, let placeholder = invitation.walletEntry {
+        context.delete(placeholder)
+        log.debug("Deleted placeholder wallet entry")
       }
-      log.debug("Found \(updatableInvitations.count) updatable invitations")
-
-      updatableInvitations.forEach { invitation in
-        guard let invitationTxid = invitation.txid else { return }
-
-        if let targetWalletEntry = CKMLNLedgerEntry.find(withId: invitationTxid, wallet: nil, in: context)?.walletEntry {
-          log.debug("Found ledger entry matching the invitation.txid, will update relationship")
-          let placeholderWalletEntry = invitation.walletEntry
-          invitation.walletEntry = targetWalletEntry
-
-          if let placeholder = placeholderWalletEntry {
-            context.delete(placeholder)
-            log.debug("Deleted placeholder transaction")
-          }
-        }
-      }
-    } catch {
-      log.error(error, message: "Failed to fetch updatable invitations")
+      invitation.walletEntry = ledgerEntry.walletEntry
+      ledgerEntry.walletEntry?.invitation = invitation
     }
   }
 
