@@ -134,6 +134,7 @@
         <attribute name="confirmations" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="date" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="dayAveragePrice" optional="YES" attributeType="Decimal"/>
+        <attribute name="dropBitProcessingFee" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="isIncoming" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="isLightningTransfer" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="isSentToSelf" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
@@ -265,7 +266,7 @@
         <element name="CKMPhoneNumber" positionX="-2009" positionY="99" width="128" height="165"/>
         <element name="CKMServerAddress" positionX="-1143" positionY="108" width="128" height="103"/>
         <element name="CKMTemporarySentTransaction" positionX="-1928" positionY="459" width="128" height="135"/>
-        <element name="CKMTransaction" positionX="-1667" positionY="317" width="128" height="375"/>
+        <element name="CKMTransaction" positionX="-1667" positionY="317" width="128" height="388"/>
         <element name="CKMTransactionSharedPayload" positionX="-1858.9765625" positionY="76.22265625" width="128" height="135"/>
         <element name="CKMTwitterContact" positionX="-2073.94921875" positionY="265.5859375" width="128" height="180"/>
         <element name="CKMUser" positionX="-1523" positionY="144" width="128" height="120"/>

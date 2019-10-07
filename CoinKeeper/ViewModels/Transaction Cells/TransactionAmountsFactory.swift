@@ -80,7 +80,9 @@ struct TransactionAmountsFactory: TransactionAmountsFactoryType {
 
     self.netWalletAmount = NSDecimalNumber(integerAmount: transaction.netWalletAmount, currency: .BTC)
     self.bitcoinNetworkFee = NSDecimalNumber(integerAmount: transaction.networkFee, currency: .BTC)
+    self.dropBitFee = NSDecimalNumber(integerAmount: transaction.dropBitProcessingFee, currency: .BTC)
     self.rateWhenTransacted = transaction.dayAveragePrice?.doubleValue
+
     if let invite = transaction.invitation {
       primaryFiatAmountWhenInitiated = NSDecimalNumber(integerAmount: invite.fiatAmount, currency: .USD)
     }
@@ -186,7 +188,7 @@ struct TransactionAmountsFactory: TransactionAmountsFactoryType {
 
 }
 
-typealias Satoshis = Int
+public typealias Satoshis = Int
 
 // MARK: - Computed Amounts
 extension CKMTransaction {

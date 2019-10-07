@@ -101,7 +101,8 @@ class LightningTransactionViewModelObject: LightningViewModelObject, Transaction
   }
 
   func amountFactory(with currentRates: ExchangeRates, fiatCurrency: CurrencyCode) -> TransactionAmountsFactoryType {
-    return TransactionAmountsFactory(walletEntry: walletEntry, fiatCurrency: fiatCurrency, currentRates: currentRates, transferType: lightningTransferType)
+    return TransactionAmountsFactory(walletEntry: walletEntry, fiatCurrency:
+      fiatCurrency, currentRates: currentRates, transferType: lightningTransferType)
   }
 
   func counterpartyConfig(for deviceCountryCode: Int) -> TransactionCellCounterpartyConfig? {
@@ -171,7 +172,8 @@ class LightningInvitationViewModelObject: LightningViewModelObject, TransactionD
   }
 
   func amountFactory(with currentRates: ExchangeRates, fiatCurrency: CurrencyCode) -> TransactionAmountsFactoryType {
-    return TransactionAmountsFactory(walletEntry: walletEntry, fiatCurrency: fiatCurrency, currentRates: currentRates, transferType: lightningTransferType)
+    return TransactionAmountsFactory(walletEntry: walletEntry, fiatCurrency: fiatCurrency,
+                                     currentRates: currentRates, transferType: lightningTransferType)
   }
 
   func counterpartyConfig(for deviceCountryCode: Int) -> TransactionCellCounterpartyConfig? {
