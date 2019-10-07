@@ -58,23 +58,13 @@ class CKDatabase: PersistenceDatabaseType {
 
   /// Returns array of managed object IDs to merge into context after all batch deletions have been processed
   private func executeBatchDelete(forEntity entityName: String, in context: NSManagedObjectContext) throws {
-    let fetch = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
-    let request = NSBatchDeleteRequest(fetchRequest: fetch)
-    request.resultType = .resultTypeObjectIDs
+    let fetch = NSFetchRequest<NSManagedObject>(entityName: entityName)
+    log.info("Currently batch deleting \(entityName)")
+    let results = try fetch.execute()
 
-    try context.performThrowingAndWait {
-      do {
-        if let result = try context.execute(request) as? NSBatchDeleteResult, let objectIDs = result.result as? [NSManagedObjectID] {
-          NSManagedObjectContext.mergeChanges(fromRemoteContextSave: [NSDeletedObjectsKey: objectIDs], into: [context])
-        }
-        log.info("Successfully batch deleted \(entityName)")
-
-      } catch {
-        let userInfo = (error as NSError).userInfo
-        let message = "Failed to execute batch delete of \(entityName). User info: \(userInfo)"
-        log.error(message)
-        throw error
-      }
+    context.performThrowingAndWait {
+      for result in results { context.delete(result) }
+      log.info("Successfully batch deleted \(entityName)")
     }
   }
 
