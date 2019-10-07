@@ -23,6 +23,10 @@ extension CKMWalletEntry {
   @NSManaged public var isHidden: Bool
   @NSManaged public var memo: String?
 
+  ///If `memo` is set, this indicates whether it was part of the original (shared) lightning invoice.
+  ///Otherwise it may have been part of the shared payload or set manually by the user.
+  @NSManaged public var memoSetByInvoice: Bool
+
   @NSManaged public var wallet: CKMWallet?
   @NSManaged public var ledgerEntry: CKMLNLedgerEntry?
   @NSManaged public var twitterContact: CKMTwitterContact?
