@@ -3458,8 +3458,8 @@
 				B59D0F292345701500E828BF /* TransactionDetailInvoiceCellViewModel.swift */,
 				B5F9D9B42347FBF500905859 /* TransactionDetailPopoverViewModel.swift */,
 				B51D55DE23462FE700AEAA60 /* TransactionViewModelObject+CKMTransaction.swift */,
-				B5076A8323466E21007D8FCC /* TransactionAmountsFactory.swift */,
 				B51D55E02346300000AEAA60 /* TransactionViewModelObject+CKMWalletEntry.swift */,
+				B5076A8323466E21007D8FCC /* TransactionAmountsFactory.swift */,
 				5B404275208CCA40005624B0 /* OldTransactionDetailCellViewModel.swift */,
 				B53461762098C61D00DDC1C4 /* OldTransactionSummaryCellViewModel.swift */,
 			);
