@@ -26,7 +26,6 @@ class MockTransactionSummaryCellViewModel: TransactionSummaryCellViewModelType {
   var isPendingTransferToLightning: Bool = false
   var isLightningUpgrade: Bool = false
 
-
   init(walletTxType: WalletTransactionType,
        direction: TransactionDirection,
        status: TransactionStatus,

@@ -11,6 +11,7 @@ import UIKit
 import PhoneNumberKit
 import CNBitcoinKit
 
+/*
 class OldTransactionSummaryCellViewModel {
 
   var counterpartyDescription: String
@@ -224,4 +225,5 @@ extension CKMTransaction: CounterpartyRepresentable {
     return counterpartyReceiverAddressId
   }
 }
+*/
 */

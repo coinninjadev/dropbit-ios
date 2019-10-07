@@ -8,14 +8,32 @@
 
 import Foundation
 
-class LightningTransactionViewModelObject: TransactionDetailCellViewModelObject {
+///Holds shared logic
+class LightningViewModelObject {
   let walletEntry: CKMWalletEntry
+
+  init(_ walletEntry: CKMWalletEntry) {
+    self.walletEntry = walletEntry
+  }
+
+  var memoIsShared: Bool {
+    if let payload = walletEntry.sharedPayload {
+      return payload.sharingDesired
+    } else {
+      return walletEntry.memoSetByInvoice
+    }
+  }
+
+}
+
+class LightningTransactionViewModelObject: LightningViewModelObject, TransactionDetailCellViewModelObject {
+
   let ledgerEntry: CKMLNLedgerEntry
 
   init?(walletEntry: CKMWalletEntry) {
     guard let ledgerEntry = walletEntry.ledgerEntry else { return nil }
-    self.walletEntry = walletEntry
     self.ledgerEntry = ledgerEntry
+    super.init(walletEntry)
   }
 
   var walletTxType: WalletTransactionType {
@@ -62,10 +80,6 @@ class LightningTransactionViewModelObject: TransactionDetailCellViewModelObject 
     return status == .pending && direction == .in && isLightningTransfer
   }
 
-  var memoIsShared: Bool {
-    return walletEntry.sharedPayload?.sharingDesired ?? false
-  }
-
   var primaryDate: Date {
     return walletEntry.sortDate
   }
@@ -87,7 +101,8 @@ class LightningTransactionViewModelObject: TransactionDetailCellViewModelObject 
   }
 
   func amountFactory(with currentRates: ExchangeRates, fiatCurrency: CurrencyCode) -> TransactionAmountsFactoryType {
-    return TransactionAmountsFactory(walletEntry: walletEntry, fiatCurrency: fiatCurrency, currentRates: currentRates)
+    return TransactionAmountsFactory(walletEntry: walletEntry, fiatCurrency:
+      fiatCurrency, currentRates: currentRates, transferType: lightningTransferType)
   }
 
   func counterpartyConfig(for deviceCountryCode: Int) -> TransactionCellCounterpartyConfig? {
@@ -101,15 +116,16 @@ class LightningTransactionViewModelObject: TransactionDetailCellViewModelObject 
 
 }
 
-struct LightningInvitationViewModelObject: TransactionDetailCellViewModelObject {
+///Note that this cannot subclass LightningTransactionViewModelObject because it's possible for the CKMInvitation
+///to not yet have a relationship to a CKMLNLedgerEntry.
+class LightningInvitationViewModelObject: LightningViewModelObject, TransactionDetailCellViewModelObject {
 
-  let walletEntry: CKMWalletEntry
   let invitation: CKMInvitation
 
   init?(invitation: CKMInvitation) {
     guard let walletEntry = invitation.walletEntry else { return nil }
-    self.walletEntry = walletEntry
     self.invitation = invitation
+    super.init(walletEntry)
   }
 
   var walletTxType: WalletTransactionType {
@@ -156,15 +172,12 @@ struct LightningInvitationViewModelObject: TransactionDetailCellViewModelObject 
   }
 
   func amountFactory(with currentRates: ExchangeRates, fiatCurrency: CurrencyCode) -> TransactionAmountsFactoryType {
-    return TransactionAmountsFactory(walletEntry: walletEntry, fiatCurrency: fiatCurrency, currentRates: currentRates)
+    return TransactionAmountsFactory(walletEntry: walletEntry, fiatCurrency: fiatCurrency,
+                                     currentRates: currentRates, transferType: lightningTransferType)
   }
 
   func counterpartyConfig(for deviceCountryCode: Int) -> TransactionCellCounterpartyConfig? {
     return counterpartyConfig(for: walletEntry, deviceCountryCode: deviceCountryCode)
-  }
-
-  var memoIsShared: Bool {
-    return walletEntry.sharedPayload?.sharingDesired ?? false
   }
 
   var primaryDate: Date {
@@ -210,20 +223,6 @@ class LightningInvoiceViewModelObject: LightningTransactionViewModelObject {
     super.init(walletEntry: walletEntry)
   }
 
-}
-
-class LightningPopoverViewModelObject: LightningTransactionViewModelObject, TransactionDetailPopoverViewModelObject {
-
-  let txid: String
-
-  override init?(walletEntry: CKMWalletEntry) {
-    guard let ledgerEntry = walletEntry.ledgerEntry, ledgerEntry.type == .btc,
-      let txid = ledgerEntry.id
-      else { return nil }
-
-    self.txid = txid
-    super.init(walletEntry: walletEntry)
-  }
 }
 
 ///Only necessary because of the optional relationship between CKMWalletEntry and CKMLNLedgerEntry

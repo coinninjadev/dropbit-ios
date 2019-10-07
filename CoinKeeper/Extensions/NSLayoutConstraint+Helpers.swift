@@ -23,7 +23,7 @@ extension UIView {
     let leadingConstraint = leadingConstant.flatMap { self.leadingAnchor.constraint(equalTo: targetView.leadingAnchor, constant: $0) }
     let trailingConstraint = trailingConstant.flatMap { self.trailingAnchor.constraint(equalTo: targetView.trailingAnchor, constant: $0) }
 
-    let desiredConstraints: [NSLayoutConstraint] = [topConstraint, bottomConstraint, leadingConstraint, trailingConstraint].compactMap{ $0 }
+    let desiredConstraints: [NSLayoutConstraint] = [topConstraint, bottomConstraint, leadingConstraint, trailingConstraint].compactMap { $0 }
     NSLayoutConstraint.activate(desiredConstraints)
   }
 

@@ -76,11 +76,6 @@ Runs full test suite with clean simulator installations.
 fastlane ios ui_tests
 ```
 Runs UI tests
-### ios xcov_for_testing
-```
-fastlane ios xcov_for_testing
-```
-
 ### ios beta
 ```
 fastlane ios beta

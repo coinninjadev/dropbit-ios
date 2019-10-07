@@ -99,7 +99,7 @@ class TransactionDataWorker: TransactionDataWorkerType {
     return self.networkManager.getLightningLedger()
       .get(in: context) { response in
         self.persistenceManager.brokers.lightning.persistLedgerResponse(response, forWallet: wallet, in: context)
-        self.identifyLightningTransfers(withLedger: response.ledger, forWallet: wallet, in: context)
+        self.processOnChainLightningTransfers(withLedger: response.ledger, forWallet: wallet, in: context)
       }
       .then(in: context) { response -> Promise<Void> in
         let lightningEntryIds = response.ledger.filter { $0.type == .lightning }.map { $0.cleanedId }
@@ -109,9 +109,9 @@ class TransactionDataWorker: TransactionDataWorkerType {
       }
   }
 
-  private func identifyLightningTransfers(withLedger ledgerResults: [LNTransactionResult],
-                                          forWallet wallet: CKMWallet,
-                                          in context: NSManagedObjectContext) {
+  private func processOnChainLightningTransfers(withLedger ledgerResults: [LNTransactionResult],
+                                                forWallet wallet: CKMWallet,
+                                                in context: NSManagedObjectContext) {
     let lightningTransferTxids = ledgerResults.filter { $0.type == .btc }.map { $0.cleanedId }
 
     let fetchRequest: NSFetchRequest<CKMTransaction> = CKMTransaction.fetchRequest()
@@ -126,8 +126,14 @@ class TransactionDataWorker: TransactionDataWorkerType {
       log.error(error, message: "failed to fetch transactions to mark for lightning transfers")
     }
 
+    var processingFeesById: [String: Int] = [:]
+    for result in ledgerResults {
+      processingFeesById[result.cleanedId] = result.processingFee
+    }
+
     for tx in transactionsToUpdate {
       tx.isLightningTransfer = true
+      tx.dropBitProcessingFee = processingFeesById[tx.txid] ?? 0
     }
   }
 

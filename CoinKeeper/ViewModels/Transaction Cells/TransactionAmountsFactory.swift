@@ -57,8 +57,12 @@ struct TransactionAmountsFactory: TransactionAmountsFactoryType {
 
   private let fiatCurrency: CurrencyCode
   private let currentRate: Double
+  private let walletTxType: WalletTransactionType
+  private let transferType: LightningTransferType?
 
+  ///This value may be positive or negative depending on how it affects the balance
   private let netWalletAmount: NSDecimalNumber
+
   private var rateWhenTransacted: Double?
   private var primaryFiatAmountWhenInitiated: NSDecimalNumber? //already converted
   private var bitcoinNetworkFee: NSDecimalNumber?
@@ -67,12 +71,18 @@ struct TransactionAmountsFactory: TransactionAmountsFactoryType {
 
   init(transaction: CKMTransaction,
        fiatCurrency: CurrencyCode,
-       currentRates: ExchangeRates) {
+       currentRates: ExchangeRates,
+       transferType: LightningTransferType?) {
     self.fiatCurrency = fiatCurrency
     self.currentRate = currentRates[fiatCurrency] ?? 1
+    self.walletTxType = .onChain
+    self.transferType = transferType
+
     self.netWalletAmount = NSDecimalNumber(integerAmount: transaction.netWalletAmount, currency: .BTC)
     self.bitcoinNetworkFee = NSDecimalNumber(integerAmount: transaction.networkFee, currency: .BTC)
+    self.dropBitFee = NSDecimalNumber(integerAmount: transaction.dropBitProcessingFee, currency: .BTC)
     self.rateWhenTransacted = transaction.dayAveragePrice?.doubleValue
+
     if let invite = transaction.invitation {
       primaryFiatAmountWhenInitiated = NSDecimalNumber(integerAmount: invite.fiatAmount, currency: .USD)
     }
@@ -80,19 +90,28 @@ struct TransactionAmountsFactory: TransactionAmountsFactoryType {
 
   init(walletEntry: CKMWalletEntry,
        fiatCurrency: CurrencyCode,
-       currentRates: ExchangeRates) {
+       currentRates: ExchangeRates,
+       transferType: LightningTransferType?) {
     self.fiatCurrency = fiatCurrency
     self.currentRate = currentRates[fiatCurrency] ?? 1
-    if let ledgerEntry = walletEntry.ledgerEntry, ledgerEntry.direction == .out {
-      self.netWalletAmount = NSDecimalNumber(integerAmount:
-        walletEntry.netWalletAmount -
-        ledgerEntry.networkFee -
-        ledgerEntry.processingFee, currency: .BTC)
-    } else {
-      self.netWalletAmount = NSDecimalNumber(integerAmount: walletEntry.netWalletAmount, currency: .BTC)
+    self.walletTxType = .lightning
+    self.transferType = transferType
+
+    self.netWalletAmount = NSDecimalNumber(integerAmount: walletEntry.netWalletAmount, currency: .BTC)
+
+    if let ledgerEntry = walletEntry.ledgerEntry {
+      switch ledgerEntry.type {
+      case .btc:
+        self.bitcoinNetworkFee = NSDecimalNumber(integerAmount: ledgerEntry.networkFee, currency: .BTC)
+      case .lightning:
+        self.lightningNetworkFee = NSDecimalNumber(integerAmount: ledgerEntry.networkFee, currency: .BTC)
+      }
+
+      self.dropBitFee = NSDecimalNumber(integerAmount: ledgerEntry.processingFee, currency: .BTC)
     }
+
     if let invite = walletEntry.invitation {
-      primaryFiatAmountWhenInitiated = NSDecimalNumber(integerAmount: invite.fiatAmount, currency: .USD)
+      self.primaryFiatAmountWhenInitiated = NSDecimalNumber(integerAmount: invite.fiatAmount, currency: .USD)
     }
   }
 
@@ -110,8 +129,32 @@ struct TransactionAmountsFactory: TransactionAmountsFactoryType {
     return convertedAmounts(withRate: rate, btcAmount: netWalletAmount)
   }
 
+  var totalWithdrawalAmounts: ConvertedAmounts? {
+    guard let type = transferType, type == .withdraw else { return nil }
+    let totalBTCAmount: NSDecimalNumber
+    switch walletTxType {
+    case .onChain:
+      //This reverses the logic performed by netWalletAmount in the CKMTransaction and CKMWalletEntry extensions
+      //That logic is needed there by the other ConvertedAmounts that are not withdrawals.
+      totalBTCAmount = netWalletAmount.adding(totalFees)
+    case .lightning:
+      totalBTCAmount = netWalletAmount
+    }
+    return convertedAmounts(withRate: currentRate, btcAmount: totalBTCAmount)
+  }
+
   var netWithdrawalAmounts: ConvertedAmounts? {
-    return nil
+    guard let type = transferType, type == .withdraw else { return nil }
+    let totalBTCAmount: NSDecimalNumber
+    switch walletTxType {
+    case .onChain:
+      totalBTCAmount = netWalletAmount
+    case .lightning:
+      //This reverses the logic performed by netWalletAmount in the CKMTransaction and CKMWalletEntry extensions
+      //That logic is needed there by the other ConvertedAmounts that are not withdrawals.
+      totalBTCAmount = netWalletAmount.subtracting(totalFees)
+    }
+    return convertedAmounts(withRate: currentRate, btcAmount: totalBTCAmount)
   }
 
   var bitcoinNetworkFeeAmounts: ConvertedAmounts? {
@@ -136,9 +179,16 @@ struct TransactionAmountsFactory: TransactionAmountsFactoryType {
     return ConvertedAmounts(converter: converter)
   }
 
+  private var totalFees: NSDecimalNumber {
+    let onChainFee = bitcoinNetworkFee ?? .zero
+    let lightningFee = lightningNetworkFee ?? .zero
+    let dbFee = dropBitFee ?? .zero
+    return onChainFee.adding(lightningFee).adding(dbFee)
+  }
+
 }
 
-typealias Satoshis = Int
+public typealias Satoshis = Int
 
 // MARK: - Computed Amounts
 extension CKMTransaction {
@@ -202,8 +252,13 @@ extension CKMWalletEntry {
 
   var netWalletAmount: Satoshis {
     if let ledgerEntry = self.ledgerEntry {
-      let sign = ledgerEntry.direction == .in ? 1 : -1
-      return ledgerEntry.value * sign
+      switch ledgerEntry.direction {
+      case .in:
+        return ledgerEntry.value
+      case .out:
+        let totalAmount = ledgerEntry.value + ledgerEntry.networkFee + ledgerEntry.processingFee
+        return totalAmount * -1
+      }
 
     } else if let invitation = self.invitation {
       let sign = invitation.side == .receiver ? 1 : -1

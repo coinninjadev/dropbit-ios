@@ -86,7 +86,7 @@ class TransactionHistoryOnChainDataSource: NSObject, TransactionHistoryDataSourc
                                     deviceCountryCode: Int) -> TransactionDetailPopoverDisplayable? {
     let transaction = frc.object(at: indexPath)
     let inputs = TransactionViewModelInputs(currencies: currencies, exchangeRates: rates, deviceCountryCode: deviceCountryCode)
-    return TransactionDetailPopoverViewModel(object: transaction, inputs: inputs)
+    return OnChainPopoverViewModel(object: transaction, inputs: inputs)
   }
 
   func detailCellActionableItem(at indexPath: IndexPath) -> TransactionDetailCellActionable? {
@@ -166,8 +166,11 @@ class TransactionHistoryLightningDataSource: NSObject, TransactionHistoryDataSou
                                     rates: ExchangeRates,
                                     currencies: CurrencyPair,
                                     deviceCountryCode: Int) -> TransactionDetailPopoverDisplayable? {
-    //TODO: return valid item for .btc ledger entries
-    return nil
+    //This intentionally returns nil for ledger entries with type .lightning, no popover desired
+    let walletEntry = frc.object(at: indexPath)
+    guard let viewModelObject = LightningOnChainViewModelObject(walletEntry: walletEntry) else { return nil }
+    let inputs = TransactionViewModelInputs(currencies: currencies, exchangeRates: rates, deviceCountryCode: deviceCountryCode)
+    return OnChainPopoverViewModel(object: viewModelObject, inputs: inputs)
   }
 
   func detailCellActionableItem(at indexPath: IndexPath) -> TransactionDetailCellActionable? {
