@@ -84,9 +84,20 @@ struct TransactionAmountsFactory: TransactionAmountsFactoryType {
     self.fiatCurrency = fiatCurrency
     self.currentRate = currentRates[fiatCurrency] ?? 1
     self.netWalletAmount = NSDecimalNumber(integerAmount: walletEntry.netWalletAmount, currency: .BTC)
+
+    if let ledgerEntry = walletEntry.ledgerEntry {
+      switch ledgerEntry.type {
+      case .btc:
+        self.bitcoinNetworkFee = NSDecimalNumber(integerAmount: ledgerEntry.networkFee, currency: .BTC)
+      case .lightning:
+        self.lightningNetworkFee = NSDecimalNumber(integerAmount: ledgerEntry.networkFee, currency: .BTC)
+      }
+
+      self.dropBitFee = NSDecimalNumber(integerAmount: ledgerEntry.processingFee, currency: .BTC)
     }
+
     if let invite = walletEntry.invitation {
-      primaryFiatAmountWhenInitiated = NSDecimalNumber(integerAmount: invite.fiatAmount, currency: .USD)
+      self.primaryFiatAmountWhenInitiated = NSDecimalNumber(integerAmount: invite.fiatAmount, currency: .USD)
     }
   }
 
