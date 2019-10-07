@@ -64,7 +64,7 @@ class WalletAddressDataWorkerTests: MockedPersistenceTestCase {
     let invitation = CKMInvitation.findUnacknowledgedInvitations(in: stack.context)[0]
     mockBrokers.mockInvitation.unacknowledgedInvitations = [invitation]
 
-    sut.handleUnacknowledgedSentInvitations(in: stack.context).done {
+    sut.handleUnacknowledgedSentInvitations(forResponses: [], in: stack.context).done {
       XCTAssertTrue(!stack.context.insertedObjects.contains(invitation), "unacknowledged invitation should be deleted")
       expectation.fulfill()
       }.cauterize()
@@ -86,7 +86,7 @@ class WalletAddressDataWorkerTests: MockedPersistenceTestCase {
     let unacknowledgedInvitation = CKMInvitation.findUnacknowledgedInvitations(in: stack.context)[0]
     mockBrokers.mockInvitation.unacknowledgedInvitations = [unacknowledgedInvitation]
 
-    sut.handleUnacknowledgedSentInvitations(in: stack.context).done {
+    sut.handleUnacknowledgedSentInvitations(forResponses: [], in: stack.context).done {
       XCTAssertTrue(!stack.context.insertedObjects.contains(unacknowledgedInvitation), "unacknowledged invitation should be deleted")
       XCTAssertTrue(stack.context.insertedObjects.contains(otherInvitation), "other invitation should not be deleted")
       expectation.fulfill()
