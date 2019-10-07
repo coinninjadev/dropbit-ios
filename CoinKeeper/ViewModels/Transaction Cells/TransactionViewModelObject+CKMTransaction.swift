@@ -158,4 +158,4 @@ extension CKMTransaction: TransactionDetailCellActionable {
 
 }
 
-extension CKMTransaction: TransactionDetailPopoverViewModelObject { }
+extension CKMTransaction: OnChainPopoverViewModelObject { }
