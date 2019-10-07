@@ -63,6 +63,7 @@ extension NetworkManager: TransactionBroadcastable {
 
   func broadcastTx(with transactionData: CNBTransactionData) -> Promise<String> {
     guard let wmgr = walletDelegate?.mainWalletManager() else { return Promise(error: CKPersistenceError.noWalletWords) }
+    guard transactionData.unspentTransactionOutputs.isNotEmpty else { return Promise(error: TransactionDataError.noSpendableFunds) }
     let wallet = wmgr.wallet
     let transactionBuilder = CNBTransactionBuilder()
     let txMetadata = transactionBuilder.generateTxMetadata(with: transactionData, wallet: wallet)
