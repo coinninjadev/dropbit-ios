@@ -95,4 +95,14 @@ extension TransactionSummaryCellViewModelObject {
                                              twitterConfig: maybeTwitter)
   }
 
+  var lightningTransferType: LightningTransferType? {
+    guard isLightningTransfer else { return nil }
+    switch walletTxType {
+    case .onChain:
+      return (direction == .in) ? .withdraw : .deposit
+    case .lightning:
+      return (direction == .in) ? .deposit : .withdraw
+    }
+  }
+
 }

@@ -25,7 +25,8 @@ extension CKMTransaction: TransactionSummaryCellViewModelObject {
   }
 
   func amountFactory(with currentRates: ExchangeRates, fiatCurrency: CurrencyCode) -> TransactionAmountsFactoryType {
-    return TransactionAmountsFactory(transaction: self, fiatCurrency: fiatCurrency, currentRates: currentRates)
+    return TransactionAmountsFactory(transaction: self, fiatCurrency: fiatCurrency,
+                                     currentRates: currentRates, transferType: lightningTransferType)
   }
 
   func counterpartyConfig(for deviceCountryCode: Int) -> TransactionCellCounterpartyConfig? {
