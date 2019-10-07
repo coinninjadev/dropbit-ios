@@ -103,7 +103,7 @@ class SharedPayloadManager: SharedPayloadManagerType {
     case .onChain:
       return CKMTransaction.find(byTxid: id, in: context)
     case .lightning:
-      return CKMLNLedgerEntry.find(with: id, wallet: nil, in: context)?.walletEntry
+      return CKMLNLedgerEntry.find(withId: id, wallet: nil, in: context)?.walletEntry
     }
   }
 

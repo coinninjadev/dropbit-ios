@@ -11,15 +11,10 @@ import CoreData
 import PromiseKit
 
 protocol InvitationWorkerDelegate: AnyObject {
-  func fetchSatisfiedSentWalletAddressRequests() -> Promise<[WalletAddressRequestResponse]>
   func didBroadcastTransaction()
 }
 
 extension AppCoordinator: InvitationWorkerDelegate {
-
-  func fetchSatisfiedSentWalletAddressRequests() -> Promise<[WalletAddressRequestResponse]> {
-    return self.networkManager.getSatisfiedSentWalletAddressRequests()
-  }
 
   func didBroadcastTransaction() {
     DispatchQueue.main.asyncAfter(deadline: .now() + 8.0) { [weak self] in
