@@ -57,7 +57,7 @@ extension TransactionDetailPopoverViewModelType {
 
   // MARK: Breakdown amounts
   private var totalSentAmounts: ConvertedAmounts? {
-    return amounts.netWhenTransacted
+    return amounts.netAtCurrent
   }
 
   private var whenSentAmounts: ConvertedAmounts? {
@@ -69,7 +69,7 @@ extension TransactionDetailPopoverViewModelType {
   }
 
   private var totalWithdrawalBreakdown: BreakdownAmount? {
-    return BreakdownAmount(type: .totalWithdrawal, amounts: amounts.netAtCurrent, walletTxType: walletTxType)
+    return amounts.totalWithdrawalAmounts.flatMap { BreakdownAmount(type: .totalWithdrawal(walletTxType), amounts: $0, walletTxType: walletTxType) }
   }
 
   private var netWithdrawalBreakdown: BreakdownAmount? {
@@ -143,7 +143,7 @@ struct TransactionPopoverBreakdownItem {
 }
 
 enum BreakdownItemType {
-  case totalWithdrawal
+  case totalWithdrawal(WalletTransactionType)
   case netWithdrawal
   case totalSent
   case networkFees(paidByDropBit: Bool)
@@ -152,12 +152,16 @@ enum BreakdownItemType {
 
   var title: String {
     switch self {
-    case .totalWithdrawal:  return "Amount"
     case .netWithdrawal:    return "Transferred"
     case .totalSent:        return "Total Sent"
     case .whenSent:         return "When Sent"
     case .networkFees:      return "Network Fee"
     case .dropbitFees:      return "DropBit Fee"
+    case .totalWithdrawal(let walletTxType):
+      switch walletTxType {
+      case .onChain:        return "Amount"
+      case .lightning:      return "Total Sent"
+      }
     }
   }
 }

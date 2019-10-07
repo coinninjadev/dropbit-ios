@@ -41,10 +41,10 @@
                                                     </label>
                                                 </subviews>
                                             </stackView>
-                                            <view contentMode="scaleToFill" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="9Jd-Ph-m8f" userLabel="Breakdown Stack Container">
+                                            <view contentMode="scaleToFill" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9Jd-Ph-m8f" userLabel="Breakdown Stack Container">
                                                 <rect key="frame" x="0.0" y="85" width="334" height="120"/>
                                                 <subviews>
-                                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="BnP-Tc-tdx">
+                                                    <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" axis="vertical" distribution="equalSpacing" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="BnP-Tc-tdx">
                                                         <rect key="frame" x="0.0" y="0.0" width="334" height="120"/>
                                                     </stackView>
                                                 </subviews>
@@ -54,10 +54,9 @@
                                                     <constraint firstItem="BnP-Tc-tdx" firstAttribute="leading" secondItem="9Jd-Ph-m8f" secondAttribute="leading" id="6qp-wu-pRF"/>
                                                     <constraint firstAttribute="trailing" secondItem="BnP-Tc-tdx" secondAttribute="trailing" id="CqJ-In-tBF"/>
                                                     <constraint firstItem="BnP-Tc-tdx" firstAttribute="top" secondItem="9Jd-Ph-m8f" secondAttribute="top" id="YX2-gc-P8d"/>
-                                                    <constraint firstAttribute="height" constant="120" id="uZX-zg-0Lg"/>
                                                 </constraints>
                                             </view>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cds-32-VLb">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cds-32-VLb">
                                                 <rect key="frame" x="0.0" y="222" width="334" height="20.5"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <nil key="textColor"/>

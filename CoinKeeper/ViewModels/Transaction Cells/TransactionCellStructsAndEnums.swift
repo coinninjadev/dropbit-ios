@@ -106,6 +106,7 @@ struct MockAmountsFactory: TransactionAmountsFactoryType {
     return ConvertedAmounts(btc: btcAmount, fiat: fiat, fiatCurrency: currencyPair.fiat)
   }
 
+  var totalWithdrawalAmounts: ConvertedAmounts? { return nil }
   var netWithdrawalAmounts: ConvertedAmounts? { return nil }
   var bitcoinNetworkFeeAmounts: ConvertedAmounts? { return nil }
   var lightningNetworkFeeAmounts: ConvertedAmounts? { return nil }

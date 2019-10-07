@@ -21,6 +21,9 @@ protocol TransactionAmountsFactoryType {
   /// The amounts when the transaction was executed.
   var netWhenTransactedAmounts: ConvertedAmounts? { get }
 
+  ///The total amount deducted from the lightning wallet
+  var totalWithdrawalAmounts: ConvertedAmounts? { get }
+
   /// The amount received by the on-chain wallet, after deducting all fees
   var netWithdrawalAmounts: ConvertedAmounts? { get }
 
@@ -37,6 +40,7 @@ struct TransactionAmounts {
   let netWhenInitiated: ConvertedAmounts?
   let netWhenTransacted: ConvertedAmounts?
   let netWithdrawalAmounts: ConvertedAmounts?
+  let totalWithdrawalAmounts: ConvertedAmounts?
   let bitcoinNetworkFee: ConvertedAmounts?
   let lightningNetworkFee: ConvertedAmounts?
   let dropBitFee: ConvertedAmounts?
@@ -46,6 +50,7 @@ struct TransactionAmounts {
     self.netWhenInitiated = factory.netWhenInitiatedAmounts
     self.netWhenTransacted = factory.netWhenTransactedAmounts
     self.netWithdrawalAmounts = factory.netWithdrawalAmounts
+    self.totalWithdrawalAmounts = factory.totalWithdrawalAmounts
     self.bitcoinNetworkFee = factory.bitcoinNetworkFeeAmounts
     self.lightningNetworkFee = factory.lightningNetworkFeeAmounts
     self.dropBitFee = factory.dropBitFeeAmounts
@@ -131,30 +136,31 @@ struct TransactionAmountsFactory: TransactionAmountsFactoryType {
 
   var totalWithdrawalAmounts: ConvertedAmounts? {
     guard let type = transferType, type == .withdraw else { return nil }
-    let totalBTCAmount: NSDecimalNumber
+    let btcAmount: NSDecimalNumber
     switch walletTxType {
     case .onChain:
       //This reverses the logic performed by netWalletAmount in the CKMTransaction and CKMWalletEntry extensions
       //That logic is needed there by the other ConvertedAmounts that are not withdrawals.
-      totalBTCAmount = netWalletAmount.adding(totalFees)
+      btcAmount = netWalletAmount.adding(totalFees)
     case .lightning:
-      totalBTCAmount = netWalletAmount
+      btcAmount = netWalletAmount
     }
-    return convertedAmounts(withRate: currentRate, btcAmount: totalBTCAmount)
+    return convertedAmounts(withRate: currentRate, btcAmount: btcAmount)
   }
 
   var netWithdrawalAmounts: ConvertedAmounts? {
     guard let type = transferType, type == .withdraw else { return nil }
-    let totalBTCAmount: NSDecimalNumber
+    let btcAmount: NSDecimalNumber
     switch walletTxType {
     case .onChain:
-      totalBTCAmount = netWalletAmount
+      btcAmount = netWalletAmount
     case .lightning:
       //This reverses the logic performed by netWalletAmount in the CKMTransaction and CKMWalletEntry extensions
       //That logic is needed there by the other ConvertedAmounts that are not withdrawals.
-      totalBTCAmount = netWalletAmount.subtracting(totalFees)
+      //Adding totalFees because netWalletAmount relative to lightning balance is negative.
+      btcAmount = netWalletAmount.adding(totalFees)
     }
-    return convertedAmounts(withRate: currentRate, btcAmount: totalBTCAmount)
+    return convertedAmounts(withRate: currentRate, btcAmount: btcAmount)
   }
 
   var bitcoinNetworkFeeAmounts: ConvertedAmounts? {
