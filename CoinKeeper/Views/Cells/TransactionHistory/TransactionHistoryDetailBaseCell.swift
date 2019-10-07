@@ -15,6 +15,7 @@ enum DetailCellTooltip: Int {
   case lightningWithdrawal
   case lightningInvoice
   case lightningDropBit
+  case lightningLoad
 
   var buttonTag: Int {
     return rawValue

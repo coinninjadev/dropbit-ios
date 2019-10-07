@@ -352,6 +352,7 @@ extension TransactionDetailCellViewModelType {
   }
 
   var tooltipType: DetailCellTooltip {
+    if isPendingTransferToLightning { return .lightningLoad }
     if isLightningWithdrawal { return .lightningWithdrawal }
 
     switch walletTxType {
