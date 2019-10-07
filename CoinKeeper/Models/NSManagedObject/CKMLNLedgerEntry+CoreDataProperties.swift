@@ -66,6 +66,9 @@ extension CKMLNLedgerEntry {
   @NSManaged public var walletEntry: CKMWalletEntry?
   @NSManaged public var invoice: CKMLNInvoice?
 
+  ///Not included in the LNTransactionResult, set locally with CKMTransaction value
+  @NSManaged public var onChainConfirmations: Int
+
   /// Be sure to set the walletEntry relationship before setting this memo
   var memo: String? {
     get { return walletEntry?.memo }

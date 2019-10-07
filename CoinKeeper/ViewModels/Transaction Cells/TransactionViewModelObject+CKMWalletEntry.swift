@@ -85,7 +85,7 @@ class LightningTransactionViewModelObject: LightningViewModelObject, Transaction
   }
 
   var onChainConfirmations: Int? {
-    return nil
+    return ledgerEntry.onChainConfirmations
   }
 
   var addressProvidedToSender: String? {

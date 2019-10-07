@@ -350,4 +350,11 @@ struct CKPredicate {
       return NSPredicate(format: "\(path) == %@", NSNumber(value: false))
     }
   }
+
+  struct LedgerEntry {
+    static func idIn(_ ids: [String]) -> NSPredicate {
+      let idKeyPath = #keyPath(CKMLNLedgerEntry.id)
+      return NSPredicate(format: "\(idKeyPath) IN %@", ids)
+    }
+  }
 }
