@@ -125,6 +125,7 @@ final class RequestPayViewController: PresentableViewController, StoryboardIniti
   override func viewDidLoad() {
     super.viewDidLoad()
 
+    editAmountView.delegate = self
     setupSubviews()
     setupCurrencySwappableEditAmountView()
     registerForRateUpdates()
@@ -303,4 +304,11 @@ extension RequestPayViewController: WalletToggleViewDelegate {
     updateViewWithViewModel()
   }
 
+}
+
+extension RequestPayViewController: CurrencySwappableEditAmountViewModelDelegate {
+
+  func viewModelDidBeginEditingAmount(_ viewModel: CurrencySwappableEditAmountViewModel) {
+    moveCursorToCorrectLocationIfNecessary()
+  }
 }
