@@ -45,6 +45,7 @@ struct CoinNinjaUrlFactory {
     case dropBitMeLearnMore
     case lightningUpgrade
     case dropBitAppLightningWithdrawalFees
+    case lightningLoadTooltip
 
     var domain: String {
       switch self {
@@ -84,6 +85,7 @@ struct CoinNinjaUrlFactory {
            .lightningWithdrawalTooltip,
            .lightningInvoiceTooltip,
            .lightningDropBitTooltip,
+           .lightningLoadTooltip,
            .lightningUpgrade:
         return "https://dropbit.app/"
       case .dropBitMe,
@@ -146,6 +148,8 @@ struct CoinNinjaUrlFactory {
         return "\(tooltipBreadcrumb)lightningdropbit"
       case .dustProtection:
         return "\(tooltipBreadcrumb)dustprotection"
+      case .lightningLoadTooltip:
+        return "\(tooltipBreadcrumb)lightningload"
       case .adjustableFeesTooltip:
         return "\(tooltipBreadcrumb)fees"
       case .spendBitcoinOnline:

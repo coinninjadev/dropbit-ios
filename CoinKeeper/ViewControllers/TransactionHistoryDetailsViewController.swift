@@ -117,6 +117,7 @@ extension TransactionHistoryDetailsViewController: TransactionHistoryDetailCellD
     case .lightningWithdrawal:  return CoinNinjaUrlFactory.buildUrl(for: .lightningWithdrawalTooltip)
     case .lightningInvoice:     return CoinNinjaUrlFactory.buildUrl(for: .lightningInvoiceTooltip)
     case .lightningDropBit:     return CoinNinjaUrlFactory.buildUrl(for: .lightningDropBitTooltip)
+    case .lightningLoad:        return CoinNinjaUrlFactory.buildUrl(for: .lightningLoadTooltip)
     }
   }
 
