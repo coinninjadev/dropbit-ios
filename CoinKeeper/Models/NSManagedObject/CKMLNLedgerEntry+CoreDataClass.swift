@@ -28,7 +28,7 @@ public class CKMLNLedgerEntry: NSManagedObject {
   }
 
   static func findOrCreate(with id: String, wallet: CKMWallet, createdAt: Date, in context: NSManagedObjectContext) -> CKMLNLedgerEntry {
-    if let foundEntry = find(with: id, wallet: wallet, in: context) {
+    if let foundEntry = find(withId: id, wallet: wallet, in: context) {
       return foundEntry
     } else {
       let newEntry = CKMLNLedgerEntry(insertInto: context)
@@ -64,7 +64,7 @@ public class CKMLNLedgerEntry: NSManagedObject {
     }
   }
 
-  static func find(with id: String, wallet: CKMWallet?, in context: NSManagedObjectContext) -> CKMLNLedgerEntry? {
+  static func find(withId id: String, wallet: CKMWallet?, in context: NSManagedObjectContext) -> CKMLNLedgerEntry? {
     let idPath = #keyPath(CKMLNLedgerEntry.id)
     let idPredicate = NSPredicate(format: "\(idPath) == %@", id)
     var predicates = [idPredicate]
