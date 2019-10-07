@@ -121,7 +121,7 @@ struct CoinNinjaUrlFactory {
       case .address(let id):
         return "address/\(id)"
       case .invoice(let invoice):
-        return "invoices/\(invoice)"
+        return "invoices/\(invoice)?advanced=true"
       case .faqs:
         return "faq"
       case .contactUs:
