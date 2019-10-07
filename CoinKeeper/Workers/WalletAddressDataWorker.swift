@@ -281,9 +281,9 @@ class WalletAddressDataWorker: WalletAddressDataWorkerType {
       if invitation.walletEntry != ledgerEntry.walletEntry, let placeholder = invitation.walletEntry {
         context.delete(placeholder)
         log.debug("Deleted placeholder wallet entry")
+        invitation.walletEntry = ledgerEntry.walletEntry
+        ledgerEntry.walletEntry?.invitation = invitation
       }
-      invitation.walletEntry = ledgerEntry.walletEntry
-      ledgerEntry.walletEntry?.invitation = invitation
     }
   }
 
