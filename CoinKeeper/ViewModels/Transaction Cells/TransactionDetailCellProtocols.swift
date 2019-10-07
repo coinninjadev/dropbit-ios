@@ -136,7 +136,9 @@ extension TransactionDetailCellViewModelType {
   }
 
   private var pendingStatusText: String {
-    if isDropBit {
+    if isPendingTransferToLightning {
+      return string(for: .loadLightningPending)
+    } else if isDropBit {
       switch direction {
       case .out:
         switch walletTxType {
@@ -305,6 +307,22 @@ extension TransactionDetailCellViewModelType {
    If not nil, this string will appear in the gray rounded container instead of the breakdown amounts.
    */
   var messageText: String? {
+    if let transferType = lightningTransferType {
+      switch transferType {
+      case .deposit:
+        if isPendingTransferToLightning {
+          let message = """
+          Instant load is not available for this transaction.
+          Funds will be complete after one confirmation.
+          Please see confirmations in the details below.
+          """
+          return sizeSensitiveMessage(from: message)
+        }
+      default:
+        break
+      }
+    }
+
     if let status = invitationStatus, status == .addressSent, let counterpartyDesc = counterpartyDescription {
       let messageWithLineBreaks = """
       Your Bitcoin address has been sent to
