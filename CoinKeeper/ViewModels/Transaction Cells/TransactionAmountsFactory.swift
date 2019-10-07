@@ -83,13 +83,7 @@ struct TransactionAmountsFactory: TransactionAmountsFactoryType {
        currentRates: ExchangeRates) {
     self.fiatCurrency = fiatCurrency
     self.currentRate = currentRates[fiatCurrency] ?? 1
-    if let ledgerEntry = walletEntry.ledgerEntry, ledgerEntry.direction == .out {
-      self.netWalletAmount = NSDecimalNumber(integerAmount:
-        walletEntry.netWalletAmount -
-        ledgerEntry.networkFee -
-        ledgerEntry.processingFee, currency: .BTC)
-    } else {
-      self.netWalletAmount = NSDecimalNumber(integerAmount: walletEntry.netWalletAmount, currency: .BTC)
+    self.netWalletAmount = NSDecimalNumber(integerAmount: walletEntry.netWalletAmount, currency: .BTC)
     }
     if let invite = walletEntry.invitation {
       primaryFiatAmountWhenInitiated = NSDecimalNumber(integerAmount: invite.fiatAmount, currency: .USD)
@@ -202,8 +196,13 @@ extension CKMWalletEntry {
 
   var netWalletAmount: Satoshis {
     if let ledgerEntry = self.ledgerEntry {
-      let sign = ledgerEntry.direction == .in ? 1 : -1
-      return ledgerEntry.value * sign
+      switch ledgerEntry.direction {
+      case .in:
+        return ledgerEntry.value
+      case .out:
+        let totalAmount = ledgerEntry.value + ledgerEntry.networkFee + ledgerEntry.processingFee
+        return totalAmount * -1
+      }
 
     } else if let invitation = self.invitation {
       let sign = invitation.side == .receiver ? 1 : -1
