@@ -77,7 +77,8 @@ class TransactionHistoryOnChainDataSource: NSObject, TransactionHistoryDataSourc
                                  deviceCountryCode: Int) -> TransactionDetailCellDisplayable {
     let transaction = frc.object(at: indexPath)
     let inputs = TransactionViewModelInputs(currencies: currencies, exchangeRates: rates, deviceCountryCode: deviceCountryCode)
-    return TransactionDetailCellViewModel(object: transaction, inputs: inputs)
+    return TransactionDetailInvalidCellViewModel(maybeInvalidObject: transaction, inputs: inputs) ??
+      TransactionDetailCellViewModel(object: transaction, inputs: inputs)
   }
 
   func detailPopoverDisplayableItem(at indexPath: IndexPath,
