@@ -79,8 +79,10 @@ class LightningWalletAmountValidator: ValidatorType<CurrencyConverter> {
       throw LightningWalletAmountValidatorError.reloadMinimum
     }
 
+    let rates = ExchangeRateManager().exchangeRates
+    let converter = CurrencyConverter(fromBtcTo: .USD, fromAmount: btcValue + balancesNetPending.lightning, rates: rates)
     if usdAmount > LightningWalletAmountValidator.maxWalletValue.amount ||
-      btcValue + balancesNetPending.lightning > LightningWalletAmountValidator.maxWalletValue.amount {
+    converter.convertedAmount() ?? .zero > LightningWalletAmountValidator.maxWalletValue.amount {
       throw LightningWalletAmountValidatorError.walletMaximum
     }
 
