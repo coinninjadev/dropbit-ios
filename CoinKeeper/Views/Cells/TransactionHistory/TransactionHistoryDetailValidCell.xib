@@ -70,7 +70,7 @@
                                     <action selector="didTapClose:" destination="gTV-IL-0wX" eventType="touchUpInside" id="xYy-es-Ej1"/>
                                 </connections>
                             </button>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="YxG-0I-pcu" userLabel="Upper Stack View">
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" alignment="center" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="YxG-0I-pcu" userLabel="Upper Stack View">
                                 <rect key="frame" x="8" y="68" width="283" height="167.5"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="tWZ-Sw-nHI">
@@ -160,9 +160,9 @@
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="HhA-Mw-oMV" userLabel="Lower Stack View">
                                 <rect key="frame" x="12" y="308.5" width="275" height="255.5"/>
                                 <subviews>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hSn-jw-Kbr">
+                                    <view contentMode="scaleToFill" verticalCompressionResistancePriority="749" translatesAutoresizingMaskIntoConstraints="NO" id="hSn-jw-Kbr">
                                         <rect key="frame" x="0.0" y="0.0" width="275" height="0.0"/>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <color key="backgroundColor" systemColor="systemYellowColor" red="1" green="0.80000000000000004" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     </view>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="13" translatesAutoresizingMaskIntoConstraints="NO" id="G4d-NH-1u9" userLabel="Memo Stack View">
                                         <rect key="frame" x="0.0" y="8" width="275" height="83"/>
@@ -197,9 +197,9 @@
                                             <constraint firstItem="oWX-jX-Isr" firstAttribute="height" secondItem="7cs-Up-bPJ" secondAttribute="height" id="LEA-Pm-Lrj"/>
                                         </constraints>
                                     </stackView>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="js4-IL-nyY">
+                                    <view contentMode="scaleToFill" verticalCompressionResistancePriority="749" translatesAutoresizingMaskIntoConstraints="NO" id="js4-IL-nyY">
                                         <rect key="frame" x="0.0" y="99" width="275" height="0.0"/>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <color key="backgroundColor" systemColor="systemYellowColor" red="1" green="0.80000000000000004" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="10" id="XkB-q5-rsC"/>
                                         </constraints>
@@ -229,11 +229,11 @@
                                                             <constraint firstAttribute="height" secondItem="vJT-iV-gek" secondAttribute="height" multiplier="1.1" id="gV1-iJ-q0a"/>
                                                         </constraints>
                                                     </view>
-                                                    <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="AZe-fB-koq">
-                                                        <rect key="frame" x="-20" y="32" width="315" height="50"/>
+                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="AZe-fB-koq">
+                                                        <rect key="frame" x="0.0" y="52" width="275" height="50"/>
                                                         <subviews>
                                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xxv-sM-Z5W" customClass="TransactionDetailBottomButton" customModule="DropBit" customModuleProvider="target">
-                                                                <rect key="frame" x="20" y="20" width="275" height="50"/>
+                                                                <rect key="frame" x="36" y="0.0" width="54" height="50"/>
                                                                 <constraints>
                                                                     <constraint firstAttribute="height" constant="50" id="Utd-FB-9Aa"/>
                                                                 </constraints>
@@ -255,7 +255,7 @@
                                             </stackView>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="d8V-VH-nZh" userLabel="buffer view">
                                                 <rect key="frame" x="0.0" y="115" width="275" height="12"/>
-                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <color key="backgroundColor" systemColor="systemRedColor" red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="12" id="jaJ-QN-VPc"/>
                                                 </constraints>
