@@ -116,8 +116,6 @@ extension TransactionSummaryCellViewModelType {
       return counterparty
     } else if let invoiceText = lightningInvoiceDescription {
       return invoiceText
-    } else if isLightningUpgrade {
-      return "Lightning Upgrade"
     } else if let address = receiverAddress {
       return address
     } else {
@@ -161,6 +159,7 @@ extension TransactionSummaryCellViewModelType {
   var subtitleColor: UIColor { return isPendingTransferToLightning ? .bitcoinOrange : .darkBlueText }
 
   var counterpartyDescription: String? {
+    if isLightningUpgrade { return lightningUpgradeText }
     if isSentToSelf { return sentToSelfText }
     guard let config = counterpartyConfig else { return nil }
     if let twitter = config.twitterConfig {
@@ -210,6 +209,7 @@ extension TransactionSummaryCellViewModelType {
   var lightningUnpaidInvoiceText: String { return "Lightning Invoice" }
   var lightningWithdrawText: String { return "Lightning Withdrawal" }
   var lightningDepositText: String { return "Lightning Load" }
+  var lightningUpgradeText: String { return "Lightning Upgrade" }
 
   var incomingImage: UIImage { return UIImage(imageLiteralResourceName: "summaryCellIncoming") }
   var outgoingImage: UIImage { return UIImage(imageLiteralResourceName: "summaryCellOutgoing") }
