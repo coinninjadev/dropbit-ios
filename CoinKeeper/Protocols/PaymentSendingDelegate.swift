@@ -35,9 +35,9 @@ protocol LightningPaymentSendingDelegate: PaymentSendingDelegate {
     inputs: LightningPaymentInputs,
     receiver: OutgoingDropBitReceiver?)
 
-  func payLightningRequest(withInputs inputs: LightningPaymentInputs,
-                           invitation: CKMInvitation?,
-                           to receiver: OutgoingDropBitReceiver?) -> Promise<LNTransactionResponse>
+  func payAndPersistLightningRequest(withInputs inputs: LightningPaymentInputs,
+                                     invitation: CKMInvitation?,
+                                     to receiver: OutgoingDropBitReceiver?) -> Promise<LNTransactionResponse>
 }
 
 protocol AllPaymentSendingDelegate: LightningPaymentSendingDelegate, OnChainPaymentSendingDelegate { }
