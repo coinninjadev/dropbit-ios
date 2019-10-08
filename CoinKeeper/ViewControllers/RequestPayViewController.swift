@@ -166,7 +166,7 @@ final class RequestPayViewController: PresentableViewController, StoryboardIniti
       receiveAddressLabel.isHidden = false
       memoTextField.isHidden = true
       walletToggleView.selectBitcoinButton()
-      bottomActionButton.style = .bitcoin(true)
+      bottomActionButton.style = .bitcoin(rounded: true)
       bottomActionButton.setTitle("SEND REQUEST", for: .normal)
     case .lightning:
       setupStyleForLightningRequest()
@@ -207,7 +207,7 @@ final class RequestPayViewController: PresentableViewController, StoryboardIniti
       receiveAddressLabel.text = invoice.request
       receiveAddressLabel.isHidden = false
       receiveAddressBGView.isHidden = false
-      bottomActionButton.style = .bitcoin(true)
+      bottomActionButton.style = .bitcoin(rounded: true)
       memoTextField.isHidden = true
       walletToggleView.isHidden = true
       memoLabel.isHidden = false
@@ -226,7 +226,7 @@ final class RequestPayViewController: PresentableViewController, StoryboardIniti
     }
 
     walletToggleView.selectLightningButton()
-    bottomActionButton.style = .lightning(true)
+    bottomActionButton.style = .lightning(rounded: true)
   }
 
   func updateViewWithViewModel() {

@@ -244,18 +244,18 @@ extension SendPaymentViewController {
 
     switch viewModel.walletTransactionType {
     case .lightning:
-      scanButton.style = .lightning(true)
-      contactsButton.style = .lightning(true)
-      twitterButton.style = .lightning(true)
-      pasteButton.style = .lightning(true)
-      nextButton.style = .lightning(true)
+      scanButton.style = .lightning(rounded: true)
+      contactsButton.style = .lightning(rounded: true)
+      twitterButton.style = .lightning(rounded: true)
+      pasteButton.style = .lightning(rounded: true)
+      nextButton.style = .lightning(rounded: true)
       walletToggleView.selectLightningButton()
     case .onChain:
-      scanButton.style = .bitcoin(true)
-      contactsButton.style = .bitcoin(true)
-      twitterButton.style = .bitcoin(true)
-      pasteButton.style = .bitcoin(true)
-      nextButton.style = .bitcoin(true)
+      scanButton.style = .bitcoin(rounded: true)
+      contactsButton.style = .bitcoin(rounded: true)
+      twitterButton.style = .bitcoin(rounded: true)
+      pasteButton.style = .bitcoin(rounded: true)
+      nextButton.style = .bitcoin(rounded: true)
       walletToggleView.selectBitcoinButton()
     }
 
