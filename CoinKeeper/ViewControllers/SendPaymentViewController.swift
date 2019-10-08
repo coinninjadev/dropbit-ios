@@ -103,6 +103,8 @@ CurrencySwappableAmountEditor {
   }
 
   @IBAction func performNext() {
+    configureFinalMemoShareStatus()
+
     do {
       try validateAndSendPayment()
     } catch {
@@ -295,6 +297,13 @@ extension SendPaymentViewController {
     destinationButton.titleLabel?.font = .medium(14)
     destinationButton.setTitleColor(.darkGrayText, for: .normal)
     destinationButton.contentEdgeInsets = UIEdgeInsets(top: 0, left: 8, bottom: 0, right: 8)
+  }
+
+  fileprivate func configureFinalMemoShareStatus() {
+    if viewModel.memo?.asNilIfEmpty() == nil {
+      viewModel.sharedMemoDesired = false
+      updateMemoContainer()
+    }
   }
 
   fileprivate func formatPhoneNumberEntryView() {
@@ -720,6 +729,7 @@ extension SendPaymentViewController {
     guard let recipient = viewModel.paymentRecipient else {
       throw BitcoinAddressValidatorError.isInvalidBitcoinAddress
     }
+
     switch recipient {
     case .contact(let contact):
       try validatePayment(toContact: contact)
