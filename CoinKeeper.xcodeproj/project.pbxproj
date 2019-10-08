@@ -440,7 +440,6 @@
 		4AF433262093BD4100B11BC9 /* DeviceVerificationViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4AF433252093BA8700B11BC9 /* DeviceVerificationViewController.storyboard */; };
 		4AF433282094103C00B11BC9 /* MockDeviceVerificationViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AF433272094103C00B11BC9 /* MockDeviceVerificationViewControllerDelegate.swift */; };
 		516F06440CEA58661D1B444C /* Pods_DropBitTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E20946923A0E7F2A5AB722BB /* Pods_DropBitTests.framework */; };
-		5B404278208CCA40005624B0 /* OldTransactionDetailCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B404275208CCA40005624B0 /* OldTransactionDetailCellViewModel.swift */; };
 		5B40427C208CCC27005624B0 /* OnChainQRCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B40427B208CCC27005624B0 /* OnChainQRCode.swift */; };
 		5B40427E208CCD02005624B0 /* SendPaymentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B40427D208CCD02005624B0 /* SendPaymentViewController.swift */; };
 		5B404284208CDD71005624B0 /* SendPaymentViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5B404283208CDD71005624B0 /* SendPaymentViewController.storyboard */; };
@@ -724,7 +723,6 @@
 		B534616B2098A9B600DDC1C4 /* CKMWallet+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53461692098A9B600DDC1C4 /* CKMWallet+CoreDataProperties.swift */; };
 		B53461722098ABBF00DDC1C4 /* CKMAddressTransactionSummary+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53461702098ABBF00DDC1C4 /* CKMAddressTransactionSummary+CoreDataClass.swift */; };
 		B53461732098ABBF00DDC1C4 /* CKMAddressTransactionSummary+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53461712098ABBF00DDC1C4 /* CKMAddressTransactionSummary+CoreDataProperties.swift */; };
-		B53461772098C61D00DDC1C4 /* OldTransactionSummaryCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53461762098C61D00DDC1C4 /* OldTransactionSummaryCellViewModel.swift */; };
 		B534CB362215E4DC00E6884A /* CKPhoneNumberTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = B534CB352215E4DC00E6884A /* CKPhoneNumberTextField.swift */; };
 		B536D12B21F1140100C344B6 /* SendPaymentMemoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B536D12A21F1140100C344B6 /* SendPaymentMemoView.swift */; };
 		B536D12D21F1141000C344B6 /* SendPaymentMemoView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B536D12C21F1141000C344B6 /* SendPaymentMemoView.xib */; };
@@ -1511,7 +1509,6 @@
 		4AF4332120935C8D00B11BC9 /* DeviceVerificationCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceVerificationCoordinator.swift; sourceTree = "<group>"; };
 		4AF433252093BA8700B11BC9 /* DeviceVerificationViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = DeviceVerificationViewController.storyboard; sourceTree = "<group>"; };
 		4AF433272094103C00B11BC9 /* MockDeviceVerificationViewControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockDeviceVerificationViewControllerDelegate.swift; sourceTree = "<group>"; };
-		5B404275208CCA40005624B0 /* OldTransactionDetailCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OldTransactionDetailCellViewModel.swift; sourceTree = "<group>"; usesTabs = 0; };
 		5B40427B208CCC27005624B0 /* OnChainQRCode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OnChainQRCode.swift; sourceTree = "<group>"; };
 		5B40427D208CCD02005624B0 /* SendPaymentViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SendPaymentViewController.swift; sourceTree = "<group>"; };
 		5B404283208CDD71005624B0 /* SendPaymentViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = SendPaymentViewController.storyboard; sourceTree = "<group>"; };
@@ -1797,7 +1794,6 @@
 		B53461692098A9B600DDC1C4 /* CKMWallet+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CKMWallet+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		B53461702098ABBF00DDC1C4 /* CKMAddressTransactionSummary+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CKMAddressTransactionSummary+CoreDataClass.swift"; sourceTree = "<group>"; };
 		B53461712098ABBF00DDC1C4 /* CKMAddressTransactionSummary+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CKMAddressTransactionSummary+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		B53461762098C61D00DDC1C4 /* OldTransactionSummaryCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OldTransactionSummaryCellViewModel.swift; sourceTree = "<group>"; };
 		B534CB352215E4DC00E6884A /* CKPhoneNumberTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CKPhoneNumberTextField.swift; sourceTree = "<group>"; };
 		B536D12A21F1140100C344B6 /* SendPaymentMemoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendPaymentMemoView.swift; sourceTree = "<group>"; };
 		B536D12C21F1141000C344B6 /* SendPaymentMemoView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SendPaymentMemoView.xib; sourceTree = "<group>"; };
@@ -3460,8 +3456,6 @@
 				B51D55DE23462FE700AEAA60 /* TransactionViewModelObject+CKMTransaction.swift */,
 				B51D55E02346300000AEAA60 /* TransactionViewModelObject+CKMWalletEntry.swift */,
 				B5076A8323466E21007D8FCC /* TransactionAmountsFactory.swift */,
-				5B404275208CCA40005624B0 /* OldTransactionDetailCellViewModel.swift */,
-				B53461762098C61D00DDC1C4 /* OldTransactionSummaryCellViewModel.swift */,
 			);
 			path = "Transaction Cells";
 			sourceTree = "<group>";
@@ -4731,7 +4725,6 @@
 				B56639CF22B1944200FA0EC3 /* UIButton+Helpers.swift in Sources */,
 				B54A4219207FF38F005B40A9 /* TransactionDetailDateLabel.swift in Sources */,
 				B56E158F2167D89E003B69D4 /* NetworkManager+WalletAddressRequestRequestable.swift in Sources */,
-				5B404278208CCA40005624B0 /* OldTransactionDetailCellViewModel.swift in Sources */,
 				3B9A8DF72150388F00C78C2C /* AppCoordinator+WalletDelegateType.swift in Sources */,
 				B552EDFC211E33D000332BB5 /* WalletAddressDataWorker.swift in Sources */,
 				B51AE4AD2093B5F3008380CC /* CKMInvitation+CoreDataProperties.swift in Sources */,
@@ -4779,7 +4772,6 @@
 				B5FFFFC2226FB4710029DB62 /* DropBitMeViewController.swift in Sources */,
 				B5A3BA622151941E005EE657 /* WalletAddressesTarget.swift in Sources */,
 				3B4558682104EB980000D4A6 /* AppCoordinator+InvitationWorkerDelegate.swift in Sources */,
-				B53461772098C61D00DDC1C4 /* OldTransactionSummaryCellViewModel.swift in Sources */,
 				30B6632821666B300011296C /* ActionableAlertViewController.swift in Sources */,
 				B558B86322B931C40033AFBD /* CKPersistenceBroker.swift in Sources */,
 				30BF4FE921B6C5C10018AE87 /* TransactionPopoverDetailsViewController.swift in Sources */,
