@@ -83,7 +83,9 @@ protocol SenderSharedPayloadPersistable: AnyObject {
 extension SenderSharedPayloadPersistable {
   func configureNewSenderSharedPayload(with sharedPayloadDTO: SharedPayloadDTO, in context: NSManagedObjectContext) {
 
-    self.memo = sharedPayloadDTO.memo
+    if self.memo?.asNilIfEmpty() == nil {
+      self.memo = sharedPayloadDTO.memo
+    }
 
     guard self.sharedPayload == nil,
       let amountInfo = sharedPayloadDTO.amountInfo,

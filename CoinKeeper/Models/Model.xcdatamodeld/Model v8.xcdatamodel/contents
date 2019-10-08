@@ -247,8 +247,8 @@
         <attribute name="memo" optional="YES" attributeType="String"/>
         <attribute name="memoSetByInvoice" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="sortDate" attributeType="Date" usesScalarValueType="NO"/>
-        <relationship name="invitation" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="CKMInvitation" inverseName="walletEntry" inverseEntity="CKMInvitation"/>
-        <relationship name="ledgerEntry" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="CKMLNLedgerEntry" inverseName="walletEntry" inverseEntity="CKMLNLedgerEntry"/>
+        <relationship name="invitation" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CKMInvitation" inverseName="walletEntry" inverseEntity="CKMInvitation"/>
+        <relationship name="ledgerEntry" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CKMLNLedgerEntry" inverseName="walletEntry" inverseEntity="CKMLNLedgerEntry"/>
         <relationship name="phoneNumber" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CKMPhoneNumber" inverseName="walletEntries" inverseEntity="CKMPhoneNumber"/>
         <relationship name="sharedPayload" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CKMTransactionSharedPayload" inverseName="walletEntry" inverseEntity="CKMTransactionSharedPayload"/>
         <relationship name="twitterContact" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CKMTwitterContact" inverseName="walletEntries" inverseEntity="CKMTwitterContact"/>

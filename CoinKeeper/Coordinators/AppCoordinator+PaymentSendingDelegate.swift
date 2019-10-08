@@ -129,8 +129,8 @@ extension AppCoordinator: PaymentSendingDelegate {
                                                 receiver: OutgoingDropBitReceiver?,
                                                 success: @escaping CKCompletion,
                                                 failure: @escaping CKErrorCompletion) {
-      //TODO: Get updated ledger and persist new entry immediately following payment
-      payLightningRequest(withInputs: inputs, invitation: nil, to: receiver)
+      payAndPersistLightningRequest(withInputs: inputs, invitation: nil, to: receiver)
+        .then { self.postLightningPayload(withInputs: inputs, response: $0, receiver: receiver) }
         .done { _ in
         success()
         self.didBroadcastTransaction()
@@ -138,21 +138,24 @@ extension AppCoordinator: PaymentSendingDelegate {
       .catch(failure)
   }
 
-  func payLightningRequest(withInputs inputs: LightningPaymentInputs,
-                           invitation: CKMInvitation?,
-                           to receiver: OutgoingDropBitReceiver?) -> Promise<LNTransactionResponse> {
+  func payAndPersistLightningRequest(withInputs inputs: LightningPaymentInputs,
+                                     invitation: CKMInvitation?,
+                                     to receiver: OutgoingDropBitReceiver?) -> Promise<LNTransactionResponse> {
     return self.networkManager.payLightningPaymentRequest(inputs.invoice, sats: inputs.sats)
     .get { self.persistLightningPaymentResponse($0, receiver: receiver, invitation: invitation, inputs: inputs) }
-    .then { response -> Promise<LNTransactionResponse> in
-      let maybeSender = self.sharedPayloadSenderIdentity(forReceiver: receiver)
-      let maybePostable = PayloadPostableLightningObject(inputs: inputs, paymentResultId: response.result.cleanedId,
-                                                         sender: maybeSender, receiver: receiver)
-      if let postableObject = maybePostable {
-        return self.postSharedPayload(postableObject)
-          .map { _ in response }
-      } else {
-        return Promise.value(response)
-      }
+  }
+
+  ///NOTE: The payload for invitations should be posted via a separate function inside the AddressRequestPaymentWorker
+  private func postLightningPayload(withInputs inputs: LightningPaymentInputs,
+                                    response: LNTransactionResponse,
+                                    receiver: OutgoingDropBitReceiver?) -> Promise<Void> {
+    let maybeSender = self.sharedPayloadSenderIdentity(forReceiver: receiver)
+    let maybePostable = PayloadPostableLightningObject(inputs: inputs, paymentResultId: response.result.cleanedId,
+                                                       sender: maybeSender, receiver: receiver)
+    if let postableObject = maybePostable {
+      return self.postSharedPayload(postableObject).asVoid()
+    } else {
+      return Promise.value(())
     }
   }
 

@@ -42,6 +42,7 @@ public class CKMLNLedgerEntry: NSManagedObject {
   private static func configure(_ entry: CKMLNLedgerEntry, with result: LNTransactionResult) {
     entry.id = result.cleanedId
     entry.accountId = result.accountId
+    entry.walletEntry?.sortDate = result.createdAt
     entry.createdAt = result.createdAt
     entry.updatedAt = result.updatedAt
     entry.expiresAt = result.expiresAt

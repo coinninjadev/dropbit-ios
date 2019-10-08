@@ -71,7 +71,7 @@ public class CKMInvitation: NSManagedObject {
     self.walletTxTypeCase = invitationDTO.walletTxType
     self.status = .notSent
     self.counterpartyName = contact.displayName
-    self.setFlatFee(to: invitationDTO.fee)
+    self.setFlatFee(to: invitationDTO.fee, type: invitationDTO.walletTxType)
     self.configure(withReceiver: contact.asDropBitReceiver, in: context)
   }
 

@@ -193,6 +193,7 @@ protocol SharedPayloadPostableObject {
 
 }
 
+///This may be used for both on chain and lightning transactions when in the flow of an address request (invitation)
 struct PayloadPostableOutgoingTransactionData: SharedPayloadPostableObject {
   let paymentId: String
   let paymentTarget: String

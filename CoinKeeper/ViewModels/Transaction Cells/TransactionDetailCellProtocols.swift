@@ -324,8 +324,9 @@ extension TransactionDetailCellViewModelType {
     }
 
     if let status = invitationStatus, status == .addressSent, let counterpartyDesc = counterpartyDescription {
+      let paymentDestination = (walletTxType == .onChain) ? "Bitcoin address" : "Lightning invoice"
       let messageWithLineBreaks = """
-      Your Bitcoin address has been sent to
+      Your \(paymentDestination) has been sent to
       \(counterpartyDesc).
       Once approved, this transaction will be completed.
       """
