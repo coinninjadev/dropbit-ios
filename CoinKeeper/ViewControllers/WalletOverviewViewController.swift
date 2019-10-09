@@ -17,8 +17,10 @@ protocol WalletOverviewViewControllerDelegate: BalanceContainerDelegate & BadgeU
   func viewControllerDidTapScan(_ viewController: UIViewController, converter: CurrencyConverter)
   func setSelectedWalletTransactionType(_ viewController: UIViewController, to selectedType: WalletTransactionType)
   func selectedWalletTransactionType() -> WalletTransactionType
-  func viewControllerDidTapReceivePayment(_ viewController: UIViewController, converter: CurrencyConverter)
-  func viewControllerDidTapSendPayment(_ viewController: UIViewController, converter: CurrencyConverter, walletTransactionType: WalletTransactionType)
+  func viewControllerDidTapReceivePayment(_ viewController: UIViewController,
+                                          converter: CurrencyConverter, walletTransactionType: WalletTransactionType)
+  func viewControllerDidTapSendPayment(_ viewController: UIViewController, converter: CurrencyConverter,
+                                       walletTransactionType: WalletTransactionType)
   func viewControllerShouldAdjustForBottomSafeArea(_ viewController: UIViewController) -> Bool
   func viewControllerDidSelectTransfer(_ viewController: UIViewController)
   func viewControllerDidTapWalletTooltip()
@@ -301,7 +303,7 @@ extension WalletOverviewViewController: SelectedCurrencyUpdatable {
 extension WalletOverviewViewController: SendReceiveActionViewDelegate {
   func actionViewDidSelectReceive(_ view: UIView) {
     let converter = delegate.currencyController.currencyConverter
-    delegate.viewControllerDidTapReceivePayment(self, converter: converter)
+    delegate.viewControllerDidTapReceivePayment(self, converter: converter, walletTransactionType: walletTransactionType)
   }
 
   func actionViewDidSelectScan(_ view: UIView) {

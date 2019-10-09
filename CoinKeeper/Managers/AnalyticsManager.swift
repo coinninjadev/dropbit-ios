@@ -124,12 +124,12 @@ enum AnalyticsManagerEventType: String {
   case quickReloadFifty = "QuickReloadFifty"
   case quickReloadOneHundred = "QuickReloadOneHundred"
   case quickReloadCustomAmount = "QuickReloadCustomAmount"
+  case lightningSendPressed = "LightningSendPressed"
+  case lightningReceivePressed = "LightningReceivePressed"
 
   //TODO
   case onChainToLightningSuccessful = "OnChainToLightningSuccessful"
   case lightningToOnChainSuccessful = "LightningToOnChainSuccessful"
-  case lightningSendPressed = "LightningSendPressed"
-  case lightningReceivePressed = "LightningReceivePressed"
   case externalLightningInvoicePaid = "ExternalLightningInvoicePaid"
   case lightningDropBitInvoicePaid = "LightningDropBitInvoicePaid"
   case lightningTransactionDetailsPressed = "LightningTransactionDetailsPressed"

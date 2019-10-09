@@ -66,10 +66,17 @@ extension AppCoordinator: WalletOverviewViewControllerDelegate {
     return UIApplication.shared.delegate?.window??.safeAreaInsets.bottom ?? 0 == 0
   }
 
-  func viewControllerDidTapReceivePayment(_ viewController: UIViewController, converter: CurrencyConverter) {
+  func viewControllerDidTapReceivePayment(_ viewController: UIViewController,
+                                          converter: CurrencyConverter, walletTransactionType: WalletTransactionType) {
     guard showLightningLockAlertIfNecessary() else { return }
     if let requestViewController = createRequestPayViewController(converter: converter) {
-      analyticsManager.track(event: .requestButtonPressed, with: nil)
+      switch walletTransactionType {
+      case .onChain:
+        analyticsManager.track(event: .requestButtonPressed, with: nil)
+      case .lightning:
+        analyticsManager.track(event: .lightningReceivePressed, with: nil)
+      }
+
       viewController.present(requestViewController, animated: true, completion: nil)
     }
   }
@@ -79,7 +86,12 @@ extension AppCoordinator: WalletOverviewViewControllerDelegate {
                                        walletTransactionType: WalletTransactionType) {
     guard showLightningLockAlertIfNecessary() else { return }
     toggleChartAndBalance()
-    analyticsManager.track(event: .payButtonWasPressed, with: nil)
+    switch walletTransactionType {
+    case .onChain:
+      analyticsManager.track(event: .payButtonWasPressed, with: nil)
+    case .lightning:
+      analyticsManager.track(event: .lightningSendPressed, with: nil)
+    }
 
     let swappableVM = CurrencySwappableEditAmountViewModel(exchangeRates: self.currencyController.exchangeRates,
                                                            primaryAmount: converter.fromAmount,
