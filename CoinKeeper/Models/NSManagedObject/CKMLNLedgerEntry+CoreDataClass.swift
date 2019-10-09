@@ -59,7 +59,7 @@ public class CKMLNLedgerEntry: NSManagedObject {
     }
 
     // User may have added local memo
-    if let resultMemo = result.memo, entry.memo == nil {
+    if let resultMemo = result.memo?.asNilIfEmpty(), entry.memo == nil {
       entry.memo = resultMemo
       entry.walletEntry?.memoSetByInvoice = true
     }
