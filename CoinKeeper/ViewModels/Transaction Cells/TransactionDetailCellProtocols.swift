@@ -36,18 +36,13 @@ protocol TransactionDetailCellDisplayable {
 extension TransactionDetailCellDisplayable {
 
   var shouldHideAddressView: Bool {
-//    return isLightningTransfer
-
     switch addressViewConfig.walletTxType {
-    case .onChain: return addressViewConfig.receiverAddress == nil
+    case .onChain:
+      let missingReceiverAddress = addressViewConfig.receiverAddress == nil
+      let missingSentAddress = addressViewConfig.addressProvidedToSender == nil
+      return missingReceiverAddress && missingSentAddress
     case .lightning: return isLightningTransfer
     }
-
-//    if isLightningTransfer {
-//      return true
-//    } else {
-//      return false
-//    }
   }
   var shouldHideCounterpartyLabel: Bool { return counterpartyText == nil }
   var shouldHideAddMemoButton: Bool { return !canAddMemo }
