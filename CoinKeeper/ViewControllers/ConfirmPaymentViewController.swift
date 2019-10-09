@@ -57,6 +57,7 @@ class ConfirmPaymentViewController: PresentableViewController, StoryboardInitial
   @IBOutlet var avatarBackgroundView: UIView!
   @IBOutlet var avatarImageView: UIImageView!
   @IBOutlet var confirmView: ConfirmView!
+  @IBOutlet var topStackViewTopConstraint: NSLayoutConstraint!
 
   private(set) weak var delegate: ConfirmPaymentViewControllerDelegate!
 
@@ -166,6 +167,13 @@ class ConfirmPaymentViewController: PresentableViewController, StoryboardInitial
 extension ConfirmPaymentViewController {
 
   fileprivate func setupViews() {
+    switch UIScreen.main.relativeSize {
+    case .short: topStackViewTopConstraint.constant = 18
+    case .medium: topStackViewTopConstraint.constant = 24
+    case .tall: topStackViewTopConstraint.constant = 32
+    }
+    view.layoutIfNeeded()
+
     primaryCurrencyLabel.textAlignment = .center
     primaryCurrencyLabel.textColor = .lightBlueTint
     primaryCurrencyLabel.font = .regular(35)

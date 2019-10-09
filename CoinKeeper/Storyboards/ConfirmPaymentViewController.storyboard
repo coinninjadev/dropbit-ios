@@ -28,6 +28,14 @@
                                     <action selector="closeButtonWasTouched" destination="qzp-92-GW0" eventType="touchUpInside" id="j1J-k3-2k4"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eq3-SK-hMN" customClass="CompactActionButton" customModule="DropBit" customModuleProvider="target">
+                                <rect key="frame" x="155" y="64" width="104" height="35"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="35" id="SEU-MJ-xpn"/>
+                                    <constraint firstAttribute="width" constant="104" id="mQ2-tu-beY"/>
+                                </constraints>
+                                <state key="normal" title="Button"/>
+                            </button>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="ul0-1X-QOZ">
                                 <rect key="frame" x="20" y="131" width="374" height="559.5"/>
                                 <subviews>
@@ -152,14 +160,6 @@
                                     </stackView>
                                 </subviews>
                             </stackView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eq3-SK-hMN" customClass="CompactActionButton" customModule="DropBit" customModuleProvider="target">
-                                <rect key="frame" x="155" y="64" width="104" height="35"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="35" id="SEU-MJ-xpn"/>
-                                    <constraint firstAttribute="width" constant="104" id="mQ2-tu-beY"/>
-                                </constraints>
-                                <state key="normal" title="Button"/>
-                            </button>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xkU-mo-iSp" customClass="ConfirmView" customModule="DropBit" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="714.5" width="414" height="111.5"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -172,7 +172,6 @@
                         <constraints>
                             <constraint firstItem="xkU-mo-iSp" firstAttribute="centerX" secondItem="rKm-cG-9ey" secondAttribute="centerX" id="18r-tc-Drv"/>
                             <constraint firstItem="S6b-v4-YFG" firstAttribute="trailing" secondItem="xkU-mo-iSp" secondAttribute="trailing" id="4b6-Jq-s19"/>
-                            <constraint firstItem="ul0-1X-QOZ" firstAttribute="top" secondItem="noa-jE-Lp3" secondAttribute="bottom" constant="24" id="9SA-Pd-R8D"/>
                             <constraint firstItem="jiI-7j-Uv0" firstAttribute="width" secondItem="rKm-cG-9ey" secondAttribute="width" multiplier="0.75" id="B3c-nZ-cv9"/>
                             <constraint firstItem="S6b-v4-YFG" firstAttribute="trailing" secondItem="noa-jE-Lp3" secondAttribute="trailing" constant="19" id="IUw-1C-xK0"/>
                             <constraint firstItem="xkU-mo-iSp" firstAttribute="top" secondItem="ul0-1X-QOZ" secondAttribute="bottom" constant="24" id="Icw-Am-8dI"/>
@@ -182,6 +181,7 @@
                             <constraint firstItem="xkU-mo-iSp" firstAttribute="leading" secondItem="S6b-v4-YFG" secondAttribute="leading" id="jcR-lq-Clb"/>
                             <constraint firstItem="S6b-v4-YFG" firstAttribute="trailing" secondItem="ul0-1X-QOZ" secondAttribute="trailing" constant="20" id="loy-UA-A0m"/>
                             <constraint firstItem="eq3-SK-hMN" firstAttribute="top" secondItem="S6b-v4-YFG" secondAttribute="top" constant="20" id="pm7-8m-MLv"/>
+                            <constraint firstItem="ul0-1X-QOZ" firstAttribute="top" secondItem="eq3-SK-hMN" secondAttribute="bottom" constant="32" id="vgF-YQ-ZdP"/>
                             <constraint firstItem="ul0-1X-QOZ" firstAttribute="leading" secondItem="S6b-v4-YFG" secondAttribute="leading" constant="20" id="wyp-KN-TZ3"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="S6b-v4-YFG"/>
@@ -201,6 +201,7 @@
                         <outlet property="primaryCurrencyLabel" destination="TT2-nt-Bjc" id="IY9-cr-OBV"/>
                         <outlet property="secondaryAddressLabel" destination="9Pu-vR-ADc" id="kOy-iZ-eLa"/>
                         <outlet property="secondaryCurrencyLabel" destination="PZD-7t-6Xz" id="nzL-dD-iw5"/>
+                        <outlet property="topStackViewTopConstraint" destination="vgF-YQ-ZdP" id="EA7-PW-zzx"/>
                         <outlet property="walletTransactionTypeButton" destination="eq3-SK-hMN" id="4pL-DY-ffE"/>
                     </connections>
                 </viewController>

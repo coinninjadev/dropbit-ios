@@ -60,7 +60,7 @@ class TransactionHistoryDetailValidCell: TransactionHistoryDetailBaseCell {
       bottomButton.tag = config.buttonTag
     }
 
-    bottomBufferView.isHidden = (UIScreen.main.relativeSize == .short)
+    bottomBufferView.isHidden = (UIScreen.main.relativeSize != .tall)
     layoutIfNeeded()
   }
 
