@@ -196,11 +196,11 @@ extension ConfirmPaymentViewController {
       case .lightning:
         networkFeeLabel.isHidden = true
         primaryAddressLabel.lineBreakMode = .byTruncatingMiddle
-        walletTransactionTypeButton.style = .lightning(true)
+        walletTransactionTypeButton.style = .lightning(rounded: true)
         walletTransactionTypeButton.setAttributedTitle(NSAttributedString.lightningSelectedButtonTitle, for: .normal)
       case .onChain:
         primaryAddressLabel.adjustsFontSizeToFitWidth = true
-        walletTransactionTypeButton.style = .bitcoin(true)
+        walletTransactionTypeButton.style = .bitcoin(rounded: true)
         walletTransactionTypeButton.setAttributedTitle(NSAttributedString.bitcoinSelectedButton, for: .normal)
       }
     }
