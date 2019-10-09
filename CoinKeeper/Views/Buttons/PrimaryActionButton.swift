@@ -31,6 +31,7 @@ class PrimaryActionButton: UIButton {
   }
 
   private func applyStyle(_ style: PrimaryActionButtonStyle) {
+    self.isEnabled = style.enabled
     self.backgroundColor = style.backgroundColor
     self.notHighlightedBackground = style.backgroundColor
     self.setTitleColor(style.normalTitleColor, for: .normal)
