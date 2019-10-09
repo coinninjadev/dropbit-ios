@@ -16,6 +16,7 @@ extension AppCoordinator: PaymentSendingDelegate {
   func viewControllerDidConfirmLightningPayment(_ viewController: UIViewController,
                                                 inputs: LightningPaymentInputs,
                                                 receiver: OutgoingDropBitReceiver?) {
+    analyticsManager.track(event: .attemptedToPayInvoice, with: nil)
     let viewModel = PaymentVerificationPinEntryViewModel(amountDisablesBiometrics: false)
     let successHandler: CKCompletion = { [unowned self] in
       self.handleSuccessfulLightningPaymentVerification(with: inputs, receiver: receiver)
@@ -72,7 +73,7 @@ extension AppCoordinator: PaymentSendingDelegate {
                                                     receiver: OutgoingDropBitReceiver?) {
     let viewModel = PaymentSuccessFailViewModel(mode: .pending)
     let successFailVC = SuccessFailViewController.newInstance(viewModel: viewModel, delegate: self)
-    let errorHandler: CKErrorCompletion = self.paymentErrorHandler(for: successFailVC)
+    let errorHandler: CKErrorCompletion = self.paymentErrorHandler(for: successFailVC, isLightning: true)
 
     successFailVC.action = { [unowned self] in
       self.executeConfirmedLightningPayment(with: inputs,
@@ -93,7 +94,7 @@ extension AppCoordinator: PaymentSendingDelegate {
 
     let viewModel = PaymentSuccessFailViewModel(mode: .pending)
     let successFailVC = SuccessFailViewController.newInstance(viewModel: viewModel, delegate: self)
-    let errorHandler: CKErrorCompletion = self.paymentErrorHandler(for: successFailVC)
+    let errorHandler: CKErrorCompletion = self.paymentErrorHandler(for: successFailVC, isLightning: false)
 
     successFailVC.action = { [unowned self] in
       self.broadcastConfirmedOnChainTransaction(
@@ -110,8 +111,9 @@ extension AppCoordinator: PaymentSendingDelegate {
   }
 
   /// Provides a completion handler to be called in the catch block of payment promise chains
-  private func paymentErrorHandler(for successFailVC: SuccessFailViewController) -> CKErrorCompletion {
+  private func paymentErrorHandler(for successFailVC: SuccessFailViewController, isLightning: Bool) -> CKErrorCompletion {
     let errorHandler: CKErrorCompletion = { [unowned self] error in
+      if isLightning { self.analyticsManager.track(event: .paymentToInvoiceFailed, with: nil) }
       if let networkError = error as? CKNetworkError,
         case let .reachabilityFailed(moyaError) = networkError {
         self.handleReachabilityError(moyaError)
@@ -129,6 +131,7 @@ extension AppCoordinator: PaymentSendingDelegate {
                                                 receiver: OutgoingDropBitReceiver?,
                                                 success: @escaping CKCompletion,
                                                 failure: @escaping CKErrorCompletion) {
+    //TODO: track invoice payment
       payAndPersistLightningRequest(withInputs: inputs, invitation: nil, to: receiver)
         .then { self.postLightningPayload(withInputs: inputs, response: $0, receiver: receiver) }
         .done { _ in

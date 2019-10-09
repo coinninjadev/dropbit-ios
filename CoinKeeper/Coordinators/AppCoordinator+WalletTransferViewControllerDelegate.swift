@@ -30,6 +30,7 @@ extension AppCoordinator: WalletTransferViewControllerDelegate {
     successFailVC.action = { [unowned self] in
       self.networkManager.withdrawLightningFunds(to: receiveAddress, sats: sats)
         .done { _ in
+          self.analyticsManager.track(event: .lightningToOnChainSuccessful, with: nil)
           CKNotificationCenter.publish(key: .didUpdateLocalTransactionRecords)
           successFailVC.setMode(.success)
         }
