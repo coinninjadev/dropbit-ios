@@ -72,6 +72,7 @@ class WalletOverviewViewController: BaseViewController, StoryboardInitializable 
 
   @IBAction func tooltipButtonWasTouched() {
     delegate.viewControllerDidTapWalletTooltip()
+    delegate.viewControllerShouldTrackEvent(event: .walletToggleTooltipPressed)
   }
 
   override func accessibleViewsAndIdentifiers() -> [AccessibleViewElement] {

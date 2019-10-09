@@ -54,7 +54,8 @@ extension AppCoordinator: WalletTransferViewControllerDelegate {
     return buildLoadLightningPaymentData(btcAmount: btcAmount, exchangeRates: exchangeRates, in: context)
   }
 
-  func viewControllerDidConfirmLoad(_ viewController: UIViewController, paymentData transactionData: PaymentData) {
+  func viewControllerDidConfirmLoad(_ viewController: UIViewController,
+                                    paymentData transactionData: PaymentData) {
     viewController.dismiss(animated: false) {
       self.toggleChartAndBalance()
       self.handleSuccessfulOnChainPaymentVerification(with: transactionData.broadcastData,
