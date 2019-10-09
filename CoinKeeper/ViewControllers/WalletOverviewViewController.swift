@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 import MMDrawerController
 
-protocol WalletOverviewViewControllerDelegate: BalanceContainerDelegate & BadgeUpdateDelegate {
+protocol WalletOverviewViewControllerDelegate: BalanceContainerDelegate & BadgeUpdateDelegate & AnalyticsManagerAccessType {
   var badgeManager: BadgeManagerType { get }
   var currencyController: CurrencyController { get }
 
@@ -245,7 +245,17 @@ extension WalletOverviewViewController: UIPageViewControllerDelegate {
   func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool,
                           previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
     if let viewController = pageViewController.viewControllers?.first as? BaseViewController {
-      setupUI(for: ViewControllerIndex(rawValue: baseViewControllers.reversed().firstIndex(of: viewController) ?? 0))
+      let index = ViewControllerIndex(rawValue: baseViewControllers.reversed().firstIndex(of: viewController) ?? 0)
+      switch index {
+      case .bitcoinWallet:
+        delegate.viewControllerShouldTrackEvent(event: .onChainWalletSelected)
+      case .lightningWallet:
+        delegate.viewControllerShouldTrackEvent(event: .lightningWalletSelected)
+      default:
+        break
+      }
+
+      setupUI(for: index)
     }
   }
 }
@@ -270,10 +280,12 @@ extension WalletOverviewViewController: UIPageViewControllerDataSource {
 extension WalletOverviewViewController: WalletToggleViewDelegate {
 
   func bitcoinWalletButtonWasTouched() {
+    delegate.viewControllerShouldTrackEvent(event: .onChainWalletSelected)
     setupUI(for: .bitcoinWallet)
   }
 
   func lightningWalletButtonWasTouched() {
+    delegate.viewControllerShouldTrackEvent(event: .lightningWalletSelected)
     setupUI(for: .lightningWallet)
   }
 }
