@@ -307,8 +307,12 @@ extension TransactionDetailCellViewModelType {
 
   var canAddMemo: Bool {
     if isLightningTransfer { return false }
-    if isIncoming && status != .completed { return false }
-    return memoConfig == nil
+    if let invitationStatus = invitationStatus,
+    isIncoming, invitationStatus != .completed {
+      return false
+    } else {
+      return memoConfig == nil && status.isValid
+    }
   }
 
   /**
