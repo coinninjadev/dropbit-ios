@@ -68,8 +68,10 @@ extension AppCoordinator {
       lightningBalance = wmgr.spendableBalance(in: bgContext).lightning
     }
 
-    let balanceIsPositive = balance > 0 || lightningBalance > 0
-    analyticsManager.track(property: MixpanelProperty(key: .hasBTCBalance, value: balanceIsPositive ? true : false))
+    let balanceIsPositive = balance > 0
+    let lightningBalanceIsPositive = lightningBalance > 0
+    analyticsManager.track(property: MixpanelProperty(key: .hasBTCBalance, value: balanceIsPositive))
+    analyticsManager.track(property: MixpanelProperty(key: .doesUserHaveLightningBalance, value: lightningBalanceIsPositive))
     analyticsManager.track(property: MixpanelProperty(key: .relativeWalletRange, value: AnalyticsRelativeWalletRange(satoshis: balance).rawValue))
   }
 
