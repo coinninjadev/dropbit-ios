@@ -40,8 +40,8 @@ extension TransactionDetailCellDisplayable {
     case .onChain:
       let missingReceiverAddress = addressViewConfig.receiverAddress == nil
       let missingSentAddress = addressViewConfig.addressProvidedToSender == nil
-      return missingReceiverAddress && missingSentAddress
-    case .lightning: return isLightningTransfer
+      return (missingReceiverAddress && missingSentAddress) || isLightningTransfer
+    case .lightning: return true
     }
   }
   var shouldHideCounterpartyLabel: Bool { return counterpartyText == nil }
