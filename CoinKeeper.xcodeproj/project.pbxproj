@@ -983,6 +983,12 @@
 		B5697273208A8E0A00835F01 /* WalletOverviewTopBarTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5697272208A8E0A00835F01 /* WalletOverviewTopBarTests.swift */; };
 		B56B63782200CDD300CCC153 /* CKMTransactionSharedPayload+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56B63772200CDD300CCC153 /* CKMTransactionSharedPayload+CoreDataProperties.swift */; };
 		B56B637A2200CDF100CCC153 /* CKMTransactionSharedPayload+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56B63792200CDF100CCC153 /* CKMTransactionSharedPayload+CoreDataClass.swift */; };
+		B56B6804234E25990073BA0D /* DropBitSnapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56B6803234E25990073BA0D /* DropBitSnapshot.swift */; };
+		B56B680D234E272C0073BA0D /* SnapshotHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56B680C234E272C0073BA0D /* SnapshotHelper.swift */; };
+		B56B680E234E28750073BA0D /* UITestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51FB0E72175221A005CBAD6 /* UITestCase.swift */; };
+		B56B680F234E29500073BA0D /* XCUIApplication+UITestArgument.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5D1B2D6219384FB006B2BC7 /* XCUIApplication+UITestArgument.swift */; };
+		B56B6810234E3CF80073BA0D /* UITestArgument.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5D1B2CF2193469C006B2BC7 /* UITestArgument.swift */; };
+		B56B6811234E3D190073BA0D /* Typealiases.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BB05AC0209CF407000297E1 /* Typealiases.swift */; };
 		B56C414621F7713B005668E3 /* ConfirmPaymentMemoView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B56C414521F7713B005668E3 /* ConfirmPaymentMemoView.xib */; };
 		B56C414821F7717C005668E3 /* ConfirmPaymentMemoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56C414721F7717C005668E3 /* ConfirmPaymentMemoView.swift */; };
 		B56E158A2167962D003B69D4 /* GlobalMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56E15892167962D003B69D4 /* GlobalMessage.swift */; };
@@ -1253,6 +1259,13 @@
 			remoteInfo = TodayExtension;
 		};
 		B50BB1A5217512400038B5DD /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 3B124E042020EB2B00431E2E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 3B124E0B2020EB2B00431E2E;
+			remoteInfo = DropBit;
+		};
+		B56B6806234E25990073BA0D /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 3B124E042020EB2B00431E2E /* Project object */;
 			proxyType = 1;
@@ -2156,6 +2169,10 @@
 		B56B63762200C82D00CCC153 /* Model v4.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Model v4.xcdatamodel"; sourceTree = "<group>"; };
 		B56B63772200CDD300CCC153 /* CKMTransactionSharedPayload+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CKMTransactionSharedPayload+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		B56B63792200CDF100CCC153 /* CKMTransactionSharedPayload+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CKMTransactionSharedPayload+CoreDataClass.swift"; sourceTree = "<group>"; };
+		B56B6801234E25990073BA0D /* DropBitSnapshot.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DropBitSnapshot.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		B56B6803234E25990073BA0D /* DropBitSnapshot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropBitSnapshot.swift; sourceTree = "<group>"; };
+		B56B6805234E25990073BA0D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B56B680C234E272C0073BA0D /* SnapshotHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SnapshotHelper.swift; sourceTree = "<group>"; };
 		B56C414521F7713B005668E3 /* ConfirmPaymentMemoView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ConfirmPaymentMemoView.xib; sourceTree = "<group>"; };
 		B56C414721F7717C005668E3 /* ConfirmPaymentMemoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmPaymentMemoView.swift; sourceTree = "<group>"; };
 		B56E15892167962D003B69D4 /* GlobalMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalMessage.swift; sourceTree = "<group>"; };
@@ -2451,6 +2468,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		B56B67FE234E25990073BA0D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -2463,6 +2487,7 @@
 				B586F4FF2175084000682D17 /* DropBitUITests */,
 				3B6924AA22F33E8B00F4A7AF /* DropBitUIDatabaseTests */,
 				A2E6221C23D2378F00417A9B /* TodayExtension */,
+				B56B6802234E25990073BA0D /* DropBitSnapshot */,
 				3B124E0D2020EB2B00431E2E /* Products */,
 				3B124E2F2020F1E500431E2E /* Frameworks */,
 				C598778409B817E98A66EE95 /* Pods */,
@@ -2477,6 +2502,7 @@
 				B50BB1A0217512400038B5DD /* DropBitUITests.xctest */,
 				3B6924A922F33E8B00F4A7AF /* DropBitUIDatabaseTests.xctest */,
 				A2E6221A23D2378F00417A9B /* TodayExtension.appex */,
+				B56B6801234E25990073BA0D /* DropBitSnapshot.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -3896,6 +3922,16 @@
 			path = Brokers;
 			sourceTree = "<group>";
 		};
+		B56B6802234E25990073BA0D /* DropBitSnapshot */ = {
+			isa = PBXGroup;
+			children = (
+				B56B6803234E25990073BA0D /* DropBitSnapshot.swift */,
+				B56B680C234E272C0073BA0D /* SnapshotHelper.swift */,
+				B56B6805234E25990073BA0D /* Info.plist */,
+			);
+			path = DropBitSnapshot;
+			sourceTree = "<group>";
+		};
 		B56E158B2167C0A9003B69D4 /* NetworkManager */ = {
 			isa = PBXGroup;
 			children = (
@@ -4383,6 +4419,24 @@
 			productReference = B50BB1A0217512400038B5DD /* DropBitUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
+		B56B6800234E25990073BA0D /* DropBitSnapshot */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B56B680B234E25990073BA0D /* Build configuration list for PBXNativeTarget "DropBitSnapshot" */;
+			buildPhases = (
+				B56B67FD234E25990073BA0D /* Sources */,
+				B56B67FE234E25990073BA0D /* Frameworks */,
+				B56B67FF234E25990073BA0D /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				B56B6807234E25990073BA0D /* PBXTargetDependency */,
+			);
+			name = DropBitSnapshot;
+			productName = DropBitSnapshot;
+			productReference = B56B6801234E25990073BA0D /* DropBitSnapshot.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -4430,6 +4484,11 @@
 						ProvisioningStyle = Automatic;
 						TestTargetID = 3B124E0B2020EB2B00431E2E;
 					};
+					B56B6800234E25990073BA0D = {
+						CreatedOnToolsVersion = 11.0;
+						ProvisioningStyle = Automatic;
+						TestTargetID = 3B124E0B2020EB2B00431E2E;
+					};
 				};
 			};
 			buildConfigurationList = 3B124E072020EB2B00431E2E /* Build configuration list for PBXProject "CoinKeeper" */;
@@ -4454,6 +4513,7 @@
 				B50BB19F217512400038B5DD /* DropBitUITests */,
 				3B6924A822F33E8B00F4A7AF /* DropBitUIDatabaseTests */,
 				A2E6221923D2378F00417A9B /* TodayExtension */,
+				B56B6800234E25990073BA0D /* DropBitSnapshot */,
 			);
 		};
 /* End PBXProject section */
@@ -4655,6 +4715,13 @@
 			files = (
 				B586770E239AD6F300DA1768 /* GoogleService-Info.plist in Resources */,
 				B5867711239AD6F700DA1768 /* GoogleService-Test-Info.plist in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B56B67FF234E25990073BA0D /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5919,6 +5986,19 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		B56B67FD234E25990073BA0D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B56B680F234E29500073BA0D /* XCUIApplication+UITestArgument.swift in Sources */,
+				B56B6810234E3CF80073BA0D /* UITestArgument.swift in Sources */,
+				B56B6811234E3D190073BA0D /* Typealiases.swift in Sources */,
+				B56B6804234E25990073BA0D /* DropBitSnapshot.swift in Sources */,
+				B56B680D234E272C0073BA0D /* SnapshotHelper.swift in Sources */,
+				B56B680E234E28750073BA0D /* UITestCase.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -5941,6 +6021,11 @@
 			isa = PBXTargetDependency;
 			target = 3B124E0B2020EB2B00431E2E /* DropBit */;
 			targetProxy = B50BB1A5217512400038B5DD /* PBXContainerItemProxy */;
+		};
+		B56B6807234E25990073BA0D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 3B124E0B2020EB2B00431E2E /* DropBit */;
+			targetProxy = B56B6806234E25990073BA0D /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -6604,6 +6689,61 @@
 			};
 			name = Beta;
 		};
+		B56B6808234E25990073BA0D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = DropBitSnapshot/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.coinninja.DropBitSnapshot;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "694ecd33-d17f-4e96-a9db-f8bfc8a03853";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = DropBit;
+			};
+			name = Debug;
+		};
+		B56B6809234E25990073BA0D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = DropBitSnapshot/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.coinninja.DropBitSnapshot;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "694ecd33-d17f-4e96-a9db-f8bfc8a03853";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = DropBit;
+			};
+			name = Release;
+		};
+		B56B680A234E25990073BA0D /* Beta */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = DropBitSnapshot/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.coinninja.DropBitSnapshot;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "694ecd33-d17f-4e96-a9db-f8bfc8a03853";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = DropBit;
+			};
+			name = Beta;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -6663,6 +6803,16 @@
 				B50BB1A8217512400038B5DD /* Debug */,
 				B50BB1A9217512400038B5DD /* Release */,
 				B50BB1AA217512400038B5DD /* Beta */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B56B680B234E25990073BA0D /* Build configuration list for PBXNativeTarget "DropBitSnapshot" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B56B6808234E25990073BA0D /* Debug */,
+				B56B6809234E25990073BA0D /* Release */,
+				B56B680A234E25990073BA0D /* Beta */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
