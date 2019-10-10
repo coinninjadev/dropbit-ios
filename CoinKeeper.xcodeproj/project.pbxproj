@@ -12,7 +12,6 @@
 		300CD8F121FA668400BFF560 /* NSAttributedString+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 300CD8F021FA668400BFF560 /* NSAttributedString+Helpers.swift */; };
 		30349F872188A99700A32AFA /* ServerAddressViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30349F862188A99700A32AFA /* ServerAddressViewModel.swift */; };
 		304BAED021FA131000065D6D /* TutorialUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 304BAECF21FA131000065D6D /* TutorialUITests.swift */; };
-		304BAED221FA1F9700065D6D /* TransactionHistoryPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 304BAED121FA1F9700065D6D /* TransactionHistoryPage.swift */; };
 		3060489F218A670B009C6E86 /* UIView+Shadow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3060489E218A670B009C6E86 /* UIView+Shadow.swift */; };
 		30626FD721C15B9C00E7A2DE /* MockNetworkManager+MerchantPaymentRequestRequestable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30626FD621C15B9C00E7A2DE /* MockNetworkManager+MerchantPaymentRequestRequestable.swift */; };
 		307DF119214C297E00260369 /* MessageResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 307DF118214C297E00260369 /* MessageResponse.swift */; };
@@ -185,7 +184,6 @@
 		3B4B929A22F354850018285C /* BackupRecoveryWordsCellPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B3779FB219E20AD00F79683 /* BackupRecoveryWordsCellPage.swift */; };
 		3B4B929B22F354850018285C /* VerifyRecoveryWordsCellPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B3779FD219EE7D900F79683 /* VerifyRecoveryWordsCellPage.swift */; };
 		3B4B929C22F354850018285C /* SendPaymentPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B1BE86321B5819500CCFE29 /* SendPaymentPage.swift */; };
-		3B4B929D22F354850018285C /* TransactionHistoryPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 304BAED121FA1F9700065D6D /* TransactionHistoryPage.swift */; };
 		3B4B929E22F354850018285C /* WalletOverviewPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = A27DFDF122DCDCD200C2824C /* WalletOverviewPage.swift */; };
 		3B5052B12045FAD7000C739F /* BackupRecoveryWordsViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3B5052B02045FAD7000C739F /* BackupRecoveryWordsViewController.storyboard */; };
 		3B5052B32045FAFA000C739F /* BackupRecoveryWordsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5052B22045FAFA000C739F /* BackupRecoveryWordsViewController.swift */; };
@@ -1295,7 +1293,6 @@
 		300CD8F021FA668400BFF560 /* NSAttributedString+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSAttributedString+Helpers.swift"; sourceTree = "<group>"; };
 		30349F862188A99700A32AFA /* ServerAddressViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerAddressViewModel.swift; sourceTree = "<group>"; };
 		304BAECF21FA131000065D6D /* TutorialUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialUITests.swift; sourceTree = "<group>"; };
-		304BAED121FA1F9700065D6D /* TransactionHistoryPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionHistoryPage.swift; sourceTree = "<group>"; };
 		3060489E218A670B009C6E86 /* UIView+Shadow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Shadow.swift"; sourceTree = "<group>"; };
 		30626FD621C15B9C00E7A2DE /* MockNetworkManager+MerchantPaymentRequestRequestable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MockNetworkManager+MerchantPaymentRequestRequestable.swift"; sourceTree = "<group>"; };
 		307DF118214C297E00260369 /* MessageResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageResponse.swift; sourceTree = "<group>"; };
@@ -4105,7 +4102,6 @@
 				3B3779FB219E20AD00F79683 /* BackupRecoveryWordsCellPage.swift */,
 				3B3779FD219EE7D900F79683 /* VerifyRecoveryWordsCellPage.swift */,
 				3B1BE86321B5819500CCFE29 /* SendPaymentPage.swift */,
-				304BAED121FA1F9700065D6D /* TransactionHistoryPage.swift */,
 				A27DFDF122DCDCD200C2824C /* WalletOverviewPage.swift */,
 				3BE1C52C232D2BC100583A83 /* LightningUpgradeStartPage.swift */,
 				3B34B97F232DB06A002D8A92 /* DropBitMePage.swift */,
@@ -5840,7 +5836,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				3B4B929622F354850018285C /* SuccessFailPage.swift in Sources */,
-				3B4B929D22F354850018285C /* TransactionHistoryPage.swift in Sources */,
 				3B4B929322F354850018285C /* RequestPayPage.swift in Sources */,
 				3B4B928E22F354850018285C /* UITestPage.swift in Sources */,
 				3B4B928A22F354630018285C /* UITestArgument.swift in Sources */,
@@ -5973,7 +5968,6 @@
 				B51FB0E021751BED005CBAD6 /* UIFont+Theme.swift in Sources */,
 				B51F1ED12199F7CB00C54B73 /* PinCreationPage.swift in Sources */,
 				3B34B980232DB06A002D8A92 /* DropBitMePage.swift in Sources */,
-				304BAED221FA1F9700065D6D /* TransactionHistoryPage.swift in Sources */,
 				3B325D542190A46D0094897C /* SecondaryActionButton.swift in Sources */,
 				3B3779FF219EEA9F00F79683 /* Int+Times.swift in Sources */,
 				B51F1ECF2199F62100C54B73 /* StartPage.swift in Sources */,
