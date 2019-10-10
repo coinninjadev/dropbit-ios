@@ -34,8 +34,8 @@ class WalletToggleView: UIView {
   private func commonInit() {
     xibSetup()
     applyCornerRadius(5)
-    bitcoinWalletButton.style = .bitcoin(false)
-    lightningWalletButton.style = .lightning(false)
+    bitcoinWalletButton.style = .bitcoin(rounded: false)
+    lightningWalletButton.style = .lightning(rounded: false)
     selectBitcoinButton()
   }
 

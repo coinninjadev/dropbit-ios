@@ -37,7 +37,7 @@ final class LightningUpgradeCompleteViewController: BaseViewController, Storyboa
   }
 
   private func styleInitialUI() {
-    goToWalletButton.style = .white(enabled: true)
+    goToWalletButton.style = .lightningUpgrade(enabled: true)
     goToWalletButton.setTitleColor(.mediumPurple, for: .normal)
     goToWalletButton.setTitle("GO TO WALLET", for: .normal)
     getNewRecoveryWordsButton.style = .mediumPurple

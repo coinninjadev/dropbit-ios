@@ -1013,6 +1013,7 @@
 		B5D1B2D7219384FB006B2BC7 /* XCUIApplication+UITestArgument.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5D1B2D6219384FB006B2BC7 /* XCUIApplication+UITestArgument.swift */; };
 		B5D3BF08222439AF0073A684 /* NSManagedObjectContext+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5D3BF07222439AF0073A684 /* NSManagedObjectContext+Extensions.swift */; };
 		B5D3BF0A222470420073A684 /* ManagedPhoneNumberInputs.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5D3BF09222470420073A684 /* ManagedPhoneNumberInputs.swift */; };
+		B5D4CE4A234D055400B0CB31 /* AlertManagerType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5D4CE49234D055400B0CB31 /* AlertManagerType.swift */; };
 		B5D77071232D6740004E1519 /* AddressRequestPaymentWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5D77070232D6740004E1519 /* AddressRequestPaymentWorker.swift */; };
 		B5D77073232D6980004E1519 /* AddressRequestFulfillmentWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5D77072232D6980004E1519 /* AddressRequestFulfillmentWorker.swift */; };
 		B5D77CCB2221FB80002C360E /* MockPhoneNumberFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5D77CC92221FB09002C360E /* MockPhoneNumberFormatter.swift */; };
@@ -2078,6 +2079,7 @@
 		B5D1B2D6219384FB006B2BC7 /* XCUIApplication+UITestArgument.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCUIApplication+UITestArgument.swift"; sourceTree = "<group>"; };
 		B5D3BF07222439AF0073A684 /* NSManagedObjectContext+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSManagedObjectContext+Extensions.swift"; sourceTree = "<group>"; };
 		B5D3BF09222470420073A684 /* ManagedPhoneNumberInputs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagedPhoneNumberInputs.swift; sourceTree = "<group>"; };
+		B5D4CE49234D055400B0CB31 /* AlertManagerType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertManagerType.swift; sourceTree = "<group>"; };
 		B5D6BE4A21C5BD42000C0D4C /* Model v3.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Model v3.xcdatamodel"; sourceTree = "<group>"; };
 		B5D77070232D6740004E1519 /* AddressRequestPaymentWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressRequestPaymentWorker.swift; sourceTree = "<group>"; };
 		B5D77072232D6980004E1519 /* AddressRequestFulfillmentWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressRequestFulfillmentWorker.swift; sourceTree = "<group>"; };
@@ -3509,6 +3511,7 @@
 				B552EDDA211E33D000332BB5 /* NotificationManager.swift */,
 				B5A7523B2225D90B0017DB35 /* DeviceCountryCodeProvider.swift */,
 				B552EDDC211E33D000332BB5 /* AlertManager.swift */,
+				B5D4CE49234D055400B0CB31 /* AlertManagerType.swift */,
 				B54913A422BBB61200ACC7D7 /* AlertConfigurationTypes.swift */,
 				B52053E0227B6D3000E5D2ED /* AlertManager+Constants.swift */,
 				B5CFA329221DF594002B1BDD /* ContactCacheManager.swift */,
@@ -5097,6 +5100,7 @@
 				A257CEC4230C3EBD0063670B /* CKLightningURLParser.swift in Sources */,
 				B5FE9B67219DD96200801D3C /* MerchantPaymentRequestResponse.swift in Sources */,
 				B5047CEE2345186100F45DB8 /* PaddedLabel.swift in Sources */,
+				B5D4CE4A234D055400B0CB31 /* AlertManagerType.swift in Sources */,
 				3BEB594620D15AF9005EDA9E /* AddressTransactionSummaryResponse.swift in Sources */,
 				3B2EBF71223010DC003C0D0E /* ManagedContactComponents.swift in Sources */,
 				3B5A88A2228B08FE0082BBA4 /* ContactCellPrimaryLabel.swift in Sources */,

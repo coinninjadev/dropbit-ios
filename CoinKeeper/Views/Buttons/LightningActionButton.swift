@@ -13,7 +13,7 @@ class LightningActionButton: PrimaryActionButton {
 
   override func awakeFromNib() {
     super.awakeFromNib()
-    style = .lightning(true)
+    style = .lightning(rounded: true)
     titleLabel?.font = .medium(18)
   }
 }

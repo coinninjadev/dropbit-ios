@@ -48,24 +48,6 @@ class TransactionHistorySummaryCellTests: XCTestCase {
   }
 
   // MARK: Leading image and background color
-  func testDescriptionLabelLoadsDescription() {
-    let counterparty = MockSummaryCellVM.mockTwitterCounterparty()
-    let viewModel = MockSummaryCellVM.testSummaryInstance(counterpartyConfig: counterparty)
-    sut.configure(with: viewModel)
-    let expectedText = counterparty.twitterConfig?.displayHandle
-    XCTAssertEqual(sut.descriptionLabel.text, expectedText)
-    XCTAssertFalse(sut.descriptionLabel.isHidden)
-  }
-
-  func testDescriptionLabelLoadsSentToSelf() {
-    let counterparty = MockSummaryCellVM.mockTwitterCounterparty()
-    let viewModel = MockSummaryCellVM.testSummaryInstance(isSentToSelf: true, counterpartyConfig: counterparty)
-    sut.configure(with: viewModel)
-    let expectedText = viewModel.sentToSelfText
-    XCTAssertEqual(sut.descriptionLabel.text, expectedText)
-    XCTAssertFalse(sut.descriptionLabel.isHidden)
-  }
-
   func testUnpaidLightningInvoice_loadsImageAndColor() {
     let viewModel = MockSummaryCellVM.testSummaryInstance(walletTxType: .lightning, direction: .in, status: .pending, isLightningTransfer: false)
     sut.configure(with: viewModel)
@@ -185,6 +167,33 @@ class TransactionHistorySummaryCellTests: XCTestCase {
   }
 
   // MARK: Labels
+  func testDescriptionLabelLoadsDescription() {
+    let counterparty = MockSummaryCellVM.mockTwitterCounterparty()
+    let viewModel = MockSummaryCellVM.testSummaryInstance(counterpartyConfig: counterparty)
+    sut.configure(with: viewModel)
+    let expectedText = counterparty.twitterConfig?.displayHandle
+    XCTAssertEqual(sut.descriptionLabel.text, expectedText)
+    XCTAssertFalse(sut.descriptionLabel.isHidden)
+  }
+
+  func testDescriptionLabelLoadsSentToSelf() {
+    let counterparty = MockSummaryCellVM.mockTwitterCounterparty()
+    let viewModel = MockSummaryCellVM.testSummaryInstance(isSentToSelf: true, isLightningUpgrade: false, counterpartyConfig: counterparty)
+    sut.configure(with: viewModel)
+    let expectedText = viewModel.sentToSelfText
+    XCTAssertEqual(sut.descriptionLabel.text, expectedText)
+    XCTAssertFalse(sut.descriptionLabel.isHidden)
+  }
+
+  func testDescriptionLabelLoadsLightningUpgrade() {
+    let counterparty = MockSummaryCellVM.mockTwitterCounterparty()
+    let viewModel = MockSummaryCellVM.testSummaryInstance(isSentToSelf: true, isLightningUpgrade: true, counterpartyConfig: counterparty)
+    sut.configure(with: viewModel)
+    let expectedText = viewModel.lightningUpgradeText
+    XCTAssertEqual(sut.descriptionLabel.text, expectedText)
+    XCTAssertFalse(sut.descriptionLabel.isHidden)
+  }
+
   func testMemoIsLoadedAndShown() {
     let expectedMemo = "Concert tickets"
     let viewModel = MockSummaryCellVM.testSummaryInstance(memo: expectedMemo)
