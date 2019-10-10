@@ -127,12 +127,12 @@ enum AnalyticsManagerEventType: String {
   case attemptedToPayInvoice = "AttemptedToPayInvoice"
   case lightningToOnChainSuccessful = "LightningToOnChainSuccessful"
   case lightningTransactionDetailsPressed = "LightningTransactionDetailsPressed"
+  case onChainToLightningSuccessful = "OnChainToLightningSuccessful"
+  case externalLightningInvoiceInput = "ExternalLightningInvoiceInput"
+  case paymentToInvoiceFailed = "PaymentToInvoiceFailed"
 
   //TODO
-  case onChainToLightningSuccessful = "OnChainToLightningSuccessful"
-  case externalLightningInvoicePaid = "ExternalLightningInvoicePaid"
   case lightningDropBitInvoicePaid = "LightningDropBitInvoicePaid"
-  case paymentToInvoiceFailed = "PaymentToInvoiceFailed" //partially done
 
   var id: String {
     return self.rawValue

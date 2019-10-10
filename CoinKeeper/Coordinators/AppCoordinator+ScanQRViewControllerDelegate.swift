@@ -62,6 +62,7 @@ extension AppCoordinator: ScanQRViewControllerDelegate {
     resolveLightningInvoice(invoice: lightningInvoice) { response in
       switch response {
       case .success(let decodedInvoice):
+        self.analyticsManager.track(event: .externalLightningInvoiceInput, with: nil)
         let currencyPair = CurrencyPair(btcPrimaryWith: self.currencyController)
         let viewModel = SendPaymentViewModel(encodedInvoice: lightningInvoice, decodedInvoice: decodedInvoice,
                                              exchangeRates: self.exchangeRates, currencyPair: currencyPair)

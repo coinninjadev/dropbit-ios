@@ -156,9 +156,9 @@ class LightningAddressRequestPaymentWorker: AddressRequestPaymentWorker {
     }
 
     let lightningInputs = LightningPaymentInputs(sats: satsToPay, invoice: invoice, sharedPayload: outgoingTxData.sharedPayloadDTO)
-    //TODO: track invoice payment
     return paymentDelegate.payAndPersistLightningRequest(withInputs: lightningInputs, invitation: pendingInvitation, to: outgoingTxData.receiver)
       .then(in: context) { response -> Promise<Void> in
+        self.analyticsManager.track(event: .lightningDropBitInvoicePaid, with: nil)
         var outgoingCopy = outgoingTxData
         outgoingCopy.txid = response.result.cleanedId
         return self.completeWalletAddressRequestFulfillmentLocally(outgoingTransactionData: outgoingCopy, invitationId: responseId,

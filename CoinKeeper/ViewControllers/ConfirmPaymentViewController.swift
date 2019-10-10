@@ -140,7 +140,7 @@ class ConfirmPaymentViewController: PresentableViewController, StoryboardInitial
     let inputs = LightningPaymentInputs(sats: viewModel.btcAmount.asFractionalUnits(of: .BTC),
                                         invoice: viewModel.invoice,
                                         sharedPayload: viewModel.sharedPayloadDTO)
-    delegate.viewControllerDidConfirmLightningPayment(self, inputs: inputs, receiver: viewModel.contact?.asDropBitReceiver)
+    delegate.viewControllerDidConfirmLightningPayment(self, inputs: inputs, receiver: viewModel.contact)
   }
 
   private func confirmInvite(with viewModel: ConfirmPaymentInviteViewModel,
