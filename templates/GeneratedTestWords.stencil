@@ -9,7 +9,15 @@ public struct GeneratedTestWords {
     return "{{ argument.recoverOnlyWords }}".components(separatedBy: "_")
   }
 
-  static var recoverOnlyFirstAddress: String {
-    return "{{ argument.recoverOnlyFirstAddress }}"
+	static var recoverOnlyLegacyWords: [String] {
+    return "{{ argument.recoverOnlyLegacyWords }}".components(separatedBy: "_")
+  }
+
+	static var recoverOnlyLegacyDeactivatedWords: [String] {
+    return "{{ argument.recoverOnlyLegacyDeactivatedWords }}".components(separatedBy: "_")
+  }
+
+  static var recoverOnlyFirstTestnetAddress: String {
+    return "{{ argument.recoverOnlyFirstTestnetAddress }}"
   }
 }

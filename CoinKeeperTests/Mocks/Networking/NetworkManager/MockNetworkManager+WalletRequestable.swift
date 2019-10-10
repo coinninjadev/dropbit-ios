@@ -24,6 +24,10 @@ extension MockNetworkManager: WalletRequestable {
     return Promise { _ in }
   }
 
+  func updateWallet(walletFlags: Int) -> Promise<WalletResponse> {
+    return Promise { _ in }
+  }
+
   func walletCheckIn() -> Promise<CheckInResponse> {
     if walletCheckInShouldSucceed {
       let response = CheckInResponse.sampleInstance()!
@@ -40,6 +44,10 @@ extension MockNetworkManager: WalletRequestable {
   }
 
   func subscribeToWallet(with deviceEndpointId: String) -> Promise<Void> {
+    return Promise { _ in }
+  }
+
+  func replaceWallet(body: ReplaceWalletBody) -> Promise<WalletResponse> {
     return Promise { _ in }
   }
 }

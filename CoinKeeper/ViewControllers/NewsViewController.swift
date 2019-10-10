@@ -10,8 +10,9 @@ import Foundation
 import UIKit
 import Charts
 import PromiseKit
+import SVProgressHUD
 
-protocol NewsViewControllerDelegate: ViewControllerDismissable, URLOpener {
+protocol NewsViewControllerDelegate: CurrencyValueDataSourceType, ViewControllerDismissable, URLOpener {
   func viewControllerDidRequestNewsData(count: Int) -> Promise<[NewsArticleResponse]>
   func viewControllerDidRequestPriceDataFor(period: PricePeriod) -> Promise<[PriceSummaryResponse]>
   func viewControllerBecameVisible(_ viewController: UIViewController)
@@ -21,8 +22,8 @@ protocol NewsViewControllerDelegate: ViewControllerDismissable, URLOpener {
 final class NewsViewController: BaseViewController, StoryboardInitializable {
 
   @IBOutlet var tableView: UITableView!
-  @IBOutlet var loadingSpinner: UIActivityIndicatorView!
   @IBOutlet var newsErrorLabel: UILabel!
+  @IBOutlet var closeButton: UIButton!
 
   private var newsViewControllerDDS: NewsViewControllerDDS?
 
@@ -32,27 +33,19 @@ final class NewsViewController: BaseViewController, StoryboardInitializable {
     self?.tableView.reloadData()
   }
 
-  static func newInstance(with delegate: NewsViewControllerDelegate) -> NewsViewController {
-    let controller = NewsViewController.makeFromStoryboard()
-    controller.generalCoordinationDelegate = delegate
-    return controller
+  static func newInstance(delegate: NewsViewControllerDelegate) -> NewsViewController {
+    let vc = NewsViewController.makeFromStoryboard()
+    vc.delegate = delegate
+    vc.currencyValueManager = delegate
+    return vc
   }
 
   required init?(coder aDecoder: NSCoder) {
     super.init(coder: aDecoder)
   }
 
-  var coordinationDelegate: NewsViewControllerDelegate? {
-    return generalCoordinationDelegate as? NewsViewControllerDelegate
-  }
-
-  override var generalCoordinationDelegate: AnyObject? {
-    didSet {
-      currencyValueManager = generalCoordinationDelegate as? CurrencyValueDataSourceType
-    }
-  }
-
-  weak var currencyValueManager: CurrencyValueDataSourceType?
+  private(set) weak var delegate: NewsViewControllerDelegate!
+  private(set) weak var currencyValueManager: CurrencyValueDataSourceType?
 
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -71,20 +64,28 @@ final class NewsViewController: BaseViewController, StoryboardInitializable {
     tableView.showsVerticalScrollIndicator = false
     tableView.backgroundColor = .lightGrayBackground
 
+    closeButton.backgroundColor = UIColor(gray: 255, alpha: 0.7)
+    closeButton.applyCornerRadius(closeButton.frame.width / 2)
+
     newsErrorLabel.font = .light(13)
     newsErrorLabel.textColor = .darkGrayText
+
+    SVProgressHUD.show()
 
     CKNotificationCenter.subscribe(self, [.didUpdateExchangeRates: #selector(refreshDisplayedPrice)])
     currencyValueManager?.latestExchangeRates(responseHandler: updateRatesRequest)
 
-    if let delegate = coordinationDelegate {
-      newsViewControllerDDS?.setupDataSet(coordinationDelegate: delegate)
-    }
+    newsViewControllerDDS?.setupDataSet(coordinationDelegate: delegate)
+  }
+
+  @IBAction func closeButtonWasTouched() {
+    SVProgressHUD.dismiss()
+    delegate.viewControllerDidSelectClose(self)
   }
 
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
-    coordinationDelegate?.viewControllerBecameVisible(self)
+    delegate.viewControllerBecameVisible(self)
   }
 
   @objc private func refreshDisplayedPrice() {
@@ -99,17 +100,17 @@ extension NewsViewController: NewsViewControllerDDSDelegate {
   }
 
   func delegateDidRequestUrl(_ url: URL) {
-    coordinationDelegate?.viewControllerWillShowNewsArticle(self)
-    coordinationDelegate?.openURL(url, completionHandler: nil)
+    delegate.viewControllerWillShowNewsArticle(self)
+    delegate.openURL(url, completionHandler: nil)
   }
 
   func delegateFinishedLoadingData() {
-    loadingSpinner.stopAnimating()
+    SVProgressHUD.dismiss()
     tableView.isHidden = false
   }
 
   func delegateErrorLoadingData() {
-    loadingSpinner.stopAnimating()
+    SVProgressHUD.dismiss()
     newsErrorLabel.isHidden = false
   }
 }

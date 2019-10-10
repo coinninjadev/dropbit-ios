@@ -1,6 +1,6 @@
 //
 //  BaseViewController.swift
-//  CoinKeeper
+//  DropBit
 //
 //  Created by BJ Miller on 3/6/18.
 //  Copyright © 2018 Coin Ninja, LLC. All rights reserved.
@@ -8,27 +8,34 @@
 
 import UIKit
 
-protocol Coordination: class {
-  var generalCoordinationDelegate: AnyObject? { get set }
-}
+class BaseViewController: UIViewController, AccessibleViewSettable {
 
-class BaseViewController: UIViewController, Coordination, AccessibleViewSettable {
-  weak var generalCoordinationDelegate: AnyObject?
+  var lockStatusNotification: NotificationToken?
+  var unlockStatusNotification: NotificationToken?
+  var unavailableStatusNotification: NotificationToken?
 
-  var statusBarStyle: UIStatusBarStyle = .default {
-    didSet {
-      setNeedsStatusBarAppearanceUpdate()
-    }
-  }
+  var currentLockStatus: LockStatus = LockStatus(rawValue: CKUserDefaults().string(for:
+  .lightningWalletLockedStatus) ?? LockStatus.locked.rawValue) ?? .locked
 
   override var preferredStatusBarStyle: UIStatusBarStyle {
     return statusBarStyle
+  }
+
+  func refreshLockStatus() {
+    switch currentLockStatus {
+    case .locked: lock()
+    case .unlocked: unlock()
+    case .unavailable: makeUnavailable()
+    }
   }
 
   override func viewDidLoad() {
     super.viewDidLoad()
     view.backgroundColor = .lightGrayBackground
     setAccessibilityIdentifiers()
+    registerForLockStatusNotification()
+
+    refreshLockStatus()
   }
 
   /// Subclasses with identifiers should override this method and return the appropriate array
@@ -36,4 +43,40 @@ class BaseViewController: UIViewController, Coordination, AccessibleViewSettable
     return []
   }
 
+  var statusBarStyle: UIStatusBarStyle = .default {
+    didSet {
+      setNeedsStatusBarAppearanceUpdate()
+    }
+  }
+
+  func unlock() {}
+  func lock() {}
+  func makeUnavailable() {}
+
+  fileprivate func registerForLockStatusNotification() {
+    lockStatusNotification = CKNotificationCenter.subscribe(key: .didLockLightning, object: nil, queue: .main, using: { [weak self] _ in
+      guard self?.currentLockStatus != .locked else { return }
+      self?.currentLockStatus = .locked
+      self?.lock()
+    })
+
+    unlockStatusNotification = CKNotificationCenter.subscribe(key: .didUnlockLightning, object: nil, queue: .main, using: { [weak self] _ in
+      guard self?.currentLockStatus != .unlocked else { return }
+      self?.currentLockStatus = .unlocked
+      self?.unlock()
+    })
+
+    unavailableStatusNotification = CKNotificationCenter.subscribe(key: .lightningUnavailable, object: nil, queue: .main, using: { [weak self] _ in
+      guard self?.currentLockStatus != .unavailable else { return }
+      self?.currentLockStatus = .unavailable
+      self?.makeUnavailable()
+    })
+  }
+
+}
+
+enum LockStatus: String {
+  case locked
+  case unlocked
+  case unavailable
 }

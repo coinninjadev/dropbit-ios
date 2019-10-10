@@ -49,7 +49,7 @@ struct DropBitMeConfig {
   }
 }
 
-class DropBitMeViewController: UIViewController, StoryboardInitializable {
+class DropBitMeViewController: BaseViewController, StoryboardInitializable {
 
   private var config: DropBitMeConfig = DropBitMeConfig(publicURLInfo: nil, verifiedFirstTime: false)
   private weak var delegate: DropBitMeViewControllerDelegate!
@@ -74,6 +74,7 @@ class DropBitMeViewController: UIViewController, StoryboardInitializable {
   @IBOutlet var dropBitMeURLButton: LightBorderedButton!
   @IBOutlet var primaryButton: PrimaryActionButton!
   @IBOutlet var secondaryButton: UIButton!
+  @IBOutlet var closeButton: UIButton!
 
   @IBAction func performClose(_ sender: Any) {
     delegate.viewControllerDidSelectClose(self)
@@ -120,9 +121,16 @@ class DropBitMeViewController: UIViewController, StoryboardInitializable {
     return vc
   }
 
+  override func accessibleViewsAndIdentifiers() -> [AccessibleViewElement] {
+    return [
+      (self.view, .dropBitMe(.page)),
+      (closeButton, .dropBitMe(.close))
+    ]
+  }
   override func viewDidLoad() {
     super.viewDidLoad()
 
+    self.view.backgroundColor = .clear
     avatarButton.alpha = 0.0
     semiOpaqueBackgroundView.backgroundColor = UIColor.black.withAlphaComponent(0.6)
     popoverBackgroundView.layer.masksToBounds = true

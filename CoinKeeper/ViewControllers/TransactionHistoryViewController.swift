@@ -1,6 +1,6 @@
 //
 //  TransactionHistoryViewController.swift
-//  CoinKeeper
+//  DropBit
 //
 //  Created by Ben Winters on 4/6/18.
 //  Copyright © 2018 Coin Ninja, LLC. All rights reserved.
@@ -14,106 +14,78 @@ import PromiseKit
 import DZNEmptyDataSet
 
 protocol TransactionHistoryViewControllerDelegate: DeviceCountryCodeProvider &
-  BadgeUpdateDelegate {
+  BadgeUpdateDelegate & URLOpener & LightningReloadDelegate & CurrencyValueDataSourceType &
+  TweetDelegate {
   func viewControllerDidRequestHistoryUpdate(_ viewController: TransactionHistoryViewController)
   func viewControllerDidDisplayTransactions(_ viewController: TransactionHistoryViewController)
   func viewControllerAttemptedToRefreshTransactions(_ viewController: UIViewController)
-
-  func viewControllerDidTapScan(_ viewController: UIViewController, converter: CurrencyConverter)
-  func viewControllerDidTapReceivePayment(_ viewController: UIViewController, converter: CurrencyConverter)
-  func viewControllerDidTapSendPayment(_ viewController: UIViewController, converter: CurrencyConverter)
 
   func viewControllerDidRequestTutorial(_ viewController: UIViewController)
   func viewControllerDidTapGetBitcoin(_ viewController: UIViewController)
   func viewControllerDidTapSpendBitcoin(_ viewController: UIViewController)
 
   var currencyController: CurrencyController { get }
-  func viewControllerShouldAdjustForBottomSafeArea(_ viewController: UIViewController) -> Bool
   func viewControllerSummariesDidReload(_ viewController: TransactionHistoryViewController, indexPathsIfNotAll paths: [IndexPath]?)
-  func viewControllerWillShowTransactionDetails(_ viewController: UIViewController)
   func viewController(_ viewController: TransactionHistoryViewController, didSelectItemAtIndexPath indexPath: IndexPath)
   func viewControllerDidDismissTransactionDetails(_ viewController: UIViewController)
-}
 
-class TransactionHistorySummaryCollectionView: UICollectionView {}
+  /// Return nil to hide header
+  func summaryHeaderType(for viewController: UIViewController) -> SummaryHeaderType?
+  func viewControllerDidSelectSummaryHeader(_ viewController: UIViewController)
+}
 
 class TransactionHistoryViewController: BaseViewController, StoryboardInitializable {
 
+  @IBOutlet var emptyStateBackgroundView: UIView!
+  @IBOutlet var emptyStateBackgroundTopConstraint: NSLayoutConstraint!
   @IBOutlet var summaryCollectionView: TransactionHistorySummaryCollectionView!
   @IBOutlet var transactionHistoryNoBalanceView: TransactionHistoryNoBalanceView!
   @IBOutlet var transactionHistoryWithBalanceView: TransactionHistoryWithBalanceView!
+  @IBOutlet var lockedLightningView: LockedLightningView!
+  @IBOutlet var lightningUnavailableView: LightningUnavailableView!
+  @IBOutlet var lightningTransactionHistoryEmptyBalanceView: LightningTransactionHistoryEmptyView!
   @IBOutlet var refreshView: TransactionHistoryRefreshView!
   @IBOutlet var refreshViewTopConstraint: NSLayoutConstraint!
-  @IBOutlet var sendReceiveActionViewBottomConstraint: NSLayoutConstraint!
-  @IBOutlet var sendReceiveActionView: SendReceiveActionView! {
-    didSet {
-      sendReceiveActionView.actionDelegate = self
-    }
-  }
+  @IBOutlet var footerView: UIView!
   @IBOutlet var gradientBlurView: UIView! {
     didSet {
-      gradientBlurView.backgroundColor = .lightGrayBackground
+      gradientBlurView.backgroundColor = .white
       gradientBlurView.fade(style: .top, percent: 1.0)
     }
   }
 
-  var currencyValueManager: CurrencyValueDataSourceType?
-  var rateManager: ExchangeRateManager = ExchangeRateManager()
+  weak var delegate: TransactionHistoryViewControllerDelegate!
+
+  var viewModel: TransactionHistoryViewModel!
+  var selectedCurrency: SelectedCurrency = .fiat
+
+  static func newInstance(withDelegate delegate: TransactionHistoryViewControllerDelegate,
+                          walletTxType: WalletTransactionType,
+                          dataSource: TransactionHistoryDataSourceType) -> TransactionHistoryViewController {
+    let viewController = TransactionHistoryViewController.makeFromStoryboard()
+    viewController.delegate = delegate
+    viewController.viewModel = TransactionHistoryViewModel(delegate: viewController,
+                                                           detailsDelegate: nil,
+                                                           currencyManager: delegate,
+                                                           deviceCountryCode: delegate.deviceCountryCode(),
+                                                           transactionType: walletTxType,
+                                                           dataSource: dataSource)
+    viewController.viewModel.dataSource.delegate = viewController
+    return viewController
+  }
+
+  var isCollectionViewFullScreen: Bool = false {
+    willSet {
+      footerView.isHidden = !newValue
+      gradientBlurView.isHidden = !newValue
+    }
+  }
 
   override func accessibleViewsAndIdentifiers() -> [AccessibleViewElement] {
     return [
       (self.view, .transactionHistory(.page)),
-      (sendReceiveActionView.receiveButton, .transactionHistory(.receiveButton)),
-      (sendReceiveActionView.sendButton, .transactionHistory(.sendButton)),
       (transactionHistoryNoBalanceView.learnAboutBitcoinButton, .transactionHistory(.tutorialButton))
     ]
-  }
-
-  lazy var phoneFormatter: CKPhoneNumberFormatter = {
-    return CKPhoneNumberFormatter(format: .national)
-  }()
-
-  var deviceCountryCode: Int?
-
-  weak var urlOpener: URLOpener?
-
-  override var generalCoordinationDelegate: AnyObject? {
-    didSet {
-      if let persistedCountryCode = coordinationDelegate?.deviceCountryCode() {
-        self.deviceCountryCode = persistedCountryCode
-      } else if let regionCode = Locale.current.regionCode,
-        let countryCode = phoneNumberKit.countryCode(for: regionCode) {
-        self.deviceCountryCode = Int(countryCode)
-      }
-    }
-  }
-
-  var coordinationDelegate: TransactionHistoryViewControllerDelegate? {
-    return generalCoordinationDelegate as? TransactionHistoryViewControllerDelegate
-  }
-
-  unowned var context: NSManagedObjectContext!
-
-  lazy var frc: NSFetchedResultsController<CKMTransaction> = {
-    let fetchRequest: NSFetchRequest<CKMTransaction> = CKMTransaction.fetchRequest()
-    fetchRequest.sortDescriptors = CKMTransaction.transactionHistorySortDescriptors
-    fetchRequest.fetchBatchSize = 25
-    let controller = NSFetchedResultsController(fetchRequest: fetchRequest,
-                                                managedObjectContext: context,
-                                                sectionNameKeyPath: nil,
-                                                cacheName: nil) // avoid caching unless there is real need as it is often the source of bugs
-    try? controller.performFetch()
-    return controller
-  }()
-
-  func preferredCurrency() -> CurrencyCode {
-    guard let selected = coordinationDelegate?.currencyController.selectedCurrency else { return .USD }
-    switch selected {
-    case .BTC:
-      return .BTC
-    case .fiat:
-      return .USD
-    }
   }
 
   override func viewDidLoad() {
@@ -121,87 +93,68 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
 
     transactionHistoryNoBalanceView.delegate = self
     transactionHistoryWithBalanceView.delegate = self
-
-    self.view.backgroundColor = .lightGrayBackground
-
-    let bottomOffsetIfNeeded: CGFloat = 20
-    if let delegate = coordinationDelegate, delegate.viewControllerShouldAdjustForBottomSafeArea(self) {
-      sendReceiveActionViewBottomConstraint.constant = bottomOffsetIfNeeded
+    lightningTransactionHistoryEmptyBalanceView.delegate = delegate
+    emptyStateBackgroundView.isHidden = false
+    emptyStateBackgroundView.backgroundColor = .whiteBackground
+    if viewModel.walletTransactionType == .onChain {
+      lockedLightningView.isHidden = true
+      lightningUnavailableView.isHidden = true
     }
 
-    view.layoutIfNeeded()
+    view.backgroundColor = .clear
+    emptyStateBackgroundView.applyCornerRadius(30, toCorners: .top)
+    delegate.viewControllerDidRequestBadgeUpdate(self)
 
-    coordinationDelegate?.viewControllerDidRequestBadgeUpdate(self)
+    CKNotificationCenter.subscribe(self, key: .didUpdateWordsBackedUp, selector: #selector(didUpdateWordsBackedUp))
 
     setupCollectionViews()
-    self.frc.delegate = self
   }
 
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     navigationController?.setNavigationBarHidden(true, animated: true)
+    resetCollectionView()
   }
 
   override func viewWillDisappear(_ animated: Bool) {
     super.viewWillDisappear(animated)
     // In case new transactions came it while this view was open, this will hide the badge
-    coordinationDelegate?.viewControllerDidDisplayTransactions(self)
+    delegate.viewControllerDidDisplayTransactions(self)
+  }
+
+  override func lock() {
+    if viewModel.walletTransactionType == .lightning {
+      lockedLightningView.isHidden = false
+      lightningUnavailableView.isHidden = true
+    }
+  }
+
+  override func makeUnavailable() {
+    if viewModel.walletTransactionType == .lightning {
+      lockedLightningView.isHidden = true
+      lightningUnavailableView.isHidden = false
+    }
+  }
+
+  override func unlock() {
+    lockedLightningView.isHidden = true
+    lightningUnavailableView.isHidden = true
   }
 
   internal func reloadTransactions(atIndexPaths paths: [IndexPath]) {
     summaryCollectionView.reloadItems(at: paths)
-    coordinationDelegate?.viewControllerSummariesDidReload(self, indexPathsIfNotAll: paths)
+    delegate.viewControllerSummariesDidReload(self, indexPathsIfNotAll: paths)
   }
 
-  func detailViewModel(at indexPath: IndexPath) -> TransactionHistoryDetailCellViewModel {
-    let transaction = frc.object(at: indexPath)
-    return TransactionHistoryDetailCellViewModel(
-      transaction: transaction,
-      rates: rateManager.exchangeRates,
-      primaryCurrency: preferredCurrency(),
-      deviceCountryCode: deviceCountryCode
-    )
-  }
-
-  func summaryViewModel(for transaction: CKMTransaction) -> TransactionHistorySummaryCellViewModel {
-    return TransactionHistorySummaryCellViewModel(
-      transaction: transaction,
-      rates: rateManager.exchangeRates,
-      primaryCurrency: preferredCurrency(),
-      deviceCountryCode: deviceCountryCode
-    )
-  }
-
-  private func setupCollectionViews() {
-    summaryCollectionView.registerNib(cellType: TransactionHistorySummaryCell.self)
-    summaryCollectionView.alwaysBounceVertical = true
-
-    summaryCollectionView.delegate = self
-    summaryCollectionView.dataSource = self
-    summaryCollectionView.backgroundColor = .clear
-
-    summaryCollectionView.collectionViewLayout = summaryCollectionViewLayout()
-
-    reloadCollectionViews()
-
-    summaryCollectionView.emptyDataSetSource = self
-    summaryCollectionView.emptyDataSetDelegate = self
-  }
-
-  fileprivate func reloadCollectionViews() {
-    summaryCollectionView.reloadData()
-    coordinationDelegate?.viewControllerSummariesDidReload(self, indexPathsIfNotAll: nil)
-  }
 }
 
 extension TransactionHistoryViewController { // Layout
 
   func showDetailCollectionView(_ shouldShow: Bool, indexPath: IndexPath, animated: Bool) {
     if shouldShow {
-      coordinationDelegate?.viewControllerWillShowTransactionDetails(self)
-      coordinationDelegate?.viewController(self, didSelectItemAtIndexPath: indexPath)
+      delegate.viewController(self, didSelectItemAtIndexPath: indexPath)
     } else {
-      coordinationDelegate?.viewControllerDidDismissTransactionDetails(self)
+      delegate.viewControllerDidDismissTransactionDetails(self)
     }
   }
 
@@ -212,45 +165,34 @@ extension TransactionHistoryViewController { // Layout
 
 }
 
-extension TransactionHistoryViewController: NSFetchedResultsControllerDelegate {
-  func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+extension TransactionHistoryViewController: TransactionHistoryDataSourceDelegate {
+  func transactionDataSourceWillChange() {
+    transactionHistoryWithBalanceView.isHidden = true
+    transactionHistoryNoBalanceView.isHidden = true
+    lightningTransactionHistoryEmptyBalanceView.isHidden = true
+  }
+
+  func transactionDataSourceDidChange() {
     reloadCollectionViews()
   }
 
-  func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-    transactionHistoryWithBalanceView.isHidden = true
-    transactionHistoryNoBalanceView.isHidden = true
+  @objc func didUpdateWordsBackedUp() {
+    transactionDataSourceDidChange()
   }
+
 }
 
 extension TransactionHistoryViewController: NoTransactionsViewDelegate {
   func noTransactionsViewDidSelectGetBitcoin(_ view: TransactionHistoryEmptyView) {
-    coordinationDelegate?.viewControllerDidTapGetBitcoin(self)
+    delegate.viewControllerDidTapGetBitcoin(self)
   }
 
   func noTransactionsViewDidSelectSpendBitcoin(_ view: TransactionHistoryEmptyView) {
-    coordinationDelegate?.viewControllerDidTapSpendBitcoin(self)
+    delegate.viewControllerDidTapSpendBitcoin(self)
   }
 
   func noTransactionsViewDidSelectLearnAboutBitcoin(_ view: TransactionHistoryEmptyView) {
-    coordinationDelegate?.viewControllerDidRequestTutorial(self)
-  }
-}
-
-extension TransactionHistoryViewController: SendReceiveActionViewDelegate {
-  func actionViewDidSelectReceive(_ view: UIView) {
-    guard let coordinator = coordinationDelegate else { return }
-    coordinator.viewControllerDidTapReceivePayment(self, converter: coordinator.currencyController.currencyConverter)
-  }
-
-  func actionViewDidSelectScan(_ view: UIView) {
-    guard let coordinator = coordinationDelegate else { return }
-    coordinator.viewControllerDidTapScan(self, converter: coordinator.currencyController.currencyConverter)
-  }
-
-  func actionViewDidSelectSend(_ view: UIView) {
-    guard let coordinator = coordinationDelegate else { return }
-    coordinator.viewControllerDidTapSendPayment(self, converter: coordinator.currencyController.currencyConverter)
+    delegate.viewControllerDidRequestTutorial(self)
   }
 }
 
@@ -258,27 +200,42 @@ extension TransactionHistoryViewController: SelectedCurrencyUpdatable {
   func updateSelectedCurrency(to selectedCurrency: SelectedCurrency) {
     let summaryIndexSet = IndexSet(integersIn: (0..<summaryCollectionView.numberOfSections))
     summaryCollectionView.reloadSections(summaryIndexSet)
-    coordinationDelegate?.viewControllerSummariesDidReload(self, indexPathsIfNotAll: nil)
+    delegate.viewControllerSummariesDidReload(self, indexPathsIfNotAll: nil)
   }
 }
 
-extension TransactionHistoryViewController: ExchangeRateUpdateable {
+extension TransactionHistoryViewController: TransactionHistoryViewModelDelegate {
 
-  func didUpdateExchangeRateManager(_ exchangeRateManager: ExchangeRateManager) {
-    rateManager.exchangeRates = exchangeRateManager.exchangeRates
-    coordinationDelegate?.currencyController.exchangeRates = exchangeRateManager.exchangeRates
+  var currencyController: CurrencyController {
+    return delegate.currencyController
+  }
+
+  func viewModelDidUpdateExchangeRates() {
     reloadCollectionViews()
+  }
+
+  func summaryHeaderType() -> SummaryHeaderType? {
+    return delegate.summaryHeaderType(for: self)
+  }
+
+  func didTapSummaryHeader(_ header: TransactionHistorySummaryHeader) {
+    self.delegate.viewControllerDidSelectSummaryHeader(self)
   }
 
 }
 
 extension TransactionHistoryViewController: DZNEmptyDataSetDelegate, DZNEmptyDataSetSource {
+
   func emptyDataSetShouldBeForced(toDisplay scrollView: UIScrollView!) -> Bool {
-    return shouldShowNoBalanceView || shouldShowWithBalanceView
+    return viewModel.shouldShowEmptyDataSet
   }
 
   func emptyDataSetShouldDisplay(_ scrollView: UIScrollView!) -> Bool {
-    return shouldShowNoBalanceView || shouldShowWithBalanceView
+    let shouldDisplay = viewModel.shouldShowEmptyDataSet
+    let offset = verticalOffset(forEmptyDataSet: scrollView)
+    emptyStateBackgroundTopConstraint.constant = SummaryCollectionView.topInset + offset
+    emptyStateBackgroundView.isHidden = !shouldDisplay
+    return shouldDisplay
   }
 
   func emptyDataSetShouldAllowTouch(_ scrollView: UIScrollView!) -> Bool {
@@ -286,22 +243,34 @@ extension TransactionHistoryViewController: DZNEmptyDataSetDelegate, DZNEmptyDat
   }
 
   func customView(forEmptyDataSet scrollView: UIScrollView!) -> UIView! {
-    if shouldShowNoBalanceView {
+    let dataSetType = viewModel.emptyDataSetToDisplay()
+    switch dataSetType {
+    case .noBalance:
       transactionHistoryNoBalanceView.isHidden = false
       return transactionHistoryNoBalanceView
-    }
-    if shouldShowWithBalanceView {
+    case .balance:
       transactionHistoryWithBalanceView.isHidden = false
       return transactionHistoryWithBalanceView
+    case .lightning:
+      lightningTransactionHistoryEmptyBalanceView.isHidden = false
+      return lightningTransactionHistoryEmptyBalanceView
+    case .none:
+      return nil
     }
-    return nil
   }
 
-  private var shouldShowNoBalanceView: Bool {
-    return (frc.fetchedObjects?.count ?? 0) == 0
-  }
+  func verticalOffset(forEmptyDataSet scrollView: UIScrollView!) -> CGFloat {
+    let headerIsShown = delegate.summaryHeaderType(for: self) != nil
+    let headerHeight = headerIsShown ? self.viewModel.warningHeaderHeight : 0
+    let dataSetType = viewModel.emptyDataSetToDisplay()
+    switch dataSetType {
+    case .balance:
+      let contentOffset = (headerHeight + SummaryCollectionView.cellHeight) / 2
+      let paddedOffset = (contentOffset > 0) ? (contentOffset + 20) : 0
+      return paddedOffset
 
-  private var shouldShowWithBalanceView: Bool {
-    return (frc.fetchedObjects?.count ?? 0) == 1
+    default:
+      return 0
+    }
   }
 }

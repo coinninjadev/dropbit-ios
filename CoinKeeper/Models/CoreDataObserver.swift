@@ -29,10 +29,8 @@ extension CoreDataObserver {
       object: nil,
       queue: nil,
       using: { [weak self] notification in
-        guard let strongSelf = self else { return }
-        guard let context = notification.object as? NSManagedObjectContext, context.parent == nil else { return }
-
-        strongSelf.handleWillSaveContext(context)
+        guard let context = notification.object as? NSManagedObjectContext else { return }
+        self?.handleWillSaveContext(context)
     })
 
     return NotificationToken(notificationCenter: .default, token: willSaveToken)
@@ -44,10 +42,8 @@ extension CoreDataObserver {
       object: nil,
       queue: nil,
       using: { [weak self] notification in
-        guard let strongSelf = self else { return }
-        guard let context = notification.object as? NSManagedObjectContext, context.parent == nil else { return }
-
-        strongSelf.handleDidSaveContext(context)
+        guard let context = notification.object as? NSManagedObjectContext else { return }
+        self?.handleDidSaveContext(context)
     })
     return NotificationToken(notificationCenter: .default, token: didSaveToken)
   }

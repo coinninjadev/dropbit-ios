@@ -28,16 +28,19 @@ class WalletBroker: CKPersistenceBroker, WalletBrokerType {
 
   func resetWallet() throws {
     let bgContext = self.databaseManager.createBackgroundContext()
-    self.deleteWallet(in: bgContext)
+    try self.deleteWallet(in: bgContext)
     try bgContext.performThrowingAndWait {
       _ = CKMWallet.findOrCreate(in: bgContext)
-      try bgContext.save()
+      try bgContext.saveRecursively()
     }
   }
 
   func walletWords() -> [String]? {
-    let maybeWords = keychainManager.retrieveValue(for: .walletWords) as? [String]
-    if let words = maybeWords, words.count == 12 {
+    let segwitWords = keychainManager.retrieveValue(for: .walletWordsV2) as? [String]
+    let maybeLegacyWords = keychainManager.retrieveValue(for: .walletWords) as? [String]
+    if let words = segwitWords, words.count == 12 {
+      return words
+    } else if let words = maybeLegacyWords, words.count == 12 {
       return words
     }
     return nil
@@ -53,8 +56,8 @@ class WalletBroker: CKPersistenceBroker, WalletBrokerType {
     userDefaultsManager.removeValue(for: .walletID)
   }
 
-  func deleteWallet(in context: NSManagedObjectContext) {
-    databaseManager.deleteAll(in: context)
+  func deleteWallet(in context: NSManagedObjectContext) throws {
+    try databaseManager.deleteAll(in: context)
     userDefaultsManager.deleteWallet()
     keychainManager.deleteAll()
   }
@@ -93,8 +96,8 @@ class WalletBroker: CKPersistenceBroker, WalletBrokerType {
   }
 
   func updateWalletLastIndexes(in context: NSManagedObjectContext) {
-    let lastReceiveIndex = CKMDerivativePath.maxUsedReceiveIndex(in: context)
-    let lastChangeIndex = CKMDerivativePath.maxUsedChangeIndex(in: context)
+    let lastReceiveIndex = CKMDerivativePath.maxUsedReceiveIndex(forCoin: usableCoin, in: context)
+    let lastChangeIndex = CKMDerivativePath.maxUsedChangeIndex(forCoin: usableCoin, in: context)
     databaseManager.updateLastReceiveAddressIndex(index: lastReceiveIndex, in: context)
     databaseManager.updateLastChangeAddressIndex(index: lastChangeIndex, in: context)
   }
@@ -118,6 +121,19 @@ class WalletBroker: CKPersistenceBroker, WalletBrokerType {
     set {
       let numbers: [NSNumber] = Array(newValue).map { NSNumber(value: $0) } // map Set<Int> to [NSNumber]
       userDefaultsManager.set(NSArray(array: numbers), for: .receiveAddressIndexGaps)
+    }
+  }
+
+  var usableCoin: CNBBaseCoin {
+    var coinType: CoinType = .MainNet
+    #if DEBUG
+    coinType = CKUserDefaults().useRegtest ? .TestNet : .MainNet
+    #endif
+    let possibleSegwitWords = keychainManager.retrieveValue(for: .walletWordsV2) as? [String]
+    if let words = possibleSegwitWords, words.count == 12 {
+      return CNBBaseCoin(purpose: .BIP84, coin: coinType, account: 0)
+    } else {
+      return CNBBaseCoin(purpose: .BIP49, coin: coinType, account: 0)
     }
   }
 

@@ -1,6 +1,6 @@
 //
 //  BitcoinAddressValidator.swift
-//  CoinKeeper
+//  DropBit
 //
 //  Created by Mitchell on 5/9/18.
 //  Copyright © 2018 Coin Ninja, LLC. All rights reserved.
@@ -35,6 +35,8 @@ enum BitcoinAddressValidatorError: ValidatorTypeError {
 class BitcoinAddressValidator: ValidatorType<String> {
 
   override func validate(value: String) throws {
+    guard value.isNotEmpty else { throw BitcoinAddressValidatorError.isInvalidBitcoinAddress }
+    guard value != "1111111111111111111114oLvT2" else { throw BitcoinAddressValidatorError.isInvalidBitcoinAddress }
     let address = value.lowercased()
     var error: BitcoinAddressValidatorError?
     let possibleHRPs = ["bc", "tb"]
@@ -64,7 +66,9 @@ class BitcoinAddressValidator: ValidatorType<String> {
   }
 
   /// matches Android regex, with escaped backslashes
-  private let validAddressRegex = "((?:bc1|[13])[a-zA-HJ-NP-Z0-9]{25,39}(?![a-zA-HJ-NP-Z0-9]))((?:\\?.*&?)(?:amount=)((?:[0-9]+)(?:\\.[0-9]{1,8})?))?"
+  private var validAddressRegex: String {
+    return "((?:bc1|tb1|[123])[a-zA-HJ-NP-Z0-9]{25,39}(?![a-zA-HJ-NP-Z0-9]))((?:\\?.*&?)(?:amount=)((?:[0-9]+)(?:\\.[0-9]{1,8})?))?"
+  }
 
   private func match(forRegex regex: String, in text: String) -> String? {
     do {

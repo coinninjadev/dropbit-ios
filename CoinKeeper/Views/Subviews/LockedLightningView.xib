@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="LockedLightningView" customModule="DropBit" customModuleProvider="target">
+            <connections>
+                <outlet property="backgroundView" destination="CbC-hw-If6" id="5NX-2v-CGY"/>
+                <outlet property="containerView" destination="NfS-wf-swy" id="evH-kE-RbP"/>
+                <outlet property="descriptionLabel" destination="Hpl-41-MQj" id="gH5-om-D4u"/>
+                <outlet property="descriptionTitle" destination="Bmo-kw-00S" id="Hqj-I9-kWF"/>
+                <outlet property="detailLabel" destination="n3x-Uq-Q2n" id="p31-M0-ziX"/>
+                <outlet property="titleLabel" destination="gvi-KI-8xN" id="o4B-nV-cvj"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="1dv-EJ-eFd">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="618"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CbC-hw-If6" customClass="LightningUpgradeGradientOverlayView" customModule="DropBit" customModuleProvider="target">
+                    <rect key="frame" x="0.0" y="0.0" width="414" height="658"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NfS-wf-swy">
+                    <rect key="frame" x="30" y="320.5" width="354" height="157"/>
+                    <subviews>
+                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="4cy-8w-jZD">
+                            <rect key="frame" x="20" y="20" width="314" height="117"/>
+                            <subviews>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="WANT TO SKIP THE LINE?" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Bmo-kw-00S">
+                                    <rect key="frame" x="56.5" y="0.0" width="201" height="20.5"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                    <nil key="textColor"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <stackView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" alignment="center" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="XcI-ty-Vxo">
+                                    <rect key="frame" x="0.0" y="35.5" width="314" height="81.5"/>
+                                    <subviews>
+                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="whiteBlueDropbit" translatesAutoresizingMaskIntoConstraints="NO" id="3YM-w5-AOL">
+                                            <rect key="frame" x="0.0" y="25" width="21" height="32"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="21" id="pQ8-V8-WGO"/>
+                                            </constraints>
+                                        </imageView>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Find a DropBit Lightning user to send you a few sats using your verified phone number or Twitter handle" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Hpl-41-MQj">
+                                            <rect key="frame" x="31" y="0.0" width="283" height="81.5"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="Hpl-41-MQj" firstAttribute="top" secondItem="XcI-ty-Vxo" secondAttribute="top" id="9rv-En-cRj"/>
+                                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="45" id="Nhr-CD-gL7"/>
+                                    </constraints>
+                                </stackView>
+                            </subviews>
+                            <constraints>
+                                <constraint firstAttribute="trailing" secondItem="XcI-ty-Vxo" secondAttribute="trailing" id="TvP-4G-sY9"/>
+                                <constraint firstItem="XcI-ty-Vxo" firstAttribute="leading" secondItem="4cy-8w-jZD" secondAttribute="leading" id="bmj-iq-NJU"/>
+                            </constraints>
+                        </stackView>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="0.2030149647887324" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="bottom" secondItem="4cy-8w-jZD" secondAttribute="bottom" constant="20" id="2hk-7F-Tv4"/>
+                        <constraint firstAttribute="height" constant="157" id="H6G-iE-ecE"/>
+                        <constraint firstAttribute="trailing" secondItem="4cy-8w-jZD" secondAttribute="trailing" constant="20" id="Lee-H4-a6w"/>
+                        <constraint firstItem="4cy-8w-jZD" firstAttribute="leading" secondItem="NfS-wf-swy" secondAttribute="leading" constant="20" id="RDX-Eg-7b6"/>
+                        <constraint firstItem="4cy-8w-jZD" firstAttribute="top" secondItem="NfS-wf-swy" secondAttribute="top" constant="20" id="tzg-r1-j2l"/>
+                    </constraints>
+                </view>
+                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="dkn-gl-e0T">
+                    <rect key="frame" x="15" y="165.5" width="384" height="130"/>
+                    <subviews>
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="lightningLock" translatesAutoresizingMaskIntoConstraints="NO" id="tNn-sl-rYg">
+                            <rect key="frame" x="171.5" y="0.0" width="41" height="59"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="41" id="gk6-ak-pTC"/>
+                                <constraint firstAttribute="height" constant="59" id="ihu-gz-DHA"/>
+                            </constraints>
+                        </imageView>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" text="YOU'RE IN LINE!" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gvi-KI-8xN">
+                            <rect key="frame" x="129.5" y="74" width="125" height="20.5"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Check back every day to see if you're unlocked!" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="n3x-Uq-Q2n">
+                            <rect key="frame" x="10" y="109.5" width="364" height="20.5"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                </stackView>
+            </subviews>
+            <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstItem="dkn-gl-e0T" firstAttribute="centerX" secondItem="1dv-EJ-eFd" secondAttribute="centerX" id="2Tb-Ha-tMK"/>
+                <constraint firstItem="5Sg-iB-7hg" firstAttribute="trailing" secondItem="dkn-gl-e0T" secondAttribute="trailing" constant="15" id="9E0-DX-7ko"/>
+                <constraint firstItem="NfS-wf-swy" firstAttribute="centerY" secondItem="1dv-EJ-eFd" secondAttribute="centerY" constant="90" id="F6u-50-ZyJ"/>
+                <constraint firstItem="dkn-gl-e0T" firstAttribute="leading" secondItem="5Sg-iB-7hg" secondAttribute="leading" constant="15" id="JGv-ex-NF9"/>
+                <constraint firstItem="NfS-wf-swy" firstAttribute="centerX" secondItem="1dv-EJ-eFd" secondAttribute="centerX" id="L4U-r8-Rha"/>
+                <constraint firstItem="5Sg-iB-7hg" firstAttribute="trailing" secondItem="NfS-wf-swy" secondAttribute="trailing" constant="30" id="U0M-Ee-B5t"/>
+                <constraint firstItem="CbC-hw-If6" firstAttribute="leading" secondItem="5Sg-iB-7hg" secondAttribute="leading" id="d3m-c6-uwJ"/>
+                <constraint firstItem="NfS-wf-swy" firstAttribute="leading" secondItem="5Sg-iB-7hg" secondAttribute="leading" constant="30" id="jXv-FE-G21"/>
+                <constraint firstItem="CbC-hw-If6" firstAttribute="top" secondItem="1dv-EJ-eFd" secondAttribute="top" id="wQx-7E-kqm"/>
+                <constraint firstItem="NfS-wf-swy" firstAttribute="top" secondItem="dkn-gl-e0T" secondAttribute="bottom" constant="25" id="y2P-8x-ZmV"/>
+                <constraint firstItem="5Sg-iB-7hg" firstAttribute="trailing" secondItem="CbC-hw-If6" secondAttribute="trailing" id="ykC-Kq-DOt"/>
+                <constraint firstAttribute="bottom" secondItem="CbC-hw-If6" secondAttribute="bottom" constant="-40" id="zfx-7T-UrE"/>
+            </constraints>
+            <nil key="simulatedTopBarMetrics"/>
+            <nil key="simulatedBottomBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <viewLayoutGuide key="safeArea" id="5Sg-iB-7hg"/>
+            <point key="canvasLocation" x="24.637681159420293" y="26.785714285714285"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="lightningLock" width="41" height="56"/>
+        <image name="whiteBlueDropbit" width="19" height="32"/>
+    </resources>
+</document>

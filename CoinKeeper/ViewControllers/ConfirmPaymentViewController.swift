@@ -1,6 +1,6 @@
 //
 //  ConfirmPaymentViewController.swift
-//  CoinKeeper
+//  DropBit
 //
 //  Created by Mitchell on 4/25/18.
 //  Copyright © 2018 Coin Ninja, LLC. All rights reserved.
@@ -9,16 +9,13 @@
 import UIKit
 import CNBitcoinKit
 
-protocol ConfirmPaymentViewControllerDelegate: ViewControllerDismissable {
+protocol ConfirmPaymentViewControllerDelegate: ViewControllerDismissable, AllPaymentSendingDelegate {
   func confirmPaymentViewControllerDidLoad(_ viewController: UIViewController)
-  func viewControllerDidConfirmPayment(
-    _ viewController: UIViewController,
-    transactionData: CNBTransactionData,
-    rates: ExchangeRates,
-    outgoingTransactionData: OutgoingTransactionData
-  )
-  func viewControllerDidConfirmInvite(_ viewController: UIViewController, outgoingInvitationDTO: OutgoingInvitationDTO)
-  func viewControllerRequestedShowFeeTooExpensiveAlert(_ viewController: UIViewController)
+
+  func viewControllerDidConfirmInvite(_ viewController: UIViewController,
+                                      outgoingInvitationDTO: OutgoingInvitationDTO,
+                                      walletTxType: WalletTransactionType)
+
 }
 
 typealias BitcoinUSDPair = (btcAmount: NSDecimalNumber, usdAmount: NSDecimalNumber)
@@ -33,7 +30,7 @@ class ConfirmPaymentViewController: PresentableViewController, StoryboardInitial
     vc.transactionType = type
     vc.viewModel = viewModel
     vc.feeModel = feeModel
-    vc.generalCoordinationDelegate = delegate
+    vc.delegate = delegate
     return vc
   }
 
@@ -45,13 +42,8 @@ class ConfirmPaymentViewController: PresentableViewController, StoryboardInitial
   private var viewModel: BaseConfirmPaymentViewModel!
   private var feeModel: ConfirmTransactionFeeModel!
 
-  lazy private var confirmLongPressGestureRecognizer: UILongPressGestureRecognizer =
-    UILongPressGestureRecognizer(target: self, action: #selector(confirmButtonDidConfirm))
-
-  private var feedbackGenerator: UIImpactFeedbackGenerator = UIImpactFeedbackGenerator(style: .medium)
-
+  @IBOutlet var walletTransactionTypeButton: CompactActionButton!
   @IBOutlet var closeButton: UIButton!
-  @IBOutlet var confirmButton: ConfirmPaymentButton!
   @IBOutlet var primaryCurrencyLabel: UILabel!
   @IBOutlet var secondaryCurrencyLabel: UILabel!
   @IBOutlet var networkFeeLabel: UILabel!
@@ -62,13 +54,11 @@ class ConfirmPaymentViewController: PresentableViewController, StoryboardInitial
   @IBOutlet var primaryAddressLabel: UILabel!
   @IBOutlet var memoContainerView: ConfirmPaymentMemoView!
   @IBOutlet var secondaryAddressLabel: UILabel!
-  @IBOutlet var tapAndHoldLabel: UILabel!
   @IBOutlet var avatarBackgroundView: UIView!
   @IBOutlet var avatarImageView: UIImageView!
+  @IBOutlet var confirmView: ConfirmView!
 
-  var coordinationDelegate: ConfirmPaymentViewControllerDelegate? {
-    return generalCoordinationDelegate as? ConfirmPaymentViewControllerDelegate
-  }
+  private(set) weak var delegate: ConfirmPaymentViewControllerDelegate!
 
   @IBAction func changeFeeType(_ sender: UISegmentedControl) {
     guard let model = feeModel else { return }
@@ -81,7 +71,7 @@ class ConfirmPaymentViewController: PresentableViewController, StoryboardInitial
         self.viewModel.update(with: self.feeModel.transactionData)
 
       } else {
-        coordinationDelegate?.viewControllerRequestedShowFeeTooExpensiveAlert(self)
+        delegate.viewControllerRequestedShowFeeTooExpensiveAlert(self)
       }
 
       self.updateFeeViews()
@@ -92,73 +82,81 @@ class ConfirmPaymentViewController: PresentableViewController, StoryboardInitial
   }
 
   @IBAction func closeButtonWasTouched() {
-    coordinationDelegate?.viewControllerDidSelectClose(self)
-  }
-
-  @IBAction func confirmButtonWasHeld() {
-    feedbackGenerator.impactOccurred()
-    confirmButton.animate()
-  }
-
-  @IBAction func confirmButtonWasReleased() {
-    confirmButton.reset()
+    delegate.viewControllerDidSelectClose(self)
   }
 
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    feedbackGenerator.prepare()
-    confirmLongPressGestureRecognizer.allowableMovement = 1000
-    confirmLongPressGestureRecognizer.minimumPressDuration = confirmButton.secondsToConfirm
-    confirmButton.addGestureRecognizer(confirmLongPressGestureRecognizer)
     setupViews()
+    confirmView.delegate = self
 
-    coordinationDelegate?.confirmPaymentViewControllerDidLoad(self)
+    if let viewModel = viewModel {
+      switch viewModel.walletTransactionType {
+      case .onChain:
+        confirmView.style = .onChain
+      case .lightning:
+        confirmView.style = .lightning
+      }
+    }
+
+    delegate.confirmPaymentViewControllerDidLoad(self)
 
     updateViewWithModel()
   }
 
-  @objc func confirmButtonDidConfirm() {
-    if confirmLongPressGestureRecognizer.state == .began {
-      switch transactionType {
-      case .invite:
-        confirmInvite(with: viewModel, feeModel: self.feeModel)
-      case .payment:
-        confirmPayment(with: viewModel, feeModel: self.feeModel)
-      }
+  private func routeConfirmedPayment(for viewModel: BaseConfirmPaymentViewModel, feeModel: ConfirmTransactionFeeModel) {
+    switch viewModel.walletTransactionType {
+    case .onChain:
+      guard let onChainVM = viewModel as? ConfirmOnChainPaymentViewModel else { return }
+      confirmOnChainPayment(with: onChainVM, feeModel: feeModel)
+    case .lightning:
+      guard let lightningVM = viewModel as? ConfirmLightningPaymentViewModel else { return }
+      confirmLightningPayment(with: lightningVM)
     }
-
-    confirmButton.reset()
   }
 
-  private func confirmPayment(with baseViewModel: BaseConfirmPaymentViewModel,
-                              feeModel: ConfirmTransactionFeeModel) {
-    guard let viewModel = baseViewModel as? ConfirmPaymentViewModel else { return }
-    var feeAdjustedOutgoingTxData = viewModel.outgoingTransactionData
-    feeAdjustedOutgoingTxData.amount = Int(feeModel.transactionData.amount)
-    feeAdjustedOutgoingTxData.feeAmount = Int(feeModel.transactionData.feeAmount)
+  private func confirmOnChainPayment(with viewModel: ConfirmOnChainPaymentViewModel,
+                                     feeModel: ConfirmTransactionFeeModel) {
+    guard let txData = feeModel.transactionData else {
+      log.error("Transaction data is nil for on chain payment confirmation")
+      return
+    }
 
-    coordinationDelegate?.viewControllerDidConfirmPayment(
+    var feeAdjustedOutgoingTxData = viewModel.outgoingTransactionData
+    feeAdjustedOutgoingTxData.amount = Int(txData.amount)
+    feeAdjustedOutgoingTxData.feeAmount = Int(txData.feeAmount)
+
+    delegate.viewControllerDidConfirmOnChainPayment(
       self,
-      transactionData: feeModel.transactionData,
+      transactionData: txData,
       rates: viewModel.exchangeRates,
       outgoingTransactionData: feeAdjustedOutgoingTxData
     )
   }
 
-  private func confirmInvite(with baseViewModel: BaseConfirmPaymentViewModel,
+  private func confirmLightningPayment(with viewModel: ConfirmLightningPaymentViewModel) {
+    let inputs = LightningPaymentInputs(sats: viewModel.btcAmount.asFractionalUnits(of: .BTC),
+                                        invoice: viewModel.invoice,
+                                        sharedPayload: viewModel.sharedPayloadDTO)
+    delegate.viewControllerDidConfirmLightningPayment(self, inputs: inputs, receiver: viewModel.contact?.asDropBitReceiver)
+  }
+
+  private func confirmInvite(with viewModel: ConfirmPaymentInviteViewModel,
                              feeModel: ConfirmTransactionFeeModel) {
-    guard let viewModel = baseViewModel as? ConfirmPaymentInviteViewModel,
-      let contact = viewModel.contact else { return }
+    guard let contact = viewModel.contact else { return }
     let btcAmount = viewModel.btcAmount
     let converter = CurrencyConverter(fromBtcTo: .USD, fromAmount: btcAmount, rates: viewModel.exchangeRates)
 
     let pair = (btcAmount: btcAmount, usdAmount: converter.amount(forCurrency: .USD) ?? NSDecimalNumber(decimal: 0.0))
     let outgoingInvitationDTO = OutgoingInvitationDTO(contact: contact,
                                                       btcPair: pair,
-                                                      fee: feeModel.feeAmount,
+                                                      fee: feeModel.networkFeeAmount,
+                                                      walletTxType: viewModel.walletTransactionType,
                                                       sharedPayloadDTO: viewModel.sharedPayloadDTO)
-    coordinationDelegate?.viewControllerDidConfirmInvite(self, outgoingInvitationDTO: outgoingInvitationDTO)
+    delegate.viewControllerDidConfirmInvite(self,
+                                            outgoingInvitationDTO: outgoingInvitationDTO,
+                                            walletTxType: viewModel.walletTransactionType)
   }
 
 }
@@ -186,7 +184,6 @@ extension ConfirmPaymentViewController {
 
     primaryAddressLabel.backgroundColor = UIColor.clear
     primaryAddressLabel.font = .medium(14)
-    primaryAddressLabel.adjustsFontSizeToFitWidth = true
 
     memoContainerView.isHidden = true
 
@@ -194,10 +191,24 @@ extension ConfirmPaymentViewController {
     secondaryAddressLabel.textColor = .darkGrayText
     secondaryAddressLabel.font = .regular(13)
 
-    tapAndHoldLabel.textColor = .darkGrayText
-    tapAndHoldLabel.font = .medium(13)
+    if let viewModel = viewModel {
+      switch viewModel.walletTransactionType {
+      case .lightning:
+        networkFeeLabel.isHidden = true
+        primaryAddressLabel.lineBreakMode = .byTruncatingMiddle
+        walletTransactionTypeButton.style = .lightning(true)
+        walletTransactionTypeButton.setAttributedTitle(NSAttributedString.lightningSelectedButtonTitle, for: .normal)
+      case .onChain:
+        primaryAddressLabel.adjustsFontSizeToFitWidth = true
+        walletTransactionTypeButton.style = .bitcoin(true)
+        walletTransactionTypeButton.setAttributedTitle(NSAttributedString.bitcoinSelectedButton, for: .normal)
+      }
+    }
 
     adjustableFeesControl.tintColor = .primaryActionButton
+    if #available(iOS 13, *) {
+      adjustableFeesControl.selectedSegmentTintColor = .primaryActionButton
+    }
     adjustableFeesControl.backgroundColor = .lightGrayBackground
     adjustableFeesControl.setTitleTextAttributes([
       .font: UIFont.medium(10),
@@ -219,7 +230,7 @@ extension ConfirmPaymentViewController {
 
   fileprivate func updateAmountViews() {
     let converter = viewModel.generateCurrencyConverter(withBTCAmount: viewModel.btcAmount)
-    let labels = viewModel.dualAmountLabels(withConverter: converter)
+    let labels = viewModel.dualAmountLabels(withConverter: converter, walletTransactionType: viewModel.walletTransactionType)
     primaryCurrencyLabel.text = labels.primary
     secondaryCurrencyLabel.attributedText = labels.secondary
   }
@@ -237,17 +248,18 @@ extension ConfirmPaymentViewController {
 
       adjustableFeesLabel.attributedText = vm.attributedWaitTimeDescription
 
-    case .required, .standard:
+    case .required, .standard, .lightning:
       adjustableFeesContainer.isHidden = true
     }
 
-    let feeDecimalAmount = NSDecimalNumber(integerAmount: feeModel.feeAmount, currency: .BTC)
+    let feeDecimalAmount = NSDecimalNumber(integerAmount: feeModel.networkFeeAmount, currency: .BTC)
     let feeConverter = CurrencyConverter(fromBtcTo: .USD,
                                          fromAmount: feeDecimalAmount,
                                          rates: self.viewModel.exchangeRates)
     let btcFee = String(describing: feeConverter.amount(forCurrency: .BTC) ?? 0)
-    let fiatFee = feeConverter.amountStringWithSymbol(forCurrency: .USD) ?? ""
-    networkFeeLabel.text = "Network Fee \(btcFee) (\(fiatFee))"
+    let fiatFeeAmount = feeConverter.amount(forCurrency: .USD)
+    let fiatFeeString = FiatFormatter(currency: .USD, withSymbol: true).string(fromDecimal: fiatFeeAmount ?? .zero) ?? ""
+    networkFeeLabel.text = "Network Fee \(btcFee) (\(fiatFeeString))"
   }
 
   fileprivate func updateRecipientViews() {
@@ -258,8 +270,8 @@ extension ConfirmPaymentViewController {
 
     // Set default contact and address label values
     contactLabel.text = viewModel.contact?.displayName
-    primaryAddressLabel.text = viewModel.address
-    secondaryAddressLabel.text = viewModel.address
+    primaryAddressLabel.text = viewModel.paymentTarget
+    secondaryAddressLabel.text = viewModel.paymentTarget
 
     if let contact = viewModel.contact {
       // May refer to either an actual contact or a manually entered phone number
@@ -318,13 +330,26 @@ extension ConfirmPaymentViewController {
     if let memo = viewModel.memo {
       memoContainerView.isHidden = false
 
-      memoContainerView.configure(memo: memo,
-                                  isShared: viewModel.shouldShareMemo,
-                                  isSent: false,
-                                  isIncoming: false,
-                                  recipientName: viewModel.contact?.displayName)
+      let config = ConfirmPaymentMemoViewConfig(memo: memo, isShared: viewModel.shouldShareMemo,
+                                                isSent: false, isIncoming: false,
+                                                recipientName: viewModel.contact?.displayName)
+      memoContainerView.configure(with: config)
     } else {
       memoContainerView.isHidden = true
+    }
+  }
+
+}
+
+extension ConfirmPaymentViewController: ConfirmViewDelegate {
+
+  func viewDidConfirm() {
+    switch transactionType {
+    case .invite:
+      guard let inviteVM = viewModel as? ConfirmPaymentInviteViewModel else { return }
+      self.confirmInvite(with: inviteVM, feeModel: feeModel)
+    case .payment:
+      routeConfirmedPayment(for: viewModel, feeModel: self.feeModel)
     }
   }
 

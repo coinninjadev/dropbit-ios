@@ -1,6 +1,6 @@
 //
 //  QueryUsers.swift
-//  CoinKeeper
+//  DropBit
 //
 //  Created by Mitchell on 5/29/18.
 //  Copyright © 2018 Coin Ninja, LLC. All rights reserved.
@@ -22,5 +22,17 @@ extension Dictionary: ResponseDecodable where Key == String, Value == String {
 
   static var requiredStringKeys: [KeyPath<StringDictResponse, String>] { return [] }
   static var optionalStringKeys: [WritableKeyPath<StringDictResponse, String?>] { return [] }
+
+}
+
+typealias StringResponse = String
+extension String: ResponseDecodable {
+
+  static var sampleJSON: String {
+    return "Success"
+  }
+
+  static var requiredStringKeys: [KeyPath<String, String>] { return [] }
+  static var optionalStringKeys: [WritableKeyPath<String, String?>] { return [] }
 
 }

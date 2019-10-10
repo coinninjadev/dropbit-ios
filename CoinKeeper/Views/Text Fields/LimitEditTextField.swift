@@ -1,6 +1,6 @@
 //
 //  LimitEditTextField.swift
-//  CoinKeeper
+//  DropBit
 //
 //  Created by Mitchell on 7/16/18.
 //  Copyright © 2018 Coin Ninja, LLC. All rights reserved.
@@ -10,6 +10,7 @@ import Foundation
 import UIKit
 
 class LimitEditTextField: UITextField {
+
   var shouldDisableActions: Bool = true
   var disabledActions: [Selector] = [#selector(UIResponderStandardEditActions.paste(_:)), #selector(UIResponderStandardEditActions.cut(_:)),
                                      #selector(UIResponderStandardEditActions.selectAll(_:)), #selector(UIResponderStandardEditActions.select(_:)),
@@ -25,9 +26,10 @@ class LimitEditTextField: UITextField {
   override func awakeFromNib() {
     super.awakeFromNib()
     backgroundColor = UIColor.clear
-    textColor = .lightBlueTint
+    textColor = .darkBlueText
     keyboardType = .decimalPad
     font = .regular(30)
     shouldDisableActions = true
   }
+
 }

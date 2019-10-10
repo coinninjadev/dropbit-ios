@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
-    <device id="retina4_7" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14868" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14824"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -25,8 +23,12 @@
                                     <constraint firstAttribute="height" constant="86" id="WR4-AT-Y4j"/>
                                 </constraints>
                             </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="D7Z-lW-169">
+                                <rect key="frame" x="5" y="140" width="365" height="527"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </view>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="GX7-DA-6R2" customClass="TransactionHistorySummaryCollectionView" customModule="DropBit" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="20" width="375" height="572"/>
+                                <rect key="frame" x="5" y="0.0" width="365" height="667"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="h1X-vI-UYr">
                                     <size key="itemSize" width="50" height="50"/>
@@ -37,44 +39,68 @@
                                 <cells/>
                             </collectionView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Fsb-uW-qUJ">
-                                <rect key="frame" x="0.0" y="576" width="375" height="16"/>
+                                <rect key="frame" x="5" y="551" width="365" height="16"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="16" id="obI-w7-xbW"/>
                                 </constraints>
                             </view>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Vc7-dJ-Wpy" customClass="SendReceiveActionView" customModule="DropBit" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="592" width="375" height="75"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Lt8-y7-dfC">
+                                <rect key="frame" x="5" y="567" width="365" height="100"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="75" id="YFR-2n-qnl"/>
+                                    <constraint firstAttribute="height" constant="100" id="bqy-qJ-Xdn"/>
                                 </constraints>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2ov-av-mIi" customClass="LockedLightningView" customModule="DropBit" customModuleProvider="target">
+                                <rect key="frame" x="5" y="140" width="365" height="527"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wFM-eQ-jUH" customClass="LightningUnavailableView" customModule="DropBit" customModuleProvider="target">
+                                <rect key="frame" x="5" y="140" width="365" height="527"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                             </view>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstItem="wFM-eQ-jUH" firstAttribute="top" secondItem="2ov-av-mIi" secondAttribute="top" id="3AH-8X-pGl"/>
                             <constraint firstItem="GX7-DA-6R2" firstAttribute="top" secondItem="JGv-XL-uiR" secondAttribute="top" id="7DN-fy-t7g"/>
-                            <constraint firstItem="Vc7-dJ-Wpy" firstAttribute="top" secondItem="Fsb-uW-qUJ" secondAttribute="bottom" id="9al-pi-EiF"/>
-                            <constraint firstItem="Vc7-dJ-Wpy" firstAttribute="leading" secondItem="JGv-XL-uiR" secondAttribute="leading" id="NAG-gI-65L"/>
-                            <constraint firstItem="JGv-XL-uiR" firstAttribute="trailing" secondItem="GX7-DA-6R2" secondAttribute="trailing" id="WgW-MD-OhW"/>
+                            <constraint firstAttribute="bottom" secondItem="D7Z-lW-169" secondAttribute="bottom" id="BOi-jc-N2s"/>
+                            <constraint firstItem="JGv-XL-uiR" firstAttribute="trailing" secondItem="2ov-av-mIi" secondAttribute="trailing" constant="5" id="Ddq-ff-4nX"/>
+                            <constraint firstItem="Lt8-y7-dfC" firstAttribute="top" secondItem="Fsb-uW-qUJ" secondAttribute="bottom" id="FYV-om-2Sq"/>
+                            <constraint firstItem="wFM-eQ-jUH" firstAttribute="leading" secondItem="2ov-av-mIi" secondAttribute="leading" id="N8e-dF-jdz"/>
+                            <constraint firstItem="2ov-av-mIi" firstAttribute="top" secondItem="dvX-tA-FaC" secondAttribute="top" constant="140" id="QjO-zd-D7w"/>
+                            <constraint firstItem="2ov-av-mIi" firstAttribute="leading" secondItem="JGv-XL-uiR" secondAttribute="leading" constant="5" id="TMR-wZ-Zez"/>
+                            <constraint firstItem="JGv-XL-uiR" firstAttribute="trailing" secondItem="GX7-DA-6R2" secondAttribute="trailing" constant="5" id="WgW-MD-OhW"/>
+                            <constraint firstItem="Lt8-y7-dfC" firstAttribute="bottom" secondItem="dvX-tA-FaC" secondAttribute="bottom" id="WsK-Vt-edy"/>
                             <constraint firstItem="Av0-bG-xgJ" firstAttribute="top" secondItem="dvX-tA-FaC" secondAttribute="top" id="XAy-Ne-KPx"/>
-                            <constraint firstItem="GX7-DA-6R2" firstAttribute="leading" secondItem="JGv-XL-uiR" secondAttribute="leading" id="bLZ-Tk-V3L"/>
+                            <constraint firstItem="Lt8-y7-dfC" firstAttribute="leading" secondItem="JGv-XL-uiR" secondAttribute="leading" constant="5" id="Z8h-2k-POK"/>
+                            <constraint firstItem="GX7-DA-6R2" firstAttribute="leading" secondItem="JGv-XL-uiR" secondAttribute="leading" constant="5" id="bLZ-Tk-V3L"/>
+                            <constraint firstItem="wFM-eQ-jUH" firstAttribute="trailing" secondItem="2ov-av-mIi" secondAttribute="trailing" id="bQs-5F-ck4"/>
+                            <constraint firstAttribute="bottom" secondItem="GX7-DA-6R2" secondAttribute="bottom" id="bbA-lC-U1f"/>
+                            <constraint firstItem="Fsb-uW-qUJ" firstAttribute="leading" secondItem="JGv-XL-uiR" secondAttribute="leading" constant="5" id="cqJ-0P-1Fb"/>
                             <constraint firstItem="Av0-bG-xgJ" firstAttribute="leading" secondItem="JGv-XL-uiR" secondAttribute="leading" id="dhp-1R-Qqb"/>
+                            <constraint firstAttribute="bottom" secondItem="2ov-av-mIi" secondAttribute="bottom" id="fVf-qJ-dvb"/>
                             <constraint firstItem="Av0-bG-xgJ" firstAttribute="trailing" secondItem="JGv-XL-uiR" secondAttribute="trailing" id="fX8-qv-xc2"/>
-                            <constraint firstItem="JGv-XL-uiR" firstAttribute="trailing" secondItem="Vc7-dJ-Wpy" secondAttribute="trailing" id="kYG-VA-aQ2"/>
-                            <constraint firstItem="JGv-XL-uiR" firstAttribute="bottom" secondItem="Vc7-dJ-Wpy" secondAttribute="bottom" id="n9x-LX-J2U"/>
-                            <constraint firstItem="Fsb-uW-qUJ" firstAttribute="centerX" secondItem="Vc7-dJ-Wpy" secondAttribute="centerX" id="uZo-He-nlP"/>
-                            <constraint firstItem="Fsb-uW-qUJ" firstAttribute="width" secondItem="Vc7-dJ-Wpy" secondAttribute="width" id="vI9-hm-7MI"/>
-                            <constraint firstItem="Vc7-dJ-Wpy" firstAttribute="top" secondItem="GX7-DA-6R2" secondAttribute="bottom" id="xnO-b1-Ecq"/>
+                            <constraint firstItem="D7Z-lW-169" firstAttribute="leading" secondItem="JGv-XL-uiR" secondAttribute="leading" constant="5" id="gQh-mr-Ffx"/>
+                            <constraint firstItem="D7Z-lW-169" firstAttribute="top" secondItem="dvX-tA-FaC" secondAttribute="top" constant="140" id="h92-Ng-INE"/>
+                            <constraint firstItem="JGv-XL-uiR" firstAttribute="trailing" secondItem="Lt8-y7-dfC" secondAttribute="trailing" constant="5" id="hEQ-Wk-IMx"/>
+                            <constraint firstItem="wFM-eQ-jUH" firstAttribute="bottom" secondItem="2ov-av-mIi" secondAttribute="bottom" id="i7w-EP-kxq"/>
+                            <constraint firstItem="Fsb-uW-qUJ" firstAttribute="trailing" secondItem="JGv-XL-uiR" secondAttribute="trailing" constant="-5" id="mCa-Xx-JuO"/>
+                            <constraint firstItem="JGv-XL-uiR" firstAttribute="trailing" secondItem="D7Z-lW-169" secondAttribute="trailing" constant="5" id="ppe-ZJ-vkj"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="JGv-XL-uiR"/>
                     </view>
                     <connections>
+                        <outlet property="emptyStateBackgroundTopConstraint" destination="h92-Ng-INE" id="y5t-xj-K0w"/>
+                        <outlet property="emptyStateBackgroundView" destination="D7Z-lW-169" id="meS-Mo-6a4"/>
+                        <outlet property="footerView" destination="Lt8-y7-dfC" id="6Rh-i8-37p"/>
                         <outlet property="gradientBlurView" destination="Fsb-uW-qUJ" id="zaQ-fS-lfw"/>
+                        <outlet property="lightningTransactionHistoryEmptyBalanceView" destination="2ME-xd-Art" id="QTU-jR-ik7"/>
+                        <outlet property="lightningUnavailableView" destination="wFM-eQ-jUH" id="HzL-Qu-TU8"/>
+                        <outlet property="lockedLightningView" destination="2ov-av-mIi" id="tbt-gH-rDb"/>
                         <outlet property="refreshView" destination="Av0-bG-xgJ" id="dNg-B0-57u"/>
                         <outlet property="refreshViewTopConstraint" destination="XAy-Ne-KPx" id="Itl-x4-z0W"/>
-                        <outlet property="sendReceiveActionView" destination="Vc7-dJ-Wpy" id="xFT-hX-Wp9"/>
-                        <outlet property="sendReceiveActionViewBottomConstraint" destination="n9x-LX-J2U" id="9ed-X3-CKE"/>
                         <outlet property="summaryCollectionView" destination="GX7-DA-6R2" id="WdE-Nn-Ajz"/>
                         <outlet property="transactionHistoryNoBalanceView" destination="Ktw-Zy-1lf" id="TOP-P2-OHv"/>
                         <outlet property="transactionHistoryWithBalanceView" destination="Ew6-Jf-eqb" id="MXo-6q-XxK"/>
@@ -197,8 +223,113 @@
                         <outlet property="spendBitcoinButton" destination="hB7-Jf-4qE" id="2vX-FQ-PGZ"/>
                     </connections>
                 </view>
+                <view contentMode="scaleToFill" id="2ME-xd-Art" customClass="LightningTransactionHistoryEmptyView" customModule="DropBit" customModuleProvider="target">
+                    <rect key="frame" x="0.0" y="0.0" width="317" height="221"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <subviews>
+                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="3LZ-BY-qly">
+                            <rect key="frame" x="10" y="122" width="297" height="95"/>
+                            <subviews>
+                                <stackView opaque="NO" contentMode="scaleToFill" alignment="top" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="fLk-oG-lqR">
+                                    <rect key="frame" x="0.0" y="0.0" width="297" height="50"/>
+                                    <subviews>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QCm-fx-OKS" customClass="LightningActionButton" customModule="DropBit" customModuleProvider="target">
+                                            <rect key="frame" x="0.0" y="0.0" width="70.5" height="50"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="50" id="HQm-5N-nH6"/>
+                                            </constraints>
+                                            <state key="normal" title="$5"/>
+                                            <connections>
+                                                <action selector="lowAmountButtonWasTouched" destination="2ME-xd-Art" eventType="touchUpInside" id="k4p-DK-evZ"/>
+                                            </connections>
+                                        </button>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IOh-Qi-xIR" customClass="LightningActionButton" customModule="DropBit" customModuleProvider="target">
+                                            <rect key="frame" x="75.5" y="0.0" width="70.5" height="50"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="50" id="5YB-7i-2wg"/>
+                                            </constraints>
+                                            <state key="normal" title="$20"/>
+                                            <connections>
+                                                <action selector="mediumAmountButtonWasTouched" destination="2ME-xd-Art" eventType="touchUpInside" id="JHV-6s-B1A"/>
+                                            </connections>
+                                        </button>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="URI-ML-Wa5" customClass="LightningActionButton" customModule="DropBit" customModuleProvider="target">
+                                            <rect key="frame" x="151" y="0.0" width="70.5" height="50"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="50" id="ahF-vd-REN"/>
+                                            </constraints>
+                                            <state key="normal" title="$50"/>
+                                            <connections>
+                                                <action selector="highAmountButtonWasTouched" destination="2ME-xd-Art" eventType="touchUpInside" id="EPY-CM-9Ar"/>
+                                            </connections>
+                                        </button>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6dm-fF-XTb" customClass="LightningActionButton" customModule="DropBit" customModuleProvider="target">
+                                            <rect key="frame" x="226.5" y="0.0" width="70.5" height="50"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="50" id="0PU-N2-Uhv"/>
+                                            </constraints>
+                                            <state key="normal" title="$100"/>
+                                            <connections>
+                                                <action selector="maxAmountButtonWasTouched" destination="2ME-xd-Art" eventType="touchUpInside" id="xeI-kr-0x9"/>
+                                            </connections>
+                                        </button>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="6dm-fF-XTb" firstAttribute="width" secondItem="QCm-fx-OKS" secondAttribute="width" id="NWE-2R-cPa"/>
+                                        <constraint firstItem="URI-ML-Wa5" firstAttribute="width" secondItem="QCm-fx-OKS" secondAttribute="width" id="Qt8-rd-A8h"/>
+                                        <constraint firstItem="IOh-Qi-xIR" firstAttribute="width" secondItem="QCm-fx-OKS" secondAttribute="width" id="daD-CB-dve"/>
+                                    </constraints>
+                                </stackView>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WNx-bS-Fag">
+                                    <rect key="frame" x="0.0" y="65" width="297" height="30"/>
+                                    <state key="normal" title="CUSTOM AMOUNT"/>
+                                    <connections>
+                                        <action selector="customAmountButtonWasTouched" destination="2ME-xd-Art" eventType="touchUpInside" id="Zib-uN-PXk"/>
+                                    </connections>
+                                </button>
+                            </subviews>
+                        </stackView>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="NOTHING'S HERE YET, LOAD YOUR LIGHTNING WALLET" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hTS-cT-5lo">
+                            <rect key="frame" x="10" y="10" width="297" height="41"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="OH, and we’ll cover the fees everytime you load " textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="U6u-c4-KH1">
+                            <rect key="frame" x="10" y="61" width="297" height="41"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstItem="U6u-c4-KH1" firstAttribute="leading" secondItem="JBj-0H-M4c" secondAttribute="leading" constant="10" id="KK0-vd-TNz"/>
+                        <constraint firstItem="U6u-c4-KH1" firstAttribute="centerX" secondItem="2ME-xd-Art" secondAttribute="centerX" id="Phj-Th-z9T"/>
+                        <constraint firstItem="hTS-cT-5lo" firstAttribute="leading" secondItem="JBj-0H-M4c" secondAttribute="leading" constant="10" id="Pj4-YV-w2H"/>
+                        <constraint firstItem="U6u-c4-KH1" firstAttribute="trailing" secondItem="JBj-0H-M4c" secondAttribute="trailing" constant="-10" id="TL4-ys-Eon"/>
+                        <constraint firstItem="hTS-cT-5lo" firstAttribute="trailing" secondItem="JBj-0H-M4c" secondAttribute="trailing" constant="-10" id="WYY-pZ-yJY"/>
+                        <constraint firstItem="3LZ-BY-qly" firstAttribute="centerX" secondItem="2ME-xd-Art" secondAttribute="centerX" id="cLZ-TB-fxn"/>
+                        <constraint firstItem="3LZ-BY-qly" firstAttribute="top" secondItem="U6u-c4-KH1" secondAttribute="bottom" constant="20" id="i3u-KX-R2a"/>
+                        <constraint firstItem="hTS-cT-5lo" firstAttribute="top" secondItem="JBj-0H-M4c" secondAttribute="top" constant="10" id="lXS-kg-7xX"/>
+                        <constraint firstItem="3LZ-BY-qly" firstAttribute="leading" secondItem="JBj-0H-M4c" secondAttribute="leading" constant="10" id="lmm-Lg-IIt"/>
+                        <constraint firstItem="hTS-cT-5lo" firstAttribute="centerX" secondItem="2ME-xd-Art" secondAttribute="centerX" id="oVZ-ph-2tk"/>
+                        <constraint firstItem="U6u-c4-KH1" firstAttribute="top" secondItem="hTS-cT-5lo" secondAttribute="bottom" constant="10" id="qGb-kv-3Sr"/>
+                        <constraint firstItem="JBj-0H-M4c" firstAttribute="trailing" secondItem="3LZ-BY-qly" secondAttribute="trailing" constant="10" id="row-GN-W9J"/>
+                    </constraints>
+                    <viewLayoutGuide key="safeArea" id="JBj-0H-M4c"/>
+                    <connections>
+                        <outlet property="customAmountButton" destination="WNx-bS-Fag" id="g4q-pP-Wt0"/>
+                        <outlet property="detailLabel" destination="U6u-c4-KH1" id="Fq9-ut-G1C"/>
+                        <outlet property="highAmountButton" destination="URI-ML-Wa5" id="1bi-TK-OB6"/>
+                        <outlet property="lowAmountButton" destination="QCm-fx-OKS" id="XAC-9b-HNF"/>
+                        <outlet property="maxAmountButton" destination="6dm-fF-XTb" id="bjF-5t-UCq"/>
+                        <outlet property="mediumAmountButton" destination="IOh-Qi-xIR" id="QOY-Rr-WhK"/>
+                        <outlet property="titleLabel" destination="hTS-cT-5lo" id="HFz-Lt-rYt"/>
+                    </connections>
+                </view>
             </objects>
-            <point key="canvasLocation" x="-471.19999999999999" y="-35.532233883058474"/>
+            <point key="canvasLocation" x="-1335.2" y="-180.35982008995504"/>
         </scene>
     </scenes>
 </document>

@@ -10,7 +10,7 @@ import PromiseKit
 
 protocol TransactionNotificationRequestable: AnyObject {
   func addTransactionNotification(body: CreateTransactionNotificationBody) -> Promise<Void>
-  func fetchTransactionNotifications(forTxid txid: String) -> Promise<[TransactionNotificationResponse]>
+  func fetchTransactionNotifications(forId id: String) -> Promise<[TransactionNotificationResponse]>
 }
 
 extension NetworkManager: TransactionNotificationRequestable {
@@ -19,8 +19,8 @@ extension NetworkManager: TransactionNotificationRequestable {
     return cnProvider.requestVoid(TransactionNotificationTarget.create(body))
   }
 
-  func fetchTransactionNotifications(forTxid txid: String) -> Promise<[TransactionNotificationResponse]> {
-    return cnProvider.requestList(TransactionNotificationTarget.get(txid))
+  func fetchTransactionNotifications(forId id: String) -> Promise<[TransactionNotificationResponse]> {
+    return cnProvider.requestList(TransactionNotificationTarget.get(id))
   }
 
 }

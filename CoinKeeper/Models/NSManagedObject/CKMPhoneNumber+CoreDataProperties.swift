@@ -1,6 +1,6 @@
 //
 //  CKMPhoneNumber+CoreDataProperties.swift
-//  CoinKeeper
+//  DropBit
 //
 //  Created by BJ Miller on 6/2/18.
 //  Copyright © 2018 Coin Ninja, LLC. All rights reserved.
@@ -23,6 +23,7 @@ extension CKMPhoneNumber {
   @NSManaged public var counterparty: CKMCounterparty?
   @NSManaged public var invitations: Set<CKMInvitation>
   @NSManaged public var transactions: Set<CKMTransaction>
+  @NSManaged public var walletEntries: Set<CKMWalletEntry>
 
 }
 

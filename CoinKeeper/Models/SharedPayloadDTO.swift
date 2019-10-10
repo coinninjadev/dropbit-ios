@@ -39,6 +39,7 @@ struct SharedPayloadAmountInfo {
 
 struct SharedPayloadDTO {
   var addressPubKeyState: AddressPublicKeyState
+  var walletTxType: WalletTransactionType
   var sharingDesired: Bool
   var memo: String?
   var amountInfo: SharedPayloadAmountInfo?
@@ -47,15 +48,21 @@ struct SharedPayloadDTO {
     return sharingDesired && addressPubKeyState.allowsSharing
   }
 
-  init(addressPubKeyState: AddressPublicKeyState, sharingDesired: Bool, memo: String?, amountInfo: SharedPayloadAmountInfo?) {
+  init(addressPubKeyState: AddressPublicKeyState,
+       walletTxType: WalletTransactionType,
+       sharingDesired: Bool,
+       memo: String?,
+       amountInfo: SharedPayloadAmountInfo?) {
     self.addressPubKeyState = addressPubKeyState
+    self.walletTxType = walletTxType
     self.sharingDesired = sharingDesired
     self.memo = memo
     self.amountInfo = amountInfo
   }
 
   static func emptyInstance() -> SharedPayloadDTO {
-    return SharedPayloadDTO(addressPubKeyState: .none, sharingDesired: false, memo: nil, amountInfo: nil)
+    return SharedPayloadDTO(addressPubKeyState: .none, walletTxType: .onChain,
+                            sharingDesired: false, memo: nil, amountInfo: nil)
   }
 
   mutating func updatePubKeyState(with addressResponse: WalletAddressesQueryResponse) {
@@ -63,6 +70,13 @@ struct SharedPayloadDTO {
       addressPubKeyState = .known(key)
     } else {
       addressPubKeyState = .invite
+    }
+  }
+
+  var shouldEncryptWithEphemeralKey: Bool {
+    switch walletTxType {
+    case .onChain:    return true
+    case .lightning:  return false
     }
   }
 

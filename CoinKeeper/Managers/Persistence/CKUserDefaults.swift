@@ -22,6 +22,7 @@ class CKUserDefaults: PersistenceUserDefaultsType {
   enum Key: String, CaseIterable {
     case invitationPopup
     case firstTimeOpeningApp
+    case firstOpenDate
     case exchangeRateBTCUSD
     case feeBest
     case feeBetter
@@ -46,10 +47,14 @@ class CKUserDefaults: PersistenceUserDefaultsType {
     case selectedCurrency
     case lastContactCacheReload
     case dontShowShareTransaction
+    case dontShowLightningRefill
     case yearlyPriceHighNotificationEnabled
     case lastTimeEnteredBackground
     case adjustableFeesEnabled
     case preferredTransactionFeeMode
+    case selectedWalletTransactionType
+    case lightningWalletLockedStatus
+    case regtest
 
     var defaultsString: String { return self.rawValue }
   }
@@ -68,7 +73,9 @@ class CKUserDefaults: PersistenceUserDefaultsType {
       .backupWordsReminderShown,
       .unseenTransactionChangesExist,
       .lastSuccessfulSyncCompletedAt,
-      .yearlyPriceHighNotificationEnabled
+      .yearlyPriceHighNotificationEnabled,
+      .lightningWalletLockedStatus,
+      .selectedWalletTransactionType
       ])
   }
 
@@ -78,6 +85,11 @@ class CKUserDefaults: PersistenceUserDefaultsType {
 
   func unverifyUser() {
     removeValues(forKeys: [.userID])
+  }
+
+  var useRegtest: Bool {
+    get { return bool(for: .regtest) }
+    set { set(newValue, for: .regtest) }
   }
 
 }

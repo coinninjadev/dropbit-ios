@@ -18,7 +18,7 @@ class RecoveryWordsIntroPage: UITestPage {
   func tapBackup() -> Self {
     let backupButton = app.buttons["WRITE DOWN WORDS + BACK UP"]
     backupButton.assertExistence(afterWait: .none, elementDesc: "backupButton")
-    backupButton.tap()
+    backupButton.forceTap()
     return self
   }
 
@@ -26,7 +26,18 @@ class RecoveryWordsIntroPage: UITestPage {
   func tapSkip() -> Self {
     let skipButton = app.buttons["SKIP AND BACK UP LATER"]
     skipButton.assertExistence(afterWait: .none, elementDesc: "skipButton")
-    skipButton.tap()
+    skipButton.forceTap()
     return self
+  }
+}
+
+extension XCUIElement {
+  func forceTap() {
+    if self.isHittable {
+      self.tap()
+    } else {
+      let coordinate = self.coordinate(withNormalizedOffset: CGVector(dx: 0.0, dy: 0.0))
+      coordinate.tap()
+    }
   }
 }

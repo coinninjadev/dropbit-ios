@@ -1,6 +1,6 @@
 //
 //  CKPredicate.swift
-//  CoinKeeper
+//  DropBit
 //
 //  Created by Ben Winters on 7/22/18.
 //  Copyright © 2018 Coin Ninja, LLC. All rights reserved.
@@ -8,6 +8,7 @@
 
 import Foundation
 import CoreData
+import CNBitcoinKit
 
 struct CKPredicate {
 
@@ -33,6 +34,11 @@ struct CKPredicate {
       let notNil = NSPredicate(format: "\(path) != nil")
       let notEmpty = NSPredicate(format: "\(path) != %@", "")
       return NSCompoundPredicate(type: .and, subpredicates: [notNil, notEmpty])
+    }
+
+    static func with(transactionType: WalletTransactionType) -> NSPredicate {
+      let path = #keyPath(CKMInvitation.walletTransactionType)
+      return NSPredicate(format: "\(path) == %@", transactionType.rawValue)
     }
 
     static func withoutTxid() -> NSPredicate {
@@ -118,11 +124,11 @@ struct CKPredicate {
       return NSPredicate(format: "\(addressPath) != nil")
     }
 
-    static func forChangeIndex(_ changeIndex: Int) -> NSPredicate {
-      let purposePredicate = NSPredicate(format: "\(purposeKeyPath) = %d", 49)
-      let coinPredicate = NSPredicate(format: "\(coinKeyPath) = %d", 0)
-      let accountPredicate = NSPredicate(format: "\(accountKeyPath) = %d", 0)
-      let changePredicate = NSPredicate(format: "\(changeKeyPath) = %d", changeIndex)
+    static func allPaths(for coin: CNBBaseCoin, changeIndex: Int) -> NSPredicate {
+      let purposePredicate = NSPredicate(format: "%K = %d", purposeKeyPath, coin.purpose.rawValue)
+      let coinPredicate = NSPredicate(format: "%K = %d", coinKeyPath, coin.coin.rawValue)
+      let accountPredicate = NSPredicate(format: "%K = %d", accountKeyPath, coin.account)
+      let changePredicate = NSPredicate(format: "%K = %d", changeKeyPath, changeIndex)
       return NSCompoundPredicate(andPredicateWithSubpredicates: [
         purposePredicate, coinPredicate, accountPredicate, changePredicate
         ])
@@ -218,6 +224,11 @@ struct CKPredicate {
       return NSPredicate(format: "\(path) == %@", NSNumber(value: value))
     }
 
+    static func isLightningTransfer(_ value: Bool) -> NSPredicate {
+      let path = #keyPath(CKMTransaction.isLightningTransfer)
+      return NSPredicate(format: "\(path) == %@", NSNumber(value: value))
+    }
+
   }
 
   struct Vin {
@@ -227,14 +238,14 @@ struct CKPredicate {
     }
 
     static func matching(response: TransactionVinResponse) -> NSPredicate {
-      return matching(previousTxid: response.txid, previousVoutIndex: response.vout)
+      return matching(previousTxid: response.uniqueTxid, previousVoutIndex: response.vout)
     }
 
     static func matching(previousTxid: String, previousVoutIndex: Int) -> NSPredicate {
       let txidPath = #keyPath(CKMVin.previousTxid)
       let voutIndexPath = #keyPath(CKMVin.previousVoutIndex)
       let txidPredicate = NSPredicate(format: "\(txidPath) == %@", previousTxid)
-      let indexPredicate = NSPredicate(format: "\(voutIndexPath) == %d", previousVoutIndex)
+      let indexPredicate = NSPredicate(format: "\(voutIndexPath) == %@", NSNumber(value: previousVoutIndex)) //must use NSNumber for predicate to work
       return NSCompoundPredicate(type: .and, subpredicates: [txidPredicate, indexPredicate])
     }
 
@@ -310,6 +321,14 @@ struct CKPredicate {
       let txidPredicate = NSPredicate(format: "%K = %@", txidKeyPath, txid)
       return txidPredicate
     }
+
+    static func matching(coin: CNBBaseCoin) -> NSPredicate {
+      let purposeKeyPath = #keyPath(CKMAddressTransactionSummary.address.derivativePath.purpose)
+      let purposePredicate = NSPredicate(format: "%K = %d", purposeKeyPath, Int(coin.purpose.rawValue))
+      let coinKeyPath = #keyPath(CKMAddressTransactionSummary.address.derivativePath.coin)
+      let coinPredicate = NSPredicate(format: "%K = %d", coinKeyPath, Int(coin.coin.rawValue))
+      return NSCompoundPredicate(andPredicateWithSubpredicates: [purposePredicate, coinPredicate])
+    }
   }
 
   struct Address {
@@ -317,6 +336,25 @@ struct CKPredicate {
       let addressKeyPath = #keyPath(CKMAddress.addressId)
       let predicate = NSPredicate(format: "%K IN %@", addressKeyPath, addresses)
       return predicate
+    }
+
+    static func matching(address: String) -> NSPredicate {
+      let keyPath = #keyPath(CKMAddress.addressId)
+      return NSPredicate(format: "\(keyPath) == %@", address)
+    }
+  }
+
+  struct WalletEntry {
+    static func notHidden() -> NSPredicate {
+      let path = #keyPath(CKMWalletEntry.isHidden)
+      return NSPredicate(format: "\(path) == %@", NSNumber(value: false))
+    }
+  }
+
+  struct LedgerEntry {
+    static func idIn(_ ids: [String]) -> NSPredicate {
+      let idKeyPath = #keyPath(CKMLNLedgerEntry.id)
+      return NSPredicate(format: "\(idKeyPath) IN %@", ids)
     }
   }
 }

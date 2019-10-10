@@ -12,7 +12,7 @@ import PromiseKit
 
 protocol ContactCacheDataWorkerType: AnyObject {
   func refreshStatuses() -> Promise<Void>
-  func reloadSystemContactsIfNeeded(force: Bool, completion: ((Error?) -> Void)?)
+  func reloadSystemContactsIfNeeded(force: Bool, completion: CKErrorCompletion?)
   func refreshStatus(forPhoneNumber phoneNumber: GlobalPhoneNumber, completion: @escaping ((ValidatedContact?) -> Void))
 }
 
@@ -48,24 +48,21 @@ class ContactCacheDataWorker: ContactCacheDataWorkerType {
   }
 
   func refreshStatuses() -> Promise<Void> {
-    let bgContext = contactCacheManager.createChildBackgroundContext()
+    let bgContext = contactCacheManager.createBackgroundContext()
 
     return self.getMetadata(in: bgContext)
       .then(in: bgContext) { self.fetchAndPersistStatuses(fromMetadata: $0, in: bgContext) }
       .done(in: bgContext) {
-        try bgContext.save()
-        try bgContext.parent?.performThrowingAndWait {
-          try bgContext.parent?.save()
-        }
+        try bgContext.saveRecursively()
     }
   }
 
   func refreshStatus(forPhoneNumber phoneNumber: GlobalPhoneNumber, completion: @escaping ((ValidatedContact?) -> Void)) {
-    let context = contactCacheManager.mainQueueContext
+    let context = contactCacheManager.viewContext
     if let metadata = contactCacheManager.validatedMetadata(for: phoneNumber, in: context) {
       _ = self.fetchAndPersistStatuses(fromMetadata: [metadata], in: context)
         .done {
-          try context.save()
+          try context.saveRecursively()
           context.refresh(metadata, mergeChanges: true)
           let foundValidNumber = metadata.firstCachedPhoneNumberByName()
           let validatedContact = foundValidNumber.flatMap { ValidatedContact(cachedNumber: $0) }
@@ -84,8 +81,8 @@ class ContactCacheDataWorker: ContactCacheDataWorkerType {
     case none, fullReload, selectiveUpdate
   }
 
-  func reloadSystemContactsIfNeeded(force: Bool, completion: ((Error?) -> Void)?) {
-    let bgContext = contactCacheManager.createChildBackgroundContext()
+  func reloadSystemContactsIfNeeded(force: Bool, completion: CKErrorCompletion?) {
+    let bgContext = contactCacheManager.createBackgroundContext()
     bgContext.perform {
       self.neededCacheAction(force: force, in: bgContext)
         .then(in: bgContext) { self.updateCache(withAction: $0, in: bgContext) }

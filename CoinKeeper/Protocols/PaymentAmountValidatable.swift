@@ -1,6 +1,6 @@
 //
 //  PaymentAmountValidatable.swift
-//  CoinKeeper
+//  DropBit
 //
 //  Created by Ben Winters on 6/1/18.
 //  Copyright © 2018 Coin Ninja, LLC. All rights reserved.
@@ -16,9 +16,12 @@ protocol PaymentAmountValidatable {
 
 extension PaymentAmountValidatable {
 
-  func createCurrencyAmountValidator(ignoring: CurrencyAmountValidationOptions = []) -> CurrencyAmountValidator {
-    let balanceNetPending = balanceDataSource?.spendableBalanceNetPending()
-    return CurrencyAmountValidator(balanceNetPending: balanceNetPending, ignoring: ignoring)
+  func createCurrencyAmountValidator(ignoring: CurrencyAmountValidationOptions = [],
+                                     balanceToCheck: WalletTransactionType) -> CurrencyAmountValidator {
+    let balanceNetPending = balanceDataSource?.spendableBalancesNetPending() ?? .empty
+    return CurrencyAmountValidator(balancesNetPending: balanceNetPending,
+                                   balanceToCheck: balanceToCheck,
+                                   ignoring: ignoring)
   }
 
 }

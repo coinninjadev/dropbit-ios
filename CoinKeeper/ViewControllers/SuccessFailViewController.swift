@@ -1,45 +1,51 @@
 //
 //  SuccessFailViewController.swift
-//  CoinKeeper
+//  DropBit
 //
 //  Created by Mitchell on 5/1/18.
 //  Copyright © 2018 Coin Ninja, LLC. All rights reserved.
 //
 
 import UIKit
+import PromiseKit
 
 protocol SuccessFailViewControllerDelegate: ViewControllerDismissable, URLOpener {
   func viewControllerDidRetry(_ viewController: SuccessFailViewController)
-  func viewController(_ viewController: SuccessFailViewController, success: Bool, completion: (() -> Void)?)
+  func viewController(_ viewController: SuccessFailViewController, success: Bool, completion: CKCompletion?)
 }
 
 class SuccessFailViewController: BaseViewController, StoryboardInitializable {
 
   var viewModel: SuccessFailViewModel = SuccessFailViewModel(mode: .pending)
-  var action: (() -> Void)?
+  var action: CKCompletion?
+  private(set) var initialAction: Promise<Void>!
 
   static func newInstance(viewModel: SuccessFailViewModel,
-                          delegate: SuccessFailViewControllerDelegate) -> SuccessFailViewController {
+                          delegate: SuccessFailViewControllerDelegate,
+                          initialAction: Promise<Void> = Promise.value(())) -> SuccessFailViewController {
     let vc = SuccessFailViewController.makeFromStoryboard()
     vc.viewModel = viewModel
-    vc.generalCoordinationDelegate = delegate
+    vc.delegate = delegate
+    vc.initialAction = initialAction
     vc.modalPresentationStyle = .overFullScreen
     return vc
   }
 
   func setMode(_ mode: SuccessFailView.Mode) {
     self.viewModel.mode = mode
-    reloadViewWithModel()
+    DispatchQueue.main.async {
+      self.reloadViewWithModel()
+    }
   }
 
   func setURL(_ url: URL?) {
     self.viewModel.url = url
-    reloadViewWithModel()
+    DispatchQueue.main.async {
+      self.reloadViewWithModel()
+    }
   }
 
-  var coordinationDelegate: SuccessFailViewControllerDelegate? {
-    return generalCoordinationDelegate as? SuccessFailViewControllerDelegate
-  }
+  private(set) weak var delegate: SuccessFailViewControllerDelegate!
 
   @IBOutlet var successFailView: SuccessFailView!
   @IBOutlet var closeButton: UIButton!
@@ -63,16 +69,16 @@ class SuccessFailViewController: BaseViewController, StoryboardInitializable {
 
   @IBAction func urlButtonWasTouched(_ sender: Any) {
     guard let url = viewModel.url else { return }
-    coordinationDelegate?.openURLExternally(url, completionHandler: nil)
+    delegate.openURLExternally(url, completionHandler: nil)
   }
 
   @IBAction func actionButtonWasTouched() {
     switch viewModel.mode {
     case .success:
-      coordinationDelegate?.viewController(self, success: true, completion: nil)
+      delegate.viewController(self, success: true, completion: nil)
     case .failure:
       if let retryAction = action {
-        coordinationDelegate?.viewControllerDidRetry(self)
+        delegate.viewControllerDidRetry(self)
         self.setMode(.pending)
         retryAction()
       }
@@ -82,7 +88,7 @@ class SuccessFailViewController: BaseViewController, StoryboardInitializable {
   }
 
   @IBAction func closeButtonWasTouched() {
-    coordinationDelegate?.viewControllerDidSelectClose(self)
+    delegate.viewControllerDidSelectClose(self)
   }
 
   override func accessibleViewsAndIdentifiers() -> [AccessibleViewElement] {
@@ -95,19 +101,19 @@ class SuccessFailViewController: BaseViewController, StoryboardInitializable {
 
   override func viewDidLoad() {
     super.viewDidLoad()
+    reloadViewWithModel()
   }
 
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
-    reloadViewWithModel()
+    initialAction
+      .done { _ in self.reloadViewWithModel() }
+      .cauterize()
   }
 
   private func reloadViewWithModel() {
     guard viewIfLoaded != nil else { return }
-
-    DispatchQueue.main.async {
-      self.configureView(with: self.viewModel)
-    }
+    self.configureView(with: self.viewModel)
   }
 
   private func configureView(with vm: SuccessFailViewModel) {

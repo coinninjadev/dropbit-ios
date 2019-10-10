@@ -1,6 +1,6 @@
 //
 //  CKMDerivativePath+CoreDataClass.swift
-//  CoinKeeper
+//  DropBit
 //
 //  Created by BJ Miller on 4/20/18.
 //  Copyright © 2018 Coin Ninja, LLC. All rights reserved.
@@ -39,7 +39,7 @@ public class CKMDerivativePath: NSManagedObject {
   }
 
   func asCNBDerivationPath() -> CNBDerivationPath {
-    let purpose = CoinDerivation(rawValue: UInt(self.purpose)) ?? CoinDerivation.BIP49
+    let purpose = CoinDerivation(rawValue: UInt(self.purpose)) ?? CoinDerivation.BIP84
     let coinType = CoinType(rawValue: UInt(self.coin)) ?? CoinType.MainNet
     return CNBDerivationPath(purpose: purpose, coinType: coinType, account: UInt(self.account), change: UInt(self.change), index: UInt(self.index))
   }
@@ -54,8 +54,17 @@ public class CKMDerivativePath: NSManagedObject {
       in: context)
   }
 
-  static func findOrCreate(withIndex receiveIndex: Int, in context: NSManagedObjectContext) -> CKMDerivativePath {
-    return findOrCreate(with: 49, 0, 0, 0, receiveIndex, in: context)
+  static func findAll(in context: NSManagedObjectContext) -> [CKMDerivativePath] {
+    let fetchRequest = CKMDerivativePath.fetchRequest() as NSFetchRequest<CKMDerivativePath>
+    do {
+      return try context.fetch(fetchRequest)
+    } catch {
+      return []
+    }
+  }
+
+  static func findOrCreate(withCoin coin: CNBBaseCoin, receiveIndex: Int, in context: NSManagedObjectContext) -> CKMDerivativePath {
+    return findOrCreate(with: Int(coin.purpose.rawValue), Int(coin.coin.rawValue), 0, 0, receiveIndex, in: context)
   }
 
   static func findOrCreate(
@@ -92,10 +101,12 @@ public class CKMDerivativePath: NSManagedObject {
     return derivativePath
   }
 
-  static func findAllReceivePathsWithAddressTransactionSummaries(in context: NSManagedObjectContext) -> [CKMDerivativePath] {
+  static func findAllReceivePathsWithAddressTransactionSummaries(
+    forCoin coin: CNBBaseCoin,
+    in context: NSManagedObjectContext) -> [CKMDerivativePath] {
     let fetchRequest: NSFetchRequest<CKMDerivativePath> = CKMDerivativePath.fetchRequest()
     fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
-      CKPredicate.DerivativePath.forChangeIndex(changeIsReceiveValue),
+      CKPredicate.DerivativePath.allPaths(for: coin, changeIndex: changeIsReceiveValue),
       CKPredicate.DerivativePath.withAddressTransactionSummaries(),
       CKPredicate.DerivativePath.withAddress()
       ])
@@ -107,17 +118,17 @@ public class CKMDerivativePath: NSManagedObject {
     }
   }
 
-  static func maxUsedReceiveIndex(in context: NSManagedObjectContext) -> Int? {
-    return maxUsedIndex(forChangeIndex: changeIsReceiveValue, in: context)
+  static func maxUsedReceiveIndex(forCoin coin: CNBBaseCoin, in context: NSManagedObjectContext) -> Int? {
+    return maxUsedIndex(forCoin: coin, changeIndex: changeIsReceiveValue, in: context)
   }
 
-  static func maxUsedChangeIndex(in context: NSManagedObjectContext) -> Int? {
-    return maxUsedIndex(forChangeIndex: changeIsChangeValue, in: context)
+  static func maxUsedChangeIndex(forCoin coin: CNBBaseCoin, in context: NSManagedObjectContext) -> Int? {
+    return maxUsedIndex(forCoin: coin, changeIndex: changeIsChangeValue, in: context)
   }
 
-  private static func maxUsedIndex(forChangeIndex change: Int, in context: NSManagedObjectContext) -> Int? {
+  private static func maxUsedIndex(forCoin coin: CNBBaseCoin, changeIndex: Int, in context: NSManagedObjectContext) -> Int? {
     let fetchRequest: NSFetchRequest<CKMDerivativePath> = CKMDerivativePath.fetchRequest()
-    let changePredicate = CKPredicate.DerivativePath.forChangeIndex(change)
+    let changePredicate = CKPredicate.DerivativePath.allPaths(for: coin, changeIndex: changeIndex)
     let nonServerPredicate = CKPredicate.DerivativePath.withoutServerAddress()
     let hasAddressPredicate = CKPredicate.DerivativePath.withAddress()
 

@@ -14,8 +14,9 @@ def shared_pods
   pod 'PhoneNumberKit', git: 'https://github.com/blwinters/PhoneNumberKit.git', commit: '6222471'
   pod 'JKSteppedProgressBar', git: 'https://github.com/MitchellMalleo/JKSteppedProgressBar.git', commit: '0519aa3'
   pod 'RNCryptor', '~> 5.1.0'
-  pod 'DZNEmptyDataSet', '~> 1.8'
+  pod 'DZNEmptyDataSet', '~> 1.8.1'
   pod 'Willow', '~> 5.0'
+  pod 'Sheeeeeeeeet'
 end
 
 target 'DropBit' do

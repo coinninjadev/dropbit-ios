@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import Sheeeeeeeeet
 @testable import DropBit
 
 class MockAlertManager: AlertManagerType {
@@ -27,7 +28,7 @@ class MockAlertManager: AlertManagerType {
   func showBanner(with message: String, duration: AlertDuration?, alertKind kind: CKBannerViewKind) {
     showBannerWithMessageDurationAlertKindWasCalled = true
   }
-  func showBannerAlert(for response: MessageResponse, completion: (() -> Void)?) {}
+  func showBannerAlert(for response: MessageResponse, completion: CKCompletion?) {}
 
   func defaultAlert(withTitle title: String, description: String?) -> AlertControllerType {
     let alertManager = AlertManager(notificationManager:
@@ -40,8 +41,9 @@ class MockAlertManager: AlertManagerType {
   func showBanner(with message: String, duration: AlertDuration) { }
   func showBanner(with message: String, duration: AlertDuration, alertKind kind: CKBannerViewKind) { }
   func showBanner(with message: String, alertKind kind: CKBannerViewKind) { }
-  func showBanner(with message: String, duration: AlertDuration?, alertKind kind: CKBannerViewKind, tapAction: (() -> Void)?) {}
+  func showBanner(with message: String, duration: AlertDuration?, alertKind kind: CKBannerViewKind, tapAction: CKCompletion?) {}
   func showAlert(for update: AddressRequestUpdateDisplayable) { }
+  func showActionSheet(in viewController: UIViewController, with items: [ActionSheetItem], actions: @escaping ActionSheet.SelectAction) {}
 
   func alert(withTitle title: String,
              description: String?,
@@ -107,11 +109,11 @@ class MockAlertManager: AlertManagerType {
   }
 
   var wasAskedToHideActivityHUD = false
-  func hideActivityHUD(withDelay delay: TimeInterval?, completion: (() -> Void)?) {
+  func hideActivityHUD(withDelay delay: TimeInterval?, completion: CKCompletion?) {
     wasAskedToHideActivityHUD = true
   }
 
-  func showSuccessHUD(withStatus status: String?, duration: TimeInterval, completion: (() -> Void)?) { }
+  func showSuccessHUD(withStatus status: String?, duration: TimeInterval, completion: CKCompletion?) { }
 
   func showIncomingTransactionAlert(for receivedAmount: Int, with rates: ExchangeRates) { }
 

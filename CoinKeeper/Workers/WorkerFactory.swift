@@ -23,15 +23,18 @@ class WorkerFactory {
   let networkManager: NetworkManagerType
   let analyticsManager: AnalyticsManagerType
   weak var wmgrProvider: WalletManagerProvider?
+  weak var paymentSendingDelegate: AllPaymentSendingDelegate?
 
   init(persistenceManager: PersistenceManagerType,
        networkManager: NetworkManagerType,
        analyticsManager: AnalyticsManagerType,
-       walletManagerProvider: WalletManagerProvider) {
+       walletManagerProvider: WalletManagerProvider,
+       paymentSendingDelegate: AllPaymentSendingDelegate) {
     self.persistenceManager = persistenceManager
     self.networkManager = networkManager
     self.analyticsManager = analyticsManager
     self.wmgrProvider = walletManagerProvider
+    self.paymentSendingDelegate = paymentSendingDelegate
   }
 
   /// This function ensures we are always working with the current instance of the WalletManager
@@ -45,11 +48,12 @@ class WorkerFactory {
 
   /// This function ensures we are always working with the current instance of the WalletManager
   func createWalletAddressDataWorker(delegate: InvitationWorkerDelegate) -> WalletAddressDataWorker? {
-    guard let wmgr = wmgrProvider?.walletManager else { return nil }
+    guard let wmgr = wmgrProvider?.walletManager, let paymentDelegate = paymentSendingDelegate else { return nil }
     return WalletAddressDataWorker(walletManager: wmgr,
                                    persistenceManager: persistenceManager,
                                    networkManager: networkManager,
                                    analyticsManager: analyticsManager,
+                                   paymentSendingDelegate: paymentDelegate,
                                    invitationWorkerDelegate: delegate)
   }
 

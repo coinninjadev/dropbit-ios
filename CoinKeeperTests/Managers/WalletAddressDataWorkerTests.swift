@@ -19,6 +19,7 @@ class WalletAddressDataWorkerTests: MockedPersistenceTestCase {
   var mockNetworkManager: MockNetworkManager!
   var mockWalletManager: MockWalletManager!
   var mockAnalyticsManager: MockAnalyticsManager!
+  var mockAppCoordinator: MockAppCoordinator!
 
   // swiftlint:disable weak_delegate
   var mockWalletDelegate: MockWalletDelegate!
@@ -32,11 +33,13 @@ class WalletAddressDataWorkerTests: MockedPersistenceTestCase {
     mockWalletManager = MockWalletManager(words: [])
     mockInvitationDelegate = MockInvitationDelegate()
     mockAnalyticsManager = MockAnalyticsManager()
+    mockAppCoordinator = MockAppCoordinator()
 
     sut = WalletAddressDataWorker(walletManager: mockWalletManager,
                                   persistenceManager: mockPersistenceManager,
                                   networkManager: mockNetworkManager,
                                   analyticsManager: mockAnalyticsManager,
+                                  paymentSendingDelegate: mockAppCoordinator,
                                   invitationWorkerDelegate: mockInvitationDelegate
     )
   }
@@ -61,7 +64,7 @@ class WalletAddressDataWorkerTests: MockedPersistenceTestCase {
     let invitation = CKMInvitation.findUnacknowledgedInvitations(in: stack.context)[0]
     mockBrokers.mockInvitation.unacknowledgedInvitations = [invitation]
 
-    sut.handleUnacknowledgedSentInvitations(in: stack.context).done {
+    sut.handleUnacknowledgedSentInvitations(forResponses: [], in: stack.context).done {
       XCTAssertTrue(!stack.context.insertedObjects.contains(invitation), "unacknowledged invitation should be deleted")
       expectation.fulfill()
       }.cauterize()
@@ -83,7 +86,7 @@ class WalletAddressDataWorkerTests: MockedPersistenceTestCase {
     let unacknowledgedInvitation = CKMInvitation.findUnacknowledgedInvitations(in: stack.context)[0]
     mockBrokers.mockInvitation.unacknowledgedInvitations = [unacknowledgedInvitation]
 
-    sut.handleUnacknowledgedSentInvitations(in: stack.context).done {
+    sut.handleUnacknowledgedSentInvitations(forResponses: [], in: stack.context).done {
       XCTAssertTrue(!stack.context.insertedObjects.contains(unacknowledgedInvitation), "unacknowledged invitation should be deleted")
       XCTAssertTrue(stack.context.insertedObjects.contains(otherInvitation), "other invitation should not be deleted")
       expectation.fulfill()
@@ -95,7 +98,8 @@ class WalletAddressDataWorkerTests: MockedPersistenceTestCase {
   private func generateUnacknowledgedInvitation(with contact: ContactType, in context: NSManagedObjectContext) {
     let acknowledgementId = UUID().uuidString
     let pair: BitcoinUSDPair = (btcAmount: 1, usdAmount: 7000)
-    let outgoingInvitationDTO = OutgoingInvitationDTO(contact: contact, btcPair: pair, fee: 19, sharedPayloadDTO: nil)
+    let outgoingInvitationDTO = OutgoingInvitationDTO(contact: contact, btcPair: pair, fee: 19,
+                                                      walletTxType: .onChain, sharedPayloadDTO: nil)
 
     PersistenceManager().brokers.invitation.persistUnacknowledgedInvitation(
       withDTO: outgoingInvitationDTO,
@@ -103,7 +107,7 @@ class WalletAddressDataWorkerTests: MockedPersistenceTestCase {
       in: context)
   }
 
-  func testLinkFulfilledAddressRequestsWithTransaction() {
+  func testlinkFulfilledOnChainAddressRequestsWithTransaction() {
     let stack = InMemoryCoreDataStack()
 
     // Seed the context with an invitation, placeholder tx, and actual tx
@@ -118,6 +122,7 @@ class WalletAddressDataWorkerTests: MockedPersistenceTestCase {
                                                       updatedAt: Date(),
                                                       address: UUID().uuidString,
                                                       addressPubkey: nil,
+                                                      addressType: nil,
                                                       txid: broadcastTxid,
                                                       metadata: nil,
                                                       identityHash: nil,
@@ -134,13 +139,47 @@ class WalletAddressDataWorkerTests: MockedPersistenceTestCase {
     let actualTx = CKMTransaction(insertInto: stack.context)
     actualTx.txid = broadcastTxid
 
-    self.sut.linkFulfilledAddressRequestsWithTransaction(in: stack.context)
+    self.sut.linkFulfilledOnChainAddressRequestsWithTransaction(in: stack.context)
 
     XCTAssertTrue(placeholderTx.isDeleted, "placeholderTx should be deleted")
     XCTAssertTrue(actualTx.invitation == invitation, "the invitation should be linked to the actual transaction")
   }
 
-  func testLinkFulfilledAddressRequestsWithTransaction_IgnoresUnmatchedInvitations() {
+  func testlinkFulfilledOnChainAddressRequestsWithTransaction_lightningInvoice() {
+    let stack = InMemoryCoreDataStack(), placeholderWalletEntry = CKMWalletEntry(insertInto: stack.context)
+    let invoice = "ln45gwu435nbsiurbsieu5ngkjsdfhgskjerhggi3u4hgrgergsthsrths46"
+
+    let sampleResponse = WalletAddressRequestResponse(id: UUID().uuidString,
+                                                      createdAt: Date(),
+                                                      updatedAt: Date(),
+                                                      address: UUID().uuidString,
+                                                      addressPubkey: nil,
+                                                      addressType: "lightning",
+                                                      txid: invoice,
+                                                      metadata: nil,
+                                                      identityHash: nil,
+                                                      status: WalletAddressRequestStatus.completed.rawValue,
+                                                      deliveryId: nil,
+                                                      deliveryStatus: nil,
+                                                      walletId: nil)
+
+    let invitation = CKMInvitation(withAddressRequestResponse: sampleResponse,
+                                   side: .received,
+                                   insertInto: stack.context)
+    placeholderWalletEntry.invitation = invitation
+
+    let targetWalletEntry = CKMWalletEntry(insertInto: stack.context)
+    let ledgerEntry = CKMLNLedgerEntry(insertInto: stack.context)
+    ledgerEntry.id = invoice
+    targetWalletEntry.ledgerEntry = ledgerEntry
+
+    self.sut.linkFulfilledLightningAddressRequestsWithTransaction(forResponses: [], in: stack.context)
+
+//   XCTAssertTrue(placeholderWalletEntry.isDeleted, "placeholder wallet entry should be deleted")
+//    XCTAssertTrue(targetWalletEntry.invitation == invitation, "the invitation should be linked to the actual transaction")
+  }
+
+  func testlinkFulfilledOnChainAddressRequestsWithTransaction_IgnoresUnmatchedInvitations() {
     let stack = InMemoryCoreDataStack()
 
     // Seed the context with an invitation, placeholder tx, and actual tx
@@ -155,6 +194,7 @@ class WalletAddressDataWorkerTests: MockedPersistenceTestCase {
                                                       updatedAt: Date(),
                                                       address: UUID().uuidString,
                                                       addressPubkey: nil,
+                                                      addressType: nil,
                                                       txid: nil,
                                                       metadata: nil,
                                                       identityHash: nil,
@@ -171,7 +211,7 @@ class WalletAddressDataWorkerTests: MockedPersistenceTestCase {
     let actualTx = CKMTransaction(insertInto: stack.context)
     actualTx.txid = broadcastTxid
 
-    self.sut.linkFulfilledAddressRequestsWithTransaction(in: stack.context)
+    self.sut.linkFulfilledOnChainAddressRequestsWithTransaction(in: stack.context)
 
     XCTAssertFalse(placeholderTx.isDeleted, "placeholderTx should not be deleted")
     XCTAssertNil(actualTx.invitation, "the actual transaction should not have a linked invitation")
@@ -245,7 +285,7 @@ class WalletAddressDataWorkerTests: MockedPersistenceTestCase {
 }
 
 class MockInvitationDelegate: InvitationWorkerDelegate {
-  func fetchAndHandleSentWalletAddressRequests() -> Promise<[WalletAddressRequestResponse]> {
+  func fetchSatisfiedSentWalletAddressRequests() -> Promise<[WalletAddressRequestResponse]> {
     return Promise { _ in }
   }
   func didBroadcastTransaction() { }

@@ -11,7 +11,8 @@ import Foundation
 struct SenderIdentityFactory {
   let persistenceManager: PersistenceManagerType
 
-  func preferredSenderBody(forReceiverType receiverIdentityType: UserIdentityType) -> UserIdentityBody? {
+  /// Returns a UserIdentityBody appropriate for including in a wallet address request
+  func preferredAddressRequestSenderIdentity(forReceiverType receiverIdentityType: UserIdentityType) -> UserIdentityBody? {
     let twitterBody: UserIdentityBody? = senderTwitterBody()
     let phoneBody: UserIdentityBody? = senderPhoneBody()
 
@@ -21,7 +22,9 @@ struct SenderIdentityFactory {
     }
   }
 
-  func preferredSharedPayloadSenderIdentity(forDropBitType type: OutgoingTransactionDropBitType) -> UserIdentityBody? {
+  /// Returns a UserIdentityBody appropriate for including in a wallet address request, the twitterBody includes a colon-separated identity
+  func preferredSharedPayloadSenderIdentity(forReceiver receiver: OutgoingDropBitReceiver?) -> UserIdentityBody? {
+    guard let receiver = receiver else { return nil }
     let phoneBody: UserIdentityBody? = senderPhoneBody()
 
     var twitterBody: UserIdentityBody?
@@ -29,10 +32,9 @@ struct SenderIdentityFactory {
       twitterBody = UserIdentityBody.sharedPayloadBody(twitterCredentials: creds)
     }
 
-    switch type {
+    switch receiver {
     case .phone:    return phoneBody ?? twitterBody
     case .twitter:  return twitterBody ?? phoneBody
-    case .none:     return nil
     }
   }
 

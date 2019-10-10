@@ -1,6 +1,6 @@
 //
 //  AppCoordinator+SettingsViewControllerDelegate.swift
-//  CoinKeeper
+//  DropBit
 //
 //  Created by Mitchell on 5/23/18.
 //  Copyright © 2018 Coin Ninja, LLC. All rights reserved.
@@ -34,12 +34,23 @@ extension AppCoordinator: SettingsViewControllerDelegate {
     })
   }
 
+  func viewControllerDidSelectReviewLegacyWords(_ viewController: UIViewController) {
+    guard let legacyWords = persistenceManager.keychainManager.retrieveValue(for: .walletWords) as? [String] else { return }
+    viewController.dismiss(animated: true) {
+      self.analyticsManager.track(event: .viewLegacyWords, with: nil)
+      let backupWordsVC = BackupRecoveryWordsViewController.newInstance(withDelegate: self,
+                                                                        recoveryWords: legacyWords,
+                                                                        wordsBackedUp: true,
+                                                                        reviewOnly: true)
+      self.navigationController.present(CNNavigationController(rootViewController: backupWordsVC), animated: false, completion: nil)
+    }
+  }
+
   func viewControllerDidSelectOpenSourceLicenses(_ viewController: UIViewController) {
     guard let privacyPolicyHtml = Bundle.main.path(forResource: "licenses", ofType: "html"),
       let html = try? String(contentsOfFile: privacyPolicyHtml, encoding: String.Encoding.utf8),
       let navigationController = viewController.navigationController else { return }
-    let textViewController = TextViewController.makeFromStoryboard()
-    textViewController.htmlString = html
+    let textViewController = TextViewController.newInstance(htmlString: html)
     navigationController.pushViewController(textViewController, animated: true)
   }
 
@@ -47,7 +58,7 @@ extension AppCoordinator: SettingsViewControllerDelegate {
     self.persistenceManager.brokers.preferences.dustProtectionIsEnabled = didEnable
   }
 
-  func viewController(_ viewController: UIViewController, didEnableYearlyHighNotification didEnable: Bool, completion: @escaping () -> Void) {
+  func viewController(_ viewController: UIViewController, didEnableYearlyHighNotification didEnable: Bool, completion: @escaping CKCompletion) {
     permissionManager.requestPermission(for: .notification) { (status: PermissionStatus) in
       switch status {
       case .authorized, .notDetermined:
@@ -81,27 +92,17 @@ extension AppCoordinator: SettingsViewControllerDelegate {
     openURL(url, completionHandler: nil)
   }
 
-  func viewControllerDidRequestDeleteWallet(_ viewController: UIViewController, completion: @escaping () -> Void) {
+  func viewControllerDidRequestDeleteWallet(_ viewController: UIViewController, completion: @escaping CKCompletion) {
     let description = """
         Are you sure you want to delete this wallet?
         Make sure you have your recovery words before you delete.\n
     """
     let settingsViewController = navigationController.topViewController()
-    let deleteAction = AlertActionConfiguration(title: "Delete", style: .default) { [weak self] in
-      guard let strongSelf = self else { return }
-      let pinEntryViewController = PinEntryViewController.makeFromStoryboard()
-      strongSelf.resetUserAuthenticatedState()
-      strongSelf.assignCoordinationDelegate(to: pinEntryViewController)
-      pinEntryViewController.mode = .walletDeletion(completion: { result in
-        switch result {
-        case .success:
-          pinEntryViewController.dismiss(animated: true, completion: nil)
-          completion()
-        default:
-          break
-        }
-      })
+    let deleteAction = AlertActionConfiguration(title: "Delete", style: .default) { [unowned self] in
+      self.resetUserAuthenticatedState()
 
+      let viewModel = WalletDeletionPinEntryViewModel()
+      let pinEntryViewController = PinEntryViewController.newInstance(delegate: self, viewModel: viewModel, success: completion)
       settingsViewController?.present(pinEntryViewController, animated: true, completion: nil)
     }
     let cancelAction = AlertActionConfiguration(title: "Cancel", style: .default, action: nil)
@@ -136,8 +137,21 @@ extension AppCoordinator: SettingsViewControllerDelegate {
           localSelf.analyticsManager.track(property: MixpanelProperty(key: .wordsBackedUp, value: false))
           localSelf.analyticsManager.track(property: MixpanelProperty(key: .hasBTCBalance, value: false))
           localSelf.analyticsManager.track(property: MixpanelProperty(key: .isDropBitMeEnabled, value: false))
-        }.catch { error in
-          log.error(error, message: nil)
+        }.catch(on: .main) { error in
+          var errorDetails = error.localizedDescription
+          if let persistenceError = error as? CKPersistenceError, case .failedToBatchDeleteWallet = persistenceError {
+            errorDetails = persistenceError.errorDescription ?? "-"
+          }
+
+          UIPasteboard.general.string = "Delete wallet error: " + errorDetails
+
+          let intro = "The full error message has been copied to your phone's clipboard. Please send it to us for assistance.\n\n"
+          let fullMessage = intro + errorDetails
+          log.error(error, message: fullMessage)
+
+          let alert = localSelf.alertManager.defaultAlert(withTitle: "Delete Wallet Error", description: fullMessage)
+          viewController.present(alert, animated: true, completion: nil)
+
         }.finally {
           localOperation.finish()
       }
@@ -151,7 +165,7 @@ extension AppCoordinator: SettingsViewControllerDelegate {
     alertManager.showActivityHUD(withStatus: "Synchronizing...")
     let successMessage = "Blockchain successfully re-synchronized. Please check your transaction history to verify."
 
-    let completion: CompletionHandler = { error in
+    let completion: CKErrorCompletion = { error in
       if let err = error {
         self.alertManager.hideActivityHUD(withDelay: 1.0) {
           self.alertManager.showError(message: "Something went wrong. Please try again.\n\nError: \(err.localizedDescription)", forDuration: 3.0)
@@ -188,9 +202,8 @@ extension AppCoordinator: SettingsViewControllerDelegate {
   }
 
   private func showStartViewController() {
-    let startViewController = StartViewController.makeFromStoryboard()
+    let startViewController = StartViewController.newInstance(delegate: self)
     navigationController.setViewControllers([startViewController], animated: false)
     navigationController.isNavigationBarHidden = false
-    assignCoordinationDelegate(to: startViewController)
   }
 }

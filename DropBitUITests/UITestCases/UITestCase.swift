@@ -15,17 +15,13 @@ class UITestCase: XCTestCase {
     super.setUp()
     continueAfterFailure = false
     app.launchArguments.append("ui-test")
+    app.appendTestArgument(.uiTestInProgress)
     // Subclasses should call app.launch() at the end of their override of this function
   }
 
   override func tearDown() {
     super.tearDown()
     app.terminate()
-  }
-
-  /// This value should match the UITestArgument enum case in the target app.
-  func appendTestArgument(_ argument: UITestArgument) {
-    app.launchArguments.append(argument.fullArgument)
   }
 
   /**
@@ -38,7 +34,7 @@ class UITestCase: XCTestCase {
                               isRequired: Bool = true,
                               file: String = #file,
                               line: Int = #line,
-                              ifExists successHandler: (() -> Void)? = nil) {
+                              ifExists successHandler: CKCompletion? = nil) {
 
     let exists = element.waitForExistence(timeout: timeout)
     if exists {

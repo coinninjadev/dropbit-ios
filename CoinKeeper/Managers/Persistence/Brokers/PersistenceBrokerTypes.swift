@@ -22,6 +22,7 @@ protocol PersistenceBrokersType: AnyObject {
   var transaction: TransactionBrokerType { get }
   var user: UserBrokerType { get }
   var wallet: WalletBrokerType { get }
+  var lightning: LightningBrokerType { get }
 
 }
 
@@ -29,6 +30,9 @@ protocol ActivityBrokerType: AnyObject {
 
   /// Initial value will return false, so getter and setter reverse value
   var isFirstTimeOpeningApp: Bool { get set }
+
+  var firstOpenDate: Date? { get }
+  func setFirstOpenDateIfNil(date: Date)
 
   func setLastLoginTime()
 
@@ -42,6 +46,22 @@ protocol ActivityBrokerType: AnyObject {
 
 }
 
+protocol LightningBrokerType: AnyObject {
+
+  func getAccount(forWallet wallet: CKMWallet, in context: NSManagedObjectContext) -> CKMLNAccount
+  func persistAccountResponse(_ response: LNAccountResponse,
+                              forWallet wallet: CKMWallet,
+                              in context: NSManagedObjectContext)
+  func persistLedgerResponse(_ response: LNLedgerResponse,
+                             forWallet wallet: CKMWallet,
+                             in context: NSManagedObjectContext)
+  func persistPaymentResponse(_ response: LNTransactionResponse,
+                              receiver: OutgoingDropBitReceiver?,
+                              invitation: CKMInvitation?,
+                              inputs: LightningPaymentInputs,
+                              in context: NSManagedObjectContext)
+}
+
 protocol CheckInBrokerType: AnyObject {
 
   var cachedBTCUSDRate: Double { get set }
@@ -49,6 +69,8 @@ protocol CheckInBrokerType: AnyObject {
   var cachedBestFee: Double { get set }
   var cachedBetterFee: Double { get set }
   var cachedGoodFee: Double { get set }
+
+  func processCheckIn(response: CheckInResponse) -> Promise<Void>
 
 }
 
@@ -72,7 +94,7 @@ protocol InvitationBrokerType: AnyObject {
 
   func getUnacknowledgedInvitations(in context: NSManagedObjectContext) -> [CKMInvitation]
   func getAllInvitations(in context: NSManagedObjectContext) -> [CKMInvitation]
-  func persistUnacknowledgedInvitation(withDTO outgoingDTO: OutgoingInvitationDTO,
+  func persistUnacknowledgedInvitation(withDTO invitationDTO: OutgoingInvitationDTO,
                                        acknowledgmentId: String,
                                        in context: NSManagedObjectContext)
   func addressesProvidedForReceivedPendingDropBits(in context: NSManagedObjectContext) -> [String]
@@ -103,6 +125,9 @@ protocol PreferencesBrokerType: AnyObject {
   var didOptOutOfInvitationPopup: Bool { get set }
   var adjustableFeesIsEnabled: Bool { get set }
   var preferredTransactionFeeType: TransactionFeeType { get set }
+  var dontShowLightningRefill: Bool { get set }
+  var selectedWalletTransactionType: WalletTransactionType { get set }
+  var lightningWalletLockedStatus: LockStatus { get set }
 
 }
 
@@ -164,7 +189,7 @@ protocol WalletBrokerType: AnyObject {
   func walletWords() -> [String]?
   func persistWalletResponse(from response: WalletResponse, in context: NSManagedObjectContext) throws
   func removeWalletId(in context: NSManagedObjectContext)
-  func deleteWallet(in context: NSManagedObjectContext)
+  func deleteWallet(in context: NSManagedObjectContext) throws
   func walletWordsBackedUp() -> Bool
 
   /// The responses should correspond 1-to-1 with the metaAddresses, order is irrelevant.
@@ -177,5 +202,6 @@ protocol WalletBrokerType: AnyObject {
   func lastReceiveAddressIndex(in context: NSManagedObjectContext) -> Int?
   func lastChangeAddressIndex(in context: NSManagedObjectContext) -> Int?
   var receiveAddressIndexGaps: Set<Int> { get set }
+  var usableCoin: CNBBaseCoin { get }
 
 }

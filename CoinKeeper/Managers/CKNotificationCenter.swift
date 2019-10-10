@@ -1,6 +1,6 @@
 //
 //  CKNotificationCenter.swift
-//  CoinKeeper
+//  DropBit
 //
 //  Created by Ben Winters on 4/4/18.
 //  Copyright © 2018 Coin Ninja, LLC. All rights reserved.
@@ -18,8 +18,11 @@ public enum CKNotificationKey: String {
   case didStartSync
   case didFinishSync
   case didUpdateAvatar
-  case willShowTransactionHistoryDetails
-  case didDismissTransactionHistoryDetails
+  case didUpdateLocalTransactionRecords
+  case didUpdateWordsBackedUp
+  case didLockLightning
+  case didUnlockLightning
+  case lightningUnavailable
 
   fileprivate func value() -> String {
     return "com.coinninja.CoinKeeper." + self.rawValue

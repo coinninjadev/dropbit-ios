@@ -1,6 +1,6 @@
 //
 //  NoConnectionViewController.swift
-//  CoinKeeper
+//  DropBit
 //
 //  Created by Mitchell on 5/21/18.
 //  Copyright © 2018 Coin Ninja, LLC. All rights reserved.
@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 
 protocol NoConnectionViewControllerDelegate: AnyObject {
-  func viewControllerDidRequestRetry(_ viewController: UIViewController, completion: @escaping () -> Void)
+  func viewControllerDidRequestRetry(_ viewController: UIViewController, completion: @escaping CKCompletion)
 }
 
 class NoConnectionViewController: BaseViewController, StoryboardInitializable {
@@ -20,9 +20,7 @@ class NoConnectionViewController: BaseViewController, StoryboardInitializable {
   @IBOutlet var retryButton: PrimaryActionButton!
   @IBOutlet var activitySpinner: UIActivityIndicatorView!
 
-  var coordinationDelegate: NoConnectionViewControllerDelegate? {
-    return generalCoordinationDelegate as? NoConnectionViewControllerDelegate
-  }
+  weak var delegate: NoConnectionViewControllerDelegate!
 
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -38,7 +36,7 @@ class NoConnectionViewController: BaseViewController, StoryboardInitializable {
 
   @IBAction func retryConnection(_ sender: UIButton) {
     beginUIUpdateForRetry()
-    coordinationDelegate?.viewControllerDidRequestRetry(self) { [weak self] in
+    delegate.viewControllerDidRequestRetry(self) { [weak self] in
       self?.endUIUpdateForRetry()
     }
   }

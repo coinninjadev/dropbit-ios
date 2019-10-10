@@ -45,6 +45,16 @@ class PreferencesBroker: CKPersistenceBroker, PreferencesBrokerType {
     }
   }
 
+  var selectedWalletTransactionType: WalletTransactionType {
+    get {
+      let stringValue = userDefaultsManager.string(for: .selectedWalletTransactionType)
+      return stringValue.flatMap { WalletTransactionType(rawValue: $0) } ?? .onChain
+    }
+    set {
+      userDefaultsManager.set(newValue.rawValue, for: .selectedWalletTransactionType)
+    }
+  }
+
   var selectedCurrency: SelectedCurrency {
     get {
       let stringValue = userDefaultsManager.string(for: .selectedCurrency)
@@ -52,6 +62,16 @@ class PreferencesBroker: CKPersistenceBroker, PreferencesBrokerType {
     }
     set {
       userDefaultsManager.set(newValue.description, for: .selectedCurrency)
+    }
+  }
+
+  var lightningWalletLockedStatus: LockStatus {
+    get {
+      let stringValue = userDefaultsManager.string(for: .lightningWalletLockedStatus)
+      return stringValue.flatMap { LockStatus(rawValue: $0) } ?? .locked
+    }
+    set {
+      userDefaultsManager.set(newValue.rawValue, for: .lightningWalletLockedStatus)
     }
   }
 
@@ -90,4 +110,8 @@ class PreferencesBroker: CKPersistenceBroker, PreferencesBrokerType {
     }
   }
 
+  var dontShowLightningRefill: Bool {
+    get { return userDefaultsManager.bool(for: .dontShowLightningRefill) }
+    set { userDefaultsManager.set(newValue, for: .dontShowLightningRefill) }
+  }
 }

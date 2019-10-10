@@ -1,6 +1,6 @@
 //
 //  AppCoordinator+ContactsViewControllerDelegate.swift
-//  CoinKeeper
+//  DropBit
 //
 //  Created by Mitchell on 5/8/18.
 //  Copyright © 2018 Coin Ninja, LLC. All rights reserved.
@@ -58,7 +58,7 @@ extension AppCoordinator: ContactsViewControllerDelegate {
     self.navigationController.topViewController()?.present(alert, animated: true)
   }
 
-  func viewControllerDidRequestRefreshVerificationStatuses(_ viewController: UIViewController, completion: @escaping ((Error?) -> Void)) {
+  func viewControllerDidRequestRefreshVerificationStatuses(_ viewController: UIViewController, completion: @escaping CKErrorCompletion) {
     self.contactCacheDataWorker.refreshStatuses()
       .done { completion(nil) }
       .catch { error in

@@ -13,6 +13,8 @@ class MockUserDefaultsManager: PersistenceUserDefaultsType {
 
   let standardDefaults: UserDefaults = UserDefaults(suiteName: "com.coinninja.unittests")!
 
+  var useRegtest: Bool = false
+
   func deleteAll() {}
   func deleteWallet() {}
   func unverifyUser() {}

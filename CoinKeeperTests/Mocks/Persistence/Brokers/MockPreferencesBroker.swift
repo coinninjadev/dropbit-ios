@@ -19,8 +19,11 @@ class MockPreferencesBroker: CKPersistenceBroker, PreferencesBrokerType {
   var yearlyPriceHighNotificationIsEnabled: Bool = false
   var selectedCurrency: SelectedCurrency = .BTC
   var dontShowShareTransaction: Bool = false
+  var dontShowLightningRefill: Bool = false
   var didOptOutOfInvitationPopup: Bool = false
   var adjustableFeesIsEnabled: Bool = false
   var preferredTransactionFeeType: TransactionFeeType = .default
+  var selectedWalletTransactionType: WalletTransactionType = .onChain
+  var lightningWalletLockedStatus: LockStatus = .locked
 
 }

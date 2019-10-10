@@ -1,6 +1,6 @@
 //
 //  CKMAddressTransactionSummary+CoreDataClass.swift
-//  CoinKeeper
+//  DropBit
 //
 //  Created by BJ Miller on 4/25/18.
 //  Copyright © 2018 Coin Ninja, LLC. All rights reserved.
@@ -9,6 +9,7 @@
 
 import Foundation
 import CoreData
+import CNBitcoinKit
 
 @objc(CKMAddressTransactionSummary)
 public class CKMAddressTransactionSummary: NSManagedObject {
@@ -106,20 +107,16 @@ public class CKMAddressTransactionSummary: NSManagedObject {
   }
 
   static func findAllTxids(in context: NSManagedObjectContext) -> [String] {
-    let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: CKMAddressTransactionSummary.entityName())
-    let txidKey = #keyPath(CKMAddressTransactionSummary.txid)
-    fetchRequest.propertiesToFetch = [txidKey]
-    fetchRequest.resultType = .dictionaryResultType
+    return findAll(in: context).map { $0.txid }
+  }
+
+  static func findAll(matching coin: CNBBaseCoin, in context: NSManagedObjectContext) -> [CKMAddressTransactionSummary] {
+    let fetchRequest: NSFetchRequest<CKMAddressTransactionSummary> = CKMAddressTransactionSummary.fetchRequest()
+    fetchRequest.predicate = CKPredicate.AddressTransactionSummary.matching(coin: coin)
     do {
-      guard let results = try context.fetch(fetchRequest) as? [[String: String]] else {
-        log.error("Could not cast results to [[String: String]] for AddressTransactionSummary.findAllTxids")
-        return []
-      }
-
-      return results.compactMap { $0[txidKey] }
-
+      return try context.fetch(fetchRequest)
     } catch {
-      log.error(error, message: "Could not execute fetch request for AddressTransactionSummary.findAllTxids")
+      log.error(error, message: "Could not execute fetch request for latest AddressTransactionSummary")
       return []
     }
   }

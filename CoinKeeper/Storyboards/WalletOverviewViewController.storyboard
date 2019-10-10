@@ -25,33 +25,75 @@
                                     <constraint firstAttribute="height" constant="66" id="vVU-Kj-8GK"/>
                                 </constraints>
                             </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="08q-AV-opn" customClass="WalletToggleView" customModule="DropBit" customModuleProvider="target">
+                                <rect key="frame" x="77" y="110" width="260" height="35"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="260" id="2Ng-91-lDH"/>
+                                    <constraint firstAttribute="height" constant="35" id="rPm-QO-8Sg"/>
+                                </constraints>
+                            </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="s5h-9Q-NkJ">
+                                <rect key="frame" x="342" y="103.5" width="77" height="44"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="Adm-8h-8kz"/>
+                                </constraints>
+                                <state key="normal" image="questionMarkIcon"/>
+                                <connections>
+                                    <action selector="tooltipButtonWasTouched" destination="hCF-3j-LSw" eventType="touchUpInside" id="xWe-bK-Kaf"/>
+                                </connections>
+                            </button>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="J68-pT-VfQ" customClass="WalletBalanceView" customModule="DropBit" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="149.5" width="414" height="100"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="100" id="V9l-if-Csm"/>
+                                </constraints>
+                            </view>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Xpq-nw-rdL">
-                                <rect key="frame" x="0.0" y="130" width="414" height="732"/>
+                                <rect key="frame" x="0.0" y="106" width="414" height="790"/>
                                 <connections>
                                     <segue destination="bBW-av-GGC" kind="embed" identifier="PageViewControllerSegue" id="5Om-x1-vjl"/>
                                 </connections>
                             </containerView>
-                            <pageControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="3" translatesAutoresizingMaskIntoConstraints="NO" id="x4D-Q0-swY">
-                                <rect key="frame" x="187.5" y="104" width="39" height="37"/>
-                            </pageControl>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="46u-yJ-o8t" customClass="SendReceiveActionView" customModule="DropBit" customModuleProvider="target">
+                                <rect key="frame" x="5" y="787" width="404" height="75"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="75" id="Mkn-WU-B2n"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="Xpq-nw-rdL" firstAttribute="trailing" secondItem="Ara-cI-e6Q" secondAttribute="trailing" id="6t4-u9-0cf"/>
-                            <constraint firstItem="Ara-cI-e6Q" firstAttribute="bottom" secondItem="Xpq-nw-rdL" secondAttribute="bottom" id="9pc-we-Clb"/>
-                            <constraint firstItem="x4D-Q0-swY" firstAttribute="top" secondItem="Ara-cI-e6Q" secondAttribute="top" constant="60" id="Dzm-j8-dpw"/>
+                            <constraint firstAttribute="bottom" secondItem="Xpq-nw-rdL" secondAttribute="bottom" id="9qq-Dm-EsO"/>
                             <constraint firstItem="yEy-5P-WRf" firstAttribute="leading" secondItem="Ara-cI-e6Q" secondAttribute="leading" id="RC7-kU-b0b"/>
+                            <constraint firstItem="J68-pT-VfQ" firstAttribute="top" secondItem="s5h-9Q-NkJ" secondAttribute="bottom" constant="2" id="RXV-FC-6Jn"/>
+                            <constraint firstItem="Xpq-nw-rdL" firstAttribute="top" secondItem="Ara-cI-e6Q" secondAttribute="top" constant="62" id="SSu-Fr-Rq7"/>
+                            <constraint firstItem="s5h-9Q-NkJ" firstAttribute="centerY" secondItem="08q-AV-opn" secondAttribute="centerY" constant="-2" id="SdR-6e-Dbo"/>
+                            <constraint firstAttribute="bottom" secondItem="46u-yJ-o8t" secondAttribute="bottom" constant="34" id="TPJ-ec-d8O"/>
                             <constraint firstItem="yEy-5P-WRf" firstAttribute="top" secondItem="Ara-cI-e6Q" secondAttribute="top" id="TnL-wg-kMl"/>
+                            <constraint firstItem="46u-yJ-o8t" firstAttribute="leading" secondItem="Ara-cI-e6Q" secondAttribute="leading" constant="5" id="Vtc-0A-67l"/>
                             <constraint firstItem="Xpq-nw-rdL" firstAttribute="leading" secondItem="Ara-cI-e6Q" secondAttribute="leading" id="WN3-QL-ogq"/>
-                            <constraint firstItem="x4D-Q0-swY" firstAttribute="centerX" secondItem="Wuq-Ar-T2f" secondAttribute="centerX" id="d8G-2t-cQQ"/>
-                            <constraint firstItem="Xpq-nw-rdL" firstAttribute="top" secondItem="yEy-5P-WRf" secondAttribute="bottom" constant="20" id="jtA-84-eFl"/>
+                            <constraint firstItem="J68-pT-VfQ" firstAttribute="trailing" secondItem="Ara-cI-e6Q" secondAttribute="trailing" id="ocA-sH-6oD"/>
+                            <constraint firstItem="08q-AV-opn" firstAttribute="centerX" secondItem="Wuq-Ar-T2f" secondAttribute="centerX" id="pEs-ZG-Z2G"/>
                             <constraint firstItem="Ara-cI-e6Q" firstAttribute="trailing" secondItem="yEy-5P-WRf" secondAttribute="trailing" id="tzJ-zb-Gmx"/>
+                            <constraint firstItem="s5h-9Q-NkJ" firstAttribute="leading" secondItem="08q-AV-opn" secondAttribute="trailing" constant="5" id="ubh-lH-amu"/>
+                            <constraint firstItem="08q-AV-opn" firstAttribute="top" secondItem="yEy-5P-WRf" secondAttribute="bottom" id="ucl-4c-cUo"/>
+                            <constraint firstItem="Ara-cI-e6Q" firstAttribute="trailing" secondItem="s5h-9Q-NkJ" secondAttribute="trailing" constant="-5" id="wQj-dv-QRN"/>
+                            <constraint firstItem="J68-pT-VfQ" firstAttribute="leading" secondItem="Ara-cI-e6Q" secondAttribute="leading" id="xs8-mM-nte"/>
+                            <constraint firstItem="Ara-cI-e6Q" firstAttribute="trailing" secondItem="46u-yJ-o8t" secondAttribute="trailing" constant="5" id="zid-wU-DZ3"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="Ara-cI-e6Q"/>
                     </view>
                     <connections>
                         <outlet property="balanceContainer" destination="yEy-5P-WRf" id="1re-u0-6nf"/>
-                        <outlet property="pageControl" destination="x4D-Q0-swY" id="hxz-Rn-jC8"/>
+                        <outlet property="currentWalletBalanceView" destination="J68-pT-VfQ" id="B7L-va-XNE"/>
+                        <outlet property="sendReceiveActionView" destination="46u-yJ-o8t" id="Hl8-gG-XM6"/>
+                        <outlet property="sendReceiveActionViewBottomConstraint" destination="TPJ-ec-d8O" id="Nfu-OS-bkq"/>
+                        <outlet property="tooltipButton" destination="s5h-9Q-NkJ" id="I3y-Bt-foS"/>
+                        <outlet property="walletToggleView" destination="08q-AV-opn" id="LTs-bg-MFe"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xNs-FC-VAi" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -67,4 +109,7 @@
             <point key="canvasLocation" x="35" y="-27"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="questionMarkIcon" width="22" height="22"/>
+    </resources>
 </document>

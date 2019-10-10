@@ -15,7 +15,15 @@ class TestHelpers {
   }
 
   static func mockValidBitcoinAddress() -> String {
+    #if DEBUG
+    return "2N9yokkV146gEoHT6sgUNtisEd7GH93PQ8Q"
+    #else
     return "15PCeM6EN7ihm4QzhVfZCeZis7uggr5RRJ"
+    #endif
+  }
+
+  static func mockInvalidBitcoinAddress() -> String {
+    return "45PCeM6EN7ihm4QzhVfZCeZis7uggr5RRJ"
   }
 
   static func mockInvalidBech32Address() -> String {
@@ -37,11 +45,19 @@ class TestHelpers {
   }
 
   static func validBase58CheckAddresses() -> [String] {
+    #if DEBUG
+    return [
+      "2N8o4Mu5PRAR27TC2eai62CRXarTbQmjyCx",
+      "2NFHgTz4v7waXzVdNyE8LSAuSJox6yDAWmd",
+      "2MvZPjbP9pThD1WBDstq2NYGrw55hUdAjaa"
+    ]
+    #else
     return [
       "12vRFewBpbdiS5HXDDLEfVFtJnpA2x8NV8",
       "3EH9Wj6KWaZBaYXhVCa8ZrwpHJYtk44bGX",
       "3Cd4xEu2VvM352BVgd9cb1Ct5vxz318tVT"
     ]
+    #endif
   }
 
   static func invalidBase58CheckAddresses() -> [String] {
@@ -73,5 +89,11 @@ class TestHelpers {
       "31415926535ILikePi89793238462643",
       "bitcoin:3Cd4xEu2VvM352BVgd9cb1Ct5vxz318tVT"
     ]
+  }
+
+  static func mockLightningInvoice() -> String {
+    return  "lnbcrt9876540n1pw4lj7tpp505qh7vwtvh5s48r4x0fjukekepdhkvcdternv8t7eh99t5" +
+            "7emrsqdq5w3jhxapqd9h8vmmfvdjscqzpgxqrrsshudk0hjapln9p3vt9dnuy2nhygrda54whp" +
+            "l7ds2jjvczcmr0p8qjej6utg98qmyncq30txmh4fernv33rq2wr34uclvzzxrgf6e5pyqq2d9m90"
   }
 }

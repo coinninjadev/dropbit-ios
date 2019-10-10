@@ -1,6 +1,6 @@
 //
 //  CKMVout+CoreDataClass.swift
-//  CoinKeeper
+//  DropBit
 //
 //  Created by BJ Miller on 5/14/18.
 //  Copyright © 2018 Coin Ninja, LLC. All rights reserved.
@@ -162,7 +162,7 @@ public class CKMVout: NSManagedObject {
 
   static func findAllUnspent(in context: NSManagedObjectContext) throws -> [CKMVout] {
     let fetchRequest: NSFetchRequest<CKMVout> = CKMVout.fetchRequest()
-    fetchRequest.predicate = CKPredicate.Vout.isSpent(value: false)
+    fetchRequest.predicate = CKPredicate.Vout.isSpendable(minAmount: 0, minReceiveConfirmations: 0)
 
     var unspentVouts: [CKMVout] = []
     do {
@@ -172,6 +172,16 @@ public class CKMVout: NSManagedObject {
     }
 
     return unspentVouts
+  }
+
+  static func unspentBalance(in context: NSManagedObjectContext) -> Int {
+    do {
+      let unspent = try findAllUnspent(in: context)
+      let total = unspent.reduce(0) { $0 + $1.amount }
+      return total
+    } catch {
+      return 0
+    }
   }
 
   public override var debugDescription: String {

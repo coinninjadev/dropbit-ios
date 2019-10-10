@@ -1,6 +1,6 @@
 //
 //  AppCoordinator.swift
-//  CoinKeeper
+//  DropBit
 //
 //  Created by BJ Miller on 2/2/18.
 //  Copyright © 2018 Coin Ninja, LLC. All rights reserved.
@@ -23,14 +23,8 @@ protocol CoordinatorType: class {
   func start()
 }
 
-extension CoordinatorType {
-  func assignCoordinationDelegate(to viewController: UIViewController) {
-    (viewController as? Coordination)?.generalCoordinationDelegate = self
-  }
-}
-
 protocol ChildCoordinatorType: CoordinatorType {
-  var delegate: ChildCoordinatorDelegate? { get set }
+  var childCoordinatorDelegate: ChildCoordinatorDelegate! { get set }
 }
 
 protocol ChildCoordinatorDelegate: class {
@@ -88,12 +82,13 @@ class AppCoordinator: CoordinatorType {
                                   countryCodeProvider: self.persistenceManager)
   }()
 
-  lazy var workerFactory: WorkerFactory = {
+  func workerFactory() -> WorkerFactory {
     return WorkerFactory(persistenceManager: self.persistenceManager,
                          networkManager: self.networkManager,
                          analyticsManager: self.analyticsManager,
-                         walletManagerProvider: self)
-  }()
+                         walletManagerProvider: self,
+                         paymentSendingDelegate: self)
+  }
 
   init(
     navigationController: CNNavigationController = CNNavigationController(),
@@ -150,8 +145,6 @@ class AppCoordinator: CoordinatorType {
     self.notificationManager.delegate = self
     self.locationManager.delegate = self.locationDelegate
 
-    setCurrentCoin()
-
     self.networkManager.headerDelegate = self
     self.networkManager.walletDelegate = self
     self.alertManager.urlOpener = self
@@ -162,11 +155,19 @@ class AppCoordinator: CoordinatorType {
     return navigationController.topViewController.flatMap { $0 as? MMDrawerController }
   }
 
+  func startSegwitUpgrade() {
+    let child = LightningUpgradeCoordinator(parent: self)
+    startChildCoordinator(childCoordinator: child)
+  }
+
   private func setInitialRootViewController() {
+
     deleteStaleCredentialsIfNeeded()
 
     if launchStateManager.isFirstTimeAfteriCloudRestore() {
       startFirstTimeAfteriCloudRestore()
+    } else if launchStateManager.needsUpgradedToSegwit() {
+      startSegwitUpgrade()
     } else if launchStateManager.shouldRequireAuthentication {
       registerWalletWithServerIfNeeded {
         self.requireAuthenticationIfNeeded {
@@ -184,8 +185,6 @@ class AppCoordinator: CoordinatorType {
 
     } else {
 
-      navigationController.topViewController.flatMap { self.assignCoordinationDelegate(to: $0) }
-
       // Take user directly to phone verification if wallet exists but wallet ID does not
       // This will register the wallet if needed after a reinstall
       let launchProperties = launchStateManager.currentProperties()
@@ -196,8 +195,7 @@ class AppCoordinator: CoordinatorType {
         // Child coordinator will push DeviceVerificationViewController onto stack in its start() method
         startDeviceVerificationFlow(userIdentityType: .phone, shouldOrphanRoot: true, selectedSetupFlow: .newWallet)
       } else if launchStateManager.isFirstTime() {
-        let startVC = StartViewController.makeFromStoryboard()
-        assignCoordinationDelegate(to: startVC)
+        let startVC = StartViewController.newInstance(delegate: self)
         navigationController.viewControllers = [startVC]
       }
     }
@@ -205,7 +203,7 @@ class AppCoordinator: CoordinatorType {
 
   /// Useful to clear out old credentials from the keychain when the app is reinstalled
   private func deleteStaleCredentialsIfNeeded() {
-    let context = persistenceManager.mainQueueContext()
+    let context = persistenceManager.viewContext
     let user = CKMUser.find(in: context)
     guard user == nil else { return }
 
@@ -224,7 +222,6 @@ class AppCoordinator: CoordinatorType {
     launchStateManager.selectedSetupFlow = nil
     enterApp()
     checkForBackendMessages()
-    checkForWordsBackedUp()
     requestPushNotificationDialogueIfNeeded()
     badgeManager.setupTopics()
   }
@@ -235,27 +232,23 @@ class AppCoordinator: CoordinatorType {
     }
   }
 
-  func registerWallet(completion: @escaping () -> Void) {
+  func registerWallet(completion: @escaping CKCompletion) {
     let bgContext = persistenceManager.createBackgroundContext()
     bgContext.perform {
       self.registerAndPersistWallet(in: bgContext)
-        .done(in: bgContext) {
-          try bgContext.save()
-          DispatchQueue.main.async {
-            completion()
-          }
-        }
+        .done(on: .main) { completion() }
         .catch { log.error($0, message: "failed to register and persist wallet") }
     }
   }
 
   func start() {
-    (navigationController.topViewController as? BaseViewController).map { self.assignCoordinationDelegate(to: $0) }
     applyUITestArguments(uiTestArguments)
     analyticsManager.start()
     analyticsManager.optIn()
     networkManager.start()
     connectionManager.delegate = self
+
+    persistenceManager.brokers.activity.setFirstOpenDateIfNil(date: Date())
 
     // fetch transaction information for receive and change addresses, update server addresses
     UIApplication.shared.setMinimumBackgroundFetchInterval(.oneHour)
@@ -302,9 +295,12 @@ class AppCoordinator: CoordinatorType {
     twitterAccessManager.uiTestArguments = uiTestArguments
   }
 
+  var uiTestIsInProgress: Bool {
+    return uiTestArguments.contains(.uiTestInProgress)
+  }
+
   func startChildCoordinator(childCoordinator: ChildCoordinatorType) {
     childCoordinators.append(childCoordinator)
-    childCoordinator.delegate = self
     childCoordinator.start()
   }
 
@@ -386,7 +382,7 @@ class AppCoordinator: CoordinatorType {
   }
 
   func refreshContacts() {
-    let contactCacheMigrationWorker = workerFactory.createContactCacheMigrationWorker(dataWorker: contactCacheDataWorker)
+    let contactCacheMigrationWorker = workerFactory().createContactCacheMigrationWorker(dataWorker: contactCacheDataWorker)
     _ = contactCacheMigrationWorker.migrateIfPossible()
       .done {
         self.contactCacheDataWorker.reloadSystemContactsIfNeeded(force: false) { [weak self] _ in
@@ -400,10 +396,23 @@ class AppCoordinator: CoordinatorType {
     launchStateManager.unauthenticateUser()
   }
 
-  func setCurrentCoin() {
-    let isTestnet = UserDefaults.standard.bool(forKey: "ontestnet")
-    let coin: CNBBaseCoin = isTestnet ? BTCTestnetCoin() : BTCMainnetCoin()
-    walletManager?.coin = coin
+  func toggleChartAndBalance() {
+    guard let topViewController = (navigationController.topViewController() as? MMDrawerController),
+      let walletViewController = topViewController.centerViewController as? WalletOverviewViewController else { return }
+    walletViewController.balanceContainer.toggleChartAndBalance()
+  }
+
+  func showLightningLockAlertIfNecessary() -> Bool {
+    let shouldShowError = persistenceManager.brokers.preferences.selectedWalletTransactionType == .lightning &&
+      persistenceManager.brokers.preferences.lightningWalletLockedStatus == .locked
+
+    if shouldShowError {
+      navigationController.present(alertManager.defaultAlert(withTitle: "Error",
+                                                             description: "Your Lightning wallet is currently locked."),
+                                   animated: true, completion: nil)
+    }
+
+    return !shouldShowError
   }
 
 }

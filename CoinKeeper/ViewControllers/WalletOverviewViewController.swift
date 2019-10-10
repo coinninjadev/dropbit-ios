@@ -8,16 +8,36 @@
 
 import Foundation
 import UIKit
+import MMDrawerController
 
 protocol WalletOverviewViewControllerDelegate: BalanceContainerDelegate & BadgeUpdateDelegate {
   var badgeManager: BadgeManagerType { get }
   var currencyController: CurrencyController { get }
+
+  func viewControllerDidTapScan(_ viewController: UIViewController, converter: CurrencyConverter)
+  func setSelectedWalletTransactionType(_ viewController: UIViewController, to selectedType: WalletTransactionType)
+  func selectedWalletTransactionType() -> WalletTransactionType
+  func viewControllerDidTapReceivePayment(_ viewController: UIViewController, converter: CurrencyConverter)
+  func viewControllerDidTapSendPayment(_ viewController: UIViewController, converter: CurrencyConverter, walletTransactionType: WalletTransactionType)
+  func viewControllerShouldAdjustForBottomSafeArea(_ viewController: UIViewController) -> Bool
+  func viewControllerDidSelectTransfer(_ viewController: UIViewController)
+  func viewControllerDidTapWalletTooltip()
+  func isSyncCurrentlyRunning() -> Bool
+  func viewControllerDidRequestPrimaryCurrencySwap()
 }
 
 class WalletOverviewViewController: BaseViewController, StoryboardInitializable {
 
   @IBOutlet var balanceContainer: BalanceContainer!
-  @IBOutlet var pageControl: UIPageControl!
+  @IBOutlet var walletToggleView: WalletToggleView!
+  @IBOutlet var tooltipButton: UIButton!
+  @IBOutlet var sendReceiveActionViewBottomConstraint: NSLayoutConstraint!
+  @IBOutlet var currentWalletBalanceView: WalletBalanceView!
+  @IBOutlet var sendReceiveActionView: SendReceiveActionView! {
+    didSet {
+      sendReceiveActionView.actionDelegate = self
+    }
+  }
 
   let rateManager = ExchangeRateManager()
   var badgeNotificationToken: NotificationToken?
@@ -26,15 +46,21 @@ class WalletOverviewViewController: BaseViewController, StoryboardInitializable 
   var balanceNotificationToken: NotificationToken?
   var pageViewController: UIPageViewController?
 
-  enum ViewControllerIndex: Int {
-    case newsViewController = 0
-    case transactionHistoryViewController = 1
-    case requestViewController = 2
+  private var currentWallet: WalletTransactionType = .onChain {
+    willSet {
+      guard currentWallet != newValue else { return }
+      delegate.setSelectedWalletTransactionType(self, to: newValue)
+    }
+    didSet {
+      balanceContainer.refresh()
+      walletBalanceView.refresh()
+    }
   }
 
-  var coordinationDelegate: WalletOverviewViewControllerDelegate? {
-    return generalCoordinationDelegate as? WalletOverviewViewControllerDelegate
-  }
+  var startSyncNotificationToken: NotificationToken?
+  var finishSyncNotificationToken: NotificationToken?
+
+  private(set) weak var delegate: WalletOverviewViewControllerDelegate!
 
   var baseViewControllers: [BaseViewController] = [] {
     willSet {
@@ -44,9 +70,12 @@ class WalletOverviewViewController: BaseViewController, StoryboardInitializable 
     }
   }
 
+  @IBAction func tooltipButtonWasTouched() {
+    delegate.viewControllerDidTapWalletTooltip()
+  }
+
   override func accessibleViewsAndIdentifiers() -> [AccessibleViewElement] {
-    guard let transactionHistoryViewController = baseViewControllers[1] as? TransactionHistoryViewController,
-      let sendReceiveActionView = transactionHistoryViewController.sendReceiveActionView else { return [] }
+    guard let transactionHistoryViewController = baseViewControllers[safe: 1] as? TransactionHistoryViewController else { return [] }
     return [
       (self.view, .walletOverview(.page)),
       (self.balanceContainer, .walletOverview(.balanceView)),
@@ -63,15 +92,14 @@ class WalletOverviewViewController: BaseViewController, StoryboardInitializable 
                           balanceProvider: ConvertibleBalanceProvider,
                           balanceDelegate: BalanceContainerDelegate) -> WalletOverviewViewController {
     let controller = WalletOverviewViewController.makeFromStoryboard()
-    controller.generalCoordinationDelegate = delegate
+    controller.delegate = delegate
     controller.baseViewControllers = baseViewControllers
     controller.balanceProvider = balanceProvider
     controller.balanceDelegate = balanceDelegate
     return controller
   }
 
-  private var showTransactionHistoryToken: NotificationToken?
-  private var dismissTransactionHistoryToken: NotificationToken?
+  private var reloadTransactionsToken: NotificationToken?
 
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -81,53 +109,93 @@ class WalletOverviewViewController: BaseViewController, StoryboardInitializable 
       pageViewController.view.layer.masksToBounds = false
     }
 
-    self.showTransactionHistoryToken = CKNotificationCenter
-      .subscribe(key: .willShowTransactionHistoryDetails, object: nil, queue: .main) { _ in
-      self.pageControl.isHidden = true
+    self.reloadTransactionsToken = CKNotificationCenter
+      .subscribe(key: .didUpdateLocalTransactionRecords, object: nil, queue: .main) { _ in
+        self.baseViewControllers.forEach { ($0 as? TransactionHistoryViewController)?.summaryCollectionView.reloadData() }
     }
 
-    self.dismissTransactionHistoryToken = CKNotificationCenter
-      .subscribe(key: .didDismissTransactionHistoryDetails, object: nil, queue: .main) { _ in
-      self.pageControl.isHidden = false
-    }
-
+    balanceContainer.delegate = balanceDelegate
     pageViewController?.dataSource = self
     pageViewController?.delegate = self
-    balanceContainer.delegate = balanceDelegate
+    walletToggleView.delegate = self
+    walletBalanceView.delegate = self
 
-    setupPageControl()
-    (coordinationDelegate?.badgeManager).map(subscribeToBadgeNotifications)
+    sendReceiveActionView.tintView(with: .bitcoinOrange)
+
+    self.subscribeToBadgeNotifications(with: delegate.badgeManager)
+
+    let bottomOffsetIfNeeded: CGFloat = 20
+    if delegate.viewControllerShouldAdjustForBottomSafeArea(self) {
+      sendReceiveActionViewBottomConstraint.constant = bottomOffsetIfNeeded
+    }
 
     subscribeToRateAndBalanceUpdates()
+    subscribeToSyncNotifications()
     updateRatesAndBalances()
 
+    self.baseViewControllers.forEach { ($0 as? TransactionHistoryViewController)?.summaryCollectionView.historyDelegate = self }
+
+    pageViewController?.view.layer.cornerRadius = 30.0
+    pageViewController?.view.layer.maskedCorners = .top
+    pageViewController?.view.clipsToBounds = true
+
     if baseViewControllers.count >= 2 {
-      pageViewController?.setViewControllers([baseViewControllers[1]], direction: .forward, animated: true, completion: nil)
+      switch delegate.selectedWalletTransactionType() {
+      case .lightning:
+        setupUI(for: .lightningWallet)
+      case .onChain:
+        setupUI(for: .bitcoinWallet)
+      }
     }
   }
 
-  override func viewDidAppear(_ animated: Bool) {
-    super.viewDidAppear(animated)
-    self.baseViewControllers.compactMap { $0 as? RequestPayViewController}.first?.closeButton?.isHidden = true
-  }
-
-  func preferredCurrency() -> CurrencyCode {
-    guard let selected = coordinationDelegate?.currencyController.selectedCurrency else { return .USD }
-    switch selected {
-    case .BTC:
-      return .BTC
-    case .fiat:
-      return .USD
+  override func lock() {
+    if delegate.selectedWalletTransactionType() == .lightning {
+      sendReceiveActionView.isHidden = true
     }
+
+    walletBalanceView.reloadWalletButton.isHidden = true
   }
 
-  private func setupPageControl() {
-    pageControl.currentPage = 1
-    pageControl.pageIndicatorTintColor = .pageIndicator
-    pageControl.currentPageIndicatorTintColor = .lightBlueTint
-    pageControl.numberOfPages = baseViewControllers.count
+  override func makeUnavailable() {
+    lock()
   }
 
+  override func unlock() {
+    sendReceiveActionView.isHidden = false
+    walletBalanceView.reloadWalletButton.isHidden = false
+  }
+
+  private func setupStyleForOnChainWallet() {
+    guard baseViewControllers.count >= 2 else { return }
+    walletToggleView.selectBitcoinButton()
+    currentWallet = .onChain
+    sendReceiveActionView.tintView(with: .bitcoinOrange)
+  }
+
+  private func setupStyleForLightningWallet() {
+    guard baseViewControllers.count >= 1 else { return }
+    walletToggleView.selectLightningButton()
+    currentWallet = .lightning
+    sendReceiveActionView.tintView(with: .lightningBlue)
+  }
+
+  private func setupUI(for wallet: ViewControllerIndex?) {
+    switch wallet {
+    case .bitcoinWallet?:
+      setupStyleForOnChainWallet()
+      sendReceiveActionView.isHidden = false
+      pageViewController?.setViewControllers([baseViewControllers[1]], direction: .reverse, animated: true, completion: nil)
+    case .lightningWallet?:
+      setupStyleForLightningWallet()
+      sendReceiveActionView.isHidden = currentLockStatus == .locked
+      pageViewController?.setViewControllers([baseViewControllers[0]], direction: .forward, animated: true, completion: nil)
+    default:
+      walletToggleView.selectBitcoinButton()
+    }
+
+    refreshLockStatus()
+  }
 }
 
 extension WalletOverviewViewController: BadgeDisplayable {
@@ -140,9 +208,10 @@ extension WalletOverviewViewController: BadgeDisplayable {
 
 extension WalletOverviewViewController: BalanceDisplayable {
 
+  var walletBalanceView: WalletBalanceView { return currentWalletBalanceView }
   var balanceLeftButtonType: BalanceContainerLeftButtonType { return .menu }
   var primaryBalanceCurrency: CurrencyCode {
-    guard let selectedCurrency = coordinationDelegate?.selectedCurrency() else { return .BTC }
+    let selectedCurrency = delegate.selectedCurrency()
     switch selectedCurrency {
     case .BTC: return .BTC
     case .fiat: return .USD
@@ -151,17 +220,32 @@ extension WalletOverviewViewController: BalanceDisplayable {
 
   func didUpdateExchangeRateManager(_ exchangeRateManager: ExchangeRateManager) {
     rateManager.exchangeRates = exchangeRateManager.exchangeRates
-    coordinationDelegate?.currencyController.exchangeRates = exchangeRateManager.exchangeRates
-    baseViewControllers.compactMap { $0 as? ExchangeRateUpdateable }.forEach { $0.didUpdateExchangeRateManager(exchangeRateManager) }
+    delegate.currencyController.exchangeRates = exchangeRateManager.exchangeRates
+    baseViewControllers.compactMap { $0 as? ExchangeRateUpdatable }.forEach { $0.didUpdateExchangeRateManager(exchangeRateManager) }
   }
 
+  var walletTransactionType: WalletTransactionType {
+    return delegate.selectedWalletTransactionType()
+  }
+}
+
+enum ViewControllerIndex: Int {
+  case bitcoinWallet = 0
+  case lightningWallet = 1
 }
 
 extension WalletOverviewViewController: UIPageViewControllerDelegate {
+
+  func pageViewController(_ pageViewController: UIPageViewController, willTransitionTo pendingViewControllers: [UIViewController]) {
+    if currentLockStatus == .locked {
+      sendReceiveActionView.isHidden = true
+    }
+  }
+
   func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool,
                           previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
-    if let viewContorller = pageViewController.viewControllers?.first as? BaseViewController, completed {
-      pageControl.currentPage = baseViewControllers.reversed().firstIndex(of: viewContorller) ?? 0
+    if let viewController = pageViewController.viewControllers?.first as? BaseViewController {
+      setupUI(for: ViewControllerIndex(rawValue: baseViewControllers.reversed().firstIndex(of: viewController) ?? 0))
     }
   }
 }
@@ -170,17 +254,27 @@ extension WalletOverviewViewController: UIPageViewControllerDataSource {
 
   func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
     guard let baseViewController = viewController as? BaseViewController,
-      let index = baseViewControllers.firstIndex(of: baseViewController), index != ViewControllerIndex.newsViewController.rawValue else { return nil }
+      let index = baseViewControllers.firstIndex(of: baseViewController) else { return nil }
 
     return baseViewControllers[safe: index + 1]
   }
 
   func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
     guard let baseViewController = viewController as? BaseViewController,
-      let index = baseViewControllers.firstIndex(of: baseViewController),
-      index != ViewControllerIndex.requestViewController.rawValue else { return nil }
+      let index = baseViewControllers.firstIndex(of: baseViewController) else { return nil }
 
     return baseViewControllers[safe: index - 1]
+  }
+}
+
+extension WalletOverviewViewController: WalletToggleViewDelegate {
+
+  func bitcoinWalletButtonWasTouched() {
+    setupUI(for: .bitcoinWallet)
+  }
+
+  func lightningWalletButtonWasTouched() {
+    setupUI(for: .lightningWallet)
   }
 }
 
@@ -188,5 +282,105 @@ extension WalletOverviewViewController: SelectedCurrencyUpdatable {
   func updateSelectedCurrency(to selectedCurrency: SelectedCurrency) {
     updateViewWithBalance()
     baseViewControllers.compactMap { $0 as? SelectedCurrencyUpdatable }.forEach { $0.updateSelectedCurrency(to: selectedCurrency) }
+  }
+}
+
+extension WalletOverviewViewController: SendReceiveActionViewDelegate {
+  func actionViewDidSelectReceive(_ view: UIView) {
+    let converter = delegate.currencyController.currencyConverter
+    delegate.viewControllerDidTapReceivePayment(self, converter: converter)
+  }
+
+  func actionViewDidSelectScan(_ view: UIView) {
+    let converter = delegate.currencyController.currencyConverter
+    delegate.viewControllerDidTapScan(self, converter: converter)
+  }
+
+  func actionViewDidSelectSend(_ view: UIView) {
+    let converter = delegate.currencyController.currencyConverter
+    delegate.viewControllerDidTapSendPayment(self, converter: converter,
+                                                walletTransactionType: currentWallet)
+  }
+}
+
+extension WalletOverviewViewController: SyncSubscribeable {
+
+  func handleStartSync() {
+    walletBalanceView.primarySecondaryBalanceContainer.isSyncing = true
+  }
+
+  func handleFinishSync() {
+    walletBalanceView.primarySecondaryBalanceContainer.isSyncing = false
+  }
+
+}
+
+extension WalletOverviewViewController: WalletBalanceViewDelegate {
+
+  func getCurrentLockStatus() -> LockStatus {
+    return currentLockStatus
+  }
+
+  func getCurrentWalletTransactionType() -> WalletTransactionType {
+    return delegate.selectedWalletTransactionType()
+  }
+
+  func transferButtonWasTouched() {
+    delegate.viewControllerDidSelectTransfer(self)
+  }
+
+  func swapPrimaryCurrency() {
+    delegate.viewControllerDidRequestPrimaryCurrencySwap()
+    let newSelectedCurrency = delegate.selectedCurrency()
+    updateSelectedCurrency(to: newSelectedCurrency)
+  }
+
+  func isSyncCurrentlyRunning() -> Bool {
+    return delegate.isSyncCurrentlyRunning()
+  }
+
+}
+
+extension WalletOverviewViewController: TransactionHistorySummaryCollectionViewDelegate {
+
+  func collectionViewDidProvideHitTestPoint(_ point: CGPoint, in view: UIView) -> UIView? {
+    let translatedPoint = view.convert(point, to: self.view)
+    if walletToggleView.frame.contains(translatedPoint) {
+      let toggleTranslatedPoint = self.view.convert(translatedPoint, to: walletToggleView)
+      walletToggleView.bitcoinWalletButton.frame.contains(toggleTranslatedPoint) ?
+        walletToggleView.bitcoinWalletWasTouched() : walletToggleView.lightningWalletWasTouched()
+      return walletToggleView
+    } else if walletBalanceView.frame.contains(translatedPoint) {
+      let balanceViewTranslatedPoint = self.view.convert(translatedPoint, to: walletBalanceView)
+      if walletBalanceView.reloadWalletButton.frame.contains(balanceViewTranslatedPoint) {
+        walletBalanceView.transferButtonWasTouched()
+        return walletBalanceView.reloadWalletButton
+      } else if walletBalanceView.primarySecondaryBalanceContainer.frame.contains(balanceViewTranslatedPoint) {
+        walletBalanceView.balanceContainerWasTouched()
+        return walletBalanceView.primarySecondaryBalanceContainer
+      } else {
+        return walletBalanceView
+      }
+    } else if tooltipButton.frame.contains(translatedPoint) {
+      tooltipButtonWasTouched()
+      return tooltipButton
+    } else {
+      return nil
+    }
+  }
+
+  func collectionViewDidUncoverWalletBalance() {
+    guard !balanceContainer.primarySecondaryBalanceContainer.isHidden
+      && navigationController?.topViewController() is MMDrawerController else { return }
+
+    balanceContainer.toggleChartAndBalance()
+    sendReceiveActionView.isHidden = false
+  }
+
+  func collectionViewDidCoverWalletBalance() {
+    guard balanceContainer.primarySecondaryBalanceContainer.isHidden else { return }
+
+    balanceContainer.toggleChartAndBalance()
+    sendReceiveActionView.isHidden = true
   }
 }

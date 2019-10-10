@@ -18,10 +18,11 @@ class CKCryptorTests: XCTestCase {
   func testDecryptingCipherTextReturnsExpectedText() {
     let stack = InMemoryCoreDataStack()
     let context = stack.context
+    mockPersistenceManager.fakeCoinToUse = CNBBaseCoin(purpose: .BIP49, coin: .TestNet, account: 0)
 
-    let aliceWallet = WalletManager(words: words.reversed(), coin: BTCMainnetCoin(), persistenceManager: mockPersistenceManager)
+    let aliceWallet = WalletManager(words: words.reversed(), persistenceManager: mockPersistenceManager)
 
-    let bobWallet = WalletManager(words: words, coin: BTCMainnetCoin(), persistenceManager: mockPersistenceManager)
+    let bobWallet = WalletManager(words: words, persistenceManager: mockPersistenceManager)
     let bobReceiveAddress = bobWallet.createAddressDataSource().receiveAddress(at: 0)
     let bobECUncompressedPubkeyString = bobReceiveAddress.uncompressedPublicKey ?? ""
     guard let bobECUncompressedPubkeyData = Data(fromHexEncodedString: bobECUncompressedPubkeyString) else {
@@ -33,7 +34,8 @@ class CKCryptorTests: XCTestCase {
     let clearText = "hello"
     let clearData = clearText.data(using: .utf8)!
     guard let payloadString = try? aliceEncryptor.encryptAsBase64String(message: clearData,
-                                                                        withRecipientUncompressedPubkey: bobECUncompressedPubkeyData) else {
+                                                                        withRecipientUncompressedPubkey: bobECUncompressedPubkeyData,
+                                                                        isEphemeral: true) else {
       XCTFail("failed to encrypt alice's message")
       return
     }
@@ -41,7 +43,7 @@ class CKCryptorTests: XCTestCase {
     let bobDecryptor = CKCryptor(walletManager: bobWallet)
 
     context.performAndWait {
-      let dpath = CKMDerivativePath.findOrCreate(withIndex: 0, in: context)
+      let dpath = CKMDerivativePath.findOrCreate(with: 49, 1, 0, 0, 0, in: context)
       let addr = CKMAddress.findOrCreate(withAddress: bobReceiveAddress.address, in: context) // just so it's in the core data context
       addr.derivativePath = dpath
       dpath.address = addr
@@ -70,16 +72,21 @@ class CKCryptorTests: XCTestCase {
       "真曰分友"
     ]
 
-    let aliceWallet = WalletManager(words: words.reversed(), coin: BTCMainnetCoin(), persistenceManager: mockPersistenceManager)
+    mockPersistenceManager.fakeCoinToUse = CNBBaseCoin(purpose: .BIP49, coin: .TestNet, account: 0)
 
-    let bobWallet = WalletManager(words: words, coin: BTCMainnetCoin(), persistenceManager: mockPersistenceManager)
+    let aliceWallet = WalletManager(words: words.reversed(), persistenceManager: mockPersistenceManager)
+
+    let bobWallet = WalletManager(words: words, persistenceManager: mockPersistenceManager)
 
     possibleMemos.forEach { self.assertTextEncryption(clearText: $0, aliceWallet: aliceWallet, bobWallet: bobWallet)}
   }
 
+  // TODO: have a test for 49 -> 84, and vice versa
+
   private func assertTextEncryption(clearText: String, aliceWallet: WalletManager, bobWallet: WalletManager) {
     let stack = InMemoryCoreDataStack()
     let context = stack.context
+    mockPersistenceManager.fakeCoinToUse = CNBBaseCoin(purpose: .BIP49, coin: .TestNet, account: 0)
 
     let bobReceiveAddress = bobWallet.createAddressDataSource().receiveAddress(at: 0)
     let bobECUncompressedPubkeyString = bobReceiveAddress.uncompressedPublicKey ?? ""
@@ -92,7 +99,8 @@ class CKCryptorTests: XCTestCase {
     let clearData = clearText.data(using: .utf8)!
     guard let payloadString = try? aliceEncryptor.encryptAsBase64String(
       message: clearData,
-      withRecipientUncompressedPubkey: bobECUncompressedPubkeyData
+      withRecipientUncompressedPubkey: bobECUncompressedPubkeyData,
+      isEphemeral: true
       ) else {
         XCTFail("failed to encrypt alice's message")
         return
@@ -101,7 +109,7 @@ class CKCryptorTests: XCTestCase {
     let bobDecryptor = CKCryptor(walletManager: bobWallet)
 
     context.performAndWait {
-      let dpath = CKMDerivativePath.findOrCreate(withIndex: 0, in: context)
+      let dpath = CKMDerivativePath.findOrCreate(with: 49, 1, 0, 0, 0, in: context)
       let addr = CKMAddress.findOrCreate(withAddress: bobReceiveAddress.address, in: context) // just so it's in the core data context
       addr.derivativePath = dpath
       dpath.address = addr
@@ -120,9 +128,11 @@ class CKCryptorTests: XCTestCase {
 
   }
 
+  // TODO: add another testEncryptingPayload test for 49->84 and 84->49.
   func testEncryptingPayload() {
     let stack = InMemoryCoreDataStack()
     let context = stack.context
+    mockPersistenceManager.fakeCoinToUse = CNBBaseCoin(purpose: .BIP49, coin: .TestNet, account: 0)
 
     // Construct the test data
     let amountInfo = SharedPayloadAmountInfo(fiatCurrency: .USD, fiatAmount: 100)
@@ -135,10 +145,10 @@ class CKCryptorTests: XCTestCase {
         return
     }
 
-    let aliceWallet = WalletManager(words: words.reversed(), coin: BTCMainnetCoin(), persistenceManager: mockPersistenceManager)
+    let aliceWallet = WalletManager(words: words.reversed(), persistenceManager: mockPersistenceManager)
     let aliceEncryptor = CKCryptor(walletManager: aliceWallet)
 
-    let bobWallet = WalletManager(words: words, coin: BTCMainnetCoin(), persistenceManager: mockPersistenceManager)
+    let bobWallet = WalletManager(words: words, persistenceManager: mockPersistenceManager)
     let bobDecryptor = CKCryptor(walletManager: bobWallet)
     let bobReceiveAddress = bobWallet.createAddressDataSource().receiveAddress(at: 0)
     let bobECUncompressedPubkeyString = bobReceiveAddress.uncompressedPublicKey ?? ""
@@ -149,14 +159,15 @@ class CKCryptorTests: XCTestCase {
 
     guard let encryptedPayloadString = try? aliceEncryptor.encryptAsBase64String(
       message: payloadData,
-      withRecipientUncompressedPubkey: bobECUncompressedPubkeyData
+      withRecipientUncompressedPubkey: bobECUncompressedPubkeyData,
+      isEphemeral: true
       ) else {
         XCTFail("failed to encrypt alice's message")
         return
     }
 
     context.performAndWait {
-      let dpath = CKMDerivativePath.findOrCreate(withIndex: 0, in: context)
+      let dpath = CKMDerivativePath.findOrCreate(with: 49, 1, 0, 0, 0, in: context)
       let addr = CKMAddress.findOrCreate(withAddress: bobReceiveAddress.address, in: context) // just so it's in the core data context
       addr.derivativePath = dpath
       dpath.address = addr

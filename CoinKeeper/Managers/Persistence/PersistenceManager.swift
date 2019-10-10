@@ -16,6 +16,10 @@ class PersistenceManager: PersistenceManagerType {
   let contactCacheManager: ContactCacheManagerType
   let brokers: PersistenceBrokersType
 
+  var usableCoin: CNBBaseCoin {
+    return brokers.wallet.usableCoin
+  }
+
   let hashingManager = HashingManager()
 
   init(
@@ -33,8 +37,16 @@ class PersistenceManager: PersistenceManagerType {
                                                  userDefaultsManager: userDefaultsManager)
   }
 
+  var viewContext: NSManagedObjectContext {
+    return databaseManager.viewContext
+  }
+
   func createBackgroundContext() -> NSManagedObjectContext {
     return databaseManager.createBackgroundContext()
+  }
+
+  func persistentStore() -> NSPersistentStore? {
+    return persistentStore(for: viewContext)
   }
 
   func resetPersistence() throws {
@@ -43,25 +55,25 @@ class PersistenceManager: PersistenceManagerType {
     self.keychainManager.deleteAll()
   }
 
-  func mainQueueContext() -> NSManagedObjectContext {
-    return databaseManager.mainQueueContext
-  }
-
-  func persistentStore() -> NSPersistentStore? {
-    return persistentStore(for: mainQueueContext())
-  }
-
   func persistentStore(for context: NSManagedObjectContext) -> NSPersistentStore? {
     return databaseManager.persistentStore(for: context)
   }
 
-  func persistReceivedSharedPayloads(_ payloads: [Data], in context: NSManagedObjectContext) {
+  func persistReceivedSharedPayloads(_ payloads: [Data], ofType walletTxType: WalletTransactionType, in context: NSManagedObjectContext) {
     let hasher = self.hashingManager
     databaseManager.sharedPayloadManager.persistReceivedSharedPayloads(
       payloads,
+      ofType: walletTxType,
       hasher: hasher,
       contactCacheManager: contactCacheManager,
       in: context)
+  }
+
+  func persistReceivedAddressRequests(_ responses: [WalletAddressRequestResponse], in context: NSManagedObjectContext) {
+    responses.forEach {
+      let invitation = CKMInvitation.updateOrCreate(withReceivedAddressRequestResponse: $0, in: context)
+      invitation.transaction?.isIncoming = true
+    }
   }
 
   func persistTransactionSummaries(
@@ -72,7 +84,7 @@ class PersistenceManager: PersistenceManagerType {
   }
 
   private func updateReceiveAddressGaps(in context: NSManagedObjectContext) {
-    let usedDerivativePaths = CKMDerivativePath.findAllReceivePathsWithAddressTransactionSummaries(in: context)
+    let usedDerivativePaths = CKMDerivativePath.findAllReceivePathsWithAddressTransactionSummaries(forCoin: usableCoin, in: context)
     let usedIndexes = usedDerivativePaths.map { $0.index }
     if let maxUsedIndex = usedIndexes.max() {
       let fullSet = Set(Array(0...maxUsedIndex))

@@ -16,8 +16,16 @@ struct UITestHelpers {
     return GeneratedTestWords.recoverOnlyWords
   }
 
+  static func recoverOnlyLegacyWords() -> [String] {
+    return GeneratedTestWords.recoverOnlyLegacyWords
+  }
+
+  static func recoverOnlyLegacyDeactivatedWords() -> [String] {
+    return GeneratedTestWords.recoverOnlyLegacyDeactivatedWords
+  }
+
   static var recoverOnlyWordsFirstAddress: String {
-    return GeneratedTestWords.recoverOnlyFirstAddress
+    return GeneratedTestWords.recoverOnlyFirstTestnetAddress
   }
 
 }

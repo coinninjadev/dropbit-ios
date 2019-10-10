@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="CKBannerView" customModule="DropBit" customModuleProvider="target"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="CKBannerView" customModule="DropBit" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="107"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WOC-oE-XBb">
+                    <rect key="frame" x="16" y="16" width="343" height="87"/>
+                    <subviews>
+                        <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="AVf-gd-kvg">
+                            <rect key="frame" x="16" y="4" width="319" height="79"/>
+                            <subviews>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zxJ-Ru-oC9">
+                                    <rect key="frame" x="0.0" y="0.0" width="281" height="79"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                    <nil key="textColor"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NgY-7g-Gcs">
+                                    <rect key="frame" x="289" y="0.0" width="30" height="79"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="30" id="PGQ-cS-M7p"/>
+                                    </constraints>
+                                    <state key="normal" image="close">
+                                        <color key="titleColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </state>
+                                    <connections>
+                                        <action selector="closeButtonWasTouched" destination="iN0-l3-epB" eventType="touchUpInside" id="VoB-ld-9gz"/>
+                                    </connections>
+                                </button>
+                            </subviews>
+                        </stackView>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstItem="AVf-gd-kvg" firstAttribute="top" secondItem="WOC-oE-XBb" secondAttribute="top" constant="4" id="HqR-qV-8e0"/>
+                        <constraint firstItem="AVf-gd-kvg" firstAttribute="leading" secondItem="WOC-oE-XBb" secondAttribute="leading" constant="16" id="T3S-So-QxY"/>
+                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="64" id="g4J-oU-IUx"/>
+                        <constraint firstAttribute="trailing" secondItem="AVf-gd-kvg" secondAttribute="trailing" constant="8" id="s97-zc-JfS"/>
+                        <constraint firstAttribute="bottom" secondItem="AVf-gd-kvg" secondAttribute="bottom" constant="4" id="tUs-7Y-Jtn"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstAttribute="bottom" secondItem="WOC-oE-XBb" secondAttribute="bottom" constant="4" id="4hW-o9-gvW"/>
+                <constraint firstItem="WOC-oE-XBb" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="16" id="Scx-xL-zuk"/>
+                <constraint firstAttribute="trailing" secondItem="WOC-oE-XBb" secondAttribute="trailing" constant="16" id="a3T-az-Ptb"/>
+                <constraint firstItem="WOC-oE-XBb" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="16" id="b8z-rr-kPi"/>
+            </constraints>
+            <nil key="simulatedTopBarMetrics"/>
+            <nil key="simulatedBottomBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <connections>
+                <outlet property="backingView" destination="WOC-oE-XBb" id="V32-1m-W6P"/>
+                <outlet property="closeButton" destination="NgY-7g-Gcs" id="twa-ZK-yL1"/>
+                <outlet property="messageLabel" destination="zxJ-Ru-oC9" id="Bc0-Vu-S2P"/>
+            </connections>
+            <point key="canvasLocation" x="-134" y="51"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="close" width="14" height="14"/>
+    </resources>
+</document>

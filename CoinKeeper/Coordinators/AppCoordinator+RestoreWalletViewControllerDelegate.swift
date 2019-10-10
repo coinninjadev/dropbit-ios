@@ -1,6 +1,6 @@
 //
 //  AppCoordinator+RestoreWalletViewControllerDelegate.swift
-//  CoinKeeper
+//  DropBit
 //
 //  Created by Mitchell on 7/3/18.
 //  Copyright © 2018 Coin Ninja, LLC. All rights reserved.
@@ -21,8 +21,10 @@ extension AppCoordinator: RestoreWalletViewControllerDelegate {
 
   private func showSuccessFail(forWords words: [String]) {
     let viewModel = RestoreWalletSuccessFailViewModel(mode: .pending)
+    let context = persistenceManager.viewContext
     let successFailController = SuccessFailViewController.newInstance(viewModel: viewModel,
-                                                                      delegate: self)
+                                                                      delegate: self,
+                                                                      initialAction: registerAndPersistWallet(in: context))
     successFailController.action = {
       if let words = self.persistenceManager.brokers.wallet.walletWords() {
         self.walletManager = WalletManager(words: words, persistenceManager: self.persistenceManager)

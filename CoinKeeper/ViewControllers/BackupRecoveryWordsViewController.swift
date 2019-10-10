@@ -1,6 +1,6 @@
 //
 //  BackupRecoveryWordsViewController.swift
-//  CoinKeeper
+//  DropBit
 //
 //  Created by BJ Miller on 2/27/18.
 //  Copyright © 2018 Coin Ninja, LLC. All rights reserved.
@@ -17,11 +17,13 @@ final class BackupRecoveryWordsViewController: BaseViewController, StoryboardIni
 
   static func newInstance(withDelegate delegate: BackupRecoveryWordsViewControllerDelegate,
                           recoveryWords words: [String],
-                          wordsBackedUp: Bool) -> BackupRecoveryWordsViewController {
+                          wordsBackedUp: Bool,
+                          reviewOnly: Bool = false) -> BackupRecoveryWordsViewController {
     let controller = BackupRecoveryWordsViewController.makeFromStoryboard()
     controller.recoveryWords = words
     controller.wordsBackedUp = wordsBackedUp
-    controller.generalCoordinationDelegate = delegate
+    controller.reviewOnly = reviewOnly
+    controller.delegate = delegate
     return controller
   }
 
@@ -60,9 +62,10 @@ final class BackupRecoveryWordsViewController: BaseViewController, StoryboardIni
       }
     }
   }
-  var coordinationDelegate: BackupRecoveryWordsViewControllerDelegate? {
-    return generalCoordinationDelegate as? BackupRecoveryWordsViewControllerDelegate
-  }
+
+  private var reviewOnly: Bool = false
+  private(set) weak var delegate: BackupRecoveryWordsViewControllerDelegate!
+
   var wordCollectionViewDDS: BackupRecoveryWordsCollectionDDS!
 
   override func accessibleViewsAndIdentifiers() -> [AccessibleViewElement] {
@@ -87,7 +90,7 @@ final class BackupRecoveryWordsViewController: BaseViewController, StoryboardIni
   }
 
   @objc func skipBackupRecoveryWords() {
-    coordinationDelegate?.viewController(self, shouldPromptToSkipWords: recoveryWords)
+    delegate.viewController(self, shouldPromptToSkipWords: recoveryWords)
   }
 
   override func viewWillAppear(_ animated: Bool) {
@@ -99,7 +102,11 @@ final class BackupRecoveryWordsViewController: BaseViewController, StoryboardIni
   // MARK: actions
   @IBAction func nextButtonTapped(_ sender: UIButton) {
     if let currentIndex = currentIndex(), indexIsLast(index: currentIndex) {
-      coordinationDelegate?.viewController(self, didFinishWords: recoveryWords)
+      if reviewOnly {
+        dismiss(animated: true, completion: nil)
+      } else {
+        delegate.viewController(self, didFinishWords: recoveryWords)
+      }
     } else {
       showItem(direction: .next)
     }

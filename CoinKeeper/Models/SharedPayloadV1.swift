@@ -83,3 +83,23 @@ struct SharedPayloadVersionIdentifier: SharedPayloadCodable {
      }
    }
  */
+
+extension SharedPayloadV1: PersistablePayload {
+
+  var amount: Int {
+    return self.info.amount
+  }
+
+  var currency: String {
+    return self.info.currency
+  }
+
+  var memo: String {
+    return self.info.memo
+  }
+
+  func payloadCounterparties(with deps: PayloadPersistenceDependencies) -> PayloadCounterparties? {
+    return phoneNumberPayloadCounterparties(forGlobalNumber: self.profile.globalPhoneNumber(), with: deps)
+  }
+
+}

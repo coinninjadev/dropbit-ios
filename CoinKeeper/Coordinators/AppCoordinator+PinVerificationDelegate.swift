@@ -1,6 +1,6 @@
 //
 //  AppCoordinator+PinVerificationDelegate.swift
-//  CoinKeeper
+//  DropBit
 //
 //  Created by BJ Miller on 4/24/18.
 //  Copyright © 2018 Coin Ninja, LLC. All rights reserved.
@@ -24,7 +24,7 @@ extension AppCoordinator: PinVerificationDelegate {
       }.cauterize()
   }
 
-  private func postVerificationAction(forFlow flow: SetupFlow?) -> (() -> Void) {
+  private func postVerificationAction(forFlow flow: SetupFlow?) -> CKCompletion {
     guard let flow = flow else { return { } }
     switch flow {
     case .newWallet, .claimInvite:
@@ -33,10 +33,9 @@ extension AppCoordinator: PinVerificationDelegate {
       }
 
     case .restoreWallet:
-      return { [weak self] in
-        let viewController = RestoreWalletViewController.makeFromStoryboard()
-        self?.assignCoordinationDelegate(to: viewController)
-        self?.navigationController.pushViewController(viewController, animated: true)
+      return { [unowned self] in
+        let viewController = RestoreWalletViewController.newInstance(delegate: self)
+        self.navigationController.pushViewController(viewController, animated: true)
       }
     }
   }

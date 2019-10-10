@@ -30,4 +30,9 @@ class StartPage: UITestPage {
     return self
   }
 
+  func assertRestoreButtonExists() {
+    let restoreButton = app.buttons(.start(.restoreWallet))
+    restoreButton.assertExistence(afterWait: .none, elementDesc: "restoreButton")
+  }
+
 }

@@ -1,6 +1,6 @@
 //
 //  URLOpener.swift
-//  CoinKeeper
+//  DropBit
 //
 //  Created by Ben Winters on 5/2/18.
 //  Copyright © 2018 Coin Ninja, LLC. All rights reserved.
@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 
 protocol URLOpener: AnyObject {
-  func openURL(_ url: URL, completionHandler completion: (() -> Void)?)
+  func openURL(_ url: URL, completionHandler completion: CKCompletion?)
   func openURLExternally(_ url: URL, completionHandler completion: ((Bool) -> Void)?)
 }
 

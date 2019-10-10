@@ -12,8 +12,6 @@ import CoreData
 import PromiseKit
 import Moya
 
-typealias CompletionHandler = (Error?) -> Void
-
 enum WalletSyncType: String {
   case comprehensive
   case standard
@@ -86,16 +84,19 @@ protocol NetworkErrorDelegate: AnyObject {
   func handleReachabilityError(_ underlyingError: MoyaError)
 }
 
-protocol SerialQueueManagerDelegate: WalletSyncDelegate & NetworkErrorDelegate { }
+protocol SerialQueueManagerDelegate: WalletSyncDelegate & NetworkErrorDelegate {
+  var launchStateManager: LaunchStateManagerType { get }
+}
 
 protocol SerialQueueManagerType: class {
   var queue: OperationQueueType { get }
   var timer: Timer { get }
   var delegate: SerialQueueManagerDelegate? { get set }
+  var walletSyncOperationFactory: WalletSyncOperationFactory? { get }
 
   func enqueueWalletSyncIfAppropriate(type: WalletSyncType,
                                       policy: EnqueueingPolicy,
-                                      completion: CompletionHandler?,
+                                      completion: CKErrorCompletion?,
                                       fetchResult: ((UIBackgroundFetchResult) -> Void)?)
 
   func enqueueOperationIfAppropriate(_ operation: AsynchronousOperation, policy: EnqueueingPolicy)
@@ -107,7 +108,7 @@ class SerialQueueManager: SerialQueueManagerType {
   var queue: OperationQueueType
   var timer: Timer = Timer()
   weak var delegate: SerialQueueManagerDelegate?
-  private let syncTimerIntervalInSeconds: Int = 60
+  private let syncTimerIntervalInSeconds: Int = 30
 
   required init() {
     let queue = OperationQueue()
@@ -163,7 +164,7 @@ class SerialQueueManager: SerialQueueManagerType {
 
   func enqueueWalletSyncIfAppropriate(type: WalletSyncType,
                                       policy: EnqueueingPolicy,
-                                      completion: CompletionHandler?,
+                                      completion: CKErrorCompletion?,
                                       fetchResult: ((UIBackgroundFetchResult) -> Void)?) {
     guard let queueDelegate = self.delegate,
       let operationFactory = self.walletSyncOperationFactory else {
@@ -173,6 +174,12 @@ class SerialQueueManager: SerialQueueManagerType {
     }
 
     guard self.shouldEnqueueOperation(ofType: .syncWallet(type), policy: policy) else {
+      completion?(nil)
+      fetchResult?(.noData)
+      return
+    }
+
+    guard !queueDelegate.launchStateManager.upgradeInProgress else {
       completion?(nil)
       fetchResult?(.noData)
       return

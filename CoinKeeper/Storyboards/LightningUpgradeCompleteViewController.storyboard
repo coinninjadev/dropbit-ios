@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14868" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14824"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Lightning Upgrade Complete View Controller-->
+        <scene sceneID="snq-iU-LUl">
+            <objects>
+                <viewController storyboardIdentifier="LightningUpgradeCompleteViewController" id="D5K-u9-i7J" customClass="LightningUpgradeCompleteViewController" customModule="DropBit" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="AFz-cg-wpQ">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lXU-Bm-IW6">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="XfX-P0-RtZ">
+                                    <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                </view>
+                                <blurEffect style="dark"/>
+                            </visualEffectView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZjJ-0a-eLY" customClass="LightningUpgradeGradientOverlayView" customModule="DropBit" customModuleProvider="target">
+                                <rect key="frame" x="15" y="64" width="384" height="783"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </view>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" translatesAutoresizingMaskIntoConstraints="NO" id="PB6-82-DKO">
+                                <rect key="frame" x="30" y="178" width="354" height="613"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="Upgrade Complete!" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fWM-Ce-gnk">
+                                        <rect key="frame" x="0.0" y="0.0" width="354" height="20.5"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="18" translatesAutoresizingMaskIntoConstraints="NO" id="NaX-nS-fkt" userLabel="Lightning Info Stack View">
+                                        <rect key="frame" x="0.0" y="181.5" width="354" height="158.5"/>
+                                        <subviews>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eUh-WN-DGE">
+                                                <rect key="frame" x="0.0" y="0.0" width="354" height="120"/>
+                                                <subviews>
+                                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="circlePurple" translatesAutoresizingMaskIntoConstraints="NO" id="MPK-D9-yDO">
+                                                        <rect key="frame" x="117" y="0.0" width="120" height="120"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="width" secondItem="MPK-D9-yDO" secondAttribute="height" multiplier="1:1" id="6dd-7g-1rn"/>
+                                                        </constraints>
+                                                    </imageView>
+                                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="blueFlashIconLarge" translatesAutoresizingMaskIntoConstraints="NO" id="Lkc-66-PAX">
+                                                        <rect key="frame" x="109.5" y="24" width="135" height="72"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="width" secondItem="Lkc-66-PAX" secondAttribute="height" multiplier="15:8" id="Xuf-DX-5J5"/>
+                                                        </constraints>
+                                                    </imageView>
+                                                </subviews>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="bottom" secondItem="MPK-D9-yDO" secondAttribute="bottom" id="MQ8-c5-QXK"/>
+                                                    <constraint firstItem="Lkc-66-PAX" firstAttribute="height" secondItem="MPK-D9-yDO" secondAttribute="height" multiplier="0.6" id="Zfu-Yg-kiM"/>
+                                                    <constraint firstItem="MPK-D9-yDO" firstAttribute="top" secondItem="eUh-WN-DGE" secondAttribute="top" id="bHY-z8-wKb"/>
+                                                    <constraint firstItem="MPK-D9-yDO" firstAttribute="centerX" secondItem="eUh-WN-DGE" secondAttribute="centerX" id="bKC-cj-pfR"/>
+                                                    <constraint firstItem="Lkc-66-PAX" firstAttribute="centerX" secondItem="MPK-D9-yDO" secondAttribute="centerX" id="o4l-En-Dg6"/>
+                                                    <constraint firstItem="Lkc-66-PAX" firstAttribute="centerY" secondItem="MPK-D9-yDO" secondAttribute="centerY" id="pBF-3m-Crz"/>
+                                                    <constraint firstAttribute="height" constant="120" id="rej-rg-fBT"/>
+                                                </constraints>
+                                            </view>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="Your upgraded wallet is Lightning ready!" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Cr9-re-XfC">
+                                                <rect key="frame" x="0.0" y="138" width="354" height="20.5"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                        </subviews>
+                                    </stackView>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="14" translatesAutoresizingMaskIntoConstraints="NO" id="Fp1-N7-vBB" userLabel="Button Stack View">
+                                        <rect key="frame" x="0.0" y="501" width="354" height="112"/>
+                                        <subviews>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pFB-qO-GtA" customClass="PrimaryActionButton" customModule="DropBit" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="0.0" width="354" height="49"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="49" id="gVj-b5-C3U"/>
+                                                </constraints>
+                                                <state key="normal" title="Button"/>
+                                                <connections>
+                                                    <action selector="goToWallet:" destination="D5K-u9-i7J" eventType="touchUpInside" id="TsP-3m-ZfS"/>
+                                                </connections>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="24V-lI-DUa" customClass="PrimaryActionButton" customModule="DropBit" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="63" width="354" height="49"/>
+                                                <state key="normal" title="Button"/>
+                                                <connections>
+                                                    <action selector="getNewRecoveryWords:" destination="D5K-u9-i7J" eventType="touchUpInside" id="rBi-e7-Ncz"/>
+                                                </connections>
+                                            </button>
+                                        </subviews>
+                                        <constraints>
+                                            <constraint firstItem="24V-lI-DUa" firstAttribute="height" secondItem="pFB-qO-GtA" secondAttribute="height" id="zNr-Ke-Pw8"/>
+                                        </constraints>
+                                    </stackView>
+                                </subviews>
+                            </stackView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="RHg-79-SxM" firstAttribute="trailing" secondItem="lXU-Bm-IW6" secondAttribute="trailing" id="4nZ-eg-BZI"/>
+                            <constraint firstItem="ZjJ-0a-eLY" firstAttribute="trailing" secondItem="PB6-82-DKO" secondAttribute="trailing" constant="15" id="5Fn-3C-ZzH"/>
+                            <constraint firstAttribute="bottom" secondItem="lXU-Bm-IW6" secondAttribute="bottom" id="5Ht-AW-te0"/>
+                            <constraint firstItem="RHg-79-SxM" firstAttribute="trailing" secondItem="ZjJ-0a-eLY" secondAttribute="trailing" constant="15" id="5uF-SK-j3j"/>
+                            <constraint firstItem="lXU-Bm-IW6" firstAttribute="leading" secondItem="RHg-79-SxM" secondAttribute="leading" id="7Bs-Wm-sMB"/>
+                            <constraint firstItem="RHg-79-SxM" firstAttribute="bottom" secondItem="ZjJ-0a-eLY" secondAttribute="bottom" constant="15" id="D1e-0y-mxy"/>
+                            <constraint firstItem="lXU-Bm-IW6" firstAttribute="top" secondItem="AFz-cg-wpQ" secondAttribute="top" id="DJb-bu-5JF"/>
+                            <constraint firstItem="PB6-82-DKO" firstAttribute="leading" secondItem="ZjJ-0a-eLY" secondAttribute="leading" constant="15" id="KKX-lb-Z6N"/>
+                            <constraint firstItem="ZjJ-0a-eLY" firstAttribute="leading" secondItem="RHg-79-SxM" secondAttribute="leading" constant="15" id="KQC-LQ-s52"/>
+                            <constraint firstItem="ZjJ-0a-eLY" firstAttribute="bottom" secondItem="PB6-82-DKO" secondAttribute="bottom" constant="56" id="XL0-vW-iaB"/>
+                            <constraint firstItem="PB6-82-DKO" firstAttribute="top" secondItem="ZjJ-0a-eLY" secondAttribute="top" constant="114" id="i4p-X4-jFw"/>
+                            <constraint firstItem="ZjJ-0a-eLY" firstAttribute="top" secondItem="RHg-79-SxM" secondAttribute="top" constant="20" id="thB-U9-UiF"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="RHg-79-SxM"/>
+                    </view>
+                    <connections>
+                        <outlet property="getNewRecoveryWordsButton" destination="24V-lI-DUa" id="zN0-9a-U6e"/>
+                        <outlet property="goToWalletButton" destination="pFB-qO-GtA" id="dqp-o9-rcI"/>
+                        <outlet property="lightningReadyLabel" destination="Cr9-re-XfC" id="DUn-fi-rcJ"/>
+                        <outlet property="overlayView" destination="ZjJ-0a-eLY" id="xjt-Lk-BUU"/>
+                        <outlet property="upgradeCompleteLabel" destination="fWM-Ce-gnk" id="iNE-30-QRl"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="hgD-NN-9uI" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="584" y="-100"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="blueFlashIconLarge" width="58" height="84"/>
+        <image name="circlePurple" width="119" height="118"/>
+    </resources>
+</document>

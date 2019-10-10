@@ -10,6 +10,7 @@ import Foundation
 import PromiseKit
 import CoreData
 import UIKit
+import Moya
 
 protocol WalletSyncDelegate: AnyObject {
   func syncManagerDidRequestDependencies(in context: NSManagedObjectContext, inBackground: Bool) -> Promise<SyncDependencies>
@@ -28,8 +29,17 @@ class WalletSyncOperationFactory {
     self.delegate = delegate
   }
 
+  func performOnChainOnlySync(in context: NSManagedObjectContext) -> Promise<Void> {
+    guard let queueDelegate = self.delegate else {
+      return Promise(error: SyncRoutineError.missingQueueDelegate)
+    }
+
+    return queueDelegate.syncManagerDidRequestDependencies(in: context, inBackground: false)
+      .then { self.onChainOnlySync(with: $0, in: context) }
+  }
+
   func createSyncOperation(ofType walletSyncType: WalletSyncType,
-                           completion: CompletionHandler?,
+                           completion: CKErrorCompletion?,
                            fetchResult: ((UIBackgroundFetchResult) -> Void)?,
                            in context: NSManagedObjectContext) -> Promise<AsynchronousOperation> {
     guard let queueDelegate = self.delegate else {
@@ -56,9 +66,11 @@ class WalletSyncOperationFactory {
               strongSelf.handleSyncRoutineError(error, in: bgContext)
             }
             .finally {
+              var contextHasInsertionsOrUpdates = false
               bgContext.performAndWait {
+                contextHasInsertionsOrUpdates = (bgContext.insertedObjects.isNotEmpty || bgContext.persistentUpdatedObjects.isNotEmpty)
                 do {
-                  try bgContext.save()
+                  try bgContext.saveRecursively()
                 } catch {
                   log.contextSaveError(error)
                 }
@@ -73,8 +85,7 @@ class WalletSyncOperationFactory {
               strongSelf.delegate?.syncManagerDidFinishSync()
 
               if let fetchResultHandler = fetchResult {
-                let result: UIBackgroundFetchResult = bgContext.insertedObjects.isNotEmpty ||
-                  bgContext.updatedObjects.isNotEmpty ? .newData : .noData
+                let result: UIBackgroundFetchResult = contextHasInsertionsOrUpdates ? .newData : .noData
                 fetchResultHandler(result)
               }
 
@@ -92,17 +103,53 @@ class WalletSyncOperationFactory {
                            in context: NSManagedObjectContext) -> Promise<Void> {
     return dependencies.databaseMigrationWorker.migrateIfPossible()
       .then { _ in dependencies.keychainMigrationWorker.migrateIfPossible() }
-      .then(in: context) { self.checkAndRecoverAuthorizationIds(with: dependencies, in: context) }
+      .then(in: context) { self.checkAndVerifyUser(with: dependencies, in: context) }
       .then(in: context) { self.checkAndVerifyWallet(with: dependencies, in: context) }
-      .then(in: context) { dependencies.txDataWorker.performFetchAndStoreAllTransactionalData(in: context, fullSync: fullSync) }
+      .then(in: context) { dependencies.txDataWorker.performFetchAndStoreAllOnChainTransactions(in: context, fullSync: fullSync) }
       .get { _ in dependencies.connectionManager.setAPIUnreachable(false) }
-      .then(in: context) { dependencies.walletWorker.updateServerPoolAddresses(in: context) }
+      .then(in: context) { self.updateLightningAccount(with: dependencies, in: context) }
+      .get { account in self.updateLightningAccountStatusAfterSuccessfulResponse(dependencies, account: account) }
+      .then(in: context) { _ in dependencies.txDataWorker.performFetchAndStoreAllLightningTransactions(in: context) }
+      .recover { self.handleThunderdomeSyncError(with: $0, dependencies: dependencies) }
+      .then(in: context) { _ in dependencies.walletWorker.updateServerPoolAddresses(in: context) }
       .then(in: context) { dependencies.walletWorker.updateReceivedAddressRequests(in: context) }
       .then(in: context) { _ in dependencies.walletWorker.updateSentAddressRequests(in: context) }
       .recover(self.recoverSyncError)
       .then(in: context) { _ in self.fetchAndFulfillReceivedAddressRequests(with: dependencies, in: context) }
       .then(in: context) { _ in dependencies.delegate.showAlertsForSyncedChanges(in: context) }
       .then(in: context) { _ in dependencies.twitterAccessManager.inflateTwitterUsersIfNeeded(in: context) }
+  }
+
+  private func updateLightningAccountStatusAfterSuccessfulResponse(_ dependencies: SyncDependencies, account: LNAccountResponse) {
+    if account.locked {
+      dependencies.persistenceManager.brokers.preferences.lightningWalletLockedStatus = .locked
+      CKNotificationCenter.publish(key: .didLockLightning)
+    } else {
+      dependencies.persistenceManager.brokers.preferences.lightningWalletLockedStatus = .unlocked
+      CKNotificationCenter.publish(key: .didUnlockLightning)
+    }
+  }
+
+  private func handleThunderdomeSyncError(with error: Error, dependencies: SyncDependencies) -> Promise<Void> {
+    log.error(error, message: "received error from thunderdome")
+
+    guard let statusCode = (error as? MoyaError)?.response?.statusCode, statusCode == 503 else {
+      return Promise(error: error)
+    }
+    dependencies.persistenceManager.brokers.preferences.lightningWalletLockedStatus = .unavailable
+    CKNotificationCenter.publish(key: .lightningUnavailable)
+    return Promise.value(())
+  }
+
+  private func onChainOnlySync(with dependencies: SyncDependencies, in context: NSManagedObjectContext) -> Promise<Void> {
+    return dependencies.databaseMigrationWorker.migrateIfPossible()
+      .then { _ in dependencies.keychainMigrationWorker.migrateIfPossible() }
+      .then(in: context) { self.checkAndVerifyUser(with: dependencies, in: context) }
+      .then(in: context) { self.checkAndVerifyWallet(with: dependencies, in: context) }
+      .then { dependencies.networkManager.walletCheckIn() }
+      .then { dependencies.persistenceManager.brokers.checkIn.processCheckIn(response: $0) }
+      .then(in: context) { dependencies.txDataWorker.performFetchAndStoreAllOnChainTransactions(in: context, fullSync: true) }
+      .get { _ in dependencies.connectionManager.setAPIUnreachable(false) }
   }
 
   private func recoverSyncError(_ error: Error) -> Promise<Void> {
@@ -116,7 +163,16 @@ class WalletSyncOperationFactory {
     }
   }
 
-  private func checkAndRecoverAuthorizationIds(with dependencies: SyncDependencies, in context: NSManagedObjectContext) -> Promise<Void> {
+  func updateLightningAccount(with dependencies: SyncDependencies, in context: NSManagedObjectContext) -> Promise<LNAccountResponse> {
+    return dependencies.networkManager.getOrCreateLightningAccount()
+      .get(in: context) { lnAccountResponse in
+        guard let wallet = CKMWallet.find(in: context) else { return }
+
+        dependencies.persistenceManager.brokers.lightning.persistAccountResponse(lnAccountResponse, forWallet: wallet, in: context)
+    }
+  }
+
+  private func checkAndVerifyUser(with dependencies: SyncDependencies, in context: NSManagedObjectContext) -> Promise<Void> {
     let userId: String? = dependencies.persistenceManager.brokers.user.userId(in: context)
 
     if userId != nil {

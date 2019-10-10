@@ -1,6 +1,6 @@
 //
 //  StartViewController.swift
-//  CoinKeeper
+//  DropBit
 //
 //  Created by BJ Miller on 2/1/18.
 //  Copyright © 2018 Coin Ninja, LLC. All rights reserved.
@@ -13,18 +13,22 @@ protocol StartViewControllerDelegate: AnyObject {
   func restoreWallet()
   func claimInvite()
   func clearPin()
-  func requireAuthenticationIfNeeded(whenAuthenticated: @escaping () -> Void)
+  func requireAuthenticationIfNeeded(whenAuthenticated: @escaping CKCompletion)
   func requireAuthenticationIfNeeded()
 }
 
 final class StartViewController: BaseViewController {
 
-  var coordinationDelegate: StartViewControllerDelegate? {
-    return generalCoordinationDelegate as? StartViewControllerDelegate
+  static func newInstance(delegate: StartViewControllerDelegate) -> StartViewController {
+    let controller = StartViewController.makeFromStoryboard()
+    controller.delegate = delegate
+    return controller
   }
 
-  @IBOutlet var restoreWalletButton: UIButton!
-  @IBOutlet var claimInviteButton: UIButton!
+  weak var delegate: StartViewControllerDelegate?
+
+  @IBOutlet var restoreWalletButton: DarkActionButton!
+  @IBOutlet var claimInviteButton: DarkActionButton!
   @IBOutlet var newWalletButton: UIButton!
 
   @IBOutlet var blockchainImage: UIImageView!
@@ -39,6 +43,12 @@ final class StartViewController: BaseViewController {
   @IBOutlet var welcomeBGViewTopConstraint: NSLayoutConstraint!
   @IBOutlet var animatableViews: [UIView]!
 
+  static func newInstance(delegate: StartViewControllerDelegate?) -> StartViewController {
+    let vc = StartViewController.makeFromStoryboard()
+    vc.delegate = delegate
+    return vc
+  }
+
   override func accessibleViewsAndIdentifiers() -> [AccessibleViewElement] {
     return [
       (self.view, .start(.page)),
@@ -48,15 +58,15 @@ final class StartViewController: BaseViewController {
   }
 
   @IBAction func restoreWalletButtonTapped() {
-    coordinationDelegate?.restoreWallet()
+    delegate?.restoreWallet()
   }
 
   @IBAction func claimBitcoinFromInviteTapped(_ sender: UIButton) {
-    coordinationDelegate?.claimInvite()
+    delegate?.claimInvite()
   }
 
   @IBAction func newWalletButtonTapped(_ sender: UIButton) {
-    coordinationDelegate?.createWallet()
+    delegate?.createWallet()
   }
 
   // MARK: view lifecycle
@@ -68,18 +78,8 @@ final class StartViewController: BaseViewController {
   }
 
   private func configureButtons() {
-    let attributes: [NSAttributedString.Key: Any] = [
-      .font: UIFont.regular(12),
-      .foregroundColor: UIColor.darkBlueText
-    ]
-    let attributedTitle = NSAttributedString(string: "Restore Wallet", attributes: attributes)
-    restoreWalletButton.setAttributedTitle(attributedTitle, for: .normal)
-
     claimInviteButton.setTitle("CLAIM BITCOIN FROM INVITE", for: .normal)
-    claimInviteButton.backgroundColor = .darkBlueBackground
-    claimInviteButton.applyCornerRadius(4)
-    claimInviteButton.setTitleColor(.whiteText, for: .normal)
-    claimInviteButton.titleLabel?.font = .primaryButtonTitle
+    restoreWalletButton.setTitle("Restore Wallet", for: .normal)
 
     newWalletButton.setTitle("NEW WALLET", for: .normal)
     newWalletButton.setTitleColor(.lightBlueTint, for: .normal)

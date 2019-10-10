@@ -1,6 +1,6 @@
 //
 //  TransactionDataWorker.swift
-//  CoinKeeper
+//  DropBit
 //
 //  Created by BJ Miller on 5/23/18.
 //  Copyright © 2018 Coin Ninja, LLC. All rights reserved.
@@ -22,7 +22,7 @@ protocol TransactionDataWorkerType: AnyObject {
   ///
   /// - Parameter context: a managed object context within which to work.
   /// - Returns: the result of performFetchAndStoreAllTransactionalData(in:force:), where `force` is false.
-  func performFetchAndStoreAllTransactionalData(in context: NSManagedObjectContext) -> Promise<Void>
+  func performFetchAndStoreAllOnChainTransactions(in context: NSManagedObjectContext) -> Promise<Void>
 
   /// Perform sync routine of fetching all transactions related to the default wallet.
   ///
@@ -30,7 +30,9 @@ protocol TransactionDataWorkerType: AnyObject {
   ///   - context: a managed object context within which to work.
   ///   - fullSync: whether the routine should force overwrite local persisted data with what is fetched from API.
   /// - Returns: a Promise<Void>
-  func performFetchAndStoreAllTransactionalData(in context: NSManagedObjectContext, fullSync: Bool) -> Promise<Void>
+  func performFetchAndStoreAllOnChainTransactions(in context: NSManagedObjectContext, fullSync: Bool) -> Promise<Void>
+
+  func performFetchAndStoreAllLightningTransactions(in context: NSManagedObjectContext) -> Promise<Void>
 
 }
 
@@ -56,13 +58,13 @@ class TransactionDataWorker: TransactionDataWorkerType {
     self.analyticsManager = analyticsManager
   }
 
-  func performFetchAndStoreAllTransactionalData(in context: NSManagedObjectContext) -> Promise<Void> {
-    return self.performFetchAndStoreAllTransactionalData(in: context, fullSync: false)
+  func performFetchAndStoreAllOnChainTransactions(in context: NSManagedObjectContext) -> Promise<Void> {
+    return self.performFetchAndStoreAllOnChainTransactions(in: context, fullSync: false)
   }
 
   typealias AddressFetcher = (Int) -> CNBMetaAddress
 
-  func performFetchAndStoreAllTransactionalData(in context: NSManagedObjectContext, fullSync: Bool) -> Promise<Void> {
+  func performFetchAndStoreAllOnChainTransactions(in context: NSManagedObjectContext, fullSync: Bool) -> Promise<Void> {
     CKNotificationCenter.publish(key: .didStartSync, object: nil, userInfo: nil)
 
     let addressDataSource = self.walletManager.createAddressDataSource()
@@ -87,6 +89,72 @@ class TransactionDataWorker: TransactionDataWorkerType {
       return fetchAddressTransactionSummaries(seekingThroughIndex: minimumSeekReceiveIndex, in: context, addressFetcher: receiveAddressFetcher)
         .then(in: context) { self.fetchAddressTransactionSummaries(in: context, aggregatingATSResponses: $0, addressFetcher: changeAddressFetcher) }
         .then(in: context) { self.processAddressTransactionSummaries($0, fullSync: fullSync, in: context) }
+    }
+  }
+
+  func performFetchAndStoreAllLightningTransactions(in context: NSManagedObjectContext) -> Promise<Void> {
+    guard let wallet = CKMWallet.find(in: context) else {
+      return Promise(error: CKPersistenceError.noManagedWallet)
+    }
+    return self.networkManager.getLightningLedger()
+      .get(in: context) { response in
+        self.persistenceManager.brokers.lightning.persistLedgerResponse(response, forWallet: wallet, in: context)
+        self.processOnChainLightningTransfers(withLedger: response.ledger, forWallet: wallet, in: context)
+      }
+      .then(in: context) { response -> Promise<Void> in
+        let lightningEntryIds = response.ledger.filter { $0.type == .lightning }.map { $0.cleanedId }
+        return self.fetchTransactionNotifications(forIds: lightningEntryIds)
+          .get(in: context) { responses in self.decryptAndPersistSharedPayloads(from: responses, ofType: .lightning, in: context) }
+          .asVoid()
+      }
+  }
+
+  private func processOnChainLightningTransfers(withLedger ledgerResults: [LNTransactionResult],
+                                                forWallet wallet: CKMWallet,
+                                                in context: NSManagedObjectContext) {
+    let lightningTransferTxids = ledgerResults.filter { $0.type == .btc }.map { $0.cleanedId }
+
+    //Update CKMTransactions
+    let txFetchRequest: NSFetchRequest<CKMTransaction> = CKMTransaction.fetchRequest()
+    //ignore whether the transaction is already marked as a transfer, so that confirmation counts can be provided to the ledger entries
+    txFetchRequest.predicate = CKPredicate.Transaction.txidIn(lightningTransferTxids)
+
+    var transactionsToUpdate: [CKMTransaction] = []
+    do {
+      transactionsToUpdate = try context.fetch(txFetchRequest)
+    } catch {
+      log.error(error, message: "failed to fetch transactions to mark for lightning transfers")
+    }
+
+    var processingFeesById: [String: Int] = [:]
+    for result in ledgerResults {
+      processingFeesById[result.cleanedId] = result.processingFee
+    }
+
+    for tx in transactionsToUpdate {
+      tx.isLightningTransfer = true
+      tx.dropBitProcessingFee = processingFeesById[tx.txid] ?? 0
+    }
+
+    //Update CKMLedgerEntries
+    let ledgerEntryFetchRequest: NSFetchRequest<CKMLNLedgerEntry> = CKMLNLedgerEntry.fetchRequest()
+    ledgerEntryFetchRequest.predicate = CKPredicate.LedgerEntry.idIn(lightningTransferTxids)
+
+    var ledgerEntriesToUpdate: [CKMLNLedgerEntry] = []
+    do {
+      ledgerEntriesToUpdate = try context.fetch(ledgerEntryFetchRequest)
+    } catch {
+      log.error(error, message: "failed to fetch ledger entries to update with confirmations")
+    }
+
+    var confirmationsById: [String: Int] = [:]
+    for tx in transactionsToUpdate {
+      confirmationsById[tx.txid] = tx.confirmations
+    }
+
+    for entry in ledgerEntriesToUpdate {
+      let entryId = entry.id ?? ""
+      entry.onChainConfirmations = confirmationsById[entryId] ?? 0
     }
   }
 
@@ -148,17 +216,20 @@ class TransactionDataWorker: TransactionDataWorkerType {
     let fourteenDaysAgo = Calendar.current.date(byAdding: .day, value: -14, to: Date()) ?? Date()
     let relevantTxids = dto.txResponses.filter { ($0.date ?? Date()) > fourteenDaysAgo }.map { $0.txid }
 
-    var txidIterator = relevantTxids.makeIterator()
-    let promiseIterator = AnyIterator<Promise<[TransactionNotificationResponse]>> {
-      guard let txid = txidIterator.next() else { return nil }
-      return self.networkManager.fetchTransactionNotifications(forTxid: txid)
-    }
-
-    return when(fulfilled: promiseIterator, concurrently: 5).flatMapValues { $0 } // flatten to single array of TransactionNotificationResponse
+    return self.fetchTransactionNotifications(forIds: relevantTxids)
       .then { responses -> Promise<TransactionDataWorkerDTO> in
         let combinedDTO = TransactionDataWorkerDTO(txNotificationResponses: responses).merged(with: dto)
         return Promise.value(combinedDTO)
     }
+  }
+
+  private func fetchTransactionNotifications(forIds ids: [String]) -> Promise<[TransactionNotificationResponse]> {
+    var idIterator = ids.makeIterator()
+    let promiseIterator = AnyIterator<Promise<[TransactionNotificationResponse]>> {
+      guard let id = idIterator.next() else { return nil }
+      return self.networkManager.fetchTransactionNotifications(forId: id)
+    }
+    return when(fulfilled: promiseIterator, concurrently: 5).flatMapValues { $0 } // flatten to single array of TransactionNotificationResponse
   }
 
   private func minimumSeekReceiveAddressIndex(in context: NSManagedObjectContext) -> Int? {
@@ -183,12 +254,7 @@ class TransactionDataWorker: TransactionDataWorkerType {
         let ownedVoutAddresses = allVoutAddresses
           .filter { searchableAddresses.contains($0) }
 
-        let vinAddresses = response.vinResponses.flatMap { $0.addresses }
-        let numberOfVinsBelongingToWallet = vinAddresses
-          .filter { searchableAddresses.contains($0) }
-          .count
-
-        let isSentToSelf = (allVoutAddresses.count == ownedVoutAddresses.count) && (numberOfVinsBelongingToWallet == vinAddresses.count)
+        let isSentToSelf = (allVoutAddresses.count == ownedVoutAddresses.count)
 
         copy.isSentToSelf = isSentToSelf
         return copy
@@ -314,13 +380,29 @@ class TransactionDataWorker: TransactionDataWorkerType {
                                                                       in: context,
                                                                       relativeToCurrentHeight: dto.blockHeight,
                                                                       fullSync: fullSync)
-      .get(in: context) { self.decryptAndPersistSharedPayloads(from: uniqueTxNotificationResponses, in: context) }
+      .get(in: context) { self.decryptAndPersistSharedPayloads(from: uniqueTxNotificationResponses, ofType: .onChain, in: context) }
       .get(in: context) { self.persistenceManager.brokers.transaction.deleteTransactions(notIn: expectedTxids, in: context) }
       .then(in: context) { self.groomFailedTransactions(notIn: expectedTxids, in: context) }
       .then { return Promise.value(uniqueTxResponses) }
   }
 
-  private func decryptAndPersistSharedPayloads(from responses: [TransactionNotificationResponse], in context: NSManagedObjectContext) {
+  private func decryptAndPersistSharedPayloads(from responses: [TransactionNotificationResponse],
+                                               ofType walletTxType: WalletTransactionType,
+                                               in context: NSManagedObjectContext) {
+    let decryptedPayloads: [Data]
+    switch walletTxType {
+    case .onChain:
+      decryptedPayloads = decryptedOnChainPayloads(from: responses, in: context)
+    case .lightning:
+      decryptedPayloads = decryptLightningPayloads(from: responses)
+    }
+
+    // This should succeed in partially decoding future versions if they are purely additive to the schema
+    self.persistenceManager.persistReceivedSharedPayloads(decryptedPayloads, ofType: walletTxType, in: context)
+  }
+
+  private func decryptedOnChainPayloads(from responses: [TransactionNotificationResponse],
+                                        in context: NSManagedObjectContext) -> [Data] {
     let cryptor = CKCryptor(walletManager: self.walletManager)
 
     let decryptionInputs = responses.compactMap { res -> (payload: String, address: String)? in
@@ -333,20 +415,33 @@ class TransactionDataWorker: TransactionDataWorkerType {
       guard addressDataSource.checkAddressExists(for: inputs.address, in: context) != nil else { return nil }
       do {
         let payloadData = try cryptor.decrypt(payloadAsBase64String: inputs.payload, withReceiveAddress: inputs.address, in: context)
-        log.debug("Successfully decrypted payload")
+        log.debug("Successfully decrypted onChain payload")
         return payloadData
       } catch {
-        log.error(error, message: "Failed to decrypt payload")
+        log.error(error, message: "Failed to decrypt onChain payload")
         return nil
       }
     }
+    return decryptedPayloads
+  }
 
-    // This should succeed in partially decoding future versions if they are purely additive to the schema
-    self.persistenceManager.persistReceivedSharedPayloads(decryptedPayloads, in: context)
+  private func decryptLightningPayloads(from responses: [TransactionNotificationResponse]) -> [Data] {
+    let cryptor = CKCryptor(walletManager: self.walletManager)
+    let decryptedPayloads: [Data] = responses.compactMap { response in
+      guard let payloadString = response.encryptedPayload else { return nil }
+      do {
+        let payloadData = try cryptor.decryptWithDefaultPrivateKey(payloadAsBase64String: payloadString)
+        log.debug("Successfully decrypted lightning payload")
+        return payloadData
+      } catch {
+        log.error(error, message: "Failed to decrypt lightning payload")
+        return nil
+      }
+    }
+    return decryptedPayloads
   }
 
   func groomFailedTransactions(notIn txids: [String], in context: NSManagedObjectContext) -> Promise<Void> {
-
     let failureCandidates = CKMTransaction.findAllToFail(notIn: txids, in: context)
 
     // Only mark transactions as failed if they don't appear on blockchain.info as well

@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14868" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14824"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Lightning Upgrade Status View Controller-->
+        <scene sceneID="Cu1-Fj-kVw">
+            <objects>
+                <viewController storyboardIdentifier="LightningUpgradeStatusViewController" id="JR4-HT-869" customClass="LightningUpgradeStatusViewController" customModule="DropBit" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="LWB-hY-nfh">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CBv-ki-Ae6">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="3P5-OU-SPw">
+                                    <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                </view>
+                                <blurEffect style="dark"/>
+                            </visualEffectView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Sbt-9C-4jZ" customClass="LightningUpgradeGradientOverlayView" customModule="DropBit" customModuleProvider="target">
+                                <rect key="frame" x="15" y="64" width="384" height="783"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1Ya-6Z-eO2">
+                                <rect key="frame" x="60" y="367" width="294" height="162"/>
+                                <subviews>
+                                    <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Sx3-Od-QIn">
+                                        <rect key="frame" x="0.0" y="0.0" width="294" height="162"/>
+                                        <subviews>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LBU-1t-uUc">
+                                                <rect key="frame" x="0.0" y="0.0" width="87" height="162"/>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            </view>
+                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="N4x-dX-PZt">
+                                                <rect key="frame" x="87" y="0.0" width="120" height="162"/>
+                                                <subviews>
+                                                    <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="Xtg-9o-OtQ">
+                                                        <rect key="frame" x="0.0" y="0.0" width="94" height="36"/>
+                                                        <subviews>
+                                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Agu-fp-m6D" customClass="LightningUpgradeStatusView" customModule="DropBit" customModuleProvider="target">
+                                                                <rect key="frame" x="0.0" y="0.0" width="36" height="36"/>
+                                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                                <constraints>
+                                                                    <constraint firstAttribute="width" constant="36" id="KK8-4e-Fyp"/>
+                                                                    <constraint firstAttribute="width" secondItem="Agu-fp-m6D" secondAttribute="height" multiplier="1:1" id="fTP-C2-Re9"/>
+                                                                </constraints>
+                                                            </view>
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2fa-dk-VvT">
+                                                                <rect key="frame" x="52" y="8" width="42" height="20.5"/>
+                                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                                <nil key="textColor"/>
+                                                                <nil key="highlightedColor"/>
+                                                            </label>
+                                                        </subviews>
+                                                    </stackView>
+                                                    <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="faO-a1-jAn">
+                                                        <rect key="frame" x="0.0" y="63" width="94" height="36"/>
+                                                        <subviews>
+                                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="f0z-DL-Ydj" customClass="LightningUpgradeStatusView" customModule="DropBit" customModuleProvider="target">
+                                                                <rect key="frame" x="0.0" y="0.0" width="36" height="36"/>
+                                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                                <constraints>
+                                                                    <constraint firstAttribute="width" secondItem="f0z-DL-Ydj" secondAttribute="height" multiplier="1:1" id="g2x-KP-iCA"/>
+                                                                </constraints>
+                                                            </view>
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CjD-fL-Xn4">
+                                                                <rect key="frame" x="52" y="8" width="42" height="20.5"/>
+                                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                                <nil key="textColor"/>
+                                                                <nil key="highlightedColor"/>
+                                                            </label>
+                                                        </subviews>
+                                                    </stackView>
+                                                    <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="UeV-fB-dAX">
+                                                        <rect key="frame" x="0.0" y="126" width="94" height="36"/>
+                                                        <subviews>
+                                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XCt-a5-FCT" customClass="LightningUpgradeStatusView" customModule="DropBit" customModuleProvider="target">
+                                                                <rect key="frame" x="0.0" y="0.0" width="36" height="36"/>
+                                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                                <constraints>
+                                                                    <constraint firstAttribute="width" secondItem="XCt-a5-FCT" secondAttribute="height" multiplier="1:1" id="fuh-bf-ffH"/>
+                                                                </constraints>
+                                                            </view>
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3WE-mF-e0g">
+                                                                <rect key="frame" x="52" y="8" width="42" height="20.5"/>
+                                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                                <nil key="textColor"/>
+                                                                <nil key="highlightedColor"/>
+                                                            </label>
+                                                        </subviews>
+                                                    </stackView>
+                                                </subviews>
+                                                <constraints>
+                                                    <constraint firstItem="f0z-DL-Ydj" firstAttribute="width" secondItem="Agu-fp-m6D" secondAttribute="width" id="Y4r-wO-hZp"/>
+                                                    <constraint firstItem="XCt-a5-FCT" firstAttribute="width" secondItem="Agu-fp-m6D" secondAttribute="width" id="ZTn-hx-7xd"/>
+                                                </constraints>
+                                            </stackView>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hSN-wt-9au">
+                                                <rect key="frame" x="207" y="0.0" width="87" height="162"/>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            </view>
+                                        </subviews>
+                                        <constraints>
+                                            <constraint firstItem="hSN-wt-9au" firstAttribute="width" secondItem="LBU-1t-uUc" secondAttribute="width" id="0xc-Ax-ihe"/>
+                                        </constraints>
+                                    </stackView>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstItem="Sx3-Od-QIn" firstAttribute="leading" secondItem="1Ya-6Z-eO2" secondAttribute="leading" id="4iJ-9Z-9Vd"/>
+                                    <constraint firstAttribute="trailing" secondItem="Sx3-Od-QIn" secondAttribute="trailing" id="Qsk-sU-Yae"/>
+                                    <constraint firstAttribute="bottom" secondItem="Sx3-Od-QIn" secondAttribute="bottom" id="TVa-YF-223"/>
+                                    <constraint firstAttribute="height" constant="162" id="mbd-3X-a4Q"/>
+                                    <constraint firstItem="Sx3-Od-QIn" firstAttribute="top" secondItem="1Ya-6Z-eO2" secondAttribute="top" id="vJ0-NU-w3d"/>
+                                </constraints>
+                            </view>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="njV-OW-d6F">
+                                <rect key="frame" x="186" y="770.5" width="42" height="20.5"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="cot-Zd-pDm" firstAttribute="trailing" secondItem="CBv-ki-Ae6" secondAttribute="trailing" id="5po-4h-X1L"/>
+                            <constraint firstItem="cot-Zd-pDm" firstAttribute="trailing" secondItem="1Ya-6Z-eO2" secondAttribute="trailing" constant="60" id="F6D-x7-SPR"/>
+                            <constraint firstItem="1Ya-6Z-eO2" firstAttribute="centerX" secondItem="LWB-hY-nfh" secondAttribute="centerX" id="Flo-uX-8Ld"/>
+                            <constraint firstItem="CBv-ki-Ae6" firstAttribute="leading" secondItem="cot-Zd-pDm" secondAttribute="leading" id="MgS-xE-TMQ"/>
+                            <constraint firstItem="1Ya-6Z-eO2" firstAttribute="centerY" secondItem="LWB-hY-nfh" secondAttribute="centerY" id="N3R-NM-ifn"/>
+                            <constraint firstItem="CBv-ki-Ae6" firstAttribute="top" secondItem="LWB-hY-nfh" secondAttribute="top" id="REt-ma-IWv"/>
+                            <constraint firstItem="1Ya-6Z-eO2" firstAttribute="leading" secondItem="cot-Zd-pDm" secondAttribute="leading" constant="60" id="U0p-VB-EBl"/>
+                            <constraint firstItem="njV-OW-d6F" firstAttribute="centerX" secondItem="LWB-hY-nfh" secondAttribute="centerX" id="UvR-Tf-S3E"/>
+                            <constraint firstItem="cot-Zd-pDm" firstAttribute="bottom" secondItem="Sbt-9C-4jZ" secondAttribute="bottom" constant="15" id="dkx-iF-dXc"/>
+                            <constraint firstItem="cot-Zd-pDm" firstAttribute="trailing" secondItem="Sbt-9C-4jZ" secondAttribute="trailing" constant="15" id="ewQ-Ka-yNM"/>
+                            <constraint firstItem="Sbt-9C-4jZ" firstAttribute="bottom" secondItem="njV-OW-d6F" secondAttribute="bottom" constant="56" id="mBM-g2-k3z"/>
+                            <constraint firstItem="Sbt-9C-4jZ" firstAttribute="leading" secondItem="cot-Zd-pDm" secondAttribute="leading" constant="15" id="otx-OW-g4e"/>
+                            <constraint firstItem="Sbt-9C-4jZ" firstAttribute="top" secondItem="cot-Zd-pDm" secondAttribute="top" constant="20" id="t9c-vv-SLL"/>
+                            <constraint firstAttribute="bottom" secondItem="CBv-ki-Ae6" secondAttribute="bottom" id="uUg-37-jgh"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="cot-Zd-pDm"/>
+                    </view>
+                    <connections>
+                        <outlet property="creatingNewWalletStatusLabel" destination="2fa-dk-VvT" id="OZm-ko-S26"/>
+                        <outlet property="creatingNewWalletStatusView" destination="Agu-fp-m6D" id="NV9-I2-YDC"/>
+                        <outlet property="doNotCloseLabel" destination="njV-OW-d6F" id="pf0-qa-h0K"/>
+                        <outlet property="overlayView" destination="Sbt-9C-4jZ" id="wTF-gY-1jV"/>
+                        <outlet property="transferringFundsStatusLabel" destination="3WE-mF-e0g" id="kMK-GL-oJf"/>
+                        <outlet property="transferringFundsStatusView" destination="XCt-a5-FCT" id="Mjt-1Z-fHD"/>
+                        <outlet property="updatingToSegwitStatusLabel" destination="CjD-fL-Xn4" id="uf4-QH-Gns"/>
+                        <outlet property="updatingToSegwitStatusView" destination="f0z-DL-Ydj" id="dHe-Kw-wSd"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="5k0-6z-6yi" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="644.92753623188412" y="-123.21428571428571"/>
+        </scene>
+    </scenes>
+</document>

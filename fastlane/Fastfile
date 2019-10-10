@@ -9,7 +9,7 @@
 # Uncomment the line if you want fastlane to automatically update itself
 # update_fastlane
 
-fastlane_version '2.127.1'
+fastlane_version '2.131.0'
 
 default_platform(:ios)
 
@@ -74,7 +74,9 @@ platform :ios do
       "deviceEndpointTestApplication=#{ENV['DEVICE_ENDPOINT_TEST_APPLICATION']}",
       "fakeWords=#{ENV['GENERATED_FAKE_WORDS']}",
       "recoverOnlyWords=#{ENV['GENERATED_RECOVER_ONLY_WORDS']}",
-      "recoverOnlyFirstAddress=#{ENV['GENERATED_RECOVER_FIRST_ADDRESS']}",
+      "recoverOnlyFirstTestnetAddress=#{ENV['GENERATED_RECOVER_FIRST_TESTNET_ADDRESS']}",
+      "recoverOnlyLegacyWords=#{ENV['GENERATED_RECOVER_ONLY_LEGACY_WORDS']}",
+      "recoverOnlyLegacyDeactivatedWords=#{ENV['GENERATED_RECOVER_ONLY_LEGACY_DEACTIVATED_WORDS']}",
       "twitterConsumerKey=#{ENV['TWITTER_CONSUMER_KEY']}",
       "twitterConsumerSecret=#{ENV['TWITTER_CONSUMER_SECRET']}",
       "twitterRequestTokenURL=#{ENV['TWITTER_REQUEST_TOKEN_URL']}",
@@ -122,25 +124,21 @@ platform :ios do
   desc "Local testing, without resetting simulators or cleaning."
   lane :local_test do
     scan
-    xcov_for_testing
   end
 
   desc "Local testing (unit tests only), without resetting simulators or cleaning."
   lane :unit_tests do
     scan
-    xcov_for_testing
   end
 
   desc "Local testing (UI tests only), without resetting simulators or cleaning."
   lane :local_ui_tests do
     scan
-    xcov_for_testing
   end
 
   desc "Local testing, without the before_all lane"
   lane :quick_test do
     scan
-    xcov_for_testing
   end
 
   desc "Runs full test suite with clean simulator installations."
@@ -148,7 +146,6 @@ platform :ios do
     reset_sims
     bootstrap_carthage
     scan
-    xcov_for_testing
   end
 
   desc "Runs UI tests"
@@ -156,16 +153,6 @@ platform :ios do
     reset_sims
     bootstrap_carthage
     scan
-    xcov_for_testing
-  end
-
-  lane :xcov_for_testing do
-    xcov(
-      workspace: "CoinKeeper.xcworkspace",
-      scheme: "CoinKeeper",
-      only_project_targets: true,
-      output_directory: "xcov_output"
-    )
   end
 
   # building

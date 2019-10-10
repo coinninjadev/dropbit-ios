@@ -1,6 +1,6 @@
 //
 //  AddressRequestUpdateDisplayable.swift
-//  CoinKeeper
+//  DropBit
 //
 //  Created by Ben Winters on 7/29/18.
 //  Copyright © 2018 Coin Ninja, LLC. All rights reserved.
@@ -24,6 +24,7 @@ protocol AddressRequestUpdateDisplayable {
   var fiatAmount: Int { get }
   var side: InvitationSide { get }
   var status: InvitationStatus { get }
+  var addressType: WalletAddressType { get }
 }
 
 extension AddressRequestUpdateDisplayable {
@@ -100,6 +101,7 @@ struct AddressRequestUpdate: AddressRequestUpdateDisplayable {
   var fiatAmount: Int
   var side: InvitationSide
   var status: InvitationStatus
+  var addressType: WalletAddressType
 
   init?(response: WalletAddressRequestResponse, requestSide: WalletAddressRequestSide, formatter: PhoneNumberFormatterType) {
     guard let responseStatus = response.statusCase else { return nil }
@@ -112,5 +114,6 @@ struct AddressRequestUpdate: AddressRequestUpdateDisplayable {
     self.fiatAmount = response.metadata?.amount?.usd ?? 0
     self.side = InvitationSide(requestSide: requestSide)
     self.status = CKMInvitation.statusToPersist(for: responseStatus, side: requestSide)
+    self.addressType = response.addressTypeCase
   }
 }

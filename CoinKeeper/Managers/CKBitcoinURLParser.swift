@@ -18,22 +18,12 @@ class CKBitcoinURLParser: CKParser {
   /// Checks that BitcoinURL is able to parse the string
   /// and if it includes an address, that the address passes validation
   func parse(_ string: String) throws -> BitcoinURL? {
-    if let bitcoinURL = BitcoinURL(string: string), bitcoinURL.components.addressOrPaymentRequestExists {
-      if let address = bitcoinURL.components.address {
-        try bitcoinAddressValidator.validate(value: address)
-      }
-
-      return bitcoinURL
-
-    } else {
-      // Re-evaluate string as Bech 32 to throw specific error for display
-      do {
-        try bitcoinAddressValidator.validate(value: string)
-        return nil
-      } catch {
-        throw error
-      }
+    guard let bitcoinURL = BitcoinURL(string: string), bitcoinURL.components.addressOrPaymentRequestExists else { return nil }
+    if let address = bitcoinURL.components.address {
+      try bitcoinAddressValidator.validate(value: address)
     }
+
+    return bitcoinURL
   }
 
 }

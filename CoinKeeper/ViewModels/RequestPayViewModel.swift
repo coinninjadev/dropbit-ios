@@ -1,6 +1,6 @@
 //
 //  RequestPayViewModel.swift
-//  CoinKeeper
+//  DropBit
 //
 //  Created by BJ Miller on 4/5/18.
 //  Copyright © 2018 Coin Ninja, LLC. All rights reserved.
@@ -12,10 +12,11 @@ class RequestPayViewModel: CurrencySwappableEditAmountViewModel {
 
   var receiveAddress: String
   let qrCodeGenerator = QRCodeGenerator()
+  var lightningInvoice: LNCreatePaymentRequestResponse?
 
-  init(receiveAddress: String, viewModel: CurrencySwappableEditAmountViewModel) {
+  init(receiveAddress: String, amountViewModel: CurrencySwappableEditAmountViewModel) {
     self.receiveAddress = receiveAddress
-    super.init(viewModel: viewModel)
+    super.init(viewModel: amountViewModel)
   }
 
   var bitcoinURL: BitcoinURL? {
@@ -23,7 +24,13 @@ class RequestPayViewModel: CurrencySwappableEditAmountViewModel {
   }
 
   func qrImage(withSize size: CGSize) -> UIImage? {
-    guard let url = bitcoinURL else { return nil }
-    return qrCodeGenerator.image(from: url.absoluteString, size: size)
+    switch walletTransactionType {
+    case .lightning:
+      guard let invoice = lightningInvoice else { return nil }
+      return qrCodeGenerator.image(from: invoice.request, size: size)
+    case .onChain:
+      guard let url = bitcoinURL else { return nil }
+      return qrCodeGenerator.image(from: url.absoluteString, size: size)
+    }
   }
 }

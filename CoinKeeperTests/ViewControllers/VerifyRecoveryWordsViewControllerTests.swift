@@ -16,10 +16,9 @@ class VerifyRecoveryWordsViewControllerTests: XCTestCase {
 
   override func setUp() {
     super.setUp()
-
-    self.sut = VerifyRecoveryWordsViewController.makeFromStoryboard()
     mockCoordinator = MockCoordinator()
-    self.sut.generalCoordinationDelegate = mockCoordinator
+    self.sut = VerifyRecoveryWordsViewController.newInstance(withDelegate: mockCoordinator,
+                                                             recoveryWords: TestHelpers.fakeWords())
   }
 
   override func tearDown() {
@@ -62,9 +61,6 @@ class VerifyRecoveryWordsViewControllerTests: XCTestCase {
   }
 
   func testViewModelIsInstantiatedWhenSettingRecoveryWords() {
-    // initial assertions
-    XCTAssertNil(self.sut.viewModel, "viewModel should initially be nil")
-
     // when
     self.sut.recoveryWords = TestHelpers.fakeWords()
     loadView()
@@ -74,15 +70,12 @@ class VerifyRecoveryWordsViewControllerTests: XCTestCase {
   }
 
   func testWhenSettingRecoveryWordsDDSIsInstantiated() {
-    // initial assertions
-    XCTAssertNil(self.sut.verificationCollectionViewDDS, "dds should initially be nil")
-
     // when
     self.sut.recoveryWords = TestHelpers.fakeWords()
     loadView()
 
     // then
-    XCTAssertNotNil(self.sut.verificationCollectionViewDDS, "dds should initially be nil")
+    XCTAssertNotNil(self.sut.verificationCollectionViewDDS, "dds should not be nil")
     XCTAssertFalse(self.sut.verificationCollectionView.dataSource === self.sut, "dataSource should not be the controller")
   }
 

@@ -16,9 +16,8 @@ class VerificationStatusViewControllerTests: XCTestCase {
 
   override func setUp() {
     super.setUp()
-    self.sut = VerificationStatusViewController.makeFromStoryboard()
     mockCoordinator = MockCoordinator()
-    self.sut.generalCoordinationDelegate = mockCoordinator
+    self.sut = VerificationStatusViewController.newInstance(delegate: mockCoordinator)
     _ = self.sut.view
   }
 
@@ -109,6 +108,9 @@ class VerificationStatusViewControllerTests: XCTestCase {
 
   // MARK: private
   class MockCoordinator: VerificationStatusViewControllerDelegate {
+
+    func viewControllerDidSelectCloseWithToggle(_ viewController: UIViewController) { }
+
     func verifiedPhoneNumber() -> GlobalPhoneNumber? {
       return nil
     }
@@ -136,12 +138,16 @@ class VerificationStatusViewControllerTests: XCTestCase {
     }
 
     var didChangeRemovePhone = false
-    func viewControllerDidRequestToUnverifyPhone(_ viewController: UIViewController, successfulCompletion: @escaping () -> Void) {
+    func viewControllerDidRequestToUnverifyPhone(_ viewController: UIViewController, successfulCompletion: @escaping CKCompletion) {
       didChangeRemovePhone = true
     }
 
+    func viewControllerDidSelectClose(_ viewController: UIViewController, completion: CKCompletion? ) {
+      didSelectClose = true
+    }
+
     var didChangeRemoveTwitter = false
-    func viewControllerDidRequestToUnverifyTwitter(_ viewController: UIViewController, successfulCompletion: @escaping () -> Void) {
+    func viewControllerDidRequestToUnverifyTwitter(_ viewController: UIViewController, successfulCompletion: @escaping CKCompletion) {
       didChangeRemoveTwitter = true
     }
 

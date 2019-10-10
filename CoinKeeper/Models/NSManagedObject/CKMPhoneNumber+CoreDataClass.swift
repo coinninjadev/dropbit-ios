@@ -1,6 +1,6 @@
 //
 //  CKMPhoneNumber+CoreDataClass.swift
-//  CoinKeeper
+//  DropBit
 //
 //  Created by Ben Winters on 4/27/18.
 //  Copyright © 2018 Coin Ninja, LLC. All rights reserved.
@@ -102,9 +102,8 @@ public class CKMPhoneNumber: NSManagedObject {
     return result
   }
 
-  public func configure(with outgoingTransactionData: OutgoingTransactionData, in context: NSManagedObjectContext) {
-    let name = outgoingTransactionData.displayName
-    guard name.isNotEmpty else { return }
+  func configure(withReceiver receiver: OutgoingDropBitReceiver, in context: NSManagedObjectContext) {
+    guard let name = receiver.displayName, name.isNotEmpty else { return }
     self.counterparty = CKMCounterparty.findOrCreate(with: name, in: context)
   }
 

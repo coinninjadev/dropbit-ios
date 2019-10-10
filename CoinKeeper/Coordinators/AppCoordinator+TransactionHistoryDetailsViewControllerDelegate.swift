@@ -16,14 +16,14 @@ extension AppCoordinator: TransactionHistoryDetailsViewControllerDelegate {
     let neverMindAction = AlertActionConfiguration(title: "Never mind", style: .cancel, action: nil)
     let cancelInvitationAction = AlertActionConfiguration(title: "Cancel DropBit", style: .default, action: { [weak self] in
       guard let strongSelf = self,
-        let walletWorker = strongSelf.workerFactory.createWalletAddressDataWorker(delegate: strongSelf)
+        let walletWorker = strongSelf.workerFactory().createWalletAddressDataWorker(delegate: strongSelf)
         else { return }
       let context = strongSelf.persistenceManager.createBackgroundContext()
       context.performAndWait {
         walletWorker.cancelInvitation(withID: invitationID, in: context)
           .done(in: context) {
             context.performAndWait {
-              try? context.save()
+              try? context.saveRecursively()
             }
 
             strongSelf.analyticsManager.track(event: .cancelDropbitPressed, with: nil)
@@ -48,19 +48,4 @@ extension AppCoordinator: TransactionHistoryDetailsViewControllerDelegate {
     viewController.present(alert, animated: true, completion: nil)
   }
 
-  func viewControllerShouldUpdateTransaction(_ viewController: TransactionHistoryDetailsViewController,
-                                             transaction: CKMTransaction) -> Promise<Void> {
-    return Promise { seal in
-      let context = transaction.managedObjectContext
-      context?.performAndWait {
-        do {
-          try context?.save()
-          viewController.collectionView.reloadData()
-          seal.fulfill(())
-        } catch {
-          seal.reject(error)
-        }
-      }
-    }
-  }
 }

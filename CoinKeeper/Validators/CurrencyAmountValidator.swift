@@ -1,12 +1,29 @@
 //
 //  CurrencyAmountValidator.swift
-//  CoinKeeper
+//  DropBit
 //
 //  Created by Mitchell on 5/9/18.
 //  Copyright © 2018 Coin Ninja, LLC. All rights reserved.
 //
 
 import Foundation
+
+enum CurrencyStringValidatorError: ValidatorTypeError {
+  case isZero
+  case notANumber
+
+  var debugMessage: String {
+    switch self {
+    case .isZero: return "Amount cannot be zero."
+    case .notANumber: return "Amount is not a number."
+    }
+  }
+
+  var displayMessage: String? {
+    return debugMessage
+  }
+
+}
 
 enum CurrencyAmountValidatorError: ValidatorTypeError {
   case invitationMaximum(Money)
@@ -57,15 +74,29 @@ struct CurrencyAmountValidationOptions: OptionSet {
 class CurrencyAmountValidator: ValidatorType<CurrencyConverter> {
 
   static let invitationMax = Money(amount: NSDecimalNumber(value: 100), currency: .USD)
+  static let lightningInvoiceMax = Money(amount: NSDecimalNumber(value: 50), currency: .USD)
 
   // Allows for validating against USD value while showing error message in BTC.
-  let balanceNetPending: NSDecimalNumber?
+  let balancesNetPending: WalletBalances
   let validationsToSkip: CurrencyAmountValidationOptions
+  let balanceType: WalletTransactionType
 
-  init(balanceNetPending: NSDecimalNumber?, ignoring: CurrencyAmountValidationOptions = []) {
-    self.balanceNetPending = balanceNetPending
+  init(balancesNetPending: WalletBalances,
+       balanceToCheck: WalletTransactionType,
+       ignoring: CurrencyAmountValidationOptions = []) {
+    self.balancesNetPending = balancesNetPending
+    self.balanceType = balanceToCheck
     self.validationsToSkip = ignoring
     super.init()
+  }
+
+  private var relevantBalance: NSDecimalNumber {
+    switch balanceType {
+    case .onChain:
+      return balancesNetPending.onChain
+    case .lightning:
+      return balancesNetPending.lightning
+    }
   }
 
   override func validate(value: CurrencyConverter) throws {
@@ -85,29 +116,12 @@ class CurrencyAmountValidator: ValidatorType<CurrencyConverter> {
       throw CurrencyAmountValidatorError.invitationMaximum(maxMoney)
     }
 
-    if !validationsToSkip.contains(.usableBalance),
-      let balance = balanceNetPending,
-      btcValue > balance {
+    let balance = relevantBalance
+
+    if !validationsToSkip.contains(.usableBalance), btcValue > balance {
       let spendableMoney = Money(amount: balance, currency: .BTC)
       throw CurrencyAmountValidatorError.usableBalance(spendableMoney)
     }
-  }
-
-  enum CurrencyStringValidatorError: ValidatorTypeError {
-    case isZero
-    case notANumber
-
-    var debugMessage: String {
-      switch self {
-      case .isZero: return "Amount cannot be zero."
-      case .notANumber: return "Amount is not a number."
-      }
-    }
-
-    var displayMessage: String? {
-      return debugMessage
-    }
-
   }
 
 }

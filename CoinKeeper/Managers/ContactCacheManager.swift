@@ -13,8 +13,8 @@ import PhoneNumberKit
 
 protocol ContactCacheManagerType: AnyObject {
 
-  var mainQueueContext: NSManagedObjectContext { get }
-  func createChildBackgroundContext() -> NSManagedObjectContext
+  var viewContext: NSManagedObjectContext { get }
+  func createBackgroundContext() -> NSManagedObjectContext
 
   func createPhoneNumberFetchedResultsController() -> NSFetchedResultsController<CCMPhoneNumber>
   func predicate(forSearch searchText: String) -> NSPredicate
@@ -38,12 +38,9 @@ class ContactCacheManager: ContactCacheManagerType {
   private let stackConfig: CoreDataStackConfig
   private let container: NSPersistentContainer
 
-  lazy var mainQueueContext: NSManagedObjectContext = {
+  lazy var viewContext: NSManagedObjectContext = {
     let context = self.container.viewContext
     context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
-    if stackConfig.storeType.shouldSetQueryGeneration {
-      try? context.setQueryGenerationFrom(.current)
-    }
     return context
   }()
 
@@ -57,9 +54,10 @@ class ContactCacheManager: ContactCacheManagerType {
     self.container = stackConfig.stack.persistentContainer
   }
 
-  func createChildBackgroundContext() -> NSManagedObjectContext {
+  func createBackgroundContext() -> NSManagedObjectContext {
     let bgContext = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
-    bgContext.parent = mainQueueContext
+    bgContext.parent = viewContext
+    bgContext.name = "ContactCache_BackgroundContext"
     bgContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
     return bgContext
   }
@@ -71,7 +69,7 @@ class ContactCacheManager: ContactCacheManagerType {
     fetchRequest.fetchBatchSize = 25
 
     let controller = NSFetchedResultsController(fetchRequest: fetchRequest,
-                                                managedObjectContext: mainQueueContext,
+                                                managedObjectContext: viewContext,
                                                 sectionNameKeyPath: #keyPath(CCMPhoneNumber.verificationStatus),
                                                 cacheName: nil) // avoid caching unless there is real need as it is often the source of bugs
     return controller
@@ -83,8 +81,8 @@ class ContactCacheManager: ContactCacheManagerType {
 
   func managedContactComponents(forGlobalPhoneNumber number: GlobalPhoneNumber) -> ManagedContactComponents? {
     var components: ManagedContactComponents?
-    mainQueueContext.performAndWait {
-      if let foundMetadata = validatedMetadata(for: number, in: mainQueueContext),
+    viewContext.performAndWait {
+      if let foundMetadata = validatedMetadata(for: number, in: viewContext),
         let displayName = foundMetadata.firstDisplayNameForCachedPhoneNumbers(),
         let phoneInputs = ManagedPhoneNumberInputs(countryCode: foundMetadata.countryCode, nationalNumber: foundMetadata.nationalNumber) {
         let counterpartyInputs = ManagedCounterpartyInputs(name: displayName)

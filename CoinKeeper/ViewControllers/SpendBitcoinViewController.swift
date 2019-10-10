@@ -21,8 +21,12 @@ final class SpendBitcoinViewController: BaseViewController, StoryboardInitializa
   @IBOutlet var spendAroundMeButton: PrimaryActionButton!
   @IBOutlet var spendOnlineButton: PrimaryActionButton!
 
-  var coordinationDelegate: SpendBitcoinViewControllerDelegate? {
-    return generalCoordinationDelegate as? SpendBitcoinViewControllerDelegate
+  private(set) weak var delegate: SpendBitcoinViewControllerDelegate!
+
+  static func newInstance(delegate: SpendBitcoinViewControllerDelegate) -> SpendBitcoinViewController {
+    let vc = SpendBitcoinViewController.makeFromStoryboard()
+    vc.delegate = delegate
+    return vc
   }
 
   override func viewDidLoad() {
@@ -59,12 +63,12 @@ final class SpendBitcoinViewController: BaseViewController, StoryboardInitializa
   }
 
   @IBAction func spendBitcoinAroundMe(_ sender: Any) {
-    coordinationDelegate?.viewControllerSpendBitcoinAroundMe(self)
+    delegate.viewControllerSpendBitcoinAroundMe(self)
   }
 
   @IBAction func spendBitcoinOnline(_ sender: Any) {
-    coordinationDelegate?.viewControllerRequestedAuthenticationSuspension(self)
-    coordinationDelegate?.viewControllerSpendBitcoinOnline(self)
+    delegate.viewControllerRequestedAuthenticationSuspension(self)
+    delegate.viewControllerSpendBitcoinOnline(self)
   }
 }
 
@@ -91,8 +95,8 @@ extension SpendBitcoinViewController: UICollectionViewDataSource, UICollectionVi
   }
 
   func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-    coordinationDelegate?.viewControllerRequestedAuthenticationSuspension(self)
-    coordinationDelegate?.viewControllerSpendGiftCards(self)
+    delegate.viewControllerRequestedAuthenticationSuspension(self)
+    delegate.viewControllerSpendGiftCards(self)
   }
 }
 

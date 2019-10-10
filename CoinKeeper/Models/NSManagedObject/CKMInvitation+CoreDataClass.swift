@@ -1,6 +1,6 @@
 //
 //  CKMInvitation+CoreDataClass.swift
-//  CoinKeeper
+//  DropBit
 //
 //  Created by Ben Winters on 4/18/18.
 //  Copyright © 2018 Coin Ninja, LLC. All rights reserved.
@@ -26,6 +26,7 @@ public class CKMInvitation: NSManagedObject {
     self.counterpartyName = nil
     self.sentDate = response.createdAt
     self.side = InvitationSide(requestSide: side)
+    self.walletTxTypeCase = WalletTransactionType(addressType: response.addressTypeCase)
     let requestStatus = response.statusCase ?? .new
     self.status = CKMInvitation.statusToPersist(for: requestStatus, side: side)
 
@@ -58,32 +59,20 @@ public class CKMInvitation: NSManagedObject {
     self.setTxid(to: response.txid)
   }
 
-  convenience public init(withOutgoingInvitationDTO outgoingDTO: OutgoingInvitationDTO,
+  convenience public init(withOutgoingInvitationDTO invitationDTO: OutgoingInvitationDTO,
                           acknowledgmentId: String,
                           insertInto context: NSManagedObjectContext) {
     self.init(insertInto: context)
-    let contact = outgoingDTO.contact
+    let contact = invitationDTO.contact
     self.id = CKMInvitation.unacknowledgementPrefix + acknowledgmentId
-    self.btcAmount = outgoingDTO.btcPair.btcAmount.asFractionalUnits(of: .BTC)
-    self.usdAmountAtTimeOfInvitation = outgoingDTO.btcPair.usdAmount.asFractionalUnits(of: .USD)
+    self.btcAmount = invitationDTO.btcPair.btcAmount.asFractionalUnits(of: .BTC)
+    self.usdAmountAtTimeOfInvitation = invitationDTO.btcPair.usdAmount.asFractionalUnits(of: .USD)
     self.side = .sender
+    self.walletTxTypeCase = invitationDTO.walletTxType
     self.status = .notSent
     self.counterpartyName = contact.displayName
-    self.setFlatFee(to: outgoingDTO.fee)
-
-    switch contact.identityType {
-    case .phone:
-      guard let phoneContact = contact as? PhoneContactType,
-        let inputs = ManagedPhoneNumberInputs(phoneNumber: phoneContact.globalPhoneNumber)
-        else { return }
-      self.counterpartyPhoneNumber = CKMPhoneNumber.findOrCreate(withInputs: inputs,
-                                                            phoneNumberHash: phoneContact.phoneNumberHash,
-                                                            in: context)
-    case.twitter:
-      guard let twitterContact = contact as? TwitterContactType else { return }
-      let managedTwitterContact = CKMTwitterContact.findOrCreate(with: twitterContact, in: context)
-      self.counterpartyTwitterContact = managedTwitterContact
-    }
+    self.setFlatFee(to: invitationDTO.fee, type: invitationDTO.walletTxType)
+    self.configure(withReceiver: contact.asDropBitReceiver, in: context)
   }
 
   var completed: Bool {
@@ -113,22 +102,49 @@ public class CKMInvitation: NSManagedObject {
 
       let newInvitation = CKMInvitation(withAddressRequestResponse: response, side: .received, insertInto: context)
 
-      let maybeTxid = response.txid?.asNilIfEmpty()
-      let tx = maybeTxid.flatMap { CKMTransaction.find(byTxid: $0, in: context) } ?? CKMTransaction(insertInto: context)
-
-      tx.txid = maybeTxid ?? CKMTransaction.prefixedTxid(for: newInvitation)
-
-      tx.sortDate = response.createdAt
-      // not setting newTx.date here since it isn't yet a transaction, so that the display date will fallback to the invitation.sentDate
-
-      tx.invitation = newInvitation
-      tx.isIncoming = tx.calculateIsIncoming(in: context)
-
       if newInvitation.status == .addressSent, let address = response.address {
         newInvitation.addressProvidedToSender = address
       }
 
+      let parentObject = invitationParentObject(for: response, invitationId: newInvitation.id, in: context)
+      parentObject?.invitation = newInvitation
+      parentObject?.phoneNumber = newInvitation.phoneNumber
+      parentObject?.twitterContact = newInvitation.twitterContact
+
       return newInvitation
+    }
+  }
+
+  static private func invitationParentObject(for response: WalletAddressRequestResponse,
+                                             invitationId: String,
+                                             in context: NSManagedObjectContext) -> InvitationParent? {
+    switch response.addressTypeCase {
+    case .btc:
+      let tx = transaction(for: response, invitationId: invitationId, in: context)
+      tx.sortDate = response.createdAt
+      // not setting tx.date here since it isn't yet a transaction, so that the display date will fallback to the invitation.sentDate
+
+      tx.isIncoming = tx.calculateIsIncoming(in: context)
+      return tx
+
+    case .lightning:
+      guard let wallet = CKMWallet.find(in: context) else { return nil }
+      let newWalletEntry = CKMWalletEntry(wallet: wallet, sortDate: response.createdAt, insertInto: context)
+      return newWalletEntry
+    }
+  }
+
+  private static func transaction(for response: WalletAddressRequestResponse,
+                                  invitationId: String,
+                                  in context: NSManagedObjectContext) -> CKMTransaction {
+    let maybeTxid: String? = response.txid?.asNilIfEmpty()
+    if let txid = maybeTxid, let foundTransaction = CKMTransaction.find(byTxid: txid, in: context) {
+      return foundTransaction
+    } else {
+      let newTransaction = CKMTransaction(insertInto: context)
+      let prefixedInvitationId = CKMTransaction.invitationTxidPrefix + invitationId
+      newTransaction.txid = maybeTxid ?? prefixedInvitationId
+      return newTransaction
     }
   }
 
@@ -187,6 +203,23 @@ public class CKMInvitation: NSManagedObject {
       }
     }
     return result
+  }
+
+  static func find(withTxid txid: String, in context: NSManagedObjectContext) -> CKMInvitation? {
+    let fetchRequest: NSFetchRequest<CKMInvitation> = CKMInvitation.fetchRequest()
+    fetchRequest.predicate = CKPredicate.Invitation.withTxid(txid)
+    fetchRequest.fetchLimit = 1
+
+    var ckmInvitation: CKMInvitation?
+    context.performAndWait {
+      do {
+        let invite = try context.fetch(fetchRequest).first
+        ckmInvitation = invite
+      } catch {
+        log.info("failed to find invitatio with txid: \(txid)")
+      }
+    }
+    return ckmInvitation
   }
 
   static func find(withId id: String, in context: NSManagedObjectContext) -> CKMInvitation? {
@@ -328,6 +361,24 @@ extension CKMInvitation: AddressRequestUpdateDisplayable {
     case .sender:   return counterpartyTwitterContact?.formattedScreenName
     case .receiver: return nil
     }
+  }
+
+  var addressType: WalletAddressType {
+    return walletTxTypeCase == .onChain ? .btc : .lightning
+  }
+
+}
+
+extension CKMInvitation: DropBitReceiverPersistable {
+
+  var phoneNumber: CKMPhoneNumber? {
+    get { return self.counterpartyPhoneNumber }
+    set { self.counterpartyPhoneNumber = newValue }
+  }
+
+  var twitterContact: CKMTwitterContact? {
+    get { return self.counterpartyTwitterContact }
+    set { self.counterpartyTwitterContact = newValue }
   }
 
 }

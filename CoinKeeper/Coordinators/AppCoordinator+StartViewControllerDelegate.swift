@@ -1,6 +1,6 @@
 //
 //  AppCoordinator+StartViewControllerDelegate.swift
-//  CoinKeeper
+//  DropBit
 //
 //  Created by BJ Miller on 4/24/18.
 //  Copyright © 2018 Coin Ninja, LLC. All rights reserved.
@@ -34,12 +34,11 @@ extension AppCoordinator: StartViewControllerDelegate {
     switch flow {
     case .restoreWallet:
       if restoreFromICloudBackup {
-        do {
-          try persistenceManager.resetPersistence()
-          log.info("Successfully reset persistence after iCloud Restore")
-        } catch {
-          log.error(error, message: "Failed to reset persistence after iCloud Restore")
-        }
+        let context = persistenceManager.viewContext
+        persistenceManager.brokers.wallet.removeWalletId(in: context)
+        persistenceManager.brokers.user.unverifyUser(in: context)
+        persistenceManager.keychainManager.deleteAll()
+        log.info("Successfully reset persistence after iCloud Restore")
       }
       persistenceManager.userDefaultsManager.deleteAll()
       continueSetupFlow()
@@ -53,6 +52,7 @@ extension AppCoordinator: StartViewControllerDelegate {
   func clearPin() {
     persistenceManager.keychainManager.storeSynchronously(anyValue: nil, key: .userPin)
     persistenceManager.keychainManager.storeSynchronously(anyValue: nil, key: .walletWords)
+    persistenceManager.keychainManager.storeSynchronously(anyValue: nil, key: .walletWordsV2)
     launchStateManager.unauthenticateUser()
   }
 
@@ -60,20 +60,33 @@ extension AppCoordinator: StartViewControllerDelegate {
     requireAuthenticationIfNeeded(whenAuthenticated: {})
   }
 
-  func requireAuthenticationIfNeeded(whenAuthenticated: @escaping () -> Void) {
+  func requireAuthenticationIfNeeded(whenAuthenticated: @escaping CKCompletion) {
     connectionManager.delegate?.connectionManager(connectionManager, didChangeStatusTo: connectionManager.status)
     guard launchStateManager.shouldRequireAuthentication,
       !(navigationController.topViewController()?.isKind(of: PinEntryViewController.classForCoder()) ?? true)
       else { return }
 
-    let pinEntryVC = PinEntryViewController.makeFromStoryboard()
-    // This closure is called by its delegate's implementation of viewControllerDidSuccessfullyAuthenticate()
-    pinEntryVC.whenAuthenticated = whenAuthenticated
-    assignCoordinationDelegate(to: pinEntryVC)
-
+    let pinEntryVC = createPinEntryViewControllerForAppOpen(whenAuthenticated: whenAuthenticated)
     pinEntryVC.modalPresentationStyle = .overCurrentContext
     pinEntryVC.modalTransitionStyle = .crossDissolve
+
     navigationController.setViewControllers([pinEntryVC], animated: false)
+  }
+
+  func createPinEntryViewControllerForAppOpen(whenAuthenticated: @escaping CKCompletion) -> PinEntryViewController {
+    let viewModel = OpenAppPinEntryViewModel()
+
+    let successHandler: CKCompletion = { [weak self] in
+      guard let self = self else { return }
+      self.launchStateManager.userWasAuthenticated()
+      self.serialQueueManager.enqueueWalletSyncIfAppropriate(type: .standard, policy: .always,
+                                                             completion: nil, fetchResult: nil)
+      whenAuthenticated()
+    }
+
+    return PinEntryViewController.newInstance(delegate: self,
+                                              viewModel: viewModel,
+                                              success: successHandler)
   }
 
 }

@@ -1,6 +1,6 @@
 //
 //  ProviderError.swift
-//  CoinKeeper
+//  DropBit
 //
 //  Created by Ben Winters on 5/21/18.
 //  Copyright © 2018 Coin Ninja, LLC. All rights reserved.
@@ -30,6 +30,9 @@ enum CKNetworkError: UserNotifiableError {
   case decodingFailed(type: String)
   case countryCodeDisabled
   case twilioError(Response) //server returns a successful response with 501 if Twilio responds with error
+  case invoiceAmountTooHigh //400
+  case underlying(MoyaError)
+  case thunderdomeUnavailable // 503
 
   /// The associated response can be used as the default value if recovering from this error
   case invalidValue(keyPath: String, value: String?, response: Decodable)
@@ -61,6 +64,8 @@ enum CKNetworkError: UserNotifiableError {
     case .decodingFailed(let type):       return "Failed to decode object of type: \(type)"
     case .countryCodeDisabled:            return "Country code not enabled"
     case .twilioError:                    return "Twilio responded with error."
+    case .invoiceAmountTooHigh:           return "Invoice amount too high."
+    case .underlying(let error):          return error.humanReadableDescription
 
     case .invalidValue(let keypath, let value, _):
       let valueDesc = value ?? "nil"
@@ -74,6 +79,11 @@ enum CKNetworkError: UserNotifiableError {
 
     case .shouldUnverify(let moyaError, let type):
       return "Error represents a state that requires deverifying the device, type: \(type.rawValue). \(moyaError.errorMessage ?? "unknown")"
+
+    case .thunderdomeUnavailable:
+      let description = "We are currently updating our servers. Don't worry, your funds are safe. " +
+      "Please check back again shortly."
+      return description
     }
   }
 
@@ -103,6 +113,19 @@ extension MoyaError {
       return errorString
     } else {
       return self.errorDescription ?? "MoyaError.response has no description"
+    }
+  }
+
+  var humanReadableDescription: String {
+    if let data = self.response?.data,
+      let errorString = String(data: data, encoding: .utf8) {
+      if let responseError = try? JSONDecoder().decode(CoinNinjaErrorResponse.self, from: data) {
+        return responseError.message
+      } else {
+        return errorString
+      }
+    } else {
+      return self.errorDescription ?? "An unknown error occurred"
     }
   }
 

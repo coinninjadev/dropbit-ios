@@ -17,6 +17,9 @@ class MockPersistenceManager: PersistenceManagerType {
   var hashingManager: HashingManager = HashingManager()
   let brokers: PersistenceBrokersType
 
+  var fakeCoinToUse: CNBBaseCoin = CNBBaseCoin(purpose: .BIP49, coin: .TestNet, account: 0)
+  var usableCoin: CNBBaseCoin { return fakeCoinToUse }
+
   init(keychainManager: PersistenceKeychainType = MockPersistenceKeychainManager(store: MockKeychainAccessorType()),
        databaseManager: PersistenceDatabaseType = MockPersistenceDatabaseManager(),
        userDefaultsManager: PersistenceUserDefaultsType = MockUserDefaultsManager(),
@@ -35,8 +38,8 @@ class MockPersistenceManager: PersistenceManagerType {
     return databaseManager.createBackgroundContext()
   }
 
-  func mainQueueContext() -> NSManagedObjectContext {
-    return databaseManager.mainQueueContext
+  var viewContext: NSManagedObjectContext {
+    return databaseManager.viewContext
   }
 
   func persistentStore() -> NSPersistentStore? {
@@ -61,7 +64,11 @@ class MockPersistenceManager: PersistenceManagerType {
     from responses: [AddressTransactionSummaryResponse],
     in context: NSManagedObjectContext) {}
 
-  func persistReceivedSharedPayloads(_ payloads: [Data], in context: NSManagedObjectContext) { }
+  func persistReceivedSharedPayloads(_ payloads: [Data],
+                                     ofType walletTxType: WalletTransactionType,
+                                     in context: NSManagedObjectContext) { }
+
+  func persistReceivedAddressRequests(_ responses: [WalletAddressRequestResponse], in context: NSManagedObjectContext) { }
 
   func matchContactsIfPossible() {
     databaseManager.matchContactsIfPossible(with: self.contactCacheManager)

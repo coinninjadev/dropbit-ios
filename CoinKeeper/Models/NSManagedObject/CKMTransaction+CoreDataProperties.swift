@@ -1,6 +1,6 @@
 //
 //  CKMTransaction+CoreDataProperties.swift
-//  CoinKeeper
+//  DropBit
 //
 //  Created by BJ Miller on 7/29/18.
 //  Copyright © 2018 Coin Ninja, LLC. All rights reserved.
@@ -36,30 +36,14 @@ extension CKMTransaction {
   @NSManaged public var isIncoming: Bool
   @NSManaged public var memo: String?
   @NSManaged public var sharedPayload: CKMTransactionSharedPayload?
+  @NSManaged public var isLightningTransfer: Bool
+  @NSManaged public var dropBitProcessingFee: Satoshis
 
   /**
    The broadcast was "successful" but the transaction never showed up on the mempool.
    In such a case, this property is set to false during grooming. Default value is false.
    */
-  @NSManaged public fileprivate(set) var broadcastFailed: Bool
-
-}
-
-extension CKMTransaction {
-
-  func markAsFailed() {
-    broadcastFailed = true
-
-    // Replace failed txid with a prefix + timestamp + UUID to free up the unique constraint in case an identical transaction is retried by the user
-    // txid may or may not be an actual txid depending on sender/receiver or actual/invitation
-    self.txid = CKMTransaction.failedTxidPrefix + String(Date().timeIntervalSince1970) + UUID().uuidString
-
-    // Free up the temporary transactions
-    temporarySentTransaction?.reservedVouts.forEach { vout in
-      vout.isSpent = false
-      vout.temporarySentTransaction = nil
-    }
-  }
+  @NSManaged public var broadcastFailed: Bool
 
 }
 

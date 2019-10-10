@@ -1,6 +1,6 @@
 //
 //  WalletAddressRequestResponse.swift
-//  CoinKeeper
+//  DropBit
 //
 //  Created by Ben Winters on 6/28/18.
 //  Copyright © 2018 Coin Ninja, LLC. All rights reserved.
@@ -75,6 +75,7 @@ public struct WalletAddressRequestMetadata: ResponseDecodable, CustomStringConve
   let receiver: MetadataParticipant?
   var requestId: String?
   let suppress: Bool?
+  let addressType: String?
 
   public var description: String {
     var responseDesc = ""
@@ -82,7 +83,8 @@ public struct WalletAddressRequestMetadata: ResponseDecodable, CustomStringConve
       "amount: \(amount?.description ?? "-")",
       "sender: \(sender?.description ?? "-")",
       "receiver: \(receiver?.description ?? "-")",
-      "request_id: \(requestId ?? "-")"
+      "requestId: \(requestId ?? "-")",
+      "addressType: \(addressType ?? "-")"
     ]
     propertyKeyValues.forEach { desc in
       responseDesc.append("\n\t\(desc)")
@@ -142,6 +144,7 @@ public struct WalletAddressRequestResponse: ResponseDecodable, CustomStringConve
   let updatedAt: Date
   var address: String?
   var addressPubkey: String?
+  var addressType: String?
   var txid: String?
 
   let metadata: WalletAddressRequestMetadata?
@@ -186,12 +189,16 @@ public struct WalletAddressRequestResponse: ResponseDecodable, CustomStringConve
   }
 
   static var optionalStringKeys: [WritableKeyPath<WalletAddressRequestResponse, String?>] {
-    return [\.address, \.addressPubkey, \.txid, \.identityHash, \.status, \.deliveryId, \.walletId]
+    return [\.address, \.addressPubkey, \.addressType, \.txid, \.identityHash, \.status, \.deliveryId, \.walletId]
   }
 
 }
 
 extension WalletAddressRequestResponse {
+
+  var addressTypeCase: WalletAddressType {
+    return addressType.flatMap { WalletAddressType(rawValue: $0) } ?? .btc
+  }
 
   var statusCase: WalletAddressRequestStatus? {
     return status.flatMap { WalletAddressRequestStatus(rawValue: $0) }
@@ -206,24 +213,19 @@ extension WalletAddressRequestResponse {
   }
 
   func copy(withAddress address: String) -> WalletAddressRequestResponse {
-    return WalletAddressRequestResponse(id: self.id,
-                                        createdAt: self.createdAt,
-                                        updatedAt: self.updatedAt,
-                                        address: address,
-                                        addressPubkey: self.addressPubkey,
-                                        txid: self.txid,
-                                        metadata: self.metadata,
-                                        identityHash: self.identityHash,
-                                        status: self.status,
-                                        deliveryId: self.deliveryId,
-                                        deliveryStatus: self.deliveryStatus,
-                                        walletId: self.walletId)
+    var newResponse = self
+    newResponse.address = address
+    return newResponse
   }
 
   /// For legacy reasons, this does not require the presence of an addressPubkey for the transaction to be sendable
   var isSatisfiedForSending: Bool {
     guard let statusCase = statusCase, let address = address else { return false }
     return statusCase == .new && address.isNotEmpty
+  }
+
+  var isUnfulfilled: Bool {
+    return (address ?? "").isEmpty && statusCase == .new
   }
 
   static var sampleJSON: String {

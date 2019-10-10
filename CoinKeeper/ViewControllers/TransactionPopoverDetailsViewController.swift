@@ -18,14 +18,9 @@ protocol TransactionPopoverDetailsViewControllerDelegate: ViewControllerDismissa
 class TransactionPopoverDetailsViewController: BaseViewController, StoryboardInitializable, PopoverViewControllerType {
 
   @IBOutlet var containerView: UIView!
-  @IBOutlet var transactionDirectionImageView: UIImageView!
+  @IBOutlet var directionView: TransactionDirectionView!
   @IBOutlet var statusLabel: TransactionDetailBreakdownLabel!
-  @IBOutlet var whenSentTitleLabel: TransactionDetailBreakdownLabel!
-  @IBOutlet var whenSentAmountLabel: TransactionDetailBreakdownLabel!
-  @IBOutlet var networkFeeTitleLabel: TransactionDetailBreakdownLabel!
-  @IBOutlet var networkFeeAmountLabel: TransactionDetailBreakdownLabel!
-  @IBOutlet var confirmationsTitleLabel: TransactionDetailBreakdownLabel!
-  @IBOutlet var confirmationsAmountLabel: TransactionDetailBreakdownLabel!
+  @IBOutlet var breakdownStackView: UIStackView!
   @IBOutlet var txidLabel: UILabel!
   @IBOutlet var seeTransactionDetailsButton: TransactionDetailBottomButton!
   @IBOutlet var shareTransactionButton: UIButton!
@@ -35,15 +30,34 @@ class TransactionPopoverDetailsViewController: BaseViewController, StoryboardIni
 
   private let height: CGFloat = 410
 
-  var viewModel: TransactionHistoryDetailCellViewModel?
+  private(set) weak var delegate: TransactionPopoverDetailsViewControllerDelegate!
+  private var viewModel: TransactionDetailPopoverDisplayable?
+
+  static func newInstance(delegate: TransactionPopoverDetailsViewControllerDelegate,
+                          viewModel: TransactionDetailPopoverDisplayable) -> TransactionPopoverDetailsViewController {
+    let vc = TransactionPopoverDetailsViewController.makeFromStoryboard()
+    vc.delegate = delegate
+    vc.viewModel = viewModel
+    return vc
+  }
 
   override func viewDidLoad() {
     super.viewDidLoad()
     setupUI()
+    configureWithViewModel()
   }
 
-  var coordinationDelegate: TransactionPopoverDetailsViewControllerDelegate? {
-    return generalCoordinationDelegate as? TransactionPopoverDetailsViewControllerDelegate
+  private func configureWithViewModel() {
+    guard let viewModel = viewModel else { return }
+
+    let breakdownStyle = TitleDetailViewStyleConfig(font: .regular(13), color: .darkGrayText)
+    for item in viewModel.breakdownItems {
+      let labelView = TitleDetailView(title: item.title, detail: item.detail, style: breakdownStyle)
+      breakdownStackView.addArrangedSubview(labelView)
+    }
+    statusLabel.text = viewModel.detailStatusText
+    txidLabel.text = viewModel.txid
+    directionView.configure(image: viewModel.directionConfig.image, bgColor: viewModel.directionConfig.bgColor)
   }
 
   private func setupUI() {
@@ -54,22 +68,8 @@ class TransactionPopoverDetailsViewController: BaseViewController, StoryboardIni
     shareTransactionButton.setTitleColor(.lightBlueTint, for: .normal)
     shareTransactionButton.titleLabel?.font = .semiBold(14)
     containerView.applyCornerRadius(15)
-    setupViewWithModel()
     addDismissibleTapToBackground()
-    let title = "VIEW ON BLOCK EXPLORER"
-    seeTransactionDetailsButton.setTitle(title, for: .normal)
-  }
-
-  private func setupViewWithModel() {
-    guard let viewModel = viewModel else { return }
-
-    whenSentAmountLabel.text = viewModel.breakdownSentAmountLabel
-    networkFeeAmountLabel.text = viewModel.breakdownFeeAmountLabel
-    confirmationsAmountLabel.text = viewModel.confirmations >= 6 ? "6+" :
-      String(describing: viewModel.confirmations)
-    statusLabel.text = viewModel.statusDescription
-    txidLabel.text = viewModel.transaction?.txid
-    transactionDirectionImageView.image = viewModel.imageForTransactionDirection
+    seeTransactionDetailsButton.setTitle("VIEW ON BLOCK EXPLORER", for: .normal)
   }
 
   func dismissPopoverViewController() {
@@ -80,21 +80,21 @@ class TransactionPopoverDetailsViewController: BaseViewController, StoryboardIni
       self?.view.layoutIfNeeded()
       }, completion: { [weak self] _ in
         guard let strongSelf = self else { return }
-        strongSelf.coordinationDelegate?.viewControllerDidSelectClose(strongSelf)
+        strongSelf.delegate.viewControllerDidSelectClose(strongSelf)
     })
   }
 
   @IBAction func viewControllerDidTapTransactionDetailsButton() {
-    guard let txid = viewModel?.transaction?.txid, let url = CoinNinjaUrlFactory.buildUrl(for: .transaction(id: txid)) else { return }
-    coordinationDelegate?.viewControllerDidTapTransactionDetailsButton(with: url)
+    guard let url = viewModel?.txidURL else { return }
+    delegate.viewControllerDidTapTransactionDetailsButton(with: url)
   }
 
   @IBAction func viewControllerDidTapShareTransactionButton() {
-    coordinationDelegate?.viewControllerDidTapShareTransactionButton()
-    guard let transaction = viewModel?.transaction, transaction.txidIsActualTxid,
-      let url = CoinNinjaUrlFactory.buildUrl(for: .transaction(id: transaction.txid)) else { return }
+    delegate.viewControllerDidTapShareTransactionButton()
+    guard let url = viewModel?.txidURL else { return }
 
-    let activityViewController = UIActivityViewController(activityItems: [url.absoluteString], applicationActivities: nil)
+    let activityViewController = UIActivityViewController(activityItems: [url.absoluteString],
+                                                          applicationActivities: nil)
     present(activityViewController, animated: true, completion: nil)
   }
 
@@ -104,6 +104,6 @@ class TransactionPopoverDetailsViewController: BaseViewController, StoryboardIni
 
   @IBAction func viewControllerDidTapQuestionMarkButton() {
     guard let url = CoinNinjaUrlFactory.buildUrl(for: .detailsTooltip) else { return }
-    coordinationDelegate?.viewControllerDidTapQuestionMarkButton(with: url)
+    delegate.viewControllerDidTapQuestionMarkButton(with: url)
   }
 }

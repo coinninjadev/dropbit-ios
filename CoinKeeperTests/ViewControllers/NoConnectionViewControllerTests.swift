@@ -18,7 +18,7 @@ class NoConnectionViewControllerTests: XCTestCase {
     super.setUp()
     sut = NoConnectionViewController.makeFromStoryboard()
     coordinator = MockCoordinator()
-    sut.generalCoordinationDelegate = coordinator
+    sut.delegate = coordinator
     _ = sut.view
   }
 
@@ -57,7 +57,7 @@ class NoConnectionViewControllerTests: XCTestCase {
   // MARK: private
   class MockCoordinator: NoConnectionViewControllerDelegate {
     var didRequestRetry = false
-    func viewControllerDidRequestRetry(_ viewController: UIKit.UIViewController, completion: @escaping () -> Void) {
+    func viewControllerDidRequestRetry(_ viewController: UIKit.UIViewController, completion: @escaping CKCompletion) {
       didRequestRetry = true
     }
   }

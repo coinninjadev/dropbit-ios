@@ -1,6 +1,6 @@
 //
 //  TextViewController.swift
-//  CoinKeeper
+//  DropBit
 //
 //  Created by Mitchell on 7/24/18.
 //  Copyright © 2018 Coin Ninja, LLC. All rights reserved.
@@ -18,6 +18,12 @@ class TextViewController: BaseViewController, StoryboardInitializable {
 
   required init?(coder aDecoder: NSCoder) {
     super.init(coder: aDecoder)
+  }
+
+  static func newInstance(htmlString: String) -> TextViewController {
+    let vc = TextViewController.makeFromStoryboard()
+    vc.htmlString = htmlString
+    return vc
   }
 
   override func viewDidLoad() {

@@ -73,4 +73,8 @@ class MockWalletBroker: CKPersistenceBroker, WalletBrokerType {
     }
   }
 
+  var usableCoin: CNBBaseCoin {
+    return CNBBaseCoin(purpose: .BIP84, coin: .MainNet, account: 0)
+  }
+
 }

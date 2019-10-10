@@ -14,4 +14,12 @@ extension TimeInterval {
     return 3600
   }
 
+  static var oneDay: TimeInterval {
+    return 86400
+  }
+
+  static var twoDays: TimeInterval {
+    return 172800
+  }
+
 }

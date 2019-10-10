@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
-        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -13,12 +13,12 @@
         <!--Pin Entry View Controller-->
         <scene sceneID="Gi6-eP-A6j">
             <objects>
-                <viewController storyboardIdentifier="PinEntryViewController" id="ipf-ac-K55" customClass="PinEntryViewController" customModule="CoinKeeper" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="PinEntryViewController" id="ipf-ac-K55" customClass="PinEntryViewController" customModule="DropBit" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="lDa-I2-3rU">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Yte-zL-ukP" customClass="KeypadEntryView" customModule="CoinKeeper" customModuleProvider="target">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Yte-zL-ukP" customClass="KeypadEntryView" customModule="DropBit" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="386" width="375" height="281"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
@@ -31,8 +31,8 @@
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="6" translatesAutoresizingMaskIntoConstraints="NO" id="4En-uV-NAT">
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="197"/>
                                         <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Enter PIN to confirm transaction" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7u3-Vg-6aW">
-                                                <rect key="frame" x="65" y="0.0" width="245" height="20.5"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7u3-Vg-6aW">
+                                                <rect key="frame" x="166.5" y="0.0" width="42" height="20.5"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
@@ -54,7 +54,7 @@
                                                     <action selector="biometricButtonTapped:" destination="ipf-ac-K55" eventType="touchUpInside" id="fhn-iN-lLh"/>
                                                 </connections>
                                             </button>
-                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="z1w-x3-kYS" customClass="SecurePinDisplayView" customModule="CoinKeeper" customModuleProvider="target">
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="z1w-x3-kYS" customClass="SecurePinDisplayView" customModule="DropBit" customModuleProvider="target">
                                                 <rect key="frame" x="61.5" y="99" width="252" height="48"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
@@ -81,13 +81,13 @@
                                 </constraints>
                             </view>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo" translatesAutoresizingMaskIntoConstraints="NO" id="gEy-8q-EQA">
-                                <rect key="frame" x="107" y="309.5" width="161" height="47"/>
+                                <rect key="frame" x="107" y="310" width="161" height="47"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="161" id="SdD-Zp-2mN"/>
                                     <constraint firstAttribute="height" constant="47" id="cmF-AS-hBT"/>
                                 </constraints>
                             </imageView>
-                            <button opaque="NO" alpha="0.0" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Vn3-aR-Djg">
+                            <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Vn3-aR-Djg">
                                 <rect key="frame" x="315" y="36" width="44" height="44"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="44" id="JUB-aM-ufC"/>
@@ -105,7 +105,7 @@
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lF6-S7-tG1">
-                                            <rect key="frame" x="44" y="323" width="287" height="20.5"/>
+                                            <rect key="frame" x="44" y="323.5" width="287" height="20.5"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
@@ -155,7 +155,7 @@
                         <outlet property="logoImage" destination="gEy-8q-EQA" id="ynt-TR-esi"/>
                         <outlet property="logoImageCenterYConstraint" destination="H0y-QD-z4f" id="d7v-Bg-BeP"/>
                         <outlet property="logoImageTopConstraint" destination="5K4-OZ-7UT" id="gen-e4-0hS"/>
-                        <outlet property="pinConfirmLabel" destination="7u3-Vg-6aW" id="uoR-9w-wZM"/>
+                        <outlet property="messageLabel" destination="7u3-Vg-6aW" id="Sbj-Zm-Lcl"/>
                         <outlet property="securePinDisplayView" destination="z1w-x3-kYS" id="gfS-Ro-hIO"/>
                         <outlet property="stackContainerView" destination="Yya-Bb-urO" id="ACl-6L-K7O"/>
                     </connections>

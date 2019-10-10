@@ -10,6 +10,7 @@ import Foundation
 import Willow
 
 let loggingQueue = DispatchQueue(label: "com.coinkeeper.cklogger.serial", qos: .utility)
+let loggingLock = NSRecursiveLock()
 
 let log = CKLogger()
 
@@ -25,7 +26,7 @@ class CKLogger: Logger {
 
   init() {
     var writers: [LogWriter] = []
-    writers.append(ConsoleWriter(method: .nslog, modifiers: [CKLogLevelModifier()]))
+    writers.append(ConsoleWriter(method: .print, modifiers: [CKLogLevelModifier()]))
     do {
       let fileWriter = try CKLogFileWriter()
       writers.append(fileWriter)
@@ -36,7 +37,7 @@ class CKLogger: Logger {
     #if DEBUG
     super.init(logLevels: .standardDebug,
                writers: writers,
-               executionMethod: .asynchronous(queue: loggingQueue))
+               executionMethod: .synchronous(lock: loggingLock))
     #else
     super.init(logLevels: .release,
                writers: writers,
@@ -69,7 +70,9 @@ class CKLogger: Logger {
   }
 
   func contextSaveError(_ error: Error, file: String = #file, function: String = #function, line: Int = #line) {
-    self.error(error, message: "failed to save context", file: file, function: function, line: line)
+    let userInfo = (error as NSError).userInfo
+    let message = "failed to save context. User info: \(userInfo)"
+    self.error(error, message: message, file: file, function: function, line: line)
   }
 
   func debug(_ message: String, privateArgs: [CVarArg] = [],

@@ -1,6 +1,6 @@
 //
 //  CKMDerivativePath+CoreDataProperties.swift
-//  CoinKeeper
+//  DropBit
 //
 //  Created by BJ Miller on 5/16/18.
 //  Copyright © 2018 Coin Ninja, LLC. All rights reserved.
@@ -25,4 +25,19 @@ extension CKMDerivativePath {
   @NSManaged public var address: CKMAddress?
   @NSManaged public var serverAddress: CKMServerAddress?
 
+}
+
+extension CKMDerivativePath {
+  override public var description: String {
+    return """
+    account: \(account)
+    change: \(change)
+    coin: \(coin)
+    index: \(index)
+    purpose: \(purpose)
+    fullPath: \(fullPath)
+    address: \(address?.addressId ?? "nil")
+    serverAddress: \(serverAddress?.address ?? "nil")
+    """
+  }
 }

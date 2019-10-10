@@ -1,6 +1,6 @@
 //
 //  PersistenceTypes.swift
-//  CoinKeeper
+//  DropBit
 //
 //  Created by Ben Winters on 5/27/18.
 //  Copyright © 2018 Coin Ninja, LLC. All rights reserved.
@@ -18,9 +18,10 @@ protocol PersistenceManagerType: DeviceCountryCodeProvider {
   var contactCacheManager: ContactCacheManagerType { get }
   var hashingManager: HashingManager { get }
   var brokers: PersistenceBrokersType { get }
+  var usableCoin: CNBBaseCoin { get }
 
+  var viewContext: NSManagedObjectContext { get }
   func createBackgroundContext() -> NSManagedObjectContext
-  func mainQueueContext() -> NSManagedObjectContext
 
   /// convenience function for calling `persistentStore(for:)` with default main context
   func persistentStore() -> NSPersistentStore?
@@ -37,11 +38,13 @@ protocol PersistenceManagerType: DeviceCountryCodeProvider {
 
   func persistReceivedSharedPayloads(
     _ payloads: [Data],
+    ofType walletTxType: WalletTransactionType,
     in context: NSManagedObjectContext)
+
+  func persistReceivedAddressRequests(_ responses: [WalletAddressRequestResponse], in context: NSManagedObjectContext)
 
   /// Look for any transactions sent to a phone number without a contact name, and provide a name if found, as a convenience when viewing tx history
   func matchContactsIfPossible()
-
 }
 
 extension PersistenceManagerType {
@@ -61,6 +64,7 @@ protocol PersistenceKeychainType: AnyObject {
   func store(valueToHash value: String?, key: CKKeychain.Key) -> Promise<Void>
   func store(deviceID: String) -> Promise<Void>
   func store(recoveryWords words: [String], isBackedUp: Bool) -> Promise<Void>
+  func upgrade(recoveryWords wordsd: [String]) -> Promise<Void>
   func storeWalletWordsBackedUp(_ isBackedUp: Bool) -> Promise<Void>
   func store(userPin pin: String) -> Promise<Void>
 
@@ -82,14 +86,15 @@ protocol PersistenceKeychainType: AnyObject {
 
 protocol PersistenceDatabaseType: AnyObject {
 
-  var mainQueueContext: NSManagedObjectContext { get }
   var sharedPayloadManager: SharedPayloadManagerType { get set }
+
+  var viewContext: NSManagedObjectContext { get }
 
   func createBackgroundContext() -> NSManagedObjectContext
 
   func persistentStore(for context: NSManagedObjectContext) -> NSPersistentStore?
 
-  func deleteAll(in context: NSManagedObjectContext)
+  func deleteAll(in context: NSManagedObjectContext) throws
 
   func persistTransactions(
     from transactionResponses: [TransactionResponse],
@@ -149,6 +154,8 @@ protocol PersistenceUserDefaultsType: AnyObject {
   /// Avoid using the methods of UserDefaults directly,
   /// use the extension functions with CKUserDefaults.Key instead.
   var standardDefaults: UserDefaults { get }
+
+  var useRegtest: Bool { get set }
 
   func deleteAll()
   func deleteWallet()

@@ -1,6 +1,6 @@
 //
 //  PrimaryActionButton.swift
-//  CoinKeeper
+//  DropBit
 //
 //  Created by BJ Miller on 3/2/18.
 //  Copyright © 2018 Coin Ninja, LLC. All rights reserved.
@@ -14,8 +14,12 @@ class PrimaryActionButton: UIButton {
     case standard
     case error
     case darkBlue
+    case lightning(Bool)
     case green
     case orange
+    case bitcoin(Bool)
+    case white(enabled: Bool)
+    case mediumPurple
   }
 
   var style: Style = .standard {
@@ -54,6 +58,30 @@ class PrimaryActionButton: UIButton {
       backgroundColor = .mango
       setTitleColor(.lightGrayText, for: .normal)
       setTitleColor(.lightGrayText, for: .highlighted)
+    case .lightning(let roundCorners):
+      if !roundCorners { applyCornerRadius(0) }
+      tintColor = .white
+      imageView?.tintColor = .white
+      backgroundColor = .lightningBlue
+      setTitleColor(.white, for: .normal)
+      setTitleColor(.lightGrayText, for: .highlighted)
+    case .bitcoin(let roundCorners):
+      if !roundCorners { applyCornerRadius(0) }
+      backgroundColor = .bitcoinOrange
+      tintColor = .white
+      imageView?.tintColor = .white
+      setTitleColor(.white, for: .normal)
+      setTitleColor(.lightGrayText, for: .highlighted)
+    case .white(enabled: let enabled):
+      backgroundColor = enabled ? .white : UIColor.white.withAlphaComponent(0.4)
+      isEnabled = enabled
+      setTitleColor(.darkPurple, for: .normal)
+      setTitleColor(.lightGrayText, for: .highlighted)
+    case .mediumPurple:
+      backgroundColor = .mediumPurple
+      tintColor = .white
+      setTitleColor(.white, for: .normal)
+      setTitleColor(.lightGrayText, for: .highlighted)
     }
   }
 
@@ -69,6 +97,10 @@ class PrimaryActionButton: UIButton {
       case .green: mainColor = .appleGreen
       case .darkBlue: mainColor = .darkBlueBackground
       case .orange: mainColor = .mango
+      case .bitcoin: mainColor = .bitcoinOrange
+      case .lightning: mainColor = .lightningBlue
+      case .white: mainColor = .white
+      case .mediumPurple: mainColor = .mediumPurple
       }
 
       backgroundColor = isHighlighted ? .mediumGrayBackground : mainColor

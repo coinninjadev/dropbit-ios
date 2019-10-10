@@ -1,6 +1,6 @@
 //
 //  LaunchStateManager.swift
-//  CoinKeeper
+//  DropBit
 //
 // Created by BJ Miller on 2/26/18.
 // Copyright (c) 2018 Coin Ninja, LLC. All rights reserved.
@@ -15,6 +15,7 @@ protocol LaunchStateManagerType: AnyObject {
   var skippedVerification: Bool { get }
   var selectedSetupFlow: SetupFlow? { get set }
   var userAuthenticated: Bool { get }
+  var upgradeInProgress: Bool { get set }
   init(persistenceManager: PersistenceManagerType)
   func currentProperties() -> LaunchStateProperties
   func profileIsActivated() -> Bool
@@ -27,6 +28,7 @@ protocol LaunchStateManagerType: AnyObject {
   func unauthenticateUser()
   func isFirstTime() -> Bool
   func isFirstTimeAfteriCloudRestore() -> Bool
+  func needsUpgradedToSegwit() -> Bool
 }
 
 /**
@@ -41,6 +43,7 @@ struct LaunchStateProperties: OptionSet {
   static let wordsBackedUp = LaunchStateProperties(rawValue: 1 << 2)
   static let deviceVerified = LaunchStateProperties(rawValue: 1 << 3)
   static let databaseWalletExists = LaunchStateProperties(rawValue: 1 << 4)
+  static let upgradedToSegwit = LaunchStateProperties(rawValue: 1 << 5)
 }
 
 class LaunchStateManager: LaunchStateManagerType {
@@ -48,6 +51,7 @@ class LaunchStateManager: LaunchStateManagerType {
   private let persistenceManager: PersistenceManagerType
   var launchType: LaunchType = .userInitiated
   var selectedSetupFlow: SetupFlow?
+  var upgradeInProgress: Bool = false
 
   required init(persistenceManager: PersistenceManagerType) {
     self.persistenceManager = persistenceManager
@@ -73,7 +77,7 @@ class LaunchStateManager: LaunchStateManagerType {
       options.insert(.wordsBackedUp)
     }
 
-    let context = persistenceManager.mainQueueContext()
+    let context = persistenceManager.viewContext
     context.performAndWait {
       if persistenceManager.brokers.user.userVerificationStatus(in: context) == .verified {
         options.insert(.deviceVerified)
@@ -81,6 +85,10 @@ class LaunchStateManager: LaunchStateManagerType {
       if persistenceManager.databaseManager.walletId(in: context) != nil {
         options.insert(.databaseWalletExists)
       }
+    }
+
+    if let words = persistenceManager.keychainManager.retrieveValue(for: .walletWordsV2) as? [String], words.count == 12 {
+      options.insert(.upgradedToSegwit)
     }
 
     return options
@@ -110,8 +118,8 @@ class LaunchStateManager: LaunchStateManagerType {
   func shouldRegisterWallet() -> Bool {
     let walletExists = currentProperties().contains(.walletExists)
 
-    let bgContext = persistenceManager.createBackgroundContext()
-    let walletIdExists = persistenceManager.brokers.wallet.walletId(in: bgContext) != nil
+    let context = persistenceManager.viewContext
+    let walletIdExists = persistenceManager.brokers.wallet.walletId(in: context) != nil
 
     log.debug("Wallet exists: \(walletExists), wallet ID exists: \(walletIdExists)")
     return walletExists && !walletIdExists
@@ -143,6 +151,13 @@ class LaunchStateManager: LaunchStateManagerType {
     log.debug("Words backed up: \(wordsBackedUp), Device verified: \(deviceVerified)")
 
     return criteria.isSubset(of: properties)
+  }
+
+  func needsUpgradedToSegwit() -> Bool {
+    let properties = currentProperties()
+    let hasUpgradedWallet = properties.contains(.upgradedToSegwit)
+    let hasLegacyWallet = properties.contains(.pinExists) && properties.contains(.walletExists)
+    return hasLegacyWallet && !hasUpgradedWallet
   }
 
   // MARK: In-Memory Status

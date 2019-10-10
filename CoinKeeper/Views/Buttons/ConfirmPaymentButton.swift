@@ -1,6 +1,6 @@
 //
 //  ConfirmPaymentButton.swift
-//  CoinKeeper
+//  DropBit
 //
 //  Created by Mitchell on 4/26/18.
 //  Copyright © 2018 Coin Ninja, LLC. All rights reserved.
@@ -14,15 +14,39 @@ protocol ConfirmPaymentButtonDelegate: class {
 
 class ConfirmPaymentButton: UIButton {
 
+  enum Style {
+    case original
+    case onChain
+    case lightning
+  }
+
   private var backgroundBezierPath: UIBezierPath = UIBezierPath()
   private var backgroundShapeLayer: CAShapeLayer = CAShapeLayer()
   private var foregroundShapeLayer: CAShapeLayer = CAShapeLayer()
   private var circleAnimation: CABasicAnimation = CABasicAnimation()
   private var longPressGestureRecognizer: UILongPressGestureRecognizer = UILongPressGestureRecognizer()
 
-  var secondsToConfirm: Double = 3.0
+  private let defaultSecondsToConfirm: Double = 3.0
+  var secondsToConfirm = 3.0
+  var style: Style {
+    didSet {
+      switch style {
+      case .original:
+        foregroundShapeLayer.strokeColor = UIColor.lightBlueTint.cgColor
+        secondsToConfirm = defaultSecondsToConfirm
+      case .onChain:
+        foregroundShapeLayer.strokeColor = UIColor.bitcoinOrange.cgColor
+        secondsToConfirm = defaultSecondsToConfirm
+      case .lightning:
+        foregroundShapeLayer.strokeColor = UIColor.lightningBlue.cgColor
+        secondsToConfirm = defaultSecondsToConfirm / 2.0
+      }
+      circleAnimation.duration = secondsToConfirm
+    }
+  }
 
   required init?(coder aDecoder: NSCoder) {
+    style = .original
     super.init(coder: aDecoder)
     initalize()
   }
@@ -87,7 +111,6 @@ class ConfirmPaymentButton: UIButton {
     foregroundShapeLayer.lineCap = CAShapeLayerLineCap.round
     foregroundShapeLayer.fillColor = UIColor.clear.cgColor
     foregroundShapeLayer.lineWidth = frame.size.height / lineWidthDivisor
-    foregroundShapeLayer.strokeColor = UIColor.lightBlueTint.cgColor
     foregroundShapeLayer.speed = 1.0
     foregroundShapeLayer.timeOffset = 0.0
     foregroundShapeLayer.beginTime = 0.0

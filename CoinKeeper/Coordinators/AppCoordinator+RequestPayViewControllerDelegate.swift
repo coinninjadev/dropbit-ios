@@ -1,18 +1,36 @@
 //
 //  AppCoordinator+RequestPayViewControllerDelegate.swift
-//  CoinKeeper
+//  DropBit
 //
 //  Created by BJ Miller on 4/24/18.
 //  Copyright © 2018 Coin Ninja, LLC. All rights reserved.
 //
 
 import UIKit
+import PromiseKit
 
 protocol CopyToClipboardMessageDisplayable: AnyObject {
   func viewControllerSuccessfullyCopiedToClipboard(message: String, viewController: UIViewController)
 }
 
 extension AppCoordinator: RequestPayViewControllerDelegate {
+
+  func viewControllerDidCreateInvoice(_ viewController: UIViewController) {
+    guard let txDataWorker = workerFactory().createTransactionDataWorker() else { return }
+
+    let context = persistenceManager.createBackgroundContext()
+    txDataWorker.performFetchAndStoreAllLightningTransactions(in: context)
+      .done(in: context) {
+        try? context.saveRecursively()
+        CKNotificationCenter.publish(key: .didUpdateLocalTransactionRecords)
+    }.cauterize()
+  }
+
+  func viewControllerDidSelectCreateInvoice(_ viewController: UIViewController,
+                                            forAmount sats: Int,
+                                            withMemo memo: String?) -> Promise<LNCreatePaymentRequestResponse> {
+    return networkManager.createLightningPaymentRequest(sats: sats, expires: Int(TimeInterval.twoDays), memo: memo)
+  }
 
   func viewControllerDidSelectSendRequest(_ viewController: UIViewController, payload: [Any]) {
     guard let requestPayVC = viewController as? RequestPayViewController else { return }

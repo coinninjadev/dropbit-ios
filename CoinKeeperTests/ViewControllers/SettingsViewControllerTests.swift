@@ -73,6 +73,8 @@ class SettingsViewControllerTests: XCTestCase {
   // MARK: mock coordinator
   class MockCoordinator: SettingsViewControllerDelegate {
 
+    func viewControllerDidSelectCloseWithToggle(_ viewController: UIViewController) { }
+
     func verifiedPhoneNumber() -> String? {
       return nil
     }
@@ -85,23 +87,30 @@ class SettingsViewControllerTests: XCTestCase {
       return false
     }
 
+    var persistenceManager: PersistenceManagerType = MockPersistenceManager()
+
     func viewControllerDidSelectVerifyPhone(_ viewController: UIViewController) {}
 
     var deleteWalletWasRequested = false
-    func viewControllerDidRequestDeleteWallet(_ viewController: UIViewController, completion: @escaping () -> Void) {
+    func viewControllerDidRequestDeleteWallet(_ viewController: UIViewController, completion: @escaping CKCompletion) {
       deleteWalletWasRequested = true
     }
     func viewControllerDidConfirmDeleteWallet(_ viewController: UIViewController) {}
     func viewController(_ viewController: UIViewController, didRequestOpenURL url: URL) {}
     func viewControllerDidSelectRecoveryWords(_ viewController: UIViewController) {}
+    func viewControllerDidSelectReviewLegacyWords(_ viewController: UIViewController) {}
     func viewControllerSendDebuggingInfo(_ viewController: UIViewController) { }
     func viewControllerDidSelectOpenSourceLicenses(_ viewController: UIViewController) {}
     func viewController(_ viewController: UIViewController, didEnableDustProtection didEnable: Bool) {}
-    func viewController(_ viewController: UIViewController, didEnableYearlyHighNotification didEnable: Bool, completion: () -> Void) {}
+    func viewController(_ viewController: UIViewController, didEnableYearlyHighNotification didEnable: Bool, completion: CKCompletion) {}
     func viewControllerDidSelectAdjustableFees(_ viewController: UIViewController) {}
 
     var didSelectCloseWasCalled = false
     func viewControllerDidSelectClose(_ viewController: UIViewController) {
+      didSelectCloseWasCalled = true
+    }
+
+    func viewControllerDidSelectClose(_ viewController: UIViewController, completion: CKCompletion? ) {
       didSelectCloseWasCalled = true
     }
 

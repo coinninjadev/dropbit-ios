@@ -49,7 +49,9 @@ extension AppCoordinator: SerialQueueManagerDelegate {
 
   func predefineSyncDependencies(in context: NSManagedObjectContext, inBackground background: Bool) -> Promise<SyncDependencies> {
 
-    guard (launchStateManager.userAuthenticated && self.verificationSatisfied) || background else {
+    let localWorkerFactory = workerFactory()
+
+    guard (launchStateManager.userAuthenticated && self.verificationSatisfied) || background || launchStateManager.upgradeInProgress else {
       log.event("Sync routine prevented by pending pin entry or verification step")
       return Promise(error: SyncRoutineError.notReady)
     }
@@ -66,17 +68,17 @@ extension AppCoordinator: SerialQueueManagerDelegate {
     }
     wmgr.resetWallet(with: keychainWords)  // this is a safety precaution to ensure the current wallet instance contains current words
 
-    guard let txDataWorker = workerFactory.createTransactionDataWorker(),
-      let walletWorker = workerFactory.createWalletAddressDataWorker(delegate: self) else {
+    guard let txDataWorker = localWorkerFactory.createTransactionDataWorker(),
+      let walletWorker = localWorkerFactory.createWalletAddressDataWorker(delegate: self) else {
         return Promise(error: SyncRoutineError.missingWorkers)
     }
 
-    guard let dbWorker = self.workerFactory.createDatabaseMigrationWorker(in: context) else {
+    guard let dbWorker = localWorkerFactory.createDatabaseMigrationWorker(in: context) else {
       log.error("database migration worker does not exist in sync routine")
       return Promise(error: SyncRoutineError.missingDatabaseMigrationWorker)
     }
 
-    let keychainWorker = self.workerFactory.createKeychainMigrationWorker()
+    let keychainWorker = localWorkerFactory.createKeychainMigrationWorker()
 
     let syncHelpers = SyncDependencies(
       walletManager: wmgr,

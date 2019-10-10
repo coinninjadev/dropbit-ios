@@ -10,14 +10,17 @@ import UIKit
 class StartViewControllerTests: XCTestCase {
 
   var sut: StartViewController!
+  var mockCoordinator: MockCoordinator!
 
   override func setUp() {
     super.setUp()
-    self.sut = StartViewController.makeFromStoryboard()
+    self.mockCoordinator = MockCoordinator()
+    self.sut = StartViewController.newInstance(delegate: mockCoordinator)
     _ = self.sut.view
   }
 
   override func tearDown() {
+    self.mockCoordinator = nil
     self.sut = nil
     super.tearDown()
   }
@@ -52,11 +55,9 @@ class StartViewControllerTests: XCTestCase {
 
   func testRestoreWalletButtonInitialState() {
     let expectedText = "Restore Wallet"
-    let expectedColor = UIColor.darkBlueText
 
-    let buttonTitleText = self.sut.restoreWalletButton.attributedTitle(for: .normal)?.string ?? ""
+    let buttonTitleText = self.sut.restoreWalletButton.titleLabel?.text ?? ""
     XCTAssertTrue(buttonTitleText.contains(expectedText), "restoreWalletButton text should match")
-    XCTAssertEqual(self.sut.restoreWalletButton.titleLabel?.textColor, expectedColor, "restoreWalletButton color should match")
     XCTAssertTrue(self.sut.restoreWalletButton.isHidden, "restoreWalletButton should be hidden")
     XCTAssertEqual(self.sut.restoreWalletButton.alpha, 0, "restoreWalletButton alpha should be 0")
 
@@ -130,26 +131,18 @@ class StartViewControllerTests: XCTestCase {
 
   // MARK: actions produce results
   func testCreateWalletButtonActionTellsCoordinator() {
-    let mockCoordinator = MockCoordinator()
-    self.sut.generalCoordinationDelegate = mockCoordinator
-
     self.sut.newWalletButton.sendActions(for: .touchUpInside)
-
     XCTAssertTrue(mockCoordinator.createWalletWasCalled, "createWallet should be called")
   }
 
   func testRestoreWalletButtonActionTellsCoordinator() {
-    let mockCoordinator = MockCoordinator()
-    self.sut.generalCoordinationDelegate = mockCoordinator
-
     self.sut.restoreWalletButton.sendActions(for: .touchUpInside)
-
     XCTAssertTrue(mockCoordinator.restoreWalletWasCalled, "restoreWallet should be called")
   }
 
   class MockCoordinator: StartViewControllerDelegate {
     var appEnteredActiveStateWasCalled = false
-    func requireAuthenticationIfNeeded(whenAuthenticated: @escaping () -> Void) {
+    func requireAuthenticationIfNeeded(whenAuthenticated: @escaping CKCompletion) {
       appEnteredActiveStateWasCalled = true
     }
 

@@ -1,6 +1,6 @@
 //
 //  WalletManager.swift
-//  CoinKeeper
+//  DropBit
 //
 //  Created by BJ Miller on 3/5/18.
 //  Copyright © 2018 Coin Ninja, LLC. All rights reserved.
@@ -14,7 +14,7 @@ protocol WalletManagerType: AnyObject {
   static func createMnemonicWords() -> [String]
   static func validateBase58Check(for address: String) -> Bool
   static func validateBech32Encoding(for address: String) -> Bool
-  var coin: CNBBaseCoin { get set }
+  var coin: CNBBaseCoin { get }
   var wallet: CNBHDWallet { get }
   var hexEncodedPublicKey: String { get }
   func signatureSigning(data: Data) -> String
@@ -24,28 +24,29 @@ protocol WalletManagerType: AnyObject {
 
   func createAddressDataSource() -> AddressDataSourceType
 
-  /// Create copy of current CNBHDWallet object for multi-broadcast necessity (avoiding crash)
-  func createWalletCopy() -> CNBHDWallet
-
   /// Use this when displaying the balance
-  func balanceNetPending(in context: NSManagedObjectContext) -> Int
+  func balanceNetPending(in context: NSManagedObjectContext) -> (onChain: Int, lightning: Int)
 
   /// Spendable UTXOs
   /// number of confirmations affects isSpendable, returns a min of 0
-  func spendableBalance(in context: NSManagedObjectContext) -> Int
+  func spendableBalance(in context: NSManagedObjectContext) -> (onChain: Int, lightning: Int)
 
   func activeTemporarySentTxTotal(in context: NSManagedObjectContext) -> Int
 
-  func transactionData(
-    forPayment payment: NSDecimalNumber,
-    to address: String,
-    withFeeRate feeRate: Double
-    ) -> Promise<CNBTransactionData>
+  func transactionData(forPayment payment: NSDecimalNumber,
+                       to address: String,
+                       withFeeRate feeRate: Double,
+                       rbfOption: CNBTransactionReplaceabilityOption) -> Promise<CNBTransactionData>
 
-  /// Returns nil instead of an error in the case of insufficient funds
+  /// Returns nil instead of an error in the case of insufficient funds, uses default `rbfOption: .Allowed`
   func failableTransactionData(forPayment payment: NSDecimalNumber,
                                to address: String,
                                withFeeRate feeRate: Double) -> CNBTransactionData?
+
+  func failableTransactionData(forPayment payment: NSDecimalNumber,
+                               to address: String,
+                               withFeeRate feeRate: Double,
+                               rbfOption: CNBTransactionReplaceabilityOption) -> CNBTransactionData?
 
   /// Transaction data for payment to a recipient with a flat, predetermined fee.
   ///
@@ -71,14 +72,16 @@ protocol WalletManagerType: AnyObject {
   /// Returns nil instead of an error in the case of insufficient funds
   func failableTransactionDataSendingMax(to address: String, withFeeRate feeRate: Double) -> CNBTransactionData?
 
-  func encryptionCipherKeys(forUncompressedPublicKey pubkey: Data) -> CNBEncryptionCipherKeys
-  func decryptionCipherKeys(
-    forReceiveAddressPath path: CKMDerivativePath,
-    withPublicKey pubkey: Data,
-    in context: NSManagedObjectContext
-    ) -> CNBCipherKeys
+  /// Returns nil instead of an error in the case of insufficient funds. Takes all unspent outputs, ignoring dust protection and confirmation count.
+  func failableTransactionDataSendingAll(to address: String, withFeeRate feeRate: Double) -> CNBTransactionData?
+  func transactionDataSendingAll(to address: String, withFeeRate feeRate: Double) -> Promise<CNBTransactionData>
 
-  func encryptPayload<T>(_ payload: T, addressPubKey: String) -> Promise<String> where T: SharedPayloadCodable
+  func encryptionCipherKeys(forUncompressedPublicKey pubkey: Data, withEntropy: Bool) -> CNBEncryptionCipherKeys
+  func decryptionCipherKeys(forReceiveAddressPath path: CKMDerivativePath,
+                            withPublicKey pubkey: Data) -> CNBCipherKeys
+  func decryptionCipherKeysWithDefaultPrivateKey(forPublicKey pubKey: Data) -> CNBCipherKeys
+
+  func encryptPayload<T>(_ payload: T, addressPubKey: String, keyIsEphemeral: Bool) -> Promise<String> where T: SharedPayloadCodable
 }
 
 /**
@@ -90,20 +93,37 @@ protocol WalletManagerType: AnyObject {
  */
 class WalletManager: WalletManagerType {
 
-  func encryptionCipherKeys(forUncompressedPublicKey pubkey: Data) -> CNBEncryptionCipherKeys {
-    return wallet.encryptionCipherKeys(forPublicKey: pubkey, withEntropy: WalletManager.secureEntropy())
+  private(set) var wallet: CNBHDWallet
+  private let persistenceManager: PersistenceManagerType
+
+  let coin: CNBBaseCoin
+
+  init(words: [String], persistenceManager: PersistenceManagerType = PersistenceManager()) {
+    let relevantCoin = persistenceManager.usableCoin
+    self.wallet = CNBHDWallet(mnemonic: words, coin: relevantCoin)
+    self.coin = relevantCoin
+    self.persistenceManager = persistenceManager
   }
 
-  func decryptionCipherKeys(
-    forReceiveAddressPath path: CKMDerivativePath,
-    withPublicKey pubkey: Data,
-    in context: NSManagedObjectContext
-    ) -> CNBCipherKeys {
+  func encryptionCipherKeys(forUncompressedPublicKey pubkey: Data, withEntropy: Bool) -> CNBEncryptionCipherKeys {
+    if withEntropy {
+      return wallet.encryptionCipherKeys(forPublicKey: pubkey, withEntropy: WalletManager.secureEntropy())
+    } else {
+      return wallet.encryptionCipherKeys(forPublicKey: pubkey)
+    }
+  }
+
+  func decryptionCipherKeys(forReceiveAddressPath path: CKMDerivativePath,
+                            withPublicKey pubkey: Data) -> CNBCipherKeys {
     let cnbPath = path.asCNBDerivationPath()
     return wallet.decryptionCipherKeysForDerivationPath(ofPrivateKey: cnbPath, publicKey: pubkey)
   }
 
-  func encryptPayload<T>(_ payload: T, addressPubKey: String) -> Promise<String> where T: SharedPayloadCodable {
+  func decryptionCipherKeysWithDefaultPrivateKey(forPublicKey pubKey: Data) -> CNBCipherKeys {
+    return wallet.decryptionCipherKeysWithDefaultPrivateKey(forPublicKey: pubKey)
+  }
+
+  func encryptPayload<T>(_ payload: T, addressPubKey: String, keyIsEphemeral: Bool) -> Promise<String> where T: SharedPayloadCodable {
     guard let addressPubKeyData = Data(fromHexEncodedString: addressPubKey) else {
       return Promise(error: CKPersistenceError.missingValue(key: "addressPubKeyData"))
     }
@@ -112,7 +132,9 @@ class WalletManager: WalletManagerType {
       do {
         let encodedPayload = try payload.encoded()
         let cryptor = CKCryptor(walletManager: self)
-        let encryptedPayloadString = try cryptor.encryptAsBase64String(message: encodedPayload, withRecipientUncompressedPubkey: addressPubKeyData)
+        let encryptedPayloadString = try cryptor.encryptAsBase64String(message: encodedPayload,
+                                                                       withRecipientUncompressedPubkey: addressPubKeyData,
+                                                                       isEphemeral: keyIsEphemeral)
         seal.fulfill(encryptedPayloadString)
       } catch {
         seal.reject(error)
@@ -145,11 +167,8 @@ class WalletManager: WalletManagerType {
     return CNBSegwitAddress.isValidP2WPKHAddress(address) || CNBSegwitAddress.isValidP2WSHAddress(address)
   }
 
-  private(set) var wallet: CNBHDWallet
-  private let persistenceManager: PersistenceManagerType
-
   var minimumFeeRate: UInt {
-    return 5
+    return 1
   }
 
   func createAddressDataSource() -> AddressDataSourceType {
@@ -162,35 +181,25 @@ class WalletManager: WalletManagerType {
     return total
   }
 
-  func balanceNetPending(in context: NSManagedObjectContext) -> Int {
-    var netBalance = 0
-    context.performAndWait {
-      let atss = CKMAddressTransactionSummary.findAll(in: context)
-      let atsAmount = atss.reduce(0) { $0 + $1.netAmount }
-      let tempSentTxTotal = activeTemporarySentTxTotal(in: context)
-      netBalance = atsAmount - tempSentTxTotal
-    }
-    return netBalance
+  func balanceNetPending(in context: NSManagedObjectContext) -> (onChain: Int, lightning: Int) {
+    let wallet = CKMWallet.findOrCreate(in: context)
+    let atss = CKMAddressTransactionSummary.findAll(matching: self.coin, in: context)
+    let lightningAccount = persistenceManager.brokers.lightning.getAccount(forWallet: wallet, in: context)
+    let atsAmount = atss.reduce(0) { $0 + $1.netAmount }
+    let tempSentTxTotal = activeTemporarySentTxTotal(in: context)
+    let netBalance = atsAmount - tempSentTxTotal
+    let netLightningBalance = lightningAccount.balance
+    return (onChain: netBalance, lightning: netLightningBalance)
   }
 
-  func spendableBalance(in context: NSManagedObjectContext) -> Int {
+  func spendableBalance(in context: NSManagedObjectContext) -> (onChain: Int, lightning: Int) {
+    guard let wallet = CKMWallet.find(in: context) else { return (0, 0) }
     let minAmount = self.persistenceManager.brokers.preferences.dustProtectionMinimumAmount
+    let lightningAccount = self.persistenceManager.brokers.lightning.getAccount(forWallet: wallet, in: context)
     let spendableVouts = CKMVout.findAllSpendable(minAmount: minAmount, in: context)
     let spendableTotal = spendableVouts.reduce(0) { $0 + $1.amount }
-    return spendableTotal
-  }
 
-  init(words: [String], coin: CNBBaseCoin = BTCMainnetCoin(), persistenceManager: PersistenceManagerType = PersistenceManager()) {
-    self.wallet = CNBHDWallet(mnemonic: words, coin: coin)
-    self.coin = coin
-    self.persistenceManager = persistenceManager
-  }
-
-  /// Setting coin will update wallet object with new coin.
-  var coin: CNBBaseCoin {
-    didSet {
-      wallet.setCoin(coin)
-    }
+    return (onChain: spendableTotal, lightning: lightningAccount.balance)
   }
 
   var hexEncodedPublicKey: String {
@@ -199,10 +208,6 @@ class WalletManager: WalletManagerType {
 
   func resetWallet(with words: [String]) {
     self.wallet = CNBHDWallet(mnemonic: words, coin: coin)
-  }
-
-  func createWalletCopy() -> CNBHDWallet {
-    return CNBHDWallet(mnemonic: mnemonicWords(), coin: coin)
   }
 
   func mnemonicWords() -> [String] {
@@ -221,11 +226,15 @@ class WalletManager: WalletManagerType {
   func transactionData(
     forPayment payment: NSDecimalNumber,
     to address: String,
-    withFeeRate feeRate: Double  // in Satoshis
+    withFeeRate feeRate: Double,  // in Satoshis
+    rbfOption: CNBTransactionReplaceabilityOption
     ) -> Promise<CNBTransactionData> {
 
     return Promise { seal in
-      let txData = failableTransactionData(forPayment: payment, to: address, withFeeRate: feeRate)
+      let txData = failableTransactionData(forPayment: payment,
+                                           to: address,
+                                           withFeeRate: feeRate,
+                                           rbfOption: rbfOption)
       if let data = txData {
         seal.fulfill(data)
       } else {
@@ -234,10 +243,15 @@ class WalletManager: WalletManagerType {
     }
   }
 
+  func failableTransactionData(forPayment payment: NSDecimalNumber, to address: String, withFeeRate feeRate: Double) -> CNBTransactionData? {
+    return failableTransactionData(forPayment: payment, to: address, withFeeRate: feeRate, rbfOption: .Allowed)
+  }
+
   func failableTransactionData(
     forPayment payment: NSDecimalNumber,
     to address: String,
-    withFeeRate feeRate: Double) -> CNBTransactionData? {
+    withFeeRate feeRate: Double,
+    rbfOption: CNBTransactionReplaceabilityOption) -> CNBTransactionData? {
     let paymentAmount = UInt(payment.asFractionalUnits(of: .BTC))
     let usableFeeRate = self.usableFeeRate(from: feeRate)
     let blockHeight = UInt(persistenceManager.brokers.checkIn.cachedBlockHeight)
@@ -254,7 +268,8 @@ class WalletManager: WalletManagerType {
         paymentAmount: paymentAmount,
         feeRate: usableFeeRate,
         change: self.newChangePath(in: bgContext),
-        blockHeight: blockHeight
+        blockHeight: blockHeight,
+        rbfReplaceabilityOption: rbfOption
       )
     }
     return result
@@ -330,6 +345,40 @@ class WalletManager: WalletManagerType {
     return result
   }
 
+  func transactionDataSendingAll(to address: String, withFeeRate feeRate: Double) -> Promise<CNBTransactionData> {
+    return Promise { seal in
+      let context = persistenceManager.viewContext
+      let unspent = CKMVout.unspentBalance(in: context)
+      guard unspent > 0 else {
+        seal.reject(TransactionDataError.noSpendableFunds)
+        return
+      }
+
+      let maybeTxData = self.failableTransactionDataSendingAll(to: address, withFeeRate: feeRate)
+      if let data = maybeTxData {
+        seal.fulfill(data)
+      } else {
+        seal.reject(TransactionDataError.insufficientFunds)
+      }
+    }
+  }
+
+  func failableTransactionDataSendingAll(to address: String, withFeeRate feeRate: Double) -> CNBTransactionData? {
+    let usableFeeRate = self.usableFeeRate(from: feeRate)
+    let blockHeight = UInt(persistenceManager.brokers.checkIn.cachedBlockHeight)
+    let context = persistenceManager.viewContext
+
+    var result: CNBTransactionData?
+    context.performThrowingAndWait {
+      let vouts = try? CKMVout.findAllUnspent(in: context)
+      let utxos = vouts.map { self.availableTransactionOutputs(fromUsableUTXOs: $0) }
+      result = utxos.flatMap {
+        CNBTransactionData(allUsableOutputs: $0, coin: self.coin, sendingMaxToAddress: address, feeRate: usableFeeRate, blockHeight: blockHeight)
+      }
+    }
+    return result
+  }
+
   /// - parameter limitByPending: true to remove the smallest vouts, to not exceed spendableBalanceNetPending()
   private func usableVouts(in context: NSManagedObjectContext) -> [CKMVout] {
     let dustProtectionAmount = self.persistenceManager.brokers.preferences.dustProtectionMinimumAmount
@@ -345,7 +394,7 @@ class WalletManager: WalletManagerType {
       let index = UInt(vout.index)
       let amount = UInt(vout.amount)
       let cnbDerivativePath = CNBDerivationPath(
-        purpose: CoinDerivation(rawValue: UInt(derivationPath.purpose)) ?? .BIP49,
+        purpose: CoinDerivation(rawValue: UInt(derivationPath.purpose)) ?? .BIP84,
         coinType: CoinType(rawValue: UInt(derivationPath.coin)) ?? .MainNet,
         account: UInt(derivationPath.account),
         change: UInt(derivationPath.change),
@@ -363,7 +412,7 @@ class WalletManager: WalletManagerType {
   private func newChangePath(in context: NSManagedObjectContext) -> CNBDerivationPath {
     let changeAddress = self.createAddressDataSource().nextChangeAddress(in: context)
     return CNBDerivationPath(
-      purpose: CoinDerivation(rawValue: changeAddress.derivationPath.purpose.rawValue) ?? .BIP49,
+      purpose: CoinDerivation(rawValue: changeAddress.derivationPath.purpose.rawValue) ?? .BIP84,
       coinType: CoinType(rawValue: changeAddress.derivationPath.coinType.rawValue) ?? .MainNet,
       account: changeAddress.derivationPath.account,
       change: changeAddress.derivationPath.change,

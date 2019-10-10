@@ -11,7 +11,7 @@ import Moya
 public enum WalletAddressRequestsTarget: CoinNinjaTargetType {
   typealias ResponseType = WalletAddressRequestResponse
 
-  case create(RequestAddressBody)
+  case create(WalletAddressRequestBody)
   case get(WalletAddressRequestSide)
 
   /// updateWalletAddressRequest params - id: String, request: WalletAddressRequest

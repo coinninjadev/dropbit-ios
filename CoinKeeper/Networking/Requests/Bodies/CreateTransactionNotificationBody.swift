@@ -9,8 +9,13 @@
 import Foundation
 
 public struct CreateTransactionNotificationBody: Encodable {
+
+  /// For lightning, this should be the ledger entry `id`
   let txid: String
+
+  /// For lightning, this should be the encoded invoice
   let address: String
+
   let identityHash: String
   let encryptedPayload: String
   let encryptedFormat: String

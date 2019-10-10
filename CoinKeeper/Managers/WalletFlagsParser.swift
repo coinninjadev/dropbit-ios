@@ -25,6 +25,7 @@ class WalletFlagsParser {
   static let purposePattern = 0xF0    // 0b_0000_0000_1111_0000
   static let purposePatternShift = 4
   static let deactivatedBit = 0x0100  // 0b_0000_0001_0000_0000
+  static let deactivatedBitShift = 8
 
   private(set) var flags: Int
 
@@ -55,6 +56,12 @@ class WalletFlagsParser {
   @discardableResult
   func setPurpose(_ purpose: WalletFlagsPurpose) -> WalletFlagsParser {
     flags = (flags & ~WalletFlagsParser.purposePattern) | (purpose.rawValue << WalletFlagsParser.purposePatternShift)
+    return self
+  }
+
+  @discardableResult
+  func deactivate() -> WalletFlagsParser {
+    flags = flags | (1 << WalletFlagsParser.deactivatedBitShift)
     return self
   }
 }

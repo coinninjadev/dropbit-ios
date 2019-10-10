@@ -18,8 +18,11 @@ class SendPaymentViewModelTests: XCTestCase {
     super.setUp()
     let safeRates: ExchangeRates = [.BTC: 1, .USD: 7000]
     let currencyPair = CurrencyPair(primary: .BTC, fiat: .USD)
-    let swappableVM = CurrencySwappableEditAmountViewModel(exchangeRates: safeRates, primaryAmount: .zero, currencyPair: currencyPair)
-    self.sut = SendPaymentViewModel(editAmountViewModel: swappableVM)
+    let swappableVM = CurrencySwappableEditAmountViewModel(exchangeRates: safeRates,
+                                                           primaryAmount: .zero,
+                                                           walletTransactionType: .onChain,
+                                                           currencyPair: currencyPair)
+    self.sut = SendPaymentViewModel(editAmountViewModel: swappableVM, walletTransactionType: .onChain)
   }
 
   override func tearDown() {
@@ -29,7 +32,7 @@ class SendPaymentViewModelTests: XCTestCase {
 
   func testSettingRecipientUpdatesAddress() {
     let address = TestHelpers.mockValidBitcoinAddress()
-    self.sut.paymentRecipient = .btcAddress(address)
+    self.sut.paymentRecipient = .paymentTarget(address)
     XCTAssertEqual(address, self.sut.address)
 
     let number = GlobalPhoneNumber(countryCode: 1, nationalNumber: "9375555555")
@@ -45,7 +48,7 @@ class SendPaymentViewModelTests: XCTestCase {
     XCTAssertTrue(sut.shouldShowSharedMemoBox, "shouldShowSharedMemoBox should be true")
     sut.paymentRecipient = .phoneNumber(contact)
     XCTAssertTrue(sut.shouldShowSharedMemoBox, "shouldShowSharedMemoBox should be true")
-    sut.paymentRecipient = .btcAddress("fake address")
+    sut.paymentRecipient = .paymentTarget("fake address")
     XCTAssertFalse(sut.shouldShowSharedMemoBox, "shouldShowSharedMemoBox should be false")
   }
 
@@ -57,7 +60,7 @@ class SendPaymentViewModelTests: XCTestCase {
     XCTAssertFalse(sut.shouldShowSharedMemoBox, "shouldShowSharedMemoBox should be false")
     sut.paymentRecipient = .phoneNumber(contact)
     XCTAssertFalse(sut.shouldShowSharedMemoBox, "shouldShowSharedMemoBox should be false")
-    sut.paymentRecipient = .btcAddress("fake address")
+    sut.paymentRecipient = .paymentTarget("fake address")
     XCTAssertFalse(sut.shouldShowSharedMemoBox, "shouldShowSharedMemoBox should be false")
   }
 

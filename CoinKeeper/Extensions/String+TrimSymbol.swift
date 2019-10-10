@@ -1,6 +1,6 @@
 //
 //  String+TrimSymbol.swift
-//  CoinKeeper
+//  DropBit
 //
 //  Created by Mitchell on 4/26/18.
 //  Copyright © 2018 Coin Ninja, LLC. All rights reserved.
@@ -11,8 +11,16 @@ import Foundation
 extension String {
 
   func removing(groupingSeparator: String, currencySymbol: String) -> String {
+    return removing(groupingSeparator: groupingSeparator, currencySymbols: [currencySymbol])
+  }
+
+  func removing(groupingSeparator: String, currencySymbols: [String]) -> String {
     let withoutSeparator = self.components(separatedBy: groupingSeparator).joined(separator: "")
-    let withoutSymbol = withoutSeparator.replacingOccurrences(of: currencySymbol, with: "")
+    var withoutSymbol = withoutSeparator
+    for symbol in currencySymbols {
+     withoutSymbol = withoutSymbol.replacingOccurrences(of: symbol, with: "")
+    }
+
     return withoutSymbol
   }
 

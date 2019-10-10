@@ -9,6 +9,7 @@
 import XCTest
 @testable import DropBit
 import CNBitcoinKit
+import PromiseKit
 
 class ConfirmPaymentViewControllerTests: XCTestCase {
 
@@ -17,21 +18,21 @@ class ConfirmPaymentViewControllerTests: XCTestCase {
 
   override func setUp() {
     mockCoordinator = MockCoordinator()
-    sut = ConfirmPaymentViewController.makeFromStoryboard()
-    sut.generalCoordinationDelegate = mockCoordinator
+    let viewModel = MockConfirmLightningPaymentViewModel()
+    sut = ConfirmPaymentViewController.newInstance(type: .payment, viewModel: viewModel,
+                                                   feeModel: .lightning, delegate: mockCoordinator)
     _ = sut.view
   }
 
   override func tearDown() {
-    sut = nil
     mockCoordinator = nil
+    sut = nil
   }
 
   // MARK: outlets
   func testOutletsAreConnected() {
     XCTAssertNotNil(sut.closeButton, "closeButton should be connected")
-    XCTAssertNotNil(sut.confirmButton, "confirmButton should be connected")
-    XCTAssertNotNil(sut.tapAndHoldLabel, "tapAndHoldLabel should be connected")
+    XCTAssertNotNil(sut.confirmView, "confirmView should be connected")
     XCTAssertNotNil(sut.networkFeeLabel, "networkFeeLabel should be connected")
     XCTAssertNotNil(sut.networkFeeLabel, "networkFeeLabel should be connected")
     XCTAssertNotNil(sut.contactLabel, "contactLabel should be connected")
@@ -51,38 +52,61 @@ class ConfirmPaymentViewControllerTests: XCTestCase {
     XCTAssertTrue(closeActions.contains(closeSelector), "closeButton should contain action")
   }
 
-  func testConfirmButtonContainsActions() {
-    let touchUpInsideActions = sut.confirmButton.actions(forTarget: sut, forControlEvent: .touchUpInside) ?? []
-    let touchUpOutsideActions = sut.confirmButton.actions(forTarget: sut, forControlEvent: .touchUpOutside) ?? []
-    let touchDownActions = sut.confirmButton.actions(forTarget: sut, forControlEvent: .touchDown) ?? []
-
-    let heldSelector = #selector(ConfirmPaymentViewController.confirmButtonWasHeld).description
-    let releasedSelector = #selector(ConfirmPaymentViewController.confirmButtonWasReleased).description
-
-    XCTAssertTrue(touchUpInsideActions.contains(releasedSelector), "confirmButton touch up inside should contain released selector")
-    XCTAssertTrue(touchUpOutsideActions.contains(releasedSelector), "confirmButton touch up outside should contain released selector")
-    XCTAssertTrue(touchDownActions.contains(heldSelector), "confirmButton held should contain released selector")
-  }
-
   class MockCoordinator: ConfirmPaymentViewControllerDelegate {
-    func viewControllerDidConfirmPayment(
+    func payAndPersistLightningRequest(withInputs inputs: LightningPaymentInputs,
+                                       invitation: CKMInvitation?,
+                                       to receiver: OutgoingDropBitReceiver?) -> Promise<LNTransactionResponse> {
+      return Promise { _ in }
+    }
+
+    func viewControllerDidSelectCloseWithToggle(_ viewController: UIViewController) { }
+    var alertManager: AlertManagerType = MockAlertManager(notificationManager:
+      NotificationManager(permissionManager: PermissionManager(),
+                          networkInteractor: NetworkManager(persistenceManager: PersistenceManager(),
+                                                            analyticsManager: AnalyticsManager())))
+    var analyticsManager: AnalyticsManagerType = MockAnalyticsManager()
+    var persistenceManager: PersistenceManagerType = MockPersistenceManager()
+
+    var navigationController: UINavigationController {
+      return UINavigationController()
+    }
+
+    var didHandleSuccessfully = false
+    func handleSuccessfulLightningPaymentVerification(with inputs: LightningPaymentInputs) {
+      didHandleSuccessfully = true
+    }
+
+    var didConfirmLightning = false
+    func viewControllerDidConfirmLightningPayment(
+      _ viewController: UIViewController,
+      inputs: LightningPaymentInputs,
+      receiver: OutgoingDropBitReceiver?) {
+      didConfirmLightning = true
+    }
+
+    func confirmPaymentViewControllerDidLoad(_ viewController: UIViewController) { }
+
+    func viewControllerDidConfirmOnChainPayment(
       _ viewController: UIKit.UIViewController,
       transactionData: CNBitcoinKit.CNBTransactionData,
       rates: ExchangeRates,
-      outgoingTransactionData: OutgoingTransactionData
-      ) {
+      outgoingTransactionData: OutgoingTransactionData) { }
 
-    }
+    func viewControllerDidConfirmInvite(
+      _ viewController: UIViewController,
+      outgoingInvitationDTO: OutgoingInvitationDTO,
+      walletTxType: WalletTransactionType) { }
 
     func viewControllerRequestedShowFeeTooExpensiveAlert(_ viewController: UIViewController) { }
-
-    func viewControllerDidConfirmInvite(_ viewController: UIViewController, outgoingInvitationDTO: OutgoingInvitationDTO) { }
 
     var closeButtonTapped = false
     func viewControllerDidSelectClose(_ viewController: UIViewController) {
       closeButtonTapped = true
     }
 
-    func confirmPaymentViewControllerDidLoad(_ viewController: UIViewController) { }
+    func viewControllerDidSelectClose(_ viewController: UIViewController, completion: CKCompletion? ) {
+      closeButtonTapped = true
+    }
+
   }
 }

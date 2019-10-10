@@ -17,14 +17,11 @@ class TutorialUITests: UITestCase {
   }
 
   func testFirstShowsTutorialViewController() {
-    let recoveryWords = UITestHelpers.recoverOnlyWords()
 
     addSystemAlertMonitor()
 
-    StartPage().tapRestore()
+    StartPage().tapNewWallet()
     PinCreationPage().enterSimplePin(digit: 1, times: 6)
-    RestoreWalletPage().enterWords(recoveryWords)
-    SuccessFailPage().checkWalletRecoverySucceeded().tapGoToWallet()
     DeviceVerificationPage().tapSkip()
     PushInfoPage()?.dismiss()
     WalletOverviewPage().tapTutorialButton()

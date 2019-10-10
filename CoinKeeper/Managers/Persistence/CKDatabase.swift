@@ -18,17 +18,6 @@ class CKDatabase: PersistenceDatabaseType {
 
   var sharedPayloadManager: SharedPayloadManagerType = SharedPayloadManager()
 
-  lazy var mainQueueContext: NSManagedObjectContext = {
-    let context = self.container.viewContext
-    context.automaticallyMergesChangesFromParent = true
-    context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
-    context.name = "MainQueueContext"
-    if stackConfig.storeType.shouldSetQueryGeneration {
-      try? context.setQueryGenerationFrom(.current)
-    }
-    return context
-  }()
-
   convenience init() {
     let stackConfig = CoreDataStackConfig(stackType: .main, storeType: .disk)
     self.init(stackConfig: stackConfig)
@@ -39,39 +28,63 @@ class CKDatabase: PersistenceDatabaseType {
     self.container = stackConfig.stack.persistentContainer
   }
 
+  private lazy var rootContext: NSManagedObjectContext = {
+    let context = self.container.newBackgroundContext()
+    context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
+    context.name = "RootContext"
+    return context
+  }()
+
+  lazy var viewContext: NSManagedObjectContext = {
+    let context = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
+    context.parent = rootContext
+    context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
+    context.name = "ViewContext"
+    return context
+  }()
+
+  /// Be sure to call saveRecursively(), parent is viewContext.
   func createBackgroundContext() -> NSManagedObjectContext {
-    let bgContext = container.newBackgroundContext()
-    bgContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
-    bgContext.automaticallyMergesChangesFromParent = true
-    bgContext.name = "BackgroundContext_\(Date().timeIntervalSince1970)"
-    return bgContext
+    let context = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
+    context.parent = viewContext
+    context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
+    context.name = "BackgroundContext_\(Date().timeIntervalSince1970)"
+    return context
   }
 
   func persistentStore(for context: NSManagedObjectContext) -> NSPersistentStore? {
     return context.persistentStoreCoordinator?.persistentStores.first
   }
 
-  private func executeBatchDeleteFor(entity name: String, in context: NSManagedObjectContext) {
-    let fetch = NSFetchRequest<NSFetchRequestResult>(entityName: name)
-    let request = NSBatchDeleteRequest(fetchRequest: fetch)
-    request.resultType = .resultTypeObjectIDs
+  /// Returns array of managed object IDs to merge into context after all batch deletions have been processed
+  private func executeBatchDelete(forEntity entityName: String, in context: NSManagedObjectContext) throws {
+    let fetch = NSFetchRequest<NSManagedObject>(entityName: entityName)
+    log.info("Currently batch deleting \(entityName)")
+    let results = try fetch.execute()
 
-    context.performAndWait {
-      do {
-        if let result = try context.execute(request) as? NSBatchDeleteResult, let objectIDs = result.result as? [NSManagedObjectID] {
-          NSManagedObjectContext.mergeChanges(fromRemoteContextSave: [NSDeletedObjectsKey: objectIDs], into: [context])
-        }
-      } catch {
-        fatalError("Failed to execute request: \(error)")
-      }
+    context.performThrowingAndWait {
+      for result in results { context.delete(result) }
+      log.info("Successfully batch deleted \(entityName)")
     }
   }
 
-  func deleteAll(in context: NSManagedObjectContext) {
-    context.performAndWait {
-      self.stackConfig.model?.entities
-        .compactMap { $0.name }
-        .forEach { executeBatchDeleteFor(entity: $0, in: context) }
+  func deleteAll(in context: NSManagedObjectContext) throws {
+    try context.performThrowingAndWait {
+      let entityNames = self.stackConfig.model?.entities.compactMap { $0.name } ?? []
+
+      var errors: [Error] = [] //gather all failures before throwing
+      for entityName in entityNames {
+        do {
+          try executeBatchDelete(forEntity: entityName, in: context)
+        } catch {
+          errors.append(error)
+        }
+      }
+
+      if errors.isNotEmpty {
+        let nsErrors = errors.map { $0 as NSError }
+        throw CKPersistenceError.failedToBatchDeleteWallet(nsErrors)
+      }
     }
   }
 
@@ -91,7 +104,7 @@ class CKDatabase: PersistenceDatabaseType {
       user.flatMap { context.delete($0) }
 
       do {
-        try context.save()
+        try context.saveRecursively()
       } catch {
         log.contextSaveError(error)
       }
@@ -107,12 +120,7 @@ class CKDatabase: PersistenceDatabaseType {
   }
 
   func walletId(in context: NSManagedObjectContext) -> String? {
-    var id: String?
-
-    context.performAndWait {
-      id = CKMWallet.find(in: context)?.id
-    }
-
+    let id = CKMWallet.find(in: context)?.id
     return id
   }
 
@@ -173,11 +181,11 @@ class CKDatabase: PersistenceDatabaseType {
     in context: NSManagedObjectContext) -> Promise<Void> {
     return Promise { seal in
       let addressString = metaAddress.address
-      let index = metaAddress.derivationPath.index
+      let path = DerivativePathResponse(derivativePath: metaAddress.derivationPath)
 
       context.performAndWait {
         let newAddress = CKMServerAddress(address: addressString, createdAt: createdAt, insertInto: context)
-        newAddress.derivativePath = CKMDerivativePath.findOrCreate(withIndex: Int(index), in: context)
+        newAddress.derivativePath = CKMDerivativePath.findOrCreate(with: path, in: context)
       }
 
       seal.fulfill(()) //no need to return the created object(s), fulfill with Void
@@ -251,7 +259,9 @@ class CKDatabase: PersistenceDatabaseType {
 
     // Identify relevantTx to link vouts to its tempTx
     let relevantTransaction = updateOrCreateTxForTempTx()
-    relevantTransaction.configureNewSenderSharedPayload(with: outgoingTxDTO.sharedPayloadDTO, in: context)
+    if let sharedPayload = outgoingTxDTO.sharedPayloadDTO {
+      relevantTransaction.configureNewSenderSharedPayload(with: sharedPayload, in: context)
+    }
 
     // Currently, this function is only called after broadcastTx()
     relevantTransaction.broadcastedAt = Date()
@@ -363,7 +373,7 @@ class CKDatabase: PersistenceDatabaseType {
 
     if context.hasChanges {
       do {
-        try context.save()
+        try context.saveRecursively()
       } catch {
         log.contextSaveError(error)
       }
