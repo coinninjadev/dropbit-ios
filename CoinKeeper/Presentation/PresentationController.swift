@@ -9,8 +9,9 @@
 import UIKit
 
 class PresentationController: UIPresentationController {
-  private let shortTopDistance: CGFloat = 66.0
-  private let tallTopDistance: CGFloat = 102.0
+  private let shortTopDistance: CGFloat = 32.0
+  private let mediumTopDistance: CGFloat = 44.0
+  private let tallTopDistance: CGFloat = 66.0
   private let dimmingView: UIView = {
     let dimmingView = UIView()
     dimmingView.backgroundColor = UIColor(white: 0, alpha: 0.5)
@@ -29,7 +30,7 @@ class PresentationController: UIPresentationController {
     guard let transitionCoordinator = presentingViewController.transitionCoordinator else { return }
 
     transitionCoordinator.animateAlongsideTransition(in: presentingViewController.view, animation: { _ in
-      self.presentingViewController.view.transform = CGAffineTransform(scaleX: 0.9, y: 0.9)
+      self.presentingViewController.view.transform = CGAffineTransform(scaleX: 0.95, y: 0.95)
       self.presentingViewController.view.applyCornerRadius(20)
       self.presentingViewController.view.layer.maskedCorners = .top
       if !transitionCoordinator.isInteractive {
@@ -78,7 +79,12 @@ class PresentationController: UIPresentationController {
   override var frameOfPresentedViewInContainerView: CGRect {
     guard let containerView = containerView else { return .zero }
     var frame = containerView.bounds
-    let distanceFromTop: CGFloat = UIScreen.main.relativeSize == .short ? shortTopDistance : tallTopDistance
+    var distanceFromTop: CGFloat = 0
+    switch UIScreen.main.relativeSize {
+    case .short: distanceFromTop = shortTopDistance
+    case .medium: distanceFromTop = mediumTopDistance
+    case .tall: distanceFromTop = tallTopDistance
+    }
     frame.size.height -= distanceFromTop
     frame.origin.y += distanceFromTop
     return frame

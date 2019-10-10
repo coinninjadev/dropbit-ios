@@ -26,6 +26,7 @@ class MockTransactionDetailValidCellViewModel: MockTransactionSummaryCellViewMod
        onChainConfirmations: Int? = nil,
        isSentToSelf: Bool = false,
        isLightningTransfer: Bool = false,
+       isLightningUpgrade: Bool = false,
        receiverAddress: String? = nil,
        addressProvidedToSender: String? = nil,
        lightningInvoice: String? = nil,
@@ -48,8 +49,8 @@ class MockTransactionDetailValidCellViewModel: MockTransactionSummaryCellViewMod
     self.exchangeRateWhenReceived = MockDetailCellVM.testRates[.USD].flatMap { $0 - 50 }
 
     super.init(walletTxType: walletTxType, direction: direction, status: status, isSentToSelf: isSentToSelf,
-               isLightningTransfer: isLightningTransfer, receiverAddress: receiverAddress,
-               lightningInvoice: lightningInvoice, selectedCurrency: selectedCurrency,
+               receiverAddress: receiverAddress, lightningInvoice: lightningInvoice,
+               isLightningTransfer: isLightningTransfer, isLightningUpgrade: isLightningUpgrade, selectedCurrency: selectedCurrency,
                amountFactory: amtFactory, counterpartyConfig: counterpartyConfig, memo: memo)
   }
 

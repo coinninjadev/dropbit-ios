@@ -504,9 +504,15 @@ class TransactionHistoryDetailValidCellTests: XCTestCase {
   }
 
   func testAddMemoButton_isHiddenIfIncomingNotCompleted() {
-    let viewModel = MockDetailCellVM(walletTxType: .onChain, direction: .in, status: .pending, memo: nil)
+    let viewModel = MockDetailCellVM(walletTxType: .onChain, direction: .in, status: .pending, invitationStatus: .addressSent, memo: nil)
     sut.configure(with: viewModel, delegate: mockDelegate)
     XCTAssertTrue(sut.addMemoButton.isHidden)
+  }
+
+  func testAddMemoButton_isShownIfIncomingUncomfirmedWithoutInvitation() {
+    let viewModel = MockDetailCellVM(walletTxType: .onChain, direction: .in, status: .pending, memo: nil)
+    sut.configure(with: viewModel, delegate: mockDelegate)
+    XCTAssertFalse(sut.addMemoButton.isHidden)
   }
 
   func testAddMemoButton_isShownIfOutgoingNotCompleted() {

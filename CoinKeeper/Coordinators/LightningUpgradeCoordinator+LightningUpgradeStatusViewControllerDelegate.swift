@@ -47,11 +47,6 @@ extension LightningUpgradeCoordinator: LightningUpgradeStatusViewControllerDeleg
       .asVoid()
   }
 
-  // TODO: is this needed?
-  func viewControllerStartUpgradingToSegwit(_ viewController: LightningUpgradeStatusViewController) -> Promise<Void> {
-    return Promise.value(())
-  }
-
   func viewController(_ viewController: LightningUpgradeStatusViewController, broadcast metadata: CNBTransactionMetadata) -> Promise<String> {
     return parent.networkManager.broadcastTx(metadata: metadata)
       .get { _ in self.parent.analyticsManager.track(property: MixpanelProperty(key: .lightningUpgradedFunds, value: true)) }

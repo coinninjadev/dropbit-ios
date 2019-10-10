@@ -35,7 +35,15 @@ protocol TransactionDetailCellDisplayable {
 
 extension TransactionDetailCellDisplayable {
 
-  var shouldHideAddressView: Bool { return isLightningTransfer }
+  var shouldHideAddressView: Bool {
+    switch addressViewConfig.walletTxType {
+    case .onChain:
+      let missingReceiverAddress = addressViewConfig.receiverAddress == nil
+      let missingSentAddress = addressViewConfig.addressProvidedToSender == nil
+      return (missingReceiverAddress && missingSentAddress) || isLightningTransfer
+    case .lightning: return true
+    }
+  }
   var shouldHideCounterpartyLabel: Bool { return counterpartyText == nil }
   var shouldHideAddMemoButton: Bool { return !canAddMemo }
   var shouldHideMessageLabel: Bool { return messageText == nil }
@@ -299,8 +307,12 @@ extension TransactionDetailCellViewModelType {
 
   var canAddMemo: Bool {
     if isLightningTransfer { return false }
-    if isIncoming && status != .completed { return false }
-    return memoConfig == nil
+    if let invitationStatus = invitationStatus,
+    isIncoming, invitationStatus != .completed {
+      return false
+    } else {
+      return memoConfig == nil && status.isValid
+    }
   }
 
   /**
