@@ -1019,6 +1019,27 @@
 		B57AF8042268C7E500E5B0A6 /* AppCoordinator+ViewControllerDontShowable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B57AF8032268C7E500E5B0A6 /* AppCoordinator+ViewControllerDontShowable.swift */; };
 		B57B78DD20B4878F007B71CB /* CKDateFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B57B78DC20B4878F007B71CB /* CKDateFormatter.swift */; };
 		B57C2436207415F400F9519A /* CurrencyCodeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B57C2435207415F400F9519A /* CurrencyCodeTests.swift */; };
+		B57E6FD6234F78C00069991A /* UITestPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B58AFF302194DAF2001BE563 /* UITestPage.swift */; };
+		B57E6FD7234F78C50069991A /* MemoEntryPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B1BE85F21B57D0A00CCFE29 /* MemoEntryPage.swift */; };
+		B57E6FD8234F78C90069991A /* DeviceVerificationPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51F1ED8219A286900C54B73 /* DeviceVerificationPage.swift */; };
+		B57E6FD9234F78D20069991A /* PinCreationPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51F1ED02199F7CB00C54B73 /* PinCreationPage.swift */; };
+		B57E6FDA234F78D20069991A /* PushInfoPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51F1ED6219A17AA00C54B73 /* PushInfoPage.swift */; };
+		B57E6FDB234F78D20069991A /* RequestPayPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51F1EDC219A29A700C54B73 /* RequestPayPage.swift */; };
+		B57E6FDC234F78D20069991A /* RestoreWalletPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B58AFF322194DC24001BE563 /* RestoreWalletPage.swift */; };
+		B57E6FDD234F78D20069991A /* StartPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51F1ECE2199F62100C54B73 /* StartPage.swift */; };
+		B57E6FDE234F78D20069991A /* SuccessFailPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B58AFF352194E366001BE563 /* SuccessFailPage.swift */; };
+		B57E6FDF234F78D20069991A /* RecoveryWordsIntroPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B3779F3219C9F4800F79683 /* RecoveryWordsIntroPage.swift */; };
+		B57E6FE0234F78D20069991A /* SwiftMessagesBannerPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B3779F5219CA79100F79683 /* SwiftMessagesBannerPage.swift */; };
+		B57E6FE1234F78D20069991A /* PinEntryPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B3779F7219DB6C800F79683 /* PinEntryPage.swift */; };
+		B57E6FE2234F78D20069991A /* BackupRecoveryWordsCellPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B3779FB219E20AD00F79683 /* BackupRecoveryWordsCellPage.swift */; };
+		B57E6FE3234F78D20069991A /* VerifyRecoveryWordsCellPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B3779FD219EE7D900F79683 /* VerifyRecoveryWordsCellPage.swift */; };
+		B57E6FE4234F78D20069991A /* SendPaymentPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B1BE86321B5819500CCFE29 /* SendPaymentPage.swift */; };
+		B57E6FE6234F78D20069991A /* WalletOverviewPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = A27DFDF122DCDCD200C2824C /* WalletOverviewPage.swift */; };
+		B57E6FE7234F78D20069991A /* LightningUpgradeStartPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BE1C52C232D2BC100583A83 /* LightningUpgradeStartPage.swift */; };
+		B57E6FE8234F78D20069991A /* DropBitMePage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B34B97F232DB06A002D8A92 /* DropBitMePage.swift */; };
+		B57E6FE9234F79C10069991A /* AccessibleElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = B58AFF382194E828001BE563 /* AccessibleElement.swift */; };
+		B57E6FEA234F79CA0069991A /* XCUIApplication+WaitAndAssert.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50BB1AD2175126B0038B5DD /* XCUIApplication+WaitAndAssert.swift */; };
+		B57E6FEB234F7B1E0069991A /* Int+Times.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B825633F1FE7A9EA9E7A2AD /* Int+Times.swift */; };
 		B57F06832243CF0200C147D2 /* TimeInterval+Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = B57F06822243CF0200C147D2 /* TimeInterval+Constants.swift */; };
 		B5823FD8207E83A600B12A35 /* TransactionHistorySummaryCellTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5823FD7207E83A600B12A35 /* TransactionHistorySummaryCellTests.swift */; };
 		B582409420920E3F005D2F90 /* CompactActionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B582409320920E3F005D2F90 /* CompactActionButton.swift */; };
@@ -5984,12 +6005,33 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B57E6FE9234F79C10069991A /* AccessibleElement.swift in Sources */,
+				B57E6FE3234F78D20069991A /* VerifyRecoveryWordsCellPage.swift in Sources */,
+				B57E6FE7234F78D20069991A /* LightningUpgradeStartPage.swift in Sources */,
 				B56B680F234E29500073BA0D /* XCUIApplication+UITestArgument.swift in Sources */,
+				B57E6FD6234F78C00069991A /* UITestPage.swift in Sources */,
 				B56B6810234E3CF80073BA0D /* UITestArgument.swift in Sources */,
+				B57E6FDB234F78D20069991A /* RequestPayPage.swift in Sources */,
+				B57E6FD8234F78C90069991A /* DeviceVerificationPage.swift in Sources */,
+				B57E6FE1234F78D20069991A /* PinEntryPage.swift in Sources */,
+				B57E6FD7234F78C50069991A /* MemoEntryPage.swift in Sources */,
 				B56B6811234E3D190073BA0D /* Typealiases.swift in Sources */,
+				B57E6FEA234F79CA0069991A /* XCUIApplication+WaitAndAssert.swift in Sources */,
 				B56B6804234E25990073BA0D /* DropBitSnapshot.swift in Sources */,
+				B57E6FE0234F78D20069991A /* SwiftMessagesBannerPage.swift in Sources */,
+				B57E6FE8234F78D20069991A /* DropBitMePage.swift in Sources */,
+				B57E6FDA234F78D20069991A /* PushInfoPage.swift in Sources */,
+				B57E6FDE234F78D20069991A /* SuccessFailPage.swift in Sources */,
+				B57E6FE6234F78D20069991A /* WalletOverviewPage.swift in Sources */,
+				B57E6FEB234F7B1E0069991A /* Int+Times.swift in Sources */,
+				B57E6FDD234F78D20069991A /* StartPage.swift in Sources */,
+				B57E6FDC234F78D20069991A /* RestoreWalletPage.swift in Sources */,
+				B57E6FE4234F78D20069991A /* SendPaymentPage.swift in Sources */,
 				B56B680D234E272C0073BA0D /* SnapshotHelper.swift in Sources */,
 				B56B680E234E28750073BA0D /* UITestCase.swift in Sources */,
+				B57E6FE2234F78D20069991A /* BackupRecoveryWordsCellPage.swift in Sources */,
+				B57E6FDF234F78D20069991A /* RecoveryWordsIntroPage.swift in Sources */,
+				B57E6FD9234F78D20069991A /* PinCreationPage.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
