@@ -76,6 +76,12 @@ extension XCUIApplication {
     return viewController
   }
 
+  func cell(withId pageElement: AccessiblePageElement, assertionWait: AssertionWait = .custom(0.5)) -> XCUIElement {
+    let viewController = cells[pageElement.identifier]
+    viewController.assertExistence(afterWait: assertionWait, elementDesc: pageElement.identifier)
+    return viewController
+  }
+
   func buttons(_ pageElement: AccessiblePageElement, assertionWait: AssertionWait = .none) -> XCUIElement {
     let button = self.buttons[pageElement.identifier]
     button.assertExistence(afterWait: assertionWait, elementDesc: pageElement.identifier)

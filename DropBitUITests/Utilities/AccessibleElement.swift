@@ -18,10 +18,18 @@
  */
 protocol AccessibleElement {
   /// Used to create the suffix for the `identifier`
-  var rawValue: String { get }
+  var elementIdentifier: String { get }
 
   /// There is a default implementation, but this can be overridden if a custom pageName is needed.
   var pageName: String { get }
+}
+
+extension AccessibleElement where Self: RawRepresentable {
+
+  var elementIdentifier: String {
+    return String(describing: rawValue)
+  }
+
 }
 
 extension AccessibleElement {
@@ -31,8 +39,8 @@ extension AccessibleElement {
     return typeDesc.replacingOccurrences(of: "Element", with: "")
   }
 
-  var identifier: String {
-    return pageName + "_" + self.rawValue
+  var fullIdentifier: String {
+    return pageName + "_" + self.elementIdentifier
   }
 
 }
@@ -65,26 +73,26 @@ enum AccessiblePageElement {
 
   var identifier: String {
     switch self {
-    case .tutorial(let element):                  return element.identifier
-    case .start(let element):                     return element.identifier
-    case .pinCreation(let element):               return element.identifier
-    case .pinEntry(let element):                  return element.identifier
-    case .successFail(let element):               return element.identifier
-    case .createRecoveryWords(let element):       return element.identifier
-    case .restoreWallet(let element):             return element.identifier
-    case .walletOverview(let element):            return element.identifier
-    case .deviceVerification(let element):        return element.identifier
-    case .actionableAlert(let element):           return element.identifier
-    case .requestPay(let element):                return element.identifier
-    case .recoveryWordsIntro(let element):        return element.identifier
-    case .bannerMessage(let element):             return element.identifier
-    case .backupRecoveryWordsCell(let element):   return element.identifier
-    case .verifyRecoveryWordsCell(let element):   return element.identifier
-    case .memoEntry(let element):                 return element.identifier
-    case .sendPayment(let element):               return element.identifier
-    case .transactionHistory(let element):        return element.identifier
-    case .lightningUpgradeStart(let element):     return element.identifier
-    case .dropBitMe(let element):                 return element.identifier
+    case .tutorial(let element):                  return element.fullIdentifier
+    case .start(let element):                     return element.fullIdentifier
+    case .pinCreation(let element):               return element.fullIdentifier
+    case .pinEntry(let element):                  return element.fullIdentifier
+    case .successFail(let element):               return element.fullIdentifier
+    case .createRecoveryWords(let element):       return element.fullIdentifier
+    case .restoreWallet(let element):             return element.fullIdentifier
+    case .walletOverview(let element):            return element.fullIdentifier
+    case .deviceVerification(let element):        return element.fullIdentifier
+    case .actionableAlert(let element):           return element.fullIdentifier
+    case .requestPay(let element):                return element.fullIdentifier
+    case .recoveryWordsIntro(let element):        return element.fullIdentifier
+    case .bannerMessage(let element):             return element.fullIdentifier
+    case .backupRecoveryWordsCell(let element):   return element.fullIdentifier
+    case .verifyRecoveryWordsCell(let element):   return element.fullIdentifier
+    case .memoEntry(let element):                 return element.fullIdentifier
+    case .sendPayment(let element):               return element.fullIdentifier
+    case .transactionHistory(let element):        return element.fullIdentifier
+    case .lightningUpgradeStart(let element):     return element.fullIdentifier
+    case .dropBitMe(let element):                 return element.fullIdentifier
     }
   }
 
@@ -155,12 +163,26 @@ enum ActionableAlertElement: String, AccessibleElement {
   case actionButton
 }
 
-enum TransactionHistoryElement: String, AccessibleElement {
+enum TransactionHistoryElement: AccessibleElement {
   case page
   case menu
   case tutorialButton
   case receiveButton
   case sendButton
+  case summaryCell(Int)
+  case detailCell(Int)
+
+  var elementIdentifier: String {
+    switch self {
+    case .page:                       return "page"
+    case .menu:                       return "menu"
+    case .tutorialButton:             return "tutorialButton"
+    case .receiveButton:              return "receiveButton"
+    case .sendButton:                 return "sendButton"
+    case .summaryCell(let cellIndex): return "summaryCell_\(cellIndex)"
+    case .detailCell(let cellIndex):  return "detailCell_\(cellIndex)"
+    }
+  }
 }
 
 enum RequestPayElement: String, AccessibleElement {
