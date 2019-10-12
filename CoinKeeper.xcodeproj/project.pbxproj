@@ -378,6 +378,7 @@
 		3BCBFCCC229EF71D00F633BA /* SettingsRecoveryWordsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3BCBFCCA229EF71D00F633BA /* SettingsRecoveryWordsCell.xib */; };
 		3BCC3BAF2295CBB100B8FB66 /* SharedPayloadManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BCC3BAE2295CBB100B8FB66 /* SharedPayloadManager.swift */; };
 		3BD013172272478300C92771 /* TransactionHistoryDetailValidCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3BD013162272478300C92771 /* TransactionHistoryDetailValidCell.xib */; };
+		3BD085B923515D64006CE008 /* SetupFlowError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BD085B823515D64006CE008 /* SetupFlowError.swift */; };
 		3BD7B73120D66F12005057A7 /* HorizontallyPaginatedCollectionViewLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BD7B73020D66F12005057A7 /* HorizontallyPaginatedCollectionViewLayout.swift */; };
 		3BDA207F203DE6F600CBA6B1 /* BiometricAuthenticationManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BDA207E203DE6F600CBA6B1 /* BiometricAuthenticationManagerTests.swift */; };
 		3BDA2081203E17A700CBA6B1 /* BiometricError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BDA2080203E17A700CBA6B1 /* BiometricError.swift */; };
@@ -1450,6 +1451,7 @@
 		3BCBFCCA229EF71D00F633BA /* SettingsRecoveryWordsCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SettingsRecoveryWordsCell.xib; sourceTree = "<group>"; };
 		3BCC3BAE2295CBB100B8FB66 /* SharedPayloadManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedPayloadManager.swift; sourceTree = "<group>"; };
 		3BD013162272478300C92771 /* TransactionHistoryDetailValidCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TransactionHistoryDetailValidCell.xib; sourceTree = "<group>"; };
+		3BD085B823515D64006CE008 /* SetupFlowError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetupFlowError.swift; sourceTree = "<group>"; };
 		3BD7B73020D66F12005057A7 /* HorizontallyPaginatedCollectionViewLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HorizontallyPaginatedCollectionViewLayout.swift; sourceTree = "<group>"; };
 		3BDA207E203DE6F600CBA6B1 /* BiometricAuthenticationManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BiometricAuthenticationManagerTests.swift; sourceTree = "<group>"; };
 		3BDA2080203E17A700CBA6B1 /* BiometricError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BiometricError.swift; sourceTree = "<group>"; };
@@ -2845,6 +2847,7 @@
 				B5192FA5216E7BFF00DCC39B /* UserProviderError.swift */,
 				3B30228021C9290D007F137A /* SyncRoutineError.swift */,
 				3B936ADA23218F810067CA97 /* CKWalletError.swift */,
+				3BD085B823515D64006CE008 /* SetupFlowError.swift */,
 			);
 			path = Errors;
 			sourceTree = "<group>";
@@ -4784,6 +4787,7 @@
 				A2952F7622BBBAAB00BDCE65 /* TimePeriodCell.swift in Sources */,
 				3B8FA48320C16F5C0074B617 /* CKMTemporarySentTransaction+CoreDataClass.swift in Sources */,
 				B53D7EC52119DC6B00D1DCBF /* BlockchainInfoTarget.swift in Sources */,
+				3BD085B923515D64006CE008 /* SetupFlowError.swift in Sources */,
 				3BF41AB020750692008B3D0A /* RequestPayViewController.swift in Sources */,
 				3B5052B82046E686000C739F /* BackupRecoveryWordsCollectionDDS.swift in Sources */,
 				3BA9F605208F6D060047C213 /* AppCoordinator+VerifyRecoveryWordsViewControllerDelegate.swift in Sources */,
