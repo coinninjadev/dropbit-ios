@@ -81,31 +81,8 @@ extension AppCoordinator {
   }
 
   private func startPinCreation(flow: SetupFlow?) {
-    let result = persistenceManager.keychainManager.prepareForPinCreation()
-    switch result {
-    case .failure(let error):
-      switch error {
-      case .previousPinExistsWhenCreating:
-        promptToResetAllLocalSecureData()
-      }
-    case .success:
-      let viewController = PinCreationViewController.newInstance(setupFlow: flow, delegate: self)
-      navigationController.pushViewController(viewController, animated: true)
-    }
-  }
-
-  private func promptToResetAllLocalSecureData() {
-    let title = "DropBit encountered a problem"
-    let description = "An internal inconsistency was found. Tap the Clear All button to wipe all local secure data, " +
-    "including PIN and recovery words, to reset. You can re-enter your PIN and recovery words later."
-    let clearAction = AlertActionConfiguration(title: "Clear All", style: .default) { [weak self] in
-      guard let localSelf = self else { return }
-      localSelf.persistenceManager.keychainManager.deleteAll()
-      localSelf.startPinCreation(flow: localSelf.launchStateManager.selectedSetupFlow ?? SetupFlow.restoreWallet)
-    }
-    let viewModel = AlertControllerViewModel(title: title, description: description, image: nil, style: .alert, actions: [clearAction])
-    let alert = alertManager.alert(from: viewModel)
-    navigationController.topViewController()?.show(alert, sender: nil)
+    let controller = PinCreationViewController.newInstance(setupFlow: flow, delegate: self)
+    navigationController.pushViewController(controller, animated: true)
   }
 
   func startFirstTimeAfteriCloudRestore() {
