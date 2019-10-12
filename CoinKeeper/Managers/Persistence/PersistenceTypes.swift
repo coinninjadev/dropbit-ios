@@ -10,6 +10,7 @@ import CNBitcoinKit
 import CoreData
 import PromiseKit
 import Strongbox
+import enum Result.Result
 
 protocol PersistenceManagerType: DeviceCountryCodeProvider {
   var keychainManager: PersistenceKeychainType { get }
@@ -80,6 +81,8 @@ protocol PersistenceKeychainType: AnyObject {
 
   func deleteAll()
   func unverifyUser(for identity: UserIdentityType)
+
+  func prepareForPinCreation() -> Result<Void, SetupFlowError>
 
   init(store: KeychainAccessorType)
 }

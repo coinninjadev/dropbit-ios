@@ -9,6 +9,7 @@
 import Foundation
 import Strongbox
 import PromiseKit
+import enum Result.Result
 
 class CKKeychain: PersistenceKeychainType {
 
@@ -34,6 +35,18 @@ class CKKeychain: PersistenceKeychainType {
   private let serialQueue = DispatchQueue(label: "com.coinkeeper.ckkeychain.serial")
 
   let store: KeychainAccessorType
+
+  func prepareForPinCreation() -> Result<Void, SetupFlowError> {
+    tempWordStorage = nil
+    tempPinHashStorage = nil
+
+    if retrieveValue(for: .userPin) != nil {
+      return .failure(.previousPinExistsWhenCreating)
+    }
+
+    storeSynchronously(anyValue: nil, key: .userPin)
+    return .success(())
+  }
 
   required init(store: KeychainAccessorType = Strongbox()) {
     self.store = store
