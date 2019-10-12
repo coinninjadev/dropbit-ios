@@ -161,7 +161,7 @@ class CKKeychain: PersistenceKeychainType {
   }
 
   func deleteAll() {
-    Key.allCases.forEach { self.store(anyValue: nil, key: $0) }
+    Key.allCases.forEach { self.storeSynchronously(anyValue: nil, key: $0) }
   }
 
   func unverifyUser(for identity: UserIdentityType) {
