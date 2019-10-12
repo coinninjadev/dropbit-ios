@@ -36,16 +36,27 @@ class CKKeychain: PersistenceKeychainType {
 
   let store: KeychainAccessorType
 
-  func prepareForPinCreation() -> Result<Void, SetupFlowError> {
+  private func hasRecoveryWords() -> Bool {
+    if retrieveValue(for: .walletWords) != nil {
+      return true
+    } else if retrieveValue(for: .walletWordsV2) != nil {
+      return true
+    } else {
+      return false
+    }
+  }
+
+  private func pinExists() -> Bool {
+    return retrieveValue(for: .userPin) != nil
+  }
+
+  func prepareForStateDetermination() {
     tempWordStorage = nil
     tempPinHashStorage = nil
 
-    if retrieveValue(for: .userPin) != nil {
-      return .failure(.previousPinExistsWhenCreating)
+    if pinExists() && !hasRecoveryWords() {
+      storeSynchronously(anyValue: nil, key: .userPin)
     }
-
-    storeSynchronously(anyValue: nil, key: .userPin)
-    return .success(())
   }
 
   required init(store: KeychainAccessorType = Strongbox()) {

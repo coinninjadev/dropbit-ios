@@ -82,7 +82,7 @@ protocol PersistenceKeychainType: AnyObject {
   func deleteAll()
   func unverifyUser(for identity: UserIdentityType)
 
-  func prepareForPinCreation() -> Result<Void, SetupFlowError>
+  func prepareForStateDetermination()
 
   init(store: KeychainAccessorType)
 }
