@@ -8,9 +8,14 @@
 
 import Foundation
 import PromiseKit
+import enum Result.Result
 @testable import DropBit
 
 class MockPersistenceKeychainManager: PersistenceKeychainType {
+  var pinCreationResultToReturn: Result<Void, SetupFlowError> = .success(())
+  func prepareForPinCreation() -> Result<Void, SetupFlowError> {
+    return pinCreationResultToReturn
+  }
 
   func backup(recoveryWords words: [String], isBackedUp: Bool) -> Promise<Void> {
     return .value(())
