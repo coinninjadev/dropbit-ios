@@ -82,6 +82,9 @@ final class PinEntryViewController: BaseViewController, StoryboardInitializable 
     if let delegate = pinVerifyDelegate, !delegate.viewControllerShouldAllowPinEntry() {
       animateLockoutView(show: true)
     }
+    if #available(iOS 13.0, *) {
+      isModalInPresentation = true
+    }
   }
 
   override func viewDidAppear(_ animated: Bool) {
