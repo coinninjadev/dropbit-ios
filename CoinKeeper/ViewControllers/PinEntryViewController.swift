@@ -15,6 +15,7 @@ protocol PinEntryViewControllerDelegate: ViewControllerDismissable {
   func viewControllerDidSuccessfullyAuthenticate(_ pinEntryViewController: PinEntryViewController, completion: CKCompletion?)
   func pinExists() -> Bool
   var biometricType: BiometricType { get }
+  var launchStateManager: LaunchStateManagerType { get }
 }
 
 final class PinEntryViewController: BaseViewController, StoryboardInitializable {
@@ -97,6 +98,7 @@ final class PinEntryViewController: BaseViewController, StoryboardInitializable 
 
   // MARK: IBActions
   @IBAction func closeButtonWasTouched() {
+    viewModel.customCloseAction()
     delegate.viewControllerDidSelectClose(self)
   }
 
