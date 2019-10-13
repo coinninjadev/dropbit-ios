@@ -15,6 +15,7 @@ protocol PinEntryViewControllerDelegate: ViewControllerDismissable {
   func viewControllerDidSuccessfullyAuthenticate(_ pinEntryViewController: PinEntryViewController, completion: CKCompletion?)
   func pinExists() -> Bool
   var biometricType: BiometricType { get }
+  var launchStateManager: LaunchStateManagerType { get }
 }
 
 final class PinEntryViewController: BaseViewController, StoryboardInitializable {
@@ -81,6 +82,9 @@ final class PinEntryViewController: BaseViewController, StoryboardInitializable 
     if let delegate = pinVerifyDelegate, !delegate.viewControllerShouldAllowPinEntry() {
       animateLockoutView(show: true)
     }
+    if #available(iOS 13.0, *) {
+      isModalInPresentation = true
+    }
   }
 
   override func viewDidAppear(_ animated: Bool) {
@@ -97,6 +101,7 @@ final class PinEntryViewController: BaseViewController, StoryboardInitializable 
 
   // MARK: IBActions
   @IBAction func closeButtonWasTouched() {
+    viewModel.customCloseAction()
     delegate.viewControllerDidSelectClose(self)
   }
 

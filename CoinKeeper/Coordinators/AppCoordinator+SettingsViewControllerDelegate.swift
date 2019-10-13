@@ -98,12 +98,19 @@ extension AppCoordinator: SettingsViewControllerDelegate {
         Make sure you have your recovery words before you delete.\n
     """
     let settingsViewController = navigationController.topViewController()
+    let pinExists = launchStateManager.pinExists()
     let deleteAction = AlertActionConfiguration(title: "Delete", style: .default) { [unowned self] in
-      self.resetUserAuthenticatedState()
+      if !pinExists {
+        completion()
+      } else {
+        self.resetUserAuthenticatedState()
 
-      let viewModel = WalletDeletionPinEntryViewModel()
-      let pinEntryViewController = PinEntryViewController.newInstance(delegate: self, viewModel: viewModel, success: completion)
-      settingsViewController?.present(pinEntryViewController, animated: true, completion: nil)
+        let viewModel = WalletDeletionPinEntryViewModel { [weak self] in
+          self?.launchStateManager.userWasAuthenticated()
+        }
+        let pinEntryViewController = PinEntryViewController.newInstance(delegate: self, viewModel: viewModel, success: completion)
+        settingsViewController?.present(pinEntryViewController, animated: true, completion: nil)
+      }
     }
     let cancelAction = AlertActionConfiguration(title: "Cancel", style: .default, action: nil)
     let configs = [cancelAction, deleteAction]
