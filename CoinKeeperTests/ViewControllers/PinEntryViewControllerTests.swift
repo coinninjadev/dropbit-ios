@@ -195,6 +195,7 @@ class PinEntryViewControllerTests: XCTestCase {
 
   // MARK: mock coordinator class
   class MockCoordinator: PinEntryViewControllerDelegate, PinVerificationDelegate {
+    var launchStateManager: LaunchStateManagerType { return MockLaunchStateManager(persistenceManager: MockPersistenceManager()) }
 
     func viewControllerDidSelectCloseWithToggle(_ viewController: UIViewController) { }
 
