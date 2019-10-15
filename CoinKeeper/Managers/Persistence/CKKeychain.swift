@@ -9,6 +9,7 @@
 import Foundation
 import Strongbox
 import PromiseKit
+import enum Result.Result
 
 class CKKeychain: PersistenceKeychainType {
 
@@ -34,6 +35,29 @@ class CKKeychain: PersistenceKeychainType {
   private let serialQueue = DispatchQueue(label: "com.coinkeeper.ckkeychain.serial")
 
   let store: KeychainAccessorType
+
+  private func hasRecoveryWords() -> Bool {
+    if retrieveValue(for: .walletWords) != nil {
+      return true
+    } else if retrieveValue(for: .walletWordsV2) != nil {
+      return true
+    } else {
+      return false
+    }
+  }
+
+  private func pinExists() -> Bool {
+    return retrieveValue(for: .userPin) != nil
+  }
+
+  func prepareForStateDetermination() {
+    tempWordStorage = nil
+    tempPinHashStorage = nil
+
+    if pinExists() && !hasRecoveryWords() {
+      storeSynchronously(anyValue: nil, key: .userPin)
+    }
+  }
 
   required init(store: KeychainAccessorType = Strongbox()) {
     self.store = store
@@ -148,7 +172,7 @@ class CKKeychain: PersistenceKeychainType {
   }
 
   func deleteAll() {
-    Key.allCases.forEach { self.store(anyValue: nil, key: $0) }
+    Key.allCases.forEach { self.storeSynchronously(anyValue: nil, key: $0) }
   }
 
   func unverifyUser(for identity: UserIdentityType) {

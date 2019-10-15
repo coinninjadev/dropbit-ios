@@ -81,8 +81,8 @@ extension AppCoordinator {
   }
 
   private func startPinCreation(flow: SetupFlow?) {
-    let viewController = PinCreationViewController.newInstance(setupFlow: flow, delegate: self)
-    navigationController.pushViewController(viewController, animated: true)
+    let controller = PinCreationViewController.newInstance(setupFlow: flow, delegate: self)
+    navigationController.pushViewController(controller, animated: true)
   }
 
   func startFirstTimeAfteriCloudRestore() {
