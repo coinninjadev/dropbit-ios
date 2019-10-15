@@ -116,14 +116,15 @@ class LightningTransactionViewModelObject: LightningViewModelObject, Transaction
 
 }
 
-///Note that this cannot subclass LightningTransactionViewModelObject because it's possible for the CKMInvitation
-///to not yet have a relationship to a CKMLNLedgerEntry.
+///Returns nil if wallet entry is not related to an invitation.
+///Note that this cannot subclass LightningTransactionViewModelObject because it's possible
+///for the CKMInvitation to not yet have a relationship to a CKMLNLedgerEntry.
 class LightningInvitationViewModelObject: LightningViewModelObject, TransactionDetailCellViewModelObject {
 
   let invitation: CKMInvitation
 
-  init?(invitation: CKMInvitation) {
-    guard let walletEntry = invitation.walletEntry else { return nil }
+  init?(walletEntry: CKMWalletEntry) {
+    guard let invitation = walletEntry.invitation else { return nil }
     self.invitation = invitation
     super.init(walletEntry)
   }
