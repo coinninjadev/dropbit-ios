@@ -21,7 +21,8 @@ extension AppCoordinator: PinVerificationDelegate {
         self.launchStateManager.userWasAuthenticated()
         let action = self.postVerificationAction(forFlow: flow)
         self.biometricsAuthenticationManager.authenticate(completion: action, error: { _ in action() })
-      }.cauterize()
+      }
+      .catch { error in self.alertManager.showError(message: error.localizedDescription, forDuration: 4.0) }
   }
 
   private func postVerificationAction(forFlow flow: SetupFlow?) -> CKCompletion {
@@ -47,7 +48,7 @@ extension AppCoordinator: PinVerificationDelegate {
       navigationController.topViewController.flatMap { $0 as? PinCreationViewController }?.entryMode = .pinVerificationFailed
     case is PinEntryViewController:
       let lockoutDate = absoluteTime() + lockoutLength  // 300s = 5m
-      self.persistenceManager.keychainManager.store(anyValue: lockoutDate, key: .lockoutDate).cauterize()
+      self.persistenceManager.keychainManager.storeSynchronously(anyValue: lockoutDate, key: .lockoutDate)
     default: break
     }
   }
