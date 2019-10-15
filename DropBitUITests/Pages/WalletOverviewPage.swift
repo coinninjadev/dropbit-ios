@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import PromiseKit
 
 class WalletOverviewPage: UITestPage {
   
@@ -53,4 +54,34 @@ class WalletOverviewPage: UITestPage {
     balanceView.tap()
     return self
   }
+
+  @discardableResult
+  func tapFirstSummaryCell() -> Self {
+    let firstCell = app.cell(withId: .transactionHistory(.summaryCell(0)))
+    firstCell.assertExistence(afterWait: .none, elementDesc: "firstSummaryCell")
+    firstCell.tap()
+    return self
+  }
+
+  private func swipeDetailCell(atIndex index: Int) -> Promise<Void> {
+    let cell = app.cell(withId: .transactionHistory(.detailCell(index)))
+    cell.assertExistence(afterWait: .custom(0.5), elementDesc: "firstDetailCell") {
+      cell.fullLeftSwipe()
+      completion()
+    }
+  }
+
+  @discardableResult
+  func swipeDetailCells(count: Int) -> Self {
+    snapshot("detail_0")
+    let counts
+    let promises =
+    for index in 0..<count {
+      self.swipeDetailCell(atIndex: index) {
+        snapshot("detail_\(index)")
+      }
+    }
+    return self
+  }
+
 }

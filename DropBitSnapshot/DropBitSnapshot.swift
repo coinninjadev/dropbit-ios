@@ -14,7 +14,17 @@ class DropBitSnapshot: UITestCase {
     app.appendTestArguments([.resetPersistence, .skipTwitterAuthentication, .skipGlobalMessageDisplay, .loadMockTransactionHistory])
     setupSnapshot(app)
     app.launch()
-    snapshot("proof of concept")
+  }
+
+  func testProofOfConcept() {
+    StartPage().tapNewWallet()
+    PinCreationPage().enterSimplePin(digit: 1, times: 6)
+    DeviceVerificationPage().tapSkip()
+    PushInfoPage()?.dismiss()
+    snapshot("history")
+    WalletOverviewPage() //page will be hidden by detail cell
+      .tapFirstSummaryCell()
+      .swipeDetailCells(count: 5)
   }
   
 }

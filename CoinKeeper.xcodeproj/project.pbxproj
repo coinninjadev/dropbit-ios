@@ -1040,6 +1040,9 @@
 		B57E6FE9234F79C10069991A /* AccessibleElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = B58AFF382194E828001BE563 /* AccessibleElement.swift */; };
 		B57E6FEA234F79CA0069991A /* XCUIApplication+WaitAndAssert.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50BB1AD2175126B0038B5DD /* XCUIApplication+WaitAndAssert.swift */; };
 		B57E6FEB234F7B1E0069991A /* Int+Times.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B825633F1FE7A9EA9E7A2AD /* Int+Times.swift */; };
+		B57E6FED234FB1F50069991A /* XCUIElement+Swipe.swift in Sources */ = {isa = PBXBuildFile; fileRef = B57E6FEC234FB1F50069991A /* XCUIElement+Swipe.swift */; };
+		B57E6FEE234FB1F50069991A /* XCUIElement+Swipe.swift in Sources */ = {isa = PBXBuildFile; fileRef = B57E6FEC234FB1F50069991A /* XCUIElement+Swipe.swift */; };
+		B57E6FEF234FB1F50069991A /* XCUIElement+Swipe.swift in Sources */ = {isa = PBXBuildFile; fileRef = B57E6FEC234FB1F50069991A /* XCUIElement+Swipe.swift */; };
 		B57F06832243CF0200C147D2 /* TimeInterval+Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = B57F06822243CF0200C147D2 /* TimeInterval+Constants.swift */; };
 		B5823FD8207E83A600B12A35 /* TransactionHistorySummaryCellTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5823FD7207E83A600B12A35 /* TransactionHistorySummaryCellTests.swift */; };
 		B582409420920E3F005D2F90 /* CompactActionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B582409320920E3F005D2F90 /* CompactActionButton.swift */; };
@@ -2222,6 +2225,7 @@
 		B57AF8032268C7E500E5B0A6 /* AppCoordinator+ViewControllerDontShowable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppCoordinator+ViewControllerDontShowable.swift"; sourceTree = "<group>"; };
 		B57B78DC20B4878F007B71CB /* CKDateFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CKDateFormatter.swift; sourceTree = "<group>"; };
 		B57C2435207415F400F9519A /* CurrencyCodeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyCodeTests.swift; sourceTree = "<group>"; };
+		B57E6FEC234FB1F50069991A /* XCUIElement+Swipe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCUIElement+Swipe.swift"; sourceTree = "<group>"; };
 		B57F06822243CF0200C147D2 /* TimeInterval+Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TimeInterval+Constants.swift"; sourceTree = "<group>"; };
 		B5823FD7207E83A600B12A35 /* TransactionHistorySummaryCellTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionHistorySummaryCellTests.swift; sourceTree = "<group>"; };
 		B582409320920E3F005D2F90 /* CompactActionButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompactActionButton.swift; sourceTree = "<group>"; };
@@ -4247,6 +4251,7 @@
 				B58AFF382194E828001BE563 /* AccessibleElement.swift */,
 				B50BB1AD2175126B0038B5DD /* XCUIApplication+WaitAndAssert.swift */,
 				B5D1B2D6219384FB006B2BC7 /* XCUIApplication+UITestArgument.swift */,
+				B57E6FEC234FB1F50069991A /* XCUIElement+Swipe.swift */,
 				B5D1B2CF2193469C006B2BC7 /* UITestArgument.swift */,
 				B58AFF2D21948891001BE563 /* UITestDefaultsKey.swift */,
 				B5D1B2D42193700D006B2BC7 /* Springboard.swift */,
@@ -5883,6 +5888,7 @@
 				3B4B929C22F354850018285C /* SendPaymentPage.swift in Sources */,
 				3B4B928D22F3546E0018285C /* UITestHelpers.swift in Sources */,
 				B5705450230B4812006DD57F /* Typealiases.swift in Sources */,
+				B57E6FEE234FB1F50069991A /* XCUIElement+Swipe.swift in Sources */,
 				3B4B928C22F3546B0018285C /* Springboard.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -5975,6 +5981,7 @@
 				3B3779FA219E1E9A00F79683 /* UITestHelpers.swift in Sources */,
 				B5D1B2D52193700D006B2BC7 /* Springboard.swift in Sources */,
 				B58AFF332194DC24001BE563 /* RestoreWalletPage.swift in Sources */,
+				B57E6FED234FB1F50069991A /* XCUIElement+Swipe.swift in Sources */,
 				3B3779F4219C9F4800F79683 /* RecoveryWordsIntroPage.swift in Sources */,
 				B5D1B2D7219384FB006B2BC7 /* XCUIApplication+UITestArgument.swift in Sources */,
 				B58AFF2F21948891001BE563 /* UITestDefaultsKey.swift in Sources */,
@@ -6005,6 +6012,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B57E6FEF234FB1F50069991A /* XCUIElement+Swipe.swift in Sources */,
 				B57E6FE9234F79C10069991A /* AccessibleElement.swift in Sources */,
 				B57E6FE3234F78D20069991A /* VerifyRecoveryWordsCellPage.swift in Sources */,
 				B57E6FE7234F78D20069991A /* LightningUpgradeStartPage.swift in Sources */,
