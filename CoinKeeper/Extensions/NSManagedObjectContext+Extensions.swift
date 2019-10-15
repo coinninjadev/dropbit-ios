@@ -86,7 +86,7 @@ extension NSManagedObjectContext {
   func saveRecursively(isFirstCall: Bool = true) throws {
     if isFirstCall {
       // Subsequent recursive saves will show `context.hasChanges == false`,
-      // but they still need to be saved to the persistent store, hence only check hasChanges if isFirstCall
+      // but they still need to be saved to the persistent store, hence only check hasPersistentChanges if isFirstCall
       guard self.hasPersistentChanges else {
         print("No changes to save")
         return
@@ -97,7 +97,12 @@ extension NSManagedObjectContext {
       log.debug("\nWill save changes in \(contextName): \n\(changes)")
     }
 
-    try self.save()
+    do {
+      try self.save()
+    } catch {
+      log.contextSaveError(error)
+      throw error //rethrow error after logging save error details
+    }
 
     if let parentContext = self.parent {
       try parentContext.performThrowingAndWait {
