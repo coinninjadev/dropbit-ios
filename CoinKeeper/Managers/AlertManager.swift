@@ -155,10 +155,21 @@ class AlertManager: AlertManagerType {
                                       rates: rates)
     let dollarAmount: String = FiatFormatter(currency: .USD, withSymbol: true).string(fromDecimal: converter.fiatAmount) ?? ""
     let message = "You have recieved a new transaction of \(dollarAmount) in bitcoin!"
+    showIncomingAlertForCurrentAppState(with: message)
+  }
+
+  func showIncomingLightningAlert(for receivedAmount: Int, with rates: ExchangeRates) {
+    let satsFormatter = SatsFormatter()
+    let amountString = satsFormatter.stringFromSats(receivedAmount)
+    let message = "You have received a new Lightning payment of \(amountString) sats!"
+    showIncomingAlertForCurrentAppState(with: message, alertKind: .lightning)
+  }
+
+  private func showIncomingAlertForCurrentAppState(with message: String, alertKind: CKBannerViewKind = .info) {
     DispatchQueue.main.async {
       switch UIApplication.shared.applicationState {
       case .active:
-        self.showBanner(with: message)
+        self.showBanner(with: message, duration: .default, alertKind: alertKind)
       case .background, .inactive:
         self.notificationManager.showNotification(with: NotificationDescription(title: "", body: message))
       @unknown default: break
