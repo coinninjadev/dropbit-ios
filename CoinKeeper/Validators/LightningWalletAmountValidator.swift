@@ -38,7 +38,9 @@ enum LightningWalletAmountValidatorError: ValidatorTypeError {
     case .invalidAmount:
       return "Unable to convert amount to fiat, stopping"
     case .walletMaximum:
-      return "Unable to load Lightning wallet, above maximum"
+      let fiatFormatter = FiatFormatter(currency: .USD, withSymbol: true)
+      let amountString = fiatFormatter.string(fromDecimal: LightningWalletAmountValidator.maxWalletValue.amount) ?? ""
+      return "Unable to load Lightning wallet, above \(amountString) maximum"
     case .reloadMinimum:
       return "Funds amount too low for reload"
     }

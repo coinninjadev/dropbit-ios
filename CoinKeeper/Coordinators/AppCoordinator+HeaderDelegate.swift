@@ -35,7 +35,7 @@ extension AppCoordinator: HeaderDelegate {
                                  pubKeyString: self.walletManager?.hexEncodedPublicKey,
                                  buildEnvironment: buildEnvironment)
 
-    let context = self.persistenceManager.databaseManager.createBackgroundContext()
+    let context = persistenceManager.viewContext
     context.performAndWait {
       headers.walletId = self.persistenceManager.brokers.wallet.walletId(in: context)
       headers.userId = self.persistenceManager.brokers.user.userId(in: context)

@@ -99,7 +99,7 @@ class WalletTransferViewController: PresentableViewController, StoryboardInitial
     setupCurrencySwappableEditAmountView()
     registerForRateUpdates()
     updateRatesAndView()
-    buildTransactionIfNecessary()
+//    buildTransactionIfNecessary()
   }
 
   func didUpdateExchangeRateManager(_ exchangeRateManager: ExchangeRateManager) {
@@ -121,12 +121,18 @@ class WalletTransferViewController: PresentableViewController, StoryboardInitial
   }
 
   private func buildTransaction() {
-    delegate.viewControllerNeedsTransactionData(self, btcAmount: viewModel.btcAmount, exchangeRates: viewModel.exchangeRates)
-      .done { paymentData in self.viewModel.direction = .toLightning(paymentData) }
-      .catch {
-        self.delegate.handleLightningLoadError($0)
-        self.disableConfirmButton()
+    let walletBalances = balanceDataSource?.balancesNetPending() ?? .empty
+    do {
+      try LightningWalletAmountValidator(balancesNetPending: walletBalances).validate(value: viewModel.generateCurrencyConverter())
+      delegate.viewControllerNeedsTransactionData(self, btcAmount: viewModel.btcAmount, exchangeRates: viewModel.exchangeRates)
+        .done { paymentData in self.viewModel.direction = .toLightning(paymentData) }
+        .catch {
+          self.delegate.handleLightningLoadError($0)
+          self.disableConfirmButton()
       }
+    } catch {
+      self.delegate.handleLightningLoadError(error)
+    }
   }
 
   private func setupTransactionUI() {
