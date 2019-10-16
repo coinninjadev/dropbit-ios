@@ -61,6 +61,7 @@ protocol LightningBrokerType: AnyObject {
                               inputs: LightningPaymentInputs,
                               in context: NSManagedObjectContext)
   func deleteInvalidWalletEntries(in context: NSManagedObjectContext)
+  func deleteInvalidLedgerEntries(in context: NSManagedObjectContext)
 }
 
 protocol CheckInBrokerType: AnyObject {

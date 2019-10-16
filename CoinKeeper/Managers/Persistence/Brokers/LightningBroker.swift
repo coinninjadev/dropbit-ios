@@ -67,4 +67,19 @@ class LightningBroker: CKPersistenceBroker, LightningBrokerType {
 
     invalidWalletEntries.forEach { context.delete($0) }
   }
+
+  func deleteInvalidLedgerEntries(in context: NSManagedObjectContext) {
+    let fetchRequest: NSFetchRequest<CKMLNLedgerEntry> = CKMLNLedgerEntry.fetchRequest()
+    fetchRequest.predicate = CKPredicate.LedgerEntry.invalid()
+
+    var invalidLedgerEntries: [CKMLNLedgerEntry] = []
+    do {
+      invalidLedgerEntries = try context.fetch(fetchRequest)
+    } catch {
+      log.error(error, message: "failed to fetch invalid wallet entries")
+    }
+
+    invalidLedgerEntries.forEach { context.delete($0) }
+  }
+
 }
