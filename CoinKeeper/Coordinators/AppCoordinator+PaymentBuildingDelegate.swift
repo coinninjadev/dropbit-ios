@@ -42,7 +42,6 @@ extension AppCoordinator: PaymentBuildingDelegate {
         do {
           try BitcoinAddressValidator().validate(value: lightningAccount.address)
           log.info("Lightning load address successfully validated.")
-//          try LightningWalletAmountValidator(balancesNetPending: self.balancesNetPending()).validate(value: <#T##CurrencyConverter#>)
         } catch {
           log.error(error, message: "Lightning load address failed validation. Address: \(lightningAccount.address)")
           return Promise(error: error)

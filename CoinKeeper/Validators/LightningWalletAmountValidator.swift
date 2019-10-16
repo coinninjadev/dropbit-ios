@@ -40,9 +40,11 @@ enum LightningWalletAmountValidatorError: ValidatorTypeError {
     case .walletMaximum:
       let fiatFormatter = FiatFormatter(currency: .USD, withSymbol: true)
       let amountString = fiatFormatter.string(fromDecimal: LightningWalletAmountValidator.maxWalletValue.amount) ?? ""
-      return "Unable to load Lightning wallet, above \(amountString) maximum"
+      return "Unable to load Lightning wallet via DropBit when Lightning balance would exceed \(amountString)."
     case .reloadMinimum:
-      return "Funds amount too low for reload"
+      let fiatFormatter = FiatFormatter(currency: .USD, withSymbol: true)
+      let amountString = fiatFormatter.string(fromDecimal: LightningWalletAmountValidator.minReloadAmount.amount) ?? ""
+      return "Unable to load Lightning wallet, requested amount is below \(amountString) minimum."
     }
   }
 }
@@ -53,9 +55,11 @@ class LightningWalletAmountValidator: ValidatorType<CurrencyConverter> {
   static let minReloadAmount = Money(amount: NSDecimalNumber(value: 5), currency: .USD)
 
   let balancesNetPending: WalletBalances
+  let type: WalletTransactionType
 
-  init(balancesNetPending: WalletBalances) {
+  init(balancesNetPending: WalletBalances, walletType: WalletTransactionType) {
     self.balancesNetPending = balancesNetPending
+    self.type = walletType
     super.init()
   }
 
@@ -72,9 +76,17 @@ class LightningWalletAmountValidator: ValidatorType<CurrencyConverter> {
     default:          break
     }
 
-    if btcValue > balancesNetPending.onChain {
-      let spendableMoney = Money(amount: balancesNetPending.onChain, currency: .BTC)
-      throw CurrencyAmountValidatorError.usableBalance(spendableMoney)
+    switch type {
+    case .onChain:
+      if btcValue > balancesNetPending.onChain {
+        let spendableMoney = Money(amount: balancesNetPending.onChain, currency: .BTC)
+        throw CurrencyAmountValidatorError.usableBalance(spendableMoney)
+      }
+    case .lightning:
+      if btcValue > balancesNetPending.lightning {
+        let spendableMoney = Money(amount: balancesNetPending.lightning, currency: .BTC)
+        throw CurrencyAmountValidatorError.usableBalance(spendableMoney)
+      }
     }
 
     if usdAmount < LightningWalletAmountValidator.minReloadAmount.amount {
