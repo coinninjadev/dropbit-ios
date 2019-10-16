@@ -349,6 +349,14 @@ struct CKPredicate {
       let path = #keyPath(CKMWalletEntry.isHidden)
       return NSPredicate(format: "\(path) == %@", NSNumber(value: false))
     }
+
+    static func invalid() -> NSPredicate {
+      let invitationPath = #keyPath(CKMWalletEntry.invitation)
+      let ledgerEntryPath = #keyPath(CKMWalletEntry.ledgerEntry)
+      let invitationPredicate = NSPredicate(format: "\(invitationPath) == nil")
+      let ledgerEntryPredicate = NSPredicate(format: "\(ledgerEntryPath) == nil")
+      return NSCompoundPredicate(type: .and, subpredicates: [invitationPredicate, ledgerEntryPredicate])
+    }
   }
 
   struct LedgerEntry {
