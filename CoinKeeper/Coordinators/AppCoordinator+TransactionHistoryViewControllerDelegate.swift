@@ -74,7 +74,7 @@ extension AppCoordinator: TransactionHistoryViewControllerDelegate {
     if viewController.viewModel.walletTransactionType == .lightning {
       analyticsManager.track(event: .lightningTransactionDetailsPressed, with: nil)
     }
-    
+
     let controller = TransactionHistoryDetailsViewController.newInstance(withDelegate: self,
                                                                          walletTxType: viewController.viewModel.walletTransactionType,
                                                                          selectedIndexPath: indexPath,

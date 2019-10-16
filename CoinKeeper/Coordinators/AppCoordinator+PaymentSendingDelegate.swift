@@ -76,9 +76,6 @@ extension AppCoordinator: PaymentSendingDelegate {
     let errorHandler: CKErrorCompletion = self.paymentErrorHandler(for: successFailVC, isLightning: true)
     let successCompletion = { [weak self] in
       successFailVC.setMode(.success)
-      if let receiver = receiver, receiver.kind == .registeredUser {
-        self?.analyticsManager.track(event: .lightningDropBitInvoicePaid, with: nil)
-      }
     }
 
     successFailVC.action = { [unowned self] in
@@ -149,7 +146,10 @@ extension AppCoordinator: PaymentSendingDelegate {
                                      invitation: CKMInvitation?,
                                      to receiver: OutgoingDropBitReceiver?) -> Promise<LNTransactionResponse> {
     return self.networkManager.payLightningPaymentRequest(inputs.invoice, sats: inputs.sats)
-    .get { self.persistLightningPaymentResponse($0, receiver: receiver, invitation: invitation, inputs: inputs) }
+    .get {
+      self.analyticsManager.track(event: .lightningDropBitInvoicePaid, with: nil)
+      self.persistLightningPaymentResponse($0, receiver: receiver, invitation: invitation, inputs: inputs)
+    }
   }
 
   ///NOTE: The payload for invitations should be posted via a separate function inside the AddressRequestPaymentWorker
@@ -159,6 +159,7 @@ extension AppCoordinator: PaymentSendingDelegate {
     let maybeSender = self.sharedPayloadSenderIdentity(forReceiver: receiver)
     let maybePostable = PayloadPostableLightningObject(inputs: inputs, paymentResultId: response.result.cleanedId,
                                                        sender: maybeSender, receiver: receiver)
+
     if let postableObject = maybePostable {
       return self.postSharedPayload(postableObject).asVoid()
     } else {

@@ -27,7 +27,7 @@ enum AnalyticsManagerPropertiesType: String {
   case lightningUpgradeCompleted = "Lightning Upgrade Completed"
   case lightningUpgradedFromRestore = "Lightning Upgrade From Restore"
   case lightningUpgradedFunds = "Lightning Upgraded Funds"
-  case doesUserHaveLightningBalance = "Does User Have Lightning Balance"
+  case hasLightningBalance = "Does User Have Lightning Balance"
   case lightningLockedStatus = "Lightning Wallet Locked Status"
 }
 
@@ -130,8 +130,6 @@ enum AnalyticsManagerEventType: String {
   case onChainToLightningSuccessful = "OnChainToLightningSuccessful"
   case externalLightningInvoiceInput = "ExternalLightningInvoiceInput"
   case paymentToInvoiceFailed = "PaymentToInvoiceFailed"
-
-  //TODO
   case lightningDropBitInvoicePaid = "LightningDropBitInvoicePaid"
 
   var id: String {
