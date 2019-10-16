@@ -32,7 +32,8 @@ enum TransferAmount {
 }
 
 protocol WalletTransferViewControllerDelegate: ViewControllerDismissable
-& PaymentBuildingDelegate & PaymentSendingDelegate & URLOpener & BalanceDataSource {
+& PaymentBuildingDelegate & PaymentSendingDelegate & URLOpener &
+BalanceDataSource & AnalyticsManagerAccessType {
 
   func viewControllerNeedsTransactionData(_ viewController: UIViewController,
                                           btcAmount: NSDecimalNumber,
@@ -89,6 +90,13 @@ class WalletTransferViewController: PresentableViewController, StoryboardInitial
 
   override func viewDidLoad() {
     super.viewDidLoad()
+
+    switch viewModel.direction {
+    case .toOnChain:
+      delegate.viewControllerShouldTrackEvent(event: .lightningToOnChainPressed)
+    case .toLightning:
+      delegate.viewControllerShouldTrackEvent(event: .onChainToLightningPressed)
+    }
 
     confirmView.delegate = self
     feesView.delegate = self

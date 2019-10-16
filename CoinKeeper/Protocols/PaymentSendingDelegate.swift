@@ -30,10 +30,9 @@ protocol OnChainPaymentSendingDelegate: PaymentSendingDelegate {
 }
 
 protocol LightningPaymentSendingDelegate: PaymentSendingDelegate {
-  func viewControllerDidConfirmLightningPayment(
-    _ viewController: UIViewController,
-    inputs: LightningPaymentInputs,
-    receiver: OutgoingDropBitReceiver?)
+  func viewControllerDidConfirmLightningPayment(_ viewController: UIViewController,
+                                                inputs: LightningPaymentInputs,
+                                                receiver: ContactType?)
 
   func payAndPersistLightningRequest(withInputs inputs: LightningPaymentInputs,
                                      invitation: CKMInvitation?,

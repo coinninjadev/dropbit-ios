@@ -16,6 +16,7 @@ extension AppCoordinator: LightningReloadDelegate {
     let currencyPair = CurrencyPair(primary: .USD, fiat: .USD)
     let converter = CurrencyConverter(rates: exchangeRates, fromAmount: dollars, currencyPair: currencyPair)
     guard let btcAmount = converter.convertedAmount() else { return }
+    trackReloaded(amount: amount)
     let context = self.persistenceManager.viewContext
     self.buildLoadLightningPaymentData(btcAmount: btcAmount, exchangeRates: exchangeRates, in: context)
       .done { paymentData in
@@ -37,6 +38,21 @@ extension AppCoordinator: LightningReloadDelegate {
       alertManager.showError(message: displayMessage, forDuration: defaultDuration)
     } else {
       alertManager.showError(message: error.localizedDescription, forDuration: defaultDuration)
+    }
+  }
+
+  private func trackReloaded(amount: TransferAmount) {
+    switch amount {
+    case .low:
+      analyticsManager.track(event: .quickReloadFive, with: nil)
+    case .medium:
+      analyticsManager.track(event: .quickReloadTwenty, with: nil)
+    case .high:
+      analyticsManager.track(event: .quickReloadFifty, with: nil)
+    case .max:
+      analyticsManager.track(event: .quickReloadOneHundred, with: nil)
+    case .custom:
+      analyticsManager.track(event: .quickReloadCustomAmount, with: nil)
     }
   }
 

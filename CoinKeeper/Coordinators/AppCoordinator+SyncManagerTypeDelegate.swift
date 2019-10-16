@@ -90,6 +90,7 @@ extension AppCoordinator: SerialQueueManagerDelegate {
       keychainMigrationWorker: keychainWorker,
       persistenceManager: persistenceManager,
       networkManager: networkManager,
+      analyticsManager: analyticsManager,
       connectionManager: connectionManager,
       delegate: self,
       twitterAccessManager: twitterAccessManager
