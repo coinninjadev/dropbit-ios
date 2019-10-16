@@ -98,6 +98,10 @@ class TransactionDataWorker: TransactionDataWorkerType {
     }
     return self.networkManager.getLightningLedger()
       .get(in: context) { response in
+        ///Run deletion before persisting the ledger so that it doesn't interfere with wallet
+        ///entries whose inverse relationships are not set until the context is saved.
+        self.persistenceManager.brokers.lightning.deleteInvalidWalletEntries(in: context)
+
         self.persistenceManager.brokers.lightning.persistLedgerResponse(response, forWallet: wallet, in: context)
         self.processOnChainLightningTransfers(withLedger: response.ledger, forWallet: wallet, in: context)
       }
