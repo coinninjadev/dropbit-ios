@@ -254,7 +254,7 @@ class WalletAddressDataWorker: WalletAddressDataWorkerType {
     forResponses responses: [WalletAddressRequestResponse],
     in context: NSManagedObjectContext) {
     for response in responses {
-      guard let txid = response.txid else { continue }
+      guard let txid = response.txid?.asNilIfEmpty(), response.addressTypeCase == .lightning else { continue }
       let maybeInvitation = CKMInvitation.find(withTxid: txid, in: context)
       let maybeLedgerEntry = CKMLNLedgerEntry.find(withId: txid, wallet: nil, in: context)
       guard let invitation = maybeInvitation, let ledgerEntry = maybeLedgerEntry else { continue }

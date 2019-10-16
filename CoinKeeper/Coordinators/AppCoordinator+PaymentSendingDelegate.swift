@@ -235,7 +235,7 @@ extension AppCoordinator: PaymentSendingDelegate {
           }
 
           do {
-            try context.save()
+            try context.saveRecursively()
           } catch {
             log.contextSaveError(error)
           }
