@@ -47,12 +47,7 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
   @IBOutlet var refreshView: TransactionHistoryRefreshView!
   @IBOutlet var refreshViewTopConstraint: NSLayoutConstraint!
   @IBOutlet var footerView: UIView!
-  @IBOutlet var gradientBlurView: UIView! {
-    didSet {
-      gradientBlurView.backgroundColor = .white
-      gradientBlurView.fade(style: .top, percent: 1.0)
-    }
-  }
+  @IBOutlet var gradientBlurView: UIView!
 
   weak var delegate: TransactionHistoryViewControllerDelegate!
 
@@ -117,6 +112,11 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
     resetCollectionView()
   }
 
+  override func viewDidLayoutSubviews() {
+    super.viewDidLayoutSubviews()
+    configureGradientBlurView() //the CAGradientLayer doesn't use autolayout, so need to keep its bounds updated here
+  }
+
   override func viewWillDisappear(_ animated: Bool) {
     super.viewWillDisappear(animated)
     // In case new transactions came it while this view was open, this will hide the badge
@@ -164,6 +164,10 @@ extension TransactionHistoryViewController { // Layout
     return UIApplication.shared.statusBarFrame.height
   }
 
+  func configureGradientBlurView() {
+    gradientBlurView.backgroundColor = .white
+    gradientBlurView.fade(style: .top, percent: 1.0)
+  }
 }
 
 extension TransactionHistoryViewController: TransactionHistoryDataSourceDelegate {
