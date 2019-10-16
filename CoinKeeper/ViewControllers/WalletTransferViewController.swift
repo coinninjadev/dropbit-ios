@@ -121,12 +121,26 @@ class WalletTransferViewController: PresentableViewController, StoryboardInitial
   }
 
   private func buildTransaction() {
-    delegate.viewControllerNeedsTransactionData(self, btcAmount: viewModel.btcAmount, exchangeRates: viewModel.exchangeRates)
-      .done { paymentData in self.viewModel.direction = .toLightning(paymentData) }
-      .catch {
-        self.delegate.handleLightningLoadError($0)
-        self.disableConfirmButton()
+    guard viewModel.btcAmount > 0 else {
+      self.disableConfirmButton()
+      return
+    }
+    let walletBalances = balanceDataSource?.balancesNetPending() ?? .empty
+    do {
+      try LightningWalletAmountValidator(balancesNetPending: walletBalances, walletType: .onChain)
+        .validate(value: viewModel.generateCurrencyConverter())
+      delegate.viewControllerNeedsTransactionData(self, btcAmount: viewModel.btcAmount, exchangeRates: viewModel.exchangeRates)
+        .done { paymentData in
+          self.viewModel.direction = .toLightning(paymentData)
+          self.setupTransactionUI()
+        }
+        .catch {
+          self.delegate.handleLightningLoadError($0)
+          self.disableConfirmButton()
       }
+    } catch {
+      self.delegate.handleLightningLoadError(error)
+    }
   }
 
   private func setupTransactionUI() {
@@ -183,14 +197,25 @@ class WalletTransferViewController: PresentableViewController, StoryboardInitial
         return
       }
       SVProgressHUD.show()
-      delegate.viewControllerNeedsFeeEstimates(self, btcAmount: amount)
-        .get(on: .main) { response in
-          SVProgressHUD.dismiss()
-          self.setupUIForFees(networkFee: response.result.networkFee, processingFee: response.result.processingFee)
+
+      do {
+        let walletBalances: WalletBalances = balanceDataSource?.balancesNetPending() ?? .empty
+        let type = WalletTransactionType.lightning
+        let value = CurrencyConverter(fromBtcTo: .USD, fromAmount: amount, rates: rateManager.exchangeRates)
+        try LightningWalletAmountValidator(balancesNetPending: walletBalances, walletType: type).validate(value: value)
+
+        delegate.viewControllerNeedsFeeEstimates(self, btcAmount: amount)
+          .get(on: .main) { response in
+            SVProgressHUD.dismiss()
+            self.setupUIForFees(networkFee: response.result.networkFee, processingFee: response.result.processingFee)
         }.catch { error in
           SVProgressHUD.dismiss()
           self.delegate.viewControllerNetworkError(error)
+        }
+      } catch {
+        delegate.handleLightningLoadError(error)
       }
+
     default:
       break
     }
@@ -217,7 +242,8 @@ extension WalletTransferViewController: ConfirmViewDelegate {
     case .toLightning(let data):
       guard let data = data else { return }
       do {
-        try LightningWalletAmountValidator(balancesNetPending: walletBalances).validate(value: viewModel.generateCurrencyConverter())
+        try LightningWalletAmountValidator(balancesNetPending: walletBalances, walletType: .onChain)
+          .validate(value: viewModel.generateCurrencyConverter())
         delegate.viewControllerDidConfirmLoad(self, paymentData: data)
       } catch {
         delegate.viewControllerNetworkError(error)

@@ -218,23 +218,21 @@ extension DeviceVerificationCoordinator: DeviceVerificationViewControllerDelegat
       return
     }
 
-    let bgContext = delegate.persistenceManager.createBackgroundContext()
-    bgContext.perform {
-      let body = UserIdentityBody(phoneNumber: phoneNumber)
-      delegate.persistenceManager.defaultHeaders(temporaryUserId: temporaryUserId, in: bgContext)
-        .then { delegate.networkManager.resendVerification(headers: $0, body: body) }
-        .done { _ in
-          delegate.alertManager.showSuccess(message: "You will receive a verification code SMS shortly",
-                                                        forDuration: 2.0)
-          log.info("Successfully requested code resend")
-        }
-        .catch { [weak self] error in
-          self?.handleResendError(error)
-          if let providerError = error as? UserProviderError, case .twilioError = providerError {
-            delegate.didReceiveTwilioError(for: body.identity, route: .resendVerification)
-          }
+    let body = UserIdentityBody(phoneNumber: phoneNumber)
+    let context = delegate.persistenceManager.viewContext
+    delegate.persistenceManager.defaultHeaders(temporaryUserId: temporaryUserId, in: context)
+      .then { delegate.networkManager.resendVerification(headers: $0, body: body) }
+      .done { _ in
+        delegate.alertManager.showSuccess(message: "You will receive a verification code SMS shortly",
+                                          forDuration: 2.0)
+        log.info("Successfully requested code resend")
       }
-    }
+      .catch { [weak self] error in
+        self?.handleResendError(error)
+        if let providerError = error as? UserProviderError, case .twilioError = providerError {
+          delegate.didReceiveTwilioError(for: body.identity, route: .resendVerification)
+        }
+      }
   }
 
   private func handleResendError(_ error: Error) {

@@ -41,7 +41,7 @@ extension AppCoordinator: PaymentBuildingDelegate {
       .then { (feeRates: FeeRates) -> Promise<PaymentData> in
         do {
           try BitcoinAddressValidator().validate(value: lightningAccount.address)
-            log.info("Lightning load address successfully validated.")
+          log.info("Lightning load address successfully validated.")
         } catch {
           log.error(error, message: "Lightning load address failed validation. Address: \(lightningAccount.address)")
           return Promise(error: error)
@@ -61,7 +61,7 @@ extension AppCoordinator: PaymentBuildingDelegate {
             return Promise(error: error)
           }
         } else {
-          return Promise(error: CKPersistenceError.missingValue(key: "paymentData"))
+          return Promise(error: TransactionDataError.insufficientFunds)
         }
     }
   }
