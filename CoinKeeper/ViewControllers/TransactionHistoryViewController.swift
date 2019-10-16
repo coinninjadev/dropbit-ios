@@ -96,6 +96,7 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
     lightningTransactionHistoryEmptyBalanceView.delegate = delegate
     emptyStateBackgroundView.isHidden = false
     emptyStateBackgroundView.backgroundColor = .whiteBackground
+    configureOnChainEmptyStateButtons()
     if viewModel.walletTransactionType == .onChain {
       lockedLightningView.isHidden = true
       lightningUnavailableView.isHidden = true
@@ -272,5 +273,17 @@ extension TransactionHistoryViewController: DZNEmptyDataSetDelegate, DZNEmptyDat
     default:
       return 0
     }
+  }
+
+  ///These buttons apply a default style during awakeFromNib, which is triggered after these outlets
+  ///didSet, so need to set the button styles later in the view lifecycle.
+  func configureOnChainEmptyStateButtons() {
+    let views = [transactionHistoryNoBalanceView, transactionHistoryWithBalanceView]
+    for view in views {
+      view?.getBitcoinButton?.style = .green
+      view?.learnAboutBitcoinButton?.style = .darkBlue
+    }
+
+    transactionHistoryWithBalanceView?.spendBitcoinButton?.style = .orange
   }
 }
