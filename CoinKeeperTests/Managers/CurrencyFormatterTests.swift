@@ -40,4 +40,17 @@ class CurrencyFormatterTests: XCTestCase {
     XCTAssertEqual(formatter.string(fromDecimal: amount), expectedValue)
   }
 
+  func testSatsFormatterWithoutSymbol() {
+    let satsFormatter = SatsFormatter()
+    let sats = 10_000
+    let formattedString = satsFormatter.stringFromSats(sats)
+    let expectedString = "10,000"
+    XCTAssertEqual(formattedString, expectedString)
+
+    let sats2 = 100_000_000
+    let formattedString2 = satsFormatter.stringFromSats(sats2)
+    let expectedString2 = "100,000,000"
+    XCTAssertEqual(formattedString2, expectedString2)
+  }
+
 }
