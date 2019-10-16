@@ -364,6 +364,12 @@ struct CKPredicate {
       let idKeyPath = #keyPath(CKMLNLedgerEntry.id)
       return NSPredicate(format: "\(idKeyPath) IN %@", ids)
     }
+
+    static func withoutPayload() -> NSPredicate {
+      let path = #keyPath(CKMLNLedgerEntry.walletEntry.sharedPayload)
+      return NSPredicate(format: "\(path) == nil")
+    }
+
     static func invalid() -> NSPredicate {
       let walletEntryPath = #keyPath(CKMLNLedgerEntry.walletEntry)
       return NSPredicate(format: "\(walletEntryPath) == nil")

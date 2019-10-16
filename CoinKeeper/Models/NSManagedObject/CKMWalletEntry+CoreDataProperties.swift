@@ -22,6 +22,7 @@ extension CKMWalletEntry {
   @NSManaged public var sortDate: Date
   @NSManaged public var isHidden: Bool
   @NSManaged public var memo: String?
+  @NSManaged public var lastCheckedSharedPayload: Date?
 
   ///If `memo` is set, this indicates whether it was part of the original (shared) lightning invoice.
   ///Otherwise it may have been part of the shared payload or set manually by the user.

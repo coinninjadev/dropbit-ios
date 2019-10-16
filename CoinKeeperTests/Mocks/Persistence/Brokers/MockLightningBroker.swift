@@ -32,5 +32,10 @@ class MockLightningBroker: CKPersistenceBroker, LightningBrokerType {
   func deleteInvalidWalletEntries(in context: NSManagedObjectContext) { }
   func deleteInvalidLedgerEntries(in context: NSManagedObjectContext) { }
 
+  func getLedgerEntriesWithoutPayloads(matchingIds ids: [String],
+                                       limit: Int,
+                                       in context: NSManagedObjectContext) -> [CKMLNLedgerEntry] {
+    return []
+  }
 
 }
