@@ -100,7 +100,7 @@ class TransactionDataWorker: TransactionDataWorkerType {
     return getLightningLedger(since: fullSync ? nil : CKMLNLedgerEntry.findLatest(in: context)?.createdAt)
     .get(in: context) { response in
       self.persistenceManager.brokers.lightning.persistLedgerResponse(response, forWallet: wallet, in: context)
-      self.identifyLightningTransfers(withLedger: response.ledger, forWallet: wallet, in: context)
+      self.processOnChainLightningTransfers(withLedger: response.ledger, forWallet: wallet, in: context)
     }
     .then(in: context) { response -> Promise<Void> in
       let lightningEntryIds = response.ledger.filter { $0.type == .lightning }.map { $0.cleanedId }
