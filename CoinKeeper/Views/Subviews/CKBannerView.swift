@@ -9,7 +9,7 @@
 import SwiftMessages
 
 enum CKBannerViewKind {
-  case error, warn, success, info
+  case error, warn, success, info, lightning
 
   var backgroundColor: UIColor {
     switch self {
@@ -17,12 +17,13 @@ enum CKBannerViewKind {
     case .warn: return .bannerWarn
     case .success: return .bannerSuccess
     case .info: return .darkBlueBackground
+    case .lightning: return .darkPurple
     }
   }
 
   var textColor: UIColor {
     switch self {
-    case .info, .error, .warn, .success: return .whiteText
+    case .info, .error, .warn, .success, .lightning: return .whiteText
     }
   }
 }
