@@ -202,8 +202,9 @@ class OnChainAddressRequestPaymentWorker: AddressRequestPaymentWorker {
           return self.walletManager.transactionData(forPayment: btcAmount, to: address, withFlatFee: pendingInvitation.fees)
             .then { txData in
               return self.networkManager.broadcastTx(with: txData)
-                .then(in: context) { _ -> Promise<Void> in
-                  return self.completeWalletAddressRequestFulfillmentLocally(outgoingTransactionData: outgoingTxData, invitationId: responseId,
+                .then(in: context) { txid -> Promise<Void> in
+                  let dataCopyWithTxid = outgoingTxData.copy(withTxid: txid)
+                  return self.completeWalletAddressRequestFulfillmentLocally(outgoingTransactionData: dataCopyWithTxid, invitationId: responseId,
                                                                              pendingInvitation: pendingInvitation, txData: txData, in: context)
               }
             }

@@ -40,9 +40,10 @@ class LightningBroker: CKPersistenceBroker, LightningBrokerType {
     if let invitation = invitation, let walletEntry = invitation.walletEntry {
       ledgerEntry = CKMLNLedgerEntry.create(with: response.result, in: context)
       walletEntry.ledgerEntry = ledgerEntry
+      ledgerEntry.walletEntry = walletEntry
     } else {
+      ///invitation and/or invitation.walletEntry are nil, create ledger entry for non-invite lightning transaction
       ledgerEntry = CKMLNLedgerEntry.updateOrCreate(with: response.result, forWallet: wallet, in: context)
-      invitation?.walletEntry?.ledgerEntry = ledgerEntry
     }
 
     if let receiver = receiver {
@@ -67,4 +68,35 @@ class LightningBroker: CKPersistenceBroker, LightningBrokerType {
 
     invalidWalletEntries.forEach { context.delete($0) }
   }
+
+  func deleteInvalidLedgerEntries(in context: NSManagedObjectContext) {
+    let fetchRequest: NSFetchRequest<CKMLNLedgerEntry> = CKMLNLedgerEntry.fetchRequest()
+    fetchRequest.predicate = CKPredicate.LedgerEntry.invalid()
+
+    var invalidLedgerEntries: [CKMLNLedgerEntry] = []
+    do {
+      invalidLedgerEntries = try context.fetch(fetchRequest)
+    } catch {
+      log.error(error, message: "failed to fetch invalid wallet entries")
+    }
+
+    invalidLedgerEntries.forEach { context.delete($0) }
+  }
+
+  func getLedgerEntriesWithoutPayloads(matchingIds ids: [String], limit: Int, in context: NSManagedObjectContext) -> [CKMLNLedgerEntry] {
+    let fetchRequest: NSFetchRequest<CKMLNLedgerEntry> = CKMLNLedgerEntry.fetchRequest()
+    fetchRequest.predicate = NSCompoundPredicate(type: .and, subpredicates: [CKPredicate.LedgerEntry.idIn(ids),
+                                                                             CKPredicate.LedgerEntry.withoutPayload()])
+    let sortPath = #keyPath(CKMLNLedgerEntry.walletEntry.lastCheckedSharedPayload)
+    fetchRequest.sortDescriptors = [NSSortDescriptor(key: sortPath, ascending: true)]
+    fetchRequest.fetchLimit = limit
+
+    do {
+      return try context.fetch(fetchRequest)
+    } catch {
+      log.error(error, message: "failed to fetch ledger entries without payloads")
+      return []
+    }
+  }
+
 }
