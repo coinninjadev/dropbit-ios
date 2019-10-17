@@ -82,6 +82,7 @@ class SettingsViewController: BaseViewController, StoryboardInitializable {
     settingsTableView.registerNib(cellType: SettingsRecoveryWordsCell.self)
     settingsTableView.registerNib(cellType: SettingSwitchCell.self)
     settingsTableView.registerNib(cellType: SettingSwitchWithInfoCell.self)
+    settingsTableView.registerNib(cellType: SettingsWithInfoCell.self)
     settingsTableView.registerHeaderFooter(headerFooterType: SettingsTableViewSectionHeader.self)
     settingsTableView.dataSource = self
     settingsTableView.delegate = self
@@ -132,6 +133,9 @@ class SettingsViewController: BaseViewController, StoryboardInitializable {
       let legacyWordsCellType = SettingsCellType.legacyWords(action: { [weak self] in
         guard let localSelf = self else { return }
         localSelf.delegate.viewControllerDidSelectReviewLegacyWords(localSelf)
+        }, infoAction: { [weak self] (type: SettingsCellType) -> Void in
+          guard let localSelf = self, let url = type.url else { return }
+          localSelf.delegate.viewController(localSelf, didRequestOpenURL: url)
       })
       legacyWordsVM = SettingsCellViewModel(type: legacyWordsCellType)
     }

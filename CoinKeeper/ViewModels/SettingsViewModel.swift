@@ -42,14 +42,16 @@ struct SettingsCellViewModel {
     switch type {
     case .dustProtection(enabled: _, infoAction: let infoAction, onChange: _):
       infoAction(type)
-    case .licenses, .legacyWords, .recoveryWords, .yearlyHighPushNotification, .adjustableFees, .regtest:
+    case .legacyWords(action: _, infoAction: let infoAction):
+      infoAction(type)
+    case .licenses, .recoveryWords, .yearlyHighPushNotification, .adjustableFees, .regtest:
       break
     }
   }
 
   func didTapRow() {
     switch type {
-    case .legacyWords(let action):
+    case .legacyWords(let action, _):
       action()
     case .recoveryWords(_, let action):
       action()
@@ -63,7 +65,7 @@ struct SettingsCellViewModel {
 
 typealias BasicAction = () -> Void
 enum SettingsCellType {
-  case legacyWords(action: BasicAction)
+  case legacyWords(action: BasicAction, infoAction: (SettingsCellType) -> Void)
   case recoveryWords(Bool, action: BasicAction)
   case dustProtection(enabled: Bool, infoAction: (SettingsCellType) -> Void, onChange: (Bool) -> Void)
   case yearlyHighPushNotification(enabled: Bool, onChange: (Bool) -> Void)
@@ -74,7 +76,7 @@ enum SettingsCellType {
   /// Returns nil if the text is conditional
   var titleText: String {
     switch self {
-    case .legacyWords:  return "Legacy Words"
+    case .legacyWords:    return "Legacy Words"
     case .recoveryWords:  return "Recovery Words"
     case .dustProtection: return "Dust Protection"
     case .yearlyHighPushNotification: return "Bitcoin Yearly High Price Notification"
@@ -94,6 +96,7 @@ enum SettingsCellType {
   var url: URL? {
     switch self {
     case .dustProtection: return CoinNinjaUrlFactory.buildUrl(for: .dustProtection)
+    case .legacyWords: return CoinNinjaUrlFactory.buildUrl(for: .legacyWords)
     default:          return nil
     }
   }
