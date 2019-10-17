@@ -19,7 +19,7 @@
 		307DF11B21500BF100260369 /* ElasticRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 307DF11A21500BF100260369 /* ElasticRequest.swift */; };
 		307DF11D2150394400260369 /* MessagesManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 307DF11C2150394400260369 /* MessagesManager.swift */; };
 		307DF11F2151676900260369 /* JSONValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 307DF11E2151676900260369 /* JSONValue.swift */; };
-		307DF12121517A8800260369 /* Global.swift in Sources */ = {isa = PBXBuildFile; fileRef = 307DF12021517A8800260369 /* Global.swift */; };
+		307DF12121517A8800260369 /* VersionInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 307DF12021517A8800260369 /* VersionInfo.swift */; };
 		308F6F01217F91980094D6CB /* ServerAddressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 308F6F00217F91980094D6CB /* ServerAddressView.swift */; };
 		308F6F03217F91A50094D6CB /* ServerAddressView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 308F6F02217F91A50094D6CB /* ServerAddressView.xib */; };
 		308F6F05217F97F50094D6CB /* DragIndiciatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 308F6F04217F97F50094D6CB /* DragIndiciatorView.swift */; };
@@ -1118,7 +1118,7 @@
 		307DF11A21500BF100260369 /* ElasticRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ElasticRequest.swift; sourceTree = "<group>"; };
 		307DF11C2150394400260369 /* MessagesManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesManager.swift; sourceTree = "<group>"; };
 		307DF11E2151676900260369 /* JSONValue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSONValue.swift; sourceTree = "<group>"; };
-		307DF12021517A8800260369 /* Global.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Global.swift; sourceTree = "<group>"; };
+		307DF12021517A8800260369 /* VersionInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VersionInfo.swift; sourceTree = "<group>"; };
 		308F6F00217F91980094D6CB /* ServerAddressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerAddressView.swift; sourceTree = "<group>"; };
 		308F6F02217F91A50094D6CB /* ServerAddressView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ServerAddressView.xib; sourceTree = "<group>"; };
 		308F6F04217F97F50094D6CB /* DragIndiciatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DragIndiciatorView.swift; sourceTree = "<group>"; };
@@ -2688,7 +2688,7 @@
 				3BB05AC0209CF407000297E1 /* Typealiases.swift */,
 				307DF11E2151676900260369 /* JSONValue.swift */,
 				B509262822CA57CF00126250 /* CKLogger.swift */,
-				307DF12021517A8800260369 /* Global.swift */,
+				307DF12021517A8800260369 /* VersionInfo.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -4722,7 +4722,7 @@
 				3BC23EF220BDCA5100877BB6 /* TransactionDataError.swift in Sources */,
 				3BA9F60D208F6EA20047C213 /* AppCoordinator+CurrencyValueManager.swift in Sources */,
 				B51D55E12346300000AEAA60 /* TransactionViewModelObject+CKMWalletEntry.swift in Sources */,
-				307DF12121517A8800260369 /* Global.swift in Sources */,
+				307DF12121517A8800260369 /* VersionInfo.swift in Sources */,
 				B559AF0D2180E919001D44F2 /* Badgeable.swift in Sources */,
 				B5976AD321552AFC00774073 /* UserQueryTarget.swift in Sources */,
 				5B91E3A42076EDBB00DD9A86 /* Array+Helpers.swift in Sources */,
