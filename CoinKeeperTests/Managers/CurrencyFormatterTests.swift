@@ -43,13 +43,13 @@ class CurrencyFormatterTests: XCTestCase {
   func testSatsFormatterWithoutSymbol() {
     let satsFormatter = SatsFormatter()
     let sats = 10_000
-    let formattedString = satsFormatter.stringFromSats(sats)
-    let expectedString = "10,000"
+    let formattedString = satsFormatter.stringWithSymbol(fromSats: sats)
+    let expectedString = "10,000 sats"
     XCTAssertEqual(formattedString, expectedString)
 
     let sats2 = 100_000_000
-    let formattedString2 = satsFormatter.stringFromSats(sats2)
-    let expectedString2 = "100,000,000"
+    let formattedString2 = satsFormatter.stringWithSymbol(fromSats: sats2)
+    let expectedString2 = "100,000,000 sats"
     XCTAssertEqual(formattedString2, expectedString2)
   }
 

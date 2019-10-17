@@ -160,8 +160,11 @@ class AlertManager: AlertManagerType {
 
   func showIncomingLightningAlert(for receivedAmount: Int, with rates: ExchangeRates) {
     let satsFormatter = SatsFormatter()
-    let amountString = satsFormatter.stringFromSats(receivedAmount)
-    let message = "You have received a new Lightning payment of \(amountString) sats!"
+    var details = "!"
+    if let amountString = satsFormatter.stringWithSymbol(fromSats: receivedAmount) {
+      details = " of \(amountString)!"
+    }
+    let message = "You have received a new Lightning payment\(details)"
     showIncomingAlertForCurrentAppState(with: message, alertKind: .lightning)
   }
 

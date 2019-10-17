@@ -179,11 +179,9 @@ class SatsFormatter: CKCurrencyFormatter {
     return numberString
   }
 
-  func stringFromSats(_ sats: Int) -> String {
-    let formatter = numberFormatterWithoutSymbol(for: .BTC, asInteger: true)
-    let convertedSats = NSNumber(value: sats)
-    let foo = formatter.string(from: convertedSats) ?? ""
-    return foo
+  func stringWithSymbol(fromSats sats: Int) -> String? {
+    let satsAsDecimal = NSDecimalNumber(integerAmount: sats, currency: .BTC)
+    return string(fromDecimal: satsAsDecimal)
   }
 
 }
