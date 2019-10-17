@@ -175,7 +175,7 @@ struct CoinNinjaUrlFactory {
       case .lightningUpgrade:
         return "upgrade"
       case .legacyWords:
-        return "legacywords"
+        return "\(tooltipBreadcrumb)legacywords"
       }
     }
   }
