@@ -27,6 +27,10 @@ public class CKMLNLedgerEntry: NSManagedObject {
     return entry
   }
 
+  static let lastLedgerSortDescriptor: [NSSortDescriptor] = [
+    NSSortDescriptor(key: #keyPath(CKMLNLedgerEntry.createdAt), ascending: false)
+  ]
+
   static func findOrCreate(with id: String, wallet: CKMWallet, createdAt: Date, in context: NSManagedObjectContext) -> CKMLNLedgerEntry {
     if let foundEntry = find(with: id, wallet: wallet, in: context) {
       return foundEntry
@@ -59,6 +63,19 @@ public class CKMLNLedgerEntry: NSManagedObject {
     entry.processingFee = result.processingFee
     entry.request = result.request
     entry.error = result.error
+  }
+
+  static func findLatest(in context: NSManagedObjectContext) -> CKMLNLedgerEntry? {
+    let fetchRequest: NSFetchRequest<CKMLNLedgerEntry> = CKMLNLedgerEntry.fetchRequest()
+    fetchRequest.fetchLimit = 1
+    fetchRequest.sortDescriptors = lastLedgerSortDescriptor
+
+    do {
+      return try context.fetch(fetchRequest).first
+    } catch {
+      log.error(error, message: "Could not execute fetch request for latest transaction")
+      return nil
+    }
   }
 
   static func find(with id: String, wallet: CKMWallet?, in context: NSManagedObjectContext) -> CKMLNLedgerEntry? {

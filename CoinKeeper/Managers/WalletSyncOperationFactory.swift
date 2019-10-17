@@ -109,7 +109,7 @@ class WalletSyncOperationFactory {
       .get { _ in dependencies.connectionManager.setAPIUnreachable(false) }
       .then(in: context) { self.updateLightningAccount(with: dependencies, in: context) }
       .get { account in self.updateLightningAccountStatusAfterSuccessfulResponse(dependencies, account: account) }
-      .then(in: context) { _ in dependencies.txDataWorker.performFetchAndStoreAllLightningTransactions(in: context) }
+      .then(in: context) { _ in dependencies.txDataWorker.performFetchAndStoreAllLightningTransactions(in: context, fullSync: fullSync) }
       .recover { self.handleThunderdomeSyncError(with: $0, dependencies: dependencies) }
       .then(in: context) { _ in dependencies.walletWorker.updateServerPoolAddresses(in: context) }
       .then(in: context) { dependencies.walletWorker.updateReceivedAddressRequests(in: context) }

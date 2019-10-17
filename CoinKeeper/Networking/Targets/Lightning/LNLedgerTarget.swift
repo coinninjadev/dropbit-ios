@@ -8,10 +8,26 @@
 
 import Moya
 
+public struct LNLedgerUrlParameters {
+  var after: Date?
+  var offset: Int
+  var limit: Int = 10
+
+  var rfcAfter: String? {
+    guard let after = after else { return nil }
+    return CKDateFormatter.rfc3339.string(from: after)
+  }
+
+  init(after: Date?, page: Int) {
+    self.after = after
+    self.offset = page * limit
+  }
+}
+
 public enum LNLedgerTarget: CoinNinjaTargetType {
   typealias ResponseType = LNLedgerResponse
 
-  case get
+  case get(LNLedgerUrlParameters)
 
   var basePath: String {
     return "thunderdome"
@@ -26,7 +42,15 @@ public enum LNLedgerTarget: CoinNinjaTargetType {
   }
 
   public var task: Task {
-    return .requestPlain
+    switch self {
+    case .get(let parameters):
+      var urlParams: [String: Any] = ["offset": parameters.offset, "limit": parameters.limit]
+      if let after = parameters.rfcAfter {
+        urlParams["after"] = after
+      }
+
+      return .requestParameters(parameters: urlParams, encoding: URLEncoding.default)
+    }
   }
 
 }

@@ -32,7 +32,7 @@ protocol TransactionDataWorkerType: AnyObject {
   /// - Returns: a Promise<Void>
   func performFetchAndStoreAllOnChainTransactions(in context: NSManagedObjectContext, fullSync: Bool) -> Promise<Void>
 
-  func performFetchAndStoreAllLightningTransactions(in context: NSManagedObjectContext) -> Promise<Void>
+  func performFetchAndStoreAllLightningTransactions(in context: NSManagedObjectContext, fullSync: Bool) -> Promise<Void>
 
 }
 
@@ -92,21 +92,48 @@ class TransactionDataWorker: TransactionDataWorkerType {
     }
   }
 
-  func performFetchAndStoreAllLightningTransactions(in context: NSManagedObjectContext) -> Promise<Void> {
+  func performFetchAndStoreAllLightningTransactions(in context: NSManagedObjectContext, fullSync: Bool) -> Promise<Void> {
     guard let wallet = CKMWallet.find(in: context) else {
       return Promise(error: CKPersistenceError.noManagedWallet)
     }
-    return self.networkManager.getLightningLedger()
-      .get(in: context) { response in
-        self.persistenceManager.brokers.lightning.persistLedgerResponse(response, forWallet: wallet, in: context)
-        self.identifyLightningTransfers(withLedger: response.ledger, forWallet: wallet, in: context)
-      }
-      .then(in: context) { response -> Promise<Void> in
-        let lightningEntryIds = response.ledger.filter { $0.type == .lightning }.map { $0.cleanedId }
-        return self.fetchTransactionNotifications(forIds: lightningEntryIds)
-          .get(in: context) { responses in self.decryptAndPersistSharedPayloads(from: responses, ofType: .lightning, in: context) }
-          .asVoid()
-      }
+
+    return getLightningLedger(since: fullSync ? nil : CKMLNLedgerEntry.findLatest(in: context)?.createdAt)
+    .get(in: context) { response in
+      self.persistenceManager.brokers.lightning.persistLedgerResponse(response, forWallet: wallet, in: context)
+      self.identifyLightningTransfers(withLedger: response.ledger, forWallet: wallet, in: context)
+    }
+    .then(in: context) { response -> Promise<Void> in
+      let lightningEntryIds = response.ledger.filter { $0.type == .lightning }.map { $0.cleanedId }
+      return self.fetchTransactionNotifications(forIds: lightningEntryIds)
+        .get(in: context) { responses in self.decryptAndPersistSharedPayloads(from: responses, ofType: .lightning, in: context) }
+        .asVoid()
+    }
+  }
+
+  private func getLightningLedger(since date: Date?,
+                                  recursiveResponse: LNLedgerResponse? = nil,
+                                  offset page: Int = 0) -> Promise<LNLedgerResponse> {
+    let urlParameters = LNLedgerUrlParameters(after: date, page: page)
+
+    return self.networkManager.getLightningLedger(parameters: urlParameters)
+      .then { response -> Promise<LNLedgerResponse> in
+        guard response.ledger.count == urlParameters.limit else {
+          if var recursiveResponse = recursiveResponse {
+            recursiveResponse.ledger += response.ledger
+            return Promise.value(recursiveResponse)
+          } else {
+            return Promise.value(response)
+          }
+        }
+
+        let newPage = page + 1
+        if var responseCopy = recursiveResponse {
+          responseCopy.ledger += response.ledger
+          return self.getLightningLedger(since: date, recursiveResponse: responseCopy, offset: newPage)
+        } else {
+          return self.getLightningLedger(since: date, recursiveResponse: response, offset: newPage)
+        }
+    }
   }
 
   private func identifyLightningTransfers(withLedger ledgerResults: [LNTransactionResult],

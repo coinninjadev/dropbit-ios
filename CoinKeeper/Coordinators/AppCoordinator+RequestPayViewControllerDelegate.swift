@@ -19,11 +19,15 @@ extension AppCoordinator: RequestPayViewControllerDelegate {
     guard let txDataWorker = workerFactory().createTransactionDataWorker() else { return }
 
     let context = persistenceManager.createBackgroundContext()
-    txDataWorker.performFetchAndStoreAllLightningTransactions(in: context)
-      .done(in: context) {
-        try? context.saveRecursively()
-        CKNotificationCenter.publish(key: .didUpdateLocalTransactionRecords)
-    }.cauterize()
+    context.perform {
+      txDataWorker.performFetchAndStoreAllLightningTransactions(in: context, fullSync: false)
+        .done(in: context) {
+          try? context.saveRecursively()
+          DispatchQueue.main.async {
+            CKNotificationCenter.publish(key: .didUpdateLocalTransactionRecords)
+          }
+      }.cauterize()
+    }
   }
 
   func viewControllerDidSelectCreateInvoice(_ viewController: UIViewController,
