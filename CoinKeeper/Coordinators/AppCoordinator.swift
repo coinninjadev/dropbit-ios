@@ -264,7 +264,7 @@ class AppCoordinator: CoordinatorType {
     let lastContactReloadDate: Date = persistenceManager.brokers.activity.lastContactCacheReload ?? .distantPast
     let oneWeekAgo = Calendar.current.date(byAdding: .day, value: -7, to: now) ?? now
     let shouldForce = lastContactReloadDate < oneWeekAgo
-    self.contactCacheDataWorker.reloadSystemContactsIfNeeded(force: true) { [weak self] _ in
+    self.contactCacheDataWorker.reloadSystemContactsIfNeeded(force: shouldForce) { [weak self] _ in
       self?.persistenceManager.matchContactsIfPossible()
       if shouldForce {
         self?.persistenceManager.brokers.activity.lastContactCacheReload = now
