@@ -10,18 +10,21 @@ import UIKit
 
 extension UIView {
 
+  ///Pass nil to not add a constraint to that side
   func constrain(to targetView: UIView,
-                 topConstant: CGFloat = 0,
-                 bottomConstant: CGFloat = 0,
-                 leadingConstant: CGFloat = 0,
-                 trailingConstant: CGFloat = 0) {
+                 topConstant: CGFloat? = 0,
+                 bottomConstant: CGFloat? = 0,
+                 leadingConstant: CGFloat? = 0,
+                 trailingConstant: CGFloat? = 0) {
     targetView.translatesAutoresizingMaskIntoConstraints = false
-    NSLayoutConstraint.activate([
-      self.topAnchor.constraint(equalTo: targetView.topAnchor, constant: topConstant),
-      self.bottomAnchor.constraint(equalTo: targetView.bottomAnchor, constant: bottomConstant),
-      self.leadingAnchor.constraint(equalTo: targetView.leadingAnchor, constant: leadingConstant),
-      self.trailingAnchor.constraint(equalTo: targetView.trailingAnchor, constant: trailingConstant)
-      ])
+
+    let topConstraint = topConstant.flatMap { self.topAnchor.constraint(equalTo: targetView.topAnchor, constant: $0) }
+    let bottomConstraint = bottomConstant.flatMap { self.bottomAnchor.constraint(equalTo: targetView.bottomAnchor, constant: $0) }
+    let leadingConstraint = leadingConstant.flatMap { self.leadingAnchor.constraint(equalTo: targetView.leadingAnchor, constant: $0) }
+    let trailingConstraint = trailingConstant.flatMap { self.trailingAnchor.constraint(equalTo: targetView.trailingAnchor, constant: $0) }
+
+    let desiredConstraints: [NSLayoutConstraint] = [topConstraint, bottomConstraint, leadingConstraint, trailingConstraint].compactMap { $0 }
+    NSLayoutConstraint.activate(desiredConstraints)
   }
 
 }

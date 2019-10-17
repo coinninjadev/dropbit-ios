@@ -45,6 +45,7 @@ protocol TransactionSummaryCellViewModelType: TransactionSummaryCellDisplayable 
   var lightningInvoice: String? { get }
   var amounts: TransactionAmounts { get }
   var memo: String? { get }
+  var isSentToSelf: Bool { get }
   var isLightningUpgrade: Bool { get }
   var isLightningTransfer: Bool { get }
   var isPendingTransferToLightning: Bool { get }
@@ -53,12 +54,7 @@ protocol TransactionSummaryCellViewModelType: TransactionSummaryCellDisplayable 
 extension TransactionSummaryCellViewModelType {
 
   var isValidTransaction: Bool {
-    switch status {
-    case .canceled,
-         .expired,
-         .failed:   return false
-    default:        return true
-    }
+    return status.isValid
   }
 
   var leadingImageConfig: SummaryCellLeadingImageConfig {
@@ -120,8 +116,6 @@ extension TransactionSummaryCellViewModelType {
       return counterparty
     } else if let invoiceText = lightningInvoiceDescription {
       return invoiceText
-    } else if isLightningUpgrade {
-      return "Lightning Upgrade"
     } else if let address = receiverAddress {
       return address
     } else {
@@ -165,6 +159,8 @@ extension TransactionSummaryCellViewModelType {
   var subtitleColor: UIColor { return isPendingTransferToLightning ? .bitcoinOrange : .darkBlueText }
 
   var counterpartyDescription: String? {
+    if isLightningUpgrade { return lightningUpgradeText }
+    if isSentToSelf { return sentToSelfText }
     guard let config = counterpartyConfig else { return nil }
     if let twitter = config.twitterConfig {
       return twitter.displayHandle
@@ -207,11 +203,13 @@ extension TransactionSummaryCellViewModelType {
     }
   }
 
+  var sentToSelfText: String { return "Sent to Myself" }
   var lightningPaidInvoiceText: String { return "Paid Invoice" }
   var lightningReceivedPaidInvoiceText: String { return "Received" }
   var lightningUnpaidInvoiceText: String { return "Lightning Invoice" }
   var lightningWithdrawText: String { return "Lightning Withdrawal" }
   var lightningDepositText: String { return "Lightning Load" }
+  var lightningUpgradeText: String { return "Lightning Upgrade" }
 
   var incomingImage: UIImage { return UIImage(imageLiteralResourceName: "summaryCellIncoming") }
   var outgoingImage: UIImage { return UIImage(imageLiteralResourceName: "summaryCellOutgoing") }

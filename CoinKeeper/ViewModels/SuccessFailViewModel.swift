@@ -54,7 +54,7 @@ class SuccessFailViewModel {
     }
   }
 
-  var primaryButtonStyle: PrimaryActionButton.Style {
+  var primaryButtonStyle: PrimaryActionButtonStyle {
     switch mode {
     case .pending, .success:  return .standard
     case .failure:            return .error

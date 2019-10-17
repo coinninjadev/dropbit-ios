@@ -72,9 +72,7 @@ class ConfirmPaymentMemoView: UIView {
     if config.isIncoming {
        return "Memo from sender"
     } else {
-      let prefix = config.isSent ? "Shared with" : "Will be seen by"
-      let recipient = config.recipientName ?? "the recipient"
-      return "\(prefix) \(recipient)"
+      return "Shared memo"
     }
   }
 

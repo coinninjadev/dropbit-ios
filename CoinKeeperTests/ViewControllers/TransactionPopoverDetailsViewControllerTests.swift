@@ -28,12 +28,6 @@ class TransactionPopoverDetailsViewControllerTests: XCTestCase {
   func testOutletsAreConnected() {
     XCTAssertNotNil(self.sut.containerView, "containerView should be connected")
     XCTAssertNotNil(self.sut.statusLabel, "statusLabel should be connected")
-    XCTAssertNotNil(self.sut.whenSentTitleLabel, "whenSentTitleLabel should be connected")
-    XCTAssertNotNil(self.sut.whenSentAmountLabel, "whenSentAmountLabel should be connected")
-    XCTAssertNotNil(self.sut.networkFeeTitleLabel, "networkFeeTitleLabel should be connected")
-    XCTAssertNotNil(self.sut.networkFeeAmountLabel, "networkFeeAmountLabel should be connected")
-    XCTAssertNotNil(self.sut.confirmationsTitleLabel, "confirmationsTitleLabel should be connected")
-    XCTAssertNotNil(self.sut.confirmationsAmountLabel, "confirmationsAmountLabel should be connected")
     XCTAssertNotNil(self.sut.txidLabel, "addressLabel should be connected")
     XCTAssertNotNil(self.sut.seeTransactionDetailsButton, "seeTransactionDetailsButton should be connected")
     XCTAssertNotNil(self.sut.shareTransactionButton, "shareTransactionButton should be connected")

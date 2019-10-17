@@ -119,7 +119,7 @@ final class LightningUpgradeStartViewController: BaseViewController, StoryboardI
     detailLabel.textColor = .neonGreen
     detailLabel.font = .regular(14)
 
-    upgradeButton.style = .white(enabled: false)
+    upgradeButton.style = .lightningUpgrade(enabled: false)
 
     let templateImage = UIImage(imageLiteralResourceName: "checkboxCheck").withRenderingMode(.alwaysTemplate)
 
@@ -173,11 +173,11 @@ final class LightningUpgradeStartViewController: BaseViewController, StoryboardI
     let transferSelected = !confirmTransferFundsCheckmarkImage.isHidden
 
     if (data?.amount ?? 0) == 0 && newWordsSelected {
-      upgradeButton.style = .white(enabled: true)
+      upgradeButton.style = .lightningUpgrade(enabled: true)
     } else if newWordsSelected && transferSelected {
-      upgradeButton.style = .white(enabled: true)
+      upgradeButton.style = .lightningUpgrade(enabled: true)
     } else {
-      upgradeButton.style = .white(enabled: false)
+      upgradeButton.style = .lightningUpgrade(enabled: false)
     }
   }
 

@@ -19,6 +19,7 @@ struct CoinNinjaUrlFactory {
     case dropBit
     case transaction(id: String)
     case address(id: String)
+    case invoice(invoice: String)
     case faqs
     case contactUs
     case termsOfUse
@@ -28,6 +29,9 @@ struct CoinNinjaUrlFactory {
     case sharedMemosTooltip
     case regularTransactionTooltip
     case dropbitTransactionTooltip
+    case lightningWithdrawalTooltip
+    case lightningInvoiceTooltip
+    case lightningDropBitTooltip
     case adjustableFeesTooltip
     case dustProtection
     case download
@@ -41,6 +45,7 @@ struct CoinNinjaUrlFactory {
     case dropBitMeLearnMore
     case lightningUpgrade
     case dropBitAppLightningWithdrawalFees
+    case lightningLoadTooltip
 
     var domain: String {
       switch self {
@@ -49,7 +54,8 @@ struct CoinNinjaUrlFactory {
            .spendBitcoinGiftCards,
            .buyGiftCards,
            .buyWithCreditCard,
-           .buyAtATM:
+           .buyAtATM,
+           .invoice:
         #if DEBUG
         return "https://test.coinninja.net/"
         #else
@@ -76,6 +82,10 @@ struct CoinNinjaUrlFactory {
            .dropBitAppLightningWithdrawalFees,
            .regularTransactionTooltip,
            .dropbitTransactionTooltip,
+           .lightningWithdrawalTooltip,
+           .lightningInvoiceTooltip,
+           .lightningDropBitTooltip,
+           .lightningLoadTooltip,
            .lightningUpgrade:
         return "https://dropbit.app/"
       case .dropBitMe,
@@ -110,6 +120,8 @@ struct CoinNinjaUrlFactory {
         return "tx/\(id)"
       case .address(let id):
         return "address/\(id)"
+      case .invoice(let invoice):
+        return "invoices/\(invoice)?advanced=true"
       case .faqs:
         return "faq"
       case .contactUs:
@@ -128,8 +140,16 @@ struct CoinNinjaUrlFactory {
         return "\(tooltipBreadcrumb)regulartransaction"
       case .dropbitTransactionTooltip:
         return "\(tooltipBreadcrumb)dropbittransaction"
+      case .lightningWithdrawalTooltip:
+        return "\(tooltipBreadcrumb)lightningwithdrawal"
+      case .lightningInvoiceTooltip:
+        return "\(tooltipBreadcrumb)lightninginvoice"
+      case .lightningDropBitTooltip:
+        return "\(tooltipBreadcrumb)lightningdropbit"
       case .dustProtection:
         return "\(tooltipBreadcrumb)dustprotection"
+      case .lightningLoadTooltip:
+        return "\(tooltipBreadcrumb)lightningload"
       case .adjustableFeesTooltip:
         return "\(tooltipBreadcrumb)fees"
       case .spendBitcoinOnline:

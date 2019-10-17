@@ -17,13 +17,7 @@ public class CKMLNLedgerEntry: NSManagedObject {
                              forWallet wallet: CKMWallet,
                              in context: NSManagedObjectContext) -> CKMLNLedgerEntry {
     let entry = findOrCreate(with: result.cleanedId, wallet: wallet, createdAt: result.createdAt, in: context)
-    configure(new: entry, with: result)
-
-    // User may have added local memo
-    if let resultMemo = result.memo, entry.memo == nil {
-      entry.memo = resultMemo
-    }
-
+    configure(entry, with: result)
     return entry
   }
 
@@ -32,7 +26,7 @@ public class CKMLNLedgerEntry: NSManagedObject {
   ]
 
   static func findOrCreate(with id: String, wallet: CKMWallet, createdAt: Date, in context: NSManagedObjectContext) -> CKMLNLedgerEntry {
-    if let foundEntry = find(with: id, wallet: wallet, in: context) {
+    if let foundEntry = find(withId: id, wallet: wallet, in: context) {
       return foundEntry
     } else {
       let newEntry = CKMLNLedgerEntry(insertInto: context)
@@ -44,14 +38,15 @@ public class CKMLNLedgerEntry: NSManagedObject {
 
   static func create(with response: LNTransactionResult, in context: NSManagedObjectContext) -> CKMLNLedgerEntry {
     let newEntry = CKMLNLedgerEntry(insertInto: context)
-    configure(new: newEntry, with: response)
+    configure(newEntry, with: response)
 
     return newEntry
   }
 
-  private static func configure(new entry: CKMLNLedgerEntry, with result: LNTransactionResult) {
+  private static func configure(_ entry: CKMLNLedgerEntry, with result: LNTransactionResult) {
     entry.id = result.cleanedId
     entry.accountId = result.accountId
+    entry.walletEntry?.sortDate = result.createdAt
     entry.createdAt = result.createdAt
     entry.updatedAt = result.updatedAt
     entry.expiresAt = result.expiresAt
@@ -61,8 +56,23 @@ public class CKMLNLedgerEntry: NSManagedObject {
     entry.value = result.value
     entry.networkFee = result.networkFee
     entry.processingFee = result.processingFee
-    entry.request = result.request
     entry.error = result.error
+
+    if entry.type == .lightning, let validRequest = result.request?.asNilIfEmpty() {
+      entry.request = validRequest //result.request may be a non-invoice string when type is .btc
+    }
+
+    // User may have added local memo
+    if let resultMemo = result.memo?.asNilIfEmpty(), entry.memo == nil {
+      entry.memo = resultMemo
+      entry.walletEntry?.memoSetByInvoice = true
+    }
+
+    if let setMemo = entry.memo?.asNilIfEmpty(), setMemo == result.memo {
+      //scanning/pasting an invoice will populate the editable memo text field and may set it before the ledger result is fetched
+      //this will give flexibility to the order of setting the memo and set the correct value if they are identical
+      entry.walletEntry?.memoSetByInvoice = true
+    }
   }
 
   static func findLatest(in context: NSManagedObjectContext) -> CKMLNLedgerEntry? {
@@ -78,7 +88,7 @@ public class CKMLNLedgerEntry: NSManagedObject {
     }
   }
 
-  static func find(with id: String, wallet: CKMWallet?, in context: NSManagedObjectContext) -> CKMLNLedgerEntry? {
+  static func find(withId id: String, wallet: CKMWallet?, in context: NSManagedObjectContext) -> CKMLNLedgerEntry? {
     let idPath = #keyPath(CKMLNLedgerEntry.id)
     let idPredicate = NSPredicate(format: "\(idPath) == %@", id)
     var predicates = [idPredicate]

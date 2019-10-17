@@ -64,7 +64,7 @@ class ConfirmPaymentMemoViewTests: XCTestCase {
     let recipient = "Satoshi"
     let config = testMemoConfig(isShared: true, isSent: false, isIncoming: false, recipientName: recipient)
     sut.configure(with: config)
-    let expectedText = "Will be seen by \(recipient)"
+    let expectedText = "Shared memo"
     XCTAssertEqual(sut.sharedStatusLabel.text, expectedText)
   }
 
@@ -72,14 +72,7 @@ class ConfirmPaymentMemoViewTests: XCTestCase {
     let recipient = "Satoshi"
     let config = testMemoConfig(isShared: true, isSent: true, isIncoming: false, recipientName: recipient)
     sut.configure(with: config)
-    let expectedText = "Shared with \(recipient)"
-    XCTAssertEqual(sut.sharedStatusLabel.text, expectedText)
-  }
-
-  func testSharedDescription_isShared_outgoing_didSend_unknownRecipient() {
-    let config = testMemoConfig(isShared: true, isSent: true, isIncoming: false, recipientName: nil)
-    sut.configure(with: config)
-    let expectedText = "Shared with the recipient"
+    let expectedText = "Shared memo"
     XCTAssertEqual(sut.sharedStatusLabel.text, expectedText)
   }
 

@@ -8,14 +8,32 @@
 
 import Foundation
 
-class LightningTransactionViewModelObject: TransactionDetailCellViewModelObject {
+///Holds shared logic
+class LightningViewModelObject {
   let walletEntry: CKMWalletEntry
+
+  init(_ walletEntry: CKMWalletEntry) {
+    self.walletEntry = walletEntry
+  }
+
+  var memoIsShared: Bool {
+    if let payload = walletEntry.sharedPayload {
+      return payload.sharingDesired
+    } else {
+      return walletEntry.memoSetByInvoice
+    }
+  }
+
+}
+
+class LightningTransactionViewModelObject: LightningViewModelObject, TransactionDetailCellViewModelObject {
+
   let ledgerEntry: CKMLNLedgerEntry
 
   init?(walletEntry: CKMWalletEntry) {
     guard let ledgerEntry = walletEntry.ledgerEntry else { return nil }
-    self.walletEntry = walletEntry
     self.ledgerEntry = ledgerEntry
+    super.init(walletEntry)
   }
 
   var walletTxType: WalletTransactionType {
@@ -50,6 +68,10 @@ class LightningTransactionViewModelObject: TransactionDetailCellViewModelObject 
     return ledgerEntry.request
   }
 
+  var isSentToSelf: Bool {
+    return false //not yet evaluating this for lightning
+  }
+
   var isLightningUpgrade: Bool {
     return false
   }
@@ -58,16 +80,12 @@ class LightningTransactionViewModelObject: TransactionDetailCellViewModelObject 
     return status == .pending && direction == .in && isLightningTransfer
   }
 
-  var memoIsShared: Bool {
-    return walletEntry.sharedPayload?.sharingDesired ?? false
-  }
-
   var primaryDate: Date {
     return walletEntry.sortDate
   }
 
   var onChainConfirmations: Int? {
-    return nil
+    return ledgerEntry.onChainConfirmations
   }
 
   var addressProvidedToSender: String? {
@@ -83,7 +101,8 @@ class LightningTransactionViewModelObject: TransactionDetailCellViewModelObject 
   }
 
   func amountFactory(with currentRates: ExchangeRates, fiatCurrency: CurrencyCode) -> TransactionAmountsFactoryType {
-    return TransactionAmountsFactory(walletEntry: walletEntry, fiatCurrency: fiatCurrency, currentRates: currentRates)
+    return TransactionAmountsFactory(walletEntry: walletEntry, fiatCurrency:
+      fiatCurrency, currentRates: currentRates, transferType: lightningTransferType)
   }
 
   func counterpartyConfig(for deviceCountryCode: Int) -> TransactionCellCounterpartyConfig? {
@@ -97,15 +116,16 @@ class LightningTransactionViewModelObject: TransactionDetailCellViewModelObject 
 
 }
 
-struct LightningInvitationViewModelObject: TransactionDetailCellViewModelObject {
+///Note that this cannot subclass LightningTransactionViewModelObject because it's possible for the CKMInvitation
+///to not yet have a relationship to a CKMLNLedgerEntry.
+class LightningInvitationViewModelObject: LightningViewModelObject, TransactionDetailCellViewModelObject {
 
-  let walletEntry: CKMWalletEntry
   let invitation: CKMInvitation
 
   init?(invitation: CKMInvitation) {
     guard let walletEntry = invitation.walletEntry else { return nil }
-    self.walletEntry = walletEntry
     self.invitation = invitation
+    super.init(walletEntry)
   }
 
   var walletTxType: WalletTransactionType {
@@ -117,6 +137,10 @@ struct LightningInvitationViewModelObject: TransactionDetailCellViewModelObject 
     case .sender:   return .out
     case .receiver: return .in
     }
+  }
+
+  var isSentToSelf: Bool {
+    return false //not yet evaluating this for lightning
   }
 
   var isLightningTransfer: Bool {
@@ -148,15 +172,12 @@ struct LightningInvitationViewModelObject: TransactionDetailCellViewModelObject 
   }
 
   func amountFactory(with currentRates: ExchangeRates, fiatCurrency: CurrencyCode) -> TransactionAmountsFactoryType {
-    return TransactionAmountsFactory(walletEntry: walletEntry, fiatCurrency: fiatCurrency, currentRates: currentRates)
+    return TransactionAmountsFactory(walletEntry: walletEntry, fiatCurrency: fiatCurrency,
+                                     currentRates: currentRates, transferType: lightningTransferType)
   }
 
   func counterpartyConfig(for deviceCountryCode: Int) -> TransactionCellCounterpartyConfig? {
     return counterpartyConfig(for: walletEntry, deviceCountryCode: deviceCountryCode)
-  }
-
-  var memoIsShared: Bool {
-    return walletEntry.sharedPayload?.sharingDesired ?? false
   }
 
   var primaryDate: Date {
@@ -212,6 +233,7 @@ struct FallbackViewModelObject: TransactionDetailCellViewModelObject {
   let isLightningTransfer: Bool = false
   let isPendingTransferToLightning: Bool = false
   let isLightningUpgrade: Bool = false
+  let isSentToSelf: Bool = false
   let status: TransactionStatus = .failed
   var memo: String?
   var receiverAddress: String?
@@ -248,7 +270,16 @@ extension CKMWalletEntry: TransactionDetailCellActionable {
     return ledgerEntry?.request
   }
 
+  var moreDetailsPath: TransactionMoreDetailsPath {
+    let transactionType = ledgerEntry?.type ?? .lightning
+    switch transactionType {
+    case .btc:        return .bitcoinPopover
+    case .lightning:  return .invoiceDecoder
+    }
+  }
+
   func removeFromTransactionHistory() {
     self.isHidden = true
   }
+
 }

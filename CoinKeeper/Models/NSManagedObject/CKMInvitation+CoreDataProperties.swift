@@ -63,8 +63,13 @@ extension CKMInvitation {
     }
   }
 
-  func setFlatFee(to flatFee: Int) {
-    self.fees = max(flatFee, 1)
+  func setFlatFee(to flatFee: Int, type: WalletTransactionType) {
+    switch type {
+    case .onChain:
+      self.fees = max(flatFee, 1)
+    case .lightning:
+      self.fees = flatFee //lightning fee amount can be 0
+    }
   }
 
   func setStatusIfDifferent(to newStatus: InvitationStatus) {

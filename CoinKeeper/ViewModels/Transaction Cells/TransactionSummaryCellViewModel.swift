@@ -14,6 +14,7 @@ class TransactionSummaryCellViewModel: TransactionSummaryCellViewModelType {
   var walletTxType: WalletTransactionType
   var selectedCurrency: SelectedCurrency
   var direction: TransactionDirection
+  var isSentToSelf: Bool
   var isLightningTransfer: Bool
   var isLightningUpgrade: Bool
   var status: TransactionStatus
@@ -31,6 +32,7 @@ class TransactionSummaryCellViewModel: TransactionSummaryCellViewModelType {
     self.walletTxType = object.walletTxType
     self.selectedCurrency = inputs.selectedCurrency
     self.direction = object.direction
+    self.isSentToSelf = object.isSentToSelf
     self.isLightningTransfer = object.isLightningTransfer
     self.isLightningUpgrade = object.isLightningUpgrade
     self.status = object.status
@@ -53,6 +55,7 @@ protocol TransactionSummaryCellViewModelObject {
   var receiverAddress: String? { get }
   var lightningInvoice: String? { get }
   var isLightningUpgrade: Bool { get }
+  var isSentToSelf: Bool { get }
   var isPendingTransferToLightning: Bool { get }
 
   func amountFactory(with currentRates: ExchangeRates, fiatCurrency: CurrencyCode) -> TransactionAmountsFactoryType
@@ -85,11 +88,21 @@ extension TransactionSummaryCellViewModelObject {
 
   func counterpartyConfig(for walletEntry: CKMWalletEntry, deviceCountryCode: Int) -> TransactionCellCounterpartyConfig? {
     let maybeTwitter = walletEntry.twitterContact.flatMap { TransactionCellTwitterConfig(contact: $0) }
-    let maybeName = priorityCounterpartyName(with: maybeTwitter, invitation: nil, phoneNumber: walletEntry.phoneNumber)
-    let maybeNumber = priorityPhoneNumber(for: deviceCountryCode, invitation: nil, phoneNumber: walletEntry.phoneNumber)
+    let maybeName = priorityCounterpartyName(with: maybeTwitter, invitation: walletEntry.invitation, phoneNumber: walletEntry.phoneNumber)
+    let maybeNumber = priorityPhoneNumber(for: deviceCountryCode, invitation: walletEntry.invitation, phoneNumber: walletEntry.phoneNumber)
     return TransactionCellCounterpartyConfig(failableWithName: maybeName,
                                              displayPhoneNumber: maybeNumber,
                                              twitterConfig: maybeTwitter)
+  }
+
+  var lightningTransferType: LightningTransferType? {
+    guard isLightningTransfer else { return nil }
+    switch walletTxType {
+    case .onChain:
+      return (direction == .in) ? .withdraw : .deposit
+    case .lightning:
+      return (direction == .in) ? .deposit : .withdraw
+    }
   }
 
 }

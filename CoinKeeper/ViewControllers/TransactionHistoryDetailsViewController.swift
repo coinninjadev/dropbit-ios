@@ -105,15 +105,19 @@ extension TransactionHistoryDetailsViewController: TransactionHistoryDetailCellD
     return viewModel.dataSource.detailCellActionableItem(at: indexPath)
   }
 
-  func didTapQuestionMarkButton(detailCell: TransactionHistoryDetailBaseCell, tooltip: DetailCellTooltip) {
+  func didTapQuestionMarkButton(detailCell: UICollectionViewCell, tooltip: DetailCellTooltip) {
     guard let tooltipURL = url(for: tooltip) else { return }
     delegate.openURL(tooltipURL, completionHandler: nil)
   }
 
   private func url(for tooltip: DetailCellTooltip) -> URL? {
     switch tooltip {
-    case .dropBit:          return CoinNinjaUrlFactory.buildUrl(for: .dropbitTransactionTooltip)
-    case .regularOnChain:   return CoinNinjaUrlFactory.buildUrl(for: .regularTransactionTooltip)
+    case .dropBit:              return CoinNinjaUrlFactory.buildUrl(for: .dropbitTransactionTooltip)
+    case .regularOnChain:       return CoinNinjaUrlFactory.buildUrl(for: .regularTransactionTooltip)
+    case .lightningWithdrawal:  return CoinNinjaUrlFactory.buildUrl(for: .lightningWithdrawalTooltip)
+    case .lightningInvoice:     return CoinNinjaUrlFactory.buildUrl(for: .lightningInvoiceTooltip)
+    case .lightningDropBit:     return CoinNinjaUrlFactory.buildUrl(for: .lightningDropBitTooltip)
+    case .lightningLoad:        return CoinNinjaUrlFactory.buildUrl(for: .lightningLoadTooltip)
     }
   }
 
@@ -147,8 +151,16 @@ extension TransactionHistoryDetailsViewController: TransactionHistoryDetailCellD
 
     switch action {
     case .seeDetails:
-      guard let popoverItem = viewModel.popoverDisplayableItem(at: indexPath) else { return }
-      delegate.viewControllerShouldSeeTransactionDetails(for: popoverItem)
+      switch item.moreDetailsPath {
+      case .bitcoinPopover:
+        guard let popoverItem = viewModel.popoverDisplayableItem(at: indexPath) else { return }
+        delegate.viewControllerShouldSeeTransactionDetails(for: popoverItem)
+
+      case .invoiceDecoder:
+        guard let invoice = item.lightningInvoice,
+          let invoiceURL = CoinNinjaUrlFactory.buildUrl(for: .invoice(invoice: invoice)) else { return }
+        delegate.openURL(invoiceURL, completionHandler: nil)
+      }
 
     case .cancelInvitation:
       guard let invitationID = item.invitation?.id else { return }

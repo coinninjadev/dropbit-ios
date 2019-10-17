@@ -20,12 +20,7 @@ class TransactionPopoverDetailsViewController: BaseViewController, StoryboardIni
   @IBOutlet var containerView: UIView!
   @IBOutlet var directionView: TransactionDirectionView!
   @IBOutlet var statusLabel: TransactionDetailBreakdownLabel!
-  @IBOutlet var whenSentTitleLabel: TransactionDetailBreakdownLabel!
-  @IBOutlet var whenSentAmountLabel: TransactionDetailBreakdownLabel!
-  @IBOutlet var networkFeeTitleLabel: TransactionDetailBreakdownLabel!
-  @IBOutlet var networkFeeAmountLabel: TransactionDetailBreakdownLabel!
-  @IBOutlet var confirmationsTitleLabel: TransactionDetailBreakdownLabel!
-  @IBOutlet var confirmationsAmountLabel: TransactionDetailBreakdownLabel!
+  @IBOutlet var breakdownStackView: UIStackView!
   @IBOutlet var txidLabel: UILabel!
   @IBOutlet var seeTransactionDetailsButton: TransactionDetailBottomButton!
   @IBOutlet var shareTransactionButton: UIButton!
@@ -55,9 +50,11 @@ class TransactionPopoverDetailsViewController: BaseViewController, StoryboardIni
   private func configureWithViewModel() {
     guard let viewModel = viewModel else { return }
 
-    whenSentAmountLabel.text = viewModel.breakdownSentAmountText
-    networkFeeAmountLabel.text = viewModel.breakdownFeeAmountText
-    confirmationsAmountLabel.text = viewModel.confirmationsText
+    let breakdownStyle = TitleDetailViewStyleConfig(font: .regular(13), color: .darkGrayText)
+    for item in viewModel.breakdownItems {
+      let labelView = TitleDetailView(title: item.title, detail: item.detail, style: breakdownStyle)
+      breakdownStackView.addArrangedSubview(labelView)
+    }
     statusLabel.text = viewModel.detailStatusText
     txidLabel.text = viewModel.txid
     directionView.configure(image: viewModel.directionConfig.image, bgColor: viewModel.directionConfig.bgColor)

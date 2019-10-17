@@ -41,6 +41,15 @@ enum TransactionStatus: String {
   case canceled
   case expired
   case failed
+
+  var isValid: Bool {
+    switch self {
+    case .pending, .broadcasting, .completed:
+      return true
+    case .canceled, .expired, .failed:
+      return false
+    }
+  }
 }
 
 enum LightningTransferType {
@@ -97,6 +106,8 @@ struct MockAmountsFactory: TransactionAmountsFactoryType {
     return ConvertedAmounts(btc: btcAmount, fiat: fiat, fiatCurrency: currencyPair.fiat)
   }
 
+  var totalWithdrawalAmounts: ConvertedAmounts? { return nil }
+  var netWithdrawalAmounts: ConvertedAmounts? { return nil }
   var bitcoinNetworkFeeAmounts: ConvertedAmounts? { return nil }
   var lightningNetworkFeeAmounts: ConvertedAmounts? { return nil }
   var dropBitFeeAmounts: ConvertedAmounts? { return nil }

@@ -103,10 +103,11 @@ CurrencySwappableAmountEditor {
   }
 
   @IBAction func performNext() {
+    configureFinalMemoShareStatus()
+
     do {
       try validateAndSendPayment()
     } catch {
-      //TODO: test all potential amount errors are thrown for lightning
       showValidatorAlert(for: error, title: "Invalid Transaction")
     }
   }
@@ -243,18 +244,18 @@ extension SendPaymentViewController {
 
     switch viewModel.walletTransactionType {
     case .lightning:
-      scanButton.style = .lightning(true)
-      contactsButton.style = .lightning(true)
-      twitterButton.style = .lightning(true)
-      pasteButton.style = .lightning(true)
-      nextButton.style = .lightning(true)
+      scanButton.style = .lightning(rounded: true)
+      contactsButton.style = .lightning(rounded: true)
+      twitterButton.style = .lightning(rounded: true)
+      pasteButton.style = .lightning(rounded: true)
+      nextButton.style = .lightning(rounded: true)
       walletToggleView.selectLightningButton()
     case .onChain:
-      scanButton.style = .bitcoin(true)
-      contactsButton.style = .bitcoin(true)
-      twitterButton.style = .bitcoin(true)
-      pasteButton.style = .bitcoin(true)
-      nextButton.style = .bitcoin(true)
+      scanButton.style = .bitcoin(rounded: true)
+      contactsButton.style = .bitcoin(rounded: true)
+      twitterButton.style = .bitcoin(rounded: true)
+      pasteButton.style = .bitcoin(rounded: true)
+      nextButton.style = .bitcoin(rounded: true)
       walletToggleView.selectBitcoinButton()
     }
 
@@ -295,6 +296,13 @@ extension SendPaymentViewController {
     destinationButton.titleLabel?.font = .medium(14)
     destinationButton.setTitleColor(.darkGrayText, for: .normal)
     destinationButton.contentEdgeInsets = UIEdgeInsets(top: 0, left: 8, bottom: 0, right: 8)
+  }
+
+  fileprivate func configureFinalMemoShareStatus() {
+    if viewModel.memo?.asNilIfEmpty() == nil {
+      viewModel.sharedMemoDesired = false
+      updateMemoContainer()
+    }
   }
 
   fileprivate func formatPhoneNumberEntryView() {
@@ -720,6 +728,7 @@ extension SendPaymentViewController {
     guard let recipient = viewModel.paymentRecipient else {
       throw BitcoinAddressValidatorError.isInvalidBitcoinAddress
     }
+
     switch recipient {
     case .contact(let contact):
       try validatePayment(toContact: contact)

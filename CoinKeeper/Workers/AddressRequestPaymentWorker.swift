@@ -51,7 +51,7 @@ class AddressRequestPaymentWorker {
           // update and match them manually, partially matching code in `persistTemporaryTransaction`
           pendingInvitation.setTxid(to: paymentId)
           pendingInvitation.status = .completed
-          //TODO: Link pendingInvitation to LNTransactionResult
+
           if let existingTransaction = CKMTransaction.find(byTxid: paymentId, in: context), pendingInvitation.transaction !== existingTransaction {
             let txToRemove = pendingInvitation.transaction
             pendingInvitation.transaction = existingTransaction
@@ -116,18 +116,20 @@ class AddressRequestPaymentWorker {
   private func sharedPayload(forInvitation invitation: CKMInvitation,
                              walletAddressRequestResponse response: WalletAddressRequestResponse) -> SharedPayloadDTO {
     let walletTxType = WalletTransactionType(addressType: response.addressTypeCase)
+    let maybePayload = invitation.transaction?.sharedPayload ?? invitation.walletEntry?.sharedPayload
 
-    if let ckmPayload = invitation.transaction?.sharedPayload,
+    if let ckmPayload = maybePayload,
       let fiatCurrency = CurrencyCode(rawValue: ckmPayload.fiatCurrency),
       let pubKey = response.addressPubkey {
       let amountInfo = SharedPayloadAmountInfo(fiatCurrency: fiatCurrency, fiatAmount: ckmPayload.fiatAmount)
+      let maybeMemo = invitation.transaction?.memo ?? invitation.walletEntry?.memo
       return SharedPayloadDTO(addressPubKeyState: .known(pubKey),
                               walletTxType: walletTxType,
                               sharingDesired: ckmPayload.sharingDesired,
-                              memo: invitation.transaction?.memo,
+                              memo: maybeMemo,
                               amountInfo: amountInfo)
 
-    } else {
+    } else { //sharing was not desired so we didn't persist a CKMTransactionSharedPayload
       return SharedPayloadDTO(addressPubKeyState: .none, walletTxType: walletTxType,
                               sharingDesired: false, memo: invitation.transaction?.memo, amountInfo: nil)
     }
@@ -154,7 +156,7 @@ class LightningAddressRequestPaymentWorker: AddressRequestPaymentWorker {
     }
 
     let lightningInputs = LightningPaymentInputs(sats: satsToPay, invoice: invoice, sharedPayload: outgoingTxData.sharedPayloadDTO)
-    return paymentDelegate.payLightningRequest(withInputs: lightningInputs, invitation: pendingInvitation, to: outgoingTxData.receiver)
+    return paymentDelegate.payAndPersistLightningRequest(withInputs: lightningInputs, invitation: pendingInvitation, to: outgoingTxData.receiver)
       .then(in: context) { response -> Promise<Void> in
         var outgoingCopy = outgoingTxData
         outgoingCopy.txid = response.result.cleanedId

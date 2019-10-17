@@ -136,25 +136,52 @@ class TransactionDataWorker: TransactionDataWorkerType {
     }
   }
 
-  private func identifyLightningTransfers(withLedger ledgerResults: [LNTransactionResult],
-                                          forWallet wallet: CKMWallet,
-                                          in context: NSManagedObjectContext) {
+  private func processOnChainLightningTransfers(withLedger ledgerResults: [LNTransactionResult],
+                                                forWallet wallet: CKMWallet,
+                                                in context: NSManagedObjectContext) {
     let lightningTransferTxids = ledgerResults.filter { $0.type == .btc }.map { $0.cleanedId }
 
-    let fetchRequest: NSFetchRequest<CKMTransaction> = CKMTransaction.fetchRequest()
-    let txidPredicate = CKPredicate.Transaction.txidIn(lightningTransferTxids)
-    let transferPredicate = CKPredicate.Transaction.isLightningTransfer(false)
-    fetchRequest.predicate = NSCompoundPredicate(type: .and, subpredicates: [txidPredicate, transferPredicate])
+    //Update CKMTransactions
+    let txFetchRequest: NSFetchRequest<CKMTransaction> = CKMTransaction.fetchRequest()
+    //ignore whether the transaction is already marked as a transfer, so that confirmation counts can be provided to the ledger entries
+    txFetchRequest.predicate = CKPredicate.Transaction.txidIn(lightningTransferTxids)
 
     var transactionsToUpdate: [CKMTransaction] = []
     do {
-      transactionsToUpdate = try context.fetch(fetchRequest)
+      transactionsToUpdate = try context.fetch(txFetchRequest)
     } catch {
       log.error(error, message: "failed to fetch transactions to mark for lightning transfers")
     }
 
+    var processingFeesById: [String: Int] = [:]
+    for result in ledgerResults {
+      processingFeesById[result.cleanedId] = result.processingFee
+    }
+
     for tx in transactionsToUpdate {
       tx.isLightningTransfer = true
+      tx.dropBitProcessingFee = processingFeesById[tx.txid] ?? 0
+    }
+
+    //Update CKMLedgerEntries
+    let ledgerEntryFetchRequest: NSFetchRequest<CKMLNLedgerEntry> = CKMLNLedgerEntry.fetchRequest()
+    ledgerEntryFetchRequest.predicate = CKPredicate.LedgerEntry.idIn(lightningTransferTxids)
+
+    var ledgerEntriesToUpdate: [CKMLNLedgerEntry] = []
+    do {
+      ledgerEntriesToUpdate = try context.fetch(ledgerEntryFetchRequest)
+    } catch {
+      log.error(error, message: "failed to fetch ledger entries to update with confirmations")
+    }
+
+    var confirmationsById: [String: Int] = [:]
+    for tx in transactionsToUpdate {
+      confirmationsById[tx.txid] = tx.confirmations
+    }
+
+    for entry in ledgerEntriesToUpdate {
+      let entryId = entry.id ?? ""
+      entry.onChainConfirmations = confirmationsById[entryId] ?? 0
     }
   }
 

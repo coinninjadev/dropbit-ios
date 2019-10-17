@@ -30,6 +30,8 @@ class PinEntryViewModel {
   static var confirmTransactionMessage: String {
     return "Enter PIN to confirm transaction"
   }
+
+  func customCloseAction() { }
 }
 
 /// Previously .standard mode
@@ -62,12 +64,18 @@ class PaymentVerificationPinEntryViewModel: PinEntryViewModel {
 }
 
 class WalletDeletionPinEntryViewModel: PinEntryViewModel {
-  init() {
+  let action: () -> Void
+  init(customCloseAction: @escaping () -> Void) {
+    self.action = customCloseAction
     super.init(enableBiometrics: false,
                showLogo: true,
                showClose: true,
                message: "Enter PIN to confirm deletion of your wallet")
     self.shouldAnimateMessage = true
+  }
+
+  override func customCloseAction() {
+    action()
   }
 }
 

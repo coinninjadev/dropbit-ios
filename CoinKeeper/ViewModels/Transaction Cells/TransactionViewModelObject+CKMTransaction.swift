@@ -25,7 +25,8 @@ extension CKMTransaction: TransactionSummaryCellViewModelObject {
   }
 
   func amountFactory(with currentRates: ExchangeRates, fiatCurrency: CurrencyCode) -> TransactionAmountsFactoryType {
-    return TransactionAmountsFactory(transaction: self, fiatCurrency: fiatCurrency, currentRates: currentRates)
+    return TransactionAmountsFactory(transaction: self, fiatCurrency: fiatCurrency,
+                                     currentRates: currentRates, transferType: lightningTransferType)
   }
 
   func counterpartyConfig(for deviceCountryCode: Int) -> TransactionCellCounterpartyConfig? {
@@ -131,7 +132,9 @@ extension CKMTransaction: TransactionDetailCellViewModelObject {
   }
 
   var paymentIdIsValid: Bool {
-    return txidIsActualTxid
+    /// txid does not begin with a prefix (e.g. invitations with placeholder Transaction objects)
+    let isInviteOrFailed = txid.starts(with: CKMTransaction.invitationTxidPrefix) || txid.starts(with: CKMTransaction.failedTxidPrefix)
+    return !isInviteOrFailed
   }
 
   var invitationStatus: InvitationStatus? {
@@ -146,10 +149,14 @@ extension CKMTransaction: TransactionDetailCellActionable {
     return receiverAddress
   }
 
+  var moreDetailsPath: TransactionMoreDetailsPath {
+    return .bitcoinPopover
+  }
+
   func removeFromTransactionHistory() {
     // CKMTransactions cannot be hidden
   }
 
 }
 
-extension CKMTransaction: TransactionDetailPopoverViewModelObject { }
+extension CKMTransaction: OnChainPopoverViewModelObject { }

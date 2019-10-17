@@ -60,17 +60,22 @@ class WalletSyncOperationFactory {
           guard let strongSelf = self, let strongOperation = innerOp else { return }
 
           var caughtError: Error?
+          log.info("Sync routine: Starting.")
           strongSelf.performSync(with: dependencies, fullSync: isFullSync, in: bgContext)
             .catch(in: bgContext) { error in
+              log.error(error, message: "Sync routine: caught error.")
               caughtError = error
               strongSelf.handleSyncRoutineError(error, in: bgContext)
             }
             .finally {
+              log.info("Sync routine: Finishing...")
               var contextHasInsertionsOrUpdates = false
               bgContext.performAndWait {
                 contextHasInsertionsOrUpdates = (bgContext.insertedObjects.isNotEmpty || bgContext.persistentUpdatedObjects.isNotEmpty)
                 do {
+                  log.info("Sync routine: Saving database...")
                   try bgContext.saveRecursively()
+                  log.info("Sync routine: Database saved.")
                 } catch {
                   log.contextSaveError(error)
                 }
@@ -89,6 +94,7 @@ class WalletSyncOperationFactory {
                 fetchResultHandler(result)
               }
 
+              log.info("Sync routine: Finished.")
               strongOperation.finish()
               UIApplication.shared.endBackgroundTask(backgroundTaskId)
           }
@@ -176,8 +182,10 @@ class WalletSyncOperationFactory {
     let userId: String? = dependencies.persistenceManager.brokers.user.userId(in: context)
 
     if userId != nil {
+      log.info("Sync routine: Found user ID, calling /user GET.")
       return dependencies.networkManager.getUser().asVoid()
     } else {
+      log.info("Sync routine: no user ID found. Continuing.")
       return Promise.value(())
     }
   }

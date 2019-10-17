@@ -35,7 +35,15 @@ protocol TransactionDetailCellDisplayable {
 
 extension TransactionDetailCellDisplayable {
 
-  var shouldHideAddressView: Bool { return isLightningTransfer }
+  var shouldHideAddressView: Bool {
+    switch addressViewConfig.walletTxType {
+    case .onChain:
+      let missingReceiverAddress = addressViewConfig.receiverAddress == nil
+      let missingSentAddress = addressViewConfig.addressProvidedToSender == nil
+      return (missingReceiverAddress && missingSentAddress) || isLightningTransfer
+    case .lightning: return true
+    }
+  }
   var shouldHideCounterpartyLabel: Bool { return counterpartyText == nil }
   var shouldHideAddMemoButton: Bool { return !canAddMemo }
   var shouldHideMessageLabel: Bool { return messageText == nil }
@@ -136,7 +144,9 @@ extension TransactionDetailCellViewModelType {
   }
 
   private var pendingStatusText: String {
-    if isDropBit {
+    if isPendingTransferToLightning {
+      return string(for: .loadLightningPending)
+    } else if isDropBit {
       switch direction {
       case .out:
         switch walletTxType {
@@ -297,17 +307,38 @@ extension TransactionDetailCellViewModelType {
 
   var canAddMemo: Bool {
     if isLightningTransfer { return false }
-    if isIncoming && status != .completed { return false }
-    return memoConfig == nil
+    if let invitationStatus = invitationStatus,
+    isIncoming, invitationStatus != .completed {
+      return false
+    } else {
+      return memoConfig == nil && status.isValid
+    }
   }
 
   /**
    If not nil, this string will appear in the gray rounded container instead of the breakdown amounts.
    */
   var messageText: String? {
+    if let transferType = lightningTransferType {
+      switch transferType {
+      case .deposit:
+        if isPendingTransferToLightning {
+          let message = """
+          Instant load is not available for this transaction.
+          Funds will be complete after one confirmation.
+          Please see confirmations in the details below.
+          """
+          return sizeSensitiveMessage(from: message)
+        }
+      default:
+        break
+      }
+    }
+
     if let status = invitationStatus, status == .addressSent, let counterpartyDesc = counterpartyDescription {
+      let paymentDestination = (walletTxType == .onChain) ? "Bitcoin address" : "Lightning invoice"
       let messageWithLineBreaks = """
-      Your Bitcoin address has been sent to
+      Your \(paymentDestination) has been sent to
       \(counterpartyDesc).
       Once approved, this transaction will be completed.
       """
@@ -320,7 +351,7 @@ extension TransactionDetailCellViewModelType {
   }
 
   /// Strips static linebreaks from the string on small devices
-  private func sizeSensitiveMessage(from message: String) -> String {
+  func sizeSensitiveMessage(from message: String) -> String {
     let shouldUseStaticLineBreaks = (UIScreen.main.relativeSize == .tall)
     if shouldUseStaticLineBreaks {
       return message
@@ -334,7 +365,15 @@ extension TransactionDetailCellViewModelType {
   }
 
   var tooltipType: DetailCellTooltip {
-    return isDropBit ? .dropBit : .regularOnChain
+    if isPendingTransferToLightning { return .lightningLoad }
+    if isLightningWithdrawal { return .lightningWithdrawal }
+
+    switch walletTxType {
+    case .onChain:
+      return isDropBit ? .dropBit : .regularOnChain
+    case .lightning:
+      return isDropBit ? .lightningDropBit : .lightningInvoice
+    }
   }
 
   var actionButtonConfig: DetailCellActionButtonConfig? {
@@ -362,6 +401,16 @@ extension TransactionDetailCellViewModelType {
 
   private var isShareable: Bool {
     return paymentIdIsValid
+  }
+
+  var isLightningWithdrawal: Bool {
+    guard let type = lightningTransferType else { return false }
+    return type == .withdraw
+  }
+
+  var isLightningDeposit: Bool {
+    guard let type = lightningTransferType else { return false }
+    return type == .deposit
   }
 
   func string(for stringId: DetailCellString) -> String {

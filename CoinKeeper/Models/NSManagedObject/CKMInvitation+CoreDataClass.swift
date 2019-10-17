@@ -71,7 +71,7 @@ public class CKMInvitation: NSManagedObject {
     self.walletTxTypeCase = invitationDTO.walletTxType
     self.status = .notSent
     self.counterpartyName = contact.displayName
-    self.setFlatFee(to: invitationDTO.fee)
+    self.setFlatFee(to: invitationDTO.fee, type: invitationDTO.walletTxType)
     self.configure(withReceiver: contact.asDropBitReceiver, in: context)
   }
 
@@ -203,6 +203,23 @@ public class CKMInvitation: NSManagedObject {
       }
     }
     return result
+  }
+
+  static func find(withTxid txid: String, in context: NSManagedObjectContext) -> CKMInvitation? {
+    let fetchRequest: NSFetchRequest<CKMInvitation> = CKMInvitation.fetchRequest()
+    fetchRequest.predicate = CKPredicate.Invitation.withTxid(txid)
+    fetchRequest.fetchLimit = 1
+
+    var ckmInvitation: CKMInvitation?
+    context.performAndWait {
+      do {
+        let invite = try context.fetch(fetchRequest).first
+        ckmInvitation = invite
+      } catch {
+        log.info("failed to find invitatio with txid: \(txid)")
+      }
+    }
+    return ckmInvitation
   }
 
   static func find(withId id: String, in context: NSManagedObjectContext) -> CKMInvitation? {

@@ -163,6 +163,7 @@ class AppCoordinator: CoordinatorType {
   private func setInitialRootViewController() {
 
     deleteStaleCredentialsIfNeeded()
+    persistenceManager.keychainManager.prepareForStateDetermination()
 
     if launchStateManager.isFirstTimeAfteriCloudRestore() {
       startFirstTimeAfteriCloudRestore()

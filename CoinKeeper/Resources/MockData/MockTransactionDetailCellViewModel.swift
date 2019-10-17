@@ -24,7 +24,9 @@ class MockTransactionDetailValidCellViewModel: MockTransactionSummaryCellViewMod
        direction: TransactionDirection = .out,
        status: TransactionStatus = .completed,
        onChainConfirmations: Int? = nil,
+       isSentToSelf: Bool = false,
        isLightningTransfer: Bool = false,
+       isLightningUpgrade: Bool = false,
        receiverAddress: String? = nil,
        addressProvidedToSender: String? = nil,
        lightningInvoice: String? = nil,
@@ -46,9 +48,9 @@ class MockTransactionDetailValidCellViewModel: MockTransactionSummaryCellViewMod
     self.paymentIdIsValid = MockDetailCellVM.paymentIdIsValid(basedOn: invitationStatus)
     self.exchangeRateWhenReceived = MockDetailCellVM.testRates[.USD].flatMap { $0 - 50 }
 
-    super.init(walletTxType: walletTxType, direction: direction, status: status,
-               isLightningTransfer: isLightningTransfer, receiverAddress: receiverAddress,
-               lightningInvoice: lightningInvoice, selectedCurrency: selectedCurrency,
+    super.init(walletTxType: walletTxType, direction: direction, status: status, isSentToSelf: isSentToSelf,
+               receiverAddress: receiverAddress, lightningInvoice: lightningInvoice,
+               isLightningTransfer: isLightningTransfer, isLightningUpgrade: isLightningUpgrade, selectedCurrency: selectedCurrency,
                amountFactory: amtFactory, counterpartyConfig: counterpartyConfig, memo: memo)
   }
 
