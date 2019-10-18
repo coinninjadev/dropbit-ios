@@ -38,11 +38,28 @@ class ContactCacheManager: ContactCacheManagerType {
   private let stackConfig: CoreDataStackConfig
   private let container: NSPersistentContainer
 
-  lazy var viewContext: NSManagedObjectContext = {
-    let context = self.container.viewContext
+  private lazy var rootContext: NSManagedObjectContext = {
+    let context = self.container.newBackgroundContext()
     context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
+    context.name = "RootContext_Contacts"
     return context
   }()
+
+  lazy var viewContext: NSManagedObjectContext = {
+    let context = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
+    context.parent = rootContext
+    context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
+    context.name = "ViewContext_Contacts"
+    return context
+  }()
+
+  func createBackgroundContext() -> NSManagedObjectContext {
+    let context = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
+    context.parent = viewContext
+    context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
+    context.name = "BackgroundContext_Contacts_\(Date().timeIntervalSince1970)"
+    return context
+  }
 
   convenience init() {
     let config = CoreDataStackConfig(stackType: .contactCache, storeType: .disk)
@@ -52,14 +69,6 @@ class ContactCacheManager: ContactCacheManagerType {
   init(stackConfig: CoreDataStackConfig) {
     self.stackConfig = stackConfig
     self.container = stackConfig.stack.persistentContainer
-  }
-
-  func createBackgroundContext() -> NSManagedObjectContext {
-    let bgContext = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
-    bgContext.parent = viewContext
-    bgContext.name = "ContactCache_BackgroundContext"
-    bgContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
-    return bgContext
   }
 
   func createPhoneNumberFetchedResultsController() -> NSFetchedResultsController<CCMPhoneNumber> {
@@ -176,7 +185,7 @@ class ContactCacheManager: ContactCacheManagerType {
 
         } catch {
           // not parseable, will not create or link CCMValidatedMetadata
-          log.error("Failed to parse phone number %@, error: \(error.localizedDescription)", privateArgs: [originalPhoneNumber])
+          log.warn("Failed to parse phone number %@, error: \(error.localizedDescription)", privateArgs: [originalPhoneNumber])
           let cachedPhoneNumber = CCMPhoneNumber(formattedNumber: originalPhoneNumber,
                                                  sanitizedOriginal: sanitizedOriginal,
                                                  labelKey: labeledNumber.label,
