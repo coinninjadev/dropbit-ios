@@ -176,7 +176,7 @@ class WalletManager: WalletManagerType {
   }
 
   func activeTemporarySentTxTotal(in context: NSManagedObjectContext) -> Int {
-    let tempTransactions = CKMTemporarySentTransaction.findAllActive(in: context)
+    let tempTransactions = CKMTemporarySentTransaction.findAllActiveOnChain(in: context)
     let total = tempTransactions.reduce(0) { $0 + $1.totalAmount }
     return total
   }
