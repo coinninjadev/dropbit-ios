@@ -97,6 +97,7 @@ class TransactionDataWorker: TransactionDataWorkerType {
       return Promise(error: CKPersistenceError.noManagedWallet)
     }
 
+    let lnBroker = self.persistenceManager.brokers.lightning
     return getLightningLedger(since: fullSync ? nil : CKMLNLedgerEntry.findLatest(in: context)?.createdAt)
     .get(in: context) { response in
       ///Run deletion before persisting the ledger so that it doesn't interfere with wallet
