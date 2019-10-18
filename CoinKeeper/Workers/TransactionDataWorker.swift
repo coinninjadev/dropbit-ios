@@ -51,7 +51,7 @@ class TransactionDataWorker: TransactionDataWorkerType {
     persistenceManager: PersistenceManagerType,
     networkManager: NetworkManagerType,
     analyticsManager: AnalyticsManagerType
-    ) {
+  ) {
     self.walletManager = walletManager
     self.persistenceManager = persistenceManager
     self.networkManager = networkManager
@@ -99,14 +99,14 @@ class TransactionDataWorker: TransactionDataWorkerType {
 
     let lnBroker = self.persistenceManager.brokers.lightning
     return getLightningLedger(since: fullSync ? nil : CKMLNLedgerEntry.findLatest(in: context)?.createdAt)
-    .get(in: context) { response in
-      ///Run deletion before persisting the ledger so that it doesn't interfere with wallet
-      ///entries whose inverse relationships are not set until the context is saved.
-      lnBroker.deleteInvalidWalletEntries(in: context)
-      lnBroker.deleteInvalidLedgerEntries(in: context)
+      .get(in: context) { response in
+        ///Run deletion before persisting the ledger so that it doesn't interfere with wallet
+        ///entries whose inverse relationships are not set until the context is saved.
+        lnBroker.deleteInvalidWalletEntries(in: context)
+        lnBroker.deleteInvalidLedgerEntries(in: context)
 
-      self.persistenceManager.brokers.lightning.persistLedgerResponse(response, forWallet: wallet, in: context)
-      self.processOnChainLightningTransfers(withLedger: response.ledger, forWallet: wallet, in: context)
+        self.persistenceManager.brokers.lightning.persistLedgerResponse(response, forWallet: wallet, in: context)
+        self.processOnChainLightningTransfers(withLedger: response.ledger, forWallet: wallet, in: context)
     }
     .then(in: context) { response -> Promise<Void> in
       let threshold = self.fourteenDaysAgo
@@ -117,9 +117,9 @@ class TransactionDataWorker: TransactionDataWorkerType {
       let idsToFetch = entriesToFetch.compactMap { $0.id }
 
       return self.fetchTransactionNotifications(forIds: idsToFetch)
-      .get(in: context) { responses in
-      entriesToFetch.forEach { $0.walletEntry?.lastCheckedSharedPayload = Date() }
-      self.decryptAndPersistSharedPayloads(from: responses, ofType: .lightning, in: context)
+        .get(in: context) { responses in
+          entriesToFetch.forEach { $0.walletEntry?.lastCheckedSharedPayload = Date() }
+          self.decryptAndPersistSharedPayloads(from: responses, ofType: .lightning, in: context)
       }
       .asVoid()
     }
@@ -237,21 +237,21 @@ class TransactionDataWorker: TransactionDataWorkerType {
       .then { (dto: TransactionDataWorkerDTO) -> Promise<TransactionDataWorkerDTO> in
         return self.networkManager.updateCachedMetadata()
           .then { Promise.value(TransactionDataWorkerDTO(checkinResponse: $0).merged(with: dto)) }
-      }
-      .then(in: context) { (dto: TransactionDataWorkerDTO) -> Promise<TransactionDataWorkerDTO> in
-        let txidsToSubtract: Set<String> = (fullSync) ? [] : CKMTransaction.findAllTxidsFullyConfirmed(in: context).asSet()
-        let txidsToFetch = dto.atsResponsesTxIds.asSet().subtracting(txidsToSubtract).asArray()
-        return self.promisesForFetchingTransactionDetails(withTxids: txidsToFetch, in: context)
-          .then(on: highPriorityBackgroundQueue, in: context) { self.processTransactionResponses($0, in: context) }
-          .then { Promise.value(TransactionDataWorkerDTO(txResponses: $0).merged(with: dto)) }
-          .then { self.fetchAndMergeTransactionNotifications(dto: $0) }
-      }
-      .then(in: context) { (dto: TransactionDataWorkerDTO) -> Promise<TransactionDataWorkerDTO> in
-        return self.persistAndGroomTransactions(with: dto, in: context, fullSync: fullSync)
-          .then { Promise.value(TransactionDataWorkerDTO(txResponses: $0).merged(with: dto)) }
-      }
-      .then(in: context) { _ in self.updateUnspentVouts(in: context) }
-      .then(in: context) { _ in self.updateTransactionDayAveragePrices(in: context) }
+    }
+    .then(in: context) { (dto: TransactionDataWorkerDTO) -> Promise<TransactionDataWorkerDTO> in
+      let txidsToSubtract: Set<String> = (fullSync) ? [] : CKMTransaction.findAllTxidsFullyConfirmed(in: context).asSet()
+      let txidsToFetch = dto.atsResponsesTxIds.asSet().subtracting(txidsToSubtract).asArray()
+      return self.promisesForFetchingTransactionDetails(withTxids: txidsToFetch, in: context)
+        .then(on: highPriorityBackgroundQueue, in: context) { self.processTransactionResponses($0, in: context) }
+        .then { Promise.value(TransactionDataWorkerDTO(txResponses: $0).merged(with: dto)) }
+        .then { self.fetchAndMergeTransactionNotifications(dto: $0) }
+    }
+    .then(in: context) { (dto: TransactionDataWorkerDTO) -> Promise<TransactionDataWorkerDTO> in
+      return self.persistAndGroomTransactions(with: dto, in: context, fullSync: fullSync)
+        .then { Promise.value(TransactionDataWorkerDTO(txResponses: $0).merged(with: dto)) }
+    }
+    .then(in: context) { _ in self.updateUnspentVouts(in: context) }
+    .then(in: context) { _ in self.updateTransactionDayAveragePrices(in: context) }
   }
 
   private var fourteenDaysAgo: Date {
@@ -312,7 +312,7 @@ class TransactionDataWorker: TransactionDataWorkerType {
   private func responsesWithPaths(
     from responses: [AddressTransactionSummaryResponse],
     matching metaAddresses: [CNBMetaAddress]
-    ) -> [AddressTransactionSummaryResponse] {
+  ) -> [AddressTransactionSummaryResponse] {
 
     let addressesInTransactions = Set(responses.map { $0.address })
     let metaAddressesInTransactions = addressesInTransactions.compactMap { addr in metaAddresses.first { $0.address == addr } }
@@ -333,7 +333,7 @@ class TransactionDataWorker: TransactionDataWorkerType {
     in context: NSManagedObjectContext,
     aggregatingATSResponses aggregateATSResponses: [AddressTransactionSummaryResponse] = [],
     addressFetcher: @escaping AddressFetcher
-    ) -> Promise<[AddressTransactionSummaryResponse]> {
+  ) -> Promise<[AddressTransactionSummaryResponse]> {
 
     return Promise { seal in
       let endIndex = startIndex + gapLimit
@@ -355,36 +355,36 @@ class TransactionDataWorker: TransactionDataWorkerType {
             aggregatingATSResponses: aggregateATSResponsesCopy,
             addressFetcher: addressFetcher
           )
+      }
+      .recover { (error: Error) -> Promise<[AddressTransactionSummaryResponse]> in
+        var isEmptyResponseError = false
+        if let networkError = error as? CKNetworkError, case .emptyResponse = networkError {
+          isEmptyResponseError = true
         }
-        .recover { (error: Error) -> Promise<[AddressTransactionSummaryResponse]> in
-          var isEmptyResponseError = false
-          if let networkError = error as? CKNetworkError, case .emptyResponse = networkError {
-            isEmptyResponseError = true
-          }
 
-          let shouldContinueSeeking = (seekingThroughIndex ?? 0) > endIndex
+        let shouldContinueSeeking = (seekingThroughIndex ?? 0) > endIndex
 
-          if isEmptyResponseError && shouldContinueSeeking {
-            // ignore empty response and continue seeking through index
-            return self.fetchAddressTransactionSummaries(
-              atStartIndex: endIndex,
-              seekingThroughIndex: seekingThroughIndex,
-              in: context,
-              aggregatingATSResponses: aggregateATSResponsesCopy,
-              addressFetcher: addressFetcher
-            )
-          } else if isEmptyResponseError {
-            /* not really an error, just ensuring no more data returned */
-            return Promise.value(aggregateATSResponsesCopy)
-          } else {
-            log.error(error, message: "unrecoverable error")
-            throw error
-          }
+        if isEmptyResponseError && shouldContinueSeeking {
+          // ignore empty response and continue seeking through index
+          return self.fetchAddressTransactionSummaries(
+            atStartIndex: endIndex,
+            seekingThroughIndex: seekingThroughIndex,
+            in: context,
+            aggregatingATSResponses: aggregateATSResponsesCopy,
+            addressFetcher: addressFetcher
+          )
+        } else if isEmptyResponseError {
+          /* not really an error, just ensuring no more data returned */
+          return Promise.value(aggregateATSResponsesCopy)
+        } else {
+          log.error(error, message: "unrecoverable error")
+          throw error
         }
-        .done { seal.fulfill($0) }
-        .catch { error in
-          log.error(error, message: nil)
-          seal.reject(error)
+      }
+      .done { seal.fulfill($0) }
+      .catch { error in
+        log.error(error, message: nil)
+        seal.reject(error)
       }
     }
   }
@@ -395,7 +395,7 @@ class TransactionDataWorker: TransactionDataWorkerType {
     in context: NSManagedObjectContext,
     aggregatingATSResponses aggregateATSResponses: [AddressTransactionSummaryResponse] = [],
     addressFetcher: @escaping AddressFetcher
-    ) -> Promise<[AddressTransactionSummaryResponse]> {
+  ) -> Promise<[AddressTransactionSummaryResponse]> {
 
     let batchedMetaAddresses: [[CNBMetaAddress]] = Array(0...seekingThroughIndex).map(addressFetcher).chunked(by: 20)
     let atsFetchPromises: [Promise<[AddressTransactionSummaryResponse]>] = batchedMetaAddresses.map { metaAddressBatch in
@@ -415,7 +415,7 @@ class TransactionDataWorker: TransactionDataWorkerType {
     with dto: TransactionDataWorkerDTO,
     in context: NSManagedObjectContext,
     fullSync: Bool
-    ) -> Promise<[TransactionResponse]> {
+  ) -> Promise<[TransactionResponse]> {
 
     let uniqueTxResponses = dto.txResponses.uniqued()
     let uniqueTxNotificationResponses = dto.txNotificationResponses.uniqued()
@@ -524,13 +524,13 @@ class TransactionDataWorker: TransactionDataWorkerType {
             }
           }
         }
-      }.asVoid()
+    }.asVoid()
   }
 
   private func persistAddressTransactionSummaries(
     with aggregateATSResponses: [AddressTransactionSummaryResponse],
     in context: NSManagedObjectContext
-    ) -> Promise<[AddressTransactionSummaryResponse]> {
+  ) -> Promise<[AddressTransactionSummaryResponse]> {
 
     let uniqueATSResponses = aggregateATSResponses.uniqued()
     persistenceManager.persistTransactionSummaries(from: uniqueATSResponses, in: context)
@@ -553,9 +553,9 @@ class TransactionDataWorker: TransactionDataWorkerType {
           self.fetchAndSetDayAveragePrice(for: ckmTransaction, in: context)
             .done(in: context) {
               seal.fulfill(())
-            }
-            .catch { error in
-              seal.reject(error)
+          }
+          .catch { error in
+            seal.reject(error)
           }
         }
       }
@@ -579,17 +579,17 @@ class TransactionDataWorker: TransactionDataWorkerType {
         } else {
           throw error
         }
+    }
+    .done(in: context) { (response: PriceTransactionResponse) in
+      if response.average != 0 { //ignore emptyResponse created above
+        transaction.dayAveragePrice = response.averagePrice
       }
-      .done(in: context) { (response: PriceTransactionResponse) in
-        if response.average != 0 { //ignore emptyResponse created above
-          transaction.dayAveragePrice = response.averagePrice
-        }
     }
   }
 
   private func updateUnspentVouts(
     in context: NSManagedObjectContext
-    ) -> Promise<Void> {
+  ) -> Promise<Void> {
     return Promise { seal in
       // fetch all unspent vouts, these may or may not belong to our wallet (address != nil)
       var unspentVouts: [CKMVout] = []
@@ -607,7 +607,7 @@ class TransactionDataWorker: TransactionDataWorkerType {
         let vinFetchReqest: NSFetchRequest<CKMVin> = CKMVin.fetchRequest()
         vinFetchReqest.predicate = CKPredicate.Vin.matching(previousTxid: txid, previousVoutIndex: vout.index)
         vinFetchReqest.fetchLimit = 1
-
+        
         do {
           let matchingVinExists = try context.fetch(vinFetchReqest).first != nil
           vout.isSpent = matchingVinExists
@@ -622,7 +622,7 @@ class TransactionDataWorker: TransactionDataWorkerType {
   private func promisesForFetchingTransactionDetails(
     withTxids txids: [String],
     in context: NSManagedObjectContext
-    ) -> Promise<[TransactionResponse]> {
+  ) -> Promise<[TransactionResponse]> {
     guard txids.isNotEmpty else { return Promise.value([]) }
     let chunkSize = 25
     let batchedTxids = txids.chunked(by: chunkSize)
