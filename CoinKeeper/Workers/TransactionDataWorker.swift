@@ -99,7 +99,6 @@ class TransactionDataWorker: TransactionDataWorkerType {
 
     return getLightningLedger(since: fullSync ? nil : CKMLNLedgerEntry.findLatest(in: context)?.createdAt)
     .get(in: context) { response in
-
       ///Run deletion before persisting the ledger so that it doesn't interfere with wallet
       ///entries whose inverse relationships are not set until the context is saved.
       lnBroker.deleteInvalidWalletEntries(in: context)
@@ -109,19 +108,19 @@ class TransactionDataWorker: TransactionDataWorkerType {
       self.processOnChainLightningTransfers(withLedger: response.ledger, forWallet: wallet, in: context)
     }
     .then(in: context) { response -> Promise<Void> in
-let threshold = self.fourteenDaysAgo
-let recentLedgerEntryIds = response.ledger.filter { $0.type == .lightning && $0.createdAt > threshold }.map { $0.cleanedId }
+      let threshold = self.fourteenDaysAgo
+      let recentLedgerEntryIds = response.ledger.filter { $0.type == .lightning && $0.createdAt > threshold }.map { $0.cleanedId }
 
-///Limit and rotate results (using lastCheckedSharedPayload), so that fetching notifications doesn't result in a rate limit error
-let entriesToFetch = lnBroker.getLedgerEntriesWithoutPayloads(matchingIds: recentLedgerEntryIds, limit: 10, in: context)
-let idsToFetch = entriesToFetch.compactMap { $0.id }
+      ///Limit and rotate results (using lastCheckedSharedPayload), so that fetching notifications doesn't result in a rate limit error
+      let entriesToFetch = lnBroker.getLedgerEntriesWithoutPayloads(matchingIds: recentLedgerEntryIds, limit: 10, in: context)
+      let idsToFetch = entriesToFetch.compactMap { $0.id }
 
-return self.fetchTransactionNotifications(forIds: idsToFetch)
-.get(in: context) { responses in
-entriesToFetch.forEach { $0.walletEntry?.lastCheckedSharedPayload = Date() }
-self.decryptAndPersistSharedPayloads(from: responses, ofType: .lightning, in: context)
-}
-.asVoid()
+      return self.fetchTransactionNotifications(forIds: idsToFetch)
+      .get(in: context) { responses in
+      entriesToFetch.forEach { $0.walletEntry?.lastCheckedSharedPayload = Date() }
+      self.decryptAndPersistSharedPayloads(from: responses, ofType: .lightning, in: context)
+      }
+      .asVoid()
     }
   }
 

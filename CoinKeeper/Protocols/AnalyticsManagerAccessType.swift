@@ -11,6 +11,6 @@ import Foundation
 protocol AnalyticsManagerAccessType: class {
   func viewControllerShouldTrackEvent(event: AnalyticsManagerEventType)
   func viewControllerShouldTrackEvent(event: AnalyticsManagerEventType, with values: [AnalyticsEventValue])
-  
+
   func viewControllerShouldTrackProperty(property: MixpanelProperty)
 }
