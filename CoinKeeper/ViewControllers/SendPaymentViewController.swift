@@ -422,6 +422,7 @@ extension SendPaymentViewController {
     case .phoneNumber:
       setPaymentRecipient(PaymentRecipient(parsedRecipient: parsedRecipient))
     case .bitcoinURL(let bitcoinURL):
+      viewModel.walletTransactionType = .onChain
       if let paymentRequest = bitcoinURL.components.paymentRequest {
         self.fetchViewModelAndUpdate(forPaymentRequest: paymentRequest)
       } else {
@@ -431,6 +432,8 @@ extension SendPaymentViewController {
         }
       }
     }
+
+    resetViewModelWithUI()
   }
 
   private func handleLightningInvoicePaste(lightningUrl: LightningURL) {
