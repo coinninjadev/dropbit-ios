@@ -99,14 +99,29 @@ class TransactionDataWorker: TransactionDataWorkerType {
 
     return getLightningLedger(since: fullSync ? nil : CKMLNLedgerEntry.findLatest(in: context)?.createdAt)
     .get(in: context) { response in
+
+      ///Run deletion before persisting the ledger so that it doesn't interfere with wallet
+      ///entries whose inverse relationships are not set until the context is saved.
+      lnBroker.deleteInvalidWalletEntries(in: context)
+      lnBroker.deleteInvalidLedgerEntries(in: context)
+
       self.persistenceManager.brokers.lightning.persistLedgerResponse(response, forWallet: wallet, in: context)
       self.processOnChainLightningTransfers(withLedger: response.ledger, forWallet: wallet, in: context)
     }
     .then(in: context) { response -> Promise<Void> in
-      let lightningEntryIds = response.ledger.filter { $0.type == .lightning }.map { $0.cleanedId }
-      return self.fetchTransactionNotifications(forIds: lightningEntryIds)
-        .get(in: context) { responses in self.decryptAndPersistSharedPayloads(from: responses, ofType: .lightning, in: context) }
-        .asVoid()
+let threshold = self.fourteenDaysAgo
+let recentLedgerEntryIds = response.ledger.filter { $0.type == .lightning && $0.createdAt > threshold }.map { $0.cleanedId }
+
+///Limit and rotate results (using lastCheckedSharedPayload), so that fetching notifications doesn't result in a rate limit error
+let entriesToFetch = lnBroker.getLedgerEntriesWithoutPayloads(matchingIds: recentLedgerEntryIds, limit: 10, in: context)
+let idsToFetch = entriesToFetch.compactMap { $0.id }
+
+return self.fetchTransactionNotifications(forIds: idsToFetch)
+.get(in: context) { responses in
+entriesToFetch.forEach { $0.walletEntry?.lastCheckedSharedPayload = Date() }
+self.decryptAndPersistSharedPayloads(from: responses, ofType: .lightning, in: context)
+}
+.asVoid()
     }
   }
 
@@ -239,9 +254,13 @@ class TransactionDataWorker: TransactionDataWorkerType {
       .then(in: context) { _ in self.updateTransactionDayAveragePrices(in: context) }
   }
 
+  private var fourteenDaysAgo: Date {
+    return Calendar.current.date(byAdding: .day, value: -14, to: Date()) ?? Date()
+  }
+
   private func fetchAndMergeTransactionNotifications(dto: TransactionDataWorkerDTO) -> Promise<TransactionDataWorkerDTO> {
-    let fourteenDaysAgo = Calendar.current.date(byAdding: .day, value: -14, to: Date()) ?? Date()
-    let relevantTxids = dto.txResponses.filter { ($0.date ?? Date()) > fourteenDaysAgo }.map { $0.txid }
+    let threshold = fourteenDaysAgo
+    let relevantTxids = dto.txResponses.filter { ($0.date ?? Date()) > threshold }.map { $0.txid }
 
     return self.fetchTransactionNotifications(forIds: relevantTxids)
       .then { responses -> Promise<TransactionDataWorkerDTO> in

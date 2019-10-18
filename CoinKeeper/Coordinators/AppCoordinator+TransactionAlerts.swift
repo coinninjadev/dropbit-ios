@@ -31,8 +31,13 @@ extension AppCoordinator {
       latestExchangeRates(responseHandler: { rates in
         let insertedTransactions = context.insertedObjects.compactMap { $0 as? CKMTransaction }
         let incomingTransactions = insertedTransactions.filter { $0.isIncoming && !$0.isInvite }
+        let insertedLightningPayments = context.insertedObjects.compactMap { $0 as? CKMLNLedgerEntry }
+        let incomingLightningPayments = insertedLightningPayments.filter { $0.type == .lightning && $0.direction == .in }
         for transaction in incomingTransactions {
           self.alertManager.showIncomingTransactionAlert(for: transaction.receivedAmount, with: rates)
+        }
+        for payment in incomingLightningPayments {
+          self.alertManager.showIncomingLightningAlert(for: payment.value, with: rates)
         }
         seal.fulfill(())
       })

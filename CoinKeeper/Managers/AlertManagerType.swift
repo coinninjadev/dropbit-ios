@@ -55,6 +55,7 @@ protocol AlertManagerType: CKBannerViewDelegate {
 
   // used for showing new transactions incoming message
   func showIncomingTransactionAlert(for receivedAmount: Int, with rates: ExchangeRates)
+  func showIncomingLightningAlert(for receivedAmount: Int, with rates: ExchangeRates)
 
   func showActivityHUD(withStatus status: String?)
   func hideActivityHUD(withDelay delay: TimeInterval?, completion: CKCompletion?)

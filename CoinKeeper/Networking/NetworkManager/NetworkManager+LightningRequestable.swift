@@ -42,6 +42,10 @@ extension NetworkManager: LightningRequestable {
   func payLightningPaymentRequest(_ request: String, sats: Int) -> Promise<LNTransactionResponse> {
     let body = LNPayBody(request: request, value: sats)
     return cnProvider.request(LNTransactionTarget.pay(body))
+      .recover { (error: Error) -> Promise<LNTransactionResponse> in
+        self.analyticsManager.track(event: .paymentToInvoiceFailed, with: nil)
+        throw error
+    }
   }
 
   func withdrawLightningFunds(to address: String, sats: Int) -> Promise<LNTransactionResponse> {
