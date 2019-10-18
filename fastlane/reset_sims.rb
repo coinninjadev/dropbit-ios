@@ -7,8 +7,6 @@ compatible_devices = [
 ]
 
 available_oss = [
-  'iOS 11.1',
-  'iOS 11.4',
   'iOS 12.2',
   'iOS 13.0'
 ]
