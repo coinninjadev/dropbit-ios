@@ -11,7 +11,7 @@ import Moya
 public struct LNLedgerUrlParameters {
   var after: Date?
   var offset: Int
-  var limit: Int = 10
+  var limit: Int = 25
 
   var rfcAfter: String? {
     guard let after = after else { return nil }
