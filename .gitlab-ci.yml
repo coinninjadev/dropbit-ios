@@ -42,6 +42,7 @@ build_archive:
   script: bundle exec fastlane deploy
   only:
     - /^release-.*$/
+    - develop
   artifacts:
     paths:
       - build/CoinKeeper.ipa
