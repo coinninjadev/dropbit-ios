@@ -21,6 +21,10 @@ public class CKMLNLedgerEntry: NSManagedObject {
     return entry
   }
 
+  static let lastLedgerSortDescriptor: [NSSortDescriptor] = [
+    NSSortDescriptor(key: #keyPath(CKMLNLedgerEntry.createdAt), ascending: false)
+  ]
+
   static func findOrCreate(with id: String, wallet: CKMWallet, createdAt: Date, in context: NSManagedObjectContext) -> CKMLNLedgerEntry {
     if let foundEntry = find(withId: id, wallet: wallet, in: context) {
       return foundEntry
@@ -68,6 +72,19 @@ public class CKMLNLedgerEntry: NSManagedObject {
       //scanning/pasting an invoice will populate the editable memo text field and may set it before the ledger result is fetched
       //this will give flexibility to the order of setting the memo and set the correct value if they are identical
       entry.walletEntry?.memoSetByInvoice = true
+    }
+  }
+
+  static func findLatest(in context: NSManagedObjectContext) -> CKMLNLedgerEntry? {
+    let fetchRequest: NSFetchRequest<CKMLNLedgerEntry> = CKMLNLedgerEntry.fetchRequest()
+    fetchRequest.fetchLimit = 1
+    fetchRequest.sortDescriptors = lastLedgerSortDescriptor
+
+    do {
+      return try context.fetch(fetchRequest).first
+    } catch {
+      log.error(error, message: "Could not execute fetch request for latest transaction")
+      return nil
     }
   }
 
