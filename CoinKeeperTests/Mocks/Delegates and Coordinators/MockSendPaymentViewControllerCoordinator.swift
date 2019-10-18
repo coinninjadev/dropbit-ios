@@ -31,6 +31,15 @@ class MockSendPaymentViewControllerCoordinator: SendPaymentViewControllerCoordin
     return Promise { _ in }
   }
 
+  func viewControllerDidTapReceivePayment(_ viewController: UIViewController,
+                                          converter: CurrencyConverter, walletTransactionType: WalletTransactionType) {}
+
+  func viewControllerShouldTrackEvent(event: AnalyticsManagerEventType) {}
+
+  func viewControllerShouldTrackEvent(event: AnalyticsManagerEventType, with values: [AnalyticsEventValue]) {}
+
+  func viewControllerShouldTrackProperty(property: MixpanelProperty) {}
+
   func configureOutgoingTransactionData(with dto: OutgoingTransactionData,
                                         address: String?,
                                         inputs: SendingDelegateInputs) -> OutgoingTransactionData {

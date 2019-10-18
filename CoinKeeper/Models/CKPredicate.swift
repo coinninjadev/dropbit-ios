@@ -349,12 +349,30 @@ struct CKPredicate {
       let path = #keyPath(CKMWalletEntry.isHidden)
       return NSPredicate(format: "\(path) == %@", NSNumber(value: false))
     }
+
+    static func invalid() -> NSPredicate {
+      let invitationPath = #keyPath(CKMWalletEntry.invitation)
+      let ledgerEntryPath = #keyPath(CKMWalletEntry.ledgerEntry)
+      let invitationPredicate = NSPredicate(format: "\(invitationPath) == nil")
+      let ledgerEntryPredicate = NSPredicate(format: "\(ledgerEntryPath) == nil")
+      return NSCompoundPredicate(type: .and, subpredicates: [invitationPredicate, ledgerEntryPredicate])
+    }
   }
 
   struct LedgerEntry {
     static func idIn(_ ids: [String]) -> NSPredicate {
       let idKeyPath = #keyPath(CKMLNLedgerEntry.id)
       return NSPredicate(format: "\(idKeyPath) IN %@", ids)
+    }
+
+    static func withoutPayload() -> NSPredicate {
+      let path = #keyPath(CKMLNLedgerEntry.walletEntry.sharedPayload)
+      return NSPredicate(format: "\(path) == nil")
+    }
+
+    static func invalid() -> NSPredicate {
+      let walletEntryPath = #keyPath(CKMLNLedgerEntry.walletEntry)
+      return NSPredicate(format: "\(walletEntryPath) == nil")
     }
   }
 }

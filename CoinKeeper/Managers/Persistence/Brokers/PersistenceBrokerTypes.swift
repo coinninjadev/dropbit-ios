@@ -60,6 +60,11 @@ protocol LightningBrokerType: AnyObject {
                               invitation: CKMInvitation?,
                               inputs: LightningPaymentInputs,
                               in context: NSManagedObjectContext)
+  func deleteInvalidWalletEntries(in context: NSManagedObjectContext)
+  func deleteInvalidLedgerEntries(in context: NSManagedObjectContext)
+
+  func getLedgerEntriesWithoutPayloads(matchingIds ids: [String], limit: Int, in context: NSManagedObjectContext) -> [CKMLNLedgerEntry]
+
 }
 
 protocol CheckInBrokerType: AnyObject {

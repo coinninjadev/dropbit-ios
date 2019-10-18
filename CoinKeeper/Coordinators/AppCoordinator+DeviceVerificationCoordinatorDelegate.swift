@@ -53,7 +53,11 @@ extension AppCoordinator: DeviceVerificationCoordinatorDelegate {
         }
       }
       .get(in: context) { _ in
-        try context.saveRecursively()
+        do {
+          try context.saveRecursively()
+        } catch {
+          log.contextSaveError(error)
+        }
       }
       .done(on: .main) { (parser: WalletFlagsParser) in
         switch parser.restoreType {

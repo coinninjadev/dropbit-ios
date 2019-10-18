@@ -128,9 +128,11 @@ class WalletSyncOperationFactory {
 
   private func updateLightningAccountStatusAfterSuccessfulResponse(_ dependencies: SyncDependencies, account: LNAccountResponse) {
     if account.locked {
+      dependencies.analyticsManager.track(property: MixpanelProperty(key: .lightningLockedStatus, value: true))
       dependencies.persistenceManager.brokers.preferences.lightningWalletLockedStatus = .locked
       CKNotificationCenter.publish(key: .didLockLightning)
     } else {
+      dependencies.analyticsManager.track(property: MixpanelProperty(key: .lightningLockedStatus, value: false))
       dependencies.persistenceManager.brokers.preferences.lightningWalletLockedStatus = .unlocked
       CKNotificationCenter.publish(key: .didUnlockLightning)
     }
