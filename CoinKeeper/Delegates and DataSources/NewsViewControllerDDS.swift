@@ -124,7 +124,7 @@ class NewsViewControllerDDS: NSObject {
   }
 
   private func configureDailyData(data: [PriceSummaryResponse]) -> (data: [ChartDataEntry], response: [PriceSummaryResponse]) {
-    let startIndex = data.count - dailyDataSourceOffset
+    let startIndex = max(0, data.count - dailyDataSourceOffset)
     let responseData = Array(data[startIndex..<data.count]).enumerated().compactMap { $0 % 5 == 0 ? $1 : nil }
     let dailyData = responseData.enumerated().map { index, element in return ChartDataEntry(x: Double(index), y: element.average) }
 
