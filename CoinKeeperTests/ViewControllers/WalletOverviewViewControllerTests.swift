@@ -75,6 +75,15 @@ class WalletOverviewViewControllerTests: XCTestCase {
 
     func latestExchangeRates(responseHandler: ExchangeRatesRequest) { }
 
+    func viewControllerDidTapReceivePayment(_ viewController: UIViewController,
+                                            converter: CurrencyConverter, walletTransactionType: WalletTransactionType) {}
+
+    func viewControllerShouldTrackEvent(event: AnalyticsManagerEventType) {}
+
+    func viewControllerShouldTrackEvent(event: AnalyticsManagerEventType, with values: [AnalyticsEventValue]) {}
+
+    func viewControllerShouldTrackProperty(property: MixpanelProperty) {}
+
     func latestFees() -> Promise<Fees> {
       return Promise { _ in }
     }

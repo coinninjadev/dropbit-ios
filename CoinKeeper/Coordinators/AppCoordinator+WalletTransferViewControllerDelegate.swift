@@ -30,6 +30,7 @@ extension AppCoordinator: WalletTransferViewControllerDelegate {
     successFailVC.action = { [unowned self] in
       self.networkManager.withdrawLightningFunds(to: receiveAddress, sats: sats)
         .done { _ in
+          self.analyticsManager.track(event: .lightningToOnChainSuccessful, with: nil)
           CKNotificationCenter.publish(key: .didUpdateLocalTransactionRecords)
           successFailVC.setMode(.success)
         }
@@ -54,7 +55,8 @@ extension AppCoordinator: WalletTransferViewControllerDelegate {
     return buildLoadLightningPaymentData(btcAmount: btcAmount, exchangeRates: exchangeRates, in: context)
   }
 
-  func viewControllerDidConfirmLoad(_ viewController: UIViewController, paymentData transactionData: PaymentData) {
+  func viewControllerDidConfirmLoad(_ viewController: UIViewController,
+                                    paymentData transactionData: PaymentData) {
     viewController.dismiss(animated: false) {
       self.toggleChartAndBalance()
       self.handleSuccessfulOnChainPaymentVerification(with: transactionData.broadcastData,

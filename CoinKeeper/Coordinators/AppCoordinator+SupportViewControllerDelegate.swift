@@ -31,6 +31,8 @@ extension AppCoordinator: SupportViewControllerDelegate {
       }
       return
     }
+    let shmFileURL = URL(string: dbFileURL.absoluteString + "-shm")
+    let walFileURL = URL(string: dbFileURL.absoluteString + "-wal")
     guard MFMailComposeViewController.canSendMail() else {
       self.alertManager.hideActivityHUD(withDelay: 0) {
         self.alertManager.showError(message: "Your mail client is not configured", forDuration: 4.0)
@@ -60,6 +62,12 @@ extension AppCoordinator: SupportViewControllerDelegate {
 
     if let dbData = try? Data(contentsOf: dbFileURL) {
       mailVC.addAttachmentData(dbData, mimeType: "application/vnd.sqlite3", fileName: "CoinNinjaDB.sqlite")
+    }
+    if let walURL = walFileURL, let walData = try? Data(contentsOf: walURL) {
+      mailVC.addAttachmentData(walData, mimeType: "application/vnd.sqlite3", fileName: "CoinNinjaDB.sqlite-wal")
+    }
+    if let shmURL = shmFileURL, let shmData = try? Data(contentsOf: shmURL) {
+      mailVC.addAttachmentData(shmData, mimeType: "application/vnd.sqlite3", fileName: "CoinNinjaDB.sqlite-shm")
     }
 
     if let logData = log.fileData() {

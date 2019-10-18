@@ -15,7 +15,8 @@ extension AppCoordinator: PaymentSendingDelegate {
 
   func viewControllerDidConfirmLightningPayment(_ viewController: UIViewController,
                                                 inputs: LightningPaymentInputs,
-                                                receiver: OutgoingDropBitReceiver?) {
+                                                receiver: ContactType?) {
+    analyticsManager.track(event: .attemptedToPayInvoice, with: nil)
     let viewModel = PaymentVerificationPinEntryViewModel(amountDisablesBiometrics: false)
     let successHandler: CKCompletion = { [unowned self] in
       self.handleSuccessfulLightningPaymentVerification(with: inputs, receiver: receiver)
@@ -69,15 +70,18 @@ extension AppCoordinator: PaymentSendingDelegate {
   }
 
   func handleSuccessfulLightningPaymentVerification(with inputs: LightningPaymentInputs,
-                                                    receiver: OutgoingDropBitReceiver?) {
+                                                    receiver: ContactType?) {
     let viewModel = PaymentSuccessFailViewModel(mode: .pending)
     let successFailVC = SuccessFailViewController.newInstance(viewModel: viewModel, delegate: self)
-    let errorHandler: CKErrorCompletion = self.paymentErrorHandler(for: successFailVC)
+    let errorHandler: CKErrorCompletion = self.paymentErrorHandler(for: successFailVC, isLightning: true)
+    let successCompletion = { [weak self] in
+      successFailVC.setMode(.success)
+    }
 
     successFailVC.action = { [unowned self] in
       self.executeConfirmedLightningPayment(with: inputs,
-                                            receiver: receiver,
-                                            success: { successFailVC.setMode(.success) },
+                                            receiver: receiver?.asDropBitReceiver,
+                                            success: successCompletion,
                                             failure: errorHandler)
     }
 
@@ -93,7 +97,7 @@ extension AppCoordinator: PaymentSendingDelegate {
 
     let viewModel = PaymentSuccessFailViewModel(mode: .pending)
     let successFailVC = SuccessFailViewController.newInstance(viewModel: viewModel, delegate: self)
-    let errorHandler: CKErrorCompletion = self.paymentErrorHandler(for: successFailVC)
+    let errorHandler: CKErrorCompletion = self.paymentErrorHandler(for: successFailVC, isLightning: false)
 
     successFailVC.action = { [unowned self] in
       self.broadcastConfirmedOnChainTransaction(
@@ -101,7 +105,7 @@ extension AppCoordinator: PaymentSendingDelegate {
         outgoingTransactionData: outgoingTransactionData,
         success: { successFailVC.setMode(.success) },
         failure: errorHandler,
-        isInternalBroadcast: isInternalBroadcast)
+        isInternalLightningLoad: isInternalBroadcast)
     }
 
     self.navigationController.topViewController()?.present(successFailVC, animated: false) {
@@ -110,7 +114,7 @@ extension AppCoordinator: PaymentSendingDelegate {
   }
 
   /// Provides a completion handler to be called in the catch block of payment promise chains
-  private func paymentErrorHandler(for successFailVC: SuccessFailViewController) -> CKErrorCompletion {
+  private func paymentErrorHandler(for successFailVC: SuccessFailViewController, isLightning: Bool) -> CKErrorCompletion {
     let errorHandler: CKErrorCompletion = { [unowned self] error in
       if let networkError = error as? CKNetworkError,
         case let .reachabilityFailed(moyaError) = networkError {
@@ -142,7 +146,10 @@ extension AppCoordinator: PaymentSendingDelegate {
                                      invitation: CKMInvitation?,
                                      to receiver: OutgoingDropBitReceiver?) -> Promise<LNTransactionResponse> {
     return self.networkManager.payLightningPaymentRequest(inputs.invoice, sats: inputs.sats)
-    .get { self.persistLightningPaymentResponse($0, receiver: receiver, invitation: invitation, inputs: inputs) }
+    .get {
+      self.analyticsManager.track(event: .lightningDropBitInvoicePaid, with: nil)
+      self.persistLightningPaymentResponse($0, receiver: receiver, invitation: invitation, inputs: inputs)
+    }
   }
 
   ///NOTE: The payload for invitations should be posted via a separate function inside the AddressRequestPaymentWorker
@@ -152,6 +159,7 @@ extension AppCoordinator: PaymentSendingDelegate {
     let maybeSender = self.sharedPayloadSenderIdentity(forReceiver: receiver)
     let maybePostable = PayloadPostableLightningObject(inputs: inputs, paymentResultId: response.result.cleanedId,
                                                        sender: maybeSender, receiver: receiver)
+
     if let postableObject = maybePostable {
       return self.postSharedPayload(postableObject).asVoid()
     } else {
@@ -196,7 +204,7 @@ extension AppCoordinator: PaymentSendingDelegate {
                                                     outgoingTransactionData: OutgoingTransactionData,
                                                     success: @escaping CKCompletion,
                                                     failure: @escaping CKErrorCompletion,
-                                                    isInternalBroadcast: Bool = false) {
+                                                    isInternalLightningLoad: Bool = false) {
     self.networkManager.updateCachedMetadata()
       .then { _ in self.networkManager.broadcastTx(with: transactionData) }
       .then { txid -> Promise<String> in
@@ -235,7 +243,7 @@ extension AppCoordinator: PaymentSendingDelegate {
           }
 
           do {
-            try context.save()
+            try context.saveRecursively()
           } catch {
             log.contextSaveError(error)
           }
@@ -244,9 +252,11 @@ extension AppCoordinator: PaymentSendingDelegate {
       .done(on: .main) { _ in
         success()
 
-        if !isInternalBroadcast {
+        if !isInternalLightningLoad {
           self.showShareTransactionIfAppropriate(dropBitReceiver: outgoingTransactionData.receiver,
                                                  walletTxType: .onChain, delegate: self)
+        } else {
+          self.analyticsManager.track(event: .onChainToLightningSuccessful, with: nil)
         }
 
         self.analyticsManager.track(property: MixpanelProperty(key: .hasSent, value: true))

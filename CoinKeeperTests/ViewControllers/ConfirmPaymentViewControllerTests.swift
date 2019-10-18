@@ -53,6 +53,10 @@ class ConfirmPaymentViewControllerTests: XCTestCase {
   }
 
   class MockCoordinator: ConfirmPaymentViewControllerDelegate {
+    func viewControllerDidConfirmLightningPayment(_ viewController: UIViewController,
+                                                  inputs: LightningPaymentInputs, receiver: ContactType?) {
+    }
+
     func payAndPersistLightningRequest(withInputs inputs: LightningPaymentInputs,
                                        invitation: CKMInvitation?,
                                        to receiver: OutgoingDropBitReceiver?) -> Promise<LNTransactionResponse> {

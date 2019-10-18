@@ -77,16 +77,15 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate {
     let successFailViewController = SuccessFailViewController.newInstance(viewModel: PaymentSuccessFailViewModel(mode: .pending),
                                                                           delegate: self)
     bgContext.performAndWait {
+      ///Create and persist an orphan CKMInvitation object, which will be "acknowledged" and linked
+      ///once the WAR creation network request succeeds
       persistenceManager.brokers.invitation.persistUnacknowledgedInvitation(
         withDTO: outgoingInvitationDTO,
         acknowledgmentId: inviteBody.requestId,
         in: bgContext)
-
-      do {
-        try bgContext.saveRecursively()
-      } catch {
-        log.contextSaveError(error)
-      }
+      ///Do not save the context here, keep it only in this context until the WAR has been created successfully.
+      ///If a sync is running concurrently at just the right time, it will sometimes delete this invitation
+      ///because this invitation hasn't yet been received/acknowledged by the server.
     }
     successFailViewController.action = { [weak self] in
       guard let strongSelf = self else { return }

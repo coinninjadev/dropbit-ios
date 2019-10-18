@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14868" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15400" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14824"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15404"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -78,7 +78,6 @@
                             <constraint firstItem="GX7-DA-6R2" firstAttribute="leading" secondItem="JGv-XL-uiR" secondAttribute="leading" constant="5" id="bLZ-Tk-V3L"/>
                             <constraint firstItem="wFM-eQ-jUH" firstAttribute="trailing" secondItem="2ov-av-mIi" secondAttribute="trailing" id="bQs-5F-ck4"/>
                             <constraint firstAttribute="bottom" secondItem="GX7-DA-6R2" secondAttribute="bottom" id="bbA-lC-U1f"/>
-                            <constraint firstItem="Fsb-uW-qUJ" firstAttribute="leading" secondItem="JGv-XL-uiR" secondAttribute="leading" constant="5" id="cqJ-0P-1Fb"/>
                             <constraint firstItem="Av0-bG-xgJ" firstAttribute="leading" secondItem="JGv-XL-uiR" secondAttribute="leading" id="dhp-1R-Qqb"/>
                             <constraint firstAttribute="bottom" secondItem="2ov-av-mIi" secondAttribute="bottom" id="fVf-qJ-dvb"/>
                             <constraint firstItem="Av0-bG-xgJ" firstAttribute="trailing" secondItem="JGv-XL-uiR" secondAttribute="trailing" id="fX8-qv-xc2"/>
@@ -86,8 +85,9 @@
                             <constraint firstItem="D7Z-lW-169" firstAttribute="top" secondItem="dvX-tA-FaC" secondAttribute="top" constant="140" id="h92-Ng-INE"/>
                             <constraint firstItem="JGv-XL-uiR" firstAttribute="trailing" secondItem="Lt8-y7-dfC" secondAttribute="trailing" constant="5" id="hEQ-Wk-IMx"/>
                             <constraint firstItem="wFM-eQ-jUH" firstAttribute="bottom" secondItem="2ov-av-mIi" secondAttribute="bottom" id="i7w-EP-kxq"/>
-                            <constraint firstItem="Fsb-uW-qUJ" firstAttribute="trailing" secondItem="JGv-XL-uiR" secondAttribute="trailing" constant="-5" id="mCa-Xx-JuO"/>
+                            <constraint firstItem="Fsb-uW-qUJ" firstAttribute="trailing" secondItem="Lt8-y7-dfC" secondAttribute="trailing" id="pBp-fc-V02"/>
                             <constraint firstItem="JGv-XL-uiR" firstAttribute="trailing" secondItem="D7Z-lW-169" secondAttribute="trailing" constant="5" id="ppe-ZJ-vkj"/>
+                            <constraint firstItem="Fsb-uW-qUJ" firstAttribute="leading" secondItem="Lt8-y7-dfC" secondAttribute="leading" id="xDR-Z4-jdD"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="JGv-XL-uiR"/>
                     </view>

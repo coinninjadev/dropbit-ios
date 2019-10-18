@@ -47,12 +47,7 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
   @IBOutlet var refreshView: TransactionHistoryRefreshView!
   @IBOutlet var refreshViewTopConstraint: NSLayoutConstraint!
   @IBOutlet var footerView: UIView!
-  @IBOutlet var gradientBlurView: UIView! {
-    didSet {
-      gradientBlurView.backgroundColor = .white
-      gradientBlurView.fade(style: .top, percent: 1.0)
-    }
-  }
+  @IBOutlet var gradientBlurView: UIView!
 
   weak var delegate: TransactionHistoryViewControllerDelegate!
 
@@ -96,6 +91,7 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
     lightningTransactionHistoryEmptyBalanceView.delegate = delegate
     emptyStateBackgroundView.isHidden = false
     emptyStateBackgroundView.backgroundColor = .whiteBackground
+    configureOnChainEmptyStateButtons()
     if viewModel.walletTransactionType == .onChain {
       lockedLightningView.isHidden = true
       lightningUnavailableView.isHidden = true
@@ -114,6 +110,11 @@ class TransactionHistoryViewController: BaseViewController, StoryboardInitializa
     super.viewWillAppear(animated)
     navigationController?.setNavigationBarHidden(true, animated: true)
     resetCollectionView()
+  }
+
+  override func viewDidLayoutSubviews() {
+    super.viewDidLayoutSubviews()
+    configureGradientBlurView() //the CAGradientLayer doesn't use autolayout, so need to keep its bounds updated here
   }
 
   override func viewWillDisappear(_ animated: Bool) {
@@ -163,6 +164,10 @@ extension TransactionHistoryViewController { // Layout
     return UIApplication.shared.statusBarFrame.height
   }
 
+  func configureGradientBlurView() {
+    gradientBlurView.backgroundColor = .white
+    gradientBlurView.fade(style: .top, percent: 1.0)
+  }
 }
 
 extension TransactionHistoryViewController: TransactionHistoryDataSourceDelegate {
@@ -272,5 +277,17 @@ extension TransactionHistoryViewController: DZNEmptyDataSetDelegate, DZNEmptyDat
     default:
       return 0
     }
+  }
+
+  ///These buttons apply a default style during awakeFromNib, which is triggered after these outlets
+  ///didSet, so need to set the button styles later in the view lifecycle.
+  func configureOnChainEmptyStateButtons() {
+    let views = [transactionHistoryNoBalanceView, transactionHistoryWithBalanceView]
+    for view in views {
+      view?.getBitcoinButton?.style = .green
+      view?.learnAboutBitcoinButton?.style = .darkBlue
+    }
+
+    transactionHistoryWithBalanceView?.spendBitcoinButton?.style = .orange
   }
 }

@@ -10,15 +10,17 @@ import Foundation
 import UIKit
 import MMDrawerController
 
-protocol WalletOverviewViewControllerDelegate: BalanceContainerDelegate & BadgeUpdateDelegate {
+protocol WalletOverviewViewControllerDelegate: BalanceContainerDelegate & BadgeUpdateDelegate & AnalyticsManagerAccessType {
   var badgeManager: BadgeManagerType { get }
   var currencyController: CurrencyController { get }
 
   func viewControllerDidTapScan(_ viewController: UIViewController, converter: CurrencyConverter)
   func setSelectedWalletTransactionType(_ viewController: UIViewController, to selectedType: WalletTransactionType)
   func selectedWalletTransactionType() -> WalletTransactionType
-  func viewControllerDidTapReceivePayment(_ viewController: UIViewController, converter: CurrencyConverter)
-  func viewControllerDidTapSendPayment(_ viewController: UIViewController, converter: CurrencyConverter, walletTransactionType: WalletTransactionType)
+  func viewControllerDidTapReceivePayment(_ viewController: UIViewController,
+                                          converter: CurrencyConverter, walletTransactionType: WalletTransactionType)
+  func viewControllerDidTapSendPayment(_ viewController: UIViewController, converter: CurrencyConverter,
+                                       walletTransactionType: WalletTransactionType)
   func viewControllerShouldAdjustForBottomSafeArea(_ viewController: UIViewController) -> Bool
   func viewControllerDidSelectTransfer(_ viewController: UIViewController)
   func viewControllerDidTapWalletTooltip()
@@ -72,6 +74,7 @@ class WalletOverviewViewController: BaseViewController, StoryboardInitializable 
 
   @IBAction func tooltipButtonWasTouched() {
     delegate.viewControllerDidTapWalletTooltip()
+    delegate.viewControllerShouldTrackEvent(event: .walletToggleTooltipPressed)
   }
 
   override func accessibleViewsAndIdentifiers() -> [AccessibleViewElement] {
@@ -245,7 +248,17 @@ extension WalletOverviewViewController: UIPageViewControllerDelegate {
   func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool,
                           previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
     if let viewController = pageViewController.viewControllers?.first as? BaseViewController {
-      setupUI(for: ViewControllerIndex(rawValue: baseViewControllers.reversed().firstIndex(of: viewController) ?? 0))
+      let index = ViewControllerIndex(rawValue: baseViewControllers.reversed().firstIndex(of: viewController) ?? 0)
+      switch index {
+      case .bitcoinWallet:
+        delegate.viewControllerShouldTrackEvent(event: .onChainWalletSelected)
+      case .lightningWallet:
+        delegate.viewControllerShouldTrackEvent(event: .lightningWalletSelected)
+      default:
+        break
+      }
+
+      setupUI(for: index)
     }
   }
 }
@@ -270,10 +283,12 @@ extension WalletOverviewViewController: UIPageViewControllerDataSource {
 extension WalletOverviewViewController: WalletToggleViewDelegate {
 
   func bitcoinWalletButtonWasTouched() {
+    delegate.viewControllerShouldTrackEvent(event: .onChainWalletSelected)
     setupUI(for: .bitcoinWallet)
   }
 
   func lightningWalletButtonWasTouched() {
+    delegate.viewControllerShouldTrackEvent(event: .lightningWalletSelected)
     setupUI(for: .lightningWallet)
   }
 }
@@ -288,7 +303,7 @@ extension WalletOverviewViewController: SelectedCurrencyUpdatable {
 extension WalletOverviewViewController: SendReceiveActionViewDelegate {
   func actionViewDidSelectReceive(_ view: UIView) {
     let converter = delegate.currencyController.currencyConverter
-    delegate.viewControllerDidTapReceivePayment(self, converter: converter)
+    delegate.viewControllerDidTapReceivePayment(self, converter: converter, walletTransactionType: walletTransactionType)
   }
 
   func actionViewDidSelectScan(_ view: UIView) {

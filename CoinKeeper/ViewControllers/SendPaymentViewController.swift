@@ -15,7 +15,8 @@ import PromiseKit
 import SVProgressHUD
 
 typealias SendPaymentViewControllerCoordinator = SendPaymentViewControllerDelegate &
-  CurrencyValueDataSourceType & BalanceDataSource & PaymentRequestResolver & URLOpener & ViewControllerDismissable
+  CurrencyValueDataSourceType & BalanceDataSource & PaymentRequestResolver & URLOpener &
+  ViewControllerDismissable & AnalyticsManagerAccessType
 
 // swiftlint:disable file_length
 class SendPaymentViewController: PresentableViewController,
@@ -435,8 +436,8 @@ extension SendPaymentViewController {
   private func handleLightningInvoicePaste(lightningUrl: LightningURL) {
     self.alertManager?.showActivityHUD(withStatus: nil)
     delegate.viewControllerDidReceiveLightningURLToDecode(lightningUrl)
-      .get { decodedInvoice
-        in
+      .get { decodedInvoice in
+        self.delegate.viewControllerShouldTrackEvent(event: .externalLightningInvoiceInput)
         self.alertManager?.hideActivityHUD(withDelay: nil, completion: {
           self.viewModel = SendPaymentViewModel(encodedInvoice: lightningUrl.invoice,
                                                 decodedInvoice: decodedInvoice,

@@ -27,6 +27,8 @@ enum AnalyticsManagerPropertiesType: String {
   case lightningUpgradeCompleted = "Lightning Upgrade Completed"
   case lightningUpgradedFromRestore = "Lightning Upgrade From Restore"
   case lightningUpgradedFunds = "Lightning Upgraded Funds"
+  case hasLightningBalance = "Does User Have Lightning Balance"
+  case lightningLockedStatus = "Lightning Wallet Locked Status"
 }
 
 enum AnalyticsManagerEventType: String {
@@ -109,6 +111,26 @@ enum AnalyticsManagerEventType: String {
   case chartsOpened = "ChartsOpened"
   case newsArticleOpened = "NewsArticleOpened"
   case enteredDeactivatedWords = "EnteredDeactivatedWords"
+  case lightningWalletSelected = "LightningWalletSelected"
+  case onChainWalletSelected = "OnChainWalletSelected"
+  case onChainToLightningPressed = "OnChainToLightningPressed"
+  case lightningToOnChainPressed = "LightningToOnChainPressed"
+  case walletToggleTooltipPressed = "WalletToggleTooltipPressed"
+  case legacyWordsPressed = "LegacyWordsPressed"
+  case quickReloadFive = "QuickReloadFive"
+  case quickReloadTwenty = "QuickReloadTwenty"
+  case quickReloadFifty = "QuickReloadFifty"
+  case quickReloadOneHundred = "QuickReloadOneHundred"
+  case quickReloadCustomAmount = "QuickReloadCustomAmount"
+  case lightningSendPressed = "LightningSendPressed"
+  case lightningReceivePressed = "LightningReceivePressed"
+  case attemptedToPayInvoice = "AttemptedToPayInvoice"
+  case lightningToOnChainSuccessful = "LightningToOnChainSuccessful"
+  case lightningTransactionDetailsPressed = "LightningTransactionDetailsPressed"
+  case onChainToLightningSuccessful = "OnChainToLightningSuccessful"
+  case externalLightningInvoiceInput = "ExternalLightningInvoiceInput"
+  case paymentToInvoiceFailed = "PaymentToInvoiceFailed"
+  case lightningDropBitInvoicePaid = "LightningDropBitInvoicePaid"
 
   var id: String {
     return self.rawValue

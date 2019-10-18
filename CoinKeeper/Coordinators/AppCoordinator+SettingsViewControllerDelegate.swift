@@ -36,6 +36,7 @@ extension AppCoordinator: SettingsViewControllerDelegate {
 
   func viewControllerDidSelectReviewLegacyWords(_ viewController: UIViewController) {
     guard let legacyWords = persistenceManager.keychainManager.retrieveValue(for: .walletWords) as? [String] else { return }
+    analyticsManager.track(event: .legacyWordsPressed, with: nil)
     viewController.dismiss(animated: true) {
       self.analyticsManager.track(event: .viewLegacyWords, with: nil)
       let backupWordsVC = BackupRecoveryWordsViewController.newInstance(withDelegate: self,

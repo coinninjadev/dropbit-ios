@@ -18,6 +18,7 @@ struct SyncDependencies {
   let keychainMigrationWorker: KeychainMigrationWorker
   let persistenceManager: PersistenceManagerType
   let networkManager: NetworkManagerType
+  let analyticsManager: AnalyticsManagerType
   let connectionManager: ConnectionManagerType
   // swiftlint:disable:next weak_delegate
   let delegate: SerialQueueManagerDelegate
