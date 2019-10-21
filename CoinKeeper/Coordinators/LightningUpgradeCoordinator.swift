@@ -52,7 +52,9 @@ class LightningUpgradeCoordinator: ChildCoordinatorType {
       .catch { (error: Error) in
         log.error(error, message: "Failed to do a full sync of blockchain prior to upgrade.")
 
-        let alertVM = AlertControllerViewModel(title: "We were unable to perform a sync. Please try again later.")
+        let alertVM = AlertControllerViewModel(
+          title: "We were unable to perform a sync. Please try again later.\nMessage: \(error.localizedDescription)"
+        )
         let alert = self.parent.alertManager.alert(from: alertVM)
         self.parent.navigationController.topViewController()?.present(alert, animated: true, completion: nil)
     }

@@ -74,7 +74,7 @@ extension AppCoordinator: PaymentSendingDelegate {
     let viewModel = PaymentSuccessFailViewModel(mode: .pending)
     let successFailVC = SuccessFailViewController.newInstance(viewModel: viewModel, delegate: self)
     let errorHandler: CKErrorCompletion = self.paymentErrorHandler(for: successFailVC, isLightning: true)
-    let successCompletion = { [weak self] in
+    let successCompletion = {
       successFailVC.setMode(.success)
     }
 
