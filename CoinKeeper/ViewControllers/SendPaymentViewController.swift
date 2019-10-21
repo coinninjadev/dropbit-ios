@@ -16,7 +16,7 @@ import SVProgressHUD
 
 typealias SendPaymentViewControllerCoordinator = SendPaymentViewControllerDelegate &
   CurrencyValueDataSourceType & BalanceDataSource & PaymentRequestResolver & URLOpener &
-  ViewControllerDismissable & AnalyticsManagerAccessType
+  ViewControllerDismissable & AnalyticsManagerAccessType & MemoEntryDelegate
 
 // swiftlint:disable file_length
 class SendPaymentViewController: PresentableViewController,
