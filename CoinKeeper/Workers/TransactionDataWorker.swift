@@ -267,6 +267,15 @@ class TransactionDataWorker: TransactionDataWorkerType {
         let combinedDTO = TransactionDataWorkerDTO(txNotificationResponses: responses).merged(with: dto)
         return Promise.value(combinedDTO)
     }
+    .recover { (error: Error) -> Promise<TransactionDataWorkerDTO> in
+      if let authError = error as? CKNetworkError, case .unauthorized = authError {
+        log.info("Request unauthorized, but ok in this scenario. \(error.localizedDescription)")
+        return Promise.value(dto)
+      } else {
+        log.error(error, message: "Failed to fetch transaction/notifications route.")
+        return Promise(error: error)
+      }
+    }
   }
 
   private func fetchTransactionNotifications(forIds ids: [String]) -> Promise<[TransactionNotificationResponse]> {

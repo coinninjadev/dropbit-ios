@@ -79,10 +79,7 @@ extension NetworkManager: CurrencyValueDataSourceType {
   @discardableResult
   func updateCachedMetadata() -> Promise<CheckInResponse> {
     let context = persistenceManager.viewContext
-    var walletId: String?
-    context.performAndWait {
-      walletId = self.persistenceManager.brokers.wallet.walletId(in: context)
-    }
+    let walletId = self.persistenceManager.brokers.wallet.walletId(in: context)
     let broker = persistenceManager.brokers.checkIn
     guard walletId != nil else {
       let fees = FeesResponse(fast: broker.cachedBestFee, med: broker.cachedBetterFee, slow: broker.cachedGoodFee)
