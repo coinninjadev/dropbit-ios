@@ -185,6 +185,8 @@ class TransactionHistoryLightningDataSource: NSObject, TransactionHistoryDataSou
       return lightningInvoiceObject
     } else if let transactionObject = LightningTransactionViewModelObject(walletEntry: walletEntry) {
       return transactionObject
+    } else if let tempLoadObject = LightningLoadTemporaryViewModelObject(walletEntry: walletEntry) {
+      return tempLoadObject
     } else {
       return FallbackViewModelObject(walletTxType: .lightning)
     }
