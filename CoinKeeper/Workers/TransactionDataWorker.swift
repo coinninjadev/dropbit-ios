@@ -607,7 +607,7 @@ class TransactionDataWorker: TransactionDataWorkerType {
         let vinFetchReqest: NSFetchRequest<CKMVin> = CKMVin.fetchRequest()
         vinFetchReqest.predicate = CKPredicate.Vin.matching(previousTxid: txid, previousVoutIndex: vout.index)
         vinFetchReqest.fetchLimit = 1
-        
+
         do {
           let matchingVinExists = try context.fetch(vinFetchReqest).first != nil
           vout.isSpent = matchingVinExists
