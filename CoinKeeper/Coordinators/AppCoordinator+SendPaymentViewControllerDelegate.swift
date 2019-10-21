@@ -168,14 +168,6 @@ extension AppCoordinator: SendPaymentViewControllerDelegate {
     alertManager.showError(message: fullMessage, forDuration: 3.5)
   }
 
-  func viewControllerDidSelectMemoButton(_ viewController: UIViewController, memo: String?, completion: @escaping (String) -> Void) {
-    let memoViewController = MemoEntryViewController.newInstance(delegate: self,
-                                                                 backgroundImage: UIApplication.shared.screenshot(),
-                                                                 completion: completion)
-    memoViewController.memo = memo ?? ""
-    viewController.present(memoViewController, animated: true)
-  }
-
   func viewControllerShouldInitiallyAllowMemoSharing(_ viewController: SendPaymentViewController) -> Bool {
     let context = persistenceManager.viewContext
     return persistenceManager.brokers.user.userIsVerified(in: context)
