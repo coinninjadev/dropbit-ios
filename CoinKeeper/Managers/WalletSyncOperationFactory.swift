@@ -152,9 +152,9 @@ class WalletSyncOperationFactory {
   private func onChainOnlySync(with dependencies: SyncDependencies, in context: NSManagedObjectContext) -> Promise<Void> {
     return dependencies.databaseMigrationWorker.migrateIfPossible()
       .then { _ in dependencies.keychainMigrationWorker.migrateIfPossible() }
-      .then(in: context) { self.checkAndVerifyUser(with: dependencies, in: context) }
       .then(in: context) { self.checkAndVerifyWallet(with: dependencies, in: context) }
-      .then { dependencies.networkManager.walletCheckIn() }
+      .recover { log.error($0, message: "Failed to verify wallet.") }
+      .then { dependencies.networkManager.checkIn() }
       .then { dependencies.persistenceManager.brokers.checkIn.processCheckIn(response: $0) }
       .then(in: context) { dependencies.txDataWorker.performFetchAndStoreAllOnChainTransactions(in: context, fullSync: true) }
       .get { _ in dependencies.connectionManager.setAPIUnreachable(false) }

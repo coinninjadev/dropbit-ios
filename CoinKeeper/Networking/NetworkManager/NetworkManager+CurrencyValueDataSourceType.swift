@@ -91,7 +91,7 @@ extension NetworkManager: CurrencyValueDataSourceType {
       return Promise.value(response)
     }
 
-    return walletCheckIn()
+    return checkIn()
       .then { self.handleCheckIn(response: $0) }
   }
 

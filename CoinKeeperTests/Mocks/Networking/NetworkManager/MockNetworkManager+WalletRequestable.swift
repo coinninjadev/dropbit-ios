@@ -29,14 +29,11 @@ extension MockNetworkManager: WalletRequestable {
   }
 
   func walletCheckIn() -> Promise<CheckInResponse> {
-    if walletCheckInShouldSucceed {
-      let response = CheckInResponse.sampleInstance()!
-      return Promise.value(response)
-    } else {
-      let moyaResponse = Moya.Response(statusCode: 404, data: "foo".data(using: .utf8)!)
-      let error = MoyaError.statusCode(moyaResponse)
-      return Promise(error: CKNetworkError.reachabilityFailed(error))
-    }
+    cannedCheckIn()
+  }
+
+  func checkIn() -> Promise<CheckInResponse> {
+    cannedCheckIn()
   }
 
   func resetWallet() -> Promise<Void> {
@@ -49,5 +46,16 @@ extension MockNetworkManager: WalletRequestable {
 
   func replaceWallet(body: ReplaceWalletBody) -> Promise<WalletResponse> {
     return Promise { _ in }
+  }
+
+  private func cannedCheckIn() -> Promise<CheckInResponse> {
+    if walletCheckInShouldSucceed {
+      let response = CheckInResponse.sampleInstance()!
+      return Promise.value(response)
+    } else {
+      let moyaResponse = Moya.Response(statusCode: 404, data: "foo".data(using: .utf8)!)
+      let error = MoyaError.statusCode(moyaResponse)
+      return Promise(error: CKNetworkError.reachabilityFailed(error))
+    }
   }
 }
