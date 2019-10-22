@@ -53,9 +53,9 @@ class WyreURLParser {
   var humanReadableDescription: String {
     return "Your Bitcoin purchase is processing. Here is your information:\n\n" +
     "Transfer ID: \(transferID)\n" +
-    "Order ID: \(orderID)" +
-    "Address: \(destinationAddress)" +
-    "Amount: \(amount)" +
+    "Order ID: \(orderID)\n" +
+    "Address: \(destinationAddress)\n" +
+    "Amount: \(amount)\n" +
     "Fees: \(fees)"
   }
 }
