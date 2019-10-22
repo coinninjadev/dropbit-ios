@@ -107,6 +107,10 @@ class PrimaryActionButtonStyle {
                                 background: .mediumPurple, rounded: true)
   }
 
+  static var standardClear: PrimaryActionButtonStyle {
+    return PrimaryActionButtonStyle(normal: .primaryActionButton, highlighted: .lightGrayText, background: .clear, tint: nil, rounded: true)
+  }
+
 }
 
 class LightTextButtonStyle: PrimaryActionButtonStyle {

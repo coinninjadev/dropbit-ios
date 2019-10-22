@@ -38,10 +38,8 @@ extension AppCoordinator: GetBitcoinViewControllerDelegate {
     copyNextAddressAndPresentVC(destinationURL: url)
   }
 
-  func viewControllerBuyWithGiftCard(_ viewController: GetBitcoinViewController) {
-    analyticsManager.track(event: .buyBitcoinWithGiftCard, with: nil)
-    guard let url = CoinNinjaUrlFactory.buildUrl(for: .buyGiftCards) else { return }
-    copyNextAddressAndPresentVC(destinationURL: url)
+  func viewControllerBuyWithApplePay(_ viewController: GetBitcoinViewController) {
+    
   }
 
   private func copyNextAddressAndPresentVC(destinationURL: URL) {
