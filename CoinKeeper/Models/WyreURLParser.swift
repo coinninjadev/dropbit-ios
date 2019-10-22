@@ -14,8 +14,8 @@ class WyreURLParser {
   var orderID: String = ""
   var accountID: String = ""
   var destinationAddress: String = ""
-  var fees: Double = 0.0
-  var amount: Double = 0.0
+  var fees: String = ""
+  var amount: String = ""
 
   init?(url: URL) {
     if let components = URLComponents(url: url, resolvingAgainstBaseURL: false),
@@ -23,23 +23,28 @@ class WyreURLParser {
       let host = components.host, host == "wyre",
       let queryParams = components.queryItems {
 
+      guard queryParams.isNotEmpty else { return nil }
+
+      var params: [String: String] = [:]
       for param in queryParams {
-        if param.name == "transferId", let value = param.value {
-          self.transferID = value
-        } else if param.name == "orderId", let value = param.value {
-          self.orderID = value
-        } else if param.name == "accountId", let value = param.value {
-          self.accountID = value
-        } else if param.name == "dest", let value = param.value {
-          self.destinationAddress = value
-        } else if param.name == "fees", let value = param.value {
-          self.fees = Double(value) ?? 0.0
-        } else if param.name == "destAmount", let value = param.value {
-          self.amount = Double(value) ?? 0.0
-        } else {
-          return nil
-        }
+        params[param.name] = param.value
       }
+
+      guard let transferID = params["transferId"],
+      let orderID = params["orderId"],
+      let accountID = params["accountId"],
+      let destinationAddress = params["dest"],
+      let fees = params["fees"],
+      let amount = params["destAmount"]
+        else { return nil }
+
+      self.transferID = transferID
+      self.orderID = orderID
+      self.accountID = accountID
+      self.destinationAddress = destinationAddress
+      self.fees = fees
+      self.amount = amount
+
     } else {
       return nil
     }

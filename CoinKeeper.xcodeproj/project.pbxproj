@@ -255,6 +255,7 @@
 		3B7A5D7C22F35A42003FFF5C /* Int+Times.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B825633F1FE7A9EA9E7A2AD /* Int+Times.swift */; };
 		3B7A5D7D22F35A62003FFF5C /* GeneratedTestWords.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B00C26A220E07C0001FC46B /* GeneratedTestWords.generated.swift */; };
 		3B7AC2B6235EA77100BD981A /* WyreURLParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B7AC2B5235EA77100BD981A /* WyreURLParser.swift */; };
+		3B7AC2B8235F320800BD981A /* WyreURLParserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B7AC2B7235F320800BD981A /* WyreURLParserTests.swift */; };
 		3B7B54432201E54100CB89FE /* KeyDerivation.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B7B54422201E54100CB89FE /* KeyDerivation.generated.swift */; };
 		3B7D1951229F167600C07FBE /* SettingSwitchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B7D194F229F167600C07FBE /* SettingSwitchCell.swift */; };
 		3B7D1952229F167600C07FBE /* SettingSwitchCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3B7D1950229F167600C07FBE /* SettingSwitchCell.xib */; };
@@ -1330,6 +1331,7 @@
 		3B73B2742281E33900F4C551 /* TwitterOAuth.generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TwitterOAuth.generated.swift; sourceTree = "<group>"; };
 		3B73B2772281F78700F4C551 /* NetworkManager+Twitter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NetworkManager+Twitter.swift"; sourceTree = "<group>"; };
 		3B7AC2B5235EA77100BD981A /* WyreURLParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WyreURLParser.swift; sourceTree = "<group>"; };
+		3B7AC2B7235F320800BD981A /* WyreURLParserTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WyreURLParserTests.swift; sourceTree = "<group>"; };
 		3B7B54422201E54100CB89FE /* KeyDerivation.generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyDerivation.generated.swift; sourceTree = "<group>"; };
 		3B7D194F229F167600C07FBE /* SettingSwitchCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingSwitchCell.swift; sourceTree = "<group>"; };
 		3B7D1950229F167600C07FBE /* SettingSwitchCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SettingSwitchCell.xib; sourceTree = "<group>"; };
@@ -3608,6 +3610,7 @@
 				B50C86A520D8123600B4FA6B /* NSManagedObject */,
 				3BF5807F20E3AFA100DD7F95 /* TransactionDataWorkerTests.swift */,
 				3BF3B0CA217761C50021E45F /* BitcoinURLTests.swift */,
+				3B7AC2B7235F320800BD981A /* WyreURLParserTests.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -5330,6 +5333,7 @@
 				B5C5FEEE22BAC15300287FF7 /* MockInvitationBroker.swift in Sources */,
 				3BFA7192203F2B6B00774D59 /* SecurePinDisplayViewTests.swift in Sources */,
 				B5192FB4216E938000DCC39B /* StringDictResponseTests.swift in Sources */,
+				3B7AC2B8235F320800BD981A /* WyreURLParserTests.swift in Sources */,
 				3B9EE87C2058370000C0CC8C /* AlertManagerTests.swift in Sources */,
 				6B8256904D0FFECD50249C41 /* AppDelegateTests.swift in Sources */,
 				3BAB143E204DDFCB001D41A2 /* MockWalletManager.swift in Sources */,
