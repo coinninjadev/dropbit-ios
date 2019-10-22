@@ -31,6 +31,7 @@ extension AppCoordinator {
       }
     } else if let urlComponents = purchasedBitcoinComponents, launchStateManager.userAuthenticated {
       purchasedBitcoinComponents = nil
+      analyticsManager.track(event: .quickPaySuccessReturn, with: nil)
       let title = urlComponents.humanReadableDescription
       let viewModel = AlertControllerViewModel(title: title)
       let alert = alertManager.alert(from: viewModel)
