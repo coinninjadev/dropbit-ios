@@ -41,6 +41,7 @@ struct CoinNinjaUrlFactory {
     case buyGiftCards
     case buyWithCreditCard
     case buyWithApplePay(String)
+    case quickPayTrackPurchase(String)
     case buyAtATM(CLLocationCoordinate2D)
     case dropBitMe(handle: String)
     case dropBitMeLearnMore
@@ -99,6 +100,8 @@ struct CoinNinjaUrlFactory {
         #else
         return "https://dropbit.me/"
         #endif
+      case .quickPayTrackPurchase:
+        return "https://api.sendwyre.com/"
       }
     }
 
@@ -180,6 +183,8 @@ struct CoinNinjaUrlFactory {
         return "upgrade"
       case .legacyWords:
         return "\(tooltipBreadcrumb)legacywords"
+      case .quickPayTrackPurchase(let transferID):
+        return "v2/\(transferID)/track"
       }
     }
   }
