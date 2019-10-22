@@ -17,7 +17,7 @@ class GetBitcoinViewControllerTests: XCTestCase {
   override func setUp() {
     super.setUp()
     mockCoordinator = MockGetBitcoinViewControllerDelegate()
-    sut = GetBitcoinViewController.newInstance(delegate: mockCoordinator)
+    sut = GetBitcoinViewController.newInstance(delegate: mockCoordinator, lightningAddress: "", bitcoinAddress: "")
     _ = sut.view
   }
 
@@ -29,11 +29,19 @@ class GetBitcoinViewControllerTests: XCTestCase {
 
   // MARK: outlets
   func testOutletsAreConnected() {
-    XCTAssertNotNil(sut.headerLabel)
     XCTAssertNotNil(sut.findATMButton)
     XCTAssertNotNil(sut.buyExternallyButton)
+    XCTAssertNotNil(sut.centerStackView)
     XCTAssertNotNil(sut.purchaseBitcoinInfoLabel)
     XCTAssertNotNil(sut.copyLightningAddressButton)
+    XCTAssertNotNil(sut.buyWithApplePayButton)
+    XCTAssertNotNil(sut.lineSeparatorView)
+    XCTAssertNotNil(sut.buyExternallyInfoLabel)
+  }
+
+  // MARK: initial state
+  func testInitialState() {
+    XCTAssertEqual(sut.lineSeparatorView.backgroundColor, UIColor.mediumGrayBackground)
   }
 
   // MARK: buttons contain actions
@@ -43,7 +51,7 @@ class GetBitcoinViewControllerTests: XCTestCase {
     XCTAssertTrue(actions.contains(expected))
   }
 
-  func testBuyWithCreditCardButtonContainsAction() {
+  func testBuyExternallyButtonContainsAction() {
     let actions = sut.buyExternallyButton.actions(forTarget: sut, forControlEvent: .touchUpInside) ?? []
     let expected = #selector(GetBitcoinViewController.buyExternally).description
     XCTAssertTrue(actions.contains(expected))
@@ -80,12 +88,12 @@ class MockGetBitcoinViewControllerDelegate: GetBitcoinViewControllerDelegate {
   }
 
   var wasAskedToBuyWithCreditCard = false
-  func viewControllerBuyWithCreditCard(_ viewController: GetBitcoinViewController) {
+  func viewControllerBuyBitcoinExternally(_ viewController: GetBitcoinViewController) {
     wasAskedToBuyWithCreditCard = true
   }
 
   var wasAskedToBuyWithApplePay = false
-  func viewControllerBuyWithApplePay(_ viewController: GetBitcoinViewController) {
+  func viewControllerBuyWithApplePay(_ viewController: GetBitcoinViewController, address: String) {
     wasAskedToBuyWithApplePay = true
   }
 }
