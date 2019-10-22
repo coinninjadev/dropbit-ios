@@ -42,18 +42,25 @@ final class GetBitcoinViewController: BaseViewController, StoryboardInitializabl
     let networks: [PKPaymentNetwork] = [.amex, .masterCard, .visa]
     let capabilities: PKMerchantCapability = [.capabilityCredit, .capabilityDebit]
     if PKPaymentAuthorizationController.canMakePayments(usingNetworks: networks, capabilities: capabilities) {
-      vc.buyWithApplePayButton = PKPaymentButton(paymentButtonType: .buy, paymentButtonStyle: .black)
+      let button = PKPaymentButton(paymentButtonType: .buy, paymentButtonStyle: .black)
+      button.addTarget(vc, action: #selector(buyWithApplePay), for: .touchUpInside)
+      vc.buyWithApplePayButton = button
     } else {
-      vc.buyWithApplePayButton = PKPaymentButton(paymentButtonType: .setUp, paymentButtonStyle: .black)
+      let button = PKPaymentButton(paymentButtonType: .setUp, paymentButtonStyle: .black)
+      button.addTarget(vc, action: #selector(setupApplePay), for: .touchUpInside)
+      vc.buyWithApplePayButton = button
     }
     return vc
+  }
+
+  @objc func setupApplePay() {
+    PKPassLibrary().openPaymentSetup()
   }
 
   override func viewDidLoad() {
     super.viewDidLoad()
 
     setupUI()
-
   }
 
   @IBAction func findATM() {
