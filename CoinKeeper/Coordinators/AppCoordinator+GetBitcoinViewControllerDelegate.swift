@@ -44,6 +44,7 @@ extension AppCoordinator: GetBitcoinViewControllerDelegate {
       self.alertManager.showError(message: warning, forDuration: 2.0)
       return
     }
+    viewControllerRequestedAuthenticationSuspension(viewController)
     let url = CoinNinjaUrlFactory.buildUrl(for: .buyWithApplePay(address))
     openURLExternally(url!, completionHandler: nil)
   }
