@@ -493,6 +493,7 @@
 		A220A97D20B5E10C00C30149 /* SettingsViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A220A97C20B5E10C00C30149 /* SettingsViewController.storyboard */; };
 		A22B196020EC1DA80084E8E9 /* AppCoordinator+RestoreWalletViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A22B195F20EC1DA80084E8E9 /* AppCoordinator+RestoreWalletViewControllerDelegate.swift */; };
 		A22C43CE20F3C84000041DF6 /* RestoreWalletViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A22C43CD20F3C84000041DF6 /* RestoreWalletViewControllerTests.swift */; };
+		A22F26B2235FB21400E5544E /* SF-Pro-Display-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = A22F26B1235FB21400E5544E /* SF-Pro-Display-Medium.otf */; };
 		A230F1C622D664360017BC7A /* NewsData.swift in Sources */ = {isa = PBXBuildFile; fileRef = A230F1C522D664360017BC7A /* NewsData.swift */; };
 		A230F1CA22DCB2F40017BC7A /* AppCoordinator+WalletOverviewViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A230F1C922DCB2F30017BC7A /* AppCoordinator+WalletOverviewViewControllerDelegate.swift */; };
 		A235898B232165A5002C3FC0 /* AppCoordinator+PaymentSendingDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A235898A232165A5002C3FC0 /* AppCoordinator+PaymentSendingDelegate.swift */; };
@@ -518,7 +519,7 @@
 		A257CEC6230C3F6D0063670B /* LightningInvoiceValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A257CEC5230C3F6D0063670B /* LightningInvoiceValidator.swift */; };
 		A257CEC82314662C0063670B /* ExpirationLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A257CEC72314662C0063670B /* ExpirationLabel.swift */; };
 		A25923EC20C981770005B1A0 /* AnalyticsManagerError.swift in Sources */ = {isa = PBXBuildFile; fileRef = A25923EB20C981770005B1A0 /* AnalyticsManagerError.swift */; };
-		A260E8C720FCD482008343F9 /* LimitEditTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = A260E8C620FCD482008343F9 /* LimitEditTextField.swift */; };
+		A260E8C720FCD482008343F9 /* PrimaryAmountTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = A260E8C620FCD482008343F9 /* PrimaryAmountTextField.swift */; };
 		A260E8CF20FCFE11008343F9 /* TutorialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A260E8CE20FCFE11008343F9 /* TutorialViewController.swift */; };
 		A260E8D320FCFE96008343F9 /* TutorialViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A260E8D220FCFE96008343F9 /* TutorialViewController.storyboard */; };
 		A260E8D520FD0C57008343F9 /* TutorialScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A260E8D420FD0C57008343F9 /* TutorialScreenViewController.swift */; };
@@ -1575,6 +1576,7 @@
 		A220A97C20B5E10C00C30149 /* SettingsViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = SettingsViewController.storyboard; sourceTree = "<group>"; };
 		A22B195F20EC1DA80084E8E9 /* AppCoordinator+RestoreWalletViewControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppCoordinator+RestoreWalletViewControllerDelegate.swift"; sourceTree = "<group>"; };
 		A22C43CD20F3C84000041DF6 /* RestoreWalletViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestoreWalletViewControllerTests.swift; sourceTree = "<group>"; };
+		A22F26B1235FB21400E5544E /* SF-Pro-Display-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Display-Medium.otf"; sourceTree = "<group>"; };
 		A230F1C522D664360017BC7A /* NewsData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsData.swift; sourceTree = "<group>"; };
 		A230F1C922DCB2F30017BC7A /* AppCoordinator+WalletOverviewViewControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppCoordinator+WalletOverviewViewControllerDelegate.swift"; sourceTree = "<group>"; };
 		A235898A232165A5002C3FC0 /* AppCoordinator+PaymentSendingDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppCoordinator+PaymentSendingDelegate.swift"; sourceTree = "<group>"; };
@@ -1600,7 +1602,7 @@
 		A257CEC5230C3F6D0063670B /* LightningInvoiceValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightningInvoiceValidator.swift; sourceTree = "<group>"; };
 		A257CEC72314662C0063670B /* ExpirationLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpirationLabel.swift; sourceTree = "<group>"; };
 		A25923EB20C981770005B1A0 /* AnalyticsManagerError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsManagerError.swift; sourceTree = "<group>"; };
-		A260E8C620FCD482008343F9 /* LimitEditTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LimitEditTextField.swift; sourceTree = "<group>"; };
+		A260E8C620FCD482008343F9 /* PrimaryAmountTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrimaryAmountTextField.swift; sourceTree = "<group>"; };
 		A260E8CE20FCFE11008343F9 /* TutorialViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialViewController.swift; sourceTree = "<group>"; };
 		A260E8D220FCFE96008343F9 /* TutorialViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = TutorialViewController.storyboard; sourceTree = "<group>"; };
 		A260E8D420FD0C57008343F9 /* TutorialScreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialScreenViewController.swift; sourceTree = "<group>"; };
@@ -2768,6 +2770,7 @@
 		3B977991202E413D00C9C933 /* Fonts */ = {
 			isa = PBXGroup;
 			children = (
+				A22F26B1235FB21400E5544E /* SF-Pro-Display-Medium.otf */,
 				3B977995202E416600C9C933 /* Montserrat-Black.ttf */,
 				3B977994202E416600C9C933 /* Montserrat-BlackItalic.ttf */,
 				3B977999202E416600C9C933 /* Montserrat-Bold.ttf */,
@@ -3142,7 +3145,7 @@
 		A260E8C520FCD456008343F9 /* Text Fields */ = {
 			isa = PBXGroup;
 			children = (
-				A260E8C620FCD482008343F9 /* LimitEditTextField.swift */,
+				A260E8C620FCD482008343F9 /* PrimaryAmountTextField.swift */,
 				B534CB352215E4DC00E6884A /* CKPhoneNumberTextField.swift */,
 			);
 			path = "Text Fields";
@@ -4138,6 +4141,7 @@
 				3093B07E21EE36E400B3EF9C /* TransactionHistoryRefreshView.xib in Resources */,
 				3B9779B1202E416700C9C933 /* Montserrat-Light.ttf in Resources */,
 				B5FFFFC0226FB44E0029DB62 /* DropBitMeViewController.storyboard in Resources */,
+				A22F26B2235FB21400E5544E /* SF-Pro-Display-Medium.otf in Resources */,
 				B5B0DC81221364140010AB2A /* PhoneNumberEntryView.xib in Resources */,
 				B54DE68522982C88009D67CE /* ContactsEmptyView.xib in Resources */,
 				A2085154232ED95B007843DE /* LightningUpgradeStartViewController.storyboard in Resources */,
@@ -4580,7 +4584,7 @@
 				B56E158A2167962D003B69D4 /* GlobalMessage.swift in Sources */,
 				B54913AF22BD287500ACC7D7 /* AdjustableFeesLabel.swift in Sources */,
 				B523DFC220926E88008A789D /* Collection+IsNotEmpty.swift in Sources */,
-				A260E8C720FCD482008343F9 /* LimitEditTextField.swift in Sources */,
+				A260E8C720FCD482008343F9 /* PrimaryAmountTextField.swift in Sources */,
 				4A251738207515FF0030FCA2 /* NetworkManager.swift in Sources */,
 				A29CE0ED20A21ED800761B91 /* AppCoordinator+ContactsViewControllerDelegate.swift in Sources */,
 				3B2E78362024D56500DA25AF /* StoryboardInitializable.swift in Sources */,

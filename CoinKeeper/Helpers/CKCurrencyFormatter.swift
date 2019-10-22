@@ -48,7 +48,8 @@ class CKCurrencyFormatter {
 
   static func attributedString(for amount: NSDecimalNumber?,
                                currency: CurrencyCode,
-                               walletTransactionType: WalletTransactionType) -> NSAttributedString? {
+                               walletTransactionType: WalletTransactionType,
+                               isInTextField: Bool) -> NSAttributedString? {
     guard let amount = amount else { return nil }
     if currency.isFiat {
       return FiatFormatter(currency: currency, withSymbol: true).attributedString(from: amount)
@@ -57,7 +58,7 @@ class CKCurrencyFormatter {
       case .lightning:
         return NSAttributedString(string: SatsFormatter().string(fromDecimal: amount) ?? "")
       case .onChain:
-        return BitcoinFormatter(symbolType: .string).attributedString(from: amount)
+        return BitcoinFormatter(symbolType: isInTextField ? .string : .attributed).attributedString(from: amount)
       }
     }
   }
@@ -143,13 +144,18 @@ class BitcoinFormatter: CKCurrencyFormatter {
   }
 
   private func attributedStringSymbol(ofSize size: Int) -> NSAttributedString? {
-    let image = UIImage(named: "bitcoinLogo")
-    let textAttribute = NSTextAttachment()
-    textAttribute.image = image
-    textAttribute.bounds = CGRect(x: -3, y: (-size / (BitcoinFormatter.defaultSize / 4)),
-                                  width: size, height: size)
+    switch symbolType {
+    case .string:
+      return currency.attributedSymbol
+    default:
+      let image = UIImage(named: "bitcoinLogo")
+      let textAttribute = NSTextAttachment()
+      textAttribute.image = image
+      textAttribute.bounds = CGRect(x: -3, y: (-size / (BitcoinFormatter.defaultSize / 4)),
+                                    width: size, height: size)
 
-    return NSAttributedString(attachment: textAttribute)
+      return NSAttributedString(attachment: textAttribute)
+    }
   }
 
 }

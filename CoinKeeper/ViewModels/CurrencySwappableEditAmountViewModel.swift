@@ -42,26 +42,28 @@ extension DualAmountDisplayable {
     let primaryAmount = currencyConverter.amount(forCurrency: primaryCurrency) ?? .zero
     let secondaryAmount = currencyConverter.amount(forCurrency: secondaryCurrency) ?? .zero
 
-    var primaryText = CKCurrencyFormatter.string(for: primaryAmount,
+    var primaryText = CKCurrencyFormatter.attributedString(for: primaryAmount,
                                                  currency: primaryCurrency,
-                                                 walletTransactionType: walletTransactionType)
+                                                 walletTransactionType: walletTransactionType,
+                                                 isInTextField: true)
 
     if hidePrimaryZero && fromAmount == .zero {
       switch walletTransactionType {
       case .lightning:
         if primaryCurrency == .USD {
-          primaryText = primaryCurrency.symbol
+          primaryText = primaryCurrency.attributedSymbol
         } else {
-          primaryText = primaryCurrency.integerSymbol(forAmount: fromAmount)
+          primaryText = primaryCurrency.attributedIntegerSymbol(forAmount: fromAmount)
         }
       case .onChain:
-        primaryText = primaryCurrency.symbol
+        primaryText = primaryCurrency.attributedSymbol
       }
     }
 
     let secondary = CKCurrencyFormatter.attributedString(for: secondaryAmount,
                                                         currency: secondaryCurrency,
-                                                        walletTransactionType: walletTransactionType)
+                                                        walletTransactionType: walletTransactionType,
+                                                        isInTextField: false)
 
     return DualAmountLabels(primary: primaryText, secondary: secondary)
   }
@@ -254,7 +256,7 @@ extension CurrencySwappableEditAmountViewModel: UITextFieldDelegate {
 
   func textFieldDidEndEditing(_ textField: UITextField) {
     if fromAmount == .zero {
-      textField.text = dualAmountLabels(walletTransactionType: walletTransactionType).primary
+      textField.attributedText = dualAmountLabels(walletTransactionType: walletTransactionType).primary
     }
     delegate?.viewModelDidEndEditingAmount(self)
   }

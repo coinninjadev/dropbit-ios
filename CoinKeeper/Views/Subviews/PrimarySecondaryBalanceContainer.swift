@@ -54,14 +54,16 @@ class PrimarySecondaryBalanceContainer: UIView {
   func set(primaryAmount amount: NSDecimalNumber?, currency: CurrencyCode, walletTransactionType: WalletTransactionType) {
     primaryBalanceLabel.attributedText = CKCurrencyFormatter.attributedString(for: amount,
                                                                               currency: currency,
-                                                                              walletTransactionType: walletTransactionType)
+                                                                              walletTransactionType: walletTransactionType,
+                                                                              isInTextField: false)
     setupLabelColors(for: currency)
   }
 
   func set(secondaryAmount amount: NSDecimalNumber?, currency: CurrencyCode, walletTransactionType: WalletTransactionType) {
     secondaryBalanceLabel.attributedText = CKCurrencyFormatter.attributedString(for: amount,
                                                                                 currency: currency,
-                                                                                walletTransactionType: walletTransactionType)
+                                                                                walletTransactionType: walletTransactionType,
+                                                                                isInTextField: false)
   }
 
   private func setupStyle() {

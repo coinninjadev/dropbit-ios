@@ -14,7 +14,7 @@ protocol CurrencySwappableEditAmountViewDelegate: AnyObject {
 }
 
 struct DualAmountLabels {
-  let primary: String?
+  let primary: NSAttributedString?
   let secondary: NSAttributedString?
 }
 
@@ -22,7 +22,7 @@ class CurrencySwappableEditAmountView: UIView {
 
   weak var delegate: CurrencySwappableEditAmountViewDelegate!
 
-  @IBOutlet var primaryAmountTextField: LimitEditTextField!
+  @IBOutlet var primaryAmountTextField: PrimaryAmountTextField!
   @IBOutlet var secondaryAmountLabel: UILabel!
   @IBOutlet var editAmountButton: UIButton!
   @IBOutlet var swapButton: UIButton!
@@ -68,7 +68,7 @@ class CurrencySwappableEditAmountView: UIView {
   }
 
   func update(with labels: DualAmountLabels) {
-    primaryAmountTextField.text = labels.primary
+    primaryAmountTextField.attributedText = labels.primary
     secondaryAmountLabel.attributedText = labels.secondary
   }
 

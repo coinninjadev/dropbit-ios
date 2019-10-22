@@ -44,6 +44,21 @@ enum CurrencyCode: String {
     }
   }
 
+  var attributedSymbol: NSAttributedString {
+    switch self {
+    case .BTC:
+      let attrs: [NSAttributedString.Key: AnyObject] = [.font: UIFont.bitcoinSymbolFont(24)]
+      return NSAttributedString(string: symbol, attributes: attrs)
+    case .USD:
+      return NSAttributedString(string: symbol)
+    }
+  }
+
+  func attributedIntegerSymbol(forAmount amount: NSDecimalNumber) -> NSAttributedString? {
+    guard let symbol = integerSymbol(forAmount: amount.asFractionalUnits(of: self)) else { return nil}
+    return NSAttributedString(string: symbol)
+  }
+
   func integerSymbol(forAmount amount: NSDecimalNumber) -> String? {
     return integerSymbol(forAmount: amount.asFractionalUnits(of: self))
   }
