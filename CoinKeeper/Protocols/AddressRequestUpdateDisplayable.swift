@@ -29,14 +29,6 @@ protocol AddressRequestUpdateDisplayable {
 
 extension AddressRequestUpdateDisplayable {
 
-  var historicalCurrencyFormatter: NumberFormatter {
-    let formatter = NumberFormatter()
-    formatter.numberStyle = .currency
-    formatter.currencySymbol = CurrencyCode.USD.symbol
-    formatter.maximumFractionDigits = CurrencyCode.USD.decimalPlaces
-    return formatter
-  }
-
   func senderPhoneNumber(formattedWith formatter: PhoneNumberFormatterType) -> String? {
     guard let globalNumber = senderPhoneNumber else { return nil }
     return try? formatter.string(from: globalNumber)
@@ -68,9 +60,28 @@ extension AddressRequestUpdateDisplayable {
   }
 
   var fiatDescription: String {
-    let inviteCents = self.fiatAmount
-    let usdAmount = NSDecimalNumber(integerAmount: inviteCents, currency: .USD)
-    return historicalCurrencyFormatter.string(from: usdAmount) ?? "-"
+    var walletTransactionType: WalletTransactionType, currency: CurrencyCode, amount: NSDecimalNumber
+
+    switch addressType {
+    case .btc:
+      amount = NSDecimalNumber(integerAmount: fiatAmount, currency: .USD)
+      currency = .USD
+      walletTransactionType = .onChain
+    case .lightning:
+      if fiatAmount < 100 {
+        amount = NSDecimalNumber(integerAmount: btcAmount, currency: .BTC)
+        currency = .BTC
+      } else {
+        amount = NSDecimalNumber(integerAmount: fiatAmount, currency: .USD)
+        currency = .USD
+      }
+
+      walletTransactionType = .lightning
+    }
+
+    return CKCurrencyFormatter.string(for: amount,
+                                      currency: currency,
+                                      walletTransactionType: walletTransactionType) ?? "-"
   }
 
   /// This should not be used directly. Use `btcDescription` instead.
