@@ -432,8 +432,8 @@ extension TransactionDetailCellViewModelType {
     let attributes = TextAttributes(size: fontSize, color: color)
     let attributedString = NSMutableAttributedString.medium("", size: fontSize, color: color)
 
-    let inviteAmount: String? = fiatWhenInvited.flatMap { historicalCurrencyFormatter.string(from: $0) }
-    let receivedAmount: String? = fiatWhenTransacted.flatMap { historicalCurrencyFormatter.string(from: $0) }
+    let inviteAmount: String? = fiatWhenInvited.flatMap { historicalCurrencyFormatter.string(from: $0.absoluteValue()) }
+    let receivedAmount: String? = fiatWhenTransacted.flatMap { historicalCurrencyFormatter.string(from: $0.absoluteValue()) }
     guard inviteAmount != nil || receivedAmount != nil else { return nil }
 
     // Amount descriptions are flipped depending on isIncoming
