@@ -62,5 +62,12 @@ final class GetBitcoinSuccessViewController: BaseViewController, StoryboardIniti
     } else {
       trackButton.setTitle("OK", for: .normal)
     }
+
+    let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissModal))
+    transparentBackgroundView.addGestureRecognizer(tapGesture)
+  }
+
+  @objc private func dismissModal() {
+    delegate.viewControllerDidSelectClose(self)
   }
 }
