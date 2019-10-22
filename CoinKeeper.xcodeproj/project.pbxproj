@@ -402,6 +402,9 @@
 		3BE8D86420D1A85200E99D24 /* TransactionResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BE8D86320D1A85200E99D24 /* TransactionResponse.swift */; };
 		3BEB594620D15AF9005EDA9E /* AddressTransactionSummaryResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BEB594520D15AF9005EDA9E /* AddressTransactionSummaryResponse.swift */; };
 		3BEC1AF42229CC8D00824A35 /* Locale+Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BEC1AF32229CC8D00824A35 /* Locale+Constants.swift */; };
+		3BEE0601235F78C4004BDCEB /* GetBitcoinSuccessViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3BEE0600235F78C4004BDCEB /* GetBitcoinSuccessViewController.storyboard */; };
+		3BEE0603235F78EA004BDCEB /* GetBitcoinSuccessViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BEE0602235F78EA004BDCEB /* GetBitcoinSuccessViewController.swift */; };
+		3BEE0605235F7FFD004BDCEB /* AppCoordinator+GetBitcoinSuccessViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BEE0604235F7FFD004BDCEB /* AppCoordinator+GetBitcoinSuccessViewControllerDelegate.swift */; };
 		3BEF22972260CD4A001F6D25 /* GetBitcoinViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BEF22962260CD4A001F6D25 /* GetBitcoinViewControllerTests.swift */; };
 		3BEF22992260D42E001F6D25 /* SpendBitcoinViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BEF22982260D42E001F6D25 /* SpendBitcoinViewController.swift */; };
 		3BEF229B2260D491001F6D25 /* SpendBitcoinViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3BEF229A2260D491001F6D25 /* SpendBitcoinViewController.storyboard */; };
@@ -1483,6 +1486,9 @@
 		3BE8D86320D1A85200E99D24 /* TransactionResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionResponse.swift; sourceTree = "<group>"; };
 		3BEB594520D15AF9005EDA9E /* AddressTransactionSummaryResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressTransactionSummaryResponse.swift; sourceTree = "<group>"; };
 		3BEC1AF32229CC8D00824A35 /* Locale+Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Locale+Constants.swift"; sourceTree = "<group>"; };
+		3BEE0600235F78C4004BDCEB /* GetBitcoinSuccessViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = GetBitcoinSuccessViewController.storyboard; sourceTree = "<group>"; };
+		3BEE0602235F78EA004BDCEB /* GetBitcoinSuccessViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetBitcoinSuccessViewController.swift; sourceTree = "<group>"; };
+		3BEE0604235F7FFD004BDCEB /* AppCoordinator+GetBitcoinSuccessViewControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppCoordinator+GetBitcoinSuccessViewControllerDelegate.swift"; sourceTree = "<group>"; };
 		3BEF22962260CD4A001F6D25 /* GetBitcoinViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetBitcoinViewControllerTests.swift; sourceTree = "<group>"; };
 		3BEF22982260D42E001F6D25 /* SpendBitcoinViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpendBitcoinViewController.swift; sourceTree = "<group>"; };
 		3BEF229A2260D491001F6D25 /* SpendBitcoinViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = SpendBitcoinViewController.storyboard; sourceTree = "<group>"; };
@@ -2405,6 +2411,7 @@
 				B57AF8032268C7E500E5B0A6 /* AppCoordinator+ViewControllerDontShowable.swift */,
 				3B26F1DF22566EAA00F3E00F /* AppCoordinator+SelectedCurrencyUpdatable.swift */,
 				3BEF22A02264B9D7001F6D25 /* AppCoordinator+GetBitcoinViewControllerDelegate.swift */,
+				3BEE0604235F7FFD004BDCEB /* AppCoordinator+GetBitcoinSuccessViewControllerDelegate.swift */,
 				3B24466D2265097B004AEE35 /* AppCoordinator+SpendBitcoinViewControllerDelegate.swift */,
 				A2952F8122BD250100BDCE65 /* AppCoordinator+NewsViewControllerDelegate.swift */,
 				A230F1C922DCB2F30017BC7A /* AppCoordinator+WalletOverviewViewControllerDelegate.swift */,
@@ -2945,6 +2952,7 @@
 				3B325D4C219090CD0094897C /* RecoveryWordsIntroViewController.swift */,
 				30BF4FE821B6C5C10018AE87 /* TransactionPopoverDetailsViewController.swift */,
 				3B27D3F9225E84E900291B82 /* GetBitcoinViewController.swift */,
+				3BEE0602235F78EA004BDCEB /* GetBitcoinSuccessViewController.swift */,
 				B56788AE227A3C5600A39534 /* GetBitcoinCopiedAddressViewController.swift */,
 				3BEF22982260D42E001F6D25 /* SpendBitcoinViewController.swift */,
 				3BCBFCB7229EAE8800F633BA /* SupportViewController.swift */,
@@ -2999,6 +3007,7 @@
 				30BF4FEA21B6C6C60018AE87 /* TransactionPopoverDetailsViewController.storyboard */,
 				3B44961E21B0661300A4E912 /* MemoEntryViewController.storyboard */,
 				3B8ACA14225F96800020B684 /* GetBitcoinViewController.storyboard */,
+				3BEE0600235F78C4004BDCEB /* GetBitcoinSuccessViewController.storyboard */,
 				B56788AC227A3C2C00A39534 /* GetBitcoinCopiedAddressViewController.storyboard */,
 				3BEF229A2260D491001F6D25 /* SpendBitcoinViewController.storyboard */,
 				3BCBFCB3229EADF400F633BA /* SupportViewController.storyboard */,
@@ -4194,6 +4203,7 @@
 				5B927C242078009F00DCDCAE /* DrawerTableViewHeader.xib in Resources */,
 				A2952F7122BBBAAB00BDCE65 /* NewsArticleCell.xib in Resources */,
 				3B6DCA1B2034B76F00B87EF9 /* KeypadDigitView.xib in Resources */,
+				3BEE0601235F78C4004BDCEB /* GetBitcoinSuccessViewController.storyboard in Resources */,
 				3B9779AB202E416700C9C933 /* Montserrat-Bold.ttf in Resources */,
 				B54913A722BC0B1000ACC7D7 /* AdjustableFeesViewController.storyboard in Resources */,
 				A200574D20B5F70F007074D9 /* SettingCell.xib in Resources */,
@@ -4760,6 +4770,7 @@
 				B56639CF22B1944200FA0EC3 /* UIButton+Helpers.swift in Sources */,
 				B54A4219207FF38F005B40A9 /* TransactionDetailDateLabel.swift in Sources */,
 				B56E158F2167D89E003B69D4 /* NetworkManager+WalletAddressRequestRequestable.swift in Sources */,
+				3BEE0603235F78EA004BDCEB /* GetBitcoinSuccessViewController.swift in Sources */,
 				3B9A8DF72150388F00C78C2C /* AppCoordinator+WalletDelegateType.swift in Sources */,
 				B552EDFC211E33D000332BB5 /* WalletAddressDataWorker.swift in Sources */,
 				B51AE4AD2093B5F3008380CC /* CKMInvitation+CoreDataProperties.swift in Sources */,
@@ -5107,6 +5118,7 @@
 				A246C82722CBA83F00AF1F52 /* PriceTarget.swift in Sources */,
 				A257CEB42302E5070063670B /* FeesView.swift in Sources */,
 				3B0C7858231E891600D4C216 /* LightningUpgradeCoordinator.swift in Sources */,
+				3BEE0605235F7FFD004BDCEB /* AppCoordinator+GetBitcoinSuccessViewControllerDelegate.swift in Sources */,
 				3BA9F603208F6CEA0047C213 /* AppCoordinator+CreateRecoveryWordsViewControllerDelegate.swift in Sources */,
 				A2FE19882301A09C00C2412D /* LightningActionButton.swift in Sources */,
 				A2952F7E22BD0B7600BDCE65 /* NewsArticleResponse.swift in Sources */,
