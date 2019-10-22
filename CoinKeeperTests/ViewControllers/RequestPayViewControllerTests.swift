@@ -108,12 +108,6 @@ class RequestPayViewControllerTests: XCTestCase {
     func viewControllerDidSelectMemoButton(_ viewController: UIViewController, memo: String?, completion: @escaping (String) -> Void) {
     }
 
-    func viewControllerDidSelectMemoButton(_ viewController: UIViewController,
-                                           memo: String?,
-                                           completion: @escaping (String) -> Void) {
-      
-    }
-
     func viewControllerDidSelectCloseWithToggle(_ viewController: UIViewController) { }
 
     var didCreateInvoice = false
