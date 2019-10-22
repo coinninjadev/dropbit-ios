@@ -72,7 +72,7 @@ final class GetBitcoinViewController: BaseViewController, StoryboardInitializabl
   private func setupUI() {
     /// Purchase bitcoin label
     purchaseBitcoinInfoLabel.text = """
-    Bitcoin purchased Apple Pay will automatically get deposited into your Bitcoin wallet using the
+    Bitcoin purchased with Apple Pay will automatically get deposited into your Bitcoin wallet using the
     address below.
     """.removingMultilineLineBreaks()
     purchaseBitcoinInfoLabel.textColor = .outgoingGray
