@@ -83,7 +83,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     if url.scheme == "dropbit" {
-      OAuthSwift.handle(url: url)
+      if let wyreURL = WyreURLParser(url: url) {
+        coordinator?.purchasedBitcoinComponents = wyreURL
+      } else {
+        OAuthSwift.handle(url: url)
+      }
       return true
     }
 

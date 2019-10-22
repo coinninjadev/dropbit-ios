@@ -40,6 +40,7 @@ struct CoinNinjaUrlFactory {
     case spendBitcoinGiftCards
     case buyGiftCards
     case buyWithCreditCard
+    case buyWithApplePay(String)
     case buyAtATM(CLLocationCoordinate2D)
     case dropBitMe(handle: String)
     case dropBitMeLearnMore
@@ -55,6 +56,7 @@ struct CoinNinjaUrlFactory {
            .spendBitcoinGiftCards,
            .buyGiftCards,
            .buyWithCreditCard,
+           .buyWithApplePay,
            .buyAtATM,
            .invoice:
         #if DEBUG
@@ -164,6 +166,8 @@ struct CoinNinjaUrlFactory {
         return "buybitcoin/giftcards"
       case .buyWithCreditCard:
         return "buybitcoin/creditcards"
+      case .buyWithApplePay(let address):
+        return "buybitcoin/quickbuy?address=\(address)"
       case .buyAtATM(let coordinate):
         return "news/webview/load-map?lat=\(coordinate.latitude)&long=\(coordinate.longitude)&type=atms"
       case .dropBitMe(let handle):

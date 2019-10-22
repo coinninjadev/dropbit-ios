@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
-    <device id="retina6_1" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14868" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14824"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -18,62 +16,92 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Get Bitcoin" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nXF-jd-P6K">
-                                <rect key="frame" x="165" y="130" width="84.5" height="20.5"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="24" translatesAutoresizingMaskIntoConstraints="NO" id="tu3-lI-Xhb">
-                                <rect key="frame" x="44" y="347.5" width="326" height="201"/>
+                                <rect key="frame" x="24" y="44" width="366" height="715"/>
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="knP-gO-z95" customClass="PrimaryActionButton" customModule="DropBit" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="0.0" width="326" height="51"/>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xbG-h2-7iL" userLabel="Top Buffer View">
+                                        <rect key="frame" x="0.0" y="0.0" width="366" height="213.5"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </view>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iTb-b3-RPF">
+                                        <rect key="frame" x="0.0" y="237.5" width="366" height="20.5"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="f09-vq-rI4" customClass="LightBorderedButton" customModule="DropBit" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="282" width="366" height="51"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="51" id="wOP-dF-5rq"/>
+                                            <constraint firstAttribute="height" constant="51" id="6b1-1s-7sC"/>
                                         </constraints>
                                         <state key="normal" title="Button"/>
                                         <connections>
-                                            <action selector="findATM" destination="0LE-bU-XIg" eventType="touchUpInside" id="N19-0j-zNc"/>
+                                            <action selector="copyLightningAddress:" destination="0LE-bU-XIg" eventType="touchUpInside" id="FOI-cG-daI"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tCu-wn-Xiv" customClass="PrimaryActionButton" customModule="DropBit" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="75" width="326" height="51"/>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="31H-vj-Km9">
+                                        <rect key="frame" x="0.0" y="357" width="366" height="1"/>
+                                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="1" id="uOI-TW-XDF"/>
+                                        </constraints>
+                                    </view>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ddq-XD-Zcr">
+                                        <rect key="frame" x="0.0" y="382" width="366" height="20.5"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tCu-wn-Xiv" customClass="LightBorderedButton" customModule="DropBit" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="426.5" width="366" height="51"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="51" id="opX-qC-NqM"/>
+                                        </constraints>
                                         <state key="normal" title="Button"/>
                                         <connections>
-                                            <action selector="buyWithCreditCard" destination="0LE-bU-XIg" eventType="touchUpInside" id="hJp-nY-5zX"/>
+                                            <action selector="buyExternally" destination="0LE-bU-XIg" eventType="touchUpInside" id="hJp-nY-5zX"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Mht-5s-c9u" customClass="PrimaryActionButton" customModule="DropBit" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="150" width="326" height="51"/>
-                                        <state key="normal" title="Button"/>
-                                        <connections>
-                                            <action selector="buyWithGiftCard" destination="0LE-bU-XIg" eventType="touchUpInside" id="5R6-6g-71v"/>
-                                        </connections>
-                                    </button>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Wa5-gJ-95M" userLabel="Bottom Buffer View">
+                                        <rect key="frame" x="0.0" y="501.5" width="366" height="213.5"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </view>
                                 </subviews>
                                 <constraints>
-                                    <constraint firstItem="tCu-wn-Xiv" firstAttribute="height" secondItem="knP-gO-z95" secondAttribute="height" id="LoF-uw-SrZ"/>
-                                    <constraint firstItem="Mht-5s-c9u" firstAttribute="height" secondItem="knP-gO-z95" secondAttribute="height" id="PKA-aD-T5p"/>
+                                    <constraint firstItem="Wa5-gJ-95M" firstAttribute="height" secondItem="xbG-h2-7iL" secondAttribute="height" id="jKI-mx-idR"/>
                                 </constraints>
                             </stackView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="knP-gO-z95" customClass="PrimaryActionButton" customModule="DropBit" customModuleProvider="target">
+                                <rect key="frame" x="20" y="767" width="374" height="51"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="51" id="wOP-dF-5rq"/>
+                                </constraints>
+                                <state key="normal" title="Button"/>
+                                <connections>
+                                    <action selector="findATM" destination="0LE-bU-XIg" eventType="touchUpInside" id="N19-0j-zNc"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="tu3-lI-Xhb" firstAttribute="leading" secondItem="1Sg-Ve-Ft5" secondAttribute="leading" constant="44" id="JNz-eF-Ex6"/>
-                            <constraint firstItem="nXF-jd-P6K" firstAttribute="top" secondItem="1Sg-Ve-Ft5" secondAttribute="top" constant="86" id="Mfe-PX-Jfb"/>
-                            <constraint firstItem="1Sg-Ve-Ft5" firstAttribute="trailing" secondItem="tu3-lI-Xhb" secondAttribute="trailing" constant="44" id="XFk-us-qZ0"/>
-                            <constraint firstItem="tu3-lI-Xhb" firstAttribute="top" relation="greaterThanOrEqual" secondItem="nXF-jd-P6K" secondAttribute="bottom" constant="8" id="a4W-GN-qRr"/>
-                            <constraint firstItem="nXF-jd-P6K" firstAttribute="centerX" secondItem="HjN-9H-cSw" secondAttribute="centerX" id="fKm-sD-3lh"/>
-                            <constraint firstItem="tu3-lI-Xhb" firstAttribute="centerY" secondItem="HjN-9H-cSw" secondAttribute="centerY" id="kdK-Mp-tnN"/>
+                            <constraint firstItem="knP-gO-z95" firstAttribute="top" secondItem="tu3-lI-Xhb" secondAttribute="bottom" constant="8" id="GPQ-P0-G6y"/>
+                            <constraint firstItem="tu3-lI-Xhb" firstAttribute="top" secondItem="1Sg-Ve-Ft5" secondAttribute="top" id="HiR-zx-Xd2"/>
+                            <constraint firstItem="tu3-lI-Xhb" firstAttribute="leading" secondItem="1Sg-Ve-Ft5" secondAttribute="leading" constant="24" id="JNz-eF-Ex6"/>
+                            <constraint firstItem="1Sg-Ve-Ft5" firstAttribute="trailing" secondItem="tu3-lI-Xhb" secondAttribute="trailing" constant="24" id="XFk-us-qZ0"/>
+                            <constraint firstItem="knP-gO-z95" firstAttribute="leading" secondItem="1Sg-Ve-Ft5" secondAttribute="leading" constant="20" id="ZO9-XD-UUu"/>
+                            <constraint firstItem="1Sg-Ve-Ft5" firstAttribute="trailing" secondItem="knP-gO-z95" secondAttribute="trailing" constant="20" id="rLC-Bm-Sbz"/>
+                            <constraint firstItem="1Sg-Ve-Ft5" firstAttribute="bottom" secondItem="knP-gO-z95" secondAttribute="bottom" constant="44" id="xQO-fT-9f5"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="1Sg-Ve-Ft5"/>
                     </view>
                     <connections>
-                        <outlet property="buyWithCreditCardButton" destination="tCu-wn-Xiv" id="ePx-1O-3dB"/>
-                        <outlet property="buyWithGiftCardButton" destination="Mht-5s-c9u" id="2Mj-qr-IAC"/>
+                        <outlet property="buyExternallyButton" destination="tCu-wn-Xiv" id="ePx-1O-3dB"/>
+                        <outlet property="buyExternallyInfoLabel" destination="ddq-XD-Zcr" id="aB7-fI-7x5"/>
+                        <outlet property="centerStackView" destination="tu3-lI-Xhb" id="p0t-8W-xaG"/>
+                        <outlet property="copyLightningAddressButton" destination="f09-vq-rI4" id="ScQ-6o-v1w"/>
                         <outlet property="findATMButton" destination="knP-gO-z95" id="QXu-mI-Lyd"/>
-                        <outlet property="headerLabel" destination="nXF-jd-P6K" id="Gts-MG-quk"/>
+                        <outlet property="lineSeparatorView" destination="31H-vj-Km9" id="nnn-z4-2a9"/>
+                        <outlet property="purchaseBitcoinInfoLabel" destination="iTb-b3-RPF" id="Or3-KK-itR"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hhD-Ti-1dh" userLabel="First Responder" sceneMemberID="firstResponder"/>

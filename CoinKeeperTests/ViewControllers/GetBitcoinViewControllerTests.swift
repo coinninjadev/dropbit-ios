@@ -17,7 +17,7 @@ class GetBitcoinViewControllerTests: XCTestCase {
   override func setUp() {
     super.setUp()
     mockCoordinator = MockGetBitcoinViewControllerDelegate()
-    sut = GetBitcoinViewController.newInstance(delegate: mockCoordinator)
+    sut = GetBitcoinViewController.newInstance(delegate: mockCoordinator, lightningAddress: "", bitcoinAddress: "")
     _ = sut.view
   }
 
@@ -29,10 +29,19 @@ class GetBitcoinViewControllerTests: XCTestCase {
 
   // MARK: outlets
   func testOutletsAreConnected() {
-    XCTAssertNotNil(sut.headerLabel)
     XCTAssertNotNil(sut.findATMButton)
-    XCTAssertNotNil(sut.buyWithCreditCardButton)
-    XCTAssertNotNil(sut.buyWithGiftCardButton)
+    XCTAssertNotNil(sut.buyExternallyButton)
+    XCTAssertNotNil(sut.centerStackView)
+    XCTAssertNotNil(sut.purchaseBitcoinInfoLabel)
+    XCTAssertNotNil(sut.copyLightningAddressButton)
+    XCTAssertNotNil(sut.buyWithApplePayButton)
+    XCTAssertNotNil(sut.lineSeparatorView)
+    XCTAssertNotNil(sut.buyExternallyInfoLabel)
+  }
+
+  // MARK: initial state
+  func testInitialState() {
+    XCTAssertEqual(sut.lineSeparatorView.backgroundColor, UIColor.mediumGrayBackground)
   }
 
   // MARK: buttons contain actions
@@ -42,15 +51,21 @@ class GetBitcoinViewControllerTests: XCTestCase {
     XCTAssertTrue(actions.contains(expected))
   }
 
-  func testBuyWithCreditCardButtonContainsAction() {
-    let actions = sut.buyWithCreditCardButton.actions(forTarget: sut, forControlEvent: .touchUpInside) ?? []
-    let expected = #selector(GetBitcoinViewController.buyWithCreditCard).description
+  func testBuyExternallyButtonContainsAction() {
+    let actions = sut.buyExternallyButton.actions(forTarget: sut, forControlEvent: .touchUpInside) ?? []
+    let expected = #selector(GetBitcoinViewController.buyExternally).description
     XCTAssertTrue(actions.contains(expected))
   }
 
-  func testBuyWithGiftCardButtonContainsAction() {
-    let actions = sut.buyWithGiftCardButton.actions(forTarget: sut, forControlEvent: .touchUpInside) ?? []
-    let expected = #selector(GetBitcoinViewController.buyWithGiftCard).description
+  func testBuyWithApplePayButtonContainsAction() {
+    let actions = sut.buyWithApplePayButton.actions(forTarget: sut, forControlEvent: .touchUpInside) ?? []
+    let expected = #selector(GetBitcoinViewController.buyWithApplePay).description
+    XCTAssertTrue(actions.contains(expected))
+  }
+
+  func testLightningButtonContainsAction() {
+    let actions = sut.copyLightningAddressButton.actions(forTarget: sut, forControlEvent: .touchUpInside) ?? []
+    let expected = #selector(GetBitcoinViewController.copyLightningAddress(_:)).description
     XCTAssertTrue(actions.contains(expected))
   }
 
@@ -60,31 +75,41 @@ class GetBitcoinViewControllerTests: XCTestCase {
     XCTAssertTrue(mockCoordinator.wasAskedToFindATMNearMe)
   }
 
-  func testBuyWithCreditCardTellsCoordinator() {
-    sut.buyWithCreditCardButton.sendActions(for: .touchUpInside)
-    XCTAssertTrue(mockCoordinator.wasAskedToBuyWithCreditCard)
+  func testBuyExternallyTellsCoordinator() {
+    sut.buyExternally()
+    XCTAssertTrue(mockCoordinator.wasAskedToBuyExternally)
   }
 
-  func testBuyWithGiftCardTellsCoordinator() {
-    sut.buyWithGiftCardButton.sendActions(for: .touchUpInside)
-    XCTAssertTrue(mockCoordinator.wasAskedToBuyWithGiftCard)
+  func testCopyLightningAddressTellsCoordinator() {
+    sut.copyLightningAddressButton.sendActions(for: .touchUpInside)
+    XCTAssertTrue(mockCoordinator.wasAskedToCopyAddress)
+  }
+
+  func testBuyWithApplePayTellsCoordinator() {
+    sut.buyWithApplePayButton.sendActions(for: .touchUpInside)
+    XCTAssertTrue(mockCoordinator.wasAskedToBuyWithApplePay)
   }
 
 }
 
 class MockGetBitcoinViewControllerDelegate: GetBitcoinViewControllerDelegate {
+  var wasAskedToCopyAddress = false
+  func viewControllerDidCopyAddress(_ viewController: UIViewController) {
+    wasAskedToCopyAddress = true
+  }
+
   var wasAskedToFindATMNearMe = false
   func viewControllerFindBitcoinATMNearMe(_ viewController: GetBitcoinViewController) {
     wasAskedToFindATMNearMe = true
   }
 
-  var wasAskedToBuyWithCreditCard = false
-  func viewControllerBuyWithCreditCard(_ viewController: GetBitcoinViewController) {
-    wasAskedToBuyWithCreditCard = true
+  var wasAskedToBuyExternally = false
+  func viewControllerBuyBitcoinExternally(_ viewController: GetBitcoinViewController) {
+    wasAskedToBuyExternally = true
   }
 
-  var wasAskedToBuyWithGiftCard = false
-  func viewControllerBuyWithGiftCard(_ viewController: GetBitcoinViewController) {
-    wasAskedToBuyWithGiftCard = true
+  var wasAskedToBuyWithApplePay = false
+  func viewControllerBuyWithApplePay(_ viewController: GetBitcoinViewController, address: String) {
+    wasAskedToBuyWithApplePay = true
   }
 }
