@@ -32,11 +32,6 @@ extension AppCoordinator: GetBitcoinViewControllerDelegate {
     }
   }
 
-  func viewControllerBuyBitcoinExternally(_ viewController: GetBitcoinViewController) {
-    analyticsManager.track(event: .buyBitcoinWithCreditCard, with: nil)
-    viewControllerDidCopyAddress(viewController)
-  }
-
   func viewControllerBuyWithApplePay(_ viewController: GetBitcoinViewController, address: String) {
     analyticsManager.track(event: .buyWithQuickPay, with: nil)
     guard address.asNilIfEmpty() != nil else {
