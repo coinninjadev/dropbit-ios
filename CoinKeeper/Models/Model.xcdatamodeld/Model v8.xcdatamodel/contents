@@ -125,8 +125,10 @@
         <attribute name="createdAt" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="feeAmount" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="isSentToSelf" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="txid" optional="YES" attributeType="String"/>
         <relationship name="reservedVouts" toMany="YES" deletionRule="Nullify" destinationEntity="CKMVout" inverseName="temporarySentTransaction" inverseEntity="CKMVout"/>
         <relationship name="transaction" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CKMTransaction" inverseName="temporarySentTransaction" inverseEntity="CKMTransaction"/>
+        <relationship name="walletEntry" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CKMWalletEntry" inverseName="temporarySentTransaction" inverseEntity="CKMWalletEntry"/>
     </entity>
     <entity name="CKMTransaction" representedClassName="CKMTransaction" versionHashModifier="1" syncable="YES">
         <attribute name="blockHash" optional="YES" attributeType="String"/>
@@ -252,6 +254,7 @@
         <relationship name="ledgerEntry" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CKMLNLedgerEntry" inverseName="walletEntry" inverseEntity="CKMLNLedgerEntry"/>
         <relationship name="phoneNumber" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CKMPhoneNumber" inverseName="walletEntries" inverseEntity="CKMPhoneNumber"/>
         <relationship name="sharedPayload" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CKMTransactionSharedPayload" inverseName="walletEntry" inverseEntity="CKMTransactionSharedPayload"/>
+        <relationship name="temporarySentTransaction" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CKMTemporarySentTransaction" inverseName="walletEntry" inverseEntity="CKMTemporarySentTransaction"/>
         <relationship name="twitterContact" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CKMTwitterContact" inverseName="walletEntries" inverseEntity="CKMTwitterContact"/>
         <relationship name="wallet" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CKMWallet" inverseName="walletEntries" inverseEntity="CKMWallet"/>
     </entity>
@@ -267,7 +270,7 @@
         <element name="CKMLNLedgerEntry" positionX="-2173.94140625" positionY="494.7109375" width="128" height="283"/>
         <element name="CKMPhoneNumber" positionX="-2009" positionY="99" width="128" height="165"/>
         <element name="CKMServerAddress" positionX="-1143" positionY="108" width="128" height="103"/>
-        <element name="CKMTemporarySentTransaction" positionX="-1928" positionY="459" width="128" height="135"/>
+        <element name="CKMTemporarySentTransaction" positionX="-1928" positionY="459" width="128" height="163"/>
         <element name="CKMTransaction" positionX="-1667" positionY="317" width="128" height="388"/>
         <element name="CKMTransactionSharedPayload" positionX="-1858.9765625" positionY="76.22265625" width="128" height="135"/>
         <element name="CKMTwitterContact" positionX="-2073.94921875" positionY="265.5859375" width="128" height="180"/>
@@ -275,6 +278,6 @@
         <element name="CKMVin" positionX="-1845" positionY="657" width="128" height="133"/>
         <element name="CKMVout" positionX="-1503" positionY="639" width="128" height="165"/>
         <element name="CKMWallet" positionX="-1368" positionY="99" width="128" height="210"/>
-        <element name="CKMWalletEntry" positionX="-1818.1640625" positionY="-44.91796875" width="128" height="208"/>
+        <element name="CKMWalletEntry" positionX="-1818.1640625" positionY="-44.91796875" width="128" height="223"/>
     </elements>
 </model>

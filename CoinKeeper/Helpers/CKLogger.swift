@@ -31,7 +31,7 @@ class CKLogger: Logger {
       let fileWriter = try CKLogFileWriter()
       writers.append(fileWriter)
     } catch {
-      log.error(error, message: "Failed to initialize CKFileWriter")
+      print("Failed to initialize CKFileWriter. \(error.localizedDescription)")
     }
 
     #if DEBUG
@@ -43,6 +43,8 @@ class CKLogger: Logger {
                writers: writers,
                executionMethod: .asynchronous(queue: loggingQueue))
     #endif
+
+    self.info("Did initialize logger: \(VersionInfo().debugDescription)")
   }
 
   private var fileWriter: CKLogFileWriter? {

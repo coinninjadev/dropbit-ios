@@ -24,14 +24,10 @@ public class CKMTemporarySentTransaction: NSManagedObject {
     return effectiveAmount + feeAmount
   }
 
-  static func findAll(in context: NSManagedObjectContext) -> [CKMTemporarySentTransaction] {
+  static func findAllActiveOnChain(in context: NSManagedObjectContext) -> [CKMTemporarySentTransaction] {
     let fetchRequest: NSFetchRequest<CKMTemporarySentTransaction> = CKMTemporarySentTransaction.fetchRequest()
 
-    return fetchTempTransactions(from: fetchRequest, in: context)
-  }
-
-  static func findAllActive(in context: NSManagedObjectContext) -> [CKMTemporarySentTransaction] {
-    let fetchRequest: NSFetchRequest<CKMTemporarySentTransaction> = CKMTemporarySentTransaction.fetchRequest()
+    let hasOnChainTxPredicate = CKPredicate.TemporarySentTransaction.withTransaction()
 
     // Doesn't have an inactive invitation
     let inactiveInvitationPredicate = CKPredicate.TemporarySentTransaction.withInactiveInvitation()
@@ -39,7 +35,8 @@ public class CKMTemporarySentTransaction: NSManagedObject {
 
     // Broadcast not detected as failed
     let txNotFailedPredicate = CKPredicate.TemporarySentTransaction.broadcastFailed(is: false)
-    fetchRequest.predicate = NSCompoundPredicate(type: .and, subpredicates: [notInactiveInvitationPredicate, txNotFailedPredicate])
+    let andPredicates = [hasOnChainTxPredicate, notInactiveInvitationPredicate, txNotFailedPredicate]
+    fetchRequest.predicate = NSCompoundPredicate(type: .and, subpredicates: andPredicates)
 
     return fetchTempTransactions(from: fetchRequest, in: context)
   }
@@ -56,4 +53,15 @@ public class CKMTemporarySentTransaction: NSManagedObject {
     }
     return result
   }
+
+  func copyForLightning() -> CKMTemporarySentTransaction? {
+    guard let context = managedObjectContext else { return nil }
+    let newTempSentTx = CKMTemporarySentTransaction(insertInto: context)
+    newTempSentTx.createdAt = self.createdAt
+    newTempSentTx.amount = self.amount
+    newTempSentTx.feeAmount = self.feeAmount
+    newTempSentTx.txid = self.txid
+    return newTempSentTx
+  }
+
 }

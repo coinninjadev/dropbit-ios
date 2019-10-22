@@ -229,6 +229,7 @@ class CKDatabase: PersistenceDatabaseType {
 
     var outgoingTxDTO = outgoingTransactionData
     outgoingTxDTO.txid = txid
+    outgoingTxDTO.amount = Int(transactionData.amount)
     outgoingTxDTO.feeAmount = Int(transactionData.feeAmount)
 
     invitation?.setTxid(to: txid)

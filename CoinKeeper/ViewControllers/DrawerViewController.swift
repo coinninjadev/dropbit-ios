@@ -26,8 +26,6 @@ class DrawerViewController: BaseViewController, StoryboardInitializable {
 
   var badgeNotificationToken: NotificationToken?
 
-  private let versionKey: String = "CFBundleShortVersionString"
-
   // MARK: outlets
   @IBOutlet var drawerTableView: UITableView!
   @IBOutlet var versionLabel: UILabel!
@@ -43,9 +41,10 @@ class DrawerViewController: BaseViewController, StoryboardInitializable {
 
     view.backgroundColor = .darkBlueBackground
 
+    let versionInfo = VersionInfo()
     versionLabel.textColor = UIColor.white
     versionLabel.font = .light(10)
-    versionLabel.text = "Version \(Bundle.main.infoDictionary?[versionKey] ?? "Unknown")"
+    versionLabel.text = "Version \(versionInfo.appVersion)"
 
     drawerTableView.registerNib(cellType: DrawerCell.self)
     drawerTableView.registerNib(cellType: BackupWordsReminderDrawerCell.self)

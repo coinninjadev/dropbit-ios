@@ -132,6 +132,19 @@ struct TransactionAmountsFactory: TransactionAmountsFactoryType {
     }
   }
 
+  init(tempSentTx: CKMTemporarySentTransaction,
+       fiatCurrency: CurrencyCode,
+       currentRates: ExchangeRates,
+       transferType: LightningTransferType) {
+    self.fiatCurrency = fiatCurrency
+    self.currentRate = currentRates[fiatCurrency] ?? 1
+    self.walletTxType = .lightning
+    self.transferType = transferType
+
+    let netWalletSats = tempSentTx.amount + tempSentTx.feeAmount
+    self.netWalletAmount = NSDecimalNumber(integerAmount: netWalletSats, currency: .BTC)
+  }
+
   var netAtCurrentAmounts: ConvertedAmounts {
     return convertedAmounts(withRate: currentRate, btcAmount: netWalletAmount)
   }
