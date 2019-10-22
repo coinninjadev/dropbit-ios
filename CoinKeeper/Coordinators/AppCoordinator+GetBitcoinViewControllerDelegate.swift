@@ -45,8 +45,8 @@ extension AppCoordinator: GetBitcoinViewControllerDelegate {
       return
     }
     viewControllerRequestedAuthenticationSuspension(viewController)
-    let url = CoinNinjaUrlFactory.buildUrl(for: .buyWithApplePay(address))
-    openURLExternally(url!, completionHandler: nil)
+    guard let url = CoinNinjaUrlFactory.buildUrl(for: .buyWithApplePay(address)) else { return }
+    openURLExternally(url, completionHandler: nil)
   }
 
   private func copyNextAddressAndPresentVC(destinationURL: URL) {
