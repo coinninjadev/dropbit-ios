@@ -44,9 +44,20 @@ enum CurrencyCode: String {
     }
   }
 
-  var integerSymbol: String? {
+  func integerSymbol(forAmount amount: NSDecimalNumber) -> String? {
+    return integerSymbol(forAmount: amount.asFractionalUnits(of: self))
+  }
+
+  func integerSymbol(forAmount amount: Int) -> String? {
     switch self {
-    case .BTC:  return " sats"
+    case .BTC:  return amount == 1 ? " sat" : " sats"
+    case .USD:  return nil
+    }
+  }
+
+  var singularIntegerSymbol: String? {
+    switch self {
+    case .BTC:  return " sat"
     case .USD:  return nil
     }
   }

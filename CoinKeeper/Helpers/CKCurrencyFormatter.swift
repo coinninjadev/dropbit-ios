@@ -164,7 +164,7 @@ class SatsFormatter: CKCurrencyFormatter {
 
   override func string(fromDecimal decimalNumber: NSDecimalNumber) -> String? {
     guard let numberString = stringWithoutSymbol(fromDecimal: decimalNumber) else { return nil }
-    if let symbol = currency.integerSymbol {
+    if let symbol = currency.integerSymbol(forAmount: decimalNumber) {
       return numberString + symbol
     } else {
       return numberString

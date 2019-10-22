@@ -52,7 +52,7 @@ extension DualAmountDisplayable {
         if primaryCurrency == .USD {
           primaryText = primaryCurrency.symbol
         } else {
-          primaryText = primaryCurrency.integerSymbol
+          primaryText = primaryCurrency.integerSymbol(forAmount: fromAmount)
         }
       case .onChain:
         primaryText = primaryCurrency.symbol
@@ -243,7 +243,7 @@ extension CurrencySwappableEditAmountViewModel: UITextFieldDelegate {
   func textFieldDidBeginEditing(_ textField: UITextField) {
     if fromAmount == .zero {
       if walletTransactionType == .lightning && primaryCurrency == .BTC {
-        textField.text = fromCurrency.integerSymbol
+        textField.text = fromCurrency.integerSymbol(forAmount: sanitizedAmount(fromRawText: textField.text))
       } else {
         textField.text = fromCurrency.symbol
       }
@@ -278,12 +278,13 @@ extension CurrencySwappableEditAmountViewModel: UITextFieldDelegate {
     }
 
     let requiredSymbolString = primaryCurrency.symbol
-    guard finalString.contains(requiredSymbolString) || finalString.contains(primaryCurrency.integerSymbol ?? "") else {
+    guard finalString.contains(requiredSymbolString) ||
+      finalString.contains(primaryCurrency.integerSymbol(forAmount: sanitizedAmount(fromRawText: textField.text)) ?? "") else {
       return false
     }
 
     var symbolsToRemove = [requiredSymbolString]
-    if let integerSymbol = primaryCurrency.integerSymbol {
+    if let integerSymbol = primaryCurrency.integerSymbol(forAmount: sanitizedAmount(fromRawText: textField.text)) {
       symbolsToRemove.append(integerSymbol)
     }
 
@@ -302,7 +303,8 @@ extension CurrencySwappableEditAmountViewModel: UITextFieldDelegate {
   }
 
   private func isNotDeletingOrEditingCurrencySymbol(for amount: String, in range: NSRange) -> Bool {
-    return (amount != primaryCurrency.symbol || range.length == 0 || amount != primaryCurrency.integerSymbol)
+    return (amount != primaryCurrency.symbol || range.length == 0 ||
+      amount != primaryCurrency.integerSymbol(forAmount: sanitizedAmount(fromRawText: amount)))
   }
 
 }

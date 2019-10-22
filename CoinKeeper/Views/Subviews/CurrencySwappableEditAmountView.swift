@@ -24,10 +24,15 @@ class CurrencySwappableEditAmountView: UIView {
 
   @IBOutlet var primaryAmountTextField: LimitEditTextField!
   @IBOutlet var secondaryAmountLabel: UILabel!
+  @IBOutlet var editAmountButton: UIButton!
   @IBOutlet var swapButton: UIButton!
 
   @IBAction func performSwap(_ sender: Any) {
     delegate.swapViewDidSwap(self)
+  }
+
+  @IBAction func editAmountButtonTapped() {
+    primaryAmountTextField.becomeFirstResponder()
   }
 
   required init?(coder aDecoder: NSCoder) {
