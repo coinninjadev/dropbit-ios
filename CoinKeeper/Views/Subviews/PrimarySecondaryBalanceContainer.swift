@@ -55,7 +55,7 @@ class PrimarySecondaryBalanceContainer: UIView {
     primaryBalanceLabel.attributedText = CKCurrencyFormatter.attributedString(for: amount,
                                                                               currency: currency,
                                                                               walletTransactionType: walletTransactionType,
-                                                                              isInTextField: false)
+                                                                              onChainSymbol: .image)
     setupLabelColors(for: currency)
   }
 
@@ -63,7 +63,7 @@ class PrimarySecondaryBalanceContainer: UIView {
     secondaryBalanceLabel.attributedText = CKCurrencyFormatter.attributedString(for: amount,
                                                                                 currency: currency,
                                                                                 walletTransactionType: walletTransactionType,
-                                                                                isInTextField: false)
+                                                                                onChainSymbol: .image)
   }
 
   private func setupStyle() {

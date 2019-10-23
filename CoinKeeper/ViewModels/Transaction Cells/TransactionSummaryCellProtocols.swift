@@ -177,7 +177,7 @@ extension TransactionSummaryCellViewModelType {
     let currentAmounts = amounts.netAtCurrent
     var btcAttributedString: NSAttributedString?
     if walletTxType == .onChain {
-      btcAttributedString = BitcoinFormatter(symbolType: .attributed).attributedString(from: currentAmounts.btc)
+      btcAttributedString = BitcoinFormatter(symbolType: .image).attributedString(from: currentAmounts.btc)
     }
 
     let signedFiatAmount = self.signedAmount(for: currentAmounts.fiat)

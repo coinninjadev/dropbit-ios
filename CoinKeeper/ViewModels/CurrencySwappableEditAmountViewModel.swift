@@ -66,6 +66,23 @@ extension DualAmountDisplayable {
                                                         isInTextField: false)
 
     return DualAmountLabels(primary: primaryText, secondary: secondary)
+  private func primaryAttributedString(walletTxType: WalletTransactionType, converter: CurrencyConverter) -> NSAttributedString? {
+
+    let primaryCurrency = currencyPair.primary
+    let primaryAmount = converter.amount(forCurrency: primaryCurrency) ?? .zero
+    return CKCurrencyFormatter.attributedString(for: primaryAmount,
+                                                currency: primaryCurrency,
+                                                walletTransactionType: walletTxType,
+                                                onChainSymbol: .string)
+  }
+
+  private func secondaryAttributedString(walletTxType: WalletTransactionType, converter: CurrencyConverter) -> NSAttributedString? {
+    let secondaryCurrency = currencyPair.secondary
+    let secondaryAmount = converter.amount(forCurrency: secondaryCurrency) ?? .zero
+    return CKCurrencyFormatter.attributedString(for: secondaryAmount,
+                                                currency: secondaryCurrency,
+                                                walletTransactionType: walletTxType,
+                                                onChainSymbol: .image)
   }
 
 }

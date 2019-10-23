@@ -276,7 +276,7 @@ extension TransactionDetailCellViewModelType {
     let btcAttributedString: NSAttributedString?
     switch walletTxType {
     case .onChain:
-      btcAttributedString = BitcoinFormatter(symbolType: .attributed).attributedString(from: netAtCurrent.btc)
+      btcAttributedString = BitcoinFormatter(symbolType: .image).attributedString(from: netAtCurrent.btc)
     case .lightning:
       let satsText = SatsFormatter().string(fromDecimal: netAtCurrent.btc) ?? ""
       btcAttributedString = NSMutableAttributedString.medium(satsText, size: 14, color: .bitcoinOrange)

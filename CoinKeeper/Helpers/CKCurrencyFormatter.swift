@@ -16,7 +16,7 @@ class CKCurrencyFormatter {
   let negativeHasSpace: Bool
 
   enum CurrencySymbolType {
-    case string, attributed, none
+    case string, image, none
   }
 
   ///Use a custom subclass instead of this formatter directly
@@ -49,7 +49,7 @@ class CKCurrencyFormatter {
   static func attributedString(for amount: NSDecimalNumber?,
                                currency: CurrencyCode,
                                walletTransactionType: WalletTransactionType,
-                               isInTextField: Bool) -> NSAttributedString? {
+                               onChainSymbol: CurrencySymbolType) -> NSAttributedString? {
     guard let amount = amount else { return nil }
     if currency.isFiat {
       return FiatFormatter(currency: currency, withSymbol: true).attributedString(from: amount)
@@ -58,7 +58,7 @@ class CKCurrencyFormatter {
       case .lightning:
         return NSAttributedString(string: SatsFormatter().string(fromDecimal: amount) ?? "")
       case .onChain:
-        return BitcoinFormatter(symbolType: isInTextField ? .string : .attributed).attributedString(from: amount)
+        return BitcoinFormatter(symbolType: onChainSymbol).attributedString(from: amount)
       }
     }
   }
