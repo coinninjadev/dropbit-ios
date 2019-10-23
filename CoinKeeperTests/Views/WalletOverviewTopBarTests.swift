@@ -1,5 +1,5 @@
 //
-//  BalanceContainerTests.swift
+//  WalletOverviewTopBarTests.swift
 //  DropBitTests
 //
 //  Created by Ben Winters on 4/20/18.
@@ -11,13 +11,13 @@ import UIKit
 import PromiseKit
 import XCTest
 
-class BalanceContainerTests: XCTestCase {
-  var sut: BalanceContainer!
+class WalletOverviewTopBarTests: XCTestCase {
+  var sut: WalletOverviewTopBar!
 
   override func setUp() {
     super.setUp()
     let frame = CGRect(x: 0, y: 0, width: 375, height: 80)
-    self.sut = BalanceContainer(frame: frame)
+    self.sut = WalletOverviewTopBar(frame: frame)
 
     _ = self.sut.xibSetup()
 
@@ -33,14 +33,14 @@ class BalanceContainerTests: XCTestCase {
   // MARK: outlets
   func testOutletsAreConnected() {
     XCTAssertNotNil(self.sut.leftButton, "leftButton should be connected")
-    XCTAssertNotNil(self.sut.primarySecondaryBalanceContainer, "primarySecondaryBalanceContainer should be connected")
+    XCTAssertNotNil(self.sut.balanceView, "balanceView should be connected")
     XCTAssertNotNil(self.sut.rightBalanceContainerView, "rightBalanceContainerView should be connected")
   }
 
   // MARK: buttons contain actions
   func testLeftButtonContainsAction() {
     let actions = self.sut.leftButton.actions(forTarget: self.sut, forControlEvent: .touchUpInside) ?? []
-    let leftSelector = #selector(BalanceContainer.didTapLeftButton(_:)).description
+    let leftSelector = #selector(WalletOverviewTopBar.didTapLeftButton(_:)).description
     XCTAssertTrue(actions.contains(leftSelector), "leftButton should contain action")
   }
 
@@ -54,15 +54,6 @@ class BalanceContainerTests: XCTestCase {
     XCTAssertTrue(mockDelegate.didTapLeftWasCalled, "leftButton should tell delegate it was called")
   }
 
-  func testTappingBalanceTellsDelegate() {
-    let mockDelegate = MockBalanceContainerDelegate()
-    self.sut.delegate = mockDelegate
-
-    self.sut.didTapRightBalanceView()
-
-    XCTAssertTrue(mockDelegate.didTapBalanceWasCalled, "should tell delegate that balance was tapped")
-  }
-
   func testTappingChartsButton() {
     let mockDelegate = MockBalanceContainerDelegate()
     self.sut.delegate = mockDelegate
@@ -73,7 +64,7 @@ class BalanceContainerTests: XCTestCase {
   }
 
   // MARK: mock delegate
-  class MockBalanceContainerDelegate: BalanceContainerDelegate {
+  class MockBalanceContainerDelegate: WalletOverviewTopBarDelegate {
 
     var didTapChartsButtonWasCalled = false
     func didTapChartsButton() {
@@ -92,11 +83,6 @@ class BalanceContainerTests: XCTestCase {
     }
 
     func containerDidTapDropBitMe(in viewController: UIViewController) {}
-
-    var didTapBalanceWasCalled = false
-    func didTapRightBalanceView(in viewController: UIViewController) {
-      didTapBalanceWasCalled = true
-    }
 
     var didLongPressBalance = false
     func containerDidLongPressBalances(in viewController: UIViewController) {

@@ -30,13 +30,6 @@ enum CurrencyCode: String {
     }
   }
 
-  var requiresFullDecimalPlaces: Bool {
-    switch self {
-    case .BTC:  return false
-    case .USD:  return true
-    }
-  }
-
   var symbol: String {
     switch self {
     case .BTC:	return "\u{20BF} "

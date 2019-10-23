@@ -9,10 +9,9 @@
 import Foundation
 import UIKit
 
-protocol WalletBalanceViewDelegate: AnyObject {
+protocol DualBalanceViewDelegate: AnyObject {
   func isSyncCurrentlyRunning() -> Bool
   func selectedCurrency() -> SelectedCurrency
-  func swapSelectedCurrency()
 }
 
 class DualBalanceView: UIView {
@@ -57,10 +56,10 @@ class DualBalanceView: UIView {
     secondaryBalanceLabel.textColor = .bitcoinOrange
   }
 
-  func updateLabels(with labels: DualAmountLabels, primaryCurrency: CurrencyCode) {
+  func updateLabels(with labels: DualAmountLabels, selectedCurrency: SelectedCurrency) {
     primaryBalanceLabel.attributedText = labels.primary
     secondaryBalanceLabel.attributedText = labels.secondary
-    setupLabelColors(for: primaryCurrency)
+    setupLabelColors(for: selectedCurrency)
   }
 
   private func setupStyle() {
@@ -72,14 +71,14 @@ class DualBalanceView: UIView {
     }
   }
 
-  private func setupLabelColors(for primaryCurrency: CurrencyCode) {
+  private func setupLabelColors(for selectedCurrency: SelectedCurrency) {
     var primaryColor: UIColor, secondaryColor: UIColor
 
-    switch primaryCurrency {
+    switch selectedCurrency {
     case .BTC:
       primaryColor = .bitcoinOrange
       secondaryColor = .darkGray
-    default:
+    case .fiat:
       primaryColor = .darkGray
       secondaryColor = .bitcoinOrange
     }

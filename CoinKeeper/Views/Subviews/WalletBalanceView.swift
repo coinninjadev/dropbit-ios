@@ -9,29 +9,19 @@
 import Foundation
 import UIKit
 
-protocol WalletBalanceViewDelegate: class {
-  func isSyncCurrentlyRunning() -> Bool
-  func getCurrentLockStatus() -> LockStatus
-  func getCurrentWalletTransactionType() -> WalletTransactionType
+protocol WalletBalanceViewDelegate: DualBalanceViewDelegate {
+  func currentLockStatus() -> LockStatus
   func transferButtonWasTouched()
-  func swapPrimaryCurrency()
-}
-
-struct WalletBalanceDataSource {
-  let onChainConverter: CurrencyConverter
-  let lightningConverter: CurrencyConverter
-  let primaryCurrency: CurrencyCode
+  func swapSelectedCurrency()
 }
 
 class WalletBalanceView: UIView {
   @IBOutlet var reloadWalletButton: UIButton!
-  @IBOutlet var primarySecondaryBalanceContainer: PrimarySecondaryBalanceContainer!
+  @IBOutlet var balanceView: DualBalanceView!
 
   weak var delegate: WalletBalanceViewDelegate?
 
-  private var currentDataSource: WalletBalanceDataSource?
-
-  lazy private var recognizer = UITapGestureRecognizer(target: self, action: #selector(balanceContainerWasTouched))
+  lazy private var recognizer = UITapGestureRecognizer(target: self, action: #selector(balanceViewWasTouched))
 
   required init?(coder aDecoder: NSCoder) {
     super.init(coder: aDecoder)
@@ -46,8 +36,8 @@ class WalletBalanceView: UIView {
   override func awakeFromNib() {
     super.awakeFromNib()
     backgroundColor = .lightGrayBackground
-    primarySecondaryBalanceContainer.style = .large
-    primarySecondaryBalanceContainer.isSyncing = false
+    balanceView.style = .large
+    balanceView.isSyncing = false
 
     reloadWalletButton.layer.shadowRadius = 1.0
     reloadWalletButton.layer.shadowOpacity = 0.3
@@ -55,39 +45,24 @@ class WalletBalanceView: UIView {
     reloadWalletButton.layer.shadowOffset = CGSize(width: 0.0, height: 1.0)
     reloadWalletButton.applyCornerRadius(15)
     reloadWalletButton.layer.masksToBounds = false
-    primarySecondaryBalanceContainer.addGestureRecognizer(recognizer)
+    balanceView.addGestureRecognizer(recognizer)
   }
 
-  func refresh() {
-    guard let dataSource = currentDataSource, let delegate = delegate else { return }
-    update(with: dataSource, walletTransactionType: delegate.getCurrentWalletTransactionType())
-  }
-
-  func update(with dataSource: WalletBalanceDataSource, walletTransactionType: WalletTransactionType) {
-    currentDataSource = dataSource
-    guard let transactionType = delegate?.getCurrentWalletTransactionType() else { return }
-    let converter: CurrencyConverter = transactionType == .lightning ? dataSource.lightningConverter : dataSource.onChainConverter
-
-    let primaryCurrency = dataSource.primaryCurrency, primaryAmount = converter.amount(forCurrency: primaryCurrency)
-    let secondaryCurrency = converter.otherCurrency(forCurrency: primaryCurrency)
-    let secondaryAmount = converter.amount(forCurrency: secondaryCurrency)
-    primarySecondaryBalanceContainer.set(primaryAmount: primaryAmount, currency: primaryCurrency, walletTransactionType: walletTransactionType)
-    primarySecondaryBalanceContainer.set(secondaryAmount: secondaryAmount, currency: secondaryCurrency, walletTransactionType: walletTransactionType)
-
-    if let syncRunning = delegate?.isSyncCurrentlyRunning(), syncRunning == false {
-      primarySecondaryBalanceContainer.isSyncing = false
-    }
+  func update(with labels: DualAmountLabels) {
+    guard let delegate = delegate else { return }
+    balanceView.updateLabels(with: labels, selectedCurrency: delegate.selectedCurrency())
+    balanceView.isSyncing = delegate.isSyncCurrentlyRunning()
   }
 
   @IBAction func transferButtonWasTouched() {
-    guard let delegate = delegate, delegate.getCurrentLockStatus() != .locked else { return }
+    guard let delegate = delegate, delegate.currentLockStatus() != .locked else { return }
     delegate.transferButtonWasTouched()
   }
 
-  @objc func balanceContainerWasTouched() {
+  @objc func balanceViewWasTouched() {
     switch recognizer.state {
     case .ended:
-      delegate?.swapPrimaryCurrency()
+      delegate?.swapSelectedCurrency()
     default:
       break
     }

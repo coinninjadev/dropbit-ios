@@ -1,5 +1,5 @@
 //
-//  BalanceContainer.swift
+//  WalletOverviewTopBar.swift
 //  DropBit
 //
 //  Created by Ben Winters on 4/9/18.
@@ -9,25 +9,15 @@
 import UIKit
 import PromiseKit
 
-protocol BalanceContainerDelegate: AnyObject {
+protocol WalletOverviewTopBarDelegate: DualBalanceViewDelegate {
   func containerDidTapLeftButton(in viewController: UIViewController)
   func containerDidTapDropBitMe(in viewController: UIViewController)
-  func didTapRightBalanceView(in viewController: UIViewController)
   func didTapChartsButton()
-  func isSyncCurrentlyRunning() -> Bool
   func selectedCurrency() -> SelectedCurrency
-  func selectedWalletTransactionType() -> WalletTransactionType
   func dropBitMeAvatar() -> Promise<UIImage>
 }
 
-struct BalanceContainerDataSource {
-  let leftButtonType: BalanceContainerLeftButtonType
-  let onChainConverter: CurrencyConverter
-  let lightningConverter: CurrencyConverter
-  let primaryCurrency: CurrencyCode
-}
-
-enum BalanceContainerLeftButtonType {
+enum TopBarLeftButtonType {
   case menu
   case back
 
@@ -50,22 +40,19 @@ enum BalanceContainerLeftButtonType {
   }
 }
 
- class BalanceContainer: UIView, AccessibleViewSettable {
+ class WalletOverviewTopBar: UIView, AccessibleViewSettable {
 
-  weak var delegate: BalanceContainerDelegate?
+  weak var delegate: WalletOverviewTopBarDelegate?
 
   @IBOutlet var leftButton: BalanceContainerLeftButton!
-  @IBOutlet var primarySecondaryBalanceContainer: PrimarySecondaryBalanceContainer!
+  @IBOutlet var balanceView: DualBalanceView!
   @IBOutlet var dropBitMeButton: UIButton!
-  @IBOutlet var balanceView: UIView!
   @IBOutlet var rightBalanceContainerView: UIView!
   @IBOutlet var chartButton: UIButton!
 
   var startSyncNotificationToken: NotificationToken?
   var finishSyncNotificationToken: NotificationToken?
   var updateAvatarNotificationToken: NotificationToken?
-
-  private var currentDataSource: BalanceContainerDataSource?
 
   @IBAction func didTapLeftButton(_ sender: Any) {
     guard let delegate = delegate, let parent = parentViewController else { return }
@@ -80,11 +67,6 @@ enum BalanceContainerLeftButtonType {
   @IBAction func didTapChartsButton() {
     guard let delegate = delegate else { return }
     delegate.didTapChartsButton()
-  }
-
-  @objc func didTapRightBalanceView() {
-    guard let delegate = delegate, let parent = parentViewController else { return }
-    delegate.didTapRightBalanceView(in: parent)
   }
 
   func accessibleViewsAndIdentifiers() -> [AccessibleViewElement] {
@@ -107,36 +89,20 @@ enum BalanceContainerLeftButtonType {
     backgroundColor = .clear
     xibSetup()
     dropBitMeButton.setImage(nil, for: .normal)
-    leftButton.badgeDisplayCriteria = BalanceContainerLeftButtonType.menu.badgeCriteria
+    leftButton.badgeDisplayCriteria = TopBarLeftButtonType.menu.badgeCriteria
     subscribeToNotifications()
     setAccessibilityIdentifiers()
-    rightBalanceContainerView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapRightBalanceView)))
   }
 
-  func refresh() {
-    guard let dataSource = currentDataSource, let delegate = delegate else { return }
-    update(with: dataSource, walletTransactionType: delegate.selectedWalletTransactionType())
-  }
-
-  func update(with dataSource: BalanceContainerDataSource, walletTransactionType: WalletTransactionType) {
-    currentDataSource = dataSource
+  func update(with labels: DualAmountLabels) {
     guard let delegate = delegate else { return }
-    leftButton.setImage(dataSource.leftButtonType.image, for: .normal)
-    leftButton.badgeDisplayCriteria = dataSource.leftButtonType.badgeCriteria
+    leftButton.configure(with: .menu)
 
     updateAvatar()
-
-    let converter = delegate.selectedWalletTransactionType() == .lightning ?
-      dataSource.lightningConverter : dataSource.onChainConverter
-    let primaryCurrency = dataSource.primaryCurrency
-    let secondaryCurrency = converter.otherCurrency(forCurrency: primaryCurrency)
-    let primaryAmount = converter.amount(forCurrency: primaryCurrency)
-    let secondaryAmount = converter.amount(forCurrency: secondaryCurrency)
-    primarySecondaryBalanceContainer.set(primaryAmount: primaryAmount, currency: primaryCurrency, walletTransactionType: walletTransactionType)
-    primarySecondaryBalanceContainer.set(secondaryAmount: secondaryAmount, currency: secondaryCurrency, walletTransactionType: walletTransactionType)
+    self.balanceView.updateLabels(with: labels, selectedCurrency: delegate.selectedCurrency())
 
     if delegate.isSyncCurrentlyRunning() {
-      primarySecondaryBalanceContainer.isSyncing = false
+      balanceView.isSyncing = false
     }
   }
 
@@ -169,14 +135,14 @@ enum BalanceContainerLeftButtonType {
 
 }
 
-extension BalanceContainer: SyncSubscribeable {
+extension WalletOverviewTopBar: SyncSubscribeable {
 
   func handleStartSync() {
-    primarySecondaryBalanceContainer.isSyncing = true
+    balanceView.isSyncing = true
   }
 
   func handleFinishSync() {
-    primarySecondaryBalanceContainer.isSyncing = false
+    balanceView.isSyncing = false
   }
 
 }

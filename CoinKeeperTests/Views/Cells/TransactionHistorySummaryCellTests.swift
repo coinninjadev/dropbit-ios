@@ -256,7 +256,7 @@ class TransactionHistorySummaryCellTests: XCTestCase {
   func testBTCLabelIsLoaded() {
     let amountFactory = MockSummaryCellVM.testAmountFactory(sats: 1234560)
     let viewModel = MockSummaryCellVM.testSummaryInstance(walletTxType: .onChain, status: .canceled, amountFactory: amountFactory)
-    let expectedText = BitcoinFormatter(symbolType: .attributed).attributedString(from: amountFactory.netAtCurrentAmounts.btc)
+    let expectedText = BitcoinFormatter(symbolType: .image).attributedString(from: amountFactory.netAtCurrentAmounts.btc)
     sut.configure(with: viewModel)
     XCTAssertEqual(sut.bitcoinLabels.count, 1)
     XCTAssertEqual(sut.satsLabels.count, 0)

@@ -191,14 +191,12 @@ CurrencySwappableAmountEditor {
     formatPhoneNumberEntryView()
     memoContainerView.delegate = self
     editAmountView.delegate = self
+    refreshBothAmounts()
     let sharedMemoAllowed = delegate.viewControllerShouldInitiallyAllowMemoSharing(self)
     viewModel.sharedMemoAllowed = sharedMemoAllowed
     memoContainerView.configure(memo: nil, isShared: sharedMemoAllowed)
     delegate.sendPaymentViewControllerDidLoad(self)
     walletToggleView.delegate = self
-
-    let labels = viewModel.dualAmountLabels(hidePrimaryZero: false, walletTransactionType: viewModel.walletTransactionType)
-    editAmountView.update(with: labels)
   }
 
   override func viewWillAppear(_ animated: Bool) {
@@ -339,12 +337,6 @@ extension SendPaymentViewController {
   }
 
   func updateViewWithModel() {
-    if editAmountView.primaryAmountTextField.isFirstResponder {
-      refreshSecondaryAmount()
-    } else {
-      refreshBothAmounts()
-    }
-
     if viewModel.btcAmount != .zero || viewModel.walletTransactionType == .lightning {
       sendMaxButton.isHidden = true
     } else {
@@ -379,9 +371,7 @@ extension SendPaymentViewController {
       recipientDisplayNumberLabel.text = viewModel.displayRecipientIdentity()
     }
 
-    editAmountView.update(with: viewModel.dualAmountLabels(hidePrimaryZero: false,
-                                                           walletTransactionType: viewModel.walletTransactionType))
-
+    refreshBothAmounts()
     updateMemoContainer()
     setupStyle()
   }

@@ -16,4 +16,9 @@ class BalanceContainerLeftButton: UIButton, Badgeable {
     return ViewOffset(dx: -13, dy: 16)
   }
 
+  func configure(with type: TopBarLeftButtonType) {
+    setImage(type.image, for: .normal)
+    badgeDisplayCriteria = type.badgeCriteria
+  }
+
 }

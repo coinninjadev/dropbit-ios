@@ -9,15 +9,15 @@
 import Foundation
 import UIKit
 
+enum CurrencySymbolType {
+  case string, image, none
+}
+
 class CKCurrencyFormatter {
   let currency: CurrencyCode
   var symbolType: CurrencySymbolType
   let showNegativeSymbol: Bool
   let negativeHasSpace: Bool
-
-  enum CurrencySymbolType {
-    case string, image, none
-  }
 
   ///Use a custom subclass instead of this formatter directly
   fileprivate init(currency: CurrencyCode,
@@ -42,23 +42,6 @@ class CKCurrencyFormatter {
         return SatsFormatter().string(fromDecimal: amount)
       case .onChain:
         return BitcoinFormatter(symbolType: .string).string(fromDecimal: amount)
-      }
-    }
-  }
-
-  static func attributedString(for amount: NSDecimalNumber?,
-                               currency: CurrencyCode,
-                               walletTransactionType: WalletTransactionType,
-                               onChainSymbol: CurrencySymbolType) -> NSAttributedString? {
-    guard let amount = amount else { return nil }
-    if currency.isFiat {
-      return FiatFormatter(currency: currency, withSymbol: true).attributedString(from: amount)
-    } else {
-      switch walletTransactionType {
-      case .lightning:
-        return NSAttributedString(string: SatsFormatter().string(fromDecimal: amount) ?? "")
-      case .onChain:
-        return BitcoinFormatter(symbolType: onChainSymbol).attributedString(from: amount)
       }
     }
   }
@@ -91,9 +74,6 @@ class CKCurrencyFormatter {
   fileprivate func numberFormatterWithoutSymbol(for currency: CurrencyCode, asInteger: Bool = false) -> NumberFormatter {
     let formatter = NumberFormatter()
     formatter.maximumFractionDigits = asInteger ? 0 : currency.decimalPlaces
-    if currency.requiresFullDecimalPlaces && !asInteger {
-      formatter.minimumFractionDigits = currency.decimalPlaces
-    }
     formatter.locale = Locale.current //determines grouping/decimal separators
     formatter.usesGroupingSeparator = true
     formatter.negativePrefix = ""
@@ -118,6 +98,14 @@ class FiatFormatter: CKCurrencyFormatter {
   func attributedString(from amount: NSDecimalNumber) -> NSAttributedString? {
     guard let str = string(fromDecimal: amount) else { return nil }
     return NSAttributedString(string: str)
+  }
+
+  override func numberFormatterWithoutSymbol(for currency: CurrencyCode, asInteger: Bool = false) -> NumberFormatter {
+    let formatter = super.numberFormatterWithoutSymbol(for: currency, asInteger: asInteger)
+    if !asInteger {
+      formatter.minimumFractionDigits = currency.decimalPlaces
+    }
+    return formatter
   }
 
 }
