@@ -15,8 +15,11 @@ protocol DualAmountEditable: DualAmountDisplayable {
 extension DualAmountEditable {
 
   var bitcoinFormatter: BitcoinFormatter {
-    let symbolType: CurrencySymbolType = selectedCurrency() == .BTC ? .string : .image
-    return BitcoinFormatter(symbolType: symbolType)
+    if selectedCurrency() == .BTC {
+      return BitcoinFormatter(symbolType: .string, numberFont: .regular(30), textColor: .darkBlueText)
+    } else {
+      return BitcoinFormatter(symbolType: .image)
+    }
   }
 
   func editableDualAmountLabels(walletTxType: WalletTransactionType) -> DualAmountLabels {

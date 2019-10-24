@@ -126,10 +126,16 @@ class EditingFiatAmountFormatter: CKCurrencyFormatter {
 class BitcoinFormatter: CKCurrencyFormatter {
 
   let imageSize: Int
+  let textColor: UIColor?
+  let numberFont: UIFont?
 
   init(symbolType: CurrencySymbolType,
+       numberFont: UIFont? = nil,
+       textColor: UIColor? = nil,
        imageSize: Int = BitcoinFormatter.defaultSize) {
     self.imageSize = imageSize
+    self.numberFont = numberFont
+    self.textColor = textColor
     super.init(currency: .BTC,
                symbolType: symbolType,
                showNegativeSymbol: false,
@@ -137,11 +143,18 @@ class BitcoinFormatter: CKCurrencyFormatter {
   }
 
   override func attributedString(from amount: NSDecimalNumber) -> NSAttributedString? {
-        guard let amountString = decimalString(fromDecimal: amount),
+    guard let amountString = decimalString(fromDecimal: amount),
       let symbol = attributedStringSymbol()
       else { return nil }
 
-    return symbol + NSAttributedString(string: amountString)
+    let numberString: NSAttributedString
+    if let color = textColor, let font = numberFont {
+      numberString = NSAttributedString(string: amountString, color: color, font: font)
+    } else {
+      numberString = NSAttributedString(string: amountString)
+    }
+
+    return symbol + numberString
   }
 
   static var defaultSize: Int {
