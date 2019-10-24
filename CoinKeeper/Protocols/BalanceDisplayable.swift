@@ -102,7 +102,6 @@ protocol BalanceDisplayable: ExchangeRateUpdatable, BalanceUpdateable, DualAmoun
 
   var balanceProvider: ConvertibleBalanceProvider? { get } // implementation should be a weak reference
   var topBar: WalletOverviewTopBar! { get } // IBOutlet
-  var primaryBalanceCurrency: CurrencyCode { get }
   var walletBalanceView: WalletBalanceView { get }
   var walletTransactionType: WalletTransactionType { get }
 

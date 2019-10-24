@@ -275,10 +275,3 @@ extension WalletTransferViewController: FeesViewDelegate {
     delegate.openURL(url, completionHandler: nil)
   }
 }
-
-extension WalletTransferViewController: CurrencySwappableEditAmountViewModelDelegate {
-
-  func viewModelDidBeginEditingAmount(_ viewModel: CurrencySwappableEditAmountViewModel) {
-    moveCursorToCorrectLocationIfNecessary()
-  }
-}

@@ -74,7 +74,7 @@ class SendPaymentViewModel: CurrencySwappableEditAmountViewModel {
     self.sendMaxTransactionData = data
     let btcAmount = NSDecimalNumber(integerAmount: Int(data.amount), currency: .BTC)
     setBTCAmountAsPrimary(btcAmount)
-    delegate?.viewModelDidChangeAmount(self)
+    delegate?.viewModelNeedsAmountLabelRefresh(self, secondaryOnly: false)
   }
 
   private var _memo: String?

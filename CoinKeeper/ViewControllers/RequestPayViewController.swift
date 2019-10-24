@@ -315,10 +315,3 @@ extension RequestPayViewController: WalletToggleViewDelegate {
   }
 
 }
-
-extension RequestPayViewController: CurrencySwappableEditAmountViewModelDelegate {
-
-  func viewModelDidBeginEditingAmount(_ viewModel: CurrencySwappableEditAmountViewModel) {
-    moveCursorToCorrectLocationIfNecessary()
-  }
-}

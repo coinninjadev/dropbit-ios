@@ -940,10 +940,3 @@ extension SendPaymentViewController: WalletToggleViewDelegate {
   }
 
 }
-
-extension SendPaymentViewController: CurrencySwappableEditAmountViewModelDelegate {
-
-  func viewModelDidBeginEditingAmount(_ viewModel: CurrencySwappableEditAmountViewModel) {
-    moveCursorToCorrectLocationIfNecessary()
-  }
-}

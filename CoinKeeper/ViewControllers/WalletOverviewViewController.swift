@@ -216,8 +216,10 @@ extension WalletOverviewViewController: BalanceDisplayable {
   }
 
   var fromAmount: NSDecimalNumber {
-    guard let provider = balanceProvider else { return .zero }
-    let balances = provider.spendableBalancesNetPending()
+    guard let provider = balanceProvider else {
+      return .zero
+    }
+    let balances = provider.balancesNetPending()
     switch walletTransactionType {
     case .onChain:    return balances.onChain
     case .lightning:  return balances.lightning
@@ -225,17 +227,11 @@ extension WalletOverviewViewController: BalanceDisplayable {
   }
 
   var currencyPair: CurrencyPair {
-    return delegate.currencyController.currencyPair
+    let fiat = delegate.currencyController.fiatCurrency
+    return CurrencyPair(primary: .BTC, fiat: fiat)
   }
 
   var walletBalanceView: WalletBalanceView { return currentWalletBalanceView }
-  var primaryBalanceCurrency: CurrencyCode {
-    let selectedCurrency = delegate.selectedCurrency()
-    switch selectedCurrency {
-    case .BTC: return .BTC
-    case .fiat: return .USD
-    }
-  }
 
   func didUpdateExchangeRateManager(_ exchangeRateManager: ExchangeRateManager) {
     rateManager.exchangeRates = exchangeRateManager.exchangeRates

@@ -19,15 +19,27 @@ protocol CurrencySwappableAmountEditor: CurrencySwappableEditAmountViewDelegate,
 
 extension CurrencySwappableAmountEditor {
 
+  func viewModelDidBeginEditingAmount(_ viewModel: CurrencySwappableEditAmountViewModel) {
+    refreshBothAmounts()
+    moveCursorToCorrectLocationIfNecessary()
+  }
+
+  func viewModelDidEndEditingAmount(_ viewModel: CurrencySwappableEditAmountViewModel) {
+    refreshBothAmounts()
+  }
+
+  func viewModelNeedsSecondaryAmountRefresh(_ viewModel: CurrencySwappableEditAmountViewModel) {
+    refreshSecondaryAmount()
+  }
+
+  var editingIsActive: Bool {
+    return editAmountView.primaryAmountTextField.isFirstResponder
+  }
+
   /// Call this during viewDidLoad
   func setupCurrencySwappableEditAmountView() {
     editAmountView.delegate = self
     editAmountView.primaryAmountTextField.delegate = editAmountViewModel
-
-    let textFieldDidChangeAction = #selector(CurrencySwappableEditAmountViewModel.primaryAmountTextFieldDidChange)
-    editAmountView.primaryAmountTextField.addTarget(editAmountViewModel,
-                                                    action: textFieldDidChangeAction,
-                                                    for: .editingChanged)
   }
 
   func swapViewDidSwap(_ swapView: CurrencySwappableEditAmountView) {
@@ -38,9 +50,8 @@ extension CurrencySwappableAmountEditor {
 
   /// Editor should call this in response to delegate method calls of CurrencySwappableEditAmountViewModelDelegate
   func refreshBothAmounts() {
-    let editingIsActive = editAmountView.primaryAmountTextField.isFirstResponder
     let txType = editAmountViewModel.walletTransactionType
-    let labels = editAmountViewModel.dualAmountLabels(walletTxType: txType)
+    let labels = editAmountViewModel.editableDualAmountLabels(walletTxType: txType)
     editAmountView.update(with: labels)
   }
 
@@ -60,15 +71,13 @@ extension CurrencySwappableAmountEditor {
     }
   }
 
-  func refreshSecondaryAmount() {
-    let walletTxType = editAmountViewModel.walletTransactionType
-    let secondaryLabel = editAmountViewModel.dualAmountLabels(walletTxType: walletTxType).secondary
-    editAmountView.secondaryAmountLabel.attributedText = secondaryLabel
-  }
+  func viewModelNeedsAmountLabelRefresh(_ viewModel: CurrencySwappableEditAmountViewModel, secondaryOnly: Bool) {
+    if secondaryOnly {
+      refreshSecondaryAmount()
+    } else {
+      refreshBothAmounts()
+    }
 
-  func viewModelDidChangeAmount(_ viewModel: CurrencySwappableEditAmountViewModel) {
-    //Skip updating primary text field
-    refreshSecondaryAmount()
     updateQRImage()
   }
 
@@ -77,6 +86,12 @@ extension CurrencySwappableAmountEditor {
   func updateEditAmountView(withRates rates: ExchangeRates) {
     editAmountViewModel.exchangeRates = rates
     refreshSecondaryAmount()
+  }
+
+  private func refreshSecondaryAmount() {
+    let walletTxType = editAmountViewModel.walletTransactionType
+    let secondaryLabel = editAmountViewModel.editableDualAmountLabels(walletTxType: walletTxType).secondary
+    editAmountView.secondaryAmountLabel.attributedText = secondaryLabel
   }
 
 }

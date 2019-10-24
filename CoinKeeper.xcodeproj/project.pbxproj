@@ -814,6 +814,8 @@
 		B552EDFC211E33D000332BB5 /* WalletAddressDataWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = B552EDE6211E33D000332BB5 /* WalletAddressDataWorker.swift */; };
 		B552EDFD211E33D000332BB5 /* AnalyticsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B552EDE7211E33D000332BB5 /* AnalyticsManager.swift */; };
 		B552EDFE211E33D000332BB5 /* CKNotificationCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B552EDE8211E33D000332BB5 /* CKNotificationCenter.swift */; };
+		B553A3AB2362580900814E5F /* CurrencySwappableEditAmountViewModel+UITextFieldDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B553A3AA2362580900814E5F /* CurrencySwappableEditAmountViewModel+UITextFieldDelegate.swift */; };
+		B553A3AD2362599400814E5F /* DualAmountDisplayable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B553A3AC2362599400814E5F /* DualAmountDisplayable.swift */; };
 		B5540C5F21ADD8ED00484238 /* CKRecipientParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5540C5E21ADD8ED00484238 /* CKRecipientParser.swift */; };
 		B555DCAC23059A1E006B3462 /* Typealiases.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BB05AC0209CF407000297E1 /* Typealiases.swift */; };
 		B555DCAF230B1754006B3462 /* TwitterShareButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B555DCAE230B1754006B3462 /* TwitterShareButton.swift */; };
@@ -1894,6 +1896,8 @@
 		B552EDE6211E33D000332BB5 /* WalletAddressDataWorker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WalletAddressDataWorker.swift; sourceTree = "<group>"; };
 		B552EDE7211E33D000332BB5 /* AnalyticsManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnalyticsManager.swift; sourceTree = "<group>"; };
 		B552EDE8211E33D000332BB5 /* CKNotificationCenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CKNotificationCenter.swift; sourceTree = "<group>"; };
+		B553A3AA2362580900814E5F /* CurrencySwappableEditAmountViewModel+UITextFieldDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CurrencySwappableEditAmountViewModel+UITextFieldDelegate.swift"; sourceTree = "<group>"; };
+		B553A3AC2362599400814E5F /* DualAmountDisplayable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DualAmountDisplayable.swift; sourceTree = "<group>"; };
 		B5540C5E21ADD8ED00484238 /* CKRecipientParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CKRecipientParser.swift; sourceTree = "<group>"; };
 		B555DCAE230B1754006B3462 /* TwitterShareButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwitterShareButton.swift; sourceTree = "<group>"; };
 		B558B86022B92F4A0033AFBD /* PreferencesBroker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesBroker.swift; sourceTree = "<group>"; };
@@ -3044,7 +3048,9 @@
 				B5FBE41F20DD76550029D273 /* SettingsViewModel.swift */,
 				3BF41AB7207694EA008B3D0A /* RequestPayViewModel.swift */,
 				5B62D55C2087732700E9D466 /* SendPaymentViewModel.swift */,
+				B553A3AC2362599400814E5F /* DualAmountDisplayable.swift */,
 				B5866B4622DD143B0064B622 /* CurrencySwappableEditAmountViewModel.swift */,
+				B553A3AA2362580900814E5F /* CurrencySwappableEditAmountViewModel+UITextFieldDelegate.swift */,
 				A2A530CD20977A8A00B6F4DE /* ConfirmOnChainPaymentViewModel.swift */,
 				B542147D22C103750048B81A /* AdjustableTransactionFeeViewModel.swift */,
 				A293E34F20F67F390099ED69 /* SuccessFailViewModel.swift */,
@@ -4950,6 +4956,7 @@
 				308F6F05217F97F50094D6CB /* DragIndiciatorView.swift in Sources */,
 				3B8B19312289BB25003BA4D7 /* AuthenticationSuspendable.swift in Sources */,
 				3B598FEA23196A8000FF50CD /* LightningUpgradeStatusViewController.swift in Sources */,
+				B553A3AB2362580900814E5F /* CurrencySwappableEditAmountViewModel+UITextFieldDelegate.swift in Sources */,
 				3BF3B0C521737A4D0021E45F /* SubscribeToWalletTarget.swift in Sources */,
 				B5EBFD0F215C01E30008EB4A /* MockAddressDataSource.swift in Sources */,
 				B58AFF2E21948891001BE563 /* UITestDefaultsKey.swift in Sources */,
@@ -5146,6 +5153,7 @@
 				B56E158D2167C176003B69D4 /* NetworkManager+AddressRequestable.swift in Sources */,
 				A235898B232165A5002C3FC0 /* AppCoordinator+PaymentSendingDelegate.swift in Sources */,
 				B54DE6892298747B009D67CE /* TweetMethodViewController.swift in Sources */,
+				B553A3AD2362599400814E5F /* DualAmountDisplayable.swift in Sources */,
 				B59C9E1E230DB37700E4F3C8 /* TwitterAvatarView.swift in Sources */,
 				B5B53C9C2107CAA5006C7B67 /* TransactionDetailsInfoContainer.swift in Sources */,
 				3B598FF02319719E00FF50CD /* LightningUpgradePageViewController.swift in Sources */,
