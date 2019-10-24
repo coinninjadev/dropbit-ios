@@ -98,7 +98,12 @@ class TransactionDataWorker: TransactionDataWorkerType {
     }
 
     let lnBroker = self.persistenceManager.brokers.lightning
-    return getLightningLedger(since: fullSync ? nil : CKMLNLedgerEntry.findLatest(in: context)?.createdAt)
+    var lastSyncDate: Date?
+    if let lastSync = CKMLNLedgerEntry.findLatest(in: context)?.createdAt {
+      lastSyncDate = Calendar.current.date(byAdding: .day, value: -1, to: lastSync)
+    }
+    let since = fullSync ? nil : lastSyncDate
+    return getLightningLedger(since: since)
       .get(in: context) { response in
         ///Run deletion before persisting the ledger so that it doesn't interfere with wallet
         ///entries whose inverse relationships are not set until the context is saved.
