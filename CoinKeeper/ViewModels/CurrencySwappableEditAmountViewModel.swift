@@ -52,7 +52,7 @@ struct CurrencyPair {
 class CurrencySwappableEditAmountViewModel: NSObject, DualAmountEditable {
 
   var exchangeRates: ExchangeRates
-  var fromAmount: NSDecimalNumber
+  private(set) var fromAmount: NSDecimalNumber
   var fromCurrency: CurrencyCode
   var toCurrency: CurrencyCode
   var fiatCurrency: CurrencyCode
@@ -92,7 +92,14 @@ class CurrencySwappableEditAmountViewModel: NSObject, DualAmountEditable {
 
   var primaryAmount: NSDecimalNumber {
     get { return fromAmount }
-    set { fromAmount = newValue }
+    set {
+      if primaryRequiresInteger {
+        let sats = newValue.intValue
+        fromAmount = NSDecimalNumber(integerAmount: sats, currency: .BTC)
+      } else {
+        fromAmount = newValue
+      }
+    }
   }
 
   var secondaryCurrency: CurrencyCode {
@@ -115,6 +122,14 @@ class CurrencySwappableEditAmountViewModel: NSObject, DualAmountEditable {
 
   var editingIsActive: Bool {
     return delegate?.editingIsActive ?? false
+  }
+
+  var primaryRequiresInteger: Bool {
+    if primaryCurrency == .BTC && walletTransactionType == .lightning {
+      return true
+    } else {
+      return false
+    }
   }
 
   var fiatFormatter: CKCurrencyFormatter {
@@ -169,7 +184,7 @@ class CurrencySwappableEditAmountViewModel: NSObject, DualAmountEditable {
 
     var amount = NSDecimalNumber(fromString: sanitizedText) ?? .zero
 
-    if walletTransactionType == .lightning && primaryCurrency == .BTC {
+    if primaryRequiresInteger {
       amount = NSDecimalNumber(integerAmount: amount.intValue, currency: .BTC)
     }
 

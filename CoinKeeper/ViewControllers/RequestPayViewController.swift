@@ -163,7 +163,7 @@ final class RequestPayViewController: PresentableViewController, StoryboardIniti
 
     guard let nextAddress = delegate.viewControllerDidRequestNextReceiveAddress(self) else { return }
     self.viewModel.currencyPair = delegate.selectedCurrencyPair()
-    self.viewModel.fromAmount = .zero
+    self.viewModel.primaryAmount = .zero
     self.viewModel.receiveAddress = nextAddress
   }
 
