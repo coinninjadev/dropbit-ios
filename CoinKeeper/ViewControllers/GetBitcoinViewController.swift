@@ -72,22 +72,22 @@ final class GetBitcoinViewController: BaseViewController, StoryboardInitializabl
   private func setupUI() {
     /// Purchase bitcoin label
     purchaseBitcoinInfoLabel.text = """
-    Bitcoin purchased with Apple Pay will automatically get deposited into your Bitcoin wallet using the
-    address below.
+    When purchasing Bitcoin please be sure to use the address below to deposit it directly into
+    your Bitcoin wallet.
     """.removingMultilineLineBreaks()
     purchaseBitcoinInfoLabel.textColor = .outgoingGray
     purchaseBitcoinInfoLabel.font = .regular(13)
 
     /// Buy with Apple Pay button
-    buyWithApplePayButton.addTarget(self, action: #selector(buyWithApplePay), for: .touchUpInside)
-    centerStackView.insertArrangedSubview(buyWithApplePayButton, at: 2)
-    buyWithApplePayButton.heightAnchor.constraint(equalToConstant: 51).isActive = true
+//    buyWithApplePayButton.addTarget(self, action: #selector(buyWithApplePay), for: .touchUpInside)
+//    centerStackView.insertArrangedSubview(buyWithApplePayButton, at: 2)
+//    buyWithApplePayButton.heightAnchor.constraint(equalToConstant: 51).isActive = true
 
-    let mapPinImage = UIImage(imageLiteralResourceName: "mapPinBlue")
+    let mapPinImage = UIImage(imageLiteralResourceName: "mapPin")
     let font = UIFont.medium(13)
     let blueAttributes: [NSAttributedString.Key: Any] = [
       .font: font,
-      .foregroundColor: UIColor.primaryActionButton
+      .foregroundColor: UIColor.lightGrayText
     ]
 
     // The font descender relates to the bottom y-coordinate, offset from the baseline, of the receiver’s longest descender.
@@ -96,7 +96,7 @@ final class GetBitcoinViewController: BaseViewController, StoryboardInitializabl
       fontDescender: font.descender,
       imageSize: CGSize(width: 13, height: 20)) + "  " + NSAttributedString(string: "FIND BITCOIN ATM", attributes: blueAttributes)
     findATMButton.setAttributedTitle(atmAttributedString, for: .normal)
-    findATMButton.style = .standardClear
+    findATMButton.style = .standard
 
     let buyBitcoinImageString = NSAttributedString(
       image: UIImage(imageLiteralResourceName: "bitcoinOrangeB"),
