@@ -40,7 +40,7 @@ extension CurrencySwappableAmountEditor {
   func refreshBothAmounts() {
     let editingIsActive = editAmountView.primaryAmountTextField.isFirstResponder
     let txType = editAmountViewModel.walletTransactionType
-    let labels = editAmountViewModel.dualAmountLabels(walletTxType: txType, editingIsActive: editingIsActive)
+    let labels = editAmountViewModel.dualAmountLabels(walletTxType: txType)
     editAmountView.update(with: labels)
   }
 

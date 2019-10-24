@@ -51,6 +51,11 @@ class CKCurrencyFormatter {
     return string(fromDecimal: decimalNumber)
   }
 
+  func attributedString(from amount: NSDecimalNumber) -> NSAttributedString? {
+    guard let str = string(fromDecimal: amount) else { return nil }
+    return NSAttributedString(string: str)
+  }
+
   func decimalString(fromDecimal decimalNumber: NSDecimalNumber) -> String? {
     return numberFormatterWithoutSymbol(for: currency).string(from: decimalNumber)
   }
@@ -95,11 +100,6 @@ class FiatFormatter: CKCurrencyFormatter {
                negativeHasSpace: negativeHasSpace)
   }
 
-  func attributedString(from amount: NSDecimalNumber) -> NSAttributedString? {
-    guard let str = string(fromDecimal: amount) else { return nil }
-    return NSAttributedString(string: str)
-  }
-
   override func numberFormatterWithoutSymbol(for currency: CurrencyCode, asInteger: Bool = false) -> NumberFormatter {
     let formatter = super.numberFormatterWithoutSymbol(for: currency, asInteger: asInteger)
     if !asInteger {
@@ -110,18 +110,35 @@ class FiatFormatter: CKCurrencyFormatter {
 
 }
 
+class EditingFiatAmountFormatter: CKCurrencyFormatter {
+
+  init(currency: CurrencyCode) {
+    super.init(currency: currency, symbolType: .string, showNegativeSymbol: false, negativeHasSpace: true)
+  }
+
+  override func numberFormatterWithoutSymbol(for currency: CurrencyCode, asInteger: Bool = false) -> NumberFormatter {
+    let formatter = super.numberFormatterWithoutSymbol(for: currency)
+    formatter.minimumFractionDigits = 0 //do not require decimal places while editing
+    return formatter
+  }
+}
+
 class BitcoinFormatter: CKCurrencyFormatter {
 
-  init(symbolType: CurrencySymbolType) {
+  let imageSize: Int
+
+  init(symbolType: CurrencySymbolType,
+       imageSize: Int = BitcoinFormatter.defaultSize) {
+    self.imageSize = imageSize
     super.init(currency: .BTC,
                symbolType: symbolType,
                showNegativeSymbol: false,
                negativeHasSpace: false)
   }
 
-  func attributedString(from amount: NSDecimalNumber, size: Int = defaultSize) -> NSAttributedString? {
-    guard let amountString = decimalString(fromDecimal: amount),
-      let symbol = attributedStringSymbol(ofSize: size)
+  override func attributedString(from amount: NSDecimalNumber) -> NSAttributedString? {
+        guard let amountString = decimalString(fromDecimal: amount),
+      let symbol = attributedStringSymbol()
       else { return nil }
 
     return symbol + NSAttributedString(string: amountString)
@@ -131,7 +148,7 @@ class BitcoinFormatter: CKCurrencyFormatter {
     return 20
   }
 
-  private func attributedStringSymbol(ofSize size: Int) -> NSAttributedString? {
+  private func attributedStringSymbol() -> NSAttributedString? {
     switch symbolType {
     case .string:
       return currency.attributedSymbol
@@ -139,8 +156,8 @@ class BitcoinFormatter: CKCurrencyFormatter {
       let image = UIImage(named: "bitcoinLogo")
       let textAttribute = NSTextAttachment()
       textAttribute.image = image
-      textAttribute.bounds = CGRect(x: -3, y: (-size / (BitcoinFormatter.defaultSize / 4)),
-                                    width: size, height: size)
+      textAttribute.bounds = CGRect(x: -3, y: (-imageSize / (BitcoinFormatter.defaultSize / 4)),
+                                    width: imageSize, height: imageSize)
 
       return NSAttributedString(attachment: textAttribute)
     }

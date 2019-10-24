@@ -9,7 +9,50 @@
 import Foundation
 import CNBitcoinKit
 
-protocol DualAmountDisplayable: CurrencyConverterProvider { }
+protocol DualAmountEditable: DualAmountDisplayable {
+
+}
+
+extension DualAmountEditable {
+
+  var bitcoinFormatter: BitcoinFormatter {
+    let symbolType: CurrencySymbolType = selectedCurrency() == .BTC ? .string : .image
+    return BitcoinFormatter(symbolType: symbolType)
+  }
+
+  func editableDualAmountLabels(walletTxType: WalletTransactionType) -> DualAmountLabels {
+    let displaybleLabels = dualAmountLabels(walletTxType: walletTxType)
+    var primaryText: NSAttributedString? = displaybleLabels.primary
+    if fromAmount == .zero {
+      primaryText = primarySymbol(for: walletTxType)
+    }
+
+    return DualAmountLabels(primary: primaryText, secondary: displaybleLabels.secondary)
+  }
+
+  func primarySymbol(for walletTxType: WalletTransactionType) -> NSAttributedString? {
+    let primaryCurrency = selectedCurrency().code
+
+    switch walletTxType {
+    case .lightning:
+      if primaryCurrency == .USD {
+        return primaryCurrency.attributedSymbol
+      } else {
+        return primaryCurrency.attributedIntegerSymbol(forAmount: fromAmount)
+      }
+    case .onChain:
+      return primaryCurrency.attributedSymbol
+    }
+  }
+
+}
+
+protocol DualAmountDisplayable: CurrencyConverterProvider {
+  var fiatFormatter: CKCurrencyFormatter { get }
+  var bitcoinFormatter: BitcoinFormatter { get }
+  var satsFormatter: SatsFormatter { get }
+  func selectedCurrency() -> SelectedCurrency
+}
 
 extension DualAmountDisplayable {
 
@@ -25,64 +68,45 @@ extension DualAmountDisplayable {
     return decimalSeparator.first ?? "."
   }
 
-  /// hidePrimaryZero will return the currency symbol only if primary amount is zero, useful during editing
-  func dualAmountLabels(hidePrimaryZero: Bool = false, walletTransactionType: WalletTransactionType) -> DualAmountLabels {
-    let converter = generateCurrencyConverter()
-    return dualAmountLabels(withConverter: converter, walletTransactionType: walletTransactionType, hidePrimaryZero: hidePrimaryZero)
+  var fiatFormatter: CKCurrencyFormatter {
+    let currency = generateCurrencyConverter().fiatCurrency
+    return FiatFormatter(currency: currency, withSymbol: true)
   }
 
-  func dualAmountLabels(
-    withConverter currencyConverter: CurrencyConverter,
-    withSymbols: Bool = true,
-    walletTransactionType: WalletTransactionType,
-    hidePrimaryZero: Bool = false) -> DualAmountLabels {
+  var bitcoinFormatter: BitcoinFormatter {
+    return BitcoinFormatter(symbolType: .image)
+  }
 
-    let primaryCurrency = currencyPair.primary
-    let secondaryCurrency = currencyPair.secondary
-    let primaryAmount = currencyConverter.amount(forCurrency: primaryCurrency) ?? .zero
-    let secondaryAmount = currencyConverter.amount(forCurrency: secondaryCurrency) ?? .zero
+  var satsFormatter: SatsFormatter {
+    return SatsFormatter()
+  }
 
-    var primaryText = CKCurrencyFormatter.attributedString(for: primaryAmount,
-                                                 currency: primaryCurrency,
-                                                 walletTransactionType: walletTransactionType,
-                                                 isInTextField: true)
+  /// hidePrimaryZero will return the currency symbol only if primary amount is zero, useful during editing
+  func dualAmountLabels(walletTxType: WalletTransactionType) -> DualAmountLabels {
+    let converter = generateCurrencyConverter()
+    let btcText = attributedString(for: converter.btcAmount, currency: .BTC, walletTxType: walletTxType)
+    let fiatText = attributedString(for: converter.fiatAmount, currency: converter.fiatCurrency, walletTxType: walletTxType)
 
-    if hidePrimaryZero && fromAmount == .zero {
-      switch walletTransactionType {
+    switch selectedCurrency() {
+    case .BTC:  return DualAmountLabels(primary: btcText, secondary: fiatText)
+    case .fiat: return DualAmountLabels(primary: fiatText, secondary: btcText)
+    }
+  }
+
+  private func attributedString(for amount: NSDecimalNumber?,
+                                currency: CurrencyCode,
+                                walletTxType: WalletTransactionType) -> NSAttributedString? {
+    guard let amount = amount else { return nil }
+    if currency.isFiat {
+      return fiatFormatter.attributedString(from: amount)
+    } else {
+      switch walletTxType {
       case .lightning:
-        if primaryCurrency == .USD {
-          primaryText = primaryCurrency.attributedSymbol
-        } else {
-          primaryText = primaryCurrency.attributedIntegerSymbol(forAmount: fromAmount)
-        }
+        return satsFormatter.attributedString(from: amount)
       case .onChain:
-        primaryText = primaryCurrency.attributedSymbol
+        return bitcoinFormatter.attributedString(from: amount)
       }
     }
-
-    let secondary = CKCurrencyFormatter.attributedString(for: secondaryAmount,
-                                                        currency: secondaryCurrency,
-                                                        walletTransactionType: walletTransactionType,
-                                                        isInTextField: false)
-
-    return DualAmountLabels(primary: primaryText, secondary: secondary)
-  private func primaryAttributedString(walletTxType: WalletTransactionType, converter: CurrencyConverter) -> NSAttributedString? {
-
-    let primaryCurrency = currencyPair.primary
-    let primaryAmount = converter.amount(forCurrency: primaryCurrency) ?? .zero
-    return CKCurrencyFormatter.attributedString(for: primaryAmount,
-                                                currency: primaryCurrency,
-                                                walletTransactionType: walletTxType,
-                                                onChainSymbol: .string)
-  }
-
-  private func secondaryAttributedString(walletTxType: WalletTransactionType, converter: CurrencyConverter) -> NSAttributedString? {
-    let secondaryCurrency = currencyPair.secondary
-    let secondaryAmount = converter.amount(forCurrency: secondaryCurrency) ?? .zero
-    return CKCurrencyFormatter.attributedString(for: secondaryAmount,
-                                                currency: secondaryCurrency,
-                                                walletTransactionType: walletTxType,
-                                                onChainSymbol: .image)
   }
 
 }
@@ -187,6 +211,10 @@ class CurrencySwappableEditAmountViewModel: NSObject, DualAmountDisplayable {
     }
   }
 
+  func selectedCurrency() -> SelectedCurrency {
+    return fromCurrency.isFiat ? .fiat : .BTC
+  }
+
   static func emptyInstance() -> CurrencySwappableEditAmountViewModel {
     let currencyPair = CurrencyPair(primary: .BTC, fiat: .USD)
     return CurrencySwappableEditAmountViewModel(exchangeRates: [:],
@@ -218,21 +246,9 @@ class CurrencySwappableEditAmountViewModel: NSObject, DualAmountDisplayable {
     return primaryCurrency == .BTC
   }
 
-  /// Formatted to work with text field editing across locales and currencies
-  func primaryAmountInputText() -> String? {
-    let converter = generateCurrencyConverter()
-    let primaryAmount = converter.amount(forCurrency: primaryCurrency) ?? .zero
-    if btcIsPrimary {
-      return BitcoinFormatter(symbolType: .string).string(fromDecimal: primaryAmount)
-    } else {
-      return FiatFormatter(currency: primaryCurrency, withSymbol: true).string(fromDecimal: primaryAmount)
-    }
-  }
-
   /// Removes the currency symbol and thousands separator from the primary text, based on Locale.current
-  private func sanitizedAmountString(_ rawText: String?) -> String? {
-    return rawText?.removing(groupingSeparator: self.groupingSeparator,
-                             currencySymbol: primaryCurrency.symbol)
+  func sanitizedAmountString(_ rawText: String?) -> String? {
+    return rawText?.removingNonDecimalCharacters(keepingCharactersIn: decimalSeparator)
   }
 
   /// Returns .zero for nil, empty, and other invalid strings.
@@ -273,56 +289,69 @@ extension CurrencySwappableEditAmountViewModel: UITextFieldDelegate {
 
   func textFieldDidEndEditing(_ textField: UITextField) {
     if fromAmount == .zero {
-      textField.attributedText = dualAmountLabels(walletTransactionType: walletTransactionType).primary
+      textField.attributedText = dualAmountLabels(walletTxType: walletTransactionType).primary
     }
     delegate?.viewModelDidEndEditingAmount(self)
   }
 
   func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-    guard let text = textField.text, let swiftRange = Range(range, in: text), isNotDeletingOrEditingCurrencySymbol(for: text, in: range) else {
+    guard let text = textField.text, isNotDeletingOrEditingCurrencySymbol(for: text, in: range) else { //let swiftRange = Range(range, in: text),
       return false
     }
 
-    let finalString = text.replacingCharacters(in: swiftRange, with: string)
-    let splitByDecimalArray = finalString.components(separatedBy: decimalSeparator).dropFirst()
+    let currentSanitizedAmountString = sanitizedAmountString(textField.text) ?? ""
 
-    if !splitByDecimalArray.isEmpty {
-      guard splitByDecimalArray[1].count <= primaryCurrency.decimalPlaces else {
-        return false
-      }
+    let newString: String
+    if string.isEmpty {
+      newString = String(currentSanitizedAmountString.dropLast())
+    } else {
+      newString = currentSanitizedAmountString + string
     }
 
-    guard finalString.count(of: decimalSeparatorCharacter) <= 1 else {
-      return false
-    }
+    self.primaryAmount = NSDecimalNumber(fromString: String(newString)) ?? .zero
 
-    let requiredSymbolString = primaryCurrency.symbol
-    guard finalString.contains(requiredSymbolString) ||
-      finalString.contains(primaryCurrency.integerSymbol(forAmount: sanitizedAmount(fromRawText: textField.text)) ?? "") else {
-      return false
-    }
+    delegate?.viewModelDidChangeAmount(self)
 
-    var symbolsToRemove = [requiredSymbolString]
-    if let integerSymbol = primaryCurrency.integerSymbol(forAmount: sanitizedAmount(fromRawText: textField.text)) {
-      symbolsToRemove.append(integerSymbol)
-    }
+//    let finalString = text.replacingCharacters(in: swiftRange, with: string)
+//    let splitByDecimalArray = finalString.components(separatedBy: decimalSeparator).dropFirst()
+//
+//    if !splitByDecimalArray.isEmpty {
+//      guard splitByDecimalArray[1].count <= primaryCurrency.decimalPlaces else {
+//        return false
+//      }
+//    }
+//
+//    guard finalString.count(of: decimalSeparatorCharacter) <= 1 else {
+//      return false
+//    }
+//
+//    let requiredSymbolString = primaryCurrency.symbol
+//    guard finalString.contains(requiredSymbolString) ||
+//      finalString.contains(primaryCurrency.integerSymbol(forAmount: sanitizedAmount(fromRawText: textField.text)) ?? "") else {
+//      return false
+//    }
+//
+//    var symbolsToRemove = [requiredSymbolString]
+//    if let integerSymbol = primaryCurrency.integerSymbol(forAmount: sanitizedAmount(fromRawText: textField.text)) {
+//      symbolsToRemove.append(integerSymbol)
+//    }
+//
+//    let trimmedFinal = finalString.removing(groupingSeparator: self.groupingSeparator, currencySymbols: symbolsToRemove)
+//    if trimmedFinal.isEmpty {
+//      return true // allow deletion of all digits by returning early
+//    }
+//
+//    guard let newAmount = NSDecimalNumber(fromString: trimmedFinal) else { return false }
+//
+//    guard newAmount.significantFractionalDecimalDigits <= primaryCurrency.decimalPlaces else {
+//      return false
+//    }
 
-    let trimmedFinal = finalString.removing(groupingSeparator: self.groupingSeparator, currencySymbols: symbolsToRemove)
-    if trimmedFinal.isEmpty {
-      return true // allow deletion of all digits by returning early
-    }
-
-    guard let newAmount = NSDecimalNumber(fromString: trimmedFinal) else { return false }
-
-    guard newAmount.significantFractionalDecimalDigits <= primaryCurrency.decimalPlaces else {
-      return false
-    }
-
-    return true
+    return false
   }
 
   private func isNotDeletingOrEditingCurrencySymbol(for amount: String, in range: NSRange) -> Bool {
-    return (amount != primaryCurrency.symbol || range.length == 0 ||
+    return (amount != primaryCurrency.symbol ||
       amount != primaryCurrency.integerSymbol(forAmount: sanitizedAmount(fromRawText: amount)))
   }
 
