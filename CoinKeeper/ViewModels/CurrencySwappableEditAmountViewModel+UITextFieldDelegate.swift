@@ -121,9 +121,11 @@ extension CurrencySwappableEditAmountViewModel: UITextFieldDelegate {
         return false
       }
     case .decimalSeparator:
+      if primaryRequiresInteger { throw EditTextError.cannotAppendCharacter }
       if currentNumberText == "0" {
         return true
       } else {
+        //ensure leading zero if user first enters decimalSeparator
         let textToInsert = currentNumberText.isEmpty ? ("0" + decimalSeparator) : decimalSeparator
         textField.insertText(textToInsert)
         return false
