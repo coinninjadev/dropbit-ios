@@ -44,8 +44,7 @@ class WalletOverviewViewController: BaseViewController, StoryboardInitializable 
   let rateManager = ExchangeRateManager()
   var badgeNotificationToken: NotificationToken?
   weak var balanceProvider: ConvertibleBalanceProvider?
-  weak var balanceDelegate: DualBalanceViewDelegate?
-  weak var topBarDelegate: WalletOverviewTopBarDelegate?
+  weak var balanceDelegate: WalletOverviewTopBarDelegate?
   var balanceNotificationToken: NotificationToken?
   var pageViewController: UIPageViewController?
 
@@ -118,7 +117,7 @@ class WalletOverviewViewController: BaseViewController, StoryboardInitializable 
         self.baseViewControllers.forEach { ($0 as? TransactionHistoryViewController)?.summaryCollectionView.reloadData() }
     }
 
-    topBar.delegate = topBarDelegate
+    topBar.delegate = balanceDelegate
     pageViewController?.dataSource = self
     pageViewController?.delegate = self
     walletToggleView.delegate = self
