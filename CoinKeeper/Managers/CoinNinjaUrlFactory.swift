@@ -101,7 +101,7 @@ struct CoinNinjaUrlFactory {
         return "https://dropbit.me/"
         #endif
       case .quickPayTrackPurchase:
-        return "https://api.sendwyre.com/"
+        return "https://dash.sendwyre.com/"
       }
     }
 
@@ -184,7 +184,7 @@ struct CoinNinjaUrlFactory {
       case .legacyWords:
         return "\(tooltipBreadcrumb)legacywords"
       case .quickPayTrackPurchase(let transferID):
-        return "v2/\(transferID)/track"
+        return "track/\(transferID)"
       }
     }
   }
