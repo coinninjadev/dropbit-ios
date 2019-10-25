@@ -35,16 +35,13 @@ extension DualAmountEditable {
   func primarySymbol(for walletTxType: WalletTransactionType) -> NSAttributedString? {
     let primaryCurrency = selectedCurrency().code
 
-    switch walletTxType {
-    case .lightning:
-      if primaryCurrency == .USD {
-        return primaryCurrency.attributedSymbol
-      } else {
-        return primaryCurrency.attributedIntegerSymbol(forAmount: fromAmount)
-      }
-    case .onChain:
-      return primaryCurrency.attributedSymbol
+    let symbol: String?
+    if walletTxType == .lightning && primaryCurrency == .BTC {
+      symbol = primaryCurrency.integerSymbol(forAmount: fromAmount)
+    } else {
+      symbol = primaryCurrency.symbol
     }
+    return symbol.flatMap { NSAttributedString(string: $0) }
   }
 
 }

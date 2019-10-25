@@ -138,8 +138,9 @@ extension CurrencySwappableEditAmountViewModel: UITextFieldDelegate {
   }
 
   private func isNotDeletingOrEditingCurrencySymbol(for currentText: String, in range: NSRange) -> Bool {
-    return (currentText != primaryCurrency.symbol ||
-      currentText != primaryCurrency.integerSymbol(forAmount: sanitizedAmount(fromRawText: currentText)))
+    let amount = sanitizedAmount(fromRawText: currentText)
+    let integerSymbol = primaryCurrency.integerSymbol(forAmount: amount)
+    return (currentText != primaryCurrency.symbol || currentText != integerSymbol)
   }
 
   private func shouldAppendFractionalZero(currentText: String, appending string: String) -> Bool {

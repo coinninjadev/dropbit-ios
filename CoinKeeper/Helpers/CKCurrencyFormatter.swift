@@ -164,7 +164,7 @@ class BitcoinFormatter: CKCurrencyFormatter {
   private func attributedStringSymbol() -> NSAttributedString? {
     switch symbolType {
     case .string:
-      return currency.attributedSymbol
+      return NSAttributedString(string: currency.symbol)
     default:
       let image = UIImage(named: "bitcoinLogo")
       let textAttribute = NSTextAttachment()
