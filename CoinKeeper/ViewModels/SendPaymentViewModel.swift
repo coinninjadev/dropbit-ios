@@ -64,7 +64,11 @@ enum RecipientDisplayStyle {
 
 class SendPaymentViewModel: CurrencySwappableEditAmountViewModel {
 
-  var paymentRecipient: PaymentRecipient?
+  var paymentRecipient: PaymentRecipient? {
+    didSet {
+      hasInvoiceWithAmount = false
+    }
+  }
   var requiredFeeRate: Double?
   var sharedMemoDesired = true
   var sharedMemoAllowed = true
@@ -95,6 +99,8 @@ class SendPaymentViewModel: CurrencySwappableEditAmountViewModel {
 
   let recipientParser: RecipientParserType = CKRecipientParser()
 
+  var hasInvoiceWithAmount = false
+
   init(encodedInvoice: String,
        decodedInvoice: LNDecodePaymentRequestResponse,
        exchangeRates: ExchangeRates,
@@ -111,6 +117,7 @@ class SendPaymentViewModel: CurrencySwappableEditAmountViewModel {
     self.paymentRecipient = .paymentTarget(encodedInvoice)
     self.requiredFeeRate = nil
     self.memo = decodedInvoice.description
+    self.hasInvoiceWithAmount = (decodedInvoice.numSatoshis ?? 0) > 0
   }
 
   // delegate may be nil at init since the delegate is likely a view controller which requires this view model for its own creation

@@ -61,6 +61,12 @@ class CurrencySwappableEditAmountView: UIView {
     swapButton.isHidden = true
   }
 
+  func enableEditing(_ isEnabled: Bool) {
+    self.isUserInteractionEnabled = isEnabled
+    self.editAmountButton.isUserInteractionEnabled = isEnabled
+    self.primaryAmountTextField.isUserInteractionEnabled = isEnabled
+  }
+
   func configure(withLabels labels: DualAmountLabels,
                  delegate: CurrencySwappableEditAmountViewDelegate) {
     update(with: labels)

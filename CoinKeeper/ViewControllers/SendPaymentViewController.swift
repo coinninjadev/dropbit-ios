@@ -343,11 +343,8 @@ extension SendPaymentViewController {
       sendMaxButton.isHidden = false
     }
 
-    if viewModel.walletTransactionType == .lightning && viewModel.btcAmount > 0 {
-      editAmountView.isUserInteractionEnabled = false
-    } else {
-      editAmountView.isUserInteractionEnabled = true
-    }
+    let allowEditingAmount = !viewModel.hasInvoiceWithAmount
+    editAmountView.enableEditing(allowEditingAmount)
 
     phoneNumberEntryView.textField.text = ""
 
