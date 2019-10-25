@@ -56,8 +56,7 @@ extension CurrencySwappableAmountEditor {
   }
 
   func moveCursorToCorrectLocationIfNecessary() {
-    guard editAmountViewModel.walletTransactionType == .lightning,
-      editAmountViewModel.primaryCurrency == .BTC,
+    guard editAmountViewModel.isEditingSats,
       let amount = SatsFormatter().stringWithoutSymbol(fromDecimal: editAmountViewModel.primaryAmount),
       let newPosition = editAmountView.primaryAmountTextField.position(from:
         editAmountView.primaryAmountTextField.beginningOfDocument, offset: amount.count) else { return }
@@ -76,6 +75,7 @@ extension CurrencySwappableAmountEditor {
       refreshSecondaryAmount()
     } else {
       refreshBothAmounts()
+      moveCursorToCorrectLocationIfNecessary()
     }
 
     updateQRImage()

@@ -125,11 +125,15 @@ class CurrencySwappableEditAmountViewModel: NSObject, DualAmountEditable {
   }
 
   var primaryRequiresInteger: Bool {
-    if primaryCurrency == .BTC && walletTransactionType == .lightning {
+    if isEditingSats {
       return true
     } else {
       return false
     }
+  }
+
+  var isEditingSats: Bool {
+    return primaryCurrency == .BTC && walletTransactionType == .lightning
   }
 
   var fiatFormatter: CKCurrencyFormatter {
