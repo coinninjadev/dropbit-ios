@@ -38,13 +38,7 @@ enum CurrencyCode: String {
   }
 
   var attributedSymbol: NSAttributedString {
-    switch self {
-    case .BTC:
-      let attrs: [NSAttributedString.Key: AnyObject] = [.font: UIFont.bitcoinSymbolFont(24)]
-      return NSAttributedString(string: symbol, attributes: attrs)
-    case .USD:
-      return NSAttributedString(string: symbol)
-    }
+    return NSAttributedString(string: symbol)
   }
 
   func attributedIntegerSymbol(forAmount amount: NSDecimalNumber) -> NSAttributedString? {
