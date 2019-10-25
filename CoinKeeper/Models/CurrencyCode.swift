@@ -57,13 +57,6 @@ enum CurrencyCode: String {
     }
   }
 
-  var singularIntegerSymbol: String? {
-    switch self {
-    case .BTC:  return " sat"
-    case .USD:  return nil
-    }
-  }
-
   var isFiat: Bool {
     switch self {
     case .BTC:  return false
