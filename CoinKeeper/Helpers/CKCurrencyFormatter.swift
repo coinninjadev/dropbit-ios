@@ -114,7 +114,8 @@ class FiatFormatter: CKCurrencyFormatter {
 class EditingFiatAmountFormatter: CKCurrencyFormatter {
 
   init(currency: CurrencyCode) {
-    super.init(currency: currency, symbolType: .string, showNegativeSymbol: false, negativeHasSpace: true)
+    super.init(currency: currency, symbolType: .string,
+               showNegativeSymbol: false, negativeHasSpace: true)
   }
 
   override func numberFormatterWithoutSymbol(for currency: CurrencyCode, asInteger: Bool = false) -> NumberFormatter {
@@ -127,33 +128,26 @@ class EditingFiatAmountFormatter: CKCurrencyFormatter {
 class BitcoinFormatter: CKCurrencyFormatter {
 
   let imageSize: Int
-  let textColor: UIColor?
-  let numberFont: UIFont?
+  let symbolFont: UIFont?
 
   init(symbolType: CurrencySymbolType,
-       numberFont: UIFont? = nil,
-       textColor: UIColor? = nil,
+       symbolFont: UIFont? = nil,
        imageSize: Int = BitcoinFormatter.defaultSize) {
     self.imageSize = imageSize
-    self.numberFont = numberFont
-    self.textColor = textColor
+    self.symbolFont = symbolFont
     super.init(currency: .BTC,
                symbolType: symbolType,
                showNegativeSymbol: false,
                negativeHasSpace: false)
   }
 
-  override func attributedString(from amount: NSDecimalNumber) -> NSAttributedString? {
+  override func attributedString(from amount: NSDecimalNumber,
+                                 attributes: StringAttributes? = nil) -> NSAttributedString? {
     guard let amountString = decimalString(fromDecimal: amount),
       let symbol = attributedStringSymbol()
       else { return nil }
 
-    let numberString: NSAttributedString
-    if let color = textColor, let font = numberFont {
-      numberString = NSAttributedString(string: amountString, color: color, font: font)
-    } else {
-      numberString = NSAttributedString(string: amountString)
-    }
+    let numberString = NSAttributedString(string: amountString, attributes: attributes)
 
     return symbol + numberString
   }
@@ -165,7 +159,8 @@ class BitcoinFormatter: CKCurrencyFormatter {
   private func attributedStringSymbol() -> NSAttributedString? {
     switch symbolType {
     case .string:
-      return NSAttributedString(string: currency.symbol)
+      let attributes: StringAttributes? = symbolFont.flatMap { [.font: $0] }
+      return NSAttributedString(string: currency.symbol, attributes: attributes)
     default:
       let image = UIImage(named: "bitcoinLogo")
       let textAttribute = NSTextAttachment()

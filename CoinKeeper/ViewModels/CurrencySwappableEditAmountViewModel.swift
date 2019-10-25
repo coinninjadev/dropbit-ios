@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 
 /// The object that should handle UI updates when the amount view model changes
 protocol CurrencySwappableEditAmountViewModelDelegate: AnyObject {
@@ -134,6 +135,14 @@ class CurrencySwappableEditAmountViewModel: NSObject, DualAmountEditable {
 
   var isEditingSats: Bool {
     return primaryCurrency == .BTC && walletTransactionType == .lightning
+  }
+
+  var primaryAttributes: StringAttributes {
+    return [.font: UIFont.regular(30), .foregroundColor: UIColor.darkBlueText]
+  }
+
+  var secondaryAttributes: StringAttributes {
+    return [.font: UIFont.regular(17), .foregroundColor: UIColor.bitcoinOrange]
   }
 
   var fiatFormatter: CKCurrencyFormatter {

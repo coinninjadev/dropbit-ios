@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 
 protocol DualAmountEditable: DualAmountDisplayable {
   var editingIsActive: Bool { get }
@@ -14,9 +15,21 @@ protocol DualAmountEditable: DualAmountDisplayable {
 
 extension DualAmountEditable {
 
+  var standardSymbolSize: CGFloat {
+    return 30
+  }
+
+  var bitcoinSymbolFont: UIFont {
+    return .bitcoinSymbolFont(standardSymbolSize)
+  }
+
+  var standardSymbolFont: UIFont {
+    return .regular(standardSymbolSize)
+  }
+
   var bitcoinFormatter: BitcoinFormatter {
     if selectedCurrency() == .BTC {
-      return BitcoinFormatter(symbolType: .string, numberFont: .regular(30), textColor: .darkBlueText)
+      return BitcoinFormatter(symbolType: .string, symbolFont: bitcoinSymbolFont)
     } else {
       return BitcoinFormatter(symbolType: .image)
     }
@@ -41,7 +54,12 @@ extension DualAmountEditable {
     } else {
       symbol = primaryCurrency.symbol
     }
-    return symbol.flatMap { NSAttributedString(string: $0) }
+
+    var attributes: StringAttributes = [:]
+    let primaryIsBitcoin = walletTxType == .onChain && primaryCurrency == .BTC
+    attributes[.font] = primaryIsBitcoin ? bitcoinSymbolFont : standardSymbolFont
+
+    return symbol.flatMap { NSAttributedString(string: $0, attributes: attributes) }
   }
 
 }
@@ -52,6 +70,8 @@ protocol DualAmountDisplayable: CurrencyConverterProvider {
   var satsFormatter: SatsFormatter { get }
   func selectedCurrency() -> SelectedCurrency
   func dualAmountLabels(walletTxType: WalletTransactionType) -> DualAmountLabels
+  var primaryAttributes: StringAttributes { get }
+  var secondaryAttributes: StringAttributes { get }
 }
 
 extension DualAmountDisplayable {
@@ -85,29 +105,46 @@ extension DualAmountDisplayable {
     return displayableDualAmountLabels(walletTxType: walletTxType)
   }
 
+  var primaryAttributes: StringAttributes {
+    return [:]
+  }
+
+  var secondaryAttributes: StringAttributes {
+    return [:]
+  }
+
   fileprivate func displayableDualAmountLabels(walletTxType: WalletTransactionType) -> DualAmountLabels {
     let converter = generateCurrencyConverter()
-    let btcText = attributedString(for: converter.btcAmount, currency: .BTC, walletTxType: walletTxType)
-    let fiatText = attributedString(for: converter.fiatAmount, currency: converter.fiatCurrency, walletTxType: walletTxType)
 
-    switch selectedCurrency() {
-    case .BTC:  return DualAmountLabels(primary: btcText, secondary: fiatText)
-    case .fiat: return DualAmountLabels(primary: fiatText, secondary: btcText)
+    let btcIsPrimary = selectedCurrency() == .BTC
+    let btcAttributes: StringAttributes = btcIsPrimary ? primaryAttributes : secondaryAttributes
+    let fiatAttributes: StringAttributes = btcIsPrimary ? secondaryAttributes : primaryAttributes
+
+    let btcText = attributedString(for: converter.btcAmount, currency: .BTC,
+                                   attributes: btcAttributes, walletTxType: walletTxType)
+    let fiatText = attributedString(for: converter.fiatAmount, currency: converter.fiatCurrency,
+                                    attributes: fiatAttributes, walletTxType: walletTxType)
+
+    if btcIsPrimary {
+      return DualAmountLabels(primary: btcText, secondary: fiatText)
+    } else {
+      return DualAmountLabels(primary: fiatText, secondary: btcText)
     }
   }
 
   private func attributedString(for amount: NSDecimalNumber?,
                                 currency: CurrencyCode,
+                                attributes: StringAttributes,
                                 walletTxType: WalletTransactionType) -> NSAttributedString? {
     guard let amount = amount else { return nil }
     if currency.isFiat {
-      return fiatFormatter.attributedString(from: amount)
+      return fiatFormatter.attributedString(from: amount, attributes: attributes)
     } else {
       switch walletTxType {
       case .lightning:
-        return satsFormatter.attributedString(from: amount)
+        return satsFormatter.attributedString(from: amount, attributes: attributes)
       case .onChain:
-        return bitcoinFormatter.attributedString(from: amount)
+        return bitcoinFormatter.attributedString(from: amount, attributes: attributes)
       }
     }
   }
