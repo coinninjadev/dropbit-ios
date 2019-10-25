@@ -89,7 +89,6 @@ class WalletOverviewViewController: BaseViewController, StoryboardInitializable 
     ]
   }
 
-  //TODO: ensure balanceProvider never returns negative value for either balance
   static func newInstance(with delegate: WalletOverviewViewControllerDelegate,
                           baseViewControllers: [BaseViewController],
                           balanceProvider: ConvertibleBalanceProvider,
@@ -333,11 +332,17 @@ extension WalletOverviewViewController: SendReceiveActionViewDelegate {
 extension WalletOverviewViewController: SyncSubscribeable {
 
   func handleStartSync() {
-    walletBalanceView.balanceView.isSyncing = true
+    DispatchQueue.main.async {
+      self.topBar.balanceView.isSyncing = true
+      self.walletBalanceView.balanceView.isSyncing = true
+    }
   }
 
   func handleFinishSync() {
-    walletBalanceView.balanceView.isSyncing = false
+    DispatchQueue.main.async {
+      self.topBar.balanceView.isSyncing = false
+      self.walletBalanceView.balanceView.isSyncing = false
+    }
   }
 
 }
