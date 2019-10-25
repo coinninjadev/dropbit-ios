@@ -35,13 +35,13 @@ class WalletOverviewViewControllerTests: XCTestCase {
 
   // MARK: outlets are connected
   func testOutletsAreConnected() {
-    XCTAssertNotNil(sut.balanceContainer, "balanceContainer should be connected")
+    XCTAssertNotNil(sut.topBar, "topBar should be connected")
     XCTAssertNotNil(sut.walletToggleView, "walletToggleView should be connected")
     XCTAssertNotNil(sut.sendReceiveActionView, "sendReceiveActionView should be connected")
     XCTAssertNotNil(sut.tooltipButton, "tooltipButton should be connected")
   }
 
-  class MockCoordinator: WalletOverviewViewControllerDelegate, ConvertibleBalanceProvider, BalanceContainerDelegate {
+  class MockCoordinator: WalletOverviewViewControllerDelegate, ConvertibleBalanceProvider, WalletOverviewTopBarDelegate {
     let badgeManager: BadgeManagerType
     let currencyController: CurrencyController
     let balanceUpdateManager: BalanceUpdateManager

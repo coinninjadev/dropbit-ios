@@ -401,7 +401,7 @@ class AppCoordinator: CoordinatorType {
   func toggleChartAndBalance() {
     guard let topViewController = (navigationController.topViewController() as? MMDrawerController),
       let walletViewController = topViewController.centerViewController as? WalletOverviewViewController else { return }
-    walletViewController.balanceContainer.toggleChartAndBalance()
+    walletViewController.topBar.toggleChartAndBalance()
   }
 
   func showLightningLockAlertIfNecessary() -> Bool {

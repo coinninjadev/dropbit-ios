@@ -163,7 +163,7 @@ final class RequestPayViewController: PresentableViewController, StoryboardIniti
 
     guard let nextAddress = delegate.viewControllerDidRequestNextReceiveAddress(self) else { return }
     self.viewModel.currencyPair = delegate.selectedCurrencyPair()
-    self.viewModel.fromAmount = .zero
+    self.viewModel.primaryAmount = .zero
     self.viewModel.receiveAddress = nextAddress
   }
 
@@ -251,8 +251,7 @@ final class RequestPayViewController: PresentableViewController, StoryboardIniti
     }
 
     updateQRImage()
-    let labels = viewModel.dualAmountLabels(walletTransactionType: viewModel.walletTransactionType)
-    editAmountView.configure(withLabels: labels, delegate: self)
+    refreshBothAmounts()
     showHideEditAmountView()
   }
 
@@ -315,11 +314,4 @@ extension RequestPayViewController: WalletToggleViewDelegate {
     updateViewWithViewModel()
   }
 
-}
-
-extension RequestPayViewController: CurrencySwappableEditAmountViewModelDelegate {
-
-  func viewModelDidBeginEditingAmount(_ viewModel: CurrencySwappableEditAmountViewModel) {
-    moveCursorToCorrectLocationIfNecessary()
-  }
 }

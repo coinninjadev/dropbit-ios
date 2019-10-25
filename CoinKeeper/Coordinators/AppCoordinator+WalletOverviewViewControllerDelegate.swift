@@ -43,6 +43,7 @@ extension AppCoordinator: WalletOverviewViewControllerDelegate {
 
   func viewControllerDidRequestPrimaryCurrencySwap() {
     currencyController.selectedCurrency.toggle()
+    persistenceManager.brokers.preferences.selectedCurrency = currencyController.selectedCurrency
   }
 
   func viewControllerDidTapWalletTooltip() {

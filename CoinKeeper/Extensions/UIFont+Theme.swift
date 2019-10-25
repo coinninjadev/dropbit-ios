@@ -30,6 +30,10 @@ extension UIFont {
     return UIFont(name: .montserratBold, size: size)
   }
 
+  static func bitcoinSymbolFont(_ size: CGFloat) -> UIFont {
+    return UIFont(name: .bitcoinSymbolFont, size: size)
+  }
+
   static var primaryButtonTitle: UIFont {
     return .medium(14)
   }

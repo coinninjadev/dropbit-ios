@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
-    <device id="retina6_1" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15400" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15404"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -18,7 +16,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yEy-5P-WRf" userLabel="Top Container" customClass="BalanceContainer" customModule="DropBit" customModuleProvider="target">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yEy-5P-WRf" customClass="WalletOverviewTopBar" customModule="DropBit" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="44" width="414" height="66"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
@@ -88,11 +86,11 @@
                         <viewLayoutGuide key="safeArea" id="Ara-cI-e6Q"/>
                     </view>
                     <connections>
-                        <outlet property="balanceContainer" destination="yEy-5P-WRf" id="1re-u0-6nf"/>
                         <outlet property="currentWalletBalanceView" destination="J68-pT-VfQ" id="B7L-va-XNE"/>
                         <outlet property="sendReceiveActionView" destination="46u-yJ-o8t" id="Hl8-gG-XM6"/>
                         <outlet property="sendReceiveActionViewBottomConstraint" destination="TPJ-ec-d8O" id="Nfu-OS-bkq"/>
                         <outlet property="tooltipButton" destination="s5h-9Q-NkJ" id="I3y-Bt-foS"/>
+                        <outlet property="topBar" destination="yEy-5P-WRf" id="Lan-6F-u2J"/>
                         <outlet property="walletToggleView" destination="08q-AV-opn" id="LTs-bg-MFe"/>
                     </connections>
                 </viewController>

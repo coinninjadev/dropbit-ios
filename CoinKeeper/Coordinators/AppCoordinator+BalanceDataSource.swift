@@ -17,8 +17,12 @@ extension AppCoordinator: BalanceDataSource {
     let context = persistenceManager.viewContext
     let balance = wmgr.balanceNetPending(in: context)
 
-    return WalletBalances(onChain: NSDecimalNumber(integerAmount: balance.onChain, currency: .BTC),
-                          lightning: NSDecimalNumber(integerAmount: balance.lightning, currency: .BTC))
+    ///Never show negative value for balances
+    let adjustedOnChain = max(0, balance.onChain)
+    let adjustedLightning = max(0, balance.lightning)
+
+    return WalletBalances(onChain: NSDecimalNumber(integerAmount: adjustedOnChain, currency: .BTC),
+                          lightning: NSDecimalNumber(integerAmount: adjustedLightning, currency: .BTC))
   }
 
   /// isSpendable relies on having at least 1 confirmation

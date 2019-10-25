@@ -191,14 +191,12 @@ CurrencySwappableAmountEditor {
     formatPhoneNumberEntryView()
     memoContainerView.delegate = self
     editAmountView.delegate = self
+    refreshBothAmounts()
     let sharedMemoAllowed = delegate.viewControllerShouldInitiallyAllowMemoSharing(self)
     viewModel.sharedMemoAllowed = sharedMemoAllowed
     memoContainerView.configure(memo: nil, isShared: sharedMemoAllowed)
     delegate.sendPaymentViewControllerDidLoad(self)
     walletToggleView.delegate = self
-
-    let labels = viewModel.dualAmountLabels(hidePrimaryZero: false, walletTransactionType: viewModel.walletTransactionType)
-    editAmountView.update(with: labels)
   }
 
   override func viewWillAppear(_ animated: Bool) {
@@ -339,25 +337,17 @@ extension SendPaymentViewController {
   }
 
   func updateViewWithModel() {
-    if editAmountView.primaryAmountTextField.isFirstResponder {
-      refreshSecondaryAmount()
-    } else {
-      refreshBothAmounts()
-    }
-
     if viewModel.btcAmount != .zero || viewModel.walletTransactionType == .lightning {
       sendMaxButton.isHidden = true
     } else {
       sendMaxButton.isHidden = false
     }
 
-    if viewModel.walletTransactionType == .lightning && viewModel.btcAmount > 0 {
-      editAmountView.isUserInteractionEnabled = false
-    } else {
-      editAmountView.isUserInteractionEnabled = true
-    }
+    let allowEditingAmount = !viewModel.hasInvoiceWithAmount
+    editAmountView.enableEditing(allowEditingAmount)
 
     phoneNumberEntryView.textField.text = ""
+    self.updateRecipientContainerContentType(forRecipient: viewModel.paymentRecipient)
 
     self.recipientDisplayNameLabel.text = viewModel.contact?.displayName
     self.recipientDisplayNumberLabel.text = viewModel.contact?.displayIdentity
@@ -379,9 +369,7 @@ extension SendPaymentViewController {
       recipientDisplayNumberLabel.text = viewModel.displayRecipientIdentity()
     }
 
-    editAmountView.update(with: viewModel.dualAmountLabels(hidePrimaryZero: false,
-                                                           walletTransactionType: viewModel.walletTransactionType))
-
+    refreshBothAmounts()
     updateMemoContainer()
     setupStyle()
   }
@@ -407,7 +395,7 @@ extension SendPaymentViewController {
       editAmountView.primaryAmountTextField.resignFirstResponder()
       updateViewModel(withParsedRecipient: recipient)
     } catch {
-      setPaymentRecipient(nil)
+      self.viewModel.paymentRecipient = nil
       delegate.viewControllerDidAttemptInvalidDestination(self, error: error)
     }
 
@@ -420,13 +408,13 @@ extension SendPaymentViewController {
     case .lightningURL(let url):
       handleLightningInvoicePaste(lightningUrl: url)
     case .phoneNumber:
-      setPaymentRecipient(PaymentRecipient(parsedRecipient: parsedRecipient))
+      self.viewModel.paymentRecipient = PaymentRecipient(parsedRecipient: parsedRecipient)
     case .bitcoinURL(let bitcoinURL):
       viewModel.walletTransactionType = .onChain
       if let paymentRequest = bitcoinURL.components.paymentRequest {
         self.fetchViewModelAndUpdate(forPaymentRequest: paymentRequest)
       } else {
-        setPaymentRecipient(PaymentRecipient(parsedRecipient: parsedRecipient))
+        self.viewModel.paymentRecipient = PaymentRecipient(parsedRecipient: parsedRecipient)
         if let amount = bitcoinURL.components.amount {
           self.viewModel.setBTCAmountAsPrimary(amount)
         }
@@ -442,26 +430,16 @@ extension SendPaymentViewController {
       .get { decodedInvoice in
         self.delegate.viewControllerShouldTrackEvent(event: .externalLightningInvoiceInput)
         self.alertManager?.hideActivityHUD(withDelay: nil, completion: {
-          self.viewModel = SendPaymentViewModel(encodedInvoice: lightningUrl.invoice,
-                                                decodedInvoice: decodedInvoice,
-                                                exchangeRates: self.viewModel.exchangeRates,
-                                                currencyPair: self.viewModel.currencyPair,
-                                                delegate: self)
-          self.setupCurrencySwappableEditAmountView()
-          self.handlePaste(withViewModel: self.viewModel, paymentTarget: lightningUrl.invoice)
+          let viewModel = SendPaymentViewModel(encodedInvoice: lightningUrl.invoice,
+                                               decodedInvoice: decodedInvoice,
+                                               exchangeRates: self.viewModel.exchangeRates,
+                                               currencyPair: self.viewModel.currencyPair,
+                                               delegate: self)
+          self.applyFetchedBitcoinModelAndUpdateView(fetchedModel: viewModel)
+
         })
       }.catch { error in
         self.handleError(error: error)
-    }
-  }
-
-  func handlePaste(withViewModel viewModel: SendPaymentViewModel, paymentTarget: String) {
-    self.viewModel = viewModel
-    self.setPaymentRecipient(.paymentTarget(paymentTarget))
-    self.viewModel.setBTCAmountAsPrimary(viewModel.btcAmount)
-
-    self.alertManager?.hideActivityHUD(withDelay: nil) {
-      self.updateViewWithModel()
     }
   }
 
@@ -478,16 +456,16 @@ extension SendPaymentViewController {
       let errorTitle = "Payment Request Error"
       switch result {
       case .success(let response):
-        guard let fetchedModel = SendPaymentViewModel(response: response,
-                                                      walletTransactionType: self.viewModel.walletTransactionType,
-                                                      exchangeRates: self.viewModel.exchangeRates,
-                                                      fiatCurrency: self.viewModel.fiatCurrency),
-          let fetchedAddress = fetchedModel.address else {
+        let maybeFetchedModel = SendPaymentViewModel(response: response,
+                                                     walletTransactionType: self.viewModel.walletTransactionType,
+                                                     exchangeRates: self.viewModel.exchangeRates,
+                                                     fiatCurrency: self.viewModel.fiatCurrency)
+        guard let fetchedModel = maybeFetchedModel, fetchedModel.address != nil else {
             self.showValidatorAlert(for: MerchantPaymentRequestError.missingOutput, title: errorTitle)
             return
         }
 
-        self.handlePaste(withViewModel: fetchedModel, paymentTarget: fetchedAddress)
+        self.applyFetchedBitcoinModelAndUpdateView(fetchedModel: fetchedModel)
 
       case .failure(let error):
         self.handleError(error: error)
@@ -495,9 +473,13 @@ extension SendPaymentViewController {
     }
   }
 
-  func setPaymentRecipient(_ paymentRecipient: PaymentRecipient?) {
-    self.viewModel.paymentRecipient = paymentRecipient
-    updateRecipientContainerContentType(forRecipient: paymentRecipient)
+  func applyFetchedBitcoinModelAndUpdateView(fetchedModel: SendPaymentViewModel) {
+    self.viewModel = fetchedModel
+    self.setupCurrencySwappableEditAmountView()
+    self.viewModel.setBTCAmountAsPrimary(fetchedModel.btcAmount)
+    self.alertManager?.hideActivityHUD(withDelay: nil) {
+      self.updateViewWithModel()
+    }
   }
 
   func updateRecipientContainerContentType(forRecipient paymentRecipient: PaymentRecipient?) {
@@ -573,7 +555,7 @@ extension SendPaymentViewController {
 extension SendPaymentViewController: SelectedValidContactDelegate {
 
   func update(withSelectedContact contact: ContactType) {
-    setPaymentRecipient(.contact(contact))
+    self.viewModel.paymentRecipient = .contact(contact)
     updateViewWithModel()
   }
 
@@ -585,7 +567,7 @@ extension SendPaymentViewController: SelectedValidContactDelegate {
     delegate.viewControllerDidRequestRegisteredAddress(self, ofType: addressType, forIdentity: twitterUser.idStr)
       .done { (responses: [WalletAddressesQueryResponse]) in
         contact.kind = (responses.isEmpty) ? .invite : .registeredUser
-        self.setPaymentRecipient(.twitterContact(contact))
+        self.viewModel.paymentRecipient = .twitterContact(contact)
         self.updateViewWithModel()
       }
       .catch { error in
@@ -616,7 +598,7 @@ extension SendPaymentViewController: UITextFieldDelegate {
     let phoneNumber = GlobalPhoneNumber(countryCode: defaultCountry.countryCode, nationalNumber: "")
     let contact = GenericContact(phoneNumber: phoneNumber, formatted: "")
     let recipient = PaymentRecipient.phoneNumber(contact)
-    setPaymentRecipient(recipient)
+    self.viewModel.paymentRecipient = recipient
     updateViewWithModel()
   }
 
@@ -639,7 +621,7 @@ extension SendPaymentViewController: UITextFieldDelegate {
           .string(from: globalPhoneNumber)
         let contact = GenericContact(phoneNumber: globalPhoneNumber, formatted: formattedPhoneNumber)
         let recipient = PaymentRecipient.phoneNumber(contact)
-        setPaymentRecipient(recipient)
+        self.viewModel.paymentRecipient = recipient
       }
     } catch {
       self.delegate.showAlertForInvalidContactOrPhoneNumber(contactName: nil, displayNumber: text)
@@ -810,8 +792,8 @@ extension SendPaymentViewController {
     var newContact = contact
     newContact.kind = kind
     switch contact.asDropBitReceiver {
-    case .phone(let contact): self.setPaymentRecipient(.contact(contact))
-    case .twitter(let contact): self.setPaymentRecipient(.twitterContact(contact))
+    case .phone(let contact): self.viewModel.paymentRecipient = .contact(contact)
+    case .twitter(let contact): self.viewModel.paymentRecipient = .twitterContact(contact)
     }
 
     try validateInvitationMaximum(against: btcAmount)
@@ -938,22 +920,23 @@ extension SendPaymentViewController {
 extension SendPaymentViewController: WalletToggleViewDelegate {
 
   func bitcoinWalletButtonWasTouched() {
+    guard viewModel.walletTransactionType != .onChain else { return }
     viewModel.walletTransactionType = .onChain
-    resetViewModelWithUI()
-    moveCursorToCorrectLocationIfNecessary()
+    refreshAfterToggle()
   }
 
   func lightningWalletButtonWasTouched() {
+    guard viewModel.walletTransactionType != .lightning else { return }
     viewModel.walletTransactionType = .lightning
+    refreshAfterToggle()
+  }
+
+  private func refreshAfterToggle() {
+    if let recipient = viewModel.paymentRecipient, case .paymentTarget = recipient {
+      viewModel.paymentRecipient = nil //bitcoin addresses aren't valid for lightning and vice versa
+    }
     resetViewModelWithUI()
     moveCursorToCorrectLocationIfNecessary()
   }
 
-}
-
-extension SendPaymentViewController: CurrencySwappableEditAmountViewModelDelegate {
-
-  func viewModelDidBeginEditingAmount(_ viewModel: CurrencySwappableEditAmountViewModel) {
-    moveCursorToCorrectLocationIfNecessary()
-  }
 }

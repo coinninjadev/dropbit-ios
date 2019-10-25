@@ -11,6 +11,7 @@ import Contacts
 import CNBitcoinKit
 
 class BaseConfirmPaymentViewModel: DualAmountDisplayable {
+
   let paymentTarget: String? //address or encoded invoice
   let contact: ContactType?
   let walletTransactionType: WalletTransactionType
@@ -30,6 +31,10 @@ class BaseConfirmPaymentViewModel: DualAmountDisplayable {
     self.btcAmount = btcAmount
     self.currencyPair = currencyPair
     self.exchangeRates = exchangeRates
+  }
+
+  func selectedCurrency() -> SelectedCurrency {
+    return currencyPair.primary.isFiat ? .fiat : .BTC
   }
 
   /// The btcAmount and fromAmount may or may not be the same

@@ -101,8 +101,7 @@ class WalletTransferViewController: PresentableViewController, StoryboardInitial
     confirmView.delegate = self
     feesView.delegate = self
     editAmountView.delegate = self
-    let labels = viewModel.dualAmountLabels(walletTransactionType: viewModel.walletTransactionType)
-    editAmountView.configure(withLabels: labels, delegate: self)
+    refreshBothAmounts()
     setupUI()
     setupCurrencySwappableEditAmountView()
     registerForRateUpdates()
@@ -274,12 +273,5 @@ extension WalletTransferViewController: FeesViewDelegate {
   func tooltipButtonWasTouched() {
     guard let url = CoinNinjaUrlFactory.buildUrl(for: .dropBitAppLightningWithdrawalFees) else { return }
     delegate.openURL(url, completionHandler: nil)
-  }
-}
-
-extension WalletTransferViewController: CurrencySwappableEditAmountViewModelDelegate {
-
-  func viewModelDidBeginEditingAmount(_ viewModel: CurrencySwappableEditAmountViewModel) {
-    moveCursorToCorrectLocationIfNecessary()
   }
 }

@@ -1,17 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
-    <device id="retina6_1" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14868" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14824"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="CurrencySwappableEditAmountView" customModule="DropBit" customModuleProvider="target">
             <connections>
+                <outlet property="editAmountButton" destination="RjF-qB-oMr" id="dwM-aS-QJk"/>
                 <outlet property="primaryAmountTextField" destination="ArV-J0-8Ul" id="TKp-he-Lve"/>
                 <outlet property="secondaryAmountLabel" destination="GcQ-37-OWH" id="lnI-Zz-Wxb"/>
                 <outlet property="swapButton" destination="S2T-ff-jLn" id="QGG-Cb-s9z"/>
@@ -36,7 +35,7 @@
                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="WTv-II-6UT">
                     <rect key="frame" x="62" y="23" width="290" height="73.5"/>
                     <subviews>
-                        <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Amount" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ArV-J0-8Ul" customClass="LimitEditTextField" customModule="DropBit" customModuleProvider="target">
+                        <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Amount" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ArV-J0-8Ul" customClass="PrimaryAmountTextField" customModule="DropBit" customModuleProvider="target">
                             <rect key="frame" x="60" y="0.0" width="170" height="45"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="170" id="NZi-oq-le6"/>
@@ -57,14 +56,26 @@
                         </label>
                     </subviews>
                 </stackView>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RjF-qB-oMr">
+                    <rect key="frame" x="54" y="22" width="306" height="75"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="75" id="wil-yt-ZhR"/>
+                    </constraints>
+                    <connections>
+                        <action selector="editAmountButtonTapped" destination="-1" eventType="touchUpInside" id="J2Y-ys-6YQ"/>
+                    </connections>
+                </button>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
+                <constraint firstItem="RjF-qB-oMr" firstAttribute="centerX" secondItem="OL0-9v-0qc" secondAttribute="centerX" id="Ccu-i5-6ki"/>
                 <constraint firstItem="WTv-II-6UT" firstAttribute="centerY" secondItem="OL0-9v-0qc" secondAttribute="centerY" id="Dbb-oJ-8xd"/>
                 <constraint firstItem="S2T-ff-jLn" firstAttribute="centerY" secondItem="OL0-9v-0qc" secondAttribute="centerY" id="NiW-np-spP"/>
                 <constraint firstItem="WTv-II-6UT" firstAttribute="leading" secondItem="S2T-ff-jLn" secondAttribute="trailing" constant="8" id="S9p-jz-yAh"/>
+                <constraint firstItem="RjF-qB-oMr" firstAttribute="leading" secondItem="S2T-ff-jLn" secondAttribute="trailing" id="SCt-vM-jix"/>
                 <constraint firstItem="WTv-II-6UT" firstAttribute="centerX" secondItem="OL0-9v-0qc" secondAttribute="centerX" id="ann-vf-jip"/>
                 <constraint firstItem="S2T-ff-jLn" firstAttribute="leading" secondItem="TsJ-cA-FOJ" secondAttribute="leading" constant="4" id="dFa-n4-qrr"/>
+                <constraint firstItem="RjF-qB-oMr" firstAttribute="centerY" secondItem="OL0-9v-0qc" secondAttribute="centerY" id="rAd-oR-CtN"/>
             </constraints>
             <nil key="simulatedTopBarMetrics"/>
             <nil key="simulatedBottomBarMetrics"/>
