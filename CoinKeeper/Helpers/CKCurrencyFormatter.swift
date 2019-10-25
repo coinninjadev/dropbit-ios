@@ -51,9 +51,10 @@ class CKCurrencyFormatter {
     return string(fromDecimal: decimalNumber)
   }
 
-  func attributedString(from amount: NSDecimalNumber) -> NSAttributedString? {
+  func attributedString(from amount: NSDecimalNumber,
+                        attributes: StringAttributes? = nil) -> NSAttributedString? {
     guard let str = string(fromDecimal: amount) else { return nil }
-    return NSAttributedString(string: str)
+    return NSAttributedString(string: str, attributes: attributes)
   }
 
   func decimalString(fromDecimal decimalNumber: NSDecimalNumber) -> String? {
