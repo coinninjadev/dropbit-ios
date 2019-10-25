@@ -50,8 +50,6 @@ enum TopBarLeftButtonType {
   @IBOutlet var rightBalanceContainerView: UIView!
   @IBOutlet var chartButton: UIButton!
 
-  var startSyncNotificationToken: NotificationToken?
-  var finishSyncNotificationToken: NotificationToken?
   var updateAvatarNotificationToken: NotificationToken?
 
   @IBAction func didTapLeftButton(_ sender: Any) {
@@ -100,10 +98,6 @@ enum TopBarLeftButtonType {
 
     updateAvatar()
     self.balanceView.updateLabels(with: labels, selectedCurrency: delegate.selectedCurrency())
-
-    if delegate.isSyncCurrentlyRunning() {
-      balanceView.isSyncing = false
-    }
   }
 
   func toggleChartAndBalance() {
@@ -116,8 +110,6 @@ enum TopBarLeftButtonType {
   }
 
   private func subscribeToNotifications() {
-    subscribeToSyncNotifications()
-
     updateAvatarNotificationToken = CKNotificationCenter.subscribe(key: .didUpdateAvatar, object: nil, queue: nil) { [weak self] (_) in
       self?.updateAvatar()
     }
@@ -131,18 +123,6 @@ enum TopBarLeftButtonType {
         let radius = (imageView?.frame.width ?? 0) / 2.0
         imageView?.applyCornerRadius(radius)
       }.cauterize()
-  }
-
-}
-
-extension WalletOverviewTopBar: SyncSubscribeable {
-
-  func handleStartSync() {
-    balanceView.isSyncing = true
-  }
-
-  func handleFinishSync() {
-    balanceView.isSyncing = false
   }
 
 }
