@@ -13,6 +13,25 @@ enum CurrencySymbolType {
   case string, image, none
 }
 
+enum CurrencyFormatType {
+  case bitcoin, sats, fiat(CurrencyCode)
+
+  init(walletTxType: WalletTransactionType, currency: CurrencyCode) {
+    if currency.isFiat {
+      self = .fiat(currency)
+    } else {
+      self = (walletTxType == .onChain) ? .bitcoin : .sats
+    }
+  }
+
+  var currency: CurrencyCode {
+    switch self {
+    case .bitcoin, .sats:       return .BTC
+    case .fiat(let currency):   return currency
+    }
+  }
+}
+
 class CKCurrencyFormatter {
   let currency: CurrencyCode
   var symbolType: CurrencySymbolType
