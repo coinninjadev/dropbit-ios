@@ -11,20 +11,19 @@ import UIKit
 
 protocol DualAmountEditable: DualAmountDisplayable {
   var editingIsActive: Bool { get }
+  var maxPrimaryWidth: CGFloat { get }
+  var standardPrimaryFontSize: CGFloat { get }
+  var reducedPrimaryFontSize: CGFloat { get }
 }
 
 extension DualAmountEditable {
 
-  var standardSymbolSize: CGFloat {
-    return 30
-  }
-
   var bitcoinSymbolFont: UIFont {
-    return .bitcoinSymbolFont(standardSymbolSize)
+    return .bitcoinSymbolFont(primaryFont.pointSize)
   }
 
-  var standardSymbolFont: UIFont {
-    return .regular(standardSymbolSize)
+  var primaryFont: UIFont {
+    (primaryAttributes[.font] as? UIFont) ?? .regular(10)
   }
 
   var bitcoinFormatter: BitcoinFormatter {
@@ -42,7 +41,10 @@ extension DualAmountEditable {
       primaryText = primarySymbol(for: walletTxType)
     }
 
-    return DualAmountLabels(primary: primaryText, secondary: displaybleLabels.secondary)
+    let mutablePrimaryText = primaryText.flatMap { NSMutableAttributedString(attributedString: $0) }
+    mutablePrimaryText?.decreaseSizeIfNecessary(to: reducedPrimaryFontSize, maxWidth: maxPrimaryWidth)
+
+    return DualAmountLabels(primary: mutablePrimaryText, secondary: displaybleLabels.secondary)
   }
 
   func primarySymbol(for walletTxType: WalletTransactionType) -> NSAttributedString? {
@@ -57,10 +59,10 @@ extension DualAmountEditable {
       attributes[.font] = bitcoinSymbolFont
     case .sats:
       symbol = primaryFormat.currency.integerSymbol(forAmount: fromAmount)
-      attributes[.font] = UIFont.regular(primaryFontSize)
+      attributes[.font] = UIFont.regular(primaryFont.pointSize)
     case .fiat:
       symbol = primaryFormat.currency.symbol
-      attributes[.font] = UIFont.regular(primaryFontSize)
+      attributes[.font] = UIFont.regular(primaryFont.pointSize)
     }
 
     return symbol.flatMap { NSAttributedString(string: $0, attributes: attributes) }

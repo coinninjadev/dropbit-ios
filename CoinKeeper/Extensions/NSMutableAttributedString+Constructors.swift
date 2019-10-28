@@ -128,4 +128,32 @@ extension NSMutableAttributedString {
     }
   }
 
+  func changeFontSize(to newFontSize: CGFloat) {
+    beginEditing()
+    enumerateAttribute(.font, in: NSRange(location: 0, length: self.length), options: [], using: { (value, localRange, _) in
+      guard let localFont = value as? UIFont else { return }
+      let newFont = localFont.withSize(newFontSize)
+      removeAttribute(.font, range: localRange)
+      addAttribute(.font, value: newFont, range: localRange)
+    })
+    endEditing()
+  }
+
+  func decreaseSizeIfNecessary(to newFontSize: CGFloat, maxWidth: CGFloat) {
+    let shouldResize = self.size().width > maxWidth
+    guard shouldResize else { return }
+    self.changeFontSize(to: newFontSize)
+  }
+
+  func increaseSizeIfAble(to newFontSize: CGFloat, maxWidth: CGFloat) {
+    let originalFits = size().width < maxWidth
+    guard originalFits else { return }
+
+    let testString = NSMutableAttributedString(attributedString: self)
+    testString.changeFontSize(to: newFontSize)
+    if testString.size().width < maxWidth {
+      self.changeFontSize(to: newFontSize)
+    }
+  }
+
 }
