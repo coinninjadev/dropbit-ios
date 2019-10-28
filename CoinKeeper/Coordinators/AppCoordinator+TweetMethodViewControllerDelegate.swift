@@ -39,22 +39,9 @@ extension AppCoordinator: TweetMethodViewControllerDelegate {
 
     let downloadURL = CoinNinjaUrlFactory.buildUrl(for: .download)?.absoluteString ?? ""
     let message = "\(receiverHandle) I just sent you Bitcoin using DropBit. Download the app to claim it here: \(downloadURL)"
-    let shareSheet = UIActivityViewController(activityItems: [message], applicationActivities: nil)
-    shareSheet.excludedActivityTypes = [
-      .addToReadingList,
-      .assignToContact,
-      .markupAsPDF,
-      .openInIBooks,
-      .postToFacebook,
-      .postToFlickr,
-      .postToTencentWeibo,
-      .postToVimeo,
-      .postToWeibo,
-      .saveToCameraRoll
-    ]
 
     viewController.dismiss(animated: true, completion: {
-      self.navigationController.topViewController()?.present(shareSheet, animated: true, completion: nil)
+      self.openTwitterURL(withMessage: message)
     })
   }
 
