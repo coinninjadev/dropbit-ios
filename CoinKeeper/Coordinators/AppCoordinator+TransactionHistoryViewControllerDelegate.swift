@@ -33,10 +33,10 @@ extension AppCoordinator: TransactionHistoryViewControllerDelegate {
     analyticsManager.track(event: .getBitcoinButtonPressed, with: nil)
     let context = persistenceManager.viewContext
     guard let wmgr = walletManager,
-      let btcAddress = wmgr.createAddressDataSource().nextAvailableReceiveAddress(forServerPool: false, indicesToSkip: [], in: context)?.address,
-      let ckmWallet = CKMWallet.find(in: context) else { return }
-    let lightningAddress = persistenceManager.brokers.lightning.getAccount(forWallet: ckmWallet, in: context).address
-    let controller = GetBitcoinViewController.newInstance(delegate: self, lightningAddress: lightningAddress, bitcoinAddress: btcAddress)
+      let btcAddress = wmgr.createAddressDataSource()
+        .nextAvailableReceiveAddress(forServerPool: false, indicesToSkip: [], in: context)?
+        .address else { return }
+    let controller = GetBitcoinViewController.newInstance(delegate: self, bitcoinAddress: btcAddress)
     navigationController.pushViewController(controller, animated: true)
   }
 

@@ -32,15 +32,10 @@ extension AppCoordinator: GetBitcoinViewControllerDelegate {
     }
   }
 
-  func viewControllerBuyBitcoinExternally(_ viewController: GetBitcoinViewController) {
-    analyticsManager.track(event: .buyBitcoinWithCreditCard, with: nil)
-    viewControllerDidCopyAddress(viewController)
-  }
-
   func viewControllerBuyWithApplePay(_ viewController: GetBitcoinViewController, address: String) {
     analyticsManager.track(event: .buyWithQuickPay, with: nil)
     guard address.asNilIfEmpty() != nil else {
-      let warning = "An error occurred: No Lightning receive address was detected. Please try again later."
+      let warning = "An error occurred: No Bitcoin receive address was detected. Please try again later."
       self.alertManager.showError(message: warning, forDuration: 2.0)
       return
     }

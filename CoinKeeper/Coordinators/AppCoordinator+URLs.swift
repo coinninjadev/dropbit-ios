@@ -32,10 +32,14 @@ extension AppCoordinator {
     } else if let urlComponents = purchasedBitcoinComponents, launchStateManager.userAuthenticated {
       purchasedBitcoinComponents = nil
       analyticsManager.track(event: .quickPaySuccessReturn, with: nil)
-      let title = urlComponents.humanReadableDescription
-      let viewModel = AlertControllerViewModel(title: title)
-      let alert = alertManager.alert(from: viewModel)
-      navigationController.present(alert, animated: true, completion: nil)
+      if let top = navigationController.topViewController(), top is GetBitcoinViewController {
+        navigationController.popViewController(animated: true)
+      }
+      let transferID = urlComponents.transferID
+      let controller = GetBitcoinSuccessViewController.newInstance(withDelegate: self, transferID: transferID)
+      controller.modalPresentationStyle = .overFullScreen
+      controller.modalTransitionStyle = .crossDissolve
+      navigationController.topViewController()?.present(controller, animated: true, completion: nil)
     } else {
       return
     }
