@@ -28,7 +28,8 @@ struct CoinNinjaUrlFactory {
     case myAddressesTooltip
     case sharedMemosTooltip
     case regularTransactionTooltip
-    case dropbitTransactionTooltip
+    case dropbitTransactionTooltipOutgoing
+    case dropbitTransactionTooltipIncoming
     case lightningWithdrawalTooltip
     case lightningInvoiceTooltip
     case lightningDropBitTooltip
@@ -85,10 +86,11 @@ struct CoinNinjaUrlFactory {
            .adjustableFeesTooltip,
            .dropBitAppLightningWithdrawalFees,
            .regularTransactionTooltip,
-           .dropbitTransactionTooltip,
+           .dropbitTransactionTooltipOutgoing,
            .lightningWithdrawalTooltip,
            .lightningInvoiceTooltip,
            .lightningDropBitTooltip,
+           .dropbitTransactionTooltipIncoming,
            .lightningLoadTooltip,
            .lightningUpgrade,
            .legacyWords:
@@ -145,7 +147,9 @@ struct CoinNinjaUrlFactory {
         return "\(tooltipBreadcrumb)sharedmemos"
       case .regularTransactionTooltip:
         return "\(tooltipBreadcrumb)regulartransaction"
-      case .dropbitTransactionTooltip:
+      case .dropbitTransactionTooltipIncoming:
+        return "\(tooltipBreadcrumb)dropbittransactionrec"
+      case .dropbitTransactionTooltipOutgoing:
         return "\(tooltipBreadcrumb)dropbittransaction"
       case .lightningWithdrawalTooltip:
         return "\(tooltipBreadcrumb)lightningwithdrawal"
