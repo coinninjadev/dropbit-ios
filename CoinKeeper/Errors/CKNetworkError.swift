@@ -96,6 +96,7 @@ enum NetworkErrorIdentifier: String {
   case timestampHeaderOffset = "timestamp header is beyond the allowed offset"
   case missingSignatureHeader = "missing signature header"
   case userIDMismatch = "user_id mismatch"
+  case badSignature = "bad signature"
 }
 
 enum RecordType: String {
