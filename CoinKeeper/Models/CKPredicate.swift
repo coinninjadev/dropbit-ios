@@ -94,6 +94,11 @@ struct CKPredicate {
       return NSPredicate(format: "\(statusPath) == \(canceled) OR \(statusPath) == %d", expired)
     }
 
+    static func withTransaction() -> NSPredicate {
+      let path = #keyPath(CKMTemporarySentTransaction.transaction)
+      return NSPredicate(format: "\(path) != nil")
+    }
+
     static func withInactiveInvitation() -> NSPredicate {
       return NSCompoundPredicate(type: .and, subpredicates: [invitationExists(), inactiveInvitationStatus()])
     }
@@ -353,13 +358,30 @@ struct CKPredicate {
     static func invalid() -> NSPredicate {
       let invitationPath = #keyPath(CKMWalletEntry.invitation)
       let ledgerEntryPath = #keyPath(CKMWalletEntry.ledgerEntry)
+      let tempTxPath = #keyPath(CKMWalletEntry.temporarySentTransaction)
       let invitationPredicate = NSPredicate(format: "\(invitationPath) == nil")
       let ledgerEntryPredicate = NSPredicate(format: "\(ledgerEntryPath) == nil")
-      return NSCompoundPredicate(type: .and, subpredicates: [invitationPredicate, ledgerEntryPredicate])
+      let tempTxPredicate = NSPredicate(format: "\(tempTxPath) == nil")
+      return NSCompoundPredicate(type: .and, subpredicates: [invitationPredicate, ledgerEntryPredicate, tempTxPredicate])
+    }
+
+    static func tempId(_ id: String) -> NSPredicate {
+      let path = #keyPath(CKMWalletEntry.temporarySentTransaction.txid)
+      return NSPredicate(format: "\(path) == %@", id)
     }
   }
 
   struct LedgerEntry {
+    static func wallet(_ wallet: CKMWallet) -> NSPredicate {
+      let walletPath = #keyPath(CKMLNLedgerEntry.walletEntry.wallet)
+      return NSPredicate(format: "\(walletPath) == %@", wallet)
+    }
+
+    static func id(_ id: String) -> NSPredicate {
+      let idPath = #keyPath(CKMLNLedgerEntry.id)
+      return NSPredicate(format: "\(idPath) == %@", id)
+    }
+
     static func idIn(_ ids: [String]) -> NSPredicate {
       let idKeyPath = #keyPath(CKMLNLedgerEntry.id)
       return NSPredicate(format: "\(idKeyPath) IN %@", ids)

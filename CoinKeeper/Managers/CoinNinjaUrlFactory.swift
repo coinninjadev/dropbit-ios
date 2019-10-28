@@ -40,6 +40,8 @@ struct CoinNinjaUrlFactory {
     case spendBitcoinGiftCards
     case buyGiftCards
     case buyWithCreditCard
+    case buyWithApplePay(String)
+    case quickPayTrackPurchase(String)
     case buyAtATM(CLLocationCoordinate2D)
     case dropBitMe(handle: String)
     case dropBitMeLearnMore
@@ -55,6 +57,7 @@ struct CoinNinjaUrlFactory {
            .spendBitcoinGiftCards,
            .buyGiftCards,
            .buyWithCreditCard,
+           .buyWithApplePay,
            .buyAtATM,
            .invoice:
         #if DEBUG
@@ -97,6 +100,8 @@ struct CoinNinjaUrlFactory {
         #else
         return "https://dropbit.me/"
         #endif
+      case .quickPayTrackPurchase:
+        return "https://dash.sendwyre.com/"
       }
     }
 
@@ -164,6 +169,8 @@ struct CoinNinjaUrlFactory {
         return "buybitcoin/giftcards"
       case .buyWithCreditCard:
         return "buybitcoin/creditcards"
+      case .buyWithApplePay(let address):
+        return "buybitcoin/quickbuy?address=\(address)"
       case .buyAtATM(let coordinate):
         return "news/webview/load-map?lat=\(coordinate.latitude)&long=\(coordinate.longitude)&type=atms"
       case .dropBitMe(let handle):
@@ -176,6 +183,8 @@ struct CoinNinjaUrlFactory {
         return "upgrade"
       case .legacyWords:
         return "\(tooltipBreadcrumb)legacywords"
+      case .quickPayTrackPurchase(let transferID):
+        return "track/\(transferID)"
       }
     }
   }

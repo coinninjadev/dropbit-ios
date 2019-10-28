@@ -20,8 +20,9 @@ extension NetworkManager: MessageRequestable {
   }
 
   private func buildElasticRequest() -> ElasticRequest {
+    let versionInfo = VersionInfo()
     let terms = ElasticTerms.object(withPlatforms: [.all, .ios])
-    let script = ElasticScript(id: "semver", version: Global.version.value)
+    let script = ElasticScript(id: "semver", version: versionInfo.appVersion)
     let query = ElasticQuery(range: nil, script: script, term: nil, terms: terms)
     return ElasticRequest(query: query)
   }

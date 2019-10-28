@@ -31,7 +31,12 @@ extension AppCoordinator: TransactionHistoryViewControllerDelegate {
 
   func viewControllerDidTapGetBitcoin(_ viewController: UIViewController) {
     analyticsManager.track(event: .getBitcoinButtonPressed, with: nil)
-    let controller = GetBitcoinViewController.newInstance(delegate: self)
+    let context = persistenceManager.viewContext
+    guard let wmgr = walletManager,
+      let btcAddress = wmgr.createAddressDataSource()
+        .nextAvailableReceiveAddress(forServerPool: false, indicesToSkip: [], in: context)?
+        .address else { return }
+    let controller = GetBitcoinViewController.newInstance(delegate: self, bitcoinAddress: btcAddress)
     navigationController.pushViewController(controller, animated: true)
   }
 

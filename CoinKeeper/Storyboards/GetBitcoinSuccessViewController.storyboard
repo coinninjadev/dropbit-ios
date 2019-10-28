@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14868" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14824"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Get Bitcoin Success View Controller-->
+        <scene sceneID="FFv-EY-Xxs">
+            <objects>
+                <viewController storyboardIdentifier="GetBitcoinSuccessViewController" id="1R1-5B-lD6" customClass="GetBitcoinSuccessViewController" customModule="DropBit" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="DSP-vN-vZa">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1mC-I0-kiQ">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aro-uP-dBc">
+                                <rect key="frame" x="18" y="345" width="378" height="206"/>
+                                <subviews>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" translatesAutoresizingMaskIntoConstraints="NO" id="dze-wX-PGN">
+                                        <rect key="frame" x="22" y="62" width="334" height="112"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="K47-Vp-WrT">
+                                                <rect key="frame" x="0.0" y="0.0" width="334" height="20.5"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DHw-Lt-4UV" customClass="PrimaryActionButton" customModule="DropBit" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="61" width="334" height="51"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="51" id="XBQ-aR-owm"/>
+                                                </constraints>
+                                                <state key="normal" title="Button"/>
+                                                <connections>
+                                                    <action selector="trackPurchase" destination="1R1-5B-lD6" eventType="touchUpInside" id="kRm-UA-J0W"/>
+                                                </connections>
+                                            </button>
+                                        </subviews>
+                                    </stackView>
+                                </subviews>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="206" id="BMb-f0-T1h"/>
+                                    <constraint firstAttribute="trailing" secondItem="dze-wX-PGN" secondAttribute="trailing" constant="22" id="FkH-vg-5UP"/>
+                                    <constraint firstItem="dze-wX-PGN" firstAttribute="leading" secondItem="aro-uP-dBc" secondAttribute="leading" constant="22" id="hra-Ru-sBN"/>
+                                    <constraint firstAttribute="bottom" secondItem="dze-wX-PGN" secondAttribute="bottom" constant="32" id="r8a-Bl-49P"/>
+                                </constraints>
+                            </view>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="bitcoinLogo" translatesAutoresizingMaskIntoConstraints="NO" id="iHw-c1-PcV">
+                                <rect key="frame" x="177" y="315" width="60" height="60"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="iHw-c1-PcV" secondAttribute="height" multiplier="1:1" id="CWT-Mp-duq"/>
+                                    <constraint firstAttribute="width" constant="60" id="eFB-UH-JSx"/>
+                                </constraints>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstItem="1mC-I0-kiQ" firstAttribute="top" secondItem="DSP-vN-vZa" secondAttribute="top" id="0M4-2I-jvW"/>
+                            <constraint firstItem="aro-uP-dBc" firstAttribute="centerY" secondItem="DSP-vN-vZa" secondAttribute="centerY" id="5qQ-aM-m5F"/>
+                            <constraint firstItem="iHw-c1-PcV" firstAttribute="centerX" secondItem="DSP-vN-vZa" secondAttribute="centerX" id="BQN-dK-S1S"/>
+                            <constraint firstItem="FnD-6c-JkZ" firstAttribute="trailing" secondItem="aro-uP-dBc" secondAttribute="trailing" constant="18" id="NWg-va-QqR"/>
+                            <constraint firstItem="dze-wX-PGN" firstAttribute="top" secondItem="iHw-c1-PcV" secondAttribute="bottom" constant="32" id="ake-FS-lcj"/>
+                            <constraint firstItem="iHw-c1-PcV" firstAttribute="centerY" secondItem="aro-uP-dBc" secondAttribute="top" id="b0V-gp-bYg"/>
+                            <constraint firstItem="FnD-6c-JkZ" firstAttribute="trailing" secondItem="1mC-I0-kiQ" secondAttribute="trailing" id="byb-RI-Hcw"/>
+                            <constraint firstAttribute="bottom" secondItem="1mC-I0-kiQ" secondAttribute="bottom" id="iyM-cl-1P2"/>
+                            <constraint firstItem="1mC-I0-kiQ" firstAttribute="leading" secondItem="FnD-6c-JkZ" secondAttribute="leading" id="ml8-Hc-MkC"/>
+                            <constraint firstItem="aro-uP-dBc" firstAttribute="leading" secondItem="FnD-6c-JkZ" secondAttribute="leading" constant="18" id="ql7-ml-aA0"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="FnD-6c-JkZ"/>
+                    </view>
+                    <connections>
+                        <outlet property="bitcoinImageView" destination="iHw-c1-PcV" id="zJ3-hb-qHk"/>
+                        <outlet property="contentView" destination="aro-uP-dBc" id="PAw-RD-RKP"/>
+                        <outlet property="infoLabel" destination="K47-Vp-WrT" id="6Qu-vW-eyD"/>
+                        <outlet property="trackButton" destination="DHw-Lt-4UV" id="6XY-5i-TBc"/>
+                        <outlet property="transparentBackgroundView" destination="1mC-I0-kiQ" id="UWS-Yk-EdC"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="sbh-rk-L08" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="528" y="-433"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="bitcoinLogo" width="20" height="21"/>
+    </resources>
+</document>

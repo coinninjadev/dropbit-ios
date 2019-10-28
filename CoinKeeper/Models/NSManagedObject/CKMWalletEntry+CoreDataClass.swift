@@ -19,6 +19,19 @@ public class CKMWalletEntry: NSManagedObject {
     self.sortDate = sortDate
   }
 
+  static func findTemporary(withId id: String, in context: NSManagedObjectContext) -> CKMWalletEntry? {
+    let fetchRequest: NSFetchRequest<CKMWalletEntry> = CKMWalletEntry.fetchRequest()
+    fetchRequest.predicate = CKPredicate.WalletEntry.tempId(id)
+    fetchRequest.fetchLimit = 1
+
+    do {
+      return try context.fetch(fetchRequest).first
+    } catch {
+      log.error(error, message: "Failed to fetch temporary sent transaction for wallet entry")
+      return nil
+    }
+  }
+
 }
 
 extension CKMWalletEntry: InvitationParent { }

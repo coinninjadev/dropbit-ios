@@ -138,6 +138,7 @@ public class CKMTransaction: NSManagedObject {
       tempTx.amount = outgoingTransactionData.amount
       tempTx.feeAmount = outgoingTransactionData.feeAmount
       tempTx.isSentToSelf = outgoingTransactionData.sentToSelf
+      tempTx.txid = outgoingTransactionData.txid
       tempTx.transaction = self
 
       guard let receiver = outgoingTransactionData.receiver else { return }

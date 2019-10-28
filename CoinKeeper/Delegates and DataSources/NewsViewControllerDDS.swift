@@ -114,9 +114,10 @@ class NewsViewControllerDDS: NSObject {
   }
 
   private func configureWeekAndMonthData(data: [PriceSummaryResponse]) -> WeekMonthChartData {
-    let monthStartIndex = data.count - monthlyDataSourceOffset, monthResponse = Array(data[monthStartIndex..<data.count])
-    let weekStartIndex = monthResponse.count - weekDataSourceOffset
-    let weekResponse = Array(monthResponse[monthResponse.count - weekStartIndex..<monthResponse.count])
+    let monthStartIndex = max(0, data.count - monthlyDataSourceOffset), monthResponse = Array(data[monthStartIndex..<data.count])
+    let weekStartIndex = max(0, monthResponse.count - weekDataSourceOffset)
+    let weekResponseStartIndex = max(0, monthResponse.count - weekStartIndex)
+    let weekResponse = Array(monthResponse[weekResponseStartIndex..<monthResponse.count])
     let weekData = weekResponse.enumerated().map { index, element in return ChartDataEntry(x: Double(index), y: element.average) }
     let monthData = monthResponse.enumerated().map { index, element in return ChartDataEntry(x: Double(index), y: element.average) }
 
@@ -124,7 +125,7 @@ class NewsViewControllerDDS: NSObject {
   }
 
   private func configureDailyData(data: [PriceSummaryResponse]) -> (data: [ChartDataEntry], response: [PriceSummaryResponse]) {
-    let startIndex = data.count - dailyDataSourceOffset
+    let startIndex = max(0, data.count - dailyDataSourceOffset)
     let responseData = Array(data[startIndex..<data.count]).enumerated().compactMap { $0 % 5 == 0 ? $1 : nil }
     let dailyData = responseData.enumerated().map { index, element in return ChartDataEntry(x: Double(index), y: element.average) }
 
@@ -139,7 +140,7 @@ class NewsViewControllerDDS: NSObject {
   }
 
   private func configureYearAndAllTimeData(data: [PriceSummaryResponse]) -> AllTimePriceChartData {
-    let yearStartIndex = data.count - yearDataSourceOffset, yearResponse = Array(data[yearStartIndex..<data.count])
+    let yearStartIndex = max(0, data.count - yearDataSourceOffset), yearResponse = Array(data[yearStartIndex..<data.count])
     let yearData = yearResponse.enumerated().map { index, element in return ChartDataEntry(x: Double(index), y: element.average) }
     let allTimeResponseData = Array(data[0..<data.count]).enumerated().compactMap { $0 % 5 == 0 ? $1 : nil }
     let allTimeData = allTimeResponseData.enumerated().map { index, element in return ChartDataEntry(x: Double(index), y: element.average) }

@@ -57,9 +57,8 @@ extension AppCoordinator: DrawerViewControllerDelegate {
   }
 
   func getBitcoinButtonWasTouched() {
-    analyticsManager.track(event: .getBitcoinButtonPressed, with: nil)
-    drawerController?.toggle(.left, animated: true, completion: nil)
-    let controller = GetBitcoinViewController.newInstance(delegate: self)
-    navigationController.pushViewController(controller, animated: true)
+    guard let controller = drawerController else { return }
+    controller.toggle(.left, animated: true, completion: nil)
+    viewControllerDidTapGetBitcoin(controller)
   }
 }

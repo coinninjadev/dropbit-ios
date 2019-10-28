@@ -227,6 +227,42 @@ class LightningInvoiceViewModelObject: LightningTransactionViewModelObject {
 
 }
 
+class LightningLoadTemporaryViewModelObject: LightningViewModelObject, TransactionDetailCellViewModelObject {
+
+  let tempTx: CKMTemporarySentTransaction
+
+  init?(walletEntry: CKMWalletEntry) {
+    guard let tempSentTx = walletEntry.temporarySentTransaction else { return nil }
+    self.tempTx = tempSentTx
+    super.init(walletEntry)
+  }
+
+  var primaryDate: Date { walletEntry.sortDate }
+  var memo: String? { walletEntry.memo }
+
+  let onChainConfirmations: Int? = 0
+  let addressProvidedToSender: String? = nil
+  let invitationStatus: InvitationStatus? = nil
+  let paymentIdIsValid: Bool = false
+  let walletTxType: WalletTransactionType = .lightning
+  let direction: TransactionDirection = .in
+  let isLightningTransfer: Bool = true
+  let status: TransactionStatus = .broadcasting
+  let receiverAddress: String? = nil
+  let lightningInvoice: String? = nil
+  let isLightningUpgrade: Bool = false
+  let isSentToSelf: Bool = false
+  let isPendingTransferToLightning: Bool = false
+
+  func counterpartyConfig(for deviceCountryCode: Int) -> TransactionCellCounterpartyConfig? { nil }
+
+  func amountFactory(with currentRates: ExchangeRates, fiatCurrency: CurrencyCode) -> TransactionAmountsFactoryType {
+    TransactionAmountsFactory(tempSentTx: tempTx, fiatCurrency: fiatCurrency,
+                              currentRates: currentRates, transferType: .deposit)
+  }
+
+}
+
 ///Only necessary because of CKMWalletEntry's optional relationships to CKMLNLedgerEntry and CKMInvitation
 ///This is returned if both those relationships are nil
 struct FallbackViewModelObject: TransactionDetailCellViewModelObject {

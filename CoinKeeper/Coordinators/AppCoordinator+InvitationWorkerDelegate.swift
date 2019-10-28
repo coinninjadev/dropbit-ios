@@ -17,7 +17,7 @@ protocol InvitationWorkerDelegate: AnyObject {
 extension AppCoordinator: InvitationWorkerDelegate {
 
   func didBroadcastTransaction() {
-    DispatchQueue.main.asyncAfter(deadline: .now() + 8.0) { [weak self] in
+    DispatchQueue.main.asyncAfter(deadline: .now() + 5.0) { [weak self] in
       self?.serialQueueManager.enqueueOptionalIncrementalSync()
     }
   }

@@ -14,7 +14,7 @@ extension AppCoordinator: HeaderDelegate {
   func createHeaders(for bodyData: Data?, signBodyIfAvailable: Bool) -> DefaultHeaders? {
     let timeStamp = CKDateFormatter.rfc3339.string(from: Date())
     let platform = "ios"
-    let version = Global.version.value
+    let appVersion = VersionInfo().appVersion
 
     var dataToSign = timeStamp.data(using: .utf8)
     if let bodyData = bodyData, signBodyIfAvailable {
@@ -27,7 +27,7 @@ extension AppCoordinator: HeaderDelegate {
     let buildEnvironment = ApplicationBuildEnvironment.current()
     var headers = DefaultHeaders(timeStamp: timeStamp,
                                  devicePlatform: platform,
-                                 appVersion: version,
+                                 appVersion: appVersion,
                                  signature: sig,
                                  walletId: nil,
                                  userId: nil,

@@ -456,6 +456,20 @@ class TransactionHistoryDetailValidCellTests: XCTestCase {
     XCTAssertEqual(actualText, expectedText)
   }
 
+  func testHistoricalAmountsDoNotShowNegativeSign() {
+    let historicalFiat = NSDecimalNumber(integerAmount: -100, currency: .USD)
+    let amountFactory = MockAmountsFactory(btcAmount: .one, fiatCurrency: .USD, exchangeRates: MockDetailCellVM.testRates,
+                                           fiatWhenInvited: historicalFiat, fiatWhenTransacted: historicalFiat)
+    let viewModel = MockDetailCellVM(direction: .out,
+                                     amountFactory: amountFactory,
+                                     invitationStatus: .completed)
+    sut.configure(with: viewModel, delegate: mockDelegate)
+    XCTAssertFalse(sut.historicalValuesLabel.isHidden)
+    let expectedText = "$1.00 when sent $1.00 when received"
+    let actualText = sut.historicalValuesLabel.attributedText?.string
+    XCTAssertEqual(actualText, expectedText)
+  }
+
   // MARK: Memo view
   func testMemoView_nilMemoHidesView() {
     let viewModel = MockDetailCellVM(memo: nil)

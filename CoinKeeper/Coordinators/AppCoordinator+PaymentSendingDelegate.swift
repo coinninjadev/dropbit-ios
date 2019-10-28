@@ -74,7 +74,7 @@ extension AppCoordinator: PaymentSendingDelegate {
     let viewModel = PaymentSuccessFailViewModel(mode: .pending)
     let successFailVC = SuccessFailViewController.newInstance(viewModel: viewModel, delegate: self)
     let errorHandler: CKErrorCompletion = self.paymentErrorHandler(for: successFailVC, isLightning: true)
-    let successCompletion = { [weak self] in
+    let successCompletion = {
       successFailVC.setMode(.success)
     }
 
@@ -229,6 +229,15 @@ extension AppCoordinator: PaymentSendingDelegate {
             invitation: nil,
             in: context
           )
+          persistedTransaction.isLightningTransfer = isInternalLightningLoad
+
+          if isInternalLightningLoad { //create temporary lightning transaction
+            if let wallet = CKMWallet.find(in: context),
+              let tempLightningTx = persistedTransaction.temporarySentTransaction?.copyForLightning() {
+              let walletEntry = CKMWalletEntry(wallet: wallet, sortDate: Date(), insertInto: context)
+              walletEntry.temporarySentTransaction = tempLightningTx
+            }
+          }
 
           if let wallet = self.walletManager?.wallet {
             let transactionBuilder = CNBTransactionBuilder()

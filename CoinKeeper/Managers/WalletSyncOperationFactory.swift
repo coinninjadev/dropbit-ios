@@ -115,7 +115,7 @@ class WalletSyncOperationFactory {
       .get { _ in dependencies.connectionManager.setAPIUnreachable(false) }
       .then(in: context) { self.updateLightningAccount(with: dependencies, in: context) }
       .get { account in self.updateLightningAccountStatusAfterSuccessfulResponse(dependencies, account: account) }
-      .then(in: context) { _ in dependencies.txDataWorker.performFetchAndStoreAllLightningTransactions(in: context) }
+      .then(in: context) { _ in dependencies.txDataWorker.performFetchAndStoreAllLightningTransactions(in: context, fullSync: fullSync) }
       .recover { self.handleThunderdomeSyncError(with: $0, dependencies: dependencies) }
       .then(in: context) { _ in dependencies.walletWorker.updateServerPoolAddresses(in: context) }
       .then(in: context) { dependencies.walletWorker.updateReceivedAddressRequests(in: context) }
@@ -152,9 +152,8 @@ class WalletSyncOperationFactory {
   private func onChainOnlySync(with dependencies: SyncDependencies, in context: NSManagedObjectContext) -> Promise<Void> {
     return dependencies.databaseMigrationWorker.migrateIfPossible()
       .then { _ in dependencies.keychainMigrationWorker.migrateIfPossible() }
-      .then(in: context) { self.checkAndVerifyUser(with: dependencies, in: context) }
       .then(in: context) { self.checkAndVerifyWallet(with: dependencies, in: context) }
-      .then { dependencies.networkManager.walletCheckIn() }
+      .then { dependencies.networkManager.checkIn() }
       .then { dependencies.persistenceManager.brokers.checkIn.processCheckIn(response: $0) }
       .then(in: context) { dependencies.txDataWorker.performFetchAndStoreAllOnChainTransactions(in: context, fullSync: true) }
       .get { _ in dependencies.connectionManager.setAPIUnreachable(false) }
@@ -197,6 +196,23 @@ class WalletSyncOperationFactory {
     if walletId != nil {
       return dependencies.networkManager
         .getWallet()
+        .recover { (error: Error) -> Promise<WalletResponse> in
+          if case CKNetworkError.unauthorized = error {
+            var flagsParser = WalletFlagsParser(flags: 0).setVersion(.v0).setPurpose(.BIP49)
+            if let words = dependencies.persistenceManager.keychainManager.retrieveValue(for: .walletWords) as? [String] {
+              let newWalletManager = WalletManager(words: words, persistenceManager: dependencies.persistenceManager)
+              return dependencies.networkManager.createWallet(withPublicKey: newWalletManager.hexEncodedPublicKey, walletFlags: flagsParser.flags)
+            } else if let words = dependencies.persistenceManager.keychainManager.retrieveValue(for: .walletWordsV2) as? [String] {
+              flagsParser = flagsParser.setVersion(.v2).setPurpose(.BIP84)
+              let newWalletManager = WalletManager(words: words, persistenceManager: dependencies.persistenceManager)
+              return dependencies.networkManager.createWallet(withPublicKey: newWalletManager.hexEncodedPublicKey, walletFlags: flagsParser.flags)
+            } else {
+              return Promise(error: CKPersistenceError.noWalletWords)
+            }
+          } else {
+            return Promise(error: error)
+          }
+      }
         .get(in: context) { try dependencies.persistenceManager.brokers.wallet.persistWalletResponse(from: $0, in: context) }
         .asVoid()
     } else { // walletId is nil

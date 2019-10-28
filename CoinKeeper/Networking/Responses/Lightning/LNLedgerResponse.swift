@@ -10,7 +10,7 @@ import Foundation
 
 struct LNLedgerResponse: LNResponseDecodable {
 
-  let ledger: [LNTransactionResult]
+  var ledger: [LNTransactionResult]
 
   static var sampleJSON: String {
     return ""

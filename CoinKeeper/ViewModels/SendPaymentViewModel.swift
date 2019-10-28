@@ -197,10 +197,7 @@ class SendPaymentViewModel: CurrencySwappableEditAmountViewModel {
   }
 
   var validParsingRecipientTypes: [CKRecipientType] {
-    switch walletTransactionType {
-    case .onChain:    return [.bitcoinURL, .phoneNumber]
-    case .lightning:  return [.lightningURL, .phoneNumber]
-    }
+    return [.bitcoinURL, .phoneNumber, .lightningURL]
   }
 
   var recipientDisplayStyle: RecipientDisplayStyle? {

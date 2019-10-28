@@ -32,16 +32,16 @@ extension AppCoordinator: GetBitcoinViewControllerDelegate {
     }
   }
 
-  func viewControllerBuyWithCreditCard(_ viewController: GetBitcoinViewController) {
-    analyticsManager.track(event: .buyBitcoinWithCreditCard, with: nil)
-    guard let url = CoinNinjaUrlFactory.buildUrl(for: .buyWithCreditCard) else { return }
-    copyNextAddressAndPresentVC(destinationURL: url)
-  }
-
-  func viewControllerBuyWithGiftCard(_ viewController: GetBitcoinViewController) {
-    analyticsManager.track(event: .buyBitcoinWithGiftCard, with: nil)
-    guard let url = CoinNinjaUrlFactory.buildUrl(for: .buyGiftCards) else { return }
-    copyNextAddressAndPresentVC(destinationURL: url)
+  func viewControllerBuyWithApplePay(_ viewController: GetBitcoinViewController, address: String) {
+    analyticsManager.track(event: .buyWithQuickPay, with: nil)
+    guard address.asNilIfEmpty() != nil else {
+      let warning = "An error occurred: No Bitcoin receive address was detected. Please try again later."
+      self.alertManager.showError(message: warning, forDuration: 2.0)
+      return
+    }
+    viewControllerRequestedAuthenticationSuspension(viewController)
+    guard let url = CoinNinjaUrlFactory.buildUrl(for: .buyWithApplePay(address)) else { return }
+    openURLExternally(url, completionHandler: nil)
   }
 
   private func copyNextAddressAndPresentVC(destinationURL: URL) {

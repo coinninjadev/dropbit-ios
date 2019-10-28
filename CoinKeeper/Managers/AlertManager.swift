@@ -154,7 +154,7 @@ class AlertManager: AlertManagerType {
                                       fromAmount: NSDecimalNumber(integerAmount: receivedAmount, currency: .BTC),
                                       rates: rates)
     let dollarAmount: String = FiatFormatter(currency: .USD, withSymbol: true).string(fromDecimal: converter.fiatAmount) ?? ""
-    let message = "You have recieved a new transaction of \(dollarAmount) in bitcoin!"
+    let message = "You have received a new transaction of \(dollarAmount) in bitcoin!"
     showIncomingAlertForCurrentAppState(with: message)
   }
 

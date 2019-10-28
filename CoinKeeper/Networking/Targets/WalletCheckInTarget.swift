@@ -12,13 +12,17 @@ public enum WalletCheckInTarget: CoinNinjaTargetType {
   typealias ResponseType = CheckInResponse
 
   case get
+  case getNoAuth
 
 }
 
 extension WalletCheckInTarget {
 
   var basePath: String {
-    return "wallet/check-in"
+    switch self {
+    case .get: return "wallet/check-in"
+    case .getNoAuth: return "check-in"
+    }
   }
 
   var subPath: String? {

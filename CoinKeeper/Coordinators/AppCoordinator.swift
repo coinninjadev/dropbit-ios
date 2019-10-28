@@ -73,6 +73,7 @@ class AppCoordinator: CoordinatorType {
   let locationManager = CLLocationManager()
 
   var bitcoinURLToOpen: BitcoinURL?
+  var purchasedBitcoinComponents: WyreURLParser?
 
   lazy var contactCacheDataWorker: ContactCacheDataWorker = {
     return ContactCacheDataWorker(contactCacheManager: self.contactCacheManager,

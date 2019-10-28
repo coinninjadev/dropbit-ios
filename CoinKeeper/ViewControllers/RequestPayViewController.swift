@@ -10,7 +10,8 @@ import UIKit
 import PromiseKit
 import SVProgressHUD
 
-protocol RequestPayViewControllerDelegate: ViewControllerDismissable, CopyToClipboardMessageDisplayable, CurrencyValueDataSourceType {
+protocol RequestPayViewControllerDelegate: ViewControllerDismissable, CopyToClipboardMessageDisplayable,
+  CurrencyValueDataSourceType, MemoEntryDelegate {
   func viewControllerDidCreateInvoice(_ viewController: UIViewController)
   func viewControllerDidSelectSendRequest(_ viewController: UIViewController, payload: [Any])
   func viewControllerDidSelectCreateInvoice(_ viewController: UIViewController,
@@ -36,6 +37,12 @@ final class RequestPayViewController: PresentableViewController, StoryboardIniti
   @IBOutlet var tapInstructionLabel: UILabel!
   @IBOutlet var bottomActionButton: PrimaryActionButton!
   @IBOutlet var addAmountButton: UIButton!
+
+  @objc private func memoButtonTapped() {
+    delegate.viewControllerDidSelectMemoButton(self, memo: memoTextField.text) { [weak self] memo in
+      self?.memoTextField.text = memo
+    }
+  }
 
   @IBAction func closeButtonTapped(_ sender: UIButton) {
     editAmountView.primaryAmountTextField.resignFirstResponder()
@@ -134,6 +141,10 @@ final class RequestPayViewController: PresentableViewController, StoryboardIniti
     walletToggleView.delegate = self
     setupKeyboardDoneButton(for: [editAmountView.primaryAmountTextField, memoTextField],
                             action: #selector(doneButtonWasPressed))
+
+    let memoGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.memoButtonTapped))
+    memoTextField.isUserInteractionEnabled = true
+    memoTextField.addGestureRecognizer(memoGestureRecognizer)
   }
 
   @objc func doneButtonWasPressed() {

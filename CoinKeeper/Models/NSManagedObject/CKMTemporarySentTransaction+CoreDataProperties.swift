@@ -20,7 +20,9 @@ extension CKMTemporarySentTransaction {
   @NSManaged public var amount: Int
   @NSManaged public var feeAmount: Int
   @NSManaged public var isSentToSelf: Bool
+  @NSManaged public var txid: String? //set this to match up with eventual ledger entry
   @NSManaged public var transaction: CKMTransaction?
+  @NSManaged public var walletEntry: CKMWalletEntry?
 
   /// The vouts that were reserved for this transaction by setting their isSpent = true
   @NSManaged public var reservedVouts: Set<CKMVout>

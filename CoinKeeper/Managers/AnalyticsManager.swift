@@ -95,6 +95,8 @@ enum AnalyticsManagerEventType: String {
   case learnBitcoinButtonPressed = "LearnBitcoin"
   case spendBitcoinButtonPressed = "SpendBitcoin"
   case buyBitcoinWithCreditCard = "BuyBitcoinWithCreditCard"
+  case buyWithQuickPay = "BuyBitcoinQuickPay"
+  case quickPaySuccessReturn = "QuickPaySuccessReturn"
   case buyBitcoinWithGiftCard = "BuyBitcoinWithGiftCard"
   case buyBitcoinAtATM = "BuyBitcoinAtATM"
   case spendOnGiftCards = "SpendOnGiftCards"

@@ -17,9 +17,13 @@ public class CKMLNLedgerEntry: NSManagedObject {
                              forWallet wallet: CKMWallet,
                              in context: NSManagedObjectContext) -> CKMLNLedgerEntry {
     let entry = findOrCreate(with: result.cleanedId, wallet: wallet, createdAt: result.createdAt, in: context)
-    configure(entry, with: result)
+    configure(entry, with: result, in: context)
     return entry
   }
+
+  static let lastLedgerSortDescriptor: [NSSortDescriptor] = [
+    NSSortDescriptor(key: #keyPath(CKMLNLedgerEntry.createdAt), ascending: false)
+  ]
 
   static func findOrCreate(with id: String, wallet: CKMWallet, createdAt: Date, in context: NSManagedObjectContext) -> CKMLNLedgerEntry {
     if let foundEntry = find(withId: id, wallet: wallet, in: context) {
@@ -27,19 +31,22 @@ public class CKMLNLedgerEntry: NSManagedObject {
     } else {
       let newEntry = CKMLNLedgerEntry(insertInto: context)
       newEntry.id = id
-      newEntry.walletEntry = CKMWalletEntry(wallet: wallet, sortDate: createdAt, insertInto: context)
+
+      ///CKMWalletEntry with a temporary sent transaction matching the id
+      let maybeFoundTempWalletEntry = CKMWalletEntry.findTemporary(withId: id, in: context)
+
+      newEntry.walletEntry = maybeFoundTempWalletEntry ?? CKMWalletEntry(wallet: wallet, sortDate: createdAt, insertInto: context)
       return newEntry
     }
   }
 
   static func create(with response: LNTransactionResult, in context: NSManagedObjectContext) -> CKMLNLedgerEntry {
     let newEntry = CKMLNLedgerEntry(insertInto: context)
-    configure(newEntry, with: response)
-
+    configure(newEntry, with: response, in: context)
     return newEntry
   }
 
-  private static func configure(_ entry: CKMLNLedgerEntry, with result: LNTransactionResult) {
+  private static func configure(_ entry: CKMLNLedgerEntry, with result: LNTransactionResult, in context: NSManagedObjectContext) {
     entry.id = result.cleanedId
     entry.accountId = result.accountId
     entry.walletEntry?.sortDate = result.createdAt
@@ -53,6 +60,10 @@ public class CKMLNLedgerEntry: NSManagedObject {
     entry.networkFee = result.networkFee
     entry.processingFee = result.processingFee
     entry.error = result.error
+
+    if let tempSentTx = entry.walletEntry?.temporarySentTransaction {
+      context.delete(tempSentTx)
+    }
 
     if entry.type == .lightning, let validRequest = result.request?.asNilIfEmpty() {
       entry.request = validRequest //result.request may be a non-invoice string when type is .btc
@@ -71,20 +82,30 @@ public class CKMLNLedgerEntry: NSManagedObject {
     }
   }
 
+  static func findLatest(in context: NSManagedObjectContext) -> CKMLNLedgerEntry? {
+    let fetchRequest: NSFetchRequest<CKMLNLedgerEntry> = CKMLNLedgerEntry.fetchRequest()
+    fetchRequest.fetchLimit = 1
+    fetchRequest.sortDescriptors = lastLedgerSortDescriptor
+
+    do {
+      return try context.fetch(fetchRequest).first
+    } catch {
+      log.error(error, message: "Could not execute fetch request for latest transaction")
+      return nil
+    }
+  }
+
   static func find(withId id: String, wallet: CKMWallet?, in context: NSManagedObjectContext) -> CKMLNLedgerEntry? {
-    let idPath = #keyPath(CKMLNLedgerEntry.id)
-    let idPredicate = NSPredicate(format: "\(idPath) == %@", id)
-    var predicates = [idPredicate]
+    let idPredicate = CKPredicate.LedgerEntry.id(id)
+    var andPredicates = [idPredicate]
 
     if let wallet = wallet {
-      let walletPath = #keyPath(CKMLNLedgerEntry.walletEntry.wallet)
-      let walletPredicate = NSPredicate(format: "\(walletPath) == %@", wallet)
-      predicates.append(walletPredicate)
+      andPredicates.append(CKPredicate.LedgerEntry.wallet(wallet))
     }
 
-    let fetchRequest = NSFetchRequest<CKMLNLedgerEntry>(entityName: entityName())
+    let fetchRequest: NSFetchRequest<CKMLNLedgerEntry> = CKMLNLedgerEntry.fetchRequest()
+    fetchRequest.predicate = NSCompoundPredicate(type: .and, subpredicates: andPredicates)
     fetchRequest.fetchLimit = 1
-    fetchRequest.predicate = NSCompoundPredicate(type: .and, subpredicates: predicates)
 
     do {
       return try context.fetch(fetchRequest).first

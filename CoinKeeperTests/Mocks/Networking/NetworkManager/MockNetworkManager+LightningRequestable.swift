@@ -11,6 +11,10 @@ import PromiseKit
 
 extension MockNetworkManager: LightningRequestable {
 
+  func getLightningLedger(parameters: LNLedgerUrlParameters) -> Promise<LNLedgerResponse> {
+    return Promise { _ in }
+  }
+
   func estimateLightningWithdrawlFees(to address: String, sats: Int) -> Promise<LNTransactionResponse> {
     return Promise { _ in }
   }
@@ -24,10 +28,6 @@ extension MockNetworkManager: LightningRequestable {
   }
 
   func decodeLightningPaymentRequest(_ request: String) -> Promise<LNDecodePaymentRequestResponse> {
-    return Promise { _ in }
-  }
-
-  func getLightningLedger() -> Promise<LNLedgerResponse> {
     return Promise { _ in }
   }
 
