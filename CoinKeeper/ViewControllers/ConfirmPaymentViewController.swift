@@ -176,7 +176,7 @@ extension ConfirmPaymentViewController {
 
     primaryCurrencyLabel.textAlignment = .center
     primaryCurrencyLabel.textColor = .lightBlueTint
-    primaryCurrencyLabel.font = .regular(35)
+    primaryCurrencyLabel.font = .regular(viewModel.primaryAmountFontSize)
 
     secondaryCurrencyLabel.textAlignment = .center
     secondaryCurrencyLabel.textColor = .darkGrayText

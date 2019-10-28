@@ -97,7 +97,7 @@ CurrencySwappableAmountEditor {
   }
 
   @IBAction func performScan() {
-    let converter = viewModel.generateCurrencyConverter()
+    let converter = viewModel.currencyConverter
     delegate.viewControllerDidPressScan(self,
                                         btcAmount: converter.btcAmount,
                                         primaryCurrency: primaryCurrency)
@@ -693,9 +693,7 @@ extension SendPaymentViewController {
   func validateAmount() throws {
     let ignoredOptions = viewModel.standardIgnoredOptions
     let amountValidator = createCurrencyAmountValidator(ignoring: ignoredOptions, balanceToCheck: viewModel.walletTransactionType)
-
-    let converter = viewModel.generateCurrencyConverter()
-    try amountValidator.validate(value: converter)
+    try amountValidator.validate(value: viewModel.currencyConverter)
   }
 
   private func validateInvitationMaximum(against btcAmount: NSDecimalNumber) throws {
@@ -706,8 +704,8 @@ extension SendPaymentViewController {
 
     let ignoredOptions = viewModel.invitationMaximumIgnoredOptions
     let validator = createCurrencyAmountValidator(ignoring: ignoredOptions, balanceToCheck: viewModel.walletTransactionType)
-    let converter = viewModel.generateCurrencyConverter(withBTCAmount: btcAmount)
-    try validator.validate(value: converter)
+    let validationConverter = CurrencyConverter(btcFromAmount: btcAmount, converter: viewModel.currencyConverter)
+    try validator.validate(value: validationConverter)
   }
 
   private func validateAndSendPayment() throws {
@@ -745,7 +743,7 @@ extension SendPaymentViewController {
     try CurrencyAmountValidator(balancesNetPending: delegate.balancesNetPending(),
                                                     balanceToCheck: viewModel.walletTransactionType,
                                                     ignoring: ignoredValidation).validate(value:
-                                                      viewModel.generateCurrencyConverter())
+                                                      viewModel.currencyConverter)
 
     switch recipient {
     case .bitcoinURL(let url):
@@ -799,7 +797,7 @@ extension SendPaymentViewController {
     try validateInvitationMaximum(against: btcAmount)
     try CurrencyAmountValidator(balancesNetPending: delegate.balancesNetPending(),
                                 balanceToCheck: viewModel.walletTransactionType).validate(value:
-                                  viewModel.generateCurrencyConverter())
+                                  viewModel.currencyConverter)
     let inputs = SendingDelegateInputs(sendPaymentVM: self.viewModel, contact: newContact, payloadDTO: sharedPayload)
 
     delegate.viewControllerDidBeginAddressNegotiation(self,

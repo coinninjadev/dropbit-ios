@@ -164,7 +164,7 @@ class CurrencySwappableEditAmountViewModel: NSObject, DualAmountEditable {
   }
 
   func swapPrimaryCurrency() {
-    let oldToAmount = generateCurrencyConverter().convertedAmount() ?? .zero
+    let oldToAmount = currencyConverter.convertedAmount() ?? .zero
     self.fromAmount = oldToAmount
     let oldFromCurrency = fromCurrency
     fromCurrency = toCurrency
@@ -178,8 +178,7 @@ class CurrencySwappableEditAmountViewModel: NSObject, DualAmountEditable {
   }
 
   var btcAmount: NSDecimalNumber {
-    let converter = generateCurrencyConverter()
-    return converter.btcAmount
+    return currencyConverter.btcAmount
   }
 
   var btcIsPrimary: Bool {
