@@ -49,6 +49,13 @@ enum LightningWalletAmountValidatorError: ValidatorTypeError {
   }
 }
 
+struct LightningWalletValidationOptions: OptionSet {
+  let rawValue: Int
+
+  static let maxWalletValue = LightningWalletValidationOptions(rawValue: 1 << 0)
+  static let minReloadAmount = LightningWalletValidationOptions(rawValue: 1 << 2)
+}
+
 class LightningWalletAmountValidator: ValidatorType<CurrencyConverter> {
 
   static let maxWalletValue = Money(amount: NSDecimalNumber(value: 200), currency: .USD)
@@ -56,9 +63,11 @@ class LightningWalletAmountValidator: ValidatorType<CurrencyConverter> {
 
   let balancesNetPending: WalletBalances
   let type: WalletTransactionType
+  let ignoringOptions: [LightningWalletValidationOptions]
 
-  init(balancesNetPending: WalletBalances, walletType: WalletTransactionType) {
+  init(balancesNetPending: WalletBalances, walletType: WalletTransactionType, ignoring: [LightningWalletValidationOptions] = []) {
     self.balancesNetPending = balancesNetPending
+    self.ignoringOptions = ignoring
     self.type = walletType
     super.init()
   }
@@ -89,15 +98,19 @@ class LightningWalletAmountValidator: ValidatorType<CurrencyConverter> {
       }
     }
 
-    if usdAmount < LightningWalletAmountValidator.minReloadAmount.amount {
-      throw LightningWalletAmountValidatorError.reloadMinimum
+    if !ignoringOptions.contains(.minReloadAmount) {
+      if usdAmount < LightningWalletAmountValidator.minReloadAmount.amount {
+        throw LightningWalletAmountValidatorError.reloadMinimum
+      }
     }
 
-    let rates = ExchangeRateManager().exchangeRates
-    let converter = CurrencyConverter(fromBtcTo: .USD, fromAmount: btcValue + balancesNetPending.lightning, rates: rates)
-    if usdAmount > LightningWalletAmountValidator.maxWalletValue.amount ||
-    converter.convertedAmount() ?? .zero > LightningWalletAmountValidator.maxWalletValue.amount {
-      throw LightningWalletAmountValidatorError.walletMaximum
+    if !ignoringOptions.contains(.maxWalletValue) {
+      let rates = ExchangeRateManager().exchangeRates
+      let converter = CurrencyConverter(fromBtcTo: .USD, fromAmount: btcValue + balancesNetPending.lightning, rates: rates)
+      if usdAmount > LightningWalletAmountValidator.maxWalletValue.amount ||
+      converter.convertedAmount() ?? .zero > LightningWalletAmountValidator.maxWalletValue.amount {
+        throw LightningWalletAmountValidatorError.walletMaximum
+      }
     }
 
   }
