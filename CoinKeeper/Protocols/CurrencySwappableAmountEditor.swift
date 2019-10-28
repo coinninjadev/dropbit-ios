@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 
 protocol CurrencySwappableAmountEditor: CurrencySwappableEditAmountViewDelegate, CurrencySwappableEditAmountViewModelDelegate,
   ExchangeRateUpdatable {
@@ -35,6 +36,13 @@ extension CurrencySwappableAmountEditor {
   var editingIsActive: Bool {
     return editAmountView.primaryAmountTextField.isFirstResponder
   }
+
+  var maxPrimaryWidth: CGFloat {
+    return editAmountView.primaryAmountTextField.frame.width - 8
+  }
+
+  var standardPrimaryFontSize: CGFloat { 30 }
+  var reducedPrimaryFontSize: CGFloat { 20 }
 
   /// Call this during viewDidLoad
   func setupCurrencySwappableEditAmountView() {

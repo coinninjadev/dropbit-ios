@@ -7,10 +7,12 @@
 //
 
 import Foundation
+import UIKit
 
 /// The object that should handle UI updates when the amount view model changes
 protocol CurrencySwappableEditAmountViewModelDelegate: AnyObject {
   var editingIsActive: Bool { get }
+  var maxPrimaryWidth: CGFloat { get }
   func viewModelDidBeginEditingAmount(_ viewModel: CurrencySwappableEditAmountViewModel)
   func viewModelDidEndEditingAmount(_ viewModel: CurrencySwappableEditAmountViewModel)
   func viewModelDidSwapCurrencies(_ viewModel: CurrencySwappableEditAmountViewModel)
@@ -124,16 +126,25 @@ class CurrencySwappableEditAmountViewModel: NSObject, DualAmountEditable {
     return delegate?.editingIsActive ?? false
   }
 
-  var primaryRequiresInteger: Bool {
-    if isEditingSats {
-      return true
-    } else {
-      return false
-    }
+  var maxPrimaryWidth: CGFloat {
+    return delegate?.maxPrimaryWidth ?? 0
   }
+
+  var standardPrimaryFontSize: CGFloat { 30 }
+  var reducedPrimaryFontSize: CGFloat { 20 }
+
+  var primaryRequiresInteger: Bool { isEditingSats }
 
   var isEditingSats: Bool {
     return primaryCurrency == .BTC && walletTransactionType == .lightning
+  }
+
+  var primaryAttributes: StringAttributes {
+    return [.font: UIFont.regular(30), .foregroundColor: UIColor.darkBlueText]
+  }
+
+  var secondaryAttributes: StringAttributes {
+    return [.font: UIFont.regular(17), .foregroundColor: UIColor.bitcoinOrange]
   }
 
   var fiatFormatter: CKCurrencyFormatter {
@@ -153,7 +164,7 @@ class CurrencySwappableEditAmountViewModel: NSObject, DualAmountEditable {
   }
 
   func swapPrimaryCurrency() {
-    let oldToAmount = generateCurrencyConverter().convertedAmount() ?? .zero
+    let oldToAmount = currencyConverter.convertedAmount() ?? .zero
     self.fromAmount = oldToAmount
     let oldFromCurrency = fromCurrency
     fromCurrency = toCurrency
@@ -167,8 +178,7 @@ class CurrencySwappableEditAmountViewModel: NSObject, DualAmountEditable {
   }
 
   var btcAmount: NSDecimalNumber {
-    let converter = generateCurrencyConverter()
-    return converter.btcAmount
+    return currencyConverter.btcAmount
   }
 
   var btcIsPrimary: Bool {

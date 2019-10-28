@@ -43,7 +43,7 @@ class SummaryCellBitcoinLabel: UILabel {
   func configure(withAttributedText attributedText: NSAttributedString?) {
     self.attributedText = attributedText
     guard let attr = attributedText else { return }
-    var attributes: [NSAttributedString.Key: Any] = attr.attributes(at: 0, effectiveRange: nil)
+    var attributes: StringAttributes = attr.attributes(at: 0, effectiveRange: nil)
     attributes[.font] = fontReference
     let textWidth = attr.string.size(withAttributes: attributes).width + horizontalInset
     self.widthAnchor.constraint(equalToConstant: textWidth).isActive = true

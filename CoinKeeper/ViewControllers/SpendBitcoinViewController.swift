@@ -46,7 +46,7 @@ final class SpendBitcoinViewController: BaseViewController, StoryboardInitializa
     let mapPinImage = UIImage(imageLiteralResourceName: "mapPin")
     let smallMobileImage = UIImage(imageLiteralResourceName: "smallMobile")
     let font = UIFont.secondaryButtonTitle
-    let attributes: [NSAttributedString.Key: Any] = [
+    let attributes: StringAttributes = [
       .font: font,
       .foregroundColor: UIColor.lightGrayText
     ]

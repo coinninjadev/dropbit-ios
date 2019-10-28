@@ -37,24 +37,16 @@ enum CurrencyCode: String {
     }
   }
 
-  var attributedSymbol: NSAttributedString {
-    return NSAttributedString(string: symbol)
-  }
-
-  func attributedIntegerSymbol(forAmount amount: NSDecimalNumber) -> NSAttributedString? {
-    guard let symbol = integerSymbol(forAmount: amount.asFractionalUnits(of: self)) else { return nil}
-    return NSAttributedString(string: symbol)
-  }
-
-  func integerSymbol(forAmount amount: NSDecimalNumber) -> String? {
-    return integerSymbol(forAmount: amount.asFractionalUnits(of: self))
-  }
-
   func integerSymbol(forAmount amount: Int) -> String? {
     switch self {
     case .BTC:  return amount == 1 ? " sat" : " sats"
     case .USD:  return nil
     }
+  }
+
+  func integerSymbol(forAmount amount: NSDecimalNumber) -> String? {
+    let fractionalUnits = amount.asFractionalUnits(of: self)
+    return integerSymbol(forAmount: fractionalUnits)
   }
 
   var isFiat: Bool {

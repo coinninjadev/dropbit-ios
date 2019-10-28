@@ -8,26 +8,6 @@
 
 import Foundation
 
-protocol CurrencyConverterProvider {
-  var exchangeRates: ExchangeRates { get }
-  var fromAmount: NSDecimalNumber { get }
-  var currencyPair: CurrencyPair { get }
-}
-
-extension CurrencyConverterProvider {
-  func generateCurrencyConverter() -> CurrencyConverter {
-    return CurrencyConverter(rates: exchangeRates,
-                             fromAmount: fromAmount,
-                             currencyPair: currencyPair)
-  }
-
-  func generateCurrencyConverter(withBTCAmount btcAmount: NSDecimalNumber) -> CurrencyConverter {
-    let existingConverter = generateCurrencyConverter()
-    return CurrencyConverter(btcFromAmount: btcAmount, converter: existingConverter)
-  }
-
-}
-
 struct CurrencyConverter {
 
   static let sampleRates: ExchangeRates = [.BTC: 1, .USD: 7000]

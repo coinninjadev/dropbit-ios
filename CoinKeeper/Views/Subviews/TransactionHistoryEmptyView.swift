@@ -79,7 +79,7 @@ class TransactionHistoryEmptyView: UIView {
 
   func attributedTitle(for button: UIButton) -> NSAttributedString {
     let string = text(for: button)
-    let attributes: [NSAttributedString.Key: Any] = [
+    let attributes: StringAttributes = [
       .font: buttonFont,
       .foregroundColor: UIColor.extraLightGrayText
     ]

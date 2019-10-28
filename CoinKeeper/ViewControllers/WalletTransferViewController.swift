@@ -135,7 +135,7 @@ class WalletTransferViewController: PresentableViewController, StoryboardInitial
     let walletBalances = balanceDataSource?.balancesNetPending() ?? .empty
     do {
       try LightningWalletAmountValidator(balancesNetPending: walletBalances, walletType: .onChain)
-        .validate(value: viewModel.generateCurrencyConverter())
+        .validate(value: viewModel.currencyConverter)
       delegate.viewControllerNeedsTransactionData(self, btcAmount: viewModel.btcAmount, exchangeRates: viewModel.exchangeRates)
         .done { paymentData in
           self.viewModel.direction = .toLightning(paymentData)
@@ -239,7 +239,7 @@ extension WalletTransferViewController: ConfirmViewDelegate {
     do {
       try CurrencyAmountValidator(balancesNetPending: delegate.balancesNetPending(),
                                   balanceToCheck: viewModel.walletTransactionType).validate(value:
-                                    viewModel.generateCurrencyConverter())
+                                    viewModel.currencyConverter)
     } catch {
       delegate.viewControllerNetworkError(error)
     }
@@ -250,7 +250,7 @@ extension WalletTransferViewController: ConfirmViewDelegate {
       guard let data = data else { return }
       do {
         try LightningWalletAmountValidator(balancesNetPending: walletBalances, walletType: .onChain)
-          .validate(value: viewModel.generateCurrencyConverter())
+          .validate(value: viewModel.currencyConverter)
         delegate.viewControllerDidConfirmLoad(self, paymentData: data)
       } catch {
         delegate.viewControllerNetworkError(error)
@@ -259,7 +259,7 @@ extension WalletTransferViewController: ConfirmViewDelegate {
       guard let btcAmount = btcAmount else { return }
       do {
         let lightningBalanceValidator = CurrencyAmountValidator(balancesNetPending: walletBalances, balanceToCheck: .lightning)
-        try lightningBalanceValidator.validate(value: viewModel.generateCurrencyConverter())
+        try lightningBalanceValidator.validate(value: viewModel.currencyConverter)
         delegate.viewControllerDidConfirmWithdraw(self, btcAmount: btcAmount)
       } catch {
         delegate.viewControllerNetworkError(error)
