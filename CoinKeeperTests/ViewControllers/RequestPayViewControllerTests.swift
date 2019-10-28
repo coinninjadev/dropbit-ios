@@ -105,8 +105,10 @@ class RequestPayViewControllerTests: XCTestCase {
 
   // MARK: mock coordinator
   class MockCoordinator: RequestPayViewControllerDelegate {
-    func viewControllerDidSelectMemoButton(_ viewController: UIViewController, memo: String?, completion: @escaping (String) -> Void) {
-    }
+
+    func viewControllerDidSelectMemoButton(_ viewController: UIViewController,
+                                           memo: String?,
+                                           completion: @escaping (String) -> Void) { }
 
     func viewControllerDidSelectCloseWithToggle(_ viewController: UIViewController) { }
 
