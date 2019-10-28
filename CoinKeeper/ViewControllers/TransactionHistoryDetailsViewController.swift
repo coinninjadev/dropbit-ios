@@ -112,7 +112,8 @@ extension TransactionHistoryDetailsViewController: TransactionHistoryDetailCellD
 
   private func url(for tooltip: DetailCellTooltip) -> URL? {
     switch tooltip {
-    case .dropBit:              return CoinNinjaUrlFactory.buildUrl(for: .dropbitTransactionTooltip)
+    case .dropBitOutgoing:      return CoinNinjaUrlFactory.buildUrl(for: .dropbitTransactionTooltipOutgoing)
+    case .dropBitIncoming:      return CoinNinjaUrlFactory.buildUrl(for: .dropbitTransactionTooltipIncoming)
     case .regularOnChain:       return CoinNinjaUrlFactory.buildUrl(for: .regularTransactionTooltip)
     case .lightningWithdrawal:  return CoinNinjaUrlFactory.buildUrl(for: .lightningWithdrawalTooltip)
     case .lightningInvoice:     return CoinNinjaUrlFactory.buildUrl(for: .lightningInvoiceTooltip)

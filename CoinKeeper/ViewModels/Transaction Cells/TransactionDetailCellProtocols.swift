@@ -370,7 +370,11 @@ extension TransactionDetailCellViewModelType {
 
     switch walletTxType {
     case .onChain:
-      return isDropBit ? .dropBit : .regularOnChain
+      if isDropBit {
+        return isIncoming ? .dropBitIncoming : .dropBitOutgoing
+      } else {
+        return .regularOnChain
+      }
     case .lightning:
       return isDropBit ? .lightningDropBit : .lightningInvoice
     }

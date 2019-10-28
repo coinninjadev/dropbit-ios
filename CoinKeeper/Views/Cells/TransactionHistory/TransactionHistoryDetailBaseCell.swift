@@ -10,7 +10,8 @@ import UIKit
 import PromiseKit
 
 enum DetailCellTooltip: Int {
-  case dropBit = 1
+  case dropBitOutgoing = 1
+  case dropBitIncoming
   case regularOnChain
   case lightningWithdrawal
   case lightningInvoice
