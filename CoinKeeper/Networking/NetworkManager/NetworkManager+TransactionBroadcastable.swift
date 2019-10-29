@@ -36,7 +36,7 @@ struct BroadcastInfo: Error {
     var description: String {
       switch self {
       case .coinninja(let encoded):
-        return "BCI: \(encoded.statusCode), \(encoded.statusMessage)"
+        return "CoinNinja: \(encoded.statusCode), \(encoded.statusMessage)"
       case .blockstream(let encoded):
         return "Blockstream: \(encoded.statusCode), \(encoded.statusMessage)"
       }

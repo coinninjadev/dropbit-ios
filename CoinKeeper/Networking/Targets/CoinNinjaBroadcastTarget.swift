@@ -8,48 +8,42 @@
 
 import Moya
 
-enum CoinNinjaBroadcastTarget: CoinNinjaTargetType {
-
-  typealias ResponseType = CoinNinjaBroadcastResponse
-
+public enum CoinNinjaBroadcastTarget {
   case broadcast(String)
 }
 
-extension CoinNinjaBroadcastTarget {
+extension CoinNinjaBroadcastTarget: TargetType {
 
-  var basePath: String {
+  public var baseURL: URL {
+    return URL(string: "https://api.coinninja.com/api/v1")!
+  }
+
+  public var path: String {
     return "broadcast"
   }
 
-  var subPath: String? {
-    return nil
-  }
-
-  var method: Method {
+  public var method: Method {
     return .post
   }
 
-  var task: Task {
+  public var sampleData: Data {
+    return ("paste actual sample data here").data(using: .utf8)!
+  }
+
+  public var headers: [String: String]? {
+    return nil
+  }
+
+  public var task: Task {
     switch self {
     case .broadcast(let tx):
       let data = queryBody(encodedTx: tx) ?? Data()
       return .requestCompositeData(bodyData: data, urlParameters: [:])
     }
-
   }
 
   private func queryBody(encodedTx: String) -> Data? {
-    let body = CoinNinjaBroadcastTransactionBody(encodedTx: encodedTx)
-    let data = try? customEncoder.encode(body)
-    return data
+    return encodedTx.data(using: .utf8) ?? Data()
   }
+
 }
-
-struct CoinNinjaBroadcastTransactionBody: Encodable {
-  var encodedTx: String
-
-  init(encodedTx: String) {
-    self.encodedTx = encodedTx
-  }
-}
-
