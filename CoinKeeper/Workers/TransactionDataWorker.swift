@@ -519,6 +519,7 @@ class TransactionDataWorker: TransactionDataWorkerType {
     context.performAndWait {
       relevantTxid = tx.invitation?.txid ?? tx.txid
     }
+
     return self.networkManager.confirmFailedTransaction(with: relevantTxid)
       .get(in: context) { [weak self] didConfirmFailure in
         if didConfirmFailure {

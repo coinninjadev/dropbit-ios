@@ -147,8 +147,8 @@ enum AnalyticsManagerEventKey: String {
   case sharingEnabled = "SharingEnabled"
   case errorMessage = "ErrorMsg"
 
-  case blockChainInfoCode = "BlockCode"
-  case blockChainInfoMessage = "BlockMsg"
+  case coinninjaCode = "CoinNinjaCode"
+  case coinninjaMessage = "CoinNinjaMessage"
   case blockstreamInfoCode = "BlockstreamCode"
   case blockstreamInfoMessage = "BlockstreamMsg"
 
