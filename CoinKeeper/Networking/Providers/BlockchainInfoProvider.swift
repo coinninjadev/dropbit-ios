@@ -49,28 +49,4 @@ class BlockchainInfoProvider {
       }
     }
   }
-
-  func broadcastTransaction(with metadata: CNBTransactionMetadata) -> Promise<BroadcastInfo> {
-    return Promise { seal in
-      provider.request(.sendRawTransaction(metadata.encodedTx)) { (result) in
-        switch result {
-        case .success(let response):
-          let stringData = String(data: response.data, encoding: .utf8) ?? "No data available"
-          guard 200..<300 ~= response.statusCode else {
-            let info = BroadcastInfo(destination: .bci(BroadcastInfo.Encoded(statusCode: String(describing: response.statusCode),
-                                                                             statusMessage: stringData)))
-            seal.reject(info)
-            return
-          }
-          var info = BroadcastInfo(destination: .bci(BroadcastInfo.Encoded(statusCode: String(describing: response.statusCode),
-                                                                           statusMessage: stringData)))
-          info.txid = metadata.txid
-          seal.fulfill(info)
-        case .failure(let error): seal.reject(BroadcastInfo(destination: .bci(BroadcastInfo.Encoded(
-          statusCode: String(describing: error.unacceptableStatusCode ?? 1000),
-          statusMessage: error.localizedDescription))))
-        }
-      }
-    }
-  }
 }

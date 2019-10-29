@@ -9,7 +9,7 @@
 @testable import DropBit
 import PromiseKit
 
-extension MockNetworkManager: BlockchainInfoRequestable {
+extension MockNetworkManager: CoinNinjaInfoRequestable {
 
   func confirmFailedTransaction(with txid: String) -> Promise<Bool> {
     if let didConfirmFailure = confirmFailedTransactionValueByTxid[txid] {

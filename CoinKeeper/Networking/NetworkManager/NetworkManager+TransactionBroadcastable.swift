@@ -30,12 +30,12 @@ struct BroadcastInfo: Error {
   }
 
   enum Destination {
-    case bci(Encoded)
+    case coinninja(Encoded)
     case blockstream(Encoded)
 
     var description: String {
       switch self {
-      case .bci(let encoded):
+      case .coinninja(let encoded):
         return "BCI: \(encoded.statusCode), \(encoded.statusMessage)"
       case .blockstream(let encoded):
         return "Blockstream: \(encoded.statusCode), \(encoded.statusMessage)"
@@ -85,7 +85,7 @@ extension NetworkManager: TransactionBroadcastable {
   }
 
   private func broadcastMainnetTx(with txMetadata: CNBTransactionMetadata) -> Promise<String> {
-    return when(resolved: [blockchainInfoProvider.broadcastTransaction(with: txMetadata),
+    return when(resolved: [coinNinjaProvider.broadcastTransaction(with: txMetadata),
                            blockstreamProvider.broadcastTransaction(with: txMetadata)])
       .then { [weak self] (results: [PromiseKit.Result<BroadcastInfo>]) -> Promise<String> in
         var success = false
@@ -99,9 +99,9 @@ extension NetworkManager: TransactionBroadcastable {
             txid = value.txid ?? ""
 
             switch value.destination {
-            case .bci(let encoded):
-              analyticEvents.append(AnalyticsEventValue(key: .blockChainInfoCode, value: String(describing: encoded.statusCode)))
-              analyticEvents.append(AnalyticsEventValue(key: .blockChainInfoMessage, value: encoded.statusMessage))
+            case .coinninja(let encoded):
+              analyticEvents.append(AnalyticsEventValue(key: .coinninjaCode, value: String(describing: encoded.statusCode)))
+              analyticEvents.append(AnalyticsEventValue(key: .coinninjaMessage, value: encoded.statusMessage))
             case .blockstream(let encoded):
               analyticEvents.append(AnalyticsEventValue(key: .blockstreamInfoCode, value: String(describing: encoded.statusCode)))
               analyticEvents.append(AnalyticsEventValue(key: .blockstreamInfoMessage, value: encoded.statusMessage))
@@ -113,9 +113,9 @@ extension NetworkManager: TransactionBroadcastable {
             if let error = error as? BroadcastInfo {
               log.error(error.localizedDescription)
               switch error.destination {
-              case .bci(let encoded):
-                analyticEvents.append(AnalyticsEventValue(key: .blockChainInfoCode, value: String(describing: encoded.statusCode)))
-                analyticEvents.append(AnalyticsEventValue(key: .blockChainInfoMessage, value: encoded.statusMessage))
+              case .coinninja(let encoded):
+                analyticEvents.append(AnalyticsEventValue(key: .coinninjaCode, value: String(describing: encoded.statusCode)))
+                analyticEvents.append(AnalyticsEventValue(key: .coinninjaMessage, value: encoded.statusMessage))
               case .blockstream(let encoded):
                 analyticEvents.append(AnalyticsEventValue(key: .blockstreamInfoCode, value: String(describing: encoded.statusCode)))
                 analyticEvents.append(AnalyticsEventValue(key: .blockstreamInfoMessage, value: encoded.statusMessage))
