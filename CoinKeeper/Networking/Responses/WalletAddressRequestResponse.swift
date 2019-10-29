@@ -153,7 +153,7 @@ public struct WalletAddressRequestResponse: ResponseDecodable, CustomStringConve
   var identityHash: String?
   var status: String?
 
-  /// ID of the tweet or Twilio SMS sent by the server
+  /// ID of the tweet (deprecated) or Twilio SMS sent by the server
   var deliveryId: String?
   static let duplicateDeliveryID = "duplicate"
 

@@ -11,38 +11,39 @@ import UIKit
 
 extension AppCoordinator: TweetMethodViewControllerDelegate {
 
-  func viewControllerRequestedDropBitSendTweet(_ viewController: UIViewController,
-                                               response: WalletAddressRequestResponse,
-                                               tweetCompletion: @escaping TweetCompletionHandler) {
-    let body = WalletAddressRequest(suppress: false)
-    self.networkManager.updateWalletAddressRequest(for: response.id, with: body)
-      .done(on: .main) { response in
-        tweetCompletion(response.deliveryId)
-        self.analyticsManager.track(event: .sendTweetViaDropBit, with: nil)
-        viewController.dismiss(animated: true, completion: nil)
-      }
-      .catch { error in
-        viewController.dismiss(animated: true) {
-          let alert = self.alertManager.defaultAlert(withTitle: "Failed to send tweet", description: error.localizedDescription)
-          self.navigationController.topViewController()?.present(alert, animated: true, completion: nil)
-        }
-    }
-  }
-
-  func viewControllerRequestedUserSendTweet(_ viewController: UIViewController, response: WalletAddressRequestResponse) {
+  func viewControllerRequestedUserSendTweet(_ viewController: UIViewController,
+                                            response: WalletAddressRequestResponse,
+                                            method: NotifyRecipientMethod) {
     self.analyticsManager.track(event: .sendTweetManually, with: nil)
-
-    guard let receiverHandle = response.metadata?.receiver?.handle, receiverHandle.isNotEmpty else {
-      log.error("WalletAddressRequestResponse does not contain receiver's handle")
-      return
-    }
-
-    let downloadURL = CoinNinjaUrlFactory.buildUrl(for: .download)?.absoluteString ?? ""
-    let message = "\(receiverHandle) I just sent you Bitcoin using DropBit. Download the app to claim it here: \(downloadURL)"
+    let message = self.tweetMessage(for: response)
 
     viewController.dismiss(animated: true, completion: {
-      self.openTwitterURL(withMessage: message)
+      switch method {
+      case .twitterApp:
+        self.openTwitterURL(withMessage: message)
+      case .shareSheet:
+        self.showShareSheet(withMessage: message)
+      }
     })
+  }
+
+  private func showShareSheet(withMessage message: String) {
+    let shareSheet = UIActivityViewController(activityItems: [message], applicationActivities: nil)
+    shareSheet.excludedActivityTypes = UIActivity.standardExcludedTypes
+
+    self.navigationController.topViewController()?.present(shareSheet, animated: true, completion: nil)
+  }
+
+  private func tweetMessage(for response: WalletAddressRequestResponse) -> String {
+    let maybeReceiverHandle = response.metadata?.receiver?.handle
+    if maybeReceiverHandle?.asNilIfEmpty() == nil {
+      log.error("WalletAddressRequestResponse does not contain receiver's handle")
+    }
+
+    let receiverHandle = maybeReceiverHandle ?? "[enter @recipient]"
+    let downloadURL = CoinNinjaUrlFactory.buildUrl(for: .download)?.absoluteString ?? ""
+    let message = "\(receiverHandle) I just sent you Bitcoin using DropBit. Download the app to claim it here: \(downloadURL)"
+    return message
   }
 
 }
