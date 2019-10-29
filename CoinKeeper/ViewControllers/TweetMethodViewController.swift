@@ -8,14 +8,14 @@
 
 import UIKit
 
-typealias TweetCompletionHandler = (_ tweetId: String?) -> Void
+enum NotifyRecipientMethod {
+  case twitterApp, shareSheet
+}
 
 protocol TweetMethodViewControllerDelegate: ViewControllerDismissable {
-  func viewControllerRequestedDropBitSendTweet(_ viewController: UIViewController,
-                                               response: WalletAddressRequestResponse,
-                                               tweetCompletion: @escaping TweetCompletionHandler)
   func viewControllerRequestedUserSendTweet(_ viewController: UIViewController,
-                                            response: WalletAddressRequestResponse)
+                                            response: WalletAddressRequestResponse,
+                                            method: NotifyRecipientMethod)
 }
 
 class TweetMethodViewController: BaseViewController, StoryboardInitializable {
@@ -23,18 +23,13 @@ class TweetMethodViewController: BaseViewController, StoryboardInitializable {
   private weak var delegate: TweetMethodViewControllerDelegate?
   private var recipient: TwitterContactType!
   private var addressRequestResponse: WalletAddressRequestResponse!
-  private var tweetCompletion: TweetCompletionHandler!
-  private var receiverNotifiedRecently = false // Twitter and our server limit how often we can tweet at each user
 
   static func newInstance(twitterRecipient: TwitterContactType,
                           addressRequestResponse: WalletAddressRequestResponse,
-                          tweetCompletion: @escaping TweetCompletionHandler,
                           delegate: TweetMethodViewControllerDelegate) -> TweetMethodViewController {
     let vc = TweetMethodViewController.makeFromStoryboard()
     vc.recipient = twitterRecipient
     vc.addressRequestResponse = addressRequestResponse
-    vc.receiverNotifiedRecently = addressRequestResponse.notificationWasDuplicate
-    vc.tweetCompletion = tweetCompletion
     vc.delegate = delegate
     vc.modalTransitionStyle = .crossDissolve
     vc.modalPresentationStyle = .overFullScreen
@@ -46,23 +41,15 @@ class TweetMethodViewController: BaseViewController, StoryboardInitializable {
   @IBOutlet var avatarImageView: UIImageView!
   @IBOutlet var screenNameLabel: UILabel!
   @IBOutlet var messageLabel: UILabel!
-  @IBOutlet var dropBitTweetButton: PrimaryActionButton!
-  @IBOutlet var manualTweetButton: PrimaryActionButton!
+  @IBOutlet var twitterAppButton: PrimaryActionButton!
+  @IBOutlet var shareSheetButton: UIButton!
 
-  @IBAction func performDropBitTweet(_ sender: Any) {
-    if receiverNotifiedRecently {
-      delegate?.viewControllerDidSelectClose(self)
-    } else {
-      delegate?.viewControllerRequestedDropBitSendTweet(
-        self,
-        response: addressRequestResponse,
-        tweetCompletion: tweetCompletion
-      )
-    }
+  @IBAction func sendWithTwitterApp(_ sender: Any) {
+    delegate?.viewControllerRequestedUserSendTweet(self, response: addressRequestResponse, method: .twitterApp)
   }
 
-  @IBAction func performManualTweet(_ sender: Any) {
-    delegate?.viewControllerRequestedUserSendTweet(self, response: addressRequestResponse)
+  @IBAction func sendWithShareSheet(_ sender: Any) {
+    delegate?.viewControllerRequestedUserSendTweet(self, response: addressRequestResponse, method: .shareSheet)
   }
 
   override func viewDidLoad() {
@@ -71,7 +58,7 @@ class TweetMethodViewController: BaseViewController, StoryboardInitializable {
     view.backgroundColor = .clear
     semiOpaqueBackgroundView.backgroundColor = .semiOpaquePopoverBackground
     backgroundView.applyCornerRadius(9)
-    self.configureViews(with: recipient)
+    configureViews(with: recipient)
   }
 
   private func configureViews(with recipient: TwitterContactType) {
@@ -90,38 +77,20 @@ class TweetMethodViewController: BaseViewController, StoryboardInitializable {
     messageLabel.textColor = .darkBlueText
     messageLabel.text = messageText(with: recipient)
 
-    dropBitTweetButton.style = .darkBlue
-    manualTweetButton.style = .standard
-    dropBitTweetButton.setTitle(dropBitTweetButtonTitle, for: .normal)
-    manualTweetButton.setTitle(manualTweetButtonTitle, for: .normal)
+    twitterAppButton.style = .standard
+    twitterAppButton.setTitle("SEND NOTIFICATION TWEET", for: .normal)
+
+    shareSheetButton.backgroundColor = .clear
+    shareSheetButton.setTitleColor(.darkBlueText, for: .normal)
+    shareSheetButton.titleLabel?.font = .primaryButtonTitle
+    shareSheetButton.setTitle("DON'T HAVE THE TWITTER APP?", for: .normal)
   }
 
   private func messageText(with recipient: TwitterContactType) -> String {
-    let start = "You’ve sent Bitcoin to \(recipient.displayHandle) on Twitter"
-    if receiverNotifiedRecently {
-      return "\(start) and they have been invited to DropBit. You can remind them with a tweet."
-    } else {
-      return """
-        \(start). You can notify the receiver with a tweet or to maintain privacy
-        we can notify them with a tweet from our account.
-        """.removingMultilineLineBreaks()
-    }
-  }
-
-  private var dropBitTweetButtonTitle: String {
-    if receiverNotifiedRecently {
-      return "OK"
-    } else {
-      return "LET DROPBIT SEND THE TWEET"
-    }
-  }
-
-  private var manualTweetButtonTitle: String {
-    if receiverNotifiedRecently {
-      return "I'LL SEND A TWEET"
-    } else {
-      return "I'LL SEND THE TWEET MYSELF"
-    }
+    return """
+    You’ve sent Bitcoin to \(recipient.displayHandle) on Twitter.
+    Be sure to send a notification tweet so they can claim their Bitcoin.
+    """.removingMultilineLineBreaks()
   }
 
 }

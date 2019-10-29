@@ -981,6 +981,7 @@
 		B5B53C9C2107CAA5006C7B67 /* TransactionDetailsInfoContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5B53C9B2107CAA5006C7B67 /* TransactionDetailsInfoContainer.swift */; };
 		B5B53C9E2107CD1C006C7B67 /* TransactionDetailMessageLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5B53C9D2107CD1C006C7B67 /* TransactionDetailMessageLabel.swift */; };
 		B5B9132921419F84003A24E9 /* PhoneNumberKit+AreaCodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5B9132821419F84003A24E9 /* PhoneNumberKit+AreaCodes.swift */; };
+		B5B9E89823688B95009A3A94 /* UIActivity+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5B9E89723688B95009A3A94 /* UIActivity+Helpers.swift */; };
 		B5BA3A7722F22B0E001E41A7 /* TransactionSummaryCellProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5BA3A7622F22B0E001E41A7 /* TransactionSummaryCellProtocols.swift */; };
 		B5BA5247223AA38E001165FC /* CKMTransaction+FetchRequests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5BA5246223AA38E001165FC /* CKMTransaction+FetchRequests.swift */; };
 		B5BA825B232EF940007064DB /* TransactionHistoryDetailsViewController+CollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5BA825A232EF940007064DB /* TransactionHistoryDetailsViewController+CollectionView.swift */; };
@@ -2063,6 +2064,7 @@
 		B5B53C9B2107CAA5006C7B67 /* TransactionDetailsInfoContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TransactionDetailsInfoContainer.swift; path = CoinKeeper/Views/Subviews/TransactionDetailsInfoContainer.swift; sourceTree = SOURCE_ROOT; };
 		B5B53C9D2107CD1C006C7B67 /* TransactionDetailMessageLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDetailMessageLabel.swift; sourceTree = "<group>"; };
 		B5B9132821419F84003A24E9 /* PhoneNumberKit+AreaCodes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PhoneNumberKit+AreaCodes.swift"; sourceTree = "<group>"; };
+		B5B9E89723688B95009A3A94 /* UIActivity+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIActivity+Helpers.swift"; sourceTree = "<group>"; };
 		B5BA3A7622F22B0E001E41A7 /* TransactionSummaryCellProtocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionSummaryCellProtocols.swift; sourceTree = "<group>"; };
 		B5BA5246223AA38E001165FC /* CKMTransaction+FetchRequests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CKMTransaction+FetchRequests.swift"; sourceTree = "<group>"; };
 		B5BA825A232EF940007064DB /* TransactionHistoryDetailsViewController+CollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TransactionHistoryDetailsViewController+CollectionView.swift"; sourceTree = "<group>"; };
@@ -2487,6 +2489,7 @@
 				3B474156217E4E4E004DA223 /* URLRequest+Helpers.swift */,
 				3060489E218A670B009C6E86 /* UIView+Shadow.swift */,
 				B527AFBC2195CFF6007D9484 /* UIView+AccessibilityIdentifier.swift */,
+				B5B9E89723688B95009A3A94 /* UIActivity+Helpers.swift */,
 				3B44962721B16D1000A4E912 /* UIApplication+Screenshot.swift */,
 				300CD8F021FA668400BFF560 /* NSAttributedString+Helpers.swift */,
 				B56639CE22B1944200FA0EC3 /* UIButton+Helpers.swift */,
@@ -4594,6 +4597,7 @@
 				3BDFADFE2267B1FB0077DEF2 /* BlockstreamProvider.swift in Sources */,
 				B505A87C2076C79700AACB23 /* TransactionHistoryDetailLabel.swift in Sources */,
 				B5EEDAA02209E225009434DC /* WalletSyncOperationFactory.swift in Sources */,
+				B5B9E89823688B95009A3A94 /* UIActivity+Helpers.swift in Sources */,
 				3B7AC2B6235EA77100BD981A /* WyreURLParser.swift in Sources */,
 				3B287CB62100FB5600A43E57 /* AppCoordinator+ChildCoordinatorDelegate.swift in Sources */,
 				A2A530C220936A7F00B6F4DE /* ConfirmPaymentViewController.swift in Sources */,
