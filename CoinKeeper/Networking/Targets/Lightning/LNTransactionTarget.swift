@@ -24,6 +24,7 @@ public enum LNTransactionTarget: CoinNinjaTargetType {
   typealias ResponseType = LNTransactionResponse
 
   case pay(LNPayBody)
+  case preauthorize(LNCreatePaymentRequestBody)
   case withdraw(LNWithdrawBody)
 
   var basePath: String {
@@ -32,8 +33,9 @@ public enum LNTransactionTarget: CoinNinjaTargetType {
 
   var subPath: String? {
     switch self {
-    case .pay:      return "pay"
-    case .withdraw: return "withdraw"
+    case .pay:          return "pay"
+    case .preauthorize: return "pay/preauth"
+    case .withdraw:     return "withdraw"
     }
   }
 
@@ -43,14 +45,17 @@ public enum LNTransactionTarget: CoinNinjaTargetType {
 
   public var method: Method {
     switch self {
-    case .pay:      return .post
-    case .withdraw: return .post
+    case .pay,
+         .preauthorize,
+         .withdraw: return .post
     }
   }
 
   public var task: Task {
     switch self {
     case .pay(let body):
+      return .requestCustomJSONEncodable(body, encoder: customEncoder)
+    case .preauthorize(let body):
       return .requestCustomJSONEncodable(body, encoder: customEncoder)
     case .withdraw(let body):
       return .requestCustomJSONEncodable(body, encoder: customEncoder)
