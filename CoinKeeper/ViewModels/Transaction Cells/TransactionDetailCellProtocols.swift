@@ -150,7 +150,12 @@ extension TransactionDetailCellViewModelType {
       switch direction {
       case .out:
         switch walletTxType {
-        case .onChain:    return string(for: .dropBitSent)
+        case .onChain:
+          if invitationStatus == nil {
+            return string(for: .pending)
+          } else {
+            return string(for: .dropBitSent)
+          }
         case .lightning:  return string(for: .dropBitSentInvitePending)
         }
       case .in:
