@@ -89,7 +89,7 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate {
     successFailViewController.action = { [weak self] in
       guard let strongSelf = self else { return }
 
-      strongSelf.networkManager.createAddressRequest(body: inviteBody)
+      strongSelf.createAddressRequest(body: inviteBody, walletTxType: outgoingInvitationDTO.walletTxType)
         .done(in: bgContext) { response in
           strongSelf.handleAddressRequestCreationSuccess(response: response,
                                                          invitationDTO: outgoingInvitationDTO,
@@ -111,6 +111,20 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate {
 
     self.navigationController.topViewController()?.present(successFailViewController, animated: false) {
       successFailViewController.action?()
+    }
+  }
+
+  private func createAddressRequest(body: WalletAddressRequestBody, walletTxType: WalletTransactionType) -> Promise<WalletAddressRequestResponse> {
+    switch walletTxType {
+    case .onChain:
+      return networkManager.createAddressRequest(body: body)
+    case .lightning:
+      return networkManager.preauthorizeLightningPayment(sats: body.amount.btc)
+        .then { response -> Promise<WalletAddressRequestResponse> in
+          var preauthBody = body
+          preauthBody.preauthId = response.result.id
+          return self.networkManager.createAddressRequest(body: preauthBody)
+      }
     }
   }
 
