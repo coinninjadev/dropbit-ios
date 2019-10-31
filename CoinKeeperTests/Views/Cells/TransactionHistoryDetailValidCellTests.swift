@@ -280,6 +280,16 @@ class TransactionHistoryDetailValidCellTests: XCTestCase {
 
   func testStatusLabel_onChainDropBitReceived() {
     let counterparty = MockDetailCellVM.mockTwitterCounterparty()
+    let viewModel = MockDetailCellVM(walletTxType: .onChain, direction: .in,
+                                     status: .pending, counterpartyConfig: counterparty,
+                                     invitationStatus: .addressSent)
+    sut.configure(with: viewModel, delegate: mockDelegate)
+    XCTAssertEqual(sut.statusLabel.text, viewModel.string(for: .addressSent))
+    XCTAssertEqual(sut.statusLabel.textColor, UIColor.darkGrayText)
+  }
+
+  func testStatusLabel_onChainDropBitAddressReceivedSender() {
+    let counterparty = MockDetailCellVM.mockTwitterCounterparty()
     let viewModel = MockDetailCellVM(walletTxType: .onChain, direction: .out,
                                      status: .pending, counterpartyConfig: counterparty,
                                      invitationStatus: .addressSent)
