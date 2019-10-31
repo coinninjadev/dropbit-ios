@@ -147,19 +147,18 @@ extension TransactionDetailCellViewModelType {
     if isPendingTransferToLightning {
       return string(for: .loadLightningPending)
     } else if isDropBit {
-      switch direction {
-      case .out:
-        switch walletTxType {
-        case .onChain:
-          if invitationStatus == nil {
-            return string(for: .pending)
-          } else {
-            return onChainInvitationStatusText
-          }
-        case .lightning:  return string(for: .dropBitSentInvitePending)
+      switch walletTxType {
+      case .onChain:
+        if invitationStatus == nil {
+          return string(for: .pending)
+        } else {
+          return onChainInvitationStatusText
         }
-      case .in:
-        return string(for: .pending)
+      case .lightning:
+        switch direction {
+        case .out:  return string(for: .dropBitSentInvitePending)
+        case .in:   return string(for: .pending)
+        }
       }
     } else {
       return string(for: .pending)
