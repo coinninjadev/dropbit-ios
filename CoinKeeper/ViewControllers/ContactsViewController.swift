@@ -32,7 +32,7 @@ protocol ContactsViewControllerDelegate: ViewControllerDismissable, URLOpener {
                                           validSelectionDelegate: SelectedValidContactDelegate)
 
   func showAlertForInvalidContactOrPhoneNumber(contactName: String?, displayNumber: String)
-  func showAlertForNoTwitterAuthorization()
+  func showAlertForTwitterAPIError(_ error: Error)
   func viewController(_ viewController: UIViewController, searchForTwitterUsersWith searchTerm: String) -> Promise<[TwitterUser]>
   func viewControllerDidRequestDefaultTwitterFriends(_ viewController: UIViewController) -> Promise<[TwitterUser]>
   func viewController(_ viewController: UIViewController,
@@ -163,7 +163,7 @@ class ContactsViewController: PresentableViewController, StoryboardInitializable
         delegate.viewControllerDidRequestDefaultTwitterFriends(self)
           .done(on: .main) { self.twitterUserDataSource.updateDefaultFriends($0) }
           .catch { error in
-            self.delegate.showAlertForNoTwitterAuthorization()
+            self.delegate.showAlertForTwitterAPIError(error)
             log.error(error, message: "failed to fetch Twitter friends")
           }
           .finally { self.activityIndiciator.stopAnimating() }
