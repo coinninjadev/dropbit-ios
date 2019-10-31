@@ -154,7 +154,7 @@ extension TransactionDetailCellViewModelType {
           if invitationStatus == nil {
             return string(for: .pending)
           } else {
-            return string(for: .dropBitSent)
+            return onChainInvitationStatusText
           }
         case .lightning:  return string(for: .dropBitSentInvitePending)
         }
@@ -163,6 +163,26 @@ extension TransactionDetailCellViewModelType {
       }
     } else {
       return string(for: .pending)
+    }
+  }
+
+  private var onChainInvitationStatusText: String {
+    switch invitationProgressStep {
+    case 1:
+      return string(for: .dropBitSent)
+    case 2:
+      switch direction {
+      case .in:
+        return string(for: .addressSent)
+      case .out:
+        return string(for: .addressReceived)
+      }
+    case 3:
+      return string(for: .broadcasting)
+    case 4:
+      return string(for: .pending)
+    default:
+      return completedStatusText
     }
   }
 
@@ -544,6 +564,8 @@ enum DetailCellString: String {
   case pending = "Pending"
   case complete = "Complete"
   case dropBitSent = "DropBit Sent"
+  case addressSent = "Address Sent"
+  case addressReceived = "Address Received"
   case dropBitSentInvitePending = "DropBit Sent - Invite Pending"
   case dropBitCanceled = "DropBit Canceled"
   case transactionExpired = "Transaction Expired"
