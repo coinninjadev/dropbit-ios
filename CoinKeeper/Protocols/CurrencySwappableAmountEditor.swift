@@ -64,17 +64,16 @@ extension CurrencySwappableAmountEditor {
   }
 
   func moveCursorToCorrectLocationIfNecessary() {
-    guard editAmountViewModel.isEditingSats,
+    guard let textField = editAmountView.primaryAmountTextField,
+      editAmountViewModel.isEditingSats,
       let amount = SatsFormatter().stringWithoutSymbol(fromDecimal: editAmountViewModel.primaryAmount),
-      let newPosition = editAmountView.primaryAmountTextField.position(from:
-        editAmountView.primaryAmountTextField.beginningOfDocument, offset: amount.count) else { return }
+      let newPosition = textField.position(from: textField.beginningOfDocument, offset: amount.count)
+      else { return }
 
     if editAmountViewModel.primaryAmount == .zero {
-      editAmountView.primaryAmountTextField.selectedTextRange = editAmountView.primaryAmountTextField.textRange(
-        from: editAmountView.primaryAmountTextField.beginningOfDocument,
-        to: editAmountView.primaryAmountTextField.beginningOfDocument)
+      textField.selectedTextRange = textField.textRange(from: textField.beginningOfDocument, to: textField.beginningOfDocument)
     } else {
-      editAmountView.primaryAmountTextField.selectedTextRange = editAmountView.primaryAmountTextField.textRange(from: newPosition, to: newPosition)
+      textField.selectedTextRange = textField.textRange(from: newPosition, to: newPosition)
     }
   }
 
