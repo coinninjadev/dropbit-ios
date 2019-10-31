@@ -102,7 +102,7 @@ public class CKMInvitation: NSManagedObject {
 
       let newInvitation = CKMInvitation(withAddressRequestResponse: response, side: .received, insertInto: context)
 
-      if newInvitation.status == .addressSent, let address = response.address {
+      if newInvitation.status == .addressProvided, let address = response.address {
         newInvitation.addressProvidedToSender = address
       }
 
@@ -164,7 +164,7 @@ public class CKMInvitation: NSManagedObject {
 
     foundInvitation.setTxid(to: response.txid) // both txids are optional, placeholder txid is only on CKMTransaction
 
-    if foundInvitation.status == .addressSent, let address = response.address {
+    if foundInvitation.status == .addressProvided, let address = response.address {
       foundInvitation.addressProvidedToSender = address
     }
 
@@ -175,7 +175,7 @@ public class CKMInvitation: NSManagedObject {
     switch requestStatus {
     case .new:
       switch side {
-      case .received: return .addressSent
+      case .received: return .addressProvided
       case .sent:     return .requestSent
       }
 
@@ -411,7 +411,7 @@ extension CKMInvitation: DropBitReceiverPersistable {
   case requestSent // formerly pending
 
   /// receiver has updated the address request with an address, waiting for transaction
-  case addressSent // formerly accepted
+  case addressProvided // formerly accepted
 
   /// the transaction has been broadcast/received
   case completed
@@ -424,12 +424,12 @@ extension CKMInvitation: DropBitReceiverPersistable {
 
   public var description: String {
     switch self {
-    case .notSent:      return "not sent"
-    case .requestSent:  return "request sent"
-    case .addressSent:  return "address sent"
-    case .completed:    return "completed"
-    case .canceled:     return "canceled"
-    case .expired:      return "expired"
+    case .notSent:          return "not sent"
+    case .requestSent:      return "request sent"
+    case .addressProvided:  return "address sent"
+    case .completed:        return "completed"
+    case .canceled:         return "canceled"
+    case .expired:          return "expired"
     }
   }
 

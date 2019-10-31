@@ -241,7 +241,7 @@ extension TransactionDetailCellViewModelType {
         } else {
           return 4
         }
-      case .addressSent:
+      case .addressProvided:
         return 2
       default:
         return 1
@@ -359,7 +359,7 @@ extension TransactionDetailCellViewModelType {
       }
     }
 
-    if let status = invitationStatus, status == .addressSent, let counterpartyDesc = counterpartyDescription {
+    if let status = invitationStatus, status == .addressProvided, let counterpartyDesc = counterpartyDescription {
       let paymentDestination = (walletTxType == .onChain) ? "Bitcoin address" : "Lightning invoice"
       let messageWithLineBreaks = """
       Your \(paymentDestination) has been sent to
@@ -423,7 +423,7 @@ extension TransactionDetailCellViewModelType {
 
   private var isCancellable: Bool {
     guard let status = invitationStatus else { return false }
-    let cancellableStatuses: [InvitationStatus] = [.notSent, .requestSent, .addressSent]
+    let cancellableStatuses: [InvitationStatus] = [.notSent, .requestSent, .addressProvided]
     return (direction == .out && cancellableStatuses.contains(status))
   }
 

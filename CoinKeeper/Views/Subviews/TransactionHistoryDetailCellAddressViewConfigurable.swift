@@ -35,7 +35,7 @@ extension TransactionHistoryDetailCellAddressViewConfigurable {
   var shouldHideAddressViews: ShouldHideAddressViews {
     if let invitationStatus = invitationStatus {
       switch invitationStatus {
-      case .completed, .addressSent:
+      case .completed, .addressProvided:
         return ShouldHideAddressViews(containerView: false, statusLabel: true)
       case .canceled, .expired:
         return ShouldHideAddressViews(containerView: true, statusLabel: true)
@@ -80,7 +80,7 @@ extension TransactionHistoryDetailCellAddressViewConfigurable {
     case .lightning:    return "Waiting on Lightning invoice"
     }
 
-    case .addressSent:  return addressProvidedToSender ?? "Waiting for sender approval"
+    case .addressProvided:  return addressProvidedToSender ?? "Waiting for sender approval"
     default:            return nil
     }
   }

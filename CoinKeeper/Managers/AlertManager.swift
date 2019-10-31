@@ -224,7 +224,7 @@ class AlertManager: AlertManagerType {
     let senderDesc = update.senderDescription(phoneFormatter: self.phoneNumberFormatter)
     let dropbitTypeDescription = update.addressType == .btc ? "Bitcoin address" : "Lightning invoice"
     switch update.status {
-    case .addressSent:
+    case .addressProvided:
       let message = "We have sent a \(dropbitTypeDescription) to \(senderDesc) for \(update.fiatDescription) to be sent."
       self.showBanner(with: message, duration: .custom(8.0), alertKind: .info)
     case .completed:

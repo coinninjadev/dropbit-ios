@@ -84,7 +84,7 @@ struct MockDetailDataGenerator {
         switch inviteStatus {
         case .notSent:
           break
-        case .requestSent, .addressSent, .canceled, .expired:
+        case .requestSent, .addressProvided, .canceled, .expired:
           amtFactory = MockDetailCellVM.testAmountFactory(sats: sats)
         case .completed:
           amtFactory = MockDetailCellVM.testAmountFactory(sats: sats)
@@ -164,7 +164,7 @@ struct MockDetailDataGenerator {
       providedAddress = MockDropBitVM.mockValidBitcoinAddress()
     }
 
-    return MockDropBitVM(walletTxType: walletTxType, direction: .in, identity: identity, invitationStatus: .addressSent,
+    return MockDropBitVM(walletTxType: walletTxType, direction: .in, identity: identity, invitationStatus: .addressProvided,
                          transactionStatus: .pending, addressProvidedToSender: providedAddress)
   }
 
