@@ -53,7 +53,7 @@ struct LightningWalletValidationOptions: OptionSet {
   let rawValue: Int
 
   static let maxWalletValue = LightningWalletValidationOptions(rawValue: 1 << 0)
-  static let minReloadAmount = LightningWalletValidationOptions(rawValue: 1 << 2)
+  static let minReloadAmount = LightningWalletValidationOptions(rawValue: 1 << 1)
 }
 
 class LightningWalletAmountValidator: ValidatorType<CurrencyConverter> {
