@@ -426,7 +426,7 @@ extension CKMInvitation: DropBitReceiverPersistable {
     switch self {
     case .notSent:          return "not sent"
     case .requestSent:      return "request sent"
-    case .addressProvided:  return "address sent"
+    case .addressProvided:  return "address provided"
     case .completed:        return "completed"
     case .canceled:         return "canceled"
     case .expired:          return "expired"
