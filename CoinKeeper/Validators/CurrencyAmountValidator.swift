@@ -67,7 +67,7 @@ struct CurrencyAmountValidationOptions: OptionSet {
   let rawValue: Int
 
   static let invitationMaximum = CurrencyAmountValidationOptions(rawValue: 1 << 0)
-  static let usableBalance = CurrencyAmountValidationOptions(rawValue: 1 << 2)
+  static let usableBalance = CurrencyAmountValidationOptions(rawValue: 1 << 1)
 }
 
 /// Validating against a CurrencyConverter allows for validating either the USD or BTC values

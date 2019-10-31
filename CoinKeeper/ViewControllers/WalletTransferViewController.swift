@@ -209,7 +209,9 @@ class WalletTransferViewController: PresentableViewController, StoryboardInitial
         let walletBalances: WalletBalances = balanceDataSource?.balancesNetPending() ?? .empty
         let type = WalletTransactionType.lightning
         let value = CurrencyConverter(fromBtcTo: .USD, fromAmount: amount, rates: rateManager.exchangeRates)
-        try LightningWalletAmountValidator(balancesNetPending: walletBalances, walletType: type).validate(value: value)
+        try LightningWalletAmountValidator(balancesNetPending: walletBalances,
+                                           walletType: type,
+                                           ignoring: [.maxWalletValue]).validate(value: value)
 
         delegate.viewControllerNeedsFeeEstimates(self, btcAmount: amount)
           .get(on: .main) { response in
@@ -238,7 +240,8 @@ extension WalletTransferViewController: ConfirmViewDelegate {
   func viewDidConfirm() {
     do {
       try CurrencyAmountValidator(balancesNetPending: delegate.balancesNetPending(),
-                                  balanceToCheck: viewModel.walletTransactionType).validate(value:
+                                  balanceToCheck: viewModel.walletTransactionType,
+                                  ignoring: [.invitationMaximum]).validate(value:
                                     viewModel.currencyConverter)
     } catch {
       delegate.viewControllerNetworkError(error)
@@ -258,7 +261,9 @@ extension WalletTransferViewController: ConfirmViewDelegate {
     case .toOnChain(let btcAmount):
       guard let btcAmount = btcAmount else { return }
       do {
-        let lightningBalanceValidator = CurrencyAmountValidator(balancesNetPending: walletBalances, balanceToCheck: .lightning)
+        let lightningBalanceValidator = CurrencyAmountValidator(balancesNetPending: walletBalances,
+                                                                balanceToCheck: .lightning,
+                                                                ignoring: [.invitationMaximum])
         try lightningBalanceValidator.validate(value: viewModel.currencyConverter)
         delegate.viewControllerDidConfirmWithdraw(self, btcAmount: btcAmount)
       } catch {
