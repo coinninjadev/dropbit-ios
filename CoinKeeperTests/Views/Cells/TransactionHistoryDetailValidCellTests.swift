@@ -271,9 +271,30 @@ class TransactionHistoryDetailValidCellTests: XCTestCase {
   func testStatusLabel_onChainDropBitSent() {
     let counterparty = MockDetailCellVM.mockTwitterCounterparty()
     let viewModel = MockDetailCellVM(walletTxType: .onChain, direction: .out,
-                                     status: .pending, counterpartyConfig: counterparty)
+                                     status: .pending, counterpartyConfig: counterparty,
+                                     invitationStatus: .requestSent)
     sut.configure(with: viewModel, delegate: mockDelegate)
     XCTAssertEqual(sut.statusLabel.text, viewModel.string(for: .dropBitSent))
+    XCTAssertEqual(sut.statusLabel.textColor, UIColor.darkGrayText)
+  }
+
+  func testStatusLabel_onChainDropBitReceived() {
+    let counterparty = MockDetailCellVM.mockTwitterCounterparty()
+    let viewModel = MockDetailCellVM(walletTxType: .onChain, direction: .in,
+                                     status: .pending, counterpartyConfig: counterparty,
+                                     invitationStatus: .addressProvided)
+    sut.configure(with: viewModel, delegate: mockDelegate)
+    XCTAssertEqual(sut.statusLabel.text, viewModel.string(for: .addressSent))
+    XCTAssertEqual(sut.statusLabel.textColor, UIColor.darkGrayText)
+  }
+
+  func testStatusLabel_onChainDropBitAddressReceivedSender() {
+    let counterparty = MockDetailCellVM.mockTwitterCounterparty()
+    let viewModel = MockDetailCellVM(walletTxType: .onChain, direction: .out,
+                                     status: .pending, counterpartyConfig: counterparty,
+                                     invitationStatus: .addressProvided)
+    sut.configure(with: viewModel, delegate: mockDelegate)
+    XCTAssertEqual(sut.statusLabel.text, viewModel.string(for: .addressReceived))
     XCTAssertEqual(sut.statusLabel.textColor, UIColor.darkGrayText)
   }
 
@@ -518,7 +539,7 @@ class TransactionHistoryDetailValidCellTests: XCTestCase {
   }
 
   func testAddMemoButton_isHiddenIfIncomingNotCompleted() {
-    let viewModel = MockDetailCellVM(walletTxType: .onChain, direction: .in, status: .pending, invitationStatus: .addressSent, memo: nil)
+    let viewModel = MockDetailCellVM(walletTxType: .onChain, direction: .in, status: .pending, invitationStatus: .addressProvided, memo: nil)
     sut.configure(with: viewModel, delegate: mockDelegate)
     XCTAssertTrue(sut.addMemoButton.isHidden)
   }
@@ -555,7 +576,7 @@ class TransactionHistoryDetailValidCellTests: XCTestCase {
 
   func testMessageLabel_addressSentShowsLabel() {
     let counterparty = TransactionCellCounterpartyConfig(displayName: "Satoshi")
-    let viewModel = MockDetailCellVM(counterpartyConfig: counterparty, invitationStatus: .addressSent)
+    let viewModel = MockDetailCellVM(counterpartyConfig: counterparty, invitationStatus: .addressProvided)
     sut.configure(with: viewModel, delegate: mockDelegate)
     XCTAssertFalse(sut.messageLabel.isHidden)
     XCTAssertFalse(sut.messageContainer.isHidden)
@@ -641,7 +662,7 @@ class TransactionHistoryDetailValidCellTests: XCTestCase {
     let counterparty = MockDetailCellVM.mockTwitterCounterparty()
     let viewModel = MockDetailCellVM(walletTxType: .onChain, direction: .in, status: .pending,
                                      addressProvidedToSender: expectedAddress,
-                                     counterpartyConfig: counterparty, invitationStatus: .addressSent)
+                                     counterpartyConfig: counterparty, invitationStatus: .addressProvided)
     sut.configure(with: viewModel, delegate: mockDelegate)
     XCTAssertFalse(sut.addressView.isHidden)
     XCTAssertEqual(sut.addressView.addressTextButton.titleLabel?.text, expectedAddress)

@@ -147,17 +147,41 @@ extension TransactionDetailCellViewModelType {
     if isPendingTransferToLightning {
       return string(for: .loadLightningPending)
     } else if isDropBit {
-      switch direction {
-      case .out:
-        switch walletTxType {
-        case .onChain:    return string(for: .dropBitSent)
-        case .lightning:  return string(for: .dropBitSentInvitePending)
+      switch walletTxType {
+      case .onChain:
+        if invitationStatus == nil {
+          return string(for: .pending)
+        } else {
+          return onChainInvitationStatusText
         }
-      case .in:
-        return string(for: .pending)
+      case .lightning:
+        switch direction {
+        case .out:  return string(for: .dropBitSentInvitePending)
+        case .in:   return string(for: .pending)
+        }
       }
     } else {
       return string(for: .pending)
+    }
+  }
+
+  private var onChainInvitationStatusText: String {
+    switch invitationProgressStep {
+    case 1:
+      return string(for: .dropBitSent)
+    case 2:
+      switch direction {
+      case .in:
+        return string(for: .addressSent)
+      case .out:
+        return string(for: .addressReceived)
+      }
+    case 3:
+      return string(for: .broadcasting)
+    case 4:
+      return string(for: .pending)
+    default:
+      return completedStatusText
     }
   }
 
@@ -217,7 +241,7 @@ extension TransactionDetailCellViewModelType {
         } else {
           return 4
         }
-      case .addressSent:
+      case .addressProvided:
         return 2
       default:
         return 1
@@ -335,7 +359,7 @@ extension TransactionDetailCellViewModelType {
       }
     }
 
-    if let status = invitationStatus, status == .addressSent, let counterpartyDesc = counterpartyDescription {
+    if let status = invitationStatus, status == .addressProvided, let counterpartyDesc = counterpartyDescription {
       let paymentDestination = (walletTxType == .onChain) ? "Bitcoin address" : "Lightning invoice"
       let messageWithLineBreaks = """
       Your \(paymentDestination) has been sent to
@@ -399,7 +423,7 @@ extension TransactionDetailCellViewModelType {
 
   private var isCancellable: Bool {
     guard let status = invitationStatus else { return false }
-    let cancellableStatuses: [InvitationStatus] = [.notSent, .requestSent, .addressSent]
+    let cancellableStatuses: [InvitationStatus] = [.notSent, .requestSent, .addressProvided]
     return (direction == .out && cancellableStatuses.contains(status))
   }
 
@@ -539,6 +563,8 @@ enum DetailCellString: String {
   case pending = "Pending"
   case complete = "Complete"
   case dropBitSent = "DropBit Sent"
+  case addressSent = "Address Sent"
+  case addressReceived = "Address Received"
   case dropBitSentInvitePending = "DropBit Sent - Invite Pending"
   case dropBitCanceled = "DropBit Canceled"
   case transactionExpired = "Transaction Expired"

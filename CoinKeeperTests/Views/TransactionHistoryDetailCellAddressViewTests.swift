@@ -143,7 +143,7 @@ class TransactionHistoryDetailCellAddressViewTests: XCTestCase {
     XCTAssertFalse(self.sut.addressStatusLabel.isHidden, "addressStatusLabel should be visible")
     XCTAssertEqual(self.sut.addressTextButton.title(for: .normal), nil, "addressTextButton title should be nil")
 
-    let addressSentConfig = dropBitAddressViewConfig(status: .addressSent,
+    let addressSentConfig = dropBitAddressViewConfig(status: .addressProvided,
                                                      receiverAddress: mockAddress,
                                                      addressForSender: mockAddress)
     sut.configure(with: addressSentConfig)

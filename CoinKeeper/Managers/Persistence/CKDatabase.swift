@@ -97,7 +97,7 @@ class CKDatabase: PersistenceDatabaseType {
       allServerAddresses.forEach { context.delete($0) }
       serverDerivativePaths.forEach { context.delete($0) }
 
-      CKMInvitation.find(withStatuses: [.requestSent, .addressSent], in: context).forEach { $0.status = .canceled }
+      CKMInvitation.find(withStatuses: [.requestSent, .addressProvided], in: context).forEach { $0.status = .canceled }
       CKMInvitation.find(withStatuses: [.notSent], in: context).forEach { context.delete($0) }
 
       user = CKMUser.find(in: context)

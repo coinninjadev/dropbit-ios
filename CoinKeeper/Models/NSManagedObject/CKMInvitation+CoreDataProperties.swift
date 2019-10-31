@@ -87,7 +87,7 @@ extension CKMInvitation {
     switch status {
     case .notSent,
          .requestSent,
-         .addressSent:  return .pending
+         .addressProvided:  return .pending
     case .canceled:     return .canceled
     case .expired:      return .expired
     case .completed:    return .completed
