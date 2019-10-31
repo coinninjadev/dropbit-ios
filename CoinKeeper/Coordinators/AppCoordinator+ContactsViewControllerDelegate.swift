@@ -49,12 +49,12 @@ extension AppCoordinator: ContactsViewControllerDelegate {
     self.navigationController.topViewController()?.present(alert, animated: true)
   }
 
-  func showAlertForNoTwitterAuthorization() {
-    let message = """
-    In order to send bitcoin to a Twitter contact, you must authorize DropBit with your Twitter account.
-    """
-
-    let alert = self.alertManager.defaultAlert(withTitle: "No access to Twitter", description: message)
+  func showAlertForTwitterAPIError(_ error: Error) {
+    var message = "Please try again later or contact us for assistance. \n\nError: \(error.localizedDescription)"
+    if let twitterError = error as? TwitterAPIError {
+      message = twitterError.displayMessage
+    }
+    let alert = self.alertManager.defaultAlert(withTitle: "Cannot Access Twitter", description: message)
     self.navigationController.topViewController()?.present(alert, animated: true)
   }
 

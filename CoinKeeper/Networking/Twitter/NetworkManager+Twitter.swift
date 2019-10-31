@@ -66,7 +66,8 @@ extension NetworkManager: TwitterRequestable {
           }
       },
         failure: { (error: OAuthSwiftError) in
-          seal.reject(error)
+          let mappedError = self.mappedError(from: error)
+          seal.reject(mappedError)
       })
     }
   }
@@ -90,8 +91,25 @@ extension NetworkManager: TwitterRequestable {
           }
       },
         failure: { (error: OAuthSwiftError) in
-          seal.reject(error)
+          let mappedError = self.mappedError(from: error)
+          seal.reject(mappedError)
       })
+    }
+  }
+
+  private func mappedError(from error: OAuthSwiftError) -> Error {
+    guard let underlying = error.underlyingError,
+      let response = (underlying as NSError).userInfo["OAuthSwiftError.response"] as? HTTPURLResponse,
+      let headers = response.allHeaderFields as? [String: String]
+      else { return error }
+
+    if response.statusCode == 429,
+      let retryString = headers["x-rate-limit-reset"],
+      let retryTimestamp = Double(retryString) {
+      let retryDate = Date(timeIntervalSince1970: retryTimestamp)
+      return TwitterAPIError.rateLimitExceeded(retryDate)
+    } else {
+      return error
     }
   }
 

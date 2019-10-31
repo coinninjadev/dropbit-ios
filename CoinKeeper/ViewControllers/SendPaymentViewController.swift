@@ -189,6 +189,7 @@ CurrencySwappableAmountEditor {
     formatAddressScanView()
     setupPhoneNumberEntryView(textFieldEnabled: true)
     formatPhoneNumberEntryView()
+    updateRecipientContainerContentType()
     memoContainerView.delegate = self
     editAmountView.delegate = self
     refreshBothAmounts()
@@ -317,8 +318,6 @@ extension SendPaymentViewController {
     entryView.textField.keyboardType = .numberPad
     entryView.textField.textAlignment = .center
     entryView.textField.isUserInteractionEnabled = true
-
-    updateRecipientContainerContentType(forRecipient: viewModel.paymentRecipient)
   }
 
   fileprivate func setupMenuController() {
@@ -347,7 +346,7 @@ extension SendPaymentViewController {
     editAmountView.enableEditing(allowEditingAmount)
 
     phoneNumberEntryView.textField.text = ""
-    self.updateRecipientContainerContentType(forRecipient: viewModel.paymentRecipient)
+    updateRecipientContainerContentType()
 
     self.recipientDisplayNameLabel.text = viewModel.contact?.displayName
     self.recipientDisplayNumberLabel.text = viewModel.contact?.displayIdentity
@@ -482,43 +481,32 @@ extension SendPaymentViewController {
     }
   }
 
-  func updateRecipientContainerContentType(forRecipient paymentRecipient: PaymentRecipient?) {
-    DispatchQueue.main.async {
-      guard let recipient = paymentRecipient else {
-        let isLightning = self.viewModel.walletTransactionType == .lightning
-        let paymentTargetDesc = isLightning ? "Invoice" : "BTC Address"
-        self.showPaymentTargetRecipient(with: "To: \(paymentTargetDesc) or phone number")
-        return
-      }
-      switch recipient {
-      case .paymentTarget(let paymentTarget):
-        self.showPaymentTargetRecipient(with: paymentTarget)
-      case .phoneNumber(let contact):
-        self.delegate.viewController(self, checkForContactFromGenericContact: contact) { possibleValidatedContact in
-          if let validatedContact = possibleValidatedContact {
-            self.viewModel.paymentRecipient = PaymentRecipient.contact(validatedContact)
-            self.updateViewWithModel()
-            self.hideRecipientInputViews()
-          } else {
-            self.showPhoneEntryView(with: contact)
-          }
-        }
-      case .contact:
-        self.hideRecipientInputViews()
-      case .twitterContact(let twitterContact):
-        self.delegate.viewController(self, checkForVerifiedTwitterContact: twitterContact)
-          .done { _ in
-            self.viewModel.paymentRecipient = paymentRecipient
-            self.updateViewWithModel()
-            self.hideRecipientInputViews()
-          }
-          .catch { (error: Error) in
-            if let userProviderError = error as? UserProviderError {
-              // user query returned no known verification status
-              log.error(userProviderError, message: "no verification status found")
-            }
+  func updateRecipientContainerContentType() {
+    guard let recipient = self.viewModel.paymentRecipient else {
+      let isLightning = self.viewModel.walletTransactionType == .lightning
+      let paymentTargetDesc = isLightning ? "Invoice" : "BTC Address"
+      self.showPaymentTargetRecipient(with: "To: \(paymentTargetDesc) or phone number")
+      return
+    }
+
+    switch recipient {
+    case .paymentTarget(let paymentTarget):
+      self.showPaymentTargetRecipient(with: paymentTarget)
+    case .phoneNumber(let contact):
+      ///Try to match the associatedValue `contact: GenericContact` with a contact from the ContactCache.
+      ///Then update the viewModel.paymentRecipient to be of type `.contact` instead of `.phoneNumber`.
+      ///updateViewWithModel() will call this function again to apply the new `.contact` recipient type.
+      self.delegate.viewController(self, checkForContactFromGenericContact: contact) { possibleValidatedContact in
+        if let validatedContact = possibleValidatedContact {
+          self.viewModel.paymentRecipient = PaymentRecipient.contact(validatedContact)
+          self.updateViewWithModel()
+          self.hideRecipientInputViews()
+        } else {
+          self.showPhoneEntryView(with: contact)
         }
       }
+    case .contact, .twitterContact:
+      self.hideRecipientInputViews()
     }
   }
 
@@ -622,6 +610,7 @@ extension SendPaymentViewController: UITextFieldDelegate {
         let contact = GenericContact(phoneNumber: globalPhoneNumber, formatted: formattedPhoneNumber)
         let recipient = PaymentRecipient.phoneNumber(contact)
         self.viewModel.paymentRecipient = recipient
+        self.updateRecipientContainerContentType()
       }
     } catch {
       self.delegate.showAlertForInvalidContactOrPhoneNumber(contactName: nil, displayNumber: text)
