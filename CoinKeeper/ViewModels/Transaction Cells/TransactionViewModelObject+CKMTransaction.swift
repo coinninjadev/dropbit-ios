@@ -101,7 +101,7 @@ extension CKMTransaction: TransactionSummaryCellViewModelObject {
     return temporarySentTransaction != nil
   }
 
-  private var statusForTransaction: TransactionStatus {
+  var statusForTransaction: TransactionStatus {
     if isTemporaryTransaction {
       return .broadcasting
     } else {
