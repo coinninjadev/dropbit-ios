@@ -90,7 +90,7 @@ extension CKMInvitation {
          .addressProvided:  return .pending
     case .canceled:     return .canceled
     case .expired:      return .expired
-    case .completed:    return .completed
+    case .completed:    return transaction?.statusForTransaction ?? .completed
     }
   }
 
