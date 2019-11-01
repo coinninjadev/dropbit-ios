@@ -9,9 +9,31 @@
 import UIKit
 
 class PresentationController: UIPresentationController {
-  private let shortTopDistance: CGFloat = 32.0
-  private let mediumTopDistance: CGFloat = 44.0
-  private let tallTopDistance: CGFloat = 66.0
+
+  private var shortTopDistance: CGFloat {
+    if #available(iOS 13, *) {
+      return 72.0
+    } else {
+      return 32.0
+    }
+  }
+
+  private var mediumTopDistance: CGFloat {
+    if #available(iOS 13, *) {
+      return 72.0
+    } else {
+      return 44.0
+    }
+  }
+
+  private var tallTopDistance: CGFloat {
+    if #available(iOS 13, *) {
+      return 100.0
+    } else {
+      return 66.0
+    }
+  }
+
   private let dimmingView: UIView = {
     let dimmingView = UIView()
     dimmingView.backgroundColor = UIColor(white: 0, alpha: 0.5)
