@@ -48,6 +48,10 @@ struct SharedPayloadDTO {
     return sharingDesired && addressPubKeyState.allowsSharing
   }
 
+  var sharingObservantMemo: String {
+    return shouldShare ? (memo ?? "") : ""
+  }
+
   init(addressPubKeyState: AddressPublicKeyState,
        walletTxType: WalletTransactionType,
        sharingDesired: Bool,
