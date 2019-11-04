@@ -244,6 +244,23 @@ class AlertManager: AlertManagerType {
     }
   }
 
+  private func sendDebugInfoAlertActionConfig(with action: @escaping CKCompletion) -> AlertActionConfiguration{
+    return AlertActionConfiguration(title: "Send Debug Info", style: .default, action: {
+      action()
+    })
+  }
+
+  func debugAlert(with error: Error, debugAction action: @escaping CKCompletion) -> AlertControllerType {
+    let message = """
+      An error occurred: \(error.localizedDescription).
+      If this problem continues, please contact support with your debug information
+    """
+    return createAlert(withTitle: "Error", description: message,
+                       image: nil,
+                       style: .alert,
+                       actionConfigs: [okAlertActionConfig, sendDebugInfoAlertActionConfig(with: action)])
+  }
+
   func showBannerAlert(for response: MessageResponse, completion: CKCompletion? = nil) {
     var title: String = response.body, kind: CKBannerViewKind
 
@@ -296,14 +313,16 @@ class AlertManager: AlertManagerType {
     case alert, walkthrough
   }
 
+  private var okAlertActionConfig: AlertActionConfigurationType {
+    return AlertActionConfiguration(title: "OK", style: .cancel, action: nil)
+  }
+
   func defaultAlert(withTitle title: String, description: String?) -> AlertControllerType {
-    let okConfig = AlertActionConfiguration(title: "OK", style: .cancel, action: nil)
-    let configs = [okConfig]
     return alert(withTitle: title,
                  description: description,
                  image: nil,
                  style: .alert,
-                 actionConfigs: configs)
+                 actionConfigs: [okAlertActionConfig])
   }
 
   func alertActionSheet(withTitle title: String?,

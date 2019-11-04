@@ -28,6 +28,7 @@ protocol AlertManagerType: CKBannerViewDelegate {
     ) -> AlertControllerType
 
   func alert(from viewModel: AlertControllerViewModel) -> AlertControllerType
+  func debugAlert(with error: Error, debugAction action: @escaping CKCompletion) -> AlertControllerType
 
   func alert(
     withTitle title: String,
