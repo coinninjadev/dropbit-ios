@@ -88,6 +88,22 @@ struct SharedPayloadV2: SharedPayloadCodable {
                                           dropbitMe: nil,
                                           avatar: nil)
   }
+
+  init(preauthInvitationDTO invitationDTO: OutgoingInvitationDTO, senderIdentity: UserIdentityBody) throws {
+    guard let payloadDTO = invitationDTO.sharedPayloadDTO else {
+      throw CKPersistenceError.missingValue(key: "sharedPayloadDTO")
+    }
+
+    guard let amountInfo = payloadDTO.amountInfo else {
+      throw CKPersistenceError.missingValue(key: "amountInfo")
+    }
+
+    self.init(txid: "",
+              memo: payloadDTO.sharingObservantMemo,
+              amountInfo: amountInfo,
+              senderIdentity: senderIdentity)
+  }
+
 }
 
 /* Sample V2 Payload

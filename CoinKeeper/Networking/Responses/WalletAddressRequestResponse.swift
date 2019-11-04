@@ -158,6 +158,7 @@ public struct WalletAddressRequestResponse: ResponseDecodable, CustomStringConve
   static let duplicateDeliveryID = "duplicate"
 
   var deliveryStatus: String?
+  var preauthId: String?
 
   /// Sent-only property
   var walletId: String?
@@ -189,7 +190,7 @@ public struct WalletAddressRequestResponse: ResponseDecodable, CustomStringConve
   }
 
   static var optionalStringKeys: [WritableKeyPath<WalletAddressRequestResponse, String?>] {
-    return [\.address, \.addressPubkey, \.addressType, \.txid, \.identityHash, \.status, \.deliveryId, \.walletId]
+    return [\.address, \.addressPubkey, \.addressType, \.txid, \.identityHash, \.status, \.deliveryId, \.walletId, \.preauthId]
   }
 
 }

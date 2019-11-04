@@ -206,7 +206,7 @@ class LightningInvoiceViewModelObject: LightningTransactionViewModelObject {
 
   override init?(walletEntry: CKMWalletEntry) {
     guard let ledgerEntry = walletEntry.ledgerEntry,
-      ledgerEntry.request != nil, ledgerEntry.type == .lightning, ledgerEntry.status != .completed,
+      ledgerEntry.cleanedRequest != nil, ledgerEntry.type == .lightning, ledgerEntry.status != .completed,
       walletEntry.invitation == nil
       else { return nil }
 

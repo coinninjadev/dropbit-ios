@@ -75,6 +75,11 @@ extension CKMLNLedgerEntry {
     set { walletEntry?.memo = newValue }
   }
 
+  var cleanedRequest: String? {
+    guard request != "PreAuth" else { return nil }
+    return request
+  }
+
   var transactionStatus: TransactionStatus {
     switch status {
     case .pending:    return .pending

@@ -89,7 +89,7 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate {
     successFailViewController.action = { [weak self] in
       guard let strongSelf = self else { return }
 
-      strongSelf.createAddressRequest(body: inviteBody, walletTxType: outgoingInvitationDTO.walletTxType)
+      strongSelf.createAddressRequest(body: inviteBody, outgoingInvitationDTO: outgoingInvitationDTO)
         .done(in: bgContext) { response in
           strongSelf.handleAddressRequestCreationSuccess(response: response,
                                                          invitationDTO: outgoingInvitationDTO,
@@ -114,17 +114,25 @@ extension AppCoordinator: ConfirmPaymentViewControllerDelegate {
     }
   }
 
-  private func createAddressRequest(body: WalletAddressRequestBody, walletTxType: WalletTransactionType) -> Promise<WalletAddressRequestResponse> {
-    switch walletTxType {
+  private func createAddressRequest(body: WalletAddressRequestBody,
+                                    outgoingInvitationDTO: OutgoingInvitationDTO) -> Promise<WalletAddressRequestResponse> {
+    switch outgoingInvitationDTO.walletTxType {
     case .onChain:
-      return networkManager.createAddressRequest(body: body)
+      return networkManager.createAddressRequest(body: body, preauthId: nil)
+
     case .lightning:
-      return networkManager.preauthorizeLightningPayment(sats: body.amount.btc)
-        .then { response -> Promise<WalletAddressRequestResponse> in
-          var preauthBody = body
-          preauthBody.preauthId = response.result.id
-          return self.networkManager.createAddressRequest(body: preauthBody)
-      }
+      return self.base64SharedPayload(from: body, invitationDTO: outgoingInvitationDTO)
+      .then { self.networkManager.preauthorizeLightningPayment(sats: body.amount.btc, encodedPayload: $0) }
+      .then { self.networkManager.createAddressRequest(body: body, preauthId: $0.result.id) }
+    }
+  }
+
+  private func base64SharedPayload(from body: WalletAddressRequestBody, invitationDTO: OutgoingInvitationDTO) -> Promise<String> {
+    return Promise<String> { seal in
+      let payload = try SharedPayloadV2(preauthInvitationDTO: invitationDTO, senderIdentity: body.sender)
+      let payloadData = try payload.encoded()
+      let encodedPayload = payloadData.base64EncodedString()
+      seal.fulfill(encodedPayload)
     }
   }
 
