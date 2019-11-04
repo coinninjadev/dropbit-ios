@@ -35,6 +35,7 @@ extension CKMInvitation {
   @NSManaged public var transaction: CKMTransaction?
   @NSManaged public var walletEntry: CKMWalletEntry?
   @NSManaged public var addressProvidedToSender: String?
+  @NSManaged public var preauthId: String?
 
   /**
    Txid of the broadcasted transaction, supplied by sender. Use this to link the eventual transaction with this invitation.

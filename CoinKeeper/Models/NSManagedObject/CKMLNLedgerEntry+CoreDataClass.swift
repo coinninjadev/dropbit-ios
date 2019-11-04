@@ -35,7 +35,16 @@ public class CKMLNLedgerEntry: NSManagedObject {
       ///CKMWalletEntry with a temporary sent transaction matching the id
       let maybeFoundTempWalletEntry = CKMWalletEntry.findTemporary(withId: id, in: context)
 
-      newEntry.walletEntry = maybeFoundTempWalletEntry ?? CKMWalletEntry(wallet: wallet, sortDate: createdAt, insertInto: context)
+      ///CKMWalletEntry with a preauthorized lightning invitation matching the id
+      let idIsPreauth = id.starts(with: LNTransactionResult.preauthPrefix)
+      let maybePreauthWalletEntry: CKMWalletEntry? = idIsPreauth ? CKMWalletEntry.find(withPreauthId: id, in: context) : nil
+
+      if let existingWalletEntry = maybeFoundTempWalletEntry ?? maybePreauthWalletEntry {
+        newEntry.walletEntry = existingWalletEntry
+      } else {
+        newEntry.walletEntry = CKMWalletEntry(wallet: wallet, sortDate: createdAt, insertInto: context)
+      }
+
       return newEntry
     }
   }

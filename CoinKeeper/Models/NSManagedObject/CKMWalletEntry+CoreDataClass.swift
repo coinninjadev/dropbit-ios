@@ -32,6 +32,19 @@ public class CKMWalletEntry: NSManagedObject {
     }
   }
 
+  static func find(withPreauthId preauthId: String, in context: NSManagedObjectContext) -> CKMWalletEntry? {
+    let fetchRequest: NSFetchRequest<CKMWalletEntry> = CKMWalletEntry.fetchRequest()
+    fetchRequest.predicate = CKPredicate.WalletEntry.preauthId(preauthId)
+    fetchRequest.fetchLimit = 1
+
+    do {
+      return try context.fetch(fetchRequest).first
+    } catch {
+      log.error(error, message: "Failed to fetch temporary sent transaction for wallet entry")
+      return nil
+    }
+  }
+
 }
 
 extension CKMWalletEntry: InvitationParent { }

@@ -29,6 +29,7 @@ public class CKMInvitation: NSManagedObject {
     self.walletTxTypeCase = WalletTransactionType(addressType: response.addressTypeCase)
     let requestStatus = response.statusCase ?? .new
     self.status = CKMInvitation.statusToPersist(for: requestStatus, side: side)
+    self.preauthId = response.metadata?.preauthId
 
     // Associate this invitation with phone number of the opposite side
     let counterparty: MetadataParticipant?
@@ -157,6 +158,7 @@ public class CKMInvitation: NSManagedObject {
     guard let foundInvitation = find(withId: queryId, in: context) else { return nil }
     foundInvitation.sentDate = response.createdAt
     foundInvitation.id = response.id
+    foundInvitation.preauthId = response.metadata?.preauthId
 
     let requestStatus = response.statusCase ?? .new
     let statusToPersist = CKMInvitation.statusToPersist(for: requestStatus, side: side)
@@ -216,7 +218,7 @@ public class CKMInvitation: NSManagedObject {
         let invite = try context.fetch(fetchRequest).first
         ckmInvitation = invite
       } catch {
-        log.info("failed to find invitatio with txid: \(txid)")
+        log.info("failed to find invitation with txid: \(txid)")
       }
     }
     return ckmInvitation
