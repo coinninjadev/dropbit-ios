@@ -1,15 +1,17 @@
 //
-//  AppCoordinator+SupportViewControllerDelegate.swift
+//  AppCoordinator+DebugDelegate.swift
 //  DropBit
 //
-//  Created by BJ Miller on 5/29/19.
+//  Created by Mitchell Malleo on 11/4/19.
 //  Copyright © 2019 Coin Ninja, LLC. All rights reserved.
 //
 
+import Foundation
 import UIKit
 import MessageUI
 
-extension AppCoordinator: SupportViewControllerDelegate {
+extension AppCoordinator: DebugDelegate {
+
   func viewControllerSendDebuggingInfo(_ viewController: UIViewController) {
     // show confirmation first
     let message = "The debug report will not include any data allowing us access to your Bitcoin. However, " +

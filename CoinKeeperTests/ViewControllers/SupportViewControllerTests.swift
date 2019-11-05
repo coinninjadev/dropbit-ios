@@ -91,6 +91,9 @@ class SupportViewControllerTests: XCTestCase {
 
   // MARK: private
   class MockCoordinator: SupportViewControllerDelegate {
+    func viewControllerDidSelectClose(_ viewController: UIViewController, completion: CKCompletion?) {}
+    func viewControllerDidSelectCloseWithToggle(_ viewController: UIViewController) {}
+
     var url: URL?
     var wasAskedToOpenURL = false
     func viewController(_ viewController: UIViewController, didRequestOpenURL url: URL) {

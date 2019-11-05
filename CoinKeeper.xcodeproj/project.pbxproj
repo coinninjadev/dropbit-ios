@@ -375,7 +375,6 @@
 		3BCBFCB8229EAE8800F633BA /* SupportViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BCBFCB7229EAE8800F633BA /* SupportViewController.swift */; };
 		3BCBFCBA229EB05000F633BA /* SettingsTitleLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BCBFCB9229EB05000F633BA /* SettingsTitleLabel.swift */; };
 		3BCBFCC0229EBA6800F633BA /* SupportViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BCBFCBF229EBA6800F633BA /* SupportViewControllerTests.swift */; };
-		3BCBFCC2229EBF2200F633BA /* AppCoordinator+SupportViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BCBFCC1229EBF2200F633BA /* AppCoordinator+SupportViewControllerDelegate.swift */; };
 		3BCBFCC6229EE91E00F633BA /* SettingsCellTitleLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BCBFCC5229EE91E00F633BA /* SettingsCellTitleLabel.swift */; };
 		3BCBFCC8229EF15400F633BA /* SettingsBaseCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BCBFCC7229EF15400F633BA /* SettingsBaseCell.swift */; };
 		3BCBFCCB229EF71D00F633BA /* SettingsRecoveryWordsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BCBFCC9229EF71D00F633BA /* SettingsRecoveryWordsCell.swift */; };
@@ -499,6 +498,10 @@
 		A22F26B2235FB21400E5544E /* SF-Pro-Display-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = A22F26B1235FB21400E5544E /* SF-Pro-Display-Medium.otf */; };
 		A230F1C622D664360017BC7A /* NewsData.swift in Sources */ = {isa = PBXBuildFile; fileRef = A230F1C522D664360017BC7A /* NewsData.swift */; };
 		A230F1CA22DCB2F40017BC7A /* AppCoordinator+WalletOverviewViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A230F1C922DCB2F30017BC7A /* AppCoordinator+WalletOverviewViewControllerDelegate.swift */; };
+		A2317009237087E70047BCD1 /* AppCoordinator+DebugDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2317008237087E70047BCD1 /* AppCoordinator+DebugDelegate.swift */; };
+		A231700B237088510047BCD1 /* DebugDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A231700A237088510047BCD1 /* DebugDelegate.swift */; };
+		A231700D23708AB50047BCD1 /* AppCoordinator+ViewControllerURLDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A231700C23708AB50047BCD1 /* AppCoordinator+ViewControllerURLDelegate.swift */; };
+		A231700F2370B5340047BCD1 /* AppCoordinator+SupportVIewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A231700E2370B5340047BCD1 /* AppCoordinator+SupportVIewControllerDelegate.swift */; };
 		A235898B232165A5002C3FC0 /* AppCoordinator+PaymentSendingDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A235898A232165A5002C3FC0 /* AppCoordinator+PaymentSendingDelegate.swift */; };
 		A235898D2321661A002C3FC0 /* PaymentSendingDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A235898C2321661A002C3FC0 /* PaymentSendingDelegate.swift */; };
 		A24525352100EBC80024D5F8 /* Gifu.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A24525342100EBC80024D5F8 /* Gifu.framework */; };
@@ -1466,7 +1469,6 @@
 		3BCBFCB7229EAE8800F633BA /* SupportViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupportViewController.swift; sourceTree = "<group>"; };
 		3BCBFCB9229EB05000F633BA /* SettingsTitleLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTitleLabel.swift; sourceTree = "<group>"; };
 		3BCBFCBF229EBA6800F633BA /* SupportViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupportViewControllerTests.swift; sourceTree = "<group>"; };
-		3BCBFCC1229EBF2200F633BA /* AppCoordinator+SupportViewControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppCoordinator+SupportViewControllerDelegate.swift"; sourceTree = "<group>"; };
 		3BCBFCC5229EE91E00F633BA /* SettingsCellTitleLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsCellTitleLabel.swift; sourceTree = "<group>"; };
 		3BCBFCC7229EF15400F633BA /* SettingsBaseCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsBaseCell.swift; sourceTree = "<group>"; };
 		3BCBFCC9229EF71D00F633BA /* SettingsRecoveryWordsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsRecoveryWordsCell.swift; sourceTree = "<group>"; };
@@ -1591,6 +1593,10 @@
 		A22F26B1235FB21400E5544E /* SF-Pro-Display-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Display-Medium.otf"; sourceTree = "<group>"; };
 		A230F1C522D664360017BC7A /* NewsData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsData.swift; sourceTree = "<group>"; };
 		A230F1C922DCB2F30017BC7A /* AppCoordinator+WalletOverviewViewControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppCoordinator+WalletOverviewViewControllerDelegate.swift"; sourceTree = "<group>"; };
+		A2317008237087E70047BCD1 /* AppCoordinator+DebugDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppCoordinator+DebugDelegate.swift"; sourceTree = "<group>"; };
+		A231700A237088510047BCD1 /* DebugDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugDelegate.swift; sourceTree = "<group>"; };
+		A231700C23708AB50047BCD1 /* AppCoordinator+ViewControllerURLDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppCoordinator+ViewControllerURLDelegate.swift"; sourceTree = "<group>"; };
+		A231700E2370B5340047BCD1 /* AppCoordinator+SupportVIewControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppCoordinator+SupportVIewControllerDelegate.swift"; sourceTree = "<group>"; };
 		A235898A232165A5002C3FC0 /* AppCoordinator+PaymentSendingDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppCoordinator+PaymentSendingDelegate.swift"; sourceTree = "<group>"; };
 		A235898C2321661A002C3FC0 /* PaymentSendingDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentSendingDelegate.swift; sourceTree = "<group>"; };
 		A24525342100EBC80024D5F8 /* Gifu.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Gifu.framework; path = Carthage/Build/iOS/Gifu.framework; sourceTree = "<group>"; };
@@ -2401,7 +2407,6 @@
 				3BA9F5FE208F642F0047C213 /* AppCoordinator+ScanQRViewControllerDelegate.swift */,
 				3BA9F600208F6CC50047C213 /* AppCoordinator+SendPaymentViewControllerDelegate.swift */,
 				3BA9F606208F6D2A0047C213 /* AppCoordinator+DrawerViewControllerDelegate.swift */,
-				3BCBFCC1229EBF2200F633BA /* AppCoordinator+SupportViewControllerDelegate.swift */,
 				3BA9F5F6208F62DA0047C213 /* AppCoordinator+StartViewControllerDelegate.swift */,
 				A29CE0CE2099FD6800761B91 /* AppCoordinator+SuccessFailViewControllerDelegate.swift */,
 				B53804FB209A4C070096DA33 /* AppCoordinator+URLOpener.swift */,
@@ -2443,6 +2448,9 @@
 				A208514F232EA185007843DE /* AppCoordinator+TwitterTweetingDelegate.swift */,
 				A2AE30CA234E385B00B65D50 /* AppCoordinator+AnalyticsMangerAccessType.swift */,
 				A21D09C9235DFC6E003BE2A6 /* AppCoordinator+MemoEntryDelegate.swift */,
+				A2317008237087E70047BCD1 /* AppCoordinator+DebugDelegate.swift */,
+				A231700C23708AB50047BCD1 /* AppCoordinator+ViewControllerURLDelegate.swift */,
+				A231700E2370B5340047BCD1 /* AppCoordinator+SupportVIewControllerDelegate.swift */,
 			);
 			path = Coordinators;
 			sourceTree = "<group>";
@@ -3360,6 +3368,7 @@
 				A2085151232EA210007843DE /* TweetDelegate.swift */,
 				A2AE30C8234E37B900B65D50 /* AnalyticsManagerAccessType.swift */,
 				A21D09CB235DFCA1003BE2A6 /* MemoEntryDelegate.swift */,
+				A231700A237088510047BCD1 /* DebugDelegate.swift */,
 			);
 			path = Protocols;
 			sourceTree = "<group>";
@@ -4678,6 +4687,7 @@
 				403AAD5E2063513900F7A2BA /* Model.xcdatamodeld in Sources */,
 				30C0974E219C64F80064F19E /* Int+NSDecimalNumber.swift in Sources */,
 				3B598FEE23196BA800FF50CD /* LightningUpgradeCoordinator+LightningUpgradeStatusViewControllerDelegate.swift in Sources */,
+				A231700F2370B5340047BCD1 /* AppCoordinator+SupportVIewControllerDelegate.swift in Sources */,
 				3B219B3922C3B9EE007EDFCC /* Data+PrettyPrinted.swift in Sources */,
 				307DF119214C297E00260369 /* MessageResponse.swift in Sources */,
 				B59C9E20230DB86100E4F3C8 /* NSLayoutConstraint+Helpers.swift in Sources */,
@@ -4786,6 +4796,7 @@
 				A2DBC50222D78DAF008C532B /* CurrencySwappableEditAmountView.swift in Sources */,
 				B56512F62153DDA500A5D044 /* WalletCheckInTarget.swift in Sources */,
 				B59C9E24230EC86C00E4F3C8 /* TransactionDirectionView.swift in Sources */,
+				A231700B237088510047BCD1 /* DebugDelegate.swift in Sources */,
 				3BCBFCCB229EF71D00F633BA /* SettingsRecoveryWordsCell.swift in Sources */,
 				B5C8F5C9216D39A300E3E85B /* DeviceEndpointResponse.swift in Sources */,
 				B54A421B2080066E005B40A9 /* TransactionDetailBottomButton.swift in Sources */,
@@ -4992,6 +5003,7 @@
 				B52E0BD4233BD07300BA1B0C /* MockAddressViewConfig.swift in Sources */,
 				3BF41AB8207694EA008B3D0A /* RequestPayViewModel.swift in Sources */,
 				308F6F0B2180B6260094D6CB /* AddressTableViewCell.swift in Sources */,
+				A231700D23708AB50047BCD1 /* AppCoordinator+ViewControllerURLDelegate.swift in Sources */,
 				3093B08221F10E9D00B3EF9C /* SerialQueueManager.swift in Sources */,
 				B59E2C9322E8B4B400A75AFE /* LightningTooltipListItem.swift in Sources */,
 				3B5220F32087B29600376DD8 /* UIScreen+RelativeSize.swift in Sources */,
@@ -5044,7 +5056,6 @@
 				30E96A2D2178F83A008079B8 /* VerificationStatusViewController.swift in Sources */,
 				B59E2CA322E8F4C000A75AFE /* LNDecodePaymentRequestResponse.swift in Sources */,
 				B552EDF5211E33D000332BB5 /* QRCodeGenerator.swift in Sources */,
-				3BCBFCC2229EBF2200F633BA /* AppCoordinator+SupportViewControllerDelegate.swift in Sources */,
 				B505A87A2076C5BE00AACB23 /* TransactionHistoryCounterpartyLabel.swift in Sources */,
 				3B47037D2253B67200977784 /* SendReceiveActionView.swift in Sources */,
 				B50E18462149A1460091EEDA /* UserResponse.swift in Sources */,
@@ -5217,6 +5228,7 @@
 				B52D4524208E5ECA00A56A5C /* ExchangeRateUpdatable.swift in Sources */,
 				3BFBD15620E56A5500BC48DB /* CKMTransaction+SampleData.swift in Sources */,
 				B52A25C72077D02100F636A1 /* UITableView+ReusableView.swift in Sources */,
+				A2317009237087E70047BCD1 /* AppCoordinator+DebugDelegate.swift in Sources */,
 				3B474163217FB589004DA223 /* SubscriptionAvailableTopicResponse.swift in Sources */,
 				6B8253F8F9ED1EF8937C46A3 /* TwitterOAuthStorage.swift in Sources */,
 				6B825A4324515C70495D2ECC /* TwitterOAuthError.swift in Sources */,

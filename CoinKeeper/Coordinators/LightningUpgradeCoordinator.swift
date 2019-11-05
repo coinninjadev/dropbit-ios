@@ -9,7 +9,7 @@
 import Foundation
 import CNBitcoinKit
 
-protocol LightningUpgradeCoordinatorDelegate: AnyObject {
+protocol LightningUpgradeCoordinatorDelegate: DebugDelegate {
   func coordinatorWillCompleteUpgrade(_ coordinator: LightningUpgradeCoordinator)
   func coordinatorDidCompleteUpgrade(_ coordinator: LightningUpgradeCoordinator)
   func coordinatorRequestedVerifyUpgradedWords(_ coordinator: LightningUpgradeCoordinator)
@@ -39,7 +39,14 @@ class LightningUpgradeCoordinator: ChildCoordinatorType {
 
     parent.launchStateManager.upgradeInProgress = true
     let context = parent.persistenceManager.createBackgroundContext()
-    parent.serialQueueManager.walletSyncOperationFactory?.performOnChainOnlySync(in: context)
+
+    guard let walletSyncOperationFactory = parent.serialQueueManager.walletSyncOperationFactory else {
+      log.info("~*~*~*~*~ Factory is nil")
+      presentDebugInfoAlert(withController: controller)
+      return
+    }
+
+    walletSyncOperationFactory.performOnChainOnlySync(in: context)
       .get(in: context) { _ in
         do {
           try context.saveRecursively()
@@ -70,8 +77,27 @@ class LightningUpgradeCoordinator: ChildCoordinatorType {
     properties.forEach { self.parent.analyticsManager.track(property: $0) }
   }
 
+  private func presentDebugInfoAlert(withController controller: UIViewController) {
+    log.info("~*~*~*~*~ Has wallet words v1: \(parent.persistenceManager.keychainManager.retrieveValue(for: .walletWords) != nil)")
+    log.info("~*~*~*~*~ Has wallet words v2: \(parent.persistenceManager.keychainManager.retrieveValue(for: .walletWordsV2) != nil)")
+    log.info("~*~*~*~*~ Has pin: \(parent.persistenceManager.keychainManager.retrieveValue(for: .userPin) != nil)")
+    log.info("~*~*~*~*~ Is iCloud restore: \(parent.launchStateManager.isFirstTimeAfteriCloudRestore())")
+
+    let alert = parent.alertManager.debugAlert(with: SyncRoutineError.missingWalletManager) {
+      self.coordinationDelegate?.viewControllerSendDebuggingInfo(controller)
+    }
+
+    DispatchQueue.main.async {
+      controller.present(alert, animated: true, completion: nil)
+    }
+  }
+
   private func proceedWithUpgrade(presentedController controller: LightningUpgradePageViewController) {
-    guard let wallet = parent.walletManager?.wallet else { return }
+    guard let wallet = parent.walletManager?.wallet else {
+      log.info("~*~*~*~*~ Parent's wallet manager is nil")
+      presentDebugInfoAlert(withController: controller)
+      return
+    }
 
     let feeRate = parent.persistenceManager.brokers.checkIn.cachedBetterFee
     var coinType: CoinType = .MainNet
@@ -110,6 +136,9 @@ class LightningUpgradeCoordinator: ChildCoordinatorType {
             let alert = self.parent.alertManager.alert(from: alertVM)
             self.parent.navigationController.topViewController()?.present(alert, animated: true, completion: nil)
           }
+        } else {
+          log.info("~*~*~*~*~ Unknown error type \(error.localizedDescription)")
+          self.presentDebugInfoAlert(withController: controller)
         }
       }
   }

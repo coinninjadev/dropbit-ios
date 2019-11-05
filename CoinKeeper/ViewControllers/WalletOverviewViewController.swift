@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 import MMDrawerController
 
-protocol WalletOverviewViewControllerDelegate: WalletOverviewTopBarDelegate & BadgeUpdateDelegate & AnalyticsManagerAccessType {
+protocol WalletOverviewViewControllerDelegate: WalletOverviewTopBarDelegate & BadgeUpdateDelegate & AnalyticsManagerAccessType & DebugDelegate {
   var badgeManager: BadgeManagerType { get }
   var currencyController: CurrencyController { get }
 
