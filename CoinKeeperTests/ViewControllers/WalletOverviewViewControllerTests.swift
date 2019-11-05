@@ -42,6 +42,7 @@ class WalletOverviewViewControllerTests: XCTestCase {
   }
 
   class MockCoordinator: WalletOverviewViewControllerDelegate, ConvertibleBalanceProvider, WalletOverviewTopBarDelegate {
+
     let badgeManager: BadgeManagerType
     let currencyController: CurrencyController
     let balanceUpdateManager: BalanceUpdateManager
@@ -65,6 +66,7 @@ class WalletOverviewViewControllerTests: XCTestCase {
       return true
     }
     func viewControllerDidSelectTransfer(_ viewController: UIViewController) { }
+    func viewControllerSendDebuggingInfo(_ viewController: UIViewController) { }
     func viewControllerDidTapWalletTooltip() { }
     func isSyncCurrentlyRunning() -> Bool {
       return false
